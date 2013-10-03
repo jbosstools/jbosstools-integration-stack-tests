@@ -36,16 +36,6 @@
               <type>p2-installable-unit</type>
               <artifactId>org.jbpm.eclipse.feature.feature.group</artifactId>
             </dependency>
-            <!-- RedDeer framework -->
-            <dependency>
-              <type>p2-installable-unit</type>
-              <artifactId>org.jboss.reddeer.feature.feature.group</artifactId>
-            </dependency>
-            <!-- Do we need AS plugin? -->
-            <dependency>
-              <type>p2-installable-unit</type>
-              <artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
-            </dependency>
           </dependencies>
         </configuration>
       </plugin>
