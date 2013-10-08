@@ -2,12 +2,11 @@ package org.jboss.tools.drools.ui.bot.test.functional;
 
 import java.util.List;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.workbench.editor.TextEditor;
 import org.jboss.tools.drools.reddeer.editor.ContentAssist;
 import org.jboss.tools.drools.reddeer.editor.DrlEditor;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
@@ -48,10 +47,9 @@ public class RulesEditorTest extends TestParent {
         diag.getFirstPage().setPackage("com.sample.domain");
         diag.finish();
 
-        // FIXME RedDeerify when possible
-        SWTBotEclipseEditor editor = new SWTWorkbenchBot().activeEditor().toTextEditor();
-        editor.setText(MESSAGE_TEXT);
-        editor.saveAndClose();
+        TextEditor txtEditor = new TextEditor();
+        txtEditor.setText(MESSAGE_TEXT);
+        txtEditor.close(true);
 
         ProblemsView problems = new ProblemsView();
         problems.open();
