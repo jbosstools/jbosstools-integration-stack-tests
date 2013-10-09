@@ -132,5 +132,57 @@ public class DslEditor extends DefaultEditor {
         public String toString() {
             return String.format("DslLine: '[%s]%s=%s'", scope, expression, mapping);
         }
+
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + ((expression == null) ? 0 : expression.hashCode());
+            result = prime * result + ((mapping == null) ? 0 : mapping.hashCode());
+            result = prime * result + ((object == null) ? 0 : object.hashCode());
+            result = prime * result + ((scope == null) ? 0 : scope.hashCode());
+            return result;
+        }
+
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (obj == null) {
+                return false;
+            }
+            if (getClass() != obj.getClass()) {
+                return false;
+            }
+            DslLine other = (DslLine) obj;
+            if (expression == null) {
+                if (other.expression != null) {
+                    return false;
+                }
+            } else if (!expression.equals(other.expression)) {
+                return false;
+            }
+            if (mapping == null) {
+                if (other.mapping != null) {
+                    return false;
+                }
+            } else if (!mapping.equals(other.mapping)) {
+                return false;
+            }
+            if (object == null) {
+                if (other.object != null) {
+                    return false;
+                }
+            } else if (!object.equals(other.object)) {
+                return false;
+            }
+            if (scope == null) {
+                if (other.scope != null) {
+                    return false;
+                }
+            } else if (!scope.equals(other.scope)) {
+                return false;
+            }
+            return true;
+        }
     }
 }
