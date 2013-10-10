@@ -3,15 +3,20 @@ package org.jboss.tools.drools.ui.bot.test.functional;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.eclipse.swt.widgets.MenuItem;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.swt.lookup.MenuLookup;
+import org.jboss.reddeer.swt.matcher.RegexMatchers;
+import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.workbench.editor.TextEditor;
 import org.jboss.tools.drools.reddeer.dialog.DslLineDialog;
 import org.jboss.tools.drools.reddeer.dialog.DslLineDialog.Scope;
 import org.jboss.tools.drools.reddeer.editor.DslEditor;
 import org.jboss.tools.drools.reddeer.editor.DslEditor.DslLine;
+import org.jboss.tools.drools.reddeer.editor.DslEditor.SortBy;
 import org.jboss.tools.drools.reddeer.wizard.NewDslWizard;
 import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
 import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultRuntime;
@@ -25,6 +30,8 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 public class DslEditorTest extends TestParent {
     private static final Logger LOGGER = Logger.getLogger(DslEditorTest.class);
+    private static final String MAPPING = "System.out.println(\"Hello World!\");";
+    private static final String EXPRESSION = "Print Hello";
 
     @Before
     public void createDefaultDsl() {
@@ -34,6 +41,8 @@ public class DslEditorTest extends TestParent {
         wiz.getFirstPage().setFileName(name.getMethodName());
         wiz.getSamplesPage().setAddSampleDsl(true);
         wiz.finish();
+
+        new DslEditor().close(true);
     }
 
     @Test
@@ -52,47 +61,161 @@ public class DslEditorTest extends TestParent {
     @Test
     @UsePerspective(JavaPerspective.class) @UseDefaultRuntime @UseDefaultProject
     public void testAddExpression() {
-        Project project = new PackageExplorer().getProject(DEFAULT_PROJECT_NAME);
-        project.getProjectItem(RESOURCES_LOCATION, name.getMethodName() + ".dsl").open();
-
-        DslEditor editor = new DslEditor();
+        DslEditor editor = openTestDslFile();
         List<DslLine> origLines = editor.getDslLines();
-
-        final String mapping = "System.out.println(\"Hello World!\");";
-        final String expression = "Print Hello";
 
         // add a new line
         DslLineDialog dialog = editor.add();
-        dialog.setRuleMapping(mapping);
-        dialog.setLanguageExpression(expression);
+        dialog.setRuleMapping(MAPPING);
+        dialog.setLanguageExpression(EXPRESSION);
         dialog.setScope(Scope.CONSEQUENCE);
         dialog.ok();
 
-        // FIXME this is annoying - closing dialog makes editor loose focus and nothing works then
-        project = new PackageExplorer().getProject(DEFAULT_PROJECT_NAME);
-        project.getProjectItem(RESOURCES_LOCATION, name.getMethodName() + ".dsl").open();
+     // FIXME this is annoying - closing dialog makes editor loose focus and nothing works then
+        editor = openTestDslFile();
 
         List<DslLine> newLines = editor.getDslLines();
         Assert.assertEquals("Line count is same!", origLines.size() + 1, newLines.size());
 
         DslLine line = newLines.get(newLines.size() - 1);
-        Assert.assertEquals("Wrong mapping!", mapping, line.getMapping());
-        Assert.assertEquals("Wrong expression!", expression, line.getExpression());
+        Assert.assertEquals("Wrong mapping!", MAPPING, line.getMapping());
+        Assert.assertEquals("Wrong expression!", EXPRESSION, line.getExpression());
         Assert.assertEquals("Wrong scope!", Scope.CONSEQUENCE.toEditorString(), line.getScope());
-
-        editor.close(true);
     }
 
-    //@Test
+    @Test
     @UsePerspective(JavaPerspective.class) @UseDefaultRuntime @UseDefaultProject
-    public void testUseDsl() {
-        TextEditor txt = new TextEditor();
-        txt.getText();
+    public void testInsertExpression() {
+        DslEditor editor = openTestDslFile();
+        List<DslLine> origLines = editor.getDslLines();
+
+        int position = origLines.size() /2;
+        editor.selectLine(origLines.get(position));
+
+        DslLineDialog dialog = editor.add();
+        dialog.setRuleMapping(MAPPING);
+        dialog.setLanguageExpression(EXPRESSION);
+        dialog.setScope(Scope.CONSEQUENCE);
+        dialog.ok();
+
+        // FIXME this is annoying - closing dialog makes editor loose focus and nothing works then
+        editor = openTestDslFile();
+
+        List<DslLine> newLines = editor.getDslLines();
+        Assert.assertEquals("Line count is same!", origLines.size() + 1, newLines.size());
+
+        // FIXME this doesn't really work, it needs to be addressed in bz#1013750
+        DslLine line = newLines.get(position + 1);
+        Assert.assertEquals("Wrong mapping!", MAPPING, line.getMapping());
+        Assert.assertEquals("Wrong expression!", EXPRESSION, line.getExpression());
+        Assert.assertEquals("Wrong scope!", Scope.CONSEQUENCE.toEditorString(), line.getScope());
     }
 
-    //@Test
+    @Test
     @UsePerspective(JavaPerspective.class) @UseDefaultRuntime @UseDefaultProject
-    public void testRunDslRules() {
-        
+    public void testEditExpression() {
+        DslEditor editor = openTestDslFile();
+        List<DslLine> origLines = editor.getDslLines();
+        int position = origLines.size() / 2;
+        DslLine origLine = origLines.get(position);
+
+        editor.selectLine(origLine);
+        DslLineDialog dialog = editor.edit();
+        dialog.setRuleMapping(MAPPING);
+        dialog.setLanguageExpression(EXPRESSION);
+        dialog.ok();
+
+     // FIXME this is annoying - closing dialog makes editor loose focus and nothing works then
+        editor = openTestDslFile();
+
+        List<DslLine> newLines = editor.getDslLines();
+        DslLine newLine = newLines.get(position);
+        Assert.assertEquals("Line count is different!", origLines.size(), newLines.size());
+        Assert.assertEquals("Scope differs", origLine.getScope(), newLine.getScope());
+        Assert.assertEquals("Mapping is the same", MAPPING, newLine.getMapping());
+        Assert.assertEquals("Rule expression is same", EXPRESSION, newLine.getExpression());
+        Assert.assertEquals("Object is different", origLine.getObject(), newLine.getObject());
+    }
+
+    @Test
+    @UsePerspective(JavaPerspective.class) @UseDefaultRuntime @UseDefaultProject
+    public void testRemoveExpression() {
+        DslEditor editor = openTestDslFile();
+        List<DslLine> origLines = editor.getDslLines();
+        int position = origLines.size() / 2;
+        DslLine origLine = origLines.get(position);
+
+        editor.selectLine(origLine);
+        editor.remove();
+
+        List<DslLine> newLines = editor.getDslLines();
+
+        Assert.assertEquals("There are more lines than expected", origLines.size() - 1, newLines.size());
+        Assert.assertFalse("Removed line is still present", newLines.contains(origLine));
+    }
+
+    @Test
+    @UsePerspective(JavaPerspective.class) @UseDefaultRuntime @UseDefaultProject
+    public void testSort() {
+        DslEditor editor = openTestDslFile();
+        List<DslLine> origLines = editor.getDslLines();
+
+        editor.sort(SortBy.SCOPE);
+
+        List<DslLine> newLines = editor.getDslLines();
+        Assert.assertEquals("Different number of DSL lines", origLines.size(), newLines.size());
+
+        for (DslLine line : origLines) {
+            Assert.assertTrue("Missing line " + line, newLines.contains(line));
+        }
+
+        // TODO test the order of dsl lines?
+    }
+
+    @Test
+    @UsePerspective(JavaPerspective.class) @UseDefaultRuntime @UseDefaultProject
+    public void testOpenHandwrittenDsl() {
+        PackageExplorer explorer = new PackageExplorer();
+        explorer.open();
+        explorer.getProject(DEFAULT_PROJECT_NAME).getProjectItem(RESOURCES_LOCATION, name.getMethodName() + ".dsl").select();
+
+        openWith("Text Editor");
+        TextEditor txtEditor = new TextEditor();
+        txtEditor.setText(getTemplateText("DslTestContent"));
+        txtEditor.save();
+        txtEditor.close();
+
+        explorer = new PackageExplorer();
+        explorer.open();
+        explorer.getProject(DEFAULT_PROJECT_NAME).getProjectItem(RESOURCES_LOCATION, name.getMethodName() + ".dsl").select();
+        openWith("DSL Editor");
+
+        DslEditor editor = new DslEditor();
+        List<DslLine> lines = editor.getDslLines();
+
+        Assert.assertEquals("Not all text file lines are present", 29, lines.size());
+    }
+
+    private DslEditor openTestDslFile() {
+        Project project = new PackageExplorer().getProject(DEFAULT_PROJECT_NAME);
+        project.getProjectItem(RESOURCES_LOCATION, name.getMethodName() + ".dsl").open();
+
+        return new DslEditor();
+    }
+
+    /*
+     * new ContextMenu(...).select() does not work with Open With choice
+     * This is the way to fix it
+     * FIXME once this gets fixed in RedDeer remove the method
+     */
+    private void openWith(String editorName) {
+        MenuLookup ml = new MenuLookup();
+        final MenuItem item = ml.lookFor(ml.getTopMenuMenuItemsFromFocus(), new RegexMatchers("Open With", editorName).getMatchers());
+        Display.syncExec(new Runnable() {
+            public void run() {
+                item.setSelection(true);
+            }
+        });
+        ml.select(item);
     }
 }
