@@ -171,20 +171,13 @@ public abstract class TestParent {
         if (getAnnotationOnMethod(name.getMethodName(), UseDefaultRuntime.class) != null) {
             DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
             pref.open();
-            boolean exists = false;
-            for (DroolsRuntime runtime : pref.getDroolsRuntimes()) {
-                if (DEFAULT_DROOLS_RUNTIME_NAME.equals(runtime.getName())) {
-                    exists = true;
-                    break;
-                }
-            }
-            if (!exists) {
-                DroolsRuntimeDialog wiz = pref.addDroolsRuntime();
-                wiz.setName(DEFAULT_DROOLS_RUNTIME_NAME);
-                wiz.setLocation(DEFAULT_DROOLS_RUNTIME_LOCATION);
-                wiz.ok();
-                pref.setDroolsRuntimeAsDefault(DEFAULT_DROOLS_RUNTIME_NAME);
-            }
+
+            DroolsRuntimeDialog wiz = pref.addDroolsRuntime();
+            wiz.setName(DEFAULT_DROOLS_RUNTIME_NAME);
+            wiz.setLocation(DEFAULT_DROOLS_RUNTIME_LOCATION);
+            wiz.ok();
+            pref.setDroolsRuntimeAsDefault(DEFAULT_DROOLS_RUNTIME_NAME);
+
             pref.okCloseWarning();
         }
 
