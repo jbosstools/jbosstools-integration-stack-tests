@@ -95,23 +95,6 @@
 		</execution>
 	      </executions>
 	    </plugin>
-	    <!-- JBTIS Target Platform -->
-	    <plugin>
-	      <groupId>org.eclipse.tycho</groupId>
-	      <artifactId>target-platform-configuration</artifactId>
-	      <version>${tychoVersion}</version>
-	      <configuration>
-		<target>
-		  <artifact>
-		    <groupId>org.jboss.tools.integration-stack</groupId>
-		    <artifactId>target-platform</artifactId>
-		    <version>${jbtis.version}</version>
-		    <type>target</type>
-		    <classifier>base</classifier>
-		  </artifact>
-		</target>
-	      </configuration>
-	    </plugin>
 	  </plugins>
 	</build>
 	
