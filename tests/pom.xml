@@ -4,12 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.jboss.tools</groupId>
-		<artifactId>integration-tests</artifactId>
+		<artifactId>integration-stack-tests</artifactId>
 		<version>4.1.0-SNAPSHOT</version>
 	</parent>
-	<groupId>org.jboss.tools.integration-tests</groupId>
+	<groupId>org.jboss.tools.integration-stack-tests</groupId>
 	<artifactId>tests</artifactId>
-	<name>integration-tests.tests</name>
+	<name>integration-stack-tests.tests</name>
 	<packaging>pom</packaging>
   
         <properties>
@@ -22,54 +22,21 @@
         </properties>
 
 	<modules>
-		<module>org.jboss.ide.eclipse.as.ui.bot.test</module>
-		<module>org.jboss.ide.eclipse.as.reddeer</module>
-		<module>org.jboss.tools.aerogear.ui.bot.test</module>
-		<module>org.jboss.tools.archives.reddeer</module>
-		<module>org.jboss.tools.archives.ui.bot.test</module>
-		<module>org.jboss.tools.common.reddeer</module>
-		<module>org.jboss.tools.cdi.bot.test</module>
-		<module>org.jboss.tools.cdi.reddeer</module>
-		<module>org.jboss.tools.cdi.seam3.bot.test</module>
-		<module>org.jboss.tools.central.test.ui.bot</module>
-		<module>org.jboss.tools.deltaspike.ui.bot.test</module>		
-		<module>org.jboss.tools.dummy.ui.bot.test</module>
-		<module>org.jboss.tools.forge.ui.bot.test</module>
-		<module>org.jboss.tools.freemarker.ui.bot.test</module>
-		<module>org.jboss.tools.hibernate.reddeer</module>
-		<module>org.jboss.tools.hibernate.ui.bot.test</module>
-		<module>org.jboss.tools.jsf.ui.bot.test</module>
-		<module>org.jboss.tools.jst.ui.bot.test</module>
-		<module>org.jboss.tools.maven.ui.bot.test</module>
-		<module>org.jboss.tools.mylyn.ui.bot.test</module>
-		<module>org.jboss.tools.openshift.ui.bot.test</module>
-		<!-- <module>org.jboss.tools.portlet.ui.bot.test</module> JBIDE-13324 -->
-		<module>org.jboss.tools.runtime.as.ui.bot.test</module>
-		<module>org.jboss.tools.seam.ui.bot.test</module>
-		<module>org.jboss.tools.ui.bot.ext</module>
-		<module>org.jboss.tools.ui.bot.ext.test</module>
-		<module>org.jboss.tools.vpe.ui.bot.test</module>
-		<module>org.jboss.tools.ws.reddeer</module>
-		<module>org.jboss.tools.ws.ui.bot.test</module>
+		<module>org.jboss.tools.jbpm.ui.bot.test</module>
+		<module>org.jboss.tools.bpel.reddeer</module>
+		<module>org.jboss.tools.bpel.ui.bot.test</module>
+		<module>org.jboss.tools.esb.ui.bot.test</module>
+		<module>org.jboss.tools.switchyard.reddeer</module>
+		<module>org.jboss.tools.switchyard.ui.bot.test</module>
+		<module>org.jboss.tools.teiid.reddeer</module>
+		<module>org.jboss.tools.teiid.ui.bot.test</module>
+		<module>org.jboss.tools.modeshape.reddeer</module>
+		<module>org.jboss.tools.modeshape.ui.bot.test</module>
+		<module>org.jboss.tools.drools.reddeer</module>
+		<module>org.jboss.tools.drools.ui.bot.test</module>
+		<module>org.jboss.tools.bpmn2.itests</module>
 	</modules>
 	<profiles>
-		<profile>
-			<id>soa</id>
-			<modules>
-				<module>org.jboss.tools.jbpm.ui.bot.test</module>
-				<module>org.jboss.tools.bpel.reddeer</module>
-				<module>org.jboss.tools.bpel.ui.bot.test</module>
-				<module>org.jboss.tools.esb.ui.bot.test</module>
-				<module>org.jboss.tools.switchyard.reddeer</module>
-				<module>org.jboss.tools.switchyard.ui.bot.test</module>
-				<module>org.jboss.tools.teiid.reddeer</module>
-				<module>org.jboss.tools.teiid.ui.bot.test</module>
-				<module>org.jboss.tools.modeshape.reddeer</module>
-				<module>org.jboss.tools.modeshape.ui.bot.test</module>
-				<module>org.jboss.tools.drools.ui.bot.test</module>
-				<module>org.jboss.tools.bpmn2.itests</module>
-			</modules>
-		</profile>
 		<profile>
 			<id>windows-xp-memory-options</id>
 			<activation>
