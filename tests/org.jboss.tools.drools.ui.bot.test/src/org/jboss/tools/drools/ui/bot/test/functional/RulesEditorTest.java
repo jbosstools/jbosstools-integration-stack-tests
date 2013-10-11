@@ -9,6 +9,7 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.workbench.editor.TextEditor;
 import org.jboss.tools.drools.reddeer.editor.ContentAssist;
 import org.jboss.tools.drools.reddeer.editor.DrlEditor;
+import org.jboss.tools.drools.reddeer.editor.RuleEditor;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
 import org.jboss.tools.drools.reddeer.wizard.NewRuleResourceWizard;
 import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
@@ -64,7 +65,7 @@ public class RulesEditorTest extends TestParent {
         wiz.getFirstPage().setRulePackageName("com.sample");
         wiz.finish();
 
-        DrlEditor drlEditor = new DrlEditor();
+        RuleEditor drlEditor = new DrlEditor().showRuleEditor();
         drlEditor.setText(RULE_RESOURCE_TEXT);
         drlEditor.save();
     }
@@ -72,7 +73,7 @@ public class RulesEditorTest extends TestParent {
     @Test @Category(SmokeTest.class)
     @UsePerspective(DroolsPerspective.class) @UseDefaultRuntime @UseDefaultProject
     public void testImportCodeCompletion() {
-        DrlEditor editor = new DrlEditor();
+        RuleEditor editor = new DrlEditor().showRuleEditor();
         editor.setPosition(2, 0);
 
         ContentAssist assist = editor.createContentAssist();
@@ -97,7 +98,7 @@ public class RulesEditorTest extends TestParent {
     @Test @Category(SmokeTest.class)
     @UsePerspective(DroolsPerspective.class) @UseDefaultRuntime @UseDefaultProject
     public void testFactTypeCompletion() {
-        DrlEditor editor = new DrlEditor();
+        RuleEditor editor = new DrlEditor().showRuleEditor();
         editor.setPosition(2, 0);
 
         editor.writeText("import com.sample.domain.Message\n\n");
@@ -125,7 +126,7 @@ public class RulesEditorTest extends TestParent {
     @Test @Category(SmokeTest.class)
     @UsePerspective(DroolsPerspective.class) @UseDefaultRuntime @UseDefaultProject
     public void testConstraintsCompletion() {
-        DrlEditor editor = new DrlEditor();
+        RuleEditor editor = new DrlEditor().showRuleEditor();
         editor.setPosition(2, 0);
         editor.writeText("import com.sample.domain.Message\n\nrule newRule\n\twhen\n\t\tMessage( )\n\tthen\nend\n");
 
@@ -167,7 +168,7 @@ public class RulesEditorTest extends TestParent {
     @Test @Category(SmokeTest.class)
     @UsePerspective(DroolsPerspective.class) @UseDefaultRuntime @UseDefaultProject
     public void testConsequencesCompletion() {
-        DrlEditor editor = new DrlEditor();
+        RuleEditor editor = new DrlEditor().showRuleEditor();
         editor.setPosition(2, 0);
         editor.writeText("import com.sample.domain.Message\n\nrule newRule\n\twhen\n\t\t$msg: Message()\n\tthen\n\t\t\nend\n");
         editor.setPosition(8, 2);

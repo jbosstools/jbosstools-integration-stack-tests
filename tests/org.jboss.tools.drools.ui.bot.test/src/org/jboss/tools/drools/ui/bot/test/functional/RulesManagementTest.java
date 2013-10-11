@@ -16,6 +16,7 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.drools.reddeer.dialog.DroolsRuntimeDialog;
 import org.jboss.tools.drools.reddeer.editor.DrlEditor;
+import org.jboss.tools.drools.reddeer.editor.RuleEditor;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage;
 import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectWizard;
@@ -133,7 +134,7 @@ public class RulesManagementTest extends TestParent {
         explorer.getProject(DEFAULT_PROJECT_NAME).getProjectItem(RESOURCES_LOCATION, "rules", "Sample.drl").select();
         new ContextMenu(new RegexMatchers("Open.*").getMatchers()).select();
 
-        DrlEditor editor = new DrlEditor();
+        RuleEditor editor = new DrlEditor().showRuleEditor();
         editor.setPosition(8, 0);
 
         try {
@@ -155,7 +156,7 @@ public class RulesManagementTest extends TestParent {
         explorer.getProject(DEFAULT_PROJECT_NAME).getProjectItem(RESOURCES_LOCATION, "rules", "Sample.drl").select();
         new ContextMenu(new RegexMatchers("Open.*").getMatchers()).select();
 
-        new DrlEditor().setBreakpoint(8);
+        new DrlEditor().showRuleEditor().setBreakpoint(8);
 
         RunUtility.debugAsDroolsApplication(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
 
