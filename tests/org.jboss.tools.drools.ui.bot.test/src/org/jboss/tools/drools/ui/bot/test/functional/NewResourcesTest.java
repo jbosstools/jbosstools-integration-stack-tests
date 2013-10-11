@@ -51,7 +51,7 @@ public class NewResourcesTest extends TestParent {
         Project p = explorer.getProject(DEFAULT_PROJECT_NAME);
         Assert.assertTrue("Rule resource was not created", p.containsItem(RESOURCES_LOCATION, "rules", resourceName + ".drl"));
 
-        String text = new DrlEditor().getText();
+        String text = new DrlEditor().showRuleEditor().getText();
         Assert.assertTrue("Wrong package declaration.", text.contains("package " + packageName));
         Matcher m = RULE_PATTERN.matcher(text);
         Assert.assertTrue("No rule present in file", m.find());
@@ -79,7 +79,7 @@ public class NewResourcesTest extends TestParent {
         Project p = explorer.getProject(DEFAULT_PROJECT_NAME);
         Assert.assertTrue("Rule resource was not created", p.containsItem(RESOURCES_LOCATION, "rules", resourceName + ".drl"));
 
-        String text = new DrlEditor().getText();
+        String text = new DrlEditor().showRuleEditor().getText();
         Assert.assertTrue("Wrong package declaration.", text.contains("package " + packageName));
         Matcher m = RULE_PATTERN.matcher(text);
         Assert.assertTrue("No rule present in file", m.find());
