@@ -1,7 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Teiid Reddeer
+Bundle-Name: Teiid Reddeer Framework
 Bundle-SymbolicName: org.jboss.tools.teiid.reddeer
+Bundle-Vendor: JBoss by Red Hat
 Bundle-Version: 4.1.0.qualifier
 Bundle-Activator: org.jboss.tools.teiid.reddeer.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
