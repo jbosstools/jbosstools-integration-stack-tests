@@ -21,14 +21,14 @@
 	  <teiid-820final.url>http://sourceforge.net/projects/teiid/files/teiid/8.2/Final/teiid-8.2.0.Final-jboss-dist.zip</teiid-820final.url>
 	  <teiid-830final.url>http://downloads.sourceforge.net/project/teiid/teiid/8.3/Final/teiid-8.3.0.Final-jboss-dist.zip</teiid-830final.url>
 	  <teiid-designer-810Final.site>http://download.jboss.org/jbosstools/updates/release/juno/soa-tooling/teiiddesigner/8.1.0.Final</teiid-designer-810Final.site>
-	  <teiid-designer.site>${teiid-designer-810Final.site}</teiid-designer.site>
+	  <teiid-designer.site>${jbtis.site}</teiid-designer.site>
 	</properties>
 
 	<repositories>
 	  <!-- Teiid Repository -->
 	  <repository>
 	    <id>teiid</id>
-	    <url>${jbtis.site}</url>
+	    <url>${teiid-designer.site}</url>
 	    <layout>p2</layout>
 	    <snapshots>
 	      <enabled>true</enabled>

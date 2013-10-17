@@ -17,21 +17,6 @@
 	  <systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=${swtbot.test.properties.file}</systemProperties>
 	  <test.class>AllTests</test.class>
 	</properties>
-
-	<repositories>
-	  <!-- JBTIS Repository -->
-	  <repository>
-	    <id>jbtis</id>
-	    <url>${jbtis.site}</url>
-	    <layout>p2</layout>
-	    <snapshots>
-	      <enabled>true</enabled>
-	    </snapshots>
-	    <releases>
-	      <enabled>true</enabled>
-	    </releases>
-	  </repository>
-	</repositories>
 	
 	<build>
 	  <plugins>

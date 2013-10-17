@@ -17,36 +17,8 @@
 	  <systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=${swtbot.properties}</systemProperties>
 	  <surefire.timeout>10800</surefire.timeout>
 	  <test.class>AllTests</test.class>
-	  <orbit.site>http://download.eclipse.org/tools/orbit/downloads/drops/R20130517111416/repository</orbit.site>
 	  <maven-download-plugin.version>1.0.0</maven-download-plugin.version>
 	</properties>
-
-	<repositories>
-	  <!-- JBTIS Repository -->
-	  <repository>
-	    <id>jbtis</id>
-	    <url>${jbtis.site}</url>
-	    <layout>p2</layout>
-	    <snapshots>
-	      <enabled>true</enabled>
-	    </snapshots>
-	    <releases>
-	      <enabled>true</enabled>
-	    </releases>
-	  </repository>
-	  <!-- Eclipse Orbit Repository -->
-	  <repository>
-	    <id>orbit</id>
-	    <url>${orbit.site}</url>
-	    <layout>p2</layout>
-	    <snapshots>
-	      <enabled>true</enabled>
-	    </snapshots>
-	    <releases>
-	      <enabled>true</enabled>
-	    </releases>
-	  </repository>
-	</repositories>
 
 	<build>
 	  <plugins>
