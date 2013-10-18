@@ -104,6 +104,36 @@ public class NewResourcesTest extends TestParent {
         Assert.assertTrue(pkg.getProject(DEFAULT_PROJECT_NAME).containsItem(RESOURCES_LOCATION, "rules", resourceName + ".dsl"));
     }
 
+    @Test
+    @UsePerspective(JavaPerspective.class) @UseDefaultRuntime @UseDefaultProject
+    public void testNewDslr() {
+        final String resourceName = name.getMethodName();
+        final String packageName = "com.redhat";
+
+        NewRuleResourceWizard wiz = new NewRuleResourceWizard();
+        wiz.open();
+        NewRuleResourceWizardPage page = wiz.getFirstPage();
+        page.setParentFolder(DEFAULT_RULES_PATH);
+        page.setFileName(resourceName);
+        page.setRulePackageName(packageName);
+        page.setTypeOfRuleResource(RuleResourceType.rulePackage);
+        page.setUseDSL(true);
+        wiz.finish();
+
+        PackageExplorer explorer = new PackageExplorer();
+        explorer.open();
+        Project p = explorer.getProject(DEFAULT_PROJECT_NAME);
+        Assert.assertTrue("Rule resource was not created", p.containsItem(RESOURCES_LOCATION, "rules", resourceName + ".dslr"));
+
+        String text = new DrlEditor().showRuleEditor().getText();
+        Assert.assertTrue("Wrong package declaration.", text.contains("package " + packageName));
+        Matcher m = RULE_PATTERN.matcher(text);
+        Assert.assertTrue("No expander definition found!", Pattern.compile("expander .*\\.dsl").matcher(text).find());
+        Assert.assertTrue("No rule present in file", m.find());
+        Assert.assertTrue("Only one rule present in file", m.find());
+        Assert.assertFalse("More than two rules present in file", m.find());
+    }
+
     @Ignore("Opens the decision table and fails remaining tests")
     @Test
     @UsePerspective(JavaPerspective.class) @UseDefaultRuntime @UseDefaultProject
