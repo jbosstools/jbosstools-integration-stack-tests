@@ -208,7 +208,7 @@ public class DslEditorTest extends TestParent {
      * This is the way to fix it
      * FIXME once this gets fixed in RedDeer remove the method
      */
-    private void openWith(String editorName) {
+    public static void openWith(String editorName) {
         MenuLookup ml = new MenuLookup();
         final MenuItem item = ml.lookFor(ml.getTopMenuMenuItemsFromFocus(), new RegexMatchers("Open With", editorName).getMatchers());
         Display.syncExec(new Runnable() {
