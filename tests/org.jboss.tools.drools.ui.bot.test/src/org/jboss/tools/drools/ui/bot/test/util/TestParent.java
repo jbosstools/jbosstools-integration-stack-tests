@@ -260,11 +260,11 @@ public abstract class TestParent {
             LOGGER.error("Unable to close template stream", ex);
         } finally {
             try {
-                br.close();
+                if (br != null) br.close();
             } catch (IOException ex) {
                 throw new RuntimeException("Error closing BufferedReader", ex);
             }
-            pw.close();
+            if (pw != null) pw.close();
         }
 
         return w.toString();
@@ -288,5 +288,12 @@ public abstract class TestParent {
             return null;
         }
         return m.getAnnotation(annotationClass);
+    }
+
+    /**
+     * Try not to use thread sleep to wait for events (there has to be a better way)
+     */
+    protected void waitASecond() {
+        try { Thread.sleep(1000); } catch (InterruptedException ex) {}
     }
 }
