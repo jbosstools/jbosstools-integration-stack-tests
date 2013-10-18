@@ -57,4 +57,40 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>prepare-brms-binaries</id>
+      <activation>
+        <property>
+            <name>brms.binaries</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>unzip-brms-binaries</id>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <phase>pre-integration-test</phase>
+                <configuration>
+                  <tasks>
+                    <get src="${brms.binaries}" dest="target/brms-deployable.zip" />
+                    <unzip src="target/brms-deployable.zip" dest="target/brms-deployable" />
+                    <unzip src="target/brms-deployable/jboss-brms-engine.zip" dest="target/runtime" />
+                    <echo file="resources/project.properties">drools.default.location=${project.build.directory}/runtime</echo>
+                  </tasks>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
