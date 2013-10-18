@@ -1,0 +1,50 @@
+# I have taken this from the Drools Expert Guide
+
+# This is a comment to be ignored.
+[when]There is a person with name of "{name}"=Person(name=="{name}")
+[when]Person is at least {age} years old and lives in "{location}"=
+      Person(age >= {age}, location=="{location}")
+[then]Log "{message}"=System.out.println("{message}");
+[when]And = and
+[when]There is a Cheese with=Cheese()
+[when]- age is less than {age}=age<{age}
+[when]- type is '{type}'=type=='{type}'
+[when]- country equal to '{country}'=country=='{country}'
+[when][]is less than or equal to=<=
+[when][]is less than=<
+[when][]is greater than or equal to=>=
+[when][]is greater than=>
+[when][]is equal to===
+[when][]equals===
+[when][]There is a Cheese with=Cheese()
+[when][]- {field:\w*} {operator} {value:\d*}={field} {operator} {value}
+
+# Comment: DSL examples
+
+#/ debug: display result and usage
+
+# keyword definition: replaces "regula" by "rule"
+[keyword][]regula=rule
+
+# conditional element: "T" or "t", "a" or "an", convert matched word
+[when][][Tt]here is an? {entity:\w+}=
+        ${entity!lc}: {entity!ucfirst} ()
+
+# consequence statement: convert matched word, literal braces
+[then][]update {entity:\w+}=modify( ${entity!lc} )\{ \}
+
+# definitions for conditions
+[when][]There is an? {entity}=${entity!lc}: {entity!ucfirst}()
+[when][]- with an? {attr} greater than {amount}={attr} <= {amount!num}
+
+# And I add a few more myself
+[keyword]this is no a keyword=true
+[keyword][]true=false
+[keyword][java.lang.Object]false=true
+[conditions]příliš žluťoučký kůň úpěl ďábelské ódy=The quick brown fox jumps over the lazy dog
+[conditions][this is no object]when=if
+[consequences][no!]bye=syso "Hello world!"
+[consequences]syso "{text}"=System.out.println("{text}");
+
+# this one is broken in Drools Engine
+[when][]- with a {what} {attr}={attr} {what!positive?>0/negative?<0/zero?==0/ERROR}

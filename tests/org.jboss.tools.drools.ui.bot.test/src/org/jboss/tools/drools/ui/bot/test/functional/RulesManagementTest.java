@@ -5,6 +5,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
@@ -15,6 +16,7 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.drools.reddeer.dialog.DroolsRuntimeDialog;
 import org.jboss.tools.drools.reddeer.editor.DrlEditor;
+import org.jboss.tools.drools.reddeer.editor.RuleEditor;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage;
 import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectWizard;
@@ -132,10 +134,18 @@ public class RulesManagementTest extends TestParent {
         explorer.getProject(DEFAULT_PROJECT_NAME).getProjectItem(RESOURCES_LOCATION, "rules", "Sample.drl").select();
         new ContextMenu(new RegexMatchers("Open.*").getMatchers()).select();
 
-        DrlEditor editor = new DrlEditor();
+        RuleEditor editor = new DrlEditor().showRuleEditor();
         editor.setPosition(8, 0);
 
-        new ShellMenu(new RegexMatchers("Run.*", "Toggle Breakpoint.*").getMatchers()).select();
+        try {
+            new ShellMenu(new RegexMatchers("Run.*", "Toggle Breakpoint.*").getMatchers()).select();
+        } catch (SWTLayerException ex) {
+            if ("Menu item is not enabled".equals(ex.getMessage())) {
+                Assert.fail("Toggle Breakpoint menu item is not enabled!");
+            } else {
+                throw ex;
+            }
+        }
     }
 
     @Test @Category(SmokeTest.class)
@@ -146,7 +156,7 @@ public class RulesManagementTest extends TestParent {
         explorer.getProject(DEFAULT_PROJECT_NAME).getProjectItem(RESOURCES_LOCATION, "rules", "Sample.drl").select();
         new ContextMenu(new RegexMatchers("Open.*").getMatchers()).select();
 
-        new DrlEditor().setBreakpoint(8);
+        new DrlEditor().showRuleEditor().setBreakpoint(8);
 
         RunUtility.debugAsDroolsApplication(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
 
@@ -164,16 +174,13 @@ public class RulesManagementTest extends TestParent {
         LOGGER.debug(consoleText);
         Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.matches(DEBUG_REGEX));
 
+        // wait a moment before Debug perspective is fully loaded
+        waitASecond();
+
         new ShellMenu(new RegexMatchers("Run", "Resume.*").getMatchers()).select();
         console.open();
+        consoleText = console.getConsoleText();
         Assert.assertTrue("Wrong console text found\n" + consoleText, consoleText.matches(SUCCESSFUL_RUN_REGEX));
     }
 
-    /**
-     * @deprecated try not to use thread sleep to wait for events (there has to be a better way)
-     */
-    @Deprecated
-    private void waitASecond() {
-        try { Thread.sleep(1000); } catch (InterruptedException ex) {}
-    }
 }

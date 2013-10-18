@@ -171,20 +171,13 @@ public abstract class TestParent {
         if (getAnnotationOnMethod(name.getMethodName(), UseDefaultRuntime.class) != null) {
             DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
             pref.open();
-            boolean exists = false;
-            for (DroolsRuntime runtime : pref.getDroolsRuntimes()) {
-                if (DEFAULT_DROOLS_RUNTIME_NAME.equals(runtime.getName())) {
-                    exists = true;
-                    break;
-                }
-            }
-            if (!exists) {
-                DroolsRuntimeDialog wiz = pref.addDroolsRuntime();
-                wiz.setName(DEFAULT_DROOLS_RUNTIME_NAME);
-                wiz.setLocation(DEFAULT_DROOLS_RUNTIME_LOCATION);
-                wiz.ok();
-                pref.setDroolsRuntimeAsDefault(DEFAULT_DROOLS_RUNTIME_NAME);
-            }
+
+            DroolsRuntimeDialog wiz = pref.addDroolsRuntime();
+            wiz.setName(DEFAULT_DROOLS_RUNTIME_NAME);
+            wiz.setLocation(DEFAULT_DROOLS_RUNTIME_LOCATION);
+            wiz.ok();
+            pref.setDroolsRuntimeAsDefault(DEFAULT_DROOLS_RUNTIME_NAME);
+
             pref.okCloseWarning();
         }
 
@@ -267,11 +260,11 @@ public abstract class TestParent {
             LOGGER.error("Unable to close template stream", ex);
         } finally {
             try {
-                br.close();
+                if (br != null) br.close();
             } catch (IOException ex) {
                 throw new RuntimeException("Error closing BufferedReader", ex);
             }
-            pw.close();
+            if (pw != null) pw.close();
         }
 
         return w.toString();
@@ -295,5 +288,12 @@ public abstract class TestParent {
             return null;
         }
         return m.getAnnotation(annotationClass);
+    }
+
+    /**
+     * Try not to use thread sleep to wait for events (there has to be a better way)
+     */
+    protected void waitASecond() {
+        try { Thread.sleep(1000); } catch (InterruptedException ex) {}
     }
 }
