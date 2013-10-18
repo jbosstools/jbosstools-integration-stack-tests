@@ -183,11 +183,4 @@ public class RulesManagementTest extends TestParent {
         Assert.assertTrue("Wrong console text found\n" + consoleText, consoleText.matches(SUCCESSFUL_RUN_REGEX));
     }
 
-    /**
-     * @deprecated try not to use thread sleep to wait for events (there has to be a better way)
-     */
-    @Deprecated
-    private void waitASecond() {
-        try { Thread.sleep(1000); } catch (InterruptedException ex) {}
-    }
 }
