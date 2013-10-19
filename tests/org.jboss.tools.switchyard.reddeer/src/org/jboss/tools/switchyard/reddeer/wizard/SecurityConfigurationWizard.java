@@ -12,6 +12,7 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.switchyard.reddeer.condition.IsButtonEnabled;
 
 public class SecurityConfigurationWizard extends WizardDialog {
 
@@ -35,8 +36,7 @@ public class SecurityConfigurationWizard extends WizardDialog {
 		activate();
 		new LabeledText(NAME).setFocus();
 		new LabeledText(NAME).setText(name);
-		new LabeledText(ROLES_ALLOWED).setFocus();
-		new LabeledText(NAME).setFocus();
+		new WaitUntil(new IsButtonEnabled("Finish", ROLES_ALLOWED, NAME), TimePeriod.LONG);
 	}
 
 	public String getName() {

@@ -9,6 +9,7 @@ import org.jboss.tools.switchyard.ui.bot.test.BottomUpCamelTest;
 import org.jboss.tools.switchyard.ui.bot.test.BottomUpEJBTest;
 import org.jboss.tools.switchyard.ui.bot.test.DroolsTest;
 import org.jboss.tools.switchyard.ui.bot.test.FileGatewayTest;
+import org.jboss.tools.switchyard.ui.bot.test.ImplementationsPropertiesTest;
 import org.jboss.tools.switchyard.ui.bot.test.SimpleTest;
 import org.jboss.tools.switchyard.ui.bot.test.WSProxyRESTTest;
 import org.jboss.tools.switchyard.ui.bot.test.WSProxySOAPTest;
@@ -31,7 +32,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	BottomUpEJBTest.class,
 	BottomUpBPMN2Test.class,
 	BPMTest.class,
-	DroolsTest.class
+	DroolsTest.class,
+	ImplementationsPropertiesTest.class
 })
 @RunWith(SwitchyardSuite.class)
 public class AllTests extends TestSuite {
