@@ -34,12 +34,14 @@ import org.jboss.tools.switchyard.reddeer.widget.ContextButton;
 public class Component {
 
 	protected SWTBotGefEditPart editPart;
+	private String tooltip;
 
 	public Component() {
 	}
 
 	public Component(String tooltip) {
 		this(tooltip, 0);
+		this.tooltip = tooltip;
 	}
 
 	public Component(String tooltip, int index) {
@@ -136,4 +138,7 @@ public class Component {
 		return editPart;
 	}
 
+	public String getTooltip() {
+		return tooltip;
+	}
 }
