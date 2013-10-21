@@ -19,6 +19,8 @@
 	<bundle url="plugins/org.jboss.tools.bpmn2.itests_0.0.0.jar" id="org.jboss.tools.bpmn2.itests" version="0.0.0"><category name="JBoss Tools Integration Stack Tests"/></bundle>
 	<bundle url="plugins/org.jboss.tools.drools.reddeer_0.0.0.jar" id="org.jboss.tools.drools.reddeer" version="0.0.0"><category name="JBoss Tools Integration Stack Tests"/></bundle>
 	<bundle url="plugins/org.jboss.tools.drools.ui.bot.test_0.0.0.jar" id="org.jboss.tools.drools.ui.bot.test" version="0.0.0"><category name="JBoss Tools Integration Stack Tests"/></bundle>
+	<bundle url="plugins/org.jboss.tools.fuse.reddeer_0.0.0.jar" id="org.jboss.tools.fuse.reddeer" version="0.0.0"><category name="JBoss Tools Integration Stack Tests"/></bundle>
+	<bundle url="plugins/org.jboss.tools.fuse.ui.bot.test_0.0.0.jar" id="org.jboss.tools.fuse.ui.bot.test" version="0.0.0"><category name="JBoss Tools Integration Stack Tests"/></bundle>
 	<bundle url="plugins/org.jboss.tools.esb.ui.bot.test_0.0.0.jar" id="org.jboss.tools.esb.ui.bot.test" version="0.0.0"><category name="JBoss Tools Integration Stack Tests"/></bundle>
 	<bundle url="plugins/org.jboss.tools.jbpm.ui.bot.test_0.0.0.jar" id="org.jboss.tools.jbpm.ui.bot.test" version="0.0.0"><category name="JBoss Tools Integration Stack Tests"/></bundle>
 	<bundle url="plugins/org.jboss.tools.modeshape.reddeer_0.0.0.jar" id="org.jboss.tools.modeshape.reddeer" version="0.0.0"><category name="JBoss Tools Integration Stack Tests"/></bundle>

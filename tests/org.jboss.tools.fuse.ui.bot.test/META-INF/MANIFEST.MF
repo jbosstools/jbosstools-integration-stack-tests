@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Fuse Bot Tests
+Bundle-SymbolicName: org.jboss.tools.fuse.ui.bot.test
+Bundle-Version: 4.1.0.qualifier
+Bundle-Activator: org.jboss.tools.switchyard.ui.bot.test.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.osgi,
+ org.eclipse.core.runtime,
+ org.junit;bundle-version="4.10.0",
+ org.jboss.reddeer.swt,
+ org.jboss.reddeer.eclipse,
+ org.jboss.reddeer.workbench,
+ org.jboss.reddeer.jface,
+ org.jboss.reddeer.junit,
+ org.jboss.reddeer.swt.test;bundle-version="0.4.0",
+ org.jboss.tools.fuse.reddeer;bundle-version="4.1.0",
+ org.jboss.tools.switchyard.reddeer;bundle-version="4.1.0",
+ org.eclipse.swtbot.eclipse.gef.finder;bundle-version="2.1.1"
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Vendor: JBoss by Red Hat
+Eclipse-RegisterBuddy: org.apache.log4j
+Eclipse-BundleShape: dir
