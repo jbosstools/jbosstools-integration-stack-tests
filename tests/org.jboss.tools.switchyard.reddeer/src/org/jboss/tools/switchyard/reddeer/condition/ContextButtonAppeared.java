@@ -21,6 +21,7 @@ public class ContextButtonAppeared implements WaitCondition {
 
 	@Override
 	public boolean test() {
+		component.select();
 		component.hover();
 		try {
 			new ContextButton(label);
