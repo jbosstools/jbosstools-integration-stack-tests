@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+	<description>JBoss Tools Integration Stack 4.1 - Tests</description>
+
+	<!-- PLEASE NOTE!
+		When updating this file, please be sure that it parses as valid XML before committing it.
+		To test, just run `mvn clean install` in this folder. 
+		To regenerate the list of included test features, do this:
+		
+		$ cd ~/trunk; find . -mindepth 3 -maxdepth 3 -type d -name "*test*feature" | sort | \
+		sed "s#\.\/.\+\/features\/\(.\+\)#<feature url=\"features/\1_0.0.0.jar\" id=\"\1\" version=\"0.0.0\"><category name=\"SOA/BRMS/EDS Integration Stack Tests\"/></feature>#g"
+	-->
+
+	<category-def name="JBoss Tools Integration Stack Tests" label="JBoss Tools Integration Stack Tests"><description>JBoss Tools Integration Stack Tests</description></category-def>
+
+	<!--feature url="features/org.jboss.tools.itests.soa.feature_0.0.0.jar" id="org.jboss.tools.itests.soa.feature" version="0.0.0"><category name="JBoss Tools Integration Stack Tests"/></feature-->
+	<bundle url="plugins/org.jboss.tools.bpel.reddeer_0.0.0.jar" id="org.jboss.tools.bpel.reddeer" version="0.0.0"><category name="JBoss Tools Integration Stack Tests"/></bundle>
+	<bundle url="plugins/org.jboss.tools.bpel.ui.bot.test_0.0.0.jar" id="org.jboss.tools.bpel.ui.bot.test" version="0.0.0"><category name="JBoss Tools Integration Stack Tests"/></bundle>
+	<bundle url="plugins/org.jboss.tools.bpmn2.itests_0.0.0.jar" id="org.jboss.tools.bpmn2.itests" version="0.0.0"><category name="JBoss Tools Integration Stack Tests"/></bundle>
+	<bundle url="plugins/org.jboss.tools.drools.reddeer_0.0.0.jar" id="org.jboss.tools.drools.reddeer" version="0.0.0"><category name="JBoss Tools Integration Stack Tests"/></bundle>
+	<bundle url="plugins/org.jboss.tools.drools.ui.bot.test_0.0.0.jar" id="org.jboss.tools.drools.ui.bot.test" version="0.0.0"><category name="JBoss Tools Integration Stack Tests"/></bundle>
+	<bundle url="plugins/org.jboss.tools.esb.ui.bot.test_0.0.0.jar" id="org.jboss.tools.esb.ui.bot.test" version="0.0.0"><category name="JBoss Tools Integration Stack Tests"/></bundle>
+	<bundle url="plugins/org.jboss.tools.jbpm.ui.bot.test_0.0.0.jar" id="org.jboss.tools.jbpm.ui.bot.test" version="0.0.0"><category name="JBoss Tools Integration Stack Tests"/></bundle>
+	<bundle url="plugins/org.jboss.tools.modeshape.reddeer_0.0.0.jar" id="org.jboss.tools.modeshape.reddeer" version="0.0.0"><category name="JBoss Tools Integration Stack Tests"/></bundle>
+	<bundle url="plugins/org.jboss.tools.modeshape.ui.bot.test_0.0.0.jar" id="org.jboss.tools.modeshape.ui.bot.test" version="0.0.0"><category name="JBoss Tools Integration Stack Tests"/></bundle>
+	<bundle url="plugins/org.jboss.tools.switchyard.reddeer_0.0.0.jar" id="org.jboss.tools.switchyard.reddeer" version="0.0.0"><category name="JBoss Tools Integration Stack Tests"/></bundle>
+	<bundle url="plugins/org.jboss.tools.switchyard.ui.bot.test_0.0.0.jar" id="org.jboss.tools.switchyard.ui.bot.test" version="0.0.0"><category name="JBoss Tools Integration Stack Tests"/></bundle>
+	<bundle url="plugins/org.jboss.tools.teiid.reddeer_0.0.0.jar" id="org.jboss.tools.teiid.reddeer" version="0.0.0"><category name="JBoss Tools Integration Stack Tests"/></bundle>
+	<bundle url="plugins/org.jboss.tools.teiid.ui.bot.test_0.0.0.jar" id="org.jboss.tools.teiid.ui.bot.test" version="0.0.0"><category name="JBoss Tools Integration Stack Tests"/></bundle>
+
+</site>

@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Process Editor SWTBot Tests
+Bundle-Name: BPMN2 Bot Tests
 Bundle-SymbolicName: org.jboss.tools.bpmn2.itests
 Bundle-Version: 4.1.0.qualifier
 Bundle-Activator: org.jboss.tools.bpmn2.itests.test.Activator
@@ -41,7 +41,7 @@ Require-Bundle:
  org.jboss.reddeer.junit,
  org.hamcrest.library
 Bundle-ActivationPolicy: lazy
-Bundle-Vendor: Eclipse Foundation
+Bundle-Vendor: JBoss by Red Hat
 Eclipse-RegisterBuddy: org.apache.log4j
 Eclipse-BundleShape: dir
 Import-Package: org.apache.log4j

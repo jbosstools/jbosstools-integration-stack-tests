@@ -1,7 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: ModeShape Reddeer
+Bundle-Name: ModeShape Reddeer Framework
 Bundle-SymbolicName: org.jboss.tools.modeshape.reddeer
+Bundle-Vendor: JBoss by Red Hat
 Bundle-Version: 4.1.0.qualifier
 Bundle-Activator: org.jboss.tools.modeshape.reddeer.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
