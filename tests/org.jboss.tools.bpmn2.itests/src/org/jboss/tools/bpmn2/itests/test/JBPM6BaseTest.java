@@ -3,6 +3,7 @@ package org.jboss.tools.bpmn2.itests.test;
 import org.apache.log4j.Logger;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
+import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.tools.bpmn2.itests.reddeer.BPMN2Editor;
 import org.jboss.tools.bpmn2.itests.reddeer.EclipseHelper;
@@ -56,6 +57,10 @@ public class JBPM6BaseTest extends SWTBotTestCase {
 	
 	@After
 	public void close() {
+		/*
+		 * Capture the image of the process.
+		 */
+		captureScreenshot();
 		try {
 			/*
 			 * Make sure all content is saved.
@@ -76,6 +81,12 @@ public class JBPM6BaseTest extends SWTBotTestCase {
 			log.info("Closing '" + editor.getTitle() + "'");
 			editor.close();
 		}
+	}
+	
+	public void captureScreenshot() {
+		String fileName = "target/screenshots/screenshot-process-definition-" + getClass().getSimpleName() + "." + 
+				SWTBotPreferences.SCREENSHOT_FORMAT.toLowerCase();
+		captureScreenshot(fileName);
 	}
 	
 	public BPMN2Editor getEditor() {
