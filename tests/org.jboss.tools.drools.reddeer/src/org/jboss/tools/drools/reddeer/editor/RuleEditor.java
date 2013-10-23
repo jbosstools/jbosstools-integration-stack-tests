@@ -67,11 +67,15 @@ public class RuleEditor extends TextEditor {
     }
 
     public void writeText(final String text) {
+        replaceText(text, 0);
+    }
+
+    public void replaceText(final String text, final int length) {
         final int offset = getOffset();
         Display.syncExec(new Runnable() {
             public void run() {
                 try {
-                    getDocument().replace(offset, 0, text);
+                    getDocument().replace(offset, length, text);
                 } catch (BadLocationException ex) {
                     LOGGER.error("Wrong location returned", ex);
                 }
