@@ -1,0 +1,25 @@
+package rules
+
+expander /rules/%s.dsl
+
+declare Person
+    age : int
+    name : String
+end
+
+pravidlo "Your First Rule"
+    when
+        There is a Person
+            - with a negative age
+            - with a positive age
+//            - with a zero age
+    then
+        print "Your First Rule"
+end
+
+rule "Another Rule"
+    when
+        
+    then
+        
+end
