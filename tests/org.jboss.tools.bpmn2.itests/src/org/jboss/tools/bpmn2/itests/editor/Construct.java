@@ -139,7 +139,7 @@ public class Construct {
 		/*
 		 * Add the event
 		 */
-		Point p = editor.getBounds(editPart).getTopLeft();
+		Point p = getBounds().getTopLeft();
 		editor.activateTool(eventType.toToolPath()[0], eventType.toToolPath()[1]);
 		editor.click(p.x(), p.y());
 		
@@ -225,11 +225,11 @@ public class Construct {
 		/*
 		 * Get the dimensions of the source (this) construct. 
 		 */
-		Rectangle rs = editor.getBounds(editPart);
+		Rectangle rs = getBounds();
 		/*
 		 * Get the dimensions of the target construct. 
 		 */
-		Rectangle rt = editor.getBounds(construct.editPart);
+		Rectangle rt = construct.getBounds();
 		/*
 		 * Create the connection.
 		 * 
@@ -281,7 +281,7 @@ public class Construct {
 		/*
 		 * Initialize variables.
 		 */
-		Rectangle childRectangle = editor.getBounds(child.getEditPart());
+		Rectangle childRectangle = child.getBounds();
 		
 		int childStartX = childRectangle.x();
 		int childEndX = childRectangle.right();
@@ -470,6 +470,14 @@ public class Construct {
 	 */
 	public BPMN2PropertiesView getProperties() {
 		return properties;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public Rectangle getBounds() {
+		return editor.getBounds(editPart);
 	}
 	
 }

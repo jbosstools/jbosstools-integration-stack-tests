@@ -2,6 +2,7 @@ package org.jboss.tools.bpmn2.itests.editor.jbpm.throwevents;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
@@ -41,10 +42,11 @@ public class MessageIntermediateThrowEvent extends AbstractEvent {
 			 * Click Add
 			 */
 			new PushButton(0).click();
-			
-			SWTBot windowBot = bot.activeShell().bot();
-			windowBot.textWithLabel("Name").setText(messageName);
-			
+			SWTBotShell shell = bot.shell("Create New Message");
+			shell.activate();
+			SWTBot windowBot = shell.bot();
+
+			new LabeledText("Name").setText(messageName);
 			if (dataType != null && !dataType.isEmpty()) {
 				nameBox = windowBot.comboBoxWithLabel("Data Type");
 				if (properties.contains(nameBox, dataType)) {

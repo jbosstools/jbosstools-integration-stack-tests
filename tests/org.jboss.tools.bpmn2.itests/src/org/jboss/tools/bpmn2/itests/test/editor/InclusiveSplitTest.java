@@ -50,23 +50,6 @@ public class InclusiveSplitTest extends JBPM6BaseTest {
 		ScriptTask script3 = new ScriptTask("Script3");
 		script3.setScript("Java", "System.out.println(\"path3\");");
 		script3.append("EndProcess3", ConstructType.END_EVENT);
-		
-		/*
-		 * TODO - test code bellow. EndEvent should allow more than 1 incomming connection.
-		 */
-//		ScriptTask script2 = new ScriptTask("Script2");
-//		script2.setScript("Java", "System.out.println(\"path2\");");
-//		script2.append("EndProcess", ConstructType.END_EVENT);
-//
-//		EndEvent end = new EndEvent("EndProcess");
-//		
-//		ScriptTask script1 = new ScriptTask("Script1");
-//		script1.setScript("Java", "System.out.println(\"path1\");");
-//		script1.connectTo(end);
-//
-//		ScriptTask script3 = new ScriptTask("Script3");
-//		script3.setScript("Java", "System.out.println(\"path3\");");
-//		script3.connectTo(end);
 	}
 	
 }
