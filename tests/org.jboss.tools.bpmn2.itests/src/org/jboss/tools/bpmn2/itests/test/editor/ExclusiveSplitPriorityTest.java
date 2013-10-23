@@ -40,8 +40,8 @@ public class ExclusiveSplitPriorityTest extends JBPM6BaseTest {
 		gw.setDirection(Direction.DIVERGING);
 		gw.append("Script1", ConstructType.SCRIPT_TASK, Position.NORTH_EAST);
 		gw.append("Script2", ConstructType.SCRIPT_TASK, Position.SOUTH_EAST);
-		gw.setCondition("Split -> Script1", "java", "return x!=null");
-		gw.setCondition("Split -> Script2", "java", "return x!=null");
+		gw.setCondition("Split -> Script1", "java", "return x!=null;");
+		gw.setCondition("Split -> Script2", "java", "return x==null;");
 		gw.setPriority("Split -> Script2", "1");
 		gw.setPriority("Split -> Script1", "2");
 		

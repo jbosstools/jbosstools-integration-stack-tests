@@ -83,7 +83,7 @@ public class ContainerConstruct extends Construct {
 	 * @param type
 	 * @param point
 	 */
-	private void add(String name, ConstructType type, Point point) {
+	public void add(String name, ConstructType type, Point point) {
 		if (!isInternalAvailable(point)) {
 			throw new RuntimeException("'" + point + "' is not available");
 		}
@@ -112,7 +112,7 @@ public class ContainerConstruct extends Construct {
 		/*
 		 * The point must be inside this edit part.
 		 */
-		if (editor.getBounds(editPart).contains(point)) {
+		if (getBounds().contains(point)) {
 			/*
 			 * Check weather the point is not already taken by another child editPart.
 			 */

@@ -17,13 +17,11 @@
 	<classpathentry kind="lib" path="lib/jbpm-flow-builder.jar"/>
 	<classpathentry kind="lib" path="lib/jbpm-flow.jar"/>
 	<classpathentry kind="lib" path="lib/joda-time.jar"/>
-	<classpathentry kind="lib" path="lib/jta.jar"/>
 	<classpathentry kind="lib" path="lib/kie-api.jar"/>
 	<classpathentry kind="lib" path="lib/kie-internal.jar"/>
 	<classpathentry kind="lib" path="lib/mvel2.jar"/>
 	<classpathentry kind="lib" path="lib/protobuf-java.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-api.jar"/>
-	<classpathentry kind="lib" path="lib/xml-apis.jar"/>
 	<classpathentry kind="lib" path="lib/xmlpull.jar"/>
 	<classpathentry kind="lib" path="lib/xpp3_min.jar"/>
 	<classpathentry kind="lib" path="lib/xstream.jar"/>

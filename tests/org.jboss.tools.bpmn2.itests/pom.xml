@@ -12,7 +12,7 @@
 	<artifactId>org.jboss.tools.bpmn2.itests</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<jbpm.site>https://repository.jboss.org/nexus/content/groups/public-jboss/</jbpm.site>
+		<droolsjbpm.site>https://repository.jboss.org/nexus/content/groups/public-jboss/</droolsjbpm.site>
 		<eclipse.graphiti.site>http://download.eclipse.org/graphiti/updates/0.10.0</eclipse.graphiti.site>
 		<systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.skip=false -Dtest.configurations.dir=resources/</systemProperties>
 		<droolsjbpm.version>6.0.0.CR4</droolsjbpm.version>
@@ -61,15 +61,12 @@
 			<artifactId>jbpm-audit</artifactId>
 			<version>${droolsjbpm.version}</version>
 		</dependency>
-
-		<!--dependency> <groupId>com.thoughtworks.xstream</groupId> <artifactId>xstream</artifactId> 
-			<version>${droolsjbpm.version}</version> </dependency -->
 	</dependencies>
 
 	<repositories>
 		<repository>
 			<id>jbpm-site</id>
-			<url>${jbpm.site}</url>
+			<url>${droolsjbpm.site}</url>
 			<layout>default</layout>
 			<snapshots>
 				<enabled>true</enabled>
