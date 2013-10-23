@@ -1,0 +1,7 @@
+[keyword]pravidlo=rule
+
+[when][]There is an? {entity}=${entity!lc}: {entity!ucfirst}()
+[when][]- with an? {attr} greater than {amount}={attr} > {amount!num}
+[then]print "{text}"=System.out.println("{text}");
+
+[when]- with a {what} {attr}={attr} {what!positive?>0/negative?<0/EROOR}

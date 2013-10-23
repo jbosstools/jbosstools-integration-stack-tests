@@ -1,0 +1,23 @@
+package rules
+
+
+
+declare Person
+    age : int
+    name : String
+end
+
+rule "Your First Rule"
+    when
+        $person: Person(age  <0, age  >0)
+//            - with a zero age
+    then
+        System.out.println("Your First Rule");
+end
+
+rule "Another Rule"
+    when
+        
+    then
+        
+end
