@@ -33,8 +33,6 @@
 		<module>org.jboss.tools.drools.reddeer</module>
 		<module>org.jboss.tools.drools.ui.bot.test</module>
 		<module>org.jboss.tools.bpmn2.itests</module>
-        <module>org.jboss.tools.drools.reddeer</module>
-        <module>org.jboss.tools.drools.ui.bot.test</module>
 	</modules>
 	<profiles>
 		<profile>
