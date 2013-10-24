@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testrun xmlns="http://www.jboss.org/NS/Req"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.jboss.org/NS/Req RedDeerRequirements.xsd">
+
+	<requirements/>
+
+</testrun>
