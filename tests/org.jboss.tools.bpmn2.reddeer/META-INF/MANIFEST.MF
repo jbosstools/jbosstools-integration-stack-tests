@@ -1,0 +1,39 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: BPMN2 Reddeer
+Bundle-SymbolicName: org.jboss.tools.bpmn2.reddeer
+Bundle-Version: 4.1.0.qualifier
+Bundle-ClassPath: .
+Require-Bundle: 
+ org.eclipse.gef,
+ org.eclipse.graphiti,
+ org.eclipse.swtbot.eclipse.gef.finder,
+ org.eclipse.swtbot.go,
+ org.eclipse.ui.forms,
+ org.jboss.reddeer.swt,
+ org.jboss.reddeer.eclipse,
+ org.jboss.reddeer.workbench,
+ org.jboss.reddeer.jface,
+ org.jboss.reddeer.junit,
+ org.hamcrest.library
+Bundle-ActivationPolicy: lazy
+Bundle-Vendor: JBoss by Red Hat
+Eclipse-RegisterBuddy: org.apache.log4j
+Eclipse-BundleShape: dir
+Import-Package: org.apache.log4j
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: org.jboss.tools.bpmn2.reddeer.awt,
+ org.jboss.tools.bpmn2.reddeer.editor,
+ org.jboss.tools.bpmn2.reddeer.editor.jbpm,
+ org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities,
+ org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents,
+ org.jboss.tools.bpmn2.reddeer.editor.jbpm.catchevents,
+ org.jboss.tools.bpmn2.reddeer.editor.jbpm.dataobjects,
+ org.jboss.tools.bpmn2.reddeer.editor.jbpm.endevents,
+ org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways,
+ org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents,
+ org.jboss.tools.bpmn2.reddeer.editor.jbpm.swimlanes,
+ org.jboss.tools.bpmn2.reddeer.editor.jbpm.throwevents,
+ org.jboss.tools.bpmn2.reddeer.editor.switchyard.activities,
+ org.jboss.tools.bpmn2.reddeer.matcher,
+ org.jboss.tools.bpmn2.reddeer.wizard
