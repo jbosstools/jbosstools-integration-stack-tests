@@ -90,7 +90,7 @@ public class CreateMetadataModel extends NewWizardDialog {
 	public void execute(String modelBuilderType, String... pathToExistingModel){
 		open();
 		fillFirstPage(modelBuilderType);
-		fillSecondPage(modelBuilderType, pathToExistingModel);
+		fillSecondPage(pathToExistingModel);
 		finish();
 	}
 	
@@ -114,6 +114,7 @@ public class CreateMetadataModel extends NewWizardDialog {
 		new DefaultCombo("Model Type:").setSelection(type);
 	}
 	
+	@Deprecated
 	private void fillFirstPage(String modelBuilderType) {
 		new LabeledText("Location:").setText(location);
 		new LabeledText("Model Name:").setText(name);
@@ -123,13 +124,22 @@ public class CreateMetadataModel extends NewWizardDialog {
 		new PushButton("&Next >").click();
 	}
 	
-	private void fillSecondPage(String modelBuilderType, String... pathToExistingModel){
+	public void fillFirstPage(boolean param) {
+		new LabeledText("Location:").setText(location);
+		new LabeledText("Model Name:").setText(name);
+		new DefaultCombo("Model Class:").setSelection(clazz);
+		new DefaultCombo("Model Type:").setSelection(type);
+		new DefaultTable().select(modelBuilder);//ModelBuilder.TRANSFORM_EXISTING
+		new PushButton("Next >").click();
+	}
+	
+	private void fillSecondPage(String... pathToExistingModel){
 		new PushButton("...").click();
 		new DefaultTreeItem(pathToExistingModel).select();
 		new PushButton("OK").click();
 	}
 	
-	private void fillSecondPage(String[] pathToXmlSchema, String rootElement){
+	public void fillSecondPage(String[] pathToXmlSchema, String rootElement){
 		new PushButton(0).click();
 		new DefaultTreeItem(pathToXmlSchema).select();
 		new PushButton("OK").click();

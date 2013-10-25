@@ -78,8 +78,11 @@ public class XMLSchemaImportWizard extends TeiidImportWizard {
 				/*for (String schema: schemas){
 					new DefaultTable().check(schema);
 				}*/
-				new DefaultTable().select(schemas);
-
+				//new DefaultTable().select(schemas);
+				for (String schema : schemas){
+					new DefaultTable().getItem(schema).setChecked(true);
+				}
+				
 				finish();
 			} else {
 				new RadioButton("Import XML schemas via").click();
