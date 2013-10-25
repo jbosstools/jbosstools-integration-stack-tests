@@ -20,6 +20,8 @@ public class FlatImportWizard extends TeiidImportWizard {
 	private String profile;
 	private String file;
 	private String name;
+	private String viewModelName;
+	private String viewTableName;
 
 	private int headerLine;
 	private int dataLine;
@@ -29,6 +31,14 @@ public class FlatImportWizard extends TeiidImportWizard {
 		// default settings
 		headerLine = 1;
 		dataLine = 2;
+	}
+	
+	public void setViewModelName(String viewModelName) {
+		this.viewModelName = viewModelName;
+	}
+
+	public void setViewTableName(String viewTableName) {
+		this.viewTableName = viewTableName;
 	}
 
 	public void setProfile(String profile) {
@@ -74,6 +84,32 @@ public class FlatImportWizard extends TeiidImportWizard {
 		new SWTWorkbenchBot().textWithLabel("Name:").setText(name + "View");
 
 		new LabeledText("New view table name:").setText(name + "Table");
+
+		finish();
+	}
+	
+	public void execute(boolean setViewNames) {
+		open();
+		new DefaultCombo(0).setSelection(profile);
+		setCheckedFile(file, true);
+		// TODO: LabeledText
+		new SWTWorkbenchBot().textWithLabel("Name:").setText(name + "Source");
+
+		next();
+		next();
+		if (headerLine > 0) {
+			new CheckBox("Column names in header").toggle(true);
+			new LabeledText("Header line #").setText(Integer.toString(headerLine));
+			new LabeledText("Data line #").setText(Integer.toString(dataLine));
+		} else {
+			new CheckBox("Column names in header").toggle(false);
+		}
+
+		next();
+		// TODO: LabeledText
+		new SWTWorkbenchBot().textWithLabel("Name:").setText(viewModelName);
+
+		new LabeledText("New view table name:").setText(viewTableName);
 
 		finish();
 	}
