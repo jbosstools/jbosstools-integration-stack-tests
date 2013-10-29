@@ -19,18 +19,27 @@ abstract class MultiPageEditor extends DefaultEditor {
     abstract IWorkbenchPart getEditorByTitle(String title);
 
     IWorkbenchPart getEditorByIndex(final int index) {
-        return Display.syncExec(new ResultRunnable<IWorkbenchPart>() {
-            public IWorkbenchPart run() {
+        final IEditorPart editor = Display.syncExec(new ResultRunnable<IEditorPart>() {
+            public IEditorPart run() {
                 IEditorPart[] parts = getEditorPart().findEditors(getEditorPart().getEditorInput());
 
                 if (index >= 0 && index < parts.length) {
-                    getEditorPart().setActiveEditor(parts[index]);
                     return parts[index];
                 }
 
                 return null;
             }
         });
+
+        if (index != getSelectedPage()) {
+            Display.asyncExec(new Runnable() {
+                public void run() {
+                    getEditorPart().setActiveEditor(editor);
+                }
+            });
+        }
+
+        return editor;
     }
 
     protected MultiPageEditorPart getEditorPart() {
@@ -38,8 +47,16 @@ abstract class MultiPageEditor extends DefaultEditor {
             throw new RuntimeException("workbenchPart is null");
         }
         if (!(workbenchPart instanceof MultiPageEditorPart)) {
-            throw new RuntimeException("workbenchPart isn't instance of MultiPageEditorPart");
+            throw new RuntimeException("workbenchPart isn't instance of MultiPageEditorPart " + workbenchPart.getClass());
         }
         return (MultiPageEditorPart) workbenchPart;
+    }
+
+    protected int getSelectedPage() {
+        return Display.syncExec(new ResultRunnable<Integer>() {
+            public Integer run() {
+                return getEditorPart().getActivePage();
+            }
+        });
     }
 }
