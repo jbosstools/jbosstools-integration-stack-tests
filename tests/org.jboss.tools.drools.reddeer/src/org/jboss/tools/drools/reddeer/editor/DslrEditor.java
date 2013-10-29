@@ -15,6 +15,7 @@ public class DslrEditor extends MultiPageEditor {
     }
 
     IWorkbenchPart getEditorByTitle(String title) {
+        save();
         if (TEXT_EDITOR.equals(title)) {
             return getEditorByIndex(0);
         }
