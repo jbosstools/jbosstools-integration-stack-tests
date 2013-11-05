@@ -165,7 +165,8 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 		newModel.setName(VIRTUAL_B_BA );
 		newModel.setClass(CreateMetadataModel.ModelClass.RELATIONAL);
 		newModel.setType(CreateMetadataModel.ModelType.VIEW);
-		newModel.execute(ModelBuilder.TRANSFORM_EXISTING, PROJECT_NAME, SOURCE_MODEL_2+".xmi");
+		newModel.setModelBuilder(ModelBuilder.TRANSFORM_EXISTING);
+		newModel.execute(true, PROJECT_NAME, SOURCE_MODEL_2+".xmi");
 		teiidBot.saveAll();
 		
 		//delete AUTHORS table
@@ -190,7 +191,8 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 		newModel.setName(VIRTUAL_A_P );
 		newModel.setClass(CreateMetadataModel.ModelClass.RELATIONAL);
 		newModel.setType(CreateMetadataModel.ModelType.VIEW);
-		newModel.execute(ModelBuilder.TRANSFORM_EXISTING, PROJECT_NAME, SOURCE_MODEL_1+".xmi");
+		newModel.setModelBuilder(ModelBuilder.TRANSFORM_EXISTING);
+		newModel.execute(true, PROJECT_NAME, SOURCE_MODEL_1+".xmi");
 
 		//delete BOOKS table
 		deleteFromContextTree(PROJECT_NAME, VIRTUAL_A_P+".xmi", "BOOKS");

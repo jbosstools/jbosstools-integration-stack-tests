@@ -196,6 +196,10 @@ public class TeiidBot {
 			// TODO: LabeledText
 			// flatPage.setHomeFolder(flatProfile.getFolder());
 			new SWTWorkbenchBot().text().setText(flatProfile.getFolder());
+			
+			//switch off validation of home folder
+			new CheckBox("Validate home folder").click();
+			
 			flatPage.setCharset(flatProfile.getCharset());
 			flatPage.setStyle(flatProfile.getStyle());
 

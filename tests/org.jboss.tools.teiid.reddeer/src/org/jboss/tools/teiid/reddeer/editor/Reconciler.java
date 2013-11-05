@@ -27,6 +27,8 @@ public class Reconciler {
 	 * @param right -- unmatched SQL symbol
 	 */
 	public void bindAttributes(String left, String right){
+		new DefaultTable(0).deselectAll();
+		new DefaultTable(1).deselectAll();
 		new DefaultTable().select(left);//left  -- virtual target column
 		new DefaultTable(1).select(right);//right -- unmatched SQL symbol
 		new PushButton("< Bind").click();

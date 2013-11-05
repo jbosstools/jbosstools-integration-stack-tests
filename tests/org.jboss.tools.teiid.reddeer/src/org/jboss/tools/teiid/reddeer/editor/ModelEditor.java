@@ -1,5 +1,6 @@
 package org.jboss.tools.teiid.reddeer.editor;
 
+import static org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable.asyncExec;
 import static org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable.syncExec;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
 import static org.hamcrest.core.AllOf.allOf;
@@ -7,14 +8,19 @@ import static org.hamcrest.core.IsInstanceOf.instanceOf;
 
 import java.util.List;
 
+import org.eclipse.draw2d.Button;
+import org.eclipse.draw2d.Clickable;
 import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.ImageFigure;
 import org.eclipse.draw2d.Label;
+import org.eclipse.draw2d.Triangle;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.ui.parts.GraphicalEditor;
+import org.eclipse.swt.SWT;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
@@ -22,10 +28,13 @@ import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefFigureCanvas;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefViewer;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.results.Result;
+import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCTabItem;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.ui.IEditorReference;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.tools.teiid.reddeer.matcher.IsTransformation;
@@ -254,10 +263,11 @@ public class ModelEditor extends SWTBotEditor {
 	
 	
 	/**
-	 * 
+	 * Moved to MappingDiagramEditor
 	 * @param prefix
 	 * @return all attributes (type Label) with name starting with prefix
 	 */
+	@Deprecated
 	public List<SWTBotGefEditPart> getAttributes(String prefix){
 		viewer = getGraphicalViewer(MAPPING_DIAGRAM);
 		AttributeMatcher matcher = AttributeMatcher.createAttributeMatcher();
@@ -267,10 +277,11 @@ public class ModelEditor extends SWTBotEditor {
 	
 	
 	/**
-	 * 
+	 * Moved to MappingDiagramEditor
 	 * @param prefix
 	 * @return all mapping classes (type Label) with name starting with prefix
 	 */
+	@Deprecated
 	public List<SWTBotGefEditPart> getMappingClasses(String prefix){
 		viewer = getGraphicalViewer(MAPPING_DIAGRAM);
 		MappingClassMatcher matcher = MappingClassMatcher.createMappingClassMatcher();
@@ -279,10 +290,11 @@ public class ModelEditor extends SWTBotEditor {
 	}
 	
 	/**
-	 * 
+	 * Moved to MappingDiagramEditor
 	 * @param prefix
 	 * @return list of attributes starting with prefix
 	 */
+	@Deprecated
 	public List<String> namesOfAttributes(String prefix){
 			viewer = getGraphicalViewer(MAPPING_DIAGRAM);
 			AttributeMatcher matcher = AttributeMatcher.createAttributeMatcher();
@@ -311,5 +323,13 @@ public class ModelEditor extends SWTBotEditor {
 		getModelDiagram(INPUT_SET, DIAGRAM).select();
 		viewer.clickContextMenu("Edit");
 	}
+	
+	public InputSetEditor openInputSetEditor(boolean param){
+		viewer = getGraphicalViewer(DIAGRAM);
+		getModelDiagram(INPUT_SET, DIAGRAM).select();
+		viewer.clickContextMenu("Edit");
+		return new InputSetEditor();
+	}
+	
 	
 }

@@ -14,7 +14,8 @@ Require-Bundle: org.eclipse.gef,
  org.jboss.reddeer.workbench,
  org.eclipse.swtbot.go,
  org.eclipse.swtbot.eclipse.gef.finder,
- org.eclipse.swtbot.swt.finder
+ org.eclipse.swtbot.swt.finder,
+ org.eclipse.draw2d
 Export-Package: org.jboss.tools.teiid.reddeer,
  org.jboss.tools.teiid.reddeer.condition,
  org.jboss.tools.teiid.reddeer.editor,

@@ -3,6 +3,7 @@ package org.jboss.tools.teiid.reddeer.view;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
@@ -10,9 +11,11 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
+import org.jboss.tools.teiid.reddeer.condition.RadioButtonEnabled;
 
 /**
  * Represent Model Explorer View and equivalent to Package explorer from Java
@@ -24,6 +27,14 @@ import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 public class ModelExplorerView extends WorkbenchView {
 
 	private static final String MODELING_MENU_ITEM = "Modeling";
+	private static final String CREATE_DATA_SOURCE = "Create Data Source";
+	
+	public static class ConnectionSource {
+		public static final String USE_MODEL_CONNECTION_INFO = "Use Model Connection Info";
+		public static final String USE_CONNECTION_PROFILE_INFO = "Use Connection Profile Info";
+	}
+	
+	
 
 	public ModelExplorerView() {
 		super("Teiid Designer", "Model Explorer");
@@ -130,5 +141,15 @@ public class ModelExplorerView extends WorkbenchView {
 
 		item.expand();
 		item.getNode("Transformation Diagram").doubleClick();
+	}
+	
+	public void createDataSource(String connectionSource, String... pathToSourceModel){
+		open();
+		new DefaultTreeItem(pathToSourceModel).select();
+		new ContextMenu(MODELING_MENU_ITEM, CREATE_DATA_SOURCE).select();
+		//wait until radio button is enabled
+		new WaitUntil(new RadioButtonEnabled(connectionSource), TimePeriod.NORMAL);
+		new RadioButton(connectionSource).click();
+		new PushButton("Finish").click();
 	}
 }

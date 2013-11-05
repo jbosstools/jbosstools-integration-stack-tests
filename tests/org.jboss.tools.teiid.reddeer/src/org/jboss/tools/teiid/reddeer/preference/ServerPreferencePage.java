@@ -38,8 +38,8 @@ public class ServerPreferencePage extends PreferencePage {
 				|| type[1].matches("WildFly (.*)")){
 			new SWTWorkbenchBot().textWithLabel("Configuration file: ").setText(configFile);
 		}
-		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
+		new WaitWhile(new IsInProgress(), TimePeriod.NORMAL);
 		new PushButton("Finish").click();
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		//new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 }
