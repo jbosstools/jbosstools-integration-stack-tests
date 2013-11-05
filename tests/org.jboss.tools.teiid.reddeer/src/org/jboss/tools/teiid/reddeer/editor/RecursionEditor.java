@@ -35,8 +35,7 @@ public class RecursionEditor {
 	}
 	
 	public void close(){
-		//new SWTWorkbenchBot().toolbarButton(1).click();
-		throw new UnsupportedOperationException();
+		new SWTBot().toolbarButtonWithTooltip("Close").click();
 	}
 	
 	

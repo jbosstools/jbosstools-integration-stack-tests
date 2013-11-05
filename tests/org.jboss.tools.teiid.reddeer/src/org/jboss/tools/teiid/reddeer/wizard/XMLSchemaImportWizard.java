@@ -10,6 +10,7 @@ import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
@@ -24,6 +25,7 @@ import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
  */
 public class XMLSchemaImportWizard extends TeiidImportWizard {
 
+	private static final String IMPORT_XML_SCHEMA_SHELL = "Import XML Schema Files";
 		private boolean isLocal;
 		private String rootPath;
 		//private List<String[]> elements;
@@ -67,6 +69,7 @@ public class XMLSchemaImportWizard extends TeiidImportWizard {
 		public void execute() {
 			open();
 			if (isLocal) {
+				new DefaultShell(IMPORT_XML_SCHEMA_SHELL).setFocus();
 				new RadioButton("Import XML schemas from file system").click();
 				next();
 

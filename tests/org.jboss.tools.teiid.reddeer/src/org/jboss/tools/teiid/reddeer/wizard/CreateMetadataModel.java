@@ -87,12 +87,21 @@ public class CreateMetadataModel extends NewWizardDialog {
 		xsdSchemaSelection();
 	}
 	
-	public void execute(String modelBuilderType, String... pathToExistingModel){
+	public void execute(String... pathToExistingModel){
 		open();
-		fillFirstPage(modelBuilderType);
+		fillFirstPage();
 		fillSecondPage(pathToExistingModel);
 		finish();
 	}
+	
+	public void execute(boolean modelBuilderSet, String... pathToExistingModel){
+		open();
+		fillFirstPage(modelBuilderSet);
+		fillSecondPage(pathToExistingModel);
+		finish();
+	}
+	
+	
 	
 	public void execute(String[] pathToXmlSchema, String rootElement){
 		open();
@@ -114,15 +123,6 @@ public class CreateMetadataModel extends NewWizardDialog {
 		new DefaultCombo("Model Type:").setSelection(type);
 	}
 	
-	@Deprecated
-	private void fillFirstPage(String modelBuilderType) {
-		new LabeledText("Location:").setText(location);
-		new LabeledText("Model Name:").setText(name);
-		new DefaultCombo("Model Class:").setSelection(clazz);
-		new DefaultCombo("Model Type:").setSelection(type);
-		new DefaultTable().select(modelBuilderType);//ModelBuilder.TRANSFORM_EXISTING
-		new PushButton("&Next >").click();
-	}
 	
 	public void fillFirstPage(boolean param) {
 		new LabeledText("Location:").setText(location);

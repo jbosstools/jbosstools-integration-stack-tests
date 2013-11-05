@@ -25,6 +25,7 @@ import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.matcher.AttributeMatcher;
+import org.jboss.tools.teiid.reddeer.matcher.IsTransformation;
 import org.jboss.tools.teiid.reddeer.matcher.MappingClassMatcher;
 import org.jboss.tools.teiid.reddeer.matcher.RecursiveButtonMatcher;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
@@ -42,6 +43,7 @@ public class MappingDiagramEditor extends SWTBotEditor{
 	private String prefixMappingClassRecursive;
 	private SWTBotGefViewer viewer;
 	public static final String MAPPING_DIAGRAM = "Mapping Diagram";
+	private static final String DIAGRAM = "Diagram";
 	private ModelEditor me;
 
 	public MappingDiagramEditor(String title) {
@@ -56,89 +58,7 @@ public class MappingDiagramEditor extends SWTBotEditor{
 		RecursiveButtonMatcher matcher = RecursiveButtonMatcher.createRecursiveButtonMatcher(mappingClass);
 		viewer.editParts(matcher);
 		return new RecursionEditor();
-		/*asyncExec(new VoidResult() {
-
-			@Override
-			public void run() {
-				
-				button.doClick();
-			}
-
-		});*/
 	}
-	
-	/*private class RecursiveButtonMatcher extends BaseMatcher<EditPart>{
-
-		private static final String MAPPING_CLASS = "<<Mapping Class>>";
-
-		private Clickable b;
-		@Override
-		public boolean matches(Object item) {
-			
-			boolean isMappingClass = false;
-			boolean startsWithPrefix = false;
-			
-			if (item instanceof GraphicalEditPart) {
-				if (item.getClass()
-						.toString()
-						.equals("class org.teiid.designer.diagram.ui.notation.uml.part.UmlClassifierEditPart")) {
-					IFigure figure = ((GraphicalEditPart) item).getFigure();
-
-					List<IFigure> children = figure.getChildren();// header,
-																	// footer,
-																	// triangle,
-																	// imagefigure,
-																	// button
-					for (IFigure figure2 : children) {
-						if (figure2 instanceof Clickable) {
-							
-							//verify correct mapping class
-							for (IFigure sibling : children){
-								if (sibling.getClass()
-										.toString()
-										.equals("class org.teiid.designer.diagram.ui.notation.uml.figure.UmlClassifierHeader")){
-									List<IFigure> siblingChildren = sibling.getChildren();
-									for (IFigure siblingChild : siblingChildren){
-										if (siblingChild instanceof Label) {
-											String text = ((Label) siblingChild).getText();
-											if (text.equals(MAPPING_CLASS)) {
-												isMappingClass = true;
-											}
-											if (text.startsWith(prefixMappingClassRecursive)) {
-												startsWithPrefix = true;
-											}
-										}
-									}
-								}
-							}
-							System.out.println(isMappingClass +", "+ startsWithPrefix);
-							
-							if (isMappingClass && startsWithPrefix){
-								b =(Clickable) figure2; 
-								asyncExec(new VoidResult() {
-									@Override
-									public void run() {										
-										b.doClick();
-									}
-								});
-							}
-							
-						}
-					}
-					
-				}
-			}
-			return false;
-		}
-
-		@Override
-		public void describeTo(Description description) {
-			// TODO Auto-generated method stub
-			
-		}
-		
-	}*/
-	
 	
 	/**
 	 * 
@@ -193,10 +113,27 @@ public class MappingDiagramEditor extends SWTBotEditor{
 			new org.jboss.reddeer.swt.impl.text.DefaultText(0).setText(column);
 			new SWTWorkbenchBot().activeShell().pressShortcut(Keystrokes.TAB);
 			me.save();
-			new SWTWorkbenchBot().sleep(5000);
+			//new SWTWorkbenchBot().sleep(5000);
 			//click somewhere else
 			//new org.jboss.reddeer.swt.impl.tree.DefaultTreeItem(0).select();//chooses the xml schema
 			//new ModelExplorerView().open();
 		}
+	}
+	
+	public void showTransformation() {
+		viewer = me.getGraphicalViewer(DIAGRAM);
+		viewer.editParts(IsTransformation.isTransformation()).get(0).select();
+		viewer.clickContextMenu("Edit");
+		new SWTWorkbenchBot().sleep(5 * 1000);
+	}
+	
+	public void copyAttribute(String fromClass, String toClass, String attr){
+		me.selectParts(this.getMappingClasses(fromClass));
+		me.selectParts(this.getAttributes(attr));
+		new ContextMenu("Copy").select();
+		me.selectParts(this.getMappingClasses(toClass));
+		new ContextMenu("Paste").select();
+		new SWTWorkbenchBot().activeShell().pressShortcut(Keystrokes.TAB);
+		me.save();
 	}
 }

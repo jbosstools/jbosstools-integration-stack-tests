@@ -1,5 +1,7 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
+import java.io.File;
+
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
@@ -45,6 +47,9 @@ import org.jboss.tools.teiid.reddeer.wizard.FlatImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.ModelProjectWizard;
 import org.jboss.tools.teiid.reddeer.wizard.XMLSchemaImportWizard;
 import org.jboss.tools.teiid.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
+import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.Server;
+import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.State;
+import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.Type;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -58,7 +63,7 @@ import org.junit.Test;
  *
  */
 @Perspective(name = "Teiid Designer")
-//@Server(type = Type.ALL, state = State.RUNNING)
+@Server(type = Type.ALL, state = State.RUNNING)
 public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 	
 	//models
@@ -67,7 +72,7 @@ public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 	private static final String EMP_TABLE = "EmpTable";
 	private static final String EMP_V = "EmpV";
 	private static final String VDB = "RecursiveVDB";
-	private static final String EMPDATA_SOURCE = "EmpData_source";
+	private static String EMPDATA_SOURCE = "EmpData";
 	private static final String EMPLOYEES_SCHEMA_XSD = "EmployeesSchema.xsd";
 	private static final String EMP_DOC_VIEW = "EmpDoc";
 	private static final String SIMPLE_EMPLOYEES_DOCUMENT = "SimpleEmployeesDocument";
@@ -89,8 +94,9 @@ public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 	private static final String RESOURCES_XSD = "resources/xsd";
 	private static final String[] SUPERVISOR_XML_PATH = {SIMPLE_EMPLOYEES_DOCUMENT, ROOT_ELEM, "sequence", EMPLOYEE+" : SimpleEmployeeType", "sequence", SUPERVISOR+" : SimpleEmployeeType"};
 	private static final String[] EMPLOYEE_COLUMNS = {"mgrID : positiveInteger"};
-	private static final String[] SUPERVISOR_COLUMNS = {"LastName : string", "FirstName : string", "MiddleInitial : string", "Street : string", 
-		"City : string", "State : State_._type", "EmpId : positiveInteger", "Phone : string", "mgrID : positiveInteger"};
+	private static final String[] SUPERVISOR_COLUMNS1 = {"LastName : string", "FirstName : string", "MiddleInitial : string", "Street : string", 
+		"City : string"};
+	private static final String[] SUPERVISOR_COLUMNS2 = {"EmpId : positiveInteger", "Phone : string", "mgrID : positiveInteger"};
 	
 	//SQL
 	private static final String SQL1 = "select * from EmpDoc.SimpleEmployeesDocument where SimpleEmployees.Employee.Name.Firstname='Orsal'";
@@ -98,16 +104,16 @@ public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 	@BeforeClass
 	public static void createProject(){
 		//create project
-		/*new ModelProjectWizard(0).create(PROJECT_NAME, true);*/
+		new ModelProjectWizard(0).create(PROJECT_NAME, true);
 		
 		//create connection profile to csv
-		flatFileProfile = teiidBot.createFlatFileProfile(flatProfile, RESOURCES_FLAT);
+		flatFileProfile = teiidBot.createFlatFileProfile(flatProfile, new File(RESOURCES_FLAT).getAbsolutePath());
 	}
 	
 	@Test
 	public void test01(){
 		//create relational source model 
-		/*FlatImportWizard importWizard = new FlatImportWizard();
+		FlatImportWizard importWizard = new FlatImportWizard();
 		importWizard.setProfile(flatProfile);
 		importWizard.setName(EMPDATA_SOURCE);
 		importWizard.setFile("EmpData.csv     <<<<");
@@ -118,7 +124,7 @@ public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 		//import xml schema
 		XMLSchemaImportWizard xmlWizard = new XMLSchemaImportWizard();
 		xmlWizard.setLocal(true);
-		xmlWizard.setRootPath(RESOURCES_XSD);
+		xmlWizard.setRootPath(new File(RESOURCES_XSD).getAbsolutePath());
 		xmlWizard.setDestination(PROJECT_NAME);
 		xmlWizard.setSchemas(new String[]{EMPLOYEES_SCHEMA_XSD});
 		xmlWizard.execute();
@@ -138,52 +144,55 @@ public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 		//check the supervisor node
 		new DefaultTreeItem(SUPERVISOR_XML_PATH).setChecked(true);
 		mModel.finish();
-		mModel.save();*/
+		//mModel.save();
 		
 		//employees mapping transformation model
 		Project project = teiidBot.modelExplorer().getProject(PROJECT_NAME);
 		project.getProjectItem(EMP_DOC_VIEW+".xmi", SIMPLE_EMPLOYEES_DOCUMENT).open();//open = doubleclick
 		
 		MappingDiagramEditor md = new MappingDiagramEditor(EMP_DOC_VIEW+".xmi");
-		/*md.addMappingClassColumns(EMPLOYEE, EMPLOYEE_COLUMNS);
-		md.addMappingClassColumns(SUPERVISOR, SUPERVISOR_COLUMNS);*/
+		md.addMappingClassColumns(EMPLOYEE, EMPLOYEE_COLUMNS);
+		//attributes must be in the same order!
+		md.addMappingClassColumns(SUPERVISOR, SUPERVISOR_COLUMNS1);
+		md.copyAttribute(EMPLOYEE, SUPERVISOR, "State");
+		md.addMappingClassColumns(SUPERVISOR, SUPERVISOR_COLUMNS2);
 		
 		//employee - transf. diagram
 		ModelEditor me = new ModelEditor(EMP_DOC_VIEW+".xmi");
-		/*me.showMappingTransformation(EMPLOYEE);*/
+		me.showMappingTransformation(EMPLOYEE);
 		ModelExplorerView mew = TeiidPerspective.getInstance().getModelExplorerView();
-		/*mew.addTransformationSource(PROJECT_NAME, EMPLOYEES_VIEW+".xmi", EMP_TABLE);
-		new ModelEditor(EMP_DOC_VIEW+".xmi").save();*/
+		mew.addTransformationSource(PROJECT_NAME, EMPLOYEES_VIEW+".xmi", EMP_TABLE);
+		new ModelEditor(EMP_DOC_VIEW+".xmi").save();
 		
 		//reconciller
-		/*Reconciler rec = me.openReconciler();
-		new SWTBot().widgets(new InnerButtonWithToolTipMatcher());*/
-		/*rec.bindAttributes("MiddleInitial : string", "MiddleName");
+		Reconciler rec = me.openReconciler();
+		rec.bindAttributes("MiddleInitial : string", "MiddleName");
 		rec.bindAttributes("Phone : string", "HomePhone");
 		rec.bindAttributes("mgrID : biginteger", "Manager");
 		rec.clearRemainingUnmatchedSymbols();
-		rec.resolveTypes(ExpressionBuilder.KEEP_VIRTUAL_TARGET);*/
-		/*rec.close();
-		new ModelEditor(EMP_DOC_VIEW+".xmi").save();*/
+		rec.resolveTypes(ExpressionBuilder.KEEP_VIRTUAL_TARGET);
+		rec.close();
+		new ModelEditor(EMP_DOC_VIEW+".xmi").save();
 		
-		/*new SWTWorkbenchBot().toolbarButtonWithTooltip("Show Parent Diagram").click();
+		new SWTWorkbenchBot().toolbarButtonWithTooltip("Show Parent Diagram").click();
 		me.showMappingTransformation(SUPERVISOR);
 		mew.addTransformationSource(PROJECT_NAME, EMPLOYEES_VIEW+".xmi", EMP_TABLE);
 		InputSetEditor ise = me.openInputSetEditor(true);
 		ise.createNewInputParam(EMPLOYEE, "mgrID : positiveInteger");
 		ise.close();//and save
-		me.save();*/
+		me.save();
 		
-		new MappingDiagramEditor(EMP_DOC_VIEW+".xmi");
+		md = new MappingDiagramEditor(EMP_DOC_VIEW+".xmi");
 		RecursionEditor recEd = md.clickOnRecursiveButton(SUPERVISOR);
 		recEd.enableRecursion();
-		/*recEd.limitRecursion(3);
-		recEd.close();*/
+		//recEd.limitRecursion(3);
+		recEd.close();
 		
+		md.showTransformation();
+		md.save();
 		
-		me.showTransformation();
 		//reconciller
-		/*rec = me.openReconciler();
+		rec = me.openReconciler();
 		rec.bindAttributes("MiddleInitial : string", "MiddleName");
 		rec.bindAttributes("Phone : string", "HomePhone");
 		rec.bindAttributes("mgrID : biginteger", "Manager");
@@ -193,8 +202,8 @@ public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 		
 		//criteria builder
 		CriteriaBuilder cb = me.criteriaBuilder();
-		cb.selectLeftAttribute("INPUTS", "INPUTS.mgrID");
-		cb.selectRightAttribute("Employees.EmpTable", "Employees.EmpTable.empId");
+		cb.selectLeftAttribute("INPUTS", "mgrID");
+		cb.selectRightAttribute("Employees.EmpTable", "EmpId");
 		cb.selectOperator(OperatorType.EQUALS);
 		cb.apply();
 		cb.close();
@@ -202,16 +211,15 @@ public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 		
 		//create new view model
 		CreateMetadataModel cmm = new CreateMetadataModel();
+		cmm.setLocation(PROJECT_NAME);
 		cmm.setName(EMP_V);
 		cmm.setClass(ModelClass.RELATIONAL);
 		cmm.setType(ModelType.VIEW);
 		cmm.setModelBuilder(ModelBuilder.TRANSFORM_EXISTING);
-		cmm.execute(ModelBuilder.TRANSFORM_EXISTING, PROJECT_NAME, EMPLOYEES_VIEW+".xmi");
-		
-		//uncomment @Server
+		cmm.execute(true, PROJECT_NAME, EMPLOYEES_VIEW+".xmi");
 		
 		//create data source
-		mew.createDataSource(ConnectionSource.USE_MODEL_CONNECTION_INFO, PROJECT_NAME, EMPDATA_SOURCE+".xmi");
+		mew.createDataSource(ConnectionSource.USE_MODEL_CONNECTION_INFO, PROJECT_NAME, EMPDATA_SOURCE +"Source.xmi");
 		
 		//create new vdb
 		CreateVDB createVDB = new CreateVDB();
@@ -221,10 +229,8 @@ public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 
 		VDBEditor editor = VDBEditor.getInstance(VDB + ".vdb");
 		editor.show();
-		editor.addModel(PROJECT_NAME, EMPDATA_SOURCE);
-		editor.addModel(PROJECT_NAME, EMP_DOC_VIEW);
-		editor.addModel(PROJECT_NAME, EMPLOYEES_VIEW);
-		editor.addModel(PROJECT_NAME, EMPLOYEES_SCHEMA_XSD);
+		editor.addModel(PROJECT_NAME, EMPDATA_SOURCE + "Source");
+		editor.addModel(PROJECT_NAME, EMP_DOC_VIEW);//adds also EMPLOYEES_VIEW, EMPLOYEES_SCHEMA_XSD
 		editor.addModel(PROJECT_NAME, EMP_V);
 		editor.save();
 		
@@ -244,10 +250,7 @@ public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 		SQLResult result = DatabaseDevelopmentPerspective.getInstance()
 				.getSqlResultsView().getByOperation(SQL1);
 		assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
-		sqlEd.close();*/
-		
-	
-		System.out.println();
+		sqlEd.close();
 	}
 	
 	@Before
@@ -265,7 +268,7 @@ public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 		new SWTWorkbenchBot().closeAllShells();
 	}
 	
-	@Test
+	//@Test
 	public void test00(){
 		openExisting();
 	}
@@ -276,35 +279,11 @@ public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 		new DefaultShell("Import");
 		new DefaultTreeItem(0, "General", "Existing Projects into Workspace").select();
 		new PushButton("Next >").click();
-		String path = "/home/lfabriko/Work/EXAMPLES/teiiddes/Recursive";//Recursive-clean/Recursive
+		String path = "/home/lfabriko/Work/EXAMPLES/teiiddes/Recursive-clean/Recursive";//Recursive-clean/Recursive
 		new DefaultCombo(0).setText(path);
 		new SWTWorkbenchBot().activeShell().pressShortcut(Keystrokes.TAB);
 		bot.sleep(2000);
 		new PushButton("Finish").click();
-		//new WaitWhile(new IsInProgress(), TimePeriod.NORMAL);
 	}
 	
-
-	private class InnerButtonWithToolTipMatcher extends BaseMatcher {
-		
-		
-		@Override
-		public boolean matches(Object o) {//ToolItem
-			if (o instanceof ToolBar){//new Button(((ToolBar)o).getParent(), SWT.CHECK);
-			//if (o instanceof Button){
-				//System.out.println(((ToolBar)o).getItemCount());
-				//WidgetHandler.getInstance().click((Button)o);
-				//columnButtons.add((ToolBar)o);
-				//new CheckBox(new a((ToolBar)o)).click();
-				
-			return true;
-			}
-			return false;
-		}
-
-		@Override
-		public void describeTo(Description arg0) {
-			// TODO Auto-generated method stub
-		}
-	}
 }
