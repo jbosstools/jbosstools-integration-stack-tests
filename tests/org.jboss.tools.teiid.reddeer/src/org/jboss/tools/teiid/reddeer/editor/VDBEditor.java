@@ -21,12 +21,20 @@ public class VDBEditor extends SWTBotEditor {
 		return editor;
 	}
 	
-	public void addModel(String projectName, String model){
+	/**
+	 * 
+	 * @param projectName
+	 * @param modelXmi whole name (with ending)
+	 */
+	public void addModel(String projectName, String modelXmi){
+		if (! modelXmi.contains(".")){
+			modelXmi = modelXmi + ".xmi";
+		}
 		new SWTWorkbenchBot().toolbarButtonWithTooltip("Add model").click();
 		
 		SWTBotShell shell = bot.shell("Add File(s) to VDB");
 		shell.activate();
-		shell.bot().tree(0).expandNode(projectName).select(model);
+		shell.bot().tree(0).expandNode(projectName).select(modelXmi);
 
 		new PushButton("OK").click();
 		new WaitWhile(new ShellWithTextIsActive(shell.getText()), TimePeriod.LONG);
