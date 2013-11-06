@@ -22,6 +22,9 @@
           <product>com.jboss.jbds.product</product>
           <testSuite>org.jboss.tools.drools.ui.bot.test</testSuite>
           <testClass>org.jboss.tools.drools.ui.bot.test.BrmsTestSuite</testClass>
+          <systemProperties>
+            <logDebug>false</logDebug>
+          </systemProperties>
           <dependencies combine.children="append">
             <!-- Drools plugins -->
             <dependency>
