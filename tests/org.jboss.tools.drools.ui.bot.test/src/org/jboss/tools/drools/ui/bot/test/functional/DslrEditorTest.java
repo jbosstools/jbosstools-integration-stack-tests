@@ -3,6 +3,7 @@ package org.jboss.tools.drools.ui.bot.test.functional;
 import java.util.List;
 
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.matcher.RegexMatchers;
 import org.jboss.reddeer.workbench.editor.TextEditor;
@@ -20,7 +21,9 @@ import org.jboss.tools.drools.ui.bot.test.util.TestParent;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+@RunWith(RedDeerSuite.class)
 public class DslrEditorTest extends TestParent {
 
     @Before
