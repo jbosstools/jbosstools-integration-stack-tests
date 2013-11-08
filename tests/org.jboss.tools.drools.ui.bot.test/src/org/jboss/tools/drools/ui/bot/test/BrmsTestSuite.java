@@ -8,7 +8,7 @@ import org.jboss.tools.drools.ui.bot.test.functional.NewResourcesTest;
 import org.jboss.tools.drools.ui.bot.test.functional.PerspectiveTest;
 import org.jboss.tools.drools.ui.bot.test.functional.ProjectManagementTest;
 import org.jboss.tools.drools.ui.bot.test.functional.ReteTreeViewerTest;
-import org.jboss.tools.drools.ui.bot.test.functional.RulesEditorTest;
+import org.jboss.tools.drools.ui.bot.test.functional.DrlEditorTest;
 import org.jboss.tools.drools.ui.bot.test.functional.RulesManagementTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
@@ -20,7 +20,7 @@ import org.junit.runners.Suite.SuiteClasses;
     ProjectManagementTest.class,
     NewResourcesTest.class,
     RulesManagementTest.class,
-    RulesEditorTest.class,
+    DrlEditorTest.class,
     ReteTreeViewerTest.class,
     DslEditorTest.class,
     DslrEditorTest.class

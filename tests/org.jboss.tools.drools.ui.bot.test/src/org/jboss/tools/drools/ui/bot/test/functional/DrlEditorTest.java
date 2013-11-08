@@ -32,7 +32,7 @@ import org.junit.runner.RunWith;
  * TODO advanced stuff (inline cast, group accessors)
  */
 @RunWith(RedDeerSuite.class)
-public class RulesEditorTest extends TestParent {
+public class DrlEditorTest extends TestParent {
     public static final String MESSAGE_TEXT = getTemplateText("MessageClass");
     public static final String RULE_RESOURCE_TEXT = getTemplateText("DummyRuleFile");
 
