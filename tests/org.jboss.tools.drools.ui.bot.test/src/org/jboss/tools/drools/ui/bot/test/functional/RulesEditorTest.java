@@ -2,7 +2,6 @@ package org.jboss.tools.drools.ui.bot.test.functional;
 
 import java.util.List;
 
-import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -216,14 +215,4 @@ public class RulesEditorTest extends TestParent {
         Assert.assertEquals("New errors occured!", warnings, problems.getAllWarnings().size());
     }
 
-    @Test
-    @UsePerspective(DroolsPerspective.class) @UseDefaultRuntime @UseDefaultProject
-    public void testShowReteTree() {
-        DrlEditor rulesEditor = new DrlEditor();
-
-        rulesEditor.showReteTree();
-        SWTUtils.captureScreenshot("REVIEW-rete-tree.png");
-
-        rulesEditor.close();
-    }
 }
