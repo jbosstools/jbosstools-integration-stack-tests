@@ -14,9 +14,7 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.reddeer.jface,
  org.jboss.reddeer.junit,
  org.jboss.reddeer.swt.test;bundle-version="0.4.0",
- org.jboss.tools.fuse.reddeer;bundle-version="4.1.0",
- org.jboss.tools.switchyard.reddeer;bundle-version="4.1.0",
- org.eclipse.swtbot.eclipse.gef.finder;bundle-version="2.1.1"
+ org.jboss.tools.fuse.reddeer;bundle-version="4.1.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: JBoss by Red Hat
