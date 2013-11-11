@@ -82,9 +82,14 @@ public class CreateMetadataModel extends NewWizardDialog {
 	public void execute() {
 		open();
 		fillFirstPage();
-		finish();
-
-		xsdSchemaSelection();
+		if (ModelClass.XSD.equals(clazz)) {
+			new PushButton("Finish").click();
+			new DefaultShell("Model Initializer");
+			new SWTWorkbenchBot().table().select("XML Schema (2001)");
+			new PushButton("OK").click();
+		} else {
+			finish();
+		}
 	}
 	
 	public void execute(String... pathToExistingModel){
@@ -145,14 +150,6 @@ public class CreateMetadataModel extends NewWizardDialog {
 		new PushButton("OK").click();
 		new DefaultTable().select(rootElement);
 		new PushButton(1).click();// >
-	}
-
-	private void xsdSchemaSelection() {
-		if (ModelClass.XSD.equals(clazz)) {
-			new DefaultShell("Model Initializer");
-			new SWTWorkbenchBot().table().select("XML Schema (2001)");
-			new PushButton("OK").click();
-		}
 	}
 
 	public void setLocation(String location) {

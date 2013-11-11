@@ -8,6 +8,7 @@ import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewException;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -84,7 +85,8 @@ public class TeiidInstanceView extends WorkbenchView {
 			SWTBotTreeItem item = bot.tree().expandNode(teiidInstance, "VDBs");
 			item.getNode(vdb);
 			return true;
-		} catch (WidgetNotFoundException e) {
+		//} catch (WidgetNotFoundException e) {
+		} catch (SWTLayerException ex){
 			return false;
 		}
 	}
@@ -97,11 +99,33 @@ public class TeiidInstanceView extends WorkbenchView {
 	 */
 	public boolean containsVDB(boolean isKeplerOrMore, String... pathToVDB) {
 		SWTBot bot = new SWTWorkbenchBot();
+		
+		//general
 		try {
 			//SWTBotTreeItem item = bot.tree(TEIID_INSTANCE_TREE_INDEX).expandNode(pathToVDB);new ContextMenu("Refresh");OK; new TeiidInstanceView(true);expand;getNode;
 			new DefaultTreeItem(pathToVDB).select();
 			return true;
-		} catch (WidgetNotFoundException e) {
+		} catch (SWTLayerException ex){
+			
+		} catch (Exception e) {
+			
+		}
+		//add [default] (in case of more servers)
+		try {
+			String[] newPath = {pathToVDB[0], pathToVDB[1], pathToVDB[2] 
+					+ "  [default]", pathToVDB[3], pathToVDB[4]};
+			new DefaultTreeItem(newPath).select();
+			return true;
+		} catch (Exception ex){
+			
+		}
+		//remove [default] (in case of one server)
+		try {
+			String[] newPath = {pathToVDB[0], pathToVDB[1], 
+					pathToVDB[2].substring(0, pathToVDB[2].indexOf(" ")), pathToVDB[3], pathToVDB[4]};
+			new DefaultTreeItem(newPath).select();
+			return true;
+		} catch (Exception ex){
 			return false;
 		}
 	}
