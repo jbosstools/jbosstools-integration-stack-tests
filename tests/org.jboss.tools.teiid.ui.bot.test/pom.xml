@@ -28,7 +28,8 @@
 	  <!-- Teiid Repository -->
 	  <repository>
 	    <id>teiid</id>
-	    <url>${teiid-designer.site}</url>
+	   <!-- <url>${teiid-designer.site}</url>-->
+		<url>http://download.jboss.org/jbosstools/updates/development/kepler/integration-stack/teiiddesigner/8.3.0.Beta3/</url>
 	    <layout>p2</layout>
 	    <snapshots>
 	      <enabled>true</enabled>

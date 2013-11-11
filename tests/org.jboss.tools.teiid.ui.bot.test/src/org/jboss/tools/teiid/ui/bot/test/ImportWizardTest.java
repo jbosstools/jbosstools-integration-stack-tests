@@ -17,6 +17,7 @@ import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.wizard.DDLImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.FlatImportWizard;
+import org.jboss.tools.teiid.reddeer.wizard.FlatImportWizard.FlatFileImportMode;
 import org.jboss.tools.teiid.reddeer.wizard.HSQLDBDriverWizard;
 import org.jboss.tools.teiid.reddeer.wizard.HSQLDBProfileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.ImportJDBCDatabaseWizard;
@@ -27,6 +28,7 @@ import org.jboss.tools.teiid.reddeer.wizard.WsdlImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.WsdlProfileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.XMLImportWizard;
 import org.jboss.tools.teiid.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -46,6 +48,11 @@ public class ImportWizardTest extends SWTBotTestCase {
 	@BeforeClass
 	public static void createModelProject() {
 		teiidBot.createModelProject(MODEL_PROJECT);
+	}
+	
+	@AfterClass
+	public static void closeAllShells(){
+		new SWTWorkbenchBot().closeAllShells();
 	}
 
 	@Test
@@ -79,7 +86,8 @@ public class ImportWizardTest extends SWTBotTestCase {
 		importWizard.setName("Item");
 		//importWizard.setFile("items.csv");
 		importWizard.setFile("items.csv     <<<<");
-
+		importWizard.setImportMode(FlatFileImportMode.FLAT_FILE_ON_LOCAL_FILE_SYSTEM);
+		
 		importModel(importWizard);
 
 		checkResource("ItemSource.xmi");

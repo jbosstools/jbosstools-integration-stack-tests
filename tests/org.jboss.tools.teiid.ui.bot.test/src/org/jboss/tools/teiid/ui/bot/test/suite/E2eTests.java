@@ -1,6 +1,7 @@
 package org.jboss.tools.teiid.ui.bot.test.suite;
 
 import org.jboss.tools.teiid.ui.bot.test.E2eRecursiveXmlTextTest;
+import org.jboss.tools.teiid.ui.bot.test.VirtualGroupTutorialUpdatedTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
@@ -11,7 +12,8 @@ import org.junit.runners.Suite.SuiteClasses;
  * 
  */
 @SuiteClasses({
-	E2eRecursiveXmlTextTest.class
+	E2eRecursiveXmlTextTest.class,
+	//VirtualGroupTutorialUpdatedTest.class
 })
 @RunWith(TeiidSuite.class)
 public class E2eTests {

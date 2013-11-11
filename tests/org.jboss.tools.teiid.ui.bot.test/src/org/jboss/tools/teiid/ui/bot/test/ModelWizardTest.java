@@ -10,6 +10,7 @@ import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.wizard.CreateMetadataModel;
 import org.jboss.tools.teiid.reddeer.wizard.ModelProjectWizard;
 import org.jboss.tools.teiid.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -54,6 +55,11 @@ public class ModelWizardTest extends SWTBotTestCase {
 		} catch (SWTLayerException swte) {
 			// ok, everything was saved
 		}
+	}
+	
+	@After
+	public void afterMethod(){
+		new SWTWorkbenchBot().closeAllShells();//doesn't help if wizard is opened
 	}
 
 	@Test
