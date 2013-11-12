@@ -29,7 +29,7 @@ public class ImplementationPropertiesPage {
 	public void openProperties(Component component) {
 		
 		log.info("Open: " + component.getTooltip());
-		component.contextButton("Properties").click();
+		component.clickContextButton("Properties");
 		new DefaultShell("Properties for " + component.getTooltip()).setFocus();
 	}
 	

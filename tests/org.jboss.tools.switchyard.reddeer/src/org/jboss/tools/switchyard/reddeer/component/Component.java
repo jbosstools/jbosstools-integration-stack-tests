@@ -16,9 +16,12 @@ import org.hamcrest.Matcher;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.switchyard.reddeer.condition.ContextButtonAppeared;
+import org.jboss.tools.switchyard.reddeer.condition.ContextButtonAppearedAndClicked;
+import org.jboss.tools.switchyard.reddeer.condition.EditPartAppeared;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.matcher.WithTooltip;
 import org.jboss.tools.switchyard.reddeer.preference.PropertiesPreferencePage;
@@ -49,6 +52,7 @@ public class Component {
 	}
 
 	public Component(Matcher<EditPart> matcher, int index) {
+		new WaitUntil(new EditPartAppeared(matcher), TimePeriod.NORMAL, false);
 		List<SWTBotGefEditPart> list = new SwitchYardEditor().editParts(matcher);
 		if (list.size() > index) {
 			editPart = list.get(index);
@@ -74,6 +78,13 @@ public class Component {
 	public ContextButton contextButton(final String label) {
 		new WaitUntil(new ContextButtonAppeared(this, label));
 		return new ContextButton(label);
+	}
+	
+	public void clickContextButton(final String label) {
+		click();
+		select();
+		hover();
+		new WaitUntil(new ContextButtonAppearedAndClicked(this, label));
 	}
 
 	public void select() {

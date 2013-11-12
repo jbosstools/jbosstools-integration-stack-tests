@@ -81,7 +81,7 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		activate();
 		setText("Group Id:", groupId);
 		setText("Package Name:", packageName);
-		setVersion(version);
+//		setVersion(version);
 		selectComponents(components);
 		finish();
 	}

@@ -8,6 +8,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
 import org.jboss.tools.switchyard.reddeer.binding.CamelBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.FTPBindingPage;
@@ -50,7 +51,7 @@ import org.junit.runner.RunWith;
 @CleanWorkspace
 @Perspective(name = "Java EE")
 @RunWith(SwitchyardSuite.class)
-public class BindingsTest {
+public class BindingsTest extends RedDeerTest {
 
 	public static final String CONTEXT_PATH = "Context Path";
 
@@ -225,6 +226,7 @@ public class BindingsTest {
 		new Service(SERVICE).addBinding("JPA");
 		BindingWizard<JPABindingPage> wizard = BindingWizard.createJPABindingWizard();
 		wizard.getBindingPage().setEntityClassName("entity-class");
+		wizard.getBindingPage().setPersistenceUnit("persistence.xml");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -232,6 +234,7 @@ public class BindingsTest {
 		PropertiesPreferencePage properties = new Service(SERVICE).showProperties();
 		properties.selectBindingsTab();
 		assertEquals("entity-class", properties.getJPABindingPage().getEntityClassName());
+		assertEquals("persistence.xml", properties.getJPABindingPage().getPersistenceUnit());
 		properties.ok();
 	}
 

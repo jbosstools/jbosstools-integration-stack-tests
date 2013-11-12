@@ -57,7 +57,7 @@ public class ServerDeployment {
 				new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 				new WaitUntil(new ConsoleHasText("Deployed \"" + checkPhrase + "\""),
 						TimePeriod.LONG);
-				checkDeployment();
+				//checkDeployment();
 				return;
 			}
 		}
@@ -80,7 +80,7 @@ public class ServerDeployment {
 						new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 						new WaitUntil(new ConsoleHasText("Replaced deployment \"" + checkPhrase
 								+ "\""), TimePeriod.LONG);
-						checkDeployment();
+						//checkDeployment();
 					}
 				}
 
@@ -94,7 +94,7 @@ public class ServerDeployment {
 		consoleView.clearConsole();
 	}
 
-	protected void checkDeployment() {
+	protected void checkDeploymexnt() {
 		ConsoleView consoleView = new ConsoleView();
 		consoleView.open();
 		String consoleText = consoleView.getConsoleText();

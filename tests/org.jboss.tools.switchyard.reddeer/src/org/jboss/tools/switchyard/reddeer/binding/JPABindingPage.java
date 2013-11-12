@@ -12,7 +12,8 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 public class JPABindingPage extends WizardPage {
 
 	public static final String NAME = "Name";
-	public static final String ENTITY_CLASS_NAME = "Entity Class Name";
+	public static final String ENTITY_CLASS_NAME = "Entity Class Name*";
+	public static final String PERSITENCE_UNIT = "Persistence Unit*";
 
 	public JPABindingPage setName(String name) {
 		new LabeledText(NAME).setFocus();
@@ -33,5 +34,15 @@ public class JPABindingPage extends WizardPage {
 
 	public String getEntityClassName() {
 		return new LabeledText(ENTITY_CLASS_NAME).getText();
+	}
+
+	public JPABindingPage setPersistenceUnit(String persistenceUnit) {
+		new LabeledText(PERSITENCE_UNIT).setFocus();
+		new LabeledText(PERSITENCE_UNIT).setText(persistenceUnit);
+		return this;
+	}
+
+	public String getPersistenceUnit() {
+		return new LabeledText(PERSITENCE_UNIT).getText();
 	}
 }

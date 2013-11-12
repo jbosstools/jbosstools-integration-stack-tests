@@ -13,7 +13,7 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 public class SOAPBindingPage extends WizardPage {
 
 	public static final String NAME = "Name";
-	public static final String CONTEXT_PATH = "Context Path";
+	public static final String CONTEXT_PATH = "Context path:";
 	public static final String WSDL_URI = "WSDL URI";
 
 	public SOAPBindingPage setContextPath(String contextPath) {

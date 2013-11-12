@@ -1,6 +1,7 @@
 package org.jboss.tools.switchyard.ui.bot.test;
 
-import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
+import static org.junit.Assert.assertEquals;
+
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
@@ -26,9 +27,11 @@ import org.jboss.tools.switchyard.ui.bot.test.suite.ServerDeployment;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Server;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.State;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Type;
+import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
 import org.jboss.tools.switchyard.ui.bot.test.util.BackupClient;
 import org.jboss.tools.switchyard.ui.bot.test.util.SoapClient;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * This simple switchyard test performs the following tasks:
@@ -53,7 +56,8 @@ import org.junit.Test;
 @CleanWorkspace
 @Perspective(name = "Java EE")
 @Server(type = Type.ALL, state = State.RUNNING)
-public class SimpleTest extends SWTBotTestCase {
+@RunWith(SwitchyardSuite.class)
+public class SimpleTest {
 
 	private static final String PROJECT = "simple";
 	private static final String PACKAGE = "com.example.switchyard.simple";

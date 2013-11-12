@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.swtbot.swt.finder.junit.ScreenshotCaptureListener;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
@@ -15,6 +16,7 @@ import org.junit.runner.notification.RunListener;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.RunnerBuilder;
+import org.osgi.framework.Bundle;
 
 /**
  * 
@@ -123,6 +125,9 @@ public class SwitchyardSuite extends RedDeerSuite {
 			}
 			if (version.startsWith("6.1")) {
 				serverType[1] = "JBoss Enterprise Application Platform 6.1";
+				if(isNewASPluging()) {
+					serverType[1] = "JBoss Enterprise Application Platform 6.1+";
+				}
 			}
 		} else if (type.equals("SOA")) {
 			serverType[0] = "JBoss Enterprise Middleware";
@@ -131,6 +136,9 @@ public class SwitchyardSuite extends RedDeerSuite {
 			}
 			if (version.startsWith("6")) {
 				serverType[1] = "JBoss Enterprise Application Platform 6.1";
+				if(isNewASPluging()) {
+					serverType[1] = "JBoss Enterprise Application Platform 6.1+";
+				}
 			}
 		} else if (type.equals("AS")) {
 			serverType[0] = "JBoss Community";
@@ -150,6 +158,9 @@ public class SwitchyardSuite extends RedDeerSuite {
 			}
 			if (version.startsWith("6.1")) {
 				serverRuntime[1] = "JBoss Enterprise Application Platform 6.1 Runtime";
+				if(isNewASPluging()) {
+					serverRuntime[1] = "JBoss Enterprise Application Platform 6.1+ Runtime";
+				}
 			}
 		} else if (type.equals("SOA")) {
 			serverRuntime[0] = "JBoss Enterprise Middleware";
@@ -158,6 +169,9 @@ public class SwitchyardSuite extends RedDeerSuite {
 			}
 			if (version.startsWith("6")) {
 				serverRuntime[1] = "JBoss Enterprise Application Platform 6.1 Runtime";
+				if(isNewASPluging()) {
+					serverRuntime[1] = "JBoss Enterprise Application Platform 6.1+ Runtime";
+				}
 			}
 		} else if (type.equals("AS")) {
 			serverRuntime[0] = "JBoss Community";
@@ -166,5 +180,11 @@ public class SwitchyardSuite extends RedDeerSuite {
 			throw new RuntimeException("You have to specify if it is AS or SOA");
 		}
 		return serverRuntime;
+	}
+	
+	private static boolean isNewASPluging() {
+		Bundle bundle = Platform.getBundle("org.jboss.ide.eclipse.as.ui"); 
+		String version = bundle.getHeaders().get("Bundle-Version");
+		return version.startsWith("2.4.101");
 	}
 }

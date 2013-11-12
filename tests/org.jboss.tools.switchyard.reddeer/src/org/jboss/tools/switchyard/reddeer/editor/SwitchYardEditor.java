@@ -38,4 +38,11 @@ public class SwitchYardEditor extends SWTBotGefEditor {
 		mainComponent.click(coords[0], coords[1]);
 	}
 
+	@Override
+	public void save() {
+		new GefEditor("switchyard.xml").save();
+	}
+	
+	
+
 }
