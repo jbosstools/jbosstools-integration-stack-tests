@@ -5,6 +5,8 @@ import static org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable.syncExec;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.DriverDefinitionPage;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
+import org.jboss.reddeer.swt.api.Tree;
+import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
@@ -45,13 +47,32 @@ public class HSQLDBDriverWizard {
 
 	public void create() {
 		new DriverDefinitionPreferencePageExt().open();
+		//new SWTWorkbenchBot().sleep(10000);
 		new PushButton("Add...").click();
+		//new SWTWorkbenchBot().sleep(10000);
 		DriverDefinitionPageExt page = new DriverDefinitionPageExt();
-		page.selectDriverTemplate("Generic JDBC Driver", "1.0");
+		
+		//System.out.println(new SWTWorkbenchBot().activeShell().getText());
+		//new SWTWorkbenchBot().sleep(10000);
+		page.selectDriverTemplate(true, "Generic JDBC Driver", "1.0");
+		
+		//System.out.println(new SWTWorkbenchBot().activeShell().getText());
+		//System.out.println("Should set name to " + name);
+		//new SWTWorkbenchBot().sleep(10000);
 		page.setName(name);
+		
+		System.out.println(new SWTWorkbenchBot().activeShell().getText());
+		System.out.println("should set library to " + library);
+		new SWTWorkbenchBot().sleep(10000);
 		page.addDriverLibrary(library);
+		
+		System.out.println(new SWTWorkbenchBot().activeShell().getText());
+		System.out.println("should set driver to " + driver);
+		new SWTWorkbenchBot().sleep(10000);
 		page.setDriverClass(driver);
+		new SWTWorkbenchBot().sleep(10000);
 		new PushButton("OK").click();
+		new SWTWorkbenchBot().sleep(10000);
 		new PushButton("OK").click();
 	}
 
@@ -80,6 +101,49 @@ public class HSQLDBDriverWizard {
 			addItem(driverLocation);
 			addItem(driverLocation);
 			removeDriverLibrary(driverLocation);
+		}
+		
+		
+		public void selectDriverTemplate(boolean b, String type, String version){
+			System.out.println("SELECT DRIVER TEMPLATE");
+			selectTab(TAB_NAME_TYPE);
+			Tree tree = new DefaultTree();
+			// Database
+			TreeItem root = tree.getItems().get(0);
+			for (TreeItem item : root.getItems()) {
+				if (type.equals(item.getCell(0))) {
+					System.out.println("TYPE FOUND");
+					/*try {
+						System.out.println(item.getCell(2));
+						
+						if (item.getCell(2) == null){
+							System.out.println("---is null");
+						}
+						
+						if (item.getCell(2).equals(null)) {
+							System.out.println("---null");
+						}
+						if (item.getCell(2).isEmpty()){
+							System.out.println("---is empty");
+						}
+						
+						
+					}catch (Exception ex){
+						System.out.println("EXC "+ ex.getMessage());
+						
+						if (item.getCell(2).isEmpty()){
+							System.out.println("is empty");
+						}
+					}*/
+					
+					
+					
+					if (item.getCell(2).isEmpty() || version.equals(item.getCell(2))){
+						item.select();
+						break;
+					}
+				}
+			}
 		}
 
 		private void addItem(final String item) {

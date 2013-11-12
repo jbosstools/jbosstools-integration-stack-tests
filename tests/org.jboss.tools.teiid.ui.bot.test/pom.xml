@@ -22,6 +22,7 @@
 	  <teiid-830final.url>http://downloads.sourceforge.net/project/teiid/teiid/8.3/Final/teiid-8.3.0.Final-jboss-dist.zip</teiid-830final.url>
 	  <teiid-designer-810Final.site>http://download.jboss.org/jbosstools/updates/release/juno/soa-tooling/teiiddesigner/8.1.0.Final</teiid-designer-810Final.site>
 	  <teiid-designer.site>${jbtis.site}</teiid-designer.site>
+	  <server.properties>dv6.properties</server.properties>
 	</properties>
 
 	<repositories>
@@ -261,7 +262,7 @@
 		      </goals>
 		      <configuration>
 			<tasks>
-			  <echo file="dv6.properties">SERVER=EAP,6.1,default,target/requirements/jboss-eap-6.1</echo>
+			  <echo file="${server.properties}">SERVER=EAP,6.1,default,target/requirements/jboss-eap-6.1</echo>
 			  <echo file="${requirementsDirectory}/jboss-eap-6.1/standalone/configuration/teiid-security-users.properties">user=user</echo>
 			</tasks>
 		      </configuration>
