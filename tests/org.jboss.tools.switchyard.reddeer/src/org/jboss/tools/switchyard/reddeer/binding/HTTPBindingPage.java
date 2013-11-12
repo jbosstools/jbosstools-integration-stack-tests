@@ -10,7 +10,7 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  */
 public class HTTPBindingPage extends OperationOptionsPage<HTTPBindingPage> {
 
-	public static final String CONTEXT_PATH = "Context Path";
+	public static final String CONTEXT_PATH = "Context path:";
 
 	public HTTPBindingPage setContextPath(String contextPath) {
 		new LabeledText(CONTEXT_PATH).setFocus();

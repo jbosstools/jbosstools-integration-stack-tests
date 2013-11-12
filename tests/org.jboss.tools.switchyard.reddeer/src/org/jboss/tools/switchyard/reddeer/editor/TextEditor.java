@@ -24,6 +24,8 @@ public class TextEditor {
 	public TextEditor(String fileName) {
 		AbstractWait.sleep(1000);
 		editor = bot.editorByTitle(fileName).toTextEditor();
+		editor.show();
+		editor.setFocus();
 	}
 
 	public TextEditor type(String text) {

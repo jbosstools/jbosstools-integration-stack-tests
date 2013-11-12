@@ -11,7 +11,7 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 public class JMSBindingPage extends OperationOptionsPage<JMSBindingPage> {
 
 	public static final String NAME = "Name";
-	public static final String QUEUE_TOPIC_NAME = "Queue/Topic Name";
+	public static final String QUEUE_TOPIC_NAME = "Queue/Topic Name*";
 
 	public JMSBindingPage setName(String name) {
 		new LabeledText(NAME).setFocus();

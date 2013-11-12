@@ -22,7 +22,7 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
  */
 public class RESTBindingPage extends WizardPage {
 
-	public static final String CONTEXT_PATH = "Context Path";
+	public static final String CONTEXT_PATH = "Context path:";
 	public static final String Address = "Address";
 
 	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
@@ -52,7 +52,7 @@ public class RESTBindingPage extends WizardPage {
 	}
 
 	public List<String> getInterfaces() {
-		String[] items = bot.listWithLabel("RESTful Interfaces").getItems();
+		String[] items = bot.listWithLabel("RESTful Interfaces*").getItems();
 		return new ArrayList<String>(Arrays.asList(items));
 	}
 
