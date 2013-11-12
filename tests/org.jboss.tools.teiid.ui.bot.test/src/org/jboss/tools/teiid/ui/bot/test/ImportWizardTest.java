@@ -57,8 +57,8 @@ public class ImportWizardTest extends SWTBotTestCase {
 	}
 	
 	@After
-	public void afterMethod(String method){
-		System.out.println("TEST METHOD END: " + method);
+	public void afterMethod(){
+		System.out.println("TEST METHOD END");
 	}
 
 	@Test
