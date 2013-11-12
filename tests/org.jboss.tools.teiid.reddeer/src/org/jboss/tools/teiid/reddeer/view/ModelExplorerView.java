@@ -14,6 +14,7 @@ import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
+import org.jboss.tools.teiid.reddeer.condition.DefaultTreeItemAvailable;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.condition.RadioButtonEnabled;
 
@@ -104,6 +105,9 @@ public class ModelExplorerView extends WorkbenchView {
 	public void addTransformationSource(String project, String model, String tableName) {
 		open();
 		
+		//wait until tree item is enabled, or timeout
+		String[] path = {project, model, tableName};
+		new WaitUntil(new DefaultTreeItemAvailable(path), TimePeriod.NORMAL);
 		new DefaultTreeItem(project, model, tableName).select();
 		new ContextMenu(MODELING_MENU_ITEM, "Add Transformation Source(s)").select();
 	}

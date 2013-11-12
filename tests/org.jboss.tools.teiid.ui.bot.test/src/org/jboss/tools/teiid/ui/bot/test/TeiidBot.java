@@ -195,7 +195,7 @@ public class TeiidBot {
 
 			// TODO: LabeledText
 			// flatPage.setHomeFolder(flatProfile.getFolder());
-			new SWTWorkbenchBot().text().setText(flatProfile.getFolder());
+			new SWTWorkbenchBot().text().setText(new File(flatProfile.getFolder()).getAbsolutePath());//should be absolute path!
 			
 			//switch off validation of home folder
 			new CheckBox("Validate home folder").click();
