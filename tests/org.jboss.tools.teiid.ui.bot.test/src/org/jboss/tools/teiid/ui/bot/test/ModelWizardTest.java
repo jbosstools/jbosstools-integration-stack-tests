@@ -57,9 +57,14 @@ public class ModelWizardTest extends SWTBotTestCase {
 		}
 	}
 	
-	@After
+	/*@After
 	public void afterMethod(){
 		new SWTWorkbenchBot().closeAllShells();//doesn't help if wizard is opened
+	}*/
+	
+	@After
+	public void afterMethod(String method){
+		System.out.println("TEST METHOD END: " + method);
 	}
 
 	@Test
