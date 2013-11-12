@@ -13,7 +13,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @SuiteClasses({
 	ImportWizardTest.class,
-	//ModelWizardTest.class
+	ModelWizardTest.class
 })
 @RunWith(TeiidSuite.class)
 public class SmokeTests {
