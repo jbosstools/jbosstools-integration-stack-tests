@@ -29,9 +29,35 @@ public class ServerWizard extends NewWizardDialog {
 	public void execute() {
 		open();
 
-		new DefaultTreeItem(0, type).select();//eclipse kepler (0), eclipse juno (1)
+		selectType(type);
+		
 		new LabeledText("Server name:").setText(name);
 
 		finish();
+	}
+	
+	private void selectType(String[] type){
+		try {
+			new DefaultTreeItem(0, type).select();//eclipse kepler (0), eclipse juno (1)
+			return;
+		} catch (Exception ex){
+			System.out.println(type + " not found, trying other variants...");
+		}
+		try {
+			new DefaultTreeItem(0, type+ " Runtime").select();//eclipse kepler (0), eclipse juno (1)
+			return;
+		} catch (Exception ex){
+			System.out.println(type + " not found, trying other variants...");
+		}
+		try {
+			new DefaultTreeItem(0, type + "+ Runtime").select();//eclipse kepler (0), eclipse juno (1)
+			return;
+		} catch (Exception ex){
+			System.out.println(type + " not found, trying juno");
+		}
+		new DefaultTreeItem(1, type).select();//eclipse kepler (0), eclipse juno (1)
+		
+		
+		
 	}
 }
