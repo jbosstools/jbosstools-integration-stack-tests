@@ -37,7 +37,24 @@ public class ServerWizard extends NewWizardDialog {
 	}
 	
 	private void selectType(String[] type){
+		String[] array = new String[type.length];
+		System.arraycopy(type, 0, array, 0, array.length);
+		
 		try {
+			
+			new DefaultTreeItem(0, array).select();//eclipse kepler (0), eclipse juno (1)
+			return;
+		} catch (Exception ex){
+			System.out.println(ex.getMessage());
+		}
+		try {
+			array[array.length-1] = type[array.length-1] + "+";
+			new DefaultTreeItem(0, array).select();//eclipse kepler (0), eclipse juno (1)
+			return;
+		} catch (Exception ex){
+			System.out.println(ex.getMessage());
+		}
+		/*try {
 			new DefaultTreeItem(0, type).select();//eclipse kepler (0), eclipse juno (1)
 			return;
 		} catch (Exception ex){
@@ -55,9 +72,6 @@ public class ServerWizard extends NewWizardDialog {
 		} catch (Exception ex){
 			System.out.println(type + " not found, trying juno");
 		}
-		new DefaultTreeItem(1, type).select();//eclipse kepler (0), eclipse juno (1)
-		
-		
-		
+		new DefaultTreeItem(1, type).select();//eclipse kepler (0), eclipse juno (1)*/
 	}
 }
