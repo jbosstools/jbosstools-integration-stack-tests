@@ -89,11 +89,29 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 	private static final String VIRTUAL_PROCEDURE_SQL = "CREATE VIRTUAL PROCEDURE\n" + "BEGIN\n\t"
 			+ "SELECT * FROM PartsVirtual.OnHand;" + "\nEND";
 	
+	@Test
+	public void test(){
+		createProject();
+		createConnProfiles();
+		createSources();
+		//previewData();
+		createViewModel();
+		createTransformation();
+		createVDB();
+		executeVDB();
+		executeSqlQueries();
+		createProcedure();
+		updateVDB();
+		deployUpdatedVDB();
+		executeProcedureQuery();
+		closeScrapbookEditor();
+	}
+	
 	
 	/**
 	 * Create new Teiid Model Project
 	 */
-	@Test
+	//@Test
 	public void createProject(){
 		int currentPage = 0;//currentPage of wizard must be set to 0
 		new ModelProjectWizard(currentPage).create(PROJECT_NAME, true);
@@ -102,7 +120,7 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 	/**
 	 * Create connection profiles to HSQL databases
 	 */
-	@Test
+	//@Test
 	public void createConnProfiles(){
 		teiidBot.createHsqlProfile(props1, jdbcProfile, true, true);
 		teiidBot.createHsqlProfile(props2, jdbcProfile2, false, true);
@@ -111,7 +129,7 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 	/**
 	 * Create data sources for connection profiles
 	 */
-	@Test
+	//@Test
 	public void createSources(){
 		//datasource ds1
 		importFromHsql(jdbcProfile, SOURCE_MODEL_1);
@@ -123,10 +141,10 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 	/**
 	 * Preview data from model
 	 */
-	@Test
+	//@Test
 	public void previewData(){
 		//wait until project is saved
-		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
+		//new WaitWhile(new IsInProgress(), TimePeriod.LONG);
 		new GuidesView().previewData(true, PROJECT_NAME, SOURCE_MODEL_1, "PARTS");
 		
 		SQLResult result = DatabaseDevelopmentPerspective.getInstance().getSqlResultsView().getByOperation(TESTSQL_1);
@@ -140,7 +158,7 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 	/**
 	 * Create virtual view model
 	 */
-	@Test
+	//@Test
 	public void createViewModel() {
 		CreateMetadataModel newModel = new CreateMetadataModel();
 		newModel.setLocation(PROJECT_NAME);
@@ -157,7 +175,7 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 	/**
 	 * Create transformation for virtual view model
 	 */
-	@Test
+	//@Test
 	public void createTransformation() {
 		//create table OnHand
 		ModelExplorerView modelView = TeiidPerspective.getInstance().getModelExplorerView();
@@ -183,7 +201,7 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 	/**
 	 * Create VDB
 	 */
-	@Test
+	//@Test
 	public void createVDB() {
 		CreateVDB createVDB = new CreateVDB();
 		createVDB.setFolder(PROJECT_NAME);
@@ -199,7 +217,7 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 	/**
 	 * Deploy, execute VDB
 	 */
-	@Test
+	//@Test
 	public void executeVDB() {
 		//switch to teiid designer perspective
 		
@@ -215,7 +233,7 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 	/**
 	 * Execute test queries in SQL Scrapbook
 	 */
-	@Test
+	//@Test
 	public void executeSqlQueries() {
 		SQLScrapbookEditor editor = new SQLScrapbookEditor("SQL Scrapbook0");
 		editor.show();
@@ -258,7 +276,7 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 	/**
 	 * Create procedure
 	 */
-	@Test
+	//@Test
 	public void createProcedure() {	
 		ModelExplorerView modelView = TeiidPerspective.getInstance().getModelExplorerView();
 		Procedure procedure = modelView.newProcedure(PROJECT_NAME, VIRTUAL_MODEL_NAME, PROCEDURE_NAME,true);
@@ -293,7 +311,7 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 		editor.save();
 	}
 	
-	@Test
+	//@Test
 	public void updateVDB() {
 		TeiidPerspective.getInstance().getModelExplorerView().open(PROJECT_NAME, VDB_FILE_NAME);
 
@@ -303,7 +321,7 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 		editor.save();
 	}
 
-	@Test
+	//@Test
 	public void deployUpdatedVDB() {
 		ModelExplorer modelExplorer = new ModelExplorer();
 		modelExplorer.open();
@@ -314,7 +332,7 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 		vdb.executeVDB();
 	}
 
-	@Test
+	//@Test
 	public void executeProcedureQuery() {
 		SQLScrapbookEditor editor = new SQLScrapbookEditor("SQL Scrapbook1");
 		editor.show();

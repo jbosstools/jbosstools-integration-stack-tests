@@ -63,16 +63,16 @@ public class HSQLDBDriverWizard {
 		
 		System.out.println(new SWTWorkbenchBot().activeShell().getText());
 		System.out.println("should set library to " + library);
-		new SWTWorkbenchBot().sleep(10000);
+		//new SWTWorkbenchBot().sleep(10000);
 		page.addDriverLibrary(library);
 		
-		System.out.println(new SWTWorkbenchBot().activeShell().getText());
+		//System.out.println(new SWTWorkbenchBot().activeShell().getText());
 		System.out.println("should set driver to " + driver);
-		new SWTWorkbenchBot().sleep(10000);
+		//new SWTWorkbenchBot().sleep(10000);
 		page.setDriverClass(driver);
-		new SWTWorkbenchBot().sleep(10000);
+		//new SWTWorkbenchBot().sleep(10000);
 		new PushButton("OK").click();
-		new SWTWorkbenchBot().sleep(10000);
+		//new SWTWorkbenchBot().sleep(10000);
 		new PushButton("OK").click();
 	}
 
