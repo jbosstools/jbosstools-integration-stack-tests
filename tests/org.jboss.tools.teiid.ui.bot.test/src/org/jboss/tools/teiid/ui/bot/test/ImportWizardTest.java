@@ -28,6 +28,7 @@ import org.jboss.tools.teiid.reddeer.wizard.WsdlImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.WsdlProfileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.XMLImportWizard;
 import org.jboss.tools.teiid.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -53,6 +54,11 @@ public class ImportWizardTest extends SWTBotTestCase {
 	@AfterClass
 	public static void closeAllShells(){
 		new SWTWorkbenchBot().closeAllShells();
+	}
+	
+	@After
+	public void afterMethod(String method){
+		System.out.println("TEST METHOD END: " + method);
 	}
 
 	@Test
