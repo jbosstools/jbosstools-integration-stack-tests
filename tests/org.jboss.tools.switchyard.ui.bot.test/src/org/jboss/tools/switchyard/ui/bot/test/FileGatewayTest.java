@@ -81,17 +81,6 @@ public class FileGatewayTest extends SWTBotTestCase {
 		wizard.getBindingPage().setMoveDirectory("processed");
 		wizard.getBindingPage().setDirectory(path);
 		wizard.finish();
-
-		// It's needed to change focuses between text inputs
-		SWTWorkbenchBot bot = new SWTWorkbenchBot();
-		bot.textWithLabel("Directory*").setFocus();
-		bot.textWithLabel("Move (Default .camel)").setFocus();
-		bot.textWithLabel("Name").setFocus();
-		bot.textWithLabel("File Name").setFocus();
-
-		// Now, we can click finish button
-		wizard.finish();
-
 		new SwitchYardEditor().save();
 
 		// Deploy and test the project
