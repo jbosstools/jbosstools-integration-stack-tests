@@ -10,7 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /*
- * TODO: function, window, entry-point
+ * TODO: window, entry-point
  */
 @RunWith(RedDeerSuite.class)
 public class DeclareCompletionTest extends DrlCompletionParent {
@@ -78,4 +78,51 @@ public class DeclareCompletionTest extends DrlCompletionParent {
         assertCorrectText(editor, "testQuery( )");
     }
 
+    @Test
+    @UsePerspective(DroolsPerspective.class) @UseDefaultRuntime @UseDefaultProject
+    public void testFunctionDeclare() {
+        RuleEditor editor = master.showRuleEditor();
+        editor.setPosition(2, 0);
+        editor.writeText("import com.sample.domain.Message\n\n");
+        selectFromContentAssist(editor, "function");
+
+        editor.setPosition(4, 9);
+        editor.replaceText("String formatMessage(Message msg)", 27);
+
+        assertCorrectText(editor, "function String formatMessage(Message msg) {");
+
+        editor.setPosition(5, 1);
+        editor.replaceText("return m", 19);
+
+        selectFromContentAssist(editor, "msg : Message");
+
+        editor.writeText(".");
+
+        selectFromContentAssist(editor, "getText() : String - Message");
+
+        editor.writeText(";");
+
+        assertCorrectText(editor, "return msg.getText();");
+    }
+
+    @Test
+    @UsePerspective(DroolsPerspective.class) @UseDefaultRuntime @UseDefaultProject
+    public void testFunctionUsage() {
+        RuleEditor editor = master.showRuleEditor();
+        editor.setPosition(2, 0);
+        editor.writeText("import com.sample.domain.Message\n\nfunction String formatMessage(Message msg) {\n");
+        editor.writeText("    return msg.getText();\n}");
+
+        editor.setPosition(10, 8);
+        editor.replaceText("$msg: Message()", 13);
+
+        editor.setPosition(12, 8);
+        editor.replaceText("", 23);
+
+        selectFromContentAssist(editor, "formatMessage()");
+
+        editor.writeText("$msg");
+
+        assertCorrectText(editor, "formatMessage($msg);");
+    }
 }
