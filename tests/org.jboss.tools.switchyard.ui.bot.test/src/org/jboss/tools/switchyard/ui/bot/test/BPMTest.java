@@ -31,15 +31,18 @@ import org.jboss.tools.switchyard.reddeer.wizard.ReferenceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
 import org.jboss.tools.switchyard.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.switchyard.ui.bot.test.suite.PerspectiveRequirement.Perspective;
+import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
-@CleanWorkspace
-@Perspective(name = "Java EE")
 /**
  * Create simple BPMN process with a switchyard service task, run JUnit test.
  * @author lfabriko
  *
  */
+@CleanWorkspace
+@Perspective(name = "Java EE")
+@RunWith(SwitchyardSuite.class)
 public class BPMTest extends SWTBotTestCase {
 
 	private static final String PROJECT = "switchyard-bpm-processgreet";
@@ -131,8 +134,8 @@ public class BPMTest extends SWTBotTestCase {
 						PROCESS_GREET + "Test.java");
 		new ProjectItemExt(item).runAsJUnitTest();
 		assertEquals("1/1", new JUnitView().getRunStatus());
-		assertEquals("0", new JUnitView().getNumberOfErrors());
-		assertEquals("0", new JUnitView().getNumberOfFailures());
+		assertEquals(0, new JUnitView().getNumberOfErrors());
+		assertEquals(0, new JUnitView().getNumberOfFailures());
 	}
 
 	private void openFile(String... file) {
