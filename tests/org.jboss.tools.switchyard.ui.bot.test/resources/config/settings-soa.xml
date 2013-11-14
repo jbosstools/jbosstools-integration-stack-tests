@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlnssi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+  <profiles>
+    <!-- Configure the JBoss EAP Maven repository -->
+    <profile>
+      <id>jboss-ip-repository</id>
+      <repositories>
+        <repository>
+          <id>jboss-ip-repository</id>
+	  <url>http://maven.repository.redhat.com/techpreview/ip6/6.0.0.Beta/maven-repository/</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </repository>
+      </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>jboss-ip-repository</id>
+	  <url>http://maven.repository.redhat.com/techpreview/ip6/6.0.0.Beta/maven-repository/</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+    <!-- Configure the JBoss tech preview -->
+    <profile>
+      <id>redhat-techpreview-all-repository</id>
+      <repositories>
+        <repository>
+          <id>eap-earlyaccess</id>
+	  <url>http://maven.repository.redhat.com/techpreview/all/</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </repository>
+      </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+	  <id>redhat-techpreview-all-repository</id>
+	  <url>http://maven.repository.redhat.com/techpreview/all/</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+  </profiles>
+
+  <activeProfiles>
+    <activeProfile>jboss-ip-repository</activeProfile>
+    <activeProfile>redhat-techpreview-all-repository</activeProfile>
+  </activeProfiles>
+
+</settings>
