@@ -63,6 +63,7 @@ public class ServerManagementSimpleTest extends SWTBotTestCase {
 
 	@BeforeClass
 	public static void createModelProject() {
+		new org.jboss.reddeer.swt.impl.menu.ShellMenu("Project", "Build Automatically").select();
 		if (System.getProperty("swtbot.PLAYBACK_DELAY") == null) {
 			SWTBotPreferences.PLAYBACK_DELAY = 1000;
 		} else {
