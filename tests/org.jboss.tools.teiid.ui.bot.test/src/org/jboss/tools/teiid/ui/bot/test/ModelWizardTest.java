@@ -43,6 +43,7 @@ public class ModelWizardTest extends SWTBotTestCase {
 
 	@BeforeClass
 	public static void beforeClass() {
+		new org.jboss.reddeer.swt.impl.menu.ShellMenu("Project", "Build Automatically").select();
 		/* Create new project */
 		new ModelProjectWizard().create(PROJECT_NAME);
 	}

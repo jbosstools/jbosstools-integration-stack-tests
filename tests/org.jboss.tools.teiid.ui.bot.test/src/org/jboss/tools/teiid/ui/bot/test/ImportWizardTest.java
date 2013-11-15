@@ -48,6 +48,7 @@ public class ImportWizardTest extends SWTBotTestCase {
 
 	@BeforeClass
 	public static void createModelProject() {
+		new org.jboss.reddeer.swt.impl.menu.ShellMenu("Project", "Build Automatically").select();
 		teiidBot.createModelProject(MODEL_PROJECT);
 	}
 	
