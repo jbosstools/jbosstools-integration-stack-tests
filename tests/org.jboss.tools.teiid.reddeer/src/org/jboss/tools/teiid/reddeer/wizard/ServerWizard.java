@@ -54,24 +54,5 @@ public class ServerWizard extends NewWizardDialog {
 		} catch (Exception ex){
 			System.out.println(ex.getMessage());
 		}
-		/*try {
-			new DefaultTreeItem(0, type).select();//eclipse kepler (0), eclipse juno (1)
-			return;
-		} catch (Exception ex){
-			System.out.println(type + " not found, trying other variants...");
-		}
-		try {
-			new DefaultTreeItem(0, type+ " Runtime").select();//eclipse kepler (0), eclipse juno (1)
-			return;
-		} catch (Exception ex){
-			System.out.println(type + " not found, trying other variants...");
-		}
-		try {
-			new DefaultTreeItem(0, type + "+ Runtime").select();//eclipse kepler (0), eclipse juno (1)
-			return;
-		} catch (Exception ex){
-			System.out.println(type + " not found, trying juno");
-		}
-		new DefaultTreeItem(1, type).select();//eclipse kepler (0), eclipse juno (1)*/
 	}
 }
