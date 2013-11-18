@@ -24,13 +24,13 @@ public class ConsequencesCompletionTest extends DrlCompletionParent {
     public void testConsequencesCompletion() {
         RuleEditor editor = master.showRuleEditor();
         editor.setPosition(2, 0);
-        editor.writeText("import com.sample.domain.Message\n\nrule newRule\n\twhen\n\t\t$msg: Message()\n\tthen\n\t\t\nend\n");
+        editor.writeText("import com.sample.domain.MyMessage\n\nrule newRule\n\twhen\n\t\t$msg: MyMessage()\n\tthen\n\t\t\nend\n");
         editor.setPosition(8, 2);
 
         ContentAssist assist = editor.createContentAssist();
         List<String> items = assist.getItems();
         Assert.assertTrue("Variable kcontext is unavailable", items.contains("kcontext : RuleContext"));
-        Assert.assertTrue("Variable $msg is unavailable", items.contains("$msg : Message"));
+        Assert.assertTrue("Variable $msg is unavailable", items.contains("$msg : MyMessage"));
 
         assist.selectItem("kcontext : RuleContext");
         editor.writeText(".");
@@ -46,22 +46,22 @@ public class ConsequencesCompletionTest extends DrlCompletionParent {
         assist = editor.createContentAssist();
         items = assist.getItems();
         Assert.assertTrue("Variable kcontext is unavailable", items.contains("kcontext : RuleContext"));
-        Assert.assertTrue("Variable $msg is unavailable", items.contains("$msg : Message"));
-        assist.selectItem("$msg : Message");
+        Assert.assertTrue("Variable $msg is unavailable", items.contains("$msg : MyMessage"));
+        assist.selectItem("$msg : MyMessage");
         editor.writeText(".");
         assist = editor.createContentAssist();
         items = assist.getItems();
-        Assert.assertEquals("Some Message methods are missing", 15, items.size());
-        Assert.assertTrue("Method setParameter() is unavailable", items.contains("setParameter(Object parameter) : void - Message"));
-        assist.selectItem("setParameter(Object parameter) : void - Message");
+        Assert.assertEquals("Some MyMessage methods are missing", 15, items.size());
+        Assert.assertTrue("Method setParameter() is unavailable", items.contains("setParameter(Object parameter) : void - MyMessage"));
+        assist.selectItem("setParameter(Object parameter) : void - MyMessage");
 
-        editor.writeText("Message.");
+        editor.writeText("MyMessage.");
         assist = editor.createContentAssist();
         items = assist.getItems();
         Assert.assertEquals("Some Message methods are missing", 3, items.size());
-        Assert.assertTrue("Constant NO_PARAMETER is missing", items.contains("NO_PARAMETER : Object - Message"));
-        assist.selectItem("NO_PARAMETER : Object - Message");
-        assertCorrectText(editor, "$msg.setParameter(Message.NO_PARAMETER);");
+        Assert.assertTrue("Constant NO_PARAMETER is missing", items.contains("NO_PARAMETER : Object - MyMessage"));
+        assist.selectItem("NO_PARAMETER : Object - MyMessage");
+        assertCorrectText(editor, "$msg.setParameter(MyMessage.NO_PARAMETER);");
     }
 
 }

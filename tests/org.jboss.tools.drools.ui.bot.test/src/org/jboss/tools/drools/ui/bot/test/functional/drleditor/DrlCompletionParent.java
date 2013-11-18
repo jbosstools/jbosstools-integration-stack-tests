@@ -2,9 +2,11 @@ package org.jboss.tools.drools.ui.bot.test.functional.drleditor;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.matcher.RegexMatchers;
 import org.jboss.reddeer.workbench.editor.TextEditor;
@@ -18,7 +20,8 @@ import org.junit.Assert;
 import org.junit.Before;
 
 public class DrlCompletionParent extends TestParent {
-    public static final String MESSAGE_TEXT = getTemplateText("MessageClass");
+    private static final Logger LOGGER = Logger.getLogger(DrlCompletionParent.class);
+    public static final String MESSAGE_TEXT = getTemplateText("MyMessageClass");
     public static final String RULE_RESOURCE_TEXT = getTemplateText("DummyRuleFile");
 
     private int errors, warnings;
@@ -29,7 +32,7 @@ public class DrlCompletionParent extends TestParent {
         // create domain class
         NewJavaClassWizardDialog diag = new NewJavaClassWizardDialog();
         diag.open();
-        diag.getFirstPage().setName("Message");
+        diag.getFirstPage().setName("MyMessage");
         diag.getFirstPage().setPackage("com.sample.domain");
         diag.finish();
 
@@ -87,8 +90,16 @@ public class DrlCompletionParent extends TestParent {
         ProblemsView problems = new ProblemsView();
         problems.open();
 
-        Assert.assertEquals("New errors occured!", errors, problems.getAllErrors().size());
-        Assert.assertEquals("New warnings occured!", warnings, problems.getAllWarnings().size());
+        List<TreeItem> items = problems.getAllErrors();
+        for (TreeItem error : items) {
+            LOGGER.debug(error.getText());
+        }
+        Assert.assertEquals("New errors occured!", errors, items.size());
+        items = problems.getAllWarnings();
+        for (TreeItem warning : items) {
+            LOGGER.debug(warning.getText());
+        }
+        Assert.assertEquals("New warnings occured!", warnings, items.size());
     }
 
     private void assertWorkingReteTree() {

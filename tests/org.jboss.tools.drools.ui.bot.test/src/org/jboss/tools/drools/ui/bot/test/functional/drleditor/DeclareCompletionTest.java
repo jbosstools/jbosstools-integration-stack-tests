@@ -49,7 +49,7 @@ public class DeclareCompletionTest extends DrlCompletionParent {
     public void testQueryDeclare() {
         RuleEditor editor = master.showRuleEditor();
         editor.setPosition(2, 0);
-        editor.writeText("import com.sample.domain.Message\n\n");
+        editor.writeText("import com.sample.domain.MyMessage\n\n");
 
         selectFromContentAssist(editor, "query");
 
@@ -60,8 +60,8 @@ public class DeclareCompletionTest extends DrlCompletionParent {
         editor.setPosition(5, 1);
         editor.replaceText("", 12); // delete "#consequences"
 
-        selectFromContentAssist(editor, "Message");
-        assertCorrectText(editor, "Message( )");
+        selectFromContentAssist(editor, "MyMessage");
+        assertCorrectText(editor, "MyMessage( )");
     }
 
     @Test
@@ -69,7 +69,7 @@ public class DeclareCompletionTest extends DrlCompletionParent {
     public void testQueryUsage() {
         RuleEditor editor = master.showRuleEditor();
         editor.setPosition(2, 0);
-        editor.writeText("import com.sample.domain.Message\n\nquery testQuery\n\tMessage()\nend\n");
+        editor.writeText("import com.sample.domain.MyMessage\n\nquery testQuery\n\tMyMessage()\nend\n");
 
         editor.setPosition(10, 21);
         editor.writeText("\n        ");
@@ -83,22 +83,22 @@ public class DeclareCompletionTest extends DrlCompletionParent {
     public void testFunctionDeclare() {
         RuleEditor editor = master.showRuleEditor();
         editor.setPosition(2, 0);
-        editor.writeText("import com.sample.domain.Message\n\n");
+        editor.writeText("import com.sample.domain.MyMessage\n\n");
         selectFromContentAssist(editor, "function");
 
         editor.setPosition(4, 9);
-        editor.replaceText("String formatMessage(Message msg)", 27);
+        editor.replaceText("String formatMessage(MyMessage msg)", 27);
 
-        assertCorrectText(editor, "function String formatMessage(Message msg) {");
+        assertCorrectText(editor, "function String formatMessage(MyMessage msg) {");
 
         editor.setPosition(5, 1);
         editor.replaceText("return m", 19);
 
-        selectFromContentAssist(editor, "msg : Message");
+        selectFromContentAssist(editor, "msg : MyMessage");
 
         editor.writeText(".");
 
-        selectFromContentAssist(editor, "getText() : String - Message");
+        selectFromContentAssist(editor, "getText() : String - MyMessage");
 
         editor.writeText(";");
 
@@ -110,11 +110,11 @@ public class DeclareCompletionTest extends DrlCompletionParent {
     public void testFunctionUsage() {
         RuleEditor editor = master.showRuleEditor();
         editor.setPosition(2, 0);
-        editor.writeText("import com.sample.domain.Message\n\nfunction String formatMessage(Message msg) {\n");
+        editor.writeText("import com.sample.domain.MyMessage\n\nfunction String formatMessage(MyMessage msg) {\n");
         editor.writeText("    return msg.getText();\n}");
 
         editor.setPosition(10, 8);
-        editor.replaceText("$msg: Message()", 13);
+        editor.replaceText("$msg: MyMessage()", 13);
 
         editor.setPosition(12, 8);
         editor.replaceText("", 23);

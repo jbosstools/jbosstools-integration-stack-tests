@@ -24,10 +24,10 @@ public class MetadataCompletionTest extends DrlCompletionParent {
 
         selectFromContentAssist(editor, "import");
 
-        editor.writeText("message");
-        selectFromContentAssist(editor, "Message - com.sample.domain");
+        editor.writeText("my");
+        selectFromContentAssist(editor, "MyMessage - com.sample.domain");
 
-        assertCorrectText(editor, "import com.sample.domain.Message");
+        assertCorrectText(editor, "import com.sample.domain.MyMessage");
     }
 
     @Test
@@ -56,8 +56,8 @@ public class MetadataCompletionTest extends DrlCompletionParent {
         editor.setPosition(7, 27);
         editor.writeText("\n        ");
 
-        selectFromContentAssist(editor, "Message");
-        assertCorrectText(editor, "Message(  )");
+        selectFromContentAssist(editor, "MyMessage");
+        assertCorrectText(editor, "MyMessage(  )");
     }
 
     @Test
