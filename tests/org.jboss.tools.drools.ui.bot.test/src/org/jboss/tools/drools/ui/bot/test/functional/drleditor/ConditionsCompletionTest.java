@@ -25,14 +25,14 @@ public class ConditionsCompletionTest extends DrlCompletionParent {
         RuleEditor editor = master.showRuleEditor();
         editor.setPosition(2, 0);
 
-        editor.writeText("import com.sample.domain.Message\n\n");
+        editor.writeText("import com.sample.domain.MyMessage\n\n");
 
         selectFromContentAssist(editor, "rule");
         assertCorrectText(editor, "rule \"new rule\"");
 
         editor.setPosition(6, 2);
-        selectFromContentAssist(editor, "Message");
-        assertCorrectText(editor, "Message(  )");
+        selectFromContentAssist(editor, "MyMessage");
+        assertCorrectText(editor, "MyMessage(  )");
     }
 
     @Test
@@ -40,7 +40,7 @@ public class ConditionsCompletionTest extends DrlCompletionParent {
     public void testConstraintsCompletion() {
         RuleEditor editor = master.showRuleEditor();
         editor.setPosition(2, 0);
-        editor.writeText("import com.sample.domain.Message\n\nrule newRule\n\twhen\n\t\tMessage( )\n\tthen\nend\n");
+        editor.writeText("import com.sample.domain.MyMessage\n\nrule newRule\n\twhen\n\t\tMyMessage( )\n\tthen\nend\n");
 
         editor.setPosition(6, 11);
 

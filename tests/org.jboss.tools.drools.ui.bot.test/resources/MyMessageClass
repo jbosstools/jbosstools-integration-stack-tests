@@ -1,16 +1,16 @@
 package com.sample.domain;
 
-public class Message {
+public class MyMessage {
     public static final Object NO_PARAMETER = new Object();
 
     private String text;
     private Object parameter;
 
-    public Message() {
+    public MyMessage() {
         this("", null);
     }
 
-    public Message(String text, Object parameter) {
+    public MyMessage(String text, Object parameter) {
         this.text = text;
         this.parameter = parameter;
     }
