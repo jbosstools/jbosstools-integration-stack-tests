@@ -7,21 +7,34 @@ import org.jboss.tools.drools.ui.bot.test.functional.DslrEditorTest;
 import org.jboss.tools.drools.ui.bot.test.functional.NewResourcesTest;
 import org.jboss.tools.drools.ui.bot.test.functional.PerspectiveTest;
 import org.jboss.tools.drools.ui.bot.test.functional.ProjectManagementTest;
-import org.jboss.tools.drools.ui.bot.test.functional.RulesEditorTest;
 import org.jboss.tools.drools.ui.bot.test.functional.RulesManagementTest;
+import org.jboss.tools.drools.ui.bot.test.functional.drleditor.ConditionsCompletionTest;
+import org.jboss.tools.drools.ui.bot.test.functional.drleditor.ConsequencesCompletionTest;
+import org.jboss.tools.drools.ui.bot.test.functional.drleditor.DeclareCompletionTest;
+import org.jboss.tools.drools.ui.bot.test.functional.drleditor.MetadataCompletionTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(RedDeerSuite.class)
 @SuiteClasses({
+    // basic tests
     PerspectiveTest.class,
     DroolsRuntimeManagementTest.class,
     ProjectManagementTest.class,
     NewResourcesTest.class,
     RulesManagementTest.class,
-    RulesEditorTest.class,
+    // DRL editor code completion
+    MetadataCompletionTest.class,
+    DeclareCompletionTest.class,
+    ConditionsCompletionTest.class,
+    ConsequencesCompletionTest.class,
+    // dsl editor
     DslEditorTest.class,
+    // dslr editor
     DslrEditorTest.class
+    // TODO: debugging tests
+    // TODO: views test
+    // TODO: 5.x tests
 })
 public class BrmsTestSuite {
 

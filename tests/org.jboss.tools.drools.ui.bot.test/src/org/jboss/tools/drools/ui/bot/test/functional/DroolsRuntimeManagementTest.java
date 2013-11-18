@@ -3,6 +3,7 @@ package org.jboss.tools.drools.ui.bot.test.functional;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -15,7 +16,9 @@ import org.jboss.tools.drools.ui.bot.test.util.TestParent;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+import org.junit.runner.RunWith;
 
+@RunWith(RedDeerSuite.class)
 public class DroolsRuntimeManagementTest extends TestParent {
     private static final Logger LOGGER = Logger.getLogger(DroolsRuntimeManagementTest.class);
 

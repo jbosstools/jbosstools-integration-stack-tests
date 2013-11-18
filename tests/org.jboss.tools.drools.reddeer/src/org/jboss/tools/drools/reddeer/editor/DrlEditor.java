@@ -25,6 +25,14 @@ public class DrlEditor extends MultiPageEditor {
         });
     }
 
+    public boolean isRuleEditorOpened() {
+        return getSelectedPage() == 0;
+    }
+
+    public boolean isReteTreeOpened() {
+        return getSelectedPage() == 1;
+    }
+
     IWorkbenchPart getEditorByTitle(String title) {
         if (TEXT_EDITOR.equals(title)) {
             return getEditorByIndex(0);
