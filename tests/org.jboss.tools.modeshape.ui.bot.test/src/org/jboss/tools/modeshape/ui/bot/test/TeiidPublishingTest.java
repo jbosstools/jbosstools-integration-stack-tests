@@ -110,11 +110,6 @@ public class TeiidPublishingTest extends SWTBotTestCase {
 		System.out.println("DEBUG: files published (sql query)");
 		
 	}
-	
-	@Test
-	public void test1() throws Exception{
-		new SWTWorkbenchBot().sleep(600000);
-	}
 
 	private void checkPublishedFile(String path) throws IOException {
 		String repository = ModeshapeSuite.getModeshapeRepository();
