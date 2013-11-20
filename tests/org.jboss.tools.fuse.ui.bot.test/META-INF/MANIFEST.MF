@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Fuse Bot Tests
 Bundle-SymbolicName: org.jboss.tools.fuse.ui.bot.test
 Bundle-Version: 4.1.0.qualifier
-Bundle-Activator: org.jboss.tools.switchyard.ui.bot.test.Activator
+Bundle-Activator: org.jboss.tools.fuse.ui.bot.test.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.osgi,
  org.eclipse.core.runtime,
