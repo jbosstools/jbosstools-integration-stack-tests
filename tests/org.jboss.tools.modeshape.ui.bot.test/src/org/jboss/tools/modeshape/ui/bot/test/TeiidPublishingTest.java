@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
@@ -42,7 +43,8 @@ public class TeiidPublishingTest extends SWTBotTestCase {
 	public static final String WORKSPACE = "default";
 
 	@Test
-	public void publishingTest() throws Exception {
+	public void test0() throws Exception{
+		//public void publishingTest() throws Exception {
 		/* Create ModeShape Server */
 		new ModeshapeView().addServer(SERVER_URL, USER, PASSWORD);
 
@@ -62,6 +64,7 @@ public class TeiidPublishingTest extends SWTBotTestCase {
 		
 		//setup publish area, if necessary
 		new ModeshapeView().addPublishArea(SERVER_URL, repository, WORKSPACE, PUBLISH_AREA);
+		System.out.println("DEBUG: publishing area "+ PUBLISH_AREA+ " added");
 		
 		new ModeshapeExplorer().publish("ModeShapeGoodies").finish();
 		
@@ -73,6 +76,8 @@ public class TeiidPublishingTest extends SWTBotTestCase {
 		checkPublishedFile("/ModeShapeGoodies/PartsData.csv");
 		checkPublishedFile("/ModeShapeGoodies/RelModels/Books_Oracle.xmi");
 		checkPublishedFile("/ModeShapeGoodies/RelModels/BooksInfo.xmi");
+		
+		System.out.println("DEBUG: files published (webdav)");
 
 		/* Test ModeShape VDB on Teiid server */
 		String path = ModeshapeSuite.getServerPath();
@@ -102,7 +107,13 @@ public class TeiidPublishingTest extends SWTBotTestCase {
 			assertTrue("Model 'Books_Oracle' isn't involved in ModeShape VDB", result.contains("Books_Oracle"));
 			assertTrue("Model 'BooksInfo' isn't involved in ModeShape VDB", result.contains("BooksInfo"));
 		}
+		System.out.println("DEBUG: files published (sql query)");
 		
+	}
+	
+	@Test
+	public void test1() throws Exception{
+		new SWTWorkbenchBot().sleep(600000);
 	}
 
 	private void checkPublishedFile(String path) throws IOException {
