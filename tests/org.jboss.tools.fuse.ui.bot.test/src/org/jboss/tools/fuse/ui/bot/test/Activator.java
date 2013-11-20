@@ -1,4 +1,4 @@
-package org.jboss.tools.switchyard.ui.bot.test;
+package org.jboss.tools.fuse.ui.bot.test;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -9,7 +9,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.jboss.tools.switchyard.ui.bot.test";
+	public static final String PLUGIN_ID = "org.jboss.tools.fuse.ui.bot.test";
 
 	// The shared instance
 	private static Activator plugin;

@@ -1,4 +1,4 @@
-package org.jboss.tools.switchyard.ui.bot.test;
+package org.jboss.tools.fuse.ui.bot.test;
 
 import static org.junit.Assert.assertTrue;
 
