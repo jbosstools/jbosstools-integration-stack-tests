@@ -50,7 +50,6 @@ public class ImportWizardTest extends SWTBotTestCase {
 	public static void createModelProject() {
 		new org.jboss.reddeer.swt.impl.menu.ShellMenu("Project", "Build Automatically").select();
 		teiidBot.createModelProject(MODEL_PROJECT);
-		new SWTWorkbenchBot().sleep(6000000);
 	}
 	
 	@AfterClass
