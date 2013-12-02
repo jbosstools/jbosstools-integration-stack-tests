@@ -1,8 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents;
 
-import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
 
 /**
@@ -12,7 +10,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
 public class TimerStartEvent extends StartEvent {
 
 	public enum Type {
-		DURATION, INTERVAL
+		DURATION, CYCLE
 	}
 	
 	/**
@@ -27,20 +25,7 @@ public class TimerStartEvent extends StartEvent {
 		properties.selectTab("Event");
 		new DefaultTable().select(0);
 		properties.toolbarButton("Event Definitions", "Edit").click();
-		
-		switch (type) {
-			case INTERVAL:
-				new RadioButton("Interval").click();
-				break;
-			case DURATION:
-				new RadioButton("Duration").click();
-				break;
-			default:
-				throw new UnsupportedOperationException();
-		}
-		
-		new LabeledText("Value").setText(value);
-		
+		bot.textWithLabel("Script", type.ordinal());
 		properties.toolbarButton("Timer Event Definition Details", "Close").click();
 	}
 	

@@ -35,7 +35,7 @@ public class SendTaskTest extends JBPM6BaseTest {
 		start.append("Send", ConstructType.SEND_TASK);
 
 		SendTask send = new SendTask("Send");
-		send.setImplementation("Other");
+		send.setImplementation("Unspecified");
 		send.setMessage("_2_Message", "String");
 		send.addParameterMapping(new InputParameterMapping(new FromVariable("BPMN2-SendTask/s"), new ToDataInput("Message")));
 		send.append("EndProcess", ConstructType.TERMINATE_END_EVENT);
