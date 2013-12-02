@@ -261,7 +261,14 @@ public class BPMN2Editor extends SWTBotGefEditor {
 		
 		String text = editor.toTextEditor().getText();
 		
-		editor.activatePage("Process Diagram");
+		/*
+		 * TODO: File a bug -the title has illogically changed to the process name.
+		 *       Now we have two tabs:
+		 *        1) ${Process Name}
+		 *        2) Process Diagram
+		 */
+//		editor.activatePage("Process Diagram");
+		editor.activatePage(editor.getPagesTitles().get(0));
 		
 		return text;
 	}

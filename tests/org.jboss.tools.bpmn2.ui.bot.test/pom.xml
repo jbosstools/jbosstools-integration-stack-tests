@@ -15,7 +15,7 @@
 		<droolsjbpm.site>https://repository.jboss.org/nexus/content/groups/public-jboss/</droolsjbpm.site>
 		<eclipse.graphiti.site>http://download.eclipse.org/graphiti/updates/0.10.0</eclipse.graphiti.site>
 		<systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.skip=false -Dtest.configurations.dir=resources/</systemProperties>
-		<droolsjbpm.version>6.0.0.CR4</droolsjbpm.version>
+		<droolsjbpm.version>6.0.0.Final</droolsjbpm.version>
 		<awt.robot>false</awt.robot>
 	</properties>
 

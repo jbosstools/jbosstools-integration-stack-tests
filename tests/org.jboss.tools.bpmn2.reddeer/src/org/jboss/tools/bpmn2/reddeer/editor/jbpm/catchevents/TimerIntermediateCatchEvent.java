@@ -1,14 +1,12 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.catchevents;
 
-import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
 
 public class TimerIntermediateCatchEvent extends IntermediateCatchEvent {
 
 	public enum Type {
-		DURATION, INTERVAL
+		DURATION, CYCLE
 	}
 	
 	public TimerIntermediateCatchEvent(String name) {
@@ -23,20 +21,7 @@ public class TimerIntermediateCatchEvent extends IntermediateCatchEvent {
 		properties.selectTab("Event");
 		new DefaultTable().select(0);
 		properties.toolbarButton("Event Definitions", "Edit").click();
-		
-		switch (type) {
-			case INTERVAL:
-				new RadioButton("Interval").click();
-				break;
-			case DURATION:
-				new RadioButton("Duration").click();
-				break;
-			default:
-				throw new UnsupportedOperationException();
-		}
-		
-		new LabeledText("Value").setText(value);
-		
+		bot.textWithLabel("Script", type.ordinal());
 		properties.toolbarButton("Timer Event Definition Details", "Close").click();
 	}
 	

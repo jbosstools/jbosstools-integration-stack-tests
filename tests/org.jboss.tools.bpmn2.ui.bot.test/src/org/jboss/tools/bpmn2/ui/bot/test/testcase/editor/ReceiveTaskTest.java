@@ -32,7 +32,7 @@ public class ReceiveTaskTest extends JBPM6BaseTest {
 		start.append("Receive", ConstructType.RECEIVE_TASK);
 		
 		ReceiveTask receive = new ReceiveTask("Receive");
-		receive.setImplementation("Other");
+		receive.setImplementation("Unspecified");
 		receive.setMessage("HelloMessage", "String");
 		receive.append("EndProcess", ConstructType.TERMINATE_END_EVENT);
 	}

@@ -48,12 +48,12 @@ import org.junit.runners.Suite.SuiteClasses;
 	InclusiveSplitTest.class,
 	IntermediateThrowEventNoneTest.class,
 	IntermediateThrowMessageEventTest.class,
-//	IntermediateThrowEscalationEventTest.class, // Cannot find Escalation_1
+	IntermediateThrowEscalationEventTest.class, // Cannot find Escalation_1
 	IntermediateCatchSignalSingleTest.class,
 	ExclusiveSplitPriorityTest.class,
 	EventBasedSplitTest.class,
-//	BoundaryEscalationEventOnTaskTest.class, // Cannot find Escalation_1
-//	ConditionalBoundaryEventInterruptingTest.class, // Cannot find Escalation_1 
+	BoundaryEscalationEventOnTaskTest.class, // Cannot find Escalation_1
+	ConditionalBoundaryEventInterruptingTest.class, // Cannot find Escalation_1 
 // Missing features tests
 // ----------------------
 //  OnEntryExitMixedNamespacedScriptProcessTest.class

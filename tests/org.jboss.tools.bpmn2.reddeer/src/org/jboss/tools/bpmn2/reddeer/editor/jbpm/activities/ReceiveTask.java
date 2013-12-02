@@ -3,7 +3,7 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.tools.bpmn2.reddeer.editor.AbstractTask;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
 import org.jboss.tools.bpmn2.reddeer.editor.IParameterMapping;
@@ -29,7 +29,8 @@ public class ReceiveTask extends AbstractTask {
 	 */
 	public void setImplementation(String implementation) {
 		properties.selectTab("Receive Task");
-		new LabeledText("Implementation").setText(implementation);
+		new DefaultCombo("Implementation").setSelection(implementation);
+		// TBD: add code to add a user defined implementation
 	}
 	
 	/**
@@ -54,8 +55,7 @@ public class ReceiveTask extends AbstractTask {
 		if (properties.contains(messageBox, messageName)) {
 			messageBox.setSelection(messageName);
 		} else {
-			// PushButton(0) denotes operation
-			new PushButton(1).click();
+			new PushButton(3).click();
 			
 			SWTBot newMessageBot = bot.shell("Create New Message").bot();
 			newMessageBot.textWithLabel("Name").setText(name);
