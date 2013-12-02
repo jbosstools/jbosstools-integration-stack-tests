@@ -35,7 +35,7 @@ public class MultipleStartEventTest extends JBPM6BaseTest {
 		gateway.append("User Task", ConstructType.USER_TASK);
 		
 		TimerStartEvent start2 = new TimerStartEvent("StartTimer");
-		start2.setTimer("500", Type.INTERVAL);
+		start2.setTimer("500", Type.CYCLE);
 		start2.connectTo(gateway);
 		
 		UserTask task = new UserTask("User Task");
