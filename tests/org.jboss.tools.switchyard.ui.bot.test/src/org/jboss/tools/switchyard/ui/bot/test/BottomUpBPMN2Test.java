@@ -1,7 +1,8 @@
 package org.jboss.tools.switchyard.ui.bot.test;
 
+import static org.junit.Assert.assertEquals;
+
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
@@ -12,6 +13,7 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
 import org.jboss.tools.switchyard.reddeer.binding.HTTPBindingPage;
@@ -31,6 +33,7 @@ import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.State;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Type;
 import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
 import org.jboss.tools.switchyard.ui.bot.test.util.HttpClient;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,7 +48,7 @@ import org.junit.runner.RunWith;
 @Perspective(name = "Java EE")
 @Server(type = Type.ALL, state = State.RUNNING)
 @RunWith(SwitchyardSuite.class)
-public class BottomUpBPMN2Test extends SWTBotTestCase {
+public class BottomUpBPMN2Test extends RedDeerTest {
 
 	public static final String PROJECT = "bpmn2_project";
 	public static final String PACKAGE = "com.example.switchyard.bpmn2_project";
@@ -54,7 +57,7 @@ public class BottomUpBPMN2Test extends SWTBotTestCase {
 	
 	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
 
-	@Before
+	@Before @After
 	public void closeSwitchyardFile() {
 		try {
 			new SwitchYardEditor().saveAndClose();

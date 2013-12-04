@@ -1,12 +1,15 @@
 package org.jboss.tools.switchyard.ui.bot.test;
 
-import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
+import static org.junit.Assert.assertEquals;
+
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.test.RedDeerTest;
+import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
 import org.jboss.tools.bpmn2.reddeer.editor.BPMN2Editor;
 import org.jboss.tools.bpmn2.reddeer.editor.BPMN2PropertiesView;
@@ -24,6 +27,7 @@ import org.jboss.tools.switchyard.reddeer.component.BPM;
 import org.jboss.tools.switchyard.reddeer.component.Bean;
 import org.jboss.tools.switchyard.reddeer.component.Component;
 import org.jboss.tools.switchyard.reddeer.component.Service;
+import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
 import org.jboss.tools.switchyard.reddeer.view.JUnitView;
 import org.jboss.tools.switchyard.reddeer.widget.ProjectItemExt;
@@ -32,6 +36,8 @@ import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
 import org.jboss.tools.switchyard.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.switchyard.ui.bot.test.suite.PerspectiveRequirement.Perspective;
 import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -43,7 +49,7 @@ import org.junit.runner.RunWith;
 @CleanWorkspace
 @Perspective(name = "Java EE")
 @RunWith(SwitchyardSuite.class)
-public class BPMTest extends SWTBotTestCase {
+public class BPMTest extends RedDeerTest {
 
 	private static final String PROJECT = "switchyard-bpm-processgreet";
 	private static final String PACKAGE = "org.switchyard.quickstarts.bpm.service";
@@ -58,22 +64,31 @@ public class BPMTest extends SWTBotTestCase {
 	private static final String PROCESS_GREET_DECL = "public boolean checkGreetIsPolite(String greet);";
 	private static final String EVAL_GREET_DECL = "public boolean checkGreet(String greet);";
 	private static final String EVAL_GREET_BEAN = EVAL_GREET + "Bean";
-
+	
+	@Before @After
+	public void closeSwitchyardFile() {
+		try {
+			new SwitchYardEditor().saveAndClose();
+		} catch (Exception ex) {
+			// it is ok, we just try to close switchyard.xml if it is open
+		}
+	}
+	
 	@Test
-	public void test01() {
+	public void bpmCreationTest() {
 		// Create new Switchyard project, Add support for Bean, BPM
 		new SwitchYardProjectWizard(PROJECT).impl("Bean", "BPM (jBPM)")
 				.groupId(GROUP_ID).packageName(PACKAGE).create();
 		openFile(PROJECT, PACKAGE_MAIN_RESOURCES, "META-INF", "switchyard.xml");
 		new BPM().setService(PROCESS_GREET).setBpmnFileName(BPMN_FILE_NAME)
 				.create(BPM_COORDS);
-		bot.sleep(1000);
+		AbstractWait.sleep(1000);
 		new Bean().setService(EVAL_GREET).create(BEAN_COORDS);
-		bot.sleep(1000);
+		AbstractWait.sleep(1000);
 		// reference to bean
 		new Component(PROCESS_GREET).contextButton("Reference").click();
 		new ReferenceWizard().selectJavaInterface(EVAL_GREET).finish();
-		bot.sleep(2000);
+		AbstractWait.sleep(2 * 1000);
 
 		// declare ProcessGreet interface
 		new Service(PROCESS_GREET, 1).openTextEditor();
@@ -126,7 +141,7 @@ public class BPMTest extends SWTBotTestCase {
 				.newLine()
 				.type("Assert.assertFalse(service.operation(\"checkGreetIsPolite\").sendInOut(\"hi\").getContent(Boolean.class));");
 		new ShellMenu("File", "Save All").select();
-		bot.sleep(1000);
+		AbstractWait.sleep(1000);
 		new PushButton("No").click();// BPMN nature
 
 		ProjectItem item = new ProjectExplorer().getProject(PROJECT)

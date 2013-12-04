@@ -67,7 +67,7 @@ public class BindingsTest extends RedDeerTest {
 			"SQL", "Scheduling" };
 
 	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
-
+	
 	@BeforeClass
 	public static void createProject() {
 		try {

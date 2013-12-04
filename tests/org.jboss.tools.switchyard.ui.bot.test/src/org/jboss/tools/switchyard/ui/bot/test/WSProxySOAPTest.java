@@ -1,10 +1,10 @@
 package org.jboss.tools.switchyard.ui.bot.test;
 
-import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
 import org.jboss.tools.switchyard.reddeer.binding.SOAPBindingPage;
@@ -21,13 +21,16 @@ import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
 import org.jboss.tools.switchyard.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.switchyard.ui.bot.test.suite.PerspectiveRequirement.Perspective;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerDeployment;
+import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Server;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.State;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Type;
 import org.jboss.tools.switchyard.ui.bot.test.util.BackupClient;
 import org.jboss.tools.switchyard.ui.bot.test.util.SoapClient;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * Web Service Proxy Test
@@ -38,12 +41,13 @@ import org.junit.Test;
 @CleanWorkspace
 @Perspective(name = "Java EE")
 @Server(type = Type.ALL, state = State.RUNNING)
-public class WSProxySOAPTest extends SWTBotTestCase {
+@RunWith(SwitchyardSuite.class)
+public class WSProxySOAPTest extends RedDeerTest {
 
 	public static final String PROJECT = "proxy_soap";
 	private static final String WSDL = "Hello.wsdl";
 
-	@Before
+	@Before @After
 	public void closeSwitchyardFile() {
 		try {
 			new SwitchYardEditor().saveAndClose();
@@ -71,7 +75,7 @@ public class WSProxySOAPTest extends SWTBotTestCase {
 		BindingWizard<SOAPBindingPage> soapWizard = BindingWizard.createSOAPBindingWizard();
 		soapWizard.getBindingPage().setContextPath(PROJECT);
 		soapWizard.finish();
-		new Component(PROJECT).contextButton("Reference").click();
+		new Component("Proxy").contextButton("Reference").click();
 		new ReferenceWizard().selectWSDLInterface(WSDL).setServiceName("HelloService").finish();
 		new Reference("HelloService").promoteReference().setServiceName("HelloService").finish();
 		new Service("HelloService").addBinding("SOAP").finish();
