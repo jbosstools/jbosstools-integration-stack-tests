@@ -1,6 +1,7 @@
 package org.jboss.tools.switchyard.ui.bot.test;
 
-import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
+import static org.junit.Assert.assertEquals;
+
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
@@ -8,9 +9,11 @@ import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.tools.switchyard.reddeer.component.Drools;
 import org.jboss.tools.switchyard.reddeer.component.Service;
+import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
 import org.jboss.tools.switchyard.reddeer.view.JUnitView;
 import org.jboss.tools.switchyard.reddeer.widget.ProjectItemExt;
@@ -18,6 +21,8 @@ import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
 import org.jboss.tools.switchyard.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.switchyard.ui.bot.test.suite.PerspectiveRequirement.Perspective;
 import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -29,7 +34,7 @@ import org.junit.runner.RunWith;
 @CleanWorkspace
 @Perspective(name = "Java EE")
 @RunWith(SwitchyardSuite.class)
-public class DroolsTest extends SWTBotTestCase {
+public class DroolsTest extends RedDeerTest {
 
 	private static final String PROJECT = "switchyard-drools-interview";
 	private static final String PACKAGE = "org.switchyard.quickstarts.drools.service";
@@ -40,9 +45,17 @@ public class DroolsTest extends SWTBotTestCase {
 	private static final String APPLICANT = "Applicant";
 	private static final String TEST = INTERVIEW + "ServiceTest.java";
 	
+	@Before @After
+	public void closeSwitchyardFile() {
+		try {
+			new SwitchYardEditor().saveAndClose();
+		} catch (Exception ex) {
+			// it is ok, we just try to close switchyard.xml if it is open
+		}
+	}
 	
 	@Test
-	public void test01(){
+	public void droolsCreationTest() {
 		//new project, support rules
 		new SwitchYardProjectWizard(PROJECT).impl("Rules (Drools)").groupId(GROUP_ID).packageName(PACKAGE).create();
 		//open sy.xml, add rules, service, promote
@@ -79,7 +92,7 @@ public class DroolsTest extends SWTBotTestCase {
 		
 		//test
 		new org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor().show();
-		bot.sleep(1000);
+		AbstractWait.sleep(1000);
 		new Service(INTERVIEW + "Service").newServiceTestClass();
 		new TextEditor(TEST).deleteLineWith("null").type("Applicant message=new Applicant(\"Twenty\", 20);").deleteLineWith("Implement")
 		.type("message=new Applicant(\"Ten\", 10);").type("service.operation(\"verify\").sendInOnly(message);");
@@ -110,6 +123,6 @@ public class DroolsTest extends SWTBotTestCase {
 		new LabeledText("Source folder:").setText(PROJECT+"/"+PACKAGE_MAIN_JAVA);
 		page.setPackage(PACKAGE);
 		wizard.finish();
-		bot.sleep(1000);
+		AbstractWait.sleep(1000);
 	}
 }

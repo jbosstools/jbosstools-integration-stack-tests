@@ -14,6 +14,7 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -37,6 +38,7 @@ public class ServerDeployment {
 	}
 
 	public void deployProject(String project, String checkPhrase) {
+		AbstractWait.sleep(1000);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
 		clearConsole();
@@ -65,6 +67,9 @@ public class ServerDeployment {
 	}
 
 	public void fullPublish(String project, String checkPhrase) {
+		AbstractWait.sleep(1000);
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		
 		clearConsole();
 		ServersView serversView = new ServersView();
 		serversView.open();

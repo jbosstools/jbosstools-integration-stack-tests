@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
+import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -30,6 +31,8 @@ import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Type;
 import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
 import org.jboss.tools.switchyard.ui.bot.test.util.BackupClient;
 import org.jboss.tools.switchyard.ui.bot.test.util.SoapClient;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -57,11 +60,20 @@ import org.junit.runner.RunWith;
 @Perspective(name = "Java EE")
 @Server(type = Type.ALL, state = State.RUNNING)
 @RunWith(SwitchyardSuite.class)
-public class SimpleTest {
+public class SimpleTest extends RedDeerTest {
 
 	private static final String PROJECT = "simple";
 	private static final String PACKAGE = "com.example.switchyard.simple";
 
+	@Before @After
+	public void closeSwitchyardFile() {
+		try {
+			new SwitchYardEditor().saveAndClose();
+		} catch (Exception ex) {
+			// it is ok, we just try to close switchyard.xml if it is open
+		}
+	}
+	
 	@Test
 	public void simpleTest() throws Exception {
 		new SwitchYardProjectWizard(PROJECT).impl("Bean").binding("SOAP").create();

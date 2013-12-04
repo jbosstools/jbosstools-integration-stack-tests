@@ -1,9 +1,9 @@
 package org.jboss.tools.switchyard.ui.bot.test;
 
-import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
 import org.jboss.tools.switchyard.reddeer.binding.RESTBindingPage;
@@ -25,6 +25,7 @@ import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Server;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.State;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Type;
 import org.jboss.tools.switchyard.ui.bot.test.util.SoapClient;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -37,14 +38,14 @@ import org.junit.Test;
 @CleanWorkspace
 @Perspective(name = "Java EE")
 @Server(type = Type.ALL, state = State.RUNNING)
-public class WSProxyRESTTest extends SWTBotTestCase {
+public class WSProxyRESTTest extends RedDeerTest {
 
 	public static final String REST_URL = "http://localhost:8080/rest/MyRESTApplication";
 	public static final String REST_SERVICE = "HelloRESTService";
 	public static final String PROJECT = "proxy_rest";
 	public static final String PACKAGE = "com.example.switchyard.proxy_rest";
 
-	@Before
+	@Before @After
 	public void closeSwitchyardFile() {
 		try {
 			new SwitchYardEditor().saveAndClose();
@@ -54,7 +55,7 @@ public class WSProxyRESTTest extends SWTBotTestCase {
 	}
 
 	@Test
-	public void wsProxySoapTest() {
+	public void wsProxyRestTest() {
 		/* Create RESTful Service */
 		new WebProjectWizard("rest").create();
 		new ProjectExplorer().getProject("rest").select();
