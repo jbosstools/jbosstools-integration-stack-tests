@@ -11,6 +11,7 @@ import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
@@ -94,6 +95,14 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		checkButtonEnabled(button);
 		button.click();
 
+		new WaitWhile(new JobIsRunning());
+		try {
+			new DefaultShell("Cannot Resolve SwitchYard Dependencies");
+			new PushButton("OK").click();
+		} catch (Exception e) {
+			// this shell pop ups only sometimes
+		}
+		
 		TimePeriod timeout = TimePeriod.getCustom(20 * 60 * 1000);
 		new WaitWhile(new ShellWithTextIsActive(DIALOG_TITLE), timeout);
 		new WaitWhile(new JobIsRunning(), timeout);
