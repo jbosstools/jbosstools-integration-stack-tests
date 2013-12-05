@@ -16,7 +16,8 @@
             <surefire.timeout>7200</surefire.timeout>
             <memoryOptions2>-XX:MaxPermSize=512m</memoryOptions2>
             <swt.bot.test.record.screencast>false</swt.bot.test.record.screencast>
-            <integrationTestsSystemProperties>-Dswt.bot.test.record.screencast=${swt.bot.test.record.screencast} -Dorg.eclipse.swtbot.screenshots.dir=${project.build.directory}/screenshots</integrationTestsSystemProperties>
+	    <pauseFailedTest>false</pauseFailedTest>
+            <integrationTestsSystemProperties>-Dswt.bot.test.record.screencast=${swt.bot.test.record.screencast} -Dorg.eclipse.swtbot.screenshots.dir=${project.build.directory}/screenshots -DpauseFailedTest=${pauseFailedTest}</integrationTestsSystemProperties>
         </properties>
 
 	<modules>
