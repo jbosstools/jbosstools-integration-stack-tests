@@ -12,6 +12,7 @@ import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.switchyard.reddeer.component.Bean;
 import org.jboss.tools.switchyard.reddeer.component.Component;
 import org.jboss.tools.switchyard.reddeer.editor.DomainEditor;
+import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.preference.ImplementationPropertiesPage;
 import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultComponentPage;
 import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultComponentPropertiesPage;
@@ -26,6 +27,7 @@ import org.jboss.tools.switchyard.ui.bot.test.suite.CleanWorkspaceRequirement.Cl
 import org.jboss.tools.switchyard.ui.bot.test.suite.PerspectiveRequirement.Perspective;
 import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -59,6 +61,15 @@ public class ImplementationsPropertiesTest {
 		Integer[] coords = {rectangle.x, rectangle.y + rectangle.height + 2};
 		new Bean().setService(BEAN2).create(coords);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+	}
+	
+	@AfterClass
+	public static void closeSwitchyardFile() {
+		try {
+			new SwitchYardEditor().saveAndClose();
+		} catch (Exception ex) {
+			// it is ok, we just try to close switchyard.xml if it is open
+		}
 	}
 	
 	@Before
