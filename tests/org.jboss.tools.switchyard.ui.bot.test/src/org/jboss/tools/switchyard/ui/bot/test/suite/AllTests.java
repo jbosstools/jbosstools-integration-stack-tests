@@ -13,6 +13,7 @@ import org.jboss.tools.switchyard.ui.bot.test.DroolsTest;
 import org.jboss.tools.switchyard.ui.bot.test.FileGatewayTest;
 import org.jboss.tools.switchyard.ui.bot.test.ImplementationsPropertiesTest;
 import org.jboss.tools.switchyard.ui.bot.test.SimpleTest;
+import org.jboss.tools.switchyard.ui.bot.test.ThrottlingTest;
 import org.jboss.tools.switchyard.ui.bot.test.WSProxyRESTTest;
 import org.jboss.tools.switchyard.ui.bot.test.WSProxySOAPTest;
 import org.junit.runner.RunWith;
@@ -37,7 +38,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	DroolsTest.class,
 	ImplementationsPropertiesTest.class,
 	DomainSettingsTest.class,
-	BindingsTest.class
+	BindingsTest.class,
+	ThrottlingTest.class
 })
 @RunWith(SwitchyardSuite.class)
 public class AllTests extends TestSuite {
