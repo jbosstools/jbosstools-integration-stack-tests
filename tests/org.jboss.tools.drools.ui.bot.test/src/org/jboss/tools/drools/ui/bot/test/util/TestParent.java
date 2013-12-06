@@ -185,12 +185,7 @@ public abstract class TestParent {
         if (getAnnotationOnMethod(name.getMethodName(), UseDefaultProject.class) != null) {
             if (!new PackageExplorer().containsProject(DEFAULT_PROJECT_NAME)) {
                 NewDroolsProjectWizard wiz = new NewDroolsProjectWizard();
-                //wiz.createDefaultProjectWithAllSamples(DEFAULT_PROJECT_NAME);
-                // FIXME temporarily disable samples other than *.drl (BZ#1001990)
-                wiz.open();
-                wiz.getFirstPage().setProjectName(DEFAULT_PROJECT_NAME);
-                wiz.getDroolsRuntimePage().setGAV("com.redhat", "brms", "6.0.0.ER2-SNAPSHOT");
-                wiz.finish();
+                wiz.createDefaultProjectWithAllSamples(DEFAULT_PROJECT_NAME);
             }
         }
     }
