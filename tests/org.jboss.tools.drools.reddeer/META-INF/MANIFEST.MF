@@ -10,6 +10,7 @@ Export-Package:
  org.jboss.tools.drools.reddeer.perspective,
  org.jboss.tools.drools.reddeer.preference,
  org.jboss.tools.drools.reddeer.properties,
+ org.jboss.tools.drools.reddeer.view,
  org.jboss.tools.drools.reddeer.wizard
 Require-Bundle: 
  org.eclipse.ui,
