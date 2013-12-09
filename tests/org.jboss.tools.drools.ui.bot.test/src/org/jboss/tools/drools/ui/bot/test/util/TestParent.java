@@ -206,6 +206,9 @@ public abstract class TestParent {
             }
         }
 
+        // switch to Java perspective
+        new JavaPerspective().open();
+
         // refresh and delete all projects (as running the projects creates logs)
         PackageExplorer explorer = new PackageExplorer();
         while (explorer.getProjects().size() > 0) {
