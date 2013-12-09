@@ -66,8 +66,9 @@ public class JBPMDeployTest extends SWTBotTestCase {
 		new LabeledText("Server Deployer:").setText("gpd-deployer/upload");
 		editor.save();
 
-		// gefBot.checkBoxWithLabel("Use credentials").select();
-		new CheckBox("Use credentials").click();
+		editor.show();
+		editor.setFocus();
+		new CheckBox("Use credentials").toggle(true);
 		new LabeledText("Username:").setText("admin");
 		new LabeledText("Password:").setText("admin");
 
