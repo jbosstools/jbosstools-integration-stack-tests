@@ -3,6 +3,7 @@ package org.jboss.tools.drools.ui.bot.test.util;
 import org.apache.log4j.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -46,6 +47,13 @@ public final class RunUtility {
         }
 
         waitAfterStarting();
+
+        try {
+            new DefaultShell("Confirm Perspective Switch");
+            new PushButton("Yes").click();
+        } catch (Exception ex) {
+            LOGGER.debug("Confirm Perspective Switch dialog not shown.");
+        }
     }
 
     private static void selectProject(String projectName, String... path) {
