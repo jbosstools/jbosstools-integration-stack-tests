@@ -163,13 +163,6 @@ public class RulesManagementTest extends TestParent {
 
         RunUtility.debugAsDroolsApplication(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
 
-        try {
-            new DefaultShell("Confirm Perspective Switch");
-            new PushButton("Yes").click();
-        } catch (Exception ex) {
-            LOGGER.warn("Confirm Perspective Switch dialog not shown.");
-        }
-
         ConsoleView console = new ConsoleView();
         console.open();
         String consoleText = console.getConsoleText();
