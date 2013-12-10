@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testrun
+  xmlns="http://www.jboss.org/NS/Req"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.jboss.org/NS/Req https://raw.github.com/jboss-reddeer/reddeer/master/plugins/org.jboss.reddeer.junit/resources/RedDeerRequirements.xsd">
+
+	<requirements>
+		<requirement class="org.jboss.tools.fuse.ui.bot.test.requirement.ServerRequirement" name="serverRequirement">
+			<property key="runtime" value="JBoss Fuse 6.1"/>
+			<property key="name" value="JBoss Fuse 6.1 Server"/>
+			<property key="path" value="target/requirements/jboss-fuse-6.1.0.redhat-139"/>
+			<property key="port" value="8101"/>
+			<property key="username" value="admin"/>
+			<property key="password" value="admin"/>
+			<property key="jmxname" value="JBoss Fuse"/>
+			<property key="servername" value="jboss-fuse-6.1.0.redhat-139"/>
+		</requirement>
+	</requirements>
+</testrun>
