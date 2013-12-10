@@ -56,15 +56,20 @@ public class FuseProjectTest extends RedDeerTest {
 	public void camelComponentTest() {
 		createProject("camel-archetype-component");
 	}
+	
+	@Test
+	public void camelCxfCodeFirstBlueprint() {
+		createProject("camel-archetype-cxf-code-first-blueprint");
+	}
+	
+	@Test
+	public void camelCxfContractFirstBlueprint() {
+		createProject("camel-archetype-cxf-contract-first-blueprint");
+	}
 
 	@Test
 	public void camelDataFormatTest() {
 		createProject("camel-archetype-dataformat");
-	}
-
-	@Test
-	public void camelGroovyTest() {
-		createProject("camel-archetype-groovy");
 	}
 
 	@Test
