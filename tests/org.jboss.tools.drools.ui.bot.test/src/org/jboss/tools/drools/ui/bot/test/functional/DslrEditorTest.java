@@ -2,10 +2,7 @@ package org.jboss.tools.drools.ui.bot.test.functional;
 
 import java.util.List;
 
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.matcher.RegexMatchers;
 import org.jboss.reddeer.workbench.editor.TextEditor;
 import org.jboss.tools.drools.reddeer.editor.ContentAssist;
 import org.jboss.tools.drools.reddeer.editor.DslEditor;
@@ -17,6 +14,7 @@ import org.jboss.tools.drools.reddeer.wizard.NewRuleResourceWizard;
 import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
 import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultRuntime;
 import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
+import org.jboss.tools.drools.ui.bot.test.util.OpenUtility;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
 import org.junit.Assert;
 import org.junit.Before;
@@ -39,11 +37,7 @@ public class DslrEditorTest extends TestParent {
             new DslEditor().close();
 
             // open in text editor
-            PackageExplorer explorer = new PackageExplorer();
-            explorer.open();
-            explorer.getProject(DEFAULT_PROJECT_NAME)
-                    .getProjectItem(RESOURCES_LOCATION, "rules", name.getMethodName() + ".dsl").select();
-            DslEditorTest.openWith("Text Editor");
+            OpenUtility.openResourceWith("Text Editor", DEFAULT_PROJECT_NAME, RESOURCES_LOCATION, "rules", name.getMethodName() + ".dsl");
 
             // put a dsl definition in text editor, save and close
             TextEditor editor = new TextEditor();
@@ -199,11 +193,7 @@ public class DslrEditorTest extends TestParent {
     }
 
     private DslrEditor openTestDslr() {
-        PackageExplorer explorer = new PackageExplorer();
-        explorer.open();
-        explorer.getProject(DEFAULT_PROJECT_NAME)
-                .getProjectItem(RESOURCES_LOCATION, "rules", name.getMethodName() + ".dslr").select();
-        new ContextMenu(new RegexMatchers("Open.*").getMatchers()).select();
+        OpenUtility.openResource(DEFAULT_PROJECT_NAME, RESOURCES_LOCATION, "rules", name.getMethodName() + ".dslr");
 
         // this has to be done to allow DRL Viewer to work properly
         DslrEditor editor = new DslrEditor();
