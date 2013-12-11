@@ -5,11 +5,13 @@ Bundle-SymbolicName: org.jboss.tools.drools.reddeer
 Bundle-Version: 4.1.0.qualifier
 Bundle-Activator: org.jboss.tools.drools.reddeer.Activator
 Export-Package: 
+ org.jboss.tools.drools.reddeer.debug,
  org.jboss.tools.drools.reddeer.dialog,
  org.jboss.tools.drools.reddeer.editor,
  org.jboss.tools.drools.reddeer.perspective,
  org.jboss.tools.drools.reddeer.preference,
  org.jboss.tools.drools.reddeer.properties,
+ org.jboss.tools.drools.reddeer.view,
  org.jboss.tools.drools.reddeer.wizard
 Require-Bundle: 
  org.eclipse.ui,

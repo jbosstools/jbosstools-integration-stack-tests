@@ -12,6 +12,8 @@ import org.jboss.tools.drools.ui.bot.test.functional.drleditor.ConditionsComplet
 import org.jboss.tools.drools.ui.bot.test.functional.drleditor.ConsequencesCompletionTest;
 import org.jboss.tools.drools.ui.bot.test.functional.drleditor.DeclareCompletionTest;
 import org.jboss.tools.drools.ui.bot.test.functional.drleditor.MetadataCompletionTest;
+import org.jboss.tools.drools.ui.bot.test.functional.view.AgendaViewTest;
+import org.jboss.tools.drools.ui.bot.test.functional.view.GlobalDataViewTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
@@ -31,9 +33,11 @@ import org.junit.runners.Suite.SuiteClasses;
     // dsl editor
     DslEditorTest.class,
     // dslr editor
-    DslrEditorTest.class
+    DslrEditorTest.class,
     // TODO: debugging tests
     // TODO: views test
+    AgendaViewTest.class,
+    GlobalDataViewTest.class
     // TODO: 5.x tests
 })
 public class BrmsTestSuite {

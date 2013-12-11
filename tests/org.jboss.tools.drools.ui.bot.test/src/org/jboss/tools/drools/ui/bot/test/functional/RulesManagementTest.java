@@ -25,6 +25,7 @@ import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
 import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultRuntime;
 import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
 import org.jboss.tools.drools.ui.bot.test.util.ApplicationIsTerminated;
+import org.jboss.tools.drools.ui.bot.test.util.OpenUtility;
 import org.jboss.tools.drools.ui.bot.test.util.RunUtility;
 import org.jboss.tools.drools.ui.bot.test.util.SmokeTest;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
@@ -132,10 +133,7 @@ public class RulesManagementTest extends TestParent {
     @Test
     @UsePerspective(JavaPerspective.class) @UseDefaultRuntime @UseDefaultProject
     public void testSetBreakpoint() {
-        PackageExplorer explorer = new PackageExplorer();
-        explorer.open();
-        explorer.getProject(DEFAULT_PROJECT_NAME).getProjectItem(RESOURCES_LOCATION, "rules", "Sample.drl").select();
-        new ContextMenu(new RegexMatchers("Open.*").getMatchers()).select();
+        OpenUtility.openResource(DEFAULT_PROJECT_NAME, RESOURCES_LOCATION, "rules", "Sample.drl");
 
         RuleEditor editor = new DrlEditor().showRuleEditor();
         editor.setPosition(8, 0);
@@ -154,21 +152,11 @@ public class RulesManagementTest extends TestParent {
     @Test @Category(SmokeTest.class)
     @UsePerspective(DroolsPerspective.class) @UseDefaultRuntime @UseDefaultProject
     public void testDebugRule() {
-        PackageExplorer explorer = new PackageExplorer();
-        explorer.open();
-        explorer.getProject(DEFAULT_PROJECT_NAME).getProjectItem(RESOURCES_LOCATION, "rules", "Sample.drl").select();
-        new ContextMenu(new RegexMatchers("Open.*").getMatchers()).select();
+        OpenUtility.openResource(DEFAULT_PROJECT_NAME, RESOURCES_LOCATION, "rules", "Sample.drl");
 
         new DrlEditor().showRuleEditor().setBreakpoint(8);
 
         RunUtility.debugAsDroolsApplication(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
-
-        try {
-            new DefaultShell("Confirm Perspective Switch");
-            new PushButton("Yes").click();
-        } catch (Exception ex) {
-            LOGGER.warn("Confirm Perspective Switch dialog not shown.");
-        }
 
         ConsoleView console = new ConsoleView();
         console.open();

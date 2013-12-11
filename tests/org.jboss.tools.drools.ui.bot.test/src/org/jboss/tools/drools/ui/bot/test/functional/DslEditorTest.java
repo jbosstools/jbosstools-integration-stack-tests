@@ -3,14 +3,10 @@ package org.jboss.tools.drools.ui.bot.test.functional;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.eclipse.swt.widgets.MenuItem;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.lookup.MenuLookup;
-import org.jboss.reddeer.swt.matcher.RegexMatchers;
-import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.workbench.editor.TextEditor;
 import org.jboss.tools.drools.reddeer.dialog.DslLineDialog;
 import org.jboss.tools.drools.reddeer.dialog.DslLineDialog.Scope;
@@ -21,6 +17,7 @@ import org.jboss.tools.drools.reddeer.wizard.NewDslWizard;
 import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
 import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultRuntime;
 import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
+import org.jboss.tools.drools.ui.bot.test.util.OpenUtility;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
 import org.junit.Assert;
 import org.junit.Before;
@@ -175,20 +172,14 @@ public class DslEditorTest extends TestParent {
     @Test
     @UsePerspective(JavaPerspective.class) @UseDefaultRuntime @UseDefaultProject
     public void testOpenHandwrittenDsl() {
-        PackageExplorer explorer = new PackageExplorer();
-        explorer.open();
-        explorer.getProject(DEFAULT_PROJECT_NAME).getProjectItem(RESOURCES_LOCATION, name.getMethodName() + ".dsl").select();
+        OpenUtility.openResourceWith("Text Editor", DEFAULT_PROJECT_NAME, RESOURCES_LOCATION, name.getMethodName() + ".dsl");
 
-        openWith("Text Editor");
         TextEditor txtEditor = new TextEditor();
         txtEditor.setText(getTemplateText("DslTestContent"));
         txtEditor.save();
         txtEditor.close();
 
-        explorer = new PackageExplorer();
-        explorer.open();
-        explorer.getProject(DEFAULT_PROJECT_NAME).getProjectItem(RESOURCES_LOCATION, name.getMethodName() + ".dsl").select();
-        openWith("DSL Editor");
+        OpenUtility.openResourceWith("DSL Editor", DEFAULT_PROJECT_NAME, RESOURCES_LOCATION, name.getMethodName() + ".dsl");
 
         DslEditor editor = new DslEditor();
         List<DslLine> lines = editor.getDslLines();
@@ -197,25 +188,8 @@ public class DslEditorTest extends TestParent {
     }
 
     private DslEditor openTestDslFile() {
-        Project project = new PackageExplorer().getProject(DEFAULT_PROJECT_NAME);
-        project.getProjectItem(RESOURCES_LOCATION, name.getMethodName() + ".dsl").open();
+        OpenUtility.openResource(DEFAULT_PROJECT_NAME, RESOURCES_LOCATION, name.getMethodName() + ".dsl");
 
         return new DslEditor();
-    }
-
-    /*
-     * new ContextMenu(...).select() does not work with Open With choice
-     * This is the way to fix it
-     * FIXME once this gets fixed in RedDeer remove the method
-     */
-    public static void openWith(String editorName) {
-        MenuLookup ml = new MenuLookup();
-        final MenuItem item = ml.lookFor(ml.getTopMenuMenuItemsFromFocus(), new RegexMatchers("Open With", editorName).getMatchers());
-        Display.syncExec(new Runnable() {
-            public void run() {
-                item.setSelection(true);
-            }
-        });
-        ml.select(item);
     }
 }
