@@ -10,6 +10,7 @@ import java.io.StringWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.Platform;
@@ -56,9 +57,11 @@ public abstract class TestParent {
 
     protected static final String DEFAULT_DROOLS_RUNTIME_NAME = "defaultTestRuntime";
     protected static final String DEFAULT_DROOLS_RUNTIME_LOCATION;
-    protected static final String DEFAULT_PROJECT_NAME = "defaultTestProject";
+    public static final String DEFAULT_PROJECT_NAME = "defaultTestProject";
     protected static final String RESOURCES_LOCATION = "src/main/resources";
     protected static final String DEFAULT_RULES_PATH = DEFAULT_PROJECT_NAME + "/" + RESOURCES_LOCATION + "/rules";
+
+    private static AtomicBoolean initialized = new AtomicBoolean(false);
 
     @Rule
     public TestName name = new TestName();
@@ -100,7 +103,6 @@ public abstract class TestParent {
             LOGGER.info("Properties for Drools test loaded");
         } catch (Exception ex) {
             LOGGER.warn("External properties were not loaded.");
-            //fail(ex.getMessage());
         }
 
         DEFAULT_DROOLS_RUNTIME_LOCATION = TEST_PARAMS.getProperty("drools.default.location", LOCAL_RUNTIME);
@@ -108,43 +110,45 @@ public abstract class TestParent {
 
     @BeforeClass
     public static void closeStartUpDialogsAndViews() {
-        try {
-            new DefaultShell("JBoss Developer Studio Usage");
-            new PushButton("No").click();
-        } catch (Exception ex) {
-            LOGGER.debug("JBoss Tools Usage dialog was not found.");
-        }
-
-        try {
-            new View("Welcome") {}.close();
-        } catch (Exception ex) {
-            LOGGER.debug("Eclipse Welcome view not found.");
-        }
-
-        try {
-            new DefaultEditor("JBoss Central").close();
-        } catch (Exception ex) {
-            LOGGER.debug("JBoss Central editor was not found.");
-        }
-
-        // maximizes the window
-        final org.eclipse.swt.widgets.Shell shell = new ShellLookup().getActiveShell();
-        Display.syncExec(new Runnable() {
-            public void run() {
-                shell.setMaximized(true);
+        if (!initialized.getAndSet(true)) {
+            try {
+                new DefaultShell("JBoss Developer Studio Usage");
+                new PushButton("No").click();
+            } catch (Exception ex) {
+                LOGGER.debug("JBoss Tools Usage dialog was not found.");
             }
-        });
 
-        // creates the default runtime if it is necessary
-        if (LOCAL_RUNTIME.equals(DEFAULT_DROOLS_RUNTIME_LOCATION)) {
-            new File(LOCAL_RUNTIME).mkdirs();
-            DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
-            pref.open();
-            DroolsRuntimeDialog diag = pref.addDroolsRuntime();
-            diag.setName("creating default runtime");
-            diag.createNewRuntime(LOCAL_RUNTIME);
-            diag.ok();
-            pref.okCloseWarning();
+            try {
+                new View("Welcome") {}.close();
+            } catch (Exception ex) {
+                LOGGER.debug("Eclipse Welcome view not found.");
+            }
+
+            try {
+                new DefaultEditor("JBoss Central").close();
+            } catch (Exception ex) {
+                LOGGER.debug("JBoss Central editor was not found.");
+            }
+
+            // maximizes the window
+            final org.eclipse.swt.widgets.Shell shell = new ShellLookup().getActiveShell();
+            Display.syncExec(new Runnable() {
+                public void run() {
+                    shell.setMaximized(true);
+                }
+            });
+
+            // creates the default runtime if it is necessary
+            if (LOCAL_RUNTIME.equals(DEFAULT_DROOLS_RUNTIME_LOCATION)) {
+                new File(LOCAL_RUNTIME).mkdirs();
+                DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
+                pref.open();
+                DroolsRuntimeDialog diag = pref.addDroolsRuntime();
+                diag.setName("creating default runtime");
+                diag.createNewRuntime(LOCAL_RUNTIME);
+                diag.ok();
+                pref.okCloseWarning();
+            }
         }
     }
 
@@ -221,7 +225,7 @@ public abstract class TestParent {
         try {
             // FIXME uncomment once my pull request is applied
             //console.removeAllTerminatedLaunches();
-            new ViewToolItem("Remove All Terminated Launches").click(); 
+            new ViewToolItem("Remove All Terminated Launches").click();
         } catch (Exception ex) {
             LOGGER.debug("Console was not cleared", ex);
         }
