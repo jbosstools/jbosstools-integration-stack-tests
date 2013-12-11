@@ -5,15 +5,12 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.ui.actions.IToggleBreakpointsTarget;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.TextSelection;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchPart;
 import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.util.ResultRunnable;
-import org.jboss.reddeer.workbench.editor.TextEditor;
 
-public class RuleEditor extends TextEditor {
+public class RuleEditor extends EnhancedTextEditor {
     private static final Logger LOGGER = Logger.getLogger(RuleEditor.class);
 
     private static MultiPageEditor staticEditor;
@@ -42,48 +39,6 @@ public class RuleEditor extends TextEditor {
         }
     }
 
-    public void setPosition(int line, int column) {
-        setSelection(line, column, 0);
-    }
-
-    public void setSelection(int startLine, int startColumn, int endLine, int endColumn) {
-        try {
-            int offset = getDocument().getLineOffset(startLine) + startColumn;
-            int length = getDocument().getLineOffset(endLine) + endColumn - offset;
-
-            setSelection(offset, length);
-        } catch (BadLocationException ex) {
-            throw new IllegalArgumentException("Invalid coordinates", ex);
-        }
-    }
-
-    public void setSelection(int line, int column, int length) {
-        try {
-            int offset = getDocument().getLineOffset(line) + column;
-            setSelection(offset, length);
-        } catch (BadLocationException ex) {
-            throw new IllegalArgumentException("Invalid coordinates", ex);
-        }
-    }
-
-    public void writeText(final String text) {
-        replaceText(text, 0);
-    }
-
-    public void replaceText(final String text, final int length) {
-        final int offset = getOffset();
-        Display.syncExec(new Runnable() {
-            public void run() {
-                try {
-                    getDocument().replace(offset, length, text);
-                } catch (BadLocationException ex) {
-                    LOGGER.error("Wrong location returned", ex);
-                }
-            }
-        });
-        setSelection(offset + text.length(), 0);
-    }
-
     /**
      * Gets the text on line selected. The returned string does not contain line delimiter (even if it is present).
      * 
@@ -109,37 +64,6 @@ public class RuleEditor extends TextEditor {
 
     public ContentAssist createContentAssist() {
         return new ContentAssist(getTextEditorPart());
-    }
-
-    protected IDocument getDocument() {
-        return getTextEditorPart().getDocumentProvider().getDocument(getTextEditorPart().getEditorInput());
-    }
-
-    protected void setSelection(final int offset, final int length) {
-        Display.syncExec(new Runnable() {
-            public void run() {
-                getTextEditorPart().getSelectionProvider().setSelection(new TextSelection(getDocument(), offset, length));
-            }
-        });
-    }
-
-    protected int getOffset() {
-        int offset = Display.syncExec(new ResultRunnable<Integer>() {
-            public Integer run() {
-                ISelection sel = getTextEditorPart().getSelectionProvider().getSelection();
-                if (sel instanceof ITextSelection) {
-                    return ((ITextSelection) sel).getOffset();
-                }
-                return -1;
-            }
-        });
-        
-
-        if (offset < 0) {
-            throw new RuntimeException("Unable to get current position");
-        }
-
-        return offset;
     }
 
     /*
