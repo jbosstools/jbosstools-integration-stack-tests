@@ -13,6 +13,6 @@ public class VariablesView extends View {
 
     public void selectItem(Matcher<String>... matchers) {
         open();
-        ItemLookup.getItemInTree(new DefaultTree(), matchers);
+        ItemLookup.getItemInTree(new DefaultTree(), matchers).select();
     }
 }
