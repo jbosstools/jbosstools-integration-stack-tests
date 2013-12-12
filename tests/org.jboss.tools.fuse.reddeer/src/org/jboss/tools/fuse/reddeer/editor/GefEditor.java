@@ -23,6 +23,7 @@ import org.jboss.reddeer.swt.util.ResultRunnable;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.editor.DefaultEditor;
+import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
 import org.jboss.tools.fuse.reddeer.editor.finder.EditPartFinder;
 import org.jboss.tools.fuse.reddeer.editor.finder.FigureFinder;
 import org.jboss.tools.fuse.reddeer.editor.matcher.All;
@@ -190,6 +191,7 @@ public class GefEditor extends DefaultEditor {
 	}
 
 	public Palette getPalette() {
+		new WorkbenchView("General", "Palette").open();
 		PaletteViewer paletteViewer = viewer.getEditDomain().getPaletteViewer();
 		return new Palette(paletteViewer);
 	}

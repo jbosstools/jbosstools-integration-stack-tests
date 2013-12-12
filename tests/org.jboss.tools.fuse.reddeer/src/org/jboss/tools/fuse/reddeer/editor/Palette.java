@@ -23,6 +23,9 @@ public class Palette {
 	private PaletteViewer paletteViewer;
 
 	public Palette(PaletteViewer paletteViewer) {
+		if(paletteViewer == null) {
+			throw new NullPointerException("PaletteViewer cannot be null!");
+		}
 		this.paletteViewer = paletteViewer;
 	}
 
