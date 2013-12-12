@@ -12,6 +12,10 @@
   <artifactId>org.jboss.tools.drools.ui.bot.test</artifactId>
   <packaging>eclipse-test-plugin</packaging>
 
+  <properties>
+    <plugin.version>6.0.0</plugin.version>
+  </properties>
+
   <build>
     <plugins>
       <plugin>
@@ -30,14 +34,17 @@
             <dependency>
               <type>p2-installable-unit</type>
               <artifactId>org.guvnor.tools.feature.feature.group</artifactId>
+              <version>${plugin.version}</version>
             </dependency>
             <dependency>
               <type>p2-installable-unit</type>
               <artifactId>org.drools.eclipse.feature.feature.group</artifactId>
+              <version>${plugin.version}</version>
             </dependency>
             <dependency>
               <type>p2-installable-unit</type>
               <artifactId>org.jbpm.eclipse.feature.feature.group</artifactId>
+              <version>${plugin.version}</version>
             </dependency>
           </dependencies>
         </configuration>
