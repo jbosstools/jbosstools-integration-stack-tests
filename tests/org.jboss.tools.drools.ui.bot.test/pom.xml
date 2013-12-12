@@ -86,7 +86,7 @@
                     <get src="${brms.binaries}" dest="target/brms-deployable.zip" />
                     <unzip src="target/brms-deployable.zip" dest="target/brms-deployable" />
                     <unzip src="target/brms-deployable/jboss-brms-engine.zip" dest="target/runtime" />
-                    <echo file="resources/project.properties">drools.default.location=${project.build.directory}/runtime</echo>
+                    <echo file="resources/project.properties">drools.default.location=${project.build.directory}${file.separator}runtime</echo>
                   </tasks>
                 </configuration>
               </execution>
