@@ -18,6 +18,7 @@ public class GlobalDataView extends WorkbenchView {
     }
 
     public List<String> getGlobalsList() {
+        open();
         List<String> globals = new LinkedList<String>();
 
         String itemText;
@@ -36,6 +37,4 @@ public class GlobalDataView extends WorkbenchView {
 
         return globals;
     }
-
-    
 }

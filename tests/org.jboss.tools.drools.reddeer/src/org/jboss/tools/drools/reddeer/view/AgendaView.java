@@ -35,6 +35,7 @@ public class AgendaView extends WorkbenchView {
     }
 
     public List<String> getActivations() {
+        open();
         List<String> activations = new LinkedList<String>();
 
         for (String group : getAgendaGroupNames()) {
