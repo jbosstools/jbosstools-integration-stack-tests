@@ -9,27 +9,10 @@ import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
  */
 public class DefaultContractSecurityPage extends DefaultPage {
 	
-	private static final String CHCK_AUTHORIZATION = "Authorization";
 	private static final String CKCK_AUTHENTICATION = "Client Authentication";
 	private static final String CONFIDENTALITY = "Confidentiality";
 	private static final String COMBOBOX_SECURITY = "Security Configuration";
-	
-	public boolean isAuthorizationChecked() {
 		
-		return isCheckBoxChecked(CHCK_AUTHORIZATION);
-	}
-	
-	public boolean isAuthorizationEnabled() {
-		
-		return isCheckBoxEnabled(CHCK_AUTHORIZATION);
-	}
-	
-	public DefaultContractSecurityPage setAuthorization(boolean value) {
-		
-		setCheckBox(CHCK_AUTHORIZATION, value);
-		return this;
-	}
-	
 	public boolean isAuthenticationChecked() {
 		
 		return isCheckBoxChecked(CKCK_AUTHENTICATION);

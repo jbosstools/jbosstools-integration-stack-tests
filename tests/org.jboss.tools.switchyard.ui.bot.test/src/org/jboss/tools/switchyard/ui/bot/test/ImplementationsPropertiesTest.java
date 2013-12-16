@@ -20,6 +20,7 @@ import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultContr
 import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultContractSecurityPage;
 import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultContractTransactionPage;
 import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultImplementationPage;
+import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultImplementationSecurityPage;
 import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultResourcePage;
 import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultTransactionPage;
 import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
@@ -166,18 +167,14 @@ public class ImplementationsPropertiesTest {
 		
 		DefaultContractSecurityPage page = properties.getContractSecurityPage();
 		
-		assertTrue(page.isAuthorizationEnabled());
 		assertTrue(page.isAuthenticationEnabled());
 		assertTrue(page.isConfidentalityEnabled());
-		assertFalse(page.isAuthorizationChecked());
 		assertFalse(page.isAuthenticationChecked());
 		assertFalse(page.isConfidentalityChecked());
 		
-		page.setAuthorization(true);
 		page.setAuthentication(true);
 		page.setConfidentality(true);
 		
-		assertTrue(page.isAuthorizationChecked());
 		assertTrue(page.isAuthenticationChecked());
 		assertTrue(page.isConfidentalityChecked());
 		assertFalse(page.isSecurityConfComboEnabled());
@@ -198,7 +195,6 @@ public class ImplementationsPropertiesTest {
 		properties = new ImplementationPropertiesPage();
 		properties.openProperties(new Component(BEAN2 + "Bean")); 
 		page = properties.getContractSecurityPage();
-		assertFalse(page.isAuthorizationChecked());
 		assertFalse(page.isAuthenticationChecked());
 		assertFalse(page.isConfidentalityChecked());
 	}
@@ -216,12 +212,12 @@ public class ImplementationsPropertiesTest {
 	}
 
 	/**
-	 * Tests "Properties --> Transaction Policy" menu
+	 * Tests "Properties --> Implementation --> Transaction Policy" menu
 	 */
 	@Test
-	public void transactionPolicyTest() {
+	public void implementationTransactionPolicyTest() {
 		
-		DefaultTransactionPage page = properties.getTransactionPage();
+		DefaultTransactionPage page = properties.getImplementationTransactionPage();
 		
 		assertTrue(page.isTransactionPolicyComboEnabled());
 		assertEquals(0, page.getComboSelectionIndex());
@@ -232,5 +228,26 @@ public class ImplementationsPropertiesTest {
 		assertTrue(page.getAllTransactionPolicies().contains("noManagedTransaction"));
 		
 		page.setTransactionPolicy("managedTransaction.Local");
+	}
+
+	/**
+	 * Tests "Properties --> Implementation --> Security Policy" menu
+	 */
+	@Test
+	public void implementationSecurityPolicyTest() {
+		
+		DefaultImplementationSecurityPage page = properties.getImplementationSecurityPage();
+		
+		assertTrue(page.isAuthorizationEnabled());
+		page.setAuthorization(true);
+		properties.ok();
+		
+		properties.openProperties(new Component(BEAN + "Bean"));
+		assertTrue(page.isAuthorizationChecked());
+		page.setAuthorization(false);
+		properties.ok();
+
+		properties.openProperties(new Component(BEAN + "Bean"));
+		assertFalse(page.isAuthorizationChecked());
 	}
 }

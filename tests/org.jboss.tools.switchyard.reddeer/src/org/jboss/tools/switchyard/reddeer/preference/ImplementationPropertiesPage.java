@@ -13,6 +13,7 @@ import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultContr
 import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultContractSecurityPage;
 import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultContractTransactionPage;
 import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultImplementationPage;
+import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultImplementationSecurityPage;
 import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultResourcePage;
 import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultTransactionPage;
 import org.jboss.tools.switchyard.reddeer.preference.implementation.RulesImplementationPage;
@@ -82,11 +83,18 @@ public class ImplementationPropertiesPage {
 		return new DefaultImplementationPage();
 	}
 	
-	public DefaultTransactionPage getTransactionPage() {
+	public DefaultTransactionPage getImplementationTransactionPage() {
 		
-		log.info("Open the 'Transaction Policy' page.");
-		new DefaultTreeItem("Transaction Policy").select();
+		log.info("Open the 'Implementation --> Transaction Policy' page.");
+		new DefaultTreeItem("Implementation", "Transaction Policy").select();
 		return new DefaultTransactionPage();
+	}
+	
+	public DefaultImplementationSecurityPage getImplementationSecurityPage() {
+		
+		log.info("Open the 'Implementation --> Security Policy' page.");
+		new DefaultTreeItem("Implementation", "Security Policy").select();
+		return new DefaultImplementationSecurityPage();
 	}
 	
 	public BPMNImplementationPage getBPMNImplementation() {
