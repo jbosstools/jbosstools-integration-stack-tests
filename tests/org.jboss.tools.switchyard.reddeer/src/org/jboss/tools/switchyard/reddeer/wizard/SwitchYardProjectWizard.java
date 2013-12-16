@@ -95,8 +95,8 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		checkButtonEnabled(button);
 		button.click();
 
-		new WaitWhile(new JobIsRunning());
 		try {
+			new WaitWhile(new JobIsRunning());
 			new DefaultShell("Cannot Resolve SwitchYard Dependencies");
 			new PushButton("OK").click();
 		} catch (Exception e) {
