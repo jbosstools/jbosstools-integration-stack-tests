@@ -5,7 +5,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.jface.exception.JFaceLayerException;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.tools.bpmn2.reddeer.wizard.JBPMProjectLegacyWizard;
+import org.jboss.tools.bpmn2.reddeer.wizard.JBPMProjectWizard;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessRuntimeRequirement.ProcessRuntime;
 import org.junit.After;
 import org.junit.Assert;
@@ -25,7 +25,7 @@ public class LegacyProjectWizardTest extends SWTBotTestCase {
 	//	   - missing delete project method. 
 	ProjectExplorer explorerView = new ProjectExplorer();
 	
-	JBPMProjectLegacyWizard wizardView  = new JBPMProjectLegacyWizard();
+	JBPMProjectWizard wizardView  = new JBPMProjectWizard();
 	
 	@After
 	public void deleteAllProjects() {
@@ -36,7 +36,7 @@ public class LegacyProjectWizardTest extends SWTBotTestCase {
 	
 	@Test
 	public void newProjectWithSimpleProcessTest() throws Exception {
-		wizardView.execute("TestProject", JBPMProjectLegacyWizard.ProcessType.SIMPLE, true, false);
+		wizardView.execute("TestProject", JBPMProjectWizard.ProcessType.SIMPLE, false);
 		
 		Project p = explorerView.getProject("TestProject");
 		assertTrue(p.containsItem("src/main/resources", "sample.bpmn"));
@@ -45,7 +45,7 @@ public class LegacyProjectWizardTest extends SWTBotTestCase {
 	
 	@Test
 	public void newProjectWithAdvancedProcessTest() {
-		wizardView.execute("TestProject", JBPMProjectLegacyWizard.ProcessType.ADVANCED, true, true);
+		wizardView.execute("TestProject", JBPMProjectWizard.ProcessType.ADVANCED, true);
 		
 		Project p = explorerView.getProject("TestProject");
 		assertTrue(p.containsItem("src/main/resources", "sample.bpmn"));

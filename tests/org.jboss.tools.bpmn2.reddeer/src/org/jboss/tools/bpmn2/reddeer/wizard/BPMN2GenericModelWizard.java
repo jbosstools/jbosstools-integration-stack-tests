@@ -32,7 +32,7 @@ public class BPMN2GenericModelWizard extends NewWizardDialog {
 	}
 	
 	/**
-	 * Creates a new instance of NewGenericBpmn2ModelWizard. 
+	 * Creates a new instance of BPMN2GenericModelWizard. 
 	 */
 	public BPMN2GenericModelWizard() {
 		super("BPMN2", "Generic BPMN 2.0 Diagram");
@@ -40,7 +40,6 @@ public class BPMN2GenericModelWizard extends NewWizardDialog {
 	
 	@Override
 	public WizardPage getFirstPage() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

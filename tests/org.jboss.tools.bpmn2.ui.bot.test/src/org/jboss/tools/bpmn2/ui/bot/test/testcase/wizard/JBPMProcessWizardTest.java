@@ -3,8 +3,8 @@ package org.jboss.tools.bpmn2.ui.bot.test.testcase.wizard;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jface.exception.JFaceLayerException;
-import org.jboss.tools.bpmn2.reddeer.wizard.JBPMProcessWizard;
-import org.jboss.tools.bpmn2.reddeer.wizard.JBPMProjectLegacyWizard;
+import org.jboss.tools.bpmn2.reddeer.wizard.BPMN2ProcessWizard;
+import org.jboss.tools.bpmn2.reddeer.wizard.JBPMProjectWizard;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessRuntimeRequirement.ProcessRuntime;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -21,7 +21,7 @@ public class JBPMProcessWizardTest {
 
 	@BeforeClass
 	public static void createProject() {
-		new JBPMProjectLegacyWizard().execute("TestProject");
+		new JBPMProjectWizard().execute("TestProject");
 	}
 	
 	@AfterClass
@@ -31,14 +31,14 @@ public class JBPMProcessWizardTest {
 	
 	@Test
 	public void newModelTest() throws Exception {
-		new JBPMProcessWizard().execute(new String[] {"TestProject"}, "SampleProcess.bpmn", "Sample", "jboss.org.bpmn2", "defaultPackage");
+		new BPMN2ProcessWizard().execute(new String[] {"TestProject"}, "SampleProcess.bpmn", "Sample", "jboss.org.bpmn2", "defaultPackage");
 		Assert.assertTrue(new ProjectExplorer().getProject("TestProject").containsItem("SampleProcess.bpmn"));
 		// Assert process name, process id and package
 	}
 	
 	@Test
 	public void formContainerExistenceValidationTest() throws Exception {
-		JBPMProcessWizard wizard = new JBPMProcessWizard();
+		BPMN2ProcessWizard wizard = new BPMN2ProcessWizard();
 		try {
 			wizard.execute(new String[] {"NonExistentProject"}, "new_process.bpmn", "Sample", "jboss.org.bpmn2", "defaultPackage");
 		} catch (JFaceLayerException e) {
@@ -50,7 +50,7 @@ public class JBPMProcessWizardTest {
 	
 	@Test
 	public void formPackageNameValidationTest() throws Exception {
-		JBPMProcessWizard wizard = new JBPMProcessWizard();
+		BPMN2ProcessWizard wizard = new BPMN2ProcessWizard();
 		try {
 			wizard.execute(new String[] {"TestProject"}, "new_process.bpmn", "Sample", "jboss.org/bpmn2", "defaultPackage");
 		} catch (JFaceLayerException e) {
@@ -62,7 +62,7 @@ public class JBPMProcessWizardTest {
 	
 	@Test
 	public void formFileNameFieldValidationTest() throws Exception {
-		JBPMProcessWizard wizard = new JBPMProcessWizard();
+		BPMN2ProcessWizard wizard = new BPMN2ProcessWizard();
 		try {
 			// file must end with 'bpmn' or 'bpmn2'
 			wizard.execute(new String[] {"TestProject"}, "new_process.bpmnX", "Sample", "jboss.org/bpmn2", "defaultPackage");
