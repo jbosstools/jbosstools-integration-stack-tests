@@ -7,7 +7,6 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.SubProcess;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
-import org.junit.Test;
 
 /**
  *     
@@ -16,13 +15,8 @@ import org.junit.Test;
 @ProcessDefinition(name="BPMN2-SubProcess", project="EditorTestProject")
 public class SubProcessTest extends JBPM6BaseTest {
 
-	/**
-	 *
-	 *  
-	 * @throws Exception
-	 */
-	@Test
-	public void runTest() throws Exception {
+	@Override
+	public void buildProcessModel() {
 		StartEvent start = new StartEvent("StartProcess");
 		start.append("Hello Subprocess", ConstructType.SUB_PROCESS);
 

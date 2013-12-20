@@ -6,7 +6,6 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.catchevents.TimerIntermediateCa
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
-import org.junit.Test;
 
 /**
  * ISSUES:
@@ -17,13 +16,8 @@ import org.junit.Test;
 @ProcessDefinition(name="BPMN2-IntermediateCatchEventTimerCycle", project="EditorTestProject")
 public class IntermediateCatchEventTimerCycleTest extends JBPM6BaseTest {
 
-	/**
-	 *
-	 *  
-	 * @throws Exception
-	 */
-	@Test
-	public void runTest() throws Exception {
+	@Override
+	public void buildProcessModel() {
 		StartEvent startEvent = new StartEvent("StartProcess");
 		startEvent.append("Timer", ConstructType.TIMER_INTERMEDIATE_CATCH_EVENT);
 		

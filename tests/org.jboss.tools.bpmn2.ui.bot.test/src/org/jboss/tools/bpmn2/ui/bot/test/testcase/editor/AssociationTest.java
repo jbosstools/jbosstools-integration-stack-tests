@@ -6,17 +6,16 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
-import org.junit.Test;
 
 /**
  *     
- * @author mbaluch
+ * @author Marek Baluch <mbaluch@redhat.com>
  */
 @ProcessDefinition(name="BPMN2-Association", project="EditorTestProject")
 public class AssociationTest extends JBPM6BaseTest {
 
-	@Test
-	public void runTest() throws Exception {
+	@Override
+	public void buildProcessModel() {
 		StartEvent start = new StartEvent("StartProcess");
 		start.append("Log", ConstructType.SCRIPT_TASK);
 		

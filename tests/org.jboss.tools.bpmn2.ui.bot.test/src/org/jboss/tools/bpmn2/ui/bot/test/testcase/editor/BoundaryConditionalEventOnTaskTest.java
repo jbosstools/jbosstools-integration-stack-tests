@@ -9,7 +9,6 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.ConditionalBound
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
-import org.junit.Test;
 
 /**
  * ISSUE: language should be 'http://www.jboss.org/drools/rule' but it's not available.
@@ -19,8 +18,8 @@ import org.junit.Test;
 @ProcessDefinition(name="BPMN2-BoundaryConditionalEventOnTask", project="EditorTestProject")
 public class BoundaryConditionalEventOnTaskTest extends JBPM6BaseTest {
 
-	@Test
-	public void runTest() throws Exception {
+	@Override
+	public void buildProcessModel() {
 		BPMN2Process process = new BPMN2Process("BPMN2-BoundaryConditionalEventOnTask");
 		process.addDataType("String");
 		process.addLocalVariable("x", "String");

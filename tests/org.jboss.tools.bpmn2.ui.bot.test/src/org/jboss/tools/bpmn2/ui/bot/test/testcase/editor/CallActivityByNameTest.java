@@ -3,7 +3,6 @@ package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.junit.Ignore;
-import org.junit.Test;
 
 /**
  *     
@@ -18,8 +17,8 @@ public class CallActivityByNameTest extends JBPM6BaseTest {
 	 * @throws Exception
 	 */
 	@Ignore
-	@Test
-	public void runTest() throws Exception {
+	@Override
+	public void buildProcessModel() {
 	}
 	
 }

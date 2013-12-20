@@ -5,7 +5,6 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.throwevents.EscalationIntermediateThrowEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
-import org.junit.Test;
 
 /**
  *     
@@ -14,13 +13,8 @@ import org.junit.Test;
 @ProcessDefinition(name="BPMN2-IntermediateThrowEscalationEvent", project="EditorTestProject")
 public class IntermediateThrowEscalationEventTest extends JBPM6BaseTest {
 
-	/**
-	 *
-	 *  
-	 * @throws Exception
-	 */
-	@Test
-	public void runTest() throws Exception {
+	@Override
+	public void buildProcessModel() {
 		StartEvent start = new StartEvent("StartProcess");
 		start.append("Escalation Event", ConstructType.ESCALATION_INTERMEDIATE_THROW_EVENT);
 

@@ -15,7 +15,6 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.ExclusiveGateway;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
-import org.junit.Test;
 
 /**
  *     
@@ -27,11 +26,9 @@ public class EventBasedSplitTest extends JBPM6BaseTest {
 	/**
 	 * ISSUES:
 	 *   1) Fails probably due to BZ-XYZ (event based gateway does not display correctly)
-	 *  
-	 * @throws Exception
 	 */
-	@Test
-	public void runTest() throws Exception {
+	@Override
+	public void buildProcessModel() {
 		BPMN2Process process = new BPMN2Process("BPMN2-EventBasedSplit");
 		process.addLocalVariable("x", "String");
 		
