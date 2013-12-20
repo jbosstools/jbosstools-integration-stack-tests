@@ -6,7 +6,6 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ReceiveTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
-import org.junit.Test;
 
 /**
  * ISSUE: Looks like this test creates on itemDefinition plus (should be 1 but there are 2)
@@ -17,13 +16,8 @@ import org.junit.Test;
 @ProcessDefinition(name="BPMN2-ReceiveTask", project="EditorTestProject")
 public class ReceiveTaskTest extends JBPM6BaseTest {
 
-	/**
-	 *
-	 *  
-	 * @throws Exception
-	 */
-	@Test
-	public void runTest() throws Exception {
+	@Override
+	public void buildProcessModel() {
 		BPMN2Process process = new BPMN2Process("BPMN2-ReceiveTask");
 		process.addLocalVariable("s", "String");
 		process.addMessage("HelloMessage", "String");

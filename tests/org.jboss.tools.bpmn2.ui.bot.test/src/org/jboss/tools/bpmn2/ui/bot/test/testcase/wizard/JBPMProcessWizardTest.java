@@ -1,9 +1,8 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.wizard;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jface.exception.JFaceLayerException;
-import org.jboss.tools.bpmn2.reddeer.wizard.BPMN2ProcessWizard;
+import org.jboss.tools.bpmn2.reddeer.wizard.JBPMProcessWizard;
 import org.jboss.tools.bpmn2.reddeer.wizard.JBPMProjectWizard;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessRuntimeRequirement.ProcessRuntime;
 import org.junit.AfterClass;
@@ -12,64 +11,49 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * Verify functionality of the jbpm model wizard.
+ * Verify functionality of the process wizard.
  * 
  * @author Marek Baluch <mbaluch@redhat.com>
  */
 @ProcessRuntime()
 public class JBPMProcessWizardTest {
 
+	static ProjectExplorer packageView = new ProjectExplorer();
+	static JBPMProjectWizard projectWizardView = new JBPMProjectWizard();
+	static JBPMProcessWizard processWizardView = new JBPMProcessWizard();
+	
 	@BeforeClass
 	public static void createProject() {
-		new JBPMProjectWizard().execute("TestProject");
+		projectWizardView.execute("TestProject");
 	}
 	
 	@AfterClass
-	public static void deleteProject() throws Exception {
-		new PackageExplorer().getProject("TestProject").delete(true);
+	public static void deleteProject() {
+		packageView.getProject("TestProject").delete(true);
 	}
 	
 	@Test
-	public void newModelTest() throws Exception {
-		new BPMN2ProcessWizard().execute(new String[] {"TestProject"}, "SampleProcess.bpmn", "Sample", "jboss.org.bpmn2", "defaultPackage");
-		Assert.assertTrue(new ProjectExplorer().getProject("TestProject").containsItem("SampleProcess.bpmn"));
-		// Assert process name, process id and package
+	public void newProcessTest() {
+		processWizardView.execute(new String[] {"TestProject", "src/main/resources"}, "SampleProcess");
+		Assert.assertTrue(packageView.getProject("TestProject").containsItem("src/main/resources", "SampleProcess.bpmn"));
 	}
 	
+	/**
+	 * ISSUES:
+	 * 	1) make sure an empty name may not be added.
+	 *  2) should it be legal to create a name without .bpmn suffix?
+	 *  
+	 * @throws Exception
+	 */
 	@Test
-	public void formContainerExistenceValidationTest() throws Exception {
-		BPMN2ProcessWizard wizard = new BPMN2ProcessWizard();
+	public void newProcessFormValidationTest() throws Exception {
 		try {
-			wizard.execute(new String[] {"NonExistentProject"}, "new_process.bpmn", "Sample", "jboss.org.bpmn2", "defaultPackage");
+			processWizardView.execute("");
 		} catch (JFaceLayerException e) {
 			Assert.assertEquals("Button '&Finish' is not enabled", e.getMessage());
 		} finally {
-			wizard.cancel();
+			processWizardView.cancel();
 		}
 	}
 	
-	@Test
-	public void formPackageNameValidationTest() throws Exception {
-		BPMN2ProcessWizard wizard = new BPMN2ProcessWizard();
-		try {
-			wizard.execute(new String[] {"TestProject"}, "new_process.bpmn", "Sample", "jboss.org/bpmn2", "defaultPackage");
-		} catch (JFaceLayerException e) {
-			Assert.assertEquals("Button '&Finish' is not enabled", e.getMessage());
-		} finally {
-			wizard.cancel();
-		}
-	}
-	
-	@Test
-	public void formFileNameFieldValidationTest() throws Exception {
-		BPMN2ProcessWizard wizard = new BPMN2ProcessWizard();
-		try {
-			// file must end with 'bpmn' or 'bpmn2'
-			wizard.execute(new String[] {"TestProject"}, "new_process.bpmnX", "Sample", "jboss.org/bpmn2", "defaultPackage");
-		} catch (JFaceLayerException e) {
-			Assert.assertEquals("Button '&Finish' is not enabled", e.getMessage());
-		} finally {
-			wizard.cancel();
-		}
-	}
 }

@@ -10,7 +10,6 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.junit.Ignore;
-import org.junit.Test;
 
 /**
  *     
@@ -20,14 +19,9 @@ import org.junit.Test;
 @ProcessDefinition(name="BPMN2-XPathExpression", project="EditorTestProject")
 public class XPathExpressionTest extends JBPM6BaseTest {
 
-	/**
-	 *
-	 *  
-	 * @throws Exception
-	 */
 	@Ignore(value = "XPath is not currently supported. Neither in the engine nor in the editor.")
-	@Test()
-	public void runTest() throws Exception {
+	@Override()
+	public void buildProcessModel() {
 		BPMN2Process process = new BPMN2Process("BPMN2-XPathExpression");
 		process.addDataType("org.w3c.dom.Document");
 		process.addLocalVariable("instanceMetadata", "org.w3c.dom.Document");

@@ -56,7 +56,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	ConditionalBoundaryEventInterruptingTest.class, // Cannot find Escalation_1 
 // Missing features tests
 // ----------------------
-//  OnEntryExitMixedNamespacedScriptProcessTest.class
+//    OnEntryExitMixedNamespacedScriptProcessTest.class
 })
 public class AllTests extends TestSuite {
 	// TBD: BPMN2-IntermediateCatchEventTimerCycleWithError.bpmn2

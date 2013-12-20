@@ -10,14 +10,15 @@ import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.tools.bpmn2.reddeer.editor.BPMN2Editor;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.jboss.tools.bpmn2.ui.bot.test.validator.JBPM6Validator;
+import org.junit.After;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.Before;
 
 /**
  * 
  * @author Marek Baluch <mbaluch@redhat.com>
  */
-public abstract class JBPM6BaseTest extends SWTBotTestCase {
+public class JBPM6LegacyBaseTest extends SWTBotTestCase {
 
 	protected Logger log = Logger.getLogger(getClass());  
 	
@@ -25,7 +26,7 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 	
 	private BPMN2Editor editor; 
 	
-	public JBPM6BaseTest() {
+	public JBPM6LegacyBaseTest() {
 		/*
 		 * Initialize
 		 */
@@ -37,41 +38,8 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 		editor = new BPMN2Editor(definition.name().replace("\\s+", ""));
 	}
 	
-	public abstract void buildProcessModel();
-	
-	@Test
-	public void executeTest() {
-		try {
-			openProcessFile();
-			buildProcessModel();
-			validateProcessModel();
-		} finally {
-			closeProcessFile();
-		}
-	}
-	
-	public void validateProcessModel() {
-		/*
-		 * Make sure all content is saved.
-		 */
-		editor.setFocus();
-		if (editor.isDirty()) {
-			editor.save();
-		}
-		/*
-		 * Capture the current state.
-		 */
-		captureScreenshot();
-		/*
-		 * Validate.
-		 */
-		log.info("Validating '" + editor.getTitle() + "'");
-		JBPM6Validator validator = new JBPM6Validator();
-		boolean result = validator.validate(editor.getSourceText());
-		Assert.assertTrue(validator.getResultMessage(), result);
-	}
-	
-	public void openProcessFile() {
+	@Before
+	public void open() {
 		/*
 		 * Open process definition.
 		 */
@@ -83,10 +51,37 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 		editor.activateTool("Profiles", definition.profile());
 	}
 	
-	public void closeProcessFile() {
+	@After 
+	public void closeDialogs() {
 		new SWTWorkbenchBot().closeAllShells();
-		log.info("Closing '" + editor.getTitle() + "'");
-		editor.close();
+	}
+	
+	@After
+	public void close() {
+		/*
+		 * Capture the image of the process.
+		 */
+		captureScreenshot();
+		try {
+			/*
+			 * Make sure all content is saved.
+			 */
+			editor.setFocus();
+			if (editor.isDirty()) editor.save();
+			/*
+			 * Validate.
+			 */
+			log.info("Validating '" + editor.getTitle() + "'");
+			JBPM6Validator validator = new JBPM6Validator();
+			boolean result = validator.validate(editor.getSourceText());
+			Assert.assertTrue(validator.getResultMessage(), result);
+		} finally {
+			/*
+			 * Close.
+			 */
+			log.info("Closing '" + editor.getTitle() + "'");
+			editor.close();
+		}
 	}
 	
 	public void captureScreenshot() {
@@ -100,9 +95,9 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 	}
 	
 	/**
-	 * Maximizes active shell.
+	 * Maximizes active shell
 	 * 
-	 * Taken from ui.bot.ext.
+	 * Taken from ui.bot.ext
 	 */
 	private static void maximizeActiveShell() {
 		final Shell shell = (Shell) (new SWTBot().activeShell().widget);

@@ -7,7 +7,6 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
-import org.junit.Test;
 
 /**
  *     
@@ -22,8 +21,8 @@ public class AdHocSubProcessTest extends JBPM6BaseTest {
 	 *         - See ContainerConstruct.add(String, ConstructType) 
 	 *         
 	 */
-	@Test
-	public void runTest() {
+	@Override
+	public void buildProcessModel() {
 		StartEvent start = new StartEvent("StartProcess");
 		start.append("Hello", ConstructType.AD_HOC_SUB_PROCESS);
 
