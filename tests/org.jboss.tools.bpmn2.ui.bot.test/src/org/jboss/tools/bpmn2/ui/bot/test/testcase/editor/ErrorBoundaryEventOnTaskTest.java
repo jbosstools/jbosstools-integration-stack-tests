@@ -1,8 +1,8 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
+import org.jboss.tools.bpmn2.reddeer.editor.AbstractGateway.Direction;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
 import org.jboss.tools.bpmn2.reddeer.editor.Position;
-import org.jboss.tools.bpmn2.reddeer.editor.AbstractGateway.Direction;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.BPMN2Process;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.UserTask;
@@ -25,11 +25,9 @@ public class ErrorBoundaryEventOnTaskTest extends JBPM6BaseTest {
 
 	/**
 	 * ISSUE: Default Error names are increased even though cancel has been hit.
-	 * 
-	 * @throws Exception
 	 */
 	@Test
-	public void runTest() throws Exception {
+	public void buildProcessModel() {
 		BPMN2Process process = new BPMN2Process("BPMN2-ErrorBoundaryEventOnTask");
 		process.addError("", "org.jbpm.bpmn2.objects.MyError", null);
 		

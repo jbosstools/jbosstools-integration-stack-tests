@@ -9,7 +9,6 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.ParallelGateway;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
-import org.junit.Test;
 
 /**
  *     
@@ -24,8 +23,8 @@ public class ParallelSplitJoinTest extends JBPM6BaseTest {
 	 *  
 	 * @throws Exception
 	 */
-	@Test
-	public void splitJoinTest() throws Exception {
+	@Override
+	public void buildProcessModel() {
 		/*
 		 * Modeling
 		 */

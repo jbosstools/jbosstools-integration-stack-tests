@@ -18,7 +18,7 @@ import org.junit.Test;
  * 
  */
 @ProcessRuntime()
-public class LegacyProjectWizardTest extends SWTBotTestCase {
+public class JBPMProjectWizardTest extends SWTBotTestCase {
 
 	// TBD: 
 	//   * switch to org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer
