@@ -13,9 +13,13 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessRuntimeRequirement.ProcessRuntime;
 
+/**
+ * 
+ * @author Marek Baluch <mbaluch@redhat.com>
+ */
 public class ProcessRuntimeRequirement implements Requirement<ProcessRuntime> {
 
-	private String name = System.getProperty("jbpm.name", "jbpm5");
+	private String name = System.getProperty("jbpm.name", "jbpm6");
 	
 	private String runtimeHome = System.getProperty("jbpm.runtime.dir");
 	
