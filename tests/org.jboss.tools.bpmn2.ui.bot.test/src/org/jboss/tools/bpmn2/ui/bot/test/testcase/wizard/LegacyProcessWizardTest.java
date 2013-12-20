@@ -2,8 +2,8 @@ package org.jboss.tools.bpmn2.ui.bot.test.testcase.wizard;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jface.exception.JFaceLayerException;
-import org.jboss.tools.bpmn2.reddeer.wizard.JBPMProcessLegacyWizard;
-import org.jboss.tools.bpmn2.reddeer.wizard.JBPMProjectLegacyWizard;
+import org.jboss.tools.bpmn2.reddeer.wizard.JBPMProcessWizard;
+import org.jboss.tools.bpmn2.reddeer.wizard.JBPMProjectWizard;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessRuntimeRequirement.ProcessRuntime;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -19,8 +19,8 @@ import org.junit.Test;
 public class LegacyProcessWizardTest {
 
 	static ProjectExplorer packageView = new ProjectExplorer();
-	static JBPMProjectLegacyWizard projectWizardView = new JBPMProjectLegacyWizard();
-	static JBPMProcessLegacyWizard processWizardView = new JBPMProcessLegacyWizard();
+	static JBPMProjectWizard projectWizardView = new JBPMProjectWizard();
+	static JBPMProcessWizard processWizardView = new JBPMProcessWizard();
 	
 	@BeforeClass
 	public static void createProject() {

@@ -19,17 +19,17 @@ import org.jboss.reddeer.junit.requirement.Requirement;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.tools.bpmn2.reddeer.wizard.JBPMProcessWizard;
+import org.jboss.tools.bpmn2.reddeer.wizard.BPMN2ProcessWizard;
 import org.jboss.tools.bpmn2.reddeer.wizard.JavaProjectWizard;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 
 /**
  * 
- * @author mbaluch
+ * @author Marek Baluch <mbaluch@redhat.com>
  */
 public class ProcessDefinitionRequirement implements Requirement<ProcessDefinition> {
 
-	Logger log = Logger.getLogger(ProcessDefinitionRequirement.class);
+	private static Logger log = Logger.getLogger(ProcessDefinitionRequirement.class);
 	
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.TYPE)
@@ -43,9 +43,9 @@ public class ProcessDefinitionRequirement implements Requirement<ProcessDefiniti
 		
 	}
 
-	ProcessDefinition d;
+	private ProcessDefinition d;
 
-	boolean useRobot;
+	private boolean useRobot;
 
 	
 	public ProcessDefinitionRequirement() {
@@ -120,7 +120,7 @@ public class ProcessDefinitionRequirement implements Requirement<ProcessDefiniti
 			pe.getProject(p).getProjectItem(f).delete();
 		}
 		
-		new JBPMProcessWizard().execute(new String[] {p}, f, n, i, "defaultPackage");
+		new BPMN2ProcessWizard().execute(new String[] {p}, f, n, i, "defaultPackage");
 	}
 	
 	private void setFocus() {

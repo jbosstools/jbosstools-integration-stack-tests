@@ -11,7 +11,7 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 public class BPMN2ModelWizard extends NewWizardDialog {
 
 	/**
-	 * Creates a new instance of NewBpmn2ModelWizard. 
+	 * Creates a new instance of BPMN2ModelWizard. 
 	 */
 	public BPMN2ModelWizard() {
 		super("BPMN2", "BPMN2 Model");

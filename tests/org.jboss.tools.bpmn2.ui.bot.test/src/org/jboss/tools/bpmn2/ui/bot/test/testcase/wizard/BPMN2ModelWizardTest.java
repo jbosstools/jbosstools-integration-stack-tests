@@ -4,7 +4,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jface.exception.JFaceLayerException;
 import org.jboss.tools.bpmn2.reddeer.wizard.BPMN2ModelWizard;
-import org.jboss.tools.bpmn2.reddeer.wizard.JBPMProjectLegacyWizard;
+import org.jboss.tools.bpmn2.reddeer.wizard.JBPMProjectWizard;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessRuntimeRequirement.ProcessRuntime;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -21,7 +21,7 @@ public class BPMN2ModelWizardTest {
 
 	@BeforeClass
 	public static void createProject() {
-		new JBPMProjectLegacyWizard().execute("TestProject");
+		new JBPMProjectWizard().execute("TestProject");
 	}
 	
 	@AfterClass
