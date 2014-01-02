@@ -28,12 +28,12 @@ public class ContentAssist {
     private void open() {
         Display.syncExec(new Runnable() {
             public void run() {
-                Shell[] orig = new ShellLookup().getShells();
+                Shell[] orig = ShellLookup.getInstance().getShells();
 
                 IAction action = editor.getAction("ContentAssistProposal");
                 action.run();
 
-                Shell[] now = new ShellLookup().getShells();
+                Shell[] now = ShellLookup.getInstance().getShells();
                 Shell result = null;
                 nowLoop : for (Shell sh : now) {
                     for (Shell sh2 : orig) {
