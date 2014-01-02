@@ -131,7 +131,7 @@ public abstract class TestParent {
             }
 
             // maximizes the window
-            final org.eclipse.swt.widgets.Shell shell = new ShellLookup().getActiveShell();
+            final org.eclipse.swt.widgets.Shell shell = ShellLookup.getInstance().getActiveShell();
             Display.syncExec(new Runnable() {
                 public void run() {
                     shell.setMaximized(true);
