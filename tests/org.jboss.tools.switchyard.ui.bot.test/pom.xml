@@ -18,6 +18,7 @@
 	  <surefire.timeout>10800</surefire.timeout>
 	  <test.class>AllTests</test.class>
 	  <maven-download-plugin.version>1.0.0</maven-download-plugin.version>
+	  <customization.file>resources/config/plugin_customization.ini</customization.file>
 	</properties>
 
 	<build>
@@ -27,7 +28,7 @@
 	      <groupId>org.eclipse.tycho</groupId>
 	      <artifactId>tycho-surefire-plugin</artifactId>
 	      <configuration>
-		<appArgLine>-pluginCustomization resources/config/plugin_customization.ini -clean</appArgLine>
+		<appArgLine>-pluginCustomization ${customization.file} -clean</appArgLine>
 		<testSuite>org.jboss.tools.switchyard.ui.bot.test</testSuite>
 		<testClass>org.jboss.tools.switchyard.ui.bot.test.suite.${test.class}</testClass>
 		<useUIThread>false</useUIThread>
