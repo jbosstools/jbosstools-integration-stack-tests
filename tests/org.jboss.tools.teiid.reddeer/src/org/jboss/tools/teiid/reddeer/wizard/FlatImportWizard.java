@@ -1,8 +1,12 @@
 package org.jboss.tools.teiid.reddeer.wizard;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
@@ -20,7 +24,7 @@ public class FlatImportWizard extends TeiidImportWizard {
 
 	private String profile;
 	private String file;
-	private String name;
+	private String name;//source model name
 	private String viewModelName;
 	private String viewTableName;
 	private String importMode;
@@ -28,9 +32,48 @@ public class FlatImportWizard extends TeiidImportWizard {
 	private int headerLine;
 	private int dataLine;
 	
+	private boolean editDelimiterCharacter = false;
+	private boolean editTexttableFunctionOptions = false;
+	
+	static class DelimiterCharacter{
+		String COMMA = "Comma \',\'";
+		String SPACE = "Space \'\'";
+		String TAB = "Tab";
+		String SEMICOLON = "Semicolon \':\'";
+		String BAR = "Bar \'|\'";
+		String OTHER = "Other";
+	}
+	
+	static class TexttableFunctionOptions{
+		String INCLUDE_HEADER = "Include HEADER";
+		String INCLUDE_SKIP = "Include SKIP";
+		String INCLUDE_QUOTE = "Include QUOTE";
+		String INCLUDE_ESCAPE = "Include ESCAPE";
+		String INCLUDE_NO_TRIM = "Include NO TRIM";
+	}
+	
+	private String delimiterCharacter;//should be set to something from static class
+	private List<String> texttableFunctionOptions = new ArrayList<String>();
+	
+	public List<String> getTexttableFunctionOptions() {
+		return texttableFunctionOptions;
+	}
+
+	public void setTexttableFunctionOptions(List<String> texttableFunctionOptions) {
+		this.texttableFunctionOptions = texttableFunctionOptions;
+	}
+
 	public static class FlatFileImportMode {
 		public static final String FLAT_FILE_ON_LOCAL_FILE_SYSTEM = "Flat file on local file system";
 		public static final String FLAT_FILE_VIA_REMOTE_URL = "Flat file via remote URL";
+	}
+
+	public boolean isEditTexttableFunctionOptions() {
+		return editTexttableFunctionOptions;
+	}
+
+	public void setEditTexttableFunctionOptions(boolean editTexttableFunctionOptions) {
+		this.editTexttableFunctionOptions = editTexttableFunctionOptions;
 	}
 
 	public FlatImportWizard() {
@@ -72,6 +115,7 @@ public class FlatImportWizard extends TeiidImportWizard {
 		this.importMode = importMode;
 	}
 
+	@Deprecated
 	@Override
 	public void execute() {
 		executeBeginOfWizard();
@@ -84,6 +128,7 @@ public class FlatImportWizard extends TeiidImportWizard {
 		finish();
 	}
 	
+	@Deprecated
 	public void execute(boolean setViewNames) {		
 		executeBeginOfWizard();
 		
@@ -95,17 +140,24 @@ public class FlatImportWizard extends TeiidImportWizard {
 		finish();
 	}
 	
+	@Deprecated
 	private void executeBeginOfWizard(){
 		open();
+		//first page
 		new RadioButton(importMode).click();
 		next();
+		
+		//second page
 		new DefaultCombo(0).setSelection(profile);
 		setCheckedFile(file, true);
 		// TODO: LabeledText
 		new SWTWorkbenchBot().textWithLabel("Name:").setText(name + "Source");
-
 		next();
+		
+		//third page
 		next();
+		
+		//fourth page
 		if (headerLine > 0) {
 			new CheckBox("Column names in header").toggle(true);
 			new LabeledText("Header line #").setText(Integer.toString(headerLine));
@@ -125,6 +177,108 @@ public class FlatImportWizard extends TeiidImportWizard {
 		} else {
 			item.uncheck();
 		}
+	}
+	
+	//refactored part
+	public void execute2() {
+		open();
+		fillFirstPage();
+		
+		fillSecondPage();
+		
+		fillThirdPage();
+		
+		fillFourthPage();
+		
+		fillFifthPage();
+		
+		finish();
+	}
+	
+	
+	private void fillFirstPage(){
+		//first page
+		if (importMode != null){
+			new RadioButton(importMode).click();
+		}
+		next();
+	}
+	
+	private void fillSecondPage(){
+		//second page
+		new DefaultCombo(0).setSelection(profile);
+		setCheckedFile(file, true);
+				// TODO: LabeledText
+		if (name != null){
+			new SWTWorkbenchBot().textWithLabel("Name:").setText(name + "Source");
+		}
+		next();
+	}
+	
+	private void fillThirdPage(){
+		next();
+	}
+	
+	private void fillFourthPage() {
+		// fourth page
+		if (headerLine > 0) {
+			new CheckBox("Column names in header").toggle(true);
+			new LabeledText("Header line #").setText(Integer
+					.toString(headerLine));
+			if (dataLine > 0) {
+				new LabeledText("Data line #").setText(Integer
+						.toString(dataLine));
+			}
+		}
+
+		else {
+			new CheckBox("Column names in header").toggle(false);
+		}
+		
+		//edit delimiter character - if != comma
+		if (editDelimiterCharacter){
+			//TEST
+			new PushButton("Edit Delimiter Character").click();
+			
+			//TODO click on proper radiobutton!!!
+			new RadioButton(delimiterCharacter).click();
+			new PushButton("OK").click();
+		}
+		
+		if (editTexttableFunctionOptions){
+			new PushButton("Edit TEXTTABLE() function options").click();
+			for (String texttableOption : this.texttableFunctionOptions){
+				new CheckBox(texttableOption).toggle(true);
+			}
+			new PushButton("OK").click();
+			
+		}
+		
+		next();
+	}
+	
+	private void fillFifthPage() {
+		// TODO: LabeledText
+		if (name != null){
+			new SWTWorkbenchBot().textWithLabel("Name:").setText(name + "View");
+			new LabeledText("New view table name:").setText(name + "Table");
+		}
+	}
+
+	public boolean isEditDelimiterCharacter() {
+		return editDelimiterCharacter;
+	}
+
+	public void setEditDelimiterCharacter(boolean editDelimiterCharacter) {
+		this.editDelimiterCharacter = editDelimiterCharacter;
+	}
+
+	public String getOtherDelimiter() {
+		return delimiterCharacter;
+	}
+
+	public void setOtherDelimiter(String otherDelimiter) {
+		this.delimiterCharacter = otherDelimiter;
 	}
 
 }

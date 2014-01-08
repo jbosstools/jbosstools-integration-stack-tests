@@ -1,6 +1,6 @@
 package org.jboss.tools.teiid.ui.bot.test.suite;
 
-import org.jboss.tools.teiid.ui.bot.test.ServerManagementSimpleAnnotTest;
+import org.jboss.tools.teiid.ui.bot.test.FlatFileImportTest;
 import org.jboss.tools.teiid.ui.bot.test.ServerManagementSimpleTest;
 import org.jboss.tools.teiid.ui.bot.test.ServerManagementTest;
 import org.junit.runner.RunWith;
@@ -13,9 +13,9 @@ import org.junit.runners.Suite.SuiteClasses;
  * 
  */
 @SuiteClasses({
-	//ServerManagementSimpleAnnotTest.class,
 	ServerManagementSimpleTest.class,
 	//ServerManagementTest.class
+	//FlatFileImportTest.class
 })
 @RunWith(TeiidSuite.class)
 public class FeatureTests {
