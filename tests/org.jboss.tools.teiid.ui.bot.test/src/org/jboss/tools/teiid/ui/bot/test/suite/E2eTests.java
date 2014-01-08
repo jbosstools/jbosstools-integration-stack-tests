@@ -14,8 +14,8 @@ import org.junit.runners.Suite.SuiteClasses;
  * 
  */
 @SuiteClasses({
-	//E2eRecursiveXmlTextTest.class,
-	VirtualGroupTutorialUpdatedTest.class,
+	E2eRecursiveXmlTextTest.class,
+	//VirtualGroupTutorialUpdatedTest.class,
 	//TopDownWsdlTest.class,
 	//E2eAudioBooksVdbExecutionTest.class
 })
