@@ -42,4 +42,11 @@ public class DatabaseDevelopmentPerspective extends AbstractPerspective {
 		}
 		return sqlResultsView;
 	}
+	
+	//@TODO
+	//public void createConnectionProfile(){//string type, wizard profile
+		//toolbar New Connection Profile
+		//select type
+		//fill in according to the wizard
+	//}
 }

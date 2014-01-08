@@ -431,7 +431,7 @@
 		      <configuration>
 			<target>
 			  <echo file="${requirementsDirectory}/jboss-eap-6.1/standalone/configuration/teiid-security-users.properties">user=user</echo>
-			  <echo file="${swtbot.properties}">SERVER=EAP,6.1,default,target/requirements/jboss-eap-6.1${line.separator}MODESHAPE=dv</echo>
+			  <echo file="${swtbot.properties}">SERVER=EAP,6.1+,default,target/requirements/jboss-eap-6.1${line.separator}MODESHAPE=dv</echo>
 			</target>
 		      </configuration>
 		    </execution>

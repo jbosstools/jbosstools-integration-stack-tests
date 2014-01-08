@@ -68,20 +68,24 @@ public class PublishingTest extends SWTBotTestCase {
 		
 		/* Add publish area */
 		new ModeshapeView().addPublishArea(SERVER_URL, repository, WORKSPACE, PUBLISH_AREA);
+		System.out.println("DEBUG: publishing area " + PUBLISH_AREA +" added");
 		
 		/* Publish */
 		new ModeshapeExplorer().publish(PROJECT_NAME).finish();
 		assertTrue(new ModeshapeWebdav(repository).isFileAvailable(PROJECT_NAME + "/" + FILE_NAME, USER, PASSWORD));
-
+		System.out.println("DEBUG: files published (webdav)");
+		
 		/* Published Locations */
 		PublishedLocations locations = new ModeshapeExplorer().showPublishedLocations(PROJECT_NAME, FILE_NAME);
 		String url = locations.getPublishedUrl();
 		locations.ok();
 		assertTrue(new ModeshapeWebdav(repository).isFileAvailable(new URL(url), USER, PASSWORD));
-
+		System.out.println("DEBUG: files published (url)");
+		
 		/* Unpublish */
 		new ModeshapeExplorer().unpublish(PROJECT_NAME).finish();
 		assertFalse(new ModeshapeWebdav(repository).isFileAvailable(PROJECT_NAME + "/" + FILE_NAME, USER, PASSWORD));
+		System.out.println("DEBUG: files unpublished");
 	}
 
 }

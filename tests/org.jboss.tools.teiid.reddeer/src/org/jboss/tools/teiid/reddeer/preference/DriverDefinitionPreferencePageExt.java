@@ -14,9 +14,9 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 
 	@Override
 	public void open() {
-		if (isRunningOnMacOs()) {
+		/*if (isRunningOnMacOs()) {
 			new SWTWorkbenchBot().shells()[0].pressShortcut(SWT.COMMAND, ',');
-		}
+		}*/
 		super.open();
 	}
 

@@ -27,7 +27,8 @@ public class ServerPreferencePage extends PreferencePage {
 	
 	public void addServerRuntime(String name, String path, String configFile, String... type) {
 		new PushButton("Add...").click();
-		new DefaultTreeItem(0, type).select();
+		//new DefaultTreeItem(0, type).select();
+		selectType(type);
 		new PushButton("Next >").click();
 		new LabeledText("Name").setText(name);
 		new LabeledText("Home Directory").setText(path);
@@ -41,5 +42,25 @@ public class ServerPreferencePage extends PreferencePage {
 		new WaitWhile(new IsInProgress(), TimePeriod.NORMAL);
 		new PushButton("Finish").click();
 		//new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+	}
+	
+	private void selectType(String[] type){
+		String[] array = new String[type.length];
+		System.arraycopy(type, 0, array, 0, array.length);
+		
+		try {
+			
+			new DefaultTreeItem(0, array).select();//eclipse kepler (0), eclipse juno (1)
+			return;
+		} catch (Exception ex){
+			System.out.println(type + " not found, trying other variants...");
+		}
+		try {
+			array[array.length-1] = type[array.length-1].replaceAll(" Runtime", "+ Runtime");
+			new DefaultTreeItem(0, array).select();//eclipse kepler (0), eclipse juno (1)
+			return;
+		} catch (Exception ex){
+			
+		}
 	}
 }
