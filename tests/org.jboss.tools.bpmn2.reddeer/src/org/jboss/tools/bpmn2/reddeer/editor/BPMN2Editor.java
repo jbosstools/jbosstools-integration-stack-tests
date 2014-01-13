@@ -24,7 +24,6 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotMultiPageEditor;
 import org.eclipse.swtbot.eclipse.gef.finder.finders.PaletteFinder;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
-import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.Result;
@@ -32,6 +31,10 @@ import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.ui.IEditorPart;
 import org.hamcrest.Matcher;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.bpmn2.reddeer.matcher.ConstructAttributeMatchingRegex;
 import org.jboss.tools.bpmn2.reddeer.matcher.ConstructWithName;
 import org.jboss.tools.bpmn2.reddeer.matcher.PaletteEntryMatcher;
@@ -260,19 +263,18 @@ public class BPMN2Editor extends SWTBotGefEditor {
 		editor.activatePage("Source");
 		
 		String text = editor.toTextEditor().getText();
-		
-		/*
-		 * TODO: File a bug -the title has illogically changed to the process name.
-		 *       Now we have two tabs:
-		 *        1) ${Process Name}
-		 *        2) Process Diagram
-		 */
-//		editor.activatePage("Process Diagram");
 		editor.activatePage(editor.getPagesTitles().get(0));
 		
 		return text;
 	}
 
+	public void projectNature(boolean on) {
+		// TODO: test weather the dialog is shown. if not the show it!
+		new DefaultShell("Configure BPMN2 Project Nature").setFocus();
+		new CheckBox().click();
+		new PushButton(on ? "Yes": "No").click();
+	}
+	
 	/**
 	 * @see org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor#save()
 	 */
@@ -282,15 +284,12 @@ public class BPMN2Editor extends SWTBotGefEditor {
 			bot.menu("File").menu("Save").click();
 			try {
 				Thread.sleep(SAVE_SLEEP_TIME);
+				projectNature(false);
 			} catch (InterruptedException e) {
-				// ignore
+				// ignore - no worries
+			} catch (SWTLayerException e) {
+				// ignore - the dialog may not appear
 			}
-			
-			SWTBotShell shell = bot.shell("Configure BPMN2 Project Nature");
-			shell.activate();
-			SWTBot shellBot = shell.bot();
-			shellBot.checkBox().click();
-			shellBot.button("No").click();
 		} catch (WidgetNotFoundException e) {
 			// ignore
 		}

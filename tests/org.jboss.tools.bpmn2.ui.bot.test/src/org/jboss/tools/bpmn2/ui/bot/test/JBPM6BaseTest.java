@@ -7,6 +7,9 @@ import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.bpmn2.reddeer.editor.BPMN2Editor;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.jboss.tools.bpmn2.ui.bot.test.validator.JBPM6Validator;
@@ -50,6 +53,23 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 		}
 	}
 	
+	public void repairProcessModel() {
+		/*
+		 * Fix IDs dialog.
+		 */
+		new DefaultShell("Selection Needed").setFocus();
+		new PushButton("Select All").click();
+		new PushButton("OK").click();
+		/*
+		 * BPMN2 nature dialog
+		 */
+		try {
+			editor.projectNature(false);
+		} catch (SWTLayerException e ) {
+			// The dialog may not appear
+		}
+	}
+	
 	public void validateProcessModel() {
 		/*
 		 * Make sure all content is saved.
@@ -58,6 +78,17 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 		if (editor.isDirty()) {
 			editor.save();
 		}
+		
+		/*
+		 * Sometimes generated IDs are not unique. Fix
+		 * it!
+		 */
+		try {
+			repairProcessModel();
+		} catch (SWTLayerException e) {
+			log.warn(e.getMessage());
+		}
+		
 		/*
 		 * Capture the current state.
 		 */
