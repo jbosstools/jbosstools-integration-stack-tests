@@ -49,7 +49,7 @@ public class ProcessDefinitionRequirement implements Requirement<ProcessDefiniti
 
 	
 	public ProcessDefinitionRequirement() {
-		useRobot = Boolean.parseBoolean(System.getProperty("awt.robot"));
+		useRobot = Boolean.parseBoolean(System.getProperty("awt.robot", "true"));
 	}
 	
 	public void setDeclaration(ProcessDefinition d) {
