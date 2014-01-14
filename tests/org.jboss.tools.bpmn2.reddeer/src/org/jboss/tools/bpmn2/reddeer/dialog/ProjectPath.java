@@ -1,4 +1,4 @@
-package org.jboss.tools.bpmn2.reddeer.wizard;
+package org.jboss.tools.bpmn2.reddeer.dialog;
 
 /**
  * 

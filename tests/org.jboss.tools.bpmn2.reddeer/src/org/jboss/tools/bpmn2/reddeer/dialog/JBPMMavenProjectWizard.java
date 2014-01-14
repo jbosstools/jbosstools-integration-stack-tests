@@ -1,5 +1,8 @@
-package org.jboss.tools.bpmn2.reddeer.wizard;
+package org.jboss.tools.bpmn2.reddeer.dialog;
 
+import static org.junit.Assert.assertTrue;
+
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
@@ -8,13 +11,13 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  * 
  * @author Marek Baluch <mbaluch@redhat.com>
  */
-public class GeneralProjectWizard extends NewWizardDialog {
+public class JBPMMavenProjectWizard extends NewWizardDialog {
 
 	/**
-	 * 
+	 * Creates a new instance of JBPMMavenProjectWizard.
 	 */
-	public GeneralProjectWizard() {
-		super("General", "Project");
+	public JBPMMavenProjectWizard() {
+		super("jBPM", "jBPM project (Maven)");
 	}
 	
 	@Override
@@ -30,6 +33,7 @@ public class GeneralProjectWizard extends NewWizardDialog {
 		open();
 		new LabeledText("Project name:").setText(projectName);
 		finish();
+		assertTrue("Project '" + projectName + "' was not created", new PackageExplorer().containsProject(projectName));
 	}
 	
 }

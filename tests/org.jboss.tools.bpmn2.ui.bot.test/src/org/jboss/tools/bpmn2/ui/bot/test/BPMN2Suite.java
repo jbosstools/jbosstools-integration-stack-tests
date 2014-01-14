@@ -20,7 +20,8 @@ public class BPMN2Suite extends RedDeerSuite {
 
 	private static RunnerBuilder foo(RunnerBuilder builder) {
 		// readConfigurationProperties();
-		closeWelcomeScreen();
+		closeWelcomeView();
+		closeGuvnorView();
 		return builder;
 	}
 	
@@ -49,9 +50,18 @@ public class BPMN2Suite extends RedDeerSuite {
 		}
 	}
 
-	private static void closeWelcomeScreen() {
+	private static void closeWelcomeView() {
 		try {
 			new SWTWorkbenchBot().viewByTitle("Welcome").close();
+		} catch (Exception ex) {
+			// Ignore
+		}
+	}
+	
+	private static void closeGuvnorView() {
+		try {
+			new SWTWorkbenchBot().viewByTitle("Guvnor Repositories").close();
+			new SWTWorkbenchBot().viewByTitle("Guvnor Resource History").close();
 		} catch (Exception ex) {
 			// Ignore
 		}
