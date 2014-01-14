@@ -1,4 +1,4 @@
-package org.jboss.tools.bpmn2.reddeer.wizard;
+package org.jboss.tools.bpmn2.reddeer.dialog;
 
 import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;

@@ -1,9 +1,9 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.jboss.tools.bpmn2.reddeer.editor.BPMN2PropertiesView;
 import org.jboss.tools.bpmn2.reddeer.editor.IMappingSide;
 import org.jboss.tools.bpmn2.reddeer.editor.IParameterMapping;
+import org.jboss.tools.bpmn2.reddeer.view.BPMN2PropertiesView;
 
 // -- OUTPUT ASSOCIATION --
 // FROM: DataOutput

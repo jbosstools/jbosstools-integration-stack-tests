@@ -1,4 +1,4 @@
-package org.jboss.tools.bpmn2.reddeer.wizard;
+package org.jboss.tools.bpmn2.reddeer.dialog;
 
 import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
@@ -8,17 +8,18 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  * 
  * @author Marek Baluch <mbaluch@redhat.com>
  */
-public class JBPMProcessWizard extends NewWizardDialog {
+public class JBPMProcessLegacyWizard extends NewWizardDialog {
 
 	/**
-	 * Creates a new instance of JBPMProcessWizard. 
+	 * Creates a new instance of NewProcessWizard. 
 	 */
-	public JBPMProcessWizard() {
+	public JBPMProcessLegacyWizard() {
 		super("jBPM", "BPMN2 Process");
 	}
 	
 	@Override
 	public WizardPage getFirstPage() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 	
