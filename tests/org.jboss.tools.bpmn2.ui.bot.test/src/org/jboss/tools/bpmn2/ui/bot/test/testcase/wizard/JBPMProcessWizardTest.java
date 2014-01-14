@@ -2,8 +2,8 @@ package org.jboss.tools.bpmn2.ui.bot.test.testcase.wizard;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jface.exception.JFaceLayerException;
-import org.jboss.tools.bpmn2.reddeer.wizard.JBPMProcessWizard;
-import org.jboss.tools.bpmn2.reddeer.wizard.JBPMProjectWizard;
+import org.jboss.tools.bpmn2.reddeer.dialog.JBPMProcessWizard;
+import org.jboss.tools.bpmn2.reddeer.dialog.JBPMProjectWizard;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessRuntimeRequirement.ProcessRuntime;
 import org.junit.AfterClass;
 import org.junit.Assert;

@@ -24,6 +24,8 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.reddeer.matcher.ConstructOfType;
 import org.jboss.tools.bpmn2.reddeer.matcher.ConstructOnPoint;
 import org.jboss.tools.bpmn2.reddeer.matcher.ConstructWithName;
+import org.jboss.tools.bpmn2.reddeer.view.BPMN2Editor;
+import org.jboss.tools.bpmn2.reddeer.view.BPMN2PropertiesView;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;

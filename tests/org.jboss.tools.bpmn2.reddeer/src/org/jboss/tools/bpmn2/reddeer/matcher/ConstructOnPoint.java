@@ -5,7 +5,7 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalEditPart;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-import org.jboss.tools.bpmn2.reddeer.editor.BPMN2Editor;
+import org.jboss.tools.bpmn2.reddeer.view.BPMN2Editor;
 
 /**
  * Returns an edit part which is on a given location (given by X, Y) in the editor.

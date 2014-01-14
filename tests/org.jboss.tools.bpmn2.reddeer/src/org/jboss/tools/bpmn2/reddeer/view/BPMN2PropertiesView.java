@@ -1,4 +1,4 @@
-package org.jboss.tools.bpmn2.reddeer.editor;
+package org.jboss.tools.bpmn2.reddeer.view;
 
 import java.util.Arrays;
 import java.util.List;

@@ -6,6 +6,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.test.RedDeerTest;
@@ -76,6 +77,7 @@ public class BPMTest extends RedDeerTest {
 	
 	@Test
 	public void bpmCreationTest() {
+		new WorkbenchShell().maximize();
 		// Create new Switchyard project, Add support for Bean, BPM
 		new SwitchYardProjectWizard(PROJECT).impl("Bean", "BPM (jBPM)")
 				.groupId(GROUP_ID).packageName(PACKAGE).create();

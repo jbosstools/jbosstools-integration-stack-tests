@@ -1,4 +1,4 @@
-package org.jboss.tools.bpmn2.reddeer.wizard;
+package org.jboss.tools.bpmn2.reddeer.dialog;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
