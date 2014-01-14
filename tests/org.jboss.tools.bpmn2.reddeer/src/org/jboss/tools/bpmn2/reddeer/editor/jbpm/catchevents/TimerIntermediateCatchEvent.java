@@ -21,7 +21,7 @@ public class TimerIntermediateCatchEvent extends IntermediateCatchEvent {
 		properties.selectTab("Event");
 		new DefaultTable().select(0);
 		properties.toolbarButton("Event Definitions", "Edit").click();
-		bot.textWithLabel("Script", type.ordinal());
+		bot.textWithLabel("Script", type.ordinal()).setText(value);
 		properties.toolbarButton("Timer Event Definition Details", "Close").click();
 	}
 	

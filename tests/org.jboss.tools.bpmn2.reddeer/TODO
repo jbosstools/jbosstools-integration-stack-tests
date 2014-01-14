@@ -1,0 +1,7 @@
+TODO
+
+* fix append so that it uses the relative position of the
+  activity after which it is appended
+* add methods to activities
+    + setMessage(String message) - only select message in the combo (message of type is already present!)
+    + setMessage(String message, String dataType) - create dataType and select message

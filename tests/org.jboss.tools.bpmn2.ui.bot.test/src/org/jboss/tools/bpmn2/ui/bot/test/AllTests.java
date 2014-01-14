@@ -24,7 +24,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	ParallelSplitJoinTest.class,
 	CallActivityTest.class,
 	AdHocProcessTest.class,
-	AdHocSubProcessTest.class,
+	AdHocSubProcessTest.class, // Fails but requires overhaul
 	AssociationTest.class,
 	BooleanStructureReferenceTest.class,
 	BusinessRuleTaskTest.class,
@@ -35,25 +35,25 @@ import org.junit.runners.Suite.SuiteClasses;
 	ReceiveTaskTest.class,
 	ParallelSplitTest.class,
 	RuleTaskTest.class,
-	SendTaskTest.class,
+	SendTaskTest.class, // Fails need to reproduce
 	ErrorBoundaryEventOnTaskTest.class,
 	IntermediateCatchEventTimerCycleTest.class,
 	MessageStartTest.class,
-	SubProcessTest.class,
+	SubProcessTest.class, // Fails but requires overhaul
 	UserTaskTest.class,
-	XPathExpressionTest.class,
-	LaneTest.class,
+	XPathExpressionTest.class, // @Ignore
+	LaneTest.class, // Analyze
 	DataObjectTest.class,
 	MultipleStartEventTest.class,
 	InclusiveSplitTest.class,
 	IntermediateThrowEventNoneTest.class,
-	IntermediateThrowMessageEventTest.class,
+	IntermediateThrowMessageEventTest.class, // Analyze
 	IntermediateThrowEscalationEventTest.class,
-	IntermediateCatchSignalSingleTest.class,
-	ExclusiveSplitPriorityTest.class,
-	EventBasedSplitTest.class,
+	IntermediateCatchSignalSingleTest.class, // Analyze
+	ExclusiveSplitPriorityTest.class, // Analyze
+	EventBasedSplitTest.class, // Analyze
 	BoundaryEscalationEventOnTaskTest.class,
-	ConditionalBoundaryEventInterruptingTest.class, 
+	ConditionalBoundaryEventInterruptingTest.class, // Analyze
 // Missing features tests
 // ----------------------
 //    OnEntryExitMixedNamespacedScriptProcessTest.class

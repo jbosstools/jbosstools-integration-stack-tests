@@ -1,4 +1,4 @@
-package org.jboss.tools.bpmn2.reddeer.editor;
+package org.jboss.tools.bpmn2.reddeer.view;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -35,6 +35,8 @@ import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.tools.bpmn2.reddeer.editor.Construct;
+import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
 import org.jboss.tools.bpmn2.reddeer.matcher.ConstructAttributeMatchingRegex;
 import org.jboss.tools.bpmn2.reddeer.matcher.ConstructWithName;
 import org.jboss.tools.bpmn2.reddeer.matcher.PaletteEntryMatcher;

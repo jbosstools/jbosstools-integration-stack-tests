@@ -1,4 +1,4 @@
-package org.jboss.tools.bpmn2.reddeer.wizard;
+package org.jboss.tools.bpmn2.reddeer.dialog;
 
 import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
@@ -8,13 +8,13 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  * 
  * @author Marek Baluch <mbaluch@redhat.com>
  */
-public class JavaProjectWizard extends NewWizardDialog {
+public class GeneralProjectWizard extends NewWizardDialog {
 
 	/**
 	 * 
 	 */
-	public JavaProjectWizard() {
-		super("Java", "Java Project");
+	public GeneralProjectWizard() {
+		super("General", "Project");
 	}
 	
 	@Override

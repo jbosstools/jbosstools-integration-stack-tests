@@ -19,8 +19,8 @@ import org.jboss.reddeer.junit.requirement.Requirement;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.tools.bpmn2.reddeer.wizard.BPMN2ProcessWizard;
-import org.jboss.tools.bpmn2.reddeer.wizard.JavaProjectWizard;
+import org.jboss.tools.bpmn2.reddeer.dialog.BPMN2ProcessWizard;
+import org.jboss.tools.bpmn2.reddeer.dialog.JavaProjectWizard;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 
 /**

@@ -25,7 +25,7 @@ public class MessageStartTest extends JBPM6BaseTest {
 		process.add("StartProcess", ConstructType.MESSAGE_START_EVENT);
 		
 		MessageStartEvent start = new MessageStartEvent("StartProcess");
-		start.setMessage("HelloMessage", "String");
+		start.setMessageMapping("HelloMessage", "String", "BPMN2-MessageStart/x");
 		start.append("Script", ConstructType.SCRIPT_TASK);
 		
 		ScriptTask script = new ScriptTask("Script");

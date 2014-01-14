@@ -18,6 +18,11 @@ import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequireme
 @ProcessDefinition(name="BPMN2-Lane", project="EditorTestProject")
 public class LaneTest extends JBPM6BaseTest {
 
+	/*
+	 * ISSUE:
+	 * 	Task2 has two outgoing connections and End has two incoming. But why? Unable to
+	 * 	reproduce by hand.
+	 */
 	@Override
 	public void buildProcessModel() {
 //		StartEvent start = new StartEvent("StartProcess");
