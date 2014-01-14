@@ -1,4 +1,4 @@
-package org.jboss.tools.bpmn2.ui.bot.test.testcase.wizard;
+package org.jboss.tools.bpmn2.ui.bot.test.testcase.view;
 
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;

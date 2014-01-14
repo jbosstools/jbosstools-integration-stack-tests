@@ -53,7 +53,8 @@ public class ContainerConstruct extends Construct {
 			/*
 			 * Upper left corner
 			 */
-			x = y = 5;
+			x = bounds.x + 5; 
+		    y = bounds.y + 5;
 		} else {
 			x = bounds.x + (bounds.width / 8);
 			/*
@@ -62,7 +63,8 @@ public class ContainerConstruct extends Construct {
 			 */
 			y = bounds.y + (bounds.height / 10);
 		}
-		add(name, type, new Point(x, y));
+		Point placeTo = new Point(x, y);
+		add(name, type, placeTo);
 	}
 	
 	/**
@@ -84,7 +86,8 @@ public class ContainerConstruct extends Construct {
 	 * @param point
 	 */
 	public void add(String name, ConstructType type, Point point) {
-		if (!isInternalAvailable(point)) {
+		String sectionName = type.toToolPath()[0];
+		if (!"Boundary Events".equals(sectionName) && !isInternalAvailable(point)) {
 			throw new RuntimeException("'" + point + "' is not available");
 		}
 		/*
