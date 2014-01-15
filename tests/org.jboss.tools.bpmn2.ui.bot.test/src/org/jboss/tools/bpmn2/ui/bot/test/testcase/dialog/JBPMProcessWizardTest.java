@@ -1,4 +1,4 @@
-package org.jboss.tools.bpmn2.ui.bot.test.testcase.wizard;
+package org.jboss.tools.bpmn2.ui.bot.test.testcase.dialog;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jface.exception.JFaceLayerException;
