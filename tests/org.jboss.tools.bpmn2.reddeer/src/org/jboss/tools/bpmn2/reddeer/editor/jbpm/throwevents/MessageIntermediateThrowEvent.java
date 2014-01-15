@@ -4,6 +4,7 @@ import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.reddeer.editor.AbstractEvent;
@@ -25,16 +26,17 @@ public class MessageIntermediateThrowEvent extends AbstractEvent {
 
 	/**
 	 * 
-	 * @param messageName
+	 * @param message
 	 * @param dataType
+	 * @param source
 	 */
-	public void setMessage(String messageName, String dataType) {
+	public void setMessageMapping(String message, String dataType, String source) {
 		properties.selectTab("Event");
 		new DefaultTable().select(0);
 		properties.toolbarButton("Event Definitions", "Edit").click();
 		
 		SWTBotCombo nameBox = bot.comboBoxWithLabel("Message");
-		String messageNameLabel  = messageName + "(" + dataType + ")";
+		String messageNameLabel  = message + "(" + dataType + ")";
 		if (properties.contains(nameBox, messageNameLabel)) {
 			nameBox.setSelection(messageNameLabel);
 		} else {
@@ -46,7 +48,7 @@ public class MessageIntermediateThrowEvent extends AbstractEvent {
 			shell.activate();
 			SWTBot windowBot = shell.bot();
 
-			new LabeledText("Name").setText(messageName);
+			new LabeledText("Name").setText(message);
 			if (dataType != null && !dataType.isEmpty()) {
 				nameBox = windowBot.comboBoxWithLabel("Data Type");
 				if (properties.contains(nameBox, dataType)) {
@@ -59,7 +61,7 @@ public class MessageIntermediateThrowEvent extends AbstractEvent {
 			}
 			
 			new PushButton("OK").click();
-			
+			new DefaultCombo("Source").setSelection(source);
 		}
 		
 		properties.toolbarButton("Message Event Definition Details", "Close").click();

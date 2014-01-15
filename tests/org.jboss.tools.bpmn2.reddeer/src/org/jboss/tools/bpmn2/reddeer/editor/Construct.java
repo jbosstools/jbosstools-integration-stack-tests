@@ -259,6 +259,14 @@ public class Construct {
 	
 	/**
 	 * 
+	 * @return
+	 */
+	public ConstructType getType() {
+		return type;
+	}
+	
+	/**
+	 * 
 	 * @param point
 	 * @return
 	 */
@@ -270,18 +278,20 @@ public class Construct {
 	}
 	
 	/**
-	 * Get a point to which a child can be added inside a parent.
+	 * Get a point inside ${parent} and next to ${child} with relative
+	 * ${position} to which another child can be added. 
 	 * 
 	 * @param parent
-	 * @param child
-	 * @param position
+	 * @param nextToChild
+	 * @param relativePosition
+	 * @param newChildType
 	 * @return
 	 */
-	protected Point findPoint(Construct parent, Construct child, Position position) {
+	protected Point findPoint(Construct parent, Construct nextToChild, Position relativePosition) {
 		/*
 		 * Initialize variables.
 		 */
-		Rectangle childRectangle = child.getBounds();
+		Rectangle childRectangle = nextToChild.getBounds();
 		
 		int childStartX = childRectangle.x();
 		int childEndX = childRectangle.right();
@@ -292,42 +302,47 @@ public class Construct {
 		int childCenterX = childRectangle.getCenter().x();
 		int childCenterY = childRectangle.getCenter().y();
 		
+//		int nearOffset  = newChildType.isContainer() ? 2 * 75 : 75;
+//		int farOffset = newChildType.isContainer() ? 2 * 100 : 100;
+		int nearOffset  = 75;
+		int farOffset = 100;
+		
 		Point point = new Point(-1, -1);
 		/*
 		 * Assign 'x' and 'y'.
 		 */
-		switch (position) {
+		switch (relativePosition) {
 			case NORTH:
 				point.x = childCenterX;
-				point.y = childStartY -100;
+				point.y = childStartY - farOffset;
 				break;
 			case NORTH_EAST:
-				point.x = childEndX + 75;
-				point.y = childStartY - 100;
+				point.x = childEndX + nearOffset;
+				point.y = childStartY - farOffset;
 				break;
 			case EAST:
-				point.x = childEndX + 100;
+				point.x = childEndX + farOffset;
 				point.y = childCenterY;
 				break;
 			case SOUTH_EAST:
-				point.x = childEndX  + 75;
-				point.y = childEndY + 100;
+				point.x = childEndX  + nearOffset;
+				point.y = childEndY + farOffset;
 				break;
 			case SOUTH:
 				point.x = childCenterX;
-				point.y = childEndY + 100;
+				point.y = childEndY + farOffset;
 				break;
 			case SOUTH_WEST:
-				point.x = childStartX - 75;
-				point.y = childEndY + 100;
+				point.x = childStartX - nearOffset;
+				point.y = childEndY + farOffset;
 				break;
 			case WEST:
-				point.x = childStartX - 100;
+				point.x = childStartX - farOffset;
 				point.y = childCenterY;
 				break;
 			case NORTH_WEST:
-				point.x = childStartX - 75;
-				point.y = childStartY - 100;
+				point.x = childStartX - nearOffset;
+				point.y = childStartY - farOffset;
 				break;
 			default:
 				throw new UnsupportedOperationException();
@@ -337,14 +352,14 @@ public class Construct {
 		 * 	- '*'  signals a properly added construct.
 		 * 	- '->' marks a connection between to '*'
 		 * 
-		 *     +
+		 *     + N
 		 *    ________
 		 * + |        |
 		 *   |        | +
-		 *   | *->*   |
+		 * W | *->*   | E
 		 *   |________|
 		 *       +
-         *
+         *       S
 		 */
 		
 		if (parent != null) {
