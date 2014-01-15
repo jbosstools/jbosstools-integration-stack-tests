@@ -16,9 +16,12 @@ import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequireme
 public class AdHocSubProcessTest extends JBPM6BaseTest {
 
 	/**
-	 * ISSUES: - May contain another bug. When adding a connection from an element
-	 *           to itself then 'y' is missing in the 'di' element.
-	 *         - See ContainerConstruct.add(String, ConstructType) 
+	 * ISSUE: - May contain another bug. When adding a connection from an element
+	 *          to itself then 'y' is missing in the 'di' element.
+	 *        - See ContainerConstruct.add(String, ConstructType) 
+	 * 
+	 * ISSUE: - Appending anything after a AdHocSubprocess or Subprocess does not
+	 *          generate the connection until the subprocess is moved.
 	 *         
 	 */
 	@Override
