@@ -29,7 +29,6 @@ public class ServerRequirement implements Requirement<Server>, PropertyConfigura
 	private String username;
 	private String password;
 	private String jmxname;
-	private String servername;
 
 	@Override
 	public boolean canFulfill() {
@@ -101,12 +100,5 @@ public class ServerRequirement implements Requirement<Server>, PropertyConfigura
 	public void setJmxname(String jmxname) {
 		this.jmxname = jmxname;
 	}
-
-	public String getServername() {
-		return servername;
-	}
-
-	public void setServername(String servername) {
-		this.servername = servername;
-	}
+	
 }
