@@ -241,6 +241,9 @@ public class Construct {
 		select();
 		log.info("\tClicking on points:");
 		log.info("\t\tPoint 1)'" + rs.getCenter() + "'");
+		/*
+		 * TODO: Clicking center on a Lane|Subprocess|etc. has a good chance to select something in it!
+		 */
 		editor.click(rs.getCenter().x(), rs.getCenter().y());
 		
 		construct.select();
