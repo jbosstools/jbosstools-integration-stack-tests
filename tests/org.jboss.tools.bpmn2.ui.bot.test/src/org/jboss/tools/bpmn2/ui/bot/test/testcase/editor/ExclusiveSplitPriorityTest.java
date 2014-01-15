@@ -9,6 +9,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.InputParameterMapping;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ToDataInput;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.Task;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.UserTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.ExclusiveGateway;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
@@ -45,13 +46,14 @@ public class ExclusiveSplitPriorityTest extends JBPM6BaseTest {
 		
 		ExclusiveGateway gw2 = new ExclusiveGateway("Join");
 		gw2.setDirection(Direction.CONVERGING);
-		gw2.append("Email", ConstructType.TASK);
+		gw2.append("Email", ConstructType.USER_TASK);
 		
 		ScriptTask task2 = new ScriptTask("Script2");
 		task2.setScript("Java", "System.out.println(\"y=\" + y);");
 		task2.connectTo(gw2);
 		
-		Task task = new Task("Email");
+		// TBD: switch to sendTask
+		UserTask task = new UserTask("Email");
 		task.addParameterMapping(new InputParameterMapping(new FromExpression("mvel", "This is an urgent email #{x}"), new ToDataInput("Body")));
 		task.addParameterMapping(new InputParameterMapping(new FromExpression("mvel", "Urgent email !"), new ToDataInput("Subject")));
 		task.addParameterMapping(new InputParameterMapping(new FromExpression("mvel", "you@mail.com"), new ToDataInput("To")));

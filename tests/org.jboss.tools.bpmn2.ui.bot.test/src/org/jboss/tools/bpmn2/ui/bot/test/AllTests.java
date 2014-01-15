@@ -2,8 +2,7 @@ package org.jboss.tools.bpmn2.ui.bot.test;
 
 import junit.framework.TestSuite;
 
-import org.jboss.tools.bpmn2.ui.bot.test.testcase.editor.*;
-import org.junit.runner.RunWith;
+import org.jboss.tools.bpmn2.ui.bot.test.testcase.editor.*;import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 /**
@@ -24,7 +23,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	ParallelSplitJoinTest.class,
 	CallActivityTest.class,
 	AdHocProcessTest.class,
-	AdHocSubProcessTest.class, // Fails but requires overhaul
+	AdHocSubProcessTest.class, // TODO: See issue description in file and create a BZ + create a validation BZ for addhocprocess
 	AssociationTest.class,
 	BooleanStructureReferenceTest.class,
 	BusinessRuleTaskTest.class,
@@ -39,7 +38,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	ErrorBoundaryEventOnTaskTest.class,
 	IntermediateCatchEventTimerCycleTest.class,
 	MessageStartTest.class,
-	SubProcessTest.class, // Fails but requires overhaul
+	SubProcessTest.class, // TODO: See AdHocSubProcessTest and file BZ
 	UserTaskTest.class,
 	XPathExpressionTest.class, // @Ignore
 	LaneTest.class, // Analyze
@@ -47,13 +46,13 @@ import org.junit.runners.Suite.SuiteClasses;
 	MultipleStartEventTest.class,
 	InclusiveSplitTest.class,
 	IntermediateThrowEventNoneTest.class,
-	IntermediateThrowMessageEventTest.class, // Analyze
+	IntermediateThrowMessageEventTest.class,
 	IntermediateThrowEscalationEventTest.class,
-	IntermediateCatchSignalSingleTest.class, // Analyze
-	ExclusiveSplitPriorityTest.class, // Analyze
-	EventBasedSplitTest.class, // Analyze
+	IntermediateCatchSignalSingleTest.class,
+	ExclusiveSplitPriorityTest.class,
+	EventBasedSplitTest.class,
 	BoundaryEscalationEventOnTaskTest.class,
-	ConditionalBoundaryEventInterruptingTest.class, // Analyze
+	ConditionalBoundaryEventInterruptingTest.class,
 // Missing features tests
 // ----------------------
 //    OnEntryExitMixedNamespacedScriptProcessTest.class

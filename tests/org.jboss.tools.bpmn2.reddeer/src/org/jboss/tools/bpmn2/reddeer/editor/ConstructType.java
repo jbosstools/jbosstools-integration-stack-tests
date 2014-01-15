@@ -1,5 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.editor;
 
+
 /**
  * TBD: tool names and sections will be required.
  * 
@@ -86,6 +87,14 @@ public enum ConstructType {
 	private ConstructType(String sectionName, String paletteToolName) {
 		this.sectionName = sectionName;
 		this.paletteToolName = paletteToolName;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean isContainer() {
+		return AD_HOC_SUB_PROCESS.equals(this) || SUB_PROCESS.equals(this) || PROCESS.equals(this);
 	}
 	
 	/**

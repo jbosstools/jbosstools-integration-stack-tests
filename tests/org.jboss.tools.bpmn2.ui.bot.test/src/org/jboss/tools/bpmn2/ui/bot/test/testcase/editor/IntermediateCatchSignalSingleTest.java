@@ -1,6 +1,7 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.BPMN2Process;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.UserTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.catchevents.SignalIntermediateCatchEvent;
@@ -17,6 +18,9 @@ public class IntermediateCatchSignalSingleTest extends JBPM6BaseTest {
 
 	@Override
 	public void buildProcessModel() {
+		BPMN2Process process = new BPMN2Process("BPMN2-IntermediateCatchSignalSingle");
+		process.addLocalVariable("s", "String");
+		
 		StartEvent startEvent = new StartEvent("StartProcess");
 		startEvent.append("User Task", ConstructType.USER_TASK);
 		
@@ -25,7 +29,7 @@ public class IntermediateCatchSignalSingleTest extends JBPM6BaseTest {
 		userTask.append("Catch", ConstructType.SIGNAL_INTERMEDIATE_CATCH_EVENT);
 		
 		SignalIntermediateCatchEvent catchEvent = new SignalIntermediateCatchEvent("Catch");
-		catchEvent.setSignal("Batman Signal");
+		catchEvent.setSignalMapping("Batman Signal", "BPMN2-IntermediateCatchSignalSingle/s");
 		catchEvent.append("Script Task", ConstructType.SCRIPT_TASK);
 		
 		ScriptTask scriptTask = new ScriptTask("Script Task");
