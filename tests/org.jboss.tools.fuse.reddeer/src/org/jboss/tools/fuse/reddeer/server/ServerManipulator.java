@@ -6,6 +6,7 @@ import java.awt.event.InputEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerLabel;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
@@ -139,6 +140,23 @@ public class ServerManipulator {
 		}
 
 		return false;
+	}
+	
+	/**
+	 * Checks if the Fuse server with given name exists
+	 * 
+	 * @param name Name of the Server in Servers View
+	 * @return true - a Fuse server is present, false - otherwise
+	 */
+	public static boolean isServerPresent(String name) {
+		
+		try {
+			new ServersView().getServer(name);
+		} catch (EclipseLayerException ex) {
+			return false;
+		}
+		
+		return true;
 	}
 	
 	/**
