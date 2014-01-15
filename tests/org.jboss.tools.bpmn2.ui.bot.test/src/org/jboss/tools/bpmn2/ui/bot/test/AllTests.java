@@ -41,7 +41,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	SubProcessTest.class, // TODO: See AdHocSubProcessTest and file BZ
 	UserTaskTest.class,
 	XPathExpressionTest.class, // @Ignore
-	LaneTest.class, // Analyze
+	LaneTest.class, // TODO: File a BZ. it's possible to connect two objects with more than one sequence flow
 	DataObjectTest.class,
 	MultipleStartEventTest.class,
 	InclusiveSplitTest.class,
