@@ -43,11 +43,12 @@ public class ServerTest extends RedDeerTest {
 		ServerManipulator.addServer(serverRequirement.getName(), serverRequirement.getName(), serverRequirement.getPort(),
 				serverRequirement.getUsername(), serverRequirement.getPassword());
 		assertEquals(1, ServerManipulator.getServers().size());
-		ServerManipulator.startServer(serverRequirement.getServername());
+		assertTrue(ServerManipulator.isServerPresent(serverRequirement.getName()));
+		ServerManipulator.startServer(serverRequirement.getName());
 		assertTrue(ServerManipulator.isServerStarted(serverRequirement.getJmxname()));
-		ServerManipulator.stopServer(serverRequirement.getServername());
+		ServerManipulator.stopServer(serverRequirement.getName());
 		assertFalse(ServerManipulator.isServerStarted(serverRequirement.getJmxname()));
-		ServerManipulator.removeServer(serverRequirement.getServername());
+		ServerManipulator.removeServer(serverRequirement.getName());
 		assertEquals(0, ServerManipulator.getServers().size());
 		ServerManipulator.removeServerRuntime(serverRequirement.getRuntime());
 		assertEquals(0, ServerManipulator.getServerRuntimes().size());
