@@ -71,8 +71,8 @@
   <profile>
     <id>fuse-6.1</id>
     <properties>
-      <build>139</build>
-      <fuse-610ci>http://repo.fusesource.com/nexus/content/groups/ea/org/jboss/fuse/jboss-fuse-full/6.1.0.redhat-${build}/jboss-fuse-full-6.1.0.redhat-${build}.zip</fuse-610ci>
+      <fuse-build>312</fuse-build>
+      <fuse-610ci>https://repository.jboss.org/nexus/content/groups/ea/org/jboss/fuse/jboss-fuse-full/6.1.0.redhat-${fuse-build}/jboss-fuse-full-6.1.0.redhat-${fuse-build}.zip</fuse-610ci>
     </properties>
     <build>
       <plugins>
@@ -112,8 +112,8 @@
                   </goals>
                   <configuration>
                     <target>
-                      <echo file="target/requirements/jboss-fuse-6.1.0.redhat-${build}/etc/users.properties">admin=admin,admin</echo>
-                      <copy file="resources/serverConfig/host.key" todir="target/requirements/jboss-fuse-6.1.0.redhat-${build}/etc/"/>
+                      <echo file="target/requirements/jboss-fuse-6.1.0.redhat-${fuse-build}/etc/users.properties">admin=admin,admin</echo>
+                      <copy file="resources/serverConfig/host.key" todir="target/requirements/jboss-fuse-6.1.0.redhat-${fuse-build}/etc/"/>
                     </target>
                   </configuration>
                 </execution>
