@@ -1,4 +1,4 @@
-package org.jboss.tools.bpmn2.ui.bot.test.testcase.view;
+package org.jboss.tools.bpmn2.ui.bot.test.testcase.dialog;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;

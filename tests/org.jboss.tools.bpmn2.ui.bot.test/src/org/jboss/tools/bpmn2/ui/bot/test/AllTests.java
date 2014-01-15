@@ -20,10 +20,13 @@ import org.junit.runners.Suite.SuiteClasses;
 //	JBpmProcessWizardTest.class,
 // Editor tests
 // ------------
+	// Uncovered:
+	// 	BZ-1053789
+	//  
 	ParallelSplitJoinTest.class,
 	CallActivityTest.class,
 	AdHocProcessTest.class,
-	AdHocSubProcessTest.class, // TODO: See issue description in file and create a BZ + create a validation BZ for addhocprocess
+	AdHocSubProcessTest.class, // BZ-1053781
 	AssociationTest.class,
 	BooleanStructureReferenceTest.class,
 	BusinessRuleTaskTest.class,
@@ -34,14 +37,14 @@ import org.junit.runners.Suite.SuiteClasses;
 	ReceiveTaskTest.class,
 	ParallelSplitTest.class,
 	RuleTaskTest.class,
-	SendTaskTest.class, // Fails need to reproduce
+	SendTaskTest.class, // BZ-1053825
 	ErrorBoundaryEventOnTaskTest.class,
 	IntermediateCatchEventTimerCycleTest.class,
 	MessageStartTest.class,
-	SubProcessTest.class, // TODO: See AdHocSubProcessTest and file BZ
+	SubProcessTest.class, // BZ-1053781
 	UserTaskTest.class,
 	XPathExpressionTest.class, // @Ignore
-	LaneTest.class, // TODO: File a BZ. it's possible to connect two objects with more than one sequence flow
+	LaneTest.class, // BZ-1053784
 	DataObjectTest.class,
 	MultipleStartEventTest.class,
 	InclusiveSplitTest.class,
@@ -52,10 +55,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	ExclusiveSplitPriorityTest.class,
 	EventBasedSplitTest.class,
 	BoundaryEscalationEventOnTaskTest.class,
-	ConditionalBoundaryEventInterruptingTest.class,
-// Missing features tests
-// ----------------------
-//    OnEntryExitMixedNamespacedScriptProcessTest.class
+	ConditionalBoundaryEventInterruptingTest.class, // BZ-1053781
 })
 public class AllTests extends TestSuite {
 	// TBD: BPMN2-IntermediateCatchEventTimerCycleWithError.bpmn2

@@ -40,6 +40,9 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 		editor = new BPMN2Editor(definition.name().replace("\\s+", ""));
 	}
 	
+	/**
+	 * Build the process model using the designer functions.
+	 */
 	public abstract void buildProcessModel();
 	
 	@Test
@@ -53,7 +56,7 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 		}
 	}
 	
-	public void repairProcessModel() {
+	protected void repairProcessModel() {
 		/*
 		 * Fix IDs dialog.
 		 */
@@ -70,14 +73,18 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 		}
 	}
 	
-	public void validateProcessModel() {
-		/*
-		 * Make sure all content is saved.
-		 */
+	protected void saveProcessModel() {
 		editor.setFocus();
 		if (editor.isDirty()) {
 			editor.save();
 		}
+	}
+	
+	protected void validateProcessModel() {
+		/*
+		 * Make sure all content is saved.
+		 */
+		saveProcessModel();
 		
 		/*
 		 * Sometimes generated IDs are not unique. Fix
@@ -102,7 +109,7 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 		Assert.assertTrue(validator.getResultMessage(), result);
 	}
 	
-	public void openProcessFile() {
+	protected void openProcessFile() {
 		/*
 		 * Open process definition.
 		 */
@@ -114,9 +121,10 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 		editor.activateTool("Profiles", definition.profile());
 	}
 	
-	public void closeProcessFile() {
+	protected void closeProcessFile() {
 		new SWTWorkbenchBot().closeAllShells();
 		log.info("Closing '" + editor.getTitle() + "'");
+		saveProcessModel();
 		editor.close();
 	}
 	
