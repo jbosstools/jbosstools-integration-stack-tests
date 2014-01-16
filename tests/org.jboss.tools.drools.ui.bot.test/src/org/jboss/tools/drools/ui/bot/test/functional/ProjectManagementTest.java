@@ -20,7 +20,7 @@ import org.jboss.tools.drools.reddeer.properties.DroolsProjectProperties;
 import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectSelectRuntimeWizardPage.CodeCompatibility;
 import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectWizard;
 import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
-import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultRuntime;
+import org.jboss.tools.drools.ui.bot.test.annotation.Drools6Runtime;
 import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
 import org.jboss.tools.drools.ui.bot.test.util.SmokeTest;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
@@ -34,7 +34,7 @@ public class ProjectManagementTest extends TestParent {
     private static final Logger LOGGER = Logger.getLogger(ProjectManagementTest.class);
 
     @Test @Category(SmokeTest.class)
-    @UsePerspective(DroolsPerspective.class) @UseDefaultRuntime
+    @UsePerspective(DroolsPerspective.class) @Drools6Runtime
     public void testProjectCreationAndDeletion() {
         final String projectName = "testProjectCreationAndDeletion";
         ProblemsView problems = new ProblemsView();
@@ -70,7 +70,7 @@ public class ProjectManagementTest extends TestParent {
     }
 
     @Test
-    @UsePerspective(JavaPerspective.class) @UseDefaultRuntime @UseDefaultProject
+    @UsePerspective(JavaPerspective.class) @Drools6Runtime @UseDefaultProject
     public void testChangeDefaultRuntime() {
         final String secondRuntime = "testChangeDefaultRuntime";
         final String runtimeLocation = createTempDir("testChangeDefaultRuntime");
@@ -108,7 +108,7 @@ public class ProjectManagementTest extends TestParent {
     }
 
     @Test
-    @UsePerspective(JavaPerspective.class) @UseDefaultRuntime
+    @UsePerspective(JavaPerspective.class) @Drools6Runtime
     public void testConvertJavaProject() {
         final String projectName = "testJavaProject";
         NewJavaProjectWizardDialog diag = new NewJavaProjectWizardDialog();

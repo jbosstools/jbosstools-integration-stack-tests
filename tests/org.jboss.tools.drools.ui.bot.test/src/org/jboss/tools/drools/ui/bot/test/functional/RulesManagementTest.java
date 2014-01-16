@@ -22,7 +22,7 @@ import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage;
 import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectWizard;
 import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
-import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultRuntime;
+import org.jboss.tools.drools.ui.bot.test.annotation.Drools6Runtime;
 import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
 import org.jboss.tools.drools.ui.bot.test.util.ApplicationIsTerminated;
 import org.jboss.tools.drools.ui.bot.test.util.OpenUtility;
@@ -42,7 +42,7 @@ public class RulesManagementTest extends TestParent {
     private static final String SUCCESSFUL_RUN_REGEX = DEBUG_REGEX + "Hello World\nGoodbye cruel world\n";
 
     @Test
-    @UsePerspective(JavaPerspective.class) @UseDefaultRuntime @UseDefaultProject
+    @UsePerspective(JavaPerspective.class) @Drools6Runtime @UseDefaultProject
     public void testRunRulesFromContextMenu() {
         ConsoleView console = new ConsoleView();
         console.open();
@@ -59,7 +59,7 @@ public class RulesManagementTest extends TestParent {
     }
 
     @Test
-    @UsePerspective(JavaPerspective.class) @UseDefaultRuntime @UseDefaultProject
+    @UsePerspective(JavaPerspective.class) @Drools6Runtime @UseDefaultProject
     public void testRunRulesFromToolbar() {
         ConsoleView console = new ConsoleView();
         console.open();
@@ -108,7 +108,7 @@ public class RulesManagementTest extends TestParent {
     }
 
     @Test
-    @UsePerspective(JavaPerspective.class) @UseDefaultRuntime @UseDefaultProject
+    @UsePerspective(JavaPerspective.class) @Drools6Runtime @UseDefaultProject
     public void testRenameProject() {
         final String oldName = DEFAULT_PROJECT_NAME;
         final String newName = "renamed" + oldName;
@@ -131,7 +131,7 @@ public class RulesManagementTest extends TestParent {
     }
 
     @Test
-    @UsePerspective(JavaPerspective.class) @UseDefaultRuntime @UseDefaultProject
+    @UsePerspective(JavaPerspective.class) @Drools6Runtime @UseDefaultProject
     public void testSetBreakpoint() {
         OpenUtility.openResource(DEFAULT_PROJECT_NAME, RESOURCES_LOCATION, "rules", "Sample.drl");
 
@@ -150,7 +150,7 @@ public class RulesManagementTest extends TestParent {
     }
 
     @Test @Category(SmokeTest.class)
-    @UsePerspective(DroolsPerspective.class) @UseDefaultRuntime @UseDefaultProject
+    @UsePerspective(DroolsPerspective.class) @Drools6Runtime @UseDefaultProject
     public void testDebugRule() {
         OpenUtility.openResource(DEFAULT_PROJECT_NAME, RESOURCES_LOCATION, "rules", "Sample.drl");
 

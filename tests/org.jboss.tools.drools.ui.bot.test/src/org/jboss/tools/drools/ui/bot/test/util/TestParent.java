@@ -3,13 +3,11 @@ package org.jboss.tools.drools.ui.bot.test.util;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.log4j.Logger;
@@ -33,7 +31,7 @@ import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage.Dr
 import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectWizard;
 import org.jboss.tools.drools.ui.bot.test.Activator;
 import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
-import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultRuntime;
+import org.jboss.tools.drools.ui.bot.test.annotation.Drools6Runtime;
 import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
 import org.junit.After;
 import org.junit.Before;
@@ -51,12 +49,12 @@ import org.osgi.framework.Bundle;
 @RunWith(RedDeerSuite.class)
 public abstract class TestParent {
     private static final Logger LOGGER = Logger.getLogger(TestParent.class);
-    private static final Properties TEST_PARAMS = new Properties();
+    private static final TestSuiteProperties TEST_PARAMS = new TestSuiteProperties();
     private static final String LOCAL_RUNTIME = new File("tmp/runtime").getAbsolutePath();
     private static final File SCREENSHOT_DIR = new File("screenshots");
 
     protected static final String DEFAULT_DROOLS_RUNTIME_NAME = "defaultTestRuntime";
-    protected static final String DEFAULT_DROOLS_RUNTIME_LOCATION;
+    protected static final String DEFAULT_DROOLS_RUNTIME_LOCATION = TEST_PARAMS.getProperty(TestSuiteProperties.DROOLS6_RUNTIME, LOCAL_RUNTIME);
     public static final String DEFAULT_PROJECT_NAME = "defaultTestProject";
     protected static final String RESOURCES_LOCATION = "src/main/resources";
     protected static final String DEFAULT_RULES_PATH = DEFAULT_PROJECT_NAME + "/" + RESOURCES_LOCATION + "/rules";
@@ -92,21 +90,6 @@ public abstract class TestParent {
             LOGGER.warn(String.format("failed %s - %s", description.getClassName(), description.getMethodName()));
         };
     };
-
-    static {
-        try {
-            LOGGER.info("Loading properties for Drools tests");
-            // Read project properties
-            Bundle bundle = Platform.getBundle(Activator.PLUGIN_ID);
-            InputStream is = bundle.getResource("project.properties").openStream();
-            TEST_PARAMS.load(is);
-            LOGGER.info("Properties for Drools test loaded");
-        } catch (Exception ex) {
-            LOGGER.warn("External properties were not loaded.");
-        }
-
-        DEFAULT_DROOLS_RUNTIME_LOCATION = TEST_PARAMS.getProperty("drools.default.location", LOCAL_RUNTIME);
-    }
 
     @BeforeClass
     public static void closeStartUpDialogsAndViews() {
@@ -172,7 +155,7 @@ public abstract class TestParent {
         }
 
         // then add a default runtime
-        if (getAnnotationOnMethod(name.getMethodName(), UseDefaultRuntime.class) != null) {
+        if (getAnnotationOnMethod(name.getMethodName(), Drools6Runtime.class) != null) {
             DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
             pref.open();
 
@@ -272,13 +255,18 @@ public abstract class TestParent {
         return w.toString();
     }
 
+    /**
+     * Takes the screenshot of Eclipse. It is stored in screenshot directory. The file name follows pattern  <code>001-${name}.png</code>.
+     * 
+     * @param name name of the screenshot (needs not be unique)
+     */
     protected static void takeScreenshot(String name) {
         if (!SCREENSHOT_DIR.exists()) {
             SCREENSHOT_DIR.mkdirs();
         }
 
         int index = SCREENSHOT_DIR.list().length;
-        File screenshotFile = new File(SCREENSHOT_DIR, String.format("%02d-%s.png", index, name ));
+        File screenshotFile = new File(SCREENSHOT_DIR, String.format("%03d-%s.png", index, name ));
         SWTUtils.captureScreenshot(screenshotFile.getAbsolutePath());
     }
 
