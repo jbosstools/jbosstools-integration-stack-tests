@@ -40,10 +40,6 @@ public class SwitchYardQuickstartsTest extends QuickstartsTest {
 		deleteAllProjects();
 		testQuickstart("bpel-service/simple_correlation");
 		deleteAllProjects();
-		testQuickstart("bpel-service/xts_subordinate_wsba");
-		deleteAllProjects();
-		testQuickstart("bpel-service/xts_wsat");
-		deleteAllProjects();
 	}
 
 	@Test
@@ -52,18 +48,8 @@ public class SwitchYardQuickstartsTest extends QuickstartsTest {
 	}
 
 	@Test
-	public void camelAmqpBindingTest() {
-		testQuickstart("camel-amqp-binding");
-	}
-
-	@Test
 	public void camelBindingTest() {
 		testQuickstart("camel-binding");
-	}
-
-	@Test
-	public void camelBusCdiTest() {
-		testQuickstart("camel-bus-cdi");
 	}
 
 	@Test
@@ -127,18 +113,8 @@ public class SwitchYardQuickstartsTest extends QuickstartsTest {
 	}
 
 	@Test
-	public void jcaInflowActivemqTest() {
-		testQuickstart("jca-inflow-activemq");
-	}
-
-	@Test
 	public void jcaInflowHornetqTest() {
 		testQuickstart("jca-inflow-hornetq");
-	}
-
-	@Test
-	public void jcaOutboundActivemqTest() {
-		testQuickstart("jca-outbound-activemq");
 	}
 
 	@Test
@@ -189,6 +165,11 @@ public class SwitchYardQuickstartsTest extends QuickstartsTest {
 	@Test
 	public void soapBindingRpcTest() {
 		testQuickstart("soap-binding-rpc");
+	}
+	
+	@Test
+	public void soapMtomTest() {
+		testQuickstart("soap-mtom");
 	}
 
 	@Test

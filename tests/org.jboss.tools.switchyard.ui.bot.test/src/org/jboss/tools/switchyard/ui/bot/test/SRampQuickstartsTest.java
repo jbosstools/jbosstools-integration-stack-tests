@@ -41,6 +41,11 @@ public class SRampQuickstartsTest extends QuickstartsTest {
 	}
 
 	@Test
+	public void sRampDemosDerivedArtifactsTest() {
+		testQuickstart("s-ramp-demos-derived-artifacts");
+	}
+	
+	@Test
 	public void sRampDemosMvnIntegrationTest() {
 		testQuickstart("s-ramp-demos-mvn-integration");
 	}

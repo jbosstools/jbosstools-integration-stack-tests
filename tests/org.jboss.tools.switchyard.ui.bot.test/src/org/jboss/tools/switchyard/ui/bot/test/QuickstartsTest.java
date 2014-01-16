@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.hamcrest.Matcher;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
@@ -76,6 +77,7 @@ public abstract class QuickstartsTest extends RedDeerTest {
 
 	@After
 	public void deleteAllProjects() {
+		new SWTWorkbenchBot().closeAllShells();
 		ProjectExplorer projectExplorer = new ProjectExplorer();
 		for (Project project : projectExplorer.getProjects()) {
 			try {
