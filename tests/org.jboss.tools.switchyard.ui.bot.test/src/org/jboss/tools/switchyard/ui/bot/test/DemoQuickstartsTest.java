@@ -31,11 +31,6 @@ public class DemoQuickstartsTest extends QuickstartsTest {
 	}
 
 	@Test
-	public void helpdeskTest() {
-		testQuickstart("helpdesk");
-	}
-
-	@Test
 	public void multiAppTest() {
 		testQuickstart("multiApp");
 	}
@@ -50,6 +45,11 @@ public class DemoQuickstartsTest extends QuickstartsTest {
 		testQuickstart("policy-security-basic");
 	}
 
+	@Test
+	public void policySecurityBasicPropagateTest() {
+		testQuickstart("policy-security-basic-propagate");
+	}
+	
 	@Test
 	public void policySecurityCertTest() {
 		testQuickstart("policy-security-cert");
@@ -75,4 +75,8 @@ public class DemoQuickstartsTest extends QuickstartsTest {
 		testQuickstart("policy-transaction");
 	}
 
+	@Test
+	public void transactionPropagationTest() {
+		testQuickstart("transaction-propagation");
+	}
 }
