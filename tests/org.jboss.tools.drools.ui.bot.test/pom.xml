@@ -14,6 +14,7 @@
 
   <properties>
     <plugin.version>6.0.0</plugin.version>
+    <binaries.brms5>http://jawa05.englab.brq.redhat.com/released/BRMS-5.3.1.GA-deployable/brms-p-5.3.1.GA-deployable.zip</binaries.brms5>
   </properties>
 
   <build>
@@ -49,7 +50,7 @@
           </dependencies>
         </configuration>
       </plugin>
-      <!-- cleanup setup -->
+      <!-- Cleanup setup -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-clean-plugin</artifactId>
@@ -65,15 +66,38 @@
           </filesets>
         </configuration>
       </plugin>
+      <!-- Downloads BRMS 5 runtime -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>prepare-brms5-binaries</id>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <phase>pre-integration-test</phase>
+            <configuration>
+              <tasks>
+                <echo>Downloading BRMS 5.x runtime</echo>
+                <get src="${binaries.brms5}" dest="target/brms5-deployable.zip" />
+                <unzip src="target/brms5-deployable.zip" dest="target/brms5-deployable" />
+                <unzip src="target/brms5-deployable/jboss-brms-engine.zip" dest="target/runtime5" />
+                <echo file="resources/project.properties" append="true">location.drools5=${project.build.directory}${file.separator}runtime5${file.separator}binaries${line.separator}</echo>
+              </tasks>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 
   <profiles>
     <profile>
-      <id>prepare-brms-binaries</id>
+      <id>prepare-brms6-binaries</id>
       <activation>
         <property>
-            <name>brms.binaries</name>
+          <name>binaries.brms6</name>
         </property>
       </activation>
       <build>
@@ -83,17 +107,22 @@
             <artifactId>maven-antrun-plugin</artifactId>
             <executions>
               <execution>
-                <id>unzip-brms-binaries</id>
+                <id>prepare-brms6-binaries</id>
                 <goals>
                   <goal>run</goal>
                 </goals>
                 <phase>pre-integration-test</phase>
                 <configuration>
                   <tasks>
-                    <get src="${brms.binaries}" dest="target/brms-deployable.zip" />
+                    <echo>Downloading BRMS 6.x runtime</echo>
+                    <get src="${binaries.brms6}" dest="target/brms-deployable.zip" />
                     <unzip src="target/brms-deployable.zip" dest="target/brms-deployable" />
-                    <unzip src="target/brms-deployable/jboss-brms-engine.zip" dest="target/runtime" />
-                    <echo file="resources/project.properties">drools.default.location=${project.build.directory}${file.separator}runtime</echo>
+                    <unzip dest="target/runtime">
+                      <fileset dir="target/brms-deployable">
+                        <include name="**/jboss-brms-engine.zip" />
+                      </fileset>
+                    </unzip>
+                    <echo file="resources/project.properties" append="true">location.drools6=${project.build.directory}${file.separator}runtime${line.separator}</echo>
                   </tasks>
                 </configuration>
               </execution>
