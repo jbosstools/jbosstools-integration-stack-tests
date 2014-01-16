@@ -11,9 +11,11 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.tools.drools.reddeer.dialog.DroolsRuntimeDialog;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage.DroolsRuntime;
+import org.jboss.tools.drools.ui.bot.test.group.Brms5Test;
 import org.jboss.tools.drools.ui.bot.test.group.SmokeTest;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -204,6 +206,23 @@ public class DroolsRuntimeManagementTest extends TestParent {
         } finally {
             pref.cancel();
         }
+    }
+
+    @Test
+    @Category({ Brms5Test.class, SmokeTest.class })
+    public void testBrms5Runtime() {
+        Assume.assumeNotNull(DROOLS5_RUNTIME_LOCATION);
+
+        DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
+        pref.open();
+        DroolsRuntimeDialog wiz = pref.addDroolsRuntime();
+        wiz.setName(name.getMethodName());
+        wiz.setLocation(DROOLS5_RUNTIME_LOCATION);
+
+        Assert.assertTrue("Impossible to use created runtime.", wiz.isValid());
+        wiz.ok();
+        Assert.assertEquals("Runtime was not created.", 1, pref.getDroolsRuntimes().size());
+        pref.ok();
     }
 
     public static void addRuntime(String name, String location, boolean setAsDefault) {

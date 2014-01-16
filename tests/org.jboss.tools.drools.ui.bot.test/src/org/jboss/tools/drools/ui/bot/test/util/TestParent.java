@@ -55,6 +55,7 @@ public abstract class TestParent {
 
     protected static final String DEFAULT_DROOLS_RUNTIME_NAME = "defaultTestRuntime";
     protected static final String DEFAULT_DROOLS_RUNTIME_LOCATION = TEST_PARAMS.getProperty(TestSuiteProperties.DROOLS6_RUNTIME, LOCAL_RUNTIME);
+    protected static final String DROOLS5_RUNTIME_LOCATION = TEST_PARAMS.getProperty(TestSuiteProperties.DROOLS5_RUNTIME);
     public static final String DEFAULT_PROJECT_NAME = "defaultTestProject";
     protected static final String RESOURCES_LOCATION = "src/main/resources";
     protected static final String DEFAULT_RULES_PATH = DEFAULT_PROJECT_NAME + "/" + RESOURCES_LOCATION + "/rules";
