@@ -18,7 +18,7 @@ import org.jboss.tools.drools.reddeer.wizard.NewRuleResourceWizardPage.RuleResou
 import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
 import org.jboss.tools.drools.ui.bot.test.annotation.Drools6Runtime;
 import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
-import org.jboss.tools.drools.ui.bot.test.util.SmokeTest;
+import org.jboss.tools.drools.ui.bot.test.group.SmokeTest;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
 import org.junit.Assert;
 import org.junit.Ignore;
