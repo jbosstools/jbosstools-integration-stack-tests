@@ -16,7 +16,7 @@ import org.jboss.tools.drools.reddeer.wizard.NewRuleResourceWizard;
 import org.jboss.tools.drools.reddeer.wizard.NewRuleResourceWizardPage;
 import org.jboss.tools.drools.reddeer.wizard.NewRuleResourceWizardPage.RuleResourceType;
 import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
-import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultRuntime;
+import org.jboss.tools.drools.ui.bot.test.annotation.Drools6Runtime;
 import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
 import org.jboss.tools.drools.ui.bot.test.util.SmokeTest;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
@@ -32,7 +32,7 @@ public class NewResourcesTest extends TestParent {
     private static final Pattern RULE_PATTERN = Pattern.compile("(?s)rule.*?when.*?then.*?end");
 
     @Test
-    @UsePerspective(JavaPerspective.class) @UseDefaultRuntime @UseDefaultProject
+    @UsePerspective(JavaPerspective.class) @Drools6Runtime @UseDefaultProject
     public void testNewDRL() {
         final String resourceName = name.getMethodName();
         final String packageName = "com.redhat";
@@ -60,7 +60,7 @@ public class NewResourcesTest extends TestParent {
     }
 
     @Test
-    @UsePerspective(JavaPerspective.class) @UseDefaultRuntime @UseDefaultProject
+    @UsePerspective(JavaPerspective.class) @Drools6Runtime @UseDefaultProject
     public void testNewIndividualRule() {
         final String resourceName = "testCreateIndividualRule";
         final String packageName = "com.redhat";
@@ -87,7 +87,7 @@ public class NewResourcesTest extends TestParent {
     }
 
     @Test
-    @UsePerspective(JavaPerspective.class) @UseDefaultRuntime @UseDefaultProject
+    @UsePerspective(JavaPerspective.class) @Drools6Runtime @UseDefaultProject
     public void testNewDsl() {
         final String resourceName = name.getMethodName();
 
@@ -105,7 +105,7 @@ public class NewResourcesTest extends TestParent {
     }
 
     @Test
-    @UsePerspective(JavaPerspective.class) @UseDefaultRuntime @UseDefaultProject
+    @UsePerspective(JavaPerspective.class) @Drools6Runtime @UseDefaultProject
     public void testNewDslr() {
         final String resourceName = name.getMethodName();
         final String packageName = "com.redhat";
@@ -136,7 +136,7 @@ public class NewResourcesTest extends TestParent {
 
     @Ignore("Opens the decision table and fails remaining tests")
     @Test
-    @UsePerspective(JavaPerspective.class) @UseDefaultRuntime @UseDefaultProject
+    @UsePerspective(JavaPerspective.class) @Drools6Runtime @UseDefaultProject
     public void testNewDecisionTable() {
         final String resourceName = name.getMethodName();
 
