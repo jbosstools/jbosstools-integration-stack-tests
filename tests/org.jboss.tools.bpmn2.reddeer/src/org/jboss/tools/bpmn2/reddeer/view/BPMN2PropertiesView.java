@@ -49,7 +49,13 @@ public class BPMN2PropertiesView extends WorkbenchView {
 	 */
 	public void selectTab(String label) {
 		open();
+		// the resolution is to low and some tabs are not visible. if they
+		// are not visible they will not be found! maximize the view to make
+		// them visible
+		maximize();
 		new ListElement(label).select();
+		// maximize second time will restore the normal size.
+		maximize();
 	}
 
 	/**
