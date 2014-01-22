@@ -13,7 +13,7 @@
   <packaging>eclipse-test-plugin</packaging>
 
   <properties>
-    <plugin.version>6.0.0</plugin.version>
+    <plugin.version>6.0.1.Final</plugin.version>
     <binaries.brms5>http://jawa05.englab.brq.redhat.com/released/BRMS-5.3.1.GA-deployable/brms-p-5.3.1.GA-deployable.zip</binaries.brms5>
   </properties>
 
@@ -119,12 +119,17 @@
                     <mkdir dir="${project.build.directory}" />
                     <get src="${binaries.brms6}" dest="target/brms-deployable.zip" />
                     <unzip src="target/brms-deployable.zip" dest="target/brms-deployable" />
-                    <unzip dest="target/runtime">
+                    <unzip dest="target/jboss-brms-engine">
                       <fileset dir="target/brms-deployable">
                         <include name="**/jboss-brms-engine.zip" />
                       </fileset>
                     </unzip>
-                    <echo file="resources/project.properties" append="true">location.drools6=${project.build.directory}${file.separator}runtime${line.separator}</echo>
+                    <move todir="target/runtime6" flatten="true">
+                      <fileset dir="target/jboss-brms-engine">
+                        <include name="**/*.jar" />
+                      </fileset>
+                    </move>
+                    <echo file="resources/project.properties" append="true">location.drools6=${project.build.directory}${file.separator}runtime6${line.separator}</echo>
                   </tasks>
                 </configuration>
               </execution>
