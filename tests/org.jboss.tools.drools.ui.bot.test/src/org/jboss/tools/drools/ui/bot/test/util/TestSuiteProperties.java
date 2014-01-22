@@ -1,6 +1,7 @@
 package org.jboss.tools.drools.ui.bot.test.util;
 
 import java.io.InputStream;
+import java.net.URL;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
@@ -40,12 +41,13 @@ public class TestSuiteProperties {
             LOGGER.info("Loading properties for Drools tests");
             // Read project properties
             Bundle bundle = Platform.getBundle(Activator.PLUGIN_ID);
-            InputStream is = bundle.getResource("project.properties").openStream();
+            URL resource = bundle.getResource("project.properties");
+            InputStream is = resource.openStream();
             PROPERTIES.load(is);
             LOGGER.info("Properties for Drools test loaded");
             return true;
         } catch (Exception ex) {
-            LOGGER.warn("External properties were not loaded.");
+            LOGGER.warn("External properties were not loaded.", ex);
             return false;
         }
     }
