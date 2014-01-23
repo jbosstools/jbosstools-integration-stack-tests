@@ -1,6 +1,8 @@
 package org.jboss.tools.drools.ui.bot.test.util;
 
-import java.io.InputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Properties;
 
@@ -37,18 +39,34 @@ public class TestSuiteProperties {
     }
 
     public boolean reloadProperties() {
+        BufferedReader br = null;
         try {
             LOGGER.info("Loading properties for Drools tests");
             // Read project properties
             Bundle bundle = Platform.getBundle(Activator.PLUGIN_ID);
             URL resource = bundle.getResource("project.properties");
-            InputStream is = resource.openStream();
-            PROPERTIES.load(is);
+            br = new BufferedReader(new InputStreamReader(resource.openStream()));
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] split = line.split("=");
+                if (split.length == 2) {
+                    PROPERTIES.setProperty(split[0].trim(), split[1].trim());
+                }
+            }
             LOGGER.info("Properties for Drools test loaded");
             return true;
         } catch (Exception ex) {
             LOGGER.warn("External properties were not loaded.", ex);
             return false;
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException ex) {
+                    // Can't do much else than logging exception
+                    LOGGER.error("Unable to close properties reader", ex);
+                }
+            }
         }
     }
 }
