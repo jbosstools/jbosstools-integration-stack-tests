@@ -125,9 +125,9 @@ public class BPMTest extends RedDeerTest {
 		task.setTaskAttribute("Operation Name", "checkGreet");
 		task.setTaskAttribute("Service Name", EVAL_GREET);
 		task.addParameterMapping(new InputParameterMapping(new FromVariable(
-				PROCESS_GREET + "/Parameter"), new ToDataInput("Parameter")));
+				PROCESS_GREET + "/Parameter"), new ToDataInput("Parameter", "String")));
 		task.addParameterMapping(new OutputParameterMapping(new FromDataOutput(
-				"Result"), new ToVariable(PROCESS_GREET + "/Result")));
+				"Result", "String"), new ToVariable(PROCESS_GREET + "/Result")));
 		task.append("EndProcess", ConstructType.TERMINATE_END_EVENT);
 
 		openFile(PROJECT, PACKAGE_MAIN_RESOURCES, "META-INF", "switchyard.xml");
@@ -150,6 +150,7 @@ public class BPMTest extends RedDeerTest {
 				.getProjectItem("src/test/java", PACKAGE,
 						PROCESS_GREET + "Test.java");
 		new ProjectItemExt(item).runAsJUnitTest();
+		AbstractWait.sleep(30 * 1000);
 		assertEquals("1/1", new JUnitView().getRunStatus());
 		assertEquals(0, new JUnitView().getNumberOfErrors());
 		assertEquals(0, new JUnitView().getNumberOfFailures());
