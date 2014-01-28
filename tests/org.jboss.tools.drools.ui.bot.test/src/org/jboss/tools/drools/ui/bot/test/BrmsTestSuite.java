@@ -14,6 +14,7 @@ import org.jboss.tools.drools.ui.bot.test.functional.drleditor.DeclareCompletion
 import org.jboss.tools.drools.ui.bot.test.functional.drleditor.MetadataCompletionTest;
 import org.jboss.tools.drools.ui.bot.test.functional.view.AgendaViewTest;
 import org.jboss.tools.drools.ui.bot.test.functional.view.GlobalDataViewTest;
+import org.jboss.tools.drools.ui.bot.test.functional.view.WorkingMemoryViewTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
@@ -35,9 +36,10 @@ import org.junit.runners.Suite.SuiteClasses;
     // dslr editor
     DslrEditorTest.class,
     // TODO: debugging tests
-    // TODO: views test
+    // views test
     AgendaViewTest.class,
-    GlobalDataViewTest.class
+    GlobalDataViewTest.class,
+    WorkingMemoryViewTest.class
     // TODO: 5.x tests
 })
 public class BrmsTestSuite {
