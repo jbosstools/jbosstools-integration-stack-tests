@@ -3,6 +3,7 @@ package org.jboss.tools.drools.ui.bot.test.functional.view;
 import java.util.List;
 import java.util.Map;
 
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.matcher.RegexMatchers;
 import org.jboss.tools.drools.reddeer.debug.DebugView;
@@ -18,7 +19,9 @@ import org.jboss.tools.drools.ui.bot.test.util.OpenUtility;
 import org.jboss.tools.drools.ui.bot.test.util.RunUtility;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+@RunWith(RedDeerSuite.class)
 public class WorkingMemoryViewTest extends ViewTestParent {
 
     public WorkingMemoryViewTest() {

@@ -11,7 +11,7 @@ import org.jboss.tools.drools.ui.bot.test.util.TestParent;
 import org.junit.After;
 import org.junit.Before;
 
-public class ViewTestParent extends TestParent {
+public abstract class ViewTestParent extends TestParent {
     private static final Logger LOGGER = Logger.getLogger(ViewTestParent.class);
 
     final Class<? extends View> viewClass; 
