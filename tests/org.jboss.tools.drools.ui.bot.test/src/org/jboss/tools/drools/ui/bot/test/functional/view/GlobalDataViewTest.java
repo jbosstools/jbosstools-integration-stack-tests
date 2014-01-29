@@ -2,6 +2,7 @@ package org.jboss.tools.drools.ui.bot.test.functional.view;
 
 import java.util.List;
 
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.drools.reddeer.editor.DrlEditor;
 import org.jboss.tools.drools.reddeer.editor.EnhancedTextEditor;
 import org.jboss.tools.drools.reddeer.editor.RuleEditor;
@@ -14,7 +15,9 @@ import org.jboss.tools.drools.ui.bot.test.util.OpenUtility;
 import org.jboss.tools.drools.ui.bot.test.util.RunUtility;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+@RunWith(RedDeerSuite.class)
 public class GlobalDataViewTest extends ViewTestParent {
 
     public GlobalDataViewTest() {

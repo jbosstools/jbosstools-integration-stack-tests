@@ -20,7 +20,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 
-public class DrlCompletionParent extends TestParent {
+public abstract class DrlCompletionParent extends TestParent {
     private static final Logger LOGGER = Logger.getLogger(DrlCompletionParent.class);
     public static final String MESSAGE_TEXT = getTemplateText("MyMessageClass");
     public static final String RULE_RESOURCE_TEXT = getTemplateText("DummyRuleFile");

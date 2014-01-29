@@ -17,6 +17,7 @@ import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
 import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectSelectRuntimeWizardPage.CodeCompatibility;
 import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectWizard;
 import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
+import org.jboss.tools.drools.ui.bot.test.group.Brms5Test;
 import org.jboss.tools.drools.ui.bot.test.group.SmokeTest;
 import org.jboss.tools.drools.ui.bot.test.util.RuntimeVersion;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
@@ -33,7 +34,7 @@ public class Brms5ProjectTest extends TestParent {
         super(RuntimeVersion.BRMS_5);
     }
 
-    @Test @Category(SmokeTest.class)
+    @Test @Category({ Brms5Test.class, SmokeTest.class })
     @UsePerspective(DroolsPerspective.class)
     public void testProjectCreationAndDeletion() {
         final String projectName = "testProjectCreationAndDeletion";
@@ -68,7 +69,7 @@ public class Brms5ProjectTest extends TestParent {
         Assert.assertFalse("Project was not deleted.", explorer.containsProject(projectName));
     }
 
-    @Test
+    @Test @Category(Brms5Test.class)
     @UsePerspective(JavaPerspective.class)
     public void testConvertJavaProject() {
         final String projectName = "testJavaProject";
