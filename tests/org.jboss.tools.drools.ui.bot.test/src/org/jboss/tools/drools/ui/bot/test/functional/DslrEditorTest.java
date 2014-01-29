@@ -29,15 +29,15 @@ public class DslrEditorTest extends TestParent {
         { // create *.dsl file
             NewDslWizard wizard = new NewDslWizard();
             wizard.open();
-            wizard.getFirstPage().setParentFolder(DEFAULT_RULES_PATH);
-            wizard.getFirstPage().setFileName(name.getMethodName());
+            wizard.getFirstPage().setParentFolder(getRulesLocation());
+            wizard.getFirstPage().setFileName(getTestName());
             wizard.finish();
 
             // close dsl editor
             new DslEditor().close();
 
             // open in text editor
-            OpenUtility.openResourceWith("Text Editor", DEFAULT_PROJECT_NAME, RESOURCES_LOCATION, "rules", name.getMethodName() + ".dsl");
+            OpenUtility.openResourceWith("Text Editor", DEFAULT_PROJECT_NAME, getResourcePath(getTestName() + ".dsl"));
 
             // put a dsl definition in text editor, save and close
             TextEditor editor = new TextEditor();
@@ -48,16 +48,16 @@ public class DslrEditorTest extends TestParent {
         { // create *.dslr file
             NewRuleResourceWizard wizard = new NewRuleResourceWizard();
             wizard.open();
-            wizard.getFirstPage().setParentFolder(DEFAULT_RULES_PATH);
+            wizard.getFirstPage().setParentFolder(getRulesLocation());
             wizard.getFirstPage().setRulePackageName("com.redhat");
-            wizard.getFirstPage().setFileName(name.getMethodName());
+            wizard.getFirstPage().setFileName(getTestName());
             wizard.getFirstPage().setUseDSL(true);
             wizard.finish();
 
             // put a default dslr definition in rule editor, save and close
             DslrEditor dslr = new DslrEditor();
             RuleEditor editor = dslr.showRuleEditor();
-            editor.setText(String.format(getTemplateText("dslr/DslrTestFile"), name.getMethodName()));
+            editor.setText(String.format(getTemplateText("dslr/DslrTestFile"), getTestName()));
             editor.close(true);
         }
     }
@@ -193,7 +193,7 @@ public class DslrEditorTest extends TestParent {
     }
 
     private DslrEditor openTestDslr() {
-        OpenUtility.openResource(DEFAULT_PROJECT_NAME, RESOURCES_LOCATION, "rules", name.getMethodName() + ".dslr");
+        OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath(getTestName() + ".dslr"));
 
         // this has to be done to allow DRL Viewer to work properly
         DslrEditor editor = new DslrEditor();

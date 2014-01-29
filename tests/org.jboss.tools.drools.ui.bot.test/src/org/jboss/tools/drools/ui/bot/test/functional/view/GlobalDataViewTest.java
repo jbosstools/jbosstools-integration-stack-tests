@@ -24,7 +24,7 @@ public class GlobalDataViewTest extends ViewTestParent {
     @Test
     @UsePerspective(DroolsPerspective.class) @Drools6Runtime @UseDefaultProject
     public void testNoGlobalsDefined() {
-        OpenUtility.openResource(DEFAULT_PROJECT_NAME, RESOURCES_LOCATION, "rules", "Sample.drl");
+        OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
 
         RuleEditor editor = new DrlEditor().showRuleEditor();
         editor.setBreakpoint(8);
@@ -40,7 +40,7 @@ public class GlobalDataViewTest extends ViewTestParent {
     @Test
     @UsePerspective(DroolsPerspective.class) @Drools6Runtime @UseDefaultProject
     public void testUninitiatedGlobal() {
-        OpenUtility.openResource(DEFAULT_PROJECT_NAME, RESOURCES_LOCATION, "rules", "Sample.drl");
+        OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
 
         RuleEditor editor = new DrlEditor().showRuleEditor();
         editor.setPosition(3, 0);
@@ -61,7 +61,7 @@ public class GlobalDataViewTest extends ViewTestParent {
     @Test
     @UsePerspective(DroolsPerspective.class) @Drools6Runtime @UseDefaultProject
     public void testMultipleGlobals() {
-        OpenUtility.openResource(DEFAULT_PROJECT_NAME, RESOURCES_LOCATION, "rules", "Sample.drl");
+        OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
 
         RuleEditor editor = new DrlEditor().showRuleEditor();
 

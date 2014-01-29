@@ -133,7 +133,7 @@ public class RulesManagementTest extends TestParent {
     @Test
     @UsePerspective(JavaPerspective.class) @Drools6Runtime @UseDefaultProject
     public void testSetBreakpoint() {
-        OpenUtility.openResource(DEFAULT_PROJECT_NAME, RESOURCES_LOCATION, "rules", "Sample.drl");
+        OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
 
         RuleEditor editor = new DrlEditor().showRuleEditor();
         editor.setPosition(8, 0);
@@ -152,7 +152,7 @@ public class RulesManagementTest extends TestParent {
     @Test @Category(SmokeTest.class)
     @UsePerspective(DroolsPerspective.class) @Drools6Runtime @UseDefaultProject
     public void testDebugRule() {
-        OpenUtility.openResource(DEFAULT_PROJECT_NAME, RESOURCES_LOCATION, "rules", "Sample.drl");
+        OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
 
         new DrlEditor().showRuleEditor().setBreakpoint(8);
 
