@@ -49,8 +49,8 @@ public class DrlCompletionParent extends TestParent {
         // create RuleResource
         NewRuleResourceWizard wiz = new NewRuleResourceWizard();
         wiz.open();
-        wiz.getFirstPage().setParentFolder(DEFAULT_RULES_PATH);
-        wiz.getFirstPage().setFileName(name.getMethodName());
+        wiz.getFirstPage().setParentFolder(getRulesLocation());
+        wiz.getFirstPage().setFileName(getTestName());
         wiz.getFirstPage().setRulePackageName("com.sample");
         wiz.finish();
 
@@ -113,8 +113,7 @@ public class DrlCompletionParent extends TestParent {
     private DrlEditor openDrlEditor() {
         PackageExplorer explorer = new PackageExplorer();
         explorer.open();
-        explorer.getProject(DEFAULT_PROJECT_NAME)
-                .getProjectItem(RESOURCES_LOCATION, "rules", name.getMethodName() + ".drl").select();
+        explorer.getProject(DEFAULT_PROJECT_NAME).getProjectItem(getResourcePath(getTestName() + ".drl")).select();
         new ContextMenu(new RegexMatchers("Open.*").getMatchers()).select();
 
         return new DrlEditor();

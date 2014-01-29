@@ -28,7 +28,7 @@ public class WorkingMemoryViewTest extends ViewTestParent {
     @Test
     @UsePerspective(DroolsPerspective.class) @Drools6Runtime @ UseDefaultProject
     public void testSampleFile() {
-        OpenUtility.openResource(DEFAULT_PROJECT_NAME, RESOURCES_LOCATION, "rules", "Sample.drl");
+        OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
         RuleEditor editor = new DrlEditor().showRuleEditor();
         editor.setBreakpoint(8);
         editor.setBreakpoint(18);
@@ -73,7 +73,7 @@ public class WorkingMemoryViewTest extends ViewTestParent {
         txt.writeText("            kSession.insert(java.util.Arrays.asList(1, 2, 3));\n");
         txt.close(true);
 
-        OpenUtility.openResource(DEFAULT_PROJECT_NAME, RESOURCES_LOCATION, "rules", "Sample.drl");
+        OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
         RuleEditor editor = new DrlEditor().showRuleEditor();
         editor.setBreakpoint(8);
 

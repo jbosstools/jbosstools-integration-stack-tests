@@ -185,13 +185,13 @@ public class DroolsRuntimeManagementTest extends TestParent {
         DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
         pref.open();
         DroolsRuntimeDialog wiz = pref.addDroolsRuntime();
-        wiz.setName(name.getMethodName());
+        wiz.setName(getTestName());
         wiz.setLocation(DEFAULT_DROOLS_RUNTIME_LOCATION);
         Assert.assertTrue("Impossible to use created runtime.", wiz.isValid());
         wiz.ok();
 
         Assert.assertEquals("The runtime was not created!", 1, pref.getDroolsRuntimes().size());
-        pref.setDroolsRuntimeAsDefault(name.getMethodName());
+        pref.setDroolsRuntimeAsDefault(getTestName());
         Assert.assertNotNull("The default runtime was not set!", pref.getDefaultDroolsRuntime());
         pref.apply();
         try {
@@ -216,7 +216,7 @@ public class DroolsRuntimeManagementTest extends TestParent {
         DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
         pref.open();
         DroolsRuntimeDialog wiz = pref.addDroolsRuntime();
-        wiz.setName(name.getMethodName());
+        wiz.setName(getTestName());
         wiz.setLocation(DROOLS5_RUNTIME_LOCATION);
 
         Assert.assertTrue("Impossible to use created runtime.", wiz.isValid());

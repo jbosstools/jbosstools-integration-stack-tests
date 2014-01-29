@@ -26,7 +26,7 @@ public class AgendaViewTest extends ViewTestParent {
     @Test
     @UsePerspective(DroolsPerspective.class) @Drools6Runtime @UseDefaultProject
     public void testAgendaViewDefaultContent() {
-        OpenUtility.openResource(DEFAULT_PROJECT_NAME, RESOURCES_LOCATION, "rules", "Sample.drl");
+        OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
 
         RuleEditor editor = new DrlEditor().showRuleEditor();
         editor.setBreakpoint(8);
@@ -48,7 +48,7 @@ public class AgendaViewTest extends ViewTestParent {
     @Test
     @UsePerspective(DroolsPerspective.class) @Drools6Runtime @UseDefaultProject
     public void testCustomAgendaGroup() {
-        OpenUtility.openResource(DEFAULT_PROJECT_NAME, RESOURCES_LOCATION, "rules", "Sample.drl");
+        OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
 
         RuleEditor editor = new DrlEditor().showRuleEditor();
         // add a new rule with different agenda group

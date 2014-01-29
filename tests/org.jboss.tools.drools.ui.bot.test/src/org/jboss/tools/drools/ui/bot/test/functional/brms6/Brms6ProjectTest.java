@@ -20,9 +20,9 @@ import org.jboss.tools.drools.reddeer.properties.DroolsProjectProperties;
 import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectSelectRuntimeWizardPage.CodeCompatibility;
 import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectWizard;
 import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
-import org.jboss.tools.drools.ui.bot.test.annotation.Drools6Runtime;
 import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
 import org.jboss.tools.drools.ui.bot.test.group.SmokeTest;
+import org.jboss.tools.drools.ui.bot.test.util.RuntimeVersion;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
 import org.junit.Assert;
 import org.junit.Test;
@@ -33,8 +33,12 @@ import org.junit.runner.RunWith;
 public class Brms6ProjectTest extends TestParent {
     private static final Logger LOGGER = Logger.getLogger(Brms6ProjectTest.class);
 
+    public Brms6ProjectTest() {
+        super(RuntimeVersion.BRMS_6);
+    }
+
     @Test @Category(SmokeTest.class)
-    @UsePerspective(DroolsPerspective.class) @Drools6Runtime
+    @UsePerspective(DroolsPerspective.class)
     public void testProjectCreationAndDeletion() {
         final String projectName = "testProjectCreationAndDeletion";
         ProblemsView problems = new ProblemsView();
@@ -49,7 +53,7 @@ public class Brms6ProjectTest extends TestParent {
         wiz.getSelectSamplesPage().checkAll();
         wiz.getDroolsRuntimePage().setUseDefaultRuntime(true);
         wiz.getDroolsRuntimePage().setCodeCompatibleWithVersion(CodeCompatibility.Drools60x);
-        wiz.getDroolsRuntimePage().setGAV("com.redhat", name.getMethodName(), "1.0-SNAPSHOT");
+        wiz.getDroolsRuntimePage().setGAV("com.redhat", getTestName(), "1.0-SNAPSHOT");
         wiz.finish();
         new WaitWhile(new JobIsRunning());
 
@@ -70,7 +74,7 @@ public class Brms6ProjectTest extends TestParent {
     }
 
     @Test
-    @UsePerspective(JavaPerspective.class) @Drools6Runtime @UseDefaultProject
+    @UsePerspective(JavaPerspective.class) @UseDefaultProject
     public void testChangeDefaultRuntime() {
         final String secondRuntime = "testChangeDefaultRuntime";
         final String runtimeLocation = createTempDir("testChangeDefaultRuntime");
@@ -108,7 +112,7 @@ public class Brms6ProjectTest extends TestParent {
     }
 
     @Test
-    @UsePerspective(JavaPerspective.class) @Drools6Runtime
+    @UsePerspective(JavaPerspective.class)
     public void testConvertJavaProject() {
         final String projectName = "testJavaProject";
         NewJavaProjectWizardDialog diag = new NewJavaProjectWizardDialog();

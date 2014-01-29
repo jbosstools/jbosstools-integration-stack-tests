@@ -8,6 +8,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.log4j.Logger;
@@ -59,11 +61,8 @@ public abstract class TestParent {
     protected static final String DEFAULT_DROOLS_RUNTIME_LOCATION = TEST_PARAMS.getProperty(TestSuiteProperties.DROOLS6_RUNTIME, LOCAL_RUNTIME);
     protected static final String DROOLS5_RUNTIME_LOCATION = TEST_PARAMS.getProperty(TestSuiteProperties.DROOLS5_RUNTIME);
     public static final String DEFAULT_PROJECT_NAME = "defaultTestProject";
-    protected static final String RESOURCES_LOCATION = "src/main/resources";
-    protected static final String DEFAULT_RULES_PATH = DEFAULT_PROJECT_NAME + "/" + RESOURCES_LOCATION + "/rules";
 
-    private static AtomicBoolean initialized = new AtomicBoolean(false);
-
+    private static final AtomicBoolean initialized = new AtomicBoolean(false);
     private final RuntimeVersion runtimeVersion;
 
     public TestParent() {
@@ -151,7 +150,7 @@ public abstract class TestParent {
     @Before
     public void setUpEnvironment() {
         // first set up the correct perspective
-        UsePerspective def = getAnnotationOnMethod(name.getMethodName(), UsePerspective.class);
+        UsePerspective def = getAnnotationOnMethod(getMethodName(), UsePerspective.class);
         boolean opened = false;
         try {
             if (def != null) {
@@ -167,29 +166,19 @@ public abstract class TestParent {
             new JavaPerspective().open();
         }
 
-        // determine runtime version
-        RuntimeVersion useRuntime;
-        if (getAnnotationOnMethod(name.getMethodName(), Drools6Runtime.class) != null) {
-            useRuntime = RuntimeVersion.BRMS_6;
-        } else if (getAnnotationOnMethod(name.getMethodName(), Drools5Runtime.class) != null) {
-            useRuntime = RuntimeVersion.BRMS_5;
-        } else {
-            useRuntime = runtimeVersion;
-        }
-
         // setup default runtime and project
-        setupRuntime(useRuntime);
+        setupRuntime(getUsedVersion());
 
         // setup default project
-        if (getAnnotationOnMethod(name.getMethodName(), UseDefaultProject.class) != null) {
-            setupProject(useRuntime);
+        if (getAnnotationOnMethod(getMethodName(), UseDefaultProject.class) != null) {
+            setupProject(getUsedVersion());
         }
     }
 
     @After
     public void cleanUp() {
         // take screenshot before cleaning up
-        takeScreenshot(String.format("%s-%s", getClass().getName(), name.getMethodName()));
+        takeScreenshot(String.format("%s-%s", getClass().getName(), getTestName()));
 
         closeAllDialogs();
 
@@ -356,5 +345,64 @@ public abstract class TestParent {
         }
 
         wiz.finish();
+    }
+
+    protected String getResourcesLocation() {
+        switch (getUsedVersion()) {
+            case BRMS_5:
+                return "src/main/rules";
+            case BRMS_6:
+                return "src/main/resources";
+            default:
+                return null;
+        }
+    }
+
+    protected String getRulesLocation() {
+        return getRulesLocation(DEFAULT_PROJECT_NAME);
+    }
+    protected String getRulesLocation(String projectName) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(projectName).append("/").append(getResourcesLocation());
+        if (getUsedVersion() == RuntimeVersion.BRMS_6) {
+                sb.append("/").append("rules");
+        }
+
+        return sb.toString();
+    }
+
+    protected String[] getResourcePath(String resourceName) {
+        return getResourcePath("rules", resourceName);
+    }
+
+    protected String[] getResourcePath(String packageName, String resourceName) {
+        List<String> result = new LinkedList<String>();
+
+        result.add(getResourcesLocation());
+        if (getUsedVersion() == RuntimeVersion.BRMS_6) {
+            result.add(packageName);
+        }
+        result.add(resourceName);
+
+        return result.toArray(new String[result.size()]);
+    }
+
+    protected String getTestName() {
+        return name.getMethodName().replace('[', '_').replace("]", "");
+    }
+
+    protected String getMethodName() {
+        return name.getMethodName().replaceAll("\\[\\d+\\]", "");
+    }
+
+    protected RuntimeVersion getUsedVersion() {
+        if (getAnnotationOnMethod(getMethodName(), Drools6Runtime.class) != null) {
+            return RuntimeVersion.BRMS_6;
+        } else if (getAnnotationOnMethod(getMethodName(), Drools5Runtime.class) != null) {
+            return RuntimeVersion.BRMS_5;
+        } else {
+            return runtimeVersion;
+        }
     }
 }
