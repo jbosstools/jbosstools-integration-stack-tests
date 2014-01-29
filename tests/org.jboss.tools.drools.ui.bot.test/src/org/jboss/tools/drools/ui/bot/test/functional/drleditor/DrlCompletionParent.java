@@ -14,6 +14,7 @@ import org.jboss.tools.drools.reddeer.editor.ContentAssist;
 import org.jboss.tools.drools.reddeer.editor.DrlEditor;
 import org.jboss.tools.drools.reddeer.editor.RuleEditor;
 import org.jboss.tools.drools.reddeer.wizard.NewRuleResourceWizard;
+import org.jboss.tools.drools.ui.bot.test.util.RuntimeVersion;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
 import org.junit.After;
 import org.junit.Assert;
@@ -26,6 +27,14 @@ public class DrlCompletionParent extends TestParent {
 
     private int errors, warnings;
     protected DrlEditor master;
+
+    public DrlCompletionParent() {
+        super();
+    }
+
+    public DrlCompletionParent(RuntimeVersion useRuntime) {
+        super(useRuntime);
+    }
 
     @Before
     public void setUpDomainAndRule() {
