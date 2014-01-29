@@ -183,12 +183,13 @@ public abstract class TestParent {
         // take screenshot before cleaning up
         takeScreenshot(String.format("%s-%s", getClass().getName(), name.getMethodName()));
 
-        // close shells
-        new SWTWorkbenchBot().closeAllShells();
+        closeAllDialogs();
+
         // save and close editors
         while (true) {
             try {
-                new DefaultEditor().close(true);
+                new DefaultEditor().save();
+                new DefaultEditor().close();
             } catch (Exception ex) {
                 break;
             }
@@ -286,5 +287,17 @@ public abstract class TestParent {
      */
     protected void waitASecond() {
         try { Thread.sleep(1000); } catch (InterruptedException ex) {}
+    }
+
+    protected void closeAllDialogs() {
+        // press as many "Cancel" buttons as possible to clear out the shells
+        while (true) {
+            try {
+                new PushButton("Cancel").click();
+            } catch (Exception ex) {
+                break;
+            }
+        }
+        new SWTWorkbenchBot().closeAllShells();
     }
 }
