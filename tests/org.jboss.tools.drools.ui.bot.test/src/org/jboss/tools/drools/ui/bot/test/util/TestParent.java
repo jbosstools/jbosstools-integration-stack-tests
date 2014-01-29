@@ -28,10 +28,12 @@ import org.jboss.reddeer.workbench.view.View;
 import org.jboss.tools.drools.reddeer.dialog.DroolsRuntimeDialog;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage.DroolsRuntime;
+import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectSelectRuntimeWizardPage.CodeCompatibility;
 import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectWizard;
 import org.jboss.tools.drools.ui.bot.test.Activator;
-import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
+import org.jboss.tools.drools.ui.bot.test.annotation.Drools5Runtime;
 import org.jboss.tools.drools.ui.bot.test.annotation.Drools6Runtime;
+import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
 import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
 import org.junit.After;
 import org.junit.Before;
@@ -61,6 +63,16 @@ public abstract class TestParent {
     protected static final String DEFAULT_RULES_PATH = DEFAULT_PROJECT_NAME + "/" + RESOURCES_LOCATION + "/rules";
 
     private static AtomicBoolean initialized = new AtomicBoolean(false);
+
+    private final RuntimeVersion runtimeVersion;
+
+    public TestParent() {
+        this(RuntimeVersion.UNDEFINED);
+    }
+
+    public TestParent(RuntimeVersion useRuntime) {
+        this.runtimeVersion = useRuntime;
+    }
 
     @Rule
     public TestName name = new TestName();
@@ -155,26 +167,22 @@ public abstract class TestParent {
             new JavaPerspective().open();
         }
 
-        // then add a default runtime
+        // determine runtime version
+        RuntimeVersion useRuntime;
         if (getAnnotationOnMethod(name.getMethodName(), Drools6Runtime.class) != null) {
-            DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
-            pref.open();
-
-            DroolsRuntimeDialog wiz = pref.addDroolsRuntime();
-            wiz.setName(DEFAULT_DROOLS_RUNTIME_NAME);
-            wiz.setLocation(DEFAULT_DROOLS_RUNTIME_LOCATION);
-            wiz.ok();
-            pref.setDroolsRuntimeAsDefault(DEFAULT_DROOLS_RUNTIME_NAME);
-
-            pref.okCloseWarning();
+            useRuntime = RuntimeVersion.BRMS_6;
+        } else if (getAnnotationOnMethod(name.getMethodName(), Drools5Runtime.class) != null) {
+            useRuntime = RuntimeVersion.BRMS_5;
+        } else {
+            useRuntime = runtimeVersion;
         }
 
-        // then create default project
+        // setup default runtime and project
+        setupRuntime(useRuntime);
+
+        // setup default project
         if (getAnnotationOnMethod(name.getMethodName(), UseDefaultProject.class) != null) {
-            if (!new PackageExplorer().containsProject(DEFAULT_PROJECT_NAME)) {
-                NewDroolsProjectWizard wiz = new NewDroolsProjectWizard();
-                wiz.createDefaultProjectWithAllSamples(DEFAULT_PROJECT_NAME);
-            }
+            setupProject(useRuntime);
         }
     }
 
@@ -299,5 +307,54 @@ public abstract class TestParent {
             }
         }
         new SWTWorkbenchBot().closeAllShells();
+    }
+
+    private void setupRuntime(RuntimeVersion useRuntime) {
+        String runtimeLocation = null;
+        switch (useRuntime) {
+            case BRMS_5:
+                runtimeLocation = DROOLS5_RUNTIME_LOCATION;
+                break;
+            case BRMS_6:
+                runtimeLocation = DEFAULT_DROOLS_RUNTIME_LOCATION;
+                break;
+            default:
+                runtimeLocation = null;
+                break;
+        }
+
+        if (runtimeLocation != null) {
+            DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
+            pref.open();
+
+            DroolsRuntimeDialog wiz = pref.addDroolsRuntime();
+            wiz.setName(DEFAULT_DROOLS_RUNTIME_NAME);
+            wiz.setLocation(runtimeLocation);
+            wiz.ok();
+            pref.setDroolsRuntimeAsDefault(DEFAULT_DROOLS_RUNTIME_NAME);
+
+            pref.okCloseWarning();
+        }
+    }
+
+    private void setupProject(RuntimeVersion useRuntime) {
+        if (useRuntime == RuntimeVersion.UNDEFINED) {
+            return;
+        }
+
+        NewDroolsProjectWizard wiz = new NewDroolsProjectWizard();
+        wiz.open();
+        wiz.getFirstPage().setProjectName(DEFAULT_PROJECT_NAME);
+        wiz.getSelectSamplesPage().checkAll();
+
+        if (useRuntime == RuntimeVersion.BRMS_5) {
+            wiz.getDroolsRuntimePage().setCodeCompatibleWithVersion(CodeCompatibility.Drools51OrAbove);
+        }
+        if (useRuntime == RuntimeVersion.BRMS_6) {
+            wiz.getDroolsRuntimePage().setCodeCompatibleWithVersion(CodeCompatibility.Drools60x);
+            wiz.getDroolsRuntimePage().setGAV("com.redhat", "test", "1.0.0-SNAPSHOT");
+        }
+
+        wiz.finish();
     }
 }
