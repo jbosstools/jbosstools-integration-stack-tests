@@ -13,14 +13,21 @@ import org.jboss.reddeer.swt.util.ResultRunnable;
 public class RuleEditor extends EnhancedTextEditor {
     private static final Logger LOGGER = Logger.getLogger(RuleEditor.class);
 
-    private static MultiPageEditor staticEditor;
+    protected static MultiPageEditor staticEditor;
+    protected static String staticPageTitle;
 
     private MultiPageEditor editor;
     private String pageTitle;
 
-    RuleEditor(MultiPageEditor editor, String pageTitle) {
-        super(setUp(editor, pageTitle));
+    static RuleEditor newInstance(MultiPageEditor editor, String pageTitle) {
+        staticEditor = editor;
+        staticPageTitle = pageTitle;
+        return new RuleEditor(editor, pageTitle);
+    }
+
+    protected RuleEditor(MultiPageEditor editor, String pageTitle) {
         staticEditor = null;
+        staticPageTitle = null;
         this.editor = editor;
         this.pageTitle = pageTitle;
     }
@@ -66,27 +73,13 @@ public class RuleEditor extends EnhancedTextEditor {
         return new ContentAssist(getTextEditorPart());
     }
 
-    /*
-     * FIXME this is a nasty hack, if it was possible to use constructor with IWorkbenchPart it would not be necessary.
-     */
-    private static String setUp(MultiPageEditor editor, String pageTitle) {
-        staticEditor = editor;
-        return pageTitle;
-    }
-
     protected IWorkbenchPart getActiveWorkbenchPart() {
         if (editor != null) {
             return editor.getEditorByTitle(pageTitle);
+        } else if (staticEditor != null) {
+            return staticEditor.getEditorByTitle(staticPageTitle);
         } else {
-            return null;
-        }
-    }
-
-    protected IWorkbenchPart getPartByTitle(String title) {
-        if (editor != null) {
-            return editor.getEditorByTitle(title);
-        } else {
-            return staticEditor.getEditorByTitle(title);
+            throw new RuntimeException("Unable to find editor!");
         }
     }
 

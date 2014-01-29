@@ -17,7 +17,6 @@ public class EnhancedTextEditor extends TextEditor {
     }
 
     public EnhancedTextEditor(String title) {
-        super(title);
     }
 
     public void setPosition(int line, int column) {
