@@ -10,17 +10,17 @@ public class NewDroolsProjectWizard extends NewWizardDialog {
     }
 
     public NewDroolsProjectNameWizardPage getFirstPage() {
-        selectPage(1);
+        selectPage(0);
         return new NewDroolsProjectNameWizardPage();
     }
 
     public NewDroolsProjectSelectSamplesWizardPage getSelectSamplesPage() {
-        selectPage(2);
+        selectPage(1);
         return new NewDroolsProjectSelectSamplesWizardPage();
     }
 
     public NewDroolsProjectSelectRuntimeWizardPage getDroolsRuntimePage() {
-        selectPage(3);
+        selectPage(2);
         return new NewDroolsProjectSelectRuntimeWizardPage();
     }
 

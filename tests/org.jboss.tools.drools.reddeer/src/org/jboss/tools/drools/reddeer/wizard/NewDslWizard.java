@@ -9,12 +9,12 @@ public class NewDslWizard extends NewWizardDialog {
     }
 
     public NewDslWizardPage getFirstPage() {
-        selectPage(1);
+        selectPage(0);
         return new NewDslWizardPage();
     }
 
     public NewDslSamplesWizardPage getSamplesPage() {
-        selectPage(2);
+        selectPage(1);
         return new NewDslSamplesWizardPage();
     }
 
