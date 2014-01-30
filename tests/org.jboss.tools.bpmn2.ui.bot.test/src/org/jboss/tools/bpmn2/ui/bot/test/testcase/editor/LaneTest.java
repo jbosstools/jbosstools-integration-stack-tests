@@ -30,7 +30,7 @@ public class LaneTest extends JBPM6BaseTest {
 //		
 //		Lane lane = new Lane("MyLane");
 //		lane.append("EndProcess", ConstructType.TERMINATE_END_EVENT, Position.SOUTH_EAST);
-//		lane.add("Hello", ConstructType.TASK, new Point(lane.getBounds().x() + lane.getBounds().width / 6, lane.getBounds().y() + lane.getBounds().height / 2));
+//		lane.add("Hello", ConstructType.TASK, new Point(lane.getBounds().width / 6, lane.getBounds().height / 2));
 //
 //		Task task = new Task("Hello");
 //		task.append("Goodbye", ConstructType.TASK);
@@ -49,7 +49,7 @@ public class LaneTest extends JBPM6BaseTest {
 		StartEvent start = new StartEvent("StartProcess");
 		start.append("MyLane", ConstructType.LANE, Position.SOUTH_EAST);
 		Lane lane = new Lane("MyLane");
-		lane.add("Hello", ConstructType.SCRIPT_TASK, new Point(lane.getBounds().x() + lane.getBounds().width / 6, lane.getBounds().y() + lane.getBounds().height / 2));
+		lane.add("Hello", ConstructType.SCRIPT_TASK, new Point(lane.getBounds().width / 6, lane.getBounds().height / 2));
 		ScriptTask task = new ScriptTask("Hello");
 		start.connectTo(task);
 		task.append("Goodbye", ConstructType.SCRIPT_TASK);
