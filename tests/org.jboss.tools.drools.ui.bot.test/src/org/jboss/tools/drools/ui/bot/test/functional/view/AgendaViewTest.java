@@ -7,8 +7,8 @@ import org.jboss.tools.drools.reddeer.editor.DrlEditor;
 import org.jboss.tools.drools.reddeer.editor.RuleEditor;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
 import org.jboss.tools.drools.reddeer.view.AgendaView;
+import org.jboss.tools.drools.ui.bot.test.annotation.Drools6Runtime;
 import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
-import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultRuntime;
 import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
 import org.jboss.tools.drools.ui.bot.test.util.OpenUtility;
 import org.jboss.tools.drools.ui.bot.test.util.RunUtility;
@@ -19,10 +19,14 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 public class AgendaViewTest extends ViewTestParent {
 
+    public AgendaViewTest() {
+        super(AgendaView.class);
+    }
+
     @Test
-    @UsePerspective(DroolsPerspective.class) @UseDefaultRuntime @UseDefaultProject
+    @UsePerspective(DroolsPerspective.class) @Drools6Runtime @UseDefaultProject
     public void testAgendaViewDefaultContent() {
-        OpenUtility.openResource(DEFAULT_PROJECT_NAME, RESOURCES_LOCATION, "rules", "Sample.drl");
+        OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
 
         RuleEditor editor = new DrlEditor().showRuleEditor();
         editor.setBreakpoint(8);
@@ -30,8 +34,6 @@ public class AgendaViewTest extends ViewTestParent {
         RunUtility.debugAsDroolsApplication(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
 
         AgendaView agenda = new AgendaView();
-        agenda.open();
-        selectKsessionVariable();
         agenda.open();
 
         List<String> agendaGroups = agenda.getAgendaGroupNames();
@@ -44,9 +46,9 @@ public class AgendaViewTest extends ViewTestParent {
     }
 
     @Test
-    @UsePerspective(DroolsPerspective.class) @UseDefaultRuntime @UseDefaultProject
+    @UsePerspective(DroolsPerspective.class) @Drools6Runtime @UseDefaultProject
     public void testCustomAgendaGroup() {
-        OpenUtility.openResource(DEFAULT_PROJECT_NAME, RESOURCES_LOCATION, "rules", "Sample.drl");
+        OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
 
         RuleEditor editor = new DrlEditor().showRuleEditor();
         // add a new rule with different agenda group
@@ -63,8 +65,6 @@ public class AgendaViewTest extends ViewTestParent {
         RunUtility.debugAsDroolsApplication(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
 
         AgendaView agenda = new AgendaView();
-        agenda.open();
-        selectKsessionVariable();
         agenda.open();
 
         List<String> agendaGroups = agenda.getAgendaGroupNames();

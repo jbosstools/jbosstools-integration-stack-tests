@@ -7,11 +7,11 @@ public class DslrEditor extends MultiPageEditor {
     private static final String DRL_VIEWER = "DRL Viewer";
 
     public RuleEditor showRuleEditor() {
-        return new RuleEditor(this, TEXT_EDITOR);
+        return RuleEditor.newInstance(this, TEXT_EDITOR);
     }
 
     public RuleEditor showDrlViewer() {
-        return new ReadonlyRuleEditor(this, DRL_VIEWER);
+        return ReadonlyRuleEditor.newInstance(this, DRL_VIEWER);
     }
 
     IWorkbenchPart getEditorByTitle(String title) {

@@ -10,7 +10,7 @@ public class DrlEditor extends MultiPageEditor {
     private static final String RETE_TREE = "Rete Tree";
 
     public RuleEditor showRuleEditor() {
-        return new RuleEditor(this, TEXT_EDITOR);
+        return RuleEditor.newInstance(this, TEXT_EDITOR);
     }
 
     public void showReteTree() {

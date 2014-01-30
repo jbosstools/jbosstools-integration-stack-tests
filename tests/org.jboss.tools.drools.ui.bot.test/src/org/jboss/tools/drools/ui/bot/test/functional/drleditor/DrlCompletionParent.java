@@ -14,18 +14,27 @@ import org.jboss.tools.drools.reddeer.editor.ContentAssist;
 import org.jboss.tools.drools.reddeer.editor.DrlEditor;
 import org.jboss.tools.drools.reddeer.editor.RuleEditor;
 import org.jboss.tools.drools.reddeer.wizard.NewRuleResourceWizard;
+import org.jboss.tools.drools.ui.bot.test.util.RuntimeVersion;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 
-public class DrlCompletionParent extends TestParent {
+public abstract class DrlCompletionParent extends TestParent {
     private static final Logger LOGGER = Logger.getLogger(DrlCompletionParent.class);
     public static final String MESSAGE_TEXT = getTemplateText("MyMessageClass");
     public static final String RULE_RESOURCE_TEXT = getTemplateText("DummyRuleFile");
 
     private int errors, warnings;
     protected DrlEditor master;
+
+    public DrlCompletionParent() {
+        super();
+    }
+
+    public DrlCompletionParent(RuntimeVersion useRuntime) {
+        super(useRuntime);
+    }
 
     @Before
     public void setUpDomainAndRule() {
@@ -49,8 +58,8 @@ public class DrlCompletionParent extends TestParent {
         // create RuleResource
         NewRuleResourceWizard wiz = new NewRuleResourceWizard();
         wiz.open();
-        wiz.getFirstPage().setParentFolder(DEFAULT_RULES_PATH);
-        wiz.getFirstPage().setFileName(name.getMethodName());
+        wiz.getFirstPage().setParentFolder(getRulesLocation());
+        wiz.getFirstPage().setFileName(getTestName());
         wiz.getFirstPage().setRulePackageName("com.sample");
         wiz.finish();
 
@@ -113,8 +122,7 @@ public class DrlCompletionParent extends TestParent {
     private DrlEditor openDrlEditor() {
         PackageExplorer explorer = new PackageExplorer();
         explorer.open();
-        explorer.getProject(DEFAULT_PROJECT_NAME)
-                .getProjectItem(RESOURCES_LOCATION, "rules", name.getMethodName() + ".drl").select();
+        explorer.getProject(DEFAULT_PROJECT_NAME).getProjectItem(getResourcePath(getTestName() + ".drl")).select();
         new ContextMenu(new RegexMatchers("Open.*").getMatchers()).select();
 
         return new DrlEditor();

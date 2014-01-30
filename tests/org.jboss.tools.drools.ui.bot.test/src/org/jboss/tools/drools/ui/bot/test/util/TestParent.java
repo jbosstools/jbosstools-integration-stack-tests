@@ -3,13 +3,13 @@ package org.jboss.tools.drools.ui.bot.test.util;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.Properties;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.log4j.Logger;
@@ -30,10 +30,12 @@ import org.jboss.reddeer.workbench.view.View;
 import org.jboss.tools.drools.reddeer.dialog.DroolsRuntimeDialog;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage.DroolsRuntime;
+import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectSelectRuntimeWizardPage.CodeCompatibility;
 import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectWizard;
 import org.jboss.tools.drools.ui.bot.test.Activator;
+import org.jboss.tools.drools.ui.bot.test.annotation.Drools5Runtime;
+import org.jboss.tools.drools.ui.bot.test.annotation.Drools6Runtime;
 import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
-import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultRuntime;
 import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
 import org.junit.After;
 import org.junit.Before;
@@ -51,17 +53,25 @@ import org.osgi.framework.Bundle;
 @RunWith(RedDeerSuite.class)
 public abstract class TestParent {
     private static final Logger LOGGER = Logger.getLogger(TestParent.class);
-    private static final Properties TEST_PARAMS = new Properties();
+    private static final TestSuiteProperties TEST_PARAMS = new TestSuiteProperties();
     private static final String LOCAL_RUNTIME = new File("tmp/runtime").getAbsolutePath();
     private static final File SCREENSHOT_DIR = new File("screenshots");
 
     protected static final String DEFAULT_DROOLS_RUNTIME_NAME = "defaultTestRuntime";
-    protected static final String DEFAULT_DROOLS_RUNTIME_LOCATION;
+    protected static final String DEFAULT_DROOLS_RUNTIME_LOCATION = TEST_PARAMS.getProperty(TestSuiteProperties.DROOLS6_RUNTIME, LOCAL_RUNTIME);
+    protected static final String DROOLS5_RUNTIME_LOCATION = TEST_PARAMS.getProperty(TestSuiteProperties.DROOLS5_RUNTIME);
     public static final String DEFAULT_PROJECT_NAME = "defaultTestProject";
-    protected static final String RESOURCES_LOCATION = "src/main/resources";
-    protected static final String DEFAULT_RULES_PATH = DEFAULT_PROJECT_NAME + "/" + RESOURCES_LOCATION + "/rules";
 
-    private static AtomicBoolean initialized = new AtomicBoolean(false);
+    private static final AtomicBoolean initialized = new AtomicBoolean(false);
+    private final RuntimeVersion runtimeVersion;
+
+    public TestParent() {
+        this(RuntimeVersion.UNDEFINED);
+    }
+
+    public TestParent(RuntimeVersion useRuntime) {
+        this.runtimeVersion = useRuntime;
+    }
 
     @Rule
     public TestName name = new TestName();
@@ -92,21 +102,6 @@ public abstract class TestParent {
             LOGGER.warn(String.format("failed %s - %s", description.getClassName(), description.getMethodName()));
         };
     };
-
-    static {
-        try {
-            LOGGER.info("Loading properties for Drools tests");
-            // Read project properties
-            Bundle bundle = Platform.getBundle(Activator.PLUGIN_ID);
-            InputStream is = bundle.getResource("project.properties").openStream();
-            TEST_PARAMS.load(is);
-            LOGGER.info("Properties for Drools test loaded");
-        } catch (Exception ex) {
-            LOGGER.warn("External properties were not loaded.");
-        }
-
-        DEFAULT_DROOLS_RUNTIME_LOCATION = TEST_PARAMS.getProperty("drools.default.location", LOCAL_RUNTIME);
-    }
 
     @BeforeClass
     public static void closeStartUpDialogsAndViews() {
@@ -155,7 +150,7 @@ public abstract class TestParent {
     @Before
     public void setUpEnvironment() {
         // first set up the correct perspective
-        UsePerspective def = getAnnotationOnMethod(name.getMethodName(), UsePerspective.class);
+        UsePerspective def = getAnnotationOnMethod(getMethodName(), UsePerspective.class);
         boolean opened = false;
         try {
             if (def != null) {
@@ -171,40 +166,27 @@ public abstract class TestParent {
             new JavaPerspective().open();
         }
 
-        // then add a default runtime
-        if (getAnnotationOnMethod(name.getMethodName(), UseDefaultRuntime.class) != null) {
-            DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
-            pref.open();
+        // setup default runtime and project
+        setupRuntime(getUsedVersion());
 
-            DroolsRuntimeDialog wiz = pref.addDroolsRuntime();
-            wiz.setName(DEFAULT_DROOLS_RUNTIME_NAME);
-            wiz.setLocation(DEFAULT_DROOLS_RUNTIME_LOCATION);
-            wiz.ok();
-            pref.setDroolsRuntimeAsDefault(DEFAULT_DROOLS_RUNTIME_NAME);
-
-            pref.okCloseWarning();
-        }
-
-        // then create default project
-        if (getAnnotationOnMethod(name.getMethodName(), UseDefaultProject.class) != null) {
-            if (!new PackageExplorer().containsProject(DEFAULT_PROJECT_NAME)) {
-                NewDroolsProjectWizard wiz = new NewDroolsProjectWizard();
-                wiz.createDefaultProjectWithAllSamples(DEFAULT_PROJECT_NAME);
-            }
+        // setup default project
+        if (getAnnotationOnMethod(getMethodName(), UseDefaultProject.class) != null) {
+            setupProject(getUsedVersion());
         }
     }
 
     @After
     public void cleanUp() {
         // take screenshot before cleaning up
-        takeScreenshot(String.format("%s-%s", getClass().getName(), name.getMethodName()));
+        takeScreenshot(String.format("%s-%s", getClass().getName(), getTestName()));
 
-        // close shells
-        new SWTWorkbenchBot().closeAllShells();
+        closeAllDialogs();
+
         // save and close editors
         while (true) {
             try {
-                new DefaultEditor().close(true);
+                new DefaultEditor().save();
+                new DefaultEditor().close();
             } catch (Exception ex) {
                 break;
             }
@@ -272,13 +254,18 @@ public abstract class TestParent {
         return w.toString();
     }
 
+    /**
+     * Takes the screenshot of Eclipse. It is stored in screenshot directory. The file name follows pattern  <code>001-${name}.png</code>.
+     * 
+     * @param name name of the screenshot (needs not be unique)
+     */
     protected static void takeScreenshot(String name) {
         if (!SCREENSHOT_DIR.exists()) {
             SCREENSHOT_DIR.mkdirs();
         }
 
         int index = SCREENSHOT_DIR.list().length;
-        File screenshotFile = new File(SCREENSHOT_DIR, String.format("%02d-%s.png", index, name ));
+        File screenshotFile = new File(SCREENSHOT_DIR, String.format("%03d-%s.png", index, name ));
         SWTUtils.captureScreenshot(screenshotFile.getAbsolutePath());
     }
 
@@ -297,5 +284,125 @@ public abstract class TestParent {
      */
     protected void waitASecond() {
         try { Thread.sleep(1000); } catch (InterruptedException ex) {}
+    }
+
+    protected void closeAllDialogs() {
+        // press as many "Cancel" buttons as possible to clear out the shells
+        while (true) {
+            try {
+                new PushButton("Cancel").click();
+            } catch (Exception ex) {
+                break;
+            }
+        }
+        new SWTWorkbenchBot().closeAllShells();
+    }
+
+    private void setupRuntime(RuntimeVersion useRuntime) {
+        String runtimeLocation = null;
+        switch (useRuntime) {
+            case BRMS_5:
+                runtimeLocation = DROOLS5_RUNTIME_LOCATION;
+                break;
+            case BRMS_6:
+                runtimeLocation = DEFAULT_DROOLS_RUNTIME_LOCATION;
+                break;
+            default:
+                runtimeLocation = null;
+                break;
+        }
+
+        if (runtimeLocation != null) {
+            DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
+            pref.open();
+
+            DroolsRuntimeDialog wiz = pref.addDroolsRuntime();
+            wiz.setName(DEFAULT_DROOLS_RUNTIME_NAME);
+            wiz.setLocation(runtimeLocation);
+            wiz.ok();
+            pref.setDroolsRuntimeAsDefault(DEFAULT_DROOLS_RUNTIME_NAME);
+
+            pref.okCloseWarning();
+        }
+    }
+
+    private void setupProject(RuntimeVersion useRuntime) {
+        if (useRuntime == RuntimeVersion.UNDEFINED) {
+            return;
+        }
+
+        NewDroolsProjectWizard wiz = new NewDroolsProjectWizard();
+        wiz.open();
+        wiz.getFirstPage().setProjectName(DEFAULT_PROJECT_NAME);
+        wiz.getSelectSamplesPage().checkAll();
+
+        if (useRuntime == RuntimeVersion.BRMS_5) {
+            wiz.getDroolsRuntimePage().setCodeCompatibleWithVersion(CodeCompatibility.Drools51OrAbove);
+        }
+        if (useRuntime == RuntimeVersion.BRMS_6) {
+            wiz.getDroolsRuntimePage().setCodeCompatibleWithVersion(CodeCompatibility.Drools60x);
+            wiz.getDroolsRuntimePage().setGAV("com.redhat", "test", "1.0.0-SNAPSHOT");
+        }
+
+        wiz.finish();
+    }
+
+    protected String getResourcesLocation() {
+        switch (getUsedVersion()) {
+            case BRMS_5:
+                return "src/main/rules";
+            case BRMS_6:
+                return "src/main/resources";
+            default:
+                return null;
+        }
+    }
+
+    protected String getRulesLocation() {
+        return getRulesLocation(DEFAULT_PROJECT_NAME);
+    }
+    protected String getRulesLocation(String projectName) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(projectName).append("/").append(getResourcesLocation());
+        if (getUsedVersion() == RuntimeVersion.BRMS_6) {
+                sb.append("/").append("rules");
+        }
+
+        return sb.toString();
+    }
+
+    protected String[] getResourcePath(String resourceName) {
+        return getResourcePath("rules", resourceName);
+    }
+
+    protected String[] getResourcePath(String packageName, String resourceName) {
+        List<String> result = new LinkedList<String>();
+
+        result.add(getResourcesLocation());
+        if (getUsedVersion() == RuntimeVersion.BRMS_6) {
+            result.add(packageName);
+        }
+        result.add(resourceName);
+
+        return result.toArray(new String[result.size()]);
+    }
+
+    protected String getTestName() {
+        return name.getMethodName().replace('[', '_').replace("]", "");
+    }
+
+    protected String getMethodName() {
+        return name.getMethodName().replaceAll("\\[\\d+\\]", "");
+    }
+
+    protected RuntimeVersion getUsedVersion() {
+        if (getAnnotationOnMethod(getMethodName(), Drools6Runtime.class) != null) {
+            return RuntimeVersion.BRMS_6;
+        } else if (getAnnotationOnMethod(getMethodName(), Drools5Runtime.class) != null) {
+            return RuntimeVersion.BRMS_5;
+        } else {
+            return runtimeVersion;
+        }
     }
 }

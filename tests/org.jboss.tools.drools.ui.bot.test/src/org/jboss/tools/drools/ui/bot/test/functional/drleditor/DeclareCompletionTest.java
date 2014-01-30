@@ -4,7 +4,7 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.drools.reddeer.editor.RuleEditor;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
 import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
-import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultRuntime;
+import org.jboss.tools.drools.ui.bot.test.annotation.Drools6Runtime;
 import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,7 +15,7 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 public class DeclareCompletionTest extends DrlCompletionParent {
     @Test
-    @UsePerspective(DroolsPerspective.class) @UseDefaultRuntime @UseDefaultProject
+    @UsePerspective(DroolsPerspective.class) @Drools6Runtime @UseDefaultProject
     public void testFactTypeDeclare() {
         RuleEditor editor = master.showRuleEditor();
         editor.setPosition(2, 0);
@@ -26,7 +26,7 @@ public class DeclareCompletionTest extends DrlCompletionParent {
     }
 
     @Test
-    @UsePerspective(DroolsPerspective.class) @UseDefaultRuntime @UseDefaultProject
+    @UsePerspective(DroolsPerspective.class) @Drools6Runtime @UseDefaultProject
     public void testFactTypeUsage() {
         RuleEditor editor = master.showRuleEditor();
         editor.setPosition(2, 0);
@@ -45,7 +45,7 @@ public class DeclareCompletionTest extends DrlCompletionParent {
     }
 
     @Test
-    @UsePerspective(DroolsPerspective.class) @UseDefaultRuntime @UseDefaultProject
+    @UsePerspective(DroolsPerspective.class) @Drools6Runtime @UseDefaultProject
     public void testQueryDeclare() {
         RuleEditor editor = master.showRuleEditor();
         editor.setPosition(2, 0);
@@ -65,7 +65,7 @@ public class DeclareCompletionTest extends DrlCompletionParent {
     }
 
     @Test
-    @UsePerspective(DroolsPerspective.class) @UseDefaultRuntime @UseDefaultProject
+    @UsePerspective(DroolsPerspective.class) @Drools6Runtime @UseDefaultProject
     public void testQueryUsage() {
         RuleEditor editor = master.showRuleEditor();
         editor.setPosition(2, 0);
@@ -79,7 +79,7 @@ public class DeclareCompletionTest extends DrlCompletionParent {
     }
 
     @Test
-    @UsePerspective(DroolsPerspective.class) @UseDefaultRuntime @UseDefaultProject
+    @UsePerspective(DroolsPerspective.class) @Drools6Runtime @UseDefaultProject
     public void testFunctionDeclare() {
         RuleEditor editor = master.showRuleEditor();
         editor.setPosition(2, 0);
@@ -106,7 +106,7 @@ public class DeclareCompletionTest extends DrlCompletionParent {
     }
 
     @Test
-    @UsePerspective(DroolsPerspective.class) @UseDefaultRuntime @UseDefaultProject
+    @UsePerspective(DroolsPerspective.class) @Drools6Runtime @UseDefaultProject
     public void testFunctionUsage() {
         RuleEditor editor = master.showRuleEditor();
         editor.setPosition(2, 0);

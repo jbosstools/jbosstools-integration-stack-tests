@@ -4,7 +4,7 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
 import org.jboss.tools.drools.reddeer.perspective.JbpmPerspective;
-import org.jboss.tools.drools.ui.bot.test.util.SmokeTest;
+import org.jboss.tools.drools.ui.bot.test.group.SmokeTest;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
 import org.junit.Assert;
 import org.junit.Test;

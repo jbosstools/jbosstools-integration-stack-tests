@@ -2,25 +2,32 @@ package org.jboss.tools.drools.ui.bot.test.functional.view;
 
 import java.util.List;
 
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.drools.reddeer.editor.DrlEditor;
 import org.jboss.tools.drools.reddeer.editor.EnhancedTextEditor;
 import org.jboss.tools.drools.reddeer.editor.RuleEditor;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
 import org.jboss.tools.drools.reddeer.view.GlobalDataView;
+import org.jboss.tools.drools.ui.bot.test.annotation.Drools6Runtime;
 import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
-import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultRuntime;
 import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
 import org.jboss.tools.drools.ui.bot.test.util.OpenUtility;
 import org.jboss.tools.drools.ui.bot.test.util.RunUtility;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+@RunWith(RedDeerSuite.class)
 public class GlobalDataViewTest extends ViewTestParent {
 
+    public GlobalDataViewTest() {
+        super(GlobalDataView.class);
+    }
+
     @Test
-    @UsePerspective(DroolsPerspective.class) @UseDefaultRuntime @UseDefaultProject
+    @UsePerspective(DroolsPerspective.class) @Drools6Runtime @UseDefaultProject
     public void testNoGlobalsDefined() {
-        OpenUtility.openResource(DEFAULT_PROJECT_NAME, RESOURCES_LOCATION, "rules", "Sample.drl");
+        OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
 
         RuleEditor editor = new DrlEditor().showRuleEditor();
         editor.setBreakpoint(8);
@@ -29,16 +36,14 @@ public class GlobalDataViewTest extends ViewTestParent {
 
         GlobalDataView globals = new GlobalDataView();
         globals.open();
-        selectKsessionVariable();
-        globals.open();
 
         Assert.assertEquals("Undefined globals found", 0, globals.getGlobalsList().size());
     }
 
     @Test
-    @UsePerspective(DroolsPerspective.class) @UseDefaultRuntime @UseDefaultProject
+    @UsePerspective(DroolsPerspective.class) @Drools6Runtime @UseDefaultProject
     public void testUninitiatedGlobal() {
-        OpenUtility.openResource(DEFAULT_PROJECT_NAME, RESOURCES_LOCATION, "rules", "Sample.drl");
+        OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
 
         RuleEditor editor = new DrlEditor().showRuleEditor();
         editor.setPosition(3, 0);
@@ -50,8 +55,6 @@ public class GlobalDataViewTest extends ViewTestParent {
 
         GlobalDataView globals = new GlobalDataView();
         globals.open();
-        selectKsessionVariable();
-        globals.open();
 
         List<String> names = globals.getGlobalsList();
         Assert.assertEquals("Wrong number of globals found", 1, names.size());
@@ -59,9 +62,9 @@ public class GlobalDataViewTest extends ViewTestParent {
     }
 
     @Test
-    @UsePerspective(DroolsPerspective.class) @UseDefaultRuntime @UseDefaultProject
+    @UsePerspective(DroolsPerspective.class) @Drools6Runtime @UseDefaultProject
     public void testMultipleGlobals() {
-        OpenUtility.openResource(DEFAULT_PROJECT_NAME, RESOURCES_LOCATION, "rules", "Sample.drl");
+        OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
 
         RuleEditor editor = new DrlEditor().showRuleEditor();
 
@@ -84,8 +87,6 @@ public class GlobalDataViewTest extends ViewTestParent {
         RunUtility.debugAsDroolsApplication(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
 
         GlobalDataView globals = new GlobalDataView();
-        globals.open();
-        selectKsessionVariable();
         globals.open();
 
         List<String> names = globals.getGlobalsList();
