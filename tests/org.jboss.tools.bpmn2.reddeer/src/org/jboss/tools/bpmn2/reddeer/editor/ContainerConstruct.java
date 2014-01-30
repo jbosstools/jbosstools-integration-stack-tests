@@ -45,23 +45,21 @@ public class ContainerConstruct extends Construct {
 		String sectionName = type.toToolPath()[0];
 		
 		Rectangle bounds = editor.getBounds(editPart);
-		int x = 0;
-		int y = 0;
-		
+		int x = -1;
+		int y = -1;
 		
 		if ("Boundary Events".equals(sectionName)) {
 			/*
 			 * Upper left corner
 			 */
-			x = bounds.x + 5; 
-		    y = bounds.y + 5;
+			x = y = 5; 
 		} else {
-			x = bounds.x + (bounds.width / 8);
+			x = bounds.width() / 8;
 			/*
 			 * ISSUE: Need to have -5 otherwise it will hit the connection arrow if an activity is under it!!!
-			 * 		  Rerun AdHocSubProcessTest without the -5 to reproduce.
+			 * 		  Use AdHocSubProcessTest without the -5 to reproduce.
 			 */
-			y = bounds.y + (bounds.height / 10);
+			y = bounds.height() / 10;
 		}
 		Point placeTo = new Point(x, y);
 		add(name, type, placeTo);
@@ -83,20 +81,30 @@ public class ContainerConstruct extends Construct {
 	 * 
 	 * @param name
 	 * @param type
-	 * @param point
+	 * @param point Represents a position in the canvas relative to this construct. Meaning that
+	 *              this construct's upper left corner is the staring position. 
 	 */
 	public void add(String name, ConstructType type, Point point) {
+		Rectangle bounds = editor.getBounds(editPart);
+		
 		String sectionName = type.toToolPath()[0];
-		if (!"Boundary Events".equals(sectionName) && !isInternalAvailable(point)) {
-			throw new RuntimeException("'" + point + "' is not available");
+		if (!"Boundary Events".equals(sectionName)) {
+			/*
+			 * Need to make the point absolute to know weather it lies inside.
+			 */
+			Point absolutePoint = new Point(point.x() + bounds.width(), point.y() + bounds.height());
+			if (isInternalAvailable(absolutePoint)) {
+				throw new RuntimeException("'" + absolutePoint + "' is not available");
+			}
 		}
+
 		/*
 		 * Add the construct using the tool in the palette.
 		 */
 		select();
 		log.info("Adding consturct '" + name + "' of type '" + type + "' to '" + point + "'");
 		editor.activateTool(type.toToolPath()[0], type.toToolPath()[1]);
-		editor.click(point.x(), point.y());
+		editor.click(bounds.x() + point.x(), bounds.y() + point.y());
 		/*
 		 * Set name
 		 */
@@ -115,7 +123,8 @@ public class ContainerConstruct extends Construct {
 		/*
 		 * The point must be inside this edit part.
 		 */
-		if (getBounds().contains(point)) {
+		Rectangle bounds = getBounds();
+		if (bounds.contains(point)) {
 			/*
 			 * Check weather the point is not already taken by another child editPart.
 			 */

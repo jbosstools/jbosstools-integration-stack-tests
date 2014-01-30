@@ -291,29 +291,24 @@ public class Construct {
 	 * @return
 	 */
 	protected Point findPoint(Construct parent, Construct nextToChild, Position relativePosition) {
-		/*
-		 * Initialize variables.
-		 */
-		Rectangle childRectangle = nextToChild.getBounds();
+		Rectangle childBounds = nextToChild.getBounds();
 		
-		int childStartX = childRectangle.x();
-		int childEndX = childRectangle.right();
+		int childStartX = childBounds.x();
+		int childEndX = childBounds.right();
 		
-		int childStartY = childRectangle.y();
-		int childEndY = childRectangle.bottom();
+		int childStartY = childBounds.y();
+		int childEndY = childBounds.bottom();
 		
-		int childCenterX = childRectangle.getCenter().x();
-		int childCenterY = childRectangle.getCenter().y();
+		int childCenterX = childBounds.getCenter().x();
+		int childCenterY = childBounds.getCenter().y();
 		
-//		int nearOffset  = newChildType.isContainer() ? 2 * 75 : 75;
-//		int farOffset = newChildType.isContainer() ? 2 * 100 : 100;
-		int nearOffset  = 75;
-		int farOffset = 100;
+		int nearOffset  = 75; // newChildType.isContainer() ? 2 * 75 : 75;
+		int farOffset = 100; // newChildType.isContainer() ? 2 * 100 : 100;
 		
-		Point point = new Point(-1, -1);
 		/*
 		 * Assign 'x' and 'y'.
 		 */
+		Point point = new Point(-1, -1);
 		switch (relativePosition) {
 			case NORTH:
 				point.x = childCenterX;
@@ -366,19 +361,25 @@ public class Construct {
 		 */
 		
 		if (parent != null) {
-		
-			Rectangle parentRectangle = editor.getBounds(parent.getEditPart());
+			Rectangle parentBounds = editor.getBounds(parent.getEditPart());
 			
-			int parentStartX = parentRectangle.x();
-			int parentEndX = parentRectangle.right();
+			int parentStartX = parentBounds.x();
+			int parentEndX = parentBounds.right();
 			
-			int parentStartY = parentRectangle.y();
-			int parentEndY = parentRectangle.bottom();
+			int parentStartY = parentBounds.y();
+			int parentEndY = parentBounds.bottom();
 			
 			if (point.x < parentStartX) point.x = parentStartX;
 			if (point.x > parentEndX) point.x = parentEndX;
 			if (point.y < parentStartY) point.y = parentStartY;
 			if (point.y > parentEndY) point.y = parentEndY;
+			
+			/*
+			 * Transform the point so it appears to be relative to the activity given
+			 * by parent not the whole canvas.
+			 */
+			point.x = point.x() - parentBounds.x();
+			point.y = point.y() - parentBounds.y();
 		}
 		/*
 		 * Return
