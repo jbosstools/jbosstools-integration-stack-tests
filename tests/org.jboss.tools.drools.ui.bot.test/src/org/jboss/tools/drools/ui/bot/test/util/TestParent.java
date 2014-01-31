@@ -22,7 +22,7 @@ import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.toolbar.ViewToolItem;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.lookup.ShellLookup;
 import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.workbench.editor.DefaultEditor;
@@ -207,7 +207,7 @@ public abstract class TestParent {
         try {
             // FIXME uncomment once my pull request is applied
             //console.removeAllTerminatedLaunches();
-            new ViewToolItem("Remove All Terminated Launches").click();
+            new DefaultToolItem("Remove All Terminated Launches").click();
         } catch (Exception ex) {
             LOGGER.debug("Console was not cleared", ex);
         }
@@ -393,7 +393,7 @@ public abstract class TestParent {
     }
 
     protected String getMethodName() {
-        return name.getMethodName().replaceAll("\\[\\d+\\]", "");
+        return name.getMethodName().replaceAll("\\[\\d+\\]", "").replace("default", "").trim();
     }
 
     protected RuntimeVersion getUsedVersion() {
