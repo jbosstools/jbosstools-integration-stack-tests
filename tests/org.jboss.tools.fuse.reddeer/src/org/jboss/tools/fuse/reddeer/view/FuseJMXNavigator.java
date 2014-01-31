@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.jboss.reddeer.junit.logging.Logger;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.toolbar.ViewToolItem;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.view.View;
 
@@ -50,7 +50,7 @@ public class FuseJMXNavigator extends View {
 		open();
 		TreeItem localProcesses = new DefaultTreeItem(LOCAL_PROCESSES);
 		localProcesses.select();
-		new ViewToolItem(REFRESH_BUTTON).click();
+		new DefaultToolItem(REFRESH_BUTTON).click();
 		log.info("Refreshing Local Processes in JMX View");
 	}
 
