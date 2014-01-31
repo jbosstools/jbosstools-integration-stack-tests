@@ -393,7 +393,7 @@ public abstract class TestParent {
     }
 
     protected String getMethodName() {
-        return name.getMethodName().replaceAll("\\[\\d+\\]", "");
+        return name.getMethodName().replaceAll("\\[\\d+\\]", "").replace("default", "").trim();
     }
 
     protected RuntimeVersion getUsedVersion() {
