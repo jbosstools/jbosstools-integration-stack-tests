@@ -1,5 +1,9 @@
 package org.jboss.tools.bpmn2.reddeer.editor;
 
+/**
+ * 
+ * @author Marek Baluch <mbaluch@redhat.com>
+ */
 public enum ConnectionType {
 	
 	DATA_ASSOCIATION,
@@ -7,6 +11,10 @@ public enum ConnectionType {
 	ASSOCIATION_ONE_WAY,
 	SEQUENCE_FLOW;
 
+	/**
+	 * 
+	 * @return
+	 */
 	public String toName() {
 		StringBuilder r = new StringBuilder();
 		for (String w : name().split("_")) {

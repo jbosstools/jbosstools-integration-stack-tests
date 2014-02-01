@@ -3,7 +3,7 @@ package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 import org.jboss.tools.bpmn2.reddeer.editor.AbstractGateway.Direction;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
 import org.jboss.tools.bpmn2.reddeer.editor.Position;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.BPMN2Process;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.ExclusiveGateway;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
@@ -29,7 +29,7 @@ public class XPathExpressionTest extends JBPM6BaseTest {
 	
 	@Override()
 	public void buildProcessModel() {
-		BPMN2Process process = new BPMN2Process("BPMN2-XPathExpression");
+		Process process = new Process("BPMN2-XPathExpression");
 		process.addDataType("org.w3c.dom.Document");
 		process.addLocalVariable("instanceMetadata", "org.w3c.dom.Document");
 		

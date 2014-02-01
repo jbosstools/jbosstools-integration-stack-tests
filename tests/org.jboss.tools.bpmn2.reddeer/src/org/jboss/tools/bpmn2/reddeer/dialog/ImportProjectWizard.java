@@ -1,4 +1,4 @@
-package org.jboss.tools.bpmn2.reddeer.editor;
+package org.jboss.tools.bpmn2.reddeer.dialog;
 
 import org.jboss.reddeer.eclipse.jface.wizard.ImportWizardDialog;
 import org.jboss.reddeer.swt.impl.button.PushButton;

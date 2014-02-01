@@ -1,7 +1,7 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.BPMN2Process;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.throwevents.MessageIntermediateThrowEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
@@ -16,7 +16,7 @@ public class IntermediateThrowMessageEventTest extends JBPM6BaseTest {
 
 	@Override
 	public void buildProcessModel() {
-		BPMN2Process process = new BPMN2Process("BPMN2-IntermediateThrowMessageEvent");
+		Process process = new Process("BPMN2-IntermediateThrowMessageEvent");
 		process.addLocalVariable("m", "String");
 		process.addMessage("_2_Message", "String");
 		

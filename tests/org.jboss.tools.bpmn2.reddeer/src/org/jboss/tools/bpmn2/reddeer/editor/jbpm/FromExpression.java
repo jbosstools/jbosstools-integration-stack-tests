@@ -3,21 +3,21 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.tools.bpmn2.reddeer.editor.IMappingSide;
+import org.jboss.tools.bpmn2.reddeer.editor.MappingSide;
 
 /**
- * Mapping from a variable.
+ * Mapping from an expression.
  * 
- * @author mbaluch
+ * @author Marek Baluch <mbaluch@redhat.com>
  */
-public class FromExpression implements IMappingSide {
+public class FromExpression implements MappingSide {
 
 	private String scriptLanguage;
 	
 	private String script;
 	
 	/**
-	 * Creates a new instance of FromVariable.
+	 * Creates a new instance of FromExpression.
 	 * 
 	 * @param variableName
 	 */
@@ -38,7 +38,7 @@ public class FromExpression implements IMappingSide {
 	 * @return
 	 */
 	@Override
-	public String getName() {
+	public String getValue() {
 		return script;
 	}
 	

@@ -5,19 +5,18 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.tools.bpmn2.reddeer.editor.Process;
 
 /**
  * 
- * @author mbaluch
+ * @author Marek Baluch <mbaluch@redhat.com>
  */
-public class BPMN2Process extends Process {
+public class Process extends org.jboss.tools.bpmn2.reddeer.editor.Process {
 
 	/**
 	 * 
 	 * @param name
 	 */
-	public BPMN2Process(String name) {
+	public Process(String name) {
 		super(name);
 		select();
 	}
@@ -64,51 +63,16 @@ public class BPMN2Process extends Process {
 	 */
 	public void setAddHoc(boolean b) {
 		properties.selectTab("Process");
-//		properties.selectCheckBox(new CheckBox("Ad Hoc"), b);
-		properties.selectCheckBox(new CheckBox(0), b);
+		properties.selectCheckBox(new CheckBox(0), b); // Ad Hoc
 	}
 	
 	/**
 	 * 
+	 * @param b
 	 */
 	public void setExecutable(boolean b) {
-		super.setExecutable(b);
-	}
-	
-	/**
-	 * ISSUES:
-	 * 	1) Does nothing. The name is set but not visible in the file.
-	 */
-	public void setNameAttribute(String name) {
-		properties.selectTab("Definitions");
-		new LabeledText("Name").setText(name);
-	}
-	
-	/**
-	 * 
-	 * @param name
-	 */
-	public void setTargetNamespaceAttribute(String name) {
-		properties.selectTab("Definitions");
-		new LabeledText("Target Namespace").setText(name);
-	}
-	
-	/**
-	 * 
-	 * @param name
-	 */
-	public void setTypeLanguageAttribute(String name) {
-		properties.selectTab("Definitions");
-		new LabeledText("Type Language").setText(name);
-	}
-	
-	/**
-	 * 
-	 * @param name
-	 */
-	public void setExpressionLanguageAttribute(String name) {
-		properties.selectTab("Definitions");
-		new LabeledText("Expression Language").setText(name);
+		properties.selectTab("Process");
+		properties.selectCheckBox(new CheckBox(1), b); // Is Executable
 	}
 	
 	/**

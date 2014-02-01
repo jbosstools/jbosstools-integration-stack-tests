@@ -1,10 +1,8 @@
 package org.jboss.tools.bpmn2.reddeer.editor;
 
+import org.jboss.reddeer.swt.impl.button.CheckBox;
+
 /**
- * ISSUES:
- * 	1) output parameter doesn't have the possibility to specify mapping type!
- *  2) inconsistent naming. 'java' Vs. 'Java', 'mvel' Vs. 'MVEL' 
- *  	- lower case is present in 'Task' var mapping and upper in 'Manual Task'
  * 
  * @author Marek Baluch <mbaluch@redhat.com>
  */
@@ -13,31 +11,50 @@ public abstract class AbstractTask extends Construct {
 	/**
 	 * 
 	 * @param name
+	 * @param type
 	 */
 	public AbstractTask(String name, ConstructType type) {
 		super(name, type);
 	}
 	
-	protected void setIsForCompensation(boolean b) {
+	/**
+	 * 
+	 * @param value
+	 */
+	protected void setIsForCompensation(boolean value) {
 		properties.selectTab(type.toToolName());
-		properties.selectCheckBox(bot.checkBoxWithLabel("Is For Compensation"), b);
+		properties.selectCheckBox(new CheckBox("Is For Compensation"), value);
 	}
 	
+	/**
+	 * 
+	 * @param language
+	 * @param script
+	 */
 	protected void setOnEntryScript(String language, String script) {
 		properties.selectTab(type.toToolName());
 		bot.comboBoxWithLabel("Script Language").setSelection(language);
 		bot.textWithLabel("Script").setText(script);
 	}
 	
+	/**
+	 * 
+	 * @param language
+	 * @param script
+	 */
 	protected void setOnExistScript(String language, String script) {
 		properties.selectTab(type.toToolName());
 		bot.comboBoxWithLabel("Script Language", 1).setSelection(language);
 		bot.textWithLabel("Script", 1).setText(script);
 	}
 	
-	protected void addParameterMapping(IParameterMapping parameter) {
+	/**
+	 * 
+	 * @param mapping
+	 */
+	protected void addParameterMapping(ParameterMapping mapping) {
 		properties.selectTab("I/O Parameters");
-		parameter.add();
+		mapping.add();
 	}
 
 	/**

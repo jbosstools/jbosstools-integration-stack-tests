@@ -1,14 +1,14 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm;
 
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.tools.bpmn2.reddeer.editor.IMappingSide;
+import org.jboss.tools.bpmn2.reddeer.editor.MappingSide;
 
 /**
  * Mapping to a variable.
  * 
- * @author mbaluch
+ * @author Marek Baluch <mbaluch@redhat.com>
  */
-public class ToVariable implements IMappingSide {
+public class ToVariable implements MappingSide {
 
 	private String variableName;
 	
@@ -21,13 +21,19 @@ public class ToVariable implements IMappingSide {
 		this.variableName = variableName;
 	}
 	
+	/**
+	 * 
+	 */
 	@Override
 	public void add() {
 		new DefaultCombo("Target").setSelection(variableName);
 	}
 
+	/**
+	 * 
+	 */
 	@Override
-	public String getName() {
+	public String getValue() {
 		return variableName;
 	}
 	

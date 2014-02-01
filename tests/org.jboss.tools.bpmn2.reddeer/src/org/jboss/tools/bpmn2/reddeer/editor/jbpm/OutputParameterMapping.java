@@ -1,52 +1,45 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.jboss.tools.bpmn2.reddeer.editor.IMappingSide;
-import org.jboss.tools.bpmn2.reddeer.editor.IParameterMapping;
+import org.jboss.tools.bpmn2.reddeer.editor.MappingSide;
+import org.jboss.tools.bpmn2.reddeer.editor.ParameterMapping;
 import org.jboss.tools.bpmn2.reddeer.view.BPMN2PropertiesView;
 
-// -- OUTPUT ASSOCIATION --
-// FROM: DataOutput
-//  - Name
-//  - Data State
-//  - Data Type
-// TO:   Variable|Transformation|...
-//	- Source
-//
-//
-// -- INTPUT ASSOCIATION --
-// FROM: DataInput
-// 	- Name
-//	- Data State
-//	- Data Type
-// TO:   Variable|Transformation
-//  - source
-public class OutputParameterMapping implements IParameterMapping {
+/**
+ *  Available output association types in BPMN2.
+ *  
+ *  FROM: DataOutput
+ *   - Name
+ *   - Data State
+ *   - Data Type
+ *  TO:   Variable|Transformation|...
+ * 	 - Source
+ * 
+ * @author Marek Baluch <mbaluch@redhat.com>
+ */
+public class OutputParameterMapping implements ParameterMapping {
 
-	protected final String SECTION = "Output Parameter Mapping"; 
-	
-	protected String sectionName;
+	protected static final String SECTION = "Output Parameter Mapping"; 
 	
 	protected BPMN2PropertiesView propertiesView = new BPMN2PropertiesView();
 	protected SWTBot bot = new SWTBot();
 	
-	protected IMappingSide from;
-	protected IMappingSide to;
+	protected MappingSide from;
+	protected MappingSide to;
 	
-	public OutputParameterMapping(IMappingSide from, IMappingSide to) {
-		this(from, to, "");
-		this.sectionName = SECTION;
-	}
-	
-	public OutputParameterMapping(IMappingSide from, IMappingSide to, String sectionName) {
+	/**
+	 * 
+	 * @param from
+	 * @param to
+	 */
+	public OutputParameterMapping(MappingSide from, MappingSide to) {
 		this.from = from;
 		this.to = to;
-		this.sectionName = sectionName;
 	}
 	
 	@Override
 	public void add() {
-		bot.toolbarButtonWithTooltip("Add", propertiesView.indexOfSection(sectionName)).click();
+		bot.toolbarButtonWithTooltip("Add", propertiesView.indexOfSection(SECTION)).click();
 		from.add();
 		to.add();
 		bot.toolbarButtonWithTooltip("Close").click();
@@ -54,7 +47,7 @@ public class OutputParameterMapping implements IParameterMapping {
 
 	@Override
 	public void remove() {
-		bot.table(1).select(from.getName());
+		bot.table(1).select(from.getValue());
 		bot.toolbarButtonWithTooltip("Remove", propertiesView.indexOfSection(SECTION)).click();
 	}
 	

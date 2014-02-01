@@ -1,7 +1,7 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.BPMN2Process;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.FromVariable;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.InputParameterMapping;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ToDataInput;
@@ -21,7 +21,7 @@ public class SendTaskTest extends JBPM6BaseTest {
 
 	@Override
 	public void buildProcessModel() {
-		BPMN2Process process = new BPMN2Process("BPMN2-SendTask");
+		Process process = new Process("BPMN2-SendTask");
 		process.addLocalVariable("s", "String");
 		process.addMessage("_2_Message", "String");
 		

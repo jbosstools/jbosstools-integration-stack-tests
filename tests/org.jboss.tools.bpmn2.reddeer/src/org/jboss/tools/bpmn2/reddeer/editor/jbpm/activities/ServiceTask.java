@@ -4,7 +4,7 @@ import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.tools.bpmn2.reddeer.editor.AbstractTask;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
-import org.jboss.tools.bpmn2.reddeer.editor.IParameterMapping;
+import org.jboss.tools.bpmn2.reddeer.editor.ParameterMapping;
 
 
 /**
@@ -39,10 +39,10 @@ public class ServiceTask extends AbstractTask {
 	}
 
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.AbstractTask#addInputParameter(org.jboss.tools.bpmn2.reddeer.editor.IParameterMapping)
+	 * @see org.jboss.tools.bpmn2.reddeer.editor.AbstractTask#addInputParameter(org.jboss.tools.bpmn2.reddeer.editor.ParameterMapping)
 	 */
 	@Override
-	public void addParameterMapping(IParameterMapping parameter) {
+	public void addParameterMapping(ParameterMapping parameter) {
 		super.addParameterMapping(parameter);
 	}
 
