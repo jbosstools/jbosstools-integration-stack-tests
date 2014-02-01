@@ -1,7 +1,7 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.BPMN2Process;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.UserTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.catchevents.SignalIntermediateCatchEvent;
@@ -18,7 +18,7 @@ public class IntermediateCatchSignalSingleTest extends JBPM6BaseTest {
 
 	@Override
 	public void buildProcessModel() {
-		BPMN2Process process = new BPMN2Process("BPMN2-IntermediateCatchSignalSingle");
+		Process process = new Process("BPMN2-IntermediateCatchSignalSingle");
 		process.addLocalVariable("s", "String");
 		
 		StartEvent startEvent = new StartEvent("StartProcess");

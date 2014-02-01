@@ -4,21 +4,21 @@ import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.tools.bpmn2.reddeer.editor.IMappingSide;
+import org.jboss.tools.bpmn2.reddeer.editor.MappingSide;
 
 /**
  * Represents the target side of parameter mapping.
  * 
- * @author mbaluch
+ * @author Marek Baluch <mbaluch@redhat.com>
  */
-public class FromDataOutput implements IMappingSide {
+public class FromDataOutput implements MappingSide {
 
 	private String name;
 	
 	private String dataType;
 
 	/**
-	 * Creates a new instance of FromDataInput.
+	 * Creates a new instance of FromDataOutput.
 	 * @param name
 	 */
 	public FromDataOutput(String name) {
@@ -26,7 +26,7 @@ public class FromDataOutput implements IMappingSide {
 	}
 	
 	/**
-	 * Creates a new instance of FromDataInput.
+	 * Creates a new instance of FromDataOutput.
 	 * 
 	 * @param name
 	 * @param dataType
@@ -37,7 +37,7 @@ public class FromDataOutput implements IMappingSide {
 	}
 	
 	/**
-	 * Define new data input.
+	 * Define new data output.
 	 */
 	public void add() {
 		new LabeledText("Name").setText(name);
@@ -59,7 +59,7 @@ public class FromDataOutput implements IMappingSide {
 	 * @return 
 	 */
 	@Override
-	public String getName() {
+	public String getValue() {
 		return name;
 	}
 	

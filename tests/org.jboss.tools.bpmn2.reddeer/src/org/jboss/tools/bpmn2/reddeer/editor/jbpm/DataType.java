@@ -5,16 +5,26 @@ import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.tools.bpmn2.reddeer.editor.IDataType;
 
-public class DataType implements IDataType {
+/**
+ * 
+ * @author Marek Baluch <mbaluch@redhat.com>
+ */
+public class DataType implements org.jboss.tools.bpmn2.reddeer.editor.DataType {
 
 	private String name;
 	
+	/**
+	 * 
+	 * @param name
+	 */
 	public DataType(String name) {
 		this.name = name;
 	}
 	
+	/**
+	 * 
+	 */
 	public void add() {
 		if (!selectType(name)) {
 			new PushButton(0).click();
@@ -25,6 +35,18 @@ public class DataType implements IDataType {
 		selectType(name);
 	}
 	
+	/**
+	 * 
+	 */
+	public void remove() {
+		throw new UnsupportedOperationException();
+	}
+	
+	/**
+	 * 
+	 * @param name
+	 * @return
+	 */
 	private boolean selectType(String name) {
 		// BZ-1008637
 		try {
@@ -39,6 +61,10 @@ public class DataType implements IDataType {
 		return false;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public String getName() {
 		return name;
 	}

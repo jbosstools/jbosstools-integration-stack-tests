@@ -2,9 +2,8 @@ package org.jboss.tools.bpmn2.reddeer.editor;
 
 
 /**
- * TBD: tool names and sections will be required.
  * 
- * @author mbaluch
+ * @author Marek Baluch <mbaluch@redhat.com>
  */
 public enum ConstructType {
 

@@ -1,7 +1,7 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.BPMN2Process;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ReceiveTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
@@ -18,7 +18,7 @@ public class ReceiveTaskTest extends JBPM6BaseTest {
 
 	@Override
 	public void buildProcessModel() {
-		BPMN2Process process = new BPMN2Process("BPMN2-ReceiveTask");
+		Process process = new Process("BPMN2-ReceiveTask");
 		process.addLocalVariable("s", "String");
 		process.addMessage("HelloMessage", "String");
 		

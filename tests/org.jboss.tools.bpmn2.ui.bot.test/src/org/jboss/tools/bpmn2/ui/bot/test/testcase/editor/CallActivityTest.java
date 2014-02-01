@@ -1,7 +1,7 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.BPMN2Process;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.FromDataOutput;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.FromVariable;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.InputParameterMapping;
@@ -22,7 +22,7 @@ public class CallActivityTest extends JBPM6BaseTest {
 
 	@Override
 	public void buildProcessModel() {
-		BPMN2Process process = new BPMN2Process("BPMN2-CallActivity");
+		Process process = new Process("BPMN2-CallActivity");
 		process.addDataType("String");
 		process.addLocalVariable("x", "String");
 		process.addLocalVariable("y", "String");

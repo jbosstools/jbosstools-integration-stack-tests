@@ -6,17 +6,13 @@ import org.eclipse.gef.EditPart;
 import org.jboss.tools.bpmn2.reddeer.matcher.ConstructOnPoint;
 
 /**
- * ISSUES: 
- *   1) Drill down does not work properly.
- *   	+ After a activity is added in the tab (drill down) the view will
- *        automatically be switched to the main process (back).
  * 
  * @author Marek Baluch <mbaluch@redhat.com>
  */
 public class ContainerConstruct extends Construct {
 
 	/**
-	 * 
+	 * @see Construct(String, ConstructType, Construct, int, boolean)
 	 * @param name
 	 * @param type
 	 */
@@ -25,7 +21,7 @@ public class ContainerConstruct extends Construct {
 	}
 	
 	/**
-	 * 
+	 * @see Construct(String, ConstructType, Construct, int, boolean)
 	 * @param name
 	 * @param type
 	 * @param parent
@@ -45,8 +41,7 @@ public class ContainerConstruct extends Construct {
 		String sectionName = type.toToolPath()[0];
 		
 		Rectangle bounds = editor.getBounds(editPart);
-		int x = -1;
-		int y = -1;
+		int x, y = 0;
 		
 		if ("Boundary Events".equals(sectionName)) {
 			/*
@@ -55,10 +50,7 @@ public class ContainerConstruct extends Construct {
 			x = y = 5; 
 		} else {
 			x = bounds.width() / 8;
-			/*
-			 * ISSUE: Need to have -5 otherwise it will hit the connection arrow if an activity is under it!!!
-			 * 		  Use AdHocSubProcessTest without the -5 to reproduce.
-			 */
+			// TODO: Creates issues in the AdHocSubProcessTest. The click hits a connection.
 			y = bounds.height() / 10;
 		}
 		Point placeTo = new Point(x, y);
@@ -88,13 +80,12 @@ public class ContainerConstruct extends Construct {
 		Rectangle bounds = editor.getBounds(editPart);
 		
 		String sectionName = type.toToolPath()[0];
+		/*
+		 * Make sure that the point is available.
+		 */
 		if (!"Boundary Events".equals(sectionName)) {
-			/*
-			 * Need to make the point absolute to know weather it lies inside.
-			 */
-			Point absolutePoint = new Point(point.x() + bounds.width(), point.y() + bounds.height());
-			if (isInternalAvailable(absolutePoint)) {
-				throw new RuntimeException("'" + absolutePoint + "' is not available");
+			if (isInternalAvailable(point)) {
+				throw new RuntimeException("'" + point + "' is not available");
 			}
 		}
 
@@ -114,16 +105,18 @@ public class ContainerConstruct extends Construct {
 	}
 	
 	/**
+	 * Check weather ${p} located in this container construct is not covered by another 
+	 * construct. 
 	 * 
-	 * @param x
-	 * @param y
+	 * @param point a relative position in this container construct
 	 * @return
 	 */
-	protected boolean isInternalAvailable(Point point) {
+	protected boolean isInternalAvailable(Point p) {
 		/*
 		 * The point must be inside this edit part.
 		 */
 		Rectangle bounds = getBounds();
+		Point point = new Point(p.x() + bounds.width(), p.y() + bounds.height());
 		if (bounds.contains(point)) {
 			/*
 			 * Check weather the point is not already taken by another child editPart.
