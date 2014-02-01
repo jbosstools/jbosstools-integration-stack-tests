@@ -1,5 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.editor;
 
+import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
@@ -7,20 +8,22 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 
 /**
- * ISSUES:
- * 	1) Cannot select default branch when conditions are already in place.
  * 	
  * @author Marek Baluch <mbaluch@redhat.com>
  */
 public abstract class AbstractGateway extends Construct {
 
+	/**
+	 * 
+	 */
 	public enum Direction {
-		CONVERGING, DIVERGING, MIXED
+		CONVERGING, DIVERGING, MIXED, UNSPECIFIED
 	}
 	
 	/**
 	 * 
 	 * @param name
+	 * @param type
 	 */
 	public AbstractGateway(String name, ConstructType type) {
 		super(name, type);
@@ -32,15 +35,15 @@ public abstract class AbstractGateway extends Construct {
 	 */
 	protected void setDirection(Direction direction) {
 		select();
-		String visibleText = direction.name().charAt(0) + 
-				direction.name().substring(1).toLowerCase();
-		
+		String visibleText = direction.name().charAt(0) + direction.name().substring(1).toLowerCase();
 		properties.selectTab("Gateway");
 		new DefaultCombo("Gateway Direction").setSelection(visibleText);
 	}
 	
 	/**
 	 * 
+	 * @param branch
+	 * @param lang
 	 * @param condition
 	 */
 	protected void setCondition(String branch, String lang, String condition) {
@@ -63,7 +66,7 @@ public abstract class AbstractGateway extends Construct {
 		properties.selectTab("Gateway");
 		new DefaultTable(0).select(branch);
 		bot.toolbarButtonWithTooltip("Edit").click();
-		bot.checkBox().click();
+		new CheckBox().click();
 		bot.toolbarButtonWithTooltip("Close").click();
 	}
 	

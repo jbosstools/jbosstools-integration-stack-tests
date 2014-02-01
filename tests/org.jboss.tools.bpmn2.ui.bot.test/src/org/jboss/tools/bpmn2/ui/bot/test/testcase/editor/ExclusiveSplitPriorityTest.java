@@ -3,12 +3,11 @@ package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 import org.jboss.tools.bpmn2.reddeer.editor.AbstractGateway.Direction;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
 import org.jboss.tools.bpmn2.reddeer.editor.Position;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.BPMN2Process;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.FromExpression;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.InputParameterMapping;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ToDataInput;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.Task;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.UserTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.ExclusiveGateway;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
@@ -24,7 +23,7 @@ public class ExclusiveSplitPriorityTest extends JBPM6BaseTest {
 
 	@Override
 	public void buildProcessModel() {
-		BPMN2Process process = new BPMN2Process("BPMN2-ExclusiveSplitPriority");
+		Process process = new Process("BPMN2-ExclusiveSplitPriority");
 		process.addLocalVariable("x", "String");
 		process.addLocalVariable("y", "String");
 		

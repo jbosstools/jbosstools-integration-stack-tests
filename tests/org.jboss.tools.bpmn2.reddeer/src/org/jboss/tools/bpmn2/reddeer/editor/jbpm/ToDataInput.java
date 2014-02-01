@@ -1,13 +1,13 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm;
 
-import org.jboss.tools.bpmn2.reddeer.editor.IMappingSide;
+import org.jboss.tools.bpmn2.reddeer.editor.MappingSide;
 
 /**
  * Represents the target side of parameter mapping.
  * 
- * @author mbaluch
+ * @author Marek Baluch <mbaluch@redhat.com>
  */
-public class ToDataInput implements IMappingSide {
+public class ToDataInput implements MappingSide {
 	
 	private String name;
 	
@@ -49,7 +49,7 @@ public class ToDataInput implements IMappingSide {
      * @return
      */
 	@Override
-	public String getName() {
+	public String getValue() {
 		return name;
 	}
     

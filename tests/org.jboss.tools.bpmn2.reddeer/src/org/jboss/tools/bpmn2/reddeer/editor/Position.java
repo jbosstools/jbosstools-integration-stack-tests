@@ -1,8 +1,9 @@
 package org.jboss.tools.bpmn2.reddeer.editor;
 
 /**
+ * Position definition relative to a point in the canvas.
  * 
- * @author mbaluch
+ * @author Marek Baluch <mbaluch@redhat.com>
  */
 public enum Position {
 
@@ -14,5 +15,5 @@ public enum Position {
 	SOUTH_WEST,
 	WEST,
 	NORTH_WEST;
-		
+
 }

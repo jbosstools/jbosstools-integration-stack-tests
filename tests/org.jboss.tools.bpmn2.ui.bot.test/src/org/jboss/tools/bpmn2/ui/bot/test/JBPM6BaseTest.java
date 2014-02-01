@@ -1,5 +1,7 @@
 package org.jboss.tools.bpmn2.ui.bot.test;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
@@ -7,6 +9,8 @@ import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -24,10 +28,17 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 
 	protected Logger log = Logger.getLogger(getClass());  
 	
+	protected BPMN2Editor editor; 
+	
+	protected ProblemsView problems;
+
+	protected boolean deepValidation;
+	
 	private ProcessDefinition definition;
 	
-	private BPMN2Editor editor; 
-	
+	/**
+	 * 
+	 */
 	public JBPM6BaseTest() {
 		/*
 		 * Initialize
@@ -37,7 +48,10 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 			throw new RuntimeException("Validation failed. Missing @ProcessDefinition annotation.");
 		}
 		
+		deepValidation = Boolean.parseBoolean(System.getProperty("jbpds.validator.on", "true"));
+		
 		editor = new BPMN2Editor(definition.name().replace("\\s+", ""));
+		problems = new  ProblemsView();
 	}
 	
 	/**
@@ -67,7 +81,7 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 		 * BPMN2 nature dialog
 		 */
 		try {
-			editor.projectNature(false);
+			editor.projectNature(true);
 		} catch (SWTLayerException e ) {
 			// The dialog may not appear
 		}
@@ -100,13 +114,28 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 		 * Capture the current state.
 		 */
 		captureScreenshot();
+		
 		/*
-		 * Validate.
+		 * Validate using jBPM.
 		 */
 		log.info("Validating '" + editor.getTitle() + "'");
 		JBPM6Validator validator = new JBPM6Validator();
 		boolean result = validator.validate(editor.getSourceText());
 		Assert.assertTrue(validator.getResultMessage(), result);
+		
+		if (deepValidation) {
+			/*
+			 * Make sure there are no problems in the problems view.
+			 */
+			StringBuilder error = new StringBuilder();
+			List<TreeItem> errorList = problems.getAllErrors();
+			for (TreeItem e : errorList) {
+				if (e.getCell(1).startsWith(editor.getTitle())) {
+					error.append(e.getCell(0) + "\n");
+				}
+			}
+			Assert.assertTrue(error.toString(), error.length() == 0);
+		}
 	}
 	
 	protected void openProcessFile() {

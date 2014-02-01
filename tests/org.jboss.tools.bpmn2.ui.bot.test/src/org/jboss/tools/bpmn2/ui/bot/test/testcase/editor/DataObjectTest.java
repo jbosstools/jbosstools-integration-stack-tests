@@ -3,7 +3,7 @@ package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 import org.jboss.tools.bpmn2.reddeer.editor.ConnectionType;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
 import org.jboss.tools.bpmn2.reddeer.editor.Position;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.BPMN2Process;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.dataobjects.DataObject;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
@@ -30,7 +30,7 @@ public class DataObjectTest extends JBPM6BaseTest {
 		script.setScript("Java", "System.out.println(\"Processing evaluation for employee \" + employee);");
 		script.append("EndProcess", ConstructType.TERMINATE_END_EVENT);
 		
-		BPMN2Process process = new BPMN2Process("BPMN2-DataObject");
+		Process process = new Process("BPMN2-DataObject");
 		process.add("employee", ConstructType.DATA_OBJECT, start, Position.SOUTH);
 		
 		DataObject object = new DataObject("employee");

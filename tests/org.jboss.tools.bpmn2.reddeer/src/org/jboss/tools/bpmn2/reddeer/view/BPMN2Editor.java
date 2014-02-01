@@ -271,7 +271,7 @@ public class BPMN2Editor extends SWTBotGefEditor {
 	}
 
 	public void projectNature(boolean on) {
-		// TODO: test weather the dialog is shown. if not the show it!
+		log.info("Handling 'BPMN2 Project Nature'. Value '" + on + "'");
 		new DefaultShell("Configure BPMN2 Project Nature").setFocus();
 		new CheckBox().click();
 		new PushButton(on ? "Yes": "No").click();
@@ -286,7 +286,7 @@ public class BPMN2Editor extends SWTBotGefEditor {
 			bot.menu("File").menu("Save").click();
 			try {
 				Thread.sleep(SAVE_SLEEP_TIME);
-				projectNature(false);
+				projectNature(true);
 			} catch (InterruptedException e) {
 				// ignore - no worries
 			} catch (SWTLayerException e) {

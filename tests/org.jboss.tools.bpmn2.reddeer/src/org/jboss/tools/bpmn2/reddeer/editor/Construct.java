@@ -31,10 +31,13 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 /**
+ * Represents a BPMN activity in the canvas.
  * 
  * @author Marek Baluch <mbaluch@redhat.com>
  */
 public class Construct {
+
+	protected Logger log = Logger.getLogger(getClass());
 	
 	protected String name;
 	protected ConstructType type;
@@ -43,30 +46,30 @@ public class Construct {
 	protected BPMN2Editor editor;
 	protected BPMN2PropertiesView properties;
 	protected SWTBot bot;
-	
 	protected SWTBotGefEditPart editPart;
 	
-	protected Logger log = Logger.getLogger(getClass());
-	
-	/*
-	 * TBD: 
-	 * 	1) make parent mandatory.
-	 * 	2) if not passed in as parameter then make Process construct the default parent.
-	 * 		- detect using the editor and file name.
-	 */
 	/**
-	 * Creates a new instance of Construct.
-	 * 
+	 * @see Construct(String, ConstructType, Construct, int, boolean)
 	 * @param name
 	 * @param type
 	 */
 	public Construct(String name, ConstructType type) {
-		this(name, type, null, -1, true);
+		this(name, type, null);
+	}
+
+	/**
+	 * @see Construct(String, ConstructType, Construct, int, boolean)
+	 * @param name
+	 * @param type
+	 * @param parent
+	 */
+	public Construct(String name, ConstructType type, Construct parent) {
+		this(name, type, parent, 0, true);
 	}
 	
 	/**
-	 * Creates a new instance of Construct. This construct must already be present
-	 * in the editor. If not found base either by ${name} or by ${type} then a
+	 * Creates a new instance of Construct. The Construct must already be present
+	 * in the editor. If not found base either based on ${name} or ${type} then a
 	 * RuntimeException will be thrown. 
 	 * 
 	 * @param name
@@ -153,7 +156,7 @@ public class Construct {
 	/**
 	 * 
 	 * @param name
-	 * @param connectionType
+	 * @param constructType
 	 */
 	public void append(String name, ConstructType constructType) {
 		append(name, constructType, ConnectionType.SEQUENCE_FLOW, Position.EAST);
@@ -198,8 +201,12 @@ public class Construct {
 		editor.click(point.x(), point.y());
 			
 		Construct construct = editor.getLastConstruct(constructType);
-		if (construct == null) throw new RuntimeException("Unexpected error. Could not find added construct.");
-		if (name != null) construct.setName(name);
+		if (construct == null) {
+			throw new RuntimeException("Unexpected error. Could not find added construct.");
+		}
+		if (name != null) {
+			construct.setName(name);
+		}
 		
 		connectTo(construct, connectionType);
 	}
@@ -218,7 +225,7 @@ public class Construct {
 	 * of type ${type}.
 	 * 
 	 * @param construct
-	 * @param connection
+	 * @param connectionType
 	 */
 	public void connectTo(Construct construct, ConnectionType connectionType) {
 		log.info("Connecting construct '" + this.name + "' and construct '" + construct.getName() + "' using '" + connectionType + "'.");
@@ -239,15 +246,11 @@ public class Construct {
 		editor.activateTool(connectionType.toName());
 		
 		select();
-		log.info("\tClicking on points:");
-		log.info("\t\tPoint 1)'" + rs.getCenter() + "'");
-		/*
-		 * TODO: Clicking center on a Lane|Subprocess|etc. has a good chance to select something in it!
-		 */
+		log.debug("\tConnecting points '" + rs.getCenter() + "' and '" + rt.getCenter() + "'");
+		// TODO: Clicking center on a Lane|Subprocess|etc. has a good chance to select something in it!
 		editor.click(rs.getCenter().x(), rs.getCenter().y());
 		
 		construct.select();
-		log.info("\t\tPoint 2)'" + rt.getCenter() + "'");
 		editor.click(rt.getCenter().x(), rt.getCenter().y());
 		editor.activateTool("Select");
 	}
@@ -269,15 +272,16 @@ public class Construct {
 	}
 	
 	/**
-	 * 
-	 * @param point
+	 * Check if ${p} in the parent is not covered by another construct.
+	 *  
+	 * @param p
 	 * @return
 	 */
-	protected boolean isAvailable(Point point) {
+	protected boolean isAvailable(Point p) {
 		/*
 		 * Check weather the point is not already taken by another child editPart.
 		 */
-		return editor.getEditParts(editPart.parent(), new ConstructOnPoint<EditPart>(point)).isEmpty();
+		return editor.getEditParts(editPart.parent(), new ConstructOnPoint<EditPart>(p)).isEmpty();
 	}
 	
 	/**
@@ -287,7 +291,6 @@ public class Construct {
 	 * @param parent
 	 * @param nextToChild
 	 * @param relativePosition
-	 * @param newChildType
 	 * @return
 	 */
 	protected Point findPoint(Construct parent, Construct nextToChild, Position relativePosition) {
@@ -305,9 +308,6 @@ public class Construct {
 		int nearOffset  = 75; // newChildType.isContainer() ? 2 * 75 : 75;
 		int farOffset = 100; // newChildType.isContainer() ? 2 * 100 : 100;
 		
-		/*
-		 * Assign 'x' and 'y'.
-		 */
 		Point point = new Point(-1, -1);
 		switch (relativePosition) {
 			case NORTH:
@@ -381,9 +381,7 @@ public class Construct {
 			point.x = point.x() - parentBounds.x();
 			point.y = point.y() - parentBounds.y();
 		}
-		/*
-		 * Return
-		 */
+
 		return point;
 	}
 	

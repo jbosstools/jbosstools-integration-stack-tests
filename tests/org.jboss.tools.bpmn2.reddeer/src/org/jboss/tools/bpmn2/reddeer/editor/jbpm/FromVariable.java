@@ -1,14 +1,14 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm;
 
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.tools.bpmn2.reddeer.editor.IMappingSide;
+import org.jboss.tools.bpmn2.reddeer.editor.MappingSide;
 
 /**
  * Mapping from a variable.
  * 
- * @author mbaluch
+ * @author Marek Baluch <mbaluch@redhat.com>
  */
-public class FromVariable implements IMappingSide {
+public class FromVariable implements MappingSide {
 
 	private String variableName;
 	
@@ -31,7 +31,7 @@ public class FromVariable implements IMappingSide {
 	 * @return
 	 */
 	@Override
-	public String getName() {
+	public String getValue() {
 		return variableName;
 	}
 	
