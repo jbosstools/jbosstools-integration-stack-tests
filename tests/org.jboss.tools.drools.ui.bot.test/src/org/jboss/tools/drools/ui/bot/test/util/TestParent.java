@@ -389,7 +389,7 @@ public abstract class TestParent {
     }
 
     protected String getTestName() {
-        return name.getMethodName().replace('[', '_').replace("]", "");
+        return name.getMethodName().replaceAll("[\\[\\] ]", "");
     }
 
     protected String getMethodName() {
