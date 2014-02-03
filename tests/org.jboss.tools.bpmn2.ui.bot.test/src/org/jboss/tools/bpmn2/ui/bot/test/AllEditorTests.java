@@ -11,18 +11,10 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(BPMN2Suite.class)
 @SuiteClasses({
-// Wizard tests
-// ------------
-//	ProjectWizardTest.class,
-//	ProcessWizardTest.class,
-//	Bpmn2ModelWizardTest.class,
-//	GenericBpmn2ModelWizardTest.class,
-//	JBpmProcessWizardTest.class,
 // Editor tests
 // ------------
 	// Uncovered:
 	// 	BZ-1053789
-	//  
 	ParallelSplitJoinTest.class,
 	CallActivityTest.class,
 	AdHocProcessTest.class,
@@ -57,7 +49,5 @@ import org.junit.runners.Suite.SuiteClasses;
 	BoundaryEscalationEventOnTaskTest.class,
 	ConditionalBoundaryEventInterruptingTest.class, // BZ-1053781
 })
-public class AllTests extends TestSuite {
-	// TBD: BPMN2-IntermediateCatchEventTimerCycleWithError.bpmn2
-		// error in timer string is not found
+public class AllEditorTests extends TestSuite {
 }

@@ -20,11 +20,7 @@ import org.junit.Test;
 @ProcessRuntime()
 public class JBPMProjectWizardTest extends SWTBotTestCase {
 
-	// TBD: 
-	//   * switch to org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer
-	//	   - missing delete project method. 
 	ProjectExplorer explorerView = new ProjectExplorer();
-	
 	JBPMProjectWizard wizardView  = new JBPMProjectWizard();
 	
 	@After
