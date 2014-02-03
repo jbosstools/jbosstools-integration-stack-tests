@@ -32,7 +32,7 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 	
 	protected ProblemsView problems;
 
-	protected boolean deepValidation;
+	protected boolean bpmnValidation;
 	
 	private ProcessDefinition definition;
 	
@@ -48,8 +48,8 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 			throw new RuntimeException("Validation failed. Missing @ProcessDefinition annotation.");
 		}
 		
-		deepValidation = Boolean.parseBoolean(System.getProperty("jbpds.validator.on", "true"));
-		
+		bpmnValidation = Boolean.parseBoolean(System.getProperty("bpmn.validation", "true"));
+
 		editor = new BPMN2Editor(definition.name().replace("\\s+", ""));
 		problems = new  ProblemsView();
 	}
@@ -81,7 +81,7 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 		 * BPMN2 nature dialog
 		 */
 		try {
-			editor.projectNature(true);
+			editor.projectNature(bpmnValidation);
 		} catch (SWTLayerException e ) {
 			// The dialog may not appear
 		}
@@ -91,6 +91,15 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 		editor.setFocus();
 		if (editor.isDirty()) {
 			editor.save();
+			/*
+			 * Sometimes generated IDs are not unique. Fix
+			 * it!
+			 */
+			try {
+				repairProcessModel();
+			} catch (SWTLayerException e) {
+				log.warn(e.getMessage());
+			}
 		}
 	}
 	
@@ -99,22 +108,10 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 		 * Make sure all content is saved.
 		 */
 		saveProcessModel();
-		
-		/*
-		 * Sometimes generated IDs are not unique. Fix
-		 * it!
-		 */
-		try {
-			repairProcessModel();
-		} catch (SWTLayerException e) {
-			log.warn(e.getMessage());
-		}
-		
 		/*
 		 * Capture the current state.
 		 */
 		captureScreenshot();
-		
 		/*
 		 * Validate using jBPM.
 		 */
@@ -122,11 +119,10 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 		JBPM6Validator validator = new JBPM6Validator();
 		boolean result = validator.validate(editor.getSourceText());
 		Assert.assertTrue(validator.getResultMessage(), result);
-		
-		if (deepValidation) {
-			/*
-			 * Make sure there are no problems in the problems view.
-			 */
+		/*
+		 * Make sure there are no problems in the problems view.
+		 */
+		if (bpmnValidation) {
 			StringBuilder error = new StringBuilder();
 			List<TreeItem> errorList = problems.getAllErrors();
 			for (TreeItem e : errorList) {
