@@ -17,6 +17,8 @@
 		<systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.skip=false -Dtest.configurations.dir=resources/</systemProperties>
 		<droolsjbpm.version>6.0.0.Final</droolsjbpm.version>
 		<awt.robot>false</awt.robot>
+		<bpmn.validation>false</bpmn.validation>
+		<test.class>AllEditorTests</test.class>
 	</properties>
 
 	<dependencies>
@@ -86,9 +88,10 @@
 		    <configuration>
 		      <systemProperties>
 		        <awt.robot>${awt.robot}</awt.robot>
+		        <bpmn.validation>${bpmn.validation}</bpmn.validation>
 		      </systemProperties>
 		      <testSuite>org.jboss.tools.bpmn2.ui.bot.test</testSuite>
-		      <testClass>org.jboss.tools.bpmn2.ui.bot.test.AllTests</testClass>
+		      <testClass>org.jboss.tools.bpmn2.ui.bot.test.${test.class}</testClass>
 		      <useUIThread>false</useUIThread>
 		      <skip>${skipTests}</skip>
 		      <dependencies combine.children="append">
