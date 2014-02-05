@@ -42,6 +42,10 @@ public class BindingWizard<T extends WizardPage> extends WizardDialog {
 		return new BindingWizard<FileBindingPage>(new FileBindingPage());
 	}
 
+	public static BindingWizard<JCABindingPage> createJCABindingWizard() {
+		return new BindingWizard<JCABindingPage>(new JCABindingPage());
+	}
+	
 	public static BindingWizard<JMSBindingPage> createJMSBindingWizard() {
 		return new BindingWizard<JMSBindingPage>(new JMSBindingPage());
 	}
