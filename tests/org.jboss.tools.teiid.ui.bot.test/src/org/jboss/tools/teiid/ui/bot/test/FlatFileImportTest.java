@@ -47,7 +47,7 @@ public class FlatFileImportTest extends SWTBotTestCase{
 	 * texttable function: not escaped, 
 	 * end of row: enter
 	 */
-	@Test
+	/*@Test
 	public void testTabNotEscEndEnter() {
 		// create all flat file conn profiles
 		FlatFileProfileExt flatProfile = new FlatFileProfileExt();
@@ -61,7 +61,7 @@ public class FlatFileImportTest extends SWTBotTestCase{
 		System.out.println();
 		// create and execute VDB
 		new VDBManager().createVDB(MODEL_PROJECT_NAME, VDB_NAME);
-	}
+	}*/
 	
 	/**
 	 * delimiter: tab, 

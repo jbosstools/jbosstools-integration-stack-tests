@@ -30,7 +30,9 @@ public class ConnectionProfileHsqlPage extends ConnectionProfileDatabasePage{
 
 	@Override
 	public void setHostname(String hostname) {
-		new DefaultCombo(LABEL_DATABASE_LOCATION).setText(hostname);
+		//new LabeledText("URL:").setText(hostname+";hsqldb.lock_file=false");
+		//new LabeledText(LABEL_DATABASE_LOCATION).setText("jdbc:hsqldb:"+hostname+";hsqldb.lock_file=false");
+		new DefaultCombo(1).setText(hostname);
 	}
 
 	@Override

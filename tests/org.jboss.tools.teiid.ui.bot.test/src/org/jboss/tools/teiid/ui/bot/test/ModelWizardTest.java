@@ -153,7 +153,7 @@ public class ModelWizardTest extends SWTBotTestCase {
 	}
 
 	@Test
-	public void functionModel() {
+	public void functionModel() {//DEPRECATED
 		CreateMetadataModel createModel = new CreateMetadataModel();
 		createModel.setLocation(PROJECT_NAME);
 		createModel.setName(FUNCTION_MODEL_NAME);
