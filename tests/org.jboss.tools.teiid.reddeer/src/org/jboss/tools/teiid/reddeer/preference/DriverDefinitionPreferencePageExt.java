@@ -41,7 +41,7 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 		public void execute() {
 			DriverTemplate drvTemp = driverDefinition.getDriverTemplate();
 			DriverDefinitionPage page = getFirstPage();
-			page.selectDriverTemplate(drvTemp.getType(), drvTemp.getVersion());
+			page.selectDriverTemplate(drvTemp.getType(), drvTemp.getVersion());//problem if there is no version of generic driver
 			page.setName(driverDefinition.getDriverName());
 			page.addDriverLibrary(driverDefinition.getDriverLibrary());
 		}

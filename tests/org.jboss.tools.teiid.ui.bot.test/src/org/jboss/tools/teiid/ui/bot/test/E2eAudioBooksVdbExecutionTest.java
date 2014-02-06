@@ -45,6 +45,7 @@ import org.jboss.tools.teiid.reddeer.editor.Reconciler;
 import org.jboss.tools.teiid.reddeer.editor.Reconciler.ExpressionBuilder;
 import org.jboss.tools.teiid.reddeer.editor.SQLScrapbookEditor;
 import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
+import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.shell.FunctionExpressionBuilder;
@@ -129,7 +130,8 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 	@Test
 	public void test02(){
 		try {
-		teiidBot.createHsqlProfile(props1, jdbcProfile, true, true);
+		//teiidBot.createHsqlProfile(props1, jdbcProfile, true, true);
+			new ConnectionProfileManager().createCPWithDriverDefinition(jdbcProfile, props1);
 		} catch (Exception ex){
 			//do it manually
 		}
@@ -179,7 +181,10 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 		newModel.setClass(CreateMetadataModel.ModelClass.RELATIONAL);
 		newModel.setType(CreateMetadataModel.ModelType.VIEW);
 		newModel.setModelBuilder(ModelBuilder.TRANSFORM_EXISTING);
-		newModel.execute(true, PROJECT_NAME, SOURCE_MODEL_2+".xmi");
+		//newModel.execute(true, PROJECT_NAME, SOURCE_MODEL_2+".xmi");
+		String[] path = {PROJECT_NAME, SOURCE_MODEL_2+".xmi"};
+		newModel.setPathToExistingModel(path);
+		newModel.execute();
 		teiidBot.saveAll();
 		
 		//delete AUTHORS table
@@ -209,7 +214,9 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 		newModel.setClass(CreateMetadataModel.ModelClass.RELATIONAL);
 		newModel.setType(CreateMetadataModel.ModelType.VIEW);
 		newModel.setModelBuilder(ModelBuilder.TRANSFORM_EXISTING);
-		newModel.execute(true, PROJECT_NAME, SOURCE_MODEL_1+".xmi");
+		String[] path = {PROJECT_NAME, SOURCE_MODEL_1+".xmi"};
+		newModel.setPathToExistingModel(path);
+		newModel.execute();
 
 		//delete BOOKS table
 		deleteFromContextTree(PROJECT_NAME, VIRTUAL_A_P+".xmi", "BOOKS");
@@ -334,7 +341,10 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 		soapyBooks.setModelBuilder(ModelBuilder.BUILD_FROM_XML_SCHEMA);
 		String[] pathToXmlSchema = {"AudioBooks", "schemas", "BooksWithSOAPEncoding.xsd"};
 		String rootElement = "bookSetMixed : BooksNS:BookSetMixed";
-		soapyBooks.execute(pathToXmlSchema, rootElement);
+		soapyBooks.setPathToXmlSchema(pathToXmlSchema);
+		soapyBooks.setRootElement(rootElement);
+		soapyBooks.execute();
+		//soapyBooks.execute(pathToXmlSchema, rootElement);
 		} catch (Exception ex){
 			//do it manually
 		}

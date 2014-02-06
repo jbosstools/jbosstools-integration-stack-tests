@@ -32,6 +32,7 @@ import org.jboss.tools.teiid.reddeer.editor.Reconciler.ExpressionBuilder;
 import org.jboss.tools.teiid.reddeer.editor.RecursionEditor;
 import org.jboss.tools.teiid.reddeer.editor.SQLScrapbookEditor;
 import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
+import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
@@ -45,6 +46,7 @@ import org.jboss.tools.teiid.reddeer.wizard.CreateMetadataModel.ModelType;
 import org.jboss.tools.teiid.reddeer.wizard.CreateVDB;
 import org.jboss.tools.teiid.reddeer.wizard.FlatImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.ModelProjectWizard;
+import org.jboss.tools.teiid.reddeer.wizard.TeiidConnectionProfileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.XMLSchemaImportWizard;
 import org.jboss.tools.teiid.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
 import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.Server;
@@ -107,7 +109,8 @@ public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 		new ModelProjectWizard(0).create(PROJECT_NAME, true);
 		
 		//create connection profile to csv
-		flatFileProfile = teiidBot.createFlatFileProfile(flatProfile, new File(RESOURCES_FLAT).getAbsolutePath());
+		//flatFileProfile = teiidBot.createFlatFileProfile(flatProfile, new File(RESOURCES_FLAT).getAbsolutePath());
+		flatFileProfile = new ConnectionProfileManager().createCPFlatFile(flatProfile, new File(RESOURCES_FLAT).getAbsolutePath());
 	}
 	
 	@Test
@@ -116,7 +119,7 @@ public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 		//create relational source model 
 		FlatImportWizard importWizard = new FlatImportWizard();
 		importWizard.setProfile(flatProfile);
-		importWizard.setName(EMPDATA_SOURCE);
+		importWizard.setSourceModelName(EMPDATA_SOURCE);
 		importWizard.setFile("EmpData.csv     <<<<");
 		importWizard.setViewModelName(EMPLOYEES_VIEW);
 		importWizard.setViewTableName(EMP_TABLE);
@@ -145,9 +148,13 @@ public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 		mModel.setModelBuilder(ModelBuilder.BUILD_FROM_XML_SCHEMA);
 		mModel.setType(ModelType.VIEW);
 		mModel.setName(EMP_DOC_VIEW);
+		mModel.setPathToXmlSchema(new String[]{PROJECT_NAME, EMPLOYEES_SCHEMA_XSD});
+		mModel.setRootElement(ROOT_ELEM);
 		mModel.open();
-		mModel.fillFirstPage(true);
-		mModel.fillSecondPage(new String[]{PROJECT_NAME, EMPLOYEES_SCHEMA_XSD}, ROOT_ELEM);
+		//mModel.fillFirstPage(true);
+		mModel.fillFirstPage();
+		//mModel.fillSecondPage(new String[]{PROJECT_NAME, EMPLOYEES_SCHEMA_XSD}, ROOT_ELEM);
+		
 		mModel.next();
 		mModel.next();
 		//check the supervisor node
@@ -262,7 +269,8 @@ public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 		cmm.setClass(ModelClass.RELATIONAL);
 		cmm.setType(ModelType.VIEW);
 		cmm.setModelBuilder(ModelBuilder.TRANSFORM_EXISTING);
-		cmm.execute(true, PROJECT_NAME, EMPLOYEES_VIEW+".xmi");
+		cmm.setPathToExistingModel(new String[]{PROJECT_NAME, EMPLOYEES_VIEW+".xmi"});
+		cmm.execute();
 } catch (Exception e){
 			
 		}

@@ -13,8 +13,8 @@ import org.junit.runners.Suite.SuiteClasses;
  * 
  */
 @SuiteClasses({
-	//ServerManagementSimpleTest.class,
-	ServerManagementTest.class
+	ServerManagementSimpleTest.class,
+	//ServerManagementTest.class
 	//FlatFileImportTest.class
 })
 @RunWith(TeiidSuite.class)
