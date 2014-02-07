@@ -7,6 +7,7 @@ import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
+import org.jboss.tools.teiid.reddeer.manager.ModelProjectManager;
 import org.jboss.tools.teiid.reddeer.wizard.CreateMetadataModel;
 import org.jboss.tools.teiid.reddeer.wizard.ModelProjectWizard;
 import org.jboss.tools.teiid.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
@@ -45,7 +46,8 @@ public class ModelWizardTest extends SWTBotTestCase {
 	public static void beforeClass() {
 		new org.jboss.reddeer.swt.impl.menu.ShellMenu("Project", "Build Automatically").select();
 		/* Create new project */
-		new ModelProjectWizard().create(PROJECT_NAME);
+		//new ModelProjectWizard().create(PROJECT_NAME);
+		new ModelProjectManager().create(PROJECT_NAME);
 	}
 
 	@AfterClass

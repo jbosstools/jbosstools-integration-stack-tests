@@ -33,6 +33,7 @@ import org.jboss.tools.teiid.reddeer.editor.RecursionEditor;
 import org.jboss.tools.teiid.reddeer.editor.SQLScrapbookEditor;
 import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
+import org.jboss.tools.teiid.reddeer.manager.ModelProjectManager;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
@@ -65,7 +66,7 @@ import org.junit.Test;
  *
  */
 @Perspective(name = "Teiid Designer")
-@Server(type = Type.ALL, state = State.RUNNING)
+//@Server(type = Type.ALL, state = State.RUNNING)
 public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 	
 	//models
@@ -106,7 +107,8 @@ public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 	@BeforeClass
 	public static void createProject(){
 		//create project
-		new ModelProjectWizard(0).create(PROJECT_NAME, true);
+		//new ModelProjectWizard(0).create(PROJECT_NAME, true);
+		new ModelProjectManager().create(PROJECT_NAME, true);
 		
 		//create connection profile to csv
 		//flatFileProfile = teiidBot.createFlatFileProfile(flatProfile, new File(RESOURCES_FLAT).getAbsolutePath());

@@ -6,6 +6,7 @@ import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.SQLScrapbookEditor;
 import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
+import org.jboss.tools.teiid.reddeer.manager.ModelProjectManager;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.view.DataSourceExplorer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
@@ -29,7 +30,7 @@ import org.junit.Test;
  * 
  */
 @Perspective(name = "Teiid Designer")
-@Server(type = Type.ALL, state = State.RUNNING)
+//@Server(type = Type.ALL, state = State.RUNNING)
 public class TopDownWsdlTest extends SWTBotTestCase {
 
 	public static final String BUNDLE = "org.teiid.designer.ui.bot.test";
@@ -49,7 +50,8 @@ public class TopDownWsdlTest extends SWTBotTestCase {
 	public void topDownWsdlTestScript() throws Exception {
 		try {
 			/* Create new project */
-			new ModelProjectWizard().create(PROJECT_NAME);
+			//new ModelProjectWizard().create(PROJECT_NAME);
+			new ModelProjectManager().create(PROJECT_NAME);
 
 			/* Import wsdl */
 			new ImportFileWizard().importFile("resources/wsdl", "wsdl");//!!! missing SET "INTO FOLDER" !
