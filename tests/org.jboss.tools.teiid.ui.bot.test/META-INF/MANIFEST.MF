@@ -1,11 +1,11 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: org.jboss.tools.teiid.ui.bot.test
+Bundle-Name: Teiid Bot Tests
 Bundle-SymbolicName: org.jboss.tools.teiid.ui.bot.test;singleton:=true
 Bundle-Version: 4.1.0.qualifier
 Bundle-ActivationPolicy: lazy
 Import-Package: org.apache.log4j
-Bundle-Vendor: 
+Bundle-Vendor: JBoss by Red Hat
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Eclipse-RegisterBuddy: org.apache.log4j
 Eclipse-BundleShape: dir
