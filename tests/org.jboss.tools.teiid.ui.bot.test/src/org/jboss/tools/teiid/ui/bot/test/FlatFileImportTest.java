@@ -35,7 +35,7 @@ public class FlatFileImportTest extends SWTBotTestCase{
 
 	@BeforeClass
 	public static void prepare(){
-		new ModelProjectManager().createNewModelProject(MODEL_PROJECT_NAME);
+		new ModelProjectManager().create(MODEL_PROJECT_NAME);
 		System.out.println();
 		//new SWTBot().widgets(new ToolBarButtonWithLabel("New Connection Profile"));//todo 
 		

@@ -16,7 +16,21 @@ public class ModelProjectManager {
 		return me.getModelProject(modelProjectName); 
 	}
 	
-	public void createNewModelProject(String modelProjectName){
-		new ModelProjectWizard().create(modelProjectName);
+	/**
+	 * New Teiid Model Project
+	 * @param modelProjectName
+	 */
+	public void create(String modelProjectName, boolean viaGuides){
+		new ModelProjectWizard(0).create(modelProjectName, viaGuides);
 	}
+	
+	public void create(String modelProjectName){
+		new ModelProjectWizard(0).create(modelProjectName);
+	}
+	
+	public void create(String modelProjectName, boolean viaGuides, String... folders){
+		new ModelProjectWizard(0).create(modelProjectName, viaGuides, folders);
+	}
+	
+	
 }
