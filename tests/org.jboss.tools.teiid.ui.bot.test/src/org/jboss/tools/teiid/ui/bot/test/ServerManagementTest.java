@@ -14,6 +14,7 @@ import org.jboss.tools.teiid.reddeer.VDB;
 import org.jboss.tools.teiid.reddeer.condition.ServerHasState;
 import org.jboss.tools.teiid.reddeer.editor.SQLScrapbookEditor;
 import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
+import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.view.GuidesView;
@@ -76,9 +77,12 @@ public class ServerManagementTest extends SWTBotTestCase {
 
 		// create HSQL profile
 		try {
-			teiidBot.createHsqlProfile("resources/db/ds1.properties",
-					HSQLDB_PROFILE, true, true);
-
+			//teiidBot.createHsqlProfile("resources/db/ds1.properties", HSQLDB_PROFILE, true, true);
+			new ConnectionProfileManager().createCPWithDriverDefinition(HSQLDB_PROFILE, "resources/db/ds1.properties");
+		} catch (Exception ex) {
+			// redo manually
+		}
+		try {
 			new ImportProjectWizard("resources/projects/ServerMgmtTest.zip")
 					.execute(); // incorrect connection profile
 			// set connection profile
@@ -203,6 +207,7 @@ public class ServerManagementTest extends SWTBotTestCase {
 	/**
 	 * AS 5
 	 */
+	@Test
 	public void test05(){
 		TeiidInstanceView teiidInstanceView = new TeiidInstanceView(true);
 		// server AS-5
@@ -246,6 +251,7 @@ public class ServerManagementTest extends SWTBotTestCase {
 	/**
 	 * AS 7
 	 */
+	@Test
 	public void test06(){
 		TeiidInstanceView teiidInstanceView = new TeiidInstanceView(true);
 		// server AS-7
