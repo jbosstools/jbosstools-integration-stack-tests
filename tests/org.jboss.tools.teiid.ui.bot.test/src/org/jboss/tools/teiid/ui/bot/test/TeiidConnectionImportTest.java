@@ -6,6 +6,7 @@ import java.util.Properties;
 
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.tools.teiid.reddeer.manager.ImportMetadataManager;
+import org.jboss.tools.teiid.reddeer.manager.ModelProjectManager;
 import org.jboss.tools.teiid.reddeer.wizard.ModelProjectWizard;
 import org.jboss.tools.teiid.reddeer.wizard.TeiidConnectionImportWizard;
 import org.jboss.tools.teiid.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
@@ -34,7 +35,8 @@ public class TeiidConnectionImportTest extends SWTBotTestCase{
 	@Test
 	public void createProject(){
 		int currentPage = 0;//currentPage of wizard must be set to 0
-		new ModelProjectWizard(currentPage).create(PROJECT_NAME, true);
+		//new ModelProjectWizard(currentPage).create(PROJECT_NAME, true);
+		new ModelProjectManager().create(PROJECT_NAME, true);
 	}
 	
 	/**

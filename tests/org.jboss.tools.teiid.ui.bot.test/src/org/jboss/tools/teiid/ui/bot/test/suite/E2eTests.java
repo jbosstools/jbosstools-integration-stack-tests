@@ -16,10 +16,10 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @SuiteClasses({
 	//E2eRecursiveXmlTextTest.class,
-	VirtualGroupTutorialTest.class,
+	//VirtualGroupTutorialTest.class,
 	//VirtualGroupTutorialUpdatedTest.class,
 	//TopDownWsdlTest.class,
-	//E2eAudioBooksVdbExecutionTest.class
+	E2eAudioBooksVdbExecutionTest.class
 })
 @RunWith(TeiidSuite.class)
 public class E2eTests {

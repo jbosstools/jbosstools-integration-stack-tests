@@ -17,6 +17,7 @@ import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
 import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.manager.ImportMetadataManager;
+import org.jboss.tools.teiid.reddeer.manager.ModelProjectManager;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.wizard.DDLImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.FlatImportWizard;
@@ -53,6 +54,7 @@ public class ImportWizardTest extends SWTBotTestCase {
 	public static void createModelProject() {
 		new org.jboss.reddeer.swt.impl.menu.ShellMenu("Project", "Build Automatically").select();
 		//teiidBot.createModelProject(MODEL_PROJECT);
+		new ModelProjectManager().create(MODEL_PROJECT);
 	}
 	
 	@AfterClass
