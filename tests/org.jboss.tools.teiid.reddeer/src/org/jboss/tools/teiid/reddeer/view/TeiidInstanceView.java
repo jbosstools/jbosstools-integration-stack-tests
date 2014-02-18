@@ -27,7 +27,7 @@ import org.jboss.tools.teiid.reddeer.condition.ServerHasState;
  * @author Lucia Jelinkova
  * 
  */
-public class TeiidInstanceView extends WorkbenchView {
+public class TeiidInstanceView extends WorkbenchView {//DEPRECATED - JBDS7 only Servers view
 
 	public static final String TOOLBAR_CREATE_TEIID = "Create a new Teiid instance";
 	public static final String TOOLBAR_RECONNECT_TEIID = "Reconnect to the selected Teiid Instance";
@@ -41,22 +41,22 @@ public class TeiidInstanceView extends WorkbenchView {
 		super("Teiid Designer", "Teiid");
 	}
 	
-	public TeiidInstanceView(boolean isKelperOrMore){
+	public TeiidInstanceView(boolean isKelperOrMore){//remove
 		super("Servers");
 	}
 
-	public void reconnect(String teiidInstance) {
+	/*public void reconnect(String teiidInstance) {//--> servermgr
 		throw new UnsupportedOperationException();
 		// bot().tree().getTreeItem(teiidInstance).select();
 		// getToolbarButtonWitTooltip(TOOLBAR_RECONNECT_TEIID).click();
-	}
+	}*/
 
-	public void deleteDataSource(String teiidInstance, String dataSource) {
+	public void deleteDataSource(String teiidInstance, String dataSource) {//
 		new DefaultTreeItem(teiidInstance, "Data Sources", dataSource).select();
 		new ContextMenu("Delete Data Source").select();
 	}
 
-	public void undeployVDB(String teiidInstance, String vdb) {
+	public void undeployVDB(String teiidInstance, String vdb) {//--> VDB
 		new DefaultTreeItem(teiidInstance, "VDBs", vdb).select();
 		new ContextMenu("Undeploy VDB").select();
 	}
@@ -97,7 +97,7 @@ public class TeiidInstanceView extends WorkbenchView {
 	 * @param pathToVDB path to VDB (the last element is name of VDB)
 	 * @return
 	 */
-	public boolean containsVDB(boolean isKeplerOrMore, String... pathToVDB) {
+	public boolean containsVDB(boolean isKeplerOrMore, String... pathToVDB) {//-->move to servermgr
 		SWTBot bot = new SWTWorkbenchBot();
 		
 		//general
@@ -151,7 +151,7 @@ public class TeiidInstanceView extends WorkbenchView {
 		}
 	}
 
-	public void setDefaultTeiidInstance(String teiidInstanceUrl) {
+	public void setDefaultTeiidInstance(String teiidInstanceUrl) {//cp to servermgr
 		new GuidesView().chooseAction("Teiid",
 				"Set the Default JBoss / Teiid Instance");
 		
@@ -176,13 +176,13 @@ public class TeiidInstanceView extends WorkbenchView {
 		new PushButton("OK").click();// confirm change of default server
 	}
 	
-	public void startServer(String serverName){
+	public void startServer(String serverName){//--copy to servermgr for servers view
 		Server server = new ServersView().getServer(serverName);
 		server.start();
 		new WaitUntil(new ServerHasState(serverName), TimePeriod.LONG);
 	}
 	
-	public void stopServer(String serverName){
+	public void stopServer(String serverName){//--> server mgr
 		Server server = new ServersView().getServer(serverName);
 		log.info("Stopping server " + server.getLabel().getName());
 		ServerState state = server.getLabel().getState();

@@ -108,11 +108,11 @@ public class TeiidSuite extends RedDeerSuite {
 		
 		serverName = type + "-" + version;
 
-		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
+		//new WaitWhile(new IsInProgress(), TimePeriod.LONG);
 		ServerPreferencePage serverPP = new ServerPreferencePage();
 		serverPP.open();
 		serverPP.addServerRuntime(serverName, path, configFile, getServerRuntime(type, version));
-		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
+		//new WaitWhile(new IsInProgress(), TimePeriod.LONG);
 		serverPP.ok();
 
 		ServerWizard serverWizard = new ServerWizard();

@@ -1,5 +1,7 @@
 package org.jboss.tools.teiid.reddeer.wizard;
 
+import java.io.File;
+
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileDatabasePage;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
@@ -32,7 +34,10 @@ public class ConnectionProfileHsqlPage extends ConnectionProfileDatabasePage{
 	public void setHostname(String hostname) {
 		//new LabeledText("URL:").setText(hostname+";hsqldb.lock_file=false");
 		//new LabeledText(LABEL_DATABASE_LOCATION).setText("jdbc:hsqldb:"+hostname+";hsqldb.lock_file=false");
-		new DefaultCombo(1).setText(hostname);
+		
+		//prepare absolute path + add lock
+		hostname = new File(hostname).getAbsolutePath();
+		new DefaultCombo(1).setText(hostname + ";hsqldb.lock_file=false");
 	}
 
 	@Override
