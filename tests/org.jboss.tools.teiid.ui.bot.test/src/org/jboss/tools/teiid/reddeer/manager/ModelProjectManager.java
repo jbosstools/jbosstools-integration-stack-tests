@@ -31,6 +31,4 @@ public class ModelProjectManager {
 	public void create(String modelProjectName, boolean viaGuides, String... folders){
 		new ModelProjectWizard(0).create(modelProjectName, viaGuides, folders);
 	}
-	
-	
 }

@@ -15,7 +15,10 @@ Require-Bundle: org.eclipse.gef,
  org.eclipse.swtbot.go,
  org.eclipse.swtbot.eclipse.gef.finder,
  org.eclipse.swtbot.swt.finder,
- org.eclipse.draw2d
+ org.eclipse.draw2d,
+ org.eclipse.swt,
+ org.eclipse.swtbot.forms.finder,
+ org.eclipse.ui.forms
 Export-Package: org.jboss.tools.teiid.reddeer,
  org.jboss.tools.teiid.reddeer.condition,
  org.jboss.tools.teiid.reddeer.editor,

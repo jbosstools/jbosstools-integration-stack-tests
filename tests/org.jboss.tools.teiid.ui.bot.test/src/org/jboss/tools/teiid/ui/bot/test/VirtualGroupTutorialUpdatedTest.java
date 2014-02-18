@@ -156,7 +156,8 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 		
 		//wait until project is saved
 		//new WaitWhile(new IsInProgress(), TimePeriod.LONG);
-		new GuidesView().previewData(true, PROJECT_NAME, SOURCE_MODEL_1, "PARTS");
+		//new GuidesView().previewData(true, PROJECT_NAME, SOURCE_MODEL_1, "PARTS");
+		new GuidesView().previewData(PROJECT_NAME, SOURCE_MODEL_1, "PARTS");
 		
 		SQLResult result = DatabaseDevelopmentPerspective.getInstance().getSqlResultsView().getByOperation(TESTSQL_1);
 		assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
