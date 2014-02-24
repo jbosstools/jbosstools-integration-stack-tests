@@ -1,7 +1,6 @@
 package org.jboss.tools.fuse.reddeer.wizard;
 
 import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
-import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -35,9 +34,7 @@ public class FuseProjectWizard extends NewWizardDialog {
 		log.info("Finish wizard");
 
 		String shellText = new DefaultShell().getText();
-		Button button = new PushButton("Finish");
-		checkButtonEnabled(button);
-		button.click();
+		new PushButton("Finish").click();
 
 		TimePeriod timeout = TimePeriod.getCustom(20 * 60 * 1000);
 		new WaitWhile(new ShellWithTextIsActive(shellText), timeout);
