@@ -28,11 +28,12 @@ public class ServerManagementSimpleEDS5Test extends SWTBotTestCase {
 	private static final String HSQLDB_PROFILE = "HSQLDB Profile";
 	private static final String VDB = "vdb";
 	private static String TEST_SQL1 = "select * from \"partssupModel1\".\"PARTS\"";
+	private static final String DS1_PROPS = "resources/db/ds1.properties";
 
 	@BeforeClass
 	public static void createModelProject() {
 		new ShellMenu("Project", "Build Automatically").select();
-		new ConnectionProfileManager().createCPWithDriverDefinition(HSQLDB_PROFILE, "resources/db/ds1.properties");
+		new ConnectionProfileManager().createCPWithDriverDefinition(HSQLDB_PROFILE, DS1_PROPS);
 		new ImportProjectWizard("resources/projects/ServerMgmtTest.zip").execute(); 
 		new ModelExplorer().changeConnectionProfile(HSQLDB_PROFILE, PROJECT_NAME, MODEL_NAME);
 	}
