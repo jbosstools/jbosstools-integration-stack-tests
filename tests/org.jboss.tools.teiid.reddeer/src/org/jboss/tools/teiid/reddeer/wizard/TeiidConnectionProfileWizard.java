@@ -32,6 +32,7 @@ public class TeiidConnectionProfileWizard extends ConnectionProfileWizard {// TO
 		wizardMap.put("XML File URL Source", new ConnectionProfileXmlUrlPage(this, 2));
 		wizardMap.put("XML Local File Source", new ConnectionProfileXmlLocalPage(this, 2));
 		wizardMap.put("SalesForce", new ConnectionProfileSalesForcePage(this,2));
+		wizardMap.put("Generic JDBC", new GenericProfilePage(this, 2));
 	}
 	
 	/**
@@ -149,6 +150,11 @@ public class TeiidConnectionProfileWizard extends ConnectionProfileWizard {// TO
 		driverDefinition.setDriverTemplate(drvTemp);
 		String driverPath = new File(props.getProperty("db.jdbc_path")).getAbsolutePath();
 		driverDefinition.setDriverLibrary(driverPath);
+		//in case of Generic JDBC: also db.jdbc_class
+		String driverClass;
+		if ((driverClass = props.getProperty("db.jdbc_class")) != null){
+			driverDefinition.setDriverClass(driverClass);
+		}
 
 		DriverDefinitionPreferencePageExt prefPage = new DriverDefinitionPreferencePageExt();
 		prefPage.open();

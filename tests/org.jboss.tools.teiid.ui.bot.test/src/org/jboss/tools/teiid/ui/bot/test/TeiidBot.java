@@ -165,7 +165,7 @@ public class TeiidBot {
 	 * @param addDriver true if driver should be added
 	 * @param setLocksFalse true if locks on database shouldn't be created
 	 */ //cp
-	/*public void createHsqlProfile(String properties, String jdbcProfile, boolean addDriver, boolean setLocksFalse){
+	public void createHsqlProfile(String properties, String jdbcProfile, boolean addDriver, boolean setLocksFalse){
 		//load properties
 		Properties props = new Properties();
 		try {
@@ -185,7 +185,7 @@ public class TeiidBot {
 		new HSQLDBProfileWizard("HSQLDB Driver", props.getProperty("db.name"),
 				props.getProperty("db.hostname")).setUser(props.getProperty("db.username"))
 				.setPassword(props.getProperty("db.password")).setName(jdbcProfile).create(setLocksFalse);
-	}*/
+	}
 	
 	
 
