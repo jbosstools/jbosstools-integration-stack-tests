@@ -6,10 +6,10 @@ import static org.junit.Assert.assertTrue;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.swt.handler.WidgetHandler;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.lookup.WidgetLookup;
 import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.util.ResultRunnable;
@@ -122,7 +122,7 @@ public class ThrottlingTest extends RedDeerTest {
 		}
 
 		public boolean isEnabled() {
-			return WidgetLookup.getInstance().isEnabled(w);
+			return WidgetHandler.getInstance().isEnabled(w);
 		}
 
 		public boolean isEditable() {
