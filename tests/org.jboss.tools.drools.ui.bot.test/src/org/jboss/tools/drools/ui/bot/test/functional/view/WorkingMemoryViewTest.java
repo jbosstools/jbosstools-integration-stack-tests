@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.matcher.RegexMatchers;
+import org.jboss.reddeer.swt.matcher.WithRegexMatchers;
 import org.jboss.tools.drools.reddeer.debug.DebugView;
 import org.jboss.tools.drools.reddeer.editor.DrlEditor;
 import org.jboss.tools.drools.reddeer.editor.EnhancedTextEditor;
@@ -50,8 +50,8 @@ public class WorkingMemoryViewTest extends ViewTestParent {
         Assert.assertTrue("Unable to find attribute 'status'", attribs.containsKey("status"));
         Assert.assertEquals("Wrong value of 'status' attribute", "0", attribs.get("status"));
 
-        new DebugView().selectItem(new RegexMatchers("DroolsTest.*", "com\\.sample\\.DroolsTest.*").getMatchers());
-        new ShellMenu(new RegexMatchers("Run", "Resume.*").getMatchers()).select();
+        new DebugView().selectItem(new WithRegexMatchers("DroolsTest.*", "com\\.sample\\.DroolsTest.*").getMatchers());
+        new ShellMenu(new WithRegexMatchers("Run", "Resume.*").getMatchers()).select();
         waitASecond();
 
         objects = view.getObjects();

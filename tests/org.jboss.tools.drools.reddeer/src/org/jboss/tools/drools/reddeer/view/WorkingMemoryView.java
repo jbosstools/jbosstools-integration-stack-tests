@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.matcher.RegexMatchers;
+import org.jboss.reddeer.swt.matcher.WithRegexMatchers;
 import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
 import org.jboss.tools.drools.reddeer.util.ItemLookup;
 
@@ -46,7 +46,7 @@ public class WorkingMemoryView extends WorkbenchView {
         open();
         Map<String, String> result = new HashMap<String, String>();
 
-        TreeItem obj = ItemLookup.getItemInTree(new DefaultTree(), new RegexMatchers(".*" + Pattern.quote(objectName) + ".*").getMatchers());
+        TreeItem obj = ItemLookup.getItemInTree(new DefaultTree(), new WithRegexMatchers(".*" + Pattern.quote(objectName) + ".*").getMatchers());
         if (obj == null) {
             throw new IllegalArgumentException(String.format("Unable to find '%s'", objectName));
         }
