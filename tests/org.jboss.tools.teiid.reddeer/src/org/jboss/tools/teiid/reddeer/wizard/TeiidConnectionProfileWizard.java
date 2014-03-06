@@ -17,6 +17,7 @@ import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileSelectPage
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileWizard;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.tools.teiid.reddeer.extensions.DriverDefinitionExt;
 import org.jboss.tools.teiid.reddeer.preference.DriverDefinitionPreferencePageExt;
 
 /**
@@ -27,12 +28,13 @@ import org.jboss.tools.teiid.reddeer.preference.DriverDefinitionPreferencePageEx
 public class TeiidConnectionProfileWizard extends ConnectionProfileWizard {// TODO should be renamed to ConnectionProfileExt 
 
 	public TeiidConnectionProfileWizard() {
-		super();
+		super();//db.vendor
 		wizardMap.put("HSQLDB", new ConnectionProfileHsqlPage(this, 2));
 		wizardMap.put("XML File URL Source", new ConnectionProfileXmlUrlPage(this, 2));
 		wizardMap.put("XML Local File Source", new ConnectionProfileXmlLocalPage(this, 2));
 		wizardMap.put("SalesForce", new ConnectionProfileSalesForcePage(this,2));
 		wizardMap.put("Generic JDBC", new GenericProfilePage(this, 2));
+		wizardMap.put("Sybase ASA", new GenericProfilePage(this, 2));//sybasepage for sybase asa driver, but this driver is nok; should be other driver and generic page
 	}
 	
 	/**
@@ -145,16 +147,29 @@ public class TeiidConnectionProfileWizard extends ConnectionProfileWizard {// TO
 		DriverTemplate drvTemp = new DriverTemplate(props.getProperty("db.template"),
 				props.getProperty("db.version"));
 
-		DriverDefinition driverDefinition = new DriverDefinition();
-		driverDefinition.setDriverName(name + "Driver");
+		//DriverDefinition driverDefinition = new DriverDefinition();
+		DriverDefinitionExt driverDefinition = new DriverDefinitionExt();
+		
+		driverDefinition.setDriverName(name + " Driver");
 		driverDefinition.setDriverTemplate(drvTemp);
-		String driverPath = new File(props.getProperty("db.jdbc_path")).getAbsolutePath();
+		
+		driverDefinition = loadDriverDefinition(driverDefinition, props);
+		
+		/*String driverPath = new File(props.getProperty("db.jdbc_path")).getAbsolutePath();
 		driverDefinition.setDriverLibrary(driverPath);
 		//in case of Generic JDBC: also db.jdbc_class
 		String driverClass;
 		if ((driverClass = props.getProperty("db.jdbc_class")) != null){
 			driverDefinition.setDriverClass(driverClass);
 		}
+		String vendorTemplate = props.getProperty("db.vendor_template");
+		if (vendorTemplate != null){
+			driverDefinition.setVendorTemplate(vendorTemplate);
+		}
+		String loadedProperty;
+		if ((loadedProperty = props.getProperty("db.conn_url")) != null){
+			driverDefinition.setConnectionUrl(loadedProperty);
+		}*/
 
 		DriverDefinitionPreferencePageExt prefPage = new DriverDefinitionPreferencePageExt();
 		prefPage.open();
@@ -175,4 +190,28 @@ public class TeiidConnectionProfileWizard extends ConnectionProfileWizard {// TO
 		wizard.open();
 		wizard.createDatabaseProfile(dbProfile);
 	}
-}
+
+	public DriverDefinitionExt loadDriverDefinition(
+			DriverDefinitionExt driverDefinition, Properties props) {
+		String driverPath = new File(props.getProperty("db.jdbc_path")).getAbsolutePath();
+		driverDefinition.setDriverLibrary(driverPath);
+		
+		String loadedProperty;
+		if ((loadedProperty = props.getProperty("db.jdbc_class")) != null){
+			driverDefinition.setDriverClass(loadedProperty);
+		}
+	
+		if ((loadedProperty = props.getProperty("db.vendor_template")) != null){
+			driverDefinition.setVendorTemplate(loadedProperty);
+		}
+		
+		if ((loadedProperty = props.getProperty("db.conn_url")) != null){
+			driverDefinition.setConnectionUrl(loadedProperty);
+		}
+		if ((loadedProperty = props.getProperty("db.name")) != null){
+			driverDefinition.setDatabaseName(loadedProperty);
+		}
+		return driverDefinition;
+	}
+	
+	}

@@ -38,7 +38,7 @@ import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
-import org.jboss.tools.teiid.reddeer.view.ModelExplorerView.ConnectionSource;
+import org.jboss.tools.teiid.reddeer.view.ModelExplorerView.ConnectionSourceType;
 import org.jboss.tools.teiid.reddeer.view.SQLResult;
 import org.jboss.tools.teiid.reddeer.wizard.CreateMetadataModel;
 import org.jboss.tools.teiid.reddeer.wizard.CreateMetadataModel.ModelBuilder;
@@ -279,7 +279,7 @@ public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 		
 		try{
 		//create data source
-		mew.createDataSource(ConnectionSource.USE_MODEL_CONNECTION_INFO, PROJECT_NAME, EMPDATA_SOURCE +"Source.xmi");
+		mew.createDataSource(ConnectionSourceType.USE_MODEL_CONNECTION_INFO, null, PROJECT_NAME, EMPDATA_SOURCE +"Source.xmi");
 } catch (Exception e){
 			
 		}

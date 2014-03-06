@@ -5,6 +5,7 @@ import java.util.Properties;
 import org.jboss.tools.teiid.reddeer.ModelProject;
 import org.jboss.tools.teiid.reddeer.wizard.ImportFileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.ImportJDBCDatabaseWizard;
+import org.jboss.tools.teiid.reddeer.wizard.ImportProjectWizard;
 import org.jboss.tools.teiid.reddeer.wizard.SalesforceImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.TeiidImportWizard;
 import org.jboss.tools.teiid.ui.bot.test.TeiidBot;
@@ -107,5 +108,8 @@ public class ImportManager {
 		importFromWSDLToSrcView(projectName, modelName, cpName, props);	
 	}*/
 	
+	public void importProject(String archiveLocation){
+		new ImportProjectWizard(archiveLocation).execute(); 
+	}
 	
 }

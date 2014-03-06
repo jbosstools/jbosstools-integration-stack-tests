@@ -46,6 +46,10 @@ public class ModelExplorer extends AbstractExplorer {
 	}
 	
 	public void changeConnectionProfile(String connectionProfile, String projectName, String... projectItem){
+		//if no extension specified, add .xmi
+		if (! projectItem[projectItem.length -1].contains(".")){
+			projectItem[projectItem.length -1] = projectItem[projectItem.length -1].concat(".xmi");
+		}
 		new ModelExplorer().getProject(projectName).getProjectItem(projectItem).select();
 		new ContextMenu("Modeling", "Set Connection Profile").select();
 		new DefaultTreeItem("Database Connections", connectionProfile).select();
