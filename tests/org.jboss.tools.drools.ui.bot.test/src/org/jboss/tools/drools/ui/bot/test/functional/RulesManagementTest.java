@@ -12,7 +12,7 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.matcher.RegexMatchers;
+import org.jboss.reddeer.swt.matcher.WithRegexMatchers;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.drools.reddeer.dialog.DroolsRuntimeDialog;
@@ -21,8 +21,8 @@ import org.jboss.tools.drools.reddeer.editor.RuleEditor;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage;
 import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectWizard;
-import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
 import org.jboss.tools.drools.ui.bot.test.annotation.Drools6Runtime;
+import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
 import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
 import org.jboss.tools.drools.ui.bot.test.group.SmokeTest;
 import org.jboss.tools.drools.ui.bot.test.util.ApplicationIsTerminated;
@@ -117,8 +117,7 @@ public class RulesManagementTest extends TestParent {
         Assert.assertTrue("The original project was not created.", explorer.containsProject(oldName));
         explorer.getProject(oldName).select();
 
-        RegexMatchers m = new RegexMatchers("Refactor.*", "Rename.*");
-        new ContextMenu(m.getMatchers()).select();
+        new ContextMenu(new WithRegexMatchers("Refactor.*", "Rename.*").getMatchers()).select();
 
         new DefaultShell("Rename Java Project");
         new LabeledText("New name:").setText(newName);
@@ -139,7 +138,7 @@ public class RulesManagementTest extends TestParent {
         editor.setPosition(8, 0);
 
         try {
-            new ShellMenu(new RegexMatchers("Run.*", "Toggle Breakpoint.*").getMatchers()).select();
+            new ShellMenu(new WithRegexMatchers("Run", "Toggle Breakpoint.*").getMatchers()).select();
         } catch (SWTLayerException ex) {
             if ("Menu item is not enabled".equals(ex.getMessage())) {
                 Assert.fail("Toggle Breakpoint menu item is not enabled!");
@@ -168,7 +167,7 @@ public class RulesManagementTest extends TestParent {
         // wait a moment before Debug perspective is fully loaded
         waitASecond();
 
-        new ShellMenu(new RegexMatchers("Run", "Resume.*").getMatchers()).select();
+        new ShellMenu(new WithRegexMatchers("Run", "Resume.*").getMatchers()).select();
         console.open();
         consoleText = console.getConsoleText();
         Assert.assertTrue("Wrong console text found\n" + consoleText, consoleText.matches(SUCCESSFUL_RUN_REGEX));

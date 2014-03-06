@@ -3,7 +3,7 @@ package org.jboss.tools.drools.ui.bot.test.functional.view;
 import org.apache.log4j.Logger;
 import org.jboss.reddeer.eclipse.ui.perspectives.DebugPerspective;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.matcher.RegexMatchers;
+import org.jboss.reddeer.swt.matcher.WithRegexMatchers;
 import org.jboss.reddeer.workbench.view.View;
 import org.jboss.tools.drools.reddeer.debug.DebugView;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
@@ -33,9 +33,9 @@ public abstract class ViewTestParent extends TestParent {
         new DebugPerspective().open();
         DebugView v = new DebugView();
         v.open();
-        v.selectItem(new RegexMatchers("DroolsTest.*").getMatchers());
+        v.selectItem(new WithRegexMatchers("DroolsTest.*").getMatchers());
         try {
-            new ShellMenu(new RegexMatchers("Run", "Terminate.*").getMatchers()).select();
+            new ShellMenu(new WithRegexMatchers("Run", "Terminate.*").getMatchers()).select();
         } catch (Exception ex) {
             LOGGER.debug("Unable to resume debugging", ex);
         }

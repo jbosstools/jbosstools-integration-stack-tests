@@ -4,9 +4,8 @@ import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.matcher.RegexMatchers;
 
 public class DroolsProjectProperties {
     private final String projectName;
@@ -19,8 +18,7 @@ public class DroolsProjectProperties {
         PackageExplorer explorer = new PackageExplorer();
         explorer.open();
         explorer.getProject(projectName).select();
-        RegexMatchers m = new RegexMatchers("Project", "Properties.*");
-        new ShellMenu(m.getMatchers()).select();
+        new ContextMenu("Properties").select();
         new DefaultTreeItem("Drools").select();
     }
 

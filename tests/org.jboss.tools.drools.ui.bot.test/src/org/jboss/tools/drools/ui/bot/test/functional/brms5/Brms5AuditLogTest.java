@@ -7,7 +7,7 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.matcher.RegexMatchers;
+import org.jboss.reddeer.swt.matcher.WithRegexMatchers;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
 import org.jboss.tools.drools.reddeer.view.AuditView;
@@ -40,13 +40,13 @@ public class Brms5AuditLogTest extends TestParent {
         explorer.open();
         explorer.getProject(DEFAULT_PROJECT_NAME).select();
 
-        new ContextMenu(new RegexMatchers("Refresh.*").getMatchers()).select();
+        new ContextMenu(new WithRegexMatchers("Refresh.*").getMatchers()).select();
 
         explorer = new PackageExplorer();
         explorer.open();
         explorer.getProject(DEFAULT_PROJECT_NAME).getProjectItem("test.log").select();
 
-        new ContextMenu(new RegexMatchers("Properties.*").getMatchers()).select();
+        new ContextMenu(new WithRegexMatchers("Properties.*").getMatchers()).select();
 
         String location = new LabeledText("Location:").getText();
         new PushButton("Cancel").click();
