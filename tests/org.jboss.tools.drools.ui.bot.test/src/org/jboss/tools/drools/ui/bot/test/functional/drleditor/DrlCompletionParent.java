@@ -7,8 +7,6 @@ import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.matcher.RegexMatchers;
 import org.jboss.reddeer.workbench.editor.TextEditor;
 import org.jboss.tools.drools.reddeer.editor.ContentAssist;
 import org.jboss.tools.drools.reddeer.editor.DrlEditor;
@@ -122,8 +120,7 @@ public abstract class DrlCompletionParent extends TestParent {
     private DrlEditor openDrlEditor() {
         PackageExplorer explorer = new PackageExplorer();
         explorer.open();
-        explorer.getProject(DEFAULT_PROJECT_NAME).getProjectItem(getResourcePath(getTestName() + ".drl")).select();
-        new ContextMenu(new RegexMatchers("Open.*").getMatchers()).select();
+        explorer.getProject(DEFAULT_PROJECT_NAME).getProjectItem(getResourcePath(getTestName() + ".drl")).open();
 
         return new DrlEditor();
     }
