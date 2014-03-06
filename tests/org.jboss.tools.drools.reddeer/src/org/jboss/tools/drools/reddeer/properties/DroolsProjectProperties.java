@@ -3,7 +3,7 @@ package org.jboss.tools.drools.reddeer.properties;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.matcher.RegexMatchers;
@@ -30,7 +30,7 @@ public class DroolsProjectProperties {
 
     public void setDefaultDroolsRuntime(String runtimeName) {
         setEnableSpecificSettings(true);
-        new DefaultCombo("Drools Runtime:").setSelection(runtimeName);
+        new LabeledCombo("Drools Runtime:").setSelection(runtimeName);
     }
 
     public void ok() {

@@ -1,11 +1,8 @@
 package org.jboss.tools.drools.ui.bot.test.util;
 
-import org.eclipse.swt.widgets.MenuItem;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.lookup.MenuLookup;
-import org.jboss.reddeer.swt.matcher.RegexMatchers;
-import org.jboss.reddeer.swt.util.Display;
 
 public final class OpenUtility {
 
@@ -13,33 +10,26 @@ public final class OpenUtility {
     }
 
     public static void openResource(String project, String... path) {
-        selectResource(project, path);
-        open();
+        openResource(project, null, path);
     }
 
     public static void openResourceWith(String editor, String project, String... path) {
-        selectResource(project, path);
-        openWith(editor);
+        openResource(project, editor, path);
     }
 
-    public static void selectResource(String project, String... path) {
+    private static ProjectItem openResource(String project, String editor, String... path) {
         PackageExplorer explorer = new PackageExplorer();
         explorer.open();
-        explorer.getProject(project).getProjectItem(path).select();
+
+        ProjectItem pi = explorer.getProject(project).getProjectItem(path);
+        pi.select();
+
+        if (editor == null) {
+            pi.open();
+        } else {
+            new ContextMenu("Open With", editor).select();
+        }
+        return explorer.getProject(project).getProjectItem(path);
     }
 
-    private static void open() {
-        new ContextMenu(new RegexMatchers("Open.*").getMatchers()).select();
-    }
-
-    private static void openWith(String editor) {
-        MenuLookup ml = new MenuLookup();
-        final MenuItem item = ml.lookFor(ml.getTopMenuMenuItemsFromFocus(), new RegexMatchers("Open With", editor).getMatchers());
-        Display.syncExec(new Runnable() {
-            public void run() {
-                item.setSelection(true);
-            }
-        });
-        ml.select(item);
-    }
 }
