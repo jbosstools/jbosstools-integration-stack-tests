@@ -2,7 +2,7 @@ package org.jboss.tools.drools.reddeer.preference;
 
 import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 
 /**
  * Drools preference page.
@@ -53,7 +53,7 @@ public class DroolsPreferencePage extends PreferencePage {
      * Preferred process skin:
      */
     public void setPreferredProcessSkin(ProcessSkin skin) {
-        new DefaultCombo(LABEL_PREFERRED_PROCESS_SKIN).setSelection(skin.toString());
+        new LabeledCombo(LABEL_PREFERRED_PROCESS_SKIN).setSelection(skin.toString());
     }
 
     /**
@@ -67,7 +67,7 @@ public class DroolsPreferencePage extends PreferencePage {
      * Internal Drools classes are:
      */
     public void setInternalClassesAccessibility(InternalClassesAccessibility level) {
-        new DefaultCombo(LABEL_INTERNAL_CLASSES).setSelection(level.toString());
+        new LabeledCombo(LABEL_INTERNAL_CLASSES).setSelection(level.toString());
     }
 
     private void toggleCheckBox(String label, boolean value) {
