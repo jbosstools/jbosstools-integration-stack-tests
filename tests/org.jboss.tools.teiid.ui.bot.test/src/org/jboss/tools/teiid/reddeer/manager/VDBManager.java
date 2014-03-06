@@ -2,9 +2,19 @@ package org.jboss.tools.teiid.reddeer.manager;
 
 import static org.junit.Assert.assertEquals;
 
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.junit.logging.Logger;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.teiid.reddeer.VDB;
@@ -56,11 +66,12 @@ public class VDBManager {
 	
 	
 	
-	public VDB openVDBEditor(String projectName, String vdbName){
+	public void openVDBEditor(String projectName, String vdbName){
 		if (vdbName.contains(".vdb")){
-			return new ModelExplorer().getModelProject(projectName).getVDB(vdbName);
+			new ModelExplorer().getModelProject(projectName).open(vdbName);
+		} else {
+			new ModelExplorer().getModelProject(projectName).open(vdbName + ".vdb");
 		}
-		return new ModelExplorer().getModelProject(projectName).getVDB(vdbName + ".vdb");
 	}
 	
 	public boolean isVDBCreated(String projectName, String vdbName){
@@ -110,4 +121,34 @@ public class VDBManager {
 		
 		return true;//false would fail on assert
 	}
+	
+	public void createVDBDataSource(String[] pathToVDB){
+		String vdb = pathToVDB[pathToVDB.length-1].substring(0, pathToVDB[pathToVDB.length-1].indexOf("."));
+		createVDBDataSource(pathToVDB, vdb, false);
+	}
+	
+	public void createVDBDataSource(String[] pathToVDB, String jndiName, boolean passThruAuth){
+		//TODO
+		new Project(new DefaultTreeItem(pathToVDB)).select();
+		new ContextMenu("Modeling", "Create VDB Data Source").select();
+		try{
+			if (new SWTWorkbenchBot().activeShell().getText().equals("VDB Not Yet Deployed")){
+				new PushButton("Yes").click();//create ds anyway
+			}
+		} catch (Exception e){
+			
+		}
+		new DefaultText(1).setText(jndiName);
+		if (passThruAuth){
+			new CheckBox("Pass Thru Authentication").click();
+		}
+		new PushButton("OK").click();
+	}
+	
+	/*public void synchronizeAll(String... pathToVDB){
+		// TODO
+		this.getVDBEditor(pathToVDB[0], pathToVDB[1]);
+		new PushButton("Synchronize All").click();
+	}*/
+	
 }
