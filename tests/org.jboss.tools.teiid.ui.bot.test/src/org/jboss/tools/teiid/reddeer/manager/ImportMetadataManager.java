@@ -177,6 +177,7 @@ public class ImportMetadataManager {
 	public void importFromTeiidConnection(String projectName, String modelName, Properties importProps, Properties dataSourceProps){
 		TeiidConnectionImportWizard importWizard = new TeiidConnectionImportWizard();
 		importWizard.setModelName(modelName);
+		importWizard.setProjectName(projectName);
 		if (dataSourceProps != null){
 			importWizard.setDataSourceProperties(dataSourceProps);
 		}
@@ -208,6 +209,12 @@ public class ImportMetadataManager {
 		}
 		if ((loadedProperty = importProps.getProperty("tablesToImport")) != null) {
 			importWizard.setTablesToImport(loadedProperty.split(","));
+		}
+		if ((loadedProperty = importProps.getProperty("endAfterCreatingDS")) != null) {
+			importWizard.setEndAfterCreatingDS(loadedProperty);
+		}
+		if ((loadedProperty = importProps.getProperty("translator")) != null) {
+			importWizard.setTranslator(loadedProperty);
 		}
 		importWizard.execute();
 	}
