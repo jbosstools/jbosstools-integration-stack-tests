@@ -1,7 +1,7 @@
 package org.jboss.tools.drools.reddeer.dialog;
 
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 public class DslLineDialog {
@@ -19,7 +19,7 @@ public class DslLineDialog {
     }
 
     public void setScope(Scope scope) {
-        new DefaultCombo("Scope:").setSelection(scope.toString());
+        new LabeledCombo("Scope:").setSelection(scope.toString());
     }
 
     public void ok() {

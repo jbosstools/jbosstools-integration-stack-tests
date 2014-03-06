@@ -2,7 +2,7 @@ package org.jboss.tools.drools.reddeer.wizard;
 
 import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 public class NewDroolsProjectSelectRuntimeWizardPage extends WizardPage {
@@ -18,11 +18,11 @@ public class NewDroolsProjectSelectRuntimeWizardPage extends WizardPage {
 
     public void selectRuntime(String runtimeName) {
         setUseDefaultRuntime(false);
-        new DefaultCombo(LABEL_DROOLS_RUNTIME).setSelection(runtimeName);
+        new LabeledCombo(LABEL_DROOLS_RUNTIME).setSelection(runtimeName);
     }
 
     public void setCodeCompatibleWithVersion(CodeCompatibility version) {
-        new DefaultCombo(LABEL_DROOLS_CODE).setSelection(version.toString());
+        new LabeledCombo(LABEL_DROOLS_CODE).setSelection(version.toString());
     }
 
     public void setGAV(String groupId, String artifactId, String version) {
@@ -32,17 +32,14 @@ public class NewDroolsProjectSelectRuntimeWizardPage extends WizardPage {
     }
 
     public void setGroupId(String groupId) {
-        // FIXME space after colon
         new LabeledText("GroupId: ").setText(groupId);
     }
 
     public void setArtifactId(String artifactId) {
-        // FIXME space after colon
         new LabeledText("ArtifactId: ").setText(artifactId);
     }
 
     public void setVersion(String version) {
-        // FIXME space after colon
         new LabeledText("Version: ").setText(version);
     }
 

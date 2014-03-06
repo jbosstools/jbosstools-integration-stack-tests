@@ -1,7 +1,7 @@
 package org.jboss.tools.drools.reddeer.wizard;
 
 import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 public class NewRuleResourceWizardPage extends NewResourceWizardPage {
@@ -20,16 +20,14 @@ public class NewRuleResourceWizardPage extends NewResourceWizardPage {
     }
 
     public void setTypeOfRuleResource(RuleResourceType type) {
-        new DefaultCombo("Type of rule resource:").setSelection(type.toString());
+        new LabeledCombo("Type of rule resource:").setSelection(type.toString());
     }
 
     public void setUseDSL(boolean value) {
-        // FIXME wrong usage of check box (no text, label before it)
         new CheckBox(0).toggle(value);
     }
 
     public void setUseFunctions(boolean value) {
-        // FIXME wrong usage of check box (no text, label before it)
         new CheckBox(1).toggle(value);
     }
 
