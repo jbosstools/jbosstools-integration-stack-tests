@@ -2,6 +2,8 @@ package org.jboss.tools.teiid.reddeer.manager;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Properties;
+
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
@@ -18,6 +20,7 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.teiid.reddeer.VDB;
+import org.jboss.tools.teiid.reddeer.WAR;
 import org.jboss.tools.teiid.reddeer.editor.SQLScrapbookEditor;
 import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
@@ -64,7 +67,21 @@ public class VDBManager {
 		editor.save();
 	}
 	
-	
+	// TODO CHECK 
+	public void removeModelFromVDB(String projectName, String vdbName, String[] models){
+		VDBEditor editor = getVDBEditor(projectName, vdbName);
+		editor.show();
+		String model = "";
+		try {
+			for (int i = 0; i < models.length; i++) {
+				model = models[i];
+				editor.removeModel(projectName, model);
+			}
+		} catch (Exception ex) {
+			log.warn("Cannot add model " + model);
+		}
+		editor.save();
+	}
 	
 	public void openVDBEditor(String projectName, String vdbName){
 		if (vdbName.contains(".vdb")){
@@ -128,11 +145,14 @@ public class VDBManager {
 	}
 	
 	public void createVDBDataSource(String[] pathToVDB, String jndiName, boolean passThruAuth){
-		//TODO
-		new Project(new DefaultTreeItem(pathToVDB)).select();
+		
+		if (! pathToVDB[pathToVDB.length-1].contains(".vdb")){
+			pathToVDB[pathToVDB.length-1] = pathToVDB[pathToVDB.length-1].concat(".vdb");
+		}
+		new ModelExplorer().getProject(pathToVDB[0]).getProjectItem(pathToVDB[1]).select();
 		new ContextMenu("Modeling", "Create VDB Data Source").select();
 		try{
-			if (new SWTWorkbenchBot().activeShell().getText().equals("VDB Not Yet Deployed")){
+			if (new SWTWorkbenchBot().activeShell().getText().equals("VDB Not Yet Deployed ")){
 				new PushButton("Yes").click();//create ds anyway
 			}
 		} catch (Exception e){
@@ -151,4 +171,17 @@ public class VDBManager {
 		new PushButton("Synchronize All").click();
 	}*/
 	
+	/*public WAR operateWAR(String... pathToWar){
+		return new WAR(new ModelExplorer().getProject(pathToWar[0]).getProjectItem(pathToWar[1]));
+	}*/
+	
+	/*public WAR createWAR(Properties warProps, String... pathToVDB){
+		return new WAR(warProps, new ModelExplorer().getProject(pathToVDB[0]).getProjectItem(pathToVDB[1]));
+	}*/
+	
+	public WAR createWAR(Properties warProps, String... pathToVDB){
+		WAR war =new WAR(warProps, pathToVDB);
+		war.createWAR();
+		return war;
+	}
 }

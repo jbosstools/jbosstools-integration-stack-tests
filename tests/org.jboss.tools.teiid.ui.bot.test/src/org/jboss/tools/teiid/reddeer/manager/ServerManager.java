@@ -24,8 +24,12 @@ public class ServerManager {
 		new ServersViewExt().stopServer(serverName);
 	}
 
-	public ServersView getServersView(){
+	/*public ServersView getServersView(){
 		return new ServersView();
+	}*/
+	
+	public ServersViewExt getServersViewExt(){
+		return new ServersViewExt();
 	}
 
 	public void setDefaultTeiidInstance(String serverName, ServerType type) {//move to guides view

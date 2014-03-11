@@ -4,6 +4,7 @@ import java.util.Properties;
 
 import org.jboss.tools.teiid.reddeer.ModelProject;
 import org.jboss.tools.teiid.reddeer.wizard.ImportFileWizard;
+import org.jboss.tools.teiid.reddeer.wizard.ImportGeneralItemWizard;
 import org.jboss.tools.teiid.reddeer.wizard.ImportJDBCDatabaseWizard;
 import org.jboss.tools.teiid.reddeer.wizard.ImportProjectWizard;
 import org.jboss.tools.teiid.reddeer.wizard.SalesforceImportWizard;
@@ -108,8 +109,18 @@ public class ImportManager {
 		importFromWSDLToSrcView(projectName, modelName, cpName, props);	
 	}*/
 	
-	public void importProject(String archiveLocation){
+	public void importProject(String archiveLocation){// TODO use generalItem instead
 		new ImportProjectWizard(archiveLocation).execute(); 
+	}
+	
+	/**
+	 * 
+	 * @param generalItemType ImportGeneralItemWizard.ARCHIVE_LABEL<br/>EXISTING_PROJECTS_INTO_WORKSPACE<br/>FILE_SYSTEM<br/>PREFERENCES
+	 * @param itemProps
+	 *  FILE_SYSTEM - directoryName, filename,<br/>EXISTING_PROJECTS_INTO_WORKSPACE - location
+	 */
+	public void importGeneralItem(String generalItemType, Properties itemProps){
+		new ImportGeneralItemWizard(generalItemType, itemProps).execute();
 	}
 	
 }

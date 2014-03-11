@@ -6,7 +6,7 @@ import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
 import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.manager.ImportMetadataManager;
-import org.jboss.tools.teiid.reddeer.manager.ModelProjectManager;
+import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.manager.ServerManager;
 import org.jboss.tools.teiid.reddeer.manager.VDBManager;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
@@ -94,11 +94,11 @@ public class TeiidConnectionImportTest extends SWTBotTestCase{
 		
 		//create data sources
 		//TEMP 
-		new ModelProjectManager().createDataSource(ModelExplorerView.ConnectionSourceType.USE_CONNECTION_PROFILE_INFO, sqlserverCP, PROJECT_NAME, sqlserverModel);
+		new ModelExplorerManager().createDataSource(ModelExplorerView.ConnectionSourceType.USE_CONNECTION_PROFILE_INFO, sqlserverCP, PROJECT_NAME, sqlserverModel);
 		//TEMP 
-		new ModelProjectManager().createDataSource(ModelExplorerView.ConnectionSourceType.USE_CONNECTION_PROFILE_INFO, oracleCP, PROJECT_NAME, oracleModel);
+		new ModelExplorerManager().createDataSource(ModelExplorerView.ConnectionSourceType.USE_CONNECTION_PROFILE_INFO, oracleCP, PROJECT_NAME, oracleModel);
 		//TEMP
-		new ModelProjectManager().createDataSource(ModelExplorerView.ConnectionSourceType.USE_CONNECTION_PROFILE_INFO, hsqlCP, PROJECT_NAME, hsqlModel);
+		new ModelExplorerManager().createDataSource(ModelExplorerView.ConnectionSourceType.USE_CONNECTION_PROFILE_INFO, hsqlCP, PROJECT_NAME, hsqlModel);
 		//TEMP new ModelProjectManager().createDataSource(ModelExplorerView.ConnectionSourceType.USE_CONNECTION_PROFILE_INFO, sybaseCP, PROJECT_NAME, sybaseModel);
 		//TEMP new ModelProjectManager().createDataSource(ModelExplorerView.ConnectionSourceType.USE_CONNECTION_PROFILE_INFO, sybaseJtdsCP, PROJECT_NAME, sybaseJtdsModel);
 	}
@@ -301,9 +301,10 @@ public class TeiidConnectionImportTest extends SWTBotTestCase{
 	private static void setup(String cp, String cpProps, String model) {
 		try {
 			new ConnectionProfileManager().createCPWithDriverDefinition(cp, cpProps);
-			new ModelProjectManager().changeConnectionProfile(cp, PROJECT_NAME, model);
+			new ModelExplorerManager().changeConnectionProfile(cp, PROJECT_NAME, model);
 		} catch (Exception e){
 			System.err.println("Setup failed, " + e.getMessage()); e.printStackTrace();
 		}
 	}
+	//TODO add resources which SHOULD work
 }
