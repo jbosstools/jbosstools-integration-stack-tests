@@ -163,6 +163,14 @@ public class ModelExplorerView extends WorkbenchView {
 		if (connectionSourceType.toString().equals(ConnectionSourceType.USE_CONNECTION_PROFILE_INFO)){
 			new DefaultCombo(1).setSelection(connectionProfile);
 		}
-		new PushButton("Finish").click();
+		if (! new PushButton("Finish").isEnabled()){
+			System.err.println("Datasource " + pathToSourceModel[pathToSourceModel.length-1] + "exists!");
+			new PushButton("Cancel").click();
+		} else {
+			new PushButton("Finish").click();
+		}
+		
 	}
+	
+	//TODO: merge with ModelExplorer
 }

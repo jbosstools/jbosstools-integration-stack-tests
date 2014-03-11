@@ -1,11 +1,12 @@
 package org.jboss.tools.teiid.reddeer.manager;
 
 import org.jboss.tools.teiid.reddeer.ModelProject;
+import org.jboss.tools.teiid.reddeer.WAR;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
 import org.jboss.tools.teiid.reddeer.wizard.ModelProjectWizard;
 
-public class ModelProjectManager {
+public class ModelExplorerManager {
 
 	/**
 	 * Click on the project in Model Explorer  
@@ -21,15 +22,15 @@ public class ModelProjectManager {
 	 * New Teiid Model Project
 	 * @param modelProjectName
 	 */
-	public void create(String modelProjectName, boolean viaGuides){
+	public void createProject(String modelProjectName, boolean viaGuides){
 		new ModelProjectWizard(0).create(modelProjectName, viaGuides);
 	}
 	
-	public void create(String modelProjectName){
+	public void createProject(String modelProjectName){
 		new ModelProjectWizard(0).create(modelProjectName);
 	}
 	
-	public void create(String modelProjectName, boolean viaGuides, String... folders){
+	public void createProject(String modelProjectName, boolean viaGuides, String... folders){
 		new ModelProjectWizard(0).create(modelProjectName, viaGuides, folders);
 	}
 	
@@ -47,4 +48,9 @@ public class ModelProjectManager {
 		}
 		new ModelExplorerView().open(pathToModel);
 	}
+	
+	public WAR getWAR(String projectName, String warName){
+		return new WAR(projectName, warName);
+	}
+	
 }

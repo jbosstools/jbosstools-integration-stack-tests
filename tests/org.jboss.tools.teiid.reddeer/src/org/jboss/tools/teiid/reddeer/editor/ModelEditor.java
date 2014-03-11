@@ -331,5 +331,5 @@ public class ModelEditor extends SWTBotEditor {
 		return new InputSetEditor();
 	}
 	
-	
+	//TODO transformation editor options - supports update
 }

@@ -39,6 +39,7 @@ public class ServersViewExt extends ServersView {
 	public static final String EDS5_PREFIX_URL = "mms://localhost:31443";
 	private static final String REFRESH = "Refresh / Reconnect Teiid Instance Connection";
 	private static final String TEIID_INSTANCE_CONFIG = "Teiid Instance Configuration";
+	private static final String DISCONNECT = "Disconnect";
 	
 	public enum ServerType{
 		 EAP6, EDS5, AS5, DV6
@@ -141,12 +142,13 @@ public class ServersViewExt extends ServersView {
 		new WaitUntil(new ServerHasState(serverName), TimePeriod.LONG);
 		//additional steps
 		if (type.equals(ServerType.EDS5)){
-			String label = getServerLabel(serverName);
-			//refresh 
-			new DefaultTreeItem(label, TEIID_INSTANCE_CONFIG).select();
-			new DefaultToolItem(REFRESH).click();
-			//server was refreshed
-			new PushButton("OK").click();
+			connectTeiidInstance(serverName);
+//			String label = getServerLabel(serverName);
+//			//refresh 
+//			new DefaultTreeItem(label, TEIID_INSTANCE_CONFIG).select();
+//			new DefaultToolItem(REFRESH).click();
+//			//server was refreshed
+//			new PushButton("OK").click();
 		}
 	}
 	
@@ -179,6 +181,27 @@ public class ServersViewExt extends ServersView {
 		new ContextMenu("Stop").select();
 		AbstractWait.sleep(TimePeriod.SHORT.getSeconds() * 1000);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);*/
+	}
+	
+	public void disconnectTeiidInstance(String serverName){
+		String label = getServerLabel(serverName);
+		//refresh 
+		
+		String url = getServerURLPrefix(determineServerType(serverName));//new DefaultTreeItem(label, TEIID_INSTANCE_CONFIG, url).expand();
+		new DefaultTreeItem(label, TEIID_INSTANCE_CONFIG, url).select();
+		new DefaultToolItem(REFRESH).click();
+		new PushButton("OK").click();
+		new DefaultTreeItem(label, TEIID_INSTANCE_CONFIG, url).select();
+		new ContextMenu(DISCONNECT).select();
+	}
+	
+	public void connectTeiidInstance(String serverName){
+		String label = getServerLabel(serverName);
+		//refresh 
+		new DefaultTreeItem(label, TEIID_INSTANCE_CONFIG).select();
+		new DefaultToolItem(REFRESH).click();
+		//server was refreshed
+		new PushButton("OK").click();
 	}
 	
 }

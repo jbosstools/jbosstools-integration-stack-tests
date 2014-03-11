@@ -14,7 +14,7 @@ import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.SQLScrapbookEditor;
 import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
-import org.jboss.tools.teiid.reddeer.manager.ModelProjectManager;
+import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
@@ -112,7 +112,7 @@ public class VirtualGroupTutorialTest extends SWTBotTestCase {
 	@Test
 	public void virtualGroupTutorialTest() {
 		//new ModelProjectWizard().create(PROJECT_NAME);
-		new ModelProjectManager().create(PROJECT_NAME);
+		new ModelExplorerManager().createProject(PROJECT_NAME);
 
 		//teiidBot.createDatabaseProfile(ORACLE_CONNPROFILE_NAME, "resources/db/oracle_parts.properties");
 		//teiidBot.createDatabaseProfile(SQLSERVER_CONNPROFILE_NAME, "resources/db/sqlserver_parts.properties");

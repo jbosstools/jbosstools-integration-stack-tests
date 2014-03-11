@@ -3,10 +3,12 @@ package org.jboss.tools.teiid.ui.bot.test;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Properties;
 
@@ -289,5 +291,34 @@ public class TeiidBot {
 		ModelEditor modelEditor = this.modelEditor(file);
 		assertNotNull(file + " is not opened!", modelEditor);
 		assertNotNull("Diagram '" + label + "' not found!", modelEditor.getModeDiagram(label));
+	}
+	
+	public String curl(String url) {
+		Process pr = null;
+		String result = "";
+		Runtime run = Runtime.getRuntime();
+		try {
+			pr = run.exec("curl "+url);
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					pr.getInputStream()));
+			String line = null;
+			
+			while ((line = in.readLine()) != null) {
+				result=result.concat(line);
+			}
+		} catch (Exception ex) {
+			// throw new RuntimeException("Executing " + cmdline, ex);
+		} finally {
+			try {
+				// close all those bloody streams
+				pr.getErrorStream().close();
+				pr.getInputStream().close();
+				pr.getOutputStream().close();
+			} catch (Exception ex) {
+				// Log.get().exception(Log.Level.Error, "Closing stream: ", ex);
+			}
+		}
+		System.out.println("-----Curl returned: "+result);
+		return result;
 	}
 }

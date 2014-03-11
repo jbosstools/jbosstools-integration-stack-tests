@@ -6,7 +6,7 @@ import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.SQLScrapbookEditor;
 import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
-import org.jboss.tools.teiid.reddeer.manager.ModelProjectManager;
+import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.view.DataSourceExplorer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
@@ -51,7 +51,7 @@ public class TopDownWsdlTest extends SWTBotTestCase {
 		try {
 			/* Create new project */
 			//new ModelProjectWizard().create(PROJECT_NAME);
-			new ModelProjectManager().create(PROJECT_NAME);
+			new ModelExplorerManager().createProject(PROJECT_NAME);
 
 			/* Import wsdl */
 			new ImportFileWizard().importFile("resources/wsdl", "wsdl");//!!! missing SET "INTO FOLDER" !
