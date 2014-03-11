@@ -46,7 +46,7 @@ import org.jboss.tools.teiid.reddeer.editor.Reconciler.ExpressionBuilder;
 import org.jboss.tools.teiid.reddeer.editor.SQLScrapbookEditor;
 import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
-import org.jboss.tools.teiid.reddeer.manager.ModelProjectManager;
+import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.shell.FunctionExpressionBuilder;
@@ -120,7 +120,7 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 		try {
 		int currentPage = 0;//currentPage of wizard must be set to 0
 		//new ModelProjectWizard(currentPage).create(PROJECT_NAME, true, "sources", "views", "schemas");
-		new ModelProjectManager().create(PROJECT_NAME, true, "sources", "views", "schemas");
+		new ModelExplorerManager().createProject(PROJECT_NAME, true, "sources", "views", "schemas");
 		} catch (Exception ex){
 			//do it manually
 		}

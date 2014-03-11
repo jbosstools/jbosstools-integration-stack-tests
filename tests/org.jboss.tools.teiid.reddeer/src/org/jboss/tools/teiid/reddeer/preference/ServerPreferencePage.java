@@ -63,4 +63,6 @@ public class ServerPreferencePage extends PreferencePage {
 			
 		}
 	}
+	//TODO preferences - teiid version
+	//TODO deploy preference for teiid import - seconds to wait
 }

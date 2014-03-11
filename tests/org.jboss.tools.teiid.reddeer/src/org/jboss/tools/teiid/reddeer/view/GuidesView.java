@@ -136,4 +136,7 @@ public class GuidesView extends WorkbenchView {
 		
 		new PushButton("OK").click();// confirm change of default server
 	}
+	
+	//TODO modeling actions... - the grey context menu
+	//TODO support other action sets
 }
