@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
-import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.api.Combo;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
@@ -91,9 +90,7 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 	public void finish() {
 		log.info("Finish wizard");
 
-		Button button = new PushButton("Finish");
-		checkButtonEnabled(button);
-		button.click();
+		new PushButton("Finish").click();
 
 		try {
 			new WaitWhile(new JobIsRunning());

@@ -1,5 +1,6 @@
 package org.jboss.tools.teiid.reddeer.view;
 
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.eclipse.jdt.ui.AbstractExplorer;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -15,6 +16,7 @@ import org.jboss.tools.teiid.reddeer.wizard.ModelProjectWizard;
  */
 public class ModelExplorer extends AbstractExplorer {
 
+	private static String CONNECTION_PROFILE_CHANGE = "Confirm Connection Profile Change";
 	public ModelExplorer() {
 		super("Model Explorer");
 	}
@@ -26,7 +28,7 @@ public class ModelExplorer extends AbstractExplorer {
 	 * @return
 	 */
 	public ModelProject createModelProject(String modelName) {
-		ModelProjectWizard wizard = new ModelProjectWizard();
+		ModelProjectWizard wizard = new ModelProjectWizard(0);
 		wizard.open();
 		wizard.getWizardPage().fillWizardPage(modelName);
 		wizard.finish();
@@ -44,10 +46,18 @@ public class ModelExplorer extends AbstractExplorer {
 	}
 	
 	public void changeConnectionProfile(String connectionProfile, String projectName, String... projectItem){
+		//if no extension specified, add .xmi
+		if (! projectItem[projectItem.length -1].contains(".")){
+			projectItem[projectItem.length -1] = projectItem[projectItem.length -1].concat(".xmi");
+		}
 		new ModelExplorer().getProject(projectName).getProjectItem(projectItem).select();
 		new ContextMenu("Modeling", "Set Connection Profile").select();
 		new DefaultTreeItem("Database Connections", connectionProfile).select();
 		new PushButton("OK").click();
+		//Confirm Connection Profile Change (it will change also the model import settings)
+		if (new SWTWorkbenchBot().activeShell().getText().equals(CONNECTION_PROFILE_CHANGE)){
+			new PushButton("OK").click();
+		}
 	}
 
 }

@@ -15,6 +15,7 @@ import org.jboss.tools.switchyard.reddeer.binding.FTPBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.FTPSBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.FileBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.HTTPBindingPage;
+import org.jboss.tools.switchyard.reddeer.binding.JCABindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.JMSBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.JPABindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.MailBindingPage;
@@ -204,6 +205,21 @@ public class BindingsTest extends RedDeerTest {
 	@Test
 	public void jcaBindingTest() throws Exception {
 		new Service(SERVICE).addBinding("JCA");
+
+		BindingWizard<JCABindingPage> wizard = BindingWizard.createJCABindingWizard();
+		wizard.getBindingPage().selectGenericResourceAdapter();
+		wizard.getBindingPage().setResourceAdapterArchive("resource-adapter.jar");
+		wizard.next();
+		wizard.getBindingPage().selectJMSEndpoint();
+		wizard.finish();
+
+		new SwitchYardEditor().save();
+
+		PropertiesPreferencePage properties = new Service(SERVICE).showProperties();
+		properties.selectBindingsTab();
+		assertTrue(properties.getJCABindingPage().isGenericResourceAdapter());
+		assertEquals("resource-adapter.jar", properties.getJCABindingPage().getResourceAdapterArchive());
+		properties.ok();
 	}
 
 	@Test

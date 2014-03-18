@@ -8,6 +8,7 @@ import org.jboss.tools.switchyard.reddeer.binding.FTPBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.FTPSBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.FileBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.HTTPBindingPage;
+import org.jboss.tools.switchyard.reddeer.binding.JCABindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.JMSBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.JPABindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.MailBindingPage;
@@ -62,6 +63,10 @@ public class PropertiesPreferencePage extends PreferencePage {
 		return new FileBindingPage();
 	}
 
+	public JCABindingPage getJCABindingPage() {
+		return new JCABindingPage();
+	}
+	
 	public JMSBindingPage getJMSBindingPage() {
 		return new JMSBindingPage();
 	}

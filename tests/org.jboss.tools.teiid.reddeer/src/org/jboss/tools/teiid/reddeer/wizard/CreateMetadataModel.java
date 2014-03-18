@@ -72,8 +72,34 @@ public class CreateMetadataModel extends NewWizardDialog {
 
 	private String type;
 	
-	private String modelBuilder = "";
+	private String modelBuilder;
+	private String[] pathToExistingModel;
+	private String[] pathToXmlSchema;
+	private String rootElement;
+	
+	public String[] getPathToXmlSchema() {
+		return pathToXmlSchema;
+	}
 
+	public void setPathToXmlSchema(String[] pathToXmlSchema) {
+		this.pathToXmlSchema = pathToXmlSchema;
+	}
+
+	public String[] getPathToExistingModel() {
+		return pathToExistingModel;
+	}
+
+	public void setPathToExistingModel(String[] pathToExistingModel) {
+		this.pathToExistingModel = pathToExistingModel;
+	}
+
+	public String getRootElement() {
+		return rootElement;
+	}
+
+	public void setRootElement(String rootElement) {
+		this.rootElement = rootElement;
+	}
 
 	public CreateMetadataModel() {
 		super("Teiid Designer", "Teiid Metadata Model");
@@ -82,33 +108,35 @@ public class CreateMetadataModel extends NewWizardDialog {
 	public void execute() {
 		open();
 		fillFirstPage();
-		if (ModelClass.XSD.equals(clazz)) {
+		fillSecondPage();//sometimes do nothing
+		finish();
+		/*if (ModelClass.XSD.equals(clazz)) {//--> secondP
 			new PushButton("Finish").click();
 			new DefaultShell("Model Initializer");
 			new SWTWorkbenchBot().table().select("XML Schema (2001)");
 			new PushButton("OK").click();
 		} else {
 			finish();
-		}
+		}*/
 	}
 	
-	public void execute(String... pathToExistingModel){
+	/*public void execute(String... pathToExistingModel){//->secondP
 		open();
 		fillFirstPage();
 		fillSecondPage(pathToExistingModel);
 		finish();
-	}
+	}*/
 	
-	public void execute(boolean modelBuilderSet, String... pathToExistingModel){
+	/*public void execute(boolean modelBuilderSet, String... pathToExistingModel){//-->first, second
 		open();
 		fillFirstPage(modelBuilderSet);
 		fillSecondPage(pathToExistingModel);
 		finish();
-	}
+	}*/
 	
 	
 	
-	public void execute(String[] pathToXmlSchema, String rootElement){
+	/*public void execute(String[] pathToXmlSchema, String rootElement){//second
 		open();
 		fillFirstPage();
 		if (modelBuilder.equals(ModelBuilder.BUILD_FROM_XML_SCHEMA)){
@@ -119,26 +147,52 @@ public class CreateMetadataModel extends NewWizardDialog {
 			throw new UnsupportedOperationException();
 		}
 		finish();
-	}
+	}*/
 
-	private void fillFirstPage() {
+	public void fillFirstPage() {
 		new LabeledText("Location:").setText(location);
 		new LabeledText("Model Name:").setText(name);
 		new DefaultCombo("Model Class:").setSelection(clazz);
-		new DefaultCombo("Model Type:").setSelection(type);
+		new DefaultCombo("Model Type:").setSelection(type);		
+		if (modelBuilder != null){
+			new DefaultTable().select(modelBuilder);
+		}
+		if (ModelClass.XSD.equals(clazz)) {
+			new PushButton("Finish").click();
+			new DefaultShell("Model Initializer");
+			new SWTWorkbenchBot().table().select("XML Schema (2001)");
+			new PushButton("OK").click();
+		}
+		if (modelBuilder != null){
+			next(); 
+		}
 	}
 	
 	
-	public void fillFirstPage(boolean param) {
+	/*public void fillFirstPage(boolean param) {
 		new LabeledText("Location:").setText(location);
 		new LabeledText("Model Name:").setText(name);
 		new DefaultCombo("Model Class:").setSelection(clazz);
 		new DefaultCombo("Model Type:").setSelection(type);
 		new DefaultTable().select(modelBuilder);//ModelBuilder.TRANSFORM_EXISTING
 		new PushButton("Next >").click();
+	}*/
+	
+	public void fillSecondPage(){
+		if (pathToExistingModel != null){
+			new PushButton("...").click();
+			new DefaultTreeItem(pathToExistingModel).select();
+			new PushButton("OK").click();
+		} else if ((rootElement != null) && (pathToXmlSchema != null)){
+			new PushButton(0).click();
+			new DefaultTreeItem(pathToXmlSchema).select();
+			new PushButton("OK").click();
+			new DefaultTable().select(rootElement);
+			new PushButton(1).click();// >
+		}
 	}
 	
-	private void fillSecondPage(String... pathToExistingModel){
+	/*private void fillSecondPage(String... pathToExistingModel){
 		new PushButton("...").click();
 		new DefaultTreeItem(pathToExistingModel).select();
 		new PushButton("OK").click();
@@ -150,7 +204,7 @@ public class CreateMetadataModel extends NewWizardDialog {
 		new PushButton("OK").click();
 		new DefaultTable().select(rootElement);
 		new PushButton(1).click();// >
-	}
+	}*/
 
 	public void setLocation(String location) {
 		this.location = location;

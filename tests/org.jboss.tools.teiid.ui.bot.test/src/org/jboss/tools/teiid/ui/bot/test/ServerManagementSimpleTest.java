@@ -14,6 +14,7 @@ import org.jboss.tools.teiid.reddeer.VDB;
 import org.jboss.tools.teiid.reddeer.condition.ServerHasState;
 import org.jboss.tools.teiid.reddeer.editor.SQLScrapbookEditor;
 import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
+import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.view.GuidesView;
@@ -72,8 +73,8 @@ public class ServerManagementSimpleTest extends SWTBotTestCase {
 		}
 
 		// create HSQL profile
-		teiidBot.createHsqlProfile("resources/db/ds1.properties", HSQLDB_PROFILE,
-				true, true);
+		//teiidBot.createHsqlProfile("resources/db/ds1.properties", HSQLDB_PROFILE, true, true);
+		new ConnectionProfileManager().createCPWithDriverDefinition(HSQLDB_PROFILE, "resources/db/ds1.properties");
 		
 		new ImportProjectWizard("resources/projects/ServerMgmtTest.zip").execute(); //incorrect connection profile
 		//set connection profile
@@ -166,8 +167,8 @@ public class ServerManagementSimpleTest extends SWTBotTestCase {
 			bot.activeShell().close();
 			return false;
 		} else {
-			new GuidesView().previewData(true, PROJECT_NAME, MODEL_NAME,
-					tableName);
+			//new GuidesView().previewData(true, PROJECT_NAME, MODEL_NAME,tableName);
+			new GuidesView().previewData(PROJECT_NAME, MODEL_NAME,tableName);
 			SQLResult result = DatabaseDevelopmentPerspective.getInstance()
 					.getSqlResultsView().getByOperation(TEST_SQL1);// "select * from \""+MODEL_NAME.substring(0,MODEL_NAME.indexOf("."))+"\".\""+tableName+"\""
 			assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());

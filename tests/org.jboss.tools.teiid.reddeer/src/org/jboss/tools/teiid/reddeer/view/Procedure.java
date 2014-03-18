@@ -159,4 +159,8 @@ public class Procedure {
 			pathToModel[1] = this.model;
 		}
 	}
+	
+	//TODO more options, move to org.jboss.tools.teiid.reddeer
+	//TODO create new UDFunction
+	
 }

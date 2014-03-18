@@ -13,6 +13,8 @@ import org.jboss.tools.teiid.reddeer.editor.CriteriaBuilder;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.SQLScrapbookEditor;
 import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
+import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
+import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
@@ -31,7 +33,7 @@ import org.junit.AfterClass;
 import org.junit.Test;
 
 @Perspective(name = "Teiid Designer")
-@Server(type = Type.ALL, state = State.RUNNING)
+//@Server(type = Type.ALL, state = State.RUNNING)
 public class VirtualGroupTutorialTest extends SWTBotTestCase {
 
 	private static final String PROJECT_NAME = "MyFirstProject";
@@ -109,10 +111,13 @@ public class VirtualGroupTutorialTest extends SWTBotTestCase {
 
 	@Test
 	public void virtualGroupTutorialTest() {
-		new ModelProjectWizard().create(PROJECT_NAME);
+		//new ModelProjectWizard().create(PROJECT_NAME);
+		new ModelExplorerManager().createProject(PROJECT_NAME);
 
-		teiidBot.createDatabaseProfile(ORACLE_CONNPROFILE_NAME, "resources/db/oracle_parts.properties");
-		teiidBot.createDatabaseProfile(SQLSERVER_CONNPROFILE_NAME, "resources/db/sqlserver_parts.properties");
+		//teiidBot.createDatabaseProfile(ORACLE_CONNPROFILE_NAME, "resources/db/oracle_parts.properties");
+		//teiidBot.createDatabaseProfile(SQLSERVER_CONNPROFILE_NAME, "resources/db/sqlserver_parts.properties");
+		new ConnectionProfileManager().createCPWithDriverDefinition(ORACLE_CONNPROFILE_NAME, "resources/db/oracle_parts.properties");
+		new ConnectionProfileManager().createCPWithDriverDefinition(SQLSERVER_CONNPROFILE_NAME, "resources/db/sqlserver_parts.properties");
 
 		createOracleModel();
 		createSQLServerModel();

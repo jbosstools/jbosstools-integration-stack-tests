@@ -24,7 +24,7 @@ public class FlatImportWizard extends TeiidImportWizard {
 
 	private String profile;
 	private String file;
-	private String name;//source model name
+	private String sourceModelName;//source model name
 	private String viewModelName;
 	private String viewTableName;
 	private String importMode;
@@ -99,8 +99,8 @@ public class FlatImportWizard extends TeiidImportWizard {
 		this.file = file;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setSourceModelName(String name) {
+		this.sourceModelName = name;
 	}
 
 	public void setHeaderLine(int headerLine) {
@@ -121,9 +121,9 @@ public class FlatImportWizard extends TeiidImportWizard {
 		executeBeginOfWizard();
 		
 		// TODO: LabeledText
-		new SWTWorkbenchBot().textWithLabel("Name:").setText(name + "View");
+		new SWTWorkbenchBot().textWithLabel("Name:").setText(sourceModelName + "View");
 
-		new LabeledText("New view table name:").setText(name + "Table");
+		new LabeledText("New view table name:").setText(sourceModelName + "Table");
 
 		finish();
 	}
@@ -151,7 +151,7 @@ public class FlatImportWizard extends TeiidImportWizard {
 		new DefaultCombo(0).setSelection(profile);
 		setCheckedFile(file, true);
 		// TODO: LabeledText
-		new SWTWorkbenchBot().textWithLabel("Name:").setText(name + "Source");
+		new SWTWorkbenchBot().textWithLabel("Name:").setText(sourceModelName + "Source");
 		next();
 		
 		//third page
@@ -209,8 +209,8 @@ public class FlatImportWizard extends TeiidImportWizard {
 		new DefaultCombo(0).setSelection(profile);
 		setCheckedFile(file, true);
 				// TODO: LabeledText
-		if (name != null){
-			new SWTWorkbenchBot().textWithLabel("Name:").setText(name + "Source");
+		if (sourceModelName != null){
+			new SWTWorkbenchBot().textWithLabel("Name:").setText(sourceModelName + "Source");
 		}
 		next();
 	}
@@ -259,9 +259,9 @@ public class FlatImportWizard extends TeiidImportWizard {
 	
 	private void fillFifthPage() {
 		// TODO: LabeledText
-		if (name != null){
-			new SWTWorkbenchBot().textWithLabel("Name:").setText(name + "View");
-			new LabeledText("New view table name:").setText(name + "Table");
+		if (sourceModelName != null){
+			new SWTWorkbenchBot().textWithLabel("Name:").setText(sourceModelName + "View");
+			new LabeledText("New view table name:").setText(sourceModelName + "Table");
 		}
 	}
 

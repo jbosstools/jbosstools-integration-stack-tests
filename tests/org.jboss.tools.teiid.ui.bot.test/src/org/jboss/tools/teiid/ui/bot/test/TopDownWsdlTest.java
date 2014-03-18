@@ -5,6 +5,8 @@ import org.jboss.tools.teiid.reddeer.ModelProject;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.SQLScrapbookEditor;
 import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
+import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
+import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.view.DataSourceExplorer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
@@ -14,6 +16,7 @@ import org.jboss.tools.teiid.reddeer.wizard.CreateVDB;
 import org.jboss.tools.teiid.reddeer.wizard.ImportFileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.ImportJDBCDatabaseWizard;
 import org.jboss.tools.teiid.reddeer.wizard.ModelProjectWizard;
+import org.jboss.tools.teiid.reddeer.wizard.TeiidConnectionProfileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.WsdlWebImportWizard;
 import org.jboss.tools.teiid.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
 import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.Server;
@@ -27,7 +30,7 @@ import org.junit.Test;
  * 
  */
 @Perspective(name = "Teiid Designer")
-@Server(type = Type.ALL, state = State.RUNNING)
+//@Server(type = Type.ALL, state = State.RUNNING)
 public class TopDownWsdlTest extends SWTBotTestCase {
 
 	public static final String BUNDLE = "org.teiid.designer.ui.bot.test";
@@ -47,10 +50,11 @@ public class TopDownWsdlTest extends SWTBotTestCase {
 	public void topDownWsdlTestScript() throws Exception {
 		try {
 			/* Create new project */
-			new ModelProjectWizard().create(PROJECT_NAME);
+			//new ModelProjectWizard().create(PROJECT_NAME);
+			new ModelExplorerManager().createProject(PROJECT_NAME);
 
 			/* Import wsdl */
-			new ImportFileWizard().importFile("resources/wsdl", "wsdl");
+			new ImportFileWizard().importFile("resources/wsdl", "wsdl");//!!! missing SET "INTO FOLDER" !
 		} catch (Exception ex) {
 
 		}
@@ -62,8 +66,8 @@ public class TopDownWsdlTest extends SWTBotTestCase {
 		}
 		try {
 			/* Create DB connection profile */
-			teiidBot.createDatabaseProfile(CONNECTION_PROFILE,
-					"resources/db/sqlserver_tpcr.properties");
+			//teiidBot.createDatabaseProfile(CONNECTION_PROFILE, "resources/db/sqlserver_tpcr.properties");
+			new ConnectionProfileManager().createCPWithDriverDefinition(CONNECTION_PROFILE, "resources/db/sqlserver_tpcr.properties");
 		} catch (Exception ex) {
 
 		}
@@ -101,7 +105,7 @@ public class TopDownWsdlTest extends SWTBotTestCase {
 						+ "WHERE (O_ORDERDATE = {ts'1993-03-31 00:00:00.0'}) AND (O_ORDERKEY = L_ORDERKEY) AND (O_CUSTKEY = C_CUSTKEY) AND (L_PARTKEY = P_PARTKEY) AND (L_SHIPDATE BETWEEN {ts'1993-04-01 00:00:00.0'} AND {ts'1993-04-15 00:00:00.0'})";
 
 				modelEditor.setTransformation(sql);
-				modelEditor.saveAndValidateSql();
+				modelEditor.saveAndValidateSql();//!!!NEEDS RECONCILING!!!
 				modelEditor.save();
 			} catch (Exception ex) {
 				// do it manually
@@ -161,16 +165,16 @@ public class TopDownWsdlTest extends SWTBotTestCase {
 		try {
 			new ModelExplorerView().executeVDB(PROJECT_NAME, VDB_NAME + ".vdb");
 
-			new DataSourceExplorer().openSQLScrapbook(VDB_NAME + ".*", true);
+			//new DataSourceExplorer().openSQLScrapbook(VDB_NAME + ".*", true);
 
 			SQLScrapbookEditor sqlEditor = new SQLScrapbookEditor();
 			sqlEditor.show();
-			sqlEditor.setDatabase(VDB_NAME);
+			//sqlEditor.setDatabase(VDB_NAME);
 
 			String testSql = "SELECT * FROM ChkOrdSvcResponses.Service1Soap_CheckOrder_OCout";
 			sqlEditor.setText(testSql);
 			// fix driver settings
-			new DataSourceExplorer().setVDBDriver(VDB_PROPS, VDB_NAME);
+			//new DataSourceExplorer().setVDBDriver(VDB_PROPS, VDB_NAME);
 			sqlEditor.executeAll();
 
 			SQLResult result = DatabaseDevelopmentPerspective.getInstance()

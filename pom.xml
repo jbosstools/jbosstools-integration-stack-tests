@@ -17,8 +17,8 @@
 	-->
 
 	<properties>
-	  <jbtis.tp.version>4.1.5.Final</jbtis.tp.version>
-	  <jbtis.site>http://download.jboss.org/jbosstools/updates/stable/kepler/integration-stack/aggregate/4.1.3.Final</jbtis.site>
+	  <jbtis.tp.version>4.1.6.Final</jbtis.tp.version>
+	  <jbtis.site>http://download.jboss.org/jbosstools/updates/development/kepler/integration-stack/aggregate/4.1.4.CR1</jbtis.site>
 	  <reddeer.site>http://download.jboss.org/jbosstools/builds/staging/RedDeer_master/all/repo</reddeer.site>
 	  <jbt.tests.site>http://download.jboss.org/jbosstools/updates/nightly/integrationtests/4.1.kepler</jbt.tests.site>
 	  <orbit.site>http://download.eclipse.org/tools/orbit/downloads/drops/R20130517111416/repository</orbit.site>

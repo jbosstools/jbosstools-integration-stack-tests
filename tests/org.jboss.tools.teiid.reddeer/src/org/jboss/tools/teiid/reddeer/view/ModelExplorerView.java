@@ -4,6 +4,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
@@ -30,7 +31,7 @@ public class ModelExplorerView extends WorkbenchView {
 	private static final String MODELING_MENU_ITEM = "Modeling";
 	private static final String CREATE_DATA_SOURCE = "Create Data Source";
 	
-	public static class ConnectionSource {
+	public static class ConnectionSourceType {
 		public static final String USE_MODEL_CONNECTION_INFO = "Use Model Connection Info";
 		public static final String USE_CONNECTION_PROFILE_INFO = "Use Connection Profile Info";
 	}
@@ -147,13 +148,29 @@ public class ModelExplorerView extends WorkbenchView {
 		item.getNode("Transformation Diagram").doubleClick();
 	}
 	
-	public void createDataSource(String connectionSource, String... pathToSourceModel){
+	public void createDataSource(String connectionSourceType, String connectionProfile, String... pathToSourceModel){
 		open();
+		//if last without ., set to .xmi
+		if (! pathToSourceModel[pathToSourceModel.length-1].contains(".")){
+			pathToSourceModel[pathToSourceModel.length-1] = pathToSourceModel[pathToSourceModel.length-1].concat(".xmi");
+		}
 		new DefaultTreeItem(pathToSourceModel).select();
 		new ContextMenu(MODELING_MENU_ITEM, CREATE_DATA_SOURCE).select();
 		//wait until radio button is enabled
-		new WaitUntil(new RadioButtonEnabled(connectionSource), TimePeriod.NORMAL);
-		new RadioButton(connectionSource).click();
-		new PushButton("Finish").click();
+		new WaitUntil(new RadioButtonEnabled(connectionSourceType), TimePeriod.NORMAL);
+		new RadioButton(connectionSourceType).click();
+		//in case of connection profile -> choose connection profile
+		if (connectionSourceType.toString().equals(ConnectionSourceType.USE_CONNECTION_PROFILE_INFO)){
+			new DefaultCombo(1).setSelection(connectionProfile);
+		}
+		if (! new PushButton("Finish").isEnabled()){
+			System.err.println("Datasource " + pathToSourceModel[pathToSourceModel.length-1] + "exists!");
+			new PushButton("Cancel").click();
+		} else {
+			new PushButton("Finish").click();
+		}
+		
 	}
+	
+	//TODO: merge with ModelExplorer
 }
