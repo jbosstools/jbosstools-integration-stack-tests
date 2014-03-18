@@ -4,7 +4,7 @@ import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.reddeer.editor.AbstractEvent;
@@ -61,7 +61,7 @@ public class MessageIntermediateThrowEvent extends AbstractEvent {
 			}
 			
 			new PushButton("OK").click();
-			new DefaultCombo("Source").setSelection(source);
+			new LabeledCombo("Source").setSelection(source);
 		}
 		
 		properties.toolbarButton("Message Event Definition Details", "Close").click();

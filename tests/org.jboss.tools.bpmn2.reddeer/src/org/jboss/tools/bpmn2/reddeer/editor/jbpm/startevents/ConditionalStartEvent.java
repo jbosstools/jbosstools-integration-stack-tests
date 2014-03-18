@@ -1,6 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents;
 
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
@@ -29,7 +29,7 @@ public class ConditionalStartEvent extends StartEvent {
 		new DefaultTable().select(0);
 		properties.toolbarButton("Event Definitions", "Edit").click();
 		
-		new DefaultCombo("Script Language").setSelection(language);
+		new LabeledCombo("Script Language").setSelection(language);
 		new LabeledText("Script").setText(script);
 	}
 	

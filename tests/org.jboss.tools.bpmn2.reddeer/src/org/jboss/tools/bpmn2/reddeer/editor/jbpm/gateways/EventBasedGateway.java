@@ -1,6 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways;
 
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.tools.bpmn2.reddeer.editor.AbstractGateway;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
 
@@ -39,7 +39,7 @@ public class EventBasedGateway extends AbstractGateway {
 				type.name().substring(1).toLowerCase();
 		
 		properties.selectTab("Gateway");
-		new DefaultCombo("Event Gateway Type").setSelection(visibleText);
+		new LabeledCombo("Event Gateway Type").setSelection(visibleText);
 	}
 
 	/**

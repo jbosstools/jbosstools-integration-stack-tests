@@ -2,7 +2,7 @@ package org.jboss.tools.bpmn2.reddeer.editor.switchyard.activities;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.reddeer.editor.AbstractTask;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
@@ -47,7 +47,7 @@ public class SwitchYardServiceTask extends AbstractTask{
 	 */
 	public void setScript(String scriptLang, String text, int type){
 		properties.selectTab("SwitchYard Service Task");
-		/*new DefaultCombo("Script Language").setSelection(scriptLang);
+		/*new LabeledCombo("Script Language").setSelection(scriptLang);
 		new LabeledText("Script").setText(text);*/
 		bot.comboBoxWithLabel("Script Language", type);
 		bot.textWithLabel("Script", type);

@@ -61,7 +61,7 @@ public class UserTask extends AbstractTask {
 	 * 
 	 * <code>
 	 *	if (!language.isEmpty()) {
-	 *		new DefaultCombo("Script Language").setSelection(language);
+	 *		new LabeledCombo("Script Language").setSelection(language);
 	 *	}
      *	new LabeledText("Script").setText(script);
 	 * </code>

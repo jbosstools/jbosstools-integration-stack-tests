@@ -2,7 +2,7 @@ package org.jboss.tools.bpmn2.reddeer.editor;
 
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
@@ -37,7 +37,7 @@ public abstract class AbstractGateway extends Construct {
 		select();
 		String visibleText = direction.name().charAt(0) + direction.name().substring(1).toLowerCase();
 		properties.selectTab("Gateway");
-		new DefaultCombo("Gateway Direction").setSelection(visibleText);
+		new LabeledCombo("Gateway Direction").setSelection(visibleText);
 	}
 	
 	/**
@@ -52,7 +52,7 @@ public abstract class AbstractGateway extends Construct {
 		new DefaultTable(0).select(branch);
 		properties.toolbarButton("Sequence Flow List", "Edit").click();
 		new PushButton("Add Condition").click();
-		new DefaultCombo("Condition Language").setSelection(lang);
+		new LabeledCombo("Condition Language").setSelection(lang);
 		new LabeledText("Constraint").setText(condition);
 		properties.toolbarButton("Sequence Flow Details", "Close").click();
 	}

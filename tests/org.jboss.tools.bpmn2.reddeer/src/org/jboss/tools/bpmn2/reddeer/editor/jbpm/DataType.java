@@ -3,7 +3,7 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 /**
@@ -50,10 +50,10 @@ public class DataType implements org.jboss.tools.bpmn2.reddeer.editor.DataType {
 	private boolean selectType(String name) {
 		// BZ-1008637
 		try {
-			new DefaultCombo("Data Type").setSelection(name);
+			new LabeledCombo("Data Type").setSelection(name);
 		} catch (SWTLayerException e1) {
 			try {
-				new DefaultCombo("Item").setSelection(name);
+				new LabeledCombo("Item").setSelection(name);
 			} catch (SWTLayerException e2) {
 				return false;
 			}
