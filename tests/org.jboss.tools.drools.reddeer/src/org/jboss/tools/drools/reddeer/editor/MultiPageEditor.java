@@ -5,13 +5,13 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.MultiPageEditorPart;
 import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.util.ResultRunnable;
-import org.jboss.reddeer.workbench.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.exception.WorkbenchPartNotFound;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 
 abstract class MultiPageEditor extends DefaultEditor {
 
     public MultiPageEditor() {
-        if (!(workbenchPart instanceof MultiPageEditorPart)){
+        if (!(editorPart instanceof MultiPageEditorPart)){
             throw new WorkbenchPartNotFound("Given editor is not instance of MultiPageEditorPart");
         }
     }
@@ -43,13 +43,13 @@ abstract class MultiPageEditor extends DefaultEditor {
     }
 
     protected MultiPageEditorPart getEditorPart() {
-        if (workbenchPart == null) {
+        if (editorPart == null) {
             throw new RuntimeException("workbenchPart is null");
         }
-        if (!(workbenchPart instanceof MultiPageEditorPart)) {
-            throw new RuntimeException("workbenchPart isn't instance of MultiPageEditorPart " + workbenchPart.getClass());
+        if (!(editorPart instanceof MultiPageEditorPart)) {
+            throw new RuntimeException("workbenchPart isn't instance of MultiPageEditorPart " + editorPart.getClass());
         }
-        return (MultiPageEditorPart) workbenchPart;
+        return (MultiPageEditorPart) editorPart;
     }
 
     protected int getSelectedPage() {
