@@ -3,7 +3,7 @@ package org.jboss.tools.bpel.reddeer.wizard;
 import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 
@@ -96,15 +96,15 @@ public class NewProcessWizard extends NewWizardDialog {
 		open();
 
 		new LabeledText("Process Name:").setText(processName);
-		new DefaultCombo("Namespace:").setText(namespace);
+		new LabeledCombo("Namespace:").setText(namespace);
 		new CheckBox("Abstract Process").toggle(isAbstract);
 
 		next();
 
-		new DefaultCombo("Template:").setSelection(template);
+		new LabeledCombo("Template:").setSelection(template);
 
 		if (!template.equals(TEMPLATE_EMPTY)) {
-			new DefaultCombo("Binding Protocol:").setSelection(bindingProtocol);
+			new LabeledCombo("Binding Protocol:").setSelection(bindingProtocol);
 		}
 
 		next();

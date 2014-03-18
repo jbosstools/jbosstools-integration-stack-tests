@@ -1,7 +1,7 @@
 package org.jboss.tools.bpel.reddeer.activity;
 
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.tools.bpel.reddeer.view.BPELPropertiesView;
@@ -76,7 +76,7 @@ public class Assign extends Activity {
 	}
 
 	private void fillAssignement(String label, String assignment, String... value) {
-		new DefaultCombo(label).setSelection(assignment);
+		new LabeledCombo(label).setSelection(assignment);
 		if (assignment.equals(VAR)) {
 			bot.treeWithLabel(label).expandNode(value).select();
 		}
