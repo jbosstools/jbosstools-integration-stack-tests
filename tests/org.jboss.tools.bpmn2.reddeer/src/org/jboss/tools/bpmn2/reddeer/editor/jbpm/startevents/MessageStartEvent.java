@@ -3,7 +3,7 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
@@ -45,7 +45,7 @@ public class MessageStartEvent extends StartEvent {
 			
 			new LabeledText("Name").setText(message);
 			try {
-				new DefaultCombo("Data Type").setSelection(dataType);
+				new LabeledCombo("Data Type").setSelection(dataType);
 			} catch (SWTLayerException e) {
 				new PushButton(0).click();
 				bot.shell("Create Data Type").activate();
@@ -54,7 +54,7 @@ public class MessageStartEvent extends StartEvent {
 			}
 
 			new PushButton("OK").click();
-			new DefaultCombo("Target").setSelection(target);
+			new LabeledCombo("Target").setSelection(target);
 		}
 		
 		properties.toolbarButton("Message Event Definition Details", "Close").click();

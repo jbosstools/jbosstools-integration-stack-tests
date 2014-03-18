@@ -2,7 +2,7 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm.catchevents;
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
@@ -28,7 +28,7 @@ public class SignalIntermediateCatchEvent extends IntermediateCatchEvent {
 			new LabeledText("Name").setText(signal);
 			new PushButton("OK").click();
 		}
-		new DefaultCombo("Target").setSelection(target);
+		new LabeledCombo("Target").setSelection(target);
 		
 		properties.toolbarButton("Signal Event Definition Details", "Close").click();
 	}

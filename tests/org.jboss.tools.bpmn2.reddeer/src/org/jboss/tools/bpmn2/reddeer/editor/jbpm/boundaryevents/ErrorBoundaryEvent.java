@@ -2,7 +2,7 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
@@ -37,7 +37,7 @@ public class ErrorBoundaryEvent extends BoundaryEvent {
 		 * TODO: rewrite the code as Reddeer as contains method becomes available.
 		 */
 		if (properties.contains(bot.comboBoxWithLabel("Error"), errorName)) {
-			new DefaultCombo("Error").setSelection(errorName);
+			new LabeledCombo("Error").setSelection(errorName);
 		} else {
 			// click the add button
 			new PushButton(0).click();
@@ -53,7 +53,7 @@ public class ErrorBoundaryEvent extends BoundaryEvent {
 				 * TODO: rewrite the code as Reddeer as contains method becomes available.
 				 */
 				if (properties.contains(bot.activeShell().bot().comboBoxWithLabel("Structure"), errorStructure)) {
-					new DefaultCombo("Structure").setSelection(errorStructure);
+					new LabeledCombo("Structure").setSelection(errorStructure);
 				} else {
 					bot.activeShell().bot().button(0).click();
 					new LabeledText("Data Type").setText(errorStructure);

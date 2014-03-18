@@ -1,6 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm;
 
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.tools.bpmn2.reddeer.editor.MappingSide;
 
 /**
@@ -23,7 +23,7 @@ public class FromVariable implements MappingSide {
 	
 	@Override
 	public void add() {
-		new DefaultCombo("Source").setSelection(variableName);
+		new LabeledCombo("Source").setSelection(variableName);
 	}
 
 	/**
