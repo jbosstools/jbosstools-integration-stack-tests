@@ -2,7 +2,7 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.reddeer.editor.MappingSide;
 
@@ -44,7 +44,7 @@ public class FromDataOutput implements MappingSide {
 		
 		if (dataType != null) {
 			try {
-				new DefaultCombo("Data Type").setSelection(dataType);
+				new LabeledCombo("Data Type").setSelection(dataType);
 			} catch (Exception e) {
 				new PushButton(0).click();
 				SWTBot windowBot = new SWTBot().shell("Create New Data Type").bot();

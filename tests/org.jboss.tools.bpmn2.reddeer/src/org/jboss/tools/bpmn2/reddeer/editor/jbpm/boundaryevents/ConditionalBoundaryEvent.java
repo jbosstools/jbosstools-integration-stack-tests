@@ -1,6 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents;
 
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
@@ -21,7 +21,7 @@ public class ConditionalBoundaryEvent extends BoundaryEvent {
 		properties.toolbarButton("Event Definitions", "Edit").click();
 		
 		if (language != null) {
-			new DefaultCombo("Script Language").setSelection(language);
+			new LabeledCombo("Script Language").setSelection(language);
 		}
 		new LabeledText("Script").setText(script);
 		

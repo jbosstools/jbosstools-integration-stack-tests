@@ -3,7 +3,7 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.tools.bpmn2.reddeer.editor.AbstractTask;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
 import org.jboss.tools.bpmn2.reddeer.editor.ParameterMapping;
@@ -29,7 +29,7 @@ public class ReceiveTask extends AbstractTask {
 	 */
 	public void setImplementation(String implementation) {
 		properties.selectTab("Receive Task");
-		new DefaultCombo("Implementation").setSelection(implementation);
+		new LabeledCombo("Implementation").setSelection(implementation);
 		// TBD: add code to add a user defined implementation
 	}
 	
