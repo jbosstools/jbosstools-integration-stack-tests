@@ -38,7 +38,6 @@ public class ConnectionProfileManager {
 	
 	/**
 	 * Create SalesForce connection profile
-	 * @return TODO
 	 */
 	public void createCPSalesForce(String connectionProfileName, String propertiesFileName){
 		new TeiidConnectionProfileWizard().createSalesforceConnectionProfile(connectionProfileName, propertiesFileName);

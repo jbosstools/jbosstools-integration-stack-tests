@@ -58,7 +58,7 @@ public class ImportManager {
 	/**
 	 * Import metadata from Oracle, HSQLDB, SQL Server
 	 * @param connectionProfile
-	 * @param propsFile
+	 * @param propsFile itemList (e.g. PUBLIC/PUBLIC/TABLE/PARTS,...)
 	 */
 	public void importFromDatabase(String projectName, String modelName, String connectionProfile, Properties props){
 		ImportJDBCDatabaseWizard wizard = new ImportJDBCDatabaseWizard();
@@ -67,9 +67,14 @@ public class ImportManager {
 		wizard.setModelName(modelName);
 		
 		if (props.getProperty("itemList") != null){
-			String[] itemList = props.getProperty("itemList").split(",");
-			for (String item : itemList){
-				wizard.addItem(item.trim());
+			String loadedProperty = props.getProperty("itemList"); 
+			if (loadedProperty.contains(",")){
+				String[] itemList = loadedProperty.split(",");
+				for (String item : itemList){
+					wizard.addItem(item.trim());
+				}
+			} else {
+				wizard.addItem(loadedProperty);
 			}
 		}
 		wizard.execute();//projectName is set on some page of wizard
@@ -117,7 +122,7 @@ public class ImportManager {
 	 * 
 	 * @param generalItemType ImportGeneralItemWizard.ARCHIVE_LABEL<br/>EXISTING_PROJECTS_INTO_WORKSPACE<br/>FILE_SYSTEM<br/>PREFERENCES
 	 * @param itemProps
-	 *  FILE_SYSTEM - directoryName, filename,<br/>EXISTING_PROJECTS_INTO_WORKSPACE - location
+	 *  FILE_SYSTEM - dirName, file,<br/>EXISTING_PROJECTS_INTO_WORKSPACE - location
 	 */
 	public void importGeneralItem(String generalItemType, Properties itemProps){
 		new ImportGeneralItemWizard(generalItemType, itemProps).execute();

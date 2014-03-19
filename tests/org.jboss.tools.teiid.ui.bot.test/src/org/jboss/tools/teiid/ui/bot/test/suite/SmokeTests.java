@@ -1,6 +1,8 @@
 package org.jboss.tools.teiid.ui.bot.test.suite;
 
 import org.jboss.tools.teiid.ui.bot.test.ImportWizardTest;
+import org.jboss.tools.teiid.ui.bot.test.JDBCImportWizardTest;
+import org.jboss.tools.teiid.ui.bot.test.ModelWizardExtTest;
 import org.jboss.tools.teiid.ui.bot.test.ModelWizardTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
@@ -12,7 +14,7 @@ import org.junit.runners.Suite.SuiteClasses;
  * 
  */
 @SuiteClasses({
-	//ImportWizardTest.class,
+	ImportWizardTest.class,
 	ModelWizardTest.class
 })
 @RunWith(TeiidSuite.class)

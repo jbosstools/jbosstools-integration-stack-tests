@@ -4,6 +4,7 @@ import org.jboss.reddeer.eclipse.jface.wizard.ImportWizardDialog;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -32,7 +33,15 @@ public abstract class TeiidImportWizard extends ImportWizardDialog {
 	@Override
 	public void open() {
 		log.info("Open " + importer);
-		super.open();
+		try {
+			super.open();
+		} catch (Exception e){
+			new DefaultTreeItem("Teiid Designer").collapse();
+			new DefaultTreeItem("Teiid Designer").expand();
+			new DefaultTreeItem("Teiid Designer", importer).select();
+			next();
+		}
+		
 	}
 
 	@Override

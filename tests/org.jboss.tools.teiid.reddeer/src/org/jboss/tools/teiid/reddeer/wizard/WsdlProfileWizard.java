@@ -1,5 +1,6 @@
 package org.jboss.tools.teiid.reddeer.wizard;
 
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
@@ -32,17 +33,11 @@ public class WsdlProfileWizard extends TeiidProfileWizard {
 	}
 
 	@Override
-	public void execute() {
+	public void execute() {//TODO URL if security not default -- this was also somewhere in web service model
 		open();
-		new LabeledText(WSDL_PATH).setText(wsdl);
+		new SWTWorkbenchBot().textWithLabel(WSDL_PATH).setText(wsdl);
 		next();
-		AllMatcher m = new AllMatcher();
-		new SWTBot().widgets(m);
-		
-		/*for (int i = 0; i < new SWTBot().widgets(m).size(); i++){
-			System.out.println(new SWTBot().widgets(m).get(i).getClass().toString());
-		}*/
-		//new DefaultCombo(END_POINT).setSelection(endPoint);
+		new DefaultCombo().setSelection(endPoint); 
 		finish();
 	}
 

@@ -7,9 +7,12 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.reddeer.eclipse.jface.wizard.ImportWizardDialog;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.condition.IsProjectItemCreated;
 import org.jboss.tools.teiid.reddeer.view.GuidesView;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
@@ -42,6 +45,19 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 		next();
 		fillFourthPage();
 		finish();
+		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
+	}
+	
+	@Override
+	public void open(){
+		try {
+			super.open();
+		} catch (Exception ex){
+			new DefaultTreeItem("Teiid Designer").collapse();
+			new DefaultTreeItem("Teiid Designer", "JDBC Database >> Source Model").expand();
+			new DefaultTreeItem("Teiid Designer", "JDBC Database >> Source Model").select();
+			next();
+		}
 	}
 	
 	/**
@@ -76,6 +92,9 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 	}
 
 	private void fillThirdPage() {
+		if ((itemList != null) && (! itemList.isEmpty())){
+			new PushButton("Deselect All").click();
+		}
 		for (String item : itemList) {
 			String[] itemArray = item.split("/");
 			SWTBotTreeItem treeItem = new SWTWorkbenchBot().tree().getTreeItem(itemArray[0]);
@@ -96,6 +115,7 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 		new DefaultShell("Select a Folder");
 		new SWTWorkbenchBot().tree(0).select(projectName);
 		new PushButton("OK").click();
+		new WaitWhile(new IsInProgress(), TimePeriod.NORMAL);
 	}
 
 	public void setConnectionProfile(String connectionProfile) {

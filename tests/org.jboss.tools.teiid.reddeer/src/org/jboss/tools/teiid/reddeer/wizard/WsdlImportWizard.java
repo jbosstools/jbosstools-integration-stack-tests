@@ -61,12 +61,14 @@ public class WsdlImportWizard extends TeiidImportWizard {
 	@Override
 	public void execute() {
 		open();
-		new DefaultCombo(0).setSelection(profile);
+		new DefaultCombo(0).setSelection(profile);//TODO end point - binding, service mode, select desired wsdl operations (+(de)select all)
 		next();
 		stupidWait();
 		next();
-		stupidWait();
-
+		stupidWait();//TODO source model definition, view model def, procedure gen. options
+		//TODO select operation; for request procedure: check generated sql statement, CRUD with element info; body/header
+		//TODO response: body, header, root path; operations with columns? (ordinality)
+		//TODO wrapper procedure: generated procedure name
 		// Add request elements
 		for (String path : requestElements) {
 			addElement("Request", path);
@@ -82,18 +84,13 @@ public class WsdlImportWizard extends TeiidImportWizard {
 	private void addElement(String tab, String path) {
 		log.info("Add " + tab + " element '" + path + "'");
 		new DefaultTabItem(tab).activate();
-		// TODO: DefaultTreeItem
 		try {
-			new DefaultTreeItem(1, path.split("/")).select();
-		} catch (Exception e) {
-		}
-		try {
-			new DefaultTreeItem(3, path.split("/")).select();
+			new DefaultTreeItem(path.split("/")).select();
 		} catch (Exception e) {
 		}
 		new PushButton("Add").click();
-		String lastItem = getLastItem(path);
-		new WaitUntil(new IsItemAdded(lastItem, tab), TimePeriod.NORMAL);
+		/*String lastItem = getLastItem(path);
+		new WaitUntil(new IsItemAdded(lastItem, tab), TimePeriod.NORMAL);*/
 	}
 
 	private String getLastItem(String path) {

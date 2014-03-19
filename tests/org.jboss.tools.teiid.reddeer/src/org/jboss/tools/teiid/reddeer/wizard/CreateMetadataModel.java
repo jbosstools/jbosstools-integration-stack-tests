@@ -3,6 +3,8 @@ package org.jboss.tools.teiid.reddeer.wizard;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.allOf;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
 
+import java.util.Properties;
+
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
@@ -20,7 +22,7 @@ import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 /**
  * Creates a new metadata model.
  * 
- * @author Lucia Jelinkova
+ * @author Lucia Jelinkova, lfabriko
  * 
  */
 public class CreateMetadataModel extends NewWizardDialog {
@@ -62,6 +64,7 @@ public class CreateMetadataModel extends NewWizardDialog {
 		public static final String COPY_EXISTING = "Copy from an existing model of the same model class";
 		
 		public static final String BUILD_FROM_XML_SCHEMA = "Build XML documents from XML schema";
+		public static final String BUILD_FROM_WSDL_URL = "Build from existing WSDL file(s) or URL";
 	}
 
 	private String location;
@@ -76,6 +79,8 @@ public class CreateMetadataModel extends NewWizardDialog {
 	private String[] pathToExistingModel;
 	private String[] pathToXmlSchema;
 	private String rootElement;
+	private Properties wsProps;
+	private String wsdlLocation;
 	
 	public String[] getPathToXmlSchema() {
 		return pathToXmlSchema;
@@ -107,105 +112,93 @@ public class CreateMetadataModel extends NewWizardDialog {
 
 	public void execute() {
 		open();
+		
 		fillFirstPage();
-		fillSecondPage();//sometimes do nothing
+		
+		if (clazz.equals(ModelClass.WEBSERVICE) && (modelBuilder != null) && modelBuilder.equals(ModelBuilder.BUILD_FROM_WSDL_URL)){
+			next();
+			new WsdlWebImportWizard().importWsdlWithoutOpen(wsProps, wsdlLocation);;
+			return;
+		}
+		
+		//next steps are in case model builder is selected
+		if (modelBuilder != null){
+			next();
+			fillSecondPage();//sometimes do nothing
+			next();
+			//3,4,5
+		}
+		//for XSD and WS is wizard same as in import
+		
 		finish();
-		/*if (ModelClass.XSD.equals(clazz)) {//--> secondP
-			new PushButton("Finish").click();
-			new DefaultShell("Model Initializer");
+		
+		//xsd
+		if (new DefaultShell().getText().contains("Model Initializer")){
 			new SWTWorkbenchBot().table().select("XML Schema (2001)");
 			new PushButton("OK").click();
-		} else {
-			finish();
+		}
+	}
+	
+	@Override
+	public void open(){
+		try {
+			super.open();
+		} catch (Exception e){
+			new DefaultTreeItem("Teiid Designer").collapse();
+			new DefaultTreeItem("Teiid Designer", "Teiid Metadata Model").expand();
+			new DefaultTreeItem("Teiid Designer", "Teiid Metadata Model").select();
+			next();
+		}
+	}
+
+	public void fillFirstPage() {
+		new SWTWorkbenchBot().textWithLabel("Location:").setText(location);
+		new SWTWorkbenchBot().textWithLabel("Model Name:").setText(name);
+		new DefaultCombo().setSelection(clazz);
+		new DefaultCombo(1).setSelection(type);		
+		if (modelBuilder != null){
+			new DefaultTable().select(modelBuilder);
+		}
+		/*if (modelBuilder != null){
+			next(); 
 		}*/
 	}
 	
-	/*public void execute(String... pathToExistingModel){//->secondP
-		open();
-		fillFirstPage();
-		fillSecondPage(pathToExistingModel);
-		finish();
-	}*/
-	
-	/*public void execute(boolean modelBuilderSet, String... pathToExistingModel){//-->first, second
-		open();
-		fillFirstPage(modelBuilderSet);
-		fillSecondPage(pathToExistingModel);
-		finish();
-	}*/
-	
-	
-	
-	/*public void execute(String[] pathToXmlSchema, String rootElement){//second
-		open();
-		fillFirstPage();
-		if (modelBuilder.equals(ModelBuilder.BUILD_FROM_XML_SCHEMA)){
-			new DefaultTable().select(modelBuilder);
-			next();
-			fillSecondPage(pathToXmlSchema, rootElement);
-		} else {
-			throw new UnsupportedOperationException();
-		}
-		finish();
-	}*/
-
-	public void fillFirstPage() {
-		new LabeledText("Location:").setText(location);
-		new LabeledText("Model Name:").setText(name);
-		new DefaultCombo("Model Class:").setSelection(clazz);
-		new DefaultCombo("Model Type:").setSelection(type);		
-		if (modelBuilder != null){
-			new DefaultTable().select(modelBuilder);
-		}
-		if (ModelClass.XSD.equals(clazz)) {
-			new PushButton("Finish").click();
-			new DefaultShell("Model Initializer");
-			new SWTWorkbenchBot().table().select("XML Schema (2001)");
-			new PushButton("OK").click();
-		}
-		if (modelBuilder != null){
-			next(); 
+	@Override
+	public void next(){
+		if (new PushButton("Next >").isEnabled()){
+			new PushButton("Next >").click();
 		}
 	}
 	
 	
-	/*public void fillFirstPage(boolean param) {
-		new LabeledText("Location:").setText(location);
-		new LabeledText("Model Name:").setText(name);
-		new DefaultCombo("Model Class:").setSelection(clazz);
-		new DefaultCombo("Model Type:").setSelection(type);
-		new DefaultTable().select(modelBuilder);//ModelBuilder.TRANSFORM_EXISTING
-		new PushButton("Next >").click();
-	}*/
-	
-	public void fillSecondPage(){
-		if (pathToExistingModel != null){
+	public void fillSecondPage(){//TODO - redo, can be also web service view model... 
+	/*	if (pathToExistingModel != null){//type = cp ex or transform
 			new PushButton("...").click();
 			new DefaultTreeItem(pathToExistingModel).select();
 			new PushButton("OK").click();
-		} else if ((rootElement != null) && (pathToXmlSchema != null)){
+		} else if ((rootElement != null) && (pathToXmlSchema != null)){//XSD datatype, cp ex
+			new PushButton(0).click();
+			new DefaultTreeItem(pathToXmlSchema).select();
+			new PushButton("OK").click();
+			new DefaultTable().select(rootElement);
+			new PushButton(1).click();// >
+		}*/
+		if ((clazz.equals(ModelClass.XSD)) && (modelBuilder.equals(ModelBuilder.COPY_EXISTING))){
 			new PushButton(0).click();
 			new DefaultTreeItem(pathToXmlSchema).select();
 			new PushButton("OK").click();
 			new DefaultTable().select(rootElement);
 			new PushButton(1).click();// >
 		}
+		else if (modelBuilder.equals(ModelBuilder.COPY_EXISTING) || modelBuilder.equals(ModelBuilder.TRANSFORM_EXISTING)){
+			new PushButton("...").click();
+			new DefaultTreeItem(pathToExistingModel).select();
+			new PushButton("OK").click();
+		}
+		
 	}
 	
-	/*private void fillSecondPage(String... pathToExistingModel){
-		new PushButton("...").click();
-		new DefaultTreeItem(pathToExistingModel).select();
-		new PushButton("OK").click();
-	}
-	
-	public void fillSecondPage(String[] pathToXmlSchema, String rootElement){
-		new PushButton(0).click();
-		new DefaultTreeItem(pathToXmlSchema).select();
-		new PushButton("OK").click();
-		new DefaultTable().select(rootElement);
-		new PushButton(1).click();// >
-	}*/
-
 	public void setLocation(String location) {
 		this.location = location;
 	}
@@ -225,4 +218,25 @@ public class CreateMetadataModel extends NewWizardDialog {
 	public void setModelBuilder(String modelBuilder) {
 		this.modelBuilder = modelBuilder;
 	}
+
+	public void setWsProps(Properties wsProps) {
+		this.wsProps = wsProps;
+	}
+
+	public void setWsdlLocation(String wsdlLocation) {
+		this.wsdlLocation = wsdlLocation;
+	}
+	
+	//TODO add support for other choices
+	//1. ws view, cp ex  -> next -> model -> finish
+	//2. ws view, build from wsdl or URL -> next -> properties -> next -> next -> next-> FINISH disabled!
+	//3. rel src, file translator -> next -> available proc -> finish
+	//4. rel src, ws tran -> next -> avail. proc -> finish
+	//5. rel src, copy from ex -> next -> ex. model -> finish
+	//6. rel view, transform -> next -> ex. model, settings -> finish
+	//7. rel view, copy from ex -> next -> ex. model -> finish
+	//8. xml view, cp ex -> next -> model -> finish
+	//9. xml view, build from xsd -> xsd, properties -> next -> doc statistics -> next -> preview -> finish
+	//10. xsd dtype, cp ex ->  next ->model -> finish
+	
 }
