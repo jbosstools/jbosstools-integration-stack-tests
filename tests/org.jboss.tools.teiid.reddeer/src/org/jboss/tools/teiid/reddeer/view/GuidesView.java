@@ -22,7 +22,7 @@ public class GuidesView extends WorkbenchView {
 		super("Teiid Designer", "Guides");
 	}
 
-	private int ACTION_SETS_TREE_INDEX = 2;//TODO hardcoded index; 0 - model explorer view, 1 - model actions, 2 - other 
+	private int ACTION_SETS_TREE_INDEX = 2;//hardcoded index; 0 - model explorer view, 1 - model actions, 2 - other 
 	private static final String CONFIRM_UNCHANGED = "Default Instance unchanged";
 	
 	/**
@@ -105,7 +105,10 @@ public class GuidesView extends WorkbenchView {
 	}
 	
 	public void setDefaultTeiidInstance(String serverName, ServerType type) {//move to guides view
-		String serverURL = ServersViewExt.getServerURLPrefix(type) + "::admin (" + serverName + ")";
+		String serverURL = "No Default";
+		if ((serverName != null) && (type != null)){
+			serverURL = ServersViewExt.getServerURLPrefix(type) + "::admin (" + serverName + ")";
+		}
 		
 		new GuidesView().chooseAction("Teiid",
 				"Set the Default JBoss / Teiid Instance");

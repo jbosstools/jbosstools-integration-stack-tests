@@ -89,7 +89,7 @@ public class ImportMetadataManager {
 		
 		String loadedProperty = null;
 		if ((loadedProperty = importProps.getProperty("autoselectDialect")) != null){
-			importWizard.setAutoselectDialect(Boolean.getBoolean(loadedProperty));
+			importWizard.setAutoselectDialect(Boolean.valueOf(loadedProperty));
 		}
 		importModel(projectName, importWizard);
 	}
@@ -107,7 +107,7 @@ public class ImportMetadataManager {
 		importWizard.setName(modelName);
 		
 		if ((loadedProperty = props.getProperty("local")) != null){
-			importWizard.setLocal(Boolean.getBoolean(loadedProperty));
+			importWizard.setLocal(Boolean.valueOf(loadedProperty));
 		}
 		
 		importWizard.setProfileName(cpName);
@@ -132,18 +132,39 @@ public class ImportMetadataManager {
 		importWizard.setProfile(cpName);
 		String loadedProperty = null;
 		if ((loadedProperty = props.getProperty("requestElements")) != null){
-			String[] elements = loadedProperty.split(",");
-			for (String element : elements){
-				importWizard.addRequestElement(element.trim());
+			if (loadedProperty.contains(",")){
+				String[] elements = loadedProperty.split(",");
+				for (String element : elements){
+					importWizard.addRequestElement(element.trim());
+				}
+			} else {
+				importWizard.addRequestElement(loadedProperty);
 			}
+			
 		}
 		if ((loadedProperty = props.getProperty("responseElements")) != null){
-			String[] elements = loadedProperty.split(",");
-			for (String element : elements){
-				importWizard.addResponseElement(element.trim());
+			if (loadedProperty.contains(",")){
+				String[] elements = loadedProperty.split(",");
+				for (String element : elements){
+					importWizard.addResponseElement(element.trim());
+				}
+			} else {
+				importWizard.addResponseElement(loadedProperty);
 			}
+			
 		}
 		importModel(projectName, importWizard);
+	}
+	
+	/**
+	 * WSDL File or URL >> Web Service Model
+	 * 
+	 * @param importProps  modelName, project, [wsdlName OR wsdlUrl, securityType (HTTPBasic), username, password], [modelNameResponses], [generateVirtualXML]
+	 * @param wsdlLocation WsdlWebImportWizard.IMPORT_WSDL_FROM_WORKSPACE, IMPORT_WSDL_FROM_URL
+	 */
+	public void importFromWSDLToWebService(Properties importProps, String wsdlLocation){
+		WsdlWebImportWizard importWizard = new WsdlWebImportWizard();
+		importWizard.importWsdl(importProps, wsdlLocation);
 	}
 	
 	/**
@@ -184,16 +205,16 @@ public class ImportMetadataManager {
 		String loadedProperty = null;
 
 		if ((loadedProperty = importProps.getProperty("createNewDataSource")) != null){
-			importWizard.setCreateNewDataSource(Boolean.getBoolean(loadedProperty));
+			importWizard.setCreateNewDataSource(Boolean.valueOf(loadedProperty));
 		}
 		if ((loadedProperty = importProps.getProperty("deleteDataSource")) != null){
-			importWizard.setDeleteDataSource(Boolean.getBoolean(loadedProperty));
+			importWizard.setDeleteDataSource(Boolean.valueOf(loadedProperty));
 		}
 		if ((loadedProperty = importProps.getProperty("editDataSource")) != null) {
-			importWizard.setEditDataSource(Boolean.getBoolean(loadedProperty));
+			importWizard.setEditDataSource(Boolean.valueOf(loadedProperty));
 		}
 		if ((loadedProperty = importProps.getProperty("copyDataSource")) != null) {
-			importWizard.setCopyDataSource(Boolean.getBoolean(loadedProperty));
+			importWizard.setCopyDataSource(Boolean.valueOf(loadedProperty));
 		}
 		if ((loadedProperty = importProps.getProperty("copiedDataSourceName")) != null) {
 			importWizard.setCopiedDataSourceName(loadedProperty);
@@ -253,11 +274,18 @@ public class ImportMetadataManager {
 		newModel.execute();
 	}
 	
+	/**
+	 * 
+	 * @param projectName
+	 * @param props 
+	 * local true: rootPath, schemas, destination<br />
+	 * local false: xmlSchemaURL, username, password, verifyHostname, addDependentSchemas
+	 */
 	public void importXMLSchema(String projectName, Properties props){
 		XMLSchemaImportWizard wizard = new XMLSchemaImportWizard();
 		String loadedProperty = null;
 		if ((loadedProperty = props.getProperty("local")) != null){
-			wizard.setLocal(Boolean.getBoolean(loadedProperty));
+			wizard.setLocal(Boolean.valueOf(loadedProperty));
 		}
 		if ((loadedProperty = props.getProperty("rootPath")) != null){
 			wizard.setRootPath(loadedProperty);//should be absolute path -- set in Properties!
@@ -269,6 +297,23 @@ public class ImportMetadataManager {
 		if ((loadedProperty = props.getProperty("destination")) != null){
 			wizard.setDestination(loadedProperty);
 		}
+		
+		if ((loadedProperty = props.getProperty("xmlSchemaURL")) != null){
+			wizard.setXmlSchemaURL(loadedProperty);
+		}
+		if ((loadedProperty = props.getProperty("username")) != null){
+			wizard.setUsername(loadedProperty);
+		}
+		if ((loadedProperty = props.getProperty("password")) != null){
+			wizard.setPassword(loadedProperty);
+		}
+		if ((loadedProperty = props.getProperty("verifyHostname")) != null){
+			wizard.setVerifyHostname(Boolean.valueOf(loadedProperty));
+		}
+		if ((loadedProperty = props.getProperty("addDependentSchemas")) != null){
+			wizard.setAddDependentSchemas(Boolean.valueOf(loadedProperty));
+		}
+		
 		importModel(projectName, wizard);
 	}
 

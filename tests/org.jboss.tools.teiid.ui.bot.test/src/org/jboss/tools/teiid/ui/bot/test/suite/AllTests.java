@@ -24,8 +24,10 @@ import org.junit.runners.Suite.SuiteClasses;
 	VirtualGroupTutorialUpdatedTest.class,
 	E2eAudioBooksVdbExecutionTest.class,
 	ServerManagementTest.class
+	//deprecated
 })
 @RunWith(TeiidSuite.class)
+@Deprecated
 public class AllTests {
 
 }

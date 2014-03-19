@@ -35,7 +35,7 @@ public class ServerPreferencePage extends PreferencePage {
 		
 		//set configuration file
 		if (type[1].matches("JBoss Enterprise Application Platform 6(.*) Runtime") 
-				|| type[1].matches("JBoss AS 7(.*)")
+				|| type[1].matches("JBoss 7(.*)")
 				|| type[1].matches("WildFly (.*)")){
 			new SWTWorkbenchBot().textWithLabel("Configuration file: ").setText(configFile);
 		}

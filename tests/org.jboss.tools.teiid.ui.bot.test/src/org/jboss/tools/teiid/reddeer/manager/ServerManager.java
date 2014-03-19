@@ -1,12 +1,18 @@
 package org.jboss.tools.teiid.reddeer.manager;
 
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
+import org.jboss.tools.teiid.reddeer.preference.TeiidDesignerPreferencePage;
 import org.jboss.tools.teiid.reddeer.view.GuidesView;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt.ServerType;
 import org.jboss.tools.teiid.ui.bot.test.suite.TeiidSuite;
 
 public class ServerManager {
+	
+	/*public static final int CONFIGURE_NEW_JBOSS_SERVER = 0;  
+	public static final int EDIT_JBOSS_TEIID_INSTANCE_PROPERTIES = 1; 
+	public static final int SET_THE_DEFAULT_JBOSS_TEIID_INSTANCE = 2; 
+	public static final int REFRESH_TEIID_INSTANCE = 3;*/
 	
 	/**
 	 * 
@@ -32,7 +38,7 @@ public class ServerManager {
 		return new ServersViewExt();
 	}
 
-	public void setDefaultTeiidInstance(String serverName, ServerType type) {//move to guides view
+	public void setDefaultTeiidInstance(String serverName, ServerType type) {
 		new GuidesView().setDefaultTeiidInstance(serverName, type);
 	}
 
@@ -42,5 +48,27 @@ public class ServerManager {
 	
 	public void editLaunchConfigProgramArgs(String serverName, String appendedText){
 		new ServersViewExt().editLaunchConfigProgramArgs(serverName, appendedText);
+	}
+	
+	/**
+	 * Choose operation:<br /> CONFIGURE_NEW_JBOSS_SERVER,<br /> EDIT_JBOSS_TEIID_INSTANCE_PROPERTIES,<br /> 
+	 * SET_THE_DEFAULT_JBOSS_TEIID_INSTANCE,<br /> REFRESH_TEIID_INSTANCE
+	 */
+	/*public void operateTeiidInstanceViaGuidesView(int teiidAction){
+		//choose operation: 
+		switch (teiidAction){
+		case 0: System.err.println("Not supported yet"); break;
+		case 1: System.err.println("Not supported yet"); break;
+		case 2:  break;
+		case 3: System.err.println("Not supported yet"); break;
+		}
+	}*/
+	
+	public void setDefaultTeiidInstanceTargetedVersion(String version){
+		new TeiidDesignerPreferencePage().setDefaultTeiidInstanceTargetedVersion(version);
+	}
+	
+	public void setTeiidConnectionImporterTimeout(String secs){
+		new TeiidDesignerPreferencePage().setTeiidConnectionImporterTimeout(secs);
 	}
 }

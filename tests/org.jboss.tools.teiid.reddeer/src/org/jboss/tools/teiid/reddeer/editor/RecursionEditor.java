@@ -76,7 +76,6 @@ private class ToolBarButtonWithLabel extends BaseMatcher {
 
 		@Override
 		public void describeTo(Description arg0) {
-			// TODO Auto-generated method stub
 			
 	}
 
