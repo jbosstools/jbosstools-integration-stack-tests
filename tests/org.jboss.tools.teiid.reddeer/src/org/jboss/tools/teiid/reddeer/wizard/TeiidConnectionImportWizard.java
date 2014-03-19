@@ -144,7 +144,7 @@ public class TeiidConnectionImportWizard extends ImportWizardDialog{
 		Table table = new DefaultTable(0);
 		int originalRowCount = table.rowCount();
 		
-		//NOK TODO add driver --> add before -- impossible, now!
+		//NOK add driver --> add before -- impossible, now!
 		//impossible -- the window with adding a driver is not recognized by SWTbot...
 		//the only way is to create ds in advance
 		
@@ -240,14 +240,13 @@ public class TeiidConnectionImportWizard extends ImportWizardDialog{
 			}
 		}
 		
-		//TODO add driver --> add before
 		
 		new WaitWhile(new IsInProgress(), TimePeriod.NORMAL);
 		
 		
 		if (type.equals(SQLSERVER_TYPE)){
 			addDataSourceSQLServer(props);
-		}//TODO extendedly
+		}
 		
 		new PushButton("OK").click();		
 		new PushButton("&Next >").click();

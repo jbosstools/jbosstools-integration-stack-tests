@@ -1,5 +1,6 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -282,6 +283,12 @@ public class TeiidBot {
 		new SWTWorkbenchBot().sleep(500);
 		ModelProject modelproject = new ModelExplorer().getModelProject(projectName);
 		assertTrue(Arrays.toString(path) + " not created!", modelproject.containsItem(path));
+	}
+	
+	public void checkResourceNotPresent(String projectName, String... path) {//-> teiidbot
+		new SWTWorkbenchBot().sleep(500);
+		ModelProject modelproject = new ModelExplorer().getModelProject(projectName);
+		assertFalse(Arrays.toString(path) + " is created but should not be!", modelproject.containsItem(path));
 	}
 
 	public void checkDiagram(String projectName, String file, String label) {//-> teiidbot

@@ -17,6 +17,7 @@ import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileSelectPage
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileWizard;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.teiid.reddeer.extensions.DriverDefinitionExt;
 import org.jboss.tools.teiid.reddeer.preference.DriverDefinitionPreferencePageExt;
 
@@ -35,13 +36,14 @@ public class TeiidConnectionProfileWizard extends ConnectionProfileWizard {// TO
 		wizardMap.put("SalesForce", new ConnectionProfileSalesForcePage(this,2));
 		wizardMap.put("Generic JDBC", new GenericProfilePage(this, 2));
 		wizardMap.put("Sybase ASA", new GenericProfilePage(this, 2));//sybasepage for sybase asa driver, but this driver is nok; should be other driver and generic page
+		wizardMap.put("DB2 for Linux, UNIX, and Windows", new ConnectionProfileDB2Page(this, 2));
 	}
 	
 	/**
 	 * Only for: SalesForce
 	 * @param profileName
 	 * @param props
-	 * @return TODO
+	 * @return 
 	 */
 	public DatabaseProfile createSalesforceConnectionProfile(String profileName, String props){
 		DatabaseProfile dbProfile = this.prepareDatabaseProfile(profileName, this.getProperties(props));
@@ -212,6 +214,18 @@ public class TeiidConnectionProfileWizard extends ConnectionProfileWizard {// TO
 			driverDefinition.setDatabaseName(loadedProperty);
 		}
 		return driverDefinition;
+	}
+	
+	@Override
+	public void open(){
+		try {
+			super.open();
+		} catch (Exception ex){
+			new DefaultTreeItem("Connection Profiles").collapse();
+			new DefaultTreeItem("Connection Profiles", "Connection Profile").expand();
+			new DefaultTreeItem("Connection Profiles", "Connection Profile").select();
+			next();
+		}
 	}
 	
 	}

@@ -245,6 +245,6 @@ public class ServerManagementSimpleTest extends SWTBotTestCase {
 		array[array.length-1] = vdb;
 		return array;
 	}
-	
+	//TODO remove
 
 }

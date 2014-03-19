@@ -87,7 +87,6 @@ public class RecursiveButtonMatcher extends BaseMatcher<EditPart>{
 
 	@Override
 	public void describeTo(Description description) {
-		// TODO Auto-generated method stub
 		
 	}
 	

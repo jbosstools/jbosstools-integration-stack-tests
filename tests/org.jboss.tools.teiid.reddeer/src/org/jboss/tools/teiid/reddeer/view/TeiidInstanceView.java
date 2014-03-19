@@ -28,7 +28,7 @@ import org.jboss.tools.teiid.reddeer.condition.ServerHasState;
  * 
  */
 public class TeiidInstanceView extends WorkbenchView {//DEPRECATED - JBDS7 only Servers view
-
+//TODO - merge with serversViewExt
 	public static final String TOOLBAR_CREATE_TEIID = "Create a new Teiid instance";
 	public static final String TOOLBAR_RECONNECT_TEIID = "Reconnect to the selected Teiid Instance";
 	private static int TEIID_INSTANCE_TREE_INDEX = 3;
@@ -36,10 +36,10 @@ public class TeiidInstanceView extends WorkbenchView {//DEPRECATED - JBDS7 only 
 	/**
 	 * Previous to Kepler
 	 */
-	@Deprecated
+	/*@Deprecated
 	public TeiidInstanceView() {
 		super("Teiid Designer", "Teiid");
-	}
+	}*/
 	
 	public TeiidInstanceView(boolean isKelperOrMore){//remove
 		super("Servers");
@@ -51,12 +51,12 @@ public class TeiidInstanceView extends WorkbenchView {//DEPRECATED - JBDS7 only 
 		// getToolbarButtonWitTooltip(TOOLBAR_RECONNECT_TEIID).click();
 	}*/
 
-	public void deleteDataSource(String teiidInstance, String dataSource) {//
+	/*public void deleteDataSource(String teiidInstance, String dataSource) {//
 		new DefaultTreeItem(teiidInstance, "Data Sources", dataSource).select();
 		new ContextMenu("Delete Data Source").select();
-	}
+	}*/
 
-	public void undeployVDB(String teiidInstance, String vdb) {//--> VDB
+	/*public void undeployVDB(String teiidInstance, String vdb) {//--> VDB
 		new DefaultTreeItem(teiidInstance, "VDBs", vdb).select();
 		new ContextMenu("Undeploy VDB").select();
 	}
@@ -70,7 +70,7 @@ public class TeiidInstanceView extends WorkbenchView {//DEPRECATED - JBDS7 only 
 		} catch (WidgetNotFoundException e) {
 			return false;
 		}
-	}
+	}*/
 
 	/**
 	 * Previous to Kepler
@@ -78,7 +78,7 @@ public class TeiidInstanceView extends WorkbenchView {//DEPRECATED - JBDS7 only 
 	 * @param vdb
 	 * @return
 	 */
-	@Deprecated
+	/*@Deprecated
 	public boolean containsVDB(String teiidInstance, String vdb) {
 		SWTBot bot = new SWTWorkbenchBot();
 		try {
@@ -89,7 +89,7 @@ public class TeiidInstanceView extends WorkbenchView {//DEPRECATED - JBDS7 only 
 		} catch (SWTLayerException ex){
 			return false;
 		}
-	}
+	}*/
 	
 	/**
 	 * 
@@ -140,7 +140,7 @@ public class TeiidInstanceView extends WorkbenchView {//DEPRECATED - JBDS7 only 
 	 * @param name
 	 * @return
 	 */
-	@Deprecated
+	/*@Deprecated
 	public boolean containsTeiidInstance(String name) {
 		SWTBot bot = new SWTWorkbenchBot();
 		try {
@@ -149,7 +149,7 @@ public class TeiidInstanceView extends WorkbenchView {//DEPRECATED - JBDS7 only 
 		} catch (WidgetNotFoundException e) {
 			return false;
 		}
-	}
+	}*/
 
 	public void setDefaultTeiidInstance(String teiidInstanceUrl) {//cp to servermgr
 		new GuidesView().chooseAction("Teiid",

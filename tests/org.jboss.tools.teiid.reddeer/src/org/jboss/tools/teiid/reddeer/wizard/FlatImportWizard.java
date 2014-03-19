@@ -120,7 +120,6 @@ public class FlatImportWizard extends TeiidImportWizard {
 	public void execute() {
 		executeBeginOfWizard();
 		
-		// TODO: LabeledText
 		new SWTWorkbenchBot().textWithLabel("Name:").setText(sourceModelName + "View");
 
 		new LabeledText("New view table name:").setText(sourceModelName + "Table");
@@ -132,7 +131,6 @@ public class FlatImportWizard extends TeiidImportWizard {
 	public void execute(boolean setViewNames) {		
 		executeBeginOfWizard();
 		
-		// TODO: LabeledText
 		new SWTWorkbenchBot().textWithLabel("Name:").setText(viewModelName);
 
 		new LabeledText("New view table name:").setText(viewTableName);
@@ -208,7 +206,6 @@ public class FlatImportWizard extends TeiidImportWizard {
 		//second page
 		new DefaultCombo(0).setSelection(profile);
 		setCheckedFile(file, true);
-				// TODO: LabeledText
 		if (sourceModelName != null){
 			new SWTWorkbenchBot().textWithLabel("Name:").setText(sourceModelName + "Source");
 		}
@@ -239,8 +236,6 @@ public class FlatImportWizard extends TeiidImportWizard {
 		if (editDelimiterCharacter){
 			//TEST
 			new PushButton("Edit Delimiter Character").click();
-			
-			//TODO click on proper radiobutton!!!
 			new RadioButton(delimiterCharacter).click();
 			new PushButton("OK").click();
 		}
@@ -258,7 +253,6 @@ public class FlatImportWizard extends TeiidImportWizard {
 	}
 	
 	private void fillFifthPage() {
-		// TODO: LabeledText
 		if (sourceModelName != null){
 			new SWTWorkbenchBot().textWithLabel("Name:").setText(sourceModelName + "View");
 			new LabeledText("New view table name:").setText(sourceModelName + "Table");
