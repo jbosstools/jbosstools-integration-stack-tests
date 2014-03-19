@@ -1,6 +1,6 @@
 package org.jboss.tools.switchyard.reddeer.binding;
 
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 /**
@@ -44,12 +44,12 @@ public class JCABindingPage extends OperationOptionsPage<JMSBindingPage> {
 	}
 
 	public JCABindingPage setResourceAdapterType(String adapterType) {
-		new DefaultCombo(RESOURCE_ADAPTER_TYPE).setSelection(adapterType);
+		new LabeledCombo(RESOURCE_ADAPTER_TYPE).setSelection(adapterType);
 		return this;
 	}
 	
 	public String getResourcseAdapterType() {
-		return new DefaultCombo(RESOURCE_ADAPTER_TYPE).getSelection();
+		return new LabeledCombo(RESOURCE_ADAPTER_TYPE).getSelection();
 	}
 	
 	public JCABindingPage setResourceAdapterArchive(String archive) {
@@ -66,11 +66,11 @@ public class JCABindingPage extends OperationOptionsPage<JMSBindingPage> {
 	}
 	
 	public JCABindingPage setEndpointMappingType(String type) {
-		new DefaultCombo(ENDPOINT_MAPPING_TYPE).setSelection(type);
+		new LabeledCombo(ENDPOINT_MAPPING_TYPE).setSelection(type);
 		return this;
 	}
 	
 	public String getEndpointMappingType() {
-		return new DefaultCombo(ENDPOINT_MAPPING_TYPE).getSelection();
+		return new LabeledCombo(ENDPOINT_MAPPING_TYPE).getSelection();
 	}
 }

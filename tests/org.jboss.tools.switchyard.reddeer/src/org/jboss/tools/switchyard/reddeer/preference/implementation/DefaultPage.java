@@ -8,6 +8,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.tools.switchyard.reddeer.widget.RadioButton;
 
 /**
@@ -26,7 +27,7 @@ public class DefaultPage {
 	
 	public boolean isComboEnabled(String name) {
 		
-		return new DefaultCombo(name).isEnabled();
+		return new LabeledCombo(name).isEnabled();
 	}
 	
 	public boolean isComboEnabled(int index) {
@@ -36,7 +37,7 @@ public class DefaultPage {
 	
 	public int getComboSelectionIndex(String name) {
 		
-		return new DefaultCombo(name).getSelectionIndex();
+		return new LabeledCombo(name).getSelectionIndex();
 	}
 	
 	public int getComboSelectionIndex(int index) {
@@ -46,7 +47,7 @@ public class DefaultPage {
 	
 	public String getComboSelection(String name) {
 		
-		return new DefaultCombo(name).getSelection();
+		return new LabeledCombo(name).getSelection();
 	}
 	
 	public String getComboSelection(int index) {

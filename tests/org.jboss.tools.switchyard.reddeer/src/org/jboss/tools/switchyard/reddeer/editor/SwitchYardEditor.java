@@ -2,6 +2,9 @@ package org.jboss.tools.switchyard.reddeer.editor;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.switchyard.reddeer.component.MainComponent;
 
 /**
@@ -41,6 +44,7 @@ public class SwitchYardEditor extends SWTBotGefEditor {
 	@Override
 	public void save() {
 		new GefEditor("switchyard.xml").save();
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 	
 	

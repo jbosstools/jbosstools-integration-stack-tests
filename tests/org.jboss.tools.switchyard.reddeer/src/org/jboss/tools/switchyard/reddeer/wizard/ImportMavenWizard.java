@@ -8,7 +8,7 @@ import org.jboss.reddeer.swt.condition.WaitCondition;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.wait.AbstractWait;
@@ -26,7 +26,7 @@ public class ImportMavenWizard extends ImportWizardDialog {
 		open();
 
 		new DefaultShell("Import Maven Projects");
-		new DefaultCombo("Root Directory:").setText(path);
+		new LabeledCombo("Root Directory:").setText(path);
 		new PushButton("Refresh").click();
 		new WaitUntil(new ProjectsIsLoaded(), TimePeriod.VERY_LONG);
 		if (new PushButton("Next >").isEnabled()) {

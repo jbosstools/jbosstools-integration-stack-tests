@@ -2,7 +2,7 @@ package org.jboss.tools.switchyard.reddeer.preference.implementation;
 
 import java.util.List;
 
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 
 /**
  * Represents a properties page "Contract --> Transaction Policy".
@@ -25,12 +25,12 @@ public class DefaultContractTransactionPage extends DefaultPage {
 	
 	public String getComboSelection() {
 		
-		return new DefaultCombo(TRANSACTION).getSelection();
+		return new LabeledCombo(TRANSACTION).getSelection();
 	}
 	
 	public DefaultContractTransactionPage setTransactionPolicy(String policy) {
 		
-		new DefaultCombo(TRANSACTION).setText(policy);
+		new LabeledCombo(TRANSACTION).setText(policy);
 		return this;
 	}
 	

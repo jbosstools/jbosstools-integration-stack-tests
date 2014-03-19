@@ -1,6 +1,7 @@
 package org.jboss.tools.switchyard.reddeer.wizard;
 
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.switchyard.reddeer.widget.Link;
 
@@ -25,7 +26,8 @@ public class PromoteServiceWizard extends ServiceWizard<PromoteServiceWizard> {
 	}
 
 	public PromoteServiceWizard setTransformerType(String transformerType) {
-		new DefaultCombo("Transformer Type:").setSelection(transformerType);
+		new DefaultShell("New Transformers");
+		new LabeledCombo("Transformer Type:").setSelection(transformerType);
 		return this;
 	}
 
