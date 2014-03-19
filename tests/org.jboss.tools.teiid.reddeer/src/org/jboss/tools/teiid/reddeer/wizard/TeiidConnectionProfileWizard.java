@@ -80,7 +80,22 @@ public class TeiidConnectionProfileWizard extends ConnectionProfileWizard {// TO
 	}
 	
 	public DatabaseProfile prepareDatabaseProfile(String name, Properties props){
+		//TODO  add some boolean param to createDatabaseProfile -> add driver 
+		DriverTemplate drvTemp = new DriverTemplate(props.getProperty("db.template"),
+				props.getProperty("db.version"));
+
+		//DriverDefinition driverDefinition = new DriverDefinition();
+		DriverDefinitionExt driverDefinition = new DriverDefinitionExt();
+		
+		driverDefinition.setDriverName(props.getProperty("driverName"));
+		driverDefinition.setDriverTemplate(drvTemp);
+		
+		driverDefinition = loadDriverDefinition(driverDefinition, props);
+		
+		//do not create a new driver definition
+		
 		DatabaseProfile dbProfile = new DatabaseProfile();
+		dbProfile.setDriverDefinition(driverDefinition);
 		dbProfile.setName(name);
 		
 		String loadedProperty = null;
@@ -195,10 +210,13 @@ public class TeiidConnectionProfileWizard extends ConnectionProfileWizard {// TO
 
 	public DriverDefinitionExt loadDriverDefinition(
 			DriverDefinitionExt driverDefinition, Properties props) {
-		String driverPath = new File(props.getProperty("db.jdbc_path")).getAbsolutePath();
-		driverDefinition.setDriverLibrary(driverPath);
-		
 		String loadedProperty;
+		if ((loadedProperty = props.getProperty("db.jdbc_path")) != null){
+			String driverPath = new File(props.getProperty("db.jdbc_path")).getAbsolutePath();
+			driverDefinition.setDriverLibrary(driverPath);
+		}
+		
+		
 		if ((loadedProperty = props.getProperty("db.jdbc_class")) != null){
 			driverDefinition.setDriverClass(loadedProperty);
 		}
@@ -220,7 +238,7 @@ public class TeiidConnectionProfileWizard extends ConnectionProfileWizard {// TO
 	public void open(){
 		try {
 			super.open();
-		} catch (Exception ex){
+		} catch (Exception ex){//TODO CHECK
 			new DefaultTreeItem("Connection Profiles").collapse();
 			new DefaultTreeItem("Connection Profiles", "Connection Profile").expand();
 			new DefaultTreeItem("Connection Profiles", "Connection Profile").select();

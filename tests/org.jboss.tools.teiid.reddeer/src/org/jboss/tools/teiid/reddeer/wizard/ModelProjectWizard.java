@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.tools.teiid.reddeer.view.GuidesView;
 
@@ -33,6 +34,18 @@ public class ModelProjectWizard extends NewWizardDialog {
 		open();
 		getWizardPage().fillWizardPage(name);
 		finish();
+	}
+	
+	@Override
+	public void open(){
+		try {
+			super.open();
+		} catch (Exception e){
+			new DefaultTreeItem(CATEGORY).collapse();
+			new DefaultTreeItem(CATEGORY, PROJECT_TITLE).expand();
+			new DefaultTreeItem(CATEGORY, PROJECT_TITLE).select();
+			next();
+		}
 	}
 	
 	/**

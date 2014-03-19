@@ -4,6 +4,7 @@ import org.jboss.reddeer.eclipse.jface.wizard.ImportWizardDialog;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 
 /**
  * Wizard for importing an existing project.
@@ -34,6 +35,18 @@ public class ImportProjectWizard extends ImportWizardDialog {
 
 		new PushButton("Refresh").click();
 		finish();
+	}
+	
+	@Override 
+	public void open(){
+		try {
+			super.open();
+		} catch (Exception e){
+			new DefaultTreeItem("General").collapse();
+			new DefaultTreeItem("General", "Existing Projects into Workspace").expand();
+			new DefaultTreeItem("General", "Existing Projects into Workspace").select();
+			next();
+		}
 	}
 
 }
