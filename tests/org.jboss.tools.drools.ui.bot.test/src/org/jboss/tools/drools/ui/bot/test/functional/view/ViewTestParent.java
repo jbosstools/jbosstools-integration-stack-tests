@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 import org.jboss.reddeer.eclipse.ui.perspectives.DebugPerspective;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.matcher.WithRegexMatchers;
-import org.jboss.reddeer.workbench.view.View;
+import org.jboss.reddeer.workbench.api.View;
 import org.jboss.tools.drools.reddeer.debug.DebugView;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;

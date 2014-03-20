@@ -3,7 +3,7 @@ package org.jboss.tools.drools.ui.bot.test.functional;
 import java.util.List;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.workbench.editor.TextEditor;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.drools.reddeer.editor.ContentAssist;
 import org.jboss.tools.drools.reddeer.editor.DslEditor;
 import org.jboss.tools.drools.reddeer.editor.DslrEditor;

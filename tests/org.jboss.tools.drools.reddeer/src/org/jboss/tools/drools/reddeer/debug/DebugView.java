@@ -2,10 +2,10 @@ package org.jboss.tools.drools.reddeer.debug;
 
 import org.hamcrest.Matcher;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.workbench.view.View;
+import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.drools.reddeer.util.ItemLookup;
 
-public class DebugView extends View {
+public class DebugView extends WorkbenchView {
     public DebugView() {
         super("Debug", "Debug");
     }

@@ -12,7 +12,7 @@ import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.util.ResultRunnable;
-import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
+import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 
 public class AuditView extends WorkbenchView {
 

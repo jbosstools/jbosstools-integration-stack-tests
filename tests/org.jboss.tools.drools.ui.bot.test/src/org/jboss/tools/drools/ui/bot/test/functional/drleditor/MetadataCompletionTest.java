@@ -3,7 +3,7 @@ package org.jboss.tools.drools.ui.bot.test.functional.drleditor;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.workbench.editor.TextEditor;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.drools.reddeer.editor.DrlEditor;
 import org.jboss.tools.drools.reddeer.editor.RuleEditor;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
