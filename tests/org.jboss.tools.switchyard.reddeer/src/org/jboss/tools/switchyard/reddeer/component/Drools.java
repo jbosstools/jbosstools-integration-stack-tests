@@ -44,7 +44,7 @@ public class Drools extends Component implements ComponentBuilder<Drools>{
 			throw new IllegalStateException("Service name is not defined!");
 		}
 
-		new SwitchYardEditor().addComponent("Rules (DRL)");
+		new SwitchYardEditor().addComponent("Rules");
 		new DroolsServiceWizard().setInterface(service).setFileName(fileName).finish();
 		new SwitchYardEditor().save();
 
