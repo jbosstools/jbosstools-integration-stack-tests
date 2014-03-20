@@ -8,7 +8,7 @@ import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.viewers.ISelection;
 import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.util.ResultRunnable;
-import org.jboss.reddeer.workbench.editor.TextEditor;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 
 public class EnhancedTextEditor extends TextEditor {
     private static final Logger LOGGER = Logger.getLogger(EnhancedTextEditor.class);
