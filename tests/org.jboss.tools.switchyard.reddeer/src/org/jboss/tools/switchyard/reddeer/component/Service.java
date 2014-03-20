@@ -8,13 +8,14 @@ import org.jboss.tools.switchyard.reddeer.wizard.ServiceTestClassWizard;
 /**
  * A service component.
  * 
- * @author apodhrad
- * 
+ * @author Andrej Podhradsky (andrej.podhradsky@gmail.com)
+ *
  */
 public class Service extends Component {
 
 	public Service(String tooltip) {
 		super(tooltip, 0);
+		System.out.println();
 	}
 
 	public Service(String tooltip, int index) {
@@ -22,13 +23,12 @@ public class Service extends Component {
 	}
 
 	public PromoteServiceWizard promoteService() {
-		clickContextButton("Promote Service");
+		contextButton("Promote Service").click();
 		return new PromoteServiceWizard("Promote Component Service");
-
 	}
 
 	public void newServiceTestClass() {
-		clickContextButton("New Service Test Class");
+		contextButton("New Service Test Class").click();
 		new ServiceTestClassWizard().activate().finish();
 	}
 
@@ -37,8 +37,9 @@ public class Service extends Component {
 		click();
 		return new WizardDialog();
 	}
-	
-	public void openTextEditor(){
+
+	public void openTextEditor() {
 		doubleClick();
 	}
+
 }

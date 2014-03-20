@@ -14,7 +14,9 @@ Require-Bundle: org.eclipse.gef,
  org.jboss.reddeer.swt,
  org.jboss.reddeer.workbench,
  org.eclipse.swtbot.go,
- org.eclipse.swtbot.eclipse.gef.finder
+ org.eclipse.swtbot.eclipse.gef.finder,
+ org.eclipse.graphiti;bundle-version="0.10.0",
+ org.eclipse.graphiti.ui;bundle-version="0.10.0"
 Export-Package: org.jboss.tools.switchyard.reddeer.binding,
  org.jboss.tools.switchyard.reddeer.component,
  org.jboss.tools.switchyard.reddeer.condition,

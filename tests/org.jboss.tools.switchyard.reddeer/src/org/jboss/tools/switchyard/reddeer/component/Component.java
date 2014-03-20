@@ -19,20 +19,18 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.switchyard.reddeer.condition.ContextButtonAppeared;
-import org.jboss.tools.switchyard.reddeer.condition.ContextButtonAppearedAndClicked;
 import org.jboss.tools.switchyard.reddeer.condition.EditPartAppeared;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.matcher.WithTooltip;
 import org.jboss.tools.switchyard.reddeer.preference.PropertiesPreferencePage;
 import org.jboss.tools.switchyard.reddeer.utils.MouseUtils;
-import org.jboss.tools.switchyard.reddeer.widget.ContextButton;
+import org.jboss.tools.switchyard.reddeer.widget.ContextButtonEntry;
 
 /**
  * A general switchyard component.
  * 
- * @author apodhrad
- * 
+ * @author Andrej Podhradsky (andrej.podhradsky@gmail.com)
+ *
  */
 public class Component {
 
@@ -74,19 +72,17 @@ public class Component {
 		new WaitWhile(new ShellWithTextIsActive(deleteShellText));
 		new WaitWhile(new JobIsRunning());
 	}
-
-	public ContextButton contextButton(final String label) {
-		new WaitUntil(new ContextButtonAppeared(this, label));
-		return new ContextButton(label);
+	
+	public ContextButtonEntry contextButton(String label) {
+		List<ContextButtonEntry> entries = new SwitchYardEditor().getContextButtonEntries(this);
+		for (ContextButtonEntry entry : entries) {
+			if (entry.getText().equals(label)) {
+				return entry;
+			}
+		}
+		throw new RuntimeException("Cannot find context button '" + label + "'");
 	}
 	
-	public void clickContextButton(final String label) {
-		click();
-		select();
-		hover();
-		new WaitUntil(new ContextButtonAppearedAndClicked(this, label));
-	}
-
 	public void select() {
 		editPart.select();
 	}
