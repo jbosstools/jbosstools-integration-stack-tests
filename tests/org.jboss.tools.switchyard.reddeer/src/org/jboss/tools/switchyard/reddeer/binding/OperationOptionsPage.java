@@ -1,9 +1,7 @@
 package org.jboss.tools.switchyard.reddeer.binding;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.tools.switchyard.reddeer.widget.RadioButton;
 
 public abstract class OperationOptionsPage<T> extends WizardPage {
 
@@ -14,9 +12,8 @@ public abstract class OperationOptionsPage<T> extends WizardPage {
 
 	@SuppressWarnings("unchecked")
 	public T setOperation(String operation) {
-		new RadioButton(OPERATION_NAME).click();
-		new SWTWorkbenchBot().comboBox(0).setFocus();
-		new DefaultCombo(0).setSelection(operation);
+		new DefaultCombo(0).setSelection(OPERATION_NAME);
+		new DefaultCombo(1).setSelection(operation);
 		return (T) this;
 	}
 
