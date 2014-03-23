@@ -18,36 +18,37 @@ import org.junit.runners.Suite.SuiteClasses;
 	ParallelSplitJoinTest.class,
 	CallActivityTest.class,
 	AdHocProcessTest.class,
-	AdHocSubProcessTest.class, // BZ-1053781
+	AdHocSubProcessTest.class,
 	AssociationTest.class,
 	BooleanStructureReferenceTest.class,
 	BusinessRuleTaskTest.class,
 	BoundaryConditionalEventOnTaskTest.class,
 	ErrorEndEventTest.class,
 	ConditionalStartTest.class,
-	ImportTest.class,
+	ImportTest.class, // Headless exception when typing is done! Only on Mac 
 	ReceiveTaskTest.class,
 	ParallelSplitTest.class,
 	RuleTaskTest.class,
-	SendTaskTest.class, // BZ-1053825
-	ErrorBoundaryEventOnTaskTest.class,
-	IntermediateCatchEventTimerCycleTest.class,
+//	SendTaskTest.class, // BZ-1079699
+//	ErrorBoundaryEventOnTaskTest.class, // BZ-1079714
+//	IntermediateCatchEventTimerCycleTest.class, // BZ-1079720
 	MessageStartTest.class,
-	SubProcessTest.class, // BZ-1053781
+	SubProcessTest.class,
 	UserTaskTest.class,
 	XPathExpressionTest.class, // @Ignore
-	LaneTest.class, // BZ-1053784
+	LaneTest.class,
 	DataObjectTest.class,
 	MultipleStartEventTest.class,
 	InclusiveSplitTest.class,
 	IntermediateThrowEventNoneTest.class,
 	IntermediateThrowMessageEventTest.class,
 	IntermediateThrowEscalationEventTest.class,
-	IntermediateCatchSignalSingleTest.class,
+//	IntermediateCatchSignalSingleTest.class, // BZ-1079720
 	ExclusiveSplitPriorityTest.class,
-	EventBasedSplitTest.class,
+//	EventBasedSplitTest.class, // BZ-1079720
 	BoundaryEscalationEventOnTaskTest.class,
-	ConditionalBoundaryEventInterruptingTest.class, // BZ-1053781
+	ConditionalBoundaryEventInterruptingTest.class,
 })
 public class AllEditorTests extends TestSuite {
+	
 }
