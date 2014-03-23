@@ -40,9 +40,6 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 	 * 
 	 */
 	public JBPM6BaseTest() {
-		/*
-		 * Initialize
-		 */
 		definition = getClass().getAnnotation(ProcessDefinition.class);
 		if (definition == null) {
 			throw new RuntimeException("Validation failed. Missing @ProcessDefinition annotation.");
@@ -65,6 +62,9 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 			openProcessFile();
 			buildProcessModel();
 			validateProcessModel();
+		} catch (RuntimeException e) {
+			captureScreenshotWithDescription("screenshot-error-process");
+			throw e;
 		} finally {
 			closeProcessFile();
 		}
@@ -111,7 +111,7 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 		/*
 		 * Capture the current state.
 		 */
-		captureScreenshot();
+		captureScreenshotWithDescription("screenshot-ok-process");
 		/*
 		 * Validate using jBPM.
 		 */
@@ -153,8 +153,8 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 		editor.close();
 	}
 	
-	public void captureScreenshot() {
-		String fileName = "target/screenshots/screenshot-process-definition-" + getClass().getSimpleName() + "." + 
+	public void captureScreenshotWithDescription(String description) {
+		String fileName = "target/screenshots/" + description + "-" + getClass().getSimpleName() + "." + 
 				SWTBotPreferences.SCREENSHOT_FORMAT.toLowerCase();
 		captureScreenshot(fileName);
 	}

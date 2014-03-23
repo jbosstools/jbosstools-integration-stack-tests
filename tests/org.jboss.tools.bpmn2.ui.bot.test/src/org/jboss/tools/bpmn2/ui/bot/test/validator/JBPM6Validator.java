@@ -1,9 +1,13 @@
 package org.jboss.tools.bpmn2.ui.bot.test.validator;
 
 import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.drools.compiler.kie.builder.impl.ResultsImpl;
 import org.kie.api.KieServices;
 import org.kie.api.builder.KieBuilder;
 import org.kie.api.builder.KieFileSystem;
@@ -25,6 +29,7 @@ public class JBPM6Validator {
 	 * 
 	 */
 	public JBPM6Validator() {
+		
 	}
 	
 	/**
@@ -62,15 +67,25 @@ public class JBPM6Validator {
 	protected boolean validate(Resource resource) {
 		resource.setResourceType(ResourceType.BPMN2);
 		
-		KieServices ks = KieServices.Factory.get();
-		KieFileSystem kfs = ks.newKieFileSystem();
-		kfs.write(resource);
-
-		KieBuilder kb = ks.newKieBuilder(kfs);
-		kb.buildAll();
+		try {
+			KieServices ks = KieServices.Factory.get();
+			KieFileSystem kfs = ks.newKieFileSystem();
+			kfs.write(resource);
+	
+			KieBuilder kb = ks.newKieBuilder(kfs);
+			kb.buildAll();
+			
+			results = kb.getResults();
+		} catch (Exception e) {
+			Writer sw = new StringWriter();
+			e.printStackTrace(new PrintWriter(sw));
+			
+			ResultsImpl resultsImpl = new ResultsImpl();
+			resultsImpl.addMessage(Level.ERROR, "Unknown", sw.toString());
+			
+			results = resultsImpl;
+		}
 		
-		results = kb.getResults();
-
 		return !results.hasMessages(Level.ERROR);
     }
 	
