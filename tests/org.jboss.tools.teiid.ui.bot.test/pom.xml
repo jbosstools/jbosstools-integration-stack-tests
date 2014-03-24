@@ -59,6 +59,22 @@
 	<dependencies>
 	<dependency>
 				<groupId>org.eclipse.birt.runtime</groupId>
+				<artifactId>org.eclipse.datatools.enablement.hsqldb.dbdefinition</artifactId>
+				<version>1.0.0.v201107221502</version>
+			</dependency>
+            <dependency>
+				<groupId>org.eclipse.birt.runtime</groupId>
+				<artifactId>org.eclipse.datatools.enablement.hsqldb</artifactId>
+				<version>1.0.0.v201107221502</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.birt.runtime</groupId>
+				<artifactId>org.eclipse.datatools.enablement.hsqldb.ui</artifactId>
+				<version>1.0.0.v201108120600</version>
+			</dependency>
+	
+	<dependency>
+				<groupId>org.eclipse.birt.runtime</groupId>
 				<artifactId>org.eclipse.datatools.enablement.oracle.dbdefinition</artifactId>
 				<version>1.0.103.v201206010214</version>
 			</dependency>
@@ -91,21 +107,6 @@
 		<!--<skip>${swtbot.test.skip}</skip>-->
 		<skip>${skip.tests}</skip>-	
 		<dependencies combine.children="append">
-			<dependency>
-				<groupId>org.eclipse.birt.runtime</groupId>
-				<artifactId>org.eclipse.datatools.enablement.oracle.dbdefinition</artifactId>
-				<version>1.0.103.v201206010214</version>
-			</dependency>
-            <dependency>
-				<groupId>org.eclipse.birt.runtime</groupId>
-				<artifactId>org.eclipse.datatools.enablement.oracle</artifactId>
-				<version>1.0.0.v201107221506</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.birt.runtime</groupId>
-				<artifactId>org.eclipse.datatools.enablement.oracle.ui</artifactId>
-				<version>1.0.3.v201201131121</version>
-			</dependency>
 		  <dependency>
 		    <type>p2-installable-unit</type>
 		    <artifactId>org.teiid.designer.feature.feature.group</artifactId>
