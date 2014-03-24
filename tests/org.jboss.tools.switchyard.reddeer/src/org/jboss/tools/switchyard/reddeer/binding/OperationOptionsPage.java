@@ -2,6 +2,7 @@ package org.jboss.tools.switchyard.reddeer.binding;
 
 import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.util.ResultRunnable;
 
@@ -14,6 +15,7 @@ public abstract class OperationOptionsPage<T> extends WizardPage {
 
 	@SuppressWarnings("unchecked")
 	public T setOperation(String operation) {
+		new DefaultShell("");
 		new DefaultCombo(0).setSelection(OPERATION_NAME);
 		Display.syncExec(new ResultRunnable<Boolean>() {
 
