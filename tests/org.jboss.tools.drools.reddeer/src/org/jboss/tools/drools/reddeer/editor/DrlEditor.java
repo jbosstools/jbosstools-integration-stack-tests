@@ -1,7 +1,6 @@
 package org.jboss.tools.drools.reddeer.editor;
 
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.jboss.reddeer.swt.util.Display;
 
@@ -10,7 +9,7 @@ public class DrlEditor extends MultiPageEditor {
     private static final String RETE_TREE = "Rete Tree";
 
     public RuleEditor showRuleEditor() {
-        return RuleEditor.newInstance(this, TEXT_EDITOR);
+        return new RuleEditor(this, TEXT_EDITOR);
     }
 
     public void showReteTree() {
@@ -33,7 +32,7 @@ public class DrlEditor extends MultiPageEditor {
         return getSelectedPage() == 1;
     }
 
-    IWorkbenchPart getEditorByTitle(String title) {
+    IEditorPart getEditorByTitle(String title) {
         if (TEXT_EDITOR.equals(title)) {
             return getEditorByIndex(0);
         }

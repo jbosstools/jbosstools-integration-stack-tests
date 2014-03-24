@@ -2,13 +2,7 @@ package org.jboss.tools.drools.reddeer.editor;
 
 final class ReadonlyRuleEditor extends RuleEditor {
 
-    static ReadonlyRuleEditor newInstance(MultiPageEditor editor, String pageTitle) {
-        staticEditor = editor;
-        staticPageTitle = pageTitle;
-        return new ReadonlyRuleEditor(editor, pageTitle);
-    }
-
-    private ReadonlyRuleEditor(MultiPageEditor editor, String pageTitle) {
+    ReadonlyRuleEditor(MultiPageEditor editor, String pageTitle) {
         super(editor, pageTitle);
     }
 

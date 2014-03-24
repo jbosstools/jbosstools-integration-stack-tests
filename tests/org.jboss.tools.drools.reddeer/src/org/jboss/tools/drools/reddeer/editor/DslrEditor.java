@@ -1,20 +1,20 @@
 package org.jboss.tools.drools.reddeer.editor;
 
-import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.IEditorPart;
 
 public class DslrEditor extends MultiPageEditor {
     private static final String TEXT_EDITOR = "Text Editor";
     private static final String DRL_VIEWER = "DRL Viewer";
 
     public RuleEditor showRuleEditor() {
-        return RuleEditor.newInstance(this, TEXT_EDITOR);
+        return new RuleEditor(this, TEXT_EDITOR);
     }
 
     public RuleEditor showDrlViewer() {
-        return ReadonlyRuleEditor.newInstance(this, DRL_VIEWER);
+        return new ReadonlyRuleEditor(this, DRL_VIEWER);
     }
 
-    IWorkbenchPart getEditorByTitle(String title) {
+    IEditorPart getEditorByTitle(String title) {
         save();
         if (TEXT_EDITOR.equals(title)) {
             return getEditorByIndex(0);
