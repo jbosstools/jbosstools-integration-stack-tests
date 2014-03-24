@@ -41,11 +41,11 @@
 	    </releases>
 	  </repository>
 
-	<repository>
+	<!--<repository>
 	<id>tp</id>
 	<url>https://repository.jboss.org/nexus/content/repositories/releases/org/jboss/tools/integration-stack/target-platform/4.1.6.Final/</url>
 	<layout>p2</layout>
-	</repository>
+	</repository>-->
 
 	<repository>
 	<id>tp2</id>
