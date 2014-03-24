@@ -22,13 +22,19 @@ public class ServerRequirement implements Requirement<Server>, PropertyConfigura
 		
 	}
 	
-	private String name;
-	private String path;
-	private String runtime;
+	// Server runtime environments
+	private String runtime; // "Select the type of runtime environment:"
+	private String path; // "Installation directory:"
+	
+	// New Server Wizard
+	private String type; // from the tree "Select the server type:"
+	private String hostname; // "Server's host name:"
+	private String name; // "Server name:"
 	private String port;
 	private String username;
 	private String password;
-	private String jmxname;
+	
+	private String jmxname; // name of the server process in JMX Navigator
 
 	@Override
 	public boolean canFulfill() {
@@ -37,28 +43,12 @@ public class ServerRequirement implements Requirement<Server>, PropertyConfigura
 
 	@Override
 	public void fulfill() {
-		System.out.println("Fulfilling Server requirement with\nName: " + name + "\nPath: " + path);
+		System.out.println("Fulfilling Server requirement with\nName: " + type + "\nPath: " + path);
 	}
 
 	@Override
 	public void setDeclaration(Server declaration) {
 		
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setPath(String path) {
-		this.path = path;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String getPath() {
-		return path;
 	}
 
 	public String getRuntime() {
@@ -67,6 +57,38 @@ public class ServerRequirement implements Requirement<Server>, PropertyConfigura
 
 	public void setRuntime(String runtime) {
 		this.runtime = runtime;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getHostname() {
+		return hostname;
+	}
+
+	public void setHostname(String hostname) {
+		this.hostname = hostname;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getPort() {
@@ -100,5 +122,5 @@ public class ServerRequirement implements Requirement<Server>, PropertyConfigura
 	public void setJmxname(String jmxname) {
 		this.jmxname = jmxname;
 	}
-	
+
 }
