@@ -113,4 +113,12 @@ public class SwitchYardEditor extends SWTBotGefEditor {
 		throw new RuntimeException("Cannot create PictogramElementContext");
 	}
 
+	@Override
+	public void saveAndClose() {
+		bot.closeAllShells();
+		super.saveAndClose();
+	}
+	
+	
+
 }

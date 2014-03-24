@@ -101,7 +101,7 @@ public class BottomUpEJBTest extends RedDeerTest {
 		new PushButton("Finish").click();
 
 		new Component("Component").contextButton("Service").click();
-		new NewServiceWizard().createJavaInterface("Hello").activate().finish();
+		new NewServiceWizard().activate().createJavaInterface("Hello").activate().finish();
 
 		// Edit the interface
 		new Service("Hello").doubleClick();

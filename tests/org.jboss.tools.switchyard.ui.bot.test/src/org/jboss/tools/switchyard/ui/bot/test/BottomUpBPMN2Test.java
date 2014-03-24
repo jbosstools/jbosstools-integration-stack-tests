@@ -100,7 +100,7 @@ public class BottomUpBPMN2Test extends RedDeerTest {
 
 		// Create new service and interface
 		new Component("Component").contextButton("Service").click();
-		new NewServiceWizard().createJavaInterface("Hello").activate().finish();
+		new NewServiceWizard().activate().createJavaInterface("Hello").activate().finish();
 
 		// Edit the interface
 		new Service("Hello").doubleClick();
