@@ -10,6 +10,7 @@ import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.util.ResultRunnable;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 
+@Deprecated
 public class EnhancedTextEditor extends TextEditor {
     private static final Logger LOGGER = Logger.getLogger(EnhancedTextEditor.class);
 
