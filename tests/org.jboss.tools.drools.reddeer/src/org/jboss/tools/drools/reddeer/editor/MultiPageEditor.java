@@ -1,7 +1,6 @@
 package org.jboss.tools.drools.reddeer.editor;
 
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.MultiPageEditorPart;
 import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.util.ResultRunnable;
@@ -16,9 +15,9 @@ abstract class MultiPageEditor extends DefaultEditor {
         }
     }
 
-    abstract IWorkbenchPart getEditorByTitle(String title);
+    abstract IEditorPart getEditorByTitle(String title);
 
-    IWorkbenchPart getEditorByIndex(final int index) {
+    IEditorPart getEditorByIndex(final int index) {
         final IEditorPart editor = Display.syncExec(new ResultRunnable<IEditorPart>() {
             public IEditorPart run() {
                 IEditorPart[] parts = getEditorPart().findEditors(getEditorPart().getEditorInput());
