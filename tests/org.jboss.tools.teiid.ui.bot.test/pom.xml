@@ -40,6 +40,20 @@
 	      <enabled>true</enabled>
 	    </releases>
 	  </repository>
+
+	<repository>
+	<id>tp</id>
+	<url>https://repository.jboss.org/nexus/content/repositories/releases/org/jboss/tools/integration-stack/target-platform/4.1.6.Final/</url>
+	<layout>p2</layout>
+	</repository>
+
+	<repository>
+	<id>tp2</id>
+	<url>http://download.jboss.org/jbosstools/targetplatforms/jbtistarget/4.1.6.Final/REPO/</url>
+	<layout>p2</layout>
+	</repository>
+	
+
 	</repositories>
 
 	<build>
