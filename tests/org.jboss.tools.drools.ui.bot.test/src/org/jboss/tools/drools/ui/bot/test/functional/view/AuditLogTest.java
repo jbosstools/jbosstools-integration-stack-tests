@@ -4,12 +4,14 @@ import java.io.File;
 import java.util.List;
 
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.swt.api.StyledText;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.matcher.WithRegexMatchers;
 import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.tools.drools.reddeer.editor.EnhancedTextEditor;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
 import org.jboss.tools.drools.reddeer.view.AuditView;
 import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
@@ -31,21 +33,20 @@ public class AuditLogTest extends TestParent {
     @Before
     public void addLoggerToSession() {
         OpenUtility.openResource(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
-        EnhancedTextEditor editor = new EnhancedTextEditor();
+        TextEditor editor = new TextEditor();
+        StyledText text = new DefaultStyledText();
 
-        editor.setPosition(3, 0);
-        editor.writeText("import org.kie.api.logger.KieRuntimeLogger;\n");
-        editor.setPosition(18, 0);
-        editor.writeText("            KieRuntimeLogger logger = ks.getLoggers().newFileLogger(kSession, \"test\");\n");
-        editor.setPosition(26, 0);
-        editor.writeText("\n            logger.close();\n");
+        text.insertText(3, 0, "import org.kie.api.logger.KieRuntimeLogger;\n");
+        text.insertText(17, 0, "            KieRuntimeLogger logger = ks.getLoggers().newFileLogger(kSession, \"test\");\n");
+        text.insertText(24, 0, "\n            logger.close();\n");
 
         editor.save();
         editor.close();
     }
 
     @Test
-    @UsePerspective(DroolsPerspective.class) @UseDefaultProject
+    @UsePerspective(DroolsPerspective.class)
+    @UseDefaultProject
     public void testDefaultProject() {
         RunUtility.runAsJavaApplication(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
         new WaitUntil(new ApplicationIsTerminated());
@@ -77,7 +78,8 @@ public class AuditLogTest extends TestParent {
     }
 
     @Test
-    @UsePerspective(DroolsPerspective.class) @UseDefaultProject
+    @UsePerspective(DroolsPerspective.class)
+    @UseDefaultProject
     public void testBussinessAuditLog() throws Exception {
         String path = new File("resources/test150.log").getAbsolutePath();
 

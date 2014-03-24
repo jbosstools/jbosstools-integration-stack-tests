@@ -3,8 +3,10 @@ package org.jboss.tools.drools.ui.bot.test.functional.view;
 import java.util.List;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.swt.api.StyledText;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.drools.reddeer.editor.DrlEditor;
-import org.jboss.tools.drools.reddeer.editor.EnhancedTextEditor;
 import org.jboss.tools.drools.reddeer.editor.RuleEditor;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
 import org.jboss.tools.drools.reddeer.view.GlobalDataView;
@@ -77,11 +79,11 @@ public class GlobalDataViewTest extends ViewTestParent {
         editor.setBreakpoint(13);
 
         OpenUtility.openResource(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
-        EnhancedTextEditor txtEditor = new EnhancedTextEditor();
-        txtEditor.setPosition(17, 0);
-        txtEditor.writeText("\n            kSession.setGlobal(\"stringVar\", \"testStringValue\");\n");
-        txtEditor.writeText("\n            kSession.setGlobal(\"objectVar\", new Object());\n");
-        txtEditor.writeText("\n            kSession.setGlobal(\"listVar\", java.util.Arrays.asList(1, 2, 3));\n");
+        TextEditor txtEditor = new TextEditor();
+        StyledText text = new DefaultStyledText();
+        text.insertText(17, 0, "\n            kSession.setGlobal(\"stringVar\", \"testStringValue\");\n");
+        text.insertText(18, 0, "\n            kSession.setGlobal(\"objectVar\", new Object());\n");
+        text.insertText(19, 0, "\n            kSession.setGlobal(\"listVar\", java.util.Arrays.asList(1, 2, 3));\n");
         txtEditor.save();
 
         RunUtility.debugAsDroolsApplication(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
