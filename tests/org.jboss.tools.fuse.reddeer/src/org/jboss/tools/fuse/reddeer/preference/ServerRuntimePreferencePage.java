@@ -11,6 +11,7 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 
 /**
  * Represents the Fuse server runtime preference page
@@ -46,7 +47,7 @@ public class ServerRuntimePreferencePage extends PreferencePage {
 		new PushButton(NEXT_BUTTON).click();
 		new LabeledText(INSTALL_DIR).setText(path);
 		new PushButton(FINISH_BUTTON).click();
-		AbstractWait.sleep(1000);
+		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 	
 	public void downloadserverRuntime() {
@@ -61,7 +62,7 @@ public class ServerRuntimePreferencePage extends PreferencePage {
 	public void removeServerRuntime(String name) {
 		new DefaultTable(0).select(name);
 		new PushButton(REMOVE_BUTTON).click();
-		AbstractWait.sleep(1000);
+		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 	
 	/**
@@ -76,7 +77,7 @@ public class ServerRuntimePreferencePage extends PreferencePage {
 		new DefaultShell(EDIT_WINDOW).setFocus();
 		new LabeledText(INSTALL_DIR).setText(path);
 		new PushButton(FINISH_BUTTON).click();
-		AbstractWait.sleep(1000);
+		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 	
 	public List<String> getServerRuntimes() {
