@@ -56,6 +56,25 @@
 
 	</repositories>
 
+	<dependencies>
+	<dependency>
+				<groupId>org.eclipse.birt.runtime</groupId>
+				<artifactId>org.eclipse.datatools.enablement.oracle.dbdefinition</artifactId>
+				<version>1.0.103.v201206010214</version>
+			</dependency>
+            <dependency>
+				<groupId>org.eclipse.birt.runtime</groupId>
+				<artifactId>org.eclipse.datatools.enablement.oracle</artifactId>
+				<version>1.0.0.v201107221506</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.birt.runtime</groupId>
+				<artifactId>org.eclipse.datatools.enablement.oracle.ui</artifactId>
+				<version>1.0.3.v201201131121</version>
+			</dependency>
+	
+	</dependencies>
+
 	<build>
 	  <plugins>
 	    <!-- Run Teiid Bot Tests -->
