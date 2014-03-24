@@ -22,4 +22,5 @@ Export-Package: org.jboss.tools.fuse.reddeer.component,
  org.jboss.tools.fuse.reddeer.projectexplorer,
  org.jboss.tools.fuse.reddeer.server,
  org.jboss.tools.fuse.reddeer.utils,
+ org.jboss.tools.fuse.reddeer.view,
  org.jboss.tools.fuse.reddeer.wizard
