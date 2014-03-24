@@ -12,8 +12,9 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
+          <reddeer.config>resources/serverConfig/fuse-6.1.xml</reddeer.config>
 	  <swtbot.test.properties.file>./swtbot.properties</swtbot.test.properties.file>
-	  <systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=${swtbot.properties} -Dreddeer.config=resources/serverConfig/fuse-6.1.xml</systemProperties>
+	  <systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=${swtbot.properties} -Dreddeer.config=${reddeer.config}</systemProperties>
 	  <surefire.timeout>10800</surefire.timeout>
 	  <test.class>AllTests</test.class>  
 	</properties>
@@ -66,61 +67,4 @@
 	    </plugin>
 	  </plugins>
 	</build>
-
-<profiles>
-  <profile>
-    <id>fuse-6.1</id>
-    <properties>
-      <fuse-build>312</fuse-build>
-      <fuse-610ci>https://repository.jboss.org/nexus/content/groups/ea/org/jboss/fuse/jboss-fuse-full/6.1.0.redhat-${fuse-build}/jboss-fuse-full-6.1.0.redhat-${fuse-build}.zip</fuse-610ci>
-    </properties>
-    <build>
-      <plugins>
-
-            <!-- Download The JBoss Fuse Server -->
-            <plugin>
-              <groupId>com.googlecode.maven-download-plugin</groupId>
-              <artifactId>maven-download-plugin</artifactId>
-              <version>1.0.0</version>
-              <executions>
-                <execution>
-                  <id>get-fuse</id>
-                  <phase>pre-integration-test</phase>
-                  <goals>
-                    <goal>wget</goal>
-                  </goals>
-                  <configuration>
-                    <url>${fuse-610ci}</url>
-                    <unpack>true</unpack>
-                    <outputDirectory>${project.build.directory}/requirements/</outputDirectory>
-                  </configuration>
-                </execution>
-              </executions>
-            </plugin>
-
-            <!-- Set user 'admin' with password 'admin' -->
-            <!-- Copy host.key file -->
-            <plugin>
-              <artifactId>maven-antrun-plugin</artifactId>
-              <version>1.7</version>
-              <executions>
-                <execution>
-                  <id>set-users</id>
-                  <phase>pre-integration-test</phase>
-                  <goals>
-                    <goal>run</goal>
-                  </goals>
-                  <configuration>
-                    <target>
-                      <echo file="target/requirements/jboss-fuse-6.1.0.redhat-${fuse-build}/etc/users.properties">admin=admin,admin</echo>
-                      <copy file="resources/serverConfig/host.key" todir="target/requirements/jboss-fuse-6.1.0.redhat-${fuse-build}/etc/"/>
-                    </target>
-                  </configuration>
-                </execution>
-              </executions>
-            </plugin>
-      </plugins>
-    </build>
-  </profile>
-</profiles>
       </project>
