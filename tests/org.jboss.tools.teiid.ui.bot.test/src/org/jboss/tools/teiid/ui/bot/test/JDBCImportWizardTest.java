@@ -50,7 +50,7 @@ public class JDBCImportWizardTest extends SWTBotTestCase {
 		
 	}
 	
-	//@Test
+	@Test
 	public void genericJDBCTest(){
 		//hsql for dv6
 		String model = "GenericModel"; 
