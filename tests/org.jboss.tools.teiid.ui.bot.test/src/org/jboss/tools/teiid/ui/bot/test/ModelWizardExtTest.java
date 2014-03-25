@@ -69,7 +69,7 @@ public class ModelWizardExtTest extends SWTBotTestCase {
 		
 	}
 	
-	//@Test
+	@Test
 	public void wsViewBuildFromWSDLorURLTest(){
 		CreateMetadataModel createModel = new CreateMetadataModel();
 		createModel.setLocation(PROJECT_NAME);
