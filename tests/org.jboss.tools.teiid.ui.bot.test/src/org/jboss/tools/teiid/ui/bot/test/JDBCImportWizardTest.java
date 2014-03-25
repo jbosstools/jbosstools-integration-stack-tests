@@ -30,7 +30,7 @@ public class JDBCImportWizardTest extends SWTBotTestCase {
 		new ModelExplorerManager().createProject(MODEL_PROJECT);
 	}
 	
-	@Test
+	//@Test
 	public void db2Test(){
 		String model = "DB2Model";
 		String cpProps = teiidBot.toAbsolutePath("resources/db/db2_bqt2.properties");
@@ -50,7 +50,7 @@ public class JDBCImportWizardTest extends SWTBotTestCase {
 		
 	}
 	
-	@Test
+	//@Test
 	public void genericJDBCTest(){
 		//hsql for dv6
 		String model = "GenericModel"; 
@@ -66,8 +66,8 @@ public class JDBCImportWizardTest extends SWTBotTestCase {
 		teiidBot.checkResource(MODEL_PROJECT, model+".xmi", "STATUS");
 	}
 	
-	@Test
-	public void hsqlTest(){
+	//@Test the same as generic
+	/*public void hsqlTest(){
 		String model = "HSQLModel"; 
 		String cpProps = teiidBot.toAbsolutePath("resources/db/hsqldb.properties");
 		String importProps = teiidBot.toAbsolutePath("resources/importWizard/hsql-employees.properties");
@@ -77,7 +77,7 @@ public class JDBCImportWizardTest extends SWTBotTestCase {
 		
 		teiidBot.checkResource(MODEL_PROJECT, model+".xmi", "CUSTOMER");
 		teiidBot.checkResource(MODEL_PROJECT, model+".xmi", "ORDER");
-	}//^customer, order
+	}*///^customer, order
 	
 	//@Test
 	public void informixTest(){
@@ -105,7 +105,7 @@ public class JDBCImportWizardTest extends SWTBotTestCase {
 		///home/lfabriko/Work/repos/dataservices/teiid-test-artifacts/scenario-deploy-artifacts/PassOne/datasource-ds/QT_sqls2005ds_Push-ds.xml
 	}
 	
-	@Test
+	//@Test
 	public void oracleTest(){
 		String model = "OracleModel";
 		String cpProps = teiidBot.toAbsolutePath("resources/db/oracle_books.properties");
@@ -125,7 +125,7 @@ public class JDBCImportWizardTest extends SWTBotTestCase {
 		
 	}
 	
-	@Test
+	//@Test
 	public void sqlserverTest(){
 		String model = "SQLModel";
 		String cpProps = teiidBot.toAbsolutePath("resources/db/sqlserver_books.properties");
