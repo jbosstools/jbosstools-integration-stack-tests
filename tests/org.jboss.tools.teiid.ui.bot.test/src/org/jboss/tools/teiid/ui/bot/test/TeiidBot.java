@@ -328,4 +328,10 @@ public class TeiidBot {
 		System.out.println("-----Curl returned: "+result);
 		return result;
 	}
+	
+	public void uncheckBuildAutomatically(){
+		if (new ShellMenu("Project", "Build Automatically").isSelected()){
+			new ShellMenu("Project", "Build Automatically").select();//ie unselect
+		}
+	}
 }
