@@ -8,6 +8,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
 import org.jboss.tools.switchyard.reddeer.binding.CamelBindingPage;
@@ -100,6 +101,7 @@ public class BindingsTest extends RedDeerTest {
 
 	@AfterClass
 	public static void deleteProject() {
+		new WorkbenchShell();
 		new SwitchYardEditor().saveAndClose();
 		new ProjectExplorer().getProject(PROJECT).delete(true);
 	}

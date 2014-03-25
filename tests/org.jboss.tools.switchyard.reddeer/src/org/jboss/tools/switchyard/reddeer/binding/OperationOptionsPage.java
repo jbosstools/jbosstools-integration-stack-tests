@@ -1,10 +1,12 @@
 package org.jboss.tools.switchyard.reddeer.binding;
 
 import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.util.ResultRunnable;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 
 public abstract class OperationOptionsPage<T> extends WizardPage {
 
@@ -15,16 +17,18 @@ public abstract class OperationOptionsPage<T> extends WizardPage {
 
 	@SuppressWarnings("unchecked")
 	public T setOperation(String operation) {
-		new DefaultShell("");
 		new DefaultCombo(0).setSelection(OPERATION_NAME);
-		Display.syncExec(new ResultRunnable<Boolean>() {
-
+		final org.eclipse.swt.widgets.Combo combo = new DefaultCombo(1).getSWTWidget();
+		boolean hasFocus = Display.syncExec(new ResultRunnable<Boolean>() {
 			@Override
 			public Boolean run() {
-				return new DefaultCombo(1).getSWTWidget().forceFocus();
+				return combo.forceFocus();
 			}
 		});
-
+		if(!hasFocus) {
+			throw new SWTLayerException("Combo box doesn't have a focus");
+		};
+		AbstractWait.sleep(TimePeriod.SHORT);
 		new DefaultCombo(1).setSelection(operation);
 		return (T) this;
 	}

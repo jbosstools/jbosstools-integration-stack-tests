@@ -14,8 +14,9 @@ import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
 import org.eclipse.swtbot.swt.finder.results.Result;
 import org.hamcrest.Matcher;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -47,6 +48,7 @@ public class Component {
 
 	public Component(String tooltip, int index) {
 		this(new WithTooltip(tooltip), index);
+		this.tooltip = tooltip;
 	}
 
 	public Component(Matcher<EditPart> matcher, int index) {
@@ -61,15 +63,15 @@ public class Component {
 
 	public PropertiesPreferencePage showProperties() {
 		contextButton("Properties").click();
-		return new PropertiesPreferencePage();
+		return new PropertiesPreferencePage(tooltip).activate();
 	}
 	
 	public void delete() {
 		contextButton("Delete").click();
 		String deleteShellText = "Confirm Delete";
-		new WaitUntil(new ShellWithTextIsActive(deleteShellText));
+		new DefaultShell(deleteShellText);
 		new PushButton("Yes").click();
-		new WaitWhile(new ShellWithTextIsActive(deleteShellText));
+		new WaitWhile(new ShellWithTextIsAvailable(deleteShellText));
 		new WaitWhile(new JobIsRunning());
 	}
 	
