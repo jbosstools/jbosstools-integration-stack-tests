@@ -28,7 +28,8 @@ public class ModelWizardExtTest extends SWTBotTestCase {
 
 	@BeforeClass
 	public static void setup(){//TODO add if is selected
-		new ShellMenu("Project", "Build Automatically").select();
+		//new ShellMenu("Project", "Build Automatically").select();
+		new TeiidBot().uncheckBuildAutomatically();
 		new ModelExplorerManager().createProject(PROJECT_NAME);
 	}
 	
@@ -68,7 +69,7 @@ public class ModelWizardExtTest extends SWTBotTestCase {
 		
 	}
 	
-	@Test
+	//@Test
 	public void wsViewBuildFromWSDLorURLTest(){
 		CreateMetadataModel createModel = new CreateMetadataModel();
 		createModel.setLocation(PROJECT_NAME);

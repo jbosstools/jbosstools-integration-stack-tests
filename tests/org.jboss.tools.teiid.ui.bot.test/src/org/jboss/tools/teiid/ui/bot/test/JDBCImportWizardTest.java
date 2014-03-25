@@ -26,7 +26,8 @@ public class JDBCImportWizardTest extends SWTBotTestCase {
 
 	@BeforeClass
 	public static void before(){
-		new ShellMenu("Project", "Build Automatically").select();
+		//new ShellMenu("Project", "Build Automatically").select();
+		teiidBot.uncheckBuildAutomatically();
 		new ModelExplorerManager().createProject(MODEL_PROJECT);
 	}
 	
