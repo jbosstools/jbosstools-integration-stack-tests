@@ -13,8 +13,7 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<systemProperties>${integrationTestsSystemProperties}
-			-Dswtbot.test.properties.file=./swtbot.properties</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=./swtbot.properties</systemProperties>
 		<test.package>org.jboss.tools.teiid.ui.bot.test.suite</test.package>
 		<test.class>SmokeTests</test.class>
 		<jdbc.dir>${requirementsDirectory}/lib</jdbc.dir>
@@ -162,7 +161,20 @@
 							</tasks>
 						</configuration>
 					</execution>
-
+					<execution>
+						<id>copytest</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target unless="get.drivers">
+								<copy file="unzipped/hsqldb-2.2.9/hsqldb/lib/hsqldb.jar"
+									tofile="drivers/hsqldb.jar" overwrite="false" />
+							</target>
+						</configuration>
+					</execution>
+	
 				</executions>
 			</plugin>
 			<!-- Download drivers (unless -Dget.drivers=false) -->
@@ -265,12 +277,12 @@
 			</plugin>
 
 			<!-- Unzip zipped driver -->
-			<plugin>
+			<!--<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
 					<execution>
 						<id>copytest</id>
-						<phase>initialize</phase>
+						<phase>generate-sources</phase>
 						<goals>
 							<goal>run</goal>
 						</goals>
@@ -282,7 +294,7 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin>-->
 
 		</plugins>
 	</build>
