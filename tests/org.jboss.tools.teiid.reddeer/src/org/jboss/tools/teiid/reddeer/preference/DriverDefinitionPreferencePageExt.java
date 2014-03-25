@@ -31,7 +31,13 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 		/*if (isRunningOnMacOs()) {
 			new SWTWorkbenchBot().shells()[0].pressShortcut(SWT.COMMAND, ',');
 		}*/
-			super.open();
+		try {
+			super.open();//TODO add try catch
+		} catch (Exception e){
+			new DefaultTreeItem("Data Management").collapse();
+			new DefaultTreeItem("Data Management", "Connectivity", "Driver Definitions").expand();
+			new DefaultTreeItem("Data Management", "Connectivity", "Driver Definitions").select();
+		}
 	}
 
 	//public void addDriverDefinition(DriverDefinition driverDefinition) {
