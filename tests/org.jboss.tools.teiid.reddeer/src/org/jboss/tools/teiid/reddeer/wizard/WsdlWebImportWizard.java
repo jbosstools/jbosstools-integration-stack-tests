@@ -55,53 +55,50 @@ public class WsdlWebImportWizard extends ImportWizardDialog {
 		finish();
 	}
 	
-	
 	public void importWsdl(Properties importProps, String wsdlLocation){
-		open();	
-		//first page
-		fillFirstPage(importProps, wsdlLocation);
-		next();
-		//second page
-		//nothing
-		fillSecondPage(importProps);
-		next();
-		//third page
-		//select desired wsdl operations -- list
-		fillThirdPage(importProps);
-		next();
-		//fourth page
-		//schema workspace location selection - where will be xsd located
-		fillFourthPage(importProps);
-		next();
-		//fifth page
-		//xml model generation: generate virtual xml doc model, location, xml model name
-		fillFifthPage(importProps);
-		finish();
+		open();
+		
+		importWsdlWithoutOpen(importProps, wsdlLocation);
 	}
 	
 	public void importWsdlWithoutOpen(Properties importProps, String wsdlLocation){
 		//first page
-		fillFirstPage(importProps, wsdlLocation);
-		next();
-		//second page
-		//review validation problems
-		next();
-		
-		//nothing - namespace resolution
-		fillSecondPage(importProps);
-		next();
-		//third page
-		//select desired wsdl operations -- list
-		fillThirdPage(importProps);
-		next();
-		//fourth page
-		//schema workspace location selection - where will be xsd located
-		fillFourthPage(importProps);
-		next();
-		//fifth page
-		//xml model generation: generate virtual xml doc model, location, xml model name
-		fillFifthPage(importProps);
-		finish();
+				fillFirstPage(importProps, wsdlLocation);
+				next();
+				
+				//second page (Validation Problems)
+				//review validation problems
+				try {
+					new SWTWorkbenchBot().textWithLabel("Validation Problems").getText();
+					next();
+				} catch (Exception ex){
+					System.err.println("Page Validation Problems not shown");
+				}
+				
+				//second page 2 (Namespace Resolution)
+				//nothing - namespace resolution 
+				try {
+					new SWTWorkbenchBot().textWithLabel("Namespace Resolution").getText();
+					fillSecondPage(importProps);
+					next();
+				} catch (Exception ex){
+					System.err.println("Page Namespace Resolution not shown");
+				}
+				
+				//third page 
+				//select desired wsdl operations -- list (WSDL Operations Selection)
+				fillThirdPage(importProps);
+				next();
+				
+				//fourth page (Schema Workspace Location Selection)
+				//schema workspace location selection - where will be xsd located 
+				fillFourthPage(importProps);
+				next();
+				
+				//fifth page (XML Model Generation)
+				//xml model generation: generate virtual xml doc model, location, xml model name
+				fillFifthPage(importProps);
+				finish();
 	}
 
 	@Override

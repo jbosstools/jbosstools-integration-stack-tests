@@ -26,7 +26,7 @@ public class JDBCImportWizardTest extends SWTBotTestCase {
 
 	@BeforeClass
 	public static void before(){
-		new ShellMenu("Project", "Build Automatically").select();
+		teiidBot.uncheckBuildAutomatically();
 		new ModelExplorerManager().createProject(MODEL_PROJECT);
 	}
 	
@@ -66,7 +66,7 @@ public class JDBCImportWizardTest extends SWTBotTestCase {
 		teiidBot.checkResource(MODEL_PROJECT, model+".xmi", "STATUS");
 	}
 	
-	@Test
+	/*@Test
 	public void hsqlTest(){
 		String model = "HSQLModel"; 
 		String cpProps = teiidBot.toAbsolutePath("resources/db/hsqldb.properties");
@@ -77,7 +77,7 @@ public class JDBCImportWizardTest extends SWTBotTestCase {
 		
 		teiidBot.checkResource(MODEL_PROJECT, model+".xmi", "CUSTOMER");
 		teiidBot.checkResource(MODEL_PROJECT, model+".xmi", "ORDER");
-	}//^customer, order
+	}*///^customer, order; currently the same as generic test
 	
 	//@Test
 	public void informixTest(){
