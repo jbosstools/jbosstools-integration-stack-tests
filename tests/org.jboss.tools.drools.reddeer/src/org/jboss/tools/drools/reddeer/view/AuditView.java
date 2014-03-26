@@ -1,9 +1,11 @@
 package org.jboss.tools.drools.reddeer.view;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.PlatformUI;
@@ -15,6 +17,7 @@ import org.jboss.reddeer.swt.util.ResultRunnable;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 
 public class AuditView extends WorkbenchView {
+    private static final Logger LOGGER = Logger.getLogger(AuditView.class);
 
     public AuditView() {
         super("Drools", "Audit");
@@ -43,8 +46,12 @@ public class AuditView extends WorkbenchView {
                     try {
                         Method m = part.getClass().getMethod("setLogFile", String.class);
                         m.invoke(part, logLocation);
-                    } catch (ReflectiveOperationException ex) {
-                        throw new RuntimeException("Unable to set log file", ex);
+                    } catch (NoSuchMethodException ex) {
+                        LOGGER.error(ex);
+                    } catch (InvocationTargetException ex) {
+                        LOGGER.error(ex);
+                    } catch (IllegalAccessException ex) {
+                        LOGGER.error(ex);
                     }
                 }
             });
