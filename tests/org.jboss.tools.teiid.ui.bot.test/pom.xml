@@ -145,26 +145,6 @@
 				</configuration>
 			</plugin>
 
-			<!-- Create drivers directory if not existing yet -->
-			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>copytest</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>run</goal>
-						</goals>
-						<configuration>
-							<target unless="get.drivers">
-								<copy file="drivers/hsqldb-2.2.9/hsqldb/lib/hsqldb.jar"
-									tofile="drivers/hsqldb.jar" overwrite="false" />
-							</target>
-						</configuration>
-					</execution>
-	
-				</executions>
-			</plugin>
 			<!-- Download drivers (unless -Dget.drivers=false) -->
 			<plugin>
 				<groupId>com.googlecode.maven-download-plugin</groupId>
@@ -181,7 +161,7 @@
 							<url>http://sourceforge.net/projects/hsqldb/files/hsqldb/hsqldb_2_2/hsqldb-2.2.9.zip</url>
 							<md5>c2a47e08e95cdff1dc9bb2f8dd73d553</md5>
 							<unpack>true</unpack>
-							<outputDirectory>drivers</outputDirectory>
+							<outputDirectory>${jdbc.dir}</outputDirectory>
 						</configuration>
 					</execution>
 					<execution>
@@ -193,7 +173,7 @@
 						<configuration>
 							<skip>${get.drivers}</skip>
 							<url>http://www.qa.jboss.com/jdbc-drivers-products/SOA/5.3.1/oracle11gR2RAC/jdbc4/ojdbc6.jar</url>
-							<outputDirectory>drivers</outputDirectory>
+							<outputDirectory>${jdbc.dir}</outputDirectory>
 						</configuration>
 					</execution>
 					<execution>
@@ -205,7 +185,7 @@
 						<configuration>
 							<skip>${get.drivers}</skip>
 							<url>http://www.qa.jboss.com/jdbc-drivers-products/SOA/5.3.1/db2-97/jdbc4/db2jcc4.jar</url>
-							<outputDirectory>drivers</outputDirectory>
+							<outputDirectory>${jdbc.dir}</outputDirectory>
 						</configuration>
 					</execution>
 					<execution>
@@ -217,7 +197,7 @@
 						<configuration>
 							<skip>${get.drivers}</skip>
 							<url>http://www.qa.jboss.com/jdbc-drivers-products/SOA/5.3.1/mysql55/jdbc4/mysql-connector-java-5.1.21-bin.jar</url>
-							<outputDirectory>drivers</outputDirectory>
+							<outputDirectory>${jdbc.dir}</outputDirectory>
 						</configuration>
 					</execution>
 					<execution>
@@ -229,12 +209,12 @@
 						<configuration>
 							<skip>${get.drivers}</skip>
 							<url>http://www.qa.jboss.com/jdbc-drivers-products/SOA/5.3.1/mssql2008R2/jdbc4/sqljdbc4.jar</url>
-							<outputDirectory>drivers</outputDirectory>
+							<outputDirectory>${jdbc.dir}</outputDirectory>
 						</configuration>
 					</execution>
 
 					<!--<execution> <id>get-ingres</id> <phase>initialize</phase> <goals> 
-						<goal>wget</goal> </goals> <configuration> <skip>${get.drivers}</skip> <outputDirectory>drivers</outputDirectory> 
+						<goal>wget</goal> </goals> <configuration> <skip>${get.drivers}</skip> <outputDirectory>${jdbc.dir}</outputDirectory> 
 						</configuration> </execution> -->		<!--clone bqt, get from there?? -->
 					<execution>
 						<id>get-postgres</id>
@@ -245,7 +225,7 @@
 						<configuration>
 							<skip>${get.drivers}</skip>
 							<url>http://www.qa.jboss.com/jdbc-drivers-products/SOA/5.3.1/postgresql91/jdbc4/postgresql-9.1-902.jdbc4.jar</url>
-							<outputDirectory>drivers</outputDirectory>
+							<outputDirectory>${jdbc.dir}</outputDirectory>
 						</configuration>
 					</execution>
 					<execution>
@@ -257,32 +237,12 @@
 						<configuration>
 							<skip>${get.drivers}</skip>
 							<url>http://www.qa.jboss.com/jdbc-drivers-products/SOA/5.3.1/sybase155/jdbc4/jconn4-26666.jar</url>
-							<outputDirectory>drivers</outputDirectory>
+							<outputDirectory>${jdbc.dir}</outputDirectory>
 						</configuration>
 					</execution>
 
 				</executions>
 			</plugin>
-
-			<!-- Unzip zipped driver -->
-			<!--<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>copytest</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>run</goal>
-						</goals>
-						<configuration>
-							<target unless="get.drivers">
-								<copy file="unzipped/hsqldb-2.2.9/hsqldb/lib/hsqldb.jar"
-									tofile="drivers/hsqldb.jar" overwrite="false" />
-							</target>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>-->
 
 		</plugins>
 	</build>
