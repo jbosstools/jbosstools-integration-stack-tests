@@ -28,7 +28,7 @@ public class ModelWizardExtTest extends SWTBotTestCase {
 
 	@BeforeClass
 	public static void setup(){
-		new ShellMenu("Project", "Build Automatically").select();
+		new TeiidBot().uncheckBuildAutomatically();
 		new ModelExplorerManager().createProject(PROJECT_NAME);
 	}
 	
@@ -85,8 +85,13 @@ public class ModelWizardExtTest extends SWTBotTestCase {
 		
 		createModel.setWsdlLocation(WsdlWebImportWizard.IMPORT_WSDL_FROM_URL);
 		
-		createModel.execute();
-
+		try {
+			createModel.execute();
+		} catch (Exception e){
+			System.err.println("wsViewBuildFromWSDLorURLTest: Couldn't create metadata model");
+			e.printStackTrace();
+		}
+		
 		assertTrue(new ProjectExplorer().getProject(PROJECT_NAME).containsItem(WEBSERVICE_MODEL_NAME + ".xmi"));
 
 		assertTrue(new ModelEditor(WEBSERVICE_MODEL_NAME + ".xmi").isActive());

@@ -31,7 +31,13 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 		/*if (isRunningOnMacOs()) {
 			new SWTWorkbenchBot().shells()[0].pressShortcut(SWT.COMMAND, ',');
 		}*/
-			super.open();
+		try {
+						super.open();
+					} catch (Exception e){
+						new DefaultTreeItem("Data Management").collapse();
+						new DefaultTreeItem("Data Management", "Connectivity", "Driver Definitions").expand();
+						new DefaultTreeItem("Data Management", "Connectivity", "Driver Definitions").select();
+					}
 	}
 
 	//public void addDriverDefinition(DriverDefinition driverDefinition) {
@@ -81,7 +87,7 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 			
 			if (drvTemp.getType().contains(GENERIC_JDBC)){//e.g. HSQL with Generic driver and with Generic CP 
 				DriverDefinitionPageExt pageExt = new DriverDefinitionPageExt(getFirstPage().getWizardDialog(), 0);
-				pageExt.selectDriverTemplate(drvTemp.getType(), drvTemp.getVersion());
+				pageExt.selectDriverTemplate(drvTemp.getType(), drvTemp.getVersion());//!!!! if at least database matches and others are empty, select it
 				pageExt.setName(driverDefinition.getDriverName());
 				pageExt.addDriverLibrary(driverDefinition.getDriverLibrary());
 				pageExt.setDriverClassGeneric(driverDefinition.getDriverClass());
@@ -193,9 +199,15 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 			for (TreeItem item : root.getItems()) {
 				if (type.equals(item.getCell(0)) && version.equals(item.getCell(2))) {
 					item.select();
-					break;
+					return;
 				}
 			}
+			for (TreeItem item : root.getItems()) {//if matches at least the type
+				if (type.equals(item.getCell(0))) {
+					item.select();
+					return;
+ 				}
+ 			}
 		}
 
 	}
