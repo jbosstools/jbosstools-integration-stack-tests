@@ -13,7 +13,7 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-	  <swtbot.test.properties.file>./swtbot.properties</swtbot.test.properties.file>
+	  <swtbot.properties>./swtbot.properties</swtbot.properties>
 	  <systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=${swtbot.test.properties.file}</systemProperties>
 	  <surefire.timeout>10800</surefire.timeout>
 	  <test.class>AllTests</test.class>
@@ -26,6 +26,7 @@
 	      <groupId>org.eclipse.tycho</groupId>
 	      <artifactId>tycho-surefire-plugin</artifactId>
 	      <configuration>
+		<appArgLine>-eclipse.password resources/security/password</appArgLine>
 		<testSuite>org.jboss.tools.bpel.ui.bot.test</testSuite>
 		<testClass>org.jboss.tools.bpel.ui.bot.test.suite.${test.class}</testClass>
 		<useUIThread>false</useUIThread>

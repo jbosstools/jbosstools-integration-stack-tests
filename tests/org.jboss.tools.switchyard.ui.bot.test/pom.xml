@@ -28,7 +28,7 @@
 	      <groupId>org.eclipse.tycho</groupId>
 	      <artifactId>tycho-surefire-plugin</artifactId>
 	      <configuration>
-		<appArgLine>-pluginCustomization ${customization.file} -clean</appArgLine>
+		<appArgLine>-eclipse.password resources/security/password -pluginCustomization ${customization.file} -clean</appArgLine>
 		<testSuite>org.jboss.tools.switchyard.ui.bot.test</testSuite>
 		<testClass>org.jboss.tools.switchyard.ui.bot.test.suite.${test.class}</testClass>
 		<useUIThread>false</useUIThread>

@@ -24,6 +24,7 @@
 	      <groupId>org.eclipse.tycho</groupId>
 	      <artifactId>tycho-surefire-plugin</artifactId>
 	      <configuration>
+		<appArgLine>-eclipse.password resources/security/password</appArgLine>
 		<testSuite>org.jboss.tools.jbpm.ui.bot.test</testSuite>
 		<testClass>org.jboss.tools.jbpm.ui.bot.test.suite.${test.class}</testClass>
 		<useUIThread>false</useUIThread>
