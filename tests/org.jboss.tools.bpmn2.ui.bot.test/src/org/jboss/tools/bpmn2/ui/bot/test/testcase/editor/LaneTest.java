@@ -8,6 +8,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.endevents.EndEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.endevents.TerminateEndEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.swimlanes.Lane;
+import org.jboss.tools.bpmn2.reddeer.view.BPMN2OutlineView;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 
@@ -18,6 +19,8 @@ import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequireme
 @ProcessDefinition(name="BPMN2-Lane", project="EditorTestProject")
 public class LaneTest extends JBPM6BaseTest {
 
+	BPMN2OutlineView outlineView = new BPMN2OutlineView();
+	
 	/*
 	 * ISSUE:
 	 * 	Task2 has two outgoing connections and End has two incoming. But why? Unable to
@@ -25,37 +28,23 @@ public class LaneTest extends JBPM6BaseTest {
 	 */
 	@Override
 	public void buildProcessModel() {
-//		StartEvent start = new StartEvent("StartProcess");
-//		start.append("MyLane", ConstructType.LANE, Position.SOUTH_EAST);
-//		
-//		Lane lane = new Lane("MyLane");
-//		lane.append("EndProcess", ConstructType.TERMINATE_END_EVENT, Position.SOUTH_EAST);
-//		lane.add("Hello", ConstructType.TASK, new Point(lane.getBounds().width / 6, lane.getBounds().height / 2));
-//
-//		Task task = new Task("Hello");
-//		task.append("Goodbye", ConstructType.TASK);
-//		
-//		Task task2 = new Task("Goodbye");
-//		
-//		EndEvent end = new TerminateEndEvent("EndProcess");
-//		
-//		start.connectTo(task);
-//		task2.connectTo(end);
-		
-		/*
-		 * The code above will not pass because "Start" is no in the visible view port when the
-		 * connect method is called. A scrolling mechanism would solve the issue.
-		 */
 		StartEvent start = new StartEvent("StartProcess");
 		start.append("MyLane", ConstructType.LANE, Position.SOUTH_EAST);
+		
 		Lane lane = new Lane("MyLane");
+		lane.append("EndProcess", ConstructType.TERMINATE_END_EVENT, Position.SOUTH_EAST);
 		lane.add("Hello", ConstructType.SCRIPT_TASK, new Point(lane.getBounds().width / 6, lane.getBounds().height / 2));
+
 		ScriptTask task = new ScriptTask("Hello");
-		start.connectTo(task);
 		task.append("Goodbye", ConstructType.SCRIPT_TASK);
+
 		ScriptTask task2 = new ScriptTask("Goodbye");
-		lane.append("EndProcess", ConstructType.TERMINATE_END_EVENT, Position.SOUTH_EAST);		
+		
 		EndEvent end = new TerminateEndEvent("EndProcess");
+		
+		outlineView.select("StartProcess");
+		start.connectTo(task);
+		outlineView.select("EndProcess");
 		task2.connectTo(end);
 	}
 	

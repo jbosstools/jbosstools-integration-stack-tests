@@ -20,9 +20,8 @@ public class BPELOutlineView extends OutlineView {
 	public void select(String label) {
 		TreeItem itemToSelect = null;
 
-		BPELOutlineView outline = new BPELOutlineView();
-		outline.open();
-		itemToSelect = outline.findItem(label);
+		open();
+		itemToSelect = findItem(label);
 
 		if (itemToSelect == null) {
 			throw new RuntimeException("Cannot find activity with label '" + label + "'");
