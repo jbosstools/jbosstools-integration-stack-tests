@@ -43,6 +43,10 @@ If you just want to check if things compiles/builds you can run:
     $ mvn clean verify -DskipTest=true
 
 But *do not* push changes without having the new and existing unit tests pass!
+
+For running the tests against an existing instance of Eclipse or JBDS use the following
+
+    $ mvn clean verify -Dtest.installPath=...
  
 ## Contribute fixes and features
 
