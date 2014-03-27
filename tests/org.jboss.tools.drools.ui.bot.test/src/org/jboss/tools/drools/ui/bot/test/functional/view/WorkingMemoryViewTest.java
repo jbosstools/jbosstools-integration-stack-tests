@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.swt.api.StyledText;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.matcher.RegexMatchers;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.jboss.reddeer.swt.matcher.WithRegexMatchers;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.drools.reddeer.debug.DebugView;
 import org.jboss.tools.drools.reddeer.editor.DrlEditor;
-import org.jboss.tools.drools.reddeer.editor.EnhancedTextEditor;
 import org.jboss.tools.drools.reddeer.editor.RuleEditor;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
 import org.jboss.tools.drools.reddeer.view.WorkingMemoryView;
@@ -50,8 +52,8 @@ public class WorkingMemoryViewTest extends ViewTestParent {
         Assert.assertTrue("Unable to find attribute 'status'", attribs.containsKey("status"));
         Assert.assertEquals("Wrong value of 'status' attribute", "0", attribs.get("status"));
 
-        new DebugView().selectItem(new RegexMatchers("DroolsTest.*", "com\\.sample\\.DroolsTest.*").getMatchers());
-        new ShellMenu(new RegexMatchers("Run", "Resume.*").getMatchers()).select();
+        new DebugView().selectItem(new WithRegexMatchers("DroolsTest.*", "com\\.sample\\.DroolsTest.*").getMatchers());
+        new ShellMenu(new WithRegexMatchers("Run", "Resume.*").getMatchers()).select();
         waitASecond();
 
         objects = view.getObjects();
@@ -69,12 +71,12 @@ public class WorkingMemoryViewTest extends ViewTestParent {
     @UsePerspective(DroolsPerspective.class) @Drools6Runtime @ UseDefaultProject
     public void testMultipleFacts() {
         OpenUtility.openResource(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
-        EnhancedTextEditor txt = new EnhancedTextEditor();
-        txt.setPosition(17, 0);
-        txt.writeText("\n            kSession.insert(\"testString\");\n");
-        txt.writeText("            kSession.insert(new Object());\n");
-        txt.writeText("            kSession.insert(java.util.Arrays.asList(1, 2, 3));\n");
-        txt.close(true);
+        TextEditor txtEditor = new TextEditor();
+        StyledText text = new DefaultStyledText();
+        text.insertText(17, 0, "\n            kSession.insert(\"testString\");\n");
+        text.insertText(18, 0, "            kSession.insert(new Object());\n");
+        text.insertText(19, 0, "            kSession.insert(java.util.Arrays.asList(1, 2, 3));\n");
+        txtEditor.save();
 
         OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
         RuleEditor editor = new DrlEditor().showRuleEditor();

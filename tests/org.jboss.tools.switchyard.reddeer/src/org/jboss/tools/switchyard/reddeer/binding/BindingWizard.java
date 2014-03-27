@@ -2,6 +2,7 @@ package org.jboss.tools.switchyard.reddeer.binding;
 
 import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 
 /**
  * Binding Wizard
@@ -19,6 +20,7 @@ public class BindingWizard<T extends WizardPage> extends WizardDialog {
 	}
 
 	public T getBindingPage() {
+		new DefaultShell("");
 		return bindingWizardPage;
 	}
 

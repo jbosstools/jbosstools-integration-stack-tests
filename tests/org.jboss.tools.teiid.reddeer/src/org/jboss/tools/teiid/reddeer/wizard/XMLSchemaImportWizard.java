@@ -7,6 +7,7 @@ import javax.swing.DefaultComboBoxModel;
 
 import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
@@ -14,6 +15,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 
@@ -30,6 +32,14 @@ public class XMLSchemaImportWizard extends TeiidImportWizard {
 		private String rootPath;
 		//private List<String[]> elements;
 		private String[] schemas;
+		
+		private String xmlSchemaURL;
+		private String username;
+		private String password;
+		private boolean verifyHostname = true;
+		private boolean addDependentSchemas = true;
+		
+		
 		public String[] getSchemas() {
 			return schemas;
 		}
@@ -75,21 +85,53 @@ public class XMLSchemaImportWizard extends TeiidImportWizard {
 
 				new SWTWorkbenchBot().comboBox().setText(rootPath);
 
-				new DefaultText().setText(destination);
-				new SWTWorkbenchBot().text().setFocus();
+				if (destination != null){
+					new DefaultText().setText(destination);
+				}
 				
-				/*for (String schema: schemas){
-					new DefaultTable().check(schema);
-				}*/
-				//new DefaultTable().select(schemas);
+				new SWTWorkbenchBot().text().setFocus();
+	
 				for (String schema : schemas){
 					new DefaultTable().getItem(schema).setChecked(true);
 				}
 				
 				finish();
 			} else {
-				new RadioButton("Import XML schemas via").click();
-				throw new UnsupportedOperationException();
+				new RadioButton("Import XML schemas via URL").click();
+				
+				next();
+				
+				if (! addDependentSchemas) {
+					new CheckBox(1).click();//by default add dependent schemas
+				}
+				
+				new DefaultToolItem("Add XML schema URL").click();
+				new DefaultText(0).setText(xmlSchemaURL);
+				if (username != null){
+					new DefaultText(1).setText(username);
+				}
+				if (password != null){
+					new DefaultText(2).setText(password);
+				}
+				if (! verifyHostname){
+					new CheckBox().click();//by default set to true
+				}
+				new PushButton("OK").click();
+				finish();
+				if (new SWTWorkbenchBot().activeShell().getText().contains("Dependent XML Schema Files Found")){
+					new PushButton("Yes").click();
+				}
+				//something else??
+				
+				
+				//throw new UnsupportedOperationException();
+//				Add XML schema URL
+//				Enter XML schema URL:
+//				Verify Hostname (HTTPS)
+				//OK
+				//shell: Dependent XML Schema Files Found --> Yes
+				//--> vyhazuje: Error opening input stream for /home/lfabriko/nulltmp/javaee !!!
+				
 			}
 
 		}
@@ -97,6 +139,26 @@ public class XMLSchemaImportWizard extends TeiidImportWizard {
 		@Override
 		public WizardPage getFirstPage() {
 			throw new UnsupportedOperationException();
+		}
+
+		public void setXmlSchemaURL(String xmlSchemaURL) {
+			this.xmlSchemaURL = xmlSchemaURL;
+		}
+
+		public void setUsername(String username) {
+			this.username = username;
+		}
+
+		public void setPassword(String password) {
+			this.password = password;
+		}
+
+		public void setVerifyHostname(boolean verifyHostname) {
+			this.verifyHostname = verifyHostname;
+		}
+
+		public void setAddDependentSchemas(boolean addDependentSchemas) {
+			this.addDependentSchemas = addDependentSchemas;
 		}
 
 	}

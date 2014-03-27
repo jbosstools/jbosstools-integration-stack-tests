@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.workbench.editor.DefaultEditor;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.drools.reddeer.dialog.DslLineDialog;
 
 public class DslEditor extends DefaultEditor {
@@ -64,7 +64,7 @@ public class DslEditor extends DefaultEditor {
     }
 
     public void sort(SortBy sortBy) {
-        new DefaultCombo("Sort by:").setSelection(sortBy.toString());
+        new LabeledCombo("Sort by:").setSelection(sortBy.toString());
         new PushButton("Sort").click();
     }
 

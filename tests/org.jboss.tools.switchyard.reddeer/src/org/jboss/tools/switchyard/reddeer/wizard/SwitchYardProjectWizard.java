@@ -8,7 +8,7 @@ import org.jboss.reddeer.swt.api.Combo;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
@@ -112,7 +112,7 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 	}
 
 	private void setVersion(String version) {
-		Combo combo = new DefaultCombo("Runtime Version:");
+		Combo combo = new LabeledCombo("Runtime Version:");
 		if (version != null && !combo.getSelection().equals(version)) {
 			combo.setSelection(version);
 		}

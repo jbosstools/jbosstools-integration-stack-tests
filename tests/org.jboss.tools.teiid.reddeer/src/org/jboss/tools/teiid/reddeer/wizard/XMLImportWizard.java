@@ -9,6 +9,9 @@ import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 
 /**
@@ -67,7 +70,7 @@ public class XMLImportWizard extends TeiidImportWizard {
 		new LabeledText("Name:").setText(name + "Source");
 
 		next();
-		new LabeledText("Root Path").setText(rootPath);
+		new SWTWorkbenchBot().text(1).setText(rootPath);
 		for (String[] path : elements) {
 			new DefaultTreeItem(0, path).select();
 			new PushButton("Add").click();

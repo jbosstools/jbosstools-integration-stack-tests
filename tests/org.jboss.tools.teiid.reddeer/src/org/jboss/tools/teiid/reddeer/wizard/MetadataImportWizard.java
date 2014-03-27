@@ -10,6 +10,9 @@ import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 
 /**
@@ -48,14 +51,15 @@ public class MetadataImportWizard extends TeiidImportWizard {
 
 	public void execute() {
 		open();
-		new DefaultCombo(IMPORT_TYPE).setSelection(importType);
+		
+		new DefaultCombo().setSelection(importType);
 
 		next();
 
 		// Workaround due to TEIIDDES-417
 		addSelection(SOURCE_LOCATION, source);
 
-		new DefaultCombo(SOURCE_LOCATION).setSelection(source);
+		new DefaultCombo().setSelection(source);
 		new PushButton(1).click();
 		new DefaultTree().getItems().get(0).select();
 		new LabeledText(MODEL_NAME).setText(target);

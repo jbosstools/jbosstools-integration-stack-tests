@@ -12,6 +12,8 @@ public class SchedulingBindingPage extends OperationOptionsPage<SchedulingBindin
 
 	public static final String NAME = "Name*";
 	public static final String CRON = "Cron*";
+	public static final String START_TIME = "Start Time";
+	public static final String END_TIME = "End Time";
 
 	public SchedulingBindingPage setName(String name) {
 		new LabeledText(NAME).setFocus();
@@ -34,4 +36,25 @@ public class SchedulingBindingPage extends OperationOptionsPage<SchedulingBindin
 		return new LabeledText(CRON).getText();
 	}
 
+	public SchedulingBindingPage setStartTime(String startTime) {
+		new LabeledText(START_TIME).setFocus();
+		new LabeledText(START_TIME).setText(startTime);
+		new LabeledText(NAME).setFocus();
+		return this;
+	}
+
+	public String getStartTime() {
+		return new LabeledText(START_TIME).getText();
+	}
+
+	public SchedulingBindingPage setEndTime(String startTime) {
+		new LabeledText(END_TIME).setFocus();
+		new LabeledText(END_TIME).setText(startTime);
+		new LabeledText(NAME).setFocus();
+		return this;
+	}
+
+	public String getEndTime() {
+		return new LabeledText(END_TIME).getText();
+	}
 }

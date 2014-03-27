@@ -6,11 +6,10 @@ import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.swt.test.RedDeerTest;
-import org.jboss.tools.fuse.reddeer.preference.SSH2PreferencePage;
 import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
-import org.jboss.tools.fuse.reddeer.utils.ResourceHelper;
 import org.jboss.tools.fuse.ui.bot.test.requirement.ServerRequirement;
 import org.jboss.tools.fuse.ui.bot.test.requirement.ServerRequirement.Server;
+import org.jboss.tools.fuse.ui.bot.test.utils.ServerConfig;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,25 +21,30 @@ import org.junit.Test;
 @Server
 public class ServerTest extends RedDeerTest {
 	
+	private static boolean setUpIsDone = false;
+	
 	@InjectRequirement
 	private ServerRequirement serverRequirement;
 	
 	@Before
-	public void setSSHHome() {
+	public void setUp() {
 		
-		SSH2PreferencePage sshPreferencePage = new SSH2PreferencePage();
-		sshPreferencePage.open();
-		sshPreferencePage.setSSH2Home(ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID, "resources/.ssh"));
-		sshPreferencePage.ok();
+		if (setUpIsDone) {
+			return;
+		}
+		
+		new ServerConfig(serverRequirement).configureServerEnvironment();
+		
+		setUpIsDone = true;
 	}
 
 	@Test
 	public void complexServerTest() {
 		
-		ServerManipulator.addServerRuntime(serverRequirement.getRuntime(), ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID, serverRequirement.getPath()));
+		ServerManipulator.addServerRuntime(serverRequirement.getRuntime(), serverRequirement.getPath());
 		assertEquals(1, ServerManipulator.getServerRuntimes().size());
-		ServerManipulator.editServerRuntime(serverRequirement.getRuntime(), ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID, serverRequirement.getPath()));
-		ServerManipulator.addServer(serverRequirement.getName(), serverRequirement.getName(), serverRequirement.getPort(),
+		ServerManipulator.editServerRuntime(serverRequirement.getRuntime(), serverRequirement.getPath());
+		ServerManipulator.addServer(serverRequirement.getType(), serverRequirement.getHostname(), serverRequirement.getName(), serverRequirement.getPort(),
 				serverRequirement.getUsername(), serverRequirement.getPassword());
 		assertEquals(1, ServerManipulator.getServers().size());
 		assertTrue(ServerManipulator.isServerPresent(serverRequirement.getName()));
@@ -52,8 +56,11 @@ public class ServerTest extends RedDeerTest {
 		assertEquals(0, ServerManipulator.getServers().size());
 		ServerManipulator.removeServerRuntime(serverRequirement.getRuntime());
 		assertEquals(0, ServerManipulator.getServerRuntimes().size());
+	}
+	
+	@Test
+	public void downloadServerRuntimeTest() {
 		
 		// TODO Test download runtime feature
-		
 	}
 }

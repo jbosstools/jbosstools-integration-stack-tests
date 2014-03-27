@@ -8,6 +8,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
 import org.jboss.tools.switchyard.reddeer.binding.CamelBindingPage;
@@ -100,6 +101,7 @@ public class BindingsTest extends RedDeerTest {
 
 	@AfterClass
 	public static void deleteProject() {
+		new WorkbenchShell();
 		new SwitchYardEditor().saveAndClose();
 		new ProjectExplorer().getProject(PROJECT).delete(true);
 	}
@@ -134,6 +136,7 @@ public class BindingsTest extends RedDeerTest {
 		PropertiesPreferencePage properties = new Service(SERVICE).showProperties();
 		properties.selectBindingsTab();
 		assertEquals("camel-uri", properties.getCamelBindingPage().getConfigURI());
+		assertEquals(OPERATION, properties.getHTTPBindingPage().getOperation());
 		properties.ok();
 	}
 
@@ -190,7 +193,7 @@ public class BindingsTest extends RedDeerTest {
 		new Service(SERVICE).addBinding("HTTP");
 		BindingWizard<HTTPBindingPage> wizard = BindingWizard.createHTTPBindingWizard();
 		wizard.getBindingPage().setContextPath("http-context");
-		wizard.getBindingPage().setOperation("sayHello");
+		wizard.getBindingPage().setOperation(OPERATION);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -198,7 +201,7 @@ public class BindingsTest extends RedDeerTest {
 		PropertiesPreferencePage properties = new Service(SERVICE).showProperties();
 		properties.selectBindingsTab();
 		assertEquals("http-context", properties.getHTTPBindingPage().getContextPath());
-		assertEquals("sayHello", properties.getHTTPBindingPage().getOperation());
+		assertEquals(OPERATION, properties.getHTTPBindingPage().getOperation());
 		new PushButton("OK").click();
 	}
 
@@ -385,16 +388,26 @@ public class BindingsTest extends RedDeerTest {
 
 	@Test
 	public void schedulingBindingTest() throws Exception {
+		String cron = "0 0 12 * * ?";
+		String startTime = "2014-01-01T00:00:00";
+		String endTime = "2015-01-01T00:00:00";
+		
 		new Service(SERVICE).addBinding("Scheduling");
 		BindingWizard<SchedulingBindingPage> wizard = BindingWizard.createSchedulingBindingWizard();
-		wizard.getBindingPage().setCron("scheduling-cron");
+		wizard.getBindingPage().setCron(cron);
+		wizard.getBindingPage().setOperation(OPERATION);
+		wizard.getBindingPage().setStartTime(startTime);
+		wizard.getBindingPage().setEndTime(endTime);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
 
 		PropertiesPreferencePage properties = new Service(SERVICE).showProperties();
 		properties.selectBindingsTab();
-		assertEquals("scheduling-cron", properties.getSchedulingBindingPage().getCron());
+		assertEquals(cron, properties.getSchedulingBindingPage().getCron());
+		assertEquals(OPERATION, properties.getHTTPBindingPage().getOperation());
+		assertEquals(startTime, properties.getSchedulingBindingPage().getStartTime());
+		assertEquals(endTime, properties.getSchedulingBindingPage().getEndTime());
 		properties.ok();
 	}
 }

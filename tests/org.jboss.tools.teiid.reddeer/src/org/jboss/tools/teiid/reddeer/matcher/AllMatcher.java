@@ -19,7 +19,6 @@ public class AllMatcher extends BaseMatcher{
 
 	@Override
 	public void describeTo(Description description) {
-		// TODO Auto-generated method stub
 		
 	}
 

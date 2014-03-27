@@ -60,11 +60,6 @@ public class ModelWizardTest extends SWTBotTestCase {
 		}
 	}
 	
-	/*@After
-	public void afterMethod(){
-		new SWTWorkbenchBot().closeAllShells();//doesn't help if wizard is opened
-	}*/
-	
 	@After
 	public void afterMethod(){
 		System.out.println("TEST METHOD END");
@@ -127,7 +122,7 @@ public class ModelWizardTest extends SWTBotTestCase {
 	}
 
 	@Test
-	public void webserviceModel() {
+	public void webserviceViewModel() {
 		CreateMetadataModel createModel = new CreateMetadataModel();
 		createModel.setLocation(PROJECT_NAME);
 		createModel.setName(WEBSERVICE_MODEL_NAME);
@@ -140,8 +135,8 @@ public class ModelWizardTest extends SWTBotTestCase {
 		assertTrue(new ModelEditor(WEBSERVICE_MODEL_NAME + ".xmi").isActive());
 	}
 
-	@Test
-	public void modelExtensionModel() {
+	/*@Test
+	public void modelExtensionModel() {//DEPRECATED ---> new -> Other... -> Teiid Designer -> Model Extension Defn (I don't know a usecase)
 		CreateMetadataModel createModel = new CreateMetadataModel();
 		createModel.setLocation(PROJECT_NAME);
 		createModel.setName(MODELEXT_MODEL_NAME);
@@ -152,10 +147,10 @@ public class ModelWizardTest extends SWTBotTestCase {
 		assertTrue(getProject().containsItem(MODELEXT_MODEL_NAME + ".xmi"));
 
 		assertTrue(new ModelEditor(MODELEXT_MODEL_NAME + ".xmi").isActive());
-	}
+	}*/
 
-	@Test
-	public void functionModel() {//DEPRECATED
+	/*@Test
+	public void functionModel() {//DEPRECATED --> procedures, functions
 		CreateMetadataModel createModel = new CreateMetadataModel();
 		createModel.setLocation(PROJECT_NAME);
 		createModel.setName(FUNCTION_MODEL_NAME);
@@ -166,9 +161,9 @@ public class ModelWizardTest extends SWTBotTestCase {
 		assertTrue(getProject().containsItem(FUNCTION_MODEL_NAME + ".xmi"));
 
 		assertTrue(new ModelEditor(FUNCTION_MODEL_NAME + ".xmi").isActive());
-	}
+	}*/
 
-	private static Project getProject() {
+	protected static Project getProject() {
 		Project project = new ProjectExplorer().getProject(PROJECT_NAME);
 		return project;
 	}

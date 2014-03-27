@@ -28,7 +28,6 @@ Require-Bundle:
  org.jboss.reddeer.swt,
  org.jboss.reddeer.workbench,
  org.apache.log4j,
- org.drools.eclipse,
  org.eclipse.swtbot.eclipse.finder,
  org.hamcrest.library
 Bundle-ActivationPolicy: lazy

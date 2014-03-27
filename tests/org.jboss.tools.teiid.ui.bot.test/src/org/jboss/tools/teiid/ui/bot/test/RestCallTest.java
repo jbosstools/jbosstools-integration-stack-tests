@@ -22,7 +22,7 @@ import org.junit.Test;
 @Perspective(name = "Teiid Designer")
 public class RestCallTest extends SWTBotTestCase {
 
-	private static final String serverFile = "dv6.properties";
+	private static final String serverFile = "as7.properties";
 	private static final String projectName = "RestCallTest";
 	private static final String srcModel = "BooksSrc";
 	private static final String viewModel1 = "BooksView1";
@@ -30,7 +30,7 @@ public class RestCallTest extends SWTBotTestCase {
 	private static final String vdbName1 = "restcall1";
 	private static final String vdbName2 = "restcall2";
 	private static final String archiveLocation = "resources/projects/"+projectName+".zip";
-	private static final String serverName = "EAP-6.1";
+	private static final String serverName = "AS-7.1";
 	private static TeiidBot teiidBot = new TeiidBot();
 	
 	private static final String oracleCP = "Oracle";
@@ -42,15 +42,17 @@ public class RestCallTest extends SWTBotTestCase {
 
 	@BeforeClass
 	public static void prepare(){
-		new ServerManager().addServer(serverFile);
+		try{new ServerManager().setDefaultTeiidInstanceTargetedVersion("8.2.x");} catch(Exception ex){}//switches back to 8.4 if server as 7.1 + teiid 8.2.0 is defined
+		
+		try{new ServerManager().addServer(serverFile);} catch(Exception ex){}
 		
 		Properties itemProps = new Properties();
 		itemProps.setProperty("location", teiidBot.toAbsolutePath(archiveLocation));
 		
-		new ImportManager().importGeneralItem(ImportGeneralItemWizard.EXISTING_PROJECTS_INTO_WORKSPACE, itemProps);
+		try{new ImportManager().importGeneralItem(ImportGeneralItemWizard.EXISTING_PROJECTS_INTO_WORKSPACE, itemProps);}catch(Exception e){}
 		
-		new ConnectionProfileManager().createCPWithDriverDefinition(oracleCP, oracleCPProps);
-		new ModelExplorerManager().changeConnectionProfile(oracleCP, projectName, srcModel);
+		try{new ConnectionProfileManager().createCPWithDriverDefinition(oracleCP, oracleCPProps);}catch(Exception e){}
+		try{new ModelExplorerManager().changeConnectionProfile(oracleCP, projectName, srcModel);}catch(Exception e){}
 	}
 	
 	@Test
@@ -58,15 +60,15 @@ public class RestCallTest extends SWTBotTestCase {
 		String vdbJndiName1 = "RestTest1";
 		String warCtxName1 = "Rest1";
 		
-		new ServerManager().startServer(serverName);
+		try{new ServerManager().startServer(serverName);}catch(Exception e){}
 		
 		//disconnect teiid instance
-		new ServerManager().getServersViewExt().disconnectTeiidInstance(serverName);
+		try{new ServerManager().getServersViewExt().disconnectTeiidInstance(serverName);}catch(Exception e){}
 		
 		//create vdb
-		new VDBManager().createVDB(projectName, vdbName1); 
-		new VDBManager().addModelsToVDB(projectName, vdbName1, new String[]{viewModel1});
-		new VDBManager().getVDBEditor(projectName, vdbName1).close();
+		try{new VDBManager().createVDB(projectName, vdbName1); }catch(Exception e){}
+		try{new VDBManager().addModelsToVDB(projectName, vdbName1, new String[]{viewModel1});}catch(Exception e){}
+		try{new VDBManager().getVDBEditor(projectName, vdbName1).close();}catch(Exception e){}
 		
 		//generate rest war
 		Properties warProps = new Properties();
@@ -78,7 +80,7 @@ public class RestCallTest extends SWTBotTestCase {
 		
 		String[] pathToVDB = new String[]{projectName, vdbName1};
 		
-		WAR war = new VDBManager().createWAR(warProps, pathToVDB);
+		try{WAR war = new VDBManager().createWAR(warProps, pathToVDB);}catch(Exception e){}
 		
 		//import created war
 		Properties itemProps = new Properties();
@@ -86,29 +88,31 @@ public class RestCallTest extends SWTBotTestCase {
 		itemProps.setProperty("file", warCtxName1+".war");
 		itemProps.setProperty("intoFolder", projectName);
 		
-		new ImportManager().importGeneralItem(ImportGeneralItemWizard.FILE_SYSTEM, itemProps);
+		try{new ImportManager().importGeneralItem(ImportGeneralItemWizard.FILE_SYSTEM, itemProps);}catch(Exception e){}
 		
 		//connect teiid instance
-		new ServerManager().getServersViewExt().connectTeiidInstance(serverName);
+		try{new ServerManager().getServersViewExt().connectTeiidInstance(serverName);}catch(Exception e){}
 		
-		//testing purposes WAR war = new ModelExplorerManager().getWAR(projectName, warCtxName1+".war");
-		war.deploy();
+		//testing purposes WAR 
+		try{
+			WAR war = new ModelExplorerManager().getWAR(projectName, warCtxName1+".war");
+			war.deploy();}catch(Exception e){}
 		
 		//create data source for BooksSrc
-		new ModelExplorerManager().createDataSource(ModelExplorerView.ConnectionSourceType.USE_CONNECTION_PROFILE_INFO, oracleCP, projectName, srcModel);
+		try{new ModelExplorerManager().createDataSource(ModelExplorerView.ConnectionSourceType.USE_CONNECTION_PROFILE_INFO, oracleCP, projectName, srcModel);}catch(Exception e){}
 		//synchronize vdb before deploying
-		new VDBManager().getVDBEditor(projectName, vdbName1).synchronizeAll();
-		new VDBManager().getVDBEditor(projectName, vdbName1).close();
+		try{new VDBManager().getVDBEditor(projectName, vdbName1).synchronizeAll();}catch(Exception e){}
+		try{new VDBManager().getVDBEditor(projectName, vdbName1).close();}catch(Exception e){}
 		
 		//create src model for vdb, deploy vdb
-		new VDBManager().createVDBDataSource(pathToVDB, vdbJndiName1, false);
-		new VDBManager().deployVDB(pathToVDB);
+		try{new VDBManager().createVDBDataSource(pathToVDB, vdbJndiName1, false);}catch(Exception e){}
+		try{new VDBManager().deployVDB(pathToVDB);}catch(Exception e){}
 		
 		//run wget
 		assertEquals(result, teiidBot.curl(url1));
 		
 		//stop server
-		new ServerManager().stopServer(serverName);
+		try{new ServerManager().stopServer(serverName);}catch(Exception e){}
 	}
 	
 	@Test
@@ -116,12 +120,12 @@ public class RestCallTest extends SWTBotTestCase {
 		String vdbJndiName1 = "RestTest2";
 		String warCtxName1 = "Rest2";
 		
-		new ServerManager().startServer(serverName);
+		try{new ServerManager().startServer(serverName);}catch(Exception e){}
 		
 		//create vdb
-		new VDBManager().createVDB(projectName, vdbName2); 
-		new VDBManager().addModelsToVDB(projectName, vdbName2, new String[]{viewModel2});
-		new VDBManager().getVDBEditor(projectName, vdbName2).close();
+		try{new VDBManager().createVDB(projectName, vdbName2); }catch(Exception e){}
+		try{new VDBManager().addModelsToVDB(projectName, vdbName2, new String[]{viewModel2});}catch(Exception e){}
+		try{new VDBManager().getVDBEditor(projectName, vdbName2).close();}catch(Exception e){}
 		
 		//generate rest war
 		Properties warProps = new Properties();
@@ -133,7 +137,7 @@ public class RestCallTest extends SWTBotTestCase {
 		
 		String[] pathToVDB = new String[]{projectName, vdbName2};
 		
-		WAR war = new VDBManager().createWAR(warProps, pathToVDB);
+		try{WAR war = new VDBManager().createWAR(warProps, pathToVDB);}catch(Exception e){}
 		
 		//import created war
 		Properties itemProps = new Properties();
@@ -141,25 +145,26 @@ public class RestCallTest extends SWTBotTestCase {
 		itemProps.setProperty("file", warCtxName1+".war");
 		itemProps.setProperty("intoFolder", projectName);
 		
-		new ImportManager().importGeneralItem(ImportGeneralItemWizard.FILE_SYSTEM, itemProps);
+		try{new ImportManager().importGeneralItem(ImportGeneralItemWizard.FILE_SYSTEM, itemProps);}catch(Exception e){}
 
-		war.deploy();
+		try{WAR war = new ModelExplorerManager().getWAR(projectName, warCtxName1+".war");
+		war.deploy();}catch(Exception e){}
 		
 		//create data source for BooksSrc
-		new ModelExplorerManager().createDataSource(ModelExplorerView.ConnectionSourceType.USE_CONNECTION_PROFILE_INFO, oracleCP, projectName, srcModel);
+		try{new ModelExplorerManager().createDataSource(ModelExplorerView.ConnectionSourceType.USE_CONNECTION_PROFILE_INFO, oracleCP, projectName, srcModel);}catch(Exception e){}
 		
 		//synchronize vdb before deploying
-		new VDBManager().getVDBEditor(projectName, vdbName2).synchronizeAll();
-		new VDBManager().getVDBEditor(projectName, vdbName2).close();
+		try{new VDBManager().getVDBEditor(projectName, vdbName2).synchronizeAll();}catch(Exception e){}
+		try{new VDBManager().getVDBEditor(projectName, vdbName2).close();}catch(Exception e){}
 		
 		//create src model for vdb, deploy vdb
-		new VDBManager().createVDBDataSource(pathToVDB, vdbJndiName1, false);
-		new VDBManager().deployVDB(pathToVDB);
+		try{new VDBManager().createVDBDataSource(pathToVDB, vdbJndiName1, false);}catch(Exception e){}
+		try{new VDBManager().deployVDB(pathToVDB);}catch(Exception e){}
 		
 		//run wget
 		assertEquals(result2, teiidBot.curl(url2));
 		
 		//stop server
-		new ServerManager().stopServer(serverName);
+		try{new ServerManager().stopServer(serverName);}catch(Exception e){}
 	}
 }

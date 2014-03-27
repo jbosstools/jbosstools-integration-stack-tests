@@ -1,6 +1,6 @@
 package org.jboss.tools.switchyard.reddeer.preference.implementation;
 
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 
 /**
  * Represents a properties page "Contract --> Security Policy".
@@ -52,7 +52,7 @@ public class DefaultContractSecurityPage extends DefaultPage {
 	
 	public DefaultContractSecurityPage setSecurityConf(String conf) {
 		
-		new DefaultCombo(COMBOBOX_SECURITY).setText(conf);
+		new LabeledCombo(COMBOBOX_SECURITY).setText(conf);
 		return this;
 	}
 }

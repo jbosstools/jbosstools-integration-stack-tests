@@ -5,8 +5,8 @@ import java.util.List;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalViewer;
 import org.jboss.reddeer.swt.handler.WidgetHandler;
-import org.jboss.reddeer.swt.lookup.WidgetLookup;
 import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.tools.fuse.reddeer.component.CamelComponent;
 import org.jboss.tools.fuse.reddeer.editor.matcher.All;
 
@@ -35,11 +35,11 @@ public class CamelEditor extends GefEditor {
 		}
 		List<EditPart> before = getEditParts(new All());
 		getPalette().activateTool(component.getPaletteEntry());
-		AbstractWait.sleep(2000);
+		AbstractWait.sleep(TimePeriod.getCustom(2));
 		WidgetHandler.getInstance().setFocus(getFigureCanvas());
 		click(0, 0);
-		WidgetLookup.getInstance().sendClickNotifications(getFigureCanvas());
-		AbstractWait.sleep(2000);
+		WidgetHandler.getInstance().sendClickNotifications(getFigureCanvas());
+		AbstractWait.sleep(TimePeriod.getCustom(2));
 		List<EditPart> after = getEditParts(new All());
 		if (after.size() <= before.size()) {
 			addCamelComponent(component, count + 1);

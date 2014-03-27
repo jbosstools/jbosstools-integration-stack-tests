@@ -4,6 +4,7 @@ import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 
 /**
@@ -42,8 +43,15 @@ public abstract class TeiidProfileWizard extends NewWizardDialog {
 	@Override
 	public void open() {
 		log.info("Open Connection Profile");
+		try {
 		super.open();
-
+		} catch (Exception ex){
+			new DefaultTreeItem("Connection Profiles").collapse();
+			new DefaultTreeItem("Connection Profiles", "Connection Profile").expand();
+			new DefaultTreeItem("Connection Profiles", "Connection Profile").select();
+			next();
+		}
+		
 		new DefaultTable().select(profile);
 		new LabeledText(LABEL_NAME).setText(name);
 		// TODO: LabeledText

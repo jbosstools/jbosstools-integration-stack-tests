@@ -6,13 +6,20 @@
 
 	<requirements>
 		<requirement class="org.jboss.tools.fuse.ui.bot.test.requirement.ServerRequirement" name="serverRequirement">
+
 			<property key="runtime" value="JBoss Fuse 6.1"/>
-			<property key="name" value="JBoss Fuse 6.1 Server"/>
 			<property key="path" value="target/requirements/jboss-fuse-6.1.0.redhat-312"/>
+
+			<property key="type" value="JBoss Fuse 6.1 Server"/>
+			<property key="hostname" value="localhost"/>
+			<property key="name" value="JBoss Fuse 6.1 (localhost)"/>
+
 			<property key="port" value="8101"/>
 			<property key="username" value="admin"/>
 			<property key="password" value="admin"/>
+
 			<property key="jmxname" value="JBoss Fuse"/>
+	
 		</requirement>
 	</requirements>
 </testrun>

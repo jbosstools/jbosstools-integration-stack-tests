@@ -7,7 +7,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.workbench.editor.TextEditor;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.drools.reddeer.dialog.DslLineDialog;
 import org.jboss.tools.drools.reddeer.dialog.DslLineDialog.Scope;
 import org.jboss.tools.drools.reddeer.editor.DslEditor;

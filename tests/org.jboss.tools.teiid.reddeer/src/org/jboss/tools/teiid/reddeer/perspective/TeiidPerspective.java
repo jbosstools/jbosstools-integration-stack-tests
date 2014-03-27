@@ -33,13 +33,13 @@ public class TeiidPerspective extends AbstractPerspective {
 	 * Previous to Kepler
 	 * @return
 	 */
-	@Deprecated
+	/*@Deprecated
 	public TeiidInstanceView getTeiidInstanceView(){
 		if (teiidInstanceView == null){
 			teiidInstanceView = new TeiidInstanceView();
 		}
 		return teiidInstanceView;
-	}
+	}*/
 	
 	public ModelExplorerView getModelExplorerView() {
 		if (modelExplorerView == null){

@@ -68,8 +68,7 @@ public class ThrottlingTest extends RedDeerTest {
 		new SwitchYardEditor().save();
 
 		/* Set Throttling */
-		PropertiesPreferencePage propsPage = new Service("HelloService")
-				.showProperties();
+		PropertiesPreferencePage propsPage = new Service("HelloService").showProperties();
 		propsPage.selectTab("Throttling");
 		new CheckBox(ENABLE_THROTTLING).toggle(true);
 		assertTrue(new ExtendedLabeledText(MAX_REQUESTS).isEnabled());

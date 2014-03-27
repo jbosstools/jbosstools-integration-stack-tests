@@ -2,6 +2,7 @@ package org.jboss.tools.switchyard.reddeer.preference;
 
 import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.impl.list.DefaultList;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.switchyard.reddeer.binding.CamelBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.FTPBindingPage;
@@ -28,6 +29,17 @@ import org.jboss.tools.switchyard.reddeer.binding.SchedulingBindingPage;
  * 
  */
 public class PropertiesPreferencePage extends PreferencePage {
+
+	protected String title;
+
+	public PropertiesPreferencePage(String title) {
+		this.title = title;
+	}
+
+	public PropertiesPreferencePage activate() {
+		new DefaultShell("Properties for " + title);
+		return this;
+	}
 
 	@Override
 	public void open() {
@@ -66,7 +78,7 @@ public class PropertiesPreferencePage extends PreferencePage {
 	public JCABindingPage getJCABindingPage() {
 		return new JCABindingPage();
 	}
-	
+
 	public JMSBindingPage getJMSBindingPage() {
 		return new JMSBindingPage();
 	}

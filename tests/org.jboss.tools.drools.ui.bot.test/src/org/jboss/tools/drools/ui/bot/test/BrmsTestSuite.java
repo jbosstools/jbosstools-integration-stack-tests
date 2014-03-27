@@ -7,6 +7,7 @@ import org.jboss.tools.drools.ui.bot.test.functional.DslrEditorTest;
 import org.jboss.tools.drools.ui.bot.test.functional.NewResourcesTest;
 import org.jboss.tools.drools.ui.bot.test.functional.PerspectiveTest;
 import org.jboss.tools.drools.ui.bot.test.functional.RulesManagementTest;
+import org.jboss.tools.drools.ui.bot.test.functional.brms5.Brms5AuditLogTest;
 import org.jboss.tools.drools.ui.bot.test.functional.brms5.Brms5ProjectTest;
 import org.jboss.tools.drools.ui.bot.test.functional.brms6.Brms6ProjectTest;
 import org.jboss.tools.drools.ui.bot.test.functional.drleditor.ConditionsCompletionTest;
@@ -14,6 +15,7 @@ import org.jboss.tools.drools.ui.bot.test.functional.drleditor.ConsequencesCompl
 import org.jboss.tools.drools.ui.bot.test.functional.drleditor.DeclareCompletionTest;
 import org.jboss.tools.drools.ui.bot.test.functional.drleditor.MetadataCompletionTest;
 import org.jboss.tools.drools.ui.bot.test.functional.view.AgendaViewTest;
+import org.jboss.tools.drools.ui.bot.test.functional.view.AuditLogTest;
 import org.jboss.tools.drools.ui.bot.test.functional.view.GlobalDataViewTest;
 import org.jboss.tools.drools.ui.bot.test.functional.view.WorkingMemoryViewTest;
 import org.junit.runner.RunWith;
@@ -41,8 +43,10 @@ import org.junit.runners.Suite.SuiteClasses;
     AgendaViewTest.class,
     GlobalDataViewTest.class,
     WorkingMemoryViewTest.class,
+    AuditLogTest.class,
     // 5.x tests
-    Brms5ProjectTest.class
+    Brms5ProjectTest.class,
+    Brms5AuditLogTest.class
 })
 public class BrmsTestSuite {
 

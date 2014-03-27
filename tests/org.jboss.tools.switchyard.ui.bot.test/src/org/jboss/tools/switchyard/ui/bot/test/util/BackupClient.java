@@ -10,7 +10,7 @@ import java.io.OutputStream;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jface.wizard.ExportWizardDialog;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
 
 public class BackupClient {
@@ -61,7 +61,7 @@ public class BackupClient {
 
 			open();
 
-			new DefaultCombo("To archive file:").setText(path);
+			new LabeledCombo("To archive file:").setText(path);
 
 			finish();
 		}
