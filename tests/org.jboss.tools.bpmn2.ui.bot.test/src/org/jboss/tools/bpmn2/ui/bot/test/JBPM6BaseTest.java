@@ -118,6 +118,7 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 		log.info("Validating '" + editor.getTitle() + "'");
 		JBPM6Validator validator = new JBPM6Validator();
 		boolean result = validator.validate(editor.getSourceText());
+		log.info("\tjBPM validation result: " + result);
 		Assert.assertTrue(validator.getResultMessage(), result);
 		/*
 		 * Make sure there are no problems in the problems view.
@@ -130,6 +131,7 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 					error.append(e.getCell(0) + "\n");
 				}
 			}
+			log.info("\tEditor validation result: " + error);
 			Assert.assertTrue(error.toString(), error.length() == 0);
 		}
 	}
