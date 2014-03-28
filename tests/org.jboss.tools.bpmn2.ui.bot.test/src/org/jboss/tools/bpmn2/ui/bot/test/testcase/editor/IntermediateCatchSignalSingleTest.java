@@ -11,7 +11,6 @@ import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequireme
 
 /**
  *     
- * @author mbaluch
  */
 @ProcessDefinition(name="BPMN2-IntermediateCatchSignalSingle", project="EditorTestProject")
 public class IntermediateCatchSignalSingleTest extends JBPM6BaseTest {
@@ -25,7 +24,7 @@ public class IntermediateCatchSignalSingleTest extends JBPM6BaseTest {
 		startEvent.append("User Task", ConstructType.USER_TASK);
 		
 		UserTask userTask = new UserTask("User Task");
-		userTask.addActor("", "Bruce");
+		userTask.addActor("Bruce");
 		userTask.append("Catch", ConstructType.SIGNAL_INTERMEDIATE_CATCH_EVENT);
 		
 		SignalIntermediateCatchEvent catchEvent = new SignalIntermediateCatchEvent("Catch");

@@ -8,18 +8,17 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.endevents.EndEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.endevents.TerminateEndEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.swimlanes.Lane;
-import org.jboss.tools.bpmn2.reddeer.view.BPMN2OutlineView;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
+import org.jboss.tools.reddeer.DefaultOutlineView;
 
 /**
  *     
- * @author mbaluch
  */
 @ProcessDefinition(name="BPMN2-Lane", project="EditorTestProject")
 public class LaneTest extends JBPM6BaseTest {
 
-	BPMN2OutlineView outlineView = new BPMN2OutlineView();
+	DefaultOutlineView outlineView = new DefaultOutlineView();
 	
 	/*
 	 * ISSUE:

@@ -14,8 +14,6 @@ import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequireme
  * ISSUES:
  *     1) When a connection is missing e.g. "Task 3" and "Gateway" are not connected 
  *        validator does not complain!
- *     
- * @author mbaluch
  */
 @ProcessDefinition(name="BPMN2-AdHocProcess",  project="EditorTestProject")
 public class AdHocProcessTest extends JBPM6BaseTest {
@@ -29,15 +27,15 @@ public class AdHocProcessTest extends JBPM6BaseTest {
 		new StartEvent("StartProcess").delete();
 		
 		ScriptTask task3 = new ScriptTask("Task 3");
-		/*
-		 * ISSUE: Empty values can be set only at the beginning!
-		 */
+		// ISSUE: Empty values can be set only at the beginning!
 		task3.setScript("", "System.out.println(\"Task3\");");
 		task3.append("Gateway", ConstructType.EXCLUSIVE_GATEWAY);
 		
 		ExclusiveGateway gateway = new ExclusiveGateway("Gateway");
 		gateway.append("End", ConstructType.TERMINATE_END_EVENT, ConnectionType.SEQUENCE_FLOW, Position.NORTH_EAST);
 		gateway.append("Task 4", ConstructType.SCRIPT_TASK, ConnectionType.SEQUENCE_FLOW, Position.SOUTH_EAST);
+		// Select the activity - it was deselected during append
+		gateway.select();
 		// Rules are not supported anymore
 		gateway.setCondition("Gateway -> End", "Rule", "org.jbpm.bpmn2.objects.Person()");
 		gateway.setCondition("Gateway -> Task 4", "Rule", "not org.jbpm.bpmn2.objects.Person()");
@@ -45,9 +43,7 @@ public class AdHocProcessTest extends JBPM6BaseTest {
 		ScriptTask task4 = new ScriptTask("Task 4");
 		task4.setScript("", "System.out.println(\"Task4\");");
 
-		/*
-		 * Finish parallel activities
-		 */
+		// Finish parallel activities
 		process.add("Task 2", ConstructType.SCRIPT_TASK, task3, Position.NORTH);
 		
 		ScriptTask task2 = new ScriptTask("Task 2");

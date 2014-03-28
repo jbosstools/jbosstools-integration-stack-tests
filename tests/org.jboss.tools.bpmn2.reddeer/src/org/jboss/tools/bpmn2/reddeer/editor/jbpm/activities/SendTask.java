@@ -1,18 +1,16 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 
-
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.tools.bpmn2.reddeer.editor.AbstractTask;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
-import org.jboss.tools.bpmn2.reddeer.editor.ParameterMapping;
-
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ErrorRef;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Expression;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Message;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
+import org.jboss.tools.bpmn2.reddeer.properties.jbpm.IOParametersTab;
+import org.jboss.tools.bpmn2.reddeer.properties.jbpm.SendTaskTab;
 
 /**
  * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 public class SendTask extends AbstractTask {
 
@@ -26,80 +24,61 @@ public class SendTask extends AbstractTask {
 	
 	/**
 	 * 
-	 * @param implementation
+	 * @param implementationUri
 	 */
-	public void setImplementation(String implementation) {
-		properties.selectTab("Send Task");
-		new LabeledCombo("Implementation").setSelection(implementation);
+	public void setImplementation(String implementationUri) {
+		properties.getTab("Send Task", SendTaskTab.class).setImplementation(implementationUri);
 	}
 	
 	/**
 	 * 
 	 * @param operation
 	 */
-	public void setOperation(String operation, String inMessage, String outMessage) {
-		throw new UnsupportedOperationException();
+	public void setOperation(String operationContractName, Message inMessage, Message outMessage, ErrorRef errorRef) {
+		properties.getTab("Send Task", SendTaskTab.class).setOperation(operationContractName, inMessage, outMessage, errorRef);
 	}
 	
 	/**
-	 * TODO: Add browse and add import or will we use a predefined project?
 	 * 
 	 * @param name
 	 * @param dataType
 	 */
 	public void setMessage(String name, String dataType) {
-		properties.selectTab("Send Task");
-		
-		SWTBotCombo messageBox = bot.comboBoxWithLabel("Message");
-		String messageName = name + "(" + dataType + ")";
-		if (properties.contains(messageBox, messageName)) {
-			messageBox.setSelection(messageName);
-		} else {
-			new PushButton(3).click();
-			
-			SWTBot newMessageBot = bot.shell("Create New Message").bot();
-			newMessageBot.textWithLabel("Name").setText(name);
-			newMessageBot.button(0).click();
-			
-			SWTBot newDataTypeBot = bot.shell("Create New Data Type").bot();
-			newDataTypeBot.textWithLabel("Structure").setText(dataType);
-			newDataTypeBot.button("OK").click();
-
-			newMessageBot.button("OK").click();
-		}
-		
+		properties.getTab("Send Task", SendTaskTab.class).setMessage(new Message(name, dataType));
 	}
 
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.AbstractTask#setIsForCompensation(boolean)
+	 *
+	 * @param value
 	 */
-	@Override
-	public void setIsForCompensation(boolean b) {
-		super.setIsForCompensation(b);
+	public void setIsForCompensation(boolean value) {
+		properties.getTab("Send Task", SendTaskTab.class).setIsForCompensation(value);
 	}
 
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.AbstractTask#setOnEntryScript(java.lang.String, java.lang.String)
+	 *
+	 * @param language
+	 * @param script
 	 */
-	@Override
 	public void setOnEntryScript(String language, String script) {
-		super.setOnEntryScript(language, script);
+		properties.getTab("Send Task", SendTaskTab.class).setOnEntryScript(new Expression(language, script));
 	}
 
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.AbstractTask#setOnExistScript(java.lang.String, java.lang.String)
+	 * 
+	 * @param language
+	 * @param script
 	 */
-	@Override
 	public void setOnExistScript(String language, String script) {
-		super.setOnExistScript(language, script);
+		properties.getTab("Send Task", SendTaskTab.class).setOnExitScript(new Expression(language, script));
 	}
 
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.AbstractTask#addInputParameter(org.jboss.tools.bpmn2.reddeer.editor.ParameterMapping)
+	 *
+	 * @param parameter
 	 */
-	@Override
-	public void addParameterMapping(ParameterMapping parameter) {
-		super.addParameterMapping(parameter);
+	public void addParameterMapping(ParameterMapping parameterMapping) {
+		properties.getTab("I/O Parameters", IOParametersTab.class).addParameter(parameterMapping);
 	}
 
 }

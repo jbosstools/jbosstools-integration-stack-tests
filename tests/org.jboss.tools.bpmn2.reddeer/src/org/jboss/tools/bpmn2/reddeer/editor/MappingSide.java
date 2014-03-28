@@ -1,24 +1,19 @@
 package org.jboss.tools.bpmn2.reddeer.editor;
 
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
+import org.jboss.tools.reddeer.UIControlsHandler;
+
 /**
  * Represents one side in the equation of a ParameterMapping.
  * 
  * @see ParameterMapping
- * @author Marek Baluch <mbaluch@redhat.com>
  */
-public interface MappingSide {
-
-	/**
-	 * Add this mapping side. E.g. from variable. 
-	 */
-	void add();
+public interface MappingSide extends UIControlsHandler {
 	
 	/**
-	 * Get the value of this mapping side. E.g. the variable name or
-	 * script value etc.
 	 * 
 	 * @return
 	 */
-	String getValue();
+	String getName();
 	
 }

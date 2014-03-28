@@ -1,31 +1,30 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents;
 
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.ConditionalEventDefinition;
+import org.jboss.tools.bpmn2.reddeer.properties.jbpm.EventTab;
 
 /**
  * 
- * @author mbaluch
  */
 public class ConditionalBoundaryEvent extends BoundaryEvent {
 
+	/**
+	 * 
+	 * @param name
+	 */
 	public ConditionalBoundaryEvent(String name) {
 		super(name, ConstructType.CONDITIONAL_BOUNDARY_EVENT);
 	}
 	
+	/**
+	 * 
+	 * @param language
+	 * @param script
+	 */
 	public void setScript(String language, String script) {
-		properties.selectTab("Event");
-		new DefaultTable().select(0);
-		properties.toolbarButton("Event Definitions", "Edit").click();
-		
-		if (language != null) {
-			new LabeledCombo("Script Language").setSelection(language);
-		}
-		new LabeledText("Script").setText(script);
-		
-		properties.toolbarButton("Conditional Event Definition Details", "Close").click();
+		properties.getTab("Event", EventTab.class).set(new ConditionalEventDefinition(language, script));
+		refresh();
 	}
 	
 }

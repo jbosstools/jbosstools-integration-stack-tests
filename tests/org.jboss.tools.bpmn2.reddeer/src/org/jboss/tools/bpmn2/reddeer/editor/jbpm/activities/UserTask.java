@@ -1,135 +1,126 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.reddeer.editor.AbstractTask;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
-import org.jboss.tools.bpmn2.reddeer.editor.ParameterMapping;
-
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Expression;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
+import org.jboss.tools.bpmn2.reddeer.properties.jbpm.IOParametersTab;
+import org.jboss.tools.bpmn2.reddeer.properties.jbpm.UserTaskTab;
 
 /**
  * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 public class UserTask extends AbstractTask {
 
+	/**
+	 * 
+	 * @param name
+	 */
 	public UserTask(String name) {
 		super(name, ConstructType.USER_TASK);
 	}
 	
+	/**
+	 * 
+	 * @param name
+	 */
 	public void setTaskName(String name) {
-		properties.selectTab("User Task");
-		new LabeledText("Task Name").setText(name);
-	}
-	
-	public void setPriority(int priority) {
-		properties.selectTab("User Task");
-		new LabeledText("Priority").setText(String.valueOf(priority));
-	}
-	
-	public void setComment(String comment) {
-		properties.selectTab("User Task");
-		new LabeledText("Comment").setText(comment);
-	}
-	
-	public void setGroupId(String id) {
-		properties.selectTab("User Task");
-		new LabeledText("Group Id").setText(id);
-	}
-	
-	public void setSkippable(boolean skippable) {
-		properties.selectTab("User Task");
-		CheckBox box = new CheckBox("Skippable");
-		if ((box.isChecked() && !skippable) || (!box.isChecked() && skippable)) {
-			box.click();
-		}
-		
-	}
-	
-	public void setContent(String content) {
-		properties.selectTab("User Task");
-		new LabeledText("Content").setText(content);
-	}
-	
-	public void setLocale(String locale) {
-		properties.selectTab("User Task");
-		new LabeledText("Locale").setText(locale);
+		properties.getTab("User Task", UserTaskTab.class).setTaskName(name);
 	}
 	
 	/**
-	 * Used before Reddeer code bellow to set the actor data:
 	 * 
-	 * <code>
-	 *	if (!language.isEmpty()) {
-	 *		new LabeledCombo("Script Language").setSelection(language);
-	 *	}
-     *	new LabeledText("Script").setText(script);
-	 * </code>
-	 *
-	 * The code created an issue when creating the 3rd UserTask in the SimpleModelingTest. When
-	 * this method was called on the 
+	 * @param priority
+	 */
+	public void setPriority(int priority) {
+		properties.getTab("User Task", UserTaskTab.class).setPriority(String.valueOf(priority));
+	}
+
+	/**
 	 * 
-	 * When the following code from SimpleModelingTest was executed an error was found. That
-	 * error was caused because another properties view was selected (the process view) instead
-	 * of the UserTask view.
+	 * @param comment
+	 */
+	public void setComment(String comment) {
+		properties.getTab("User Task", UserTaskTab.class).setComment(comment);
+	}
+	
+	/**
 	 * 
-	 * <code>
-	 *  UserTask userTask3 = new UserTask("PM Evaluation");
-	 *  userTask3.addActor("John", "mvel");
-	 * </code>
+	 * @param id
+	 */
+	public void setGroupId(String id) {
+		properties.getTab("User Task", UserTaskTab.class).setGroupId(id);
+	}
+	
+	/**
 	 * 
-	 * Looks like the error is caused by the Reddeer code because it works fine with plain old
-	 * SWT Bot.
+	 * @param skippable
+	 */
+	public void setSkippable(boolean skippable) {
+		properties.getTab("User Task", UserTaskTab.class).setSkippable(skippable);
+		
+	}
+	
+	/**
 	 * 
-	 * @param script
+	 * @param content
+	 */
+	public void setContent(String content) {
+		properties.getTab("User Task", UserTaskTab.class).setContent(content);
+	}
+	
+	/**
+	 * 
+	 * @param locale
+	 */
+	public void setLocale(String locale) {
+		properties.getTab("User Task", UserTaskTab.class).setLocale(locale);
+	}
+	
+	/**
+	 * 
 	 * @param language
 	 */
-	public void addActor(String language, String script) {
-		properties.selectTab("User Task");
-		properties.toolbarButton("Actors", "Add").click();
-		
-		if (!language.isEmpty()) {
-			bot.comboBoxWithLabel("Script Language").setSelection(language);
-		}
-		bot.textWithLabel("Script").setText(script);
-		bot.toolbarButtonWithTooltip("Close").click();
+	public void addActor(String language) {
+		properties.getTab("User Task", UserTaskTab.class).addActor(name);
 	}
 	
 	public void removeActor(String name) {
-		properties.selectTab("User Task");
-		properties.toolbarButton("Actors", "Remove").click();
+		properties.getTab("User Task", UserTaskTab.class).removeActor(name);
 	}
 
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.AbstractTask#setIsForCompensation(boolean)
+	 *
+	 * @param value
 	 */
-	@Override
-	public void setIsForCompensation(boolean b) {
-		super.setIsForCompensation(b);
+	public void setIsForCompensation(boolean value) {
+		properties.getTab("User Task", UserTaskTab.class).setIsForCompensation(value);
 	}
 
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.AbstractTask#setOnEntryScript(java.lang.String, java.lang.String)
+	 *
+	 * @param language
+	 * @param script
 	 */
-	@Override
 	public void setOnEntryScript(String language, String script) {
-		super.setOnEntryScript(language, script);
+		properties.getTab("User Task", UserTaskTab.class).setOnEntryScript(new Expression(language, script));
 	}
 
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.AbstractTask#setOnExistScript(java.lang.String, java.lang.String)
+	 * 
+	 * @param language
+	 * @param script
 	 */
-	@Override
 	public void setOnExistScript(String language, String script) {
-		super.setOnExistScript(language, script);
+		properties.getTab("User Task", UserTaskTab.class).setOnExitScript(new Expression(language, script));
 	}
 
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.AbstractTask#addInputParameter(org.jboss.tools.bpmn2.reddeer.editor.ParameterMapping)
+	 *
+	 * @param parameter
 	 */
-	@Override
-	public void addParameterMapping(ParameterMapping parameter) {
-		super.addParameterMapping(parameter);
+	public void addParameterMapping(ParameterMapping parameterMapping) {
+		properties.getTab("I/O Parameters", IOParametersTab.class).addParameter(parameterMapping);
 	}
 
 }

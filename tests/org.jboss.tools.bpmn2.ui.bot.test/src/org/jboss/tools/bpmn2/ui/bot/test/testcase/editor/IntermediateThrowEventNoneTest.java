@@ -8,7 +8,6 @@ import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequireme
 
 /**
  *     
- * @author mbaluch
  */
 @ProcessDefinition(name="BPMN2-IntermediateThrowEventNone", project="EditorTestProject")
 public class IntermediateThrowEventNoneTest extends JBPM6BaseTest {

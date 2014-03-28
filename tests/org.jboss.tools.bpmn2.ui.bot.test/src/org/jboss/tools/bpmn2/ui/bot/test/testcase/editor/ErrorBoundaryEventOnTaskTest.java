@@ -3,6 +3,7 @@ package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 import org.jboss.tools.bpmn2.reddeer.editor.AbstractGateway.Direction;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
 import org.jboss.tools.bpmn2.reddeer.editor.Position;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ErrorRef;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.UserTask;
@@ -16,8 +17,6 @@ import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequireme
 /**
  * ISSUES:
  * 	1) engine does not validate the presence of the rules.
- *     
- * @author mbaluch
  */
 @ProcessDefinition(name="BPMN2-ErrorBoundaryEventOnTask", project="EditorTestProject")
 public class ErrorBoundaryEventOnTaskTest extends JBPM6BaseTest {
@@ -36,19 +35,19 @@ public class ErrorBoundaryEventOnTaskTest extends JBPM6BaseTest {
 		gateway.append("User task error attached", ConstructType.USER_TASK, Position.SOUTH_EAST);
 		
 		UserTask task1 = new UserTask("User Task");
-		task1.addActor("", "john");
+		task1.addActor("john");
 		task1.append("Error end event", ConstructType.ERROR_END_EVENT);
 		
 		ErrorEndEvent end1 = new ErrorEndEvent("Error end event");
-		end1.setErrorEvent("", "org.jbpm.bpmn2.objects.MyError", "");
+		end1.setErrorEvent(new ErrorRef("", "org.jbpm.bpmn2.objects.MyError", ""));
 		
 		UserTask task2 = new UserTask("User task error attached");
-		task2.addActor("", "mary");
+		task2.addActor("mary");
 		task2.append("Error 1", ConstructType.END_EVENT);
 		task2.addEvent("Error Boundary Event", ConstructType.ERROR_BOUNDARY_EVENT);
 		
 		ErrorBoundaryEvent boundaryEvent = new ErrorBoundaryEvent("Error Boundary Event");
-		boundaryEvent.setErrorEvent("", "org.jbpm.bpmn2.objects.MyError", "");
+		boundaryEvent.setErrorEvent(new ErrorRef("", "org.jbpm.bpmn2.objects.MyError", ""));
 		boundaryEvent.append("Script Task", ConstructType.SCRIPT_TASK, Position.SOUTH);
 		
 		ScriptTask script = new ScriptTask("Script Task");

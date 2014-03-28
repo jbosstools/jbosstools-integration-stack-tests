@@ -10,8 +10,6 @@ import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequireme
 /**
  * ISSUE: Looks like this test creates on itemDefinition plus (should be 1 but there are 2)
  *     <itemDefinition .../>
- *     
- * @author mbaluch
  */
 @ProcessDefinition(name="BPMN2-ReceiveTask", project="EditorTestProject")
 public class ReceiveTaskTest extends JBPM6BaseTest {

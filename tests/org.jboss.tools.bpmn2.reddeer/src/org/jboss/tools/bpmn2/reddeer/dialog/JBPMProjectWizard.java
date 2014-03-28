@@ -11,7 +11,6 @@ import org.jboss.reddeer.swt.impl.button.RadioButton;
 
 /**
  * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 public class JBPMProjectWizard extends NewWizardDialog {
 

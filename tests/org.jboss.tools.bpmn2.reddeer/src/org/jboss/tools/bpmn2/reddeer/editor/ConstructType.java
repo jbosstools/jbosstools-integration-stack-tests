@@ -1,9 +1,7 @@
 package org.jboss.tools.bpmn2.reddeer.editor;
 
-
 /**
  * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 public enum ConstructType {
 
@@ -59,7 +57,13 @@ public enum ConstructType {
 	MESSAGE_INTERMEDIATE_THROW_EVENT("Intermediate Throw Events", "Message"),
 	SIGNAL_INTERMEDIATE_THROW_EVENT("Intermediate Throw Events", "Signal"),
 	
-//	COMPLEX_GATEWAY("Gateways", "Complex Gateway"),
+	CONDITIONAL_EVENT_DEFINITION("Event Definitions", "Conditional Event Definition"),
+	ERROR_EVENT_DEFINITION("Event Definitions", "Error Event Definition"),
+	ESCALATION_EVENT_DEFINITION("Event Definitions", "Escalation Event Definition"),
+	MESSAGE_EVENT_DEFINITION("Event Definitions", "Message Event Definition"),
+	SIGNAL_EVENT_DEFINITION("Event Definitions", "Signal Event Definition"),
+	TIMER_EVENT_DEFINITION("Event Definitions", "Timer Event Definition"),
+	
 	EXCLUSIVE_GATEWAY("Gateways", "Exclusive Gateway"),
 	EVENT_BASED_GATEWAY("Gateways", "Event-Based Gateway"),
 	INCLUSIVE_GATEWAY("Gateways", "Inclusive Gateway"),
@@ -119,7 +123,10 @@ public enum ConstructType {
 	 */
 	public String toId() {
 		String name = null;
-		if (sectionName.equals("End Events")) {
+		
+		if (sectionName == null || paletteToolName == null) {
+			name = "Process";
+		} else if (sectionName.equals("End Events")) {
 			name = "End Event";
 		} else if (sectionName.equals("Start Events")) {
 			name = "Start Event";
@@ -136,5 +143,4 @@ public enum ConstructType {
 		}
 		return name.replace(" ", "").replace("-", "");
 	}
-	
 }

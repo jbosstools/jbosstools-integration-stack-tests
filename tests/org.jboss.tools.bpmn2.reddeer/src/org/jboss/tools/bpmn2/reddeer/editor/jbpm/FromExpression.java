@@ -7,8 +7,6 @@ import org.jboss.tools.bpmn2.reddeer.editor.MappingSide;
 
 /**
  * Mapping from an expression.
- * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 public class FromExpression implements MappingSide {
 
@@ -17,28 +15,24 @@ public class FromExpression implements MappingSide {
 	private String script;
 	
 	/**
-	 * Creates a new instance of FromExpression.
 	 * 
-	 * @param variableName
+	 * @param scriptLanguage
+	 * @param script
 	 */
 	public FromExpression(String scriptLanguage, String script) {
 		this.scriptLanguage = scriptLanguage;
 		this.script = script;
-	}
+	} 
 	
 	@Override
-	public void add() {
+	public void setUp() {
 		new RadioButton("Expression").click();
 		new LabeledCombo("Script Language").setSelection(scriptLanguage);
 		new LabeledText("Script").setText(script);
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	@Override
-	public String getValue() {
+	public String getName() {
 		return script;
 	}
 	

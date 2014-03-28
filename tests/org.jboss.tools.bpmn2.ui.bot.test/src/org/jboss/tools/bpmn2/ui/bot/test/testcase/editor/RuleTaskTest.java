@@ -9,8 +9,6 @@ import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequireme
 /**
  * ISSUES:
  * 	1) engine does not validate the presence of the rules.
- *     
- * @author mbaluch
  */
 @ProcessDefinition(name="BPMN2-RuleTask", project="EditorTestProject")
 public class RuleTaskTest extends JBPM6BaseTest {

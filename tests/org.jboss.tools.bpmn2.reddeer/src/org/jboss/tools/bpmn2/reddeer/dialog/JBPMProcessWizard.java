@@ -3,15 +3,15 @@ package org.jboss.tools.bpmn2.reddeer.dialog;
 import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.tools.reddeer.dialog.ProjectPath;
 
 /**
  * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 public class JBPMProcessWizard extends NewWizardDialog {
 
 	/**
-	 * Creates a new instance of JBPMProcessWizard. 
+	 * 
 	 */
 	public JBPMProcessWizard() {
 		super("jBPM", "BPMN2 Process");

@@ -3,13 +3,10 @@ package org.jboss.tools.bpmn2.ui.bot.test;
 import junit.framework.TestSuite;
 
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
-import org.jboss.tools.bpmn2.ui.bot.test.testcase.editor.*;import org.junit.runner.RunWith;
+import org.jboss.tools.bpmn2.ui.bot.test.testcase.editor.*;
+import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
-/**
- * 
- * @author Marek Baluch
- */
 @RunWith(BPMN2Suite.class)
 @SuiteClasses({
 // Editor tests
@@ -26,27 +23,27 @@ import org.junit.runners.Suite.SuiteClasses;
 	BoundaryConditionalEventOnTaskTest.class,
 	ErrorEndEventTest.class,
 	ConditionalStartTest.class,
-	ImportTest.class, // Headless exception when typing is done! Only on Mac 
+	ImportTest.class, // Headless exception when typing is done! Only on Mac
 	ReceiveTaskTest.class,
 	ParallelSplitTest.class,
 	RuleTaskTest.class,
-//	SendTaskTest.class, // BZ-1079699
-//	ErrorBoundaryEventOnTaskTest.class, // BZ-1079714
-//	IntermediateCatchEventTimerCycleTest.class, // BZ-1079720
+	SendTaskTest.class, // BZ-1079699
+	ErrorBoundaryEventOnTaskTest.class, // BZ-1079714 // Untested
+	IntermediateCatchEventTimerCycleTest.class, // BZ-1079720 // Untested
 	MessageStartTest.class,
 	SubProcessTest.class,
 	UserTaskTest.class,
 	XPathExpressionTest.class, // @Ignore
 	LaneTest.class,
 	DataObjectTest.class,
-	MultipleStartEventTest.class,
+	MultipleStartEventTest.class, // BZ-1085520
 	InclusiveSplitTest.class,
 	IntermediateThrowEventNoneTest.class,
 	IntermediateThrowMessageEventTest.class,
 	IntermediateThrowEscalationEventTest.class,
-//	IntermediateCatchSignalSingleTest.class, // BZ-1079720
+	IntermediateCatchSignalSingleTest.class, // BZ-1079720 // Untested
 	ExclusiveSplitPriorityTest.class,
-//	EventBasedSplitTest.class, // BZ-1079720
+	EventBasedSplitTest.class, // BZ-1079720 // Untested
 	BoundaryEscalationEventOnTaskTest.class,
 	ConditionalBoundaryEventInterruptingTest.class,
 })

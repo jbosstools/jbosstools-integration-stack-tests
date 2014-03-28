@@ -5,15 +5,12 @@ import org.jboss.tools.bpmn2.reddeer.editor.MappingSide;
 
 /**
  * Mapping from a variable.
- * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 public class FromVariable implements MappingSide {
 
 	private String variableName;
 	
 	/**
-	 * Creates a new instance of FromVariable.
 	 * 
 	 * @param variableName
 	 */
@@ -22,16 +19,12 @@ public class FromVariable implements MappingSide {
 	}
 	
 	@Override
-	public void add() {
+	public void setUp() {
 		new LabeledCombo("Source").setSelection(variableName);
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	@Override
-	public String getValue() {
+	public String getName() {
 		return variableName;
 	}
 	

@@ -1,11 +1,10 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.FromDataOutput;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.FromVariable;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.InputParameterMapping;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.OutputParameterMapping;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ToDataInput;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ToVariable;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.CallActivity;
@@ -15,7 +14,6 @@ import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequireme
 
 /**
  *     
- * @author mbaluch
  */
 @ProcessDefinition(name="BPMN2-CallActivity", project="EditorTestProject")
 public class CallActivityTest extends JBPM6BaseTest {
@@ -34,8 +32,8 @@ public class CallActivityTest extends JBPM6BaseTest {
 		call.setWaitForCompletion(true);
 		call.setIndependent(true);
 		call.setCalledActivity("SubProcess");
-		call.addParameterMapping(new InputParameterMapping(new FromVariable("BPMN2-CallActivity/y"), new ToDataInput("subX")));
-		call.addParameterMapping(new OutputParameterMapping(new FromDataOutput("subY"), new ToVariable("BPMN2-CallActivity/x")));
+		call.addParameterMapping(new ParameterMapping(new FromVariable("BPMN2-CallActivity/y"), new ToDataInput("subX"), ParameterMapping.Type.INPUT));
+		call.addParameterMapping(new ParameterMapping(new FromDataOutput("subY"), new ToVariable("BPMN2-CallActivity/x"), ParameterMapping.Type.OUTPUT));
 		
 		call.append("EndProcess", ConstructType.TERMINATE_END_EVENT);
 	}

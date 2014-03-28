@@ -7,10 +7,10 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.tools.reddeer.dialog.ProjectPath;
 
 /**
  * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 public class BPMN2ProcessWizard extends NewWizardDialog {
 

@@ -1,13 +1,11 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents;
 
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.ConditionalEventDefinition;
+import org.jboss.tools.bpmn2.reddeer.properties.jbpm.EventTab;
 
 /**
  * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 public class ConditionalStartEvent extends StartEvent {
 
@@ -25,12 +23,8 @@ public class ConditionalStartEvent extends StartEvent {
 	 * @param script
 	 */
 	public void setCondition(String language, String script) {
-		properties.selectTab("Event");
-		new DefaultTable().select(0);
-		properties.toolbarButton("Event Definitions", "Edit").click();
-		
-		new LabeledCombo("Script Language").setSelection(language);
-		new LabeledText("Script").setText(script);
+		properties.getTab("Event", EventTab.class).set(new ConditionalEventDefinition(language, script));
+		refresh();
 	}
 	
 }

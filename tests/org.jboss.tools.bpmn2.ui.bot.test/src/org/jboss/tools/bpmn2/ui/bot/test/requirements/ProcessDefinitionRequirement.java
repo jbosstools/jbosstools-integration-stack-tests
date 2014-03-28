@@ -20,17 +20,19 @@ import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.bpmn2.reddeer.dialog.BPMN2ProcessWizard;
-import org.jboss.tools.bpmn2.reddeer.dialog.JavaProjectWizard;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
+import org.jboss.tools.reddeer.dialog.JavaProjectWizard;
 
 /**
  * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 public class ProcessDefinitionRequirement implements Requirement<ProcessDefinition> {
 
 	private static Logger log = Logger.getLogger(ProcessDefinitionRequirement.class);
 	
+	/**
+	 * 
+	 */
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.TYPE)
 	public @interface ProcessDefinition {
@@ -47,19 +49,24 @@ public class ProcessDefinitionRequirement implements Requirement<ProcessDefiniti
 
 	private boolean useRobot;
 
-	
+	/**
+	 * 
+	 */
 	public ProcessDefinitionRequirement() {
 		useRobot = Boolean.parseBoolean(System.getProperty("awt.robot", "true"));
 	}
-	
+
+	@Override
 	public void setDeclaration(ProcessDefinition d) {
 		this.d = d;
 	}
 	
+	@Override
 	public boolean canFulfill() {
 		return true;
 	}
 
+	@Override
 	public void fulfill() {
 		closeAllEditors();
 		try {
@@ -82,6 +89,9 @@ public class ProcessDefinitionRequirement implements Requirement<ProcessDefiniti
 		}
 	}
 	
+	/**
+	 * 
+	 */
 	private void closeAllEditors() {
 		for (SWTBotEditor e : new SWTWorkbenchBot().editors()) {
 			if (e.isDirty()) {
@@ -91,6 +101,9 @@ public class ProcessDefinitionRequirement implements Requirement<ProcessDefiniti
 		}
 	}
 	
+	/**
+	 * 
+	 */
 	private void openProcessDefinition() {
 		PackageExplorer pe = new PackageExplorer();
 		if (!pe.containsProject(d.project())) {
@@ -119,10 +132,12 @@ public class ProcessDefinitionRequirement implements Requirement<ProcessDefiniti
 		if (pe.getProject(p).containsItem(f)) {
 			pe.getProject(p).getProjectItem(f).delete();
 		}
-		
 		new BPMN2ProcessWizard().execute(new String[] {p}, f, n, i, "defaultPackage");
 	}
 	
+	/**
+	 * 
+	 */
 	private void setFocus() {
 		try {
 			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

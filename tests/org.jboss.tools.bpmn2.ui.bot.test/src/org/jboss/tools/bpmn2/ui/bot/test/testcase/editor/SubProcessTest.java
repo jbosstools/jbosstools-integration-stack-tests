@@ -10,7 +10,6 @@ import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequireme
 
 /**
  *     
- * @author mbaluch
  */
 @ProcessDefinition(name="BPMN2-SubProcess", project="EditorTestProject")
 public class SubProcessTest extends JBPM6BaseTest {

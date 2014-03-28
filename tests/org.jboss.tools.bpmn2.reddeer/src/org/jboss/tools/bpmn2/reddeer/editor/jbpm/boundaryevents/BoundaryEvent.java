@@ -1,26 +1,37 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents;
 
-import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.tools.bpmn2.reddeer.editor.Construct;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
+import org.jboss.tools.bpmn2.reddeer.properties.jbpm.BoundaryEventTab;
 
 /**
  * 
- * @author mbaluch
  */
 public class BoundaryEvent extends Construct {
 
+	/**
+	 * 
+	 * @param name
+	 */
 	public BoundaryEvent(String name) {
 		super(name, ConstructType.BOUNDARY_EVENT);
 	}
 	
+	/**
+	 * 
+	 * @param name
+	 * @param type
+	 */
 	BoundaryEvent(String name, ConstructType type) {
 		super(name, type);
 	}
 	
-	public void setCancelActivity(boolean b) {
-		properties.selectTab("Event");
-		properties.selectCheckBox(new CheckBox("Cancel Activity"), b);
+	/**
+	 * 
+	 * @param value
+	 */
+	public void setCancelActivity(boolean value) {
+		properties.getTab("Event", BoundaryEventTab.class).setCancelActivity(value);
 	}
 	
 }

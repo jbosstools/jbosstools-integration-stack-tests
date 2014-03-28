@@ -13,8 +13,6 @@ import org.junit.Test;
 
 /**
  * Verify functionality of the jbpm model wizard.
- * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 @ProcessRuntime()
 public class MixedApproachWizardTest {

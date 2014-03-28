@@ -1,15 +1,14 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.tools.bpmn2.reddeer.editor.AbstractTask;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
-import org.jboss.tools.bpmn2.reddeer.editor.ParameterMapping;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Expression;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
+import org.jboss.tools.bpmn2.reddeer.properties.jbpm.CallActivityTab;
+import org.jboss.tools.bpmn2.reddeer.properties.jbpm.IOParametersTab;
 
 /**
  * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 public class CallActivity extends AbstractTask {
 	
@@ -23,68 +22,60 @@ public class CallActivity extends AbstractTask {
 
 	/**
 	 * 
-	 * @param b
+	 * @param value
 	 */
-	public void setIndependent(boolean b) {
-		properties.selectTab("Call Activity");
-		//properties.selectCheckBox(new CheckBox("Independent"), b);
-		properties.selectCheckBox(new CheckBox(1), b);
+	public void setIndependent(boolean value) {
+		properties.getTab("Call Activity", CallActivityTab.class).setIndependent(value);
 	}
 	
 	/**
 	 * 
-	 * @param b
+	 * @param value
 	 */
-	public void setWaitForCompletion(boolean b) {
-		properties.selectTab("Call Activity");
-//		properties.selectCheckBox(new CheckBox("Wait For Completion"), b);
-		properties.selectCheckBox(new CheckBox(0), b);
+	public void setWaitForCompletion(boolean value) {
+		properties.getTab("Call Activity", CallActivityTab.class).setWaitForCompletion(value);
 	}
 	
 	/**
 	 * 
-	 * @param id
+	 * @param activityName
 	 */
-	public void setCalledActivity(String id) {
-		properties.selectTab("Call Activity");
-		new PushButton(0).click();
-		
-		SWTBot viewBot = bot.shell("Called Activity").bot();
-		viewBot.text().setText(id);
-		viewBot.button("OK").click();
-		
+	public void setCalledActivity(String activityName) {
+		properties.getTab("Call Activity", CallActivityTab.class).setCalledActivity(activityName);
 	}
 
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.AbstractTask#setIsForCompensation(boolean)
+	 * 
+	 * @param value
 	 */
-	@Override
-	public void setIsForCompensation(boolean b) {
-		super.setIsForCompensation(b);
+	public void setIsForCompensation(boolean value) {
+		properties.getTab("Call Activity", CallActivityTab.class).setIsForCompensation(value);
 	}
 
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.AbstractTask#setOnEntryScript(java.lang.String, java.lang.String)
+	 *
+	 * @param language
+	 * @param script
 	 */
-	@Override
 	public void setOnEntryScript(String language, String script) {
-		super.setOnEntryScript(language, script);
+		properties.getTab("Call Activity", CallActivityTab.class).setOnEntryScript(new Expression(language, script));
 	}
 
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.AbstractTask#setOnExistScript(java.lang.String, java.lang.String)
+	 * 
+	 * @param language
+	 * @param script
 	 */
-	@Override
 	public void setOnExistScript(String language, String script) {
-		super.setOnExistScript(language, script);
+		properties.getTab("Call Activity", CallActivityTab.class).setOnExitScript(new Expression(language, script));
 	}
 
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.AbstractTask#addParameterMapping(org.jboss.tools.bpmn2.reddeer.editor.ParameterMapping)
+	 *
+	 * @param parameter
 	 */
-	@Override
-	public void addParameterMapping(ParameterMapping parameter) {
-		super.addParameterMapping(parameter);
+	public void addParameterMapping(ParameterMapping parameterMapping) {
+		properties.getTab("I/O Parameters", IOParametersTab.class).addParameter(parameterMapping);
 	}
 	
 }

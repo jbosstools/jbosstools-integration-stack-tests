@@ -8,7 +8,6 @@ import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequireme
 
 /**
  *     
- * @author mbaluch
  */
 @ProcessDefinition(name="BPMN2-BusinessRuleTask", project="EditorTestProject")
 public class BusinessRuleTaskTest extends JBPM6BaseTest {

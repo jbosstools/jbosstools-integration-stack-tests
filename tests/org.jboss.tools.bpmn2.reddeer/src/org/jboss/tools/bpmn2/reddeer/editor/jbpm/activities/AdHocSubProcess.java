@@ -5,7 +5,6 @@ import org.jboss.tools.bpmn2.reddeer.editor.ContainerConstruct;
 
 /**
  * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 public class AdHocSubProcess extends ContainerConstruct {
 

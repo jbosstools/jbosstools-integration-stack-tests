@@ -4,10 +4,10 @@ import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.tools.reddeer.dialog.ProjectPath;
 
 /**
  * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 public class BPMN2GenericModelWizard extends NewWizardDialog {
 

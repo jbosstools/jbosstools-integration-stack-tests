@@ -14,9 +14,7 @@ import org.junit.Test;
 
 /**
  *     
- * @author mbaluch
  */
-
 @ProcessDefinition(name="BPMN2-XPathExpression", project="EditorTestProject")
 public class XPathExpressionTest extends JBPM6BaseTest {
 

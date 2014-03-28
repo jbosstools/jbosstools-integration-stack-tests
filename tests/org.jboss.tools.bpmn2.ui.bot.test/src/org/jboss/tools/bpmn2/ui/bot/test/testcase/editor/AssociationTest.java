@@ -9,7 +9,6 @@ import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequireme
 
 /**
  *     
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 @ProcessDefinition(name="BPMN2-Association", project="EditorTestProject")
 public class AssociationTest extends JBPM6BaseTest {

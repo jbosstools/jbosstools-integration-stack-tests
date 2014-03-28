@@ -1,6 +1,7 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Message;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.MessageStartEvent;
@@ -10,7 +11,6 @@ import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequireme
 
 /**
  *     
- * @author mbaluch
  */
 @ProcessDefinition(name="BPMN2-MessageStart", project="EditorTestProject")
 public class MessageStartTest extends JBPM6BaseTest {
@@ -25,7 +25,7 @@ public class MessageStartTest extends JBPM6BaseTest {
 		process.add("StartProcess", ConstructType.MESSAGE_START_EVENT);
 		
 		MessageStartEvent start = new MessageStartEvent("StartProcess");
-		start.setMessageMapping("HelloMessage", "String", "BPMN2-MessageStart/x");
+		start.setMessageMapping(new Message("HelloMessage", "String"), "x");
 		start.append("Script", ConstructType.SCRIPT_TASK);
 		
 		ScriptTask script = new ScriptTask("Script");

@@ -14,7 +14,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/antlr-runtime.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/drools-core.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate-jpa-2.0-api.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jbpm-bpmn2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jbpm-bpmn2.jar" sourcepath="/home/mbaluch/work/src/jbpm"/>
 	<classpathentry exported="true" kind="lib" path="lib/joda-time.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/kie-internal.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/slf4j-api.jar"/>

@@ -1,15 +1,11 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.reddeer.editor.AbstractTask;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
-
+import org.jboss.tools.bpmn2.reddeer.properties.jbpm.ScriptTaskTab;
 
 /**
  * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 public class ScriptTask extends AbstractTask {
 
@@ -21,28 +17,21 @@ public class ScriptTask extends AbstractTask {
 		super(name, ConstructType.SCRIPT_TASK);
 	}
 
+	/**
+	 * 
+	 * @param language
+	 * @param script
+	 */
 	public void setScript(String language, String script) {
-		properties.selectTab("Script Task");
-		if (language != null && !language.isEmpty()) {
-			new LabeledCombo("Script Language").setSelection(language);
-		}
-		
-		/*
-		 * ISSUE: Widget lookup bug. Finds fine the first time but not the second.
-		 */
-		try {
-			new LabeledText("Script").setText(script);
-		} catch (SWTLayerException ex) {
-			bot.textWithLabel("Script").setText(script);
-		}
+		properties.getTab("Script Task", ScriptTaskTab.class).setScript(language, script);
 	}
 
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.AbstractTask#setIsForCompensation(boolean)
+	 *
+	 * @param value
 	 */
-	@Override
-	public void setIsForCompensation(boolean b) {
-		super.setIsForCompensation(b);
+	public void setIsForCompensation(boolean value) {
+		properties.getTab("Script Task", ScriptTaskTab.class).setIsForCompensation(value);
 	}
-		
+
 }

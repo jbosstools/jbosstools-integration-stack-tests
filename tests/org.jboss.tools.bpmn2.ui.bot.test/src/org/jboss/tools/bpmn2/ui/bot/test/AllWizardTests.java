@@ -7,10 +7,6 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import org.jboss.tools.bpmn2.ui.bot.test.testcase.dialog.*;
 
-/**
- * 
- * @author Marek Baluch
- */
 @RunWith(BPMN2Suite.class)
 @SuiteClasses({
 // Wizard tests

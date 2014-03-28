@@ -8,10 +8,6 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 
-/**
- *     
- * @author mbaluch
- */
 @ProcessDefinition(name="BPMN2-ConditionalStart", project="EditorTestProject")
 public class ConditionalStartTest extends JBPM6BaseTest {
 
@@ -21,7 +17,7 @@ public class ConditionalStartTest extends JBPM6BaseTest {
 		new Process("BPMN2-ConditionalStart").add("StartProcess", ConstructType.CONDITIONAL_START_EVENT);
 		
 		ConditionalStartEvent startEvent = new ConditionalStartEvent("StartProcess");
-		startEvent.setCondition("", "org.jbpm.bpmn2.objects.Person(name == \"john\")");
+		startEvent.setCondition("", "org.jbpm.bpmn2.objects.Person(name == \"john\")"); // causes NPE
 		startEvent.append("Hello", ConstructType.SCRIPT_TASK);
 		
 		ScriptTask scriptTask = new ScriptTask("Hello");

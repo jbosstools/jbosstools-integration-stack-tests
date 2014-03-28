@@ -9,8 +9,7 @@ import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 
 /**
- *     
- * @author mbaluch
+ * 
  */
 @ProcessDefinition(name="BPMN2-AdHocSubProcess",  project="EditorTestProject")
 public class AdHocSubProcessTest extends JBPM6BaseTest {

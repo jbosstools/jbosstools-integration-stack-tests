@@ -2,7 +2,6 @@ package org.jboss.tools.bpmn2.reddeer.editor;
 
 /**
  * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 public enum ConnectionType {
 	

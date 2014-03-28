@@ -20,36 +20,33 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.hamcrest.Matcher;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.tools.bpmn2.reddeer.matcher.ConstructOfType;
-import org.jboss.tools.bpmn2.reddeer.matcher.ConstructOnPoint;
-import org.jboss.tools.bpmn2.reddeer.matcher.ConstructWithName;
-import org.jboss.tools.bpmn2.reddeer.view.BPMN2Editor;
-import org.jboss.tools.bpmn2.reddeer.view.BPMN2PropertiesView;
+import org.jboss.tools.bpmn2.reddeer.ProcessEditorView;
+import org.jboss.tools.bpmn2.reddeer.ProcessPropertiesView;
+import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructOfType;
+import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructOnPoint;
+import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructWithName;
+import org.jboss.tools.bpmn2.reddeer.properties.jbpm.DescriptionTab;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 /**
  * Represents a BPMN activity in the canvas.
- * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 public class Construct {
 
 	protected Logger log = Logger.getLogger(getClass());
 	
+	protected ProcessEditorView editor = new ProcessEditorView();
+	protected ProcessPropertiesView properties = new ProcessPropertiesView();
+	protected SWTBot bot = new SWTBot();
+	
 	protected String name;
 	protected ConstructType type;
 	protected Construct parent;
-	
-	protected BPMN2Editor editor;
-	protected BPMN2PropertiesView properties;
-	protected SWTBot bot;
 	protected SWTBotGefEditPart editPart;
 	
 	/**
-	 * @see Construct(String, ConstructType, Construct, int, boolean)
 	 * @param name
 	 * @param type
 	 */
@@ -58,7 +55,6 @@ public class Construct {
 	}
 
 	/**
-	 * @see Construct(String, ConstructType, Construct, int, boolean)
 	 * @param name
 	 * @param type
 	 * @param parent
@@ -79,35 +75,46 @@ public class Construct {
 	 * @param select
 	 */
 	public Construct(String name, ConstructType type, Construct parent, int index, boolean select) {
-		this.editor = new BPMN2Editor();
-		this.properties = new BPMN2PropertiesView();
-		this.bot = new SWTBot();
-		
 		this.name = name;
 		this.type = type;
 		this.parent = parent;
 		
-		Matcher<EditPart>/*<? extends EditPart>*/ matcher1 = new ConstructOfType<EditPart>(type.name());
-		Matcher<EditPart>/*<? extends EditPart>*/ allMatcher = allOf(matcher1, new ConstructWithName<EditPart>(name));
-		
+		setUp(name, type, parent, index, select);
+	}
+	
+	private void setUp(String name, ConstructType type, Construct parent, int index, boolean select) {
+		List<Matcher<? super EditPart>> matcherList = new ArrayList<Matcher<? super EditPart>>();
+		if (name != null) {
+			matcherList.add(new ConstructWithName<EditPart>(name));
+		}
+		if (type != null) {
+			matcherList.add(new ConstructOfType<EditPart>(type));
+		}
+
+		Matcher<EditPart> allMatcher = allOf(matcherList);
 		if (parent != null) {
 			List<SWTBotGefEditPart> editParts = editor.getEditParts(parent.editPart, allMatcher);
 			if (!editParts.isEmpty()) {
-				editPart = editParts.get(index);
+				this.editPart = editParts.get(index);
 			}
-		} else if (name != null) {
-			editPart = editor.getEditPart(name);
 		} else {
-			editPart = editor.getEditPart(allMatcher, index);
+			this.editPart = editor.getEditPart(allMatcher, index);
 		}
-		
+
 		if (editPart == null) {
 			throw new RuntimeException("Could not find construct with name '" + name + "' of type '" + type.name() + "'");
+		}
+		if (name == null) {
+			this.name = editor.getName(editPart);
 		}
 		
 		if (select) {
 			select();
 		}
+	}
+	
+	public void refresh() {
+		setUp(name, type, parent, 0, true);
 	}
 	
 	/**
@@ -116,9 +123,8 @@ public class Construct {
 	 * @param name
 	 */
 	public void setName(String name) {
-		new BPMN2PropertiesView().selectTab("Description");
-		new LabeledText("Name").setText(name);
 		this.name = name;
+		this.properties.getTab("Description", DescriptionTab.class).setName(name);
 	}
 	
 	/**
@@ -127,7 +133,7 @@ public class Construct {
 	public void select() {
 		editor.selectEditPart(editPart);
 	}
-
+	
 	/**
 	 * Add a boundary event to this construct.
 	 *  
@@ -135,20 +141,16 @@ public class Construct {
 	 * @param eventType
 	 */
 	protected void addEvent(String name, ConstructType eventType) {
-		if (!eventType.toString().endsWith("BOUNDARY_EVENT")) {
+		if (!eventType.name().endsWith("BOUNDARY_EVENT")) {
 			throw new IllegalArgumentException("Can add only BOUNDARY_EVENT types.");
 		}
 
-		/*
-		 * Add the event
-		 */
+		// Add the event
 		Point p = getBounds().getTopLeft();
 		editor.activateTool(eventType.toToolPath()[0], eventType.toToolPath()[1]);
 		editor.click(p.x(), p.y());
-		
-		/*
-		 * Set the name of the event
-		 */
+
+		// Set the name of the event
 		Construct event = editor.getLastConstruct(eventType);
 		event.setName(name);
 	}
@@ -229,25 +231,19 @@ public class Construct {
 	 */
 	public void connectTo(Construct construct, ConnectionType connectionType) {
 		log.info("Connecting construct '" + this.name + "' and construct '" + construct.getName() + "' using '" + connectionType + "'.");
-		/*
-		 * Get the dimensions of the source (this) construct. 
-		 */
+		// Get the dimensions of the source (this) construct. 
 		Rectangle rs = getBounds();
-		/*
-		 * Get the dimensions of the target construct. 
-		 */
+		// Get the dimensions of the target construct. 
 		Rectangle rt = construct.getBounds();
-		/*
-		 * Create the connection.
-		 * 
-		 * Bring forward elements in case they are covered by another bigger
-		 * element. Then perform the clicks.
-		 */
+		// Create the connection.
+		// 
+		// Bring forward elements in case they are covered by another bigger
+		// element. Then perform the clicks.
 		editor.activateTool(connectionType.toName());
 		
 		select();
 		log.debug("\tConnecting points '" + rs.getCenter() + "' and '" + rt.getCenter() + "'");
-		// TODO: Clicking center on a Lane|Subprocess|etc. has a good chance to select something in it!
+		// ISSUE: Clicking center on a Lane|Subprocess|etc. has a good chance to select something in it!
 		editor.click(rs.getCenter().x(), rs.getCenter().y());
 		
 		construct.select();
@@ -278,9 +274,7 @@ public class Construct {
 	 * @return
 	 */
 	protected boolean isAvailable(Point p) {
-		/*
-		 * Check weather the point is not already taken by another child editPart.
-		 */
+		// Check weather the point is not already taken by another child editPart.
 		return editor.getEditParts(editPart.parent(), new ConstructOnPoint<EditPart>(p)).isEmpty();
 	}
 	
@@ -345,21 +339,18 @@ public class Construct {
 			default:
 				throw new UnsupportedOperationException();
 		}
-		/*
-		 * Check parent bounds. In case the point (marked as '+') is out of bounds.
-		 * 	- '*'  signals a properly added construct.
-		 * 	- '->' marks a connection between to '*'
-		 * 
-		 *     + N
-		 *    ________
-		 * + |        |
-		 *   |        | +
-		 * W | *->*   | E
-		 *   |________|
-		 *       +
-         *       S
-		 */
-		
+		// Check parent bounds. In case the point (marked as '+') is out of bounds.
+		// 	- '*'  signals a properly added construct.
+		// 	- '->' marks a connection between to '*'
+		// 
+		//     + N
+		//    ________
+		// + |        |
+		//   |        | +
+		// W | *->*   | E
+		//   |________|
+		//       +
+        //       S
 		if (parent != null) {
 			Rectangle parentBounds = editor.getBounds(parent.getEditPart());
 			
@@ -374,10 +365,8 @@ public class Construct {
 			if (point.y < parentStartY) point.y = parentStartY;
 			if (point.y > parentEndY) point.y = parentEndY;
 			
-			/*
-			 * Transform the point so it appears to be relative to the activity given
-			 * by parent not the whole canvas.
-			 */
+			// Transform the point so it appears to be relative to the activity given
+			// by parent not the whole canvas.
 			point.x = point.x() - parentBounds.x();
 			point.y = point.y() - parentBounds.y();
 		}
@@ -402,9 +391,7 @@ public class Construct {
 		if (attributes.length != values.length) {
 			throw new RuntimeException("Attribute names size '" + attributes.length + "' is not equal to attribute values size '" + values.length + "'");
 		}
-		/*
-		 * validate attributes
-		 */
+		// Validate attributes
 		List<String> errors = new ArrayList<String>();
 		Element e = getEditPartElement();
 		for (int i=0; i<attributes.length; i++) {
@@ -438,13 +425,9 @@ public class Construct {
 	 * @return
 	 */
 	public Element getEditPartElement() {
-		/*
-		 * required to store the code to xml
-		 */
+		// Required to store the code to xml
 		editor.save();
-		/*
-		 * find the element
-		 */
+		// Find the element
 		try {
 			InputStream inputStream = new ByteArrayInputStream(editor.getSourceText().getBytes());		
 			Document xmlDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputStream);
@@ -477,7 +460,7 @@ public class Construct {
 	 * 
 	 * @return
 	 */
-	public BPMN2Editor getEditor() {
+	public ProcessEditorView getEditor() {
 		return editor;
 	}
 	
@@ -485,7 +468,7 @@ public class Construct {
 	 * 
 	 * @return
 	 */
-	public BPMN2PropertiesView getProperties() {
+	public ProcessPropertiesView getProperties() {
 		return properties;
 	}
 	

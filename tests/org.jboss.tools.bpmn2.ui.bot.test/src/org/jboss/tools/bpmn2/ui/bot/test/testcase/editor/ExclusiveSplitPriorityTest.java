@@ -4,7 +4,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.AbstractGateway.Direction;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
 import org.jboss.tools.bpmn2.reddeer.editor.Position;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.FromExpression;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.InputParameterMapping;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ToDataInput;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
@@ -16,7 +16,6 @@ import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequireme
 
 /**
  *     
- * @author mbaluch
  */
 @ProcessDefinition(name="BPMN2-ExclusiveSplitPriority", project="EditorTestProject")
 public class ExclusiveSplitPriorityTest extends JBPM6BaseTest {
@@ -34,6 +33,8 @@ public class ExclusiveSplitPriorityTest extends JBPM6BaseTest {
 		gw.setDirection(Direction.DIVERGING);
 		gw.append("Script1", ConstructType.SCRIPT_TASK, Position.NORTH_EAST);
 		gw.append("Script2", ConstructType.SCRIPT_TASK, Position.SOUTH_EAST);
+		
+		gw.select();
 		gw.setCondition("Split -> Script1", "java", "return x!=null;");
 		gw.setCondition("Split -> Script2", "java", "return x==null;");
 		gw.setPriority("Split -> Script2", "1");
@@ -53,10 +54,10 @@ public class ExclusiveSplitPriorityTest extends JBPM6BaseTest {
 		
 		// TBD: switch to sendTask
 		UserTask task = new UserTask("Email");
-		task.addParameterMapping(new InputParameterMapping(new FromExpression("mvel", "This is an urgent email #{x}"), new ToDataInput("Body")));
-		task.addParameterMapping(new InputParameterMapping(new FromExpression("mvel", "Urgent email !"), new ToDataInput("Subject")));
-		task.addParameterMapping(new InputParameterMapping(new FromExpression("mvel", "you@mail.com"), new ToDataInput("To")));
-		task.addParameterMapping(new InputParameterMapping(new FromExpression("mvel", "ne@mail.com"), new ToDataInput("From")));
+		task.addParameterMapping(new ParameterMapping(new FromExpression("mvel", "This is an urgent email #{x}"), new ToDataInput("Body"), ParameterMapping.Type.INPUT));
+		task.addParameterMapping(new ParameterMapping(new FromExpression("mvel", "Urgent email !"), new ToDataInput("Subject"), ParameterMapping.Type.INPUT));
+		task.addParameterMapping(new ParameterMapping(new FromExpression("mvel", "you@mail.com"), new ToDataInput("To"), ParameterMapping.Type.INPUT));
+		task.addParameterMapping(new ParameterMapping(new FromExpression("mvel", "ne@mail.com"), new ToDataInput("From"), ParameterMapping.Type.INPUT));
 		task.append("EndProcess", ConstructType.TERMINATE_END_EVENT);
 	}
 	

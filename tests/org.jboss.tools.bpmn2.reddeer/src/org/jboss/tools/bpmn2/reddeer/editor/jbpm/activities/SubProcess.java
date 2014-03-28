@@ -1,14 +1,11 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 
-import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
 import org.jboss.tools.bpmn2.reddeer.editor.ContainerConstruct;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.DataType;
+import org.jboss.tools.bpmn2.reddeer.properties.jbpm.SubProcessTab;
 
 /**
- * TBD
  * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 public class SubProcess extends ContainerConstruct {
 
@@ -20,11 +17,12 @@ public class SubProcess extends ContainerConstruct {
 		super(name, ConstructType.SUB_PROCESS);
 	}
 	
+	/**
+	 * 
+	 * @param name
+	 * @param dataType
+	 */
 	public void addLocalVariable(String name, String dataType) {
-		properties.selectTab("Sub Process");
-		properties.toolbarButton("Variable List", "Add").click();
-		new LabeledText("Name").setText(name);
-		new DataType(dataType).add();
-		bot.toolbarButtonWithTooltip("Close").click();
+		properties.getTab("Sub Process", SubProcessTab.class).addVariable(name, dataType);
 	}
 }
