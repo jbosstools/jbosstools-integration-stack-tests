@@ -76,7 +76,8 @@ public class SimpleTest extends RedDeerTest {
 	
 	@Test
 	public void simpleTest() throws Exception {
-		new SwitchYardProjectWizard(PROJECT).impl("Bean").binding("SOAP").create();
+		String version = SwitchyardSuite.getLibraryVersion();
+		new SwitchYardProjectWizard(PROJECT, version).impl("Bean").binding("SOAP").create();
 
 		new Bean().setService("ExampleService").create();
 

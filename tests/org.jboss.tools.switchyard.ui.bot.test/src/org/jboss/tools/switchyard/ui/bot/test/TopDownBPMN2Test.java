@@ -86,8 +86,9 @@ public class TopDownBPMN2Test extends RedDeerTest {
 		new WorkbenchShell().maximize();
 
 		// Create new Switchyard project, Add support for Bean, BPM
-		new SwitchYardProjectWizard(PROJECT).impl("Bean", "BPM (jBPM)").groupId(GROUP_ID).packageName(PACKAGE)
-				.version("1.1.0.Final").create();
+		String version = SwitchyardSuite.getLibraryVersion();
+		new SwitchYardProjectWizard(PROJECT, version).impl("Bean", "BPM (jBPM)").groupId(GROUP_ID).packageName(PACKAGE)
+				.create();
 		openFile(PROJECT, PACKAGE_MAIN_RESOURCES, "META-INF", "switchyard.xml");
 		new BPM().setService(PROCESS_GREET).setBpmnFileName(BPMN_FILE_NAME).create(BPM_COORDS);
 		new SwitchYardEditor().save();

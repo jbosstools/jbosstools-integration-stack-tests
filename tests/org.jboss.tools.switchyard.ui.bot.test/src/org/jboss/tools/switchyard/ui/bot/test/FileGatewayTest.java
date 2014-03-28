@@ -54,7 +54,8 @@ public class FileGatewayTest extends RedDeerTest {
 
 	@Test
 	public void fileGatewayTest() throws Exception {
-		new SwitchYardProjectWizard(PROJECT).impl("Bean").binding("File").create();
+		String version = SwitchyardSuite.getLibraryVersion();
+		new SwitchYardProjectWizard(PROJECT, version).impl("Bean").binding("File").create();
 
 		// Create new service and interface
 		new Bean().setService("Info").create();

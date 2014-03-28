@@ -39,7 +39,8 @@ public class DomainSettingsTest {
 	@BeforeClass
 	public static void createProject() {
 		closeSwitchYardEditor();
-		new SwitchYardProjectWizard(PROJECT).create();
+		String version = SwitchyardSuite.getLibraryVersion();
+		new SwitchYardProjectWizard(PROJECT, version).create();
 	}
 
 	@AfterClass

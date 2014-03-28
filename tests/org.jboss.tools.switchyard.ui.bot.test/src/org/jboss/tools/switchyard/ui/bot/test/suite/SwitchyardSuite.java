@@ -29,6 +29,7 @@ public class SwitchyardSuite extends RedDeerSuite {
 
 	private static String serverName;
 	private static String serverHome;
+	private static String libraryVersion = "1.1.0.Final";
 
 	public SwitchyardSuite(Class<?> clazz, RunnerBuilder builder) throws InitializationError {
 		super(clazz, foo(builder));
@@ -63,6 +64,10 @@ public class SwitchyardSuite extends RedDeerSuite {
 	
 	public static String getServerHome() {
 		return serverHome;
+	}
+	
+	public static String getLibraryVersion() {
+		return libraryVersion;
 	}
 
 	private static void closeWelcome() {
@@ -101,9 +106,13 @@ public class SwitchyardSuite extends RedDeerSuite {
 		String type = param[0];
 		String version = param[1];
 		String path = new File(param[3]).getAbsolutePath();
-
+		
 		serverName = type + "-" + version;
 		serverHome = path;
+		
+		if (param.length > 4) {
+			libraryVersion = param[4];
+		}
 
 		ServerPreferencePage serverPP = new ServerPreferencePage();
 		serverPP.open();

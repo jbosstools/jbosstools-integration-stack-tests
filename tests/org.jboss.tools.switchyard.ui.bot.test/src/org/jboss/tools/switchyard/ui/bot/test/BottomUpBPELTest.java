@@ -43,7 +43,8 @@ public class BottomUpBPELTest extends RedDeerTest {
 	public static final String PROJECT = "bpel_project";
 	public static final String WSDL = "http://localhost:8080/bpel_project/SayHelloService?wsdl";
 
-	@Before @After
+	@Before
+	@After
 	public void closeSwitchyardFile() {
 		try {
 			new SwitchYardEditor().saveAndClose();
@@ -54,7 +55,8 @@ public class BottomUpBPELTest extends RedDeerTest {
 
 	@Test
 	public void bottomUpBPELtest() throws Exception {
-		new SwitchYardProjectWizard(PROJECT).impl("BPEL").binding("SOAP").create();
+		String version = SwitchyardSuite.getLibraryVersion();
+		new SwitchYardProjectWizard(PROJECT, version).impl("BPEL").binding("SOAP").create();
 		new ProjectExplorer().getProject(PROJECT).getProjectItem("src/main/resources").select();
 		new ImportFileWizard().importFile("resources/bpel", "SayHello.bpel");
 		new ImportFileWizard().importFile("resources/wsdl", "SayHelloArtifacts.wsdl");
@@ -85,7 +87,7 @@ public class BottomUpBPELTest extends RedDeerTest {
 		BindingWizard<SOAPBindingPage> soapWizard = BindingWizard.createSOAPBindingWizard();
 		soapWizard.getBindingPage().setContextPath(PROJECT);
 		soapWizard.finish();
-		
+
 		new SwitchYardEditor().save();
 
 		/* Test SOAP Response */

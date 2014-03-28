@@ -77,7 +77,8 @@ public class BindingsTest extends RedDeerTest {
 		} catch (Exception ex) {
 			// it is ok, we just try to close switchyard.xml if it is open
 		}
-		new SwitchYardProjectWizard(PROJECT).binding(GATEWAY_BINDINGS).create();
+		String version = SwitchyardSuite.getLibraryVersion();
+		new SwitchYardProjectWizard(PROJECT, version).binding(GATEWAY_BINDINGS).create();
 
 		// Sometimes the editor is not displayed properly, this happens only
 		// when the project is created by bot

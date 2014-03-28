@@ -24,7 +24,6 @@ import org.jboss.reddeer.swt.wait.WaitWhile;
 public class SwitchYardProjectWizard extends NewWizardDialog {
 
 	public static final String DIALOG_TITLE = "New SwitchYard Project";
-	public static final String DEFAULT_VERSION = "0.8.0.Final";
 
 	private String name;
 	private String groupId;
@@ -32,10 +31,10 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 	private String version;
 	private List<String[]> components;
 
-	public SwitchYardProjectWizard(String name) {
+	public SwitchYardProjectWizard(String name, String version) {
 		super("SwitchYard", "SwitchYard Project");
 		this.name = name;
-		// this.version = DEFAULT_VERSION;
+		this.version = version;
 		components = new ArrayList<String[]>();
 	}
 
@@ -60,11 +59,6 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		for (int i = 0; i < component.length; i++) {
 			components.add(new String[] { "Gateway Bindings", component[i] });
 		}
-		return this;
-	}
-
-	public SwitchYardProjectWizard version(String version) {
-		this.version = version;
 		return this;
 	}
 	

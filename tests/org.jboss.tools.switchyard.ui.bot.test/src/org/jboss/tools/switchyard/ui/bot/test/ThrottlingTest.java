@@ -57,7 +57,8 @@ public class ThrottlingTest extends RedDeerTest {
 	@Test
 	public void throttlingTest() {
 		/* Create SY Project */
-		new SwitchYardProjectWizard(PROJECT).create();
+		String version = SwitchyardSuite.getLibraryVersion();
+		new SwitchYardProjectWizard(PROJECT, version).create();
 
 		/* Add Service */
 		new SwitchYardEditor().addComponent("Service");

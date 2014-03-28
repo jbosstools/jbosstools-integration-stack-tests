@@ -57,7 +57,8 @@ public class DroolsTest extends RedDeerTest {
 	@Test
 	public void droolsCreationTest() {
 		//new project, support rules
-		new SwitchYardProjectWizard(PROJECT).impl("Rules (Drools)").groupId(GROUP_ID).packageName(PACKAGE).create();
+		String version = SwitchyardSuite.getLibraryVersion();
+		new SwitchYardProjectWizard(PROJECT, version).impl("Rules (Drools)").groupId(GROUP_ID).packageName(PACKAGE).create();
 		//open sy.xml, add rules, service, promote
 		new Drools().setName(INTERVIEW).setfileName(INTERVIEW+".drl").setService(INTERVIEW + "Service").create();
 		new Service(INTERVIEW + "Service").promoteService().setServiceName(INTERVIEW + "ServiceMain").finish();

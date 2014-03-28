@@ -64,7 +64,8 @@ public class BottomUpBPMN2Test extends RedDeerTest {
 	public void bottomUpBPMN2Test() throws Exception {
 		new WorkbenchShell().maximize();
 		
-		new SwitchYardProjectWizard(PROJECT).impl("BPM (jBPM)").version("1.1.0.Final").create();
+		String version = SwitchyardSuite.getLibraryVersion();
+		new SwitchYardProjectWizard(PROJECT, version).impl("BPM (jBPM)").create();
 		Project project = new ProjectExplorer().getProject(PROJECT);
 
 		// Import BPMN process

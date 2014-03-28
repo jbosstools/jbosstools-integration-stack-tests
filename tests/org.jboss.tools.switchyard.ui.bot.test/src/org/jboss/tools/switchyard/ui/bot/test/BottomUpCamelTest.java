@@ -27,6 +27,7 @@ import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
 import org.jboss.tools.switchyard.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.switchyard.ui.bot.test.suite.PerspectiveRequirement.Perspective;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerDeployment;
+import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Server;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.State;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Type;
@@ -63,7 +64,8 @@ public class BottomUpCamelTest extends RedDeerTest {
 
 	@Test
 	public void bottomUpCamelTest() throws Exception {
-		new SwitchYardProjectWizard(PROJECT).impl("Camel Route").binding("HTTP").create();
+		String version = SwitchyardSuite.getLibraryVersion();
+		new SwitchYardProjectWizard(PROJECT, version).impl("Camel Route").binding("HTTP").create();
 		Project project = new ProjectExplorer().getProject(PROJECT);
 
 		// Import java file

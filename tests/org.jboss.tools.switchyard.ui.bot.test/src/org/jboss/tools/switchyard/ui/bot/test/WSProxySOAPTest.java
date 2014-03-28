@@ -65,7 +65,8 @@ public class WSProxySOAPTest extends RedDeerTest {
 		new ServerDeployment().deployProject("web", "web.war");
 
 		/* Create SwicthYard Project */
-		new SwitchYardProjectWizard(PROJECT).impl("Camel Route").binding("SOAP").create();
+		String version = SwitchyardSuite.getLibraryVersion();
+		new SwitchYardProjectWizard(PROJECT, version).impl("Camel Route").binding("SOAP").create();
 		new ProjectExplorer().getProject(PROJECT).getProjectItem("src/main/resources").select();
 		new ImportFileWizard().importFile("resources/wsdl", WSDL);
 		new CamelJavaWizard().open().setName("Proxy").selectWSDLInterface(WSDL).finish();

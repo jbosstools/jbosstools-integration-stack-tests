@@ -51,8 +51,8 @@ public class ImplementationsPropertiesTest {
 	
 	@BeforeClass
 	public static void setUp() {
-		
-		new SwitchYardProjectWizard(PROJECT).create(); 
+		String version = SwitchyardSuite.getLibraryVersion();
+		new SwitchYardProjectWizard(PROJECT, version).create(); 
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
 		Component compo = new Bean().setService(BEAN).create();
