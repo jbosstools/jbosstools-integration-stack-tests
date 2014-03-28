@@ -2,6 +2,7 @@ package org.jboss.tools.bpmn2.ui.bot.test;
 
 import junit.framework.TestSuite;
 
+import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.jboss.tools.bpmn2.ui.bot.test.testcase.editor.*;import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
@@ -50,5 +51,9 @@ import org.junit.runners.Suite.SuiteClasses;
 	ConditionalBoundaryEventInterruptingTest.class,
 })
 public class AllEditorTests extends TestSuite {
+	
+	static {
+		System.setProperty(SWTBotPreferences.KEY_MAX_ERROR_SCREENSHOT_COUNT, "0");
+	}
 	
 }
