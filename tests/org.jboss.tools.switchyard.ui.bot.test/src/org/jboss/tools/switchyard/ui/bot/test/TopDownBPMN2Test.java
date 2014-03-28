@@ -117,6 +117,7 @@ public class TopDownBPMN2Test extends RedDeerTest {
 		openFile(PROJECT, PACKAGE_MAIN_RESOURCES, BPMN_FILE_NAME);
 		BPMN2Editor editor = new BPMN2Editor();
 		editor.click(1, 1);
+		new WorkbenchShell();
 		new BPMN2PropertiesView().selectTab("Process");
 		new LabeledText("Id").setText(PROCESS_GREET);
 		editor.setFocus();
