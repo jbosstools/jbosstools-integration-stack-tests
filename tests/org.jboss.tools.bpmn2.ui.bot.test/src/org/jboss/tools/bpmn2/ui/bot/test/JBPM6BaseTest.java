@@ -3,18 +3,15 @@ package org.jboss.tools.bpmn2.ui.bot.test;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.tools.bpmn2.reddeer.view.BPMN2Editor;
+import org.jboss.reddeer.swt.util.Display;
+import org.jboss.tools.bpmn2.reddeer.ProcessEditorView;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.jboss.tools.bpmn2.ui.bot.test.validator.JBPM6Validator;
 import org.junit.Assert;
@@ -22,13 +19,12 @@ import org.junit.Test;
 
 /**
  * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 public abstract class JBPM6BaseTest extends SWTBotTestCase {
 
 	protected Logger log = Logger.getLogger(getClass());  
 	
-	protected BPMN2Editor editor; 
+	protected ProcessEditorView editor; 
 	
 	protected ProblemsView problems;
 
@@ -47,7 +43,7 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 		
 		bpmnValidation = Boolean.parseBoolean(System.getProperty("bpmn.validation", "true"));
 
-		editor = new BPMN2Editor(definition.name().replace("\\s+", ""));
+		editor = new ProcessEditorView(definition.name().replace("\\s+", ""));
 		problems = new  ProblemsView();
 	}
 	
@@ -70,39 +66,19 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 		}
 	}
 	
-	protected void repairProcessModel() {
-		/*
-		 * Fix IDs dialog.
-		 */
-		new DefaultShell("Selection Needed").setFocus();
-		new PushButton("Select All").click();
-		new PushButton("OK").click();
-		/*
-		 * BPMN2 nature dialog
-		 */
-		try {
-			editor.projectNature(bpmnValidation);
-		} catch (SWTLayerException e ) {
-			// The dialog may not appear
-		}
-	}
-	
+	/**
+	 * 
+	 */
 	protected void saveProcessModel() {
 		editor.setFocus();
 		if (editor.isDirty()) {
 			editor.save();
-			/*
-			 * Sometimes generated IDs are not unique. Fix
-			 * it!
-			 */
-			try {
-				repairProcessModel();
-			} catch (SWTLayerException e) {
-				log.warn(e.getMessage());
-			}
 		}
 	}
 	
+	/**
+	 * 
+	 */
 	protected void validateProcessModel() {
 		/*
 		 * Make sure all content is saved.
@@ -115,10 +91,10 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 		/*
 		 * Validate using jBPM.
 		 */
-		log.info("Validating '" + editor.getTitle() + "'");
+		log.info("Validating '" + editor.getTitle() + "':");
 		JBPM6Validator validator = new JBPM6Validator();
 		boolean result = validator.validate(editor.getSourceText());
-		log.info("\tjBPM validation result: " + result);
+		log.info("\tjBPM validation result '" + (result ? "valid" : "not valid") + "'");
 		Assert.assertTrue(validator.getResultMessage(), result);
 		/*
 		 * Make sure there are no problems in the problems view.
@@ -131,11 +107,16 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 					error.append(e.getCell(0) + "\n");
 				}
 			}
-			log.info("\tEditor validation result: " + error);
-			Assert.assertTrue(error.toString(), error.length() == 0);
+			
+			boolean isErrorEmpty = error.length() == 0;
+			log.info("\tEditor validation result '" + (isErrorEmpty ? "OK" : error) + "'");
+			Assert.assertTrue(error.toString(), isErrorEmpty);
 		}
 	}
 	
+	/**
+	 * 
+	 */
 	protected void openProcessFile() {
 		/*
 		 * Open process definition.
@@ -148,6 +129,9 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 		editor.activateTool("Profiles", definition.profile());
 	}
 	
+	/**
+	 * 
+	 */
 	protected void closeProcessFile() {
 		new SWTWorkbenchBot().closeAllShells();
 		log.info("Closing '" + editor.getTitle() + "'");
@@ -155,13 +139,21 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 		editor.close();
 	}
 	
+	/**
+	 * 
+	 * @param description
+	 */
 	public void captureScreenshotWithDescription(String description) {
 		String fileName = "target/screenshots/" + description + "-" + getClass().getSimpleName() + "." + 
 				SWTBotPreferences.SCREENSHOT_FORMAT.toLowerCase();
 		captureScreenshot(fileName);
 	}
 	
-	public BPMN2Editor getEditor() {
+	/**
+	 * 
+	 * @return
+	 */
+	public ProcessEditorView getEditor() {
 		return editor;
 	}
 	
@@ -171,12 +163,9 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 	 * Taken from ui.bot.ext.
 	 */
 	private static void maximizeActiveShell() {
-		final Shell shell = (Shell) (new SWTBot().activeShell().widget);
-		new SWTBot().getDisplay().syncExec(new Runnable() {
-
+		Display.getDisplay().syncExec(new Runnable() {
 			public void run() {
-				shell.setMaximized(true);
-
+				new DefaultShell().getSWTWidget().setMaximized(true);
 			}
 		});
 	}

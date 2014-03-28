@@ -1,9 +1,9 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
-import org.jboss.tools.bpmn2.reddeer.editor.AbstractGateway.Direction;
 import org.jboss.tools.bpmn2.reddeer.editor.ConnectionType;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
 import org.jboss.tools.bpmn2.reddeer.editor.Position;
+import org.jboss.tools.bpmn2.reddeer.editor.AbstractGateway.Direction;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.UserTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.ParallelGateway;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
@@ -12,7 +12,6 @@ import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequireme
 
 /**
  *     
- * @author mbaluch
  */
 @ProcessDefinition(name="Evaluation", project="EmployeeEvaluation")
 public class ParallelSplitJoinTest extends JBPM6BaseTest {
@@ -34,7 +33,7 @@ public class ParallelSplitJoinTest extends JBPM6BaseTest {
 		start.append("Self Evaluation", ConstructType.USER_TASK);
 		
 		UserTask userTask1 = new UserTask("Self Evaluation");
-		userTask1.addActor("" ,"employee"); 
+		userTask1.addActor("employee"); 
 		userTask1.append("Gateway1", ConstructType.PARALLEL_GATEWAY, ConnectionType.SEQUENCE_FLOW);
 		
 		ParallelGateway gateway1 = new ParallelGateway("Gateway1");
@@ -44,14 +43,14 @@ public class ParallelSplitJoinTest extends JBPM6BaseTest {
 		gateway1.append("PM Evaluation", ConstructType.USER_TASK, ConnectionType.SEQUENCE_FLOW, Position.SOUTH_EAST);
 
 		UserTask userTask2 = new UserTask("HR Evaluation");
-		userTask2.addActor("", "Mary");
+		userTask2.addActor("Mary");
 		userTask2.append("Gateway2", ConstructType.PARALLEL_GATEWAY, ConnectionType.SEQUENCE_FLOW, Position.SOUTH_EAST);
 		
 		ParallelGateway gateway2 = new ParallelGateway("Gateway2");
 		gateway2.setDirection(Direction.CONVERGING);
 
 		UserTask userTask3 = new UserTask("PM Evaluation");
-	    userTask3.addActor("", "John");
+	    userTask3.addActor("John");
 		userTask3.connectTo(gateway2);
 		
 		gateway2.append("End", ConstructType.END_EVENT);

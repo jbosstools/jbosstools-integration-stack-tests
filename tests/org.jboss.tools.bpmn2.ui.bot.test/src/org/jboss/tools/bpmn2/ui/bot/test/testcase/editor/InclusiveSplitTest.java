@@ -11,7 +11,6 @@ import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequireme
 
 /**
  *     
- * @author mbaluch
  */
 @ProcessDefinition(name="BPMN2-InclusiveSplit", project="EditorTestProject")
 public class InclusiveSplitTest extends JBPM6BaseTest {
@@ -29,6 +28,8 @@ public class InclusiveSplitTest extends JBPM6BaseTest {
 		gateway.append("Script1", ConstructType.SCRIPT_TASK, Position.NORTH);
 		gateway.append("Script2", ConstructType.SCRIPT_TASK);
 		gateway.append("Script3", ConstructType.SCRIPT_TASK, Position.SOUTH);
+		
+		gateway.select();
 		gateway.setCondition("Gateway -> Script1", "java", "return x > 0;");
 		gateway.setCondition("Gateway -> Script2", "java", "return x > 10;");
 		gateway.setCondition("Gateway -> Script3", "java", "return x > 20;");

@@ -9,7 +9,6 @@ import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequireme
 
 /**
  *     
- * @author mbaluch
  */
 @ProcessDefinition(name="BPMN2-Import", project="EditorTestProject")
 public class ImportTest extends JBPM6BaseTest {

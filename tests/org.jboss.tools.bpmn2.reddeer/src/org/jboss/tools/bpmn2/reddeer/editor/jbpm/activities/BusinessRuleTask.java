@@ -1,13 +1,12 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 
-import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.reddeer.editor.AbstractTask;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
-
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Expression;
+import org.jboss.tools.bpmn2.reddeer.properties.jbpm.BusinessRuleTaskTab;
 
 /**
  * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 public class BusinessRuleTask extends AbstractTask {
 	
@@ -24,32 +23,33 @@ public class BusinessRuleTask extends AbstractTask {
 	 * @param group
 	 */
 	public void setRuleFlowGroup(String group) {
-		properties.selectTab("Business Rule Task");
-		new LabeledText("Rule Flow Group").setText(group);
+		properties.getTab("Business Rule Task", BusinessRuleTaskTab.class).setRuleFlowGroup(group);
 	}
 
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.AbstractTask#setIsForCompensation(boolean)
+	 * 
+	 * @param b
 	 */
-	@Override
-	public void setIsForCompensation(boolean b) {
-		super.setIsForCompensation(b);
+	public void setIsForCompensation(boolean value) {
+		properties.getTab("Business Rule Task", BusinessRuleTaskTab.class).setIsForCompensation(value);
 	}
 
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.AbstractTask#setOnEntryScript(java.lang.String, java.lang.String)
+	 * 
+	 * @param language
+	 * @param script
 	 */
-	@Override
 	public void setOnEntryScript(String language, String script) {
-		super.setOnEntryScript(language, script);
+		properties.getTab("Business Rule Task", BusinessRuleTaskTab.class).setOnEntryScript(new Expression(language, script));
 	}
 
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.AbstractTask#setOnExistScript(java.lang.String, java.lang.String)
+	 * 
+	 * @param language
+	 * @param script
 	 */
-	@Override
 	public void setOnExistScript(String language, String script) {
-		super.setOnExistScript(language, script);
+		properties.getTab("Business Rule Task", BusinessRuleTaskTab.class).setOnExitScript(new Expression(language, script));
 	}
 	
 }

@@ -8,7 +8,6 @@ import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequireme
 
 /**
  *     
- * @author mbaluch
  */
 @ProcessDefinition(name="BPMN2-UserTask", project="EditorTestProject")
 public class UserTaskTest extends JBPM6BaseTest {
@@ -19,7 +18,7 @@ public class UserTaskTest extends JBPM6BaseTest {
 		start.append("User Task", ConstructType.USER_TASK);
 
 		UserTask task = new UserTask("User Task");
-		task.addActor("", "john");
+		task.addActor("john");
 		task.append("EndProcess", ConstructType.TERMINATE_END_EVENT);
 	}
 	

@@ -1,9 +1,9 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.FromDataOutput;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.OutputParameterMapping;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ToVariable;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.UserTask;
@@ -13,7 +13,6 @@ import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequireme
 
 /**
  *     
- * @author mbaluch
  */
 @ProcessDefinition(name="BPMN2-BooleanStructureRef", project="EditorTestProject")
 public class BooleanStructureReferenceTest extends JBPM6BaseTest {
@@ -28,7 +27,7 @@ public class BooleanStructureReferenceTest extends JBPM6BaseTest {
 		start.append("User Task", ConstructType.USER_TASK);
 
 		UserTask userTask = new UserTask("User Task");
-		userTask.addParameterMapping(new OutputParameterMapping(new FromDataOutput("testHT"), new ToVariable("BPMN2-BooleanStructureRef/test")));
+		userTask.addParameterMapping(new ParameterMapping(new FromDataOutput("testHT"), new ToVariable("BPMN2-BooleanStructureRef/test"), ParameterMapping.Type.OUTPUT));
 		userTask.append("Script", ConstructType.SCRIPT_TASK);
 
 		ScriptTask scriptTask = new ScriptTask("Script");

@@ -9,7 +9,6 @@ import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequireme
 
 /**
  *     
- * @author mbaluch
  */
 @ProcessDefinition(name="BPMN2-OnEntryExitMixedNamespacedScriptProcess", project="EditorTestProject")
 public class OnEntryExitMixedNamespacedScriptProcessTest extends JBPM6BaseTest {

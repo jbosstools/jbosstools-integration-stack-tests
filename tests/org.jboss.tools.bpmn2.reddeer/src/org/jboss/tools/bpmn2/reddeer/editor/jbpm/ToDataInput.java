@@ -1,11 +1,14 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm;
 
+import org.jboss.reddeer.swt.api.Combo;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.reddeer.editor.MappingSide;
+import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.DataTypeDialog;
 
 /**
  * Represents the target side of parameter mapping.
- * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 public class ToDataInput implements MappingSide {
 	
@@ -14,16 +17,14 @@ public class ToDataInput implements MappingSide {
 	private String dataType;
 	
 	/**
-	 * Creates a new instance of ToDataOutput.
 	 * 
 	 * @param name
 	 */
 	public ToDataInput(String name) {
-		this(name, null);
+		this(name, "");
 	}
 	
 	/**
-	 * Creates a new instance of ToDataOutput.
 	 * 
 	 * @param name
 	 * @param dataType
@@ -33,23 +34,20 @@ public class ToDataInput implements MappingSide {
 		this.dataType = dataType;
 	}
 	
-    /**
-     * Define new data output.
-     */
-    public void add() {
-    	/*
-    	 * Use DataInput class as the steps required to define
-    	 * a new data output are the same.
-    	 */
-    	new FromDataOutput(name, dataType).add();
+    @Override
+    public void setUp() {
+    	new LabeledText("Name").setText(name);
+		
+		Combo dataTypeCombo = new LabeledCombo("Data Type");
+		if (!dataTypeCombo.getItems().contains(dataType)) {
+			new PushButton(0).click();
+			new DataTypeDialog().add(dataType);
+		}
+		dataTypeCombo.setSelection(dataType);
     }
 
-    /**
-     * 
-     * @return
-     */
-	@Override
-	public String getValue() {
+    @Override
+    public String getName() {
 		return name;
 	}
     

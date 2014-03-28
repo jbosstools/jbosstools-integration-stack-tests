@@ -1,6 +1,7 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Message;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.throwevents.MessageIntermediateThrowEvent;
@@ -9,7 +10,6 @@ import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequireme
 
 /**
  *     
- * @author mbaluch
  */
 @ProcessDefinition(name="BPMN2-IntermediateThrowMessageEvent", project="EditorTestProject")
 public class IntermediateThrowMessageEventTest extends JBPM6BaseTest {
@@ -24,7 +24,7 @@ public class IntermediateThrowMessageEventTest extends JBPM6BaseTest {
 		start.append("Message Event", ConstructType.MESSAGE_INTERMEDIATE_THROW_EVENT);
 
 		MessageIntermediateThrowEvent ithrow = new MessageIntermediateThrowEvent("Message Event");
-		ithrow.setMessageMapping("_2_Message", "String", "BPMN2-IntermediateThrowMessageEvent/m");
+		ithrow.setMessageMapping(new Message("_2_Message", "String"), "m");
 		ithrow.append("EndProcess", ConstructType.END_EVENT);
 	}
 	

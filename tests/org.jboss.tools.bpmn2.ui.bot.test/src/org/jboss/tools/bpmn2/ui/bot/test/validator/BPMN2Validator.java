@@ -29,7 +29,6 @@ import org.xml.sax.SAXParseException;
 
 /**
  * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 public class BPMN2Validator {
 

@@ -13,8 +13,6 @@ import org.junit.Test;
 
 /**
  * Verify functionality of the bpmn2 model wizard.
- * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 @ProcessRuntime()
 public class BPMN2ModelWizardTest {

@@ -1,25 +1,21 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways;
 
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.tools.bpmn2.reddeer.editor.AbstractGateway;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
-
+import org.jboss.tools.bpmn2.reddeer.properties.jbpm.EventBasedGatewayTab;
+import org.jboss.tools.bpmn2.reddeer.properties.jbpm.InclusiveGatewayTab;
 
 /**
- * ISSUES: 
- * 	1) Description is mixed with the pictogram.
- *  2) When adding a new condition 
- *  	+ select flow
- *      + click pencil
- *      + click add condition
- *      - condition expression is not visible
  *  
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 public class EventBasedGateway extends AbstractGateway {
 	
 	public enum Type {
-		EXCLUSIVE, PARALLEL
+		EXCLUSIVE, PARALLEL;
+		
+		public String label() {
+		    return name().charAt(0) + name().substring(1).toLowerCase();
+		}
 	}
 	
 	/**
@@ -35,35 +31,33 @@ public class EventBasedGateway extends AbstractGateway {
 	 * @param type
 	 */
 	public void setType(Type type) {
-		String visibleText = type.name().charAt(0) + 
-				type.name().substring(1).toLowerCase();
-		
-		properties.selectTab("Gateway");
-		new LabeledCombo("Event Gateway Type").setSelection(visibleText);
+		properties.getTab("Gateway", EventBasedGatewayTab.class).setType(type);
 	}
 
 	/**
 	 * 
+	 * @param value
 	 */
-	public void setInstantiate(boolean b) {
-		properties.selectTab("Gateway");
-		properties.selectCheckBox(bot.checkBox(), b);
+	public void setInstantiate(boolean value) {
+		properties.getTab("Gateway", EventBasedGatewayTab.class).setInstantiate(value);
 	}
 
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.AbstractGateway#setDirection(org.jboss.tools.bpmn2.reddeer.editor.AbstractGateway.Direction)
+	 * 
+	 * @param flow
+	 * @param lang
+	 * @param condition
 	 */
-	@Override
-	public void setDirection(Direction direction) {
-		super.setDirection(direction);
+	public void setCondition(String flow, String lang, String condition) {
+		properties.getTab("Gateway", InclusiveGatewayTab.class).setCondition(flow, lang, condition);
 	}
-	
+
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.constructs.AbstractGateway#setCondition(java.lang.String, java.lang.String, java.lang.String)
+	 * 
+	 * @param flow
 	 */
-	@Override
-	public void setCondition(String branch, String lang, String condition) {
-		super.setCondition(branch, lang, condition);
+	public void setDefaultBranch(String flow) {
+		properties.getTab("Gateway", InclusiveGatewayTab.class).setDefaultBranch(flow);
 	}
 	
 }

@@ -13,9 +13,6 @@ import org.junit.Test;
 
 /**
  * Verify functionality of the project wizard.
- * 
- * @author Marek Baluch <mbaluch@redhat.com>
- * 
  */
 @ProcessRuntime()
 public class JBPMProjectWizardTest extends SWTBotTestCase {

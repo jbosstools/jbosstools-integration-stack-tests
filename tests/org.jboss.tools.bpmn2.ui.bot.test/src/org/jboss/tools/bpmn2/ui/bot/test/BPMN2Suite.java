@@ -37,6 +37,7 @@ public class BPMN2Suite extends RedDeerSuite {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private static void readConfigurationProperties() {
 		Properties props = null;
 		try {

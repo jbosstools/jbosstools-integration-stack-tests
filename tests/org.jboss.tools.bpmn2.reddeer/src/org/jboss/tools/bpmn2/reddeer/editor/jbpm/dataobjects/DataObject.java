@@ -1,21 +1,20 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.dataobjects;
 
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.reddeer.editor.ConnectionType;
 import org.jboss.tools.bpmn2.reddeer.editor.Construct;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
 import org.jboss.tools.bpmn2.reddeer.editor.Position;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.DataType;
+import org.jboss.tools.bpmn2.reddeer.properties.jbpm.DataObjectTab;
 
 /**
  * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 public class DataObject extends Construct {
 
+	/**
+	 * 
+	 * @param name
+	 */
 	public DataObject(String name) {
 		super(name, ConstructType.DATA_OBJECT);
 	}
@@ -24,25 +23,8 @@ public class DataObject extends Construct {
 	 * 
 	 * @param name
 	 */
-	protected void setDataObjectName(String name) {
-		properties.selectTab(type.toToolName());
-		new LabeledText("Name").setText(name);
-	}
-	
-	/**
-	 * 
-	 * @param dataType
-	 */
-	public void setDataObjectType(String dataType) {
-		properties.selectTab(type.toToolName());
-		
-		SWTBotCombo nameBox = bot.comboBoxWithLabel("Data Type");
-		
-		if (properties.contains(nameBox, dataType)) {
-			nameBox.setSelection(dataType);
-		} else {
-			new DataType(dataType).add();
-		}
+	public void setDataType(String name) {
+		properties.getTab("Data Object", DataObjectTab.class).setDataType(name);
 	}
 
 	/**

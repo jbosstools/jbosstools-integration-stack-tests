@@ -6,7 +6,6 @@ import org.junit.Ignore;
 
 /**
  *     
- * @author mbaluch
  */
 @ProcessDefinition(name="BPMN2-CallActivityByName", project="EditorTestProject")
 public class CallActivityByNameTest extends JBPM6BaseTest {

@@ -1,16 +1,13 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents;
 
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Message;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.MessageEventDefinition;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.MessageEventDefinition.Type;
+import org.jboss.tools.bpmn2.reddeer.properties.jbpm.EventTab;
 
 /**
  * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 public class MessageStartEvent extends StartEvent {
 
@@ -24,40 +21,12 @@ public class MessageStartEvent extends StartEvent {
 
 	/**
 	 * 
-	 * @param messageName
-	 * @param dataType
+	 * @param message
+	 * @param variableName
 	 */
-	public void setMessageMapping(String message, String dataType, String target) {
-		properties.selectTab("Event");
-		new DefaultTable().select(0);
-		properties.toolbarButton("Event Definitions", "Edit").click();
-		
-		SWTBotCombo nameBox = bot.comboBoxWithLabel("Message");
-		String messageNameLabel  = message + "(" + dataType + ")";
-		if (properties.contains(nameBox, messageNameLabel)) {
-			nameBox.setSelection(messageNameLabel);
-		} else {
-			/*
-			 * Click Add
-			 */
-			new PushButton(0).click();
-			bot.shell("Create New Message").activate();
-			
-			new LabeledText("Name").setText(message);
-			try {
-				new LabeledCombo("Data Type").setSelection(dataType);
-			} catch (SWTLayerException e) {
-				new PushButton(0).click();
-				bot.shell("Create Data Type").activate();
-				new LabeledText("Structure").setText(dataType);
-				new PushButton("OK").click();
-			}
-
-			new PushButton("OK").click();
-			new LabeledCombo("Target").setSelection(target);
-		}
-		
-		properties.toolbarButton("Message Event Definition Details", "Close").click();
+	public void setMessageMapping(Message message, String targetVariable) {
+		properties.getTab("Event", EventTab.class).set(new MessageEventDefinition(message, targetVariable, Type.TARGET));
+		refresh();
 	}
 	
 }

@@ -9,12 +9,11 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 /**
  * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 public class JBPMMavenProjectWizard extends NewWizardDialog {
 
 	/**
-	 * Creates a new instance of JBPMMavenProjectWizard.
+	 * 
 	 */
 	public JBPMMavenProjectWizard() {
 		super("jBPM", "jBPM project (Maven)");

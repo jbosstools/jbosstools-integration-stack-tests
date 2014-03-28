@@ -5,15 +5,12 @@ import org.jboss.tools.bpmn2.reddeer.editor.MappingSide;
 
 /**
  * Mapping to a variable.
- * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 public class ToVariable implements MappingSide {
 
 	private String variableName;
 	
 	/**
-	 * Creates a new instance of ToVariable.
 	 * 
 	 * @param variableName
 	 */
@@ -21,20 +18,14 @@ public class ToVariable implements MappingSide {
 		this.variableName = variableName;
 	}
 	
-	/**
-	 * 
-	 */
 	@Override
-	public void add() {
+	public void setUp() {
 		new LabeledCombo("Target").setSelection(variableName);
 	}
-
-	/**
-	 * 
-	 */
+	
 	@Override
-	public String getValue() {
+	public String getName() {
 		return variableName;
 	}
-	
+
 }

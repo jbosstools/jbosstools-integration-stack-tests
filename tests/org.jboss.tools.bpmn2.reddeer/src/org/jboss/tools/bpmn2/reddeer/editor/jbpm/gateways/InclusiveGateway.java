@@ -2,10 +2,10 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways;
 
 import org.jboss.tools.bpmn2.reddeer.editor.AbstractGateway;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
+import org.jboss.tools.bpmn2.reddeer.properties.jbpm.InclusiveGatewayTab;
 
 /**
  * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 public class InclusiveGateway extends AbstractGateway {
 
@@ -18,27 +18,30 @@ public class InclusiveGateway extends AbstractGateway {
 	}
 	
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.AbstractGateway#setDirection(org.jboss.tools.bpmn2.reddeer.editor.AbstractGateway.Direction)
+	 * 
+	 * @param flow
+	 * @param lang
+	 * @param condition
 	 */
-	@Override
-	public void setDirection(Direction direction) {
-		super.setDirection(direction);
+	public void setCondition(String flow, String lang, String condition) {
+		properties.getTab("Gateway", InclusiveGatewayTab.class).setCondition(flow, lang, condition);
 	}
 
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.AbstractGateway#setCondition(java.lang.String, java.lang.String, java.lang.String)
+	 * 
+	 * @param flow
 	 */
-	@Override
-	public void setCondition(String branch, String lang, String condition) {
-		super.setCondition(branch, lang, condition);
+	public void setDefaultBranch(String flow) {
+		properties.getTab("Gateway", InclusiveGatewayTab.class).setDefaultBranch(flow);
 	}
-
+	
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.AbstractGateway#setDefaultBranch(java.lang.String)
+	 * 
+	 * @param flow
+	 * @param priority
 	 */
-	@Override
-	public void setDefaultBranch(String branch) {
-		super.setDefaultBranch(branch);
+	public void setPriority(String flow, String priority) {
+		properties.getTab("Gateway", InclusiveGatewayTab.class).setPriority(flow, priority);
 	}
 	
 }

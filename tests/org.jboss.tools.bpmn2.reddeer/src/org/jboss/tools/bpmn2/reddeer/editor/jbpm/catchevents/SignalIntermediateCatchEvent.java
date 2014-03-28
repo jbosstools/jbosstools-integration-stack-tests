@@ -1,36 +1,31 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.catchevents;
 
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.SignalEventDefinition;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.SignalEventDefinition.Type;
+import org.jboss.tools.bpmn2.reddeer.properties.jbpm.EventTab;
 
+/**
+ * 
+ */
 public class SignalIntermediateCatchEvent extends IntermediateCatchEvent {
 
+	/**
+	 * 
+	 * @param name
+	 */
 	public SignalIntermediateCatchEvent(String name) {
 		super(name, ConstructType.SIGNAL_INTERMEDIATE_CATCH_EVENT);
 	}
 	
-	public void setSignalMapping(String signal, String target) {
-		properties.selectTab("Event");
-		new DefaultTable().select(0);
-		properties.toolbarButton("Event Definitions", "Edit").click();
-		
-		SWTBotCombo nameBox = bot.comboBoxWithLabel("Signal");
-		if (properties.contains(nameBox, signal)) {
-			nameBox.setSelection(signal);
-		} else {
-			new PushButton(0).click();
-			new DefaultShell("Create New Signal").setFocus();
-			new LabeledText("Name").setText(signal);
-			new PushButton("OK").click();
-		}
-		new LabeledCombo("Target").setSelection(target);
-		
-		properties.toolbarButton("Signal Event Definition Details", "Close").click();
+	/**
+	 * 
+	 * @param signal
+	 * @param variable
+	 */
+	public void setSignalMapping(String signal, String targetVariable) {
+		properties.getTab("Event", EventTab.class).set(new SignalEventDefinition(signal, targetVariable, Type.TARGET));
+		refresh();
 	}
 	
 	

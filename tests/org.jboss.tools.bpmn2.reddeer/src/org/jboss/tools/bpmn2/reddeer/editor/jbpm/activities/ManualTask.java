@@ -2,11 +2,13 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 
 import org.jboss.tools.bpmn2.reddeer.editor.AbstractTask;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
-import org.jboss.tools.bpmn2.reddeer.editor.ParameterMapping;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Expression;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
+import org.jboss.tools.bpmn2.reddeer.properties.jbpm.IOParametersTab;
+import org.jboss.tools.bpmn2.reddeer.properties.jbpm.ManualTaskTab;
 
 /**
  * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 public class ManualTask extends AbstractTask {
 	
@@ -19,35 +21,37 @@ public class ManualTask extends AbstractTask {
 	}
 
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.AbstractTask#setIsForCompensation(boolean)
+	 *
+	 * @param value
 	 */
-	@Override
-	public void setIsForCompensation(boolean b) {
-		super.setIsForCompensation(b);
+	public void setIsForCompensation(boolean value) {
+		properties.getTab("Manual Task", ManualTaskTab.class).setIsForCompensation(value);
 	}
 
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.AbstractTask#setOnEntryScript(java.lang.String, java.lang.String)
+	 *
+	 * @param language
+	 * @param script
 	 */
-	@Override
 	public void setOnEntryScript(String language, String script) {
-		super.setOnEntryScript(language, script);
+		properties.getTab("Manual Task", ManualTaskTab.class).setOnEntryScript(new Expression(language, script));
 	}
 
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.AbstractTask#setOnExistScript(java.lang.String, java.lang.String)
+	 * 
+	 * @param language
+	 * @param script
 	 */
-	@Override
 	public void setOnExistScript(String language, String script) {
-		super.setOnExistScript(language, script);
+		properties.getTab("Manual Task", ManualTaskTab.class).setOnExitScript(new Expression(language, script));
 	}
 
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.AbstractTask#addInputParameter(org.jboss.tools.bpmn2.reddeer.editor.ParameterMapping)
+	 *
+	 * @param parameter
 	 */
-	@Override
-	public void addParameterMapping(ParameterMapping parameter) {
-		super.addParameterMapping(parameter);
+	public void addParameterMapping(ParameterMapping parameterMapping) {
+		properties.getTab("I/O Parameters", IOParametersTab.class).addParameter(parameterMapping);
 	}
 
 }

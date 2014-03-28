@@ -1,16 +1,14 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm;
 
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.tools.bpmn2.reddeer.properties.jbpm.DataItemsTab;
+import org.jboss.tools.bpmn2.reddeer.properties.jbpm.DefinitionsTab;
+import org.jboss.tools.bpmn2.reddeer.properties.jbpm.InterfacesTab;
+import org.jboss.tools.bpmn2.reddeer.properties.jbpm.ProcessTab;
 
 /**
  * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
-public class Process extends org.jboss.tools.bpmn2.reddeer.editor.Process {
+public class Process extends org.jboss.tools.bpmn2.reddeer.editor.AbstractProcess {
 
 	/**
 	 * 
@@ -26,17 +24,15 @@ public class Process extends org.jboss.tools.bpmn2.reddeer.editor.Process {
 	 * @param id
 	 */
 	public void setId(String id) {
-		properties.selectTab("Process");
-		new LabeledText("Id").setText(id);
+		properties.getTab("Process", ProcessTab.class).setId(id);
 	}
 	
 	/**
 	 * 
 	 * @param name
 	 */
-	public void setProcessName(String name) {
-		properties.selectTab("Process");
-		new LabeledText("Name").setText(name);
+	public void setName(String name) {
+		properties.getTab("Process", ProcessTab.class).setName(name);
 	}
 	
 	/**
@@ -44,8 +40,7 @@ public class Process extends org.jboss.tools.bpmn2.reddeer.editor.Process {
 	 * @param version
 	 */
 	public void setVersion(String version) {
-		properties.selectTab("Version");
-		new LabeledText("Id").setText(version);
+		properties.getTab("Process", ProcessTab.class).setVersion(version);
 	}
 	
 	/**
@@ -53,26 +48,23 @@ public class Process extends org.jboss.tools.bpmn2.reddeer.editor.Process {
 	 * @param name
 	 */
 	public void setPackageName(String name) {
-		properties.selectTab("Process");
-		new LabeledText("Package Name").setText(name);
+		properties.getTab("Process", ProcessTab.class).setPackageName(name);
 	}
 	
 	/**
 	 * 
-	 * @param b
+	 * @param value
 	 */
-	public void setAddHoc(boolean b) {
-		properties.selectTab("Process");
-		properties.selectCheckBox(new CheckBox(0), b); // Ad Hoc
+	public void setAddHoc(boolean value) {
+		properties.getTab("Process", ProcessTab.class).setAdHoc(value);
 	}
 	
 	/**
 	 * 
-	 * @param b
+	 * @param value
 	 */
-	public void setExecutable(boolean b) {
-		properties.selectTab("Process");
-		properties.selectCheckBox(new CheckBox(1), b); // Is Executable
+	public void setExecutable(boolean value) {
+		properties.getTab("Process", ProcessTab.class).setExecutable(value);
 	}
 	
 	/**
@@ -80,110 +72,79 @@ public class Process extends org.jboss.tools.bpmn2.reddeer.editor.Process {
 	 * @param name
 	 */
 	public void addDataType(String name) {
-		properties.selectTab("Definitions");
-		properties.toolbarButton("Data Type List", "Add").click();
-		bot.textWithLabel("Structure").setText(name);
-		bot.toolbarButtonWithTooltip("Close").click();
+		properties.getTab("Definitions", DefinitionsTab.class).addDataType(name);
 	}
 	
-	public void addImport(String dataType) {
-		properties.selectTab("Definitions");
-		properties.toolbarButton("Imports", "Add").click();
-		
-		String dataTypeLabel = dataType.substring(dataType.lastIndexOf(".") + 1) + " - " + dataType;
-		/*
-		 * Must by typed for the listener to get activated.
-		 */
-		SWTBot windowBot = bot.shell("Browse for a Java type to Import").bot();
-		SWTBotText text = windowBot.textWithLabel("Type:");
-		text.setText(dataType);
-		text.typeText(" ");
-		windowBot.tree().select(dataTypeLabel);
-		
-		new PushButton("OK").click();
-	}
-	
-	public void addMessage(String name, String dataType) {
-		properties.selectTab("Definitions");
-		
-		bot.toolbarButtonWithTooltip("Add", 2).click();
-		bot.textWithLabel("Name").setText(name);
-		
-		new DataType(dataType).add();
-
-		maximizeAndRestorePropertiesView();
-		bot.toolbarButtonWithTooltip("Close").click();
-	}
-	
-	public void addError(String name, String code, DataType dataType) {
-		properties.selectTab("Definitions");
-		
-		bot.toolbarButtonWithTooltip("Add", 3).click();
-		if (name != null && !name.isEmpty())
-			bot.textWithLabel("Name").setText(name);
-		if (code != null && !code.isEmpty())
-			bot.textWithLabel("Error Code").setText(code);
-		
-		if (dataType != null) {
-			dataType.add();
-		}
-		
-		bot.toolbarButtonWithTooltip("Close").click();
-	}
-	
-	public void addEscalation(String name, String code) {
-		properties.selectTab("Definitions");
-		
-		bot.toolbarButtonWithTooltip("Add", 4).click();
-		bot.textWithLabel("Escalation Code").setText(name);
-		bot.toolbarButtonWithTooltip("Close").click();
-	}
-	
-	public void addSignal(String name) {
-		properties.selectTab("Definitions");
-		
-		bot.toolbarButtonWithTooltip("Add", 5).click();
-		bot.textWithLabel("Name").setText(name);
-		bot.toolbarButtonWithTooltip("Close").click();
-	}
-	
-	public void addGlobalVariable(String name, String dataType) {
-		properties.selectTab("Data Items");
-		
-		bot.toolbarButtonWithTooltip("Add", 0).click();
-		bot.textWithLabel("Name").setText(name);
-		
-		new DataType(dataType).add();
-		
-		bot.toolbarButtonWithTooltip("Close").click();
-	}
-	
-	public void addLocalVariable(String name, String dataType) {
-		properties.selectTab("Data Items");
-		
-//		// TBD: the name is not the process name but file name
-//		properties.toolbarButton("Variable List for Process \"" + name + "\"", "Add").click();
-		
-		bot.toolbarButtonWithTooltip("Add", 1).click();
-		bot.textWithLabel("Name").setText(name);
-
-		new DataType(dataType).add();
-		
-		maximizeAndRestorePropertiesView();
-		bot.toolbarButtonWithTooltip("Close").click();
-	}
-	
-	public void addInterface() {
-		throw new UnsupportedOperationException();
-	}
-
-	/*
-	 * Bug in BPMN2 Editor where the close button can be found only after it was made visible. Maximize
-	 * and then restore the window to display the button.
+	/**
+	 * 
+	 * @param dataType
 	 */
-	private void maximizeAndRestorePropertiesView() {
-		for (int i=0; i<2; i++) {
-			properties.maximize();
-		}
+	public void addImport(String dataType) {
+		properties.getTab("Definitions", DefinitionsTab.class).addImport(dataType);
 	}
+	
+	/**
+	 * 
+	 * @param name
+	 * @param dataType
+	 */
+	public void addMessage(String name, String dataType) {
+		properties.getTab("Definitions", DefinitionsTab.class).addMessage(name, dataType);
+	}
+	
+	/**
+	 * 
+	 * @param name
+	 * @param code
+	 * @param dataType
+	 */
+	public void addError(String name, String code, String dataType) {
+		properties.getTab("Definitions", DefinitionsTab.class).addError(name, code, dataType);
+	}
+	
+	/**
+	 * 
+	 * @param name
+	 * @param code
+	 */
+	public void addEscalation(String name, String code) {
+		properties.getTab("Definitions", DefinitionsTab.class).addEscalation(name, code);
+	}
+	
+	/**
+	 * 
+	 * @param name
+	 */
+	public void addSignal(String name) {
+		properties.getTab("Definitions", DefinitionsTab.class).addSignal(name);
+	}
+	
+	/**
+	 * 
+	 * @param name
+	 * @param dataType
+	 */
+	public void addGlobalVariable(String name, String dataType) {
+		properties.getTab("Data Items", DataItemsTab.class).addGlobalVariable(name, dataType);
+	}
+	
+	/**
+	 * 
+	 * @param name
+	 * @param dataType
+	 */
+	public void addLocalVariable(String name, String dataType) {
+		properties.getTab("Data Items", DataItemsTab.class).addLocalVariable(name, dataType);
+	}
+	
+	/**
+	 * 
+	 * @param name
+	 * @param implementation
+	 * @param operationList
+	 */
+	public void addInterface(String name, String implementation, String ... operationList) {
+		properties.getTab("Interfaces", InterfacesTab.class).addInterface(name, implementation, operationList);
+	}
+
 }

@@ -1,16 +1,14 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways;
 
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.reddeer.editor.AbstractGateway;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
+import org.jboss.tools.bpmn2.reddeer.properties.jbpm.ExclusiveGatewayTab;
 
 /**
  * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 public class ExclusiveGateway extends AbstractGateway {
-	
+
 	/**
 	 * 
 	 * @param name
@@ -18,43 +16,31 @@ public class ExclusiveGateway extends AbstractGateway {
 	public ExclusiveGateway(String name) {
 		super(name, ConstructType.EXCLUSIVE_GATEWAY);
 	}
+	
+	/**
+	 * 
+	 * @param flow
+	 * @param lang
+	 * @param condition
+	 */
+	public void setCondition(String flow, String lang, String condition) {
+		properties.getTab("Gateway", ExclusiveGatewayTab.class).setCondition(flow, lang, condition);
+	}
 
 	/**
 	 * 
-	 * @param name
+	 * @param flow
+	 */
+	public void setDefaultBranch(String flow) {
+		properties.getTab("Gateway", ExclusiveGatewayTab.class).setDefaultBranch(flow);
+	}
+	
+	/**
+	 * 
+	 * @param flow
 	 * @param priority
 	 */
-	public void setPriority(String branch, String priority) {
-		select();
-		properties.selectTab("Gateway");
-		new DefaultTable(0).select(branch);
-		properties.toolbarButton("Sequence Flow List", "Edit").click();
-		new LabeledText("Priority").setText(priority);
-		properties.toolbarButton("Sequence Flow Details", "Close").click();
+	public void setPriority(String flow, String priority) {
+		properties.getTab("Gateway", ExclusiveGatewayTab.class).setPriority(flow, priority);
 	}
-	
-	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.AbstractGateway#setDirection(org.jboss.tools.bpmn2.reddeer.editor.AbstractGateway.Direction)
-	 */
-	@Override
-	public void setDirection(Direction direction) {
-		super.setDirection(direction);
-	}
-	
-	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.AbstractGateway#setCondition(java.lang.String, java.lang.String)
-	 */
-	@Override
-	public void setCondition(String branch, String lang, String condition) {
-		super.setCondition(branch, lang, condition);
-	}
-
-	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.AbstractGateway#setDefaultBranch(java.lang.String)
-	 */
-	@Override
-	public void setDefaultBranch(String branch) {
-		super.setDefaultBranch(branch);
-	}
-	
 }

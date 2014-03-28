@@ -19,7 +19,6 @@ import org.kie.api.io.ResourceType;
 
 /**
  * 
- * @author mbaluch
  */
 public class JBPM6Validator {
 	

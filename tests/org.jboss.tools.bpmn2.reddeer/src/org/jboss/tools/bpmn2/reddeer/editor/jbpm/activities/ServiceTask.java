@@ -1,15 +1,15 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.tools.bpmn2.reddeer.editor.AbstractTask;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
-import org.jboss.tools.bpmn2.reddeer.editor.ParameterMapping;
-
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ErrorRef;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Message;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
+import org.jboss.tools.bpmn2.reddeer.properties.jbpm.IOParametersTab;
+import org.jboss.tools.bpmn2.reddeer.properties.jbpm.ServiceTaskTab;
 
 /**
  * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 public class ServiceTask extends AbstractTask {
 
@@ -21,29 +21,39 @@ public class ServiceTask extends AbstractTask {
 		super(name, ConstructType.SERVICE_TASK);
 	}
 	
-	public void setOperation(String name) {
-		properties.selectTab("Service Task");
-		
-		new PushButton(0).click();
-		SWTBot viewBot = bot.shell("Create New Operation").bot();
-		viewBot.textWithLabel("Name").setText(name);
-		viewBot.button("OK").click();
+	/**
+	 * 
+	 * @param implementationUri
+	 */
+	public void setImplementation(String implementationUri) {
+		properties.getTab("Service Task", ServiceTaskTab.class).setImplementation(implementationUri);
+	}
+	
+	/**
+	 * 
+	 * @param operationContractName
+	 * @param inMessage
+	 * @param outMessage
+	 * @param errorRef
+	 */
+	public void setOperation(String operationContractName, Message inMessage, Message outMessage, ErrorRef errorRef) {
+		properties.getTab("Service Task", ServiceTaskTab.class).setOperation(operationContractName, inMessage, outMessage, errorRef);
 	}
 
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.AbstractTask#setIsForCompensation(boolean)
+	 *
+	 * @param value
 	 */
-	@Override
-	public void setIsForCompensation(boolean b) {
-		super.setIsForCompensation(b);
+	public void setIsForCompensation(boolean value) {
+		properties.getTab("Service Task", ServiceTaskTab.class).setIsForCompensation(value);
 	}
 
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.AbstractTask#addInputParameter(org.jboss.tools.bpmn2.reddeer.editor.ParameterMapping)
+	 *
+	 * @param parameter
 	 */
-	@Override
-	public void addParameterMapping(ParameterMapping parameter) {
-		super.addParameterMapping(parameter);
+	public void addParameterMapping(ParameterMapping parameterMapping) {
+		properties.getTab("I/O Parameters", IOParametersTab.class).addParameter(parameterMapping);
 	}
 
 }

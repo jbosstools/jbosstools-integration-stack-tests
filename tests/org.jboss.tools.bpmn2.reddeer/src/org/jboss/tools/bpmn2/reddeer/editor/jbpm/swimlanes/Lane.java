@@ -5,10 +5,8 @@ import org.jboss.tools.bpmn2.reddeer.editor.Construct;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
 import org.jboss.tools.bpmn2.reddeer.editor.ContainerConstruct;
 
-
 /**
  * 
- * @author mbaluch
  */
 public class Lane extends ContainerConstruct {
 
@@ -23,7 +21,7 @@ public class Lane extends ContainerConstruct {
 
 	@Override
 	public void connectTo(Construct construct, ConnectionType connectionType) {
-		// No operation! Lane cannot have any appendies It's only an organizational
+		// No operation! Lane cannot have any appendices It's only an organizational
 		// structure.
 	}
 	

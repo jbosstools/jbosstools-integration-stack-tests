@@ -15,7 +15,6 @@ import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessRuntimeRequirement.
 
 /**
  * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 public class ProcessRuntimeRequirement implements Requirement<ProcessRuntime> {
 
@@ -23,16 +22,21 @@ public class ProcessRuntimeRequirement implements Requirement<ProcessRuntime> {
 	
 	private String runtimeHome = System.getProperty("jbpm.runtime.dir");
 	
+	/**
+	 *
+	 */
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.TYPE)
 	public @interface ProcessRuntime {
 
 	}
 
+	@Override
 	public boolean canFulfill() {
 		return name != null && runtimeHome != null;
 	}
 
+	@Override
 	public void fulfill() {
 		new PreferencePage("jBPM", "Installed jBPM Runtimes") {}.open();
 		
@@ -60,14 +64,23 @@ public class ProcessRuntimeRequirement implements Requirement<ProcessRuntime> {
 		new PushButton("OK").click();
 	}
 
+	@Override
 	public void setDeclaration(ProcessRuntime declaration) {
 		// Not required
 	}
 	
+	/**
+	 * 
+	 * @param name
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 	
+	/**
+	 * 
+	 * @param runtimeHome
+	 */
 	public void setRuntimeHome(String runtimeHome) {
 		this.runtimeHome = runtimeHome;
 	}

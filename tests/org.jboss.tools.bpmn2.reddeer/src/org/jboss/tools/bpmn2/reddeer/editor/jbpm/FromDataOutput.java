@@ -1,15 +1,14 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm;
 
-import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.jboss.reddeer.swt.api.Combo;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.reddeer.editor.MappingSide;
+import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.DataTypeDialog;
 
 /**
  * Represents the target side of parameter mapping.
- * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 public class FromDataOutput implements MappingSide {
 
@@ -18,15 +17,14 @@ public class FromDataOutput implements MappingSide {
 	private String dataType;
 
 	/**
-	 * Creates a new instance of FromDataOutput.
+	 * 
 	 * @param name
 	 */
 	public FromDataOutput(String name) {
-		this(name, null);
+		this(name, "");
 	}
 	
 	/**
-	 * Creates a new instance of FromDataOutput.
 	 * 
 	 * @param name
 	 * @param dataType
@@ -36,30 +34,20 @@ public class FromDataOutput implements MappingSide {
 		this.dataType = dataType;
 	}
 	
-	/**
-	 * Define new data output.
-	 */
-	public void add() {
+	@Override
+	public void setUp() {
 		new LabeledText("Name").setText(name);
 		
-		if (dataType != null) {
-			try {
-				new LabeledCombo("Data Type").setSelection(dataType);
-			} catch (Exception e) {
-				new PushButton(0).click();
-				SWTBot windowBot = new SWTBot().shell("Create New Data Type").bot();
-				windowBot.textWithLabel("Structure").setText(dataType);
-				windowBot.button("OK").click();
-			}
+		Combo dataTypeCombo = new LabeledCombo("Data Type");
+		if (!dataTypeCombo.getItems().contains(dataType)) {
+			new PushButton(0).click();
+			new DataTypeDialog().add(dataType);
 		}
+		dataTypeCombo.setSelection(dataType);
 	}
-	
-	/**
-	 * 
-	 * @return 
-	 */
+
 	@Override
-	public String getValue() {
+	public String getName() {
 		return name;
 	}
 	

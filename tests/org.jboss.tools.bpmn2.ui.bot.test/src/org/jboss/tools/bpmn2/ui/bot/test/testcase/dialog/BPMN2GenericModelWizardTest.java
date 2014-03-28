@@ -4,8 +4,8 @@ import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.jface.exception.JFaceLayerException;
 import org.jboss.tools.bpmn2.reddeer.dialog.BPMN2GenericModelWizard;
-import org.jboss.tools.bpmn2.reddeer.dialog.JBPMProjectWizard;
 import org.jboss.tools.bpmn2.reddeer.dialog.BPMN2GenericModelWizard.ModelType;
+import org.jboss.tools.bpmn2.reddeer.dialog.JBPMProjectWizard;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessRuntimeRequirement.ProcessRuntime;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -20,9 +20,6 @@ import org.junit.Test;
  *     button. Writing the text into the field does not work!
  *  2) When a file name is entered and the user attempts to change the package then the
  *     name will be reset!
- *     
- * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 @ProcessRuntime()
 public class BPMN2GenericModelWizardTest {

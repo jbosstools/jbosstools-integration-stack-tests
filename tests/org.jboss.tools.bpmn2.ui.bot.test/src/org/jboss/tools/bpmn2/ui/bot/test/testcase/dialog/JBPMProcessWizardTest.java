@@ -12,8 +12,6 @@ import org.junit.Test;
 
 /**
  * Verify functionality of the process wizard.
- * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 @ProcessRuntime()
 public class JBPMProcessWizardTest {

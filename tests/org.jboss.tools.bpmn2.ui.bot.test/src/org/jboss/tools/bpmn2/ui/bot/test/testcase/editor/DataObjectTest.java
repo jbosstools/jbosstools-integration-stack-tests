@@ -12,7 +12,6 @@ import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequireme
 
 /**
  *     
- * @author mbaluch
  */
 @ProcessDefinition(name="BPMN2-DataObject", project="EditorTestProject")
 public class DataObjectTest extends JBPM6BaseTest {
@@ -34,7 +33,7 @@ public class DataObjectTest extends JBPM6BaseTest {
 		process.add("employee", ConstructType.DATA_OBJECT, start, Position.SOUTH);
 		
 		DataObject object = new DataObject("employee");
-		object.setDataObjectType("String");
+		object.setDataType("String");
 		object.connectTo(script, ConnectionType.DATA_ASSOCIATION);
 	}
 	

@@ -16,7 +16,6 @@ import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequireme
 
 /**
  *     
- * @author mbaluch
  */
 @ProcessDefinition(name="BPMN2-EventBasedSplit", project="EditorTestProject")
 public class EventBasedSplitTest extends JBPM6BaseTest {

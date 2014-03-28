@@ -18,7 +18,6 @@ import org.xml.sax.InputSource;
 
 /**
  * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 public class XMLAssert {
 

@@ -9,9 +9,6 @@ import org.junit.Test;
 
 /**
  * Verify functionality of the Maven project wizard.
- * 
- * @author Marek Baluch <mbaluch@redhat.com>
- * 
  */
 public class JBPMMavenProjectWizardTest extends SWTBotTestCase {
 

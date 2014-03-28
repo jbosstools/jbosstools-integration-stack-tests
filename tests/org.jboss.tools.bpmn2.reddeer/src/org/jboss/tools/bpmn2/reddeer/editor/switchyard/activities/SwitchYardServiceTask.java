@@ -1,16 +1,21 @@
 package org.jboss.tools.bpmn2.reddeer.editor.switchyard.activities;
 
-import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.reddeer.editor.AbstractTask;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
-import org.jboss.tools.bpmn2.reddeer.editor.ParameterMapping;
+import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.OperationDialog;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
+import org.jboss.tools.bpmn2.reddeer.properties.jbpm.IOParametersTab;
 
+/**
+ * TODO: apodhrad
+ */
 public class SwitchYardServiceTask extends AbstractTask{
 
+	@SuppressWarnings("unused")
 	private static final int ON_ENTRY = 0;
+	@SuppressWarnings("unused")
 	private static final int ON_EXIT = 1;
 	
 	public SwitchYardServiceTask(String name) {
@@ -21,17 +26,11 @@ public class SwitchYardServiceTask extends AbstractTask{
 		properties.selectTab("Service Task");
 		 
 		new PushButton(0).click();
-		SWTBot viewBot = bot.shell("Create New Operation").bot();
-		viewBot.textWithLabel("Name").setText(name);
-		viewBot.button("OK").click();
+		new OperationDialog().add(name, null, null, null);
 	}
 	
-	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.AbstractTask#addInputParameter(org.jboss.tools.bpmn2.reddeer.editor.ParameterMapping)
-	 */
-	@Override
-	public void addParameterMapping(ParameterMapping parameter) {
-		super.addParameterMapping(parameter);
+	public void addParameterMapping(ParameterMapping parameterMapping) {
+		properties.getTab("I/O Parameters", IOParametersTab.class).addParameter(parameterMapping);
 	}
 	
 	public void setTaskAttribute(String attribute, String text){

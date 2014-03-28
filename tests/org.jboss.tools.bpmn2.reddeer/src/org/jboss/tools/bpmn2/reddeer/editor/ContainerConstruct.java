@@ -3,11 +3,10 @@ package org.jboss.tools.bpmn2.reddeer.editor;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
-import org.jboss.tools.bpmn2.reddeer.matcher.ConstructOnPoint;
+import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructOnPoint;
 
 /**
  * 
- * @author Marek Baluch <mbaluch@redhat.com>
  */
 public class ContainerConstruct extends Construct {
 
@@ -17,7 +16,7 @@ public class ContainerConstruct extends Construct {
 	 * @param type
 	 */
 	public ContainerConstruct(String name, ConstructType type) {
-		this(name, type, null, -1, true);
+		this(name, type, null, 0, true);
 	}
 	
 	/**
@@ -44,13 +43,10 @@ public class ContainerConstruct extends Construct {
 		int x, y = 0;
 		
 		if ("Boundary Events".equals(sectionName)) {
-			/*
-			 * Upper left corner
-			 */
+			// Upper left corner
 			x = y = 5; 
 		} else {
 			x = bounds.width() / 8;
-			// TODO: Creates issues in the AdHocSubProcessTest. The click hits a connection.
 			y = bounds.height() / 10;
 		}
 		Point placeTo = new Point(x, y);
@@ -80,25 +76,19 @@ public class ContainerConstruct extends Construct {
 		Rectangle bounds = editor.getBounds(editPart);
 		
 		String sectionName = type.toToolPath()[0];
-		/*
-		 * Make sure that the point is available.
-		 */
+		// Make sure that the point is available.
 		if (!"Boundary Events".equals(sectionName)) {
 			if (isInternalAvailable(point)) {
 				throw new RuntimeException("'" + point + "' is not available");
 			}
 		}
 
-		/*
-		 * Add the construct using the tool in the palette.
-		 */
+		// Add the construct using the tool in the palette.
 		select();
 		log.info("Adding consturct '" + name + "' of type '" + type + "' to '" + point + "'");
 		editor.activateTool(type.toToolPath()[0], type.toToolPath()[1]);
 		editor.click(bounds.x() + point.x(), bounds.y() + point.y());
-		/*
-		 * Set name
-		 */
+		// Set name
 		Construct c = editor.getLastConstruct(type);
 		c.select();
 		c.setName(name);
@@ -112,20 +102,14 @@ public class ContainerConstruct extends Construct {
 	 * @return
 	 */
 	protected boolean isInternalAvailable(Point p) {
-		/*
-		 * The point must be inside this edit part.
-		 */
+		// The point must be inside this edit part.
 		Rectangle bounds = getBounds();
 		Point point = new Point(p.x() + bounds.width(), p.y() + bounds.height());
 		if (bounds.contains(point)) {
-			/*
-			 * Check weather the point is not already taken by another child editPart.
-			 */
+			// Check weather the point is not already taken by another child editPart.
 			return editor.getEditParts(editPart, new ConstructOnPoint<EditPart>(point)).isEmpty();
 		}
-		/*
-		 * Out of bounds.
-		 */
+		// Out of bounds.
 		return false;
 	}
 	

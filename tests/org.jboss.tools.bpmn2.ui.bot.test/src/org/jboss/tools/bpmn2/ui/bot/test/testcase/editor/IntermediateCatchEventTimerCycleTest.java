@@ -10,8 +10,6 @@ import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequireme
 /**
  * ISSUES:
  * 	1) Invalid timer string is not found! E.g. 500###ms
- *     
- * @author mbaluch
  */
 @ProcessDefinition(name="BPMN2-IntermediateCatchEventTimerCycle", project="EditorTestProject")
 public class IntermediateCatchEventTimerCycleTest extends JBPM6BaseTest {

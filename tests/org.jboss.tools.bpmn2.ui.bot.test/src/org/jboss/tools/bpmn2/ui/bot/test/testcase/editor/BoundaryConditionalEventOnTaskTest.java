@@ -12,8 +12,6 @@ import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequireme
 
 /**
  * ISSUE: language should be 'http://www.jboss.org/drools/rule' but it's not available.
- *     
- * @author mbaluch
  */
 @ProcessDefinition(name="BPMN2-BoundaryConditionalEventOnTask", project="EditorTestProject")
 public class BoundaryConditionalEventOnTaskTest extends JBPM6BaseTest {
@@ -28,7 +26,7 @@ public class BoundaryConditionalEventOnTaskTest extends JBPM6BaseTest {
 		startEvent.append("User Task", ConstructType.USER_TASK);
 		
 		UserTask userTask1 = new UserTask("User Task");
-		userTask1.addActor("", "john");
+		userTask1.addActor("john");
 		userTask1.append("User Task 2", ConstructType.USER_TASK, Position.NORTH_EAST);
 		userTask1.addEvent("Conditional Boundary Event", ConstructType.CONDITIONAL_BOUNDARY_EVENT);
 
@@ -38,7 +36,7 @@ public class BoundaryConditionalEventOnTaskTest extends JBPM6BaseTest {
 		
 		boundaryEvent.append("Condition met", ConstructType.SCRIPT_TASK, Position.SOUTH_EAST);
 		UserTask userTask2 = new UserTask("User Task 2");
-		userTask2.addActor("", "john");
+		userTask2.addActor("john");
 		userTask2.append("End 1", ConstructType.END_EVENT);
 		
 		ScriptTask scriptTask1 = new ScriptTask("Condition met");
