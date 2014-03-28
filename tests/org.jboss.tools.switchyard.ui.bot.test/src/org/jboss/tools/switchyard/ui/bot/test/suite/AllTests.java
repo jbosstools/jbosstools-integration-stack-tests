@@ -2,7 +2,7 @@ package org.jboss.tools.switchyard.ui.bot.test.suite;
 
 import junit.framework.TestSuite;
 
-import org.jboss.tools.switchyard.ui.bot.test.BPMTest;
+import org.jboss.tools.switchyard.ui.bot.test.TopDownBPMN2Test;
 import org.jboss.tools.switchyard.ui.bot.test.BindingsTest;
 import org.jboss.tools.switchyard.ui.bot.test.BottomUpBPELTest;
 import org.jboss.tools.switchyard.ui.bot.test.BottomUpBPMN2Test;
@@ -34,7 +34,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	BottomUpCamelTest.class,
 	BottomUpEJBTest.class,
 	BottomUpBPMN2Test.class,
-	BPMTest.class,
+	TopDownBPMN2Test.class,
 	DroolsTest.class,
 	ImplementationsPropertiesTest.class,
 	DomainSettingsTest.class,

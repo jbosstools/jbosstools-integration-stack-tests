@@ -2,37 +2,34 @@ package org.jboss.tools.switchyard.ui.bot.test;
 
 import static org.junit.Assert.assertEquals;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.reddeer.swt.condition.TableHasRows;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.test.RedDeerTest;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
-import org.jboss.tools.switchyard.reddeer.binding.HTTPBindingPage;
 import org.jboss.tools.switchyard.reddeer.component.Component;
 import org.jboss.tools.switchyard.reddeer.component.Service;
+import org.jboss.tools.switchyard.reddeer.condition.JUnitHasFinished;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
+import org.jboss.tools.switchyard.reddeer.view.JUnitView;
+import org.jboss.tools.switchyard.reddeer.widget.ProjectItemExt;
 import org.jboss.tools.switchyard.reddeer.wizard.ImportFileWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.NewServiceWizard;
-import org.jboss.tools.switchyard.reddeer.wizard.PromoteServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
 import org.jboss.tools.switchyard.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.switchyard.ui.bot.test.suite.PerspectiveRequirement.Perspective;
-import org.jboss.tools.switchyard.ui.bot.test.suite.ServerDeployment;
-import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Server;
-import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.State;
-import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Type;
 import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
-import org.jboss.tools.switchyard.ui.bot.test.util.HttpClient;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,18 +43,15 @@ import org.junit.runner.RunWith;
  */
 @CleanWorkspace
 @Perspective(name = "Java EE")
-@Server(type = Type.ALL, state = State.RUNNING)
 @RunWith(SwitchyardSuite.class)
 public class BottomUpBPMN2Test extends RedDeerTest {
 
 	public static final String PROJECT = "bpmn2_project";
 	public static final String PACKAGE = "com.example.switchyard.bpmn2_project";
 	public static final String BPMN2_FILE = "sample.bpmn";
-	public static final String JAVA_FILE = "MyHttpMessageComposer";
-	
-	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
 
-	@Before @After
+	@Before
+	@After
 	public void closeSwitchyardFile() {
 		try {
 			new SwitchYardEditor().saveAndClose();
@@ -67,22 +61,15 @@ public class BottomUpBPMN2Test extends RedDeerTest {
 	}
 
 	@Test
-	public void bottomUpCamelTest() throws Exception {
-		new SwitchYardProjectWizard(PROJECT).impl("BPM (jBPM)").binding("HTTP").create();
+	public void bottomUpBPMN2Test() throws Exception {
+		new WorkbenchShell().maximize();
+		
+		new SwitchYardProjectWizard(PROJECT).impl("BPM (jBPM)").version("1.1.0.Final").create();
 		Project project = new ProjectExplorer().getProject(PROJECT);
 
 		// Import BPMN process
 		project.getProjectItem("src/main/java", PACKAGE).select();
 		new ImportFileWizard().importFile("resources/bpmn", BPMN2_FILE);
-
-		// Import HTTP message composer
-		project.getProjectItem("src/main/java", PACKAGE).select();
-		new ImportFileWizard().importFile("resources/java", JAVA_FILE + ".java");
-
-		// Edit the composer
-		project.getProjectItem("src/main/java", PACKAGE, JAVA_FILE + ".java").open();
-		new TextEditor(JAVA_FILE + ".java").deleteLineWith("package")
-				.type("package " + PACKAGE + ";").saveAndClose();
 
 		// Add component
 		new SwitchYardEditor().addComponent("Component");
@@ -92,7 +79,7 @@ public class BottomUpBPMN2Test extends RedDeerTest {
 
 		// Select existing implementation
 		new PushButton("Browse...").click();
-		bot.shell("Select Resource").activate();
+		new DefaultShell("Select Resource");
 		new DefaultText(0).setText(BPMN2_FILE);
 		new WaitUntil(new TableHasRows(new DefaultTable()));
 		new PushButton("OK").click();
@@ -104,58 +91,51 @@ public class BottomUpBPMN2Test extends RedDeerTest {
 
 		// Edit the interface
 		new Service("Hello").doubleClick();
-		new TextEditor("Hello.java").typeAfter("Hello", "String sayHello(String name);")
-				.saveAndClose();
+		new TextEditor("Hello.java").typeAfter("Hello", "String sayHello(String name);").saveAndClose();
 
 		// Edit the BPMN process
-		new Component("Component").hover();
-		new Component("Component").click();
-		new Component("Component").contextButton("Properties").click();
-
+		new Component("Component").showProperties();
 		new DefaultTreeItem("Implementation").select();
-
 		new LabeledText("Process ID:").setText("com.sample.bpmn.hello");
 
 		new DefaultTabItem("Operations").activate();
 		new PushButton("Add").click();
-		
-		bot.table(0).click(0, 0);
+
+		new DefaultTable(0).getItem(0).doubleClick(0);
 		new DefaultText(1).setText("sayHello");
 		new DefaultTable(0).select(0);
 
 		new PushButton(2, "Add").click();
-		bot.table(2).click(0, 1);
+		new DefaultTable(2).getItem(0).doubleClick(1);
 		new DefaultText(1).setText("name");
 		new DefaultTable(0).select(0);
 
 		new PushButton(3, "Add").click();
-		bot.table(3).click(0, 0);
+		new DefaultTable(3).getItem(0).doubleClick(0);
 		new DefaultText(1).setText("result");
 		new DefaultTable(0).select(0);
 
 		new PushButton("OK").click();
 
-		PromoteServiceWizard wizard = new Service("Hello").promoteService();
-		wizard.activate().setServiceName("HelloService").finish();
-
-		// Add HTTP binding
-		new Service("HelloService").addBinding("HTTP");
-		BindingWizard<HTTPBindingPage> httpWizard = BindingWizard.createHTTPBindingWizard();
-		httpWizard.getBindingPage().setContextPath(PROJECT);
-		httpWizard.getBindingPage().setOperation("sayHello");
-		httpWizard.next();
-		httpWizard.getMessageComposerPage().setMessageComposer(JAVA_FILE);
-		httpWizard.finish();
-		
 		new SwitchYardEditor().save();
 
-		// Deploy and test the project
-		new ServerDeployment().deployProject(PROJECT);
-		String url = "http://localhost:8080/" + PROJECT;
-		HttpClient httpClient = new HttpClient(url);
-		assertEquals("Hello apodhrad", httpClient.send("apodhrad"));
-		assertEquals("Hello JBoss", httpClient.send("JBoss"));
+		// Create HelloTest
+		new Service("Hello").newServiceTestClass();
+		new TextEditor("HelloTest.java").deleteLineWith("String message").type("String message=\"BPMN2\";")
+				.deleteLineWith("assertTrue").type("Assert.assertEquals(\"Hello BPMN2\", result);").saveAndClose();
+		new SwitchYardEditor().save();
 
-		new WaitUntil(new ConsoleHasText("Hello JBoss"));
+		// Tun the test
+		ProjectItem item = project.getProjectItem("src/test/java", PACKAGE, "HelloTest.java");
+		new ProjectItemExt(item).runAsJUnitTest();
+		new WaitUntil(new JUnitHasFinished(), TimePeriod.LONG);
+
+		// Check the test
+		JUnitView jUnitView = new JUnitView();
+		jUnitView.open();
+		assertEquals("1/1", new JUnitView().getRunStatus());
+		assertEquals(0, new JUnitView().getNumberOfErrors());
+		assertEquals(0, new JUnitView().getNumberOfFailures());
 	}
+
 }

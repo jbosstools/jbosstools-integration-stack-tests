@@ -81,7 +81,7 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		activate();
 		setText("Group Id:", groupId);
 		setText("Package Name:", packageName);
-//		setVersion(version);
+		setVersion(version);
 		selectComponents(components);
 		finish();
 	}
@@ -112,8 +112,8 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 	}
 
 	private void setVersion(String version) {
-		Combo combo = new LabeledCombo("Runtime Version:");
-		if (version != null && !combo.getSelection().equals(version)) {
+		Combo combo = new LabeledCombo("Library Version:");
+		if (version != null && combo.isEnabled()) {
 			combo.setSelection(version);
 		}
 	}
