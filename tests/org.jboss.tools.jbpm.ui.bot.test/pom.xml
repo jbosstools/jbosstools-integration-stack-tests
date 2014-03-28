@@ -14,7 +14,7 @@
 
 	<properties>
 	  <test.class>AllTests</test.class>
-	  <swtbot.test.properties.file>./swtbot.properties</swtbot.test.properties.file>
+	  <swtbot.properties>./swtbot.properties</swtbot.properties>
 	  <systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=${swtbot.test.properties.file}</systemProperties>
 	</properties>
 
