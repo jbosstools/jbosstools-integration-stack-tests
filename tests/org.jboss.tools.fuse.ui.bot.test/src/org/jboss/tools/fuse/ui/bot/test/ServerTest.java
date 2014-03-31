@@ -5,7 +5,14 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.test.RedDeerTest;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.tools.fuse.reddeer.preference.ServerRuntimePreferencePage;
 import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
 import org.jboss.tools.fuse.ui.bot.test.requirement.ServerRequirement;
 import org.jboss.tools.fuse.ui.bot.test.requirement.ServerRequirement.Server;
@@ -20,6 +27,13 @@ import org.junit.Test;
  */
 @Server
 public class ServerTest extends RedDeerTest {
+	
+	private static final String ADD_BUTTON = "Add...";
+	private static final String NEW_WINDOW = "New Server Runtime Environment";
+	private static final String SERVER_SECTION = "JBoss Fuse";
+	private static final String FINISH_BUTTON = "Finish";
+	private static final String CANCEL_BUTTON = "Cancel";
+	private static final String PREFERENCES_WINDOW = "Preferences";
 	
 	private static boolean setUpIsDone = false;
 	
@@ -58,9 +72,53 @@ public class ServerTest extends RedDeerTest {
 		assertEquals(0, ServerManipulator.getServerRuntimes().size());
 	}
 	
+	/**
+	 * Tests the issue: https://issues.jboss.org/browse/ECLIPSE-1067
+	 */
 	@Test
-	public void downloadServerRuntimeTest() {
+	public void runtimeManipulationTest() {
 		
-		// TODO Test download runtime feature
+		new ServerRuntimePreferencePage().open();
+		
+		new PushButton(ADD_BUTTON).click();
+		new DefaultShell(NEW_WINDOW).setFocus();
+		new DefaultTreeItem(SERVER_SECTION).expand();
+		
+		// tests the _Finish_ button
+		for (TreeItem item : new DefaultTreeItem(SERVER_SECTION).getItems()) {
+			AbstractWait.sleep(TimePeriod.SHORT);
+			item.select();
+			try {
+				
+				assertFalse(new PushButton(FINISH_BUTTON).isEnabled());
+			} catch (AssertionError ex) {
+				
+				new DefaultTreeItem(SERVER_SECTION).select();
+				AbstractWait.sleep(TimePeriod.SHORT);
+				new PushButton(CANCEL_BUTTON).click();
+				AbstractWait.sleep(TimePeriod.NORMAL);
+				new DefaultShell().close();
+				throw ex;
+			}
+		}
+		
+		// tests the _Cancel_ button
+		AbstractWait.sleep(TimePeriod.SHORT);
+		new DefaultTreeItem(SERVER_SECTION, serverRequirement.getRuntime()).select();
+		new PushButton(CANCEL_BUTTON).click();
+		try {
+			
+			assertTrue(new DefaultShell().getText().equals(PREFERENCES_WINDOW));
+		} catch (AssertionError ex) {
+			
+			new DefaultShell().close();
+			new DefaultTreeItem(SERVER_SECTION).select();
+			AbstractWait.sleep(TimePeriod.SHORT);
+			new PushButton(CANCEL_BUTTON).click();
+			AbstractWait.sleep(TimePeriod.NORMAL);
+			new DefaultShell().close();
+			throw ex;
+		}
 	}
+	
 }
