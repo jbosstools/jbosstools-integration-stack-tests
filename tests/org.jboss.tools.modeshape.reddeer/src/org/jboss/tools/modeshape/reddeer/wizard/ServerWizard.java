@@ -37,6 +37,19 @@ public class ServerWizard extends NewWizardDialog {
 		finish();
 	}
 	
+	@Override
+	public void open(){
+		try {
+			super.open();
+		} catch (Exception e){
+			new DefaultTreeItem("Server").collapse();
+			new DefaultTreeItem("Server", "Server").expand();
+			new DefaultTreeItem("Server", "Server").select();
+			next();
+		}
+		
+	}
+	
 	private void selectType(String[] type){
 		String[] array = new String[type.length];
 		System.arraycopy(type, 0, array, 0, array.length);

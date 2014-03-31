@@ -40,52 +40,90 @@ public class PublishingTest extends SWTBotTestCase {
 	public static final String PUBLISH_AREA = "/files";
 	public static final String WORKSPACE = "default";
 	
+	
 	@Test
 	public void publishingTest() throws Exception {
+		try {
 		/* Create Java Project */
 		NewJavaProjectWizardDialog projectWizard = new NewJavaProjectWizardDialog();
 		projectWizard.open();
 		projectWizard.getFirstPage().setProjectName(PROJECT_NAME);
 		projectWizard.finish();
-
+		} catch (Exception ex){
+			ex.printStackTrace();
+		}
+		
+		try {
 		/* Create Text File */
 		NewFileCreationWizardDialog fileWizard = new NewFileCreationWizardDialog();
 		fileWizard.open();
 		fileWizard.getFirstPage().setFolderPath(PROJECT_NAME);
 		fileWizard.getFirstPage().setFileName(FILE_NAME);
 		fileWizard.finish();
-
+		} catch (Exception ex){
+			ex.printStackTrace();
+		}
+		
+		try {
 		/* Edit Text File */
 		SWTBotEditor editor = new SWTWorkbenchBot().editorByTitle(FILE_NAME);
 		editor.toTextEditor().typeText(FILE_CONTENT);
 		editor.saveAndClose();
-
-		/* Create ModeSHape Server */
-		new ModeshapeView().addServer(SERVER_URL, USER, PASSWORD);
-
-		/* Get ModeSHape Repository */
-		String repository = ModeshapeSuite.getModeshapeRepository();
+		} catch (Exception ex){
+			ex.printStackTrace();
+		}
 		
+		try {
+		/* Create ModeSHape Server */
+		new ModeshapeView().addServer(SERVER_URL, USER, PASSWORD);//admin=admin in modeshape-users.properties;admin=admin,connect,readonly,readwrite in modeshape-roles.properties
+		} catch (Exception ex){
+			ex.printStackTrace();
+		}
+		
+		String repository = null;
+		try {
+		/* Get ModeSHape Repository */
+		 repository = ModeshapeSuite.getModeshapeRepository();
+		} catch (Exception ex){
+			ex.printStackTrace();
+		}
+		
+		try {
 		/* Add publish area */
 		new ModeshapeView().addPublishArea(SERVER_URL, repository, WORKSPACE, PUBLISH_AREA);
 		System.out.println("DEBUG: publishing area " + PUBLISH_AREA +" added");
+		} catch (Exception ex){
+			ex.printStackTrace();
+		}
 		
+		try {
 		/* Publish */
 		new ModeshapeExplorer().publish(PROJECT_NAME).finish();
 		assertTrue(new ModeshapeWebdav(repository).isFileAvailable(PROJECT_NAME + "/" + FILE_NAME, USER, PASSWORD));
 		System.out.println("DEBUG: files published (webdav)");
+		} catch (Exception ex){
+			ex.printStackTrace();
+		}
 		
+		try {
 		/* Published Locations */
 		PublishedLocations locations = new ModeshapeExplorer().showPublishedLocations(PROJECT_NAME, FILE_NAME);
 		String url = locations.getPublishedUrl();
 		locations.ok();
 		assertTrue(new ModeshapeWebdav(repository).isFileAvailable(new URL(url), USER, PASSWORD));
 		System.out.println("DEBUG: files published (url)");
+		} catch (Exception ex){
+			ex.printStackTrace();
+		}
 		
+		try {
 		/* Unpublish */
 		new ModeshapeExplorer().unpublish(PROJECT_NAME).finish();
 		assertFalse(new ModeshapeWebdav(repository).isFileAvailable(PROJECT_NAME + "/" + FILE_NAME, USER, PASSWORD));
 		System.out.println("DEBUG: files unpublished");
+		} catch (Exception ex){
+			ex.printStackTrace();
+		}
 	}
 
 }
