@@ -44,36 +44,42 @@ public class TeiidPublishingTest extends SWTBotTestCase {
 
 	@Test
 	public void test0() throws Exception{
+		//refresh connection to server
+		
+		
 		//public void publishingTest() throws Exception {
 		/* Create ModeShape Server */
-		new ModeshapeView().addServer(SERVER_URL, USER, PASSWORD);
-
-		new ImportProjectWizard("resources/projects/ModeShapeGoodies.zip").execute();
-		
-		//dialog - password to model
 		try {
-			if (bot.activeShell().getText().equals("Missing Password Required")){
-				new DefaultText().setText("mm");
-				new PushButton("OK").click();
-			}
+		new ModeshapeView().addServer(SERVER_URL, USER, PASSWORD);
 		} catch (Exception ex){
-			//do nothing
+			ex.printStackTrace();
 		}
 		
-		String repository = ModeshapeSuite.getModeshapeRepository();
+		try {
+		new ImportProjectWizard("resources/projects/ModeShapeGoodies.zip").execute();
+		if (bot.activeShell().getText().equals("Missing Password Required")){
+			new DefaultText().setText("mm");
+			new PushButton("OK").click();
+		}
+		} catch (Exception ex){
+			ex.printStackTrace();
+		}
+		
+		String repository = null;
 		try
 		{
+			repository = ModeshapeSuite.getModeshapeRepository();
 		//setup publish area, if necessary
 		new ModeshapeView().addPublishArea(SERVER_URL, repository, WORKSPACE, PUBLISH_AREA);
 		System.out.println("DEBUG: publishing area "+ PUBLISH_AREA+ " added");
-} catch (Exception ex){
-			
+		} catch (Exception ex){
+			ex.printStackTrace();
 		}
 		
 		try {
 		new ModeshapeExplorer().publish("ModeShapeGoodies").finish();
 		} catch (Exception ex){
-			
+			ex.printStackTrace();
 		}
 		
 		try {
@@ -85,12 +91,11 @@ public class TeiidPublishingTest extends SWTBotTestCase {
 		checkPublishedFile("/ModeShapeGoodies/PartsData.csv");
 		checkPublishedFile("/ModeShapeGoodies/RelModels/Books_Oracle.xmi");
 		checkPublishedFile("/ModeShapeGoodies/RelModels/BooksInfo.xmi");
+		System.out.println("DEBUG: files published (webdav)");//^
 		} catch (Exception ex){
-			
+			ex.printStackTrace();
 		}
 		
-		System.out.println("DEBUG: files published (webdav)");
-
 		try{
 		/* Test ModeShape VDB on Teiid server */
 		String path = ModeshapeSuite.getServerPath();
@@ -103,7 +108,7 @@ public class TeiidPublishingTest extends SWTBotTestCase {
 			DriverManager.registerDriver(new TeiidDriver(path + "/client/teiid-client.jar"));
 		}
 		} catch (Exception ex){
-			
+			ex.printStackTrace();
 		}
 
 		try {
@@ -123,8 +128,8 @@ public class TeiidPublishingTest extends SWTBotTestCase {
 			assertTrue("Model 'BooksInfo' isn't involved in ModeShape VDB", result.contains("BooksInfo"));
 		}
 		System.out.println("DEBUG: files published (sql query)");
-} catch (Exception ex){
-			
+		} catch (Exception ex){
+			ex.printStackTrace();
 		}
 		
 	}
