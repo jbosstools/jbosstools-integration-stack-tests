@@ -3,15 +3,19 @@ package org.jboss.tools.switchyard.reddeer.wizard;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.api.Combo;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 
@@ -78,6 +82,7 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		setVersion(version);
 		selectComponents(components);
 		finish();
+		update();
 	}
 
 	@Override
@@ -99,6 +104,19 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		new WaitWhile(new JobIsRunning(), timeout);
 	}
 
+	public void update() {
+		ProjectExplorer projectExplorer = new ProjectExplorer();
+		projectExplorer.open();
+		projectExplorer.getProjects().get(0).select();
+		new ContextMenu("Maven", "Update Project...").select();
+		new DefaultShell("Update Maven Project");
+		new CheckBox("Force Update of Snapshots/Releases").toggle(true);
+		new PushButton("OK").click();
+
+		AbstractWait.sleep(TimePeriod.NORMAL);
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+	}
+	
 	private void setText(String label, String value) {
 		if (value != null) {
 			new LabeledText(label).setText(value);
