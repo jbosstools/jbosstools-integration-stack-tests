@@ -4,11 +4,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.swt.handler.WidgetHandler;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.reddeer.swt.util.Display;
@@ -109,10 +109,9 @@ public class ThrottlingTest extends RedDeerTest {
 
 	@AfterClass
 	public static void deleteProject() {
-		new SWTWorkbenchBot().closeAllShells();
+		new WorkbenchShell().closeAllShells();
 		new SwitchYardEditor().saveAndClose();
 		new ProjectExplorer().getProject(PROJECT).delete(true);
-		new SWTWorkbenchBot().closeAllShells();
 	}
 
 	public class ExtendedLabeledText extends LabeledText {

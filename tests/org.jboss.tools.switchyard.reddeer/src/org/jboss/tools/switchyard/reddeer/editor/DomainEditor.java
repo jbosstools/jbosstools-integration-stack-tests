@@ -7,7 +7,7 @@ import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.workbench.editor.DefaultEditor;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.switchyard.reddeer.shell.DomainPropertyShell;
 import org.jboss.tools.switchyard.reddeer.wizard.SecurityConfigurationWizard;
 
@@ -151,7 +151,7 @@ public class DomainEditor extends DefaultEditor {
 				return item;
 			}
 		}
-		return null;
+		throw new RuntimeException("Cannot find security configuration '" + name + "'");
 	}
 
 	public List<TreeItem> getSecurityConfigurations() {

@@ -71,6 +71,11 @@ public class ImplementationsPropertiesTest {
 		} catch (Exception ex) {
 			// it is ok, we just try to close switchyard.xml if it is open
 		}
+		try {
+			new DomainEditor().close(true);
+		} catch (Exception ex) {
+			// it is ok, we just try to close switchyard.xml if it is open
+		}
 	}
 	
 	@Before

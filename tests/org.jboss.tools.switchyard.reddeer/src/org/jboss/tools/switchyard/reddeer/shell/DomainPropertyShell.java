@@ -5,7 +5,9 @@ import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.switchyard.reddeer.condition.IsButtonEnabled;
 
 /**
  * 
@@ -35,6 +37,7 @@ public class DomainPropertyShell {
 	}
 
 	public void ok() {
+		new WaitUntil(new IsButtonEnabled("OK",	NAME, VALUE));
 		new PushButton("OK").click();
 		waitForFinish();
 	}

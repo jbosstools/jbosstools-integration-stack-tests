@@ -1,8 +1,7 @@
 package org.jboss.tools.switchyard.reddeer.wizard;
 
-import org.hamcrest.core.IsNull;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.condition.TableHasRows;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -34,8 +33,7 @@ public class SecurityConfigurationWizard extends WizardDialog {
 
 	public void setName(String name) {
 		activate();
-		new LabeledText(NAME).setFocus();
-		new LabeledText(NAME).setText(name);
+		new LabeledText(NAME).typeText(name);
 		new WaitUntil(new IsButtonEnabled("Finish", ROLES_ALLOWED, NAME), TimePeriod.LONG);
 	}
 
@@ -79,11 +77,16 @@ public class SecurityConfigurationWizard extends WizardDialog {
 
 	public void selectCallbackHandlerClass(String className) {
 		activate();
+		log.info("Open class browser");
 		new PushButton("Browse...").click();
+		new DefaultShell("");
+		log.info("Select callback handler to '" + className + "'");
 		new DefaultText().setText(className);
 		new WaitUntil(new TableHasRows(new DefaultTable()), TimePeriod.LONG);
+		new DefaultTable().select(0);
+		log.info("Close class browser");
 		new PushButton("OK").click();
-		new WaitWhile(new ShellWithTextIsActive(new IsNull<String>()));
+		new WaitWhile(new ShellWithTextIsAvailable(""));
 		activate();
 	}
 
@@ -91,4 +94,12 @@ public class SecurityConfigurationWizard extends WizardDialog {
 		activate();
 		return new LabeledText(CALLBACK_HANDLER).getText();
 	}
+
+	@Override
+	public void finish() {
+		new WaitUntil(new IsButtonEnabled("Finish", NAME, ROLES_ALLOWED, RUN_AS, SECURITY_DOMAIN));
+		super.finish();
+	}
+	
+	
 }

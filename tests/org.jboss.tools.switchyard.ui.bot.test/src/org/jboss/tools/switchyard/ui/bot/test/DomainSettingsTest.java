@@ -10,6 +10,7 @@ import java.util.List;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.tools.switchyard.reddeer.editor.DomainEditor;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.wizard.SecurityConfigurationWizard;
@@ -41,6 +42,7 @@ public class DomainSettingsTest {
 		closeSwitchYardEditor();
 		String version = SwitchyardSuite.getLibraryVersion();
 		new SwitchYardProjectWizard(PROJECT, version).create();
+		new WorkbenchShell().maximize();
 	}
 
 	@AfterClass
@@ -123,6 +125,11 @@ public class DomainSettingsTest {
 	public static void closeSwitchYardEditor() {
 		try {
 			new SwitchYardEditor().saveAndClose();
+		} catch (Exception ex) {
+			// it is ok, we just try to close switchyard.xml if it is open
+		}
+		try {
+			new DomainEditor().close(true);
 		} catch (Exception ex) {
 			// it is ok, we just try to close switchyard.xml if it is open
 		}
