@@ -17,10 +17,10 @@ import org.junit.runners.Suite.SuiteClasses;
  * 
  */
 @SuiteClasses({//TODO update tests
-	//E2eRecursiveXmlTextTest.class,
+	E2eRecursiveXmlTextTest.class,
 	//VirtualGroupTutorialTest.class,
-	//VirtualGroupTutorialUpdatedTest.class,
-	//TopDownWsdlTest.class,
+	VirtualGroupTutorialUpdatedTest.class,
+	TopDownWsdlTest.class,
 	E2eAudioBooksVdbExecutionTest.class,
 	RestCallTest.class,
 	ServerManagementTest.class

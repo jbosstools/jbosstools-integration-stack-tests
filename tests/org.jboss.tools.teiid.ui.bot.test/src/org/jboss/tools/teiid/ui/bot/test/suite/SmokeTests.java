@@ -4,6 +4,7 @@ import org.jboss.tools.teiid.ui.bot.test.ImportWizardTest;
 import org.jboss.tools.teiid.ui.bot.test.JDBCImportWizardTest;
 import org.jboss.tools.teiid.ui.bot.test.ModelWizardExtTest;
 import org.jboss.tools.teiid.ui.bot.test.ModelWizardTest;
+import org.jboss.tools.teiid.ui.bot.test.RelationalViewModelTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
@@ -15,7 +16,12 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @SuiteClasses({
 	ImportWizardTest.class,
-	ModelWizardTest.class
+	ModelWizardTest.class,
+	JDBCImportWizardTest.class,
+	ModelWizardExtTest.class,
+	//RelationalSourceModelTest.class,
+	RelationalViewModelTest.class,
+	//XMLDocumentViewModelTest.class*///TODO not supported yet
 })
 @RunWith(TeiidSuite.class)
 public class SmokeTests {

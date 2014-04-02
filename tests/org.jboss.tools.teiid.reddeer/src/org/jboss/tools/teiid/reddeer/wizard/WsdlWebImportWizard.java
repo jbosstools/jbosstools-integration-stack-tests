@@ -55,6 +55,18 @@ public class WsdlWebImportWizard extends ImportWizardDialog {
 		finish();
 	}
 	
+	@Override 
+	public void open(){
+		try {
+			super.open();
+		} catch (Exception e){
+			new DefaultTreeItem("Teiid Designer").collapse();
+			new DefaultTreeItem("Teiid Designer", "WSDL File or URL >> Web Service Model").expand();
+			new DefaultTreeItem("Teiid Designer", "WSDL File or URL >> Web Service Model").select();
+			next();
+		}
+	}
+	
 	public void importWsdl(Properties importProps, String wsdlLocation){
 		open();
 		

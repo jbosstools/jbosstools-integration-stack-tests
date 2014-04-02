@@ -81,6 +81,7 @@ public class CreateMetadataModel extends NewWizardDialog {
 	private String rootElement;
 	private Properties wsProps;
 	private String wsdlLocation;
+	private String[] selectedElement;
 	
 	public String[] getPathToXmlSchema() {
 		return pathToXmlSchema;
@@ -125,11 +126,16 @@ public class CreateMetadataModel extends NewWizardDialog {
 		if (modelBuilder != null){
 			next();
 			fillSecondPage();//sometimes do nothing
-			next();
+			if (new PushButton("Next >").isEnabled()){
+				next();//relational view model + transform existing  (9): just finish now
+			}
 			//3,4,5
 		}
 		//for XSD and WS is wizard same as in import
-		
+		if (clazz.equals(ModelClass.XML) && (modelBuilder != null) && modelBuilder.equals(ModelBuilder.BUILD_FROM_XML_SCHEMA)){
+			next();
+			fillFourthPage();
+		}
 		finish();
 		
 		//xsd
@@ -137,6 +143,13 @@ public class CreateMetadataModel extends NewWizardDialog {
 			new SWTWorkbenchBot().table().select("XML Schema (2001)");
 			new PushButton("OK").click();
 		}
+	}
+	
+	public void fillFourthPage() {
+		if (clazz.equals(ModelClass.XML) && modelBuilder.equals(ModelBuilder.BUILD_FROM_XML_SCHEMA)){
+			new DefaultTreeItem(selectedElement).setChecked(true);//TODO in cycle
+		}
+
 	}
 	
 	@Override
@@ -173,18 +186,8 @@ public class CreateMetadataModel extends NewWizardDialog {
 	
 	
 	public void fillSecondPage(){//TODO - redo, can be also web service view model... 
-	/*	if (pathToExistingModel != null){//type = cp ex or transform
-			new PushButton("...").click();
-			new DefaultTreeItem(pathToExistingModel).select();
-			new PushButton("OK").click();
-		} else if ((rootElement != null) && (pathToXmlSchema != null)){//XSD datatype, cp ex
-			new PushButton(0).click();
-			new DefaultTreeItem(pathToXmlSchema).select();
-			new PushButton("OK").click();
-			new DefaultTable().select(rootElement);
-			new PushButton(1).click();// >
-		}*/
-		if ((clazz.equals(ModelClass.XSD)) && (modelBuilder.equals(ModelBuilder.COPY_EXISTING))){
+		if ((clazz.equals(ModelClass.XSD)) && (modelBuilder.equals(ModelBuilder.COPY_EXISTING))
+				|| (clazz.equals(ModelClass.XML) && modelBuilder.equals(ModelBuilder.BUILD_FROM_XML_SCHEMA))){
 			new PushButton(0).click();
 			new DefaultTreeItem(pathToXmlSchema).select();
 			new PushButton("OK").click();
@@ -225,6 +228,14 @@ public class CreateMetadataModel extends NewWizardDialog {
 
 	public void setWsdlLocation(String wsdlLocation) {
 		this.wsdlLocation = wsdlLocation;
+	}
+
+	public String[] getSelectedElement() {
+		return selectedElement;
+	}
+
+	public void setSelectedElement(String[] selectedElement) {
+		this.selectedElement = selectedElement;
 	}
 	
 	//TODO add support for other choices
