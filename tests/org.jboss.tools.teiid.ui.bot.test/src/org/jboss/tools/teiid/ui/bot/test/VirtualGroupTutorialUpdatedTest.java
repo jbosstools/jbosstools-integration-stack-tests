@@ -49,21 +49,21 @@ import org.junit.Test;
  *
  */
 @Perspective(name = "Teiid Designer")//initialize tests in this perspective
-//@Server(type = Type.ALL, state = State.RUNNING)//uses info about server - swtbot.properties
+@Server(type = Type.ALL, state = State.RUNNING)//uses info about server - swtbot.properties
 public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 
 	private static final String PROJECT_NAME = "MyFirstProject";
 
 	private static TeiidBot teiidBot = new TeiidBot();
 	
-	private String jdbcProfile = "HSQLDB Profile";
-	private String jdbcProfile2 = "HSQLDB Profile 2";
+	private String jdbcProfile = "Generic JDBC Profile";
+	private String jdbcProfile2 = "Generic JDBC Profile 2";
 	
 	private static String SOURCE_MODEL_1 = "partssupModel1.xmi";
 	private static String SOURCE_MODEL_2 = "partssupModel2.xmi";
 	
-	private String props1 = "resources/db/ds1.properties";
-	private String props2 = "resources/db/ds2.properties";
+	private String props1 = "resources/db/dv6-ds1.properties";
+	private String props2 = "resources/db/dv6-ds2.properties";
 
 	private static String VIRTUAL_MODEL_NAME = "PartsVirtual.xmi";
 	private static final String VIRTUAL_TABLE_NAME = "OnHand";
@@ -102,7 +102,7 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 		createVDB();//refresh server
 		executeVDB();
 		executeSqlQueries();
-		createProcedure();
+		createProcedure();//procedure parameter TODO
 		updateVDB();
 		deployUpdatedVDB();
 		executeProcedureQuery();
@@ -143,7 +143,7 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 		//datasource ds2
 		importFromHsql(jdbcProfile2, SOURCE_MODEL_2);//import the same tables, other datasource
 		} catch (Exception ex){
-			//redo it manually
+			ex.printStackTrace();
 		}
 	}
 	
@@ -167,7 +167,7 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 		new DefaultTreeItem(0, PROJECT_NAME, SOURCE_MODEL_1, "PARTS").select();
 		
 		} catch (Exception ex){
-			//redo it manually
+			ex.printStackTrace();
 		}
 	}
 	
@@ -189,7 +189,7 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 		//parts virtual have been modified - save changes
 		closeActiveShell();
 	} catch (Exception ex){
-		//redo it manually
+		ex.printStackTrace();
 	}
 	}
 	
@@ -219,7 +219,7 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 		editor.save();
 		closeActiveShell();
 		} catch (Exception ex){
-			//redo it manually
+			ex.printStackTrace();
 		}
 	}
 
@@ -239,7 +239,7 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 		editor.addModel(PROJECT_NAME, VIRTUAL_MODEL_NAME);
 		editor.save();
 		} catch (Exception ex){
-			//redo it manually
+			ex.printStackTrace();
 		}
 	}
 	
@@ -259,7 +259,7 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 		
 		closeActiveShell();
 		} catch (Exception ex){
-			//redo it manually
+			ex.printStackTrace();
 		}
 	}
 	
@@ -319,7 +319,7 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 		result = DatabaseDevelopmentPerspective.getInstance().getSqlResultsView().getByOperation(TESTSQL_4);
 		//assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
 		} catch (Exception ex){
-			//redo it manually
+			ex.printStackTrace();
 		}
 	}
 	
@@ -398,7 +398,7 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 		editor.synchronizeAll();
 		editor.save();
 		} catch (Exception ex){
-			//redo it manually
+			ex.printStackTrace();
 		}
 	}
 
@@ -413,7 +413,7 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 		vdb.deployVDB();
 		vdb.executeVDB();
 		} catch (Exception ex){
-			//redo it manually
+			ex.printStackTrace();
 		}
 	}
 
@@ -430,7 +430,7 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 				.getByOperation(TESTSQL_5);
 		assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
 		} catch (Exception ex){
-			//redo it manually
+			ex.printStackTrace();
 		}
 	}
 
