@@ -30,7 +30,7 @@ import org.junit.Test;
  * 
  */
 @Perspective(name = "Teiid Designer")
-//@Server(type = Type.ALL, state = State.RUNNING)
+@Server(type = Type.ALL, state = State.RUNNING)
 public class TopDownWsdlTest extends SWTBotTestCase {
 
 	public static final String BUNDLE = "org.teiid.designer.ui.bot.test";
@@ -56,20 +56,20 @@ public class TopDownWsdlTest extends SWTBotTestCase {
 			/* Import wsdl */
 			new ImportFileWizard().importFile("resources/wsdl", "wsdl");//!!! missing SET "INTO FOLDER" !
 		} catch (Exception ex) {
-
+			ex.printStackTrace();
 		}
 		try {
 			new WsdlWebImportWizard().importWsdl(WS_NAME, PROJECT_NAME,
 					"TpcrOrderChecking.wsdl");
 		} catch (Exception ex) {
-
+			ex.printStackTrace();
 		}
 		try {
 			/* Create DB connection profile */
 			//teiidBot.createDatabaseProfile(CONNECTION_PROFILE, "resources/db/sqlserver_tpcr.properties");
 			new ConnectionProfileManager().createCPWithDriverDefinition(CONNECTION_PROFILE, "resources/db/sqlserver_tpcr.properties");
 		} catch (Exception ex) {
-
+			ex.printStackTrace();
 		}
 
 		/* Import a Relational Source */
@@ -82,7 +82,7 @@ public class TopDownWsdlTest extends SWTBotTestCase {
 			wizard.setModelName(fileName);
 			wizard.execute();
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}
 
 		try {
@@ -108,7 +108,7 @@ public class TopDownWsdlTest extends SWTBotTestCase {
 				modelEditor.saveAndValidateSql();//!!!NEEDS RECONCILING!!!
 				modelEditor.save();
 			} catch (Exception ex) {
-				// do it manually
+				ex.printStackTrace();
 			}
 
 			try {
@@ -134,7 +134,7 @@ public class TopDownWsdlTest extends SWTBotTestCase {
 				modelEditor.saveAndValidateSql();
 				modelEditor.save();
 			} catch (Exception e) {
-
+				e.printStackTrace();
 			}
 		} catch (Exception e) {
 
@@ -147,7 +147,7 @@ public class TopDownWsdlTest extends SWTBotTestCase {
 			createVDB.setName(VDB_NAME);
 			createVDB.execute();
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}
 
 		try {
@@ -156,7 +156,7 @@ public class TopDownWsdlTest extends SWTBotTestCase {
 			editor.addModel(PROJECT_NAME, WS_NAME + ".xmi");
 			editor.save();
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}
 
 		// TODO: check the following ChkOrdSvc.xmi ChkOrdSvcResponse.xmi
@@ -203,7 +203,7 @@ public class TopDownWsdlTest extends SWTBotTestCase {
 			sqlEditor.close();
 
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}
 		// Generate the WAR file
 	}

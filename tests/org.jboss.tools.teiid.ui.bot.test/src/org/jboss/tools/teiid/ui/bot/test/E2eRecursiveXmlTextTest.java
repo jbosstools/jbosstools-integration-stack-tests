@@ -66,7 +66,7 @@ import org.junit.Test;
  *
  */
 @Perspective(name = "Teiid Designer")
-//@Server(type = Type.ALL, state = State.RUNNING)
+@Server(type = Type.ALL, state = State.RUNNING)
 public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 	
 	//models
@@ -125,9 +125,10 @@ public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 		importWizard.setFile("EmpData.csv     <<<<");
 		importWizard.setViewModelName(EMPLOYEES_VIEW);
 		importWizard.setViewTableName(EMP_TABLE);
+		importWizard.setProjectName(PROJECT_NAME);
 		importWizard.execute(true);
-} catch (Exception e){
-			
+		} catch (Exception e){
+			e.printStackTrace();
 		}
 		
 		try{
@@ -138,8 +139,8 @@ public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 		xmlWizard.setDestination(PROJECT_NAME);
 		xmlWizard.setSchemas(new String[]{EMPLOYEES_SCHEMA_XSD});
 		xmlWizard.execute();
-} catch (Exception e){
-			
+		} catch (Exception e){
+			e.printStackTrace();
 		}
 		
 		try{
@@ -152,27 +153,32 @@ public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 		mModel.setName(EMP_DOC_VIEW);
 		mModel.setPathToXmlSchema(new String[]{PROJECT_NAME, EMPLOYEES_SCHEMA_XSD});
 		mModel.setRootElement(ROOT_ELEM);
-		mModel.open();
+		mModel.setSelectedElement(SUPERVISOR_XML_PATH);
+		
+		/*mModel.open();
 		//mModel.fillFirstPage(true);
 		mModel.fillFirstPage();
+		mModel.next();
+		mModel.fillSecondPage();
 		//mModel.fillSecondPage(new String[]{PROJECT_NAME, EMPLOYEES_SCHEMA_XSD}, ROOT_ELEM);
 		
-		mModel.next();
-		mModel.next();
+		//mModel.next();
+		//mModel.next();
 		//check the supervisor node
 		new DefaultTreeItem(SUPERVISOR_XML_PATH).setChecked(true);
-		mModel.finish();
+		mModel.finish();*/
+		mModel.execute();
 		//mModel.save();
-} catch (Exception e){
-			
+		} catch (Exception e){
+			e.printStackTrace();
 		}
 		
 		try{
 		//employees mapping transformation model
 		Project project = teiidBot.modelExplorer().getProject(PROJECT_NAME);
 		project.getProjectItem(EMP_DOC_VIEW+".xmi", SIMPLE_EMPLOYEES_DOCUMENT).open();//open = doubleclick
-} catch (Exception e){
-			
+		} catch (Exception e){
+			e.printStackTrace();
 		}
 		
 		
@@ -184,7 +190,7 @@ public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 		md.copyAttribute(EMPLOYEE, SUPERVISOR, "State");
 		md.addMappingClassColumns(SUPERVISOR, SUPERVISOR_COLUMNS2);
 		} catch (Exception e){
-			
+			e.printStackTrace();
 		}
 		
 		//employee - transf. diagram
@@ -195,7 +201,7 @@ public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 		mew.addTransformationSource(PROJECT_NAME, EMPLOYEES_VIEW+".xmi", EMP_TABLE);
 		new ModelEditor(EMP_DOC_VIEW+".xmi").save();
 		} catch (Exception e){
-			
+			e.printStackTrace();
 		}
 		
 		//reconciller
@@ -209,7 +215,7 @@ public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 		rec.close();
 		new ModelEditor(EMP_DOC_VIEW+".xmi").save();
 		} catch (Exception e){
-			
+			e.printStackTrace();
 		}
 		
 		try{
@@ -220,8 +226,8 @@ public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 		ise.createNewInputParam(EMPLOYEE, "mgrID : positiveInteger");
 		ise.close();//and save
 		me.save();
-} catch (Exception e){
-			
+		} catch (Exception e){
+			e.printStackTrace();
 		}
 		
 		try{
@@ -230,8 +236,8 @@ public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 		recEd.enableRecursion();
 		//recEd.limitRecursion(3);
 		recEd.close();
-} catch (Exception e){
-			
+		} catch (Exception e){
+			e.printStackTrace();
 		}
 		
 		md.showTransformation();
@@ -246,8 +252,8 @@ public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 		rec.clearRemainingUnmatchedSymbols();
 		rec.resolveTypes(ExpressionBuilder.KEEP_VIRTUAL_TARGET);
 		rec.close();
-} catch (Exception e){
-			
+		} catch (Exception e){
+			e.printStackTrace();
 		}
 		
 		try{
@@ -259,8 +265,8 @@ public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 		cb.apply();
 		cb.close();
 		me.save();
-} catch (Exception e){
-			
+		} catch (Exception e){
+			e.printStackTrace();
 		}
 		
 		try{
@@ -273,15 +279,15 @@ public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 		cmm.setModelBuilder(ModelBuilder.TRANSFORM_EXISTING);
 		cmm.setPathToExistingModel(new String[]{PROJECT_NAME, EMPLOYEES_VIEW+".xmi"});
 		cmm.execute();
-} catch (Exception e){
-			
+		} catch (Exception e){
+			e.printStackTrace();
 		}
 		
 		try{
 		//create data source
 		mew.createDataSource(ConnectionSourceType.USE_MODEL_CONNECTION_INFO, null, PROJECT_NAME, EMPDATA_SOURCE +"Source.xmi");
-} catch (Exception e){
-			
+		} catch (Exception e){
+			e.printStackTrace();
 		}
 		
 		try{
@@ -290,8 +296,8 @@ public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 		createVDB.setFolder(PROJECT_NAME);
 		createVDB.setName(VDB);
 		createVDB.execute(true);
-} catch (Exception e){
-			
+		} catch (Exception e){
+			e.printStackTrace();
 		}
 
 		try{
@@ -301,8 +307,8 @@ public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 		editor.addModel(PROJECT_NAME, EMP_DOC_VIEW);//adds also EMPLOYEES_VIEW, EMPLOYEES_SCHEMA_XSD
 		editor.addModel(PROJECT_NAME, EMP_V);
 		editor.save();
-} catch (Exception e){
-			
+		} catch (Exception e){
+			e.printStackTrace();
 		}
 		
 		try{
@@ -310,8 +316,8 @@ public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 		VDB vdb = new ModelExplorer().getModelProject(PROJECT_NAME).getVDB(VDB + ".vdb");
 		vdb.deployVDB();
 		vdb.executeVDB(true);
-} catch (Exception e){
-			
+		} catch (Exception e){
+			e.printStackTrace();
 		}
 		
 		try{
@@ -327,8 +333,8 @@ public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 				.getSqlResultsView().getByOperation(SQL1);
 		assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
 		sqlEd.close();
-} catch (Exception e){
-			
+		} catch (Exception e){
+			e.printStackTrace();
 		}
 	}
 	

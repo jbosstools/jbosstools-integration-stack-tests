@@ -49,7 +49,7 @@ public class ImportWizardTest extends SWTBotTestCase {
 		System.out.println("TEST METHOD END");
 	}
 	
-	@Test
+	//@Test
 	public void ddlImportTest() {
 		String ddl = teiidBot.toAbsolutePath("resources/ddl/hsqldb.ddl");
 
@@ -68,7 +68,7 @@ public class ImportWizardTest extends SWTBotTestCase {
 		teiidBot.checkDiagram(MODEL_PROJECT, "CustomerHsqldb.xmi", "ADDRESS");
 	}
 	
-	@Test
+	//@Test
 	public void dtfImportTest(){
 		String source = teiidBot.toAbsolutePath("resources/dtf/relationalModel.xml");
 		String target = "RelationalModel.xmi";
@@ -94,7 +94,7 @@ public class ImportWizardTest extends SWTBotTestCase {
 		teiidBot.checkDiagram(MODEL_PROJECT, target, "ProductIDIndex");
 	}
 	
-	@Test
+	@Test 
 	public void flatImportTest(){
 		String flatProfile = "Flat Profile";
 		//String propsFile = "resources/importWizard/csv-items.properties";
@@ -123,7 +123,7 @@ public class ImportWizardTest extends SWTBotTestCase {
 		teiidBot.checkDiagram(MODEL_PROJECT, "ItemView.xmi", "ItemTable");
 	}
 	
-	@Test
+	//@Test
 	public void xmlImportTest(){
 		String xmlProfile = "XML Local Profile";
 		//teiidBot.createXmlProfile(xmlProfile, "resources/flat/accounts.xml");
@@ -152,7 +152,7 @@ public class ImportWizardTest extends SWTBotTestCase {
 		teiidBot.checkDiagram(MODEL_PROJECT, "AccountView.xmi", "AccountTable");
 	}
 	
-	@Test
+	//@Test
 	public void wsdlToSOAPImportTest(){
 		String profile = "Hello Service";
 		/*String wsdl = teiidBot.toAbsolutePath("resources/wsdl/Hello.wsdl");
@@ -190,7 +190,7 @@ public class ImportWizardTest extends SWTBotTestCase {
 		teiidBot.checkDiagram(MODEL_PROJECT, "HelloServiceView.xmi", "sayHello_response");
 	}
 	
-	@Test
+	//@Test
 	public void wsdlToWSImportTest(){
 		//import wsdl
 		Properties iProps = new Properties();
@@ -218,7 +218,7 @@ public class ImportWizardTest extends SWTBotTestCase {
 		teiidBot.checkResource(MODEL_PROJECT, "WsdlToWS2Responses.xmi");
 	}
 	
-	@Test //throws exception! remote && addDependentSchemas=true (JBDS exception)
+	//@Test //throws exception! remote && addDependentSchemas=true (JBDS exception)
 	public void xmlSchemaImportTest(){
 		//local xsd
 		Properties iProps = new Properties();

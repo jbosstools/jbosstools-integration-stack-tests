@@ -65,7 +65,7 @@ public class ModelWizardTest extends SWTBotTestCase {
 		System.out.println("TEST METHOD END");
 	}
 
-	@Test
+	//@Test
 	public void relationalSourceModel() {
 		CreateMetadataModel createModel = new CreateMetadataModel();
 		createModel.setLocation(PROJECT_NAME);
@@ -79,7 +79,7 @@ public class ModelWizardTest extends SWTBotTestCase {
 		assertTrue(new ModelEditor(RELATIONAL_SOURCE_MODEL_NAME + ".xmi").isActive());
 	}
 
-	@Test
+	//@Test
 	public void relationalViewModel() {
 		CreateMetadataModel createModel = new CreateMetadataModel();
 		createModel.setLocation(PROJECT_NAME);
@@ -121,7 +121,7 @@ public class ModelWizardTest extends SWTBotTestCase {
 		assertTrue(new ModelEditor(XSD_DATATYPE_MODEL_NAME + ".xsd").isActive());
 	}
 
-	@Test
+	//@Test
 	public void webserviceViewModel() {
 		CreateMetadataModel createModel = new CreateMetadataModel();
 		createModel.setLocation(PROJECT_NAME);

@@ -17,6 +17,7 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.reference.ReferencedComposite;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 
 /**
@@ -81,6 +82,8 @@ public class CreateMetadataModel extends NewWizardDialog {
 	private String rootElement;
 	private Properties wsProps;
 	private String wsdlLocation;
+
+	private String[] selectedElement;
 	
 	public String[] getPathToXmlSchema() {
 		return pathToXmlSchema;
@@ -125,10 +128,21 @@ public class CreateMetadataModel extends NewWizardDialog {
 		if (modelBuilder != null){
 			next();
 			fillSecondPage();//sometimes do nothing
-			next();
+			if (new PushButton("Next >").isEnabled()){
+				next();//relational view model + transform existing  (9): just finish now
+			}
 			//3,4,5
 		}
 		//for XSD and WS is wizard same as in import
+		//ad 9) xmlview + xsd:
+		//3rd page: selected documents statistics (nothing)
+		//next
+		//4th page: preview generated documents (tree)
+		//finish
+		if (clazz.equals(ModelClass.XML) && (modelBuilder != null) && modelBuilder.equals(ModelBuilder.BUILD_FROM_XML_SCHEMA)){
+			next();
+			fillFourthPage();
+		}
 		
 		finish();
 		
@@ -139,6 +153,13 @@ public class CreateMetadataModel extends NewWizardDialog {
 		}
 	}
 	
+	public void fillFourthPage() {
+		if (clazz.equals(ModelClass.XML) && modelBuilder.equals(ModelBuilder.BUILD_FROM_XML_SCHEMA)){
+			new DefaultTreeItem(selectedElement).setChecked(true);//TODO in cycle
+		}
+		
+	}
+
 	@Override
 	public void open(){
 		try {
@@ -184,7 +205,8 @@ public class CreateMetadataModel extends NewWizardDialog {
 			new DefaultTable().select(rootElement);
 			new PushButton(1).click();// >
 		}*/
-		if ((clazz.equals(ModelClass.XSD)) && (modelBuilder.equals(ModelBuilder.COPY_EXISTING))){
+		if ((clazz.equals(ModelClass.XSD)) && (modelBuilder.equals(ModelBuilder.COPY_EXISTING))
+				|| (clazz.equals(ModelClass.XML) && modelBuilder.equals(ModelBuilder.BUILD_FROM_XML_SCHEMA))){
 			new PushButton(0).click();
 			new DefaultTreeItem(pathToXmlSchema).select();
 			new PushButton("OK").click();
@@ -195,7 +217,7 @@ public class CreateMetadataModel extends NewWizardDialog {
 			new PushButton("...").click();
 			new DefaultTreeItem(pathToExistingModel).select();
 			new PushButton("OK").click();
-		}
+		} 
 		
 	}
 	
@@ -225,6 +247,14 @@ public class CreateMetadataModel extends NewWizardDialog {
 
 	public void setWsdlLocation(String wsdlLocation) {
 		this.wsdlLocation = wsdlLocation;
+	}
+
+	public String[] getSelectedElement() {
+		return selectedElement;
+	}
+
+	public void setSelectedElement(String[] selectedElement) {
+		this.selectedElement = selectedElement;
 	}
 	
 	//TODO add support for other choices

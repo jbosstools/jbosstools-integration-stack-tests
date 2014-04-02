@@ -10,6 +10,7 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 
 /**
@@ -28,6 +29,7 @@ public class FlatImportWizard extends TeiidImportWizard {
 	private String viewModelName;
 	private String viewTableName;
 	private String importMode;
+	private String projectName;
 
 	private int headerLine;
 	private int dataLine;
@@ -131,6 +133,12 @@ public class FlatImportWizard extends TeiidImportWizard {
 	public void execute(boolean setViewNames) {		
 		executeBeginOfWizard();
 		
+		if (projectName != null){
+			new PushButton("...").click();
+			new DefaultTreeItem(projectName).select();
+			new PushButton("OK").click();
+		}
+		
 		new SWTWorkbenchBot().textWithLabel("Name:").setText(viewModelName);
 
 		new LabeledText("New view table name:").setText(viewTableName);
@@ -150,6 +158,12 @@ public class FlatImportWizard extends TeiidImportWizard {
 		setCheckedFile(file, true);
 		// TODO: LabeledText
 		new SWTWorkbenchBot().textWithLabel("Name:").setText(sourceModelName + "Source");
+		if (projectName != null){
+			new PushButton("...").click();
+			new DefaultTreeItem(projectName).select();
+			new PushButton("OK").click();
+		}
+		
 		next();
 		
 		//third page
@@ -273,6 +287,14 @@ public class FlatImportWizard extends TeiidImportWizard {
 
 	public void setOtherDelimiter(String otherDelimiter) {
 		this.delimiterCharacter = otherDelimiter;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 
 }
