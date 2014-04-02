@@ -49,21 +49,21 @@ import org.junit.Test;
  *
  */
 @Perspective(name = "Teiid Designer")//initialize tests in this perspective
-//@Server(type = Type.ALL, state = State.RUNNING)//uses info about server - swtbot.properties
+@Server(type = Type.ALL, state = State.RUNNING)//uses info about server - swtbot.properties
 public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 
 	private static final String PROJECT_NAME = "MyFirstProject";
 
 	private static TeiidBot teiidBot = new TeiidBot();
 	
-	private String jdbcProfile = "HSQLDB Profile";
-	private String jdbcProfile2 = "HSQLDB Profile 2";
+	private String jdbcProfile = "Generic JDBC Profile";
+	private String jdbcProfile2 = "Generic JDBC Profile 2";
 	
 	private static String SOURCE_MODEL_1 = "partssupModel1.xmi";
 	private static String SOURCE_MODEL_2 = "partssupModel2.xmi";
 	
-	private String props1 = "resources/db/ds1.properties";
-	private String props2 = "resources/db/ds2.properties";
+	private String props1 = "resources/db/dv6-ds1.properties";
+	private String props2 = "resources/db/dv6-ds2.properties";
 
 	private static String VIRTUAL_MODEL_NAME = "PartsVirtual.xmi";
 	private static final String VIRTUAL_TABLE_NAME = "OnHand";

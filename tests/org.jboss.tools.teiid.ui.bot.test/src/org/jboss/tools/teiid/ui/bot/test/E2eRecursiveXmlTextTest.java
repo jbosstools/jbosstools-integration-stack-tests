@@ -66,7 +66,7 @@ import org.junit.Test;
  *
  */
 @Perspective(name = "Teiid Designer")
-//@Server(type = Type.ALL, state = State.RUNNING)
+@Server(type = Type.ALL, state = State.RUNNING)
 public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 	
 	//models
@@ -152,17 +152,8 @@ public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 		mModel.setName(EMP_DOC_VIEW);
 		mModel.setPathToXmlSchema(new String[]{PROJECT_NAME, EMPLOYEES_SCHEMA_XSD});
 		mModel.setRootElement(ROOT_ELEM);
-		mModel.open();
-		//mModel.fillFirstPage(true);
-		mModel.fillFirstPage();
-		//mModel.fillSecondPage(new String[]{PROJECT_NAME, EMPLOYEES_SCHEMA_XSD}, ROOT_ELEM);
-		
-		mModel.next();
-		mModel.next();
-		//check the supervisor node
-		new DefaultTreeItem(SUPERVISOR_XML_PATH).setChecked(true);
-		mModel.finish();
-		//mModel.save();
+		mModel.setSelectedElement(SUPERVISOR_XML_PATH);
+		mModel.execute();
 } catch (Exception e){
 			
 		}

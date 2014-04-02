@@ -30,7 +30,7 @@ import org.junit.Test;
  * 
  */
 @Perspective(name = "Teiid Designer")
-//@Server(type = Type.ALL, state = State.RUNNING)
+@Server(type = Type.ALL, state = State.RUNNING)
 public class TopDownWsdlTest extends SWTBotTestCase {
 
 	public static final String BUNDLE = "org.teiid.designer.ui.bot.test";
