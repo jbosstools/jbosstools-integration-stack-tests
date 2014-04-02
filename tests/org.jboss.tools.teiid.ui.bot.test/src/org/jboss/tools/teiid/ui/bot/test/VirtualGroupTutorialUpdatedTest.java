@@ -49,7 +49,7 @@ import org.junit.Test;
  *
  */
 @Perspective(name = "Teiid Designer")//initialize tests in this perspective
-//@Server(type = Type.ALL, state = State.RUNNING)//uses info about server - swtbot.properties
+@Server(type = Type.ALL, state = State.RUNNING)//uses info about server - swtbot.properties
 public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 
 	private static final String PROJECT_NAME = "MyFirstProject";
