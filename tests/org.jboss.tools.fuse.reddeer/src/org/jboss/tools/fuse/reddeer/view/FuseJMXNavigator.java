@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.jboss.reddeer.junit.logging.Logger;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
@@ -63,7 +64,11 @@ public class FuseJMXNavigator extends WorkbenchView {
 			if (item.getText().startsWith(name)) {
 				item.select();
 				AbstractWait.sleep(TimePeriod.getCustom(2));
-				new ContextMenu(CONNECT_CONTEXT_MENU).select();
+				try {
+					new ContextMenu(CONNECT_CONTEXT_MENU).select();
+				} catch (SWTLayerException ex) {
+					log.info("Already connected to '" + name + "'.");
+				}
 				AbstractWait.sleep(TimePeriod.getCustom(2));
 				item.expand();
 				return item;
@@ -101,11 +106,15 @@ public class FuseJMXNavigator extends WorkbenchView {
 		for (int i = 0; i < path.length; i++) {
 			for (TreeItem item : items) {
 				if (item.getText().startsWith(path[i])) {
+					
 					if (i == path.length - 1) {
 						return item;
 					}
 					
 					item.select();
+					AbstractWait.sleep(TimePeriod.getCustom(5));
+					new DefaultToolItem(REFRESH_BUTTON).click();
+					AbstractWait.sleep(TimePeriod.getCustom(2));
 					item.doubleClick();
 					item.expand();
 					AbstractWait.sleep(TimePeriod.getCustom(2));

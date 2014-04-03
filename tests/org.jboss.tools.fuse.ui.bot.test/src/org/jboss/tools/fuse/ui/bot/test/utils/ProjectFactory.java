@@ -29,7 +29,7 @@ public class ProjectFactory {
 		projectWizard.selectFirstArchetype();
 		projectWizard.finish();
 		
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);	
+		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(300));	
 		log.info("The Fuse project from archetype: " + archetype + " was created.");
 		
 	}
