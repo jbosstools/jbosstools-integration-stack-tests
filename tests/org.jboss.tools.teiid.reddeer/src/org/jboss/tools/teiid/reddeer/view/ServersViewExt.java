@@ -204,4 +204,13 @@ public class ServersViewExt extends ServersView {
 		new PushButton("OK").click();
 	}
 	
+	public void refreshServer(String serverName){
+		String label = getServerLabel(serverName);
+		//refresh 
+		new DefaultTreeItem(label).select();
+		new DefaultToolItem(REFRESH).click();
+		//server was refreshed
+		new PushButton("OK").click();
+	}
+	
 }

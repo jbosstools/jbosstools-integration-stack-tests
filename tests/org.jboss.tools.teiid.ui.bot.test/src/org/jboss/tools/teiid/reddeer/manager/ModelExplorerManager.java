@@ -1,9 +1,11 @@
 package org.jboss.tools.teiid.reddeer.manager;
 
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.teiid.reddeer.ModelProject;
 import org.jboss.tools.teiid.reddeer.WAR;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
+import org.jboss.tools.teiid.reddeer.view.Procedure;
 import org.jboss.tools.teiid.reddeer.wizard.ModelProjectWizard;
 
 public class ModelExplorerManager {
@@ -53,4 +55,13 @@ public class ModelExplorerManager {
 		return new WAR(projectName, warName);
 	}
 	
+	public Procedure getProcedure(String project, String model, String procedure){
+			new ModelExplorerView().open();
+			new DefaultTreeItem(0, project, model, procedure).select();
+			return new Procedure(project, model, procedure);
+		}
+		
+	public Procedure createProcedure(String project, String model, String procedure){
+			return new ModelExplorerView().newProcedure(project, model, procedure, true);
+		}
 }

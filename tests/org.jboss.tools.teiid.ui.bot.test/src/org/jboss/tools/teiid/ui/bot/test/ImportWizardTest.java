@@ -94,7 +94,7 @@ public class ImportWizardTest extends SWTBotTestCase {
 		teiidBot.checkDiagram(MODEL_PROJECT, target, "ProductIDIndex");
 	}
 	
-	//@Test
+	@Test
 	public void flatImportTest(){
 		String flatProfile = "Flat Profile";
 		//String propsFile = "resources/importWizard/csv-items.properties";
