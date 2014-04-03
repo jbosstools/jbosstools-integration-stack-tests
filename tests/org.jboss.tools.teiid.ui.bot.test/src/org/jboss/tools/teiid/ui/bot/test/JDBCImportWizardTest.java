@@ -125,7 +125,7 @@ public class JDBCImportWizardTest extends SWTBotTestCase {
 		
 	}
 	
-	@Test
+	//@Test
 	public void sqlserverTest(){
 		String model = "SQLModel";
 		String cpProps = teiidBot.toAbsolutePath("resources/db/sqlserver_books.properties");

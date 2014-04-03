@@ -1,10 +1,13 @@
 package org.jboss.tools.teiid.reddeer.manager;
 
+import java.util.Properties;
+
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.tools.teiid.reddeer.preference.TeiidDesignerPreferencePage;
 import org.jboss.tools.teiid.reddeer.view.GuidesView;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt.ServerType;
+import org.jboss.tools.teiid.ui.bot.test.TeiidBot;
 import org.jboss.tools.teiid.ui.bot.test.suite.TeiidSuite;
 
 public class ServerManager {
@@ -70,5 +73,11 @@ public class ServerManager {
 	
 	public void setTeiidConnectionImporterTimeout(String secs){
 		new TeiidDesignerPreferencePage().setTeiidConnectionImporterTimeout(secs);
+	}
+	
+	public String getServerName(String serverProperties){
+		Properties props = TeiidSuite.loadSWTBotProperties();
+		String[] parts = props.getProperty("SERVER").split(",");
+		return parts[0]+"-"+parts[1];
 	}
 }

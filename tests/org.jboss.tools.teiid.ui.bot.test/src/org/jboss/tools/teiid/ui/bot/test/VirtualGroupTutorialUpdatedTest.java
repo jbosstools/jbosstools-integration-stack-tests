@@ -1,20 +1,12 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
-import java.util.Arrays;
-
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.teiid.reddeer.ModelProject;
 import org.jboss.tools.teiid.reddeer.VDB;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.editor.CriteriaBuilder;
@@ -23,6 +15,7 @@ import org.jboss.tools.teiid.reddeer.editor.SQLScrapbookEditor;
 import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
+import org.jboss.tools.teiid.reddeer.manager.ServerManager;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.view.GuidesView;
@@ -34,7 +27,6 @@ import org.jboss.tools.teiid.reddeer.widget.TeiidStyledText;
 import org.jboss.tools.teiid.reddeer.wizard.CreateMetadataModel;
 import org.jboss.tools.teiid.reddeer.wizard.CreateVDB;
 import org.jboss.tools.teiid.reddeer.wizard.ImportJDBCDatabaseWizard;
-import org.jboss.tools.teiid.reddeer.wizard.ModelProjectWizard;
 import org.jboss.tools.teiid.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
 import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.Server;
 import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.State;
@@ -43,25 +35,27 @@ import org.junit.AfterClass;
 import org.junit.Test;
 
 /**
- * Test functions described in testscript E2eVirtualGroupTutorial.
- * In contrast to VirtualGroupTutorialTest, it uses Modelling action sets and creates preview.
+ * Test functions described in testscript E2eVirtualGroupTutorial. In contrast
+ * to VirtualGroupTutorialTest, it uses Modelling action sets and creates
+ * preview.
+ * 
  * @author Lucie Fabrikova, lfabriko@redhat.com
- *
+ * 
  */
-@Perspective(name = "Teiid Designer")//initialize tests in this perspective
-@Server(type = Type.ALL, state = State.RUNNING)//uses info about server - swtbot.properties
-public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
+@Perspective(name = "Teiid Designer")
+@Server(type = Type.ALL, state = State.RUNNING)
+public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase {
 
 	private static final String PROJECT_NAME = "MyFirstProject";
 
 	private static TeiidBot teiidBot = new TeiidBot();
-	
+
 	private String jdbcProfile = "Generic JDBC Profile";
 	private String jdbcProfile2 = "Generic JDBC Profile 2";
-	
+
 	private static String SOURCE_MODEL_1 = "partssupModel1.xmi";
 	private static String SOURCE_MODEL_2 = "partssupModel2.xmi";
-	
+
 	private String props1 = "resources/db/dv6-ds1.properties";
 	private String props2 = "resources/db/dv6-ds2.properties";
 
@@ -69,10 +63,9 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 	private static final String VIRTUAL_TABLE_NAME = "OnHand";
 	private static final String PROCEDURE_NAME = "getOnHandByQuantity";
 
-
 	private static final String VDB_NAME = "MyFirstVDB";
 	private static final String VDB_FILE_NAME = VDB_NAME + ".vdb";
-	
+
 	private static String TESTSQL_1 = "select * from \"partssupModel1\".\"PARTS\"";
 	private static String TESTSQL_2 = "SELECT * FROM PartsVirtual.OnHand";
 	private static final String TESTSQL_3 = "SELECT * FROM PartsVirtual.OnHand WHERE QUANTITY > 200"; 
@@ -92,14 +85,15 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 			+ "SELECT * FROM PartsVirtual.OnHand;" + "\nEND";
 	
 	@Test
-	public void test(){
-		createProject();
+	public void test() {
+		createProject(); 
+		refreshServer(); 
 		createConnProfiles();
-		createSources();
-		//previewData();
+		createSources(); 
+		previewData(); 
 		createViewModel();
 		createTransformation();
-		createVDB();//refresh server
+		createVDB();
 		executeVDB();
 		executeSqlQueries();
 		createProcedure();
@@ -108,228 +102,245 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 		executeProcedureQuery();
 		closeScrapbookEditor();
 	}
-	
-	
+
+	public void refreshServer() {
+		String serverName = new ServerManager()
+				.getServerName("swtbot.properties");
+		new ServerManager().getServersViewExt().refreshServer(serverName);
+	}
+
 	/**
 	 * Create new Teiid Model Project
 	 */
-	//@Test
-	public void createProject(){
-		//int currentPage = 0;//currentPage of wizard must be set to 0
-		//new ModelProjectWizard(currentPage).create(PROJECT_NAME, true);
+
+	public void createProject() {
 		new ModelExplorerManager().createProject(PROJECT_NAME, true);
 	}
-	
+
 	/**
 	 * Create connection profiles to HSQL databases
 	 */
-	//@Test
-	public void createConnProfiles(){
-		//teiidBot.createHsqlProfile(props1, jdbcProfile, true, true);
-		new ConnectionProfileManager().createCPWithDriverDefinition(jdbcProfile, props1);
-		//teiidBot.createHsqlProfile(props2, jdbcProfile2, false, true);
-		new ConnectionProfileManager().createCPWithoutDriverDefinition(jdbcProfile2, props2);
+
+	public void createConnProfiles() {
+		try {
+			new ConnectionProfileManager().createCPWithDriverDefinition(
+					jdbcProfile, props1);
+			new ConnectionProfileManager().createCPWithoutDriverDefinition(
+					jdbcProfile2, props2);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-	
+
 	/**
 	 * Create data sources for connection profiles
 	 */
-	//@Test
-	public void createSources(){
+
+	public void createSources() {
 		try {
-		//datasource ds1
-		importFromHsql(jdbcProfile, SOURCE_MODEL_1);
-		
-		//datasource ds2
-		importFromHsql(jdbcProfile2, SOURCE_MODEL_2);//import the same tables, other datasource
-		} catch (Exception ex){
-			//redo it manually
+			// datasource ds1
+			importFromHsql(jdbcProfile, SOURCE_MODEL_1);
+
+			// datasource ds2
+			importFromHsql(jdbcProfile2, SOURCE_MODEL_2);// import the same
+															// tables, other
+															// datasource
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Preview data from model
 	 */
-	//@Test
-	public void previewData(){
+
+	public void previewData() {
 		try {
-		
-		//wait until project is saved
-		//new WaitWhile(new IsInProgress(), TimePeriod.LONG);
-		//new GuidesView().previewData(true, PROJECT_NAME, SOURCE_MODEL_1, "PARTS");
-		new GuidesView().previewData(PROJECT_NAME, SOURCE_MODEL_1, "PARTS");
-		
-		SQLResult result = DatabaseDevelopmentPerspective.getInstance().getSqlResultsView().getByOperation(TESTSQL_1);
-		assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
-		
-		new WaitWhile(new IsInProgress(), TimePeriod.NORMAL);
-		TeiidPerspective.getInstance().open();
-		new DefaultTreeItem(0, PROJECT_NAME, SOURCE_MODEL_1, "PARTS").select();
-		
-		} catch (Exception ex){
-			//redo it manually
+			new GuidesView().previewData(PROJECT_NAME, SOURCE_MODEL_1, "PARTS");
+
+			SQLResult result = DatabaseDevelopmentPerspective.getInstance()
+					.getSqlResultsView().getByOperation(TESTSQL_1);
+			assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
+
+			new WaitWhile(new IsInProgress(), TimePeriod.NORMAL);
+			TeiidPerspective.getInstance().open();
+			new DefaultTreeItem(0, PROJECT_NAME, SOURCE_MODEL_1, "PARTS")
+					.select();
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Create virtual view model
 	 */
-	//@Test
-	public void createViewModel() {
-	try{	
-	
-		CreateMetadataModel newModel = new CreateMetadataModel();
-		newModel.setLocation(PROJECT_NAME);
-		newModel.setName(VIRTUAL_MODEL_NAME );
-		newModel.setClass(CreateMetadataModel.ModelClass.RELATIONAL);
-		newModel.setType(CreateMetadataModel.ModelType.VIEW);
-		newModel.execute();
 
-		saveAll();
-		//parts virtual have been modified - save changes
-		closeActiveShell();
-	} catch (Exception ex){
-		//redo it manually
+	public void createViewModel() {
+		try {
+
+			CreateMetadataModel newModel = new CreateMetadataModel();
+			newModel.setLocation(PROJECT_NAME);
+			newModel.setName(VIRTUAL_MODEL_NAME);
+			newModel.setClass(CreateMetadataModel.ModelClass.RELATIONAL);
+			newModel.setType(CreateMetadataModel.ModelType.VIEW);
+			newModel.execute();
+
+			teiidBot.saveAll();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
-	}
-	
+
 	/**
 	 * Create transformation for virtual view model
 	 */
-	//@Test
+
 	public void createTransformation() {
-		try{
-		//create table OnHand
-		ModelExplorerView modelView = TeiidPerspective.getInstance().getModelExplorerView();
-		modelView.newBaseTable(PROJECT_NAME, VIRTUAL_MODEL_NAME, VIRTUAL_TABLE_NAME, false);
-		modelView.openTransformationDiagram(PROJECT_NAME, VIRTUAL_MODEL_NAME, VIRTUAL_TABLE_NAME);
-		modelView.addTransformationSource(PROJECT_NAME, SOURCE_MODEL_1, "SUPPLIER");
-		modelView.addTransformationSource(PROJECT_NAME, SOURCE_MODEL_2, "SUPPLIER_PARTS");
+		try {
+			// create table OnHand
+			ModelExplorerView modelView = TeiidPerspective.getInstance()
+					.getModelExplorerView();
+			modelView.newBaseTable(PROJECT_NAME, VIRTUAL_MODEL_NAME,
+					VIRTUAL_TABLE_NAME, false);
+			modelView.openTransformationDiagram(PROJECT_NAME,
+					VIRTUAL_MODEL_NAME, VIRTUAL_TABLE_NAME);
+			modelView.addTransformationSource(PROJECT_NAME, SOURCE_MODEL_1,
+					"SUPPLIER");
+			modelView.addTransformationSource(PROJECT_NAME, SOURCE_MODEL_2,
+					"SUPPLIER_PARTS");
 
-		ModelEditor editor = new ModelEditor(VIRTUAL_MODEL_NAME);
-		editor.show();
-		editor.showTransformation();
+			ModelEditor editor = new ModelEditor(VIRTUAL_MODEL_NAME);
+			editor.show();
+			editor.showTransformation();
 
-		CriteriaBuilder criteriaBuilder = editor.criteriaBuilder();
-		criteriaBuilder.selectRightAttribute(SOURCE_MODEL_1.substring(0, SOURCE_MODEL_1.indexOf('.')).concat(".SUPPLIER"), "SUPPLIER_ID");
-		criteriaBuilder.selectLeftAttribute(SOURCE_MODEL_2.substring(0, SOURCE_MODEL_2.indexOf('.')).concat(".SUPPLIER_PARTS"), "SUPPLIER_ID");
-		criteriaBuilder.apply();
-		criteriaBuilder.finish();
+			CriteriaBuilder criteriaBuilder = editor.criteriaBuilder();
+			criteriaBuilder.selectRightAttribute(
+					SOURCE_MODEL_1.substring(0, SOURCE_MODEL_1.indexOf('.'))
+							.concat(".SUPPLIER"), "SUPPLIER_ID");
+			criteriaBuilder.selectLeftAttribute(
+					SOURCE_MODEL_2.substring(0, SOURCE_MODEL_2.indexOf('.'))
+							.concat(".SUPPLIER_PARTS"), "SUPPLIER_ID");
+			criteriaBuilder.apply();
+			criteriaBuilder.finish();
 
-		editor.save();
-		closeActiveShell();
-		} catch (Exception ex){
-			//redo it manually
+			editor.save();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 
 	/**
 	 * Create VDB
 	 */
-	//@Test
+
 	public void createVDB() {
 		try {
-		CreateVDB createVDB = new CreateVDB();
-		createVDB.setFolder(PROJECT_NAME);
-		createVDB.setName(VDB_NAME);
-		createVDB.execute(true);
+			CreateVDB createVDB = new CreateVDB();
+			createVDB.setFolder(PROJECT_NAME);
+			createVDB.setName(VDB_NAME);
+			createVDB.execute(true);
 
-		VDBEditor editor = VDBEditor.getInstance(VDB_FILE_NAME);
-		editor.show();
-		editor.addModel(PROJECT_NAME, VIRTUAL_MODEL_NAME);
-		editor.save();
-		} catch (Exception ex){
-			//redo it manually
+			VDBEditor editor = VDBEditor.getInstance(VDB_FILE_NAME);
+			editor.show();
+			editor.addModel(PROJECT_NAME, VIRTUAL_MODEL_NAME);
+			editor.save();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Deploy, execute VDB
 	 */
-	//@Test
+
 	public void executeVDB() {
 		try {
-		//switch to teiid designer perspective
-		
-		ModelExplorer modelExplorer = new ModelExplorer();
-		modelExplorer.open();
-		VDB vdb = modelExplorer.getModelProject(PROJECT_NAME).getVDB(VDB_FILE_NAME);
-		vdb.deployVDB();
-		vdb.executeVDB(true);
-		
-		closeActiveShell();
-		} catch (Exception ex){
-			//redo it manually
+			ModelExplorer modelExplorer = new ModelExplorer();
+			modelExplorer.open();
+			VDB vdb = modelExplorer.getModelProject(PROJECT_NAME).getVDB(
+					VDB_FILE_NAME);
+			vdb.deployVDB();
+			vdb.executeVDB(true);
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Execute test queries in SQL Scrapbook
 	 */
-	//@Test
+
 	public void executeSqlQueries() {
-		
+
 		SQLScrapbookEditor editor = new SQLScrapbookEditor("SQL Scrapbook0");
 		SQLResult result;
 		try {
-		editor.show();
-		editor.setDatabase(VDB_NAME);
+			editor.show();
+			editor.setDatabase(VDB_NAME);
 
-		// TESTSQL_1
-		editor.setText(TESTSQL_1);
-		editor.executeAll();
+			// TESTSQL_1
+			editor.setText(TESTSQL_1);
+			editor.executeAll();
 
-		result = DatabaseDevelopmentPerspective.getInstance().getSqlResultsView()
-				.getByOperation(TESTSQL_1);
-		//assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());//??fails...
-		
-		} catch (Exception ex){
+			result = DatabaseDevelopmentPerspective.getInstance()
+					.getSqlResultsView().getByOperation(TESTSQL_1);
+			assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
-		
-		try{
+
+		try {
 			// TESTSQL_2
 			editor.show();
 			editor.setText(TESTSQL_2);
 			editor.executeAll();
 
-			result = DatabaseDevelopmentPerspective.getInstance().getSqlResultsView().getByOperation(TESTSQL_2);
-			//assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
+			result = DatabaseDevelopmentPerspective.getInstance()
+					.getSqlResultsView().getByOperation(TESTSQL_2);
+			assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
 
-		} catch (Exception ex){
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
-		
-		try{
+
+		try {
 			// TESTSQL_3
 			editor.show();
 			editor.setText(TESTSQL_3);
 			editor.executeAll();
 
-			result = DatabaseDevelopmentPerspective.getInstance().getSqlResultsView().getByOperation(TESTSQL_3);
-			//assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
+			result = DatabaseDevelopmentPerspective.getInstance()
+					.getSqlResultsView().getByOperation(TESTSQL_3);
+			assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
 
-		} catch (Exception ex){
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
-		
-		try{
-		// TESTSQL_4
-		editor.show();
-		editor.setText(TESTSQL_4);
-		editor.executeAll();
 
-		result = DatabaseDevelopmentPerspective.getInstance().getSqlResultsView().getByOperation(TESTSQL_4);
-		//assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
-		} catch (Exception ex){
-			//redo it manually
+		try {
+			// TESTSQL_4
+			editor.show();
+			editor.setText(TESTSQL_4);
+			editor.executeAll();
+
+			result = DatabaseDevelopmentPerspective.getInstance()
+					.getSqlResultsView().getByOperation(TESTSQL_4);
+			assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
-	
-	
+
 	/**
 	 * Create procedure
 	 */
-	//@Test
-	public void createProcedure() {	
-		ModelExplorerView modelView = TeiidPerspective.getInstance().getModelExplorerView();
+
+	public void createProcedure() {
+		ModelExplorerView modelView = TeiidPerspective.getInstance()
+				.getModelExplorerView();
 		ModelEditor editor;
 		try {
 			modelView = TeiidPerspective.getInstance().getModelExplorerView();
@@ -341,9 +352,10 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 			new DefaultTreeItem(0, PROJECT_NAME, VIRTUAL_MODEL_NAME,
 					PROCEDURE_NAME).select();
 
-			//procedure.addParameter2("qtyIn", "short : xs:int");// PROBLEM
+			procedure.addParameter2("qtyIn", "short : xs:int");
 
 		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 
 		try {
@@ -358,6 +370,7 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 			editor.setTransformationProcedureBody(VIRTUAL_PROCEDURE_SQL, true);// "SELECT * FROM PartsVirtual.OnHand;"
 			editor.save();
 		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 
 		try {
@@ -370,6 +383,7 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 			styledText.navigateTo(2, 2);
 			styledText.mouseClickOnCaret();// clicks on the cursor position
 		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 
 		try {
@@ -384,53 +398,50 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 
 			editor.save();
 		} catch (Exception ex) {
-			// redo it manually
+			ex.printStackTrace();
 		}
 	}
-	
-	//@Test
+
 	public void updateVDB() {
 		try {
-		TeiidPerspective.getInstance().getModelExplorerView().open(PROJECT_NAME, VDB_FILE_NAME);
+			TeiidPerspective.getInstance().getModelExplorerView()
+					.open(PROJECT_NAME, VDB_FILE_NAME);
 
-		VDBEditor editor = VDBEditor.getInstance(VDB_FILE_NAME);
-		editor.show();
-		editor.synchronizeAll();
-		editor.save();
-		} catch (Exception ex){
-			//redo it manually
+			VDBEditor editor = VDBEditor.getInstance(VDB_FILE_NAME);
+			editor.show();
+			editor.synchronizeAll();
+			editor.save();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 
-	//@Test
 	public void deployUpdatedVDB() {
 		try {
-		ModelExplorer modelExplorer = new ModelExplorer();
-		modelExplorer.open();
-		VDB vdb = modelExplorer.getModelProject(PROJECT_NAME).getVDB(VDB_FILE_NAME);
-		// simple execute vdb isn't enough, we have to deploy and then execute
-		// vdb
-		vdb.deployVDB();
-		vdb.executeVDB();
-		} catch (Exception ex){
-			//redo it manually
+			ModelExplorer modelExplorer = new ModelExplorer();
+			modelExplorer.open();
+			VDB vdb = modelExplorer.getModelProject(PROJECT_NAME).getVDB(
+					VDB_FILE_NAME);
+			vdb.deployVDB();
+			vdb.executeVDB();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 
-	//@Test
 	public void executeProcedureQuery() {
 		try {
-		SQLScrapbookEditor editor = new SQLScrapbookEditor("SQL Scrapbook1");
-		editor.show();
-		editor.setDatabase(VDB_NAME);
-		editor.setText(TESTSQL_5);
-		editor.executeAll();
+			SQLScrapbookEditor editor = new SQLScrapbookEditor("SQL Scrapbook1");
+			editor.show();
+			editor.setDatabase(VDB_NAME);
+			editor.setText(TESTSQL_5);
+			editor.executeAll();
 
-		SQLResult result = DatabaseDevelopmentPerspective.getInstance().getSqlResultsView()
-				.getByOperation(TESTSQL_5);
-		assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
-		} catch (Exception ex){
-			//redo it manually
+			SQLResult result = DatabaseDevelopmentPerspective.getInstance()
+					.getSqlResultsView().getByOperation(TESTSQL_5);
+			assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 
@@ -441,7 +452,6 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 		closeModelEditor(VIRTUAL_MODEL_NAME);
 		closeModelEditor(SOURCE_MODEL_1);
 		closeModelEditor(SOURCE_MODEL_2);
-		closeAutoConnectToTeiidInstance();
 	}
 
 	private static void closeScrapbook() {
@@ -453,7 +463,7 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 			editor.show();
 			editor.close();
 		} catch (WidgetNotFoundException e) {
-
+			e.printStackTrace();
 		}
 	}
 
@@ -462,7 +472,7 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 			VDBEditor editor = VDBEditor.getInstance(VDB_NAME + ".vdb");
 			editor.close();
 		} catch (WidgetNotFoundException e) {
-
+			e.printStackTrace();
 		}
 	}
 
@@ -471,29 +481,23 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 			ModelEditor editor = new ModelEditor(name);
 			editor.close();
 		} catch (WidgetNotFoundException e) {
-
+			e.printStackTrace();
 		}
 	}
 
-	private static void closeAutoConnectToTeiidInstance() {
-		try {
-			new DefaultShell("Auto Connect to New Teiid Instance").close();
-		} catch (SWTLayerException e) {
-			// it is ok
-		}
-	}
-		
 	/**
 	 * Import tables from HSQL database
-	 * @param connProfile name of connection profile (e.g. HSQLDB Profile)
-	 * @param modelName name of model (e.g. partssupplier.xmi)
+	 * 
+	 * @param connProfile
+	 *            name of connection profile (e.g. HSQLDB Profile)
+	 * @param modelName
+	 *            name of model (e.g. partssupplier.xmi)
 	 */
 	public void importFromHsql(String connProfile, String modelName) {
 		ImportJDBCDatabaseWizard wizard = new ImportJDBCDatabaseWizard();
 		wizard.setConnectionProfile(connProfile);
 		wizard.setProjectName(PROJECT_NAME);
 		wizard.setModelName(modelName);
-		// add all tables
 		wizard.addItem("PUBLIC/PUBLIC/TABLE/PARTS");
 		wizard.addItem("PUBLIC/PUBLIC/TABLE/SHIP_VIA");
 		wizard.addItem("PUBLIC/PUBLIC/TABLE/STATUS");
@@ -502,33 +506,5 @@ public class VirtualGroupTutorialUpdatedTest extends SWTBotTestCase{
 
 		wizard.execute(true);
 	}
-	
-	/**
-	 * Check if model contains object on given path
-	 * @param path
-	 */
-	private void checkResource(String... path) {
-		new SWTWorkbenchBot().sleep(500);
-		ModelProject modelproject = teiidBot.modelExplorer().getModelProject(PROJECT_NAME);
-		assertTrue(Arrays.toString(path) + " not created!", modelproject.containsItem(path));
-	}
-	
-	/**
-	 * Save all
-	 */
-	private void saveAll(){
-		new ShellMenu("File", "Save All").select();
-	}
-	
-	/**
-	 * Confirm active shell, if appears
-	 */
-	private void closeActiveShell(){
-		try {
-			new SWTWorkbenchBot().activeShell().bot().button("Yes").click();
-		} catch (Exception e){
-			System.out.println(e.getMessage());
-		}
-	}
-	
+
 }

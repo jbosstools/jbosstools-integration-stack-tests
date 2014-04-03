@@ -105,11 +105,11 @@ public class Procedure {
 	}
 	
 	private void addParameterName2(String parameter) {
+		new ModelExplorerView().open();
 		new DefaultTreeItem(project, model, procedure).select();
 		new ContextMenu("New Child", "Procedure Parameter").select();
-		new DefaultTreeItem(project, model, procedure, "NewProcedureParameter").select();	
-		new ContextMenu("Rename...").select();//highlights text to be edited
 		new DefaultText("NewProcedureParameter").setText(parameter);
+		new DefaultTreeItem(project, model, procedure).collapse();
 			}
 
 	private void addParameterType(String parameter, String type) {
@@ -124,14 +124,14 @@ public class Procedure {
 	}
 	
 	private void addParameterType2(String parameter, String type) {
+		new ModelExplorerView().open();
+		new DefaultTreeItem(project, model, procedure).expand();
 		new DefaultTreeItem(project, model, procedure, parameter).select();
 		new ContextMenu("Modeling", "Set Datatype").select();
-
-		Shell shell = new DefaultShell("Select a Datatype");
 		new SWTWorkbenchBot().table().getTableItem(type).select();
 		new PushButton("OK").click();
-		new WaitWhile(new ShellWithTextIsActive(shell.getText()), TimePeriod.LONG);
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		new WaitWhile(new ShellWithTextIsActive("Select a Datatype"), TimePeriod.LONG);
+		new ModelEditor(model).save();
 	}
 	
 	/**

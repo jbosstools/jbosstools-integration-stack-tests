@@ -66,7 +66,7 @@ public class TeiidSuite extends RedDeerSuite {
 		}
 	}
 
-	private static Properties loadSWTBotProperties() {
+	public static Properties loadSWTBotProperties() {
 		Properties props = new Properties();
 		String propsFile = System.getProperty(PROPERTIES_FILE);
 		if (propsFile != null) {
