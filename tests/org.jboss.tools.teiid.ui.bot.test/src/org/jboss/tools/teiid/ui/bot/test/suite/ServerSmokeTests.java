@@ -13,10 +13,8 @@ import org.junit.runners.Suite.SuiteClasses;
  * 
  */
 @SuiteClasses({
-	ServerManagementSimpleDV6Test.class,//??? or in separate suite?
-	ServerManagementSimpleEDS5Test.class,//???
 	//something like test for: creating source model from VDB and other basic ops
-	//ServerOpsTest.class//TODO not supported yet
+	ServerOpsTest.class//TODO not supported yet
 })
 @RunWith(TeiidSuite.class)
 public class ServerSmokeTests {

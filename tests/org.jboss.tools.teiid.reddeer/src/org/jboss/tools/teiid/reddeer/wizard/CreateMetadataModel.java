@@ -82,6 +82,8 @@ public class CreateMetadataModel extends NewWizardDialog {
 	private Properties wsProps;
 	private String wsdlLocation;
 	private String[] selectedElement;
+
+	private String[] virtualDocuments;
 	
 	public String[] getPathToXmlSchema() {
 		return pathToXmlSchema;
@@ -147,7 +149,10 @@ public class CreateMetadataModel extends NewWizardDialog {
 	
 	public void fillFourthPage() {
 		if (clazz.equals(ModelClass.XML) && modelBuilder.equals(ModelBuilder.BUILD_FROM_XML_SCHEMA)){
-			new DefaultTreeItem(selectedElement).setChecked(true);//TODO in cycle
+			if (selectedElement != null){
+				new DefaultTreeItem(selectedElement).setChecked(true);//TODO in cycle
+			}
+			
 		}
 
 	}
@@ -191,8 +196,17 @@ public class CreateMetadataModel extends NewWizardDialog {
 			new PushButton(0).click();
 			new DefaultTreeItem(pathToXmlSchema).select();
 			new PushButton("OK").click();
-			new DefaultTable().select(rootElement);
-			new PushButton(1).click();// >
+			if (rootElement != null){
+				new DefaultTable().select(rootElement);
+				new PushButton(1).click();// >
+			}
+			if (virtualDocuments != null){
+				for (String virtDoc : virtualDocuments){
+					new DefaultTable().select(virtDoc);
+					new PushButton(1).click();// >
+				}				
+			}
+		
 		}
 		else if (modelBuilder.equals(ModelBuilder.COPY_EXISTING) || modelBuilder.equals(ModelBuilder.TRANSFORM_EXISTING)){
 			new PushButton("...").click();
@@ -236,6 +250,14 @@ public class CreateMetadataModel extends NewWizardDialog {
 
 	public void setSelectedElement(String[] selectedElement) {
 		this.selectedElement = selectedElement;
+	}
+
+	public String[] getVirtualDocuments() {
+		return virtualDocuments;
+	}
+
+	public void setVirtualDocuments(String[] virtualDocuments) {
+		this.virtualDocuments = virtualDocuments;
 	}
 	
 	//TODO add support for other choices

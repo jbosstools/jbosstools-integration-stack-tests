@@ -291,8 +291,13 @@ public class ImportMetadataManager {
 			wizard.setRootPath(loadedProperty);//should be absolute path -- set in Properties!
 		}
 		if ((loadedProperty = props.getProperty("schemas")) != null){
-			String[] schemas = loadedProperty.split(",");
-			wizard.setSchemas(schemas);
+			if (loadedProperty.contains(",")){
+				String[] schemas = loadedProperty.split(",");
+				wizard.setSchemas(schemas);
+			} else {
+				wizard.setSchemas(new String[]{loadedProperty});
+			}
+			
 		}
 		if ((loadedProperty = props.getProperty("destination")) != null){
 			wizard.setDestination(loadedProperty);

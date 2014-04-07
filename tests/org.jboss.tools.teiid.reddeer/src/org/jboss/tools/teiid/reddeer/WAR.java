@@ -45,14 +45,16 @@ public class WAR {
 	private static final String WEB_SERVER_HOST = "Web Server Host:";
 	private static final String WEB_SERVER_PORT = "Web Server Port:";
 	private static final String ENABLE_MTOM = "Enable MTOM";
+	private static final String JBOSSWSCXF_SAVE_LOC = "WAR File Save Location:";
+	private static final String USERNAME = "Username:";
+	private static final String PASSWORD = "Password:";
+	private static final String TARGET_NS = "Target namespace:";
 	
 	public static String NONE_SECURITY="None";
 	public static String HTTPBasic_SECURITY="HTTPBasic";
 	public static String WS_SECURITY = "WS-Security (Username Token)";
 	
-	
 	private String[] pathToVDB;
-	//private String warName;
 	
 	//to operate existing war
 	public WAR(String projectName, String warName){
@@ -76,7 +78,6 @@ public class WAR {
 		if ((warProps != null) && (vdbProjectItem != null)){
 			vdbProjectItem.select();
 			//props: either rest or ws cxf war
-			//new ContextMenu("Modeling", "Generate RESTEasy WAR").select();
 			new ContextMenu("Modeling", warProps.getProperty("type")).select();
 			if (warProps.getProperty("type").equals(RESTEASY_TYPE)){
 				setupRESTWAR();
@@ -84,34 +85,52 @@ public class WAR {
 			if (warProps.getProperty("type").equals(JBOSSWS_CXF_TYPE)){
 				setupJBossWSCXFWAR();
 			}
-			//this.warProjectItem = new ModelExplorer().getProject(pathToWar[0]).getProjectItem();
 			
 			new PushButton("OK").click();
 			new PushButton("OK").click();
-			//this.warProjectItem = new ModelExplorer().getProject(pathToVDB[0]).getProjectItem(warProps.getProperty("contextMenu"));
 			
 		}
 	}
 
 	private void setupJBossWSCXFWAR() {
-		setupRESTWAR();
+		setupCommon();
+		if (warProps.containsKey("saveLocation")){
+			String absPath = new File(warProps.getProperty("saveLocation")).getAbsolutePath();
+			new SWTWorkbenchBot().textWithLabel(JBOSSWSCXF_SAVE_LOC).setText(warProps.getProperty("saveLocation"));
+		}
 		//other war creation info
-		new LabeledText(WEB_SERVER_HOST).setText(warProps.getProperty("host"));
-		new LabeledText(WEB_SERVER_PORT).setText(warProps.getProperty("port"));
-		new RadioButton(warProps.getProperty("securityType")).click();
+		if (warProps.containsKey("host")){
+			new SWTWorkbenchBot().textWithLabel(WEB_SERVER_HOST).setText(warProps.getProperty("host"));
+		}
+		if (warProps.containsKey("port")){
+			new SWTWorkbenchBot().textWithLabel(WEB_SERVER_PORT).setText(warProps.getProperty("port"));
+		}
+		if (warProps.containsKey("securityType")){
+			new RadioButton(warProps.getProperty("securityType")).click();
+		}
+		
 		if (warProps.containsKey("username") && warProps.containsKey("password")){
-			new LabeledText("Username:").setText(warProps.getProperty("username"));
-			new LabeledText("Password:").setText(warProps.getProperty("password"));
+			new SWTWorkbenchBot().textWithLabel(USERNAME).setText(warProps.getProperty("username"));
+			new SWTWorkbenchBot().textWithLabel(PASSWORD).setText(warProps.getProperty("password"));
 		}
 		if (warProps.containsKey("enableMtom")){
 			new CheckBox(ENABLE_MTOM).click();
 		}
 		if (warProps.containsKey("ns")){
-			new LabeledText("Target namespace:").setText(warProps.getProperty("ns"));
+			new SWTWorkbenchBot().textWithLabel(TARGET_NS).setText(warProps.getProperty("ns"));
 		}
 	}
+	
+	private void setupRESTWAR(){
+		setupCommon();
+		//save location
+		if (warProps.containsKey("saveLocation")){
+			String absPath = new File(warProps.getProperty("saveLocation")).getAbsolutePath();
+			new SWTWorkbenchBot().textWithLabel(SAVE_LOC).setText(warProps.getProperty("saveLocation"));
+		}	
+	}
 
-	private void setupRESTWAR() {
+	private void setupCommon() {
 		//getprop contextName
 		if (warProps.containsKey("contextName")){
 			//new LabeledText(CONTEXT_NAME).setText(warProps.getProperty("contextName"));
@@ -119,15 +138,8 @@ public class WAR {
 		}
 		//vdb jndi name
 		if (warProps.containsKey("vdbJndiName")){
-			//new LabeledText(VDB_JNDI_NAME).setText(warProps.getProperty("vdbJndiName"));
 			new SWTWorkbenchBot().textWithLabel(VDB_JNDI_NAME).setText(warProps.getProperty("vdbJndiName"));
 		}
-		//save location
-		if (warProps.containsKey("saveLocation")){
-			//new LabeledText(SAVE_LOC).setText();
-			String absPath = new File(warProps.getProperty("saveLocation")).getAbsolutePath();
-			new SWTWorkbenchBot().textWithLabel(SAVE_LOC).setText(warProps.getProperty("saveLocation"));
-		}	
 		//security  --> if httpbasic,...
 		if (warProps.containsKey("securityType")){
 			new RadioButton(warProps.getProperty("securityType")).click();
@@ -155,7 +167,6 @@ public class WAR {
 		if (new DefaultShell().getText().equals("Select a server to publish")){
 			new DefaultTreeItem(warProps.getProperty("serverName")).select();new PushButton("OK").click();
 		}
-		//new PushButton("OK").click();
 	}
 	
 	public void undeploy(){
@@ -164,7 +175,6 @@ public class WAR {
 		} else {
 			new ModelExplorer().getProject(pathToVDB[0]).getProjectItem(warProps.getProperty("contextName")+".war").select();
 		}
-		//new ModelExplorer().getProject(pathToVDB[0]).getProjectItem(warProps.getProperty("contextName")+".war").select();
 		warProjectItem.select();
 		new ContextMenu(UNMARK_AS_DEPLOYABLE).select();
 	}
@@ -175,7 +185,6 @@ public class WAR {
 		} else {
 			new ModelExplorer().getProject(pathToVDB[0]).getProjectItem(warProps.getProperty("contextName")+".war").select();
 		}
-		//new ModelExplorer().getProject(pathToVDB[0]).getProjectItem(warProps.getProperty("contextName")+".war").select();
 		warProjectItem.select();
 		new ContextMenu("Delete").select();
 	}
