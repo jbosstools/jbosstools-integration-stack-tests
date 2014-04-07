@@ -1,0 +1,8 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:chec="http://www.teiid.org/CheckBook_Output">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <chec:ISBNInput>
+         <ISBN>1-861-00506-7</ISBN>
+      </chec:ISBNInput>
+   </soapenv:Body>
+</soapenv:Envelope>

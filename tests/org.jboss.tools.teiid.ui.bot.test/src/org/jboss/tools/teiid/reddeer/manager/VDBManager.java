@@ -140,7 +140,11 @@ public class VDBManager {
 	}
 	
 	public void createVDBDataSource(String[] pathToVDB){
-		String vdb = pathToVDB[pathToVDB.length-1].substring(0, pathToVDB[pathToVDB.length-1].indexOf("."));
+		String vdb =  pathToVDB[pathToVDB.length-1];
+		if (pathToVDB[pathToVDB.length-1].contains(".vdb")){
+			vdb = pathToVDB[pathToVDB.length-1].substring(0, pathToVDB[pathToVDB.length-1].indexOf("."));
+		}
+		
 		createVDBDataSource(pathToVDB, vdb, false);
 	}
 	

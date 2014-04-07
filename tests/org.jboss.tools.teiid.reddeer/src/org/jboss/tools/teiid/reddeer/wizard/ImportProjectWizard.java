@@ -1,6 +1,9 @@
 package org.jboss.tools.teiid.reddeer.wizard;
 
+import java.io.File;
+
 import org.jboss.reddeer.eclipse.jface.wizard.ImportWizardDialog;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
@@ -29,7 +32,9 @@ public class ImportProjectWizard extends ImportWizardDialog {
 			new RadioButton(ARCHIVE_LABEL).click();
 			new DefaultCombo(1).setText(location);
 		} else {
-			new DefaultCombo(0).setText(location);
+			new DefaultCombo(0).setText(new File(location).getAbsolutePath());
+			//TODO add option to choose
+			new CheckBox("Copy projects into workspace").click();
 		}
 
 		new PushButton("Refresh").click();

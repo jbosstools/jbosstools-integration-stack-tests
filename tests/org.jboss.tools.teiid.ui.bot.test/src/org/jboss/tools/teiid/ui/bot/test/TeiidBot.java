@@ -334,4 +334,20 @@ public class TeiidBot {
 			new ShellMenu("Project", "Build Automatically").select();//ie unselect
 		}
 	}
+	
+	public String loadFileAsString(String fileName){
+		String result = "";
+		File f = new File(fileName);
+		try {
+			BufferedReader in = new BufferedReader(new FileReader(f));
+			String line = null;
+			
+			while ((line = in.readLine()) != null) {
+				result=result.concat(line);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 }
