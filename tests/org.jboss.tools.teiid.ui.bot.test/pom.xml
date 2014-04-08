@@ -17,7 +17,6 @@
 		<test.package>org.jboss.tools.teiid.ui.bot.test.suite</test.package>
 		<test.class>SmokeTests</test.class>
 		<jdbc.dir>${requirementsDirectory}/lib</jdbc.dir>
-		<reddeer.site>http://download.jboss.org/jbosstools/builds/staging/RedDeer_master/all/repo</reddeer.site>
 		<jbtis.site>https://devstudio.jboss.com/updates/7.0-development/integration-stack/</jbtis.site><!--latest 
 			development JBDSIS -->
 		<server.properties>dv6.properties</server.properties>
