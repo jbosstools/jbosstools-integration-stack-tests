@@ -87,6 +87,11 @@ public class WAR {
 			}
 			
 			new PushButton("OK").click();
+			try{//overwrite existing war
+				new PushButton("Yes").click();
+			} catch (Exception ex){
+				
+			}
 			new PushButton("OK").click();
 			
 		}
@@ -104,9 +109,6 @@ public class WAR {
 		}
 		if (warProps.containsKey("port")){
 			new SWTWorkbenchBot().textWithLabel(WEB_SERVER_PORT).setText(warProps.getProperty("port"));
-		}
-		if (warProps.containsKey("securityType")){
-			new RadioButton(warProps.getProperty("securityType")).click();
 		}
 		
 		if (warProps.containsKey("username") && warProps.containsKey("password")){

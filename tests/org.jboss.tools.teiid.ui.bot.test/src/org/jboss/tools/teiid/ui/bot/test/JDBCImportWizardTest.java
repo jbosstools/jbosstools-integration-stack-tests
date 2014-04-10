@@ -160,4 +160,5 @@ public class JDBCImportWizardTest extends SWTBotTestCase {
 		teiidBot.checkResourceNotPresent(MODEL_PROJECT, model+".xmi", "salesforce", "Apex Class");
 	}//salesforce, AccountFeed
 
+	//TODO class DatasourcesTest - create CP to VDB, create src model from it, new vdb- execute
 }
