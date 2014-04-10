@@ -68,6 +68,8 @@ public class VDBEditor extends SWTBotEditor {
 	}
 
 	public void synchronizeAll() {
+		new PushButton("Synchronize All").click();
+		
 		if (new PushButton("Synchronize All").isEnabled()){
 			new PushButton("Synchronize All").click();
 		}

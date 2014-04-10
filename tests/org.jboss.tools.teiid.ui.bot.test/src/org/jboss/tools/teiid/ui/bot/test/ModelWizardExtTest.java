@@ -95,6 +95,8 @@ public class ModelWizardExtTest extends SWTBotTestCase {
 		assertTrue(new ProjectExplorer().getProject(PROJECT_NAME).containsItem(WEBSERVICE_MODEL_NAME + ".xmi"));
 
 		assertTrue(new ModelEditor(WEBSERVICE_MODEL_NAME + ".xmi").isActive());
-	
+		//TODO preview data
 	}
+	
+	//TODO ??? same as wsViewBuildFromWSDLorURLTest, but use wsdl from jbossws-cxf war on localhost
 }

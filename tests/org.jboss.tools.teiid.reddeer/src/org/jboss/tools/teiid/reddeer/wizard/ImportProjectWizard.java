@@ -34,7 +34,9 @@ public class ImportProjectWizard extends ImportWizardDialog {
 		} else {
 			new DefaultCombo(0).setText(new File(location).getAbsolutePath());
 			//TODO add option to choose
-			new CheckBox("Copy projects into workspace").click();
+			if (! new CheckBox("Copy projects into workspace").isChecked()){
+				new CheckBox("Copy projects into workspace").click();
+			}
 		}
 
 		new PushButton("Refresh").click();

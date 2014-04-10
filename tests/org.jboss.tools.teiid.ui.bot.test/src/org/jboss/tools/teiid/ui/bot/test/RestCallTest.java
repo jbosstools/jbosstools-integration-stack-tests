@@ -75,7 +75,7 @@ public class RestCallTest extends SWTBotTestCase {
 		warProps.setProperty("type", WAR.RESTEASY_TYPE);
 		warProps.setProperty("contextName", warCtxName1);
 		warProps.setProperty("vdbJndiName", vdbJndiName1);
-		warProps.setProperty("saveLocation", teiidBot.toAbsolutePath("resources"));
+		warProps.setProperty("saveLocation", teiidBot.toAbsolutePath("target"));
 		warProps.setProperty("securityType", WAR.NONE_SECURITY);
 		
 		String[] pathToVDB = new String[]{projectName, vdbName1};
@@ -84,7 +84,7 @@ public class RestCallTest extends SWTBotTestCase {
 		
 		//import created war
 		Properties itemProps = new Properties();
-		itemProps.setProperty("dirName", teiidBot.toAbsolutePath("resources"));
+		itemProps.setProperty("dirName", teiidBot.toAbsolutePath("target"));
 		itemProps.setProperty("file", warCtxName1+".war");
 		itemProps.setProperty("intoFolder", projectName);
 		
@@ -132,7 +132,7 @@ public class RestCallTest extends SWTBotTestCase {
 		warProps.setProperty("type", WAR.RESTEASY_TYPE);
 		warProps.setProperty("contextName", warCtxName1);
 		warProps.setProperty("vdbJndiName", vdbJndiName1);
-		warProps.setProperty("saveLocation", teiidBot.toAbsolutePath("resources"));
+		warProps.setProperty("saveLocation", teiidBot.toAbsolutePath("target"));
 		warProps.setProperty("securityType", WAR.NONE_SECURITY);
 		
 		String[] pathToVDB = new String[]{projectName, vdbName2};
@@ -141,7 +141,7 @@ public class RestCallTest extends SWTBotTestCase {
 		
 		//import created war
 		Properties itemProps = new Properties();
-		itemProps.setProperty("dirName", teiidBot.toAbsolutePath("resources"));
+		itemProps.setProperty("dirName", teiidBot.toAbsolutePath("target"));
 		itemProps.setProperty("file", warCtxName1+".war");
 		itemProps.setProperty("intoFolder", projectName);
 		
