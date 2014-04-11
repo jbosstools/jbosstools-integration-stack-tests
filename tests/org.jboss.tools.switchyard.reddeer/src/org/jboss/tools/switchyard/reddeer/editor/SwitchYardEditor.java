@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.gef.EditPart;
+import org.eclipse.graphiti.features.context.IDoubleClickContext;
 import org.eclipse.graphiti.features.context.IPictogramElementContext;
+import org.eclipse.graphiti.features.custom.ICustomFeature;
+import org.eclipse.graphiti.internal.features.context.impl.base.DoubleClickContext;
 import org.eclipse.graphiti.internal.features.context.impl.base.PictogramElementContext;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.tb.IContextButtonEntry;
@@ -85,8 +88,6 @@ public class SwitchYardEditor extends SWTBotGefEditor {
 				for (int i = 0; i < tool.length; i++) {
 					IPictogramElementContext context = createPictogramElementContext(component);
 					IContextButtonPadData pad = tool[i].getContextButtonPad(context);
-					System.out.println(pad.getClass());
-					System.out.println(pad);
 					entries.addAll(pad.getDomainSpecificContextButtons());
 					entries.addAll(pad.getGenericContextButtons());
 				}
@@ -99,18 +100,61 @@ public class SwitchYardEditor extends SWTBotGefEditor {
 			}
 		});
 	}
+	
+	public void doubleClick(final Component component) {
+		List<ICustomFeature> features = Display.syncExec(new ResultRunnable<List<ICustomFeature>>() {
+			
+			@Override
+			public List<ICustomFeature> run() {
+				List<ICustomFeature> features = new ArrayList<ICustomFeature>();
+				IToolBehaviorProvider[] tool = diagramEditor.getDiagramTypeProvider().getAvailableToolBehaviorProviders();
+				for (int i = 0; i < tool.length; i++) {
+					IDoubleClickContext context = createDoubleClickContext(component);
+					ICustomFeature feature = tool[i].getDoubleClickFeature(context);
+					features.add(feature);
+				}
+				return features;
+			}
+		});
+		for(final ICustomFeature feature: features) {
+			Display.getDisplay().syncExec(new Runnable() {
+				
+				@Override
+				public void run() {
+					feature.execute(createDoubleClickContext(component));
+				}
+			});
+		}
+	}
+	
+	@SuppressWarnings("restriction")
+	private IPictogramElementContext createPictogramElementContext(final Component component) {
+		PictogramElement pe = getPictogramElement(component);
+		if (pe == null) {
+			throw new RuntimeException("Cannot create PictogramElementContext, pe is null");
+		}
+		return new PictogramElementContext(pe);
+	}
+	
+	@SuppressWarnings("restriction")
+	private IDoubleClickContext createDoubleClickContext(final Component component) {
+		PictogramElement pe = getPictogramElement(component);
+		if (pe == null) {
+			throw new RuntimeException("Cannot create DoubleClickContext, pe is null");
+		}
+		return new DoubleClickContext(pe, null, null);
+	}
 
 	@SuppressWarnings("restriction")
-	private IPictogramElementContext createPictogramElementContext(
-			final Component component) {
+	private PictogramElement getPictogramElement(final Component component) {
 		EditPart part = component.getEditPart().part();
 
 		if (part instanceof IPictogramElementEditPart) {
 			IPictogramElementEditPart peep = (IPictogramElementEditPart) part;
 			PictogramElement pe = peep.getPictogramElement();
-			return new PictogramElementContext(pe);
+			return pe;
 		}
-		throw new RuntimeException("Cannot create PictogramElementContext");
+		return null;
 	}
 
 	@Override

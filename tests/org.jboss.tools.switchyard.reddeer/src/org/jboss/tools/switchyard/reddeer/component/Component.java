@@ -105,9 +105,7 @@ public class Component {
 	}
 
 	public void doubleClick() {
-		Rectangle rectangle = getDisplayBounds();
-		Point centralPoint = getCentralPoint(rectangle);
-		MouseUtils.doubleClick(centralPoint.x, centralPoint.y);
+		new SwitchYardEditor().doubleClick(this);
 	}
 
 	public Rectangle getAbsoluteBounds() {
