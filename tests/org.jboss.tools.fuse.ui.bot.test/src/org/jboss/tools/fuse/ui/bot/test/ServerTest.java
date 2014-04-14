@@ -86,6 +86,7 @@ public class ServerTest extends RedDeerTest {
 		
 		// tests the _Finish_ button
 		for (TreeItem item : new DefaultTreeItem(SERVER_SECTION).getItems()) {
+			if (!item.getText().startsWith("JBoss")) continue;
 			AbstractWait.sleep(TimePeriod.SHORT);
 			item.select();
 			try {
