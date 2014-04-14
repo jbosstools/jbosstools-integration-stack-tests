@@ -1,5 +1,6 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -23,7 +24,9 @@ import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.fuse.reddeer.preference.DeployFolderPreferencePage;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
 import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
+import org.jboss.tools.fuse.reddeer.view.FabricExplorer;
 import org.jboss.tools.fuse.reddeer.view.FuseJMXNavigator;
+import org.jboss.tools.fuse.reddeer.view.FuseShell;
 import org.jboss.tools.fuse.ui.bot.test.requirement.ServerRequirement;
 import org.jboss.tools.fuse.ui.bot.test.requirement.ServerRequirement.Server;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
@@ -39,16 +42,20 @@ import org.junit.Test;
  * <li>Deploy Folder mechanism</li>
  * <li>JMX</li>
  * <li>Fabric Profile</li>
- * </ul> 
+ * </ul>
  * 
  * @author tsedmik
  */
 @Server
 public class DeploymentTest extends RedDeerTest {
 	
+	private static String os = System.getProperty("os.name").toLowerCase();	
+	private static boolean isWindows = os.indexOf("win") >= 0;
+	
 	private static final String PROJECT_ARCHETYPE = "camel-archetype-spring";
 	private static final String PROJECT_NAME = "camel-spring";
 	private static final String PROJECT_JAR_ARCHIVE = "camel-spring-1.0.0-SNAPSHOT.jar";
+	private static final String PROJECT_FABS = "mvn:com.mycompany/camel-spring/1.0.0-SNAPSHOT";
 
 	private static final String PROJECT_ARCHETYPE2 = "camel-archetype-spring-dm";
 	private static final String PROJECT_NAME2 = "camel-spring-dm";
@@ -56,7 +63,7 @@ public class DeploymentTest extends RedDeerTest {
 	private static final String CONTEXT_DEPLOY_TO = "Deploy to...";
 	private static final String DEPLOY_FOLDER_NAME = "Fuse Deploy Folder";
 	
-	private static final String JMX_JBOSS_FUSE = "JBoss Fuse";
+	private String JMX_JBOSS_FUSE = "JBoss Fuse";
 	private static final String JMX_CAMEL = "Camel";
 	private static final String JMX_CAMEL2 = "camel-";
 	
@@ -70,6 +77,10 @@ public class DeploymentTest extends RedDeerTest {
 		
 		if (setUpIsDone) {
 			return;
+		}
+		
+		if (isWindows) {
+			JMX_JBOSS_FUSE = "karaf";
 		}
 		
 		new ServerConfig(serverRequirement).configureNewServer();
@@ -108,14 +119,13 @@ public class DeploymentTest extends RedDeerTest {
 		assertTrue(new ConsoleView().getConsoleText().contains("BUILD SUCCESS"));
 		File jarArchive = new File(serverRequirement.getPath() + "/deploy/" + PROJECT_JAR_ARCHIVE);
 		assertTrue(jarArchive.exists());
-		
-		assertNotNull(getJMXNode(JMX_JBOSS_FUSE, JMX_CAMEL, JMX_CAMEL2));
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Test
 	public void deployWithJMXTest() {
 		
+		new FuseJMXNavigator().connectTo(JMX_JBOSS_FUSE);
 		new ProjectExplorer().getProject(PROJECT_NAME2).select();
 		Matcher<String> deployTo = new WithTextMatcher(CONTEXT_DEPLOY_TO);
 		Matcher<String> fuse = new WithRegexMatcher("JBoss Fuse.*");
@@ -128,7 +138,21 @@ public class DeploymentTest extends RedDeerTest {
 	@Test
 	public void deployWithFabric() {
 		
-		// TODO Not implemented yet!
+		new FuseShell().createFabric();
+		
+		FabricExplorer fab = new FabricExplorer();
+		fab.open();
+		fab.addFabricDetails(null, null, "admin", "admin", "admin");
+		fab.refresh();
+		fab.connectToFabric(null);
+		fab.createProfile("test", "1.0", "default");
+		fab.deployProjectToProfile(PROJECT_NAME, "test");
+		
+		assertEquals(PROJECT_FABS, fab.getProfileFABs("1.0", "default", "test"));
+		
+		// TODO improve test case
+		// create a new container with assigned the profile
+		// check deploy in the properties view
 	}
 	
 	/**
@@ -166,7 +190,7 @@ public class DeploymentTest extends RedDeerTest {
 		FuseJMXNavigator jmx = new FuseJMXNavigator();
 		jmx.open();
 		jmx.connectTo(JMX_JBOSS_FUSE);
-		AbstractWait.sleep(TimePeriod.SHORT);
+		AbstractWait.sleep(TimePeriod.getCustom(2));
 		return jmx.getNode(path);
 	}
 }
