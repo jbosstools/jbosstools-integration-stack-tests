@@ -6,7 +6,9 @@ import static org.junit.Assert.assertTrue;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
@@ -35,7 +37,6 @@ import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
 import org.jboss.tools.switchyard.reddeer.preference.PropertiesPreferencePage;
 import org.jboss.tools.switchyard.reddeer.wizard.DefaultServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
-import org.jboss.tools.switchyard.ui.bot.test.suite.PerspectiveRequirement.Perspective;
 import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -51,7 +52,7 @@ import org.junit.runner.RunWith;
  * 
  */
 @CleanWorkspace
-@Perspective(name = "Java EE")
+@OpenPerspective(JavaEEPerspective.class)
 @RunWith(SwitchyardSuite.class)
 public class BindingsTest extends RedDeerTest {
 
