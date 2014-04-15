@@ -9,13 +9,13 @@ import java.util.List;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.tools.switchyard.reddeer.editor.DomainEditor;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.wizard.SecurityConfigurationWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
-import org.jboss.tools.switchyard.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.switchyard.ui.bot.test.suite.PerspectiveRequirement.Perspective;
 import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
 import org.junit.AfterClass;

@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileWriter;
 
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
@@ -16,7 +17,6 @@ import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
 import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
-import org.jboss.tools.switchyard.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.switchyard.ui.bot.test.suite.PerspectiveRequirement.Perspective;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerDeployment;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Server;

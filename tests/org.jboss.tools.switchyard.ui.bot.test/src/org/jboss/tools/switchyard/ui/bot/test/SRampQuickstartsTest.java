@@ -1,11 +1,11 @@
 package org.jboss.tools.switchyard.ui.bot.test;
 
-import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
-import org.jboss.tools.switchyard.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.switchyard.ui.bot.test.suite.PerspectiveRequirement.Perspective;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Server;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.State;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Type;
+import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

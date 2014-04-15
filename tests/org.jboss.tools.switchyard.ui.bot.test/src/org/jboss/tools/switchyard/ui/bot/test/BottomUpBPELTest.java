@@ -1,6 +1,7 @@
 package org.jboss.tools.switchyard.ui.bot.test;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.test.RedDeerTest;
@@ -14,7 +15,6 @@ import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.wizard.ImportFileWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.PromoteServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
-import org.jboss.tools.switchyard.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.switchyard.ui.bot.test.suite.PerspectiveRequirement.Perspective;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerDeployment;
 import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Server;

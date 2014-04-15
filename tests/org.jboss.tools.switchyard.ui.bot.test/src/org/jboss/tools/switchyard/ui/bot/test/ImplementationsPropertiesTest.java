@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
@@ -24,7 +25,6 @@ import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultImple
 import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultResourcePage;
 import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultTransactionPage;
 import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
-import org.jboss.tools.switchyard.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.switchyard.ui.bot.test.suite.PerspectiveRequirement.Perspective;
 import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
 import org.junit.After;
