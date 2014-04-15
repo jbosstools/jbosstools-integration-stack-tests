@@ -8,7 +8,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 /**
- * Test suite concentrating on specific features
+ * Test suite concentrating on specific features, used e.g. to test a bug presence, run locally 
  * 
  * @author lfabriko
  * 
