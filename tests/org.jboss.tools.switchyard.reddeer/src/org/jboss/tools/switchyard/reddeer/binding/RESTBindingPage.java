@@ -6,13 +6,16 @@ import java.util.List;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.condition.TableHasRows;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 
 /**
  * REST binding page
@@ -45,9 +48,11 @@ public class RESTBindingPage extends WizardPage {
 
 	public RESTBindingPage addInterface(String javaInterface) {
 		new PushButton("Add").click();
+		new DefaultShell("Select entries");
 		new DefaultText().setText(javaInterface);
 		new WaitUntil(new TableHasRows(new DefaultTable()), TimePeriod.LONG);
 		new PushButton("OK").click();
+		new WaitWhile(new ShellWithTextIsAvailable("Select entries"));
 		return this;
 	}
 
