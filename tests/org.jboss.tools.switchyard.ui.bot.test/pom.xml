@@ -73,6 +73,14 @@
 		</dependencies>
 	      </configuration>
 	    </plugin>
+	    <plugin>
+	      <groupId>org.eclipse.tycho</groupId>
+	      <artifactId>tycho-compiler-plugin</artifactId>
+	      <version>${tychoVersion}</version>
+	      <configuration>
+ 		<compilerArgument>-err:-forbidden</compilerArgument>
+              </configuration>
+	    </plugin>
 	  </plugins>
 	</build>
 	
