@@ -106,7 +106,7 @@ public class WARTest extends SWTBotTestCase {
 		String curlOK = "curl -H \"Content-Type: text/xml; charset=utf-8\" -H \"SOAPAction:\"  -d @"+teiidBot.toAbsolutePath("resources/wsdl/requestOracleOK.xml")+" -X POST http://localhost:8080/checkBookVdb/BooksInterface?wsdl";
 		String responseNOK = teiidBot.curl(curlNOK);
 		String responseOK = teiidBot.curl(curlOK);
-		assertEquals(teiidBot.loadFileAsString(teiidBot.toAbsolutePath("resources/wsdl/responseOracleNOK.xml")), responseNOK);
+		assertEquals(teiidBot.loadFileAsString(teiidBot.toAbsolutePath("resources/wsdl/responseOracleNOK.xml")), responseNOK);//sometimes fails even though via command line it works; curl -u testuser:testpassword -d @resources/wsdl/requestOracleNOK.xml -X POST http://localhost:8080/checkBookVdbBasic/BooksInterface?wsdl
 		assertEquals(teiidBot.loadFileAsString(teiidBot.toAbsolutePath("resources/wsdl/responseOracleOK.xml")), responseOK);
 		} catch (Exception e){
 			e.printStackTrace();

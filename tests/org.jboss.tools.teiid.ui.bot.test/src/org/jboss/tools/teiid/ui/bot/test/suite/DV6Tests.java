@@ -5,6 +5,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 /**
+ * Basic server management operations with DV6
+ * Run on all platforms
  * 
  * @author lfabriko
  * 

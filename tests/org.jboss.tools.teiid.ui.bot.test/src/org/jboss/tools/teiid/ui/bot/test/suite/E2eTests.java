@@ -10,7 +10,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 /**
- * Test suite concentrating on specific features
+ * E2e tests
+ * Run at least locally
  * 
  * @author lfabriko
  * 

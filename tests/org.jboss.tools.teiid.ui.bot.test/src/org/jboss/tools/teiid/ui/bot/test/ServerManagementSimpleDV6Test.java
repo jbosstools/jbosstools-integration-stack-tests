@@ -11,6 +11,9 @@ import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt.ServerType;
 import org.jboss.tools.teiid.reddeer.wizard.ImportProjectWizard;
 import org.jboss.tools.teiid.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
+import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.Server;
+import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.State;
+import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.Type;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -20,6 +23,7 @@ import org.junit.Test;
  *
  */
 @Perspective(name = "Teiid Designer")
+@Server(type = Type.ALL, state = State.NOT_RUNNING)
 public class ServerManagementSimpleDV6Test extends SWTBotTestCase {
 	private static final String DV6_PROPERTIES = "dv6.properties";
 	private static final String DV6_SERVER = "EAP-6.1";
@@ -43,11 +47,11 @@ public class ServerManagementSimpleDV6Test extends SWTBotTestCase {
 
 	@Test
 	public void test() {
-		try{
-			new ServerManager().addServer(DV6_PROPERTIES);
-		} catch (Exception ex){
-			System.err.println("Cannot add server, " + ex.getMessage()); 
-		}
+//		try{
+//			new ServerManager().addServer(DV6_PROPERTIES);
+//		} catch (Exception ex){
+//			System.err.println("Cannot add server, " + ex.getMessage()); 
+//		}
 		
 		try {
 			new ServerManager().startServer(DV6_SERVER);
