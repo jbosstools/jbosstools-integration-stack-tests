@@ -92,7 +92,7 @@ public class SimpleTest extends RedDeerTest {
 				.type("return \"Hello \" + name;}").saveAndClose();
 		new SwitchYardEditor().save();
 
-		new Service("ExampleService").newServiceTestClass();
+		new Service("ExampleService").createNewServiceTestClass();
 		new SwitchYardEditor().save();
 
 		new TextEditor("ExampleServiceTest.java").deleteLineWith("String message")

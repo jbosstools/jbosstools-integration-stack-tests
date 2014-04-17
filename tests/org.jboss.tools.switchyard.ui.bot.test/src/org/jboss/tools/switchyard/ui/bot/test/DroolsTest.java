@@ -95,7 +95,7 @@ public class DroolsTest extends RedDeerTest {
 		//test
 		new org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor().show();
 		AbstractWait.sleep(1000);
-		new Service(INTERVIEW + "Service").newServiceTestClass();
+		new Service(INTERVIEW + "Service").createNewServiceTestClass();
 		new TextEditor(TEST).deleteLineWith("null").type("Applicant message=new Applicant(\"Twenty\", 20);").deleteLineWith("Implement")
 		.type("message=new Applicant(\"Ten\", 10);").type("service.operation(\"verify\").sendInOnly(message);");
 		

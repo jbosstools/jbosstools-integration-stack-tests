@@ -122,7 +122,7 @@ public class BottomUpBPMN2Test extends RedDeerTest {
 		new SwitchYardEditor().save();
 
 		// Create HelloTest
-		new Service("Hello").newServiceTestClass();
+		new Service("Hello").createNewServiceTestClass();
 		new TextEditor("HelloTest.java").deleteLineWith("String message").type("String message=\"BPMN2\";")
 				.deleteLineWith("assertTrue").type("Assert.assertEquals(\"Hello BPMN2\", result);").saveAndClose();
 		new SwitchYardEditor().save();

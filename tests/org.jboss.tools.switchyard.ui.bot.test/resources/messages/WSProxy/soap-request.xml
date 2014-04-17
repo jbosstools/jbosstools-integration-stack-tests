@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Header/>
+  <soap:Body>
+    <ns2:sayHello xmlns:ns2="http://util.test.bot.ui.switchyard.tools.jboss.org/">
+      <name>apodhrad</name>
+    </ns2:sayHello>
+  </soap:Body>
+</soap:Envelope>

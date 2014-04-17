@@ -137,7 +137,7 @@ public class TopDownBPMN2Test extends RedDeerTest {
 		openFile(PROJECT, PACKAGE_MAIN_RESOURCES, "META-INF", "switchyard.xml");
 
 		// Junit
-		new Service(PROCESS_GREET, 1).newServiceTestClass();
+		new Service(PROCESS_GREET, 1).createNewServiceTestClass();
 		new TextEditor(PROCESS_GREET + "Test.java")
 				.deleteLineWith("null")
 				.deleteLineWith("assertTrue")

@@ -117,7 +117,7 @@ public class BottomUpCamelTest extends RedDeerTest {
 		new SwitchYardEditor().save();
 		
 		// Create HelloTest
-		new Service("Hello").newServiceTestClass();
+		new Service("Hello").createNewServiceTestClass();
 		new TextEditor("HelloTest.java").deleteLineWith("String message").type("String message=\"Camel\";")
 				.deleteLineWith("assertTrue").type("Assert.assertEquals(\"Hello Camel\", result);").saveAndClose();
 		new SwitchYardEditor().save();

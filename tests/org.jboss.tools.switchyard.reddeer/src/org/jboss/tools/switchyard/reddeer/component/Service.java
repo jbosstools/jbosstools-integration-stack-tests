@@ -9,7 +9,7 @@ import org.jboss.tools.switchyard.reddeer.wizard.ServiceTestClassWizard;
  * A service component.
  * 
  * @author Andrej Podhradsky (andrej.podhradsky@gmail.com)
- *
+ * 
  */
 public class Service extends Component {
 
@@ -27,9 +27,14 @@ public class Service extends Component {
 		return new PromoteServiceWizard("Promote Component Service");
 	}
 
-	public void newServiceTestClass() {
+	public void createNewServiceTestClass(String... mixin) {
 		contextButton("New Service Test Class").click();
-		new ServiceTestClassWizard().activate().finish();
+		new ServiceTestClassWizard().activate().selectMixin(mixin).finish();
+	}
+	
+	public ServiceTestClassWizard newServiceTestClass() {
+		contextButton("New Service Test Class").click();
+		return new ServiceTestClassWizard().activate();
 	}
 
 	public WizardDialog addBinding(String binding) {

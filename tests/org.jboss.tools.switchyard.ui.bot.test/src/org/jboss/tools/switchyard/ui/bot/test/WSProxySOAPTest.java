@@ -1,33 +1,34 @@
 package org.jboss.tools.switchyard.ui.bot.test;
 
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
+import static org.junit.Assert.assertEquals;
+
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.test.RedDeerTest;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
 import org.jboss.tools.switchyard.reddeer.binding.SOAPBindingPage;
 import org.jboss.tools.switchyard.reddeer.component.Component;
 import org.jboss.tools.switchyard.reddeer.component.Reference;
 import org.jboss.tools.switchyard.reddeer.component.Service;
-import org.jboss.tools.switchyard.reddeer.condition.ConsoleHasChanged;
+import org.jboss.tools.switchyard.reddeer.condition.JUnitHasFinished;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
+import org.jboss.tools.switchyard.reddeer.view.JUnitView;
+import org.jboss.tools.switchyard.reddeer.widget.ProjectItemExt;
 import org.jboss.tools.switchyard.reddeer.wizard.CamelJavaWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ImportFileWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ReferenceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
-import org.jboss.tools.switchyard.ui.bot.test.suite.ServerDeployment;
-import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Server;
-import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.State;
-import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Type;
 import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
-import org.jboss.tools.switchyard.ui.bot.test.util.BackupClient;
-import org.jboss.tools.switchyard.ui.bot.test.util.SoapClient;
+import org.jboss.tools.switchyard.ui.bot.test.util.SOAPService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,14 +42,17 @@ import org.junit.runner.RunWith;
  */
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
-@Server(type = Type.ALL, state = State.RUNNING)
 @RunWith(SwitchyardSuite.class)
 public class WSProxySOAPTest extends RedDeerTest {
 
 	public static final String PROJECT = "proxy_soap";
+	public static final String PACKAGE = "com.example.switchyard.proxy_soap";
 	private static final String WSDL = "Hello.wsdl";
 
-	@Before @After
+	private SOAPService webService;
+
+	@Before
+	@After
 	public void closeSwitchyardFile() {
 		try {
 			new SwitchYardEditor().saveAndClose();
@@ -57,93 +61,77 @@ public class WSProxySOAPTest extends RedDeerTest {
 		}
 	}
 
+	@Before
+	public void startWebService() {
+		webService = new SOAPService(8123);
+		webService.start();
+	}
+
+	@After
+	public void stopWebService() {
+		webService.stop();
+	}
+
 	@Test
 	public void wsProxySoapTest() throws Exception {
-		/* Create Web Service */
-		new WebProjectWizard("web").create();
-		new ProjectExplorer().getProject("web").select();
-		new WebServiceWizard("Hello").create();
-		new ServerDeployment().deployProject("web", "web.war");
-
 		/* Create SwicthYard Project */
 		String version = SwitchyardSuite.getLibraryVersion();
 		new SwitchYardProjectWizard(PROJECT, version).impl("Camel Route").binding("SOAP").create();
+
+		/* Import Resources */
 		new ProjectExplorer().getProject(PROJECT).getProjectItem("src/main/resources").select();
 		new ImportFileWizard().importFile("resources/wsdl", WSDL);
-		new CamelJavaWizard().open().setName("Proxy").selectWSDLInterface(WSDL).finish();
+		new ProjectExplorer().getProject(PROJECT).getProjectItem("src/test/resources").select();
+		new ImportFileWizard().importFile("resources/messages/WSProxy", "soap-request.xml");
+		new ProjectExplorer().getProject(PROJECT).getProjectItem("src/test/resources").select();
+		new ImportFileWizard().importFile("resources/messages/WSProxy", "soap-response.xml");
+
+		/* Create Camel Route */
+		new CamelJavaWizard().open().setName("Proxy").selectWSDLInterface(WSDL).setServiceName("Hello").finish();
 
 		new Service("Hello").promoteService().setServiceName("ProxyService").finish();
 		new Service("ProxyService").addBinding("SOAP");
 		BindingWizard<SOAPBindingPage> soapWizard = BindingWizard.createSOAPBindingWizard();
 		soapWizard.getBindingPage().setContextPath(PROJECT);
+		soapWizard.getBindingPage().setServerPort(":18080");
 		soapWizard.finish();
 		new Component("Proxy").contextButton("Reference").click();
 		new ReferenceWizard().selectWSDLInterface(WSDL).setServiceName("HelloService").finish();
 		new Reference("HelloService").promoteReference().setServiceName("HelloService").finish();
-		new Service("HelloService").addBinding("SOAP").finish();
+		new Service("HelloService").addBinding("SOAP");
+		BindingWizard<SOAPBindingPage> wizard = BindingWizard.createSOAPBindingWizard();
+		wizard.getBindingPage().setEndpointAddress("http://localhost:8123/soap");
+		wizard.finish();
+
 		new SwitchYardEditor().save();
 
 		/* Edit Camel Route */
 		new Component("Proxy").doubleClick();
-		new TextEditor("Proxy.java").typeAfter("from(", ".to(\"switchyard://HelloService\")")
-				.saveAndClose();
+		new TextEditor("Proxy.java").typeAfter("from(", ".to(\"switchyard://HelloService\")").saveAndClose();
 		new SwitchYardEditor().save();
 
 		/* Test Web Service Proxy */
+		new Service("Hello").newServiceTestClass().setPackage(PACKAGE).selectMixin("HTTP Mix-in").finish();
+		new TextEditor("HelloTest.java")
+				.deleteLineWith("Object message")
+				.deleteLineWith("Object result")
+				.deleteLineWith("getContent")
+				.deleteLineWith("assertTrue")
+				.type("httpMixIn.postResourceAndTestXML(\"http://localhost:8123/soap\", \"soap-request.xml\", \"soap-response.xml\");")
+				.saveAndClose();
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 
-		/* Test SOAP Response */
-		new ServerDeployment().deployProject(PROJECT);
-		new ServerDeployment().fullPublish(PROJECT);
-		try {
-			SoapClient.testResponses("http://localhost:8080/" + PROJECT + "/HelloService?wsdl",
-					"WSProxy");
-		} catch (Exception e) {
-			BackupClient.backupDeployment(PROJECT);
-			throw e;
-		}
+		ProjectItem item = new ProjectExplorer().getProject(PROJECT).getProjectItem("src/test/java", PACKAGE,
+				"HelloTest.java");
+		new ProjectItemExt(item).runAsJUnitTest();
+		AbstractWait.sleep(TimePeriod.NORMAL);
+		new WaitUntil(new JUnitHasFinished(), TimePeriod.LONG);
 
-		new WaitWhile(new ConsoleHasChanged());
-	}
-
-	private class WebServiceWizard extends NewJavaClassWizardDialog {
-
-		public static final String DEFAULT_PACKAGE = "com.example.webservice";
-
-		private String name;
-
-		public WebServiceWizard(String name) {
-			super();
-			this.name = name;
-		}
-
-		public void create() {
-			open();
-			getFirstPage().setName(name);
-			getFirstPage().setPackage(DEFAULT_PACKAGE);
-			finish();
-
-			new TextEditor(name + ".java").typeAfter("package", "import javax.jws.*;").newLine()
-					.type("@WebService(targetNamespace = \"urn:webservice:" + name + ":1.0\")")
-					.typeAfter("class", "@WebMethod").newLine()
-					.type("@WebResult(name=\"greeting\")").newLine()
-					.type("public String sayHello(@WebParam(name=\"name\") String name) {")
-					.newLine().type("return \"Hello \" + name;}").saveAndClose();
-		}
-	}
-
-	private class WebProjectWizard extends NewWizardDialog {
-
-		private String projectName;
-
-		public WebProjectWizard(String projectName) {
-			super("Web", "Dynamic Web Project");
-			this.projectName = projectName;
-		}
-
-		public void create() {
-			open();
-			new LabeledText("Project name:").setText(projectName);
-			finish();
-		}
+		JUnitView jUnitView = new JUnitView();
+		jUnitView.open();
+		assertEquals("1/1", new JUnitView().getRunStatus());
+		assertEquals(0, new JUnitView().getNumberOfErrors());
+		assertEquals(0, new JUnitView().getNumberOfFailures());
 	}
 }
