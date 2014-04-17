@@ -117,9 +117,9 @@ public class WSProxySOAPTest extends RedDeerTest {
 				.deleteLineWith("Object result")
 				.deleteLineWith("getContent")
 				.deleteLineWith("assertTrue")
-				.type("httpMixIn.postResourceAndTestXML(\"http://localhost:8123/soap\", \"soap-request.xml\", \"soap-response.xml\");")
+				.type("httpMixIn.postResourceAndTestXML(\"http://localhost:18080/proxy_soap/HelloServiceService\", \"soap-request.xml\", \"soap-response.xml\");")
 				.saveAndClose();
-		
+
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 
 		ProjectItem item = new ProjectExplorer().getProject(PROJECT).getProjectItem("src/test/java", PACKAGE,

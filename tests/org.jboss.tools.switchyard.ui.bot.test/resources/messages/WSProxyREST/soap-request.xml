@@ -2,8 +2,8 @@
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Header/>
   <soap:Body>
-    <ns2:sayHello xmlns:ns2="http://util.test.bot.ui.switchyard.tools.jboss.org/">
-      <name>apodhrad</name>
-    </ns2:sayHello>
+    <sayHello xmlns="urn:com.example.switchyard:proxy_rest:1.0">
+      <string>apodhrad</string>
+    </sayHello>
   </soap:Body>
 </soap:Envelope>
