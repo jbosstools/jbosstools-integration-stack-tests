@@ -24,6 +24,7 @@
 		<module>org.jboss.tools.jbpm.ui.bot.test</module>
 		<module>org.jboss.tools.bpel.reddeer</module>
 		<module>org.jboss.tools.bpel.ui.bot.test</module>
+		<module>org.jboss.tools.esb.reddeer</module>
 		<module>org.jboss.tools.esb.ui.bot.test</module>
 		<module>org.jboss.tools.switchyard.reddeer</module>
 		<module>org.jboss.tools.switchyard.ui.bot.test</module>

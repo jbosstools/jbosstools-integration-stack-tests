@@ -13,9 +13,8 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-	  <swtbot.properties>./swtbot.properties</swtbot.properties>
-	  <systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=${swtbot.test.properties.file}</systemProperties>
-	  <test.class>AllTests</test.class>
+	  <systemProperties>${integrationTestsSystemProperties}</systemProperties>
+	  <customization.file>resources/config/plugin_customization.ini</customization.file>
 	</properties>
 	
 	<build>
@@ -25,11 +24,12 @@
 	      <groupId>org.eclipse.tycho</groupId>
 	      <artifactId>tycho-surefire-plugin</artifactId>
 	      <configuration>
-		<useUIThread>false</useUIThread>
-		<skip>${swtbot.test.skip}</skip>
+		<appArgLine>-eclipse.password resources/security/password -pluginCustomization ${customization.file} -clean -testpluginname org.jboss.tools.esb.ui.bot.test</appArgLine>
 		<testSuite>org.jboss.tools.esb.ui.bot.test</testSuite>
-		<testClass>org.jboss.tools.esb.ui.bot.tests.${test.class}</testClass>
+		<testClass>**/*Test</testClass>
 		<forkedProcessTimeoutInSeconds>7200</forkedProcessTimeoutInSeconds>
+		<useUIThread>false</useUIThread>
+		<skip>${skipTests}</skip>
 		<dependencies combine.children="append">
 		  <!-- JBoss AS Feature -->
 		  <dependency>
@@ -67,6 +67,18 @@
 	</build>
 
 	<profiles>
+	  <!-- RedDeer Config -->
+	  <profile>
+	    <id>reddeer-config</id>
+	    <activation>
+	      <property>
+		<name>reddeer.config</name>
+	      </property>
+	    </activation>
+	    <properties>
+	      <systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=${reddeer.config}</systemProperties>
+	    </properties>
+	  </profile>
 	  <!-- Install AS 5.1 with ESB and Riftsaw -->
 	  <profile>
 	    <id>as51</id>
