@@ -6,7 +6,6 @@ import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.ImplementationDialog;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Expression;
 import org.jboss.tools.reddeer.DefaultCheckBox;
 import org.jboss.tools.reddeer.DefaultCombo;
-import org.jboss.tools.reddeer.DefaultSection;
 
 /**
  * 
@@ -47,9 +46,7 @@ public class BusinessRuleTaskTab {
 	 * @param expression
 	 */
 	public void setOnEntryScript(Expression expression) {
-		DefaultSection section = new DefaultSection("On Entry Script");
-		section.getComboBox("Script Language").setSelection(expression.getLanguage());
-		section.getText("Script").setText(expression.getScript());
+		expression.setUp("On Entry Script");
 	}
 	
 	/**
@@ -57,9 +54,7 @@ public class BusinessRuleTaskTab {
 	 * @param expression
 	 */
 	public void setOnExitScript(Expression expression) {
-		DefaultSection section = new DefaultSection("On Exit Script");
-		section.getComboBox("Script Language").setSelection(expression.getLanguage());
-		section.getText("Script").setText(expression.getScript());
+		expression.setUp("On Exit Script");
 	}
 	
 }

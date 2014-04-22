@@ -8,14 +8,14 @@ import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructOnPoint;
 /**
  * 
  */
-public class ContainerConstruct extends Construct {
+public class ElementContainer extends Element {
 
 	/**
 	 * @see Construct(String, ConstructType, Construct, int, boolean)
 	 * @param name
 	 * @param type
 	 */
-	public ContainerConstruct(String name, ConstructType type) {
+	public ElementContainer(String name, ElementType type) {
 		this(name, type, null, 0, true);
 	}
 	
@@ -27,7 +27,7 @@ public class ContainerConstruct extends Construct {
 	 * @param index
 	 * @param select
 	 */
-	public ContainerConstruct(String name, ConstructType type, Construct parent, int index, boolean select) {
+	public ElementContainer(String name, ElementType type, Element parent, int index, boolean select) {
 		super(name, type, parent, index, select);
 	}
 
@@ -36,7 +36,7 @@ public class ContainerConstruct extends Construct {
 	 * @param name
 	 * @param type
 	 */
-	public void add(String name, ConstructType type) {
+	public void add(String name, ElementType type) {
 		String sectionName = type.toToolPath()[0];
 		
 		Rectangle bounds = editor.getBounds(editPart);
@@ -60,7 +60,7 @@ public class ContainerConstruct extends Construct {
 	 * @param type
 	 * @param position
 	 */
-	public void add(String name, ConstructType type, Construct nextTo, Position position) {
+	public void add(String name, ElementType type, Element nextTo, Position position) {
 		add(name, type, findPoint(this, nextTo, position));
 	}
 	
@@ -72,7 +72,7 @@ public class ContainerConstruct extends Construct {
 	 * @param point Represents a position in the canvas relative to this construct. Meaning that
 	 *              this construct's upper left corner is the staring position. 
 	 */
-	public void add(String name, ConstructType type, Point point) {
+	public void add(String name, ElementType type, Point point) {
 		Rectangle bounds = editor.getBounds(editPart);
 		
 		String sectionName = type.toToolPath()[0];
@@ -89,7 +89,7 @@ public class ContainerConstruct extends Construct {
 		editor.activateTool(type.toToolPath()[0], type.toToolPath()[1]);
 		editor.click(bounds.x() + point.x(), bounds.y() + point.y());
 		// Set name
-		Construct c = editor.getLastConstruct(type);
+		Element c = editor.getLastConstruct(type);
 		c.select();
 		c.setName(name);
 	}

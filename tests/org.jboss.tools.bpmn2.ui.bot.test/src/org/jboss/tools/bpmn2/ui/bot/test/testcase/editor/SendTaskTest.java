@@ -1,6 +1,6 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
-import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
+import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.FromVariable;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
@@ -11,8 +11,7 @@ import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 
 /**
- * ISSUES:
- * 	1) engine does not validate the presence of the rules.
+ * ISSUES - Engine does not validate the presence of the rules.
  */
 @ProcessDefinition(name="BPMN2-SendTask", project="EditorTestProject")
 public class SendTaskTest extends JBPM6BaseTest {
@@ -24,13 +23,13 @@ public class SendTaskTest extends JBPM6BaseTest {
 		process.addMessage("_2_Message", "String");
 		
 		StartEvent start = new StartEvent("StartProcess");
-		start.append("Send", ConstructType.SEND_TASK);
+		start.append("Send", ElementType.SEND_TASK);
 
 		SendTask send = new SendTask("Send");
 		send.setImplementation("Unspecified");
 		send.setMessage("_2_Message", "String");
 		send.addParameterMapping(new ParameterMapping(new FromVariable("BPMN2-SendTask/s"), new ToDataInput("Message"), ParameterMapping.Type.INPUT));
-		send.append("EndProcess", ConstructType.TERMINATE_END_EVENT);
+		send.append("EndProcess", ElementType.TERMINATE_END_EVENT);
 	}
 	
 }

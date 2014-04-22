@@ -1,19 +1,19 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents;
 
-import org.jboss.tools.bpmn2.reddeer.editor.AbstractEvent;
-import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
+import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Element;
 
 /**
  * 
  */
-public class StartEvent extends AbstractEvent {
+public class StartEvent extends Element {
 
 	/**
 	 * 
 	 * @param name
 	 */
 	public StartEvent(String name) {
-		this(name, ConstructType.START_EVENT);
+		this(name, ElementType.START_EVENT);
 	}
 
 	/**
@@ -21,7 +21,7 @@ public class StartEvent extends AbstractEvent {
 	 * @param name
 	 * @param type
 	 */
-    StartEvent(String name, ConstructType type) {
+    StartEvent(String name, ElementType type) {
 		super(name, type);
 	}
 	

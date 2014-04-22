@@ -3,7 +3,7 @@ package org.jboss.tools.bpmn2.reddeer.editor;
 /**
  * 
  */
-public enum ConstructType {
+public enum ElementType {
 
 	PROCESS(null, null),
 	
@@ -87,7 +87,7 @@ public enum ConstructType {
 	 * @param sectionName
 	 * @param paletteToolName
 	 */
-	private ConstructType(String sectionName, String paletteToolName) {
+	private ElementType(String sectionName, String paletteToolName) {
 		this.sectionName = sectionName;
 		this.paletteToolName = paletteToolName;
 	}
@@ -96,7 +96,7 @@ public enum ConstructType {
 	 * 
 	 * @return
 	 */
-	public boolean isContainer() {
+	public boolean isElementContainer() {
 		return AD_HOC_SUB_PROCESS.equals(this) || SUB_PROCESS.equals(this) || PROCESS.equals(this);
 	}
 	

@@ -1,23 +1,32 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 
-import org.jboss.tools.bpmn2.reddeer.editor.AbstractTask;
-import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
+import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.IOParametersTab;
 
 /**
  * 
  */
-public class Task extends AbstractTask {
+public class Task extends Element {
 
 	/**
 	 * 
 	 * @param name
 	 */
 	public Task(String name) {
-		super(name, ConstructType.TASK);
+		super(name, ElementType.TASK);
 	}
 
+	/**
+	 * 
+	 * @param name
+	 * @param type
+	 */
+	Task(String name, ElementType type) {
+		super(name, type);
+	}
+	
 	/**
 	 * 
 	 * @param parameterMapping
@@ -32,6 +41,15 @@ public class Task extends AbstractTask {
 	 */
 	public void removeParameterMapping(ParameterMapping parameterMapping) {
 		properties.getTab("I/O Parameters", IOParametersTab.class).removeParameter(parameterMapping);
+	}
+	
+	/**
+	 * 
+	 * @param name
+	 * @param eventType
+	 */
+	public void addEvent(String name, ElementType eventType) {
+		super.addEvent(name, eventType);
 	}
 
 }

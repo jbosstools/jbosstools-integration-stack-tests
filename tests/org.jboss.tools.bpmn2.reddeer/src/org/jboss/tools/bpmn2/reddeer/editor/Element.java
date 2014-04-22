@@ -27,13 +27,12 @@ import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructOnPoint;
 import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructWithName;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.DescriptionTab;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 /**
- * Represents a BPMN activity in the canvas.
+ * Represents an element in the editor canvas.
  */
-public class Construct {
+public class Element {
 
 	protected Logger log = Logger.getLogger(getClass());
 	
@@ -42,15 +41,15 @@ public class Construct {
 	protected SWTBot bot = new SWTBot();
 	
 	protected String name;
-	protected ConstructType type;
-	protected Construct parent;
+	protected ElementType type;
+	protected Element parent;
 	protected SWTBotGefEditPart editPart;
 	
 	/**
 	 * @param name
 	 * @param type
 	 */
-	public Construct(String name, ConstructType type) {
+	public Element(String name, ElementType type) {
 		this(name, type, null);
 	}
 
@@ -59,7 +58,7 @@ public class Construct {
 	 * @param type
 	 * @param parent
 	 */
-	public Construct(String name, ConstructType type, Construct parent) {
+	public Element(String name, ElementType type, Element parent) {
 		this(name, type, parent, 0, true);
 	}
 	
@@ -74,7 +73,7 @@ public class Construct {
 	 * @param index
 	 * @param select
 	 */
-	public Construct(String name, ConstructType type, Construct parent, int index, boolean select) {
+	public Element(String name, ElementType type, Element parent, int index, boolean select) {
 		this.name = name;
 		this.type = type;
 		this.parent = parent;
@@ -82,7 +81,7 @@ public class Construct {
 		setUp(name, type, parent, index, select);
 	}
 	
-	private void setUp(String name, ConstructType type, Construct parent, int index, boolean select) {
+	private void setUp(String name, ElementType type, Element parent, int index, boolean select) {
 		List<Matcher<? super EditPart>> matcherList = new ArrayList<Matcher<? super EditPart>>();
 		if (name != null) {
 			matcherList.add(new ConstructWithName<EditPart>(name));
@@ -113,6 +112,9 @@ public class Construct {
 		}
 	}
 	
+	/**
+	 * 
+	 */
 	public void refresh() {
 		setUp(name, type, parent, 0, true);
 	}
@@ -140,7 +142,7 @@ public class Construct {
 	 * @param name
 	 * @param eventType
 	 */
-	protected void addEvent(String name, ConstructType eventType) {
+	protected void addEvent(String name, ElementType eventType) {
 		if (!eventType.name().endsWith("BOUNDARY_EVENT")) {
 			throw new IllegalArgumentException("Can add only BOUNDARY_EVENT types.");
 		}
@@ -151,7 +153,7 @@ public class Construct {
 		editor.click(p.x(), p.y());
 
 		// Set the name of the event
-		Construct event = editor.getLastConstruct(eventType);
+		Element event = editor.getLastConstruct(eventType);
 		event.setName(name);
 	}
 	
@@ -160,7 +162,7 @@ public class Construct {
 	 * @param name
 	 * @param constructType
 	 */
-	public void append(String name, ConstructType constructType) {
+	public void append(String name, ElementType constructType) {
 		append(name, constructType, ConnectionType.SEQUENCE_FLOW, Position.EAST);
 	}
 	
@@ -170,7 +172,7 @@ public class Construct {
 	 * @param constructType
 	 * @param position
 	 */
-	public void append(String name, ConstructType constructType, Position position) {
+	public void append(String name, ElementType constructType, Position position) {
 		append(name, constructType, ConnectionType.SEQUENCE_FLOW, position);
 	}
 	
@@ -180,7 +182,7 @@ public class Construct {
 	 * @param constructType
 	 * @param connectionType
 	 */
-	public void append(String name, ConstructType constructType, ConnectionType connectionType) {
+	public void append(String name, ElementType constructType, ConnectionType connectionType) {
 		append(name, constructType, connectionType, Position.EAST);
 	}
 	
@@ -191,7 +193,7 @@ public class Construct {
 	 * @param connectionType
 	 * @param relativePosition
 	 */
-	public void append(String name, ConstructType constructType, ConnectionType connectionType, Position relativePosition) {
+	public void append(String name, ElementType constructType, ConnectionType connectionType, Position relativePosition) {
 		log.info("Appending construct name '" + name + "' of type '" + constructType + "' after construct with name '" + this.name + "'.");
 		
 		Point point = findPoint(parent, this, relativePosition);
@@ -202,7 +204,7 @@ public class Construct {
 		editor.activateTool(constructType.toToolPath()[0], constructType.toToolPath()[1]);
 		editor.click(point.x(), point.y());
 			
-		Construct construct = editor.getLastConstruct(constructType);
+		Element construct = editor.getLastConstruct(constructType);
 		if (construct == null) {
 			throw new RuntimeException("Unexpected error. Could not find added construct.");
 		}
@@ -217,7 +219,7 @@ public class Construct {
 	 * 
 	 * @param construct
 	 */
-	public void connectTo(Construct construct) {
+	public void connectTo(Element construct) {
 		connectTo(construct, ConnectionType.SEQUENCE_FLOW);
 	}
 	
@@ -229,7 +231,7 @@ public class Construct {
 	 * @param construct
 	 * @param connectionType
 	 */
-	public void connectTo(Construct construct, ConnectionType connectionType) {
+	public void connectTo(Element construct, ConnectionType connectionType) {
 		log.info("Connecting construct '" + this.name + "' and construct '" + construct.getName() + "' using '" + connectionType + "'.");
 		// Get the dimensions of the source (this) construct. 
 		Rectangle rs = getBounds();
@@ -263,7 +265,7 @@ public class Construct {
 	 * 
 	 * @return
 	 */
-	public ConstructType getType() {
+	public ElementType getType() {
 		return type;
 	}
 	
@@ -287,7 +289,7 @@ public class Construct {
 	 * @param relativePosition
 	 * @return
 	 */
-	protected Point findPoint(Construct parent, Construct nextToChild, Position relativePosition) {
+	protected Point findPoint(Element parent, Element nextToChild, Position relativePosition) {
 		Rectangle childBounds = nextToChild.getBounds();
 		
 		int childStartX = childBounds.x();
@@ -393,7 +395,7 @@ public class Construct {
 		}
 		// Validate attributes
 		List<String> errors = new ArrayList<String>();
-		Element e = getEditPartElement();
+		org.w3c.dom.Element e = getEditPartElement();
 		for (int i=0; i<attributes.length; i++) {
 			String attributeName = attributes[i];
 			String actualValue = e.getAttribute(attributeName);
@@ -424,7 +426,7 @@ public class Construct {
 	 * 
 	 * @return
 	 */
-	public Element getEditPartElement() {
+	public org.w3c.dom.Element getEditPartElement() {
 		// Required to store the code to xml
 		editor.save();
 		// Find the element
@@ -442,7 +444,7 @@ public class Construct {
 				throw new RuntimeException("Found '" + nodeList.getLength() + "' nodes with name '" + name + "'. Expected exactly '1'."); 
 			}
 
-			return (Element) nodeList.item(0);
+			return (org.w3c.dom.Element) nodeList.item(0);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

@@ -1,6 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents;
 
-import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
+import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.TimerEventDefinition;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.EventTab;
 
@@ -14,7 +14,7 @@ public class TimerBoundaryEvent extends BoundaryEvent {
 	 * @param name
 	 */
 	public TimerBoundaryEvent(String name) {
-		super(name, ConstructType.ERROR_BOUNDARY_EVENT);
+		super(name, ElementType.ERROR_BOUNDARY_EVENT);
 	}
 	
 	/**

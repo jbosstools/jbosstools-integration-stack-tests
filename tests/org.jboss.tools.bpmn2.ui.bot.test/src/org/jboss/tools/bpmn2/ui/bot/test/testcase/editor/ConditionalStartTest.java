@@ -1,6 +1,6 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
-import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
+import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.ConditionalStartEvent;
@@ -14,15 +14,15 @@ public class ConditionalStartTest extends JBPM6BaseTest {
 	@Override
 	public void buildProcessModel() {
 		new StartEvent("StartProcess").delete();
-		new Process("BPMN2-ConditionalStart").add("StartProcess", ConstructType.CONDITIONAL_START_EVENT);
+		new Process("BPMN2-ConditionalStart").add("StartProcess", ElementType.CONDITIONAL_START_EVENT);
 		
 		ConditionalStartEvent startEvent = new ConditionalStartEvent("StartProcess");
 		startEvent.setCondition("", "org.jbpm.bpmn2.objects.Person(name == \"john\")"); // causes NPE
-		startEvent.append("Hello", ConstructType.SCRIPT_TASK);
+		startEvent.append("Hello", ElementType.SCRIPT_TASK);
 		
 		ScriptTask scriptTask = new ScriptTask("Hello");
 		scriptTask.setScript("", "System.out.println(\"Hello World\");");
-		scriptTask.append("EndProcess", ConstructType.TERMINATE_END_EVENT);
+		scriptTask.append("EndProcess", ElementType.TERMINATE_END_EVENT);
 	}
 	
 }

@@ -1,22 +1,22 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.dataobjects;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ConnectionType;
-import org.jboss.tools.bpmn2.reddeer.editor.Construct;
-import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
+import org.jboss.tools.bpmn2.reddeer.editor.Element;
+import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.Position;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.DataObjectTab;
 
 /**
  * 
  */
-public class DataObject extends Construct {
+public class DataObject extends Element {
 
 	/**
 	 * 
 	 * @param name
 	 */
 	public DataObject(String name) {
-		super(name, ConstructType.DATA_OBJECT);
+		super(name, ElementType.DATA_OBJECT);
 	}
 
 	/**
@@ -28,50 +28,50 @@ public class DataObject extends Construct {
 	}
 
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.Construct#append(java.lang.String, org.jboss.tools.bpmn2.reddeer.editor.ConstructType)
+	 * @see org.jboss.tools.bpmn2.reddeer.editor.Element#append(java.lang.String, org.jboss.tools.bpmn2.reddeer.editor.ElementType)
 	 */
 	@Override
-	public void append(String name, ConstructType constructType) {
+	public void append(String name, ElementType constructType) {
 		throw new UnsupportedOperationException();
 	}
 
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.Construct#append(java.lang.String, org.jboss.tools.bpmn2.reddeer.editor.ConstructType, org.jboss.tools.bpmn2.reddeer.editor.Position)
+	 * @see org.jboss.tools.bpmn2.reddeer.editor.Element#append(java.lang.String, org.jboss.tools.bpmn2.reddeer.editor.ElementType, org.jboss.tools.bpmn2.reddeer.editor.Position)
 	 */
 	@Override
-	public void append(String name, ConstructType constructType, Position position) {
+	public void append(String name, ElementType constructType, Position position) {
 		throw new UnsupportedOperationException();
 	}
 
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.Construct#append(java.lang.String, org.jboss.tools.bpmn2.reddeer.editor.ConstructType, org.jboss.tools.bpmn2.reddeer.editor.ConnectionType)
+	 * @see org.jboss.tools.bpmn2.reddeer.editor.Element#append(java.lang.String, org.jboss.tools.bpmn2.reddeer.editor.ElementType, org.jboss.tools.bpmn2.reddeer.editor.ConnectionType)
 	 */
 	@Override
-	public void append(String name, ConstructType constructType, ConnectionType connectionType) {
+	public void append(String name, ElementType constructType, ConnectionType connectionType) {
 		throw new UnsupportedOperationException();
 	}
 
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.Construct#append(java.lang.String, org.jboss.tools.bpmn2.reddeer.editor.ConstructType, org.jboss.tools.bpmn2.reddeer.editor.ConnectionType, org.jboss.tools.bpmn2.reddeer.editor.Position)
+	 * @see org.jboss.tools.bpmn2.reddeer.editor.Element#append(java.lang.String, org.jboss.tools.bpmn2.reddeer.editor.ElementType, org.jboss.tools.bpmn2.reddeer.editor.ConnectionType, org.jboss.tools.bpmn2.reddeer.editor.Position)
 	 */
 	@Override
-	public void append(String name, ConstructType constructType, ConnectionType connectionType, Position relativePosition) {
+	public void append(String name, ElementType constructType, ConnectionType connectionType, Position relativePosition) {
 		throw new UnsupportedOperationException();
 	}
 
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.Construct#connectTo(org.jboss.tools.bpmn2.reddeer.editor.Construct)
+	 * @see org.jboss.tools.bpmn2.reddeer.editor.Element#connectTo(org.jboss.tools.bpmn2.reddeer.editor.Element)
 	 */
 	@Override
-	public void connectTo(Construct construct) {
+	public void connectTo(Element construct) {
 		this.connectTo(construct, ConnectionType.ASSOCIATION_UNDIRECTED);
 	}
 
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.Construct#connectTo(org.jboss.tools.bpmn2.reddeer.editor.Construct, org.jboss.tools.bpmn2.reddeer.editor.ConnectionType)
+	 * @see org.jboss.tools.bpmn2.reddeer.editor.Element#connectTo(org.jboss.tools.bpmn2.reddeer.editor.Element, org.jboss.tools.bpmn2.reddeer.editor.ConnectionType)
 	 */
 	@Override
-	public void connectTo(Construct construct, ConnectionType connectionType) {
+	public void connectTo(Element construct, ConnectionType connectionType) {
 		if (connectionType == ConnectionType.SEQUENCE_FLOW) {
 			throw new UnsupportedOperationException();
 		}

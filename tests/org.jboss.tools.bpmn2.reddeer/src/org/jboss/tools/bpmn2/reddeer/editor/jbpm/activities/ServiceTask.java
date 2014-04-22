@@ -1,7 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 
-import org.jboss.tools.bpmn2.reddeer.editor.AbstractTask;
-import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
+import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ErrorRef;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Message;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
@@ -11,14 +10,14 @@ import org.jboss.tools.bpmn2.reddeer.properties.jbpm.ServiceTaskTab;
 /**
  * 
  */
-public class ServiceTask extends AbstractTask {
+public class ServiceTask extends Task {
 
 	/**
 	 * 
 	 * @param name
 	 */
 	public ServiceTask(String name) {
-		super(name, ConstructType.SERVICE_TASK);
+		super(name, ElementType.SERVICE_TASK);
 	}
 	
 	/**

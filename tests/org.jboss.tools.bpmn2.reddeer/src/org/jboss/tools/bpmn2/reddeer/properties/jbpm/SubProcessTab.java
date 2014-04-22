@@ -91,9 +91,7 @@ public class SubProcessTab {
 	 * @param expression
 	 */
 	public void setOnEntryScript(Expression expression) {
-		DefaultSection s = new DefaultSection("On Entry Script");
-		s.getComboBox("Script Language").setSelection(expression.getLanguage());
-		s.getText("Script").setText(expression.getScript());
+		expression.setUp("On Entry Script");
 	}
 	
 	/**
@@ -101,8 +99,6 @@ public class SubProcessTab {
 	 * @param expression
 	 */
 	public void setOnExitScript(Expression expression) {
-		DefaultSection s = new DefaultSection("On Exit Script");
-		s.getComboBox("Script Language").setSelection(expression.getLanguage());
-		s.getText("Script").setText(expression.getScript());
+		expression.setUp("On Exit Script");
 	}
 }

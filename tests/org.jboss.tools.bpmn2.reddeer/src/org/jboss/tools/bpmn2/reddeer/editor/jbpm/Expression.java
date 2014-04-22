@@ -1,11 +1,13 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm;
 
-import org.jboss.tools.reddeer.UIControlsHandler;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.tools.reddeer.DefaultCombo;
+import org.jboss.tools.reddeer.DefaultSection;
 
 /**
  * 
  */
-public class Expression implements UIControlsHandler {
+public class Expression {
 
 	private String language;
 	private String script;
@@ -36,9 +38,23 @@ public class Expression implements UIControlsHandler {
 		return script;
 	}
 	
-	@Override
+	/**
+	 * Perform user actions which are required to set up this object
+	 * in the UI.
+	 */
 	public void setUp() {
-		// TODO Auto-generated method stub
+		new DefaultCombo("Script Language").setSelection(language);
+		new LabeledText("Script").setText(script);
+	}
+	
+	/**
+	 * 
+	 * @param sectionName
+	 */
+	public void setUp(String sectionName) {
+		DefaultSection secion = new DefaultSection(sectionName);
+		secion.getComboBox("Script Language").setSelection(language);
+		secion.getText("Script").setText(script);
 	}
 	
 }

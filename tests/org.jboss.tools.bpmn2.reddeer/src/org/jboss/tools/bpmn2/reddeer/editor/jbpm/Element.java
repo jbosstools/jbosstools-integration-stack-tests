@@ -1,19 +1,19 @@
-package org.jboss.tools.bpmn2.reddeer.editor;
+package org.jboss.tools.bpmn2.reddeer.editor.jbpm;
 
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
+import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.IOParametersTab;
 
 /**
  * 
  */
-public abstract class AbstractConstruct extends Construct {
+public class Element extends org.jboss.tools.bpmn2.reddeer.editor.Element {
 
 	/**
 	 * 
 	 * @param name
 	 * @param type
 	 */
-	public AbstractConstruct(String name, ConstructType type) {
+	public Element(String name, ElementType type) {
 		super(name, type);
 	}
 	

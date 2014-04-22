@@ -1,20 +1,21 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways;
 
-import org.jboss.tools.bpmn2.reddeer.editor.AbstractGateway;
-import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
+import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Element;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.ExclusiveGatewayTab;
+import org.jboss.tools.bpmn2.reddeer.properties.jbpm.GatewayTab;
 
 /**
  * 
  */
-public class ExclusiveGateway extends AbstractGateway {
+public class ExclusiveGateway extends Element {
 
 	/**
 	 * 
 	 * @param name
 	 */
 	public ExclusiveGateway(String name) {
-		super(name, ConstructType.EXCLUSIVE_GATEWAY);
+		super(name, ElementType.EXCLUSIVE_GATEWAY);
 	}
 	
 	/**
@@ -42,5 +43,13 @@ public class ExclusiveGateway extends AbstractGateway {
 	 */
 	public void setPriority(String flow, String priority) {
 		properties.getTab("Gateway", ExclusiveGatewayTab.class).setPriority(flow, priority);
+	}
+	
+	/**
+	 * 
+	 * @param direction
+	 */
+	public void setDirection(Direction direction) {
+		properties.getTab("Gateway", GatewayTab.class).setDirection(direction);
 	}
 }

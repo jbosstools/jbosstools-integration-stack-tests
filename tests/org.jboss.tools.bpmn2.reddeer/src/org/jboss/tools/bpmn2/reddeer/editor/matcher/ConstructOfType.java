@@ -12,7 +12,7 @@ import org.eclipse.graphiti.mm.pictograms.PictogramLink;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
+import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 
 /**
  *
@@ -25,7 +25,7 @@ public class ConstructOfType<T extends EditPart> extends BaseMatcher<EditPart> {
 	 * 
 	 * @param constructType
 	 */
-	public ConstructOfType(ConstructType constructType) {
+	public ConstructOfType(ElementType constructType) {
 		this.constructTypeName = constructType.toId();
 	}
 
@@ -50,7 +50,7 @@ public class ConstructOfType<T extends EditPart> extends BaseMatcher<EditPart> {
 	 */
 	public static boolean equalsType(EditPart editPart, String constructTypeName) {
 		Object model = editPart.getModel();
-		if (ConstructType.PROCESS.toId().equals(constructTypeName)) {
+		if (ElementType.PROCESS.toId().equals(constructTypeName)) {
 			if (model instanceof Diagram) {
 				return true;
 			}

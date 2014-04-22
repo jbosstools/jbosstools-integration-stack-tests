@@ -1,6 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.endevents;
 
-import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
+import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ErrorRef;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.ErrorEventDefinition;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.EventTab;
@@ -15,7 +15,7 @@ public class ErrorEndEvent extends EndEvent {
 	 * @param name
 	 */
 	public ErrorEndEvent(String name) {
-		super(name, ConstructType.ERROR_END_EVENT);
+		super(name, ElementType.ERROR_END_EVENT);
 	}
 
 	/**

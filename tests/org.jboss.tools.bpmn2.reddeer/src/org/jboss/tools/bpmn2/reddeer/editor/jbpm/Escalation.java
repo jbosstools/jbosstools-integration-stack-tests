@@ -1,11 +1,11 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm;
 
-import org.jboss.tools.reddeer.UIControlsHandler;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 /**
  * 
  */
-public class Escalation implements UIControlsHandler {
+public class Escalation {
 
 	private String name;
 	private String code;
@@ -41,9 +41,13 @@ public class Escalation implements UIControlsHandler {
 		return code;
 	}
 	
-	@Override
+	/**
+	 * Perform user actions which are required to set up this object
+	 * in the UI.
+	 */
 	public void setUp() {
-		// TODO Auto-generated method stub
+		new LabeledText("Name").setText(name);
+		new LabeledText("Escalation Code").setText(code);
 	}
 	
 }

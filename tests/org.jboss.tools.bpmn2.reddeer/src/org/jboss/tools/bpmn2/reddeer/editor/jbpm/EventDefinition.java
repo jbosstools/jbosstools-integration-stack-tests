@@ -1,11 +1,9 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm;
 
-import org.jboss.tools.reddeer.UIControlsHandler;
-
 /**
  *
  */
-public abstract class AbstractEventDefinition implements UIControlsHandler {
+public class EventDefinition {
 
 	/**
 	 * 
@@ -15,4 +13,12 @@ public abstract class AbstractEventDefinition implements UIControlsHandler {
 		return getClass().getSimpleName().replaceAll("([A-Z])", " $1").trim();
 	}
 
+	/**
+	 * Take care of the UI user actions required
+	 * to set up the definition.
+	 */
+	public void setUp() {
+		throw new UnsupportedOperationException();
+	}
+	
 }

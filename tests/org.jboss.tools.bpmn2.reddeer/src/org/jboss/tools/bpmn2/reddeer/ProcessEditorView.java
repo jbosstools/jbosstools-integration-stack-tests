@@ -27,8 +27,8 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.util.ResultRunnable;
-import org.jboss.tools.bpmn2.reddeer.editor.Construct;
-import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
+import org.jboss.tools.bpmn2.reddeer.editor.Element;
+import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructOfType;
 import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructWithName;
 import org.jboss.tools.reddeer.DefaultPalette;
@@ -78,7 +78,7 @@ public class ProcessEditorView extends SWTBotGefEditor {
 	 * 
 	 * @return
 	 */
-	public Construct getProcess() {
+	public Element getProcess() {
 		return getProcess(false);
 	}
 	
@@ -87,8 +87,8 @@ public class ProcessEditorView extends SWTBotGefEditor {
 	 * @param select
 	 * @return
 	 */
-	public Construct getProcess(boolean select) {
-		return new Construct(null, ConstructType.PROCESS, null, 0, select);
+	public Element getProcess(boolean select) {
+		return new Element(null, ElementType.PROCESS, null, 0, select);
 	}
 	
 	/**
@@ -248,12 +248,12 @@ public class ProcessEditorView extends SWTBotGefEditor {
 	 * @param constructType
 	 * @return
 	 */
-	public List<Construct> getConstructs(ConstructType constructType) {
+	public List<Element> getConstructs(ElementType constructType) {
 		log.info("Searching for constructs of type '" + constructType.toToolName() + "'");
-		List<Construct> constructList = new ArrayList<Construct>();
+		List<Element> constructList = new ArrayList<Element>();
 		List<SWTBotGefEditPart> editPartList = getEditParts(new ConstructOfType<EditPart>(constructType));
 		for (SWTBotGefEditPart editPart : editPartList) {
-			constructList.add(new Construct(getName(editPart), constructType, null, 0, false));
+			constructList.add(new Element(getName(editPart), constructType, null, 0, false));
 		}
 		return constructList;
 	}
@@ -263,8 +263,8 @@ public class ProcessEditorView extends SWTBotGefEditor {
 	 * @param connectionType
 	 * @return
 	 */
-	public Construct getLastConstruct(ConstructType constructType) {
-		List<Construct> constructList = getConstructs(constructType);
+	public Element getLastConstruct(ElementType constructType) {
+		List<Element> constructList = getConstructs(constructType);
 		if (!constructList.isEmpty()) {
 			return constructList.get(constructList.size() - 1);
 		}

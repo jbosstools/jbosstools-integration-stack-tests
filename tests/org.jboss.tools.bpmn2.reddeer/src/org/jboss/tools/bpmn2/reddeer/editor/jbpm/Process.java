@@ -1,5 +1,7 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm;
 
+import org.jboss.tools.bpmn2.reddeer.editor.ElementContainer;
+import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.DataItemsTab;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.DefinitionsTab;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.InterfacesTab;
@@ -8,14 +10,14 @@ import org.jboss.tools.bpmn2.reddeer.properties.jbpm.ProcessTab;
 /**
  * 
  */
-public class Process extends org.jboss.tools.bpmn2.reddeer.editor.AbstractProcess {
+public class Process extends ElementContainer {
 
 	/**
 	 * 
 	 * @param name
 	 */
 	public Process(String name) {
-		super(name);
+		super(name, ElementType.PROCESS);
 		select();
 	}
 	

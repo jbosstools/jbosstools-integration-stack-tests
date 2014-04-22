@@ -1,6 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents;
 
-import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
+import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Message;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.MessageEventDefinition;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.MessageEventDefinition.Type;
@@ -16,7 +16,7 @@ public class MessageStartEvent extends StartEvent {
 	 * @param name
 	 */
 	public MessageStartEvent(String name) {
-		super(name, ConstructType.MESSAGE_START_EVENT);
+		super(name, ElementType.MESSAGE_START_EVENT);
 	}
 
 	/**
