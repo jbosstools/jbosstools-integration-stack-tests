@@ -17,18 +17,17 @@ import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
+import org.jboss.tools.bpmn2.reddeer.ProcessEditorView;
+import org.jboss.tools.bpmn2.reddeer.ProcessPropertiesView;
 import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.FromDataOutput;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.FromVariable;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.InputParameterMapping;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.OutputParameterMapping;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ToDataInput;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ToVariable;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.endevents.TerminateEndEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.switchyard.activities.SwitchYardServiceTask;
-import org.jboss.tools.bpmn2.reddeer.view.BPMN2Editor;
-import org.jboss.tools.bpmn2.reddeer.view.BPMN2PropertiesView;
 import org.jboss.tools.switchyard.reddeer.component.BPM;
 import org.jboss.tools.switchyard.reddeer.component.Bean;
 import org.jboss.tools.switchyard.reddeer.component.Component;
@@ -116,10 +115,10 @@ public class TopDownBPMN2Test extends RedDeerTest {
 
 		// BPM Process and its properties
 		openFile(PROJECT, PACKAGE_MAIN_RESOURCES, BPMN_FILE_NAME);
-		BPMN2Editor editor = new BPMN2Editor();
+		ProcessEditorView editor = new ProcessEditorView();
 		editor.click(1, 1);
 		new WorkbenchShell();
-		new BPMN2PropertiesView().selectTab("Process");
+		new ProcessPropertiesView().selectTab("Process");
 		new LabeledText("Id").setText(PROCESS_GREET);
 		editor.setFocus();
 
@@ -128,10 +127,10 @@ public class TopDownBPMN2Test extends RedDeerTest {
 		SwitchYardServiceTask task = new SwitchYardServiceTask("EvalGreet");
 		task.setTaskAttribute("Operation Name", "checkGreet");
 		task.setTaskAttribute("Service Name", EVAL_GREET);
-		task.addParameterMapping(new InputParameterMapping(new FromVariable(PROCESS_GREET + "/Parameter"),
-				new ToDataInput("Parameter", "String")));
-		task.addParameterMapping(new OutputParameterMapping(new FromDataOutput("Result", "String"), new ToVariable(
-				PROCESS_GREET + "/Result")));
+		task.addParameterMapping(new ParameterMapping(new FromVariable(PROCESS_GREET + "/Parameter"),
+				new ToDataInput("Parameter", "String"), ParameterMapping.Type.INPUT));
+		task.addParameterMapping(new ParameterMapping(new FromDataOutput("Result", "String"), new ToVariable(
+				PROCESS_GREET + "/Result"),  ParameterMapping.Type.OUTPUT));
 		task.append("EndProcess", ConstructType.TERMINATE_END_EVENT);
 
 		openFile(PROJECT, PACKAGE_MAIN_RESOURCES, "META-INF", "switchyard.xml");
