@@ -2,16 +2,16 @@ package org.jboss.tools.bpmn2.reddeer.editor.switchyard.activities;
 
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.tools.bpmn2.reddeer.editor.AbstractTask;
-import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
+import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.OperationDialog;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.IOParametersTab;
 
 /**
  * TODO: apodhrad
  */
-public class SwitchYardServiceTask extends AbstractTask{
+public class SwitchYardServiceTask extends Element {
 
 	@SuppressWarnings("unused")
 	private static final int ON_ENTRY = 0;
@@ -19,14 +19,14 @@ public class SwitchYardServiceTask extends AbstractTask{
 	private static final int ON_EXIT = 1;
 	
 	public SwitchYardServiceTask(String name) {
-		super(name, ConstructType.SWITCHYARD_SERVICE_TASK);
+		super(name, ElementType.SWITCHYARD_SERVICE_TASK);
 	}
 	
 	public void setOperation(String name) {
 		properties.selectTab("Service Task");
 		 
 		new PushButton(0).click();
-		new OperationDialog().add(name, null, null, null);
+		new OperationDialog().addOperation(name, null, null, null);
 	}
 	
 	public void addParameterMapping(ParameterMapping parameterMapping) {

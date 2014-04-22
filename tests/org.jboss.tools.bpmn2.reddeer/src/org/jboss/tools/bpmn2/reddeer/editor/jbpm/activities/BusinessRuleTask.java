@@ -1,21 +1,20 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 
-import org.jboss.tools.bpmn2.reddeer.editor.AbstractTask;
-import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
+import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Expression;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.BusinessRuleTaskTab;
 
 /**
  * 
  */
-public class BusinessRuleTask extends AbstractTask {
+public class BusinessRuleTask extends Task {
 	
 	/**
 	 * 
 	 * @param name
 	 */
 	public BusinessRuleTask(String name) {
-		super(name, ConstructType.BUSINESS_RULE_TASK);
+		super(name, ElementType.BUSINESS_RULE_TASK);
 	}
 
 	/**

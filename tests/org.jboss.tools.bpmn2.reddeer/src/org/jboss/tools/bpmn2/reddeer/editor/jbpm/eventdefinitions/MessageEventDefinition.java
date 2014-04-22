@@ -3,7 +3,7 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.tools.bpmn2.reddeer.ProcessEditorView;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.MessageDialog;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.AbstractEventDefinition;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.EventDefinition;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Message;
 import org.jboss.tools.reddeer.DefaultCombo;
 import org.jboss.tools.reddeer.DefaultSection;
@@ -11,7 +11,7 @@ import org.jboss.tools.reddeer.DefaultSection;
 /**
  * 
  */
-public class MessageEventDefinition extends AbstractEventDefinition {
+public class MessageEventDefinition extends EventDefinition {
 
 	public enum Type {
 		SOURCE, TARGET;

@@ -1,7 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 
-import org.jboss.tools.bpmn2.reddeer.editor.AbstractTask;
-import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
+import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ErrorRef;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Expression;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Message;
@@ -12,14 +11,14 @@ import org.jboss.tools.bpmn2.reddeer.properties.jbpm.ReceiveTaskTab;
 /**
  * 
  */
-public class ReceiveTask extends AbstractTask {
+public class ReceiveTask extends Task {
 
 	/**
 	 * 
 	 * @param name
 	 */
 	public ReceiveTask(String name) {
-		super(name, ConstructType.RECEIVE_TASK);
+		super(name, ElementType.RECEIVE_TASK);
 	}
 	
 	/**

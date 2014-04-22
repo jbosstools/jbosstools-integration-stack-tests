@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testrun xmlns="http://www.jboss.org/NS/Req"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://www.jboss.org/NS/Req RedDeerRequirements.xsd">
+         xsi:schemaLocation="http://www.jboss.org/NS/Req https://raw.github.com/jboss-reddeer/reddeer/master/plugins/org.jboss.reddeer.junit/resources/RedDeerRequirements.xsd">
 
-	<requirements/>
+  <requirements>
+    <requirement class="org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessRuntimeRequirement" name="ProcessRuntimeRequirement">
+      <property key="runtimeDir" value="${FILL_ME}"/>
+    </requirement>
+  </requirements>
 
 </testrun>

@@ -1,10 +1,10 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
-import org.jboss.tools.bpmn2.reddeer.editor.AbstractGateway.Direction;
-import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
+import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.Position;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.Direction;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.ExclusiveGateway;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
@@ -12,9 +12,6 @@ import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequireme
 import org.junit.Ignore;
 import org.junit.Test;
 
-/**
- *     
- */
 @ProcessDefinition(name="BPMN2-XPathExpression", project="EditorTestProject")
 public class XPathExpressionTest extends JBPM6BaseTest {
 
@@ -32,12 +29,12 @@ public class XPathExpressionTest extends JBPM6BaseTest {
 		process.addLocalVariable("instanceMetadata", "org.w3c.dom.Document");
 		
 		StartEvent start = new StartEvent("StartProcess");
-		start.append("Split", ConstructType.EXCLUSIVE_GATEWAY);
+		start.append("Split", ElementType.EXCLUSIVE_GATEWAY);
 		
 		ExclusiveGateway splitGw = new ExclusiveGateway("Split");
 		splitGw.setDirection(Direction.DIVERGING);
-		splitGw.append("Task1", ConstructType.SCRIPT_TASK, Position.NORTH_EAST);
-		splitGw.append("Task2", ConstructType.SCRIPT_TASK, Position.SOUTH_EAST);
+		splitGw.append("Task1", ElementType.SCRIPT_TASK, Position.NORTH_EAST);
+		splitGw.append("Task2", ElementType.SCRIPT_TASK, Position.SOUTH_EAST);
 		/*
 		 * There are several issues with the validator
 		 * 1) Problem parsing the expression.
@@ -52,12 +49,12 @@ public class XPathExpressionTest extends JBPM6BaseTest {
 		ScriptTask task2 = new ScriptTask("Task2");
 		task2.setScript("Java", "System.out.println(\"Task 2\");");
 		
-		task1.append("Join", ConstructType.EXCLUSIVE_GATEWAY, Position.SOUTH_EAST);
+		task1.append("Join", ElementType.EXCLUSIVE_GATEWAY, Position.SOUTH_EAST);
 		ExclusiveGateway joinGw = new ExclusiveGateway("Join");
 		joinGw.setDirection(Direction.CONVERGING);
 		task2.connectTo(joinGw);
 		
-		joinGw.append("EndProcess", ConstructType.END_EVENT);
+		joinGw.append("EndProcess", ElementType.END_EVENT);
 	}
 	
 }

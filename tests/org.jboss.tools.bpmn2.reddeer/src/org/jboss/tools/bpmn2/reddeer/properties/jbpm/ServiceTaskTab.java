@@ -9,7 +9,6 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Expression;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Message;
 import org.jboss.tools.reddeer.DefaultCheckBox;
 import org.jboss.tools.reddeer.DefaultCombo;
-import org.jboss.tools.reddeer.DefaultSection;
 
 /**
  * 
@@ -53,7 +52,7 @@ public class ServiceTaskTab {
 		if (!combo.contains(interfaceName + "/" + operationName)) {
 			new PushButton(2).click();
 			new InterfaceDialog().select(interfaceName);
-			new OperationDialog().add(operationName, inMessage, outMessage, errorRef);
+			new OperationDialog().addOperation(operationName, inMessage, outMessage, errorRef);
 		}
 		combo.setSelection(interfaceName + "/" + operationName);
 	}
@@ -71,9 +70,7 @@ public class ServiceTaskTab {
 	 * @param expression
 	 */
 	public void setOnEntryScript(Expression expression) {
-		DefaultSection section = new DefaultSection("On Entry Script");
-		section.getComboBox("Script Language").setSelection(expression.getLanguage());
-		section.getText("Script").setText(expression.getScript());
+		expression.setUp("On Entry Script");
 	}
 	
 	/**
@@ -81,9 +78,7 @@ public class ServiceTaskTab {
 	 * @param expression
 	 */
 	public void setOnExitScript(Expression expression) {
-		DefaultSection section = new DefaultSection("On Exit Script");
-		section.getComboBox("Script Language").setSelection(expression.getLanguage());
-		section.getText("Script").setText(expression.getScript());
+		expression.setUp("On Exit Script");
 	}
 	
 }

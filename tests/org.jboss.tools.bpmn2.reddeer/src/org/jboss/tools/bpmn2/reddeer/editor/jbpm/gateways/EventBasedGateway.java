@@ -1,14 +1,15 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways;
 
-import org.jboss.tools.bpmn2.reddeer.editor.AbstractGateway;
-import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
+import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Element;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.EventBasedGatewayTab;
+import org.jboss.tools.bpmn2.reddeer.properties.jbpm.GatewayTab;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.InclusiveGatewayTab;
 
 /**
  *  
  */
-public class EventBasedGateway extends AbstractGateway {
+public class EventBasedGateway extends Element {
 	
 	public enum Type {
 		EXCLUSIVE, PARALLEL;
@@ -23,7 +24,7 @@ public class EventBasedGateway extends AbstractGateway {
 	 * @param name
 	 */
 	public EventBasedGateway(String name) {
-		super(name, ConstructType.EVENT_BASED_GATEWAY);
+		super(name, ElementType.EVENT_BASED_GATEWAY);
 	}
 	
 	/**
@@ -60,4 +61,11 @@ public class EventBasedGateway extends AbstractGateway {
 		properties.getTab("Gateway", InclusiveGatewayTab.class).setDefaultBranch(flow);
 	}
 	
+	/**
+	 * 
+	 * @param direction
+	 */
+	public void setDirection(Direction direction) {
+		properties.getTab("Gateway", GatewayTab.class).setDirection(direction);
+	}
 }

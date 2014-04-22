@@ -1,7 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 
-import org.jboss.tools.bpmn2.reddeer.editor.AbstractTask;
-import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
+import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Expression;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.IOParametersTab;
@@ -10,14 +9,14 @@ import org.jboss.tools.bpmn2.reddeer.properties.jbpm.UserTaskTab;
 /**
  * 
  */
-public class UserTask extends AbstractTask {
+public class UserTask extends Task {
 
 	/**
 	 * 
 	 * @param name
 	 */
 	public UserTask(String name) {
-		super(name, ConstructType.USER_TASK);
+		super(name, ElementType.USER_TASK);
 	}
 	
 	/**

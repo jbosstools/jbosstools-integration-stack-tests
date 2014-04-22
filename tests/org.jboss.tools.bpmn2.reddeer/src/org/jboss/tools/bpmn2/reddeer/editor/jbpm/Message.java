@@ -1,11 +1,15 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm;
 
-import org.jboss.tools.reddeer.UIControlsHandler;
+import org.jboss.reddeer.swt.api.Combo;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.DataTypeDialog;
 
 /**
  * 
  */
-public class Message implements UIControlsHandler {
+public class Message {
 
 	private String name;
 	private String dataType;
@@ -36,9 +40,18 @@ public class Message implements UIControlsHandler {
 		return dataType;
 	}
 
-	@Override
+	/**
+	 * Perform user actions which are required to set up this object
+	 * in the UI.
+	 */
 	public void setUp() {
-		// TODO Auto-generated method stub
+		new LabeledText("Name").setText(name);
+		Combo dataTypeCombo = new LabeledCombo("Data Type");
+		if (!dataTypeCombo.getItems().contains(dataType)) {
+			new PushButton(0).click();
+			new DataTypeDialog().add(dataType);
+		}
+		dataTypeCombo.setSelection(dataType);
 	}
 	
 }

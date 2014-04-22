@@ -1,20 +1,20 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 
-import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
-import org.jboss.tools.bpmn2.reddeer.editor.ContainerConstruct;
+import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
+import org.jboss.tools.bpmn2.reddeer.editor.ElementContainer;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.SubProcessTab;
 
 /**
  * 
  */
-public class SubProcess extends ContainerConstruct {
+public class SubProcess extends ElementContainer {
 
 	/**
 	 * 
 	 * @param name
 	 */
 	public SubProcess(String name) {
-		super(name, ConstructType.SUB_PROCESS);
+		super(name, ElementType.SUB_PROCESS);
 	}
 	
 	/**

@@ -1,7 +1,7 @@
 package org.jboss.tools.bpmn2.reddeer.properties.jbpm;
 
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.EventDefinitionTypeDialog;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.AbstractEventDefinition;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.EventDefinition;
 import org.jboss.tools.reddeer.DefaultSection;
 
 /**
@@ -13,7 +13,7 @@ public class EventTab {
 	 * 
 	 * @param definition
 	 */
-	public void set(AbstractEventDefinition definition) {
+	public void set(EventDefinition definition) {
 		DefaultSection section = new DefaultSection("Event Definitions");
 		if (getEventCount() == 1) {
 			section.getTable().select(0);
@@ -33,7 +33,7 @@ public class EventTab {
 //	 * 
 //	 * @param definition
 //	 */
-//	public void set(AbstractEventDefinition definition) {
+//	public void set(EventDefinition definition) {
 //		DefaultSection section = new DefaultSection("Event Definitions");
 //		// Cannot just remove the old one and add the new one. If the event definition 
 //		// type changes then the 'Event', on which the method was called will become 

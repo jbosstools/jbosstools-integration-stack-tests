@@ -4,14 +4,14 @@ import org.jboss.reddeer.swt.api.Combo;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.EscalationDialog;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.AbstractEventDefinition;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.EventDefinition;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Escalation;
 import org.jboss.tools.reddeer.DefaultSection;
 
 /**
  * 
  */
-public class EscalationEventDefinition extends AbstractEventDefinition {
+public class EscalationEventDefinition extends EventDefinition {
 
 	private Escalation escalation;
 

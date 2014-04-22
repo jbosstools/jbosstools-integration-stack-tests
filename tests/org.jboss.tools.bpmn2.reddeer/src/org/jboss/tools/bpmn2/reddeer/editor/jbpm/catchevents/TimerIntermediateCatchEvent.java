@@ -1,6 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.catchevents;
 
-import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
+import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.TimerEventDefinition;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.EventTab;
 
@@ -14,7 +14,7 @@ public class TimerIntermediateCatchEvent extends IntermediateCatchEvent {
 	 * @param name
 	 */
 	public TimerIntermediateCatchEvent(String name) {
-		super(name, ConstructType.TIMER_INTERMEDIATE_CATCH_EVENT);
+		super(name, ElementType.TIMER_INTERMEDIATE_CATCH_EVENT);
 	}
 
 	/**

@@ -1,20 +1,19 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 
-import org.jboss.tools.bpmn2.reddeer.editor.AbstractTask;
-import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
+import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.ScriptTaskTab;
 
 /**
  * 
  */
-public class ScriptTask extends AbstractTask {
+public class ScriptTask extends Task {
 
 	/**
 	 * 
 	 * @param name
 	 */
 	public ScriptTask(String name) {
-		super(name, ConstructType.SCRIPT_TASK);
+		super(name, ElementType.SCRIPT_TASK);
 	}
 
 	/**

@@ -11,8 +11,8 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
 // Editor tests
 // ------------
-	// Uncovered:
-	// 	BZ-1053789
+//	// Uncovered:
+//	// 	BZ-1053789
 	ParallelSplitJoinTest.class,
 	CallActivityTest.class,
 	AdHocProcessTest.class,

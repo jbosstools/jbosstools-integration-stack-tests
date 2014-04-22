@@ -1,19 +1,19 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.endevents;
 
-import org.jboss.tools.bpmn2.reddeer.editor.AbstractEvent;
-import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
+import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Element;
 
 /**
  * 
  */
-public class EndEvent extends AbstractEvent {
+public class EndEvent extends Element {
 	
 	/**
 	 * 
 	 * @param name
 	 */
 	public EndEvent(String name) {
-		super(name, ConstructType.END_EVENT);
+		super(name, ElementType.END_EVENT);
 	}
 
 	/**
@@ -21,7 +21,7 @@ public class EndEvent extends AbstractEvent {
 	 * @param name
 	 * @param type
 	 */
-	EndEvent(String name, ConstructType type) {
+	EndEvent(String name, ElementType type) {
 		super(name, type);
 	}
 	

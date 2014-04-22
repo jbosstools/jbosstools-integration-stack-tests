@@ -7,7 +7,9 @@ import java.lang.annotation.Target;
 
 import org.apache.log4j.Logger;
 import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
+import org.jboss.reddeer.junit.requirement.PropertyConfiguration;
 import org.jboss.reddeer.junit.requirement.Requirement;
+import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
@@ -16,11 +18,11 @@ import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessRuntimeRequirement.
 /**
  * 
  */
-public class ProcessRuntimeRequirement implements Requirement<ProcessRuntime> {
+public class ProcessRuntimeRequirement implements Requirement<ProcessRuntime>, PropertyConfiguration {
 
-	private String name = System.getProperty("jbpm.name", "jbpm6");
+	private static final String RUNTIME_NAME = "jbpm6";
 	
-	private String runtimeHome = System.getProperty("jbpm.runtime.dir");
+	private String runtimeDir; // = System.getProperty("jbpm.runtime.dir");
 	
 	/**
 	 *
@@ -33,7 +35,7 @@ public class ProcessRuntimeRequirement implements Requirement<ProcessRuntime> {
 
 	@Override
 	public boolean canFulfill() {
-		return name != null && runtimeHome != null;
+		return runtimeDir != null;
 	}
 
 	@Override
@@ -41,10 +43,10 @@ public class ProcessRuntimeRequirement implements Requirement<ProcessRuntime> {
 		new PreferencePage("jBPM", "Installed jBPM Runtimes") {}.open();
 		
 		boolean runtimeFound = false;
-		DefaultTable table = new DefaultTable();
+		Table table = new DefaultTable();
 		if (table.rowCount() > 0) {
 			for (int row=0; row<table.rowCount(); row++) {
-				if (table.getItem(row).getText(0).equals(name)) {
+				if (table.getItem(row).getText(0).equals(RUNTIME_NAME)) {
 					runtimeFound = true;
 					break;
 				}
@@ -53,14 +55,14 @@ public class ProcessRuntimeRequirement implements Requirement<ProcessRuntime> {
 
 		if (!runtimeFound) {
 			new PushButton("Add...").click();
-			new DefaultText(0).setText(name);
-			new DefaultText(1).setText(runtimeHome);
+			new DefaultText(0).setText(RUNTIME_NAME);
+			new DefaultText(1).setText(runtimeDir);
 			new PushButton("OK").click();
 			
-			Logger.getLogger(ProcessRuntimeRequirement.class).info("jBPM Runtime '" + name + "' added.");
+			Logger.getLogger(ProcessRuntimeRequirement.class).info("jBPM Runtime '" + RUNTIME_NAME + "' added.");
 		}
 		
-		table.getItem(name).setChecked(true);
+		table.getItem(RUNTIME_NAME).setChecked(true);
 		new PushButton("OK").click();
 	}
 
@@ -71,18 +73,10 @@ public class ProcessRuntimeRequirement implements Requirement<ProcessRuntime> {
 	
 	/**
 	 * 
-	 * @param name
+	 * @param runtimeDir
 	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	/**
-	 * 
-	 * @param runtimeHome
-	 */
-	public void setRuntimeHome(String runtimeHome) {
-		this.runtimeHome = runtimeHome;
+	public void setRuntimeDir(String runtimeDir) {
+		this.runtimeDir = runtimeDir;
 	}
 	
 }

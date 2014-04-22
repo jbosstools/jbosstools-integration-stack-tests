@@ -55,7 +55,10 @@ public class ParameterMapping implements org.jboss.tools.bpmn2.reddeer.editor.Pa
 		return type;
 	}
 	
-	@Override
+	/**
+	 * Perform user actions which are required to set up this object
+	 * in the UI.
+	 */
 	public void setUp() {
 		from.setUp();
 		to.setUp();

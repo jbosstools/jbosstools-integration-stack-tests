@@ -4,7 +4,6 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.CalledActivityDialog;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Expression;
 import org.jboss.tools.reddeer.DefaultCheckBox;
-import org.jboss.tools.reddeer.DefaultSection;
 
 /**
  * 
@@ -49,9 +48,7 @@ public class CallActivityTab {
 	 * @param expression
 	 */
 	public void setOnEntryScript(Expression expression) {
-		DefaultSection section = new DefaultSection("On Entry Script");
-		section.getComboBox("Script Language").setSelection(expression.getLanguage());
-		section.getText("Script").setText(expression.getScript());
+		expression.setUp("On Entry Script");
 	}
 	
 	/**
@@ -59,9 +56,7 @@ public class CallActivityTab {
 	 * @param expression
 	 */
 	public void setOnExitScript(Expression expression) {
-		DefaultSection section = new DefaultSection("On Exit Script");
-		section.getComboBox("Script Language").setSelection(expression.getLanguage());
-		section.getText("Script").setText(expression.getScript());
+		expression.setUp("On Exit Script");
 	}
 	
 }

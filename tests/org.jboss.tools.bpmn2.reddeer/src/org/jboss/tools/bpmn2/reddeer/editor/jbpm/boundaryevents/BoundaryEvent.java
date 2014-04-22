@@ -1,20 +1,20 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents;
 
-import org.jboss.tools.bpmn2.reddeer.editor.Construct;
-import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
+import org.jboss.tools.bpmn2.reddeer.editor.Element;
+import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.BoundaryEventTab;
 
 /**
  * 
  */
-public class BoundaryEvent extends Construct {
+public class BoundaryEvent extends Element {
 
 	/**
 	 * 
 	 * @param name
 	 */
 	public BoundaryEvent(String name) {
-		super(name, ConstructType.BOUNDARY_EVENT);
+		super(name, ElementType.BOUNDARY_EVENT);
 	}
 	
 	/**
@@ -22,7 +22,7 @@ public class BoundaryEvent extends Construct {
 	 * @param name
 	 * @param type
 	 */
-	BoundaryEvent(String name, ConstructType type) {
+	BoundaryEvent(String name, ElementType type) {
 		super(name, type);
 	}
 	

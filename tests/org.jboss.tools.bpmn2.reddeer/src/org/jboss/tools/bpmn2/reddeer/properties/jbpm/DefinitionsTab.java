@@ -1,9 +1,10 @@
 package org.jboss.tools.bpmn2.reddeer.properties.jbpm;
 
-import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.DataTypeDialog;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.ImportJavaTypeDialog;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ErrorRef;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Escalation;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Message;
 import org.jboss.tools.reddeer.DefaultSection;
 
 /**
@@ -57,9 +58,7 @@ public class DefinitionsTab {
 	 */
 	public void addMessage(String name, String dataType) {
 		new DefaultSection("Message List").getToolbarButton("Add").click();
-		new LabeledText("Name").setText(name);
-		new PushButton(0).click();
-		new DataTypeDialog().add(dataType);
+		new Message(name, dataType).setUp();
 		new DefaultSection("Message Details").getToolbarButton("Close").click();
 	}
 	
@@ -76,15 +75,12 @@ public class DefinitionsTab {
 	/**
 	 * 
 	 * @param name
-	 * @param errorCode
+	 * @param code
 	 * @param dataType
 	 */
-	public void addError(String name, String errorCode, String dataType) {
+	public void addError(String name, String code, String dataType) {
 		new DefaultSection("Error List").getToolbarButton("Add").click();
-		new LabeledText("Name").setText(name);
-		new LabeledText("Error Code").setText(errorCode);
-		new PushButton(0).click();
-		new DataTypeDialog().add(dataType);
+		new ErrorRef(name, code, dataType).setUp();
 		new DefaultSection("Error Details").getToolbarButton("Close").click();
 	}
 	
@@ -123,10 +119,9 @@ public class DefinitionsTab {
 	 * @param name
 	 * @param escalationCode
 	 */
-	public void addEscalation(String name, String escalationCode) {
+	public void addEscalation(String name, String code) {
 		new DefaultSection("Escalation List").getToolbarButton("Add").click();
-		new LabeledText("Name").setText(name);
-		new LabeledText("Escalation Code").setText(escalationCode);
+		new Escalation(name, code).setUp();
 		new DefaultSection("Escalation Details").getToolbarButton("Close").click();
 	}
 	

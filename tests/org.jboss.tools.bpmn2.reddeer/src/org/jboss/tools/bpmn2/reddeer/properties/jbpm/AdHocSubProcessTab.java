@@ -34,8 +34,7 @@ public class AdHocSubProcessTab {
 	 * @param expression
 	 */
 	public void setCompletionCondition(Expression expression) {
-		new DefaultCombo("Script Language").setSelection(expression.getLanguage());
-		new LabeledText("Script").setText(expression.getScript());
+		expression.setUp();
 	}
 	
 	/**
