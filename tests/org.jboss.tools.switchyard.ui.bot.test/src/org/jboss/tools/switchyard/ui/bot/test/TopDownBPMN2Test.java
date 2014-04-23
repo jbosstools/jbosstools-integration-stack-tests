@@ -19,7 +19,7 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.bpmn2.reddeer.ProcessEditorView;
 import org.jboss.tools.bpmn2.reddeer.ProcessPropertiesView;
-import org.jboss.tools.bpmn2.reddeer.editor.ConstructType;
+import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.FromDataOutput;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.FromVariable;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
@@ -123,7 +123,7 @@ public class TopDownBPMN2Test extends RedDeerTest {
 		editor.setFocus();
 
 		new TerminateEndEvent("EndProcess").delete();
-		new StartEvent("StartProcess").append("EvalGreet", ConstructType.SWITCHYARD_SERVICE_TASK);
+		new StartEvent("StartProcess").append("EvalGreet", ElementType.SWITCHYARD_SERVICE_TASK);
 		SwitchYardServiceTask task = new SwitchYardServiceTask("EvalGreet");
 		task.setTaskAttribute("Operation Name", "checkGreet");
 		task.setTaskAttribute("Service Name", EVAL_GREET);
@@ -131,7 +131,7 @@ public class TopDownBPMN2Test extends RedDeerTest {
 				new ToDataInput("Parameter", "String"), ParameterMapping.Type.INPUT));
 		task.addParameterMapping(new ParameterMapping(new FromDataOutput("Result", "String"), new ToVariable(
 				PROCESS_GREET + "/Result"),  ParameterMapping.Type.OUTPUT));
-		task.append("EndProcess", ConstructType.TERMINATE_END_EVENT);
+		task.append("EndProcess", ElementType.TERMINATE_END_EVENT);
 
 		openFile(PROJECT, PACKAGE_MAIN_RESOURCES, "META-INF", "switchyard.xml");
 
