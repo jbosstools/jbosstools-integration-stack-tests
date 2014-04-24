@@ -188,9 +188,29 @@ public class FabricExplorer extends DefaultExplorer {
 		new DefaultShell().setFocus();
 	}
 	
-	public void deleteContainer(String name) {
+	/**
+	 * Stops a container with a given name
+	 * 
+	 * @param name name of the container
+	 */
+	public void stopContainer(String name) {
 		
-		// TODO
+		selectNode(NODE_FABRICS, "Local Fabric", "Containers", name);
+		selectContextMenuItem("Stop Container");
+		AbstractWait.sleep(TimePeriod.SHORT);
+	}
+	
+	
+	/**
+	 * Starts a container with a given name
+	 * 
+	 * @param name name of the container
+	 */
+	public void startContainer(String name) {
+		
+		selectNode(NODE_FABRICS, "Local Fabric", "Containers", name);
+		selectContextMenuItem("Start Container");
+		AbstractWait.sleep(TimePeriod.getCustom(10));
 	}
 	
 	/**
