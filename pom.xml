@@ -23,6 +23,7 @@
 	  <jbt.tests.site>http://download.jboss.org/jbosstools/updates/nightly/integrationtests/4.1.kepler</jbt.tests.site>
 	  <orbit.site>http://download.eclipse.org/tools/orbit/downloads/drops/R20130517111416/repository</orbit.site>
 	  <swtbot.site>http://download.eclipse.org/technology/swtbot/releases/latest</swtbot.site>
+	  <jetty.site>http://download.eclipse.org/jetty/updates/jetty-bundles-8.x</jetty.site>
 	</properties>
 
 	<modules>
@@ -66,12 +67,12 @@
 	    <id>orbit-site</id>
 	    <url>${orbit.site}</url>
 	    <layout>p2</layout>
-	    <snapshots>
-	      <enabled>true</enabled>
-	    </snapshots>
-	    <releases>
-	      <enabled>true</enabled>
-	    </releases>
+	  </repository>
+	  <!-- Jetty HTTP Server Update Site -->
+	  <repository>
+	    <id>jetty-site</id>
+	    <url>${jetty.site}</url>
+	    <layout>p2</layout>
 	  </repository>
 	</repositories>
 
