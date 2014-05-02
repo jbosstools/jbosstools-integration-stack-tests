@@ -42,7 +42,8 @@ public class RESTBindingPage extends WizardPage {
 
 	public RESTBindingPage setAddress(String address) {
 		// new LabeledText("Address").setText(address);
-		bot.textWithLabel("Address").typeText(address);
+		bot.textWithLabel("Address").setFocus();
+		bot.textWithLabel("Address").setText(address);
 		return this;
 	}
 

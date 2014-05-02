@@ -1,14 +1,18 @@
 package org.jboss.tools.switchyard.ui.bot.test.util;
 
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.Date;
 
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
-import com.sun.net.httpserver.HttpServer;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.AbstractHandler;
 
 /**
  * Simple REST Service
@@ -16,7 +20,6 @@ import com.sun.net.httpserver.HttpServer;
  * @author apodhrad
  * 
  */
-@SuppressWarnings("restriction")
 public class RESTService {
 
 	public static final int DEFAULT_PORT = 8080;
@@ -25,7 +28,7 @@ public class RESTService {
 
 	private int port;
 	private String host;
-	private HttpServer server;
+	private Server server;
 
 	public RESTService() {
 		this(DEFAULT_HOST, DEFAULT_PORT);
@@ -46,37 +49,47 @@ public class RESTService {
 
 	public void start(final String context) {
 		try {
-			server = HttpServer.create(new InetSocketAddress(InetAddress.getByName(host), port), 0);
-			server.createContext(context, new HttpHandler() {
+			InetSocketAddress address = new InetSocketAddress(InetAddress.getByName(host), port);
+			Server server = new Server(address);
+			server.setHandler(new AbstractHandler() {
 
-				public void handle(HttpExchange exchange) throws IOException {
-					String path = exchange.getRequestURI().getPath();
-					info("Received path '" + path + "'");
-					String name = path.substring(path.indexOf(context) + context.length()).replaceAll("/", "");
-					String response = "Hello " + name;
-					info("Response set to '" + response + "'");
-					exchange.sendResponseHeaders(200, response.getBytes().length);
-					OutputStream os = exchange.getResponseBody();
-					os.write(response.getBytes());
-					os.close();
+				@Override
+				public void handle(String data, Request baseRequest, HttpServletRequest request,
+						HttpServletResponse response) throws IOException, ServletException {
+					info("Data: " + data);
+					String message = "Unknown request '" + data + "'";
+					if (data.contains(context)) {
+						message = "Hello " + data.substring(context.length()).replaceAll("/", "");
+					}
+					PrintWriter out = response.getWriter();
+					out.println(message);
+					out.flush();
+					out.close();
 				}
-
 			});
-			server.setExecutor(null);
 			server.start();
-		} catch (IOException e) {
+			info("REST service started at http://" + host + ":" + port + context);
+		} catch (Exception e) {
 			e.printStackTrace();
-			throw new RuntimeException("IOException");
+			info(e.getMessage());
 		}
-		info("REST service started at http://" + host + ":" + port + context);
 	}
 
 	public void stop() {
-		server.stop(0);
-		info("REST service stopped");
+		try {
+			server.stop();
+			info("REST service stopped");
+		} catch (Exception e) {
+			e.printStackTrace();
+			info(e.getMessage());
+		}
 	}
 
-	protected void info(String msg) {
+	protected static void info(String msg) {
 		System.out.println(new Date() + "\tINFO\t" + msg);
+	}
+	
+	public static void main(String[] args) {
+		new RESTService(8123).start();
 	}
 }
