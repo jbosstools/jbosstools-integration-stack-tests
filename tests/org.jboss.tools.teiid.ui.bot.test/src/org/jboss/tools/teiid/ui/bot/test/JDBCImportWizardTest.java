@@ -7,9 +7,15 @@ import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
 import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
+import org.jboss.tools.teiid.reddeer.manager.ServerManager;
+import org.jboss.tools.teiid.reddeer.view.GuidesView;
 import org.jboss.tools.teiid.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.Server;
+import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.State;
+import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.Type;
 
 /**
  * Tests for importing relational models from various sources
@@ -18,16 +24,26 @@ import org.junit.Test;
  * 
  */
 @Perspective(name = "Teiid Designer")
+@Server(type = Type.ALL, state = State.RUNNING)
 public class JDBCImportWizardTest extends SWTBotTestCase {
 
 	public static final String MODEL_PROJECT = "jdbcImportTest";
 
 	private static TeiidBot teiidBot = new TeiidBot();
+	private static final String SERVER_PROPS = "swtbot.properties";
+	private static final String serverName = new ServerManager().getServerName(SERVER_PROPS);
 
 	@BeforeClass
 	public static void before(){
 		teiidBot.uncheckBuildAutomatically();
 		new ModelExplorerManager().createProject(MODEL_PROJECT);
+		
+		new ServerManager().getServersViewExt().refreshServer(serverName);
+	}
+	
+	@AfterClass
+	public static void after(){
+		new ServerManager().stopServer(serverName);
 	}
 	
 	@Test
@@ -41,8 +57,10 @@ public class JDBCImportWizardTest extends SWTBotTestCase {
 		new ConnectionProfileManager().createCPWithDriverDefinition(cpName, cpProps);
 		new ImportManager().importFromDatabase(MODEL_PROJECT, model, cpName, iProps);
 		
-		teiidBot.checkResource(MODEL_PROJECT, model+".xmi", "SMALLA");
-		teiidBot.checkResource(MODEL_PROJECT, model+".xmi", "SMALLB");
+		teiidBot.assertResource(MODEL_PROJECT, model+".xmi", "SMALLA");
+		teiidBot.assertResource(MODEL_PROJECT, model+".xmi", "SMALLB");
+		
+		assertTrue(new GuidesView().canPreviewData(null, new String[]{MODEL_PROJECT, model+".xmi", "SMALLA"}));
 	}
 	
 	//@Test
@@ -62,8 +80,10 @@ public class JDBCImportWizardTest extends SWTBotTestCase {
 		new ConnectionProfileManager().createCPWithDriverDefinition(cpName, cpProps);
 		new ImportManager().importFromDatabase(MODEL_PROJECT, model, cpName, iProps);
 		
-		teiidBot.checkResource(MODEL_PROJECT, model+".xmi", "SHIP_VIA");
-		teiidBot.checkResource(MODEL_PROJECT, model+".xmi", "STATUS");
+		teiidBot.assertResource(MODEL_PROJECT, model+".xmi", "SHIP_VIA");
+		teiidBot.assertResource(MODEL_PROJECT, model+".xmi", "STATUS");
+		
+		assertTrue(new GuidesView().canPreviewData(null, new String[]{MODEL_PROJECT, model+".xmi", "STATUS"}));
 	}
 	
 	/*@Test
@@ -116,8 +136,10 @@ public class JDBCImportWizardTest extends SWTBotTestCase {
 		iProps.setProperty("itemList", "BOOKS/TABLE/AUTHORS,BOOKS/TABLE/PUBLISHERS");
 		new ImportManager().importFromDatabase(MODEL_PROJECT, model, cpName, iProps);
 		
-		teiidBot.checkResource(MODEL_PROJECT, model+".xmi", "AUTHORS");
-		teiidBot.checkResource(MODEL_PROJECT, model+".xmi", "PUBLISHERS");
+		teiidBot.assertResource(MODEL_PROJECT, model+".xmi", "AUTHORS");
+		teiidBot.assertResource(MODEL_PROJECT, model+".xmi", "PUBLISHERS");
+		
+		assertTrue(new GuidesView().canPreviewData(null, new String[]{MODEL_PROJECT, model+".xmi", "AUTHORS"}));
 	}
 	
 	//@Test
@@ -136,8 +158,8 @@ public class JDBCImportWizardTest extends SWTBotTestCase {
 		new ConnectionProfileManager().createCPWithDriverDefinition(cpName, cpProps);
 		new ImportManager().importFromDatabase(MODEL_PROJECT, model, cpName, iProps);
 		
-		teiidBot.checkResource(MODEL_PROJECT, model+".xmi", "AUTHORS");
-		teiidBot.checkResource(MODEL_PROJECT, model+".xmi", "PUBLISHERS");
+		teiidBot.assertResource(MODEL_PROJECT, model+".xmi", "AUTHORS");
+		teiidBot.assertResource(MODEL_PROJECT, model+".xmi", "PUBLISHERS");
 	}//UC authors, publishers
 	
 	//@Test
@@ -155,9 +177,11 @@ public class JDBCImportWizardTest extends SWTBotTestCase {
 		new ConnectionProfileManager().createCPSalesForce(cpName, cpProps);
 		new ImportManager().importFromSalesForce(MODEL_PROJECT, model, cpName, teiidBot.getProperties(importProps));
 		
-		teiidBot.checkResource(MODEL_PROJECT, model+".xmi", "salesforce", "AccountFeed");
-		teiidBot.checkResourceNotPresent(MODEL_PROJECT, model+".xmi", "salesforce", "Account");
-		teiidBot.checkResourceNotPresent(MODEL_PROJECT, model+".xmi", "salesforce", "Apex Class");
+		teiidBot.assertResource(MODEL_PROJECT, model+".xmi", "salesforce", "AccountFeed");
+		teiidBot.assertFailResource(MODEL_PROJECT, model+".xmi", "salesforce", "Account");
+		teiidBot.assertFailResource(MODEL_PROJECT, model+".xmi", "salesforce", "Apex Class");
+		
+		assertTrue(new GuidesView().canPreviewData(null, new String[]{MODEL_PROJECT, model+".xmi", "salesforce", "AccountFeed"}));
 	}//salesforce, AccountFeed
 
 	//TODO class DatasourcesTest - create CP to VDB, create src model from it, new vdb- execute

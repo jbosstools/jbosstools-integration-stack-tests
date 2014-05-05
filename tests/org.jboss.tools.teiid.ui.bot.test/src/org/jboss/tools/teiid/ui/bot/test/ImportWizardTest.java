@@ -63,7 +63,7 @@ public class ImportWizardTest extends SWTBotTestCase {
 		props.setProperty("autoselectDialect", "true");
 		new ImportMetadataManager().importFromDDL(MODEL_PROJECT, "CustomerHsqldb", ddl, props);
 
-		teiidBot.checkResource(MODEL_PROJECT, "CustomerHsqldb.xmi");
+		teiidBot.assertResource(MODEL_PROJECT, "CustomerHsqldb.xmi");
 		teiidBot.checkDiagram(MODEL_PROJECT, "CustomerHsqldb.xmi", "USER");
 		teiidBot.checkDiagram(MODEL_PROJECT, "CustomerHsqldb.xmi", "ADDRESS");
 	}
@@ -87,7 +87,7 @@ public class ImportWizardTest extends SWTBotTestCase {
 		
 		new ImportMetadataManager().importFromDesignerTextFile(MODEL_PROJECT, props);
 
-		teiidBot.checkResource(MODEL_PROJECT, target);
+		teiidBot.assertResource(MODEL_PROJECT, target);
 		teiidBot.checkDiagram(MODEL_PROJECT, target, "ProductSymbols");
 		teiidBot.checkDiagram(MODEL_PROJECT, target, "ProductData");
 		teiidBot.checkDiagram(MODEL_PROJECT, target, "getProductInfo");
@@ -116,8 +116,8 @@ public class ImportWizardTest extends SWTBotTestCase {
 		
 		new ImportMetadataManager().importFromFlatFile(MODEL_PROJECT, "Item", flatProfile, iProps);
 
-		teiidBot.checkResource(MODEL_PROJECT, "ItemSource.xmi");
-		teiidBot.checkResource(MODEL_PROJECT, "ItemView.xmi");
+		teiidBot.assertResource(MODEL_PROJECT, "ItemSource.xmi");
+		teiidBot.assertResource(MODEL_PROJECT, "ItemView.xmi");
 		teiidBot.checkDiagram(MODEL_PROJECT, "ItemSource.xmi", "getTextFiles");
 		teiidBot.checkDiagram(MODEL_PROJECT, "ItemSource.xmi", "Result");
 		teiidBot.checkDiagram(MODEL_PROJECT, "ItemView.xmi", "ItemTable");
@@ -145,8 +145,8 @@ public class ImportWizardTest extends SWTBotTestCase {
 		
 		new ImportMetadataManager().importFromXML(MODEL_PROJECT, "Account", xmlProfile, props);
 
-		teiidBot.checkResource(MODEL_PROJECT, "AccountSource.xmi");
-		teiidBot.checkResource(MODEL_PROJECT, "AccountView.xmi");
+		teiidBot.assertResource(MODEL_PROJECT, "AccountSource.xmi");
+		teiidBot.assertResource(MODEL_PROJECT, "AccountView.xmi");
 		teiidBot.checkDiagram(MODEL_PROJECT, "AccountSource.xmi", "getTextFiles");
 		teiidBot.checkDiagram(MODEL_PROJECT, "AccountSource.xmi", "Result");
 		teiidBot.checkDiagram(MODEL_PROJECT, "AccountView.xmi", "AccountTable");
@@ -182,8 +182,8 @@ public class ImportWizardTest extends SWTBotTestCase {
 		props.setProperty("responseElements", "sayHelloResponse/sequence/return");
 		new ImportMetadataManager().importFromWSDLToSrcView(MODEL_PROJECT, profile, props);
 
-		teiidBot.checkResource(MODEL_PROJECT, "HelloService.xmi");
-		teiidBot.checkResource(MODEL_PROJECT, "HelloServiceView.xmi");
+		teiidBot.assertResource(MODEL_PROJECT, "HelloService.xmi");
+		teiidBot.assertResource(MODEL_PROJECT, "HelloServiceView.xmi");
 		teiidBot.checkDiagram(MODEL_PROJECT, "HelloService.xmi", "invoke");
 		teiidBot.checkDiagram(MODEL_PROJECT, "HelloServiceView.xmi", "sayHello");
 		teiidBot.checkDiagram(MODEL_PROJECT, "HelloServiceView.xmi", "sayHello_request");
@@ -197,7 +197,7 @@ public class ImportWizardTest extends SWTBotTestCase {
 		iProps.setProperty("dirName", teiidBot.toAbsolutePath("resources/wsdl"));
 		iProps.setProperty("file", "Hello.wsdl");
 		iProps.setProperty("intoFolder", MODEL_PROJECT);
-		new ImportManager().importGeneralItem(ImportGeneralItemWizard.FILE_SYSTEM, iProps);
+		new ImportManager().importGeneralItem(ImportGeneralItemWizard.Type.FILE_SYSTEM, iProps);
 		
 		//import from workspace
 		iProps = new Properties();
@@ -214,8 +214,8 @@ public class ImportWizardTest extends SWTBotTestCase {
 		iProps.setProperty("securityType", "None");
 		new ImportMetadataManager().importFromWSDLToWebService(iProps, WsdlWebImportWizard.IMPORT_WSDL_FROM_URL);
 		
-		teiidBot.checkResource(MODEL_PROJECT, "WsdlToWS.xmi");
-		teiidBot.checkResource(MODEL_PROJECT, "WsdlToWS2Responses.xmi");
+		teiidBot.assertResource(MODEL_PROJECT, "WsdlToWS.xmi");
+		teiidBot.assertResource(MODEL_PROJECT, "WsdlToWS2Responses.xmi");
 	}
 	
 	@Test //throws exception! remote && addDependentSchemas=true (JBDS exception)
@@ -226,8 +226,8 @@ public class ImportWizardTest extends SWTBotTestCase {
 		iProps.setProperty("rootPath", teiidBot.toAbsolutePath("resources/xsd"));
 		iProps.setProperty("schemas", "EmployeesSchema.xsd,BookDatatypes.xsd");
 		new ImportMetadataManager().importXMLSchema(MODEL_PROJECT, iProps);
-		teiidBot.checkResource(MODEL_PROJECT, "EmployeesSchema.xsd");
-		teiidBot.checkResource(MODEL_PROJECT, "BookDatatypes.xsd");
+		teiidBot.assertResource(MODEL_PROJECT, "EmployeesSchema.xsd");
+		teiidBot.assertResource(MODEL_PROJECT, "BookDatatypes.xsd");
 		
 		//remote URI
 		iProps = new Properties();
@@ -236,7 +236,7 @@ public class ImportWizardTest extends SWTBotTestCase {
 		iProps.setProperty("verifyHostname", "false");
 		iProps.setProperty("addDependentSchemas", "false");
 		new ImportMetadataManager().importXMLSchema(MODEL_PROJECT, iProps);
-		teiidBot.checkResource(MODEL_PROJECT, "jboss-common_6_0.xsd");
+		teiidBot.assertResource(MODEL_PROJECT, "jboss-common_6_0.xsd");
 	}
 
 //	@Test
