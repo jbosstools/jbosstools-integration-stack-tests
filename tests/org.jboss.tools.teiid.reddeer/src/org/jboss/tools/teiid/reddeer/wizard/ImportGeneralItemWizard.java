@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Properties;
 
 import org.jboss.reddeer.eclipse.jface.wizard.ImportWizardDialog;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
@@ -22,11 +23,14 @@ public class ImportGeneralItemWizard extends ImportWizardDialog {
 
 	private static final String ARCHIVE_LABEL = "Select archive file:";
 	
-	public static final String ARCHIVE_FILE = "Archive File";
-	public static final String EXISTING_PROJECTS_INTO_WORKSPACE = "Existing Projects into Workspace";
-	public static final String FILE_SYSTEM = "File System";
-	public static final String PREFERENCES = "Preferences";
 
+	public static class Type{
+		public static final String ARCHIVE_FILE = "Archive File";
+		public static final String EXISTING_PROJECTS_INTO_WORKSPACE = "Existing Projects into Workspace";
+		public static final String FILE_SYSTEM = "File System";
+		public static final String PREFERENCES = "Preferences";
+	}
+	
 	private static final String INTO_FOLDER = "Into folder:";
 	
 	private String generalItemType;
@@ -41,12 +45,13 @@ public class ImportGeneralItemWizard extends ImportWizardDialog {
 	public void execute(){
 		open();
 		
-		if (generalItemType.equals(EXISTING_PROJECTS_INTO_WORKSPACE)){
+		if (generalItemType.equals(Type.EXISTING_PROJECTS_INTO_WORKSPACE)){
 			executeExistingProjects();
 		}
-		else if (generalItemType.equals(FILE_SYSTEM)){
+		else if (generalItemType.equals(Type.FILE_SYSTEM)){
 			executeFileSystem();
 		}
+		//TODO if needed - archive file and preferences
 		finish();
 	}
 	
@@ -54,11 +59,15 @@ public class ImportGeneralItemWizard extends ImportWizardDialog {
 		String dirName = new File(itemProps.getProperty("dirName")).getAbsolutePath();//from where is imported
 		String intoFolder = itemProps.getProperty("intoFolder");//project name
 		String file = itemProps.getProperty("file");
+		String createTopLevel = itemProps.getProperty("createTopLevel");//ie. import lib/abc and create folder lib
 		
 		new DefaultCombo().setText(dirName);
 		new LabeledText(INTO_FOLDER).setFocus();
 		new DefaultTable().getItem(file).setChecked(true);
 		new LabeledText(INTO_FOLDER).setText(intoFolder);
+		if (createTopLevel != null){
+			new CheckBox("Create top-level folder").click();
+		}
 	}
 
 	private void executeExistingProjects() {//existing projects into ws

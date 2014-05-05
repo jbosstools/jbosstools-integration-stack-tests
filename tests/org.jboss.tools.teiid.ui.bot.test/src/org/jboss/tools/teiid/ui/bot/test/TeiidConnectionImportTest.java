@@ -190,7 +190,7 @@ public class TeiidConnectionImportTest extends SWTBotTestCase{
 			System.err.println("SQL server test failed, " + e.getMessage()); e.printStackTrace();
 		}
 		
-		teiidBot.checkResource(PROJECT_NAME, sqlserverModel+"Imp.xmi","AUTHORS");
+		teiidBot.assertResource(PROJECT_NAME, sqlserverModel+"Imp.xmi","AUTHORS");
 	}
 	
 	//@Test //NOK

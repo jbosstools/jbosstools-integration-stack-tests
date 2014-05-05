@@ -16,6 +16,7 @@ public class ImportManager {
 	/**
 	 * Import file from General: File System
 	 */
+	@Deprecated
 	public void importFromFileSystem(String path, String importFolder){
 		new ImportFileWizard().importFile(path, importFolder);
 	}
@@ -114,15 +115,14 @@ public class ImportManager {
 		importFromWSDLToSrcView(projectName, modelName, cpName, props);	
 	}*/
 	
-	public void importProject(String archiveLocation){// TODO use generalItem instead
-		new ImportProjectWizard(archiveLocation).execute(); 
+	public void importProject(String location){// TODO use generalItem instead
+		new ImportProjectWizard(location).execute(); 
 	}
 	
 	/**
 	 * 
-	 * @param generalItemType ImportGeneralItemWizard.ARCHIVE_LABEL<br/>EXISTING_PROJECTS_INTO_WORKSPACE<br/>FILE_SYSTEM<br/>PREFERENCES
+	 * @param generalItemType ImportGeneralItemWizard.Type
 	 * @param itemProps
-	 *  FILE_SYSTEM - dirName, file,<br/>EXISTING_PROJECTS_INTO_WORKSPACE - location
 	 */
 	public void importGeneralItem(String generalItemType, Properties itemProps){
 		new ImportGeneralItemWizard(generalItemType, itemProps).execute();

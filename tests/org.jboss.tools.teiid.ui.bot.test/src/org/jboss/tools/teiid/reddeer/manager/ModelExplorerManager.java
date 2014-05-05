@@ -1,11 +1,29 @@
 package org.jboss.tools.teiid.reddeer.manager;
 
+import static org.junit.Assert.assertEquals;
+
+import java.util.List;
+import java.util.Map;
+
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.hamcrest.Matcher;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.matcher.RegexMatcher;
+import org.jboss.reddeer.swt.matcher.WithRegexMatcher;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.teiid.reddeer.ModelProject;
+import org.jboss.tools.teiid.reddeer.Procedure;
 import org.jboss.tools.teiid.reddeer.WAR;
+import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
+import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
-import org.jboss.tools.teiid.reddeer.view.Procedure;
+import org.jboss.tools.teiid.reddeer.view.SQLResult;
 import org.jboss.tools.teiid.reddeer.wizard.ModelProjectWizard;
 
 public class ModelExplorerManager {
@@ -64,4 +82,38 @@ public class ModelExplorerManager {
 	public Procedure createProcedure(String project, String model, String procedure){
 			return new ModelExplorerView().newProcedure(project, model, procedure, true);
 		}
+	
+	public ModelExplorerView getModelExplorerView(){
+		return new ModelExplorerView();
+	}
+	
+	public void previewModelObject(List<String> params, String... pathToObject){
+		new ModelExplorerView().open();
+		new DefaultTreeItem(0, pathToObject).select();
+		new ContextMenu("Modeling", "Preview Data").select();
+		try {
+			new PushButton("Yes").click();
+		} catch (Exception e){
+			
+		}
+		
+		if ((params != null) && (! params.isEmpty())){
+			int i = 0;
+			for (String paramName : params){//expects the params are sorted
+				new SWTWorkbenchBot().text(i).setText(paramName);
+				i++;
+			}
+			new PushButton("OK").click();
+		}
+		
+	}
+	
+	public boolean checkPreviewOfModelObject(String previewSQL){
+		//wait while is in progress
+		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
+		//wait while dialog Preview data... is active
+		new WaitWhile(new ShellWithTextIsActive(new WithRegexMatcher("Preview.*")), TimePeriod.LONG);
+		SQLResult result = DatabaseDevelopmentPerspective.getInstance().getSqlResultsView().getByOperation(previewSQL);
+		return result.getStatus().equals(SQLResult.STATUS_SUCCEEDED);
+	}
 }

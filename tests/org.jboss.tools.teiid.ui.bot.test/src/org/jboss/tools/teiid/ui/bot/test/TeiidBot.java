@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Properties;
 
@@ -279,16 +280,28 @@ public class TeiidBot {
 		return props;
 	}
 	
-	public void checkResource(String projectName, String... path) {//-> teiidbot
+	public void assertResource(String projectName, String... path) {//-> teiidbot
 		new SWTWorkbenchBot().sleep(500);
 		ModelProject modelproject = new ModelExplorer().getModelProject(projectName);
 		assertTrue(Arrays.toString(path) + " not created!", modelproject.containsItem(path));
 	}
 	
-	public void checkResourceNotPresent(String projectName, String... path) {//-> teiidbot
+	public boolean checkResource(String projectName, String... path) {//-> teiidbot
+		new SWTWorkbenchBot().sleep(500);
+		ModelProject modelproject = new ModelExplorer().getModelProject(projectName);
+		return modelproject.containsItem(path);
+	}
+	
+	public void assertFailResource(String projectName, String... path) {//-> teiidbot
 		new SWTWorkbenchBot().sleep(500);
 		ModelProject modelproject = new ModelExplorer().getModelProject(projectName);
 		assertFalse(Arrays.toString(path) + " is created but should not be!", modelproject.containsItem(path));
+	}
+	
+	public boolean checkResourceNotPresent(String projectName, String... path) {//-> teiidbot
+		new SWTWorkbenchBot().sleep(500);
+		ModelProject modelproject = new ModelExplorer().getModelProject(projectName);
+		return modelproject.containsItem(path);
 	}
 
 	public void checkDiagram(String projectName, String file, String label) {//-> teiidbot
@@ -350,4 +363,20 @@ public class TeiidBot {
 		}
 		return result;
 	}
+	
+	public String generateProcedurePreviewQuery(String modelName, String procedureName, ArrayList<String> procedureInputParams){
+		String params = "";
+		for (int i = 0; i < procedureInputParams.size(); i++){
+			params+="'"+procedureInputParams.get(i)+"',";
+		}
+		params=params.substring(0, params.length() - 1);
+		
+		return "select * from ( exec \"" +modelName+"\".\""+procedureName+"\"("+params+") ) AS X_X";
+	}
+	
+	public String generateTablePreviewQuery(String modelName, String tableName){
+		return "select * from \""+modelName+"\".\""+tableName+"\"";
+	}
+	
+	//TODO generate mapping class preview - input set editor params
 }

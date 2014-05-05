@@ -49,7 +49,7 @@ public class RestCallTest extends SWTBotTestCase {
 		Properties itemProps = new Properties();
 		itemProps.setProperty("location", teiidBot.toAbsolutePath(archiveLocation));
 		
-		try{new ImportManager().importGeneralItem(ImportGeneralItemWizard.EXISTING_PROJECTS_INTO_WORKSPACE, itemProps);}catch(Exception e){}
+		try{new ImportManager().importGeneralItem(ImportGeneralItemWizard.Type.EXISTING_PROJECTS_INTO_WORKSPACE, itemProps);}catch(Exception e){}
 		
 		try{new ConnectionProfileManager().createCPWithDriverDefinition(oracleCP, oracleCPProps);}catch(Exception e){}
 		try{new ModelExplorerManager().changeConnectionProfile(oracleCP, projectName, srcModel);}catch(Exception e){}
@@ -88,7 +88,7 @@ public class RestCallTest extends SWTBotTestCase {
 		itemProps.setProperty("file", warCtxName1+".war");
 		itemProps.setProperty("intoFolder", projectName);
 		
-		try{new ImportManager().importGeneralItem(ImportGeneralItemWizard.FILE_SYSTEM, itemProps);}catch(Exception e){}
+		try{new ImportManager().importGeneralItem(ImportGeneralItemWizard.Type.FILE_SYSTEM, itemProps);}catch(Exception e){}
 		
 		//connect teiid instance
 		try{new ServerManager().getServersViewExt().connectTeiidInstance(serverName);}catch(Exception e){}
@@ -145,7 +145,7 @@ public class RestCallTest extends SWTBotTestCase {
 		itemProps.setProperty("file", warCtxName1+".war");
 		itemProps.setProperty("intoFolder", projectName);
 		
-		try{new ImportManager().importGeneralItem(ImportGeneralItemWizard.FILE_SYSTEM, itemProps);}catch(Exception e){}
+		try{new ImportManager().importGeneralItem(ImportGeneralItemWizard.Type.FILE_SYSTEM, itemProps);}catch(Exception e){}
 
 		try{WAR war = new ModelExplorerManager().getWAR(projectName, warCtxName1+".war");
 		war.deploy();}catch(Exception e){}

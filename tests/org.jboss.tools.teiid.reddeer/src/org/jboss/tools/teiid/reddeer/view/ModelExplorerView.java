@@ -1,5 +1,7 @@
 package org.jboss.tools.teiid.reddeer.view;
 
+import java.util.Properties;
+
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -15,9 +17,12 @@ import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
+import org.jboss.tools.teiid.reddeer.Procedure;
+import org.jboss.tools.teiid.reddeer.Table;
 import org.jboss.tools.teiid.reddeer.condition.DefaultTreeItemAvailable;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.condition.RadioButtonEnabled;
+import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 
 /**
  * Represent Model Explorer View and equivalent to Package explorer from Java
@@ -73,6 +78,15 @@ public class ModelExplorerView extends WorkbenchView {
 		new LabeledText("Name").setText(tableName);
 		new PushButton("OK").click();
 	}
+	
+	public void newTable(String tableName, Table.Type type, Properties props, String... pathToModelXmi){
+		open();
+
+		new DefaultTreeItem(pathToModelXmi).select();
+		new ContextMenu("New Child", "Table...").select();
+		new Table().create(type, tableName, props);
+		new ModelEditor(pathToModelXmi[pathToModelXmi.length - 1]).save();//the last member is modelXmi
+	}
 
 	public Procedure newProcedure(String project, String model, String procedure) {
 		open();
@@ -101,6 +115,17 @@ public class ModelExplorerView extends WorkbenchView {
 		new SWTWorkbenchBot().button("OK").click();
 
 		return new Procedure(project, model, procedure);
+	}
+	
+	
+	public void newProcedure(String project, String modelXmi, String procedure, Properties props){
+		open();
+
+		new DefaultTreeItem(project, modelXmi).select();
+		new ContextMenu("New Child", "Procedure...").select();
+		
+		new Procedure().create(procedure, props);
+		new ModelEditor(modelXmi).save();
 	}
 
 	public void addTransformationSource(String project, String model, String tableName) {

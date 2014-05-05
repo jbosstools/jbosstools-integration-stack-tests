@@ -99,7 +99,7 @@ public class WARTest extends SWTBotTestCase {
 		itemProps.setProperty("dirName", teiidBot.toAbsolutePath("target"));
 		itemProps.setProperty("intoFolder", projectBooksWS);
 		itemProps.setProperty("file", vdbCheckBook+".war");
-		new ImportManager().importGeneralItem(ImportGeneralItemWizard.FILE_SYSTEM, itemProps);
+		new ImportManager().importGeneralItem(ImportGeneralItemWizard.Type.FILE_SYSTEM, itemProps);
 		new ModelExplorerManager().getWAR(projectBooksWS, vdbCheckBook+".war").deploy();
 		
 		String curlNOK = "curl -H \"Content-Type: text/xml; charset=utf-8\" -H \"SOAPAction:\"  -d @"+teiidBot.toAbsolutePath("resources/wsdl/requestOracleNOK.xml")+" -X POST http://localhost:8080/checkBookVdb/BooksInterface?wsdl";
@@ -137,7 +137,7 @@ public class WARTest extends SWTBotTestCase {
 		itemProps.setProperty("dirName", teiidBot.toAbsolutePath("target"));
 		itemProps.setProperty("intoFolder", projectBooksWS);
 		itemProps.setProperty("file", warCheckBookBasic+".war");
-		new ImportManager().importGeneralItem(ImportGeneralItemWizard.FILE_SYSTEM, itemProps);
+		new ImportManager().importGeneralItem(ImportGeneralItemWizard.Type.FILE_SYSTEM, itemProps);
 		new ModelExplorerManager().getWAR(projectBooksWS, warCheckBookBasic+".war").deploy();
 		
 		String curlNOK = "curl -u testuser:testpassword -H \"Content-Type: text/xml; charset=utf-8\" -H \"SOAPAction:\"  -d @"+teiidBot.toAbsolutePath("resources/wsdl/requestOracleNOK.xml")+" -X POST http://localhost:8080/checkBookVdbBasic/BooksInterface?wsdl";
@@ -180,7 +180,7 @@ public class WARTest extends SWTBotTestCase {
 		itemProps.setProperty("intoFolder", projectBooksRest);
 
 		try {
-			new ImportManager().importGeneralItem(ImportGeneralItemWizard.FILE_SYSTEM, itemProps);
+			new ImportManager().importGeneralItem(ImportGeneralItemWizard.Type.FILE_SYSTEM, itemProps);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -226,7 +226,7 @@ public class WARTest extends SWTBotTestCase {
 		itemProps.setProperty("intoFolder", projectBooksRest);
 
 		try {
-			new ImportManager().importGeneralItem(ImportGeneralItemWizard.FILE_SYSTEM, itemProps);
+			new ImportManager().importGeneralItem(ImportGeneralItemWizard.Type.FILE_SYSTEM, itemProps);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
