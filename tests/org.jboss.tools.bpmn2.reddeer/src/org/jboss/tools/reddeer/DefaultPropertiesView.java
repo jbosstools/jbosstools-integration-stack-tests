@@ -1,20 +1,18 @@
 package org.jboss.tools.reddeer;
 
 import java.lang.reflect.Method;
+import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Widget;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.AbstractSWTBotControl;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
 import org.jboss.reddeer.swt.impl.clabel.DefaultCLabel;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
+import org.jboss.tools.reddeer.matcher.WidgetWithClassName;
 
 /**
  * 
@@ -36,24 +34,7 @@ public class DefaultPropertiesView extends WorkbenchView {
 	 * @param value
 	 */
 	public void setSelectionIndex(int value) {
-		Widget w = bot.widget(new BaseMatcher<Widget>() {
-			
-			public boolean matches(Object item) {
-				return item.getClass().getSimpleName().equals("TabbedPropertyList");
-			}
-			
-			public void describeTo(Description description) {
-				// no operation
-			}
-			
-		});
-		
-		try {
-			Method m = w.getClass().getMethod("select", int.class, boolean.class);
-			m.invoke(w, value, true);
-		} catch (Exception e) {
-			throw new IllegalStateException("TabbedPropertyList object was not found!");
-		}
+		invokeMethod("select", value, true);
 	}
 	
 	/**
@@ -61,23 +42,26 @@ public class DefaultPropertiesView extends WorkbenchView {
 	 * @return
 	 */
 	public int getSelectionIndex() {
-		Widget w = bot.widget(new BaseMatcher<Widget>() {
-			
-			public boolean matches(Object item) {
-				return item.getClass().getSimpleName().equals("TabbedPropertyList");
-			}
-			
-			public void describeTo(Description description) {
-				// no operation
-			}
-			
-		});
+		return (Integer) invokeMethod("getSelectionIndex");
+	}
+	
+	private Object invokeMethod(String name, Object ... args) {
+		Widget w = bot.widget(new WidgetWithClassName("TabbedPropertyList"));
+		
+		if (w == null) {
+			throw new IllegalStateException("Properties view tab list not found.");
+		}
+		
+		Class<?>[] argTypes = new Class<?>[args.length];
+		for (int i=0; i<args.length; i++) {
+			argTypes[i] = args[i].getClass();
+		}
 		
 		try {
-			Method m = w.getClass().getMethod("getSelectionIndex");
-			return (Integer) m.invoke(w);
+			Method m = w.getClass().getMethod(name, argTypes);
+			return m.invoke(w, args);
 		} catch (Exception e) {
-			throw new IllegalStateException("TabbedPropertyList object was not found!");
+			throw new RuntimeException(e);
 		}
 	}
 	
@@ -87,13 +71,22 @@ public class DefaultPropertiesView extends WorkbenchView {
 	 */
 	public void selectTab(String label) {
 		open();
-		// the resolution is to low and some tabs are not visible. if they
-		// are not visible they will not be found! maximize the view to make
-		// them visible
-		maximize();
-		new ListElement(label).select();
-		// maximize second time will restore the normal size.
-		maximize();
+		try {
+			// When the resolution is low some tabs are not visible. Unless they
+			// are rendered at least once, they will not be found by SWTBot.
+			// Maximize the view to force rendering of hidden tabs.
+			maximize();
+			// Attempt to get the tab with given label.
+			Canvas c = getListElement(label);
+			if (c == null) {
+				throw new WidgetNotFoundException("Element with text '" + label + "' not found.");
+			}
+			// Select the tab.
+			new ClickControl(c).click();
+		} finally {
+			// Maximizing the view a second time will restore the original size.
+			maximize();
+		}
 	}
 
 	/**
@@ -104,71 +97,14 @@ public class DefaultPropertiesView extends WorkbenchView {
 		return new DefaultCLabel().getText();
 	}
 	
-	/**
-	 * 
-	 * @param bot
-	 */
-	protected void activateShell(SWTWorkbenchBot bot) {
-		try {
-			bot.activeShell();
-		} catch (WidgetNotFoundException e) {
-			SWTBotShell[] shellArray = bot.shells();
-			for (SWTBotShell shell : shellArray) {
-				if (shell.getText() != null && shell.getText().endsWith("Eclipse Platform")) {
-					shell.activate();
-					return;
-				}
+	private Canvas getListElement(String label) {
+		List<? extends Widget> listElements = bot.widgets(new WidgetWithClassName("ListElement"));
+		for (Widget e : listElements) {
+			if (e.toString().equals(label)) {
+				return (Canvas) e;
 			}
-			throw new WidgetNotFoundException("Main shell was not found!");
 		}
-	}
-	
-	@Override
-	public void minimize() {
-		SWTWorkbenchBot bot = new SWTWorkbenchBot();
-		activateShell(bot);
-		bot.menu("Window").menu("Navigation").menu("Minimize Active View or Editor").click();
-	}
-	
-	@Override
-	public void maximize() {
-		SWTWorkbenchBot bot = new SWTWorkbenchBot();
-		activateShell(bot);
-		bot.menu("Window").menu("Navigation").menu("Maximize Active View or Editor").click();
-	}
-	
-	private class ListElement {
-
-		private Canvas canvas;
-
-		public ListElement(String label) {
-			canvas = (Canvas) bot.widget(new ListElementWithLabel(label));
-		}
-
-		public void select() {
-			new ClickControl(canvas).click();
-		}
-
-	}
-	
-	private class ListElementWithLabel extends BaseMatcher<Widget> {
-
-		private String label;
-
-		public ListElementWithLabel(String label) {
-			this.label = label;
-		}
-
-		public boolean matches(Object item) {
-			if (item.getClass().getSimpleName().equals("ListElement")) {
-				return item.toString().equals(label);
-			}
-			return false;
-		}
-
-		public void describeTo(Description description) {
-			description.appendText("of class '").appendText(label).appendText("'");
-		}
+		return null;
 	}
 	
 	private class ClickControl extends AbstractSWTBotControl<Composite> {
