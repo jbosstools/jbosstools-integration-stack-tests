@@ -8,6 +8,7 @@ import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -33,25 +34,29 @@ public class DefaultExplorer extends WorkbenchView {
 	 * @param path Path to the desired node.
 	 */
 	public void selectNode(String... path) {
-		
+
+		String nodeName = null;
 		List<TreeItem> items = new DefaultTree().getItems();
+		
 		for (int i = 0; i < path.length; i++) {
+
+			nodeName = path[i];
 			for (TreeItem item : items) {
+
 				if (item.getText().startsWith(path[i])) {
-					
 					item.select();
 					if (i == path.length - 1) return;
-					AbstractWait.sleep(TimePeriod.getCustom(2));
 					item.doubleClick();
+					AbstractWait.sleep(TimePeriod.getCustom(5));
 					item.expand();
-					AbstractWait.sleep(TimePeriod.getCustom(2));
+					AbstractWait.sleep(TimePeriod.getCustom(5));
 					items = item.getItems();
 					break;
 				}
 			}
 		}
 		
-		throw new SWTLayerException("The node '" + path + "' was not found!");
+		throw new SWTLayerException("The node '" + nodeName + "' was not found!");
 	}
 	
 	/**
@@ -75,5 +80,17 @@ public class DefaultExplorer extends WorkbenchView {
 		new ContextMenu(path).select();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		AbstractWait.sleep(TimePeriod.getCustom(2));
+	}
+	
+	/**
+	 * Checks if the selected node has child items
+	 * 
+	 * Note: Be sure some node is selected!
+	 * 
+	 * @return true - if the selected node has child items, false - otherwise.
+	 */
+	public boolean hasSelectedNodeChildren(String... path) {
+		
+		return new DefaultTreeItem(path).getItems().size() > 0 ? true : false;
 	}
 }

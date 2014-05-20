@@ -184,11 +184,4 @@ public class FabricExplorerTest extends RedDeerTest {
 		prop.open();
 		assertEquals("success", prop.getStatus("testContainer"));
 	}
-
-	@Test
-	public void testCloudFabric() {
-
-		// TODO Not implemented yet!
-		fail("Not implemented yet!");
-	}
 }

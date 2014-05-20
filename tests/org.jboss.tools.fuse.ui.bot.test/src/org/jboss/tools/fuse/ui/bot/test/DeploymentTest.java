@@ -148,7 +148,7 @@ public class DeploymentTest extends RedDeerTest {
 		fab.createProfile("test", "1.0", "default");
 		fab.deployProjectToProfile(PROJECT_NAME, "test");
 		
-		assertEquals(PROJECT_FABS, fab.getProfileFABs("1.0", "default", "test"));
+		assertEquals(PROJECT_FABS, fab.getProfileFABs("Fabrics", "Local Fabric", "Versions", "1.0", "default", "test"));
 		
 		// TODO improve test case
 		// create a new container with assigned the profile

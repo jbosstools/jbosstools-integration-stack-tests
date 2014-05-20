@@ -13,9 +13,11 @@ import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.list.DefaultList;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
@@ -28,9 +30,7 @@ import org.jboss.tools.fuse.reddeer.widget.ListElement;
 
 /**
  * Performs operations with the <i>Fabric Explorer</i> view.
- * 
- * TODO Add logging into every method
- * 
+ *
  * @author tsedmik
  */
 public class FabricExplorer extends DefaultExplorer {
@@ -89,8 +89,12 @@ public class FabricExplorer extends DefaultExplorer {
 		if (fab == null) fab = "Local Fabric";
 		log.info("Connecting to the '" + fab + "' fabric");
 		selectNode(NODE_FABRICS, fab);
+		
 		try {
-			selectContextMenuItem(CONTEXT_CONNECT);
+			while (!hasSelectedNodeChildren(NODE_FABRICS, fab)) {
+				selectContextMenuItem(CONTEXT_CONNECT);
+				refresh();
+			}
 		} catch (SWTLayerException ex) {
 			log.info("Already connected to '" + fab + "'.");
 		}
@@ -105,6 +109,7 @@ public class FabricExplorer extends DefaultExplorer {
 	 */
 	public void createProfile(String name, String... path) {
 		
+		log.info("Creating a new profile: '" + name + "'.");
 		List<String> temp = new ArrayList<String>(Arrays.asList(path));
 		temp.add(0, "Versions");
 		temp.add(0, "Local Fabric");
@@ -116,6 +121,7 @@ public class FabricExplorer extends DefaultExplorer {
 		new DefaultText().setText(name);
 		new PushButton("OK").click();
 		AbstractWait.sleep(TimePeriod.getCustom(5));
+		log.info("Profile '" + name + "' was created.");
 	}
 	
 	/**
@@ -125,8 +131,10 @@ public class FabricExplorer extends DefaultExplorer {
 	 */
 	public void deleteProfile(String... path) {
 		
+		log.info("Deleting a profile with the path: " + path);
 		selectNode(path);
 		deleteProfile();
+		log.info("Profile (" + path + ") was deleted");
 	}
 	
 	/**
@@ -134,6 +142,7 @@ public class FabricExplorer extends DefaultExplorer {
 	 */
 	public void deleteProfile() {
 		
+		log.info("Invoking the delete profile method on selected profile.");
 		selectContextMenuItem("Delete Profile");
 		new DefaultShell().setFocus();
 		new PushButton("OK").click();
@@ -149,6 +158,7 @@ public class FabricExplorer extends DefaultExplorer {
 	 */
 	public void createVersion(String name) {
 		
+		log.info("Creationg a new version: " + name);
 		selectNode(NODE_FABRICS, "Local Fabric", "Versions");
 		selectContextMenuItem("Create Version");
 		new DefaultShell().setFocus();
@@ -156,6 +166,7 @@ public class FabricExplorer extends DefaultExplorer {
 		new PushButton("OK").click();
 		AbstractWait.sleep(TimePeriod.getCustom(5));
 		new DefaultShell().setFocus();
+		log.info("New version '" + name + "' was created");
 	}
 	
 	/**
@@ -167,6 +178,7 @@ public class FabricExplorer extends DefaultExplorer {
 	 */
 	public void createContainer(String name, String version, String profile) {
 		
+		log.info("Creating a new container: " + name);
 		selectNode(NODE_FABRICS, "Local Fabric", "Containers");
 		selectContextMenuItem("Create a new child container");
 		new DefaultShell().setFocus();
@@ -186,6 +198,7 @@ public class FabricExplorer extends DefaultExplorer {
 		new PushButton("OK").click();
 		AbstractWait.sleep(TimePeriod.getCustom(5));
 		new DefaultShell().setFocus();
+		log.info("New container (" + name + ") was created");
 	}
 	
 	/**
@@ -195,9 +208,11 @@ public class FabricExplorer extends DefaultExplorer {
 	 */
 	public void stopContainer(String name) {
 		
+		log.info("Stopping the container: " + name);
 		selectNode(NODE_FABRICS, "Local Fabric", "Containers", name);
 		selectContextMenuItem("Stop Container");
 		AbstractWait.sleep(TimePeriod.SHORT);
+		log.info("The container (" + name + ") was stopped");
 	}
 	
 	
@@ -208,9 +223,11 @@ public class FabricExplorer extends DefaultExplorer {
 	 */
 	public void startContainer(String name) {
 		
+		log.info("Starting the container: " + name);
 		selectNode(NODE_FABRICS, "Local Fabric", "Containers", name);
 		selectContextMenuItem("Start Container");
 		AbstractWait.sleep(TimePeriod.getCustom(10));
+		log.info("The container (" + name + ") was started");
 	}
 	
 	/**
@@ -230,36 +247,94 @@ public class FabricExplorer extends DefaultExplorer {
 	 */
 	public void deployProjectToProfile(String project, String profile) {
 		
+		log.info("Deploing the project (" + project + ") to the profile (" + profile + ")");
 		new ProjectExplorer().selectProjects(project);
 		new ContextMenu("Deploy to...", "Local Fabric", "1.0", profile).select();
 		new WaitUntil(new ConsoleHasText("BUILD SUCCESS"), TimePeriod.LONG);
 		open();
+		log.info("Project (" + project + ") was successfully deployed to the profile (" + profile + ")");
 	}
 	
 	/**
-	 * Returns a value of <i>FABs</i> of a profile given by a path in <i>Fabric Explorer</i> from
-	 * the <b>Versions</b> node (excluded).
+	 * Returns a value of <i>FABs</i> of a profile given by a path in <i>Fabric Explorer</i>.
 	 * 
 	 * @param path path to the node.
 	 * @return value of <i>FABs</i> property in <i>Properties</i> view.
 	 */
 	public String getProfileFABs(String... path) {
 		
-		List<String> temp = new ArrayList<String>(Arrays.asList(path));
-		temp.add(0, "Versions");
-		temp.add(0, "Local Fabric");
-		temp.add(0, NODE_FABRICS);
-		
+		log.info("Accessing name of the deployed project on: " + path);		
 		PropertiesView properties = new PropertiesView();
 		properties.open();
 		open();
-		selectNode(temp.toArray(new String[0]));
+		selectNode(path);
 		properties.open();
+		new DefaultShell().setFocus();
 
 		new ListElement("Details").select();
 		String value = new DefaultList(3).getListItems()[0];
 		open();
 		
 		return value;
+	}
+	
+	/**
+	 * Creates a new Amazon Elastic Compute Cloud (EC2).
+	 * 
+	 * @param name Name of the cloud
+	 * @param identity Identity to use on the cloud provider
+	 * @param credential Credential to use on the cloud provider
+	 * @param owner Owner of the EC2 account
+	 */
+	public void createCloudDetail(String name, String identity, String credential, String owner) {
+		
+		log.info("Create a new Amazon Elastic Compute Cloud (EC2)");
+		selectNode("Clouds");
+		selectContextMenuItem("Add Cloud details");
+		new DefaultShell().setFocus();
+		new LabeledText("Name").typeText(name);
+		new LabeledCombo("Provider name").setSelection("Amazon Elastic Compute Cloud (EC2)");
+		new LabeledText("Identity").typeText(identity);
+		new LabeledText("Credential").typeText(credential);
+		new LabeledText("Owner").typeText(owner);
+		new PushButton("OK").click();
+		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(300));
+		new DefaultShell().setFocus();
+		log.info("New cloud details '" + name + "' created.");
+	}
+	
+	/**
+	 * Creates a new Fabric in the cloud
+	 * 
+	 * @param cloudName Name of the cloud 
+	 * @param name Name of the Fabric
+	 * @param password the password of the user
+	 * @param zooPassword the ZooKeeper password for the Fabric
+	 * @param location Location ID (e.g. 'eu-west-1')
+	 * @param hardware Hardware ID (e.g. 't1.micro')
+	 * @param os OS Family (e.g. 'rhel')
+	 * @param osVersion OS Version (e.g. '6')
+	 */
+	public void createFabricInTheCloud(String cloudName, String name, String password, String zooPassword,
+			String location, String hardware, String os, String osVersion) {
+		
+		log.info("Create a Fabric in the Cloud");
+		selectNode("Fabrics");
+		selectContextMenuItem("Create Fabric in the cloud");
+		new DefaultShell().setFocus();
+		new DefaultTableItem(cloudName).select();
+		new PushButton("Next >").click();
+		new DefaultShell().setFocus();
+		new LabeledText("Fabric Name").setText(name);
+		new LabeledText("Password").setText(password);
+		new LabeledText("Zookeeper Password").setText(zooPassword);
+		new LabeledCombo("Location ID").setSelection(location);
+		new LabeledCombo("Hardware ID").setSelection(hardware);
+		new LabeledCombo("OS Family").setSelection(os);
+		new LabeledCombo("OS Version").setSelection(osVersion);
+		new PushButton("Finish").click();
+		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(1800));
+		new DefaultShell().setFocus();
+		log.info("New Fabric in the cloud '" + name + "' created.");
 	}
 }
