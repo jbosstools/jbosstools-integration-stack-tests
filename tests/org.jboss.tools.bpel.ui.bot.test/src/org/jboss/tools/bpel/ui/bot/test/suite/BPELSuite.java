@@ -54,10 +54,10 @@ public class BPELSuite extends RedDeerSuite {
 				props.load(new FileReader(propsFile));
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
-				throw new RuntimeException("Couldn't find properties file!");
+				throw new RuntimeException("Couldn't find properties file!", e);
 			} catch (IOException e) {
 				e.printStackTrace();
-				throw new RuntimeException("I/O excpetion during reading properties file!");
+				throw new RuntimeException("I/O excpetion during reading properties file!", e);
 			}
 		}
 		return props;

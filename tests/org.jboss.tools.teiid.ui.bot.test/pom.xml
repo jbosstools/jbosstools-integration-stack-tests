@@ -17,8 +17,7 @@
 		<test.package>org.jboss.tools.teiid.ui.bot.test.suite</test.package>
 		<test.class>SmokeTests</test.class>
 		<jdbc.dir>${requirementsDirectory}/lib</jdbc.dir>
-		<jbtis.site>https://devstudio.jboss.com/updates/7.0-development/integration-stack/</jbtis.site><!--latest 
-			development JBDSIS -->
+		<teiid.site>${jbtis.site}</teiid.site>
 		<server.properties>dv6.properties</server.properties>
 	</properties>
 
@@ -26,7 +25,7 @@
 		<!-- Teiid Repository -->
 		<repository>
 			<id>teiid</id>
-			<url>${jbtis.site}</url>
+			<url>${teiid.site}</url>
 			<layout>p2</layout>
 			<snapshots>
 				<enabled>true</enabled>
@@ -56,7 +55,7 @@
 						<dependency>
 							<type>p2-installable-unit</type>
 							<artifactId>org.eclipse.datatools.enablement.hsqldb.ui</artifactId>
-							<!--<version>0.0.0</version> --><!--get any version exported for the artifact -->
+							<version>0.0.0</version>
 						</dependency>
 						<dependency>
 							<type>p2-installable-unit</type>
@@ -128,6 +127,11 @@
 						<dependency>
 							<type>p2-installable-unit</type>
 							<artifactId>org.teiid.designer.runtime.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.teiid.designer.teiid.client.feature.feature.group</artifactId>
 							<version>0.0.0</version>
 						</dependency>
 						<dependency>

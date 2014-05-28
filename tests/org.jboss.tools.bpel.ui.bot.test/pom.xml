@@ -13,8 +13,9 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-	  <swtbot.properties>./swtbot.properties</swtbot.properties>
-	  <systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=${swtbot.test.properties.file}</systemProperties>
+	  <swtbot.properties>swtbot.properties</swtbot.properties>
+	  <swtbot.test.properties.file>${swtbot.properties}</swtbot.test.properties.file>
+	  <systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=${swtbot.properties}</systemProperties>
 	  <surefire.timeout>10800</surefire.timeout>
 	  <test.class>AllTests</test.class>
 	</properties>

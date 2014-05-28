@@ -1,15 +1,15 @@
-package org.jboss.tools.bpel.ui.bot.test.suite;
+package org.jboss.tools.esb.ui.bot.test;
 
 import junit.framework.TestSuite;
 
-import org.jboss.tools.bpel.ui.bot.test.WizardTest;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 @SuiteClasses({
-	WizardTest.class
+	NewESBFileTest.class,
 })
-@RunWith(BPELSuite.class)
+@RunWith(RedDeerSuite.class)
 public class SmokeTests extends TestSuite {
 
 }
