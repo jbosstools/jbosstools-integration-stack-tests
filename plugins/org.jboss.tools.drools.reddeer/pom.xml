@@ -4,12 +4,13 @@
 
   <parent>
     <groupId>org.jboss.tools.integration-stack-tests</groupId>
-    <artifactId>tests</artifactId>
+    <artifactId>plugins</artifactId>
     <version>4.1.0-SNAPSHOT</version>
   </parent>
 
-  <groupId>org.jboss.tools</groupId>
+  <groupId>org.jboss.tools.drools</groupId>
   <artifactId>org.jboss.tools.drools.reddeer</artifactId>
+
   <packaging>eclipse-plugin</packaging>
 
 </project>
