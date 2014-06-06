@@ -1,2 +1,8 @@
 bin/
 target/
+
+
+# Eclipse
+.classpath
+.project
+.settings
