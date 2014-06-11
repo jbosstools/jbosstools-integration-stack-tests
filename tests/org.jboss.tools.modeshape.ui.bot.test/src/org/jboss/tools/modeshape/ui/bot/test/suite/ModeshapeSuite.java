@@ -6,8 +6,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.eclipse.ui.IViewReference;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.jboss.reddeer.swt.lookup.WorkbenchLookup;
+import org.jboss.reddeer.swt.util.Display;
 import org.jboss.tools.modeshape.reddeer.view.ServerPreferencePage;
 import org.jboss.tools.modeshape.reddeer.wizard.ServerWizard;
 import org.junit.runners.model.InitializationError;
@@ -35,9 +37,23 @@ public class ModeshapeSuite extends RedDeerSuite {
 	private static RunnerBuilder foo(RunnerBuilder builder) {
 		Properties props = loadSWTBotProperties();
 		addServer(props.getProperty("SERVER"));
-		closeWelcome();
-
+		closeWelcomePage();
 		return builder;
+	}
+
+	protected static void closeWelcomePage() {
+		for (IViewReference viewReference : WorkbenchLookup.findAllViews()) {
+			if (viewReference.getPartName().equals("Welcome")) {
+				final IViewReference iViewReference = viewReference;
+				Display.syncExec(new Runnable() {
+					@Override
+					public void run() {
+						iViewReference.getPage().hideView(iViewReference);
+					}
+				});
+				break;
+			}
+		}
 	}
 
 	public static String getServerName() {
@@ -50,14 +66,6 @@ public class ModeshapeSuite extends RedDeerSuite {
 	public static String getModeshapeRepository() {
 		Properties props = loadSWTBotProperties();
 		return props.getProperty("MODESHAPE");
-	}
-
-	private static void closeWelcome() {
-		try {
-			new SWTWorkbenchBot().viewByTitle("Welcome").close();
-		} catch (Exception ex) {
-			// ok
-		}
 	}
 
 	private static Properties loadSWTBotProperties() {

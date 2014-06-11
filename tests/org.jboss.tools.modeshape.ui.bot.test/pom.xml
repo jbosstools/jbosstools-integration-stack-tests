@@ -13,7 +13,8 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-	  <swtbot.test.properties.file>./swtbot.properties</swtbot.test.properties.file>
+	  <swtbot.properties>./swtbot.properties</swtbot.properties>
+	  <swtbot.test.properties.file>${swtbot.properties}</swtbot.test.properties.file>
 	  <systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=${swtbot.test.properties.file}</systemProperties>
 	  <surefire.timeout>10800</surefire.timeout>
 	  <test.class>AllTests</test.class>
@@ -26,6 +27,7 @@
 	      <groupId>org.eclipse.tycho</groupId>
 	      <artifactId>tycho-surefire-plugin</artifactId>
 	      <configuration>
+		<appArgLine>-eclipse.password resources/security/password -clean</appArgLine>
 		<testSuite>org.jboss.tools.modeshape.ui.bot.test</testSuite>
 		<testClass>org.jboss.tools.modeshape.ui.bot.test.suite.${test.class}</testClass>
 		<useUIThread>false</useUIThread>
@@ -43,10 +45,30 @@
 		    <artifactId>org.jboss.tools.modeshape.rest.feature.feature.group</artifactId>
 		    <version>0.0.0</version>
 		  </dependency>
+		  <dependency>
+		    <type>p2-installable-unit</type>
+		    <artifactId>org.jboss.tools.modeshape.jcr.feature.feature.group</artifactId>
+		    <version>0.0.0</version>
+		  </dependency>
 		  <!-- Teiid Designer feature -->
 		  <dependency>
 		    <type>p2-installable-unit</type>
 		    <artifactId>org.teiid.designer.feature.feature.group</artifactId>
+		    <version>0.0.0</version>
+		  </dependency>
+		  <dependency>
+		    <type>p2-installable-unit</type>
+		    <artifactId>org.teiid.designer.runtime.feature.feature.group</artifactId>
+		    <version>0.0.0</version>
+		  </dependency>
+		  <dependency>
+		    <type>p2-installable-unit</type>
+		    <artifactId>org.teiid.designer.teiid.client.feature.feature.group</artifactId>
+		    <version>0.0.0</version>
+		  </dependency>
+		  <dependency>
+		    <type>p2-installable-unit</type>
+		    <artifactId>org.teiid.datatools.connectivity.feature.feature.group</artifactId>
 		    <version>0.0.0</version>
 		  </dependency>
 		  <!-- This entry should enable creating of default JDK on Mac -->

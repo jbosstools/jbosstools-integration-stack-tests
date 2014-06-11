@@ -1,5 +1,7 @@
 package org.jboss.tools.modeshape.ui.bot.test;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,22 +10,26 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.modeshape.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.modeshape.reddeer.util.ModeshapeWebdav;
 import org.jboss.tools.modeshape.reddeer.util.TeiidDriver;
 import org.jboss.tools.modeshape.reddeer.view.ModeshapeExplorer;
 import org.jboss.tools.modeshape.reddeer.view.ModeshapeView;
 import org.jboss.tools.modeshape.reddeer.wizard.ImportProjectWizard;
-import org.jboss.tools.modeshape.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.modeshape.ui.bot.test.suite.ModeshapeSuite;
-import org.jboss.tools.modeshape.ui.bot.test.suite.PerspectiveRequirement.Perspective;
 import org.jboss.tools.modeshape.ui.bot.test.suite.ServerRequirement.Server;
 import org.jboss.tools.modeshape.ui.bot.test.suite.ServerRequirement.State;
 import org.jboss.tools.modeshape.ui.bot.test.suite.ServerRequirement.Type;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * Bot test for publishing Teiid files into ModeShape repository.
@@ -32,9 +38,10 @@ import org.junit.Test;
  * 
  */
 @CleanWorkspace
-@Perspective(name = "Teiid Designer")
+@OpenPerspective(TeiidPerspective.class)
 @Server(type = Type.ALL, state = State.RUNNING)
-public class TeiidPublishingTest extends SWTBotTestCase {
+@RunWith(ModeshapeSuite.class)
+public class TeiidPublishingTest {
 
 	public static final String SERVER_URL = "http://localhost:8080/modeshape-rest";
 	public static final String USER = "admin";
@@ -43,46 +50,36 @@ public class TeiidPublishingTest extends SWTBotTestCase {
 	public static final String WORKSPACE = "default";
 
 	@Test
-	public void test0() throws Exception{
+	public void publishingTest() throws Exception{
 		//refresh connection to server
-		
 		
 		//public void publishingTest() throws Exception {
 		/* Create ModeShape Server */
-		try {
 		new ModeshapeView().addServer(SERVER_URL, USER, PASSWORD);
-		} catch (Exception ex){
-			ex.printStackTrace();
-		}
+		
+		new ImportProjectWizard("resources/projects/ModeShapeGoodies.zip").execute();
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		
+		new ModeshapeExplorer().getProject("ModeShapeGoodies")
+			.getProjectItem("RelModels", "Books_Oracle.xmi").open();
 		
 		try {
-		new ImportProjectWizard("resources/projects/ModeShapeGoodies.zip").execute();
-		if (bot.activeShell().getText().equals("Missing Password Required")){
+			// Sometimes the password is required (especially in new versions of teiid designer)
+			new DefaultShell("Missing Password Required");
 			new DefaultText().setText("mm");
 			new PushButton("OK").click();
-		}
-		} catch (Exception ex){
-			ex.printStackTrace();
+		} catch(Exception e) {
+			// this is ok
+			e.printStackTrace();
 		}
 		
-		String repository = null;
-		try
-		{
-			repository = ModeshapeSuite.getModeshapeRepository();
+		String repository = ModeshapeSuite.getModeshapeRepository();
 		//setup publish area, if necessary
 		new ModeshapeView().addPublishArea(SERVER_URL, repository, WORKSPACE, PUBLISH_AREA);
 		System.out.println("DEBUG: publishing area "+ PUBLISH_AREA+ " added");
-		} catch (Exception ex){
-			ex.printStackTrace();
-		}
 		
-		try {
 		new ModeshapeExplorer().publish("ModeShapeGoodies").finish();
-		} catch (Exception ex){
-			ex.printStackTrace();
-		}
 		
-		try {
 		checkPublishedFile("/ModeShapeGoodies/BookDatatypes.xsd");
 		checkPublishedFile("/ModeShapeGoodies/Books.xsd");
 		checkPublishedFile("/ModeShapeGoodies/BooksDoc.xmi");
@@ -92,11 +89,7 @@ public class TeiidPublishingTest extends SWTBotTestCase {
 		checkPublishedFile("/ModeShapeGoodies/RelModels/Books_Oracle.xmi");
 		checkPublishedFile("/ModeShapeGoodies/RelModels/BooksInfo.xmi");
 		System.out.println("DEBUG: files published (webdav)");//^
-		} catch (Exception ex){
-			ex.printStackTrace();
-		}
 		
-		try{
 		/* Test ModeShape VDB on Teiid server */
 		String path = ModeshapeSuite.getServerPath();
 		if (repository.equals("dv")){
@@ -107,11 +100,7 @@ public class TeiidPublishingTest extends SWTBotTestCase {
 			//MODESHAPE = eds
 			DriverManager.registerDriver(new TeiidDriver(path + "/client/teiid-client.jar"));
 		}
-		} catch (Exception ex){
-			ex.printStackTrace();
-		}
 
-		try {
 		Connection conn = DriverManager.getConnection("jdbc:teiid:ModeShape@mm://localhost:31000", "user", "user");
 		Statement stmt = conn.createStatement();
 		ResultSet rs = stmt.executeQuery("SELECT * FROM ModeShape.xmi_model");
@@ -128,9 +117,6 @@ public class TeiidPublishingTest extends SWTBotTestCase {
 			assertTrue("Model 'BooksInfo' isn't involved in ModeShape VDB", result.contains("BooksInfo"));
 		}
 		System.out.println("DEBUG: files published (sql query)");
-		} catch (Exception ex){
-			ex.printStackTrace();
-		}
 		
 	}
 

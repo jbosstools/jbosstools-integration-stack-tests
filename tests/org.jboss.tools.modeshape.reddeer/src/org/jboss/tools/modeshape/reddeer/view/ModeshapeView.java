@@ -6,10 +6,12 @@ import java.util.List;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
+import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.modeshape.reddeer.wizard.ModeshapeServerWizard;
 
 /**
@@ -82,8 +84,10 @@ public class ModeshapeView extends WorkbenchView {
 		if (getPublishAreas(url, repository, workspace).contains(publishArea)){
 			return;
 		}
+		new WorkbenchShell();
 		new DefaultTreeItem(url, repository, workspace).select();
 		new ContextMenu("New Publish Area").select();
+		new DefaultShell("New Publish Area");
 		new DefaultText().setText(publishArea);
 		new PushButton("OK").click();
 	}

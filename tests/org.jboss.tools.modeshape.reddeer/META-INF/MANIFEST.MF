@@ -13,7 +13,8 @@ Require-Bundle: org.jboss.reddeer.eclipse,
  org.jboss.reddeer.swt,
  org.jboss.reddeer.workbench,
  org.eclipse.swtbot.go
-Export-Package: org.jboss.tools.modeshape.reddeer.shell,
+Export-Package: org.jboss.tools.modeshape.reddeer.perspective,
+ org.jboss.tools.modeshape.reddeer.shell,
  org.jboss.tools.modeshape.reddeer.util,
  org.jboss.tools.modeshape.reddeer.view,
  org.jboss.tools.modeshape.reddeer.wizard

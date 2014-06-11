@@ -9,8 +9,6 @@ import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerLabel;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
 import org.jboss.reddeer.junit.requirement.Requirement;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.tools.modeshape.ui.bot.test.suite.ServerRequirement.Server;
 
 /**
@@ -20,7 +18,6 @@ import org.jboss.tools.modeshape.ui.bot.test.suite.ServerRequirement.Server;
  */
 public class ServerRequirement implements Requirement<Server> {
 
-	private static final String REFRESH = "Refresh / Reconnect Teiid Instance Connection";
 	private Server serverConf;
 
 	@Retention(RetentionPolicy.RUNTIME)
@@ -47,10 +44,6 @@ public class ServerRequirement implements Requirement<Server> {
 		if (serverConf.state().equals(State.RUNNING)) {
 			if (serverLabel.getState().equals(ServerState.STOPPED)) {
 				server.start();
-			}//otherwise just refresh
-			else {
-				new DefaultToolItem(REFRESH).click();
-				new PushButton("OK").click();
 			}
 		}
 		// Server should not be running
