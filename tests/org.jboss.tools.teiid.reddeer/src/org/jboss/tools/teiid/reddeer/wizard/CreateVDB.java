@@ -1,6 +1,10 @@
 package org.jboss.tools.teiid.reddeer.wizard;
 
 import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.tools.teiid.reddeer.view.GuidesView;
 
@@ -30,13 +34,20 @@ public class CreateVDB extends NewWizardDialog {
 	 * Define new VDB
 	 * @param viaGuides true if set via Modelling actions
 	 */
-	public void execute(boolean viaGuides){
-		if (viaGuides){
+	public void execute(boolean viaGuides) {
+
+		if (viaGuides) {
+
 			new GuidesView().chooseAction("Model JDBC Source", "Define VDB");
-			new SWTWorkbenchBot().button("New...").click();
+			AbstractWait.sleep(TimePeriod.SHORT);
+			new DefaultShell().setFocus();
+			
+			new PushButton("New...").click();
 			fillFirstPage();
 			finish();
-			new SWTWorkbenchBot().button("OK").click();
+			
+			new DefaultShell("Define VDB").setFocus();
+			new PushButton("OK").click();
 		} else {
 			execute();
 		}

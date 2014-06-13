@@ -15,6 +15,7 @@ import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.reference.ReferencedComposite;
+import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
@@ -157,17 +158,26 @@ public class WAR {
 		}
 	}
 	
-	public void deploy(){
-		if (warProjectItem != null) {//newly created war is not by default in the project...
+	public void deploy() {
+
+		if (warProjectItem != null) { 
+
+			//newly created war is not by default in the project...
 			warProjectItem.select();
 		} else {
+
 			new ModelExplorer().getProject(pathToVDB[0]).getProjectItem(warProps.getProperty("contextName")+".war").select();
 		}
-				
+	
 		new ContextMenu(MARK_AS_DEPLOYABLE).select();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		
 		//select a server to publish
-		if (new DefaultShell().getText().equals("Select a server to publish")){
-			new DefaultTreeItem(warProps.getProperty("serverName")).select();new PushButton("OK").click();
+		new DefaultShell().setFocus();
+		if (new DefaultShell().getText().equals("Select a server to publish to")) {
+
+			new DefaultTreeItem(warProps.getProperty("serverName")).select();
+			new PushButton("OK").click();
 		}
 	}
 	
