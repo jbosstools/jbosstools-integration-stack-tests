@@ -4,9 +4,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.teiid.reddeer.view.GuidesView;
 
 /**
@@ -56,11 +59,14 @@ public class ModelProjectWizard extends NewWizardDialog {
 	public void create(String name, boolean viaGuides){
 		if (viaGuides){
 			new GuidesView().chooseAction("Model JDBC Source", "Define Teiid Model Project");
+			new DefaultShell("Define Model Project");
 			new SWTWorkbenchBot().button("New...").click();
-			getWizardPage().fillWizardPage(name);
+			new DefaultShell("New Model Project");
+			new LabeledText("Project name:").setText(name);
 			//TODO: select folders - source, schema, view,...
 			finish();
-			new SWTWorkbenchBot().shell("Define Model Project").close();//this shell isn't active after executing method create(name)
+			new DefaultShell("Define Model Project");
+			new PushButton("OK").click();
 		} else {
 			create(name);
 		}

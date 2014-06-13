@@ -6,6 +6,9 @@ import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.tools.teiid.reddeer.ModelProject;
 import org.jboss.tools.teiid.reddeer.Procedure;
@@ -29,11 +32,14 @@ import org.jboss.tools.teiid.ui.bot.test.requirement.PerspectiveRequirement.Pers
 import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.Server;
 import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.State;
 import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.Type;
+import org.jboss.tools.teiid.ui.bot.test.suite.TeiidSuite;
 import org.junit.AfterClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 @Perspective(name = "Teiid Designer")
-//@Server(type = Type.ALL, state = State.RUNNING)
+@Server(type = Type.ALL, state = State.RUNNING)
+@RunWith(TeiidSuite.class)
 public class VirtualGroupTutorialTest extends SWTBotTestCase {
 
 	private static final String PROJECT_NAME = "MyFirstProject";
@@ -111,6 +117,8 @@ public class VirtualGroupTutorialTest extends SWTBotTestCase {
 
 	@Test
 	public void virtualGroupTutorialTest() {
+		new WorkbenchShell().maximize();
+		
 		//new ModelProjectWizard().create(PROJECT_NAME);
 		new ModelExplorerManager().createProject(PROJECT_NAME);
 
@@ -174,7 +182,9 @@ public class VirtualGroupTutorialTest extends SWTBotTestCase {
 
 		ModelEditor editor = new ModelEditor(VIRTUAL_MODEL_NAME);
 		editor.show();
+		AbstractWait.sleep(TimePeriod.NORMAL);
 		editor.showTransformation();
+		AbstractWait.sleep(TimePeriod.NORMAL);
 
 		CriteriaBuilder criteriaBuilder = editor.criteriaBuilder();
 		criteriaBuilder.selectRightAttribute("PartsSupplier_Oracle.SUPPLIER", "SUPPLIER_ID");

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotRadio;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
@@ -12,8 +13,9 @@ import org.hamcrest.Description;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.tools.teiid.reddeer.shell.FunctionExpressionBuilder;
 
 public class CriteriaBuilder {
@@ -25,8 +27,11 @@ public class CriteriaBuilder {
 	private List<Button> constantButtons = new ArrayList<Button>();
 	private List<Button> functionButtons = new ArrayList<Button>();
 	
-	public CriteriaBuilder(SWTBotShell shell) {
-		this.shell = shell;
+	public CriteriaBuilder() {
+		new DefaultShell("Criteria Builder");
+		new DefaultCTabItem("Tree View").activate();
+		// TODO: removw swtbot dependency
+		this.shell = new SWTBot().shell("Criteria Builder");
 		new SWTBot().widgets(new InnerButtonWithToolTipMatcher());//fill lists of column/constant/function buttons
 	}
 	

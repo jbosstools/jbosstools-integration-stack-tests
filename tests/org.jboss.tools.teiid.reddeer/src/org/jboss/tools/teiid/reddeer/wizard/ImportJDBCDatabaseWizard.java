@@ -3,19 +3,17 @@ package org.jboss.tools.teiid.reddeer.wizard;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.reddeer.eclipse.jface.wizard.ImportWizardDialog;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
-import org.jboss.tools.teiid.reddeer.condition.IsProjectItemCreated;
 import org.jboss.tools.teiid.reddeer.view.GuidesView;
-import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
 
 /**
  * Imports JDBC Database to Teiid project.
@@ -25,6 +23,8 @@ import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
  */
 public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 
+	public static final String TITLE = "Import Database via JDBC";
+	
 	private String connectionProfile;
 	private String projectName;
 	private String modelName;
@@ -34,52 +34,56 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 		super("Teiid Designer", "JDBC Database >> Source Model");
 		itemList = new ArrayList<String>();
 	}
+	
+	public void openUsingGuideView() {
+		new GuidesView().chooseAction("Model JDBC Source", "Create source model for JDBC data source");
+		setFocus();
+	}
 
 	public void execute() {
 		open();
-		fillFirstPage();
-		next();
-		fillSecondPage();
-		next();
-		fillThirdPage();
-		next();
-		fillFourthPage();
+		fill();
 		finish();
-		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
-	}
-	
-	@Override
-	public void open(){
-		try {
-			super.open();
-		} catch (Exception ex){
-			new DefaultTreeItem("Teiid Designer").collapse();
-			new DefaultTreeItem("Teiid Designer", "JDBC Database >> Source Model").expand();
-			new DefaultTreeItem("Teiid Designer", "JDBC Database >> Source Model").select();
-			next();
-		}
 	}
 	
 	/**
 	 * Create source model for JDBC data source
 	 * @param viaGuides true if should be executed via guides
 	 */
-	public void execute(boolean viaGuides) {
-		if (viaGuides){
-			new GuidesView().chooseAction("Model JDBC Source", "Create source model for JDBC data source");
-			fillFirstPage();
-			next();
-			fillSecondPage();
-			next();
-			fillThirdPage();
-			next();
-			fillFourthPage();
-			finish();
-			new ModelExplorerView().open();
+	public void execute(boolean viaGuide) {
+		if (viaGuide) {
+			openUsingGuideView();
 		} else {
-			execute();
+			open();	
 		}
-		
+		fill();
+		finish();
+	}
+	
+	public void fill() {
+		setFocus();
+		fillFirstPage();
+		next();
+		setFocus();
+		fillSecondPage();
+		next();
+		setFocus();
+		fillThirdPage();
+		next();
+		setFocus();
+		fillFourthPage();
+	}
+	
+	public void setFocus() {
+		new DefaultShell(TITLE);
+	}
+
+	@Override
+	public void finish() {
+		super.finish();
+		new WaitWhile(new ShellWithTextIsAvailable(TITLE), TimePeriod.LONG);
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
 	}
 
 	private void fillFirstPage() {
@@ -133,11 +137,5 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 	public void addItem(String item) {
 		itemList.add(item);
 	}
-
-	/*@Override
-	public void finish() {
-		super.finish();
-		new WaitUntil(new IsProjectItemCreated(projectName, modelName), TimePeriod.LONG);//causes infinite loop 
-	}*/
 	
 }

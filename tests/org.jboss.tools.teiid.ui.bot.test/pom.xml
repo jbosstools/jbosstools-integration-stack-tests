@@ -13,7 +13,9 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=./swtbot.properties</systemProperties>
+		<swtbot.properties>swtbot.properties</swtbot.properties>
+		<swtbot.test.properties.file>${swtbot.properties}</swtbot.test.properties.file>
+		<systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=${swtbot.test.properties.file}</systemProperties>
 		<test.package>org.jboss.tools.teiid.ui.bot.test.suite</test.package>
 		<test.class>SmokeTests</test.class>
 		<jdbc.dir>${requirementsDirectory}/lib</jdbc.dir>

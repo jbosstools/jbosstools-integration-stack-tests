@@ -4,6 +4,8 @@ import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
@@ -42,6 +44,7 @@ public class VDB {
 	 * Deployes this VDB
 	 */
 	public void deployVDB() {
+		new WorkbenchShell();
 		projectItem.select();
 		new ContextMenu("Modeling", "Deploy").select();
 		new WaitWhile(new IsInProgress(), TimePeriod.VERY_LONG);
@@ -52,8 +55,11 @@ public class VDB {
 	 * Executes this VDB
 	 */
 	public void executeVDB() {
+		new WorkbenchShell();
 		projectItem.select();
 		new ContextMenu("Modeling", "Execute VDB").select();
+		new WaitWhile(new IsInProgress(), TimePeriod.VERY_LONG);
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 	
 	/**
@@ -64,6 +70,7 @@ public class VDB {
 		if (viaGuides){
 			projectItem.select();
 			new GuidesView().chooseAction("Model JDBC Source", "Execute VDB");
+			new DefaultShell("Execute VDB");
 			//VDB should be selected from previous step, if not:
 			if (! new DefaultText(0).getText().isEmpty()){
 				new SWTWorkbenchBot().button("OK").click();

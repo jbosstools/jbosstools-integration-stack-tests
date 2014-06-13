@@ -40,7 +40,7 @@ public class CreateVDB extends NewWizardDialog {
 
 			new GuidesView().chooseAction("Model JDBC Source", "Define VDB");
 			AbstractWait.sleep(TimePeriod.SHORT);
-			new DefaultShell().setFocus();
+			new DefaultShell("Define VDB").setFocus();
 			
 			new PushButton("New...").click();
 			fillFirstPage();
