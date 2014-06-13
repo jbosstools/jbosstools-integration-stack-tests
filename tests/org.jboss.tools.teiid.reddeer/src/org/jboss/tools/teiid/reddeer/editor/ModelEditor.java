@@ -1,6 +1,5 @@
 package org.jboss.tools.teiid.reddeer.editor;
 
-import static org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable.asyncExec;
 import static org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable.syncExec;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
 import static org.hamcrest.core.AllOf.allOf;
@@ -8,19 +7,12 @@ import static org.hamcrest.core.IsInstanceOf.instanceOf;
 
 import java.util.List;
 
-import org.eclipse.draw2d.Button;
-import org.eclipse.draw2d.Clickable;
 import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.ImageFigure;
-import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.Triangle;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.gef.EditPart;
-import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.ui.parts.GraphicalEditor;
-import org.eclipse.swt.SWT;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
@@ -28,17 +20,13 @@ import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefFigureCanvas;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefViewer;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.results.Result;
-import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCTabItem;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.ui.IEditorReference;
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.jboss.tools.teiid.reddeer.matcher.IsTransformation;
 import org.jboss.tools.teiid.reddeer.matcher.AttributeMatcher;
+import org.jboss.tools.teiid.reddeer.matcher.IsTransformation;
 import org.jboss.tools.teiid.reddeer.matcher.MappingClassMatcher;
 import org.jboss.tools.teiid.reddeer.matcher.WaitForFigure;
 import org.jboss.tools.teiid.reddeer.matcher.WithBounds;
@@ -131,10 +119,8 @@ public class ModelEditor extends SWTBotEditor {
 	}
 
 	public CriteriaBuilder criteriaBuilder() {
-		bot.toolbarButtonWithTooltip("Criteria Builder").click();
-		SWTBotShell shell = bot.shell("Criteria Builder");
-		shell.activate();
-		return new CriteriaBuilder(shell);
+		bot.toolbarButtonWithTooltip("Criteria Builder").click();		
+		return new CriteriaBuilder();
 	}
 
 	public void setTransformationProcedureBody(String procedure) {

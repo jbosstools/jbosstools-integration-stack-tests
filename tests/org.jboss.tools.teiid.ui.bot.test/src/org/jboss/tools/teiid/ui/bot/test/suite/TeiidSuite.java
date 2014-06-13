@@ -4,15 +4,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.junit.ScreenshotCaptureListener;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.preference.ServerPreferencePage;
+import org.jboss.tools.teiid.reddeer.util.FileUtils;
+import org.jboss.tools.teiid.reddeer.util.TeiidDriver;
 import org.jboss.tools.teiid.reddeer.wizard.ServerWizard;
 import org.junit.runner.notification.RunListener;
 import org.junit.runner.notification.RunNotifier;
@@ -29,6 +29,7 @@ public class TeiidSuite extends RedDeerSuite {
 	public static final String PROPERTIES_FILE = "swtbot.test.properties.file";
 
 	private static String serverName;
+	private static String serverPath;
 
 	public TeiidSuite(Class<?> clazz, RunnerBuilder builder) throws InitializationError {
 		super(clazz, foo(builder));
@@ -58,6 +59,10 @@ public class TeiidSuite extends RedDeerSuite {
 		return serverName;
 	}
 
+	public static String getServerPath() {
+		return serverPath;
+	}
+	
 	private static void closeWelcome() {
 		try {
 			new SWTWorkbenchBot().viewByTitle("Welcome").close();
@@ -107,6 +112,7 @@ public class TeiidSuite extends RedDeerSuite {
 		}
 		
 		serverName = type + "-" + version;
+		serverPath = path;
 
 		//new WaitWhile(new IsInProgress(), TimePeriod.LONG);
 		ServerPreferencePage serverPP = new ServerPreferencePage();
@@ -173,5 +179,18 @@ public class TeiidSuite extends RedDeerSuite {
 			throw new RuntimeException("You have to specify if it is AS or SOA or EAP");
 		}
 		return serverRuntime;
+	}
+	
+	public static String getTeiidDriverPath() {
+		List<File> files = FileUtils.find(getServerPath(), "teiid.*[jdbc|client].jar");
+		if(files.isEmpty() || !files.get(0).exists()) {
+			throw new RuntimeException("Cannot find teiid driver");
+		}
+		return files.get(0).getAbsolutePath();
+	}
+	
+	public static TeiidDriver getTeiidDriver() {
+		String teiidDriverPath = getTeiidDriverPath();
+		return new TeiidDriver(teiidDriverPath);
 	}
 }

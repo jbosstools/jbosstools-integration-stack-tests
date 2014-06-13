@@ -9,13 +9,12 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.custom.CCombo;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
-import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCCombo;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
@@ -24,20 +23,12 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.teiid.reddeer.Procedure;
 import org.jboss.tools.teiid.reddeer.VDB;
-import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.editor.CriteriaBuilder;
 import org.jboss.tools.teiid.reddeer.editor.CriteriaBuilder.OperatorType;
 import org.jboss.tools.teiid.reddeer.editor.CriteriaBuilder.RadioButtonType;
@@ -60,8 +51,6 @@ import org.jboss.tools.teiid.reddeer.wizard.CreateMetadataModel.ModelClass;
 import org.jboss.tools.teiid.reddeer.wizard.CreateMetadataModel.ModelType;
 import org.jboss.tools.teiid.reddeer.wizard.CreateVDB;
 import org.jboss.tools.teiid.reddeer.wizard.ImportJDBCDatabaseWizard;
-import org.jboss.tools.teiid.reddeer.wizard.ModelProjectWizard;
-import org.jboss.tools.teiid.reddeer.wizard.TeiidProfileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.XMLSchemaImportWizard;
 import org.jboss.tools.teiid.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
 import org.junit.Test;
@@ -573,7 +562,7 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 		//1st criteria
 		new DefaultTable(0).select(0);
 		new SWTWorkbenchBot().toolbarButtonWithTooltip("Edit").click();
-		CriteriaBuilder cb = new CriteriaBuilder(new SWTWorkbenchBot().activeShell());
+		CriteriaBuilder cb = new CriteriaBuilder();
 		
 		//COLUMN type
 		cb.selectRadioButton(RadioButtonType.COLUMN, RadioButtonType.LEFT);
@@ -592,7 +581,7 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 		//2nd criteria
 		new DefaultTable(0).select(1);
 		new SWTWorkbenchBot().toolbarButtonWithTooltip("Edit").click();
-		cb = new CriteriaBuilder(new SWTWorkbenchBot().activeShell());
+		cb = new CriteriaBuilder();
 		
 		//function
 		cb.selectRadioButton(RadioButtonType.FUNCTION, RadioButtonType.LEFT);
@@ -610,7 +599,7 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 		cb.selectOperator(OperatorType.LIKE);
 		
 		//constant sof%
-		cb = new CriteriaBuilder(new SWTWorkbenchBot().activeShell());
+		cb = new CriteriaBuilder();
 		cb.selectRadioButton(RadioButtonType.CONSTANT, RadioButtonType.RIGHT);
 		//cb.setConstant("sof%");
 		new DefaultText(1).setText("sof%");
@@ -620,7 +609,7 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 		//3rd criteria
 		new DefaultTable(0).select(2);
 		new SWTWorkbenchBot().toolbarButtonWithTooltip("Edit").click();
-		cb = new CriteriaBuilder(new SWTWorkbenchBot().activeShell());
+		cb = new CriteriaBuilder();
 		
 		//column TYPE
 		cb.selectRadioButton(RadioButtonType.COLUMN, RadioButtonType.LEFT);
@@ -629,7 +618,7 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 		//IN
 		cb.selectOperator(OperatorType.IN);
 		cb.addConstantsToList("Books on Tape", "Audio", "Books on CD");
-		cb = new CriteriaBuilder(new SWTWorkbenchBot().activeShell());
+		cb = new CriteriaBuilder();
 		cb.apply();
 		cb.close();
 		

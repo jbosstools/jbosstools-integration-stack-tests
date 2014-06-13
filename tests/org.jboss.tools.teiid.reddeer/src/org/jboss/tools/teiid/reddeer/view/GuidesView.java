@@ -3,15 +3,14 @@ package org.jboss.tools.teiid.reddeer.view;
 import static org.junit.Assert.assertEquals;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.reddeer.workbench.view.View;
-import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
+import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt.ServerType;
@@ -30,11 +29,11 @@ public class GuidesView extends WorkbenchView {
 	 * @param actionSet 
 	 * @param action
 	 */
-	public void chooseAction(String actionSet, String action){
-		new SWTWorkbenchBot().cTabItem("Guides").activate();
-		new SWTWorkbenchBot().comboBox().setSelection(actionSet);
-		SWTBotTree t = new SWTWorkbenchBot().tree(ACTION_SETS_TREE_INDEX).select(action);
-		t.getTreeItem(action).doubleClick();
+	public void chooseAction(String actionSet, String action) {
+		open();
+		
+		new DefaultCombo().setSelection(actionSet);
+		new DefaultTreeItem(action).doubleClick();
 	}
 	
 	/**
@@ -66,15 +65,19 @@ public class GuidesView extends WorkbenchView {
 	 */
 	public void previewData(String... path){//just try-catch, no boolean param
 		new GuidesView().chooseAction("Model JDBC Source", "Preview Data");
-		new SWTWorkbenchBot().button("...").click();
+		new DefaultShell("Preview Data");
+		new PushButton("...").click();
+		new DefaultShell("Table or Procedure Selection");
 		new DefaultTreeItem(path).select();
-		new SWTWorkbenchBot().button("OK").click();
-		new SWTWorkbenchBot().button("OK").click();
+		new PushButton("OK").click();
+		new DefaultShell("Preview Data");
+		new PushButton("OK").click();
 		
 		//setup display property; only 1st time
 		try {
 			//what property?
-			new SWTWorkbenchBot().activeShell().bot().button("Yes").click();
+			new DefaultShell("Change Property");
+			new PushButton("Yes").click();
 		} catch (Exception ex){
 			//do nothing
 		}

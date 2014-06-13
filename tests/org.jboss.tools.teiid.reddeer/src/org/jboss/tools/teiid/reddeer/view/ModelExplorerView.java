@@ -2,24 +2,23 @@ package org.jboss.tools.teiid.reddeer.view;
 
 import java.util.Properties;
 
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.jboss.reddeer.eclipse.jdt.ui.AbstractExplorer;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
 import org.jboss.tools.teiid.reddeer.Procedure;
 import org.jboss.tools.teiid.reddeer.Table;
-import org.jboss.tools.teiid.reddeer.condition.DefaultTreeItemAvailable;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.condition.RadioButtonEnabled;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
@@ -31,7 +30,7 @@ import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
  * @author Lucia Jelinkova
  * 
  */
-public class ModelExplorerView extends WorkbenchView {
+public class ModelExplorerView extends AbstractExplorer {
 
 	private static final String MODELING_MENU_ITEM = "Modeling";
 	private static final String CREATE_DATA_SOURCE = "Create Data Source";
@@ -40,11 +39,9 @@ public class ModelExplorerView extends WorkbenchView {
 		public static final String USE_MODEL_CONNECTION_INFO = "Use Model Connection Info";
 		public static final String USE_CONNECTION_PROFILE_INFO = "Use Connection Profile Info";
 	}
-	
-	
 
 	public ModelExplorerView() {
-		super("Teiid Designer", "Model Explorer");
+		super("Model Explorer");
 	}
 
 	public void newBaseTable(String project, String model, String tableName) {
@@ -74,7 +71,7 @@ public class ModelExplorerView extends WorkbenchView {
 			new ContextMenu("New Child", "Table...").select();
 		}
 		
-		//new DefaultShell("Create Relational Table");
+		new DefaultShell("Create Relational View Table");
 		new LabeledText("Name").setText(tableName);
 		new PushButton("OK").click();
 	}
@@ -103,17 +100,18 @@ public class ModelExplorerView extends WorkbenchView {
 
 		new DefaultTreeItem(project, model).select();
 		new ContextMenu("New Child", "Procedure...").select();
+		new DefaultShell("Select Procedure Type");
 		
 		if (procedureNotFunction){
 			//Procedure?/(Function) - OK
-			new SWTWorkbenchBot().button("OK").click();
+			new PushButton("OK").click();
 		}
 		
+		new DefaultShell("Create Relational View Procedure");
 		new LabeledText("Name").setText(procedure);
+		new PushButton("OK").click();
+		new WaitWhile(new ShellWithTextIsAvailable("Create Relational View Procedure"));
 		
-		//finish
-		new SWTWorkbenchBot().button("OK").click();
-
 		return new Procedure(project, model, procedure);
 	}
 	
@@ -131,10 +129,7 @@ public class ModelExplorerView extends WorkbenchView {
 	public void addTransformationSource(String project, String model, String tableName) {
 		open();
 		
-		//wait until tree item is enabled, or timeout
-		String[] path = {project, model, tableName};
-		new WaitUntil(new DefaultTreeItemAvailable(path), TimePeriod.NORMAL);
-		new DefaultTreeItem(project, model, tableName).select();
+		getProject(project).getProjectItem(model, tableName).select();
 		new ContextMenu(MODELING_MENU_ITEM, "Add Transformation Source(s)").select();
 	}
 
@@ -158,19 +153,24 @@ public class ModelExplorerView extends WorkbenchView {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
+	
+	
+	@Override
+	public void open() {
+		super.open();
+		new WorkbenchShell();
+	}
+
 	public void open(String... filePath) {
 		open();
 
 		new SWTWorkbenchBot().tree(0).expandNode(filePath).doubleClick();
 	}
 
-	public void openTransformationDiagram(String... filePath) {
+	public void openTransformationDiagram(String project, String... filePath) {
 		open();
 
-		SWTBotTreeItem item = new SWTWorkbenchBot().tree(0).expandNode(filePath);
-
-		item.expand();
-		item.getNode("Transformation Diagram").doubleClick();
+		getProject(project).getProjectItem(filePath).getChild("Transformation Diagram").open();
 	}
 	
 	public void createDataSource(String connectionSourceType, String connectionProfile, String... pathToSourceModel){

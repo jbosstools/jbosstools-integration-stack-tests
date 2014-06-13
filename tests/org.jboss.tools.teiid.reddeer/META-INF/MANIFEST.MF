@@ -27,6 +27,7 @@ Export-Package: org.jboss.tools.teiid.reddeer,
  org.jboss.tools.teiid.reddeer.perspective,
  org.jboss.tools.teiid.reddeer.preference,
  org.jboss.tools.teiid.reddeer.shell,
+ org.jboss.tools.teiid.reddeer.util,
  org.jboss.tools.teiid.reddeer.view,
  org.jboss.tools.teiid.reddeer.widget,
  org.jboss.tools.teiid.reddeer.wizard

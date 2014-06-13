@@ -7,14 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.hamcrest.Matcher;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.tools.teiid.reddeer.editor.CriteriaBuilder;
-import org.jboss.tools.teiid.reddeer.editor.CriteriaBuilder.RadioButtonType;
 
 public class FunctionExpressionBuilder{
 
@@ -46,7 +44,7 @@ public class FunctionExpressionBuilder{
 	}
 	
 	public void setRadioButtonType(String typeOfRadioButton){
-		this.cb = new CriteriaBuilder(this.shell);
+		this.cb = new CriteriaBuilder();
 		cb.selectRadioButton(typeOfRadioButton, 0);
 	}
 	
