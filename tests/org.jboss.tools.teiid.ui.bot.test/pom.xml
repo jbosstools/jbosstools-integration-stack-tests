@@ -213,7 +213,7 @@
 						</goals>
 						<configuration>
 							<skip>${get.drivers}</skip>
-							<url>http://www.qa.jboss.com/jdbc-drivers-products/SOA/5.3.1/mssql2008R2/jdbc4/sqljdbc4.jar</url>
+							<url>http://www.qa.jboss.com/jdbc-drivers-products/SOA/5.2.0/mssql2005/jdbc4/sqljdbc4.jar</url>
 							<outputDirectory>${jdbc.dir}</outputDirectory>
 						</configuration>
 					</execution>

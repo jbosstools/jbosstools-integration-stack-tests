@@ -18,6 +18,7 @@ import org.jboss.reddeer.swt.api.ToolItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.AbstractWait;
@@ -204,13 +205,18 @@ public class ServersViewExt extends ServersView {
 		new PushButton("OK").click();
 	}
 	
-	public void refreshServer(String serverName){
+	public void refreshServer(String serverName) {
+
 		String label = getServerLabel(serverName);
+		
 		//refresh 
 		new DefaultTreeItem(label).select();
 		new DefaultToolItem(REFRESH).click();
+		
 		//server was refreshed
 		new PushButton("OK").click();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		new DefaultShell();
 	}
 	
 }

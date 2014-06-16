@@ -129,7 +129,7 @@ public class VDBManager {
 		SQLScrapbookEditor editor = new SQLScrapbookEditor();
 		editor.show();
 		editor.setText(sql);
-		editor.executeAll(true);
+		editor.executeAll();
 
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		

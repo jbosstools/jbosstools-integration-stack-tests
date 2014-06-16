@@ -12,26 +12,23 @@ import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 
 public class DataSourceExplorer extends AbstractExplorer {
 
 	public DataSourceExplorer() {
+
 		super("Data Source Explorer");
 	}
 
 	public void openSQLScrapbook(String datasource) {
-		openSQLScrapbook(datasource, false);
-	}
 
-	public void openSQLScrapbook(String datasource, boolean useRegularExpression) {
 		open();
 		selectVDB(datasource);
 		new ContextMenu("Open SQL Scrapbook").select();
 	}
-	
+
 	public void setVDBDriver(String properties, String vdb) {
-		// load properties
+
 		Properties props = new Properties();
 		try {
 			props.load(new FileReader(properties));
@@ -42,24 +39,27 @@ public class DataSourceExplorer extends AbstractExplorer {
 			e.printStackTrace();
 			return;
 		}
+
 		selectVDB(vdb);
 		new ContextMenu("Properties").select();
 		new DefaultTreeItem("Driver Properties").select();
 		new DefaultCombo("Drivers:").setSelection(props.getProperty("driver"));
 		new PushButton("OK").click();
+
 		try {
 			new PushButton("Yes").click();
-		} catch (Exception e){
-			//Confirm not appeared
+		} catch (Exception e) {
+			// Confirm not appeared
 		}
 	}
-	
-	private void selectVDB(String vdb){
-		for (TreeItem t: new DefaultTree(0).getAllItems()){
-			if (t.getText().equals("Database Connections")){
-				for (TreeItem t2 : t.getItems()){
-					if (t2.getText().startsWith(vdb)){
-						t2.select();
+
+	private void selectVDB(String vdb) {
+
+		for (TreeItem item : new DefaultTree(0).getItems()) {
+			if (item.getText().equals("Database Connections")) {
+				for (TreeItem dbConnections : item.getItems()) {
+					if (dbConnections.getText().startsWith(vdb)) {
+						dbConnections.select();
 						break;
 					}
 				}

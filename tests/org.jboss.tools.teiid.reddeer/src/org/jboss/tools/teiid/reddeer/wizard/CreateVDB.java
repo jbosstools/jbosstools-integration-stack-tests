@@ -25,9 +25,11 @@ public class CreateVDB extends NewWizardDialog {
 	}
 
 	public void execute() {
+
 		open();
 		fillFirstPage();
 		finish();
+		new DefaultShell().setFocus();
 	}
 	
 	/**

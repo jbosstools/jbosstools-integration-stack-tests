@@ -226,7 +226,7 @@ public class ServerManagementSimpleTest extends SWTBotTestCase {
 
 		// TESTSQL_1
 		editor.setText(sql);
-		editor.executeAll(true);
+		editor.executeAll();
 
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		

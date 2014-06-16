@@ -19,7 +19,6 @@ import org.jboss.tools.teiid.reddeer.view.GuidesView;
  * Imports JDBC Database to Teiid project.
  * 
  * @author Lucia Jelinkova
- * 
  */
 public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 
@@ -31,6 +30,7 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 	private List<String> itemList;
 
 	public ImportJDBCDatabaseWizard() {
+
 		super("Teiid Designer", "JDBC Database >> Source Model");
 		itemList = new ArrayList<String>();
 	}
@@ -41,6 +41,7 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 	}
 
 	public void execute() {
+
 		open();
 		fill();
 		finish();
@@ -87,22 +88,27 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 	}
 
 	private void fillFirstPage() {
+
 		new SWTWorkbenchBot().comboBoxInGroup("Connection Profile").setSelection(connectionProfile);
 	}
 
 	private void fillSecondPage() {
+
 		new PushButton("Deselect All").click();
 		new SWTWorkbenchBot().tableInGroup("Table Types").select("TABLE");
 	}
 
 	private void fillThirdPage() {
-		if ((itemList != null) && (! itemList.isEmpty())){
+
+		if ((itemList != null) && (! itemList.isEmpty())) {
 			new PushButton("Deselect All").click();
 		}
 		for (String item : itemList) {
+
 			String[] itemArray = item.split("/");
 			SWTBotTreeItem treeItem = new SWTWorkbenchBot().tree().getTreeItem(itemArray[0]);
 			for (int i = 1; i < itemArray.length; i++) {
+
 				treeItem.expand();
 				treeItem = treeItem.getNode(itemArray[i]);
 			}
@@ -111,6 +117,7 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 	}
 
 	private void fillFourthPage() {
+
 		new SWTWorkbenchBot().checkBoxInGroup("Model Object Names (Tables, Procedures, Columns, etc...)", 0).deselect();
 		new SWTWorkbenchBot().textWithLabel("Model Name:").setText(modelName);
 		new SWTWorkbenchBot().checkBox("Update (if existing model selected)").deselect();
@@ -123,19 +130,22 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 	}
 
 	public void setConnectionProfile(String connectionProfile) {
+
 		this.connectionProfile = connectionProfile;
 	}
 
 	public void setProjectName(String projectName) {
+
 		this.projectName = projectName;
 	}
 
 	public void setModelName(String modelName) {
+
 		this.modelName = modelName;
 	}
 
 	public void addItem(String item) {
+
 		itemList.add(item);
 	}
-	
 }

@@ -25,6 +25,9 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotCTabItem;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.ui.IEditorReference;
 import org.hamcrest.Matcher;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.tools.teiid.reddeer.matcher.AttributeMatcher;
 import org.jboss.tools.teiid.reddeer.matcher.IsTransformation;
 import org.jboss.tools.teiid.reddeer.matcher.MappingClassMatcher;
@@ -113,9 +116,13 @@ public class ModelEditor extends SWTBotEditor {
 	}
 
 	public void showMappingTransformation(String label) {
+
 		viewer = getGraphicalViewer(MAPPING_DIAGRAM);
 		viewer.getEditPart(label).select();
 		viewer.clickContextMenu("Edit");
+
+		AbstractWait.sleep(TimePeriod.SHORT);
+		new DefaultShell().setFocus();
 	}
 
 	public CriteriaBuilder criteriaBuilder() {

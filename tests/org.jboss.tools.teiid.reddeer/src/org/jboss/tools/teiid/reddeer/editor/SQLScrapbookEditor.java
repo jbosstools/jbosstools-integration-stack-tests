@@ -1,10 +1,13 @@
 package org.jboss.tools.teiid.reddeer.editor;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
-import org.eclipse.swtbot.swt.finder.waits.Conditions;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 
 
 
@@ -26,19 +29,11 @@ public class SQLScrapbookEditor extends SWTBotEditor {
 		new SWTWorkbenchBot().styledText().setText(text);
 	}
 	
-	@Deprecated
 	public void executeAll(){
-		new SWTWorkbenchBot().styledText().contextMenu("Execute All").click();
 		
-		SWTBotShell shell = new SWTWorkbenchBot().shell("SQL Statement Execution");
-		new SWTWorkbenchBot().waitUntil(Conditions.shellCloses(shell), 60 * 1000);
-	}
-	
-	public void executeAll(boolean param){
-		new SWTWorkbenchBot().styledText().setFocus();
+		new DefaultStyledText();
 		new ContextMenu("Execute All").select();
-		
-		SWTBotShell shell = new SWTWorkbenchBot().shell("SQL Statement Execution");
-		new SWTWorkbenchBot().waitUntil(Conditions.shellCloses(shell), 60 * 1000);
+		new WaitWhile(new ShellWithTextIsAvailable("SQL Statement Execution"), TimePeriod.VERY_LONG);
+		new DefaultShell();
 	}
 }

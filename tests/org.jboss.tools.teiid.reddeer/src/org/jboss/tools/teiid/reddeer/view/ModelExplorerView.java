@@ -3,6 +3,7 @@ package org.jboss.tools.teiid.reddeer.view;
 import java.util.Properties;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.eclipse.ui.internal.browser.DefaultWorkbenchBrowserSupport;
 import org.jboss.reddeer.eclipse.jdt.ui.AbstractExplorer;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
@@ -141,6 +142,7 @@ public class ModelExplorerView extends AbstractExplorer {
 
 		new WaitWhile(new IsInProgress(), TimePeriod.VERY_LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		new WorkbenchShell();
 	}
 
 	public void deployVDB(String project, String vdb) {
