@@ -1,28 +1,22 @@
 package org.jboss.tools.teiid.reddeer.wizard;
 
-import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.allOf;
-import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
-
 import java.util.Properties;
 
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
-import org.hamcrest.Matcher;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 
 /**
  * Creates a new metadata model.
  * 
  * @author Lucia Jelinkova, lfabriko
+ * @deprecated Use MetadataModelWizard
  * 
  */
 public class CreateMetadataModel extends NewWizardDialog {
@@ -135,7 +129,9 @@ public class CreateMetadataModel extends NewWizardDialog {
 		}
 		//for XSD and WS is wizard same as in import
 		if (clazz.equals(ModelClass.XML) && (modelBuilder != null) && modelBuilder.equals(ModelBuilder.BUILD_FROM_XML_SCHEMA)){
+			AbstractWait.sleep(TimePeriod.SHORT);
 			next();
+			AbstractWait.sleep(TimePeriod.SHORT);
 			fillFourthPage();
 		}
 		finish();

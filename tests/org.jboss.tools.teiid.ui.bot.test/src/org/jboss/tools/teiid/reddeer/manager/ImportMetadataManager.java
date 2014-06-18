@@ -1,12 +1,10 @@
 package org.jboss.tools.teiid.reddeer.manager;
 
-import java.util.ArrayList;
 import java.util.Properties;
 
 import org.jboss.tools.teiid.reddeer.ModelProject;
 import org.jboss.tools.teiid.reddeer.wizard.CreateMetadataModel;
 import org.jboss.tools.teiid.reddeer.wizard.DDLImportWizard;
-import org.jboss.tools.teiid.reddeer.wizard.FlatImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.MetadataImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.TeiidConnectionImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.TeiidImportWizard;
@@ -24,61 +22,6 @@ public class ImportMetadataManager {
 	 */
 	public void importWSDLToWSModel(String name, String project, String wsdl){
 		new WsdlWebImportWizard().importWsdl(name, project, wsdl);
-	}
-	
-	/**
-	 * File Source (Flat) >> Source and View Model
-	 * @param projectName
-	 * @param modelName
-	 * @param connectionProfile
-	 * @param props
-	 */
-	public void importFromFlatFile(String projectName, String modelName, String connectionProfile, Properties props){
-		FlatImportWizard importWizard = new FlatImportWizard();
-		importWizard.setProfile(connectionProfile);
-		
-		String loadedProperty = null;
-		/*if ((loadedProperty = props.getProperty("sourceModelName")) != null){
-			importWizard.setSourceModelName(loadedProperty);
-		}*/
-		importWizard.setSourceModelName(modelName);
-		
-		if ((loadedProperty = props.getProperty("file")) != null){
-			importWizard.setFile(loadedProperty);
-		}
-		if ((loadedProperty = props.getProperty("importMode")) != null){
-			importWizard.setImportMode(loadedProperty);
-		}
-		if ((loadedProperty = props.getProperty("viewModelName")) != null){
-			importWizard.setViewModelName(loadedProperty);
-		} 
-		if ((loadedProperty = props.getProperty("viewTableName")) != null){
-			importWizard.setViewTableName(loadedProperty);
-		}
-		if ((loadedProperty = props.getProperty("headerLine")) != null){
-			importWizard.setHeaderLine(Integer.parseInt(loadedProperty));
-		}
-		if ((loadedProperty = props.getProperty("dataLine")) != null){
-			importWizard.setDataLine(Integer.parseInt(loadedProperty));
-		}
-		if ((loadedProperty = props.getProperty("editDelimiterCharacter")) != null){
-			importWizard.setEditDelimiterCharacter(Boolean.parseBoolean(loadedProperty));
-		}
-		if ((loadedProperty = props.getProperty("editTexttableFunctionOptions")) != null){
-			importWizard.setEditTexttableFunctionOptions(Boolean.parseBoolean(loadedProperty));
-		}
-		if ((loadedProperty = props.getProperty("delimiterCharacter")) != null){
-			importWizard.setOtherDelimiter(loadedProperty);
-		}
-		if ((loadedProperty = props.getProperty("texttableFunctionOptions")) != null){
-			String[] itemList = loadedProperty.split(",");
-			ArrayList<String> options = new ArrayList<String>();
-			for (String item : itemList){
-				options.add(item.trim());
-			}
-			importWizard.setTexttableFunctionOptions(options);
-		}
-		importModel(projectName, importWizard);
 	}
 	
 	public void importFromDDL(String projectName, String modelName, String ddlPath, Properties importProps){

@@ -4,11 +4,14 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 
 public class Reconciler {
 
+	public static final String DIALOG_TITLE = "Reconcile Virtual Target Columns";
+	
 	private SWTBotShell shell;
 	
 	public static class ExpressionBuilder {
@@ -21,12 +24,18 @@ public class Reconciler {
 		this.shell = shell;
 	}
 	
+	public Reconciler activate() {
+		new DefaultShell(DIALOG_TITLE);
+		return this;
+	}
+	
 	/**
 	 * 
 	 * @param left -- virtual target column
 	 * @param right -- unmatched SQL symbol
 	 */
 	public void bindAttributes(String left, String right){
+		activate();
 		new DefaultTable(0).deselectAll();
 		new DefaultTable(1).deselectAll();
 		new DefaultTable().select(left);//left  -- virtual target column
@@ -35,6 +44,7 @@ public class Reconciler {
 	}
 	
 	public void addNewVirtualTargetAttribute(String unmatchedSQLSymbol){
+		activate();
 		new DefaultTable(1).select(unmatchedSQLSymbol);
 		new PushButton("< New").click();
 	}
@@ -50,6 +60,7 @@ public class Reconciler {
 	}
 	
 	public void clearRemainingUnmatchedSymbols(){
+		activate();
 		new PushButton("Clear").click();
 	}
 	
@@ -57,6 +68,7 @@ public class Reconciler {
 	 * Closes and saves the reconciler
 	 */
 	public void close(){
+		activate();
 		new PushButton("OK").click();
 	}
 	
@@ -65,6 +77,7 @@ public class Reconciler {
 	 * @param resolveType constant from ExpressionBuilder - e.g. ExpressionBuilder.KEEP_VIRTUAL_TARGET
 	 */
 	public void resolveTypes(String resolveType){
+		activate();
 		new PushButton("Type Resolver...").click();
 		new PushButton(resolveType).click();
 		new PushButton("OK").click();

@@ -14,11 +14,12 @@ import org.jboss.tools.teiid.reddeer.manager.VDBManager;
 import org.jboss.tools.teiid.reddeer.wizard.ImportGeneralItemWizard;
 import org.jboss.tools.teiid.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
 import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.Server;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.Server;
 import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.State;
 import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.Type;
+import org.jboss.tools.teiid.ui.bot.test.suite.TeiidSuite;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * WAR tests (REST, JBossWS-CXF) with security None | HttpBasic
@@ -27,6 +28,7 @@ import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.Type;
  */
 @Perspective(name = "Teiid Designer")
 @Server(type = Type.ALL, state = State.NOT_RUNNING)
+@RunWith(TeiidSuite.class)
 public class WARTest extends SWTBotTestCase {
 
 	public static final String MODEL_PROJECT = "jdbcImportTest";

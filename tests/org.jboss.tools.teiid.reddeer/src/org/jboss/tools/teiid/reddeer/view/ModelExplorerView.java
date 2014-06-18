@@ -179,6 +179,7 @@ public class ModelExplorerView extends AbstractExplorer {
 		if (! pathToSourceModel[pathToSourceModel.length-1].contains(".")){
 			pathToSourceModel[pathToSourceModel.length-1] = pathToSourceModel[pathToSourceModel.length-1].concat(".xmi");
 		}
+		new WorkbenchShell();
 		new DefaultTreeItem(pathToSourceModel).select();
 		new ContextMenu(MODELING_MENU_ITEM, CREATE_DATA_SOURCE).select();
 		//wait until radio button is enabled

@@ -5,7 +5,7 @@ import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
@@ -31,20 +31,6 @@ public abstract class TeiidImportWizard extends ImportWizardDialog {
 	}
 
 	@Override
-	public void open() {
-		log.info("Open " + importer);
-		try {
-			super.open();
-		} catch (Exception e){
-			new DefaultTreeItem("Teiid Designer").collapse();
-			new DefaultTreeItem("Teiid Designer").expand();
-			new DefaultTreeItem("Teiid Designer", importer).select();
-			next();
-		}
-		
-	}
-
-	@Override
 	public void finish() {
 		stupidWait();
 		super.finish();
@@ -65,9 +51,8 @@ public abstract class TeiidImportWizard extends ImportWizardDialog {
 	// The are some problems on Win7_32. We need to wait due to possible WSDL
 	// reading (not sure).
 	private void stupidWait() {
-		long time = 10 * 1000;
-		log.info("Stupid waiting for " + time + " ms");
-		new SWTWorkbenchBot().sleep(time);
+		log.info("Stupid waiting for " + TimePeriod.NORMAL.getSeconds() + " s");
+		AbstractWait.sleep(TimePeriod.NORMAL);
 	}
 
 	public abstract void execute();

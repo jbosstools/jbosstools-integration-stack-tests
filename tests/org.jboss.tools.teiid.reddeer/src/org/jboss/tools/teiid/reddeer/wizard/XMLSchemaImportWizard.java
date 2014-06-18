@@ -1,164 +1,203 @@
 package org.jboss.tools.teiid.reddeer.wizard;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.DefaultComboBoxModel;
-
-import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
+import org.eclipse.swt.SWT;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 
 /**
  * Wizard for importing XML schemas
  * 
- * @author lfabriko
+ * @author lfabriko, apodhrad
  * 
  */
 public class XMLSchemaImportWizard extends TeiidImportWizard {
 
 	private static final String IMPORT_XML_SCHEMA_SHELL = "Import XML Schema Files";
-		private boolean isLocal;
-		private String rootPath;
-		//private List<String[]> elements;
-		private String[] schemas;
-		
-		private String xmlSchemaURL;
-		private String username;
-		private String password;
-		private boolean verifyHostname = true;
-		private boolean addDependentSchemas = true;
-		
-		
-		public String[] getSchemas() {
-			return schemas;
+
+	public static final String LOCAL_IMPORT_MODE = "Import XML schemas from file system";
+	public static final String REMOTE_IMPORT_MODE = "Import XML schemas via URL";
+
+	private boolean isLocal;
+	private String rootPath;
+	// private List<String[]> elements;
+	private String[] schemas;
+
+	private String xmlSchemaURL;
+	private String username;
+	private String password;
+	private boolean verifyHostname = true;
+	private boolean addDependentSchemas = true;
+
+	public XMLSchemaImportWizard() {
+		super("XML Schemas");
+	}
+
+	public XMLSchemaImportWizard activate() {
+		new DefaultShell(IMPORT_XML_SCHEMA_SHELL);
+		return this;
+	}
+
+	public XMLSchemaImportWizard selectLocalImportMode() {
+		return selectImportMode(LOCAL_IMPORT_MODE);
+	}
+
+	public XMLSchemaImportWizard selectRemoteImportMode() {
+		return selectImportMode(REMOTE_IMPORT_MODE);
+	}
+
+	public XMLSchemaImportWizard selectImportMode(String importMode) {
+		activate();
+		log.info("Select import mode to '" + importMode + "'");
+		new RadioButton(importMode).click();
+		return this;
+	}
+
+	public XMLSchemaImportWizard setFromDirectory(String dir) {
+		activate();
+		log.info("Set from directory to '" + dir + "'");
+		new SWTWorkbenchBot().comboBox().setFocus();
+		new SWTWorkbenchBot().comboBox().setText(dir);
+		KeyboardFactory.getKeyboard().type(SWT.TAB);
+		return this;
+	}
+
+	public XMLSchemaImportWizard setToDirectory(String dir) {
+		activate();
+		log.info("Set to directory to '" + dir + "'");
+		new DefaultText().setText(dir);
+		return this;
+	}
+
+	public XMLSchemaImportWizard selectSchema(String... schema) {
+		activate();
+		for (int i = 0; i < schema.length; i++) {
+			log.info("Select schema '" + schema[i] + "'");
+			new DefaultTable().getItem(schema[i]).setChecked(true);
 		}
+		return this;
+	}
 
-		public void setSchemas(String[] schemas) {
-			this.schemas = schemas;
-		}
+	public String[] getSchemas() {
+		return schemas;
+	}
 
-		private String destination;
+	public void setSchemas(String[] schemas) {
+		this.schemas = schemas;
+	}
 
-		public void setDestination(String destination) {
-			this.destination = destination;
-		}
+	private String destination;
 
-		public XMLSchemaImportWizard() {
-			super("XML Schemas");
-		}
+	public void setDestination(String destination) {
+		this.destination = destination;
+	}
 
-		public void setLocal(boolean isLocal) {
-			this.isLocal = isLocal;
-		}
+	public void setLocal(boolean isLocal) {
+		this.isLocal = isLocal;
+	}
 
+	public void setRootPath(String rootPath) {
+		this.rootPath = rootPath;
+	}
 
-		public void setRootPath(String rootPath) {
-			this.rootPath = rootPath;
-		}
+	/*
+	 * public void addElement(String[] path) { elements.add(path); }
+	 * 
+	 * public void addElement(String path) { elements.add(path.split("/")); }
+	 */
 
-		
-		/*public void addElement(String[] path) {
-			elements.add(path);
-		}
+	public void execute() {
+		open();
+		if (isLocal) {
+			new DefaultShell(IMPORT_XML_SCHEMA_SHELL).setFocus();
+			new RadioButton("Import XML schemas from file system").click();
+			next();
 
-		public void addElement(String path) {
-			elements.add(path.split("/"));
-		}*/
+			new SWTWorkbenchBot().comboBox().setText(rootPath);
 
-		public void execute() {
-			open();
-			if (isLocal) {
-				new DefaultShell(IMPORT_XML_SCHEMA_SHELL).setFocus();
-				new RadioButton("Import XML schemas from file system").click();
-				next();
-
-				new SWTWorkbenchBot().comboBox().setText(rootPath);
-
-				if (destination != null){
-					new DefaultText().setText(destination);
-				}
-				
-				new SWTWorkbenchBot().text().setFocus();
-	
-				for (String schema : schemas){
-					new DefaultTable().getItem(schema).setChecked(true);
-				}
-				
-				finish();
-			} else {
-				new RadioButton("Import XML schemas via URL").click();
-				
-				next();
-				
-				if (! addDependentSchemas) {
-					new CheckBox(1).click();//by default add dependent schemas
-				}
-				
-				new DefaultToolItem("Add XML schema URL").click();
-				new DefaultText(0).setText(xmlSchemaURL);
-				if (username != null){
-					new DefaultText(1).setText(username);
-				}
-				if (password != null){
-					new DefaultText(2).setText(password);
-				}
-				if (! verifyHostname){
-					new CheckBox().click();//by default set to true
-				}
-				new PushButton("OK").click();
-				finish();
-				if (new SWTWorkbenchBot().activeShell().getText().contains("Dependent XML Schema Files Found")){
-					new PushButton("Yes").click();
-				}
-				//something else??
-				
-				
-				//throw new UnsupportedOperationException();
-//				Add XML schema URL
-//				Enter XML schema URL:
-//				Verify Hostname (HTTPS)
-				//OK
-				//shell: Dependent XML Schema Files Found --> Yes
-				//--> vyhazuje: Error opening input stream for /home/lfabriko/nulltmp/javaee !!!
-				
+			if (destination != null) {
+				new DefaultText().setText(destination);
 			}
 
-		}
+			new SWTWorkbenchBot().text().setFocus();
 
-		@Override
-		public WizardPage getFirstPage() {
-			throw new UnsupportedOperationException();
-		}
+			for (String schema : schemas) {
+				new DefaultShell(IMPORT_XML_SCHEMA_SHELL).setFocus();
+				new DefaultTable().getItem(schema).setChecked(true);
+			}
 
-		public void setXmlSchemaURL(String xmlSchemaURL) {
-			this.xmlSchemaURL = xmlSchemaURL;
-		}
+			new DefaultShell(IMPORT_XML_SCHEMA_SHELL).setFocus();
+			finish();
+		} else {
+			new RadioButton("Import XML schemas via URL").click();
 
-		public void setUsername(String username) {
-			this.username = username;
-		}
+			next();
 
-		public void setPassword(String password) {
-			this.password = password;
-		}
+			if (!addDependentSchemas) {
+				new CheckBox(1).click();// by default add dependent schemas
+			}
 
-		public void setVerifyHostname(boolean verifyHostname) {
-			this.verifyHostname = verifyHostname;
-		}
+			new DefaultToolItem("Add XML schema URL").click();
+			new DefaultText(0).setText(xmlSchemaURL);
+			if (username != null) {
+				new DefaultText(1).setText(username);
+			}
+			if (password != null) {
+				new DefaultText(2).setText(password);
+			}
+			if (!verifyHostname) {
+				new CheckBox().click();// by default set to true
+			}
+			new PushButton("OK").click();
+			finish();
+			if (new SWTWorkbenchBot().activeShell().getText().contains("Dependent XML Schema Files Found")) {
+				new PushButton("Yes").click();
+			}
+			// something else??
 
-		public void setAddDependentSchemas(boolean addDependentSchemas) {
-			this.addDependentSchemas = addDependentSchemas;
+			// throw new UnsupportedOperationException();
+			// Add XML schema URL
+			// Enter XML schema URL:
+			// Verify Hostname (HTTPS)
+			// OK
+			// shell: Dependent XML Schema Files Found --> Yes
+			// --> vyhazuje: Error opening input stream for
+			// /home/lfabriko/nulltmp/javaee !!!
+
 		}
 
 	}
+
+	@Override
+	public WizardPage getFirstPage() {
+		throw new UnsupportedOperationException();
+	}
+
+	public void setXmlSchemaURL(String xmlSchemaURL) {
+		this.xmlSchemaURL = xmlSchemaURL;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public void setVerifyHostname(boolean verifyHostname) {
+		this.verifyHostname = verifyHostname;
+	}
+
+	public void setAddDependentSchemas(boolean addDependentSchemas) {
+		this.addDependentSchemas = addDependentSchemas;
+	}
+
+}

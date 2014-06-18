@@ -9,7 +9,7 @@ import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
 import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.manager.ImportMetadataManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
-import org.jboss.tools.teiid.reddeer.wizard.FlatImportWizard.FlatFileImportMode;
+import org.jboss.tools.teiid.reddeer.wizard.FlatImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.ImportGeneralItemWizard;
 import org.jboss.tools.teiid.reddeer.wizard.MetadataImportWizard.ImportType;
 import org.jboss.tools.teiid.reddeer.wizard.WsdlWebImportWizard;
@@ -111,22 +111,18 @@ public class ImportWizardTest extends RedDeerTest {
 		String flatProfile = "Flat Profile";
 		new ConnectionProfileManager().createCPFlatFile(flatProfile, "resources/flat");
 
-		/*
-		 * FlatImportWizard importWizard = new FlatImportWizard();
-		 * importWizard.setProfile(flatProfile); importWizard.setName("Item");
-		 * importWizard.setFile("items.csv     <<<<");
-		 * importWizard.setImportMode
-		 * (FlatFileImportMode.FLAT_FILE_ON_LOCAL_FILE_SYSTEM);
-		 * 
-		 * ImportManager.importModel(MODEL_PROJECT, importWizard);
-		 */
-
-		Properties iProps = new Properties();
-		iProps.setProperty("file", "items.csv     <<<<");
-		iProps.setProperty("sourceModelName", "Item");
-		iProps.setProperty("importMode", FlatFileImportMode.FLAT_FILE_ON_LOCAL_FILE_SYSTEM);
-
-		new ImportMetadataManager().importFromFlatFile(MODEL_PROJECT, "Item", flatProfile, iProps);
+		FlatImportWizard importWizard = new FlatImportWizard();
+		importWizard.open();
+		importWizard.selectLocalFileImportMode();
+		importWizard.next();
+		importWizard.selectProfile(flatProfile);
+		importWizard.selectFile("items.csv     <<<<");
+		importWizard.setSourceModel("Item");
+		importWizard.setProject(MODEL_PROJECT);
+		importWizard.next();
+		importWizard.next();
+		importWizard.next();
+		importWizard.finish();
 
 		teiidBot.assertResource(MODEL_PROJECT, "ItemSource.xmi");
 		teiidBot.assertResource(MODEL_PROJECT, "ItemView.xmi");
