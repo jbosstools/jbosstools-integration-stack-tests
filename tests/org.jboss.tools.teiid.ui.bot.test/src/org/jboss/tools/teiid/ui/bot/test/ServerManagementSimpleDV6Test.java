@@ -1,7 +1,9 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
-import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
+import static org.junit.Assert.assertTrue;
+
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
 import org.jboss.tools.teiid.reddeer.manager.ServerManager;
 import org.jboss.tools.teiid.reddeer.manager.VDBManager;
@@ -14,18 +16,20 @@ import org.jboss.tools.teiid.ui.bot.test.requirement.PerspectiveRequirement.Pers
 import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.Server;
 import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.State;
 import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.Type;
+import org.jboss.tools.teiid.ui.bot.test.suite.TeiidSuite;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
- * 
  * @author lfabriko
- *
  */
 @Perspective(name = "Teiid Designer")
 @Server(type = Type.ALL, state = State.NOT_RUNNING)
-public class ServerManagementSimpleDV6Test extends SWTBotTestCase {
-	private static final String DV6_PROPERTIES = "dv6.properties";
+@RunWith(TeiidSuite.class)
+public class ServerManagementSimpleDV6Test extends RedDeerTest {
+
 	private static final String DV6_SERVER = "EAP-6.1";
 	private static final String PROJECT_NAME = "ServerMgmtTest";
 	private static final String MODEL_NAME = "partssupModel1.xmi";
@@ -37,87 +41,37 @@ public class ServerManagementSimpleDV6Test extends SWTBotTestCase {
 
 	@BeforeClass
 	public static void createModelProject() {
+
 		new ShellMenu("Project", "Build Automatically").select();
-		//new TeiidBot().createHsqlProfile("resources/db/ds1.properties", HSQLDB_PROFILE, true, true);
-		
 		new ConnectionProfileManager().createCPWithDriverDefinition(HSQLDB_PROFILE, DS1_DATASOURCE);
-		new ImportProjectWizard(PROJECT_ZIP).execute(); 
+		new ImportProjectWizard(PROJECT_ZIP).execute();
 		new ModelExplorer().changeConnectionProfile(HSQLDB_PROFILE, PROJECT_NAME, MODEL_NAME);
+		new ServerManager().startServer(DV6_SERVER);
 	}
 
+	@AfterClass
+	public static void stopServer() {
+		
+		TeiidPerspective.getInstance();
+		new ServerManager().stopServer(DV6_SERVER);
+	}
+	
 	@Test
 	public void test() {
-//		try{
-//			new ServerManager().addServer(DV6_PROPERTIES);
-//		} catch (Exception ex){
-//			System.err.println("Cannot add server, " + ex.getMessage()); 
-//		}
-		
-		try {
-			new ServerManager().startServer(DV6_SERVER);
-		} catch (Exception ex){
-			System.err.println("Cannot start server, " + ex.getMessage());
-		}
-		
-		try {
+
 			new ServerManager().setDefaultTeiidInstance(DV6_SERVER, ServerType.DV6);
-		} catch (Exception ex){
-			System.err.println("Cannot set default instance, " + ex.getMessage());
-		}
-		
-		try {
-			System.out.println("Can preview data? " + new GuidesView().canPreviewData(null, new String[]{PROJECT_NAME, MODEL_NAME, "PARTS"}));//if assert fails, whole test fails -> but it may have failed just because the tree didn't expand
-		} catch (Exception ex){
-			System.err.println("cannot preview data, " + ex.getMessage());
-		}
-		
-		// switch back to Teiid Designer Perspective
-		try{
+			assertTrue(new GuidesView().canPreviewData(null, new String[] {PROJECT_NAME, MODEL_NAME, "PARTS" }));
+
 			TeiidPerspective.getInstance();
-		} catch (Exception ex){
-			System.err.println(ex.getMessage());
-		}
-		
-		// create VDB - pass
-		try{
 			new VDBManager().createVDB(PROJECT_NAME, VDB);
-			new VDBManager().addModelsToVDB(PROJECT_NAME, VDB, new String[]{MODEL_NAME});//before adding should be verified that vdb doesn't contain yet
-			System.out.println("VDB created? " + new VDBManager().isVDBCreated(PROJECT_NAME, VDB));	
-		} catch (Exception ex){
-			System.err.println("Cannot create vdb, " + ex.getMessage());
-		}
-		
-		TeiidPerspective.getInstance();
-		// deploy VDB - pass
-		try{
-			new VDBManager().deployVDB(new String[]{PROJECT_NAME, VDB});
-			System.out.println("VDB deployed? " + new VDBManager().isVDBDeployed(DV6_SERVER, ServerType.DV6, VDB));//or serverManager, its ==
-		} catch (Exception ex){
-			//do it manually
-			System.err.println("VDB may not be deployed, " + ex.getMessage());
-		}
-		
-		// execute VDB - pass
-		try{
-			new VDBManager().executeVDB(true,PROJECT_NAME, VDB);
-			System.out.println("Query passed? " + new VDBManager().queryPassed(VDB, TEST_SQL1));
-		} catch (Exception ex){
-			System.err.println("Query may not passed, " + ex.getMessage());
-		}
-		
-		// switch back to teiid designer perspective
-		try{
-		TeiidPerspective.getInstance();
-		} catch (Exception ex){
-			System.err.println(ex.getMessage());
-		}
-		
-		try{
-			new ServerManager().stopServer(DV6_SERVER);
-		} catch (Exception ex){
-			System.err.println("Server stop problem, " + ex.getMessage());
-		}
+			new VDBManager().addModelsToVDB(PROJECT_NAME, VDB, new String[] { MODEL_NAME });
+			assertTrue(new VDBManager().isVDBCreated(PROJECT_NAME, VDB));
+
+			TeiidPerspective.getInstance();
+			new VDBManager().deployVDB(new String[] { PROJECT_NAME, VDB });
+			assertTrue(new VDBManager().isVDBDeployed(DV6_SERVER, ServerType.DV6, VDB));
+
+			new VDBManager().executeVDB(true, PROJECT_NAME, VDB);
+			assertTrue(new VDBManager().queryPassed(VDB, TEST_SQL1));
 	}
-
-
 }

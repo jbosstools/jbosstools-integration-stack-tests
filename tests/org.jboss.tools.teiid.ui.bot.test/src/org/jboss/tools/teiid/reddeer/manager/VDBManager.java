@@ -24,6 +24,7 @@ import org.jboss.tools.teiid.reddeer.WAR;
 import org.jboss.tools.teiid.reddeer.editor.SQLScrapbookEditor;
 import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
+import org.jboss.tools.teiid.reddeer.view.DataSourceExplorer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.SQLResult;
 import org.jboss.tools.teiid.reddeer.view.SQLResultView;
@@ -123,20 +124,24 @@ public class VDBManager {
 
 
 	public boolean queryPassed(String vdb, String sql) {
-		SQLScrapbookEditor editor = new SQLScrapbookEditor("SQL Scrapbook0");
+		
+		new DataSourceExplorer().openSQLScrapbook(vdb);
+		SQLScrapbookEditor editor = new SQLScrapbookEditor();
 		editor.show();
 		editor.setText(sql);
 		editor.executeAll(true);
 
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
-		SQLResult result = DatabaseDevelopmentPerspective.getInstance().getSqlResultsView().getByOperation(sql);
-		//SQLResult result = new SQLResultView().getByOperation(sql);
+		SQLResultView resView = new SQLResultView();
+		resView.open();
+		SQLResult result = resView.getByOperation(sql);
+		
 		assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
 
 		editor.close();
 		
-		return true;//false would fail on assert
+		return true;
 	}
 	
 	public void createVDBDataSource(String[] pathToVDB){
