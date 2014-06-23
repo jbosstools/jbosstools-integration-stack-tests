@@ -2,10 +2,8 @@ package org.jboss.tools.teiid.reddeer.preference;
 
 import static org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable.syncExec;
 
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
-import org.jboss.reddeer.eclipse.datatools.ui.DriverDefinition;
 import org.jboss.reddeer.eclipse.datatools.ui.DriverTemplate;
 import org.jboss.reddeer.eclipse.datatools.ui.preference.DriverDefinitionPreferencePage;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.DriverDefinitionPage;
@@ -15,7 +13,6 @@ import org.jboss.reddeer.swt.api.Tree;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
@@ -28,9 +25,7 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 	
 	@Override
 	public void open() {
-		/*if (isRunningOnMacOs()) {
-			new SWTWorkbenchBot().shells()[0].pressShortcut(SWT.COMMAND, ',');
-		}*/
+
 		try {
 						super.open();
 					} catch (Exception e){
@@ -47,10 +42,6 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 		new PushButton("OK").click();
 	}
 
-	private static boolean isRunningOnMacOs() {
-		return Platform.getOS().equalsIgnoreCase("macosx");
-	}
-
 	private class DriverDefinitionWizardExt extends DriverDefinitionWizard {
 
 		//private DriverDefinition driverDefinition;
@@ -62,30 +53,11 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 		}
 
 		public void execute() {
+
 			DriverTemplate drvTemp = driverDefinition.getDriverTemplate();
 			
-			/*if (! drvTemp.getType().contains(GENERIC_JDBC)){
-				DriverDefinitionPage page = getFirstPage();
-				page.selectDriverTemplate(drvTemp.getType(), drvTemp.getVersion());
-				page.setName(driverDefinition.getDriverName());
-				page.addDriverLibrary(driverDefinition.getDriverLibrary());//firstly clears all suggested jars, but for Generic the list is empty
-			} 
-			else {//or Other driver
-				DriverDefinitionPageExt pageExt = new DriverDefinitionPageExt(getFirstPage().getWizardDialog(), 0);
-				if (drvTemp.getType().equals("Other")){
-					//pageExt.selectDriverTemplate(drvTemp.getType(), drvTemp.getVersion(), driverDefinition.getVendorTemplate());
-					
-				} else {
-					pageExt.selectDriverTemplate(drvTemp.getType(), drvTemp.getVersion());
-				}
-				
-				
-				pageExt.setName(driverDefinition.getDriverName());
-				pageExt.addDriverLibrary(driverDefinition.getDriverLibrary());//firstly clears all suggested jars, but for Generic the list is empty
-				pageExt.setDriverClass(driverDefinition.getDriverClass());
-			}*/
-			
-			if (drvTemp.getType().contains(GENERIC_JDBC)){//e.g. HSQL with Generic driver and with Generic CP 
+			if (drvTemp.getType().contains(GENERIC_JDBC)) { //e.g. HSQL with Generic driver and with Generic CP 
+
 				DriverDefinitionPageExt pageExt = new DriverDefinitionPageExt(getFirstPage().getWizardDialog(), 0);
 				pageExt.selectDriverTemplate(drvTemp.getType(), drvTemp.getVersion());//!!!! if at least database matches and others are empty, select it
 				pageExt.setName(driverDefinition.getDriverName());
@@ -94,7 +66,8 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 				return;
 			} 
 			
-			if (drvTemp.getType().contains(OTHER)){//e.g. Sybase jtds
+			if (drvTemp.getType().contains(OTHER)) { //e.g. Sybase jtds
+
 				DriverDefinitionPageExt pageExt = new DriverDefinitionPageExt(getFirstPage().getWizardDialog(), 0);
 				pageExt.selectDriverTemplate(drvTemp.getType(), drvTemp.getVersion(), driverDefinition.getVendorTemplate());
 				pageExt.setName(driverDefinition.getDriverName());
@@ -156,6 +129,7 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 
 		public DriverDefinitionPageExt(WizardDialog wizardDialog, int pageIndex) {
 			super(wizardDialog, pageIndex);
+			new DefaultShell();
 		}
 
 		public void setDriverClassGeneric(String driverClass) {
