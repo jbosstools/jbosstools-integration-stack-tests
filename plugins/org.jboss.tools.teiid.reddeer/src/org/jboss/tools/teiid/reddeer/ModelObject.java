@@ -5,6 +5,8 @@ import java.util.Properties;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 
@@ -15,18 +17,21 @@ public abstract class ModelObject {
 	public static final String TRANSFORMATION_SQL = "Transformation SQL";
 	
 	public void fillTransformationSQL(Properties props) {
+		
 		String prop = props.getProperty("template");
-		if (prop != null){
-			new SWTWorkbenchBot().tabItem(TRANSFORMATION_SQL).activate();
-			//select template
+		new DefaultTabItem(TRANSFORMATION_SQL).activate();
+		
+		if (prop != null) {
+			
 			new PushButton("Select SQL Template").click();
 			new RadioButton(prop).click();
 			new PushButton("OK").click();
-		}	
+		}
+
 		prop = props.getProperty("sql");
-		if (prop != null){
-			new SWTWorkbenchBot().tabItem(TRANSFORMATION_SQL).activate();
-			new SWTWorkbenchBot().styledText().setText(prop);
+		if (prop != null) {
+			
+			new DefaultStyledText().setText(prop);
 		}
 	}
 	

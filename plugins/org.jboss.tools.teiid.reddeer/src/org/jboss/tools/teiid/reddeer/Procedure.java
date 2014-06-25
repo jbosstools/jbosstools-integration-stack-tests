@@ -1,34 +1,27 @@
 package org.jboss.tools.teiid.reddeer;
 
-import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
-
-import java.awt.Checkbox;
 import java.util.Arrays;
 import java.util.Properties;
 
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
-import org.jboss.tools.teiid.reddeer.widget.SWTBotGefFigure;
 
 public class Procedure extends ModelObject{
 
@@ -220,7 +213,8 @@ public class Procedure extends ModelObject{
 		}
 	}
 	
-	public void create(String name, Properties props){
+	public void create(String name, Properties props) {
+
 		//select procedure type
 		String type = props.getProperty("type");
 		new RadioButton(type).click();
@@ -254,11 +248,17 @@ public class Procedure extends ModelObject{
 		//Transformation SQL
 		fillTransformationSQL(type, props);
 		
+		if (new ShellWithTextIsAvailable("Create Relational View Procedure").test()) {
+			new DefaultShell("Create Relational View Procedure");
+		} else {
+			new DefaultShell();
+		}
+		
 		new PushButton("OK").click();
 	}
 	
 	private void fillTransformationSQL(String type, Properties props) {
-		if (type.equals(Type.RELVIEW_PROCEDURE)){
+		if (type.equals(Type.RELVIEW_PROCEDURE) && !props.containsKey("nativeQuery")){
 			super.fillTransformationSQL(props);
 		}
 	}

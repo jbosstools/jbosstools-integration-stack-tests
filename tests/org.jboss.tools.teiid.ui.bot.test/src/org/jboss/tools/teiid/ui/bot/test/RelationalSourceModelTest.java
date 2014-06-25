@@ -1,63 +1,50 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.Properties;
 
-import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
+import org.jboss.reddeer.swt.test.RedDeerTest;
+import org.jboss.tools.teiid.reddeer.ModelClass;
+import org.jboss.tools.teiid.reddeer.ModelType;
 import org.jboss.tools.teiid.reddeer.Procedure;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
-import org.jboss.tools.teiid.reddeer.wizard.CreateMetadataModel;
+import org.jboss.tools.teiid.reddeer.wizard.MetadataModelWizard;
 import org.jboss.tools.teiid.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
+import org.jboss.tools.teiid.ui.bot.test.suite.TeiidSuite;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
- * 
  * @author lfabriko
- *
  */
 @Perspective(name = "Teiid Designer")
-public class RelationalSourceModelTest extends SWTBotTestCase {
+@RunWith(TeiidSuite.class)
+public class RelationalSourceModelTest extends RedDeerTest {
 
 	private static final String PROJECT = "RelSrcModel";
 	private static final String MODEL = "relModel.xmi";
 	private static TeiidBot teiidBot = new TeiidBot();
 	
 	@BeforeClass
-	public static void before(){
+	public static void before() {
+		
 		new ModelExplorerManager().createProject(PROJECT);
-		CreateMetadataModel createModel = new CreateMetadataModel();
-		createModel.setLocation(PROJECT);
-		createModel.setName(MODEL);
-		createModel.setClass(CreateMetadataModel.ModelClass.RELATIONAL);
-		createModel.setType(CreateMetadataModel.ModelType.SOURCE);
-		createModel.execute();
-	}
-	
-	//@Test
-	public void generateFileTranslatorProcedures(){
-		//create rel. src model with this option
-	}
-	
-	//@Test
-	public void generateWebServiceTranslatorProcedures(){
-		
-	}
-	
-	//@Test
-	public void copyFromExistingModel(){
-		
-	}
-	
-	//@Test
-	public void createTab(){
-		String tab = "tab";
-		new ModelExplorerManager().getModelExplorerView().newBaseTable(PROJECT, MODEL+".xmi", tab);
-		
-		assertTrue(teiidBot.checkResource(PROJECT,  MODEL + ".xmi", tab));
+
+		MetadataModelWizard modelWizard = new MetadataModelWizard();
+		modelWizard.open();
+		modelWizard.activate();
+		modelWizard.setLocation(PROJECT);
+		modelWizard.setModelName(MODEL);
+		modelWizard.selectModelClass(ModelClass.RELATIONAL);
+		modelWizard.selectModelType(ModelType.SOURCE);
+		modelWizard.finish();
 	}
 	
 	@Test
-	public void createProcedure(){
+	public void createProcedure() {
+
 		String proc = "proc";
 		Properties props = new Properties();
 		props.setProperty("type", Procedure.Type.RELSRC_PROCEDURE);
@@ -80,7 +67,8 @@ public class RelationalSourceModelTest extends SWTBotTestCase {
 	}
 	
 	@Test
-	public void createSrcFunction(){
+	public void createSrcFunction() {
+
 		String proc = "srcFunction";
 		Properties props = new Properties();
 		props.setProperty("type", Procedure.Type.RELSRC_SOURCE_FUNCTION);
@@ -93,22 +81,6 @@ public class RelationalSourceModelTest extends SWTBotTestCase {
 		
 		assertTrue(teiidBot.checkResource(PROJECT, MODEL, proc, "myparam2 : string(4000)"));
 		assertTrue(teiidBot.checkResource(PROJECT, MODEL, proc, "myparam3 : string(4000)"));
-	}
-	
-	//@Test
-	public void createSourceFunction(){
-		
-	}
-	
-	//@Test
-	public void createView(){
-		
-	}
-	
-	//@Test
-	public void newAssociation(){
-		//created by selecting with Ctrl two columns -> right-click -> new assoc
-		//can be specified in the properties of the link
 	}
 	
 	//TODO associations 1:N,...

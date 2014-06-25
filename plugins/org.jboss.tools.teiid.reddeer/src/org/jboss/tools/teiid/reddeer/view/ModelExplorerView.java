@@ -117,11 +117,13 @@ public class ModelExplorerView extends AbstractExplorer {
 	}
 	
 	
-	public void newProcedure(String project, String modelXmi, String procedure, Properties props){
+	public void newProcedure(String project, String modelXmi, String procedure, Properties props) {
+
 		open();
 
 		new DefaultTreeItem(project, modelXmi).select();
 		new ContextMenu("New Child", "Procedure...").select();
+		new DefaultShell("Select Procedure Type");
 		
 		new Procedure().create(procedure, props);
 		new ModelEditor(modelXmi).save();
