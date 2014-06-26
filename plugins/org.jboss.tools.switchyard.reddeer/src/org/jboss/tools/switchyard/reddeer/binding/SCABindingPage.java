@@ -1,8 +1,6 @@
 package org.jboss.tools.switchyard.reddeer.binding;
 
-import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 /**
  * SCA binding page
@@ -10,20 +8,9 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  * @author apodhrad
  * 
  */
-public class SCABindingPage extends WizardPage {
+public class SCABindingPage extends OperationOptionsPage<SCABindingPage> {
 
-	public static final String NAME = "Name";
 	public static final String CLUSTERED = "Clustered";
-
-	public SCABindingPage setName(String name) {
-		new LabeledText(NAME).setFocus();
-		new LabeledText(NAME).setText(name);
-		return this;
-	}
-
-	public String getName() {
-		return new LabeledText(NAME).getText();
-	}
 
 	public SCABindingPage setClustered(boolean clustered) {
 		new CheckBox(CLUSTERED).toggle(clustered);

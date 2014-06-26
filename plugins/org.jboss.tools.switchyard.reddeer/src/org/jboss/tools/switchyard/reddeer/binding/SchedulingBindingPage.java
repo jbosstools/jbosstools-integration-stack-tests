@@ -1,6 +1,8 @@
 package org.jboss.tools.switchyard.reddeer.binding;
 
+import org.eclipse.swt.SWT;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 
 /**
  * Scheduling binding page
@@ -18,6 +20,7 @@ public class SchedulingBindingPage extends OperationOptionsPage<SchedulingBindin
 	public SchedulingBindingPage setName(String name) {
 		new LabeledText(NAME).setFocus();
 		new LabeledText(NAME).setText(name);
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.TAB);
 		return this;
 	}
 
@@ -28,7 +31,7 @@ public class SchedulingBindingPage extends OperationOptionsPage<SchedulingBindin
 	public SchedulingBindingPage setCron(String cron) {
 		new LabeledText(CRON).setFocus();
 		new LabeledText(CRON).setText(cron);
-		new LabeledText(NAME).setFocus();
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.TAB);
 		return this;
 	}
 
@@ -39,7 +42,7 @@ public class SchedulingBindingPage extends OperationOptionsPage<SchedulingBindin
 	public SchedulingBindingPage setStartTime(String startTime) {
 		new LabeledText(START_TIME).setFocus();
 		new LabeledText(START_TIME).setText(startTime);
-		new LabeledText(NAME).setFocus();
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.TAB);
 		return this;
 	}
 
@@ -50,7 +53,7 @@ public class SchedulingBindingPage extends OperationOptionsPage<SchedulingBindin
 	public SchedulingBindingPage setEndTime(String startTime) {
 		new LabeledText(END_TIME).setFocus();
 		new LabeledText(END_TIME).setText(startTime);
-		new LabeledText(NAME).setFocus();
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.TAB);
 		return this;
 	}
 

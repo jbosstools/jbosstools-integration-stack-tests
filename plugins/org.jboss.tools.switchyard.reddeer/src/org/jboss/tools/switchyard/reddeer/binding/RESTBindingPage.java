@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.condition.TableHasRows;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -13,6 +13,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -23,7 +24,7 @@ import org.jboss.reddeer.swt.wait.WaitWhile;
  * @author apodhrad
  * 
  */
-public class RESTBindingPage extends WizardPage {
+public class RESTBindingPage extends OperationOptionsPage<RESTBindingPage> {
 
 	public static final String CONTEXT_PATH = "Context path:";
 	public static final String Address = "Address";
@@ -33,6 +34,7 @@ public class RESTBindingPage extends WizardPage {
 	public RESTBindingPage setContextPath(String contextPath) {
 		new LabeledText(CONTEXT_PATH).setFocus();
 		new LabeledText(CONTEXT_PATH).setText(contextPath);
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.TAB);
 		return this;
 	}
 
@@ -41,9 +43,9 @@ public class RESTBindingPage extends WizardPage {
 	}
 
 	public RESTBindingPage setAddress(String address) {
-		// new LabeledText("Address").setText(address);
 		bot.textWithLabel("Address").setFocus();
 		bot.textWithLabel("Address").setText(address);
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.TAB);
 		return this;
 	}
 

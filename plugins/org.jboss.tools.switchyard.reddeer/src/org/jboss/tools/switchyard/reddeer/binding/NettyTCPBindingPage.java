@@ -1,6 +1,8 @@
 package org.jboss.tools.switchyard.reddeer.binding;
 
+import org.eclipse.swt.SWT;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 
 /**
  * Netty TCP binding page
@@ -10,24 +12,13 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  */
 public class NettyTCPBindingPage extends OperationOptionsPage<NettyTCPBindingPage> {
 
-	public static final String NAME = "Name";
 	public static final String HOST = "Host*";
 	public static final String PORT = "Port*";
-
-	public NettyTCPBindingPage setName(String name) {
-		new LabeledText(NAME).setFocus();
-		new LabeledText(NAME).setText(name);
-		return this;
-	}
-
-	public String getName() {
-		return new LabeledText(NAME).getText();
-	}
 
 	public NettyTCPBindingPage setHost(String host) {
 		new LabeledText(HOST).setFocus();
 		new LabeledText(HOST).setText(host);
-		new LabeledText(NAME).setFocus();
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.TAB);
 		return this;
 	}
 
@@ -38,7 +29,7 @@ public class NettyTCPBindingPage extends OperationOptionsPage<NettyTCPBindingPag
 	public NettyTCPBindingPage setPort(String port) {
 		new LabeledText(PORT).setFocus();
 		new LabeledText(PORT).setText(port);
-		new LabeledText(NAME).setFocus();
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.TAB);
 		return this;
 	}
 
