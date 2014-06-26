@@ -1,6 +1,8 @@
 package org.jboss.tools.switchyard.reddeer.binding;
 
+import org.eclipse.swt.SWT;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 
 /**
  * HTTP binding.
@@ -15,6 +17,7 @@ public class HTTPBindingPage extends OperationOptionsPage<HTTPBindingPage> {
 	public HTTPBindingPage setContextPath(String contextPath) {
 		new LabeledText(CONTEXT_PATH).setFocus();
 		new LabeledText(CONTEXT_PATH).setText(contextPath);
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.TAB);
 		return this;
 	}
 	

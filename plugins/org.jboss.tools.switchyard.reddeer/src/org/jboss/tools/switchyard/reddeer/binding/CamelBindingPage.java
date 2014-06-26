@@ -1,6 +1,8 @@
 package org.jboss.tools.switchyard.reddeer.binding;
 
+import org.eclipse.swt.SWT;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 
 /**
  * Camel binding page
@@ -10,22 +12,12 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  */
 public class CamelBindingPage extends OperationOptionsPage<CamelBindingPage> {
 
-	public static final String NAME = "Name";
 	public static final String CONFIG_URI = "Config URI*";
-
-	public CamelBindingPage setName(String name) {
-		new LabeledText(NAME).setFocus();
-		new LabeledText(NAME).setText(name);
-		return this;
-	}
-
-	public String getName() {
-		return new LabeledText(NAME).getText();
-	}
 
 	public CamelBindingPage setConfigURI(String configURI) {
 		new LabeledText(CONFIG_URI).setFocus();
 		new LabeledText(CONFIG_URI).setText(configURI);
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.TAB);
 		return this;
 	}
 

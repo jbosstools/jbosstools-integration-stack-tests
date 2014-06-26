@@ -13,6 +13,7 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.test.RedDeerTest;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
 import org.jboss.tools.switchyard.reddeer.binding.CamelBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.FTPBindingPage;
@@ -33,7 +34,6 @@ import org.jboss.tools.switchyard.reddeer.binding.SQLBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.SchedulingBindingPage;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
-import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
 import org.jboss.tools.switchyard.reddeer.preference.PropertiesPreferencePage;
 import org.jboss.tools.switchyard.reddeer.wizard.DefaultServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
@@ -62,15 +62,14 @@ public class BindingsTest extends RedDeerTest {
 	public static final String SERVICE = "HelloService";
 	public static final String OPERATION = "sayHello";
 	public static final String PACKAGE = "com.example.switchyard." + PROJECT;
-	public static final String[] GATEWAY_BINDINGS = new String[] { "Camel Core (SEDA/Timer/URI)",
-			"File", "File Transfer (FTP/FTPS/SFTP)", "HTTP", "JCA", "JMS", "JPA", "Mail",
-			"Network (TCP/UDP)", "REST", "SCA", "Scheduling", "SOAP", "SQL" };
-	public static final String[] BINDINGS = new String[] { "Camel", "FTP", "FTPS", "File", "HTTP",
-			"JCA", "JMS", "JPA", "Mail", "Netty TCP", "Netty UDP", "REST", "SCA", "SFTP", "SOAP",
-			"SQL", "Scheduling" };
+	public static final String[] GATEWAY_BINDINGS = new String[] { "Camel Core (SEDA/Timer/URI)", "File",
+			"File Transfer (FTP/FTPS/SFTP)", "HTTP", "JCA", "JMS", "JPA", "Mail", "Network (TCP/UDP)", "REST", "SCA",
+			"Scheduling", "SOAP", "SQL" };
+	public static final String[] BINDINGS = new String[] { "Camel", "FTP", "FTPS", "File", "HTTP", "JCA", "JMS", "JPA",
+			"Mail", "Netty TCP", "Netty UDP", "REST", "SCA", "SFTP", "SOAP", "SQL", "Scheduling" };
 
 	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
-	
+
 	@BeforeClass
 	public static void createProject() {
 		try {
@@ -92,13 +91,14 @@ public class BindingsTest extends RedDeerTest {
 		wizard.open();
 		wizard.getFirstPage().setName("Hello");
 		wizard.finish();
-		new TextEditor("Hello.java").deleteLineWith("Hello").type("public interface Hello {")
-				.typeBefore("Hello", "import javax.ws.rs.Produces;").newLine()
-				.type("import javax.ws.rs.GET;").newLine().type("import javax.ws.rs.Path;")
-				.newLine().type("import javax.ws.rs.PathParam;").newLine()
-				.typeAfter("Hello", "@GET()").newLine().type("@Path(\"/{name}\")").newLine()
-				.type("@Produces(\"text/plain\")").newLine()
-				.type("String sayHello(@PathParam(\"name\") String name);").saveAndClose();
+
+		TextEditor textEditor = new TextEditor("Hello.java");
+		textEditor.setText("package com.example.switchyard.binding_project;\n" + "import javax.ws.rs.Produces;"
+				+ "import javax.ws.rs.GET;\n" + "import javax.ws.rs.Path;\n" + "import javax.ws.rs.PathParam;\n"
+				+ "public interface Hello {\n" + "@GET()\n" + "@Path(\"/{name}\")\n" + "@Produces(\"text/plain\")\n"
+				+ "String sayHello(@PathParam(\"name\") String name);\n}");
+		textEditor.save();
+		textEditor.close();
 	}
 
 	@AfterClass
@@ -113,8 +113,7 @@ public class BindingsTest extends RedDeerTest {
 		new SwitchYardEditor().addComponent("Service");
 		new DefaultShell("New Service");
 		new SWTWorkbenchBot().shell("New Service").activate();
-		new DefaultServiceWizard().selectJavaInterface("Hello").setServiceName("HelloService")
-				.finish();
+		new DefaultServiceWizard().selectJavaInterface("Hello").setServiceName("HelloService").finish();
 		new SwitchYardEditor().save();
 	}
 
@@ -129,6 +128,8 @@ public class BindingsTest extends RedDeerTest {
 	public void camelBindingTest() throws Exception {
 		new Service(SERVICE).addBinding("Camel");
 		BindingWizard<CamelBindingPage> wizard = BindingWizard.createCamelBindingWizard();
+		assertEquals("camel1", wizard.getBindingPage().getName());
+		wizard.getBindingPage().setName("camel-binding");
 		wizard.getBindingPage().setConfigURI("camel-uri");
 		wizard.getBindingPage().setOperation(OPERATION);
 		wizard.finish();
@@ -137,6 +138,7 @@ public class BindingsTest extends RedDeerTest {
 
 		PropertiesPreferencePage properties = new Service(SERVICE).showProperties();
 		properties.selectBindingsTab();
+		assertEquals("camel-binding", properties.getCamelBindingPage().getName());
 		assertEquals("camel-uri", properties.getCamelBindingPage().getConfigURI());
 		assertEquals(OPERATION, properties.getHTTPBindingPage().getOperation());
 		properties.ok();
@@ -146,6 +148,8 @@ public class BindingsTest extends RedDeerTest {
 	public void ftpBindingTest() throws Exception {
 		new Service(SERVICE).addBinding("FTP");
 		BindingWizard<FTPBindingPage> wizard = BindingWizard.createFTPBindingWizard();
+		assertEquals("ftp1", wizard.getBindingPage().getName());
+		wizard.getBindingPage().setName("ftp-binding");
 		wizard.getBindingPage().setDirectory("ftp-directory");
 		wizard.finish();
 
@@ -153,14 +157,17 @@ public class BindingsTest extends RedDeerTest {
 
 		PropertiesPreferencePage properties = new Service(SERVICE).showProperties();
 		properties.selectBindingsTab();
+		assertEquals("ftp-binding", properties.getCamelBindingPage().getName());
 		assertEquals("ftp-directory", properties.getFTPBindingPage().getDirectory());
 		properties.ok();
 	}
 
 	@Test
 	public void ftpsBindingTest() throws Exception {
-		new Service(SERVICE).addBinding("SFTP");
+		new Service(SERVICE).addBinding("FTPS");
 		BindingWizard<FTPSBindingPage> wizard = BindingWizard.createFTPSBindingWizard();
+		assertEquals("ftps1", wizard.getBindingPage().getName());
+		wizard.getBindingPage().setName("ftps-binding");
 		wizard.getBindingPage().setDirectory("ftps-directory");
 		wizard.finish();
 
@@ -168,6 +175,7 @@ public class BindingsTest extends RedDeerTest {
 
 		PropertiesPreferencePage properties = new Service(SERVICE).showProperties();
 		properties.selectBindingsTab();
+		assertEquals("ftps-binding", properties.getCamelBindingPage().getName());
 		assertEquals("ftps-directory", properties.getFTPSBindingPage().getDirectory());
 		properties.ok();
 	}
@@ -176,6 +184,8 @@ public class BindingsTest extends RedDeerTest {
 	public void fileBindingTest() throws Exception {
 		new Service(SERVICE).addBinding("File");
 		BindingWizard<FileBindingPage> wizard = BindingWizard.createFileBindingWizard();
+		assertEquals("file1", wizard.getBindingPage().getName());
+		wizard.getBindingPage().setName("file-binding");
 		wizard.getBindingPage().setDirectory("file-directory");
 		wizard.getBindingPage().setDirAutoCreation(true);
 		wizard.getBindingPage().setMoveDirectory("processed");
@@ -185,6 +195,7 @@ public class BindingsTest extends RedDeerTest {
 
 		PropertiesPreferencePage properties = new Service(SERVICE).showProperties();
 		properties.selectBindingsTab();
+		assertEquals("file-binding", properties.getCamelBindingPage().getName());
 		assertEquals("file-directory", properties.getFileBindingPage().getDirectory());
 		assertTrue(properties.getFileBindingPage().isDirAutoCreation());
 		properties.ok();
@@ -194,6 +205,8 @@ public class BindingsTest extends RedDeerTest {
 	public void httpBindingTest() throws Exception {
 		new Service(SERVICE).addBinding("HTTP");
 		BindingWizard<HTTPBindingPage> wizard = BindingWizard.createHTTPBindingWizard();
+		assertEquals("http1", wizard.getBindingPage().getName());
+		wizard.getBindingPage().setName("http-binding");
 		wizard.getBindingPage().setContextPath("http-context");
 		wizard.getBindingPage().setOperation(OPERATION);
 		wizard.finish();
@@ -202,6 +215,7 @@ public class BindingsTest extends RedDeerTest {
 
 		PropertiesPreferencePage properties = new Service(SERVICE).showProperties();
 		properties.selectBindingsTab();
+		assertEquals("http-binding", properties.getCamelBindingPage().getName());
 		assertEquals("http-context", properties.getHTTPBindingPage().getContextPath());
 		assertEquals(OPERATION, properties.getHTTPBindingPage().getOperation());
 		new PushButton("OK").click();
@@ -212,6 +226,8 @@ public class BindingsTest extends RedDeerTest {
 		new Service(SERVICE).addBinding("JCA");
 
 		BindingWizard<JCABindingPage> wizard = BindingWizard.createJCABindingWizard();
+		assertEquals("jca1", wizard.getBindingPage().getName());
+		wizard.getBindingPage().setName("jca-binding");
 		wizard.getBindingPage().selectGenericResourceAdapter();
 		wizard.getBindingPage().setResourceAdapterArchive("resource-adapter.jar");
 		wizard.next();
@@ -222,6 +238,7 @@ public class BindingsTest extends RedDeerTest {
 
 		PropertiesPreferencePage properties = new Service(SERVICE).showProperties();
 		properties.selectBindingsTab();
+		assertEquals("jca-binding", properties.getCamelBindingPage().getName());
 		assertTrue(properties.getJCABindingPage().isGenericResourceAdapter());
 		assertEquals("resource-adapter.jar", properties.getJCABindingPage().getResourceAdapterArchive());
 		properties.ok();
@@ -231,6 +248,8 @@ public class BindingsTest extends RedDeerTest {
 	public void jmsBindingTest() throws Exception {
 		new Service(SERVICE).addBinding("JMS");
 		BindingWizard<JMSBindingPage> wizard = BindingWizard.createJMSBindingWizard();
+		assertEquals("jms1", wizard.getBindingPage().getName());
+		wizard.getBindingPage().setName("jms-binding");
 		wizard.getBindingPage().setQueueTopicName("queue-name");
 		wizard.finish();
 
@@ -238,6 +257,7 @@ public class BindingsTest extends RedDeerTest {
 
 		PropertiesPreferencePage properties = new Service(SERVICE).showProperties();
 		properties.selectBindingsTab();
+		assertEquals("jms-binding", properties.getCamelBindingPage().getName());
 		assertEquals("queue-name", properties.getJMSBindingPage().getQueueTopicName());
 		properties.ok();
 	}
@@ -246,6 +266,8 @@ public class BindingsTest extends RedDeerTest {
 	public void jpaBindingTest() throws Exception {
 		new Service(SERVICE).addBinding("JPA");
 		BindingWizard<JPABindingPage> wizard = BindingWizard.createJPABindingWizard();
+		assertEquals("jpa1", wizard.getBindingPage().getName());
+		wizard.getBindingPage().setName("jpa-binding");
 		wizard.getBindingPage().setEntityClassName("entity-class");
 		wizard.getBindingPage().setPersistenceUnit("persistence.xml");
 		wizard.finish();
@@ -254,6 +276,7 @@ public class BindingsTest extends RedDeerTest {
 
 		PropertiesPreferencePage properties = new Service(SERVICE).showProperties();
 		properties.selectBindingsTab();
+		assertEquals("jpa-binding", properties.getCamelBindingPage().getName());
 		assertEquals("entity-class", properties.getJPABindingPage().getEntityClassName());
 		assertEquals("persistence.xml", properties.getJPABindingPage().getPersistenceUnit());
 		properties.ok();
@@ -263,6 +286,8 @@ public class BindingsTest extends RedDeerTest {
 	public void mailBindingTest() throws Exception {
 		new Service(SERVICE).addBinding("Mail");
 		BindingWizard<MailBindingPage> wizard = BindingWizard.createMailBindingWizard();
+		assertEquals("mail1", wizard.getBindingPage().getName());
+		wizard.getBindingPage().setName("mail-binding");
 		wizard.getBindingPage().setHost("mail-host");
 		wizard.finish();
 
@@ -270,6 +295,7 @@ public class BindingsTest extends RedDeerTest {
 
 		PropertiesPreferencePage properties = new Service(SERVICE).showProperties();
 		properties.selectBindingsTab();
+		assertEquals("mail-binding", properties.getCamelBindingPage().getName());
 		assertEquals("mail-host", properties.getMailBindingPage().getHost());
 		properties.ok();
 	}
@@ -278,16 +304,19 @@ public class BindingsTest extends RedDeerTest {
 	public void nettyTcpBindingTest() throws Exception {
 		new Service(SERVICE).addBinding("Netty TCP");
 		BindingWizard<NettyTCPBindingPage> wizard = BindingWizard.createNettyTCPBindingWizard();
+		assertEquals("tcp1", wizard.getBindingPage().getName());
+		wizard.getBindingPage().setName("tcp-binding");
 		wizard.getBindingPage().setHost("tcp-host");
-		wizard.getBindingPage().setPort("tcp-port");
+		wizard.getBindingPage().setPort("1234");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
 
 		PropertiesPreferencePage properties = new Service(SERVICE).showProperties();
 		properties.selectBindingsTab();
+		assertEquals("tcp-binding", properties.getCamelBindingPage().getName());
 		assertEquals("tcp-host", properties.getNettyTCPBindingPage().getHost());
-		assertEquals("tcp-port", properties.getNettyTCPBindingPage().getPort());
+		assertEquals("1234", properties.getNettyTCPBindingPage().getPort());
 		properties.ok();
 	}
 
@@ -295,16 +324,19 @@ public class BindingsTest extends RedDeerTest {
 	public void nettyUdpBindingTest() throws Exception {
 		new Service(SERVICE).addBinding("Netty UDP");
 		BindingWizard<NettyUDPBindingPage> wizard = BindingWizard.createNettyUDPBindingWizard();
+		assertEquals("udp1", wizard.getBindingPage().getName());
+		wizard.getBindingPage().setName("udp-binding");
 		wizard.getBindingPage().setHost("udp-host");
-		wizard.getBindingPage().setPort("udp-port");
+		wizard.getBindingPage().setPort("1234");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
 
 		PropertiesPreferencePage properties = new Service(SERVICE).showProperties();
 		properties.selectBindingsTab();
+		assertEquals("udp-binding", properties.getCamelBindingPage().getName());
 		assertEquals("udp-host", properties.getNettyUDPBindingPage().getHost());
-		assertEquals("udp-port", properties.getNettyUDPBindingPage().getPort());
+		assertEquals("1234", properties.getNettyUDPBindingPage().getPort());
 		properties.ok();
 	}
 
@@ -312,7 +344,9 @@ public class BindingsTest extends RedDeerTest {
 	public void restBindingTest() throws Exception {
 		new Service(SERVICE).addBinding("REST");
 		BindingWizard<RESTBindingPage> wizard = BindingWizard.createRESTBindingWizard();
-		wizard.getBindingPage().setContextPath("rest-binding");
+		assertEquals("rest1", wizard.getBindingPage().getName());
+		wizard.getBindingPage().setName("rest-binding");
+		wizard.getBindingPage().setContextPath("rest-context");
 		wizard.getBindingPage().addInterface("Hello");
 		wizard.finish();
 
@@ -320,7 +354,8 @@ public class BindingsTest extends RedDeerTest {
 
 		PropertiesPreferencePage properties = new Service(SERVICE).showProperties();
 		properties.selectBindingsTab();
-		assertEquals("rest-binding", properties.getRESTBindingPage().getContextPath());
+		assertEquals("rest-binding", properties.getCamelBindingPage().getName());
+		assertEquals("rest-context", properties.getRESTBindingPage().getContextPath());
 		assertTrue(properties.getRESTBindingPage().getInterfaces().contains(PACKAGE + ".Hello"));
 		properties.ok();
 	}
@@ -329,6 +364,8 @@ public class BindingsTest extends RedDeerTest {
 	public void scaBindingTest() throws Exception {
 		new Service(SERVICE).addBinding("SCA");
 		BindingWizard<SCABindingPage> wizard = BindingWizard.createSCABindingWizard();
+		assertEquals("sca1", wizard.getBindingPage().getName());
+		wizard.getBindingPage().setName("sca-binding");
 		wizard.getBindingPage().setClustered(true);
 		wizard.finish();
 
@@ -336,6 +373,7 @@ public class BindingsTest extends RedDeerTest {
 
 		PropertiesPreferencePage properties = new Service(SERVICE).showProperties();
 		properties.selectBindingsTab();
+		assertEquals("sca-binding", properties.getCamelBindingPage().getName());
 		assertTrue(properties.getSCABindingPage().isClustered());
 		properties.ok();
 	}
@@ -344,6 +382,8 @@ public class BindingsTest extends RedDeerTest {
 	public void sftpBindingTest() throws Exception {
 		new Service(SERVICE).addBinding("SFTP");
 		BindingWizard<SFTPBindingPage> wizard = BindingWizard.createSFTPBindingWizard();
+		assertEquals("sftp1", wizard.getBindingPage().getName());
+		wizard.getBindingPage().setName("sftp-binding");
 		wizard.getBindingPage().setDirectory("sftp-directory");
 		wizard.finish();
 
@@ -351,6 +391,7 @@ public class BindingsTest extends RedDeerTest {
 
 		PropertiesPreferencePage properties = new Service(SERVICE).showProperties();
 		properties.selectBindingsTab();
+		assertEquals("sftp-binding", properties.getCamelBindingPage().getName());
 		assertEquals("sftp-directory", properties.getSFTPBindingPage().getDirectory());
 		properties.ok();
 	}
@@ -359,7 +400,9 @@ public class BindingsTest extends RedDeerTest {
 	public void soapBindingTest() throws Exception {
 		new Service(SERVICE).addBinding("SOAP");
 		BindingWizard<SOAPBindingPage> wizard = BindingWizard.createSOAPBindingWizard();
-		wizard.getBindingPage().setContextPath("soap-binding");
+		assertEquals("soap1", wizard.getBindingPage().getName());
+		wizard.getBindingPage().setName("soap-binding");
+		wizard.getBindingPage().setContextPath("soap-context");
 		wizard.getBindingPage().setWsdlURI("soap-wsdl");
 		wizard.finish();
 
@@ -367,7 +410,8 @@ public class BindingsTest extends RedDeerTest {
 
 		PropertiesPreferencePage properties = new Service(SERVICE).showProperties();
 		properties.selectBindingsTab();
-		assertEquals("soap-binding", properties.getSOAPBindingPage().getContextPath());
+		assertEquals("soap-binding", properties.getCamelBindingPage().getName());
+		assertEquals("soap-context", properties.getSOAPBindingPage().getContextPath());
 		properties.ok();
 	}
 
@@ -375,6 +419,8 @@ public class BindingsTest extends RedDeerTest {
 	public void sqlBindingTest() throws Exception {
 		new Service(SERVICE).addBinding("SQL");
 		BindingWizard<SQLBindingPage> wizard = BindingWizard.createSQLBindingWizard();
+		assertEquals("sql1", wizard.getBindingPage().getName());
+		wizard.getBindingPage().setName("sql-binding");
 		wizard.getBindingPage().setQuery("sql-query");
 		wizard.getBindingPage().setDataSource("data-source");
 		wizard.finish();
@@ -383,6 +429,7 @@ public class BindingsTest extends RedDeerTest {
 
 		PropertiesPreferencePage properties = new Service(SERVICE).showProperties();
 		properties.selectBindingsTab();
+		assertEquals("sql-binding", properties.getCamelBindingPage().getName());
 		assertEquals("sql-query", properties.getSQLBindingPage().getQuery());
 		assertEquals("data-source", properties.getSQLBindingPage().getDataSource());
 		properties.ok();
@@ -393,9 +440,10 @@ public class BindingsTest extends RedDeerTest {
 		String cron = "0 0 12 * * ?";
 		String startTime = "2014-01-01T00:00:00";
 		String endTime = "2015-01-01T00:00:00";
-		
+
 		new Service(SERVICE).addBinding("Scheduling");
 		BindingWizard<SchedulingBindingPage> wizard = BindingWizard.createSchedulingBindingWizard();
+		wizard.getBindingPage().setName("schedule-binding");
 		wizard.getBindingPage().setCron(cron);
 		wizard.getBindingPage().setOperation(OPERATION);
 		wizard.getBindingPage().setStartTime(startTime);

@@ -3,6 +3,8 @@ package org.jboss.tools.switchyard.reddeer.binding;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 
 /**
  * Binding Wizard
@@ -17,6 +19,10 @@ public class BindingWizard<T extends WizardPage> extends WizardDialog {
 	public BindingWizard(T bindingWizardPage) {
 		super();
 		this.bindingWizardPage = bindingWizardPage;
+
+		// In SwitchYard Tool 2.0 there is unknown problem with storing the data
+		// without this waiting.
+		AbstractWait.sleep(TimePeriod.NORMAL);
 	}
 
 	public T getBindingPage() {
@@ -47,7 +53,7 @@ public class BindingWizard<T extends WizardPage> extends WizardDialog {
 	public static BindingWizard<JCABindingPage> createJCABindingWizard() {
 		return new BindingWizard<JCABindingPage>(new JCABindingPage());
 	}
-	
+
 	public static BindingWizard<JMSBindingPage> createJMSBindingWizard() {
 		return new BindingWizard<JMSBindingPage>(new JMSBindingPage());
 	}

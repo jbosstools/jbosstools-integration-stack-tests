@@ -1,6 +1,8 @@
 package org.jboss.tools.switchyard.reddeer.binding;
 
+import org.eclipse.swt.SWT;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 
 /**
  * FTPS binding page
@@ -10,23 +12,12 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  */
 public class FTPSBindingPage extends OperationOptionsPage<FTPSBindingPage> {
 
-	public static final String NAME = "Name";
 	public static final String DIRECTORY = "Directory*";
-
-	public FTPSBindingPage setName(String name) {
-		new LabeledText(NAME).setFocus();
-		new LabeledText(NAME).setText(name);
-		return this;
-	}
-
-	public String getName() {
-		return new LabeledText(NAME).getText();
-	}
 
 	public FTPSBindingPage setDirectory(String directory) {
 		new LabeledText(DIRECTORY).setFocus();
 		new LabeledText(DIRECTORY).setText(directory);
-		new LabeledText(NAME).setFocus();
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.TAB);
 		return this;
 	}
 
