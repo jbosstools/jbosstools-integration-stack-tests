@@ -78,6 +78,21 @@ public class FabricExplorer extends DefaultExplorer {
 	}
 	
 	/**
+	 * Removes the fabric details
+	 * 
+	 * @param name name of the fabric detail (if is <i>null</i>, a default value is used).
+	 */
+	public void removeFabric(String name) {
+
+		String fabric = name == null ? "Local Fabric" : name;
+		log.info("Removing the Fabric detail: " + fabric);
+		selectNode(NODE_FABRICS, fabric);
+		selectContextMenuItem("Delete Fabric details");
+		AbstractWait.sleep(TimePeriod.SHORT);
+		log.info("Fabric detail (" + fabric + ") was deleted");
+	}
+	
+	/**
 	 * Tries to connect to a Fabric detail with given name
 	 * 
 	 * @param name Name of a Fabric detail displayed in <i>Fabric Explorer</i>.

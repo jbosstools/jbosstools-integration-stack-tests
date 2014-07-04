@@ -9,6 +9,8 @@ import java.util.Scanner;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.junit.logging.Logger;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
@@ -17,6 +19,7 @@ import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
 import org.jboss.tools.fuse.reddeer.utils.ResourceHelper;
 import org.jboss.tools.fuse.reddeer.wizard.CamelTestCaseWizard;
@@ -35,6 +38,8 @@ import org.junit.Test;
  * 
  * @author tsedmik
  */
+@CleanWorkspace
+@OpenPerspective(FuseIntegrationPerspective.class)
 public class ProjectLocalRunTest extends RedDeerTest {
 	
 	private static final String PROJECT_ARCHETYPE = "camel-archetype-spring";

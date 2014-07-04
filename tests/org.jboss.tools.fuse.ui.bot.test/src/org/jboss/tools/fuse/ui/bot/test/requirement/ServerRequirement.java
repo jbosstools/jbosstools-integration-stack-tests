@@ -19,7 +19,7 @@ public class ServerRequirement implements Requirement<Server>, PropertyConfigura
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.TYPE)
 	public @interface Server {
-		
+
 	}
 	
 	// Server runtime environments
@@ -122,5 +122,4 @@ public class ServerRequirement implements Requirement<Server>, PropertyConfigura
 	public void setJmxname(String jmxname) {
 		this.jmxname = jmxname;
 	}
-
 }

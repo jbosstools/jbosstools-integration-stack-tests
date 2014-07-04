@@ -31,7 +31,7 @@ public class FabricInCloudTest extends RedDeerTest {
 
 	private static FabricExplorer fab = new FabricExplorer();
 
-	@Test
+	//@Test
 	public void testCloudFabric() {
 
 		// create a Fabric in the cloud

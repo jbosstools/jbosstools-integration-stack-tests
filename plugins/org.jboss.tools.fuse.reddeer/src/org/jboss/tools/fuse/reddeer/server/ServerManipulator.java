@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
+import org.jboss.reddeer.eclipse.condition.ServerExists;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerLabel;
@@ -15,9 +16,12 @@ import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.matcher.WithRegexMatcher;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
@@ -87,8 +91,15 @@ public class ServerManipulator {
 
 	public static void removeServer(String name) {
 
-		Server server = new ServersView().getServer(name);
-		server.delete();
+		log.info("Deleting server " + name + ".");
+		new ServersView().open();
+		new DefaultTreeItem().select();
+		new ContextMenu("Delete").select();
+		new DefaultShell("Delete Server");
+		new PushButton("OK").click();
+		new WaitWhile(new ServerExists(name), TimePeriod.NORMAL);
+		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
+		log.info("Server " + name + " was deleted.");
 
 	}
 

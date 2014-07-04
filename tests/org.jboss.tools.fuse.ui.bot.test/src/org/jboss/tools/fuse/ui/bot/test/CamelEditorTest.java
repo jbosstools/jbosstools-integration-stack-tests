@@ -1,7 +1,10 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.junit.logging.Logger;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.tools.fuse.reddeer.component.CamelComponent;
@@ -16,10 +19,12 @@ import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 
 /**
- * 
+ * Tests creation of all components in Fuse Camel editor
+ *  
  * @author apodhrad
- * 
  */
+@CleanWorkspace
+@OpenPerspective(JavaEEPerspective.class)
 public class CamelEditorTest extends RedDeerTest {
 
 	protected Logger log = Logger.getLogger(CamelEditorTest.class);

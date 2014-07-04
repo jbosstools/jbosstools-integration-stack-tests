@@ -11,9 +11,12 @@ import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.matcher.WithRegexMatcher;
 import org.jboss.reddeer.swt.matcher.WithTextMatcher;
 import org.jboss.reddeer.swt.test.RedDeerTest;
@@ -21,6 +24,7 @@ import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.preference.DeployFolderPreferencePage;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
 import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
@@ -47,6 +51,8 @@ import org.junit.Test;
  * @author tsedmik
  */
 @Server
+@CleanWorkspace
+@OpenPerspective(FuseIntegrationPerspective.class)
 public class DeploymentTest extends RedDeerTest {
 	
 	private static String os = System.getProperty("os.name").toLowerCase();	
@@ -87,6 +93,8 @@ public class DeploymentTest extends RedDeerTest {
 		ServerManipulator.startServer(serverRequirement.getName());
 		ProjectFactory.createProject(PROJECT_ARCHETYPE);
 		ProjectFactory.createProject(PROJECT_ARCHETYPE2);
+		new WorkbenchShell().setFocus();
+		new WorkbenchShell().maximize();
 		
 		setUpIsDone = true;
 	}
@@ -106,6 +114,8 @@ public class DeploymentTest extends RedDeerTest {
 	public static void cleanUp() {
 		
 		ServerManipulator.stopServer(serverRequirement.getName());
+		ServerManipulator.removeServer(serverRequirement.getName());
+		ServerManipulator.removeServerRuntime(serverRequirement.getRuntime());
 		new CamelProject(PROJECT_NAME).deleteProject();
 		new CamelProject(PROJECT_NAME2).deleteProject();
 	}
@@ -149,7 +159,10 @@ public class DeploymentTest extends RedDeerTest {
 		fab.deployProjectToProfile(PROJECT_NAME, "test");
 		
 		assertEquals(PROJECT_FABS, fab.getProfileFABs("Fabrics", "Local Fabric", "Versions", "1.0", "default", "test"));
-		
+
+		fab.open();
+		fab.removeFabric(null);
+
 		// TODO improve test case
 		// create a new container with assigned the profile
 		// check deploy in the properties view

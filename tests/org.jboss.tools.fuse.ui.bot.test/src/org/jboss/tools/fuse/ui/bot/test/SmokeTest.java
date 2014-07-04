@@ -6,7 +6,10 @@ import static org.junit.Assert.fail;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.AbstractPerspective;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.junit.logging.Logger;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.view.FabricExplorer;
@@ -19,6 +22,8 @@ import org.junit.Test;
  * 
  * @author tsedmik
  */
+@CleanWorkspace
+@OpenPerspective(JavaEEPerspective.class)
 public class SmokeTest extends RedDeerTest {
 
 	private static final String PROJECT_ARCHETYPE = "camel-archetype-spring";

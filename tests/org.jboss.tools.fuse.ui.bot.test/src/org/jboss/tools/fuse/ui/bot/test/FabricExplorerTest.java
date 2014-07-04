@@ -7,6 +7,8 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -15,6 +17,7 @@ import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
 import org.jboss.tools.fuse.reddeer.view.FabricExplorer;
 import org.jboss.tools.fuse.reddeer.view.FuseContainerProperties;
@@ -32,6 +35,8 @@ import org.junit.Test;
  * @author tsedmik
  */
 @Server
+@CleanWorkspace
+@OpenPerspective(FuseIntegrationPerspective.class)
 public class FabricExplorerTest extends RedDeerTest {
 
 	@InjectRequirement
@@ -63,6 +68,11 @@ public class FabricExplorerTest extends RedDeerTest {
 	public static void cleanUp() {
 
 		ServerManipulator.stopServer(serverRequirement.getName());
+		ServerManipulator.removeServer(serverRequirement.getName());
+		ServerManipulator.removeServerRuntime(serverRequirement.getRuntime());
+		
+		fab.open();
+		fab.removeFabric(null);
 	}
 
 	@Test

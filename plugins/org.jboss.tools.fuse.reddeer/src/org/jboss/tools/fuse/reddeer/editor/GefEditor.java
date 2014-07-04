@@ -18,6 +18,7 @@ import org.hamcrest.core.IsInstanceOf;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.util.ResultRunnable;
 import org.jboss.reddeer.swt.wait.WaitUntil;
@@ -174,6 +175,7 @@ public class GefEditor extends DefaultEditor {
 		hoverEditPartWithLabel(label);
 		new ContextButton("Delete").click();
 		String deleteShellText = "Confirm Delete";
+		new DefaultShell().setFocus();
 		new WaitUntil(new ShellWithTextIsActive(deleteShellText));
 		new PushButton("Yes").click();
 		new WaitWhile(new ShellWithTextIsActive(deleteShellText));
@@ -184,6 +186,7 @@ public class GefEditor extends DefaultEditor {
 		hoverEditPartWithTooltip(tooltip);
 		new ContextButton("Delete").click();
 		String deleteShellText = "Confirm Delete";
+		new DefaultShell().setFocus();
 		new WaitUntil(new ShellWithTextIsActive(deleteShellText));
 		new PushButton("Yes").click();
 		new WaitWhile(new ShellWithTextIsActive(deleteShellText));
