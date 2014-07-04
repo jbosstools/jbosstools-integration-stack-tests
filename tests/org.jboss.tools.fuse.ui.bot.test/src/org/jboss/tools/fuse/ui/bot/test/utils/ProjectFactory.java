@@ -12,26 +12,24 @@ import org.jboss.tools.fuse.reddeer.wizard.FuseProjectWizard;
  * @author tsedmik
  */
 public class ProjectFactory {
-	
+
 	private static Logger log = Logger.getLogger(ProjectFactory.class);
-	
+
 	/**
 	 * Creates a new Fuse project from given archetype 
 	 * 
 	 * @param archetype <i>Artifact ID</i> in the <i>New Fuse Project</i> Wizard
 	 */
 	public static void createProject(String archetype) {
-		
+
 		FuseProjectWizard projectWizard = new FuseProjectWizard();
 		projectWizard.open();
 		projectWizard.next();
 		projectWizard.setFilter(archetype);
 		projectWizard.selectFirstArchetype();
 		projectWizard.finish();
-		
-		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(300));	
-		log.info("The Fuse project from archetype: " + archetype + " was created.");
-		
-	}
 
+		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(300));
+		log.info("The Fuse project from archetype: " + archetype + " was created.");
+	}
 }
