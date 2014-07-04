@@ -32,7 +32,7 @@
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog -eclipse.password resources/security/password -pluginCustomization resources/config/plugin_customization.ini"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="org.jboss.tools.switchyard.ui.bot.test"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xms256m -Xmx512m -XX:PermSize=256m -XX:MaxPermSize=384m -Dusage_reporting_enabled=false -Dswtbot.test.properties.file=/home/apodhrad/Projects/server-installer/fsw-6.0.0.GA/target/server.properties"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xms256m -Xmx512m -XX:PermSize=256m -XX:MaxPermSize=384m -Dusage_reporting_enabled=false -Dswtbot.test.properties.file=swtbot.properties"/>
 <stringAttribute key="pde.version" value="3.3"/>
 <stringAttribute key="product" value="com.jboss.jbds.product.product"/>
 <booleanAttribute key="show_selected_only" value="false"/>

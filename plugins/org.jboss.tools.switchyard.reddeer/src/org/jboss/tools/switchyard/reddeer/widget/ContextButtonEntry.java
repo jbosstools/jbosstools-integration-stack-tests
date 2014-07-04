@@ -1,5 +1,8 @@
 package org.jboss.tools.switchyard.reddeer.widget;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.graphiti.tb.IContextButtonEntry;
 import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.util.ResultRunnable;
@@ -38,5 +41,17 @@ public class ContextButtonEntry {
 				return contextButtonEntry.getText();
 			}
 		});
+	}
+
+	public List<ContextButtonEntry> getContextButtonEntries() {
+		List<ContextButtonEntry> entries = new ArrayList<ContextButtonEntry>();
+		if (contextButtonEntry instanceof org.eclipse.graphiti.tb.ContextButtonEntry) {
+			org.eclipse.graphiti.tb.ContextButtonEntry entry = (org.eclipse.graphiti.tb.ContextButtonEntry) contextButtonEntry;
+			List<IContextButtonEntry> menuEntries = entry.getContextButtonMenuEntries();
+			for (IContextButtonEntry menuEntry : menuEntries) {
+				entries.add(new ContextButtonEntry(menuEntry));
+			}
+		}
+		return entries;
 	}
 }

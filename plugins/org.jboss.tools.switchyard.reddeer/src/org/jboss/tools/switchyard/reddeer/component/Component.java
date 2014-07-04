@@ -13,6 +13,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
 import org.eclipse.swtbot.swt.finder.results.Result;
 import org.hamcrest.Matcher;
+import org.jboss.reddeer.junit.logging.Logger;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -31,9 +32,11 @@ import org.jboss.tools.switchyard.reddeer.widget.ContextButtonEntry;
  * A general switchyard component.
  * 
  * @author Andrej Podhradsky (andrej.podhradsky@gmail.com)
- *
+ * 
  */
 public class Component {
+
+	private Logger log = Logger.getLogger(Component.class);
 
 	protected SWTBotGefEditPart editPart;
 	private String tooltip;
@@ -65,7 +68,7 @@ public class Component {
 		contextButton("Properties").click();
 		return new PropertiesPreferencePage(tooltip).activate();
 	}
-	
+
 	public void delete() {
 		contextButton("Delete").click();
 		String deleteShellText = "Confirm Delete";
@@ -74,17 +77,27 @@ public class Component {
 		new WaitWhile(new ShellWithTextIsAvailable(deleteShellText));
 		new WaitWhile(new JobIsRunning());
 	}
-	
-	public ContextButtonEntry contextButton(String label) {
+
+	public ContextButtonEntry contextButton(String... label) {
 		List<ContextButtonEntry> entries = new SwitchYardEditor().getContextButtonEntries(this);
+		ContextButtonEntry contextButton = find(label[0], entries);
+		for (int i = 1; i < label.length; i++) {
+			contextButton = find(label[i], contextButton.getContextButtonEntries());
+		}
+		return contextButton;
+	}
+
+	private ContextButtonEntry find(String label, List<ContextButtonEntry> entries) {
+		log.info("Looking for context button:");
 		for (ContextButtonEntry entry : entries) {
+			log.info("\t'" + entry.getText() + "'");
 			if (entry.getText().equals(label)) {
 				return entry;
 			}
 		}
 		throw new RuntimeException("Cannot find context button '" + label + "'");
 	}
-	
+
 	public void select() {
 		editPart.select();
 	}

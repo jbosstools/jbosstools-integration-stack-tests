@@ -1,5 +1,8 @@
 package org.jboss.tools.switchyard.ui.bot.test;
 
+import java.io.IOException;
+
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -45,6 +48,19 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public static Activator getDefault() {
 		return plugin;
+	}
+	
+	/**
+	 * Returns absolute path to resources folder.
+	 * 
+	 * @return absolute path to resources folder
+	 */
+	public String getResourcesPath() {
+		try {
+			return FileLocator.toFileURL(getBundle().getEntry("/resources")).getFile();
+		} catch (IOException e) {
+			throw new RuntimeException("Cannot get resources path", e);
+		}
 	}
 
 }
