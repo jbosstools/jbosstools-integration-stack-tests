@@ -107,7 +107,6 @@ public class DeploymentTest extends RedDeerTest {
 			item.select();
 			new ContextMenu("Close Camel Context").select();
 		}
-		
 	}
 	
 	@AfterClass
@@ -157,15 +156,15 @@ public class DeploymentTest extends RedDeerTest {
 		fab.connectToFabric(null);
 		fab.createProfile("test", "1.0", "default");
 		fab.deployProjectToProfile(PROJECT_NAME, "test");
-		
+
 		assertEquals(PROJECT_FABS, fab.getProfileFABs("Fabrics", "Local Fabric", "Versions", "1.0", "default", "test"));
 
 		fab.open();
-		fab.removeFabric(null);
+		fab.createContainer("testContainer", "1.0", "test");
+		assertTrue(new FuseShell().containsLog("testContainer has been successfully created"));
 
-		// TODO improve test case
-		// create a new container with assigned the profile
-		// check deploy in the properties view
+		fab.open();
+		fab.removeFabric(null);
 	}
 	
 	/**

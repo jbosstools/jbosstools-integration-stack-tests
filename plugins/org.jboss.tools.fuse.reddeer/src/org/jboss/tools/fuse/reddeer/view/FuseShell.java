@@ -1,13 +1,18 @@
 package org.jboss.tools.fuse.reddeer.view;
 
+import java.io.IOException;
+
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.swt.keyboard.Keyboard;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
+import org.jboss.tools.fuse.reddeer.utils.ShellManager;
+
+import com.jcraft.jsch.JSchException;
 
 /**
  * Performs operations with the <i>Fuse Shell</i> view.
+ * Command execution is performed via SSH (not via JBoss Fuse Tooling).
  * 
  * @author tsedmik
  */
@@ -22,12 +27,21 @@ public class FuseShell extends WorkbenchView {
 	 * 
 	 * @param command command that will be performed
 	 */
-	public void execute(String command) {
+	public String execute(String command) {
 		
-		new Keyboard() {
-			@Override public void writeToClipboard(boolean cut) {}
-			@Override public void pasteFromClipboard() {}
-		}.type(command + "\n");
+		ShellManager shell = null;
+		try {
+			shell = new ShellManager("admin", "admin", "0.0.0.0", 8101);
+			return shell.execute(command);
+		} catch (JSchException e) {
+			log.error("Cannot create ShellManager");
+		} catch (IOException e) {
+			log.error("Reading response to given command error");
+		} finally {
+			if (shell != null) shell.close();
+		}
+		
+		return null;
 	}
 
 	/**
@@ -45,11 +59,37 @@ public class FuseShell extends WorkbenchView {
 	 */
 	public void createFabric() {
 		
-		open();
-		connect();
 		execute("fabric:create");
-		AbstractWait.sleep(TimePeriod.getCustom(30)); // TODO replace it with wait condition
 	}
 	
-	
+	/**
+	 * Checks whether JBoss Fuse log contains given text
+	 * 
+	 * @param text Text which presence is checked in JBoss Fuse log
+	 * @return true - text is in the log, false - otherwise
+	 */
+	public boolean containsLog(String text) {
+		
+		ShellManager shell = null;
+		int attempts = 10;
+		
+		try {
+			shell = new ShellManager("admin", "admin", "0.0.0.0", 8101);
+			while (attempts-- > 0) {
+				String tmp = shell.execute("log:display");
+				System.out.println(tmp);
+				if (tmp.contains(text)) return true;
+				AbstractWait.sleep(TimePeriod.SHORT);
+			}
+			return false;
+		} catch (JSchException e) {
+			log.error("Cannot create ShellManager");
+		} catch (IOException e) {
+			log.error("Problem with creating output");
+		} finally {
+			if (shell != null) shell.close();
+		}
+
+		return false;
+	}
 }
