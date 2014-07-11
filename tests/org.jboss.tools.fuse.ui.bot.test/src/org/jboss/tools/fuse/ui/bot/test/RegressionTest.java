@@ -8,8 +8,12 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
+import org.jboss.tools.fuse.reddeer.preference.ServerRuntimePreferencePage;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
 import org.jboss.tools.fuse.reddeer.view.FuseJMXNavigator;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
@@ -35,6 +39,25 @@ public class RegressionTest {
 	}
 
 	/**
+	 * New Server Runtime Wizard - Finish button error
+	 * https://issues.jboss.org/browse/FUSETOOLS-1076
+	 */
+	@Test
+	public void issue_1076() {
+
+		ServerRuntimePreferencePage serverRuntime = new ServerRuntimePreferencePage();
+		serverRuntime.open();
+		new PushButton("Add...").click();
+		new DefaultShell("New Server Runtime Environment").setFocus();
+		new DefaultTreeItem("JBoss Fuse", "JBoss Fuse 6.1").select();
+		if (new PushButton("Finish").isEnabled()) {
+			new PushButton("Cancel").click();
+			new DefaultShell("Preferences").close();
+			fail("'Finish' button should not be enabled!");
+		}
+	}
+
+	/**
 	 * JMX Navigator - prevent from close Camel Context
 	 * https://issues.jboss.org/browse/FUSETOOLS-1115
 	 */
@@ -53,6 +76,6 @@ public class RegressionTest {
 			new ConsoleView().terminateConsole();
 		}
 
-		fail("Context menu item 'Close Camel Context' is available");
+		fail("Context menu item 'Close Camel Context' is available!");
 	}
 }
