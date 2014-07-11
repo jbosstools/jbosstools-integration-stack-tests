@@ -130,4 +130,19 @@ public class RegressionTest {
 
 		fail("Context menu item 'Close Camel Context' is available!");
 	}
+
+	/**
+	 * New Fuse Project - Finish button
+	 * https://issues.jboss.org/browse/FUSETOOLS-1149
+	 */
+	@Test
+	public void issue_1149() {
+
+		new ShellMenu("File", "New", "Fuse Project").select();
+		new DefaultShell("New Fuse Project");
+		if (new PushButton("Finish").isEnabled()) {
+			new DefaultShell().close();
+			fail("'Finish' button should not be enabled!");
+		}
+	}
 }
