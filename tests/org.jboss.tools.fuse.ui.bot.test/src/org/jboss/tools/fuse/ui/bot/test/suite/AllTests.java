@@ -5,7 +5,6 @@ import junit.framework.TestSuite;
 import org.jboss.tools.fuse.ui.bot.test.CamelEditorTest;
 import org.jboss.tools.fuse.ui.bot.test.DeploymentTest;
 import org.jboss.tools.fuse.ui.bot.test.FabricExplorerTest;
-import org.jboss.tools.fuse.ui.bot.test.FabricInCloudTest;
 import org.jboss.tools.fuse.ui.bot.test.FuseProjectTest;
 import org.jboss.tools.fuse.ui.bot.test.JMXNavigatorTest;
 import org.jboss.tools.fuse.ui.bot.test.ProjectLocalRunTest;
@@ -27,8 +26,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	FuseProjectTest.class,
 	ServerTest.class,
 	FabricExplorerTest.class,
-	DeploymentTest.class,
-	FabricInCloudTest.class
+	DeploymentTest.class
 })
 @RunWith(FuseSuite.class)
 public class AllTests extends TestSuite {

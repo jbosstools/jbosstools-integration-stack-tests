@@ -18,8 +18,18 @@ import org.junit.Test;
  * <ul>
  * <li>EC2id - Amazon EC2 Identity</li>
  * <li>EC2password - Amazon EC2 password</li>
- * <li>EC2emil - Amazon EC2 owner</li>
+ * <li>EC2email - Amazon EC2 owner</li>
  * </ul>
+ * 
+ * <b>Note:</b> Run this test only from maven:
+ * <tt>cd jbosstools-integration-stack-tests</tt>
+ * <tt>DISPLAY=:2 mvn verify -pl tests/org.jboss.tools.fuse.ui.bot.test -am
+ * 		-Dreddeer.config=$SERVER_CONFIG_XML
+ * 		-Dtest=FabricInCloudTest
+ * 		-Dec2.id=$EC2id
+ * 		-Dec2.pass=$EC2password
+ * 		-Dec2.email=$EC2email
+ * 		-Dmaven.test.failure.ignore=true</tt>
  * 
  * @author tsedmik
  */
@@ -31,7 +41,7 @@ public class FabricInCloudTest extends RedDeerTest {
 
 	private static FabricExplorer fab = new FabricExplorer();
 
-	//@Test
+	@Test
 	public void testCloudFabric() {
 
 		// create a Fabric in the cloud
