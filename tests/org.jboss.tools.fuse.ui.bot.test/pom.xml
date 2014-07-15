@@ -27,61 +27,65 @@
 		<amazon-terminator-jar>amazon-terminator-1.0-jar-with-dependencies.jar</amazon-terminator-jar>
 
 	</properties>
-			<build>
-				<plugins>
-					<!-- Fuse Bot Tests -->
-					<plugin>
-						<groupId>org.eclipse.tycho</groupId>
-						<artifactId>tycho-surefire-plugin</artifactId>
-						<configuration>
-							<appArgLine>-pluginCustomization resources/config/plugin_customization.ini -clean -testpluginname org.jboss.tools.fuse.ui.bot.test</appArgLine>
-							<testSuite>org.jboss.tools.fuse.ui.bot.test</testSuite>
-							<testClass>**/*Test</testClass>
-							<useUIThread>false</useUIThread>
-							<skip>${skipTests}</skip>
 
-							<dependencies combine.children="append">
-								<!-- Fuse Camel feature -->
-								<dependency>
-									<type>p2-installable-unit</type>
-									<artifactId>org.fusesource.ide.camel.editor.feature.feature.group</artifactId>
-									<version>0.0.0</version>
-								</dependency>
-								<!-- Fuse Runtimes feature -->
-								<dependency>
-									<type>p2-installable-unit</type>
-									<artifactId>org.fusesource.ide.runtimes.feature.feature.group</artifactId>
-									<version>0.0.0</version>
-								</dependency>
-								<!-- Fuse Server feature -->
-								<dependency>
-									<type>p2-installable-unit</type>
-									<artifactId>org.fusesource.ide.server.extensions.feature.feature.group</artifactId>
-									<version>0.0.0</version>
-								</dependency>
-								<!-- AS feature -->
-								<dependency>
-									<type>p2-installable-unit</type>
-									<artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
-									<version>0.0.0</version>
-								</dependency>
-								<!-- This entry should enable creating of default JDK on Mac -->
-								<dependency>
-									<type>p2-installable-unit</type>
-									<artifactId>org.eclipse.jdt.feature.group</artifactId>
-									<version>0.0.0</version>
-								</dependency>
-							</dependencies>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-			
+	<build>
+		<plugins>
+			<!-- Fuse Bot Tests -->
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<configuration>
+					<appArgLine>-pluginCustomization resources/config/plugin_customization.ini -clean -testpluginname org.jboss.tools.fuse.ui.bot.test</appArgLine>
+					<testSuite>org.jboss.tools.fuse.ui.bot.test</testSuite>
+					<testClass>**/*Test</testClass>
+					<useUIThread>false</useUIThread>
+					<skip>${skipTests}</skip>
+
+					<dependencies combine.children="append">
+						<!-- Fuse Camel feature -->
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.fusesource.ide.camel.editor.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+						<!-- Fuse Runtimes feature -->
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.fusesource.ide.runtimes.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+						<!-- Fuse Server feature -->
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.fusesource.ide.server.extensions.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+						<!-- AS feature -->
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+						<!-- This entry should enable creating of default JDK on Mac -->
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.eclipse.jdt.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+					</dependencies>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
 	<profiles>
 		<profile>
 			<id>amazon-terminator-profile</id>
 			<activation>
-				<property><name>test</name><value>FabricInCloudTest</value></property>
+				<property>
+					<name>test</name>
+					<value>FabricInCloudTest</value>
+				</property>
 			</activation>
 			<build>
 				<plugins>
