@@ -9,15 +9,15 @@
 	</parent>
 	<groupId>org.jboss.tools</groupId>
 	<artifactId>integration-stack-tests</artifactId>
-	<version>4.1.0-SNAPSHOT</version>
+	<version>4.2.0-SNAPSHOT</version>
 	<name>integration-stack-tests.all</name>
 	<packaging>pom</packaging>
 
 	<properties>
+	  <tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-integration-stack-tests.git</tycho.scmUrl>
 	  <jbtis.tp.version>4.1.8.Final</jbtis.tp.version>
 	  <jbtis.site>http://download.jboss.org/jbosstools/updates/stable/kepler/integration-stack/aggregate/4.1.5.Final</jbtis.site>
 	  <reddeer.site>http://download.jboss.org/jbosstools/updates/stable/luna/core/reddeer/0.5.0</reddeer.site>
-	  <jbt.tests.site>http://download.jboss.org/jbosstools/updates/nightly/integrationtests/4.1.kepler</jbt.tests.site>
 	  <orbit.site>http://download.eclipse.org/tools/orbit/downloads/drops/R20130517111416/repository</orbit.site>
 	  <swtbot.site>http://download.eclipse.org/technology/swtbot/releases/latest</swtbot.site>
 	  <jetty.site>http://download.eclipse.org/jetty/updates/jetty-bundles-8.x</jetty.site>
@@ -52,12 +52,6 @@
 	  <repository>
 	    <id>swtbot-site</id>
 	    <url>${swtbot.site}</url>
-	    <layout>p2</layout>
-	  </repository>
-	  <!-- JBoss Tools Integration Tests Site -->
-	  <repository>
-	    <id>jbt-tests-site</id>
-	    <url>${jbt.tests.site}</url>
 	    <layout>p2</layout>
 	  </repository>
 	  <!-- Eclipse Orbit Update Site -->
