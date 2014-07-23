@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.jboss.tools.integration-stack-tests</groupId>
 		<artifactId>tests</artifactId>
-		<version>4.1.0-SNAPSHOT</version>
+		<version>4.2.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.fuse</groupId>
 	<artifactId>org.jboss.tools.fuse.ui.bot.test</artifactId>
@@ -25,7 +25,6 @@
 
 		<amazon-terminator>https://github.com/tsedmik/amazon-terminator/releases/download/v1.0/amazon-terminator-1.0-jar-with-dependencies.jar</amazon-terminator>
 		<amazon-terminator-jar>amazon-terminator-1.0-jar-with-dependencies.jar</amazon-terminator-jar>
-
 	</properties>
 
 	<build>

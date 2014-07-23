@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: SwitchYard Reddeer Framework
 Bundle-SymbolicName: org.jboss.tools.switchyard.reddeer
 Bundle-Vendor: JBoss by Red Hat
-Bundle-Version: 4.1.0.qualifier
+Bundle-Version: 4.2.0.qualifier
 Bundle-Activator: org.jboss.tools.switchyard.reddeer.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.gef,
