@@ -1,13 +1,3 @@
-# Fuse Bot Tests
+# JBoss Fuse Tooling Tests
 
-## How to run
-
-At first, you have to install org.jboss.tools.fuse.reddeer
-
-    $ mvn clean install
-
-then you can run the tests as follows
-
-    $ mvn clean verify
-
-We recommend to run the tests on another display (Xephyr, Vnc, ...)
+See complete guide on [Wiki](https://github.com/jbosstools/jbosstools-integration-stack-tests/wiki/JBoss-Fuse-Tooling)
