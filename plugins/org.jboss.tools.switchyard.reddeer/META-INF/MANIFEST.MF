@@ -7,16 +7,17 @@ Bundle-Version: 4.2.0.qualifier
 Bundle-Activator: org.jboss.tools.switchyard.reddeer.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.gef,
- org.jboss.reddeer.eclipse,
- org.jboss.reddeer.gef,
- org.jboss.reddeer.jface,
- org.jboss.reddeer.junit,
- org.jboss.reddeer.swt,
- org.jboss.reddeer.workbench,
+ org.jboss.reddeer.eclipse;bundle-version="0.6.0",
+ org.jboss.reddeer.gef;bundle-version="0.6.0",
+ org.jboss.reddeer.jface;bundle-version="0.6.0",
+ org.jboss.reddeer.junit;bundle-version="0.6.0",
+ org.jboss.reddeer.swt;bundle-version="0.6.0",
+ org.jboss.reddeer.workbench;bundle-version="0.6.0",
  org.eclipse.swtbot.go,
  org.eclipse.swtbot.eclipse.gef.finder,
  org.eclipse.graphiti;bundle-version="0.10.0",
- org.eclipse.graphiti.ui;bundle-version="0.10.0"
+ org.eclipse.graphiti.ui;bundle-version="0.10.0",
+ org.jboss.reddeer.common
 Export-Package: org.jboss.tools.switchyard.reddeer.binding,
  org.jboss.tools.switchyard.reddeer.component,
  org.jboss.tools.switchyard.reddeer.condition,

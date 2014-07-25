@@ -3,7 +3,6 @@ package org.jboss.tools.teiid.reddeer.wizard;
 import java.io.File;
 
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileDatabasePage;
-import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
@@ -18,10 +17,6 @@ public class GenericProfilePage extends ConnectionProfileDatabasePage {
 	private static final String HSQL_LOCK = ";hsqldb.lock_file=false";
 	private static final String HSQL_PREFIX = "jdbc:hsqldb:";
 
-	protected GenericProfilePage(WizardDialog wizardDialog, int pageIndex) {
-		super(wizardDialog, pageIndex);
-	}
-	
 	@Override
 	public void setDatabase(String database) {
 		new LabeledText(LABEL_DATABASE).setText(database);

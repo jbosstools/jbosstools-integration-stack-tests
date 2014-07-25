@@ -18,10 +18,6 @@ public class ConnectionProfileSybasePage extends ConnectionProfileDatabasePage {
 	public static final String LABEL_PASSWORD = "Password:";
 	public static final String LABEL_SAVE_PASSWORD = "Save password";
 
-	public ConnectionProfileSybasePage(WizardDialog wizardDialog, int indexPage) {
-		super(wizardDialog, indexPage);
-	}
-
 	public String getDatabase() {
 		return new LabeledText(LABEL_DATABASE).getText();
 	}

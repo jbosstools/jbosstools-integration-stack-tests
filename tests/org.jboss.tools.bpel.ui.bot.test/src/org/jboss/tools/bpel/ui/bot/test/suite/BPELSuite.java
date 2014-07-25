@@ -10,7 +10,7 @@ import java.util.Properties;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.Tree;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
+import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.bpel.reddeer.view.ServerPreferencePage;
 import org.jboss.tools.bpel.reddeer.wizard.ServerWizard;
 import org.junit.runners.model.InitializationError;

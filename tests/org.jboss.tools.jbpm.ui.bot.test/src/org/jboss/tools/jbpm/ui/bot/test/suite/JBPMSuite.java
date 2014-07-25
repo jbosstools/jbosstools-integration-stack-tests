@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
+import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.jbpm.ui.bot.test.wizard.ServerWizard;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.RunnerBuilder;

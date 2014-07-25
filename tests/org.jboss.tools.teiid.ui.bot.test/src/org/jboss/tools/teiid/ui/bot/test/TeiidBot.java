@@ -14,36 +14,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Properties;
 
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
-import org.jboss.reddeer.eclipse.datatools.ui.DatabaseProfile;
-import org.jboss.reddeer.eclipse.datatools.ui.DriverDefinition;
-import org.jboss.reddeer.eclipse.datatools.ui.DriverTemplate;
-import org.jboss.reddeer.eclipse.datatools.ui.FlatFileProfile;
-import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileDatabasePage;
-import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileFlatFilePage;
-import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileSelectPage;
-import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileWizard;
-import org.jboss.reddeer.eclipse.datatools.ui.wizard.DriverDefinitionPage;
-import org.jboss.reddeer.eclipse.datatools.ui.wizard.DriverDefinitionWizard;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.tools.teiid.reddeer.ModelProject;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
-import org.jboss.tools.teiid.reddeer.extensions.FlatFileProfileExt;
-import org.jboss.tools.teiid.reddeer.preference.DriverDefinitionPreferencePageExt;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.TeiidView;
-import org.jboss.tools.teiid.reddeer.wizard.ConnectionProfileXmlPage;
 import org.jboss.tools.teiid.reddeer.wizard.HSQLDBDriverWizard;
 import org.jboss.tools.teiid.reddeer.wizard.HSQLDBProfileWizard;
-import org.jboss.tools.teiid.reddeer.wizard.ImportJDBCDatabaseWizard;
-import org.jboss.tools.teiid.reddeer.wizard.TeiidConnectionProfileWizard;
 
 /**
  * Bot operations specific for Teiid Designer.

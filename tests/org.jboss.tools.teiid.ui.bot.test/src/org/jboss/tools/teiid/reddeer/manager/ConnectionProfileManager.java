@@ -1,19 +1,13 @@
 package org.jboss.tools.teiid.reddeer.manager;
 
-import java.io.File;
 import java.util.Properties;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.eclipse.datatools.ui.DatabaseProfile;
 import org.jboss.reddeer.eclipse.datatools.ui.FlatFileProfile;
-import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileDatabasePage;
-import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileFlatFilePage;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileSelectPage;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileWizard;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.tools.teiid.reddeer.extensions.FlatFileProfileExt;
 import org.jboss.tools.teiid.reddeer.wizard.ConnectionProfileXmlPage;
+import org.jboss.tools.teiid.reddeer.wizard.ConnectionProfileXmlUrlPage;
 import org.jboss.tools.teiid.reddeer.wizard.TeiidConnectionProfileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.WsdlProfileWizard;
 import org.jboss.tools.teiid.ui.bot.test.TeiidBot;
@@ -116,13 +110,13 @@ public class ConnectionProfileManager {
 		TeiidConnectionProfileWizard wizard = new TeiidConnectionProfileWizard();
 		wizard.open();
 
-		ConnectionProfileSelectPage selectPage = wizard.getFirstPage();
+		ConnectionProfileSelectPage selectPage = new ConnectionProfileSelectPage();
 		selectPage.setConnectionProfile(xmlProfile);
 		selectPage.setName(name);
 
 		wizard.next();
 
-		ConnectionProfileXmlPage xmlPage = (ConnectionProfileXmlPage) wizard.getSecondPage();
+		ConnectionProfileXmlPage xmlPage = new ConnectionProfileXmlUrlPage();
 		xmlPage.setPath(new TeiidBot().toAbsolutePath(path));
 
 		wizard.finish();

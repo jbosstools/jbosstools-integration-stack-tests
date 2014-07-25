@@ -1,7 +1,11 @@
 package org.jboss.tools.drools.reddeer.editor;
 
+import java.util.List;
+
 import org.eclipse.ui.IEditorPart;
+import org.jboss.reddeer.eclipse.jface.text.contentassist.ContentAssistant;
 import org.jboss.reddeer.workbench.api.Editor;
+import org.jboss.reddeer.workbench.impl.editor.Marker;
 
 public class NestedEditor implements Editor {
     private IEditorPart editor;
@@ -51,5 +55,39 @@ public class NestedEditor implements Editor {
     public void minimize() {
         parent.minimize();
     }
+
+    // TODO The following methods were added in Red Deer 0.6.0
+    
+	@Override
+	public void activate() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void restore() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public ContentAssistant openContentAssistant() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public ContentAssistant openQuickFixContentAssistant() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public ContentAssistant openOpenOnAssistant() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Marker> getMarkers() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

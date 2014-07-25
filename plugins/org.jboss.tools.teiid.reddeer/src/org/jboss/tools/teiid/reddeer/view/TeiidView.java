@@ -1,6 +1,6 @@
 package org.jboss.tools.teiid.reddeer.view;
 
-import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
+import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 
 /**
  * This class represents a teiid view

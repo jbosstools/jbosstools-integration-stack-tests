@@ -8,10 +8,10 @@ import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.swt.handler.ShellHandler;
 import org.jboss.reddeer.swt.handler.WidgetHandler;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.reddeer.swt.util.Display;
@@ -110,7 +110,7 @@ public class ThrottlingTest extends RedDeerTest {
 
 	@AfterClass
 	public static void deleteProject() {
-		new WorkbenchShell().closeAllShells();
+		ShellHandler.getInstance().closeAllNonWorbenchShells();
 		new SwitchYardEditor().saveAndClose();
 		new ProjectExplorer().getProject(PROJECT).delete(true);
 	}

@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 import org.jboss.reddeer.eclipse.ui.perspectives.AbstractPerspective;
 import org.jboss.reddeer.junit.requirement.Requirement;
-import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
+import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.bpel.ui.bot.test.suite.PerspectiveRequirement.Perspective;
 
 /**

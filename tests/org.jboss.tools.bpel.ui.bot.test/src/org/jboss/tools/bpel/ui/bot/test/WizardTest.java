@@ -1,7 +1,7 @@
 package org.jboss.tools.bpel.ui.bot.test;
 
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
-import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
+import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.bpel.reddeer.editor.BpelEditor;
 import org.jboss.tools.bpel.reddeer.wizard.NewProcessWizard;
 import org.jboss.tools.bpel.reddeer.wizard.NewProjectWizard;

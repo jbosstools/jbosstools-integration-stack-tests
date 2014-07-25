@@ -2,16 +2,15 @@ package org.jboss.tools.teiid.reddeer.wizard;
 
 import static org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable.syncExec;
 
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.DriverDefinitionPage;
-import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.api.Tree;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.tools.teiid.reddeer.preference.DriverDefinitionPreferencePageExt;
 
 /**
@@ -77,14 +76,6 @@ public class HSQLDBDriverWizard {
 	}
 
 	private class DriverDefinitionPageExt extends DriverDefinitionPage {
-
-		public DriverDefinitionPageExt() {
-			super(null, -1);
-		}
-
-		public DriverDefinitionPageExt(WizardDialog wizardDialog, int pageIndex) {
-			super(wizardDialog, pageIndex);
-		}
 
 		@Override
 		public void setDriverClass(String driverClass) {

@@ -3,7 +3,6 @@ package org.jboss.tools.teiid.reddeer.wizard;
 import java.io.File;
 
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileDatabasePage;
-import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
@@ -20,10 +19,6 @@ public class ConnectionProfileHsqlPage extends ConnectionProfileDatabasePage{
 	public static final String LABEL_USER_NAME = "User name:";
 	public static final String LABEL_PASSWORD = "Password:";
 	public static final String LABEL_SAVE_PASSWORD = "Save Password";
-	
-	protected ConnectionProfileHsqlPage(WizardDialog wizardDialog, int pageIndex) {
-		super(wizardDialog, pageIndex);
-	}
 
 	@Override
 	public void setDatabase(String database) {

@@ -9,7 +9,7 @@ import java.util.Properties;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swtbot.swt.finder.junit.ScreenshotCaptureListener;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.workbench.view.impl.WorkbenchView;
+import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.switchyard.reddeer.preference.ServerPreferencePage;
 import org.jboss.tools.switchyard.reddeer.wizard.ServerWizard;
 import org.junit.runner.notification.RunListener;

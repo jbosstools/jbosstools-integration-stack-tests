@@ -8,7 +8,6 @@ import org.jboss.reddeer.eclipse.datatools.ui.DriverTemplate;
 import org.jboss.reddeer.eclipse.datatools.ui.preference.DriverDefinitionPreferencePage;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.DriverDefinitionPage;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.DriverDefinitionWizard;
-import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.api.Tree;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -58,7 +57,7 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 			
 			if (drvTemp.getType().contains(GENERIC_JDBC)) { //e.g. HSQL with Generic driver and with Generic CP 
 
-				DriverDefinitionPageExt pageExt = new DriverDefinitionPageExt(getFirstPage().getWizardDialog(), 0);
+				DriverDefinitionPageExt pageExt = new DriverDefinitionPageExt();
 				pageExt.selectDriverTemplate(drvTemp.getType(), drvTemp.getVersion());//!!!! if at least database matches and others are empty, select it
 				pageExt.setName(driverDefinition.getDriverName());
 				pageExt.addDriverLibrary(driverDefinition.getDriverLibrary());
@@ -68,7 +67,7 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 			
 			if (drvTemp.getType().contains(OTHER)) { //e.g. Sybase jtds
 
-				DriverDefinitionPageExt pageExt = new DriverDefinitionPageExt(getFirstPage().getWizardDialog(), 0);
+				DriverDefinitionPageExt pageExt = new DriverDefinitionPageExt();
 				pageExt.selectDriverTemplate(drvTemp.getType(), drvTemp.getVersion(), driverDefinition.getVendorTemplate());
 				pageExt.setName(driverDefinition.getDriverName());
 				pageExt.addDriverLibrary(driverDefinition.getDriverLibrary());
@@ -81,7 +80,7 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 			
 			else {
 				//normal jdbc (e.g. HSQL with HSQL CP, Sybase jconn3)
-				DriverDefinitionPage page = getFirstPage();
+				DriverDefinitionPage page = new DriverDefinitionPage();
 				page.selectDriverTemplate(drvTemp.getType(), drvTemp.getVersion());
 				page.setName(driverDefinition.getDriverName());
 				page.addDriverLibrary(driverDefinition.getDriverLibrary());//firstly clears all suggested jars, but for Generic the list is empty
@@ -96,10 +95,6 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 		private static final String CONNECTION_URL = "Connection URL";
 		private static final String GENERAL = "General";
 		private static final String DRIVER_CLASS = "Driver Class";
-		
-		public DriverDefinitionPageExt() {
-			super(null, -1);
-		}
 
 		public void setDatabaseName(String databaseName) {
 			selectTab(TAB_PROPERTIES);
@@ -125,11 +120,6 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 					break;
 				}
 			}
-		}
-
-		public DriverDefinitionPageExt(WizardDialog wizardDialog, int pageIndex) {
-			super(wizardDialog, pageIndex);
-			new DefaultShell();
 		}
 
 		public void setDriverClassGeneric(String driverClass) {

@@ -8,7 +8,6 @@ import java.util.Properties;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.eclipse.datatools.ui.DatabaseProfile;
-import org.jboss.reddeer.eclipse.datatools.ui.DriverDefinition;
 import org.jboss.reddeer.eclipse.datatools.ui.DriverTemplate;
 import org.jboss.reddeer.eclipse.datatools.ui.FlatFileProfile;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileDatabasePage;
@@ -26,17 +25,10 @@ import org.jboss.tools.teiid.reddeer.preference.DriverDefinitionPreferencePageEx
  * @author apodhrad, lfabriko
  *
  */
-public class TeiidConnectionProfileWizard extends ConnectionProfileWizard {// TODO should be renamed to ConnectionProfileExt 
+public class TeiidConnectionProfileWizard extends ConnectionProfileWizard { 
 
 	public TeiidConnectionProfileWizard() {
-		super();//db.vendor
-		wizardMap.put("HSQLDB", new ConnectionProfileHsqlPage(this, 2));
-		wizardMap.put("XML File URL Source", new ConnectionProfileXmlUrlPage(this, 2));
-		wizardMap.put("XML Local File Source", new ConnectionProfileXmlLocalPage(this, 2));
-		wizardMap.put("SalesForce", new ConnectionProfileSalesForcePage(this,2));
-		wizardMap.put("Generic JDBC", new GenericProfilePage(this, 2));
-		wizardMap.put("Sybase ASA", new GenericProfilePage(this, 2));//sybasepage for sybase asa driver, but this driver is nok; should be other driver and generic page
-		wizardMap.put("DB2 for Linux, UNIX, and Windows", new ConnectionProfileDB2Page(this, 2));
+		super();
 	}
 	
 	/**
@@ -48,13 +40,13 @@ public class TeiidConnectionProfileWizard extends ConnectionProfileWizard {// TO
 	public DatabaseProfile createSalesforceConnectionProfile(String profileName, String props){
 		DatabaseProfile dbProfile = this.prepareDatabaseProfile(profileName, this.getProperties(props));
 		open();
-		ConnectionProfileSelectPage selectPage = getFirstPage();
+		ConnectionProfileSelectPage selectPage = new ConnectionProfileSelectPage();
 		selectPage.setConnectionProfile(dbProfile.getVendor());
 		selectPage.setName(dbProfile.getName());
 
 		next();
 		
-		ConnectionProfileDatabasePage dbPage = (ConnectionProfileDatabasePage) getSecondPage();
+		ConnectionProfileDatabasePage dbPage = new ConnectionProfileSalesForcePage();
 		dbPage.setUsername(dbProfile.getUsername());
 		dbPage.setPassword(dbProfile.getPassword());
 
@@ -139,13 +131,13 @@ public class TeiidConnectionProfileWizard extends ConnectionProfileWizard {// TO
 	
 	@Override
 	public void createFlatFileProfile(FlatFileProfile flatProfile) {
-		ConnectionProfileSelectPage selectPage = getFirstPage();
+		ConnectionProfileSelectPage selectPage = new ConnectionProfileSelectPage();
 		selectPage.setConnectionProfile("Flat File Data Source");
 		selectPage.setName(flatProfile.getName());
 
 		next();
 
-		ConnectionProfileFlatFilePage flatPage = (ConnectionProfileFlatFilePage) getSecondPage();
+		ConnectionProfileFlatFilePage flatPage =  new ConnectionProfileFlatFilePage();
 		new SWTWorkbenchBot().text().setText(new File(flatProfile.getFolder()).getAbsolutePath());//should be absolute path!
 		//switch off validation of home folder
 		new CheckBox("Validate home folder").click();

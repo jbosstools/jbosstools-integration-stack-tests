@@ -13,6 +13,10 @@ public class ConnectionProfileXmlUrlPage extends WizardPage implements Connectio
 
 	public static final String LABEL_URL = "Connection URL";
 
+	public ConnectionProfileXmlUrlPage() {
+		
+	}
+	
 	protected ConnectionProfileXmlUrlPage(WizardDialog wizardDialog, int pageIndex) {
 		super(wizardDialog, pageIndex);
 	}
