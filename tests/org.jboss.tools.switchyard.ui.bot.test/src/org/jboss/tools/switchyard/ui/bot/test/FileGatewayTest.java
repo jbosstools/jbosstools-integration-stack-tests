@@ -9,7 +9,6 @@ import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
 import org.jboss.tools.switchyard.reddeer.binding.FileBindingPage;
@@ -39,7 +38,7 @@ import org.junit.runner.RunWith;
 @OpenPerspective(JavaEEPerspective.class)
 @Server(type = Type.ALL, state = State.RUNNING)
 @RunWith(SwitchyardSuite.class)
-public class FileGatewayTest extends RedDeerTest {
+public class FileGatewayTest {
 
 	public static final String PROJECT = "file_project";
 	public static final String PACKAGE = "com.example.switchyard.file_project";

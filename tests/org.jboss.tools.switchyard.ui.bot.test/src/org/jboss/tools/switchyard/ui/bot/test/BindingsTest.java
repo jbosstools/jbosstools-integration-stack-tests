@@ -12,7 +12,6 @@ import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
-import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
 import org.jboss.tools.switchyard.reddeer.binding.CamelBindingPage;
@@ -54,7 +53,7 @@ import org.junit.runner.RunWith;
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
 @RunWith(SwitchyardSuite.class)
-public class BindingsTest extends RedDeerTest {
+public class BindingsTest {
 
 	public static final String CONTEXT_PATH = "Context Path";
 

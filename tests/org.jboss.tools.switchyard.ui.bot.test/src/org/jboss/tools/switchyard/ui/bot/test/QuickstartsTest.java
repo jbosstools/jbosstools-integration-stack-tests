@@ -14,7 +14,6 @@ import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.C
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
-import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -36,7 +35,7 @@ import org.junit.runner.RunWith;
 @OpenPerspective(JavaEEPerspective.class)
 @Server(type = Type.ALL, state = State.PRESENT)
 @RunWith(SwitchyardSuite.class)
-public abstract class QuickstartsTest extends RedDeerTest {
+public abstract class QuickstartsTest {
 
 	protected String quickstartPath;
 

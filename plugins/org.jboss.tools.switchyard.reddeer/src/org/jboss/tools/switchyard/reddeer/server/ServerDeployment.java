@@ -38,7 +38,7 @@ public class ServerDeployment {
 	}
 
 	public void deployProject(String project, String checkPhrase) {
-		AbstractWait.sleep(1000);
+		AbstractWait.sleep(TimePeriod.SHORT);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
 		clearConsole();
@@ -67,7 +67,7 @@ public class ServerDeployment {
 	}
 
 	public void fullPublish(String project, String checkPhrase) {
-		AbstractWait.sleep(1000);
+		AbstractWait.sleep(TimePeriod.SHORT);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
 		clearConsole();

@@ -10,6 +10,7 @@ import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 
 /**
  * 
@@ -22,14 +23,14 @@ public class TextEditor {
 	private static SWTWorkbenchBot bot = new SWTWorkbenchBot(); 
 
 	public TextEditor(String fileName) {
-		AbstractWait.sleep(1000);
+		AbstractWait.sleep(TimePeriod.SHORT);
 		editor = bot.editorByTitle(fileName).toTextEditor();
 		editor.show();
 		editor.setFocus();
 	}
 
 	public TextEditor type(String text) {
-		AbstractWait.sleep(1000);
+		AbstractWait.sleep(TimePeriod.SHORT);
 		editor.typeText(text);
 		editor.save();
 		return this;
@@ -66,7 +67,7 @@ public class TextEditor {
 	}
 
 	public TextEditor formatText() {
-		AbstractWait.sleep(1000);
+		AbstractWait.sleep(TimePeriod.SHORT);
 		try {
 			editor.pressShortcut(Keystrokes.CTRL, Keystrokes.SHIFT, KeyStroke.getInstance("O"));
 			editor.pressShortcut(Keystrokes.CTRL, Keystrokes.SHIFT, KeyStroke.getInstance("F"));
@@ -97,7 +98,7 @@ public class TextEditor {
 	public void generateGettersSetters(String firstAttribute){
 		editor.navigateTo(getLineNum(firstAttribute),0);
 		new ShellMenu("Source", "Generate Getters and Setters...").select();
-		AbstractWait.sleep(1000);
+		AbstractWait.sleep(TimePeriod.SHORT);
 		new PushButton("Select All").click();
 		new PushButton("OK").click();
 		editor.save();

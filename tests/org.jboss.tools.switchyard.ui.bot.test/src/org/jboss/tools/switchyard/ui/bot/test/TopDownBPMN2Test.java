@@ -13,7 +13,6 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
@@ -55,7 +54,7 @@ import org.junit.runner.RunWith;
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
 @RunWith(SwitchyardSuite.class)
-public class TopDownBPMN2Test extends RedDeerTest {
+public class TopDownBPMN2Test {
 
 	private static final String PROJECT = "switchyard-bpm-processgreet";
 	private static final String PACKAGE = "org.switchyard.quickstarts.bpm.service";

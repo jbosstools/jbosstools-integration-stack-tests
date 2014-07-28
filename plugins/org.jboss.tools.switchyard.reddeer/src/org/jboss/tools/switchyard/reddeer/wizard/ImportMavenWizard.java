@@ -42,7 +42,7 @@ public class ImportMavenWizard extends ImportWizardDialog {
 		new WaitWhile(new ShellWithTextIsActive("Import Maven Projects"), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(20 * 60 * 1000));
 
-		AbstractWait.sleep(10 * 1000);
+		AbstractWait.sleep(TimePeriod.NORMAL);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 
 		ProjectExplorer projectExplorer = new ProjectExplorer();
@@ -53,7 +53,7 @@ public class ImportMavenWizard extends ImportWizardDialog {
 		new CheckBox("Force Update of Snapshots/Releases").toggle(true);
 		new PushButton("OK").click();
 
-		AbstractWait.sleep(10 * 1000);
+		AbstractWait.sleep(TimePeriod.NORMAL);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 

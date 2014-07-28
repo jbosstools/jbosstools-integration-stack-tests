@@ -6,7 +6,6 @@ import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.C
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
 import org.jboss.tools.switchyard.reddeer.binding.SOAPBindingPage;
@@ -39,7 +38,7 @@ import org.junit.runner.RunWith;
 @OpenPerspective(JavaEEPerspective.class)
 @Server(type = Type.ALL, state = State.RUNNING)
 @RunWith(SwitchyardSuite.class)
-public class BottomUpBPELTest extends RedDeerTest {
+public class BottomUpBPELTest {
 
 	public static final String PROJECT = "bpel_project";
 	public static final String WSDL = "http://localhost:8080/bpel_project/SayHelloService?wsdl";

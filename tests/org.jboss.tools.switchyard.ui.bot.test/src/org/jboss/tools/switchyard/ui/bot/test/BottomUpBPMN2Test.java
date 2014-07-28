@@ -17,7 +17,6 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.switchyard.reddeer.component.Component;
@@ -45,7 +44,7 @@ import org.junit.runner.RunWith;
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
 @RunWith(SwitchyardSuite.class)
-public class BottomUpBPMN2Test extends RedDeerTest {
+public class BottomUpBPMN2Test {
 
 	public static final String PROJECT = "bpmn2_project";
 	public static final String PACKAGE = "com.example.switchyard.bpmn2_project";

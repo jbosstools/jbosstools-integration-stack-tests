@@ -13,7 +13,6 @@ import org.jboss.reddeer.swt.handler.WidgetHandler;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.util.ResultRunnable;
 import org.jboss.tools.switchyard.reddeer.component.Service;
@@ -36,7 +35,7 @@ import org.junit.runner.RunWith;
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
 @RunWith(SwitchyardSuite.class)
-public class ThrottlingTest extends RedDeerTest {
+public class ThrottlingTest {
 
 	public static final String PROJECT = "throttling_project";
 	public static final String SERVICE = "HelloService";

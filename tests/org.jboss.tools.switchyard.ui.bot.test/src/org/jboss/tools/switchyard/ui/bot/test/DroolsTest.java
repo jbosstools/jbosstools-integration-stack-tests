@@ -12,8 +12,8 @@ import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.C
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.tools.switchyard.reddeer.component.Drools;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
@@ -35,7 +35,7 @@ import org.junit.runner.RunWith;
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
 @RunWith(SwitchyardSuite.class)
-public class DroolsTest extends RedDeerTest {
+public class DroolsTest {
 
 	private static final String PROJECT = "switchyard-drools-interview";
 	private static final String PACKAGE = "org.switchyard.quickstarts.drools.service";
@@ -94,7 +94,7 @@ public class DroolsTest extends RedDeerTest {
 		
 		//test
 		new org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor().show();
-		AbstractWait.sleep(1000);
+		AbstractWait.sleep(TimePeriod.SHORT);
 		new Service(INTERVIEW + "Service").createNewServiceTestClass();
 		new TextEditor(TEST).deleteLineWith("null").type("Applicant message=new Applicant(\"Twenty\", 20);").deleteLineWith("Implement")
 		.type("message=new Applicant(\"Ten\", 10);").type("service.operation(\"verify\").sendInOnly(message);");
@@ -104,7 +104,7 @@ public class DroolsTest extends RedDeerTest {
 		ProjectItem item = new ProjectExplorer().getProject(PROJECT)
 				.getProjectItem("src/test/java", PACKAGE,TEST);
 		new ProjectItemExt(item).runAsJUnitTest();
-		AbstractWait.sleep(30 * 1000);
+		AbstractWait.sleep(TimePeriod.LONG);
 		assertEquals("1/1", new JUnitView().getRunStatus());
 		assertEquals(0, new JUnitView().getNumberOfErrors());
 		assertEquals(0, new JUnitView().getNumberOfFailures());
@@ -125,6 +125,6 @@ public class DroolsTest extends RedDeerTest {
 		new LabeledText("Source folder:").setText(PROJECT+"/"+PACKAGE_MAIN_JAVA);
 		page.setPackage(PACKAGE);
 		wizard.finish();
-		AbstractWait.sleep(1000);
+		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 }

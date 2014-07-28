@@ -3,6 +3,7 @@ package org.jboss.tools.switchyard.reddeer.condition;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.swt.condition.WaitCondition;
 import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 
 /**
  * 
@@ -18,7 +19,7 @@ public class ConsoleHasChanged implements WaitCondition {
 		consoleView.open();
 		String consoleTextBefore = consoleView.getConsoleText();
 
-		AbstractWait.sleep(1000);
+		AbstractWait.sleep(TimePeriod.SHORT);
 
 		consoleView.open();
 		String consoleTextAfter = consoleView.getConsoleText();
