@@ -13,6 +13,8 @@
 
 	<category-def name="JBoss Tools Integration Stack Tests" label="JBoss Tools Integration Stack Tests"><description>JBoss Tools Integration Stack Tests</description></category-def>
 
+	<bundle id="org.jboss.tools.runtime.reddeer"><category name="JBoss Tools Integration Stack Tests"/></bundle>
+	<bundle id="org.jboss.tools.runtime.ui.bot.test"><category name="JBoss Tools Integration Stack Tests"/></bundle>
 	<bundle id="org.jboss.tools.bpel.reddeer"><category name="JBoss Tools Integration Stack Tests"/></bundle>
 	<bundle id="org.jboss.tools.bpel.ui.bot.test"><category name="JBoss Tools Integration Stack Tests"/></bundle>
 	<bundle id="org.jboss.tools.bpmn2.reddeer"><category name="JBoss Tools Integration Stack Tests"/></bundle>
@@ -33,6 +35,8 @@
 
 	<category-def name="JBoss Tools Integration Stack Tests Sources" label="JBoss Tools Integration Stack Tests Sources"><description>JBoss Tools Integration Stack Tests Sources</description></category-def>
 
+	<bundle id="org.jboss.tools.runtime.reddeer.source"><category name="JBoss Tools Integration Stack Tests Sources"/></bundle>
+	<bundle id="org.jboss.tools.runtime.ui.bot.test.source"><category name="JBoss Tools Integration Stack Tests Sources"/></bundle>
 	<bundle id="org.jboss.tools.bpel.reddeer.source"><category name="JBoss Tools Integration Stack Tests Sources"/></bundle>
 	<bundle id="org.jboss.tools.bpel.ui.bot.test.source"><category name="JBoss Tools Integration Stack Tests Sources"/></bundle>
 	<bundle id="org.jboss.tools.bpmn2.reddeer.source"><category name="JBoss Tools Integration Stack Tests Sources"/></bundle>

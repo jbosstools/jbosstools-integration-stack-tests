@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+                <groupId>org.jboss.tools.integration-stack-tests</groupId>
+		<artifactId>tests</artifactId>
+		<version>4.2.0-SNAPSHOT</version>
+	</parent>
+	<groupId>org.jboss.tools.runtime</groupId>
+	<artifactId>org.jboss.tools.runtime.ui.bot.test</artifactId>
+	<packaging>eclipse-test-plugin</packaging>
+
+	<properties>
+	  <reddeer.config>${project.build.directory}/classes/config</reddeer.config>
+	  <systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=${reddeer.config}</systemProperties>
+	  <surefire.timeout>10800</surefire.timeout>
+	  <maven-download-plugin.version>1.0.0</maven-download-plugin.version>
+	</properties>
+
+	<build>
+	  <resources>
+	    <resource>
+	      <directory>resources</directory>
+	      <includes>
+		<include>config/*</include>
+	      </includes>
+	      <filtering>true</filtering>
+	    </resource>
+	  </resources>
+	  <plugins>
+	    <!-- Runtime Bot Tests -->
+	    <plugin>
+	      <groupId>org.eclipse.tycho</groupId>
+	      <artifactId>tycho-surefire-plugin</artifactId>
+	      <configuration>
+		<appArgLine>-eclipse.password resources/security/password -clean</appArgLine>
+		<useUIThread>false</useUIThread>
+		<skip>${skipTests}</skip>
+		<dependencies combine.children="append">
+		  <!-- JBoss AS Feature -->
+		  <dependency>
+		    <type>p2-installable-unit</type>
+		    <artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
+		    <version>0.0.0</version>
+		  </dependency>
+		  <!-- JBoss ESB Feature -->
+		  <dependency>
+		    <type>p2-installable-unit</type>
+		    <artifactId>org.jboss.tools.esb.feature.feature.group</artifactId>
+		    <version>0.0.0</version>
+		  </dependency>
+		  <!-- Fuse fature -->
+		  <dependency>
+		    <type>p2-installable-unit</type>
+		    <artifactId>org.fusesource.ide.server.extensions.feature.feature.group</artifactId>
+		    <version>0.0.0</version>
+		  </dependency>
+		  <!-- This entry should enable creating of default JDK on Mac -->
+		  <dependency>
+		    <type>p2-installable-unit</type>
+		    <artifactId>org.eclipse.jdt.feature.group</artifactId>
+		    <version>0.0.0</version>
+		  </dependency>
+		</dependencies>
+	      </configuration>
+	    </plugin>
+	    <plugin>
+	      <groupId>com.googlecode.maven-download-plugin</groupId>
+	      <artifactId>download-maven-plugin</artifactId>
+	      <version>1.2.0</version>
+	      <executions>
+		<execution>
+		  <id>download-jboss-esb</id>
+		  <phase>pre-integration-test</phase>
+		  <goals>
+                    <goal>wget</goal>
+		  </goals>
+		  <configuration>
+                    <url>http://download.jboss.org/jbossesb/4.12/binary/jbossesb-4.12.zip</url>
+                    <unpack>true</unpack>
+                    <outputDirectory>${project.build.directory}</outputDirectory>
+                    <md5>24077f0ad7643a1f34448c0ed5225590</md5>
+		  </configuration>
+		</execution>
+		<execution>
+		  <id>download-jboss-as</id>
+		  <phase>pre-integration-test</phase>
+		  <goals>
+                    <goal>wget</goal>
+		  </goals>
+		  <configuration>
+		    <url>http://download.jboss.org/jbossas/7.1/jboss-as-7.1.1.Final/jboss-as-7.1.1.Final.zip</url>
+                    <unpack>true</unpack>
+                    <outputDirectory>${project.build.directory}</outputDirectory>
+		    <md5>175c92545454f4e7270821f4b8326c4e</md5>
+		  </configuration>
+		</execution>
+		<execution>
+		  <id>download-apache-karaf</id>
+		  <phase>pre-integration-test</phase>
+		  <goals>
+                    <goal>wget</goal>
+		  </goals>
+		  <configuration>
+                    <url>http://apache.miloslavbrada.cz/karaf/2.3.6/apache-karaf-2.3.6.zip</url>
+                    <unpack>true</unpack>
+                    <outputDirectory>${project.build.directory}</outputDirectory>
+                    <md5>d8179d5d90aec394b48955faf2ada99b</md5>
+		  </configuration>
+		</execution>
+	      </executions>
+	    </plugin>
+	  </plugins>
+	</build>
+	
+      </project>
+      

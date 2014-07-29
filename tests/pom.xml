@@ -21,6 +21,7 @@
         </properties>
 
 	<modules>
+		<module>org.jboss.tools.runtime.ui.bot.test</module>
 		<module>org.jboss.tools.jbpm.ui.bot.test</module>
 		<module>org.jboss.tools.bpel.ui.bot.test</module>
 		<module>org.jboss.tools.esb.ui.bot.test</module>
