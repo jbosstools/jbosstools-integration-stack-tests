@@ -29,3 +29,4 @@ Export-Package: org.jboss.tools.fuse.reddeer.component,
  org.jboss.tools.fuse.reddeer.utils,
  org.jboss.tools.fuse.reddeer.view,
  org.jboss.tools.fuse.reddeer.wizard
+Import-Package: org.jboss.reddeer.common.logging

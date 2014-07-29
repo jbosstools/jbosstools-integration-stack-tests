@@ -15,13 +15,12 @@ import org.jboss.tools.runtime.reddeer.impl.ServerFuse;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-/**
- * FIXME TODO Move this class into runtime.tests
- * 
+/** 
  * Tests managing a Fuse server
  * 
  * @author tsedmik
@@ -50,7 +49,8 @@ public class ServerTest {
 		ServerManipulator.addServerRuntime(fuse.getName(), fuse.getHome());
 		assertEquals(1, ServerManipulator.getServerRuntimes().size());
 		ServerManipulator.editServerRuntime(fuse.getName(), fuse.getHome());
-		ServerManipulator.addServer(fuse.getServerType(), fuse.getHost(), fuse.getName(), fuse.getPort(), fuse.getUsername(), fuse.getPassword());
+		ServerManipulator.addServer(fuse.getServerType(), fuse.getHost(), fuse.getName(), fuse.getPort(),
+				fuse.getUsername(), fuse.getPassword());
 		assertEquals(1, ServerManipulator.getServers().size());
 		assertTrue(ServerManipulator.isServerPresent(fuse.getName()));
 		ServerManipulator.startServer(fuse.getName());
