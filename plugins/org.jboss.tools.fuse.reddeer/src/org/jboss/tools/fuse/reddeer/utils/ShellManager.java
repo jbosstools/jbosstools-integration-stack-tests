@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.jboss.reddeer.junit.logging.Logger;
+import org.jboss.reddeer.common.logging.Logger;
 
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelExec;
@@ -26,12 +26,18 @@ public class ShellManager {
 	/**
 	 * Creates an instance of ShellManager and establishes a session to given host
 	 * 
-	 * @param user username
-	 * @param password suitable password for given username
-	 * @param host IP address of host device
-	 * @param port Port number
+	 * @param user
+	 *            username
+	 * @param password
+	 *            suitable password for given username
+	 * @param host
+	 *            IP address of host device
+	 * @param port
+	 *            Port number
 	 * 
-	 * @throws JSchException In case something is wrong (username+password, connection establishing, ...)
+	 * @throws JSchException
+	 *             In case something is wrong (username+password, connection
+	 *             establishing, ...)
 	 */
 	public ShellManager(String user, String password, String host, int port) throws JSchException {
 
@@ -45,14 +51,18 @@ public class ShellManager {
 	}
 
 	/**
-	 * Executes given command. Execution is synchronous - Method waits until reaction to given command is complete
-	 * (InputStream is closed).
+	 * Executes given command. Execution is synchronous - Method waits until
+	 * reaction to given command is complete (InputStream is closed).
 	 * 
-	 * @param command Command that is sent to the host for execution
+	 * @param command
+	 *            Command that is sent to the host for execution
 	 * @return The host's reaction to given command
 	 * 
-	 * @throws JSchException In case something is wrong with command execution
-	 * @throws IOException In case something is wrong with reading reaction to given command
+	 * @throws JSchException
+	 *             In case something is wrong with command execution
+	 * @throws IOException
+	 *             In case something is wrong with reading reaction to given
+	 *             command
 	 */
 	public String execute(String command) throws JSchException, IOException {
 
@@ -93,10 +103,13 @@ public class ShellManager {
 	}
 
 	/**
-	 * Executes given command. Execution is asynchronous - Command execution is performed in a new thread.
+	 * Executes given command. Execution is asynchronous - Command execution is
+	 * performed in a new thread.
 	 * 
-	 * @param command Command that is sent to the host for execution
-	 * @param out OutputStream that contains reactions to given command
+	 * @param command
+	 *            Command that is sent to the host for execution
+	 * @param out
+	 *            OutputStream that contains reactions to given command
 	 */
 	public void asyncExecute(final String command, final OutputStream out) {
 
@@ -132,12 +145,15 @@ public class ShellManager {
 	}
 
 	/**
-	 * Closes session. Should be called after services of ServiceManager is no longer needed.
+	 * Closes session. Should be called after services of ServiceManager is no
+	 * longer needed.
 	 */
 	public void close() {
 		log.debug("Closing connection...");
-		if (session != null) session.disconnect();
-		if (channel != null) channel.disconnect();
+		if (session != null)
+			session.disconnect();
+		if (channel != null)
+			channel.disconnect();
 		log.debug("Connection closed");
 	}
 }

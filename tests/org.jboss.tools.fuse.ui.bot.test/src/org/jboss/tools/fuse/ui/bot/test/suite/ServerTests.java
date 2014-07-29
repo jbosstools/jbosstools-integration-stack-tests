@@ -2,6 +2,7 @@ package org.jboss.tools.fuse.ui.bot.test.suite;
 
 import junit.framework.TestSuite;
 
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.fuse.ui.bot.test.DeploymentTest;
 import org.jboss.tools.fuse.ui.bot.test.FabricExplorerTest;
 import org.jboss.tools.fuse.ui.bot.test.ServerTest;
@@ -18,7 +19,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	FabricExplorerTest.class,
 	DeploymentTest.class
 })
-@RunWith(FuseSuite.class)
+@RunWith(RedDeerSuite.class)
 public class ServerTests extends TestSuite {
 
 }

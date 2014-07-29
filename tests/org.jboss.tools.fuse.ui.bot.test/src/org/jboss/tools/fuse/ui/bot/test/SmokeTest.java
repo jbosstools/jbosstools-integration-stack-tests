@@ -3,19 +3,20 @@ package org.jboss.tools.fuse.ui.bot.test;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.AbstractPerspective;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.junit.logging.Logger;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.view.FabricExplorer;
 import org.jboss.tools.fuse.reddeer.view.FuseJMXNavigator;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * Simple tests verifies only presence of JBoss Fuse Tooling plugins
@@ -24,7 +25,8 @@ import org.junit.Test;
  */
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
-public class SmokeTest extends RedDeerTest {
+@RunWith(RedDeerSuite.class)
+public class SmokeTest {
 
 	private static final String PROJECT_ARCHETYPE = "camel-archetype-spring";
 	private static final String PROJECT_NAME = "camel-spring";

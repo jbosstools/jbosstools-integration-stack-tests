@@ -4,13 +4,14 @@ import static org.junit.Assert.assertEquals;
 
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.fuse.reddeer.view.FabricExplorer;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * Tests Fabric in the cloud. Must be run with properly set following system
@@ -33,7 +34,8 @@ import org.junit.Test;
  * 
  * @author tsedmik
  */
-public class FabricInCloudTest extends RedDeerTest {
+@RunWith(RedDeerSuite.class)
+public class FabricInCloudTest {
 
 	private static final String PROJECT_ARCHETYPE = "camel-archetype-spring";
 	private static final String PROJECT_NAME = "camel-spring";
@@ -46,7 +48,8 @@ public class FabricInCloudTest extends RedDeerTest {
 
 		// create a Fabric in the cloud
 		fab.open();
-		fab.createCloudDetail("Amazon", System.getProperty("ec2.id"), System.getProperty("ec2.pass"), System.getProperty("ec2.email"));
+		fab.createCloudDetail("Amazon", System.getProperty("ec2.id"), System.getProperty("ec2.pass"),
+				System.getProperty("ec2.email"));
 		fab.selectNode("Clouds", "Amazon");
 		fab.createFabricInTheCloud("Amazon", "Cloud Fabric", "admin", "admin", "eu-west-1", "t1.micro", "rhel", "6");
 		fab.selectNode("Fabrics", "Cloud Fabric");

@@ -3,13 +3,13 @@ package org.jboss.tools.fuse.reddeer.server;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.condition.ServerExists;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerLabel;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.junit.logging.Logger;
 import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.api.Tree;
 import org.jboss.reddeer.swt.api.TreeItem;
@@ -21,7 +21,6 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.matcher.WithRegexMatcher;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
@@ -36,7 +35,7 @@ import org.jboss.tools.fuse.reddeer.wizard.ServerWizard;
  * @author tsedmik
  */
 public class ServerManipulator {
-	
+
 	private static final Logger log = Logger.getLogger(ServerManipulator.class);
 
 	public static void addServerRuntime(String type, String path) {
@@ -75,8 +74,8 @@ public class ServerManipulator {
 		return temp;
 	}
 
-	public static void addServer(String type, String hostname, String name, String portNumber,
-			String userName, String password) {
+	public static void addServer(String type, String hostname, String name, String portNumber, String userName,
+			String password) {
 
 		ServerWizard serverWizard = new ServerWizard();
 		serverWizard.setType(type);
@@ -104,17 +103,18 @@ public class ServerManipulator {
 	}
 
 	public static void startServer(String name) {
-		
+
 		Server server = new ServersView().getServer(name);
 		server.start();
-		
+
 		Shell workbenchShell = new WorkbenchShell();
-		
+
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		new WaitUntil(new ConsoleHasText("100%"), TimePeriod.getCustom(300));
-		
+
 		// Hack for Mac OS X
-		// Returns focus from Apache.karaf.main back to IDE (after starting server)
+		// Returns focus from Apache.karaf.main back to IDE (after starting
+		// server)
 		workbenchShell.setFocus();
 	}
 
@@ -123,7 +123,7 @@ public class ServerManipulator {
 		Server server = new ServersView().getServer(name);
 		server.stop();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		
+
 		hack_General_CloseServerTerminateWindow();
 
 	}
@@ -148,11 +148,12 @@ public class ServerManipulator {
 	/**
 	 * Checks if the Fuse server is started
 	 * 
-	 * @param name Name of the server in Local Processes in JMX Navigator View
+	 * @param name
+	 *            Name of the server in Local Processes in JMX Navigator View
 	 * @return true - a Fuse server is started, false - otherwise
 	 */
 	public static boolean isServerStarted(String name) {
-		
+
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		FuseJMXNavigator jmx = new FuseJMXNavigator();
 		jmx.refresh();
@@ -164,35 +165,36 @@ public class ServerManipulator {
 
 		return false;
 	}
-	
+
 	/**
 	 * Checks if the Fuse server with given name exists
 	 * 
-	 * @param name Name of the Server in Servers View
+	 * @param name
+	 *            Name of the Server in Servers View
 	 * @return true - a Fuse server is present, false - otherwise
 	 */
 	public static boolean isServerPresent(String name) {
-		
+
 		try {
 			new ServersView().getServer(name);
 		} catch (EclipseLayerException ex) {
 			return false;
 		}
-		
+
 		return true;
 	}
-	
+
 	/**
-	 * If stopping a server takes a long time, <i>Terminate Server</i>
-	 * window is appeared. This method tries to close the window.
+	 * If stopping a server takes a long time, <i>Terminate Server</i> window is
+	 * appeared. This method tries to close the window.
 	 */
 	private static void hack_General_CloseServerTerminateWindow() {
-		
+
 		try {
 			new DefaultShell("Terminate Server").setFocus();
 			new PushButton("OK").click();
 		} catch (Exception e) {
 			log.info("Window 'Terminate Server' didn't appeared.");
 		}
-	}	
+	}
 }

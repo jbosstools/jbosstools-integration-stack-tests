@@ -1,14 +1,14 @@
 package org.jboss.tools.fuse.reddeer.preference;
 
-import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
 
 /**
  * Represents the SSH2 (Network Connections) preference page
  * 
  * @author tsedmik
  */
-public class SSH2PreferencePage extends PreferencePage {
+public class SSH2PreferencePage extends WorkbenchPreferencePage {
 	
 	private static final String SSH2HOME = "SSH2 home:";
 

@@ -4,11 +4,12 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.junit.logging.Logger;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.api.TreeItem;
@@ -17,13 +18,13 @@ import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.fuse.reddeer.wizard.FuseProjectWizard;
 import org.junit.After;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * 
@@ -32,7 +33,8 @@ import org.junit.Test;
  */
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
-public class FuseProjectTest extends RedDeerTest {
+@RunWith(RedDeerSuite.class)
+public class FuseProjectTest {
 
 	protected Logger log = Logger.getLogger(FuseProjectTest.class);
 
@@ -50,12 +52,12 @@ public class FuseProjectTest extends RedDeerTest {
 	public void camelComponentTest() {
 		createProject("camel-archetype-component");
 	}
-	
+
 	@Test
 	public void camelCxfCodeFirstBlueprint() {
 		createProject("camel-archetype-cxf-code-first-blueprint");
 	}
-	
+
 	@Test
 	public void camelCxfContractFirstBlueprint() {
 		createProject("camel-archetype-cxf-contract-first-blueprint");
@@ -149,8 +151,8 @@ public class FuseProjectTest extends RedDeerTest {
 
 		problemsView.open();
 		errors = problemsView.getAllErrors();
-		assertTrue("After creating the project '" + archetype
-				+ "' there are the following errors:\n" + toString(errors), errors.isEmpty());
+		assertTrue("After creating the project '" + archetype + "' there are the following errors:\n"
+				+ toString(errors), errors.isEmpty());
 	}
 
 	@After
@@ -169,5 +171,4 @@ public class FuseProjectTest extends RedDeerTest {
 		}
 		return result.toString();
 	}
-
 }

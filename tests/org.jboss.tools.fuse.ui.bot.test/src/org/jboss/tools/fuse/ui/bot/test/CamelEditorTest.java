@@ -1,31 +1,33 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.junit.logging.Logger;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
-import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.tools.fuse.reddeer.component.CamelComponent;
 import org.jboss.tools.fuse.reddeer.component.CamelComponents;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.editor.GefEditor;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
-import org.jboss.tools.fuse.reddeer.wizard.FuseProjectWizard;
+import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
+import org.junit.runner.RunWith;
 
 /**
  * Tests creation of all components in Fuse Camel editor
- *  
+ * 
  * @author apodhrad
  */
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
-public class CamelEditorTest extends RedDeerTest {
+@RunWith(RedDeerSuite.class)
+public class CamelEditorTest {
 
 	protected Logger log = Logger.getLogger(CamelEditorTest.class);
 
@@ -34,15 +36,11 @@ public class CamelEditorTest extends RedDeerTest {
 
 	@Test
 	public void camelEditorTest() {
+
 		new WorkbenchShell().maximize();
 
-		/* Create fuse project */
-		FuseProjectWizard projectWizard = new FuseProjectWizard();
-		projectWizard.open();
-		projectWizard.next();
-		projectWizard.setFilter("camel-archetype-spring");
-		projectWizard.selectFirstArchetype();
-		projectWizard.finish();
+		// Create fuse project
+		ProjectFactory.createProject("camel-archetype-spring");
 
 		new ProjectExplorer().open();
 		new CamelProject("camel-spring").deleteCamelContext("camel-context.xml");
@@ -67,6 +65,5 @@ public class CamelEditorTest extends RedDeerTest {
 			new GefEditor().printAllFigures();
 			super.failed(e, description);
 		}
-
 	}
 }

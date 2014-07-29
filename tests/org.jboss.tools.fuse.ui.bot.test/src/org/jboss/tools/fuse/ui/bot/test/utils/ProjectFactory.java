@@ -1,6 +1,6 @@
 package org.jboss.tools.fuse.ui.bot.test.utils;
 
-import org.jboss.reddeer.junit.logging.Logger;
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
