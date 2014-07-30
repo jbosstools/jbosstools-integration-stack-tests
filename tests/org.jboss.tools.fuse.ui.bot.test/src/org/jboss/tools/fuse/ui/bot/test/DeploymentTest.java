@@ -29,9 +29,9 @@ import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.preference.DeployFolderPreferencePage;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
 import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
-import org.jboss.tools.fuse.reddeer.view.FabricExplorer;
-import org.jboss.tools.fuse.reddeer.view.FuseJMXNavigator;
+import org.jboss.tools.fuse.reddeer.view.Fabric8Explorer;
 import org.jboss.tools.fuse.reddeer.view.FuseShell;
+import org.jboss.tools.fuse.reddeer.view.JMXNavigator;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
@@ -59,7 +59,6 @@ import org.junit.runner.RunWith;
 public class DeploymentTest {
 
 	private static String os = System.getProperty("os.name").toLowerCase();
-	private static boolean isWindows = os.indexOf("win") >= 0;
 
 	private static final String PROJECT_ARCHETYPE = "camel-archetype-spring";
 	private static final String PROJECT_NAME = "camel-spring";
@@ -72,7 +71,7 @@ public class DeploymentTest {
 	private static final String CONTEXT_DEPLOY_TO = "Deploy to...";
 	private static final String DEPLOY_FOLDER_NAME = "Fuse Deploy Folder";
 
-	private String JMX_JBOSS_FUSE = "JBoss Fuse";
+	private String JMX_JBOSS_FUSE = "karaf";
 	private static final String JMX_CAMEL = "Camel";
 	private static final String JMX_CAMEL2 = "camel-";
 
@@ -88,12 +87,8 @@ public class DeploymentTest {
 			return;
 		}
 
-		if (isWindows) {
-			JMX_JBOSS_FUSE = "karaf";
-		}
-
-		ProjectFactory.createProject(PROJECT_ARCHETYPE);
-		ProjectFactory.createProject(PROJECT_ARCHETYPE2);
+		ProjectFactory.createProject(PROJECT_NAME, PROJECT_ARCHETYPE);
+		ProjectFactory.createProject(PROJECT_NAME2, PROJECT_ARCHETYPE2);
 		new WorkbenchShell().setFocus();
 		new WorkbenchShell().maximize();
 
@@ -123,11 +118,13 @@ public class DeploymentTest {
 	@Test
 	public void deployWithDeployFolderTest() {
 
-		setupDeployFolder(DEPLOY_FOLDER_NAME, serverRequirement.getConfig().getServerBase().getHome() + "/deploy/", "Some description");
+		setupDeployFolder(DEPLOY_FOLDER_NAME, serverRequirement.getConfig().getServerBase().getHome() + "/deploy/",
+				"Some description");
 		deployProject(PROJECT_NAME, DEPLOY_FOLDER_NAME);
 
 		assertTrue(new ConsoleView().getConsoleText().contains("BUILD SUCCESS"));
-		File jarArchive = new File(serverRequirement.getConfig().getServerBase().getHome() + "/deploy/" + PROJECT_JAR_ARCHIVE);
+		File jarArchive = new File(serverRequirement.getConfig().getServerBase().getHome() + "/deploy/"
+				+ PROJECT_JAR_ARCHIVE);
 		assertTrue(jarArchive.exists());
 	}
 
@@ -135,7 +132,7 @@ public class DeploymentTest {
 	@Test
 	public void deployWithJMXTest() {
 
-		new FuseJMXNavigator().connectTo(JMX_JBOSS_FUSE);
+		new JMXNavigator().connectTo(JMX_JBOSS_FUSE);
 		new ProjectExplorer().getProject(PROJECT_NAME2).select();
 		Matcher<String> deployTo = new WithTextMatcher(CONTEXT_DEPLOY_TO);
 		Matcher<String> fuse = new RegexMatcher("JBoss Fuse.*");
@@ -150,7 +147,7 @@ public class DeploymentTest {
 
 		new FuseShell().createFabric();
 
-		FabricExplorer fab = new FabricExplorer();
+		Fabric8Explorer fab = new Fabric8Explorer();
 		fab.open();
 		fab.addFabricDetails(null, null, "admin", "admin", "admin");
 		fab.refresh();
@@ -206,7 +203,7 @@ public class DeploymentTest {
 
 	private TreeItem getJMXNode(String... path) {
 
-		FuseJMXNavigator jmx = new FuseJMXNavigator();
+		JMXNavigator jmx = new JMXNavigator();
 		jmx.open();
 		jmx.connectTo(JMX_JBOSS_FUSE);
 		AbstractWait.sleep(TimePeriod.getCustom(2));

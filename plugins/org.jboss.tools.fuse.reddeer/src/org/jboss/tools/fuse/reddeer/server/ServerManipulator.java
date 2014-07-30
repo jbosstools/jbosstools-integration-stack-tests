@@ -21,12 +21,10 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.fuse.reddeer.preference.ServerRuntimePreferencePage;
-import org.jboss.tools.fuse.reddeer.view.FuseJMXNavigator;
 import org.jboss.tools.fuse.reddeer.wizard.ServerWizard;
 
 /**
@@ -85,7 +83,6 @@ public class ServerManipulator {
 		serverWizard.setUserName(userName);
 		serverWizard.setPassword(password);
 		serverWizard.execute();
-
 	}
 
 	public static void removeServer(String name) {
@@ -99,7 +96,6 @@ public class ServerManipulator {
 		new WaitWhile(new ServerExists(name), TimePeriod.NORMAL);
 		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
 		log.info("Server " + name + " was deleted.");
-
 	}
 
 	public static void startServer(String name) {
@@ -112,9 +108,6 @@ public class ServerManipulator {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		new WaitUntil(new ConsoleHasText("100%"), TimePeriod.getCustom(300));
 
-		// Hack for Mac OS X
-		// Returns focus from Apache.karaf.main back to IDE (after starting
-		// server)
 		workbenchShell.setFocus();
 	}
 
@@ -125,7 +118,6 @@ public class ServerManipulator {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 
 		hack_General_CloseServerTerminateWindow();
-
 	}
 
 	public static List<String> getServers() {
@@ -149,21 +141,12 @@ public class ServerManipulator {
 	 * Checks if the Fuse server is started
 	 * 
 	 * @param name
-	 *            Name of the server in Local Processes in JMX Navigator View
+	 *            Name of the server
 	 * @return true - a Fuse server is started, false - otherwise
 	 */
 	public static boolean isServerStarted(String name) {
 
-		AbstractWait.sleep(TimePeriod.NORMAL);
-		FuseJMXNavigator jmx = new FuseJMXNavigator();
-		jmx.refresh();
-		for (String item : jmx.getLocalProcesses()) {
-			if (item.startsWith(name)) {
-				return true;
-			}
-		}
-
-		return false;
+		return new ServersView().getServer(name).getLabel().getState().isRunningState();
 	}
 
 	/**

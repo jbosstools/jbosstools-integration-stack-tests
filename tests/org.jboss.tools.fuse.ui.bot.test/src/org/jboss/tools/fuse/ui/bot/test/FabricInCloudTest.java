@@ -8,7 +8,7 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.tools.fuse.reddeer.view.FabricExplorer;
+import org.jboss.tools.fuse.reddeer.view.Fabric8Explorer;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,7 +41,7 @@ public class FabricInCloudTest {
 	private static final String PROJECT_NAME = "camel-spring";
 	private static final String PROJECT_FABS = "mvn:com.mycompany/camel-spring/1.0.0-SNAPSHOT";
 
-	private static FabricExplorer fab = new FabricExplorer();
+	private static Fabric8Explorer fab = new Fabric8Explorer();
 
 	@Test
 	public void testCloudFabric() {
@@ -57,7 +57,7 @@ public class FabricInCloudTest {
 		fab.selectNode("Fabrics", "Cloud Fabric", "Versions", "1.0", "default");
 
 		// Deploy a project to the fabric in the cloud
-		ProjectFactory.createProject(PROJECT_ARCHETYPE);
+		ProjectFactory.createProject(PROJECT_NAME, PROJECT_ARCHETYPE);
 		ProjectExplorer projectExplorer = new ProjectExplorer();
 		projectExplorer.open();
 		projectExplorer.selectProjects(PROJECT_NAME);

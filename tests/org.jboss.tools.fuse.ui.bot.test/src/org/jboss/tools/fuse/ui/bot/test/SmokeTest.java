@@ -12,8 +12,8 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
-import org.jboss.tools.fuse.reddeer.view.FabricExplorer;
-import org.jboss.tools.fuse.reddeer.view.FuseJMXNavigator;
+import org.jboss.tools.fuse.reddeer.view.Fabric8Explorer;
+import org.jboss.tools.fuse.reddeer.view.JMXNavigator;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,7 +37,7 @@ public class SmokeTest {
 	public void testCreateFuseProject() {
 
 		log.info("Create a new Fuse project (" + PROJECT_ARCHETYPE + ")");
-		ProjectFactory.createProject(PROJECT_ARCHETYPE);
+		ProjectFactory.createProject(PROJECT_NAME, PROJECT_ARCHETYPE);
 		try {
 			new ProjectExplorer().getProject(PROJECT_NAME);
 		} catch (EclipseLayerException ex) {
@@ -48,8 +48,8 @@ public class SmokeTest {
 	@Test
 	public void testOpenViews() {
 
-		new FuseJMXNavigator().open();
-		new FabricExplorer().open();
+		new JMXNavigator().open();
+		new Fabric8Explorer().open();
 	}
 
 	@Test

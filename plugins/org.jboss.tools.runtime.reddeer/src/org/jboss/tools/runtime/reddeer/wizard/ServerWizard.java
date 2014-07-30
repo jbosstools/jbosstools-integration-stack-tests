@@ -38,7 +38,7 @@ public class ServerWizard extends NewWizardDialog {
 	/*
 	 * JBoss Fuse
 	 */
-	public static final String PORT_NUMBER = "Port Number: ";
+	public static final String PORT_NUMBER = "SSH Port: ";
 	public static final String USER_NAME = "User Name:";
 	public static final String PASSWORD = "Password: ";
 	

@@ -94,7 +94,7 @@ public class ProjectLocalRunTest {
 	public static void createProject() {
 
 		log.info("Create a new Fuse project (" + PROJECT_ARCHETYPE + ")");
-		ProjectFactory.createProject(PROJECT_ARCHETYPE);
+		ProjectFactory.createProject(PROJECT_NAME, PROJECT_ARCHETYPE);
 		createTestClass();
 	}
 

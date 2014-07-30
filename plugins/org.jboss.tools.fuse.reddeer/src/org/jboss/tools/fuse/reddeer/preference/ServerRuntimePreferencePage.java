@@ -27,7 +27,8 @@ public class ServerRuntimePreferencePage extends WorkbenchPreferencePage {
 	private static final String EDIT_BUTTON = "Edit...";
 	private static final String NEW_WINDOW = "New Server Runtime Environment";
 	private static final String EDIT_WINDOW = "Edit Server Runtime Environment";
-	private static final String INSTALL_DIR = "Installation directory: ";
+	private static final String INSTALL_DIR = "Home Directory";
+	private static final String NAME = "Name";
 	private static final String SERVER_SECTION = "JBoss Fuse";
 	
 	public ServerRuntimePreferencePage() {
@@ -45,6 +46,7 @@ public class ServerRuntimePreferencePage extends WorkbenchPreferencePage {
 		new DefaultShell(NEW_WINDOW).setFocus();
 		new DefaultTreeItem(SERVER_SECTION, type).select();
 		new PushButton(NEXT_BUTTON).click();
+		new LabeledText(NAME).setText(type);
 		new LabeledText(INSTALL_DIR).setText(path);
 		new PushButton(FINISH_BUTTON).click();
 		AbstractWait.sleep(TimePeriod.SHORT);

@@ -29,6 +29,7 @@ public class CamelComponents {
 		list.add(new Aggregate());
 		list.add(new Choice());
 		list.add(new DynamicRouter());
+		list.add(new Filter());
 		list.add(new IdempotentConsumer());
 		list.add(new LoadBalance());
 		list.add(new Multicast());

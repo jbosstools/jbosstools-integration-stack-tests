@@ -10,7 +10,6 @@ import org.jboss.tools.runtime.reddeer.Namespaces;
  * JBoss Fuse Server
  * 
  * @author apodhrad
- * 
  */
 @XmlRootElement(name = "fuse", namespace = Namespaces.SOA_REQ)
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -34,9 +33,9 @@ public class ServerFuse extends ServerKaraf {
 	public String getRuntimeType() {
 		return label + " " + getVersion();
 	}
-	
+
 	@Override
 	public String getRuntimeName() {
-		return label + " " + getVersion();
+		return label + " " + getVersion() + " Runtime";
 	}
 }

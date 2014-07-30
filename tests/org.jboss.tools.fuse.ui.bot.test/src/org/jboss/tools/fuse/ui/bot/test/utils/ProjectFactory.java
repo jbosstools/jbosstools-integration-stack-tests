@@ -20,10 +20,11 @@ public class ProjectFactory {
 	 * 
 	 * @param archetype <i>Artifact ID</i> in the <i>New Fuse Project</i> Wizard
 	 */
-	public static void createProject(String archetype) {
+	public static void createProject(String name, String archetype) {
 
 		FuseProjectWizard projectWizard = new FuseProjectWizard();
 		projectWizard.open();
+		projectWizard.setProjectName(name);
 		projectWizard.next();
 		projectWizard.setFilter(archetype);
 		projectWizard.selectFirstArchetype();

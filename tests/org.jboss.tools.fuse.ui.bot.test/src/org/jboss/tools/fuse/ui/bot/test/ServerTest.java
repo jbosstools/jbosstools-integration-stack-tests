@@ -38,7 +38,7 @@ public class ServerTest {
 	public void cleanUp() {
 
 		ServerManipulator.removeServer(serverRequirement.getConfig().getName());
-		ServerManipulator.removeServerRuntime(serverRequirement.getConfig().getName());
+		ServerManipulator.removeServerRuntime(serverRequirement.getConfig().getName() + " Runtime");
 	}
 
 	@Test
@@ -54,9 +54,9 @@ public class ServerTest {
 		assertEquals(1, ServerManipulator.getServers().size());
 		assertTrue(ServerManipulator.isServerPresent(fuse.getName()));
 		ServerManipulator.startServer(fuse.getName());
-		assertTrue(ServerManipulator.isServerStarted(fuse.getCategory()));
+		assertTrue(ServerManipulator.isServerStarted(fuse.getName()));
 		ServerManipulator.stopServer(fuse.getName());
-		assertFalse(ServerManipulator.isServerStarted(fuse.getCategory()));
+		assertFalse(ServerManipulator.isServerStarted(fuse.getName()));
 		ServerManipulator.removeServer(fuse.getName());
 		assertEquals(0, ServerManipulator.getServers().size());
 		ServerManipulator.removeServerRuntime(fuse.getName());

@@ -5,6 +5,15 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.Scanner;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
@@ -27,28 +36,17 @@ import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.preference.ServerRuntimePreferencePage;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
 import org.jboss.tools.fuse.reddeer.utils.ResourceHelper;
-import org.jboss.tools.fuse.reddeer.view.FuseJMXNavigator;
+import org.jboss.tools.fuse.reddeer.view.JMXNavigator;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
-
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.Scanner;
 
 /**
  * Class contains test cases verifying resolved issues
@@ -77,7 +75,7 @@ public class RegressionTest {
 	@Test
 	public void issue_674() throws ParserConfigurationException, SAXException, IOException {
 
-		ProjectFactory.createProject("camel-archetype-spring");
+		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		new DefaultCTabItem("Source").activate();
 
@@ -182,9 +180,9 @@ public class RegressionTest {
 	@Test
 	public void issue_1115() {
 
-		ProjectFactory.createProject("camel-archetype-spring");
+		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
 		new CamelProject("camel-spring").runCamelContext("camel-context.xml");
-		new FuseJMXNavigator().getNode("Local Processes", "Local Camel Context", "Camel", "camel").select();
+		new JMXNavigator().getNode("Local Camel Context", "Camel", "camel").select();
 
 		try {
 			new ContextMenu("Close Camel Context");

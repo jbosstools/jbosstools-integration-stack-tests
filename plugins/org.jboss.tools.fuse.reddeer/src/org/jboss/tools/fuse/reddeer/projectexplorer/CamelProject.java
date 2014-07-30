@@ -3,6 +3,7 @@ package org.jboss.tools.fuse.reddeer.projectexplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.tools.fuse.reddeer.wizard.CamelXmlFileWizard;
 
@@ -39,7 +40,11 @@ public class CamelProject {
 	
 	public void runCamelContext(String name) {
 		project.getProjectItem("src/main/resources", "META-INF", "spring", name).select();
-		new ContextMenu("Run As", "2 Local Camel Context").select();
+		try {
+			new ContextMenu("Run As", "2 Local Camel Context").select();
+		} catch (SWTLayerException ex) {
+			new ContextMenu("Run As", "1 Local Camel Context").select();
+		}
 	}
 	
 	public void runCamelContextWithoutTests(String name) {

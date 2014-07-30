@@ -33,9 +33,9 @@ import org.jboss.tools.fuse.reddeer.widget.ListElement;
  * 
  * @author tsedmik
  */
-public class FabricExplorer extends DefaultExplorer {
+public class Fabric8Explorer extends DefaultExplorer {
 
-	private static final String TITLE = "Fabric Explorer";
+	private static final String TITLE = "Fabric8 Explorer";
 	private static final String ADD_BUTTON = "Adds a new Fabric details";
 	private static final String NAME = "Name";
 	private static final String URL = "Jolokia URL";
@@ -46,9 +46,9 @@ public class FabricExplorer extends DefaultExplorer {
 	private static final String BTN_REFRESH = "Refreshes the tree";
 	private static final String CONTEXT_CONNECT = "Connect";
 
-	private static final Logger log = Logger.getLogger(FabricExplorer.class);
+	private static final Logger log = Logger.getLogger(Fabric8Explorer.class);
 
-	public FabricExplorer() {
+	public Fabric8Explorer() {
 		super(TITLE);
 	}
 

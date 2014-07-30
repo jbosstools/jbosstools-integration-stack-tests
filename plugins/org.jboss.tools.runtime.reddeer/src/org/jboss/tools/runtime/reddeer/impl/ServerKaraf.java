@@ -13,6 +13,13 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.jboss.reddeer.eclipse.wst.server.ui.RuntimePreferencePage;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.runtime.reddeer.Activator;
 import org.jboss.tools.runtime.reddeer.Namespaces;
 import org.jboss.tools.runtime.reddeer.ServerBase;
@@ -23,8 +30,7 @@ import org.jboss.tools.runtime.reddeer.wizard.ServerWizard;
 /**
  * Apache Karaf Server
  * 
- * @author apodhrad
- * 
+ * @author apodhrad, tsedmik
  */
 @XmlRootElement(name = "karaf", namespace = Namespaces.SOA_REQ)
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -86,7 +92,7 @@ public class ServerKaraf extends ServerBase {
 	public String getRuntimeType() {
 		return "Runtime definition for " + label + " " + getVersion();
 	}
-	
+
 	public String getRuntimeName() {
 		return "Runtime definition for " + label + " " + getVersion();
 	}
@@ -111,6 +117,7 @@ public class ServerKaraf extends ServerBase {
 		serverWizard.setName(name);
 		serverWizard.setRuntime(getRuntimeName());
 		serverWizard.next();
+		closeSecureStorage();
 		serverWizard.setPort(getPort());
 		serverWizard.setUsername(getUsername());
 		serverWizard.setPassword(getPassword());
@@ -159,4 +166,20 @@ public class ServerKaraf extends ServerBase {
 		}
 	}
 
+	/**
+	 * Tries to close 'Secure Storage' dialog window
+	 */
+	private static void closeSecureStorage() {
+
+		try {
+			new WaitUntil(new ShellWithTextIsAvailable("Secure Storage"), TimePeriod.getCustom(5));
+		} catch (RuntimeException ex) {
+			return;
+		}
+		new DefaultShell("Secure Storage");
+		new LabeledText("Password:").setText("admin");
+		new PushButton("OK").click();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		new DefaultShell("New Server");
+	}
 }

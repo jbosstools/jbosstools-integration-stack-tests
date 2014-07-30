@@ -6,6 +6,7 @@ import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
@@ -16,7 +17,6 @@ import org.jboss.reddeer.swt.wait.WaitWhile;
 /**
  * 
  * @author apodhrad
- * 
  */
 public class FuseProjectWizard extends NewWizardDialog {
 
@@ -27,16 +27,20 @@ public class FuseProjectWizard extends NewWizardDialog {
 	public void setFilter(String text) {
 		new LabeledText("Filter:").setText(text);
 	}
-	
+
 	public void selectFirstArchetype() {
 		new DefaultTable().select(0);
 	}
-	
+
+	public void setProjectName(String name) {
+		new DefaultCombo(0).setText(name);
+	}
+
 	@Override
 	public void finish() {
-		
+
 		log.info("Finish wizard");
-		
+
 		String shellText = new DefaultShell().getText();
 		Button button = new PushButton("Finish");
 		new WaitUntil(new WidgetIsEnabled(button));
@@ -46,5 +50,4 @@ public class FuseProjectWizard extends NewWizardDialog {
 		new WaitWhile(new ShellWithTextIsActive(shellText), timeout);
 		new WaitWhile(new JobIsRunning(), timeout);
 	}
-
 }

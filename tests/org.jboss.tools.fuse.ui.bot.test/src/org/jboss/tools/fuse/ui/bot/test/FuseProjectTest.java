@@ -126,6 +126,7 @@ public class FuseProjectTest {
 	private void createProject(String archetype) {
 		FuseProjectWizard projectWizard = new FuseProjectWizard();
 		projectWizard.open();
+		projectWizard.setProjectName("test");
 		projectWizard.next();
 		projectWizard.setFilter(archetype);
 		projectWizard.selectFirstArchetype();

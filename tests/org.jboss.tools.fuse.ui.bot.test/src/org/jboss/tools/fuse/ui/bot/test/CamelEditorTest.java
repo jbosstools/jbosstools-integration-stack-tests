@@ -33,7 +33,7 @@ public class CamelEditorTest {
 		new WorkbenchShell().maximize();
 
 		// Create fuse project
-		ProjectFactory.createProject("camel-archetype-spring");
+		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
 
 		new ProjectExplorer().open();
 		new CamelProject("camel-spring").deleteCamelContext("camel-context.xml");

@@ -20,7 +20,7 @@ import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
-import org.jboss.tools.fuse.reddeer.view.FabricExplorer;
+import org.jboss.tools.fuse.reddeer.view.Fabric8Explorer;
 import org.jboss.tools.fuse.reddeer.view.FuseContainerProperties;
 import org.jboss.tools.fuse.reddeer.view.FuseShell;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
@@ -46,7 +46,7 @@ public class FabricExplorerTest {
 	private static ServerRequirement serverRequirement;
 
 	private static boolean setUpIsDone = false;
-	private static FabricExplorer fab = new FabricExplorer();
+	private static Fabric8Explorer fab = new Fabric8Explorer();
 
 	@Before
 	public void setUp() {

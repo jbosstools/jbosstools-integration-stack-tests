@@ -44,7 +44,7 @@ public class ServerRuntimeWizard extends WizardDialog {
 	/*
 	 * JBoss Fuse
 	 */
-	public static final String INSTALL_DIR = "Installation directory: ";
+	public static final String INSTALL_DIR = "Home Directory";
 	
 	public ServerRuntimeWizard setInstallationDir(String path) {
 		new LabeledText(INSTALL_DIR).setText(path);
