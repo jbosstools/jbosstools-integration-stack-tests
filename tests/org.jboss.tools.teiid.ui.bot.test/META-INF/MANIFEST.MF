@@ -4,8 +4,7 @@ Bundle-Name: Teiid Bot Tests
 Bundle-SymbolicName: org.jboss.tools.teiid.ui.bot.test;singleton:=true
 Bundle-Version: 4.2.0.qualifier
 Bundle-ActivationPolicy: lazy
-Import-Package: org.apache.log4j,
- org.jboss.reddeer.swt.test
+Import-Package: org.apache.log4j
 Bundle-Vendor: JBoss by Red Hat
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Eclipse-RegisterBuddy: org.apache.log4j

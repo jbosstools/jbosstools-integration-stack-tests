@@ -194,7 +194,7 @@ public class TeiidInstanceView extends WorkbenchView {//DEPRECATED - JBDS7 only 
 		}
 		
 		new ContextMenu("Stop").select();
-		AbstractWait.sleep(TimePeriod.SHORT.getSeconds() * 1000);
+		AbstractWait.sleep(TimePeriod.VERY_LONG);
 		//new WaitUntil(new ServerHasState(serverName), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}

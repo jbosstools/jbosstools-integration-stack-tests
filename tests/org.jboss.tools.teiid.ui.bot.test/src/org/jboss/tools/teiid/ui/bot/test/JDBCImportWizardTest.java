@@ -4,7 +4,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Properties;
 
-import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
 import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
@@ -30,7 +29,7 @@ import org.junit.runner.RunWith;
 @Perspective(name = "Teiid Designer")
 @Server(type = Type.ALL, state = State.RUNNING)
 @RunWith(TeiidSuite.class)
-public class JDBCImportWizardTest extends RedDeerTest {
+public class JDBCImportWizardTest {
 
 	public static final String MODEL_PROJECT = "jdbcImportTest";
 

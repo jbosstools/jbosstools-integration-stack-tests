@@ -9,6 +9,7 @@ import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
 import org.hamcrest.Matcher;
 import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.tools.bpel.reddeer.editor.BpelEditor;
 import org.jboss.tools.bpel.reddeer.matcher.ActivityOfType;
 import org.jboss.tools.bpel.reddeer.matcher.ActivityWithName;
@@ -85,7 +86,7 @@ public class Activity {
 	}
 
 	public void select() {
-		AbstractWait.sleep(1000);
+		AbstractWait.sleep(TimePeriod.SHORT);
 		bpelEditor.selectEditPart(editPart);
 		new BPELPropertiesView().open();
 		bpelEditor.selectEditPart(editPart);

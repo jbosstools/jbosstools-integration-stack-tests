@@ -3,6 +3,7 @@ package org.jboss.tools.bpel.ui.bot.test;
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.tools.bpel.reddeer.activity.Assign;
 import org.jboss.tools.bpel.reddeer.activity.Empty;
 import org.jboss.tools.bpel.reddeer.activity.Receive;
@@ -64,7 +65,7 @@ public class SimpleDeployTest extends SWTBotTestCase {
 		String serverName = BPELSuite.getServerName();
 		ServerDeployment server = new ServerDeployment(serverName);
 		server.deployProject(projectName);
-		AbstractWait.sleep(5 * 1000);
+		AbstractWait.sleep(TimePeriod.NORMAL);
 
 		// test the deployed project
 		SoapClient.testResponses(WSDL_URL, "Deploy_Hello");

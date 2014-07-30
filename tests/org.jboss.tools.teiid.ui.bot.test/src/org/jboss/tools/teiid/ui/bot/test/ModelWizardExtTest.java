@@ -6,7 +6,6 @@ import java.util.Properties;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.logging.Logger;
-import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.wizard.CreateMetadataModel;
@@ -22,7 +21,7 @@ import org.junit.runner.RunWith;
  */
 @Perspective(name = "Teiid Designer")
 @RunWith(TeiidSuite.class)
-public class ModelWizardExtTest extends RedDeerTest {
+public class ModelWizardExtTest {
 
 	private static final String PROJECT_NAME = "ModelWizardExt";
 	private static final String WEBSERVICE_MODEL_NAME = "WsViewBuildFromWSDL";

@@ -3,7 +3,6 @@ package org.jboss.tools.teiid.ui.bot.test;
 import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
 import org.jboss.tools.teiid.reddeer.manager.ServerManager;
 import org.jboss.tools.teiid.reddeer.manager.VDBManager;
@@ -28,7 +27,7 @@ import org.junit.runner.RunWith;
 @Perspective(name = "Teiid Designer")
 @Server(type = Type.ALL, state = State.NOT_RUNNING)
 @RunWith(TeiidSuite.class)
-public class ServerManagementSimpleDV6Test extends RedDeerTest {
+public class ServerManagementSimpleDV6Test {
 
 	private static final String DV6_SERVER = "EAP-6.1";
 	private static final String PROJECT_NAME = "ServerMgmtTest";

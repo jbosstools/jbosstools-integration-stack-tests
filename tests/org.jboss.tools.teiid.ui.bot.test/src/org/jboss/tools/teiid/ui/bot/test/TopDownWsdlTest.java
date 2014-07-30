@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.tools.teiid.reddeer.ModelProject;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.SQLScrapbookEditor;
@@ -36,7 +35,7 @@ import org.junit.runner.RunWith;
 @Perspective(name = "Teiid Designer")
 @Server(type = Type.ALL, state = State.RUNNING)
 @RunWith(TeiidSuite.class)
-public class TopDownWsdlTest extends RedDeerTest {
+public class TopDownWsdlTest {
 
 	public static final String BUNDLE = "org.teiid.designer.ui.bot.test";
 	public static final String PROJECT_NAME = "TopDownWsdlTest";

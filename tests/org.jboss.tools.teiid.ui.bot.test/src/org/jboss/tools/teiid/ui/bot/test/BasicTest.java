@@ -7,7 +7,6 @@ import java.io.PrintWriter;
 import java.util.Properties;
 
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.tools.teiid.reddeer.manager.ImportMetadataManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
@@ -21,7 +20,7 @@ import org.junit.runner.RunWith;
 
 @Perspective(name = "Teiid Designer")
 @RunWith(TeiidSuite.class)
-public class BasicTest extends RedDeerTest {
+public class BasicTest {
 
 	private static final String PROJECT = "XmlView";
 	private static TeiidBot teiidBot = new TeiidBot();

@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Properties;
 
-import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.tools.teiid.reddeer.WAR;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
 import org.jboss.tools.teiid.reddeer.manager.ImportManager;
@@ -27,7 +26,7 @@ import org.junit.runner.RunWith;
  */
 @Perspective(name = "Teiid Designer")
 @RunWith(TeiidSuite.class)
-public class RestCallTest extends RedDeerTest {
+public class RestCallTest {
 
 	private static final String serverFile = "as7.properties";
 	private static final String projectName = "RestCallTest";

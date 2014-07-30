@@ -3,13 +3,12 @@ package org.jboss.tools.teiid.ui.bot.test;
 import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.eclipse.ui.perspectives.AbstractPerspective;
-import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.tools.teiid.ui.bot.test.suite.TeiidSuite;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(TeiidSuite.class)
-public class PerspectiveTest extends RedDeerTest {
+public class PerspectiveTest {
 
 	@Test
 	public void openPerspectiveTest() {

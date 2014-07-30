@@ -6,7 +6,6 @@ import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.wizard.CreateMetadataModel;
@@ -25,7 +24,7 @@ import org.junit.runner.RunWith;
  */
 @Perspective(name = "Teiid Designer")
 @RunWith(TeiidSuite.class)
-public class ModelWizardTest extends RedDeerTest {
+public class ModelWizardTest {
 
 	private static final String PROJECT_NAME = "ModelWizardTestProject";
 	public static final String RELATIONAL_SOURCE_MODEL_NAME = "relational_source";

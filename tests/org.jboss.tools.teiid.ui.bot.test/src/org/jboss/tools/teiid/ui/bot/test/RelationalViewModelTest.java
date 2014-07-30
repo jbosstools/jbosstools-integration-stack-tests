@@ -4,7 +4,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Properties;
 
-import org.jboss.reddeer.swt.test.RedDeerTest;
 import org.jboss.tools.teiid.reddeer.ModelClass;
 import org.jboss.tools.teiid.reddeer.ModelType;
 import org.jboss.tools.teiid.reddeer.Procedure;
@@ -21,7 +20,7 @@ import org.junit.runner.RunWith;
  */
 @Perspective(name = "Teiid Designer")
 @RunWith(TeiidSuite.class)
-public class RelationalViewModelTest extends RedDeerTest {
+public class RelationalViewModelTest {
 
 	private static String PROJECT = "relViewTest";
 	private static String MODEL = "view.xmi";
