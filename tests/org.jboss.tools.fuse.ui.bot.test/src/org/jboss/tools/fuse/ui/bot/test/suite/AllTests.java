@@ -4,6 +4,7 @@ import junit.framework.TestSuite;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.fuse.ui.bot.test.CamelEditorTest;
+import org.jboss.tools.fuse.ui.bot.test.DebuggerTest;
 import org.jboss.tools.fuse.ui.bot.test.DeploymentTest;
 import org.jboss.tools.fuse.ui.bot.test.FabricExplorerTest;
 import org.jboss.tools.fuse.ui.bot.test.FuseProjectTest;
@@ -27,7 +28,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	FuseProjectTest.class,
 	ServerTest.class,
 	FabricExplorerTest.class,
-	DeploymentTest.class
+	DeploymentTest.class,
+	DebuggerTest.class
 })
 @RunWith(RedDeerSuite.class)
 public class AllTests extends TestSuite {

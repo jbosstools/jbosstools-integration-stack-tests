@@ -58,8 +58,6 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 public class DeploymentTest {
 
-	private static String os = System.getProperty("os.name").toLowerCase();
-
 	private static final String PROJECT_ARCHETYPE = "camel-archetype-spring";
 	private static final String PROJECT_NAME = "camel-spring";
 	private static final String PROJECT_JAR_ARCHIVE = "camel-spring-1.0.0-SNAPSHOT.jar";

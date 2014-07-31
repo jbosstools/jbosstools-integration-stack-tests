@@ -125,6 +125,7 @@ function test_case {
 	echo "8 - Server Test (manipulation with servers)"
 	echo "9 - Smoke Test (check views, perspectives, project creation)"
 	echo "10 - Regression Test (test resolved issues)"
+	echo "11 - Debugger Test (check camel route debugger)"
 	echo ""
 
 	TEST="0"
@@ -161,6 +162,9 @@ function test_case {
 				;;
 			[10] )
 				TEST=RegressionTest
+				;;
+			[11] )
+				TEST=DebuggerTest
 				;;
 			*)
 				echo "Invalid input! Try it again."

@@ -3,42 +3,56 @@ package org.jboss.tools.fuse.reddeer.projectexplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.fuse.reddeer.wizard.CamelXmlFileWizard;
 
 /**
+ * Manipulates with Camel projects
  * 
- * @author apodhrad
- * 
+ * @author apodhrad, tsedmik
  */
 public class CamelProject {
 
 	private Project project;
 
 	public CamelProject(String name) {
+
 		project = new ProjectExplorer().getProject(name);
 	}
 
 	public void openCamelContext(String name) {
+
 		ProjectItem item = project.getProjectItem("src/main/resources", "META-INF", "spring");
 		item.getChild(name).open();
 	}
 
 	public void deleteCamelContext(String name) {
+
 		project.getProjectItem("src/main/resources", "META-INF", "spring", name).delete();
 	}
 
 	public void createCamelContext(String name) {
+
 		project.getProjectItem("src/main/resources", "META-INF", "spring").select();
 		new CamelXmlFileWizard().openWizard().setName(name).finish();
 	}
-	
+
 	public void selectCamelContext(String name) {
+
 		project.getProjectItem("src/main/resources", "META-INF", "spring", name).select();
 	}
-	
+
 	public void runCamelContext(String name) {
+
 		project.getProjectItem("src/main/resources", "META-INF", "spring", name).select();
 		try {
 			new ContextMenu("Run As", "2 Local Camel Context").select();
@@ -46,21 +60,57 @@ public class CamelProject {
 			new ContextMenu("Run As", "1 Local Camel Context").select();
 		}
 	}
-	
+
 	public void runCamelContextWithoutTests(String name) {
+
 		project.getProjectItem("src/main/resources", "META-INF", "spring", name).select();
 		new ContextMenu("Run As", "3 Local Camel Context (without tests)").select();
 	}
 
+	public void debugCamelContext(String name) {
+
+		project.getProjectItem("src/main/resources", "META-INF", "spring", name).select();
+		new ContextMenu("Debug As", "2 Local Camel Context").select();
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		closePerspectiveSwitchWindow();
+	}
+
+	public void debugCamelContextWithoutTests(String name) {
+
+		project.getProjectItem("src/main/resources", "META-INF", "spring", name).select();
+		new ContextMenu("Debug As", "3 Local Camel Context (without tests)").select();
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		closePerspectiveSwitchWindow();
+	}
+
 	public CamelProject(Project project) {
+
 		this.project = project;
 	}
 
 	public Project getProject() {
+
 		return project;
 	}
-	
-	public void deleteProject() {	
+
+	public void deleteProject() {
+
 		new ProjectExplorer().getProject(project.getName()).delete(true);
+	}
+
+	/**
+	 * Tries to close 'Confirm Perspective Switch' window. This window is
+	 * appeared after debugging is started.
+	 */
+	private void closePerspectiveSwitchWindow() {
+
+		for (int i = 0; i < 5; i++) {
+			if (new ShellWithTextIsAvailable("Confirm Perspective Switch").test()) {
+				new DefaultShell("Confirm Perspective Switch");
+				new CheckBox("Remember my decision").toggle(true);
+				new PushButton("No").click();
+			}
+			AbstractWait.sleep(TimePeriod.SHORT);
+		}
 	}
 }
