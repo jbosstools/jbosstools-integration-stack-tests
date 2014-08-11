@@ -21,4 +21,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: JBoss by Red Hat
 Eclipse-RegisterBuddy: org.apache.log4j
 Eclipse-BundleShape: dir
-Import-Package: org.jboss.reddeer.common.logging
+Import-Package: org.jboss.reddeer.common.logging,
+ org.jboss.tools.runtime.reddeer,
+ org.jboss.tools.runtime.reddeer.impl,
+ org.jboss.tools.runtime.reddeer.requirement

@@ -6,7 +6,7 @@ import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.jboss.reddeer.swt.impl.toolbar.ViewToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.AbstractWait;
@@ -66,7 +66,7 @@ public class DefaultExplorer extends WorkbenchView {
 	 */
 	protected void refresh(String btnName) {
 		
-		new DefaultToolItem(btnName).click();
+		new ViewToolItem(btnName).click();
 		AbstractWait.sleep(TimePeriod.getCustom(2));
 	}
 	

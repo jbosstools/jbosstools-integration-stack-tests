@@ -10,11 +10,12 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.jboss.reddeer.swt.impl.toolbar.ViewToolItem;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
@@ -22,9 +23,9 @@ import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
 import org.jboss.tools.fuse.reddeer.view.FabricExplorer;
 import org.jboss.tools.fuse.reddeer.view.FuseContainerProperties;
 import org.jboss.tools.fuse.reddeer.view.FuseShell;
-import org.jboss.tools.fuse.ui.bot.test.requirement.ServerRequirement;
-import org.jboss.tools.fuse.ui.bot.test.requirement.ServerRequirement.Server;
-import org.jboss.tools.fuse.ui.bot.test.utils.ServerConfig;
+import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
+import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
+import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +36,7 @@ import org.junit.runner.RunWith;
  * 
  * @author tsedmik
  */
-@Server
+@Server(type = ServerReqType.Fuse, state = ServerReqState.RUNNING)
 @CleanWorkspace
 @OpenPerspective(FuseIntegrationPerspective.class)
 @RunWith(RedDeerSuite.class)
@@ -54,9 +55,6 @@ public class FabricExplorerTest {
 			return;
 		}
 
-		new ServerConfig(serverRequirement).configureNewServer();
-		ServerManipulator.startServer(serverRequirement.getName());
-
 		new FuseShell().createFabric();
 
 		fab.open();
@@ -69,9 +67,9 @@ public class FabricExplorerTest {
 	@AfterClass
 	public static void cleanUp() {
 
-		ServerManipulator.stopServer(serverRequirement.getName());
-		ServerManipulator.removeServer(serverRequirement.getName());
-		ServerManipulator.removeServerRuntime(serverRequirement.getRuntime());
+		ServerManipulator.stopServer(serverRequirement.getConfig().getName());
+		ServerManipulator.removeServer(serverRequirement.getConfig().getName());
+		ServerManipulator.removeServerRuntime(serverRequirement.getConfig().getName());
 
 		fab.open();
 		fab.removeFabric(null);
@@ -81,7 +79,7 @@ public class FabricExplorerTest {
 	public void testFabricCreation() {
 
 		fab.open();
-		new DefaultToolItem("Adds a new Fabric details").click();
+		new ViewToolItem("Adds a new Fabric details").click();
 		new DefaultShell().setFocus();
 		PushButton ok = new PushButton("OK");
 

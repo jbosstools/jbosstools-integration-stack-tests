@@ -20,7 +20,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.jboss.reddeer.swt.impl.toolbar.ViewToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
@@ -70,7 +70,8 @@ public class FabricExplorer extends DefaultExplorer {
 	public void addFabricDetails(String name, String url, String username, String password, String zoopassword) {
 
 		log.info("Creating a new Fuse Fabric detail");
-		new DefaultToolItem(ADD_BUTTON).click();
+		open();
+		new ViewToolItem(ADD_BUTTON).click();
 		new DefaultShell().setFocus();
 		if (name != null)
 			new LabeledText(NAME).setText(name);

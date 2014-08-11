@@ -14,6 +14,7 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -31,10 +32,10 @@ import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
 import org.jboss.tools.fuse.reddeer.view.FabricExplorer;
 import org.jboss.tools.fuse.reddeer.view.FuseJMXNavigator;
 import org.jboss.tools.fuse.reddeer.view.FuseShell;
-import org.jboss.tools.fuse.ui.bot.test.requirement.ServerRequirement;
-import org.jboss.tools.fuse.ui.bot.test.requirement.ServerRequirement.Server;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
-import org.jboss.tools.fuse.ui.bot.test.utils.ServerConfig;
+import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
+import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
+import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -51,7 +52,7 @@ import org.junit.runner.RunWith;
  * 
  * @author tsedmik
  */
-@Server
+@Server(type = ServerReqType.Fuse, state = ServerReqState.RUNNING)
 @CleanWorkspace
 @OpenPerspective(FuseIntegrationPerspective.class)
 @RunWith(RedDeerSuite.class)
@@ -91,8 +92,6 @@ public class DeploymentTest {
 			JMX_JBOSS_FUSE = "karaf";
 		}
 
-		new ServerConfig(serverRequirement).configureNewServer();
-		ServerManipulator.startServer(serverRequirement.getName());
 		ProjectFactory.createProject(PROJECT_ARCHETYPE);
 		ProjectFactory.createProject(PROJECT_ARCHETYPE2);
 		new WorkbenchShell().setFocus();
@@ -114,9 +113,9 @@ public class DeploymentTest {
 	@AfterClass
 	public static void cleanUp() {
 
-		ServerManipulator.stopServer(serverRequirement.getName());
-		ServerManipulator.removeServer(serverRequirement.getName());
-		ServerManipulator.removeServerRuntime(serverRequirement.getRuntime());
+		ServerManipulator.stopServer(serverRequirement.getConfig().getName());
+		ServerManipulator.removeServer(serverRequirement.getConfig().getName());
+		ServerManipulator.removeServerRuntime(serverRequirement.getConfig().getName());
 		new CamelProject(PROJECT_NAME).deleteProject();
 		new CamelProject(PROJECT_NAME2).deleteProject();
 	}
@@ -124,11 +123,11 @@ public class DeploymentTest {
 	@Test
 	public void deployWithDeployFolderTest() {
 
-		setupDeployFolder(DEPLOY_FOLDER_NAME, serverRequirement.getPath() + "/deploy/", "Some description");
+		setupDeployFolder(DEPLOY_FOLDER_NAME, serverRequirement.getConfig().getServerBase().getHome() + "/deploy/", "Some description");
 		deployProject(PROJECT_NAME, DEPLOY_FOLDER_NAME);
 
 		assertTrue(new ConsoleView().getConsoleText().contains("BUILD SUCCESS"));
-		File jarArchive = new File(serverRequirement.getPath() + "/deploy/" + PROJECT_JAR_ARCHIVE);
+		File jarArchive = new File(serverRequirement.getConfig().getServerBase().getHome() + "/deploy/" + PROJECT_JAR_ARCHIVE);
 		assertTrue(jarArchive.exists());
 	}
 

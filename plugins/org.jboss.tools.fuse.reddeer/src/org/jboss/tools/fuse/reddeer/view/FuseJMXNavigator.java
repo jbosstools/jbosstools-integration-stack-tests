@@ -7,7 +7,7 @@ import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.jboss.reddeer.swt.impl.toolbar.ViewToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
@@ -88,7 +88,7 @@ public class FuseJMXNavigator extends WorkbenchView {
 		open();
 		TreeItem localProcesses = new DefaultTreeItem(LOCAL_PROCESSES);
 		localProcesses.select();
-		new DefaultToolItem(REFRESH_BUTTON).click();
+		new ViewToolItem(REFRESH_BUTTON).click();
 		log.info("Refreshing Local Processes in JMX View");
 	}
 
@@ -117,7 +117,7 @@ public class FuseJMXNavigator extends WorkbenchView {
 
 					item.select();
 					AbstractWait.sleep(TimePeriod.getCustom(5));
-					new DefaultToolItem(REFRESH_BUTTON).click();
+					new ViewToolItem(REFRESH_BUTTON).click();
 					AbstractWait.sleep(TimePeriod.getCustom(2));
 					item.doubleClick();
 					item.expand();

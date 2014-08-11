@@ -8,7 +8,7 @@ import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.jboss.reddeer.swt.impl.toolbar.ViewToolItem;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -68,7 +68,7 @@ public class FuseContainerProperties extends PropertiesView {
 	 */
 	public void refresh() {
 
-		new DefaultToolItem("Refreshes the view").click();
+		new ViewToolItem("Refreshes the view").click();
 		AbstractWait.sleep(TimePeriod.getCustom(2));
 	}
 
@@ -77,7 +77,7 @@ public class FuseContainerProperties extends PropertiesView {
 	 */
 	public void startContainer() {
 
-		new DefaultToolItem("Start the Container's JVM").click();
+		new ViewToolItem("Start the Container's JVM").click();
 		AbstractWait.sleep(TimePeriod.getCustom(10)); // TODO use wait condition on container's status
 		refresh();
 	}
@@ -90,7 +90,7 @@ public class FuseContainerProperties extends PropertiesView {
 	 */
 	public boolean isStartContainerEnabled() {
 
-		return new DefaultToolItem("Start the Container's JVM").isEnabled();
+		return new ViewToolItem("Start the Container's JVM").isEnabled();
 	}
 
 	/**
@@ -98,7 +98,7 @@ public class FuseContainerProperties extends PropertiesView {
 	 */
 	public void stopContainer() {
 
-		new DefaultToolItem("Stops the Container's JVM").click();
+		new ViewToolItem("Stops the Container's JVM").click();
 		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(10));
 		AbstractWait.sleep(TimePeriod.getCustom(2));
 	}
@@ -111,7 +111,7 @@ public class FuseContainerProperties extends PropertiesView {
 	 */
 	public boolean isStopContainerEnabled() {
 
-		return new DefaultToolItem("Stops the Container's JVM").isEnabled();
+		return new ViewToolItem("Stops the Container's JVM").isEnabled();
 	}
 
 	/**
@@ -120,7 +120,7 @@ public class FuseContainerProperties extends PropertiesView {
 	 */
 	public void destroyContainer() {
 
-		new DefaultToolItem("Destroys the Container's JVM and configuration in the Fabric").click();
+		new ViewToolItem("Destroys the Container's JVM and configuration in the Fabric").click();
 		new DefaultShell().setFocus();
 		new PushButton("OK").click();
 		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(10));
@@ -137,7 +137,7 @@ public class FuseContainerProperties extends PropertiesView {
 	 */
 	public boolean isDestroyContainerEnabled() {
 
-		return new DefaultToolItem("Destroys the Container's JVM and configuration in the Fabric").isEnabled();
+		return new ViewToolItem("Destroys the Container's JVM and configuration in the Fabric").isEnabled();
 	}
 
 	/**
