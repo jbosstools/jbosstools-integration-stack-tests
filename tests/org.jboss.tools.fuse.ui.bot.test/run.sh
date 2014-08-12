@@ -124,6 +124,7 @@ function test_case {
 	echo "7 - Project Local Run Test (tests in project, deploy to Local Camel Context)"
 	echo "8 - Server Test (manipulation with servers)"
 	echo "9 - Smoke Test (check views, perspectives, project creation)"
+	echo "10 - Regression Test (test resolved issues)"
 	echo ""
 
 	TEST="0"
@@ -157,6 +158,9 @@ function test_case {
 				;;
 			[9] )
 				TEST=SmokeTest
+				;;
+			[10] )
+				TEST=RegressionTest
 				;;
 			*)
 				echo "Invalid input! Try it again."
