@@ -6,11 +6,14 @@ import java.util.List;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.AbstractSWTBotControl;
 import org.jboss.reddeer.swt.impl.clabel.DefaultCLabel;
+import org.jboss.reddeer.swt.util.Display;
+import org.jboss.reddeer.swt.util.ResultRunnable;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.reddeer.matcher.WidgetWithClassName;
 
@@ -65,30 +68,43 @@ public class DefaultPropertiesView extends WorkbenchView {
 		}
 	}
 	
+	private Control getChildren(final String label) {
+		return Display.syncExec(new ResultRunnable<Control>() {
+
+			@Override
+			public Control run() {
+				final Composite widget = (Composite) bot.widget(new WidgetWithClassName("TabbedPropertyList"));
+				
+				for(Control listItem : (Control[]) widget.getChildren()) {
+					if(listItem.toString().equals(label)) {
+						return listItem;
+					}
+				}
+				
+				return null;
+			}
+		});
+	}
+	
 	/**
 	 * 
 	 * @param label
 	 */
 	public void selectTab(String label) {
 		open();
-		try {
-			// When the resolution is low some tabs are not visible. Unless they
-			// are rendered at least once, they will not be found by SWTBot.
-			// Maximize the view to force rendering of hidden tabs.
-			maximize();
-			// Attempt to get the tab with given label.
-			Canvas c = getListElement(label);
-			if (c == null) {
-				throw new WidgetNotFoundException("Element with text '" + label + "' not found.");
-			}
-			// Select the tab.
-			new ClickControl(c).click();
-		} finally {
-			// Maximizing the view a second time will restore the original size.
-			maximize();
+		
+			
+		//Attempt to get the tab with given label.
+		Canvas canvas = (Canvas) getChildren(label);
+		
+		if (canvas == null) {
+			throw new WidgetNotFoundException("Element with text '" + label + "' not found.");
 		}
+		
+		// Select the tab.
+		new ClickControl(canvas).click();	
 	}
-
+	
 	/**
 	 * 
 	 * @return
