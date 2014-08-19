@@ -1,6 +1,5 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -27,10 +26,7 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.preference.DeployFolderPreferencePage;
-import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
 import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
-import org.jboss.tools.fuse.reddeer.view.Fabric8Explorer;
-import org.jboss.tools.fuse.reddeer.view.FuseShell;
 import org.jboss.tools.fuse.reddeer.view.JMXNavigator;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
@@ -47,7 +43,6 @@ import org.junit.runner.RunWith;
  * <ul>
  * <li>Deploy Folder mechanism</li>
  * <li>JMX</li>
- * <li>Fabric Profile</li>
  * </ul>
  * 
  * @author tsedmik
@@ -61,7 +56,6 @@ public class DeploymentTest {
 	private static final String PROJECT_ARCHETYPE = "camel-archetype-spring";
 	private static final String PROJECT_NAME = "camel-spring";
 	private static final String PROJECT_JAR_ARCHIVE = "camel-spring-1.0.0-SNAPSHOT.jar";
-	private static final String PROJECT_FABS = "mvn:com.mycompany/camel-spring/1.0.0-SNAPSHOT";
 
 	private static final String PROJECT_ARCHETYPE2 = "camel-archetype-spring-dm";
 	private static final String PROJECT_NAME2 = "camel-spring-dm";
@@ -109,8 +103,7 @@ public class DeploymentTest {
 		ServerManipulator.stopServer(serverRequirement.getConfig().getName());
 		ServerManipulator.removeServer(serverRequirement.getConfig().getName());
 		ServerManipulator.removeServerRuntime(serverRequirement.getConfig().getName());
-		new CamelProject(PROJECT_NAME).deleteProject();
-		new CamelProject(PROJECT_NAME2).deleteProject();
+		new ProjectExplorer().deleteAllProjects();
 	}
 
 	@Test
@@ -138,29 +131,6 @@ public class DeploymentTest {
 		new WaitUntil(new ConsoleHasText("BUILD SUCCESS"), TimePeriod.getCustom(300));
 
 		assertNotNull(getJMXNode(JMX_JBOSS_FUSE, JMX_CAMEL, JMX_CAMEL2));
-	}
-
-	@Test
-	public void deployWithFabric() {
-
-		new FuseShell().createFabric();
-
-		Fabric8Explorer fab = new Fabric8Explorer();
-		fab.open();
-		fab.addFabricDetails(null, null, "admin", "admin", "admin");
-		fab.refresh();
-		fab.connectToFabric(null);
-		fab.createProfile("test", "1.0", "default");
-		fab.deployProjectToProfile(PROJECT_NAME, "test");
-
-		assertEquals(PROJECT_FABS, fab.getProfileFABs("Fabrics", "Local Fabric", "Versions", "1.0", "default", "test"));
-
-		fab.open();
-		fab.createContainer("testContainer", "1.0", "test");
-		assertTrue(new FuseShell().containsLog("testContainer has been successfully created"));
-
-		fab.open();
-		fab.removeFabric(null);
 	}
 
 	/**

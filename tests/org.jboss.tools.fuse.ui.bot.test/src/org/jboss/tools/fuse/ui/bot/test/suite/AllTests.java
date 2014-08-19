@@ -6,10 +6,10 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.fuse.ui.bot.test.CamelEditorTest;
 import org.jboss.tools.fuse.ui.bot.test.DebuggerTest;
 import org.jboss.tools.fuse.ui.bot.test.DeploymentTest;
-import org.jboss.tools.fuse.ui.bot.test.FabricExplorerTest;
 import org.jboss.tools.fuse.ui.bot.test.FuseProjectTest;
 import org.jboss.tools.fuse.ui.bot.test.JMXNavigatorTest;
 import org.jboss.tools.fuse.ui.bot.test.ProjectLocalRunTest;
+import org.jboss.tools.fuse.ui.bot.test.RegressionTest;
 import org.jboss.tools.fuse.ui.bot.test.ServerTest;
 import org.jboss.tools.fuse.ui.bot.test.SmokeTest;
 import org.junit.runner.RunWith;
@@ -27,9 +27,9 @@ import org.junit.runners.Suite.SuiteClasses;
 	CamelEditorTest.class,
 	FuseProjectTest.class,
 	ServerTest.class,
-	FabricExplorerTest.class,
 	DeploymentTest.class,
-	DebuggerTest.class
+	DebuggerTest.class,
+	RegressionTest.class
 })
 @RunWith(RedDeerSuite.class)
 public class AllTests extends TestSuite {

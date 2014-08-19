@@ -77,7 +77,8 @@ function test_suite {
 	echo "1 - Smoke Tests"
 	echo "2 - Without Server Tests"
 	echo "3 - Server Tests"
-	echo "4 - All Tests"
+	echo "4 - Regression Tests"
+	echo "5 - All Tests"
 	echo ""
 
 	TEST="0"
@@ -95,6 +96,9 @@ function test_suite {
 				TEST=ServerTests
 				;;
 			[4] )
+				TEST=RegressionTests
+				;;
+			[5] )
 				TEST=AllTests
 				;;
 			*)
@@ -116,16 +120,14 @@ function test_case {
 	echo "--------------------------------------------------------------------------------"
 	echo "List of available tests:"
 	echo "1 - Camel Editor Test (try to use every patern in Camel Editor)"
-	echo "2 - Deployment Test (deploy folder, JMX and deployment into Fabric profile)"
-	echo "3 - Fabric Explorer Test (Fabric Explorer View)"
-	echo "4 - Fabric In Cloud Test (test Fabric in Cloud)"
-	echo "5 - Fuse Project Test (try to create projects from all available archetypes)"
-	echo "6 - JMX Navigator Test (JMX Navigator View)"
-	echo "7 - Project Local Run Test (tests in project, deploy to Local Camel Context)"
-	echo "8 - Server Test (manipulation with servers)"
-	echo "9 - Smoke Test (check views, perspectives, project creation)"
-	echo "10 - Regression Test (test resolved issues)"
-	echo "11 - Debugger Test (check camel route debugger)"
+	echo "2 - Deployment Test (deploy folder and JMX deployment)"
+	echo "3 - Fuse Project Test (try to create projects from all available archetypes)"
+	echo "4 - JMX Navigator Test (JMX Navigator View)"
+	echo "5 - Project Local Run Test (tests in project, deploy to Local Camel Context)"
+	echo "6 - Server Test (manipulation with servers)"
+	echo "7 - Smoke Test (check views, perspectives, project creation)"
+	echo "8 - Regression Test (test resolved issues)"
+	echo "9 - Debugger Test (check camel route debugger)"
 	echo ""
 
 	TEST="0"
@@ -140,30 +142,24 @@ function test_case {
 				TEST=DeploymentTest
 				;;
 			[3] )
-				TEST=FabricExplorerTest
-				;;
-			[4] )
-				TEST=FabricInCloudTest
-				;;
-			[5] )
 				TEST=FuseProjectTest
 				;;
-			[6] )
+			[4] )
 				TEST=JMXNavigatorTest
 				;;
-			[7] )
+			[5] )
 				TEST=ProjectLocalRunTest
 				;;
-			[8] )
+			[6] )
 				TEST=ServerTest
 				;;
-			[9] )
+			[7] )
 				TEST=SmokeTest
 				;;
-			[10] )
+			[8] )
 				TEST=RegressionTest
 				;;
-			[11] )
+			[9] )
 				TEST=DebuggerTest
 				;;
 			*)
