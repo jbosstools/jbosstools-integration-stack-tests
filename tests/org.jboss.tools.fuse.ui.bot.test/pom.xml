@@ -34,7 +34,7 @@
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
-					<appArgLine>-pluginCustomization resources/config/plugin_customization.ini -clean -testpluginname org.jboss.tools.fuse.ui.bot.test</appArgLine>
+					<appArgLine>-eclipse.password resources/security/password -pluginCustomization resources/config/plugin_customization.ini -clean -testpluginname org.jboss.tools.fuse.ui.bot.test</appArgLine>
 					<testSuite>org.jboss.tools.fuse.ui.bot.test</testSuite>
 					<testClass>**/*Test</testClass>
 					<useUIThread>false</useUIThread>
