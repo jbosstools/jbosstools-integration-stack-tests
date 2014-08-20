@@ -15,12 +15,11 @@ import org.jboss.tools.runtime.reddeer.impl.ServerFuse;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-/** 
+/**
  * Tests managing a Fuse server
  * 
  * @author tsedmik

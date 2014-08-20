@@ -19,7 +19,7 @@ import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
  * @author tsedmik
  */
 public class ServerRuntimePreferencePage extends WorkbenchPreferencePage {
-	
+
 	private static final String ADD_BUTTON = "Add...";
 	private static final String NEXT_BUTTON = "Next >";
 	private static final String FINISH_BUTTON = "Finish";
@@ -30,16 +30,18 @@ public class ServerRuntimePreferencePage extends WorkbenchPreferencePage {
 	private static final String INSTALL_DIR = "Home Directory";
 	private static final String NAME = "Name";
 	private static final String SERVER_SECTION = "JBoss Fuse";
-	
+
 	public ServerRuntimePreferencePage() {
 		super("Server", "Runtime Environments");
 	}
-	
+
 	/**
 	 * Adds a new server runtime.
 	 * 
-	 * @param path installation directory of a server
-	 * @param type server type (e.g. "JBoss Fuse", "JBoss Fuse 6.1")
+	 * @param path
+	 *            installation directory of a server
+	 * @param type
+	 *            server type (e.g. "JBoss Fuse", "JBoss Fuse 6.1")
 	 */
 	public void addServerRuntime(String type, String path) {
 		new PushButton(ADD_BUTTON).click();
@@ -51,27 +53,30 @@ public class ServerRuntimePreferencePage extends WorkbenchPreferencePage {
 		new PushButton(FINISH_BUTTON).click();
 		AbstractWait.sleep(TimePeriod.SHORT);
 	}
-	
+
 	public void downloadserverRuntime() {
 		// TODO Not implemented yet.
 	}
-	
+
 	/**
 	 * Removes the server runtime
 	 * 
-	 * @param name name of the removed server runtime
+	 * @param name
+	 *            name of the removed server runtime
 	 */
 	public void removeServerRuntime(String name) {
 		new DefaultTable(0).select(name);
 		new PushButton(REMOVE_BUTTON).click();
 		AbstractWait.sleep(TimePeriod.SHORT);
 	}
-	
+
 	/**
 	 * Edits the server runtime
 	 * 
-	 * @param name name of the edited server runtime
-	 * @param path a new installation directory
+	 * @param name
+	 *            name of the edited server runtime
+	 * @param path
+	 *            a new installation directory
 	 */
 	public void editServerRuntime(String name, String path) {
 		new DefaultTable(0).select(name);
@@ -81,7 +86,7 @@ public class ServerRuntimePreferencePage extends WorkbenchPreferencePage {
 		new PushButton(FINISH_BUTTON).click();
 		AbstractWait.sleep(TimePeriod.SHORT);
 	}
-	
+
 	public List<String> getServerRuntimes() {
 		List<String> temp = new ArrayList<String>();
 		for (TableItem item : new DefaultTable(0).getItems()) {

@@ -1,6 +1,7 @@
 package org.jboss.tools.fuse.reddeer.wizard;
 
-import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
+import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesPage;
+import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -14,7 +15,6 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
  * Wizard for creating a Fuse server.
  * 
  * @author tsedmik
- * 
  */
 public class ServerWizard extends NewWizardDialog {
 
@@ -31,6 +31,7 @@ public class ServerWizard extends NewWizardDialog {
 	private String portNumber;
 	private String userName;
 	private String password;
+	private String[] projects;
 
 	public ServerWizard() {
 		super("Server", "Server");
@@ -60,6 +61,14 @@ public class ServerWizard extends NewWizardDialog {
 		this.password = password;
 	}
 
+	public String[] getProjects() {
+		return projects;
+	}
+
+	public void setProjects(String... projects) {
+		this.projects = projects;
+	}
+
 	public void execute() {
 		open();
 
@@ -83,6 +92,9 @@ public class ServerWizard extends NewWizardDialog {
 		if (password != null) {
 			new LabeledText(PASSWORD).setText(password);
 		}
+
+		next();
+		new ModifyModulesPage().add(projects);
 
 		finish();
 	}
