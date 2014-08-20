@@ -3,7 +3,7 @@ package org.jboss.tools.drools.reddeer.editor;
 import java.util.List;
 
 import org.eclipse.ui.IEditorPart;
-import org.jboss.reddeer.eclipse.jface.text.contentassist.ContentAssistant;
+import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
 import org.jboss.reddeer.workbench.api.Editor;
 import org.jboss.reddeer.workbench.impl.editor.Marker;
 
@@ -80,14 +80,17 @@ public class NestedEditor implements Editor {
 
 	@Override
 	public ContentAssistant openOpenOnAssistant() {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public List<Marker> getMarkers() {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void closeAll(boolean save) {
+		throw new UnsupportedOperationException();
 	}
 
 }
