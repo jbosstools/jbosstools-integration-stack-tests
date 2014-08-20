@@ -18,18 +18,7 @@
 	  <test.class>AllTests</test.class>
 	  <maven-download-plugin.version>1.0.0</maven-download-plugin.version>
 	  <customization.file>resources/config/plugin_customization.ini</customization.file>
-	  <!-- Temporary update site till it is included in new JBTIS -->
-	  <switchyard.site>http://download.jboss.org/jbosstools/updates/development/kepler/integration-stack/switchyard/2.0.0.Alpha1</switchyard.site>
 	</properties>
-
-	<repositories>
-	  <!-- SwitchYard Update Site -->
-	  <repository>
-	    <id>switchyard-site</id>
-	    <url>${switchyard.site}</url>
-	    <layout>p2</layout>
-	  </repository>
-	</repositories>
 
 	<build>
 	  <plugins>
