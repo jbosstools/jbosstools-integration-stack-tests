@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
-import org.jboss.reddeer.eclipse.condition.ServerExists;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerLabel;
@@ -16,11 +15,9 @@ import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -42,7 +39,6 @@ public class ServerManipulator {
 		serverRuntime.open();
 		serverRuntime.addServerRuntime(type, path);
 		serverRuntime.ok();
-
 	}
 
 	public static void editServerRuntime(String name, String path) {
@@ -73,7 +69,7 @@ public class ServerManipulator {
 	}
 
 	public static void addServer(String type, String hostname, String name, String portNumber, String userName,
-			String password) {
+			String password, String... projects) {
 
 		ServerWizard serverWizard = new ServerWizard();
 		serverWizard.setType(type);
@@ -82,20 +78,16 @@ public class ServerManipulator {
 		serverWizard.setPortNumber(portNumber);
 		serverWizard.setUserName(userName);
 		serverWizard.setPassword(password);
+		serverWizard.setProjects(projects);
 		serverWizard.execute();
 	}
 
 	public static void removeServer(String name) {
 
-		log.info("Deleting server " + name + ".");
-		new ServersView().open();
-		new DefaultTreeItem().select();
-		new ContextMenu("Delete").select();
-		new DefaultShell("Delete Server");
-		new PushButton("OK").click();
-		new WaitWhile(new ServerExists(name), TimePeriod.NORMAL);
-		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
-		log.info("Server " + name + " was deleted.");
+		try {
+			new ServersView().getServer(name).delete();
+		} catch (EclipseLayerException ex) {
+		}
 	}
 
 	public static void startServer(String name) {
@@ -113,11 +105,15 @@ public class ServerManipulator {
 
 	public static void stopServer(String name) {
 
-		Server server = new ServersView().getServer(name);
-		server.stop();
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-
-		hack_General_CloseServerTerminateWindow();
+		try {
+			ServersView serversView = new ServersView();
+			serversView.open();
+			Server server = serversView.getServer(name);
+			server.stop();
+			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+			hack_General_CloseServerTerminateWindow();
+		} catch (Exception ex) {
+		}
 	}
 
 	public static List<String> getServers() {
@@ -165,6 +161,116 @@ public class ServerManipulator {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Removes server and removes server's runtime
+	 * 
+	 * @param name
+	 *            Name of the Server in Servers View
+	 */
+	public static void clean(String name) {
+
+		removeServer(name);
+		removeServerRuntime(name + " Runtime");
+	}
+
+	/**
+	 * Checks whether a defined server has added a given module (project)
+	 * 
+	 * @param server
+	 *            name of the server in the Servers view
+	 * @param module
+	 *            name of the module
+	 * @return true - the server has added a given module, false - otherwise
+	 */
+	public static boolean hasServerModule(String server, String module) {
+
+		try {
+			new ServersView().getServer(server).getModule(module);
+		} catch (EclipseLayerException ex) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Removes all assigned modules to a server
+	 * 
+	 * @param name
+	 *            name of the server in the Servers view
+	 */
+	public static void removeAllModules(String name) {
+
+		ServersView view = new ServersView();
+		view.open();
+		try {
+			view.getServer(name).addAndRemoveModules();
+		} catch (EclipseLayerException ex) {
+			return;
+		}
+		new DefaultShell("Add and Remove...");
+		FuseModifyModulesPage page = new FuseModifyModulesPage();
+		try {
+			page.removeAll();
+		} catch (Exception ex) {
+			log.debug("Nothing to remove.");
+		}
+		page.close();
+		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
+	}
+
+	/**
+	 * Adds a given project to the server
+	 * 
+	 * @param server
+	 *            name of the server in the Servers view
+	 * @param project
+	 *            name of the project in Project Explorer view
+	 */
+	public static void addModule(String server, String project) {
+
+		new ServersView().getServer(server).addAndRemoveModules();
+		new DefaultShell("Add and Remove...");
+		FuseModifyModulesPage page = new FuseModifyModulesPage();
+		try {
+			page.add(project);
+		} catch (Exception ex) {
+			log.error("Cannot add '" + project + "' project to the server.");
+		}
+		page.close();
+		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
+	}
+
+	/**
+	 * Sets option 'If server is started, publish changes immediately'
+	 * 
+	 * @param name
+	 *            name of the server in the Servers view
+	 * @param value
+	 *            true - option is checked, false - option is not checked
+	 */
+	public static void setImmeadiatelyPublishing(String name, boolean value) {
+
+		new ServersView().getServer(name).addAndRemoveModules();
+		new DefaultShell("Add and Remove...");
+		FuseModifyModulesPage page = new FuseModifyModulesPage();
+		page.setImmeadiatelyPublishing(value);
+		page.close();
+		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
+	}
+
+	/**
+	 * Publishes the given server
+	 *
+	 * @param name
+	 *            name of the server in the Servers view
+	 */
+	public static void publish(String name) {
+
+		ServersView view = new ServersView();
+		view.open();
+		view.getServer(name).publish();
 	}
 
 	/**
