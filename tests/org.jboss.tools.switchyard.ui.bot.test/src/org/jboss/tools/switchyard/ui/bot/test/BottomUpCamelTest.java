@@ -6,10 +6,8 @@ import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.condition.TableHasRows;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
@@ -24,12 +22,12 @@ import org.jboss.tools.switchyard.reddeer.condition.JUnitHasFinished;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
 import org.jboss.tools.switchyard.reddeer.project.ProjectItemExt;
+import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
+import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.jboss.tools.switchyard.reddeer.view.JUnitView;
 import org.jboss.tools.switchyard.reddeer.wizard.ImportFileWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.NewServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.PromoteServiceWizard;
-import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
-import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,8 +39,7 @@ import org.junit.runner.RunWith;
  * @author apodhrad
  * 
  */
-@CleanWorkspace
-@OpenPerspective(JavaEEPerspective.class)
+@SwitchYard
 @RunWith(RedDeerSuite.class)
 public class BottomUpCamelTest {
 
@@ -51,6 +48,9 @@ public class BottomUpCamelTest {
 	public static final String JAVA_FILE = "MyRouteBuilder";
 	
 	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
+	
+	@InjectRequirement
+	private SwitchYardRequirement switchyardRequirement;
 
 	@Before @After
 	public void closeSwitchyardFile() {
@@ -63,8 +63,7 @@ public class BottomUpCamelTest {
 
 	@Test
 	public void bottomUpCamelTest() throws Exception {
-		String version = SwitchyardSuite.getLibraryVersion();
-		new SwitchYardProjectWizard(PROJECT, version).impl("Camel Route").binding("HTTP").create();
+		switchyardRequirement.project(PROJECT).impl("Camel Route").binding("HTTP").create();
 		Project project = new ProjectExplorer().getProject(PROJECT);
 
 		// Import java file

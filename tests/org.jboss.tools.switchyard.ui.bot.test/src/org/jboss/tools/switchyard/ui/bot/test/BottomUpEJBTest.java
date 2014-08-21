@@ -5,9 +5,9 @@ import static org.junit.Assert.assertEquals;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.condition.TableHasRows;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
@@ -16,6 +16,8 @@ import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
+import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
 import org.jboss.tools.switchyard.reddeer.binding.HTTPBindingPage;
 import org.jboss.tools.switchyard.reddeer.component.Component;
@@ -23,15 +25,12 @@ import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.condition.ConsoleHasChanged;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
+import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
+import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
+import org.jboss.tools.switchyard.reddeer.server.ServerDeployment;
 import org.jboss.tools.switchyard.reddeer.wizard.ImportFileWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.NewServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.PromoteServiceWizard;
-import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
-import org.jboss.tools.switchyard.ui.bot.test.suite.ServerDeployment;
-import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Server;
-import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.State;
-import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Type;
-import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
 import org.jboss.tools.switchyard.ui.bot.test.util.HttpClient;
 import org.junit.After;
 import org.junit.Before;
@@ -44,10 +43,8 @@ import org.junit.runner.RunWith;
  * @author apodhrad
  * 
  */
-@CleanWorkspace
-@OpenPerspective(JavaEEPerspective.class)
-@Server(type = Type.ALL, state = State.RUNNING)
-@RunWith(SwitchyardSuite.class)
+@SwitchYard(server = @Server(type = ServerReqType.ANY, state = ServerReqState.RUNNING))
+@RunWith(RedDeerSuite.class)
 public class BottomUpEJBTest {
 
 	public static final String PROJECT = "ejb_project";
@@ -55,6 +52,9 @@ public class BottomUpEJBTest {
 	public static final String JAVA_FILE = "HelloBean";
 
 	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
+
+	@InjectRequirement
+	private SwitchYardRequirement switchyardRequirement;
 	
 	@Before @After
 	public void closeSwitchyardFile() {
@@ -67,8 +67,7 @@ public class BottomUpEJBTest {
 
 	@Test
 	public void bottomUpCamelTest() throws Exception {
-		String version = SwitchyardSuite.getLibraryVersion();
-		new SwitchYardProjectWizard(PROJECT, version).impl("Bean").binding("HTTP").create();
+		switchyardRequirement.project(PROJECT).impl("Bean").binding("HTTP").create();
 		Project project = new ProjectExplorer().getProject(PROJECT);
 
 		// Add EJB dependency
@@ -130,16 +129,13 @@ public class BottomUpEJBTest {
 		httpWizard.finish();
 		
 		new SwitchYardEditor().save();
-		
-		
 
 		// Deploy and test the project
-		new ServerDeployment().deployProject(PROJECT);
+		new ServerDeployment(switchyardRequirement.getConfig().getName()).deployProject(PROJECT);
 		String url = "http://localhost:8080/" + PROJECT;
 		HttpClient httpClient = new HttpClient(url);
-		assertEquals("EJB: Hello apodhrad", httpClient.send("apodhrad"));
-		assertEquals("EJB: Hello JBoss", httpClient.send("JBoss"));
-
+		assertEquals("EJB: Hello apodhrad", httpClient.post("apodhrad"));
+		assertEquals("EJB: Hello JBoss", httpClient.post("JBoss"));
 		new WaitWhile(new ConsoleHasChanged());
 	}
 

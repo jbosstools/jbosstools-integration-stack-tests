@@ -6,9 +6,9 @@ import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.swt.handler.ShellHandler;
 import org.jboss.reddeer.swt.handler.WidgetHandler;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -18,9 +18,9 @@ import org.jboss.reddeer.swt.util.ResultRunnable;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.preference.PropertiesPreferencePage;
+import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
+import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.jboss.tools.switchyard.reddeer.wizard.DefaultServiceWizard;
-import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
-import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -32,9 +32,9 @@ import org.junit.runner.RunWith;
  * @author apodhrad
  * 
  */
-@CleanWorkspace
+@SwitchYard
 @OpenPerspective(JavaEEPerspective.class)
-@RunWith(SwitchyardSuite.class)
+@RunWith(RedDeerSuite.class)
 public class ThrottlingTest {
 
 	public static final String PROJECT = "throttling_project";
@@ -44,6 +44,9 @@ public class ThrottlingTest {
 	public static final String MAX_REQUESTS = "Maximum Requests:";
 	public static final String TIME_PERIOD = "Time Period:";
 
+	@InjectRequirement
+	private SwitchYardRequirement switchyardRequirement;
+	
 	@BeforeClass
 	public static void createProject() {
 		try {
@@ -57,8 +60,7 @@ public class ThrottlingTest {
 	@Test
 	public void throttlingTest() {
 		/* Create SY Project */
-		String version = SwitchyardSuite.getLibraryVersion();
-		new SwitchYardProjectWizard(PROJECT, version).create();
+		switchyardRequirement.project(PROJECT).create();
 
 		/* Add Service */
 		new SwitchYardEditor().addComponent("Service");
@@ -109,9 +111,10 @@ public class ThrottlingTest {
 
 	@AfterClass
 	public static void deleteProject() {
-		ShellHandler.getInstance().closeAllNonWorbenchShells();
 		new SwitchYardEditor().saveAndClose();
-		new ProjectExplorer().getProject(PROJECT).delete(true);
+		ProjectExplorer projectExplorer = new ProjectExplorer();
+		projectExplorer.open();
+		projectExplorer.deleteAllProjects();
 	}
 
 	public class ExtendedLabeledText extends LabeledText {

@@ -12,12 +12,11 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-	  <swtbot.properties>./swtbot.properties</swtbot.properties>
-	  <systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=${swtbot.properties}</systemProperties>
+	  <reddeer.config>${project.build.directory}/classes/config/wildfly-810_switchyard-200.xml</reddeer.config>
+	  <systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=${reddeer.config}</systemProperties>
 	  <surefire.timeout>10800</surefire.timeout>
 	  <test.class>AllTests</test.class>
-	  <maven-download-plugin.version>1.0.0</maven-download-plugin.version>
-	  <customization.file>resources/config/plugin_customization.ini</customization.file>
+	  <customization.file>resources/settings/plugin_customization.ini</customization.file>
 	</properties>
 
 	<build>
@@ -72,15 +71,51 @@
 		</dependencies>
 	      </configuration>
 	    </plugin>
+	    <!-- Install SwitchYard 2.0.Alpha2 into JBoss WildFly 8.1.0.Final -->
 	    <plugin>
-	      <groupId>org.eclipse.tycho</groupId>
-	      <artifactId>tycho-compiler-plugin</artifactId>
-	      <version>${tychoVersion}</version>
-	      <configuration>
- 		<compilerArgument>-err:-forbidden</compilerArgument>
-              </configuration>
+	      <groupId>com.googlecode.maven-download-plugin</groupId>
+	      <artifactId>download-maven-plugin</artifactId>
+	      <version>1.2.0</version>
+	      <executions>
+		<execution>
+		  <id>get-wildfly</id>
+		  <phase>pre-integration-test</phase>
+		  <goals>
+		    <goal>wget</goal>
+		  </goals>
+		  <configuration>
+		    <url>http://download.jboss.org/wildfly/8.1.0.Final/wildfly-8.1.0.Final.zip</url>
+		    <unpack>true</unpack>
+		    <md5>b7df11f92ee80155702a351aee4b003b</md5>
+		    <outputDirectory>${project.build.directory}</outputDirectory>
+		  </configuration>
+		</execution>
+		<execution>
+		  <id>get-switchyard</id>
+		  <phase>pre-integration-test</phase>
+		  <goals>
+		    <goal>wget</goal>
+		  </goals>
+		  <configuration>
+		    <url>http://downloads.jboss.org/switchyard/releases/v2.0.Alpha2/switchyard-2.0.0.Alpha2-WildFly.zip</url>
+		    <unpack>true</unpack>
+		    <md5>5227e62abd9c14130fd68d8cdbe70eae</md5>
+		    <outputDirectory>${project.build.directory}/wildfly-8.1.0.Final</outputDirectory>
+		  </configuration>
+		</execution>
+	      </executions>
 	    </plugin>
 	  </plugins>
+	  <!-- Copy resources and replace variables with its values -->
+	  <resources>
+	    <resource>
+	      <directory>resources</directory>
+	      <includes>
+		<include>config/*</include>
+	      </includes>
+	      <filtering>true</filtering>
+	    </resource>
+	  </resources>
 	</build>
 	
       </project>

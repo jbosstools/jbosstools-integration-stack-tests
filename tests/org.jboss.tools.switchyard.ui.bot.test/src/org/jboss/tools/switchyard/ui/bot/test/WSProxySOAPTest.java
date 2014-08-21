@@ -5,7 +5,8 @@ import static org.junit.Assert.assertEquals;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.wait.AbstractWait;
@@ -21,12 +22,12 @@ import org.jboss.tools.switchyard.reddeer.condition.JUnitHasFinished;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
 import org.jboss.tools.switchyard.reddeer.project.ProjectItemExt;
+import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
+import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.jboss.tools.switchyard.reddeer.view.JUnitView;
 import org.jboss.tools.switchyard.reddeer.wizard.CamelJavaWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ImportFileWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ReferenceWizard;
-import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
-import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
 import org.jboss.tools.switchyard.ui.bot.test.util.SOAPService;
 import org.junit.After;
 import org.junit.Before;
@@ -39,9 +40,9 @@ import org.junit.runner.RunWith;
  * @author apodhrad
  * 
  */
-@CleanWorkspace
+@SwitchYard
 @OpenPerspective(JavaEEPerspective.class)
-@RunWith(SwitchyardSuite.class)
+@RunWith(RedDeerSuite.class)
 public class WSProxySOAPTest {
 
 	public static final String PROJECT = "proxy_soap";
@@ -49,6 +50,9 @@ public class WSProxySOAPTest {
 	private static final String WSDL = "Hello.wsdl";
 
 	private SOAPService webService;
+	
+	@InjectRequirement
+	private SwitchYardRequirement switchyardRequirement;
 
 	@Before
 	@After
@@ -74,8 +78,7 @@ public class WSProxySOAPTest {
 	@Test
 	public void wsProxySoapTest() throws Exception {
 		/* Create SwicthYard Project */
-		String version = SwitchyardSuite.getLibraryVersion();
-		new SwitchYardProjectWizard(PROJECT, version).impl("Camel Route").binding("SOAP").create();
+		switchyardRequirement.project(PROJECT).impl("Camel Route").binding("SOAP").create();
 
 		/* Import Resources */
 		new ProjectExplorer().getProject(PROJECT).getProjectItem("src/main/resources").select();
@@ -111,6 +114,7 @@ public class WSProxySOAPTest {
 
 		/* Test Web Service Proxy */
 		new Service("Hello").newServiceTestClass().setPackage(PACKAGE).selectMixin("HTTP Mix-in").finish();
+		
 		new TextEditor("HelloTest.java")
 				.deleteLineWith("Object message")
 				.deleteLineWith("Object result")
@@ -121,6 +125,7 @@ public class WSProxySOAPTest {
 
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 
+		new SwitchYardEditor().save();
 		ProjectItem item = new ProjectExplorer().getProject(PROJECT).getProjectItem("src/test/java", PACKAGE,
 				"HelloTest.java");
 		new ProjectItemExt(item).runAsJUnitTest();

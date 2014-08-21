@@ -10,15 +10,16 @@ import java.util.List;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.tools.switchyard.reddeer.editor.DomainEditor;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
+import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
+import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.jboss.tools.switchyard.reddeer.wizard.SecurityConfigurationWizard;
-import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
-import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -30,19 +31,21 @@ import org.junit.runner.RunWith;
  * @author apodhrad
  * 
  */
-@CleanWorkspace
+@SwitchYard
 @OpenPerspective(JavaEEPerspective.class)
-@RunWith(SwitchyardSuite.class)
+@RunWith(RedDeerSuite.class)
 public class DomainSettingsTest {
 
 	public static final String PROJECT = "domain-project";
 	public static final String CALLBACK_CLASS = "org.switchyard.security.callback.handler.NamePasswordCallbackHandler";
 
+	@InjectRequirement
+	private static SwitchYardRequirement switchyardRequirement;
+	
 	@BeforeClass
 	public static void createProject() {
 		closeSwitchYardEditor();
-		String version = SwitchyardSuite.getLibraryVersion();
-		new SwitchYardProjectWizard(PROJECT, version).create();
+		switchyardRequirement.project(PROJECT).create();
 		new WorkbenchShell().maximize();
 	}
 

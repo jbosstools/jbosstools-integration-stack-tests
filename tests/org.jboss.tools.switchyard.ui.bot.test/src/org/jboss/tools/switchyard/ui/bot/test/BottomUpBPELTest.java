@@ -1,27 +1,25 @@
 package org.jboss.tools.switchyard.ui.bot.test;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
+import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
 import org.jboss.tools.switchyard.reddeer.binding.SOAPBindingPage;
 import org.jboss.tools.switchyard.reddeer.component.Component;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.condition.ConsoleHasChanged;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
+import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
+import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
+import org.jboss.tools.switchyard.reddeer.server.ServerDeployment;
 import org.jboss.tools.switchyard.reddeer.wizard.ImportFileWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.PromoteServiceWizard;
-import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
-import org.jboss.tools.switchyard.ui.bot.test.suite.ServerDeployment;
-import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Server;
-import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.State;
-import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Type;
-import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
-import org.jboss.tools.switchyard.ui.bot.test.util.BackupClient;
 import org.jboss.tools.switchyard.ui.bot.test.util.SoapClient;
 import org.junit.After;
 import org.junit.Before;
@@ -34,15 +32,16 @@ import org.junit.runner.RunWith;
  * @author apodhrad
  * 
  */
-@CleanWorkspace
-@OpenPerspective(JavaEEPerspective.class)
-@Server(type = Type.ALL, state = State.RUNNING)
-@RunWith(SwitchyardSuite.class)
+@SwitchYard(server = @Server(type = ServerReqType.ANY, state = ServerReqState.RUNNING))
+@RunWith(RedDeerSuite.class)
 public class BottomUpBPELTest {
 
 	public static final String PROJECT = "bpel_project";
 	public static final String WSDL = "http://localhost:8080/bpel_project/SayHelloService?wsdl";
 
+	@InjectRequirement
+	private SwitchYardRequirement switchyardRequirement;
+	
 	@Before
 	@After
 	public void closeSwitchyardFile() {
@@ -55,8 +54,7 @@ public class BottomUpBPELTest {
 
 	@Test
 	public void bottomUpBPELtest() throws Exception {
-		String version = SwitchyardSuite.getLibraryVersion();
-		new SwitchYardProjectWizard(PROJECT, version).impl("BPEL").binding("SOAP").create();
+		switchyardRequirement.project(PROJECT).impl("BPEL").binding("SOAP").create();
 		new ProjectExplorer().getProject(PROJECT).getProjectItem("src/main/resources").select();
 		new ImportFileWizard().importFile("resources/bpel", "SayHello.bpel");
 		new ImportFileWizard().importFile("resources/wsdl", "SayHelloArtifacts.wsdl");
@@ -91,15 +89,8 @@ public class BottomUpBPELTest {
 		new SwitchYardEditor().save();
 
 		/* Test SOAP Response */
-		new ServerDeployment().deployProject(PROJECT);
-		new ServerDeployment().fullPublish(PROJECT);
-		try {
-			SoapClient.testResponses(WSDL, "SayHello");
-		} catch (Exception e) {
-			BackupClient.backupDeployment(PROJECT);
-			throw e;
-		}
-
+		new ServerDeployment(switchyardRequirement.getConfig().getName()).deployProject(PROJECT);
+		SoapClient.testResponses(WSDL, "SayHello");
 		new WaitWhile(new ConsoleHasChanged());
 	}
 }

@@ -5,7 +5,8 @@ import static org.junit.Assert.assertEquals;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
@@ -35,10 +36,10 @@ import org.jboss.tools.switchyard.reddeer.condition.JUnitHasFinished;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
 import org.jboss.tools.switchyard.reddeer.project.ProjectItemExt;
+import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
+import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.jboss.tools.switchyard.reddeer.view.JUnitView;
 import org.jboss.tools.switchyard.reddeer.wizard.ReferenceWizard;
-import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
-import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,9 +52,9 @@ import org.junit.runner.RunWith;
  * @author apodhrad
  * 
  */
-@CleanWorkspace
+@SwitchYard
 @OpenPerspective(JavaEEPerspective.class)
-@RunWith(SwitchyardSuite.class)
+@RunWith(RedDeerSuite.class)
 public class TopDownBPMN2Test {
 
 	private static final String PROJECT = "switchyard-bpm-processgreet";
@@ -70,6 +71,9 @@ public class TopDownBPMN2Test {
 	private static final String EVAL_GREET_DECL = "public boolean checkGreet(String greet);";
 	private static final String EVAL_GREET_BEAN = EVAL_GREET + "Bean";
 
+	@InjectRequirement
+	private SwitchYardRequirement switchyardRequirement;
+	
 	@Before
 	@After
 	public void closeSwitchyardFile() {
@@ -85,8 +89,7 @@ public class TopDownBPMN2Test {
 		new WorkbenchShell().maximize();
 
 		// Create new Switchyard project, Add support for Bean, BPM
-		String version = SwitchyardSuite.getLibraryVersion();
-		new SwitchYardProjectWizard(PROJECT, version).impl("Bean", "BPM (jBPM)").groupId(GROUP_ID).packageName(PACKAGE)
+		switchyardRequirement.project(PROJECT).impl("Bean", "BPM (jBPM)").groupId(GROUP_ID).packageName(PACKAGE)
 				.create();
 		openFile(PROJECT, PACKAGE_MAIN_RESOURCES, "META-INF", "switchyard.xml");
 		new BPM().setService(PROCESS_GREET).setBpmnFileName(BPMN_FILE_NAME).create(BPM_COORDS);

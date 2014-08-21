@@ -1,12 +1,12 @@
 package org.jboss.tools.switchyard.ui.bot.test;
 
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Server;
-import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.State;
-import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Type;
-import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
+import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
+import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
+import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -16,10 +16,9 @@ import org.junit.runner.RunWith;
  * @author apodhrad
  * 
  */
-@CleanWorkspace
+@SwitchYard(server = @Server(type = ServerReqType.ANY, state = ServerReqState.PRESENT))
 @OpenPerspective(JavaEEPerspective.class)
-@Server(type = Type.ALL, state = State.PRESENT)
-@RunWith(SwitchyardSuite.class)
+@RunWith(RedDeerSuite.class)
 public class SwitchYardQuickstartsTest extends QuickstartsTest {
 
 	public SwitchYardQuickstartsTest() {

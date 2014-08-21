@@ -19,12 +19,25 @@ public class HttpClient {
 	public HttpClient(String url) {
 		this.url = url;
 	}
-
-	public String send() throws MalformedURLException, IOException {
-		return send(null);
+	
+	public String get() throws MalformedURLException, IOException {
+		StringBuffer response = new StringBuffer();
+		HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
+		con.setRequestMethod("GET");
+		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+		String line = null;
+		while ((line = in.readLine()) != null) {
+			response.append(line);
+		}
+		in.close();
+		return response.toString();
 	}
 
-	public String send(String data) throws MalformedURLException, IOException {
+	public String post() throws MalformedURLException, IOException {
+		return post(null);
+	}
+
+	public String post(String data) throws MalformedURLException, IOException {
 		StringBuffer response = new StringBuffer();
 		HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
 		con.setRequestMethod("POST");

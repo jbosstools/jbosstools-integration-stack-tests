@@ -6,11 +6,15 @@ import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
+import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
 import org.jboss.tools.switchyard.reddeer.binding.SOAPBindingPage;
 import org.jboss.tools.switchyard.reddeer.component.Bean;
@@ -21,15 +25,11 @@ import org.jboss.tools.switchyard.reddeer.condition.JUnitHasFinished;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
 import org.jboss.tools.switchyard.reddeer.project.ProjectItemExt;
+import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
+import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
+import org.jboss.tools.switchyard.reddeer.server.ServerDeployment;
 import org.jboss.tools.switchyard.reddeer.view.JUnitView;
 import org.jboss.tools.switchyard.reddeer.wizard.PromoteServiceWizard;
-import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
-import org.jboss.tools.switchyard.ui.bot.test.suite.ServerDeployment;
-import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Server;
-import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.State;
-import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Type;
-import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
-import org.jboss.tools.switchyard.ui.bot.test.util.BackupClient;
 import org.jboss.tools.switchyard.ui.bot.test.util.SoapClient;
 import org.junit.After;
 import org.junit.Before;
@@ -56,14 +56,16 @@ import org.junit.runner.RunWith;
  * @author apodhrad
  * 
  */
-@CleanWorkspace
+@SwitchYard(server = @Server(type = ServerReqType.ANY, state = ServerReqState.RUNNING))
 @OpenPerspective(JavaEEPerspective.class)
-@Server(type = Type.ALL, state = State.RUNNING)
-@RunWith(SwitchyardSuite.class)
+@RunWith(RedDeerSuite.class)
 public class SimpleTest {
 
 	private static final String PROJECT = "simple";
 	private static final String PACKAGE = "com.example.switchyard.simple";
+
+	@InjectRequirement
+	private SwitchYardRequirement switchyardRequirement;
 
 	@Before @After
 	public void closeSwitchyardFile() {
@@ -76,8 +78,7 @@ public class SimpleTest {
 	
 	@Test
 	public void simpleTest() throws Exception {
-		String version = SwitchyardSuite.getLibraryVersion();
-		new SwitchYardProjectWizard(PROJECT, version).impl("Bean").binding("SOAP").create();
+		switchyardRequirement.project(PROJECT).impl("Bean").binding("SOAP").create();
 
 		new Bean().setService("ExampleService").create();
 
@@ -135,14 +136,11 @@ public class SimpleTest {
 		new SwitchYardEditor().save();
 
 		/* Test SOAP Response */
-		new ServerDeployment().deployProject(PROJECT);
-		new ServerDeployment().fullPublish(PROJECT);
+		new ServerDeployment(switchyardRequirement.getConfig().getName()).deployProject(PROJECT);
 		try {
-			SoapClient.testResponses("http://localhost:8080/" + PROJECT + "/ExampleService?wsdl",
-					"Hello");
-		} catch (Exception e) {
-			BackupClient.backupDeployment(PROJECT);
-			throw e;
+			SoapClient.testResponses("http://localhost:8080/" + PROJECT + "/ExampleService?wsdl", "Hello");
+		} catch (Exception ex) {
+			throw ex;
 		}
 
 		new WaitWhile(new ConsoleHasChanged());

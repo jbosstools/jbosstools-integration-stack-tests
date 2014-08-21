@@ -8,7 +8,8 @@ import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
@@ -19,9 +20,9 @@ import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
 import org.jboss.tools.switchyard.reddeer.project.ProjectItemExt;
+import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
+import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.jboss.tools.switchyard.reddeer.view.JUnitView;
-import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
-import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,9 +33,9 @@ import org.junit.runner.RunWith;
  * @author lfabriko
  *
  */
-@CleanWorkspace
+@SwitchYard
 @OpenPerspective(JavaEEPerspective.class)
-@RunWith(SwitchyardSuite.class)
+@RunWith(RedDeerSuite.class)
 public class DroolsTest {
 
 	private static final String PROJECT = "switchyard-drools-interview";
@@ -45,6 +46,9 @@ public class DroolsTest {
 	private static final String INTERVIEW = "Interview";
 	private static final String APPLICANT = "Applicant";
 	private static final String TEST = INTERVIEW + "ServiceTest.java";
+
+	@InjectRequirement
+	private SwitchYardRequirement switchyardRequirement;
 	
 	@Before @After
 	public void closeSwitchyardFile() {
@@ -58,8 +62,7 @@ public class DroolsTest {
 	@Test
 	public void droolsCreationTest() {
 		//new project, support rules
-		String version = SwitchyardSuite.getLibraryVersion();
-		new SwitchYardProjectWizard(PROJECT, version).impl("Rules (Drools)").groupId(GROUP_ID).packageName(PACKAGE).create();
+		switchyardRequirement.project(PROJECT).impl("Rules (Drools)").groupId(GROUP_ID).packageName(PACKAGE).create();
 		//open sy.xml, add rules, service, promote
 		new Drools().setName(INTERVIEW).setfileName(INTERVIEW+".drl").setService(INTERVIEW + "Service").create();
 		new Service(INTERVIEW + "Service").promoteService().setServiceName(INTERVIEW + "ServiceMain").finish();

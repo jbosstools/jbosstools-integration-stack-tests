@@ -41,7 +41,9 @@ public class ServerConfig {
 	private ServerBase serverBase;
 
 	public ServerBase getServerBase() {
-		serverBase.setName(name);
+		if (serverBase != null) {
+			serverBase.setName(name);
+		}
 		return serverBase;
 	}
 

@@ -1,7 +1,7 @@
 package org.jboss.tools.switchyard.reddeer.wizard;
 
 import org.hamcrest.core.IsNull;
-import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
+import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.condition.TableHasRows;

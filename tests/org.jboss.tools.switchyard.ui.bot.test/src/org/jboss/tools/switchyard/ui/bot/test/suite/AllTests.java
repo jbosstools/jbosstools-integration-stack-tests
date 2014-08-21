@@ -2,6 +2,8 @@ package org.jboss.tools.switchyard.ui.bot.test.suite;
 
 import junit.framework.TestSuite;
 
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.tools.switchyard.ui.bot.test.DeploymentTest;
 import org.jboss.tools.switchyard.ui.bot.test.TopDownBPMN2Test;
 import org.jboss.tools.switchyard.ui.bot.test.BindingsTest;
 import org.jboss.tools.switchyard.ui.bot.test.BottomUpBPELTest;
@@ -39,9 +41,10 @@ import org.junit.runners.Suite.SuiteClasses;
 	ImplementationsPropertiesTest.class,
 	DomainSettingsTest.class,
 	BindingsTest.class,
-	ThrottlingTest.class
+	ThrottlingTest.class,
+	DeploymentTest.class
 })
-@RunWith(SwitchyardSuite.class)
+@RunWith(RedDeerSuite.class)
 public class AllTests extends TestSuite {
 
 }

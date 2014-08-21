@@ -11,7 +11,7 @@ import java.util.List;
 import org.jboss.reddeer.eclipse.ui.perspectives.DebugPerspective;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
@@ -36,7 +36,7 @@ import org.jboss.tools.switchyard.reddeer.debug.Breakpoint.TriggeringPhase;
 import org.jboss.tools.switchyard.reddeer.debug.BreakpointsView;
 import org.jboss.tools.switchyard.reddeer.debug.TerminateButton;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
-import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
+import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -49,9 +49,9 @@ import org.junit.runner.RunWith;
  * @author apodhrad
  * 
  */
-@CleanWorkspace
+@SwitchYard
 @OpenPerspective(DebugPerspective.class)
-@RunWith(SwitchyardSuite.class)
+@RunWith(RedDeerSuite.class)
 public class BreakpointTest {
 
 	// TODO Add test for checking whether checkboxes (triggering phases) are

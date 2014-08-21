@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
-	targetNamespace="http://www.jboss.org/NS/SOAReq" xmlns:server="http://www.jboss.org/NS/SOAReq" xmlns:rd="http://www.jboss.org/NS/Req">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://www.jboss.org/NS/SOAReq"
+	xmlns:server="http://www.jboss.org/NS/SOAReq" xmlns:rd="http://www.jboss.org/NS/Req">
 
 	<!-- Import basic RedDeer requirements -->
 	<xs:import namespace="http://www.jboss.org/NS/Req" schemaLocation="http://www.jboss.org/schema/reddeer/RedDeerSchema.xsd" />
@@ -19,6 +19,13 @@
 		</xs:annotation>
 	</xs:element>
 
+	<!-- Specify user-requirement -->
+	<xs:element name="switchyard-requirement" type="server:switchyardRequirementType" substitutionGroup="rd:abstractRequirement">
+		<xs:annotation>
+			<xs:documentation>Some documentation</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+
 	<xs:complexType name="serverRequirementType">
 		<xs:complexContent>
 			<xs:extension base="rd:abstractRequirementType">
@@ -32,7 +39,7 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	
+
 	<xs:complexType name="runtimeRequirementType">
 		<xs:complexContent>
 			<xs:extension base="rd:abstractRequirementType">
@@ -40,6 +47,33 @@
 					<xs:element name="esb" type="server:jboss-esb" />
 					<xs:element name="jbpm" type="server:jboss-jbpm" />
 				</xs:choice>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="switchyardRequirementType">
+		<xs:complexContent>
+			<xs:extension base="rd:abstractRequirementType">
+				<xs:sequence>
+					<xs:element name="configurationVersion">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:enumeration value="1.0" />
+								<xs:enumeration value="1.1" />
+								<xs:enumeration value="2.0" />
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="targetRuntime" type="xs:string" minOccurs="0" />
+					<xs:element name="libraryVersion" type="xs:string" />
+					<xs:choice minOccurs="0">
+						<xs:element name="karaf" type="server:apache-karaf" />
+						<xs:element name="fuse" type="server:jboss-fuse" />
+						<xs:element name="as" type="server:jboss-as" />
+						<xs:element name="eap" type="server:jboss-eap" />
+						<xs:element name="wildfly" type="server:jboss-wildfly" />
+					</xs:choice>
+				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -131,8 +165,7 @@
 			</xs:simpleType>
 		</xs:attribute>
 	</xs:complexType>
-	
-	
+
 	<!-- JBoss ESB -->
 	<xs:complexType name="jboss-esb">
 		<xs:sequence>
@@ -148,7 +181,7 @@
 			</xs:simpleType>
 		</xs:attribute>
 	</xs:complexType>
-	
+
 	<!-- JBoss jBPM -->
 	<xs:complexType name="jboss-jbpm">
 		<xs:sequence>

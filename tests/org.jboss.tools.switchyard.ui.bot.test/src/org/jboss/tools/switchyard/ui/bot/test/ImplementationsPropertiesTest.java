@@ -6,7 +6,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
@@ -26,8 +27,8 @@ import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultImple
 import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultImplementationSecurityPage;
 import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultResourcePage;
 import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultTransactionPage;
-import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
-import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
+import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
+import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -40,9 +41,9 @@ import org.junit.runner.RunWith;
  * 
  * @author tsedmik
  */
-@CleanWorkspace
+@SwitchYard
 @OpenPerspective(JavaEEPerspective.class)
-@RunWith(SwitchyardSuite.class)
+@RunWith(RedDeerSuite.class)
 public class ImplementationsPropertiesTest {
 	
 	private static final String PROJECT = "ImplPropTestProject";
@@ -50,10 +51,12 @@ public class ImplementationsPropertiesTest {
 	private static final String BEAN2 = "BeanService2";
 	private ImplementationPropertiesPage properties;
 	
+	@InjectRequirement
+	private static SwitchYardRequirement switchyardRequirement;
+	
 	@BeforeClass
 	public static void setUp() {
-		String version = SwitchyardSuite.getLibraryVersion();
-		new SwitchYardProjectWizard(PROJECT, version).create(); 
+		switchyardRequirement.project(PROJECT).create(); 
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
 		Component compo = new Bean().setService(BEAN).create();

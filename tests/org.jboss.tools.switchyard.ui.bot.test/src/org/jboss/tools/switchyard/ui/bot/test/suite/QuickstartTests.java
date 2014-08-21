@@ -2,6 +2,7 @@ package org.jboss.tools.switchyard.ui.bot.test.suite;
 
 import junit.framework.TestSuite;
 
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.switchyard.ui.bot.test.CamelQuickstartsTest;
 import org.jboss.tools.switchyard.ui.bot.test.DTGovQuickstartsTest;
 import org.jboss.tools.switchyard.ui.bot.test.DemoQuickstartsTest;
@@ -25,7 +26,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	SRampQuickstartsTest.class,
 	CamelQuickstartsTest.class
 })
-@RunWith(SwitchyardSuite.class)
+@RunWith(RedDeerSuite.class)
 public class QuickstartTests extends TestSuite {
 
 }

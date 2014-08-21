@@ -7,9 +7,13 @@ import java.io.FileWriter;
 
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
+import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
 import org.jboss.tools.switchyard.reddeer.binding.FileBindingPage;
 import org.jboss.tools.switchyard.reddeer.component.Bean;
@@ -17,12 +21,9 @@ import org.jboss.tools.switchyard.reddeer.component.Component;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
-import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
-import org.jboss.tools.switchyard.ui.bot.test.suite.ServerDeployment;
-import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Server;
-import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.State;
-import org.jboss.tools.switchyard.ui.bot.test.suite.ServerRequirement.Type;
-import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
+import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
+import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
+import org.jboss.tools.switchyard.reddeer.server.ServerDeployment;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,15 +35,17 @@ import org.junit.runner.RunWith;
  * @author apodhrad
  * 
  */
-@CleanWorkspace
+@SwitchYard(server = @Server(type = ServerReqType.ANY, state = ServerReqState.RUNNING))
 @OpenPerspective(JavaEEPerspective.class)
-@Server(type = Type.ALL, state = State.RUNNING)
-@RunWith(SwitchyardSuite.class)
+@RunWith(RedDeerSuite.class)
 public class FileGatewayTest {
 
 	public static final String PROJECT = "file_project";
 	public static final String PACKAGE = "com.example.switchyard.file_project";
 
+	@InjectRequirement
+	private SwitchYardRequirement switchyardRequirement;
+	
 	@Before @After
 	public void closeSwitchyardFile() {
 		try {
@@ -54,8 +57,7 @@ public class FileGatewayTest {
 
 	@Test
 	public void fileGatewayTest() throws Exception {
-		String version = SwitchyardSuite.getLibraryVersion();
-		new SwitchYardProjectWizard(PROJECT, version).impl("Bean").binding("File").create();
+		switchyardRequirement.project(PROJECT).impl("Bean").binding("File").create();
 
 		// Create new service and interface
 		new Bean().setService("Info").create();
@@ -87,8 +89,7 @@ public class FileGatewayTest {
 		new SwitchYardEditor().save();
 
 		// Deploy and test the project
-		new ServerDeployment().deployProject(PROJECT);
-
+		new ServerDeployment(switchyardRequirement.getConfig().getName()).deployProject(PROJECT);
 		FileWriter out = new FileWriter(path + "/test.txt");
 		out.write("Hello File Gateway");
 		out.flush();

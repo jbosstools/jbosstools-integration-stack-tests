@@ -36,6 +36,9 @@ public class ServerRequirement implements Requirement<Server>, CustomConfigurati
 	@Override
 	public boolean canFulfill() {
 		ServerReqType[] type = server.type();
+		if(type.length == 0) {
+			return true;
+		}
 		for (int i = 0; i < type.length; i++) {
 			if (type[i].matches(config.getServerBase())) {
 				return true;

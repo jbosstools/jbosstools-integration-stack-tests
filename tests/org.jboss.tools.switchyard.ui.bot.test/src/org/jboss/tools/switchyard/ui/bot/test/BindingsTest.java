@@ -6,9 +6,9 @@ import static org.junit.Assert.assertTrue;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.swt.handler.ShellHandler;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
@@ -34,9 +34,9 @@ import org.jboss.tools.switchyard.reddeer.binding.SchedulingBindingPage;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.preference.PropertiesPreferencePage;
+import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
+import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.jboss.tools.switchyard.reddeer.wizard.DefaultServiceWizard;
-import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
-import org.jboss.tools.switchyard.ui.bot.test.suite.SwitchyardSuite;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -50,9 +50,8 @@ import org.junit.runner.RunWith;
  * @author apodhrad
  * 
  */
-@CleanWorkspace
-@OpenPerspective(JavaEEPerspective.class)
-@RunWith(SwitchyardSuite.class)
+@SwitchYard
+@RunWith(RedDeerSuite.class)
 public class BindingsTest {
 
 	public static final String CONTEXT_PATH = "Context Path";
@@ -67,7 +66,8 @@ public class BindingsTest {
 	public static final String[] BINDINGS = new String[] { "Camel", "FTP", "FTPS", "File", "HTTP", "JCA", "JMS", "JPA",
 			"Mail", "Netty TCP", "Netty UDP", "REST", "SCA", "SFTP", "SOAP", "SQL", "Scheduling" };
 
-	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
+	@InjectRequirement
+	private static SwitchYardRequirement switchyardRequirement;
 
 	@BeforeClass
 	public static void createProject() {
@@ -76,8 +76,8 @@ public class BindingsTest {
 		} catch (Exception ex) {
 			// it is ok, we just try to close switchyard.xml if it is open
 		}
-		String version = SwitchyardSuite.getLibraryVersion();
-		new SwitchYardProjectWizard(PROJECT, version).binding(GATEWAY_BINDINGS).create();
+		
+		switchyardRequirement.project(PROJECT).binding(GATEWAY_BINDINGS).create();
 
 		// Sometimes the editor is not displayed properly, this happens only
 		// when the project is created by bot
@@ -118,7 +118,7 @@ public class BindingsTest {
 
 	@After
 	public void deleteService() {
-		bot.closeAllShells();
+		ShellHandler.getInstance().closeAllNonWorbenchShells();
 		new Service("HelloService").delete();
 		new SwitchYardEditor().save();
 	}
