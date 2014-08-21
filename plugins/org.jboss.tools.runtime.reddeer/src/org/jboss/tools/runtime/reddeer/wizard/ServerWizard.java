@@ -1,7 +1,7 @@
 package org.jboss.tools.runtime.reddeer.wizard;
 
-import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
+import org.jboss.reddeer.jface.wizard.NewWizardDialog;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 
@@ -31,7 +31,7 @@ public class ServerWizard extends NewWizardDialog {
 	}
 
 	public ServerWizard setRuntime(String runtime) {
-		new LabeledCombo(RUNTIME).setSelection(runtime);
+		new DefaultCombo().setSelection(runtime);
 		return this;
 	}
 

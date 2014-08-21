@@ -34,7 +34,7 @@
 	      <groupId>org.eclipse.tycho</groupId>
 	      <artifactId>tycho-surefire-plugin</artifactId>
 	      <configuration>
-		<appArgLine>-eclipse.password resources/security/password -clean</appArgLine>
+		<appArgLine>-eclipse.password ${project.basedir}/resources/security/password -clean</appArgLine>
 		<useUIThread>false</useUIThread>
 		<skip>${skipTests}</skip>
 		<dependencies combine.children="append">

@@ -90,11 +90,11 @@ public class ServerKaraf extends ServerBase {
 	}
 
 	public String getRuntimeType() {
-		return "Runtime definition for " + label + " " + getVersion();
+		return label + " " + getVersion();
 	}
 
 	public String getRuntimeName() {
-		return "Runtime definition for " + label + " " + getVersion();
+		return label + " " + getVersion() + " Runtime";
 	}
 
 	@Override
@@ -170,10 +170,9 @@ public class ServerKaraf extends ServerBase {
 	 * Tries to close 'Secure Storage' dialog window
 	 */
 	private static void closeSecureStorage() {
-
 		try {
-			new WaitUntil(new ShellWithTextIsAvailable("Secure Storage"), TimePeriod.getCustom(5));
-		} catch (RuntimeException ex) {
+			new WaitUntil(new ShellWithTextIsAvailable("Secure Storage"), TimePeriod.NORMAL);
+		} catch (RuntimeException ex1) {
 			return;
 		}
 		new DefaultShell("Secure Storage");

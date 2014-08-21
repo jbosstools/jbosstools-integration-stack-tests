@@ -55,6 +55,7 @@ public class ServerAS extends ServerBase {
 		serverWizard.open();
 		serverWizard.setType(getCategory(), getServerType());
 		serverWizard.setName(name);
+		serverWizard.next();
 		serverWizard.setRuntime(name);
 		serverWizard.finish();
 	}

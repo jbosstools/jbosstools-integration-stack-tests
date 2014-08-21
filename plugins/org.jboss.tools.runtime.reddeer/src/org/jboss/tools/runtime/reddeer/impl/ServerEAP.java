@@ -16,7 +16,7 @@ import org.jboss.tools.runtime.reddeer.Namespaces;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ServerEAP extends ServerAS {
 
-	public static final String CATEGORY = "JBoss Enterprise Middleware";
+	public static final String CATEGORY = "Red Hat JBoss Middleware";
 
 	private final String label = "JBoss Enterprise Application Platform";
 
