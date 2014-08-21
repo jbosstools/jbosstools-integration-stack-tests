@@ -11,21 +11,29 @@
 package org.jboss.tools.jbpm.ui.bot.test;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.tools.jbpm.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.tools.jbpm.ui.bot.test.suite.JBPMRequirement.JBPM;
-import org.jboss.tools.jbpm.ui.bot.test.suite.JBPMSuite;
-import org.jboss.tools.jbpm.ui.bot.test.suite.PerspectiveRequirement.Perspective;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.tools.jbpm.ui.bot.test.perspective.JBPMJPDL3Perspective;
 import org.jboss.tools.jbpm.ui.bot.test.wizard.JBPMProjectWizard;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
-@JBPM
 @CleanWorkspace
-@Perspective(name = "jBPM jPDL 3")
-public class JBPMProjectTest extends SWTBotTestCase {
+@OpenPerspective(JBPMJPDL3Perspective.class)
+@Runtime(type = RuntimeReqType.JBPM)
+@RunWith(RedDeerSuite.class)
+public class JBPMProjectTest {
 
 	protected static SWTWorkbenchBot bot = new SWTWorkbenchBot();
+
+	@InjectRequirement
+	protected RuntimeRequirement requirement;
 	
 	@Test
 	public void createProject() {
@@ -33,7 +41,7 @@ public class JBPMProjectTest extends SWTBotTestCase {
 		JBPMProjectWizard projectWizard = new JBPMProjectWizard();
 		projectWizard.open();
 		projectWizard.setName("test").next();
-		projectWizard.setRuntime(JBPMSuite.getJBPMRuntime()).finish();
+		projectWizard.setRuntime(requirement.getConfig().getName()).finish();
 
 		new ProjectExplorer().getProject("test").getProjectItem("src", "main", "jpdl", "simple.jpdl.xml").open();
 		

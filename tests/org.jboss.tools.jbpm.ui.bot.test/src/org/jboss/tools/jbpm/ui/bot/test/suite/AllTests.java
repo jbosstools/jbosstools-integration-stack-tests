@@ -12,7 +12,8 @@ package org.jboss.tools.jbpm.ui.bot.test.suite;
 
 import junit.framework.TestSuite;
 
-import org.jboss.tools.jbpm.ui.bot.test.BPMNConvertCase;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.tools.jbpm.ui.bot.test.BPMNConvertTest;
 import org.jboss.tools.jbpm.ui.bot.test.GPDPaletteTest;
 import org.jboss.tools.jbpm.ui.bot.test.GPDTest;
 import org.jboss.tools.jbpm.ui.bot.test.JBPMDeployTest;
@@ -25,9 +26,9 @@ import org.junit.runners.Suite.SuiteClasses;
 	GPDTest.class, 
 	GPDPaletteTest.class,
 	JBPMDeployTest.class, 
-	BPMNConvertCase.class 
+	BPMNConvertTest.class 
 })
-@RunWith(JBPMSuite.class)
+@RunWith(RedDeerSuite.class)
 public class AllTests extends TestSuite {
 
 }

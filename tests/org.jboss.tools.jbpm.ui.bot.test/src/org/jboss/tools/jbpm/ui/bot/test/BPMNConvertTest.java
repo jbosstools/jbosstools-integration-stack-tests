@@ -1,21 +1,24 @@
 package org.jboss.tools.jbpm.ui.bot.test;
 
-import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.eclipse.jdt.ui.ide.NewJavaProjectWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.tools.jbpm.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.tools.jbpm.ui.bot.test.suite.PerspectiveRequirement.Perspective;
 import org.jboss.tools.jbpm.ui.bot.test.wizard.ExportBPMNWizard;
 import org.jboss.tools.jbpm.ui.bot.test.wizard.ImportFileWizard;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 @CleanWorkspace
-@Perspective(name = "Java")
-public class BPMNConvertCase extends SWTBotTestCase {
+@OpenPerspective(JavaPerspective.class)
+@RunWith(RedDeerSuite.class)
+public class BPMNConvertTest {
 
 	private String projectName = "BPMNConvertProject";
 	private String originalFolder = "original";

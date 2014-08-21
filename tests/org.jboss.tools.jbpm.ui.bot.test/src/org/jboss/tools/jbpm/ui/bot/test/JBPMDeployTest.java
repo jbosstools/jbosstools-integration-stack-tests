@@ -12,8 +12,12 @@ package org.jboss.tools.jbpm.ui.bot.test;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotMultiPageEditor;
-import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -22,34 +26,38 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.jbpm.ui.bot.test.editor.JBPMEditor;
-import org.jboss.tools.jbpm.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.tools.jbpm.ui.bot.test.suite.JBPMRequirement.JBPM;
-import org.jboss.tools.jbpm.ui.bot.test.suite.JBPMSuite;
-import org.jboss.tools.jbpm.ui.bot.test.suite.PerspectiveRequirement.Perspective;
-import org.jboss.tools.jbpm.ui.bot.test.suite.ServerRequirement.Server;
-import org.jboss.tools.jbpm.ui.bot.test.suite.ServerRequirement.State;
-import org.jboss.tools.jbpm.ui.bot.test.suite.ServerRequirement.Type;
+import org.jboss.tools.jbpm.ui.bot.test.perspective.JBPMJPDL3Perspective;
 import org.jboss.tools.jbpm.ui.bot.test.wizard.JBPMProjectWizard;
-import org.junit.BeforeClass;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
+import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
+import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
-@JBPM
 @CleanWorkspace
-@Perspective(name = "jBPM jPDL 3")
-@Server(type = Type.ALL, state = State.RUNNING)
-public class JBPMDeployTest extends SWTBotTestCase {
+@OpenPerspective(JBPMJPDL3Perspective.class)
+@Runtime(type = RuntimeReqType.JBPM)
+@Server(type = {ServerReqType.AS, ServerReqType.EAP}, state = ServerReqState.RUNNING)
+@RunWith(RedDeerSuite.class)
+public class JBPMDeployTest {
 
 	public static final String PROJECT = "deploytest";
 
 	protected static SWTWorkbenchBot bot = new SWTWorkbenchBot();
+	
+	@InjectRequirement
+	private RuntimeRequirement requirement;
 
-	@BeforeClass
-	public static void createProject() {
+	@Before
+	public void createProject() {
 		/* Create jBPM3 Project */
 		JBPMProjectWizard projectWizard = new JBPMProjectWizard();
 		projectWizard.open();
 		projectWizard.setName(PROJECT).next();
-		projectWizard.setRuntime(JBPMSuite.getJBPMRuntime()).finish();
+		projectWizard.setRuntime(requirement.getConfig().getName()).finish();
 	}
 
 	@Test

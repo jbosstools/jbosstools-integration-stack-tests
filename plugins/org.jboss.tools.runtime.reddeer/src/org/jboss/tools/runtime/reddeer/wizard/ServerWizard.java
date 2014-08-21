@@ -31,7 +31,11 @@ public class ServerWizard extends NewWizardDialog {
 	}
 
 	public ServerWizard setRuntime(String runtime) {
-		new DefaultCombo().setSelection(runtime);
+		try {
+			new DefaultCombo(0).setSelection(runtime);
+		} catch (Exception ex) {
+			new DefaultCombo(1).setSelection(runtime);
+		}
 		return this;
 	}
 

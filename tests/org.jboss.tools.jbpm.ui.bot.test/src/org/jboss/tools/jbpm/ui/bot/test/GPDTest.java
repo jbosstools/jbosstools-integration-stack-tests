@@ -16,33 +16,46 @@ import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotMultiPageEditor;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
-import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.tools.jbpm.ui.bot.test.editor.JBPMEditor;
-import org.jboss.tools.jbpm.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.tools.jbpm.ui.bot.test.suite.JBPMRequirement.JBPM;
-import org.jboss.tools.jbpm.ui.bot.test.suite.JBPMSuite;
-import org.jboss.tools.jbpm.ui.bot.test.suite.PerspectiveRequirement.Perspective;
+import org.jboss.tools.jbpm.ui.bot.test.perspective.JBPMJPDL3Perspective;
 import org.jboss.tools.jbpm.ui.bot.test.wizard.JBPMProjectWizard;
-import org.junit.BeforeClass;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
-@JBPM
 @CleanWorkspace
-@Perspective(name = "jBPM jPDL 3")
-public class GPDTest extends SWTBotTestCase {
+@OpenPerspective(JBPMJPDL3Perspective.class)
+@Runtime(type = RuntimeReqType.JBPM)
+@RunWith(RedDeerSuite.class)
+public class GPDTest {
 
 	public static final String PROJECT = "gpdtest";
 	
 	protected static SWTWorkbenchBot bot = new SWTWorkbenchBot();
+	
+	@InjectRequirement
+	private RuntimeRequirement requirement;
 
-	@BeforeClass
-	public static void createProject() {
+	@Before
+	public void createProject() {
 		/* Create jBPM3 Project */
 		JBPMProjectWizard projectWizard = new JBPMProjectWizard();
 		projectWizard.open();
-		projectWizard.setName(PROJECT).next();
-		projectWizard.setRuntime(JBPMSuite.getJBPMRuntime()).finish();
+		projectWizard.setName(PROJECT);
+		projectWizard.next();
+		System.out.println(requirement);
+		System.out.println(requirement.getConfig());
+		System.out.println(requirement.getConfig().getName());
+		projectWizard.setRuntime(requirement.getConfig().getName());
+		projectWizard.finish();
 	}
 
 	@Test
