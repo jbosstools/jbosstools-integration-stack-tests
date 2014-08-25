@@ -12,6 +12,7 @@
 	<artifactId>org.jboss.tools.bpmn2.ui.bot.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
+		<bpmn2-modeler.site>http://download.eclipse.org/bpmn2-modeler/updates/luna/1.1.0</bpmn2-modeler.site>
 		<droolsjbpm.site>https://repository.jboss.org/nexus/content/groups/public-jboss/</droolsjbpm.site>
 		<eclipse.graphiti.site>http://download.eclipse.org/graphiti/updates/0.10.0</eclipse.graphiti.site>
 		<systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.skip=false -Dtest.configurations.dir=resources/</systemProperties>
@@ -27,7 +28,7 @@
 		<mvel.version>2.1.7.Final</mvel.version>
 		<javassist.version>3.15.0-GA</javassist.version>
 		<dom4j.version>1.6.1</dom4j.version>
-		<slj4j.version>1.7.2</slj4j.version>
+		<slf4j.version>1.7.2</slf4j.version>
 		<hibernate.version>1.0.1.Final</hibernate.version>
 	</properties>
 
@@ -38,44 +39,44 @@
 			<version>${hibernate.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>${slj4j.version}</version>
+		  <groupId>org.slf4j</groupId>
+		  <artifactId>slf4j-api</artifactId>
+		  <version>${slf4j.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>dom4j</groupId>
-			<artifactId>dom4j</artifactId>
-			<version>${dom4j.version}</version>
+		  <groupId>dom4j</groupId>
+		  <artifactId>dom4j</artifactId>
+		  <version>${dom4j.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.drools</groupId>
-			<artifactId>drools-persistence-jpa</artifactId>
-			<version>${droolsjbpm.version}</version>
+		  <groupId>org.drools</groupId>
+		  <artifactId>drools-persistence-jpa</artifactId>
+		  <version>${droolsjbpm.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.javassist</groupId>
-			<artifactId>javassist</artifactId>
-			<version>${javassist.version}</version>
+		  <groupId>org.javassist</groupId>
+		  <artifactId>javassist</artifactId>
+		  <version>${javassist.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.mvel</groupId>
-			<artifactId>mvel2</artifactId>
-			<version>${mvel.version}</version>
+		  <groupId>org.mvel</groupId>
+		  <artifactId>mvel2</artifactId>
+		  <version>${mvel.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>joda-time</groupId>
-			<artifactId>joda-time</artifactId>
-			<version>${joda-time.version}</version>
+		  <groupId>joda-time</groupId>
+		  <artifactId>joda-time</artifactId>
+		  <version>${joda-time.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.antlr</groupId>
-			<artifactId>antlr-runtime</artifactId>
-			<version>${antlr.version}</version>
+		  <groupId>org.antlr</groupId>
+		  <artifactId>antlr-runtime</artifactId>
+		  <version>${antlr.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.thoughtworks.xstream</groupId>
-			<artifactId>xstream</artifactId>
-			<version>${xstream.version}</version>
+		  <groupId>com.thoughtworks.xstream</groupId>
+		  <artifactId>xstream</artifactId>
+		  <version>${xstream.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jdt.core.compiler</groupId>
@@ -142,6 +143,11 @@
 				<enabled>true</enabled>
 			</releases>
 		</repository>
+		<repository>
+            <id>bpmn2-modeler</id>
+            <url>${bpmn2-modeler.site}</url>
+            <layout>p2</layout>
+        </repository>
 	</repositories>
 
 	<build>
@@ -161,16 +167,31 @@
 		      <skip>${skipTests}</skip>
 		      <dependencies combine.children="append">
 			<!-- SwitchYard feature -->
-			<dependency>
+			<!--dependency>
 			  <type>p2-installable-unit</type>
 			  <artifactId>org.switchyard.tools.feature.feature.group</artifactId>
 			  <version>0.0.0</version>
-			</dependency>
+			</dependency-->
 			<!-- SwitchYard BPMN2 feature -->
-			<dependency>
+			<!--dependency>
 			  <type>p2-installable-unit</type>
 			  <artifactId>org.switchyard.tools.bpmn2.feature.feature.group</artifactId>
 			  <version>0.0.0</version>
+			</dependency-->
+			<dependency>
+			  <type>p2-installable-unit</type>
+			  <artifactId>org.eclipse.bpmn2.modeler.feature.group</artifactId>
+			  <version>1.1.0</version>
+			</dependency>
+			<dependency>
+			  <type>p2-installable-unit</type>
+			  <artifactId>org.eclipse.bpmn2.modeler.runtime.jboss.feature.group</artifactId>
+			  <version>1.1.0</version>
+			</dependency>
+			<dependency>
+			  <type>p2-installable-unit</type>
+			  <artifactId>org.eclipse.bpmn2.modeler.wsil.feature.group</artifactId>
+			  <version>1.1.0</version>
 			</dependency>
 			<!-- This entry should enable creating of default JDK on Mac -->
 			<dependency>
@@ -199,6 +220,11 @@
 						</goals>
 						<configuration>
 							<artifactItems>
+								<artifactItem>
+									<groupId>org.eclipse.jdt.core.compiler</groupId>
+									<artifactId>ecj</artifactId>
+									<version>${ecj.version}</version>
+								</artifactItem>
 								<artifactItem>
 									<groupId>org.kie</groupId>
 									<artifactId>kie-api</artifactId>
