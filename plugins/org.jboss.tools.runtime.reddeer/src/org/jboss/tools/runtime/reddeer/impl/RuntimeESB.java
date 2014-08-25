@@ -4,6 +4,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.jboss.tools.esb.core.runtime.JBossESBRuntime;
+import org.jboss.tools.esb.core.runtime.JBossRuntimeManager;
 import org.jboss.tools.runtime.reddeer.Namespaces;
 import org.jboss.tools.runtime.reddeer.RuntimeBase;
 import org.jboss.tools.runtime.reddeer.wizard.ESBRuntimePreferencePage;
@@ -29,5 +31,11 @@ public class RuntimeESB extends RuntimeBase {
 		esbRuntimeWizard.setHomeFolder(getHome());
 		esbRuntimeWizard.finish();
 		esbRuntimePreferencePage.ok();
+	}
+	
+	@Override
+	public boolean exists() {
+		JBossESBRuntime esbRuntime = JBossRuntimeManager.getInstance().findRuntimeByName(name);
+		return esbRuntime != null;
 	}
 }

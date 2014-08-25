@@ -12,7 +12,8 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-	  <systemProperties>${integrationTestsSystemProperties}</systemProperties>
+	  <reddeer.config>${project.build.directory}/classes/config</reddeer.config>
+	  <systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=${reddeer.config}</systemProperties>
 	  <customization.file>resources/config/plugin_customization.ini</customization.file>
 	</properties>
 	
@@ -23,9 +24,7 @@
 	      <groupId>org.eclipse.tycho</groupId>
 	      <artifactId>tycho-surefire-plugin</artifactId>
 	      <configuration>
-		<appArgLine>-eclipse.password resources/security/password -pluginCustomization ${customization.file} -clean -testpluginname org.jboss.tools.esb.ui.bot.test</appArgLine>
-		<testSuite>org.jboss.tools.esb.ui.bot.test</testSuite>
-		<testClass>**/*Test</testClass>
+		<appArgLine>-eclipse.password ${project.basedir}/resources/security/password -pluginCustomization ${customization.file} -clean</appArgLine>
 		<forkedProcessTimeoutInSeconds>7200</forkedProcessTimeoutInSeconds>
 		<useUIThread>false</useUIThread>
 		<skip>${skipTests}</skip>
@@ -62,269 +61,72 @@
 		</dependencies>
 	      </configuration>
 	    </plugin>
+	    <plugin>
+	      <groupId>com.googlecode.maven-download-plugin</groupId>
+	      <artifactId>download-maven-plugin</artifactId>
+	      <version>1.2.0</version>
+	      <executions>
+		<execution>
+		  <id>install-as-5.1.0</id>
+		  <phase>pre-integration-test</phase>
+		  <goals>
+		    <goal>wget</goal>
+		  </goals>
+		  <configuration>
+		    <url>http://repository.jboss.org/sourceforge/jboss-5.1.0.GA.zip</url>
+		    <md5>78322c75ca0c13002a04418b4a8bc920</md5>
+		    <unpack>true</unpack>
+                    <outputDirectory>${project.build.directory}</outputDirectory>
+		  </configuration>
+		</execution>
+		<execution>
+		  <id>get-esb</id>
+		  <phase>pre-integration-test</phase>
+		  <goals>
+		    <goal>wget</goal>
+		  </goals>
+		  <configuration>
+		    <url>http://download.jboss.org/jbossesb/4.12/binary/jbossesb-4.12.zip</url>
+		    <md5>24077f0ad7643a1f34448c0ed5225590</md5>
+		    <unpack>true</unpack>
+                    <outputDirectory>${project.build.directory}</outputDirectory>
+		  </configuration>
+		</execution>
+	      </executions>
+	    </plugin>
+	    <plugin>
+	      <artifactId>maven-antrun-plugin</artifactId>
+	      <version>1.7</version>
+	      <executions>
+		<execution>
+		  <id>install-esb</id>
+		  <phase>pre-integration-test</phase>
+		  <goals>
+		    <goal>run</goal>
+		  </goals>
+		  <configuration>
+		    <skip>${skipTests}</skip>
+		    <target>
+		      <ant dir="${project.build.directory}/jbossesb-4.12/install" target="deploy">
+			<property name="org.jboss.esb.server.home" value="${project.build.directory}/jboss-5.1.0.GA" />
+			<property name="org.jboss.esb.server.config" value="default" />
+		      </ant>
+		    </target>
+		  </configuration>
+		</execution>
+	      </executions>
+	    </plugin>
 	  </plugins>
+	  <!-- Copy resources and replace variables with its values -->
+	  <resources>
+	    <resource>
+	      <directory>resources</directory>
+	      <includes>
+		<include>config/*</include>
+	      </includes>
+	      <filtering>true</filtering>
+	    </resource>
+	  </resources>
 	</build>
-
-	<profiles>
-	  <!-- RedDeer Config -->
-	  <profile>
-	    <id>reddeer-config</id>
-	    <activation>
-	      <property>
-		<name>reddeer.config</name>
-	      </property>
-	    </activation>
-	    <properties>
-	      <systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=${reddeer.config}</systemProperties>
-	    </properties>
-	  </profile>
-	  <!-- Install AS 5.1 with ESB and Riftsaw -->
-	  <profile>
-	    <id>as51</id>
-	    <properties>
-	      <swtbot.properties>${requirementsDirectory}/as51.properties</swtbot.properties>
-	      <swtbot.test.properties.file>${swtbot.properties}</swtbot.test.properties.file>
-	    </properties>
-	    <build>
-	      <plugins>
-		<plugin>
-		  <groupId>com.googlecode.maven-download-plugin</groupId>
-		  <artifactId>maven-download-plugin</artifactId>
-		  <executions>
-		    <execution>
-		      <id>install-as-5.1.0</id>
-		      <phase>pre-integration-test</phase>
-		      <goals>
-			<goal>wget</goal>
-		      </goals>
-		      <configuration>
-			<url>http://repository.jboss.org/sourceforge/jboss-5.1.0.GA.zip</url>
-			<md5>78322c75ca0c13002a04418b4a8bc920</md5>
-			<unpack>true</unpack>
-		      </configuration>
-		    </execution>
-		    <execution>
-		      <id>get-esb</id>
-		      <phase>pre-integration-test</phase>
-		      <goals>
-			<goal>wget</goal>
-		      </goals>
-		      <configuration>
-			<url>http://download.jboss.org/jbossesb/4.11/binary/jbossesb-4.11.zip</url>
-			<md5>506bb7f42777cf0e524ccc37336aa137</md5>
-			<unpack>true</unpack>
-		      </configuration>
-		    </execution>
-		    <execution>
-		      <id>get-riftsaw</id>
-		      <phase>pre-integration-test</phase>
-		      <goals>
-			<goal>wget</goal>
-		      </goals>
-		      <configuration>
-			<url>http://downloads.jboss.org/riftsaw/releases/2.3.0.Final/riftsaw-2.3.0.Final.zip</url>
-			<md5>d57290b01d25ec0d15e143c6053d0878</md5>
-			<unpack>true</unpack>
-		      </configuration>
-		    </execution>
-		  </executions>
-		</plugin>
-		<plugin>
-		  <artifactId>maven-antrun-plugin</artifactId>
-		  <version>1.7</version>
-		  <executions>
-		    <execution>
-		      <id>install-esb</id>
-		      <phase>pre-integration-test</phase>
-		      <goals>
-			<goal>run</goal>
-		      </goals>
-		      <configuration>
-			<target>
-			  <ant dir="${requirementsDirectory}/jbossesb-4.11/install" target="deploy">
-			    <property name="org.jboss.esb.server.home" value="${requirementsDirectory}/jboss-5.1.0.GA" />
-			    <property name="org.jboss.esb.server.config" value="default" />
-			  </ant>
-			  <echo file="${swtbot.properties}">SERVER=AS,5.1,default,target/requirements/jboss-5.1.0.GA${line.separator}ESB=4.11,target/requirements/jboss-5.1.0.GA</echo>
-			</target>
-		      </configuration>
-		    </execution>
-		    <execution>
-		      <id>install-riftsaw</id>
-		      <phase>pre-integration-test</phase>
-		      <goals>
-			<goal>run</goal>
-		      </goals>
-		      <configuration>
-			<target>
-			  <ant dir="${requirementsDirectory}/riftsaw-2.3.0.Final/install" target="deploy">
-			    <property name="org.jboss.as.home" value="${requirementsDirectory}/jboss-5.1.0.GA" />
-			    <property name="org.jboss.as.config" value="default" />
-			    <property name="org.jboss.esb.home" value="${requirementsDirectory}/jbossesb-4.11" />
-			    <property name="databasev" value="hsql" />
-			    <property name="ws.version" value="3.4.0.GA" />
-			  </ant>
-			</target>
-		      </configuration>
-		    </execution>
-		  </executions>
-		</plugin>
-	      </plugins>
-	    </build>
-	  </profile>
-	  <!-- Install SOA Platform 5.2.0 -->
-	  <!-- You have to specify soa520.url property -->
-	  <profile>
-	    <id>soa520</id>
-	    <properties>
-	      <soa.version>soa520</soa.version>
-	      <esb.version>4.10</esb.version>
-	      <swtbot.properties>${requirementsDirectory}/${soa.version}.properties</swtbot.properties>
-	      <swtbot.test.properties.file>${swtbot.properties}</swtbot.test.properties.file>
-	    </properties>
-	    <build>
-	      <plugins>
-		<plugin>
-		  <groupId>com.googlecode.maven-download-plugin</groupId>
-		  <artifactId>maven-download-plugin</artifactId>
-		  <executions>
-		    <execution>
-		      <id>get-soa</id>
-		      <phase>pre-integration-test</phase>
-		      <goals>
-			<goal>wget</goal>
-		      </goals>
-		      <configuration>
-			<url>${soa520.url}</url>
-			<unpack>true</unpack>
-		      </configuration>
-		    </execution>
-		  </executions>
-		</plugin>
-		<plugin>
-		  <artifactId>maven-antrun-plugin</artifactId>
-		  <version>1.7</version>
-		  <executions>
-		    <execution>
-		      <id>set-soa-user</id>
-		      <phase>pre-integration-test</phase>
-		      <goals>
-			<goal>run</goal>
-		      </goals>
-		      <configuration>
-			<target>
-			  <echo file="${requirementsDirectory}/jboss-soa-p-5/jboss-as/server/default/conf/props/soa-users.properties">admin=admin</echo>
-			  <echo file="${swtbot.properties}">SERVER=SOA,5.2,default,target/requirements/jboss-soa-p-5/jboss-as${line.separator}ESB=${esb.version},target/requirements/jboss-soa-p-5</echo>
-			</target>
-		      </configuration>
-		    </execution>
-		  </executions>
-		</plugin>
-	      </plugins>
-	    </build>
-	  </profile>
-	  <!-- Install SOA Platform 5.3.0 -->
-	  <!-- You have to specify soa530.url property -->
-	  <profile>
-	    <id>soa530</id>
-	    <properties>
-	      <soa.version>soa530</soa.version>
-	      <esb.version>4.11</esb.version>
-	      <swtbot.properties>${requirementsDirectory}/${soa.version}.properties</swtbot.properties>
-	      <swtbot.test.properties.file>${swtbot.properties}</swtbot.test.properties.file>
-	    </properties>
-	    <build>
-	      <plugins>
-		<plugin>
-		  <groupId>com.googlecode.maven-download-plugin</groupId>
-		  <artifactId>maven-download-plugin</artifactId>
-		  <executions>
-		    <execution>
-		      <id>get-soa</id>
-		      <phase>pre-integration-test</phase>
-		      <goals>
-			<goal>wget</goal>
-		      </goals>
-		      <configuration>
-			<url>${soa530.url}</url>
-			<unpack>true</unpack>
-		      </configuration>
-		    </execution>
-		  </executions>
-		</plugin>
-		<plugin>
-		  <artifactId>maven-antrun-plugin</artifactId>
-		  <version>1.7</version>
-		  <executions>
-		    <execution>
-		      <id>set-soa-user</id>
-		      <phase>pre-integration-test</phase>
-		      <goals>
-			<goal>run</goal>
-		      </goals>
-		      <configuration>
-			<target>
-			  <echo file="${requirementsDirectory}/jboss-soa-p-5/jboss-as/server/default/conf/props/soa-users.properties">admin=admin</echo>
-			  <echo file="${swtbot.properties}">SERVER=SOA,5.3,default,target/requirements/jboss-soa-p-5/jboss-as${line.separator}ESB=${esb.version},target/requirements/jboss-soa-p-5</echo>
-			</target>
-		      </configuration>
-		    </execution>
-		  </executions>
-		</plugin>
-	      </plugins>
-	    </build>
-	  </profile>
-	  <!-- Install SOA Platform 5.3.1 -->
-	  <!-- You have to specify soa531.url property -->
-	  <profile>
-	    <id>soa531</id>
-	    <properties>
-	      <soa.version>soa531</soa.version>
-	      <esb.version>4.11</esb.version>
-	      <swtbot.properties>${requirementsDirectory}/${soa.version}.properties</swtbot.properties>
-	      <swtbot.test.properties.file>${swtbot.properties}</swtbot.test.properties.file>
-	    </properties>
-	    <build>
-	      <plugins>
-		<plugin>
-		  <groupId>com.googlecode.maven-download-plugin</groupId>
-		  <artifactId>maven-download-plugin</artifactId>
-		  <executions>
-		    <execution>
-		      <id>get-soa</id>
-		      <phase>pre-integration-test</phase>
-		      <goals>
-			<goal>wget</goal>
-		      </goals>
-		      <configuration>
-			<url>${soa531.url}</url>
-			<unpack>true</unpack>
-		      </configuration>
-		    </execution>
-		  </executions>
-		</plugin>
-		<plugin>
-		  <artifactId>maven-antrun-plugin</artifactId>
-		  <version>1.7</version>
-		  <executions>
-		    <execution>
-		      <id>set-soa-user</id>
-		      <phase>pre-integration-test</phase>
-		      <goals>
-			<goal>run</goal>
-		      </goals>
-		      <configuration>
-			<target>
-			  <echo file="${requirementsDirectory}/jboss-soa-p-5/jboss-as/server/default/conf/props/soa-users.properties">admin=admin</echo>
-			  <echo file="${swtbot.properties}">SERVER=SOA,5.3,default,target/requirements/jboss-soa-p-5/jboss-as${line.separator}ESB=${esb.version},target/requirements/jboss-soa-p-5</echo>
-			</target>
-		      </configuration>
-		    </execution>
-		  </executions>
-		</plugin>
-	      </plugins>
-	    </build>
-	  </profile>
-	</profiles>
 
 </project>

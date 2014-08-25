@@ -15,10 +15,11 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.tools.esb.reddeer.wizard.ESBProjectWizard;
-import org.jboss.tools.esb.reddeer.wizard.ESBRuntimePreferences;
-import org.jboss.tools.esb.reddeer.wizard.ESBRuntimeWizard;
-import org.jboss.tools.esb.ui.bot.test.requirement.ESBRequirement;
-import org.jboss.tools.esb.ui.bot.test.requirement.ESBRequirement.ESB;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
+import org.jboss.tools.runtime.reddeer.wizard.ESBRuntimeWizard;
+import org.jboss.tools.runtime.reddeer.wizard.ESBRuntimePreferencePage;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,7 +29,7 @@ import org.junit.runner.RunWith;
  * @author apodhrad
  *
  */
-@ESB
+@Runtime(type = RuntimeReqType.ESB)
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
 @RunWith(RedDeerSuite.class)
@@ -37,7 +38,7 @@ public class NewProjectUsingRuntimeTest {
 	public Logger log = Logger.getLogger(NewProjectUsingRuntimeTest.class);
 
 	@InjectRequirement
-	private ESBRequirement esbRequirement;
+	private RuntimeRequirement esbRequirement;
 
 	@After
 	public void deleteProject() {
@@ -50,18 +51,18 @@ public class NewProjectUsingRuntimeTest {
 
 	@Test
 	public void runtimeCreationTest() {
-		ESBRuntimePreferences preferences = new ESBRuntimePreferences();
+		ESBRuntimePreferencePage preferences = new ESBRuntimePreferencePage();
 		preferences.open();
 
 		ESBRuntimeWizard wizard = preferences.addESBRuntime();
 		assertFalse("Finish button must not be enabled when no home dir is defined",
 				new PushButton("Finish").isEnabled());
-		wizard.setHomeFolder(esbRequirement.getPath());
+		wizard.setHomeFolder(esbRequirement.getConfig().getRuntimeFamily().getHome());
 		assertEquals("JBDS-1886 - Version was not automatically selected by setting ESB home dir",
-				esbRequirement.getVersion(), wizard.getVersion());
+				esbRequirement.getConfig().getRuntimeFamily().getVersion(), wizard.getVersion());
 		wizard.setName("123_TheName");
 		assertEquals("Runtime name cannot start with a number", "Runtime name is not correct", wizard.getInfoText());
-		String name = "esb-" + esbRequirement.getVersion();
+		String name = "test-esb-" + esbRequirement.getConfig().getRuntimeFamily().getVersion();
 		wizard.setName(name);
 		wizard.finish();
 
@@ -74,18 +75,13 @@ public class NewProjectUsingRuntimeTest {
 
 	@Test
 	public void createProjectUsingRuntimeTest() {
-		String runtime = "esb-" + esbRequirement.getVersion();
+		String runtime = esbRequirement.getConfig().getName();
 		String project = "esb-project-using-runtime";
-
-		ESBRuntimePreferences preferences = new ESBRuntimePreferences();
-		preferences.open();
-		preferences.addESBRuntime(esbRequirement.getVersion(), esbRequirement.getPath());
-		preferences.ok();
 
 		ESBProjectWizard wizard = new ESBProjectWizard();
 		wizard.open();
 		wizard.setName(project);
-		wizard.setVersion(esbRequirement.getVersion());
+		wizard.setVersion(esbRequirement.getConfig().getRuntimeFamily().getVersion());
 		wizard.next();
 		wizard.next();
 		new RadioButton(1).click();

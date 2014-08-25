@@ -35,11 +35,14 @@ import org.jboss.tools.esb.reddeer.editor.ESBEditor;
 import org.jboss.tools.esb.reddeer.widget.SelectableFormLabel;
 import org.jboss.tools.esb.reddeer.wizard.ESBActionWizard;
 import org.jboss.tools.esb.reddeer.wizard.ESBProjectWizard;
-import org.jboss.tools.esb.ui.bot.test.requirement.ESBRequirement;
-import org.jboss.tools.esb.ui.bot.test.requirement.ESBRequirement.ESB;
-import org.jboss.tools.esb.ui.bot.test.requirement.ServerRequirement;
-import org.jboss.tools.esb.ui.bot.test.requirement.ServerRequirement.Server;
 import org.jboss.tools.esb.ui.bot.test.util.HttpClient;
+import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
+import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
+import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
+import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,8 +53,8 @@ import org.junit.runner.RunWith;
  * @author apodhrad
  * 
  */
-@ESB
-@Server
+@Runtime(type = RuntimeReqType.ESB)
+@Server(type = {ServerReqType.AS, ServerReqType.EAP}, state = ServerReqState.RUNNING)
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
 @RunWith(RedDeerSuite.class)
@@ -62,20 +65,10 @@ public class DeploymentTest {
 	public Logger log = Logger.getLogger(DeploymentTest.class);
 
 	@InjectRequirement
-	private ESBRequirement esbRequirement;
+	private RuntimeRequirement esbRequirement;
 
 	@InjectRequirement
 	private ServerRequirement serverRequirement;
-
-	@Before
-	public void startServer() {
-		getServer().start();
-	}
-
-	@After
-	public void stopServer() {
-		getServer().stop();
-	}
 
 	@After
 	public void deleteProject() {
@@ -93,8 +86,8 @@ public class DeploymentTest {
 		ESBProjectWizard projectWizard = new ESBProjectWizard();
 		projectWizard.open();
 		projectWizard.setName(PROJECT);
-		projectWizard.setServer(serverRequirement.getName());
-		projectWizard.setVersion(esbRequirement.getVersion());
+		projectWizard.setServer(serverRequirement.getConfig().getName());
+		projectWizard.setVersion(esbRequirement.getConfig().getRuntimeFamily().getVersion());
 		projectWizard.finish();
 
 		ESBEditor editor = new ESBEditor();
@@ -153,6 +146,6 @@ public class DeploymentTest {
 	private org.jboss.reddeer.eclipse.wst.server.ui.view.Server getServer() {
 		ServersView serversView = new ServersView();
 		serversView.open();
-		return serversView.getServer(serverRequirement.getName());
+		return serversView.getServer(serverRequirement.getConfig().getName());
 	}
 }
