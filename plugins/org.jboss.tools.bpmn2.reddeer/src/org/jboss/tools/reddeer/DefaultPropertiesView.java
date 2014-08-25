@@ -11,9 +11,11 @@ import org.eclipse.swt.widgets.Widget;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.AbstractSWTBotControl;
+import org.jboss.reddeer.swt.condition.WaitCondition;
 import org.jboss.reddeer.swt.impl.clabel.DefaultCLabel;
 import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.util.ResultRunnable;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.reddeer.matcher.WidgetWithClassName;
 
@@ -86,6 +88,22 @@ public class DefaultPropertiesView extends WorkbenchView {
 		});
 	}
 	
+	private class WaitForPropertiesTab implements WaitCondition {
+
+		@Override
+		public boolean test() {
+			Composite widget = (Composite) bot.widget(new WidgetWithClassName("TabbedPropertyList"));
+
+			return widget != null;
+		}
+
+		@Override
+		public String description() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+	}
+	
 	/**
 	 * 
 	 * @param label
@@ -93,6 +111,8 @@ public class DefaultPropertiesView extends WorkbenchView {
 	public void selectTab(String label) {
 		open();
 		
+		
+		new WaitUntil(new WaitForPropertiesTab());
 			
 		//Attempt to get the tab with given label.
 		Canvas canvas = (Canvas) getChildren(label);
