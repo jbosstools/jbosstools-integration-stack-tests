@@ -7,7 +7,6 @@ import javax.xml.bind.annotation.XmlElement;
 
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.ServerCore;
-import org.jboss.tools.jbpm.preferences.PreferencesManager;
 
 /**
  * 

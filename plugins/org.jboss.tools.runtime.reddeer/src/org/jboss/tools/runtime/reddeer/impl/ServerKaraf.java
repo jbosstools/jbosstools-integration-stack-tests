@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.jboss.reddeer.direct.preferences.Preferences;
 import org.jboss.reddeer.eclipse.wst.server.ui.RuntimePreferencePage;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -23,7 +24,6 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.runtime.reddeer.Activator;
 import org.jboss.tools.runtime.reddeer.Namespaces;
 import org.jboss.tools.runtime.reddeer.ServerBase;
-import org.jboss.tools.runtime.reddeer.preference.Preferences;
 import org.jboss.tools.runtime.reddeer.wizard.ServerRuntimeWizard;
 import org.jboss.tools.runtime.reddeer.wizard.ServerWizard;
 
