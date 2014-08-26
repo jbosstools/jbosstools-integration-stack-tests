@@ -16,6 +16,7 @@ public class IntermediateCatchSignalSingleTest extends JBPM6BaseTest {
 	public void buildProcessModel() {
 		Process process = new Process("BPMN2-IntermediateCatchSignalSingle");
 		process.addLocalVariable("s", "String");
+		process.addSignal("Batman Signal", "String");
 		
 		StartEvent startEvent = new StartEvent("StartProcess");
 		startEvent.append("User Task", ElementType.USER_TASK);
@@ -25,7 +26,7 @@ public class IntermediateCatchSignalSingleTest extends JBPM6BaseTest {
 		userTask.append("Catch", ElementType.SIGNAL_INTERMEDIATE_CATCH_EVENT);
 		
 		SignalIntermediateCatchEvent catchEvent = new SignalIntermediateCatchEvent("Catch");
-		catchEvent.setSignalMapping("Batman Signal", "BPMN2-IntermediateCatchSignalSingle/s");
+		catchEvent.setSignalMapping("Batman Signal", "s");
 		catchEvent.append("Script Task", ElementType.SCRIPT_TASK);
 		
 		ScriptTask scriptTask = new ScriptTask("Script Task");

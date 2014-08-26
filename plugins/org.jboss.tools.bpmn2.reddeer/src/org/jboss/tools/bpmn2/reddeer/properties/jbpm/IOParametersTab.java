@@ -38,12 +38,12 @@ public class IOParametersTab {
 		}
 		
 		String sn = getSectionType(parameterMapping.getType());
-		DefaultSection s = new DefaultSection(sn + " Parameter Mapping");
+		DefaultSection s = new DefaultSection(sn + " Data Mapping");
 		s.getToolbarButton("Add").click();
 
 		parameterMapping.setUp();
 		
-		DefaultSection sd = new DefaultSection(sn + " Parameter Mapping Details");
+		DefaultSection sd = new DefaultSection(sn + " Data Mapping Details");
 		sd.getToolbarButton("Close").click();
 	}
 	

@@ -26,7 +26,7 @@ public class ConstructOfType<T extends EditPart> extends BaseMatcher<EditPart> {
 	 * @param constructType
 	 */
 	public ConstructOfType(ElementType constructType) {
-		this.constructTypeName = constructType.toId();
+		this.constructTypeName = constructType.getIdOnCanvas();
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class ConstructOfType<T extends EditPart> extends BaseMatcher<EditPart> {
 	 */
 	public static boolean equalsType(EditPart editPart, String constructTypeName) {
 		Object model = editPart.getModel();
-		if (ElementType.PROCESS.toId().equals(constructTypeName)) {
+		if (ElementType.PROCESS.getIdOnCanvas().equals(constructTypeName)) {
 			if (model instanceof Diagram) {
 				return true;
 			}

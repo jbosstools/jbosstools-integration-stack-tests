@@ -37,7 +37,7 @@ public class EventBasedSplitTest extends JBPM6BaseTest {
 		gateway1.append("Event2", ElementType.SIGNAL_INTERMEDIATE_CATCH_EVENT, Position.SOUTH_EAST);
 		
 		SignalIntermediateCatchEvent event1 = new SignalIntermediateCatchEvent("Event1");
-		event1.setSignalMapping("Signal1", "BPMN2-EventBasedSplit/x");
+		event1.setSignalMapping("Signal1", "x");
 //		event1.addParameterMapping(new OutputParameterMapping(new FromDataOutput("Event1"), new ToVariable("BPMN2-EventBasedSplit/x"), "Output Parameters"));
 		event1.append("Script1", ElementType.SCRIPT_TASK);
 		
@@ -45,7 +45,7 @@ public class EventBasedSplitTest extends JBPM6BaseTest {
 		script1.setScript("Java", "System.out.println(\"Executing Yes\");");
 		
 		SignalIntermediateCatchEvent event2 = new SignalIntermediateCatchEvent("Event2");
-		event2.setSignalMapping("Signal2", "BPMN2-EventBasedSplit/x");
+		event2.setSignalMapping("Signal2", "x");
 //		event2.addParameterMapping(new OutputParameterMapping(new FromDataOutput("Event2"), new ToVariable("BPMN2-EventBasedSplit/x"), "Output Parameters"));
 		event2.append("Script2", ElementType.SCRIPT_TASK);
 		
@@ -63,7 +63,7 @@ public class EventBasedSplitTest extends JBPM6BaseTest {
 		script3.setScript("Java", "System.out.println(\"x=\" + x);");
 		script3.append("Email2", ElementType.USER_TASK);
 		
-		Task task2 = new Task("Email2");
+		UserTask task2 = new UserTask("Email2");
 		task2.append("EndProcess", ElementType.TERMINATE_END_EVENT);
 	}
 	

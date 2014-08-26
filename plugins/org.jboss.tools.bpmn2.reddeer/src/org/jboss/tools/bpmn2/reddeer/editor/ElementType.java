@@ -7,17 +7,19 @@ public enum ElementType {
 
 	PROCESS(null, null),
 	
-	AD_HOC_SUB_PROCESS("Activities", "Ad-Hoc Sub-Process"),
-	SUB_PROCESS("Activities", "Sub-Process"),
-	CALL_ACTIVITY("Activities", "Call Activity"),
-	TASK("Activities", "Task"),
-	MANUAL_TASK("Activities", "Manual Task"),
-	USER_TASK("Activities", "User Task"),
-	SCRIPT_TASK("Activities", "Script Task"),
-	BUSINESS_RULE_TASK("Activities", "Business Rule Task"),
-	SERVICE_TASK("Activities", "Service Task"),
-	SEND_TASK("Activities", "Send Task"),
-	RECEIVE_TASK("Activities", "Receive Task"),
+	AD_HOC_SUB_PROCESS("Sub Processes", "AdHoc Subprocess", "Ad-Hoc Sub-Process"),
+	SUB_PROCESS("Sub Processes", "Embedded SubProcess", "Sub-Process"),
+	CALL_ACTIVITY("Sub Processes", "Reusable Process", "Call Activity"),
+	
+	
+	TASK("Tasks", "Task"),
+	MANUAL_TASK("Tasks", "Manual Task"),
+	USER_TASK("Tasks", "User Task"),
+	SCRIPT_TASK("Tasks", "Script Task"),
+	BUSINESS_RULE_TASK("Tasks", "Business Rule Task"),
+	SERVICE_TASK("Tasks", "Service Task"),
+	SEND_TASK("Tasks", "Send Task"),
+	RECEIVE_TASK("Tasks", "Receive Task"),
 //	TRANSACTION("TBD", "Transaction"),
 	
 	BOUNDARY_EVENT("Boundary Events", "Boundary Event"),
@@ -32,14 +34,14 @@ public enum ElementType {
 	CONDITIONAL_START_EVENT("Start Events", "Conditional"),
 	ERROR_START_EVENT("Start Events", "Error"),
 	ESCALATION_START_EVENT("Start Events", "Escalation"),
-	START_EVENT("Start Events", "Start Event"),
+	START_EVENT("Start Events","Start"),
 	MESSAGE_START_EVENT("Start Events", "Message"),
 	SIGNAL_START_EVENT("Start Events", "Signal"),
 	TIMER_START_EVENT("Start Events", "Timer"),
 	
 	CANCEL_END_EVENT("End Events", "Cancel"),
 	COMPENSATION_END_EVENT("End Events", "Compensation"),
-	END_EVENT("End Events", "End Event"),
+	END_EVENT("End Events", "End"),
 	ERROR_END_EVENT("End Events", "Error"),
 	ESCALATION_END_EVENT("End Events", "Escalation"),
 	MESSAGE_END_EVENT("End Events", "Message"),
@@ -53,7 +55,7 @@ public enum ElementType {
 	
 	COMPENSATION_INTERMEDIATE_THROW_EVENT("Intermediate Throw Events", "Compensation"),
 	ESCALATION_INTERMEDIATE_THROW_EVENT("Intermediate Throw Events", "Escalation"),
-	INTERMEDIATE_THROW_EVENT("Intermediate Throw Events", "Throw Event"),
+	INTERMEDIATE_THROW_EVENT("Intermediate Throw Events", "Intermediate"),
 	MESSAGE_INTERMEDIATE_THROW_EVENT("Intermediate Throw Events", "Message"),
 	SIGNAL_INTERMEDIATE_THROW_EVENT("Intermediate Throw Events", "Signal"),
 	
@@ -64,16 +66,13 @@ public enum ElementType {
 	SIGNAL_EVENT_DEFINITION("Event Definitions", "Signal Event Definition"),
 	TIMER_EVENT_DEFINITION("Event Definitions", "Timer Event Definition"),
 	
-	EXCLUSIVE_GATEWAY("Gateways", "Exclusive Gateway"),
-	EVENT_BASED_GATEWAY("Gateways", "Event-Based Gateway"),
-	INCLUSIVE_GATEWAY("Gateways", "Inclusive Gateway"),
-	PARALLEL_GATEWAY("Gateways", "Parallel Gateway"),
+	EXCLUSIVE_GATEWAY("Gateways", "Data-based Exclusive (XOR)", "Exclusive Gateway"),
+	EVENT_BASED_GATEWAY("Gateways", "Event-based", "Event-Based Gateway"),
+	INCLUSIVE_GATEWAY("Gateways", "Inclusive", "Inclusive Gateway"),
+	PARALLEL_GATEWAY("Gateways", "Parallel", "Parallel Gateway"),
 	
 	LANE("Swimlanes", "Lane"),
 
-//	MESSAGE("Data Objects", "Message"),
-//	DATA_INPUT("Data Objects", "Data Input"),
-//	DATA_OUTPUT("Data Objects", "Data Output"),
 	DATA_OBJECT("Data Objects", "Data Object"),
 	
 	SWITCHYARD_SERVICE_TASK("SwitchYard", "SwitchYard Service Task");
@@ -83,13 +82,45 @@ public enum ElementType {
 	private String paletteToolName;
 	
 	/**
+	 * This string uses class {@link ConstructOfType} for matching elements on canvas
+	 */
+	private String idOnCanvas;
+	
+	/**
 	 * 
 	 * @param sectionName
 	 * @param paletteToolName
 	 */
 	private ElementType(String sectionName, String paletteToolName) {
+		this(sectionName, paletteToolName, paletteToolName);
+	}
+	
+	private ElementType(String sectionName, String paletteToolName, String idOnCanvas) {
 		this.sectionName = sectionName;
 		this.paletteToolName = paletteToolName;
+		this.idOnCanvas = idOnCanvas;
+		
+		if (sectionName == null || paletteToolName == null) {
+			this.idOnCanvas = "Process";
+		} else if (sectionName.equals("End Events")) {
+			this.idOnCanvas = "End Event";
+		} else if (sectionName.equals("Start Events")) {
+			this.idOnCanvas = "Start Event";
+		} else if (sectionName.equals("Boundary Events")) {
+			this.idOnCanvas = "Boundary Event";
+		} else if (sectionName.equals("Intermediate Catch Events")) {
+			this.idOnCanvas = "Intermediate Catch Event";
+		} else if (sectionName.equals("Intermediate Throw Events")) {
+			this.idOnCanvas = "Intermediate Throw Event";
+		} else if (sectionName.equals("SwitchYard")){
+			this.idOnCanvas = "Task";
+		}
+		
+		this.idOnCanvas = this.idOnCanvas.replace(" ", "").replace("-", "");
+	}
+
+	public String getSectionName() {
+		return sectionName;
 	}
 
 	/**
@@ -121,26 +152,7 @@ public enum ElementType {
 	 * 
 	 * @return
 	 */
-	public String toId() {
-		String name = null;
-		
-		if (sectionName == null || paletteToolName == null) {
-			name = "Process";
-		} else if (sectionName.equals("End Events")) {
-			name = "End Event";
-		} else if (sectionName.equals("Start Events")) {
-			name = "Start Event";
-		} else if (sectionName.equals("Boundary Events")) {
-			name = "Boundary Event";
-		} else if (sectionName.equals("Intermediate Catch Events")) {
-			name = "Intermediate Catch Event";
-		} else if (sectionName.equals("Intermediate Throw Events")) {
-			name = "Intermediate Throw Event";
-		} else if (sectionName.equals("SwitchYard")){
-			name = "Task";
-		} else {
-			name = toToolName();
-		}
-		return name.replace(" ", "").replace("-", "");
+	public String getIdOnCanvas() {
+		return idOnCanvas;
 	}
 }

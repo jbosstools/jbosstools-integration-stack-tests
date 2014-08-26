@@ -2,7 +2,6 @@ package org.jboss.tools.bpmn2.reddeer.properties.jbpm;
 
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.ImplementationDialog;
-import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.InterfaceDialog;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.MessageDialog;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.OperationDialog;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ErrorRef;
@@ -52,7 +51,6 @@ public class SendTaskTab {
 		DefaultCombo combo = new DefaultCombo("Operation");
 		if (!combo.contains(interfaceName + "/" + operationName)) {
 			new PushButton(2).click();
-			new InterfaceDialog().select(interfaceName);
 			new OperationDialog().addOperation(operationName, inMessage, outMessage, errorRef);
 		}
 		combo.setSelection(interfaceName + "/" + operationName);
@@ -64,11 +62,12 @@ public class SendTaskTab {
 	 */
 	public void setMessage(Message message) {
 		DefaultCombo combo = new DefaultCombo("Message");
-		if (!combo.contains(message.getName())) {
+		String comboItem = message.getName() + "(" + message.getDataType()  + ")";
+		if (!combo.contains(comboItem)) {
 			new PushButton(3).click();
 			new MessageDialog().add(message);
 		}
-		combo.setSelection(message.getName());
+		combo.setSelection(comboItem);
 	}
 	
 	/**

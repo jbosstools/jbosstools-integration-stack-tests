@@ -17,14 +17,13 @@ public class BooleanStructureReferenceTest extends JBPM6BaseTest {
 	@Override
 	public void buildProcessModel() {
 		Process process = new Process("BPMN2-BooleanStructureRef");
-		process.addDataType("Boolean");
 		process.addLocalVariable("test", "Boolean");
 		
 		StartEvent start = new StartEvent("StartProcess");
 		start.append("User Task", ElementType.USER_TASK);
 
 		UserTask userTask = new UserTask("User Task");
-		userTask.addParameterMapping(new ParameterMapping(new FromDataOutput("testHT"), new ToVariable("BPMN2-BooleanStructureRef/test"), ParameterMapping.Type.OUTPUT));
+		userTask.addParameterMapping(new ParameterMapping(new FromDataOutput("testHT", "String"), new ToVariable("test"), ParameterMapping.Type.OUTPUT));
 		userTask.append("Script", ElementType.SCRIPT_TASK);
 
 		ScriptTask scriptTask = new ScriptTask("Script");

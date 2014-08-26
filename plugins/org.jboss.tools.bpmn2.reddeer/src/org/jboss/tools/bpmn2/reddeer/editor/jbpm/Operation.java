@@ -1,9 +1,20 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm;
 
+import java.util.List;
+
+import org.jboss.reddeer.swt.api.Combo;
+import org.jboss.reddeer.swt.api.TableItem;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
+import org.jboss.reddeer.swt.impl.table.AbstractTable;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.ErrorDialog;
-import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.MessageDialog;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 
 /**
  * 
@@ -66,20 +77,58 @@ public class Operation {
 	 * in the UI.
 	 */
 	public void setUp() {
+		new DefaultTabItem("General").activate();
 		new LabeledText("Name").setText(name);
+		
+		new DefaultTabItem("Operation").activate();
+		
 		if (inMessage != null) {
-			new PushButton(0).click();
-			new MessageDialog().add(inMessage);
+			String inMsgComboItem = inMessage.getName() + "(" + inMessage.getDataType() + ")";
+			Combo inMsgCombo = new LabeledCombo("In Message");
+			
+			if (!inMsgCombo.getItems().contains(inMsgComboItem)) {
+				throw new IllegalArgumentException("Operation: " + name + "is not as choice in combo box 'In Message'");
+			} 
+			
+			inMsgCombo.setSelection(inMsgComboItem);
+		} else {
+			throw new IllegalStateException("Operation: " + name + " must have specified in message");
 		}
 		
 		if (outMessage != null) {
-			new PushButton(2).click();
-			new MessageDialog().add(outMessage);
+			String outMsgComboItem = outMessage.getName() + "(" + outMessage.getDataType() + ")";
+			Combo outMsgCombo = new LabeledCombo("Out Message");
+			
+			if (!outMsgCombo.getItems().contains(outMsgComboItem)) {
+				throw new IllegalArgumentException("Operation: " + name + "is not as choice in combo box 'Out Message'");
+			} 
+			
+			outMsgCombo.setSelection(outMsgComboItem);
+		} else {
+			throw new IllegalStateException("Operation: " + name + " must have specified out message");
 		}
 		
 		if (errorRef != null) {
-			new PushButton(4).click();
-			new ErrorDialog().add(errorRef);
+			new PushButton(6).click();
+			new DefaultShell("Select elements -- " + name).setFocus();
+			String errorItem = errorRef.getName() + "(" + errorRef.getDataType() + ")";
+			AbstractTable errorTable = new DefaultTable(0);
+			List<TableItem> errors = errorTable.getItems();
+			
+			for(TableItem error : errors) {
+				if(error.getText().equals(errorItem)) {
+					errorTable.select(errorItem);
+					new PushButton("Add").click();
+					new PushButton("OK").click();
+					new WaitWhile(new ShellWithTextIsActive("Select elements -- " + name),TimePeriod.LONG);
+					new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+					break;
+				}
+				
+				if(error.equals(errors.get(errors.size()-1))) {
+					throw new IllegalArgumentException("Error: " + errorRef.getName() + " was not defined in process errors");
+				}
+			}
 		}
 	}
 	

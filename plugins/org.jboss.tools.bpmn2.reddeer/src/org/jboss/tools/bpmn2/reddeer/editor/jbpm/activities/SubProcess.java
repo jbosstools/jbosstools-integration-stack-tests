@@ -23,6 +23,6 @@ public class SubProcess extends ElementContainer {
 	 * @param dataType
 	 */
 	public void addLocalVariable(String name, String dataType) {
-		properties.getTab("Sub Process", SubProcessTab.class).addVariable(name, dataType);
+		properties.getTab("Sub Process", SubProcessTab.class).addLocalVariable(name, dataType);
 	}
 }

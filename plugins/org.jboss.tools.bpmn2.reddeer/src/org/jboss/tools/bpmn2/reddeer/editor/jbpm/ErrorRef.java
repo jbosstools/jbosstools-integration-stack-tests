@@ -5,6 +5,7 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.DataTypeDialog;
+import org.jboss.tools.reddeer.DefaultSection;
 
 /**
  * 
@@ -60,7 +61,7 @@ public class ErrorRef {
 	 * in the UI.
 	 */
 	public void setUp() {
-		new LabeledText("Name").setText(name);
+		new LabeledText(new DefaultSection("Error Details"), "Name").setText(name);
 		new LabeledText("Error Code").setText(code);
 		Combo dataTypeCombo = new LabeledCombo("Data Type");
 		if (!dataTypeCombo.getItems().contains(dataType)) {

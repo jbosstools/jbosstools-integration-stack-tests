@@ -6,11 +6,17 @@ import org.apache.log4j.Logger;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
+import org.jboss.reddeer.eclipse.condition.MarkerIsUpdating;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.WaitCondition;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.util.Display;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.bpmn2.reddeer.ProcessEditorView;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.jboss.tools.bpmn2.ui.bot.test.validator.JBPM6Validator;
@@ -73,6 +79,7 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 		editor.setFocus();
 		if (editor.isDirty()) {
 			editor.save();
+			new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
 		}
 	}
 	
@@ -101,7 +108,12 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 		 */
 		if (bpmnValidation) {
 			StringBuilder error = new StringBuilder();
+			new WaitUntil(new NoProblemsExists(), TimePeriod.NORMAL, false);
+			new WaitWhile(new MarkerIsUpdating());
+			problems = new ProblemsView();
+			problems.open();
 			List<TreeItem> errorList = problems.getAllErrors();
+			
 			for (TreeItem e : errorList) {
 				if (e.getCell(1).startsWith(editor.getTitle())) {
 					error.append(e.getCell(0) + "\n");
@@ -111,6 +123,27 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 			boolean isErrorEmpty = error.length() == 0;
 			log.info("\tEditor validation result '" + (isErrorEmpty ? "OK" : error) + "'");
 			Assert.assertTrue(error.toString(), isErrorEmpty);
+		}
+	}
+	
+	private class NoProblemsExists implements WaitCondition {
+
+		private ProblemsView problemsView;
+
+		@Override
+		public boolean test() {
+			problemsView = new ProblemsView();
+			problemsView.open();
+
+			List<TreeItem> errors = problemsView.getAllErrors();
+			
+			return errors.isEmpty(); 
+			
+		}
+
+		@Override
+		public String description() {
+			return "NoProblemsExist";
 		}
 	}
 	

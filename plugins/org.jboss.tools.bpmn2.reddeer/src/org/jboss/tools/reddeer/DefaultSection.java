@@ -2,6 +2,7 @@ package org.jboss.tools.reddeer;
 
 import java.util.List;
 
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
@@ -12,12 +13,13 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 import org.eclipse.ui.forms.widgets.Section;
+import org.jboss.reddeer.swt.reference.ReferencedComposite;
 import org.jboss.reddeer.swt.util.Display;
 
 /**
  * 
  */
-public class DefaultSection extends AbstractSWTBot<Section> {
+public class DefaultSection extends AbstractSWTBot<Section> implements ReferencedComposite{
 
 	private SWTBot bot;
 
@@ -107,5 +109,10 @@ public class DefaultSection extends AbstractSWTBot<Section> {
 			
 		});
 		
+	}
+
+	@Override
+	public Control getControl() {
+		return widget;
 	}
 }

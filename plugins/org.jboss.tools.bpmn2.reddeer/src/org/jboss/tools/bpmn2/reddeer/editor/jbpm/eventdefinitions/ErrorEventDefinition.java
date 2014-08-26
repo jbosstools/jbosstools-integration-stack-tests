@@ -14,24 +14,37 @@ import org.jboss.tools.reddeer.DefaultSection;
 public class ErrorEventDefinition extends EventDefinition {
 
 	private ErrorRef errorRef;
+	private String variableForMaping;
+	private String comboLabel;
 
 	/**
 	 * 
 	 * @param errorRef
 	 */
-	public ErrorEventDefinition(ErrorRef errorRef) {
+	public ErrorEventDefinition(ErrorRef errorRef, String variableForMaping, String comboLabel) {
 		this.errorRef = errorRef;
+		this.variableForMaping = variableForMaping;
+		this.comboLabel = comboLabel;
 	}
 	
 	@Override
 	public void setUp() {
 		Combo errorCombo = new LabeledCombo("Error");
-		if (!errorCombo.getItems().contains(errorRef.getName())) {
-			new PushButton(0).click();
-			new ErrorDialog().add(errorRef);
+		String comboItem = errorRef.getName() + "(" + errorRef.getDataType() + ")";
+		if (!errorCombo.getItems().contains(comboItem)) {
+			/*new PushButton(0).click();
+			new ErrorDialog().add(errorRef);*/
+			throw new IllegalArgumentException(errorRef.getName() + " isn't in list of defined errors");
 		}
-		errorCombo.setSelection(errorRef.getName());
-
+		errorCombo.setSelection(comboItem);
+		
+		Combo sourceCombo = new LabeledCombo(comboLabel);
+		if (!sourceCombo.getItems().contains(variableForMaping)) {
+			throw new IllegalArgumentException(variableForMaping + " isn't in list of defined errors");
+		}
+		sourceCombo.setSelection(variableForMaping);
+		
+		
 		new DefaultSection("Error Event Definition Details").getToolbarButton("Close").click();
 	}
 	

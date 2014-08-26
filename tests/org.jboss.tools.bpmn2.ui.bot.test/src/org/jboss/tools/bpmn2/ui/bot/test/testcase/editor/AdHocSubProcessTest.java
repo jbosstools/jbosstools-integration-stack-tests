@@ -1,5 +1,6 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
+import org.eclipse.draw2d.geometry.Point;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.Position;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.AdHocSubProcess;
@@ -23,7 +24,7 @@ public class AdHocSubProcessTest extends JBPM6BaseTest {
 	@Override
 	public void buildProcessModel() {
 		StartEvent start = new StartEvent("StartProcess");
-		start.append("Hello", ElementType.AD_HOC_SUB_PROCESS);
+		start.append("Hello", ElementType.AD_HOC_SUB_PROCESS, Position.SOUTH);
 
 		AdHocSubProcess subprocess = new AdHocSubProcess("Hello");
 		subprocess.append("Goodbye", ElementType.SCRIPT_TASK);		
@@ -40,7 +41,7 @@ public class AdHocSubProcessTest extends JBPM6BaseTest {
 		ScriptTask task1 = new ScriptTask("Hello1");
 		task1.setScript("", "System.out.println(\"Hello World 1\");");
 		
-		subprocess.add("Hello2", ElementType.SCRIPT_TASK, task1, Position.SOUTH);
+		subprocess.addRelativeToElement("Hello2", ElementType.SCRIPT_TASK, task1, new Point(0,80));
 		
 		ScriptTask task2 = new ScriptTask("Hello2");
 		task2.setScript("", "System.out.println(\"Hello World 2\");");

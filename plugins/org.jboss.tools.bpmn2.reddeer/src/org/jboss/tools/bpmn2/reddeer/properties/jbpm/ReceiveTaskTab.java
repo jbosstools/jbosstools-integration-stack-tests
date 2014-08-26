@@ -64,11 +64,12 @@ public class ReceiveTaskTab {
 	 */
 	public void setMessage(Message message) {
 		DefaultCombo combo = new DefaultCombo("Message");
-		if (!combo.contains(message.getName())) {
+		String comboOption = message.getName() + "(" + message.getDataType() + ")";
+		if (!combo.contains(comboOption)) {
 			new PushButton(3).click();
 			new MessageDialog().add(message);
 		}
-		combo.setSelection(message.getName());
+		combo.setSelection(comboOption);
 	}
 	
 	/**

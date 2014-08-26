@@ -22,8 +22,8 @@ public class ErrorEndEvent extends EndEvent {
 	 * 
 	 * @param errorRef
 	 */
-	public void setErrorEvent(ErrorRef errorRef) {
-		properties.getTab("Event", EventTab.class).set(new ErrorEventDefinition(errorRef));
+	public void setErrorEvent(ErrorRef errorRef, String variableForMapping) {
+		properties.getTab("Event", EventTab.class).set(new ErrorEventDefinition(errorRef, variableForMapping, "Source"));
 		refresh();
 	}
 	

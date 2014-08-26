@@ -15,7 +15,10 @@ import org.jboss.reddeer.swt.condition.WaitCondition;
 import org.jboss.reddeer.swt.impl.clabel.DefaultCLabel;
 import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.util.ResultRunnable;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.reddeer.matcher.WidgetWithClassName;
 
@@ -111,8 +114,8 @@ public class DefaultPropertiesView extends WorkbenchView {
 	public void selectTab(String label) {
 		open();
 		
-		
 		new WaitUntil(new WaitForPropertiesTab());
+		AbstractWait.sleep(TimePeriod.getCustom(1));
 			
 		//Attempt to get the tab with given label.
 		Canvas canvas = (Canvas) getChildren(label);

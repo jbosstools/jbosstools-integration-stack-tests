@@ -5,6 +5,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.ImportJavaTypeDialog;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ErrorRef;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Escalation;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Message;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Signal;
 import org.jboss.tools.reddeer.DefaultSection;
 
 /**
@@ -98,9 +99,9 @@ public class DefinitionsTab {
 	 * 
 	 * @param name
 	 */
-	public void addSignal(String name) {
+	public void addSignal(String name, String dataType) {
 		new DefaultSection("Signal List").getToolbarButton("Add").click();
-		new LabeledText("Name").setText(name);
+		new Signal(name, dataType).setUp();
 		new DefaultSection("Signal Details").getToolbarButton("Close").click();
 	}
 
@@ -119,9 +120,9 @@ public class DefinitionsTab {
 	 * @param name
 	 * @param escalationCode
 	 */
-	public void addEscalation(String name, String code) {
+	public void addEscalation(String name, String code, String dataType) {
 		new DefaultSection("Escalation List").getToolbarButton("Add").click();
-		new Escalation(name, code).setUp();
+		new Escalation(name, code, dataType).setUp();
 		new DefaultSection("Escalation Details").getToolbarButton("Close").click();
 	}
 	

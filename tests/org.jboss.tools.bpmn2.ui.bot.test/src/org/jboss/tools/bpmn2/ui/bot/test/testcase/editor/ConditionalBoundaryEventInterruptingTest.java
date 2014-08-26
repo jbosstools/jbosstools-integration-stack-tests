@@ -3,6 +3,7 @@ package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.Position;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Escalation;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.SubProcess;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.ConditionalBoundaryEvent;
@@ -17,21 +18,25 @@ public class ConditionalBoundaryEventInterruptingTest extends JBPM6BaseTest {
 
 	@Override
 	public void buildProcessModel() {
+		Process process = new Process("BPMN2-ConditionalBoundaryEventInterrupting");
+		process.addLocalVariable("varForMapping", "String");
+		process.addEscalation("Timeout", "400", "String");
+		
 		StartEvent startEvent = new StartEvent("StartProcess");
-		startEvent.append("Hello", ElementType.SUB_PROCESS);
+		startEvent.append("Hello", ElementType.SUB_PROCESS, Position.SOUTH);
 		
 		SubProcess subProcess = new SubProcess("Hello");
 		subProcess.append("EndProcess", ElementType.TERMINATE_END_EVENT);
 		subProcess.add("StartSubProcess", ElementType.START_EVENT);
 		
 		StartEvent subProcessStartEvent = new StartEvent("StartSubProcess");
-		subProcessStartEvent.append("Task", ElementType.SCRIPT_TASK);
+		subProcessStartEvent.append("Task", ElementType.SCRIPT_TASK, Position.SOUTH_EAST);
 		
 		ScriptTask task = new ScriptTask("Task");
-		task.append("EscalationEvent", ElementType.ESCALATION_END_EVENT, Position.SOUTH);
+		task.append("EscalationEvent", ElementType.ESCALATION_END_EVENT, Position.NORTH);
 		
 		EscalationEndEvent endEvent = new EscalationEndEvent("EscalationEvent");
-		endEvent.setEscalation(new Escalation("Timeout", "400"));
+		endEvent.setEscalation(new Escalation("Timeout", "400", "String"), "varForMapping");
 		
 		subProcess.add("Conditional Boundary Event Process", ElementType.CONDITIONAL_BOUNDARY_EVENT);
 		

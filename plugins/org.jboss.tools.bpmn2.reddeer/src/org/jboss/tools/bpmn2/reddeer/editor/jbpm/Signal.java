@@ -1,58 +1,41 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm;
 
 import org.jboss.reddeer.swt.api.Combo;
-import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.DataTypeDialog;
 import org.jboss.tools.reddeer.DefaultSection;
 
-/**
- * 
- */
-public class Message {
-
+public class Signal {
 	private String name;
 	private String dataType;
-
-	/**
-	 * 
-	 * @param name
-	 * @param dataType
-	 */
-	public Message(String name, String dataType) {
+	
+	
+	public Signal(String name, String dataType) {
 		this.name = name;
 		this.dataType = dataType;
 	}
-
-	/**
-	 * 
-	 * @return
-	 */
+	
+	
 	public String getName() {
 		return name;
 	}
-
-	/**
-	 * 
-	 * @return
-	 */
+	
 	public String getDataType() {
 		return dataType;
 	}
-
+	
 	/**
 	 * Perform user actions which are required to set up this object
 	 * in the UI.
 	 */
 	public void setUp() {
-		new LabeledText(new DefaultSection("Message Details"), "Name").setText(name);
+		new LabeledText(new DefaultSection("Signal Details"), "Name").setText(name);
 		Combo dataTypeCombo = new LabeledCombo("Data Type");
 		if (!dataTypeCombo.getItems().contains(dataType)) {
-			new PushButton(0).click();
-			new DataTypeDialog().add(dataType);
+			throw new IllegalArgumentException("Unsuported data type: " + dataType + ". There was no such data type in combo box." );
 		}
 		dataTypeCombo.setSelection(dataType);
 	}
 	
+
 }

@@ -64,6 +64,10 @@ public class ElementContainer extends Element {
 		add(name, type, findPoint(this, nextTo, position));
 	}
 	
+	public void addRelativeToElement(String name, ElementType type, Element nextTo, Point move) {
+		addToPoint(name, type, new Point(nextTo.getBounds().getCenter().x + move.x, nextTo.getBounds().getCenter().y + move.y));
+	}
+	
 	
 	/**
 	 * 
@@ -88,6 +92,26 @@ public class ElementContainer extends Element {
 		log.info("Adding consturct '" + name + "' of type '" + type + "' to '" + point + "'");
 		editor.activateTool(type.toToolPath()[0], type.toToolPath()[1]);
 		editor.click(bounds.x() + point.x(), bounds.y() + point.y());
+		// Set name
+		Element c = editor.getLastConstruct(type);
+		c.select();
+		c.setName(name);
+	}
+	
+	private void addToPoint(String name, ElementType type, Point point) {
+		String sectionName = type.toToolPath()[0];
+		// Make sure that the point is available.
+		if (!"Boundary Events".equals(sectionName)) {
+			if (isInternalAvailable(point)) {
+				throw new RuntimeException("'" + point + "' is not available");
+			}
+		}
+
+		// Add the construct using the tool in the palette.
+		select();
+		log.info("Adding consturct '" + name + "' of type '" + type + "' to '" + point + "'");
+		editor.activateTool(type.toToolPath()[0], type.toToolPath()[1]);
+		editor.click(point.x(), point.y());
 		// Set name
 		Element c = editor.getLastConstruct(type);
 		c.select();

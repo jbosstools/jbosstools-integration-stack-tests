@@ -47,14 +47,14 @@ public class MessageEventDefinition extends EventDefinition {
 	@Override
 	public void setUp() {
 		DefaultCombo combo = new DefaultCombo("Message");
-		if (!combo.contains(message.getName())) {
+		String comboItem = message.getName() + "(" + message.getDataType() + ")";
+		if (!combo.contains(comboItem)) {
 			new PushButton(0).click();
 			new MessageDialog().add(message);
 		}
-		combo.setSelection(message.getName());
+		combo.setSelection(comboItem);
 		
-		String processName = new ProcessEditorView().getProcess().getName();
-		new DefaultCombo(type.label()).setSelection(processName + "/" + variableName);
+		new DefaultCombo(type.label()).setSelection(variableName);
 		new DefaultSection("Message Event Definition Details").getToolbarButton("Close").click();
 	}
 	

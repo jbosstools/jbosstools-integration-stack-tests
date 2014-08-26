@@ -52,8 +52,7 @@ public class SignalEventDefinition extends EventDefinition {
 		}
 		combo.setSelection(signalName);
 		
-		String processName = new ProcessEditorView().getProcess().getName();
-		new DefaultCombo(type.label()).setSelection(processName + "/" + variableName);
+		new DefaultCombo(type.label()).setSelection( variableName);
 		new DefaultSection("Signal Event Definition Details").getToolbarButton("Close").click();
 	}
 	

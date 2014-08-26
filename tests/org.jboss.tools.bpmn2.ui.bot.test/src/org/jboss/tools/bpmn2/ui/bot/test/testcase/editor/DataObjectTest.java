@@ -29,8 +29,10 @@ public class DataObjectTest extends JBPM6BaseTest {
 		process.add("employee", ElementType.DATA_OBJECT, start, Position.SOUTH);
 		
 		DataObject object = new DataObject("employee");
-		object.setDataType("String");
 		object.connectTo(script, ConnectionType.DATA_ASSOCIATION);
+		object.select();
+		object.setDataType("String");
+		
 	}
 	
 }

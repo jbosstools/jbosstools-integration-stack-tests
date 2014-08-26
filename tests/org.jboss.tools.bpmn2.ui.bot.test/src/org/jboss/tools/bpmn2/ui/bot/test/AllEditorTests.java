@@ -24,26 +24,26 @@ import org.junit.runners.Suite.SuiteClasses;
 	ErrorEndEventTest.class,
 	ConditionalStartTest.class,
 	ImportTest.class, // Headless exception when typing is done! Only on Mac
-	ReceiveTaskTest.class,
+	ReceiveTaskTest.class, 
 	ParallelSplitTest.class,
 	RuleTaskTest.class,
-	SendTaskTest.class, // BZ-1079699
-	ErrorBoundaryEventOnTaskTest.class, // BZ-1079714 // Untested
-	IntermediateCatchEventTimerCycleTest.class, // BZ-1079720 // Untested
+	SendTaskTest.class, 
+	ErrorBoundaryEventOnTaskTest.class,
+	IntermediateCatchEventTimerCycleTest.class,
 	MessageStartTest.class,
 	SubProcessTest.class,
 	UserTaskTest.class,
 	XPathExpressionTest.class, // @Ignore
 	LaneTest.class,
 	DataObjectTest.class,
-	MultipleStartEventTest.class, // BZ-1085520
+	MultipleStartEventTest.class,
 	InclusiveSplitTest.class,
-	IntermediateThrowEventNoneTest.class,
+	//IntermediateThrowEventNoneTest.class, 
 	IntermediateThrowMessageEventTest.class,
 	IntermediateThrowEscalationEventTest.class,
-	IntermediateCatchSignalSingleTest.class, // BZ-1079720 // Untested
-	ExclusiveSplitPriorityTest.class,
-	EventBasedSplitTest.class, // BZ-1079720 // Untested
+	IntermediateCatchSignalSingleTest.class,
+	//ExclusiveSplitPriorityTest.class, @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1140542
+	EventBasedSplitTest.class, 
 	BoundaryEscalationEventOnTaskTest.class,
 	ConditionalBoundaryEventInterruptingTest.class,
 })

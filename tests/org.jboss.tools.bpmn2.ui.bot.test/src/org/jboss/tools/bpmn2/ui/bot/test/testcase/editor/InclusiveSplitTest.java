@@ -4,6 +4,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.Position;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.Direction;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.InclusiveGateway;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
@@ -15,7 +16,6 @@ public class InclusiveSplitTest extends JBPM6BaseTest {
 	@Override
 	public void buildProcessModel() {
 		Process process = new Process("BPMN2-InclusiveSplit");
-		process.addDataType("Integer");
 		process.addLocalVariable("x", "Integer");
 		
 		StartEvent start = new StartEvent("StartProcess");
@@ -27,9 +27,10 @@ public class InclusiveSplitTest extends JBPM6BaseTest {
 		gateway.append("Script3", ElementType.SCRIPT_TASK, Position.SOUTH);
 		
 		gateway.select();
-		gateway.setCondition("Gateway -> Script1", "java", "return x > 0;");
-		gateway.setCondition("Gateway -> Script2", "java", "return x > 10;");
-		gateway.setCondition("Gateway -> Script3", "java", "return x > 20;");
+		gateway.setDirection(Direction.DIVERGING);
+		gateway.setCondition("Gateway -> Script1", "Java", "return x > 0;");
+		gateway.setCondition("Gateway -> Script2", "Java", "return x > 10;");
+		gateway.setCondition("Gateway -> Script3", "Java", "return x > 20;");
 
 		ScriptTask script1 = new ScriptTask("Script1");
 		script1.setScript("Java", "System.out.println(\"path1\");");

@@ -126,7 +126,7 @@ public class Element {
 	 */
 	public void setName(String name) {
 		this.name = name;
-		this.properties.getTab("Description", DescriptionTab.class).setName(name);
+		this.properties.getTab("General", DescriptionTab.class).setName(name);
 	}
 	
 	/**
@@ -237,6 +237,7 @@ public class Element {
 		Rectangle rs = getBounds();
 		// Get the dimensions of the target construct. 
 		Rectangle rt = construct.getBounds();
+		
 		// Create the connection.
 		// 
 		// Bring forward elements in case they are covered by another bigger
@@ -245,11 +246,16 @@ public class Element {
 		
 		select();
 		log.debug("\tConnecting points '" + rs.getCenter() + "' and '" + rt.getCenter() + "'");
+		
 		// ISSUE: Clicking center on a Lane|Subprocess|etc. has a good chance to select something in it!
+	
 		editor.click(rs.getCenter().x(), rs.getCenter().y());
+		
+		
 		
 		construct.select();
 		editor.click(rt.getCenter().x(), rt.getCenter().y());
+		
 		editor.activateTool("Select");
 	}
 	

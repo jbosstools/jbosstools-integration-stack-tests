@@ -62,9 +62,9 @@ public class SubProcessTab {
 	 * @param name
 	 * @param dataType
 	 */
-	public void addVariable(String name, String dataType) {
-		new DefaultSection("Variable List").getToolbarButton("Add").click();
-		new LabeledText("Name").setText(name);
+	public void addLocalVariable(String name, String dataType) {
+		new DefaultSection("Local Variable List").getToolbarButton("Add").click();
+		new LabeledText(new DefaultSection("Local Variable Details"), "Name").setText(name);
 		
 		DefaultCombo c = new DefaultCombo("Data Type");
 		if (!c.contains(dataType)) {
@@ -73,7 +73,7 @@ public class SubProcessTab {
 		}
 		c.setSelection(dataType);
 		
-		new DefaultSection("Variable Details").getToolbarButton("Close").click();
+		new DefaultSection("Local Variable Details").getToolbarButton("Close").click();
 	}
 	
 	/**

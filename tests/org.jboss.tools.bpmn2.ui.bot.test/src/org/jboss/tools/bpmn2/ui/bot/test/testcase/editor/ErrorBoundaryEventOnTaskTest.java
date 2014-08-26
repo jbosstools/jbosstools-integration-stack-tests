@@ -20,10 +20,13 @@ import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequireme
 @ProcessDefinition(name="BPMN2-ErrorBoundaryEventOnTask", project="EditorTestProject")
 public class ErrorBoundaryEventOnTaskTest extends JBPM6BaseTest {
 
+	private static final String VARIABLE = "localVar";
+	
 	@Override
 	public void buildProcessModel() {
 		Process process = new Process("BPMN2-ErrorBoundaryEventOnTask");
-		process.addError("", "org.jbpm.bpmn2.objects.MyError", null);
+		process.addLocalVariable(VARIABLE, "String");
+		process.addError("MyError", "org.jbpm.bpmn2.objects.MyError", "String");
 		
 		StartEvent start = new StartEvent("StartProcess");
 		start.append("Split", ElementType.PARALLEL_GATEWAY);
@@ -38,7 +41,7 @@ public class ErrorBoundaryEventOnTaskTest extends JBPM6BaseTest {
 		task1.append("Error end event", ElementType.ERROR_END_EVENT);
 		
 		ErrorEndEvent end1 = new ErrorEndEvent("Error end event");
-		end1.setErrorEvent(new ErrorRef("", "org.jbpm.bpmn2.objects.MyError", ""));
+		end1.setErrorEvent(new ErrorRef("MyError", "org.jbpm.bpmn2.objects.MyError", "String"), VARIABLE);
 		
 		UserTask task2 = new UserTask("User task error attached");
 		task2.addActor("mary");
@@ -46,7 +49,7 @@ public class ErrorBoundaryEventOnTaskTest extends JBPM6BaseTest {
 		task2.addEvent("Error Boundary Event", ElementType.ERROR_BOUNDARY_EVENT);
 		
 		ErrorBoundaryEvent boundaryEvent = new ErrorBoundaryEvent("Error Boundary Event");
-		boundaryEvent.setErrorEvent(new ErrorRef("", "org.jbpm.bpmn2.objects.MyError", ""));
+		boundaryEvent.setErrorEvent(new ErrorRef("MyError", "org.jbpm.bpmn2.objects.MyError", "String"), VARIABLE);
 		boundaryEvent.append("Script Task", ElementType.SCRIPT_TASK, Position.SOUTH);
 		
 		ScriptTask script = new ScriptTask("Script Task");

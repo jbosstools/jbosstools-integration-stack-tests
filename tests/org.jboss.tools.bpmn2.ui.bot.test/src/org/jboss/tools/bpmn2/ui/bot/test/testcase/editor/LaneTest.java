@@ -27,13 +27,16 @@ public class LaneTest extends JBPM6BaseTest {
 		start.append("MyLane", ElementType.LANE, Position.SOUTH_EAST);
 		
 		Lane lane = new Lane("MyLane");
+		lane.changeOrientation();
 		lane.append("EndProcess", ElementType.TERMINATE_END_EVENT, Position.SOUTH_EAST);
-		lane.add("Hello", ElementType.SCRIPT_TASK, new Point(lane.getBounds().width / 6, lane.getBounds().height / 2));
+		lane.addRelativeToElement("Hello", ElementType.SCRIPT_TASK, lane, new Point(-100, 0));
 
 		ScriptTask task = new ScriptTask("Hello");
+		task.setScript("", "System.out.println(\"hello\")");
 		task.append("Goodbye", ElementType.SCRIPT_TASK);
 
 		ScriptTask task2 = new ScriptTask("Goodbye");
+		task2.setScript("", "System.out.println(\"bye\")");
 		
 		EndEvent end = new TerminateEndEvent("EndProcess");
 		
