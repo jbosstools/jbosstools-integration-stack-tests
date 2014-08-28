@@ -1,10 +1,6 @@
 #!/bin/bash
 
 SERVER_CONFIG="./target/server-installer/fuse-6.1.0.GA/target/server-settings.xml"
-ID="AmazonEC2ID"
-PASS="AmazonEC2Password"
-EMAIL="AmazonEC2Owner"
-IGNORE_TEST_FAILURE="false"
 
 function clean {
 	echo ""
@@ -47,23 +43,9 @@ function execute_tests () {
 	echo "--------------------------------------------------------------------------------"
 	echo ""
 	cd ../../
-	DISPLAY=:2 mvn verify -pl tests/org.jboss.tools.fuse.ui.bot.test -am -Dreddeer.config=$SERVER_CONFIG -Dtest=$TEST -Dec2.id=$ID -Dec2.pass=$PASS -Dec2.email=$EMAIL -Dmaven.test.failure.ignore=$IGNORE_TEST_FAILURE
+	DISPLAY=:2 mvn verify -pl tests/org.jboss.tools.fuse.ui.bot.test -am -Dreddeer.config=$SERVER_CONFIG -Dtest=$TEST -Dmaven.test.failure.ignore=$IGNORE_TEST_FAILURE
 }
 
-
-
-
-
-function set_credentials {
-	echo ""
-	echo "The chosen test/suite required access to Amazon EC2 Cloud. Please provide credentials."
-	echo -n "Access Key ID: "
-	read ID
-	echo -n "Secret Access Key: "
-	read PASS
-	echo -n "E-mail: "
-	read EMAIL
-}
 
 
 
@@ -128,6 +110,7 @@ function test_case {
 	echo "7 - Smoke Test (check views, perspectives, project creation)"
 	echo "8 - Regression Test (test resolved issues)"
 	echo "9 - Debugger Test (check camel route debugger)"
+	echo "10 - JMX Navigator Test (Server side)"
 	echo ""
 
 	TEST="0"
@@ -162,18 +145,15 @@ function test_case {
 			[9] )
 				TEST=DebuggerTest
 				;;
+			10)
+				TEST=JMXNavigatorServerTest
+				;;
 			*)
 				echo "Invalid input! Try it again."
 				;;
 		esac
 	done
 
-	if [ "$input" == "4" ]
-		then
-			#Ignore test failure - ensures execution of amazon-terminator after test failure
-			IGNORE_TEST_FAILURE="true"
-			set_credentials
-	fi
 	clean
 	install_fuse_server
 	execute_tests $TEST

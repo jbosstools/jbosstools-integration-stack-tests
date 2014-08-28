@@ -31,7 +31,7 @@ import org.junit.runner.RunWith;
  * Tests <i>JMX Navigator</i> view that:
  * <ul>
  * <li>shows running processes (local context) correctly</li>
- * <li><i>Suspend</i>, <i>Resume</i>, <i>Close</i> options work</li>
+ * <li><i>Suspend</i>, <i>Resume</i> options work</li>
  * </ul>
  * 
  * @author tsedmik

@@ -230,7 +230,9 @@ public class ServerManipulator {
 	 */
 	public static void addModule(String server, String project) {
 
-		new ServersView().getServer(server).addAndRemoveModules();
+		ServersView view = new ServersView();
+		view.open();
+		view.getServer(server).addAndRemoveModules();
 		new DefaultShell("Add and Remove...");
 		FuseModifyModulesPage page = new FuseModifyModulesPage();
 		try {
