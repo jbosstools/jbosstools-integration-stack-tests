@@ -2,12 +2,14 @@ package org.jboss.tools.fuse.reddeer.editor;
 
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
+import org.jboss.reddeer.gef.GEFLayerException;
 import org.jboss.reddeer.gef.editor.GEFEditor;
 import org.jboss.reddeer.gef.impl.editpart.LabeledEditPart;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
@@ -202,7 +204,7 @@ public class CamelEditor extends GEFEditor {
 	 * @param operation
 	 *            name of operation in the context menu
 	 */
-	public void doOperation(String label, String operation) {
+	public void doOperation(String label, String... operation) {
 
 		log.debug("Executing operation '" + operation + "' on the component: " + label);
 		new GEFEditor().click(5, 5);
@@ -229,5 +231,86 @@ public class CamelEditor extends GEFEditor {
 		new LabeledEditPart(label).select();
 		new PropertiesView().open();
 		new LabeledText("Id").setText(id);
+		activate();
+	}
+
+	/**
+	 * Switchs between 'Design' and 'Source' tab of the Camel Editor
+	 * 
+	 * @param name
+	 *            'Design' or 'Source'
+	 */
+	public static void switchTab(String name) {
+
+		log.debug("Switching on the tab '" + name + "'");
+		new DefaultCTabItem(name).activate();
+	}
+
+	/**
+	 * Checks whether a component with given name is available in the Camel
+	 * Editor
+	 * 
+	 * @param name
+	 *            name of the component
+	 * @return true - component is available, false - otherwise
+	 */
+	public boolean isComponentAvailable(String name) {
+
+		log.debug("Looking for '" + name + "' component in the Camel Editor");
+		new GEFEditor().click(5, 5);
+		try {
+			new LabeledEditPart(name).select();
+		} catch (GEFLayerException ex) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Sets a property to desired value. This method presume the component in
+	 * the Camel Editor is already selected.
+	 * 
+	 * @param name
+	 *            name of the property
+	 * @param value
+	 *            value of the property
+	 */
+	public void setProperty(String name, String value) {
+
+		log.debug("Setting '" + value + "' as the property '" + name + "' of selelected component in the Camel Editor");
+		new PropertiesView().open();
+		new LabeledText(name).setText(value);
+		activate();
+	}
+
+	/**
+	 * Sets a property to desired value. This method presume the component in
+	 * the Camel Editor is already selected.
+	 * 
+	 * @param name
+	 *            name of the property
+	 * @param value
+	 *            value of the property
+	 */
+	public void setComboProperty(int position, String value) {
+
+		log.debug("Setting '" + value + "' as the property number '" + position
+				+ "' of selelected component in the Camel Editor");
+		new PropertiesView().open();
+		new DefaultCombo(position).setText(value);
+		activate();
+	}
+
+	/**
+	 * Tries to add connection between 'source' component and 'target' component
+	 * 
+	 * @param source
+	 *            name of the source component
+	 * @param target
+	 *            name of the target component
+	 */
+	public void addConnection(String source, String target) {
+
+		// TODO Not implemented yet!
 	}
 }

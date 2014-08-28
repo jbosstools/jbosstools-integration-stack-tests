@@ -23,6 +23,7 @@ import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
 import org.jboss.tools.fuse.reddeer.utils.ResourceHelper;
 import org.jboss.tools.fuse.reddeer.wizard.CamelTestCaseWizard;
+import org.jboss.tools.fuse.ui.bot.test.utils.EditorManipulator;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -49,31 +50,6 @@ public class ProjectLocalRunTest {
 	private static final String PROJECT_CAMEL_CONTEXT = "camel-context.xml";
 
 	private static Logger log = Logger.getLogger(ProjectLocalRunTest.class);
-
-	/**
-	 * Replaces content of a file opened in active text editor with content of
-	 * the file <i>source</i>
-	 * 
-	 * @param source
-	 *            Path to the source file
-	 */
-	private static void copyFileContent(String source) {
-
-		File testFile = new File(ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID, source));
-
-		try {
-			TextEditor editor = new TextEditor();
-			Scanner scanner = new Scanner(testFile);
-			scanner.useDelimiter("\\Z");
-			editor.setText(scanner.next());
-			editor.save();
-			scanner.close();
-		} catch (FileNotFoundException e) {
-			log.error("Resource missing: can't find a failing test case to copy (" + source + ")!");
-		}
-
-		log.info("Text in active text editor was replaced with content of the file: " + source + ".");
-	}
 
 	/**
 	 * Creates a new Camel Test Case <b>which fails</b>
@@ -111,7 +87,7 @@ public class ProjectLocalRunTest {
 
 		Shell workbenchShell = new WorkbenchShell();
 		log.info("Run a project as Local Camel Context (Project contains a passing test case).");
-		copyFileContent("resources/PassingTest.java");
+		EditorManipulator.copyFileContent("resources/PassingTest.java");
 		new CamelProject(PROJECT_NAME).runCamelContext(PROJECT_CAMEL_CONTEXT);
 		new WaitUntil(new ConsoleHasText("Total 1 routes, of which 1 is started."), TimePeriod.getCustom(300));
 		workbenchShell.setFocus();
@@ -124,7 +100,7 @@ public class ProjectLocalRunTest {
 
 		Shell workbenchShell = new WorkbenchShell();
 		log.info("Run a project as Local Camel Context (Project contains a failing test case).");
-		copyFileContent("resources/FailingTest.java");
+		EditorManipulator.copyFileContent("resources/FailingTest.java");
 		new CamelProject(PROJECT_NAME).runCamelContext(PROJECT_CAMEL_CONTEXT);
 		new WaitUntil(new ConsoleHasText("BUILD FAILURE"), TimePeriod.getCustom(300));
 		workbenchShell.setFocus();
@@ -135,7 +111,7 @@ public class ProjectLocalRunTest {
 
 		Shell workbenchShell = new WorkbenchShell();
 		log.info("Run a project as Local Camel Context (without tests).");
-		copyFileContent("resources/FailingTest.java");
+		EditorManipulator.copyFileContent("resources/FailingTest.java");
 		new CamelProject(PROJECT_NAME).runCamelContextWithoutTests(PROJECT_CAMEL_CONTEXT);
 		new WaitUntil(new ConsoleHasText("Total 1 routes, of which 1 is started."), TimePeriod.getCustom(300));
 		workbenchShell.setFocus();

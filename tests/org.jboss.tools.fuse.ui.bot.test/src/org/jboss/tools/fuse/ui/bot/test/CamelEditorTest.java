@@ -1,5 +1,8 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
@@ -7,18 +10,33 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.jboss.reddeer.swt.matcher.RegexMatcher;
+import org.jboss.reddeer.swt.matcher.WithTooltipTextMatcher;
 import org.jboss.tools.fuse.reddeer.component.CamelComponent;
 import org.jboss.tools.fuse.reddeer.component.CamelComponents;
+import org.jboss.tools.fuse.reddeer.component.Endpoint;
+import org.jboss.tools.fuse.reddeer.component.Log;
+import org.jboss.tools.fuse.reddeer.component.Otherwise;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
+import org.jboss.tools.fuse.ui.bot.test.utils.EditorManipulator;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * Tests creation of all components in Fuse Camel editor
+ * Tests:
+ * <ul>
+ * <li>creation of all components in Fuse Camel editor</li>
+ * <li>manipulation with components in the Camel Editor</li>
+ * </ul>
  * 
- * @author apodhrad
+ * @author apodhrad, tsedmik
  */
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
@@ -27,13 +45,28 @@ public class CamelEditorTest {
 
 	protected Logger log = Logger.getLogger(CamelEditorTest.class);
 
-	@Test
-	public void camelEditorTest() {
+	@BeforeClass
+	public static void setup() {
 
 		new WorkbenchShell().maximize();
+	}
 
-		// Create fuse project
+	@Before
+	public void resetCamelContext() {
+
 		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
+	}
+
+	@After
+	public void deleteProjects() {
+
+		new DefaultToolItem(new WorkbenchShell(), 0, new WithTooltipTextMatcher(new RegexMatcher("Save All.*")))
+				.click();
+		new ProjectExplorer().deleteAllProjects();
+	}
+
+	@Test
+	public void testComponents() {
 
 		new ProjectExplorer().open();
 		new CamelProject("camel-spring").deleteCamelContext("camel-context.xml");
@@ -46,5 +79,69 @@ public class CamelEditorTest {
 			editor.addCamelComponent(component);
 			editor.deleteCamelComponent(component);
 		}
+	}
+
+	@Test
+	public void testXMLEditor() {
+
+		prepareIDEForManipulationTests();
+		CamelEditor editor = new CamelEditor("camel-context.xml");
+		assertFalse(editor.isComponentAvailable("otherwise"));
+		CamelEditor.switchTab("Source");
+		EditorManipulator.copyFileContentToCamelXMLEditor("resources/camel-context-all.xml");
+		CamelEditor.switchTab("Design");
+		assertTrue(editor.isComponentAvailable("otherwise"));
+		assertTrue(editor.isComponentAvailable("file:target/messa..."));
+	}
+
+	@Test
+	public void testAddComponents() {
+
+		prepareIDEForManipulationTests();
+		CamelEditor editor = new CamelEditor("camel-context.xml");
+		editor.doOperation("choice", "Add", "Routing", "Otherwise");
+		editor.doOperation("otherwise", "Add", "Endpoints", "Log");
+		editor.setProperty("Message", "Other messsage");
+		editor.setId("log", "log1");
+		editor.doOperation("log", "Add", "Endpoints", "Endpoint");
+		editor.setComboProperty(0, "file:target/messages/others");
+		editor.setId("log1", "");
+		assertTrue(editor.isComponentAvailable("otherwise"));
+		assertTrue(editor.isComponentAvailable("file:target/messa..."));
+		CamelEditor.switchTab("Source");
+		EditorManipulator.isEditorContentEqualsFile("resources/camel-context-all.xml");
+	}
+
+	@Ignore // TODO Adding a connection via Drag&Drop is not implemented yet
+	@Test
+	public void testDragAndDropComponents() {
+
+		prepareIDEForManipulationTests();
+		CamelEditor editor = new CamelEditor("camel-context.xml");
+		editor.addCamelComponent(new Otherwise());
+		editor.addConnection("choice", "otherwise");
+		editor.setId("log", "log1");
+		editor.setId("file:target/messa...", "temp");
+		editor.addCamelComponent(new Log());
+		editor.setProperty("Message", "Other messsage");
+		editor.addConnection("otherwise", "log");
+		editor.addCamelComponent(new Endpoint());
+		editor.setComboProperty(0, "file:target/messages/others");
+		editor.addConnection("log", "file:target/messa...");
+		editor.setId("temp", "");
+		editor.setId("log1", "");
+		CamelEditor.switchTab("Source");
+		EditorManipulator.isEditorContentEqualsFile("resources/camel-context-all.xml");
+	}
+
+	/**
+	 * Prepares IDE for tests manipulate with components in the Camel Editor
+	 */
+	private static void prepareIDEForManipulationTests() {
+
+		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
+		CamelEditor.switchTab("Source");
+		EditorManipulator.copyFileContentToCamelXMLEditor("resources/camel-context-otherwise.xml");
+		CamelEditor.switchTab("Design");
 	}
 }
