@@ -1,8 +1,11 @@
 package org.jboss.tools.bpel.ui.bot.test;
 
-import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.tools.bpel.reddeer.activity.Assign;
 import org.jboss.tools.bpel.reddeer.activity.Catch;
@@ -12,23 +15,24 @@ import org.jboss.tools.bpel.reddeer.activity.If;
 import org.jboss.tools.bpel.reddeer.activity.Receive;
 import org.jboss.tools.bpel.reddeer.activity.Scope;
 import org.jboss.tools.bpel.reddeer.activity.Sequence;
+import org.jboss.tools.bpel.reddeer.perspective.BPELPerspective;
 import org.jboss.tools.bpel.reddeer.wizard.ImportProjectWizard;
-import org.jboss.tools.bpel.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.tools.bpel.ui.bot.test.suite.PerspectiveRequirement.Perspective;
-import org.jboss.tools.bpel.ui.bot.test.suite.ServerRequirement.Server;
-import org.jboss.tools.bpel.ui.bot.test.suite.ServerRequirement.State;
-import org.jboss.tools.bpel.ui.bot.test.suite.ServerRequirement.Type;
 import org.jboss.tools.bpel.ui.bot.test.util.ResourceHelper;
+import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
+import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * 
  * @author apodhrad
  */
 @CleanWorkspace
-@Perspective(name="BPEL")
-@Server(type = Type.ALL, state = State.NOT_RUNNING)
-public class FaultModelingTest extends SWTBotTestCase {
+@OpenPerspective(BPELPerspective.class)
+// TODO: should be in state NOT_RUNNING
+@Server(type = ServerReqType.ANY, state = ServerReqState.PRESENT)
+@RunWith(RedDeerSuite.class)
+public class FaultModelingTest {
 
 	public static final String PROJECT_NAME = "bpel_scope";
 	public static final String BPEL_FILE_NAME = "scope.bpel";

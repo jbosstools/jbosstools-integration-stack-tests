@@ -1,20 +1,25 @@
 package org.jboss.tools.bpel.ui.bot.test;
 
-import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
+import static org.junit.Assert.assertTrue;
+
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.tools.bpel.reddeer.perspective.BPELPerspective;
 import org.jboss.tools.bpel.reddeer.wizard.NewProjectWizard;
-import org.jboss.tools.bpel.ui.bot.test.suite.BPELSuite;
-import org.jboss.tools.bpel.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.tools.bpel.ui.bot.test.suite.PerspectiveRequirement.Perspective;
-import org.jboss.tools.bpel.ui.bot.test.suite.ServerRequirement.Server;
-import org.jboss.tools.bpel.ui.bot.test.suite.ServerRequirement.State;
-import org.jboss.tools.bpel.ui.bot.test.suite.ServerRequirement.Type;
+import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
+import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
+import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * 
@@ -22,10 +27,14 @@ import org.junit.Test;
  * 
  */
 @CleanWorkspace
-@Perspective(name = "BPEL")
-@Server(type = Type.ALL, state = State.PRESENT)
-public class AssociateRuntimeTest extends SWTBotTestCase {
+@OpenPerspective(BPELPerspective.class)
+@RunWith(RedDeerSuite.class)
+@Server(type = ServerReqType.ANY, state = ServerReqState.PRESENT)
+public class AssociateRuntimeTest {
 
+	@InjectRequirement
+	private ServerRequirement serverRequirement;
+	
 	@Test
 	public void testModeling() throws Exception {
 		new NewProjectWizard("runtimeTest").execute();
@@ -36,7 +45,7 @@ public class AssociateRuntimeTest extends SWTBotTestCase {
 
 		new DefaultTreeItem("Targeted Runtimes").select();
 
-		String serverName = BPELSuite.getServerName();
+		String serverName = serverRequirement.getConfig().getName();
 		assertTrue(containsItem(new DefaultTable(), serverName));
 
 		new PushButton("OK").click();

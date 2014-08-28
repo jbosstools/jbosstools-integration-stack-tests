@@ -1,5 +1,8 @@
 package org.jboss.tools.bpel.ui.bot.test;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -11,21 +14,24 @@ import javax.xml.soap.SOAPException;
 
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLUnit;
-import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.eclipse.swtbot.swt.finder.exceptions.AssertionFailedException;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.tools.bpel.reddeer.perspective.BPELPerspective;
 import org.jboss.tools.bpel.reddeer.server.ServerDeployment;
 import org.jboss.tools.bpel.reddeer.wizard.ExampleWizard;
-import org.jboss.tools.bpel.ui.bot.test.suite.BPELSuite;
-import org.jboss.tools.bpel.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.tools.bpel.ui.bot.test.suite.PerspectiveRequirement.Perspective;
-import org.jboss.tools.bpel.ui.bot.test.suite.ServerRequirement.Server;
-import org.jboss.tools.bpel.ui.bot.test.suite.ServerRequirement.State;
-import org.jboss.tools.bpel.ui.bot.test.suite.ServerRequirement.Type;
 import org.jboss.tools.bpel.ui.bot.test.util.ResourceHelper;
 import org.jboss.tools.bpel.ui.bot.test.util.SoapClient;
+import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
+import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
+import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.xml.sax.SAXException;
 
 /**
@@ -35,9 +41,10 @@ import org.xml.sax.SAXException;
  *
  */
 @CleanWorkspace
-@Perspective(name = "BPEL")
-@Server(type = Type.ALL, state = State.RUNNING)
-public class ExampleTest extends SWTBotTestCase {
+@OpenPerspective(BPELPerspective.class)
+@RunWith(RedDeerSuite.class)
+@Server(type = ServerReqType.ANY, state = ServerReqState.RUNNING)
+public class ExampleTest {
 
 	public static final String HOST_URL = "http://localhost:8080";
 	public static final String EXAMPLE_CATEGORY = "BPEL";
@@ -45,6 +52,9 @@ public class ExampleTest extends SWTBotTestCase {
 
 	private List<BpelExample> bpelExamples;
 
+	@InjectRequirement
+	private ServerRequirement serverRequirement;
+	
 	public ExampleTest() {
 		add("A simple BPEL example", "HelloWorld", "bpel/processes/helloWorld");
 		add("Hello_World_Header_Ode", "Hello_World_Header_Ode", "Quickstart_bpel_hello_world_header_odeWS");
@@ -102,7 +112,7 @@ public class ExampleTest extends SWTBotTestCase {
 		}
 
 		public void deployToServer() {
-			String serverName = BPELSuite.getServerName();
+			String serverName = serverRequirement.getConfig().getName();
 			ServerDeployment server = new ServerDeployment(serverName);
 			server.deployProject(projectName);
 			AbstractWait.sleep(TimePeriod.NORMAL);

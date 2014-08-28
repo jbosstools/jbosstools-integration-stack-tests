@@ -1,6 +1,10 @@
 package org.jboss.tools.bpel.ui.bot.test;
 
-import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
@@ -10,18 +14,17 @@ import org.jboss.tools.bpel.reddeer.activity.Receive;
 import org.jboss.tools.bpel.reddeer.activity.Reply;
 import org.jboss.tools.bpel.reddeer.activity.Sequence;
 import org.jboss.tools.bpel.reddeer.editor.BpelDescriptorEditor;
+import org.jboss.tools.bpel.reddeer.perspective.BPELPerspective;
 import org.jboss.tools.bpel.reddeer.server.ServerDeployment;
 import org.jboss.tools.bpel.reddeer.wizard.NewDescriptorWizard;
 import org.jboss.tools.bpel.reddeer.wizard.NewProcessWizard;
 import org.jboss.tools.bpel.reddeer.wizard.NewProjectWizard;
-import org.jboss.tools.bpel.ui.bot.test.suite.BPELSuite;
-import org.jboss.tools.bpel.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.tools.bpel.ui.bot.test.suite.PerspectiveRequirement.Perspective;
-import org.jboss.tools.bpel.ui.bot.test.suite.ServerRequirement.Server;
-import org.jboss.tools.bpel.ui.bot.test.suite.ServerRequirement.State;
-import org.jboss.tools.bpel.ui.bot.test.suite.ServerRequirement.Type;
 import org.jboss.tools.bpel.ui.bot.test.util.SoapClient;
+import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
+import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
+import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * 
@@ -29,12 +32,16 @@ import org.junit.Test;
  * 
  */
 @CleanWorkspace
-@Perspective(name = "BPEL")
-@Server(type = Type.ALL, state = State.RUNNING)
-public class SimpleDeployTest extends SWTBotTestCase {
+@OpenPerspective(BPELPerspective.class)
+@RunWith(RedDeerSuite.class)
+@Server(type = ServerReqType.ANY, state = ServerReqState.RUNNING)
+public class SimpleDeployTest {
 
 	private static final String WSDL_URL = "http://localhost:8080/deployHello?wsdl";
 
+	@InjectRequirement
+	private ServerRequirement serverRequirement;
+	
 	@Test
 	public void simpleDeployTest() throws Exception {
 		new WorkbenchShell().maximize();
@@ -62,7 +69,7 @@ public class SimpleDeployTest extends SWTBotTestCase {
 		new BpelDescriptorEditor().setAssociatedPort("deployHelloPort");
 
 		// deploy project
-		String serverName = BPELSuite.getServerName();
+		String serverName = serverRequirement.getConfig().getName();
 		ServerDeployment server = new ServerDeployment(serverName);
 		server.deployProject(projectName);
 		AbstractWait.sleep(TimePeriod.NORMAL);
