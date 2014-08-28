@@ -1,15 +1,17 @@
 package org.jboss.tools.bpel.ui.bot.test;
 
-import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.bpel.reddeer.editor.BpelEditor;
+import org.jboss.tools.bpel.reddeer.perspective.BPELPerspective;
 import org.jboss.tools.bpel.reddeer.wizard.NewProcessWizard;
 import org.jboss.tools.bpel.reddeer.wizard.NewProjectWizard;
-import org.jboss.tools.bpel.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.tools.bpel.ui.bot.test.suite.PerspectiveRequirement.Perspective;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * 
@@ -17,8 +19,9 @@ import org.junit.Test;
  * 
  */
 @CleanWorkspace
-@Perspective(name = "BPEL")
-public class WizardTest extends SWTBotTestCase {
+@OpenPerspective(BPELPerspective.class)
+@RunWith(RedDeerSuite.class)
+public class WizardTest {
 
 	@BeforeClass
 	public static void closeWelcome() throws Exception {

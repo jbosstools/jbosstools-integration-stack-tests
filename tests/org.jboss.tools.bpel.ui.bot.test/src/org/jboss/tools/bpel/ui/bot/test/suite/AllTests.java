@@ -2,6 +2,7 @@ package org.jboss.tools.bpel.ui.bot.test.suite;
 
 import junit.framework.TestSuite;
 
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.bpel.ui.bot.test.ActivityModelingTest;
 import org.jboss.tools.bpel.ui.bot.test.AssignActivityTest;
 import org.jboss.tools.bpel.ui.bot.test.AssociateRuntimeTest;
@@ -21,7 +22,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	FaultModelingTest.class,
 	ExampleTest.class
 })
-@RunWith(BPELSuite.class)
+@RunWith(RedDeerSuite.class)
 public class AllTests extends TestSuite {
 
 }

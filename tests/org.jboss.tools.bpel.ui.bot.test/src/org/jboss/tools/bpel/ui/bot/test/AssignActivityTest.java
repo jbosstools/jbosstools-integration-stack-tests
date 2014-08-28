@@ -1,25 +1,33 @@
 package org.jboss.tools.bpel.ui.bot.test;
 
-import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.bpel.reddeer.activity.Sequence;
 import org.jboss.tools.bpel.reddeer.condition.NoErrorExists;
 import org.jboss.tools.bpel.reddeer.editor.BpelEditor;
+import org.jboss.tools.bpel.reddeer.perspective.BPELPerspective;
 import org.jboss.tools.bpel.reddeer.wizard.ImportProjectWizard;
-import org.jboss.tools.bpel.ui.bot.test.suite.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.tools.bpel.ui.bot.test.suite.PerspectiveRequirement.Perspective;
 import org.jboss.tools.bpel.ui.bot.test.util.ResourceHelper;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+/**
+ * 
+ * @author apodhrad
+ *
+ */
 @CleanWorkspace
-@Perspective(name = "BPEL")
-public class AssignActivityTest extends SWTBotTestCase {
+@OpenPerspective(BPELPerspective.class)
+@RunWith(RedDeerSuite.class)
+public class AssignActivityTest {
 
 	@BeforeClass
 	public static void maximizeEclipse() throws Exception {
