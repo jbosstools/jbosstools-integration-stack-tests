@@ -129,6 +129,19 @@
 		    <md5>e2d8624bd181235a34b5f97fb088c589</md5>
 		  </configuration>
 		</execution>
+		<execution>
+		  <id>download-wildfly</id>
+		  <phase>pre-integration-test</phase>
+		  <goals>
+		    <goal>wget</goal>
+		  </goals>
+		  <configuration>
+		    <url>http://download.jboss.org/wildfly/8.1.0.Final/wildfly-8.1.0.Final.zip</url>
+		    <unpack>true</unpack>
+                    <outputDirectory>${project.build.directory}</outputDirectory>
+		    <md5>b7df11f92ee80155702a351aee4b003b</md5>
+		  </configuration>
+		</execution>
 	      </executions>
 	    </plugin>
 	    <plugin>

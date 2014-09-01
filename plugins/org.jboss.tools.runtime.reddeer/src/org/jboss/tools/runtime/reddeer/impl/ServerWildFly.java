@@ -29,7 +29,7 @@ public class ServerWildFly extends ServerAS {
 
 	@Override
 	public String getRuntimeType() {
-		return label + " Runtime " + getVersion();
+		return label + " " + getVersion() + " Runtime";
 	}
 
 }
