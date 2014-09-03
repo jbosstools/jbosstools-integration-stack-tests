@@ -8,6 +8,7 @@ import org.jboss.tools.fuse.ui.bot.test.DebuggerTest;
 import org.jboss.tools.fuse.ui.bot.test.FuseProjectTest;
 import org.jboss.tools.fuse.ui.bot.test.JMXNavigatorTest;
 import org.jboss.tools.fuse.ui.bot.test.ProjectLocalRunTest;
+import org.jboss.tools.fuse.ui.bot.test.RouteEditingTest;
 import org.jboss.tools.fuse.ui.bot.test.SmokeTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
@@ -23,7 +24,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	JMXNavigatorTest.class,
 	CamelEditorTest.class,
 	FuseProjectTest.class,
-	DebuggerTest.class
+	DebuggerTest.class,
+	RouteEditingTest.class
 })
 @RunWith(RedDeerSuite.class)
 public class WithoutServerTests extends TestSuite {
