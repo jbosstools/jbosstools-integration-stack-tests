@@ -9,7 +9,7 @@ import org.jboss.tools.switchyard.reddeer.wizard.PromoteServiceWizard;
  * @author apodhrad
  * 
  */
-public class Reference extends Component {
+public class Reference extends SwitchYardComponent {
 
 	public Reference(String tooltip) {
 		super(tooltip, 0);

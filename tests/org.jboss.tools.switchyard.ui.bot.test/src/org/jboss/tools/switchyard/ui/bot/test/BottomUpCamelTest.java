@@ -16,8 +16,8 @@ import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
 import org.jboss.tools.switchyard.reddeer.binding.HTTPBindingPage;
-import org.jboss.tools.switchyard.reddeer.component.Component;
 import org.jboss.tools.switchyard.reddeer.component.Service;
+import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.condition.JUnitHasFinished;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
@@ -76,10 +76,8 @@ public class BottomUpCamelTest {
 				.type("package " + PACKAGE + ";").saveAndClose();
 
 		// Add component
-		new SwitchYardEditor().addComponent("Component");
-		new Component("Component").select();
-		new SwitchYardEditor().activateTool("Camel (Java)");
-		new Component("Component").click();
+		new SwitchYardEditor().addComponent();
+		new SwitchYardEditor().addCamelJavaImplementation(new SwitchYardComponent("Component"));
 
 		// Select existing implementation
 		new PushButton("Browse...").click();
@@ -91,7 +89,7 @@ public class BottomUpCamelTest {
 		new PushButton("Finish").click();
 
 		// Create new service and interface
-		new Component("Component").contextButton("Service").click();
+		new SwitchYardComponent("Component").getContextButton("Service").click();
 		new NewServiceWizard().activate().createJavaInterface("Hello").activate().finish();
 
 		// Edit the interface
@@ -100,7 +98,7 @@ public class BottomUpCamelTest {
 				.saveAndClose();
 
 		// Edit the camel route
-		new Component("Component").doubleClick();
+		new SwitchYardComponent("Component").doubleClick();
 		new TextEditor(JAVA_FILE + ".java").deleteLineWith("file:in")
 				.type("from(\"switchyard://Hello\")").deleteLineWith("file:out").type(";")
 				.saveAndClose();

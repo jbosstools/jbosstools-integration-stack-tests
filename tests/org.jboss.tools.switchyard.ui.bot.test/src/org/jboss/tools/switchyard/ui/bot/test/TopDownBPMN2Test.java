@@ -28,10 +28,8 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ToVariable;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.endevents.TerminateEndEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.switchyard.activities.SwitchYardServiceTask;
-import org.jboss.tools.switchyard.reddeer.component.BPM;
-import org.jboss.tools.switchyard.reddeer.component.Bean;
-import org.jboss.tools.switchyard.reddeer.component.Component;
 import org.jboss.tools.switchyard.reddeer.component.Service;
+import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.condition.JUnitHasFinished;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
@@ -92,14 +90,16 @@ public class TopDownBPMN2Test {
 		switchyardRequirement.project(PROJECT).impl("Bean", "BPM (jBPM)").groupId(GROUP_ID).packageName(PACKAGE)
 				.create();
 		openFile(PROJECT, PACKAGE_MAIN_RESOURCES, "META-INF", "switchyard.xml");
-		new BPM().setService(PROCESS_GREET).setBpmnFileName(BPMN_FILE_NAME).create(BPM_COORDS);
+		
+		new SwitchYardEditor().addBPMNImplementation().setFileName(BPMN_FILE_NAME).createNewInterface(PROCESS_GREET).finish();
+		new SwitchYardEditor().autoLayout();
 		new SwitchYardEditor().save();
 
-		new Bean().setService(EVAL_GREET).create(BEAN_COORDS);
+		new SwitchYardEditor().addBeanImplementation().createNewInterface(EVAL_GREET).finish();
 		new SwitchYardEditor().save();
 
 		// reference to bean
-		new Component(PROCESS_GREET).contextButton("Reference").click();
+		new SwitchYardComponent(PROCESS_GREET).getContextButton("Reference").click();
 		new ReferenceWizard().selectJavaInterface(EVAL_GREET).finish();
 		new SwitchYardEditor().save();
 

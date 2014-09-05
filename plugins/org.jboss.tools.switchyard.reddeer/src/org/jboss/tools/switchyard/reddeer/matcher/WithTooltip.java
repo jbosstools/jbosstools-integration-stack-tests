@@ -3,7 +3,7 @@ package org.jboss.tools.switchyard.reddeer.matcher;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.gef.EditPart;
-import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.graphiti.ui.platform.GraphitiShapeEditPart;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 
@@ -23,8 +23,8 @@ public class WithTooltip extends BaseMatcher<EditPart> {
 
 	@Override
 	public boolean matches(Object obj) {
-		if (obj instanceof GraphicalEditPart) {
-			IFigure figure = ((GraphicalEditPart) obj).getFigure();
+		if (obj instanceof GraphitiShapeEditPart) {
+			IFigure figure = ((GraphitiShapeEditPart) obj).getFigure();
 			IFigure tooltip = figure.getToolTip();
 			if (tooltip instanceof Label) {
 				Label label = (Label) tooltip;

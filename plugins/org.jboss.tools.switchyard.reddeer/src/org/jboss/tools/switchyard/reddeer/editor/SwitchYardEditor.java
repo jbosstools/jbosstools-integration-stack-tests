@@ -1,168 +1,174 @@
 package org.jboss.tools.switchyard.reddeer.editor;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 
-import org.eclipse.gef.EditPart;
-import org.eclipse.graphiti.features.context.IDoubleClickContext;
-import org.eclipse.graphiti.features.context.IPictogramElementContext;
-import org.eclipse.graphiti.features.custom.ICustomFeature;
-import org.eclipse.graphiti.internal.features.context.impl.base.DoubleClickContext;
-import org.eclipse.graphiti.internal.features.context.impl.base.PictogramElementContext;
-import org.eclipse.graphiti.mm.pictograms.PictogramElement;
-import org.eclipse.graphiti.tb.IContextButtonEntry;
-import org.eclipse.graphiti.tb.IContextButtonPadData;
-import org.eclipse.graphiti.tb.IToolBehaviorProvider;
-import org.eclipse.graphiti.ui.editor.DiagramEditor;
-import org.eclipse.graphiti.ui.internal.parts.IPictogramElementEditPart;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
-import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
-import org.eclipse.swtbot.swt.finder.results.Result;
-import org.eclipse.ui.IEditorPart;
-import org.jboss.reddeer.swt.condition.JobIsRunning;
-import org.jboss.reddeer.swt.util.Display;
-import org.jboss.reddeer.swt.util.ResultRunnable;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.switchyard.reddeer.component.Component;
-import org.jboss.tools.switchyard.reddeer.component.MainComponent;
-import org.jboss.tools.switchyard.reddeer.widget.ContextButtonEntry;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.part.FileEditorInput;
+import org.jboss.reddeer.gef.api.EditPart;
+import org.jboss.reddeer.gef.condition.EditorHasEditParts;
+import org.jboss.reddeer.gef.editor.GEFEditor;
+import org.jboss.reddeer.graphiti.impl.graphitieditpart.LabeledGraphitiEditPart;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.tools.switchyard.reddeer.wizard.BPMServiceWizard;
+import org.jboss.tools.switchyard.reddeer.wizard.BeanServiceWizard;
+import org.jboss.tools.switchyard.reddeer.wizard.CamelJavaWizard;
+import org.jboss.tools.switchyard.reddeer.wizard.DroolsServiceWizard;
+import org.jboss.tools.switchyard.reddeer.wizard.ReferenceWizard;
 
 /**
- * SwitchYeard editor
  * 
  * @author apodhrad
- * 
+ *
  */
-public class SwitchYardEditor extends SWTBotGefEditor {
+public class SwitchYardEditor extends GEFEditor {
 
-	private MainComponent mainComponent;
-	private static SWTWorkbenchBot bot = new SWTWorkbenchBot();
+	public static final String TITLE = "switchyard.xml";
+	public static final String TOOL_COMPONENT = "Component";
+	public static final String TOOL_SERVICE = "Service";
+	public static final String TOOL_REFERENCE = "Reference";
+	public static final String TOOL_BEAN = "Bean";
+	public static final String TOOL_CAMEL_JAVA = "Camel (Java)";
+	public static final String TOOL_CAMEL_XML = "Camel (XML)";
+	public static final String TOOL_BPEL = "Process (BPEL)";
+	public static final String TOOL_BPMN = "Process (BPMN)";
+	public static final String TOOL_RULES = "Rules";
 
-	private DiagramEditor diagramEditor;
+	protected File sourceFile;
+	protected CompositeEditPart composite;
 
 	public SwitchYardEditor() {
-		super(bot.editorByTitle("switchyard.xml").getReference(), bot);
-		diagramEditor = UIThreadRunnable.syncExec(new Result<DiagramEditor>() {
-			public DiagramEditor run() {
-				final IEditorPart editor = partReference.getEditor(true);
-				return (DiagramEditor) editor.getAdapter(DiagramEditor.class);
+		super(TITLE);
+		composite = getCompositeEditPart();
+	}
+
+	public CompositeEditPart getCompositeEditPart() {
+		String compositeName = getCompositeName();
+		return new CompositeEditPart(compositeName);
+	}
+
+	public String getCompositeName() {
+		File sourceFile = getSourceFile();
+		try {
+			XPathEvaluator xpath = new XPathEvaluator(new FileReader(sourceFile));
+			String name = xpath.evaluateString("/switchyard/@name");
+			return name;
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public void autoLayout() {
+		composite.getContextButton("Auto-layout Diagram").click();
+		save();
+	}
+
+	public void addComponent() {
+		int oldCount = getNumberOfEditParts();
+		getPalette().activateTool(TOOL_COMPONENT);
+		composite.click();
+		new WaitUntil(new EditorHasEditParts(this, oldCount));
+	}
+
+	public void addService() {
+		getPalette().activateTool(TOOL_SERVICE);
+		composite.click();
+	}
+
+	public ReferenceWizard addReference() {
+		getPalette().activateTool(TOOL_REFERENCE);
+		composite.click();
+		return new ReferenceWizard();
+	}
+
+	public BeanServiceWizard addBeanImplementation() {
+		return addBeanImplementation(composite);
+	}
+
+	public BeanServiceWizard addBeanImplementation(EditPart editPart) {
+		addTool(TOOL_BEAN, editPart);
+		return new BeanServiceWizard();
+	}
+
+	public CamelJavaWizard addCamelJavaImplementation() {
+		return addCamelJavaImplementation(composite);
+	}
+
+	public CamelJavaWizard addCamelJavaImplementation(EditPart editPart) {
+		addTool(TOOL_CAMEL_JAVA, editPart);
+		return new CamelJavaWizard(this);
+	}
+
+	public void addCamelXmlImplementation() {
+
+	}
+
+	public void addBPELImplementation() {
+		addBPELImplementation(composite);
+	}
+
+	public void addBPELImplementation(EditPart editPart) {
+		getPalette().activateTool(TOOL_BPEL);
+		editPart.click();
+	}
+
+	public BPMServiceWizard addBPMNImplementation() {
+		return addBPMNImplementation(composite);
+	}
+
+	public BPMServiceWizard addBPMNImplementation(EditPart editPart) {
+		addTool(TOOL_BPMN, editPart);
+		return new BPMServiceWizard();
+	}
+
+	public DroolsServiceWizard addDroolsImplementation() {
+		return addDroolsImplementation(composite);
+	}
+
+	public DroolsServiceWizard addDroolsImplementation(EditPart editPart) {
+		addTool(TOOL_RULES, editPart);
+		return new DroolsServiceWizard();
+	}
+
+	protected void addTool(String tool, EditPart editPart) {
+		getPalette().activateTool(tool);
+		editPart.click();
+	}
+
+	public String xpath(String expr) throws FileNotFoundException {
+		XPathEvaluator xpath = new XPathEvaluator(new FileReader(getSourceFile()));
+		String result = xpath.evaluateString(expr);
+		return result;
+	}
+
+	protected File getSourceFile() {
+		if (sourceFile == null) {
+			IEditorInput editorInput = editorPart.getEditorInput();
+			if (editorInput instanceof FileEditorInput) {
+				FileEditorInput fileEditorInput = (FileEditorInput) editorInput;
+				sourceFile = fileEditorInput.getPath().toFile();
 			}
-		});
-		mainComponent = new MainComponent(mainEditPart().children().get(0));
+		}
+		return sourceFile;
 	}
 
-	public void addComponent(String component) {
-		activateTool(component);
-		clickMainComponent();
-	}
+	private class CompositeEditPart extends LabeledGraphitiEditPart {
 
-	private void clickMainComponent() {
-		mainComponent.click();
-	}
+		public CompositeEditPart(String label) {
+			super(label);
+		}
 
-	public MainComponent getMainComponent() {
-		return mainComponent;
-	}
-
-	public void addComponent(String component, Integer[] coords) {
-		activateTool(component);
-		mainComponent.click(coords[0], coords[1]);
-	}
-
-	@Override
-	public void save() {
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		new GefEditor("switchyard.xml").save();
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-	}
-
-	public List<ContextButtonEntry> getContextButtonEntries(final Component component) {
-		return Display.syncExec(new ResultRunnable<List<ContextButtonEntry>>() {
-			
-			@Override
-			public List<ContextButtonEntry> run() {
-				List<IContextButtonEntry> entries = new ArrayList<IContextButtonEntry>();
-				IToolBehaviorProvider[] tool = diagramEditor.getDiagramTypeProvider().getAvailableToolBehaviorProviders();
-				for (int i = 0; i < tool.length; i++) {
-					IPictogramElementContext context = createPictogramElementContext(component);
-					IContextButtonPadData pad = tool[i].getContextButtonPad(context);
-					entries.addAll(pad.getDomainSpecificContextButtons());
-					entries.addAll(pad.getGenericContextButtons());
-				}
-				List<ContextButtonEntry> contextButtonEntries = new ArrayList<ContextButtonEntry>();
-				for (IContextButtonEntry entry: entries) {
-					ContextButtonEntry contextButtonEntry = new ContextButtonEntry(entry);
-					contextButtonEntries.add(contextButtonEntry);
-				}
-				return contextButtonEntries;
-			}
-		});
-	}
-	
-	public void doubleClick(final Component component) {
-		List<ICustomFeature> features = Display.syncExec(new ResultRunnable<List<ICustomFeature>>() {
-			
-			@Override
-			public List<ICustomFeature> run() {
-				List<ICustomFeature> features = new ArrayList<ICustomFeature>();
-				IToolBehaviorProvider[] tool = diagramEditor.getDiagramTypeProvider().getAvailableToolBehaviorProviders();
-				for (int i = 0; i < tool.length; i++) {
-					IDoubleClickContext context = createDoubleClickContext(component);
-					ICustomFeature feature = tool[i].getDoubleClickFeature(context);
-					features.add(feature);
-				}
-				return features;
-			}
-		});
-		for(final ICustomFeature feature: features) {
-			Display.getDisplay().syncExec(new Runnable() {
-				
-				@Override
-				public void run() {
-					feature.execute(createDoubleClickContext(component));
-				}
-			});
+		public Rectangle getBounds() {
+			IFigure figure = super.getFigure();
+			return figure.getBounds();
 		}
 	}
-	
-	@SuppressWarnings("restriction")
-	private IPictogramElementContext createPictogramElementContext(final Component component) {
-		PictogramElement pe = getPictogramElement(component);
-		if (pe == null) {
-			throw new RuntimeException("Cannot create PictogramElementContext, pe is null");
-		}
-		return new PictogramElementContext(pe);
-	}
-	
-	@SuppressWarnings("restriction")
-	private IDoubleClickContext createDoubleClickContext(final Component component) {
-		PictogramElement pe = getPictogramElement(component);
-		if (pe == null) {
-			throw new RuntimeException("Cannot create DoubleClickContext, pe is null");
-		}
-		return new DoubleClickContext(pe, null, null);
-	}
 
-	@SuppressWarnings("restriction")
-	private PictogramElement getPictogramElement(final Component component) {
-		EditPart part = component.getEditPart().part();
-
-		if (part instanceof IPictogramElementEditPart) {
-			IPictogramElementEditPart peep = (IPictogramElementEditPart) part;
-			PictogramElement pe = peep.getPictogramElement();
-			return pe;
-		}
-		return null;
-	}
-
-	@Override
 	public void saveAndClose() {
-		bot.closeAllShells();
-		super.saveAndClose();
+		super.close(true);
 	}
-	
-	
 
 }

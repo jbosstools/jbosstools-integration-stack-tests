@@ -1,7 +1,8 @@
 package org.jboss.tools.switchyard.reddeer.wizard;
 
-import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
+import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.switchyard.reddeer.widget.Link;
 
 /**
@@ -10,14 +11,11 @@ import org.jboss.tools.switchyard.reddeer.widget.Link;
  * @author apodhrad
  * 
  */
-public class BeanServiceWizard extends NewWizardDialog {
+public class BeanServiceWizard extends WizardDialog {
 
 	public static final String DIALOG_TITLE = "New Bean Service";
 
-	private String interfaceName;
-
 	public BeanServiceWizard() {
-		super("SwitchYard", "SwitchYard Bean Component");
 	}
 
 	public BeanServiceWizard activate() {
@@ -25,20 +23,21 @@ public class BeanServiceWizard extends NewWizardDialog {
 		return this;
 	}
 
-	public BeanServiceWizard setInterface(String name) {
-		this.interfaceName = name;
+	public BeanServiceWizard setName(String name) {
+		activate();
+		new LabeledText("Name:").setText(name);
 		return this;
 	}
 
-	@Override
-	public void finish() {
+	public BeanServiceWizard createNewInterface(String name) {
 		activate();
-		if (interfaceName != null) {
-			new Link("Interface:").click();
-			new JavaInterfaceWizard().activate().setName(interfaceName).finish();
-			activate();
-		}
-		super.finish();
+		new Link("Interface:").click();
+		new JavaInterfaceWizard().activate().setName(name).finish();
+		return this;
+	}
+
+	public BeanServiceWizard setExistingInterface(String name) {
+		throw new UnsupportedOperationException();
 	}
 
 }

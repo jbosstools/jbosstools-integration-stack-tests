@@ -22,7 +22,9 @@ Require-Bundle: org.jboss.tools.switchyard.reddeer;bundle-version="4.2.0",
  org.eclipse.jetty.server;bundle-version="8.1.14",
  org.eclipse.jetty.util;bundle-version="8.1.14",
  org.eclipse.jetty.io;bundle-version="8.1.14",
- org.eclipse.jetty.continuation;bundle-version="8.1.14"
+ org.eclipse.jetty.continuation;bundle-version="8.1.14",
+ org.jboss.reddeer.gef;bundle-version="0.6.0",
+ org.jboss.reddeer.graphiti;bundle-version="0.6.0"
 Bundle-ActivationPolicy: lazy
 Import-Package: org.apache.log4j,
  org.eclipse.draw2d.geometry

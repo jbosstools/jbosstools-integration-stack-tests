@@ -5,7 +5,7 @@ import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.tools.switchyard.reddeer.component.Component;
+import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.preference.implementation.BPMNImplementationPage;
 import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultComponentPage;
 import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultComponentPropertiesPage;
@@ -27,10 +27,10 @@ public class ImplementationPropertiesPage {
 	
 	protected final Logger log = Logger.getLogger(this.getClass());
 	
-	public void openProperties(Component component) {
+	public void openProperties(SwitchYardComponent component) {
 		
 		log.info("Open: " + component.getTooltip());
-		component.contextButton("Properties").click();
+		component.getContextButton("Properties").click();
 		new DefaultShell("Properties for " + component.getTooltip()).setFocus();
 	}
 	

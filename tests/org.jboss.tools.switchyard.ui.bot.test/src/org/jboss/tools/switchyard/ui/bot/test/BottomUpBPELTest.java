@@ -11,8 +11,8 @@ import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
 import org.jboss.tools.switchyard.reddeer.binding.SOAPBindingPage;
-import org.jboss.tools.switchyard.reddeer.component.Component;
 import org.jboss.tools.switchyard.reddeer.component.Service;
+import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.condition.ConsoleHasChanged;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
@@ -62,17 +62,16 @@ public class BottomUpBPELTest {
 		// There is no way how to create deployment descriptor, only manually
 		new ImportFileWizard().importFile("resources/bpel", "deploy.xml");
 
-		new SwitchYardEditor().addComponent("Component");
-		new Component("Component").select();
-		new SwitchYardEditor().activateTool("Process (BPEL)");
-		new Component("Component").click();
+		new SwitchYardEditor().addComponent();
+		new SwitchYardComponent("Component").select();
+		new SwitchYardEditor().addBPELImplementation(new SwitchYardComponent("Component"));
 
 		new PushButton("Browse...").click();
 		new DefaultText(0).setText("SayHello.bpel");
 		new PushButton("OK").click();
 		new PushButton("Finish").click();
 
-		new Component("Component").contextButton("Service").click();
+		new SwitchYardComponent("Component").getContextButton("Service").click();
 		new PushButton("Browse...").click();
 		new DefaultText(0).setText("SayHelloArtifacts.wsdl");
 		new PushButton("OK").click();

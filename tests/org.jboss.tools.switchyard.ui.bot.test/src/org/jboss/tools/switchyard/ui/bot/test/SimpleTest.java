@@ -17,9 +17,8 @@ import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
 import org.jboss.tools.switchyard.reddeer.binding.SOAPBindingPage;
-import org.jboss.tools.switchyard.reddeer.component.Bean;
-import org.jboss.tools.switchyard.reddeer.component.Component;
 import org.jboss.tools.switchyard.reddeer.component.Service;
+import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.condition.ConsoleHasChanged;
 import org.jboss.tools.switchyard.reddeer.condition.JUnitHasFinished;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
@@ -80,13 +79,13 @@ public class SimpleTest {
 	public void simpleTest() throws Exception {
 		switchyardRequirement.project(PROJECT).impl("Bean").binding("SOAP").create();
 
-		new Bean().setService("ExampleService").create();
+		new SwitchYardEditor().addBeanImplementation().createNewInterface("ExampleService").finish();
 
-		new Component("ExampleService").doubleClick();
+		new SwitchYardComponent("ExampleService").doubleClick();
 		new TextEditor("ExampleService.java").typeAfter("interface",
 				"String sayHello(String name);").saveAndClose();
 
-		new Component("ExampleServiceBean").doubleClick();
+		new SwitchYardComponent("ExampleServiceBean").doubleClick();
 		new TextEditor("ExampleServiceBean.java").typeAfter("public class", "@Override").newLine()
 				.type("public String sayHello(String name) {").newLine()
 				.type("return \"Hello \" + name;}").saveAndClose();

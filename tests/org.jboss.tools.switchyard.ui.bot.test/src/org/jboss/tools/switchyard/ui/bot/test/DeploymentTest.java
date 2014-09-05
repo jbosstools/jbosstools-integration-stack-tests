@@ -10,9 +10,8 @@ import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
 import org.jboss.tools.switchyard.reddeer.binding.HTTPBindingPage;
-import org.jboss.tools.switchyard.reddeer.component.Bean;
-import org.jboss.tools.switchyard.reddeer.component.Component;
 import org.jboss.tools.switchyard.reddeer.component.Service;
+import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
@@ -41,17 +40,16 @@ public class DeploymentTest {
 		new SwitchYardProjectWizard(PROJECT_NAME, switchYardRequirement.getConfig().getConfigurationVersion(),
 				switchYardRequirement.getConfig().getLibraryVersion(), "").impl("Bean").binding("HTTP").create();
 
-		new SwitchYardEditor();
-		new Bean().setService("Hello").create();
+		new SwitchYardEditor().addBeanImplementation().createNewInterface("Hello").finish();
 
-		new Component("Hello").doubleClick();
+		new SwitchYardComponent("Hello").doubleClick();
 		TextEditor helloEditor = new TextEditor("Hello.java");
 		helloEditor.setText("package com.example.switchyard.deploy;\n" + "public interface Hello {\n"
 				+ "\tString sayHello(String name);\n}");
 		helloEditor.save();
 		helloEditor.close();
 
-		new Component("HelloBean").doubleClick();
+		new SwitchYardComponent("HelloBean").doubleClick();
 		TextEditor helloBeanEditor = new TextEditor("HelloBean.java");
 		helloBeanEditor.setText("package com.example.switchyard.deploy;\n"
 				+ "import org.switchyard.component.bean.Service;\n" + "@Service(Hello.class)\n"

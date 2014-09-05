@@ -63,7 +63,7 @@ public class ThrottlingTest {
 		switchyardRequirement.project(PROJECT).create();
 
 		/* Add Service */
-		new SwitchYardEditor().addComponent("Service");
+		new SwitchYardEditor().addService();
 		new DefaultShell("New Service");
 		new DefaultServiceWizard().createJavaInterface("Hello");
 		new DefaultShell("New Service");

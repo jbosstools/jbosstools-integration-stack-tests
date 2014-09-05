@@ -70,7 +70,7 @@ public class ServiceWizard<T extends ServiceWizard<?>> extends WizardDialog {
 
 	@SuppressWarnings("unchecked")
 	public T createJavaInterface(String javaInterface) {
-		checkInterfaceType("Java").clickInterface();
+		activate().checkInterfaceType("Java").clickInterface();
 		new JavaInterfaceWizard().activate().setName(javaInterface).finish();
 		return (T) this;
 	}

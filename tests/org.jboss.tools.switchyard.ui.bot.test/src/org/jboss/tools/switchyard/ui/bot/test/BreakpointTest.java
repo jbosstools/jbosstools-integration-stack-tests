@@ -29,7 +29,7 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.switchyard.reddeer.component.Component;
+import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.debug.Breakpoint;
 import org.jboss.tools.switchyard.reddeer.debug.Breakpoint.TriggerOn;
 import org.jboss.tools.switchyard.reddeer.debug.Breakpoint.TriggeringPhase;
@@ -67,7 +67,7 @@ public class BreakpointTest {
 	@BeforeClass
 	public static void importTestProject() {
 		new ExternalProjectImportWizardDialog().open();
-		WizardProjectsImportPage importPage = new WizardProjectsImportPage(null, 0);
+		WizardProjectsImportPage importPage = new WizardProjectsImportPage();
 		importPage.setRootDirectory(new File(RESOURCES, "projects/hello").getAbsolutePath());
 		importPage.copyProjectsIntoWorkspace(true);
 		// This may take several minutes
@@ -96,7 +96,7 @@ public class BreakpointTest {
 	public void transformBreakpointTest() {
 		// add transform breakpoint
 		new SwitchYardProject("hello").openSwitchYardFile();
-		new Component("hello").contextButton("Breakpoints", "Enable  Transform Breakpoint").click();
+		new SwitchYardComponent("hello").getContextButton("Breakpoints", "Enable  Transform Breakpoint").click();
 
 		// check the breakpoint in Breakpoints view
 		List<Breakpoint> breakpoints = new BreakpointsView().getBreakpoints();
@@ -114,7 +114,7 @@ public class BreakpointTest {
 		breakpoint.checkTransformer("String {java.lang}", "Person {com.example.switchyard.hello}");
 
 		// check the breakpoint in Properties
-		new Component("hello").contextButton("Properties").click();
+		new SwitchYardComponent("hello").getContextButton("Properties").click();
 		new DefaultShell("Properties for ").setFocus();
 		new DefaultTreeItem("Transform Breakpoint Properties").select();
 		assertEquals("hello", new LabeledText("Project").getText());
@@ -143,7 +143,7 @@ public class BreakpointTest {
 		breakpoint.setChecked(false);
 
 		// check the breakpoint in Properties
-		new Component("hello").contextButton("Properties").click();
+		new SwitchYardComponent("hello").getContextButton("Properties").click();
 		new DefaultShell("Properties for ").setFocus();
 		new DefaultTreeItem("Transform Breakpoint Properties").select();
 		assertEquals("hello", new LabeledText("Project").getText());
@@ -155,7 +155,7 @@ public class BreakpointTest {
 		new WaitWhile(new ShellWithTextIsAvailable("Properties for "));
 
 		// delete breakpoint
-		new Component("hello").contextButton("Breakpoints", "Disable Transform Breakpoint").click();
+		new SwitchYardComponent("hello").getContextButton("Breakpoints", "Disable Transform Breakpoint").click();
 		assertTrue(new BreakpointsView().getBreakpoints().isEmpty());
 	}
 
@@ -163,7 +163,7 @@ public class BreakpointTest {
 	public void validateBreakpointTest() {
 		// add validate breakpoint
 		new SwitchYardProject("hello").openSwitchYardFile();
-		new Component("hello").contextButton("Breakpoints", "Enable  Validate Breakpoint").click();
+		new SwitchYardComponent("hello").getContextButton("Breakpoints", "Enable  Validate Breakpoint").click();
 
 		// check the breakpoint in Breakpoints view
 		List<Breakpoint> breakpoints = new BreakpointsView().getBreakpoints();
@@ -176,7 +176,7 @@ public class BreakpointTest {
 		assertBreakpoint(breakpoint, TriggeringPhase.FAULT, true);
 
 		// check the breakpoint in Properties
-		new Component("hello").contextButton("Properties").click();
+		new SwitchYardComponent("hello").getContextButton("Properties").click();
 		new DefaultShell("Properties for ").setFocus();
 		new DefaultTreeItem("Validate Breakpoint Properties").select();
 		assertEquals("hello", new LabeledText("Project").getText());
@@ -202,7 +202,7 @@ public class BreakpointTest {
 		breakpoint.setChecked(false);
 
 		// check the breakpoint in Properties
-		new Component("hello").contextButton("Properties").click();
+		new SwitchYardComponent("hello").getContextButton("Properties").click();
 		new DefaultShell("Properties for ").setFocus();
 		new DefaultTreeItem("Validate Breakpoint Properties").select();
 		assertEquals("hello", new LabeledText("Project").getText());
@@ -214,7 +214,7 @@ public class BreakpointTest {
 		new WaitWhile(new ShellWithTextIsAvailable("Properties for "));
 
 		// delete breakpoint
-		new Component("hello").contextButton("Breakpoints", "Disable Validate Breakpoint").click();
+		new SwitchYardComponent("hello").getContextButton("Breakpoints", "Disable Validate Breakpoint").click();
 		assertTrue(new BreakpointsView().getBreakpoints().isEmpty());
 	}
 
@@ -222,7 +222,7 @@ public class BreakpointTest {
 	public void consumerBreakpointTest() {
 		// add validate breakpoint
 		new SwitchYardProject("hello").openSwitchYardFile();
-		new Component("HelloService").contextButton("Enable  Breakpoint").click();
+		new SwitchYardComponent("HelloService").getContextButton("Enable  Breakpoint").click();
 
 		// check the breakpoint in Breakpoints view
 		List<Breakpoint> breakpoints = new BreakpointsView().getBreakpoints();
@@ -244,7 +244,7 @@ public class BreakpointTest {
 		assertBreakpoint(breakpoint, TriggerOn.TRANSFORMATION, false);
 
 		// check the breakpoint in Properties
-		new Component("HelloService").contextButton("Properties").click();
+		new SwitchYardComponent("HelloService").getContextButton("Properties").click();
 		new DefaultShell("Properties for HelloService").setFocus();
 		new DefaultTreeItem("Service Breakpoint Properties").select();
 		assertEquals("HelloService", new LabeledText("Service Name").getText());
@@ -295,7 +295,7 @@ public class BreakpointTest {
 		breakpoint.setChecked(false);
 
 		// check the breakpoint in Properties
-		new Component("HelloService").contextButton("Properties").click();
+		new SwitchYardComponent("HelloService").getContextButton("Properties").click();
 		new DefaultShell("Properties for HelloService").setFocus();
 		new DefaultTreeItem("Service Breakpoint Properties").select();
 		assertEquals("hello", new LabeledText("Project").getText());
@@ -308,7 +308,7 @@ public class BreakpointTest {
 
 		// delete breakpoint
 		new BreakpointsView().removeAllBreakpoints();
-		new Component("HelloService").contextButton("Properties").click();
+		new SwitchYardComponent("HelloService").getContextButton("Properties").click();
 		new DefaultShell("Properties for HelloService").setFocus();
 		try {
 			new DefaultTreeItem("Service Breakpoint Properties").select();
@@ -324,7 +324,7 @@ public class BreakpointTest {
 	public void providerBreakpointTest() {
 		// add validate breakpoint
 		new SwitchYardProject("hello").openSwitchYardFile();
-		new Component("Hello").contextButton("Enable  Breakpoint").click();
+		new SwitchYardComponent("Hello").getContextButton("Enable  Breakpoint").click();
 
 		// check the breakpoint in Breakpoints view
 		List<Breakpoint> breakpoints = new BreakpointsView().getBreakpoints();
@@ -346,7 +346,7 @@ public class BreakpointTest {
 		assertBreakpoint(breakpoint, TriggerOn.TRANSFORMATION, false);
 
 		// check the breakpoint in Properties
-		new Component("Hello").contextButton("Properties").click();
+		new SwitchYardComponent("Hello").getContextButton("Properties").click();
 		new DefaultShell("Properties for Hello").setFocus();
 		new DefaultTreeItem("Service Breakpoint Properties").select();
 		assertEquals("Hello", new LabeledText("Service Name").getText());
@@ -397,7 +397,7 @@ public class BreakpointTest {
 		breakpoint.setChecked(false);
 
 		// check the breakpoint in Properties
-		new Component("Hello").contextButton("Properties").click();
+		new SwitchYardComponent("Hello").getContextButton("Properties").click();
 		new DefaultShell("Properties for Hello").setFocus();
 		new DefaultTreeItem("Service Breakpoint Properties").select();
 		assertEquals("hello", new LabeledText("Project").getText());
@@ -410,7 +410,7 @@ public class BreakpointTest {
 
 		// delete breakpoint
 		new BreakpointsView().removeAllBreakpoints();
-		new Component("Hello").contextButton("Properties").click();
+		new SwitchYardComponent("Hello").getContextButton("Properties").click();
 		new DefaultShell("Properties for Hello").setFocus();
 		try {
 			new DefaultTreeItem("Service Breakpoint Properties").select();

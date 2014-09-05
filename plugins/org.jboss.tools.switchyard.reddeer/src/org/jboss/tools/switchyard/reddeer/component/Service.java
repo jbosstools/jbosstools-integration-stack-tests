@@ -1,6 +1,7 @@
 package org.jboss.tools.switchyard.reddeer.component;
 
-import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
+import org.jboss.reddeer.graphiti.api.ContextButton;
+import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
@@ -13,11 +14,10 @@ import org.jboss.tools.switchyard.reddeer.wizard.ServiceTestClassWizard;
  * @author Andrej Podhradsky (andrej.podhradsky@gmail.com)
  * 
  */
-public class Service extends Component {
+public class Service extends SwitchYardComponent {
 
 	public Service(String tooltip) {
 		super(tooltip, 0);
-		System.out.println();
 	}
 
 	public Service(String tooltip, int index) {
@@ -25,22 +25,23 @@ public class Service extends Component {
 	}
 
 	public PromoteServiceWizard promoteService() {
-		contextButton("Promote Service").click();
+		ContextButton cb = getContextButton("Promote Service");
+		cb.click();
 		return new PromoteServiceWizard("Promote Component Service");
 	}
 
 	public void createNewServiceTestClass(String... mixin) {
-		contextButton("New Service Test Class").click();
+		getContextButton("New Service Test Class").click();
 		new ServiceTestClassWizard().activate().selectMixin(mixin).finish();
 	}
 	
 	public ServiceTestClassWizard newServiceTestClass() {
-		contextButton("New Service Test Class").click();
+		getContextButton("New Service Test Class").click();
 		return new ServiceTestClassWizard().activate();
 	}
 
 	public WizardDialog addBinding(String binding) {
-		new SwitchYardEditor().activateTool(binding);
+		new SwitchYardEditor().getPalette().activateTool(binding);
 		click();
 		new WaitWhile(new JobIsRunning());
 		return new WizardDialog();

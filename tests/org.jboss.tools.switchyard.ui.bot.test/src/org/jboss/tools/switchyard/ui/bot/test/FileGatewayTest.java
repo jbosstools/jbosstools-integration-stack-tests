@@ -16,9 +16,8 @@ import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
 import org.jboss.tools.switchyard.reddeer.binding.FileBindingPage;
-import org.jboss.tools.switchyard.reddeer.component.Bean;
-import org.jboss.tools.switchyard.reddeer.component.Component;
 import org.jboss.tools.switchyard.reddeer.component.Service;
+import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
@@ -60,15 +59,15 @@ public class FileGatewayTest {
 		switchyardRequirement.project(PROJECT).impl("Bean").binding("File").create();
 
 		// Create new service and interface
-		new Bean().setService("Info").create();
+		new SwitchYardEditor().addBeanImplementation().createNewInterface("Info").finish();
 
 		// Edit the interface
-		new Component("Info").doubleClick();
+		new SwitchYardComponent("Info").doubleClick();
 		new TextEditor("Info.java").typeAfter("interface", "void printInfo(String body);")
 				.saveAndClose();
 
 		// Edit the bean
-		new Component("InfoBean").doubleClick();
+		new SwitchYardComponent("InfoBean").doubleClick();
 		new TextEditor("InfoBean.java").typeAfter("public class", "@Override").newLine()
 				.type("public void printInfo(String body) {").newLine()
 				.type("System.out.println(\"Body: \" + body);}").saveAndClose();

@@ -18,8 +18,8 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.tools.switchyard.reddeer.component.Component;
 import org.jboss.tools.switchyard.reddeer.component.Service;
+import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.condition.JUnitHasFinished;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
@@ -73,10 +73,8 @@ public class BottomUpBPMN2Test {
 		new ImportFileWizard().importFile("resources/bpmn", BPMN2_FILE);
 
 		// Add component
-		new SwitchYardEditor().addComponent("Component");
-		new Component("Component").select();
-		new SwitchYardEditor().activateTool("Process (BPMN)");
-		new Component("Component").click();
+		new SwitchYardEditor().addComponent();
+		new SwitchYardEditor().addBPMNImplementation(new SwitchYardComponent("Component"));
 
 		// Select existing implementation
 		new PushButton("Browse...").click();
@@ -87,7 +85,7 @@ public class BottomUpBPMN2Test {
 		new PushButton("Finish").click();
 
 		// Create new service and interface
-		new Component("Component").contextButton("Service").click();
+		new SwitchYardComponent("Component").getContextButton("Service").click();
 		new NewServiceWizard().activate().createJavaInterface("Hello").activate().finish();
 
 		// Edit the interface
@@ -95,7 +93,7 @@ public class BottomUpBPMN2Test {
 		new TextEditor("Hello.java").typeAfter("Hello", "String sayHello(String name);").saveAndClose();
 
 		// Edit the BPMN process
-		new Component("Component").showProperties();
+		new SwitchYardComponent("Component").showProperties();
 		new DefaultTreeItem("Implementation").select();
 		new LabeledText("Process ID:").setText("com.sample.bpmn.hello");
 

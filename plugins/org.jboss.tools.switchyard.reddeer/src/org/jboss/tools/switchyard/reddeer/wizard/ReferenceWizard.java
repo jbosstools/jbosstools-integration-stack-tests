@@ -17,8 +17,7 @@ public class ReferenceWizard extends ServiceWizard<ReferenceWizard> {
 	}
 
 	public ReferenceWizard open() {
-		new SwitchYardEditor().addComponent("Reference");
-		return this;
+		return new SwitchYardEditor().addReference();
 	}
 
 	@Override

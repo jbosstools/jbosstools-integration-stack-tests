@@ -81,7 +81,7 @@ public class BindingsTest {
 
 		// Sometimes the editor is not displayed properly, this happens only
 		// when the project is created by bot
-		new SwitchYardEditor().close();
+		new SwitchYardEditor().saveAndClose();
 		new ProjectExplorer().getProject(PROJECT).getProjectItem("SwitchYard").open();
 		new ProjectExplorer().getProject(PROJECT).select();
 
@@ -109,7 +109,7 @@ public class BindingsTest {
 
 	@Before
 	public void addService() {
-		new SwitchYardEditor().addComponent("Service");
+		new SwitchYardEditor().addService();
 		new DefaultShell("New Service");
 		new SWTWorkbenchBot().shell("New Service").activate();
 		new DefaultServiceWizard().selectJavaInterface("Hello").setServiceName("HelloService").finish();

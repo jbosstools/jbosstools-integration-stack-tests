@@ -1,8 +1,11 @@
 package org.jboss.tools.switchyard.reddeer.wizard;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.jboss.reddeer.gef.condition.EditorHasEditParts;
+import org.jboss.reddeer.gef.editor.GEFEditor;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 
 /**
@@ -13,10 +16,17 @@ import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 public class CamelJavaWizard extends ServiceWizard<CamelJavaWizard> {
 
 	public static final String DIALOG_TITLE = "New Java Class";
-	private static SWTWorkbenchBot bot = new SWTWorkbenchBot(); 
+	private static SWTWorkbenchBot bot = new SWTWorkbenchBot();
+
+	private GEFEditor editor;
 
 	public CamelJavaWizard() {
 		super();
+	}
+
+	public CamelJavaWizard(GEFEditor editor) {
+		super();
+		this.editor = editor;
 	}
 
 	public CamelJavaWizard activate() {
@@ -30,8 +40,7 @@ public class CamelJavaWizard extends ServiceWizard<CamelJavaWizard> {
 	}
 
 	public CamelJavaWizard open() {
-		new SwitchYardEditor().addComponent("Camel (Java)");
-		return this;
+		return new SwitchYardEditor().addCamelJavaImplementation();
 	}
 
 	@Override
@@ -41,8 +50,11 @@ public class CamelJavaWizard extends ServiceWizard<CamelJavaWizard> {
 
 	@Override
 	public void finish() {
+		int oldCount = editor.getNumberOfEditParts();
 		activate();
 		super.finish();
+		new WaitUntil(new EditorHasEditParts(editor, oldCount));
+		editor.save();
 	}
 
 }

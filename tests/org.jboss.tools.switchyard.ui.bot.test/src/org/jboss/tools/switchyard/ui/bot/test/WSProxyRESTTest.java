@@ -16,9 +16,9 @@ import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
 import org.jboss.tools.switchyard.reddeer.binding.RESTBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.SOAPBindingPage;
-import org.jboss.tools.switchyard.reddeer.component.Component;
 import org.jboss.tools.switchyard.reddeer.component.Reference;
 import org.jboss.tools.switchyard.reddeer.component.Service;
+import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.condition.JUnitHasFinished;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
@@ -129,7 +129,7 @@ public class WSProxyRESTTest {
 		new SwitchYardEditor().save();
 
 		/* Reference to RESTful Service */
-		new Component("Proxy").contextButton("Reference").click();
+		new SwitchYardComponent("Proxy").getContextButton("Reference").click();
 		new ReferenceWizard().selectJavaInterface("Hello").setServiceName(REST_SERVICE).finish();
 		new Reference(REST_SERVICE).promoteReference().finish();
 		new Service(REST_SERVICE).addBinding("REST");
@@ -139,7 +139,7 @@ public class WSProxyRESTTest {
 		wizard.finish();
 
 		/* Edit Camel Route */
-		new Component("Proxy").doubleClick();
+		new SwitchYardComponent("Proxy").doubleClick();
 		new TextEditor("Proxy.java").typeAfter("from(", ".to(\"switchyard://" + REST_SERVICE + "\")").saveAndClose();
 		new SwitchYardEditor().save();
 

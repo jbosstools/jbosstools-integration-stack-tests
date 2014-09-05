@@ -15,9 +15,9 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
 import org.jboss.tools.switchyard.reddeer.binding.SOAPBindingPage;
-import org.jboss.tools.switchyard.reddeer.component.Component;
 import org.jboss.tools.switchyard.reddeer.component.Reference;
 import org.jboss.tools.switchyard.reddeer.component.Service;
+import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.condition.JUnitHasFinished;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
@@ -97,7 +97,7 @@ public class WSProxySOAPTest {
 		soapWizard.getBindingPage().setContextPath(PROJECT);
 		soapWizard.getBindingPage().setServerPort(":18080");
 		soapWizard.finish();
-		new Component("Proxy").contextButton("Reference").click();
+		new SwitchYardComponent("Proxy").getContextButton("Reference").click();
 		new ReferenceWizard().selectWSDLInterface(WSDL).setServiceName("HelloService").finish();
 		new Reference("HelloService").promoteReference().setServiceName("HelloService").finish();
 		new Service("HelloService").addBinding("SOAP");
@@ -108,7 +108,7 @@ public class WSProxySOAPTest {
 		new SwitchYardEditor().save();
 
 		/* Edit Camel Route */
-		new Component("Proxy").doubleClick();
+		new SwitchYardComponent("Proxy").doubleClick();
 		new TextEditor("Proxy.java").typeAfter("from(", ".to(\"switchyard://HelloService\")").saveAndClose();
 		new SwitchYardEditor().save();
 

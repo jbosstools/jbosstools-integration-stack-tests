@@ -20,8 +20,8 @@ import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
 import org.jboss.tools.switchyard.reddeer.binding.HTTPBindingPage;
-import org.jboss.tools.switchyard.reddeer.component.Component;
 import org.jboss.tools.switchyard.reddeer.component.Service;
+import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.condition.ConsoleHasChanged;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
@@ -90,10 +90,8 @@ public class BottomUpEJBTest {
 		new TextEditor(JAVA_FILE + ".java").deleteLineWith("package")
 				.type("package " + PACKAGE + ";").saveAndClose();
 
-		new SwitchYardEditor().addComponent("Component");
-		new Component("Component").select();
-		new SwitchYardEditor().activateTool("Bean");
-		new Component("Component").click();
+		new SwitchYardEditor().addComponent();
+		new SwitchYardEditor().addBeanImplementation(new SwitchYardComponent("Component"));
 
 		bot.shell("Bean Implementation").activate();
 		new PushButton("Browse...").click();
@@ -103,7 +101,7 @@ public class BottomUpEJBTest {
 		bot.shell("Bean Implementation").activate();
 		new PushButton("Finish").click();
 
-		new Component("Component").contextButton("Service").click();
+		new SwitchYardComponent("Component").getContextButton("Service").click();
 		new NewServiceWizard().activate().createJavaInterface("Hello").activate().finish();
 
 		// Edit the interface
@@ -112,7 +110,7 @@ public class BottomUpEJBTest {
 				.saveAndClose();
 
 		// Edit the camel route
-		new Component("Component").doubleClick();
+		new SwitchYardComponent("Component").doubleClick();
 		new TextEditor(JAVA_FILE + ".java")
 				.typeAfter("package", "import org.switchyard.component.bean.Service;")
 				.typeBefore("@Stateless", "@Service(Hello.class)").deleteLineWith("HelloBean")

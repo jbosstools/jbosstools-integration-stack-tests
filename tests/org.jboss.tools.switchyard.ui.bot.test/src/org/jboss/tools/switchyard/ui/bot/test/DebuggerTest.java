@@ -21,8 +21,8 @@ import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.switchyard.reddeer.component.Component;
 import org.jboss.tools.switchyard.reddeer.component.Service;
+import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.condition.IsSuspended;
 import org.jboss.tools.switchyard.reddeer.condition.IsTerminated;
 import org.jboss.tools.switchyard.reddeer.debug.Breakpoint;
@@ -101,7 +101,7 @@ public class DebuggerTest {
 	public void transformDebugTest() {
 		// add transform breakpoint
 		new SwitchYardProject("hello").openSwitchYardFile();
-		new Component("hello").contextButton("Breakpoints", "Enable  Transform Breakpoint").click();
+		new SwitchYardComponent("hello").getContextButton("Breakpoints", "Enable  Transform Breakpoint").click();
 
 		// check the breakpoint
 		List<Breakpoint> breakpoints = new BreakpointsView().getBreakpoints();
@@ -134,7 +134,7 @@ public class DebuggerTest {
 	public void validateDebugTest() {
 		// add transform breakpoint
 		new SwitchYardProject("hello").openSwitchYardFile();
-		new Component("hello").contextButton("Breakpoints", "Enable  Validate Breakpoint").click();
+		new SwitchYardComponent("hello").getContextButton("Breakpoints", "Enable  Validate Breakpoint").click();
 
 		// check the breakpoint
 		List<Breakpoint> breakpoints = new BreakpointsView().getBreakpoints();
@@ -162,7 +162,7 @@ public class DebuggerTest {
 	@Test
 	public void consumerDebugTest() {
 		new SwitchYardProject("hello").openSwitchYardFile();
-		new Service("HelloService").contextButton("Enable  Breakpoint").click();
+		new Service("HelloService").getContextButton("Enable  Breakpoint").click();
 
 		List<Breakpoint> breakpoints = new BreakpointsView().getBreakpoints();
 		assertEquals("No breakpoint found", 1, breakpoints.size());
@@ -200,7 +200,7 @@ public class DebuggerTest {
 	@Test
 	public void consumerInDebugTest() {
 		new SwitchYardProject("hello").openSwitchYardFile();
-		new Service("HelloService").contextButton("Enable  Breakpoint").click();
+		new Service("HelloService").getContextButton("Enable  Breakpoint").click();
 
 		List<Breakpoint> breakpoints = new BreakpointsView().getBreakpoints();
 		assertEquals("No breakpoint found", 1, breakpoints.size());
@@ -238,7 +238,7 @@ public class DebuggerTest {
 	@Test
 	public void consumerOutDebugTest() {
 		new SwitchYardProject("hello").openSwitchYardFile();
-		new Service("HelloService").contextButton("Enable  Breakpoint").click();
+		new Service("HelloService").getContextButton("Enable  Breakpoint").click();
 
 		List<Breakpoint> breakpoints = new BreakpointsView().getBreakpoints();
 		assertEquals("No breakpoint found", 1, breakpoints.size());
@@ -276,7 +276,7 @@ public class DebuggerTest {
 	@Test
 	public void providerDebugTest() {
 		new SwitchYardProject("hello").openSwitchYardFile();
-		new Service("Hello").contextButton("Enable  Breakpoint").click();
+		new Service("Hello").getContextButton("Enable  Breakpoint").click();
 
 		List<Breakpoint> breakpoints = new BreakpointsView().getBreakpoints();
 		assertEquals("No breakpoint found", 1, breakpoints.size());
