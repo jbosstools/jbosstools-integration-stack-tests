@@ -1,4 +1,4 @@
-package org.jboss.tools.switchyard.reddeer.preference;
+package org.jboss.tools.switchyard.reddeer.preference.implementation;
 
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.swt.api.Button;
@@ -6,17 +6,12 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
-import org.jboss.tools.switchyard.reddeer.preference.implementation.BPMNImplementationPage;
-import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultComponentPage;
-import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultComponentPropertiesPage;
-import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultContractPage;
-import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultContractSecurityPage;
-import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultContractTransactionPage;
-import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultImplementationPage;
-import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultImplementationSecurityPage;
-import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultResourcePage;
-import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultTransactionPage;
-import org.jboss.tools.switchyard.reddeer.preference.implementation.RulesImplementationPage;
+import org.jboss.tools.switchyard.reddeer.preference.ResourcePage;
+import org.jboss.tools.switchyard.reddeer.preference.component.ComponentPage;
+import org.jboss.tools.switchyard.reddeer.preference.component.ComponentPropertiesPage;
+import org.jboss.tools.switchyard.reddeer.preference.contract.ContractPage;
+import org.jboss.tools.switchyard.reddeer.preference.contract.ContractSecurityPage;
+import org.jboss.tools.switchyard.reddeer.preference.contract.ContractTransactionPage;
 
 /**
  * Represents a properties pages of implementation (Bean, Camel, ...)
@@ -34,81 +29,78 @@ public class ImplementationPropertiesPage {
 		new DefaultShell("Properties for " + component.getTooltip()).setFocus();
 	}
 	
-	public DefaultResourcePage getResourcePage() {
-		
+	public ResourcePage getResourcePage() {
 		log.info("Open the 'Resource' page.");
 		new DefaultTreeItem("Resource").select();
-		return new DefaultResourcePage();
+		return new ResourcePage();
 	}
 	
-	public DefaultContractPage getContractPage() {
-		
+	public ContractPage getContractPage() {
 		log.info("Open the 'Contract' page.");
 		new DefaultTreeItem("Contract").select();
-		return new DefaultContractPage();
+		return new ContractPage();
 	}
 	
-	public DefaultContractSecurityPage getContractSecurityPage() {
-		
+	public ContractSecurityPage getContractSecurityPage() {
 		log.info("Open the 'Contract --> Security Policy' page.");
 		new DefaultTreeItem("Contract", "Security Policy").select();
-		return new DefaultContractSecurityPage();
+		return new ContractSecurityPage();
 	}
 	
-	public DefaultContractTransactionPage getContractTransactionPage() {
+	public ContractTransactionPage getContractTransactionPage() {
 		
 		log.info("Open the 'Contract --> Transaction Policy' page.");
 		new DefaultTreeItem("Contract", "Transaction Policy").select();
-		return new DefaultContractTransactionPage();
+		return new ContractTransactionPage();
 	}
 	
-	public DefaultComponentPage getComponentPage() {
+	public ComponentPage getComponentPage() {
 	
 		log.info("Open the 'Component' page.");
 		new DefaultTreeItem("Component").select();
-		return new DefaultComponentPage();
+		return new ComponentPage();
 	}
 	
-	public DefaultComponentPropertiesPage getComponentPropertiesPage() {
+	public ComponentPropertiesPage getComponentPropertiesPage() {
 		
 		log.info("Open the 'Component --> Properties' page.");
 		new DefaultTreeItem("Component", "Properties").select();
-		return new DefaultComponentPropertiesPage();
+		return new ComponentPropertiesPage();
 	}
 	
-	public DefaultImplementationPage getImplementationPage() {
+	public ImplementationPage getImplementationPage() {
 		
 		log.info("Open the 'Implementation' page.");
 		new DefaultTreeItem("Implementation").select();
-		return new DefaultImplementationPage();
+		return new ImplementationPage();
 	}
 	
-	public DefaultTransactionPage getImplementationTransactionPage() {
+	public ImplementationTransactionPage getImplementationTransactionPage() {
 		
 		log.info("Open the 'Implementation --> Transaction Policy' page.");
 		new DefaultTreeItem("Implementation", "Transaction Policy").select();
-		return new DefaultTransactionPage();
+		return new ImplementationTransactionPage();
 	}
 	
-	public DefaultImplementationSecurityPage getImplementationSecurityPage() {
+	public ImplementationSecurityPage getImplementationSecurityPage() {
 		
 		log.info("Open the 'Implementation --> Security Policy' page.");
 		new DefaultTreeItem("Implementation", "Security Policy").select();
-		return new DefaultImplementationSecurityPage();
+		return new ImplementationSecurityPage();
 	}
 	
-	public BPMNImplementationPage getBPMNImplementation() {
+	public ImplementationBPMNPage getBPMNImplementation() {
 		
 		log.info("Open the 'Implementation' page for BPMN.");
 		new DefaultTreeItem("Implementation").select();
-		return new BPMNImplementationPage();
+		return new ImplementationBPMNPage();
 	}
 	
-	public RulesImplementationPage getRulesImplementation() {
+	public ImplementationRulesPage getRulesImplementation() {
 		
 		log.info("Open the 'Implementation' page for Rules (DRL).");
 		new DefaultTreeItem("Implementation").select();
-		return new RulesImplementationPage();
+		return new ImplementationRulesPage();
 	}
 	
 	public void ok() {

@@ -1,6 +1,6 @@
 package org.jboss.tools.switchyard.reddeer.binding;
 
-import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
+import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
@@ -9,7 +9,7 @@ import org.jboss.reddeer.swt.util.ResultRunnable;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 
-public abstract class OperationOptionsPage<T> extends WizardPage {
+public abstract class OperationOptionsPage<T> extends WizardDialog {
 
 	public static final String NAME = "Name";
 	public static final String OPERATION_NAME = "Operation Name";

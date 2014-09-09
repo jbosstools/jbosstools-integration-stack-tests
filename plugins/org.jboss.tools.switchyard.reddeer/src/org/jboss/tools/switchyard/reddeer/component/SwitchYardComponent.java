@@ -7,7 +7,7 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.switchyard.reddeer.matcher.WithTooltip;
-import org.jboss.tools.switchyard.reddeer.preference.PropertiesPreferencePage;
+import org.jboss.tools.switchyard.reddeer.preference.CompositePropertiesPage;
 
 public class SwitchYardComponent extends AbstractGraphitiEditPart {
 
@@ -26,9 +26,9 @@ public class SwitchYardComponent extends AbstractGraphitiEditPart {
 		return tooltip;
 	}
 
-	public PropertiesPreferencePage showProperties() {
+	public CompositePropertiesPage showProperties() {
 		getContextButton("Properties").click();
-		return new PropertiesPreferencePage(tooltip).activate();
+		return new CompositePropertiesPage(tooltip).activate();
 	}
 
 	public void delete() {

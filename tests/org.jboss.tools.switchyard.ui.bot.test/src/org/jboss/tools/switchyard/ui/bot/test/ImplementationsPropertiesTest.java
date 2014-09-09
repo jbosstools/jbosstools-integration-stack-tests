@@ -15,16 +15,16 @@ import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.editor.DomainEditor;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
-import org.jboss.tools.switchyard.reddeer.preference.ImplementationPropertiesPage;
-import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultComponentPage;
-import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultComponentPropertiesPage;
-import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultContractPage;
-import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultContractSecurityPage;
-import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultContractTransactionPage;
-import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultImplementationPage;
-import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultImplementationSecurityPage;
-import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultResourcePage;
-import org.jboss.tools.switchyard.reddeer.preference.implementation.DefaultTransactionPage;
+import org.jboss.tools.switchyard.reddeer.preference.CompositePropertiesPage;
+import org.jboss.tools.switchyard.reddeer.preference.ResourcePage;
+import org.jboss.tools.switchyard.reddeer.preference.component.ComponentPage;
+import org.jboss.tools.switchyard.reddeer.preference.component.ComponentPropertiesPage;
+import org.jboss.tools.switchyard.reddeer.preference.contract.ContractPage;
+import org.jboss.tools.switchyard.reddeer.preference.contract.ContractSecurityPage;
+import org.jboss.tools.switchyard.reddeer.preference.contract.ContractTransactionPage;
+import org.jboss.tools.switchyard.reddeer.preference.implementation.ImplementationPage;
+import org.jboss.tools.switchyard.reddeer.preference.implementation.ImplementationSecurityPage;
+import org.jboss.tools.switchyard.reddeer.preference.implementation.ImplementationTransactionPage;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.junit.After;
@@ -47,7 +47,7 @@ public class ImplementationsPropertiesTest {
 	private static final String PROJECT = "ImplPropTestProject";
 	private static final String BEAN = "BeanService";
 	private static final String BEAN2 = "BeanService2";
-	private ImplementationPropertiesPage properties;
+	private CompositePropertiesPage properties;
 
 	@InjectRequirement
 	private static SwitchYardRequirement switchyardRequirement;
@@ -83,8 +83,7 @@ public class ImplementationsPropertiesTest {
 
 	@Before
 	public void openProperties() {
-		properties = new ImplementationPropertiesPage();
-		properties.openProperties(new SwitchYardComponent(BEAN + "Bean"));
+		properties = new SwitchYardComponent(BEAN + "Bean").showProperties();
 	}
 
 	@After
@@ -98,7 +97,7 @@ public class ImplementationsPropertiesTest {
 	@Test
 	public void resourceTest() {
 
-		DefaultResourcePage page = properties.getResourcePage();
+		ResourcePage page = properties.selectResource();
 
 		assertTrue(page.isAttrDerivedEnabled());
 		assertTrue(page.isDefaultEncodingEnabled());
@@ -117,7 +116,7 @@ public class ImplementationsPropertiesTest {
 	@Test
 	public void componentTest() {
 
-		DefaultComponentPage page = properties.getComponentPage();
+		ComponentPage page = properties.selectComponent();
 		assertEquals("BeanServiceBean", page.getName());
 	}
 
@@ -127,7 +126,7 @@ public class ImplementationsPropertiesTest {
 	@Test
 	public void componentPropertiesTest() {
 
-		DefaultComponentPropertiesPage page = properties.getComponentPropertiesPage();
+		ComponentPropertiesPage page = properties.selectComponentProperties();
 		assertEquals(0, page.getPropertiesCount());
 		page.addProperty("AAA", "BBB");
 		assertEquals(1, page.getPropertiesCount());
@@ -141,7 +140,7 @@ public class ImplementationsPropertiesTest {
 	@Test
 	public void contractTest() {
 
-		DefaultContractPage page = properties.getContractPage();
+		ContractPage page = properties.selectContract();
 
 		assertTrue(page.isInterfaceTypeEnabled("Java"));
 		assertFalse(page.isInterfaceTypeEnabled("WSDL"));
@@ -155,7 +154,7 @@ public class ImplementationsPropertiesTest {
 	@Test
 	public void contractTransactionPolicyTest() {
 
-		DefaultContractTransactionPage page = properties.getContractTransactionPage();
+		ContractTransactionPage page = properties.selectContractTransaction();
 
 		assertTrue(page.isComboEnabled());
 		assertEquals(0, page.getComboSelectionIndex());
@@ -173,7 +172,7 @@ public class ImplementationsPropertiesTest {
 	@Test
 	public void contractSecurityPolicyTest() {
 
-		DefaultContractSecurityPage page = properties.getContractSecurityPage();
+		ContractSecurityPage page = properties.selectContractSecurity();
 
 		assertTrue(page.isAuthenticationEnabled());
 		assertTrue(page.isConfidentalityEnabled());
@@ -192,17 +191,16 @@ public class ImplementationsPropertiesTest {
 		domain.addSecurityConfiguration("default", null, null, null, null);
 		domain.addSecurityConfiguration("default1", null, null, null, null);
 		new DefaultCTabItem("Design").activate();
-		properties.openProperties(new SwitchYardComponent(BEAN + "Bean"));
-		page = properties.getContractSecurityPage();
+		properties = new SwitchYardComponent(BEAN + "Bean").showProperties();
+		page = properties.selectContractSecurity();
 
 		assertTrue(page.isSecurityConfComboEnabled());
 		page.setSecurityConf("default1");
 
 		// Check bug: https://issues.jboss.org/browse/SWITCHYARD-1732
 		properties.ok();
-		properties = new ImplementationPropertiesPage();
-		properties.openProperties(new SwitchYardComponent(BEAN2 + "Bean"));
-		page = properties.getContractSecurityPage();
+		properties = new SwitchYardComponent(BEAN2 + "Bean").showProperties();
+		page = properties.selectContractSecurity();
 		assertFalse(page.isAuthenticationChecked());
 		assertFalse(page.isConfidentalityChecked());
 	}
@@ -213,7 +211,7 @@ public class ImplementationsPropertiesTest {
 	@Test
 	public void implementationTest() {
 
-		DefaultImplementationPage page = properties.getImplementationPage();
+		ImplementationPage page = properties.selectImplementation();
 
 		assertEquals("com.example.switchyard.ImplPropTestProject.BeanServiceBean", page.getBeanClass());
 		assertTrue(page.isBrowseButtonEnabled());
@@ -225,7 +223,7 @@ public class ImplementationsPropertiesTest {
 	@Test
 	public void implementationTransactionPolicyTest() {
 
-		DefaultTransactionPage page = properties.getImplementationTransactionPage();
+		ImplementationTransactionPage page = properties.selectImplementationTransaction();
 
 		assertTrue(page.isTransactionPolicyComboEnabled());
 		assertEquals(0, page.getComboSelectionIndex());
@@ -244,18 +242,18 @@ public class ImplementationsPropertiesTest {
 	@Test
 	public void implementationSecurityPolicyTest() {
 
-		DefaultImplementationSecurityPage page = properties.getImplementationSecurityPage();
+		ImplementationSecurityPage page = properties.selectImplementationSecurity();
 
 		assertTrue(page.isAuthorizationEnabled());
 		page.setAuthorization(true);
 		properties.ok();
 
-		properties.openProperties(new SwitchYardComponent(BEAN + "Bean"));
+		properties = new SwitchYardComponent(BEAN + "Bean").showProperties();
 		assertTrue(page.isAuthorizationChecked());
 		page.setAuthorization(false);
 		properties.ok();
 
-		properties.openProperties(new SwitchYardComponent(BEAN + "Bean"));
+		properties = new SwitchYardComponent(BEAN + "Bean").showProperties();
 		assertFalse(page.isAuthorizationChecked());
 	}
 }

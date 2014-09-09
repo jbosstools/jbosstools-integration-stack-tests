@@ -9,6 +9,10 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
  */
 public class DefaultServiceWizard extends ServiceWizard<DefaultServiceWizard> {
 
+	public DefaultServiceWizard() {
+		super("New Service");
+	}
+	
 	@Override
 	protected void browse() {
 		new PushButton("Browse...").click();

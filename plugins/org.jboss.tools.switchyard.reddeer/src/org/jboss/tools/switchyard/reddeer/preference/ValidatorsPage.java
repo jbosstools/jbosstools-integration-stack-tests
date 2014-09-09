@@ -9,6 +9,14 @@ import org.jboss.tools.switchyard.reddeer.wizard.ValidatorWizard;
 
 public class ValidatorsPage extends CompositePropertiesPage {
 
+	public ValidatorsPage() {
+		super("");
+	}
+
+	public ValidatorsPage(String title) {
+		super(title);
+	}
+
 	public ValidatorWizard add() {
 		activate();
 		new PushButton("Add").click();

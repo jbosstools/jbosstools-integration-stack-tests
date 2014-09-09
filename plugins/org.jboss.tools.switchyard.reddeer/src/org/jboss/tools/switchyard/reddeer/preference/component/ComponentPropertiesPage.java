@@ -1,7 +1,8 @@
-package org.jboss.tools.switchyard.reddeer.preference.implementation;
+package org.jboss.tools.switchyard.reddeer.preference.component;
 
 import java.util.List;
 
+import org.jboss.reddeer.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -16,7 +17,7 @@ import org.jboss.tools.switchyard.reddeer.condition.IsButtonEnabled;
  * 
  * @author tsedmik
  */
-public class DefaultComponentPropertiesPage {
+public class ComponentPropertiesPage extends PreferencePage {
 
 	private static final String BUTTON_ADD = "Add";
 	private static final String BUTTON_REMOVE = "Remove";
@@ -25,8 +26,7 @@ public class DefaultComponentPropertiesPage {
 	private static final String NEW_PROP_DIALOG_VALUE = "Value*";
 	private static final String NEW_PROP_DIALOG_OK = "OK";
 
-	public DefaultComponentPropertiesPage addProperty(String name, String value) {
-
+	public ComponentPropertiesPage addProperty(String name, String value) {
 		new PushButton(BUTTON_ADD).click();
 		new DefaultShell(NEW_PROP_DIALOG).setFocus();
 		LabeledText propName = new LabeledText(NEW_PROP_DIALOG_NAME);
@@ -41,8 +41,7 @@ public class DefaultComponentPropertiesPage {
 		return this;
 	}
 
-	public DefaultComponentPropertiesPage removeProperty(int position) {
-
+	public ComponentPropertiesPage removeProperty(int position) {
 		DefaultTree tree = new DefaultTree(1);
 		tree.getItems().get(position).select();
 		new PushButton(BUTTON_REMOVE).click();
@@ -50,8 +49,7 @@ public class DefaultComponentPropertiesPage {
 		return this;
 	}
 
-	public DefaultComponentPropertiesPage removeProperty(String name) {
-
+	public ComponentPropertiesPage removeProperty(String name) {
 		List<TreeItem> items = new DefaultTree(1).getAllItems();
 		for (TreeItem item : items) {
 			if (item.getText().equals(name)) {
@@ -64,7 +62,6 @@ public class DefaultComponentPropertiesPage {
 	}
 
 	public int getPropertiesCount() {
-
 		return new DefaultTree(1).getAllItems().size();
 	}
 }

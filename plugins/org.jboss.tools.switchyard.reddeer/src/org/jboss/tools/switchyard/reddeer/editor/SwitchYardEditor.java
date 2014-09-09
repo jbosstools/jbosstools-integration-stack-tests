@@ -139,7 +139,7 @@ public class SwitchYardEditor extends GEFEditor {
 	
 	public CompositePropertiesPage showProperties() {
 		getComposite().getContextButton("Properties").click();
-		return new CompositePropertiesPage();
+		return new CompositePropertiesPage("");
 	}
 	
 	public String xpath(String expr) throws FileNotFoundException {
