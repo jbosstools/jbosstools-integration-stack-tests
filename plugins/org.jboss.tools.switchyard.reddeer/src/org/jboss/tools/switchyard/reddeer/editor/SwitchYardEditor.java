@@ -4,15 +4,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
 import org.jboss.reddeer.gef.api.EditPart;
 import org.jboss.reddeer.gef.condition.EditorHasEditParts;
 import org.jboss.reddeer.gef.editor.GEFEditor;
-import org.jboss.reddeer.graphiti.impl.graphitieditpart.LabeledGraphitiEditPart;
 import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
+import org.jboss.tools.switchyard.reddeer.preference.CompositePropertiesPage;
 import org.jboss.tools.switchyard.reddeer.wizard.BPMServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.BeanServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.CamelJavaWizard;
@@ -38,16 +37,16 @@ public class SwitchYardEditor extends GEFEditor {
 	public static final String TOOL_RULES = "Rules";
 
 	protected File sourceFile;
-	protected CompositeEditPart composite;
+	protected SwitchYardComponent composite;
 
 	public SwitchYardEditor() {
 		super(TITLE);
-		composite = getCompositeEditPart();
+		composite = getComposite();
 	}
 
-	public CompositeEditPart getCompositeEditPart() {
+	public SwitchYardComponent getComposite() {
 		String compositeName = getCompositeName();
-		return new CompositeEditPart(compositeName);
+		return new SwitchYardComponent(compositeName);
 	}
 
 	public String getCompositeName() {
@@ -137,7 +136,12 @@ public class SwitchYardEditor extends GEFEditor {
 		getPalette().activateTool(tool);
 		editPart.click();
 	}
-
+	
+	public CompositePropertiesPage showProperties() {
+		getComposite().getContextButton("Properties").click();
+		return new CompositePropertiesPage();
+	}
+	
 	public String xpath(String expr) throws FileNotFoundException {
 		XPathEvaluator xpath = new XPathEvaluator(new FileReader(getSourceFile()));
 		String result = xpath.evaluateString(expr);
@@ -153,18 +157,6 @@ public class SwitchYardEditor extends GEFEditor {
 			}
 		}
 		return sourceFile;
-	}
-
-	private class CompositeEditPart extends LabeledGraphitiEditPart {
-
-		public CompositeEditPart(String label) {
-			super(label);
-		}
-
-		public Rectangle getBounds() {
-			IFigure figure = super.getFigure();
-			return figure.getBounds();
-		}
 	}
 
 	public void saveAndClose() {

@@ -30,7 +30,7 @@ public class SwitchYardComponent extends AbstractGraphitiEditPart {
 		getContextButton("Properties").click();
 		return new PropertiesPreferencePage(tooltip).activate();
 	}
-	
+
 	public void delete() {
 		getContextButton("Delete").click();
 		String deleteShellText = "Confirm Delete";
