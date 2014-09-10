@@ -36,4 +36,5 @@ public class NettyTCPBindingPage extends OperationOptionsPage<NettyTCPBindingPag
 	public String getPort() {
 		return new LabeledText(PORT).getText();
 	}
+
 }

@@ -13,7 +13,6 @@ import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
 import org.jboss.tools.switchyard.reddeer.binding.RESTBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.SOAPBindingPage;
 import org.jboss.tools.switchyard.reddeer.component.Reference;
@@ -121,9 +120,9 @@ public class WSProxyRESTTest {
 
 		/* Expose Proxy Service Through SOAP */
 		new Service("HelloPortType").addBinding("SOAP");
-		BindingWizard<SOAPBindingPage> soapWizard = BindingWizard.createSOAPBindingWizard();
-		soapWizard.getBindingPage().setContextPath(PROJECT);
-		soapWizard.getBindingPage().setServerPort(":18080");
+		SOAPBindingPage soapWizard = new SOAPBindingPage();
+		soapWizard.setContextPath(PROJECT);
+		soapWizard.setServerPort(":18080");
 		soapWizard.finish();
 
 		new SwitchYardEditor().save();
@@ -133,9 +132,9 @@ public class WSProxyRESTTest {
 		new ReferenceWizard().selectJavaInterface("Hello").setServiceName(REST_SERVICE).finish();
 		new Reference(REST_SERVICE).promoteReference().finish();
 		new Service(REST_SERVICE).addBinding("REST");
-		BindingWizard<RESTBindingPage> restWizard = BindingWizard.createRESTBindingWizard();
-		restWizard.getBindingPage().setAddress(REST_URL);
-		restWizard.getBindingPage().addInterface("Hello");
+		RESTBindingPage restWizard = new RESTBindingPage();
+		restWizard.setAddress(REST_URL);
+		restWizard.addInterface("Hello");
 		wizard.finish();
 
 		/* Edit Camel Route */

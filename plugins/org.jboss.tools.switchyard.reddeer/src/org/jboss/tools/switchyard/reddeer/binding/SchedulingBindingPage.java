@@ -60,4 +60,5 @@ public class SchedulingBindingPage extends OperationOptionsPage<SchedulingBindin
 	public String getEndTime() {
 		return new LabeledText(END_TIME).getText();
 	}
+
 }

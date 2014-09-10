@@ -36,4 +36,5 @@ public class JPABindingPage extends OperationOptionsPage<JPABindingPage> {
 	public String getPersistenceUnit() {
 		return new LabeledText(PERSITENCE_UNIT).getText();
 	}
+
 }

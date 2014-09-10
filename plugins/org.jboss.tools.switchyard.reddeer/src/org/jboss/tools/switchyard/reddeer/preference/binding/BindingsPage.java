@@ -1,6 +1,7 @@
 package org.jboss.tools.switchyard.reddeer.preference.binding;
 
 import org.jboss.reddeer.jface.preference.PreferencePage;
+import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.list.DefaultList;
 import org.jboss.tools.switchyard.reddeer.binding.CamelBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.FTPBindingPage;
@@ -26,9 +27,22 @@ import org.jboss.tools.switchyard.reddeer.binding.SchedulingBindingPage;
  * @author apodhrad
  */
 public class BindingsPage extends PreferencePage {
+	
+	public BindingsPage remove() {
+		new PushButton("Remove").click();
+		return this;
+	}
+	
+	public BindingsPage removeAll() {
+		while (new DefaultList().getListItems().length > 0) {
+			new DefaultList().select(0);
+			remove();
+		}
+		return this;
+	}
 
 	public CamelBindingPage selectCamelBinding(String name) {
-		new DefaultList().select("Camel (" + name + ")");
+		new DefaultList().select("Camel URI (" + name + ")");
 		return new CamelBindingPage();
 	}
 
@@ -78,12 +92,12 @@ public class BindingsPage extends PreferencePage {
 	}
 
 	public NettyTCPBindingPage selectNettyTCPBinding(String name) {
-		new DefaultList().select("NettyTCP (" + name + ")");
+		new DefaultList().select("TCP (" + name + ")");
 		return new NettyTCPBindingPage();
 	}
 
 	public NettyUDPBindingPage selectNettyUDPBinding(String name) {
-		new DefaultList().select("NettyUDP (" + name + ")");
+		new DefaultList().select("UDP (" + name + ")");
 		return new NettyUDPBindingPage();
 	}
 

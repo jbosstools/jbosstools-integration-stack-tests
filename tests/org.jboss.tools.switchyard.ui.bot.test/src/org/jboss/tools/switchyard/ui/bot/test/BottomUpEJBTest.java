@@ -18,7 +18,6 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
-import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
 import org.jboss.tools.switchyard.reddeer.binding.HTTPBindingPage;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
@@ -121,9 +120,9 @@ public class BottomUpEJBTest {
 
 		// Add HTTP binding
 		new Service("HelloService").addBinding("HTTP");
-		BindingWizard<HTTPBindingPage> httpWizard = BindingWizard.createHTTPBindingWizard();
-		httpWizard.getBindingPage().setContextPath(PROJECT);
-		httpWizard.getBindingPage().setOperation("sayHello");
+		HTTPBindingPage httpWizard = new HTTPBindingPage();
+		httpWizard.setContextPath(PROJECT);
+		httpWizard.setOperation("sayHello");
 		httpWizard.finish();
 		
 		new SwitchYardEditor().save();

@@ -9,7 +9,10 @@ import org.eclipse.ui.part.FileEditorInput;
 import org.jboss.reddeer.gef.api.EditPart;
 import org.jboss.reddeer.gef.condition.EditorHasEditParts;
 import org.jboss.reddeer.gef.editor.GEFEditor;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.preference.CompositePropertiesPage;
 import org.jboss.tools.switchyard.reddeer.wizard.BPMServiceWizard;
@@ -159,8 +162,15 @@ public class SwitchYardEditor extends GEFEditor {
 		return sourceFile;
 	}
 
+	@Override
+	public void save() {
+		super.save();
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+	}
+
 	public void saveAndClose() {
-		super.close(true);
+		save();
+		close();
 	}
 
 }

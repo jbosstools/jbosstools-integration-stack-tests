@@ -9,7 +9,6 @@ import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
-import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
 import org.jboss.tools.switchyard.reddeer.binding.SOAPBindingPage;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
@@ -81,8 +80,8 @@ public class BottomUpBPELTest {
 		wizard.activate().setServiceName("SayHelloService").finish();
 
 		new Service("SayHelloService").addBinding("SOAP");
-		BindingWizard<SOAPBindingPage> soapWizard = BindingWizard.createSOAPBindingWizard();
-		soapWizard.getBindingPage().setContextPath(PROJECT);
+		SOAPBindingPage soapWizard = new SOAPBindingPage();
+		soapWizard.setContextPath(PROJECT);
 		soapWizard.finish();
 
 		new SwitchYardEditor().save();

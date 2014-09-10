@@ -14,7 +14,6 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
 import org.jboss.tools.switchyard.reddeer.binding.HTTPBindingPage;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
@@ -108,9 +107,9 @@ public class BottomUpCamelTest {
 
 		// Add HTTP binding
 		new Service("HelloService").addBinding("HTTP");
-		BindingWizard<HTTPBindingPage> httpWizard = BindingWizard.createHTTPBindingWizard();
-		httpWizard.getBindingPage().setContextPath(PROJECT);
-		httpWizard.getBindingPage().setOperation("sayHello");
+		HTTPBindingPage httpWizard = new HTTPBindingPage();
+		httpWizard.setContextPath(PROJECT);
+		httpWizard.setOperation("sayHello");
 		httpWizard.finish();
 		
 		new SwitchYardEditor().save();

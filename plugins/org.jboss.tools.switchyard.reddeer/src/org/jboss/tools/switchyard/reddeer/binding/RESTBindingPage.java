@@ -64,4 +64,5 @@ public class RESTBindingPage extends OperationOptionsPage<RESTBindingPage> {
 		return new ArrayList<String>(Arrays.asList(items));
 	}
 
+
 }

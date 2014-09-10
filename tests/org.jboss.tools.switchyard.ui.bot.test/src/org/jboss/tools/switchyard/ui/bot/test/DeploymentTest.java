@@ -8,7 +8,6 @@ import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
-import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
 import org.jboss.tools.switchyard.reddeer.binding.HTTPBindingPage;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
@@ -61,8 +60,8 @@ public class DeploymentTest {
 		new Service("Hello").promoteService().activate().setName("HelloService").finish();
 
 		new Service("HelloService").addBinding("HTTP");
-		BindingWizard<HTTPBindingPage> soapWizard = BindingWizard.createHTTPBindingWizard();
-		soapWizard.getBindingPage().setContextPath("hello");
+		HTTPBindingPage soapWizard = new HTTPBindingPage();
+		soapWizard.setContextPath("hello");
 		soapWizard.finish();
 
 		new SwitchYardEditor().save();

@@ -24,4 +24,5 @@ public class CamelBindingPage extends OperationOptionsPage<CamelBindingPage> {
 	public String getConfigURI() {
 		return new LabeledText(CONFIG_URI).getText();
 	}
+
 }

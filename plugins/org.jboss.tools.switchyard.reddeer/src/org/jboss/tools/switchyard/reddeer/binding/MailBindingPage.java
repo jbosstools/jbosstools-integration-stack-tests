@@ -24,4 +24,5 @@ public class MailBindingPage extends OperationOptionsPage<MailBindingPage>  {
 	public String getHost() {
 		return new LabeledText(HOST).getText();
 	}
+
 }

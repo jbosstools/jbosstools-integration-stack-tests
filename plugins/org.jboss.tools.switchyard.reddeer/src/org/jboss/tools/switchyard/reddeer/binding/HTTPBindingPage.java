@@ -24,5 +24,5 @@ public class HTTPBindingPage extends OperationOptionsPage<HTTPBindingPage> {
 	public String getContextPath() {
 		return new LabeledText(CONTEXT_PATH).getText();
 	}
-
+	
 }

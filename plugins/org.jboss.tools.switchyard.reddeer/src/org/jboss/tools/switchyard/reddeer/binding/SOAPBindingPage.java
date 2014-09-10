@@ -61,4 +61,5 @@ public class SOAPBindingPage extends OperationOptionsPage<SOAPBindingPage> {
 	public String getServerPort() {
 		return new LabeledText(SERVER_PORT).getText();
 	}
+
 }

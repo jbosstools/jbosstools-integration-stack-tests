@@ -14,7 +14,6 @@ import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
-import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
 import org.jboss.tools.switchyard.reddeer.binding.FileBindingPage;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
@@ -79,11 +78,11 @@ public class FileGatewayTest {
 
 		// Add File binding
 		new Service("InfoService").addBinding("File");
-		BindingWizard<FileBindingPage> wizard = BindingWizard.createFileBindingWizard();
+		FileBindingPage wizard = new FileBindingPage();
 		String path = new File("target/input").getAbsolutePath();
-		wizard.getBindingPage().setDirAutoCreation(true);
-		wizard.getBindingPage().setMoveDirectory("processed");
-		wizard.getBindingPage().setDirectory(path);
+		wizard.setDirAutoCreation(true);
+		wizard.setMoveDirectory("processed");
+		wizard.setDirectory(path);
 		wizard.finish();
 		new SwitchYardEditor().save();
 

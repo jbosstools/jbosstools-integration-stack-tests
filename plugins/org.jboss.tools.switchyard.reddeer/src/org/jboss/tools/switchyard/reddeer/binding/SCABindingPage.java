@@ -20,4 +20,5 @@ public class SCABindingPage extends OperationOptionsPage<SCABindingPage> {
 	public boolean isClustered() {
 		return new CheckBox(CLUSTERED).isChecked();
 	}
+
 }

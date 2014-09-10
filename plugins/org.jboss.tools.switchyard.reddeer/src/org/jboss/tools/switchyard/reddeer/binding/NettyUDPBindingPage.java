@@ -36,4 +36,5 @@ public class NettyUDPBindingPage extends OperationOptionsPage<NettyUDPBindingPag
 	public String getPort() {
 		return new LabeledText(PORT).getText();
 	}
+	
 }

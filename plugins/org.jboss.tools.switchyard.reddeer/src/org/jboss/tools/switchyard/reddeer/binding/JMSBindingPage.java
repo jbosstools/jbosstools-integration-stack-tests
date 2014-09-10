@@ -1,8 +1,7 @@
 package org.jboss.tools.switchyard.reddeer.binding;
 
-import org.eclipse.swt.SWT;
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 
 /**
  * JMS binding page
@@ -15,13 +14,15 @@ public class JMSBindingPage extends OperationOptionsPage<JMSBindingPage> {
 	public static final String QUEUE_TOPIC_NAME = "Queue/Topic Name*";
 
 	public JMSBindingPage setQueueTopicName(String name) {
-		new LabeledText(QUEUE_TOPIC_NAME).setFocus();
-		new LabeledText(QUEUE_TOPIC_NAME).setText(name);
-		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.TAB);
+		activate();
+		// TODO Replace with RedDeer implementation
+		new SWTBot().textWithLabel(QUEUE_TOPIC_NAME).setFocus();
+		new SWTBot().textWithLabel(QUEUE_TOPIC_NAME).setText(name);
 		return this;
 	}
-
+	
 	public String getQueueTopicName() {
 		return new LabeledText(QUEUE_TOPIC_NAME).getText();
 	}
+
 }

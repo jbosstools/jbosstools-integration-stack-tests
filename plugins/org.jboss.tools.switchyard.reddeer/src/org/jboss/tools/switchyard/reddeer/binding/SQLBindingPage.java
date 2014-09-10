@@ -14,6 +14,7 @@ public class SQLBindingPage extends OperationOptionsPage<SQLBindingPage> {
 
 	public static final String QUERY = "Query*";
 	public static final String DATA_SOURCE = "Data Source*";
+	public static final String PERIOD = "Period*";
 
 	public SQLBindingPage setQuery(String query) {
 		new LabeledText(QUERY).setFocus();
@@ -36,4 +37,14 @@ public class SQLBindingPage extends OperationOptionsPage<SQLBindingPage> {
 	public String getDataSource() {
 		return new LabeledText(DATA_SOURCE).getText();
 	}
+
+	public SQLBindingPage setPeriod(String period) {
+		new LabeledText(PERIOD).setText(period);
+		return this;
+	}
+
+	public String getPeriod() {
+		return new LabeledText(PERIOD).getText();
+	}
+
 }

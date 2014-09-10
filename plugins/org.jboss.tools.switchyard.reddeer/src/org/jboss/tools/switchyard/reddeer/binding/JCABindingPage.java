@@ -66,4 +66,5 @@ public class JCABindingPage extends OperationOptionsPage<JMSBindingPage> {
 	public String getEndpointMappingType() {
 		return new LabeledCombo(ENDPOINT_MAPPING_TYPE).getSelection();
 	}
+
 }

@@ -13,7 +13,6 @@ import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.switchyard.reddeer.binding.BindingWizard;
 import org.jboss.tools.switchyard.reddeer.binding.SOAPBindingPage;
 import org.jboss.tools.switchyard.reddeer.component.Reference;
 import org.jboss.tools.switchyard.reddeer.component.Service;
@@ -93,16 +92,16 @@ public class WSProxySOAPTest {
 
 		new Service("Hello").promoteService().setServiceName("ProxyService").finish();
 		new Service("ProxyService").addBinding("SOAP");
-		BindingWizard<SOAPBindingPage> soapWizard = BindingWizard.createSOAPBindingWizard();
-		soapWizard.getBindingPage().setContextPath(PROJECT);
-		soapWizard.getBindingPage().setServerPort(":18080");
+		SOAPBindingPage soapWizard = new SOAPBindingPage();
+		soapWizard.setContextPath(PROJECT);
+		soapWizard.setServerPort(":18080");
 		soapWizard.finish();
 		new SwitchYardComponent("Proxy").getContextButton("Reference").click();
 		new ReferenceWizard().selectWSDLInterface(WSDL).setServiceName("HelloService").finish();
 		new Reference("HelloService").promoteReference().setServiceName("HelloService").finish();
 		new Service("HelloService").addBinding("SOAP");
-		BindingWizard<SOAPBindingPage> wizard = BindingWizard.createSOAPBindingWizard();
-		wizard.getBindingPage().setEndpointAddress("http://localhost:8123/soap");
+		SOAPBindingPage wizard = new SOAPBindingPage();
+		wizard.setEndpointAddress("http://localhost:8123/soap");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
