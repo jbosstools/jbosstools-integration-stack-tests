@@ -164,6 +164,7 @@ public class SwitchYardEditor extends GEFEditor {
 
 	@Override
 	public void save() {
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		super.save();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}

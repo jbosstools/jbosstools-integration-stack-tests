@@ -1,5 +1,6 @@
 package org.jboss.tools.switchyard.ui.bot.test;
 
+import static org.jboss.tools.switchyard.reddeer.binding.OperationOptionsPage.OPERATION_NAME;
 import static org.junit.Assert.assertEquals;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
@@ -109,7 +110,7 @@ public class BottomUpCamelTest {
 		new Service("HelloService").addBinding("HTTP");
 		HTTPBindingPage httpWizard = new HTTPBindingPage();
 		httpWizard.setContextPath(PROJECT);
-		httpWizard.setOperation("sayHello");
+		httpWizard.setOperationSelector(OPERATION_NAME, "sayHello");
 		httpWizard.finish();
 		
 		new SwitchYardEditor().save();

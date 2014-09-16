@@ -17,17 +17,6 @@ public class SchedulingBindingPage extends OperationOptionsPage<SchedulingBindin
 	public static final String START_TIME = "Start Time";
 	public static final String END_TIME = "End Time";
 
-	public SchedulingBindingPage setName(String name) {
-		new LabeledText(NAME).setFocus();
-		new LabeledText(NAME).setText(name);
-		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.TAB);
-		return this;
-	}
-
-	public String getName() {
-		return new LabeledText(NAME).getText();
-	}
-
 	public SchedulingBindingPage setCron(String cron) {
 		new LabeledText(CRON).setFocus();
 		new LabeledText(CRON).setText(cron);

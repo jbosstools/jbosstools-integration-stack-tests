@@ -1,7 +1,6 @@
 package org.jboss.tools.switchyard.reddeer.binding;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 /**
  * JMS binding page
@@ -22,7 +21,8 @@ public class JMSBindingPage extends OperationOptionsPage<JMSBindingPage> {
 	}
 	
 	public String getQueueTopicName() {
-		return new LabeledText(QUEUE_TOPIC_NAME).getText();
+		// TODO Replace with RedDeer implementation
+		return new SWTBot().textWithLabel(QUEUE_TOPIC_NAME).getText();
 	}
 
 }

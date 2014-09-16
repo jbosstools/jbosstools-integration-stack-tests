@@ -1,6 +1,8 @@
 package org.jboss.tools.switchyard.ui.bot.test;
 
+import static org.jboss.tools.switchyard.reddeer.binding.OperationOptionsPage.OPERATION_NAME;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
@@ -8,6 +10,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.handler.ShellHandler;
+import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
@@ -30,6 +33,7 @@ import org.jboss.tools.switchyard.reddeer.binding.SQLBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.SchedulingBindingPage;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
+import org.jboss.tools.switchyard.reddeer.preference.binding.BindingsPage;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
@@ -58,7 +62,7 @@ public class BindingsTest {
 
 	public static final String PROJECT = "binding_project";
 	public static final String SERVICE = "HelloService";
-	public static final String OPERATION = "sayHello";
+	public static final String METHOD = "sayHello";
 	public static final String PACKAGE = "com.example.switchyard." + PROJECT;
 	public static final String[] GATEWAY_BINDINGS = new String[] { "Camel Core (SEDA/Timer/URI)", "File",
 			"File Transfer (FTP/FTPS/SFTP)", "HTTP", "JCA", "JMS", "JPA", "Mail", "Network (TCP/UDP)", "REST", "SCA",
@@ -145,21 +149,22 @@ public class BindingsTest {
 		new Service(SERVICE).addBinding("Camel");
 		CamelBindingPage wizard = new CamelBindingPage();
 		assertEquals("camel1", wizard.getName());
-		// wizard.setName("camel-binding");
+		wizard.setName("camel-binding");
 		wizard.setConfigURI("camel-uri");
-		wizard.setOperation(OPERATION);
+		wizard.setOperationSelector(OPERATION_NAME, METHOD);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
 
-		assertEquals("camel1", editor.xpath("/switchyard/composite/service/binding.uri/@name"));
+		assertEquals("camel-binding", editor.xpath("/switchyard/composite/service/binding.uri/@name"));
 
-		/*
-		 * BindingsPage properties = new Service(SERVICE).showProperties() .selectBindings();
-		 * CamelBindingPage page = properties.selectCamelBinding("camel-binding");
-		 * assertEquals("camel1", page.getName()); assertEquals("camel-uri", page.getConfigURI());
-		 * assertEquals(OPERATION, page.getOperation()); properties.ok();
-		 */
+		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
+		CamelBindingPage page = properties.selectCamelBinding("camel-binding");
+		assertEquals("camel-binding", page.getName());
+		assertEquals("camel-uri", page.getConfigURI());
+		assertEquals(OPERATION_NAME, page.getOperationSelector());
+		assertEquals(METHOD, page.getOperationSelectorValue());
+		properties.ok();
 	}
 
 	@Test
@@ -167,19 +172,19 @@ public class BindingsTest {
 		new Service(SERVICE).addBinding("FTP");
 		FTPBindingPage wizard = new FTPBindingPage();
 		assertEquals("ftp1", wizard.getName());
-		// wizard.setName("ftp-binding");
+		wizard.setName("ftp-binding");
 		wizard.setDirectory("ftp-directory");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
 
-		assertEquals("ftp1", editor.xpath("/switchyard/composite/service/binding.ftp/@name"));
+		assertEquals("ftp-binding", editor.xpath("/switchyard/composite/service/binding.ftp/@name"));
 
-		/*
-		 * BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
-		 * FTPBindingPage page = properties.selectFTPBinding("ftp-binding"); assertEquals("ftp1",
-		 * page.getName()); assertEquals("ftp-directory", page.getDirectory()); properties.ok();
-		 */
+		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
+		FTPBindingPage page = properties.selectFTPBinding("ftp-binding");
+		assertEquals("ftp-binding", page.getName());
+		assertEquals("ftp-directory", page.getDirectory());
+		properties.ok();
 	}
 
 	@Test
@@ -187,28 +192,27 @@ public class BindingsTest {
 		new Service(SERVICE).addBinding("FTPS");
 		FTPSBindingPage wizard = new FTPSBindingPage();
 		assertEquals("ftps1", wizard.getName());
-		// wizard.setName("ftps-binding");
+		wizard.setName("ftps-binding");
 		wizard.setDirectory("ftps-directory");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
 
-		assertEquals("ftps1", editor.xpath("/switchyard/composite/service/binding.ftps/@name"));
+		assertEquals("ftps-binding", editor.xpath("/switchyard/composite/service/binding.ftps/@name"));
 
-		/*
-		 * BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
-		 * FTPSBindingPage page = properties.selectFTPSBinding("ftps-binding");
-		 * assertEquals("ftps1", page.getName()); assertEquals("ftps-directory",
-		 * page.getDirectory()); properties.ok();
-		 */
+		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
+		FTPSBindingPage page = properties.selectFTPSBinding("ftps-binding");
+		assertEquals("ftps-binding", page.getName());
+		assertEquals("ftps-directory", page.getDirectory());
+		properties.ok();
 	}
 
-	@Test
+	 @Test
 	public void fileBindingTest() throws Exception {
 		new Service(SERVICE).addBinding("File");
 		FileBindingPage wizard = new FileBindingPage();
 		assertEquals("file1", wizard.getName());
-		// wizard.setName("file-binding");
+		wizard.setName("file-binding");
 		wizard.setDirectory("file-directory");
 		wizard.setDirAutoCreation(true);
 		wizard.setMoveDirectory("processed");
@@ -216,14 +220,14 @@ public class BindingsTest {
 
 		new SwitchYardEditor().save();
 
-		assertEquals("file1", editor.xpath("/switchyard/composite/service/binding.file/@name"));
+		assertEquals("file-binding", editor.xpath("/switchyard/composite/service/binding.file/@name"));
 
-		/*
-		 * BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
-		 * FileBindingPage page = properties.selectFileBinding("file-binding");
-		 * assertEquals("file1", page.getName()); assertEquals("file-directory",
-		 * page.getDirectory()); assertTrue(page.isDirAutoCreation()); properties.ok();
-		 */
+		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
+		FileBindingPage page = properties.selectFileBinding("file-binding");
+		assertEquals("file-binding", page.getName());
+		assertEquals("file-directory", page.getDirectory());
+		assertTrue(page.isDirAutoCreation());
+		properties.ok();
 	}
 
 	@Test
@@ -231,22 +235,22 @@ public class BindingsTest {
 		new Service(SERVICE).addBinding("HTTP");
 		HTTPBindingPage wizard = new HTTPBindingPage();
 		assertEquals("http1", wizard.getName());
-		// wizard.setName("http-binding");
+		wizard.setName("http-binding");
 		wizard.setContextPath("http-context");
-		wizard.setOperation(OPERATION);
+		wizard.setOperationSelector(OPERATION_NAME, METHOD);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
 
-		assertEquals("http1", editor.xpath("/switchyard/composite/service/binding.http/@name"));
+		assertEquals("http-binding", editor.xpath("/switchyard/composite/service/binding.http/@name"));
 
-		/*
-		 * BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
-		 * HTTPBindingPage page = properties.selectHTTPBinding("http-binding");
-		 * assertEquals("http1", page.getName()); assertEquals("http-context",
-		 * page.getContextPath()); assertEquals(OPERATION, page.getOperation()); new
-		 * PushButton("OK").click();
-		 */
+		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
+		HTTPBindingPage page = properties.selectHTTPBinding("http-binding");
+		assertEquals("http-binding", page.getName());
+		assertEquals("http-context", page.getContextPath());
+		assertEquals(OPERATION_NAME, page.getOperationSelector());
+		assertEquals(METHOD, page.getOperationSelectorValue());
+		new PushButton("OK").click();
 	}
 
 	@Test
@@ -255,7 +259,7 @@ public class BindingsTest {
 
 		JCABindingPage wizard = new JCABindingPage();
 		assertEquals("jca1", wizard.getName());
-		// wizard.setName("jca-binding");
+		wizard.setName("jca-binding");
 		wizard.selectGenericResourceAdapter();
 		wizard.setResourceAdapterArchive("resource-adapter.jar");
 		wizard.next();
@@ -264,35 +268,34 @@ public class BindingsTest {
 
 		new SwitchYardEditor().save();
 
-		assertEquals("jca1", editor.xpath("/switchyard/composite/service/binding.jca/@name"));
+		assertEquals("jca-binding", editor.xpath("/switchyard/composite/service/binding.jca/@name"));
 
-		/*
-		 * BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
-		 * JCABindingPage page = properties.selectJCABinding("jca-binding"); assertEquals("jca1",
-		 * page.getName()); assertTrue(page.isGenericResourceAdapter());
-		 * assertEquals("resource-adapter.jar", page.getResourceAdapterArchive()); properties.ok();
-		 */
+		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
+		JCABindingPage page = properties.selectJCABinding("jca-binding");
+		assertEquals("jca-binding", page.getName());
+		assertTrue(page.isGenericResourceAdapter());
+		assertEquals("resource-adapter.jar", page.getResourceAdapterArchive());
+		properties.ok();
 	}
 
-	@Test
+	 @Test
 	public void jmsBindingTest() throws Exception {
 		new Service(SERVICE).addBinding("JMS");
 		JMSBindingPage wizard = new JMSBindingPage();
 		assertEquals("jms1", wizard.getName());
-		// wizard.setName("jms-binding");
+		wizard.setName("jms-binding");
 		wizard.setQueueTopicName("queue-name");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
 
-		assertEquals("jms1", editor.xpath("/switchyard/composite/service/binding.jms/@name"));
+		assertEquals("jms-binding", editor.xpath("/switchyard/composite/service/binding.jms/@name"));
 
-		/*
-		 * BindingsPage properties = new Service ( SERVICE ) . showProperties ( ) . selectBindings (
-		 * ) ; JMSBindingPage page = properties . selectJMSBinding ( "jms-binding" ) ; assertEquals
-		 * ( "jms-binding" , page . getName ( ) ) ; assertEquals ( "queue-name" , page .
-		 * getQueueTopicName ( ) ) ; properties . ok ( ) ;
-		 */
+		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
+		JMSBindingPage page = properties.selectJMSBinding("jms-binding");
+		assertEquals("jms-binding", page.getName());
+		assertEquals("queue-name", page.getQueueTopicName());
+		properties.ok();
 	}
 
 	@Test
@@ -300,22 +303,21 @@ public class BindingsTest {
 		new Service(SERVICE).addBinding("JPA");
 		JPABindingPage wizard = new JPABindingPage();
 		assertEquals("jpa1", wizard.getName());
-		// wizard.setName("jpa-binding");
+		wizard.setName("jpa-binding");
 		wizard.setEntityClassName("entity-class");
 		wizard.setPersistenceUnit("persistence.xml");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
 
-		assertEquals("jpa1", editor.xpath("/switchyard/composite/service/binding.jpa/@name"));
+		assertEquals("jpa-binding", editor.xpath("/switchyard/composite/service/binding.jpa/@name"));
 
-		/*
-		 * BindingsPage properties = new Service ( SERVICE ) . showProperties ( ) . selectBindings (
-		 * ) ; JPABindingPage page = properties . selectJPABinding ( "jpa-binding" ) ; assertEquals
-		 * ( "jpa-binding" , page . getName ( ) ) ; assertEquals ( "entity-class" , page .
-		 * getEntityClassName ( ) ) ; assertEquals ( "persistence.xml" , page . getPersistenceUnit (
-		 * ) ) ; properties . ok ( ) ;
-		 */
+		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
+		JPABindingPage page = properties.selectJPABinding("jpa-binding");
+		assertEquals("jpa-binding", page.getName());
+		assertEquals("entity-class", page.getEntityClassName());
+		assertEquals("persistence.xml", page.getPersistenceUnit());
+		properties.ok();
 	}
 
 	@Test
@@ -323,20 +325,19 @@ public class BindingsTest {
 		new Service(SERVICE).addBinding("Mail");
 		MailBindingPage wizard = new MailBindingPage();
 		assertEquals("mail1", wizard.getName());
-		// wizard.setName("mail-binding");
+		wizard.setName("mail-binding");
 		wizard.setHost("mail-host");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
 
-		assertEquals("mail1", editor.xpath("/switchyard/composite/service/binding.mail/@name"));
+		assertEquals("mail-binding", editor.xpath("/switchyard/composite/service/binding.mail/@name"));
 
-		/*
-		 * BindingsPage properties = new Service ( SERVICE ) . showProperties ( ) . selectBindings (
-		 * ) ; MailBindingPage page = properties . selectMailBinding ( "mail-binding" ) ;
-		 * assertEquals ( "mail-binding" , page . getName ( ) ) ; assertEquals ( "mail-host" , page
-		 * . getHost ( ) ) ; properties . ok ( ) ;
-		 */
+		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
+		MailBindingPage page = properties.selectMailBinding("mail-binding");
+		assertEquals("mail-binding", page.getName());
+		assertEquals("mail-host", page.getHost());
+		properties.ok();
 	}
 
 	@Test
@@ -344,21 +345,21 @@ public class BindingsTest {
 		new Service(SERVICE).addBinding("Netty TCP");
 		NettyTCPBindingPage wizard = new NettyTCPBindingPage();
 		assertEquals("tcp1", wizard.getName());
-		// wizard.setName("tcp-binding");
+		wizard.setName("tcp-binding");
 		wizard.setHost("tcp-host");
 		wizard.setPort("1234");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
 
-		assertEquals("tcp1", editor.xpath("/switchyard/composite/service/binding.tcp/@name"));
+		assertEquals("tcp-binding", editor.xpath("/switchyard/composite/service/binding.tcp/@name"));
 
-		/*
-		 * BindingsPage properties = new Service ( SERVICE ) . showProperties ( ) . selectBindings (
-		 * ) ; NettyTCPBindingPage page = properties . selectNettyTCPBinding ( "tcp-binding" ) ;
-		 * assertEquals ( "tcp-binding" , page . getName ( ) ) ; assertEquals ( "tcp-host" , page .
-		 * getHost ( ) ) ; assertEquals ( "1234" , page . getPort ( ) ) ; properties . ok ( ) ;
-		 */
+		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
+		NettyTCPBindingPage page = properties.selectNettyTCPBinding("tcp-binding");
+		assertEquals("tcp-binding", page.getName());
+		assertEquals("tcp-host", page.getHost());
+		assertEquals("1234", page.getPort());
+		properties.ok();
 	}
 
 	@Test
@@ -366,44 +367,43 @@ public class BindingsTest {
 		new Service(SERVICE).addBinding("Netty UDP");
 		NettyUDPBindingPage wizard = new NettyUDPBindingPage();
 		assertEquals("udp1", wizard.getName());
-		// wizard.setName("udp-binding");
+		wizard.setName("udp-binding");
 		wizard.setHost("udp-host");
 		wizard.setPort("1234");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
 
-		assertEquals("udp1", editor.xpath("/switchyard/composite/service/binding.udp/@name"));
+		assertEquals("udp-binding", editor.xpath("/switchyard/composite/service/binding.udp/@name"));
 
-		/*
-		 * BindingsPage properties = new Service ( SERVICE ) . showProperties ( ) . selectBindings (
-		 * ) ; NettyUDPBindingPage page = properties . selectNettyUDPBinding ( "udp-binding" ) ;
-		 * assertEquals ( "udp-binding" , page . getName ( ) ) ; assertEquals ( "udp-host" , page .
-		 * getHost ( ) ) ; assertEquals ( "1234" , page . getPort ( ) ) ; properties . ok ( ) ;
-		 */
+		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
+		NettyUDPBindingPage page = properties.selectNettyUDPBinding("udp-binding");
+		assertEquals("udp-binding", page.getName());
+		assertEquals("udp-host", page.getHost());
+		assertEquals("1234", page.getPort());
+		properties.ok();
 	}
 
-	@Test
+	 @Test
 	public void restBindingTest() throws Exception {
 		new Service(SERVICE).addBinding("REST");
 		RESTBindingPage wizard = new RESTBindingPage();
 		assertEquals("rest1", wizard.getName());
-		// wizard.setName("rest-binding");
+		wizard.setName("rest-binding");
 		wizard.setContextPath("rest-context");
 		wizard.addInterface("Hello");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
 
-		assertEquals("rest1", editor.xpath("/switchyard/composite/service/binding.rest/@name"));
+		assertEquals("rest-binding", editor.xpath("/switchyard/composite/service/binding.rest/@name"));
 
-		/*
-		 * BindingsPage properties = new Service ( SERVICE ) . showProperties ( ) . selectBindings (
-		 * ) ; RESTBindingPage page = properties . selectRESTBinding ( "est-binding" ) ;
-		 * assertEquals ( "rest-binding" , page . getName ( ) ) ; assertEquals ( "rest-context" ,
-		 * page . getContextPath ( ) ) ; assertTrue ( page . getInterfaces ( ) . contains ( PACKAGE
-		 * + ".Hello" ) ) ; properties . ok ( ) ;
-		 */
+		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
+		RESTBindingPage page = properties.selectRESTBinding("rest-binding");
+		assertEquals("rest-binding", page.getName());
+		assertEquals("rest-context", page.getContextPath());
+		assertTrue(page.getInterfaces().contains(PACKAGE + ".Hello"));
+		properties.ok();
 	}
 
 	@Test
@@ -411,20 +411,19 @@ public class BindingsTest {
 		new Service(SERVICE).addBinding("SCA");
 		SCABindingPage wizard = new SCABindingPage();
 		assertEquals("sca1", wizard.getName());
-		// wizard.setName("sca-binding");
+		wizard.setName("sca-binding");
 		wizard.setClustered(true);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
 
-		assertEquals("sca1", editor.xpath("/switchyard/composite/service/binding.sca/@name"));
+		assertEquals("sca-binding", editor.xpath("/switchyard/composite/service/binding.sca/@name"));
 
-		/*
-		 * BindingsPage properties = new Service ( SERVICE ) . showProperties ( ) . selectBindings (
-		 * ) ; SCABindingPage page = properties . selectSCABinding ( "sca-binding" ) ; assertEquals
-		 * ( "sca-binding" , page . getName ( ) ) ; assertTrue ( page . isClustered ( ) ) ;
-		 * properties . ok ( ) ;
-		 */
+		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
+		SCABindingPage page = properties.selectSCABinding("sca-binding");
+		assertEquals("sca-binding", page.getName());
+		assertTrue(page.isClustered());
+		properties.ok();
 	}
 
 	@Test
@@ -432,20 +431,19 @@ public class BindingsTest {
 		new Service(SERVICE).addBinding("SFTP");
 		SFTPBindingPage wizard = new SFTPBindingPage();
 		assertEquals("sftp1", wizard.getName());
-		// wizard.setName("sftp-binding");
+		wizard.setName("sftp-binding");
 		wizard.setDirectory("sftp-directory");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
 
-		assertEquals("sftp1", editor.xpath("/switchyard/composite/service/binding.sftp/@name"));
+		assertEquals("sftp-binding", editor.xpath("/switchyard/composite/service/binding.sftp/@name"));
 
-		/*
-		 * BindingsPage properties = new Service ( SERVICE ) . showProperties ( ) . selectBindings (
-		 * ) ; SFTPBindingPage page = properties . selectSFTPBinding ( "sftp-binding" ) ;
-		 * assertEquals ( "sftp-binding" , page . getName ( ) ) ; assertEquals ( "sftp-directory" ,
-		 * page . getDirectory ( ) ) ; properties . ok ( ) ;
-		 */
+		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
+		SFTPBindingPage page = properties.selectSFTPBinding("sftp-binding");
+		assertEquals("sftp-binding", page.getName());
+		assertEquals("sftp-directory", page.getDirectory());
+		properties.ok();
 	}
 
 	@Test
@@ -453,21 +451,20 @@ public class BindingsTest {
 		new Service(SERVICE).addBinding("SOAP");
 		SOAPBindingPage wizard = new SOAPBindingPage();
 		assertEquals("soap1", wizard.getName());
-		// wizard.setName("soap-binding");
+		wizard.setName("soap-binding");
 		wizard.setContextPath("soap-context");
 		wizard.setWsdlURI("soap-wsdl");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
 
-		assertEquals("soap1", editor.xpath("/switchyard/composite/service/binding.soap/@name"));
+		assertEquals("soap-binding", editor.xpath("/switchyard/composite/service/binding.soap/@name"));
 
-		/*
-		 * BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
-		 * SOAPBindingPage page = properties.selectSOAPBinding("soap-binding");
-		 * assertEquals("soap1", page.getName()); assertEquals("soap-context",
-		 * page.getContextPath()); properties.ok();
-		 */
+		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
+		SOAPBindingPage page = properties.selectSOAPBinding("soap-binding");
+		assertEquals("soap-binding", page.getName());
+		assertEquals("soap-context", page.getContextPath());
+		properties.ok();
 	}
 
 	@Test
@@ -475,7 +472,7 @@ public class BindingsTest {
 		new Service(SERVICE).addBinding("SQL");
 		SQLBindingPage wizard = new SQLBindingPage();
 		assertEquals("sql1", wizard.getName());
-		// wizard.setName("sql-binding");
+		wizard.setName("sql-binding");
 		wizard.setQuery("sql-query");
 		wizard.setDataSource("data-source");
 		wizard.setPeriod("10");
@@ -483,20 +480,17 @@ public class BindingsTest {
 
 		new SwitchYardEditor().save();
 
-		assertEquals("sql1", editor.xpath("/switchyard/composite/service/binding.sql/@name"));
-		// assertEquals("10",
-		// editor.xpath("/switchyard/composite/service/binding.sql/@period"));
-		// assertEquals("sql-query",
-		// editor.xpath("/switchyard/composite/service/binding.sql/query"));
-		// assertEquals("data-source",
-		// editor.xpath("/switchyard/composite/service/binding.sql/dataSourceRef"));
+		assertEquals("sql-binding", editor.xpath("/switchyard/composite/service/binding.sql/@name"));
+		assertEquals("10", editor.xpath("/switchyard/composite/service/binding.sql/@period"));
+		assertEquals("sql-query", editor.xpath("/switchyard/composite/service/binding.sql/query"));
+		assertEquals("data-source", editor.xpath("/switchyard/composite/service/binding.sql/dataSourceRef"));
 
-		/*
-		 * BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
-		 * SQLBindingPage page = properties.selectSQLBinding("sql-binding"); assertEquals("sql1",
-		 * page.getName()); assertEquals("sql-query", page.getQuery()); assertEquals("data-source",
-		 * page.getDataSource()); properties.ok();
-		 */
+		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
+		SQLBindingPage page = properties.selectSQLBinding("sql-binding");
+		assertEquals("sql-binding", page.getName());
+		assertEquals("sql-query", page.getQuery());
+		assertEquals("data-source", page.getDataSource());
+		properties.ok();
 	}
 
 	@Test
@@ -507,23 +501,24 @@ public class BindingsTest {
 
 		new Service(SERVICE).addBinding("Scheduling");
 		SchedulingBindingPage wizard = new SchedulingBindingPage();
-		// wizard.setName("schedule-binding");
+		wizard.setName("schedule-binding");
 		wizard.setCron(cron);
-		wizard.setOperation(OPERATION);
+		wizard.setOperationSelector(OPERATION_NAME, METHOD);
 		wizard.setStartTime(startTime);
 		wizard.setEndTime(endTime);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
 
-		assertEquals("HelloService1", editor.xpath("/switchyard/composite/service/binding.quartz/@name"));
+		assertEquals("schedule-binding", editor.xpath("/switchyard/composite/service/binding.quartz/name"));
 
-		/*
-		 * BindingsPage properties = new Service ( SERVICE ) . showProperties ( ) . selectBindings (
-		 * ) ; SchedulingBindingPage page = properties . selectSchedulingBinding ( "schdule-binding"
-		 * ) ; assertEquals ( cron , page . getCron ( ) ) ; assertEquals ( OPERATION , page .
-		 * getOperation ( ) ) ; assertEquals ( startTime , page . getStartTime ( ) ) ; assertEquals
-		 * ( endTime , page . getEndTime ( ) ) ; properties . ok ( ) ;
-		 */
+		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
+		SchedulingBindingPage page = properties.selectSchedulingBinding("HelloService1");
+		assertEquals(cron, page.getCron());
+		assertEquals(OPERATION_NAME, page.getOperationSelector());
+		assertEquals(METHOD, page.getOperationSelectorValue());
+		assertEquals(startTime, page.getStartTime());
+		assertEquals(endTime, page.getEndTime());
+		properties.ok();
 	}
 }
