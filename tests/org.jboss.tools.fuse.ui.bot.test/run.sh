@@ -111,7 +111,7 @@ function test_case {
 	echo "8 - Regression Test (test resolved issues)"
 	echo "9 - Debugger Test (check camel route debugger)"
 	echo "10 - JMX Navigator Test (Server side)"
-	echo "11 - Remote Route Editing"
+	echo "11 - Remote Route Editing, Tracing"
 	echo ""
 
 	TEST="0"
@@ -150,7 +150,7 @@ function test_case {
 				TEST=JMXNavigatorServerTest
 				;;
 			11)
-				TEST=RouteEditingTest
+				TEST=RouteManipulationTest
 				;;
 			*)
 				echo "Invalid input! Try it again."
