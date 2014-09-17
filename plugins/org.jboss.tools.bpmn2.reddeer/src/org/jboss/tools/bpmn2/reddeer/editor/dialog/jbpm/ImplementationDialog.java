@@ -14,7 +14,7 @@ public class ImplementationDialog {
 	 * @param implementationUri
 	 */
 	public void add(String implementationUri) {
-		new SWTBot().shell("Create New Implementation URI").activate();
+		new SWTBot().shell("Create New Service Implementation").activate();
 		new DefaultText(0).setText(implementationUri);
 		new PushButton("OK").click();
 	}

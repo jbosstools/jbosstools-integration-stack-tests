@@ -1,7 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions;
 
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.tools.bpmn2.reddeer.ProcessEditorView;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.SignalDialog;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.EventDefinition;
 import org.jboss.tools.reddeer.DefaultCombo;

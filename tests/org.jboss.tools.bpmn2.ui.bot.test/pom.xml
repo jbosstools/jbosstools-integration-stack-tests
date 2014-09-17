@@ -12,7 +12,6 @@
 	<artifactId>org.jboss.tools.bpmn2.ui.bot.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<bpmn2-modeler.site>http://download.eclipse.org/bpmn2-modeler/updates/luna/1.1.0</bpmn2-modeler.site>
 		<droolsjbpm.site>https://repository.jboss.org/nexus/content/groups/public-jboss/</droolsjbpm.site>
 		<eclipse.graphiti.site>http://download.eclipse.org/graphiti/updates/0.10.0</eclipse.graphiti.site>
 		<systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.skip=false -Dtest.configurations.dir=resources/</systemProperties>
@@ -143,11 +142,6 @@
 				<enabled>true</enabled>
 			</releases>
 		</repository>
-		<repository>
-            <id>bpmn2-modeler</id>
-            <url>${bpmn2-modeler.site}</url>
-            <layout>p2</layout>
-        </repository>
 	</repositories>
 
 	<build>
@@ -166,39 +160,29 @@
 		      <useUIThread>false</useUIThread>
 		      <skip>${skipTests}</skip>
 		      <dependencies combine.children="append">
-			<!-- SwitchYard feature -->
-			<!--dependency>
-			  <type>p2-installable-unit</type>
-			  <artifactId>org.switchyard.tools.feature.feature.group</artifactId>
-			  <version>0.0.0</version>
-			</dependency-->
-			<!-- SwitchYard BPMN2 feature -->
-			<!--dependency>
-			  <type>p2-installable-unit</type>
-			  <artifactId>org.switchyard.tools.bpmn2.feature.feature.group</artifactId>
-			  <version>0.0.0</version>
-			</dependency-->
-			<dependency>
-			  <type>p2-installable-unit</type>
-			  <artifactId>org.eclipse.bpmn2.modeler.feature.group</artifactId>
-			  <version>1.1.0</version>
-			</dependency>
-			<dependency>
-			  <type>p2-installable-unit</type>
-			  <artifactId>org.eclipse.bpmn2.modeler.runtime.jboss.feature.group</artifactId>
-			  <version>1.1.0</version>
-			</dependency>
-			<dependency>
-			  <type>p2-installable-unit</type>
-			  <artifactId>org.eclipse.bpmn2.modeler.wsil.feature.group</artifactId>
-			  <version>1.1.0</version>
-			</dependency>
-			<!-- This entry should enable creating of default JDK on Mac -->
-			<dependency>
-			  <type>p2-installable-unit</type>
-			  <artifactId>org.eclipse.jdt.feature.group</artifactId>
-			  <version>0.0.0</version>
-			</dependency>
+				<!-- BPMN2 feature -->
+				<dependency>
+				  <type>p2-installable-unit</type>
+				  <artifactId>org.eclipse.bpmn2.modeler.feature.group</artifactId>
+				  <version>1.1.0</version>
+				</dependency>
+				<dependency>
+				  <type>p2-installable-unit</type>
+				  <artifactId>org.eclipse.bpmn2.modeler.runtime.jboss.feature.group</artifactId>
+				  <version>1.1.0</version>
+				</dependency>
+				<dependency>
+				  <type>p2-installable-unit</type>
+				  <artifactId>org.eclipse.bpmn2.feature.feature.group</artifactId>
+				  <version>0.7.0</version>
+				</dependency>
+				
+				<!-- This entry should enable creating of default JDK on Mac -->
+				<dependency>
+				  <type>p2-installable-unit</type>
+				  <artifactId>org.eclipse.jdt.feature.group</artifactId>
+				  <version>0.0.0</version>
+				</dependency>
 		      </dependencies>
 		    </configuration>
 		  </plugin>

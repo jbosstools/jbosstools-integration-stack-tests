@@ -59,7 +59,7 @@ public class DefinitionsTab {
 	 */
 	public void addMessage(String name, String dataType) {
 		new DefaultSection("Message List").getToolbarButton("Add").click();
-		new Message(name, dataType).setUp();
+		new Message(name, dataType).setUp("Message Details");
 		new DefaultSection("Message Details").getToolbarButton("Close").click();
 	}
 	
@@ -122,7 +122,7 @@ public class DefinitionsTab {
 	 */
 	public void addEscalation(String name, String code, String dataType) {
 		new DefaultSection("Escalation List").getToolbarButton("Add").click();
-		new Escalation(name, code, dataType).setUp();
+		new Escalation(name, code, dataType).setUpViaProcessDefinitions();
 		new DefaultSection("Escalation Details").getToolbarButton("Close").click();
 	}
 	

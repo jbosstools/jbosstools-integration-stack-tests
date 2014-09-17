@@ -43,10 +43,10 @@ public class Message {
 
 	/**
 	 * Perform user actions which are required to set up this object
-	 * in the UI.
+	 * in the UI
 	 */
-	public void setUp() {
-		new LabeledText(new DefaultSection("Message Details"), "Name").setText(name);
+	public void setUp(String sectionName) {
+		new LabeledText(new DefaultSection(sectionName), "Name").setText(name);
 		Combo dataTypeCombo = new LabeledCombo("Data Type");
 		if (!dataTypeCombo.getItems().contains(dataType)) {
 			new PushButton(0).click();
@@ -54,5 +54,4 @@ public class Message {
 		}
 		dataTypeCombo.setSelection(dataType);
 	}
-	
 }

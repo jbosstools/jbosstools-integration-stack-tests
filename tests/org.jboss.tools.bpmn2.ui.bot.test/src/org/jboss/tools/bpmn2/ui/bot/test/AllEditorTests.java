@@ -24,7 +24,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	ErrorEndEventTest.class,
 	ConditionalStartTest.class,
 	ImportTest.class, // Headless exception when typing is done! Only on Mac
-	ReceiveTaskTest.class, 
+	// ReceiveTaskTest.class, https://bugzilla.redhat.com/show_bug.cgi?id=1134874 
 	ParallelSplitTest.class,
 	RuleTaskTest.class,
 	SendTaskTest.class, 

@@ -32,9 +32,8 @@ public class ErrorEventDefinition extends EventDefinition {
 		Combo errorCombo = new LabeledCombo("Error");
 		String comboItem = errorRef.getName() + "(" + errorRef.getDataType() + ")";
 		if (!errorCombo.getItems().contains(comboItem)) {
-			/*new PushButton(0).click();
-			new ErrorDialog().add(errorRef);*/
-			throw new IllegalArgumentException(errorRef.getName() + " isn't in list of defined errors");
+			new PushButton(0).click();
+			new ErrorDialog().add(errorRef);
 		}
 		errorCombo.setSelection(comboItem);
 		

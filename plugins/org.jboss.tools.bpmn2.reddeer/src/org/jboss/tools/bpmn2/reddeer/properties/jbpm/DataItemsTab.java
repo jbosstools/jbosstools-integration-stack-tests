@@ -22,7 +22,6 @@ public class DataItemsTab {
 	}
 	
 	/**
-	 * BZ-1089464 ('Local' is renamed to 'Variable')
 	 * 
 	 * @param name
 	 * @param dataType

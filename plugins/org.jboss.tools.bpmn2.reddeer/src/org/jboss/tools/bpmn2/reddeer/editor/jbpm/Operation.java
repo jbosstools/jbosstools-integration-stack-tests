@@ -15,6 +15,8 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.ErrorDialog;
+import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.MessageDialog;
 
 /**
  * 
@@ -87,7 +89,8 @@ public class Operation {
 			Combo inMsgCombo = new LabeledCombo("In Message");
 			
 			if (!inMsgCombo.getItems().contains(inMsgComboItem)) {
-				throw new IllegalArgumentException("Operation: " + name + "is not as choice in combo box 'In Message'");
+				new PushButton(1).click();
+				new MessageDialog().add(inMessage);
 			} 
 			
 			inMsgCombo.setSelection(inMsgComboItem);
@@ -100,7 +103,8 @@ public class Operation {
 			Combo outMsgCombo = new LabeledCombo("Out Message");
 			
 			if (!outMsgCombo.getItems().contains(outMsgComboItem)) {
-				throw new IllegalArgumentException("Operation: " + name + "is not as choice in combo box 'Out Message'");
+				new PushButton(3).click();
+				new MessageDialog().add(outMessage);
 			} 
 			
 			outMsgCombo.setSelection(outMsgComboItem);
@@ -126,7 +130,9 @@ public class Operation {
 				}
 				
 				if(error.equals(errors.get(errors.size()-1))) {
-					throw new IllegalArgumentException("Error: " + errorRef.getName() + " was not defined in process errors");
+					new PushButton(5).click(); // close selecting errors
+					new PushButton(5).click(); // open add error dialog
+					new ErrorDialog().add(errorRef);
 				}
 			}
 		}

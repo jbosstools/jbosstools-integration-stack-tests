@@ -64,7 +64,7 @@ public class SendTaskTab {
 		DefaultCombo combo = new DefaultCombo("Message");
 		String comboItem = message.getName() + "(" + message.getDataType()  + ")";
 		if (!combo.contains(comboItem)) {
-			new PushButton(3).click();
+			new PushButton(4).click();
 			new MessageDialog().add(message);
 		}
 		combo.setSelection(comboItem);
