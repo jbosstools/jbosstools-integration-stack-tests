@@ -33,7 +33,7 @@ public class ServerWizard extends NewWizardDialog {
 		//new DefaultTreeItem(type).select();
 		selectType(type);
 		new LabeledText("Server name:").setText(name);
-
+		next();
 		finish();
 	}
 	

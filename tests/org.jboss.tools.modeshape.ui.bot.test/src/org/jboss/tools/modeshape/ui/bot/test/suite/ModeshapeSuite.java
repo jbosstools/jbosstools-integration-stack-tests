@@ -114,7 +114,7 @@ public class ModeshapeSuite extends RedDeerSuite {
 	private static String[] getServerType(String type, String version) {
 		String[] serverType = new String[2];
 		if (type.equals("EAP")) {
-            serverType[0] = "JBoss Enterprise Middleware";
+            serverType[0] = "Red Hat JBoss Middleware";
             if (version.startsWith("6.0")) {
                     serverType[1] = "JBoss Enterprise Application Platform 6.0";
             }
@@ -122,7 +122,7 @@ public class ModeshapeSuite extends RedDeerSuite {
                     serverType[1] = "JBoss Enterprise Application Platform 6.1";
             }
 		} else if (type.equals("SOA")) {
-			serverType[0] = "JBoss Enterprise Middleware";
+			serverType[0] = "Red Hat JBoss Middleware";
 			if (version.startsWith("5")) {
 				serverType[1] = "JBoss Enterprise Application Platform 5.x";
 			} if (version.startsWith("6")) {
@@ -140,7 +140,7 @@ public class ModeshapeSuite extends RedDeerSuite {
 	private static String[] getServerRuntime(String type, String version) {
 		String[] serverRuntime = new String[2];
 		if (type.equals("EAP")) {
-            serverRuntime[0] = "JBoss Enterprise Middleware";
+            serverRuntime[0] = "Red Hat JBoss Middleware";
             if (version.startsWith("6.0")) {
                     serverRuntime[1] = "JBoss Enterprise Application Platform 6.0 Runtime";
             }
@@ -148,7 +148,7 @@ public class ModeshapeSuite extends RedDeerSuite {
                     serverRuntime[1] = "JBoss Enterprise Application Platform 6.1 Runtime";
             }
 		} else if (type.equals("SOA")) {
-			serverRuntime[0] = "JBoss Enterprise Middleware";
+			serverRuntime[0] = "Red Hat JBoss Middleware";
 			if (version.startsWith("5")) {
 				serverRuntime[1] = "JBoss Enterprise Application Platform 5.x Runtime";
 			} else if (version.startsWith("6")) {
