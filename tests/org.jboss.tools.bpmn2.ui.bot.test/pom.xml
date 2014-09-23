@@ -177,6 +177,18 @@
 				  <version>0.7.0</version>
 				</dependency>
 				
+				<!-- jBPM wizard  -->
+				<dependency>
+				  <type>p2-installable-unit</type>
+				  <artifactId>org.jbpm.eclipse.feature.feature.group</artifactId>
+				  <version>6.1.0.Final</version>
+				</dependency>
+				<dependency>
+				  <type>p2-installable-unit</type>
+				  <artifactId>org.drools.eclipse.feature.feature.group</artifactId>
+				  <version>6.1.0.Final</version>
+				</dependency>
+				
 				<!-- This entry should enable creating of default JDK on Mac -->
 				<dependency>
 				  <type>p2-installable-unit</type>
