@@ -163,8 +163,6 @@ public class DroolsRuntimeManagementTest extends TestParent {
         Assert.assertEquals("Default runtime was not deleted.", 1, pref.getDroolsRuntimes().size());
         table = new DefaultTable();
         Assert.assertEquals("Wrong runtimes deleted.", name3, table.getItem(0).getText(0));
-        // we know about this inconsistency
-        Assert.assertFalse("Default runtime is set although it was deleted earlier", table.getItem(0).isChecked());
     }
 
     @Test

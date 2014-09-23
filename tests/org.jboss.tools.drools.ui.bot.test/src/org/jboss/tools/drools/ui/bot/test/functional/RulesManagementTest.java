@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
+import org.jboss.reddeer.eclipse.ui.perspectives.ResourcePerspective;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
@@ -136,6 +137,9 @@ public class RulesManagementTest extends TestParent {
 
         RuleEditor editor = new DrlEditor().showRuleEditor();
         editor.setPosition(8, 0);
+
+        new ResourcePerspective().open();
+        new JavaPerspective().open();
 
         try {
             new ShellMenu(new WithRegexMatchers("Run", "Toggle Breakpoint.*").getMatchers()).select();

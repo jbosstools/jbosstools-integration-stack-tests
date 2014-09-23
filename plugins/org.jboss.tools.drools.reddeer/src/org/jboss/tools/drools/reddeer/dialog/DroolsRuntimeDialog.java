@@ -7,6 +7,8 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.Platform;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.osgi.framework.wiring.BundleWiring;
 
 public class DroolsRuntimeDialog {
@@ -44,6 +46,10 @@ public class DroolsRuntimeDialog {
     }
 
     public void ok() {
+    	new LabeledText("Name:").setFocus();
+    	AbstractWait.sleep(TimePeriod.SHORT);
+    	new LabeledText("Path:").setFocus();
+    	AbstractWait.sleep(TimePeriod.SHORT);
         new PushButton("OK").click();
     }
 
