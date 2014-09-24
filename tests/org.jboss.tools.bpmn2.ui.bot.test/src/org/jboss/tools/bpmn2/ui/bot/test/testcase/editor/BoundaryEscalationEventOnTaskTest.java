@@ -13,6 +13,8 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
+import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.process.ProcessInstance;
 
 /**
  * ISSUE - language should be 'http://www.jboss.org/drools/rule' but it's not available.
@@ -53,6 +55,12 @@ public class BoundaryEscalationEventOnTaskTest extends JBPM6BaseTest {
 		ScriptTask scriptTask = new ScriptTask("Script Task");
 		scriptTask.setScript("Java", "System.out.println(\"Escalation handled\");");
 		scriptTask.append("EndProcess2", ElementType.END_EVENT);
+	}
+
+	@Override
+	public void assertRunOfProcessModel(KieSession kSession) {
+		ProcessInstance processInstance = kSession.startProcess("BPMN2BoundaryEscalationEventOnTask");
+		assertTrue(processInstance.getState() == ProcessInstance.STATE_COMPLETED);
 	}
 	
 }

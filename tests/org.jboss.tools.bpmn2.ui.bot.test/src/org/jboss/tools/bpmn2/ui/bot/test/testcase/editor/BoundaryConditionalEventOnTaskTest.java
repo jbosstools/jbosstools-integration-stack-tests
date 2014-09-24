@@ -9,6 +9,8 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.ConditionalBound
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
+import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.process.ProcessInstance;
 
 /**
  * ISSUE - language should be 'http://www.jboss.org/drools/rule' but it's not available.
@@ -41,6 +43,12 @@ public class BoundaryConditionalEventOnTaskTest extends JBPM6BaseTest {
 		ScriptTask scriptTask1 = new ScriptTask("Condition met");
 		scriptTask1.setScript("", "System.out.println(\"Conditional boundary event executed\";)");
 		scriptTask1.append("End 2", ElementType.END_EVENT);
+	}
+
+	@Override
+	public void assertRunOfProcessModel(KieSession kSession) {
+		ProcessInstance processInstance = kSession.startProcess("BPMN2BoundaryConditionalEventOnTask");		
+		assertTrue(processInstance.getState() == ProcessInstance.STATE_COMPLETED);
 	}
 	
 }

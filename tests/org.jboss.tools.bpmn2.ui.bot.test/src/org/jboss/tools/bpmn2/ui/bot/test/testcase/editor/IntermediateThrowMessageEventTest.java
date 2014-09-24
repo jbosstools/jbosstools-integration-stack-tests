@@ -7,6 +7,8 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.throwevents.MessageIntermediateThrowEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
+import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.process.ProcessInstance;
 
 @ProcessDefinition(name="BPMN2-IntermediateThrowMessageEvent", project="EditorTestProject")
 public class IntermediateThrowMessageEventTest extends JBPM6BaseTest {
@@ -23,6 +25,12 @@ public class IntermediateThrowMessageEventTest extends JBPM6BaseTest {
 		MessageIntermediateThrowEvent ithrow = new MessageIntermediateThrowEvent("Message Event");
 		ithrow.setMessageMapping(new Message("_2_Message", "String"), "m");
 		ithrow.append("EndProcess", ElementType.END_EVENT);
+	}
+
+	@Override
+	public void assertRunOfProcessModel(KieSession kSession) {
+		ProcessInstance processInstance = kSession.startProcess("BPMN2IntermediateThrowMessageEvent");
+		assertTrue(processInstance.getState() == ProcessInstance.STATE_COMPLETED);
 	}
 	
 }

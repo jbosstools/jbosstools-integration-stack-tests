@@ -9,6 +9,8 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.endevents.EndEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
+import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.process.ProcessInstance;
 
 @ProcessDefinition(name="BPMN2-SubProcess", project="EditorTestProject")
 public class SubProcessTest extends JBPM6BaseTest {
@@ -46,5 +48,10 @@ public class SubProcessTest extends JBPM6BaseTest {
 		EndEvent subEnd = new EndEvent("EndSubProcess");
 		script2.connectTo(subEnd);
 	}
-	
+
+	@Override
+	public void assertRunOfProcessModel(KieSession kSession) {
+		ProcessInstance processInstance = kSession.startProcess("BPMN2SubProcess");
+		assertTrue(processInstance.getState() == ProcessInstance.STATE_COMPLETED);
+	}
 }

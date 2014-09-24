@@ -66,6 +66,7 @@ public class ProcessDefinitionRequirement implements Requirement<ProcessDefiniti
 		return true;
 	}
 
+		
 	@Override
 	public void fulfill() {
 		closeAllEditors();

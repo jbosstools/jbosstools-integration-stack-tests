@@ -6,6 +6,8 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.catchevents.TimerIntermediateCa
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
+import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.process.ProcessInstance;
 
 /**
  * ISSUES - Invalid timer string is not found! E.g. 500###ms
@@ -26,5 +28,13 @@ public class IntermediateCatchEventTimerCycleTest extends JBPM6BaseTest {
 		scriptTask.setScript("Java", "System.out.println(\"Timer triggered\");");
 		scriptTask.append("EndProcess", ElementType.TERMINATE_END_EVENT);
 	}
+
+	@Override
+	public void assertRunOfProcessModel(KieSession kSession) {
+		ProcessInstance processInstance = kSession.startProcess("BPMN2IntermediateCatchEventTimerCycle");
+		assertTrue(processInstance.getState() == ProcessInstance.STATE_COMPLETED);
+	}
+
+	
 	
 }

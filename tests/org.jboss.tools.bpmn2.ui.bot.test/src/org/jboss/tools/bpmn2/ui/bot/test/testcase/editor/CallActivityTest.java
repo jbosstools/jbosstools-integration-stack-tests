@@ -11,13 +11,18 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.CallActivity;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
+import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.process.ProcessInstance;
+
 
 @ProcessDefinition(name="BPMN2-CallActivity", project="EditorTestProject")
 public class CallActivityTest extends JBPM6BaseTest {
 
+	private static final String MODEL_NAME = "BPMN2-CallActivity";
+	
 	@Override
 	public void buildProcessModel() {
-		Process process = new Process("BPMN2-CallActivity");
+		Process process = new Process(MODEL_NAME);
 		process.addLocalVariable("x", "String");
 		process.addLocalVariable("y", "String");
 		
@@ -32,6 +37,13 @@ public class CallActivityTest extends JBPM6BaseTest {
 		call.addParameterMapping(new ParameterMapping(new FromDataOutput("subY", "String"), new ToVariable("x"), ParameterMapping.Type.OUTPUT));
 		
 		call.append("EndProcess", ElementType.TERMINATE_END_EVENT);
+	}
+
+	@Override
+	public void assertRunOfProcessModel(KieSession kSession) {
+			    
+	    ProcessInstance processInstance = kSession.startProcess(MODEL_NAME.replace("-", "").replace("_", ""));
+	    assertTrue(processInstance.getState() == ProcessInstance.STATE_COMPLETED);
 	}
 	
 }

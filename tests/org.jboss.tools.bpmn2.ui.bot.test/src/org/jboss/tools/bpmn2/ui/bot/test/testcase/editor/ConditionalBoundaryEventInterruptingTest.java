@@ -12,6 +12,8 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.endevents.EscalationEndEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
+import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.process.ProcessInstance;
 
 @ProcessDefinition(name="BPMN2-ConditionalBoundaryEventInterrupting", project="EditorTestProject")
 public class ConditionalBoundaryEventInterruptingTest extends JBPM6BaseTest {
@@ -53,5 +55,10 @@ public class ConditionalBoundaryEventInterruptingTest extends JBPM6BaseTest {
 		new ConditionalBoundaryEvent("Conditional Boundary Event Process").connectTo(new ScriptTask("Goodbye"));
 		new ScriptTask("Goodbye").connectTo(new EndEvent("EndProcess2"));
 	}
-	
+
+	@Override
+	public void assertRunOfProcessModel(KieSession kSession) {
+		ProcessInstance processInstance = kSession.startProcess("BPMN2ConditionalBoundaryEventInterrupting");
+		assertTrue(processInstance.getState() == ProcessInstance.STATE_COMPLETED);
+	}
 }

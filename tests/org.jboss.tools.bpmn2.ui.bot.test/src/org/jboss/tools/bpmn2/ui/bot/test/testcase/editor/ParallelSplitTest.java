@@ -8,6 +8,8 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.ParallelGateway;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
+import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.process.ProcessInstance;
 
 @ProcessDefinition(name="BPMN2-ParallelSplit", project="EditorTestProject")
 public class ParallelSplitTest extends JBPM6BaseTest {
@@ -32,5 +34,10 @@ public class ParallelSplitTest extends JBPM6BaseTest {
 		script2.setScript("Java", "System.out.println(\"2\");");
 		script2.append("End2", ElementType.END_EVENT);
 	}
-	
+
+	@Override
+	public void assertRunOfProcessModel(KieSession kSession) {
+		ProcessInstance processInstance = kSession.startProcess("BPMN2ParallelSplit");
+		assertTrue(processInstance.getState() == ProcessInstance.STATE_COMPLETED);
+	}
 }

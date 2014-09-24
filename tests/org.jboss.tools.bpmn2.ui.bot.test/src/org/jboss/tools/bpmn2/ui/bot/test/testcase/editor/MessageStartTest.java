@@ -8,6 +8,8 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.MessageStartEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
+import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.process.ProcessInstance;
 
 @ProcessDefinition(name="BPMN2-MessageStart", project="EditorTestProject")
 public class MessageStartTest extends JBPM6BaseTest {
@@ -29,5 +31,10 @@ public class MessageStartTest extends JBPM6BaseTest {
 		script.setScript("Java", "System.out.println(\"x = \" + x);");
 		script.append("EndProcess", ElementType.TERMINATE_END_EVENT);
 	}
-	
+
+	@Override
+	public void assertRunOfProcessModel(KieSession kSession) {
+		ProcessInstance processInstance = kSession.startProcess("BPMN2MessageStart");
+		assertTrue(processInstance.getState() == ProcessInstance.STATE_COMPLETED);
+	}
 }

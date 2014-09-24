@@ -128,7 +128,22 @@
 			<artifactId>jbpm-audit</artifactId>
 			<version>${droolsjbpm.version}</version>
 		</dependency>
-	</dependencies>
+		<dependency>
+			<groupId>org.jbpm</groupId>
+			<artifactId>jbpm-test</artifactId>
+			<version>${droolsjbpm.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jbpm</groupId>
+			<artifactId>jbpm-runtime-manager</artifactId>
+			<version>${droolsjbpm.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jbpm</groupId>
+			<artifactId>jbpm-human-task-core</artifactId>
+			<version>${droolsjbpm.version}</version>
+		</dependency>
+    </dependencies>
 
 	<repositories>
 		<repository>
@@ -260,6 +275,21 @@
 								<artifactItem>
 									<groupId>org.jbpm</groupId>
 									<artifactId>jbpm-audit</artifactId>
+									<version>${droolsjbpm.version}</version>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.jbpm</groupId>
+									<artifactId>jbpm-test</artifactId>
+									<version>${droolsjbpm.version}</version>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.jbpm</groupId>
+									<artifactId>jbpm-runtime-manager</artifactId>
+									<version>${droolsjbpm.version}</version>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.jbpm</groupId>
+									<artifactId>jbpm-human-task-core</artifactId>
 									<version>${droolsjbpm.version}</version>
 								</artifactItem>
 							</artifactItems>

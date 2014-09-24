@@ -25,7 +25,10 @@ Bundle-ClassPath: .,
  lib/javassist.jar,
  lib/jbpm-flow-builder.jar,
  lib/mvel2.jar,
- lib/xpp3_min.jar
+ lib/xpp3_min.jar,
+ lib/jbpm-test.jar,
+ lib/jbpm-runtime-manager.jar,
+ lib/jbpm-human-task-core.jar
 Require-Bundle: 
  org.eclipse.gef,
  org.eclipse.graphiti,

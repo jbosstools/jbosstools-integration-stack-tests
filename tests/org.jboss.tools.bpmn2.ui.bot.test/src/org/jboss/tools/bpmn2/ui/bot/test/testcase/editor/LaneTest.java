@@ -11,6 +11,8 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.swimlanes.Lane;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.jboss.tools.reddeer.DefaultOutlineView;
+import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.process.ProcessInstance;
 
 /**
  * ISSUE - Task2 has two outgoing connections and End has two incoming. But why? Unable to
@@ -45,5 +47,10 @@ public class LaneTest extends JBPM6BaseTest {
 		outlineView.select("EndProcess");
 		task2.connectTo(end);
 	}
-	
+
+	@Override
+	public void assertRunOfProcessModel(KieSession kSession) {
+		ProcessInstance processInstance = kSession.startProcess("BPMN2Lane");
+		assertTrue(processInstance.getState() == ProcessInstance.STATE_COMPLETED);
+	}
 }

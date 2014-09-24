@@ -8,6 +8,8 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.catchevents.SignalIntermediateC
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
+import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.process.ProcessInstance;
 
 @ProcessDefinition(name="BPMN2-IntermediateCatchSignalSingle", project="EditorTestProject")
 public class IntermediateCatchSignalSingleTest extends JBPM6BaseTest {
@@ -31,6 +33,12 @@ public class IntermediateCatchSignalSingleTest extends JBPM6BaseTest {
 		
 		ScriptTask scriptTask = new ScriptTask("Script Task");
 		scriptTask.append("EndProcess", ElementType.END_EVENT);
+	}
+
+	@Override
+	public void assertRunOfProcessModel(KieSession kSession) {
+		ProcessInstance processInstance = kSession.startProcess("BPMN2IntermediateCatchSihnalSingle");
+		assertTrue(processInstance.getState() == ProcessInstance.STATE_COMPLETED);
 	}
 	
 }

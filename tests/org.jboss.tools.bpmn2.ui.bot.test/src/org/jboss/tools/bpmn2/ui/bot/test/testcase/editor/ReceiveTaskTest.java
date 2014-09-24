@@ -6,6 +6,8 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ReceiveTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
+import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.process.ProcessInstance;
 
 /**
  * ISSUE - Looks like this test creates on itemDefinition plus (should be 1 but there are 2)
@@ -28,5 +30,10 @@ public class ReceiveTaskTest extends JBPM6BaseTest {
 		receive.setMessage("HelloMessage", "String");
 		receive.append("EndProcess", ElementType.TERMINATE_END_EVENT);
 	}
-	
+
+	@Override
+	public void assertRunOfProcessModel(KieSession kSession) {
+		ProcessInstance processInstance = kSession.startProcess("BPMN2ReceiveTask");
+		assertTrue(processInstance.getState() == ProcessInstance.STATE_COMPLETED);
+	}
 }

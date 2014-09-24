@@ -9,6 +9,8 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.dataobjects.DataObject;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
+import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.process.ProcessInstance;
 
 /**
  * ISSUE - Some users may use &quot; instead of ". The validator will not replace the entities.
@@ -33,6 +35,12 @@ public class DataObjectTest extends JBPM6BaseTest {
 		object.select();
 		object.setDataType("String");
 		
+	}
+
+	@Override
+	public void assertRunOfProcessModel(KieSession kSession) {
+		ProcessInstance processInstance = kSession.startProcess("BPMN2DataObject");
+		assertTrue(processInstance.getState() == ProcessInstance.STATE_COMPLETED);
 	}
 	
 }

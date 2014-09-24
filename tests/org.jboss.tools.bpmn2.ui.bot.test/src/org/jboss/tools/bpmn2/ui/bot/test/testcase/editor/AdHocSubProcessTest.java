@@ -8,6 +8,8 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
+import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.process.ProcessInstance;
 
 @ProcessDefinition(name="BPMN2-AdHocSubProcess",  project="EditorTestProject")
 public class AdHocSubProcessTest extends JBPM6BaseTest {
@@ -46,6 +48,15 @@ public class AdHocSubProcessTest extends JBPM6BaseTest {
 		ScriptTask task2 = new ScriptTask("Hello2");
 		task2.setScript("", "System.out.println(\"Hello World 2\");");
 		task2.append("Hello", ElementType.USER_TASK);
+	}
+
+	@Override
+	public void assertRunOfProcessModel(KieSession kSession) {
+
+		ProcessInstance processInstance = kSession.startProcess("BPMN2AdHocSubProcess");
+		
+		assertTrue(processInstance.getState() == ProcessInstance.STATE_COMPLETED);
+		
 	}
 	
 }

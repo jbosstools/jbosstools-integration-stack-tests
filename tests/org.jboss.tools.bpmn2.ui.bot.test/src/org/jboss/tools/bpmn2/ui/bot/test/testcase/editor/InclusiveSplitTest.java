@@ -9,6 +9,8 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.InclusiveGateway;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
+import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.process.ProcessInstance;
 
 @ProcessDefinition(name="BPMN2-InclusiveSplit", project="EditorTestProject")
 public class InclusiveSplitTest extends JBPM6BaseTest {
@@ -43,6 +45,12 @@ public class InclusiveSplitTest extends JBPM6BaseTest {
 		ScriptTask script3 = new ScriptTask("Script3");
 		script3.setScript("Java", "System.out.println(\"path3\");");
 		script3.append("EndProcess3", ElementType.END_EVENT);
+	}
+
+	@Override
+	public void assertRunOfProcessModel(KieSession kSession) {
+		ProcessInstance processInstance = kSession.startProcess("BPMN2InclusiveSplit");
+		assertTrue(processInstance.getState() == ProcessInstance.STATE_COMPLETED);
 	}
 	
 }

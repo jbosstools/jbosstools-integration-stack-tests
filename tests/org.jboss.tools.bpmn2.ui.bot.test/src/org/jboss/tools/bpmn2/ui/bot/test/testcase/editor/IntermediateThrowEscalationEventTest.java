@@ -7,6 +7,8 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.throwevents.EscalationIntermediateThrowEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
+import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.process.ProcessInstance;
 
 @ProcessDefinition(name="BPMN2-IntermediateThrowEscalationEvent", project="EditorTestProject")
 public class IntermediateThrowEscalationEventTest extends JBPM6BaseTest {
@@ -24,5 +26,10 @@ public class IntermediateThrowEscalationEventTest extends JBPM6BaseTest {
 		ithrow.setEscalation(new Escalation("EscName", "MyEscalation", "String"), "variable");
 		ithrow.append("EndProcess", ElementType.END_EVENT);
 	}
-	
+
+	@Override
+	public void assertRunOfProcessModel(KieSession kSession) {
+		ProcessInstance processInstance = kSession.startProcess("BPMN2IntermediateThrowEscalationEvent");
+		assertTrue(processInstance.getState() == ProcessInstance.STATE_COMPLETED);
+	}
 }

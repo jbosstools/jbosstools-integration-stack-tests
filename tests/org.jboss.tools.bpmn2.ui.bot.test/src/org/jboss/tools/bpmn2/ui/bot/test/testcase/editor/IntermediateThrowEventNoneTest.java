@@ -6,6 +6,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.throwevents.IntermediateThrowEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
+import org.kie.api.runtime.KieSession;
 
 @ProcessDefinition(name="BPMN2-IntermediateThrowEventNone", project="EditorTestProject")
 public class IntermediateThrowEventNoneTest extends JBPM6BaseTest {
@@ -25,6 +26,12 @@ public class IntermediateThrowEventNoneTest extends JBPM6BaseTest {
 
 		IntermediateThrowEvent ithrow = new IntermediateThrowEvent("None Event");
 		ithrow.append("EndProcess", ElementType.END_EVENT);
+	}
+
+	@Override
+	public void assertRunOfProcessModel(KieSession kSession) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

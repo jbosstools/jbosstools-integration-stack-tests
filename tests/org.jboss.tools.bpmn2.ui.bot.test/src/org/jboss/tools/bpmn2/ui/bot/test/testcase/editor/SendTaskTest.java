@@ -11,6 +11,8 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.SendTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
+import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.process.ProcessInstance;
 
 /**
  * ISSUES - Engine does not validate the presence of the rules.
@@ -37,6 +39,12 @@ public class SendTaskTest extends JBPM6BaseTest {
 		send.setMessage(msg.getName(), msg.getDataType());
 		send.addParameterMapping(new ParameterMapping(new FromVariable("s"), new ToDataInput(msg.getName(), msg.getDataType()), ParameterMapping.Type.INPUT));
 		send.append("EndProcess", ElementType.TERMINATE_END_EVENT);
+	}
+
+	@Override
+	public void assertRunOfProcessModel(KieSession kSession) {
+		ProcessInstance processInstance = kSession.startProcess("BPMN2SendTask");
+		assertTrue(processInstance.getState() == ProcessInstance.STATE_COMPLETED);
 	}
 	
 }

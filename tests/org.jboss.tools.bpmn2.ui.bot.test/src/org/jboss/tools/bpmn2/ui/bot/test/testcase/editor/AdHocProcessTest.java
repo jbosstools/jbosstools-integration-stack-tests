@@ -10,6 +10,8 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.ExclusiveGateway;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
+import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.process.ProcessInstance;
 
 /**
  * ISSUES - When a connection is missing e.g. "Task 3" and "Gateway" are not connected 
@@ -48,12 +50,7 @@ public class AdHocProcessTest extends JBPM6BaseTest {
 		task4.append("ScriptEnd", ElementType.END_EVENT, ConnectionType.SEQUENCE_FLOW, Position.EAST);
 
 		// Finish parallel activities
-		/**
-		 * 
-		 * Ask Marek B. if Ad Hoc property enables such model
-		 * 
-		 */
-		/*process.add("Task 2", ElementType.SCRIPT_TASK, task3, Position.NORTH);
+		process.add("Task 2", ElementType.SCRIPT_TASK, task3, Position.NORTH);
 		
 		ScriptTask task2 = new ScriptTask("Task 2");
 		task2.setScript("", "System.out.println(\"Task2\");");
@@ -63,7 +60,14 @@ public class AdHocProcessTest extends JBPM6BaseTest {
 		ScriptTask task1 = new ScriptTask("Task 1");
 		task1.setScript("", "System.out.println(\"Task1\");");
 		
-		process.add("User", ElementType.USER_TASK, task3, Position.SOUTH);*/
+		process.add("User", ElementType.USER_TASK, task3, Position.SOUTH);
+	}
+
+	@Override
+	public void assertRunOfProcessModel(KieSession kSession) {
+		
+		ProcessInstance processInstance = kSession.startProcess("BPMN2AdHocProcess");
+		assertTrue(processInstance.getState() == ProcessInstance.STATE_COMPLETED);
 	}
 	
 }

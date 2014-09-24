@@ -6,6 +6,8 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
+import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.process.ProcessInstance;
 
 @ProcessDefinition(name="BPMN2-Import", project="EditorTestProject")
 public class ImportTest extends JBPM6BaseTest {
@@ -22,6 +24,12 @@ public class ImportTest extends JBPM6BaseTest {
 		ScriptTask script = new ScriptTask("Hello");
 		script.setScript("Java", "ArrayList l = new ArrayList(); System.out.println(l);");
 		script.append("EndProcess", ElementType.TERMINATE_END_EVENT);
+	}
+
+	@Override
+	public void assertRunOfProcessModel(KieSession kSession) {
+		ProcessInstance processInstance = kSession.startProcess("BPMN2Import");
+		assertTrue(processInstance.getState() == ProcessInstance.STATE_COMPLETED);
 	}
 	
 }

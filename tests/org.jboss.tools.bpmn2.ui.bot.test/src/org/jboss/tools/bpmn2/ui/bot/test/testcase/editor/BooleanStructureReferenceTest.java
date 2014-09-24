@@ -10,6 +10,8 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.UserTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
+import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.process.ProcessInstance;
 
 @ProcessDefinition(name="BPMN2-BooleanStructureRef", project="EditorTestProject")
 public class BooleanStructureReferenceTest extends JBPM6BaseTest {
@@ -29,6 +31,12 @@ public class BooleanStructureReferenceTest extends JBPM6BaseTest {
 		ScriptTask scriptTask = new ScriptTask("Script");
 		scriptTask.setScript("", "System.out.println(\"Result \" + test)");
 		scriptTask.append("EndProcess", ElementType.TERMINATE_END_EVENT);
+	}
+
+	@Override
+	public void assertRunOfProcessModel(KieSession kSession) {
+		ProcessInstance processInstance = kSession.startProcess("BPMN2BooleanStructureRef");
+		assertTrue(processInstance.getState() == ProcessInstance.STATE_COMPLETED);
 	}
 	
 }
