@@ -25,7 +25,9 @@ public class ServerHasState implements WaitCondition {
 
 	@Override
 	public boolean test() {
-		Server server = new ServersView().getServer(serverName);
+		ServersView view = new ServersView();
+		view.open();
+		Server server = view.getServer(serverName);
 		state = server.getLabel().getState();
 		System.out.println("Server's state: " + state);
 		return state.equals(ServerState.STARTED) || state.equals(ServerState.STOPPED);

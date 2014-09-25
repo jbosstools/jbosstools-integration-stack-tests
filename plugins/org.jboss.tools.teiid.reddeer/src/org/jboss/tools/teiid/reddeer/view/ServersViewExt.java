@@ -10,12 +10,14 @@ import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.forms.finder.SWTFormsBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 import org.hamcrest.Matcher;
+import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewException;
 import org.jboss.reddeer.swt.api.ToolItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -141,16 +143,16 @@ public class ServersViewExt extends ServersView {
 		Server server = new ServersView().getServer(serverName);
 		server.start();
 		new WaitUntil(new ServerHasState(serverName), TimePeriod.LONG);
+		new WaitUntil(new ConsoleHasText("- Started"), TimePeriod.LONG);
+
 		//additional steps
 		if (type.equals(ServerType.EDS5)){
 			connectTeiidInstance(serverName);
-//			String label = getServerLabel(serverName);
-//			//refresh 
-//			new DefaultTreeItem(label, TEIID_INSTANCE_CONFIG).select();
-//			new DefaultToolItem(REFRESH).click();
-//			//server was refreshed
-//			new PushButton("OK").click();
 		}
+		// FIXME temporary workaround to https://issues.jboss.org/browse/TEIIDDES-2341
+		new GuidesView().chooseAction("Teiid", "Refresh");
+		new WaitUntil(new ShellWithTextIsAvailable("Notification"));
+		new PushButton("OK").click();
 	}
 	
 	public String getServerLabel(String serverName){//TEST!!!
