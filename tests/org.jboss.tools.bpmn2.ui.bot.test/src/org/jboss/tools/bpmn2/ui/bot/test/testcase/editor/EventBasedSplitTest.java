@@ -63,7 +63,7 @@ public class EventBasedSplitTest extends JBPM6BaseTest {
 		script3.setScript("Java", "System.out.println(\"x=\" + x);");
 		script3.append("Email2", ElementType.USER_TASK);
 		
-		Task task2 = new Task("Email2");
+		UserTask task2 = new UserTask("Email2");
 		task2.append("EndProcess", ElementType.TERMINATE_END_EVENT);
 	}
 	
