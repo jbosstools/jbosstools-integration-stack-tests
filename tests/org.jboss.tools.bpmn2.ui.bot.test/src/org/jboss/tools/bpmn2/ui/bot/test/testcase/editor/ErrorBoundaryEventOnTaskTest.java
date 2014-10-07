@@ -23,7 +23,7 @@ public class ErrorBoundaryEventOnTaskTest extends JBPM6BaseTest {
 	@Override
 	public void buildProcessModel() {
 		Process process = new Process("BPMN2-ErrorBoundaryEventOnTask");
-		process.addError("", "org.jbpm.bpmn2.objects.MyError", null);
+		process.addError("", "org.jbpm.bpmn2.objects.MyError", "String");
 		
 		StartEvent start = new StartEvent("StartProcess");
 		start.append("Split", ElementType.PARALLEL_GATEWAY);

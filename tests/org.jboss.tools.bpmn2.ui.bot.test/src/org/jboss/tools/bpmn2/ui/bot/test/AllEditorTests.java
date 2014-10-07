@@ -29,7 +29,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	RuleTaskTest.class,
 	SendTaskTest.class, // BZ-1079699
 	ErrorBoundaryEventOnTaskTest.class, // BZ-1079714 // Untested
-	IntermediateCatchEventTimerCycleTest.class, // BZ-1079720 // Untested
+	IntermediateCatchEventTimerCycleTest.class, // BZ-1079720, 1085520 // Untested
 	MessageStartTest.class,
 	SubProcessTest.class,
 	UserTaskTest.class,

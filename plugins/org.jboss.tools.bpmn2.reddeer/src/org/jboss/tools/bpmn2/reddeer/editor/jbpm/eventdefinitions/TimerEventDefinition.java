@@ -36,8 +36,7 @@ public class TimerEventDefinition extends EventDefinition {
 	 */
 	@Override
 	public void setUp() {
-		new RadioButton("Duration").click();
-		new LabeledText("Value").setText(duration);
+		new LabeledText("Script").setText(duration);
 		new DefaultSection("Timer Event Definition Details").getToolbarButton("Close").click();
 	}
 	
