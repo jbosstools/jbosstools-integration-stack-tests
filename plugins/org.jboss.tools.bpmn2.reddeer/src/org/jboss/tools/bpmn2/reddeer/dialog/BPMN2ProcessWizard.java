@@ -4,8 +4,8 @@ import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
-import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
+import org.jboss.reddeer.jface.wizard.NewWizardDialog;
+
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.reddeer.dialog.ProjectPath;
 
@@ -21,12 +21,6 @@ public class BPMN2ProcessWizard extends NewWizardDialog {
 		super("BPMN2", "jBPM Process Diagram");
 	}
 	
-	@Override
-	public WizardPage getFirstPage() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	/**
 	 * 
 	 * @param fileName

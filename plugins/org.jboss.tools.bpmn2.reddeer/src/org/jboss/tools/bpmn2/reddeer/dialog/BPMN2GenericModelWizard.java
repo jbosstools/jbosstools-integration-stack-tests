@@ -1,7 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.dialog;
 
-import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
-import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
+import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.reddeer.dialog.ProjectPath;
@@ -38,11 +37,6 @@ public class BPMN2GenericModelWizard extends NewWizardDialog {
 		super("BPMN2", "Generic BPMN 2.0 Diagram");
 	}
 	
-	@Override
-	public WizardPage getFirstPage() {
-		return null;
-	}
-
 	/**
 	 * 
 	 * @param location

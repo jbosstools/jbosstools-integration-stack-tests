@@ -1,6 +1,6 @@
 package org.jboss.tools.reddeer.dialog;
 
-import org.jboss.reddeer.eclipse.jface.wizard.ImportWizardDialog;
+import org.jboss.reddeer.jface.wizard.ImportWizardDialog;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.text.DefaultText;

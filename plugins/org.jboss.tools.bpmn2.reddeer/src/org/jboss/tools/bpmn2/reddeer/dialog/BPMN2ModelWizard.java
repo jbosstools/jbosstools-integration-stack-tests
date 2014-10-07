@@ -1,7 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.dialog;
 
-import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
-import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
+import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.reddeer.dialog.ProjectPath;
 
@@ -17,12 +16,7 @@ public class BPMN2ModelWizard extends NewWizardDialog {
 		super("BPMN2", "BPMN2 Model");
 	}
 	
-	@Override
-	public WizardPage getFirstPage() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
 	/**
 	 * Create a new process definition in the root of the first project.
 	 * 
