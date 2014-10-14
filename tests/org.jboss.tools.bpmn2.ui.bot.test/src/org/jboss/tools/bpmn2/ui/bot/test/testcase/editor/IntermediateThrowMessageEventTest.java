@@ -1,11 +1,16 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
+import java.util.Arrays;
+
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Message;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.throwevents.MessageIntermediateThrowEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
+import org.jboss.tools.bpmn2.ui.bot.test.jbpm.JbpmAssertions;
+import org.jboss.tools.bpmn2.ui.bot.test.jbpm.SendTaskWorkItemdHandler;
+import org.jboss.tools.bpmn2.ui.bot.test.jbpm.TriggeredNodesListener;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
@@ -29,8 +34,13 @@ public class IntermediateThrowMessageEventTest extends JBPM6BaseTest {
 
 	@Override
 	public void assertRunOfProcessModel(KieSession kSession) {
+		TriggeredNodesListener triggered = new TriggeredNodesListener(
+			Arrays.asList("StartProcess", "Message Event", "EndProcess"), null);
+		kSession.addEventListener(triggered);
+		kSession.getWorkItemManager().registerWorkItemHandler("Send Task", new SendTaskWorkItemdHandler("_2_Message"));
 		ProcessInstance processInstance = kSession.startProcess("BPMN2IntermediateThrowMessageEvent");
-		assertTrue(processInstance.getState() == ProcessInstance.STATE_COMPLETED);
+		
+		JbpmAssertions.assertProcessInstanceCompleted(processInstance, kSession);
 	}
 	
 }

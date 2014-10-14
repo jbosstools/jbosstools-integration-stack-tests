@@ -78,10 +78,10 @@ public class UserTask extends Task {
 	
 	/**
 	 * 
-	 * @param language
+	 * @param actor
 	 */
-	public void addActor(String language) {
-		properties.getTab("User Task", UserTaskTab.class).addActor(name);
+	public void addActor(String actor) {
+		properties.getTab("User Task", UserTaskTab.class).addActor(actor);
 	}
 	
 	public void removeActor(String name) {
@@ -120,6 +120,10 @@ public class UserTask extends Task {
 	 */
 	public void addParameterMapping(ParameterMapping parameterMapping) {
 		properties.getTab("I/O Parameters", IOParametersTab.class).addParameter(parameterMapping);
+	}
+	
+	public void addLocalVariable(String varName, String dataType) {
+		properties.getTab("User Task", UserTaskTab.class).addLocalVariable(varName, dataType);
 	}
 
 }

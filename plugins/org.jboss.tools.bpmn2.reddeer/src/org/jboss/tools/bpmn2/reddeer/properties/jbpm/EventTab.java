@@ -1,7 +1,10 @@
 package org.jboss.tools.bpmn2.reddeer.properties.jbpm;
 
+import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.EventDefinitionTypeDialog;
+import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.SignalDialog;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.EventDefinition;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Signal;
 import org.jboss.tools.reddeer.DefaultSection;
 
 /**
@@ -27,6 +30,27 @@ public class EventTab {
 			}
 		}
 		definition.setUp();
+	}
+	
+	/**
+	 * Example of usage: If I have Signal start event, and I want to specify Signal to this event, but
+	 * I ha not needed signal declared in process.
+	 * @param signal
+	 */
+	public void addNewSignal(Signal signal) {
+		DefaultSection section = new DefaultSection("Event Definitions");
+		if (getEventCount() == 1) {
+			section.getTable().select(0);
+			String eventOnTabType = section.getTable().getTableItem(0).getText(0);
+			if (!signal.getClass().getSimpleName().startsWith(eventOnTabType)) {
+				section.getToolbarButton("Remove").click();
+				section.getToolbarButton("Add").click();
+			} else {
+				section.getToolbarButton("Edit").click();
+			}
+		}
+		new PushButton(new DefaultSection("Signal Event Definition Details"), 0).click();
+		new SignalDialog().add(signal);
 	}
 	
 //	/**

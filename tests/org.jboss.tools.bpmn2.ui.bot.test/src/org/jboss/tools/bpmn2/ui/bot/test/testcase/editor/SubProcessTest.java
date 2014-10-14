@@ -1,5 +1,7 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
+import java.util.Arrays;
+
 import org.eclipse.draw2d.geometry.Point;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.Position;
@@ -8,6 +10,8 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.SubProcess;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.endevents.EndEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
+import org.jboss.tools.bpmn2.ui.bot.test.jbpm.JbpmAssertions;
+import org.jboss.tools.bpmn2.ui.bot.test.jbpm.TriggeredNodesListener;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
@@ -51,7 +55,13 @@ public class SubProcessTest extends JBPM6BaseTest {
 
 	@Override
 	public void assertRunOfProcessModel(KieSession kSession) {
+		TriggeredNodesListener triggered = new TriggeredNodesListener(
+				Arrays.asList("StartProcess", "StartSubProcess", "Hello1",
+				"Hello2", "EndSubProcess", "Goodbye", "EndProcess"), null); 
+		kSession.addEventListener(triggered);
+		
+		
 		ProcessInstance processInstance = kSession.startProcess("BPMN2SubProcess");
-		assertTrue(processInstance.getState() == ProcessInstance.STATE_COMPLETED);
+		JbpmAssertions.assertProcessInstanceCompleted(processInstance, kSession);
 	}
 }

@@ -16,11 +16,11 @@ import org.junit.runners.Suite.SuiteClasses;
 	ParallelSplitJoinTest.class,
 	CallActivityTest.class,
 	AdHocProcessTest.class, //@BZ https://bugzilla.redhat.com/show_bug.cgi?id=1147940
-	AdHocSubProcessTest.class,
+	AdHocSubProcessTest.class, //@BZ https://bugzilla.redhat.com/show_bug.cgi?id=1153075
 	AssociationTest.class,
-	BooleanStructureReferenceTest.class,
+	BooleanStructureReferenceTest.class, //@BZ https://bugzilla.redhat.com/show_bug.cgi?id=1151984
 	BusinessRuleTaskTest.class,
-	BoundaryConditionalEventOnTaskTest.class,
+	BoundaryConditionalEventOnTaskTest.class, //@BZ https://bugzilla.redhat.com/show_bug.cgi?id=1153008
 	ErrorEndEventTest.class,
 	ConditionalStartTest.class,
 	ImportTest.class, // Headless exception when typing is done! Only on Mac
@@ -45,7 +45,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	ExclusiveSplitPriorityTest.class, //@BZ https://bugzilla.redhat.com/show_bug.cgi?id=1140542
 	EventBasedSplitTest.class, 
 	BoundaryEscalationEventOnTaskTest.class,
-	ConditionalBoundaryEventInterruptingTest.class,
+	ConditionalBoundaryEventInterruptingTest.class, //@BZ https://bugzilla.redhat.com/show_bug.cgi?id=1153008
 })
 public class AllEditorTests extends TestSuite {
 	

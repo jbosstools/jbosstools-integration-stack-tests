@@ -1,5 +1,9 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ErrorRef;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.FromVariable;
@@ -10,6 +14,9 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ToDataInput;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.SendTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
+import org.jboss.tools.bpmn2.ui.bot.test.jbpm.JbpmAssertions;
+import org.jboss.tools.bpmn2.ui.bot.test.jbpm.SendTaskWorkItemdHandler;
+import org.jboss.tools.bpmn2.ui.bot.test.jbpm.TriggeredNodesListener;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
@@ -43,8 +50,17 @@ public class SendTaskTest extends JBPM6BaseTest {
 
 	@Override
 	public void assertRunOfProcessModel(KieSession kSession) {
-		ProcessInstance processInstance = kSession.startProcess("BPMN2SendTask");
-		assertTrue(processInstance.getState() == ProcessInstance.STATE_COMPLETED);
+		TriggeredNodesListener triggeredNodes = new TriggeredNodesListener(
+			Arrays.asList("StartProcess", "Send", "EndProcess"), null);
+		kSession.addEventListener(triggeredNodes);
+		
+		kSession.getWorkItemManager().registerWorkItemHandler("Send Task", new SendTaskWorkItemdHandler("msgName"));
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("s", "Initialized string");
+		
+		ProcessInstance processInstance = kSession.startProcess("BPMN2SendTask", params);
+		JbpmAssertions.assertProcessInstanceCompleted(processInstance, kSession);
 	}
 	
 }

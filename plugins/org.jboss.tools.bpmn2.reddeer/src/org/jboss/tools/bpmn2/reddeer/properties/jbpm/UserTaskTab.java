@@ -126,4 +126,16 @@ public class UserTaskTab {
 		expression.setUp("On Exit Script");
 	}
 	
+	public void addLocalVariable(String varName, String dataType) {
+		new DefaultSection("Local Variable List").getToolbarButton("Add").click();
+		DefaultSection variableDetails = new DefaultSection("Local Variable Details");
+		new LabeledText(variableDetails, "Name").setText(varName);
+		DefaultCombo combo = new DefaultCombo("Data Type");
+		if (!combo.contains(dataType)) {
+			throw new UnsupportedOperationException("Adding variable of type: " + dataType + " is not supported yet");
+		}
+		combo.setSelection(dataType);
+		variableDetails.getToolbarButton("Close").click();
+	}
+	
 }

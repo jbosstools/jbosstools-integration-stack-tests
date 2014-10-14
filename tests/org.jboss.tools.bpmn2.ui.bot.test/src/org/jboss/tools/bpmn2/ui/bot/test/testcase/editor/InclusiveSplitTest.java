@@ -1,5 +1,9 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.Position;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
@@ -8,6 +12,8 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.Direction;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.InclusiveGateway;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
+import org.jboss.tools.bpmn2.ui.bot.test.jbpm.JbpmAssertions;
+import org.jboss.tools.bpmn2.ui.bot.test.jbpm.TriggeredNodesListener;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
@@ -49,8 +55,16 @@ public class InclusiveSplitTest extends JBPM6BaseTest {
 
 	@Override
 	public void assertRunOfProcessModel(KieSession kSession) {
-		ProcessInstance processInstance = kSession.startProcess("BPMN2InclusiveSplit");
-		assertTrue(processInstance.getState() == ProcessInstance.STATE_COMPLETED);
+		TriggeredNodesListener triggered = new TriggeredNodesListener(
+			Arrays.asList("StartProcess", "Gateway", "Script1", "EndProcess1", "Script2", "EndProcess2"), 
+			Arrays.asList("Script3", "EndProcess3"));
+		kSession.addEventListener(triggered);
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("x", 15);
+		
+		ProcessInstance processInstance = kSession.startProcess("BPMN2InclusiveSplit", params);
+		JbpmAssertions.assertProcessInstanceCompleted(processInstance, kSession);
 	}
 	
 }
