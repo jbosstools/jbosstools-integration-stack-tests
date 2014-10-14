@@ -1,5 +1,7 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
+import java.util.Arrays;
+
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.Position;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
@@ -8,20 +10,25 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.UserTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.ConditionalBoundaryEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
+import org.jboss.tools.bpmn2.ui.bot.test.jbpm.JbpmAssertions;
+import org.jboss.tools.bpmn2.ui.bot.test.jbpm.PersistenceWorkItemHandler;
+import org.jboss.tools.bpmn2.ui.bot.test.jbpm.TriggeredNodesListener;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
+import org.kie.api.runtime.process.WorkItem;
 
 /**
  * ISSUE - language should be 'http://www.jboss.org/drools/rule' but it's not available.
  */
-@ProcessDefinition(name="BPMN2-BoundaryConditionalEventOnTask", project="EditorTestProject")
+@ProcessDefinition(name="BPMN2-BoundaryConditionalEventOnTask", project="EditorTestProject", needPerson=true)
 public class BoundaryConditionalEventOnTaskTest extends JBPM6BaseTest {
 
 	@Override
 	public void buildProcessModel() {
 		Process process = new Process("BPMN2-BoundaryConditionalEventOnTask");
 		process.addLocalVariable("x", "String");
+		process.addImport("org.jbpm.bpmn2.objects.Person");
 		
 		StartEvent startEvent = new StartEvent("StartProcess");
 		startEvent.append("User Task", ElementType.USER_TASK);
@@ -47,8 +54,27 @@ public class BoundaryConditionalEventOnTaskTest extends JBPM6BaseTest {
 
 	@Override
 	public void assertRunOfProcessModel(KieSession kSession) {
-		ProcessInstance processInstance = kSession.startProcess("BPMN2BoundaryConditionalEventOnTask");		
-		assertTrue(processInstance.getState() == ProcessInstance.STATE_COMPLETED);
+		PersistenceWorkItemHandler workItemHandler = new PersistenceWorkItemHandler();
+		kSession.getWorkItemManager().registerWorkItemHandler("Human Task", workItemHandler);
+		
+		
+		TriggeredNodesListener triggeredNodes = new TriggeredNodesListener(Arrays.asList("StartProcess" ,
+				"User Task", "User Task 2", "End 1", "End 2", "Condition met"), null);
+		kSession.addEventListener(triggeredNodes);
+		
+		org.jbpm.bpmn2.objects.Person person = new org.jbpm.bpmn2.objects.Person();
+		person.setName("john");
+		kSession.insert(person);
+		
+		ProcessInstance processInstance = kSession.startProcess("BPMN2BoundaryConditionalEventOnTask");
+		kSession.fireAllRules();
+		WorkItem workItem = workItemHandler.getWorkItem("User Task");
+		if(workItem != null) {
+			workItemHandler.completeWorkItem(workItem,kSession.getWorkItemManager());
+		}
+		workItem = workItemHandler.getWorkItem("User Task 2");
+		workItemHandler.completeWorkItem(workItem, kSession.getWorkItemManager());
+		JbpmAssertions.assertProcessInstanceCompleted(processInstance, kSession);
 	}
 	
 }

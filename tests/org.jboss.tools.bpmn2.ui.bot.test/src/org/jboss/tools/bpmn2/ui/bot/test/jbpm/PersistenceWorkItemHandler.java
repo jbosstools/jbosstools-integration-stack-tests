@@ -1,9 +1,9 @@
 package org.jboss.tools.bpmn2.ui.bot.test.jbpm;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
-import org.apache.log4j.Logger;
+import java.util.Map;
 import org.kie.api.runtime.process.WorkItem;
 import org.kie.api.runtime.process.WorkItemHandler;
 import org.kie.api.runtime.process.WorkItemManager;
@@ -15,9 +15,12 @@ import org.kie.api.runtime.process.WorkItemManager;
  */
 public class PersistenceWorkItemHandler implements WorkItemHandler {
 
-	private Logger log = Logger.getLogger(getClass());  
-
 	private List<WorkItem> workItems = new ArrayList<WorkItem>();
+	private Map<String, Map<String, Object>> results;
+	
+	public PersistenceWorkItemHandler() {
+		results = new HashMap<String, Map<String,Object>>();
+	}
 	
 	public WorkItem getWorkItem(String nodeName) {
 		for(WorkItem item : workItems) {
@@ -34,18 +37,32 @@ public class PersistenceWorkItemHandler implements WorkItemHandler {
 	}
 	
 	public void completeWorkItem(WorkItem workItem, WorkItemManager manager) {
+		Map<String, Object> result = null;
+		
+		
+		for(String nodeName : results.keySet()) {
+			if(((String) workItem.getParameter("NodeName")).compareTo(nodeName) == 0){
+				result = results.get(nodeName);
+				break;
+			}
+		}
+		
+		manager.completeWorkItem(workItem.getId(), result);
 		workItems.remove(workItem);
-		manager.completeWorkItem(workItem.getId(), null);
 	}
 	
 	@Override
 	public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
-		
 		workItems.add(workItem);
 	}
 	
 	@Override
 	public void abortWorkItem(WorkItem workItem, WorkItemManager manager) {
-		log.debug("Aborting work item: " + workItem.getName());
+		workItems.remove(workItem);
+		manager.abortWorkItem(workItem.getId());
+	}
+	
+	public void setResult(String nodeName, Map<String, Object> result) {
+		results.put(nodeName, result);
 	}
 }

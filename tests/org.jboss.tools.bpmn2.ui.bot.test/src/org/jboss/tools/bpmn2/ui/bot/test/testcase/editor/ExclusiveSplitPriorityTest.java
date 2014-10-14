@@ -12,6 +12,8 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.Direction;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.ExclusiveGateway;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
+import org.jboss.tools.bpmn2.ui.bot.test.jbpm.JbpmAssertions;
+import org.jboss.tools.bpmn2.ui.bot.test.jbpm.PersistenceWorkItemHandler;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
@@ -62,8 +64,11 @@ public class ExclusiveSplitPriorityTest extends JBPM6BaseTest {
 
 	@Override
 	public void assertRunOfProcessModel(KieSession kSession) {
+		PersistenceWorkItemHandler handler = new PersistenceWorkItemHandler();
+		kSession.getWorkItemManager().registerWorkItemHandler("Human Task", handler);
+		
 		ProcessInstance processInstance = kSession.startProcess("BPMN2ExclusiveSplitPriority");
-		assertTrue(processInstance.getState() == ProcessInstance.STATE_COMPLETED);
+		JbpmAssertions.assertProcessInstanceCompleted(processInstance, kSession);
 	}
 	
 }

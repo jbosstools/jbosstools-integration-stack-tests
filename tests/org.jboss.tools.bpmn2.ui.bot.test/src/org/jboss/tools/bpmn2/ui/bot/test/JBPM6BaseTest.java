@@ -52,8 +52,6 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 	
 	protected String diagramFileLocation;
 	
-	protected JbpmAssertionsForBPMN2 jbpmAsserter;
-	
 	/**
 	 * 
 	 */
@@ -67,7 +65,6 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 
 		editor = new ProcessEditorView(definition.name().replace("\\s+", ""));
 		problems = new  ProblemsView();
-		jbpmAsserter = new JbpmAssertionsForBPMN2();
 	}
 	
 	/**
@@ -82,7 +79,7 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 	
 	public void runProcessModel() {
 		Resource resource = ResourceFactory.newByteArrayResource(diagramSourceCode.getBytes());
-		resource.setResourceType(ResourceType.BPMN2);
+ 		resource.setResourceType(ResourceType.BPMN2);
 		resource.setSourcePath(diagramFileLocation);
 		
 		KieHelper kieHelper = new KieHelper();

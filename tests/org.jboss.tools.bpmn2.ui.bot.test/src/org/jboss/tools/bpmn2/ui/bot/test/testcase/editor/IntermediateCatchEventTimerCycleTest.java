@@ -5,6 +5,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.catchevents.TimerIntermediateCatchEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
+import org.jboss.tools.bpmn2.ui.bot.test.jbpm.JbpmAssertions;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
@@ -32,7 +33,14 @@ public class IntermediateCatchEventTimerCycleTest extends JBPM6BaseTest {
 	@Override
 	public void assertRunOfProcessModel(KieSession kSession) {
 		ProcessInstance processInstance = kSession.startProcess("BPMN2IntermediateCatchEventTimerCycle");
-		assertTrue(processInstance.getState() == ProcessInstance.STATE_COMPLETED);
+		
+		try {
+		    Thread.sleep(550);                 //1000 milliseconds is one second.
+		} catch(InterruptedException ex) {
+		    Thread.currentThread().interrupt();
+		}
+		
+		JbpmAssertions.assertProcessInstanceCompleted(processInstance, kSession);
 	}
 
 	

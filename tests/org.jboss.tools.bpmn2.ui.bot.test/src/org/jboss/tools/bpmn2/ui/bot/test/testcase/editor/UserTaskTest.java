@@ -1,9 +1,15 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
+import java.util.Arrays;
+
+import org.drools.core.process.instance.WorkItem;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.UserTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
+import org.jboss.tools.bpmn2.ui.bot.test.jbpm.JbpmAssertions;
+import org.jboss.tools.bpmn2.ui.bot.test.jbpm.PersistenceWorkItemHandler;
+import org.jboss.tools.bpmn2.ui.bot.test.jbpm.TriggeredNodesListener;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
@@ -23,8 +29,17 @@ public class UserTaskTest extends JBPM6BaseTest {
 
 	@Override
 	public void assertRunOfProcessModel(KieSession kSession) {
-		ProcessInstance processInstance = kSession.startProcess("BPMN2UserTask");
+		PersistenceWorkItemHandler handler = new PersistenceWorkItemHandler();
+		kSession.getWorkItemManager().registerWorkItemHandler("Human Task", handler);
 		
-		assertTrue(processInstance.getState() == ProcessInstance.STATE_COMPLETED);
+		TriggeredNodesListener triggered = new TriggeredNodesListener(
+			Arrays.asList("StartProcess", "User Task", "EndProcess"), null);
+		kSession.addEventListener(triggered);
+		
+		ProcessInstance processInstance = kSession.startProcess("BPMN2UserTask");
+		WorkItem item = (WorkItem) handler.getWorkItem("User Task");
+		assertEquals("This user task should be assigned to john", "john",(String) item.getParameter("ActorId"));
+		handler.completeWorkItem(item, kSession.getWorkItemManager());
+		JbpmAssertions.assertProcessInstanceCompleted(processInstance, kSession);
 	}
 }

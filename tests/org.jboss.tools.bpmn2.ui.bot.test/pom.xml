@@ -19,12 +19,12 @@
 		<awt.robot>false</awt.robot>
 		<bpmn.validation>false</bpmn.validation>
 		<test.class>AllEditorTests</test.class>
-		<ecj.version>3.7.2</ecj.version>
+		<ecj.version>4.3.1</ecj.version>
 		<protobuf.version>2.5.0</protobuf.version>
 		<xstream.version>1.4.3</xstream.version>
 		<antlr.version>3.5</antlr.version>
 		<joda-time.version>1.6.2</joda-time.version>
-		<mvel.version>2.1.7.Final</mvel.version>
+		<mvel.version>2.2.1.Final</mvel.version>
 		<javassist.version>3.15.0-GA</javassist.version>
 		<dom4j.version>1.6.1</dom4j.version>
 		<slf4j.version>1.7.2</slf4j.version>
@@ -126,11 +126,6 @@
 		<dependency>
 			<groupId>org.jbpm</groupId>
 			<artifactId>jbpm-audit</artifactId>
-			<version>${droolsjbpm.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jbpm</groupId>
-			<artifactId>jbpm-test</artifactId>
 			<version>${droolsjbpm.version}</version>
 		</dependency>
 		<dependency>
@@ -275,11 +270,6 @@
 								<artifactItem>
 									<groupId>org.jbpm</groupId>
 									<artifactId>jbpm-audit</artifactId>
-									<version>${droolsjbpm.version}</version>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.jbpm</groupId>
-									<artifactId>jbpm-test</artifactId>
 									<version>${droolsjbpm.version}</version>
 								</artifactItem>
 								<artifactItem>
