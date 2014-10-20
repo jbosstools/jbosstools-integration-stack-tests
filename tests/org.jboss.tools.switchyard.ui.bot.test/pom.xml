@@ -97,9 +97,9 @@
 		    <goal>wget</goal>
 		  </goals>
 		  <configuration>
-		    <url>http://downloads.jboss.org/switchyard/releases/v2.0.Alpha2/switchyard-2.0.0.Alpha2-WildFly.zip</url>
+		    <url>http://downloads.jboss.org/switchyard/releases/v2.0.Alpha3/switchyard-2.0.0.Alpha3-WildFly.zip</url>
 		    <unpack>true</unpack>
-		    <md5>5227e62abd9c14130fd68d8cdbe70eae</md5>
+		    <md5>0bde300c252aca20cc9933d577aec173</md5>
 		    <outputDirectory>${project.build.directory}/wildfly-8.1.0.Final</outputDirectory>
 		  </configuration>
 		</execution>
