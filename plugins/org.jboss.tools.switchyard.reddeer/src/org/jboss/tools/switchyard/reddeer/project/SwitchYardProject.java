@@ -1,5 +1,10 @@
 package org.jboss.tools.switchyard.reddeer.project;
 
+import java.io.File;
+
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
@@ -53,6 +58,13 @@ public class SwitchYardProject extends Project {
 
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+	}
+
+	public File getFile() {
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		IWorkspaceRoot root = workspace.getRoot();
+
+		return new File(new File(root.getLocationURI().getPath()), getName());
 	}
 
 }

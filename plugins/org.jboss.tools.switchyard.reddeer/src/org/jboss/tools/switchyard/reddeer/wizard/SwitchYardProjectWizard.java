@@ -11,6 +11,7 @@ import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
+import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
@@ -27,9 +28,18 @@ import org.jboss.reddeer.swt.wait.WaitWhile;
  */
 public class SwitchYardProjectWizard extends NewWizardDialog {
 
+	public static final String PROJECT_NAME = "Project name:";
+	public static final String ARTIFACT_ID = "Artifact Id:";
+	public static final String GROUP_ID = "Group Id:";
+	public static final String TARGET_NAMESPACE = "Target Namespace:";
+	public static final String PACKAGE_NAME = "Package Name:";
+	public static final String OSGI_BUNDLE = "OSGI Bundle";
+
 	public static final String DEFAULT_CONFIGURATION_VERSION = "2.0";
-	public static final String DEFAULT_LIBRARY_VERSION = "2.0.0.Alpha2";
-	
+	public static final String DEFAULT_LIBRARY_VERSION = "2.0.0.Alpha3";
+
+	public static final String SWITCHYARD_COMPONENTS = "SwitchYard Components";
+
 	public static final String DIALOG_TITLE = "New SwitchYard Project";
 
 	private String name;
@@ -40,14 +50,14 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 	private String libraryVersion;
 	private List<String[]> components;
 
-	protected SwitchYardProjectWizard(String name) {
+	public SwitchYardProjectWizard(String name) {
 		this(name, DEFAULT_CONFIGURATION_VERSION, DEFAULT_LIBRARY_VERSION);
 	}
-	
+
 	public SwitchYardProjectWizard(String name, String configurationVersion, String libraryVersion) {
 		this(name, configurationVersion, libraryVersion, null);
 	}
-	
+
 	public SwitchYardProjectWizard(String name, String configurationVersion, String libraryVersion, String targetRuntime) {
 		super("SwitchYard", "SwitchYard Project");
 		this.name = name;
@@ -56,10 +66,23 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		this.libraryVersion = libraryVersion;
 		components = new ArrayList<String[]>();
 	}
-	
+
 	public SwitchYardProjectWizard name(String name) {
 		this.name = name;
 		return this;
+	}
+
+	public SwitchYardProjectWizard setName(String name) {
+		new LabeledText(PROJECT_NAME).setText(name);
+		return this;
+	}
+
+	public String getName() {
+		return new LabeledText(PROJECT_NAME).getText();
+	}
+
+	public String getArtifactId() {
+		return new LabeledText(ARTIFACT_ID).getText();
 	}
 
 	public SwitchYardProjectWizard groupId(String groupId) {
@@ -67,9 +90,54 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		return this;
 	}
 
+	public SwitchYardProjectWizard setGroupId(String groupId) {
+		new LabeledText(GROUP_ID).setText(groupId);
+		return this;
+	}
+
+	public String getGroupId() {
+		return new LabeledText(GROUP_ID).getText();
+	}
+
+	public SwitchYardProjectWizard setTargetNamespace(String targetNamespace) {
+		new LabeledText(TARGET_NAMESPACE).setText(targetNamespace);
+		return this;
+	}
+
+	public String gettargetNamespace() {
+		return new LabeledText(TARGET_NAMESPACE).getText();
+	}
+
 	public SwitchYardProjectWizard packageName(String packageName) {
 		this.packageName = packageName;
 		return this;
+	}
+
+	public SwitchYardProjectWizard setPackageName(String packageName) {
+		new LabeledText(PACKAGE_NAME).setText(packageName);
+		return this;
+	}
+
+	public String getPackageName() {
+		return new LabeledText(PACKAGE_NAME).getText();
+	}
+
+	public SwitchYardProjectWizard setOSGiBundle(boolean checked) {
+		new CheckBox(OSGI_BUNDLE).toggle(checked);
+		return this;
+	}
+
+	public boolean isOSGiBundle() {
+		return new CheckBox(OSGI_BUNDLE).isChecked();
+	}
+
+	public SwitchYardProjectWizard setComponent(String group, String component, boolean checked) {
+		new DefaultTreeItem(new DefaultGroup(SWITCHYARD_COMPONENTS), group, component).setChecked(checked);
+		return this;
+	}
+
+	public boolean isComponent(String group, String component) {
+		return new DefaultTreeItem(new DefaultGroup(SWITCHYARD_COMPONENTS), group, component).isChecked();
 	}
 
 	public SwitchYardProjectWizard impl(String... component) {
@@ -85,18 +153,64 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		}
 		return this;
 	}
-	
+
 	public SwitchYardProjectWizard activate() {
 		new DefaultShell(DIALOG_TITLE);
 		return this;
 	}
 
-	public void create() {
-		open();
+	private void setText(String label, String value) {
+		if (value != null) {
+			new LabeledText(label).setText(value);
+		}
+	}
+
+	public void setConfigurationVersion(String configurationVersion) {
+		Combo combo = new LabeledCombo("Configuration Version:");
+		if (configurationVersion != null && combo.isEnabled()) {
+			combo.setSelection(configurationVersion);
+		}
+	}
+
+	public String getLibraryVersion() {
+		Combo combo = new LabeledCombo("Library Version:");
+		return combo.getText();
+	}
+
+	public void setLibraryVersion(String libraryVersion) {
+		Combo combo = new LabeledCombo("Library Version:");
+		if (libraryVersion != null && combo.isEnabled()) {
+			combo.setText(libraryVersion);
+		}
+	}
+
+	public String getTargetRuntime() {
+		Combo combo = new LabeledCombo("Target Runtime:");
+		return combo.getSelection();
+	}
+
+	public void setTargetRuntime(String targetRuntime) {
+		Combo combo = new LabeledCombo("Target Runtime:");
+		combo.setSelection(targetRuntime);
+	}
+
+	private void selectComponents(List<String[]> components) {
+		for (String[] component : components) {
+			new DefaultTreeItem(component).setChecked(true);
+		}
+	}
+
+	@Override
+	public void open() {
+		super.open();
 		activate();
-		setText("Project name:", name);
+		setName(name);
 		next();
 		activate();
+	}
+
+	public void create() {
+		open();
 		setText("Group Id:", groupId);
 		setText("Package Name:", packageName);
 		setConfigurationVersion(configurationVersion);
@@ -121,7 +235,7 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		} catch (Exception e) {
 			// this shell pop ups only sometimes
 		}
-		
+
 		TimePeriod timeout = TimePeriod.getCustom(20 * 60 * 1000);
 		new WaitWhile(new ShellWithTextIsActive(DIALOG_TITLE), timeout);
 		new WaitWhile(new JobIsRunning(), timeout);
@@ -138,46 +252,5 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
-	}
-	
-	private void setText(String label, String value) {
-		if (value != null) {
-			new LabeledText(label).setText(value);
-		}
-	}
-
-	public void setConfigurationVersion(String configurationVersion) {
-		Combo combo = new LabeledCombo("Configuration Version:");
-		if (configurationVersion != null && combo.isEnabled()) {
-			combo.setSelection(configurationVersion);
-		}
-	}
-	
-	public String getLibraryVersion() {
-		Combo combo = new LabeledCombo("Library Version:");
-		return combo.getText();
-	}
-	
-	public void setLibraryVersion(String libraryVersion) {
-		Combo combo = new LabeledCombo("Library Version:");
-		if (libraryVersion != null && combo.isEnabled()) {
-			combo.setText(libraryVersion);
-		}
-	}
-	
-	public String getTargetRuntime() {
-		Combo combo = new LabeledCombo("Target Runtime:");
-		return combo.getSelection();
-	}
-	
-	public void setTargetRuntime(String targetRuntime) {
-		Combo combo = new LabeledCombo("Target Runtime:");
-		combo.setSelection(targetRuntime);
-	}
-	
-	private void selectComponents(List<String[]> components) {
-		for (String[] component : components) {
-			new DefaultTreeItem(component).setChecked(true);
-		}
 	}
 }

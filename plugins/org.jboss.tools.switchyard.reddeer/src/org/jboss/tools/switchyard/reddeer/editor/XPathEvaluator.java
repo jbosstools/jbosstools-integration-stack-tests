@@ -1,5 +1,7 @@
 package org.jboss.tools.switchyard.reddeer.editor;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -22,6 +24,10 @@ public class XPathEvaluator {
 
 	private Document doc;
 	
+	public XPathEvaluator(File file) {
+		this(getReader(file));
+	}
+	
 	public XPathEvaluator(Reader reader) {
 		try {
 			doc = DOC_FACTORY.newDocumentBuilder().parse(new InputSource(reader));
@@ -30,6 +36,14 @@ public class XPathEvaluator {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		} catch (ParserConfigurationException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	private static Reader getReader(File file) {
+		try {
+			return new FileReader(file);
+		} catch (FileNotFoundException e) {
 			throw new RuntimeException(e);
 		}
 	}
