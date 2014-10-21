@@ -5,9 +5,17 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringWriter;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Result;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -19,17 +27,28 @@ import org.xml.sax.SAXException;
 
 public class XPathEvaluator {
 
+	public static final boolean DEFAULT_NAMESPACE_AWARE = false;
+
 	private static final DocumentBuilderFactory DOC_FACTORY = DocumentBuilderFactory.newInstance();
 	private static final XPath XPATH = XPathFactory.newInstance().newXPath();
 
 	private Document doc;
-	
+
 	public XPathEvaluator(File file) {
-		this(getReader(file));
+		this(file, DEFAULT_NAMESPACE_AWARE);
 	}
-	
+
+	public XPathEvaluator(File file, boolean namespaceAware) {
+		this(getReader(file), namespaceAware);
+	}
+
 	public XPathEvaluator(Reader reader) {
+		this(reader, DEFAULT_NAMESPACE_AWARE);
+	}
+
+	public XPathEvaluator(Reader reader, boolean namespaceAware) {
 		try {
+			DOC_FACTORY.setNamespaceAware(namespaceAware);
 			doc = DOC_FACTORY.newDocumentBuilder().parse(new InputSource(reader));
 		} catch (SAXException e) {
 			throw new RuntimeException(e);
@@ -39,7 +58,7 @@ public class XPathEvaluator {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	private static Reader getReader(File file) {
 		try {
 			return new FileReader(file);
@@ -67,12 +86,30 @@ public class XPathEvaluator {
 			return null;
 		}
 	}
-	
-	public static void main(String[] args) throws Exception {
-		XPathEvaluator xpath = new XPathEvaluator(new FileReader("/home/apodhrad/Temp/switchyard.xml"));
-		System.out.println(xpath.evaluateString("count(/switchyard/composite/component)"));
-		System.out.println(xpath.evaluateString("count(/switchyard/composite/component/implementation.camel) = 1"));
-		System.out.println(xpath.evaluateBoolean("/switchyard/composite/component/@name = 'MyProcess'"));
+
+	public void printDocument(Result target) throws IOException, TransformerException {
+		TransformerFactory tf = TransformerFactory.newInstance();
+		Transformer transformer = tf.newTransformer();
+		transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+		transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+		transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+		transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+
+		transformer.transform(new DOMSource(doc), target);
+	}
+
+	@Override
+	public String toString() {
+		StringWriter writer = new StringWriter();
+		try {
+			printDocument(new StreamResult(writer));
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (TransformerException e) {
+			e.printStackTrace();
+		}
+		return writer.toString();
 	}
 
 }

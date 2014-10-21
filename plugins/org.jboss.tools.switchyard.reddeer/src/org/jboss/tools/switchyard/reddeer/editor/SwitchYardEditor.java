@@ -151,7 +151,7 @@ public class SwitchYardEditor extends GEFEditor {
 		return result;
 	}
 
-	protected File getSourceFile() {
+	public File getSourceFile() {
 		if (sourceFile == null) {
 			IEditorInput editorInput = editorPart.getEditorInput();
 			if (editorInput instanceof FileEditorInput) {
