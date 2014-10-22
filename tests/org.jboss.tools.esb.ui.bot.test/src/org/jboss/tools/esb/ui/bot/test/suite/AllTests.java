@@ -10,6 +10,7 @@ import org.jboss.tools.esb.ui.bot.test.NewESBFileTest;
 import org.jboss.tools.esb.ui.bot.test.NewProjectUsingRuntimeTest;
 import org.jboss.tools.esb.ui.bot.test.NewProjectUsingServerTest;
 import org.jboss.tools.esb.ui.bot.test.NotificationsTest;
+import org.jboss.tools.esb.ui.bot.test.ProjectExamplesTest;
 import org.jboss.tools.esb.ui.bot.test.ProvidersTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
@@ -22,8 +23,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	NewESBFileTest.class,
 	NewProjectUsingRuntimeTest.class,
 	NewProjectUsingServerTest.class,
-	DeploymentTest.class
-	// TODO: add test for examples
+	DeploymentTest.class,
+	ProjectExamplesTest.class
 })
 @RunWith(RedDeerSuite.class)
 public class AllTests extends TestSuite {
