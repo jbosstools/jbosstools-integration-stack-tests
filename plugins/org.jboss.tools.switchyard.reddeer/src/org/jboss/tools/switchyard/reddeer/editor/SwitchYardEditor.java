@@ -18,6 +18,7 @@ import org.jboss.tools.switchyard.reddeer.preference.CompositePropertiesPage;
 import org.jboss.tools.switchyard.reddeer.wizard.BPMServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.BeanServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.CamelJavaWizard;
+import org.jboss.tools.switchyard.reddeer.wizard.CamelXMLWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.DroolsServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ReferenceWizard;
 
@@ -103,9 +104,14 @@ public class SwitchYardEditor extends GEFEditor {
 		addTool(TOOL_CAMEL_JAVA, editPart);
 		return new CamelJavaWizard(this);
 	}
-
-	public void addCamelXmlImplementation() {
-
+	
+	public CamelXMLWizard addCamelXMLImplementation() {
+		return addCamelXmlImplementation(composite);
+	}
+	
+	public CamelXMLWizard addCamelXmlImplementation(EditPart editPart) {
+		addTool(TOOL_CAMEL_XML, editPart);
+		return new CamelXMLWizard(this);
 	}
 
 	public void addBPELImplementation() {

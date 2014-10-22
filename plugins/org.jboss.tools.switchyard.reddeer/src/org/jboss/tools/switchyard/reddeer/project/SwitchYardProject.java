@@ -64,6 +64,7 @@ public class SwitchYardProject extends Project {
 	public File getFile() {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IWorkspaceRoot root = workspace.getRoot();
+		
 
 		return new File(new File(root.getLocationURI().getPath()), getName());
 	}
