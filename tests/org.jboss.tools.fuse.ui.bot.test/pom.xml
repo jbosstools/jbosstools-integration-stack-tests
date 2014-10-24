@@ -38,16 +38,22 @@
 							<artifactId>org.fusesource.ide.camel.editor.feature.feature.group</artifactId>
 							<version>0.0.0</version>
 						</dependency>
-						<!-- Fuse Runtimes feature -->
+						<!-- Fuse Core feature -->
 						<dependency>
 							<type>p2-installable-unit</type>
-							<artifactId>org.fusesource.ide.runtimes.feature.feature.group</artifactId>
+							<artifactId>org.fusesource.ide.core.feature.feature.group</artifactId>
 							<version>0.0.0</version>
 						</dependency>
 						<!-- Fuse Server feature -->
 						<dependency>
 							<type>p2-installable-unit</type>
 							<artifactId>org.fusesource.ide.server.extensions.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+						<!-- Fuse JMX feature -->
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.fusesource.ide.jmx.feature.feature.group</artifactId>
 							<version>0.0.0</version>
 						</dependency>
 						<!-- AS feature -->
