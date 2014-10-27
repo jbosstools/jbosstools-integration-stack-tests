@@ -5,7 +5,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.junit.requirement.CustomConfiguration;
 import org.jboss.reddeer.junit.requirement.Requirement;
 import org.jboss.tools.runtime.reddeer.RuntimeBase;
@@ -18,8 +17,6 @@ import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
  */
 
 public class RuntimeRequirement implements Requirement<Runtime>, CustomConfiguration<RuntimeConfig> {
-
-	private static final Logger LOGGER = Logger.getLogger(RuntimeRequirement.class);
 
 	private RuntimeConfig config;
 	private Runtime runtime;
