@@ -40,16 +40,17 @@ public class JMXNavigator extends WorkbenchView {
 		log.info("Connecting to '" + name + "'.");
 		open();
 		List<TreeItem> items = new DefaultTree().getItems();
-		// temporary hack due to bad process view in JMX Navigator View (should
-		// by fix with new JBT)
+
 		for (TreeItem item : items) {
-			if (item.getItems().size() > 0) {
+			if (item.getText().equals("Local Processes")) {
+				item.expand();
 				items = item.getItems();
 				break;
 			}
-		}
+		}				 				
+			 				
 		for (TreeItem item : items) {
-			if (item.getText().startsWith(name)) {
+			if (item.getText().contains(name)) {
 				item.select();
 				AbstractWait.sleep(TimePeriod.getCustom(2));
 				try {
@@ -80,33 +81,36 @@ public class JMXNavigator extends WorkbenchView {
 
 		open();
 		List<TreeItem> items = new DefaultTree().getItems();
-
-		// temporary hack due to bad process view in JMX Navigator View (should
-		// by fix with new JBT)
 		for (TreeItem item : items) {
-			if (item.getItems().size() > 0) {
+			if (item.getText().equals("Local Processes")) {
+				item.expand();
 				items = item.getItems();
 				break;
 			}
 		}
-		String[] temp = path;
-		if (temp[0].equals("Local Camel Context")) {
-			boolean camelContext = false;
+
+		for (int i = 0; i < path.length; i++) {
 			for (TreeItem item : items) {
-				if (item.getText().equals("Local Camel Context")) {
-					camelContext = true;
+
+				if (i == 0 && 
+						// node 'Local Camel Context' could be sometimes named 'maven [pid]'
+						(path[i].equals("Local Camel Context") && (item.getText().startsWith(path[i]) || item.getText().startsWith("maven [")) ||
+						// node 'JBoss Fuse' could be sometimes named 'karaf'
+						 path[i].equals("karaf") && (item.getText().contains(path[i]) || item.getText().startsWith("JBoss Fuse")))) {
+
+					if (i == path.length - 1) {
+						return item;
+					}
+
+					item.select();
+					item.doubleClick();
+					items = item.getItems();
+					break;
 				}
-			}
-			if (!camelContext) {
-				temp[0] = "maven";
-			}
-		}
 
-		for (int i = 0; i < temp.length; i++) {
-			for (TreeItem item : items) {
-				if (item.getText().startsWith(temp[i])) {
+				if (item.getText().startsWith(path[i])) {
 
-					if (i == temp.length - 1) {
+					if (i == path.length - 1) {
 						return item;
 					}
 
@@ -120,5 +124,4 @@ public class JMXNavigator extends WorkbenchView {
 
 		return null;
 	}
-
 }
