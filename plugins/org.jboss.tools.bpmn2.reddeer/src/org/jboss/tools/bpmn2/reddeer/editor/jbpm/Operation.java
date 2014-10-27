@@ -113,7 +113,7 @@ public class Operation {
 		}
 		
 		if (errorRef != null) {
-			new PushButton(6).click();
+			new PushButton(5).click();
 			new DefaultShell("Select elements -- " + name).setFocus();
 			String errorItem = errorRef.getName() + "(" + errorRef.getDataType() + ")";
 			AbstractTable errorTable = new DefaultTable(0);

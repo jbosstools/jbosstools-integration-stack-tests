@@ -99,9 +99,9 @@ public class DefinitionsTab {
 	 * 
 	 * @param name
 	 */
-	public void addSignal(String name, String dataType) {
+	public void addSignal(String name) {
 		new DefaultSection("Signal List").getToolbarButton("Add").click();
-		new Signal(name, dataType).setUp();
+		new Signal(name).setUp();
 		new DefaultSection("Signal Details").getToolbarButton("Close").click();
 	}
 
@@ -120,9 +120,9 @@ public class DefinitionsTab {
 	 * @param name
 	 * @param escalationCode
 	 */
-	public void addEscalation(String name, String code, String dataType) {
+	public void addEscalation(String name, String code) {
 		new DefaultSection("Escalation List").getToolbarButton("Add").click();
-		new Escalation(name, code, dataType).setUpViaProcessDefinitions();
+		new Escalation(name, code).setUpViaProcessDefinitions();
 		new DefaultSection("Escalation Details").getToolbarButton("Close").click();
 	}
 	

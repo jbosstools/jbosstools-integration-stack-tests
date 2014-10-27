@@ -23,7 +23,7 @@ public class ConditionalBoundaryEventInterruptingTest extends JBPM6BaseTest {
 	public void buildProcessModel() {
 		Process process = new Process("BPMN2-ConditionalBoundaryEventInterrupting");
 		process.addLocalVariable("varForMapping", "String");
-		process.addEscalation("Timeout", "400", "String");
+		process.addEscalation("Timeout", "400");
 		
 		StartEvent startEvent = new StartEvent("StartProcess");
 		startEvent.append("Hello", ElementType.SUB_PROCESS, Position.SOUTH);
@@ -39,7 +39,7 @@ public class ConditionalBoundaryEventInterruptingTest extends JBPM6BaseTest {
 		task.append("EscalationEvent", ElementType.ESCALATION_END_EVENT, Position.NORTH);
 		
 		EscalationEndEvent endEvent = new EscalationEndEvent("EscalationEvent");
-		endEvent.setEscalation(new Escalation("Timeout", "400", "String"), "varForMapping");
+		endEvent.setEscalation(new Escalation("Timeout", "400"), "varForMapping");
 		
 		subProcess.add("Conditional Boundary Event Process", ElementType.CONDITIONAL_BOUNDARY_EVENT);
 		

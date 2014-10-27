@@ -1,9 +1,7 @@
 package org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.jboss.reddeer.swt.api.Combo;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
@@ -28,14 +26,6 @@ public class SignalDialog {
 		new DefaultShell("Create New Signal").setFocus();
 		new DefaultTabItem("General").activate();
 		new LabeledText("Name").setText(signal.getName());
-		
-		new DefaultTabItem("Signal").activate();
-		Combo dataTypeCombo = new LabeledCombo("Data Type");
-		if (!dataTypeCombo.getItems().contains(signal.getDataType())) {
-			new PushButton(0).click();
-			new DataTypeDialog().add(signal.getDataType());
-		}
-		dataTypeCombo.setSelection(signal.getDataType());
 		
 		new PushButton("OK").click();
 	}

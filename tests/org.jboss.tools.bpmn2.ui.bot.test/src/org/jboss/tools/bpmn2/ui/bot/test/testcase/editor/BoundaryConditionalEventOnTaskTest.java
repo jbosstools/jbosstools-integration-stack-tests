@@ -21,14 +21,15 @@ import org.kie.api.runtime.process.WorkItem;
 /**
  * ISSUE - language should be 'http://www.jboss.org/drools/rule' but it's not available.
  */
-@ProcessDefinition(name="BPMN2-BoundaryConditionalEventOnTask", project="EditorTestProject", needPerson=true)
+//@ProcessDefinition(name="BPMN2-BoundaryConditionalEventOnTask", project="EditorTestProject", needPerson=true)
+@ProcessDefinition(name="BPMN2-BoundaryConditionalEventOnTask", project="EditorTestProject")
 public class BoundaryConditionalEventOnTaskTest extends JBPM6BaseTest {
 
 	@Override
 	public void buildProcessModel() {
 		Process process = new Process("BPMN2-BoundaryConditionalEventOnTask");
 		process.addLocalVariable("x", "String");
-		process.addImport("org.jbpm.bpmn2.objects.Person");
+		//process.addImport("org.jbpm.bpmn2.objects.Person");
 		
 		StartEvent startEvent = new StartEvent("StartProcess");
 		startEvent.append("User Task", ElementType.USER_TASK);

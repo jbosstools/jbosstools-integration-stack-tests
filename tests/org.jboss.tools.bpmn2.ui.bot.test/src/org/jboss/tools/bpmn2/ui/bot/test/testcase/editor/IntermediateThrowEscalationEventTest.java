@@ -18,13 +18,13 @@ public class IntermediateThrowEscalationEventTest extends JBPM6BaseTest {
 	public void buildProcessModel() {
 		Process process = new Process("BPMN2-IntermediateThrowEscalationEvent");
 		process.addLocalVariable("variable", "String");
-		process.addEscalation("EscName", "MyEscalation", "String");
+		process.addEscalation("EscName", "MyEscalation");
 		
 		StartEvent start = new StartEvent("StartProcess");
 		start.append("Escalation Event", ElementType.ESCALATION_INTERMEDIATE_THROW_EVENT);
 
 		EscalationIntermediateThrowEvent ithrow = new EscalationIntermediateThrowEvent("Escalation Event");
-		ithrow.setEscalation(new Escalation("EscName", "MyEscalation", "String"), "variable");
+		ithrow.setEscalation(new Escalation("EscName", "MyEscalation"), "variable");
 		ithrow.append("EndProcess", ElementType.END_EVENT);
 	}
 
