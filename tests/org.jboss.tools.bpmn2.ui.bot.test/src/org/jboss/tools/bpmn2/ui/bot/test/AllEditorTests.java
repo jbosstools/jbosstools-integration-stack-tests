@@ -11,8 +11,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
 // Editor tests
 // ------------
-//	// Uncovered:
-//	// 	BZ-1053789
+//	// @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1157656
 	ParallelSplitJoinTest.class,
 	CallActivityTest.class,
 	AdHocProcessTest.class, //@BZ https://bugzilla.redhat.com/show_bug.cgi?id=1147940
@@ -23,18 +22,19 @@ import org.junit.runners.Suite.SuiteClasses;
 	BoundaryConditionalEventOnTaskTest.class, //@BZ https://bugzilla.redhat.com/show_bug.cgi?id=1153008
 	ErrorEndEventTest.class,
 	ConditionalStartTest.class,
-	ImportTest.class, // Headless exception when typing is done! Only on Mac
+	ImportTest.class, // Headless exception when typing is done! Only on Mac 
+					  // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1155145
 	ReceiveTaskTest.class, //@BZ https://bugzilla.redhat.com/show_bug.cgi?id=1134874 
 	ParallelSplitTest.class,
 	RuleTaskTest.class,
 	SendTaskTest.class, 
 	ErrorBoundaryEventOnTaskTest.class,
 	IntermediateCatchEventTimerCycleTest.class,
-	MessageStartTest.class,
+	MessageStartTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1155707
 	SubProcessTest.class,
 	UserTaskTest.class,
 	XPathExpressionTest.class, // @Ignore
-	LaneTest.class,
+	LaneTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1156314
 	DataObjectTest.class,
 	MultipleStartEventTest.class,
 	InclusiveSplitTest.class,

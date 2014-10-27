@@ -12,14 +12,13 @@ import org.kie.api.runtime.KieSession;
 public class IntermediateThrowEventNoneTest extends JBPM6BaseTest {
 
 	private static final String VAR_NAME = "x";
-	private static final String STRING_DATATYPE = "String";
 	private static final String SIG_NAME = "SomeSignal";
 	
 	@Override
 	public void buildProcessModel() {
 		Process process = new Process("BPMN2-IntermediateThrowEventNone");
-		process.addLocalVariable(VAR_NAME, STRING_DATATYPE);
-		process.addSignal(SIG_NAME, STRING_DATATYPE);
+		process.addLocalVariable(VAR_NAME, "String");
+		process.addSignal(SIG_NAME);
 		
 		StartEvent start = new StartEvent("StartProcess");
 		start.append("None Event", ElementType.INTERMEDIATE_THROW_EVENT);

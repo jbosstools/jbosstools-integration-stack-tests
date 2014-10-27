@@ -109,16 +109,16 @@ public class Process extends ElementContainer {
 	 * @param name
 	 * @param code
 	 */
-	public void addEscalation(String name, String code, String dataType) {
-		properties.getTab("Definitions", DefinitionsTab.class).addEscalation(name, code, dataType);
+	public void addEscalation(String name, String code) {
+		properties.getTab("Definitions", DefinitionsTab.class).addEscalation(name, code);
 	}
 	
 	/**
 	 * 
 	 * @param name
 	 */
-	public void addSignal(String name, String dataType) {
-		properties.getTab("Definitions", DefinitionsTab.class).addSignal(name, dataType);
+	public void addSignal(String name) {
+		properties.getTab("Definitions", DefinitionsTab.class).addSignal(name);
 	}
 	
 	/**

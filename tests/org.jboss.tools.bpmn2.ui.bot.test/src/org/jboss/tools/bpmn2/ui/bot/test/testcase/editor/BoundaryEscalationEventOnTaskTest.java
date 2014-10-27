@@ -28,7 +28,7 @@ public class BoundaryEscalationEventOnTaskTest extends JBPM6BaseTest {
 	public void buildProcessModel() {
 		Process process = new Process("BPMN2-BoundaryEscalationEventOnTask");
 		process.addLocalVariable("varA", "String");
-		process.addEscalation("MyEsc", "MyEscalation", "String");
+		process.addEscalation("MyEsc", "MyEscalation");
 		
 		StartEvent startEvent = new StartEvent("StartProcess");
 		startEvent.append("Split", ElementType.PARALLEL_GATEWAY);
@@ -43,7 +43,7 @@ public class BoundaryEscalationEventOnTaskTest extends JBPM6BaseTest {
 		userTask1.append("EscalationEndProcess", ElementType.ESCALATION_END_EVENT);
 
 		EscalationEndEvent escalationEndEvent = new EscalationEndEvent("EscalationEndProcess");
-		escalationEndEvent.setEscalation(new Escalation("MyEsc","MyEscalation","String"), "varA");
+		escalationEndEvent.setEscalation(new Escalation("MyEsc","MyEscalation"), "varA");
 	
 		UserTask userTask2 = new UserTask("User Task");
 		userTask2.addActor("Mary");
@@ -51,7 +51,7 @@ public class BoundaryEscalationEventOnTaskTest extends JBPM6BaseTest {
 		userTask2.addEvent("Escalation Boundary Event", ElementType.ESCALATION_BOUNDARY_EVENT);
 
 		EscalationBoundaryEvent boundaryEvent = new EscalationBoundaryEvent("Escalation Boundary Event");
-		boundaryEvent.setEscalation(new Escalation("MyEsc","MyEscalation", "String"), "varA");
+		boundaryEvent.setEscalation(new Escalation("MyEsc","MyEscalation"), "varA");
 		boundaryEvent.append("Script Task", ElementType.SCRIPT_TASK, Position.SOUTH);
 		
 		ScriptTask scriptTask = new ScriptTask("Script Task");
