@@ -5,7 +5,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.junit.requirement.CustomConfiguration;
 import org.jboss.reddeer.junit.requirement.Requirement;
 import org.jboss.reddeer.requirements.server.ServerReqState;
@@ -19,8 +18,6 @@ import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
  */
 
 public class ServerRequirement implements Requirement<Server>, CustomConfiguration<ServerConfig> {
-
-	private static final Logger LOGGER = Logger.getLogger(ServerRequirement.class);
 
 	private ServerConfig config;
 	private Server server;
