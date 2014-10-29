@@ -7,9 +7,6 @@ import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.Position;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.AdHocSubProcess;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.UserTask;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.Direction;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.ParallelGateway;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.jbpm.JbpmAssertions;
@@ -40,6 +37,7 @@ public class AdHocSubProcessTest extends JBPM6BaseTest {
 		start.append("Hello", ElementType.AD_HOC_SUB_PROCESS, Position.SOUTH);
 
 		AdHocSubProcess subprocess = new AdHocSubProcess("Hello");
+		subprocess.setCompletionCondition("Rule", "getActivityInstanceAttribute(\"numberOfActiveInstances\") == 0");
 		subprocess.append("Goodbye", ElementType.SCRIPT_TASK);		
 
 		ScriptTask task3 = new ScriptTask("Goodbye");
@@ -59,16 +57,6 @@ public class AdHocSubProcessTest extends JBPM6BaseTest {
 		ScriptTask task2 = new ScriptTask("Hello2");
 		task2.setScript("", "System.out.println(\"Hello World 2\");");
 		task2.append("UserTask", ElementType.USER_TASK);
-
-		subprocess.addRelativeToElement("Gateway", ElementType.PARALLEL_GATEWAY, task1, new Point(80, 0));
-		
-		ParallelGateway gateway = new ParallelGateway("Gateway");
-		gateway.setDirection(Direction.CONVERGING);
-		
-		task1.connectTo(gateway);
-		new UserTask("UserTask").connectTo(gateway);
-		
-		gateway.append("Termination", ElementType.TERMINATE_END_EVENT);
  	}
 
 	@Override
@@ -77,13 +65,13 @@ public class AdHocSubProcessTest extends JBPM6BaseTest {
 		kSession.getWorkItemManager().registerWorkItemHandler("Human Task", handler);
 		
 		TriggeredNodesListener triggeredNodes = new TriggeredNodesListener(Arrays.asList("StartProcess" ,
-				"Hello", "Goodbye", "EndProcess", "Hello1", "Hello2", "UserTask", "Gateway", "Termination"), null);
+				"Hello", "Goodbye", "EndProcess", "Hello1", "Hello2", "UserTask"), null);
 		kSession.addEventListener(triggeredNodes);
 	    
 		
 		ProcessInstance processInstance = kSession.startProcess(PROCESS_ID);
-		kSession.signalEvent("Hello1", null, processInstance.getId());
 		kSession.signalEvent("Hello2", null, processInstance.getId());
+		kSession.signalEvent("Hello1", null, processInstance.getId());
 		
 		WorkItem workItem = handler.getWorkItem("UserTask");;
 		while(workItem == null) {
