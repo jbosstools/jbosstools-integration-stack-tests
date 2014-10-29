@@ -13,80 +13,14 @@
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
 		<droolsjbpm.site>https://repository.jboss.org/nexus/content/groups/public-jboss/</droolsjbpm.site>
-		<eclipse.graphiti.site>http://download.eclipse.org/graphiti/updates/0.10.0</eclipse.graphiti.site>
 		<systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.skip=false -Dtest.configurations.dir=resources/</systemProperties>
 		<droolsjbpm.version>6.1.0.Final</droolsjbpm.version>
 		<awt.robot>false</awt.robot>
 		<bpmn.validation>false</bpmn.validation>
 		<test.class>AllEditorTests</test.class>
-		<ecj.version>4.3.1</ecj.version>
-		<protobuf.version>2.5.0</protobuf.version>
-		<xstream.version>1.4.3</xstream.version>
-		<antlr.version>3.5</antlr.version>
-		<joda-time.version>1.6.2</joda-time.version>
-		<mvel.version>2.2.1.Final</mvel.version>
-		<javassist.version>3.15.0-GA</javassist.version>
-		<dom4j.version>1.6.1</dom4j.version>
-		<slf4j.version>1.7.2</slf4j.version>
-		<hibernate.version>1.0.1.Final</hibernate.version>
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.hibernate.javax.persistence</groupId>
-			<artifactId>hibernate-jpa-2.0-api</artifactId>
-			<version>${hibernate.version}</version>
-		</dependency>
-		<dependency>
-		  <groupId>org.slf4j</groupId>
-		  <artifactId>slf4j-api</artifactId>
-		  <version>${slf4j.version}</version>
-		</dependency>
-		<dependency>
-		  <groupId>dom4j</groupId>
-		  <artifactId>dom4j</artifactId>
-		  <version>${dom4j.version}</version>
-		</dependency>
-		<dependency>
-		  <groupId>org.drools</groupId>
-		  <artifactId>drools-persistence-jpa</artifactId>
-		  <version>${droolsjbpm.version}</version>
-		</dependency>
-		<dependency>
-		  <groupId>org.javassist</groupId>
-		  <artifactId>javassist</artifactId>
-		  <version>${javassist.version}</version>
-		</dependency>
-		<dependency>
-		  <groupId>org.mvel</groupId>
-		  <artifactId>mvel2</artifactId>
-		  <version>${mvel.version}</version>
-		</dependency>
-		<dependency>
-		  <groupId>joda-time</groupId>
-		  <artifactId>joda-time</artifactId>
-		  <version>${joda-time.version}</version>
-		</dependency>
-		<dependency>
-		  <groupId>org.antlr</groupId>
-		  <artifactId>antlr-runtime</artifactId>
-		  <version>${antlr.version}</version>
-		</dependency>
-		<dependency>
-		  <groupId>com.thoughtworks.xstream</groupId>
-		  <artifactId>xstream</artifactId>
-		  <version>${xstream.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jdt.core.compiler</groupId>
-			<artifactId>ecj</artifactId>
-			<version>${ecj.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.protobuf</groupId>
-			<artifactId>protobuf-java</artifactId>
-			<version>${protobuf.version}</version>
-		</dependency>
 		<dependency>
 			<groupId>org.kie</groupId>
 			<artifactId>kie-api</artifactId>
@@ -174,12 +108,12 @@
 				<dependency>
 				  <type>p2-installable-unit</type>
 				  <artifactId>org.eclipse.bpmn2.modeler.feature.group</artifactId>
-				  <version>1.1.0</version>
+				  <version>1.1.1</version>
 				</dependency>
 				<dependency>
 				  <type>p2-installable-unit</type>
 				  <artifactId>org.eclipse.bpmn2.modeler.runtime.jboss.feature.group</artifactId>
-				  <version>1.1.0</version>
+				  <version>1.1.1</version>
 				</dependency>
 				<dependency>
 				  <type>p2-installable-unit</type>
@@ -226,11 +160,6 @@
 						</goals>
 						<configuration>
 							<artifactItems>
-								<artifactItem>
-									<groupId>org.eclipse.jdt.core.compiler</groupId>
-									<artifactId>ecj</artifactId>
-									<version>${ecj.version}</version>
-								</artifactItem>
 								<artifactItem>
 									<groupId>org.kie</groupId>
 									<artifactId>kie-api</artifactId>

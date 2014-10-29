@@ -19,14 +19,13 @@ import org.kie.api.runtime.process.ProcessInstance;
  * ISSUES - When a connection is missing e.g. "Task 3" and "Gateway" are not connected 
  *          validator does not complain!
  */
-//@ProcessDefinition(name="BPMN2-AdHocProcess",  project="EditorTestProject", needPerson=true)
-@ProcessDefinition(name="BPMN2-AdHocProcess",  project="EditorTestProject")
+@ProcessDefinition(name="BPMN2-AdHocProcess",  project="EditorTestProject", needPerson=true)
 public class AdHocProcessTest extends JBPM6BaseTest {
 
 	@Override
 	public void buildProcessModel() {
 		Process process = new Process("BPMN2-AdHocProcess");
-//		process.addImport("org.jbpm.bpmn2.objects.Person");
+		process.addImport("org.jbpm.bpmn2.objects.Person");
 		process.setAddHoc(true);
 		//process.add("Task 3", ElementType.SCRIPT_TASK);
 

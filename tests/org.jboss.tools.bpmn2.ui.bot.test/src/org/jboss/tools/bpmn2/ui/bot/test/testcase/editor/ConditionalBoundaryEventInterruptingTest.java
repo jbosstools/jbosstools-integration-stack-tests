@@ -16,7 +16,7 @@ import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequireme
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
 
-@ProcessDefinition(name="BPMN2-ConditionalBoundaryEventInterrupting", project="EditorTestProject")
+@ProcessDefinition(name="BPMN2-ConditionalBoundaryEventInterrupting", project="EditorTestProject", needPerson=true)
 public class ConditionalBoundaryEventInterruptingTest extends JBPM6BaseTest {
 
 	@Override
@@ -44,7 +44,7 @@ public class ConditionalBoundaryEventInterruptingTest extends JBPM6BaseTest {
 		subProcess.add("Conditional Boundary Event Process", ElementType.CONDITIONAL_BOUNDARY_EVENT);
 		
 		ConditionalBoundaryEvent conditionalBoundaryEvent = new ConditionalBoundaryEvent("Conditional Boundary Event Process");
-		conditionalBoundaryEvent.setScript("", "org.jbpm.bpmn2.objects.Person(name == \"john\")");
+		conditionalBoundaryEvent.setScript("Rule", "org.jbpm.bpmn2.objects.Person(name == \"john\")");
 		conditionalBoundaryEvent.append("Goodbye", ElementType.SCRIPT_TASK, Position.NORTH);
 		
 		ScriptTask scriptTask = new ScriptTask("Goodbye");

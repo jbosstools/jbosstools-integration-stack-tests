@@ -48,7 +48,7 @@ public class ProcessDefinitionRequirement implements Requirement<ProcessDefiniti
 		
 		String profile() default "Full";
 		
-		//boolean needPerson() default false;
+		boolean needPerson() default false;
 		
 	}
 
@@ -142,20 +142,20 @@ public class ProcessDefinitionRequirement implements Requirement<ProcessDefiniti
 		}
 		new BPMN2ProcessWizard().execute(new String[] {p}, f, n, i, "defaultPackage");
 		
-//		if(d.needPerson()) {
-//			if(!pe.getProject(p).containsItem("src", "org.jbpm.bpmn2.objects", "Person.java")) {
-//				NewJavaClassWizardDialog wizard = new NewJavaClassWizardDialog();
-//				wizard.open();
-//				wizard.getFirstPage().setName("Person");
-//				wizard.getFirstPage().setPackage("org.jbpm.bpmn2.objects");
-//				wizard.finish();
-//				KeyboardFactory.getKeyboard().moveCursor(55, false);
-//				KeyboardFactory.getKeyboard().type(Person.getClassBody());
-//				
-//				Menu shellMenu = new ShellMenu("File", "Save");
-//				shellMenu.select();
-//			}
-//		}
+		if(d.needPerson()) {
+			if(!pe.getProject(p).containsItem("src", "org.jbpm.bpmn2.objects", "Person.java")) {
+				NewJavaClassWizardDialog wizard = new NewJavaClassWizardDialog();
+				wizard.open();
+				wizard.getFirstPage().setName("Person");
+				wizard.getFirstPage().setPackage("org.jbpm.bpmn2.objects");
+				wizard.finish();
+				KeyboardFactory.getKeyboard().moveCursor(55, false);
+				KeyboardFactory.getKeyboard().type(Person.getClassBody());
+				
+				Menu shellMenu = new ShellMenu("File", "Save");
+				shellMenu.select();
+			}
+		}
 	}
 	
 	/**
