@@ -129,6 +129,7 @@ public class TeiidSuite extends RedDeerSuite {
 		serverWizard.execute();
 	}
 
+
 	private static String[] getServerType(String type, String version) {
 		String[] serverType = new String[2];
 		if (type.equals("EAP")) {
@@ -137,21 +138,25 @@ public class TeiidSuite extends RedDeerSuite {
                     serverType[1] = "JBoss Enterprise Application Platform 6.0";
             }
             if (version.startsWith("6.1")) {
-                    serverType[1] = "JBoss Enterprise Application Platform 6.1";
+                    serverType[1] = "JBoss Enterprise Application Platform 6.1+";
             }
 		} else if (type.equals("SOA")) {
 			serverType[0] = "Red Hat JBoss Middleware";
 			if (version.startsWith("5")) {
 				serverType[1] = "JBoss Enterprise Application Platform 5.x";
+			} if (version.startsWith("6")) {
+                serverType[1] = "JBoss Enterprise Application Platform 6.1+";
 			}
-			if (version.startsWith("6")) {
-                serverType[1] = "JBoss Enterprise Application Platform 6.1";
+		} else if (type.equals("DV")) {
+			serverType[0] = "Red Hat JBoss Middleware";
+			if (version.startsWith("6.1.0")) {
+				serverType[1] = "JBoss Enterprise Application Platform 6.1+";
 			}
 		} else if (type.equals("AS")) {
 			serverType[0] = "JBoss Community";
 			serverType[1] = "JBoss AS " + version;
 		} else {
-			throw new RuntimeException("You have to specify if it is AS or SOA or EAP");
+			throw new RuntimeException("You have to specify if it is AS, EAP, SOA or DV");
 		}
 		return serverType;
 	}
@@ -164,21 +169,25 @@ public class TeiidSuite extends RedDeerSuite {
                     serverRuntime[1] = "JBoss Enterprise Application Platform 6.0 Runtime";
             }
             if (version.startsWith("6.1")) {
-                    serverRuntime[1] = "JBoss Enterprise Application Platform 6.1 Runtime";
+                    serverRuntime[1] = "JBoss Enterprise Application Platform 6.1+ Runtime";
             }
 		} else if (type.equals("SOA")) {
 			serverRuntime[0] = "Red Hat JBoss Middleware";
 			if (version.startsWith("5")) {
 				serverRuntime[1] = "JBoss Enterprise Application Platform 5.x Runtime";
+			} else if (version.startsWith("6")) {
+                serverRuntime[1] = "JBoss Enterprise Application Platform 6.1+ Runtime";
 			}
-			if (version.startsWith("6")) {
-                serverRuntime[1] = "JBoss Enterprise Application Platform 6.1 Runtime";
+		} else if (type.equals("DV")) {
+			serverRuntime[0] = "Red Hat JBoss Middleware";
+			if (version.startsWith("6.1.0")) {
+                serverRuntime[1] = "JBoss Enterprise Application Platform 6.1+ Runtime";
 			}
 		} else if (type.equals("AS")) {
 			serverRuntime[0] = "JBoss Community";
 			serverRuntime[1] = "JBoss " + version + " Runtime";
 		} else {
-			throw new RuntimeException("You have to specify if it is AS or SOA or EAP");
+			throw new RuntimeException("You have to specify if it is AS, EAP, SOA or DV");
 		}
 		return serverRuntime;
 	}
