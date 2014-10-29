@@ -34,7 +34,7 @@ public class AdHocSubProcessTab {
 	 * @param expression
 	 */
 	public void setCompletionCondition(Expression expression) {
-		expression.setUp();
+		expression.setUp("Attributes");
 	}
 	
 	/**
