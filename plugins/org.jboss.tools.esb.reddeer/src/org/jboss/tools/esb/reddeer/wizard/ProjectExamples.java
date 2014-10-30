@@ -11,6 +11,7 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 
@@ -30,6 +31,7 @@ public class ProjectExamples extends NewWizardDialog {
 
 	@Override
 	public void open() {
+		AbstractWait.sleep(TimePeriod.SHORT);
 		super.open();
 		new WaitUntil(new ShellWithTextIsAvailable(DIALOG_TITLE), TimePeriod.NORMAL);
 		new DefaultShell(DIALOG_TITLE);
