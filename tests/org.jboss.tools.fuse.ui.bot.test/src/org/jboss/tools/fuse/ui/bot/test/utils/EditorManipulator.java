@@ -5,11 +5,16 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.matcher.RegexMatcher;
 import org.jboss.reddeer.swt.matcher.WithTooltipTextMatcher;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.fuse.reddeer.utils.ResourceHelper;
 import org.jboss.tools.fuse.ui.bot.test.Activator;
@@ -48,6 +53,16 @@ public class EditorManipulator {
 
 		new DefaultStyledText().setText(EditorManipulator.getFileContent(source));
 		new DefaultToolItem(new WorkbenchShell(), 0, new WithTooltipTextMatcher(new RegexMatcher("Save.*"))).click();
+		
+		// FIXME temporary added due to https://issues.jboss.org/browse/FUSETOOLS-1208
+		try {
+			log.debug("Check whether 'Could not parse your changes to the XML' dialog is appeared");
+			new WaitUntil(new ShellWithTextIsAvailable("Could not parse your changes to the XML"), TimePeriod.SHORT);
+			new DefaultShell("Could not parse your changes to the XML");
+			new PushButton("OK").click();
+		} catch (Exception e) {
+			log.debug("Dialog 'Could not parse your changes to the XML' didn't appeared");
+		}
 	}
 
 	/**

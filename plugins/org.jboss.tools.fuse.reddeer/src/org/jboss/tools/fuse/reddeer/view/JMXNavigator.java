@@ -104,6 +104,7 @@ public class JMXNavigator extends WorkbenchView {
 
 					item.select();
 					item.doubleClick();
+					item.expand();
 					items = item.getItems();
 					break;
 				}
@@ -115,7 +116,7 @@ public class JMXNavigator extends WorkbenchView {
 					}
 
 					item.select();
-					item.doubleClick();
+					item.expand();
 					items = item.getItems();
 					break;
 				}

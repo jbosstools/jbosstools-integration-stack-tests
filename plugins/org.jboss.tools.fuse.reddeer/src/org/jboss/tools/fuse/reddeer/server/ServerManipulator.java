@@ -218,6 +218,7 @@ public class ServerManipulator {
 		}
 		page.close();
 		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
+		new WorkbenchShell().setFocus();
 	}
 
 	/**
