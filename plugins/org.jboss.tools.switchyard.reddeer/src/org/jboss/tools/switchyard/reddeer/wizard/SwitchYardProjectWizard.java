@@ -34,6 +34,7 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 	public static final String TARGET_NAMESPACE = "Target Namespace:";
 	public static final String PACKAGE_NAME = "Package Name:";
 	public static final String OSGI_BUNDLE = "OSGI Bundle";
+	public static final String BOM_DEPENDENCY = "Use SwitchYard BOM for Dependency Management";
 
 	public static final String DEFAULT_CONFIGURATION_VERSION = "2.0";
 	public static final String DEFAULT_LIBRARY_VERSION = "2.0.0.Alpha3";
@@ -131,6 +132,19 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		return new CheckBox(OSGI_BUNDLE).isChecked();
 	}
 
+	public SwitchYardProjectWizard setBOMDependency(boolean checked) {
+		new CheckBox(BOM_DEPENDENCY).toggle(checked);
+		return this;
+	}
+
+	public boolean isBOMDependencyChecked() {
+		return new CheckBox(BOM_DEPENDENCY).isChecked();
+	}
+	
+	public boolean isBOMDependencyEnabled() {
+		return new CheckBox(BOM_DEPENDENCY).isEnabled();
+	}
+	
 	public SwitchYardProjectWizard setComponent(String group, String component, boolean checked) {
 		new DefaultTreeItem(new DefaultGroup(SWITCHYARD_COMPONENTS), group, component).setChecked(checked);
 		return this;

@@ -195,8 +195,50 @@ public class ProjectCreationTest {
 			fail(msg.toString());
 		}
 	}
-	
-	// TODO createProjectWithBOMTest
+
+	@Test
+	public void createProjectWithBOMTest() {
+		String projectName = "bom";
+
+		wizard = new SwitchYardProjectWizard(projectName);
+		wizard.open();
+
+		wizard.setConfigurationVersion("1.0");
+		assertTrue("BOM dependency should be enabled with 1.0 version", wizard.isBOMDependencyEnabled());
+		wizard.setBOMDependency(true);
+		assertTrue("BOM dependency cannot be checked with 1.0 version", wizard.isBOMDependencyChecked());
+		wizard.setBOMDependency(false);
+		assertFalse("BOM dependency cannot be unchecked with 1.0 version", wizard.isBOMDependencyChecked());
+		wizard.setBOMDependency(true);
+		assertTrue("BOM dependency cannot be checked with 1.0 version", wizard.isBOMDependencyChecked());
+
+		wizard.setConfigurationVersion("1.1");
+		assertTrue("BOM dependency should be enabled with 1.1 version", wizard.isBOMDependencyEnabled());
+		wizard.setBOMDependency(true);
+		assertTrue("BOM dependency cannot be checked with 1.1 version", wizard.isBOMDependencyChecked());
+		wizard.setBOMDependency(false);
+		assertFalse("BOM dependency cannot be unchecked with 1.1 version", wizard.isBOMDependencyChecked());
+		wizard.setBOMDependency(true);
+		assertTrue("BOM dependency cannot be checked with 1.1 version", wizard.isBOMDependencyChecked());
+
+		wizard.setConfigurationVersion("2.0");
+		assertTrue("BOM dependency should be enabled with 2.0 version", wizard.isBOMDependencyEnabled());
+		wizard.setBOMDependency(true);
+		assertTrue("BOM dependency cannot be checked with 2.0 version", wizard.isBOMDependencyChecked());
+		wizard.setBOMDependency(false);
+		assertFalse("BOM dependency cannot be unchecked with 2.0 version", wizard.isBOMDependencyChecked());
+		wizard.setBOMDependency(true);
+		assertTrue("BOM dependency cannot be checked with 2.0 version", wizard.isBOMDependencyChecked());
+
+		wizard.finish();
+
+		XPathEvaluator xpath = new XPathEvaluator(new File(new SwitchYardProject(projectName).getFile(), "pom.xml"));
+		String bomDependency = "/project/dependencyManagement/dependencies/dependency/";
+		assertEquals(projectName, xpath.evaluateString("/project/artifactId"));
+		assertEquals("switchyard-bom", xpath.evaluateString(bomDependency + "/artifactId"));
+		assertEquals("pom", xpath.evaluateString(bomDependency + "/type"));
+		assertEquals("import", xpath.evaluateString(bomDependency + "/scope"));
+	}
 
 	private void assertComponent(String group, String component) {
 		assertFalse("" + component + " should by unchecked by default", wizard.isComponent(group, component));
