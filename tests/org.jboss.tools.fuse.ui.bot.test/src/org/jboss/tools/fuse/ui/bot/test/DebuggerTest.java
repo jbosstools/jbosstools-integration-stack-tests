@@ -56,6 +56,7 @@ public class DebuggerTest {
 		new WorkbenchShell().maximize();
 		ProjectFactory.createProject(PROJECT_NAME, PROJECT_ARCHETYPE);
 		new CamelProject(PROJECT_NAME).openCamelContext(CAMEL_CONTEXT);
+		CamelEditor.switchTab("Design"); // FIXME temporary added due to https://issues.jboss.org/browse/FUSETOOLS-1208
 		CamelEditor editor = new CamelEditor(CAMEL_CONTEXT);
 		editor.setId("choice", CHOICE);
 		editor.setId("log", LOG);
