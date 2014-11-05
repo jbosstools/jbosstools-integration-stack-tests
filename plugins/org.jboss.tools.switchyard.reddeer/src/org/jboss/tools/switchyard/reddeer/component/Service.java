@@ -1,6 +1,5 @@
 package org.jboss.tools.switchyard.reddeer.component;
 
-import org.jboss.reddeer.graphiti.api.ContextButton;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -25,9 +24,8 @@ public class Service extends SwitchYardComponent {
 	}
 
 	public PromoteServiceWizard promoteService() {
-		ContextButton cb = getContextButton("Promote Service");
-		cb.click();
-		return new PromoteServiceWizard("Promote Component Service");
+		getContextButton("Promote Service").click();
+		return new PromoteServiceWizard("Promote Component Service").activate();
 	}
 
 	public void createNewServiceTestClass(String... mixin) {

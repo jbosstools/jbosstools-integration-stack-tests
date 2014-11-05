@@ -44,8 +44,10 @@ import org.junit.runner.RunWith;
 @SwitchYard
 @OpenPerspective(JavaEEPerspective.class)
 @RunWith(RedDeerSuite.class)
-public class WSProxyRESTTest {
+public class UseCaseWSProxyRESTTest {
 
+	public static final String SERVICE = "Hello";
+	public static final String SERVICE_REF = "HelloRef";
 	public static final String REST_URL = "http://localhost:8123/rest";
 	public static final String REST_SERVICE = "HelloRESTService";
 	public static final String PROJECT = "proxy_rest";
@@ -121,6 +123,7 @@ public class WSProxyRESTTest {
 		/* Expose Proxy Service Through SOAP */
 		new Service("HelloPortType").addBinding("SOAP");
 		SOAPBindingPage soapWizard = new SOAPBindingPage();
+		soapWizard.setName("soap-binding");
 		soapWizard.setContextPath(PROJECT);
 		soapWizard.setServerPort(":18080");
 		soapWizard.finish();
@@ -129,8 +132,8 @@ public class WSProxyRESTTest {
 
 		/* Reference to RESTful Service */
 		new SwitchYardComponent("Proxy").getContextButton("Reference").click();
-		new ReferenceWizard().selectJavaInterface("Hello").setServiceName(REST_SERVICE).finish();
-		new Reference(REST_SERVICE).promoteReference().finish();
+		new ReferenceWizard().selectJavaInterface("Hello").setServiceName(SERVICE_REF).finish();
+		new Reference(SERVICE_REF).promoteReference().setServiceName(REST_SERVICE).finish();
 		new Service(REST_SERVICE).addBinding("REST");
 		RESTBindingPage restWizard = new RESTBindingPage();
 		restWizard.setAddress(REST_URL);
@@ -139,7 +142,7 @@ public class WSProxyRESTTest {
 
 		/* Edit Camel Route */
 		new SwitchYardComponent("Proxy").doubleClick();
-		new TextEditor("Proxy.java").typeAfter("from(", ".to(\"switchyard://" + REST_SERVICE + "\")").saveAndClose();
+		new TextEditor("Proxy.java").typeAfter("from(", ".to(\"switchyard://" + SERVICE_REF + "\")").saveAndClose();
 		new SwitchYardEditor().save();
 
 		/* Test Web Service Proxy */

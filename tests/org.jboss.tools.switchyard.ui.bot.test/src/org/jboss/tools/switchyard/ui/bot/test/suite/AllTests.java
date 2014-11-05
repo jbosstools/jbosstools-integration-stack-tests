@@ -12,12 +12,12 @@ import org.jboss.tools.switchyard.ui.bot.test.BottomUpCamelTest;
 import org.jboss.tools.switchyard.ui.bot.test.BottomUpEJBTest;
 import org.jboss.tools.switchyard.ui.bot.test.DomainSettingsTest;
 import org.jboss.tools.switchyard.ui.bot.test.DroolsTest;
-import org.jboss.tools.switchyard.ui.bot.test.FileGatewayTest;
+import org.jboss.tools.switchyard.ui.bot.test.UseCaseFileGatewayTest;
 import org.jboss.tools.switchyard.ui.bot.test.ImplementationsPropertiesTest;
-import org.jboss.tools.switchyard.ui.bot.test.SimpleTest;
+import org.jboss.tools.switchyard.ui.bot.test.UseCaseSimpleTest;
 import org.jboss.tools.switchyard.ui.bot.test.ThrottlingTest;
-import org.jboss.tools.switchyard.ui.bot.test.WSProxyRESTTest;
-import org.jboss.tools.switchyard.ui.bot.test.WSProxySOAPTest;
+import org.jboss.tools.switchyard.ui.bot.test.UseCaseWSProxyRESTTest;
+import org.jboss.tools.switchyard.ui.bot.test.UseCaseWSProxySOAPTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
@@ -28,10 +28,10 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  */
 @SuiteClasses({
-	SimpleTest.class,
-	WSProxySOAPTest.class,
-	WSProxyRESTTest.class,
-	FileGatewayTest.class,
+	UseCaseSimpleTest.class,
+	UseCaseWSProxySOAPTest.class,
+	UseCaseWSProxyRESTTest.class,
+	UseCaseFileGatewayTest.class,
 	BottomUpBPELTest.class,
 	BottomUpCamelTest.class,
 	BottomUpEJBTest.class,

@@ -42,7 +42,7 @@ import org.junit.runner.RunWith;
 @SwitchYard
 @OpenPerspective(JavaEEPerspective.class)
 @RunWith(RedDeerSuite.class)
-public class WSProxySOAPTest {
+public class UseCaseWSProxySOAPTest {
 
 	public static final String PROJECT = "proxy_soap";
 	public static final String PACKAGE = "com.example.switchyard.proxy_soap";
@@ -93,14 +93,16 @@ public class WSProxySOAPTest {
 		new Service("Hello").promoteService().setServiceName("ProxyService").finish();
 		new Service("ProxyService").addBinding("SOAP");
 		SOAPBindingPage soapWizard = new SOAPBindingPage();
+		soapWizard.setName("soap-binding");
 		soapWizard.setContextPath(PROJECT);
 		soapWizard.setServerPort(":18080");
 		soapWizard.finish();
 		new SwitchYardComponent("Proxy").getContextButton("Reference").click();
-		new ReferenceWizard().selectWSDLInterface(WSDL).setServiceName("HelloService").finish();
-		new Reference("HelloService").promoteReference().setServiceName("HelloService").finish();
-		new Service("HelloService").addBinding("SOAP");
+		new ReferenceWizard().activate().selectWSDLInterface(WSDL).setServiceName("HelloRef").finish();
+		new Reference("HelloRef").promoteReference().setServiceName("HelloService").finish();
+		new Service("HelloService").getContextButton("Binding", "SOAP").click();
 		SOAPBindingPage wizard = new SOAPBindingPage();
+		wizard.setName("soap-binding");
 		wizard.setEndpointAddress("http://localhost:8123/soap");
 		wizard.finish();
 
@@ -108,7 +110,7 @@ public class WSProxySOAPTest {
 
 		/* Edit Camel Route */
 		new SwitchYardComponent("Proxy").doubleClick();
-		new TextEditor("Proxy.java").typeAfter("from(", ".to(\"switchyard://HelloService\")").saveAndClose();
+		new TextEditor("Proxy.java").typeAfter("from(", ".to(\"switchyard://HelloRef\")").saveAndClose();
 		new SwitchYardEditor().save();
 
 		/* Test Web Service Proxy */

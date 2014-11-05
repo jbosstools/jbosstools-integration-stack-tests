@@ -1,6 +1,5 @@
 package org.jboss.tools.switchyard.reddeer.component;
 
-import org.jboss.tools.switchyard.reddeer.widget.ContextButton;
 import org.jboss.tools.switchyard.reddeer.wizard.PromoteServiceWizard;
 
 /**
@@ -20,8 +19,7 @@ public class Reference extends SwitchYardComponent {
 	}
 
 	public PromoteServiceWizard promoteReference() {
-		click();
-		new ContextButton("Promote Reference").click();
-		return new PromoteServiceWizard("New Component Reference");
+		getContextButton("Promote Reference").click();
+		return new PromoteServiceWizard("Promote Component Reference").activate();
 	}
 }

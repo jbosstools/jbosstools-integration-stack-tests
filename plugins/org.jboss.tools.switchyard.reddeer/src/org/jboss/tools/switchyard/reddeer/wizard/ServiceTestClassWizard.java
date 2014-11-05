@@ -2,10 +2,10 @@ package org.jboss.tools.switchyard.reddeer.wizard;
 
 import java.util.List;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
+import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.api.TableItem;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
@@ -20,10 +20,8 @@ public class ServiceTestClassWizard extends WizardDialog {
 	public static final String DIALOG_TITLE = "Service Test Class";
 	public static final String PACKAGE = "Package:";
 
-	private static SWTWorkbenchBot bot = new SWTWorkbenchBot();
-
 	public ServiceTestClassWizard activate() {
-		bot.shell(DIALOG_TITLE).activate();
+		new DefaultShell(DIALOG_TITLE);
 		return this;
 	}
 	

@@ -36,7 +36,7 @@ import org.junit.runner.RunWith;
 @SwitchYard(server = @Server(type = ServerReqType.ANY, state = ServerReqState.RUNNING))
 @OpenPerspective(JavaEEPerspective.class)
 @RunWith(RedDeerSuite.class)
-public class FileGatewayTest {
+public class UseCaseFileGatewayTest {
 
 	public static final String PROJECT = "file_project";
 	public static final String PACKAGE = "com.example.switchyard.file_project";
@@ -79,23 +79,27 @@ public class FileGatewayTest {
 		// Add File binding
 		new Service("InfoService").addBinding("File");
 		FileBindingPage wizard = new FileBindingPage();
-		String path = new File("target/input").getAbsolutePath();
+		File input = new File("target/input");
+		input.mkdirs();
+		File output = new File("target/processed");
+		output.mkdirs();
+		wizard.setName("file-binding");
+		wizard.setDirectory(input.getAbsolutePath());
 		wizard.setDirAutoCreation(true);
-		wizard.setMoveDirectory("processed");
-		wizard.setDirectory(path);
+		wizard.setMoveDirectory(output.getAbsolutePath());
 		wizard.finish();
 		new SwitchYardEditor().save();
 
 		// Deploy and test the project
 		new ServerDeployment(switchyardRequirement.getConfig().getName()).deployProject(PROJECT);
-		FileWriter out = new FileWriter(path + "/test.txt");
+		FileWriter out = new FileWriter(new File(input, "test.txt"));
 		out.write("Hello File Gateway");
 		out.flush();
 		out.close();
 
 		new WaitUntil(new ConsoleHasText("Body: Hello File Gateway"));
 
-		File file = new File(path + "/processed/test.txt");
+		File file = new File(output, "test.txt");
 		assertTrue("File 'test.txt' wasn't processed", file.exists());
 	}
 }

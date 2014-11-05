@@ -26,14 +26,14 @@ public class BeanServiceWizard extends WizardDialog {
 	public BeanServiceWizard setName(String name) {
 		activate();
 		new LabeledText("Name:").setText(name);
-		return this;
+		return activate();
 	}
 
 	public BeanServiceWizard createNewInterface(String name) {
 		activate();
 		new Link("Interface:").click();
 		new JavaInterfaceWizard().activate().setName(name).finish();
-		return this;
+		return activate();
 	}
 
 	public BeanServiceWizard setExistingInterface(String name) {

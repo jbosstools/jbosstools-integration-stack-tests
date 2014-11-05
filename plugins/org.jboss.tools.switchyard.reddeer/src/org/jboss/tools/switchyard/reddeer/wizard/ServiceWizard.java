@@ -43,21 +43,18 @@ public class ServiceWizard<T extends ServiceWizard<?>> extends WizardDialog {
 		return (T) this;
 	}
 
-	@SuppressWarnings("unchecked")
 	public T setServiceName(String serviceName) {
 		new LabeledText("Service Name:").setText(serviceName);
-		return (T) this;
+		return activate();
 	}
 
-	@SuppressWarnings("unchecked")
 	public T checkInterfaceType(String interfaceType) {
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new RadioButton(interfaceType).click();
 		AbstractWait.sleep(TimePeriod.SHORT);
-		return (T) this;
+		return activate();
 	}
 
-	@SuppressWarnings("unchecked")
 	public T selectJavaInterface(String javaInterface) {
 		checkInterfaceType("Java").browse();
 		new DefaultShell("");
@@ -65,29 +62,26 @@ public class ServiceWizard<T extends ServiceWizard<?>> extends WizardDialog {
 		new WaitUntil(new TableHasRows(new DefaultTable()), TimePeriod.LONG);
 		new PushButton("OK").click();
 		new WaitWhile(new ShellWithTextIsActive(new IsNull<String>()));
-		return (T) this;
+		return activate();
 	}
 
-	@SuppressWarnings("unchecked")
 	public T createJavaInterface(String javaInterface) {
 		activate().checkInterfaceType("Java").clickInterface();
 		new JavaInterfaceWizard().activate().setName(javaInterface).finish();
-		return (T) this;
+		return activate();
 	}
 
-	@SuppressWarnings("unchecked")
 	public T selectWSDLInterface(String wsdlInterface) {
 		checkInterfaceType("WSDL").browse();
 		new DefaultText().setText(wsdlInterface);
 		clickOK();
-		return (T) this;
+		return activate();
 	}
 
-	@SuppressWarnings("unchecked")
 	public T createWSDLInterface(String wsdlInterface) {
 		checkInterfaceType("WSDL").clickInterface();
 		new Java2WSDLWizard().activate().finish();
-		return (T) this;
+		return activate();
 	}
 
 	public void clickInterface() {

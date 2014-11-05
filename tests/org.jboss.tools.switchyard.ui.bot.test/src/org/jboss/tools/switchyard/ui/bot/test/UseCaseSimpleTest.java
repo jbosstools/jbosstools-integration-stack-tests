@@ -57,7 +57,7 @@ import org.junit.runner.RunWith;
 @SwitchYard(server = @Server(type = ServerReqType.ANY, state = ServerReqState.RUNNING))
 @OpenPerspective(JavaEEPerspective.class)
 @RunWith(RedDeerSuite.class)
-public class SimpleTest {
+public class UseCaseSimpleTest {
 
 	private static final String PROJECT = "simple";
 	private static final String PACKAGE = "com.example.switchyard.simple";
