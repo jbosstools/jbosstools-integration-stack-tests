@@ -11,7 +11,7 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  */
 public class ConnectionProfileXmlUrlPage extends WizardPage implements ConnectionProfileXmlPage {
 
-	public static final String LABEL_URL = "Connection URL";
+	public static final String LABEL_URL = "File Name";
 
 	public ConnectionProfileXmlUrlPage() {
 		
