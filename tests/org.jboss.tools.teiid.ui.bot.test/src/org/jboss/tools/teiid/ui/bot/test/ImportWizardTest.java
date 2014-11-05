@@ -2,7 +2,7 @@ package org.jboss.tools.teiid.ui.bot.test;
 
 import java.util.Properties;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.jboss.reddeer.swt.handler.ShellHandler;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
 import org.jboss.tools.teiid.reddeer.manager.ImportManager;
@@ -14,7 +14,6 @@ import org.jboss.tools.teiid.reddeer.wizard.MetadataImportWizard.ImportType;
 import org.jboss.tools.teiid.reddeer.wizard.WsdlWebImportWizard;
 import org.jboss.tools.teiid.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
 import org.jboss.tools.teiid.ui.bot.test.suite.TeiidSuite;
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -43,34 +42,16 @@ public class ImportWizardTest {
 	@AfterClass
 	public static void closeAllShells() {
 
-		new SWTWorkbenchBot().closeAllShells();
-	}
-
-	@After
-	public void afterMethod() {
-
-		System.out.println("TEST METHOD END");
+		ShellHandler.getInstance().closeAllNonWorbenchShells();
 	}
 
 	@Test
 	public void ddlImportTest() {
 
 		String ddl = teiidBot.toAbsolutePath("resources/ddl/hsqldb.ddl");
-
-		/*
-		 * DDLImportWizard importWizard = new DDLImportWizard();
-		 * importWizard.setDdlPath(ddl);
-		 * importWizard.setModelName("CustomerHsqldb");
-		 * importWizard.setAutoselectDialect(true);
-		 * 
-		 * ImportManager.importModel(MODEL_PROJECT, importWizard);
-		 */
-
 		Properties props = new Properties();
 		props.setProperty("autoselectDialect", "true");
-		new ImportMetadataManager().importFromDDL(MODEL_PROJECT,
-				"CustomerHsqldb", ddl, props);
-
+		new ImportMetadataManager().importFromDDL(MODEL_PROJECT, "CustomerHsqldb", ddl, props);
 		teiidBot.assertResource(MODEL_PROJECT, "CustomerHsqldb.xmi");
 		teiidBot.checkDiagram(MODEL_PROJECT, "CustomerHsqldb.xmi", "USER");
 		teiidBot.checkDiagram(MODEL_PROJECT, "CustomerHsqldb.xmi", "ADDRESS");
@@ -81,14 +62,6 @@ public class ImportWizardTest {
 
 		String source = teiidBot.toAbsolutePath("resources/dtf/relationalModel.xml");
 		String target = "RelationalModel.xmi";
-
-		/*
-		 * MetadataImportWizard importWizard = new MetadataImportWizard();
-		 * importWizard.setImportType(ImportType.RELATIONAL_MODEL);
-		 * importWizard.setSource(source); importWizard.setTarget(target);
-		 * 
-		 * ImportManager.importModel(MODEL_PROJECT, importWizard);
-		 */
 
 		Properties props = new Properties();
 		props.setProperty("source", source);
@@ -124,10 +97,10 @@ public class ImportWizardTest {
 		importWizard.finish();
 
 		teiidBot.assertResource(MODEL_PROJECT, "ItemSource.xmi");
-		teiidBot.assertResource(MODEL_PROJECT, "ItemView.xmi");
+		teiidBot.assertResource(MODEL_PROJECT, "ViewModel.xmi");
 		teiidBot.checkDiagram(MODEL_PROJECT, "ItemSource.xmi", "getTextFiles");
 		teiidBot.checkDiagram(MODEL_PROJECT, "ItemSource.xmi", "Result");
-		teiidBot.checkDiagram(MODEL_PROJECT, "ItemView.xmi", "ItemTable");
+		teiidBot.checkDiagram(MODEL_PROJECT, "ViewModel.xmi", "new_table");
 	}
 
 	@Test
@@ -135,17 +108,6 @@ public class ImportWizardTest {
 
 		String xmlProfile = "XML Local Profile";
 		new ConnectionProfileManager().createCPXml(xmlProfile, "resources/flat/accounts.xml");
-
-		/*
-		 * XMLImportWizard importWizard = new XMLImportWizard();
-		 * importWizard.setLocal(true); importWizard.setName("Account");
-		 * importWizard.setProfileName(xmlProfile);
-		 * importWizard.setRootPath("/accounts/account");
-		 * importWizard.addElement("accounts/account/nick");
-		 * importWizard.addElement("accounts/account/balance");
-		 * 
-		 * ImportManager.importModel(MODEL_PROJECT, importWizard);
-		 */
 
 		Properties props = new Properties();
 		props.setProperty("local", "true");
@@ -166,31 +128,11 @@ public class ImportWizardTest {
 
 		String profile = "Hello Service";
 
-		/*
-		 * String wsdl = teiidBot.toAbsolutePath("resources/wsdl/Hello.wsdl");
-		 * 
-		 * // Create wsdl profile WsdlProfileWizard profileWizard = new
-		 * WsdlProfileWizard(); profileWizard.setName(profile);
-		 * profileWizard.setWsdl("file:" + wsdl);
-		 * profileWizard.setEndPoint("HelloPort");//!!!PROBLEM - reddeer
-		 * profileWizard.execute();
-		 */
-
 		Properties wsdlCP = new Properties();
 		wsdlCP.setProperty("wsdl", "resources/wsdl/Hello.wsdl");
 		wsdlCP.setProperty("endPoint", "HelloPort");
 
 		new ConnectionProfileManager().createCPWSDL(profile, wsdlCP);
-
-		// Import wsdl as model
-		/*
-		 * WsdlImportWizard importWizard = new WsdlImportWizard();
-		 * importWizard.setProfile(profile);
-		 * importWizard.addRequestElement("sayHello/sequence/arg0");
-		 * importWizard.addResponseElement("sayHelloResponse/sequence/return");
-		 * 
-		 * ImportManager.importModel(MODEL_PROJECT, importWizard);
-		 */
 
 		Properties props = new Properties();
 		props.setProperty("requestElements", "sayHello/sequence/arg0");
@@ -207,7 +149,7 @@ public class ImportWizardTest {
 
 	@Test
 	public void wsdlToWSImportTest() {
-	
+
 		// import wsdl
 		Properties iProps = new Properties();
 		iProps.setProperty("dirName", teiidBot.toAbsolutePath("resources/wsdl"));
@@ -221,10 +163,7 @@ public class ImportWizardTest {
 		iProps.setProperty("project", MODEL_PROJECT);
 		iProps.setProperty("wsdlName", "Hello.wsdl");
 		new ImportMetadataManager().importFromWSDLToWebService(iProps,
-				WsdlWebImportWizard.IMPORT_WSDL_FROM_WORKSPACE);// generates
-																// Hello.xsd,
-																// WsdlToWS.xmi
-																// - Hello
+				WsdlWebImportWizard.IMPORT_WSDL_FROM_WORKSPACE); // generates Hello.xsd WsdlToWS.xmi - Hello
 
 		// import from URL
 		iProps = new Properties();
@@ -260,97 +199,4 @@ public class ImportWizardTest {
 		new ImportMetadataManager().importXMLSchema(MODEL_PROJECT, iProps);
 		teiidBot.assertResource(MODEL_PROJECT, "jboss-common_6_0.xsd");
 	}
-
-	// @Test
-	// public void jdbcImportTest() {
-	//
-	// String jdbcProfile = "HSQLDB Profile";
-	// String importProps = "resources/db/hsql-employees.properties";
-	//
-	// String empModel =
-	// teiidBot.getProperties(importProps).getProperty("modelName");//"Emp.xmi";
-	//
-	// //createHSQLDBProfile(jdbcProfile);
-	// new ConnectionProfileManager().createCPWithDriverDefinition(jdbcProfile,
-	// "resources/db/hsqldb.properties");
-	//
-	// /*ImportJDBCDatabaseWizard wizard = new ImportJDBCDatabaseWizard();
-	// wizard.setConnectionProfile(jdbcProfile);
-	// wizard.setProjectName(MODEL_PROJECT);
-	// wizard.setModelName(empModel);
-	// wizard.addItem("PUBLIC/PUBLIC/TABLE/CUSTOMER");
-	// wizard.addItem("PUBLIC/PUBLIC/TABLE/ORDER");
-	// wizard.execute();*/
-	//
-	// new ImportManager().importFromDatabase(MODEL_PROJECT, empModel,
-	// jdbcProfile, teiidBot.getProperties(importProps));
-	//
-	// teiidBot.checkResource(MODEL_PROJECT, empModel);
-	// teiidBot.checkDiagram(MODEL_PROJECT, empModel, "ORDER");
-	// teiidBot.checkDiagram(MODEL_PROJECT, empModel, "CUSTOMER");
-	// }
-
-	//
-	// @Test
-	// public void metadataTableImportTest() {
-	// String source =
-	// teiidBot.toAbsolutePath("resources/dtf/relationalTable.csv");
-	// String target = "RelationalTable.xmi";
-	//
-	// /*MetadataImportWizard importWizard = new MetadataImportWizard();
-	// importWizard.setImportType(ImportType.RELATIONAL_TABLE);
-	// importWizard.setSource(source);
-	// importWizard.setTarget(target);
-	//
-	// ImportManager.importModel(MODEL_PROJECT, importWizard);*/
-	// Properties props = new Properties();
-	// props.setProperty("source", source);
-	// props.setProperty("target", target);
-	// props.setProperty("importType", ImportType.RELATIONAL_TABLE);
-	//
-	// new ImportMetadataManager().importFromDesignerTextFile(MODEL_PROJECT,
-	// props);
-	//
-	// teiidBot.checkResource(MODEL_PROJECT, target);
-	// teiidBot.checkDiagram(MODEL_PROJECT, target, "USER");
-	// teiidBot.checkDiagram(MODEL_PROJECT, target, "ADDRESS");
-	// }
-	//
-	// @Test
-	// public void metadataVirtualTableImportTest() {
-	// String source =
-	// teiidBot.toAbsolutePath("resources/dtf/relationalVirtualTable.csv");
-	// String target = "RelationalVirtualTable.xmi";
-	//
-	// /*MetadataImportWizard importWizard = new MetadataImportWizard();
-	// importWizard.setImportType(ImportType.RELATIONAL_VIRTUAL_TABLE);
-	// importWizard.setSource(source);
-	// importWizard.setTarget(target);
-	//
-	// ImportManager.importModel(MODEL_PROJECT, importWizard);*/
-	//
-	// Properties props = new Properties();
-	// props.setProperty("source", source);
-	// props.setProperty("target", target);
-	// props.setProperty("importType", ImportType.RELATIONAL_VIRTUAL_TABLE);
-	//
-	// new ImportMetadataManager().importFromDesignerTextFile(MODEL_PROJECT,
-	// props);
-	//
-	// teiidBot.checkResource(MODEL_PROJECT, target);
-	// teiidBot.checkDiagram(MODEL_PROJECT, target, "VTable1");
-	// teiidBot.checkDiagram(MODEL_PROJECT, target, "VTable2");
-	// teiidBot.checkDiagram(MODEL_PROJECT, target, "VTable3");
-	// teiidBot.checkDiagram(MODEL_PROJECT, target, "VTable4");
-	// teiidBot.checkDiagram(MODEL_PROJECT, target, "VTable5");
-	// teiidBot.checkDiagram(MODEL_PROJECT, target, "VTable6");
-	// teiidBot.checkDiagram(MODEL_PROJECT, target, "VTable7");
-	// teiidBot.checkDiagram(MODEL_PROJECT, target, "VTable8");
-	// teiidBot.checkDiagram(MODEL_PROJECT, target, "VTable9");
-	// teiidBot.checkDiagram(MODEL_PROJECT, target, "VTable10");
-	// teiidBot.checkDiagram(MODEL_PROJECT, target, "VProc1");
-	// teiidBot.checkDiagram(MODEL_PROJECT, target, "NewProcedureResult");
-	// }
-
-	// TODO wsdl >> ws model, xml schema
 }

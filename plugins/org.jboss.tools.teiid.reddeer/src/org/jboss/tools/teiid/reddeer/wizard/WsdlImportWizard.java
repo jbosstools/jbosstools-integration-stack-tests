@@ -22,7 +22,7 @@ import org.jboss.tools.teiid.reddeer.condition.IsItemAdded;
  */
 public class WsdlImportWizard extends TeiidImportWizard {
 
-	public static final String IMPORTER = "WSDL File or URL >> Source and View Model (SOAP)";
+	public static final String IMPORTER = "Web Service Source >> Source and View Model (SOAP)";
 
 	private String profile;
 	private List<String> requestElements;
