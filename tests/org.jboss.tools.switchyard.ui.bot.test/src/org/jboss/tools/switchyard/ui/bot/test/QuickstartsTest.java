@@ -20,8 +20,8 @@ import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
-import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
+import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.jboss.tools.switchyard.reddeer.wizard.ImportMavenWizard;
 import org.junit.After;
@@ -41,14 +41,14 @@ public abstract class QuickstartsTest {
 	protected String quickstartPath;
 
 	@InjectRequirement
-	private ServerRequirement serverRequirement;
+	private SwitchYardRequirement switchyardRequirement;
 	
 	public QuickstartsTest(String quickstartPath) {
 		this.quickstartPath = quickstartPath;
 	}
 
 	protected void testQuickstart(String path) {
-		String fullPath = serverRequirement.getConfig().getServerBase().getName() + "/" + quickstartPath + "/" + path;
+		String fullPath = switchyardRequirement.getConfig().getServerBase().getHome() + "/" + quickstartPath + "/" + path;
 		assertTrue("Path '" + fullPath + "' doesn exist!", new File(fullPath).exists());
 
 		new ImportMavenWizard().importProject(fullPath);
