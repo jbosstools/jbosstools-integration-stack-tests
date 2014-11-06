@@ -4,7 +4,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.teiid.reddeer.ModelProject;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.SQLScrapbookEditor;
@@ -147,7 +150,7 @@ public class TopDownWsdlTest {
 		sqlEditor.show();
 		sqlEditor.setText(sql);
 		sqlEditor.executeAll();
-
+		new WaitWhile(new ShellWithTextIsAvailable("SQL Statement Execution"), TimePeriod.LONG);
 		SQLResultView resView = new SQLResultView();
 		resView.open();
 		SQLResult result = resView.getByOperation(sql);

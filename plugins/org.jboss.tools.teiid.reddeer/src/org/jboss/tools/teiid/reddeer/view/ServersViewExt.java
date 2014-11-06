@@ -1,32 +1,19 @@
 package org.jboss.tools.teiid.reddeer.view;
-import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.allOf;
-import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
-import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withMnemonic;
-
 import org.apache.log4j.Logger;
-import org.eclipse.swt.widgets.ToolBar;
-import org.eclipse.swt.widgets.Widget;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.forms.finder.SWTFormsBot;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
-import org.hamcrest.Matcher;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewException;
-import org.jboss.reddeer.swt.api.ToolItem;
-import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.jboss.reddeer.swt.impl.toolbar.ViewToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.teiid.reddeer.condition.ServerHasState;
 
 /**
@@ -170,20 +157,6 @@ public class ServersViewExt extends ServersView {
 		server.stop();
 		
 		log.info("Stopping server " + server.getLabel().getName());
-		/*ServerState state = server.getLabel().getState();
-		if (!ServerState.STARTING.equals(state) && !state.isRunningState()){
-			throw new ServersViewException("Cannot stop server because it not running");
-		}
-//		try {
-//			new DefaultTreeItem(serverName + "  [Started, Synchronized]").select();
-//		} catch (Exception ex){
-//			new DefaultTreeItem(serverName + "  [Started]").select();
-//		}
-		new DefaultTreeItem(serverName + "  " + state.getText()).select();
-		
-		new ContextMenu("Stop").select();
-		AbstractWait.sleep(TimePeriod.SHORT.getSeconds() * 1000);
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);*/
 	}
 	
 	public void disconnectTeiidInstance(String serverName){
@@ -192,8 +165,7 @@ public class ServersViewExt extends ServersView {
 		
 		String url = getServerURLPrefix(determineServerType(serverName));//new DefaultTreeItem(label, TEIID_INSTANCE_CONFIG, url).expand();
 		new DefaultTreeItem(label, TEIID_INSTANCE_CONFIG, url).select();
-		new DefaultToolItem(REFRESH).click();
-		new PushButton("OK").click();
+		refreshServer(serverName);
 		new DefaultTreeItem(label, TEIID_INSTANCE_CONFIG, url).select();
 		new ContextMenu(DISCONNECT).select();
 	}
@@ -202,9 +174,7 @@ public class ServersViewExt extends ServersView {
 		String label = getServerLabel(serverName);
 		//refresh 
 		new DefaultTreeItem(label, TEIID_INSTANCE_CONFIG).select();
-		new DefaultToolItem(REFRESH).click();
-		//server was refreshed
-		new PushButton("OK").click();
+		refreshServer(serverName);
 	}
 	
 	public void refreshServer(String serverName) {
@@ -213,7 +183,7 @@ public class ServersViewExt extends ServersView {
 		
 		//refresh 
 		new DefaultTreeItem(label).select();
-		new DefaultToolItem(REFRESH).click();
+		new ViewToolItem(REFRESH).click();
 		
 		//server was refreshed
 		new PushButton("OK").click();
