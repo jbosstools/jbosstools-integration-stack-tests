@@ -24,6 +24,7 @@ public class EscalationIntermediateThrowEvent extends Element {
 	 * @param escalation
 	 */
 	public void setEscalation(Escalation escalation, String variableForMapping) {
+		select();
 		properties.getTab("Event", EventTab.class).set(new EscalationEventDefinition(escalation, variableForMapping, "Source"));
 		refresh();
 	}

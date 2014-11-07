@@ -27,6 +27,10 @@ public class Task extends Element {
 		super(name, type);
 	}
 	
+	Task(String name, ElementType type, org.jboss.tools.bpmn2.reddeer.editor.Element parent) {
+		super(name, type, parent);
+	}
+	
 	/**
 	 * 
 	 * @param parameterMapping
