@@ -3,7 +3,6 @@ package org.jboss.tools.teiid.reddeer.view;
 import java.util.Properties;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.ui.internal.browser.DefaultWorkbenchBrowserSupport;
 import org.jboss.reddeer.eclipse.jdt.ui.AbstractExplorer;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
@@ -130,10 +129,9 @@ public class ModelExplorerView extends AbstractExplorer {
 	}
 
 	public void addTransformationSource(String project, String model, String tableName) {
-		open();
-		
+
+		open();		
 		getProject(project).getProjectItem(model, tableName).select();
-		new ContextMenu(MODELING_MENU_ITEM, "Add Transformation Source(s)").select();
 	}
 
 	public void executeVDB(String project, String vdb) {
