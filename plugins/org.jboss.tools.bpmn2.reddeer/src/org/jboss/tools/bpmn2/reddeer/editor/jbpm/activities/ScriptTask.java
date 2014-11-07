@@ -1,5 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 
+import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.ScriptTaskTab;
 
@@ -14,6 +15,10 @@ public class ScriptTask extends Task {
 	 */
 	public ScriptTask(String name) {
 		super(name, ElementType.SCRIPT_TASK);
+	}
+	
+	public ScriptTask(String name, Element parent) {
+		super(name, ElementType.SCRIPT_TASK, parent);
 	}
 
 	/**

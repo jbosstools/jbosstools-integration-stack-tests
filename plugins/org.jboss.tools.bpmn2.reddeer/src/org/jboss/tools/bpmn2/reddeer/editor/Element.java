@@ -194,6 +194,7 @@ public class Element {
 	 * @param relativePosition
 	 */
 	public void append(String name, ElementType constructType, ConnectionType connectionType, Position relativePosition) {
+		select();
 		log.info("Appending construct name '" + name + "' of type '" + constructType + "' after construct with name '" + this.name + "'.");
 		
 		Point point = findPoint(parent, this, relativePosition);
@@ -307,8 +308,8 @@ public class Element {
 		int childCenterX = childBounds.getCenter().x();
 		int childCenterY = childBounds.getCenter().y();
 		
-		int nearOffset  = 75; // newChildType.isContainer() ? 2 * 75 : 75;
-		int farOffset = 100; // newChildType.isContainer() ? 2 * 100 : 100;
+		int nearOffset  = 75; //nextToChild.type.isContainer() ? 2 * 75 : 75;
+		int farOffset = 100; //nextToChild.type.isContainer() ? 2 * 100 : 100;
 		
 		Point point = new Point(-1, -1);
 		switch (relativePosition) {

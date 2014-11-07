@@ -17,6 +17,10 @@ public class Element extends org.jboss.tools.bpmn2.reddeer.editor.Element {
 		super(name, type);
 	}
 	
+	public Element(String name, ElementType type, org.jboss.tools.bpmn2.reddeer.editor.Element parent) {
+		super(name, type, parent);
+	}
+	
 	/**
 	 * 
 	 * @param parameterMapping

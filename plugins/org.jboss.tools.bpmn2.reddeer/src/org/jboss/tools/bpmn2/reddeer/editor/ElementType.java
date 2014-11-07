@@ -9,6 +9,7 @@ public enum ElementType {
 	
 	AD_HOC_SUB_PROCESS("Sub Processes", "AdHoc Subprocess", "Ad-Hoc Sub-Process"),
 	SUB_PROCESS("Sub Processes", "Embedded SubProcess", "Sub-Process"),
+	EVENT_SUB_PROCESS("Sub Processes", "Event SubProcess", "Sub-Process"),
 	CALL_ACTIVITY("Sub Processes", "Reusable Process", "Call Activity"),
 	
 	
@@ -81,6 +82,8 @@ public enum ElementType {
 	
 	private String paletteToolName;
 	
+	private boolean container;
+	
 	/**
 	 * This string uses class {@link ConstructOfType} for matching elements on canvas
 	 */
@@ -99,6 +102,7 @@ public enum ElementType {
 		this.sectionName = sectionName;
 		this.paletteToolName = paletteToolName;
 		this.idOnCanvas = idOnCanvas;
+		this.container = false;
 		
 		if (sectionName == null || paletteToolName == null) {
 			this.idOnCanvas = "Process";
@@ -114,6 +118,8 @@ public enum ElementType {
 			this.idOnCanvas = "Intermediate Throw Event";
 		} else if (sectionName.equals("SwitchYard")){
 			this.idOnCanvas = "Task";
+		} else if(sectionName.equals("Sub Processes")) {
+			this.container = true;
 		}
 		
 		this.idOnCanvas = this.idOnCanvas.replace(" ", "").replace("-", "");
@@ -154,5 +160,9 @@ public enum ElementType {
 	 */
 	public String getIdOnCanvas() {
 		return idOnCanvas;
+	}
+	
+	public boolean isContainer() {
+		return container;
 	}
 }

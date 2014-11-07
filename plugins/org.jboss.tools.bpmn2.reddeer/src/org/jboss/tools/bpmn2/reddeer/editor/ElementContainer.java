@@ -46,8 +46,8 @@ public class ElementContainer extends Element {
 			// Upper left corner
 			x = y = 5; 
 		} else {
-			x = bounds.width() / 8;
-			y = bounds.height() / 10;
+			x = bounds.width() / 7;
+			y = bounds.height() / 5;
 		}
 		Point placeTo = new Point(x, y);
 		add(name, type, placeTo);

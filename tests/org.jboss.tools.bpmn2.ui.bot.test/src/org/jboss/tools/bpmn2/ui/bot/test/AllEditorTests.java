@@ -38,9 +38,9 @@ import org.junit.runners.Suite.SuiteClasses;
 	DataObjectTest.class,
 	MultipleStartEventTest.class,
 	InclusiveSplitTest.class,
-	//IntermediateThrowEventNoneTest.class, 
+//	//IntermediateThrowEventNoneTest.class, 
 	IntermediateThrowMessageEventTest.class,
-	IntermediateThrowEscalationEventTest.class,
+	IntermediateThrowEscalationEventTest.class, // https://bugzilla.redhat.com/show_bug.cgi?id=1162174
 	IntermediateCatchSignalSingleTest.class,
 	ExclusiveSplitPriorityTest.class,
 	EventBasedSplitTest.class, 
