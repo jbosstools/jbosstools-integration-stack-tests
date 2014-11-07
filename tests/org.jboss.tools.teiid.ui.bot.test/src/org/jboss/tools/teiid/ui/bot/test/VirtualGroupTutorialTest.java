@@ -2,14 +2,15 @@ package org.jboss.tools.teiid.ui.bot.test;
 
 import java.util.Arrays;
 
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.tools.teiid.reddeer.ModelProject;
 import org.jboss.tools.teiid.reddeer.Procedure;
 import org.jboss.tools.teiid.reddeer.VDB;
@@ -24,10 +25,11 @@ import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
 import org.jboss.tools.teiid.reddeer.view.SQLResult;
+import org.jboss.tools.teiid.reddeer.view.SQLResultView;
+import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.CreateMetadataModel;
 import org.jboss.tools.teiid.reddeer.wizard.CreateVDB;
 import org.jboss.tools.teiid.reddeer.wizard.ImportJDBCDatabaseWizard;
-import org.jboss.tools.teiid.reddeer.wizard.ModelProjectWizard;
 import org.jboss.tools.teiid.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
 import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.Server;
 import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.State;
@@ -177,8 +179,11 @@ public class VirtualGroupTutorialTest extends SWTBotTestCase {
 		ModelExplorerView modelView = TeiidPerspective.getInstance().getModelExplorerView();
 		modelView.newBaseTable(PROJECT_NAME, VIRTUAL_MODEL_NAME, VIRTUAL_TABLE_NAME);
 		modelView.openTransformationDiagram(PROJECT_NAME, VIRTUAL_MODEL_NAME, VIRTUAL_TABLE_NAME);
+		DefaultToolItem addTransformation = new DefaultToolItem("Add Transformation Source(s)");
 		modelView.addTransformationSource(PROJECT_NAME, ORACLE_MODEL_NAME, "SUPPLIER");
+		addTransformation.click();
 		modelView.addTransformationSource(PROJECT_NAME, SQLSERVER_MODEL_NAME, "SUPPLIER_PARTS");
+		addTransformation.click();
 
 		ModelEditor editor = new ModelEditor(VIRTUAL_MODEL_NAME);
 		editor.show();
@@ -193,7 +198,7 @@ public class VirtualGroupTutorialTest extends SWTBotTestCase {
 		criteriaBuilder.finish();
 
 		editor.save();
-
+		AbstractWait.sleep(TimePeriod.getCustom(2));
 		assertEquals("SQL Statements do not match!", TRANSFORMATION_SQL, editor.getTransformation());
 	}
 
@@ -214,6 +219,8 @@ public class VirtualGroupTutorialTest extends SWTBotTestCase {
 	}
 
 	public void executeVDB() {
+		ServersViewExt serversView = new ServersViewExt();
+		serversView.refreshServer("EAP-6.1");
 		ModelExplorer modelExplorer = new ModelExplorer();
 		modelExplorer.open();
 		VDB vdb = modelExplorer.getModelProject(PROJECT_NAME).getVDB(VDB_FILE_NAME);
@@ -229,25 +236,22 @@ public class VirtualGroupTutorialTest extends SWTBotTestCase {
 		// TESTSQL_1
 		editor.setText(TESTSQL_1);
 		editor.executeAll();
-
-		SQLResult result = DatabaseDevelopmentPerspective.getInstance().getSqlResultsView()
-				.getByOperation(TESTSQL_1);
+		SQLResultView sqlResult = new SQLResultView();
+		SQLResult result = sqlResult.getByOperation(TESTSQL_1);
 		assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
 
 		// TESTSQL_2
 		editor.show();
 		editor.setText(TESTSQL_2);
 		editor.executeAll();
-
-		result = DatabaseDevelopmentPerspective.getInstance().getSqlResultsView().getByOperation(TESTSQL_2);
+		result = sqlResult.getByOperation(TESTSQL_2);
 		assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
 
 		// TESTSQL_3
 		editor.show();
 		editor.setText(TESTSQL_3);
 		editor.executeAll();
-
-		result = DatabaseDevelopmentPerspective.getInstance().getSqlResultsView().getByOperation(TESTSQL_3);
+		result = sqlResult.getByOperation(TESTSQL_3);
 		assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
 		assertEquals(126, result.getCount());
 
@@ -255,8 +259,7 @@ public class VirtualGroupTutorialTest extends SWTBotTestCase {
 		editor.show();
 		editor.setText(TESTSQL_4);
 		editor.executeAll();
-
-		result = DatabaseDevelopmentPerspective.getInstance().getSqlResultsView().getByOperation(TESTSQL_4);
+		result = sqlResult.getByOperation(TESTSQL_4);
 		assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
 		assertEquals(30, result.getCount());
 	}
