@@ -24,6 +24,9 @@ public abstract class RuntimeBase {
 	@XmlElement(name = "home", namespace = Namespaces.SOA_REQ)
 	private String home;
 
+	@XmlElement(name = "properties", namespace = Namespaces.SOA_REQ)
+	private Properties properties;
+
 	public String getName() {
 		return name;
 	}
@@ -46,6 +49,19 @@ public abstract class RuntimeBase {
 
 	public void setHome(String home) {
 		this.home = home;
+	}
+
+	public void setProperties(Properties properties) {
+		this.properties = properties;
+	}
+
+	public String getProperty(String key) {
+		return properties != null ? properties.getProperty(key) : null;
+	}
+
+	public String getProperty(String key, String defaultValue) {
+		String value = getProperty(key);
+		return value != null ? value : defaultValue;
 	}
 
 	public boolean exists() {
