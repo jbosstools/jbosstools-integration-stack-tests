@@ -20,6 +20,7 @@ Require-Bundle: org.junit;bundle-version="4.11.0",
  org.eclipse.wst.server.core;bundle-version="1.5.100"
 Export-Package: org.jboss.tools.runtime.reddeer,
  org.jboss.tools.runtime.reddeer.impl,
+ org.jboss.tools.runtime.reddeer.preference,
  org.jboss.tools.runtime.reddeer.requirement,
  org.jboss.tools.runtime.reddeer.wizard
 Eclipse-BundleShape: dir
