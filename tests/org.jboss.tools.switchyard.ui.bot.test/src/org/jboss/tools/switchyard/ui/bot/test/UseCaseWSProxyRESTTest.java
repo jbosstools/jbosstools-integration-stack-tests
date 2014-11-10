@@ -124,8 +124,8 @@ public class UseCaseWSProxyRESTTest {
 		new Service("HelloPortType").addBinding("SOAP");
 		SOAPBindingPage soapWizard = new SOAPBindingPage();
 		soapWizard.setName("soap-binding");
-		soapWizard.setContextPath(PROJECT);
-		soapWizard.setServerPort(":18080");
+		soapWizard.getContextPath().setText(PROJECT);
+		soapWizard.getServerPort().setText(":18080");
 		soapWizard.finish();
 
 		new SwitchYardEditor().save();

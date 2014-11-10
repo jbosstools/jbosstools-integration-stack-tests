@@ -31,15 +31,8 @@ public class RESTBindingPage extends OperationOptionsPage<RESTBindingPage> {
 
 	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
 
-	public RESTBindingPage setContextPath(String contextPath) {
-		new LabeledText(CONTEXT_PATH).setFocus();
-		new LabeledText(CONTEXT_PATH).setText(contextPath);
-		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.TAB);
-		return this;
-	}
-
-	public String getContextPath() {
-		return new LabeledText(CONTEXT_PATH).getText();
+	public LabeledText getContextPath() {
+		return new LabeledText("Context path:");
 	}
 
 	public RESTBindingPage setAddress(String address) {
@@ -63,6 +56,5 @@ public class RESTBindingPage extends OperationOptionsPage<RESTBindingPage> {
 		String[] items = bot.listWithLabel("RESTful Interfaces*").getItems();
 		return new ArrayList<String>(Arrays.asList(items));
 	}
-
 
 }

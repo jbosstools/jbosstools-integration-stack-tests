@@ -1,6 +1,21 @@
 package org.jboss.tools.switchyard.ui.bot.test;
 
+import static org.jboss.tools.switchyard.reddeer.binding.JCABindingPage.ACKNOWLEDGE_MODE_AUTO;
+import static org.jboss.tools.switchyard.reddeer.binding.JCABindingPage.ACKNOWLEDGE_MODE_DUPS_OK;
+import static org.jboss.tools.switchyard.reddeer.binding.JCABindingPage.ENDPOINT_JMS;
+import static org.jboss.tools.switchyard.reddeer.binding.JCABindingPage.RESOURCE_ADAPTER_GENERIC;
+import static org.jboss.tools.switchyard.reddeer.binding.JCABindingPage.RESOURCE_ADAPTER_HORNETQ_QUEUE;
+import static org.jboss.tools.switchyard.reddeer.binding.JCABindingPage.RESOURCE_ADAPTER_HORNETQ_TOPIC;
+import static org.jboss.tools.switchyard.reddeer.binding.JCABindingPage.SUBSCRIPTION_NONDURABLE;
+import static org.jboss.tools.switchyard.reddeer.binding.JMSBindingPage.TYPE_QUEUE;
+import static org.jboss.tools.switchyard.reddeer.binding.JMSBindingPage.TYPE_TOPIC;
+import static org.jboss.tools.switchyard.reddeer.binding.MailBindingPage.ACCOUNT_TYPE_IMAP;
+import static org.jboss.tools.switchyard.reddeer.binding.OperationOptionsPage.JAVA_CLASS;
 import static org.jboss.tools.switchyard.reddeer.binding.OperationOptionsPage.OPERATION_NAME;
+import static org.jboss.tools.switchyard.reddeer.binding.OperationOptionsPage.REGEX;
+import static org.jboss.tools.switchyard.reddeer.binding.OperationOptionsPage.XPATH;
+import static org.jboss.tools.switchyard.reddeer.binding.SOAPBindingPage.SOAP_HEADERS_TYPE_DOM;
+import static org.jboss.tools.switchyard.reddeer.binding.SchedulingBindingPage.SCHEDULING_TYPE_CRON;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -10,7 +25,6 @@ import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.handler.ShellHandler;
-import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
@@ -45,7 +59,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-// TODO Add checking all attributes
 // TODO Add test for editing existing bindings (now it is commented out)
 
 /**
@@ -150,18 +163,21 @@ public class BindingsTest {
 		CamelBindingPage wizard = new CamelBindingPage();
 		assertEquals("camel1", wizard.getName());
 		wizard.setName("camel-binding");
-		wizard.setConfigURI("camel-uri");
+		wizard.getConfigURI().setText("camel-uri");
 		wizard.setOperationSelector(OPERATION_NAME, METHOD);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
 
-		assertEquals("camel-binding", editor.xpath("/switchyard/composite/service/binding.uri/@name"));
+		String bindingPath = "/switchyard/composite/service/binding.uri";
+		assertEquals("camel-binding", editor.xpath(bindingPath + "/@name"));
+		assertEquals("camel-uri", editor.xpath(bindingPath + "/@configURI"));
+		assertEquals(METHOD, editor.xpath(bindingPath + "/operationSelector/@operationName"));
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		CamelBindingPage page = properties.selectCamelBinding("camel-binding");
 		assertEquals("camel-binding", page.getName());
-		assertEquals("camel-uri", page.getConfigURI());
+		assertEquals("camel-uri", page.getConfigURI().getText());
 		assertEquals(OPERATION_NAME, page.getOperationSelector());
 		assertEquals(METHOD, page.getOperationSelectorValue());
 		properties.ok();
@@ -173,17 +189,55 @@ public class BindingsTest {
 		FTPBindingPage wizard = new FTPBindingPage();
 		assertEquals("ftp1", wizard.getName());
 		wizard.setName("ftp-binding");
-		wizard.setDirectory("ftp-directory");
+		wizard.getHost().setText("myhost");
+		wizard.getPort().setText("1234");
+		wizard.getUserName().setText("admin");
+		wizard.getPassword().setText("admin123$");
+		wizard.getUseBinaryTransferMode().toggle(true);
+		wizard.getDirectory().setText("ftp-directory");
+		wizard.getFileName().setText("fileName");
+		wizard.getAutoCreateMissingDirectoriesinFilePath().click();
+		wizard.getAutoCreateMissingDirectoriesinFilePath().toggle(true);
+		wizard.getInclude().setText("include");
+		wizard.getExclude().setText("exclude");
+		wizard.getDeleteFilesOnceProcessed().toggle(true);
+		wizard.getProcessSubDirectoriesRecursively().toggle(true);
+		wizard.setOperationSelector(OPERATION_NAME, METHOD);
+		wizard.next();
+		wizard.getPreMove().setText("preMove");
+		wizard.getMove().setText("move");
+		wizard.getMoveFailed().setText("moveFailed");
+		wizard.getDelayBetweenPolls().setText("3000");
+		wizard.getMaxMessagesPerPoll().setText("10");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
 
-		assertEquals("ftp-binding", editor.xpath("/switchyard/composite/service/binding.ftp/@name"));
+		String bindingPath = "/switchyard/composite/service/binding.ftp";
+		assertEquals("ftp-binding", editor.xpath(bindingPath + "/@name"));
+		assertEquals(METHOD, editor.xpath(bindingPath + "/operationSelector/@operationName"));
+		assertEquals("ftp-directory", editor.xpath(bindingPath + "/directory"));
+		assertEquals("true", editor.xpath(bindingPath + "/autoCreate"));
+		assertEquals("fileName", editor.xpath(bindingPath + "/fileName"));
+		assertEquals("myhost", editor.xpath(bindingPath + "/host"));
+		assertEquals("1234", editor.xpath(bindingPath + "/port"));
+		assertEquals("admin", editor.xpath(bindingPath + "/username"));
+		assertEquals("admin123$", editor.xpath(bindingPath + "/password"));
+		assertEquals("true", editor.xpath(bindingPath + "/binary"));
+		assertEquals("true", editor.xpath(bindingPath + "/consume/delete"));
+		assertEquals("true", editor.xpath(bindingPath + "/consume/recursive"));
+		assertEquals("preMove", editor.xpath(bindingPath + "/consume/preMove"));
+		assertEquals("move", editor.xpath(bindingPath + "/consume/move"));
+		assertEquals("moveFailed", editor.xpath(bindingPath + "/consume/moveFailed"));
+		assertEquals("include", editor.xpath(bindingPath + "/consume/include"));
+		assertEquals("exclude", editor.xpath(bindingPath + "/consume/exclude"));
+		assertEquals("10", editor.xpath(bindingPath + "/consume/maxMessagesPerPoll"));
+		assertEquals("3000", editor.xpath(bindingPath + "/consume/delay"));
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		FTPBindingPage page = properties.selectFTPBinding("ftp-binding");
 		assertEquals("ftp-binding", page.getName());
-		assertEquals("ftp-directory", page.getDirectory());
+		assertEquals("ftp-directory", page.getDirectory().getText());
 		properties.ok();
 	}
 
@@ -193,40 +247,106 @@ public class BindingsTest {
 		FTPSBindingPage wizard = new FTPSBindingPage();
 		assertEquals("ftps1", wizard.getName());
 		wizard.setName("ftps-binding");
-		wizard.setDirectory("ftps-directory");
+		wizard.getHost().setText("localhost");
+		wizard.getPort().setText("1234");
+		wizard.getUserName().setText("admin");
+		wizard.getPassword().setText("admin123$");
+		wizard.getUseBinaryTransferMode().toggle(true);
+		wizard.getDirectory().setText("ftps-directory");
+		wizard.getFileName().setText("filename");
+		wizard.getAutoCreateMissingDirectoriesinFilePath().toggle(false);
+		wizard.getAutoCreateMissingDirectoriesinFilePath().toggle(true);
+		wizard.getInclude().setText("include");
+		wizard.getExclude().setText("exclude");
+		wizard.getDeleteFilesOnceProcessed().toggle(true);
+		wizard.getProcessSubDirectoriesRecursively().toggle(true);
+		wizard.setOperationSelector(OPERATION_NAME, METHOD);
+		wizard.next();
+		wizard.getPreMove().setText("pre-move");
+		wizard.getMove().setText("move");
+		wizard.getMoveFailed().setText("move-failed");
+		wizard.getDelayBetweenPolls().setText("1200");
+		wizard.getMaxMessagesPerPoll().setText("3");
+		wizard.next();
+		wizard.getSecurityProtocol().setSelection(FTPSBindingPage.SECURITY_PROTOCOL_SSL);
+		wizard.getSecurityProtocol().setSelection(FTPSBindingPage.SECURITY_PROTOCOL_TLS);
+		wizard.getImplicit().toggle(true);
+		wizard.getExecutionProtocol().setSelection(FTPSBindingPage.EXECUTION_PROTOCOL_C);
+		wizard.getExecutionProtocol().setSelection(FTPSBindingPage.EXECUTION_PROTOCOL_S);
+		wizard.getExecutionProtocol().setSelection(FTPSBindingPage.EXECUTION_PROTOCOL_E);
+		wizard.getExecutionProtocol().setSelection(FTPSBindingPage.EXECUTION_PROTOCOL_P);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
 
-		assertEquals("ftps-binding", editor.xpath("/switchyard/composite/service/binding.ftps/@name"));
+		String bindingPath = "/switchyard/composite/service/binding.ftps";
+		assertEquals("ftps-binding", editor.xpath(bindingPath + "/@name"));
+		assertEquals(METHOD, editor.xpath(bindingPath + "/operationSelector/@operationName"));
+		assertEquals("ftps-directory", editor.xpath(bindingPath + "/directory"));
+		assertEquals("filename", editor.xpath(bindingPath + "/fileName"));
+		assertEquals("localhost", editor.xpath(bindingPath + "/host"));
+		assertEquals("1234", editor.xpath(bindingPath + "/port"));
+		assertEquals("admin", editor.xpath(bindingPath + "/username"));
+		assertEquals("admin123$", editor.xpath(bindingPath + "/password"));
+		assertEquals("true", editor.xpath(bindingPath + "/binary"));
+		assertEquals("true", editor.xpath(bindingPath + "/consume/delete"));
+		assertEquals("true", editor.xpath(bindingPath + "/consume/recursive"));
+		assertEquals("pre-move", editor.xpath(bindingPath + "/consume/preMove"));
+		assertEquals("move", editor.xpath(bindingPath + "/consume/move"));
+		assertEquals("move-failed", editor.xpath(bindingPath + "/consume/moveFailed"));
+		assertEquals("include", editor.xpath(bindingPath + "/consume/include"));
+		assertEquals("exclude", editor.xpath(bindingPath + "/consume/exclude"));
+		assertEquals("3", editor.xpath(bindingPath + "/consume/maxMessagesPerPoll"));
+		assertEquals("1200", editor.xpath(bindingPath + "/consume/delay"));
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		FTPSBindingPage page = properties.selectFTPSBinding("ftps-binding");
 		assertEquals("ftps-binding", page.getName());
-		assertEquals("ftps-directory", page.getDirectory());
+		assertEquals("ftps-directory", page.getDirectory().getText());
 		properties.ok();
 	}
 
-	 @Test
+	@Test
 	public void fileBindingTest() throws Exception {
 		new Service(SERVICE).addBinding("File");
 		FileBindingPage wizard = new FileBindingPage();
 		assertEquals("file1", wizard.getName());
 		wizard.setName("file-binding");
-		wizard.setDirectory("file-directory");
-		wizard.setDirAutoCreation(true);
-		wizard.setMoveDirectory("processed");
+		wizard.getDirectory().setText("file-directory");
+		wizard.getFileName().setText("test.txt");
+		wizard.getAutoCreateMissingDirectoriesinFilePath().toggle(false);
+		wizard.getAutoCreateMissingDirectoriesinFilePath().toggle(true);
+		wizard.getInclude().setText("inc");
+		wizard.getExclude().setText("ex");
+		wizard.setOperationSelector(OPERATION_NAME, METHOD);
+		wizard.getPreMove().setText("pre");
+		wizard.getMove().setText("processed");
+		wizard.getMoveFailed().setText("failed");
+		wizard.getMaxMessagesPerPoll().setText("10");
+		wizard.getDelayBetweenPolls().setText("963");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
 
-		assertEquals("file-binding", editor.xpath("/switchyard/composite/service/binding.file/@name"));
+		String bindingPath = "/switchyard/composite/service/binding.file";
+		assertEquals("file-binding", editor.xpath(bindingPath + "/@name"));
+		assertEquals(METHOD, editor.xpath(bindingPath + "/operationSelector/@operationName"));
+		assertEquals("file-directory", editor.xpath(bindingPath + "/directory"));
+		assertEquals("test.txt", editor.xpath(bindingPath + "/fileName"));
+		assertEquals("true", editor.xpath(bindingPath + "/autoCreate"));
+		assertEquals("963", editor.xpath(bindingPath + "/consume/delay"));
+		assertEquals("10", editor.xpath(bindingPath + "/consume/maxMessagesPerPoll"));
+		assertEquals("pre", editor.xpath(bindingPath + "/consume/preMove"));
+		assertEquals("processed", editor.xpath(bindingPath + "/consume/move"));
+		assertEquals("failed", editor.xpath(bindingPath + "/consume/moveFailed"));
+		assertEquals("inc", editor.xpath(bindingPath + "/consume/include"));
+		assertEquals("ex", editor.xpath(bindingPath + "/consume/exclude"));
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		FileBindingPage page = properties.selectFileBinding("file-binding");
 		assertEquals("file-binding", page.getName());
-		assertEquals("file-directory", page.getDirectory());
-		assertTrue(page.isDirAutoCreation());
+		assertEquals("file-directory", page.getDirectory().getText());
+		assertTrue(page.getAutoCreateMissingDirectoriesinFilePath().isChecked());
 		properties.ok();
 	}
 
@@ -236,65 +356,255 @@ public class BindingsTest {
 		HTTPBindingPage wizard = new HTTPBindingPage();
 		assertEquals("http1", wizard.getName());
 		wizard.setName("http-binding");
-		wizard.setContextPath("http-context");
+		wizard.getContextPath().setText("http-context");
 		wizard.setOperationSelector(OPERATION_NAME, METHOD);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
 
-		assertEquals("http-binding", editor.xpath("/switchyard/composite/service/binding.http/@name"));
+		String bindingPath = "/switchyard/composite/service/binding.http";
+		assertEquals("http-binding", editor.xpath(bindingPath + "/@name"));
+		assertEquals(METHOD, editor.xpath(bindingPath + "/operationSelector/@operationName"));
+		assertEquals("http-context", editor.xpath(bindingPath + "/contextPath"));
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		HTTPBindingPage page = properties.selectHTTPBinding("http-binding");
 		assertEquals("http-binding", page.getName());
-		assertEquals("http-context", page.getContextPath());
+		page.setName("http1");
+		assertEquals("http-context", page.getContextPath().getText());
+		page.getContextPath().setText("hello");
 		assertEquals(OPERATION_NAME, page.getOperationSelector());
 		assertEquals(METHOD, page.getOperationSelectorValue());
-		new PushButton("OK").click();
+		page.setOperationSelector(XPATH, "/hello/method");
+		page.ok();
+
+		new SwitchYardEditor().save();
+
+		assertEquals("http1", editor.xpath(bindingPath + "/@name"));
+		assertEquals("/hello/method", editor.xpath(bindingPath + "/operationSelector.xpath/@expression"));
+		assertEquals("hello", editor.xpath(bindingPath + "/contextPath"));
 	}
 
 	@Test
-	public void jcaBindingTest() throws Exception {
+	public void jcaBindingGenericTest() throws Exception {
 		new Service(SERVICE).addBinding("JCA");
-
 		JCABindingPage wizard = new JCABindingPage();
 		assertEquals("jca1", wizard.getName());
 		wizard.setName("jca-binding");
-		wizard.selectGenericResourceAdapter();
-		wizard.setResourceAdapterArchive("resource-adapter.jar");
+		wizard.getResourceAdapterType().setSelection(RESOURCE_ADAPTER_GENERIC);
+		wizard.getResourceAdapterArchive().setText("generic-ra.rar");
+		wizard.setOperationSelector(OPERATION_NAME, METHOD);
 		wizard.next();
-		wizard.selectJMSEndpoint();
+		wizard.getEndpointMappingType().setSelection(ENDPOINT_JMS);
+		wizard.getTransacted().toggle(false);
+		wizard.getTransacted().toggle(true);
+		wizard.getBatchSize().setText("123");
+		wizard.getBatchTimeoutin().setText("2000");
+		wizard.getConnectionFactoryJNDIName().setText("jndiName");
+		wizard.getJNDIPropertiesFileName().setText("jndi.properties");
+		wizard.getDestinationType().setSelection("javax.jms.Queue");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
 
-		assertEquals("jca-binding", editor.xpath("/switchyard/composite/service/binding.jca/@name"));
+		String bindingPath = "/switchyard/composite/service/binding.jca";
+		assertEquals("jca-binding", editor.xpath(bindingPath + "/@name"));
+		assertEquals(METHOD, editor.xpath(bindingPath + "/operationSelector/@operationName"));
+		assertEquals("generic-ra.rar", editor.xpath(bindingPath + "/inboundConnection/resourceAdapter/@name"));
+		assertEquals("javax.jms.Queue", editor.xpath(bindingPath
+				+ "/inboundConnection/activationSpec/property[@name='destinationType']/@value"));
+		assertEquals("queue/YourQueueName",
+				editor.xpath(bindingPath + "/inboundConnection/activationSpec/property[@name='destination']/@value"));
+		assertEquals("", editor.xpath(bindingPath
+				+ "/inboundConnection/activationSpec/property[@name='messageSelector']/@value"));
+		assertEquals("Auto-acknowledge", editor.xpath(bindingPath
+				+ "/inboundConnection/activationSpec/property[@name='acknowledgeMode']/@value"));
+		assertEquals("org.switchyard.component.jca.endpoint.JMSEndpoint",
+				editor.xpath(bindingPath + "/inboundInteraction/endpoint/@type"));
+		assertEquals("true", editor.xpath(bindingPath + "/inboundInteraction/transacted"));
+		assertEquals("123", editor.xpath(bindingPath + "/inboundInteraction/batchCommit/@batchSize"));
+		assertEquals("2000", editor.xpath(bindingPath + "/inboundInteraction/batchCommit/@batchTimeout"));
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		JCABindingPage page = properties.selectJCABinding("jca-binding");
 		assertEquals("jca-binding", page.getName());
-		assertTrue(page.isGenericResourceAdapter());
-		assertEquals("resource-adapter.jar", page.getResourceAdapterArchive());
+		assertEquals(RESOURCE_ADAPTER_GENERIC, page.getResourceAdapterType().getSelection());
+		assertEquals("generic-ra.rar", page.getResourceAdapterArchive().getText());
 		properties.ok();
 	}
 
-	 @Test
-	public void jmsBindingTest() throws Exception {
-		new Service(SERVICE).addBinding("JMS");
-		JMSBindingPage wizard = new JMSBindingPage();
-		assertEquals("jms1", wizard.getName());
-		wizard.setName("jms-binding");
-		wizard.setQueueTopicName("queue-name");
+	@Test
+	public void jcaBindingHornetQueueTest() throws Exception {
+		new Service(SERVICE).addBinding("JCA");
+		JCABindingPage wizard = new JCABindingPage();
+		assertEquals("jca1", wizard.getName());
+		wizard.setName("jca-binding");
+		wizard.getResourceAdapterType().setSelection(RESOURCE_ADAPTER_HORNETQ_QUEUE);
+		wizard.getDestinationQueue().setText("queue/MyQueue");
+		wizard.getMessageSelector().setText("ms");
+		wizard.getAcknowledgeMode().setSelection(ACKNOWLEDGE_MODE_DUPS_OK);
+		wizard.setOperationSelector(REGEX, "say[H|h]ello");
+		wizard.next();
+		wizard.getEndpointMappingType().setSelection(ENDPOINT_JMS);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
 
-		assertEquals("jms-binding", editor.xpath("/switchyard/composite/service/binding.jms/@name"));
+		String bindingPath = "/switchyard/composite/service/binding.jca";
+		assertEquals("jca-binding", editor.xpath(bindingPath + "/@name"));
+		assertEquals("say[H|h]ello", editor.xpath(bindingPath + "/operationSelector.regex/@expression"));
+		assertEquals("hornetq-ra.rar", editor.xpath(bindingPath + "/inboundConnection/resourceAdapter/@name"));
+		assertEquals("javax.jms.Queue", editor.xpath(bindingPath
+				+ "/inboundConnection/activationSpec/property[@name='destinationType']/@value"));
+		assertEquals("queue/MyQueue",
+				editor.xpath(bindingPath + "/inboundConnection/activationSpec/property[@name='destination']/@value"));
+		assertEquals("ms", editor.xpath(bindingPath
+				+ "/inboundConnection/activationSpec/property[@name='messageSelector']/@value"));
+		assertEquals("Dups-ok-acknowledge", editor.xpath(bindingPath
+				+ "/inboundConnection/activationSpec/property[@name='acknowledgeMode']/@value"));
+
+		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
+		JCABindingPage page = properties.selectJCABinding("jca-binding");
+		assertEquals("jca-binding", page.getName());
+		assertTrue(page.getResourceAdapterType().getSelection().equals(RESOURCE_ADAPTER_HORNETQ_QUEUE));
+		properties.ok();
+	}
+
+	@Test
+	public void jcaBindingHornetTopicTest() throws Exception {
+		new Service(SERVICE).addBinding("JCA");
+		JCABindingPage wizard = new JCABindingPage();
+		assertEquals("jca1", wizard.getName());
+		wizard.setName("jca-binding");
+		wizard.getResourceAdapterType().setSelection(RESOURCE_ADAPTER_HORNETQ_TOPIC);
+		wizard.getDestinationTopic().setText("topic/MyTopic");
+		wizard.getMessageSelector().setText("ms");
+		wizard.getAcknowledgeMode().setSelection(ACKNOWLEDGE_MODE_AUTO);
+		wizard.getSubscriptionDurability().setSelection(SUBSCRIPTION_NONDURABLE);
+		wizard.getClientID().setText("clientID");
+		wizard.getSubscriptionName().setText("sub-name");
+		wizard.setOperationSelector(JAVA_CLASS, "myClass.java");
+		wizard.next();
+		wizard.getEndpointMappingType().setSelection(ENDPOINT_JMS);
+		wizard.finish();
+
+		new SwitchYardEditor().save();
+
+		String bindingPath = "/switchyard/composite/service/binding.jca";
+		assertEquals("jca-binding", editor.xpath(bindingPath + "/@name"));
+		assertEquals("myClass.java", editor.xpath(bindingPath + "/operationSelector.java/@class"));
+		assertEquals("hornetq-ra.rar", editor.xpath(bindingPath + "/inboundConnection/resourceAdapter/@name"));
+		assertEquals("javax.jms.Topic", editor.xpath(bindingPath
+				+ "/inboundConnection/activationSpec/property[@name='destinationType']/@value"));
+		assertEquals("topic/MyTopic",
+				editor.xpath(bindingPath + "/inboundConnection/activationSpec/property[@name='destination']/@value"));
+		assertEquals("ms", editor.xpath(bindingPath
+				+ "/inboundConnection/activationSpec/property[@name='messageSelector']/@value"));
+		assertEquals(ACKNOWLEDGE_MODE_AUTO, editor.xpath(bindingPath
+				+ "/inboundConnection/activationSpec/property[@name='acknowledgeMode']/@value"));
+		assertEquals(
+				"sub-name",
+				editor.xpath(bindingPath
+						+ "/inboundConnection/activationSpec/property[@name='subscriptionName']/@value"));
+		assertEquals(
+				SUBSCRIPTION_NONDURABLE,
+				editor.xpath(bindingPath
+						+ "/inboundConnection/activationSpec/property[@name='subscriptionDurability']/@value"));
+		assertEquals("clientID",
+				editor.xpath(bindingPath + "/inboundConnection/activationSpec/property[@name='clientId']/@value"));
+		assertEquals(
+				"1",
+				editor.xpath("count(" + bindingPath
+						+ "/inboundConnection/activationSpec/property[@name='messageSelector'])"));
+		assertEquals(
+				"1",
+				editor.xpath("count(" + bindingPath
+						+ "/inboundConnection/activationSpec/property[@name='acknowledgeMode'])"));
+
+		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
+		JCABindingPage page = properties.selectJCABinding("jca-binding");
+		assertEquals("jca-binding", page.getName());
+		assertTrue(page.getResourceAdapterType().getSelection().equals(RESOURCE_ADAPTER_HORNETQ_TOPIC));
+		properties.ok();
+	}
+
+	@Test
+	public void jmsBindingQueueTest() throws Exception {
+		new Service(SERVICE).addBinding("JMS");
+		JMSBindingPage wizard = new JMSBindingPage();
+		assertEquals("jms1", wizard.getName());
+		wizard.setName("jms-binding");
+		wizard.getType().setSelection(TYPE_QUEUE);
+		wizard.setQueueTopicName("myqueue");
+		wizard.getConnectionFactory().setText("#MyFactory");
+		wizard.getConcurrentConsumers().setText("3");
+		wizard.getMaximumConcurrentConsumers().setText("7");
+		wizard.getReplyTo().setText("reply-to");
+		wizard.getSelector().setText("selector");
+		wizard.getTransactionManager().setText("MyTX");
+		wizard.getTransacted().toggle(false);
+		wizard.getTransacted().toggle(true);
+		wizard.setOperationSelector(OPERATION_NAME, METHOD);
+		wizard.finish();
+
+		new SwitchYardEditor().save();
+
+		String bindingPath = "/switchyard/composite/service/binding.jms";
+		assertEquals("jms-binding", editor.xpath(bindingPath + "/@name"));
+		assertEquals(METHOD, editor.xpath(bindingPath + "/operationSelector/@operationName"));
+		assertEquals("myqueue", editor.xpath(bindingPath + "/queue"));
+		assertEquals("#MyFactory", editor.xpath(bindingPath + "/connectionFactory"));
+		assertEquals("3", editor.xpath(bindingPath + "/concurrentConsumers"));
+		assertEquals("7", editor.xpath(bindingPath + "/maxConcurrentConsumers"));
+		assertEquals("reply-to", editor.xpath(bindingPath + "/replyTo"));
+		assertEquals("selector", editor.xpath(bindingPath + "/selector"));
+		assertEquals("true", editor.xpath(bindingPath + "/transacted"));
+		assertEquals("MyTX", editor.xpath(bindingPath + "/transactionManager"));
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		JMSBindingPage page = properties.selectJMSBinding("jms-binding");
 		assertEquals("jms-binding", page.getName());
-		assertEquals("queue-name", page.getQueueTopicName());
+		assertEquals("myqueue", page.getQueueTopicName());
+		properties.ok();
+	}
+
+	@Test
+	public void jmsBindingTopicTest() throws Exception {
+		new Service(SERVICE).addBinding("JMS");
+		JMSBindingPage wizard = new JMSBindingPage();
+		assertEquals("jms1", wizard.getName());
+		wizard.setName("jms-binding");
+		wizard.getType().setSelection(TYPE_TOPIC);
+		wizard.setQueueTopicName("mytopic");
+		wizard.getConnectionFactory().setText("#MyFactory");
+		wizard.getConcurrentConsumers().setText("3");
+		wizard.getMaximumConcurrentConsumers().setText("7");
+		wizard.getReplyTo().setText("reply-to");
+		wizard.getSelector().setText("selector");
+		wizard.getTransactionManager().setText("MyTX");
+		wizard.getTransacted().toggle(true);
+		wizard.getTransacted().toggle(false);
+		wizard.setOperationSelector(OPERATION_NAME, METHOD);
+		wizard.finish();
+
+		new SwitchYardEditor().save();
+
+		String bindingPath = "/switchyard/composite/service/binding.jms";
+		assertEquals("jms-binding", editor.xpath(bindingPath + "/@name"));
+		assertEquals(METHOD, editor.xpath(bindingPath + "/operationSelector/@operationName"));
+		assertEquals("mytopic", editor.xpath(bindingPath + "/topic"));
+		assertEquals("#MyFactory", editor.xpath(bindingPath + "/connectionFactory"));
+		assertEquals("3", editor.xpath(bindingPath + "/concurrentConsumers"));
+		assertEquals("7", editor.xpath(bindingPath + "/maxConcurrentConsumers"));
+		assertEquals("reply-to", editor.xpath(bindingPath + "/replyTo"));
+		assertEquals("selector", editor.xpath(bindingPath + "/selector"));
+		assertEquals("false", editor.xpath(bindingPath + "/transacted"));
+		assertEquals("MyTX", editor.xpath(bindingPath + "/transactionManager"));
+
+		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
+		JMSBindingPage page = properties.selectJMSBinding("jms-binding");
+		assertEquals("jms-binding", page.getName());
+		assertEquals("myqueue", page.getQueueTopicName());
 		properties.ok();
 	}
 
@@ -304,19 +614,41 @@ public class BindingsTest {
 		JPABindingPage wizard = new JPABindingPage();
 		assertEquals("jpa1", wizard.getName());
 		wizard.setName("jpa-binding");
-		wizard.setEntityClassName("entity-class");
-		wizard.setPersistenceUnit("persistence.xml");
+		wizard.getEntityClassName().setText("EClass.java");
+		wizard.getPersistenceUnit().setText("persistence.xml");
+		wizard.getTransactionManager().setText("myTX");
+		wizard.getDelete().toggle(false);
+		wizard.getDelete().toggle(true);
+		wizard.getLockEntity().toggle(false);
+		wizard.getLockEntity().toggle(true);
+		wizard.getMaximumResults().setText("5");
+		wizard.getQuery().setText("query");
+		wizard.getNamedQuery().setText("named-query");
+		wizard.getNativeQuery().setText("native-query");
+		wizard.getTransacted().toggle(false);
+		wizard.getTransacted().toggle(true);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
 
-		assertEquals("jpa-binding", editor.xpath("/switchyard/composite/service/binding.jpa/@name"));
+		String bindingPath = "/switchyard/composite/service/binding.jpa";
+		assertEquals("jpa-binding", editor.xpath(bindingPath + "/@name"));
+		assertEquals("EClass.java", editor.xpath(bindingPath + "/entityClassName"));
+		assertEquals("persistence.xml", editor.xpath(bindingPath + "/persistenceUnit"));
+		assertEquals("myTX", editor.xpath(bindingPath + "/transactionManager"));
+		assertEquals("true", editor.xpath(bindingPath + "/consume/consumeDelete"));
+		assertEquals("true", editor.xpath(bindingPath + "/consume/consumeLockEntity"));
+		assertEquals("5", editor.xpath(bindingPath + "/consume/maximumResults"));
+		assertEquals("query", editor.xpath(bindingPath + "/consume/consumer.query"));
+		assertEquals("named-query", editor.xpath(bindingPath + "/consume/consumer.namedQuery"));
+		assertEquals("native-query", editor.xpath(bindingPath + "/consume/consumer.nativeQuery"));
+		assertEquals("true", editor.xpath(bindingPath + "/consume/consumer.transacted"));
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		JPABindingPage page = properties.selectJPABinding("jpa-binding");
 		assertEquals("jpa-binding", page.getName());
-		assertEquals("entity-class", page.getEntityClassName());
-		assertEquals("persistence.xml", page.getPersistenceUnit());
+		assertEquals("EClass.java", page.getEntityClassName().getText());
+		assertEquals("persistence.xml", page.getPersistenceUnit().getText());
 		properties.ok();
 	}
 
@@ -326,17 +658,40 @@ public class BindingsTest {
 		MailBindingPage wizard = new MailBindingPage();
 		assertEquals("mail1", wizard.getName());
 		wizard.setName("mail-binding");
-		wizard.setHost("mail-host");
+		wizard.getHost().setText("localhost");
+		wizard.getPort().setText("1234");
+		wizard.getUserName().setText("admin");
+		wizard.getPassword().setText("admin123$");
+		wizard.getSecured().toggle(false);
+		wizard.getSecured().toggle(true);
+		wizard.getAccountType().setSelection(ACCOUNT_TYPE_IMAP);
+		wizard.getFolderName().setText("inbox");
+		wizard.getFetchSize().setText("3");
+		wizard.getUnreadOnly().toggle(false);
+		wizard.getUnreadOnly().toggle(true);
+		wizard.getDelete().toggle(false);
+		wizard.getDelete().toggle(true);
+		wizard.setOperationSelector(OPERATION_NAME, METHOD);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
-
-		assertEquals("mail-binding", editor.xpath("/switchyard/composite/service/binding.mail/@name"));
+		String bindingPath = "/switchyard/composite/service/binding.mail";
+		assertEquals("mail-binding", editor.xpath(bindingPath + "/@name"));
+		assertEquals("true", editor.xpath(bindingPath + "/@secure"));
+		assertEquals("sayHello", editor.xpath(bindingPath + "/operationSelector/@operationName"));
+		assertEquals("localhost", editor.xpath(bindingPath + "/host"));
+		assertEquals("1234", editor.xpath(bindingPath + "/port"));
+		assertEquals("admin", editor.xpath(bindingPath + "/username"));
+		assertEquals("admin123$", editor.xpath(bindingPath + "/password"));
+		assertEquals("imap", editor.xpath(bindingPath + "/consume/@accountType"));
+		assertEquals("inbox", editor.xpath(bindingPath + "/consume/folderName"));
+		assertEquals("3", editor.xpath(bindingPath + "/consume/fetchSize"));
+		assertEquals("true", editor.xpath(bindingPath + "/consume/delete"));
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		MailBindingPage page = properties.selectMailBinding("mail-binding");
 		assertEquals("mail-binding", page.getName());
-		assertEquals("mail-host", page.getHost());
+		assertEquals("localhost", page.getHost().getText());
 		properties.ok();
 	}
 
@@ -346,19 +701,24 @@ public class BindingsTest {
 		NettyTCPBindingPage wizard = new NettyTCPBindingPage();
 		assertEquals("tcp1", wizard.getName());
 		wizard.setName("tcp-binding");
-		wizard.setHost("tcp-host");
-		wizard.setPort("1234");
+		wizard.getHost().setText("tcp-host");
+		wizard.getPort().setText("1234");
+		wizard.setOperationSelector(OPERATION_NAME, METHOD);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
 
-		assertEquals("tcp-binding", editor.xpath("/switchyard/composite/service/binding.tcp/@name"));
+		String bindingPath = "/switchyard/composite/service/binding.tcp";
+		assertEquals("tcp-binding", editor.xpath(bindingPath + "/@name"));
+		assertEquals("sayHello", editor.xpath(bindingPath + "/operationSelector/@operationName"));
+		assertEquals("tcp-host", editor.xpath(bindingPath + "/host"));
+		assertEquals("1234", editor.xpath(bindingPath + "/port"));
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		NettyTCPBindingPage page = properties.selectNettyTCPBinding("tcp-binding");
 		assertEquals("tcp-binding", page.getName());
-		assertEquals("tcp-host", page.getHost());
-		assertEquals("1234", page.getPort());
+		assertEquals("tcp-host", page.getHost().getText());
+		assertEquals("1234", page.getPort().getText());
 		properties.ok();
 	}
 
@@ -368,40 +728,51 @@ public class BindingsTest {
 		NettyUDPBindingPage wizard = new NettyUDPBindingPage();
 		assertEquals("udp1", wizard.getName());
 		wizard.setName("udp-binding");
-		wizard.setHost("udp-host");
-		wizard.setPort("1234");
+		wizard.getHost().setText("udp-host");
+		wizard.getPort().setText("1234");
+		wizard.getBroadcast().toggle(false);
+		wizard.getBroadcast().toggle(true);
+		wizard.setOperationSelector(OPERATION_NAME, METHOD);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
 
-		assertEquals("udp-binding", editor.xpath("/switchyard/composite/service/binding.udp/@name"));
+		String bindingPath = "/switchyard/composite/service/binding.udp";
+		assertEquals("udp-binding", editor.xpath(bindingPath + "/@name"));
+		assertEquals("sayHello", editor.xpath(bindingPath + "/operationSelector/@operationName"));
+		assertEquals("udp-host", editor.xpath(bindingPath + "/host"));
+		assertEquals("1234", editor.xpath(bindingPath + "/port"));
+		assertEquals("true", editor.xpath(bindingPath + "/broadcast"));
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		NettyUDPBindingPage page = properties.selectNettyUDPBinding("udp-binding");
 		assertEquals("udp-binding", page.getName());
-		assertEquals("udp-host", page.getHost());
-		assertEquals("1234", page.getPort());
+		assertEquals("udp-host", page.getHost().getText());
+		assertEquals("1234", page.getPort().getText());
 		properties.ok();
 	}
 
-	 @Test
+	@Test
 	public void restBindingTest() throws Exception {
 		new Service(SERVICE).addBinding("REST");
 		RESTBindingPage wizard = new RESTBindingPage();
 		assertEquals("rest1", wizard.getName());
 		wizard.setName("rest-binding");
-		wizard.setContextPath("rest-context");
+		wizard.getContextPath().setText("rest-context");
 		wizard.addInterface("Hello");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
 
-		assertEquals("rest-binding", editor.xpath("/switchyard/composite/service/binding.rest/@name"));
+		String bindingPath = "/switchyard/composite/service/binding.rest";
+		assertEquals("rest-binding", editor.xpath(bindingPath + "/@name"));
+		assertEquals(PACKAGE + ".Hello", editor.xpath(bindingPath + "/interfaces"));
+		assertEquals("rest-context", editor.xpath(bindingPath + "/contextPath"));
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		RESTBindingPage page = properties.selectRESTBinding("rest-binding");
 		assertEquals("rest-binding", page.getName());
-		assertEquals("rest-context", page.getContextPath());
+		assertEquals("rest-context", page.getContextPath().getText());
 		assertTrue(page.getInterfaces().contains(PACKAGE + ".Hello"));
 		properties.ok();
 	}
@@ -412,17 +783,20 @@ public class BindingsTest {
 		SCABindingPage wizard = new SCABindingPage();
 		assertEquals("sca1", wizard.getName());
 		wizard.setName("sca-binding");
-		wizard.setClustered(true);
+		wizard.getClustered().toggle(false);
+		wizard.getClustered().toggle(true);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
 
-		assertEquals("sca-binding", editor.xpath("/switchyard/composite/service/binding.sca/@name"));
+		String bindingPath = "/switchyard/composite/service/binding.sca";
+		assertEquals("sca-binding", editor.xpath(bindingPath + "/@name"));
+		assertEquals("true", editor.xpath(bindingPath + "/@clustered"));
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		SCABindingPage page = properties.selectSCABinding("sca-binding");
 		assertEquals("sca-binding", page.getName());
-		assertTrue(page.isClustered());
+		assertTrue(page.getClustered().isChecked());
 		properties.ok();
 	}
 
@@ -432,17 +806,61 @@ public class BindingsTest {
 		SFTPBindingPage wizard = new SFTPBindingPage();
 		assertEquals("sftp1", wizard.getName());
 		wizard.setName("sftp-binding");
-		wizard.setDirectory("sftp-directory");
+		wizard.getHost().setText("localhost");
+		wizard.getPort().setText("1234");
+		wizard.getUserName().setText("admin");
+		wizard.getPassword().setText("admin123$");
+		wizard.getUseBinaryTransferMode().toggle(false);
+		wizard.getUseBinaryTransferMode().toggle(true);
+		wizard.getDirectory().setText("sftp-directory");
+		wizard.getFileName().setText("test.txt");
+		wizard.getAutoCreateMissingDirectoriesinFilePath().toggle(false);
+		wizard.getAutoCreateMissingDirectoriesinFilePath().toggle(true);
+		wizard.getInclude().setText("in");
+		wizard.getExclude().setText("ex");
+		wizard.getDeleteFilesOnceProcessed().toggle(false);
+		wizard.getDeleteFilesOnceProcessed().toggle(true);
+		wizard.getProcessSubDirectoriesRecursively().toggle(false);
+		wizard.getProcessSubDirectoriesRecursively().toggle(true);
+		wizard.setOperationSelector(OPERATION_NAME, METHOD);
+		wizard.next();
+		wizard.getPreMove().setText("preMove");
+		wizard.getMove().setText("move");
+		wizard.getMoveFailed().setText("moveFailed");
+		wizard.getDelayBetweenPolls().setText("1000");
+		wizard.getMaxMessagesPerPoll().setText("2");
+		wizard.next();
+		wizard.getPrivateKeyFile().setText("private.key");
+		wizard.getPrivateKeyFilePassphrase().setText("secret");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
-
-		assertEquals("sftp-binding", editor.xpath("/switchyard/composite/service/binding.sftp/@name"));
+		String bindingPath = "/switchyard/composite/service/binding.sftp";
+		assertEquals("sftp-binding", editor.xpath(bindingPath + "/@name"));
+		assertEquals("sayHello", editor.xpath(bindingPath + "/operationSelector/@operationName"));
+		assertEquals("sftp-directory", editor.xpath(bindingPath + "/directory"));
+		assertEquals("true", editor.xpath(bindingPath + "/autoCreate"));
+		assertEquals("localhost", editor.xpath(bindingPath + "/host"));
+		assertEquals("1234", editor.xpath(bindingPath + "/port"));
+		assertEquals("admin", editor.xpath(bindingPath + "/username"));
+		assertEquals("admin123$", editor.xpath(bindingPath + "/password"));
+		assertEquals("true", editor.xpath(bindingPath + "/binary"));
+		assertEquals("private.key", editor.xpath(bindingPath + "/privateKeyFile"));
+		assertEquals("secret", editor.xpath(bindingPath + "/privateKeyFilePassphrase"));
+		assertEquals("true", editor.xpath(bindingPath + "/consume/delete"));
+		assertEquals("true", editor.xpath(bindingPath + "/consume/recursive"));
+		assertEquals("preMove", editor.xpath(bindingPath + "/consume/preMove"));
+		assertEquals("move", editor.xpath(bindingPath + "/consume/move"));
+		assertEquals("moveFailed", editor.xpath(bindingPath + "/consume/moveFailed"));
+		assertEquals("in", editor.xpath(bindingPath + "/consume/include"));
+		assertEquals("ex", editor.xpath(bindingPath + "/consume/exclude"));
+		assertEquals("2", editor.xpath(bindingPath + "/consume/maxMessagesPerPoll"));
+		assertEquals("1000", editor.xpath(bindingPath + "/consume/delay"));
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		SFTPBindingPage page = properties.selectSFTPBinding("sftp-binding");
 		assertEquals("sftp-binding", page.getName());
-		assertEquals("sftp-directory", page.getDirectory());
+		assertEquals("sftp-directory", page.getDirectory().getText());
 		properties.ok();
 	}
 
@@ -452,18 +870,43 @@ public class BindingsTest {
 		SOAPBindingPage wizard = new SOAPBindingPage();
 		assertEquals("soap1", wizard.getName());
 		wizard.setName("soap-binding");
-		wizard.setContextPath("soap-context");
-		wizard.setWsdlURI("soap-wsdl");
+		wizard.getContextPath().setText("soap-context");
+		wizard.setWsdlURI("hello.wsdl");
+		wizard.getWSDLPort().setText("1234");
+		wizard.getServerPort().setText("4321");
+		wizard.getUnwrappedPayload().toggle(false);
+		wizard.getUnwrappedPayload().toggle(true);
+		wizard.getSOAPHeadersType().setSelection(SOAP_HEADERS_TYPE_DOM);
+		wizard.getConfigFile().setText("soap.conf");
+		wizard.getConfigName().setText("configName");
+		wizard.getEnable().toggle(false);
+		wizard.getEnable().toggle(true);
+		wizard.getTemporarilyDisable().toggle(false);
+		wizard.getTemporarilyDisable().toggle(true);
+		wizard.getxopExpand().toggle(false);
+		wizard.getxopExpand().toggle(true);
+		wizard.getThreshold().setText("963");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
-
-		assertEquals("soap-binding", editor.xpath("/switchyard/composite/service/binding.soap/@name"));
+		String bindingPath = "/switchyard/composite/service/binding.soap";
+		assertEquals("soap-binding", editor.xpath(bindingPath + "/@name"));
+		assertEquals("DOM", editor.xpath(bindingPath + "/contextMapper/@soapHeadersType"));
+		assertEquals("true", editor.xpath(bindingPath + "/messageComposer/@unwrapped"));
+		assertEquals("hello.wsdl", editor.xpath(bindingPath + "/wsdl"));
+		assertEquals("1234", editor.xpath(bindingPath + "/wsdlPort"));
+		assertEquals(":4321", editor.xpath(bindingPath + "/socketAddr"));
+		assertEquals("soap-context", editor.xpath(bindingPath + "/contextPath"));
+		assertEquals("soap.conf", editor.xpath(bindingPath + "/endpointConfig/@configFile"));
+		assertEquals("configName", editor.xpath(bindingPath + "/endpointConfig/@configName"));
+		assertEquals("true", editor.xpath(bindingPath + "/mtom/@enabled"));
+		assertEquals("963", editor.xpath(bindingPath + "/mtom/@threshold"));
+		assertEquals("true", editor.xpath(bindingPath + "/mtom/@xopExpand"));
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		SOAPBindingPage page = properties.selectSOAPBinding("soap-binding");
 		assertEquals("soap-binding", page.getName());
-		assertEquals("soap-context", page.getContextPath());
+		assertEquals("soap-context", page.getContextPath().getText());
 		properties.ok();
 	}
 
@@ -473,23 +916,30 @@ public class BindingsTest {
 		SQLBindingPage wizard = new SQLBindingPage();
 		assertEquals("sql1", wizard.getName());
 		wizard.setName("sql-binding");
-		wizard.setQuery("sql-query");
-		wizard.setDataSource("data-source");
-		wizard.setPeriod("10");
+		wizard.getQuery().setText("sql-query");
+		wizard.getDataSource().setText("data-source");
+		wizard.getPlaceholder().setText("place-holder");
+		wizard.getPeriod().setText("10");
+		wizard.getInitialDelayMS().setText("1234");
+		wizard.setOperationSelector(OPERATION_NAME, METHOD);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
 
-		assertEquals("sql-binding", editor.xpath("/switchyard/composite/service/binding.sql/@name"));
-		assertEquals("10", editor.xpath("/switchyard/composite/service/binding.sql/@period"));
-		assertEquals("sql-query", editor.xpath("/switchyard/composite/service/binding.sql/query"));
-		assertEquals("data-source", editor.xpath("/switchyard/composite/service/binding.sql/dataSourceRef"));
+		String bindingPath = "/switchyard/composite/service/binding.sql";
+		assertEquals("sql-binding", editor.xpath(bindingPath + "/@name"));
+		assertEquals("1234", editor.xpath(bindingPath + "/@initialDelay"));
+		assertEquals("10", editor.xpath(bindingPath + "/@period"));
+		assertEquals("sayHello", editor.xpath(bindingPath + "/operationSelector/@operationName"));
+		assertEquals("sql-query", editor.xpath(bindingPath + "/query"));
+		assertEquals("data-source", editor.xpath(bindingPath + "/dataSourceRef"));
+		assertEquals("place-holder", editor.xpath(bindingPath + "/placeholder"));
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		SQLBindingPage page = properties.selectSQLBinding("sql-binding");
 		assertEquals("sql-binding", page.getName());
-		assertEquals("sql-query", page.getQuery());
-		assertEquals("data-source", page.getDataSource());
+		assertEquals("sql-query", page.getQuery().getText());
+		assertEquals("data-source", page.getDataSource().getText());
 		properties.ok();
 	}
 
@@ -502,23 +952,30 @@ public class BindingsTest {
 		new Service(SERVICE).addBinding("Scheduling");
 		SchedulingBindingPage wizard = new SchedulingBindingPage();
 		wizard.setName("schedule-binding");
-		wizard.setCron(cron);
+		wizard.getSchedulingType().setSelection(SCHEDULING_TYPE_CRON);
+		wizard.getCron().setText(cron);
+		wizard.getStartTime().setText(startTime);
+		wizard.getEndTime().setText(endTime);
+		wizard.getTimeZone().setSelection("Europe/Prague");
 		wizard.setOperationSelector(OPERATION_NAME, METHOD);
-		wizard.setStartTime(startTime);
-		wizard.setEndTime(endTime);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
-
-		assertEquals("schedule-binding", editor.xpath("/switchyard/composite/service/binding.quartz/name"));
+		String bindingPath = "/switchyard/composite/service/binding.quartz";
+		assertEquals("sayHello", editor.xpath(bindingPath + "/operationSelector/@operationName"));
+		assertEquals("schedule-binding", editor.xpath(bindingPath + "/name"));
+		assertEquals("0 0 12 * * ?", editor.xpath(bindingPath + "/cron"));
+		assertEquals("2014-01-01T00:00:00", editor.xpath(bindingPath + "/trigger.startTime"));
+		assertEquals("2015-01-01T00:00:00", editor.xpath(bindingPath + "/trigger.endTime"));
+		assertEquals("Europe/Prague", editor.xpath(bindingPath + "/trigger.timeZone"));
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		SchedulingBindingPage page = properties.selectSchedulingBinding("HelloService1");
-		assertEquals(cron, page.getCron());
+		assertEquals(cron, page.getCron().getText());
 		assertEquals(OPERATION_NAME, page.getOperationSelector());
 		assertEquals(METHOD, page.getOperationSelectorValue());
-		assertEquals(startTime, page.getStartTime());
-		assertEquals(endTime, page.getEndTime());
+		assertEquals(startTime, page.getStartTime().getText());
+		assertEquals(endTime, page.getEndTime().getText());
 		properties.ok();
 	}
 }

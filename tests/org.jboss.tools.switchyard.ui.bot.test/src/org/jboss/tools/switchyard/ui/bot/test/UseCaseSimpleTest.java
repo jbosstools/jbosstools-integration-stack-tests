@@ -128,7 +128,7 @@ public class UseCaseSimpleTest {
 
 		new Service("ExampleServicePortType").addBinding("SOAP");
 		SOAPBindingPage soapWizard = new SOAPBindingPage();
-		soapWizard.setContextPath(PROJECT);
+		soapWizard.getContextPath().setText(PROJECT);
 		soapWizard.finish();
 		
 		new SwitchYardEditor().save();

@@ -1,9 +1,9 @@
 package org.jboss.tools.switchyard.reddeer.binding;
 
-import org.eclipse.swt.SWT;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
+import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 
 /**
  * JCA binding page
@@ -12,59 +12,119 @@ import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
  * 
  */
 public class JCABindingPage extends OperationOptionsPage<JMSBindingPage> {
+	
+	public static final String RESOURCE_ADAPTER_GENERIC = "Generic Resource Adapter";
+	public static final String RESOURCE_ADAPTER_HORNETQ_QUEUE = "HornetQ Queue Resource Adapter";
+	public static final String RESOURCE_ADAPTER_HORNETQ_TOPIC = "HornetQ Topic Resource Adapter";
+	
+	public static final String ENDPOINT_JMS = "JMS Endpoint";
+	public static final String ENDPOINT_CCI = "CCI Endpoint";
+	public static final String ENDPOINT_CUSTOM = "Custom";
+	
+	public static final String ACKNOWLEDGE_MODE_AUTO = "Auto-acknowledge";
+	public static final String ACKNOWLEDGE_MODE_DUPS_OK = "Dups-ok-acknowledge";
 
-	public static final String RESOURCE_ADAPTER_TYPE = "Resource Adapter Type:";
-	public static final String RESOURCE_ADAPTER_ARCHIVE = "Resource Adapter Archive*";
-	public static final String GENERIC_RESOURCE_ADAPTER = "Generic Resource Adapter";
-	public static final String ENDPOINT_MAPPING_TYPE = "Endpoint Mapping Type";
-	public static final String JMS_ENDPOINT = "JMS Endpoint";
-	public static final String CCI_ENDPOINT = "CCI Endpoint";
+	public static final String SUBSCRIPTION_DURABLE = "Durable";
+	public static final String SUBSCRIPTION_NONDURABLE = "NonDurable";
 
-	public JCABindingPage selectGenericResourceAdapter() {
-		setResourceAdapterType("Generic Resource Adapter");
-		return this;
+	public LabeledText getListenerType() {
+		return new LabeledText(new DefaultGroup("Custom JCA Endpoint"), "Listener Type");
 	}
 
-	public boolean isGenericResourceAdapter() {
-		return getResourcseAdapterType().equals(GENERIC_RESOURCE_ADAPTER);
+	public LabeledText getEndpointType() {
+		return new LabeledText(new DefaultGroup("Custom JCA Endpoint"), "Endpoint Type");
 	}
 
-	public JCABindingPage selectHornetQQueueResourceAdapter() {
-		setResourceAdapterType("HornetQ Queue Resource Adapter");
-		return this;
+	public LabeledText getPassword() {
+		return new LabeledText(new DefaultGroup("JMS Endpoint Properties"), "Password:");
 	}
 
-	public JCABindingPage setResourceAdapterType(String adapterType) {
-		new LabeledCombo(RESOURCE_ADAPTER_TYPE).setSelection(adapterType);
-		return this;
+	public LabeledText getUserName() {
+		return new LabeledText(new DefaultGroup("JMS Endpoint Properties"), "User Name:");
 	}
 
-	public String getResourcseAdapterType() {
-		return new LabeledCombo(RESOURCE_ADAPTER_TYPE).getSelection();
+	public LabeledText getFaultTo() {
+		return new LabeledText(new DefaultGroup("JMS Endpoint Properties"), "Fault To:");
 	}
 
-	public JCABindingPage setResourceAdapterArchive(String archive) {
-		new LabeledText(RESOURCE_ADAPTER_ARCHIVE).setFocus();
-		new LabeledText(RESOURCE_ADAPTER_ARCHIVE).setText(archive);
-		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.TAB);
-		return this;
+	public LabeledText getReplyTo() {
+		return new LabeledText(new DefaultGroup("JMS Endpoint Properties"), "Reply To:");
 	}
 
-	public String getResourceAdapterArchive() {
-		return new LabeledText(RESOURCE_ADAPTER_ARCHIVE).getText();
+	public LabeledText getDestinationJNDIPropertiesFileName() {
+		return new LabeledText(new DefaultGroup("JMS Endpoint Properties"), "Destination JNDI Properties File Name:");
 	}
 
-	public JCABindingPage selectJMSEndpoint() {
-		return setEndpointMappingType(JMS_ENDPOINT);
+	public LabeledText getJNDIPropertiesFileName() {
+		return new LabeledText(new DefaultGroup("JMS Endpoint Properties"), "JNDI Properties File Name:");
 	}
 
-	public JCABindingPage setEndpointMappingType(String type) {
-		new LabeledCombo(ENDPOINT_MAPPING_TYPE).setSelection(type);
-		return this;
+	public LabeledText getConnectionFactoryJNDIName() {
+		return new LabeledText(new DefaultGroup("JMS Endpoint Properties"), "Connection Factory JNDI Name:");
 	}
 
-	public String getEndpointMappingType() {
-		return new LabeledCombo(ENDPOINT_MAPPING_TYPE).getSelection();
+	public LabeledText getBatchTimeoutin() {
+		return new LabeledText(new DefaultGroup("Batch Commit Options"), "Batch Timeout (in MS)");
+	}
+
+	public LabeledText getBatchSize() {
+		return new LabeledText(new DefaultGroup("Batch Commit Options"), "Batch Size");
+	}
+
+	public LabeledText getSubscriptionName() {
+		return new LabeledText("Subscription Name");
+	}
+
+	public LabeledText getClientID() {
+		return new LabeledText("Client ID*");
+	}
+
+	public LabeledText getMessageSelector() {
+		return new LabeledText("Message Selector");
+	}
+
+	public LabeledText getDestinationTopic() {
+		return new LabeledText("Destination (Topic)*");
+	}
+
+	public LabeledText getDestinationQueue() {
+		return new LabeledText("Destination (Queue)*");
+	}
+
+	public LabeledText getResourceAdapterArchive() {
+		return new LabeledText("Resource Adapter Archive*");
+	}
+
+	public LabeledCombo getMessageType() {
+		return new LabeledCombo(new DefaultGroup("JMS Endpoint Properties"), "Message Type:");
+	}
+
+	public LabeledCombo getDestinationType() {
+		return new LabeledCombo(new DefaultGroup("JMS Endpoint Properties"), "Destination Type");
+	}
+
+	public LabeledCombo getEndpointMappingType() {
+		return new LabeledCombo("Endpoint Mapping Type");
+	}
+
+	public LabeledCombo getSubscriptionDurability() {
+		return new LabeledCombo("Subscription Durability");
+	}
+
+	public LabeledCombo getAcknowledgeMode() {
+		return new LabeledCombo("Acknowledge Mode");
+	}
+
+	public LabeledCombo getResourceAdapterType() {
+		return new LabeledCombo("Resource Adapter Type:");
+	}
+
+	public CheckBox getUseJNDILookupforDestination() {
+		return new CheckBox(new DefaultGroup("JMS Endpoint Properties"), "Use JNDI Lookup for Destination");
+	}
+
+	public CheckBox getTransacted() {
+		return new CheckBox("Transacted");
 	}
 
 }

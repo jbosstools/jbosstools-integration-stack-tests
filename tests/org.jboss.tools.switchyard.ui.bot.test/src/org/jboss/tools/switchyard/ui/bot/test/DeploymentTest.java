@@ -61,7 +61,8 @@ public class DeploymentTest {
 
 		new Service("HelloService").addBinding("HTTP");
 		HTTPBindingPage soapWizard = new HTTPBindingPage();
-		soapWizard.setContextPath("hello");
+		soapWizard.setName("soap-binding");
+		soapWizard.getContextPath().setText("hello");
 		soapWizard.finish();
 
 		new SwitchYardEditor().save();

@@ -122,7 +122,8 @@ public class BottomUpEJBTest {
 		// Add HTTP binding
 		new Service("HelloService").addBinding("HTTP");
 		HTTPBindingPage httpWizard = new HTTPBindingPage();
-		httpWizard.setContextPath(PROJECT);
+		httpWizard.setName("http-binding");
+		httpWizard.getContextPath().setText(PROJECT);
 		httpWizard.setOperationSelector(OPERATION_NAME, "sayHello");
 		httpWizard.finish();
 		

@@ -1,8 +1,6 @@
 package org.jboss.tools.switchyard.reddeer.binding;
 
-import org.eclipse.swt.SWT;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 
 /**
  * SQL binding page
@@ -12,39 +10,24 @@ import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
  */
 public class SQLBindingPage extends OperationOptionsPage<SQLBindingPage> {
 
-	public static final String QUERY = "Query*";
-	public static final String DATA_SOURCE = "Data Source*";
-	public static final String PERIOD = "Period*";
-
-	public SQLBindingPage setQuery(String query) {
-		new LabeledText(QUERY).setFocus();
-		new LabeledText(QUERY).setText(query);
-		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.TAB);
-		return this;
+	public LabeledText getInitialDelayMS() {
+		return new LabeledText("Initial Delay (MS)");
 	}
 
-	public String getQuery() {
-		return new LabeledText(QUERY).getText();
+	public LabeledText getPeriod() {
+		return new LabeledText("Period*");
 	}
 
-	public SQLBindingPage setDataSource(String dataSource) {
-		new LabeledText(DATA_SOURCE).setFocus();
-		new LabeledText(DATA_SOURCE).setText(dataSource);
-		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.TAB);
-		return this;
+	public LabeledText getPlaceholder() {
+		return new LabeledText("Placeholder:");
 	}
 
-	public String getDataSource() {
-		return new LabeledText(DATA_SOURCE).getText();
+	public LabeledText getDataSource() {
+		return new LabeledText("Data Source*");
 	}
 
-	public SQLBindingPage setPeriod(String period) {
-		new LabeledText(PERIOD).setText(period);
-		return this;
-	}
-
-	public String getPeriod() {
-		return new LabeledText(PERIOD).getText();
+	public LabeledText getQuery() {
+		return new LabeledText("Query*");
 	}
 
 }

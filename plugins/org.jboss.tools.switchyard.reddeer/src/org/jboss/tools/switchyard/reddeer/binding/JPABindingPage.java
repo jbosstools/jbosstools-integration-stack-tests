@@ -1,8 +1,8 @@
 package org.jboss.tools.switchyard.reddeer.binding;
 
-import org.eclipse.swt.SWT;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 
 /**
  * JPA binding page
@@ -12,29 +12,44 @@ import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
  */
 public class JPABindingPage extends OperationOptionsPage<JPABindingPage> {
 
-	public static final String ENTITY_CLASS_NAME = "Entity Class Name*";
-	public static final String PERSITENCE_UNIT = "Persistence Unit*";
-
-	public JPABindingPage setEntityClassName(String name) {
-		new LabeledText(ENTITY_CLASS_NAME).setFocus();
-		new LabeledText(ENTITY_CLASS_NAME).setText(name);
-		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.TAB);
-		return this;
+	public LabeledText getNativeQuery() {
+		return new LabeledText(new DefaultGroup("Consumer Options"), "Native Query");
 	}
 
-	public String getEntityClassName() {
-		return new LabeledText(ENTITY_CLASS_NAME).getText();
+	public LabeledText getNamedQuery() {
+		return new LabeledText(new DefaultGroup("Consumer Options"), "Named Query");
 	}
 
-	public JPABindingPage setPersistenceUnit(String persistenceUnit) {
-		new LabeledText(PERSITENCE_UNIT).setFocus();
-		new LabeledText(PERSITENCE_UNIT).setText(persistenceUnit);
-		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.TAB);
-		return this;
+	public LabeledText getQuery() {
+		return new LabeledText(new DefaultGroup("Consumer Options"), "Query");
 	}
 
-	public String getPersistenceUnit() {
-		return new LabeledText(PERSITENCE_UNIT).getText();
+	public LabeledText getMaximumResults() {
+		return new LabeledText(new DefaultGroup("Consumer Options"), "Maximum Results");
+	}
+
+	public LabeledText getTransactionManager() {
+		return new LabeledText("Transaction Manager");
+	}
+
+	public LabeledText getPersistenceUnit() {
+		return new LabeledText("Persistence Unit*");
+	}
+
+	public LabeledText getEntityClassName() {
+		return new LabeledText("Entity Class Name*");
+	}
+
+	public CheckBox getTransacted() {
+		return new CheckBox(new DefaultGroup("Consumer Options"), "Transacted");
+	}
+
+	public CheckBox getLockEntity() {
+		return new CheckBox(new DefaultGroup("Consumer Options"), "Lock Entity");
+	}
+
+	public CheckBox getDelete() {
+		return new CheckBox(new DefaultGroup("Consumer Options"), "Delete");
 	}
 
 }

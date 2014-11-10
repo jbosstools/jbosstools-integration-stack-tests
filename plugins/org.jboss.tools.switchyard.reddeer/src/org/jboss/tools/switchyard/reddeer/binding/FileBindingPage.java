@@ -1,9 +1,8 @@
 package org.jboss.tools.switchyard.reddeer.binding;
 
-import org.eclipse.swt.SWT;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 
 /**
  * File binding page
@@ -13,34 +12,44 @@ import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
  */
 public class FileBindingPage extends OperationOptionsPage<FileBindingPage> {
 
-	public static final String DIR_AUTO_CREATION = "Auto Create Missing Directories in File Path";
-	public static final String DIRECTORY = "Directory*";
-
-	public FileBindingPage setDirectory(String directory) {
-		new LabeledText(DIRECTORY).setFocus();
-		new LabeledText(DIRECTORY).setText(directory);
-		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.TAB);
-		return this;
+	public LabeledText getDelayBetweenPolls() {
+		return new LabeledText(new DefaultGroup("Poll Options"), "Delay Between Polls (MS) (Default 500)");
 	}
 
-	public String getDirectory() {
-		return new LabeledText(DIRECTORY).getText();
+	public LabeledText getMaxMessagesPerPoll() {
+		return new LabeledText(new DefaultGroup("Poll Options"), "Max Messages Per Poll (Default 0)");
 	}
 
-	public FileBindingPage setDirAutoCreation(boolean dirAutoCreation) {
-		new CheckBox(DIR_AUTO_CREATION).toggle(dirAutoCreation);
-		return this;
+	public LabeledText getMoveFailed() {
+		return new LabeledText(new DefaultGroup("Move Options"), "Move Failed");
 	}
 
-	public boolean isDirAutoCreation() {
-		return new CheckBox(DIR_AUTO_CREATION).isChecked();
+	public LabeledText getMove() {
+		return new LabeledText(new DefaultGroup("Move Options"), "Move (Default .camel)");
 	}
 
-	public FileBindingPage setMoveDirectory(String moveDirectory) {
-		new LabeledText("Move (Default .camel)").setFocus();
-		new LabeledText("Move (Default .camel)").setText(moveDirectory);
-		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.TAB);
-		return this;
+	public LabeledText getPreMove() {
+		return new LabeledText(new DefaultGroup("Move Options"), "Pre-Move");
+	}
+
+	public LabeledText getExclude() {
+		return new LabeledText("Exclude");
+	}
+
+	public LabeledText getInclude() {
+		return new LabeledText("Include");
+	}
+
+	public LabeledText getFileName() {
+		return new LabeledText("File Name");
+	}
+
+	public LabeledText getDirectory() {
+		return new LabeledText("Directory*");
+	}
+
+	public CheckBox getAutoCreateMissingDirectoriesinFilePath() {
+		return new CheckBox("Auto Create Missing Directories in File Path");
 	}
 
 }

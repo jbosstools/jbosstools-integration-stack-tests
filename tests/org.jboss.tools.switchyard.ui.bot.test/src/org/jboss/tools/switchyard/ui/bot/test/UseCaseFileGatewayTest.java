@@ -84,9 +84,9 @@ public class UseCaseFileGatewayTest {
 		File output = new File("target/processed");
 		output.mkdirs();
 		wizard.setName("file-binding");
-		wizard.setDirectory(input.getAbsolutePath());
-		wizard.setDirAutoCreation(true);
-		wizard.setMoveDirectory(output.getAbsolutePath());
+		wizard.getDirectory().setText(input.getAbsolutePath());
+		wizard.getAutoCreateMissingDirectoriesinFilePath().toggle(true);
+		wizard.getMove().setText(output.getAbsolutePath());
 		wizard.finish();
 		new SwitchYardEditor().save();
 

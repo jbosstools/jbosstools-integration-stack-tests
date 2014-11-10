@@ -94,8 +94,8 @@ public class UseCaseWSProxySOAPTest {
 		new Service("ProxyService").addBinding("SOAP");
 		SOAPBindingPage soapWizard = new SOAPBindingPage();
 		soapWizard.setName("soap-binding");
-		soapWizard.setContextPath(PROJECT);
-		soapWizard.setServerPort(":18080");
+		soapWizard.getContextPath().setText(PROJECT);
+		soapWizard.getServerPort().setText(":18080");
 		soapWizard.finish();
 		new SwitchYardComponent("Proxy").getContextButton("Reference").click();
 		new ReferenceWizard().activate().selectWSDLInterface(WSDL).setServiceName("HelloRef").finish();

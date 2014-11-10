@@ -1,8 +1,9 @@
 package org.jboss.tools.switchyard.reddeer.binding;
 
-import org.eclipse.swt.SWT;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
+import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 
 /**
  * Mail binding page
@@ -10,19 +11,49 @@ import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
  * @author apodhrad
  * 
  */
-public class MailBindingPage extends OperationOptionsPage<MailBindingPage>  {
+public class MailBindingPage extends OperationOptionsPage<MailBindingPage> {
+	
+	public static final String ACCOUNT_TYPE_IMAP = "imap";
+	public static final String ACCOUNT_TYPE_POP3 = "pop3";
 
-	public static final String HOST = "Host*";
-
-	public MailBindingPage setHost(String host) {
-		new LabeledText(HOST).setFocus();
-		new LabeledText(HOST).setText(host);
-		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.TAB);
-		return this;
+	public LabeledText getFetchSize() {
+		return new LabeledText(new DefaultGroup("Consumer Options"), "Fetch Size");
 	}
 
-	public String getHost() {
-		return new LabeledText(HOST).getText();
+	public LabeledText getFolderName() {
+		return new LabeledText(new DefaultGroup("Consumer Options"), "Folder Name");
+	}
+
+	public LabeledText getPassword() {
+		return new LabeledText("Password");
+	}
+
+	public LabeledText getUserName() {
+		return new LabeledText("User Name");
+	}
+
+	public LabeledText getPort() {
+		return new LabeledText("Port");
+	}
+
+	public LabeledText getHost() {
+		return new LabeledText("Host*");
+	}
+
+	public LabeledCombo getAccountType() {
+		return new LabeledCombo(new DefaultGroup("Consumer Options"), "Account Type");
+	}
+
+	public CheckBox getDelete() {
+		return new CheckBox(new DefaultGroup("Consumer Options"), "Delete");
+	}
+
+	public CheckBox getUnreadOnly() {
+		return new CheckBox(new DefaultGroup("Consumer Options"), "Unread Only");
+	}
+
+	public CheckBox getSecured() {
+		return new CheckBox("Secured");
 	}
 
 }

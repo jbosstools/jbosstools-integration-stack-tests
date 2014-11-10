@@ -1,6 +1,9 @@
 package org.jboss.tools.switchyard.reddeer.binding;
 
 import org.eclipse.swt.SWT;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
+import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
@@ -13,31 +16,18 @@ import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
  */
 public class SOAPBindingPage extends OperationOptionsPage<SOAPBindingPage> {
 
-	public static final String CONTEXT_PATH = "Context path:";
-	public static final String WSDL_URI = "WSDL URI";
+	public static final String SOAP_HEADERS_TYPE_VALUE = "VALUE";
+	public static final String SOAP_HEADERS_TYPE_CONFIG = "CONFIG";
+	public static final String SOAP_HEADERS_TYPE_DOM = "DOM";
+	public static final String SOAP_HEADERS_TYPE_XML = "XML";
+	
 	public static final String ENDPOINT_ADDRESS = "Endpoint Address";
-	public static final String SERVER_PORT = "Server Port";
-
-	public SOAPBindingPage setContextPath(String contextPath) {
-		new LabeledText(CONTEXT_PATH).setFocus();
-		new LabeledText(CONTEXT_PATH).setText(contextPath);
-		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.TAB);
-		return this;
-	}
-
-	public String getContextPath() {
-		return new LabeledText(CONTEXT_PATH).getText();
-	}
 
 	public SOAPBindingPage setWsdlURI(String uri) {
 		new DefaultText(1).setFocus();
 		new DefaultText(1).setText(uri);
 		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.TAB);
 		return this;
-	}
-
-	public String getWsdlURI() {
-		throw new UnsupportedOperationException();
 	}
 
 	public SOAPBindingPage setEndpointAddress(String address) {
@@ -51,15 +41,48 @@ public class SOAPBindingPage extends OperationOptionsPage<SOAPBindingPage> {
 		return new LabeledText(ENDPOINT_ADDRESS).getText();
 	}
 
-	public SOAPBindingPage setServerPort(String port) {
-		new LabeledText(SERVER_PORT).setFocus();
-		new LabeledText(SERVER_PORT).setText(port);
-		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.TAB);
-		return this;
+	public LabeledText getThreshold() {
+		return new LabeledText(new DefaultGroup("MTom"), "Threshold");
 	}
 
-	public String getServerPort() {
-		return new LabeledText(SERVER_PORT).getText();
+	public LabeledText getConfigName() {
+		return new LabeledText(new DefaultGroup("Endpoint Configuration"), "Config Name");
+	}
+
+	public LabeledText getConfigFile() {
+		return new LabeledText(new DefaultGroup("Endpoint Configuration"), "Config File");
+	}
+
+	public LabeledText getServerPort() {
+		return new LabeledText("Server Port");
+	}
+
+	public LabeledText getContextPath() {
+		return new LabeledText("Context path:");
+	}
+
+	public LabeledText getWSDLPort() {
+		return new LabeledText("WSDL Port");
+	}
+
+	public LabeledCombo getSOAPHeadersType() {
+		return new LabeledCombo("SOAP Headers Type");
+	}
+
+	public CheckBox getxopExpand() {
+		return new CheckBox(new DefaultGroup("MTom"), "xopExpand");
+	}
+
+	public CheckBox getTemporarilyDisable() {
+		return new CheckBox(new DefaultGroup("MTom"), "Temporarily Disable");
+	}
+
+	public CheckBox getEnable() {
+		return new CheckBox(new DefaultGroup("MTom"), "Enable");
+	}
+
+	public CheckBox getUnwrappedPayload() {
+		return new CheckBox("Unwrapped Payload");
 	}
 
 }

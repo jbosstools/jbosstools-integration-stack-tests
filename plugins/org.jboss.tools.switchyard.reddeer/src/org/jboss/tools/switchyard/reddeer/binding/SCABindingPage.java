@@ -1,6 +1,7 @@
 package org.jboss.tools.switchyard.reddeer.binding;
 
 import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 
 /**
  * SCA binding page
@@ -10,15 +11,7 @@ import org.jboss.reddeer.swt.impl.button.CheckBox;
  */
 public class SCABindingPage extends OperationOptionsPage<SCABindingPage> {
 
-	public static final String CLUSTERED = "Clustered";
-
-	public SCABindingPage setClustered(boolean clustered) {
-		new CheckBox(CLUSTERED).toggle(clustered);
-		return this;
+	public CheckBox getClustered() {
+		return new CheckBox(new DefaultGroup("Clustering"), "Clustered");
 	}
-
-	public boolean isClustered() {
-		return new CheckBox(CLUSTERED).isChecked();
-	}
-
 }

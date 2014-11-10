@@ -1,8 +1,7 @@
 package org.jboss.tools.switchyard.reddeer.binding;
 
-import org.eclipse.swt.SWT;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 
 /**
  * Scheduling binding page
@@ -11,43 +10,36 @@ import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
  * 
  */
 public class SchedulingBindingPage extends OperationOptionsPage<SchedulingBindingPage> {
+	
+	public static final String SCHEDULING_TYPE_CRON = "cron";
+	public static final String SCHEDULING_TYPE_TRIGGER = "trigger";
 
-	public static final String NAME = "Name*";
-	public static final String CRON = "Cron*";
-	public static final String START_TIME = "Start Time";
-	public static final String END_TIME = "End Time";
-
-	public SchedulingBindingPage setCron(String cron) {
-		new LabeledText(CRON).setFocus();
-		new LabeledText(CRON).setText(cron);
-		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.TAB);
-		return this;
+	public LabeledText getEndTime() {
+		return new LabeledText("End Time");
 	}
 
-	public String getCron() {
-		return new LabeledText(CRON).getText();
+	public LabeledText getStartTime() {
+		return new LabeledText("Start Time");
 	}
 
-	public SchedulingBindingPage setStartTime(String startTime) {
-		new LabeledText(START_TIME).setFocus();
-		new LabeledText(START_TIME).setText(startTime);
-		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.TAB);
-		return this;
+	public LabeledText getRepeatInterval() {
+		return new LabeledText("Repeat Interval");
 	}
 
-	public String getStartTime() {
-		return new LabeledText(START_TIME).getText();
+	public LabeledText getRepeatCount() {
+		return new LabeledText("Repeat Count");
 	}
 
-	public SchedulingBindingPage setEndTime(String startTime) {
-		new LabeledText(END_TIME).setFocus();
-		new LabeledText(END_TIME).setText(startTime);
-		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.TAB);
-		return this;
+	public LabeledText getCron() {
+		return new LabeledText("Cron*");
 	}
 
-	public String getEndTime() {
-		return new LabeledText(END_TIME).getText();
+	public LabeledCombo getTimeZone() {
+		return new LabeledCombo("Time Zone");
+	}
+
+	public LabeledCombo getSchedulingType() {
+		return new LabeledCombo("Scheduling Type");
 	}
 
 }
