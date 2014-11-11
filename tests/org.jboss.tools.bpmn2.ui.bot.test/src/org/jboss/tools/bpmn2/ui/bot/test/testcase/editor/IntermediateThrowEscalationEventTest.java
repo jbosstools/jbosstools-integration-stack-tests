@@ -18,7 +18,7 @@ import org.kie.api.runtime.process.ProcessInstance;
 @ProcessDefinition(name="BPMN2-IntermediateThrowEscalationEvent", project="EditorTestProject")
 public class IntermediateThrowEscalationEventTest extends JBPM6BaseTest {
 
-	private static final String VARIABLE = "Property_1";
+	private static final String VARIABLE = "procVar";
 
 	@Override
 	public void buildProcessModel() {

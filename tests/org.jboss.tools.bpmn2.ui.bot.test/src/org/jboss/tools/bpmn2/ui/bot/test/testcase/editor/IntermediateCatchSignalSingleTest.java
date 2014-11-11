@@ -1,5 +1,7 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
+import java.util.Arrays;
+
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
@@ -9,17 +11,22 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.jbpm.JbpmAssertions;
 import org.jboss.tools.bpmn2.ui.bot.test.jbpm.PersistenceWorkItemHandler;
+import org.jboss.tools.bpmn2.ui.bot.test.jbpm.TriggeredNodesListener;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
+import org.kie.api.runtime.process.WorkItem;
+import org.kie.api.runtime.process.WorkflowProcessInstance;
 
 @ProcessDefinition(name="BPMN2-IntermediateCatchSignalSingle", project="EditorTestProject")
 public class IntermediateCatchSignalSingleTest extends JBPM6BaseTest {
 
+	private static final String VARIABLE = "procVar";
+	
 	@Override
 	public void buildProcessModel() {
 		Process process = new Process("BPMN2-IntermediateCatchSignalSingle");
-		process.addLocalVariable("s", "String");
+		process.addLocalVariable(VARIABLE, "String");
 		process.addSignal("BatmanSignal");
 		
 		StartEvent startEvent = new StartEvent("StartProcess");
@@ -30,10 +37,11 @@ public class IntermediateCatchSignalSingleTest extends JBPM6BaseTest {
 		userTask.append("Catch", ElementType.SIGNAL_INTERMEDIATE_CATCH_EVENT);
 		
 		SignalIntermediateCatchEvent catchEvent = new SignalIntermediateCatchEvent("Catch");
-		catchEvent.setSignalMapping("BatmanSignal", "s");
+		catchEvent.setSignalMapping("BatmanSignal", VARIABLE);
 		catchEvent.append("Script Task", ElementType.SCRIPT_TASK);
 		
 		ScriptTask scriptTask = new ScriptTask("Script Task");
+		scriptTask.setScript("Java", "System.out.println("+ VARIABLE +");");
 		scriptTask.append("EndProcess", ElementType.END_EVENT);
 	}
 
@@ -42,8 +50,19 @@ public class IntermediateCatchSignalSingleTest extends JBPM6BaseTest {
 		PersistenceWorkItemHandler handler = new PersistenceWorkItemHandler();
 		kSession.getWorkItemManager().registerWorkItemHandler("Human Task", handler);
 		
+		TriggeredNodesListener triggered = new TriggeredNodesListener(
+				Arrays.asList("StartProcess", "User Task", "Catch", "Script Task", "EndProcess"), null);
+		kSession.addEventListener(triggered);
+		
 		ProcessInstance processInstance = kSession.startProcess("BPMN2IntermediateCatchSignalSingle");
+		
+		WorkItem item = handler.getWorkItem("User Task");
+		handler.completeWorkItem(item, kSession.getWorkItemManager());
+		kSession.signalEvent("BatmanSignal", "batman is comming");
+		
 		JbpmAssertions.assertProcessInstanceCompleted(processInstance, kSession);
+		assertEquals("Process variable "+VARIABLE+" didn't changed.", "batman is comming", ((WorkflowProcessInstance) processInstance).getVariable(VARIABLE));
+
 	}
 	
 }
