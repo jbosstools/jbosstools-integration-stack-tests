@@ -162,7 +162,7 @@ public class RuntimeDetectionDownloadTest {
 		downloadRuntime("WildFly 8.1.0 Final");
 	}
 
-	private static void downloadRuntime(String name) {
+	protected static void downloadRuntime(String name) {
 		JBossRuntimeDetection prefPage = new JBossRuntimeDetection();
 		prefPage.open();
 		DownloadRuntimesWizard runtimeWiz = prefPage.downloadRuntime();
@@ -179,8 +179,6 @@ public class RuntimeDetectionDownloadTest {
 		ServersView servers = new ServersView();
 		servers.open();
 		assertEquals(1, servers.getServers().size());
-		servers.getServers().get(0).start();
-		servers.getServers().get(0).stop();
 	}
 
 	/**

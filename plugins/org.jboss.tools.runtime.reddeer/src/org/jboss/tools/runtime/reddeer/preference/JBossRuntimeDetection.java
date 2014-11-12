@@ -1,12 +1,21 @@
 package org.jboss.tools.runtime.reddeer.preference;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jboss.reddeer.swt.api.TableItem;
+import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
+import org.jboss.tools.runtime.reddeer.RuntimeEntry;
 import org.jboss.tools.runtime.reddeer.wizard.DownloadRuntimesWizard;
 
 /**
@@ -36,5 +45,30 @@ public class JBossRuntimeDetection extends WorkbenchPreferencePage {
 			item.select();
 			new PushButton("Remove").click();
 		}
+	}
+
+	public void editFirstPath(String path) {
+		new DefaultTable(0).getItem(0).select();
+		new PushButton("Edit...").click();
+		new DefaultShell("Edit runtime detection path");
+		new DefaultText(0).setText(path);
+		new PushButton("OK").click();
+	}
+
+	public List<RuntimeEntry> searchRuntimes() {
+		new PushButton("Search...").click();
+		AbstractWait.sleep(TimePeriod.getCustom(5));
+		new DefaultShell("Searching for runtimes...");
+		List<RuntimeEntry> entries = new ArrayList<RuntimeEntry>();
+		for (TreeItem item : new DefaultTree(0).getItems()) {
+			RuntimeEntry entry = new RuntimeEntry();
+			entry.setName(item.getCell(0));
+			entry.setType(item.getCell(1));
+			entry.setVersion(item.getCell(2));
+			entry.setLocation(item.getCell(3));
+			entries.add(entry);
+		}
+		new PushButton("Cancel").click();
+		return entries;
 	}
 }
