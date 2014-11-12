@@ -1,5 +1,6 @@
 package org.jboss.tools.switchyard.ui.bot.test;
 
+import static org.jboss.tools.switchyard.reddeer.binding.CXFBindingPage.DATA_FORMAT_POJO;
 import static org.jboss.tools.switchyard.reddeer.binding.JCABindingPage.ACKNOWLEDGE_MODE_AUTO;
 import static org.jboss.tools.switchyard.reddeer.binding.JCABindingPage.ACKNOWLEDGE_MODE_DUPS_OK;
 import static org.jboss.tools.switchyard.reddeer.binding.JCABindingPage.ENDPOINT_JMS;
@@ -9,6 +10,7 @@ import static org.jboss.tools.switchyard.reddeer.binding.JCABindingPage.RESOURCE
 import static org.jboss.tools.switchyard.reddeer.binding.JCABindingPage.SUBSCRIPTION_NONDURABLE;
 import static org.jboss.tools.switchyard.reddeer.binding.JMSBindingPage.TYPE_QUEUE;
 import static org.jboss.tools.switchyard.reddeer.binding.JMSBindingPage.TYPE_TOPIC;
+import static org.jboss.tools.switchyard.reddeer.binding.MQTTBindingPage.QOS_EXACTLY_ONCE;
 import static org.jboss.tools.switchyard.reddeer.binding.MailBindingPage.ACCOUNT_TYPE_IMAP;
 import static org.jboss.tools.switchyard.reddeer.binding.OperationOptionsPage.JAVA_CLASS;
 import static org.jboss.tools.switchyard.reddeer.binding.OperationOptionsPage.OPERATION_NAME;
@@ -28,6 +30,8 @@ import org.jboss.reddeer.swt.handler.ShellHandler;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.switchyard.reddeer.binding.AtomBindingPage;
+import org.jboss.tools.switchyard.reddeer.binding.CXFBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.CamelBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.FTPBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.FTPSBindingPage;
@@ -36,10 +40,13 @@ import org.jboss.tools.switchyard.reddeer.binding.HTTPBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.JCABindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.JMSBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.JPABindingPage;
+import org.jboss.tools.switchyard.reddeer.binding.MQTTBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.MailBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.NettyTCPBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.NettyUDPBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.RESTBindingPage;
+import org.jboss.tools.switchyard.reddeer.binding.RSSBindingPage;
+import org.jboss.tools.switchyard.reddeer.binding.SAPBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.SCABindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.SFTPBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.SOAPBindingPage;
@@ -155,6 +162,78 @@ public class BindingsTest {
 		ShellHandler.getInstance().closeAllNonWorbenchShells();
 		new Service("HelloService").showProperties().selectBindings().removeAll().ok();
 		new SwitchYardEditor().save();
+	}
+
+	@Test
+	public void atomBindingTest() throws Exception {
+		String time = "2015-01-01T00:00:00";
+
+		new Service(SERVICE).addBinding("Atom");
+		AtomBindingPage wizard = new AtomBindingPage();
+		wizard.setName("atom-binding");
+		wizard.getFeedURI().setText("http://localhost");
+		wizard.getSplitEntries().toggle(false);
+		wizard.getSplitEntries().toggle(true);
+		wizard.getFilter().toggle(false);
+		wizard.getFilter().toggle(true);
+		wizard.getLastUpdateStartingTimestamp().setText(time);
+		wizard.getSortEntriesbyDate().toggle(false);
+		wizard.getSortEntriesbyDate().toggle(true);
+		wizard.getDelayBetweenPolls().setText("1234");
+		wizard.finish();
+
+		new SwitchYardEditor().save();
+
+		String bindingPath = "/switchyard/composite/service/binding.atom";
+		assertEquals("atom-binding", editor.xpath(bindingPath + "/@name"));
+		assertEquals("http://localhost", editor.xpath(bindingPath + "/feedURI"));
+		assertEquals("true", editor.xpath(bindingPath + "/splitEntries"));
+		assertEquals("true", editor.xpath(bindingPath + "/filter"));
+		assertEquals(time, editor.xpath(bindingPath + "/lastUpdate"));
+		assertEquals("true", editor.xpath(bindingPath + "/sortEntries"));
+		assertEquals("1234", editor.xpath(bindingPath + "/consume/delay"));
+
+		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
+		AtomBindingPage page = properties.selectAtomBinding("atom-binding");
+		assertEquals("atom-binding", page.getName());
+		properties.ok();
+	}
+
+	@Test
+	public void cxfBindingTest() throws Exception {
+		new Service(SERVICE).addBinding("CXF");
+		CXFBindingPage wizard = new CXFBindingPage();
+		wizard.setName("cxf-binding");
+		wizard.getCXFURI().setText("http://localhost");
+		wizard.getWSDLURL().setText("hello.wsdl");
+		wizard.getDataFormat().setSelection(DATA_FORMAT_POJO);
+		wizard.getServiceClass().setText("myClass.java");
+		wizard.getPortName().setText("port");
+		wizard.getRelayHeaders().toggle(false);
+		wizard.getRelayHeaders().toggle(true);
+		wizard.getWrapped().toggle(false);
+		wizard.getWrapped().toggle(true);
+		wizard.getWrappedStyle().setSelection("false");
+		wizard.getWrappedStyle().setSelection("true");
+		wizard.finish();
+
+		new SwitchYardEditor().save();
+
+		String bindingPath = "/switchyard/composite/service/binding.cxf";
+		assertEquals("cxf-binding", editor.xpath(bindingPath + "/@name"));
+		assertEquals("http://localhost", editor.xpath(bindingPath + "/cxfURI"));
+		assertEquals("hello.wsdl", editor.xpath(bindingPath + "/wsdlURL"));
+		assertEquals("myClass.java", editor.xpath(bindingPath + "/serviceClass"));
+		assertEquals("port", editor.xpath(bindingPath + "/portName"));
+		assertEquals(DATA_FORMAT_POJO, editor.xpath(bindingPath + "/dataFormat"));
+		assertEquals("true", editor.xpath(bindingPath + "/relayHeaders"));
+		assertEquals("true", editor.xpath(bindingPath + "/wrapped"));
+		assertEquals("true", editor.xpath(bindingPath + "/wrappedStyle"));
+
+		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
+		CXFBindingPage page = properties.selectCXFBinding("cxf-binding");
+		assertEquals("cxf-binding", page.getName());
+		properties.ok();
 	}
 
 	@Test
@@ -653,6 +732,34 @@ public class BindingsTest {
 	}
 
 	@Test
+	public void mqttBindingTest() throws Exception {
+		new Service(SERVICE).addBinding("MQTT");
+		MQTTBindingPage wizard = new MQTTBindingPage();
+		wizard.setName("mqtt-binding");
+		wizard.getHostURI().setText("tcp://localhost:1883");
+		wizard.getSubscribeTopicName().setText("topicName");
+		wizard.getConnectAttemptsMax().setText("111");
+		wizard.getReconnectAttemptsMax().setText("222");
+		wizard.getQualityofService().setSelection(QOS_EXACTLY_ONCE);
+		wizard.finish();
+
+		new SwitchYardEditor().save();
+
+		String bindingPath = "/switchyard/composite/service/binding.mqtt";
+		assertEquals("mqtt-binding", editor.xpath(bindingPath + "/@name"));
+		assertEquals("tcp://localhost:1883", editor.xpath(bindingPath + "/host"));
+		assertEquals("111", editor.xpath(bindingPath + "/connectAttemptsMax"));
+		assertEquals("222", editor.xpath(bindingPath + "/reconnectAttemptsMax"));
+		assertEquals(QOS_EXACTLY_ONCE, editor.xpath(bindingPath + "/qualityOfService"));
+		assertEquals("topicName", editor.xpath(bindingPath + "/subscribeTopicName"));
+
+		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
+		MQTTBindingPage page = properties.selectMQTTBinding("mqtt-binding");
+		assertEquals("mqtt-binding", page.getName());
+		properties.ok();
+	}
+
+	@Test
 	public void mailBindingTest() throws Exception {
 		new Service(SERVICE).addBinding("Mail");
 		MailBindingPage wizard = new MailBindingPage();
@@ -774,6 +881,66 @@ public class BindingsTest {
 		assertEquals("rest-binding", page.getName());
 		assertEquals("rest-context", page.getContextPath().getText());
 		assertTrue(page.getInterfaces().contains(PACKAGE + ".Hello"));
+		properties.ok();
+	}
+
+	@Test
+	public void rssBindingTest() throws Exception {
+		String time = "2015-01-01T00:00:00";
+
+		new Service(SERVICE).addBinding("RSS");
+		RSSBindingPage wizard = new RSSBindingPage();
+		wizard.setName("rss-binding");
+		wizard.getFeedURI().setText("http://localhost");
+		wizard.getSplitEntries().toggle(false);
+		wizard.getSplitEntries().toggle(true);
+		wizard.getFilter().toggle(false);
+		wizard.getFilter().toggle(true);
+		wizard.getLastUpdateStartingTimestamp().setText(time);
+		wizard.getSortEntriesbyDate().toggle(false);
+		wizard.getSortEntriesbyDate().toggle(true);
+		wizard.getDelayBetweenPolls().setText("1234");
+		wizard.finish();
+
+		new SwitchYardEditor().save();
+
+		String bindingPath = "/switchyard/composite/service/binding.rss";
+		assertEquals("rss-binding", editor.xpath(bindingPath + "/@name"));
+		assertEquals("http://localhost", editor.xpath(bindingPath + "/feedURI"));
+		assertEquals("true", editor.xpath(bindingPath + "/splitEntries"));
+		assertEquals("true", editor.xpath(bindingPath + "/filter"));
+		assertEquals("2015-01-01T00:00:00", editor.xpath(bindingPath + "/lastUpdate"));
+		assertEquals("true", editor.xpath(bindingPath + "/sortEntries"));
+		assertEquals("1234", editor.xpath(bindingPath + "/consume/delay"));
+
+		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
+		RSSBindingPage page = properties.selectRSSBinding("rss-binding");
+		assertEquals("rss-binding", page.getName());
+		properties.ok();
+	}
+
+	@Test
+	public void sapBindingTest() throws Exception {
+		new Service(SERVICE).addBinding("SAP");
+		SAPBindingPage wizard = new SAPBindingPage();
+		wizard.setName("sap-binding");
+		wizard.getServer().setText("localhost");
+		wizard.getRFCName().setText("rfcName");
+		wizard.getTransacted().toggle(false);
+		wizard.getTransacted().toggle(true);
+		wizard.finish();
+
+		new SwitchYardEditor().save();
+
+		String bindingPath = "/switchyard/composite/service/binding.sap";
+		assertEquals("sap-binding", editor.xpath(bindingPath + "/@name"));
+		assertEquals("localhost", editor.xpath(bindingPath + "/server"));
+		assertEquals("rfcName", editor.xpath(bindingPath + "/rfcName"));
+		assertEquals("true", editor.xpath(bindingPath + "/transacted"));
+
+		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
+		SAPBindingPage page = properties.selectSAPBinding("sap-binding");
+		assertEquals("sap-binding", page.getName());
 		properties.ok();
 	}
 

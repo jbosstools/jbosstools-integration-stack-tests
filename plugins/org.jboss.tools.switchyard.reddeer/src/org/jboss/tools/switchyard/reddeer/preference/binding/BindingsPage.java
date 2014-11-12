@@ -3,6 +3,8 @@ package org.jboss.tools.switchyard.reddeer.preference.binding;
 import org.jboss.reddeer.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.list.DefaultList;
+import org.jboss.tools.switchyard.reddeer.binding.AtomBindingPage;
+import org.jboss.tools.switchyard.reddeer.binding.CXFBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.CamelBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.FTPBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.FTPSBindingPage;
@@ -11,10 +13,13 @@ import org.jboss.tools.switchyard.reddeer.binding.HTTPBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.JCABindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.JMSBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.JPABindingPage;
+import org.jboss.tools.switchyard.reddeer.binding.MQTTBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.MailBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.NettyTCPBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.NettyUDPBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.RESTBindingPage;
+import org.jboss.tools.switchyard.reddeer.binding.RSSBindingPage;
+import org.jboss.tools.switchyard.reddeer.binding.SAPBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.SCABindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.SFTPBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.SOAPBindingPage;
@@ -27,18 +32,28 @@ import org.jboss.tools.switchyard.reddeer.binding.SchedulingBindingPage;
  * @author apodhrad
  */
 public class BindingsPage extends PreferencePage {
-	
+
 	public BindingsPage remove() {
 		new PushButton("Remove").click();
 		return this;
 	}
-	
+
 	public BindingsPage removeAll() {
 		while (new DefaultList().getListItems().length > 0) {
 			new DefaultList().select(0);
 			remove();
 		}
 		return this;
+	}
+
+	public AtomBindingPage selectAtomBinding(String name) {
+		new DefaultList().select("Atom (" + name + ")");
+		return new AtomBindingPage();
+	}
+
+	public CXFBindingPage selectCXFBinding(String name) {
+		new DefaultList().select("CXF (" + name + ")");
+		return new CXFBindingPage();
 	}
 
 	public CamelBindingPage selectCamelBinding(String name) {
@@ -86,6 +101,11 @@ public class BindingsPage extends PreferencePage {
 		return new JPABindingPage();
 	}
 
+	public MQTTBindingPage selectMQTTBinding(String name) {
+		new DefaultList().select("MQTT (" + name + ")");
+		return new MQTTBindingPage();
+	}
+
 	public MailBindingPage selectMailBinding(String name) {
 		new DefaultList().select("Mail (" + name + ")");
 		return new MailBindingPage();
@@ -104,6 +124,16 @@ public class BindingsPage extends PreferencePage {
 	public RESTBindingPage selectRESTBinding(String name) {
 		new DefaultList().select("REST (" + name + ")");
 		return new RESTBindingPage();
+	}
+
+	public RSSBindingPage selectRSSBinding(String name) {
+		new DefaultList().select("RSS (" + name + ")");
+		return new RSSBindingPage();
+	}
+
+	public SAPBindingPage selectSAPBinding(String name) {
+		new DefaultList().select("SAP (" + name + ")");
+		return new SAPBindingPage();
 	}
 
 	public SCABindingPage selectSCABinding(String name) {
