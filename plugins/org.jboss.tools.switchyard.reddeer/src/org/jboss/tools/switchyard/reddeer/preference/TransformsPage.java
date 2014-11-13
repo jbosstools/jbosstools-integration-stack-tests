@@ -7,13 +7,17 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.tools.switchyard.reddeer.wizard.ValidatorWizard;
 
-public class ValidatorsPage extends CompositePropertiesPage {
+public class TransformsPage extends CompositePropertiesPage {
 
-	public ValidatorsPage() {
+	public static final int COLUMN_FROM = 0;
+	public static final int COLUMN_TO = 1;
+	public static final int COLUMN_TYPE = 2;
+
+	public TransformsPage() {
 		super("");
 	}
 
-	public ValidatorsPage(String title) {
+	public TransformsPage(String title) {
 		super(title);
 	}
 
@@ -23,40 +27,23 @@ public class ValidatorsPage extends CompositePropertiesPage {
 		return new ValidatorWizard();
 	}
 
-	public ValidatorsPage edit() {
-		activate();
-		new PushButton("Edit").click();
-		return this;
-	}
-
-	public ValidatorsPage remove() {
+	public TransformsPage remove() {
 		activate();
 		new PushButton("Remove").click();
 		return this;
 	}
 
-	public ValidatorsPage removeAll() {
-		List<TableItem> items = getValidators();
+	public TransformsPage removeAll() {
+		List<TableItem> items = getTransforms();
 		while (!items.isEmpty()) {
 			items.get(0).select();
 			remove();
-			items = getValidators();
+			items = getTransforms();
 		}
 		return this;
 	}
 
-	public ValidatorsPage selectByName(String name) {
-		List<TableItem> items = getValidators();
-		for (TableItem item : items) {
-			if (item.getText(0).equals(name)) {
-				item.select();
-				break;
-			}
-		}
-		return this;
-	}
-
-	public List<TableItem> getValidators() {
+	public List<TableItem> getTransforms() {
 		return new DefaultTable().getItems();
 	}
 }

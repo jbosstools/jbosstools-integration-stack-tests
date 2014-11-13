@@ -2,8 +2,18 @@ package org.jboss.tools.switchyard.reddeer.wizard;
 
 import java.io.File;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.jboss.reddeer.eclipse.jface.wizard.ImportWizardDialog;
+import org.jboss.reddeer.jface.wizard.ImportWizardDialog;
+import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.TableHasRows;
+import org.jboss.reddeer.swt.handler.WidgetHandler;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 
 /**
  * 
@@ -12,13 +22,11 @@ import org.jboss.reddeer.eclipse.jface.wizard.ImportWizardDialog;
  */
 public class ImportFileWizard extends ImportWizardDialog {
 
-	private static SWTWorkbenchBot bot = new SWTWorkbenchBot(); 
-	
 	public ImportFileWizard() {
 		super("General", "File System");
 	}
 
-	public void importFile(String folder, String fileName) {
+	public void importFile(String folder, String... fileNames) {
 		File file = new File(folder);
 		if (!file.exists()) {
 			throw new RuntimeException("File '" + folder + "' not found!");
@@ -26,25 +34,40 @@ public class ImportFileWizard extends ImportWizardDialog {
 
 		open();
 
-		bot.comboBoxWithLabel("From directory:").setText(file.getAbsolutePath());
-		bot.tree().setFocus();
-		bot.table().getTableItem(fileName).check();
-
-		finish();
-	}
-
-	public void importFolder(String path, String importFolder) {
-		File file = new File(path);
-		if (!file.exists()) {
-			throw new RuntimeException("File '" + path + "' not found!");
+		new DefaultShell("Import");
+		new LabeledComboExt("From directory:").typeText(file.getAbsolutePath());
+		new LabeledComboExt("From directory:").setText(file.getAbsolutePath());
+		new DefaultTree().setFocus();
+		new WaitUntil(new TableHasRows(new DefaultTable()), TimePeriod.NORMAL);
+		for (String fileName : fileNames) {
+			new DefaultTableItem(fileName).setChecked(true);
+		}
+		if (fileNames.length == 0) {
+			for (TreeItem item : new DefaultTree().getItems()) {
+				item.setChecked(true);
+			}
 		}
 
-		open();
-
-		bot.comboBoxWithLabel("From directory:").typeText(file.getAbsolutePath());
-		bot.tree().setFocus();
-		bot.tree().getTreeItem(importFolder).check();
-
 		finish();
 	}
+	
+	private class LabeledComboExt extends LabeledCombo {
+
+		public LabeledComboExt(String label) {
+			super(label);
+		}
+
+		public void setFocus() {
+			log.debug("Set focus to Combo");
+			WidgetHandler.getInstance().setFocus(swtCombo);
+		}
+		
+		public void typeText(String text) {
+			log.info("Type text " + text);
+			setText("");
+			setFocus();
+			KeyboardFactory.getKeyboard().type(text);
+		}
+	}
+
 }

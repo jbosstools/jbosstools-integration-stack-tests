@@ -14,6 +14,7 @@ import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
+import org.jboss.tools.switchyard.reddeer.component.SwitchYardComposite;
 import org.jboss.tools.switchyard.reddeer.preference.CompositePropertiesPage;
 import org.jboss.tools.switchyard.reddeer.wizard.BPMServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.BeanServiceWizard;
@@ -48,9 +49,9 @@ public class SwitchYardEditor extends GEFEditor {
 		composite = getComposite();
 	}
 
-	public SwitchYardComponent getComposite() {
+	public SwitchYardComposite getComposite() {
 		String compositeName = getCompositeName();
-		return new SwitchYardComponent(compositeName);
+		return new SwitchYardComposite(compositeName);
 	}
 
 	public String getCompositeName() {
@@ -179,5 +180,4 @@ public class SwitchYardEditor extends GEFEditor {
 		save();
 		close();
 	}
-
 }

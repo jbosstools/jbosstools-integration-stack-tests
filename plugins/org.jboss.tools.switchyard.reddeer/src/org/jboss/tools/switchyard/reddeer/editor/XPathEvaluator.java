@@ -111,5 +111,4 @@ public class XPathEvaluator {
 		}
 		return writer.toString();
 	}
-
 }

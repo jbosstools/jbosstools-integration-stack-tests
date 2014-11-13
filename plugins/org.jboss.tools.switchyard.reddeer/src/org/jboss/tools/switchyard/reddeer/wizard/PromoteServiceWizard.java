@@ -1,5 +1,7 @@
 package org.jboss.tools.switchyard.reddeer.wizard;
 
+import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
@@ -36,5 +38,20 @@ public class PromoteServiceWizard extends ServiceWizard<PromoteServiceWizard> {
 		Java2WSDLWizard wizard = new Java2WSDLWizard();
 		wizard.next();
 		wizard.finish();
+	}
+
+	public PromoteServiceWizard doNotCreateTransformers() {
+		activate();
+		getCreateRequiredTransformers().toggle(false);
+		return this;
+	}
+	
+	public CheckBox getCreateRequiredTransformers() {
+		return new CheckBox("Create required transformers");
+	}
+
+	@Override
+	protected void browse() {
+		new PushButton("Browse...").click();
 	}
 }

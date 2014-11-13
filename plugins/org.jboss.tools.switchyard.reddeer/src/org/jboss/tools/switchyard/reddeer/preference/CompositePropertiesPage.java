@@ -11,9 +11,9 @@ import org.jboss.tools.switchyard.reddeer.preference.contract.ContractSecurityPa
 import org.jboss.tools.switchyard.reddeer.preference.contract.ContractTransactionPage;
 import org.jboss.tools.switchyard.reddeer.preference.implementation.ImplementationBPMNPage;
 import org.jboss.tools.switchyard.reddeer.preference.implementation.ImplementationPage;
+import org.jboss.tools.switchyard.reddeer.preference.implementation.ImplementationRulesPage;
 import org.jboss.tools.switchyard.reddeer.preference.implementation.ImplementationSecurityPage;
 import org.jboss.tools.switchyard.reddeer.preference.implementation.ImplementationTransactionPage;
-import org.jboss.tools.switchyard.reddeer.preference.implementation.ImplementationRulesPage;
 
 /**
  * 
@@ -38,6 +38,13 @@ public class CompositePropertiesPage extends PreferencePage {
 		log.info("Select 'Validators' page");
 		new DefaultTreeItem("Validators").select();
 		return new ValidatorsPage();
+	}
+	
+	public TransformsPage selectTransforms() {
+		activate();
+		log.info("Select 'Transforms' page");
+		new DefaultTreeItem("Transforms").select();
+		return new TransformsPage();
 	}
 
 	public ResourcePage selectResource() {
