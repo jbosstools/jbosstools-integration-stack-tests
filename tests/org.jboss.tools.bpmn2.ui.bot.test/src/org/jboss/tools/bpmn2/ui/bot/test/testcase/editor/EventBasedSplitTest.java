@@ -1,5 +1,7 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
+import java.util.Arrays;
+
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.Position;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
@@ -13,9 +15,12 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.jbpm.JbpmAssertions;
 import org.jboss.tools.bpmn2.ui.bot.test.jbpm.PersistenceWorkItemHandler;
+import org.jboss.tools.bpmn2.ui.bot.test.jbpm.TriggeredNodesListener;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
+import org.kie.api.runtime.process.WorkItem;
+import org.kie.api.runtime.process.WorkflowProcessInstance;
 
 /**
  * ISSUES - Fails probably due to BZ-XYZ (event based gateway does not display correctly)
@@ -23,10 +28,12 @@ import org.kie.api.runtime.process.ProcessInstance;
 @ProcessDefinition(name="BPMN2-EventBasedSplit", project="EditorTestProject")
 public class EventBasedSplitTest extends JBPM6BaseTest {
 
+	private static final String VARIABLE = "x";
+	
 	@Override
 	public void buildProcessModel() {
 		Process process = new Process("BPMN2-EventBasedSplit");
-		process.addLocalVariable("x", "String");
+		process.addLocalVariable(VARIABLE, "String");
 		
 		StartEvent start = new StartEvent("StartProcess");
 		start.append("Email1", ElementType.USER_TASK);
@@ -40,7 +47,7 @@ public class EventBasedSplitTest extends JBPM6BaseTest {
 		gateway1.append("Event2", ElementType.SIGNAL_INTERMEDIATE_CATCH_EVENT, Position.SOUTH_EAST);
 		
 		SignalIntermediateCatchEvent event1 = new SignalIntermediateCatchEvent("Event1");
-		event1.setSignalMapping("Signal1", "x");
+		event1.setSignalMapping("Signal1", VARIABLE);
 //		event1.addParameterMapping(new OutputParameterMapping(new FromDataOutput("Event1"), new ToVariable("BPMN2-EventBasedSplit/x"), "Output Parameters"));
 		event1.append("Script1", ElementType.SCRIPT_TASK);
 		
@@ -48,7 +55,7 @@ public class EventBasedSplitTest extends JBPM6BaseTest {
 		script1.setScript("Java", "System.out.println(\"Executing Yes\");");
 		
 		SignalIntermediateCatchEvent event2 = new SignalIntermediateCatchEvent("Event2");
-		event2.setSignalMapping("Signal2", "x");
+		event2.setSignalMapping("Signal2", VARIABLE);
 //		event2.addParameterMapping(new OutputParameterMapping(new FromDataOutput("Event2"), new ToVariable("BPMN2-EventBasedSplit/x"), "Output Parameters"));
 		event2.append("Script2", ElementType.SCRIPT_TASK);
 		
@@ -63,7 +70,7 @@ public class EventBasedSplitTest extends JBPM6BaseTest {
 		gateway2.append("Script", ElementType.SCRIPT_TASK);
 		
 		ScriptTask script3 = new ScriptTask("Script");
-		script3.setScript("Java", "System.out.println(\"x=\" + x);");
+		script3.setScript("Java", "System.out.println(" + VARIABLE + ");");
 		script3.append("Email2", ElementType.USER_TASK);
 		
 		UserTask task2 = new UserTask("Email2");
@@ -75,8 +82,20 @@ public class EventBasedSplitTest extends JBPM6BaseTest {
 		PersistenceWorkItemHandler handler = new PersistenceWorkItemHandler();
 		kSession.getWorkItemManager().registerWorkItemHandler("Human Task", handler);
 		
+		TriggeredNodesListener triggered = new TriggeredNodesListener(
+				Arrays.asList("StartProcess", "Email1", "Split", "Script1", "Join", "Script", "Email2", "EndProcess"), Arrays.asList("Script2"));
+		kSession.addEventListener(triggered);
+		
 		ProcessInstance processInstance = kSession.startProcess("BPMN2EventBasedSplit");
+		
+		WorkItem item = handler.getWorkItem("Email1");
+		handler.completeWorkItem(item, kSession.getWorkItemManager());
+		kSession.signalEvent("Signal1", "Signal1 sended");
+		item = handler.getWorkItem("Email2");
+		handler.completeWorkItem(item, kSession.getWorkItemManager());
+		
 		JbpmAssertions.assertProcessInstanceCompleted(processInstance, kSession);
+		assertEquals("Process variable "+VARIABLE+" didn't changed.", "Signal1 sended", ((WorkflowProcessInstance) processInstance).getVariable(VARIABLE));
 	}
 	
 }
