@@ -95,7 +95,7 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 			openProcessFile();
 			buildProcessModel();
 			validateProcessModel();
-			//runProcessModel();
+			runProcessModel();
 		} catch (RuntimeException e) {
 			captureScreenshotWithDescription("screenshot-error-process");
 			throw e;

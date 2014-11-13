@@ -1,5 +1,9 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.Position;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.FromExpression;
@@ -14,18 +18,24 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.jbpm.JbpmAssertions;
 import org.jboss.tools.bpmn2.ui.bot.test.jbpm.PersistenceWorkItemHandler;
+import org.jboss.tools.bpmn2.ui.bot.test.jbpm.TriggeredNodesListener;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
+import org.kie.api.runtime.process.WorkItem;
+import org.mvel2.util.Varargs;
 
 @ProcessDefinition(name="BPMN2-ExclusiveSplitPriority", project="EditorTestProject")
 public class ExclusiveSplitPriorityTest extends JBPM6BaseTest {
+	
+	private static final String VARIABLE1 = "x";
+	private static final String VARIABLE2 = "y";
 
 	@Override
 	public void buildProcessModel() {
 		Process process = new Process("BPMN2-ExclusiveSplitPriority");
-		process.addLocalVariable("x", "String");
-		process.addLocalVariable("y", "String");
+		process.addLocalVariable(VARIABLE1, "String");
+		process.addLocalVariable(VARIABLE2, "String");
 		
 		StartEvent start = new StartEvent("StartProcess");
 		start.append("Split", ElementType.EXCLUSIVE_GATEWAY);
@@ -36,13 +46,13 @@ public class ExclusiveSplitPriorityTest extends JBPM6BaseTest {
 		gw.append("Script2", ElementType.SCRIPT_TASK, Position.SOUTH_EAST);
 		
 		gw.select();
-		gw.setCondition("Split -> Script1", "Java", "return x!=null;");
-		gw.setCondition("Split -> Script2", "Java", "return x==null;");
+		gw.setCondition("Split -> Script1", "Java", "return " + VARIABLE1 + " != null;");
+		gw.setCondition("Split -> Script2", "Java", "return " + VARIABLE1 + " == null;");
 		gw.setPriority("Split -> Script2", "1");
 		gw.setPriority("Split -> Script1", "2");
 		
 		ScriptTask task1 = new ScriptTask("Script1");
-		task1.setScript("Java", "System.out.println(\"x=\" + x);");
+		task1.setScript("Java", "System.out.println("+ VARIABLE1 + ");");
 		task1.append("Join", ElementType.EXCLUSIVE_GATEWAY, Position.SOUTH_EAST);
 		
 		ExclusiveGateway gw2 = new ExclusiveGateway("Join");
@@ -50,7 +60,7 @@ public class ExclusiveSplitPriorityTest extends JBPM6BaseTest {
 		gw2.append("Email", ElementType.USER_TASK);
 		
 		ScriptTask task2 = new ScriptTask("Script2");
-		task2.setScript("Java", "System.out.println(\"y=\" + y);");
+		task2.setScript("Java", "System.out.println(" + VARIABLE2 + ");");
 		task2.connectTo(gw2);
 		
 		// TBD: switch to sendTask
@@ -67,7 +77,18 @@ public class ExclusiveSplitPriorityTest extends JBPM6BaseTest {
 		PersistenceWorkItemHandler handler = new PersistenceWorkItemHandler();
 		kSession.getWorkItemManager().registerWorkItemHandler("Human Task", handler);
 		
-		ProcessInstance processInstance = kSession.startProcess("BPMN2ExclusiveSplitPriority");
+		TriggeredNodesListener triggered = new TriggeredNodesListener(
+				Arrays.asList("StartProcess", "Split", "Script1", "Email", "EndProcess"), Arrays.asList("Script2"));
+		kSession.addEventListener(triggered);
+		
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put(VARIABLE1, "nonNullValue");
+		
+		ProcessInstance processInstance = kSession.startProcess("BPMN2ExclusiveSplitPriority", args);
+		
+		WorkItem item = handler.getWorkItem("Email");
+		handler.completeWorkItem(item, kSession.getWorkItemManager());
+		
 		JbpmAssertions.assertProcessInstanceCompleted(processInstance, kSession);
 	}
 	
