@@ -21,14 +21,14 @@ public class IntermediateThrowMessageEventTest extends JBPM6BaseTest {
 	@Override
 	public void buildProcessModel() {
 		Process process = new Process("BPMN2-IntermediateThrowMessageEvent");
-		process.addLocalVariable("m", "String");
+		process.addLocalVariable(VARIABLE1, "String");
 		process.addMessage("_2_Message", "String");
 		
 		StartEvent start = new StartEvent("StartProcess");
 		start.append("Message Event", ElementType.MESSAGE_INTERMEDIATE_THROW_EVENT);
 
 		MessageIntermediateThrowEvent ithrow = new MessageIntermediateThrowEvent("Message Event");
-		ithrow.setMessageMapping(new Message("_2_Message", "String"), "m");
+		ithrow.setMessageMapping(new Message("_2_Message", "String"), VARIABLE1);
 		ithrow.append("EndProcess", ElementType.END_EVENT);
 	}
 

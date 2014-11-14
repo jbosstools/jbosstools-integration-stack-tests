@@ -52,6 +52,9 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 	
 	protected String diagramFileLocation;
 	
+	protected static final String VARIABLE1 = "Property_1";
+	protected static final String VARIABLE2 = "Property_2";
+	
 	/**
 	 * 
 	 */

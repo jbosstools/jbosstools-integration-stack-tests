@@ -19,7 +19,6 @@ public class ReceiveTaskTest extends JBPM6BaseTest {
 	@Override
 	public void buildProcessModel() {
 		Process process = new Process("BPMN2-ReceiveTask");
-		process.addLocalVariable("s", "String");
 		process.addMessage("HelloMessage", "String");
 		
 		StartEvent start = new StartEvent("StartProcess");

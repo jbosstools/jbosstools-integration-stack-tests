@@ -18,14 +18,14 @@ import org.kie.api.runtime.process.ProcessInstance;
 
 @ProcessDefinition(name="BPMN2-CallActivity", project="EditorTestProject")
 public class CallActivityTest extends JBPM6BaseTest {
-
+	
 	private static final String MODEL_NAME = "BPMN2-CallActivity";
 	
 	@Override
 	public void buildProcessModel() {
 		Process process = new Process(MODEL_NAME);
-		process.addLocalVariable("x", "String");
-		process.addLocalVariable("y", "String");
+		process.addLocalVariable(VARIABLE1, "String");
+		process.addLocalVariable(VARIABLE2, "String");
 		
 		StartEvent start = new StartEvent("StartProcess");
 		start.append("CallActivity", ElementType.CALL_ACTIVITY);
@@ -34,8 +34,8 @@ public class CallActivityTest extends JBPM6BaseTest {
 		call.setWaitForCompletion(true);
 		call.setIndependent(true);
 		call.setCalledActivity("SubProcess");
-		call.addParameterMapping(new ParameterMapping(new FromVariable("y"), new ToDataInput("subX", "String"), ParameterMapping.Type.INPUT));
-		call.addParameterMapping(new ParameterMapping(new FromDataOutput("subY", "String"), new ToVariable("x"), ParameterMapping.Type.OUTPUT));
+		call.addParameterMapping(new ParameterMapping(new FromVariable(VARIABLE2), new ToDataInput("subX", "String"), ParameterMapping.Type.INPUT));
+		call.addParameterMapping(new ParameterMapping(new FromDataOutput("subY", "String"), new ToVariable(VARIABLE1), ParameterMapping.Type.OUTPUT));
 		
 		call.append("EndProcess", ElementType.TERMINATE_END_EVENT);
 	}

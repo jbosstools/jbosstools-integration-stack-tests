@@ -18,19 +18,17 @@ import org.kie.api.runtime.process.ProcessInstance;
 @ProcessDefinition(name="BPMN2-IntermediateThrowEscalationEvent", project="EditorTestProject")
 public class IntermediateThrowEscalationEventTest extends JBPM6BaseTest {
 
-	private static final String VARIABLE = "procVar";
-
 	@Override
 	public void buildProcessModel() {
 		Process process = new Process("BPMN2-IntermediateThrowEscalationEvent");
-		process.addLocalVariable(VARIABLE, "String");
+		process.addLocalVariable(VARIABLE1, "String");
 		process.addEscalation("EscName", "MyEscalation");
 		
 		StartEvent start = new StartEvent("StartProcess");
 		start.append("Escalation Event", ElementType.ESCALATION_INTERMEDIATE_THROW_EVENT);
 
 		EscalationIntermediateThrowEvent ithrow = new EscalationIntermediateThrowEvent("Escalation Event");
-		ithrow.setEscalation(new Escalation("EscName", "MyEscalation"), VARIABLE);
+		ithrow.setEscalation(new Escalation("EscName", "MyEscalation"), VARIABLE1);
 		ithrow.append("TotalEnd", ElementType.END_EVENT);
 		
 		process.select();
@@ -40,12 +38,12 @@ public class IntermediateThrowEscalationEventTest extends JBPM6BaseTest {
 		escalationHandler.add("HandlerStart", ElementType.ESCALATION_START_EVENT);		
 		
 		EscalationStartEvent handlerStart = new EscalationStartEvent("HandlerStart");
-		handlerStart.setEscalation(new Escalation("EscName", "MyEscalation"), VARIABLE);
+		handlerStart.setEscalation(new Escalation("EscName", "MyEscalation"), VARIABLE1);
 		handlerStart.append("EscalationPrinter", ElementType.SCRIPT_TASK);
 		
 		
 		ScriptTask script = new ScriptTask("EscalationPrinter", escalationHandler);
-		script.setScript("Java", "System.out.println(\"" + VARIABLE + "\");");
+		script.setScript("Java", "System.out.println(\"" + VARIABLE1 + "\");");
 		script.append("HandlerEnd", ElementType.END_EVENT,Position.SOUTH_EAST);
 		
 	}

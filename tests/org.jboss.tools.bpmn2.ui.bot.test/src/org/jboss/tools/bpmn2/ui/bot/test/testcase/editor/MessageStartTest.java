@@ -23,23 +23,23 @@ import org.kie.api.runtime.process.WorkflowProcessInstance;
 @ProcessDefinition(name="BPMN2-MessageStart", project="EditorTestProject")
 public class MessageStartTest extends JBPM6BaseTest {
 
-	private String changedX = "";
+	private String changedVar = "";
 	
 	@Override
 	public void buildProcessModel() {
 		Process process = new Process("BPMN2-MessageStart");
-		process.addLocalVariable("x", "String");
+		process.addLocalVariable(VARIABLE1, "String");
 		process.addMessage("HelloMessage", "String");
 		
 		new StartEvent("StartProcess").delete();
 		process.add("StartProcess", ElementType.MESSAGE_START_EVENT);
 		
 		MessageStartEvent start = new MessageStartEvent("StartProcess");
-		start.setMessageMapping(new Message("HelloMessage", "String"), "x");
+		start.setMessageMapping(new Message("HelloMessage", "String"), VARIABLE1);
 		start.append("Script", ElementType.SCRIPT_TASK);
 		
 		ScriptTask script = new ScriptTask("Script");
-		script.setScript("Java", "System.out.println(\"x = \" + x);");
+		script.setScript("Java", "System.out.println(" + VARIABLE1 + ");");
 		script.append("EndProcess", ElementType.TERMINATE_END_EVENT);
 	}
 
@@ -52,13 +52,13 @@ public class MessageStartTest extends JBPM6BaseTest {
 		kSession.addEventListener(new DefaultProcessEventListener() {
 			public void afterProcessStarted(ProcessStartedEvent event) {
 			
-				changedX = (String) ((WorkflowProcessInstance) event.getProcessInstance()).getVariable("x");
+				changedVar = (String) ((WorkflowProcessInstance) event.getProcessInstance()).getVariable("x");
 			}
 		});
 		
 		
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("x", "xValue");
+		params.put(VARIABLE1, "var1Value");
 		
 		ProcessInstance processInstance = kSession.startProcess("BPMN2MessageStart", params);
 		

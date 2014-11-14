@@ -11,7 +11,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
 // Editor tests
 // ------------
-	// @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1157656
+//  @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1157656
 	ParallelSplitJoinTest.class,
 	CallActivityTest.class,
 	AdHocProcessTest.class, //@BZ https://bugzilla.redhat.com/show_bug.cgi?id=1147940
@@ -38,7 +38,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	DataObjectTest.class,
 	MultipleStartEventTest.class,
 	InclusiveSplitTest.class,
-//	//IntermediateThrowEventNoneTest.class, 
+	//IntermediateThrowEventNoneTest.class, 
 	IntermediateThrowMessageEventTest.class,
 	IntermediateThrowEscalationEventTest.class, // https://bugzilla.redhat.com/show_bug.cgi?id=1162174
 	IntermediateCatchSignalSingleTest.class,

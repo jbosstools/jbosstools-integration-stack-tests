@@ -21,12 +21,10 @@ import org.kie.api.runtime.process.WorkflowProcessInstance;
 @ProcessDefinition(name="BPMN2-IntermediateCatchSignalSingle", project="EditorTestProject")
 public class IntermediateCatchSignalSingleTest extends JBPM6BaseTest {
 
-	private static final String VARIABLE = "procVar";
-	
 	@Override
 	public void buildProcessModel() {
 		Process process = new Process("BPMN2-IntermediateCatchSignalSingle");
-		process.addLocalVariable(VARIABLE, "String");
+		process.addLocalVariable(VARIABLE1, "String");
 		process.addSignal("BatmanSignal");
 		
 		StartEvent startEvent = new StartEvent("StartProcess");
@@ -37,11 +35,11 @@ public class IntermediateCatchSignalSingleTest extends JBPM6BaseTest {
 		userTask.append("Catch", ElementType.SIGNAL_INTERMEDIATE_CATCH_EVENT);
 		
 		SignalIntermediateCatchEvent catchEvent = new SignalIntermediateCatchEvent("Catch");
-		catchEvent.setSignalMapping("BatmanSignal", VARIABLE);
+		catchEvent.setSignalMapping("BatmanSignal", VARIABLE1);
 		catchEvent.append("Script Task", ElementType.SCRIPT_TASK);
 		
 		ScriptTask scriptTask = new ScriptTask("Script Task");
-		scriptTask.setScript("Java", "System.out.println("+ VARIABLE +");");
+		scriptTask.setScript("Java", "System.out.println("+ VARIABLE1 +");");
 		scriptTask.append("EndProcess", ElementType.END_EVENT);
 	}
 
@@ -61,7 +59,7 @@ public class IntermediateCatchSignalSingleTest extends JBPM6BaseTest {
 		kSession.signalEvent("BatmanSignal", "batman is comming");
 		
 		JbpmAssertions.assertProcessInstanceCompleted(processInstance, kSession);
-		assertEquals("Process variable "+VARIABLE+" didn't changed.", "batman is comming", ((WorkflowProcessInstance) processInstance).getVariable(VARIABLE));
+		assertEquals("Process variable "+VARIABLE1+" didn't changed.", "batman is comming", ((WorkflowProcessInstance) processInstance).getVariable(VARIABLE1));
 
 	}
 	

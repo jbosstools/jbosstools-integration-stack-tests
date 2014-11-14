@@ -30,12 +30,10 @@ import org.kie.api.runtime.process.WorkItem;
 @ProcessDefinition(name="BPMN2-ErrorBoundaryEventOnTask", project="EditorTestProject")
 public class ErrorBoundaryEventOnTaskTest extends JBPM6BaseTest {
 
-	private static final String VARIABLE = "localVar";
-	
 	@Override
 	public void buildProcessModel() {
 		Process process = new Process("BPMN2-ErrorBoundaryEventOnTask");
-		process.addLocalVariable(VARIABLE, "String");
+		process.addLocalVariable(VARIABLE1, "String");
 		process.addError("MyError", "java.lang.IllegalArgumentException", "java.lang.IllegalArgumentException");
 		
 		StartEvent start = new StartEvent("StartProcess");
@@ -51,7 +49,7 @@ public class ErrorBoundaryEventOnTaskTest extends JBPM6BaseTest {
 		task1.append("Error end event", ElementType.ERROR_END_EVENT);
 		
 		ErrorEndEvent end1 = new ErrorEndEvent("Error end event");
-		end1.setErrorEvent(new ErrorRef("MyError", "java.lang.IllegalArgumentException", "java.lang.IllegalArgumentException"), VARIABLE);
+		end1.setErrorEvent(new ErrorRef("MyError", "java.lang.IllegalArgumentException", "java.lang.IllegalArgumentException"), VARIABLE1);
 		
 		UserTask task2 = new UserTask("User task error attached");
 		task2.addActor("mary");
@@ -60,7 +58,7 @@ public class ErrorBoundaryEventOnTaskTest extends JBPM6BaseTest {
 		task2.addEvent("Error Boundary Event", ElementType.ERROR_BOUNDARY_EVENT);
 		
 		ErrorBoundaryEvent boundaryEvent = new ErrorBoundaryEvent("Error Boundary Event");
-		boundaryEvent.setErrorEvent(new ErrorRef("MyError", "java.lang.IllegalArgumentException", "java.lang.IllegalArgumentException"), VARIABLE);
+		boundaryEvent.setErrorEvent(new ErrorRef("MyError", "java.lang.IllegalArgumentException", "java.lang.IllegalArgumentException"), VARIABLE1);
 		boundaryEvent.append("Script Task", ElementType.SCRIPT_TASK, Position.SOUTH);
 		
 		ScriptTask script = new ScriptTask("Script Task");
@@ -80,7 +78,7 @@ public class ErrorBoundaryEventOnTaskTest extends JBPM6BaseTest {
 		kSession.addEventListener(triggeredNodes);
 		
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put(VARIABLE, "local variable value");
+		params.put(VARIABLE1, "local variable value");
 		
 		ProcessInstance processInstance = kSession.startProcess("BPMN2ErrorBoundaryEventOnTask", params);
 		

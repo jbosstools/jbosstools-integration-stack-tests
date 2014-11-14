@@ -28,12 +28,10 @@ import org.kie.api.runtime.process.WorkflowProcessInstance;
 @ProcessDefinition(name="BPMN2-EventBasedSplit", project="EditorTestProject")
 public class EventBasedSplitTest extends JBPM6BaseTest {
 
-	private static final String VARIABLE = "x";
-	
 	@Override
 	public void buildProcessModel() {
 		Process process = new Process("BPMN2-EventBasedSplit");
-		process.addLocalVariable(VARIABLE, "String");
+		process.addLocalVariable(VARIABLE1, "String");
 		
 		StartEvent start = new StartEvent("StartProcess");
 		start.append("Email1", ElementType.USER_TASK);
@@ -47,7 +45,7 @@ public class EventBasedSplitTest extends JBPM6BaseTest {
 		gateway1.append("Event2", ElementType.SIGNAL_INTERMEDIATE_CATCH_EVENT, Position.SOUTH_EAST);
 		
 		SignalIntermediateCatchEvent event1 = new SignalIntermediateCatchEvent("Event1");
-		event1.setSignalMapping("Signal1", VARIABLE);
+		event1.setSignalMapping("Signal1", VARIABLE1);
 //		event1.addParameterMapping(new OutputParameterMapping(new FromDataOutput("Event1"), new ToVariable("BPMN2-EventBasedSplit/x"), "Output Parameters"));
 		event1.append("Script1", ElementType.SCRIPT_TASK);
 		
@@ -55,7 +53,7 @@ public class EventBasedSplitTest extends JBPM6BaseTest {
 		script1.setScript("Java", "System.out.println(\"Executing Yes\");");
 		
 		SignalIntermediateCatchEvent event2 = new SignalIntermediateCatchEvent("Event2");
-		event2.setSignalMapping("Signal2", VARIABLE);
+		event2.setSignalMapping("Signal2", VARIABLE1);
 //		event2.addParameterMapping(new OutputParameterMapping(new FromDataOutput("Event2"), new ToVariable("BPMN2-EventBasedSplit/x"), "Output Parameters"));
 		event2.append("Script2", ElementType.SCRIPT_TASK);
 		
@@ -70,7 +68,7 @@ public class EventBasedSplitTest extends JBPM6BaseTest {
 		gateway2.append("Script", ElementType.SCRIPT_TASK);
 		
 		ScriptTask script3 = new ScriptTask("Script");
-		script3.setScript("Java", "System.out.println(" + VARIABLE + ");");
+		script3.setScript("Java", "System.out.println(" + VARIABLE1 + ");");
 		script3.append("Email2", ElementType.USER_TASK);
 		
 		UserTask task2 = new UserTask("Email2");
@@ -95,7 +93,7 @@ public class EventBasedSplitTest extends JBPM6BaseTest {
 		handler.completeWorkItem(item, kSession.getWorkItemManager());
 		
 		JbpmAssertions.assertProcessInstanceCompleted(processInstance, kSession);
-		assertEquals("Process variable "+VARIABLE+" didn't changed.", "Signal1 sended", ((WorkflowProcessInstance) processInstance).getVariable(VARIABLE));
+		assertEquals("Process variable "+VARIABLE1+" didn't changed.", "Signal1 sended", ((WorkflowProcessInstance) processInstance).getVariable(VARIABLE1));
 	}
 	
 }

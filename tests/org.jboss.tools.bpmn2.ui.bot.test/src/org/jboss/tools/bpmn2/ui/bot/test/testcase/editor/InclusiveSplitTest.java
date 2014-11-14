@@ -24,7 +24,7 @@ public class InclusiveSplitTest extends JBPM6BaseTest {
 	@Override
 	public void buildProcessModel() {
 		Process process = new Process("BPMN2-InclusiveSplit");
-		process.addLocalVariable("x", "Integer");
+		process.addLocalVariable(VARIABLE1, "Integer");
 		
 		StartEvent start = new StartEvent("StartProcess");
 		start.append("Gateway", ElementType.INCLUSIVE_GATEWAY);
@@ -36,9 +36,9 @@ public class InclusiveSplitTest extends JBPM6BaseTest {
 		
 		gateway.select();
 		gateway.setDirection(Direction.DIVERGING);
-		gateway.setCondition("Gateway -> Script1", "Java", "return x > 0;");
-		gateway.setCondition("Gateway -> Script2", "Java", "return x > 10;");
-		gateway.setCondition("Gateway -> Script3", "Java", "return x > 20;");
+		gateway.setCondition("Gateway -> Script1", "Java", "return "+VARIABLE1+" > 0;");
+		gateway.setCondition("Gateway -> Script2", "Java", "return "+VARIABLE1+" > 10;");
+		gateway.setCondition("Gateway -> Script3", "Java", "return "+VARIABLE1+" > 20;");
 
 		ScriptTask script1 = new ScriptTask("Script1");
 		script1.setScript("Java", "System.out.println(\"path1\");");
@@ -61,7 +61,7 @@ public class InclusiveSplitTest extends JBPM6BaseTest {
 		kSession.addEventListener(triggered);
 		
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("x", 15);
+		params.put(VARIABLE1, 15);
 		
 		ProcessInstance processInstance = kSession.startProcess("BPMN2InclusiveSplit", params);
 		JbpmAssertions.assertProcessInstanceCompleted(processInstance, kSession);

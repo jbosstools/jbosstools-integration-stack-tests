@@ -22,7 +22,8 @@ public class ConditionalBoundaryEventInterruptingTest extends JBPM6BaseTest {
 	@Override
 	public void buildProcessModel() {
 		Process process = new Process("BPMN2-ConditionalBoundaryEventInterrupting");
-		process.addLocalVariable("varForMapping", "String");
+		process.addImport("org.jbpm.bpmn2.objects.Person");
+		process.addLocalVariable(VARIABLE1, "String");
 		process.addEscalation("Timeout", "400");
 		
 		StartEvent startEvent = new StartEvent("StartProcess");
@@ -39,7 +40,7 @@ public class ConditionalBoundaryEventInterruptingTest extends JBPM6BaseTest {
 		task.append("EscalationEvent", ElementType.ESCALATION_END_EVENT, Position.NORTH);
 		
 		EscalationEndEvent endEvent = new EscalationEndEvent("EscalationEvent");
-		endEvent.setEscalation(new Escalation("Timeout", "400"), "varForMapping");
+		endEvent.setEscalation(new Escalation("Timeout", "400"), VARIABLE1);
 		
 		subProcess.add("Conditional Boundary Event Process", ElementType.CONDITIONAL_BOUNDARY_EVENT);
 		
@@ -48,7 +49,7 @@ public class ConditionalBoundaryEventInterruptingTest extends JBPM6BaseTest {
 		conditionalBoundaryEvent.append("Goodbye", ElementType.SCRIPT_TASK, Position.NORTH);
 		
 		ScriptTask scriptTask = new ScriptTask("Goodbye");
-		scriptTask.setScript("", "System.out.println(\"Condition met\");");
+		scriptTask.setScript("Java", "System.out.println(\"Condition met\");");
 		scriptTask.append("EndProcess2", ElementType.END_EVENT);
 		
 		// fix connections - the framework code does not create them because editPart is

@@ -27,7 +27,6 @@ public class BoundaryConditionalEventOnTaskTest extends JBPM6BaseTest {
 	@Override
 	public void buildProcessModel() {
 		Process process = new Process("BPMN2-BoundaryConditionalEventOnTask");
-		process.addLocalVariable("x", "String");
 		process.addImport("org.jbpm.bpmn2.objects.Person");
 		
 		StartEvent startEvent = new StartEvent("StartProcess");

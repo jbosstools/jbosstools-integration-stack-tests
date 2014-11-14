@@ -28,9 +28,6 @@ import org.mvel2.util.Varargs;
 @ProcessDefinition(name="BPMN2-ExclusiveSplitPriority", project="EditorTestProject")
 public class ExclusiveSplitPriorityTest extends JBPM6BaseTest {
 	
-	private static final String VARIABLE1 = "x";
-	private static final String VARIABLE2 = "y";
-
 	@Override
 	public void buildProcessModel() {
 		Process process = new Process("BPMN2-ExclusiveSplitPriority");
