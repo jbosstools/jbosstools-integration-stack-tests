@@ -8,11 +8,9 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.ConditionalStartEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
-import org.jboss.tools.bpmn2.ui.bot.test.jbpm.JbpmAssertions;
 import org.jboss.tools.bpmn2.ui.bot.test.jbpm.TriggeredNodesListener;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.kie.api.runtime.KieSession;
-import org.kie.api.runtime.process.ProcessInstance;
 
 @ProcessDefinition(name="BPMN2-ConditionalStart", project="EditorTestProject", needPerson=true)
 public class ConditionalStartTest extends JBPM6BaseTest {
@@ -49,10 +47,9 @@ public class ConditionalStartTest extends JBPM6BaseTest {
 		person.setName("john");
 		kSession.insert(person);
 		
-		ProcessInstance processInstance = kSession.startProcess("BPMN2ConditionalStart");
 		kSession.fireAllRules();
 		
-		JbpmAssertions.assertProcessInstanceCompleted(processInstance, kSession);
+		assertEquals("There shouldn't be a active process instance", 0, kSession.getProcessInstances().size());
 	}
 	
 }

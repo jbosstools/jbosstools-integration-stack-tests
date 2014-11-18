@@ -1,5 +1,6 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
@@ -58,11 +59,10 @@ public class MultipleStartEventTest extends JBPM6BaseTest {
 		triggered.setExpectedFinalProcessState(ProcessInstance.STATE_COMPLETED);
 		kSession.addEventListener(triggered);
 		
-		
-		kSession.signalEvent("Signal_1", "any data");
-		
+		kSession.signalEvent("BlockingSignal", "any data");
+		ArrayList<ProcessInstance> list = new ArrayList<ProcessInstance>(kSession.getProcessInstances());
+		assertEquals(1, list.size());
 		handler.completeWorkItem(handler.getWorkItem("User Task"), kSession.getWorkItemManager());
-		
-		assertTrue(triggered.wasCompletitionReached());
+		assertEquals(ProcessInstance.STATE_COMPLETED, list.get(0).getState());
 	}
 }

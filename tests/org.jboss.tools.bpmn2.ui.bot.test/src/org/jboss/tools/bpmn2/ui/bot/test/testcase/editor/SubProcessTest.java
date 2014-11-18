@@ -15,6 +15,7 @@ import org.jboss.tools.bpmn2.ui.bot.test.jbpm.TriggeredNodesListener;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
+import org.kie.api.runtime.process.WorkflowProcessInstance;
 
 @ProcessDefinition(name="BPMN2-SubProcess", project="EditorTestProject")
 public class SubProcessTest extends JBPM6BaseTest {
@@ -39,13 +40,13 @@ public class SubProcessTest extends JBPM6BaseTest {
 		subProcess.addRelativeToElement("Hello1", ElementType.SCRIPT_TASK, subStart, new Point(0, 50));
 		
 		ScriptTask script1 = new ScriptTask("Hello1");
-		script1.setScript("Java", "System.out.println(" + VARIABLE1 + ");");
+		script1.setScript("Java", "kcontext.setVariable(\"" + VARIABLE1 + "\",\" innerValue\");");
 		subStart.connectTo(script1);
 		subProcess.addRelativeToElement("Hello2", ElementType.SCRIPT_TASK, script1, new Point(130, 0));
 		
 		
 		ScriptTask script2 = new ScriptTask("Hello2");
-		script2.setScript("Java", "kcontext.setVariable(" + VARIABLE1+ ", \"Hello\");");
+		script2.setScript("Java", "System.out.println(kcontext.getVariable(\"" + VARIABLE1 + "\"));");
 		script1.connectTo(script2);
 		subProcess.addRelativeToElement("EndSubProcess", ElementType.END_EVENT, script2, new Point(0, -50));
 		
@@ -63,5 +64,6 @@ public class SubProcessTest extends JBPM6BaseTest {
 		
 		ProcessInstance processInstance = kSession.startProcess("BPMN2SubProcess");
 		JbpmAssertions.assertProcessInstanceCompleted(processInstance, kSession);
+		assertNull(((WorkflowProcessInstance) processInstance).getVariable(VARIABLE1));
 	}
 }
