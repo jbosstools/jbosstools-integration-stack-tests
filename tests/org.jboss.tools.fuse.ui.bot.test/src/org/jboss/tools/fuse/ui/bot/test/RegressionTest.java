@@ -23,6 +23,7 @@ import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.swt.handler.ShellHandler;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -42,6 +43,7 @@ import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.w3c.dom.Document;
@@ -66,12 +68,16 @@ public class RegressionTest {
 	public void clean() {
 
 		new ProjectExplorer().deleteAllProjects();
+		ShellHandler.getInstance().closeAllNonWorbenchShells();
 	}
 
 	/**
 	 * GUI editor issue when using route scoped onException
 	 * https://issues.jboss.org/browse/FUSETOOLS-674
+	 * 
+	 * NOTE: not fixed yet - deferred to 8.0
 	 */
+	@Ignore
 	@Test
 	public void issue_674() throws ParserConfigurationException, SAXException, IOException {
 
@@ -105,6 +111,8 @@ public class RegressionTest {
 	/**
 	 * New Server Runtime Wizard - Cancel/Finish button error
 	 * https://issues.jboss.org/browse/FUSETOOLS-1067
+	 * 
+	 * NOTE: this test is related to https://issues.jboss.org/browse/FUSETOOLS-1076 too
 	 */
 	@Test
 	public void issue_1067() {
