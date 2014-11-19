@@ -44,7 +44,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	IntermediateCatchSignalSingleTest.class,
 	ExclusiveSplitPriorityTest.class,
 	EventBasedSplitTest.class, 
-	BoundaryEscalationEventOnTaskTest.class,
+	BoundaryEscalationEventOnTaskTest.class, // https://bugzilla.redhat.com/show_bug.cgi?id=1165807
 	ConditionalBoundaryEventInterruptingTest.class, // https://bugzilla.redhat.com/show_bug.cgi?id=1165667
 })
 public class AllEditorTests extends TestSuite {

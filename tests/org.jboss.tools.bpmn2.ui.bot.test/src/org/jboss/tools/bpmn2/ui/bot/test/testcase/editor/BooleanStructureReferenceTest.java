@@ -30,13 +30,12 @@ import org.kie.api.runtime.process.WorkflowProcessInstance;
 
 @ProcessDefinition(name="BPMN2-BooleanStructureRef", project="EditorTestProject")
 public class BooleanStructureReferenceTest extends JBPM6BaseTest {
-	private static final String VARIABLE = "Property_1";
 	private static final String NODE_USER_TASK = "User Task";
 
 	@Override
 	public void buildProcessModel() {
 		Process process = new Process("BPMN2-BooleanStructureRef");
-		process.addLocalVariable(VARIABLE, "Boolean");
+		process.addLocalVariable(VARIABLE1, "Boolean");
 		
 		StartEvent start = new StartEvent("StartProcess");
 		start.append(NODE_USER_TASK, ElementType.USER_TASK);
@@ -45,11 +44,11 @@ public class BooleanStructureReferenceTest extends JBPM6BaseTest {
 		userTask.addActor("john");
 		userTask.setTaskName("UserTask");
 //		userTask.addLocalVariable("testHT", "String"); // @BZ
-		userTask.addParameterMapping(new ParameterMapping(new FromDataOutput("testHT", "String"), new ToVariable(VARIABLE), ParameterMapping.Type.OUTPUT));
+		userTask.addParameterMapping(new ParameterMapping(new FromDataOutput("testHT", "String"), new ToVariable(VARIABLE1), ParameterMapping.Type.OUTPUT));
 		userTask.append("Script", ElementType.SCRIPT_TASK);
 
 		ScriptTask scriptTask = new ScriptTask("Script");
-		scriptTask.setScript("", "System.out.println(" + VARIABLE +")");
+		scriptTask.setScript("", "System.out.println(" + VARIABLE1 +")");
 		scriptTask.append("EndProcess", ElementType.END_EVENT);
 	}
 
@@ -68,7 +67,7 @@ public class BooleanStructureReferenceTest extends JBPM6BaseTest {
 		kSession.getWorkItemManager().registerWorkItemHandler("Human Task", workItemHandler);
 		
 		Map<String, Object> arguments = new HashMap<String, Object>();
-		arguments.put(VARIABLE, false);
+		arguments.put(VARIABLE1, false);
 		
 		BeforeEndEventListener listener = new BeforeEndEventListener();
 		kSession.addEventListener(listener);
@@ -96,7 +95,7 @@ public class BooleanStructureReferenceTest extends JBPM6BaseTest {
 
 		@Override
 		public void beforeProcessCompleted(ProcessCompletedEvent event) {
-			assertEquals("Process variable "+VARIABLE+" didn't changed to true.", true, ((WorkflowProcessInstance) event.getProcessInstance()).getVariable(VARIABLE));
+			assertEquals("Process variable "+VARIABLE1+" didn't changed to true.", true, ((WorkflowProcessInstance) event.getProcessInstance()).getVariable(VARIABLE1));
 		}
 
 		@Override

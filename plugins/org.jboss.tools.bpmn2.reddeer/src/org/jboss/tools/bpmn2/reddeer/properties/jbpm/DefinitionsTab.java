@@ -121,8 +121,13 @@ public class DefinitionsTab {
 	 * @param escalationCode
 	 */
 	public void addEscalation(String name, String code) {
+		Escalation escalation = new Escalation(name, code);
+		addEscalation(escalation);
+	}
+	
+	public void addEscalation(Escalation escalation) {
 		new DefaultSection("Escalation List").getToolbarButton("Add").click();
-		new Escalation(name, code).setUpViaProcessDefinitions();
+		escalation.setUpViaProcessDefinitions();
 		new DefaultSection("Escalation Details").getToolbarButton("Close").click();
 	}
 	

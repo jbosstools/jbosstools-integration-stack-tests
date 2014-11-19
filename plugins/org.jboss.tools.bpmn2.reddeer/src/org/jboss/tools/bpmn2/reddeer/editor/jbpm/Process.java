@@ -110,7 +110,12 @@ public class Process extends ElementContainer {
 	 * @param code
 	 */
 	public void addEscalation(String name, String code) {
-		properties.getTab("Definitions", DefinitionsTab.class).addEscalation(name, code);
+		Escalation escalation = new Escalation(name, code);
+		addEscalation(escalation);
+	}
+	
+	public void addEscalation(Escalation escalation) {
+		properties.getTab("Definitions", DefinitionsTab.class).addEscalation(escalation);
 	}
 	
 	/**
