@@ -110,7 +110,7 @@ public class UserTask extends Task {
 	 * @param language
 	 * @param script
 	 */
-	public void setOnExistScript(String language, String script) {
+	public void setOnExitScript(String language, String script) {
 		properties.getTab("User Task", UserTaskTab.class).setOnExitScript(new Expression(language, script));
 	}
 

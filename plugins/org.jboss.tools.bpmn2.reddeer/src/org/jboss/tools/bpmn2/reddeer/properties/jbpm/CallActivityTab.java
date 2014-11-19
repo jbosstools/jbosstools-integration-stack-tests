@@ -1,14 +1,14 @@
 package org.jboss.tools.bpmn2.reddeer.properties.jbpm;
 
 import org.jboss.reddeer.swt.impl.button.PushButton;
+
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.CalledActivityDialog;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Expression;
 import org.jboss.tools.reddeer.DefaultCheckBox;
 
 /**
  * 
  */
-public class CallActivityTab {
+public class CallActivityTab extends GeneralPropertiesTab {
 
 	/**
 	 * 
@@ -41,22 +41,6 @@ public class CallActivityTab {
 	public void setCalledActivity(String activityName) {
 		new PushButton(0).click();
 		new CalledActivityDialog().add(activityName);
-	}
-	
-	/**
-	 * 
-	 * @param expression
-	 */
-	public void setOnEntryScript(Expression expression) {
-		expression.setUp("On Entry Script");
-	}
-	
-	/**
-	 * 
-	 * @param expression
-	 */
-	public void setOnExitScript(Expression expression) {
-		expression.setUp("On Exit Script");
 	}
 	
 }

@@ -11,7 +11,7 @@ import org.jboss.tools.reddeer.DefaultSection;
 /**
  * 
  */
-public class AdHocSubProcessTab {
+public class AdHocSubProcessTab extends GeneralPropertiesTab {
 
 	/**
 	 * 

@@ -3,7 +3,6 @@ package org.jboss.tools.bpmn2.reddeer.properties.jbpm;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.ImplementationDialog;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Expression;
 import org.jboss.tools.reddeer.DefaultCheckBox;
 import org.jboss.tools.reddeer.DefaultCombo;
 import org.jboss.tools.reddeer.DefaultSection;
@@ -11,7 +10,7 @@ import org.jboss.tools.reddeer.DefaultSection;
 /**
  * 
  */
-public class UserTaskTab {
+public class UserTaskTab extends GeneralPropertiesTab {
 
 	/**
 	 * 
@@ -108,22 +107,6 @@ public class UserTaskTab {
 		DefaultSection section = new DefaultSection("Actors");
 		section.getTable().select(name);
 		section.getToolbarButton("Remove").click();
-	}
-	
-	/**
-	 * 
-	 * @param expression
-	 */
-	public void setOnEntryScript(Expression expression) {
-		expression.setUp("On Entry Script");
-	}
-	
-	/**
-	 * 
-	 * @param expression
-	 */
-	public void setOnExitScript(Expression expression) {
-		expression.setUp("On Exit Script");
 	}
 	
 	public void addLocalVariable(String varName, String dataType) {
