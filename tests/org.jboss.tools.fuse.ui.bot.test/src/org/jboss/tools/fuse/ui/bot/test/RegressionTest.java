@@ -2,6 +2,7 @@ package org.jboss.tools.fuse.ui.bot.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -33,6 +34,7 @@ import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.preference.ServerRuntimePreferencePage;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
@@ -216,5 +218,29 @@ public class RegressionTest {
 			new DefaultShell().close();
 			fail("'Finish' button should not be enabled!");
 		}
+	}
+
+	/**
+	 * remove use of the customId attribute
+	 * https://issues.jboss.org/browse/FUSETOOLS-1172
+	 */
+	@Test
+	public void issue_1172() throws ParserConfigurationException, SAXException, IOException {
+
+		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
+		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
+		CamelEditor.switchTab("Design");
+		CamelEditor editor = new CamelEditor("camel-context.xml");
+		editor.click(5, 5);
+		editor.setProperty("Id", "1");
+		editor.save();
+		CamelEditor.switchTab("Source");
+
+		// check XML content
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = factory.newDocumentBuilder();
+		InputSource is = new InputSource(new StringReader(new DefaultStyledText().getText()));
+		Document doc = builder.parse(is);
+		assertNull(doc.getElementsByTagName("route").item(0).getAttributes().getNamedItem("customId"));
 	}
 }
