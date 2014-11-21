@@ -104,7 +104,6 @@ public class EditorManipulator {
 
 		String editorText = new DefaultStyledText().getText();
 		String fileText = getFileContent(file);
-
 		return editorText.equals(fileText);
 	}
 }

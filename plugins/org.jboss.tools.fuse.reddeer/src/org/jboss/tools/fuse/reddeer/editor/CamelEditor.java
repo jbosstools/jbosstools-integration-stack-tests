@@ -1,5 +1,7 @@
 package org.jboss.tools.fuse.reddeer.editor;
 
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.swt.widgets.Composite;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.gef.GEFLayerException;
@@ -15,7 +17,12 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.util.Display;
+import org.jboss.reddeer.swt.util.ResultRunnable;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.tools.fuse.reddeer.component.CamelComponent;
+import org.jboss.tools.fuse.reddeer.utils.MouseAWTManager;
 
 /**
  * Manipulates with Camel Editor
@@ -41,6 +48,7 @@ public class CamelEditor extends GEFEditor {
 
 		log.debug("Adding '" + component.getLabel() + "' component into the Camel Editor");
 		addToolFromPalette(component.getPaletteEntry(), 0, 0);
+		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 
 	/**
@@ -227,11 +235,13 @@ public class CamelEditor extends GEFEditor {
 	public void setId(String label, String id) {
 
 		log.debug("Setting id '" + id + "' to the component: " + label);
-		new GEFEditor().click(5, 5);
-		new LabeledEditPart(label).select();
-		new PropertiesView().open();
+		PropertiesView properties = new PropertiesView();
+		properties.open();
+		selectEditPart(label);
+		properties.activate();
 		new LabeledText("Id").setText(id);
 		activate();
+		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 
 	/**
@@ -267,9 +277,10 @@ public class CamelEditor extends GEFEditor {
 	}
 
 	/**
-	 * Sets a property to desired value. This method presume the component in
-	 * the Camel Editor is already selected.
+	 * Sets a property to desired value. It presumes that some component in the Camel Editor is selected.
 	 * 
+	 * @param component
+	 * 			  component in the Camel editor
 	 * @param name
 	 *            name of the property
 	 * @param value
@@ -281,24 +292,52 @@ public class CamelEditor extends GEFEditor {
 		new PropertiesView().open();
 		new LabeledText(name).setText(value);
 		activate();
+		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 
 	/**
-	 * Sets a property to desired value. This method presume the component in
-	 * the Camel Editor is already selected.
+	 * Sets a property to desired value.
 	 * 
+	 * @param component
+	 * 			  component in the Camel editor
 	 * @param name
 	 *            name of the property
 	 * @param value
 	 *            value of the property
 	 */
-	public void setComboProperty(int position, String value) {
+	public void setProperty(String component, String name, String value) {
+
+		log.debug("Setting '" + value + "' as the property '" + name + "' of selelected component in the Camel Editor");
+		PropertiesView properties = new PropertiesView();
+		properties.open();
+		selectEditPart(component);
+		properties.activate();
+		new LabeledText(name).setText(value);
+		activate();
+		AbstractWait.sleep(TimePeriod.SHORT);
+	}
+
+	/**
+	 * Sets a property to desired value.
+	 * 
+	 * @param component
+	 * 			  component in the Camel editor
+	 * @param name
+	 *            name of the property
+	 * @param value
+	 *            value of the property
+	 */
+	public void setComboProperty(String component, int position, String value) {
 
 		log.debug("Setting '" + value + "' as the property number '" + position
 				+ "' of selelected component in the Camel Editor");
-		new PropertiesView().open();
+		PropertiesView properties = new PropertiesView();
+		properties.open();
+		selectEditPart(component);
+		properties.activate();
 		new DefaultCombo(position).setText(value);
 		activate();
+		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 
 	/**
@@ -311,6 +350,54 @@ public class CamelEditor extends GEFEditor {
 	 */
 	public void addConnection(String source, String target) {
 
-		// TODO Not implemented yet!
+		activate();
+		final Point fromCoords = getCoords(source);
+		final Point toCoords = getCoords(target);
+		MouseAWTManager.AWTMouseMove(fromCoords.x, fromCoords.y);
+		new LabeledEditPart(source).click();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		MouseAWTManager.AWTMouseMoveFromTo(new Point(fromCoords.x + 70, fromCoords.y + 20), new Point(fromCoords.x + 140, fromCoords.y + 20));
+		MouseAWTManager.AWTMousePress();
+		MouseAWTManager.AWTMouseMoveFromTo(new Point(fromCoords.x + 140, fromCoords.y + 20), new Point(toCoords.x + 10, toCoords.y + 20));
+		MouseAWTManager.AWTMouseRelease();
+		activate();
+		AbstractWait.sleep(TimePeriod.SHORT);
+	}
+
+	/**
+	 * Selects an edit part with a given name
+	 * 
+	 * @param name name of edit part
+	 */
+	public void selectEditPart(String name) {
+		
+		activate();
+		new LabeledEditPart(name).select();
+	}
+
+	/**
+	 * Retrieves coordinates of given component
+	 * 
+	 * @param item
+	 *            an item.
+	 * @return absolute coordinates of given element
+	 */
+	private Point getCoords(String name) {
+
+		activate();
+		final CamelComponentEditPart component = new CamelComponentEditPart(name);
+		final int x = component.getBounds().x;
+		final int y = component.getBounds().y;
+		return Display.syncExec(new ResultRunnable<Point>() {
+
+			@Override
+			public Point run() {
+				
+				Composite parent = component.getControl().getParent();
+				int tempX = x + parent.toDisplay(1, 1).x;
+				int tempY = y + parent.toDisplay(1, 1).y;
+				return new Point(tempX, tempY);
+			}
+		});
 	}
 }

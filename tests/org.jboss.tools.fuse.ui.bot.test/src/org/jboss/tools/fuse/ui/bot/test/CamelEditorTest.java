@@ -3,6 +3,10 @@ package org.jboss.tools.fuse.ui.bot.test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
+
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
@@ -13,6 +17,8 @@ import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.matcher.RegexMatcher;
 import org.jboss.reddeer.swt.matcher.WithTooltipTextMatcher;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.tools.fuse.reddeer.component.CamelComponent;
 import org.jboss.tools.fuse.reddeer.component.CamelComponents;
 import org.jboss.tools.fuse.reddeer.component.Endpoint;
@@ -25,9 +31,9 @@ import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.xml.sax.SAXException;
 
 /**
  * Tests:
@@ -99,39 +105,44 @@ public class CamelEditorTest {
 
 		prepareIDEForManipulationTests();
 		CamelEditor editor = new CamelEditor("camel-context.xml");
+		editor.setId("log", "log1");
 		editor.doOperation("choice", "Add", "Routing", "Otherwise");
 		editor.doOperation("otherwise", "Add", "Endpoints", "Log");
-		editor.setProperty("Message", "Other messsage");
-		editor.setId("log", "log1");
+		editor.setProperty("log", "Message", "Other messsage");
 		editor.doOperation("log", "Add", "Endpoints", "Endpoint");
-		editor.setComboProperty(0, "file:target/messages/others");
+		editor.setComboProperty("Endpoint", 0, "file:target/messages/others");
 		editor.setId("log1", "");
 		assertTrue(editor.isComponentAvailable("otherwise"));
 		assertTrue(editor.isComponentAvailable("file:target/messa..."));
 		CamelEditor.switchTab("Source");
-		EditorManipulator.isEditorContentEqualsFile("resources/camel-context-all.xml");
+		assertTrue(EditorManipulator.isEditorContentEqualsFile("resources/camel-context-all.xml"));
 	}
 
-	@Ignore // TODO Adding a connection via Drag&Drop is not implemented yet
 	@Test
-	public void testDragAndDropComponents() {
+	public void testDragAndDropComponents() throws ParserConfigurationException, SAXException, IOException {
 
 		prepareIDEForManipulationTests();
 		CamelEditor editor = new CamelEditor("camel-context.xml");
 		editor.addCamelComponent(new Otherwise());
 		editor.addConnection("choice", "otherwise");
+		editor.save();
+		AbstractWait.sleep(TimePeriod.SHORT);
 		editor.setId("log", "log1");
 		editor.setId("file:target/messa...", "temp");
 		editor.addCamelComponent(new Log());
-		editor.setProperty("Message", "Other messsage");
+		editor.setProperty("log", "Message", "Other messsage");
 		editor.addConnection("otherwise", "log");
+		editor.save();
+		AbstractWait.sleep(TimePeriod.getCustom(1));
 		editor.addCamelComponent(new Endpoint());
-		editor.setComboProperty(0, "file:target/messages/others");
+		editor.setComboProperty("Endpoint", 0, "file:target/messages/others");
 		editor.addConnection("log", "file:target/messa...");
+		editor.save();
+		AbstractWait.sleep(TimePeriod.getCustom(1));
 		editor.setId("temp", "");
 		editor.setId("log1", "");
 		CamelEditor.switchTab("Source");
-		EditorManipulator.isEditorContentEqualsFile("resources/camel-context-all.xml");
+		assertTrue(EditorManipulator.isEditorContentEqualsFile("resources/camel-context-all.xml"));
 	}
 
 	/**

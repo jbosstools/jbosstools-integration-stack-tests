@@ -8,24 +8,23 @@
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
 
-  <camelContext xmlns="http://camel.apache.org/schema/spring">
-    <!-- here is a sample which processes the input files
+  <!-- here is a sample which processes the input files
          (leaving them in place - see the 'noop' flag)
-         then performs content based routing on the message using XPath -->
+         then performs content based routing on the message using XPath --><camelContext xmlns="http://camel.apache.org/schema/spring">
     <route>
-      <from uri="file:src/data?noop=true"/>
-      <choice>
-        <when>
-          <xpath>/person/city = 'London'</xpath>
-          <log message="UK message"/>
-          <to uri="file:target/messages/uk"/>
-        </when>
-        <otherwise>
-          <log message="Other message"/>
-          <to uri="file:target/messages/others"/>
-        </otherwise>
-      </choice>
+        <from uri="file:src/data?noop=true"/>
+        <choice>
+            <when>
+                <xpath>/person/city = 'London'</xpath>
+                <log message="UK message"/>
+                <to uri="file:target/messages/uk"/>
+            </when>
+            <otherwise>
+                <log message="Other messsage"/>
+                <to uri="file:target/messages/others"/>
+            </otherwise>
+        </choice>
     </route>
-  </camelContext>
+</camelContext>
 
 </beans>
