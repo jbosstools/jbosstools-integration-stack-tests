@@ -24,6 +24,7 @@ import org.hamcrest.Matcher;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.util.ResultRunnable;
@@ -276,7 +277,7 @@ public class ProcessEditorView extends SWTBotGefEditor {
 	 * @return
 	 */
 	public String getSourceText() {
-		clickContextMenu("Show Source View");
+		new ContextMenu("Show Source View").select();
 		
 		SWTBotMultiPageEditor editor = new SWTBotMultiPageEditor(getReference(), bot);
 		editor.activatePage("Source");

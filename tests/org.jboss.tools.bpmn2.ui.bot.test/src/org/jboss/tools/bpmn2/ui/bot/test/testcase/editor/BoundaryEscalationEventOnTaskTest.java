@@ -1,5 +1,9 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.Position;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Escalation;
@@ -14,10 +18,13 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.throwevents.EscalationIntermedi
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.jbpm.JbpmAssertions;
 import org.jboss.tools.bpmn2.ui.bot.test.jbpm.PersistenceWorkItemHandler;
+import org.jboss.tools.bpmn2.ui.bot.test.jbpm.TriggeredNodesListener;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
+import org.kie.api.runtime.process.WorkItem;
+import org.kie.api.runtime.process.WorkflowProcessInstance;
 
 /**
  * ISSUE - language should be 'http://www.jboss.org/drools/rule' but it's not available.
@@ -62,7 +69,7 @@ public class BoundaryEscalationEventOnTaskTest extends JBPM6BaseTest {
 		boundaryEventSub.append("SubHandler", ElementType.SCRIPT_TASK, Position.WEST);
 		
 		ScriptTask subHandler = new ScriptTask("SubHandler");
-		subHandler.setScript("Java", "System.out.println(\"Handling SubProcess: \"+"+VARIABLE2 + "+\" \"+" + VARIABLE3+");");
+		subHandler.setScript("Java", "System.out.println(\"Handling SubProcess: \" + "+VARIABLE2 + " +\" \" + " + VARIABLE3+");");
 		subHandler.append("SubHandlerEnd", ElementType.END_EVENT, Position.SOUTH);
 		
 
@@ -74,10 +81,11 @@ public class BoundaryEscalationEventOnTaskTest extends JBPM6BaseTest {
 
 		EscalationBoundaryEvent boundaryEvent = new EscalationBoundaryEvent("Escalation Boundary Event");
 		boundaryEvent.setEscalation(escalation, VARIABLE1);
+		boundaryEvent.setCancelActivity(false);
 		boundaryEvent.append("Script Task", ElementType.SCRIPT_TASK, Position.SOUTH);
 		
 		ScriptTask scriptTask = new ScriptTask("Script Task");
-		scriptTask.setScript("Java", "System.out.println(\"Handling UserTask: \"+"+VARIABLE1 + ");");
+		scriptTask.setScript("Java", "System.out.println(\"Handling UserTask: \" + "+VARIABLE1 + ");");
 		scriptTask.append("EndProcess2", ElementType.END_EVENT);
 	}
 
@@ -86,8 +94,35 @@ public class BoundaryEscalationEventOnTaskTest extends JBPM6BaseTest {
 		PersistenceWorkItemHandler handler = new PersistenceWorkItemHandler();
 		kSession.getWorkItemManager().registerWorkItemHandler("Human Task", handler);
 		
-		ProcessInstance processInstance = kSession.startProcess("BPMN2BoundaryEscalationEventOnTask");
+		TriggeredNodesListener triggered = new TriggeredNodesListener(
+			Arrays.asList("StartProcess", "Split", "User Task", "Script Task", "EndProcess", "EndProcess2", 
+				"SubHandler", "SubHandlerEnd", "SubStart", "ThrowEscalation"),
+			Arrays.asList("OnlyForSyntaxEnd", "SubEnd"));
+		
+		Map<String, Object> sessionArgs = new HashMap<String, Object>();
+		sessionArgs.put("Property_2", new java.lang.RuntimeException());
+		
+		ProcessInstance processInstance = kSession.startProcess("BPMN2BoundaryEscalationEventOnTask", sessionArgs);
+		
+		WorkItem item = handler.getWorkItem("User Task");
+		while(item == null){
+			System.out.println("waiting");
+			item = handler.getWorkItem("User Task");
+		}
+		handler.completeWorkItem(item, kSession.getWorkItemManager());
+		
 		JbpmAssertions.assertProcessInstanceCompleted(processInstance, kSession);
+		Object var1 = ((WorkflowProcessInstance) processInstance).getVariable(VARIABLE1);
+		Object var2 = ((WorkflowProcessInstance) processInstance).getVariable(VARIABLE2);
+		Object var3 = ((WorkflowProcessInstance) processInstance).getVariable(VARIABLE3);
+		
+		assertNotNull(var1);
+		assertNotNull(var2);
+		assertNotNull(var3);
+		
+		assertTrue(var1 instanceof RuntimeException);
+		assertTrue(var2 instanceof RuntimeException);
+		assertTrue(var3 instanceof RuntimeException);
 	}
 	
 }

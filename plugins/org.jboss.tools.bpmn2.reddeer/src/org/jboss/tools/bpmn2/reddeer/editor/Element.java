@@ -20,12 +20,17 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.hamcrest.Matcher;
+import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.bpmn2.reddeer.AbsoluteEditPart;
+import org.jboss.tools.bpmn2.reddeer.GEFProcessEditor;
 import org.jboss.tools.bpmn2.reddeer.ProcessEditorView;
 import org.jboss.tools.bpmn2.reddeer.ProcessPropertiesView;
 import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructOfType;
 import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructOnPoint;
 import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructWithName;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.DescriptionTab;
+import org.jboss.tools.reddeer.matcher.EditPartOfClassName;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
@@ -44,6 +49,7 @@ public class Element {
 	protected ElementType type;
 	protected Element parent;
 	protected SWTBotGefEditPart editPart;
+	protected AbsoluteEditPart editPartRedDeer;
 	
 	/**
 	 * @param name
@@ -81,6 +87,11 @@ public class Element {
 		setUp(name, type, parent, index, select);
 	}
 	
+	private Element(EditPart editPart, ElementType type) {
+		this.type = type;
+		this.editPartRedDeer = new AbsoluteEditPart(editPart);
+	}
+	
 	private void setUp(String name, ElementType type, Element parent, int index, boolean select) {
 		List<Matcher<? super EditPart>> matcherList = new ArrayList<Matcher<? super EditPart>>();
 		if (name != null) {
@@ -89,7 +100,7 @@ public class Element {
 		if (type != null) {
 			matcherList.add(new ConstructOfType<EditPart>(type));
 		}
-
+		
 		Matcher<EditPart> allMatcher = allOf(matcherList);
 		if (parent != null) {
 			List<SWTBotGefEditPart> editParts = editor.getEditParts(parent.editPart, allMatcher);
@@ -99,9 +110,17 @@ public class Element {
 		} else {
 			this.editPart = editor.getEditPart(allMatcher, index);
 		}
+		
+		if(type != ElementType.PROCESS) {
+			matcherList.add(new EditPartOfClassName("ContainerShapeEditPart"));
+			editPartRedDeer = new AbsoluteEditPart(allOf(matcherList), index);
+		}
 
 		if (editPart == null) {
 			throw new RuntimeException("Could not find construct with name '" + name + "' of type '" + type.name() + "'");
+		}
+		if (editPartRedDeer == null && type != ElementType.PROCESS) {
+			throw new RuntimeException("Reddeer could not find construct with name '" + name + "' of type '" + type.name() + "'");
 		}
 		if (name == null) {
 			this.name = editor.getName(editPart);
@@ -133,7 +152,22 @@ public class Element {
 	 * Select this construct. Select the pictogram not the label.
 	 */
 	public void select() {
-		editor.selectEditPart(editPart);
+		if(type == ElementType.PROCESS) {
+			editor.selectEditPart(editPart);
+		} else {
+			editPartRedDeer.select();
+		}
+	}
+
+	/**
+	 * Click to label of construct
+	 */
+	public void click() {
+		if(type == ElementType.PROCESS) {
+			editor.click(editPart);
+		} else {
+			editPartRedDeer.click();
+		}
 	}
 	
 	/**
@@ -202,13 +236,27 @@ public class Element {
 			throw new RuntimeException(point + " is not available");
 		}
 		
+		GEFProcessEditor gefEditor = new GEFProcessEditor();
+		List<EditPart> before = gefEditor.getAllEditParts(constructType);
+		
 		editor.activateTool(constructType.toToolPath()[0], constructType.toToolPath()[1]);
 		editor.click(point.x(), point.y());
-			
-		Element construct = editor.getLastConstruct(constructType);
-		if (construct == null) {
-			throw new RuntimeException("Unexpected error. Could not find added construct.");
+	
+		new WaitWhile(new LastAddedCondition(before.size(), gefEditor, constructType));
+		
+		List<EditPart> after = gefEditor.getAllEditParts(constructType);
+		after.removeAll(before);
+		
+		if(after.size() != 1) {
+			throw new IllegalStateException("There wasn't added exactly one lement. Count of added elements: " + after.size());
 		}
+		
+//		Element construct = editor.getLastConstruct(constructType);
+		Element construct = new Element(after.get(0), constructType);
+		
+//		if (construct == null) {
+//			throw new RuntimeException("Unexpected error. Could not find added construct.");
+//		}
 		if (name != null) {
 			construct.setName(name);
 		}
@@ -486,7 +534,35 @@ public class Element {
 	 * @return
 	 */
 	public Rectangle getBounds() {
-		return editor.getBounds(editPart);
+		if(type == ElementType.PROCESS) {
+			return editor.getBounds(editPart);
+		} else {
+			return editPartRedDeer.getBounds();
+		}
 	}
 	
+	
+	private class LastAddedCondition implements WaitCondition {
+
+		private int originalSize;
+		private GEFProcessEditor editor;
+		private ElementType type;
+		
+		public LastAddedCondition(int orginalSize, GEFProcessEditor editor, ElementType type) {
+			this.type = type;
+			this.editor = editor;
+			this.originalSize = orginalSize;
+		}
+		
+		@Override
+		public boolean test() {
+			return editor.getAllEditParts(type).size() == originalSize;
+		}
+
+		@Override
+		public String description() {
+			return "Testing if original size: " + originalSize + "has changed.";
+		}
+		
+	}
 }
