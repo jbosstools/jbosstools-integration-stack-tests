@@ -36,6 +36,7 @@ public class BoundaryEscalationEventOnTaskTest extends JBPM6BaseTest {
 	
 	@Override
 	public void buildProcessModel() {
+		
 		Process process = new Process("BPMN2-BoundaryEscalationEventOnTask");
 		process.addLocalVariable(VARIABLE1, "Object");
 		process.addLocalVariable(VARIABLE2, "Object");
@@ -116,13 +117,13 @@ public class BoundaryEscalationEventOnTaskTest extends JBPM6BaseTest {
 		Object var2 = ((WorkflowProcessInstance) processInstance).getVariable(VARIABLE2);
 		Object var3 = ((WorkflowProcessInstance) processInstance).getVariable(VARIABLE3);
 		
-		assertNotNull(var1);
-		assertNotNull(var2);
-		assertNotNull(var3);
+		assertNotNull(VARIABLE1 + " shouldn't be null", var1);
+		assertNotNull(VARIABLE2 + " shouldn't be null", var2);
+		assertNotNull(VARIABLE3 + " shouldn't be null", var3);
 		
-		assertTrue(var1 instanceof RuntimeException);
-		assertTrue(var2 instanceof RuntimeException);
-		assertTrue(var3 instanceof RuntimeException);
+		assertTrue(VARIABLE1 + " should be instance of RuntimeException", var1 instanceof RuntimeException);
+		assertTrue(VARIABLE2 + " should be instance of RuntimeException", var2 instanceof RuntimeException);
+		assertTrue(VARIABLE3 + " should be instance of RuntimeException", var3 instanceof RuntimeException);
 	}
 	
 }

@@ -50,6 +50,7 @@ public class Element {
 	protected Element parent;
 	protected SWTBotGefEditPart editPart;
 	protected AbsoluteEditPart editPartRedDeer;
+	protected GEFProcessEditor processEditor;
 	
 	/**
 	 * @param name
@@ -93,6 +94,8 @@ public class Element {
 	}
 	
 	private void setUp(String name, ElementType type, Element parent, int index, boolean select) {
+		processEditor = new GEFProcessEditor();
+		
 		List<Matcher<? super EditPart>> matcherList = new ArrayList<Matcher<? super EditPart>>();
 		if (name != null) {
 			matcherList.add(new ConstructWithName<EditPart>(name));
@@ -114,6 +117,8 @@ public class Element {
 		if(type != ElementType.PROCESS) {
 			matcherList.add(new EditPartOfClassName("ContainerShapeEditPart"));
 			editPartRedDeer = new AbsoluteEditPart(allOf(matcherList), index);
+		} else {
+			editPartRedDeer = new AbsoluteEditPart(processEditor.getRootEditPart());
 		}
 
 		if (editPart == null) {
@@ -152,22 +157,22 @@ public class Element {
 	 * Select this construct. Select the pictogram not the label.
 	 */
 	public void select() {
-		if(type == ElementType.PROCESS) {
-			editor.selectEditPart(editPart);
-		} else {
+//		if(type == ElementType.PROCESS) {
+//			editor.selectEditPart(editPart);
+//		} else {
 			editPartRedDeer.select();
-		}
+//		}
 	}
 
 	/**
 	 * Click to label of construct
 	 */
 	public void click() {
-		if(type == ElementType.PROCESS) {
-			editor.click(editPart);
-		} else {
+//		if(type == ElementType.PROCESS) {
+//			editor.click(editPart);
+//		} else {
 			editPartRedDeer.click();
-		}
+//		}
 	}
 	
 	/**
@@ -333,6 +338,7 @@ public class Element {
 	protected boolean isAvailable(Point p) {
 		// Check weather the point is not already taken by another child editPart.
 		return editor.getEditParts(editPart.parent(), new ConstructOnPoint<EditPart>(p)).isEmpty();
+		//return processEditor.getAllEditParts(editPartRedDeer.getEditPart().getParent(), new ConstructOnPoint<EditPart>(p)).isEmpty();
 	}
 	
 	/**
@@ -534,11 +540,11 @@ public class Element {
 	 * @return
 	 */
 	public Rectangle getBounds() {
-		if(type == ElementType.PROCESS) {
-			return editor.getBounds(editPart);
-		} else {
+//		if(type == ElementType.PROCESS) {
+//			return editor.getBounds(editPart);
+//		} else {
 			return editPartRedDeer.getBounds();
-		}
+//		}
 	}
 	
 	

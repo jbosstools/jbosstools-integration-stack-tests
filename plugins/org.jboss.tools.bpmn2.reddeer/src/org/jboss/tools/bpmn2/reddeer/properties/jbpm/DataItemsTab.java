@@ -29,7 +29,7 @@ public class DataItemsTab {
 	 */
 	public void addVariable(String name, String dataType, boolean local) {
  		new DefaultSection((local ? "Local" : "Global") + " Variable List for Process \"" + processName + "\"").getToolbarButton("Add").click();
-		new LabeledText("Name").setText(name); 		
+ 		new LabeledText(new DefaultSection((local ? "Local" : "Global") + " Variable Details"), "Name").setText(name); 		
 		
 		DefaultCombo c = new DefaultCombo("Data Type");
 		if (!c.contains(dataType)) {

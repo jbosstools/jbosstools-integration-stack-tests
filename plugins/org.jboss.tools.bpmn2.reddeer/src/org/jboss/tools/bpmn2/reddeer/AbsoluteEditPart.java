@@ -43,5 +43,9 @@ public class AbsoluteEditPart extends AbstractEditPart {
 		figure.translateToAbsolute(bounds);
 		return bounds;
 	}
+	
+	public EditPart getEditPart() {
+		return editPart;
+	}
 
 }

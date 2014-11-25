@@ -15,16 +15,32 @@ import org.jboss.tools.reddeer.matcher.EditPartOfClassName;
 
 public class GEFProcessEditor extends GEFEditor {
 	
+	private AllEditPartFinder finder = new AllEditPartFinder();
+	
 	public List<EditPart> getAllEditParts(ElementType type) {
 		EditPart parent = viewer.getContents();
 		
 		List<Matcher<? super EditPart>> matcherList = new ArrayList<Matcher<? super EditPart>>();
 		matcherList.add(new EditPartOfClassName("ContainerShapeEditPart"));
 		matcherList.add(new ConstructOfType<EditPart>(type));
-		
-		AllEditPartFinder finder = new AllEditPartFinder();
 		return finder.find(parent, allOf(matcherList));
 	}
 	
+	public List<EditPart> getAllEditParts(EditPart parent, Matcher<org.eclipse.gef.EditPart> matcher) {
+		List<Matcher<? super EditPart>> matcherList = new ArrayList<Matcher<? super EditPart>>();
+		matcherList.add(new EditPartOfClassName("ContainerShapeEditPart"));
+		matcherList.add(matcher);
+		
+		List<EditPart> result =  finder.find(parent, allOf(matcherList));
+		return result;
+	}
+	
+	/**
+	 * Returns edit part which wraps all elements of process
+	 * @return EditPart - which is instance of some internal DiagramEditPart
+	 */
+	public EditPart getRootEditPart() {
+		return viewer.getContents();
+	}
 
 }

@@ -26,8 +26,11 @@ import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.util.ResultRunnable;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructOfType;
@@ -279,11 +282,8 @@ public class ProcessEditorView extends SWTBotGefEditor {
 	public String getSourceText() {
 		new ContextMenu("Show Source View").select();
 		
-		SWTBotMultiPageEditor editor = new SWTBotMultiPageEditor(getReference(), bot);
-		editor.activatePage("Source");
-		
-		String text = editor.toTextEditor().getText();
-		editor.activatePage(editor.getPagesTitles().get(0));
+		DefaultStyledText styled = new DefaultStyledText();
+		String text = styled.getText();
 		
 		return text;
 	}
