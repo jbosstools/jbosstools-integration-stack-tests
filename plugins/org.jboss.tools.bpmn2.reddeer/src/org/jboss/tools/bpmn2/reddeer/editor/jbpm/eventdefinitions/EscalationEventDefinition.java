@@ -6,7 +6,7 @@ import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.EscalationDialog;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.EventDefinition;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Escalation;
-import org.jboss.tools.reddeer.DefaultSection;
+import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
 
 /**
  * 
@@ -42,7 +42,7 @@ public class EscalationEventDefinition extends EventDefinition {
 		}
 		c.setSelection(variableForMaping);
 		
-		new DefaultSection("Escalation Event Definition Details").getToolbarButton("Close").click();
+		new SectionToolItem("Escalation Event Definition Details", "Close").click();
 	}
 	
 }

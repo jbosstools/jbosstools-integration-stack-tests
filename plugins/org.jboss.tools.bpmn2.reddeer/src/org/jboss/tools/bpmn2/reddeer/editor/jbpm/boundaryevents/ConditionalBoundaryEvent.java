@@ -1,5 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents;
 
+import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.ConditionalEventDefinition;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.EventTab;
@@ -15,6 +16,10 @@ public class ConditionalBoundaryEvent extends BoundaryEvent {
 	 */
 	public ConditionalBoundaryEvent(String name) {
 		super(name, ElementType.CONDITIONAL_BOUNDARY_EVENT);
+	}
+	
+	public ConditionalBoundaryEvent(Element element) {
+		super(element);
 	}
 	
 	/**

@@ -10,7 +10,8 @@ public class ProcessPropertiesView extends DefaultPropertiesView {
 	/**
 	 * 
 	 */
-	public ProcessPropertiesView() {
+	public ProcessPropertiesView(AbsoluteEditPart element) {
+		super(element);
 	}
 	
 	/**
@@ -40,7 +41,9 @@ public class ProcessPropertiesView extends DefaultPropertiesView {
 	 */
 	public <T> T getTab(String label, Class<T> asType) {
 		selectTab(label);
-		return getSelectedTab(asType);
+		T result = getSelectedTab(asType);
+		activate();
+		return result;
 	}
 	
 	/**

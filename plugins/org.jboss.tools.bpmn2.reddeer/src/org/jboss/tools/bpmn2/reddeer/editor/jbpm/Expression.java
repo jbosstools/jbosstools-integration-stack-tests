@@ -2,7 +2,7 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm;
 
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.reddeer.DefaultCombo;
-import org.jboss.tools.reddeer.DefaultSection;
+import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
 
 /**
  * 
@@ -52,9 +52,9 @@ public class Expression {
 	 * @param sectionName
 	 */
 	public void setUp(String sectionName) {
-		DefaultSection secion = new DefaultSection(sectionName);
-		secion.getComboBox("Script Language").setSelection(language);
-		secion.getText("Script").setText(script);
+		DefaultSection section = new DefaultSection(sectionName);
+		new DefaultCombo(section, "Script Language").setSelection(language);
+		new LabeledText(section, "Script").setText(script);
 	}
 	
 }

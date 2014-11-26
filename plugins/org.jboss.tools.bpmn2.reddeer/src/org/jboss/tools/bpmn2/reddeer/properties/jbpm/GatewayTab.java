@@ -5,8 +5,8 @@ import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.Direction;
+import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
 import org.jboss.tools.reddeer.DefaultCheckBox;
-import org.jboss.tools.reddeer.DefaultSection;
 
 /**
  * 
@@ -29,11 +29,11 @@ public class GatewayTab {
 	 */
 	protected void setCondition(String flow, String lang, String condition) {
 		new DefaultTable(0).select(flow);
-		new DefaultSection("Sequence Flow List").getToolbarButton("Edit").click();
+		new SectionToolItem("Sequence Flow List", "Edit").click();
 		new PushButton("Add Condition").click();
 		new LabeledCombo("Condition Language").setSelection(lang);
 		new LabeledText("Constraint").setText(condition);
-		new DefaultSection("Sequence Flow Details").getToolbarButton("Close").click();
+		new SectionToolItem("Sequence Flow Details", "Close").click();
 	}
 	
 	/**
@@ -42,9 +42,9 @@ public class GatewayTab {
 	 */
 	protected void setDefaultBranch(String flow) {
 		new DefaultTable(0).select(flow);
-		new DefaultSection("Sequence Flow List").getToolbarButton("Edit").click();
+		new SectionToolItem("Sequence Flow List", "Edit").click();
 		new DefaultCheckBox().setChecked(true);
-		new DefaultSection("Sequence Flow Details").getToolbarButton("Close").click();
+		new SectionToolItem("Sequence Flow Details", "Close").click();
 	}
 
 	/**
@@ -54,8 +54,8 @@ public class GatewayTab {
 	 */
 	protected void setPriority(String flow, String priority) {
 		new DefaultTable(0).select(flow);
-		new DefaultSection("Sequence Flow List").getToolbarButton("Edit").click();
+		new SectionToolItem("Sequence Flow List", "Edit").click();
 		new LabeledText("Priority").setText(priority);
-		new DefaultSection("Sequence Flow Details").getToolbarButton("Close").click();
+		new SectionToolItem("Sequence Flow Details", "Close").click();
 	}
 }

@@ -12,7 +12,7 @@ import org.jboss.tools.bpmn2.ui.bot.test.jbpm.TriggeredNodesListener;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.kie.api.runtime.KieSession;
 
-@ProcessDefinition(name="BPMN2-ConditionalStart", project="EditorTestProject", needPerson=true)
+@ProcessDefinition(name="BPMN2-ConditionalStart", project="EditorTestProject")
 public class ConditionalStartTest extends JBPM6BaseTest {
 
 	private static final String N_END = "EndProcess";
@@ -23,7 +23,7 @@ public class ConditionalStartTest extends JBPM6BaseTest {
 	public void buildProcessModel() {
 		new StartEvent(N_START).delete();
 		Process process = new Process("BPMN2-ConditionalStart");
-		process.addImport("org.jbpm.bpmn2.objects.Person");
+		//process.addImport("org.jbpm.bpmn2.objects.Person");
 		
 		process.add(N_START, ElementType.CONDITIONAL_START_EVENT);
 		

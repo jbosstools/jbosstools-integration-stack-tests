@@ -1,9 +1,10 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions;
 
+
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.EventDefinition;
-import org.jboss.tools.reddeer.DefaultSection;
+import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
 
 /**
  * 
@@ -38,7 +39,7 @@ public class TimerEventDefinition extends EventDefinition {
 	public void setUp() {
 		new RadioButton("Duration").click();
 		new LabeledText("Value").setText(duration);
-		new DefaultSection("Timer Event Definition Details").getToolbarButton("Close").click();
+		new SectionToolItem("Timer Event Definition Details", "Close").click();
 	}
 	
 }

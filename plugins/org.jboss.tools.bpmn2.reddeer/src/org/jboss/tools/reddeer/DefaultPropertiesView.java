@@ -1,6 +1,7 @@
 package org.jboss.tools.reddeer;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
@@ -15,10 +16,10 @@ import org.jboss.reddeer.swt.condition.WaitCondition;
 import org.jboss.reddeer.swt.impl.clabel.DefaultCLabel;
 import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.util.ResultRunnable;
-import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
+import org.jboss.tools.bpmn2.reddeer.AbsoluteEditPart;
 import org.jboss.tools.reddeer.matcher.WidgetWithClassName;
 
 /**
@@ -27,12 +28,14 @@ import org.jboss.tools.reddeer.matcher.WidgetWithClassName;
 public class DefaultPropertiesView extends WorkbenchView {
 
 	private SWTBot bot = new SWTBot();
+	private AbsoluteEditPart element;
 	
 	/**
 	 * 
 	 */
-	public DefaultPropertiesView() {
+	public DefaultPropertiesView(AbsoluteEditPart element) {
 		super("General", "Properties");
+		this.element = element;
 		open();
 	}
 	
@@ -90,13 +93,45 @@ public class DefaultPropertiesView extends WorkbenchView {
 		});
 	}
 	
-	private class WaitForPropertiesTab implements WaitCondition {
+	private List<String> getPropertiesTabs(){
+		final List<String> result = new ArrayList<String>();
+		
+		try {
+			final Composite widget = (Composite) bot.widget(new WidgetWithClassName("TabbedPropertyList"));
+						
+			if(widget != null) {
+				
+				Display.syncExec(new Runnable() {
 
+					@Override
+					public void run() {
+						for(Control listItem : (Control[]) widget.getChildren()) {
+							result.add(listItem.toString());
+						}
+					}
+				});
+				
+			}
+		} catch (WidgetNotFoundException e) {
+			// empty list will be returned
+		}
+		
+		return result;
+	}
+	
+	private class WaitForPropertiesTab implements WaitCondition {
+		
+		private List<String> oldLabels;
+		
+		public WaitForPropertiesTab(List<String> oldLabels) {
+			this.oldLabels = oldLabels;
+		}
+		
 		@Override
 		public boolean test() {
-			Composite widget = (Composite) bot.widget(new WidgetWithClassName("TabbedPropertyList"));
-
-			return widget != null;
+			List<String> newLabels = getPropertiesTabs();
+			newLabels.removeAll(oldLabels);
+			return !newLabels.isEmpty();
 		}
 
 		@Override
@@ -113,8 +148,12 @@ public class DefaultPropertiesView extends WorkbenchView {
 	public void selectTab(String label) {
 		open();
 		
-		new WaitUntil(new WaitForPropertiesTab());
-		AbstractWait.sleep(TimePeriod.getCustom(1));
+		List<String> oldLabels = getPropertiesTabs();
+		
+		element.click();
+		activate();
+		
+		new WaitUntil(new WaitForPropertiesTab(oldLabels), TimePeriod.getCustom(5), false);
 			
 		//Attempt to get the tab with given label.
 		Canvas canvas = (Canvas) getChildren(label);

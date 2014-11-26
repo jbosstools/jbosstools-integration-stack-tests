@@ -1,12 +1,14 @@
 package org.jboss.tools.bpmn2.reddeer.properties.jbpm;
 
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.ImportJavaTypeDialog;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ErrorRef;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Escalation;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Message;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Signal;
-import org.jboss.tools.reddeer.DefaultSection;
+import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
 
 /**
  * 
@@ -18,7 +20,7 @@ public class DefinitionsTab {
 	 * @param name
 	 */
 	public void addImport(String name) {
-		new DefaultSection("Imports").getToolbarButton("Add").click();
+		new SectionToolItem("Imports", "Add").click();
 		new ImportJavaTypeDialog().add(name);
 	}
 
@@ -28,8 +30,8 @@ public class DefinitionsTab {
 	 */
 	public void removeImport(String name) {
 		DefaultSection s = new DefaultSection("Imports");
-		s.getTable().select(name);
-		s.getToolbarButton("Remove").click();
+		new DefaultTable(s).select(name);
+		new SectionToolItem("Imports", "Remove").click();
 	}
 	
 	/**
@@ -37,9 +39,9 @@ public class DefinitionsTab {
 	 * @param name
 	 */
 	public void addDataType(String name) {
-		new DefaultSection("Data Type List").getToolbarButton("Add").click();
+		new SectionToolItem("Data Type List", "Add").click();
 		new LabeledText("Structure").setText(name);
-		new DefaultSection("Data Type Details").getToolbarButton("Close").click();
+		new SectionToolItem("Data Type Details", "Close").click();
 	}
 
 	/**
@@ -48,8 +50,8 @@ public class DefinitionsTab {
 	 */
 	public void removeDataType(String name) {
 		DefaultSection s = new DefaultSection("Data Type List");
-		s.getTable().select(name);
-		s.getToolbarButton("Remove").click();
+		new DefaultTable(s).select(name);
+		new SectionToolItem("Data Type Details", "Remove").click();
 	}
 	
 	/**
@@ -58,9 +60,10 @@ public class DefinitionsTab {
 	 * @param dataType
 	 */
 	public void addMessage(String name, String dataType) {
-		new DefaultSection("Message List").getToolbarButton("Add").click();
+		
+		new SectionToolItem("Message List", "Add").click();
 		new Message(name, dataType).setUp("Message Details");
-		new DefaultSection("Message Details").getToolbarButton("Close").click();
+		new SectionToolItem("Message Details", "Close").click();
 	}
 	
 	/**
@@ -69,8 +72,8 @@ public class DefinitionsTab {
 	 */
 	public void removeMessage(String name) {
 		DefaultSection s = new DefaultSection("Message List");
-		s.getTable().select(name);
-		s.getToolbarButton("Remove").click();
+		new DefaultTable(s).select(name);
+		new SectionToolItem("Message List", "Remove").click();
 	}
 
 	/**
@@ -80,9 +83,9 @@ public class DefinitionsTab {
 	 * @param dataType
 	 */
 	public void addError(String name, String code, String dataType) {
-		new DefaultSection("Error List").getToolbarButton("Add").click();
+		new SectionToolItem("Error List", "Add").click();
 		new ErrorRef(name, code, dataType).setUp();
-		new DefaultSection("Error Details").getToolbarButton("Close").click();
+		new SectionToolItem("Error Details", "Close").click();
 	}
 	
 	/**
@@ -91,8 +94,8 @@ public class DefinitionsTab {
 	 */
 	public void removeError(String name) {
 		DefaultSection s = new DefaultSection("Error List");
-		s.getTable().select(name);
-		s.getToolbarButton("Remove").click();
+		new DefaultTable(s).select(name);
+		new SectionToolItem("Error List", "Remove").click();
 	}
 
 	/**
@@ -100,9 +103,9 @@ public class DefinitionsTab {
 	 * @param name
 	 */
 	public void addSignal(String name) {
-		new DefaultSection("Signal List").getToolbarButton("Add").click();
+		new SectionToolItem("Signal List", "Add").click();
 		new Signal(name).setUp();
-		new DefaultSection("Signal Details").getToolbarButton("Close").click();
+		new SectionToolItem("Signal Details", "Close").click();
 	}
 
 	/**
@@ -111,8 +114,8 @@ public class DefinitionsTab {
 	 */
 	public void removeSignal(String name) {
 		DefaultSection s = new DefaultSection("Signal List");
-		s.getTable().select(name);
-		s.getToolbarButton("Remove").click();
+		new DefaultTable(s).select(name);
+		new SectionToolItem("Signal List", "Remove").click();
 	}
 	
 	/**
@@ -126,9 +129,9 @@ public class DefinitionsTab {
 	}
 	
 	public void addEscalation(Escalation escalation) {
-		new DefaultSection("Escalation List").getToolbarButton("Add").click();
+		new SectionToolItem("Escalation List", "Add").click();
 		escalation.setUpViaProcessDefinitions();
-		new DefaultSection("Escalation Details").getToolbarButton("Close").click();
+		new SectionToolItem("Escalation Details", "Close").click();
 	}
 	
 	/**
@@ -137,8 +140,8 @@ public class DefinitionsTab {
 	 */
 	public void removeEscalation(String name) {
 		DefaultSection s = new DefaultSection("Escalation List");
-		s.getTable().select(name);
-		s.getToolbarButton("Remove").click();
+		new DefaultTable(s).select(name);
+		new SectionToolItem("Escalation List", "Remove").click();
 	}
 
 }

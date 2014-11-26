@@ -1,5 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents;
 
+import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ErrorRef;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.ErrorEventDefinition;
@@ -16,6 +17,10 @@ public class ErrorBoundaryEvent extends BoundaryEvent {
 	 */
 	public ErrorBoundaryEvent(String name) {
 		super(name, ElementType.ERROR_BOUNDARY_EVENT);
+	}
+	
+	public ErrorBoundaryEvent(Element element) {
+		super(element);
 	}
 	
 	/**

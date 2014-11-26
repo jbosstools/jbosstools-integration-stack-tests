@@ -24,13 +24,13 @@ import org.kie.api.runtime.process.WorkItem;
  * ISSUES - When a connection is missing e.g. "Task 3" and "Gateway" are not connected 
  *          validator does not complain!
  */
-@ProcessDefinition(name="BPMN2-AdHocProcess",  project="EditorTestProject", needPerson=true)
+@ProcessDefinition(name="BPMN2-AdHocProcess",  project="EditorTestProject")
 public class AdHocProcessTest extends JBPM6BaseTest {
 
 	@Override
 	public void buildProcessModel() {
 		Process process = new Process("BPMN2-AdHocProcess");
-		process.addImport("org.jbpm.bpmn2.objects.Person");
+		//process.addImport("org.jbpm.bpmn2.objects.Person");
 		process.setAddHoc(true);
 		//process.add("Task 3", ElementType.SCRIPT_TASK);
 
@@ -46,8 +46,7 @@ public class AdHocProcessTest extends JBPM6BaseTest {
 		gateway.setDirection(Direction.DIVERGING);
 		gateway.append("User", ElementType.USER_TASK, ConnectionType.SEQUENCE_FLOW, Position.NORTH_EAST);
 		gateway.append("Task 4", ElementType.SCRIPT_TASK, ConnectionType.SEQUENCE_FLOW, Position.SOUTH_EAST);
-		// Select the activity - it was deselected during append
-		gateway.select();
+
 		// Rules are not supported anymore
 		gateway.setCondition("Gateway -> User", "Rule", "org.jbpm.bpmn2.objects.Person()");
 		gateway.setCondition("Gateway -> Task 4", "Rule", "not org.jbpm.bpmn2.objects.Person()");

@@ -21,7 +21,7 @@ public class ScriptTaskTab {
 	 * @param expression
 	 */
 	public void set(Expression expression) {
-		expression.setUp();
+		expression.setUp("Attributes");
 	}
 	
 	/**

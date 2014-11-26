@@ -3,8 +3,8 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.SignalDialog;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.EventDefinition;
+import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
 import org.jboss.tools.reddeer.DefaultCombo;
-import org.jboss.tools.reddeer.DefaultSection;
 
 /**
  * 
@@ -52,7 +52,7 @@ public class SignalEventDefinition extends EventDefinition {
 		combo.setSelection(signalName);
 		
 		new DefaultCombo(type.label()).setSelection( variableName);
-		new DefaultSection("Signal Event Definition Details").getToolbarButton("Close").click();
+		new SectionToolItem("Signal Event Definition Details", "Close").click();
 	}
 	
 }

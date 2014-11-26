@@ -3,6 +3,7 @@ package org.jboss.tools.bpmn2.reddeer;
 import org.hamcrest.Matcher;
 import org.jboss.reddeer.gef.editor.GEFEditor;
 import org.jboss.reddeer.gef.impl.editpart.AbstractEditPart;
+import org.jboss.reddeer.gef.matcher.IsEditPartWithLabel;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
@@ -17,6 +18,10 @@ public class AbsoluteEditPart extends AbstractEditPart {
 	
 	public AbsoluteEditPart(EditPart editPart) {
 		super(editPart);
+	}
+	
+	public AbsoluteEditPart(String label) {
+		this(new IsEditPartWithLabel(label));
 	}
 	
 	public AbsoluteEditPart(Matcher<org.eclipse.gef.EditPart> matcher) {
@@ -35,6 +40,13 @@ public class AbsoluteEditPart extends AbstractEditPart {
 		int x = rec.x + rec.width / 2;
 		int y = rec.y + rec.height / 2;
 		new GEFEditor().click(x, y);
+	}
+	
+	public void click(int x, int y) {
+		Rectangle bounds = getFigure().getBounds();
+		final Rectangle rec = bounds.getCopy();
+		getFigure().translateToAbsolute(rec);
+		new GEFEditor().click(rec.x + x, rec.y + y);
 	}
 	
 	public Rectangle getBounds() {

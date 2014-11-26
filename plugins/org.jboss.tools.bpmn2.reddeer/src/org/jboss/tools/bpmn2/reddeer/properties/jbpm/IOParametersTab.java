@@ -3,8 +3,10 @@ package org.jboss.tools.bpmn2.reddeer.properties.jbpm;
 import java.util.Arrays;
 import java.util.List;
 
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
-import org.jboss.tools.reddeer.DefaultSection;
+import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
 
 /**
  * 
@@ -38,13 +40,11 @@ public class IOParametersTab {
 		}
 		
 		String sn = getSectionType(parameterMapping.getType());
-		DefaultSection s = new DefaultSection(sn + " Data Mapping");
-		s.getToolbarButton("Add").click();
+		new SectionToolItem(sn + " Data Mapping", "Add").click();
 
 		parameterMapping.setUp();
 		
-		DefaultSection sd = new DefaultSection(sn + " Data Mapping Details");
-		sd.getToolbarButton("Close").click();
+		new SectionToolItem(sn + " Data Mapping Details", "Close").click();
 	}
 	
 	/**
@@ -57,8 +57,8 @@ public class IOParametersTab {
 		}
 		
 		DefaultSection s = new DefaultSection(getSectionType(parameterMapping.getType()) + " Parameter Mapping");
-		s.getTable().select(parameterMapping.getFrom().getName() + " " + parameterMapping.getTo().getName());
-		s.getToolbarButton("Remove").click();
+		new DefaultTable(s).select(parameterMapping.getFrom().getName() + " " + parameterMapping.getTo().getName());
+		new SectionToolItem(s.getText(), "Remove").click();
 	}
 	
 	/**

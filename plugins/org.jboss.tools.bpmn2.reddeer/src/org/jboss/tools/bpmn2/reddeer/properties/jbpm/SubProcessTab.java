@@ -1,13 +1,14 @@
 package org.jboss.tools.bpmn2.reddeer.properties.jbpm;
 
 import org.jboss.reddeer.swt.impl.button.PushButton;
-
 import org.jboss.reddeer.swt.impl.button.RadioButton;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.DataTypeDialog;
+import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
 import org.jboss.tools.reddeer.DefaultCheckBox;
 import org.jboss.tools.reddeer.DefaultCombo;
-import org.jboss.tools.reddeer.DefaultSection;
 
 /**
  *
@@ -63,7 +64,7 @@ public class SubProcessTab extends GeneralPropertiesTab {
 	 * @param dataType
 	 */
 	public void addLocalVariable(String name, String dataType) {
-		new DefaultSection("Local Variable List").getToolbarButton("Add").click();
+		new SectionToolItem("Local Variable List", "Add").click();
 		new LabeledText(new DefaultSection("Local Variable Details"), "Name").setText(name);
 		
 		DefaultCombo c = new DefaultCombo("Data Type");
@@ -73,7 +74,7 @@ public class SubProcessTab extends GeneralPropertiesTab {
 		}
 		c.setSelection(dataType);
 		
-		new DefaultSection("Local Variable Details").getToolbarButton("Close").click();
+		new SectionToolItem("Local Variable Details", "Close").click();
 	}
 	
 	/**
@@ -81,9 +82,9 @@ public class SubProcessTab extends GeneralPropertiesTab {
 	 * @param name
 	 */
 	public void removeVariable(String name) {
-		DefaultSection s = new DefaultSection("Variable List");
-		s.getTable().select(name);
-		s.getToolbarButton("Remove").click();
+		DefaultSection s = new DefaultSection("Local Variable List");
+		new DefaultTable(s).select(name);
+		new SectionToolItem("Local Variable List", "Remove").click();
 	}
 	
 }

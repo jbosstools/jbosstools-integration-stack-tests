@@ -18,7 +18,7 @@ public class Process extends ElementContainer {
 	 */
 	public Process(String name) {
 		super(name, ElementType.PROCESS);
-		select();
+		editPartRedDeer.click(1, 1);
 	}
 	
 	/**
@@ -132,7 +132,7 @@ public class Process extends ElementContainer {
 	 * @param dataType
 	 */
 	public void addGlobalVariable(String name, String dataType) {
-		properties.getTab("Data Items", DataItemsTab.class).addGlobalVariable(name, dataType);
+		properties.getTab("Data Items", DataItemsTab.class).addGlobalVariable(name, dataType, name);
 	}
 	
 	/**
@@ -141,7 +141,7 @@ public class Process extends ElementContainer {
 	 * @param dataType
 	 */
 	public void addLocalVariable(String name, String dataType) {
-		properties.getTab("Data Items", DataItemsTab.class).addLocalVariable(name, dataType);
+		properties.getTab("Data Items", DataItemsTab.class).addLocalVariable(name, dataType, this.name);
 	}
 	
 	/**

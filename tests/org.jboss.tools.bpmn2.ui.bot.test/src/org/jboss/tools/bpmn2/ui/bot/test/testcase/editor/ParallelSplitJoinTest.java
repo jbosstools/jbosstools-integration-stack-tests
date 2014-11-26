@@ -36,6 +36,7 @@ public class ParallelSplitJoinTest extends JBPM6BaseTest {
 
 	@Override
 	public void buildProcessModel() {
+		
 		StartEvent start = new StartEvent("StartProcess");
 		start.select();
 		start.setName(START);

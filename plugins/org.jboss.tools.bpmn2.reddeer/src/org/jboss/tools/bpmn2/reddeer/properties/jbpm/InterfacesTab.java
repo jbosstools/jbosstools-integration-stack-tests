@@ -1,6 +1,8 @@
 package org.jboss.tools.bpmn2.reddeer.properties.jbpm;
 
-import org.jboss.tools.reddeer.DefaultSection;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
+import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
 
 /**
  * 
@@ -41,7 +43,7 @@ public class InterfacesTab {
 	 */
 	public void deleteInterface(String name) {
 		DefaultSection s = new DefaultSection("Interface List");
-		s.getTable().select(name);
-		s.getToolbarButton("Delete").click();
+		new DefaultTable(s).select(name);
+		new SectionToolItem("Interface List", "Remove").click();
 	}
 }

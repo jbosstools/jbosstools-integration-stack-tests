@@ -24,6 +24,7 @@ import org.hamcrest.Matcher;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
@@ -284,6 +285,8 @@ public class ProcessEditorView extends SWTBotGefEditor {
 		
 		DefaultStyledText styled = new DefaultStyledText();
 		String text = styled.getText();
+		
+		new DefaultCTabItem("Source").close();
 		
 		return text;
 	}

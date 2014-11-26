@@ -17,15 +17,16 @@ import org.apache.log4j.Logger;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
-import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.hamcrest.Matcher;
-import org.jboss.reddeer.swt.condition.WaitCondition;
-import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.gef.impl.editpart.AbstractEditPart;
+import org.jboss.reddeer.graphiti.impl.graphitieditpart.LabeledGraphitiEditPart;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.tools.bpmn2.reddeer.AbsoluteEditPart;
 import org.jboss.tools.bpmn2.reddeer.GEFProcessEditor;
 import org.jboss.tools.bpmn2.reddeer.ProcessEditorView;
 import org.jboss.tools.bpmn2.reddeer.ProcessPropertiesView;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.BoundaryEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructOfType;
 import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructOnPoint;
 import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructWithName;
@@ -41,16 +42,19 @@ public class Element {
 
 	protected Logger log = Logger.getLogger(getClass());
 	
-	protected ProcessEditorView editor = new ProcessEditorView();
-	protected ProcessPropertiesView properties = new ProcessPropertiesView();
+	protected ProcessEditorView editor;
+	protected ProcessPropertiesView properties;
 	protected SWTBot bot = new SWTBot();
 	
 	protected String name;
 	protected ElementType type;
 	protected Element parent;
-	protected SWTBotGefEditPart editPart;
 	protected AbsoluteEditPart editPartRedDeer;
 	protected GEFProcessEditor processEditor;
+	
+	protected Element(){
+		
+	}
 	
 	/**
 	 * @param name
@@ -88,13 +92,27 @@ public class Element {
 		setUp(name, type, parent, index, select);
 	}
 	
-	private Element(EditPart editPart, ElementType type) {
+	protected Element(EditPart containerShapeEditPart, ElementType type) {
 		this.type = type;
-		this.editPartRedDeer = new AbsoluteEditPart(editPart);
+		this.editPartRedDeer = new AbsoluteEditPart(containerShapeEditPart);
+		processEditor = new GEFProcessEditor();
+		editor = new ProcessEditorView();
+		properties = new ProcessPropertiesView(editPartRedDeer);
+	}
+	
+	protected Element(Element copyFrom) {
+		this.name = copyFrom.name;
+		this.type = copyFrom.type;
+		this.parent = copyFrom.parent;
+		this.editor = copyFrom.editor;
+		this.editPartRedDeer = copyFrom.editPartRedDeer;
+		this.properties = copyFrom.properties;
+		this.processEditor = copyFrom.processEditor;
 	}
 	
 	private void setUp(String name, ElementType type, Element parent, int index, boolean select) {
 		processEditor = new GEFProcessEditor();
+		editor = new ProcessEditorView();
 		
 		List<Matcher<? super EditPart>> matcherList = new ArrayList<Matcher<? super EditPart>>();
 		if (name != null) {
@@ -104,16 +122,6 @@ public class Element {
 			matcherList.add(new ConstructOfType<EditPart>(type));
 		}
 		
-		Matcher<EditPart> allMatcher = allOf(matcherList);
-		if (parent != null) {
-			List<SWTBotGefEditPart> editParts = editor.getEditParts(parent.editPart, allMatcher);
-			if (!editParts.isEmpty()) {
-				this.editPart = editParts.get(index);
-			}
-		} else {
-			this.editPart = editor.getEditPart(allMatcher, index);
-		}
-		
 		if(type != ElementType.PROCESS) {
 			matcherList.add(new EditPartOfClassName("ContainerShapeEditPart"));
 			editPartRedDeer = new AbsoluteEditPart(allOf(matcherList), index);
@@ -121,18 +129,18 @@ public class Element {
 			editPartRedDeer = new AbsoluteEditPart(processEditor.getRootEditPart());
 		}
 
-		if (editPart == null) {
-			throw new RuntimeException("Could not find construct with name '" + name + "' of type '" + type.name() + "'");
-		}
 		if (editPartRedDeer == null && type != ElementType.PROCESS) {
 			throw new RuntimeException("Reddeer could not find construct with name '" + name + "' of type '" + type.name() + "'");
 		}
-		if (name == null) {
-			this.name = editor.getName(editPart);
-		}
+
+		properties = new ProcessPropertiesView(editPartRedDeer);
 		
 		if (select) {
 			select();
+		}
+		
+		if(type == ElementType.PROCESS) {
+			click();
 		}
 	}
 	
@@ -157,22 +165,14 @@ public class Element {
 	 * Select this construct. Select the pictogram not the label.
 	 */
 	public void select() {
-//		if(type == ElementType.PROCESS) {
-//			editor.selectEditPart(editPart);
-//		} else {
-			editPartRedDeer.select();
-//		}
+		editPartRedDeer.select();
 	}
 
 	/**
 	 * Click to label of construct
 	 */
 	public void click() {
-//		if(type == ElementType.PROCESS) {
-//			editor.click(editPart);
-//		} else {
-			editPartRedDeer.click();
-//		}
+		editPartRedDeer.click();
 	}
 	
 	/**
@@ -181,19 +181,20 @@ public class Element {
 	 * @param name
 	 * @param eventType
 	 */
-	protected void addEvent(String name, ElementType eventType) {
+	protected <T extends BoundaryEvent> T addEvent(String name, ElementType eventType, Class<T> asType) {
 		if (!eventType.name().endsWith("BOUNDARY_EVENT")) {
 			throw new IllegalArgumentException("Can add only BOUNDARY_EVENT types.");
 		}
 
-		// Add the event
 		Point p = getBounds().getTopLeft();
-		editor.activateTool(eventType.toToolPath()[0], eventType.toToolPath()[1]);
-		editor.click(p.x(), p.y());
-
-		// Set the name of the event
-		Element event = editor.getLastConstruct(eventType);
-		event.setName(name);
+		Element newEvent = putToCanvas(name, eventType, p, editPartRedDeer.getEditPart().getParent());
+		newEvent.name = name;
+		
+		try {
+			return (T) asType.getConstructor(Element.class).newInstance(newEvent);
+		} catch (Exception e) {
+			throw new RuntimeException("Could not create an instance of type '" + asType + "'", e);
+		}
 	}
 	
 	/**
@@ -241,30 +242,7 @@ public class Element {
 			throw new RuntimeException(point + " is not available");
 		}
 		
-		GEFProcessEditor gefEditor = new GEFProcessEditor();
-		List<EditPart> before = gefEditor.getAllEditParts(constructType);
-		
-		editor.activateTool(constructType.toToolPath()[0], constructType.toToolPath()[1]);
-		editor.click(point.x(), point.y());
-	
-		new WaitWhile(new LastAddedCondition(before.size(), gefEditor, constructType));
-		
-		List<EditPart> after = gefEditor.getAllEditParts(constructType);
-		after.removeAll(before);
-		
-		if(after.size() != 1) {
-			throw new IllegalStateException("There wasn't added exactly one lement. Count of added elements: " + after.size());
-		}
-		
-//		Element construct = editor.getLastConstruct(constructType);
-		Element construct = new Element(after.get(0), constructType);
-		
-//		if (construct == null) {
-//			throw new RuntimeException("Unexpected error. Could not find added construct.");
-//		}
-		if (name != null) {
-			construct.setName(name);
-		}
+		Element construct = putToCanvas(name, constructType, point, editPartRedDeer.getEditPart().getParent());
 		
 		connectTo(construct, connectionType);
 	}
@@ -286,7 +264,7 @@ public class Element {
 	 * @param connectionType
 	 */
 	public void connectTo(Element construct, ConnectionType connectionType) {
-		log.info("Connecting construct '" + this.name + "' and construct '" + construct.getName() + "' using '" + connectionType + "'.");
+	log.info("Connecting construct '" + this.name + "' and construct '" + construct.getName() + "' using '" + connectionType + "'.");
 		// Get the dimensions of the source (this) construct. 
 		Rectangle rs = getBounds();
 		// Get the dimensions of the target construct. 
@@ -296,21 +274,22 @@ public class Element {
 		// 
 		// Bring forward elements in case they are covered by another bigger
 		// element. Then perform the clicks.
-		editor.activateTool(connectionType.toName());
+		processEditor.getPalette().activateTool(connectionType.toName());
 		
 		select();
 		log.debug("\tConnecting points '" + rs.getCenter() + "' and '" + rt.getCenter() + "'");
 		
 		// ISSUE: Clicking center on a Lane|Subprocess|etc. has a good chance to select something in it!
 	
-		editor.click(rs.getCenter().x(), rs.getCenter().y());
+		processEditor.click(rs.getCenter().x(), rs.getCenter().y());
 		
 		
 		
 		construct.select();
-		editor.click(rt.getCenter().x(), rt.getCenter().y());
+		processEditor.click(rt.getCenter().x(), rt.getCenter().y());
 		
-		editor.activateTool("Select");
+		processEditor.getPalette().activateTool("Select");
+		click();
 	}
 	
 	/**
@@ -318,7 +297,7 @@ public class Element {
 	 */
 	public void delete() {
 		select();
-		editor.clickContextMenu("Delete");
+		new LabeledGraphitiEditPart(name).getContextButton("Delete").click();
 	}
 	
 	/**
@@ -337,8 +316,8 @@ public class Element {
 	 */
 	protected boolean isAvailable(Point p) {
 		// Check weather the point is not already taken by another child editPart.
-		return editor.getEditParts(editPart.parent(), new ConstructOnPoint<EditPart>(p)).isEmpty();
-		//return processEditor.getAllEditParts(editPartRedDeer.getEditPart().getParent(), new ConstructOnPoint<EditPart>(p)).isEmpty();
+		List<EditPart> result = processEditor.getAllChildContainerShapeEditParts(editPartRedDeer.getEditPart().getParent(), new ConstructOnPoint<EditPart>(p));
+		return result.isEmpty();
 	}
 	
 	/**
@@ -415,7 +394,7 @@ public class Element {
 		//       +
         //       S
 		if (parent != null) {
-			Rectangle parentBounds = editor.getBounds(parent.getEditPart());
+			Rectangle parentBounds = parent.getBounds();
 			
 			int parentStartX = parentBounds.x();
 			int parentEndX = parentBounds.right();
@@ -479,9 +458,9 @@ public class Element {
 	 * 
 	 * @return
 	 */
-	public SWTBotGefEditPart getEditPart() {
+	/*public SWTBotGefEditPart getEditPart() {
 		return editPart;
-	}
+	}*/
 
 	/**
 	 * 
@@ -519,12 +498,8 @@ public class Element {
 		return name;
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
-	public ProcessEditorView getEditor() {
-		return editor;
+	public AbsoluteEditPart getAbsoluteEditPart() {
+		return editPartRedDeer;
 	}
 	
 	/**
@@ -540,35 +515,42 @@ public class Element {
 	 * @return
 	 */
 	public Rectangle getBounds() {
-//		if(type == ElementType.PROCESS) {
-//			return editor.getBounds(editPart);
-//		} else {
-			return editPartRedDeer.getBounds();
-//		}
+		return editPartRedDeer.getBounds();
 	}
 	
+	protected Element putToCanvas(String name, ElementType type, Point point, EditPart parent) {
+		AbstractEditPart added = (AbstractEditPart) processEditor.addElementFromPalette(
+										type, 
+										point.x, 
+										point.y, 
+										parent); 
+		return addedElement(added, name, type);
+	}
 	
-	private class LastAddedCondition implements WaitCondition {
-
-		private int originalSize;
-		private GEFProcessEditor editor;
-		private ElementType type;
+	private Element addedElement(AbstractEditPart added, String label, ElementType type) {
+		List<EditPart> selected = processEditor.getViewer().getSelectedEditParts();
 		
-		public LastAddedCondition(int orginalSize, GEFProcessEditor editor, ElementType type) {
-			this.type = type;
-			this.editor = editor;
-			this.originalSize = orginalSize;
+		if(selected.size() != 1) {
+			StringBuilder builder = new StringBuilder();
+			for(int i = 0; i < selected.size(); i++) {
+				builder.append(selected.get(i).toString());
+				builder.append(", ");
+			}
+			throw new IllegalStateException("Adding element caused selecting more elements: " + builder.toString());
 		}
 		
-		@Override
-		public boolean test() {
-			return editor.getAllEditParts(type).size() == originalSize;
-		}
-
-		@Override
-		public String description() {
-			return "Testing if original size: " + originalSize + "has changed.";
+		Element addedElement = new Element(selected.get(0), type);
+		try{
+			if("Tasks".compareTo(type.getSectionName()) == 0) {
+				added.setLabel(label);
+			} else {
+				addedElement.setName(label);
+			}
+			
+		} catch (SWTLayerException e) {
+			addedElement.setName(label);
 		}
 		
+		return addedElement;
 	}
 }

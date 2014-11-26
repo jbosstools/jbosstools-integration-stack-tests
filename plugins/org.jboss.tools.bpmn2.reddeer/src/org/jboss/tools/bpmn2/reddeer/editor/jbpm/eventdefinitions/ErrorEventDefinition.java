@@ -6,7 +6,7 @@ import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.ErrorDialog;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.EventDefinition;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ErrorRef;
-import org.jboss.tools.reddeer.DefaultSection;
+import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
 
 /**
  * 
@@ -44,7 +44,7 @@ public class ErrorEventDefinition extends EventDefinition {
 		sourceCombo.setSelection(variableForMaping);
 		
 		
-		new DefaultSection("Error Event Definition Details").getToolbarButton("Close").click();
+		new SectionToolItem("Error Event Definition Details", "Close").click();
 	}
 	
 }

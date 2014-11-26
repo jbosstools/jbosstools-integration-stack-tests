@@ -1,6 +1,7 @@
 package org.jboss.tools.reddeer;
 
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
+import org.jboss.reddeer.swt.reference.ReferencedComposite;
 
 /**
  * 
@@ -15,6 +16,10 @@ public class DefaultCombo extends LabeledCombo {
 		super(label);	
 	}
 	
+	
+	public DefaultCombo(ReferencedComposite section, String label) {
+		super(section, label);	
+	}
 	/**
 	 * 
 	 * @param text

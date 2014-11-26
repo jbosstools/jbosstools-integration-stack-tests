@@ -73,17 +73,17 @@ public class BoundaryEscalationEventOnTaskTest extends JBPM6BaseTest {
 		subHandler.setScript("Java", "System.out.println(\"Handling SubProcess: \" + "+VARIABLE2 + " +\" \" + " + VARIABLE3+");");
 		subHandler.append("SubHandlerEnd", ElementType.END_EVENT, Position.SOUTH);
 		
-
 		UserTask userTask = new UserTask("User Task");
 		userTask.addActor("Mary");
 		userTask.setOnExitScript("Java", "throw new RuntimeException();");
 		userTask.append("EndProcess", ElementType.END_EVENT);
-		userTask.addEvent("Escalation Boundary Event", ElementType.ESCALATION_BOUNDARY_EVENT);
-
-		EscalationBoundaryEvent boundaryEvent = new EscalationBoundaryEvent("Escalation Boundary Event");
+		
+		EscalationBoundaryEvent boundaryEvent =
+			(EscalationBoundaryEvent) userTask.addEvent("Escalation Boundary Event", ElementType.ESCALATION_BOUNDARY_EVENT);
+		
 		boundaryEvent.setEscalation(escalation, VARIABLE1);
+		boundaryEvent.append("Script Task", ElementType.SCRIPT_TASK, Position.NORTH_EAST);
 		boundaryEvent.setCancelActivity(false);
-		boundaryEvent.append("Script Task", ElementType.SCRIPT_TASK, Position.SOUTH);
 		
 		ScriptTask scriptTask = new ScriptTask("Script Task");
 		scriptTask.setScript("Java", "System.out.println(\"Handling UserTask: \" + "+VARIABLE1 + ");");
@@ -99,6 +99,8 @@ public class BoundaryEscalationEventOnTaskTest extends JBPM6BaseTest {
 			Arrays.asList("StartProcess", "Split", "User Task", "Script Task", "EndProcess", "EndProcess2", 
 				"SubHandler", "SubHandlerEnd", "SubStart", "ThrowEscalation"),
 			Arrays.asList("OnlyForSyntaxEnd", "SubEnd"));
+		
+		kSession.addEventListener(triggered);
 		
 		Map<String, Object> sessionArgs = new HashMap<String, Object>();
 		sessionArgs.put("Property_2", new java.lang.RuntimeException());

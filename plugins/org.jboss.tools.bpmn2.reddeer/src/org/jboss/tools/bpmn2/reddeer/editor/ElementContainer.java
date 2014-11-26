@@ -39,7 +39,8 @@ public class ElementContainer extends Element {
 	public void add(String name, ElementType type) {
 		String sectionName = type.toToolPath()[0];
 		
-		Rectangle bounds = editor.getBounds(editPart);
+		//Rectangle bounds = editor.getBounds(editPart);
+		Rectangle bounds = getBounds();
 		int x, y = 0;
 		
 		if ("Boundary Events".equals(sectionName)) {
@@ -77,7 +78,7 @@ public class ElementContainer extends Element {
 	 *              this construct's upper left corner is the staring position. 
 	 */
 	public void add(String name, ElementType type, Point point) {
-		Rectangle bounds = editor.getBounds(editPart);
+		Rectangle bounds = getBounds();
 		
 		String sectionName = type.toToolPath()[0];
 		// Make sure that the point is available.
@@ -90,12 +91,13 @@ public class ElementContainer extends Element {
 		// Add the construct using the tool in the palette.
 		select();
 		log.info("Adding consturct '" + name + "' of type '" + type + "' to '" + point + "'");
-		editor.activateTool(type.toToolPath()[0], type.toToolPath()[1]);
-		editor.click(bounds.x() + point.x(), bounds.y() + point.y());
-		// Set name
-		Element c = editor.getLastConstruct(type);
-		c.select();
-		c.setName(name);
+		
+		EditPart parent = editPartRedDeer.getEditPart();
+		if("Boundary Events".compareTo(type.getSectionName()) == 0) {
+			parent = parent.getParent();
+		}
+		
+		putToCanvas(name, type, new Point(bounds.x + point.x, bounds.y + point.y), parent);		
 	}
 	
 	private void addToPoint(String name, ElementType type, Point point) {
@@ -110,12 +112,12 @@ public class ElementContainer extends Element {
 		// Add the construct using the tool in the palette.
 		select();
 		log.info("Adding consturct '" + name + "' of type '" + type + "' to '" + point + "'");
-		editor.activateTool(type.toToolPath()[0], type.toToolPath()[1]);
-		editor.click(point.x(), point.y());
-		// Set name
-		Element c = editor.getLastConstruct(type);
-		c.select();
-		c.setName(name);
+		
+		EditPart parent = editPartRedDeer.getEditPart();
+		if("Boundary Events".compareTo(type.getSectionName()) == 0) {
+			parent = parent.getParent();
+		}
+		putToCanvas(name, type, point, parent);
 	}
 	
 	/**
@@ -131,7 +133,9 @@ public class ElementContainer extends Element {
 		Point point = new Point(p.x() + bounds.width(), p.y() + bounds.height());
 		if (bounds.contains(point)) {
 			// Check weather the point is not already taken by another child editPart.
-			return editor.getEditParts(editPart, new ConstructOnPoint<EditPart>(point)).isEmpty();
+			//return editor.getEditParts(editPart, new ConstructOnPoint<EditPart>(point)).isEmpty();
+			return processEditor.getAllChildContainerShapeEditParts(editPartRedDeer.getEditPart().getParent(),
+					new ConstructOnPoint<EditPart>(p)).isEmpty();
 		}
 		// Out of bounds.
 		return false;

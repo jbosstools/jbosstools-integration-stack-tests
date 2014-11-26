@@ -1,34 +1,29 @@
 package org.jboss.tools.bpmn2.reddeer.properties.jbpm;
 
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.tools.bpmn2.reddeer.ProcessEditorView;
+import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.DataTypeDialog;
+import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
 import org.jboss.tools.reddeer.DefaultCombo;
-import org.jboss.tools.reddeer.DefaultSection;
 
 /**
  * 
  */
 public class DataItemsTab {
 
-	private String processName;
-
-	/**
-	 * 
-	 */
-	public DataItemsTab() {
-		this.processName = new ProcessEditorView().getProcess().getName();
-	}
-	
 	/**
 	 * 
 	 * @param name
 	 * @param dataType
 	 * @param local
 	 */
-	public void addVariable(String name, String dataType, boolean local) {
- 		new DefaultSection((local ? "Local" : "Global") + " Variable List for Process \"" + processName + "\"").getToolbarButton("Add").click();
+	public void addVariable(String name, String dataType, boolean local, String processName) {
+ 		
+		new SectionToolItem(
+				(local ? "Local" : "Global") + " Variable List for Process \"" + processName + "\"",
+				"Add").click();
  		new LabeledText(new DefaultSection((local ? "Local" : "Global") + " Variable Details"), "Name").setText(name); 		
 		
 		DefaultCombo c = new DefaultCombo("Data Type");
@@ -38,7 +33,7 @@ public class DataItemsTab {
 		}
 		c.setSelection(dataType);
 		
-		new DefaultSection((local ? "Local" : "Global") + " Variable Details").getToolbarButton("Close").click();
+		new SectionToolItem((local ? "Local" : "Global") + " Variable Details", "Close").click();
 	}
 	
 	/**
@@ -46,10 +41,10 @@ public class DataItemsTab {
 	 * @param name
 	 * @param local
 	 */
-	public void removeVariable(String name, boolean local) {
+	public void removeVariable(String name, boolean local, String processName) {
 		DefaultSection s = new DefaultSection((local ? "Local" : "Global") + " List for Process \"" + processName + "\"");
-		s.getTable().select(name);
-		s.getToolbarButton("Remove").click();
+		new DefaultTable(s).select(name);
+		new SectionToolItem((local ? "Local" : "Global") + " List for Process \"" + processName + "\"", "Remove").click();
 	}
 	
 	/**
@@ -57,16 +52,16 @@ public class DataItemsTab {
 	 * @param name
 	 * @param dataType
 	 */
-	public void addGlobalVariable(String name, String dataType) {
-		addVariable(name, dataType, false);
+	public void addGlobalVariable(String name, String dataType, String processName) {
+		addVariable(name, dataType, false, processName);
 	}
 	
 	/**
 	 * 
 	 * @param name
 	 */
-	public void removeGlobalVariable(String name) {
-		removeVariable(name, false);
+	public void removeGlobalVariable(String name, String processName) {
+		removeVariable(name, false, processName);
 	}
 	
 	/**
@@ -74,16 +69,16 @@ public class DataItemsTab {
 	 * @param name
 	 * @param dataType
 	 */
-	public void addLocalVariable(String name, String dataType) {
-		addVariable(name, dataType, true);
+	public void addLocalVariable(String name, String dataType, String processName) {
+		addVariable(name, dataType, true, processName);
 	}
 	
 	/**
 	 * 
 	 * @param name
 	 */
-	public void removeLocalVariable(String name) {
-		removeVariable(name, true);
+	public void removeLocalVariable(String name, String processName) {
+		removeVariable(name, true, processName);
 	}
 	
 }

@@ -1,11 +1,14 @@
 package org.jboss.tools.bpmn2.reddeer.properties.jbpm;
 
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.ImplementationDialog;
+import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
 import org.jboss.tools.reddeer.DefaultCheckBox;
 import org.jboss.tools.reddeer.DefaultCombo;
-import org.jboss.tools.reddeer.DefaultSection;
 
 /**
  * 
@@ -94,9 +97,9 @@ public class UserTaskTab extends GeneralPropertiesTab {
 	 * @param name
 	 */
 	public void addActor(String name) {
-		new DefaultSection("Actors").getToolbarButton("Add").click();
+		new SectionToolItem("Actors", "Add").click();
 		new LabeledText("Name").setText(name);
-		new DefaultSection("Actor Details").getToolbarButton("Close").click();
+		new SectionToolItem("Actor Details", "Close").click();
 	}
 	
 	/**
@@ -105,12 +108,12 @@ public class UserTaskTab extends GeneralPropertiesTab {
 	 */
 	public void removeActor(String name) {
 		DefaultSection section = new DefaultSection("Actors");
-		section.getTable().select(name);
-		section.getToolbarButton("Remove").click();
+		new DefaultTable(section).select(name);
+		new SectionToolItem("Actors", "Remove").click();
 	}
 	
 	public void addLocalVariable(String varName, String dataType) {
-		new DefaultSection("Local Variable List").getToolbarButton("Add").click();
+		new SectionToolItem("Local Variable List","Add").click();
 		DefaultSection variableDetails = new DefaultSection("Local Variable Details");
 		new LabeledText(variableDetails, "Name").setText(varName);
 		DefaultCombo combo = new DefaultCombo("Data Type");
@@ -118,7 +121,7 @@ public class UserTaskTab extends GeneralPropertiesTab {
 			throw new UnsupportedOperationException("Adding variable of type: " + dataType + " is not supported yet");
 		}
 		combo.setSelection(dataType);
-		variableDetails.getToolbarButton("Close").click();
+		new SectionToolItem("Local Variable Details", "Close").click();
 	}
 	
 }

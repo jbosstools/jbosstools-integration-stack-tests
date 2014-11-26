@@ -2,7 +2,7 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions;
 
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.EventDefinition;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Expression;
-import org.jboss.tools.reddeer.DefaultSection;
+import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
 
 /**
  * 
@@ -30,8 +30,8 @@ public class ConditionalEventDefinition extends EventDefinition {
 	
 	@Override
 	public void setUp() {
-		expression.setUp();
-		new DefaultSection("Conditional Event Definition Details").getToolbarButton("Close").click();
+		expression.setUp("Conditional Event Definition Details");
+		new SectionToolItem("Conditional Event Definition Details", "Close").click();
 	}
 	
 }

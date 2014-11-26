@@ -55,9 +55,9 @@ public class ErrorBoundaryEventOnTaskTest extends JBPM6BaseTest {
 		task2.addActor("mary");
 		task2.setOnExitScript("Java", "throw new java.lang.IllegalArgumentException(\"Exception for test purpose\");");
 		task2.append("Error 1", ElementType.END_EVENT);
-		task2.addEvent("Error Boundary Event", ElementType.ERROR_BOUNDARY_EVENT);
 		
-		ErrorBoundaryEvent boundaryEvent = new ErrorBoundaryEvent("Error Boundary Event");
+		ErrorBoundaryEvent boundaryEvent = 
+			(ErrorBoundaryEvent) task2.addEvent("Error Boundary Event", ElementType.ERROR_BOUNDARY_EVENT);
 		boundaryEvent.setErrorEvent(new ErrorRef("MyError", "java.lang.IllegalArgumentException", "java.lang.IllegalArgumentException"), VARIABLE1);
 		boundaryEvent.append("Script Task", ElementType.SCRIPT_TASK, Position.SOUTH);
 		

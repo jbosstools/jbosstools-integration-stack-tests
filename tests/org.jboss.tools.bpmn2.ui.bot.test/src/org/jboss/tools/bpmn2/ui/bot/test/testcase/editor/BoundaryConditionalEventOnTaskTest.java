@@ -21,13 +21,13 @@ import org.kie.api.runtime.process.WorkItem;
 /**
  * ISSUE - language should be 'http://www.jboss.org/drools/rule' but it's not available.
  */
-@ProcessDefinition(name="BPMN2-BoundaryConditionalEventOnTask", project="EditorTestProject", needPerson=true)
+@ProcessDefinition(name="BPMN2-BoundaryConditionalEventOnTask", project="EditorTestProject")
 public class BoundaryConditionalEventOnTaskTest extends JBPM6BaseTest {
 
 	@Override
 	public void buildProcessModel() {
 		Process process = new Process("BPMN2-BoundaryConditionalEventOnTask");
-		process.addImport("org.jbpm.bpmn2.objects.Person");
+		//process.addImport("org.jbpm.bpmn2.objects.Person");
 		
 		StartEvent startEvent = new StartEvent("StartProcess");
 		startEvent.append("User Task", ElementType.USER_TASK);
@@ -35,10 +35,10 @@ public class BoundaryConditionalEventOnTaskTest extends JBPM6BaseTest {
 		UserTask userTask1 = new UserTask("User Task");
 		userTask1.addActor("john");
 		userTask1.append("User Task 2", ElementType.USER_TASK, Position.NORTH_EAST);
-		userTask1.addEvent("Conditional Boundary Event", ElementType.CONDITIONAL_BOUNDARY_EVENT);
-
+		
 		// ISSUE: language should be 'http://www.jboss.org/drools/rule' but it's not available.
-		ConditionalBoundaryEvent boundaryEvent = new ConditionalBoundaryEvent("Conditional Boundary Event");
+		ConditionalBoundaryEvent boundaryEvent = 
+			(ConditionalBoundaryEvent) userTask1.addEvent("Conditional Boundary Event", ElementType.CONDITIONAL_BOUNDARY_EVENT);
 		boundaryEvent.setScript("Rule", "org.jbpm.bpmn2.objects.Person(name == \"john\")");
 		
 		boundaryEvent.append("Condition met", ElementType.SCRIPT_TASK, Position.SOUTH_EAST);

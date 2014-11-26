@@ -24,6 +24,7 @@ public enum ElementType {
 //	TRANSACTION("TBD", "Transaction"),
 	
 	BOUNDARY_EVENT("Boundary Events", "Boundary Event"),
+	COMPENSATION_BOUNDARY_EVENT("Boundary Events", "Compensation Boundary Event"),
 	CONDITIONAL_BOUNDARY_EVENT("Boundary Events", "Conditional"),
 	ERROR_BOUNDARY_EVENT("Boundary Events", "Error"),
 	ESCALATION_BOUNDARY_EVENT("Boundary Events", "Escalation"),

@@ -17,6 +17,10 @@ public class BoundaryEvent extends Element {
 		super(name, ElementType.BOUNDARY_EVENT);
 	}
 	
+	protected BoundaryEvent(Element element){
+		super(element);
+	}
+	
 	/**
 	 * 
 	 * @param name
@@ -27,7 +31,9 @@ public class BoundaryEvent extends Element {
 	}
 	
 	/**
-	 * 
+	 * !!!
+	 * Be careful. This method changes instance of 'EditPart' by which is element represented and methods for appending elements to 'this' doesn't work correctly.
+	 * !!!
 	 * @param value
 	 */
 	public void setCancelActivity(boolean value) {
