@@ -20,7 +20,7 @@
                 <to uri="file:target/messages/uk"/>
             </when>
             <otherwise>
-                <log message="Other messsage"/>
+                <log message="Other message"/>
                 <to uri="file:target/messages/others"/>
             </otherwise>
         </choice>

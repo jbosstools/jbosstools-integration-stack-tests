@@ -108,7 +108,7 @@ public class CamelEditorTest {
 		editor.setId("log", "log1");
 		editor.doOperation("choice", "Add", "Routing", "Otherwise");
 		editor.doOperation("otherwise", "Add", "Endpoints", "Log");
-		editor.setProperty("log", "Message", "Other messsage");
+		editor.setProperty("log", "Message", "Other message");
 		editor.doOperation("log", "Add", "Endpoints", "Endpoint");
 		editor.setComboProperty("Endpoint", 0, "file:target/messages/others");
 		editor.setId("log1", "");
@@ -130,7 +130,7 @@ public class CamelEditorTest {
 		editor.setId("log", "log1");
 		editor.setId("file:target/messa...", "temp");
 		editor.addCamelComponent(new Log());
-		editor.setProperty("log", "Message", "Other messsage");
+		editor.setProperty("log", "Message", "Other message");
 		editor.addConnection("otherwise", "log");
 		editor.save();
 		AbstractWait.sleep(TimePeriod.getCustom(1));

@@ -2,6 +2,7 @@ package org.jboss.tools.fuse.ui.bot.test.utils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.StringReader;
 import java.util.Scanner;
 
 import org.jboss.reddeer.common.logging.Logger;
@@ -17,6 +18,7 @@ import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.fuse.reddeer.utils.ResourceHelper;
+import org.jboss.tools.fuse.reddeer.utils.XPathEvaluator;
 import org.jboss.tools.fuse.ui.bot.test.Activator;
 
 /**
@@ -103,7 +105,19 @@ public class EditorManipulator {
 	public static boolean isEditorContentEqualsFile(String file) {
 
 		String editorText = new DefaultStyledText().getText();
-		String fileText = getFileContent(file);
-		return editorText.equals(fileText);
+		if (file.equals("resources/camel-context-all.xml")) {
+			XPathEvaluator xpath = new XPathEvaluator(new StringReader(editorText));
+			if (	(xpath.evaluateBoolean("/beans/camelContext/route/*[1]/@uri = 'file:src/data?noop=true'")) &&
+					(xpath.evaluateString("/beans/camelContext/route/choice/*[1]/*[1][text()]").equals("/person/city = 'London'")) &&
+					(xpath.evaluateBoolean("/beans/camelContext/route/choice/*[1]/*[2]/@message = 'UK message'")) &&
+					(xpath.evaluateBoolean("/beans/camelContext/route/choice/*[1]/*[3]/@uri = 'file:target/messages/uk'")) &&
+					(xpath.evaluateBoolean("/beans/camelContext/route/choice/*[2]/*[1]/@message = 'Other message'")) &&
+					(xpath.evaluateBoolean("/beans/camelContext/route/choice/*[2]/*[2]/@uri = 'file:target/messages/others'"))) return true;
+			return false;
+		}
+		else {
+			String fileText = getFileContent(file);
+			return editorText.equals(fileText);
+		}
 	}
 }
