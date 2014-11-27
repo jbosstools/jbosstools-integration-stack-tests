@@ -1,5 +1,6 @@
 package org.jboss.tools.fuse.reddeer.projectexplorer;
 
+import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
@@ -12,6 +13,7 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.fuse.reddeer.wizard.CamelXmlFileWizard;
 
@@ -59,11 +61,19 @@ public class CamelProject {
 		} catch (SWTLayerException ex) {
 			new ContextMenu("Run As", "1 Local Camel Context").select();
 		}
+		new WaitUntil(new ConsoleHasText("Total 1 routes, of which 1 is started."), TimePeriod.getCustom(300));
 	}
 
 	public void runCamelContextWithoutTests(String name) {
 
 		project.getProjectItem("src/main/resources", "META-INF", "spring", name).select();
+		new ContextMenu("Run As", "3 Local Camel Context (without tests)").select();
+		new WaitUntil(new ConsoleHasText("Total 1 routes, of which 1 is started."), TimePeriod.getCustom(300));
+	}
+
+	public void runApplicationContextWithoutTests(String name) {
+
+		project.getProjectItem("src", "main", "webapp", "WEB-INF", name).select();
 		new ContextMenu("Run As", "3 Local Camel Context (without tests)").select();
 	}
 
