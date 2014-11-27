@@ -15,6 +15,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
@@ -34,6 +35,7 @@ import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.preference.ServerRuntimePreferencePage;
@@ -71,6 +73,7 @@ public class RegressionTest {
 
 		new ProjectExplorer().deleteAllProjects();
 		ShellHandler.getInstance().closeAllNonWorbenchShells();
+		new ConsoleView().terminateConsole();
 	}
 
 	/**
@@ -181,6 +184,18 @@ public class RegressionTest {
 			new DefaultShell("Preferences").close();
 			fail("'Finish' button should not be enabled!");
 		}
+	}
+
+	/**
+	 * camel context won't run without tests in eclipse kepler
+	 * https://issues.jboss.org/browse/FUSETOOLS-1077
+	 */
+	@Test
+	public void issue_1077() {
+
+		ProjectFactory.createProject("camel-web", "camel-archetype-web");
+		new CamelProject("camel-web").runApplicationContextWithoutTests("applicationContext.xml");
+		new WaitUntil(new ConsoleHasText("[INFO] Started Jetty Server\nHello Web Application, how are you?"), TimePeriod.LONG);
 	}
 
 	/**
