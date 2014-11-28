@@ -36,10 +36,12 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.tools.fuse.reddeer.condition.FuseLogContainsText;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.preference.ServerRuntimePreferencePage;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
+import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
 import org.jboss.tools.fuse.reddeer.utils.ResourceHelper;
 import org.jboss.tools.fuse.reddeer.view.JMXNavigator;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
@@ -71,6 +73,10 @@ public class RegressionTest {
 	@After
 	public void clean() {
 
+		String server = serverRequirement.getConfig().getName();
+		if (ServerManipulator.isServerStarted(server)) {
+			ServerManipulator.stopServer(server);
+		}
 		new ProjectExplorer().deleteAllProjects();
 		ShellHandler.getInstance().closeAllNonWorbenchShells();
 		new ConsoleView().terminateConsole();
@@ -233,6 +239,22 @@ public class RegressionTest {
 			new DefaultShell().close();
 			fail("'Finish' button should not be enabled!");
 		}
+	}
+
+	/**
+	 * uninstall of bundles from servers broken
+	 * https://issues.jboss.org/browse/FUSETOOLS-1152
+	 */
+	@Test
+	public void issue_1152() {
+
+		ProjectFactory.createProject("camel-spring-dm", "camel-archetype-spring-dm");
+		String server = serverRequirement.getConfig().getName();
+		ServerManipulator.addModule(server, "camel-spring-dm");
+		ServerManipulator.startServer(server);
+		AbstractWait.sleep(TimePeriod.NORMAL);
+		ServerManipulator.removeAllModules(server);
+		new WaitUntil(new FuseLogContainsText("Application context succesfully closed (OsgiBundleXmlApplicationContext(bundle=camel-spring-dm"));
 	}
 
 	/**
