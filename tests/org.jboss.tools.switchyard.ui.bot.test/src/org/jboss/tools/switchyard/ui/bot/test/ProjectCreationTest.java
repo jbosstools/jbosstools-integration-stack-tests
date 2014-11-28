@@ -13,6 +13,7 @@ import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.XPathEvaluator;
@@ -55,6 +56,15 @@ public class ProjectCreationTest {
 	}
 
 	@After
+	public void closeProjectWizard() {
+		try {
+			new DefaultShell("New SwitchYard Project").close();
+		} catch (Exception ex) {
+			// it is ok, we just try to close the wizard if it is open
+		}
+	}
+
+	@After
 	public void deleteSwitchYardProject() {
 		saveAndCloseSwitchYardFile();
 		new ProjectExplorer().deleteAllProjects();
@@ -92,17 +102,17 @@ public class ProjectCreationTest {
 
 		wizard = new SwitchYardProjectWizard(projectName);
 		wizard.open();
-		assertEquals(switchYardRequirement.getConfig().getTargetRuntime(), wizard.getTargetRuntime());
+		assertEquals(switchYardRequirement.getTargetRuntimeLabel(), wizard.getTargetRuntime());
 		assertEquals(switchYardRequirement.getConfig().getLibraryVersion(), wizard.getLibraryVersion());
 		wizard.setTargetRuntime("<None>");
 		wizard.setLibraryVersion("foo");
 		assertEquals("<None>", wizard.getTargetRuntime());
 		assertEquals("foo", wizard.getLibraryVersion());
-		wizard.setTargetRuntime(switchYardRequirement.getConfig().getTargetRuntime());
-		assertEquals(switchYardRequirement.getConfig().getTargetRuntime(), wizard.getTargetRuntime());
+		wizard.setTargetRuntime(switchYardRequirement.getTargetRuntimeLabel());
+		assertEquals(switchYardRequirement.getTargetRuntimeLabel(), wizard.getTargetRuntime());
 		assertEquals(switchYardRequirement.getConfig().getLibraryVersion(), wizard.getLibraryVersion());
 		wizard.setConfigurationVersion(switchYardRequirement.getConfig().getConfigurationVersion());
-		assertEquals(switchYardRequirement.getConfig().getTargetRuntime(), wizard.getTargetRuntime());
+		assertEquals(switchYardRequirement.getTargetRuntimeLabel(), wizard.getTargetRuntime());
 		assertEquals(switchYardRequirement.getConfig().getLibraryVersion(), wizard.getLibraryVersion());
 		wizard.finish();
 
@@ -151,9 +161,7 @@ public class ProjectCreationTest {
 		assertComponent("Implementation Support", "BPM (jBPM)");
 		assertComponent("Implementation Support", "Camel Route");
 		assertComponent("Implementation Support", "Rules (Drools)");
-		assertComponent("Gateway Bindings", "Atom");
 		assertComponent("Gateway Bindings", "Camel Core (SEDA/Timer/URI)");
-		assertComponent("Gateway Bindings", "CXF");
 		assertComponent("Gateway Bindings", "File");
 		assertComponent("Gateway Bindings", "File Transfer (FTP/FTPS/SFTP)");
 		assertComponent("Gateway Bindings", "HTTP");
@@ -163,8 +171,6 @@ public class ProjectCreationTest {
 		assertComponent("Gateway Bindings", "Mail");
 		assertComponent("Gateway Bindings", "Network (TCP/UDP)");
 		assertComponent("Gateway Bindings", "REST");
-		assertComponent("Gateway Bindings", "RSS");
-		assertComponent("Gateway Bindings", "SAP");
 		assertComponent("Gateway Bindings", "SCA");
 		assertComponent("Gateway Bindings", "Scheduling");
 		assertComponent("Gateway Bindings", "SOAP");
@@ -173,6 +179,14 @@ public class ProjectCreationTest {
 		assertComponent("Test Mixins", "HTTP Mixin");
 		assertComponent("Test Mixins", "Naming Mixin");
 		assertComponent("Test Mixins", "Smooks Mixin");
+
+		if (switchYardRequirement.getConfig().getConfigurationVersion().equals("2.0")) {
+			assertComponent("Gateway Bindings", "Atom");
+			assertComponent("Gateway Bindings", "CXF");
+			assertComponent("Gateway Bindings", "RSS");
+			assertComponent("Gateway Bindings", "SAP");
+		}
+
 		wizard.finish();
 
 		new SwitchYardProject(projectName).update();

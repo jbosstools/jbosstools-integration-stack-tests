@@ -81,6 +81,10 @@ public class SwitchYardRequirement implements Requirement<SwitchYard>, CustomCon
 		return this.config;
 	}
 
+	public String getTargetRuntimeLabel() {
+		return getConfig().getTargetRuntime() + " [" + getConfig().getName() + "]"; 
+	}
+	
 	public SwitchYardProjectWizard project(String name) {
 		return new SwitchYardProjectWizard(name, config.getConfigurationVersion(), config.getLibraryVersion(),
 				config.getTargetRuntime());
