@@ -44,7 +44,18 @@ public class ServerRequirement implements Requirement<Server> {
 		// Server should be running
 		if (serverConf.state().equals(State.RUNNING)) {
 			if (serverLabel.getState().equals(ServerState.STOPPED)) {
-				server.start();
+				try {
+					server.start();
+				} catch (Exception e) {
+					try {
+						server = new ServersView().getServer(SwitchyardSuite.getServerName());
+						server.stop();
+					} catch (Exception ex) {
+						
+					}
+					server = new ServersView().getServer(SwitchyardSuite.getServerName());
+					server.start();
+				}
 			}
 		}
 		// Server should not be running
