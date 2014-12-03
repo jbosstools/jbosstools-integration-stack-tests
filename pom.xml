@@ -72,6 +72,13 @@
 	    <url>${jetty.site}</url>
 	    <layout>p2</layout>
 	  </repository>
+	  <!-- JBoss Tools Target Platform Update Site -->
+	  <!-- Parent pom defines wrong repository for TP 4.32.0.Final -->
+	  <repository>
+	    <id>jbt-tp-site</id>
+	    <url>http://download.jboss.org/jbosstools/static/targetplatforms/jbosstoolstarget/4.32.0.Final/REPO/</url>
+	    <layout>p2</layout>
+	  </repository>
 	</repositories>
 
 	<build>
