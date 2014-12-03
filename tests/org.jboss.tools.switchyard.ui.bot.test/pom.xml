@@ -18,7 +18,8 @@
 	  <surefire.timeout>10800</surefire.timeout>
 	  <test.class>AllTests</test.class>
 	  <maven-download-plugin.version>1.0.0</maven-download-plugin.version>
-	  <customization.file>resources/config/plugin_customization.ini</customization.file>
+	  <m2e.userSettingsFile>${project.build.directory}/config/settings.xml</m2e.userSettingsFile>
+	  <customization.file>${project.build.directory}/config/plugin_customization.ini</customization.file>
 	</properties>
 
 	<build>
@@ -78,6 +79,32 @@
 		  </dependency>
 		</dependencies>
 	      </configuration>
+	    </plugin>
+	    <plugin>
+	      <artifactId>maven-resources-plugin</artifactId>
+	      <version>2.6</version>
+	      <executions>
+	        <execution>
+                  <id>copy-resources</id>
+	          <phase>validate</phase>
+	          <goals>
+	            <goal>copy-resources</goal>
+	          </goals>
+	          <configuration>
+	            <encoding>UTF-8</encoding>
+	            <outputDirectory>${basedir}/target/</outputDirectory>
+	            <resources>          
+	              <resource>
+	                <directory>resources</directory>
+			<includes>
+			  <include>config/*</include>
+			</includes>
+	                <filtering>true</filtering>
+	              </resource>
+	            </resources>
+	          </configuration>            
+	        </execution>
+	      </executions>
 	    </plugin>
 	    <plugin>
 	      <groupId>org.eclipse.tycho</groupId>
