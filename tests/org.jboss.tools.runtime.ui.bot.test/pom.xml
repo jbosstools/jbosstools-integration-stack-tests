@@ -110,7 +110,7 @@
                     <goal>wget</goal>
 		  </goals>
 		  <configuration>
-                    <url>http://apache.miloslavbrada.cz/karaf/2.3.6/apache-karaf-2.3.6.zip</url>
+                    <url>http://archive.apache.org/dist/karaf/2.3.6/apache-karaf-2.3.6.zip</url>
                     <unpack>true</unpack>
                     <outputDirectory>${project.build.directory}</outputDirectory>
                     <md5>d8179d5d90aec394b48955faf2ada99b</md5>
