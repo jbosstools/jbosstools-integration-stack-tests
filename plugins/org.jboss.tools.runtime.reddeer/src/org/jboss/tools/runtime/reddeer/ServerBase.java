@@ -26,8 +26,20 @@ public abstract class ServerBase extends RuntimeBase {
 				server.stop();
 			break;
 		case STOPPED:
-			if (requiredState == ServerReqState.RUNNING)
-				server.start();
+			if (requiredState == ServerReqState.RUNNING) {
+				try {
+					server.start();
+				} catch (Exception e) {
+					try {
+						server = new ServersView().getServer(name);
+						server.stop();
+					} catch (Exception ex) {
+
+					}
+					server = new ServersView().getServer(name);
+					server.start();
+				}
+			}
 			break;
 		default:
 			new AssertionError("It was expected to have server in " + ServerState.STARTED + " or "
