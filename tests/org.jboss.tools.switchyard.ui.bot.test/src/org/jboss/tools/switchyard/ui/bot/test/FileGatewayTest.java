@@ -83,7 +83,7 @@ public class FileGatewayTest extends RedDeerTest {
 		String path = new File("target/input").getAbsolutePath();
 		wizard.getBindingPage().setDirAutoCreation(true);
 		wizard.getBindingPage().setMoveDirectory("processed");
-		wizard.getBindingPage().setDirectory(path);
+		wizard.getBindingPage().setDirectory(path.replace("\\", "/"));
 		wizard.finish();
 		new SwitchYardEditor().save();
 
