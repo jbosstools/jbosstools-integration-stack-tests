@@ -4,8 +4,10 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.List;
 
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.direct.preferences.Preferences;
 import org.jboss.reddeer.junit.requirement.CustomConfiguration;
 import org.jboss.reddeer.junit.requirement.Requirement;
 import org.jboss.reddeer.requirements.server.ServerReqState;
@@ -31,12 +33,21 @@ public class ServerRequirement implements Requirement<Server>, CustomConfigurati
 		ServerReqType[] type() default ServerReqType.ANY;
 
 		ServerReqState state() default ServerReqState.RUNNING;
+
+		String[] property() default "";
 	}
 
 	@Override
 	public boolean canFulfill() {
+		String[] requiredProperties = server.property();
+		for (String requiredProperty : requiredProperties) {
+			if (requiredProperty != null && !requiredProperty.isEmpty()
+					&& config.getServerBase().getProperties(requiredProperty).isEmpty()) {
+				return false;
+			}
+		}
 		ServerReqType[] type = server.type();
-		if(type.length == 0) {
+		if (type.length == 0) {
 			return true;
 		}
 		for (int i = 0; i < type.length; i++) {
@@ -50,6 +61,21 @@ public class ServerRequirement implements Requirement<Server>, CustomConfigurati
 	@Override
 	public void fulfill() {
 		ServerBase serverBase = config.getServerBase();
+		List<String> preferences = serverBase.getProperties("preference");
+		for (String preference : preferences) {
+			// Example: org.eclipse.m2e.core/eclipse.m2.userSettingsFile=settings.xml
+			if (preference.matches("([^/=]+)/([^/=]+)=.+")) {
+				String[] parts = preference.split("=");
+				String key = parts[0];
+				String value = parts[1];
+				parts = key.split("/");
+				String plugin = parts[0];
+				String pluginKey = parts[1];
+				Preferences.set(plugin, pluginKey, value);
+			} else {
+				LOGGER.warn("Preference '" + preference + "' doesn't match the patter. SKIPPED");
+			}
+		}
 		if (!serverBase.exists()) {
 			serverBase.create();
 		}

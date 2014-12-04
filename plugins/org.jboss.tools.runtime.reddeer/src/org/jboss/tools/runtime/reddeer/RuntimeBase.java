@@ -1,5 +1,8 @@
 package org.jboss.tools.runtime.reddeer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -57,6 +60,10 @@ public abstract class RuntimeBase {
 
 	public String getProperty(String key) {
 		return properties != null ? properties.getProperty(key) : null;
+	}
+	
+	public List<String> getProperties(String key) {
+		return properties != null ? properties.getProperties(key) : new ArrayList<String>();
 	}
 
 	public String getProperty(String key, String defaultValue) {

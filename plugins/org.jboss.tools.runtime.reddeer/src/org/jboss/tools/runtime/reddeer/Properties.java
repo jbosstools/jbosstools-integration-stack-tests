@@ -1,5 +1,6 @@
 package org.jboss.tools.runtime.reddeer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -35,5 +36,16 @@ public class Properties {
 			}
 		}
 		return null;
+	}
+	
+	public List<String> getProperties(String key) {
+		List<String> values = new ArrayList<String>();
+		for (Element element : any) {
+			String elemKey = element.getNodeName();
+			if (elemKey != null && elemKey.equals(key)) {
+				values.add(element.getTextContent());
+			}
+		}
+		return values;
 	}
 }
