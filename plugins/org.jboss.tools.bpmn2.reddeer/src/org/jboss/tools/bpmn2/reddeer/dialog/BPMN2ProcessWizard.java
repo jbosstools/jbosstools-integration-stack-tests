@@ -5,9 +5,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
-
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.tools.reddeer.dialog.ProjectPath;
 
 /**
  * 

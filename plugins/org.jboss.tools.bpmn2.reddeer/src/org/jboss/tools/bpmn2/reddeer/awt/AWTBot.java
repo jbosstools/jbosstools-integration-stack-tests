@@ -1,4 +1,4 @@
-package org.jboss.tools.awt;
+package org.jboss.tools.bpmn2.reddeer.awt;
 
 import java.awt.AWTException;
 import java.awt.Robot;

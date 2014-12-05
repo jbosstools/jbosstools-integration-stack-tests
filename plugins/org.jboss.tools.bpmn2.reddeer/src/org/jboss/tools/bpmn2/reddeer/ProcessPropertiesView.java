@@ -1,6 +1,5 @@
 package org.jboss.tools.bpmn2.reddeer;
 
-import org.jboss.tools.reddeer.DefaultPropertiesView;
 
 /**
  * 

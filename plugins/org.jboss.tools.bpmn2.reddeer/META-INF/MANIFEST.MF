@@ -25,8 +25,8 @@ Eclipse-RegisterBuddy: org.apache.log4j
 Eclipse-BundleShape: dir
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: org.jboss.tools.awt,
- org.jboss.tools.bpmn2.reddeer,
+Export-Package: org.jboss.tools.bpmn2.reddeer,
+ org.jboss.tools.bpmn2.reddeer.awt,
  org.jboss.tools.bpmn2.reddeer.dialog,
  org.jboss.tools.bpmn2.reddeer.editor,
  org.jboss.tools.bpmn2.reddeer.editor.jbpm,
@@ -43,7 +43,5 @@ Export-Package: org.jboss.tools.awt,
  org.jboss.tools.bpmn2.reddeer.editor.matcher,
  org.jboss.tools.bpmn2.reddeer.editor.properties,
  org.jboss.tools.bpmn2.reddeer.editor.switchyard.activities,
- org.jboss.tools.bpmn2.reddeer.properties.jbpm,
- org.jboss.tools.reddeer,
- org.jboss.tools.reddeer.dialog,
- org.jboss.tools.reddeer.matcher
+ org.jboss.tools.bpmn2.reddeer.matcher,
+ org.jboss.tools.bpmn2.reddeer.properties.jbpm

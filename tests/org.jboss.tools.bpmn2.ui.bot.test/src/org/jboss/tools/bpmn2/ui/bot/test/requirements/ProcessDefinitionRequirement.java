@@ -24,8 +24,8 @@ import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.tools.bpmn2.reddeer.dialog.BPMN2ProcessWizard;
+import org.jboss.tools.bpmn2.reddeer.dialog.JavaProjectWizard;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
-import org.jboss.tools.reddeer.dialog.JavaProjectWizard;
 import org.jbpm.bpmn2.objects.Person;
 
 /**

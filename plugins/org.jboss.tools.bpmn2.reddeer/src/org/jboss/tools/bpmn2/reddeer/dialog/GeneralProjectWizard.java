@@ -1,4 +1,4 @@
-package org.jboss.tools.reddeer.dialog;
+package org.jboss.tools.bpmn2.reddeer.dialog;
 
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.impl.text.LabeledText;

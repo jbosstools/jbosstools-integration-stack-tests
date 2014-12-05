@@ -1,9 +1,8 @@
 package org.jboss.tools.bpmn2.reddeer.properties.jbpm;
 
 import org.jboss.reddeer.swt.impl.button.PushButton;
-
+import org.jboss.tools.bpmn2.reddeer.DefaultCheckBox;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.CalledActivityDialog;
-import org.jboss.tools.reddeer.DefaultCheckBox;
 
 /**
  * 

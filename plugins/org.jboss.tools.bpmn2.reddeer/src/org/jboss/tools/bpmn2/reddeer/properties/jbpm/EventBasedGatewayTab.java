@@ -1,8 +1,8 @@
 package org.jboss.tools.bpmn2.reddeer.properties.jbpm;
 
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
+import org.jboss.tools.bpmn2.reddeer.DefaultCheckBox;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.EventBasedGateway.Type;
-import org.jboss.tools.reddeer.DefaultCheckBox;
 
 /**
  * 

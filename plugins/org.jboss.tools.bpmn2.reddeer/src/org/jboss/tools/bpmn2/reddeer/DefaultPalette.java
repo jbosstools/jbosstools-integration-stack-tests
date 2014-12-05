@@ -1,4 +1,4 @@
-package org.jboss.tools.reddeer;
+package org.jboss.tools.bpmn2.reddeer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,7 +14,7 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.util.ResultRunnable;
-import org.jboss.tools.reddeer.finder.PaletteEntryFinder;
+import org.jboss.tools.bpmn2.reddeer.finder.PaletteEntryFinder;
 
 /**
  * 

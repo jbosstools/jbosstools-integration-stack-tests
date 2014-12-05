@@ -2,9 +2,9 @@ package org.jboss.tools.bpmn2.reddeer.properties.jbpm;
 
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.tools.bpmn2.reddeer.DefaultCheckBox;
+import org.jboss.tools.bpmn2.reddeer.DefaultCombo;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.ImplementationDialog;
-import org.jboss.tools.reddeer.DefaultCheckBox;
-import org.jboss.tools.reddeer.DefaultCombo;
 
 /**
  * 

@@ -2,11 +2,11 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions;
 
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
+import org.jboss.tools.bpmn2.reddeer.DefaultCombo;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.MessageDialog;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.EventDefinition;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Message;
 import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
-import org.jboss.tools.reddeer.DefaultCombo;
 
 /**
  * 

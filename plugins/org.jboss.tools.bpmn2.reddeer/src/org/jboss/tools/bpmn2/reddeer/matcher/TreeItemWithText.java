@@ -1,4 +1,4 @@
-package org.jboss.tools.reddeer.matcher;
+package org.jboss.tools.bpmn2.reddeer.matcher;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;

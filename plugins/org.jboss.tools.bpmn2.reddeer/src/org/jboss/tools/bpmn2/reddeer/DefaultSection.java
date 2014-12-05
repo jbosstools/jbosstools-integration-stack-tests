@@ -1,4 +1,4 @@
-package org.jboss.tools.reddeer;
+package org.jboss.tools.bpmn2.reddeer;
 
 import java.util.List;
 

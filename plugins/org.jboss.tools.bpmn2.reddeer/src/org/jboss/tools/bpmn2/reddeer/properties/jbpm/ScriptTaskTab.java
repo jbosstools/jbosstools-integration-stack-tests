@@ -1,7 +1,7 @@
 package org.jboss.tools.bpmn2.reddeer.properties.jbpm;
 
+import org.jboss.tools.bpmn2.reddeer.DefaultCheckBox;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Expression;
-import org.jboss.tools.reddeer.DefaultCheckBox;
 
 /**
  *

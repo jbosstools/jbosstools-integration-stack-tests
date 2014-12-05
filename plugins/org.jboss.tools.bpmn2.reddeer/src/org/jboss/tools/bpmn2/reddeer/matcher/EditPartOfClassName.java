@@ -1,4 +1,4 @@
-package org.jboss.tools.reddeer.matcher;
+package org.jboss.tools.bpmn2.reddeer.matcher;
 
 import org.eclipse.gef.EditPart;
 import org.hamcrest.BaseMatcher;

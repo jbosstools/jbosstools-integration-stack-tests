@@ -36,7 +36,6 @@ import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructOfType;
 import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructWithName;
-import org.jboss.tools.reddeer.DefaultPalette;
 
 /**
  * 

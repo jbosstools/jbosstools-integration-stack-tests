@@ -1,4 +1,4 @@
-package org.jboss.tools.reddeer;
+package org.jboss.tools.bpmn2.reddeer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import org.jboss.reddeer.eclipse.ui.views.contentoutline.OutlineView;
 import org.jboss.reddeer.swt.api.Tree;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.tools.reddeer.matcher.TreeItemWithText;
+import org.jboss.tools.bpmn2.reddeer.matcher.TreeItemWithText;
 
 /**
  * 

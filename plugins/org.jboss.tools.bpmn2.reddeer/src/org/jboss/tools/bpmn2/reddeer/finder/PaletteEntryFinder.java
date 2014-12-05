@@ -1,4 +1,4 @@
-package org.jboss.tools.reddeer.finder;
+package org.jboss.tools.bpmn2.reddeer.finder;
 
 import java.util.ArrayList;
 import java.util.List;

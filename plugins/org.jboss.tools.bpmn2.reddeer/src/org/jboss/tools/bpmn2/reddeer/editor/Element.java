@@ -30,8 +30,8 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.BoundaryEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructOfType;
 import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructOnPoint;
 import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructWithName;
+import org.jboss.tools.bpmn2.reddeer.matcher.EditPartOfClassName;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.DescriptionTab;
-import org.jboss.tools.reddeer.matcher.EditPartOfClassName;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 

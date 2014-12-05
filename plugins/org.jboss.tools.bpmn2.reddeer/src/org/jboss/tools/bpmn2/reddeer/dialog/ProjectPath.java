@@ -1,4 +1,4 @@
-package org.jboss.tools.reddeer.dialog;
+package org.jboss.tools.bpmn2.reddeer.dialog;
 
 /**
  * 

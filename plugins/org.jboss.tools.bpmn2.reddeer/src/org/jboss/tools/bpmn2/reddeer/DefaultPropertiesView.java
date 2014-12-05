@@ -1,4 +1,4 @@
-package org.jboss.tools.reddeer;
+package org.jboss.tools.bpmn2.reddeer;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -19,8 +19,7 @@ import org.jboss.reddeer.swt.util.ResultRunnable;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
-import org.jboss.tools.bpmn2.reddeer.AbsoluteEditPart;
-import org.jboss.tools.reddeer.matcher.WidgetWithClassName;
+import org.jboss.tools.bpmn2.reddeer.matcher.WidgetWithClassName;
 
 /**
  * 

@@ -4,11 +4,11 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
+import org.jboss.tools.bpmn2.reddeer.DefaultCheckBox;
+import org.jboss.tools.bpmn2.reddeer.DefaultCombo;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.DataTypeDialog;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Expression;
 import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
-import org.jboss.tools.reddeer.DefaultCheckBox;
-import org.jboss.tools.reddeer.DefaultCombo;
 
 /**
  * 

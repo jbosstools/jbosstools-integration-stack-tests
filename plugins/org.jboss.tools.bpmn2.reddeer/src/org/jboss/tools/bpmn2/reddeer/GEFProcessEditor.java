@@ -17,9 +17,9 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructOfType;
-import org.jboss.tools.reddeer.finder.AllChildEditPartFinder;
-import org.jboss.tools.reddeer.finder.AllEditPartFinder;
-import org.jboss.tools.reddeer.matcher.EditPartOfClassName;
+import org.jboss.tools.bpmn2.reddeer.finder.AllChildEditPartFinder;
+import org.jboss.tools.bpmn2.reddeer.finder.AllEditPartFinder;
+import org.jboss.tools.bpmn2.reddeer.matcher.EditPartOfClassName;
 
 public class GEFProcessEditor extends GEFEditor {
 	
