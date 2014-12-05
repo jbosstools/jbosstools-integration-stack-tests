@@ -12,17 +12,15 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
-import org.jboss.tools.bpmn2.reddeer.ProcessEditorView;
-import org.jboss.tools.bpmn2.reddeer.ProcessPropertiesView;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.FromDataOutput;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.FromVariable;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ToDataInput;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ToVariable;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.endevents.TerminateEndEvent;
@@ -104,7 +102,7 @@ public class TopDownBPMN2Test {
 		new SwitchYardEditor().save();
 
 		// declare ProcessGreet interface
-		new Service(PROCESS_GREET, 1).openTextEditor();
+		new Service(PROCESS_GREET, 0).openTextEditor();
 		new TextEditor(PROCESS_GREET + ".java").typeAfter("interface", PROCESS_GREET_DECL);
 		// declare EvalGreet interface
 		openFile(PROJECT, PACKAGE_MAIN_JAVA, PACKAGE, EVAL_GREET + ".java");
@@ -117,13 +115,8 @@ public class TopDownBPMN2Test {
 
 		// BPM Process and its properties
 		openFile(PROJECT, PACKAGE_MAIN_RESOURCES, BPMN_FILE_NAME);
-		ProcessEditorView editor = new ProcessEditorView();
-		editor.click(1, 1);
-		new WorkbenchShell();
-		new ProcessPropertiesView().selectTab("Process");
-		new LabeledText("Id").setText(PROCESS_GREET);
-		editor.setFocus();
-
+		new Process(null).setName(PROCESS_GREET);
+		
 		new TerminateEndEvent("EndProcess").delete();
 		new StartEvent("StartProcess").append("EvalGreet", ElementType.SWITCHYARD_SERVICE_TASK);
 		SwitchYardServiceTask task = new SwitchYardServiceTask("EvalGreet");
