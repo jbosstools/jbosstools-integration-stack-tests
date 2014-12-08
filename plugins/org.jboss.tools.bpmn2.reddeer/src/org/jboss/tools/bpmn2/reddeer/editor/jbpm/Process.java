@@ -18,7 +18,13 @@ public class Process extends ElementContainer {
 	 */
 	public Process(String name) {
 		super(name, ElementType.PROCESS);
-		editPartRedDeer.click(1, 1);
+	}
+	
+	/**
+	 * Constructs currently opened process
+	 */
+	public Process() {
+		this(null);
 	}
 	
 	/**

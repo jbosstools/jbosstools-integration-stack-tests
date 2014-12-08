@@ -20,6 +20,7 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.hamcrest.Matcher;
 import org.jboss.reddeer.gef.impl.editpart.AbstractEditPart;
+import org.jboss.reddeer.gef.impl.editpart.LabeledEditPart;
 import org.jboss.reddeer.graphiti.impl.graphitieditpart.LabeledGraphitiEditPart;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.tools.bpmn2.reddeer.AbsoluteEditPart;
@@ -49,7 +50,7 @@ public class Element {
 	protected String name;
 	protected ElementType type;
 	protected Element parent;
-	protected AbsoluteEditPart editPartRedDeer;
+	protected AbsoluteEditPart containerShapeEditPart;
 	protected GEFProcessEditor processEditor;
 	
 	protected Element(){
@@ -94,10 +95,10 @@ public class Element {
 	
 	protected Element(EditPart containerShapeEditPart, ElementType type) {
 		this.type = type;
-		this.editPartRedDeer = new AbsoluteEditPart(containerShapeEditPart);
+		this.containerShapeEditPart = new AbsoluteEditPart(containerShapeEditPart);
 		processEditor = new GEFProcessEditor();
 		editor = new ProcessEditorView();
-		properties = new ProcessPropertiesView(editPartRedDeer);
+		properties = new ProcessPropertiesView(this.containerShapeEditPart);
 	}
 	
 	protected Element(Element copyFrom) {
@@ -105,7 +106,7 @@ public class Element {
 		this.type = copyFrom.type;
 		this.parent = copyFrom.parent;
 		this.editor = copyFrom.editor;
-		this.editPartRedDeer = copyFrom.editPartRedDeer;
+		this.containerShapeEditPart = copyFrom.containerShapeEditPart;
 		this.properties = copyFrom.properties;
 		this.processEditor = copyFrom.processEditor;
 	}
@@ -124,23 +125,27 @@ public class Element {
 		
 		if(type != ElementType.PROCESS) {
 			matcherList.add(new EditPartOfClassName("ContainerShapeEditPart"));
-			editPartRedDeer = new AbsoluteEditPart(allOf(matcherList), index);
+			containerShapeEditPart = new AbsoluteEditPart(allOf(matcherList), index);
 		} else {
-			editPartRedDeer = new AbsoluteEditPart(processEditor.getRootEditPart());
+			containerShapeEditPart = new AbsoluteEditPart(processEditor.getRootEditPart());
 		}
 
-		if (editPartRedDeer == null && type != ElementType.PROCESS) {
+		if (containerShapeEditPart == null) {
 			throw new RuntimeException("Reddeer could not find construct with name '" + name + "' of type '" + type.name() + "'");
 		}
 
-		properties = new ProcessPropertiesView(editPartRedDeer);
-		
+		properties = new ProcessPropertiesView(containerShapeEditPart);
+	
 		if (select) {
 			select();
 		}
 		
 		if(type == ElementType.PROCESS) {
-			click();
+			containerShapeEditPart.click(0,0);
+			if(name == null) {
+				properties.activate();
+				this.name = properties.getTitle();
+			}
 		}
 	}
 	
@@ -165,14 +170,18 @@ public class Element {
 	 * Select this construct. Select the pictogram not the label.
 	 */
 	public void select() {
-		editPartRedDeer.select();
+		if(name != null && type != ElementType.PROCESS) {
+			new LabeledEditPart(name).select();
+		} else {
+			containerShapeEditPart.select();
+		}
 	}
 
 	/**
 	 * Click to label of construct
 	 */
 	public void click() {
-		editPartRedDeer.click();
+		containerShapeEditPart.click();
 	}
 	
 	/**
@@ -187,7 +196,7 @@ public class Element {
 		}
 
 		Point p = getBounds().getTopLeft();
-		Element newEvent = putToCanvas(name, eventType, p, editPartRedDeer.getEditPart().getParent());
+		Element newEvent = putToCanvas(name, eventType, p, containerShapeEditPart.getEditPart().getParent());
 		newEvent.name = name;
 		
 		try {
@@ -242,7 +251,7 @@ public class Element {
 			throw new RuntimeException(point + " is not available");
 		}
 		
-		Element construct = putToCanvas(name, constructType, point, editPartRedDeer.getEditPart().getParent());
+		Element construct = putToCanvas(name, constructType, point, containerShapeEditPart.getEditPart().getParent());
 		
 		connectTo(construct, connectionType);
 	}
@@ -316,7 +325,7 @@ public class Element {
 	 */
 	protected boolean isAvailable(Point p) {
 		// Check weather the point is not already taken by another child editPart.
-		List<EditPart> result = processEditor.getAllChildContainerShapeEditParts(editPartRedDeer.getEditPart().getParent(), new ConstructOnPoint<EditPart>(p));
+		List<EditPart> result = processEditor.getAllChildContainerShapeEditParts(containerShapeEditPart.getEditPart().getParent(), new ConstructOnPoint<EditPart>(p));
 		return result.isEmpty();
 	}
 	
@@ -499,7 +508,7 @@ public class Element {
 	}
 	
 	public AbsoluteEditPart getAbsoluteEditPart() {
-		return editPartRedDeer;
+		return containerShapeEditPart;
 	}
 	
 	/**
@@ -515,7 +524,7 @@ public class Element {
 	 * @return
 	 */
 	public Rectangle getBounds() {
-		return editPartRedDeer.getBounds();
+		return containerShapeEditPart.getBounds();
 	}
 	
 	protected Element putToCanvas(String name, ElementType type, Point point, EditPart parent) {

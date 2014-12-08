@@ -9,7 +9,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructOnPoint;
  * 
  */
 public class ElementContainer extends Element {
-
+	
 	/**
 	 * @see Construct(String, ConstructType, Construct, int, boolean)
 	 * @param name
@@ -92,7 +92,7 @@ public class ElementContainer extends Element {
 		select();
 		log.info("Adding consturct '" + name + "' of type '" + type + "' to '" + point + "'");
 		
-		EditPart parent = editPartRedDeer.getEditPart();
+		EditPart parent = containerShapeEditPart.getEditPart();
 		if("Boundary Events".compareTo(type.getSectionName()) == 0) {
 			parent = parent.getParent();
 		}
@@ -113,7 +113,7 @@ public class ElementContainer extends Element {
 		select();
 		log.info("Adding consturct '" + name + "' of type '" + type + "' to '" + point + "'");
 		
-		EditPart parent = editPartRedDeer.getEditPart();
+		EditPart parent = containerShapeEditPart.getEditPart();
 		if("Boundary Events".compareTo(type.getSectionName()) == 0) {
 			parent = parent.getParent();
 		}
@@ -134,7 +134,7 @@ public class ElementContainer extends Element {
 		if (bounds.contains(point)) {
 			// Check weather the point is not already taken by another child editPart.
 			//return editor.getEditParts(editPart, new ConstructOnPoint<EditPart>(point)).isEmpty();
-			return processEditor.getAllChildContainerShapeEditParts(editPartRedDeer.getEditPart().getParent(),
+			return processEditor.getAllChildContainerShapeEditParts(containerShapeEditPart.getEditPart().getParent(),
 					new ConstructOnPoint<EditPart>(p)).isEmpty();
 		}
 		// Out of bounds.
