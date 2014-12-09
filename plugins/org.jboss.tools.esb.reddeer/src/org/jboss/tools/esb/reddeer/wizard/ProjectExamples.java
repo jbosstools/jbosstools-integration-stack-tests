@@ -7,6 +7,7 @@ import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
@@ -14,6 +15,7 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 
 /**
  * Wizard for creating project examples
@@ -39,13 +41,18 @@ public class ProjectExamples extends NewWizardDialog {
 
 	@Override
 	public void finish() {
-		super.finish();
-		new WaitUntil(new ShellWithTextIsAvailable(DIALOG_TITLE), TimePeriod.getCustom(600));
+		new DefaultShell(DIALOG_TITLE);
+		new FinishButton().click();
+		new WaitUntil(new ShellWithTextIsAvailable(DIALOG_TITLE), TimePeriod.VERY_LONG);
+		
+		new DefaultShell(DIALOG_TITLE);
 		if (new CheckBox(0).isEnabled()) {
 			new CheckBox(0).toggle(false);
 		}
 		new CheckBox(1).toggle(false);
+		
 		new PushButton("Finish").click();
+		new WaitWhile(new ShellWithTextIsAvailable(DIALOG_TITLE));
 	}
 
 	/**
