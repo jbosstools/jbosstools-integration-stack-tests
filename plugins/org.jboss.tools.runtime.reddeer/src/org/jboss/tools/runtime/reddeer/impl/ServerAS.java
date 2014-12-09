@@ -43,6 +43,7 @@ public class ServerAS extends ServerBase {
 		runtimePreferencePage.open();
 		runtimePreferencePage.addRuntime();
 		ServerRuntimeWizard runtimeWizard = new ServerRuntimeWizard();
+		runtimeWizard.activate();
 		runtimeWizard.setType(getCategory(), getRuntimeType());
 		runtimeWizard.next();
 		runtimeWizard.setName(name);
