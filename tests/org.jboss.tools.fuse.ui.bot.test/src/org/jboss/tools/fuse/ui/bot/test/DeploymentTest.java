@@ -1,6 +1,5 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
@@ -9,6 +8,7 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
@@ -65,6 +65,7 @@ public class DeploymentTest {
 	@After
 	public void manageServers() {
 
+		new DefaultShell();
 		ServerManipulator.removeAllModules(serverRequirement.getConfig().getName());
 		ServerManipulator.stopServer(serverRequirement.getConfig().getName());
 		ServerManipulator.removeAllModules("TEST");
@@ -96,10 +97,6 @@ public class DeploymentTest {
 		ServerManipulator.setImmeadiatelyPublishing(server, false);
 		ServerManipulator.addModule(server, PROJECT2_NAME);
 		assertTrue(ServerManipulator.hasServerModule(server, PROJECT2_NAME));
-		assertFalse(new FuseShell()
-				.execute("log:display")
-				.contains(
-						"Publishing application context as OSGi service with properties {org.springframework.context.service.name=camel-spring-dm"));
 		ServerManipulator.publish(server);
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		assertTrue(new FuseShell()

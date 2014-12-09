@@ -7,7 +7,7 @@ import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.gef.GEFLayerException;
 import org.jboss.reddeer.gef.editor.GEFEditor;
 import org.jboss.reddeer.gef.impl.editpart.LabeledEditPart;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
@@ -74,7 +74,7 @@ public class CamelEditor extends GEFEditor {
 
 		log.debug("Setting a new breakpoint on component: " + label);
 		doOperation(label, "Set Breakpoint");
-		if (new ShellWithTextIsActive("Please confirm...").test()) {
+		if (new ShellWithTextIsAvailable("Please confirm...").test()) {
 			new DefaultShell("Please confirm...");
 			new PushButton("OK").click();
 		}
@@ -98,7 +98,7 @@ public class CamelEditor extends GEFEditor {
 		new DefaultCombo().setSelection(language);
 		new DefaultStyledText().setText(condition);
 		new PushButton("OK").click();
-		if (new ShellWithTextIsActive("Please confirm...").test()) {
+		if (new ShellWithTextIsAvailable("Please confirm...").test()) {
 			new DefaultShell("Please confirm...");
 			new PushButton("OK").click();
 		}
