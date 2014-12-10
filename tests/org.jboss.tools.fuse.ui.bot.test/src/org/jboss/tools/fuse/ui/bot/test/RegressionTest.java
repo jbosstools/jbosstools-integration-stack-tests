@@ -31,8 +31,12 @@ import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.matcher.RegexMatcher;
+import org.jboss.reddeer.swt.matcher.WithTooltipTextMatcher;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
@@ -44,6 +48,7 @@ import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
 import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
 import org.jboss.tools.fuse.reddeer.utils.ResourceHelper;
 import org.jboss.tools.fuse.reddeer.view.JMXNavigator;
+import org.jboss.tools.fuse.ui.bot.test.utils.EditorManipulator;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
@@ -77,6 +82,7 @@ public class RegressionTest {
 		if (ServerManipulator.isServerStarted(server)) {
 			ServerManipulator.stopServer(server);
 		}
+		new DefaultToolItem(new WorkbenchShell(), 0, new WithTooltipTextMatcher(new RegexMatcher("Save All.*"))).click();
 		new ProjectExplorer().deleteAllProjects();
 		ShellHandler.getInstance().closeAllNonWorbenchShells();
 		new ConsoleView().terminateConsole();
@@ -224,6 +230,23 @@ public class RegressionTest {
 		}
 
 		fail("Context menu item 'Close Camel Context' is available!");
+	}
+
+	/**
+	 * context id is removed on save
+	 * https://issues.jboss.org/browse/FUSETOOLS-1123
+	 */
+	@Test
+	public void issue_1123() {
+
+		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
+		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
+		CamelEditor.switchTab("Source");
+		EditorManipulator.copyFileContentToCamelXMLEditor("resources/camel-context-routeContextId.xml");
+		CamelEditor.switchTab("Design");
+		CamelEditor.switchTab("Source");
+		String editorText = new DefaultStyledText().getText();
+		assertTrue(editorText.contains("id=id=\"test\""));
 	}
 
 	/**
