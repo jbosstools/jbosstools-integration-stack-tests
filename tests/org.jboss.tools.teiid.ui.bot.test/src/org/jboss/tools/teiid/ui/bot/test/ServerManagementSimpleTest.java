@@ -3,15 +3,17 @@ package org.jboss.tools.teiid.ui.bot.test;
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
+import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
+import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.teiid.reddeer.VDB;
-import org.jboss.tools.teiid.reddeer.condition.ServerHasState;
 import org.jboss.tools.teiid.reddeer.editor.SQLScrapbookEditor;
 import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
@@ -22,12 +24,10 @@ import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.SQLResult;
 import org.jboss.tools.teiid.reddeer.view.TeiidInstanceView;
 import org.jboss.tools.teiid.reddeer.wizard.CreateVDB;
-import org.jboss.tools.teiid.reddeer.wizard.ImportJDBCDatabaseWizard;
 import org.jboss.tools.teiid.reddeer.wizard.ImportProjectWizard;
-import org.jboss.tools.teiid.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
-import org.jboss.tools.teiid.ui.bot.test.suite.TeiidSuite;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * Test server management use cases start with -Pprofiles - this will load and
@@ -36,17 +36,14 @@ import org.junit.Test;
  * @author lfabriko
  * (linux fedora 18, 64bit locally - 8 min)
  */
-@Perspective(name = "Teiid Designer")
+@RunWith(RedDeerSuite.class)
+@OpenPerspective(TeiidPerspective.class)
+@Server(type = ServerReqType.ANY, state = ServerReqState.PRESENT)
 public class ServerManagementSimpleTest extends SWTBotTestCase {
 
-	public static String[] properties = {
-		"dv6.properties"
-	};
-
-	public static String[] serverNames = { 
-		"EAP-6.1"
-		};
-
+	@InjectRequirement
+	private ServerRequirement serverRequirement;
+	
 	private static final String PROJECT_NAME = "ServerMgmtTest";
 	private static final String MODEL_NAME = "partssupModel1.xmi";
 	private static final String HSQLDB_PROFILE = "HSQLDB Profile";
@@ -91,18 +88,12 @@ public class ServerManagementSimpleTest extends SWTBotTestCase {
 		SWTBotPreferences.PLAYBACK_DELAY = 1000;
 		n++;
 		
-		try{
-		TeiidSuite.addServerWithProperties(properties[0]);// define AS-5,
-		} catch (Exception ex){
-			//do it manually
-		}
-		
 		SWTBotPreferences.PLAYBACK_DELAY = 200;
 		// start server EAP-6.1
 		
 		TeiidInstanceView teiidInstanceView = new TeiidInstanceView(true);
 		try {
-		teiidInstanceView.startServer(serverNames[0]);
+		serverRequirement.getConfig().getServerBase().setState(ServerReqState.RUNNING);
 
 		//specify the default teiid instance
 		teiidInstanceView.setDefaultTeiidInstance(EAP6_URL);
@@ -148,7 +139,7 @@ public class ServerManagementSimpleTest extends SWTBotTestCase {
 		
 		// stop server EAP-6.1
 		try{
-		teiidInstanceView.stopServer(serverNames[0]);
+		serverRequirement.getConfig().getServerBase().setState(ServerReqState.STOPPED);
 		} catch (Exception ex){
 			//do it manually
 		}

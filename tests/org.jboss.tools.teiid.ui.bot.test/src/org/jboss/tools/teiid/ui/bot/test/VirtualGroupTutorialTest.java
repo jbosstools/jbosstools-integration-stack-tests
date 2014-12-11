@@ -5,12 +5,16 @@ import java.util.Arrays;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
+import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.teiid.reddeer.ModelProject;
 import org.jboss.tools.teiid.reddeer.Procedure;
 import org.jboss.tools.teiid.reddeer.VDB;
@@ -30,18 +34,13 @@ import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.CreateMetadataModel;
 import org.jboss.tools.teiid.reddeer.wizard.CreateVDB;
 import org.jboss.tools.teiid.reddeer.wizard.ImportJDBCDatabaseWizard;
-import org.jboss.tools.teiid.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
-import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.Server;
-import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.State;
-import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.Type;
-import org.jboss.tools.teiid.ui.bot.test.suite.TeiidSuite;
 import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@Perspective(name = "Teiid Designer")
-@Server(type = Type.ALL, state = State.RUNNING)
-@RunWith(TeiidSuite.class)
+
+@RunWith(RedDeerSuite.class)
+@Server(type = ServerReqType.ANY, state = ServerReqState.RUNNING)
 public class VirtualGroupTutorialTest extends SWTBotTestCase {
 
 	private static final String PROJECT_NAME = "MyFirstProject";

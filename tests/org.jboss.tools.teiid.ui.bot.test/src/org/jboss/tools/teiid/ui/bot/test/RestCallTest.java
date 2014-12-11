@@ -1,20 +1,23 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.Properties;
 
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
+import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.teiid.reddeer.WAR;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
 import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.manager.ServerManager;
 import org.jboss.tools.teiid.reddeer.manager.VDBManager;
+import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
 import org.jboss.tools.teiid.reddeer.wizard.ImportGeneralItemWizard;
-import org.jboss.tools.teiid.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
-import org.jboss.tools.teiid.ui.bot.test.suite.TeiidSuite;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,8 +27,9 @@ import org.junit.runner.RunWith;
  * 
  * @author lfabriko
  */
-@Perspective(name = "Teiid Designer")
-@RunWith(TeiidSuite.class)
+@RunWith(RedDeerSuite.class)
+@OpenPerspective(TeiidPerspective.class)
+@Server(type = ServerReqType.ANY, state = ServerReqState.RUNNING)
 public class RestCallTest {
 
 	private static final String serverFile = "as7.properties";
@@ -50,10 +54,9 @@ public class RestCallTest {
 	@BeforeClass
 	public static void prepare() {
 
+		// TODO: DO NOT use hard coded version
 		new ServerManager().setDefaultTeiidInstanceTargetedVersion("8.2.x");
 		// switches back to 8.4 if server as 7.1 + teiid 8.2.0 is defined
-
-		new ServerManager().addServer(serverFile);
 
 		Properties itemProps = new Properties();
 		itemProps.setProperty("location", teiidBot.toAbsolutePath(archiveLocation));
@@ -125,7 +128,7 @@ public class RestCallTest {
 		new VDBManager().deployVDB(pathToVDB);
 
 		// run wget
-		assertEquals(result, teiidBot.curl(url1));
+		Assert.assertEquals(result, teiidBot.curl(url1));
 	}
 
 	@Test
@@ -176,6 +179,6 @@ public class RestCallTest {
 		new VDBManager().deployVDB(pathToVDB);
 
 		// run wget
-		assertEquals(result2, teiidBot.curl(url2));
+		Assert.assertEquals(result2, teiidBot.curl(url2));
 	}
 }

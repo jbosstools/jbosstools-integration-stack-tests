@@ -4,13 +4,14 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Properties;
 
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.tools.teiid.reddeer.ModelClass;
 import org.jboss.tools.teiid.reddeer.ModelType;
 import org.jboss.tools.teiid.reddeer.Procedure;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
+import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.wizard.MetadataModelWizard;
-import org.jboss.tools.teiid.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
-import org.jboss.tools.teiid.ui.bot.test.suite.TeiidSuite;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,8 +19,8 @@ import org.junit.runner.RunWith;
 /**
  * @author lfabriko
  */
-@Perspective(name = "Teiid Designer")
-@RunWith(TeiidSuite.class)
+@RunWith(RedDeerSuite.class)
+@OpenPerspective(TeiidPerspective.class)
 public class RelationalSourceModelTest {
 
 	private static final String PROJECT = "RelSrcModel";

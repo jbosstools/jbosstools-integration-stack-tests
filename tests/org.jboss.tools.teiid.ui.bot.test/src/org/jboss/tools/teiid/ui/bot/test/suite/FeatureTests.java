@@ -1,5 +1,6 @@
 package org.jboss.tools.teiid.ui.bot.test.suite;
 
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.teiid.ui.bot.test.BasicTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
@@ -15,7 +16,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	// ServerManagementSimpleTest.class,
 	// ServerManagementTest.class
 })
-@RunWith(TeiidSuite.class)
+@RunWith(RedDeerSuite.class)
 public class FeatureTests {
 
 }

@@ -1,12 +1,12 @@
 package org.jboss.tools.teiid.ui.bot.test.suite;
 
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.teiid.ui.bot.test.E2eAudioBooksVdbExecutionTest;
 import org.jboss.tools.teiid.ui.bot.test.ImportWizardTest;
 import org.jboss.tools.teiid.ui.bot.test.ModelWizardTest;
 import org.jboss.tools.teiid.ui.bot.test.ServerManagementTest;
 import org.jboss.tools.teiid.ui.bot.test.TopDownWsdlTest;
 import org.jboss.tools.teiid.ui.bot.test.VirtualGroupTutorialTest;
-import org.jboss.tools.teiid.ui.bot.test.VirtualGroupTutorialUpdatedTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
@@ -21,12 +21,11 @@ import org.junit.runners.Suite.SuiteClasses;
 	ModelWizardTest.class,
 	TopDownWsdlTest.class,
 	VirtualGroupTutorialTest.class,
-	VirtualGroupTutorialUpdatedTest.class,
 	E2eAudioBooksVdbExecutionTest.class,
 	ServerManagementTest.class
 	//deprecated
 })
-@RunWith(TeiidSuite.class)
+@RunWith(RedDeerSuite.class)
 @Deprecated
 public class AllTests {
 

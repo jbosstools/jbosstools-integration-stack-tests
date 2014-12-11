@@ -1,16 +1,20 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
+import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
+import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
 import org.jboss.tools.teiid.reddeer.manager.ServerManager;
 import org.jboss.tools.teiid.reddeer.manager.VDBManager;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.view.GuidesView;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
-import org.jboss.tools.teiid.reddeer.view.ServersViewExt.ServerType;
 import org.jboss.tools.teiid.reddeer.wizard.ImportProjectWizard;
-import org.jboss.tools.teiid.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -19,8 +23,13 @@ import org.junit.Test;
  * @author lfabriko
  *
  */
-@Perspective(name = "Teiid Designer")
+@OpenPerspective(TeiidPerspective.class)
+@Server(type = ServerReqType.ANY, state = ServerReqState.RUNNING)
 public class ServerManagementSimpleEDS5Test extends SWTBotTestCase {
+	
+	@InjectRequirement
+	private ServerRequirement serverRequirement;
+
 	private static final String EDS5_PROPERTIES = "eds5.properties";
 	private static final String EDS5_SERVER = "SOA-5.1";
 	private static final String PROJECT_NAME = "ServerMgmtTest";
@@ -40,12 +49,6 @@ public class ServerManagementSimpleEDS5Test extends SWTBotTestCase {
 
 	@Test
 	public void test() {
-		try{
-			new ServerManager().addServer(EDS5_PROPERTIES);
-		} catch (Exception ex){
-			System.err.println("Cannot add server, " + ex.getMessage()); 
-		}
-		
 		try {
 			new ServerManager().editLaunchConfigProgramArgs(EDS5_SERVER, "-Dremoting.stream.host=localhost");
 		} catch (Exception ex){
@@ -53,13 +56,8 @@ public class ServerManagementSimpleEDS5Test extends SWTBotTestCase {
 		}
 		
 		try {
-			new ServerManager().startServer(EDS5_SERVER);
-		} catch (Exception ex){
-			System.err.println("Cannot start server, " + ex.getMessage());
-		}
-		
-		try {
-			new ServerManager().setDefaultTeiidInstance(EDS5_SERVER, ServerType.EDS5);
+			// TODO: fix  setDefaultTeiidInstance
+			// new ServerManager().setDefaultTeiidInstance(EDS5_SERVER, ??);
 		} catch (Exception ex){
 			System.err.println("Cannot set default instance, " + ex.getMessage());
 		}
@@ -90,7 +88,8 @@ public class ServerManagementSimpleEDS5Test extends SWTBotTestCase {
 		// deploy VDB - pass
 		try{
 			new VDBManager().deployVDB(new String[]{PROJECT_NAME, VDB});
-			System.out.println("VDB deployed? " + new VDBManager().isVDBDeployed(EDS5_SERVER, ServerType.EDS5, VDB));//or serverManager, its ==
+			// TOD: fix isVDBDeployed
+			// System.out.println("VDB deployed? " + new VDBManager().isVDBDeployed(EDS5_SERVER, ServerType.EDS5, VDB));//or serverManager, its ==
 		} catch (Exception ex){
 			//do it manually
 			System.err.println("VDB may not be deployed, " + ex.getMessage());

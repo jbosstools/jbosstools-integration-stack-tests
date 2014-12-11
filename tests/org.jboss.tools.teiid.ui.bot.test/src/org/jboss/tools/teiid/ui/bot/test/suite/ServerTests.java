@@ -1,5 +1,6 @@
 package org.jboss.tools.teiid.ui.bot.test.suite;
 
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.teiid.ui.bot.test.JDBCImportWizardTest;
 import org.jboss.tools.teiid.ui.bot.test.ProcedurePreviewTest;
 import org.jboss.tools.teiid.ui.bot.test.ServerManagementSimpleDV6Test;
@@ -24,7 +25,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	//TeiidConnectionImportTest - TODO solve issues with DV setup
 	//AdvancedServerOpsTest - TODO 
 })
-@RunWith(TeiidSuite.class)
+@RunWith(RedDeerSuite.class)
 public class ServerTests {
 
 }

@@ -1,5 +1,6 @@
 package org.jboss.tools.teiid.ui.bot.test.suite;
 
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.teiid.ui.bot.test.TeiidConnectionImportTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
@@ -14,7 +15,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	TeiidConnectionImportTest.class
 	// TODO not supported yet
 })
-@RunWith(TeiidSuite.class)
+@RunWith(RedDeerSuite.class)
 public class AdvancedServerTests {
 
 }

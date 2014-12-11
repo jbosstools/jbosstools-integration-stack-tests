@@ -1,14 +1,9 @@
 package org.jboss.tools.teiid.reddeer.manager;
 
-import java.util.Properties;
-
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.tools.teiid.reddeer.preference.TeiidDesignerPreferencePage;
 import org.jboss.tools.teiid.reddeer.view.GuidesView;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt.ServerType;
-import org.jboss.tools.teiid.ui.bot.test.TeiidBot;
-import org.jboss.tools.teiid.ui.bot.test.suite.TeiidSuite;
 
 public class ServerManager {
 	
@@ -16,14 +11,6 @@ public class ServerManager {
 	public static final int EDIT_JBOSS_TEIID_INSTANCE_PROPERTIES = 1; 
 	public static final int SET_THE_DEFAULT_JBOSS_TEIID_INSTANCE = 2; 
 	public static final int REFRESH_TEIID_INSTANCE = 3;*/
-	
-	/**
-	 * 
-	 * @param swtbotFileName as5.properties, dv6.properties
-	 */
-	public void addServer(String swtbotFileName){
-		TeiidSuite.addServerWithProperties(swtbotFileName);
-	}
 	
 	public void startServer(String serverName){
 		new ServersViewExt().startServer(serverName);
@@ -75,9 +62,4 @@ public class ServerManager {
 		new TeiidDesignerPreferencePage().setTeiidConnectionImporterTimeout(secs);
 	}
 	
-	public String getServerName(String serverProperties){
-		Properties props = TeiidSuite.loadSWTBotProperties();
-		String[] parts = props.getProperty("SERVER").split(",");
-		return parts[0]+"-"+parts[1];
-	}
 }

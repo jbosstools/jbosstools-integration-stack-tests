@@ -3,7 +3,12 @@ package org.jboss.tools.teiid.ui.bot.test;
 import java.util.Properties;
 
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
+import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.teiid.reddeer.WAR;
 import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
@@ -11,12 +16,8 @@ import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.manager.ServerManager;
 import org.jboss.tools.teiid.reddeer.manager.VDBManager;
+import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.wizard.ImportGeneralItemWizard;
-import org.jboss.tools.teiid.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
-import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.Server;
-import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.State;
-import org.jboss.tools.teiid.ui.bot.test.requirement.ServerRequirement.Type;
-import org.jboss.tools.teiid.ui.bot.test.suite.TeiidSuite;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,9 +27,9 @@ import org.junit.runner.RunWith;
  * @author lfabriko
  *
  */
-@Perspective(name = "Teiid Designer")
-@Server(type = Type.ALL, state = State.NOT_RUNNING)
-@RunWith(TeiidSuite.class)
+@RunWith(RedDeerSuite.class)
+@OpenPerspective(TeiidPerspective.class)
+@Server(type = ServerReqType.ANY, state = ServerReqState.PRESENT)
 public class WARTest extends SWTBotTestCase {
 
 	public static final String MODEL_PROJECT = "jdbcImportTest";

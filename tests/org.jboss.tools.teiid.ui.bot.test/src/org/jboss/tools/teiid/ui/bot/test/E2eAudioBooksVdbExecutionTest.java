@@ -22,6 +22,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
@@ -52,7 +53,6 @@ import org.jboss.tools.teiid.reddeer.wizard.CreateMetadataModel.ModelType;
 import org.jboss.tools.teiid.reddeer.wizard.CreateVDB;
 import org.jboss.tools.teiid.reddeer.wizard.ImportJDBCDatabaseWizard;
 import org.jboss.tools.teiid.reddeer.wizard.XMLSchemaImportWizard;
-import org.jboss.tools.teiid.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
 import org.junit.Test;
 
 /**
@@ -63,7 +63,7 @@ import org.junit.Test;
  *
  */
 
-@Perspective(name = "Teiid Designer")//initialize tests in this perspective
+@OpenPerspective(TeiidPerspective.class)//initialize tests in this perspective
 //@Server(type = Type.ALL, state = State.RUNNING)//uses info about server - swtbot.properties
 public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 

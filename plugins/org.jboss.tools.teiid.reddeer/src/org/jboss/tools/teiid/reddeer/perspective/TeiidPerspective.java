@@ -20,7 +20,7 @@ public class TeiidPerspective extends AbstractPerspective {
 	
 	private ModelExplorerView modelExplorerView;
 	
-	private TeiidPerspective() {
+	public TeiidPerspective() {
 		super(NAME);
 	}
 	

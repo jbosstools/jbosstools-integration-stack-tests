@@ -1,12 +1,9 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
-import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -22,10 +19,7 @@ import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.SQLResult;
 import org.jboss.tools.teiid.reddeer.view.TeiidInstanceView;
 import org.jboss.tools.teiid.reddeer.wizard.CreateVDB;
-import org.jboss.tools.teiid.reddeer.wizard.ImportJDBCDatabaseWizard;
 import org.jboss.tools.teiid.reddeer.wizard.ImportProjectWizard;
-import org.jboss.tools.teiid.ui.bot.test.requirement.PerspectiveRequirement.Perspective;
-import org.jboss.tools.teiid.ui.bot.test.suite.TeiidSuite;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -35,7 +29,7 @@ import org.junit.Test;
  * 
  * @author lfabriko 
  */
-@Perspective(name = "Teiid Designer")
+@OpenPerspective(TeiidPerspective.class)
 public class ServerManagementTest extends SWTBotTestCase {
 
 	public static String[] properties = { "dv6.properties", "as5.properties" , "as7.properties"};
@@ -129,7 +123,8 @@ public class ServerManagementTest extends SWTBotTestCase {
 		try {
 			n++;
 			for (int i = 0; i < properties.length; i++) {
-				TeiidSuite.addServerWithProperties(properties[i]);// define
+				// TODO: Don't use properties anymore!
+				// TeiidSuite.addServerWithProperties(properties[i]);// define
 																	// AS-5,
 																	// EAP-6.1
 			}
