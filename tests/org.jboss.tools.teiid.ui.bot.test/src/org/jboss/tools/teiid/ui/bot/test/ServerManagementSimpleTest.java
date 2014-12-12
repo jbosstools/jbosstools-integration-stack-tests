@@ -5,20 +5,18 @@ import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
-import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
-import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.teiid.reddeer.VDB;
 import org.jboss.tools.teiid.reddeer.editor.SQLScrapbookEditor;
 import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
+import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
+import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.GuidesView;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.SQLResult;
@@ -37,12 +35,11 @@ import org.junit.runner.RunWith;
  * (linux fedora 18, 64bit locally - 8 min)
  */
 @RunWith(RedDeerSuite.class)
-@OpenPerspective(TeiidPerspective.class)
-@Server(type = ServerReqType.ANY, state = ServerReqState.PRESENT)
+@TeiidServer(state = ServerReqState.PRESENT)
 public class ServerManagementSimpleTest extends SWTBotTestCase {
 
 	@InjectRequirement
-	private ServerRequirement serverRequirement;
+	private TeiidServerRequirement teiidServer;
 	
 	private static final String PROJECT_NAME = "ServerMgmtTest";
 	private static final String MODEL_NAME = "partssupModel1.xmi";
@@ -93,7 +90,7 @@ public class ServerManagementSimpleTest extends SWTBotTestCase {
 		
 		TeiidInstanceView teiidInstanceView = new TeiidInstanceView(true);
 		try {
-		serverRequirement.getConfig().getServerBase().setState(ServerReqState.RUNNING);
+		teiidServer.getServerConfig().getServerBase().setState(ServerReqState.RUNNING);
 
 		//specify the default teiid instance
 		teiidInstanceView.setDefaultTeiidInstance(EAP6_URL);
@@ -139,7 +136,7 @@ public class ServerManagementSimpleTest extends SWTBotTestCase {
 		
 		// stop server EAP-6.1
 		try{
-		serverRequirement.getConfig().getServerBase().setState(ServerReqState.STOPPED);
+		teiidServer.getServerConfig().getServerBase().setState(ServerReqState.STOPPED);
 		} catch (Exception ex){
 			//do it manually
 		}
