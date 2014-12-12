@@ -10,6 +10,12 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.EscalationStartEven
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ImportResourceRequirement.ImportResource;
 import org.junit.Test;
 
+/**
+ * @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1173140
+ * @author jomarko
+ *
+ */
+
 @ImportResource(projectName="BpmnTestProject", folderToImportName="resources/bpmn2/model/base", baseDiagramFileName="StartEventSubprocessTest.bpmn2")
 public class StartEventSubprocessTest extends ImportResourceTest{
 	

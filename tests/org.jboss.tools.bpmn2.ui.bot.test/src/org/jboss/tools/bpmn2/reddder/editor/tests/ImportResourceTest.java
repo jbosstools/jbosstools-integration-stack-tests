@@ -27,6 +27,8 @@ import org.jboss.tools.bpmn2.ui.bot.test.validator.JBPM6Validator;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.rules.TestName;
 import org.kie.api.KieBase;
 import org.kie.api.io.Resource;
 import org.kie.api.io.ResourceType;
@@ -40,16 +42,20 @@ public class ImportResourceTest {
 	protected String lastSavedName;
 	protected ProcessEditorView editor;
 	protected Process process;
+	protected String processId;
+	
+	@Rule 
+	public TestName methodName = new TestName();
 	
 	private static boolean configureShellHandled;
 	private String diagramSourceCode;
 	
-	protected static final String STRING_VAR_ONE = "Property_1";
-	protected static final String STRING_VAR_TWO = "Property_2";
-	protected static final String INT_VAR_ONE = "Property_3";
-	protected static final String INT_VAR_TWO = "Property_4";
-	protected static final String BOOL_VAR = "Property_5";
-	protected static final String OBJECT_VAR = "Property_6";
+	protected static final String STRING_VAR_ONE = "StrVarOne";
+	protected static final String STRING_VAR_TWO = "StrVarTwo";
+	protected static final String INT_VAR_ONE = "IntVarOne";
+	protected static final String INT_VAR_TWO = "IntVarTwo";
+	protected static final String BOOL_VAR = "BoolVarOne";
+	protected static final String OBJECT_VAR = "ObjectVarOne";
 	
 	protected static final String PACKAGE_BASE = "org.jboss.tools.bpmn2";
 	
@@ -115,7 +121,7 @@ public class ImportResourceTest {
 		Assert.assertTrue(error.toString(), isErrorEmpty);
 		
 		
-		captureScreenshotWithDescription("ok");
+		captureScreenshotWithDescription("ok-" + filename.substring(0, filename.length()-6));
 	}
 	
 	
@@ -132,7 +138,7 @@ public class ImportResourceTest {
 	}
 	
 	private void captureScreenshotWithDescription(String description) {
-		String fileName = "target/screenshots/" + description + "-" + getClass().getName() + "." + 
+		String fileName = "target/screenshots/" + description + "-" + getClass().getSimpleName() + "." + 
 				SWTBotPreferences.SCREENSHOT_FORMAT.toLowerCase();
 		SWTUtils.captureScreenshot(fileName);
 	}

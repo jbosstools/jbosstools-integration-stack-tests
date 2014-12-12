@@ -66,7 +66,7 @@ public class ElementContainer extends Element {
 	}
 	
 	public void addRelativeToElement(String name, ElementType type, Element nextTo, Point move) {
-		addToPoint(name, type, new Point(nextTo.getBounds().getCenter().x + move.x, nextTo.getBounds().getCenter().y + move.y));
+		addToAbsolutePoint(name, type, new Point(nextTo.getBounds().getCenter().x + move.x, nextTo.getBounds().getCenter().y + move.y));
 	}
 	
 	
@@ -79,32 +79,14 @@ public class ElementContainer extends Element {
 	 */
 	public void add(String name, ElementType type, Point point) {
 		Rectangle bounds = getBounds();
-		
+		addToAbsolutePoint(name, type, new Point(bounds.x + point.x, bounds.y + point.y));		
+	}
+	
+	private void addToAbsolutePoint(String name, ElementType type, Point point) {
 		String sectionName = type.toToolPath()[0];
 		// Make sure that the point is available.
 		if (!"Boundary Events".equals(sectionName)) {
 			if (!isInternalAvailable(point)) {
-				throw new RuntimeException("'" + point + "' is not available");
-			}
-		}
-
-		// Add the construct using the tool in the palette.
-		select();
-		log.info("Adding consturct '" + name + "' of type '" + type + "' to '" + point + "'");
-		
-		EditPart parent = containerShapeEditPart.getEditPart();
-		if("Boundary Events".compareTo(type.getSectionName()) == 0) {
-			parent = parent.getParent();
-		}
-		
-		putToCanvas(name, type, new Point(bounds.x + point.x, bounds.y + point.y), parent);		
-	}
-	
-	private void addToPoint(String name, ElementType type, Point point) {
-		String sectionName = type.toToolPath()[0];
-		// Make sure that the point is available.
-		if (!"Boundary Events".equals(sectionName)) {
-			if (isInternalAvailable(point)) {
 				throw new RuntimeException("'" + point + "' is not available");
 			}
 		}
@@ -129,13 +111,11 @@ public class ElementContainer extends Element {
 	 */
 	protected boolean isInternalAvailable(Point p) {
 		// The point must be inside this edit part.
-		Rectangle bounds = getBounds();
-		Point point = new Point(p.x() + bounds.x(), p.y() + bounds.y());
-		
-		if (bounds.contains(point)) {
+		Rectangle bounds = getBounds();		
+		if (bounds.contains(p)) {
 			// Check weather the point is not already taken by another child editPart.
 			//return editor.getEditParts(editPart, new ConstructOnPoint<EditPart>(point)).isEmpty();
-			return processEditor.getAllChildContainerShapeEditParts(containerShapeEditPart.getEditPart().getParent(),
+			return processEditor.getAllChildContainerShapeEditParts(containerShapeEditPart.getEditPart(),
 					new ConstructOnPoint<EditPart>(p)).isEmpty();
 		}
 		// Out of bounds.

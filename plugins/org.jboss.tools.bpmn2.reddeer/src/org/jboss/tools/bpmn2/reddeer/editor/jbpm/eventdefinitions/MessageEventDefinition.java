@@ -13,23 +13,17 @@ import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
  */
 public class MessageEventDefinition extends EventDefinition {
 
-	public enum Type {
-		SOURCE, TARGET;
-		
-		public String label() {
-			return name().charAt(0) + name().substring(1).toLowerCase();
-		}
-	}
+	
 	
 	private Message message;
 	private String variableName;
-	private Type type;
+	private MappingType type;
 	
 	/**
 	 * 
 	 * @param signalName
 	 */
-	public MessageEventDefinition(Message message, Type type) {
+	public MessageEventDefinition(Message message, MappingType type) {
 		this(message, null, type);
 	}
 	
@@ -38,7 +32,7 @@ public class MessageEventDefinition extends EventDefinition {
 	 * @param signalName
 	 * @param variableName
 	 */
-	public MessageEventDefinition(Message message, String variableName, Type type) {
+	public MessageEventDefinition(Message message, String variableName, MappingType type) {
 		this.message = message;
 		this.variableName = variableName;
 		this.type = type;

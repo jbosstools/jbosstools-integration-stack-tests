@@ -29,9 +29,10 @@ public class MultipleStartEventTest extends JBPM6BaseTest {
 		
 		Process process = new Process("BPMN2-MultipleStartEvent");
 		process.add("StartProcess", ElementType.SIGNAL_START_EVENT);
+		process.addLocalVariable(VARIABLE1, "Object");
 		
 		SignalStartEvent start = new SignalStartEvent("StartProcess");
-		start.setSignal(new Signal("BlockingSignal"));
+		start.setSignal(new Signal("BlockingSignal"), VARIABLE1);
 		start.append("StartTimer", ElementType.TIMER_START_EVENT, Position.SOUTH);
 		start.append("Split", ElementType.EXCLUSIVE_GATEWAY, Position.SOUTH_EAST);
 

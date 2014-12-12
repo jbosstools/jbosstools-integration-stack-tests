@@ -1,5 +1,6 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,10 +19,7 @@ import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
 import org.kie.api.runtime.process.WorkflowProcessInstance;
 
-/**
- * ISSUE - Task2 has two outgoing connections and End has two incoming. But why? Unable to
- * 	       reproduce by hand.
- */
+
 @ProcessDefinition(name="BPMN2-Lane", project="EditorTestProject")
 public class LaneTest extends JBPM6BaseTest {
 

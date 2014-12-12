@@ -13,9 +13,17 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.TimerStartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.jbpm.JbpmAssertions;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ImportResourceRequirement.ImportResource;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
+
+/**
+ * @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1173140
+ * @author jomarko
+ *
+ */
 
 @ImportResource(projectName="BpmnTestProject", folderToImportName="resources/bpmn2/model/base", baseDiagramFileName="StartEventTest.bpmn2")
 public class StartEventTest extends ImportResourceTest{
@@ -26,67 +34,62 @@ public class StartEventTest extends ImportResourceTest{
 	@Before
 	public void loadProcess() {
 		this.process = new Process(PROCESS);
+		String[] parts = methodName.getMethodName().split(" ");
+		processId = PACKAGE_BASE + parts[0] + "." + PROCESS;
+		//process.setId(processId);
 	}
 	
 	@Test
 	public void startEventTest() {
-		String packageName = PACKAGE_BASE + "start.normal";
-		process.setPackageName(packageName);
 		process.add("NormalStart", ElementType.START_EVENT);
 		new StartEvent("NormalStart").connectTo(new ScriptTask("Script"));
 		
 		saveAsAndValidate("Normal" + BASE_FILE);
-//		runNormal(packageName);
+//		runNormal(processId);
 	}
 	
-	private void runNormal(String packageName){
+	private void runNormal(String processId){
 		KieSession kSession = createKieSession();
-		ProcessInstance processInstance = kSession.startProcess(packageName + "." + PROCESS);
+		ProcessInstance processInstance = kSession.startProcess(processId);
 		JbpmAssertions.assertProcessInstanceCompleted(processInstance, kSession);
 	}
 	
 	@Test
 	public void conditionalStartEventTest() {
-		String packageName = PACKAGE_BASE + "start.conditional";
-		process.setPackageName(packageName);
 		process.add("ConditionalStart", ElementType.CONDITIONAL_START_EVENT);
 		ConditionalStartEvent start = new ConditionalStartEvent("ConditionalStart");
 		start.setCondition("Rule", "org.jbpm.bpmn2.objects.Person(name == \"john\")");
 		start.connectTo(new ScriptTask("Script"));
 		
 		saveAsAndValidate("Conditional" + BASE_FILE);
-//		runConditional(packageName);
+//		runConditional(processId);
 	}
 	
-	private void runConditional(String packageName){
+	private void runConditional(String processId){
 		KieSession kSession = createKieSession();
-		ProcessInstance processInstance = kSession.startProcess(packageName + "." + PROCESS);
+		ProcessInstance processInstance = kSession.startProcess(processId);
 		JbpmAssertions.assertProcessInstanceCompleted(processInstance, kSession);
 	}
 	
 	@Test
 	public void timerStartEventTest() {
-		String packageName = PACKAGE_BASE + "start.timer";
-		process.setPackageName(packageName);
 		process.add("TimerStart", ElementType.TIMER_START_EVENT);
 		TimerStartEvent start = new TimerStartEvent("TimerStart");
 		start.setTimer("5000ms");
 		start.connectTo(new ScriptTask("Script"));
 		
 		saveAsAndValidate("Timer" + BASE_FILE);
-//		runTimer(packageName);
+//		runTimer(processId);
 	}
 	
-	private void runTimer(String packageName){
+	private void runTimer(String processId){
 		KieSession kSession = createKieSession();
-		ProcessInstance processInstance = kSession.startProcess(packageName + "." + PROCESS);
+		ProcessInstance processInstance = kSession.startProcess(processId);
 		JbpmAssertions.assertProcessInstanceCompleted(processInstance, kSession);
 	}
 	
 	@Test
 	public void messageStartEventTest() {
-		String packageName = PACKAGE_BASE + "start.message";
-		process.setPackageName(packageName);
 		process.addMessage("HelloMessage", "String");
 		process.add("MessageStart", ElementType.MESSAGE_START_EVENT);
 		
@@ -95,31 +98,30 @@ public class StartEventTest extends ImportResourceTest{
 		start.connectTo(new ScriptTask("Script"));
 		
 		saveAsAndValidate("Message" + BASE_FILE);
-//		runMessage(packageName);
+//		runMessage(processId);
 	}
 	
-	private void runMessage(String packageName){
+	private void runMessage(String processId){
 		KieSession kSession = createKieSession();
-		ProcessInstance processInstance = kSession.startProcess(packageName + "." + PROCESS);
+		ProcessInstance processInstance = kSession.startProcess(processId);
 		JbpmAssertions.assertProcessInstanceCompleted(processInstance, kSession);
 	}
 	
 	@Test
 	public void signalStartEventTest() {
-		String packageName = PACKAGE_BASE + "start.signal";
-		process.setPackageName(packageName);
+		process.addSignal("StartSignal");
 		process.add("SignalStart", ElementType.SIGNAL_START_EVENT);
 		SignalStartEvent start = new SignalStartEvent("SignalStart");
-		start.setSignal(new Signal("BlockingSignal"));
+		start.setSignal(new Signal("StartSignal"), OBJECT_VAR);
 		start.connectTo(new ScriptTask("Script"));
 		
 		saveAsAndValidate("Signal" + BASE_FILE);
-//		runSignal(packageName);
+//		runSignal(processId);
 	}
 	
-	private void runSignal(String packageName){
+	private void runSignal(String processId){
 		KieSession kSession = createKieSession();
-		ProcessInstance processInstance = kSession.startProcess(packageName + "." + PROCESS);
+		ProcessInstance processInstance = kSession.startProcess(processId);
 		JbpmAssertions.assertProcessInstanceCompleted(processInstance, kSession);
 	}
 }

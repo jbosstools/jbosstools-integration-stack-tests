@@ -1,8 +1,7 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.ConditionalEventDefinition;
-import org.jboss.tools.bpmn2.reddeer.properties.jbpm.EventTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.ConditionSetUpCTab;
 
 /**
  * 
@@ -23,7 +22,8 @@ public class ConditionalStartEvent extends StartEvent {
 	 * @param script
 	 */
 	public void setCondition(String language, String script) {
-		properties.getTab("Event", EventTab.class).set(new ConditionalEventDefinition(language, script));
+//		properties.getTab("Event", EventTab.class).set(new ConditionalEventDefinition(language, script));
+		graphitiProperties.setUpTabs(new ConditionSetUpCTab(language, script));
 		refresh();
 	}
 	

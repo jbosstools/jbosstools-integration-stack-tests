@@ -2,9 +2,8 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Message;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.MessageEventDefinition;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.MessageEventDefinition.Type;
-import org.jboss.tools.bpmn2.reddeer.properties.jbpm.EventTab;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.MappingType;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.MessageSetUpCTab;
 
 /**
  * 
@@ -25,7 +24,8 @@ public class MessageStartEvent extends StartEvent {
 	 * @param variableName
 	 */
 	public void setMessageMapping(Message message, String targetVariable) {
-		properties.getTab("Event", EventTab.class).set(new MessageEventDefinition(message, targetVariable, Type.TARGET));
+//		properties.getTab("Event", EventTab.class).set(new MessageEventDefinition(message, targetVariable, Type.TARGET));
+		graphitiProperties.setUpTabs(new MessageSetUpCTab(message, targetVariable, MappingType.TARGET));
 		refresh();
 	}
 	

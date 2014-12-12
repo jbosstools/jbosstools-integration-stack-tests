@@ -27,12 +27,13 @@ import org.jboss.tools.bpmn2.reddeer.AbsoluteEditPart;
 import org.jboss.tools.bpmn2.reddeer.GEFProcessEditor;
 import org.jboss.tools.bpmn2.reddeer.ProcessEditorView;
 import org.jboss.tools.bpmn2.reddeer.ProcessPropertiesView;
+import org.jboss.tools.bpmn2.reddeer.editor.graphiti.PropertiesGraphitiEditPart;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.BoundaryEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructOfType;
 import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructOnPoint;
 import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructWithName;
 import org.jboss.tools.bpmn2.reddeer.matcher.EditPartOfClassName;
-import org.jboss.tools.bpmn2.reddeer.properties.jbpm.DescriptionTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.NameSetUpCTab;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
@@ -45,6 +46,7 @@ public class Element {
 	
 	protected ProcessEditorView editor;
 	protected ProcessPropertiesView properties;
+	protected PropertiesGraphitiEditPart graphitiProperties;
 	protected SWTBot bot = new SWTBot();
 	
 	protected String name;
@@ -99,6 +101,7 @@ public class Element {
 		processEditor = new GEFProcessEditor();
 		editor = new ProcessEditorView();
 		properties = new ProcessPropertiesView(this.containerShapeEditPart);
+		graphitiProperties = new PropertiesGraphitiEditPart(containerShapeEditPart);
 	}
 	
 	protected Element(Element copyFrom) {
@@ -109,6 +112,7 @@ public class Element {
 		this.containerShapeEditPart = copyFrom.containerShapeEditPart;
 		this.properties = copyFrom.properties;
 		this.processEditor = copyFrom.processEditor;
+		this.graphitiProperties = copyFrom.graphitiProperties;
 	}
 	
 	private void setUp(String name, ElementType type, Element parent, int index, boolean select) {
@@ -135,6 +139,7 @@ public class Element {
 		}
 
 		properties = new ProcessPropertiesView(containerShapeEditPart);
+		graphitiProperties = new PropertiesGraphitiEditPart(containerShapeEditPart.getEditPart());
 	
 		if (select) {
 			select();
@@ -163,7 +168,7 @@ public class Element {
 	 */
 	public void setName(String name) {
 		this.name = name;
-		this.properties.getTab("General", DescriptionTab.class).setName(name);
+		graphitiProperties.setUpTabs(new NameSetUpCTab(name));
 	}
 	
 	/**
@@ -248,7 +253,7 @@ public class Element {
 		
 		Point point = findPoint(parent, this, relativePosition);
 		if (!isAvailable(point)) {
-			throw new RuntimeException(point + " is not available");
+			throw new RuntimeException(point + " is not available ");
 		}
 		
 		Element construct = putToCanvas(name, constructType, point, containerShapeEditPart.getEditPart().getParent());

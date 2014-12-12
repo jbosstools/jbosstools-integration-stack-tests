@@ -3,6 +3,7 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.ScriptTaskTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.ScriptSetUpCTab;
 
 /**
  * 
@@ -27,7 +28,9 @@ public class ScriptTask extends Task {
 	 * @param script
 	 */
 	public void setScript(String language, String script) {
-		properties.getTab("Script Task", ScriptTaskTab.class).setScript(language, script);
+//		properties.getTab("Script Task", ScriptTaskTab.class).setScript(language, script);
+		graphitiProperties.setUpTabs(new ScriptSetUpCTab("Script Task", language, script));
+
 	}
 
 	/**

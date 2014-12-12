@@ -27,7 +27,7 @@ public class Lane extends ElementContainer {
 	}
 	
 	public void  changeOrientation() {
-		select();
+		click();
 		new ContextMenu("Change Lane Orientation").select();
 		
 	}

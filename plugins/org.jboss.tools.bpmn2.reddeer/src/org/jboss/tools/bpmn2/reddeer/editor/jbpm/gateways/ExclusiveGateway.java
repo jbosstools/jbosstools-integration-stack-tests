@@ -1,9 +1,11 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways;
 
+
+
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Element;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.ExclusiveGatewayTab;
-import org.jboss.tools.bpmn2.reddeer.properties.jbpm.GatewayTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.GatewayDirectionSetUpCTab;
 
 /**
  * 
@@ -50,6 +52,7 @@ public class ExclusiveGateway extends Element {
 	 * @param direction
 	 */
 	public void setDirection(Direction direction) {
-		properties.getTab("Gateway", GatewayTab.class).setDirection(direction);
+//		properties.getTab("Gateway", GatewayTab.class).setDirection(direction);
+		graphitiProperties.setUpTabs(new GatewayDirectionSetUpCTab(direction));
 	}
 }

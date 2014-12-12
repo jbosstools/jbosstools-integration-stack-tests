@@ -24,7 +24,7 @@ public class SubProcessTest extends JBPM6BaseTest {
 	public void buildProcessModel() {
 		StartEvent start = new StartEvent("StartProcess");
 		start.append("Hello Subprocess", ElementType.SUB_PROCESS, Position.SOUTH);
-
+		
 		SubProcess subProcess = new SubProcess("Hello Subprocess");
 		subProcess.addLocalVariable(VARIABLE1, "String");
 		subProcess.append("Goodbye", ElementType.SCRIPT_TASK);
@@ -34,11 +34,11 @@ public class SubProcessTest extends JBPM6BaseTest {
 		script4.append("EndProcess", ElementType.TERMINATE_END_EVENT);
 		
 		// Now create the inner of the sub process.
-		subProcess.addRelativeToElement("StartSubProcess", ElementType.START_EVENT, subProcess, new Point(-70, -35));
+		subProcess.addRelativeToElement("StartSubProcess", ElementType.START_EVENT, subProcess, new Point(-90, -45));
 		
 		StartEvent subStart = new StartEvent("StartSubProcess");
 		subProcess.addRelativeToElement("Hello1", ElementType.SCRIPT_TASK, subStart, new Point(0, 50));
-		
+
 		ScriptTask script1 = new ScriptTask("Hello1");
 		script1.setScript("Java", "kcontext.setVariable(\"" + VARIABLE1 + "\",\" innerValue\");");
 		subStart.connectTo(script1);
@@ -48,7 +48,7 @@ public class SubProcessTest extends JBPM6BaseTest {
 		ScriptTask script2 = new ScriptTask("Hello2");
 		script2.setScript("Java", "System.out.println(kcontext.getVariable(\"" + VARIABLE1 + "\"));");
 		script1.connectTo(script2);
-		subProcess.addRelativeToElement("EndSubProcess", ElementType.END_EVENT, script2, new Point(0, -50));
+		subProcess.addRelativeToElement("EndSubProcess", ElementType.END_EVENT, script2, new Point(0, -45));
 		
 		EndEvent subEnd = new EndEvent("EndSubProcess");
 		script2.connectTo(subEnd);

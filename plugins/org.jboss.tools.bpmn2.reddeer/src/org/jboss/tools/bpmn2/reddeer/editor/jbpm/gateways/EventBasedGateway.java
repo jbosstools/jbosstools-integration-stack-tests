@@ -3,8 +3,8 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Element;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.EventBasedGatewayTab;
-import org.jboss.tools.bpmn2.reddeer.properties.jbpm.GatewayTab;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.InclusiveGatewayTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.GatewayDirectionSetUpCTab;
 
 /**
  *  
@@ -66,6 +66,7 @@ public class EventBasedGateway extends Element {
 	 * @param direction
 	 */
 	public void setDirection(Direction direction) {
-		properties.getTab("Gateway", GatewayTab.class).setDirection(direction);
+//		properties.getTab("Gateway", GatewayTab.class).setDirection(direction);
+		graphitiProperties.setUpTabs(new GatewayDirectionSetUpCTab(direction));
 	}
 }

@@ -17,13 +17,6 @@ import org.kie.api.runtime.process.ProcessInstance;
 
 @ProcessDefinition(name="BPMN2-XPathExpression", project="EditorTestProject")
 public class XPathExpressionTest extends JBPM6BaseTest {
-
-	@Ignore(value = "XPath expression language is not supported.")
-	@Test
-	@Override
-	public void executeTest() {
-		super.executeTest();
-	}
 	
 	@Override()
 	public void buildProcessModel() {

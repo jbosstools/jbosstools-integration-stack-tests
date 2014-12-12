@@ -3,7 +3,6 @@ package org.jboss.tools.bpmn2.reddeer.properties.jbpm;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
 import org.jboss.tools.bpmn2.reddeer.DefaultCheckBox;
 import org.jboss.tools.bpmn2.reddeer.DefaultCombo;
@@ -99,7 +98,9 @@ public class UserTaskTab extends GeneralPropertiesTab {
 	public void addActor(String name) {
 		new SectionToolItem("Actors", "Add").click();
 		new LabeledText("Name").setText(name);
-		new SectionToolItem("Formal Expression Details", "Close").click();
+		//new SectionToolItem("Actor Details", "Close").click();
+		//WORKAROUND @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1175772
+		new SectionToolItem("Formal Expression Details", "Close").click(); 
 	}
 	
 	/**

@@ -2,8 +2,7 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents;
 
 import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.ConditionalEventDefinition;
-import org.jboss.tools.bpmn2.reddeer.properties.jbpm.EventTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.ConditionSetUpCTab;
 
 /**
  * 
@@ -28,7 +27,8 @@ public class ConditionalBoundaryEvent extends BoundaryEvent {
 	 * @param script
 	 */
 	public void setScript(String language, String script) {
-		properties.getTab("Event", EventTab.class).set(new ConditionalEventDefinition(language, script));
+//		properties.getTab("Event", EventTab.class).set(new ConditionalEventDefinition(language, script));
+		graphitiProperties.setUpTabs(new ConditionSetUpCTab(language, script));
 		refresh();
 	}
 	

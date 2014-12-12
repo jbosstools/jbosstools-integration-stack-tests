@@ -3,9 +3,8 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm.throwevents;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Message;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.MessageEventDefinition;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.MessageEventDefinition.Type;
-import org.jboss.tools.bpmn2.reddeer.properties.jbpm.EventTab;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.MappingType;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.MessageSetUpCTab;
 
 /**
  * 
@@ -26,7 +25,9 @@ public class MessageIntermediateThrowEvent extends Element {
 	 * @param sourceVariable
 	 */
 	public void setMessageMapping(Message message, String sourceVariable) {
-		properties.getTab("Event", EventTab.class).set(new MessageEventDefinition(message, sourceVariable, Type.SOURCE));
+//		properties.getTab("Event", EventTab.class).set(new MessageEventDefinition(message, sourceVariable, Type.SOURCE));
+		graphitiProperties.setUpTabs(new MessageSetUpCTab(message, sourceVariable, MappingType.SOURCE));
+
 		refresh();
 	}
 	

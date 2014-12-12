@@ -11,16 +11,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
  */
 public class TimerEventDefinition extends EventDefinition {
 
-	/**
-	 * 
-	 */
-	public enum Type {
-		CYCLE, DURATION;
-		
-		public String label() {
-		    return name().charAt(0) + name().substring(1).toLowerCase();
-		}
-	}
+	
 	
 	private String duration;
 	
