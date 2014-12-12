@@ -136,7 +136,7 @@ public class ImportResourceTest {
 	}
 	
 	private void captureScreenshotWithDescription(String description) {
-		String fileName = "target/screenshots/" + description + "-" + getClass().getName() + "." + 
+		String fileName = "target/screenshots/" + description + "-" + getClass().getSimpleName() + "." + 
 				SWTBotPreferences.SCREENSHOT_FORMAT.toLowerCase();
 		SWTUtils.captureScreenshot(fileName);
 	}
