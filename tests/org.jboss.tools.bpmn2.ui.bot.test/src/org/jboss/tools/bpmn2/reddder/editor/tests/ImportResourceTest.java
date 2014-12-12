@@ -119,8 +119,6 @@ public class ImportResourceTest {
 		boolean isErrorEmpty = error.length() == 0;
 		log.info("\tEditor validation result '" + (isErrorEmpty ? "OK" : error) + "'");
 		Assert.assertTrue(error.toString(), isErrorEmpty);
-		
-		
 		captureScreenshotWithDescription("ok-" + filename.substring(0, filename.length()-6));
 	}
 	
@@ -138,7 +136,7 @@ public class ImportResourceTest {
 	}
 	
 	private void captureScreenshotWithDescription(String description) {
-		String fileName = "target/screenshots/" + description + "-" + getClass().getSimpleName() + "." + 
+		String fileName = "target/screenshots/" + description + "-" + getClass().getName() + "." + 
 				SWTBotPreferences.SCREENSHOT_FORMAT.toLowerCase();
 		SWTUtils.captureScreenshot(fileName);
 	}
