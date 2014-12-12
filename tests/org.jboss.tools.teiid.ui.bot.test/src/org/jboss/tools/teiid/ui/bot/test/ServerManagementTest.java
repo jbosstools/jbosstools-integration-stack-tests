@@ -2,6 +2,7 @@ package org.jboss.tools.teiid.ui.bot.test;
 
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.wait.TimePeriod;
@@ -22,6 +23,7 @@ import org.jboss.tools.teiid.reddeer.wizard.CreateVDB;
 import org.jboss.tools.teiid.reddeer.wizard.ImportProjectWizard;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * Test server management use cases start with -Pprofiles - this will load and
@@ -29,6 +31,7 @@ import org.junit.Test;
  * 
  * @author lfabriko 
  */
+@RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
 public class ServerManagementTest extends SWTBotTestCase {
 

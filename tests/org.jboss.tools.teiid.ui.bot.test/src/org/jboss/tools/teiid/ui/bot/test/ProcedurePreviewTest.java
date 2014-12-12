@@ -6,15 +6,11 @@ import java.util.Properties;
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
-import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
-import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.teiid.reddeer.Procedure;
 import org.jboss.tools.teiid.reddeer.Table;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
@@ -22,7 +18,8 @@ import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.manager.PerspectiveAndViewManager;
 import org.jboss.tools.teiid.reddeer.manager.ServerManager;
-import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
+import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
+import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.wizard.ImportGeneralItemWizard;
 import org.junit.AfterClass;
@@ -33,19 +30,18 @@ import org.junit.runner.RunWith;
 
 
 @RunWith(RedDeerSuite.class)
-@OpenPerspective(TeiidPerspective.class)
-@Server(type = ServerReqType.ANY, state = ServerReqState.STOPPED)
+@TeiidServer(state = ServerReqState.STOPPED)
 public class ProcedurePreviewTest extends SWTBotTestCase{
 
 	@InjectRequirement
-	private static ServerRequirement serverRequirement;
+	private static TeiidServerRequirement teiidServer;
 	
 	private static final String PROJECT_NAME = "Partssupplier";
 	private static final String MODEL_SRC_NAME = "hsqldbParts";
 	private static final String MODEL_VIEW_NAME = "view";
 	private static final String DS1_DATASOURCE = "resources/db/dv6-ds1.properties";
 	private static final String HSQLDB_PROFILE = "Generic HSQLDB Profile";
-	private static final String SERVER_NAME = serverRequirement.getConfig().getName();
+	private static final String SERVER_NAME = teiidServer.getServerConfig().getName();
 	private static final String UDF_LIB_PATH = "resources/projects/java/MyTestUdf/lib/";
 	private static final String UDF_LIB = "MyTestUdf-1.0-SNAPSHOT.jar";
 	

@@ -2,21 +2,18 @@ package org.jboss.tools.teiid.ui.bot.test;
 
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
-import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.teiid.reddeer.ModelProject;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.SQLScrapbookEditor;
 import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
-import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
+import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.DataSourceExplorer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
@@ -35,8 +32,7 @@ import org.junit.runner.RunWith;
  * @author apodhrad
  */
 @RunWith(RedDeerSuite.class)
-@OpenPerspective(TeiidPerspective.class)
-@Server(type = ServerReqType.ANY, state = ServerReqState.RUNNING)
+@TeiidServer(state = ServerReqState.RUNNING)
 public class TopDownWsdlTest {
 
 	public static final String BUNDLE = "org.teiid.designer.ui.bot.test";

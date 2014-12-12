@@ -13,12 +13,8 @@ import org.jboss.reddeer.eclipse.datatools.ui.FlatFileProfile;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
-import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
-import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
-import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.teiid.reddeer.ModelBuilder;
 import org.jboss.tools.teiid.reddeer.ModelClass;
 import org.jboss.tools.teiid.reddeer.ModelType;
@@ -35,6 +31,8 @@ import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
+import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
+import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorerView.ConnectionSourceType;
@@ -42,7 +40,6 @@ import org.jboss.tools.teiid.reddeer.wizard.CreateVDB;
 import org.jboss.tools.teiid.reddeer.wizard.FlatImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.MetadataModelWizard;
 import org.jboss.tools.teiid.reddeer.wizard.XMLSchemaImportWizard;
-import org.jboss.tools.teiid.ui.bot.test.suite.TeiidUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -57,12 +54,11 @@ import org.junit.runner.RunWith;
  * 
  */
 @RunWith(RedDeerSuite.class)
-@OpenPerspective(TeiidPerspective.class)
-@Server(type = ServerReqType.ANY, state = ServerReqState.RUNNING)
+@TeiidServer(state = ServerReqState.RUNNING)
 public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 	
 	@InjectRequirement
-	private ServerRequirement serverRequirement;
+	private TeiidServerRequirement teiidServer;
 
 	// models
 	private static final String PROJECT_NAME = "Recursive";
@@ -260,7 +256,7 @@ public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 
 	private void checkSql(String sql) throws SQLException {
 		// register teiid driver
-		DriverManager.registerDriver(TeiidUtils.getTeiidDriver(serverRequirement));
+		DriverManager.registerDriver(teiidServer.getTeiidDriver());
 		// create connection
 		Connection conn = DriverManager.getConnection("jdbc:teiid:" + VDB + "@mm://localhost:31000", "user", "user");
 		Statement stmt = conn.createStatement();
