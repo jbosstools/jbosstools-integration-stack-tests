@@ -11,14 +11,12 @@ import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
-import org.jboss.reddeer.swt.condition.WaitCondition;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.bpmn2.reddeer.ProcessEditorView;
@@ -135,7 +133,7 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 		 */
 		log.info("Validating '" + editor.getTitle() + "':");
 		JBPM6Validator validator = new JBPM6Validator();
-		diagramSourceCode = editor.getSourceText();
+		diagramSourceCode = editor.validateSourceText();
 		boolean result = validator.validate(diagramSourceCode);
 		log.info("\tjBPM validation result '" + (result ? "valid" : "not valid") + "'");
 		Assert.assertTrue(validator.getResultMessage(), result);
@@ -144,10 +142,9 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 		 */
 		if (bpmnValidation) {
 			StringBuilder error = new StringBuilder();
-			new WaitUntil(new NoProblemsExists(), TimePeriod.NORMAL, false);
-			new WaitWhile(new MarkerIsUpdating());
 			problems = new ProblemsView();
 			problems.open();
+			new WaitWhile(new MarkerIsUpdating(), TimePeriod.SHORT, false);
 			List<TreeItem> errorList = problems.getAllErrors();
 			
 			for (TreeItem e : errorList) {
@@ -159,27 +156,6 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 			boolean isErrorEmpty = error.length() == 0;
 			log.info("\tEditor validation result '" + (isErrorEmpty ? "OK" : error) + "'");
 			Assert.assertTrue(error.toString(), isErrorEmpty);
-		}
-	}
-	
-	private class NoProblemsExists implements WaitCondition {
-
-		private ProblemsView problemsView;
-
-		@Override
-		public boolean test() {
-			problemsView = new ProblemsView();
-			problemsView.open();
-
-			List<TreeItem> errors = problemsView.getAllErrors();
-			
-			return errors.isEmpty(); 
-			
-		}
-
-		@Override
-		public String description() {
-			return "NoProblemsExist";
 		}
 	}
 	

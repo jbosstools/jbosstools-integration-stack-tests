@@ -16,7 +16,6 @@ import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramLink;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotMultiPageEditor;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
 import org.eclipse.ui.IEditorPart;
@@ -30,8 +29,6 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.util.ResultRunnable;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructOfType;
@@ -276,12 +273,12 @@ public class ProcessEditorView extends SWTBotGefEditor {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Before source code is returned, method invokes validation on opened bpmn2 process
+	 * @return xml source code of opened process
 	 */
-	public String getSourceText() {
+	public String validateSourceText() {
 		new ContextMenu("Show Source View").select();
-		
+		new ContextMenu("Validate").select();
 		DefaultStyledText styled = new DefaultStyledText();
 		String text = styled.getText();
 		
@@ -289,7 +286,7 @@ public class ProcessEditorView extends SWTBotGefEditor {
 		
 		return text;
 	}
-
+	
 	/**
 	 * 
 	 * @return

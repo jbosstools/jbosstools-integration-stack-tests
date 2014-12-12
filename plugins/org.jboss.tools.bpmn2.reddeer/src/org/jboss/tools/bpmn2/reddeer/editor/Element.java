@@ -480,7 +480,7 @@ public class Element {
 		editor.save();
 		// Find the element
 		try {
-			InputStream inputStream = new ByteArrayInputStream(editor.getSourceText().getBytes());		
+			InputStream inputStream = new ByteArrayInputStream(editor.validateSourceText().getBytes());		
 			Document xmlDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputStream);
 					
 			XPathFactory xPathFactory = XPathFactory.newInstance();

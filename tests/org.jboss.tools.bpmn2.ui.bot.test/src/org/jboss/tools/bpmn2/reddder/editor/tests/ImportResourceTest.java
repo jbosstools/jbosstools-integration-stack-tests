@@ -10,7 +10,6 @@ import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.WaitCondition;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
@@ -19,7 +18,6 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.bpmn2.reddeer.DefaultCheckBox;
 import org.jboss.tools.bpmn2.reddeer.ProcessEditorView;
@@ -95,16 +93,15 @@ public class ImportResourceTest {
 		 */
 		log.info("Validating '" + editor.getTitle() + "':");
 		JBPM6Validator validator = new JBPM6Validator();
-		diagramSourceCode = editor.getSourceText();
+		diagramSourceCode = editor.validateSourceText();
 		boolean result = validator.validate(diagramSourceCode);
 		log.info("\tjBPM validation result '" + (result ? "valid" : "not valid") + "'");
 		Assert.assertTrue(validator.getResultMessage(), result);
 		
 		StringBuilder error = new StringBuilder();
-		new WaitUntil(new NoProblemsExists(), TimePeriod.NORMAL, false);
-		new WaitWhile(new MarkerIsUpdating());
 		ProblemsView problems = new ProblemsView();
 		problems.open();
+		new WaitWhile(new MarkerIsUpdating(), TimePeriod.SHORT, false);
 		List<TreeItem> errorList = problems.getAllErrors();
 		
 		for (TreeItem e : errorList) {
@@ -118,7 +115,7 @@ public class ImportResourceTest {
 		Assert.assertTrue(error.toString(), isErrorEmpty);
 		
 		
-		captureScreenshotWithDescription(filename.substring(0, filename.length()-6) + "-ok");
+		captureScreenshotWithDescription("ok");
 	}
 	
 	
@@ -135,7 +132,7 @@ public class ImportResourceTest {
 	}
 	
 	private void captureScreenshotWithDescription(String description) {
-		String fileName = "target/screenshots/" + description + "-" + getClass().getSimpleName() + "." + 
+		String fileName = "target/screenshots/" + description + "-" + getClass().getName() + "." + 
 				SWTBotPreferences.SCREENSHOT_FORMAT.toLowerCase();
 		SWTUtils.captureScreenshot(fileName);
 	}
@@ -149,26 +146,5 @@ public class ImportResourceTest {
 		});
 		
 		configureShellHandled = false;
-	}
-	
-	private class NoProblemsExists implements WaitCondition {
-
-		private ProblemsView problemsView;
-
-		@Override
-		public boolean test() {
-			problemsView = new ProblemsView();
-			problemsView.open();
-
-			List<TreeItem> errors = problemsView.getAllErrors();
-			
-			return errors.isEmpty(); 
-			
-		}
-
-		@Override
-		public String description() {
-			return "NoProblemsExist";
-		}
 	}
 }
