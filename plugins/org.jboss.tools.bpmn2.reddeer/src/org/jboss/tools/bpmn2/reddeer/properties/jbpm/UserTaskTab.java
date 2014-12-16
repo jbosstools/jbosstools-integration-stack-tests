@@ -99,7 +99,7 @@ public class UserTaskTab extends GeneralPropertiesTab {
 	public void addActor(String name) {
 		new SectionToolItem("Actors", "Add").click();
 		new LabeledText("Name").setText(name);
-		new SectionToolItem("Actor Details", "Close").click();
+		new SectionToolItem("Formal Expression Details", "Close").click();
 	}
 	
 	/**
