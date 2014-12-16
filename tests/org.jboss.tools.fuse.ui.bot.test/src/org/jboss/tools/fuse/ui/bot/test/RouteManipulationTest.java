@@ -92,7 +92,7 @@ public class RouteManipulationTest {
 		CamelEditor.switchTab("Design");
 		editor.save();
 		new WaitUntil(new ConsoleHasText("file://src/data] route1                         INFO  YYY"));
-		assertNotNull(jmx.getNode("Local Camel Context", "Camel", "camel-1", "Routes", "route1", "file:src/data?noop=true", "choice1", "choice1", "log1", "to1"));
+		assertNotNull(jmx.getNode("Local Camel Context", "Camel", "camel-1", "Routes", "route1", "file:src/data?noop=true", "choice1", "when1", "log1", "to1"));
 		assertNull(jmx.getNode("Local Camel Context", "Camel", "camel-1", "Routes", "route1", "file:src/data?noop=true", "choice1", "otherwise"));
 	}
 
