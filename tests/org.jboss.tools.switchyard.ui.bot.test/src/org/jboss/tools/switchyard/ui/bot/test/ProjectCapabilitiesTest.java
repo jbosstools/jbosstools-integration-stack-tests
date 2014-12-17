@@ -32,6 +32,7 @@ import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.jboss.tools.switchyard.reddeer.shell.ProjectCapabilitiesShell;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -167,9 +168,11 @@ public class ProjectCapabilitiesTest {
 		capabilities.setConfigurationVersion("1.1").ok();
 		assertSwitchYardNamespace("1.1");
 		/* Set configuration version to 2.0 */
-		capabilities = new SwitchYardProject(SY_PROJECT).configureCapabilities();
-		capabilities.setConfigurationVersion("2.0").ok();
-		assertSwitchYardNamespace("2.0");
+		if (switchYardRequirement.getConfig().getLibraryVersion().startsWith("2")) {
+			capabilities = new SwitchYardProject(SY_PROJECT).configureCapabilities();
+			capabilities.setConfigurationVersion("2.0").ok();
+			assertSwitchYardNamespace("2.0");
+		}
 
 	}
 

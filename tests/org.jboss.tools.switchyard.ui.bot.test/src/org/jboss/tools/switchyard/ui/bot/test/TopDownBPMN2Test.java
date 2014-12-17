@@ -5,9 +5,12 @@ import static org.junit.Assert.assertEquals;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -15,6 +18,8 @@ import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.FromDataOutput;
@@ -37,6 +42,7 @@ import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.Swit
 import org.jboss.tools.switchyard.reddeer.view.JUnitView;
 import org.jboss.tools.switchyard.reddeer.wizard.ReferenceWizard;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -115,6 +121,7 @@ public class TopDownBPMN2Test {
 
 		// BPM Process and its properties
 		openFile(PROJECT, PACKAGE_MAIN_RESOURCES, BPMN_FILE_NAME);
+		new DefaultEditor(PROCESS_GREET);
 		new Process(null).setName(PROCESS_GREET);
 		
 		new TerminateEndEvent("EndProcess").delete();
@@ -122,16 +129,18 @@ public class TopDownBPMN2Test {
 		SwitchYardServiceTask task = new SwitchYardServiceTask("EvalGreet");
 		task.setTaskAttribute("Operation Name", "checkGreet");
 		task.setTaskAttribute("Service Name", EVAL_GREET);
-		task.addParameterMapping(new ParameterMapping(new FromVariable(PROCESS_GREET + "/Parameter"),
+		task.addParameterMapping(new ParameterMapping(new FromVariable("Parameter"),
 				new ToDataInput("Parameter", "String"), ParameterMapping.Type.INPUT));
 		task.addParameterMapping(new ParameterMapping(new FromDataOutput("Result", "String"), new ToVariable(
-				PROCESS_GREET + "/Result"),  ParameterMapping.Type.OUTPUT));
+				"Result"),  ParameterMapping.Type.OUTPUT));
 		task.append("EndProcess", ElementType.TERMINATE_END_EVENT);
 
+		checkBug_SWITCHYARD_2484();
+		
 		openFile(PROJECT, PACKAGE_MAIN_RESOURCES, "META-INF", "switchyard.xml");
 
 		// Junit
-		new Service(PROCESS_GREET, 1).createNewServiceTestClass();
+		new Service(PROCESS_GREET, 0).createNewServiceTestClass();
 		new TextEditor(PROCESS_GREET + "Test.java")
 				.deleteLineWith("null")
 				.deleteLineWith("assertTrue")
@@ -140,11 +149,16 @@ public class TopDownBPMN2Test {
 				.typeAfter("getContent", "Assert.assertTrue(result);")
 				.newLine()
 				.type("Assert.assertFalse(service.operation(\"checkGreetIsPolite\").sendInOut(\"hi\").getContent(Boolean.class));");
-		new ShellMenu("File", "Save All").select();
 
-		new DefaultShell("Configure BPMN2 Project Nature");
-		new PushButton("No").click();// BPMN nature
+		try {
+			new ShellMenu("File", "Save All").select();
+			new DefaultShell("Configure BPMN2 Project Nature");
+			new PushButton("No").click();
+		} catch (Exception e) {
+			// ok, no shell was popup
+		}
 
+		
 		ProjectItem item = new ProjectExplorer().getProject(PROJECT).getProjectItem("src/test/java", PACKAGE,
 				PROCESS_GREET + "Test.java");
 		new ProjectItemExt(item).runAsJUnitTest();
@@ -160,4 +174,26 @@ public class TopDownBPMN2Test {
 		new WorkbenchView("General", "Project Explorer").open();
 		new DefaultTreeItem(0, file).doubleClick();
 	}
+	
+	private void checkBug_SWITCHYARD_2484() {
+		try {
+			new ShellMenu("File", "Save All").select();
+			new DefaultShell("Configure BPMN2 Project Nature");
+			new PushButton("No").click();;
+		} catch (Exception e) {
+			// ok, no shell was popup
+		}
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		ProblemsView problemsView = new ProblemsView();
+		problemsView.open();
+		for(TreeItem error: problemsView.getAllErrors()) {
+			System.out.println(error.getText());
+			if (error.getText().startsWith("Data Input Association has missing or incomplete Source")) {
+				Assert.fail("SWITCHYARD_2484: SwitchYard Sevice Task generates wrong data inputs");
+			}
+		}
+	}
+	
+	
 }
