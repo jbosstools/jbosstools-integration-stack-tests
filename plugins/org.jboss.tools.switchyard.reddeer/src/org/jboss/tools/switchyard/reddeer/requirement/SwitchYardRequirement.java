@@ -9,6 +9,7 @@ import org.jboss.reddeer.junit.requirement.CustomConfiguration;
 import org.jboss.reddeer.junit.requirement.Requirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.tools.runtime.reddeer.ServerBase;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
@@ -61,6 +62,7 @@ public class SwitchYardRequirement implements Requirement<SwitchYard>, CustomCon
 
 	@Override
 	public void fulfill() {
+		new WorkbenchShell().maximize();
 		new CleanWorkspaceRequirement().fulfill();
 		ServerBase serverBase = config.getServerBase();
 		if (serverBase == null) {

@@ -3,20 +3,22 @@ package org.jboss.tools.switchyard.ui.bot.test;
 import static org.jboss.tools.switchyard.reddeer.binding.OperationOptionsPage.OPERATION_NAME;
 import static org.junit.Assert.assertEquals;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.condition.TableHasRows;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.switchyard.reddeer.binding.HTTPBindingPage;
@@ -51,8 +53,6 @@ public class BottomUpEJBTest {
 	public static final String PACKAGE = "com.example.switchyard.ejb_project";
 	public static final String JAVA_FILE = "HelloBean";
 
-	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
-
 	@InjectRequirement
 	private SwitchYardRequirement switchyardRequirement;
 	
@@ -66,7 +66,7 @@ public class BottomUpEJBTest {
 	}
 
 	@Test
-	public void bottomUpCamelTest() throws Exception {
+	public void bottomUpEJBTest() throws Exception {
 		switchyardRequirement.project(PROJECT).impl("Bean").binding("HTTP").create();
 		Project project = new ProjectExplorer().getProject(PROJECT);
 
@@ -74,12 +74,12 @@ public class BottomUpEJBTest {
 		project.getProjectItem("pom.xml").open();
 		new DefaultCTabItem("Dependencies").activate();
 		new PushButton("Add...").click();
-		bot.shell("Select Dependency").activate();
+		new DefaultShell("Select Dependency");
 		new LabeledText("Group Id:").setText("javax");
 		new LabeledText("Artifact Id:").setText("javaee-api");
 		new LabeledText("Version: ").setText("6.0");
 		new PushButton("OK").click();
-		bot.activeEditor().saveAndClose();
+		new DefaultEditor().close(true);
 
 		// Import java file
 		project.getProjectItem("src/main/java", PACKAGE).select();
@@ -93,13 +93,15 @@ public class BottomUpEJBTest {
 		new SwitchYardEditor().addComponent();
 		new SwitchYardEditor().addBeanImplementation(new SwitchYardComponent("Component"));
 
-		bot.shell("Bean Implementation").activate();
+		new DefaultShell("Bean Implementation");
 		new PushButton("Browse...").click();
+		new DefaultShell("");
 		new DefaultText(0).setText(JAVA_FILE);
 		new WaitUntil(new TableHasRows(new DefaultTable()));
 		new PushButton("OK").click();
-		bot.shell("Bean Implementation").activate();
+		new DefaultShell("Bean Implementation");
 		new PushButton("Finish").click();
+		new WaitWhile(new ShellWithTextIsAvailable("Bean Implementation"));
 
 		new SwitchYardComponent("Component").getContextButton("Service").click();
 		new NewServiceWizard().activate().createJavaInterface("Hello").activate().finish();

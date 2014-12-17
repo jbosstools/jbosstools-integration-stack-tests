@@ -23,7 +23,7 @@ public class PromoteServiceWizard extends ServiceWizard<PromoteServiceWizard> {
 	}
 
 	public PromoteServiceWizard setName(String name) {
-		new LabeledText("Name:").setText(name);
+		new LabeledText("Service Name:").setText(name);
 		return this;
 	}
 

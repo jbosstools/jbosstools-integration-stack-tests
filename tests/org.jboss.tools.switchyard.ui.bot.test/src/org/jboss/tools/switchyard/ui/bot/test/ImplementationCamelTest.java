@@ -59,7 +59,7 @@ public class ImplementationCamelTest {
 		assertEquals(SERVICE_IMPL_NAME, editor.xpath("/switchyard/composite/component/@name"));
 		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.camel)"));
 		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.camel/java)"));
-		assertEquals(PROJECT_PACKAGE + "." + PROJECT_NAME,
+		assertEquals(PROJECT_PACKAGE + "." + SERVICE_IMPL_NAME,
 				editor.xpath("/switchyard/composite/component/implementation.camel/java/@class"));
 	}
 

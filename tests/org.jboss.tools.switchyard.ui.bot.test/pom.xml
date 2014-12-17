@@ -12,7 +12,7 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-	  <reddeer.config>${project.build.directory}/classes/config/wildfly-810_switchyard-200.xml</reddeer.config>
+	  <reddeer.config>${project.build.directory}/config/wildfly-810_switchyard-200.xml</reddeer.config>
 	  <systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=${reddeer.config}</systemProperties>
 	  <surefire.timeout>10800</surefire.timeout>
 	  <test.class>AllTests</test.class>
@@ -71,7 +71,7 @@
 		</dependencies>
 	      </configuration>
 	    </plugin>
-	    <!-- Install SwitchYard 2.0.Alpha2 into JBoss WildFly 8.1.0.Final -->
+	    <!-- Install SwitchYard 2.0.0.Beta1 into JBoss WildFly 8.1.0.Final -->
 	    <plugin>
 	      <groupId>com.googlecode.maven-download-plugin</groupId>
 	      <artifactId>download-maven-plugin</artifactId>
@@ -97,25 +97,42 @@
 		    <goal>wget</goal>
 		  </goals>
 		  <configuration>
-		    <url>http://downloads.jboss.org/switchyard/releases/v2.0.Alpha3/switchyard-2.0.0.Alpha3-WildFly.zip</url>
+		    <url>http://downloads.jboss.org/switchyard/releases/v2.0.Beta1/switchyard-2.0.0.Beta1-WildFly.zip</url>
 		    <unpack>true</unpack>
-		    <md5>0bde300c252aca20cc9933d577aec173</md5>
+		    <md5>9a13f61cf0123e057025495431e9f758</md5>
 		    <outputDirectory>${project.build.directory}/wildfly-8.1.0.Final</outputDirectory>
 		  </configuration>
 		</execution>
 	      </executions>
 	    </plugin>
+	    <!-- Copy resources and replace variables with its values -->
+	    <plugin>
+	      <artifactId>maven-resources-plugin</artifactId>
+	      <version>2.6</version>
+	      <executions>
+	        <execution>
+                  <id>copy-resources</id>
+	          <phase>validate</phase>
+	          <goals>
+	            <goal>copy-resources</goal>
+	          </goals>
+	          <configuration>
+	            <encoding>UTF-8</encoding>
+	            <outputDirectory>${project.build.directory}</outputDirectory>
+	            <resources>          
+	              <resource>
+	                <directory>resources</directory>
+			<includes>
+			  <include>config/*</include>
+			</includes>
+	                <filtering>true</filtering>
+	              </resource>
+	            </resources>
+	          </configuration>            
+	        </execution>
+	      </executions>
+	    </plugin>
 	  </plugins>
-	  <!-- Copy resources and replace variables with its values -->
-	  <resources>
-	    <resource>
-	      <directory>resources</directory>
-	      <includes>
-		<include>config/*</include>
-	      </includes>
-	      <filtering>true</filtering>
-	    </resource>
-	  </resources>
 	</build>
 	
       </project>

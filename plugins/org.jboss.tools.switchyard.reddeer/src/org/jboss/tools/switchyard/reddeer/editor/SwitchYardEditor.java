@@ -4,12 +4,17 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
 import org.jboss.reddeer.gef.api.EditPart;
 import org.jboss.reddeer.gef.condition.EditorHasEditParts;
 import org.jboss.reddeer.gef.editor.GEFEditor;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.handler.IBeforeShellIsClosed;
+import org.jboss.reddeer.swt.handler.ShellHandler;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -22,6 +27,7 @@ import org.jboss.tools.switchyard.reddeer.wizard.CamelJavaWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.CamelXMLWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.DroolsServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ReferenceWizard;
+import org.junit.Assert;
 
 /**
  * 
@@ -40,6 +46,8 @@ public class SwitchYardEditor extends GEFEditor {
 	public static final String TOOL_BPEL = "Process (BPEL)";
 	public static final String TOOL_BPMN = "Process (BPMN)";
 	public static final String TOOL_RULES = "Rules";
+	
+	private static Shell remainedShell = null;
 
 	protected File sourceFile;
 	protected SwitchYardComponent composite;
@@ -172,8 +180,26 @@ public class SwitchYardEditor extends GEFEditor {
 	@Override
 	public void save() {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		super.save();
+		
+		remainedShell = null;
+		ShellHandler.getInstance().closeAllNonWorbenchShells(new IBeforeShellIsClosed() {
+			
+			@Override
+			public void runBeforeShellIsClosed(Shell shell) {
+				remainedShell = shell;
+			}
+		});
+		
+		activate();
+		ShellMenu saveMenu = new ShellMenu("File", "Save");
+		if(saveMenu.isEnabled()) {
+			saveMenu.select();
+		}
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		
+		if (remainedShell != null) {
+			Assert.fail("Shell '" + remainedShell.getText() + "' remains open");
+		}
 	}
 
 	public void saveAndClose() {

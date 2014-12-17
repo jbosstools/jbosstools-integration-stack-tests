@@ -256,6 +256,8 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 	}
 
 	public void update() {
+		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
+		
 		ProjectExplorer projectExplorer = new ProjectExplorer();
 		projectExplorer.open();
 		projectExplorer.getProjects().get(0).select();
