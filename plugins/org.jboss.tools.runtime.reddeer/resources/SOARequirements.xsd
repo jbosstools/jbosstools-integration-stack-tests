@@ -196,6 +196,7 @@
 				<xs:restriction base="xs:string">
 					<xs:enumeration value="6.0" />
 					<xs:enumeration value="6.1" />
+					<xs:enumeration value="6.2" />
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
