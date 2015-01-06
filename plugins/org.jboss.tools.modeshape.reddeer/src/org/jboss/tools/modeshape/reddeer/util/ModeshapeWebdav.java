@@ -21,7 +21,7 @@ public class ModeshapeWebdav {
 	public static final String HOST = "http://localhost:8080/modeshape-webdav";
 	public static final String REPOSITORY = "repository";
 	public static final String WORKSPACE = "default";
-	public static final String PUBLISH_AREA = "/files";
+	public static final String PUBLISH_AREA = "files";
 
 	private String host;
 	private String repository;
