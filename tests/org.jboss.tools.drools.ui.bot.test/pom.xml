@@ -117,15 +117,10 @@
                   <tasks>
                     <echo>Downloading BRMS 6.x runtime</echo>
                     <mkdir dir="${project.build.directory}" />
-                    <get src="${binaries.brms6}" dest="target/brms-deployable.zip" />
-                    <unzip src="target/brms-deployable.zip" dest="target/brms-deployable" />
-                    <unzip dest="target/jboss-brms-engine">
-                      <fileset dir="target/brms-deployable">
-                        <include name="**/jboss-brms-engine.zip" />
-                      </fileset>
-                    </unzip>
+                    <get src="${binaries.brms6}" dest="target/brms-engine.zip" />
+                    <unzip src="target/brms-engine.zip" dest="target/brms-engine" />
                     <move todir="target/runtime6" flatten="true">
-                      <fileset dir="target/jboss-brms-engine">
+                      <fileset dir="target/brms-engine/${engine-dir}">
                         <include name="**/*.jar" />
                       </fileset>
                     </move>
