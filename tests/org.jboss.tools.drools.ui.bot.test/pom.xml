@@ -120,7 +120,7 @@
                     <get src="${binaries.brms6}" dest="target/brms-engine.zip" />
                     <unzip src="target/brms-engine.zip" dest="target/brms-engine" />
                     <move todir="target/runtime6" flatten="true">
-                      <fileset dir="target/brms-engine/${engine-dir}">
+                      <fileset dir="target/brms-engine/${engine.dir}">
                         <include name="**/*.jar" />
                       </fileset>
                     </move>
