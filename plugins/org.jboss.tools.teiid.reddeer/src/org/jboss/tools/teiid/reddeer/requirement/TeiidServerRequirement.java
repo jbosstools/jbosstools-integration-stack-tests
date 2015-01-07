@@ -7,11 +7,20 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.List;
 
+import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.junit.requirement.CustomConfiguration;
 import org.jboss.reddeer.junit.requirement.Requirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.jboss.reddeer.swt.matcher.RegexMatcher;
+import org.jboss.reddeer.swt.matcher.WithTooltipTextMatcher;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.runtime.reddeer.ServerBase;
 import org.jboss.tools.runtime.reddeer.requirement.ServerConfig;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
@@ -26,6 +35,9 @@ import org.jboss.tools.teiid.reddeer.util.TeiidDriver;
  *
  */
 public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomConfiguration<ServerConfig> {
+
+	private static final String USERNAME = "teiidUser";
+	private static final String PASSWORD = "dvdvdv0!";
 
 	private ServerConfig serverConfig;
 	private TeiidServer teiid;
@@ -76,6 +88,19 @@ public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomC
 			serverBase.create();
 		}
 		serverBase.setState(teiid.state());
+
+		// set username and password
+		try {
+			new WaitUntil(new ConsoleHasText("started in"), TimePeriod.LONG);
+		} catch (Exception e) {
+		}
+		ServersView servers = new ServersView();
+		servers.open();
+		servers.getServer(serverConfig.getName()).open();
+		new DefaultCTabItem("Teiid Instance").activate();
+		new DefaultText(0).typeText(USERNAME);
+		new DefaultText(1).typeText(PASSWORD);
+		new DefaultToolItem(new WorkbenchShell(), 0, new WithTooltipTextMatcher(new RegexMatcher("Save All.*"))).click();
 	}
 
 	@Override
