@@ -53,7 +53,7 @@ public class SFTPBindingPage extends OperationOptionsPage<SFTPBindingPage> {
 	}
 
 	public LabeledText getDirectory() {
-		return new LabeledText(new DefaultGroup("File and Directory Options"), "Directory*");
+		return new LabeledText(new DefaultGroup("File and Directory Options"), "Directory");
 	}
 
 	public LabeledText getPassword() {
@@ -69,7 +69,7 @@ public class SFTPBindingPage extends OperationOptionsPage<SFTPBindingPage> {
 	}
 
 	public LabeledText getHost() {
-		return new LabeledText("Host");
+		return new LabeledText("Host*");
 	}
 
 	public CheckBox getProcessSubDirectoriesRecursively() {

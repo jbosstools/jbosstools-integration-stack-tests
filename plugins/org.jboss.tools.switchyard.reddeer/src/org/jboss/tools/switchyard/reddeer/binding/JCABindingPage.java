@@ -123,8 +123,8 @@ public class JCABindingPage extends OperationOptionsPage<JMSBindingPage> {
 		return new CheckBox(new DefaultGroup("JMS Endpoint Properties"), "Use JNDI Lookup for Destination");
 	}
 
-	public CheckBox getTransacted() {
-		return new CheckBox("Transacted");
+	public LabeledText getTransacted() {
+		return new LabeledText("Transacted");
 	}
 
 }

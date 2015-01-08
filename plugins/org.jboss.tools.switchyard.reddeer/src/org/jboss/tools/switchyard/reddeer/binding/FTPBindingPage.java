@@ -14,7 +14,7 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 public class FTPBindingPage extends OperationOptionsPage<FTPBindingPage> {
 
 	public Text getHost() {
-		return new LabeledText("Host");
+		return new LabeledText("Host*");
 	}
 
 	public Text getPort() {
@@ -34,7 +34,7 @@ public class FTPBindingPage extends OperationOptionsPage<FTPBindingPage> {
 	}
 
 	public Text getDirectory() {
-		return new LabeledText(new DefaultGroup("File and Directory Options"), "Directory*");
+		return new LabeledText(new DefaultGroup("File and Directory Options"), "Directory");
 	}
 
 	public Text getFileName() {
