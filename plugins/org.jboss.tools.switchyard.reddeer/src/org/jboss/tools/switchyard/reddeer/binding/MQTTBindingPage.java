@@ -28,7 +28,7 @@ public class MQTTBindingPage extends OperationOptionsPage<MQTTBindingPage> {
 	}
 
 	public LabeledText getHostURI() {
-		return new LabeledText("Host URI*");
+		return new LabeledText("Host URI (Default: tcp://127.0.0.1:1883)");
 	}
 
 	public LabeledCombo getQualityofService() {

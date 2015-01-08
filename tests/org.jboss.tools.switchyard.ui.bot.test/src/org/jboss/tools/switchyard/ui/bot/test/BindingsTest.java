@@ -472,11 +472,12 @@ public class BindingsTest {
 		wizard.setName("jca-binding");
 		wizard.getResourceAdapterType().setSelection(RESOURCE_ADAPTER_GENERIC);
 		wizard.getResourceAdapterArchive().setText("generic-ra.rar");
+		wizard.getAcknowledgeMode().setSelection(JCABindingPage.ACKNOWLEDGE_MODE_AUTO);
 		wizard.setOperationSelector(OPERATION_NAME, METHOD);
 		wizard.next();
 		wizard.getEndpointMappingType().setSelection(ENDPOINT_JMS);
-		wizard.getTransacted().toggle(false);
-		wizard.getTransacted().toggle(true);
+		wizard.getTransacted().setText("false");
+		wizard.getTransacted().setText("true");
 		wizard.getBatchSize().setText("123");
 		wizard.getBatchTimeoutin().setText("2000");
 		wizard.getConnectionFactoryJNDIName().setText("jndiName");
@@ -683,7 +684,7 @@ public class BindingsTest {
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		JMSBindingPage page = properties.selectJMSBinding("jms-binding");
 		assertEquals("jms-binding", page.getName());
-		assertEquals("myqueue", page.getQueueTopicName());
+		assertEquals("mytopic", page.getQueueTopicName());
 		properties.ok();
 	}
 

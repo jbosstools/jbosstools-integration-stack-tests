@@ -54,7 +54,7 @@ public class FTPSBindingPage extends OperationOptionsPage<FTPSBindingPage> {
 	}
 
 	public LabeledText getDirectory() {
-		return new LabeledText(new DefaultGroup("File and Directory Options"), "Directory*");
+		return new LabeledText(new DefaultGroup("File and Directory Options"), "Directory");
 	}
 
 	public LabeledText getPassword() {
@@ -70,7 +70,7 @@ public class FTPSBindingPage extends OperationOptionsPage<FTPSBindingPage> {
 	}
 
 	public LabeledText getHost() {
-		return new LabeledText("Host");
+		return new LabeledText("Host*");
 	}
 
 	public LabeledCombo getExecutionProtocol() {
