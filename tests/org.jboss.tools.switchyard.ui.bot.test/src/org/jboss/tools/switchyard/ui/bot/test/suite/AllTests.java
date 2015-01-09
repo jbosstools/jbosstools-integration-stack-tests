@@ -9,6 +9,7 @@ import org.jboss.tools.switchyard.ui.bot.test.BottomUpBPMN2Test;
 import org.jboss.tools.switchyard.ui.bot.test.BottomUpCamelTest;
 import org.jboss.tools.switchyard.ui.bot.test.BottomUpEJBTest;
 import org.jboss.tools.switchyard.ui.bot.test.BreakpointTest;
+import org.jboss.tools.switchyard.ui.bot.test.DebuggerTest;
 import org.jboss.tools.switchyard.ui.bot.test.DeploymentTest;
 import org.jboss.tools.switchyard.ui.bot.test.DomainSettingsTest;
 import org.jboss.tools.switchyard.ui.bot.test.DroolsTest;
@@ -47,6 +48,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	TransformersTest.class,
 	ValidatorsTest.class,
 	BreakpointTest.class,
+	DebuggerTest.class,
 	DeploymentTest.class
 })
 @RunWith(RedDeerSuite.class)
