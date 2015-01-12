@@ -136,6 +136,7 @@ public class UseCaseWSProxyRESTTest {
 		new Reference(SERVICE_REF).promoteReference().setServiceName(REST_SERVICE).finish();
 		new Service(REST_SERVICE).addBinding("REST");
 		RESTBindingPage restWizard = new RESTBindingPage();
+		restWizard.setName("rest-reference");
 		restWizard.setAddress(REST_URL);
 		restWizard.addInterface("Hello");
 		wizard.finish();
