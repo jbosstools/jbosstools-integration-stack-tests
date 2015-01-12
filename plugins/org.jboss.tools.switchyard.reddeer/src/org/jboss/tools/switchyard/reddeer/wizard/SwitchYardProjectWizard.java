@@ -228,7 +228,9 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		setText("Group Id:", groupId);
 		setText("Package Name:", packageName);
 		setConfigurationVersion(configurationVersion);
-		if (targetRuntime == null) {
+		if (targetRuntime != null) {
+			setTargetRuntime(targetRuntime);
+		} else {
 			setLibraryVersion(libraryVersion);
 		}
 		selectComponents(components);

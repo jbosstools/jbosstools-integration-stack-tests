@@ -57,7 +57,7 @@ public class DeploymentTest {
 		helloBeanEditor.save();
 		helloBeanEditor.close();
 
-		new Service("Hello").promoteService().activate().setName("HelloService").finish();
+		new Service("Hello").promoteService().activate().setServiceName("HelloService").finish();
 
 		new Service("HelloService").addBinding("HTTP");
 		HTTPBindingPage soapWizard = new HTTPBindingPage();
