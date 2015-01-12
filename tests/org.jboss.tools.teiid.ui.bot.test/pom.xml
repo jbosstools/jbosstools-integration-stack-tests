@@ -12,7 +12,9 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<reddeer.config>notSpecified</reddeer.config>
+		<server.name>AS-7.1.1.Final</server.name>
+		<server.home>${project.build.directory}/jboss-as-7.1.1.Final</server.home>
+		<reddeer.config>${project.build.directory}/config/as-711_teiid-830.xml</reddeer.config>
 		<swtbot.properties>swtbot.properties</swtbot.properties>
 		<swtbot.test.properties.file>${swtbot.properties}</swtbot.test.properties.file>
 		<systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=${swtbot.test.properties.file} -Dreddeer.config=${reddeer.config}</systemProperties>
@@ -254,6 +256,64 @@
 				</executions>
 			</plugin>
 
+			<!-- Download JBoss AS + Teiid -->	
+			<plugin>
+			  <groupId>com.googlecode.maven-download-plugin</groupId>
+			  <artifactId>download-maven-plugin</artifactId>
+			  <version>1.2.0</version>
+			  <executions>
+			    <execution>
+			      <id>get-as</id>
+			      <phase>pre-integration-test</phase>
+			      <goals>
+				<goal>wget</goal>
+			      </goals>
+			      <configuration>
+				<url>http://download.jboss.org/jbossas/7.1/jboss-as-7.1.1.Final/jboss-as-7.1.1.Final.zip</url>
+				<unpack>true</unpack>
+			      </configuration>
+			    </execution>
+			    <execution>
+			      <id>get-teiid</id>
+			      <phase>pre-integration-test</phase>
+			      <goals>
+				<goal>wget</goal>
+			      </goals>
+			      <configuration>
+				<url>https://sourceforge.net/projects/teiid/files/teiid-8.3.0.Final-jboss-dist.zip</url>
+				<unpack>true</unpack>
+				<outputDirectory>${project.build.directory}/jboss-as-7.1.1.Final</outputDirectory>
+			      </configuration>
+			    </execution>
+			  </executions>
+			</plugin>
+			<plugin>
+			  <artifactId>maven-resources-plugin</artifactId>
+			  <version>2.6</version>
+			  <executions>
+			    <execution>
+			      <id>copy-resources</id>
+			      <phase>validate</phase>
+			      <goals>
+				<goal>copy-resources</goal>
+			      </goals>
+			      <configuration>
+				<encoding>UTF-8</encoding>
+				<outputDirectory>${basedir}/target/</outputDirectory>
+				<resources>          
+				  <resource>
+				    <directory>resources</directory>
+				    <includes>
+				      <include>config/*</include>
+				    </includes>
+				    <filtering>true</filtering>
+				  </resource>
+				</resources>
+			      </configuration>            
+			    </execution>
+			  </executions>
+			</plugin>
+			
 			</plugins>
 	</build>
 
