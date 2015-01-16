@@ -23,7 +23,7 @@ public class ServerAS extends ServerBase {
 	private final String category = "JBoss Community";
 
 	private final String label = "JBoss AS";
-
+	
 	public String getCategory() {
 		return category;
 	}
@@ -38,6 +38,8 @@ public class ServerAS extends ServerBase {
 
 	@Override
 	public void create() {
+		addJre();
+		
 		// Add runtime
 		RuntimePreferencePage runtimePreferencePage = new RuntimePreferencePage();
 		runtimePreferencePage.open();
@@ -48,6 +50,7 @@ public class ServerAS extends ServerBase {
 		runtimeWizard.next();
 		runtimeWizard.setName(name);
 		runtimeWizard.setHomeDirectory(getHome());
+		runtimeWizard.selectJre(getJreName());
 		runtimeWizard.finish();
 		runtimePreferencePage.ok();
 

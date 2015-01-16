@@ -12,24 +12,42 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-	  <reddeer.config>${project.build.directory}/classes/config</reddeer.config>
+	  <server.jre>default</server.jre>
+	  <reddeer.config>${project.build.directory}/config</reddeer.config>
 	  <systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=${reddeer.config}</systemProperties>
 	  <surefire.timeout>10800</surefire.timeout>
 	  <maven-download-plugin.version>1.0.0</maven-download-plugin.version>
 	</properties>
 
 	<build>
-	  <resources>
-	    <resource>
-	      <directory>resources</directory>
-	      <includes>
-		<include>config/*</include>
-		<include>auto/*</include>
-	      </includes>
-	      <filtering>true</filtering>
-	    </resource>
-	  </resources>
 	  <plugins>
+	    <plugin>
+	      <artifactId>maven-resources-plugin</artifactId>
+	      <version>2.6</version>
+	      <executions>
+	        <execution>
+                  <id>copy-resources</id>
+	          <phase>validate</phase>
+	          <goals>
+	            <goal>copy-resources</goal>
+	          </goals>
+	          <configuration>
+	            <encoding>UTF-8</encoding>
+	            <outputDirectory>${basedir}/target/</outputDirectory>
+	            <resources>          
+	              <resource>
+	                <directory>resources</directory>
+			<includes>
+			  <include>config/*</include>
+			  <include>auto/*</include>
+			</includes>
+	                <filtering>true</filtering>
+	              </resource>
+	            </resources>
+	          </configuration>            
+	        </execution>
+	      </executions>
+	    </plugin>
 	    <!-- Runtime Bot Tests -->
 	    <plugin>
 	      <groupId>org.eclipse.tycho</groupId>
@@ -159,7 +177,7 @@
 		      <java
 			  jar="${project.build.directory}/jbpm-distribution-3.2.9-installer.jar"
 			  dir="${project.build.directory}" fork="true">
-			<arg value="${project.build.directory}/classes/auto/install-jbpm3.xml" />
+			<arg value="${project.build.directory}/auto/install-jbpm3.xml" />
 		      </java>
 		    </tasks>
 		  </configuration>
@@ -169,5 +187,5 @@
 	  </plugins>
 	</build>
 	
-      </project>
+</project>
       

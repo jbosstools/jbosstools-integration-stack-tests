@@ -82,6 +82,7 @@
 	<xs:complexType name="jboss-as">
 		<xs:sequence>
 			<xs:element name="home" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="jre" type="xs:string" minOccurs="0" maxOccurs="1" />
 			<xs:element name="properties" minOccurs="0" maxOccurs="1">
 				<xs:complexType>
 					<xs:sequence>
@@ -107,6 +108,7 @@
 	<xs:complexType name="jboss-eap">
 		<xs:sequence>
 			<xs:element name="home" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="jre" type="xs:string" minOccurs="0" maxOccurs="1" />
 			<xs:element name="properties" minOccurs="0" maxOccurs="1">
 				<xs:complexType>
 					<xs:sequence>
@@ -130,6 +132,7 @@
 	<xs:complexType name="jboss-wildfly">
 		<xs:sequence>
 			<xs:element name="home" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="jre" type="xs:string" minOccurs="0" maxOccurs="1" />
 			<xs:element name="properties" minOccurs="0" maxOccurs="1">
 				<xs:complexType>
 					<xs:sequence>
@@ -151,6 +154,7 @@
 	<xs:complexType name="apache-karaf">
 		<xs:sequence>
 			<xs:element name="home" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="jre" type="xs:string" minOccurs="0" maxOccurs="1" />
 			<xs:element name="host" type="xs:string" minOccurs="0" maxOccurs="1" />
 			<xs:element name="port" type="xs:string" minOccurs="0" maxOccurs="1" />
 			<xs:element name="username" type="xs:string" minOccurs="0" maxOccurs="1" />
@@ -179,6 +183,7 @@
 	<xs:complexType name="jboss-fuse">
 		<xs:sequence>
 			<xs:element name="home" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="jre" type="xs:string" minOccurs="0" maxOccurs="1" />
 			<xs:element name="host" type="xs:string" minOccurs="0" maxOccurs="1" />
 			<xs:element name="port" type="xs:string" minOccurs="0" maxOccurs="1" />
 			<xs:element name="username" type="xs:string" minOccurs="0" maxOccurs="1" />

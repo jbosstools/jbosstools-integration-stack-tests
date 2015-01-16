@@ -99,6 +99,8 @@ public class ServerKaraf extends ServerBase {
 
 	@Override
 	public void create() {
+		addJre();
+		
 		// Add runtime
 		RuntimePreferencePage runtimePreferencePage = new RuntimePreferencePage();
 		runtimePreferencePage.open();
@@ -107,6 +109,7 @@ public class ServerKaraf extends ServerBase {
 		runtimeWizard.setType(getCategory(), getRuntimeType());
 		runtimeWizard.next();
 		runtimeWizard.setInstallationDir(getHome());
+		runtimeWizard.selectJre(getJreName());
 		runtimeWizard.finish();
 		runtimePreferencePage.ok();
 

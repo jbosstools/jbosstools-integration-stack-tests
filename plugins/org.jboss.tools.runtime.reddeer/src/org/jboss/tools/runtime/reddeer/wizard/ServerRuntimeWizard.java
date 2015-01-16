@@ -1,6 +1,9 @@
 package org.jboss.tools.runtime.reddeer.wizard;
 
 import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
+import org.jboss.reddeer.swt.impl.button.RadioButton;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
@@ -23,6 +26,14 @@ public class ServerRuntimeWizard extends WizardDialog {
 	public ServerRuntimeWizard setType(String category, String label) {
 		new DefaultTreeItem(category, label).select();
 		return this;
+	}
+	
+	public void selectJre(String jreName) {
+		if (jreName == null) {
+			return;
+		}
+		new RadioButton(new DefaultGroup("Runtime JRE"),"Alternate JRE: ").click();
+		new DefaultCombo(new DefaultGroup("Runtime JRE"),1).setSelection(jreName);
 	}
 
 	/*
