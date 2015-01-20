@@ -17,12 +17,8 @@ import org.jboss.tools.bpmn2.ui.bot.test.jbpm.JbpmAssertions;
 import org.jboss.tools.bpmn2.ui.bot.test.jbpm.PersistenceWorkItemHandler;
 import org.jboss.tools.bpmn2.ui.bot.test.jbpm.TriggeredNodesListener;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
+import org.kie.api.event.process.DefaultProcessEventListener;
 import org.kie.api.event.process.ProcessCompletedEvent;
-import org.kie.api.event.process.ProcessEventListener;
-import org.kie.api.event.process.ProcessNodeLeftEvent;
-import org.kie.api.event.process.ProcessNodeTriggeredEvent;
-import org.kie.api.event.process.ProcessStartedEvent;
-import org.kie.api.event.process.ProcessVariableChangedEvent;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
 import org.kie.api.runtime.process.WorkItem;
@@ -79,62 +75,11 @@ public class BooleanStructureReferenceTest extends JBPM6BaseTest {
 		JbpmAssertions.assertProcessInstanceCompleted(processInstance, kSession);
 	}
 	
-	private class BeforeEndEventListener implements ProcessEventListener {
+	private class BeforeEndEventListener extends DefaultProcessEventListener {
 		
-		@Override
-		public void beforeProcessStarted(ProcessStartedEvent event) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void afterProcessStarted(ProcessStartedEvent event) {
-			// TODO Auto-generated method stub
-			
-		}
-
 		@Override
 		public void beforeProcessCompleted(ProcessCompletedEvent event) {
 			assertEquals("Process variable "+VARIABLE1+" didn't changed to true.", true, ((WorkflowProcessInstance) event.getProcessInstance()).getVariable(VARIABLE1));
-		}
-
-		@Override
-		public void afterProcessCompleted(ProcessCompletedEvent event) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void beforeNodeTriggered(ProcessNodeTriggeredEvent event) {
-		
-		}
-
-		@Override
-		public void afterNodeTriggered(ProcessNodeTriggeredEvent event) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void beforeNodeLeft(ProcessNodeLeftEvent event) {
-			
-		}
-
-		@Override
-		public void afterNodeLeft(ProcessNodeLeftEvent event) {
-			
-		}
-
-		@Override
-		public void beforeVariableChanged(ProcessVariableChangedEvent event) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void afterVariableChanged(ProcessVariableChangedEvent event) {
-			// TODO Auto-generated method stub
-			
 		}
 		
 	}

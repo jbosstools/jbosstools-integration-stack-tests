@@ -32,7 +32,7 @@ public class GatewayTab {
 		new SectionToolItem("Sequence Flow List", "Edit").click();
 		new PushButton("Add Condition").click();
 		new LabeledCombo("Condition Language").setSelection(lang);
-		new LabeledText("Constraint").setText(condition);
+		new LabeledText("Condition").setText(condition);
 		new SectionToolItem("Sequence Flow Details", "Close").click();
 	}
 	

@@ -1,19 +1,22 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
-import org.eclipse.draw2d.geometry.Point;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.jboss.tools.bpmn2.reddeer.DefaultOutlineView;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
-import org.jboss.tools.bpmn2.reddeer.editor.Position;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.endevents.EndEvent;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.endevents.TerminateEndEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.swimlanes.Lane;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
 import org.jboss.tools.bpmn2.ui.bot.test.jbpm.JbpmAssertions;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
+import org.kie.api.event.process.DefaultProcessEventListener;
+import org.kie.api.event.process.ProcessCompletedEvent;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
+import org.kie.api.runtime.process.WorkflowProcessInstance;
 
 /**
  * ISSUE - Task2 has two outgoing connections and End has two incoming. But why? Unable to
@@ -23,35 +26,39 @@ import org.kie.api.runtime.process.ProcessInstance;
 public class LaneTest extends JBPM6BaseTest {
 
 	DefaultOutlineView outlineView = new DefaultOutlineView();
+	private static final String EXPECTED_VALUE = "123456"; 
 	
 	@Override
 	public void buildProcessModel() {
+		new StartEvent("StartProcess").delete();
+		Process process = new Process("BPMN2-Lane");
+		process.addLocalVariable(VARIABLE1, "String");
+		process.add("Manager", ElementType.LANE);
+		Lane lane = new Lane("Manager");
+		lane.add("StartProcess", ElementType.START_EVENT);
 		StartEvent start = new StartEvent("StartProcess");
-		start.append("MyLane", ElementType.LANE, Position.SOUTH_EAST);
-		
-		Lane lane = new Lane("MyLane");
-		lane.changeOrientation();
-		lane.append("EndProcess", ElementType.TERMINATE_END_EVENT, Position.SOUTH_EAST);
-		lane.addRelativeToElement("Hello", ElementType.SCRIPT_TASK, lane, new Point(-100, 0));
-
-		ScriptTask task = new ScriptTask("Hello");
-		task.setScript("", "System.out.println(\"hello\")");
-		task.append("Goodbye", ElementType.SCRIPT_TASK);
-
-		ScriptTask task2 = new ScriptTask("Goodbye");
-		task2.setScript("", "System.out.println(\"bye\")");
-		
-		EndEvent end = new TerminateEndEvent("EndProcess");
-		
-		outlineView.select("StartProcess");
-		start.connectTo(task);
-		outlineView.select("EndProcess");
-		task2.connectTo(end);
+		start.append("LaneScript", ElementType.SCRIPT_TASK);
+		ScriptTask script = new ScriptTask("LaneScript");
+		script.setScript("Java", "kcontext.setVariable(\""+VARIABLE1+"\", \""+EXPECTED_VALUE+"\");");
+		script.append("EndProcess", ElementType.END_EVENT);
 	}
 
 	@Override
 	public void assertRunOfProcessModel(KieSession kSession) {
-		ProcessInstance processInstance = kSession.startProcess("BPMN2Lane");
+		kSession.addEventListener(new BeforeEndEventListener());
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put(VARIABLE1, "empty");
+		
+		ProcessInstance processInstance = kSession.startProcess("BPMN2Lane", map);
 		JbpmAssertions.assertProcessInstanceCompleted(processInstance, kSession);
+	}
+	
+	private class BeforeEndEventListener extends DefaultProcessEventListener  {
+		@Override
+		public void beforeProcessCompleted(ProcessCompletedEvent event) {
+			assertEquals("Process variable "+VARIABLE1+" didn't changed to expected value.", EXPECTED_VALUE, ((WorkflowProcessInstance) event.getProcessInstance()).getVariable(VARIABLE1));
+		}
+		
 	}
 }

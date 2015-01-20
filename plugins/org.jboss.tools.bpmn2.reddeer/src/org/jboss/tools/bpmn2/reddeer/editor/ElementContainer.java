@@ -83,7 +83,7 @@ public class ElementContainer extends Element {
 		String sectionName = type.toToolPath()[0];
 		// Make sure that the point is available.
 		if (!"Boundary Events".equals(sectionName)) {
-			if (isInternalAvailable(point)) {
+			if (!isInternalAvailable(point)) {
 				throw new RuntimeException("'" + point + "' is not available");
 			}
 		}
@@ -130,7 +130,8 @@ public class ElementContainer extends Element {
 	protected boolean isInternalAvailable(Point p) {
 		// The point must be inside this edit part.
 		Rectangle bounds = getBounds();
-		Point point = new Point(p.x() + bounds.width(), p.y() + bounds.height());
+		Point point = new Point(p.x() + bounds.x(), p.y() + bounds.y());
+		
 		if (bounds.contains(point)) {
 			// Check weather the point is not already taken by another child editPart.
 			//return editor.getEditParts(editPart, new ConstructOnPoint<EditPart>(point)).isEmpty();

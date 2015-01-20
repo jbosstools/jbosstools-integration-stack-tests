@@ -10,41 +10,48 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(BPMN2Suite.class)
 @SuiteClasses({
 // Editor tests
+//	
+//	Everywhere, where is used UserTask
+//	@BZ https://bugzilla.redhat.com/show_bug.cgi?id=1183743
+//	
+//	Where is declared escalation or signal
+//	@BZ https://bugzilla.redhat.com/show_bug.cgi?id=1184422
+//	
+//	temporary workaround used
+//	@BZ https://bugzilla.redhat.com/show_bug.cgi?id=1175772
 // ------------
-//  @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1157656
-	ParallelSplitJoinTest.class,
+	ParallelSplitJoinTest.class, 
 	CallActivityTest.class,
-	AdHocProcessTest.class, //@BZ https://bugzilla.redhat.com/show_bug.cgi?id=1147940
+	AdHocProcessTest.class,
 	AdHocSubProcessTest.class,
 	AssociationTest.class,
-	BooleanStructureReferenceTest.class, //@BZ https://bugzilla.redhat.com/show_bug.cgi?id=1151984
+	BooleanStructureReferenceTest.class,
 	BusinessRuleTaskTest.class,
 	BoundaryConditionalEventOnTaskTest.class,
 	ErrorEndEventTest.class,
 	ConditionalStartTest.class,
-	ImportTest.class, // Headless exception when typing is done! Only on Mac 
-					  // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1155145
+	ImportTest.class,
 	ReceiveTaskTest.class, 
 	ParallelSplitTest.class,
 	RuleTaskTest.class,
 	SendTaskTest.class, 
 	ErrorBoundaryEventOnTaskTest.class,
 	IntermediateCatchEventTimerCycleTest.class,
-	MessageStartTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1155707
+	MessageStartTest.class,
 	SubProcessTest.class,
 	UserTaskTest.class,
-	XPathExpressionTest.class, // @Ignore
-	LaneTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1156314
+	XPathExpressionTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1176400
+	LaneTest.class,
 	DataObjectTest.class,
 	MultipleStartEventTest.class,
 	InclusiveSplitTest.class,
 	//IntermediateThrowEventNoneTest.class, 
 	IntermediateThrowMessageEventTest.class,
-	IntermediateThrowEscalationEventTest.class, // https://bugzilla.redhat.com/show_bug.cgi?id=1162174
+	IntermediateThrowEscalationEventTest.class,
 	IntermediateCatchSignalSingleTest.class,
 	ExclusiveSplitPriorityTest.class,
 	EventBasedSplitTest.class, 
-	BoundaryEscalationEventOnTaskTest.class, // https://bugzilla.redhat.com/show_bug.cgi?id=1165807
+	BoundaryEscalationEventOnTaskTest.class,
 	ConditionalBoundaryEventInterruptingTest.class, // https://bugzilla.redhat.com/show_bug.cgi?id=1165667
 })
 public class AllEditorTests extends TestSuite {

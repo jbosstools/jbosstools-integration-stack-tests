@@ -1,7 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm;
 
 import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.reddeer.editor.MappingSide;
 
@@ -27,7 +26,6 @@ public class FromExpression implements MappingSide {
 	@Override
 	public void setUp() {
 		new RadioButton("Expression").click();
-		new LabeledCombo("Script Language").setSelection(scriptLanguage);
 		new LabeledText("Script").setText(script);
 	}
 

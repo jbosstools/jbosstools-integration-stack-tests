@@ -14,7 +14,10 @@
 	<properties>
 		<droolsjbpm.site>https://repository.jboss.org/nexus/content/groups/public-jboss/</droolsjbpm.site>
 		<systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.skip=false -Dtest.configurations.dir=resources/</systemProperties>
-		<droolsjbpm.version>6.1.0.Final</droolsjbpm.version>
+		<droolsjbpm.version>6.2.0.CR3</droolsjbpm.version>
+		<droolsjbpm.feature.version>6.2.0.CR3</droolsjbpm.feature.version>
+		<bpmn2.modeler.version>1.1.1</bpmn2.modeler.version>
+		<bpmn2.metamodel.version>1.0.0</bpmn2.metamodel.version>
 		<awt.robot>false</awt.robot>
 		<bpmn.validation>false</bpmn.validation>
 		<test.class>AllEditorTests</test.class>
@@ -108,29 +111,29 @@
 				<dependency>
 				  <type>p2-installable-unit</type>
 				  <artifactId>org.eclipse.bpmn2.modeler.feature.group</artifactId>
-				  <version>1.1.1</version>
+				  <version>${bpmn2.modeler.version}</version>
 				</dependency>
 				<dependency>
 				  <type>p2-installable-unit</type>
 				  <artifactId>org.eclipse.bpmn2.modeler.runtime.jboss.feature.group</artifactId>
-				  <version>1.1.1</version>
+				  <version>${bpmn2.modeler.version}</version>
 				</dependency>
 				<dependency>
 				  <type>p2-installable-unit</type>
 				  <artifactId>org.eclipse.bpmn2.feature.group</artifactId>
-				  <version>1.0.0</version>
+				  <version>${bpmn2.metamodel.version}</version>
 				</dependency>
 				
 				<!-- jBPM wizard  -->
 				<dependency>
 				  <type>p2-installable-unit</type>
 				  <artifactId>org.jbpm.eclipse.feature.feature.group</artifactId>
-				  <version>6.1.0.Final</version>
+				  <version>${droolsjbpm.feature.version}</version>
 				</dependency>
 				<dependency>
 				  <type>p2-installable-unit</type>
 				  <artifactId>org.drools.eclipse.feature.feature.group</artifactId>
-				  <version>6.1.0.Final</version>
+				  <version>${droolsjbpm.feature.version}</version>
 				</dependency>
 				
 				<!-- This entry should enable creating of default JDK on Mac -->
