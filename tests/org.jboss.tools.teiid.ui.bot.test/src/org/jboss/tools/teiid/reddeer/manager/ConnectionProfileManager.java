@@ -128,12 +128,18 @@ public class ConnectionProfileManager {
 	 * @param props
 	 */
 	public void createCPWSDL(String cpName, Properties props){
-		String wsdl = new TeiidBot().toAbsolutePath(props.getProperty("wsdl"));
+		String wsdl;
+		
+		if (props.getProperty("wsdl").contains("http")){
+			wsdl = props.getProperty("wsdl");		
+		}else {
+			wsdl = "file:" + new TeiidBot().toAbsolutePath(props.getProperty("wsdl"));
+		}
 
 		// Create wsdl profile
 		WsdlProfileWizard profileWizard = new WsdlProfileWizard();
 		profileWizard.setName(cpName);
-		profileWizard.setWsdl("file:" + wsdl);
+		profileWizard.setWsdl(wsdl);
 		profileWizard.setEndPoint(props.getProperty("endPoint"));//!!!PROBLEM - reddeer
 		profileWizard.execute();
 

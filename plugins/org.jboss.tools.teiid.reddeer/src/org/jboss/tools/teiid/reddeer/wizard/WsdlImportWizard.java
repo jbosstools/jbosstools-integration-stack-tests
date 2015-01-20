@@ -5,9 +5,12 @@ import java.util.List;
 
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.wait.TimePeriod;
@@ -27,15 +30,40 @@ public class WsdlImportWizard extends TeiidImportWizard {
 	private String profile;
 	private List<String> requestElements;
 	private List<String> responseElements;
+	private List<String> operations;
+	private String projectName;
+	private String sourceModelName;
+	private String viewModelName;
 
 	public WsdlImportWizard() {
 		super(IMPORTER);
 		requestElements = new ArrayList<String>();
 		responseElements = new ArrayList<String>();
+		operations = new ArrayList<String>();
+	}
+	
+	public String getViewModelName() {
+		return viewModelName;
+	}
+
+	public void setViewModelName(String viewModelName) {
+		this.viewModelName = viewModelName;
+	}
+	
+	public String getSourceModelName() {
+		return sourceModelName;
+	}
+
+	public void setSourceModelName(String sourceModelName) {
+		this.sourceModelName = sourceModelName;
 	}
 
 	public void setProfile(String profile) {
 		this.profile = profile;
+	}
+	
+	public void setProjectName(String projectName){
+		this.projectName = projectName;
 	}
 
 	public void addRequestElement(String path) {
@@ -44,6 +72,10 @@ public class WsdlImportWizard extends TeiidImportWizard {
 
 	public void addResponseElement(String path) {
 		responseElements.add(path);
+	}
+	
+	public void addOperation(String name) {
+		operations.add(name);	
 	}
 
 	@Override
@@ -61,22 +93,46 @@ public class WsdlImportWizard extends TeiidImportWizard {
 	@Override
 	public void execute() {
 		open();
-		new DefaultCombo(0).setSelection(profile);//TODO end point - binding, service mode, select desired wsdl operations (+(de)select all)
-		next();
-		stupidWait();
-		next();
-		stupidWait();//TODO source model definition, view model def, procedure gen. options
+		new DefaultCombo(0).setSelection(profile);//TODO end point - binding, service mode
+		for (String operationName : operations){
+			selectOperation(operationName);			
+		}
+		new PushButton("Next >").click();
+		
+		new PushButton(new DefaultGroup("Source Model Definition"),"...").click();
+		new DefaultShell("Select a Folder");
+		new DefaultTreeItem(projectName).select();
+		new PushButton("OK").click();
+		
+		new LabeledText(new DefaultGroup("Source Model Definition"),"Name").setText(sourceModelName);
+		
+		new PushButton(new DefaultGroup("View Model Definition"),"...").click();
+		new DefaultShell("Select a Folder");
+		new DefaultTreeItem(projectName).select();
+		new PushButton("OK").click();
+		
+		new LabeledText(new DefaultGroup("View Model Definition"),"Name").setText(viewModelName);
+		
+		new PushButton("Next >").click();
+		
+		for (String operation : operations){
+			new DefaultCombo(new DefaultGroup("Operations"),0).setSelection(operation);
+			
+			for (String path : requestElements) {
+				if (path.split("/")[0].equals(operation)) addElement("Request", path);
+			}
+			// Add response elements
+			for (String path : responseElements) {
+				if (path.split("/")[0].equals(operation + "Response")) addElement("Response", path);
+			}
+			
+		}
+		
+		//TODO source model definition, view model def, procedure gen. options
 		//TODO select operation; for request procedure: check generated sql statement, CRUD with element info; body/header
 		//TODO response: body, header, root path; operations with columns? (ordinality)
 		//TODO wrapper procedure: generated procedure name
 		// Add request elements
-		for (String path : requestElements) {
-			addElement("Request", path);
-		}
-		// Add response elements
-		for (String path : responseElements) {
-			addElement("Response", path);
-		}
 
 		finish();
 	}
@@ -91,6 +147,11 @@ public class WsdlImportWizard extends TeiidImportWizard {
 		new PushButton("Add").click();
 		/*String lastItem = getLastItem(path);
 		new WaitUntil(new IsItemAdded(lastItem, tab), TimePeriod.NORMAL);*/
+	}
+	
+	private void selectOperation(String operation){
+		new DefaultTable(new DefaultGroup("Select the desired WSDL Operations"),0).getItem(operation).setChecked(true);	
+		
 	}
 
 	private String getLastItem(String path) {
