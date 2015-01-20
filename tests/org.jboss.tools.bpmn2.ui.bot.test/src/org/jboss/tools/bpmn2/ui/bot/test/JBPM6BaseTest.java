@@ -52,6 +52,7 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 	
 	protected static final String VARIABLE1 = "VariableOne";
 	protected static final String VARIABLE2 = "VariableTwo";
+
 	
 	/**
 	 * 

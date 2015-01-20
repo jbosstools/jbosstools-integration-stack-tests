@@ -1,6 +1,5 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,7 +16,10 @@ import org.kie.api.event.process.DefaultProcessEventListener;
 import org.kie.api.event.process.ProcessCompletedEvent;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
+
 import org.kie.api.runtime.process.WorkflowProcessInstance;
+
+
 
 
 @ProcessDefinition(name="BPMN2-Lane", project="EditorTestProject")
