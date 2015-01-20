@@ -3,11 +3,13 @@ package org.jboss.tools.switchyard.reddeer.wizard;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.api.Combo;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.handler.WidgetHandler;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
@@ -16,6 +18,7 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -192,9 +195,9 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 	}
 
 	public void setLibraryVersion(String libraryVersion) {
-		Combo combo = new LabeledCombo("Library Version:");
+		LabeledComboExt combo = new LabeledComboExt("Library Version:");
 		if (libraryVersion != null && combo.isEnabled()) {
-			combo.setText(libraryVersion);
+			combo.typeText(libraryVersion);
 		}
 	}
 
@@ -270,5 +273,27 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+	}
+	
+	private class LabeledComboExt extends LabeledCombo {
+		
+		private final Logger log = Logger.getLogger(LabeledComboExt.class);
+		
+		public LabeledComboExt(String label) {
+			super(label);
+		}
+		
+		public void setFocus() {
+			log.debug("Set focus to Combo Text");
+			WidgetHandler.getInstance().setFocus(swtCombo);
+		}
+		
+		public void typeText(String text) {
+			setText("");
+			setFocus();
+			KeyboardFactory.getKeyboard().type(text);
+			setText(text);
+		}
+		
 	}
 }
