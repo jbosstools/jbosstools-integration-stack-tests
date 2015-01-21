@@ -84,11 +84,15 @@ public class SwitchYardRequirement implements Requirement<SwitchYard>, CustomCon
 	}
 
 	public String getTargetRuntimeLabel() {
-		return getConfig().getTargetRuntime() + " [" + getConfig().getName() + "]"; 
+		String targetRuntime = getConfig().getTargetRuntime(); 
+		if (targetRuntime == null) {
+			return null;
+		}
+		return targetRuntime + " [" + getConfig().getName() + "]"; 
 	}
 	
 	public SwitchYardProjectWizard project(String name) {
 		return new SwitchYardProjectWizard(name, config.getConfigurationVersion(), config.getLibraryVersion(),
-				config.getTargetRuntime());
+				getTargetRuntimeLabel());
 	}
 }
