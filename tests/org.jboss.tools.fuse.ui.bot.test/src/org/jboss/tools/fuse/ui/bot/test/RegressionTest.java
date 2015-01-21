@@ -85,7 +85,10 @@ public class RegressionTest {
 		new DefaultToolItem(new WorkbenchShell(), 0, new WithTooltipTextMatcher(new RegexMatcher("Save All.*"))).click();
 		new ProjectExplorer().deleteAllProjects();
 		ShellHandler.getInstance().closeAllNonWorbenchShells();
-		new ConsoleView().terminateConsole();
+		try {
+			new ConsoleView().terminateConsole();
+		} catch (Exception e) {
+		}
 	}
 
 	/**
@@ -126,12 +129,29 @@ public class RegressionTest {
 	}
 
 	/**
+	 * Propose a DebugAs option to start CamelContext & debug java code used by beans from camel routes
+	 * https://issues.jboss.org/browse/FUSETOOLS-853
+	 */
+	@Test
+	public void issue_853() {
+
+		ProjectFactory.createProject("camel-blueprint", "camel-archetype-blueprint");
+		new ProjectExplorer().getProject("camel-blueprint").getProjectItem("src/main/resources", "OSGI-INF", "blueprint", "blueprint.xml").select();
+		try {
+			new ContextMenu("Debug As", "3 Local Camel Context (without tests)");
+		} catch (Exception e) {
+			fail("Context menu 'Debug As --> Local Camel Context' is missing");
+		}
+	}
+
+	/**
 	 * New Server Runtime Wizard - Cancel/Finish button error
 	 * https://issues.jboss.org/browse/FUSETOOLS-1067
 	 * 
 	 * NOTE: this test is related to https://issues.jboss.org/browse/FUSETOOLS-1076 too
 	 */
 	@Test
+	@Ignore
 	public void issue_1067() {
 
 		new ServerRuntimePreferencePage().open();
@@ -182,8 +202,11 @@ public class RegressionTest {
 	/**
 	 * New Server Runtime Wizard - Finish button error
 	 * https://issues.jboss.org/browse/FUSETOOLS-1076
+	 * 
+	 * NOTE: not fixed yet -reopened
 	 */
 	@Test
+	@Ignore
 	public void issue_1076() {
 
 		ServerRuntimePreferencePage serverRuntime = new ServerRuntimePreferencePage();
@@ -235,8 +258,11 @@ public class RegressionTest {
 	/**
 	 * context id is removed on save
 	 * https://issues.jboss.org/browse/FUSETOOLS-1123
+	 * 
+	 * NOTE: not fixed yet -reopened
 	 */
 	@Test
+	@Ignore
 	public void issue_1123() {
 
 		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
