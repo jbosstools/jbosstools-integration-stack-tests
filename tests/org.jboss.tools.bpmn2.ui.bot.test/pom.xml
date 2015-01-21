@@ -117,8 +117,8 @@
 				</dependency>
 				<dependency>
 				  <type>p2-installable-unit</type>
-				  <artifactId>org.eclipse.bpmn2.feature.feature.group</artifactId>
-				  <version>0.7.0</version>
+				  <artifactId>org.eclipse.bpmn2.feature.group</artifactId>
+				  <version>1.0.0</version>
 				</dependency>
 				
 				<!-- jBPM wizard  -->
