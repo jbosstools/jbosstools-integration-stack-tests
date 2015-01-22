@@ -472,7 +472,6 @@ public class BindingsTest {
 		wizard.setName("jca-binding");
 		wizard.getResourceAdapterType().setSelection(RESOURCE_ADAPTER_GENERIC);
 		wizard.getResourceAdapterArchive().setText("generic-ra.rar");
-		wizard.getAcknowledgeMode().setSelection(JCABindingPage.ACKNOWLEDGE_MODE_AUTO);
 		wizard.setOperationSelector(OPERATION_NAME, METHOD);
 		wizard.next();
 		wizard.getEndpointMappingType().setSelection(ENDPOINT_JMS);
@@ -497,8 +496,6 @@ public class BindingsTest {
 				editor.xpath(bindingPath + "/inboundConnection/activationSpec/property[@name='destination']/@value"));
 		assertEquals("", editor.xpath(bindingPath
 				+ "/inboundConnection/activationSpec/property[@name='messageSelector']/@value"));
-		assertEquals("Auto-acknowledge", editor.xpath(bindingPath
-				+ "/inboundConnection/activationSpec/property[@name='acknowledgeMode']/@value"));
 		assertEquals("org.switchyard.component.jca.endpoint.JMSEndpoint",
 				editor.xpath(bindingPath + "/inboundInteraction/endpoint/@type"));
 		assertEquals("true", editor.xpath(bindingPath + "/inboundInteraction/transacted"));
