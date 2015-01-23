@@ -22,13 +22,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.handler.ShellHandler;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.switchyard.reddeer.binding.AtomBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.CXFBindingPage;
@@ -53,6 +56,7 @@ import org.jboss.tools.switchyard.reddeer.binding.SOAPBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.SQLBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.SchedulingBindingPage;
 import org.jboss.tools.switchyard.reddeer.component.Service;
+import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.preference.binding.BindingsPage;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
@@ -84,11 +88,9 @@ public class BindingsTest {
 	public static final String SERVICE = "HelloService";
 	public static final String METHOD = "sayHello";
 	public static final String PACKAGE = "com.example.switchyard." + PROJECT;
-	public static final String[] GATEWAY_BINDINGS = new String[] { "Camel Core (SEDA/Timer/URI)", "File",
-			"File Transfer (FTP/FTPS/SFTP)", "HTTP", "JCA", "JMS", "JPA", "Mail", "Network (TCP/UDP)", "REST", "SCA",
-			"Scheduling", "SOAP", "SQL" };
-	public static final String[] BINDINGS = new String[] { "Camel", "FTP", "FTPS", "File", "HTTP", "JCA", "JMS", "JPA",
-			"Mail", "Netty TCP", "Netty UDP", "REST", "SCA", "SFTP", "SOAP", "SQL", "Scheduling" };
+	public static final String[] GATEWAY_BINDINGS = new String[] { "Atom", "Camel Core (SEDA/Timer/URI)", "CXF",
+			"File", "File Transfer (FTP/FTPS/SFTP)", "HTTP", "JCA", "JMS", "JPA", "Mail", "MQTT", "Network (TCP/UDP)",
+			"REST", "RSS", "SAP", "SCA", "Scheduling", "SOAP", "SQL" };
 
 	private SwitchYardEditor editor;
 
@@ -110,18 +112,9 @@ public class BindingsTest {
 
 		switchyardRequirement.project(PROJECT).binding(GATEWAY_BINDINGS).create();
 
-		// Sometimes the editor is not displayed properly, this happens only
-		// when the project is created by bot
-		new SwitchYardEditor().saveAndClose();
-		new ProjectExplorer().getProject(PROJECT).getProjectItem("SwitchYard").open();
-		new ProjectExplorer().getProject(PROJECT).select();
+		new SwitchYardEditor().addBeanImplementation().createNewInterface("Hello").finish();
 
-		// Create new interface
-		NewJavaClassWizardDialog wizard = new NewJavaClassWizardDialog();
-		wizard.open();
-		wizard.getFirstPage().setName("Hello");
-		wizard.finish();
-
+		new SwitchYardComponent("Hello").doubleClick();
 		TextEditor textEditor = new TextEditor("Hello.java");
 		textEditor.setText("package com.example.switchyard.binding_project;\n" + "import javax.ws.rs.Produces;"
 				+ "import javax.ws.rs.GET;\n" + "import javax.ws.rs.Path;\n" + "import javax.ws.rs.PathParam;\n"
@@ -130,10 +123,16 @@ public class BindingsTest {
 		textEditor.save();
 		textEditor.close();
 
-		new SwitchYardEditor().addService();
-		new DefaultShell("New Service");
-		new SWTWorkbenchBot().shell("New Service").activate();
-		new DefaultServiceWizard().selectJavaInterface("Hello").setServiceName("HelloService").finish();
+		new SwitchYardComponent("HelloBean").doubleClick();
+		textEditor = new TextEditor("HelloBean.java");
+		textEditor.setText("package com.example.switchyard.binding_project;\n"
+				+ "import org.switchyard.component.bean.Service;\n" + "@Service(Hello.class)\n"
+				+ "public class HelloBean implements Hello {\n" + "\t@Override\n"
+				+ "\tpublic String sayHello(String name) {\n" + "\t\treturn \"Hello \" + name;\n" + "\t}\n" + "}");
+		textEditor.save();
+		textEditor.close();
+
+		new Service("Hello").promoteService().activate().setServiceName("HelloService").finish();
 		new SwitchYardEditor().save();
 	}
 
@@ -145,7 +144,7 @@ public class BindingsTest {
 
 	@Before
 	public void focusSwitchYardEditor() {
-		editor = new SwitchYardEditor();
+		editor = new SwitchYardProject(PROJECT).openSwitchYardFile();
 	}
 
 	public void addService() {
@@ -159,9 +158,9 @@ public class BindingsTest {
 
 	@After
 	public void removeAllBindings() {
-		ShellHandler.getInstance().closeAllNonWorbenchShells();
-		new Service("HelloService").showProperties().selectBindings().removeAll().ok();
 		new SwitchYardEditor().save();
+		new Service("HelloService").showProperties().selectBindings().removeAll().ok();
+		new SwitchYardEditor().saveAndClose();
 	}
 
 	@Test
