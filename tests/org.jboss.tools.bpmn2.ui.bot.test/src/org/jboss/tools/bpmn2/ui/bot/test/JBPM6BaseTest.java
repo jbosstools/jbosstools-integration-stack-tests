@@ -21,6 +21,7 @@ import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.bpmn2.reddeer.ProcessEditorView;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.jboss.tools.bpmn2.ui.bot.test.validator.JBPM6Validator;
@@ -214,7 +215,8 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 		new SWTWorkbenchBot().closeAllShells();
 		log.info("Closing '" + editor.getTitle() + "'");
 		saveProcessModel();
-		editor.close();
+		// editor.close();
+		new DefaultEditor(definition.name()).close();
 	}
 	
 	/**
