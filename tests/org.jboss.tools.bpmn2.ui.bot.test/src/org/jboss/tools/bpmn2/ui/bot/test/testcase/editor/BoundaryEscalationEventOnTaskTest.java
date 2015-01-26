@@ -32,7 +32,7 @@ import org.kie.api.runtime.process.WorkflowProcessInstance;
 @ProcessDefinition(name="BPMN2-BoundaryEscalationEventOnTask", project="EditorTestProject")
 public class BoundaryEscalationEventOnTaskTest extends JBPM6BaseTest {
 
-	private static final String VARIABLE3 = "Property_3";
+	private static final String VARIABLE3 = "VariableThree";
 	
 	@Override
 	public void buildProcessModel() {
@@ -103,7 +103,7 @@ public class BoundaryEscalationEventOnTaskTest extends JBPM6BaseTest {
 		kSession.addEventListener(triggered);
 		
 		Map<String, Object> sessionArgs = new HashMap<String, Object>();
-		sessionArgs.put("Property_2", new java.lang.RuntimeException());
+		sessionArgs.put(VARIABLE2, new java.lang.RuntimeException());
 		
 		ProcessInstance processInstance = kSession.startProcess("BPMN2BoundaryEscalationEventOnTask", sessionArgs);
 		

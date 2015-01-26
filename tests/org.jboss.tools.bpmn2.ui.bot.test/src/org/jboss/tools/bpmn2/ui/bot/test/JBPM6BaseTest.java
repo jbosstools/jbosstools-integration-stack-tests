@@ -3,7 +3,6 @@ package org.jboss.tools.bpmn2.ui.bot.test;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.jboss.reddeer.eclipse.condition.MarkerIsUpdating;
@@ -84,7 +83,7 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 	public void runProcessModel() {
 		Resource resource = ResourceFactory.newByteArrayResource(diagramSourceCode.getBytes());
  		resource.setResourceType(ResourceType.BPMN2);
-		resource.setSourcePath(diagramFileLocation);
+		resource.setSourcePath(definition.name()); // Any string, it is not checked given value
 		
 		KieHelper kieHelper = new KieHelper();
 		KieBase kieBase = kieHelper.addResource(resource).build();
@@ -212,7 +211,10 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 	 * 
 	 */
 	protected void closeProcessFile() {
-		new SWTWorkbenchBot().closeAllShells();
+		// !!!!!!! 
+		// causes problem on WIN machines and probably, it is never needed to close some shell in this phase
+		// new SWTWorkbenchBot().closeAllShells(); 
+		// !!!!!!!
 		log.info("Closing '" + editor.getTitle() + "'");
 		saveProcessModel();
 		// editor.close();
