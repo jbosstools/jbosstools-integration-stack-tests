@@ -485,7 +485,7 @@ public class Element {
 		editor.save();
 		// Find the element
 		try {
-			InputStream inputStream = new ByteArrayInputStream(editor.validateSourceText().getBytes());		
+			InputStream inputStream = new ByteArrayInputStream(editor.getSourceText().getBytes());		
 			Document xmlDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputStream);
 					
 			XPathFactory xPathFactory = XPathFactory.newInstance();

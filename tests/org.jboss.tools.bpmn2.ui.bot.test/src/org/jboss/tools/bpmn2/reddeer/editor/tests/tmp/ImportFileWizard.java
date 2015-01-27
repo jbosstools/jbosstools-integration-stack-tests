@@ -27,6 +27,7 @@ public class ImportFileWizard extends ImportWizardDialog {
 	}
 
 	public void importFile(String folder, String... fileNames) {
+		
 		File file = new File(folder);
 		if (!file.exists()) {
 			throw new RuntimeException("File '" + folder + "' not found!");

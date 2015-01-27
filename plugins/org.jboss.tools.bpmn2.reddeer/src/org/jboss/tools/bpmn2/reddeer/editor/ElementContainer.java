@@ -106,10 +106,10 @@ public class ElementContainer extends Element {
 	 * Check weather ${p} located in this container construct is not covered by another 
 	 * construct. 
 	 * 
-	 * @param point a relative position in this container construct
+	 * @param point a absolute posiiton on canvas
 	 * @return
 	 */
-	protected boolean isInternalAvailable(Point p) {
+	private boolean isInternalAvailable(Point p) {
 		// The point must be inside this edit part.
 		Rectangle bounds = getBounds();		
 		if (bounds.contains(p)) {

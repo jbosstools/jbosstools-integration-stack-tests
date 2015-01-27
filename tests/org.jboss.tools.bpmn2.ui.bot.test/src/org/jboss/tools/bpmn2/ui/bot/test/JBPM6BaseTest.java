@@ -134,7 +134,7 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 		
 		log.info("Validating '" + editor.getTitle() + "':");
 		JBPM6Validator validator = new JBPM6Validator();
-		diagramSourceCode = editor.validateSourceText();
+		diagramSourceCode = editor.getSourceText();
 		boolean result = validator.validate(diagramSourceCode);
 		log.info("\tjBPM validation result '" + (result ? "valid" : "not valid") + "'");
 		Assert.assertTrue(validator.getResultMessage(), result);

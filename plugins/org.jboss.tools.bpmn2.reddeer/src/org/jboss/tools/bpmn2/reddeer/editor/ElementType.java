@@ -77,6 +77,8 @@ public enum ElementType {
 
 	DATA_OBJECT("Data Objects", "Data Object"),
 	
+	TEXT_ANNOTATION("Artifacts", "Text Annotation"), 
+	
 	SWITCHYARD_SERVICE_TASK("SwitchYard", "SwitchYard Service Task");
 
 	private String sectionName;

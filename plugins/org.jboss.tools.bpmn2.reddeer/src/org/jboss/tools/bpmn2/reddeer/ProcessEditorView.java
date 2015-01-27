@@ -276,9 +276,9 @@ public class ProcessEditorView extends SWTBotGefEditor {
 	 * Before source code is returned, method invokes validation on opened bpmn2 process
 	 * @return xml source code of opened process
 	 */
-	public String validateSourceText() {
+	public String getSourceText() {
 		new ContextMenu("Show Source View").select();
-		new ContextMenu("Validate").select();
+		
 		DefaultStyledText styled = new DefaultStyledText();
 		String text = styled.getText();
 		
