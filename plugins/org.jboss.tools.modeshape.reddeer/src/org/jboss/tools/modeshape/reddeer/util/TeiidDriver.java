@@ -1,5 +1,6 @@
 package org.jboss.tools.modeshape.reddeer.util;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -71,5 +72,17 @@ public class TeiidDriver implements Driver {
 
 	public Logger getParentLogger() {
 		return Logger.getLogger("TeiidDriver");
+	}
+
+	public static String getDriverPath(String serverPath){
+		String driverName = "";
+		File dir = new File(serverPath + "/dataVirtualization/jdbc/");
+		for(File file : dir.listFiles()) {
+			if(file.getName().startsWith("teiid-") && file.getName().endsWith(".jar")){
+		    	driverName = file.getName();
+		    	break;
+		    }
+		}
+		return "/dataVirtualization/jdbc/" + driverName;
 	}
 }
