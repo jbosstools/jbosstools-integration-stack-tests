@@ -10,8 +10,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -26,41 +29,43 @@ import org.jboss.tools.modeshape.reddeer.util.TeiidDriver;
 import org.jboss.tools.modeshape.reddeer.view.ModeshapeExplorer;
 import org.jboss.tools.modeshape.reddeer.view.ModeshapeView;
 import org.jboss.tools.modeshape.reddeer.wizard.ImportProjectWizard;
-import org.jboss.tools.modeshape.ui.bot.test.suite.ModeshapeSuite;
-import org.jboss.tools.modeshape.ui.bot.test.suite.ServerRequirement.Server;
-import org.jboss.tools.modeshape.ui.bot.test.suite.ServerRequirement.State;
-import org.jboss.tools.modeshape.ui.bot.test.suite.ServerRequirement.Type;
+import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
+import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
+import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
  * Bot test for publishing Teiid files into ModeShape repository.
  * 
- * @author apodhrad, lfabriko
- * 
+ * @author apodhrad, lfabriko, tsedmik
  */
 @CleanWorkspace
 @OpenPerspective(TeiidPerspective.class)
-@Server(type = Type.ALL, state = State.RUNNING)
-@RunWith(ModeshapeSuite.class)
+@Server(type = ServerReqType.ANY, state = ServerReqState.RUNNING)
+@RunWith(RedDeerSuite.class)
 public class TeiidPublishingTest {
 
+	@InjectRequirement
+	private ServerRequirement server;
+	
 	public static final String SERVER_URL = "http://localhost:8080/modeshape-rest";
-	public static final String USER = "modeshapeUser";
-	public static final String PASSWORD = "dvdvdv0!";
 	public static final String PUBLISH_AREA = "files";
 	public static final String WORKSPACE = "default";
 
 	@Test
 	public void publishingTest() throws Exception {
 
-		new ModeshapeView().addServer(SERVER_URL, USER, PASSWORD);
+		String user =  server.getConfig().getServerBase().getProperty("modeshapeUser");
+		String password =  server.getConfig().getServerBase().getProperty("modeshapePassword");
+
+		new ModeshapeView().addServer(SERVER_URL, user, password);
 		new ImportProjectWizard("resources/projects/ModeShapeGoodies.zip").execute();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		tryToClosePasswordDialog();
 		new ModeshapeExplorer().getProject("ModeShapeGoodies").getProjectItem("RelModels", "Books_Oracle.xmi").open();
 		tryToClosePasswordDialog();
-		String repository = ModeshapeSuite.getModeshapeRepository();
+		String repository = server.getConfig().getServerBase().getProperty("modeshape");
 		new ModeshapeView().addPublishArea(SERVER_URL, repository, WORKSPACE, PUBLISH_AREA);
 
 		System.out.println("DEBUG: publishing area " + PUBLISH_AREA + " added");
@@ -78,17 +83,17 @@ public class TeiidPublishingTest {
 		System.out.println("DEBUG: files published (rest)");
 
 		/* Test ModeShape VDB on Teiid server */
-		String path = ModeshapeSuite.getServerPath();
-		if (repository.equals("dv")) {
+		String path = server.getConfig().getServerBase().getHome();
+		if (repository.equals("dv") || repository.equals("sample")) {
 			// MODESHAPE = dv
-			String driverPath = ModeshapeSuite.getDriverPath(path);
+			String driverPath = TeiidDriver.getDriverPath(path);
 			DriverManager.registerDriver(new TeiidDriver(path + driverPath));
 		} else {
 			// MODESHAPE = eds
 			DriverManager.registerDriver(new TeiidDriver(path + "/client/teiid-client.jar"));
 		}
 
-		Connection conn = DriverManager.getConnection("jdbc:teiid:ModeShape@mm://localhost:31000", USER, PASSWORD);
+		Connection conn = DriverManager.getConnection("jdbc:teiid:ModeShape@mm://localhost:31000", user, password);
 		Statement stmt = conn.createStatement();
 		ResultSet rs = stmt.executeQuery("SELECT * FROM ModeShape.xmi_model");
 		List<String> result = new ArrayList<String>();
@@ -120,8 +125,10 @@ public class TeiidPublishingTest {
 
 	private void checkPublishedFile(String path) throws IOException {
 
-		String repository = ModeshapeSuite.getModeshapeRepository();
-		boolean result = new ModeshapeWebdav(SERVER_URL + "/v1", repository, WORKSPACE + "/items", PUBLISH_AREA).isFileAvailable(path, USER, PASSWORD);
+		String user =  server.getConfig().getServerBase().getProperty("modeshapeUser");
+		String password =  server.getConfig().getServerBase().getProperty("modeshapePassword");
+		String repository = server.getConfig().getServerBase().getProperty("modeshape");
+		boolean result = new ModeshapeWebdav(SERVER_URL + "/v1", repository, WORKSPACE + "/items", PUBLISH_AREA).isFileAvailable(path, user, password);
 		assertTrue("File '" + path + "' isn't published", result);
 	}
 }
