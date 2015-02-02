@@ -20,6 +20,10 @@ public class ExclusiveGateway extends Element {
 		super(name, ElementType.EXCLUSIVE_GATEWAY);
 	}
 	
+	public ExclusiveGateway(org.jboss.tools.bpmn2.reddeer.editor.Element element){
+		super(element);
+	}
+	
 	/**
 	 * 
 	 * @param flow

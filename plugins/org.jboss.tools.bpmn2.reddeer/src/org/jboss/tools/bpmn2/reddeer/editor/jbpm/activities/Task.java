@@ -28,12 +28,16 @@ public class Task extends Element {
 	 * @param name
 	 * @param type
 	 */
-	Task(String name, ElementType type) {
+	public Task(String name, ElementType type) {
 		super(name, type);
 	}
 	
-	Task(String name, ElementType type, org.jboss.tools.bpmn2.reddeer.editor.Element parent) {
+	public Task(String name, ElementType type, org.jboss.tools.bpmn2.reddeer.editor.Element parent) {
 		super(name, type, parent);
+	}
+	
+	public Task(org.jboss.tools.bpmn2.reddeer.editor.Element element) {
+		super(element);
 	}
 	
 	/**

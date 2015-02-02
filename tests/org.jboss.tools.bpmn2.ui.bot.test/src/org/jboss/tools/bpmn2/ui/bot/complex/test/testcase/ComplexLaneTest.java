@@ -38,8 +38,8 @@ public class ComplexLaneTest extends JBPM6ComplexTest {
 		Lane lane = new Lane("Manager");
 		lane.add("StartProcess", ElementType.START_EVENT);
 		StartEvent start = new StartEvent("StartProcess");
-		start.append("LaneScript", ElementType.SCRIPT_TASK);
-		ScriptTask script = new ScriptTask("LaneScript");
+		
+		ScriptTask script = (ScriptTask) start.append("LaneScript", ElementType.SCRIPT_TASK);
 		script.setScript("Java", "kcontext.setVariable(\""+VARIABLE1+"\", \""+EXPECTED_VALUE+"\");");
 		script.append("EndProcess", ElementType.END_EVENT);
 	}

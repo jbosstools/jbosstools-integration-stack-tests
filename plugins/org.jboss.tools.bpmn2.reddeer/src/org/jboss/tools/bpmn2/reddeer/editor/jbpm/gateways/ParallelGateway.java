@@ -16,6 +16,10 @@ public class ParallelGateway extends Element {
 	public ParallelGateway(String name) {
 		super(name, ElementType.PARALLEL_GATEWAY);
 	}
+	
+	public ParallelGateway(org.jboss.tools.bpmn2.reddeer.editor.Element element) {
+		super(element);
+	}
 
 	/**
 	 * 

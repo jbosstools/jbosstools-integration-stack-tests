@@ -1,7 +1,7 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.endevents;
 
+import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Element;
 
 /**
  * 
@@ -14,6 +14,10 @@ public class EndEvent extends Element {
 	 */
 	public EndEvent(String name) {
 		super(name, ElementType.END_EVENT);
+	}
+	
+	public EndEvent(Element element) {
+		super(element);
 	}
 
 	/**

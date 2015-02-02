@@ -44,19 +44,13 @@ public class ComplexParalellSplitJoinTest extends JBPM6ComplexTest{
 		UserTask hrEvaluation = new UserTask("HR Evaluation");
 		UserTask pmEvaluation = new UserTask("PM Evaluation");
 		
-		
-		selfEvaluation.append("Gateway1", ElementType.PARALLEL_GATEWAY, ConnectionType.SEQUENCE_FLOW);
-		
-		ParallelGateway gateway1 = new ParallelGateway("Gateway1");
+		ParallelGateway gateway1 = (ParallelGateway) selfEvaluation.append("Gateway1", ElementType.PARALLEL_GATEWAY, ConnectionType.SEQUENCE_FLOW);
 		gateway1.setDirection(Direction.DIVERGING);
 		
 		gateway1.connectTo(hrEvaluation);
 		gateway1.connectTo(pmEvaluation);
 
-		
-		hrEvaluation.append("Gateway2", ElementType.PARALLEL_GATEWAY, ConnectionType.SEQUENCE_FLOW, Position.SOUTH_EAST);
-		
-		ParallelGateway gateway2 = new ParallelGateway("Gateway2");
+		ParallelGateway gateway2 = (ParallelGateway) hrEvaluation.append("Gateway2", ElementType.PARALLEL_GATEWAY, ConnectionType.SEQUENCE_FLOW, Position.SOUTH_EAST);
 		gateway2.setDirection(Direction.CONVERGING);
 		gateway2.connectTo(new EndEvent("End"));
 

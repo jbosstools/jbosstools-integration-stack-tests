@@ -27,6 +27,10 @@ public class EventBasedGateway extends Element {
 		super(name, ElementType.EVENT_BASED_GATEWAY);
 	}
 	
+	public EventBasedGateway(org.jboss.tools.bpmn2.reddeer.editor.Element element){
+		super(element);
+	}
+	
 	/**
 	 * 
 	 * @param type

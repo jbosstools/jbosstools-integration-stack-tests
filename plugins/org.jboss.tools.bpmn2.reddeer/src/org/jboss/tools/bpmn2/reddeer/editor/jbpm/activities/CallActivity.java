@@ -18,6 +18,10 @@ public class CallActivity extends Task {
 	public CallActivity(String name) {
 		super(name, ElementType.CALL_ACTIVITY);
 	}
+	
+	public CallActivity(org.jboss.tools.bpmn2.reddeer.editor.Element element){
+		super(element);
+	}
 
 	/**
 	 * 

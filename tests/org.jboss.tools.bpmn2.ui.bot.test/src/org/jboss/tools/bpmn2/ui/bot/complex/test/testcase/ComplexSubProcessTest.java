@@ -30,9 +30,8 @@ public class ComplexSubProcessTest extends JBPM6ComplexTest {
 	@TestPhase(phase=Phase.MODEL)
 	public void model() {
 		StartEvent start = new StartEvent("StartProcess");
-		start.append("Hello Subprocess", ElementType.SUB_PROCESS, Position.SOUTH);
-
-		SubProcess subProcess = new SubProcess("Hello Subprocess");
+		
+		SubProcess subProcess = (SubProcess) start.append("Hello Subprocess", ElementType.SUB_PROCESS, Position.SOUTH);
 		subProcess.addLocalVariable(VARIABLE1, "String");
 		subProcess.connectTo(new ScriptTask("Goodbye"));
 		

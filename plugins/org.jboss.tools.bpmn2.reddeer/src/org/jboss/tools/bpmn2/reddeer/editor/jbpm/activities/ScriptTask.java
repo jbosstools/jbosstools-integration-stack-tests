@@ -21,6 +21,10 @@ public class ScriptTask extends Task {
 	public ScriptTask(String name, Element parent) {
 		super(name, ElementType.SCRIPT_TASK, parent);
 	}
+	
+	public ScriptTask(Element element) {
+		super(element);
+	}
 
 	/**
 	 * 

@@ -32,9 +32,8 @@ public class ComplexParalellSplitTest extends JBPM6ComplexTest {
 	@TestPhase(phase=Phase.MODEL)
 	public void model() {
 		StartEvent start = new StartEvent(N_START);
-		start.append(N_SPLIT, ElementType.PARALLEL_GATEWAY);
 		
-		ParallelGateway gateway = new ParallelGateway(N_SPLIT);
+		ParallelGateway gateway = (ParallelGateway) start.append(N_SPLIT, ElementType.PARALLEL_GATEWAY);
 		gateway.setDirection(Direction.DIVERGING);
 		gateway.connectTo(new ScriptTask(N_SCRIPT1));
 		gateway.connectTo(new ScriptTask(N_SCRIPT2));

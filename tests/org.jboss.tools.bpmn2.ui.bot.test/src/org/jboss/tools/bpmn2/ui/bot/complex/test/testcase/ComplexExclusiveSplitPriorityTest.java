@@ -31,9 +31,8 @@ public class ComplexExclusiveSplitPriorityTest extends JBPM6ComplexTest{
 	@TestPhase(phase=Phase.MODEL)
 	public void model() {
 		StartEvent start = new StartEvent("StartProcess");
-		start.append("Split", ElementType.EXCLUSIVE_GATEWAY);
 		
-		ExclusiveGateway gw = new ExclusiveGateway("Split");
+		ExclusiveGateway gw = (ExclusiveGateway) start.append("Split", ElementType.EXCLUSIVE_GATEWAY);
 		gw.setDirection(Direction.DIVERGING);
 		gw.connectTo(new ScriptTask("Script1"));
 		gw.connectTo(new ScriptTask("Script2"));
@@ -45,9 +44,8 @@ public class ComplexExclusiveSplitPriorityTest extends JBPM6ComplexTest{
 		gw.setPriority("Split -> Script1", "2");
 		
 		ScriptTask task1 = new ScriptTask("Script1");
-		task1.append("Join", ElementType.EXCLUSIVE_GATEWAY, Position.SOUTH_EAST);
 		
-		ExclusiveGateway gw2 = new ExclusiveGateway("Join");
+		ExclusiveGateway gw2 = (ExclusiveGateway) task1.append("Join", ElementType.EXCLUSIVE_GATEWAY, Position.SOUTH_EAST);
 		gw2.setDirection(Direction.CONVERGING);
 		gw2.connectTo(new EndEvent("EndProcess"));
 		

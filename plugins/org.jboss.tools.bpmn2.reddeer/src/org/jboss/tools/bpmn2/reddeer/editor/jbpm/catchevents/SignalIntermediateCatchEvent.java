@@ -1,5 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.catchevents;
 
+import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.SignalEventDefinition;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.SignalEventDefinition.Type;
@@ -16,6 +17,10 @@ public class SignalIntermediateCatchEvent extends IntermediateCatchEvent {
 	 */
 	public SignalIntermediateCatchEvent(String name) {
 		super(name, ElementType.SIGNAL_INTERMEDIATE_CATCH_EVENT);
+	}
+	
+	public SignalIntermediateCatchEvent(Element element) {
+		super(element);
 	}
 	
 	/**

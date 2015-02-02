@@ -43,9 +43,9 @@ public class ComplexBoundaryEscalationEventOnTaskTest extends JBPM6ComplexTest {
 		SubProcess subProcess = new SubProcess("SubProcess");
 		
 		StartEvent subStart = new StartEvent("SubStart");
-		subStart.append("ThrowEscalation", ElementType.ESCALATION_INTERMEDIATE_THROW_EVENT);
 		
-		EscalationIntermediateThrowEvent throwEvent = new EscalationIntermediateThrowEvent("ThrowEscalation");
+		EscalationIntermediateThrowEvent throwEvent = 
+			(EscalationIntermediateThrowEvent) subStart.append("ThrowEscalation", ElementType.ESCALATION_INTERMEDIATE_THROW_EVENT);
 		throwEvent.setEscalation(escalation, VARIABLE2);
 		throwEvent.connectTo(new EndEvent("SubEnd"));
 		

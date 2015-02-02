@@ -1,5 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 
+import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementContainer;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Expression;
@@ -18,6 +19,10 @@ public class SubProcess extends ElementContainer {
 	 */
 	public SubProcess(String name) {
 		super(name, ElementType.SUB_PROCESS);
+	}
+	
+	public SubProcess(Element element) {
+		super(element);
 	}
 	
 	/**

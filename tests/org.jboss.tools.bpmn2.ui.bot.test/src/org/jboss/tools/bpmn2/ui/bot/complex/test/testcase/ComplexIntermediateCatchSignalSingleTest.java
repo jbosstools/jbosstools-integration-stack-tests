@@ -29,9 +29,9 @@ public class ComplexIntermediateCatchSignalSingleTest extends JBPM6ComplexTest {
 	@TestPhase(phase=Phase.MODEL)
 	public void model() {
 		UserTask userTask = new UserTask("User Task");
-		userTask.append("Catch", ElementType.SIGNAL_INTERMEDIATE_CATCH_EVENT);
 		
-		SignalIntermediateCatchEvent catchEvent = new SignalIntermediateCatchEvent("Catch");
+		SignalIntermediateCatchEvent catchEvent = 
+			(SignalIntermediateCatchEvent) userTask.append("Catch", ElementType.SIGNAL_INTERMEDIATE_CATCH_EVENT);
 		catchEvent.setSignalMapping("BatmanSignal", VARIABLE1);
 		catchEvent.connectTo(new ScriptTask("Script Task"));
 	}

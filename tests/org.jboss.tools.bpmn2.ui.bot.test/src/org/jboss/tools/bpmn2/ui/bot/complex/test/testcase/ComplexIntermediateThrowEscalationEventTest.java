@@ -23,9 +23,9 @@ public class ComplexIntermediateThrowEscalationEventTest extends JBPM6ComplexTes
 	public void model() {
 		
 		StartEvent start = new StartEvent("StartProcess");
-		start.append("Escalation Event", ElementType.ESCALATION_INTERMEDIATE_THROW_EVENT);
-
-		EscalationIntermediateThrowEvent ithrow = new EscalationIntermediateThrowEvent("Escalation Event");
+		
+		EscalationIntermediateThrowEvent ithrow = 
+			(EscalationIntermediateThrowEvent) start.append("Escalation Event", ElementType.ESCALATION_INTERMEDIATE_THROW_EVENT);
 		ithrow.setEscalation(new Escalation("EscName", "MyEscalation"), VARIABLE1);
 		ithrow.connectTo(new EndEvent("TotalEnd"));
 	}

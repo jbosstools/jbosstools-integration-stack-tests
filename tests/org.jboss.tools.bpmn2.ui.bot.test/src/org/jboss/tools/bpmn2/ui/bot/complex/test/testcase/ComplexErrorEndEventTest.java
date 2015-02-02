@@ -21,9 +21,8 @@ public class ComplexErrorEndEventTest extends JBPM6ComplexTest {
 	@TestPhase(phase=Phase.MODEL)
 	public void model() {
 		StartEvent start = new StartEvent("StartProcess");
-		start.append("ErrorEvent", ElementType.ERROR_END_EVENT);
 		
-		ErrorEndEvent end = new ErrorEndEvent("ErrorEvent");
+		ErrorEndEvent end = (ErrorEndEvent) start.append("ErrorEvent", ElementType.ERROR_END_EVENT);
 		end.setErrorEvent(new ErrorRef("SimpleError", "error", "String"), VARIABLE1);
 	}
 	

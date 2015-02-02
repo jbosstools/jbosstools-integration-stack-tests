@@ -1,5 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 
+import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ErrorRef;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Expression;
@@ -19,6 +20,10 @@ public class SendTask extends Task {
 	 */
 	public SendTask(String name) {
 		super(name, ElementType.SEND_TASK);
+	}
+	
+	public SendTask(Element element) {
+		super(element);
 	}
 	
 	/**

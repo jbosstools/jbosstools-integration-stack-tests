@@ -1,5 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 
+import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Expression;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.BusinessRuleTaskTab;
@@ -15,6 +16,10 @@ public class BusinessRuleTask extends Task {
 	 */
 	public BusinessRuleTask(String name) {
 		super(name, ElementType.BUSINESS_RULE_TASK);
+	}
+	
+	public BusinessRuleTask(Element element) {
+		super(element);
 	}
 
 	/**

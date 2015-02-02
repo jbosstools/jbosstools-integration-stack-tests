@@ -1,5 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 
+import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Expression;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
@@ -17,6 +18,10 @@ public class UserTask extends Task {
 	 */
 	public UserTask(String name) {
 		super(name, ElementType.USER_TASK);
+	}
+	
+	public UserTask(Element element) {
+		super(element);
 	}
 	
 	/**

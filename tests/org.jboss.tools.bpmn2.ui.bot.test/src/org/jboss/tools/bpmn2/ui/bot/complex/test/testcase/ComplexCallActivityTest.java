@@ -26,9 +26,7 @@ public class ComplexCallActivityTest extends JBPM6ComplexTest {
 	public void model() {
 		StartEvent start = new StartEvent("StartProcess");
 		
-		start.append("CallActivity", ElementType.CALL_ACTIVITY);
-		
-		CallActivity call = new CallActivity("CallActivity");
+		CallActivity call = (CallActivity) start.append("CallActivity", ElementType.CALL_ACTIVITY);
 		call.setWaitForCompletion(true);
 		call.setIndependent(true);
 		call.setCalledActivity("SubProcess");

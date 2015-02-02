@@ -19,6 +19,10 @@ public class MessageIntermediateThrowEvent extends Element {
 		super(name, ElementType.MESSAGE_INTERMEDIATE_THROW_EVENT);
 	}
 
+	public MessageIntermediateThrowEvent(org.jboss.tools.bpmn2.reddeer.editor.Element element){
+		super(element);
+	}
+	
 	/**
 	 * 
 	 * @param message

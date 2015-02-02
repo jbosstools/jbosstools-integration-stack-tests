@@ -1,5 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 
+import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ErrorRef;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Expression;
@@ -19,6 +20,10 @@ public class ReceiveTask extends Task {
 	 */
 	public ReceiveTask(String name) {
 		super(name, ElementType.RECEIVE_TASK);
+	}
+	
+	public ReceiveTask(Element element) {
+		super(element);
 	}
 	
 	/**

@@ -28,9 +28,8 @@ public class ComplexUserTaskTest extends JBPM6ComplexTest {
 	@TestPhase(phase=Phase.MODEL)
 	public void model() {
 		StartEvent start = new StartEvent("StartProcess");
-		start.append("User Task", ElementType.USER_TASK);
-
-		UserTask task = new UserTask("User Task");
+		
+		UserTask task = (UserTask) start.append("User Task", ElementType.USER_TASK);
 		task.addActor("john");
 		task.connectTo(new TerminateEndEvent("EndProcess"));
 		

@@ -17,4 +17,7 @@ public class IntermediateCatchEvent extends Element {
 		super(name, type);
 	}
 
+	public IntermediateCatchEvent(org.jboss.tools.bpmn2.reddeer.editor.Element element) {
+		super(element);
+	}
 }

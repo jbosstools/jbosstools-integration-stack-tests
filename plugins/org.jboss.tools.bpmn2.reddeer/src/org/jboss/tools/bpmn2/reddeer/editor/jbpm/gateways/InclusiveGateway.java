@@ -18,6 +18,10 @@ public class InclusiveGateway extends Element {
 		super(name, ElementType.INCLUSIVE_GATEWAY);
 	}
 	
+	public InclusiveGateway(org.jboss.tools.bpmn2.reddeer.editor.Element element) {
+		super(element);
+	}
+	
 	/**
 	 * 
 	 * @param flow

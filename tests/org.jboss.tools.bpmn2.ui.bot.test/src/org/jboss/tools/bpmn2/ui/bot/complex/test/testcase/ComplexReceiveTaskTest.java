@@ -21,9 +21,7 @@ public class ComplexReceiveTaskTest extends JBPM6ComplexTest {
 	@TestPhase(phase=Phase.MODEL)
 	public void model() {
 		StartEvent start = new StartEvent("StartProcess");
-		start.append("Receive", ElementType.RECEIVE_TASK);
-		
-		ReceiveTask receive = new ReceiveTask("Receive");
+		ReceiveTask receive = (ReceiveTask) start.append("Receive", ElementType.RECEIVE_TASK);
 		receive.setImplementation("Unspecified");
 		receive.setMessage("HelloMessage", "String");
 		receive.connectTo(new TerminateEndEvent("EndProcess"));

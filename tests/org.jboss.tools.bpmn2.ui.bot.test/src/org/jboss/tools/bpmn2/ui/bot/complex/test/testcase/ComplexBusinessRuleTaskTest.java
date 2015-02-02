@@ -21,9 +21,8 @@ public class ComplexBusinessRuleTaskTest extends JBPM6ComplexTest{
 	@TestPhase(phase=Phase.MODEL)
 	public void model() {
 		StartEvent start = new StartEvent("StartProcess");
-		start.append("Business Rule Task", ElementType.BUSINESS_RULE_TASK);
 		
-		BusinessRuleTask task = new BusinessRuleTask("Business Rule Task");
+		BusinessRuleTask task = (BusinessRuleTask) start.append("Business Rule Task", ElementType.BUSINESS_RULE_TASK);
 		task.setRuleFlowGroup("MyRuleFlowGroup");
 		task.connectTo(new EndEvent("EndProcess"));
 	}

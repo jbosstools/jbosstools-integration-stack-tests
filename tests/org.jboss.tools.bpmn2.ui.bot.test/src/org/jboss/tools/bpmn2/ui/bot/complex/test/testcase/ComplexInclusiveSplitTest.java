@@ -26,12 +26,9 @@ public class ComplexInclusiveSplitTest extends JBPM6ComplexTest {
 
 	@TestPhase(phase=Phase.MODEL)
 	public void model() {
-		
-		
 		StartEvent start = new StartEvent("StartProcess");
-		start.append("Gateway", ElementType.INCLUSIVE_GATEWAY);
 		
-		InclusiveGateway gateway = new InclusiveGateway("Gateway");
+		InclusiveGateway gateway = (InclusiveGateway) start.append("Gateway", ElementType.INCLUSIVE_GATEWAY);
 		gateway.connectTo(new ScriptTask("Script1"));
 		gateway.connectTo(new ScriptTask("Script2"));
 		gateway.connectTo(new ScriptTask("Script3"));

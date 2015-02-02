@@ -28,9 +28,8 @@ public class ComplexAdHocSubprocessTest extends JBPM6ComplexTest {
 	@TestPhase(phase=Phase.MODEL)
 	public void buildProcessModel() {
 		StartEvent start = new StartEvent("StartProcess");
-		start.append("Hello", ElementType.AD_HOC_SUB_PROCESS, Position.SOUTH);
-
-		AdHocSubProcess subprocess = new AdHocSubProcess("Hello");
+		
+		AdHocSubProcess subprocess = (AdHocSubProcess) start.append("Hello", ElementType.AD_HOC_SUB_PROCESS, Position.SOUTH);
 		subprocess.setCompletionCondition("Rule", "getActivityInstanceAttribute(\"numberOfActiveInstances\") == 0");
 		subprocess.connectTo(new ScriptTask("Goodbye"));		
 

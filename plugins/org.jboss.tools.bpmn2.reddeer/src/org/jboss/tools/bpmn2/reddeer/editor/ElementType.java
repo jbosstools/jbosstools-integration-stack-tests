@@ -1,5 +1,23 @@
 package org.jboss.tools.bpmn2.reddeer.editor;
 
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.AdHocSubProcess;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.BusinessRuleTask;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.CallActivity;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ReceiveTask;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.SendTask;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.SubProcess;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.UserTask;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.catchevents.SignalIntermediateCatchEvent;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.catchevents.TimerIntermediateCatchEvent;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.endevents.ErrorEndEvent;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.EventBasedGateway;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.ExclusiveGateway;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.InclusiveGateway;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.ParallelGateway;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.throwevents.EscalationIntermediateThrowEvent;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.throwevents.MessageIntermediateThrowEvent;
+
 /**
  * 
  */
@@ -167,5 +185,47 @@ public enum ElementType {
 	
 	public boolean isContainer() {
 		return container;
+	}
+	
+	public Class getJavaClass(){
+		switch (this) {
+		case SCRIPT_TASK:
+			return ScriptTask.class;
+		case PARALLEL_GATEWAY:
+			return ParallelGateway.class;
+		case INCLUSIVE_GATEWAY:
+			return InclusiveGateway.class;
+		case EXCLUSIVE_GATEWAY:
+			return ExclusiveGateway.class;
+		case EVENT_BASED_GATEWAY:
+			return EventBasedGateway.class;
+		case CALL_ACTIVITY:
+			return CallActivity.class;
+		case AD_HOC_SUB_PROCESS:
+			return AdHocSubProcess.class;
+		case BUSINESS_RULE_TASK:
+			return BusinessRuleTask.class;
+		case ERROR_END_EVENT:
+			return ErrorEndEvent.class;
+		case RECEIVE_TASK:
+			return ReceiveTask.class;
+		case SEND_TASK:
+			return SendTask.class;
+		case TIMER_INTERMEDIATE_CATCH_EVENT:
+			return TimerIntermediateCatchEvent.class;
+		case MESSAGE_INTERMEDIATE_THROW_EVENT:
+			return MessageIntermediateThrowEvent.class;
+		case ESCALATION_INTERMEDIATE_THROW_EVENT:
+			return EscalationIntermediateThrowEvent.class;
+		case SIGNAL_INTERMEDIATE_CATCH_EVENT:
+			return SignalIntermediateCatchEvent.class;
+		case SUB_PROCESS:
+			return SubProcess.class;
+		case USER_TASK:
+			return UserTask.class;
+
+		default:
+			throw new IllegalArgumentException("Unsuported yet");
+		}
 	}
 }

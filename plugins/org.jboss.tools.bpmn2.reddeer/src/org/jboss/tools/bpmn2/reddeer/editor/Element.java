@@ -216,8 +216,8 @@ public class Element {
 	 * @param name
 	 * @param constructType
 	 */
-	public void append(String name, ElementType constructType) {
-		append(name, constructType, ConnectionType.SEQUENCE_FLOW, Position.EAST);
+	public Element append(String name, ElementType constructType) {
+		return append(name, constructType, ConnectionType.SEQUENCE_FLOW, Position.EAST);
 	}
 	
 	/**
@@ -226,8 +226,8 @@ public class Element {
 	 * @param constructType
 	 * @param position
 	 */
-	public void append(String name, ElementType constructType, Position position) {
-		append(name, constructType, ConnectionType.SEQUENCE_FLOW, position);
+	public Element append(String name, ElementType constructType, Position position) {
+		return append(name, constructType, ConnectionType.SEQUENCE_FLOW, position);
 	}
 	
 	/**
@@ -236,8 +236,8 @@ public class Element {
 	 * @param constructType
 	 * @param connectionType
 	 */
-	public void append(String name, ElementType constructType, ConnectionType connectionType) {
-		append(name, constructType, connectionType, Position.EAST);
+	public Element append(String name, ElementType constructType, ConnectionType connectionType) {
+		return append(name, constructType, connectionType, Position.EAST);
 	}
 	
 	/**
@@ -247,7 +247,7 @@ public class Element {
 	 * @param connectionType
 	 * @param relativePosition
 	 */
-	public void append(String name, ElementType constructType, ConnectionType connectionType, Position relativePosition) {
+	public Element append(String name, ElementType constructType, ConnectionType connectionType, Position relativePosition) {
 		select();
 		log.info("Appending construct name '" + name + "' of type '" + constructType + "' after construct with name '" + this.name + "'.");
 		
@@ -259,6 +259,16 @@ public class Element {
 		Element construct = putToCanvas(name, constructType, point, containerShapeEditPart.getEditPart().getParent());
 		
 		connectTo(construct, connectionType);
+		
+		Element specificInstance = null;
+		
+		try {
+			specificInstance = (Element) constructType.getJavaClass().getConstructor(Element.class).newInstance(construct);
+		} catch (Exception e) {
+			// will be returned null
+		}
+		
+		return specificInstance;
 	}
 	
 	/**

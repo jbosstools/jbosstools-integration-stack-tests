@@ -18,6 +18,10 @@ public class EscalationIntermediateThrowEvent extends Element {
 	public EscalationIntermediateThrowEvent(String name) {
 		super(name, ElementType.ESCALATION_INTERMEDIATE_THROW_EVENT);
 	}
+	
+	public EscalationIntermediateThrowEvent(org.jboss.tools.bpmn2.reddeer.editor.Element element){
+		super(element);
+	}
 
 	/**
 	 * 

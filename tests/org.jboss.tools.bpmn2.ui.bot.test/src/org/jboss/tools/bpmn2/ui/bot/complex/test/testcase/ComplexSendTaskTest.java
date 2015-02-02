@@ -34,9 +34,8 @@ public class ComplexSendTaskTest extends JBPM6ComplexTest {
 		Message msg = new Message("msgName", "String");
 		
 		StartEvent start = new StartEvent("StartProcess");
-		start.append("Send", ElementType.SEND_TASK);
-
-		SendTask send = new SendTask("Send");
+		
+		SendTask send = (SendTask) start.append("Send", ElementType.SEND_TASK);
 		send.setImplementation("Unspecified");
 		send.setOperation("Interface 1/operationName", msg, msg, new ErrorRef("errName", "errCode", "String"));
 		send.setMessage(msg.getName(), msg.getDataType());

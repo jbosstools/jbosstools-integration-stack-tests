@@ -30,9 +30,8 @@ public class ComplexEventBasedSplitTest extends JBPM6ComplexTest{
 	@TestPhase(phase=Phase.MODEL)
 	public void model() {
 		UserTask task1 = new UserTask("Email1");
-		task1.append("Split", ElementType.EVENT_BASED_GATEWAY);
 		
-		EventBasedGateway gateway1 = new EventBasedGateway("Split");
+		EventBasedGateway gateway1 = (EventBasedGateway) task1.append("Split", ElementType.EVENT_BASED_GATEWAY);
 		gateway1.setDirection(Direction.DIVERGING);
 		gateway1.connectTo(new SignalIntermediateCatchEvent("Event1"));
 		gateway1.connectTo(new SignalIntermediateCatchEvent("Event2"));

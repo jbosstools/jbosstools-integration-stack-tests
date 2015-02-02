@@ -21,9 +21,9 @@ public class ComplexIntermediateCatchEventTimerCycleTest extends JBPM6ComplexTes
 	@TestPhase(phase=Phase.MODEL)
 	public void model() {
 		StartEvent startEvent = new StartEvent("StartProcess");
-		startEvent.append("Timer", ElementType.TIMER_INTERMEDIATE_CATCH_EVENT);
 		
-		TimerIntermediateCatchEvent catchEvent = new TimerIntermediateCatchEvent("Timer");
+		TimerIntermediateCatchEvent catchEvent =
+			(TimerIntermediateCatchEvent) startEvent.append("Timer", ElementType.TIMER_INTERMEDIATE_CATCH_EVENT);
 		catchEvent.setTimer("500ms");
 		catchEvent.connectTo(new ScriptTask("Event"));
 	}

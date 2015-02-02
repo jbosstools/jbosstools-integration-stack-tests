@@ -30,6 +30,10 @@ public class ElementContainer extends Element {
 	public ElementContainer(String name, ElementType type, Element parent, int index, boolean select) {
 		super(name, type, parent, index, select);
 	}
+	
+	public ElementContainer(Element element) {
+		super(element);
+	}
 
 	/**
 	 * 
