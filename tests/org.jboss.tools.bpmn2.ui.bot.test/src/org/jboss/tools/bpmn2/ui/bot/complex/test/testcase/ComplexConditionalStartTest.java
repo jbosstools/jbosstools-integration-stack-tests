@@ -30,9 +30,7 @@ public class ComplexConditionalStartTest extends JBPM6ComplexTest {
 		
 		Process process = new Process("BPMN2-ConditionalStart");
 		
-		process.add(N_START, ElementType.CONDITIONAL_START_EVENT);
-		
-		ConditionalStartEvent startEvent = new ConditionalStartEvent(N_START);
+		ConditionalStartEvent startEvent = (ConditionalStartEvent) process.add(N_START, ElementType.CONDITIONAL_START_EVENT);
 		startEvent.setCondition("Rule", "org.jbpm.bpmn2.objects.Person(name == \"john\")");
 		startEvent.connectTo(new ScriptTask(N_HELLO));
 	}

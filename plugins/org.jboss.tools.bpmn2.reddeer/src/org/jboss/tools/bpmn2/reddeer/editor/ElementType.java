@@ -8,13 +8,22 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.SendTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.SubProcess;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.UserTask;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.ConditionalBoundaryEvent;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.EscalationBoundaryEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.catchevents.SignalIntermediateCatchEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.catchevents.TimerIntermediateCatchEvent;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.endevents.EndEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.endevents.ErrorEndEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.EventBasedGateway;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.ExclusiveGateway;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.InclusiveGateway;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.ParallelGateway;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.ConditionalStartEvent;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.MessageStartEvent;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.SignalStartEvent;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.TimerStartEvent;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.swimlanes.Lane;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.throwevents.EscalationIntermediateThrowEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.throwevents.MessageIntermediateThrowEvent;
 
@@ -223,6 +232,24 @@ public enum ElementType {
 			return SubProcess.class;
 		case USER_TASK:
 			return UserTask.class;
+		case CONDITIONAL_START_EVENT:
+			return ConditionalStartEvent.class;
+		case MESSAGE_START_EVENT:
+			return MessageStartEvent.class;
+		case START_EVENT:
+			return StartEvent.class;
+		case END_EVENT:
+			return EndEvent.class;
+		case LANE:
+			return Lane.class;
+		case SIGNAL_START_EVENT:
+			return SignalStartEvent.class;
+		case TIMER_START_EVENT:
+			return TimerStartEvent.class;
+		case ESCALATION_BOUNDARY_EVENT:
+			return EscalationBoundaryEvent.class;
+		case CONDITIONAL_BOUNDARY_EVENT:
+			return ConditionalBoundaryEvent.class;
 
 		default:
 			throw new IllegalArgumentException("Unsuported yet");

@@ -34,8 +34,7 @@ public class ComplexLaneTest extends JBPM6ComplexTest {
 		
 		Process process = new Process("BPMN2-Lane");
 		
-		process.add("Manager", ElementType.LANE);
-		Lane lane = new Lane("Manager");
+		Lane lane = (Lane) process.add("Manager", ElementType.LANE);
 		lane.add("StartProcess", ElementType.START_EVENT);
 		StartEvent start = new StartEvent("StartProcess");
 		

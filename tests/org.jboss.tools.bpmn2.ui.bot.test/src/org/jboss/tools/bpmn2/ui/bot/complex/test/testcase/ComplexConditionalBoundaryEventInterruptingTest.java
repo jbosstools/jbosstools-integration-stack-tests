@@ -34,9 +34,9 @@ public class ComplexConditionalBoundaryEventInterruptingTest extends JBPM6Comple
 	public void model() {
 		
 		SubProcess subProcess = new SubProcess(SUB_PROCESS);
-		subProcess.add("Conditional Boundary Event Process", ElementType.CONDITIONAL_BOUNDARY_EVENT);
 		
-		ConditionalBoundaryEvent conditionalBoundaryEvent = new ConditionalBoundaryEvent("Conditional Boundary Event Process");
+		ConditionalBoundaryEvent conditionalBoundaryEvent = 
+			(ConditionalBoundaryEvent) subProcess.add("Conditional Boundary Event Process", ElementType.CONDITIONAL_BOUNDARY_EVENT);
 		conditionalBoundaryEvent.setScript("Java", "return " + VARIABLE1 + " > 5;");
 		conditionalBoundaryEvent.connectTo(new ScriptTask(HANDLER));
 	}

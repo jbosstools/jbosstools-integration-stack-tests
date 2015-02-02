@@ -40,7 +40,7 @@ public class ElementContainer extends Element {
 	 * @param name
 	 * @param type
 	 */
-	public void add(String name, ElementType type) {
+	public Element add(String name, ElementType type) {
 		String sectionName = type.toToolPath()[0];
 		
 		//Rectangle bounds = editor.getBounds(editPart);
@@ -55,7 +55,7 @@ public class ElementContainer extends Element {
 			y = bounds.height() / 5;
 		}
 		Point placeTo = new Point(x, y);
-		add(name, type, placeTo);
+		return add(name, type, placeTo);
 	}
 	
 	/**
@@ -65,12 +65,12 @@ public class ElementContainer extends Element {
 	 * @param type
 	 * @param position
 	 */
-	public void add(String name, ElementType type, Element nextTo, Position position) {
-		add(name, type, findPoint(this, nextTo, position));
+	public Element add(String name, ElementType type, Element nextTo, Position position) {
+		return add(name, type, findPoint(this, nextTo, position));
 	}
 	
-	public void addRelativeToElement(String name, ElementType type, Element nextTo, Point move) {
-		addToAbsolutePoint(name, type, new Point(nextTo.getBounds().getCenter().x + move.x, nextTo.getBounds().getCenter().y + move.y));
+	public Element addRelativeToElement(String name, ElementType type, Element nextTo, Point move) {
+		return addToAbsolutePoint(name, type, new Point(nextTo.getBounds().getCenter().x + move.x, nextTo.getBounds().getCenter().y + move.y));
 	}
 	
 	
@@ -81,12 +81,12 @@ public class ElementContainer extends Element {
 	 * @param point Represents a position in the canvas relative to this construct. Meaning that
 	 *              this construct's upper left corner is the staring position. 
 	 */
-	public void add(String name, ElementType type, Point point) {
+	public Element add(String name, ElementType type, Point point) {
 		Rectangle bounds = getBounds();
-		addToAbsolutePoint(name, type, new Point(bounds.x + point.x, bounds.y + point.y));		
+		return addToAbsolutePoint(name, type, new Point(bounds.x + point.x, bounds.y + point.y));		
 	}
 	
-	private void addToAbsolutePoint(String name, ElementType type, Point point) {
+	private Element addToAbsolutePoint(String name, ElementType type, Point point) {
 		String sectionName = type.toToolPath()[0];
 		// Make sure that the point is available.
 		if (!"Boundary Events".equals(sectionName)) {
@@ -103,7 +103,14 @@ public class ElementContainer extends Element {
 		if("Boundary Events".compareTo(type.getSectionName()) == 0) {
 			parent = parent.getParent();
 		}
-		putToCanvas(name, type, point, parent);
+		Element generalElement = putToCanvas(name, type, point, parent);
+		Element specificElement = null;
+		try {
+			specificElement = (Element) type.getJavaClass().getConstructor(Element.class).newInstance(generalElement);
+		} catch (Exception e) {
+			
+		}
+		return specificElement;
 	}
 	
 	/**

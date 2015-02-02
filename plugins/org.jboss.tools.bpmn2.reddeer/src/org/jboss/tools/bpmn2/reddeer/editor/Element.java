@@ -113,6 +113,7 @@ public class Element {
 		this.properties = copyFrom.properties;
 		this.processEditor = copyFrom.processEditor;
 		this.graphitiProperties = copyFrom.graphitiProperties;
+		select();
 	}
 	
 	private void setUp(String name, ElementType type, Element parent, int index, boolean select) {

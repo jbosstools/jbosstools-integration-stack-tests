@@ -28,15 +28,10 @@ public class ComplexAdHocProcessTest extends JBPM6ComplexTest {
 		Process process = new Process("BPMN2-AdHocProcess");
 		process.setAddHoc(true);
 		
-		// Finish parallel activities
-		process.add("Task 2", ElementType.SCRIPT_TASK);
-		
-		ScriptTask task2 = new ScriptTask("Task 2");
+		ScriptTask task2 = (ScriptTask) process.add("Task 2", ElementType.SCRIPT_TASK);
 		task2.setScript("", "System.out.println(\"Task2\");");
 		
-		process.add("Task 1", ElementType.SCRIPT_TASK, task2, Position.NORTH);
-		
-		ScriptTask task1 = new ScriptTask("Task 1");
+		ScriptTask task1 = (ScriptTask) process.add("Task 1", ElementType.SCRIPT_TASK, task2, Position.NORTH);
 		task1.setScript("", "System.out.println(\"Task1\");");
 		task1.select();
 	}

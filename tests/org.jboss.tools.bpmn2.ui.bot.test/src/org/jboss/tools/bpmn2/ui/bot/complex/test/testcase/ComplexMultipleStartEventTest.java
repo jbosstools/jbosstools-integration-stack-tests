@@ -33,15 +33,12 @@ public class ComplexMultipleStartEventTest extends JBPM6ComplexTest {
 		ExclusiveGateway gateway = new ExclusiveGateway("Split");
 		
 		Process process = new Process("BPMN2-MultipleStartEvent");
-		process.add("StartProcess", ElementType.SIGNAL_START_EVENT);
 		
-		SignalStartEvent start = new SignalStartEvent("StartProcess");
+		SignalStartEvent start = (SignalStartEvent) process.add("StartProcess", ElementType.SIGNAL_START_EVENT);;
 		start.setSignal(new Signal("BlockingSignal"), VARIABLE1);
 		start.connectTo(gateway);
 
-		process.add("StartTimer", ElementType.TIMER_START_EVENT, start, Position.SOUTH_WEST);
-		
-		TimerStartEvent start2 = new TimerStartEvent("StartTimer");
+		TimerStartEvent start2 = (TimerStartEvent) process.add("StartTimer", ElementType.TIMER_START_EVENT, start, Position.SOUTH_WEST);
 		start2.setTimer("5000ms");
 		start2.connectTo(gateway);
 		

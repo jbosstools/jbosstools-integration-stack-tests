@@ -15,6 +15,10 @@ public class Lane extends ElementContainer {
 		super(name, ElementType.LANE);
 	}
 
+	public Lane(Element element){
+		super(element);
+	}
+	
 	@Override
 	public void connectTo(Element construct) {
 		// See connectTo(Construct, ConnectionType)

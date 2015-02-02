@@ -33,14 +33,11 @@ public class ComplexAdHocSubprocessTest extends JBPM6ComplexTest {
 		subprocess.setCompletionCondition("Rule", "getActivityInstanceAttribute(\"numberOfActiveInstances\") == 0");
 		subprocess.connectTo(new ScriptTask("Goodbye"));		
 
-		subprocess.add("Hello1", ElementType.SCRIPT_TASK);
-		
-		ScriptTask task1 = new ScriptTask("Hello1");
+		ScriptTask task1 = (ScriptTask) subprocess.add("Hello1", ElementType.SCRIPT_TASK);
 		task1.setScript("", "System.out.println(\"Hello World 1\");");
 		
-		subprocess.addRelativeToElement("Hello2", ElementType.SCRIPT_TASK, task1, new Point(0,80));
-		
-		ScriptTask task2 = new ScriptTask("Hello2");
+		ScriptTask task2 = 
+			(ScriptTask) subprocess.addRelativeToElement("Hello2", ElementType.SCRIPT_TASK, task1, new Point(0,80));
 		task2.setScript("", "System.out.println(\"Hello World 2\");");
 		task2.append("UserTask", ElementType.USER_TASK);
  	}

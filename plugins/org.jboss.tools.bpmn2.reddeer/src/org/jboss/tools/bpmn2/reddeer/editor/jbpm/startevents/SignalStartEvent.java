@@ -1,5 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents;
 
+import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Signal;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.MappingType;
@@ -16,6 +17,10 @@ public class SignalStartEvent extends StartEvent {
 	 */
 	public SignalStartEvent(String name) {
 		super(name, ElementType.SIGNAL_START_EVENT);
+	}
+	
+	public SignalStartEvent(Element element) {
+		super(element);
 	}
 
 	public void setSignal(Signal signal, String variable) {
