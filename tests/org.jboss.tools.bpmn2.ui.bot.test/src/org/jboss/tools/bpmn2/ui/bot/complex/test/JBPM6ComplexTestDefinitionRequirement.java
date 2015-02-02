@@ -29,6 +29,7 @@ public class JBPM6ComplexTestDefinitionRequirement implements Requirement<JBPM6C
 		public String importFolder() default "";
 		public String saveAs();
 		public String openFile();
+		public String dependentOn() default "";
 	}
 	
 	private JBPM6ComplexTestDefinition declaration;

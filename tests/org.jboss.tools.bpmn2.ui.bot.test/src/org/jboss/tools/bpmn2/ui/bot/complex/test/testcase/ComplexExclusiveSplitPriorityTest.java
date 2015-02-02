@@ -56,9 +56,6 @@ public class ComplexExclusiveSplitPriorityTest extends JBPM6ComplexTest{
 	
 	@TestPhase(phase=Phase.RUN)
 	public void run(KieSession kSession) {
-		PersistenceWorkItemHandler handler = new PersistenceWorkItemHandler();
-		kSession.getWorkItemManager().registerWorkItemHandler("Human Task", handler);
-		
 		TriggeredNodesListener triggered = new TriggeredNodesListener(
 				Arrays.asList("StartProcess", "Split", "Script1", "EndProcess"), Arrays.asList("Script2"));
 		kSession.addEventListener(triggered);
@@ -67,9 +64,6 @@ public class ComplexExclusiveSplitPriorityTest extends JBPM6ComplexTest{
 		args.put(VARIABLE1, "nonNullValue");
 		
 		ProcessInstance processInstance = kSession.startProcess("BPMN2ExclusiveSplitPriority", args);
-		
-		WorkItem item = handler.getWorkItem("Email");
-		handler.completeWorkItem(item, kSession.getWorkItemManager());
 		
 		JbpmAssertions.assertProcessInstanceCompleted(processInstance, kSession);
 	}

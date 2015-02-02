@@ -19,6 +19,8 @@ import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
@@ -185,13 +187,21 @@ public abstract class JBPM6ComplexTest {
 		if(diagramSourceCode.compareTo("") == 0) {
 			throw new IllegalStateException("File was not stored yet");
 		}
+		
+		KieHelper kieHelper = new KieHelper();
+		
+		if(definition.dependentOn().compareTo("") != 0) {
+			kieHelper = addDependenciesToKieHelper(kieHelper, definition.dependentOn());
+		}
+		
 		Resource resource = ResourceFactory.newByteArrayResource(diagramSourceCode.getBytes());
  		resource.setResourceType(ResourceType.BPMN2);
 		resource.setSourcePath("/home"); // it is not checked
 		
-		KieHelper kieHelper = new KieHelper();
 		KieBase kieBase = kieHelper.addResource(resource).build();
 		KieSession kSession = kieBase.newKieSession();
+		
+		
 		
 		return kSession;
 	}
@@ -230,5 +240,33 @@ public abstract class JBPM6ComplexTest {
 			return "Waiting if for old counnt("+oldCount+") of errors change";
 		}
 		
+	}
+	
+	private KieHelper addDependenciesToKieHelper(KieHelper helper, String dependencyFileName) {
+		Project project = new ProjectExplorer().getProject(definition.projectName());
+		project.getProjectItem(definition.dependentOn()).open();
+		
+		Resource resource = null;
+		
+		ProcessEditorView editor = new ProcessEditorView();
+		editor.setFocus();
+		
+		if(dependencyFileName.endsWith("bpmn2")){
+			String source = editor.getSourceText();
+			resource = ResourceFactory.newByteArrayResource(source.getBytes());
+			resource.setResourceType(ResourceType.BPMN2);
+		} else
+		if(dependencyFileName.endsWith("drl")) {
+			String source = new DefaultStyledText().getText();
+			resource = ResourceFactory.newByteArrayResource(source.getBytes());
+			resource.setResourceType(ResourceType.DRL);
+		}
+ 		
+ 		
+		resource.setSourcePath("/home/dependency"); // it is not checked
+		
+		helper = helper.addResource(resource);
+		
+		return helper;
 	}
 }

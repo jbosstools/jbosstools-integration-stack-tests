@@ -4,6 +4,7 @@
   <bpmn2:itemDefinition id="ItemDefinition_4" structureRef="String"/>
   <bpmn2:message id="HelloMessage" itemRef="ItemDefinition_4" name="HelloMessage"/>
   <bpmn2:process id="BPMN2ReceiveTask" tns:packageName="defaultPackage" name="BPMN2-ReceiveTask" isExecutable="true" processType="Private">
+    <bpmn2:property id="VariableOne" itemSubjectRef="ItemDefinition_4" name="VariableOne"/>
     <bpmn2:startEvent id="StartEvent_1" name="StartProcess"/>
     <bpmn2:endEvent id="EndEvent_1" name="EndProcess">
       <bpmn2:terminateEventDefinition id="TerminateEventDefinition_1"/>
@@ -13,16 +14,19 @@
     <bpmndi:BPMNPlane id="BPMNPlane_Process_1" bpmnElement="BPMN2ReceiveTask">
       <bpmndi:BPMNShape id="BPMNShape_StartEvent_1" bpmnElement="StartEvent_1">
         <dc:Bounds height="0.0" width="0.0" x="45.0" y="45.0"/>
-        <bpmndi:BPMNLabel id="BPMNLabel_1">
+        <bpmndi:BPMNLabel id="BPMNLabel_1" labelStyle="#//@definitions/@diagrams.0/@labelStyle.0">
           <dc:Bounds height="14.0" width="71.0" x="28.0" y="81.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_EndEvent_1" bpmnElement="EndEvent_1">
         <dc:Bounds height="36.0" width="36.0" x="312.0" y="42.0"/>
-        <bpmndi:BPMNLabel id="BPMNLabel_3">
+        <bpmndi:BPMNLabel id="BPMNLabel_3" labelStyle="#//@definitions/@diagrams.0/@labelStyle.0">
           <dc:Bounds height="14.0" width="68.0" x="296.0" y="78.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
+    <bpmndi:BPMNLabelStyle>
+      <dc:Font name="arial" size="9.0"/>
+    </bpmndi:BPMNLabelStyle>
   </bpmndi:BPMNDiagram>
 </bpmn2:definitions>

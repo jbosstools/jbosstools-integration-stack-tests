@@ -19,6 +19,7 @@ import org.kie.api.runtime.process.ProcessInstance;
 
 @JBPM6ComplexTestDefinition(projectName="JBPM6ComplexTest",
 							importFolder="resources/bpmn2/model/base",
+							dependentOn="DependencyBPMN2-CallActivity.bpmn2",
 							openFile="BaseBPMN2-CallActivity.bpmn2",
 							saveAs="BPMN2-CallActivity.bpmn2")
 public class ComplexCallActivityTest extends JBPM6ComplexTest {
@@ -29,7 +30,7 @@ public class ComplexCallActivityTest extends JBPM6ComplexTest {
 		CallActivity call = (CallActivity) start.append("CallActivity", ElementType.CALL_ACTIVITY);
 		call.setWaitForCompletion(true);
 		call.setIndependent(true);
-		call.setCalledActivity("SubProcess");
+		call.setCalledActivity("DependencyBPMN2CallActivity");
 		call.addParameterMapping(new ParameterMapping(new FromVariable(VARIABLE2), new ToDataInput("subX", "String"), ParameterMapping.Type.INPUT));
 		call.addParameterMapping(new ParameterMapping(new FromDataOutput("subY", "String"), new ToVariable(VARIABLE1), ParameterMapping.Type.OUTPUT));
 		

@@ -87,5 +87,9 @@ public class ReceiveTask extends Task {
 	public void addParameterMapping(ParameterMapping parameterMapping) {
 		properties.getTab("I/O Parameters", IOParametersTab.class).addParameter(parameterMapping);
 	}
+	
+	public void setTarget(String varName) {
+		properties.getTab("Receive Task", ReceiveTaskTab.class).setTarget(varName);
+	}
 
 }

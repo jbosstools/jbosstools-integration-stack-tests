@@ -1,5 +1,7 @@
 package org.jboss.tools.bpmn2.ui.bot.complex.test.testcase;
 
+import static org.junit.Assert.assertEquals;
+
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.BusinessRuleTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.endevents.EndEvent;
@@ -9,11 +11,13 @@ import org.jboss.tools.bpmn2.ui.bot.complex.test.TestPhase;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.JBPM6ComplexTestDefinitionRequirement.JBPM6ComplexTestDefinition;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.TestPhase.Phase;
 import org.jboss.tools.bpmn2.ui.bot.test.jbpm.JbpmAssertions;
+import org.jbpm.process.instance.event.listeners.RuleAwareProcessEventLister;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
 
 @JBPM6ComplexTestDefinition(projectName="JBPM6ComplexTest",
 							importFolder="resources/bpmn2/model/base",
+							dependentOn="DependencyBPMN2-BusinessRuleTask.drl",
 							openFile="BaseBPMN2-BusinessRuleTask.bpmn2",
 							saveAs="BPMN2-BusinessRuleTask.bpmn2")
 public class ComplexBusinessRuleTaskTest extends JBPM6ComplexTest{
@@ -23,13 +27,16 @@ public class ComplexBusinessRuleTaskTest extends JBPM6ComplexTest{
 		StartEvent start = new StartEvent("StartProcess");
 		
 		BusinessRuleTask task = (BusinessRuleTask) start.append("Business Rule Task", ElementType.BUSINESS_RULE_TASK);
-		task.setRuleFlowGroup("MyRuleFlowGroup");
+		task.setRuleFlowGroup("MyRuleFlow");
 		task.connectTo(new EndEvent("EndProcess"));
 	}
 	
 	@TestPhase(phase=Phase.RUN)
 	public void run(KieSession kSession) {
+		kSession.addEventListener(new RuleAwareProcessEventLister());
 		ProcessInstance processInstance = kSession.startProcess("BPMN2BusinessRuleTask");
+		int fired = kSession.fireAllRules();
+		assertEquals(1, fired);
 		JbpmAssertions.assertProcessInstanceCompleted(processInstance, kSession);
 	}
 }

@@ -71,6 +71,15 @@ public class ReceiveTaskTab extends GeneralPropertiesTab {
 		combo.setSelection(comboOption);
 	}
 	
+	public void setTarget(String varName) {
+		DefaultCombo combo = new DefaultCombo("Target");
+		
+		if (!combo.contains(varName)) {
+			throw new IllegalArgumentException("There is no such variable: " + varName + " in process definitions");
+		}
+		combo.setSelection(varName);
+	}
+	
 	/**
 	 * 
 	 * @param value

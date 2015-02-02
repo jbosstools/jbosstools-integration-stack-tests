@@ -28,7 +28,6 @@ import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexMultipleStartEv
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexParalellSplitJoinTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexParalellSplitTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexReceiveTaskTest;
-import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexRuleTaskTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexSendTaskTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexSubProcessTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexUserTaskTest;
@@ -51,7 +50,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	ComplexImportTest.class,
 	ComplexReceiveTaskTest.class,
 	ComplexParalellSplitTest.class,
-	ComplexRuleTaskTest.class,
 	ComplexSendTaskTest.class,
 	ComplexErrorBoundaryEventOnTaskTest.class,
 	ComplexIntermediateCatchEventTimerCycleTest.class,
