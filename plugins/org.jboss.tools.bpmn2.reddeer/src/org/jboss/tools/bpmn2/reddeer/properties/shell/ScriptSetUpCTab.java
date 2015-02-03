@@ -9,16 +9,18 @@ public class ScriptSetUpCTab extends AbstractSetUpCTab {
 	private String language;
 	private String script;
 	private String tabLabel;
+	private String sectionLabel;
 	
-	public ScriptSetUpCTab(String tabLabel, String language, String script) {
+	public ScriptSetUpCTab(String tabLabel, String section, String language, String script) {
 		this.tabLabel = tabLabel;
 		this.language = language;
 		this.script = script;
+		this.sectionLabel = section;
 	}
 	
 	@Override
 	public void setUpCTab() {
-		DefaultSection section = new DefaultSection("Attributes");
+		DefaultSection section = new DefaultSection(sectionLabel);
 		new LabeledCombo(section, "Script Language").setSelection(language);
 		new LabeledText(section, "Script").setText(script);
 	}

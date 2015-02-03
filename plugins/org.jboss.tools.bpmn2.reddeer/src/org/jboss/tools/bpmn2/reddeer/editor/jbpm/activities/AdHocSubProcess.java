@@ -3,8 +3,7 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementContainer;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Expression;
-import org.jboss.tools.bpmn2.reddeer.properties.jbpm.AdHocSubProcessTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.ScriptSetUpCTab;
 
 /**
  * 
@@ -24,7 +23,8 @@ public class AdHocSubProcess extends ElementContainer {
 	}
 	
 	public void setCompletionCondition(String language, String script) {
-		properties.getTab("AdHoc Sub Process", AdHocSubProcessTab.class).setCompletionCondition(new Expression(language, script));
+		//properties.getTab("AdHoc Sub Process", AdHocSubProcessTab.class).setCompletionCondition(new Expression(language, script));
+		graphitiProperties.setUpTabs(new ScriptSetUpCTab("AdHoc Sub Process", "Attributes", language, script));
 		
 	}
 	

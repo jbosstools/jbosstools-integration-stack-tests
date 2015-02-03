@@ -4,6 +4,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Expression;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.BusinessRuleTaskTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.LabeledTextSetUpCTab;
 
 /**
  * 
@@ -27,7 +28,8 @@ public class BusinessRuleTask extends Task {
 	 * @param group
 	 */
 	public void setRuleFlowGroup(String group) {
-		properties.getTab("Business Rule Task", BusinessRuleTaskTab.class).setRuleFlowGroup(group);
+		//properties.getTab("Business Rule Task", BusinessRuleTaskTab.class).setRuleFlowGroup(group);
+		graphitiProperties.setUpTabs(new LabeledTextSetUpCTab("Business Rule Task", "Rule Flow Group" , group));
 	}
 
 	/**

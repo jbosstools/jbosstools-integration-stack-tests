@@ -1,10 +1,11 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Expression;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
-import org.jboss.tools.bpmn2.reddeer.properties.jbpm.CallActivityTab;
-import org.jboss.tools.bpmn2.reddeer.properties.jbpm.IOParametersTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.AddParameterMappingSetUpCTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.CalledActivitySetUpCTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.CheckBoxSetUpCTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.ScriptSetUpCTab;
 
 /**
  * 
@@ -28,7 +29,8 @@ public class CallActivity extends Task {
 	 * @param value
 	 */
 	public void setIndependent(boolean value) {
-		properties.getTab("Call Activity", CallActivityTab.class).setIndependent(value);
+		//properties.getTab("Call Activity", CallActivityTab.class).setIndependent(value);
+		graphitiProperties.setUpTabs(new CheckBoxSetUpCTab("Call Activity", "Independent", value));
 	}
 	
 	/**
@@ -36,7 +38,8 @@ public class CallActivity extends Task {
 	 * @param value
 	 */
 	public void setWaitForCompletion(boolean value) {
-		properties.getTab("Call Activity", CallActivityTab.class).setWaitForCompletion(value);
+		//properties.getTab("Call Activity", CallActivityTab.class).setWaitForCompletion(value);
+		graphitiProperties.setUpTabs(new CheckBoxSetUpCTab("Call Activity", "Independent", value));
 	}
 	
 	/**
@@ -44,7 +47,8 @@ public class CallActivity extends Task {
 	 * @param activityName
 	 */
 	public void setCalledActivity(String activityName) {
-		properties.getTab("Call Activity", CallActivityTab.class).setCalledActivity(activityName);
+		//properties.getTab("Call Activity", CallActivityTab.class).setCalledActivity(activityName);
+		graphitiProperties.setUpTabs(new CalledActivitySetUpCTab(activityName));
 	}
 
 	/**
@@ -52,7 +56,8 @@ public class CallActivity extends Task {
 	 * @param value
 	 */
 	public void setIsForCompensation(boolean value) {
-		properties.getTab("Call Activity", CallActivityTab.class).setIsForCompensation(value);
+		//properties.getTab("Call Activity", CallActivityTab.class).setIsForCompensation(value);
+		graphitiProperties.setUpTabs(new CheckBoxSetUpCTab("Call Activity", "Is For Compensation", value));
 	}
 
 	/**
@@ -61,7 +66,8 @@ public class CallActivity extends Task {
 	 * @param script
 	 */
 	public void setOnEntryScript(String language, String script) {
-		properties.getTab("Call Activity", CallActivityTab.class).setOnEntryScript(new Expression(language, script));
+		//properties.getTab("Call Activity", CallActivityTab.class).setOnEntryScript(new Expression(language, script));
+		graphitiProperties.setUpTabs(new ScriptSetUpCTab("Call Activity", "On Entry Script", language, script));
 	}
 
 	/**
@@ -70,7 +76,8 @@ public class CallActivity extends Task {
 	 * @param script
 	 */
 	public void setOnExistScript(String language, String script) {
-		properties.getTab("Call Activity", CallActivityTab.class).setOnExitScript(new Expression(language, script));
+		//properties.getTab("Call Activity", CallActivityTab.class).setOnExitScript(new Expression(language, script));
+		graphitiProperties.setUpTabs(new ScriptSetUpCTab("Call Activity", "On Exit Script", language, script));
 	}
 
 	/**
@@ -78,7 +85,8 @@ public class CallActivity extends Task {
 	 * @param parameter
 	 */
 	public void addParameterMapping(ParameterMapping parameterMapping) {
-		properties.getTab("I/O Parameters", IOParametersTab.class).addParameter(parameterMapping);
+		//properties.getTab("I/O Parameters", IOParametersTab.class).addParameter(parameterMapping);
+		graphitiProperties.setUpTabs(new AddParameterMappingSetUpCTab(parameterMapping));
 	}
 	
 }

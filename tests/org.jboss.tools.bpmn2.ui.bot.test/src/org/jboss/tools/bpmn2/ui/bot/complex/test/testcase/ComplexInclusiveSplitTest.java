@@ -37,7 +37,6 @@ public class ComplexInclusiveSplitTest extends JBPM6ComplexTest {
 		gateway.setCondition("Gateway -> Script1", "Java", "return "+VARIABLE1+" > 0;");
 		gateway.setCondition("Gateway -> Script2", "Java", "return "+VARIABLE1+" > 10;");
 		gateway.setCondition("Gateway -> Script3", "Java", "return "+VARIABLE1+" > 20;");
-		gateway.select();
 	}
 	
 	@TestPhase(phase=Phase.RUN)

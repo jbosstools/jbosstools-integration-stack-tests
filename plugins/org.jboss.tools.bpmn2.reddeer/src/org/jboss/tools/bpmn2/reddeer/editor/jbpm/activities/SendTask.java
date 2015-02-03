@@ -6,8 +6,9 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ErrorRef;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Expression;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Message;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
-import org.jboss.tools.bpmn2.reddeer.properties.jbpm.IOParametersTab;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.SendTaskTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.AddParameterMappingSetUpCTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.ComboSetUpCTab;
 
 /**
  * 
@@ -31,7 +32,8 @@ public class SendTask extends Task {
 	 * @param implementationUri
 	 */
 	public void setImplementation(String implementationUri) {
-		properties.getTab("Send Task", SendTaskTab.class).setImplementation(implementationUri);
+		//properties.getTab("Send Task", SendTaskTab.class).setImplementation(implementationUri);
+		graphitiProperties.setUpTabs(new ComboSetUpCTab("Send Task", "Implementation", implementationUri));
 	}
 	
 	/**
@@ -48,7 +50,8 @@ public class SendTask extends Task {
 	 * @param dataType
 	 */
 	public void setMessage(String name, String dataType) {
-		properties.getTab("Send Task", SendTaskTab.class).setMessage(new Message(name, dataType));
+		//properties.getTab("Send Task", SendTaskTab.class).setMessage(new Message(name, dataType));
+		graphitiProperties.setUpTabs(new ComboSetUpCTab("Send Task", "Message", name+"("+dataType+")"));
 	}
 
 	/**
@@ -82,7 +85,8 @@ public class SendTask extends Task {
 	 * @param parameter
 	 */
 	public void addParameterMapping(ParameterMapping parameterMapping) {
-		properties.getTab("I/O Parameters", IOParametersTab.class).addParameter(parameterMapping);
+		//properties.getTab("I/O Parameters", IOParametersTab.class).addParameter(parameterMapping);
+		graphitiProperties.setUpTabs(new AddParameterMappingSetUpCTab(parameterMapping));
 	}
 
 }

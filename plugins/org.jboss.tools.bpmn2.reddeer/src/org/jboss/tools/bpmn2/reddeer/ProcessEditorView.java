@@ -20,6 +20,7 @@ import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
 import org.eclipse.ui.IEditorPart;
 import org.hamcrest.Matcher;
+import org.jboss.reddeer.swt.condition.WaitCondition;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -29,6 +30,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.util.ResultRunnable;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructOfType;
@@ -273,11 +275,10 @@ public class ProcessEditorView extends SWTBotGefEditor {
 	}
 	
 	/**
-	 * Before source code is returned, method invokes validation on opened bpmn2 process
 	 * @return xml source code of opened process
 	 */
 	public String getSourceText() {
-		new ContextMenu("Show Source View").select();
+		new WaitWhile(new SourceCodeIsNotShown());
 		
 		DefaultStyledText styled = new DefaultStyledText();
 		String text = styled.getText();
@@ -342,6 +343,25 @@ public class ProcessEditorView extends SWTBotGefEditor {
 		bot.menu("File").menu("Save").click();
 		repairProcessModel();
 		projectNature(true);
+	}
+	
+	private class SourceCodeIsNotShown implements WaitCondition {
+
+		@Override
+		public boolean test() {
+			try{
+				new ContextMenu("Show Source View").select();
+			} catch(SWTLayerException e) {
+				return true;
+			}
+			return false;
+		}
+
+		@Override
+		public String description() {
+			return "Wait while source code is not shown";
+		}
+		
 	}
 
 }

@@ -8,6 +8,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Message;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.IOParametersTab;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.ReceiveTaskTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.ComboSetUpCTab;
 
 /**
  * 
@@ -31,7 +32,8 @@ public class ReceiveTask extends Task {
 	 * @param implementationUri
 	 */
 	public void setImplementation(String implementationUri) {
-		properties.getTab("Receive Task", ReceiveTaskTab.class).setImplementation(implementationUri);
+		//properties.getTab("Receive Task", ReceiveTaskTab.class).setImplementation(implementationUri);
+		graphitiProperties.setUpTabs(new ComboSetUpCTab("Receive Task", "Implementation", implementationUri));
 	}
 	
 	/**
@@ -51,7 +53,8 @@ public class ReceiveTask extends Task {
 	 * @param dataType
 	 */
 	public void setMessage(String name, String dataType) {
-		properties.getTab("Receive Task", ReceiveTaskTab.class).setMessage(new Message(name, dataType));
+		//properties.getTab("Receive Task", ReceiveTaskTab.class).setMessage(new Message(name, dataType));
+		graphitiProperties.setUpTabs(new ComboSetUpCTab("Receive Task", "Message", name + "(" + dataType + ")"));
 	}
 	
 	/**
@@ -89,7 +92,8 @@ public class ReceiveTask extends Task {
 	}
 	
 	public void setTarget(String varName) {
-		properties.getTab("Receive Task", ReceiveTaskTab.class).setTarget(varName);
+		//properties.getTab("Receive Task", ReceiveTaskTab.class).setTarget(varName);
+		graphitiProperties.setUpTabs(new ComboSetUpCTab("Receive Task", "Target", varName));
 	}
 
 }

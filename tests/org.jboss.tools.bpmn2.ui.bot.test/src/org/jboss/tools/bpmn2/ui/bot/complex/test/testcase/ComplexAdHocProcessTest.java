@@ -33,7 +33,6 @@ public class ComplexAdHocProcessTest extends JBPM6ComplexTest {
 		
 		ScriptTask task1 = (ScriptTask) process.add("Task 1", ElementType.SCRIPT_TASK, task2, Position.NORTH);
 		task1.setScript("", "System.out.println(\"Task1\");");
-		task1.select();
 	}
 	
 	@TestPhase(phase=Phase.RUN)

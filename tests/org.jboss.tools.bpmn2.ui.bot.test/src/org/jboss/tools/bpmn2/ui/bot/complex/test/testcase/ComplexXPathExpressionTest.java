@@ -20,7 +20,6 @@ public class ComplexXPathExpressionTest extends JBPM6ComplexTest{
 		ExclusiveGateway splitGw = new ExclusiveGateway("Split");
 		splitGw.setCondition("Split -> Task1", "", "count($instanceMetadata/instanceMetadata/user[@approved='true']) = 1");
 		splitGw.setCondition("Split -> Task2", "", "count($instanceMetadata/instanceMetadata/user[@approved='false']) = 1");
-		splitGw.select();
 	}
 	
 	@TestPhase(phase=Phase.RUN)

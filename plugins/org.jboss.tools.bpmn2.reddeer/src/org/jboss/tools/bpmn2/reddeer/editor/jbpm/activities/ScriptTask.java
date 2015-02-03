@@ -33,7 +33,7 @@ public class ScriptTask extends Task {
 	 */
 	public void setScript(String language, String script) {
 //		properties.getTab("Script Task", ScriptTaskTab.class).setScript(language, script);
-		graphitiProperties.setUpTabs(new ScriptSetUpCTab("Script Task", language, script));
+		graphitiProperties.setUpTabs(new ScriptSetUpCTab("Script Task", "Attributes", language, script));
 
 	}
 

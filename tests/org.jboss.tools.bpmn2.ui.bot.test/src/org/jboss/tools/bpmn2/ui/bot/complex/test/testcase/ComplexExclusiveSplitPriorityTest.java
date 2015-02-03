@@ -16,11 +16,9 @@ import org.jboss.tools.bpmn2.ui.bot.complex.test.JBPM6ComplexTestDefinitionRequi
 import org.jboss.tools.bpmn2.ui.bot.complex.test.TestPhase.Phase;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.TestPhase;
 import org.jboss.tools.bpmn2.ui.bot.test.jbpm.JbpmAssertions;
-import org.jboss.tools.bpmn2.ui.bot.test.jbpm.PersistenceWorkItemHandler;
 import org.jboss.tools.bpmn2.ui.bot.test.jbpm.TriggeredNodesListener;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
-import org.kie.api.runtime.process.WorkItem;
 
 @JBPM6ComplexTestDefinition(projectName="JBPM6ComplexTest",
 							importFolder="resources/bpmn2/model/base",

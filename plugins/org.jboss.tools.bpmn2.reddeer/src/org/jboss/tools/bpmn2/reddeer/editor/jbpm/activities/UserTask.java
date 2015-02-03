@@ -4,8 +4,8 @@ import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Expression;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
-import org.jboss.tools.bpmn2.reddeer.properties.jbpm.IOParametersTab;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.UserTaskTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.AddParameterMappingSetUpCTab;
 
 /**
  * 
@@ -124,7 +124,8 @@ public class UserTask extends Task {
 	 * @param parameter
 	 */
 	public void addParameterMapping(ParameterMapping parameterMapping) {
-		properties.getTab("I/O Parameters", IOParametersTab.class).addParameter(parameterMapping);
+//		properties.getTab("I/O Parameters", IOParametersTab.class).addParameter(parameterMapping);
+		graphitiProperties.setUpTabs(new AddParameterMappingSetUpCTab(parameterMapping));
 	}
 	
 	public void addLocalVariable(String varName, String dataType) {

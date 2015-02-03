@@ -16,17 +16,11 @@ import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.WaitCondition;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.bpmn2.reddeer.DefaultCheckBox;
 import org.jboss.tools.bpmn2.reddeer.ProcessEditorView;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.JBPM6ComplexTestDefinitionRequirement.JBPM6ComplexTestDefinition;
 import org.jboss.tools.bpmn2.ui.bot.test.validator.JBPM6Validator;
@@ -49,7 +43,6 @@ public abstract class JBPM6ComplexTest {
 	private List<Method> validateMethods;
 	private List<Method> runMethods;
 	
-	private static boolean configureShellHandled;
 	private static final int MAX_DISPLAYED_ERRORS = 100;
 	private static List<String> usedBaseFiles = new ArrayList<String>();
 	
@@ -101,10 +94,11 @@ public abstract class JBPM6ComplexTest {
 		try {
 			modelMethod.invoke(this);
 			
-			saveAs(definition.saveAs());
+			saveViaReddeer();
 			
 			ProcessEditorView editor = new ProcessEditorView(filenameTitle);
 			diagramSourceCode = editor.getSourceText();
+			
 			
 			if(validateMethods.size() > 0) {
 				for(Method method : validateMethods) {
@@ -126,25 +120,6 @@ public abstract class JBPM6ComplexTest {
 		} catch (Exception e) {
 			captureScreenshotWithDescription("error-"+definition.saveAs().substring(0, definition.saveAs().length()-6));
 			throw e;
-		}
-	}
-	
-	public void saveAs(String filename) {
-		new ShellMenu(new String[]{"File", "Save As..."}).select();
-		new DefaultShell("Save As");
-		new DefaultTreeItem(definition.projectName()).select();
-		new LabeledText("File name:").setText(filename);
-		new PushButton("OK").click();
-		
-		if(!configureShellHandled) {
-			try{
-				new DefaultShell("Configure BPMN2 Project Nature");
-				new DefaultCheckBox().setChecked(true);
-				new PushButton("Yes").click();
-			} catch (SWTLayerException e) {
-				// probably previously configured
-			}
-			configureShellHandled = true;
 		}
 	}
 	
@@ -248,10 +223,9 @@ public abstract class JBPM6ComplexTest {
 		
 		Resource resource = null;
 		
-		ProcessEditorView editor = new ProcessEditorView();
-		editor.setFocus();
-		
 		if(dependencyFileName.endsWith("bpmn2")){
+			ProcessEditorView editor = new ProcessEditorView();
+			editor.setFocus();
 			String source = editor.getSourceText();
 			resource = ResourceFactory.newByteArrayResource(source.getBytes());
 			resource.setResourceType(ResourceType.BPMN2);
@@ -268,5 +242,29 @@ public abstract class JBPM6ComplexTest {
 		helper = helper.addResource(resource);
 		
 		return helper;
+	}
+	
+	private void saveViaReddeer(){
+		new WaitWhile(new SaveWasNotSuccessfull());
+	}
+	
+	private class SaveWasNotSuccessfull implements WaitCondition {
+
+		@Override
+		public boolean test() {
+			try {
+				new ShellMenu(new String[]{"File", "Save All"}).select();
+			} catch(SWTLayerException e) {
+				return true;
+			}
+			
+			return false;
+		}
+
+		@Override
+		public String description() {
+			return "Wait for successfull save operation";
+		}
+		
 	}
 }
