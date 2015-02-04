@@ -12,13 +12,21 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<reddeer.config>resources/serverConfig/fuse-6.1.xml</reddeer.config>
+		<fuse.url>http://download.eng.bos.redhat.com/brewroot/repos/jb-fuse-6-rhel-6-build/latest/maven/org/jboss/fuse/jboss-fuse-full/6.1.0.redhat-379/jboss-fuse-full-6.1.0.redhat-379.zip</fuse.url>
+		<fuse.name>JBoss Fuse 6.1</fuse.name>
+		<fuse.path>${project.build.directory}/requirements/jboss-fuse-6.1.0.redhat-379</fuse.path>
+		<fuse.hostname>localhost</fuse.hostname>
+		<fuse.port>8101</fuse.port>
+		<fuse.username>admin</fuse.username>
+		<fuse.password>admin</fuse.password>
+		<reddeer.config>${project.build.directory}/requirements/</reddeer.config>
 		<systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=${reddeer.config}</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
 		<test.class>AllTests</test.class>
 	</properties>
 
 	<build>
+
 		<plugins>
 			<!-- Fuse Bot Tests -->
 			<plugin>
@@ -71,6 +79,71 @@
 					</dependencies>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.6</version>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<encoding>UTF-8</encoding>
+							<outputDirectory>${project.build.directory}/requirements</outputDirectory>
+							<resources>
+								<resource>
+									<directory>resources/serverConfig</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>com.googlecode.maven-download-plugin</groupId>
+				<artifactId>maven-download-plugin</artifactId>
+				<version>1.0.0</version>
+				<executions>
+					<execution>
+						<id>get-fuse</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>${fuse.url}</url>
+							<unpack>true</unpack>
+							<outputDirectory>${project.build.directory}/requirements</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<id>set-users</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<echo
+									file="${project.build.directory}/requirements/jboss-fuse-6.1.0.redhat-379/etc/users.properties">${fuse.username}=${fuse.password},admin</echo>
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 </project>
