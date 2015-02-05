@@ -24,8 +24,8 @@ import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.bpmn2.reddeer.DefaultCheckBox;
 import org.jboss.tools.bpmn2.reddeer.dialog.JavaProjectWizard;
-import org.jboss.tools.bpmn2.reddeer.editor.tests.tmp.ImportFileWizard;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.JBPM6ComplexTestDefinitionRequirement.JBPM6ComplexTestDefinition;
+import org.jboss.tools.bpmn2.ui.bot.tmp.ImportFileWizard;
 
 public class JBPM6ComplexTestDefinitionRequirement implements Requirement<JBPM6ComplexTestDefinition> {
 

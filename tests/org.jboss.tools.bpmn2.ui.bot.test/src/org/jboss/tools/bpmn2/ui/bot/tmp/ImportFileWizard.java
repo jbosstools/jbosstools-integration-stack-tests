@@ -1,4 +1,4 @@
-package org.jboss.tools.bpmn2.reddeer.editor.tests.tmp;
+package org.jboss.tools.bpmn2.ui.bot.tmp;
 
 import java.io.File;
 
