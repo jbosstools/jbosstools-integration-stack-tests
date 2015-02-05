@@ -8,6 +8,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.SendTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.SubProcess;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.UserTask;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.CompensationBoundaryEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.ConditionalBoundaryEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.EscalationBoundaryEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.catchevents.SignalIntermediateCatchEvent;
@@ -52,7 +53,7 @@ public enum ElementType {
 //	TRANSACTION("TBD", "Transaction"),
 	
 	BOUNDARY_EVENT("Boundary Events", "Boundary Event"),
-	COMPENSATION_BOUNDARY_EVENT("Boundary Events", "Compensation Boundary Event"),
+	COMPENSATION_BOUNDARY_EVENT("Boundary Events", "Compensation"),
 	CONDITIONAL_BOUNDARY_EVENT("Boundary Events", "Conditional"),
 	ERROR_BOUNDARY_EVENT("Boundary Events", "Error"),
 	ESCALATION_BOUNDARY_EVENT("Boundary Events", "Escalation"),
@@ -251,6 +252,8 @@ public enum ElementType {
 			return EscalationBoundaryEvent.class;
 		case CONDITIONAL_BOUNDARY_EVENT:
 			return ConditionalBoundaryEvent.class;
+		case COMPENSATION_BOUNDARY_EVENT:
+			return CompensationBoundaryEvent.class;
 
 		default:
 			throw new IllegalArgumentException("Unsuported yet");

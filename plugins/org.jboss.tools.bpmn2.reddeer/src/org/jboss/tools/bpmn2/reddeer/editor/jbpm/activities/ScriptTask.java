@@ -3,6 +3,7 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.ScriptTaskTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.CheckBoxSetUpCTab;
 import org.jboss.tools.bpmn2.reddeer.properties.shell.ScriptSetUpCTab;
 
 /**
@@ -42,7 +43,8 @@ public class ScriptTask extends Task {
 	 * @param value
 	 */
 	public void setIsForCompensation(boolean value) {
-		properties.getTab("Script Task", ScriptTaskTab.class).setIsForCompensation(value);
+		//properties.getTab("Script Task", ScriptTaskTab.class).setIsForCompensation(value);
+		graphitiProperties.setUpTabs(new CheckBoxSetUpCTab("Script Task", "Is For Compensation", value));
 	}
 
 }
