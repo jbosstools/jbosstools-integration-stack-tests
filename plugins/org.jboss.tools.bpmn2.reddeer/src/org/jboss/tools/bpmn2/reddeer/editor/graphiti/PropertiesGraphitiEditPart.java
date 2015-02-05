@@ -23,20 +23,22 @@ public class PropertiesGraphitiEditPart extends AbstractGraphitiEditPart {
 		
 			getContextButton("Show Properties").click();
 			new DefaultShell().setFocus();
-			for(AbstractSetUpCTab tab : tabs) {
-				
-				if(tab != null) {
-					try{
-						new DefaultTabItem(tab.getTabLabel()).activate();
-					}catch(SWTLayerException e) {
-						//General tab is showed only if has element more tabs in properties view
+			try{
+				for(AbstractSetUpCTab tab : tabs) {
+					
+					if(tab != null) {
+						try{
+							new DefaultTabItem(tab.getTabLabel()).activate();
+						}catch(SWTLayerException e) {
+							//General tab is showed only if has element more tabs in properties view
+						}
+						tab.setUpCTab();
 					}
-					tab.setUpCTab();
 				}
+			}finally{
+				new DefaultShell().setFocus();
+				new PushButton("OK").click();
 			}
-			
-			new DefaultShell().setFocus();
-			new PushButton("OK").click();
 		
 		}
 }

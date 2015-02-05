@@ -4,6 +4,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.BoundaryEvent;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.CompensationBoundaryEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.ConditionalBoundaryEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.ErrorBoundaryEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.EscalationBoundaryEvent;
@@ -71,8 +72,10 @@ public class Task extends Element {
 			return super.<EscalationBoundaryEvent>addEvent(name, eventType, EscalationBoundaryEvent.class);
 		case TIMER_BOUNDARY_EVENT:
 			return super.<TimerBoundaryEvent>addEvent(name, eventType, TimerBoundaryEvent.class);
+		case COMPENSATION_BOUNDARY_EVENT:
+			return super.<CompensationBoundaryEvent>addEvent(name, eventType, CompensationBoundaryEvent.class);
 		default:
-			throw new IllegalArgumentException(eventType + "  is unsuported yet");
+			return null;
 		}
 	}
 
