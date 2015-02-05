@@ -38,6 +38,7 @@ public enum ElementType {
 	SUB_PROCESS("Sub Processes", "Embedded SubProcess", "Sub-Process"),
 	EVENT_SUB_PROCESS("Sub Processes", "Event SubProcess", "Sub-Process"),
 	CALL_ACTIVITY("Sub Processes", "Reusable Process", "Call Activity"),
+	MULTIPLE_SUB_PROCESS("Sub Process", "Multiple Instances", "Sub-Process"),
 	
 	
 	TASK("Tasks", "Task"),

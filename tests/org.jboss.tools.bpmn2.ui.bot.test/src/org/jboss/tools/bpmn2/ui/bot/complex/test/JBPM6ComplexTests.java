@@ -24,6 +24,7 @@ import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexIntermediateThr
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexIntermediateThrowMessageEventTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexLaneTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexMessageStartTest;
+import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexMultiInstanceLoopCharacteristicsTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexMultipleStartEventTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexParalellSplitJoinTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexParalellSplitTest;
@@ -68,7 +69,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	ComplexExclusiveSplitPriorityTest.class,
 	ComplexEventBasedSplitTest.class,
 	ComplexBoundaryEscalationEventOnTaskTest.class,
-	ComplexConditionalBoundaryEventInterruptingTest.class
+	ComplexConditionalBoundaryEventInterruptingTest.class,
+	ComplexMultiInstanceLoopCharacteristicsTest.class // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1189454
 })
 @RunWith(BPMN2Suite.class)
 public class JBPM6ComplexTests {
