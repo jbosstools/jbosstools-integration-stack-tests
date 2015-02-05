@@ -43,9 +43,6 @@ public abstract class JBPM6ComplexTest {
 	private List<Method> validateMethods;
 	private List<Method> runMethods;
 	
-	private static final int MAX_DISPLAYED_ERRORS = 100;
-	private static List<String> usedBaseFiles = new ArrayList<String>();
-	
 	private String diagramSourceCode = "";
 	private String filenameTitle;
 	
@@ -61,12 +58,6 @@ public abstract class JBPM6ComplexTest {
 		definition = obj.getAnnotation(JBPM6ComplexTestDefinition.class);
 		log = Logger.getLogger(getClass());
 		filenameTitle = definition.saveAs().substring(0, definition.saveAs().length()-6);
-		
-		if(definition.openFile().startsWith("Base")) {
-			if(!usedBaseFiles.contains(definition.openFile())) {
-				usedBaseFiles.add(definition.openFile());
-			}
-		}
 		
 		Method[] methods = obj.getMethods();
 		
@@ -99,6 +90,7 @@ public abstract class JBPM6ComplexTest {
 			ProcessEditorView editor = new ProcessEditorView(filenameTitle);
 			diagramSourceCode = editor.getSourceText();
 			
+			removeBaseFileFromProject();
 			
 			if(validateMethods.size() > 0) {
 				for(Method method : validateMethods) {
@@ -140,12 +132,6 @@ public abstract class JBPM6ComplexTest {
 		
 		List<TreeItem> errorList = problems.getAllErrors();
 		
-		if(errorList.size() >= MAX_DISPLAYED_ERRORS) {
-			removeFilesFromProject(usedBaseFiles);
-			errorList = problems.getAllErrors();
-			usedBaseFiles.clear();
-		}
-		
 		StringBuilder error = new StringBuilder();
 		for (TreeItem e : errorList) {
 			if (e.getCell(1).startsWith(filenameTitle)) {
@@ -181,11 +167,9 @@ public abstract class JBPM6ComplexTest {
 		return kSession;
 	}
 	
-	private void removeFilesFromProject(List<String> files) {
+	private void removeBaseFileFromProject() {
 		Project project = new ProjectExplorer().getProject(definition.projectName());
-		for(String filename : files) {
-			project.getProjectItem(filename).delete();
-		}
+		project.getProjectItem(definition.openFile()).delete();
 	}
 	
 	private void captureScreenshotWithDescription(String description) {
