@@ -15,7 +15,7 @@
 
 	<properties>
 	  <tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-integration-stack-tests.git</tycho.scmUrl>
-	  <jbtis.tp.version>4.2.0.Final</jbtis.tp.version>
+	  <jbtis.tp.version>4.2.1.CR1</jbtis.tp.version>
 	  <jbtis.site>http://download.jboss.org/jbosstools/updates/development/luna/integration-stack/aggregate/4.2.0.CR2/</jbtis.site>
 	  <jbtis-ea.site>http://download.jboss.org/jbosstools/updates/development/luna/integration-stack/aggregate/4.2.0.CR2/earlyaccess</jbtis-ea.site>
 	  <reddeer.site>http://download.jboss.org/jbosstools/updates/stable/luna/core/reddeer/0.6.0</reddeer.site>
@@ -90,6 +90,13 @@
 		    <version>${jbtis.tp.version}</version>
 		    <type>target</type>
 		    <classifier>base</classifier>
+		  </artifact>
+		  <artifact>
+		    <groupId>org.jboss.tools.integration-stack</groupId>
+		    <artifactId>target-platform</artifactId>
+		    <version>${jbtis.tp.version}</version>
+		    <type>target</type>
+		    <classifier>base-ea</classifier>
 		  </artifact>
 		</target>
 	      </configuration>
