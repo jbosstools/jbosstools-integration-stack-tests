@@ -26,6 +26,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.TimerStartEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.swimlanes.Lane;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.throwevents.EscalationIntermediateThrowEvent;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.throwevents.LinkIntermediateThrowEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.throwevents.MessageIntermediateThrowEvent;
 
 /**
@@ -89,6 +90,7 @@ public enum ElementType {
 	INTERMEDIATE_THROW_EVENT("Intermediate Throw Events", "Intermediate"),
 	MESSAGE_INTERMEDIATE_THROW_EVENT("Intermediate Throw Events", "Message"),
 	SIGNAL_INTERMEDIATE_THROW_EVENT("Intermediate Throw Events", "Signal"),
+	LINK_INTERMEDIATE_THROW_EVENT("Intermediate Throw Events", "Link"),
 	
 	CONDITIONAL_EVENT_DEFINITION("Event Definitions", "Conditional Event Definition"),
 	ERROR_EVENT_DEFINITION("Event Definitions", "Error Event Definition"),
@@ -254,6 +256,8 @@ public enum ElementType {
 			return ConditionalBoundaryEvent.class;
 		case COMPENSATION_BOUNDARY_EVENT:
 			return CompensationBoundaryEvent.class;
+		case LINK_INTERMEDIATE_THROW_EVENT:
+			return LinkIntermediateThrowEvent.class;
 
 		default:
 			throw new IllegalArgumentException("Unsuported yet");

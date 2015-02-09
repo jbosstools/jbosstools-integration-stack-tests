@@ -9,7 +9,7 @@ import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexBoundaryConditi
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexBoundaryEscalationEventOnTaskTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexBusinessRuleTaskTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexCallActivityTest;
-import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexCompensationEvent;
+import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexCompensationEventTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexConditionalBoundaryEventInterruptingTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexConditionalStartTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexDataObjectTest;
@@ -24,6 +24,7 @@ import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexIntermediateCat
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexIntermediateThrowEscalationEventTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexIntermediateThrowMessageEventTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexLaneTest;
+import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexLinkEventTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexMessageStartTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexMultiInstanceLoopCharacteristicsTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexMultipleStartEventTest;
@@ -39,6 +40,15 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 @SuiteClasses({
+//	Everywhere, where is used UserTask
+//	@BZ https://bugzilla.redhat.com/show_bug.cgi?id=1183743
+//	
+//	Where is declared escalation or signal
+//	@BZ https://bugzilla.redhat.com/show_bug.cgi?id=1184422
+//	
+//	temporary workaround used
+//	@BZ https://bugzilla.redhat.com/show_bug.cgi?id=1175772
+// --------------------------------------------------------
 	ComplexParalellSplitJoinTest.class,
 	ComplexCallActivityTest.class,
 	ComplexAdHocProcessTest.class,
@@ -58,7 +68,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	ComplexMessageStartTest.class,
 	ComplexSubProcessTest.class,
 	ComplexUserTaskTest.class,
-	ComplexXPathExpressionTest.class,
+	ComplexXPathExpressionTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1176400
 	ComplexLaneTest.class,
 //	// Doesn't work, because of strange context menu appearing during connecting data object with other elements
 //	// ComplexDataObjectTest.class, 
@@ -70,9 +80,11 @@ import org.junit.runners.Suite.SuiteClasses;
 	ComplexExclusiveSplitPriorityTest.class,
 	ComplexEventBasedSplitTest.class,
 	ComplexBoundaryEscalationEventOnTaskTest.class,
-	ComplexConditionalBoundaryEventInterruptingTest.class,
+	ComplexConditionalBoundaryEventInterruptingTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1165667
 	ComplexMultiInstanceLoopCharacteristicsTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1189454
-	ComplexCompensationEvent.class // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1189735
+	ComplexCompensationEventTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1189735
+	ComplexLinkEventTest.class // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1190688
+							   // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1190727
 })
 @RunWith(BPMN2Suite.class)
 public class JBPM6ComplexTests {
