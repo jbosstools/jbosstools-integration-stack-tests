@@ -14,5 +14,9 @@ public class IntermediateThrowEvent extends Element {
 	 */
 	public IntermediateThrowEvent(String name) {
 		super(name, ElementType.INTERMEDIATE_THROW_EVENT);
-	}	
+	}
+	
+	public IntermediateThrowEvent(org.jboss.tools.bpmn2.reddeer.editor.Element element) {
+		super(element);
+	}
 }
