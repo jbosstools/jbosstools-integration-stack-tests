@@ -2,6 +2,7 @@ package org.jboss.tools.teiid.reddeer.manager;
 
 import java.util.Properties;
 
+import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.ModelProject;
 import org.jboss.tools.teiid.reddeer.wizard.CreateMetadataModel;
 import org.jboss.tools.teiid.reddeer.wizard.DDLImportWizard;
@@ -35,6 +36,7 @@ public class ImportMetadataManager {
 			importWizard.setAutoselectDialect(Boolean.valueOf(loadedProperty));
 		}
 		importModel(projectName, importWizard);
+		new WorkbenchShell();
 	}
 	
 	/**

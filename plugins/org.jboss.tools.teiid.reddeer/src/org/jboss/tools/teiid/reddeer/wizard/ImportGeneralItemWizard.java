@@ -8,8 +8,11 @@ import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 
 /**
  * Wizard for importing an archive file, existing project, file system, preferences.
@@ -44,6 +47,8 @@ public class ImportGeneralItemWizard extends ImportWizardDialog {
 	
 	public void execute(){
 		open();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		new DefaultShell();
 		
 		if (generalItemType.equals(Type.EXISTING_PROJECTS_INTO_WORKSPACE)){
 			executeExistingProjects();

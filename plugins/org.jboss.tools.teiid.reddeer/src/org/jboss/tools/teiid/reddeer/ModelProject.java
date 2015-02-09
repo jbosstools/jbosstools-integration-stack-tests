@@ -4,7 +4,9 @@ import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.teiid.reddeer.wizard.TeiidImportWizard;
@@ -26,6 +28,8 @@ public class ModelProject {
 	public void importModel(TeiidImportWizard importWizard) {
 		project.select();
 		importWizard.execute();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		new WorkbenchShell().setFocus();
 	}
 
 	/**

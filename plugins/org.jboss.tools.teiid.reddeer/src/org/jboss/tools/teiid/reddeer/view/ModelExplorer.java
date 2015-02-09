@@ -1,10 +1,11 @@
 package org.jboss.tools.teiid.reddeer.view;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.eclipse.jdt.ui.AbstractExplorer;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.teiid.reddeer.ModelProject;
 import org.jboss.tools.teiid.reddeer.wizard.ModelProjectWizard;
 
@@ -54,9 +55,11 @@ public class ModelExplorer extends AbstractExplorer {
 		new ContextMenu("Modeling", "Set Connection Profile").select();
 		new DefaultTreeItem("Database Connections", connectionProfile).select();
 		new PushButton("OK").click();
-		//Confirm Connection Profile Change (it will change also the model import settings)
-		if (new SWTWorkbenchBot().activeShell().getText().equals(CONNECTION_PROFILE_CHANGE)){
+
+		try {
+			new WaitUntil(new ShellWithTextIsAvailable(CONNECTION_PROFILE_CHANGE));
 			new PushButton("OK").click();
+		} catch (Exception e) {
 		}
 	}
 

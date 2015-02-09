@@ -4,18 +4,22 @@ import java.util.Properties;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.handler.ShellHandler;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
 import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.manager.ImportMetadataManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
+import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.wizard.FlatImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.ImportGeneralItemWizard;
 import org.jboss.tools.teiid.reddeer.wizard.MetadataImportWizard.ImportType;
 import org.jboss.tools.teiid.reddeer.wizard.WsdlWebImportWizard;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,6 +31,7 @@ import org.junit.runner.RunWith;
  */
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
+@TeiidServer(state = ServerReqState.PRESENT)
 public class ImportWizardTest {
 
 	public static final String MODEL_PROJECT = "importTest";
@@ -44,6 +49,11 @@ public class ImportWizardTest {
 	public static void closeAllShells() {
 
 		ShellHandler.getInstance().closeAllNonWorbenchShells();
+	}
+
+	@Before
+	public void setFocus() {
+		new WorkbenchShell();
 	}
 
 	@Test
@@ -96,7 +106,8 @@ public class ImportWizardTest {
 		importWizard.next();
 		importWizard.next();
 		importWizard.finish();
-
+		new WorkbenchShell();
+		
 		teiidBot.assertResource(MODEL_PROJECT, "ItemSource.xmi");
 		teiidBot.assertResource(MODEL_PROJECT, "ViewModel.xmi");
 		teiidBot.checkDiagram(MODEL_PROJECT, "ItemSource.xmi", "getTextFiles");
@@ -126,7 +137,7 @@ public class ImportWizardTest {
 
 	@Test
 	public void wsdlToSOAPImportTest() {
-
+		
 		String profile = "Hello Service";
 
 		Properties wsdlCP = new Properties();
@@ -165,6 +176,7 @@ public class ImportWizardTest {
 		iProps.setProperty("wsdlName", "Hello.wsdl");
 		new ImportMetadataManager().importFromWSDLToWebService(iProps,
 				WsdlWebImportWizard.IMPORT_WSDL_FROM_WORKSPACE); // generates Hello.xsd WsdlToWS.xmi - Hello
+		new WorkbenchShell();
 
 		// import from URL
 		iProps = new Properties();
@@ -179,7 +191,6 @@ public class ImportWizardTest {
 	}
 
 	@Test
-	// throws exception! remote && addDependentSchemas=true (JBDS exception)
 	public void xmlSchemaImportTest() {
 
 		// local xsd

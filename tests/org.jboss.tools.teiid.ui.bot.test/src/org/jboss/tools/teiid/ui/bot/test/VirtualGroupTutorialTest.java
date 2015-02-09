@@ -5,6 +5,7 @@ import java.util.Arrays;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
@@ -24,7 +25,9 @@ import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
+import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
+import org.jboss.tools.teiid.reddeer.view.DataSourceExplorer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
 import org.jboss.tools.teiid.reddeer.view.SQLResult;
@@ -40,6 +43,9 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 @TeiidServer(state = ServerReqState.RUNNING)
 public class VirtualGroupTutorialTest extends SWTBotTestCase {
+
+	@InjectRequirement
+	private TeiidServerRequirement server;
 
 	private static final String PROJECT_NAME = "MyFirstProject";
 
@@ -196,6 +202,8 @@ public class VirtualGroupTutorialTest extends SWTBotTestCase {
 
 		editor.save();
 		AbstractWait.sleep(TimePeriod.getCustom(2));
+		new WorkbenchShell();
+		editor.bot().activeShell();
 		assertEquals("SQL Statements do not match!", TRANSFORMATION_SQL, editor.getTransformation());
 	}
 
@@ -217,7 +225,7 @@ public class VirtualGroupTutorialTest extends SWTBotTestCase {
 
 	public void executeVDB() {
 		ServersViewExt serversView = new ServersViewExt();
-		serversView.refreshServer("EAP-6.1");
+		serversView.refreshServer(server.getName());
 		ModelExplorer modelExplorer = new ModelExplorer();
 		modelExplorer.open();
 		VDB vdb = modelExplorer.getModelProject(PROJECT_NAME).getVDB(VDB_FILE_NAME);
@@ -226,9 +234,17 @@ public class VirtualGroupTutorialTest extends SWTBotTestCase {
 	}
 
 	public void executeSqlQueries() {
-		SQLScrapbookEditor editor = new SQLScrapbookEditor("SQL Scrapbook0");
-		editor.show();
-		editor.setDatabase(VDB_NAME);
+		new WorkbenchShell();
+		SQLScrapbookEditor editor = null;
+		try {
+			editor = new SQLScrapbookEditor("SQL Scrapbook0");
+			editor.show();
+			editor.setDatabase(VDB_NAME);
+		} catch (Exception e) {
+			new DataSourceExplorer().openSQLScrapbook(VDB_NAME);
+			editor = new SQLScrapbookEditor("SQL Scrapbook 0");
+			editor.show();
+		}
 
 		// TESTSQL_1
 		editor.setText(TESTSQL_1);

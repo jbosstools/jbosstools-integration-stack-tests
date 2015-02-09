@@ -4,7 +4,7 @@ import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
@@ -34,8 +34,11 @@ public class SQLScrapbookEditor extends SWTBotEditor {
 		
 		new DefaultStyledText();
 		new ContextMenu("Execute All").select();
-		new WaitWhile(new ShellWithTextIsAvailable("SQL Statement Execution"), TimePeriod.VERY_LONG);
-		new DefaultShell();
-		AbstractWait.sleep(TimePeriod.SHORT);
+		try {
+			new WaitWhile(new ShellWithTextIsAvailable("SQL Statement Execution"), TimePeriod.VERY_LONG);
+		} catch(Exception e) {
+		}
+		AbstractWait.sleep(TimePeriod.NORMAL);
+		new WorkbenchShell();
 	}
 }

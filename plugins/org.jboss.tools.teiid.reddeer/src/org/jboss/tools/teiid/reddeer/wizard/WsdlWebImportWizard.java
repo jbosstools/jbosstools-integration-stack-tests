@@ -4,12 +4,15 @@ import java.util.Properties;
 
 import org.jboss.reddeer.eclipse.jface.wizard.ImportWizardDialog;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 
@@ -74,7 +77,9 @@ public class WsdlWebImportWizard extends ImportWizardDialog {
 	}
 	
 	public void importWsdlWithoutOpen(Properties importProps, String wsdlLocation){
-		//first page
+
+				//first page
+				AbstractWait.sleep(TimePeriod.getCustom(2));
 				fillFirstPage(importProps, wsdlLocation);
 				next();
 				
@@ -138,6 +143,8 @@ public class WsdlWebImportWizard extends ImportWizardDialog {
 			//property wsdl url
 			//property security type -> none | httpbasic (username, password)
 			new PushButton("URL...").click();
+			new WaitUntil(new ShellWithTextIsAvailable("WSDL URL"));
+			new DefaultShell("WSDL URL").setFocus();
 			new SWTWorkbenchBot().textWithLabel("Enter WSDL URL:").setText(importProps.getProperty("wsdlUrl"));
 			if (importProps.getProperty("securityType") != null){
 				if (importProps.getProperty("securityType").equals(HTTPBASIC_SECURITY_TYPE)){

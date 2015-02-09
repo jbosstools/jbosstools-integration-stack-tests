@@ -3,6 +3,7 @@ package org.jboss.tools.teiid.reddeer.wizard;
 import org.eclipse.swt.SWT;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
@@ -11,6 +12,9 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 
 /**
  * Wizard for importing XML schemas
@@ -145,6 +149,8 @@ public class XMLSchemaImportWizard extends TeiidImportWizard {
 			}
 
 			new DefaultToolItem("Add XML schema URL").click();
+			new WaitUntil(new ShellWithTextIsAvailable("XML Schema Url"));
+			new DefaultShell("XML Schema Url").setFocus();
 			new DefaultText(0).setText(xmlSchemaURL);
 			if (username != null) {
 				new DefaultText(1).setText(username);
@@ -160,17 +166,6 @@ public class XMLSchemaImportWizard extends TeiidImportWizard {
 			if (new SWTWorkbenchBot().activeShell().getText().contains("Dependent XML Schema Files Found")) {
 				new PushButton("Yes").click();
 			}
-			// something else??
-
-			// throw new UnsupportedOperationException();
-			// Add XML schema URL
-			// Enter XML schema URL:
-			// Verify Hostname (HTTPS)
-			// OK
-			// shell: Dependent XML Schema Files Found --> Yes
-			// --> vyhazuje: Error opening input stream for
-			// /home/lfabriko/nulltmp/javaee !!!
-
 		}
 
 	}

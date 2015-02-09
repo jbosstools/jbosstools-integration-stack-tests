@@ -1,6 +1,12 @@
 package org.jboss.tools.teiid.reddeer.wizard;
 
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.scale.DefaultScale;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 
 /**
@@ -60,6 +66,8 @@ public class DDLImportWizard extends TeiidImportWizard {
 
 	public void execute() {
 		open();
+		new WaitUntil(new ShellWithTextIsAvailable("Import DDL"));
+		new DefaultShell("Import DDL");
 		new DefaultCombo(0).setText(ddlPath);
 		if (autoselectDialect){
 			//click on autoselect 
@@ -75,6 +83,8 @@ public class DDLImportWizard extends TeiidImportWizard {
 		new SWTWorkbenchBot().textWithLabel(MODEL_NAME).setText(modelName);
 
 		next();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		new DefaultShell("Import DDL");
 		finish();
 	}
 

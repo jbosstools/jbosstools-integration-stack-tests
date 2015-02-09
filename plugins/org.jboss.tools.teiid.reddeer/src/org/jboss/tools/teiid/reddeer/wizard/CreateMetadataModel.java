@@ -141,6 +141,7 @@ public class CreateMetadataModel extends NewWizardDialog {
 			new SWTWorkbenchBot().table().select("XML Schema (2001)");
 			new PushButton("OK").click();
 		}
+		AbstractWait.sleep(TimePeriod.NORMAL);
 	}
 	
 	public void fillFourthPage() {

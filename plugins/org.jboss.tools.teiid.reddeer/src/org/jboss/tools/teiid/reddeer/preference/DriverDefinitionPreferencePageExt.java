@@ -37,6 +37,7 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 	//public void addDriverDefinition(DriverDefinition driverDefinition) {
 	public void addDriverDefinition(DriverDefinitionExt driverDefinition) {
 		new PushButton("Add...").click();
+		new DefaultShell("New Driver Definition");
 		new DriverDefinitionWizardExt(driverDefinition).execute();
 		new PushButton("OK").click();
 	}
