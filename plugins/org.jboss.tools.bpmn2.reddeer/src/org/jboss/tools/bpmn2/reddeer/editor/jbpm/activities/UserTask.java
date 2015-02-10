@@ -6,6 +6,8 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Expression;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.UserTaskTab;
 import org.jboss.tools.bpmn2.reddeer.properties.shell.AddParameterMappingSetUpCTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.CheckBoxSetUpCTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.LabeledTextSetUpCTab;
 
 /**
  * 
@@ -29,7 +31,8 @@ public class UserTask extends Task {
 	 * @param name
 	 */
 	public void setTaskName(String name) {
-		properties.getTab("User Task", UserTaskTab.class).setTaskName(name);
+		//properties.getTab("User Task", UserTaskTab.class).setTaskName(name);
+		graphitiProperties.setUpTabs(new LabeledTextSetUpCTab("User Task", "Task Name", name));
 	}
 	
 	/**
@@ -61,7 +64,8 @@ public class UserTask extends Task {
 	 * @param skippable
 	 */
 	public void setSkippable(boolean skippable) {
-		properties.getTab("User Task", UserTaskTab.class).setSkippable(skippable);
+		//properties.getTab("User Task", UserTaskTab.class).setSkippable(skippable);
+		graphitiProperties.setUpTabs(new CheckBoxSetUpCTab("User Task", "Skippable", skippable));
 		
 	}
 	
@@ -78,7 +82,8 @@ public class UserTask extends Task {
 	 * @param locale
 	 */
 	public void setLocale(String locale) {
-		properties.getTab("User Task", UserTaskTab.class).setLocale(locale);
+		//properties.getTab("User Task", UserTaskTab.class).setLocale(locale);
+		graphitiProperties.setUpTabs(new LabeledTextSetUpCTab("User Task", "Locale", locale));
 	}
 	
 	/**
