@@ -13,16 +13,13 @@
 
 	<properties>
 		<server.name>AS-7.1.1.Final</server.name>
-		<server.home>${project.build.directory}/jboss-as-7.1.1.Final</server.home>
+		<server.home>${project.build.directory}/requirements/jboss-as-7.1.1.Final</server.home>
 		<reddeer.config>${project.build.directory}/config/as-711_teiid-830.xml</reddeer.config>
-		<swtbot.properties>swtbot.properties</swtbot.properties>
-		<swtbot.test.properties.file>${swtbot.properties}</swtbot.test.properties.file>
-		<systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=${swtbot.test.properties.file} -Dreddeer.config=${reddeer.config}</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=${reddeer.config}</systemProperties>
 		<test.package>org.jboss.tools.teiid.ui.bot.test.suite</test.package>
-		<test.class>SmokeTests</test.class>
+		<test.class>AllTests</test.class>
 		<jdbc.dir>${requirementsDirectory}/lib</jdbc.dir>
 		<teiid.site>${jbtis.site}</teiid.site>
-		<server.properties>dv6.properties</server.properties>
 	</properties>
 
 	<repositories>
@@ -42,6 +39,66 @@
 
 	<build>
 		<plugins>
+
+			<!-- Download JBoss AS + Teiid -->
+			<plugin>
+				<groupId>com.googlecode.maven-download-plugin</groupId>
+				<artifactId>download-maven-plugin</artifactId>
+				<version>1.2.0</version>
+				<executions>
+					<execution>
+						<id>get-as</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>http://download.jboss.org/jbossas/7.1/jboss-as-7.1.1.Final/jboss-as-7.1.1.Final.zip</url>
+							<unpack>true</unpack>
+							<outputDirectory>${project.build.directory}/requirements</outputDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>get-teiid</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>https://sourceforge.net/projects/teiid/files/teiid-8.3.0.Final-jboss-dist.zip</url>
+							<unpack>true</unpack>
+							<outputDirectory>${project.build.directory}/requirements/jboss-as-7.1.1.Final</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.6</version>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<encoding>UTF-8</encoding>
+							<outputDirectory>${basedir}/target/</outputDirectory>
+							<resources>
+								<resource>
+									<directory>resources</directory>
+									<includes>
+										<include>config/*</include>
+									</includes>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 			<!-- Run Teiid Bot Tests -->
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
@@ -226,7 +283,7 @@
 					</execution>
 
 					<!--<execution> <id>get-ingres</id> <phase>initialize</phase> <goals> 
-					     						<goal>wget</goal> </goals> <configuration> <skip>${get.drivers}</skip> <outputDirectory>${jdbc.dir}</outputDirectory> 
+						<goal>wget</goal> </goals> <configuration> <skip>${get.drivers}</skip> <outputDirectory>${jdbc.dir}</outputDirectory> 
 						</configuration> </execution> -->		<!--clone bqt, get from there?? -->
 					<execution>
 						<id>get-postgres</id>
@@ -255,66 +312,7 @@
 
 				</executions>
 			</plugin>
-
-			<!-- Download JBoss AS + Teiid -->	
-			<plugin>
-			  <groupId>com.googlecode.maven-download-plugin</groupId>
-			  <artifactId>download-maven-plugin</artifactId>
-			  <version>1.2.0</version>
-			  <executions>
-			    <execution>
-			      <id>get-as</id>
-			      <phase>pre-integration-test</phase>
-			      <goals>
-				<goal>wget</goal>
-			      </goals>
-			      <configuration>
-				<url>http://download.jboss.org/jbossas/7.1/jboss-as-7.1.1.Final/jboss-as-7.1.1.Final.zip</url>
-				<unpack>true</unpack>
-			      </configuration>
-			    </execution>
-			    <execution>
-			      <id>get-teiid</id>
-			      <phase>pre-integration-test</phase>
-			      <goals>
-				<goal>wget</goal>
-			      </goals>
-			      <configuration>
-				<url>https://sourceforge.net/projects/teiid/files/teiid-8.3.0.Final-jboss-dist.zip</url>
-				<unpack>true</unpack>
-				<outputDirectory>${project.build.directory}/jboss-as-7.1.1.Final</outputDirectory>
-			      </configuration>
-			    </execution>
-			  </executions>
-			</plugin>
-			<plugin>
-			  <artifactId>maven-resources-plugin</artifactId>
-			  <version>2.6</version>
-			  <executions>
-			    <execution>
-			      <id>copy-resources</id>
-			      <phase>validate</phase>
-			      <goals>
-				<goal>copy-resources</goal>
-			      </goals>
-			      <configuration>
-				<encoding>UTF-8</encoding>
-				<outputDirectory>${basedir}/target/</outputDirectory>
-				<resources>          
-				  <resource>
-				    <directory>resources</directory>
-				    <includes>
-				      <include>config/*</include>
-				    </includes>
-				    <filtering>true</filtering>
-				  </resource>
-				</resources>
-			      </configuration>            
-			    </execution>
-			  </executions>
-			</plugin>
-			
-			</plugins>
+		</plugins>
 	</build>
 
 </project>
