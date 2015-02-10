@@ -13,6 +13,7 @@ import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexCompensationEve
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexConditionalBoundaryEventInterruptingTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexConditionalStartTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexDataObjectTest;
+import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexDefaultSkippableTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexErrorBoundaryEventOnTaskTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexErrorEndEventTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexEventBasedSplitTest;
@@ -86,7 +87,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	ComplexCompensationEventTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1189735
 	ComplexLinkEventTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1190688
 							    // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1190727
-	ComplexWebDesignerProcessTest.class // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1188870
+	ComplexWebDesignerProcessTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1188870
+	ComplexDefaultSkippableTest.class // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1168413
 })
 @RunWith(BPMN2Suite.class)
 public class JBPM6ComplexTests {

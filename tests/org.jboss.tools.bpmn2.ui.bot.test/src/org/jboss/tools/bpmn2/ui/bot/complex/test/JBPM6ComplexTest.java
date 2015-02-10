@@ -92,11 +92,12 @@ public abstract class JBPM6ComplexTest {
 			
 			removeBaseFileFromProject();
 			
-			if(validateMethods.size() > 0) {
-				for(Method method : validateMethods) {
-					method.invoke(this);
-				}
-			} else {
+			
+			for(Method method : validateMethods) {
+				method.invoke(this);
+			}
+			
+			if(definition.noErrorsInValidation()){
 				defaultValidate();
 			}
 			

@@ -37,6 +37,7 @@ public class JBPM6ComplexTestDefinitionRequirement implements Requirement<JBPM6C
 		public String saveAs();
 		public String openFile();
 		public String dependentOn() default "";
+		public boolean noErrorsInValidation() default true;
 	}
 	
 	private JBPM6ComplexTestDefinition declaration;
