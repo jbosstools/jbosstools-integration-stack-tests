@@ -1,5 +1,10 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 
+import org.jboss.reddeer.swt.api.Shell;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
+import org.jboss.tools.bpmn2.reddeer.DefaultCheckBox;
 import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Expression;
@@ -67,6 +72,16 @@ public class UserTask extends Task {
 		//properties.getTab("User Task", UserTaskTab.class).setSkippable(skippable);
 		graphitiProperties.setUpTabs(new CheckBoxSetUpCTab("User Task", "Skippable", skippable));
 		
+	}
+	
+	public boolean getSkippable() {
+		graphitiProperties.getContextButton("Show Properties").click();
+		Shell shell = new DefaultShell();
+		shell.setFocus();
+		new DefaultTabItem("User Task").activate();
+		boolean result =  new DefaultCheckBox("Skippable").isChecked();
+		new PushButton("OK").click();
+		return result;
 	}
 	
 	/**
