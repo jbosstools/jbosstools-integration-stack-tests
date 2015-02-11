@@ -1,6 +1,8 @@
 package org.jboss.tools.bpmn2.reddeer.properties.jbpm;
 
+import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
 import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
 
@@ -16,15 +18,13 @@ public class InterfacesTab {
 	 * @param operationList
 	 */
 	public void addInterface(String name, String implementation, String [] operationList) {
-//		DefaultSection s = new DefaultSection("Interface List");
-//		s.getToolbarButton("Add").click();
-//		
-//		new LabeledText("Name").setText(name);
-//		new LabeledText("Implementation").setText(implementation);
-//		
+		new SectionToolItem("Interface List", "Add").click();
+		
+		new LabeledText("Name").setText(name);
+		new LabeledText("Implementation").setText(implementation);
+
 //		// Add operations
 		
-		throw new UnsupportedOperationException();
 	}
 	
 	/**

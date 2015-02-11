@@ -4,6 +4,7 @@ import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.reddeer.DefaultCheckBox;
 import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
@@ -40,12 +41,26 @@ public class UserTask extends Task {
 		graphitiProperties.setUpTabs(new LabeledTextSetUpCTab("User Task", "Task Name", name));
 	}
 	
+	public String getTaskName() {
+		properties.selectTab("User Task");
+		return new LabeledText("Task Name").getText();
+		
+	}
+	
 	/**
 	 * 
 	 * @param priority
 	 */
 	public void setPriority(int priority) {
 		properties.getTab("User Task", UserTaskTab.class).setPriority(String.valueOf(priority));
+	}
+	
+	/**
+	 * USE ONLY FOR numbers bigger than int
+	 * @param priority
+	 */
+	public void setPriority(String priority) {
+		properties.getTab("User Task", UserTaskTab.class).setPriority(priority);
 	}
 
 	/**
@@ -62,6 +77,11 @@ public class UserTask extends Task {
 	 */
 	public void setGroupId(String id) {
 		properties.getTab("User Task", UserTaskTab.class).setGroupId(id);
+	}
+	
+	public String getGroupId() {
+		properties.selectTab("User Task");
+		return new LabeledText("Group Id").getText();
 	}
 	
 	/**
