@@ -5,6 +5,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.ValidationException;
+
 import org.apache.log4j.Logger;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
@@ -92,9 +94,18 @@ public abstract class JBPM6ComplexTest {
 			
 			removeBaseFileFromProject();
 			
-			
+			StringBuilder error = new StringBuilder();
 			for(Method method : validateMethods) {
-				method.invoke(this);
+				try{
+					method.invoke(this);
+				}catch(InvocationTargetException e){
+					error.append(method.getName()).append(e.getCause().toString()).append("\n");
+				}catch (Exception e) {
+					error.append(method.getName()).append(e.toString()).append("\n");
+				}
+			}
+			if(error.toString().length() > 0) {
+				throw new ValidationException(error.toString());
 			}
 			
 			if(definition.noErrorsInValidation()){
@@ -124,21 +135,7 @@ public abstract class JBPM6ComplexTest {
 		log.info("\tjBPM validation result '" + (result ? "valid" : "not valid") + "'");
 		Assert.assertTrue(validator.getResultMessage(), result);
 		
-		
-		ProblemsView problems = new ProblemsView();
-		problems.open();
-		new WaitWhile(new MarkerIsUpdating());
-		new WaitWhile(new JobIsRunning());
-		new WaitUntil(new ErrorAppearOrDisappear(problems), TimePeriod.getCustom(5), false);
-		
-		List<TreeItem> errorList = problems.getAllErrors();
-		
-		StringBuilder error = new StringBuilder();
-		for (TreeItem e : errorList) {
-			if (e.getCell(1).startsWith(filenameTitle)) {
-				error.append(e.getCell(0) + "\n");
-			}
-		}
+		String error = getErrorsFromProblemsView(filenameTitle, null);
 		
 		boolean isErrorEmpty = error.length() == 0;
 		log.info("\tEditor validation result '" + (isErrorEmpty ? "OK" : error) + "'");
@@ -251,5 +248,39 @@ public abstract class JBPM6ComplexTest {
 			return "Wait for successfull save operation";
 		}
 		
+	}
+	
+	protected boolean isInSourceCode(String text) {
+		return diagramSourceCode.contains(text);
+	}
+	
+	protected String getErrorsFromProblemsView(String resourcePrefix, String descriptionPrefix){
+		ProblemsView problems = new ProblemsView();
+		problems.open();
+		new WaitWhile(new MarkerIsUpdating());
+		new WaitWhile(new JobIsRunning());
+		new WaitUntil(new ErrorAppearOrDisappear(problems), TimePeriod.getCustom(5), false);
+		
+		List<TreeItem> errorList = problems.getAllErrors();
+		
+		StringBuilder error = new StringBuilder();
+		for (TreeItem e : errorList) {
+			if(resourcePrefix != null && descriptionPrefix != null) {
+				if (e.getCell(1).startsWith(resourcePrefix) && e.getCell(0).startsWith(descriptionPrefix)) {
+					error.append(e.getCell(0) + "\n");
+				}
+			} else if(resourcePrefix != null) {
+				if (e.getCell(1).startsWith(resourcePrefix)) {
+					error.append(e.getCell(0) + "\n");
+				}
+			} else if(descriptionPrefix != null) {
+				if (e.getCell(0).startsWith(descriptionPrefix)) {
+					error.append(e.getCell(0) + "\n");
+				}
+			}
+			
+		}
+		
+		return error.toString();
 	}
 }

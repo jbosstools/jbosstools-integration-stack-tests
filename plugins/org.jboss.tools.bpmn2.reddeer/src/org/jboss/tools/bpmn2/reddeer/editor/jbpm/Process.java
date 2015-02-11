@@ -138,7 +138,7 @@ public class Process extends ElementContainer {
 	 * @param dataType
 	 */
 	public void addGlobalVariable(String name, String dataType) {
-		properties.getTab("Data Items", DataItemsTab.class).addGlobalVariable(name, dataType, name);
+		properties.getTab("Data Items", DataItemsTab.class).addGlobalVariable(name, dataType, this.name);
 	}
 	
 	/**

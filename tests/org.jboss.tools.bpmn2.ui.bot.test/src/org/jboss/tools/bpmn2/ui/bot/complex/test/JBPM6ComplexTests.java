@@ -33,6 +33,7 @@ import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexParalellSplitJo
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexParalellSplitTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexReceiveTaskTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexSendTaskTest;
+import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexSpecialCharactersAndLenghtsTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexSubProcessTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexUserTaskTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexWebDesignerProcessTest;
@@ -88,7 +89,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	ComplexLinkEventTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1190688
 							    // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1190727
 	ComplexWebDesignerProcessTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1188870
-	ComplexDefaultSkippableTest.class // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1168413
+	ComplexDefaultSkippableTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1168413
+	ComplexSpecialCharactersAndLenghtsTest.class
 })
 @RunWith(BPMN2Suite.class)
 public class JBPM6ComplexTests {
