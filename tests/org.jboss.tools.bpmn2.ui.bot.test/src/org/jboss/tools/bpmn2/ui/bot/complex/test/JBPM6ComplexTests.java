@@ -18,6 +18,7 @@ import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexErrorBoundaryEv
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexErrorEndEventTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexEventBasedSplitTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexExclusiveSplitPriorityTest;
+import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexImportInterfaceTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexImportTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexInclusiveSplitTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexIntermediateCatchEventTimerCycleTest;
@@ -33,6 +34,7 @@ import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexParalellSplitJo
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexParalellSplitTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexReceiveTaskTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexSendTaskTest;
+import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexServiceTaskTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexSpecialCharactersAndLenghtsTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexSubProcessTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexUserTaskTest;
@@ -90,7 +92,9 @@ import org.junit.runners.Suite.SuiteClasses;
 							    // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1190727
 	ComplexWebDesignerProcessTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1188870
 	ComplexDefaultSkippableTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1168413
-	ComplexSpecialCharactersAndLenghtsTest.class
+	ComplexSpecialCharactersAndLenghtsTest.class,
+	ComplexImportInterfaceTest.class,
+	ComplexServiceTaskTest.class
 })
 @RunWith(BPMN2Suite.class)
 public class JBPM6ComplexTests {

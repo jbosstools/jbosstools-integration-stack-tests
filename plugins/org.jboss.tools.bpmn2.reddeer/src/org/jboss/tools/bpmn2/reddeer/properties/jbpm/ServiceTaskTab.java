@@ -54,6 +54,18 @@ public class ServiceTaskTab extends GeneralPropertiesTab {
 			new OperationDialog().addOperation(operationName, inMessage, outMessage, errorRef);
 		}
 		combo.setSelection(interfaceName + "/" + operationName);
+		
+		combo = new DefaultCombo("Source");
+		if (!combo.contains(inMessage.getName())) {
+			throw new UnsupportedOperationException();
+		}
+		combo.setSelection(inMessage.getName());
+		
+		combo = new DefaultCombo("Target");
+		if (!combo.contains(outMessage.getName())) {
+			throw new UnsupportedOperationException();
+		}
+		combo.setSelection(outMessage.getName());
 	}
 	
 	/**

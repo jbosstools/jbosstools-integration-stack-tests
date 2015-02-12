@@ -159,5 +159,9 @@ public class Process extends ElementContainer {
 	public void addInterface(String name, String implementation, String ... operationList) {
 		properties.getTab("Interfaces", InterfacesTab.class).addInterface(name, implementation, operationList);
 	}
+	
+	public void importInterface(String fullQualifiedName){
+		properties.getTab("Interfaces", InterfacesTab.class).importInterface(fullQualifiedName);
+	}
 
 }
