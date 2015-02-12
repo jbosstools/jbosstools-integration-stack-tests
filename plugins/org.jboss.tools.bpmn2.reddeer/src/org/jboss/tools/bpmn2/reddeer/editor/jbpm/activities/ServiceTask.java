@@ -1,5 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 
+import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ErrorRef;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Message;
@@ -18,6 +19,10 @@ public class ServiceTask extends Task {
 	 */
 	public ServiceTask(String name) {
 		super(name, ElementType.SERVICE_TASK);
+	}
+	
+	public ServiceTask(Element element){
+		super(element);
 	}
 	
 	/**

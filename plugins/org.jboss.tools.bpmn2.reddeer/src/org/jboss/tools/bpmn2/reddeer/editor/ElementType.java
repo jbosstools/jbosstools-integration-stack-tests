@@ -6,6 +6,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.CallActivity;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ReceiveTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.SendTask;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ServiceTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.SubProcess;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.UserTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.CompensationBoundaryEvent;
@@ -258,6 +259,8 @@ public enum ElementType {
 			return CompensationBoundaryEvent.class;
 		case LINK_INTERMEDIATE_THROW_EVENT:
 			return LinkIntermediateThrowEvent.class;
+		case SERVICE_TASK:
+			return ServiceTask.class;
 
 		default:
 			throw new IllegalArgumentException("Unsuported yet");
