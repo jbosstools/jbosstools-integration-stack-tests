@@ -21,7 +21,9 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.fuse.reddeer.condition.FuseLogContainsText;
 import org.jboss.tools.fuse.reddeer.preference.ServerRuntimePreferencePage;
+import org.jboss.tools.fuse.reddeer.view.FuseShell;
 import org.jboss.tools.fuse.reddeer.wizard.ServerWizard;
 
 /**
@@ -99,13 +101,34 @@ public class ServerManipulator {
 
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		new WaitUntil(new ConsoleHasText("100%"), TimePeriod.getCustom(300));
-
+		
+		log.info("Checking Fuse log for 'Updating the maven indices'");
+		if (new FuseLogContainsText("Updating the maven indices").test()) {
+			log.info("'Updating the maven indices' occurred. Waiting on completion.");
+			new WaitUntil(new FuseLogContainsText("Completed updating"), TimePeriod.VERY_LONG);
+			log.info("Updating was completed");
+		}
+			
 		workbenchShell.setFocus();
+	}
+
+	public static void debugServer(String name) {
+
+		Server server = new ServersView().getServer(name);
+		server.debug();
+		
+		log.info("Checking Fuse log for 'Updating the maven indices'");
+		if (new FuseLogContainsText("Updating the maven indices").test()) {
+			log.info("'Updating the maven indices' occurred. Waiting on completion.");
+			new WaitUntil(new FuseLogContainsText("Completed updating"), TimePeriod.VERY_LONG);
+			log.info("Updating was completed");
+		}
 	}
 
 	public static void stopServer(String name) {
 
 		try {
+			new FuseShell().execute("log:clear");
 			ServersView serversView = new ServersView();
 			serversView.open();
 			Server server = serversView.getServer(name);

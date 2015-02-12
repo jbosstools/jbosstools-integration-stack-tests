@@ -6,9 +6,13 @@ import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.toolbar.ViewToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 
 /**
@@ -72,5 +76,21 @@ public class BreakpointsView extends WorkbenchView {
 			new DefaultShell("Remove All Breakpoints").setFocus();
 			new PushButton("Yes").click();
 		}
+	}
+
+	/**
+	 * Imports breakpoints from a file
+	 * 
+	 * @param path path to the file
+	 */
+	public void importBreakpoints(String path) {
+
+		open();
+		new DefaultTree(0).setFocus();
+		new ContextMenu("Import Breakpoints...").select();
+		new WaitUntil(new ShellWithTextIsAvailable("Import Breakpoints"));
+		new DefaultShell("Import Breakpoints");
+		new LabeledText("From file:").setText(path);
+		new PushButton("Finish").click();
 	}
 }

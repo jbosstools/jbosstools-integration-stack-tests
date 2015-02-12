@@ -24,8 +24,10 @@ import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.C
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.handler.ShellHandler;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -40,7 +42,11 @@ import org.jboss.reddeer.swt.matcher.WithTooltipTextMatcher;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.fuse.reddeer.condition.FuseLogContainsText;
+import org.jboss.tools.fuse.reddeer.debug.BreakpointsView;
+import org.jboss.tools.fuse.reddeer.debug.IsRunning;
+import org.jboss.tools.fuse.reddeer.debug.ResumeButton;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.preference.ServerRuntimePreferencePage;
@@ -276,6 +282,38 @@ public class RegressionTest {
 	}
 
 	/**
+	 * Karaf cannot be started in debug mode
+	 * https://issues.jboss.org/browse/FUSETOOLS-1132
+	 */
+	@Test
+	public void issue_1132() {
+
+		ProjectFactory.createProject("camel-blueprint", "camel-archetype-blueprint");
+		String server = serverRequirement.getConfig().getName();
+		new BreakpointsView().importBreakpoints(ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID, "resources/breakpoint.bkpt"));
+		ServerManipulator.debugServer(server);
+		ServerManipulator.addModule(server, "camel-blueprint");
+		try {	
+			new WaitUntil(new ShellWithTextIsAvailable("Confirm Perspective Switch"), TimePeriod.LONG);
+			new DefaultShell("Confirm Perspective Switch");
+			new CheckBox(0).toggle(true);
+			new PushButton("No").click();
+			AbstractWait.sleep(TimePeriod.NORMAL);
+		} catch (Exception e) {
+			fail();
+		} finally {
+			new WaitWhile(new IsRunning());
+			new BreakpointsView().removeAllBreakpoints();
+			new WorkbenchShell().setFocus();
+			ResumeButton resume = new ResumeButton();
+			if (resume.isEnabled()) {
+				resume.select();
+			}
+			ServerManipulator.removeAllModules(server);
+		}
+	}
+
+	/**
 	 * New Fuse Project - Finish button
 	 * https://issues.jboss.org/browse/FUSETOOLS-1149
 	 */
@@ -299,11 +337,11 @@ public class RegressionTest {
 
 		ProjectFactory.createProject("camel-spring-dm", "camel-archetype-spring-dm");
 		String server = serverRequirement.getConfig().getName();
-		ServerManipulator.addModule(server, "camel-spring-dm");
 		ServerManipulator.startServer(server);
+		ServerManipulator.addModule(server, "camel-spring-dm");
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		ServerManipulator.removeAllModules(server);
-		new WaitUntil(new FuseLogContainsText("Application context succesfully closed (OsgiBundleXmlApplicationContext(bundle=camel-spring-dm"));
+		new WaitUntil(new FuseLogContainsText("Application context succesfully closed (OsgiBundleXmlApplicationContext(bundle=camel-spring-dm"), TimePeriod.VERY_LONG);
 	}
 
 	/**
