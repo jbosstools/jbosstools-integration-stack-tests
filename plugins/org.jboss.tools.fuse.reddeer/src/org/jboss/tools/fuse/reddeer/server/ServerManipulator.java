@@ -9,7 +9,6 @@ import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerLabel;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.api.Tree;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
@@ -18,10 +17,10 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.fuse.reddeer.condition.FuseLogContainsText;
 import org.jboss.tools.fuse.reddeer.preference.ServerRuntimePreferencePage;
 import org.jboss.tools.fuse.reddeer.view.FuseShell;
 import org.jboss.tools.fuse.reddeer.wizard.ServerWizard;
@@ -97,32 +96,18 @@ public class ServerManipulator {
 		Server server = new ServersView().getServer(name);
 		server.start();
 
-		Shell workbenchShell = new WorkbenchShell();
-
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		new WaitUntil(new ConsoleHasText("100%"), TimePeriod.getCustom(300));
-		
-		log.info("Checking Fuse log for 'Updating the maven indices'");
-		if (new FuseLogContainsText("Updating the maven indices").test()) {
-			log.info("'Updating the maven indices' occurred. Waiting on completion.");
-			new WaitUntil(new FuseLogContainsText("Completed updating"), TimePeriod.VERY_LONG);
-			log.info("Updating was completed");
-		}
-			
-		workbenchShell.setFocus();
+		AbstractWait.sleep(TimePeriod.NORMAL);	
+		new WorkbenchShell().setFocus();
 	}
 
 	public static void debugServer(String name) {
 
 		Server server = new ServersView().getServer(name);
 		server.debug();
-		
-		log.info("Checking Fuse log for 'Updating the maven indices'");
-		if (new FuseLogContainsText("Updating the maven indices").test()) {
-			log.info("'Updating the maven indices' occurred. Waiting on completion.");
-			new WaitUntil(new FuseLogContainsText("Completed updating"), TimePeriod.VERY_LONG);
-			log.info("Updating was completed");
-		}
+		AbstractWait.sleep(TimePeriod.NORMAL);
+		new WorkbenchShell().setFocus();
 	}
 
 	public static void stopServer(String name) {
