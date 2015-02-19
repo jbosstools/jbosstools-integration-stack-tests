@@ -19,13 +19,13 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author tsedmik
  */
 @SuiteClasses({
-	SmokeTest.class,
-	ProjectLocalRunTest.class,
-	JMXNavigatorTest.class,
 	CamelEditorTest.class,
-	FuseProjectTest.class,
 	DebuggerTest.class,
-	RouteManipulationTest.class
+	FuseProjectTest.class,
+	JMXNavigatorTest.class,
+	ProjectLocalRunTest.class,
+	RouteManipulationTest.class,
+	SmokeTest.class
 })
 @RunWith(RedDeerSuite.class)
 public class WithoutServerTests extends TestSuite {

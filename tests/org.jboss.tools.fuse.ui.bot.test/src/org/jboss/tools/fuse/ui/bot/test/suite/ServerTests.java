@@ -15,9 +15,9 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author tsedmik
  */
 @SuiteClasses({
-	ServerTest.class,
 	DeploymentTest.class,
-	JMXNavigatorServerTest.class
+	JMXNavigatorServerTest.class,
+	ServerTest.class
 })
 @RunWith(RedDeerSuite.class)
 public class ServerTests extends TestSuite {
