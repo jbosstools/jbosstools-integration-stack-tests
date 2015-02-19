@@ -6,10 +6,11 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.fuse.ui.bot.test.CamelEditorTest;
 import org.jboss.tools.fuse.ui.bot.test.DebuggerTest;
 import org.jboss.tools.fuse.ui.bot.test.DeploymentTest;
+import org.jboss.tools.fuse.ui.bot.test.FeaturesTest;
 import org.jboss.tools.fuse.ui.bot.test.FuseProjectTest;
+import org.jboss.tools.fuse.ui.bot.test.JMXNavigatorServerTest;
 import org.jboss.tools.fuse.ui.bot.test.JMXNavigatorTest;
 import org.jboss.tools.fuse.ui.bot.test.ProjectLocalRunTest;
-import org.jboss.tools.fuse.ui.bot.test.RegressionTest;
 import org.jboss.tools.fuse.ui.bot.test.RouteManipulationTest;
 import org.jboss.tools.fuse.ui.bot.test.ServerTest;
 import org.jboss.tools.fuse.ui.bot.test.SmokeTest;
@@ -22,16 +23,17 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author tsedmik
  */
 @SuiteClasses({
-	SmokeTest.class,
-	ProjectLocalRunTest.class,
-	JMXNavigatorTest.class,
 	CamelEditorTest.class,
-	FuseProjectTest.class,
-	ServerTest.class,
-	DeploymentTest.class,
 	DebuggerTest.class,
-	RegressionTest.class,
-	RouteManipulationTest.class
+	DeploymentTest.class,
+	FeaturesTest.class,
+	FuseProjectTest.class,
+	JMXNavigatorServerTest.class,
+	JMXNavigatorTest.class,
+	ProjectLocalRunTest.class,
+	RouteManipulationTest.class,
+	ServerTest.class,
+	SmokeTest.class
 })
 @RunWith(RedDeerSuite.class)
 public class AllTests extends TestSuite {
