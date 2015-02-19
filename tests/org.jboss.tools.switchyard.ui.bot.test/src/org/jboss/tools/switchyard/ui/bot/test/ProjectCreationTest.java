@@ -67,6 +67,8 @@ public class ProjectCreationTest {
 	@After
 	public void deleteSwitchYardProject() {
 		saveAndCloseSwitchYardFile();
+		new WorkbenchShell().setFocus();
+		new ProjectExplorer().open();
 		new ProjectExplorer().deleteAllProjects();
 	}
 
