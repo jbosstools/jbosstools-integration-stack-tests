@@ -54,17 +54,4 @@ public class BPMN2ProcessWizard extends NewWizardDialog {
 		if (fileName != null && !fileName.isEmpty()) new LabeledText("File name:").setText(fileName);
 		finish();
 	}
-	
-	// FIX for: org.jboss.reddeer.swt.exception.SWTLayerException: No shell is available at the moment
-	@Override
-	public void open() {
-		SWTWorkbenchBot bot = new SWTWorkbenchBot();
-		bot.menu("File").menu("New").menu("Other...").click();
-		SWTBotShell shell = bot.shell("New");
-		shell.activate();
-		SWTBotTree tree = bot.tree();
-		tree.expandNode("BPMN2", "jBPM Process Diagram").select();
-		SWTBotButton button = bot.button("Next >");
-		button.click();
-	}
 }
