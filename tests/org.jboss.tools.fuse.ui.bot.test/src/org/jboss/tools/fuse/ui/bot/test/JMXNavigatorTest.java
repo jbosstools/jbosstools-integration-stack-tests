@@ -1,6 +1,7 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
@@ -18,6 +19,7 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
+import org.jboss.tools.fuse.reddeer.view.ErrorLogView;
 import org.jboss.tools.fuse.reddeer.view.JMXNavigator;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.After;
@@ -62,6 +64,7 @@ public class JMXNavigatorTest {
 		new CamelProject(PROJECT_NAME).runCamelContextWithoutTests(PROJECT_CAMEL_CONTEXT);
 		new WaitUntil(new ConsoleHasText("Route: route1 started and consuming"), TimePeriod.getCustom(300));
 		AbstractWait.sleep(TimePeriod.NORMAL);
+		new ErrorLogView().deleteLog();
 		workbenchShell.setFocus();
 	}
 
@@ -88,6 +91,7 @@ public class JMXNavigatorTest {
 		assertNotNull(jmx.getNode("Local Camel Context", "Camel", "camel-1", "Endpoints", "file", "src/data?noop=true"));
 		assertNotNull(jmx.getNode("Local Camel Context", "Camel", "camel-1", "Routes", "route1", "file:src/data?noop=true",
 				"choice1", "when1", "log1", "to1"));
+		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 
 	@Test
@@ -103,5 +107,6 @@ public class JMXNavigatorTest {
 		log.info("Resume Camel Context");
 		new ContextMenu("Resume Camel Context").select();
 		new WaitUntil(new ConsoleHasText("route1 resumed"), TimePeriod.NORMAL);
+		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 }

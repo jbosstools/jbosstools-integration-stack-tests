@@ -55,7 +55,11 @@ public class ServerManipulator {
 
 		ServerRuntimePreferencePage serverRuntime = new ServerRuntimePreferencePage();
 		serverRuntime.open();
-		serverRuntime.removeServerRuntime(name);
+		try {
+			serverRuntime.removeServerRuntime(name);
+		} catch (SWTLayerException ex) {
+			log.warn("Cannot remove '" + name + "' server runtime. It is not listed in Server Runtimes!");
+		}
 		serverRuntime.ok();
 
 	}

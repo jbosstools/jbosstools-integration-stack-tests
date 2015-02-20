@@ -3,6 +3,7 @@ package org.jboss.tools.fuse.ui.bot.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
@@ -25,6 +26,7 @@ import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
 import org.jboss.tools.fuse.reddeer.utils.TracingDragAndDropManager;
+import org.jboss.tools.fuse.reddeer.view.ErrorLogView;
 import org.jboss.tools.fuse.reddeer.view.JMXNavigator;
 import org.jboss.tools.fuse.reddeer.view.MessagesView;
 import org.jboss.tools.fuse.ui.bot.test.utils.EditorManipulator;
@@ -60,6 +62,7 @@ public class RouteManipulationTest {
 		new WaitUntil(new ConsoleHasText("Route: route1 started and consuming"), TimePeriod.getCustom(300));
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		workbenchShell.setFocus();
+		new ErrorLogView().deleteLog();
 	}
 
 	@After
@@ -94,6 +97,7 @@ public class RouteManipulationTest {
 		new WaitUntil(new ConsoleHasText("file://src/data] route1                         INFO  YYY"));
 		assertNotNull(jmx.getNode("Local Camel Context", "Camel", "camel-1", "Routes", "route1", "file:src/data?noop=true", "choice1", "when1", "log1", "to1"));
 		assertNull(jmx.getNode("Local Camel Context", "Camel", "camel-1", "Routes", "route1", "file:src/data?noop=true", "choice1", "otherwise"));
+		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 
 	@Test
@@ -122,5 +126,6 @@ public class RouteManipulationTest {
 		assertEquals("choice1", msg.getMessage(6).getTraceNode());
 		assertEquals("log1", msg.getMessage(7).getTraceNode());
 		assertEquals("to1", msg.getMessage(8).getTraceNode());
+		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 }

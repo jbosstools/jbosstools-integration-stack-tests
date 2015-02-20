@@ -26,6 +26,7 @@ import org.jboss.tools.fuse.reddeer.component.Log;
 import org.jboss.tools.fuse.reddeer.component.Otherwise;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
+import org.jboss.tools.fuse.reddeer.view.ErrorLogView;
 import org.jboss.tools.fuse.ui.bot.test.utils.EditorManipulator;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.After;
@@ -61,13 +62,13 @@ public class CamelEditorTest {
 	public void resetCamelContext() {
 
 		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
+		new ErrorLogView().deleteLog();
 	}
 
 	@After
 	public void deleteProjects() {
 
-		new DefaultToolItem(new WorkbenchShell(), 0, new WithTooltipTextMatcher(new RegexMatcher("Save All.*")))
-				.click();
+		new DefaultToolItem(new WorkbenchShell(), 0, new WithTooltipTextMatcher(new RegexMatcher("Save All.*"))).click();
 		new ProjectExplorer().deleteAllProjects();
 	}
 
@@ -85,6 +86,7 @@ public class CamelEditorTest {
 			editor.addCamelComponent(component);
 			editor.deleteCamelComponent(component);
 		}
+		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 
 	@Test
@@ -98,6 +100,7 @@ public class CamelEditorTest {
 		CamelEditor.switchTab("Design");
 		assertTrue(editor.isComponentAvailable("otherwise"));
 		assertTrue(editor.isComponentAvailable("file:target/messa..."));
+		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 
 	@Test
@@ -116,6 +119,7 @@ public class CamelEditorTest {
 		assertTrue(editor.isComponentAvailable("file:target/messa..."));
 		CamelEditor.switchTab("Source");
 		assertTrue(EditorManipulator.isEditorContentEqualsFile("resources/camel-context-all.xml"));
+		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 
 	@Test
@@ -143,6 +147,7 @@ public class CamelEditorTest {
 		editor.setId("log1", "");
 		CamelEditor.switchTab("Source");
 		assertTrue(EditorManipulator.isEditorContentEqualsFile("resources/camel-context-all.xml"));
+		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 
 	/**

@@ -27,6 +27,7 @@ import org.jboss.tools.fuse.reddeer.debug.TerminateButton;
 import org.jboss.tools.fuse.reddeer.debug.VariablesView;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
+import org.jboss.tools.fuse.reddeer.view.ErrorLogView;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.After;
 import org.junit.BeforeClass;
@@ -62,6 +63,7 @@ public class DebuggerTest {
 		editor.setId("log", LOG);
 		editor.setId("log", LOG2);
 		editor.save();
+		new ErrorLogView().deleteLog();
 	}
 
 	@After
@@ -79,6 +81,7 @@ public class DebuggerTest {
 			console.terminateConsole();
 		} catch (SWTLayerException ex) {
 		}
+		new ErrorLogView().deleteLog();
 	}
 
 	@Test
@@ -111,6 +114,7 @@ public class DebuggerTest {
 		view.open();
 		view.getBreakpoint(LOG).remove();
 		assertFalse(editor.isBreakpointSet(LOG));
+		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 
 	@Test
@@ -161,6 +165,7 @@ public class DebuggerTest {
 		new WaitUntil(new IsRunning(), TimePeriod.NORMAL);
 		new TerminateButton().select();
 		assertTrue(new ConsoleHasText("Disabling debugger").test());
+		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 
 	@Test
@@ -186,5 +191,6 @@ public class DebuggerTest {
 		assertTrue(new ConsoleHasText("Other message").test());
 		new TerminateButton().select();
 		assertTrue(new ConsoleHasText("Disabling debugger").test());
+		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 }

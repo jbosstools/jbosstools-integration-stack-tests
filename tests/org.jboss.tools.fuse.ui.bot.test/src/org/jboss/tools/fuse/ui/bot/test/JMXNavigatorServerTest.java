@@ -1,6 +1,7 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
@@ -14,6 +15,7 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.fuse.reddeer.condition.FuseLogContainsText;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
+import org.jboss.tools.fuse.reddeer.view.ErrorLogView;
 import org.jboss.tools.fuse.reddeer.view.JMXNavigator;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
@@ -60,6 +62,7 @@ public class JMXNavigatorServerTest {
 		ServerManipulator.addModule(serverName, PROJECT_NAME);
 
 		setupIsDone = true;
+		new ErrorLogView().deleteLog();
 	}
 
 	@AfterClass
@@ -79,8 +82,8 @@ public class JMXNavigatorServerTest {
 		assertNotNull(jmx.getNode("karaf"));
 		jmx.connectTo("karaf");
 		assertNotNull(jmx.getNode("karaf", "Camel", "camel-1", "Endpoints", "timer", "foo?period=5000"));
-		assertNotNull(jmx.getNode("karaf", "Camel", "camel-1", "Routes", "route1", "timer:foo?period=5000", "setBody1",
-				"log1"));
+		assertNotNull(jmx.getNode("karaf", "Camel", "camel-1", "Routes", "route1", "timer:foo?period=5000", "setBody1", "log1"));
+		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 
 	@Test
@@ -94,5 +97,6 @@ public class JMXNavigatorServerTest {
 		new JMXNavigator().getNode("karaf", "Camel", "camel-1").select();
 		new ContextMenu("Resume Camel Context").select();
 		new WaitUntil(new FuseLogContainsText("(CamelContext: camel-1) resumed"), TimePeriod.NORMAL);
+		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 }

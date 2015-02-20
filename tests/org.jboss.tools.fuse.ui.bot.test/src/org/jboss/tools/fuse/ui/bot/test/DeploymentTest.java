@@ -14,6 +14,7 @@ import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
+import org.jboss.tools.fuse.reddeer.view.ErrorLogView;
 import org.jboss.tools.fuse.reddeer.view.FuseShell;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.impl.ServerFuse;
@@ -52,6 +53,7 @@ public class DeploymentTest {
 		new WorkbenchShell().maximize();
 		ProjectFactory.createProject(PROJECT_NAME, PROJECT_ARCHETYPE);
 		ProjectFactory.createProject(PROJECT2_NAME, PROJECT2_ARCHETYPE);
+		new ErrorLogView().deleteLog();
 	}
 
 	@AfterClass
@@ -71,6 +73,7 @@ public class DeploymentTest {
 		ServerManipulator.removeAllModules("TEST");
 		ServerManipulator.stopServer("TEST");
 		ServerManipulator.removeServer("TEST");
+		new ErrorLogView().deleteLog();
 	}
 
 	@Test
@@ -86,6 +89,7 @@ public class DeploymentTest {
 		ServerManipulator.removeAllModules("TEST");
 		AbstractWait.sleep(TimePeriod.getCustom(20));
 		assertTrue(new FuseShell().execute("log:display").contains("(CamelContext: blueprintContext) is shutdown"));
+		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 
 	@Test
@@ -101,7 +105,7 @@ public class DeploymentTest {
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		assertTrue(new FuseShell()
 				.execute("log:display")
-				.contains(
-						"Publishing application context as OSGi service with properties {org.springframework.context.service.name=camel-spring-dm"));
+				.contains("Publishing application context as OSGi service with properties {org.springframework.context.service.name=camel-spring-dm"));
+		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 }
