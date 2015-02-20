@@ -2,15 +2,17 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 
 import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Expression;
-import org.jboss.tools.bpmn2.reddeer.properties.jbpm.BusinessRuleTaskTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.CheckBoxSetUpCTab;
 import org.jboss.tools.bpmn2.reddeer.properties.shell.LabeledTextSetUpCTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.ScriptSetUpCTab;
 
 /**
  * 
  */
 public class BusinessRuleTask extends Task {
 	
+	private static final String B_RULE_TASK = "Business Rule Task";
+
 	/**
 	 * 
 	 * @param name
@@ -28,8 +30,7 @@ public class BusinessRuleTask extends Task {
 	 * @param group
 	 */
 	public void setRuleFlowGroup(String group) {
-		//properties.getTab("Business Rule Task", BusinessRuleTaskTab.class).setRuleFlowGroup(group);
-		graphitiProperties.setUpTabs(new LabeledTextSetUpCTab("Business Rule Task", "Rule Flow Group" , group));
+		propertiesHandler.setUp(new LabeledTextSetUpCTab(B_RULE_TASK, "Rule Flow Group" , group));
 	}
 
 	/**
@@ -37,7 +38,8 @@ public class BusinessRuleTask extends Task {
 	 * @param b
 	 */
 	public void setIsForCompensation(boolean value) {
-		properties.getTab("Business Rule Task", BusinessRuleTaskTab.class).setIsForCompensation(value);
+		//properties.getTab("Business Rule Task", BusinessRuleTaskTab.class).setIsForCompensation(value);
+		propertiesHandler.setUp(new CheckBoxSetUpCTab(B_RULE_TASK, "Is For Compensation", value));
 	}
 
 	/**
@@ -46,7 +48,8 @@ public class BusinessRuleTask extends Task {
 	 * @param script
 	 */
 	public void setOnEntryScript(String language, String script) {
-		properties.getTab("Business Rule Task", BusinessRuleTaskTab.class).setOnEntryScript(new Expression(language, script));
+//		properties.getTab("Business Rule Task", BusinessRuleTaskTab.class).setOnEntryScript(new Expression(language, script));
+		propertiesHandler.setUp(new ScriptSetUpCTab(B_RULE_TASK, "On Entry Script", language, script));
 	}
 
 	/**
@@ -55,7 +58,8 @@ public class BusinessRuleTask extends Task {
 	 * @param script
 	 */
 	public void setOnExistScript(String language, String script) {
-		properties.getTab("Business Rule Task", BusinessRuleTaskTab.class).setOnExitScript(new Expression(language, script));
+//		properties.getTab("Business Rule Task", BusinessRuleTaskTab.class).setOnExitScript(new Expression(language, script));
+		propertiesHandler.setUp(new ScriptSetUpCTab(B_RULE_TASK, "On Exit Script", language, script));
 	}
 	
 }

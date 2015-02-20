@@ -3,7 +3,7 @@ package org.jboss.tools.bpmn2.reddeer.properties.shell;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.CalledActivityDialog;
 
-public class CalledActivitySetUpCTab extends AbstractSetUpCTab {
+public class CalledActivitySetUpCTab implements SetUpAble {
 
 	private String activityName;
 	

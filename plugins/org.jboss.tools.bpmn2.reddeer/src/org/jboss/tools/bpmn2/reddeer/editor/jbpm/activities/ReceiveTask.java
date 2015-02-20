@@ -3,17 +3,20 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ErrorRef;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Expression;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Message;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
-import org.jboss.tools.bpmn2.reddeer.properties.jbpm.IOParametersTab;
-import org.jboss.tools.bpmn2.reddeer.properties.jbpm.ReceiveTaskTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.AddParameterMappingSetUpCTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.CheckBoxSetUpCTab;
 import org.jboss.tools.bpmn2.reddeer.properties.shell.ComboSetUpCTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.OperationSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.ScriptSetUpCTab;
 
 /**
  * 
  */
 public class ReceiveTask extends Task {
+
+	private static final String RECEIVE_TASK = "Receive Task";
 
 	/**
 	 * 
@@ -32,8 +35,7 @@ public class ReceiveTask extends Task {
 	 * @param implementationUri
 	 */
 	public void setImplementation(String implementationUri) {
-		//properties.getTab("Receive Task", ReceiveTaskTab.class).setImplementation(implementationUri);
-		graphitiProperties.setUpTabs(new ComboSetUpCTab("Receive Task", "Implementation", implementationUri));
+		propertiesHandler.setUp(new ComboSetUpCTab(RECEIVE_TASK, "Implementation", implementationUri));
 	}
 	
 	/**
@@ -44,7 +46,7 @@ public class ReceiveTask extends Task {
 	 * @param errorRef
 	 */
 	public void setOperation(String operationContractName, Message inMessage, Message outMessage, ErrorRef errorRef) {
-		properties.getTab("Receive Task", ReceiveTaskTab.class).setOperation(operationContractName, inMessage, outMessage, errorRef);
+		propertiesHandler.setUp(new OperationSetUp(RECEIVE_TASK, operationContractName, inMessage, outMessage, errorRef));
 	}
 	
 	/**
@@ -53,8 +55,7 @@ public class ReceiveTask extends Task {
 	 * @param dataType
 	 */
 	public void setMessage(String name, String dataType) {
-		//properties.getTab("Receive Task", ReceiveTaskTab.class).setMessage(new Message(name, dataType));
-		graphitiProperties.setUpTabs(new ComboSetUpCTab("Receive Task", "Message", name + "(" + dataType + ")"));
+		propertiesHandler.setUp(new ComboSetUpCTab(RECEIVE_TASK, "Message", name + "(" + dataType + ")"));
 	}
 	
 	/**
@@ -62,7 +63,7 @@ public class ReceiveTask extends Task {
 	 * @param value
 	 */
 	public void setIsForCompensation(boolean value) {
-		properties.getTab("Receive Task", ReceiveTaskTab.class).setIsForCompensation(value);
+		propertiesHandler.setUp(new CheckBoxSetUpCTab(RECEIVE_TASK, "Is For Compensation", value));
 	}
 
 	/**
@@ -71,7 +72,7 @@ public class ReceiveTask extends Task {
 	 * @param script
 	 */
 	public void setOnEntryScript(String language, String script) {
-		properties.getTab("Receive Task", ReceiveTaskTab.class).setOnEntryScript(new Expression(language, script));
+		propertiesHandler.setUp(new ScriptSetUpCTab(RECEIVE_TASK, "On Entry Script", language, script));
 	}
 
 	/**
@@ -80,7 +81,7 @@ public class ReceiveTask extends Task {
 	 * @param script
 	 */
 	public void setOnExistScript(String language, String script) {
-		properties.getTab("Receive Task", ReceiveTaskTab.class).setOnExitScript(new Expression(language, script));
+		propertiesHandler.setUp(new ScriptSetUpCTab(RECEIVE_TASK, "On Exit Script", language, script));
 	}
 
 	/**
@@ -88,12 +89,11 @@ public class ReceiveTask extends Task {
 	 * @param parameter
 	 */
 	public void addParameterMapping(ParameterMapping parameterMapping) {
-		properties.getTab("I/O Parameters", IOParametersTab.class).addParameter(parameterMapping);
+		propertiesHandler.setUp(new AddParameterMappingSetUpCTab(parameterMapping));
 	}
 	
 	public void setTarget(String varName) {
-		//properties.getTab("Receive Task", ReceiveTaskTab.class).setTarget(varName);
-		graphitiProperties.setUpTabs(new ComboSetUpCTab("Receive Task", "Target", varName));
+		propertiesHandler.setUp(new ComboSetUpCTab(RECEIVE_TASK, "Target", varName));
 	}
 
 }

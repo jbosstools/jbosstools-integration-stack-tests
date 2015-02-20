@@ -14,6 +14,6 @@ public class LinkIntermediateThrowEvent extends IntermediateThrowEvent {
 	}
 
 	public void setTarget(String targetEventName, int targetEventIndexInCombo) {
-		graphitiProperties.setUpTabs(new LinkEventTargetSetUpCTab(targetEventName, targetEventIndexInCombo));
+		propertiesHandler.setUp(new LinkEventTargetSetUpCTab(targetEventName, targetEventIndexInCombo));
 	}
 }

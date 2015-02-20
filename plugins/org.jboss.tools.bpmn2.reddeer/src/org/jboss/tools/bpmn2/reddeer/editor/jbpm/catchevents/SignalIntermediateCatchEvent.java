@@ -4,7 +4,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.SignalEventDefinition;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.SignalEventDefinition.Type;
-import org.jboss.tools.bpmn2.reddeer.properties.jbpm.EventTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.EventDefinitionSetUp;
 
 /**
  * 
@@ -29,7 +29,7 @@ public class SignalIntermediateCatchEvent extends IntermediateCatchEvent {
 	 * @param variable
 	 */
 	public void setSignalMapping(String signal, String targetVariable) {
-		properties.getTab("Event", EventTab.class).set(new SignalEventDefinition(signal, targetVariable, Type.TARGET));
+		propertiesHandler.setUp(new EventDefinitionSetUp(new SignalEventDefinition(signal, targetVariable, Type.TARGET)));
 		refresh();
 	}
 	

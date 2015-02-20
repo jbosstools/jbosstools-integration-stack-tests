@@ -2,7 +2,7 @@ package org.jboss.tools.bpmn2.reddeer.properties.shell;
 
 import org.jboss.tools.bpmn2.reddeer.DefaultCombo;
 
-public class ComboSetUpCTab extends AbstractSetUpCTab {
+public class ComboSetUpCTab implements SetUpAble {
 
 	private String tabLabel;
 	private String comboLabel;

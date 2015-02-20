@@ -27,8 +27,7 @@ public class ConditionalStartEvent extends StartEvent {
 	 * @param script
 	 */
 	public void setCondition(String language, String script) {
-//		properties.getTab("Event", EventTab.class).set(new ConditionalEventDefinition(language, script));
-		graphitiProperties.setUpTabs(new ConditionSetUpCTab(language, script));
+		propertiesHandler.setUp(new ConditionSetUpCTab(language, script));
 		refresh();
 	}
 	

@@ -58,6 +58,7 @@ public class JBPM6ComplexTestDefinitionRequirement implements Requirement<JBPM6C
 		});
 		
 		PackageExplorer pe = new PackageExplorer();
+		pe.open();
 		if (!pe.containsProject(declaration.projectName())) {
 			new JavaProjectWizard().execute(declaration.projectName());
 			

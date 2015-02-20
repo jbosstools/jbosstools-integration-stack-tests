@@ -1,23 +1,39 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm;
 
+import org.jboss.reddeer.swt.api.Table;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementContainer;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.DataItemsTab;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.DefinitionsTab;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.InterfacesTab;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.ProcessTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.CheckBoxSetUpCTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.LabeledTextSetUpCTab;
 
 /**
  * 
  */
 public class Process extends ElementContainer {
 
+	private static final String PROCESS_TAB = "Process";
+	private static final String DEFINITIONS_TAB = "Definitions";
+	private static final String DATA_ITEMS_TAB = "Data Items";
+	private static final String INTERFACES_TAB = "Interfaces";
+	private ProcessTab processTab;
+	private DefinitionsTab definitionsTab;
+	private DataItemsTab dataItemsTab;
+	private InterfacesTab interfacesTab;
 	/**
 	 * 
 	 * @param name
 	 */
 	public Process(String name) {
 		super(name, ElementType.PROCESS);
+		processTab = new ProcessTab();
+		definitionsTab = new DefinitionsTab();
+		dataItemsTab = new DataItemsTab();
+		interfacesTab = new InterfacesTab();
 	}
 	
 	/**
@@ -32,7 +48,7 @@ public class Process extends ElementContainer {
 	 * @param id
 	 */
 	public void setId(String id) {
-		properties.getTab("Process", ProcessTab.class).setId(id);
+		propertiesHandler.setUpNormal(new LabeledTextSetUpCTab(PROCESS_TAB, "Id", id));
 	}
 	
 	/**
@@ -40,7 +56,7 @@ public class Process extends ElementContainer {
 	 * @param name
 	 */
 	public void setName(String name) {
-		properties.getTab("Process", ProcessTab.class).setName(name);
+		propertiesHandler.setUpNormal(new LabeledTextSetUpCTab(PROCESS_TAB, "Name", name));
 	}
 	
 	/**
@@ -48,15 +64,15 @@ public class Process extends ElementContainer {
 	 * @param version
 	 */
 	public void setVersion(String version) {
-		properties.getTab("Process", ProcessTab.class).setVersion(version);
+		propertiesHandler.setUpNormal(new LabeledTextSetUpCTab(PROCESS_TAB, "Version", version));
 	}
 	
 	/**
 	 * 
 	 * @param name
 	 */
-	public void setPackageName(String name) {
-		properties.getTab("Process", ProcessTab.class).setPackageName(name);
+	public void setPackageName(String packageName) {
+		propertiesHandler.setUpNormal(new LabeledTextSetUpCTab(PROCESS_TAB, "Package Name", packageName));
 	}
 	
 	/**
@@ -64,7 +80,7 @@ public class Process extends ElementContainer {
 	 * @param value
 	 */
 	public void setAddHoc(boolean value) {
-		properties.getTab("Process", ProcessTab.class).setAdHoc(value);
+		propertiesHandler.setUpNormal(new CheckBoxSetUpCTab(PROCESS_TAB, "Ad Hoc", value));
 	}
 	
 	/**
@@ -72,7 +88,8 @@ public class Process extends ElementContainer {
 	 * @param value
 	 */
 	public void setExecutable(boolean value) {
-		properties.getTab("Process", ProcessTab.class).setExecutable(value);
+		propertiesHandler.selectTabInPropertiesView(PROCESS_TAB);
+		processTab.setExecutable(value);
 	}
 	
 	/**
@@ -80,7 +97,8 @@ public class Process extends ElementContainer {
 	 * @param name
 	 */
 	public void addDataType(String name) {
-		properties.getTab("Definitions", DefinitionsTab.class).addDataType(name);
+		propertiesHandler.selectTabInPropertiesView(DEFINITIONS_TAB);
+		definitionsTab.addDataType(name);
 	}
 	
 	/**
@@ -88,7 +106,8 @@ public class Process extends ElementContainer {
 	 * @param dataType
 	 */
 	public void addImport(String dataType) {
-		properties.getTab("Definitions", DefinitionsTab.class).addImport(dataType);
+		propertiesHandler.selectTabInPropertiesView(DEFINITIONS_TAB);
+		definitionsTab.addImport(dataType);
 	}
 	
 	/**
@@ -97,7 +116,8 @@ public class Process extends ElementContainer {
 	 * @param dataType
 	 */
 	public void addMessage(String name, String dataType) {
-		properties.getTab("Definitions", DefinitionsTab.class).addMessage(name, dataType);
+		propertiesHandler.selectTabInPropertiesView(DEFINITIONS_TAB);
+		definitionsTab.addMessage(name, dataType);
 	}
 	
 	/**
@@ -107,7 +127,8 @@ public class Process extends ElementContainer {
 	 * @param dataType
 	 */
 	public void addError(String name, String code, String dataType) {
-		properties.getTab("Definitions", DefinitionsTab.class).addError(name, code, dataType);
+		propertiesHandler.selectTabInPropertiesView(DEFINITIONS_TAB);
+		definitionsTab.addError(name, code, dataType);
 	}
 	
 	/**
@@ -121,7 +142,8 @@ public class Process extends ElementContainer {
 	}
 	
 	public void addEscalation(Escalation escalation) {
-		properties.getTab("Definitions", DefinitionsTab.class).addEscalation(escalation);
+		propertiesHandler.selectTabInPropertiesView(DEFINITIONS_TAB);
+		definitionsTab.addEscalation(escalation);
 	}
 	
 	/**
@@ -129,7 +151,8 @@ public class Process extends ElementContainer {
 	 * @param name
 	 */
 	public void addSignal(String name) {
-		properties.getTab("Definitions", DefinitionsTab.class).addSignal(name);
+		propertiesHandler.selectTabInPropertiesView(DEFINITIONS_TAB);
+		definitionsTab.addSignal(name);
 	}
 	
 	/**
@@ -138,7 +161,8 @@ public class Process extends ElementContainer {
 	 * @param dataType
 	 */
 	public void addGlobalVariable(String name, String dataType) {
-		properties.getTab("Data Items", DataItemsTab.class).addGlobalVariable(name, dataType, this.name);
+		propertiesHandler.selectTabInPropertiesView(DATA_ITEMS_TAB);
+		dataItemsTab.addGlobalVariable(name, dataType, this.name);
 	}
 	
 	/**
@@ -147,7 +171,8 @@ public class Process extends ElementContainer {
 	 * @param dataType
 	 */
 	public void addLocalVariable(String name, String dataType) {
-		properties.getTab("Data Items", DataItemsTab.class).addLocalVariable(name, dataType, this.name);
+		propertiesHandler.selectTabInPropertiesView(DATA_ITEMS_TAB);
+		dataItemsTab.addLocalVariable(name, dataType, this.name);
 	}
 	
 	/**
@@ -157,11 +182,18 @@ public class Process extends ElementContainer {
 	 * @param operationList
 	 */
 	public void addInterface(String name, String implementation, String ... operationList) {
-		properties.getTab("Interfaces", InterfacesTab.class).addInterface(name, implementation, operationList);
+		propertiesHandler.selectTabInPropertiesView(INTERFACES_TAB);
+		interfacesTab.addInterface(name, implementation, operationList);
 	}
 	
 	public void importInterface(String fullQualifiedName){
-		properties.getTab("Interfaces", InterfacesTab.class).importInterface(fullQualifiedName);
+		propertiesHandler.selectTabInPropertiesView(INTERFACES_TAB);
+		interfacesTab.importInterface(fullQualifiedName);
 	}
 
+	public String getFirstLocalVariable() {
+		propertiesHandler.selectTabInPropertiesView(DATA_ITEMS_TAB);
+		Table table = new DefaultTable(1);
+		return table.getItem(0).getText(0);
+	}
 }

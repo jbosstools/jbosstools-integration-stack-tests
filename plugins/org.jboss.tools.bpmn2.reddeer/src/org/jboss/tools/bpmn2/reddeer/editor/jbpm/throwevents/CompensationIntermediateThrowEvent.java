@@ -11,6 +11,6 @@ public class CompensationIntermediateThrowEvent extends Element {
 	}
 	
 	public void setCompensationActivity(String activityName) {
-		graphitiProperties.setUpTabs(new CompensationActivitySetUpCTab(activityName));
+		propertiesHandler.setUp(new CompensationActivitySetUpCTab(activityName));
 	}
 }

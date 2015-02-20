@@ -1,26 +1,26 @@
 package org.jboss.tools.bpmn2.reddeer.properties.shell;
 
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
 import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
 
-
-public class AddParameterMappingSetUpCTab implements SetUpAble {
+public class RemoveParameterMappingSetUp implements SetUpAble {
 
 	private ParameterMapping parameterMapping;
 	
-	public AddParameterMappingSetUpCTab(ParameterMapping parameterMapping) {
+	public RemoveParameterMappingSetUp(ParameterMapping parameterMapping) {
 		this.parameterMapping = parameterMapping;
 	}
 	
 	@Override
 	public void setUpCTab() {
-		 
+				
 		String sn = parameterMapping.getType() == ParameterMapping.Type.INPUT ? "Input" : "Output";
-		new SectionToolItem(sn + " Data Mapping", "Add").click();
+		DefaultSection s = new DefaultSection(sn + " Data Mapping");
+		new DefaultTable(s).select(parameterMapping.getFrom().getName() + " " + parameterMapping.getTo().getName());
+		new SectionToolItem(s.getText(), "Remove").click();
 
-		parameterMapping.setUp();
-		
-		new SectionToolItem(sn + " Data Mapping Details", "Close").click();
 	}
 
 	@Override

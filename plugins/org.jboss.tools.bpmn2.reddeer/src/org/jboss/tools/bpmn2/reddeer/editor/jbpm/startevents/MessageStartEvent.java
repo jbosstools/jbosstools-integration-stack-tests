@@ -29,8 +29,7 @@ public class MessageStartEvent extends StartEvent {
 	 * @param variableName
 	 */
 	public void setMessageMapping(Message message, String targetVariable) {
-//		properties.getTab("Event", EventTab.class).set(new MessageEventDefinition(message, targetVariable, Type.TARGET));
-		graphitiProperties.setUpTabs(new MessageSetUpCTab(message, targetVariable, MappingType.TARGET));
+		propertiesHandler.setUp(new MessageSetUpCTab(message, targetVariable, MappingType.TARGET));
 		refresh();
 	}
 	

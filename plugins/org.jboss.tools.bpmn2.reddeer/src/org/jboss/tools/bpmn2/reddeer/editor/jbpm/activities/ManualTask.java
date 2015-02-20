@@ -1,16 +1,18 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Expression;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
-import org.jboss.tools.bpmn2.reddeer.properties.jbpm.IOParametersTab;
-import org.jboss.tools.bpmn2.reddeer.properties.jbpm.ManualTaskTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.AddParameterMappingSetUpCTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.CheckBoxSetUpCTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.ScriptSetUpCTab;
 
 /**
  * 
  */
 public class ManualTask extends Task {
 	
+	private static final String MANUAL_TASK = "Manual Task";
+
 	/**
 	 * 
 	 * @param name
@@ -24,7 +26,7 @@ public class ManualTask extends Task {
 	 * @param value
 	 */
 	public void setIsForCompensation(boolean value) {
-		properties.getTab("Manual Task", ManualTaskTab.class).setIsForCompensation(value);
+		propertiesHandler.setUp(new CheckBoxSetUpCTab(MANUAL_TASK, "Is For Compensation", value));
 	}
 
 	/**
@@ -33,7 +35,7 @@ public class ManualTask extends Task {
 	 * @param script
 	 */
 	public void setOnEntryScript(String language, String script) {
-		properties.getTab("Manual Task", ManualTaskTab.class).setOnEntryScript(new Expression(language, script));
+		propertiesHandler.setUp(new ScriptSetUpCTab(MANUAL_TASK, "On Entry Script", language, script));
 	}
 
 	/**
@@ -42,7 +44,7 @@ public class ManualTask extends Task {
 	 * @param script
 	 */
 	public void setOnExistScript(String language, String script) {
-		properties.getTab("Manual Task", ManualTaskTab.class).setOnExitScript(new Expression(language, script));
+		propertiesHandler.setUp(new ScriptSetUpCTab(MANUAL_TASK, "On Exit Script", language, script));
 	}
 
 	/**
@@ -50,7 +52,7 @@ public class ManualTask extends Task {
 	 * @param parameter
 	 */
 	public void addParameterMapping(ParameterMapping parameterMapping) {
-		properties.getTab("I/O Parameters", IOParametersTab.class).addParameter(parameterMapping);
+		propertiesHandler.setUp(new AddParameterMappingSetUpCTab(parameterMapping));
 	}
 
 }

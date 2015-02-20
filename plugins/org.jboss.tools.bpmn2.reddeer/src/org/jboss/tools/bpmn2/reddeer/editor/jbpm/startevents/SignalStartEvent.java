@@ -24,7 +24,6 @@ public class SignalStartEvent extends StartEvent {
 	}
 
 	public void setSignal(Signal signal, String variable) {
-//		properties.getTab("Event", EventTab.class).addNewSignal(signal);
-		graphitiProperties.setUpTabs(new SignalSetUpCTab(signal, variable, MappingType.TARGET));
+		propertiesHandler.setUp(new SignalSetUpCTab(signal, variable, MappingType.TARGET));
 	}
 }

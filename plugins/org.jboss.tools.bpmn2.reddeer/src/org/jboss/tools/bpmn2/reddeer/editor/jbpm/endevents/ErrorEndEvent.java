@@ -4,7 +4,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ErrorRef;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.ErrorEventDefinition;
-import org.jboss.tools.bpmn2.reddeer.properties.jbpm.EventTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.EventDefinitionSetUp;
 
 /**
  * 
@@ -28,7 +28,7 @@ public class ErrorEndEvent extends EndEvent {
 	 * @param errorRef
 	 */
 	public void setErrorEvent(ErrorRef errorRef, String variableForMapping) {
-		properties.getTab("Event", EventTab.class).set(new ErrorEventDefinition(errorRef, variableForMapping, "Source"));
+		propertiesHandler.setUp(new EventDefinitionSetUp(new ErrorEventDefinition(errorRef, variableForMapping, "Source")));
 		refresh();
 	}
 	

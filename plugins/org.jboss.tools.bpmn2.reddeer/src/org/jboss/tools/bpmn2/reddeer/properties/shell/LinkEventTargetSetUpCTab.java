@@ -6,7 +6,7 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
 import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
 
-public class LinkEventTargetSetUpCTab extends AbstractSetUpCTab {
+public class LinkEventTargetSetUpCTab implements SetUpAble {
 
 	private String targetEventName;
 	private int targetEventIndexInCombo;

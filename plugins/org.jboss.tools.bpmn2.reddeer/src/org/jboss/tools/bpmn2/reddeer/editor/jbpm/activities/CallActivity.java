@@ -12,6 +12,8 @@ import org.jboss.tools.bpmn2.reddeer.properties.shell.ScriptSetUpCTab;
  */
 public class CallActivity extends Task {
 	
+	private static final String CALL_ACTIVITY = "Call Activity";
+
 	/**
 	 * 
 	 * @param name
@@ -29,8 +31,7 @@ public class CallActivity extends Task {
 	 * @param value
 	 */
 	public void setIndependent(boolean value) {
-		//properties.getTab("Call Activity", CallActivityTab.class).setIndependent(value);
-		graphitiProperties.setUpTabs(new CheckBoxSetUpCTab("Call Activity", "Independent", value));
+		propertiesHandler.setUp(new CheckBoxSetUpCTab(CALL_ACTIVITY, "Independent", value));
 	}
 	
 	/**
@@ -38,8 +39,7 @@ public class CallActivity extends Task {
 	 * @param value
 	 */
 	public void setWaitForCompletion(boolean value) {
-		//properties.getTab("Call Activity", CallActivityTab.class).setWaitForCompletion(value);
-		graphitiProperties.setUpTabs(new CheckBoxSetUpCTab("Call Activity", "Independent", value));
+		propertiesHandler.setUp(new CheckBoxSetUpCTab(CALL_ACTIVITY, "Independent", value));
 	}
 	
 	/**
@@ -47,8 +47,7 @@ public class CallActivity extends Task {
 	 * @param activityName
 	 */
 	public void setCalledActivity(String activityName) {
-		//properties.getTab("Call Activity", CallActivityTab.class).setCalledActivity(activityName);
-		graphitiProperties.setUpTabs(new CalledActivitySetUpCTab(activityName));
+		propertiesHandler.setUp(new CalledActivitySetUpCTab(activityName));
 	}
 
 	/**
@@ -56,8 +55,7 @@ public class CallActivity extends Task {
 	 * @param value
 	 */
 	public void setIsForCompensation(boolean value) {
-		//properties.getTab("Call Activity", CallActivityTab.class).setIsForCompensation(value);
-		graphitiProperties.setUpTabs(new CheckBoxSetUpCTab("Call Activity", "Is For Compensation", value));
+		propertiesHandler.setUp(new CheckBoxSetUpCTab(CALL_ACTIVITY, "Is For Compensation", value));
 	}
 
 	/**
@@ -66,8 +64,7 @@ public class CallActivity extends Task {
 	 * @param script
 	 */
 	public void setOnEntryScript(String language, String script) {
-		//properties.getTab("Call Activity", CallActivityTab.class).setOnEntryScript(new Expression(language, script));
-		graphitiProperties.setUpTabs(new ScriptSetUpCTab("Call Activity", "On Entry Script", language, script));
+		propertiesHandler.setUp(new ScriptSetUpCTab(CALL_ACTIVITY, "On Entry Script", language, script));
 	}
 
 	/**
@@ -76,8 +73,7 @@ public class CallActivity extends Task {
 	 * @param script
 	 */
 	public void setOnExistScript(String language, String script) {
-		//properties.getTab("Call Activity", CallActivityTab.class).setOnExitScript(new Expression(language, script));
-		graphitiProperties.setUpTabs(new ScriptSetUpCTab("Call Activity", "On Exit Script", language, script));
+		propertiesHandler.setUp(new ScriptSetUpCTab(CALL_ACTIVITY, "On Exit Script", language, script));
 	}
 
 	/**
@@ -85,8 +81,7 @@ public class CallActivity extends Task {
 	 * @param parameter
 	 */
 	public void addParameterMapping(ParameterMapping parameterMapping) {
-		//properties.getTab("I/O Parameters", IOParametersTab.class).addParameter(parameterMapping);
-		graphitiProperties.setUpTabs(new AddParameterMappingSetUpCTab(parameterMapping));
+		propertiesHandler.setUp(new AddParameterMappingSetUpCTab(parameterMapping));
 	}
 	
 }

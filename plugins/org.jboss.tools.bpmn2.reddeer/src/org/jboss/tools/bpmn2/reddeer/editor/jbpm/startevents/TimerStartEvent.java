@@ -23,7 +23,7 @@ public class TimerStartEvent extends StartEvent {
 	}
 
 	public void setTimer(TimerType timerType, String duration) {
-		graphitiProperties.setUpTabs(new TimerSetUpCTab(timerType, duration));
+		propertiesHandler.setUp(new TimerSetUpCTab(timerType, duration));
 		refresh();
 	}
 	

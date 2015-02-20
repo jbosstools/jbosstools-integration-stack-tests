@@ -26,8 +26,7 @@ public class ParallelGateway extends Element {
 	 * @param direction
 	 */
 	public void setDirection(Direction direction) {
-//		properties.getTab("Gateway", GatewayTab.class).setDirection(direction);
-		graphitiProperties.setUpTabs(new GatewayDirectionSetUpCTab(direction));
+		propertiesHandler.setUp(new GatewayDirectionSetUpCTab(direction));
 	}
 	
 }

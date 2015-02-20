@@ -18,9 +18,7 @@ import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.WaitCondition;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
@@ -90,8 +88,6 @@ public abstract class JBPM6ComplexTest {
 			modelMethod.invoke(this);
 			
 			saveViaReddeer();
-			
-			resolvePossibleConflictsAfterImportInterface();
 			
 			ProcessEditorView editor = new ProcessEditorView(filenameTitle);
 			diagramSourceCode = editor.getSourceText();
@@ -286,15 +282,5 @@ public abstract class JBPM6ComplexTest {
 		}
 		
 		return error.toString();
-	}
-	
-	private void resolvePossibleConflictsAfterImportInterface() {
-		try{
-			new DefaultShell("Selection Needed").setFocus();
-			new PushButton("Select All").click();
-			new PushButton("OK").click();
-		}catch(SWTLayerException e) {
-			// no conflicts
-		}
 	}
 }

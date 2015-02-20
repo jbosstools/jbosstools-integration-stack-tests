@@ -1,48 +1,40 @@
 package org.jboss.tools.bpmn2.reddeer.properties.shell;
 
-import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.TimerType;
+import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.EventDefinitionTypeDialog;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.EventDefinition;
 import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
 
-public class TimerSetUpCTab implements SetUpAble {
+public class EventDefinitionSetUp implements SetUpAble {
 	
-	private TimerType timerType;
-	private String duration;
+	private EventDefinition definition;
 	
-	public TimerSetUpCTab(TimerType timerType, String duration) {
-		this.timerType = timerType;
-		this.duration = duration;
+	public EventDefinitionSetUp(EventDefinition definition) {
+		this.definition = definition;
 	}
-
-
+	
 	@Override
 	public void setUpCTab() {
 		DefaultSection section = new DefaultSection("Event Definitions");
-		
 		if (new DefaultTable(new DefaultSection("Event Definitions")).rowCount() == 1) {
 			DefaultTable table = new DefaultTable(section);
 			table.select(0);
 			String eventOnTabType = table.getItem(0).getText(0);
-			if (!"Timer".equals(eventOnTabType)) {
-				throw new IllegalArgumentException("Not supported yet");
+			if (!definition.getClass().getSimpleName().startsWith(eventOnTabType)) {
+				new SectionToolItem("Event Definitions","Remove").click();
+				new SectionToolItem("Event Definitions", "Add").click();
+				new EventDefinitionTypeDialog().add(definition.label());
 			} else {
 				new SectionToolItem("Event Definitions", "Edit").click();
 			}
 		}
-		new RadioButton(timerType.label()).click();
-		new LabeledText("Value").setText(duration);
-		new SectionToolItem("Timer Event Definition Details", "Close").click();
-		
+		definition.setUp();
 	}
 
 	@Override
 	public String getTabLabel() {
 		return "Event";
 	}
-	
-	
 
 }

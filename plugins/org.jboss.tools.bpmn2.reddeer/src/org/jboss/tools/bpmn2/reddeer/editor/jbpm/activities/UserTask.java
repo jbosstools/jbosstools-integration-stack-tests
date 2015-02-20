@@ -8,17 +8,21 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.reddeer.DefaultCheckBox;
 import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Expression;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
-import org.jboss.tools.bpmn2.reddeer.properties.jbpm.UserTaskTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.AddActorSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.AddLocalVariableSetUp;
 import org.jboss.tools.bpmn2.reddeer.properties.shell.AddParameterMappingSetUpCTab;
 import org.jboss.tools.bpmn2.reddeer.properties.shell.CheckBoxSetUpCTab;
 import org.jboss.tools.bpmn2.reddeer.properties.shell.LabeledTextSetUpCTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.RemoveActorSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.ScriptSetUpCTab;
 
 /**
  * 
  */
 public class UserTask extends Task {
+
+	private static final String USER_TASK = "User Task";
 
 	/**
 	 * 
@@ -37,12 +41,11 @@ public class UserTask extends Task {
 	 * @param name
 	 */
 	public void setTaskName(String name) {
-		//properties.getTab("User Task", UserTaskTab.class).setTaskName(name);
-		graphitiProperties.setUpTabs(new LabeledTextSetUpCTab("User Task", "Task Name", name));
+		propertiesHandler.setUp(new LabeledTextSetUpCTab(USER_TASK, "Task Name", name));
 	}
 	
 	public String getTaskName() {
-		properties.selectTab("User Task");
+		propertiesHandler.selectTabInPropertiesView(USER_TASK);
 		return new LabeledText("Task Name").getText();
 		
 	}
@@ -52,7 +55,7 @@ public class UserTask extends Task {
 	 * @param priority
 	 */
 	public void setPriority(int priority) {
-		properties.getTab("User Task", UserTaskTab.class).setPriority(String.valueOf(priority));
+		setPriority(String.valueOf(priority));
 	}
 	
 	/**
@@ -60,7 +63,7 @@ public class UserTask extends Task {
 	 * @param priority
 	 */
 	public void setPriority(String priority) {
-		properties.getTab("User Task", UserTaskTab.class).setPriority(priority);
+		propertiesHandler.setUp(new LabeledTextSetUpCTab(USER_TASK, "Priority", priority));
 	}
 
 	/**
@@ -68,7 +71,7 @@ public class UserTask extends Task {
 	 * @param comment
 	 */
 	public void setComment(String comment) {
-		properties.getTab("User Task", UserTaskTab.class).setComment(comment);
+		propertiesHandler.setUp(new LabeledTextSetUpCTab(USER_TASK, "Comment", comment));
 	}
 	
 	/**
@@ -76,11 +79,12 @@ public class UserTask extends Task {
 	 * @param id
 	 */
 	public void setGroupId(String id) {
-		properties.getTab("User Task", UserTaskTab.class).setGroupId(id);
+		propertiesHandler.setUp(new LabeledTextSetUpCTab(USER_TASK, "Group Id", id));
+		
 	}
 	
 	public String getGroupId() {
-		properties.selectTab("User Task");
+		propertiesHandler.selectTabInPropertiesView(USER_TASK);
 		return new LabeledText("Group Id").getText();
 	}
 	
@@ -89,16 +93,15 @@ public class UserTask extends Task {
 	 * @param skippable
 	 */
 	public void setSkippable(boolean skippable) {
-		//properties.getTab("User Task", UserTaskTab.class).setSkippable(skippable);
-		graphitiProperties.setUpTabs(new CheckBoxSetUpCTab("User Task", "Skippable", skippable));
+		propertiesHandler.setUp(new CheckBoxSetUpCTab(USER_TASK, "Skippable", skippable));
 		
 	}
 	
 	public boolean getSkippable() {
-		graphitiProperties.getContextButton("Show Properties").click();
+		propertiesHandler.activateGraphitiPropertiesView();
 		Shell shell = new DefaultShell();
 		shell.setFocus();
-		new DefaultTabItem("User Task").activate();
+		new DefaultTabItem(USER_TASK).activate();
 		boolean result =  new DefaultCheckBox("Skippable").isChecked();
 		new PushButton("OK").click();
 		return result;
@@ -109,7 +112,7 @@ public class UserTask extends Task {
 	 * @param content
 	 */
 	public void setContent(String content) {
-		properties.getTab("User Task", UserTaskTab.class).setContent(content);
+		propertiesHandler.setUp(new LabeledTextSetUpCTab(USER_TASK, "Content", content));
 	}
 	
 	/**
@@ -117,8 +120,7 @@ public class UserTask extends Task {
 	 * @param locale
 	 */
 	public void setLocale(String locale) {
-		//properties.getTab("User Task", UserTaskTab.class).setLocale(locale);
-		graphitiProperties.setUpTabs(new LabeledTextSetUpCTab("User Task", "Locale", locale));
+		propertiesHandler.setUp(new LabeledTextSetUpCTab(USER_TASK, "Locale", locale));
 	}
 	
 	/**
@@ -126,11 +128,11 @@ public class UserTask extends Task {
 	 * @param actor
 	 */
 	public void addActor(String actor) {
-		properties.getTab("User Task", UserTaskTab.class).addActor(actor);
+		propertiesHandler.setUp(new AddActorSetUp(USER_TASK, actor));
 	}
 	
-	public void removeActor(String name) {
-		properties.getTab("User Task", UserTaskTab.class).removeActor(name);
+	public void removeActor(String actorName) {
+		propertiesHandler.setUp(new RemoveActorSetUp(USER_TASK, actorName));
 	}
 
 	/**
@@ -138,7 +140,7 @@ public class UserTask extends Task {
 	 * @param value
 	 */
 	public void setIsForCompensation(boolean value) {
-		properties.getTab("User Task", UserTaskTab.class).setIsForCompensation(value);
+		propertiesHandler.setUp(new CheckBoxSetUpCTab(USER_TASK, "Is For Compensation", value));
 	}
 
 	/**
@@ -147,7 +149,7 @@ public class UserTask extends Task {
 	 * @param script
 	 */
 	public void setOnEntryScript(String language, String script) {
-		properties.getTab("User Task", UserTaskTab.class).setOnEntryScript(new Expression(language, script));
+		propertiesHandler.setUp(new ScriptSetUpCTab(USER_TASK, "On Entry Script", language, script));
 	}
 
 	/**
@@ -156,7 +158,7 @@ public class UserTask extends Task {
 	 * @param script
 	 */
 	public void setOnExitScript(String language, String script) {
-		properties.getTab("User Task", UserTaskTab.class).setOnExitScript(new Expression(language, script));
+		propertiesHandler.setUp(new ScriptSetUpCTab(USER_TASK, "On Exit Script", language, script));
 	}
 
 	/**
@@ -164,12 +166,11 @@ public class UserTask extends Task {
 	 * @param parameter
 	 */
 	public void addParameterMapping(ParameterMapping parameterMapping) {
-//		properties.getTab("I/O Parameters", IOParametersTab.class).addParameter(parameterMapping);
-		graphitiProperties.setUpTabs(new AddParameterMappingSetUpCTab(parameterMapping));
+		propertiesHandler.setUp(new AddParameterMappingSetUpCTab(parameterMapping));
 	}
 	
 	public void addLocalVariable(String varName, String dataType) {
-		properties.getTab("User Task", UserTaskTab.class).addLocalVariable(varName, dataType);
+		propertiesHandler.setUp(new AddLocalVariableSetUp(USER_TASK, varName, dataType));
 	}
 
 }

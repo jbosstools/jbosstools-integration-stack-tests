@@ -22,8 +22,8 @@ public class TimerIntermediateCatchEvent extends IntermediateCatchEvent {
 		super(element);
 	}
 
-	public void setTimer(TimerType timerType, String duration) {
-		graphitiProperties.setUpTabs(new TimerSetUpCTab(timerType, duration));
+	public void setTimer(TimerType timerType, String value) {
+		propertiesHandler.setUp(new TimerSetUpCTab(timerType, value));
 		refresh();
 	}
 	

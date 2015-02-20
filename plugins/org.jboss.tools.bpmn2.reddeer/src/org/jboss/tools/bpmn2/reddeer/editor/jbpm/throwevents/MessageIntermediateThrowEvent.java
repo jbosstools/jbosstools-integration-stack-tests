@@ -30,7 +30,7 @@ public class MessageIntermediateThrowEvent extends Element {
 	 */
 	public void setMessageMapping(Message message, String sourceVariable) {
 //		properties.getTab("Event", EventTab.class).set(new MessageEventDefinition(message, sourceVariable, Type.SOURCE));
-		graphitiProperties.setUpTabs(new MessageSetUpCTab(message, sourceVariable, MappingType.SOURCE));
+		propertiesHandler.setUp(new MessageSetUpCTab(message, sourceVariable, MappingType.SOURCE));
 
 		refresh();
 	}

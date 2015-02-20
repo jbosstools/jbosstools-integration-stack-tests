@@ -2,7 +2,7 @@ package org.jboss.tools.bpmn2.reddeer.properties.shell;
 
 import org.jboss.tools.bpmn2.reddeer.DefaultCheckBox;
 
-public class CheckBoxSetUpCTab extends AbstractSetUpCTab {
+public class CheckBoxSetUpCTab implements SetUpAble {
 
 	private boolean value;
 	private String tabLabel;

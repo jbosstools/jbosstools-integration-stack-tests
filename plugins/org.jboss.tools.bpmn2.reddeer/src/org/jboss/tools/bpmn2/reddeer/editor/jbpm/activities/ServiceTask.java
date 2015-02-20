@@ -5,13 +5,17 @@ import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ErrorRef;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Message;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
-import org.jboss.tools.bpmn2.reddeer.properties.jbpm.IOParametersTab;
-import org.jboss.tools.bpmn2.reddeer.properties.jbpm.ServiceTaskTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.AddParameterMappingSetUpCTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.CheckBoxSetUpCTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.ImplementationSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.OperationSetUp;
 
 /**
  * 
  */
 public class ServiceTask extends Task {
+
+	private static final String SERVICE_TASK = "Service Task";
 
 	/**
 	 * 
@@ -30,7 +34,7 @@ public class ServiceTask extends Task {
 	 * @param implementationUri
 	 */
 	public void setImplementation(String implementationUri) {
-		properties.getTab("Service Task", ServiceTaskTab.class).setImplementation(implementationUri);
+		propertiesHandler.setUp(new ImplementationSetUp(SERVICE_TASK, implementationUri));
 	}
 	
 	/**
@@ -41,7 +45,7 @@ public class ServiceTask extends Task {
 	 * @param errorRef
 	 */
 	public void setOperation(String operationContractName, Message inMessage, Message outMessage, ErrorRef errorRef) {
-		properties.getTab("Service Task", ServiceTaskTab.class).setOperation(operationContractName, inMessage, outMessage, errorRef);
+		propertiesHandler.setUp(new OperationSetUp(SERVICE_TASK, operationContractName, inMessage, outMessage, errorRef));
 	}
 
 	/**
@@ -49,7 +53,7 @@ public class ServiceTask extends Task {
 	 * @param value
 	 */
 	public void setIsForCompensation(boolean value) {
-		properties.getTab("Service Task", ServiceTaskTab.class).setIsForCompensation(value);
+		propertiesHandler.setUp(new CheckBoxSetUpCTab(SERVICE_TASK, "Is For Compensation", value));
 	}
 
 	/**
@@ -57,7 +61,7 @@ public class ServiceTask extends Task {
 	 * @param parameter
 	 */
 	public void addParameterMapping(ParameterMapping parameterMapping) {
-		properties.getTab("I/O Parameters", IOParametersTab.class).addParameter(parameterMapping);
+		propertiesHandler.setUp(new AddParameterMappingSetUpCTab(parameterMapping));
 	}
 
 }

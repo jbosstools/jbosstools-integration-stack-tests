@@ -4,7 +4,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.ConnectionType;
 import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.Position;
-import org.jboss.tools.bpmn2.reddeer.properties.jbpm.DataObjectTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.ComboSetUpCTab;
 
 /**
  * 
@@ -23,8 +23,8 @@ public class DataObject extends Element {
 	 * 
 	 * @param name
 	 */
-	public void setDataType(String name) {
-		properties.getTab("Data Object", DataObjectTab.class).setDataType(name);
+	public void setDataType(String dataType) {
+		propertiesHandler.setUp(new ComboSetUpCTab("Data Object", "Data Type", dataType));
 	}
 
 	/**

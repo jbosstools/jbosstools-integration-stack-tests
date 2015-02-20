@@ -2,7 +2,7 @@ package org.jboss.tools.bpmn2.reddeer.properties.shell;
 
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
-public class LabeledTextSetUpCTab extends AbstractSetUpCTab {
+public class LabeledTextSetUpCTab implements SetUpAble {
 
 	private String tabLabel;
 	private String textLabel;

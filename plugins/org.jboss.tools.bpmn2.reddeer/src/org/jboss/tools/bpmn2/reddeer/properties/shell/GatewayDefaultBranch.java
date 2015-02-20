@@ -1,24 +1,22 @@
 package org.jboss.tools.bpmn2.reddeer.properties.shell;
 
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.tools.bpmn2.reddeer.DefaultCheckBox;
 import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
 
-public class GatewayPrioritySetUpCTab implements SetUpAble {
+public class GatewayDefaultBranch implements SetUpAble {
 
-	private String priority;
 	private String flow;
 	
-	public GatewayPrioritySetUpCTab(String flow, String priority) {
+	public GatewayDefaultBranch(String flow) {
 		this.flow = flow;
-		this.priority = priority;
 	}
 	
 	@Override
 	public void setUpCTab() {
 		new DefaultTable(0).select(flow);
 		new SectionToolItem("Sequence Flow List", "Edit").click();
-		new LabeledText("Priority").setText(priority);
+		new DefaultCheckBox().setChecked(true);
 		new SectionToolItem("Sequence Flow Details", "Close").click();
 
 	}

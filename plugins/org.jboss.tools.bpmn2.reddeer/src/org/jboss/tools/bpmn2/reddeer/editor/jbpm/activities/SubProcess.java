@@ -3,8 +3,8 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementContainer;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Expression;
-import org.jboss.tools.bpmn2.reddeer.properties.jbpm.SubProcessTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.AddLocalVariableSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.ScriptSetUpCTab;
 
 /**
  * 
@@ -27,11 +27,11 @@ public class SubProcess extends ElementContainer {
 	
 	/**
 	 * 
-	 * @param name
+	 * @param varName
 	 * @param dataType
 	 */
-	public void addLocalVariable(String name, String dataType) {
-		properties.getTab(SUB_PROCESS_TAB, SubProcessTab.class).addLocalVariable(name, dataType);
+	public void addLocalVariable(String varName, String dataType) {
+		propertiesHandler.setUp(new AddLocalVariableSetUp(SUB_PROCESS_TAB, varName, dataType));
 	}
 	
 	/**
@@ -40,7 +40,7 @@ public class SubProcess extends ElementContainer {
 	 * @param script
 	 */
 	public void setOnEntryScript(String language, String script) {
-		properties.getTab(SUB_PROCESS_TAB, SubProcessTab.class).setOnEntryScript(new Expression(language, script));
+		propertiesHandler.setUp(new ScriptSetUpCTab(SUB_PROCESS_TAB, "On Entry Script", language, script));
 	}
 
 	/**
@@ -49,6 +49,6 @@ public class SubProcess extends ElementContainer {
 	 * @param script
 	 */
 	public void setOnExitScript(String language, String script) {
-		properties.getTab(SUB_PROCESS_TAB, SubProcessTab.class).setOnExitScript(new Expression(language, script));
+		propertiesHandler.setUp(new ScriptSetUpCTab(SUB_PROCESS_TAB, "On Eexit Script", language, script));
 	}
 }

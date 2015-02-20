@@ -23,8 +23,7 @@ public class AdHocSubProcess extends ElementContainer {
 	}
 	
 	public void setCompletionCondition(String language, String script) {
-		//properties.getTab("AdHoc Sub Process", AdHocSubProcessTab.class).setCompletionCondition(new Expression(language, script));
-		graphitiProperties.setUpTabs(new ScriptSetUpCTab("AdHoc Sub Process", "Attributes", language, script));
+		propertiesHandler.setUp(new ScriptSetUpCTab("AdHoc Sub Process", "Attributes", language, script));
 		
 	}
 	

@@ -1,7 +1,8 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
-import org.jboss.tools.bpmn2.reddeer.properties.jbpm.IOParametersTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.AddParameterMappingSetUpCTab;
+import org.jboss.tools.bpmn2.reddeer.properties.shell.RemoveParameterMappingSetUp;
 
 /**
  * 
@@ -30,7 +31,7 @@ public class Element extends org.jboss.tools.bpmn2.reddeer.editor.Element {
 	 * @param parameterMapping
 	 */
 	protected void addParameterMapping(ParameterMapping parameterMapping) {
-		properties.getTab("I/O Parameters", IOParametersTab.class).addParameter(parameterMapping);
+		propertiesHandler.setUp(new AddParameterMappingSetUpCTab(parameterMapping));
 	}
 	
 	/**
@@ -38,7 +39,7 @@ public class Element extends org.jboss.tools.bpmn2.reddeer.editor.Element {
 	 * @param parameterMapping
 	 */
 	protected void removeParameterMapping(ParameterMapping parameterMapping) {
-		properties.getTab("I/O Parameters", IOParametersTab.class).removeParameter(parameterMapping);
+		propertiesHandler.setUp(new RemoveParameterMappingSetUp(parameterMapping));
 	}
 	
 }

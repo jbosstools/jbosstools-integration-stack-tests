@@ -9,7 +9,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Signal;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.MappingType;
 import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
 
-public class SignalSetUpCTab extends AbstractSetUpCTab {
+public class SignalSetUpCTab implements SetUpAble {
 	
 	private Signal signal;
 	private String variableName;

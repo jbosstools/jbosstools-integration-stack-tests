@@ -5,7 +5,7 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways;
  */
 public enum Direction {
 
-	CONVERGING, DIVERGING, MIXED, UNSPECIFIED;
+	CONVERGING, DIVERGING;
 
 	/**
 	 * 

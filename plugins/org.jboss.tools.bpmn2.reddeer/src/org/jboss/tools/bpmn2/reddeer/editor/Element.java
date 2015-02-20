@@ -26,8 +26,7 @@ import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.tools.bpmn2.reddeer.AbsoluteEditPart;
 import org.jboss.tools.bpmn2.reddeer.GEFProcessEditor;
 import org.jboss.tools.bpmn2.reddeer.ProcessEditorView;
-import org.jboss.tools.bpmn2.reddeer.ProcessPropertiesView;
-import org.jboss.tools.bpmn2.reddeer.editor.graphiti.PropertiesGraphitiEditPart;
+import org.jboss.tools.bpmn2.reddeer.PropertiesHandler;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.BoundaryEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructOfType;
 import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructOnPoint;
@@ -41,13 +40,13 @@ import org.w3c.dom.NodeList;
  * Represents an element in the editor canvas.
  */
 public class Element {
+	
+	private boolean useGraphitiProperties = true;
 
 	protected Logger log = Logger.getLogger(getClass());
 	
 	protected ProcessEditorView editor;
-	protected ProcessPropertiesView properties;
-	protected PropertiesGraphitiEditPart graphitiProperties;
-	protected SWTBot bot = new SWTBot();
+	protected PropertiesHandler propertiesHandler;
 	
 	protected String name;
 	protected ElementType type;
@@ -100,8 +99,7 @@ public class Element {
 		this.containerShapeEditPart = new AbsoluteEditPart(containerShapeEditPart);
 		processEditor = new GEFProcessEditor();
 		editor = new ProcessEditorView();
-		properties = new ProcessPropertiesView(this.containerShapeEditPart);
-		graphitiProperties = new PropertiesGraphitiEditPart(containerShapeEditPart);
+		propertiesHandler = new PropertiesHandler(containerShapeEditPart, useGraphitiProperties);
 	}
 	
 	protected Element(Element copyFrom) {
@@ -110,9 +108,8 @@ public class Element {
 		this.parent = copyFrom.parent;
 		this.editor = copyFrom.editor;
 		this.containerShapeEditPart = copyFrom.containerShapeEditPart;
-		this.properties = copyFrom.properties;
 		this.processEditor = copyFrom.processEditor;
-		this.graphitiProperties = copyFrom.graphitiProperties;
+		this.propertiesHandler = copyFrom.propertiesHandler;
 		select();
 	}
 	
@@ -139,8 +136,7 @@ public class Element {
 			throw new RuntimeException("Reddeer could not find construct with name '" + name + "' of type '" + type.name() + "'");
 		}
 
-		properties = new ProcessPropertiesView(containerShapeEditPart);
-		graphitiProperties = new PropertiesGraphitiEditPart(containerShapeEditPart.getEditPart());
+		propertiesHandler = new PropertiesHandler(containerShapeEditPart.getEditPart(), useGraphitiProperties);
 	
 		if (select) {
 			select();
@@ -149,8 +145,8 @@ public class Element {
 		if(type == ElementType.PROCESS) {
 			containerShapeEditPart.click(0,0);
 			if(name == null) {
-				properties.activate();
-				this.name = properties.getTitle();
+				propertiesHandler.activatePropertiesView();
+				this.name = propertiesHandler.getTitleOfPropertiesView();
 			}
 		}
 	}
@@ -169,7 +165,7 @@ public class Element {
 	 */
 	public void setName(String name) {
 		this.name = name;
-		graphitiProperties.setUpTabs(new NameSetUpCTab(name));
+		propertiesHandler.setUp(new NameSetUpCTab(name));
 	}
 	
 	/**
@@ -525,14 +521,6 @@ public class Element {
 	
 	public AbsoluteEditPart getAbsoluteEditPart() {
 		return containerShapeEditPart;
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public ProcessPropertiesView getProperties() {
-		return properties;
 	}
 	
 	/**

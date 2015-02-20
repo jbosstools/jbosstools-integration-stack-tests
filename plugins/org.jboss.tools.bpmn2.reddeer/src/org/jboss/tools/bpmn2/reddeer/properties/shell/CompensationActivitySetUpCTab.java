@@ -5,7 +5,7 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
 import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
 
-public class CompensationActivitySetUpCTab extends AbstractSetUpCTab {
+public class CompensationActivitySetUpCTab implements SetUpAble {
 
 	private String activityName;
 	

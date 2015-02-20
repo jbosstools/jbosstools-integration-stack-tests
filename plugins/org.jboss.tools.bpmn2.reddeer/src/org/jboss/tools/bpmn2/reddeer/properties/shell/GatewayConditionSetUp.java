@@ -7,13 +7,13 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
 import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
 
-public class GatewayConditionSetUpCTab implements SetUpAble {
+public class GatewayConditionSetUp implements SetUpAble {
 
 	private String flow;
 	private String lang;
 	private String condition;
 	
-	public GatewayConditionSetUpCTab(String flow, String lang, String condition) {
+	public GatewayConditionSetUp(String flow, String lang, String condition) {
 		this.flow = flow;
 		this.lang = lang;
 		this.condition = condition;
@@ -27,6 +27,7 @@ public class GatewayConditionSetUpCTab implements SetUpAble {
 		new LabeledCombo("Condition Language").setSelection(lang);
 		new LabeledText("Condition").setText(condition);
 		new SectionToolItem("Sequence Flow Details", "Close").click();
+
 	}
 
 	@Override

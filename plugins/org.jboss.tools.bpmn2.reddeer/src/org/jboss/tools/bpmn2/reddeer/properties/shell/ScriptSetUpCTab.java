@@ -4,7 +4,7 @@ import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
 
-public class ScriptSetUpCTab extends AbstractSetUpCTab {
+public class ScriptSetUpCTab implements SetUpAble {
 
 	private String language;
 	private String script;

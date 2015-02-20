@@ -3,13 +3,10 @@ package org.jboss.tools.bpmn2.ui.bot.complex.test.testcase;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.swt.api.Table;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.JBPM6ComplexTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.TestPhase;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.JBPM6ComplexTestDefinitionRequirement.JBPM6ComplexTestDefinition;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.TestPhase.Phase;
-import org.jboss.tools.bpmn2.reddeer.ProcessPropertiesView;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.UserTask;
 import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
@@ -64,10 +61,7 @@ public class ComplexSpecialCharactersAndLenghtsTest extends JBPM6ComplexTest {
 	@TestPhase(phase=Phase.VALIDATE)
 	public void validateBZ1179075() {
 		process.click();
-		ProcessPropertiesView properties = process.getProperties();
-		properties.selectTab("Data Items");
-		Table table = new DefaultTable(1);
-		String variableName = table.getItem(0).getText(0);
+		String variableName = process.getFirstLocalVariable();
 		assertEquals("BZ 1179075, invalid characters in variable name","variable", variableName);
 	}
 	

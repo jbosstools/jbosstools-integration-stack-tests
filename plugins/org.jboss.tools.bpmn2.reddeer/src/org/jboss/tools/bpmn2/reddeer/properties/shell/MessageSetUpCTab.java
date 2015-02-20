@@ -9,7 +9,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Message;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.MappingType;
 import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
 
-public class MessageSetUpCTab extends AbstractSetUpCTab {
+public class MessageSetUpCTab implements SetUpAble {
 
 	private Message message;
 	private String variableName;
