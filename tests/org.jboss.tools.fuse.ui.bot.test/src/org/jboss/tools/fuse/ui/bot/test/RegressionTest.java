@@ -18,6 +18,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
@@ -366,5 +367,28 @@ public class RegressionTest {
 		InputSource is = new InputSource(new StringReader(new DefaultStyledText().getText()));
 		Document doc = builder.parse(is);
 		assertNull(doc.getElementsByTagName("route").item(0).getAttributes().getNamedItem("customId"));
+	}
+
+	/**
+	 * Problem occurred during restart JBoss Fuse
+	 * https://issues.jboss.org/browse/FUSETOOLS-1252
+	 */
+	@Test
+	public void issue_1252() {
+
+		ProjectFactory.createProject("camel-blueprint", "camel-archetype-blueprint");
+		String server = serverRequirement.getConfig().getName();
+		ServerManipulator.addModule(server, "camel-blueprint");
+		ServerManipulator.startServer(server);
+		new ServersView().getServer(server).restartInDebug();
+		try {
+			new WaitUntil(new ShellWithTextIsAvailable("Problem Occurred"));
+			new DefaultShell("Problem Occurred");
+			new PushButton("OK");
+		} catch (Exception e) {
+			// OK no shell "Problem Occurred" was found
+			return;
+		}
+		fail();
 	}
 }
