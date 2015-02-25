@@ -44,6 +44,9 @@
 			<plugin>
 				<groupId>com.googlecode.maven-download-plugin</groupId>
 				<artifactId>download-maven-plugin</artifactId>
+				<configuration>
+				  <skip>${skipRequirements}</skip>
+				</configuration>
 				<version>1.2.0</version>
 				<executions>
 					<execution>
@@ -315,5 +318,23 @@
 		</plugins>
 	</build>
 
+	<profiles>
+	  <profile>
+	    <id>smoke</id>
+	    <activation>
+	      <property>
+		<name>test</name>
+		<value>SmokeTests</value>
+	      </property>
+	    </activation>
+	    <properties>	      
+	      <reddeerProperties></reddeerProperties>
+	      <test.class>SmokeTests</test.class>
+	      <skipRequirements>true</skipRequirements>
+	      <get.drivers>true</get.drivers>
+	    </properties>
+	  </profile>
+	</profiles>
+	
 </project>
 

@@ -18,7 +18,8 @@
 		<modeshapeUser>admin</modeshapeUser>
 		<modeshapePassword>admin</modeshapePassword>
 		<reddeer.config>${project.build.directory}/config/as-711_modeshape-301.xml</reddeer.config>
-		<systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=${reddeer.config}</systemProperties>
+		<reddeerProperties>-Dreddeer.config=${reddeer.config}</reddeerProperties>
+		<systemProperties>${integrationTestsSystemProperties} ${reddeerProperties}</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
 		<test.class>AllTests</test.class>
 	</properties>
@@ -86,6 +87,9 @@
 			<plugin>
 				<groupId>com.googlecode.maven-download-plugin</groupId>
 				<artifactId>maven-download-plugin</artifactId>
+				<configuration>
+				  <skip>${skipRequirements}</skip>
+				</configuration>
 				<executions>
 					<execution>
 						<id>install-as</id>
@@ -117,6 +121,9 @@
 			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<version>${maven.antrun.plugin.version}</version>
+				<configuration>
+				  <skip>${skipRequirements}</skip>
+				</configuration>
 				<executions>
 					<execution>
 						<id>prepare-modeshape</id>
@@ -162,5 +169,22 @@
 			</plugin>
 		</plugins>
 	</build>
+	      
+	<profiles>
+	  <profile>
+	    <id>smoke</id>
+	    <activation>
+	      <property>
+		<name>test</name>
+		<value>SmokeTests</value>
+	      </property>
+	    </activation>
+	    <properties>	      
+	      <reddeerProperties></reddeerProperties>
+	      <test.class>SmokeTests</test.class>
+	      <skipRequirements>true</skipRequirements>
+	    </properties>
+	  </profile>
+	</profiles>
 </project>
       
