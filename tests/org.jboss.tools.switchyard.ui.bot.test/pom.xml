@@ -76,6 +76,9 @@
 	      <groupId>com.googlecode.maven-download-plugin</groupId>
 	      <artifactId>download-maven-plugin</artifactId>
 	      <version>1.2.0</version>
+	      <configuration>
+		<skip>${skipRequirements}</skip>
+	      </configuration>
 	      <executions>
 		<execution>
 		  <id>get-wildfly</id>
@@ -134,6 +137,23 @@
 	    </plugin>
 	  </plugins>
 	</build>
+
+	<profiles>
+	  <profile>
+	    <id>smoke</id>
+	    <activation>
+	      <property>
+		<name>test</name>
+		<value>SmokeTests</value>
+	      </property>
+	    </activation>
+	    <properties>	      
+	      <reddeer.config>${project.build.directory}/config/switchyard-200.xml</reddeer.config>
+	      <test.class>SmokeTests</test.class>
+	      <skipRequirements>true</skipRequirements>
+	    </properties>
+	  </profile>
+	</profiles>
 	
       </project>
       

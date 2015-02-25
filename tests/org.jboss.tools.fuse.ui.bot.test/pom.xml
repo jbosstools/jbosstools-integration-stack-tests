@@ -108,6 +108,9 @@
 				<groupId>com.googlecode.maven-download-plugin</groupId>
 				<artifactId>maven-download-plugin</artifactId>
 				<version>1.0.0</version>
+				<configuration>
+				  <skip>${skipRequirements}</skip>
+				</configuration>
 				<executions>
 					<execution>
 						<id>get-fuse</id>
@@ -127,6 +130,9 @@
 			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<version>1.7</version>
+				<configuration>
+				  <skip>${skipRequirements}</skip>
+				</configuration>
 				<executions>
 					<execution>
 						<id>set-users</id>
@@ -146,4 +152,22 @@
 
 		</plugins>
 	</build>
+	
+	<profiles>
+	  <profile>
+	    <id>smoke</id>
+	    <activation>
+	      <property>
+		<name>test</name>
+		<value>SmokeTests</value>
+	      </property>
+	    </activation>
+	    <properties>	      
+	      <reddeerProperties></reddeerProperties>
+	      <test.class>SmokeTests</test.class>
+	      <skipRequirements>true</skipRequirements>
+	    </properties>
+	  </profile>
+	</profiles>
+	
 </project>

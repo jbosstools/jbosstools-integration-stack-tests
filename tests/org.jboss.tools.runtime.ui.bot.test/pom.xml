@@ -14,9 +14,10 @@
 	<properties>
 	  <server.jre>default</server.jre>
 	  <reddeer.config>${project.build.directory}/config</reddeer.config>
-	  <systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=${reddeer.config}</systemProperties>
+	  <reddeerProperties>-Dreddeer.config=${reddeer.config}</reddeerProperties>
+	  <systemProperties>${integrationTestsSystemProperties} ${reddeerProperties}</systemProperties>
 	  <surefire.timeout>10800</surefire.timeout>
-	  <maven-download-plugin.version>1.0.0</maven-download-plugin.version>
+	  <maven-download-plugin.version>1.2.0</maven-download-plugin.version>
 	</properties>
 
 	<build>
@@ -94,6 +95,9 @@
 	      <groupId>com.googlecode.maven-download-plugin</groupId>
 	      <artifactId>download-maven-plugin</artifactId>
 	      <version>1.2.0</version>
+	      <configuration>
+		<skip>${skipRequirements}</skip>
+	      </configuration>
 	      <executions>
 		<execution>
 		  <id>download-jboss-esb</id>
@@ -165,6 +169,9 @@
 	    <plugin>
 	      <artifactId>maven-antrun-plugin</artifactId>
 	      <version>1.7</version>
+	      <configuration>
+		<skip>${skipRequirements}</skip>
+	      </configuration>
 	      <executions>
 		<execution>
 		  <id>install-jbpm3</id>
@@ -186,6 +193,23 @@
 	    </plugin>
 	  </plugins>
 	</build>
+	
+	<profiles>
+	  <profile>
+	    <id>smoke</id>
+	    <activation>
+	      <property>
+		<name>test</name>
+		<value>SmokeTests</value>
+	      </property>
+	    </activation>
+	    <properties>	      
+	      <reddeerProperties></reddeerProperties>
+	      <test.class>SmokeTests</test.class>
+	      <skipRequirements>true</skipRequirements>
+	    </properties>
+	  </profile>
+	</profiles>
 	
 </project>
       
