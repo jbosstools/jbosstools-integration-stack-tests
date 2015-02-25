@@ -30,9 +30,9 @@
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
-					<appArgLine>-eclipse.password resources/security/password -clean</appArgLine>
+					<appArgLine>-eclipse.password resources/security/password -clean -testpluginname org.jboss.tools.modeshape.ui.bot.test</appArgLine>
 					<testSuite>org.jboss.tools.modeshape.ui.bot.test</testSuite>
-					<testClass>org.jboss.tools.modeshape.ui.bot.test.suite.${test.class}</testClass>
+					<testClass>**/*Test</testClass>
 					<useUIThread>false</useUIThread>
 					<skip>${testSkip}</skip>
 					<dependencies combine.children="append">
