@@ -4,6 +4,7 @@ import org.jboss.reddeer.eclipse.jface.wizard.ImportWizardDialog;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 
 /**
  * Wizard for importing an existing project.
@@ -33,7 +34,7 @@ public class ImportProjectWizard extends ImportWizardDialog {
 		}
 
 		new PushButton("Refresh").click();
-		finish();
+		finish(TimePeriod.getCustom(600));
 	}
 
 }
