@@ -19,6 +19,7 @@ import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
+import org.jboss.tools.switchyard.reddeer.properties.ProjectProperties;
 import org.jboss.tools.switchyard.reddeer.shell.ProjectCapabilitiesShell;
 
 public class SwitchYardProject extends Project {
@@ -77,6 +78,12 @@ public class SwitchYardProject extends Project {
 		select();
 		new ContextMenu("SwitchYard", "Configure Capabilities...").select();
 		return new ProjectCapabilitiesShell("Properties for " + getName());
+	}
+	
+	public ProjectProperties openProperties() {
+		select();
+		new ContextMenu("Properties").select();
+		return new ProjectProperties();
 	}
 
 }

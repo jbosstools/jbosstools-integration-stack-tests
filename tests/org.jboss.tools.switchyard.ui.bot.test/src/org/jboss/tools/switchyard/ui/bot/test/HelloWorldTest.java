@@ -18,6 +18,8 @@ import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.condition.JUnitHasFinished;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.project.ProjectItemExt;
+import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
+import org.jboss.tools.switchyard.reddeer.properties.ProjectPropertiesJavaBuildPath;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.jboss.tools.switchyard.reddeer.view.JUnitView;
@@ -51,6 +53,10 @@ public class HelloWorldTest {
 	@Test
 	public void helloWorldTest() {
 		switchyardRequirement.project(PROJECT).impl("Bean").binding("HTTP").create();
+		
+		ProjectPropertiesJavaBuildPath buildPath = new SwitchYardProject(PROJECT).openProperties().selectJavaBuildPath();
+		buildPath.selectLibrary("JRE System Library [JavaSE-1.6]").edit().selectExecutionEnvironmentWithPrefix("JavaSE-1.7").finish();
+		buildPath.ok();
 
 		new SwitchYardEditor().addBeanImplementation().createNewInterface("Hello").finish();
 		new SwitchYardComponent("Hello").doubleClick();
