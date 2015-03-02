@@ -101,7 +101,9 @@ public class ServerManipulator {
 		server.start();
 
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		new WaitUntil(new ConsoleHasText("100%"), TimePeriod.getCustom(300));
+		if (server.getLabel().getName().toLowerCase().contains("fuse")) {
+			new WaitUntil(new ConsoleHasText("100%"), TimePeriod.getCustom(300));
+		}
 		AbstractWait.sleep(TimePeriod.NORMAL);	
 		new WorkbenchShell().setFocus();
 	}
