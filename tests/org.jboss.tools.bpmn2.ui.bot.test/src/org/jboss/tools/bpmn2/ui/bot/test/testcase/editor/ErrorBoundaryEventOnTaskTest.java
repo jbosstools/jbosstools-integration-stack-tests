@@ -4,6 +4,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.Position;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ErrorRef;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ScriptLanguage;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.UserTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.ErrorBoundaryEvent;
@@ -23,7 +24,8 @@ public class ErrorBoundaryEventOnTaskTest extends JBPM6BaseTest {
 	@Override
 	public void buildProcessModel() {
 		Process process = new Process("BPMN2-ErrorBoundaryEventOnTask");
-		process.addError("", "org.jbpm.bpmn2.objects.MyError", "String");
+		ErrorRef myError = new ErrorRef("myError", "org.jbpm.bpmn2.objects.MyError", "String");
+		process.addError(myError);
 		
 		StartEvent start = new StartEvent("StartProcess");
 		start.append("Split", ElementType.PARALLEL_GATEWAY);
@@ -38,7 +40,7 @@ public class ErrorBoundaryEventOnTaskTest extends JBPM6BaseTest {
 		task1.append("Error end event", ElementType.ERROR_END_EVENT);
 		
 		ErrorEndEvent end1 = new ErrorEndEvent("Error end event");
-		end1.setErrorEvent(new ErrorRef("", "org.jbpm.bpmn2.objects.MyError", ""));
+		end1.setErrorEvent(myError);
 		
 		UserTask task2 = new UserTask("User task error attached");
 		task2.addActor("mary");
@@ -46,11 +48,11 @@ public class ErrorBoundaryEventOnTaskTest extends JBPM6BaseTest {
 		task2.addEvent("Error Boundary Event", ElementType.ERROR_BOUNDARY_EVENT);
 		
 		ErrorBoundaryEvent boundaryEvent = new ErrorBoundaryEvent("Error Boundary Event");
-		boundaryEvent.setErrorEvent(new ErrorRef("", "org.jbpm.bpmn2.objects.MyError", ""));
+		boundaryEvent.setErrorEvent(myError);
 		boundaryEvent.append("Script Task", ElementType.SCRIPT_TASK, Position.SOUTH);
 		
 		ScriptTask script = new ScriptTask("Script Task");
-		script.setScript("Java", "System.out.println(\"Error handled\");");
+		script.setScript(ScriptLanguage.JAVA, "System.out.println(\"Error handled\");");
 		script.append("Error 2", ElementType.END_EVENT);
 	}
 	

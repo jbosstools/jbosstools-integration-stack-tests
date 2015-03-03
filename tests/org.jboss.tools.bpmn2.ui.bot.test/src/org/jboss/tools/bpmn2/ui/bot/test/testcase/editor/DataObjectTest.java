@@ -4,6 +4,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.ConnectionType;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.Position;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ScriptLanguage;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.dataobjects.DataObject;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
@@ -22,7 +23,7 @@ public class DataObjectTest extends JBPM6BaseTest {
 		start.append("Script", ElementType.SCRIPT_TASK);
 		
 		ScriptTask script = new ScriptTask("Script");
-		script.setScript("Java", "System.out.println(\"Processing evaluation for employee \" + employee);");
+		script.setScript(ScriptLanguage.JAVA, "System.out.println(\"Processing evaluation for employee \" + employee);");
 		script.append("EndProcess", ElementType.TERMINATE_END_EVENT);
 		
 		Process process = new Process("BPMN2-DataObject");

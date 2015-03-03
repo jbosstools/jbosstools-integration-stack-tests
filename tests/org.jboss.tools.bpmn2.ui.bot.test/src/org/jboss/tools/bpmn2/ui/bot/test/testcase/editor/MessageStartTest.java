@@ -3,6 +3,7 @@ package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Message;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ScriptLanguage;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.MessageStartEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
@@ -26,7 +27,7 @@ public class MessageStartTest extends JBPM6BaseTest {
 		start.append("Script", ElementType.SCRIPT_TASK);
 		
 		ScriptTask script = new ScriptTask("Script");
-		script.setScript("Java", "System.out.println(\"x = \" + x);");
+		script.setScript(ScriptLanguage.JAVA, "System.out.println(\"x = \" + x);");
 		script.append("EndProcess", ElementType.TERMINATE_END_EVENT);
 	}
 	

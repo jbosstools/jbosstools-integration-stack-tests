@@ -4,6 +4,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.ConnectionType;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.Position;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ScriptLanguage;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.ExclusiveGateway;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
@@ -27,7 +28,7 @@ public class AdHocProcessTest extends JBPM6BaseTest {
 		
 		ScriptTask task3 = new ScriptTask("Task 3");
 		// ISSUE: Empty values can be set only at the beginning!
-		task3.setScript("", "System.out.println(\"Task3\");");
+		task3.setScript(ScriptLanguage.JAVA, "System.out.println(\"Task3\");");
 		task3.append("Gateway", ElementType.EXCLUSIVE_GATEWAY);
 		
 		ExclusiveGateway gateway = new ExclusiveGateway("Gateway");
@@ -40,18 +41,18 @@ public class AdHocProcessTest extends JBPM6BaseTest {
 		gateway.setCondition("Gateway -> Task 4", "Rule", "not org.jbpm.bpmn2.objects.Person()");
 		
 		ScriptTask task4 = new ScriptTask("Task 4");
-		task4.setScript("", "System.out.println(\"Task4\");");
+		task4.setScript(ScriptLanguage.JAVA, "System.out.println(\"Task4\");");
 
 		// Finish parallel activities
 		process.add("Task 2", ElementType.SCRIPT_TASK, task3, Position.NORTH);
 		
 		ScriptTask task2 = new ScriptTask("Task 2");
-		task2.setScript("", "System.out.println(\"Task2\");");
+		task2.setScript(ScriptLanguage.JAVA, "System.out.println(\"Task2\");");
 		
 		process.add("Task 1", ElementType.SCRIPT_TASK, task2, Position.NORTH);
 		
 		ScriptTask task1 = new ScriptTask("Task 1");
-		task1.setScript("", "System.out.println(\"Task1\");");
+		task1.setScript(ScriptLanguage.JAVA, "System.out.println(\"Task1\");");
 		
 		process.add("User", ElementType.USER_TASK, task3, Position.SOUTH);
 	}

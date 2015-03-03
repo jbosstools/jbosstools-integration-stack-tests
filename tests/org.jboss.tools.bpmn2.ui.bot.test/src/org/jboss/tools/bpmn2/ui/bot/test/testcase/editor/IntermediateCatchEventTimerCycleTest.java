@@ -1,6 +1,8 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ScriptLanguage;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.TimerType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.catchevents.TimerIntermediateCatchEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
@@ -19,11 +21,11 @@ public class IntermediateCatchEventTimerCycleTest extends JBPM6BaseTest {
 		startEvent.append("Timer", ElementType.TIMER_INTERMEDIATE_CATCH_EVENT);
 		
 		TimerIntermediateCatchEvent catchEvent = new TimerIntermediateCatchEvent("Timer");
-		catchEvent.setTimer("500ms");
+		catchEvent.setTimer("500ms", TimerType.INTERVAL);
 		catchEvent.append("Event", ElementType.SCRIPT_TASK);
 		
 		ScriptTask scriptTask = new ScriptTask("Event");
-		scriptTask.setScript("Java", "System.out.println(\"Timer triggered\");");
+		scriptTask.setScript(ScriptLanguage.JAVA, "System.out.println(\"Timer triggered\");");
 		scriptTask.append("EndProcess", ElementType.TERMINATE_END_EVENT);
 	}
 	

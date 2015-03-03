@@ -2,6 +2,7 @@ package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.Position;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ScriptLanguage;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.Direction;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.ParallelGateway;
@@ -23,13 +24,13 @@ public class ParallelSplitTest extends JBPM6BaseTest {
 		gateway.append("Script2", ElementType.SCRIPT_TASK, Position.SOUTH_EAST);
 		
 		ScriptTask script1 = new ScriptTask("Script1");
-		script1.setScript("Java", "System.out.println(\"1\");");
+		script1.setScript(ScriptLanguage.JAVA, "System.out.println(\"1\");");
 		script1.append("End1", ElementType.END_EVENT);
 		
 		// Fails on setScript and I don't know why!
 		ScriptTask script2 = new ScriptTask("Script2");
 		script2.select();
-		script2.setScript("Java", "System.out.println(\"2\");");
+		script2.setScript(ScriptLanguage.JAVA, "System.out.println(\"2\");");
 		script2.append("End2", ElementType.END_EVENT);
 	}
 	

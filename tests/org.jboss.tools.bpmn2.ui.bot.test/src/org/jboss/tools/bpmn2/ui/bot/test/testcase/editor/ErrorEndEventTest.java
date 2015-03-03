@@ -16,7 +16,7 @@ public class ErrorEndEventTest extends JBPM6BaseTest {
 		start.append("ErrorEvent", ElementType.ERROR_END_EVENT);
 		
 		ErrorEndEvent end = new ErrorEndEvent("ErrorEvent");
-		end.setErrorEvent(new ErrorRef("", "error", ""));
+		end.setErrorEvent(new ErrorRef("errorname", "errorcode", "java.lang.Object"));
 	}
 	
 }

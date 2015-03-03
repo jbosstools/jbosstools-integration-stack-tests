@@ -3,6 +3,7 @@ package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.Position;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ScriptLanguage;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.Task;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.UserTask;
@@ -42,7 +43,7 @@ public class EventBasedSplitTest extends JBPM6BaseTest {
 		event1.append("Script1", ElementType.SCRIPT_TASK);
 		
 		ScriptTask script1 = new ScriptTask("Script1");
-		script1.setScript("Java", "System.out.println(\"Executing Yes\");");
+		script1.setScript(ScriptLanguage.JAVA, "System.out.println(\"Executing Yes\");");
 		
 		SignalIntermediateCatchEvent event2 = new SignalIntermediateCatchEvent("Event2");
 		event2.setSignalMapping("Signal2", "BPMN2-EventBasedSplit/x");
@@ -50,7 +51,7 @@ public class EventBasedSplitTest extends JBPM6BaseTest {
 		event2.append("Script2", ElementType.SCRIPT_TASK);
 		
 		ScriptTask script2 = new ScriptTask("Script2");
-		script2.setScript("Java", "System.out.println(\"Executing No\");");
+		script2.setScript(ScriptLanguage.JAVA, "System.out.println(\"Executing No\");");
 		
 		script1.append("Join", ElementType.EXCLUSIVE_GATEWAY, Position.SOUTH_EAST);
 		ExclusiveGateway gateway2 = new ExclusiveGateway("Join");
@@ -60,7 +61,7 @@ public class EventBasedSplitTest extends JBPM6BaseTest {
 		gateway2.append("Script", ElementType.SCRIPT_TASK);
 		
 		ScriptTask script3 = new ScriptTask("Script");
-		script3.setScript("Java", "System.out.println(\"x=\" + x);");
+		script3.setScript(ScriptLanguage.JAVA, "System.out.println(\"x=\" + x);");
 		script3.append("Email2", ElementType.USER_TASK);
 		
 		UserTask task2 = new UserTask("Email2");

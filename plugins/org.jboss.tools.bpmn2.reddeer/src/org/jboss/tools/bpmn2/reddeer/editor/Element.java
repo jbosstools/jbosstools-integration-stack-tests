@@ -126,7 +126,7 @@ public class Element {
 	 */
 	public void setName(String name) {
 		this.name = name;
-		this.properties.getTab("Description", DescriptionTab.class).setName(name);
+		this.properties.getTab("General", DescriptionTab.class).setName(name);
 	}
 	
 	/**

@@ -29,7 +29,7 @@ public class DataItemsTab {
 	 * @param local
 	 */
 	public void addVariable(String name, String dataType, boolean local) {
- 		new DefaultSection((local ? "Variable" : "Global") + " List for Process \"" + processName + "\"").getToolbarButton("Add").click();
+ 		new DefaultSection((local ? "Local Variable" : "Global Variable") + " List for Process \"" + processName + "\"").getToolbarButton("Add").click();
 		new LabeledText("Name").setText(name);
 		
 		DefaultCombo c = new DefaultCombo("Data Type");
@@ -39,7 +39,7 @@ public class DataItemsTab {
 		}
 		c.setSelection(dataType);
 		
-		new DefaultSection((local ? "Variable" : "Global") + " Details").getToolbarButton("Close").click();
+		new DefaultSection((local ? "Local Variable" : "Global Variable") + " Details").getToolbarButton("Close").click();
 	}
 	
 	/**

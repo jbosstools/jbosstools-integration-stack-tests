@@ -2,6 +2,7 @@ package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ScriptLanguage;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.ConditionalStartEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
@@ -21,7 +22,7 @@ public class ConditionalStartTest extends JBPM6BaseTest {
 		startEvent.append("Hello", ElementType.SCRIPT_TASK);
 		
 		ScriptTask scriptTask = new ScriptTask("Hello");
-		scriptTask.setScript("", "System.out.println(\"Hello World\");");
+		scriptTask.setScript(ScriptLanguage.JAVA, "System.out.println(\"Hello World\");");
 		scriptTask.append("EndProcess", ElementType.TERMINATE_END_EVENT);
 	}
 	

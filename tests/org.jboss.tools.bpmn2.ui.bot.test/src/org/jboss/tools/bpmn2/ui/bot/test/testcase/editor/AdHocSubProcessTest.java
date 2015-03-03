@@ -2,6 +2,7 @@ package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.Position;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ScriptLanguage;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.AdHocSubProcess;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
@@ -29,7 +30,7 @@ public class AdHocSubProcessTest extends JBPM6BaseTest {
 		subprocess.append("Goodbye", ElementType.SCRIPT_TASK);		
 
 		ScriptTask task3 = new ScriptTask("Goodbye");
-		task3.setScript("", "System.out.println(\"Goodbye World\");");
+		task3.setScript(ScriptLanguage.JAVA, "System.out.println(\"Goodbye World\");");
 		task3.append("EndProcess", ElementType.TERMINATE_END_EVENT);
 		
 		/*
@@ -38,12 +39,11 @@ public class AdHocSubProcessTest extends JBPM6BaseTest {
 		subprocess.add("Hello1", ElementType.SCRIPT_TASK);
 		
 		ScriptTask task1 = new ScriptTask("Hello1");
-		task1.setScript("", "System.out.println(\"Hello World 1\");");
 		
 		subprocess.add("Hello2", ElementType.SCRIPT_TASK, task1, Position.SOUTH);
 		
 		ScriptTask task2 = new ScriptTask("Hello2");
-		task2.setScript("", "System.out.println(\"Hello World 2\");");
+		task2.setScript(ScriptLanguage.JAVA, "System.out.println(\"Hello World 2\");");
 		task2.append("Hello", ElementType.USER_TASK);
 	}
 	

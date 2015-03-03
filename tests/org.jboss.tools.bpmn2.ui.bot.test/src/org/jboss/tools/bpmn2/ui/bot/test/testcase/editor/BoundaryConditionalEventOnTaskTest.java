@@ -3,6 +3,7 @@ package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.Position;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ScriptLanguage;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.UserTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.ConditionalBoundaryEvent;
@@ -40,7 +41,7 @@ public class BoundaryConditionalEventOnTaskTest extends JBPM6BaseTest {
 		userTask2.append("End 1", ElementType.END_EVENT);
 		
 		ScriptTask scriptTask1 = new ScriptTask("Condition met");
-		scriptTask1.setScript("", "System.out.println(\"Conditional boundary event executed\";)");
+		scriptTask1.setScript(ScriptLanguage.JAVA, "System.out.println(\"Conditional boundary event executed\";)");
 		scriptTask1.append("End 2", ElementType.END_EVENT);
 	}
 	

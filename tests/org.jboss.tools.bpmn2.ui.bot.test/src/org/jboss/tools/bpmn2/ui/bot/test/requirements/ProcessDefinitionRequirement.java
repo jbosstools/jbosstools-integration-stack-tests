@@ -16,9 +16,13 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.junit.requirement.Requirement;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.bpmn2.reddeer.dialog.BPMN2ProcessWizard;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.jboss.tools.reddeer.dialog.JavaProjectWizard;
@@ -107,14 +111,26 @@ public class ProcessDefinitionRequirement implements Requirement<ProcessDefiniti
 	private void openProcessDefinition() {
 		PackageExplorer pe = new PackageExplorer();
 		if (!pe.containsProject(d.project())) {
-			new JavaProjectWizard().execute(d.project());
-			
-			try {
-				new DefaultShell("Open Associated Perspective?");
-				new PushButton("No").click();
-			} catch (WidgetNotFoundException e) {
-				// ignore
-			}
+			new JavaProjectWizard(){
+				@Override
+				public void finish() {
+					log.info("Finish wizard");
+
+					String shellText = new DefaultShell().getText();
+					new PushButton("Finish").click();
+					new WaitWhile(new JobIsRunning());
+					
+					try {
+						new DefaultShell("Open Associated Perspective?");
+						new PushButton("No").click();
+					} catch (WidgetNotFoundException e) {
+						log.info("Probably shell 'Open Associated Perspective?' not displayed");					
+					}
+
+					new WaitWhile(new ShellWithTextIsActive(shellText), TimePeriod.LONG);
+					new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+				}
+			}.execute(d.project());
 		}
 		
 		// process name

@@ -78,9 +78,9 @@ public class DefinitionsTab {
 	 * @param code
 	 * @param dataType
 	 */
-	public void addError(String name, String code, String dataType) {
+	public void addError(ErrorRef error) {
 		new DefaultSection("Error List").getToolbarButton("Add").click();
-		new ErrorRef(name, code, dataType).setUp();
+		error.setUp();
 		new DefaultSection("Error Details").getToolbarButton("Close").click();
 	}
 	

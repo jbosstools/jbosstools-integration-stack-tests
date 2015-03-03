@@ -3,6 +3,7 @@ package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.Position;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ScriptLanguage;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.Direction;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.ExclusiveGateway;
@@ -44,10 +45,10 @@ public class XPathExpressionTest extends JBPM6BaseTest {
 		splitGw.setCondition("Split -> Task2", "", "count($instanceMetadata/instanceMetadata/user[@approved='false']) = 1");
 		
 		ScriptTask task1 = new ScriptTask("Task1");
-		task1.setScript("Java", "System.out.println(\"Task 1\");");
+		task1.setScript(ScriptLanguage.JAVA, "System.out.println(\"Task 1\");");
 		
 		ScriptTask task2 = new ScriptTask("Task2");
-		task2.setScript("Java", "System.out.println(\"Task 2\");");
+		task2.setScript(ScriptLanguage.JAVA, "System.out.println(\"Task 2\");");
 		
 		task1.append("Join", ElementType.EXCLUSIVE_GATEWAY, Position.SOUTH_EAST);
 		ExclusiveGateway joinGw = new ExclusiveGateway("Join");

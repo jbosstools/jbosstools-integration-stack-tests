@@ -5,6 +5,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.Position;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.FromExpression;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ScriptLanguage;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ToDataInput;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.UserTask;
@@ -38,7 +39,7 @@ public class ExclusiveSplitPriorityTest extends JBPM6BaseTest {
 		gw.setPriority("Split -> Script1", "2");
 		
 		ScriptTask task1 = new ScriptTask("Script1");
-		task1.setScript("Java", "System.out.println(\"x=\" + x);");
+		task1.setScript(ScriptLanguage.JAVA, "System.out.println(\"x=\" + x);");
 		task1.append("Join", ElementType.EXCLUSIVE_GATEWAY, Position.SOUTH_EAST);
 		
 		ExclusiveGateway gw2 = new ExclusiveGateway("Join");
@@ -46,7 +47,7 @@ public class ExclusiveSplitPriorityTest extends JBPM6BaseTest {
 		gw2.append("Email", ElementType.USER_TASK);
 		
 		ScriptTask task2 = new ScriptTask("Script2");
-		task2.setScript("Java", "System.out.println(\"y=\" + y);");
+		task2.setScript(ScriptLanguage.JAVA, "System.out.println(\"y=\" + y);");
 		task2.connectTo(gw2);
 		
 		// TBD: switch to sendTask

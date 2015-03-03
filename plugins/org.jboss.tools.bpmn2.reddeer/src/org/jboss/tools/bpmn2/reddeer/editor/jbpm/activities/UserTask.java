@@ -80,12 +80,12 @@ public class UserTask extends Task {
 	 * 
 	 * @param language
 	 */
-	public void addActor(String language) {
-		properties.getTab("User Task", UserTaskTab.class).addActor(name);
+	public void addActor(String actor) {
+		properties.getTab("User Task", UserTaskTab.class).addActor(actor);
 	}
 	
-	public void removeActor(String name) {
-		properties.getTab("User Task", UserTaskTab.class).removeActor(name);
+	public void removeActor(String actor) {
+		properties.getTab("User Task", UserTaskTab.class).removeActor(actor);
 	}
 
 	/**

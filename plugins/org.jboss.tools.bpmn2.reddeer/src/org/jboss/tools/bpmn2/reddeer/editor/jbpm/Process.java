@@ -100,8 +100,8 @@ public class Process extends ElementContainer {
 	 * @param code
 	 * @param dataType
 	 */
-	public void addError(String name, String code, String dataType) {
-		properties.getTab("Definitions", DefinitionsTab.class).addError(name, code, dataType);
+	public void addError(ErrorRef error) {
+		properties.getTab("Definitions", DefinitionsTab.class).addError(error);
 	}
 	
 	/**
@@ -109,8 +109,8 @@ public class Process extends ElementContainer {
 	 * @param name
 	 * @param code
 	 */
-	public void addEscalation(String name, String code) {
-		properties.getTab("Definitions", DefinitionsTab.class).addEscalation(name, code);
+	public void addEscalation(Escalation escalation) {
+		properties.getTab("Definitions", DefinitionsTab.class).addEscalation(escalation.getName(), escalation.getCode());
 	}
 	
 	/**

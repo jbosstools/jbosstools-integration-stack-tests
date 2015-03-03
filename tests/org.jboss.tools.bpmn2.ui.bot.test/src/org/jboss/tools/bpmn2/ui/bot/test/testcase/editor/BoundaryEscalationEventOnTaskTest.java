@@ -3,6 +3,7 @@ package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.Position;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Escalation;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ScriptLanguage;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.UserTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.EscalationBoundaryEvent;
@@ -44,7 +45,7 @@ public class BoundaryEscalationEventOnTaskTest extends JBPM6BaseTest {
 		boundaryEvent.append("Script Task", ElementType.SCRIPT_TASK, Position.SOUTH);
 		
 		ScriptTask scriptTask = new ScriptTask("Script Task");
-		scriptTask.setScript("Java", "System.out.println(\"Escalation handled\");");
+		scriptTask.setScript(ScriptLanguage.JAVA, "System.out.println(\"Escalation handled\");");
 		scriptTask.append("EndProcess2", ElementType.END_EVENT);
 	}
 	

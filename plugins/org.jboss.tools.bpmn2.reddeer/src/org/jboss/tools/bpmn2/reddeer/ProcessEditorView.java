@@ -322,9 +322,9 @@ public class ProcessEditorView extends SWTBotGefEditor {
 	 */
 	protected void projectNature(boolean on) {
 		try {
-			log.info("Handling 'BPMN2 Project Nature'. Value '" + on + "'");
+			log.info("Handling 'BPMN2 Project'. Value '" + on + "'");
 			Thread.sleep(SAVE_SLEEP_TIME);
-			new DefaultShell("Configure BPMN2 Project Nature").setFocus();
+			new DefaultShell("Configure BPMN2 Project").setFocus();
 			new CheckBox().click();
 			new PushButton(on ? "Yes": "No").click();
 		} catch (InterruptedException e) {

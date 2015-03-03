@@ -2,6 +2,7 @@ package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.Position;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ScriptLanguage;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.SubProcess;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
@@ -21,7 +22,7 @@ public class SubProcessTest extends JBPM6BaseTest {
 		subProcess.append("Goodbye", ElementType.SCRIPT_TASK);
 
 		ScriptTask script4 = new ScriptTask("Goodbye");
-		script4.setScript("Java", "System.out.println(\"Goodbye World\");");
+		script4.setScript(ScriptLanguage.JAVA, "System.out.println(\"Goodbye World\");");
 		script4.append("EndProcess", ElementType.TERMINATE_END_EVENT);
 		
 		// Now create the inner of the sub process.
@@ -31,11 +32,11 @@ public class SubProcessTest extends JBPM6BaseTest {
 		start2.append("Hello1", ElementType.SCRIPT_TASK);
 		
 		ScriptTask script1 = new ScriptTask("Hello1");
-		script1.setScript("Java", "System.out.println(\"x = \" + x);");
+		script1.setScript(ScriptLanguage.JAVA, "System.out.println(\"x = \" + x);");
 		script1.append("Hello2", ElementType.SCRIPT_TASK, Position.SOUTH);
 		
 		ScriptTask script2 = new ScriptTask("Hello2");
-		script2.setScript("Java", "kcontext.setVariable(\"x\", \"Hello\");");
+		script2.setScript(ScriptLanguage.JAVA, "kcontext.setVariable(\"x\", \"Hello\");");
 		script2.append("EndSubProcess", ElementType.END_EVENT, Position.SOUTH);
 	}
 	

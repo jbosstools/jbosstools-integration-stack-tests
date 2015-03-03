@@ -96,8 +96,8 @@ public class UserTaskTab {
 	 */
 	public void addActor(String name) {
 		new DefaultSection("Actors").getToolbarButton("Add").click();
-		new LabeledText("Script").setText(name);
-		new DefaultSection("Formal Expression Details").getToolbarButton("Close").click();
+		new LabeledText("Name").setText(name);
+		new DefaultSection("Actor Details").getToolbarButton("Close").click();
 	}
 	
 	/**

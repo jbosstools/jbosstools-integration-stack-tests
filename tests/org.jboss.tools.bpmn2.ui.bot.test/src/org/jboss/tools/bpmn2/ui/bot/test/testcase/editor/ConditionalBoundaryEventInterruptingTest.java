@@ -3,6 +3,7 @@ package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.Position;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Escalation;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ScriptLanguage;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.SubProcess;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.ConditionalBoundaryEvent;
@@ -40,7 +41,7 @@ public class ConditionalBoundaryEventInterruptingTest extends JBPM6BaseTest {
 		conditionalBoundaryEvent.append("Goodbye", ElementType.SCRIPT_TASK, Position.NORTH);
 		
 		ScriptTask scriptTask = new ScriptTask("Goodbye");
-		scriptTask.setScript("", "System.out.println(\"Condition met\");");
+		scriptTask.setScript(ScriptLanguage.JAVA, "System.out.println(\"Condition met\");");
 		scriptTask.append("EndProcess2", ElementType.END_EVENT);
 		
 		// fix connections - the framework code does not create them because editPart is

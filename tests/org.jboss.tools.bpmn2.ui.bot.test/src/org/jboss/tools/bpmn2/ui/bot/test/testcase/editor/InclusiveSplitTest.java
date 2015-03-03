@@ -3,6 +3,7 @@ package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.Position;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ScriptLanguage;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.InclusiveGateway;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
@@ -32,15 +33,15 @@ public class InclusiveSplitTest extends JBPM6BaseTest {
 		gateway.setCondition("Gateway -> Script3", "java", "return x > 20;");
 
 		ScriptTask script1 = new ScriptTask("Script1");
-		script1.setScript("Java", "System.out.println(\"path1\");");
+		script1.setScript(ScriptLanguage.JAVA, "System.out.println(\"path1\");");
 		script1.append("EndProcess1", ElementType.END_EVENT);
 		
 		ScriptTask script2 = new ScriptTask("Script2");
-		script2.setScript("Java", "System.out.println(\"path2\");");
+		script2.setScript(ScriptLanguage.JAVA, "System.out.println(\"path2\");");
 		script2.append("EndProcess2", ElementType.END_EVENT);
 
 		ScriptTask script3 = new ScriptTask("Script3");
-		script3.setScript("Java", "System.out.println(\"path3\");");
+		script3.setScript(ScriptLanguage.JAVA, "System.out.println(\"path3\");");
 		script3.append("EndProcess3", ElementType.END_EVENT);
 	}
 	
