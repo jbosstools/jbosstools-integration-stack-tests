@@ -45,3 +45,4 @@ Export-Package: org.jboss.tools.switchyard.reddeer.binding,
  org.jboss.tools.switchyard.reddeer.view,
  org.jboss.tools.switchyard.reddeer.widget,
  org.jboss.tools.switchyard.reddeer.wizard
+Import-Package: org.jboss.reddeer.direct.preferences

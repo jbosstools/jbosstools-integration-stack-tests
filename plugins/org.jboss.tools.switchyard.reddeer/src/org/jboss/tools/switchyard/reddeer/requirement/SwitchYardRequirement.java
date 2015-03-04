@@ -4,7 +4,10 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.List;
 
+import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.direct.preferences.Preferences;
 import org.jboss.reddeer.junit.requirement.CustomConfiguration;
 import org.jboss.reddeer.junit.requirement.Requirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement;
@@ -23,6 +26,8 @@ import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
  */
 public class SwitchYardRequirement implements Requirement<SwitchYard>, CustomConfiguration<SwitchYardConfig> {
 
+	private static final Logger LOGGER = Logger.getLogger(SwitchYardRequirement.class);
+	
 	private SwitchYardConfig config;
 	private SwitchYard switchyard;
 
@@ -67,6 +72,21 @@ public class SwitchYardRequirement implements Requirement<SwitchYard>, CustomCon
 		ServerBase serverBase = config.getServerBase();
 		if (serverBase == null) {
 			return;
+		}
+		List<String> preferences = serverBase.getProperties("preference");
+		for (String preference : preferences) {
+			// Example: org.eclipse.m2e.core/eclipse.m2.userSettingsFile=settings.xml
+			if (preference.matches("([^/=]+)/([^/=]+)=.+")) {
+				String[] parts = preference.split("=");
+				String key = parts[0];
+				String value = parts[1];
+				parts = key.split("/");
+				String plugin = parts[0];
+				String pluginKey = parts[1];
+				Preferences.set(plugin, pluginKey, value);
+			} else {
+				LOGGER.warn("Preference '" + preference + "' doesn't match the patterm. SKIPPED");
+			}
 		}
 		if (!serverBase.exists()) {
 			serverBase.create();
