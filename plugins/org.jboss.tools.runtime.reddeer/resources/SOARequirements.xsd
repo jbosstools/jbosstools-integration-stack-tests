@@ -31,6 +31,8 @@
 			<xs:extension base="rd:abstractRequirementType">
 				<xs:choice>
 					<xs:element name="karaf" type="server:apache-karaf" />
+					<xs:element name="servicemix" type="server:apache-servicemix" />
+					<xs:element name="fabric8" type="server:apache-fabric8" />
 					<xs:element name="fuse" type="server:jboss-fuse" />
 					<xs:element name="as" type="server:jboss-as" />
 					<xs:element name="eap" type="server:jboss-eap" />
