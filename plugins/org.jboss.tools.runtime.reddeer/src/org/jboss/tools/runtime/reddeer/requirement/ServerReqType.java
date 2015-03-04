@@ -5,6 +5,7 @@ import org.jboss.tools.runtime.reddeer.impl.ServerAS;
 import org.jboss.tools.runtime.reddeer.impl.ServerEAP;
 import org.jboss.tools.runtime.reddeer.impl.ServerFuse;
 import org.jboss.tools.runtime.reddeer.impl.ServerKaraf;
+import org.jboss.tools.runtime.reddeer.impl.ServerServiceMix;
 import org.jboss.tools.runtime.reddeer.impl.ServerWildFly;
 
 /**
@@ -15,7 +16,7 @@ import org.jboss.tools.runtime.reddeer.impl.ServerWildFly;
 public enum ServerReqType {
 
 	ANY(null), AS(ServerAS.class), WildFly(ServerWildFly.class), EAP(ServerEAP.class), Karaf(ServerKaraf.class), Fuse(
-			ServerFuse.class);
+			ServerFuse.class), ServiceMix(ServerServiceMix.class);
 
 	private Class<?> clazz;
 
