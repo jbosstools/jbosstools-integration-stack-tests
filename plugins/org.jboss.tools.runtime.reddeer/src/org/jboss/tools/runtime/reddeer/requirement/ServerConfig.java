@@ -39,7 +39,8 @@ public class ServerConfig {
 			@XmlElement(name = "wildfly", namespace = Namespaces.SOA_REQ, type = ServerWildFly.class),
 			@XmlElement(name = "karaf", namespace = Namespaces.SOA_REQ, type = ServerKaraf.class),
 			@XmlElement(name = "fuse", namespace = Namespaces.SOA_REQ, type = ServerFuse.class),
-			@XmlElement(name = "servicemix", namespace = Namespaces.SOA_REQ, type = ServerServiceMix.class)})
+			@XmlElement(name = "servicemix", namespace = Namespaces.SOA_REQ, type = ServerServiceMix.class),
+			@XmlElement(name = "fabric8", namespace = Namespaces.SOA_REQ, type = ServerServiceMix.class) })
 	private ServerBase serverBase;
 
 	public ServerBase getServerBase() {
