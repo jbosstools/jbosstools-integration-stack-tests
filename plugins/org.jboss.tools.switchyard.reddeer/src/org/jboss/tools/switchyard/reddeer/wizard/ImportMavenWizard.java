@@ -1,7 +1,7 @@
 package org.jboss.tools.switchyard.reddeer.wizard;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jface.wizard.ImportWizardDialog;
+import org.jboss.reddeer.jface.wizard.ImportWizardDialog;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.condition.WaitCondition;
@@ -33,6 +33,14 @@ public class ImportMavenWizard extends ImportWizardDialog {
 			new PushButton("Next >").click();
 		}
 		new PushButton("Finish").click();
+		new WaitWhile(new ShellWithTextIsActive("Import Maven Projects"), TimePeriod.NORMAL, false);
+		try {
+			new DefaultShell("Import Maven Projects");
+			new PushButton("Resolve All Later").click();
+			new PushButton("Finish").click();
+		} catch (Exception e) {
+			// ok, it means that the warning wasn't displayed
+		}
 		try {
 			new DefaultShell("Incomplete Maven Goal Execution");
 			new PushButton("OK").click();
