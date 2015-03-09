@@ -3,8 +3,12 @@ package org.jboss.tools.switchyard.ui.bot.test;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
@@ -53,16 +57,28 @@ public abstract class QuickstartsTest {
 
 		new ImportMavenWizard().importProject(fullPath);
 
-		checkErrors(path);
+		checkErrors(path, new FixableErrorMatcher());
 	}
 
 	protected void checkErrors(String path) {
+		checkErrors(path, null);
+	}
+	
+	protected void checkErrors(String path, Matcher<TreeItem> excludeMatcher) {
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
 		ErrorsExist errorsExistCondition = new ErrorsExist();
 		new WaitUntil(errorsExistCondition, TimePeriod.LONG, false);
-		List<TreeItem> errors = errorsExistCondition.getAllErrors();
+		List<TreeItem> allErrors = errorsExistCondition.getAllErrors();
+		List<TreeItem> errors = new ArrayList<TreeItem>();
+		for (TreeItem error: allErrors) {
+			if(excludeMatcher != null && excludeMatcher.matches(error)) {
+				continue;
+			}
+			errors.add(error);
+		}
+		
 		assertTrue("After importing the quickstart '" + path
 				+ "' there are the following errors:\n" + toString(errors), errors.isEmpty());
 	}
@@ -83,6 +99,27 @@ public abstract class QuickstartsTest {
 			result.append("\n");
 		}
 		return result.toString();
+	}
+	
+	private class FixableErrorMatcher extends BaseMatcher<TreeItem> {
+		
+		public static final String NOT_COVERED = "Plugin execution not covered by lifecycle configuration";
+
+		@Override
+		public boolean matches(Object obj) {
+			if (obj instanceof TreeItem) {
+				TreeItem treeItem = (TreeItem) obj;
+				String text = treeItem.getText();
+				return text != null && text.startsWith(NOT_COVERED);
+			}
+			return false;
+		}
+
+		@Override
+		public void describeTo(Description desc) {
+			
+		}
+		
 	}
 
 }
