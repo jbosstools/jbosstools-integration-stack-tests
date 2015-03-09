@@ -76,7 +76,7 @@
             <goals>
               <goal>run</goal>
             </goals>
-            <phase>generate-resources</phase>
+            <phase>pre-integration-test</phase>
             <configuration>
               <tasks>
                 <echo>Downloading BRMS 5.x runtime</echo>
@@ -112,7 +112,7 @@
                 <goals>
                   <goal>run</goal>
                 </goals>
-                <phase>generate-resources</phase>
+		<phase>pre-integration-test</phase>
                 <configuration>
                   <tasks>
                     <echo>Downloading BRMS 6.x runtime</echo>
