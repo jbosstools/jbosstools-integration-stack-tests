@@ -29,6 +29,7 @@ public class MultipleStartEventTest extends JBPM6BaseTest {
 		start2.connectTo(gateway);
 		
 		UserTask task = new UserTask("User Task");
+		task.setTaskName("TaskForJohn");
 		task.addActor("john");
 		task.append("EndProcess", ElementType.TERMINATE_END_EVENT);
 	}

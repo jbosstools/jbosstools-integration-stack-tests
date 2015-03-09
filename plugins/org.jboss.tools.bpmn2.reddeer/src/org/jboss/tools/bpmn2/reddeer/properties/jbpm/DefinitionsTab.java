@@ -56,9 +56,9 @@ public class DefinitionsTab {
 	 * @param name
 	 * @param dataType
 	 */
-	public void addMessage(String name, String dataType) {
+	public void addMessage(Message message) {
 		new DefaultSection("Message List").getToolbarButton("Add").click();
-		new Message(name, dataType).setUp();
+		message.setUp();
 		new DefaultSection("Message Details").getToolbarButton("Close").click();
 	}
 	
@@ -119,9 +119,9 @@ public class DefinitionsTab {
 	 * @param name
 	 * @param escalationCode
 	 */
-	public void addEscalation(String name, String code) {
+	public void addEscalation(Escalation escalation) {
 		new DefaultSection("Escalation List").getToolbarButton("Add").click();
-		new Escalation(name, code).setUp();
+		escalation.setUp();
 		new DefaultSection("Escalation Details").getToolbarButton("Close").click();
 	}
 	

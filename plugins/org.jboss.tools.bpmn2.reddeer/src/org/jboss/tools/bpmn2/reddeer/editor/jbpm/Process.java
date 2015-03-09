@@ -90,8 +90,8 @@ public class Process extends ElementContainer {
 	 * @param name
 	 * @param dataType
 	 */
-	public void addMessage(String name, String dataType) {
-		properties.getTab("Definitions", DefinitionsTab.class).addMessage(name, dataType);
+	public void addMessage(Message message) {
+		properties.getTab("Definitions", DefinitionsTab.class).addMessage(message);
 	}
 	
 	/**
@@ -110,7 +110,7 @@ public class Process extends ElementContainer {
 	 * @param code
 	 */
 	public void addEscalation(Escalation escalation) {
-		properties.getTab("Definitions", DefinitionsTab.class).addEscalation(escalation.getName(), escalation.getCode());
+		properties.getTab("Definitions", DefinitionsTab.class).addEscalation(escalation);
 	}
 	
 	/**
@@ -149,4 +149,7 @@ public class Process extends ElementContainer {
 		properties.getTab("Interfaces", InterfacesTab.class).addInterface(name, implementation, operationList);
 	}
 
+	public void importWholeInterface(String interfaceName) {
+		properties.getTab("Interfaces", InterfacesTab.class).importWholeInterface(interfaceName);
+	}
 }

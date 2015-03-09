@@ -20,12 +20,11 @@ public class ParallelSplitJoinTest extends JBPM6BaseTest {
 	@Override
 	public void buildProcessModel() {
 		StartEvent start = new StartEvent("StartProcess");
-		start.select();
-		start.setName("Start");
 		start.append("Self Evaluation", ElementType.USER_TASK);
 		
 		UserTask userTask1 = new UserTask("Self Evaluation");
-		userTask1.addActor("employee"); 
+		userTask1.addActor("employee");
+		userTask1.setTaskName("employeeTask");
 		userTask1.append("Gateway1", ElementType.PARALLEL_GATEWAY, ConnectionType.SEQUENCE_FLOW);
 		
 		ParallelGateway gateway1 = new ParallelGateway("Gateway1");
@@ -36,6 +35,7 @@ public class ParallelSplitJoinTest extends JBPM6BaseTest {
 
 		UserTask userTask2 = new UserTask("HR Evaluation");
 		userTask2.addActor("Mary");
+		userTask2.setTaskName("maryTask");
 		userTask2.append("Gateway2", ElementType.PARALLEL_GATEWAY, ConnectionType.SEQUENCE_FLOW, Position.SOUTH_EAST);
 		
 		ParallelGateway gateway2 = new ParallelGateway("Gateway2");
@@ -43,6 +43,7 @@ public class ParallelSplitJoinTest extends JBPM6BaseTest {
 
 		UserTask userTask3 = new UserTask("PM Evaluation");
 	    userTask3.addActor("John");
+	    userTask3.setTaskName("johnTask");
 		userTask3.connectTo(gateway2);
 		
 		gateway2.append("End", ElementType.END_EVENT);

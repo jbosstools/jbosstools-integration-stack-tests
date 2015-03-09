@@ -3,6 +3,7 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm.throwevents;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Escalation;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.EventDefinition.MappingVariableType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.EscalationEventDefinition;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.EventTab;
 
@@ -23,8 +24,8 @@ public class EscalationIntermediateThrowEvent extends Element {
 	 * 
 	 * @param escalation
 	 */
-	public void setEscalation(Escalation escalation) {
-		properties.getTab("Event", EventTab.class).set(new EscalationEventDefinition(escalation));
+	public void setEscalation(Escalation escalation, String variable) {
+		properties.getTab("Event", EventTab.class).set(new EscalationEventDefinition(escalation, variable, MappingVariableType.SOURCE));
 		refresh();
 	}
 	

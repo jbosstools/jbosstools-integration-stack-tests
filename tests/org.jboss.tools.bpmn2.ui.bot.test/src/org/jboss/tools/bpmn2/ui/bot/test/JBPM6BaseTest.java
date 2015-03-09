@@ -3,14 +3,17 @@ package org.jboss.tools.bpmn2.ui.bot.test;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.WaitCondition;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.util.Display;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.bpmn2.reddeer.ProcessEditorView;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
 import org.jboss.tools.bpmn2.ui.bot.test.validator.JBPM6Validator;
@@ -100,6 +103,7 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 		 * Make sure there are no problems in the problems view.
 		 */
 		if (bpmnValidation) {
+			new WaitUntil(new ErrorAppearOrDisappear(problems), TimePeriod.getCustom(5), false);
 			StringBuilder error = new StringBuilder();
 			List<TreeItem> errorList = problems.getAllErrors();
 			for (TreeItem e : errorList) {
@@ -133,10 +137,9 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 	 * 
 	 */
 	protected void closeProcessFile() {
-		new SWTWorkbenchBot().closeAllShells();
 		log.info("Closing '" + editor.getTitle() + "'");
 		saveProcessModel();
-		editor.close();
+		new DefaultEditor().close();
 	}
 	
 	/**
@@ -168,5 +171,27 @@ public abstract class JBPM6BaseTest extends SWTBotTestCase {
 				new DefaultShell().getSWTWidget().setMaximized(true);
 			}
 		});
+	}
+	
+	private class ErrorAppearOrDisappear implements WaitCondition {
+		
+		private int oldCount;
+		private ProblemsView problems;
+		
+		public ErrorAppearOrDisappear(ProblemsView problemsView) {
+			problems = problemsView;
+			oldCount = problems.getAllErrors().size();
+		}
+		
+		@Override
+		public boolean test() {
+			int newCount = problems.getAllErrors().size();
+			return oldCount != newCount;
+		}
+		
+		@Override
+		public String description() {
+			return "Waiting if for old counnt("+oldCount+") of errors change";
+		}
 	}
 }

@@ -5,7 +5,6 @@ import org.jboss.tools.bpmn2.reddeer.editor.Position;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ScriptLanguage;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.Task;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.UserTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.catchevents.SignalIntermediateCatchEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.Direction;
@@ -30,6 +29,7 @@ public class EventBasedSplitTest extends JBPM6BaseTest {
 		start.append("Email1", ElementType.USER_TASK);
 		
 		UserTask task1 = new UserTask("Email1");
+		task1.setTaskName("Email1Task");
 		task1.append("Split", ElementType.EVENT_BASED_GATEWAY);
 		
 		EventBasedGateway gateway1 = new EventBasedGateway("Split");
@@ -38,7 +38,7 @@ public class EventBasedSplitTest extends JBPM6BaseTest {
 		gateway1.append("Event2", ElementType.SIGNAL_INTERMEDIATE_CATCH_EVENT, Position.SOUTH_EAST);
 		
 		SignalIntermediateCatchEvent event1 = new SignalIntermediateCatchEvent("Event1");
-		event1.setSignalMapping("Signal1", "BPMN2-EventBasedSplit/x");
+		event1.setSignalMapping("Signal1", "x");
 //		event1.addParameterMapping(new OutputParameterMapping(new FromDataOutput("Event1"), new ToVariable("BPMN2-EventBasedSplit/x"), "Output Parameters"));
 		event1.append("Script1", ElementType.SCRIPT_TASK);
 		
@@ -46,7 +46,7 @@ public class EventBasedSplitTest extends JBPM6BaseTest {
 		script1.setScript(ScriptLanguage.JAVA, "System.out.println(\"Executing Yes\");");
 		
 		SignalIntermediateCatchEvent event2 = new SignalIntermediateCatchEvent("Event2");
-		event2.setSignalMapping("Signal2", "BPMN2-EventBasedSplit/x");
+		event2.setSignalMapping("Signal2", "x");
 //		event2.addParameterMapping(new OutputParameterMapping(new FromDataOutput("Event2"), new ToVariable("BPMN2-EventBasedSplit/x"), "Output Parameters"));
 		event2.append("Script2", ElementType.SCRIPT_TASK);
 		
@@ -65,6 +65,7 @@ public class EventBasedSplitTest extends JBPM6BaseTest {
 		script3.append("Email2", ElementType.USER_TASK);
 		
 		UserTask task2 = new UserTask("Email2");
+		task2.setTaskName("Email2Task");
 		task2.append("EndProcess", ElementType.TERMINATE_END_EVENT);
 	}
 	

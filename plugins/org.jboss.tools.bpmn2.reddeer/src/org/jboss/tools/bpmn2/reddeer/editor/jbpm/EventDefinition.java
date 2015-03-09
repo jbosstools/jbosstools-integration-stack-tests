@@ -5,6 +5,15 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm;
  */
 public class EventDefinition {
 
+	public enum MappingVariableType {
+		SOURCE, TARGET;
+		
+		public String label() {
+			return name().charAt(0) + name().substring(1).toLowerCase();
+		}
+	}
+	
+	
 	/**
 	 * 
 	 * @return

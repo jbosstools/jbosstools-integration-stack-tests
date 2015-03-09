@@ -14,13 +14,17 @@ import org.jboss.tools.reddeer.DefaultSection;
 public class EscalationEventDefinition extends EventDefinition {
 
 	private Escalation escalation;
+	private MappingVariableType mappingType;
+	private String variable;
 
 	/**
 	 * 
 	 * @param escalation
 	 */
-	public EscalationEventDefinition(Escalation escalation) {
+	public EscalationEventDefinition(Escalation escalation, String variable, MappingVariableType mappingType) {
 		this.escalation = escalation;
+		this.variable = variable;
+		this.mappingType = mappingType;
 	}
 	
 	@Override
@@ -31,7 +35,7 @@ public class EscalationEventDefinition extends EventDefinition {
 			new EscalationDialog().add(escalation);
 		}
 		c.setSelection(escalation.getName());
-		
+		new LabeledCombo(mappingType.label()).setSelection(variable);
 		new DefaultSection("Escalation Event Definition Details").getToolbarButton("Close").click();
 	}
 	

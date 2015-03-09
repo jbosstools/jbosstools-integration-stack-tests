@@ -1,6 +1,7 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
 import org.jboss.tools.bpmn2.reddeer.editor.Position;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Escalation;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ScriptLanguage;
@@ -18,23 +19,31 @@ public class ConditionalBoundaryEventInterruptingTest extends JBPM6BaseTest {
 
 	@Override
 	public void buildProcessModel() {
-		StartEvent startEvent = new StartEvent("StartProcess");
-		startEvent.append("Hello", ElementType.SUB_PROCESS);
+		Process process = new Process("BPMN2-ConditionalBoundaryEventInterrupting");
+		process.addLocalVariable("x", "String");
+		
+		new StartEvent("StartProcess").delete();
+
+		process.add("Hello", ElementType.SUB_PROCESS);
 		
 		SubProcess subProcess = new SubProcess("Hello");
 		subProcess.append("EndProcess", ElementType.TERMINATE_END_EVENT);
-		subProcess.add("StartSubProcess", ElementType.START_EVENT);
 		
+		process.add("Start", ElementType.START_EVENT, subProcess, Position.SOUTH);
+		new StartEvent("Start").connectTo(subProcess);
+		
+		subProcess.add("StartSubProcess", ElementType.START_EVENT);
 		StartEvent subProcessStartEvent = new StartEvent("StartSubProcess");
-		subProcessStartEvent.append("Task", ElementType.SCRIPT_TASK);
+		subProcessStartEvent.append("Task", ElementType.SCRIPT_TASK, Position.SOUTH_EAST);
 		
 		ScriptTask task = new ScriptTask("Task");
+		task.setScript(ScriptLanguage.JAVA, "System.out.println(\"Subprocess script\");");
 		task.append("EscalationEvent", ElementType.ESCALATION_END_EVENT, Position.SOUTH);
 		
 		EscalationEndEvent endEvent = new EscalationEndEvent("EscalationEvent");
-		endEvent.setEscalation(new Escalation("Timeout", "400"));
+		endEvent.setEscalation(new Escalation("Timeout", "400"), "x");
 		
-		subProcess.add("Conditional Boundary Event Process", ElementType.CONDITIONAL_BOUNDARY_EVENT);
+		subProcess.add("Conditional Boundary Event Process", ElementType.CONDITIONAL_BOUNDARY_EVENT );
 		
 		ConditionalBoundaryEvent conditionalBoundaryEvent = new ConditionalBoundaryEvent("Conditional Boundary Event Process");
 		conditionalBoundaryEvent.setScript("", "org.jbpm.bpmn2.objects.Person(name == \"john\")");

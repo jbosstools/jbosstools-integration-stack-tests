@@ -1,7 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions;
 
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.tools.bpmn2.reddeer.ProcessEditorView;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.SignalDialog;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.EventDefinition;
 import org.jboss.tools.reddeer.DefaultCombo;
@@ -12,23 +11,15 @@ import org.jboss.tools.reddeer.DefaultSection;
  */
 public class SignalEventDefinition extends EventDefinition {
 
-	public enum Type {
-		SOURCE, TARGET;
-		
-		public String label() {
-			return name().charAt(0) + name().substring(1).toLowerCase();
-		}
-	}
-	
 	private String signalName;
 	private String variableName;
-	private Type type;
+	private MappingVariableType type;
 
 	/**
 	 * 
 	 * @param signalName
 	 */
-	public SignalEventDefinition(String signalName, Type type) {
+	public SignalEventDefinition(String signalName, MappingVariableType type) {
 		this(signalName, null, type);
 	}
 	
@@ -37,7 +28,7 @@ public class SignalEventDefinition extends EventDefinition {
 	 * @param signalName
 	 * @param variableName
 	 */
-	public SignalEventDefinition(String signalName, String variableName, Type type) {
+	public SignalEventDefinition(String signalName, String variableName, MappingVariableType type) {
 		this.signalName = signalName;
 		this.variableName = variableName;
 		this.type = type;

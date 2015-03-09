@@ -63,7 +63,7 @@ public class SubProcessTab {
 	 * @param dataType
 	 */
 	public void addVariable(String name, String dataType) {
-		new DefaultSection("Variable List").getToolbarButton("Add").click();
+		new DefaultSection("Local Variable List").getToolbarButton("Add").click();
 		new LabeledText("Name").setText(name);
 		
 		DefaultCombo c = new DefaultCombo("Data Type");
@@ -73,7 +73,7 @@ public class SubProcessTab {
 		}
 		c.setSelection(dataType);
 		
-		new DefaultSection("Variable Details").getToolbarButton("Close").click();
+		new DefaultSection("Local Variable Details").getToolbarButton("Close").click();
 	}
 	
 	/**

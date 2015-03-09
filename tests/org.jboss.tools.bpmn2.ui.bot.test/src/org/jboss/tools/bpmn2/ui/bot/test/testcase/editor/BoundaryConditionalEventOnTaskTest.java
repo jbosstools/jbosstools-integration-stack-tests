@@ -28,6 +28,7 @@ public class BoundaryConditionalEventOnTaskTest extends JBPM6BaseTest {
 		
 		UserTask userTask1 = new UserTask("User Task");
 		userTask1.addActor("john");
+		userTask1.setTaskName("taskForJohn");
 		userTask1.append("User Task 2", ElementType.USER_TASK, Position.NORTH_EAST);
 		userTask1.addEvent("Conditional Boundary Event", ElementType.CONDITIONAL_BOUNDARY_EVENT);
 
@@ -38,10 +39,11 @@ public class BoundaryConditionalEventOnTaskTest extends JBPM6BaseTest {
 		boundaryEvent.append("Condition met", ElementType.SCRIPT_TASK, Position.SOUTH_EAST);
 		UserTask userTask2 = new UserTask("User Task 2");
 		userTask2.addActor("john");
+		userTask2.setTaskName("secondTaskForJohn");
 		userTask2.append("End 1", ElementType.END_EVENT);
 		
 		ScriptTask scriptTask1 = new ScriptTask("Condition met");
-		scriptTask1.setScript(ScriptLanguage.JAVA, "System.out.println(\"Conditional boundary event executed\";)");
+		scriptTask1.setScript(ScriptLanguage.JAVA, "System.out.println(\"Conditional boundary event executed\");");
 		scriptTask1.append("End 2", ElementType.END_EVENT);
 	}
 	

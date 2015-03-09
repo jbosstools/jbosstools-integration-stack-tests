@@ -19,14 +19,6 @@ public class ToDataInput implements MappingSide {
 	/**
 	 * 
 	 * @param name
-	 */
-	public ToDataInput(String name) {
-		this(name, "");
-	}
-	
-	/**
-	 * 
-	 * @param name
 	 * @param dataType
 	 */
     public ToDataInput(String name, String dataType) {

@@ -29,8 +29,8 @@ public class CallActivityTest extends JBPM6BaseTest {
 		call.setWaitForCompletion(true);
 		call.setIndependent(true);
 		call.setCalledActivity("SubProcess");
-		call.addParameterMapping(new ParameterMapping(new FromVariable("y"), new ToDataInput("subX"), ParameterMapping.Type.INPUT));
-		call.addParameterMapping(new ParameterMapping(new FromDataOutput("subY"), new ToVariable("x"), ParameterMapping.Type.OUTPUT));
+		call.addParameterMapping(new ParameterMapping(new FromVariable("y"), new ToDataInput("subX", "String"), ParameterMapping.Type.INPUT));
+		call.addParameterMapping(new ParameterMapping(new FromDataOutput("subY", "String"), new ToVariable("x"), ParameterMapping.Type.OUTPUT));
 		
 		call.append("EndProcess", ElementType.TERMINATE_END_EVENT);
 	}

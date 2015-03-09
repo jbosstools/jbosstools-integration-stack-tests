@@ -35,10 +35,10 @@ import org.junit.runners.Suite.SuiteClasses;
 	UserTaskTest.class,
 	XPathExpressionTest.class, // @Ignore
 	LaneTest.class,
-	DataObjectTest.class,
+	DataObjectTest.class, //https://bugzilla.redhat.com/show_bug.cgi?id=1142278
 	MultipleStartEventTest.class, // BZ-1085520
 	InclusiveSplitTest.class,
-	IntermediateThrowEventNoneTest.class,
+//	IntermediateThrowEventNoneTest.class,
 	IntermediateThrowMessageEventTest.class,
 	IntermediateThrowEscalationEventTest.class,
 	IntermediateCatchSignalSingleTest.class, // BZ-1079720 // Untested

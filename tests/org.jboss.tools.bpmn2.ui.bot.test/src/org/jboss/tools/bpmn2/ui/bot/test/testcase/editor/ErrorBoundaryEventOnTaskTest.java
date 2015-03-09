@@ -24,6 +24,7 @@ public class ErrorBoundaryEventOnTaskTest extends JBPM6BaseTest {
 	@Override
 	public void buildProcessModel() {
 		Process process = new Process("BPMN2-ErrorBoundaryEventOnTask");
+		process.addLocalVariable("x", "String");
 		ErrorRef myError = new ErrorRef("myError", "org.jbpm.bpmn2.objects.MyError", "String");
 		process.addError(myError);
 		
@@ -37,18 +38,20 @@ public class ErrorBoundaryEventOnTaskTest extends JBPM6BaseTest {
 		
 		UserTask task1 = new UserTask("User Task");
 		task1.addActor("john");
+		task1.setTaskName("TaskForJohn");
 		task1.append("Error end event", ElementType.ERROR_END_EVENT);
 		
 		ErrorEndEvent end1 = new ErrorEndEvent("Error end event");
-		end1.setErrorEvent(myError);
+		end1.setErrorEvent(myError, "x");
 		
 		UserTask task2 = new UserTask("User task error attached");
 		task2.addActor("mary");
+		task2.setTaskName("TaskForMary");
 		task2.append("Error 1", ElementType.END_EVENT);
 		task2.addEvent("Error Boundary Event", ElementType.ERROR_BOUNDARY_EVENT);
 		
 		ErrorBoundaryEvent boundaryEvent = new ErrorBoundaryEvent("Error Boundary Event");
-		boundaryEvent.setErrorEvent(myError);
+		boundaryEvent.setErrorEvent(myError, "x");
 		boundaryEvent.append("Script Task", ElementType.SCRIPT_TASK, Position.SOUTH);
 		
 		ScriptTask script = new ScriptTask("Script Task");

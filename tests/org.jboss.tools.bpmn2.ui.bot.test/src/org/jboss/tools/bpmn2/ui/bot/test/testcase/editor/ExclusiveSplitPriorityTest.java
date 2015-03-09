@@ -52,10 +52,11 @@ public class ExclusiveSplitPriorityTest extends JBPM6BaseTest {
 		
 		// TBD: switch to sendTask
 		UserTask task = new UserTask("Email");
-		task.addParameterMapping(new ParameterMapping(new FromExpression("mvel", "This is an urgent email #{x}"), new ToDataInput("Body"), ParameterMapping.Type.INPUT));
-		task.addParameterMapping(new ParameterMapping(new FromExpression("mvel", "Urgent email !"), new ToDataInput("Subject"), ParameterMapping.Type.INPUT));
-		task.addParameterMapping(new ParameterMapping(new FromExpression("mvel", "you@mail.com"), new ToDataInput("To"), ParameterMapping.Type.INPUT));
-		task.addParameterMapping(new ParameterMapping(new FromExpression("mvel", "ne@mail.com"), new ToDataInput("From"), ParameterMapping.Type.INPUT));
+		task.setTaskName("EmailTask");
+		task.addParameterMapping(new ParameterMapping(new FromExpression("mvel", "This is an urgent email #{x}"), new ToDataInput("Body", "String"), ParameterMapping.Type.INPUT));
+		task.addParameterMapping(new ParameterMapping(new FromExpression("mvel", "Urgent email !"), new ToDataInput("Subject", "String"), ParameterMapping.Type.INPUT));
+		task.addParameterMapping(new ParameterMapping(new FromExpression("mvel", "you@mail.com"), new ToDataInput("To", "String"), ParameterMapping.Type.INPUT));
+		task.addParameterMapping(new ParameterMapping(new FromExpression("mvel", "ne@mail.com"), new ToDataInput("From", "String"), ParameterMapping.Type.INPUT));
 		task.append("EndProcess", ElementType.TERMINATE_END_EVENT);
 	}
 	

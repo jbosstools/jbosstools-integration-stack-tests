@@ -19,14 +19,6 @@ public class FromDataOutput implements MappingSide {
 	/**
 	 * 
 	 * @param name
-	 */
-	public FromDataOutput(String name) {
-		this(name, "");
-	}
-	
-	/**
-	 * 
-	 * @param name
 	 * @param dataType
 	 */
 	public FromDataOutput(String name, String dataType) {

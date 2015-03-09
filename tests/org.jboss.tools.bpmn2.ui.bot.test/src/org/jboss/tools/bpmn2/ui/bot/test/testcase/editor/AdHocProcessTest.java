@@ -6,6 +6,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.Position;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ScriptLanguage;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.UserTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.ExclusiveGateway;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.ui.bot.test.JBPM6BaseTest;
@@ -55,6 +56,7 @@ public class AdHocProcessTest extends JBPM6BaseTest {
 		task1.setScript(ScriptLanguage.JAVA, "System.out.println(\"Task1\");");
 		
 		process.add("User", ElementType.USER_TASK, task3, Position.SOUTH);
+		new UserTask("User").setTaskName("TaskForUser");
 	}
 	
 }

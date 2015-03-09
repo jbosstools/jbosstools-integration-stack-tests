@@ -1,6 +1,7 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ErrorRef;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.endevents.ErrorEndEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
@@ -12,11 +13,12 @@ public class ErrorEndEventTest extends JBPM6BaseTest {
 
 	@Override
 	public void buildProcessModel() {
+		new Process("BPMN2-ErrorEndEvent").addLocalVariable("x", "String");
 		StartEvent start = new StartEvent("StartProcess");
 		start.append("ErrorEvent", ElementType.ERROR_END_EVENT);
 		
 		ErrorEndEvent end = new ErrorEndEvent("ErrorEvent");
-		end.setErrorEvent(new ErrorRef("errorname", "errorcode", "java.lang.Object"));
+		end.setErrorEvent(new ErrorRef("errorname", "errorcode", "java.lang.Object"), "x");
 	}
 	
 }

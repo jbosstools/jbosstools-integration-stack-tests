@@ -17,13 +17,15 @@ public class MessageStartTest extends JBPM6BaseTest {
 	public void buildProcessModel() {
 		Process process = new Process("BPMN2-MessageStart");
 		process.addLocalVariable("x", "String");
-		process.addMessage("HelloMessage", "String");
+		
+		Message msg = new Message("_2_Message", "String");
+		process.addMessage(msg);
 		
 		new StartEvent("StartProcess").delete();
 		process.add("StartProcess", ElementType.MESSAGE_START_EVENT);
 		
 		MessageStartEvent start = new MessageStartEvent("StartProcess");
-		start.setMessageMapping(new Message("HelloMessage", "String"), "x");
+		start.setMessageMapping(msg, "x");
 		start.append("Script", ElementType.SCRIPT_TASK);
 		
 		ScriptTask script = new ScriptTask("Script");

@@ -45,8 +45,8 @@ public class ReceiveTask extends Task {
 	 * @param name
 	 * @param dataType
 	 */
-	public void setMessage(String name, String dataType) {
-		properties.getTab("Receive Task", ReceiveTaskTab.class).setMessage(new Message(name, dataType));
+	public void setMessage(Message message) {
+		properties.getTab("Receive Task", ReceiveTaskTab.class).setMessage(message);
 	}
 	
 	/**

@@ -16,6 +16,8 @@ public class UserTaskTest extends JBPM6BaseTest {
 
 		UserTask task = new UserTask("User Task");
 		task.addActor("john");
+		task.setTaskName("TaskForJohn");
+		task.setGroupId("com.redhat");
 		task.append("EndProcess", ElementType.TERMINATE_END_EVENT);
 	}
 	

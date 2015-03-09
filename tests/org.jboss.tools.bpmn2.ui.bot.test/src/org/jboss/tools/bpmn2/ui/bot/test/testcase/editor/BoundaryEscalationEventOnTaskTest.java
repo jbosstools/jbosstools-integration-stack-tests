@@ -1,6 +1,7 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.editor;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
 import org.jboss.tools.bpmn2.reddeer.editor.Position;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Escalation;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ScriptLanguage;
@@ -21,6 +22,9 @@ public class BoundaryEscalationEventOnTaskTest extends JBPM6BaseTest {
 
 	@Override
 	public void buildProcessModel() {
+		new Process("BPMN2-BoundaryEscalationEventOnTask").addLocalVariable("x", "String");
+		Escalation escalation = new Escalation("myEscalation","MyEscalation");
+		
 		StartEvent startEvent = new StartEvent("StartProcess");
 		startEvent.append("Split", ElementType.PARALLEL_GATEWAY);
 		
@@ -30,18 +34,20 @@ public class BoundaryEscalationEventOnTaskTest extends JBPM6BaseTest {
 
 		UserTask userTask1 = new UserTask("User Task With Escalation");
 		userTask1.addActor("John");
+		userTask1.setTaskName("TaskForJohn");
 		userTask1.append("EscalationEndProcess", ElementType.ESCALATION_END_EVENT);
 
 		EscalationEndEvent escalationEndEvent = new EscalationEndEvent("EscalationEndProcess");
-		escalationEndEvent.setEscalation(new Escalation("","MyEscalation"));
+		escalationEndEvent.setEscalation(escalation, "x");
 	
 		UserTask userTask2 = new UserTask("User Task");
 		userTask2.addActor("Mary");
+		userTask1.setTaskName("TaskForMary");
 		userTask2.append("EndProcess", ElementType.END_EVENT);
 		userTask2.addEvent("Escalation Boundary Event", ElementType.ESCALATION_BOUNDARY_EVENT);
 
 		EscalationBoundaryEvent boundaryEvent = new EscalationBoundaryEvent("Escalation Boundary Event");
-		boundaryEvent.setEscalation(new Escalation("","MyEscalation"));
+		boundaryEvent.setEscalation(escalation, "x");
 		boundaryEvent.append("Script Task", ElementType.SCRIPT_TASK, Position.SOUTH);
 		
 		ScriptTask scriptTask = new ScriptTask("Script Task");

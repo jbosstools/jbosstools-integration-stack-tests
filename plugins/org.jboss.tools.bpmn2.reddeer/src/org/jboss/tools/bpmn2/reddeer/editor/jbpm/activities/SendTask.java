@@ -29,6 +29,10 @@ public class SendTask extends Task {
 		properties.getTab("Send Task", SendTaskTab.class).setImplementation(implementationUri);
 	}
 	
+	public void setOperation(String operationContractName) {
+		setOperation(operationContractName, null, null, null);
+	}
+	
 	/**
 	 * 
 	 * @param operation
@@ -42,8 +46,8 @@ public class SendTask extends Task {
 	 * @param name
 	 * @param dataType
 	 */
-	public void setMessage(String name, String dataType) {
-		properties.getTab("Send Task", SendTaskTab.class).setMessage(new Message(name, dataType));
+	public void setMessage(Message message) {
+		properties.getTab("Send Task", SendTaskTab.class).setMessage(message);
 	}
 
 	/**

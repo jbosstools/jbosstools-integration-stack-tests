@@ -20,15 +20,15 @@ public class SendTaskTest extends JBPM6BaseTest {
 	public void buildProcessModel() {
 		Process process = new Process("BPMN2-SendTask");
 		process.addLocalVariable("s", "String");
-		process.addMessage("_2_Message", "String");
+		process.importWholeInterface("String");
 		
 		StartEvent start = new StartEvent("StartProcess");
 		start.append("Send", ElementType.SEND_TASK);
 
 		SendTask send = new SendTask("Send");
-		send.addParameterMapping(new ParameterMapping(new FromVariable("s"), new ToDataInput("Message"), ParameterMapping.Type.INPUT));
-		send.setImplementation("Unspecified");
-		send.setMessage("_2_Message", "String");
+		send.addParameterMapping(new ParameterMapping(new FromVariable("s"), new ToDataInput("Message", "String"), ParameterMapping.Type.INPUT));
+		send.setImplementation("Java");
+		send.setOperation("String/copyValueOf");
 		send.append("EndProcess", ElementType.TERMINATE_END_EVENT);
 	}
 	

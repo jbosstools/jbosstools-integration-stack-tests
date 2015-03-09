@@ -14,13 +14,17 @@ import org.jboss.tools.reddeer.DefaultSection;
 public class ErrorEventDefinition extends EventDefinition {
 
 	private ErrorRef errorRef;
+	private MappingVariableType mappingType;
+	private String variable;
 
 	/**
 	 * 
 	 * @param errorRef
 	 */
-	public ErrorEventDefinition(ErrorRef errorRef) {
+	public ErrorEventDefinition(ErrorRef errorRef, String variable, MappingVariableType mappingType) {
 		this.errorRef = errorRef;
+		this.variable = variable;
+		this.mappingType = mappingType;
 	}
 	
 	@Override
@@ -31,7 +35,7 @@ public class ErrorEventDefinition extends EventDefinition {
 			new ErrorDialog().add(errorRef);
 		}
 		errorCombo.setSelection(errorRef.getName());
-
+		new LabeledCombo(mappingType.label()).setSelection(variable);
 		new DefaultSection("Error Event Definition Details").getToolbarButton("Close").click();
 	}
 	
