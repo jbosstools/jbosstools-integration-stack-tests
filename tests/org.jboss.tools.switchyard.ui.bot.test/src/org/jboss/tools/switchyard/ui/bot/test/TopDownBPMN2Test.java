@@ -127,10 +127,10 @@ public class TopDownBPMN2Test extends RedDeerTest {
 		SwitchYardServiceTask task = new SwitchYardServiceTask("EvalGreet");
 		task.setTaskAttribute("Operation Name", "checkGreet");
 		task.setTaskAttribute("Service Name", EVAL_GREET);
-		task.addParameterMapping(new ParameterMapping(new FromVariable(PROCESS_GREET + "/Parameter"),
+		task.addParameterMapping(new ParameterMapping(new FromVariable("Parameter"),
 				new ToDataInput("Parameter", "String"), ParameterMapping.Type.INPUT));
 		task.addParameterMapping(new ParameterMapping(new FromDataOutput("Result", "String"), new ToVariable(
-				PROCESS_GREET + "/Result"),  ParameterMapping.Type.OUTPUT));
+				"Result"),  ParameterMapping.Type.OUTPUT));
 		task.append("EndProcess", ElementType.TERMINATE_END_EVENT);
 
 		openFile(PROJECT, PACKAGE_MAIN_RESOURCES, "META-INF", "switchyard.xml");
@@ -145,10 +145,14 @@ public class TopDownBPMN2Test extends RedDeerTest {
 				.typeAfter("getContent", "Assert.assertTrue(result);")
 				.newLine()
 				.type("Assert.assertFalse(service.operation(\"checkGreetIsPolite\").sendInOut(\"hi\").getContent(Boolean.class));");
-		new ShellMenu("File", "Save All").select();
-
-		new DefaultShell("Configure BPMN2 Project Nature");
-		new PushButton("No").click();// BPMN nature
+		
+		try {
+			new ShellMenu("File", "Save All").select();
+			new DefaultShell("Configure BPMN2 Project");
+			new PushButton("No").click();
+		} catch (Exception e) {
+			// ok, no shell was popup
+		}
 
 		ProjectItem item = new ProjectExplorer().getProject(PROJECT).getProjectItem("src/test/java", PACKAGE,
 				PROCESS_GREET + "Test.java");
