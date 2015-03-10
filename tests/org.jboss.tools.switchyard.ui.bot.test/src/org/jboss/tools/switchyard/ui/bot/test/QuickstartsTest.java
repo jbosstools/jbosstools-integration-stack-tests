@@ -5,22 +5,22 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.util.List;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.handler.ShellHandler;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
+import org.jboss.tools.switchyard.reddeer.condition.ErrorsExist;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.jboss.tools.switchyard.reddeer.wizard.ImportMavenWizard;
@@ -59,21 +59,21 @@ public abstract class QuickstartsTest {
 	protected void checkErrors(String path) {
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-
-		ProblemsView problemsView = new ProblemsView();
-		problemsView.open();
-		List<TreeItem> errors = problemsView.getAllErrors();
+		
+		ErrorsExist errorsExistCondition = new ErrorsExist();
+		new WaitUntil(errorsExistCondition, TimePeriod.LONG, false);
+		List<TreeItem> errors = errorsExistCondition.getAllErrors();
 		assertTrue("After importing the quickstart '" + path
 				+ "' there are the following errors:\n" + toString(errors), errors.isEmpty());
 	}
 
 	@After
 	public void deleteAllProjects() {
-		new SWTWorkbenchBot().closeAllShells();
-		ProjectExplorer projectExplorer = new ProjectExplorer();
-		for (Project project : projectExplorer.getProjects()) {
-			project.delete(false);
-		}
+		ShellHandler.getInstance().closeAllNonWorbenchShells();
+		
+		PackageExplorer packageExplorer = new PackageExplorer();
+		packageExplorer.open();
+		packageExplorer.deleteAllProjects(false);
 	}
 
 	protected String toString(List<TreeItem> items) {
