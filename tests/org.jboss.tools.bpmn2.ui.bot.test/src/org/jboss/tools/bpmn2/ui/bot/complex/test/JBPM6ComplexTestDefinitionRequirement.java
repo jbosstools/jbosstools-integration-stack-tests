@@ -23,6 +23,7 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.bpmn2.reddeer.DefaultCheckBox;
+import org.jboss.tools.bpmn2.reddeer.JBPM6ComplexEnvironment;
 import org.jboss.tools.bpmn2.reddeer.dialog.JavaProjectWizard;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.JBPM6ComplexTestDefinitionRequirement.JBPM6ComplexTestDefinition;
 import org.jboss.tools.bpmn2.ui.bot.tmp.ImportFileWizard;
@@ -38,6 +39,7 @@ public class JBPM6ComplexTestDefinitionRequirement implements Requirement<JBPM6C
 		public String openFile();
 		public String dependentOn() default "";
 		public boolean noErrorsInValidation() default true;
+		public boolean useGraphiti() default true;
 	}
 	
 	private JBPM6ComplexTestDefinition declaration;
@@ -51,6 +53,8 @@ public class JBPM6ComplexTestDefinitionRequirement implements Requirement<JBPM6C
 
 	@Override
 	public void fulfill() {
+		JBPM6ComplexEnvironment.getInstance().setUseGraphiti(declaration.useGraphiti());
+		
 		Display.getDisplay().syncExec(new Runnable() {
 			public void run() {
 				new DefaultShell().getSWTWidget().setMaximized(true);

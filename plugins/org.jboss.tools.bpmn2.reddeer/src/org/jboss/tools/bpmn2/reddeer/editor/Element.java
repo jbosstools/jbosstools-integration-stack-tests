@@ -25,6 +25,7 @@ import org.jboss.reddeer.graphiti.impl.graphitieditpart.LabeledGraphitiEditPart;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.tools.bpmn2.reddeer.AbsoluteEditPart;
 import org.jboss.tools.bpmn2.reddeer.GEFProcessEditor;
+import org.jboss.tools.bpmn2.reddeer.JBPM6ComplexEnvironment;
 import org.jboss.tools.bpmn2.reddeer.ProcessEditorView;
 import org.jboss.tools.bpmn2.reddeer.PropertiesHandler;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.BoundaryEvent;
@@ -41,7 +42,8 @@ import org.w3c.dom.NodeList;
  */
 public class Element {
 	
-	private boolean useGraphitiProperties = true;
+	private boolean useGraphitiProperties = 
+		JBPM6ComplexEnvironment.getInstance().useGraphiti();
 
 	protected Logger log = Logger.getLogger(getClass());
 	
