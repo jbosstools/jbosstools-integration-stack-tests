@@ -3,6 +3,7 @@ package org.jboss.tools.runtime.reddeer.wizard;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
@@ -31,5 +32,11 @@ public class JBPMRuntimePreferencePage extends WorkbenchPreferencePage {
 			jbpmRuntimes.add(item.getText(0));
 		}
 		return jbpmRuntimes;
+	}
+
+	public void open() {
+		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
+		dialog.open();
+		dialog.select(this);
 	}
 }

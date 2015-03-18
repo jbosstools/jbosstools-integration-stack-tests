@@ -2,7 +2,7 @@ package org.jboss.tools.teiid.reddeer.wizard;
 
 import java.util.Properties;
 
-import org.jboss.reddeer.eclipse.jface.wizard.ImportWizardDialog;
+import org.jboss.reddeer.jface.wizard.ImportWizardDialog;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.CheckBox;

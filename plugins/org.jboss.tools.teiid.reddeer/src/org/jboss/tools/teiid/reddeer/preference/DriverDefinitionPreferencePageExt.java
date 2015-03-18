@@ -8,6 +8,7 @@ import org.jboss.reddeer.eclipse.datatools.ui.DriverTemplate;
 import org.jboss.reddeer.eclipse.datatools.ui.preference.DriverDefinitionPreferencePage;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.DriverDefinitionPage;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.DriverDefinitionWizard;
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.swt.api.Tree;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -22,16 +23,16 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 	private static final String GENERIC_JDBC = "Generic JDBC";
 	public static final CharSequence OTHER = "Other";
 	
-	@Override
 	public void open() {
-
 		try {
-						super.open();
-					} catch (Exception e){
-						new DefaultTreeItem("Data Management").collapse();
-						new DefaultTreeItem("Data Management", "Connectivity", "Driver Definitions").expand();
-						new DefaultTreeItem("Data Management", "Connectivity", "Driver Definitions").select();
-					}
+			WorkbenchPreferenceDialog preferences = new WorkbenchPreferenceDialog();
+			preferences.open();
+			preferences.select(this);
+		} catch (Exception e){
+			new DefaultTreeItem("Data Management").collapse();
+			new DefaultTreeItem("Data Management", "Connectivity", "Driver Definitions").expand();
+			new DefaultTreeItem("Data Management", "Connectivity", "Driver Definitions").select();
+		}
 	}
 
 	//public void addDriverDefinition(DriverDefinition driverDefinition) {

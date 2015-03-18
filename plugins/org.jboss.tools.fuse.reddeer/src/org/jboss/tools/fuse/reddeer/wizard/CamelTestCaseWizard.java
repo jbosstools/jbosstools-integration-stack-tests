@@ -1,6 +1,6 @@
 package org.jboss.tools.fuse.reddeer.wizard;
 
-import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
+import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 
 /**
  * Wizard for creating a Camel Test Case.

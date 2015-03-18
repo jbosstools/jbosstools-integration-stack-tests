@@ -4,7 +4,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.ToolItem;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-import org.jboss.reddeer.swt.handler.WidgetHandler;
+import org.jboss.reddeer.swt.handler.ButtonHandler;
 import org.jboss.reddeer.swt.util.Display;
 
 /**
@@ -61,7 +61,7 @@ public class ToolBarButtonWithLabel extends BaseMatcher {
 							Display.syncExec(new Runnable() {
 								@Override
 								public void run() {
-									WidgetHandler.getInstance().click(but);
+									ButtonHandler.getInstance().click(but);
 								}
 							});	
 							return true;

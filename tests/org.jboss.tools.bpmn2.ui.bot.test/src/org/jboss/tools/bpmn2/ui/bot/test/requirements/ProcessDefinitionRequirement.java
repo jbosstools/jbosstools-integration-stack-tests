@@ -14,19 +14,14 @@ import org.apache.log4j.Logger;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.junit.requirement.Requirement;
-import org.jboss.reddeer.swt.api.Menu;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.tools.bpmn2.reddeer.dialog.BPMN2ProcessWizard;
 import org.jboss.tools.bpmn2.reddeer.dialog.JavaProjectWizard;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessDefinitionRequirement.ProcessDefinition;
-import org.jbpm.bpmn2.objects.Person;
 
 /**
  * 
@@ -114,6 +109,7 @@ public class ProcessDefinitionRequirement implements Requirement<ProcessDefiniti
 	 */
 	private void openProcessDefinition() {
 		PackageExplorer pe = new PackageExplorer();
+		pe.open();
 		if (!pe.containsProject(d.project())) {
 			new JavaProjectWizard().execute(d.project());
 			

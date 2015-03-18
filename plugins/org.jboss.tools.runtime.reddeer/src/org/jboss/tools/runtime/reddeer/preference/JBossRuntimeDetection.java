@@ -3,6 +3,7 @@ package org.jboss.tools.runtime.reddeer.preference;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
@@ -70,5 +71,11 @@ public class JBossRuntimeDetection extends WorkbenchPreferencePage {
 		}
 		new PushButton("Cancel").click();
 		return entries;
+	}
+
+	public void open() {
+		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
+		dialog.open();
+		dialog.select(this);
 	}
 }

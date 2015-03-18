@@ -1,6 +1,6 @@
 package org.jboss.tools.drools.reddeer.wizard;
 
-import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
+import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 
 public class NewDroolsProjectSelectSamplesWizardPage extends WizardPage {

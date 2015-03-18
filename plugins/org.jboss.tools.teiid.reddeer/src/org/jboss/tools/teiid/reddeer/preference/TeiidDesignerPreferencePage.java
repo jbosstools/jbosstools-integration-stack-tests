@@ -1,23 +1,17 @@
 package org.jboss.tools.teiid.reddeer.preference;
 
-import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
-import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
+import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
 
 /**
  * 
  * @author apodhrad
  *
  */
-public class TeiidDesignerPreferencePage extends PreferencePage {
+public class TeiidDesignerPreferencePage extends WorkbenchPreferencePage {
 
 	public TeiidDesignerPreferencePage() {
 		super("Teiid Designer");
@@ -44,6 +38,12 @@ public class TeiidDesignerPreferencePage extends PreferencePage {
 			new PushButton("Yes").click();
 		}
 		new PushButton("OK").click();
+	}
+	
+	public void open() {
+		WorkbenchPreferenceDialog preferences = new WorkbenchPreferenceDialog();
+		preferences.open();
+		preferences.select(this);
 	}
 	
 }

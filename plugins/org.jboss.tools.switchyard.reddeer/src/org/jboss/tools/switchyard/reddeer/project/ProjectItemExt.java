@@ -3,11 +3,11 @@ package org.jboss.tools.switchyard.reddeer.project;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
+import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.matcher.RegexMatcher;
 import org.jboss.reddeer.swt.matcher.WithMnemonicTextMatcher;
-import org.jboss.reddeer.swt.matcher.WithRegexMatcher;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.switchyard.reddeer.condition.ConsoleHasChanged;
@@ -84,7 +84,7 @@ public class ProjectItemExt {
 		private Matcher<String> matcher;
 
 		private Configuration(String config) {
-			matcher = new WithRegexMatcher("[1-9]+ " + config + ".*");
+			matcher = new RegexMatcher("[1-9]+ " + config + ".*");
 		}
 
 		public Matcher<String> getMatcher() {

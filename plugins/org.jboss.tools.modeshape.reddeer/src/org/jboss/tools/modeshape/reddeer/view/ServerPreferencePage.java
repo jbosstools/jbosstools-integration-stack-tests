@@ -1,12 +1,12 @@
 package org.jboss.tools.modeshape.reddeer.view;
 
-import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
 
 /**
  * Preference Page for Server Runtimes.
@@ -14,7 +14,7 @@ import org.jboss.reddeer.swt.wait.WaitWhile;
  * @author apodhrad
  *
  */
-public class ServerPreferencePage extends PreferencePage {
+public class ServerPreferencePage extends WorkbenchPreferencePage {
 
 	public ServerPreferencePage() {
 		super("Server", "Runtime Environments");

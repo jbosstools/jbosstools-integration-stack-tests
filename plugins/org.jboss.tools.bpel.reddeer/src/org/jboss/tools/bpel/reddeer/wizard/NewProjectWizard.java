@@ -3,8 +3,7 @@ package org.jboss.tools.bpel.reddeer.wizard;
 import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
-import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
+import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 /**
@@ -21,11 +20,6 @@ public class NewProjectWizard extends NewWizardDialog {
 		this.name = name;
 	}
 
-	@Override
-	public WizardPage getFirstPage() {
-		return null;
-	}
-
 	public void execute() {
 		open();
 
@@ -33,7 +27,8 @@ public class NewProjectWizard extends NewWizardDialog {
 
 		finish();
 
-		assertTrue("Project '" + name + "' wasn't created",
-				new PackageExplorer().containsProject(name));
+		PackageExplorer packageExplorer = new PackageExplorer();
+		packageExplorer.open();
+		assertTrue("Project '" + name + "' wasn't created", packageExplorer.containsProject(name));
 	}
 }

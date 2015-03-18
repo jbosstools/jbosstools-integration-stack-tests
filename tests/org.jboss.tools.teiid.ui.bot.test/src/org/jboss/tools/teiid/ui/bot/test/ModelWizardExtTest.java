@@ -4,8 +4,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Properties;
 
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.junit.logging.Logger;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;

@@ -1,7 +1,6 @@
 package org.jboss.tools.teiid.reddeer.wizard;
 
-import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
-import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
+import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 /**
@@ -15,10 +14,6 @@ public class ConnectionProfileXmlUrlPage extends WizardPage implements Connectio
 
 	public ConnectionProfileXmlUrlPage() {
 		
-	}
-	
-	protected ConnectionProfileXmlUrlPage(WizardDialog wizardDialog, int pageIndex) {
-		super(wizardDialog, pageIndex);
 	}
 
 	@Override

@@ -1,6 +1,6 @@
 package org.jboss.tools.jbpm.ui.bot.test.wizard;
 
-import org.jboss.reddeer.eclipse.jface.wizard.ExportWizardDialog;
+import org.jboss.reddeer.jface.wizard.ExportWizardDialog;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 
 /**

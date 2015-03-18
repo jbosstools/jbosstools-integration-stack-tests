@@ -13,7 +13,7 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.matcher.WithRegexMatchers;
+import org.jboss.reddeer.swt.matcher.RegexMatcher;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.drools.reddeer.dialog.DroolsRuntimeDialog;
@@ -118,7 +118,7 @@ public class RulesManagementTest extends TestParent {
         Assert.assertTrue("The original project was not created.", explorer.containsProject(oldName));
         explorer.getProject(oldName).select();
 
-        new ContextMenu(new WithRegexMatchers("Refactor.*", "Rename.*").getMatchers()).select();
+        new ContextMenu(new RegexMatcher("Refactor.*"), new RegexMatcher("Rename.*")).select();
 
         new DefaultShell("Rename Java Project");
         new LabeledText("New name:").setText(newName);
@@ -142,7 +142,7 @@ public class RulesManagementTest extends TestParent {
         new JavaPerspective().open();
 
         try {
-            new ShellMenu(new WithRegexMatchers("Run", "Toggle Breakpoint.*").getMatchers()).select();
+            new ShellMenu(new RegexMatcher("Run"), new RegexMatcher("Toggle Breakpoint.*")).select();
         } catch (SWTLayerException ex) {
             if ("Menu item is not enabled".equals(ex.getMessage())) {
                 Assert.fail("Toggle Breakpoint menu item is not enabled!");
@@ -171,7 +171,7 @@ public class RulesManagementTest extends TestParent {
         // wait a moment before Debug perspective is fully loaded
         waitASecond();
 
-        new ShellMenu(new WithRegexMatchers("Run", "Resume.*").getMatchers()).select();
+        new ShellMenu(new RegexMatcher("Run"), new RegexMatcher("Resume.*")).select();
         console.open();
         consoleText = console.getConsoleText();
         Assert.assertTrue("Wrong console text found\n" + consoleText, consoleText.matches(SUCCESSFUL_RUN_REGEX));

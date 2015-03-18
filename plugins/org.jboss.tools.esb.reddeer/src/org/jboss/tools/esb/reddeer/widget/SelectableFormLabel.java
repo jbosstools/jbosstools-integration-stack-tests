@@ -16,6 +16,6 @@ public class SelectableFormLabel extends DefaultLabel {
 	}
 
 	public void select() {
-		WidgetHandler.getInstance().notify(SWT.Selection, w);
+		WidgetHandler.getInstance().notify(SWT.Selection, swtWidget);
 	}
 }

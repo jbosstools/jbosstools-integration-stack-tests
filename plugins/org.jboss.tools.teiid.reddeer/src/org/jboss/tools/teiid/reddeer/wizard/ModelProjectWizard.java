@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
+import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
@@ -35,7 +35,7 @@ public class ModelProjectWizard extends NewWizardDialog {
 
 	public void create(String name) {
 		open();
-		getWizardPage().fillWizardPage(name);
+		new ModelProjectPage().setProjectName(name);
 		finish();
 	}
 	
@@ -85,7 +85,7 @@ public class ModelProjectWizard extends NewWizardDialog {
 			new SWTWorkbenchBot().button("New...").click();
 			
 			//New Model Project (1. page)
-			getWizardPage().fillWizardPage(name);
+			new ModelProjectPage().setProjectName(name);
 			new SWTWorkbenchBot().button("&Next >").click();
 			//Project References (2. page)
 			new SWTWorkbenchBot().button("&Next >").click();

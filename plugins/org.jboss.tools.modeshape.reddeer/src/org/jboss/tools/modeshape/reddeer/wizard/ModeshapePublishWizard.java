@@ -3,7 +3,7 @@ package org.jboss.tools.modeshape.reddeer.wizard;
 import java.util.Arrays;
 import java.util.List;
 
-import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
+import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.list.DefaultList;
 

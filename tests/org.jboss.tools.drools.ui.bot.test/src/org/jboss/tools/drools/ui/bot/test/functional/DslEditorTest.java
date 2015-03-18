@@ -3,8 +3,8 @@ package org.jboss.tools.drools.ui.bot.test.functional;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;

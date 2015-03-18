@@ -3,7 +3,7 @@ package org.jboss.tools.jbpm.ui.bot.test.wizard;
 import java.io.File;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.jboss.reddeer.eclipse.jface.wizard.ImportWizardDialog;
+import org.jboss.reddeer.jface.wizard.ImportWizardDialog;
 
 /**
  * 

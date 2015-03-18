@@ -2,6 +2,7 @@ package org.jboss.tools.runtime.reddeer.preference;
 
 import java.util.List;
 
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
@@ -63,6 +64,12 @@ public class InstalledJREs extends WorkbenchPreferencePage {
 			}
 		}
 		return false;
+	}
+	
+	public void open() {
+		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
+		dialog.open();
+		dialog.select(this);
 	}
 
 }

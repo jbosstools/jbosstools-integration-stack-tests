@@ -2,7 +2,7 @@ package org.jboss.tools.modeshape.reddeer.wizard;
 
 import static org.junit.Assert.assertEquals;
 
-import org.jboss.reddeer.eclipse.jface.wizard.WizardDialog;
+import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;

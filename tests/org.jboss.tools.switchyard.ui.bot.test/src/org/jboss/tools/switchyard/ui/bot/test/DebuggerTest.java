@@ -63,7 +63,7 @@ public class DebuggerTest {
 	@BeforeClass
 	public static void importTestProject() {
 		new ExternalProjectImportWizardDialog().open();
-		WizardProjectsImportPage importPage = new WizardProjectsImportPage(null, 0);
+		WizardProjectsImportPage importPage = new WizardProjectsImportPage();
 		importPage.setRootDirectory(new File(RESOURCES, "projects/hello").getAbsolutePath());
 		importPage.copyProjectsIntoWorkspace(true);
 		// This may take several minutes

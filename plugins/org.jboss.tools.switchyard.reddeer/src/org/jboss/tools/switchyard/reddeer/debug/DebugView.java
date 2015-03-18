@@ -23,7 +23,7 @@ public class DebugView extends WorkbenchView {
 
 				@Override
 				public String run() {
-					org.eclipse.swt.widgets.TreeItem[] items = swtTree.getSelection();
+					org.eclipse.swt.widgets.TreeItem[] items = swtWidget.getSelection();
 					if (items.length > 0) {
 						return items[0].getText();
 					}

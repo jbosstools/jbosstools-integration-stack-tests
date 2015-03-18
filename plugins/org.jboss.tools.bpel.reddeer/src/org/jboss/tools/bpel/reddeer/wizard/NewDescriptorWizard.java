@@ -1,7 +1,6 @@
 package org.jboss.tools.bpel.reddeer.wizard;
 
-import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
-import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
+import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 /**
@@ -18,11 +17,6 @@ public class NewDescriptorWizard extends NewWizardDialog {
 	public NewDescriptorWizard(String projectName) {
 		super("BPEL 2.0", "BPEL Deployment Descriptor");
 		this.projectName = projectName;
-	}
-
-	@Override
-	public WizardPage getFirstPage() {
-		throw new UnsupportedOperationException();
 	}
 
 	public void execute() {

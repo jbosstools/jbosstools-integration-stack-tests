@@ -11,7 +11,7 @@ import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.matcher.WithRegexMatchers;
+import org.jboss.reddeer.swt.matcher.RegexMatcher;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
 import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectSelectRuntimeWizardPage.CodeCompatibility;
@@ -87,7 +87,7 @@ public class Brms5ProjectTest extends TestParent {
         Assert.assertFalse("Project already has Drools dependencies.", explorer.getProject(projectName).containsItem("Drools Library"));
 
         explorer.getProject(projectName).select();
-        new ContextMenu(new WithRegexMatchers("Configure.*", "Convert to Drools Project.*").getMatchers()).select();
+        new ContextMenu(new RegexMatcher("Configure.*"), new RegexMatcher("Convert to Drools Project.*")).select();
         new WaitWhile(new JobIsRunning());
 
         Assert.assertTrue("Project does not have Drools dependencies.", explorer.getProject(projectName).containsItem("Drools Library"));

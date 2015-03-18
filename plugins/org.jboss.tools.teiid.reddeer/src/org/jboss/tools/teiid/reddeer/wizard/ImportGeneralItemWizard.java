@@ -3,7 +3,7 @@ package org.jboss.tools.teiid.reddeer.wizard;
 import java.io.File;
 import java.util.Properties;
 
-import org.jboss.reddeer.eclipse.jface.wizard.ImportWizardDialog;
+import org.jboss.reddeer.jface.wizard.ImportWizardDialog;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;

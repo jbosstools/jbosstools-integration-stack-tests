@@ -9,7 +9,7 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.matcher.WithRegexMatchers;
+import org.jboss.reddeer.swt.matcher.RegexMatcher;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
@@ -55,13 +55,13 @@ public class AuditLogTest extends TestParent {
         explorer.open();
         explorer.getProject(DEFAULT_PROJECT_NAME).select();
 
-        new ContextMenu(new WithRegexMatchers("Refresh.*").getMatchers()).select();
+        new ContextMenu(new RegexMatcher("Refresh.*")).select();
 
         explorer = new PackageExplorer();
         explorer.open();
         explorer.getProject(DEFAULT_PROJECT_NAME).getProjectItem("test.log").select();
 
-        new ContextMenu(new WithRegexMatchers("Properties.*").getMatchers()).select();
+        new ContextMenu(new RegexMatcher("Properties.*")).select();
 
         String location = new LabeledText("Location:").getText();
         new PushButton("Cancel").click();

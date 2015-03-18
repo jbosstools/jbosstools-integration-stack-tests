@@ -1,20 +1,14 @@
 package org.jboss.tools.teiid.reddeer.manager;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.hamcrest.Matcher;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.matcher.RegexMatcher;
-import org.jboss.reddeer.swt.matcher.WithRegexMatcher;
 import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.teiid.reddeer.ModelProject;
 import org.jboss.tools.teiid.reddeer.Procedure;
@@ -112,7 +106,7 @@ public class ModelExplorerManager {
 		//wait while is in progress
 		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
 		//wait while dialog Preview data... is active
-		new WaitWhile(new ShellWithTextIsActive(new WithRegexMatcher("Preview.*")), TimePeriod.LONG);
+		new WaitWhile(new ShellWithTextIsActive(new RegexMatcher("Preview.*")), TimePeriod.LONG);
 		SQLResult result = DatabaseDevelopmentPerspective.getInstance().getSqlResultsView().getByOperation(previewSQL);
 		return result.getStatus().equals(SQLResult.STATUS_SUCCEEDED);
 	}

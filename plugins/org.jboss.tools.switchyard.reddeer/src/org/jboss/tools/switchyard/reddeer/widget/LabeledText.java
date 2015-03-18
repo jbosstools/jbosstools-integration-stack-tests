@@ -7,7 +7,6 @@ import org.eclipse.swt.widgets.Widget;
 import org.hamcrest.Matcher;
 import org.jboss.reddeer.swt.api.Text;
 import org.jboss.reddeer.swt.impl.text.AbstractText;
-import org.jboss.reddeer.swt.lookup.TextLookup;
 import org.jboss.reddeer.swt.matcher.RegexMatcher;
 import org.jboss.reddeer.swt.matcher.WithLabelMatcher;
 import org.jboss.reddeer.swt.util.Display;
@@ -34,7 +33,7 @@ public class LabeledText extends AbstractText implements Text {
 	}
 
 	public LabeledText(Matcher<String> matcher) {
-		w = TextLookup.getInstance().getText(null, 0, new WithLabelMatcher(matcher));
+		super(null, 0, new WithLabelMatcher(matcher));
 	}
 
 	public void setFocusOut() {
@@ -42,11 +41,10 @@ public class LabeledText extends AbstractText implements Text {
 
 			@Override
 			public void run() {
-				Listener[] listeners = w.getListeners(SWT.FocusOut);
+				Listener[] listeners = swtWidget.getListeners(SWT.FocusOut);
 				for (Listener listener : listeners) {
-					listener.handleEvent(createEvent(w, SWT.FocusOut));
-					listener.handleEvent(createEvent(w, SWT.FocusOut));
-					System.out.println("APLOG: Notify " + listener + " with FocusOut. Current text = '" + w.getText() + "'");
+					listener.handleEvent(createEvent(swtWidget, SWT.FocusOut));
+					listener.handleEvent(createEvent(swtWidget, SWT.FocusOut));
 				}
 			}
 		});

@@ -3,6 +3,7 @@ package org.jboss.tools.runtime.reddeer.wizard;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
@@ -58,5 +59,11 @@ public class ESBRuntimePreferencePage extends WorkbenchPreferencePage {
 			esbRuntimes.add(item.getText(1));
 		}
 		return esbRuntimes;
+	}
+	
+	public void open() {
+		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
+		dialog.open();
+		dialog.select(this);
 	}
 }

@@ -11,7 +11,7 @@ import org.jboss.reddeer.swt.reference.ReferencedComposite;
 public class DefaultCheckBox extends CheckBox {
 
 	public DefaultCheckBox() {
-		swtButton = ButtonLookup.getInstance().getButton(null, 0);
+		swtWidget = ButtonLookup.getInstance().getButton(null, 0);
 	}
 	
 	/**
@@ -21,16 +21,16 @@ public class DefaultCheckBox extends CheckBox {
 	public DefaultCheckBox(String label) {
 		//super(label);
 		
-		if (swtButton == null) {
-			swtButton = ButtonLookup.getInstance().getButton(null, 0, new WithLabelMatcher(label));
+		if (swtWidget == null) {
+			swtWidget = ButtonLookup.getInstance().getButton(null, 0, new WithLabelMatcher(label));
 		}
 	}
 	
 	public DefaultCheckBox(ReferencedComposite referenceComposite, String label) {
 		//super(referenceComposite, label);
 		
-		if (swtButton == null) {
-			swtButton = ButtonLookup.getInstance().getButton(referenceComposite, 0, new WithLabelMatcher(label));
+		if (swtWidget == null) {
+			swtWidget = ButtonLookup.getInstance().getButton(referenceComposite, 0, new WithLabelMatcher(label));
 		}
 	}
 

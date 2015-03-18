@@ -155,7 +155,7 @@ public class ESBEditor extends DefaultEditor {
 	private class MessageFlowPriorityCombo extends DefaultCombo {
 
 		public MessageFlowPriorityCombo() {
-			this.swtCombo = new SWTWorkbenchBot().comboBoxWithLabel(MESSAGE_FLOW_PRIORITY).widget;
+			this.swtWidget = new SWTWorkbenchBot().comboBoxWithLabel(MESSAGE_FLOW_PRIORITY).widget;
 		}
 
 	}

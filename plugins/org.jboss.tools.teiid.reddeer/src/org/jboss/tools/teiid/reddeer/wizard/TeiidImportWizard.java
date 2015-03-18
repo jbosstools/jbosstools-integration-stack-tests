@@ -1,10 +1,8 @@
 package org.jboss.tools.teiid.reddeer.wizard;
 
-import org.jboss.reddeer.eclipse.jface.wizard.ImportWizardDialog;
-import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
+import org.jboss.reddeer.jface.wizard.ImportWizardDialog;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -23,11 +21,6 @@ public abstract class TeiidImportWizard extends ImportWizardDialog {
 	public TeiidImportWizard(String importer) {
 		super("Teiid Designer", importer);
 		this.importer = importer;
-	}
-
-	@Override
-	public WizardPage getFirstPage() {
-		throw new UnsupportedOperationException("TeiidImportWizard doesn't support getFirstPage()");
 	}
 
 	@Override

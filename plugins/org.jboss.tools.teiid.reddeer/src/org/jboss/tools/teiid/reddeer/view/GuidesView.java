@@ -8,7 +8,7 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.matcher.RegexMatcher;
+import org.jboss.reddeer.swt.matcher.TreeItemRegexMatcher;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
@@ -35,7 +35,7 @@ public class GuidesView extends WorkbenchView {
 		open();
 		
 		new DefaultCombo().setSelection(actionSet);
-		new DefaultTreeItem(new RegexMatcher(action + ".*")).doubleClick();
+		new DefaultTreeItem(new TreeItemRegexMatcher(action + ".*")).doubleClick();
 	}
 	
 	/**

@@ -1,7 +1,6 @@
 package org.jboss.tools.bpel.reddeer.wizard;
 
-import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
-import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
+import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
@@ -85,11 +84,6 @@ public class NewProcessWizard extends NewWizardDialog {
 
 	public NewProcessWizard setEmptyTemplate() {
 		return setTemplate(TEMPLATE_EMPTY);
-	}
-
-	@Override
-	public WizardPage getFirstPage() {
-		throw new UnsupportedOperationException();
 	}
 
 	public void execute() {

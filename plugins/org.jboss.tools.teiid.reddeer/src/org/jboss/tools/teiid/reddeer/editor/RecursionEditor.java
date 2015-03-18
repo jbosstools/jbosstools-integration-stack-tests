@@ -1,25 +1,12 @@
 package org.jboss.tools.teiid.reddeer.editor;
 
 
-import static org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable.asyncExec;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotWorkbenchPart;
 import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-import org.jboss.reddeer.swt.handler.WidgetHandler;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.reference.ReferencedComposite;
+import org.jboss.reddeer.swt.handler.ButtonHandler;
 import org.jboss.reddeer.swt.util.Display;
 
 public class RecursionEditor {
@@ -64,7 +51,7 @@ private class ToolBarButtonWithLabel extends BaseMatcher {
 						Display.syncExec(new Runnable() {
 							@Override
 							public void run() {
-								WidgetHandler.getInstance().click(but);
+								ButtonHandler.getInstance().click(but);
 							}
 						});	
 						return true;

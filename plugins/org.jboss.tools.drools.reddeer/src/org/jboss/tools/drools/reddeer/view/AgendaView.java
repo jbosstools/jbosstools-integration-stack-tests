@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.matcher.WithRegexMatchers;
+import org.jboss.reddeer.swt.matcher.RegexMatcher;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.drools.reddeer.util.ItemLookup;
 
@@ -31,7 +31,7 @@ public class AgendaView extends WorkbenchView {
 
     public void selectAgendaGroup(String name) {
         open();
-        ItemLookup.getItemInTree(new DefaultTree(), new WithRegexMatchers(name + ".*").getMatchers());
+        ItemLookup.getItemInTree(new DefaultTree(), new RegexMatcher(name + ".*"));
     }
 
     public List<String> getActivations() {
@@ -47,7 +47,7 @@ public class AgendaView extends WorkbenchView {
 
     public List<String> getActivationsForGroup(String groupName) {
         open();
-        TreeItem group = ItemLookup.getItemInTree(new DefaultTree(), new WithRegexMatchers(groupName + ".*").getMatchers());
+        TreeItem group = ItemLookup.getItemInTree(new DefaultTree(), new RegexMatcher(groupName + ".*"));
 
         List<String> activations = new LinkedList<String>();
 

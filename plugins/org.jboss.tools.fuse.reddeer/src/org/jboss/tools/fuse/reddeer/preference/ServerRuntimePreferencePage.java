@@ -3,6 +3,7 @@ package org.jboss.tools.fuse.reddeer.preference;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -93,5 +94,11 @@ public class ServerRuntimePreferencePage extends WorkbenchPreferencePage {
 			temp.add(item.getText());
 		}
 		return temp;
+	}
+	
+	public void open() {
+		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
+		dialog.open();
+		dialog.select(this);
 	}
 }

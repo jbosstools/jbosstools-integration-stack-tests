@@ -2,6 +2,7 @@ package org.jboss.tools.runtime.ui.bot.test;
 
 import static org.junit.Assert.assertEquals;
 
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.m2e.core.ui.preferences.MavenSettingsPreferencePage;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -22,7 +23,10 @@ public class ServerPreferencesTest {
 	@Test
 	public void serverPreferenceTest() {
 		MavenSettingsPreferencePage page = new MavenSettingsPreferencePage();
-		page.open();
+		
+		WorkbenchPreferenceDialog preferences = new WorkbenchPreferenceDialog();
+		preferences.open();
+		preferences.select(page);
 		String location = page.getUserSettingsLocation();
 		page.cancel();
 		

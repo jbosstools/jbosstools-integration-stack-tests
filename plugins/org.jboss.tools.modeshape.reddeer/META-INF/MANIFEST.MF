@@ -6,12 +6,12 @@ Bundle-Vendor: JBoss by Red Hat
 Bundle-Version: 4.2.0.qualifier
 Bundle-Activator: org.jboss.tools.modeshape.reddeer.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: org.jboss.reddeer.eclipse;bundle-version="0.6.0",
- org.jboss.reddeer.gef;bundle-version="0.6.0",
- org.jboss.reddeer.jface;bundle-version="0.6.0",
- org.jboss.reddeer.junit;bundle-version="0.6.0",
- org.jboss.reddeer.swt;bundle-version="0.6.0",
- org.jboss.reddeer.workbench;bundle-version="0.6.0",
+Require-Bundle: org.jboss.reddeer.eclipse;bundle-version="0.7.0",
+ org.jboss.reddeer.gef;bundle-version="0.7.0",
+ org.jboss.reddeer.jface;bundle-version="0.7.0",
+ org.jboss.reddeer.junit;bundle-version="0.7.0",
+ org.jboss.reddeer.swt;bundle-version="0.7.0",
+ org.jboss.reddeer.workbench;bundle-version="0.7.0",
  org.eclipse.swtbot.go
 Export-Package: org.jboss.tools.modeshape.reddeer.perspective,
  org.jboss.tools.modeshape.reddeer.shell,

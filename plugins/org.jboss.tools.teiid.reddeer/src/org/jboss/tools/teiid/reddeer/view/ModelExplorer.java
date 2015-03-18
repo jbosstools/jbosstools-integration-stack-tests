@@ -30,9 +30,7 @@ public class ModelExplorer extends AbstractExplorer {
 	 */
 	public ModelProject createModelProject(String modelName) {
 		ModelProjectWizard wizard = new ModelProjectWizard(0);
-		wizard.open();
-		wizard.getWizardPage().fillWizardPage(modelName);
-		wizard.finish();
+		wizard.create(modelName);
 		return getModelProject(modelName);
 	}
 

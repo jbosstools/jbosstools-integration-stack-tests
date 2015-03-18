@@ -6,13 +6,15 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.apache.log4j.Logger;
-import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.jface.preference.PreferencePage;
 import org.jboss.reddeer.junit.requirement.PropertyConfiguration;
 import org.jboss.reddeer.junit.requirement.Requirement;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessRuntimeRequirement.ProcessRuntime;
 
 /**
@@ -40,7 +42,9 @@ public class ProcessRuntimeRequirement implements Requirement<ProcessRuntime>, P
 
 	@Override
 	public void fulfill() {
-		new PreferencePage("jBPM", "Installed jBPM Runtimes") {}.open();
+		WorkbenchPreferenceDialog preferences = new WorkbenchPreferenceDialog();
+		preferences.open();
+		preferences.select("jBPM", "Installed jBPM Runtimes");
 		
 		boolean runtimeFound = false;
 		Table table = new DefaultTable();

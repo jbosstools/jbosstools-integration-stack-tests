@@ -1,5 +1,6 @@
 package org.jboss.tools.fuse.reddeer.preference;
 
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
 
@@ -22,5 +23,11 @@ public class FuseToolingEditorPreferencePage extends WorkbenchPreferencePage {
 	public void setShowIDinEditor(boolean value) {
 
 		new CheckBox("If enabled the ID values will be used for labels if existing").toggle(value);
+	}
+
+	public void open() {
+		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
+		dialog.open();
+		dialog.select(this);
 	}
 }

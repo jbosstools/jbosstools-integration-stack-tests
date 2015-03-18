@@ -41,11 +41,6 @@ public class PropertiesPreferencePage extends PreferencePage {
 		return this;
 	}
 
-	@Override
-	public void open() {
-		throw new UnsupportedOperationException("Open it via context button!");
-	}
-
 	public void selectTab(String... tab) {
 		new DefaultTreeItem(tab).select();
 	}

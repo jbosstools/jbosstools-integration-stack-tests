@@ -1,6 +1,6 @@
 package org.jboss.tools.drools.reddeer.wizard;
 
-import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
+import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectSelectRuntimeWizardPage.CodeCompatibility;
 
 public class NewDroolsProjectWizard extends NewWizardDialog {

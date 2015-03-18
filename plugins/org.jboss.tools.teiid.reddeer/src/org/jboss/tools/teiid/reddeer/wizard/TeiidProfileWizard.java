@@ -1,11 +1,10 @@
 package org.jboss.tools.teiid.reddeer.wizard;
 
-import org.jboss.reddeer.eclipse.jface.wizard.NewWizardDialog;
-import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 
 /**
  * 
@@ -33,11 +32,6 @@ public abstract class TeiidProfileWizard extends NewWizardDialog {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	@Override
-	public WizardPage getFirstPage() {
-		throw new UnsupportedOperationException(getClass() + " doesn't support getFirstPage()");
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.RuntimePreferencePage;
 import org.jboss.tools.runtime.reddeer.Namespaces;
 import org.jboss.tools.runtime.reddeer.ServerBase;
@@ -40,9 +41,12 @@ public class ServerAS extends ServerBase {
 	public void create() {
 		addJre();
 		
+		WorkbenchPreferenceDialog preferences = new WorkbenchPreferenceDialog();
+		preferences.open();
+		
 		// Add runtime
 		RuntimePreferencePage runtimePreferencePage = new RuntimePreferencePage();
-		runtimePreferencePage.open();
+		preferences.select(runtimePreferencePage);
 		runtimePreferencePage.addRuntime();
 		ServerRuntimeWizard runtimeWizard = new ServerRuntimeWizard();
 		runtimeWizard.activate();

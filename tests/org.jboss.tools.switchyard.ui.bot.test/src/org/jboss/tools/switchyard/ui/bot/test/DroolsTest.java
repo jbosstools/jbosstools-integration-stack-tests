@@ -5,8 +5,8 @@ import static org.junit.Assert.assertEquals;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
+import org.jboss.reddeer.eclipse.core.resources.Project;
+import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -119,7 +119,7 @@ public class DroolsTest {
 	private void createPojo(String name) {
 		NewJavaClassWizardDialog wizard = new NewJavaClassWizardDialog();
 		wizard.open();
-		NewJavaClassWizardPage page = new NewJavaClassWizardPage(wizard);
+		NewJavaClassWizardPage page = new NewJavaClassWizardPage();
 		page.setName(name);
 		new LabeledText("Source folder:").setText(PROJECT + "/" + PACKAGE_MAIN_JAVA);
 		page.setPackage(PACKAGE);

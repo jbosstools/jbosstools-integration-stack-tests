@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.jboss.reddeer.direct.preferences.Preferences;
+import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.RuntimePreferencePage;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -100,10 +101,13 @@ public class ServerKaraf extends ServerBase {
 	@Override
 	public void create() {
 		addJre();
+
+		WorkbenchPreferenceDialog preferences = new WorkbenchPreferenceDialog();
+		preferences.open();
 		
 		// Add runtime
 		RuntimePreferencePage runtimePreferencePage = new RuntimePreferencePage();
-		runtimePreferencePage.open();
+		preferences.select(runtimePreferencePage);
 		runtimePreferencePage.addRuntime();
 		ServerRuntimeWizard runtimeWizard = new ServerRuntimeWizard();
 		runtimeWizard.setType(getCategory(), getRuntimeType());

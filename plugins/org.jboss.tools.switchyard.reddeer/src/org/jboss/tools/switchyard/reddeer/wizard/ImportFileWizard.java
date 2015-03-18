@@ -59,7 +59,7 @@ public class ImportFileWizard extends ImportWizardDialog {
 
 		public void setFocus() {
 			log.debug("Set focus to Combo");
-			WidgetHandler.getInstance().setFocus(swtCombo);
+			WidgetHandler.getInstance().setFocus(swtWidget);
 		}
 		
 		public void typeText(String text) {

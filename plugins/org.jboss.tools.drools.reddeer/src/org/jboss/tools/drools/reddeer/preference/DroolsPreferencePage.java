@@ -1,13 +1,13 @@
 package org.jboss.tools.drools.reddeer.preference;
 
-import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
+import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
 
 /**
  * Drools preference page.
  */
-public class DroolsPreferencePage extends PreferencePage {
+public class DroolsPreferencePage extends WorkbenchPreferencePage {
     private static final String LABEL_RULES_REPARSE = "Automatically reparse all rules if a Java resource is changed.";
     private static final String LABEL_CROSSREFERENCE = "Allow cross references in DRL files.";
     private static final String LABEL_FOLDING = "Use code folding in DRL editor.";

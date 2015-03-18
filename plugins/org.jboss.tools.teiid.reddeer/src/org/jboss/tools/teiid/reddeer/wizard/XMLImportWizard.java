@@ -3,7 +3,7 @@ package org.jboss.tools.teiid.reddeer.wizard;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.reddeer.eclipse.jface.wizard.WizardPage;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
@@ -11,12 +11,7 @@ import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.wait.AbstractWait;
-import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 
 /**
  * Wizard for importing relational model from XML
@@ -87,11 +82,6 @@ public class XMLImportWizard extends TeiidImportWizard {
 		new LabeledText("New view table name:").setText(name + "Table");
 
 		finish();
-	}
-
-	@Override
-	public WizardPage getFirstPage() {
-		throw new UnsupportedOperationException();
 	}
 
 }

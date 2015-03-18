@@ -285,7 +285,7 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		
 		public void setFocus() {
 			log.debug("Set focus to Combo Text");
-			WidgetHandler.getInstance().setFocus(swtCombo);
+			WidgetHandler.getInstance().setFocus(swtWidget);
 		}
 		
 		public void typeText(String text) {

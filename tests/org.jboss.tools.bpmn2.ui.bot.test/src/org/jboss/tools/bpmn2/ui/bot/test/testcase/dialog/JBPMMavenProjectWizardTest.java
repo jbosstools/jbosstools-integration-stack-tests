@@ -1,8 +1,8 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.dialog;
 
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
+import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.Project;
 import org.jboss.tools.bpmn2.reddeer.dialog.JBPMMavenProjectWizard;
 import org.junit.After;
 import org.junit.Test;

@@ -1,7 +1,7 @@
 package org.jboss.tools.drools.ui.bot.test.util;
 
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.ProjectItem;
+import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 
 public final class OpenUtility {

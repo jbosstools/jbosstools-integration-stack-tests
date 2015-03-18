@@ -7,7 +7,8 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.matcher.WithRegexMatchers;
+import org.jboss.reddeer.swt.matcher.RegexMatcher;
+import org.jboss.reddeer.swt.matcher.WithTextMatcher;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 
@@ -25,9 +26,9 @@ public final class RunUtility {
         selectProject(projectName, path);
 
         if (useContextMenu) {
-            new ContextMenu(new WithRegexMatchers("Run As", ".*Java Application.*").getMatchers()).select();
+            new ContextMenu(new WithTextMatcher("Run As"), new RegexMatcher(".*Java Application.*")).select();
         } else {
-            new ShellMenu(new WithRegexMatchers("Run", "Run As", ".*Java Application.*").getMatchers()).select();
+            new ShellMenu(new WithTextMatcher("Run"), new WithTextMatcher("Run As"), new RegexMatcher(".*Java Application.*"), new RegexMatcher(".*Java Application.*")).select();
         }
 
         waitAfterStarting();
@@ -41,9 +42,9 @@ public final class RunUtility {
         selectProject(projectName, path);
 
         if (useContextMenu) {
-            new ContextMenu(new WithRegexMatchers("Debug As", ".*Drools Application.*").getMatchers()).select();
+            new ContextMenu(new WithTextMatcher("Debug As"), new RegexMatcher(".*Drools Application.*")).select();
         } else {
-            new ShellMenu(new WithRegexMatchers("Run", "Debug As", ".*Drools Application.*").getMatchers()).select();
+            new ShellMenu(new WithTextMatcher("Run"), new WithTextMatcher("Debug As"), new RegexMatcher(".*Drools Application.*")).select();
         }
 
         waitAfterStarting();

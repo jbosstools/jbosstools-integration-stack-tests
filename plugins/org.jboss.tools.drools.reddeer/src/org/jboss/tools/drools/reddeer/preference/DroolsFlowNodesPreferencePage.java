@@ -1,13 +1,13 @@
 package org.jboss.tools.drools.reddeer.preference;
 
-import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
 
 /**
  * Drools Flow nodes preference page:
  *      Drools -> Drools Flow nodes
  */
-public class DroolsFlowNodesPreferencePage extends PreferencePage {
+public class DroolsFlowNodesPreferencePage extends WorkbenchPreferencePage {
 
     public DroolsFlowNodesPreferencePage() {
         super("Drools", "Drools Flow nodes");
