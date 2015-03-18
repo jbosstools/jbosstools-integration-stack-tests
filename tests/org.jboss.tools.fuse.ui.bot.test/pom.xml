@@ -20,6 +20,7 @@
 		<fuse.username>admin</fuse.username>
 		<fuse.password>admin</fuse.password>
 		<reddeer.config>${project.build.directory}/requirements/</reddeer.config>
+		<enable.debug.log>false</enable.debug.log>
 		<systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=${reddeer.config}</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
 		<test.class>AllTests</test.class>
@@ -38,6 +39,9 @@
 					<testClass>**/*Test</testClass>
 					<useUIThread>false</useUIThread>
 					<skip>${skipTests}</skip>
+					<systemProperties>
+						<logDebug>${enable.debug.log}</logDebug>
+					</systemProperties>
 
 					<dependencies combine.children="append">
 						<!-- Fuse Camel feature -->
