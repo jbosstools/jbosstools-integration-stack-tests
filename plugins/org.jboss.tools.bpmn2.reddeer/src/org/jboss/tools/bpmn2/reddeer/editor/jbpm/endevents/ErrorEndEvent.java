@@ -4,7 +4,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ErrorRef;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.ErrorEventDefinition;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.EventDefinitionSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.EventDefinitionSetUp;
 
 /**
  * 

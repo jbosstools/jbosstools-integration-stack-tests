@@ -9,8 +9,8 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.ConditionalBound
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.ErrorBoundaryEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.EscalationBoundaryEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.TimerBoundaryEvent;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.AddParameterMappingSetUpCTab;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.RemoveParameterMappingSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.AddParameterMappingSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.RemoveParameterMappingSetUp;
 
 /**
  * 
@@ -47,7 +47,7 @@ public class Task extends Element {
 	 * @param parameterMapping
 	 */
 	public void addParameterMapping(ParameterMapping parameterMapping) {
-		propertiesHandler.setUp(new AddParameterMappingSetUpCTab(parameterMapping));
+		propertiesHandler.setUp(new AddParameterMappingSetUp(parameterMapping));
 	}
 	
 	/**

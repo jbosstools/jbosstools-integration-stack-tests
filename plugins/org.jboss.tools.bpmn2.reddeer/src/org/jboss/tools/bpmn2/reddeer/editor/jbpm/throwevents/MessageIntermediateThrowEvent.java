@@ -4,7 +4,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Message;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.MappingType;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.MessageSetUpCTab;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.MessageSetUp;
 
 /**
  * 
@@ -29,9 +29,7 @@ public class MessageIntermediateThrowEvent extends Element {
 	 * @param sourceVariable
 	 */
 	public void setMessageMapping(Message message, String sourceVariable) {
-//		properties.getTab("Event", EventTab.class).set(new MessageEventDefinition(message, sourceVariable, Type.SOURCE));
-		propertiesHandler.setUp(new MessageSetUpCTab(message, sourceVariable, MappingType.SOURCE));
-
+		propertiesHandler.setUp(new MessageSetUp(message, sourceVariable, MappingType.SOURCE));
 		refresh();
 	}
 	

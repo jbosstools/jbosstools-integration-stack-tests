@@ -2,7 +2,7 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents;
 
 import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.CheckBoxSetUpCTab;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.CheckBoxSetUp;
 
 /**
  * 
@@ -39,7 +39,7 @@ public class BoundaryEvent extends Element {
 	 * @param value
 	 */
 	public void setCancelActivity(boolean value) {
-		propertiesHandler.setUp(new CheckBoxSetUpCTab(EVENT, "Cancel Activity", value));
+		propertiesHandler.setUp(new CheckBoxSetUp(EVENT, "Cancel Activity", value));
 	}
 	
 }

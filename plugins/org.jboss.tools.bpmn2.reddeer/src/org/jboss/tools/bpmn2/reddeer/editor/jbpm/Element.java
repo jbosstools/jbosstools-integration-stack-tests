@@ -1,8 +1,8 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.AddParameterMappingSetUpCTab;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.RemoveParameterMappingSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.AddParameterMappingSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.RemoveParameterMappingSetUp;
 
 /**
  * 
@@ -31,7 +31,7 @@ public class Element extends org.jboss.tools.bpmn2.reddeer.editor.Element {
 	 * @param parameterMapping
 	 */
 	protected void addParameterMapping(ParameterMapping parameterMapping) {
-		propertiesHandler.setUp(new AddParameterMappingSetUpCTab(parameterMapping));
+		propertiesHandler.setUp(new AddParameterMappingSetUp(parameterMapping));
 	}
 	
 	/**

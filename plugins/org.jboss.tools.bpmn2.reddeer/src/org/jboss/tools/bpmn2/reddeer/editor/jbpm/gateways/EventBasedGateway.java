@@ -2,11 +2,10 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Element;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.CheckBoxSetUpCTab;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.ComboSetUpCTab;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.GatewayConditionSetUp;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.GatewayDefaultBranch;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.GatewayDirectionSetUpCTab;
+import org.jboss.tools.bpmn2.reddeer.editor.properties.PropertiesTabs;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.CheckBoxSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.ComboSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.GatewayConditionSetUp;
 
 /**
  *  
@@ -38,7 +37,7 @@ public class EventBasedGateway extends Element {
 	 * @param type
 	 */
 	public void setType(Type type) {
-		propertiesHandler.setUp(new ComboSetUpCTab("Gateway", "Event Gateway Type", type.label()));
+		propertiesHandler.setUp(new ComboSetUp(PropertiesTabs.GATEWAY_TAB, "Event Gateway Type", type.label()));
 	}
 
 	/**
@@ -46,7 +45,7 @@ public class EventBasedGateway extends Element {
 	 * @param value
 	 */
 	public void setInstantiate(boolean value) {
-		propertiesHandler.setUp(new CheckBoxSetUpCTab("Gateway", "Instantiate", value));
+		propertiesHandler.setUp(new CheckBoxSetUp(PropertiesTabs.GATEWAY_TAB, "Instantiate", value));
 	}
 
 	/**
@@ -61,17 +60,9 @@ public class EventBasedGateway extends Element {
 
 	/**
 	 * 
-	 * @param flow
-	 */
-	public void setDefaultBranch(String flow) {
-		propertiesHandler.setUp(new GatewayDefaultBranch(flow));
-	}
-	
-	/**
-	 * 
 	 * @param direction
 	 */
 	public void setDirection(Direction direction) {
-		propertiesHandler.setUp(new GatewayDirectionSetUpCTab(direction));
+		propertiesHandler.setUp(new ComboSetUp(PropertiesTabs.GATEWAY_TAB, "Gateway Direction", direction.label()));
 	}
 }

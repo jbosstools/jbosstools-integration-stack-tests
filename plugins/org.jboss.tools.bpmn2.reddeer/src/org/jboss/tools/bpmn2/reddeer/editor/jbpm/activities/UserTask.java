@@ -1,28 +1,27 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 
 import org.jboss.reddeer.swt.api.Shell;
+import org.jboss.reddeer.swt.impl.button.LabeledCheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.tools.bpmn2.reddeer.DefaultCheckBox;
 import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.AddActorSetUp;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.AddLocalVariableSetUp;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.AddParameterMappingSetUpCTab;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.CheckBoxSetUpCTab;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.LabeledTextSetUpCTab;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.RemoveActorSetUp;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.ScriptSetUpCTab;
+import org.jboss.tools.bpmn2.reddeer.editor.properties.PropertiesTabs;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.AddActorSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.AddLocalVariableSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.AddParameterMappingSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.CheckBoxSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.LabeledTextSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.RemoveActorSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.ScriptSetUp;
 
 /**
  * 
  */
 public class UserTask extends Task {
-
-	private static final String USER_TASK = "User Task";
 
 	/**
 	 * 
@@ -41,11 +40,11 @@ public class UserTask extends Task {
 	 * @param name
 	 */
 	public void setTaskName(String name) {
-		propertiesHandler.setUp(new LabeledTextSetUpCTab(USER_TASK, "Task Name", name));
+		propertiesHandler.setUp(new LabeledTextSetUp(PropertiesTabs.USER_TASK_TAB, "Task Name", name));
 	}
 	
 	public String getTaskName() {
-		propertiesHandler.selectTabInPropertiesView(USER_TASK);
+		propertiesHandler.selectTabInPropertiesView(PropertiesTabs.USER_TASK_TAB);
 		return new LabeledText("Task Name").getText();
 		
 	}
@@ -63,7 +62,7 @@ public class UserTask extends Task {
 	 * @param priority
 	 */
 	public void setPriority(String priority) {
-		propertiesHandler.setUp(new LabeledTextSetUpCTab(USER_TASK, "Priority", priority));
+		propertiesHandler.setUp(new LabeledTextSetUp(PropertiesTabs.USER_TASK_TAB, "Priority", priority));
 	}
 
 	/**
@@ -71,7 +70,7 @@ public class UserTask extends Task {
 	 * @param comment
 	 */
 	public void setComment(String comment) {
-		propertiesHandler.setUp(new LabeledTextSetUpCTab(USER_TASK, "Comment", comment));
+		propertiesHandler.setUp(new LabeledTextSetUp(PropertiesTabs.USER_TASK_TAB, "Comment", comment));
 	}
 	
 	/**
@@ -79,12 +78,12 @@ public class UserTask extends Task {
 	 * @param id
 	 */
 	public void setGroupId(String id) {
-		propertiesHandler.setUp(new LabeledTextSetUpCTab(USER_TASK, "Group Id", id));
+		propertiesHandler.setUp(new LabeledTextSetUp(PropertiesTabs.USER_TASK_TAB, "Group Id", id));
 		
 	}
 	
 	public String getGroupId() {
-		propertiesHandler.selectTabInPropertiesView(USER_TASK);
+		propertiesHandler.selectTabInPropertiesView(PropertiesTabs.USER_TASK_TAB);
 		return new LabeledText("Group Id").getText();
 	}
 	
@@ -93,7 +92,7 @@ public class UserTask extends Task {
 	 * @param skippable
 	 */
 	public void setSkippable(boolean skippable) {
-		propertiesHandler.setUp(new CheckBoxSetUpCTab(USER_TASK, "Skippable", skippable));
+		propertiesHandler.setUp(new CheckBoxSetUp(PropertiesTabs.USER_TASK_TAB, "Skippable", skippable));
 		
 	}
 	
@@ -101,8 +100,8 @@ public class UserTask extends Task {
 		propertiesHandler.activateGraphitiPropertiesView();
 		Shell shell = new DefaultShell();
 		shell.setFocus();
-		new DefaultTabItem(USER_TASK).activate();
-		boolean result =  new DefaultCheckBox("Skippable").isChecked();
+		new DefaultTabItem(PropertiesTabs.USER_TASK_TAB).activate();
+		boolean result =  new LabeledCheckBox("Skippable").isChecked();
 		new PushButton("OK").click();
 		return result;
 	}
@@ -112,7 +111,7 @@ public class UserTask extends Task {
 	 * @param content
 	 */
 	public void setContent(String content) {
-		propertiesHandler.setUp(new LabeledTextSetUpCTab(USER_TASK, "Content", content));
+		propertiesHandler.setUp(new LabeledTextSetUp(PropertiesTabs.USER_TASK_TAB, "Content", content));
 	}
 	
 	/**
@@ -120,7 +119,7 @@ public class UserTask extends Task {
 	 * @param locale
 	 */
 	public void setLocale(String locale) {
-		propertiesHandler.setUp(new LabeledTextSetUpCTab(USER_TASK, "Locale", locale));
+		propertiesHandler.setUp(new LabeledTextSetUp(PropertiesTabs.USER_TASK_TAB, "Locale", locale));
 	}
 	
 	/**
@@ -128,11 +127,11 @@ public class UserTask extends Task {
 	 * @param actor
 	 */
 	public void addActor(String actor) {
-		propertiesHandler.setUp(new AddActorSetUp(USER_TASK, actor));
+		propertiesHandler.setUp(new AddActorSetUp(PropertiesTabs.USER_TASK_TAB, actor));
 	}
 	
 	public void removeActor(String actorName) {
-		propertiesHandler.setUp(new RemoveActorSetUp(USER_TASK, actorName));
+		propertiesHandler.setUp(new RemoveActorSetUp(PropertiesTabs.USER_TASK_TAB, actorName));
 	}
 
 	/**
@@ -140,7 +139,7 @@ public class UserTask extends Task {
 	 * @param value
 	 */
 	public void setIsForCompensation(boolean value) {
-		propertiesHandler.setUp(new CheckBoxSetUpCTab(USER_TASK, "Is For Compensation", value));
+		propertiesHandler.setUp(new CheckBoxSetUp(PropertiesTabs.USER_TASK_TAB, "Is For Compensation", value));
 	}
 
 	/**
@@ -149,7 +148,7 @@ public class UserTask extends Task {
 	 * @param script
 	 */
 	public void setOnEntryScript(String language, String script) {
-		propertiesHandler.setUp(new ScriptSetUpCTab(USER_TASK, "On Entry Script", language, script));
+		propertiesHandler.setUp(new ScriptSetUp(PropertiesTabs.USER_TASK_TAB, "On Entry Script", language, script));
 	}
 
 	/**
@@ -158,7 +157,7 @@ public class UserTask extends Task {
 	 * @param script
 	 */
 	public void setOnExitScript(String language, String script) {
-		propertiesHandler.setUp(new ScriptSetUpCTab(USER_TASK, "On Exit Script", language, script));
+		propertiesHandler.setUp(new ScriptSetUp(PropertiesTabs.USER_TASK_TAB, "On Exit Script", language, script));
 	}
 
 	/**
@@ -166,11 +165,11 @@ public class UserTask extends Task {
 	 * @param parameter
 	 */
 	public void addParameterMapping(ParameterMapping parameterMapping) {
-		propertiesHandler.setUp(new AddParameterMappingSetUpCTab(parameterMapping));
+		propertiesHandler.setUp(new AddParameterMappingSetUp(parameterMapping));
 	}
 	
 	public void addLocalVariable(String varName, String dataType) {
-		propertiesHandler.setUp(new AddLocalVariableSetUp(USER_TASK, varName, dataType));
+		propertiesHandler.setUp(new AddLocalVariableSetUp(PropertiesTabs.USER_TASK_TAB, varName, dataType));
 	}
 
 }

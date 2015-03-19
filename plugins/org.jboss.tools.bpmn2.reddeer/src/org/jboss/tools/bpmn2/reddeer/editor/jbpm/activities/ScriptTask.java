@@ -2,15 +2,14 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 
 import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.CheckBoxSetUpCTab;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.ScriptSetUpCTab;
+import org.jboss.tools.bpmn2.reddeer.editor.properties.PropertiesTabs;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.CheckBoxSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.ScriptSetUp;
 
 /**
  * 
  */
 public class ScriptTask extends Task {
-
-	private static final String SCRIPT_TASK = "Script Task";
 
 	/**
 	 * 
@@ -34,7 +33,7 @@ public class ScriptTask extends Task {
 	 * @param script
 	 */
 	public void setScript(String language, String script) {
-		propertiesHandler.setUp(new ScriptSetUpCTab(SCRIPT_TASK, "Attributes", language, script));
+		propertiesHandler.setUp(new ScriptSetUp(PropertiesTabs.SCRIPT_TASK_TAB, "Attributes", language, script));
 
 	}
 
@@ -43,7 +42,7 @@ public class ScriptTask extends Task {
 	 * @param value
 	 */
 	public void setIsForCompensation(boolean value) {
-		propertiesHandler.setUp(new CheckBoxSetUpCTab(SCRIPT_TASK, "Is For Compensation", value));
+		propertiesHandler.setUp(new CheckBoxSetUp(PropertiesTabs.SCRIPT_TASK_TAB, "Is For Compensation", value));
 	}
 
 }

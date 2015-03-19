@@ -5,17 +5,18 @@ import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ErrorRef;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Message;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.AddParameterMappingSetUpCTab;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.CheckBoxSetUpCTab;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.ImplementationSetUp;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.OperationSetUp;
+import org.jboss.tools.bpmn2.reddeer.editor.properties.PropertiesTabs;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.AddParameterMappingSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.CheckBoxSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.ImplementationSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.OperationSetUp;
 
 /**
  * 
  */
 public class ServiceTask extends Task {
 
-	private static final String SERVICE_TASK = "Service Task";
+	
 
 	/**
 	 * 
@@ -34,7 +35,7 @@ public class ServiceTask extends Task {
 	 * @param implementationUri
 	 */
 	public void setImplementation(String implementationUri) {
-		propertiesHandler.setUp(new ImplementationSetUp(SERVICE_TASK, implementationUri));
+		propertiesHandler.setUp(new ImplementationSetUp(PropertiesTabs.SERVICE_TASK_TAB, implementationUri));
 	}
 	
 	/**
@@ -45,7 +46,7 @@ public class ServiceTask extends Task {
 	 * @param errorRef
 	 */
 	public void setOperation(String operationContractName, Message inMessage, Message outMessage, ErrorRef errorRef) {
-		propertiesHandler.setUp(new OperationSetUp(SERVICE_TASK, operationContractName, inMessage, outMessage, errorRef));
+		propertiesHandler.setUp(new OperationSetUp(PropertiesTabs.SERVICE_TASK_TAB, operationContractName, inMessage, outMessage, errorRef));
 	}
 
 	/**
@@ -53,7 +54,7 @@ public class ServiceTask extends Task {
 	 * @param value
 	 */
 	public void setIsForCompensation(boolean value) {
-		propertiesHandler.setUp(new CheckBoxSetUpCTab(SERVICE_TASK, "Is For Compensation", value));
+		propertiesHandler.setUp(new CheckBoxSetUp(PropertiesTabs.SERVICE_TASK_TAB, "Is For Compensation", value));
 	}
 
 	/**
@@ -61,7 +62,7 @@ public class ServiceTask extends Task {
 	 * @param parameter
 	 */
 	public void addParameterMapping(ParameterMapping parameterMapping) {
-		propertiesHandler.setUp(new AddParameterMappingSetUpCTab(parameterMapping));
+		propertiesHandler.setUp(new AddParameterMappingSetUp(parameterMapping));
 	}
 
 }

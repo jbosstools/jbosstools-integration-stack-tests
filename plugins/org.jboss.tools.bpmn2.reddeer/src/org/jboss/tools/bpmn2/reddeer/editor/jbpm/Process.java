@@ -8,8 +8,8 @@ import org.jboss.tools.bpmn2.reddeer.properties.jbpm.DataItemsTab;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.DefinitionsTab;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.InterfacesTab;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.ProcessTab;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.CheckBoxSetUpCTab;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.LabeledTextSetUpCTab;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.CheckBoxSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.LabeledTextSetUp;
 
 /**
  * 
@@ -48,7 +48,7 @@ public class Process extends ElementContainer {
 	 * @param id
 	 */
 	public void setId(String id) {
-		propertiesHandler.setUpNormal(new LabeledTextSetUpCTab(PROCESS_TAB, "Id", id));
+		propertiesHandler.setUpNormal(new LabeledTextSetUp(PROCESS_TAB, "Id", id));
 	}
 	
 	/**
@@ -56,7 +56,7 @@ public class Process extends ElementContainer {
 	 * @param name
 	 */
 	public void setName(String name) {
-		propertiesHandler.setUpNormal(new LabeledTextSetUpCTab(PROCESS_TAB, "Name", name));
+		propertiesHandler.setUpNormal(new LabeledTextSetUp(PROCESS_TAB, "Name", name));
 	}
 	
 	/**
@@ -64,7 +64,7 @@ public class Process extends ElementContainer {
 	 * @param version
 	 */
 	public void setVersion(String version) {
-		propertiesHandler.setUpNormal(new LabeledTextSetUpCTab(PROCESS_TAB, "Version", version));
+		propertiesHandler.setUpNormal(new LabeledTextSetUp(PROCESS_TAB, "Version", version));
 	}
 	
 	/**
@@ -72,7 +72,7 @@ public class Process extends ElementContainer {
 	 * @param name
 	 */
 	public void setPackageName(String packageName) {
-		propertiesHandler.setUpNormal(new LabeledTextSetUpCTab(PROCESS_TAB, "Package Name", packageName));
+		propertiesHandler.setUpNormal(new LabeledTextSetUp(PROCESS_TAB, "Package Name", packageName));
 	}
 	
 	/**
@@ -80,7 +80,7 @@ public class Process extends ElementContainer {
 	 * @param value
 	 */
 	public void setAddHoc(boolean value) {
-		propertiesHandler.setUpNormal(new CheckBoxSetUpCTab(PROCESS_TAB, "Ad Hoc", value));
+		propertiesHandler.setUpNormal(new CheckBoxSetUp(PROCESS_TAB, "Ad Hoc", value));
 	}
 	
 	/**

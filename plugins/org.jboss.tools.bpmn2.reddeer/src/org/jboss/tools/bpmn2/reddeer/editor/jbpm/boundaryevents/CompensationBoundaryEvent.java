@@ -2,7 +2,7 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents;
 
 import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.CompensationActivitySetUpCTab;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.CompensationActivitySetUp;
 
 public class CompensationBoundaryEvent extends BoundaryEvent {
 
@@ -15,7 +15,7 @@ public class CompensationBoundaryEvent extends BoundaryEvent {
 	}
 
 	public void setCompensationActivity(String activityName) {
-		propertiesHandler.setUp(new CompensationActivitySetUpCTab(activityName));
+		propertiesHandler.setUp(new CompensationActivitySetUp(activityName));
 	}
 	
 }

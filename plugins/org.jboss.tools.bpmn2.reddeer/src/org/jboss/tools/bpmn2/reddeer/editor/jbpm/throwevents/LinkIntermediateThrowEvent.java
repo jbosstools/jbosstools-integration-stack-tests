@@ -1,7 +1,7 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.throwevents;
 
 import org.jboss.tools.bpmn2.reddeer.editor.Element;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.LinkEventTargetSetUpCTab;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.LinkEventTargetSetUp;
 
 public class LinkIntermediateThrowEvent extends IntermediateThrowEvent {
 
@@ -14,6 +14,6 @@ public class LinkIntermediateThrowEvent extends IntermediateThrowEvent {
 	}
 
 	public void setTarget(String targetEventName, int targetEventIndexInCombo) {
-		propertiesHandler.setUp(new LinkEventTargetSetUpCTab(targetEventName, targetEventIndexInCombo));
+		propertiesHandler.setUp(new LinkEventTargetSetUp(targetEventName, targetEventIndexInCombo));
 	}
 }

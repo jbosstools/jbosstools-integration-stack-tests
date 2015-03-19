@@ -4,7 +4,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Escalation;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.EscalationEventDefinition;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.EventDefinitionSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.EventDefinitionSetUp;
 
 /**
  * 

@@ -116,7 +116,7 @@ public class ProcessDefinitionRequirement implements Requirement<ProcessDefiniti
 			try {
 				new DefaultShell("Open Associated Perspective?");
 				new PushButton("No").click();
-			} catch (WidgetNotFoundException e) {
+			} catch (SWTLayerException e) {
 				// ignore
 			}
 		}

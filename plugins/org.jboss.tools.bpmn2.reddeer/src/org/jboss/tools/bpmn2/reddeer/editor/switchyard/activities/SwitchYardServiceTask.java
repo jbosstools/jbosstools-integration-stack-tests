@@ -5,16 +5,16 @@ import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.OperationDialog;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.AddParameterMappingSetUpCTab;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.LabeledTextSetUpCTab;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.ScriptSetUpCTab;
+import org.jboss.tools.bpmn2.reddeer.editor.properties.PropertiesTabs;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.AddParameterMappingSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.LabeledTextSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.ScriptSetUp;
 
 /**
  * TODO: apodhrad
  */
 public class SwitchYardServiceTask extends Element {
 
-	private static final String SWITCHYARD_TAB = "SwitchYard Service Task";
 	@SuppressWarnings("unused")
 	private static final int ON_ENTRY = 0;
 	@SuppressWarnings("unused")
@@ -32,11 +32,11 @@ public class SwitchYardServiceTask extends Element {
 	}
 	
 	public void addParameterMapping(ParameterMapping parameterMapping) {
-		propertiesHandler.setUp(new AddParameterMappingSetUpCTab(parameterMapping));
+		propertiesHandler.setUp(new AddParameterMappingSetUp(parameterMapping));
 	}
 	
 	public void setTaskAttribute(String attribute, String text){
-		propertiesHandler.setUpNormal(new LabeledTextSetUpCTab(SWITCHYARD_TAB, attribute, text));
+		propertiesHandler.setUpNormal(new LabeledTextSetUp(PropertiesTabs.SWITCHYARD_TAB, attribute, text));
 	}
 	
 	/**
@@ -54,7 +54,7 @@ public class SwitchYardServiceTask extends Element {
 			case ON_EXIT:
 				section = "On Exit Script";
 		}
-		propertiesHandler.setUpNormal(new ScriptSetUpCTab(SWITCHYARD_TAB, section, scriptLang, text));
+		propertiesHandler.setUpNormal(new ScriptSetUp(PropertiesTabs.SWITCHYARD_TAB, section, scriptLang, text));
 	}
 
 }

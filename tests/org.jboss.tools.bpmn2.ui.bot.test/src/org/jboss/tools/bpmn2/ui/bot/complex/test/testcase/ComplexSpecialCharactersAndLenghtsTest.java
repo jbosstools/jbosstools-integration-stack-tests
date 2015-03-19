@@ -49,7 +49,7 @@ public class ComplexSpecialCharactersAndLenghtsTest extends JBPM6ComplexTest {
 	
 	@TestPhase(phase=Phase.VALIDATE)
 	public void validateBZ1188153() {
-		String error = getErrorsFromProblemsView(PROCESS, PROBLEM_ONE);
+		String error = getErrorsFromProblemsView(PROBLEM_ONE);
 		assertTrue("BZ 1188153, data type of variable", error.startsWith(PROBLEM_ONE));
 	}
 	
@@ -67,7 +67,7 @@ public class ComplexSpecialCharactersAndLenghtsTest extends JBPM6ComplexTest {
 	
 	@TestPhase(phase=Phase.VALIDATE)
 	public void validateBZ1182875() {
-		String error = getErrorsFromProblemsView(PROCESS, PROBLEM_TWO);
+		String error = getErrorsFromProblemsView(PROBLEM_TWO);
 		assertTrue("BZ 1182875, package name", error.startsWith(PROBLEM_TWO));
 	}
 	

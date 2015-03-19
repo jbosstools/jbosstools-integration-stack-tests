@@ -4,7 +4,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Signal;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.MappingType;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.SignalSetUpCTab;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.SignalSetUp;
 
 /**
  * 
@@ -24,6 +24,6 @@ public class SignalStartEvent extends StartEvent {
 	}
 
 	public void setSignal(Signal signal, String variable) {
-		propertiesHandler.setUp(new SignalSetUpCTab(signal, variable, MappingType.TARGET));
+		propertiesHandler.setUp(new SignalSetUp(signal, variable, MappingType.TARGET));
 	}
 }

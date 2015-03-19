@@ -1,8 +1,8 @@
 package org.jboss.tools.bpmn2.reddeer.properties.jbpm;
 
 import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.LabeledCheckBox;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.tools.bpmn2.reddeer.DefaultCheckBox;
 
 /**
  * 
@@ -46,7 +46,7 @@ public class ProcessTab {
 	 * @param value
 	 */
 	public void setAdHoc(boolean value) {
-		new DefaultCheckBox("Ad Hoc").setChecked(value);
+		new LabeledCheckBox("Ad Hoc").toggle(value);
 	}
 
 	/**

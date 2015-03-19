@@ -6,7 +6,7 @@ import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.SetUpAble;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.SetUpAble;
 
 /**
  * Class for setting element properties

@@ -13,8 +13,10 @@ import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
 import org.jboss.reddeer.eclipse.condition.MarkerIsUpdating;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.core.resources.Project;
+import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsResourceMatcher;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.WaitCondition;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
@@ -25,9 +27,11 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.bpmn2.reddeer.ProcessEditorView;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.JBPM6ComplexTestDefinitionRequirement.JBPM6ComplexTestDefinition;
+import org.jboss.tools.bpmn2.ui.bot.test.BPMN2Suite;
 import org.jboss.tools.bpmn2.ui.bot.test.validator.JBPM6Validator;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.kie.api.KieBase;
 import org.kie.api.io.Resource;
 import org.kie.api.io.ResourceType;
@@ -35,6 +39,7 @@ import org.kie.api.runtime.KieSession;
 import org.kie.internal.io.ResourceFactory;
 import org.kie.internal.utils.KieHelper;
 
+@RunWith(BPMN2Suite.class)
 public abstract class JBPM6ComplexTest {
 	
 	private JBPM6ComplexTestDefinition definition;
@@ -135,7 +140,7 @@ public abstract class JBPM6ComplexTest {
 		log.info("\tjBPM validation result '" + (result ? "valid" : "not valid") + "'");
 		Assert.assertTrue(validator.getResultMessage(), result);
 		
-		String error = getErrorsFromProblemsView(filenameTitle, null);
+		String error = getErrorsFromProblemsView(null);
 		
 		boolean isErrorEmpty = error.length() == 0;
 		log.info("\tEditor validation result '" + (isErrorEmpty ? "OK" : error) + "'");
@@ -183,12 +188,12 @@ public abstract class JBPM6ComplexTest {
 		
 		public ErrorAppearOrDisappear(ProblemsView problemsView) {
 			problems = problemsView;
-			oldCount = problems.getAllErrors().size();
+			oldCount = problems.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(definition.saveAs())).size();
 		}
 		
 		@Override
 		public boolean test() {
-			int newCount = problems.getAllErrors().size();
+			int newCount = problems.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(definition.saveAs())).size();
 			return oldCount != newCount;
 		}
 
@@ -254,29 +259,23 @@ public abstract class JBPM6ComplexTest {
 		return diagramSourceCode.contains(text);
 	}
 	
-	protected String getErrorsFromProblemsView(String resourcePrefix, String descriptionPrefix){
+	protected String getErrorsFromProblemsView(String descriptionPrefix){
 		ProblemsView problems = new ProblemsView();
 		problems.open();
 		new WaitWhile(new MarkerIsUpdating());
 		new WaitWhile(new JobIsRunning());
 		new WaitUntil(new ErrorAppearOrDisappear(problems), TimePeriod.getCustom(5), false);
 		
-		List<TreeItem> errorList = problems.getAllErrors();
+		List<Problem> errorList = problems.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(definition.saveAs()));
 		
 		StringBuilder error = new StringBuilder();
-		for (TreeItem e : errorList) {
-			if(resourcePrefix != null && descriptionPrefix != null) {
-				if (e.getCell(1).startsWith(resourcePrefix) && e.getCell(0).startsWith(descriptionPrefix)) {
-					error.append(e.getCell(0) + "\n");
+		for (Problem problem : errorList) {
+			if(descriptionPrefix != null) {
+				if (problem.getDescription().startsWith(descriptionPrefix)) {
+					error.append(problem.getDescription() + "\n");
 				}
-			} else if(resourcePrefix != null) {
-				if (e.getCell(1).startsWith(resourcePrefix)) {
-					error.append(e.getCell(0) + "\n");
-				}
-			} else if(descriptionPrefix != null) {
-				if (e.getCell(0).startsWith(descriptionPrefix)) {
-					error.append(e.getCell(0) + "\n");
-				}
+			} else {
+				error.append(problem.getDescription() + "\n");
 			}
 			
 		}

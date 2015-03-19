@@ -3,7 +3,7 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents;
 import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.TimerType;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.TimerSetUpCTab;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.TimerSetUp;
 
 /**
  * 
@@ -23,7 +23,7 @@ public class TimerStartEvent extends StartEvent {
 	}
 
 	public void setTimer(TimerType timerType, String duration) {
-		propertiesHandler.setUp(new TimerSetUpCTab(timerType, duration));
+		propertiesHandler.setUp(new TimerSetUp(timerType, duration));
 		refresh();
 	}
 	

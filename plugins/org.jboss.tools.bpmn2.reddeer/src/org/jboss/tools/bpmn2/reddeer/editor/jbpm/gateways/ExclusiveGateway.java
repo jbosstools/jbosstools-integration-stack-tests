@@ -2,10 +2,11 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Element;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.GatewayConditionSetUpCTab;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.GatewayDefaultBranch;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.GatewayDirectionSetUpCTab;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.GatewayPrioritySetUpCTab;
+import org.jboss.tools.bpmn2.reddeer.editor.properties.PropertiesTabs;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.ComboSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.GatewayConditionSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.GatewayDefaultBranchSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.GatewayPrioritySetUp;
 
 /**
  * 
@@ -31,7 +32,7 @@ public class ExclusiveGateway extends Element {
 	 * @param condition
 	 */
 	public void setCondition(String flow, String lang, String condition) {
-		propertiesHandler.setUp(new GatewayConditionSetUpCTab(flow, lang, condition));
+		propertiesHandler.setUp(new GatewayConditionSetUp(flow, lang, condition));
 	}
 
 	/**
@@ -39,7 +40,7 @@ public class ExclusiveGateway extends Element {
 	 * @param flow
 	 */
 	public void setDefaultBranch(String flow) {
-		propertiesHandler.setUp(new GatewayDefaultBranch(flow));
+		propertiesHandler.setUp(new GatewayDefaultBranchSetUp(flow));
 	}
 	
 	/**
@@ -48,7 +49,7 @@ public class ExclusiveGateway extends Element {
 	 * @param priority
 	 */
 	public void setPriority(String flow, String priority) {
-		propertiesHandler.setUp(new GatewayPrioritySetUpCTab(flow, priority));
+		propertiesHandler.setUp(new GatewayPrioritySetUp(flow, priority));
 	}
 	
 	/**
@@ -56,6 +57,6 @@ public class ExclusiveGateway extends Element {
 	 * @param direction
 	 */
 	public void setDirection(Direction direction) {
-		propertiesHandler.setUp(new GatewayDirectionSetUpCTab(direction));
+		propertiesHandler.setUp(new ComboSetUp(PropertiesTabs.GATEWAY_TAB, "Gateway Direction", direction.label()));
 	}
 }

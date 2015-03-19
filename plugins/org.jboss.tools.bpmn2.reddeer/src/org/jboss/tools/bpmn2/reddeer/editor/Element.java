@@ -17,7 +17,6 @@ import org.apache.log4j.Logger;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
-import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.hamcrest.Matcher;
 import org.jboss.reddeer.gef.impl.editpart.AbstractEditPart;
 import org.jboss.reddeer.gef.impl.editpart.LabeledEditPart;
@@ -33,7 +32,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructOfType;
 import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructOnPoint;
 import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructWithName;
 import org.jboss.tools.bpmn2.reddeer.matcher.EditPartOfClassName;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.NameSetUpCTab;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.LabeledTextSetUp;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
@@ -167,7 +166,7 @@ public class Element {
 	 */
 	public void setName(String name) {
 		this.name = name;
-		propertiesHandler.setUp(new NameSetUpCTab(name));
+		propertiesHandler.setUp(new LabeledTextSetUp("General", "Name", name));
 	}
 	
 	/**

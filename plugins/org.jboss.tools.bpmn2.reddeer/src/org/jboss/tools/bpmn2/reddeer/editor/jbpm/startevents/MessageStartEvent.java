@@ -4,7 +4,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Message;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.MappingType;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.MessageSetUpCTab;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.MessageSetUp;
 
 /**
  * 
@@ -29,7 +29,7 @@ public class MessageStartEvent extends StartEvent {
 	 * @param variableName
 	 */
 	public void setMessageMapping(Message message, String targetVariable) {
-		propertiesHandler.setUp(new MessageSetUpCTab(message, targetVariable, MappingType.TARGET));
+		propertiesHandler.setUp(new MessageSetUp(message, targetVariable, MappingType.TARGET));
 		refresh();
 	}
 	

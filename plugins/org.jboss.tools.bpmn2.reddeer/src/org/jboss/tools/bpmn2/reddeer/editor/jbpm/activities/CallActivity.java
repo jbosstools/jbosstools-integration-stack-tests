@@ -2,18 +2,17 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.AddParameterMappingSetUpCTab;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.CalledActivitySetUpCTab;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.CheckBoxSetUpCTab;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.ScriptSetUpCTab;
+import org.jboss.tools.bpmn2.reddeer.editor.properties.PropertiesTabs;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.AddParameterMappingSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.CalledActivitySetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.CheckBoxSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.ScriptSetUp;
 
 /**
  * 
  */
 public class CallActivity extends Task {
 	
-	private static final String CALL_ACTIVITY = "Call Activity";
-
 	/**
 	 * 
 	 * @param name
@@ -31,7 +30,7 @@ public class CallActivity extends Task {
 	 * @param value
 	 */
 	public void setIndependent(boolean value) {
-		propertiesHandler.setUp(new CheckBoxSetUpCTab(CALL_ACTIVITY, "Independent", value));
+		propertiesHandler.setUp(new CheckBoxSetUp(PropertiesTabs.CALL_ACTIVITY_TAB, "Independent", value));
 	}
 	
 	/**
@@ -39,7 +38,7 @@ public class CallActivity extends Task {
 	 * @param value
 	 */
 	public void setWaitForCompletion(boolean value) {
-		propertiesHandler.setUp(new CheckBoxSetUpCTab(CALL_ACTIVITY, "Independent", value));
+		propertiesHandler.setUp(new CheckBoxSetUp(PropertiesTabs.CALL_ACTIVITY_TAB, "Independent", value));
 	}
 	
 	/**
@@ -47,7 +46,7 @@ public class CallActivity extends Task {
 	 * @param activityName
 	 */
 	public void setCalledActivity(String activityName) {
-		propertiesHandler.setUp(new CalledActivitySetUpCTab(activityName));
+		propertiesHandler.setUp(new CalledActivitySetUp(activityName));
 	}
 
 	/**
@@ -55,7 +54,7 @@ public class CallActivity extends Task {
 	 * @param value
 	 */
 	public void setIsForCompensation(boolean value) {
-		propertiesHandler.setUp(new CheckBoxSetUpCTab(CALL_ACTIVITY, "Is For Compensation", value));
+		propertiesHandler.setUp(new CheckBoxSetUp(PropertiesTabs.CALL_ACTIVITY_TAB, "Is For Compensation", value));
 	}
 
 	/**
@@ -64,7 +63,7 @@ public class CallActivity extends Task {
 	 * @param script
 	 */
 	public void setOnEntryScript(String language, String script) {
-		propertiesHandler.setUp(new ScriptSetUpCTab(CALL_ACTIVITY, "On Entry Script", language, script));
+		propertiesHandler.setUp(new ScriptSetUp(PropertiesTabs.CALL_ACTIVITY_TAB, "On Entry Script", language, script));
 	}
 
 	/**
@@ -73,7 +72,7 @@ public class CallActivity extends Task {
 	 * @param script
 	 */
 	public void setOnExistScript(String language, String script) {
-		propertiesHandler.setUp(new ScriptSetUpCTab(CALL_ACTIVITY, "On Exit Script", language, script));
+		propertiesHandler.setUp(new ScriptSetUp(PropertiesTabs.CALL_ACTIVITY_TAB, "On Exit Script", language, script));
 	}
 
 	/**
@@ -81,7 +80,7 @@ public class CallActivity extends Task {
 	 * @param parameter
 	 */
 	public void addParameterMapping(ParameterMapping parameterMapping) {
-		propertiesHandler.setUp(new AddParameterMappingSetUpCTab(parameterMapping));
+		propertiesHandler.setUp(new AddParameterMappingSetUp(parameterMapping));
 	}
 	
 }

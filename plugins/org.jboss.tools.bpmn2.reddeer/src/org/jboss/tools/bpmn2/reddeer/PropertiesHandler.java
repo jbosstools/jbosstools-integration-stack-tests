@@ -2,7 +2,7 @@ package org.jboss.tools.bpmn2.reddeer;
 
 import org.eclipse.gef.EditPart;
 import org.jboss.tools.bpmn2.reddeer.editor.graphiti.PropertiesGraphitiEditPart;
-import org.jboss.tools.bpmn2.reddeer.properties.shell.SetUpAble;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.SetUpAble;
 
 public class PropertiesHandler {
 	
