@@ -1,6 +1,8 @@
 package org.jboss.tools.switchyard.reddeer.preference.binding;
 
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.jface.preference.PreferencePage;
+import org.jboss.reddeer.swt.api.List;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.list.DefaultList;
 import org.jboss.tools.switchyard.reddeer.binding.AtomBindingPage;
@@ -27,22 +29,31 @@ import org.jboss.tools.switchyard.reddeer.binding.SQLBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.SchedulingBindingPage;
 
 /**
- * Represents a properties page "Bindigs".
+ * Represents a properties page "Bindings".
  * 
  * @author apodhrad
  */
 public class BindingsPage extends PreferencePage {
 
+	protected final Logger log = Logger.getLogger(this.getClass());
+	
 	public BindingsPage remove() {
 		new PushButton("Remove").click();
 		return this;
 	}
 
 	public BindingsPage removeAll() {
-		while (new DefaultList().getListItems().length > 0) {
-			new DefaultList().select(0);
-			remove();
+		List bindings = new DefaultList();
+		log.info("Remove all bindings");
+		if (bindings.getListItems().length == 0) {
+			log.info("\tno binding is available available");
+			return this;
 		}
+		for (String binding: bindings.getListItems()) {
+			log.info("\t" + binding + " will be removed");
+		}
+		bindings.selectAll();
+		remove();
 		return this;
 	}
 
