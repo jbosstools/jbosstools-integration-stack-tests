@@ -1,6 +1,7 @@
 package org.jboss.tools.switchyard.reddeer.preference;
 
 import org.jboss.reddeer.jface.preference.PreferencePage;
+import org.jboss.reddeer.swt.impl.list.DefaultList;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.switchyard.reddeer.preference.binding.BindingsPage;
@@ -122,6 +123,7 @@ public class CompositePropertiesPage extends PreferencePage {
 	public BindingsPage selectBindings() {
 		log.info("Select 'Bindings' page.");
 		new DefaultTreeItem("Bindings").select();
+		new DefaultList().deselectAll();
 		return new BindingsPage();
 	}
 

@@ -1,20 +1,22 @@
 package org.jboss.tools.switchyard.reddeer.editor;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 
-import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.gef.api.EditPart;
 import org.jboss.reddeer.gef.condition.EditorHasEditParts;
 import org.jboss.reddeer.gef.editor.GEFEditor;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.WaitCondition;
 import org.jboss.reddeer.swt.handler.IBeforeShellIsClosed;
 import org.jboss.reddeer.swt.handler.ShellHandler;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -46,11 +48,12 @@ public class SwitchYardEditor extends GEFEditor {
 	public static final String TOOL_BPEL = "Process (BPEL)";
 	public static final String TOOL_BPMN = "Process (BPMN)";
 	public static final String TOOL_RULES = "Rules";
-	
+
+	private static Logger log = Logger.getLogger(SwitchYardEditor.class);
 	private static Shell remainedShell = null;
 
 	protected File sourceFile;
-	protected SwitchYardComponent composite;
+	protected SwitchYardComponent composite; 
 
 	public SwitchYardEditor() {
 		super(TITLE);
@@ -176,9 +179,20 @@ public class SwitchYardEditor extends GEFEditor {
 		}
 		return sourceFile;
 	}
-
-	@Override
-	public void save() {
+	
+	public String getSource() throws IOException {
+		StringBuffer source = new StringBuffer();
+		BufferedReader in = new BufferedReader(new FileReader(getSourceFile()));
+		String line = null;
+		while ((line = in.readLine()) != null) {
+			source.append(line).append("\n");
+		}
+		in.close();
+		return source.toString();
+	}
+	
+	private void doSave() {
+		log.info("Save SwitchYard editor");
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
 		remainedShell = null;
@@ -190,11 +204,8 @@ public class SwitchYardEditor extends GEFEditor {
 			}
 		});
 		
-		activate();
-		ShellMenu saveMenu = new ShellMenu("File", "Save");
-		if(saveMenu.isEnabled()) {
-			saveMenu.select();
-		}
+		super.save();
+		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
 		if (remainedShell != null) {
@@ -202,8 +213,28 @@ public class SwitchYardEditor extends GEFEditor {
 		}
 	}
 
+	@Override
+	public void save() {
+		new WaitUntil(new EditorIsSaved(), TimePeriod.VERY_LONG);
+	}
+
 	public void saveAndClose() {
 		save();
 		close();
+	}
+	
+	private class EditorIsSaved implements WaitCondition {
+
+		@Override
+		public boolean test() {
+			new SwitchYardEditor().doSave();
+			return !new SwitchYardEditor().isDirty();
+		}
+
+		@Override
+		public String description() {
+			return "Editor is still dirty";
+		}
+		
 	}
 }

@@ -21,17 +21,13 @@ import static org.jboss.tools.switchyard.reddeer.binding.SchedulingBindingPage.S
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
+
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.condition.JobIsRunning;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.switchyard.reddeer.binding.AtomBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.CXFBindingPage;
@@ -184,13 +180,13 @@ public class BindingsTest {
 		new SwitchYardEditor().save();
 
 		String bindingPath = "/switchyard/composite/service/binding.atom";
-		assertEquals("atom-binding", editor.xpath(bindingPath + "/@name"));
-		assertEquals("http://localhost", editor.xpath(bindingPath + "/feedURI"));
-		assertEquals("true", editor.xpath(bindingPath + "/splitEntries"));
-		assertEquals("true", editor.xpath(bindingPath + "/filter"));
-		assertEquals(time, editor.xpath(bindingPath + "/lastUpdate"));
-		assertEquals("true", editor.xpath(bindingPath + "/sortEntries"));
-		assertEquals("1234", editor.xpath(bindingPath + "/consume/delay"));
+		assertXPath("atom-binding", bindingPath + "/@name");
+		assertXPath("http://localhost", bindingPath + "/feedURI");
+		assertXPath("true", bindingPath + "/splitEntries");
+		assertXPath("true", bindingPath + "/filter");
+		assertXPath(time, bindingPath + "/lastUpdate");
+		assertXPath("true", bindingPath + "/sortEntries");
+		assertXPath("1234", bindingPath + "/consume/delay");
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		AtomBindingPage page = properties.selectAtomBinding("atom-binding");
@@ -219,15 +215,15 @@ public class BindingsTest {
 		new SwitchYardEditor().save();
 
 		String bindingPath = "/switchyard/composite/service/binding.cxf";
-		assertEquals("cxf-binding", editor.xpath(bindingPath + "/@name"));
-		assertEquals("http://localhost", editor.xpath(bindingPath + "/cxfURI"));
-		assertEquals("hello.wsdl", editor.xpath(bindingPath + "/wsdlURL"));
-		assertEquals("myClass.java", editor.xpath(bindingPath + "/serviceClass"));
-		assertEquals("port", editor.xpath(bindingPath + "/portName"));
-		assertEquals(DATA_FORMAT_POJO, editor.xpath(bindingPath + "/dataFormat"));
-		assertEquals("true", editor.xpath(bindingPath + "/relayHeaders"));
-		assertEquals("true", editor.xpath(bindingPath + "/wrapped"));
-		assertEquals("true", editor.xpath(bindingPath + "/wrappedStyle"));
+		assertXPath("cxf-binding", bindingPath + "/@name");
+		assertXPath("http://localhost", bindingPath + "/cxfURI");
+		assertXPath("hello.wsdl", bindingPath + "/wsdlURL");
+		assertXPath("myClass.java", bindingPath + "/serviceClass");
+		assertXPath("port", bindingPath + "/portName");
+		assertXPath(DATA_FORMAT_POJO, bindingPath + "/dataFormat");
+		assertXPath("true", bindingPath + "/relayHeaders");
+		assertXPath("true", bindingPath + "/wrapped");
+		assertXPath("true", bindingPath + "/wrappedStyle");
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		CXFBindingPage page = properties.selectCXFBinding("cxf-binding");
@@ -248,9 +244,9 @@ public class BindingsTest {
 		new SwitchYardEditor().save();
 
 		String bindingPath = "/switchyard/composite/service/binding.uri";
-		assertEquals("camel-binding", editor.xpath(bindingPath + "/@name"));
-		assertEquals("camel-uri", editor.xpath(bindingPath + "/@configURI"));
-		assertEquals(METHOD, editor.xpath(bindingPath + "/operationSelector/@operationName"));
+		assertXPath("camel-binding", bindingPath + "/@name");
+		assertXPath("camel-uri", bindingPath + "/@configURI");
+		assertXPath(METHOD, bindingPath + "/operationSelector/@operationName");
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		CamelBindingPage page = properties.selectCamelBinding("camel-binding");
@@ -292,25 +288,25 @@ public class BindingsTest {
 		new SwitchYardEditor().save();
 
 		String bindingPath = "/switchyard/composite/service/binding.ftp";
-		assertEquals("ftp-binding", editor.xpath(bindingPath + "/@name"));
-		assertEquals(METHOD, editor.xpath(bindingPath + "/operationSelector/@operationName"));
-		assertEquals("ftp-directory", editor.xpath(bindingPath + "/directory"));
-		assertEquals("true", editor.xpath(bindingPath + "/autoCreate"));
-		assertEquals("fileName", editor.xpath(bindingPath + "/fileName"));
-		assertEquals("myhost", editor.xpath(bindingPath + "/host"));
-		assertEquals("1234", editor.xpath(bindingPath + "/port"));
-		assertEquals("admin", editor.xpath(bindingPath + "/username"));
-		assertEquals("admin123$", editor.xpath(bindingPath + "/password"));
-		assertEquals("true", editor.xpath(bindingPath + "/binary"));
-		assertEquals("true", editor.xpath(bindingPath + "/consume/delete"));
-		assertEquals("true", editor.xpath(bindingPath + "/consume/recursive"));
-		assertEquals("preMove", editor.xpath(bindingPath + "/consume/preMove"));
-		assertEquals("move", editor.xpath(bindingPath + "/consume/move"));
-		assertEquals("moveFailed", editor.xpath(bindingPath + "/consume/moveFailed"));
-		assertEquals("include", editor.xpath(bindingPath + "/consume/include"));
-		assertEquals("exclude", editor.xpath(bindingPath + "/consume/exclude"));
-		assertEquals("10", editor.xpath(bindingPath + "/consume/maxMessagesPerPoll"));
-		assertEquals("3000", editor.xpath(bindingPath + "/consume/delay"));
+		assertXPath("ftp-binding", bindingPath + "/@name");
+		assertXPath(METHOD, bindingPath + "/operationSelector/@operationName");
+		assertXPath("ftp-directory", bindingPath + "/directory");
+		assertXPath("true", bindingPath + "/autoCreate");
+		assertXPath("fileName", bindingPath + "/fileName");
+		assertXPath("myhost", bindingPath + "/host");
+		assertXPath("1234", bindingPath + "/port");
+		assertXPath("admin", bindingPath + "/username");
+		assertXPath("admin123$", bindingPath + "/password");
+		assertXPath("true", bindingPath + "/binary");
+		assertXPath("true", bindingPath + "/consume/delete");
+		assertXPath("true", bindingPath + "/consume/recursive");
+		assertXPath("preMove", bindingPath + "/consume/preMove");
+		assertXPath("move", bindingPath + "/consume/move");
+		assertXPath("moveFailed", bindingPath + "/consume/moveFailed");
+		assertXPath("include", bindingPath + "/consume/include");
+		assertXPath("exclude", bindingPath + "/consume/exclude");
+		assertXPath("10", bindingPath + "/consume/maxMessagesPerPoll");
+		assertXPath("3000", bindingPath + "/consume/delay");
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		FTPBindingPage page = properties.selectFTPBinding("ftp-binding");
@@ -358,24 +354,24 @@ public class BindingsTest {
 		new SwitchYardEditor().save();
 
 		String bindingPath = "/switchyard/composite/service/binding.ftps";
-		assertEquals("ftps-binding", editor.xpath(bindingPath + "/@name"));
-		assertEquals(METHOD, editor.xpath(bindingPath + "/operationSelector/@operationName"));
-		assertEquals("ftps-directory", editor.xpath(bindingPath + "/directory"));
-		assertEquals("filename", editor.xpath(bindingPath + "/fileName"));
-		assertEquals("localhost", editor.xpath(bindingPath + "/host"));
-		assertEquals("1234", editor.xpath(bindingPath + "/port"));
-		assertEquals("admin", editor.xpath(bindingPath + "/username"));
-		assertEquals("admin123$", editor.xpath(bindingPath + "/password"));
-		assertEquals("true", editor.xpath(bindingPath + "/binary"));
-		assertEquals("true", editor.xpath(bindingPath + "/consume/delete"));
-		assertEquals("true", editor.xpath(bindingPath + "/consume/recursive"));
-		assertEquals("pre-move", editor.xpath(bindingPath + "/consume/preMove"));
-		assertEquals("move", editor.xpath(bindingPath + "/consume/move"));
-		assertEquals("move-failed", editor.xpath(bindingPath + "/consume/moveFailed"));
-		assertEquals("include", editor.xpath(bindingPath + "/consume/include"));
-		assertEquals("exclude", editor.xpath(bindingPath + "/consume/exclude"));
-		assertEquals("3", editor.xpath(bindingPath + "/consume/maxMessagesPerPoll"));
-		assertEquals("1200", editor.xpath(bindingPath + "/consume/delay"));
+		assertXPath("ftps-binding", bindingPath + "/@name");
+		assertXPath(METHOD, bindingPath + "/operationSelector/@operationName");
+		assertXPath("ftps-directory", bindingPath + "/directory");
+		assertXPath("filename", bindingPath + "/fileName");
+		assertXPath("localhost", bindingPath + "/host");
+		assertXPath("1234", bindingPath + "/port");
+		assertXPath("admin", bindingPath + "/username");
+		assertXPath("admin123$", bindingPath + "/password");
+		assertXPath("true", bindingPath + "/binary");
+		assertXPath("true", bindingPath + "/consume/delete");
+		assertXPath("true", bindingPath + "/consume/recursive");
+		assertXPath("pre-move", bindingPath + "/consume/preMove");
+		assertXPath("move", bindingPath + "/consume/move");
+		assertXPath("move-failed", bindingPath + "/consume/moveFailed");
+		assertXPath("include", bindingPath + "/consume/include");
+		assertXPath("exclude", bindingPath + "/consume/exclude");
+		assertXPath("3", bindingPath + "/consume/maxMessagesPerPoll");
+		assertXPath("1200", bindingPath + "/consume/delay");
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		FTPSBindingPage page = properties.selectFTPSBinding("ftps-binding");
@@ -407,18 +403,18 @@ public class BindingsTest {
 		new SwitchYardEditor().save();
 
 		String bindingPath = "/switchyard/composite/service/binding.file";
-		assertEquals("file-binding", editor.xpath(bindingPath + "/@name"));
-		assertEquals(METHOD, editor.xpath(bindingPath + "/operationSelector/@operationName"));
-		assertEquals("file-directory", editor.xpath(bindingPath + "/directory"));
-		assertEquals("test.txt", editor.xpath(bindingPath + "/fileName"));
-		assertEquals("true", editor.xpath(bindingPath + "/autoCreate"));
-		assertEquals("963", editor.xpath(bindingPath + "/consume/delay"));
-		assertEquals("10", editor.xpath(bindingPath + "/consume/maxMessagesPerPoll"));
-		assertEquals("pre", editor.xpath(bindingPath + "/consume/preMove"));
-		assertEquals("processed", editor.xpath(bindingPath + "/consume/move"));
-		assertEquals("failed", editor.xpath(bindingPath + "/consume/moveFailed"));
-		assertEquals("inc", editor.xpath(bindingPath + "/consume/include"));
-		assertEquals("ex", editor.xpath(bindingPath + "/consume/exclude"));
+		assertXPath("file-binding", bindingPath + "/@name");
+		assertXPath(METHOD, bindingPath + "/operationSelector/@operationName");
+		assertXPath("file-directory", bindingPath + "/directory");
+		assertXPath("test.txt", bindingPath + "/fileName");
+		assertXPath("true", bindingPath + "/autoCreate");
+		assertXPath("963", bindingPath + "/consume/delay");
+		assertXPath("10", bindingPath + "/consume/maxMessagesPerPoll");
+		assertXPath("pre", bindingPath + "/consume/preMove");
+		assertXPath("processed", bindingPath + "/consume/move");
+		assertXPath("failed", bindingPath + "/consume/moveFailed");
+		assertXPath("inc", bindingPath + "/consume/include");
+		assertXPath("ex", bindingPath + "/consume/exclude");
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		FileBindingPage page = properties.selectFileBinding("file-binding");
@@ -441,9 +437,9 @@ public class BindingsTest {
 		new SwitchYardEditor().save();
 
 		String bindingPath = "/switchyard/composite/service/binding.http";
-		assertEquals("http-binding", editor.xpath(bindingPath + "/@name"));
-		assertEquals(METHOD, editor.xpath(bindingPath + "/operationSelector/@operationName"));
-		assertEquals("http-context", editor.xpath(bindingPath + "/contextPath"));
+		assertXPath("http-binding", bindingPath + "/@name");
+		assertXPath(METHOD, bindingPath + "/operationSelector/@operationName");
+		assertXPath("http-context", bindingPath + "/contextPath");
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		HTTPBindingPage page = properties.selectHTTPBinding("http-binding");
@@ -458,9 +454,9 @@ public class BindingsTest {
 
 		new SwitchYardEditor().save();
 
-		assertEquals("http1", editor.xpath(bindingPath + "/@name"));
-		assertEquals("/hello/method", editor.xpath(bindingPath + "/operationSelector.xpath/@expression"));
-		assertEquals("hello", editor.xpath(bindingPath + "/contextPath"));
+		assertXPath("http1", bindingPath + "/@name");
+		assertXPath("/hello/method", bindingPath + "/operationSelector.xpath/@expression");
+		assertXPath("hello", bindingPath + "/contextPath");
 	}
 
 	@Test
@@ -486,20 +482,20 @@ public class BindingsTest {
 		new SwitchYardEditor().save();
 
 		String bindingPath = "/switchyard/composite/service/binding.jca";
-		assertEquals("jca-binding", editor.xpath(bindingPath + "/@name"));
-		assertEquals(METHOD, editor.xpath(bindingPath + "/operationSelector/@operationName"));
-		assertEquals("generic-ra.rar", editor.xpath(bindingPath + "/inboundConnection/resourceAdapter/@name"));
-		assertEquals("javax.jms.Queue", editor.xpath(bindingPath
+		assertXPath("jca-binding", bindingPath + "/@name");
+		assertXPath(METHOD, bindingPath + "/operationSelector/@operationName");
+		assertXPath("generic-ra.rar", bindingPath + "/inboundConnection/resourceAdapter/@name");
+		assertXPath("javax.jms.Queue", editor.xpath(bindingPath
 				+ "/inboundConnection/activationSpec/property[@name='destinationType']/@value"));
-		assertEquals("queue/YourQueueName",
-				editor.xpath(bindingPath + "/inboundConnection/activationSpec/property[@name='destination']/@value"));
-		assertEquals("", editor.xpath(bindingPath
+		assertXPath("queue/YourQueueName",
+				bindingPath + "/inboundConnection/activationSpec/property[@name='destination']/@value");
+		assertXPath("", editor.xpath(bindingPath
 				+ "/inboundConnection/activationSpec/property[@name='messageSelector']/@value"));
-		assertEquals("org.switchyard.component.jca.endpoint.JMSEndpoint",
-				editor.xpath(bindingPath + "/inboundInteraction/endpoint/@type"));
-		assertEquals("true", editor.xpath(bindingPath + "/inboundInteraction/transacted"));
-		assertEquals("123", editor.xpath(bindingPath + "/inboundInteraction/batchCommit/@batchSize"));
-		assertEquals("2000", editor.xpath(bindingPath + "/inboundInteraction/batchCommit/@batchTimeout"));
+		assertXPath("org.switchyard.component.jca.endpoint.JMSEndpoint",
+				bindingPath + "/inboundInteraction/endpoint/@type");
+		assertXPath("true", bindingPath + "/inboundInteraction/transacted");
+		assertXPath("123", bindingPath + "/inboundInteraction/batchCommit/@batchSize");
+		assertXPath("2000", bindingPath + "/inboundInteraction/batchCommit/@batchTimeout");
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		JCABindingPage page = properties.selectJCABinding("jca-binding");
@@ -527,16 +523,16 @@ public class BindingsTest {
 		new SwitchYardEditor().save();
 
 		String bindingPath = "/switchyard/composite/service/binding.jca";
-		assertEquals("jca-binding", editor.xpath(bindingPath + "/@name"));
-		assertEquals("say[H|h]ello", editor.xpath(bindingPath + "/operationSelector.regex/@expression"));
-		assertEquals("hornetq-ra.rar", editor.xpath(bindingPath + "/inboundConnection/resourceAdapter/@name"));
-		assertEquals("javax.jms.Queue", editor.xpath(bindingPath
+		assertXPath("jca-binding", bindingPath + "/@name");
+		assertXPath("say[H|h]ello", bindingPath + "/operationSelector.regex/@expression");
+		assertXPath("hornetq-ra.rar", bindingPath + "/inboundConnection/resourceAdapter/@name");
+		assertXPath("javax.jms.Queue", editor.xpath(bindingPath
 				+ "/inboundConnection/activationSpec/property[@name='destinationType']/@value"));
-		assertEquals("queue/MyQueue",
-				editor.xpath(bindingPath + "/inboundConnection/activationSpec/property[@name='destination']/@value"));
-		assertEquals("ms", editor.xpath(bindingPath
+		assertXPath("queue/MyQueue",
+				bindingPath + "/inboundConnection/activationSpec/property[@name='destination']/@value");
+		assertXPath("ms", editor.xpath(bindingPath
 				+ "/inboundConnection/activationSpec/property[@name='messageSelector']/@value"));
-		assertEquals("Dups-ok-acknowledge", editor.xpath(bindingPath
+		assertXPath("Dups-ok-acknowledge", editor.xpath(bindingPath
 				+ "/inboundConnection/activationSpec/property[@name='acknowledgeMode']/@value"));
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
@@ -567,32 +563,32 @@ public class BindingsTest {
 		new SwitchYardEditor().save();
 
 		String bindingPath = "/switchyard/composite/service/binding.jca";
-		assertEquals("jca-binding", editor.xpath(bindingPath + "/@name"));
-		assertEquals("myClass.java", editor.xpath(bindingPath + "/operationSelector.java/@class"));
-		assertEquals("hornetq-ra.rar", editor.xpath(bindingPath + "/inboundConnection/resourceAdapter/@name"));
-		assertEquals("javax.jms.Topic", editor.xpath(bindingPath
+		assertXPath("jca-binding", bindingPath + "/@name");
+		assertXPath("myClass.java", bindingPath + "/operationSelector.java/@class");
+		assertXPath("hornetq-ra.rar", bindingPath + "/inboundConnection/resourceAdapter/@name");
+		assertXPath("javax.jms.Topic", editor.xpath(bindingPath
 				+ "/inboundConnection/activationSpec/property[@name='destinationType']/@value"));
-		assertEquals("topic/MyTopic",
-				editor.xpath(bindingPath + "/inboundConnection/activationSpec/property[@name='destination']/@value"));
-		assertEquals("ms", editor.xpath(bindingPath
+		assertXPath("topic/MyTopic",
+				bindingPath + "/inboundConnection/activationSpec/property[@name='destination']/@value");
+		assertXPath("ms", editor.xpath(bindingPath
 				+ "/inboundConnection/activationSpec/property[@name='messageSelector']/@value"));
-		assertEquals(ACKNOWLEDGE_MODE_AUTO, editor.xpath(bindingPath
+		assertXPath(ACKNOWLEDGE_MODE_AUTO, editor.xpath(bindingPath
 				+ "/inboundConnection/activationSpec/property[@name='acknowledgeMode']/@value"));
-		assertEquals(
+		assertXPath(
 				"sub-name",
 				editor.xpath(bindingPath
 						+ "/inboundConnection/activationSpec/property[@name='subscriptionName']/@value"));
-		assertEquals(
+		assertXPath(
 				SUBSCRIPTION_NONDURABLE,
 				editor.xpath(bindingPath
 						+ "/inboundConnection/activationSpec/property[@name='subscriptionDurability']/@value"));
-		assertEquals("clientID",
-				editor.xpath(bindingPath + "/inboundConnection/activationSpec/property[@name='clientId']/@value"));
-		assertEquals(
+		assertXPath("clientID",
+				bindingPath + "/inboundConnection/activationSpec/property[@name='clientId']/@value");
+		assertXPath(
 				"1",
 				editor.xpath("count(" + bindingPath
 						+ "/inboundConnection/activationSpec/property[@name='messageSelector'])"));
-		assertEquals(
+		assertXPath(
 				"1",
 				editor.xpath("count(" + bindingPath
 						+ "/inboundConnection/activationSpec/property[@name='acknowledgeMode'])"));
@@ -626,16 +622,16 @@ public class BindingsTest {
 		new SwitchYardEditor().save();
 
 		String bindingPath = "/switchyard/composite/service/binding.jms";
-		assertEquals("jms-binding", editor.xpath(bindingPath + "/@name"));
-		assertEquals(METHOD, editor.xpath(bindingPath + "/operationSelector/@operationName"));
-		assertEquals("myqueue", editor.xpath(bindingPath + "/queue"));
-		assertEquals("#MyFactory", editor.xpath(bindingPath + "/connectionFactory"));
-		assertEquals("3", editor.xpath(bindingPath + "/concurrentConsumers"));
-		assertEquals("7", editor.xpath(bindingPath + "/maxConcurrentConsumers"));
-		assertEquals("reply-to", editor.xpath(bindingPath + "/replyTo"));
-		assertEquals("selector", editor.xpath(bindingPath + "/selector"));
-		assertEquals("true", editor.xpath(bindingPath + "/transacted"));
-		assertEquals("MyTX", editor.xpath(bindingPath + "/transactionManager"));
+		assertXPath("jms-binding", bindingPath + "/@name");
+		assertXPath(METHOD, bindingPath + "/operationSelector/@operationName");
+		assertXPath("myqueue", bindingPath + "/queue");
+		assertXPath("#MyFactory", bindingPath + "/connectionFactory");
+		assertXPath("3", bindingPath + "/concurrentConsumers");
+		assertXPath("7", bindingPath + "/maxConcurrentConsumers");
+		assertXPath("reply-to", bindingPath + "/replyTo");
+		assertXPath("selector", bindingPath + "/selector");
+		assertXPath("true", bindingPath + "/transacted");
+		assertXPath("MyTX", bindingPath + "/transactionManager");
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		JMSBindingPage page = properties.selectJMSBinding("jms-binding");
@@ -666,16 +662,16 @@ public class BindingsTest {
 		new SwitchYardEditor().save();
 
 		String bindingPath = "/switchyard/composite/service/binding.jms";
-		assertEquals("jms-binding", editor.xpath(bindingPath + "/@name"));
-		assertEquals(METHOD, editor.xpath(bindingPath + "/operationSelector/@operationName"));
-		assertEquals("mytopic", editor.xpath(bindingPath + "/topic"));
-		assertEquals("#MyFactory", editor.xpath(bindingPath + "/connectionFactory"));
-		assertEquals("3", editor.xpath(bindingPath + "/concurrentConsumers"));
-		assertEquals("7", editor.xpath(bindingPath + "/maxConcurrentConsumers"));
-		assertEquals("reply-to", editor.xpath(bindingPath + "/replyTo"));
-		assertEquals("selector", editor.xpath(bindingPath + "/selector"));
-		assertEquals("false", editor.xpath(bindingPath + "/transacted"));
-		assertEquals("MyTX", editor.xpath(bindingPath + "/transactionManager"));
+		assertXPath("jms-binding", bindingPath + "/@name");
+		assertXPath(METHOD, bindingPath + "/operationSelector/@operationName");
+		assertXPath("mytopic", bindingPath + "/topic");
+		assertXPath("#MyFactory", bindingPath + "/connectionFactory");
+		assertXPath("3", bindingPath + "/concurrentConsumers");
+		assertXPath("7", bindingPath + "/maxConcurrentConsumers");
+		assertXPath("reply-to", bindingPath + "/replyTo");
+		assertXPath("selector", bindingPath + "/selector");
+		assertXPath("false", bindingPath + "/transacted");
+		assertXPath("MyTX", bindingPath + "/transactionManager");
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		JMSBindingPage page = properties.selectJMSBinding("jms-binding");
@@ -708,17 +704,17 @@ public class BindingsTest {
 		new SwitchYardEditor().save();
 
 		String bindingPath = "/switchyard/composite/service/binding.jpa";
-		assertEquals("jpa-binding", editor.xpath(bindingPath + "/@name"));
-		assertEquals("EClass.java", editor.xpath(bindingPath + "/entityClassName"));
-		assertEquals("persistence.xml", editor.xpath(bindingPath + "/persistenceUnit"));
-		assertEquals("myTX", editor.xpath(bindingPath + "/transactionManager"));
-		assertEquals("true", editor.xpath(bindingPath + "/consume/consumeDelete"));
-		assertEquals("true", editor.xpath(bindingPath + "/consume/consumeLockEntity"));
-		assertEquals("5", editor.xpath(bindingPath + "/consume/maximumResults"));
-		assertEquals("query", editor.xpath(bindingPath + "/consume/consumer.query"));
-		assertEquals("named-query", editor.xpath(bindingPath + "/consume/consumer.namedQuery"));
-		assertEquals("native-query", editor.xpath(bindingPath + "/consume/consumer.nativeQuery"));
-		assertEquals("true", editor.xpath(bindingPath + "/consume/consumer.transacted"));
+		assertXPath("jpa-binding", bindingPath + "/@name");
+		assertXPath("EClass.java", bindingPath + "/entityClassName");
+		assertXPath("persistence.xml", bindingPath + "/persistenceUnit");
+		assertXPath("myTX", bindingPath + "/transactionManager");
+		assertXPath("true", bindingPath + "/consume/consumeDelete");
+		assertXPath("true", bindingPath + "/consume/consumeLockEntity");
+		assertXPath("5", bindingPath + "/consume/maximumResults");
+		assertXPath("query", bindingPath + "/consume/consumer.query");
+		assertXPath("named-query", bindingPath + "/consume/consumer.namedQuery");
+		assertXPath("native-query", bindingPath + "/consume/consumer.nativeQuery");
+		assertXPath("true", bindingPath + "/consume/consumer.transacted");
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		JPABindingPage page = properties.selectJPABinding("jpa-binding");
@@ -743,12 +739,12 @@ public class BindingsTest {
 		new SwitchYardEditor().save();
 
 		String bindingPath = "/switchyard/composite/service/binding.mqtt";
-		assertEquals("mqtt-binding", editor.xpath(bindingPath + "/@name"));
-		assertEquals("tcp://localhost:1883", editor.xpath(bindingPath + "/host"));
-		assertEquals("111", editor.xpath(bindingPath + "/connectAttemptsMax"));
-		assertEquals("222", editor.xpath(bindingPath + "/reconnectAttemptsMax"));
-		assertEquals(QOS_EXACTLY_ONCE, editor.xpath(bindingPath + "/qualityOfService"));
-		assertEquals("topicName", editor.xpath(bindingPath + "/subscribeTopicName"));
+		assertXPath("mqtt-binding", bindingPath + "/@name");
+		assertXPath("tcp://localhost:1883", bindingPath + "/host");
+		assertXPath("111", bindingPath + "/connectAttemptsMax");
+		assertXPath("222", bindingPath + "/reconnectAttemptsMax");
+		assertXPath(QOS_EXACTLY_ONCE, bindingPath + "/qualityOfService");
+		assertXPath("topicName", bindingPath + "/subscribeTopicName");
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		MQTTBindingPage page = properties.selectMQTTBinding("mqtt-binding");
@@ -780,17 +776,17 @@ public class BindingsTest {
 
 		new SwitchYardEditor().save();
 		String bindingPath = "/switchyard/composite/service/binding.mail";
-		assertEquals("mail-binding", editor.xpath(bindingPath + "/@name"));
-		assertEquals("true", editor.xpath(bindingPath + "/@secure"));
-		assertEquals("sayHello", editor.xpath(bindingPath + "/operationSelector/@operationName"));
-		assertEquals("localhost", editor.xpath(bindingPath + "/host"));
-		assertEquals("1234", editor.xpath(bindingPath + "/port"));
-		assertEquals("admin", editor.xpath(bindingPath + "/username"));
-		assertEquals("admin123$", editor.xpath(bindingPath + "/password"));
-		assertEquals("imap", editor.xpath(bindingPath + "/consume/@accountType"));
-		assertEquals("inbox", editor.xpath(bindingPath + "/consume/folderName"));
-		assertEquals("3", editor.xpath(bindingPath + "/consume/fetchSize"));
-		assertEquals("true", editor.xpath(bindingPath + "/consume/delete"));
+		assertXPath("mail-binding", bindingPath + "/@name");
+		assertXPath("true", bindingPath + "/@secure");
+		assertXPath("sayHello", bindingPath + "/operationSelector/@operationName");
+		assertXPath("localhost", bindingPath + "/host");
+		assertXPath("1234", bindingPath + "/port");
+		assertXPath("admin", bindingPath + "/username");
+		assertXPath("admin123$", bindingPath + "/password");
+		assertXPath("imap", bindingPath + "/consume/@accountType");
+		assertXPath("inbox", bindingPath + "/consume/folderName");
+		assertXPath("3", bindingPath + "/consume/fetchSize");
+		assertXPath("true", bindingPath + "/consume/delete");
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		MailBindingPage page = properties.selectMailBinding("mail-binding");
@@ -813,10 +809,10 @@ public class BindingsTest {
 		new SwitchYardEditor().save();
 
 		String bindingPath = "/switchyard/composite/service/binding.tcp";
-		assertEquals("tcp-binding", editor.xpath(bindingPath + "/@name"));
-		assertEquals("sayHello", editor.xpath(bindingPath + "/operationSelector/@operationName"));
-		assertEquals("tcp-host", editor.xpath(bindingPath + "/host"));
-		assertEquals("1234", editor.xpath(bindingPath + "/port"));
+		assertXPath("tcp-binding", bindingPath + "/@name");
+		assertXPath("sayHello", bindingPath + "/operationSelector/@operationName");
+		assertXPath("tcp-host", bindingPath + "/host");
+		assertXPath("1234", bindingPath + "/port");
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		NettyTCPBindingPage page = properties.selectNettyTCPBinding("tcp-binding");
@@ -842,11 +838,11 @@ public class BindingsTest {
 		new SwitchYardEditor().save();
 
 		String bindingPath = "/switchyard/composite/service/binding.udp";
-		assertEquals("udp-binding", editor.xpath(bindingPath + "/@name"));
-		assertEquals("sayHello", editor.xpath(bindingPath + "/operationSelector/@operationName"));
-		assertEquals("udp-host", editor.xpath(bindingPath + "/host"));
-		assertEquals("1234", editor.xpath(bindingPath + "/port"));
-		assertEquals("true", editor.xpath(bindingPath + "/broadcast"));
+		assertXPath("udp-binding", bindingPath + "/@name");
+		assertXPath("sayHello", bindingPath + "/operationSelector/@operationName");
+		assertXPath("udp-host", bindingPath + "/host");
+		assertXPath("1234", bindingPath + "/port");
+		assertXPath("true", bindingPath + "/broadcast");
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		NettyUDPBindingPage page = properties.selectNettyUDPBinding("udp-binding");
@@ -869,9 +865,9 @@ public class BindingsTest {
 		new SwitchYardEditor().save();
 
 		String bindingPath = "/switchyard/composite/service/binding.rest";
-		assertEquals("rest-binding", editor.xpath(bindingPath + "/@name"));
-		assertEquals(PACKAGE + ".Hello", editor.xpath(bindingPath + "/interfaces"));
-		assertEquals("rest-context", editor.xpath(bindingPath + "/contextPath"));
+		assertXPath("rest-binding", bindingPath + "/@name");
+		assertXPath(PACKAGE + ".Hello", bindingPath + "/interfaces");
+		assertXPath("rest-context", bindingPath + "/contextPath");
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		RESTBindingPage page = properties.selectRESTBinding("rest-binding");
@@ -902,13 +898,13 @@ public class BindingsTest {
 		new SwitchYardEditor().save();
 
 		String bindingPath = "/switchyard/composite/service/binding.rss";
-		assertEquals("rss-binding", editor.xpath(bindingPath + "/@name"));
-		assertEquals("http://localhost", editor.xpath(bindingPath + "/feedURI"));
-		assertEquals("true", editor.xpath(bindingPath + "/splitEntries"));
-		assertEquals("true", editor.xpath(bindingPath + "/filter"));
-		assertEquals("2015-01-01T00:00:00", editor.xpath(bindingPath + "/lastUpdate"));
-		assertEquals("true", editor.xpath(bindingPath + "/sortEntries"));
-		assertEquals("1234", editor.xpath(bindingPath + "/consume/delay"));
+		assertXPath("rss-binding", bindingPath + "/@name");
+		assertXPath("http://localhost", bindingPath + "/feedURI");
+		assertXPath("true", bindingPath + "/splitEntries");
+		assertXPath("true", bindingPath + "/filter");
+		assertXPath("2015-01-01T00:00:00", bindingPath + "/lastUpdate");
+		assertXPath("true", bindingPath + "/sortEntries");
+		assertXPath("1234", bindingPath + "/consume/delay");
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		RSSBindingPage page = properties.selectRSSBinding("rss-binding");
@@ -930,10 +926,10 @@ public class BindingsTest {
 		new SwitchYardEditor().save();
 
 		String bindingPath = "/switchyard/composite/service/binding.sap";
-		assertEquals("sap-binding", editor.xpath(bindingPath + "/@name"));
-		assertEquals("localhost", editor.xpath(bindingPath + "/server"));
-		assertEquals("rfcName", editor.xpath(bindingPath + "/rfcName"));
-		assertEquals("true", editor.xpath(bindingPath + "/transacted"));
+		assertXPath("sap-binding", bindingPath + "/@name");
+		assertXPath("localhost", bindingPath + "/server");
+		assertXPath("rfcName", bindingPath + "/rfcName");
+		assertXPath("true", bindingPath + "/transacted");
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		SAPBindingPage page = properties.selectSAPBinding("sap-binding");
@@ -954,8 +950,8 @@ public class BindingsTest {
 		new SwitchYardEditor().save();
 
 		String bindingPath = "/switchyard/composite/service/binding.sca";
-		assertEquals("sca-binding", editor.xpath(bindingPath + "/@name"));
-		assertEquals("true", editor.xpath(bindingPath + "/@clustered"));
+		assertXPath("sca-binding", bindingPath + "/@name");
+		assertXPath("true", bindingPath + "/@clustered");
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		SCABindingPage page = properties.selectSCABinding("sca-binding");
@@ -1000,26 +996,26 @@ public class BindingsTest {
 
 		new SwitchYardEditor().save();
 		String bindingPath = "/switchyard/composite/service/binding.sftp";
-		assertEquals("sftp-binding", editor.xpath(bindingPath + "/@name"));
-		assertEquals("sayHello", editor.xpath(bindingPath + "/operationSelector/@operationName"));
-		assertEquals("sftp-directory", editor.xpath(bindingPath + "/directory"));
-		assertEquals("true", editor.xpath(bindingPath + "/autoCreate"));
-		assertEquals("localhost", editor.xpath(bindingPath + "/host"));
-		assertEquals("1234", editor.xpath(bindingPath + "/port"));
-		assertEquals("admin", editor.xpath(bindingPath + "/username"));
-		assertEquals("admin123$", editor.xpath(bindingPath + "/password"));
-		assertEquals("true", editor.xpath(bindingPath + "/binary"));
-		assertEquals("private.key", editor.xpath(bindingPath + "/privateKeyFile"));
-		assertEquals("secret", editor.xpath(bindingPath + "/privateKeyFilePassphrase"));
-		assertEquals("true", editor.xpath(bindingPath + "/consume/delete"));
-		assertEquals("true", editor.xpath(bindingPath + "/consume/recursive"));
-		assertEquals("preMove", editor.xpath(bindingPath + "/consume/preMove"));
-		assertEquals("move", editor.xpath(bindingPath + "/consume/move"));
-		assertEquals("moveFailed", editor.xpath(bindingPath + "/consume/moveFailed"));
-		assertEquals("in", editor.xpath(bindingPath + "/consume/include"));
-		assertEquals("ex", editor.xpath(bindingPath + "/consume/exclude"));
-		assertEquals("2", editor.xpath(bindingPath + "/consume/maxMessagesPerPoll"));
-		assertEquals("1000", editor.xpath(bindingPath + "/consume/delay"));
+		assertXPath("sftp-binding", bindingPath + "/@name");
+		assertXPath("sayHello", bindingPath + "/operationSelector/@operationName");
+		assertXPath("sftp-directory", bindingPath + "/directory");
+		assertXPath("true", bindingPath + "/autoCreate");
+		assertXPath("localhost", bindingPath + "/host");
+		assertXPath("1234", bindingPath + "/port");
+		assertXPath("admin", bindingPath + "/username");
+		assertXPath("admin123$", bindingPath + "/password");
+		assertXPath("true", bindingPath + "/binary");
+		assertXPath("private.key", bindingPath + "/privateKeyFile");
+		assertXPath("secret", bindingPath + "/privateKeyFilePassphrase");
+		assertXPath("true", bindingPath + "/consume/delete");
+		assertXPath("true", bindingPath + "/consume/recursive");
+		assertXPath("preMove", bindingPath + "/consume/preMove");
+		assertXPath("move", bindingPath + "/consume/move");
+		assertXPath("moveFailed", bindingPath + "/consume/moveFailed");
+		assertXPath("in", bindingPath + "/consume/include");
+		assertXPath("ex", bindingPath + "/consume/exclude");
+		assertXPath("2", bindingPath + "/consume/maxMessagesPerPoll");
+		assertXPath("1000", bindingPath + "/consume/delay");
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		SFTPBindingPage page = properties.selectSFTPBinding("sftp-binding");
@@ -1054,18 +1050,18 @@ public class BindingsTest {
 
 		new SwitchYardEditor().save();
 		String bindingPath = "/switchyard/composite/service/binding.soap";
-		assertEquals("soap-binding", editor.xpath(bindingPath + "/@name"));
-		assertEquals("DOM", editor.xpath(bindingPath + "/contextMapper/@soapHeadersType"));
-		assertEquals("true", editor.xpath(bindingPath + "/messageComposer/@unwrapped"));
-		assertEquals("hello.wsdl", editor.xpath(bindingPath + "/wsdl"));
-		assertEquals("1234", editor.xpath(bindingPath + "/wsdlPort"));
-		assertEquals(":4321", editor.xpath(bindingPath + "/socketAddr"));
-		assertEquals("soap-context", editor.xpath(bindingPath + "/contextPath"));
-		assertEquals("soap.conf", editor.xpath(bindingPath + "/endpointConfig/@configFile"));
-		assertEquals("configName", editor.xpath(bindingPath + "/endpointConfig/@configName"));
-		assertEquals("true", editor.xpath(bindingPath + "/mtom/@enabled"));
-		assertEquals("963", editor.xpath(bindingPath + "/mtom/@threshold"));
-		assertEquals("true", editor.xpath(bindingPath + "/mtom/@xopExpand"));
+		assertXPath("soap-binding", bindingPath + "/@name");
+		assertXPath("DOM", bindingPath + "/contextMapper/@soapHeadersType");
+		assertXPath("true", bindingPath + "/messageComposer/@unwrapped");
+		assertXPath("hello.wsdl", bindingPath + "/wsdl");
+		assertXPath("1234", bindingPath + "/wsdlPort");
+		assertXPath(":4321", bindingPath + "/socketAddr");
+		assertXPath("soap-context", bindingPath + "/contextPath");
+		assertXPath("soap.conf", bindingPath + "/endpointConfig/@configFile");
+		assertXPath("configName", bindingPath + "/endpointConfig/@configName");
+		assertXPath("true", bindingPath + "/mtom/@enabled");
+		assertXPath("963", bindingPath + "/mtom/@threshold");
+		assertXPath("true", bindingPath + "/mtom/@xopExpand");
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		SOAPBindingPage page = properties.selectSOAPBinding("soap-binding");
@@ -1091,13 +1087,13 @@ public class BindingsTest {
 		new SwitchYardEditor().save();
 
 		String bindingPath = "/switchyard/composite/service/binding.sql";
-		assertEquals("sql-binding", editor.xpath(bindingPath + "/@name"));
-		assertEquals("1234", editor.xpath(bindingPath + "/@initialDelay"));
-		assertEquals("10", editor.xpath(bindingPath + "/@period"));
-		assertEquals("sayHello", editor.xpath(bindingPath + "/operationSelector/@operationName"));
-		assertEquals("sql-query", editor.xpath(bindingPath + "/query"));
-		assertEquals("data-source", editor.xpath(bindingPath + "/dataSourceRef"));
-		assertEquals("place-holder", editor.xpath(bindingPath + "/placeholder"));
+		assertXPath("sql-binding", bindingPath + "/@name");
+		assertXPath("1234", bindingPath + "/@initialDelay");
+		assertXPath("10", bindingPath + "/@period");
+		assertXPath("sayHello", bindingPath + "/operationSelector/@operationName");
+		assertXPath("sql-query", bindingPath + "/query");
+		assertXPath("data-source", bindingPath + "/dataSourceRef");
+		assertXPath("place-holder", bindingPath + "/placeholder");
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		SQLBindingPage page = properties.selectSQLBinding("sql-binding");
@@ -1126,12 +1122,12 @@ public class BindingsTest {
 
 		new SwitchYardEditor().save();
 		String bindingPath = "/switchyard/composite/service/binding.quartz";
-		assertEquals("sayHello", editor.xpath(bindingPath + "/operationSelector/@operationName"));
-		assertEquals("schedule-binding", editor.xpath(bindingPath + "/name"));
-		assertEquals("0 0 12 * * ?", editor.xpath(bindingPath + "/cron"));
-		assertEquals("2014-01-01T00:00:00", editor.xpath(bindingPath + "/trigger.startTime"));
-		assertEquals("2015-01-01T00:00:00", editor.xpath(bindingPath + "/trigger.endTime"));
-		assertEquals("Europe/Prague", editor.xpath(bindingPath + "/trigger.timeZone"));
+		assertXPath("sayHello", bindingPath + "/operationSelector/@operationName");
+		assertXPath("schedule-binding", bindingPath + "/name");
+		assertXPath("0 0 12 * * ?", bindingPath + "/cron");
+		assertXPath("2014-01-01T00:00:00", bindingPath + "/trigger.startTime");
+		assertXPath("2015-01-01T00:00:00", bindingPath + "/trigger.endTime");
+		assertXPath("Europe/Prague", bindingPath + "/trigger.timeZone");
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		SchedulingBindingPage page = properties.selectSchedulingBinding("HelloService1");
@@ -1141,5 +1137,9 @@ public class BindingsTest {
 		assertEquals(startTime, page.getStartTime().getText());
 		assertEquals(endTime, page.getEndTime().getText());
 		properties.ok();
+	}
+	
+	private void assertXPath(String expected, String xpath) throws IOException {
+		assertEquals(editor.getSource(), expected, editor.xpath(xpath));
 	}
 }
