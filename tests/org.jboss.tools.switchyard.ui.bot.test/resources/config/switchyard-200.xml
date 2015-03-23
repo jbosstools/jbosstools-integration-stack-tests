@@ -8,9 +8,9 @@
                       http://www.jboss.org/NS/SOAReq	http://www.jboss.org/schema/reddeer/3rdparty/SOARequirements.xsd">
 
   <requirements>
-    <switchyard:switchyard-requirement name="SwitchYard-2.0.0.Beta1">
+    <switchyard:switchyard-requirement name="SwitchYard-2.0.0.CR1">
       <switchyard:configurationVersion>2.0</switchyard:configurationVersion>
-      <switchyard:libraryVersion>2.0.0.Beta1</switchyard:libraryVersion>
+      <switchyard:libraryVersion>2.0.0.CR1</switchyard:libraryVersion>
     </switchyard:switchyard-requirement>
   </requirements>
 

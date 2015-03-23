@@ -71,7 +71,7 @@
 		</dependencies>
 	      </configuration>
 	    </plugin>
-	    <!-- Install SwitchYard 2.0.0.Beta1 into JBoss WildFly 8.1.0.Final -->
+	    <!-- Install SwitchYard 2.0.0.CR1 into JBoss WildFly 8.1.0.Final -->
 	    <plugin>
 	      <groupId>com.googlecode.maven-download-plugin</groupId>
 	      <artifactId>download-maven-plugin</artifactId>
@@ -100,9 +100,9 @@
 		    <goal>wget</goal>
 		  </goals>
 		  <configuration>
-		    <url>http://downloads.jboss.org/switchyard/releases/v2.0.Beta1/switchyard-2.0.0.Beta1-WildFly.zip</url>
+		    <url>http://downloads.jboss.org/switchyard/releases/v2.0.CR1/switchyard-2.0.0.CR1-WildFly.zip</url>
 		    <unpack>true</unpack>
-		    <md5>9a13f61cf0123e057025495431e9f758</md5>
+		    <md5>a0250e1aba6d1ff704fc61f121b89b3d</md5>
 		    <outputDirectory>${project.build.directory}/wildfly-8.1.0.Final</outputDirectory>
 		  </configuration>
 		</execution>
