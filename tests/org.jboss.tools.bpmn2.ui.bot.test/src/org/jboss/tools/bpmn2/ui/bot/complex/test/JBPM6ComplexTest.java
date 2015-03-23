@@ -17,6 +17,7 @@ import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsResourceMatcher;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.WaitCondition;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
@@ -27,7 +28,6 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.bpmn2.reddeer.ProcessEditorView;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.JBPM6ComplexTestDefinitionRequirement.JBPM6ComplexTestDefinition;
-import org.jboss.tools.bpmn2.ui.bot.test.BPMN2Suite;
 import org.jboss.tools.bpmn2.ui.bot.test.validator.JBPM6Validator;
 import org.junit.Assert;
 import org.junit.Test;
@@ -39,7 +39,7 @@ import org.kie.api.runtime.KieSession;
 import org.kie.internal.io.ResourceFactory;
 import org.kie.internal.utils.KieHelper;
 
-@RunWith(BPMN2Suite.class)
+@RunWith(RedDeerSuite.class)
 public abstract class JBPM6ComplexTest {
 	
 	private JBPM6ComplexTestDefinition definition;

@@ -18,8 +18,6 @@
 		<droolsjbpm.feature.version>6.2.0.CR3</droolsjbpm.feature.version>
 		<bpmn2.modeler.version>1.1.1</bpmn2.modeler.version>
 		<bpmn2.metamodel.version>1.0.0</bpmn2.metamodel.version>
-		<awt.robot>false</awt.robot>
-		<bpmn.validation>false</bpmn.validation>
 		<test.class>AllEditorTests</test.class>
 		<graphiti.properties>true</graphiti.properties>
 	</properties>
@@ -100,8 +98,7 @@
 		    <artifactId>tycho-surefire-plugin</artifactId>
 		    <configuration>
 		      <systemProperties>
-		        <awt.robot>${awt.robot}</awt.robot>
-		        <bpmn.validation>${bpmn.validation}</bpmn.validation>
+		        <!--graphiti.properties>${graphiti.properties}</graphiti.properties-->
 		      </systemProperties>
 		      <testSuite>org.jboss.tools.bpmn2.ui.bot.test</testSuite>
 		      <testClass>org.jboss.tools.bpmn2.ui.bot.test.${test.class}</testClass>

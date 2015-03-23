@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+    <extension
+         id="org.jboss.reddeer.junit.before.test"
+         name="BeforeTestExtPoint"
+         point="org.jboss.reddeer.junit.before.test">
+   		<client
+			class="org.jboss.tools.bpmn2.ui.bot.reddeer.junit.extension.CloseGuvnorViewExt">
+		</client>
+    </extension>
+
+</plugin>
