@@ -1,6 +1,7 @@
 package org.jboss.tools.bpmn2.ui.bot.complex.test;
 
 
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexAdHocProcessTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexAdHocSubprocessTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexAssociationTest;
@@ -40,7 +41,6 @@ import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexSubProcessTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexUserTaskTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexWebDesignerProcessTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexXPathExpressionTest;
-import org.jboss.tools.bpmn2.ui.bot.test.BPMN2Suite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
@@ -96,7 +96,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	ComplexImportInterfaceTest.class,
 	ComplexServiceTaskTest.class
 })
-@RunWith(BPMN2Suite.class)
+@RunWith(RedDeerSuite.class)
 public class JBPM6ComplexTests {
 
 }
