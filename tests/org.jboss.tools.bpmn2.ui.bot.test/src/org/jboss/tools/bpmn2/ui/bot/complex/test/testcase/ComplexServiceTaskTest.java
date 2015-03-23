@@ -1,13 +1,10 @@
 package org.jboss.tools.bpmn2.ui.bot.complex.test.testcase;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
-
-import org.drools.core.process.instance.WorkItem;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Message;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ServiceTask;

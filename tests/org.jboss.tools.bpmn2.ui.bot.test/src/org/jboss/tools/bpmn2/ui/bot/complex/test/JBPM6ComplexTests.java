@@ -28,6 +28,7 @@ import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexIntermediateThr
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexIntermediateThrowMessageEventTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexLaneTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexLinkEventTest;
+import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexManualTaskTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexMessageStartTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexMultiInstanceLoopCharacteristicsTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexMultipleStartEventTest;
@@ -87,7 +88,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	ComplexDefaultSkippableTest.class,
 	ComplexSpecialCharactersAndLenghtsTest.class,
 	ComplexImportInterfaceTest.class,
-	ComplexServiceTaskTest.class
+	ComplexServiceTaskTest.class,
+	ComplexManualTaskTest.class
 })
 @RunWith(RedDeerSuite.class)
 public class JBPM6ComplexTests {
