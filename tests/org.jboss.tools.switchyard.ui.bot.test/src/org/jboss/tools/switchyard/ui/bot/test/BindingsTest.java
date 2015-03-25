@@ -485,14 +485,13 @@ public class BindingsTest {
 		assertXPath("jca-binding", bindingPath + "/@name");
 		assertXPath(METHOD, bindingPath + "/operationSelector/@operationName");
 		assertXPath("generic-ra.rar", bindingPath + "/inboundConnection/resourceAdapter/@name");
-		assertXPath("javax.jms.Queue", editor.xpath(bindingPath
-				+ "/inboundConnection/activationSpec/property[@name='destinationType']/@value"));
-		assertXPath("queue/YourQueueName",
-				bindingPath + "/inboundConnection/activationSpec/property[@name='destination']/@value");
-		assertXPath("", editor.xpath(bindingPath
-				+ "/inboundConnection/activationSpec/property[@name='messageSelector']/@value"));
-		assertXPath("org.switchyard.component.jca.endpoint.JMSEndpoint",
-				bindingPath + "/inboundInteraction/endpoint/@type");
+		assertXPath("javax.jms.Queue", bindingPath
+				+ "/inboundConnection/activationSpec/property[@name='destinationType']/@value");
+		assertXPath("queue/YourQueueName", bindingPath
+				+ "/inboundConnection/activationSpec/property[@name='destination']/@value");
+		assertXPath("", bindingPath + "/inboundConnection/activationSpec/property[@name='messageSelector']/@value");
+		assertXPath("org.switchyard.component.jca.endpoint.JMSEndpoint", bindingPath
+				+ "/inboundInteraction/endpoint/@type");
 		assertXPath("true", bindingPath + "/inboundInteraction/transacted");
 		assertXPath("123", bindingPath + "/inboundInteraction/batchCommit/@batchSize");
 		assertXPath("2000", bindingPath + "/inboundInteraction/batchCommit/@batchTimeout");
@@ -526,14 +525,13 @@ public class BindingsTest {
 		assertXPath("jca-binding", bindingPath + "/@name");
 		assertXPath("say[H|h]ello", bindingPath + "/operationSelector.regex/@expression");
 		assertXPath("hornetq-ra.rar", bindingPath + "/inboundConnection/resourceAdapter/@name");
-		assertXPath("javax.jms.Queue", editor.xpath(bindingPath
-				+ "/inboundConnection/activationSpec/property[@name='destinationType']/@value"));
-		assertXPath("queue/MyQueue",
-				bindingPath + "/inboundConnection/activationSpec/property[@name='destination']/@value");
-		assertXPath("ms", editor.xpath(bindingPath
-				+ "/inboundConnection/activationSpec/property[@name='messageSelector']/@value"));
-		assertXPath("Dups-ok-acknowledge", editor.xpath(bindingPath
-				+ "/inboundConnection/activationSpec/property[@name='acknowledgeMode']/@value"));
+		assertXPath("javax.jms.Queue", bindingPath
+				+ "/inboundConnection/activationSpec/property[@name='destinationType']/@value");
+		assertXPath("queue/MyQueue", bindingPath
+				+ "/inboundConnection/activationSpec/property[@name='destination']/@value");
+		assertXPath("ms", bindingPath + "/inboundConnection/activationSpec/property[@name='messageSelector']/@value");
+		assertXPath("Dups-ok-acknowledge", bindingPath
+				+ "/inboundConnection/activationSpec/property[@name='acknowledgeMode']/@value");
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		JCABindingPage page = properties.selectJCABinding("jca-binding");
@@ -566,32 +564,22 @@ public class BindingsTest {
 		assertXPath("jca-binding", bindingPath + "/@name");
 		assertXPath("myClass.java", bindingPath + "/operationSelector.java/@class");
 		assertXPath("hornetq-ra.rar", bindingPath + "/inboundConnection/resourceAdapter/@name");
-		assertXPath("javax.jms.Topic", editor.xpath(bindingPath
-				+ "/inboundConnection/activationSpec/property[@name='destinationType']/@value"));
-		assertXPath("topic/MyTopic",
-				bindingPath + "/inboundConnection/activationSpec/property[@name='destination']/@value");
-		assertXPath("ms", editor.xpath(bindingPath
-				+ "/inboundConnection/activationSpec/property[@name='messageSelector']/@value"));
-		assertXPath(ACKNOWLEDGE_MODE_AUTO, editor.xpath(bindingPath
-				+ "/inboundConnection/activationSpec/property[@name='acknowledgeMode']/@value"));
-		assertXPath(
-				"sub-name",
-				editor.xpath(bindingPath
-						+ "/inboundConnection/activationSpec/property[@name='subscriptionName']/@value"));
-		assertXPath(
-				SUBSCRIPTION_NONDURABLE,
-				editor.xpath(bindingPath
-						+ "/inboundConnection/activationSpec/property[@name='subscriptionDurability']/@value"));
-		assertXPath("clientID",
-				bindingPath + "/inboundConnection/activationSpec/property[@name='clientId']/@value");
-		assertXPath(
-				"1",
-				editor.xpath("count(" + bindingPath
-						+ "/inboundConnection/activationSpec/property[@name='messageSelector'])"));
-		assertXPath(
-				"1",
-				editor.xpath("count(" + bindingPath
-						+ "/inboundConnection/activationSpec/property[@name='acknowledgeMode'])"));
+		assertXPath("javax.jms.Topic", bindingPath
+				+ "/inboundConnection/activationSpec/property[@name='destinationType']/@value");
+		assertXPath("topic/MyTopic", bindingPath
+				+ "/inboundConnection/activationSpec/property[@name='destination']/@value");
+		assertXPath("ms", bindingPath + "/inboundConnection/activationSpec/property[@name='messageSelector']/@value");
+		assertXPath(ACKNOWLEDGE_MODE_AUTO, bindingPath
+				+ "/inboundConnection/activationSpec/property[@name='acknowledgeMode']/@value");
+		assertXPath("sub-name", bindingPath
+				+ "/inboundConnection/activationSpec/property[@name='subscriptionName']/@value");
+		assertXPath(SUBSCRIPTION_NONDURABLE, bindingPath
+				+ "/inboundConnection/activationSpec/property[@name='subscriptionDurability']/@value");
+		assertXPath("clientID", bindingPath + "/inboundConnection/activationSpec/property[@name='clientId']/@value");
+		assertXPath("1", "count(" + bindingPath
+				+ "/inboundConnection/activationSpec/property[@name='messageSelector'])");
+		assertXPath("1", "count(" + bindingPath
+				+ "/inboundConnection/activationSpec/property[@name='acknowledgeMode'])");
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		JCABindingPage page = properties.selectJCABinding("jca-binding");
@@ -1138,7 +1126,7 @@ public class BindingsTest {
 		assertEquals(endTime, page.getEndTime().getText());
 		properties.ok();
 	}
-	
+
 	private void assertXPath(String expected, String xpath) throws IOException {
 		assertEquals(editor.getSource(), expected, editor.xpath(xpath));
 	}
