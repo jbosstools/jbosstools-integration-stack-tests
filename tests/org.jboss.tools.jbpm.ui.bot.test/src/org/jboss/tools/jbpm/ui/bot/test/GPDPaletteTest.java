@@ -11,10 +11,12 @@
 package org.jboss.tools.jbpm.ui.bot.test;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.gef.impl.editpart.LabeledEditPart;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.tools.jbpm.ui.bot.test.editor.JBPMEditor;
 import org.jboss.tools.jbpm.ui.bot.test.perspective.JBPMJPDL3Perspective;
 import org.jboss.tools.jbpm.ui.bot.test.wizard.JBPMProjectWizard;
@@ -32,7 +34,7 @@ import org.junit.runner.RunWith;
 public class GPDPaletteTest {
 
 	public static final String PROJECT = "palettetest";
-	
+
 	@InjectRequirement
 	protected RuntimeRequirement requirement;
 
@@ -50,11 +52,19 @@ public class GPDPaletteTest {
 		/* Open Simple Diagram */
 		new ProjectExplorer().getProject(PROJECT).getProjectItem("src", "main", "jpdl", "simple.jpdl.xml").open();
 
-		String[] entities = { "Select", "Start", "State", "End", "Fork", "Join", "Decision", "Node", "Task Node",
-				"Mail Node", "ESB Service", "Process State", "Super State", "Transition" };
+		String[] entities = { "Start", "State", "End", "Fork", "Join", "Decision", "Node", "Task Node", "Mail Node",
+				"ESB Service", "Process State", "Super State" };
 
 		/* Add All Entities */
-		JBPMEditor editor = new JBPMEditor("simple");
+		JBPMEditor editor = new JBPMEditor("simple.jpdl.xml");
+
+		new LabeledEditPart("start").click();
+		new ContextMenu("Delete").select();
+		new LabeledEditPart("first").click();
+		new ContextMenu("Delete").select();
+		new LabeledEditPart("end").click();
+		new ContextMenu("Delete").select();
+
 		for (int i = 0; i < entities.length; i++) {
 			int x = 100;
 			int y = 100 + 10 * i;
@@ -63,4 +73,5 @@ public class GPDPaletteTest {
 		}
 		editor.save();
 	}
+
 }

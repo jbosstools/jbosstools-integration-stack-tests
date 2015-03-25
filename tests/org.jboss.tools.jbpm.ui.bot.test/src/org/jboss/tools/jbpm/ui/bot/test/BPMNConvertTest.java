@@ -47,7 +47,7 @@ public class BPMNConvertTest {
 
 		// import files
 		new PackageExplorer().getProject(projectName).getProjectItem(originalFolder).select();
-		new ImportFileWizard().importFile("resources/" + originalFolder, originalFolder);
+		new ImportFileWizard().importFile("resources/" + originalFolder);
 	}
 
 	@Test

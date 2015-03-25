@@ -5,10 +5,11 @@ Bundle-SymbolicName: org.jboss.tools.jbpm.ui.bot.test
 Bundle-Vendor: JBoss by Red Hat
 Bundle-Version: 4.2.0.qualifier
 Bundle-Activator: org.jboss.tools.jbpm.ui.bot.test.Activator
-Require-Bundle: org.eclipse.gef,
- org.eclipse.swtbot.go,
- org.eclipse.swtbot.eclipse.finder,
- org.eclipse.swtbot.eclipse.gef.finder,
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.gef,
+ org.junit;bundle-version="4.10.0",
+ org.hamcrest.core;bundle-version="1.3.0",
  org.jboss.reddeer.eclipse;bundle-version="0.7.0",
  org.jboss.reddeer.jface;bundle-version="0.7.0",
  org.jboss.reddeer.junit;bundle-version="0.7.0",
@@ -17,6 +18,7 @@ Require-Bundle: org.eclipse.gef,
  org.jboss.reddeer.swt;bundle-version="0.7.0",
  org.jboss.reddeer.workbench;bundle-version="0.7.0",
  org.jboss.reddeer.common;bundle-version="0.7.0",
+ org.jboss.reddeer.gef;bundle-version="0.7.0",
  org.jboss.tools.runtime.reddeer;bundle-version="4.2.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
