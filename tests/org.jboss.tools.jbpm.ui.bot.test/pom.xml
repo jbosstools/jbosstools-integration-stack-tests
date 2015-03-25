@@ -13,9 +13,7 @@
 
 	<properties>
 	  <reddeer.config>${project.build.directory}/config</reddeer.config>
-	  <reddeerProperties>-Dreddeer.config=${reddeer.config}</reddeerProperties>
-	  <systemProperties>${integrationTestsSystemProperties} ${reddeerProperties}</systemProperties>
-	  <maven-download-plugin.version>1.0.0</maven-download-plugin.version>
+	  <systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=${reddeer.config}</systemProperties>
 	</properties>
 
 	<build>

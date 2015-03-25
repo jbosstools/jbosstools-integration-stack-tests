@@ -10,12 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.jbpm.ui.bot.test;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.jbpm.ui.bot.test.perspective.JBPMJPDL3Perspective;
 import org.jboss.tools.jbpm.ui.bot.test.wizard.JBPMProjectWizard;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
@@ -30,8 +30,6 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 public class JBPMProjectTest {
 
-	protected static SWTWorkbenchBot bot = new SWTWorkbenchBot();
-
 	@InjectRequirement
 	protected RuntimeRequirement requirement;
 	
@@ -45,7 +43,7 @@ public class JBPMProjectTest {
 
 		new ProjectExplorer().getProject("test").getProjectItem("src", "main", "jpdl", "simple.jpdl.xml").open();
 		
-		bot.editorByTitle("simple");
+		new DefaultEditor("simple.jpdl.xml");
 	
 	}
 
