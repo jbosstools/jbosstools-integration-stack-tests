@@ -5,15 +5,22 @@ import static org.hamcrest.Matchers.allOf;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.draw2d.FigureCanvas;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartListener;
 import org.eclipse.gef.GraphicalViewer;
+import org.eclipse.swt.SWT;
 import org.hamcrest.Matcher;
 import org.jboss.reddeer.gef.GEFLayerException;
 import org.jboss.reddeer.gef.condition.EditorHasEditParts;
 import org.jboss.reddeer.gef.editor.GEFEditor;
+import org.jboss.reddeer.gef.handler.EditPartHandler;
+import org.jboss.reddeer.swt.handler.WidgetHandler;
 import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructOfType;
 import org.jboss.tools.bpmn2.reddeer.finder.AllChildEditPartFinder;
@@ -87,6 +94,46 @@ public class GEFProcessEditor extends GEFEditor {
 		}
 
 		return new AbsoluteEditPart(viewerListener.getAddedEditPart());
+	}
+	
+	public void click(final Element element) {
+		WidgetHandler handler = WidgetHandler.getInstance();
+		final FigureCanvas figureCanvas = (FigureCanvas) viewer.getControl();
+		
+		final int oldX = element.getBounds().getCenter().x();
+		final int oldY = element.getBounds().getCenter().y();
+		
+		Display.syncExec(new Runnable() {
+			@Override
+			public void run() {
+				int horizontalSelection = figureCanvas.getHorizontalBar().getSelection();
+				int verticalSelection = figureCanvas.getVerticalBar().getSelection();
+				int xDiff = 0; int yDiff = 0;
+				if(oldX > horizontalSelection+figureCanvas.getBounds().width) {
+					xDiff = oldX - horizontalSelection+figureCanvas.getBounds().width;
+				}
+				if(oldX < horizontalSelection) {
+					xDiff = oldX - horizontalSelection;
+				}
+				if(oldY > verticalSelection+figureCanvas.getBounds().height) {
+					yDiff = oldY - verticalSelection+figureCanvas.getBounds().height;
+				}
+				if(oldY < verticalSelection) {
+					yDiff = oldY - verticalSelection;
+				}
+				figureCanvas.scrollToX(xDiff);
+				figureCanvas.scrollToY(yDiff);
+			}
+		});
+		
+		IFigure figure = EditPartHandler.getInstance().getFigure(element.getAbsoluteEditPart().getEditPart());
+		final Rectangle bounds = figure.getBounds().getCopy();
+		figure.translateToAbsolute(bounds);
+		int newX = bounds.getCenter().x();
+		int newY = bounds.getCenter().y();
+		handler.notifyItemMouse(SWT.MouseMove, 0, figureCanvas, null, newX, newY, 0);
+		handler.notifyItemMouse(SWT.MouseDown, 0, figureCanvas, null, newX, newY, 1);
+		handler.notifyItemMouse(SWT.MouseUp, 0, figureCanvas, null, newX, newY, 1);
 	}
 	
 	private class ViewerListener implements EditPartListener {

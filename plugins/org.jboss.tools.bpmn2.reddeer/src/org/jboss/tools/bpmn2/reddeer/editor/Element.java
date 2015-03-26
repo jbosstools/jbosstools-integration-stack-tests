@@ -286,11 +286,7 @@ public class Element {
 	 * @param connectionType
 	 */
 	public void connectTo(Element construct, ConnectionType connectionType) {
-	log.info("Connecting construct '" + this.name + "' and construct '" + construct.getName() + "' using '" + connectionType + "'.");
-		// Get the dimensions of the source (this) construct. 
-		Rectangle rs = getBounds();
-		// Get the dimensions of the target construct. 
-		Rectangle rt = construct.getBounds();
+		log.info("Connecting construct '" + this.name + "' and construct '" + construct.getName() + "' using '" + connectionType + "'.");
 		
 		// Create the connection.
 		// 
@@ -299,16 +295,13 @@ public class Element {
 		processEditor.getPalette().activateTool(connectionType.toName());
 		
 		select();
-		log.debug("\tConnecting points '" + rs.getCenter() + "' and '" + rt.getCenter() + "'");
+		log.debug("\tConnecting points '" + getBounds().getCenter() + "' and '" + construct.getBounds().getCenter() + "'");
 		
 		// ISSUE: Clicking center on a Lane|Subprocess|etc. has a good chance to select something in it!
-	
-		processEditor.click(rs.getCenter().x(), rs.getCenter().y());
-		
-		
+		processEditor.click(this);
 		
 		construct.select();
-		processEditor.click(rt.getCenter().x(), rt.getCenter().y());
+		processEditor.click(construct);
 		
 		processEditor.getPalette().activateTool("Select");
 		click();
