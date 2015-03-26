@@ -29,19 +29,21 @@ public class ErrorEventDefinition extends EventDefinition {
 	
 	@Override
 	public void setUp() {
+		
+		Combo mappingCombo = new LabeledCombo(comboLabel);
+		if (!mappingCombo.getItems().contains(variableForMaping)) {
+			throw new IllegalArgumentException(variableForMaping + " isn't in list of defined errors");
+		}
+		mappingCombo.setSelection(variableForMaping);
+		
 		Combo errorCombo = new LabeledCombo("Error");
 		String comboItem = errorRef.getName() + "(" + errorRef.getDataType() + ")";
 		if (!errorCombo.getItems().contains(comboItem)) {
 			new PushButton(0).click();
 			new ErrorDialog().add(errorRef);
+		} else {
+			errorCombo.setSelection(comboItem);
 		}
-		errorCombo.setSelection(comboItem);
-		
-		Combo sourceCombo = new LabeledCombo(comboLabel);
-		if (!sourceCombo.getItems().contains(variableForMaping)) {
-			throw new IllegalArgumentException(variableForMaping + " isn't in list of defined errors");
-		}
-		sourceCombo.setSelection(variableForMaping);
 		
 		
 		new SectionToolItem("Error Event Definition Details", "Close").click();

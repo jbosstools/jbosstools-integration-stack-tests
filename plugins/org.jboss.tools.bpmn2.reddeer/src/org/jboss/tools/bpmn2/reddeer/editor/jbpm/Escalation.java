@@ -58,7 +58,7 @@ public class Escalation {
 	public void setUpViaDialog() {
 		new DefaultShell("Create New Escalation").setFocus();
 		new DefaultTabItem("General").activate();
-		new LabeledText(new DefaultSection("Attributes"), "Name").setText(name);
+		new LabeledText("Name").setText(name);
 		new DefaultTabItem("Escalation").activate();
 		new LabeledText("Escalation Code").setText(code);
 		new PushButton("OK").click();

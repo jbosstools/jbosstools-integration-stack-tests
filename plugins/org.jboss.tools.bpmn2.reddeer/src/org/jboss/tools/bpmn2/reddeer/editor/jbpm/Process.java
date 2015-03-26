@@ -1,7 +1,12 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jboss.reddeer.swt.api.Table;
+import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementContainer;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.DataItemsTab;
@@ -203,5 +208,56 @@ public class Process extends ElementContainer {
 		propertiesHandler.selectTabInPropertiesView(DATA_ITEMS_TAB);
 		Table table = new DefaultTable(1);
 		return table.getItem(0).getText(0);
+	}
+	
+	public List<Signal> getSignals(){
+		propertiesHandler.selectTabInPropertiesView(DEFINITIONS_TAB);
+		Table table = new DefaultTable(new DefaultSection("Signal List"), 0);
+		List<Signal> signals = new ArrayList<Signal>();
+		
+		for(TableItem item : table.getItems()) {
+			signals.add(new Signal(item.getText(0)));
+		}
+		
+		return signals;
+	}
+	
+	public List<Message> getMessages() {
+		propertiesHandler.selectTabInPropertiesView(DEFINITIONS_TAB);
+		Table table = new DefaultTable(new DefaultSection("Message List"), 0);
+		
+		List<Message> messages = new ArrayList<Message>();
+		for(TableItem item : table.getItems()) {
+			Message message = new Message(item.getText(0), item.getText(1));
+			messages.add(message);
+		}
+		
+		return messages;
+	}
+	
+	public List<Escalation> getEscalations() {
+		propertiesHandler.selectTabInPropertiesView(DEFINITIONS_TAB);
+		Table table = new DefaultTable(new DefaultSection("Escalation List"), 0);
+		List<Escalation> escalations = new ArrayList<Escalation>();
+		
+		for(TableItem item : table.getItems()) {
+			Escalation escalation = new Escalation(item.getText(0), item.getText(1));
+			escalations.add(escalation);
+		}
+		
+		return escalations;
+	}
+	
+	public List<ErrorRef> getErrors() {
+		propertiesHandler.selectTabInPropertiesView(DEFINITIONS_TAB);
+		Table table = new DefaultTable(new DefaultSection("Error List"), 0);
+		List<ErrorRef> errors = new ArrayList<ErrorRef>();
+		
+		for(TableItem item : table.getItems()) {
+			ErrorRef error = new ErrorRef(item.getText(0), item.getText(1), item.getText(2));
+			errors.add(error);
+		}
+		
+		return errors;
 	}
 }

@@ -15,6 +15,7 @@ import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexConditionalBoun
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexConditionalStartTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexDataObjectTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexDefaultSkippableTest;
+import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexDefinitionViaElementTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexErrorBoundaryEventOnTaskTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexErrorEndEventTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexEventBasedSplitTest;
@@ -68,7 +69,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	ComplexMessageStartTest.class,
 	ComplexSubProcessTest.class,
 	ComplexUserTaskTest.class,
-	ComplexXPathExpressionTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1176400
+	ComplexXPathExpressionTest.class,
 	ComplexLaneTest.class,
 	// Doesn't work, because of strange context menu appearing during connecting data object with other elements
 	// ComplexDataObjectTest.class, 
@@ -89,7 +90,9 @@ import org.junit.runners.Suite.SuiteClasses;
 	ComplexSpecialCharactersAndLenghtsTest.class,
 	ComplexImportInterfaceTest.class,
 	ComplexServiceTaskTest.class,
-	ComplexManualTaskTest.class
+	ComplexManualTaskTest.class,
+	ComplexDefinitionViaElementTest.class // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1211647
+										  // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1211611
 })
 @RunWith(RedDeerSuite.class)
 public class JBPM6ComplexTests {

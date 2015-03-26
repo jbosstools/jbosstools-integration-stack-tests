@@ -71,10 +71,11 @@ public class ErrorRef {
 	public void setUpViaDialog() {
 		new DefaultShell("Create New Error").setFocus();
 		new DefaultTabItem("General").activate();
-		new LabeledText(new DefaultSection("Attributes"), "Name").setText(name);
+		new LabeledText("Name").setText(name);
 		new DefaultTabItem("Error").activate();
-		new LabeledText(new DefaultSection("Attributes"), "Error Code").setText(code);
+		new LabeledText("Error Code").setText(code);
 		setUpDataType();
+		new DefaultShell("Create New Error").setFocus();
 		new PushButton("OK").click();
 	}
 	
@@ -83,8 +84,9 @@ public class ErrorRef {
 		if (!dataTypeCombo.getItems().contains(dataType)) {
 			new PushButton(0).click();
 			new DataTypeDialog().add(dataType);
+		} else {
+			dataTypeCombo.setSelection(dataType);
 		}
-		dataTypeCombo.setSelection(dataType);
 	}
 
 }
