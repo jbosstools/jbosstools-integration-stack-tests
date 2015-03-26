@@ -1,9 +1,8 @@
 package org.jboss.tools.esb.reddeer.wizard;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.tools.esb.reddeer.widget.LabeledTextExt;
 
 /**
  * Wizard for creating an ESB file.
@@ -34,14 +33,13 @@ public class ESBFileWizard extends NewWizardDialog {
 	}
 
 	public ESBFileWizard setName(String name) {
-		// TODO: Why LabeledText doesn't work?
-		new SWTWorkbenchBot().textWithLabel(NAME).setFocus();
-		new SWTWorkbenchBot().textWithLabel(NAME).setText(name);
+		new LabeledTextExt(NAME).setFocus();
+		new LabeledTextExt(NAME).setText(name);
 		return this;
 	}
 
 	public String getName() {
-		return new LabeledText(NAME).getText();
+		return new LabeledTextExt(NAME).getText();
 	}
 
 }

@@ -4,8 +4,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.swt.api.Button;
 
 public class Assertions {
 //	public static void assertTreeContent(SWTBotEditor editor, String... items) {
@@ -13,7 +13,7 @@ public class Assertions {
 //				+ Arrays.toString(items),
 //				SWTEclipseExt.containstInTree(editor.bot().tree(), items));
 //	}
-	public static void assertButtonEnabled(SWTBotButton button, boolean enabled) {
+	public static void assertButtonEnabled(Button button, boolean enabled) {
 		if (enabled) {
 			assertTrue(button.getText()+ " button is not enabled when all required fields are filled",button.isEnabled());
 		}

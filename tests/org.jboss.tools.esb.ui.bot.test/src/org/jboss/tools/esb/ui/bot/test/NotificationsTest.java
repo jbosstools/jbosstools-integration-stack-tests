@@ -213,7 +213,6 @@ public class NotificationsTest {
 		selectNotoficationList();
 		new ContextMenu("New", "Notify SQL Table...").select();
 		ESBWizard wizard = new ESBWizard("Notify SQL Table...");
-		wizard.setText("Class:*", "SQLClass");
 		wizard.finish();
 
 		check(target);

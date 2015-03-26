@@ -1,9 +1,9 @@
 package org.jboss.tools.esb.reddeer.wizard;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.tools.esb.reddeer.widget.LabeledTextExt;
 
 /**
  * 
@@ -20,31 +20,29 @@ public class ESBListenerWizard extends WizardDialog {
 	public static final String CHANNEL_REF = "Channel ID Ref:";
 	public static final String ENDPOINT_CLASS = "Endpoint Class:*";
 
-	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
-
 	public ESBListenerWizard(String listener) {
 		super();
 		new DefaultShell("Add " + listener);
 	}
 
 	public void setName(String name) {
-		bot.textWithLabel(NAME).setText(name);
+		new LabeledTextExt(NAME).setText(name);
 	}
 
 	public void setScript(String script) {
-		bot.textWithLabel(SCRIPT).setText(script);
+		new LabeledTextExt(SCRIPT).setText(script);
 	}
 
 	public void setAdapter(String adapter) {
-		bot.textWithLabel(ADAPTER).setText(adapter);
+		new LabeledTextExt(ADAPTER).setText(adapter);
 	}
 
 	public void setHost(String host) {
-		bot.textWithLabel(HOST).setText(host);
+		new LabeledTextExt(HOST).setText(host);
 	}
 
 	public void setPort(String port) {
-		bot.textWithLabel(PORT).setText(port);
+		new LabeledTextExt(PORT).setText(port);
 	}
 
 	public void setChannelRef(String channel) {
@@ -52,6 +50,6 @@ public class ESBListenerWizard extends WizardDialog {
 	}
 
 	public void setEndpointClass(String endpointClass) {
-		bot.textWithLabel(ENDPOINT_CLASS).setText(endpointClass);
+		new LabeledTextExt(ENDPOINT_CLASS).setText(endpointClass);
 	}
 }

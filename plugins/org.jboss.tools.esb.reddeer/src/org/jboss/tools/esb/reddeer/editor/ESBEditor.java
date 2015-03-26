@@ -2,15 +2,15 @@ package org.jboss.tools.esb.reddeer.editor;
 
 import static org.junit.Assert.assertFalse;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.api.Combo;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.tools.esb.reddeer.widget.LabeledComboExt;
+import org.jboss.tools.esb.reddeer.widget.LabeledTextExt;
 import org.jboss.tools.esb.reddeer.wizard.ESBActionWizard;
 import org.jboss.tools.esb.reddeer.wizard.ESBListenerWizard;
 import org.jboss.tools.esb.reddeer.wizard.ESBProviderWizard;
@@ -27,7 +27,6 @@ public class ESBEditor extends DefaultEditor {
 	public static final String MESSAGE_FLOW_PRIORITY = "Message Flow Priority:";
 
 	private String name;
-	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
 
 	public ESBEditor() {
 		this(ESB_FILE);
@@ -119,7 +118,7 @@ public class ESBEditor extends DefaultEditor {
 
 	public Combo getMessageFlowPriorityCombo() {
 		selectTree();
-		return new MessageFlowPriorityCombo();
+		return new LabeledComboExt(MESSAGE_FLOW_PRIORITY);
 	}
 
 	public String getSource() {
@@ -141,23 +140,15 @@ public class ESBEditor extends DefaultEditor {
 	}
 
 	public void setText(String label, String text) {
-		bot.textWithLabel(label).setText(text);
+		new LabeledTextExt(label).setText(text);
 	}
 
 	public String getText(String label) {
-		return bot.textWithLabel(label).getText();
+		return new LabeledTextExt(label).getText();
 	}
 
 	public void setCombo(String label, String text) {
-		bot.comboBoxWithLabel(label).setSelection(text);
-	}
-
-	private class MessageFlowPriorityCombo extends DefaultCombo {
-
-		public MessageFlowPriorityCombo() {
-			this.swtWidget = new SWTWorkbenchBot().comboBoxWithLabel(MESSAGE_FLOW_PRIORITY).widget;
-		}
-
+		new LabeledComboExt(label).setSelection(text);
 	}
 
 	public void saveAndClose() {

@@ -9,7 +9,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import org.apache.log4j.Logger;
+import org.jboss.reddeer.common.logging.Logger;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 

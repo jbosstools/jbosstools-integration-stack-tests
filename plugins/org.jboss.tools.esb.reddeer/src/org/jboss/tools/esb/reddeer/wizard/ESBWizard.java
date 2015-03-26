@@ -1,6 +1,5 @@
 package org.jboss.tools.esb.reddeer.wizard;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
@@ -9,6 +8,8 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.esb.reddeer.widget.LabeledComboExt;
+import org.jboss.tools.esb.reddeer.widget.LabeledTextExt;
 
 /**
  * 
@@ -19,7 +20,6 @@ public class ESBWizard extends WizardDialog {
 
 	public static final String NAME = "Name:*";
 
-	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
 	private String title;
 
 	public ESBWizard(String title) {
@@ -29,19 +29,19 @@ public class ESBWizard extends WizardDialog {
 	}
 
 	public void setName(String name) {
-		bot.textWithLabel(NAME).setText(name);
+		new LabeledTextExt(NAME).setText(name);
 	}
 
 	public void setText(String label, String text) {
-		bot.textWithLabel(label).setText(text);
+		new LabeledTextExt(label).setText(text);
 	}
 
 	public void getText(String label) {
-		bot.textWithLabel(label).getText();
+		new LabeledTextExt(label).getText();
 	}
 
 	public void setCombo(String label, String text) {
-		bot.comboBoxWithLabel(label).setSelection(text);
+		new LabeledComboExt(label).setSelection(text);
 	}
 
 	public void ok() {
