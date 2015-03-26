@@ -1,9 +1,9 @@
 package org.jboss.tools.esb.reddeer.editor;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.tools.esb.reddeer.widget.LabeledComboExt;
 import org.jboss.tools.esb.reddeer.wizard.ESBActionWizard;
 import org.jboss.tools.esb.reddeer.wizard.ESBListenerWizard;
 
@@ -13,15 +13,13 @@ import org.jboss.tools.esb.reddeer.wizard.ESBListenerWizard;
  *
  */
 public class ESBService extends DefaultTreeItem {
-	
-	protected SWTWorkbenchBot bot = new SWTWorkbenchBot();
 
 	public ESBService(String... path) {
 		super(path);
 	}
 
 	public void setInvmScope(String scope) {
-		bot.comboBoxWithLabel("Invm Scope:").setSelection(scope);
+		new LabeledComboExt("Invm Scope:").setSelection(scope);
 	}
 	
 	public ESBActionWizard addAction(String category, String action) {
