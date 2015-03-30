@@ -30,7 +30,8 @@ public class JDBCImportWizardTest {
 
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;
-	
+
+
 	public static final String MODEL_PROJECT = "jdbcImportTest";
 
 	private static TeiidBot teiidBot = new TeiidBot();
@@ -40,84 +41,106 @@ public class JDBCImportWizardTest {
 
 		teiidBot.uncheckBuildAutomatically();
 		new ModelExplorerManager().createProject(MODEL_PROJECT);
-		new ServerManager().getServersViewExt().refreshServer(teiidServer.getName());
+		new ServerManager().getServersViewExt().refreshServer(
+				teiidServer.getName());
 	}
-	
+
+
 	@Test
 	public void db2Test() {
 
 		String model = "DB2Model";
-		String cpProps = teiidBot.toAbsolutePath("resources/db/db2_bqt2.properties");
+		Properties connectionProfileProps = teiidServer.getServerConfig().getConnectionProfile("db2_bqt2").asProperties();
 		String cpName = "DB2 Profile";
 		Properties iProps = new Properties();
 		iProps.setProperty("itemList", "BQT2/TABLE/SMALLA,BQT2/TABLE/SMALLB");
-		
-		new ConnectionProfileManager().createCPWithDriverDefinition(cpName, cpProps);
+
+		new ConnectionProfileManager().createCPWithDriverDefinition(cpName, connectionProfileProps);
 		TeiidPerspective.getInstance();
-		new ImportManager().importFromDatabase(MODEL_PROJECT, model, cpName, iProps);
-		
-		teiidBot.assertResource(MODEL_PROJECT, model+".xmi", "SMALLA");
-		teiidBot.assertResource(MODEL_PROJECT, model+".xmi", "SMALLB");
-		
-		Assert.assertTrue(new GuidesView().canPreviewData(null, new String[]{MODEL_PROJECT, model+".xmi", "SMALLA"}));
+		new ImportManager().importFromDatabase(MODEL_PROJECT, model, cpName,
+				iProps);
+
+		teiidBot.assertResource(MODEL_PROJECT, model + ".xmi", "SMALLA");
+		teiidBot.assertResource(MODEL_PROJECT, model + ".xmi", "SMALLB");
+
+		Assert.assertTrue(new GuidesView().canPreviewData(null, new String[] {
+				MODEL_PROJECT, model + ".xmi", "SMALLA" }));
 	}
-	
-	@Test
+
+	@Test // NOK
 	public void genericJDBCTest() {
 
-		//hsql for dv6
-		String model = "GenericModel"; 
-		String cpProps = teiidBot.toAbsolutePath("resources/db/dv6-ds1.properties");
+		// hsql for dv6
+		String model = "GenericModel";
+		Properties cpProperties = teiidServer.getServerConfig().getConnectionProfile("dv6-ds1").asProperties();
 		String cpName = "Generic cp";
 		Properties iProps = new Properties();
-		iProps.setProperty("itemList", "PUBLIC/PUBLIC/TABLE/SHIP_VIA, PUBLIC/PUBLIC/TABLE/STATUS");
-		
-		new ConnectionProfileManager().createCPWithDriverDefinition(cpName, cpProps);
+		iProps.setProperty("itemList",
+				"PUBLIC/PUBLIC/TABLE/SHIP_VIA, PUBLIC/PUBLIC/TABLE/STATUS");
+
+		new ConnectionProfileManager().createCPWithDriverDefinition(cpName, cpProperties);
 		TeiidPerspective.getInstance();
-		new ImportManager().importFromDatabase(MODEL_PROJECT, model, cpName, iProps);
-		
-		teiidBot.assertResource(MODEL_PROJECT, model+".xmi", "SHIP_VIA");
-		teiidBot.assertResource(MODEL_PROJECT, model+".xmi", "STATUS");
-		
-		Assert.assertTrue(new GuidesView().canPreviewData(null, new String[]{MODEL_PROJECT, model+".xmi", "STATUS"}));
+		new ImportManager().importFromDatabase(MODEL_PROJECT, model, cpName,
+				iProps);
+
+		teiidBot.assertResource(MODEL_PROJECT, model + ".xmi", "SHIP_VIA");
+		teiidBot.assertResource(MODEL_PROJECT, model + ".xmi", "STATUS");
+
+		/*
+		 * does not work, Designer seems to hold the lock even when disconnected, 
+		 * will have to investigate whether it's a bug in Designer, in the driver
+		 * or someplace else
+		 *  */
+		Assert.assertTrue(new GuidesView().canPreviewData(null, new String[] {
+				MODEL_PROJECT, model + ".xmi", "STATUS" }));
 	}
-	
+
 	@Test
 	public void oracleTest() {
 
 		String model = "OracleModel";
-		String cpProps = teiidBot.toAbsolutePath("resources/db/oracle_books.properties");
+		Properties cpProperties = teiidServer.getServerConfig().getConnectionProfile("oracle_books").asProperties();
 		String cpName = "Oracle cp";
-		new ConnectionProfileManager().createCPWithDriverDefinition(cpName, cpProps);
+		new ConnectionProfileManager().createCPWithDriverDefinition(cpName, cpProperties);
 		Properties iProps = new Properties();
-		iProps.setProperty("itemList", "BOOKS/TABLE/AUTHORS,BOOKS/TABLE/PUBLISHERS");	
+		iProps.setProperty("itemList",
+				"BOOKS/TABLE/AUTHORS,BOOKS/TABLE/PUBLISHERS");
 		TeiidPerspective.getInstance();
-		new ImportManager().importFromDatabase(MODEL_PROJECT, model, cpName, iProps);
-		
-		teiidBot.assertResource(MODEL_PROJECT, model+".xmi", "AUTHORS");
-		teiidBot.assertResource(MODEL_PROJECT, model+".xmi", "PUBLISHERS");
-		
-		Assert.assertTrue(new GuidesView().canPreviewData(null, new String[]{MODEL_PROJECT, model+".xmi", "AUTHORS"}));
+		new ImportManager().importFromDatabase(MODEL_PROJECT, model, cpName,
+				iProps);
+
+		teiidBot.assertResource(MODEL_PROJECT, model + ".xmi", "AUTHORS");
+		teiidBot.assertResource(MODEL_PROJECT, model + ".xmi", "PUBLISHERS");
+
+		Assert.assertTrue(new GuidesView().canPreviewData(null, new String[] {
+				MODEL_PROJECT, model + ".xmi", "AUTHORS" }));
 	}
 
 	@Test
-	@Ignore // FIXME salesforce.properties has invalid username or password
 	public void salesforceTest() {
 
 		String model = "SFModel";
-		String cpProps = teiidBot.toAbsolutePath("resources/db/salesforce.properties");
-		String importProps = teiidBot.toAbsolutePath("resources/importWizard/sf.properties");
-		String cpName =  "SF profile";
-		new ConnectionProfileManager().createCPSalesForce(cpName, cpProps);
+		Properties cpProperties = teiidServer.getServerConfig().getConnectionProfile("salesforce").asProperties();
+		String importProps = teiidBot
+				.toAbsolutePath("resources/importWizard/sf.properties");
+		String cpName = "SF profile";
+		new ConnectionProfileManager().createCPSalesForce(cpName, cpProperties);
 		TeiidPerspective.getInstance();
-		new ImportManager().importFromSalesForce(MODEL_PROJECT, model, cpName, teiidBot.getProperties(importProps));
+		new ImportManager().importFromSalesForce(MODEL_PROJECT, model, cpName,
+				teiidBot.getProperties(importProps));
+
+		teiidBot.assertResource(MODEL_PROJECT, model + ".xmi", "salesforce",
+				"AccountFeed");
+		teiidBot.assertFailResource(MODEL_PROJECT, model + ".xmi",
+				"salesforce", "Account");
+		teiidBot.assertFailResource(MODEL_PROJECT, model + ".xmi",
+				"salesforce", "Apex Class");
 		
-		teiidBot.assertResource(MODEL_PROJECT, model+".xmi", "salesforce", "AccountFeed");
-		teiidBot.assertFailResource(MODEL_PROJECT, model+".xmi", "salesforce", "Account");
-		teiidBot.assertFailResource(MODEL_PROJECT, model+".xmi", "salesforce", "Apex Class");
-		
-		Assert.assertTrue(new GuidesView().canPreviewData(null, new String[]{MODEL_PROJECT, model+".xmi", "salesforce", "AccountFeed"}));
+
+		Assert.assertTrue(new GuidesView().canPreviewData(null, new String[] { 
+				MODEL_PROJECT, model + ".xmi", "salesforce", "Case_" }, "select * from \"SFModel\".\"salesforce\".\"Case_\""));
 	}
 
-	//TODO class DatasourcesTest - create CP to VDB, create src model from it, new vdb- execute
+	// TODO class DatasourcesTest - create CP to VDB, create src model from it,
+	// new vdb- execute
 }

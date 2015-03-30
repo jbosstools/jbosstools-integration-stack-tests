@@ -3,7 +3,7 @@ package org.jboss.tools.teiid.reddeer.wizard;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.jface.wizard.ImportWizardDialog;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
@@ -61,6 +61,7 @@ public class SalesforceImportWizard extends ImportWizardDialog {
 	}
 
 	private void fillThirdPage() {
+		new DefaultShell("Create Relational Model from SalesForce Data Model");
 		new SWTWorkbenchBot().textWithLabel(MODEL_NAME).setText(modelName);
 		new SWTWorkbenchBot().textWithLabel(LOCATION).setText(projectName);
 		

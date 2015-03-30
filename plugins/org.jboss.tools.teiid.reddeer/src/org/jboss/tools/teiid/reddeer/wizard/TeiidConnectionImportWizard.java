@@ -1,30 +1,32 @@
 package org.jboss.tools.teiid.reddeer.wizard;
 
-import static org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable.syncExec;
-
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.swtbot.swt.finder.results.VoidResult;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Widget;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.jboss.reddeer.jface.wizard.ImportWizardDialog;
 import org.jboss.reddeer.swt.api.Table;
+import org.jboss.reddeer.swt.api.TableItem;
+import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.ShellIsActive;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.group.DefaultGroup;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
+import org.jboss.reddeer.swt.lookup.WidgetLookup;
+import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 
 
 /**
@@ -35,6 +37,7 @@ import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 public class TeiidConnectionImportWizard extends ImportWizardDialog{
 
 	private Properties dataSourceProperties;
+	private Properties teiidImporterProperties;
 	//dataSourceName, driverName, <other vendor specific properties -- key: Name, value: Value>
 	private Boolean createNewDataSource;
 	private Boolean deleteDataSource;
@@ -85,12 +88,23 @@ public class TeiidConnectionImportWizard extends ImportWizardDialog{
 			return;
 		}
 		next();
-		fillSecondPage();//set target name
-		//new WaitWhile(new IsInProgress(), TimePeriod.LONG);
-		next();//wait Progress Information
-		fillThirdPage();//generate ddl
+		setFocus();
+		fillSecondPage();
 		next();
-		fillFourthPage();//choose items to be imported
+		setFocus();
+		fillThirdPage();
+		next();
+		
+		// wait for the import to finish (default timeout is 120 s, add some wiggle room)
+		new WaitWhile(new ShellWithTextIsAvailable("Progress Information"), TimePeriod.getCustom(150), false);
+		setFocus();
+		
+		next();
+		setFocus();
+
+		fillFourthPage();//choose items to be imported<
+		
+		setFocus();
 		finish();
 	}
 	
@@ -100,12 +114,9 @@ public class TeiidConnectionImportWizard extends ImportWizardDialog{
 		}
 		if (dataSourceName != null){
 			Table table = new DefaultTable(0);
-			int originalRowCount = table.rowCount();
-			for (int i = 0; i < originalRowCount; i++){
-				if (table.getItem(i).getText(0).equals(dataSourceName)){
-					table.select(i);
-					break;
-				}
+			TableItem item = table.getItem(dataSourceName, 0);
+			if (item != null){
+				item.select();
 			}
 			
 			//do something with selected datasource
@@ -138,29 +149,24 @@ public class TeiidConnectionImportWizard extends ImportWizardDialog{
 	
 	private void createNewDataSource(){
 		new PushButton("New...").click();
+		new DefaultShell("Create DataSource");
 		new LabeledText("Name:").setText(newDataSourceName);
 		
 		//set driver
-		Table table = new DefaultTable(0);
-		int originalRowCount = table.rowCount();
-		
-		//NOK add driver --> add before -- impossible, now!
-		//impossible -- the window with adding a driver is not recognized by SWTbot...
-		//the only way is to create ds in advance
-		
-		//default drivers
-		for (int i = 0; i < originalRowCount; i++){
-			if (table.getItem(i).getText(0).equals(driverName)){
-				table.select(i);
-				break;
-			}
+		try{
+			Table table = new DefaultTable(0);
+			table.getItem(driverName).select();
+			
+			//NOK add driver --> add before -- impossible, now!
+			//impossible -- the window with adding a driver is not recognized by SWTbot...
+			//the only way is to create ds in advance
+			addDataSource();
+		}catch(Exception ex){
+			ex.printStackTrace();
 		}
-		
-		
 		
 		//new WaitWhile(new IsInProgress(), TimePeriod.NORMAL);
 		
-		addDataSource();
 		
 		//set focus somewhere else
 		new LabeledText("Name:").setFocus();
@@ -171,6 +177,7 @@ public class TeiidConnectionImportWizard extends ImportWizardDialog{
 	
 	private void addDataSource(){
 		Table table = new DefaultTable(1);
+		new DefaultShell();
 		
 		for (int i = 0; i < table.rowCount(); i++){
 			if (dataSourceProperties.keySet().contains(table.getItem(i).getText(0))){
@@ -183,31 +190,70 @@ public class TeiidConnectionImportWizard extends ImportWizardDialog{
 	}
 	
 	public void fillSecondPage(){
-		new LabeledText("Name:").setText(modelName);
 		
 		//TODO translator
 		if (translator != null){
-			//new DefaultCombo(0).setSelection(translator);//TRY
+			new DefaultCombo(0).setSelection(translator);//TRY
 		}
 		
+		DefaultGroup importPropertiesGroup = new DefaultGroup("Import Properties");
+		Table table = new DefaultTable(importPropertiesGroup, 0);
+		if(teiidImporterProperties != null){
+			for(Entry<Object, Object> e : teiidImporterProperties.entrySet()){
+				final String key = e.getKey().toString();
+				final String value = e.getValue().toString();
+				try{
+					final TableItem tableItem = table.getItem(key, 0);
+					// known importer property
+					tableItem.select();
+//					tableItem.getSWTWidget().setText(1, e.getValue().toString());
+					// this is rather hacky, but that ^^ does not work
+					
+					// OK, this is *very* fragile, but nothing else seems to work...
+					tableItem.doubleClick(1);
+					final Widget w = WidgetLookup.getInstance().getFocusControl();
+					System.out.println(w);
+					Display.syncExec(new Runnable() {
+						
+						@Override
+						public void run() {
+//							tableItem.getSWTWidget().setText(1, value); // does not work for whatever reason
+							((Text) w).setText(value);
+							KeyboardFactory.getKeyboard().type(SWT.CR); // this is needed, otherwise the text dissapears
+							
+							
+						}
+					});
+//					tableItem.doubleClick(0);
+//					new KeyboardFactory().getKeyboard().type(SWT.CR);
+//					new DefaultText(importPropertiesGroup).setText(e.getValue().toString());
+				}catch(Exception ex){
+					ex.printStackTrace();
+					// unknown property, add
+					new PushButton(new DefaultGroup("Optional Source Import Properties"),0).click();
+					new DefaultShell("Add New Property");
+					new LabeledText("Name:").setText(key);
+					new LabeledText("Value:").setText(value);
+					new PushButton("OK").click();
+				}
+			}
+		}
+		
+		
+		
+	}
+	
+	public void fillThirdPage(){
+		new LabeledText("Name:").setText(modelName);
 		//set model location
 		new PushButton("...").click();
+		new DefaultShell("Select a Folder");
 		new org.jboss.reddeer.swt.impl.tree.DefaultTreeItem(projectName).select();
 		new PushButton("OK").click();
 	}
 	
-	public void fillThirdPage(){
-		//TODO
-	}
-	
 	public void fillFourthPage(){
 		if (tablesToImport != null){
-			try {
-				new PushButton("Unselect All").click();
-			} catch (Exception e){
-				System.err.println("Couldn't click on unselect all, "+ e.getMessage() + "-- skipping");
-			}
-			
 			checkTablesToImport(tablesToImport);
 		}
 	}
@@ -339,12 +385,19 @@ public class TeiidConnectionImportWizard extends ImportWizardDialog{
 	}*/
 	
 	private void checkTablesToImport(String[] pathsToTables){
-		String top = pathsToTables[0].split("/")[0];
-		new SWTWorkbenchBot().tree().expandNode(top).uncheck();
+		DefaultTree tree = new DefaultTree();
+		for (TreeItem treeItem : tree.getItems()){
+			treeItem.setChecked(false);
+		}
+		new DefaultTree();
 		for (String path : pathsToTables){
 			String[] parts = path.split("/");
-			new SWTWorkbenchBot().tree().expandNode(parts).check();//CHECK
+			new DefaultTreeItem(tree, parts).setChecked(true);
 		}
+	}
+	
+	public void setFocus(){
+		new DefaultShell("Import using a Teiid Connection");
 	}
 
 	public Properties getDataSourceProperties() {
@@ -450,6 +503,14 @@ public class TeiidConnectionImportWizard extends ImportWizardDialog{
 
 	public void setTranslator(String translator) {
 		this.translator = translator;
+	}
+
+	public Properties getTeiidImporterProperties() {
+		return teiidImporterProperties;
+	}
+
+	public void setTeiidImporterProperties(Properties teiidImporterProperties) {
+		this.teiidImporterProperties = teiidImporterProperties;
 	}
 
 }

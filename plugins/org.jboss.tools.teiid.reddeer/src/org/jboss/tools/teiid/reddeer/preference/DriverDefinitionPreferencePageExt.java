@@ -40,6 +40,7 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 		new PushButton("Add...").click();
 		new DefaultShell("New Driver Definition");
 		new DriverDefinitionWizardExt(driverDefinition).execute();
+		new DefaultShell("New Driver Definition");
 		new PushButton("OK").click();
 	}
 
@@ -128,6 +129,7 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 			selectTab(TAB_PROPERTIES);
 			new DefaultTreeItem(0, GENERAL, DRIVER_CLASS).doubleClick();//kepler 0, juno 1
 			new PushButton("...").click();
+			new DefaultShell("Available Classes from Jar List");
 			new DefaultText().setText(driverClass);
 			new PushButton("OK").click();
 		}

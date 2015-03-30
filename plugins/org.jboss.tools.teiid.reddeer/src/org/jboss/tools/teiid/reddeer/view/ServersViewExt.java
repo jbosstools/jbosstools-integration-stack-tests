@@ -5,10 +5,14 @@ import org.eclipse.swtbot.forms.finder.SWTFormsBot;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
+import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.button.RadioButton;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.toolbar.ViewToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.AbstractWait;
@@ -30,6 +34,7 @@ public class ServersViewExt extends ServersView {
 	private static final String REFRESH = "Refresh / Reconnect Teiid Instance Connection";
 	private static final String TEIID_INSTANCE_CONFIG = "Teiid Instance Configuration";
 	private static final String DISCONNECT = "Disconnect";
+	private static final String DATA_SOURCES = "Data Sources";
 	
 	public enum ServerType{
 		 EAP6, EDS5, AS5, DV6
@@ -186,9 +191,43 @@ public class ServersViewExt extends ServersView {
 		new ViewToolItem(REFRESH).click();
 		
 		//server was refreshed
+		new DefaultShell("Notification");
 		new PushButton("OK").click();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new DefaultShell();
+	}
+	
+	public void createDatasource(String serverName, String connectionProfile){
+		new ServersView().getServer(serverName);
+		new DefaultTreeItem(getServerLabel(serverName), TEIID_INSTANCE_CONFIG, DV6_PREFIX_URL, DATA_SOURCES).select();
+		new ContextMenu("Create Data Source").select();
+		new DefaultShell("Create Data Source");
+		new DefaultText().setText(connectionProfile);
+		new RadioButton("Use Connection Profile Info").click();
+		new DefaultCombo(1).setSelection(connectionProfile);
+		if (! new PushButton("Finish").isEnabled()){
+			System.err.println("Datasource " + connectionProfile + "exists!");
+			new PushButton("Cancel").click();
+		} else {
+			new PushButton("Finish").click();
+		}
+	}
+	
+	public void deleteDatasource(String serverName, String dsName){
+		new ServersView().getServer(serverName);
+		try{
+			DefaultTreeItem dataSources = new DefaultTreeItem(getServerLabel(serverName), TEIID_INSTANCE_CONFIG, DV6_PREFIX_URL, DATA_SOURCES);
+			for (TreeItem treeItem : dataSources.getItems()){
+				if (treeItem.getText().startsWith(dsName)){
+					treeItem.select();
+					new ContextMenu("Delete Data Source").select();
+					break;
+				}
+			}
+		}catch (Exception ex){
+			// ds not on server, ok
+			ex.printStackTrace();
+		}
 	}
 	
 }

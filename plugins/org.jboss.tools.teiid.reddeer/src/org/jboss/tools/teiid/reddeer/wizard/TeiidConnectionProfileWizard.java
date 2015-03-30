@@ -8,15 +8,22 @@ import java.util.Properties;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.eclipse.datatools.ui.DatabaseProfile;
+import org.jboss.reddeer.eclipse.datatools.ui.DriverDefinition;
 import org.jboss.reddeer.eclipse.datatools.ui.DriverTemplate;
 import org.jboss.reddeer.eclipse.datatools.ui.FlatFileProfile;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileDatabasePage;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileFlatFilePage;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileSelectPage;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileWizard;
+import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.teiid.reddeer.extensions.DriverDefinitionExt;
 import org.jboss.tools.teiid.reddeer.preference.DriverDefinitionPreferencePageExt;
 
@@ -26,19 +33,22 @@ import org.jboss.tools.teiid.reddeer.preference.DriverDefinitionPreferencePageEx
  *
  */
 public class TeiidConnectionProfileWizard extends ConnectionProfileWizard { 
+	
+	public static final String KEY_CONNECT_AFTER_COMPLETING = "connectAfterCompleting";
 
 	public TeiidConnectionProfileWizard() {
 		super();
+		wizardMap.put("DB2 for Linux, UNIX, and Windows", new ConnectionProfileDB2Page());
 	}
-	
+
 	/**
 	 * Only for: SalesForce
 	 * @param profileName
 	 * @param props
 	 * @return 
 	 */
-	public DatabaseProfile createSalesforceConnectionProfile(String profileName, String props){
-		DatabaseProfile dbProfile = this.prepareDatabaseProfile(profileName, this.getProperties(props));
+	public DatabaseProfile createSalesforceConnectionProfile(String profileName, Properties props){
+		DatabaseProfile dbProfile = this.prepareDatabaseProfile(profileName, props);
 		open();
 		ConnectionProfileSelectPage selectPage = new ConnectionProfileSelectPage();
 		selectPage.setConnectionProfile(dbProfile.getVendor());
@@ -56,6 +66,16 @@ public class TeiidConnectionProfileWizard extends ConnectionProfileWizard {
 		
 		finish();
 		return dbProfile;
+	}
+	
+	/**
+	 * Only for: SalesForce
+	 * @param profileName
+	 * @param props
+	 * @return 
+	 */
+	public DatabaseProfile createSalesforceConnectionProfile(String profileName, String props){
+		return this.createSalesforceConnectionProfile(profileName, props);
 	}
 	
 	/**
@@ -195,9 +215,45 @@ public class TeiidConnectionProfileWizard extends ConnectionProfileWizard {
 		dbProfile.setVendor(props.getProperty("db.vendor"));
 		dbProfile.setPort(props.getProperty("db.port"));
 
-		TeiidConnectionProfileWizard wizard = new TeiidConnectionProfileWizard();
-		wizard.open();
-		wizard.createDatabaseProfile(dbProfile);
+		open();
+		createDatabaseProfile(dbProfile, false, Boolean.valueOf(props.getProperty(KEY_CONNECT_AFTER_COMPLETING, "true")));
+	}
+	
+	public void createDatabaseProfile(DatabaseProfile dbProfile, boolean test){
+		createDatabaseProfile(dbProfile, test, true);
+	}
+	
+	public void createDatabaseProfile(DatabaseProfile dbProfile, boolean test, boolean connect) {
+		ConnectionProfileSelectPage selectPage = new ConnectionProfileSelectPage();
+		selectPage.setConnectionProfile(dbProfile.getVendor());
+		selectPage.setName(dbProfile.getName());
+
+		next();
+
+		ConnectionProfileDatabasePage dbPage = wizardMap.get(dbProfile.getVendor());
+		DriverDefinition drvDef = dbProfile.getDriverDefinition();
+		dbPage.setDriver(drvDef.getDriverName());
+		dbPage.setDatabase(dbProfile.getDatabase());
+		dbPage.setHostname(dbProfile.getHostname());
+		dbPage.setPort(dbProfile.getPort());
+		dbPage.setUsername(dbProfile.getUsername());
+		dbPage.setPassword(dbProfile.getPassword());
+		
+		if (test) {
+			String success = "Success";
+			new PushButton("Test Connection").click();
+			new WaitUntil(new ShellWithTextIsActive(success), TimePeriod.NORMAL, false);
+			String text = new DefaultShell().getText();
+			new OkButton().click();
+			if (!text.equals(success)) {
+				throw new EclipseLayerException("Connection ping failed!");
+			}
+		}
+
+		new CheckBox("Connect when the wizard completes").toggle(connect);
+		
+
+		finish();
 	}
 
 	public DriverDefinitionExt loadDriverDefinition(
