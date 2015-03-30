@@ -6,6 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.List;
+import java.util.Properties;
 
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
@@ -27,6 +28,7 @@ import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.util.FileUtils;
 import org.jboss.tools.teiid.reddeer.util.TeiidDriver;
+import org.jboss.tools.teiid.reddeer.wizard.TeiidConnectionProfileWizard;
 
 /**
  * 
@@ -44,7 +46,10 @@ public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomC
 
 		ServerReqType[] type() default { ServerReqType.AS, ServerReqType.EAP };
 
+		String[] connectionProfiles() default {};
+		
 		ServerReqState state();
+		
 	}
 
 	@Override
@@ -60,15 +65,21 @@ public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomC
 	@Override
 	public boolean canFulfill() {
 		ServerReqType[] type = teiid.type();
+		boolean result = false;
 		if (type.length == 0) {
 			return true;
 		}
 		for (int i = 0; i < type.length; i++) {
 			if (type[i].matches(serverConfig.getServerBase())) {
-				return true;
+				result = true;
 			}
 		}
-		return false;
+		for (String cp : teiid.connectionProfiles()){
+			if (serverConfig.getConnectionProfile(cp) == null){
+				result = false;
+			}
+		}
+		return result;
 	}
 
 	@Override
@@ -97,6 +108,22 @@ public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomC
 		new DefaultText(0).typeText(serverConfig.getServerBase().getProperty("teiidUser"));
 		new DefaultText(1).typeText(serverConfig.getServerBase().getProperty("teiidPassword"));
 		new DefaultToolItem(new WorkbenchShell(), 0, new WithTooltipTextMatcher(new RegexMatcher("Save All.*"))).click();
+		
+		// create connection profiles
+
+		for (String cp : teiid.connectionProfiles()){
+			ConnectionProfileConfig connectionProfile = getServerConfig().getConnectionProfile(cp);
+			String vendor = connectionProfile.getVendor();
+			Properties cpProps = connectionProfile.asProperties();
+			if ("LDAP".equals(vendor)){
+				new TeiidConnectionProfileWizard().createLdapConnectionProfile(cp, cpProps);				
+			}else if("SalesForce".equals(vendor)){
+				new TeiidConnectionProfileWizard().createSalesforceConnectionProfile(cp, cpProps);
+			}else{
+				new TeiidConnectionProfileWizard().createDatabaseProfile(cp, cpProps);
+			}
+		}
+		
 	}
 
 	@Override

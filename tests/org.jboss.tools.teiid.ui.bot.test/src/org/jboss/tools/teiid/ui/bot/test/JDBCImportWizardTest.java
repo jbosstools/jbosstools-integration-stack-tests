@@ -6,6 +6,7 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
+import org.jboss.tools.teiid.reddeer.manager.ConnectionProfilesConstants;
 import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.manager.ServerManager;
@@ -14,6 +15,7 @@ import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.GuidesView;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -25,7 +27,12 @@ import org.junit.runner.RunWith;
  * @author lfabriko
  */
 @RunWith(RedDeerSuite.class)
-@TeiidServer(state = ServerReqState.RUNNING)
+@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = {
+		ConnectionProfilesConstants.CP_DB2_BQT2,
+		ConnectionProfilesConstants.CP_ORACLE_BOOKS,
+		ConnectionProfilesConstants.CP_DV6_DS1,
+		ConnectionProfilesConstants.CP_SALESFORCE,
+		})
 public class JDBCImportWizardTest {
 
 	@InjectRequirement
@@ -33,7 +40,7 @@ public class JDBCImportWizardTest {
 
 
 	public static final String MODEL_PROJECT = "jdbcImportTest";
-
+	
 	private static TeiidBot teiidBot = new TeiidBot();
 
 	@BeforeClass
@@ -45,20 +52,19 @@ public class JDBCImportWizardTest {
 				teiidServer.getName());
 	}
 
+	@Before
+	public void openPerspective(){
+		TeiidPerspective.getInstance();
+	}
 
 	@Test
 	public void db2Test() {
 
 		String model = "DB2Model";
-		Properties connectionProfileProps = teiidServer.getServerConfig().getConnectionProfile("db2_bqt2").asProperties();
-		String cpName = "DB2 Profile";
+		
 		Properties iProps = new Properties();
 		iProps.setProperty("itemList", "BQT2/TABLE/SMALLA,BQT2/TABLE/SMALLB");
-
-		new ConnectionProfileManager().createCPWithDriverDefinition(cpName, connectionProfileProps);
-		TeiidPerspective.getInstance();
-		new ImportManager().importFromDatabase(MODEL_PROJECT, model, cpName,
-				iProps);
+		new ImportManager().importFromDatabase(MODEL_PROJECT, model, ConnectionProfilesConstants.CP_DB2_BQT2, iProps);
 
 		teiidBot.assertResource(MODEL_PROJECT, model + ".xmi", "SMALLA");
 		teiidBot.assertResource(MODEL_PROJECT, model + ".xmi", "SMALLB");
@@ -72,15 +78,10 @@ public class JDBCImportWizardTest {
 
 		// hsql for dv6
 		String model = "GenericModel";
-		Properties cpProperties = teiidServer.getServerConfig().getConnectionProfile("dv6-ds1").asProperties();
-		String cpName = "Generic cp";
+		
 		Properties iProps = new Properties();
-		iProps.setProperty("itemList",
-				"PUBLIC/PUBLIC/TABLE/SHIP_VIA, PUBLIC/PUBLIC/TABLE/STATUS");
-
-		new ConnectionProfileManager().createCPWithDriverDefinition(cpName, cpProperties);
-		TeiidPerspective.getInstance();
-		new ImportManager().importFromDatabase(MODEL_PROJECT, model, cpName,
+		iProps.setProperty("itemList", "PUBLIC/PUBLIC/TABLE/SHIP_VIA, PUBLIC/PUBLIC/TABLE/STATUS");
+		new ImportManager().importFromDatabase(MODEL_PROJECT, model, ConnectionProfilesConstants.CP_DV6_DS1,
 				iProps);
 
 		teiidBot.assertResource(MODEL_PROJECT, model + ".xmi", "SHIP_VIA");
@@ -99,15 +100,10 @@ public class JDBCImportWizardTest {
 	public void oracleTest() {
 
 		String model = "OracleModel";
-		Properties cpProperties = teiidServer.getServerConfig().getConnectionProfile("oracle_books").asProperties();
-		String cpName = "Oracle cp";
-		new ConnectionProfileManager().createCPWithDriverDefinition(cpName, cpProperties);
+		
 		Properties iProps = new Properties();
-		iProps.setProperty("itemList",
-				"BOOKS/TABLE/AUTHORS,BOOKS/TABLE/PUBLISHERS");
-		TeiidPerspective.getInstance();
-		new ImportManager().importFromDatabase(MODEL_PROJECT, model, cpName,
-				iProps);
+		iProps.setProperty("itemList", "BOOKS/TABLE/AUTHORS,BOOKS/TABLE/PUBLISHERS");
+		new ImportManager().importFromDatabase(MODEL_PROJECT, model, ConnectionProfilesConstants.CP_ORACLE_BOOKS, iProps);
 
 		teiidBot.assertResource(MODEL_PROJECT, model + ".xmi", "AUTHORS");
 		teiidBot.assertResource(MODEL_PROJECT, model + ".xmi", "PUBLISHERS");
@@ -120,13 +116,9 @@ public class JDBCImportWizardTest {
 	public void salesforceTest() {
 
 		String model = "SFModel";
-		Properties cpProperties = teiidServer.getServerConfig().getConnectionProfile("salesforce").asProperties();
-		String importProps = teiidBot
-				.toAbsolutePath("resources/importWizard/sf.properties");
-		String cpName = "SF profile";
-		new ConnectionProfileManager().createCPSalesForce(cpName, cpProperties);
-		TeiidPerspective.getInstance();
-		new ImportManager().importFromSalesForce(MODEL_PROJECT, model, cpName,
+		
+		String importProps = teiidBot.toAbsolutePath("resources/importWizard/sf.properties");
+		new ImportManager().importFromSalesForce(MODEL_PROJECT, model, ConnectionProfilesConstants.CP_SALESFORCE,
 				teiidBot.getProperties(importProps));
 
 		teiidBot.assertResource(MODEL_PROJECT, model + ".xmi", "salesforce",
