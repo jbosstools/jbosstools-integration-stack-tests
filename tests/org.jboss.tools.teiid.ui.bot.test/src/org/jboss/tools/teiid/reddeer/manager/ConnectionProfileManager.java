@@ -45,6 +45,14 @@ public class ConnectionProfileManager {
 	}
 	
 	/**
+	 * Create LDAP connection profile
+	 */
+	public void createCPLdap(String connectionProfileName, Properties properties){
+		new TeiidConnectionProfileWizard().createLdapConnectionProfile(connectionProfileName, properties);
+	}
+	
+	
+	/**
 	 * Create connection profile and define driver, only for: Oracle, HSQLDB, SQL Server
 	 */
 	public void createCPWithoutDriverDefinition(String connectionProfileName, String propertiesFileName){

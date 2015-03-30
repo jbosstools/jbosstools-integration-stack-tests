@@ -7,6 +7,7 @@ import org.jboss.tools.teiid.reddeer.wizard.ImportFileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.ImportGeneralItemWizard;
 import org.jboss.tools.teiid.reddeer.wizard.ImportJDBCDatabaseWizard;
 import org.jboss.tools.teiid.reddeer.wizard.ImportProjectWizard;
+import org.jboss.tools.teiid.reddeer.wizard.LdapImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.SalesforceImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.TeiidImportWizard;
 import org.jboss.tools.teiid.ui.bot.test.TeiidBot;
@@ -79,6 +80,25 @@ public class ImportManager {
 			}
 		}
 		wizard.execute();//projectName is set on some page of wizard
+	}
+	
+	// TODO: refactor the parameters
+	public void importFromLdap(String projectName, String modelName, String connectionProfile, String connectionUrl, String principalDnSuffix, Properties props){
+		
+		LdapImportWizard wizard = new LdapImportWizard();
+		wizard.setConnectionProfile(connectionProfile);
+		wizard.setModelName(modelName);
+		wizard.setProjectName(projectName);
+		wizard.setConnectionUrl(connectionUrl);
+		wizard.setPrincipalDnSuffix(principalDnSuffix);
+		String objects;
+		if ((objects = props.getProperty("selectedEntries")) != null){
+			wizard.setSelectedEntries(objects.split(","));
+		}
+		if ((objects = props.getProperty("selectedColumns")) != null){
+			wizard.setSelectedColumns(objects.split(","));
+		}
+		wizard.execute();
 	}
 	
 	/*public void importFromFlatFile(String projectName, String modelName, String connectionProfile, String propsFile){

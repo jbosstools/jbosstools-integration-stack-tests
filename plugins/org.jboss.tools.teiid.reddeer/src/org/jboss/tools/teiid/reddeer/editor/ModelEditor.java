@@ -25,7 +25,12 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotCTabItem;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.ui.IEditorReference;
 import org.hamcrest.Matcher;
+import org.jboss.reddeer.swt.api.CTabItem;
+import org.jboss.reddeer.swt.api.TabItem;
+import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.tab.DefaultTabFolder;
+import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.tools.teiid.reddeer.matcher.AttributeMatcher;
@@ -49,6 +54,7 @@ public class ModelEditor extends SWTBotEditor {
 	public static final String MAPPING_DIAGRAM = "Mapping Diagram";
 	public static final String PACKAGE_DIAGRAM = "Package Diagram";
 	public static final String TABLE_EDITOR = "Table Editor";
+	public static final String COLUMNS = "Columns";
 	private static final String DIAGRAM = "Diagram";
 	private static final String INPUT_SET = "Input Set";
 
@@ -100,11 +106,29 @@ public class ModelEditor extends SWTBotEditor {
 
 		return new SWTBotGefViewer(graphicalViewer);
 	}
+	
+	public CTabItem showTabItem(String label){
+		DefaultCTabItem tabItem = new DefaultCTabItem(label);
+		tabItem.activate();
+		return tabItem;
+	}
+	
+	public TabItem showSubTabItem(String label){
+		DefaultTabItem tabItem = new DefaultTabItem(label);
+		tabItem.activate();
+		return tabItem;
+	}
 
 	public SWTBotCTabItem showTab(String label) {
 		SWTBotCTabItem tabItem = bot.cTabItem(label);
 		tabItem.activate();
 		tabItem.show();
+		return tabItem;
+	}
+	
+	public TabItem showSubTab(String label){
+		DefaultTabItem tabItem = new DefaultTabItem(label);
+		tabItem.activate();
 		return tabItem;
 	}
 
