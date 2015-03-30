@@ -86,14 +86,8 @@ public class GuidesView extends WorkbenchView {
 		
 		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
 	}
-	
-	public boolean canPreviewData(String expectedErrorMessage, String[] pathToTable) {//nechat tak??? OR ???guides mgr (msg, string[] pathTotable, )
-		String tableName = pathToTable[pathToTable.length-1];//last
-		String modelName = pathToTable[pathToTable.length-2];
-		if (modelName.contains(".")){
-			modelName = modelName.substring(0, modelName.indexOf("."));
-		}
-		String previewSQL = "select * from \""+modelName+"\".\""+tableName+"\"";
+
+	public boolean canPreviewData(String expectedErrorMessage, String[] pathToTable, String previewSQL) {//nechat tak??? OR ???guides mgr (msg, string[] pathTotable, )
 		if (expectedErrorMessage != null) {//OR to guides view
 			new GuidesView().chooseAction("Model JDBC Source", "Preview Data");
 			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
@@ -107,6 +101,17 @@ public class GuidesView extends WorkbenchView {
 			assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
 			return true;
 		}
+	}
+	
+	
+	public boolean canPreviewData(String expectedErrorMessage, String[] pathToTable) {//nechat tak??? OR ???guides mgr (msg, string[] pathTotable, )
+		String tableName = pathToTable[pathToTable.length-1];//last
+		String modelName = pathToTable[pathToTable.length-2];
+		if (modelName.contains(".")){
+			modelName = modelName.substring(0, modelName.indexOf("."));
+		}
+		String previewSQL = "select * from \""+modelName+"\".\""+tableName+"\"";
+		return canPreviewData(expectedErrorMessage, pathToTable, previewSQL);
 	}
 	
 	public void setDefaultTeiidInstance(String serverName, ServerType type) {//move to guides view

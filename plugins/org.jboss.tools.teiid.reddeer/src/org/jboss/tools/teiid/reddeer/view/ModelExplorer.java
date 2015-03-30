@@ -4,6 +4,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.AbstractExplorer;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.teiid.reddeer.ModelProject;
@@ -49,8 +50,10 @@ public class ModelExplorer extends AbstractExplorer {
 		if (! projectItem[projectItem.length -1].contains(".")){
 			projectItem[projectItem.length -1] = projectItem[projectItem.length -1].concat(".xmi");
 		}
+		new DefaultShell();
 		new ModelExplorer().getProject(projectName).getProjectItem(projectItem).select();
 		new ContextMenu("Modeling", "Set Connection Profile").select();
+		new DefaultShell("Set Connection Profile");
 		new DefaultTreeItem("Database Connections", connectionProfile).select();
 		new PushButton("OK").click();
 

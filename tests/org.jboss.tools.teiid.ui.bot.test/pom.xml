@@ -47,7 +47,6 @@
 				<configuration>
 				  <skip>${skipRequirements}</skip>
 				</configuration>
-				<version>1.2.0</version>
 				<executions>
 					<execution>
 						<id>get-as</id>
@@ -220,11 +219,11 @@
 			<!-- Download drivers (unless -Dget.drivers=false) -->
 			<plugin>
 				<groupId>com.googlecode.maven-download-plugin</groupId>
-				<artifactId>maven-download-plugin</artifactId>
+				<artifactId>download-maven-plugin</artifactId>
 				<executions>
 					<execution>
 						<id>get-hsqldb</id>
-						<phase>initialize</phase>
+						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>wget</goal>
 						</goals>
@@ -238,7 +237,7 @@
 					</execution>
 					<execution>
 						<id>get-oracle</id>
-						<phase>initialize</phase>
+						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>wget</goal>
 						</goals>
@@ -250,7 +249,7 @@
 					</execution>
 					<execution>
 						<id>get-db2</id>
-						<phase>initialize</phase>
+						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>wget</goal>
 						</goals>
@@ -262,7 +261,7 @@
 					</execution>
 					<execution>
 						<id>get-mysql</id>
-						<phase>initialize</phase>
+						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>wget</goal>
 						</goals>
@@ -274,7 +273,7 @@
 					</execution>
 					<execution>
 						<id>get-sqlserver</id>
-						<phase>initialize</phase>
+						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>wget</goal>
 						</goals>
@@ -285,16 +284,16 @@
 						</configuration>
 					</execution>
 
-					<!--<execution> <id>get-ingres</id> <phase>initialize</phase> <goals> 
+					<!--<execution> <id>get-ingres</id> <phase>pre-integration-test</phase> <goals> 
 						<goal>wget</goal> </goals> <configuration> <skip>${get.drivers}</skip> <outputDirectory>${jdbc.dir}</outputDirectory> 
 						</configuration> </execution> -->		<!--clone bqt, get from there?? -->
 					<execution>
 						<id>get-postgres</id>
-						<phase>initialize</phase>
+						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>wget</goal>
 						</goals>
-						<configuration>
+						<configuration>pre-integration-test
 							<skip>${get.drivers}</skip>
 							<url>http://www.qa.jboss.com/jdbc-drivers-products/SOA/5.3.1/postgresql91/jdbc4/postgresql-9.1-902.jdbc4.jar</url>
 							<outputDirectory>${jdbc.dir}</outputDirectory>
@@ -302,7 +301,7 @@
 					</execution>
 					<execution>
 						<id>get-sybase</id><!--clone bqt, get jtds from there?? -->
-						<phase>initialize</phase>
+						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>wget</goal>
 						</goals>

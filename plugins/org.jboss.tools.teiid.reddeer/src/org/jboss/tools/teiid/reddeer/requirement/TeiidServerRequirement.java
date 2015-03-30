@@ -22,7 +22,6 @@ import org.jboss.reddeer.swt.matcher.WithTooltipTextMatcher;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.runtime.reddeer.ServerBase;
-import org.jboss.tools.runtime.reddeer.requirement.ServerConfig;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
@@ -34,12 +33,9 @@ import org.jboss.tools.teiid.reddeer.util.TeiidDriver;
  * @author apodhrad
  *
  */
-public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomConfiguration<ServerConfig> {
+public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomConfiguration<TeiidConfiguration> {
 
-	private static final String USERNAME = "teiidUser";
-	private static final String PASSWORD = "dvdvdv0!";
-
-	private ServerConfig serverConfig;
+	private TeiidConfiguration serverConfig;
 	private TeiidServer teiid;
 
 	@Retention(RetentionPolicy.RUNTIME)
@@ -52,12 +48,12 @@ public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomC
 	}
 
 	@Override
-	public Class<ServerConfig> getConfigurationClass() {
-		return ServerConfig.class;
+	public Class<TeiidConfiguration> getConfigurationClass() {
+		return TeiidConfiguration.class;
 	}
 
 	@Override
-	public void setConfiguration(ServerConfig serverConfig) {
+	public void setConfiguration(TeiidConfiguration serverConfig) {
 		this.serverConfig = serverConfig;
 	}
 
@@ -98,8 +94,8 @@ public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomC
 		servers.open();
 		servers.getServer(serverConfig.getName()).open();
 		new DefaultCTabItem("Teiid Instance").activate();
-		new DefaultText(0).typeText(USERNAME);
-		new DefaultText(1).typeText(PASSWORD);
+		new DefaultText(0).typeText(serverConfig.getServerBase().getProperty("teiidUser"));
+		new DefaultText(1).typeText(serverConfig.getServerBase().getProperty("teiidPassword"));
 		new DefaultToolItem(new WorkbenchShell(), 0, new WithTooltipTextMatcher(new RegexMatcher("Save All.*"))).click();
 	}
 
@@ -108,7 +104,7 @@ public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomC
 		this.teiid = teiid;
 	}
 
-	public ServerConfig getServerConfig() { 
+	public TeiidConfiguration getServerConfig() { 
 		return serverConfig;
 	}
 	

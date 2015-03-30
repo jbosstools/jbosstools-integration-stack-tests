@@ -29,6 +29,13 @@ public class ConnectionProfileManager {
 	 */
 	// presun do conn profile mgr
 	
+
+	/**
+	 * Create SalesForce connection profile
+	 */
+	public void createCPSalesForce(String connectionProfileName, Properties properties){
+		new TeiidConnectionProfileWizard().createSalesforceConnectionProfile(connectionProfileName, properties);
+	}
 	
 	/**
 	 * Create SalesForce connection profile
@@ -48,8 +55,15 @@ public class ConnectionProfileManager {
 	 * Create connection profile, only for: Oracle, HSQLDB, SQL Server
 	 */
 	public void createCPWithDriverDefinition(String connectionProfileName, String propertiesFileName){
+		createCPWithDriverDefinition(connectionProfileName, new TeiidBot().getProperties(propertiesFileName));
+	}
+	
+	/**
+	 * Create connection profile, only for: Oracle, HSQLDB, SQL Server
+	 */
+	public void createCPWithDriverDefinition(String connectionProfileName, Properties properties){
 		//new TeiidBot().createDatabaseProfile(connectionProfileName, propertiesFileName);
-		new TeiidConnectionProfileWizard().createDatabaseProfile(connectionProfileName, new TeiidBot().getProperties(propertiesFileName));
+		new TeiidConnectionProfileWizard().createDatabaseProfile(connectionProfileName, properties);
 	}
 	
 	public FlatFileProfile createCPFlatFile(String connectionProfileName, String folder){

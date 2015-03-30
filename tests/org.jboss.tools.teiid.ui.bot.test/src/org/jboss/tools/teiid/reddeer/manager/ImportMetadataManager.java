@@ -137,13 +137,18 @@ public class ImportMetadataManager {
 		modelProject.importModel(importWizard);
 	}
 	
+	
+	public void importFromTeiidConnection(String projectName, String modelName, Properties importProps, Properties dataSourceProps){
+		importFromTeiidConnection(projectName, modelName, importProps, dataSourceProps, null);
+	}
 	/**
 	 * Teiid Connection >> Source Model
 	 */
-	public void importFromTeiidConnection(String projectName, String modelName, Properties importProps, Properties dataSourceProps){
+	public void importFromTeiidConnection(String projectName, String modelName, Properties importProps, Properties dataSourceProps, Properties teiidImporterProperties){
 		TeiidConnectionImportWizard importWizard = new TeiidConnectionImportWizard();
 		importWizard.setModelName(modelName);
 		importWizard.setProjectName(projectName);
+		importWizard.setTeiidImporterProperties(teiidImporterProperties);
 		if (dataSourceProps != null){
 			importWizard.setDataSourceProperties(dataSourceProps);
 		}
