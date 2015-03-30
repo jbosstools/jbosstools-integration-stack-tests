@@ -17,6 +17,7 @@ import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileSelectPage
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileWizard;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -64,6 +65,40 @@ public class TeiidConnectionProfileWizard extends ConnectionProfileWizard {
 
 		new PushButton("OK").click();
 		
+		finish();
+		return dbProfile;
+	}
+	
+	
+	/**
+	 * Only for: LDAP
+	 * @param profileName
+	 * @param props
+	 * @return 
+	 */
+	public DatabaseProfile createLdapConnectionProfile(String profileName, Properties cpProperties){
+		DatabaseProfile dbProfile = this.prepareDatabaseProfile(profileName, cpProperties);
+		open();
+		ConnectionProfileSelectPage selectPage = new ConnectionProfileSelectPage();
+		selectPage.setConnectionProfile(dbProfile.getVendor());
+		selectPage.setName(dbProfile.getName());
+
+		next();
+		
+		ConnectionProfileLdapPage dbPage = new ConnectionProfileLdapPage();
+		dbPage.setUsername(dbProfile.getUsername());
+		dbPage.setPassword(dbProfile.getPassword());
+		dbPage.setHostname(dbProfile.getHostname());
+		dbPage.setPrincipalDnSuffix(cpProperties.getProperty("principalDnSuffix"));
+		dbPage.setContextFactoryName(cpProperties.getProperty("contextFactoryName"));
+
+		new PushButton("Test Connection").click(); 
+
+		new WaitUntil(new ShellWithTextIsAvailable("Success"));
+		new DefaultShell("Success");
+		new PushButton("OK").click();
+		
+		new DefaultShell("New connection profile");
 		finish();
 		return dbProfile;
 	}
