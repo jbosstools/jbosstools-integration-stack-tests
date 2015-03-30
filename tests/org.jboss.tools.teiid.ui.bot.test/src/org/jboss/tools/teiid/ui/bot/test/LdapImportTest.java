@@ -34,6 +34,7 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.teiid.reddeer.editor.ModelDiagram;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
+import org.jboss.tools.teiid.reddeer.manager.ConnectionProfilesConstants;
 import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.matcher.ModelColumnMatcher;
@@ -50,7 +51,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
-@TeiidServer(state = ServerReqState.RUNNING)
+@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles={
+		ConnectionProfilesConstants.CP_LDAP,
+		ConnectionProfilesConstants.CP_RHDS
+})
 public class LdapImportTest {
 	
 	@InjectRequirement
@@ -60,9 +64,7 @@ public class LdapImportTest {
 	private static TeiidBot teiidBot = new TeiidBot();
 	private static final String LDAP_MODEL = "LdapImp";
 	private static final String RHDS_MODEL = "RhdsImp";
-	
-	private static final String LDAP_CONNECTION_PROFILE = "LDAP Profile";
-	private static final String RHDS_CONNECTION_PROFILE = "RHDS Profile";
+		
 	
 	
 	
@@ -71,13 +73,6 @@ public class LdapImportTest {
 		new TeiidBot().uncheckBuildAutomatically();
 		new ModelExplorerManager().createProject(NEW_PROJECT);
 		
-		// create RHDS connection profile
-		Properties rhdsProperties = teiidServer.getServerConfig().getConnectionProfile("rhds").asProperties();
-		new ConnectionProfileManager().createCPLdap(RHDS_CONNECTION_PROFILE, rhdsProperties);
-		
-		// create LDAP connection profile
-		Properties ldapProperties = teiidServer.getServerConfig().getConnectionProfile("ldap").asProperties();
-		new ConnectionProfileManager().createCPLdap(LDAP_CONNECTION_PROFILE, ldapProperties);
 	}
 	
 	@Before
@@ -94,7 +89,7 @@ public class LdapImportTest {
 		new ImportManager().importFromLdap(
 				NEW_PROJECT,
 				RHDS_MODEL, 
-				RHDS_CONNECTION_PROFILE, 
+				ConnectionProfilesConstants.CP_RHDS, 
 				cpProperties.getProperty("db.hostname"), 
 				cpProperties.getProperty("principalDnSuffix"),
 				importProperties
@@ -131,7 +126,7 @@ public class LdapImportTest {
 		new ImportManager().importFromLdap(
 				NEW_PROJECT,
 				LDAP_MODEL, 
-				LDAP_CONNECTION_PROFILE, 
+				ConnectionProfilesConstants.CP_LDAP, 
 				cpProperties.getProperty("db.hostname"), 
 				cpProperties.getProperty("principalDnSuffix"),
 				importProperties
