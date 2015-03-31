@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- origin at X=0.0 Y=0.0 -->
-<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:java="http://www.java.com/javaTypes" xmlns:tns="http://www.jboss.org/drools" xmlns="http://www.jboss.org/drools" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd http://www.jboss.org/drools drools.xsd http://www.bpsim.org/schemas/1.0 bpsim.xsd" id="Definition" exporter="org.eclipse.bpmn2.modeler.core" exporterVersion="1.1.1.201501081320" expressionLanguage="http://www.mvel.org/2.0" targetNamespace="http://www.jboss.org/drools" typeLanguage="http://www.java.com/javaTypes">
-  <bpmn2:itemDefinition id="ItemDefinition_4" structureRef="String"/>
-  <bpmn2:itemDefinition id="ItemDefinition_80" structureRef="Integer"/>
-  <bpmn2:itemDefinition id="ItemDefinition_81" structureRef="Boolean"/>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:java="http://www.java.com/javaTypes" xmlns:tns="http://www.jboss.org/drools" xmlns="http://www.jboss.org/drools" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd http://www.jboss.org/drools drools.xsd http://www.bpsim.org/schemas/1.0 bpsim.xsd" id="Definition" exporter="org.eclipse.bpmn2.modeler.core" exporterVersion="1.1.2.Final" expressionLanguage="http://www.mvel.org/2.0" targetNamespace="http://www.jboss.org/drools" typeLanguage="http://www.java.com/javaTypes">
+  <bpmn2:itemDefinition id="ItemDefinition_4" isCollection="false" structureRef="String"/>
+  <bpmn2:itemDefinition id="ItemDefinition_80" isCollection="false" structureRef="Integer"/>
+  <bpmn2:itemDefinition id="ItemDefinition_81" isCollection="false" structureRef="Boolean"/>
   <bpmn2:signal id="Signal1" name="Signal1"/>
   <bpmn2:signal id="Signal2" name="Signal2"/>
   <bpmn2:process id="BPMN2EventBasedSplit" tns:packageName="defaultPackage" name="BPMN2-EventBasedSplit" isExecutable="true" processType="Private">
-    <bpmn2:property id="Property_1" itemSubjectRef="ItemDefinition_4" name="Property_1"/>
+    <bpmn2:property id="VariableOne" itemSubjectRef="ItemDefinition_4" name="VariableOne"/>
     <bpmn2:startEvent id="StartEvent_1" name="StartProcess">
       <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
     </bpmn2:startEvent>
@@ -88,7 +88,7 @@
       <bpmn2:dataOutput id="DataOutput_1" name="Signal_1_Output"/>
       <bpmn2:dataOutputAssociation id="DataOutputAssociation_1">
         <bpmn2:sourceRef>DataOutput_1</bpmn2:sourceRef>
-        <bpmn2:targetRef>Property_1</bpmn2:targetRef>
+        <bpmn2:targetRef>VariableOne</bpmn2:targetRef>
       </bpmn2:dataOutputAssociation>
       <bpmn2:outputSet id="OutputSet_2" name="Output Set 2">
         <bpmn2:dataOutputRefs>DataOutput_1</bpmn2:dataOutputRefs>
@@ -100,7 +100,7 @@
       <bpmn2:dataOutput id="DataOutput_2" name="Signal_2_Output"/>
       <bpmn2:dataOutputAssociation id="DataOutputAssociation_2">
         <bpmn2:sourceRef>DataOutput_2</bpmn2:sourceRef>
-        <bpmn2:targetRef>Property_1</bpmn2:targetRef>
+        <bpmn2:targetRef>VariableOne</bpmn2:targetRef>
       </bpmn2:dataOutputAssociation>
       <bpmn2:outputSet id="OutputSet_3" name="Output Set 3">
         <bpmn2:dataOutputRefs>DataOutput_2</bpmn2:dataOutputRefs>

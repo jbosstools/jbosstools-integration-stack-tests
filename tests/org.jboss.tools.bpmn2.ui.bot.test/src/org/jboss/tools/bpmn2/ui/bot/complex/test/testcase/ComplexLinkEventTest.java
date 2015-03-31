@@ -28,7 +28,7 @@ public class ComplexLinkEventTest extends JBPM6ComplexTest {
 		LinkIntermediateThrowEvent throwEventTwo = 
 			(LinkIntermediateThrowEvent)middleStep.append("MiddleStep", ElementType.LINK_INTERMEDIATE_THROW_EVENT);
 		
-		throwEventTwo.setTarget("go_to", 1);
+		throwEventTwo.setTarget("go_to", "CatchEnd/go_to");
 	}
 	
 	@TestPhase(phase=Phase.RUN)

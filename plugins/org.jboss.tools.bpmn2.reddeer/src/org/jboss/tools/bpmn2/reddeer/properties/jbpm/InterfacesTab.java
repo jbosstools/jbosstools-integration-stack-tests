@@ -21,11 +21,17 @@ public class InterfacesTab {
 	 * @param implementation
 	 * @param operationList
 	 */
-	public void addInterface(String name, String implementation, String [] operationList) {
+	public void addInterface(String name, String implementation, String [] operationList, boolean typeText) {
 		new SectionToolItem("Interface List", "Add").click();
 		
-		new LabeledText("Name").setText(name);
-		new LabeledText("Implementation").setText(implementation);
+		if(typeText) {
+			new LabeledText("Name").typeText(name);
+			new LabeledText("Implementation").typeText(implementation);
+		} else {
+			new LabeledText("Name").setText(name);
+			new LabeledText("Implementation").setText(implementation);
+		}
+		
 
 //		// Add operations
 	}

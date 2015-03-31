@@ -19,12 +19,17 @@ public class DataItemsTab {
 	 * @param dataType
 	 * @param local
 	 */
-	public void addVariable(String name, String dataType, boolean local, String processName) {
+	public void addVariable(String name, String dataType, boolean local, String processName, boolean typeText) {
  		
 		new SectionToolItem(
 				(local ? "Local" : "Global") + " Variable List for Process \"" + processName + "\"",
 				"Add").click();
- 		new LabeledText(new DefaultSection((local ? "Local" : "Global") + " Variable Details"), "Name").setText(name); 		
+ 		LabeledText variableName = new LabeledText(new DefaultSection((local ? "Local" : "Global") + " Variable Details"), "Name");
+ 		if(typeText) {
+ 			variableName.typeText(name); 		
+ 		} else {
+ 			variableName.setText(name);
+ 		}
 		
 		DefaultCombo c = new DefaultCombo("Data Type");
 		if (!c.contains(dataType)) {
@@ -53,7 +58,7 @@ public class DataItemsTab {
 	 * @param dataType
 	 */
 	public void addGlobalVariable(String name, String dataType, String processName) {
-		addVariable(name, dataType, false, processName);
+		addVariable(name, dataType, false, processName, false);
 	}
 	
 	/**
@@ -69,8 +74,8 @@ public class DataItemsTab {
 	 * @param name
 	 * @param dataType
 	 */
-	public void addLocalVariable(String name, String dataType, String processName) {
-		addVariable(name, dataType, true, processName);
+	public void addLocalVariable(String name, String dataType, String processName, boolean typeText) {
+		addVariable(name, dataType, true, processName, typeText);
 	}
 	
 	/**

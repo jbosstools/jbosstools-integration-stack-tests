@@ -13,7 +13,7 @@ public class LinkIntermediateThrowEvent extends IntermediateThrowEvent {
 		super(element);
 	}
 
-	public void setTarget(String targetEventName, int targetEventIndexInCombo) {
-		propertiesHandler.setUp(new LinkEventTargetSetUp(targetEventName, targetEventIndexInCombo));
+	public void setTarget(String targetEventName, String targetElementEvent) {
+		propertiesHandler.setUp(new LinkEventTargetSetUp(targetEventName, targetElementEvent));
 	}
 }

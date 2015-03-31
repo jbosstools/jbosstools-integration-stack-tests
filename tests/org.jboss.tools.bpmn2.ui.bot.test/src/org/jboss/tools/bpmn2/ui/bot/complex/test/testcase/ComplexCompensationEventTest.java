@@ -41,11 +41,7 @@ public class ComplexCompensationEventTest extends JBPM6ComplexTest {
 		
 		CompensationBoundaryEvent handlerStart = 
 			(CompensationBoundaryEvent) userTask.addEvent("HandlerStart", ElementType.COMPENSATION_BOUNDARY_EVENT);
-		handlerStart.setCompensationActivity("WillBeReRun");
-		
-		ScriptTask handler = new ScriptTask("Handler");
-		handlerStart.connectTo(handler, ConnectionType.ASSOCIATION_ONE_WAY);
-		handler.setIsForCompensation(true);
+		handlerStart.setCompensationActivity("Handler");
 	}
 	
 	@TestPhase(phase=Phase.RUN)

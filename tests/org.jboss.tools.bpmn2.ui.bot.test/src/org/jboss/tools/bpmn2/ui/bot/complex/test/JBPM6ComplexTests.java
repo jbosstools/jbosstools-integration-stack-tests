@@ -45,14 +45,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 @SuiteClasses({
-//	Everywhere, where is used UserTask
-//	@BZ https://bugzilla.redhat.com/show_bug.cgi?id=1183743
-//	
 //	Where is declared escalation or signal
 //	@BZ https://bugzilla.redhat.com/show_bug.cgi?id=1184422
-//	
-//	temporary workaround used
-//	@BZ https://bugzilla.redhat.com/show_bug.cgi?id=1175772
 // --------------------------------------------------------
 	ComplexParalellSplitJoinTest.class,
 	ComplexCallActivityTest.class,
@@ -65,7 +59,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	ComplexErrorEndEventTest.class,
 	ComplexConditionalStartTest.class,
 	ComplexImportTest.class,
-	ComplexReceiveTaskTest.class,
+	ComplexReceiveTaskTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1188592
 	ComplexParalellSplitTest.class,
 	ComplexSendTaskTest.class,
 	ComplexErrorBoundaryEventOnTaskTest.class,
@@ -75,8 +69,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	ComplexUserTaskTest.class,
 	ComplexXPathExpressionTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1176400
 	ComplexLaneTest.class,
-//	// Doesn't work, because of strange context menu appearing during connecting data object with other elements
-//	// ComplexDataObjectTest.class, 
+	// Doesn't work, because of strange context menu appearing during connecting data object with other elements
+	// ComplexDataObjectTest.class, 
 	ComplexMultipleStartEventTest.class,
 	ComplexInclusiveSplitTest.class,
 	ComplexIntermediateThrowMessageEventTest.class,
@@ -87,11 +81,10 @@ import org.junit.runners.Suite.SuiteClasses;
 	ComplexBoundaryEscalationEventOnTaskTest.class,
 	ComplexConditionalBoundaryEventInterruptingTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1165667
 	ComplexMultiInstanceLoopCharacteristicsTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1189454
-	ComplexCompensationEventTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1189735
+	ComplexCompensationEventTest.class, // https://bugzilla.redhat.com/show_bug.cgi?id=1209449
 	ComplexLinkEventTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1190688
-							    // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1190727
-	ComplexWebDesignerProcessTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1188870
-	ComplexDefaultSkippableTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1168413
+	ComplexWebDesignerProcessTest.class,
+	ComplexDefaultSkippableTest.class,
 	ComplexSpecialCharactersAndLenghtsTest.class,
 	ComplexImportInterfaceTest.class,
 	ComplexServiceTaskTest.class

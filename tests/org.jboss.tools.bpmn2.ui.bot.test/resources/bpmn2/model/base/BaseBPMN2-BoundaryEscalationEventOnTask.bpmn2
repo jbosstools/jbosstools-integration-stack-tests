@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- origin at X=0.0 Y=0.0 -->
-<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:java="http://www.java.com/javaTypes" xmlns:tns="http://www.jboss.org/drools" xmlns="http://www.jboss.org/drools" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd http://www.jboss.org/drools drools.xsd http://www.bpsim.org/schemas/1.0 bpsim.xsd" id="Definition" exporter="org.eclipse.bpmn2.modeler.core" exporterVersion="1.1.1.201501081320" expressionLanguage="http://www.mvel.org/2.0" targetNamespace="http://www.jboss.org/drools" typeLanguage="http://www.java.com/javaTypes">
-  <bpmn2:itemDefinition id="ItemDefinition_5" structureRef="Object"/>
-  <bpmn2:itemDefinition id="ItemDefinition_296" structureRef="String"/>
-  <bpmn2:itemDefinition id="ItemDefinition_297" structureRef="Integer"/>
-  <bpmn2:itemDefinition id="ItemDefinition_298" structureRef="Boolean"/>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:java="http://www.java.com/javaTypes" xmlns:tns="http://www.jboss.org/drools" xmlns="http://www.jboss.org/drools" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd http://www.jboss.org/drools drools.xsd http://www.bpsim.org/schemas/1.0 bpsim.xsd" id="Definition" exporter="org.eclipse.bpmn2.modeler.core" exporterVersion="1.1.2.Final" expressionLanguage="http://www.mvel.org/2.0" targetNamespace="http://www.jboss.org/drools" typeLanguage="http://www.java.com/javaTypes">
+  <bpmn2:itemDefinition id="ItemDefinition_5" isCollection="false" structureRef="Object"/>
+  <bpmn2:itemDefinition id="ItemDefinition_296" isCollection="false" structureRef="String"/>
+  <bpmn2:itemDefinition id="ItemDefinition_297" isCollection="false" structureRef="Integer"/>
+  <bpmn2:itemDefinition id="ItemDefinition_298" isCollection="false" structureRef="Boolean"/>
   <bpmn2:escalation id="MyEscalation" escalationCode="java.lang.RuntimeException" name="MyEscalation"/>
   <bpmn2:process id="BPMN2BoundaryEscalationEventOnTask" tns:packageName="defaultPackage" name="BPMN2-BoundaryEscalationEventOnTask" isExecutable="true" processType="Private">
     <bpmn2:property id="VariableOne" itemSubjectRef="ItemDefinition_5" name="VariableOne"/>
-    <bpmn2:property id="VariableTwo" name="VariableTwo"/>
-    <bpmn2:property id="Property_3" name="Property_3"/>
+    <bpmn2:property id="VariableTwo" itemSubjectRef="ItemDefinition_5" name="VariableTwo"/>
+    <bpmn2:property id="Property_3" itemSubjectRef="ItemDefinition_5" name="Property_3"/>
     <bpmn2:startEvent id="StartEvent_1" name="StartProcess">
       <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
     </bpmn2:startEvent>
@@ -55,9 +55,17 @@
       </bpmn2:ioSpecification>
       <bpmn2:dataInputAssociation id="_DataInputAssociation_2">
         <bpmn2:targetRef>DataInput_1</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_8">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_17">TaskName</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_16">DataInput_1</bpmn2:to>
+        </bpmn2:assignment>
       </bpmn2:dataInputAssociation>
       <bpmn2:dataInputAssociation id="_DataInputAssociation_3">
         <bpmn2:targetRef>DataInput_2</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_9">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_19">1</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_18">DataInput_2</bpmn2:to>
+        </bpmn2:assignment>
       </bpmn2:dataInputAssociation>
       <bpmn2:dataInputAssociation id="_DataInputAssociation_4">
         <bpmn2:targetRef>DataInput_3</bpmn2:targetRef>
@@ -73,6 +81,10 @@
       </bpmn2:dataInputAssociation>
       <bpmn2:dataInputAssociation id="_DataInputAssociation_8">
         <bpmn2:targetRef>DataInput_7</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_14">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_29">en-UK</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_28">DataInput_7</bpmn2:to>
+        </bpmn2:assignment>
       </bpmn2:dataInputAssociation>
       <bpmn2:potentialOwner id="PotentialOwner_1">
         <bpmn2:resourceAssignmentExpression id="ResourceAssignmentExpression_1">
@@ -120,7 +132,7 @@
           <dc:Bounds height="14.0" width="71.0" x="73.0" y="236.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_ParallelGateway_1" bpmnElement="ParallelGateway_1">
+      <bpmndi:BPMNShape id="BPMNShape_ParallelGateway_1" bpmnElement="ParallelGateway_1" isMarkerVisible="true">
         <dc:Bounds height="50.0" width="50.0" x="200.0" y="190.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_3">
           <dc:Bounds height="14.0" width="24.0" x="213.0" y="240.0"/>

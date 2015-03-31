@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.drools.core.event.DefaultProcessEventListener;
-import org.drools.core.process.instance.impl.DefaultWorkItemManager;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.MultipleInstancesSubProcess;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.JBPM6ComplexTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.TestPhase;
@@ -16,7 +15,6 @@ import org.jboss.tools.bpmn2.ui.bot.test.jbpm.JbpmAssertions;
 import org.kie.api.event.process.ProcessCompletedEvent;
 import org.kie.api.event.process.ProcessVariableChangedEvent;
 import org.kie.api.runtime.KieSession;
-import org.kie.api.runtime.process.ProcessInstance;
 import org.kie.api.runtime.process.WorkflowProcessInstance;
 
 @JBPM6ComplexTestDefinition(projectName="JBPM6ComplexTest",
@@ -30,7 +28,7 @@ public class ComplexMultiInstanceLoopCharacteristicsTest extends JBPM6ComplexTes
 	@TestPhase(phase=Phase.MODEL)
 	public void model() {
 		MultipleInstancesSubProcess repeater = new MultipleInstancesSubProcess("Repeater");
-		repeater.setInputCollection(VARIABLE2, "java.util.ArrayList");
+		repeater.setInputCollection(VARIABLE2);
 		repeater.setIteratorTroughCollection(ITERATOR);
 	}
 	

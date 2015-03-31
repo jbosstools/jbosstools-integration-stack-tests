@@ -171,8 +171,12 @@ public class Process extends ElementContainer {
 	 * @param dataType
 	 */
 	public void addLocalVariable(String name, String dataType) {
+		addLocalVariable(name, dataType, false);
+	}
+	
+	public void addLocalVariable(String name, String dataType, boolean typeText) {
 		propertiesHandler.selectTabInPropertiesView(DATA_ITEMS_TAB);
-		dataItemsTab.addLocalVariable(name, dataType, this.name);
+		dataItemsTab.addLocalVariable(name, dataType, this.name, typeText);
 	}
 	
 	/**
@@ -182,8 +186,12 @@ public class Process extends ElementContainer {
 	 * @param operationList
 	 */
 	public void addInterface(String name, String implementation, String ... operationList) {
+		addInterface(name, implementation, false, operationList);
+	}
+	
+	public void addInterface(String name, String implementation, boolean typeText, String ... operationList) {
 		propertiesHandler.selectTabInPropertiesView(INTERFACES_TAB);
-		interfacesTab.addInterface(name, implementation, operationList);
+		interfacesTab.addInterface(name, implementation, operationList, typeText);
 	}
 	
 	public void importInterface(String fullQualifiedName){

@@ -10,11 +10,11 @@ import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
 public class LinkEventTargetSetUp implements SetUpAble {
 
 	private String targetEventName;
-	private int targetEventIndexInCombo;
+	private String targetElementEvent;
 	
-	public LinkEventTargetSetUp(String targetEventName,int targetEventIndexInCombo) {
+	public LinkEventTargetSetUp(String targetEventName,String targetElementEvent) {
 		this.targetEventName = targetEventName;
-		this.targetEventIndexInCombo = targetEventIndexInCombo;
+		this.targetElementEvent = targetElementEvent;
 	}
 	
 	@Override
@@ -22,7 +22,7 @@ public class LinkEventTargetSetUp implements SetUpAble {
 		new DefaultTable(new DefaultSection("Event Definitions")).select(0);
 		new SectionToolItem("Event Definitions", "Edit").click();
 		new LabeledText("Name").setText(targetEventName);
-		new LabeledCombo("Target").setSelection(targetEventIndexInCombo);
+		new LabeledCombo("Target").setSelection(targetElementEvent);
 
 	}
 

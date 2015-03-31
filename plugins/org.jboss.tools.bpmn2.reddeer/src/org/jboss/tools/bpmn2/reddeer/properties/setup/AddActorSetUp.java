@@ -17,9 +17,7 @@ public class AddActorSetUp implements SetUpAble {
 	public void setUpCTab() {
 		new SectionToolItem("Actors", "Add").click();
 		new LabeledText("Name").setText(actorName);
-		//new SectionToolItem("Actor Details", "Close").click();
-		//WORKAROUND @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1175772
-		new SectionToolItem("Formal Expression Details", "Close").click(); 
+		new SectionToolItem("Actor Details", "Close").click(); 
 	}
 
 	@Override

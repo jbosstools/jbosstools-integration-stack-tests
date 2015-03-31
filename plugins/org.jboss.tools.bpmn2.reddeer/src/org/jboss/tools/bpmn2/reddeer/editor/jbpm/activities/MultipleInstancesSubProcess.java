@@ -12,8 +12,8 @@ public class MultipleInstancesSubProcess extends ElementContainer {
 		super(name, ElementType.MULTIPLE_SUB_PROCESS);
 	}
 	
-	public void setInputCollection(String collectionName, String collectionDataType) {
-		propertiesHandler.setUp(new ComboSetUp(PropertiesTabs.SUB_PROCESS_TAB, "Input Data Collection",collectionName + " (" + collectionDataType + ")"));
+	public void setInputCollection(String collectionName) {
+		propertiesHandler.setUp(new ComboSetUp(PropertiesTabs.SUB_PROCESS_TAB, "Input Data Collection",collectionName));
 	}
 	
 	public void setIteratorTroughCollection(String iteratorName) {
