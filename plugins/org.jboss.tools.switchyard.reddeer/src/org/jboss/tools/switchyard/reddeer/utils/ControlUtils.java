@@ -2,10 +2,15 @@ package org.jboss.tools.switchyard.reddeer.utils;
 
 import static org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable.syncExec;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swtbot.swt.finder.results.Result;
+import org.jboss.reddeer.swt.util.Display;
 
 /**
  * 
@@ -13,6 +18,8 @@ import org.eclipse.swtbot.swt.finder.results.Result;
  * 
  */
 public class ControlUtils {
+
+	private List<Control> allWidgets;
 
 	public static Rectangle getBounds(final Control control) {
 		return syncExec(new Result<Rectangle>() {
@@ -50,5 +57,27 @@ public class ControlUtils {
 
 	private static Point getCentralPoint(Rectangle rec) {
 		return new Point(rec.x + rec.width / 2, rec.y + rec.height / 2);
+	}
+	
+	public List<Control> findAllWidgets(final Control parent) {
+		allWidgets = new ArrayList<Control>();
+		Display.syncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				findWidgets(parent);
+			}
+		});
+		return allWidgets;
+	}
+
+	private void findWidgets(Control control) {
+		allWidgets.add(control);
+		if (control instanceof Composite) {
+			Composite composite = (Composite) control;
+			for (Control child : composite.getChildren()) {
+				findWidgets(child);
+			}
+		}
 	}
 }
