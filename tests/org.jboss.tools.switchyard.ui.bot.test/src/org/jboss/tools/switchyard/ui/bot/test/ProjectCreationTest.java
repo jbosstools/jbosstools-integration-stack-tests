@@ -76,7 +76,7 @@ public class ProjectCreationTest {
 	public void createProjectWithoutServerTest() {
 		String projectName = "noserver";
 
-		wizard = new SwitchYardProjectWizard(projectName);
+		wizard = switchYardRequirement.project(projectName);
 		wizard.open();
 		assertEquals(projectName, wizard.getArtifactId());
 		assertEquals("com.example.switchyard", wizard.getGroupId());
@@ -86,9 +86,7 @@ public class ProjectCreationTest {
 		assertEquals("abcd", wizard.getGroupId());
 		assertEquals("urn:abcd:noserver:1.0", wizard.gettargetNamespace());
 		assertEquals("abcd.noserver", wizard.getPackageName());
-		wizard.setConfigurationVersion(switchYardRequirement.getConfig().getConfigurationVersion());
 		wizard.setTargetRuntime("<None>");
-		wizard.setLibraryVersion(switchYardRequirement.getConfig().getLibraryVersion());
 		wizard.finish();
 
 		XPathEvaluator xpath = new XPathEvaluator(new File(new SwitchYardProject(projectName).getFile(), "pom.xml"));
@@ -102,7 +100,7 @@ public class ProjectCreationTest {
 	public void createProjectWithServerTest() {
 		String projectName = "withserver";
 
-		wizard = new SwitchYardProjectWizard(projectName);
+		wizard = switchYardRequirement.project(projectName);
 		wizard.open();
 		assertEquals(switchYardRequirement.getTargetRuntimeLabel(), wizard.getTargetRuntime());
 		assertEquals(switchYardRequirement.getConfig().getLibraryVersion(), wizard.getLibraryVersion());
@@ -129,7 +127,7 @@ public class ProjectCreationTest {
 	public void createProjectWithOSGiTest() {
 		String projectName = "osgi";
 
-		wizard = new SwitchYardProjectWizard(projectName);
+		wizard = switchYardRequirement.project(projectName);
 		wizard.open();
 		assertFalse("OSGi bundle should be unchecked by default", wizard.isOSGiBundle());
 		wizard.setOSGiBundle(true);
@@ -156,7 +154,7 @@ public class ProjectCreationTest {
 	public void createProjectWithComponentsTest() {
 		String projectName = "components";
 
-		wizard = new SwitchYardProjectWizard(projectName);
+		wizard = switchYardRequirement.project(projectName);
 		wizard.open();
 		assertComponent("Implementation Support", "Bean");
 		assertComponent("Implementation Support", "BPEL");
@@ -216,7 +214,7 @@ public class ProjectCreationTest {
 	public void createProjectWithBOMTest() {
 		String projectName = "bom";
 
-		wizard = new SwitchYardProjectWizard(projectName);
+		wizard = switchYardRequirement.project(projectName);
 		wizard.open();
 		wizard.setTargetRuntime("<None>");
 
@@ -231,7 +229,7 @@ public class ProjectCreationTest {
 		wizard.setConfigurationVersion("2.0");
 		assertFalse("BOM dependency should not be enabled with 1.0 version when library version is '1.1.0.Final'", wizard.isBOMDependencyEnabled());
 		
-		wizard.setLibraryVersion("2.0.0.Beta1");
+		wizard.setLibraryVersion("2.0.0.CR1");
 
 		wizard.setConfigurationVersion("1.0");
 		assertTrue("BOM dependency should be enabled with 1.0 version", wizard.isBOMDependencyEnabled());

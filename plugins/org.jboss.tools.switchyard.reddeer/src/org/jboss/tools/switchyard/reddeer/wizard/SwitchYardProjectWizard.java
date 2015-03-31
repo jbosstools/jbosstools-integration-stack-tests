@@ -224,6 +224,18 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		setName(name);
 		next();
 		activate();
+		
+		if (configurationVersion != null) {
+			if (configurationVersion.equals("1.0") || configurationVersion.equals("1.1")) {
+				setBOMDependency(false);
+			}
+			setConfigurationVersion(configurationVersion);
+		}
+		if (targetRuntime != null) {
+			setTargetRuntime(targetRuntime);
+		} else if (libraryVersion != null) {
+			setLibraryVersion(libraryVersion);
+		}
 	}
 
 	public void create() {
