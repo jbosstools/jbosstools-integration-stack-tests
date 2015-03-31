@@ -2,9 +2,9 @@ package org.jboss.tools.switchyard.ui.bot.test;
 
 import static org.junit.Assert.assertEquals;
 
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.condition.TableHasRows;
@@ -18,6 +18,8 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.uiforms.api.Section;
+import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.condition.JUnitHasFinished;
@@ -27,6 +29,7 @@ import org.jboss.tools.switchyard.reddeer.project.ProjectItemExt;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.jboss.tools.switchyard.reddeer.view.JUnitView;
+import org.jboss.tools.switchyard.reddeer.widget.DefaultTextExt;
 import org.jboss.tools.switchyard.reddeer.wizard.ImportFileWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.NewServiceWizard;
 import org.junit.After;
@@ -50,7 +53,7 @@ public class BottomUpBPMN2Test {
 
 	@InjectRequirement
 	private SwitchYardRequirement switchyardRequirement;
-	
+
 	@Before
 	@After
 	public void closeSwitchyardFile() {
@@ -64,7 +67,7 @@ public class BottomUpBPMN2Test {
 	@Test
 	public void bottomUpBPMN2Test() throws Exception {
 		new WorkbenchShell().maximize();
-		
+
 		switchyardRequirement.project(PROJECT).impl("BPM (jBPM)").create();
 		Project project = new ProjectExplorer().getProject(PROJECT);
 
@@ -96,23 +99,25 @@ public class BottomUpBPMN2Test {
 		new SwitchYardComponent("Component").showProperties();
 		new DefaultTreeItem("Implementation").select();
 		new LabeledText("Process ID:").setText("com.sample.bpmn.hello");
-
 		new DefaultTabItem("Operations").activate();
-		new PushButton("Add").click();
 
-		new DefaultTable(0).getItem(0).doubleClick(0);
-		new DefaultText(1).setText("sayHello");
-		new DefaultTable(0).select(0);
+		Section operationsSection = new DefaultSection("Operations");
+		new PushButton(operationsSection, "Add").click();
+		new DefaultTable(operationsSection).getItem(0).doubleClick(0);
+		new DefaultTextExt(operationsSection, 0).setText("sayHello");
+		new DefaultTable(operationsSection).select(0);
 
-		new PushButton(2, "Add").click();
-		new DefaultTable(2).getItem(0).doubleClick(1);
-		new DefaultText(1).setText("name");
-		new DefaultTable(0).select(0);
+		Section inputsSection = new DefaultSection("Inputs");
+		new PushButton(inputsSection, "Add").click();
+		new DefaultTable(inputsSection).getItem(0).doubleClick(1);
+		new DefaultTextExt(inputsSection, 1).setText("name");
+		new DefaultTable(inputsSection).select(0);
 
-		new PushButton(3, "Add").click();
-		new DefaultTable(3).getItem(0).doubleClick(0);
-		new DefaultText(1).setText("result");
-		new DefaultTable(0).select(0);
+		Section outputsSection = new DefaultSection("Outputs");
+		new PushButton(outputsSection, "Add").click();
+		new DefaultTable(outputsSection).getItem(0).doubleClick(0);
+		new DefaultTextExt(outputsSection, 0).setText("result");
+		new DefaultTable(outputsSection).select(0);
 
 		new PushButton("OK").click();
 
@@ -124,7 +129,8 @@ public class BottomUpBPMN2Test {
 				.deleteLineWith("assertTrue").type("Assert.assertEquals(\"Hello BPMN2\", result);").saveAndClose();
 		new SwitchYardEditor().save();
 
-		// Tun the test
+		// Run the test
+		new ProjectExplorer().open();
 		ProjectItem item = project.getProjectItem("src/test/java", PACKAGE, "HelloTest.java");
 		new ProjectItemExt(item).runAsJUnitTest();
 		new WaitUntil(new JUnitHasFinished(), TimePeriod.LONG);
