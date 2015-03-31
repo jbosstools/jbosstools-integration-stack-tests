@@ -28,7 +28,7 @@ public final class RunUtility {
         if (useContextMenu) {
             new ContextMenu(new WithTextMatcher("Run As"), new RegexMatcher(".*Java Application.*")).select();
         } else {
-            new ShellMenu(new WithTextMatcher("Run"), new WithTextMatcher("Run As"), new RegexMatcher(".*Java Application.*"), new RegexMatcher(".*Java Application.*")).select();
+            new ShellMenu(new WithTextMatcher("Run"), new WithTextMatcher("Run As"), new RegexMatcher(".*Java Application.*")).select();
         }
 
         waitAfterStarting();
