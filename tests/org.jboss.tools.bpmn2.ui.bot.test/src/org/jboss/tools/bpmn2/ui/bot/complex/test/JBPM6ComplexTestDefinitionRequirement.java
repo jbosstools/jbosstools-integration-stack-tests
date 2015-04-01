@@ -100,7 +100,7 @@ public class JBPM6ComplexTestDefinitionRequirement implements Requirement<JBPM6C
 		
 		if(!configureShellHandled) {
 			try{
-				new DefaultShell("Configure BPMN2 Project Nature");
+				new DefaultShell("Configure BPMN2 Project");
 				new CheckBox().toggle(true);
 				new PushButton("Yes").click();
 			} catch (SWTLayerException e) {
