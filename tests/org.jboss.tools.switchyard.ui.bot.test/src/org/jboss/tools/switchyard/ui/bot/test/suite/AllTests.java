@@ -44,7 +44,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	DomainSettingsTest.class,
 	BindingsTest.class,
 	ThrottlingTest.class,
-	DeploymentTest.class,
 	TransformersTest.class,
 	ValidatorsTest.class,
 	BreakpointTest.class,
