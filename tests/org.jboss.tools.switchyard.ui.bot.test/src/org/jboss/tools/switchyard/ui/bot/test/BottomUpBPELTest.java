@@ -1,6 +1,5 @@
 package org.jboss.tools.switchyard.ui.bot.test;
 
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
@@ -14,6 +13,7 @@ import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.condition.ConsoleHasChanged;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
+import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.jboss.tools.switchyard.reddeer.server.ServerDeployment;
@@ -54,7 +54,7 @@ public class BottomUpBPELTest {
 	@Test
 	public void bottomUpBPELtest() throws Exception {
 		switchyardRequirement.project(PROJECT).impl("BPEL").binding("SOAP").create();
-		new ProjectExplorer().getProject(PROJECT).getProjectItem("src/main/resources").select();
+		new SwitchYardProject(PROJECT).getProjectItem("src/main/resources").select();
 		new ImportFileWizard().importFile("resources/bpel", "SayHello.bpel");
 		new ImportFileWizard().importFile("resources/wsdl", "SayHelloArtifacts.wsdl");
 

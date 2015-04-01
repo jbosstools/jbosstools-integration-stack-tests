@@ -7,8 +7,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -17,6 +15,7 @@ import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.tools.switchyard.reddeer.editor.DomainEditor;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
+import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.jboss.tools.switchyard.reddeer.wizard.SecurityConfigurationWizard;
@@ -52,7 +51,7 @@ public class DomainSettingsTest {
 	@AfterClass
 	public static void deleteProject() {
 		closeSwitchYardEditor();
-		new ProjectExplorer().getProject(PROJECT).delete(true);
+		new SwitchYardProject(PROJECT).delete(true);
 	}
 
 	@Test
@@ -60,11 +59,11 @@ public class DomainSettingsTest {
 		openSwitchYardEditor();
 		assertFalse(new DomainEditor().isMessageTraced());
 		new DomainEditor().setMessageTrace(true);
-		new DomainEditor().close(true);
+		new DomainEditor().saveAndClose();
 		openSwitchYardEditor();
 		assertTrue(new DomainEditor().isMessageTraced());
 		new DomainEditor().setMessageTrace(false);
-		new DomainEditor().close(true);
+		new DomainEditor().saveAndClose();
 		openSwitchYardEditor();
 		assertFalse(new DomainEditor().isMessageTraced());
 	}
@@ -75,13 +74,13 @@ public class DomainSettingsTest {
 		new DomainEditor().removeAllProperties();
 		assertEquals(0, new DomainEditor().getProperties().size());
 		new DomainEditor().addProperty("foo", "bar");
-		new DomainEditor().close(true);
+		new DomainEditor().saveAndClose();
 
 		openSwitchYardEditor();
 		assertEquals(1, new DomainEditor().getProperties().size());
 		assertEquals("bar", new DomainEditor().getProperty("foo"));
 		new DomainEditor().removeProperty("foo");
-		new DomainEditor().close(true);
+		new DomainEditor().saveAndClose();
 
 		openSwitchYardEditor();
 		assertEquals(0, new DomainEditor().getProperties().size());
@@ -94,7 +93,7 @@ public class DomainSettingsTest {
 		openSwitchYardEditor();
 		new DomainEditor().addSecurityConfiguration("test-security", "tester, admin", "user",
 				"other", "NamePasswordCallbackHandler");
-		new DomainEditor().close(true);
+		new DomainEditor().saveAndClose();
 
 		/* Test if it is displayed in the editor */
 		openSwitchYardEditor();
@@ -119,11 +118,11 @@ public class DomainSettingsTest {
 
 		/* Test if the configuration can be properly deleted */
 		new DomainEditor().removeSecurityConfiguration("test-security");
-		new DomainEditor().close(true);
+		new DomainEditor().saveAndClose();
 		openSwitchYardEditor();
 		items = new DomainEditor().getSecurityConfigurations();
 		assertEquals(0, items.size());
-		new DomainEditor().close(true);
+		new DomainEditor().saveAndClose();
 	}
 
 	public static void closeSwitchYardEditor() {
@@ -133,14 +132,13 @@ public class DomainSettingsTest {
 			// it is ok, we just try to close switchyard.xml if it is open
 		}
 		try {
-			new DomainEditor().close(true);
+			new DomainEditor().saveAndClose();
 		} catch (Exception ex) {
 			// it is ok, we just try to close switchyard.xml if it is open
 		}
 	}
 
 	public static void openSwitchYardEditor() {
-		Project project = new ProjectExplorer().getProject(PROJECT);
-		project.getProjectItem("SwitchYard").open();
+		new SwitchYardProject(PROJECT).getProjectItem("SwitchYard").open();
 	}
 }

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.api.Combo;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
@@ -14,14 +13,13 @@ import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
-import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 
 /**
  * Wizard for creating a SwitchYard project.
@@ -250,7 +248,7 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		}
 		selectComponents(components);
 		finish();
-		update();
+		new SwitchYardProject(name).update();
 	}
 
 	@Override
@@ -270,21 +268,6 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		TimePeriod timeout = TimePeriod.getCustom(20 * 60 * 1000);
 		new WaitWhile(new ShellWithTextIsActive(DIALOG_TITLE), timeout);
 		new WaitWhile(new JobIsRunning(), timeout);
-	}
-
-	public void update() {
-		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
-		
-		ProjectExplorer projectExplorer = new ProjectExplorer();
-		projectExplorer.open();
-		projectExplorer.getProjects().get(0).select();
-		new ContextMenu("Maven", "Update Project...").select();
-		new DefaultShell("Update Maven Project");
-		new CheckBox("Force Update of Snapshots/Releases").toggle(true);
-		new PushButton("OK").click();
-
-		AbstractWait.sleep(TimePeriod.NORMAL);
-		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 	
 	private class LabeledComboExt extends LabeledCombo {
