@@ -155,11 +155,8 @@ public class RegressionTest {
 	/**
 	 * New Server Runtime Wizard - Cancel/Finish button error
 	 * https://issues.jboss.org/browse/FUSETOOLS-1067
-	 * 
-	 * NOTE: this test is related to https://issues.jboss.org/browse/FUSETOOLS-1076 too
 	 */
 	@Test
-	@Ignore
 	public void issue_1067() {
 
 		new ServerRuntimePreferencePage().open();
@@ -210,11 +207,8 @@ public class RegressionTest {
 	/**
 	 * New Server Runtime Wizard - Finish button error
 	 * https://issues.jboss.org/browse/FUSETOOLS-1076
-	 * 
-	 * NOTE: not fixed yet -reopened
 	 */
 	@Test
-	@Ignore
 	public void issue_1076() {
 
 		ServerRuntimePreferencePage serverRuntime = new ServerRuntimePreferencePage();
