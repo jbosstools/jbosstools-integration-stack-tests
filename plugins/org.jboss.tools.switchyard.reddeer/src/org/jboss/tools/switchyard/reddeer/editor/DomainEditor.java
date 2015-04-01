@@ -2,14 +2,23 @@ package org.jboss.tools.switchyard.reddeer.editor;
 
 import java.util.List;
 
+import org.eclipse.swt.widgets.Shell;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.swt.handler.IBeforeShellIsClosed;
+import org.jboss.reddeer.swt.handler.ShellHandler;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.switchyard.reddeer.shell.DomainPropertyShell;
 import org.jboss.tools.switchyard.reddeer.wizard.SecurityConfigurationWizard;
+import org.junit.Assert;
 
 /**
  * 
@@ -20,6 +29,8 @@ public class DomainEditor extends DefaultEditor {
 
 	public static final String SWITCHYARD_FILE = "switchyard.xml";
 	public static final String ENABLE_MESSAGE_TRACE = "Enable Message Trace";
+	
+	private static Shell remainedShell;
 
 	public DomainEditor() {
 		super(SWITCHYARD_FILE);
@@ -156,6 +167,52 @@ public class DomainEditor extends DefaultEditor {
 
 	public List<TreeItem> getSecurityConfigurations() {
 		return new DefaultTree(1).getItems();
+	}
+	private void doSave() {
+		log.info("Save SwitchYard editor");
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		
+		remainedShell = null;
+		ShellHandler.getInstance().closeAllNonWorbenchShells(new IBeforeShellIsClosed() {
+			
+			@Override
+			public void runBeforeShellIsClosed(Shell shell) {
+				remainedShell = shell;
+			}
+		});
+		
+		super.save();
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		
+		if (remainedShell != null) {
+			Assert.fail("Shell '" + remainedShell.getText() + "' remains open");
+		}
+	}
+
+	@Override
+	public void save() {
+		new WaitUntil(new EditorIsSaved(), TimePeriod.VERY_LONG);
+	}
+
+	public void saveAndClose() {
+		save();
+		close();
+	}
+	
+	private class EditorIsSaved implements WaitCondition {
+
+		@Override
+		public boolean test() {
+			new DomainEditor().doSave();
+			return !new DomainEditor().isDirty();
+		}
+
+		@Override
+		public String description() {
+			return "Editor is still dirty";
+		}
+		
 	}
 
 }

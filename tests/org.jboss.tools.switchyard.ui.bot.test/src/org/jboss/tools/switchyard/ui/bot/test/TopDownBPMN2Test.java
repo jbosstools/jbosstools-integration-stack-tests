@@ -37,6 +37,7 @@ import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.condition.JUnitHasFinished;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.project.ProjectItemExt;
+import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.jboss.tools.switchyard.reddeer.view.JUnitView;
@@ -178,7 +179,7 @@ public class TopDownBPMN2Test {
 		}
 
 		new ProjectExplorer().open();
-		ProjectItem item = new ProjectExplorer().getProject(PROJECT).getProjectItem("src/test/java", PACKAGE,
+		ProjectItem item = new SwitchYardProject(PROJECT).getProjectItem("src/test/java", PACKAGE,
 				PROCESS_GREET + "Test.java");
 		new ProjectItemExt(item).runAsJUnitTest();
 		new WaitUntil(new JUnitHasFinished(), TimePeriod.LONG);

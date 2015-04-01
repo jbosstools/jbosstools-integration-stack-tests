@@ -4,8 +4,6 @@ import static org.jboss.tools.switchyard.reddeer.binding.OperationOptionsPage.OP
 import static org.junit.Assert.assertEquals;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -19,9 +17,10 @@ import org.jboss.tools.switchyard.reddeer.binding.HTTPBindingPage;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.condition.JUnitHasFinished;
-import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.SimpleTextEditor;
+import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.project.ProjectItemExt;
+import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.jboss.tools.switchyard.reddeer.view.JUnitView;
@@ -64,14 +63,13 @@ public class BottomUpCamelTest {
 	@Test
 	public void bottomUpCamelTest() throws Exception {
 		switchyardRequirement.project(PROJECT).impl("Camel Route").binding("HTTP").create();
-		Project project = new ProjectExplorer().getProject(PROJECT);
 
 		// Import java file
-		project.getProjectItem("src/main/java", PACKAGE).select();
+		new SwitchYardProject(PROJECT).getProjectItem("src/main/java", PACKAGE).select();
 		new ImportFileWizard().importFile("resources/java", JAVA_FILE + ".java");
 
 		// Edit java file
-		project.getProjectItem("src/main/java", PACKAGE, JAVA_FILE + ".java").open();
+		new SwitchYardProject(PROJECT).getProjectItem("src/main/java", PACKAGE, JAVA_FILE + ".java").open();
 		new SimpleTextEditor(JAVA_FILE + ".java").deleteLineWith("package")
 				.type("package " + PACKAGE + ";").saveAndClose();
 
@@ -123,7 +121,7 @@ public class BottomUpCamelTest {
 		new SwitchYardEditor().save();
 
 		// Tun the test
-		ProjectItem item = project.getProjectItem("src/test/java", PACKAGE, "HelloTest.java");
+		ProjectItem item = new SwitchYardProject(PROJECT).getProjectItem("src/test/java", PACKAGE, "HelloTest.java");
 		new ProjectItemExt(item).runAsJUnitTest();
 		new WaitUntil(new JUnitHasFinished(), TimePeriod.LONG);
 

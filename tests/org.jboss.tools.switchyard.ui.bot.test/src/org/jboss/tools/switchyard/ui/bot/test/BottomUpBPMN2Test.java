@@ -2,7 +2,6 @@ package org.jboss.tools.switchyard.ui.bot.test;
 
 import static org.junit.Assert.assertEquals;
 
-import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
@@ -23,9 +22,10 @@ import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.condition.JUnitHasFinished;
-import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.SimpleTextEditor;
+import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.project.ProjectItemExt;
+import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.jboss.tools.switchyard.reddeer.view.JUnitView;
@@ -69,10 +69,9 @@ public class BottomUpBPMN2Test {
 		new WorkbenchShell().maximize();
 
 		switchyardRequirement.project(PROJECT).impl("BPM (jBPM)").create();
-		Project project = new ProjectExplorer().getProject(PROJECT);
 
 		// Import BPMN process
-		project.getProjectItem("src/main/java", PACKAGE).select();
+		new SwitchYardProject(PROJECT).getProjectItem("src/main/java", PACKAGE).select();
 		new ImportFileWizard().importFile("resources/bpmn", BPMN2_FILE);
 
 		// Add component
@@ -131,7 +130,7 @@ public class BottomUpBPMN2Test {
 
 		// Run the test
 		new ProjectExplorer().open();
-		ProjectItem item = project.getProjectItem("src/test/java", PACKAGE, "HelloTest.java");
+		ProjectItem item = new SwitchYardProject(PROJECT).getProjectItem("src/test/java", PACKAGE, "HelloTest.java");
 		new ProjectItemExt(item).runAsJUnitTest();
 		new WaitUntil(new JUnitHasFinished(), TimePeriod.LONG);
 

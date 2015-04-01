@@ -2,8 +2,6 @@ package org.jboss.tools.switchyard.ui.bot.test;
 
 import static org.junit.Assert.assertEquals;
 
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
@@ -20,9 +18,10 @@ import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.condition.ConsoleHasChanged;
 import org.jboss.tools.switchyard.reddeer.condition.JUnitHasFinished;
-import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.SimpleTextEditor;
+import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.project.ProjectItemExt;
+import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.jboss.tools.switchyard.reddeer.server.ServerDeployment;
@@ -98,7 +97,7 @@ public class UseCaseSimpleTest {
 				.type("Assert.assertEquals(\"Hello Andrej\", result);").saveAndClose();
 		new SwitchYardEditor().save();
 
-		ProjectItem item = getProject().getProjectItem("src/test/java", PACKAGE,
+		ProjectItem item = new SwitchYardProject(PROJECT).getProjectItem("src/test/java", PACKAGE,
 				"ExampleServiceTest.java");
 		new ProjectItemExt(item).runAsJUnitTest();
 		new WaitUntil(new JUnitHasFinished(), TimePeriod.LONG);
@@ -115,7 +114,7 @@ public class UseCaseSimpleTest {
 		wizard.setTransformerType("Java Transformer").next();
 		wizard.setName("ExampleServiceTransformers").finish();
 
-		new ProjectExplorer().getProject(PROJECT)
+		new SwitchYardProject(PROJECT)
 				.getProjectItem("src/main/java", PACKAGE, "ExampleServiceTransformers.java").open();
 		new SimpleTextEditor("ExampleServiceTransformers.java")
 				.deleteLineWith("ToSayHello")
@@ -142,10 +141,6 @@ public class UseCaseSimpleTest {
 		}
 
 		new WaitWhile(new ConsoleHasChanged());
-	}
-
-	private static Project getProject() {
-		return new ProjectExplorer().getProject(PROJECT);
 	}
 
 }

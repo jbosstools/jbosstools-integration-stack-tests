@@ -3,8 +3,6 @@ package org.jboss.tools.switchyard.ui.bot.test;
 import static org.jboss.tools.switchyard.reddeer.binding.OperationOptionsPage.OPERATION_NAME;
 import static org.junit.Assert.assertEquals;
 
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
@@ -25,8 +23,9 @@ import org.jboss.tools.switchyard.reddeer.binding.HTTPBindingPage;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.condition.ConsoleHasChanged;
-import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.SimpleTextEditor;
+import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
+import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.jboss.tools.switchyard.reddeer.server.ServerDeployment;
@@ -68,10 +67,9 @@ public class BottomUpEJBTest {
 	@Test
 	public void bottomUpEJBTest() throws Exception {
 		switchyardRequirement.project(PROJECT).impl("Bean").binding("HTTP").create();
-		Project project = new ProjectExplorer().getProject(PROJECT);
 
 		// Add EJB dependency
-		project.getProjectItem("pom.xml").open();
+		new SwitchYardProject(PROJECT).getProjectItem("pom.xml").open();
 		new DefaultCTabItem("Dependencies").activate();
 		new PushButton("Add...").click();
 		new DefaultShell("Select Dependency");
@@ -82,11 +80,11 @@ public class BottomUpEJBTest {
 		new DefaultEditor().close(true);
 
 		// Import java file
-		project.getProjectItem("src/main/java", PACKAGE).select();
+		new SwitchYardProject(PROJECT).getProjectItem("src/main/java", PACKAGE).select();
 		new ImportFileWizard().importFile("resources/java", JAVA_FILE + ".java");
 
 		// Edit java file
-		project.getProjectItem("src/main/java", PACKAGE, JAVA_FILE + ".java").open();
+		new SwitchYardProject(PROJECT).getProjectItem("src/main/java", PACKAGE, JAVA_FILE + ".java").open();
 		new SimpleTextEditor(JAVA_FILE + ".java").deleteLineWith("package")
 				.type("package " + PACKAGE + ";").saveAndClose();
 

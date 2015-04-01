@@ -2,7 +2,6 @@ package org.jboss.tools.switchyard.ui.bot.test;
 
 import static org.junit.Assert.assertEquals;
 
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
@@ -18,9 +17,10 @@ import org.jboss.tools.switchyard.reddeer.component.Reference;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.condition.JUnitHasFinished;
-import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.SimpleTextEditor;
+import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.project.ProjectItemExt;
+import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.jboss.tools.switchyard.reddeer.view.JUnitView;
@@ -80,11 +80,11 @@ public class UseCaseWSProxySOAPTest {
 		switchyardRequirement.project(PROJECT).impl("Camel Route").binding("SOAP").create();
 
 		/* Import Resources */
-		new ProjectExplorer().getProject(PROJECT).getProjectItem("src/main/resources").select();
+		new SwitchYardProject(PROJECT).getProjectItem("src/main/resources").select();
 		new ImportFileWizard().importFile("resources/wsdl", WSDL);
-		new ProjectExplorer().getProject(PROJECT).getProjectItem("src/test/resources").select();
+		new SwitchYardProject(PROJECT).getProjectItem("src/test/resources").select();
 		new ImportFileWizard().importFile("resources/messages/WSProxy", "soap-request.xml");
-		new ProjectExplorer().getProject(PROJECT).getProjectItem("src/test/resources").select();
+		new SwitchYardProject(PROJECT).getProjectItem("src/test/resources").select();
 		new ImportFileWizard().importFile("resources/messages/WSProxy", "soap-response.xml");
 
 		/* Create Camel Route */
@@ -127,8 +127,7 @@ public class UseCaseWSProxySOAPTest {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 
 		new SwitchYardEditor().save();
-		ProjectItem item = new ProjectExplorer().getProject(PROJECT).getProjectItem("src/test/java", PACKAGE,
-				"HelloTest.java");
+		ProjectItem item = new SwitchYardProject(PROJECT).getProjectItem("src/test/java", PACKAGE, "HelloTest.java");
 		new ProjectItemExt(item).runAsJUnitTest();
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		new WaitUntil(new JUnitHasFinished(), TimePeriod.LONG);
