@@ -44,6 +44,7 @@ import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.fuse.reddeer.component.Log;
 import org.jboss.tools.fuse.reddeer.condition.FuseLogContainsText;
 import org.jboss.tools.fuse.reddeer.debug.BreakpointsView;
 import org.jboss.tools.fuse.reddeer.debug.IsRunning;
@@ -238,6 +239,30 @@ public class RegressionTest {
 		ProjectFactory.createProject("camel-web", "camel-archetype-web");
 		new CamelProject("camel-web").runApplicationContextWithoutTests("applicationContext.xml");
 		new WaitUntil(new ConsoleHasText("[INFO] Started Jetty Server\nHello Web Application, how are you?"), TimePeriod.LONG);
+	}
+
+	/**
+	 * An endpoint is lost after saving
+	 * https://issues.jboss.org/browse/FUSETOOLS-1085
+	 */
+	@Test
+	public void issue_1085() {
+
+		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
+		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
+		CamelEditor editor = new CamelEditor("camel-context.xml");
+		editor.addCamelComponent(new Log());
+		new DefaultToolItem(new WorkbenchShell(), 0, new WithTooltipTextMatcher(new RegexMatcher("Save All.*"))).click();
+		new WaitUntil(new ShellWithTextIsAvailable("Please confirm..."));
+		new DefaultShell("Please confirm...");
+		new PushButton("No").click();
+		assertTrue(editor.isDirty());
+		new DefaultToolItem(new WorkbenchShell(), 0, new WithTooltipTextMatcher(new RegexMatcher("Save All.*"))).click();
+		new WaitUntil(new ShellWithTextIsAvailable("Please confirm..."));
+		new DefaultShell("Please confirm...");
+		new PushButton("Yes").click();
+		AbstractWait.sleep(TimePeriod.getCustom(5));
+		assertFalse(editor.isDirty());
 	}
 
 	/**
