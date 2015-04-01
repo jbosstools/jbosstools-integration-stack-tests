@@ -22,7 +22,7 @@ import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.condition.JUnitHasFinished;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
-import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
+import org.jboss.tools.switchyard.reddeer.editor.SimpleTextEditor;
 import org.jboss.tools.switchyard.reddeer.project.ProjectItemExt;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
@@ -90,7 +90,7 @@ public class BottomUpBPMN2Test {
 
 		// Edit the interface
 		new Service("Hello").doubleClick();
-		new TextEditor("Hello.java").typeAfter("Hello", "String sayHello(String name);").saveAndClose();
+		new SimpleTextEditor("Hello.java").typeAfter("Hello", "String sayHello(String name);").saveAndClose();
 
 		// Edit the BPMN process
 		new SwitchYardComponent("Component").showProperties();
@@ -120,7 +120,7 @@ public class BottomUpBPMN2Test {
 
 		// Create HelloTest
 		new Service("Hello").createNewServiceTestClass();
-		new TextEditor("HelloTest.java").deleteLineWith("String message").type("String message=\"BPMN2\";")
+		new SimpleTextEditor("HelloTest.java").deleteLineWith("String message").type("String message=\"BPMN2\";")
 				.deleteLineWith("assertTrue").type("Assert.assertEquals(\"Hello BPMN2\", result);").saveAndClose();
 		new SwitchYardEditor().save();
 

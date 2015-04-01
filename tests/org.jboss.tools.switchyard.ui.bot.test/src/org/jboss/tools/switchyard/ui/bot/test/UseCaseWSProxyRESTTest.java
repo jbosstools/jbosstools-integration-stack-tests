@@ -20,7 +20,7 @@ import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.condition.JUnitHasFinished;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
-import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
+import org.jboss.tools.switchyard.reddeer.editor.SimpleTextEditor;
 import org.jboss.tools.switchyard.reddeer.project.ProjectItemExt;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
@@ -94,7 +94,7 @@ public class UseCaseWSProxyRESTTest {
 		/* Edit Hello interface */
 		new Service("Hello").doubleClick();
 
-		new TextEditor("Hello.java").typeBefore("Hello", "import javax.ws.rs.Produces;").newLine()
+		new SimpleTextEditor("Hello.java").typeBefore("Hello", "import javax.ws.rs.Produces;").newLine()
 				.type("import javax.ws.rs.GET;").newLine().type("import javax.ws.rs.Path;").newLine()
 				.type("import javax.ws.rs.PathParam;").newLine().typeAfter("Hello", "@GET()").newLine()
 				.type("@Path(\"/{name}\")").newLine().type("@Produces(\"text/plain\")").newLine()
@@ -111,7 +111,7 @@ public class UseCaseWSProxyRESTTest {
 		/* Edit HelloTransformer */
 		new ProjectExplorer().getProject(PROJECT).getProjectItem("src/main/java", PACKAGE, "HelloTransformer.java")
 				.open();
-		new TextEditor("HelloTransformer.java")
+		new SimpleTextEditor("HelloTransformer.java")
 				.deleteLineWith("ToSayHello")
 				.type("public static String transformStringToSayHelloResponse(String from) {")
 				.deleteLineWith("return null")
@@ -143,12 +143,12 @@ public class UseCaseWSProxyRESTTest {
 
 		/* Edit Camel Route */
 		new SwitchYardComponent("Proxy").doubleClick();
-		new TextEditor("Proxy.java").typeAfter("from(", ".to(\"switchyard://" + SERVICE_REF + "\")").saveAndClose();
+		new SimpleTextEditor("Proxy.java").typeAfter("from(", ".to(\"switchyard://" + SERVICE_REF + "\")").saveAndClose();
 		new SwitchYardEditor().save();
 
 		/* Test Web Service Proxy */
 		new Service("Hello").newServiceTestClass().setPackage(PACKAGE).selectMixin("HTTP Mix-in").finish();
-		new TextEditor("HelloTest.java")
+		new SimpleTextEditor("HelloTest.java")
 				.deleteLineWith("String message")
 				.deleteLineWith("String result")
 				.deleteLineWith("getContent")

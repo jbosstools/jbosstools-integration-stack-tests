@@ -17,47 +17,47 @@ import org.jboss.reddeer.swt.wait.TimePeriod;
  * @author apodhrad
  * 
  */
-public class TextEditor {
+public class SimpleTextEditor {
 
 	private SWTBotEclipseEditor editor;
 	private static SWTWorkbenchBot bot = new SWTWorkbenchBot(); 
 
-	public TextEditor(String fileName) {
+	public SimpleTextEditor(String fileName) {
 		AbstractWait.sleep(TimePeriod.SHORT);
 		editor = bot.editorByTitle(fileName).toTextEditor();
 		editor.show();
 		editor.setFocus();
 	}
 
-	public TextEditor type(String text) {
+	public SimpleTextEditor type(String text) {
 		AbstractWait.sleep(TimePeriod.SHORT);
 		editor.typeText(text);
 		editor.save();
 		return this;
 	}
 
-	public TextEditor typeAfter(String word, String text) {
+	public SimpleTextEditor typeAfter(String word, String text) {
 		editor.navigateTo(getLineNum(word) + 1, 0);
 		return type(text);
 	}
 
-	public TextEditor typeBefore(String word, String text) {
+	public SimpleTextEditor typeBefore(String word, String text) {
 		editor.navigateTo(getLineNum(word) - 1, 0);
 		return type(text);
 	}
 
-	public TextEditor deleteLine(int lineNum) {
+	public SimpleTextEditor deleteLine(int lineNum) {
 		editor.selectLine(lineNum);
 		editor.pressShortcut(Keystrokes.DELETE);
 		editor.save();
 		return this;
 	}
 
-	public TextEditor deleteLineWith(String word) {
+	public SimpleTextEditor deleteLineWith(String word) {
 		return deleteLine(getLineNum(word));
 	}
 
-	public TextEditor newLine() {
+	public SimpleTextEditor newLine() {
 		return type("\n");
 	}
 
@@ -66,7 +66,7 @@ public class TextEditor {
 		editor.saveAndClose();
 	}
 
-	public TextEditor formatText() {
+	public SimpleTextEditor formatText() {
 		AbstractWait.sleep(TimePeriod.SHORT);
 		try {
 			editor.pressShortcut(Keystrokes.CTRL, Keystrokes.SHIFT, KeyStroke.getInstance("O"));

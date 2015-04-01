@@ -18,7 +18,7 @@ import org.jboss.tools.switchyard.reddeer.binding.FileBindingPage;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
-import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
+import org.jboss.tools.switchyard.reddeer.editor.SimpleTextEditor;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.jboss.tools.switchyard.reddeer.server.ServerDeployment;
@@ -62,12 +62,12 @@ public class UseCaseFileGatewayTest {
 
 		// Edit the interface
 		new SwitchYardComponent("Info").doubleClick();
-		new TextEditor("Info.java").typeAfter("interface", "void printInfo(String body);")
+		new SimpleTextEditor("Info.java").typeAfter("interface", "void printInfo(String body);")
 				.saveAndClose();
 
 		// Edit the bean
 		new SwitchYardComponent("InfoBean").doubleClick();
-		new TextEditor("InfoBean.java").typeAfter("public class", "@Override").newLine()
+		new SimpleTextEditor("InfoBean.java").typeAfter("public class", "@Override").newLine()
 				.type("public void printInfo(String body) {").newLine()
 				.type("System.out.println(\"Body: \" + body);}").saveAndClose();
 
