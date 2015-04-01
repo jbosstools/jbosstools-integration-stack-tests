@@ -26,7 +26,7 @@ import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.condition.ConsoleHasChanged;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
-import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
+import org.jboss.tools.switchyard.reddeer.editor.SimpleTextEditor;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.jboss.tools.switchyard.reddeer.server.ServerDeployment;
@@ -87,7 +87,7 @@ public class BottomUpEJBTest {
 
 		// Edit java file
 		project.getProjectItem("src/main/java", PACKAGE, JAVA_FILE + ".java").open();
-		new TextEditor(JAVA_FILE + ".java").deleteLineWith("package")
+		new SimpleTextEditor(JAVA_FILE + ".java").deleteLineWith("package")
 				.type("package " + PACKAGE + ";").saveAndClose();
 
 		new SwitchYardEditor().addComponent();
@@ -108,12 +108,12 @@ public class BottomUpEJBTest {
 
 		// Edit the interface
 		new Service("Hello").doubleClick();
-		new TextEditor("Hello.java").typeAfter("Hello", "String sayHello(String name);")
+		new SimpleTextEditor("Hello.java").typeAfter("Hello", "String sayHello(String name);")
 				.saveAndClose();
 
 		// Edit the camel route
 		new SwitchYardComponent("Component").doubleClick();
-		new TextEditor(JAVA_FILE + ".java")
+		new SimpleTextEditor(JAVA_FILE + ".java")
 				.typeAfter("package", "import org.switchyard.component.bean.Service;")
 				.typeBefore("@Stateless", "@Service(Hello.class)").deleteLineWith("HelloBean")
 				.type("public class HelloBean implements Hello {").saveAndClose();

@@ -20,7 +20,7 @@ import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.condition.JUnitHasFinished;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
-import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
+import org.jboss.tools.switchyard.reddeer.editor.SimpleTextEditor;
 import org.jboss.tools.switchyard.reddeer.project.ProjectItemExt;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
@@ -72,7 +72,7 @@ public class BottomUpCamelTest {
 
 		// Edit java file
 		project.getProjectItem("src/main/java", PACKAGE, JAVA_FILE + ".java").open();
-		new TextEditor(JAVA_FILE + ".java").deleteLineWith("package")
+		new SimpleTextEditor(JAVA_FILE + ".java").deleteLineWith("package")
 				.type("package " + PACKAGE + ";").saveAndClose();
 
 		// Add component
@@ -94,12 +94,12 @@ public class BottomUpCamelTest {
 
 		// Edit the interface
 		new Service("Hello").doubleClick();
-		new TextEditor("Hello.java").typeAfter("Hello", "String sayHello(String name);")
+		new SimpleTextEditor("Hello.java").typeAfter("Hello", "String sayHello(String name);")
 				.saveAndClose();
 
 		// Edit the camel route
 		new SwitchYardComponent("Component").doubleClick();
-		new TextEditor(JAVA_FILE + ".java").deleteLineWith("file:in")
+		new SimpleTextEditor(JAVA_FILE + ".java").deleteLineWith("file:in")
 				.type("from(\"switchyard://Hello\")").deleteLineWith("file:out").type(";")
 				.saveAndClose();
 
@@ -118,7 +118,7 @@ public class BottomUpCamelTest {
 		
 		// Create HelloTest
 		new Service("Hello").createNewServiceTestClass();
-		new TextEditor("HelloTest.java").deleteLineWith("String message").type("String message=\"Camel\";")
+		new SimpleTextEditor("HelloTest.java").deleteLineWith("String message").type("String message=\"Camel\";")
 				.deleteLineWith("assertTrue").type("Assert.assertEquals(\"Hello Camel\", result);").saveAndClose();
 		new SwitchYardEditor().save();
 

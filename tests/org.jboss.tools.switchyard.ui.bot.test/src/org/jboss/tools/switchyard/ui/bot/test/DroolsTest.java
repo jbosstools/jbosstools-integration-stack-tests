@@ -17,7 +17,7 @@ import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
-import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
+import org.jboss.tools.switchyard.reddeer.editor.SimpleTextEditor;
 import org.jboss.tools.switchyard.reddeer.project.ProjectItemExt;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
@@ -71,7 +71,7 @@ public class DroolsTest {
 
 		// insert rules
 		openFile(PACKAGE_MAIN_RESOURCES, INTERVIEW + ".drl");
-		new TextEditor(INTERVIEW + ".drl").deleteLineWith("Interview").deleteLineWith("System.out.println")
+		new SimpleTextEditor(INTERVIEW + ".drl").deleteLineWith("Interview").deleteLineWith("System.out.println")
 				.deleteLineWith("global").type("global java.lang.String userName").newLine()
 				.type("rule \"Is of valid age\"").typeAfter("when", "$a : Applicant( age > 17 )")
 				.typeAfter("then", "$a.setValid( true );").newLine()
@@ -83,10 +83,10 @@ public class DroolsTest {
 
 		// insert code
 		openFile(PACKAGE_MAIN_JAVA, PACKAGE, INTERVIEW + "Service.java");
-		new TextEditor(INTERVIEW + "Service.java").typeAfter("interface", "public void verify(Applicant applicant);");
+		new SimpleTextEditor(INTERVIEW + "Service.java").typeAfter("interface", "public void verify(Applicant applicant);");
 
 		createPojo(APPLICANT);
-		new TextEditor(APPLICANT + ".java")
+		new SimpleTextEditor(APPLICANT + ".java")
 				.typeAfter("class", "private String name; private int age; private boolean valid;").newLine()
 				.type("public Applicant(String name, int age){this.name=name;this.age=age;}")
 				.generateGettersSetters("name");
@@ -95,7 +95,7 @@ public class DroolsTest {
 		new SwitchYardEditor();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new Service(INTERVIEW + "Service").createNewServiceTestClass();
-		new TextEditor(TEST).deleteLineWith("null").type("Applicant message=new Applicant(\"Twenty\", 20);")
+		new SimpleTextEditor(TEST).deleteLineWith("null").type("Applicant message=new Applicant(\"Twenty\", 20);")
 				.deleteLineWith("Implement").type("message=new Applicant(\"Ten\", 10);")
 				.type("service.operation(\"verify\").sendInOnly(message);");
 

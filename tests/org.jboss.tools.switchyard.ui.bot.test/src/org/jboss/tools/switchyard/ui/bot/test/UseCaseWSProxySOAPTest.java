@@ -19,7 +19,7 @@ import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.condition.JUnitHasFinished;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
-import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
+import org.jboss.tools.switchyard.reddeer.editor.SimpleTextEditor;
 import org.jboss.tools.switchyard.reddeer.project.ProjectItemExt;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
@@ -110,13 +110,13 @@ public class UseCaseWSProxySOAPTest {
 
 		/* Edit Camel Route */
 		new SwitchYardComponent("Proxy").doubleClick();
-		new TextEditor("Proxy.java").typeAfter("from(", ".to(\"switchyard://HelloRef\")").saveAndClose();
+		new SimpleTextEditor("Proxy.java").typeAfter("from(", ".to(\"switchyard://HelloRef\")").saveAndClose();
 		new SwitchYardEditor().save();
 
 		/* Test Web Service Proxy */
 		new Service("Hello").newServiceTestClass().setPackage(PACKAGE).selectMixin("HTTP Mix-in").finish();
 		
-		new TextEditor("HelloTest.java")
+		new SimpleTextEditor("HelloTest.java")
 				.deleteLineWith("Object message")
 				.deleteLineWith("Object result")
 				.deleteLineWith("getContent")

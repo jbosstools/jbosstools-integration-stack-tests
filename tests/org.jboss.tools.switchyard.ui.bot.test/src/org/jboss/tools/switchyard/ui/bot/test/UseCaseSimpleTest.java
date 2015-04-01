@@ -21,7 +21,7 @@ import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.condition.ConsoleHasChanged;
 import org.jboss.tools.switchyard.reddeer.condition.JUnitHasFinished;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
-import org.jboss.tools.switchyard.reddeer.editor.TextEditor;
+import org.jboss.tools.switchyard.reddeer.editor.SimpleTextEditor;
 import org.jboss.tools.switchyard.reddeer.project.ProjectItemExt;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
@@ -81,11 +81,11 @@ public class UseCaseSimpleTest {
 		new SwitchYardEditor().addBeanImplementation().createNewInterface("ExampleService").finish();
 
 		new SwitchYardComponent("ExampleService").doubleClick();
-		new TextEditor("ExampleService.java").typeAfter("interface",
+		new SimpleTextEditor("ExampleService.java").typeAfter("interface",
 				"String sayHello(String name);").saveAndClose();
 
 		new SwitchYardComponent("ExampleServiceBean").doubleClick();
-		new TextEditor("ExampleServiceBean.java").typeAfter("public class", "@Override").newLine()
+		new SimpleTextEditor("ExampleServiceBean.java").typeAfter("public class", "@Override").newLine()
 				.type("public String sayHello(String name) {").newLine()
 				.type("return \"Hello \" + name;}").saveAndClose();
 		new SwitchYardEditor().save();
@@ -93,7 +93,7 @@ public class UseCaseSimpleTest {
 		new Service("ExampleService").createNewServiceTestClass();
 		new SwitchYardEditor().save();
 
-		new TextEditor("ExampleServiceTest.java").deleteLineWith("String message")
+		new SimpleTextEditor("ExampleServiceTest.java").deleteLineWith("String message")
 				.type("String message=\"Andrej\";").deleteLineWith("assertTrue")
 				.type("Assert.assertEquals(\"Hello Andrej\", result);").saveAndClose();
 		new SwitchYardEditor().save();
@@ -117,7 +117,7 @@ public class UseCaseSimpleTest {
 
 		new ProjectExplorer().getProject(PROJECT)
 				.getProjectItem("src/main/java", PACKAGE, "ExampleServiceTransformers.java").open();
-		new TextEditor("ExampleServiceTransformers.java")
+		new SimpleTextEditor("ExampleServiceTransformers.java")
 				.deleteLineWith("ToSayHello")
 				.type("public static String transformStringToSayHelloResponse(String from) {")
 				.deleteLineWith("return null")
