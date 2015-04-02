@@ -284,11 +284,8 @@ public class RegressionTest {
 	/**
 	 * context id is removed on save
 	 * https://issues.jboss.org/browse/FUSETOOLS-1123
-	 * 
-	 * NOTE: not fixed yet -reopened
 	 */
 	@Test
-	@Ignore
 	public void issue_1123() {
 
 		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
@@ -298,7 +295,7 @@ public class RegressionTest {
 		CamelEditor.switchTab("Design");
 		CamelEditor.switchTab("Source");
 		String editorText = new DefaultStyledText().getText();
-		assertTrue(editorText.contains("id=id=\"test\""));
+		assertTrue(editorText.contains("id=\"test\""));
 	}
 
 	/**
