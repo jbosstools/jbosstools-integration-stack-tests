@@ -12,9 +12,19 @@ import org.jboss.tools.switchyard.reddeer.debug.ResumeButton;
  */
 public class IsSuspended implements WaitCondition {
 
+	private ResumeButton resumeButton;
+	
+	public IsSuspended() {
+		this(new ResumeButton());
+	}
+	
+	public IsSuspended(ResumeButton resumeButton) {
+		this.resumeButton = resumeButton;
+	}
+	
 	@Override
 	public boolean test() {
-		if (new ResumeButton().isEnabled()) {
+		if (resumeButton.isEnabled()) {
 			AbstractWait.sleep(TimePeriod.SHORT);
 			return true;
 		}
