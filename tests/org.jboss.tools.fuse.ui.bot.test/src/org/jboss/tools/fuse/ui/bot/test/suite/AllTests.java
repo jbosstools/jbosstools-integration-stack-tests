@@ -6,6 +6,8 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.fuse.ui.bot.test.CamelEditorTest;
 import org.jboss.tools.fuse.ui.bot.test.DebuggerTest;
 import org.jboss.tools.fuse.ui.bot.test.DeploymentTest;
+import org.jboss.tools.fuse.ui.bot.test.Fabric8Test;
+import org.jboss.tools.fuse.ui.bot.test.FabricInCloudTest;
 import org.jboss.tools.fuse.ui.bot.test.FeaturesTest;
 import org.jboss.tools.fuse.ui.bot.test.FuseProjectTest;
 import org.jboss.tools.fuse.ui.bot.test.JMXNavigatorServerTest;
@@ -27,6 +29,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	CamelEditorTest.class,
 	DebuggerTest.class,
 	DeploymentTest.class,
+	Fabric8Test.class,
+	FabricInCloudTest.class,
 	FeaturesTest.class,
 	FuseProjectTest.class,
 	JMXNavigatorServerTest.class,

@@ -12,6 +12,11 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
+		<ec2.id>AmazonEC2ID</ec2.id>
+		<ec2.pass>AmazonEC2Password</ec2.pass>
+		<ec2.email>AmazonEC2Owner</ec2.email>
+		<amazon-terminator>https://github.com/tsedmik/amazon-terminator/releases/download/v1.0/amazon-terminator-1.0-jar-with-dependencies.jar</amazon-terminator>
+		<amazon-terminator-jar>amazon-terminator-1.0-jar-with-dependencies.jar</amazon-terminator-jar>
 		<fuse.url>http://download.eng.bos.redhat.com/brewroot/repos/jb-fuse-6-rhel-6-build/latest/maven/org/jboss/fuse/jboss-fuse-full/6.1.0.redhat-379/jboss-fuse-full-6.1.0.redhat-379.zip</fuse.url>
 		<fuse.name>JBoss Fuse 6.1</fuse.name>
 		<fuse.path>${project.build.directory}/requirements/jboss-fuse-6.1.0.redhat-379</fuse.path>
@@ -21,7 +26,7 @@
 		<fuse.password>admin</fuse.password>
 		<reddeer.config>${project.build.directory}/requirements/</reddeer.config>
 		<enable.debug.log>false</enable.debug.log>
-		<systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=${reddeer.config}</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=${reddeer.config} -Dec2.id=${ec2.id} -Dec2.pass=${ec2.pass} -Dec2.email=${ec2.email}</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
 		<test.class>AllTests</test.class>
 	</properties>
@@ -158,20 +163,83 @@
 	</build>
 	
 	<profiles>
-	  <profile>
-	    <id>smoke</id>
-	    <activation>
-	      <property>
-		<name>test</name>
-		<value>SmokeTests</value>
-	      </property>
-	    </activation>
-	    <properties>	      
-	      <reddeerProperties></reddeerProperties>
-	      <test.class>SmokeTests</test.class>
-	      <skipRequirements>true</skipRequirements>
-	    </properties>
-	  </profile>
+		<profile>
+			<id>smoke</id>
+			<activation>
+				<property>
+					<name>test</name>
+					<value>SmokeTests</value>
+				</property>
+			</activation>
+			<properties>
+				<reddeerProperties></reddeerProperties>
+				<test.class>SmokeTests</test.class>
+				<skipRequirements>true</skipRequirements>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>amazon-terminator-profile</id>
+			<activation>
+				<property>
+					<name>test</name>
+					<value>FabricInCloudTest</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+
+					<!-- Get terminator JBoss Fuse Fabric instances on Amazon EC2 Cloud -->
+					<!-- It is relevant only for 'FabricInCloudTest' -->
+					<plugin>
+						<groupId>com.googlecode.maven-download-plugin</groupId>
+						<artifactId>maven-download-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>get-amazon-terminator</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>wget</goal>
+								</goals>
+								<configuration>
+									<url>${amazon-terminator}</url>
+									<unpack>false</unpack>
+									<outputDirectory>${project.build.directory}</outputDirectory>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+					<!-- Execute termination of JBoss Fuse Fabric Instances on Amazon EC2 Cloud -->
+					<!-- It is relevant only for 'FabricInCloudTest' -->
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<version>1.3.1</version>
+						<executions>
+							<execution>
+								<phase>post-integration-test</phase>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<executable>java</executable>
+							<workingDirectory>${project.build.directory}</workingDirectory>
+							<arguments>
+								<argument>-jar</argument>
+								<argument>${amazon-terminator-jar}</argument>
+								<argument>${ec2.id}</argument>
+								<argument>${ec2.pass}</argument>
+							</arguments>
+						</configuration>
+					</plugin>
+
+				</plugins>
+			</build>
+		</profile>
+
 	</profiles>
 	
 </project>
