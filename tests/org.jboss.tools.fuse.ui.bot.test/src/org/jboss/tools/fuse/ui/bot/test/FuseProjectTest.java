@@ -1,29 +1,19 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
-import java.util.List;
 
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.JobIsRunning;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.wait.AbstractWait;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.fuse.reddeer.wizard.FuseProjectWizard;
+import org.jboss.reddeer.swt.handler.ShellHandler;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,143 +31,183 @@ public class FuseProjectTest {
 	protected Logger log = Logger.getLogger(FuseProjectTest.class);
 
 	@Test
-	public void camelActiveMQTest() {
-		createProject("camel-archetype-activemq");
-	}
-
-	@Test
-	public void camelBlueprintTest() {
-		createProject("camel-archetype-blueprint");
-	}
-
-	@Test
-	public void camelComponentTest() {
-		createProject("camel-archetype-component");
-	}
-
-	@Test
-	public void camelCxfCodeFirstBlueprint() {
-		createProject("camel-archetype-cxf-code-first-blueprint");
-	}
-
-	@Test
-	public void camelCxfContractFirstBlueprint() {
-		createProject("camel-archetype-cxf-contract-first-blueprint");
-	}
-
-	@Test
-	public void camelDataFormatTest() {
-		createProject("camel-archetype-dataformat");
-	}
-
-	@Test
-	public void camelJavaTest() {
-		createProject("camel-archetype-java");
-	}
-
-	@Test
-	public void camelSpringTest() {
-		createProject("camel-archetype-spring");
-	}
-
-	@Test
-	public void camelSpringDMTest() {
-		createProject("camel-archetype-spring-dm");
-	}
-
-	@Test
-	public void camelWebTest() {
-		createProject("camel-archetype-web");
-	}
-
-	@Test
-	public void camelWebConsoleTest() {
-		createProject("camel-archetype-webconsole");
-	}
-
-	@Test
-	public void camelCxfJaxRSTest() {
-		createProject("cxf-jaxrs-service");
-	}
-
-	@Test
-	public void camelCxfJaxWSTest() {
-		createProject("cxf-jaxws-javafirst");
-	}
-
-	@Test
 	public void camelCxfCodeTest() {
-		createProject("camel-cxf-code-first-archetype");
+
+		ProjectFactory.createProject("test", "camel-cxf-code-first-archetype");
+		assertTrue(isPresent());
+		assertFalse(hasErrors());
 	}
 
 	@Test
 	public void camelCxfContractTest() {
-		createProject("camel-cxf-contract-first-archetype");
+
+		ProjectFactory.createProject("test", "camel-cxf-contract-first-archetype");
+		assertTrue(isPresent());
+		assertFalse(hasErrors());
 	}
 
 	@Test
 	public void camelDroolsTest() {
-		createProject("camel-drools-archetype");
+
+		ProjectFactory.createProject("test", "camel-drools-archetype");
+		assertTrue(isPresent());
+		assertFalse(hasErrors());
 	}
 
 	@Test
 	public void camelWebServiceTest() {
-		createProject("camel-webservice-archetype");
+
+		ProjectFactory.createProject("test", "camel-webservice-archetype");
+		assertTrue(isPresent());
+		assertFalse(hasErrors());
 	}
 
-	private void createProject(String archetype) {
-		FuseProjectWizard projectWizard = new FuseProjectWizard();
-		projectWizard.open();
-		projectWizard.setProjectName("test");
-		projectWizard.next();
-		projectWizard.setFilter(archetype);
-		projectWizard.selectFirstArchetype();
-		projectWizard.finish();
+	@Test
+	public void camelActiveMQTest() {
 
-		try {
-			new WaitUntil(new ShellWithTextIsAvailable("Open Associated Perspective?"), TimePeriod.NORMAL);
-			new DefaultShell("Open Associated Perspective?");
-			new PushButton("No").click();;
-		} catch (Exception ex) {}
+		ProjectFactory.createProject("test", "camel-archetype-activemq");
+		assertTrue(isPresent());
+		assertFalse(hasErrors());
+	}
 
-		AbstractWait.sleep(TimePeriod.NORMAL);
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+	@Test
+	public void camelAPIComponentTest() {
 
-		ProblemsView problemsView = new ProblemsView();
-		problemsView.open();
-		List<TreeItem> errors = problemsView.getAllErrors();
+		ProjectFactory.createProject("test", "camel-archetype-api-component");
+		assertTrue(isPresent());
+		assertFalse(hasErrors());
+	}
 
-		if (!errors.isEmpty()) {
-			ProjectExplorer projectExplorer = new ProjectExplorer();
-			projectExplorer.open();
-			projectExplorer.getProjects().get(0).select();
-			new ContextMenu("Maven", "Update Project...").select();
-			new DefaultShell("Update Maven Project");
-			new CheckBox("Force Update of Snapshots/Releases").toggle(true);
-			new PushButton("OK").click();
-			new WaitWhile(new JobIsRunning());
+	@Test
+	public void camelBlueprintTest() {
+
+		ProjectFactory.createProject("test", "camel-archetype-blueprint");
+		assertTrue(isPresent());
+		assertFalse(hasErrors());
+	}
+
+	@Test
+	public void camelComponentTest() {
+
+		ProjectFactory.createProject("test", "camel-archetype-component");
+		assertTrue(isPresent());
+		assertFalse(hasErrors());
+	}
+
+	@Test
+	public void camelCxfCodeFirstBlueprint() {
+
+		ProjectFactory.createProject("test", "camel-archetype-cxf-code-first-blueprint");
+		assertTrue(isPresent());
+		assertFalse(hasErrors());
+	}
+
+	@Test
+	public void camelCxfContractFirstBlueprint() {
+
+		ProjectFactory.createProject("test", "camel-archetype-cxf-contract-first-blueprint");
+		assertTrue(isPresent());
+		assertFalse(hasErrors());
+	}
+
+	@Test
+	public void camelDataFormatTest() {
+
+		ProjectFactory.createProject("test", "camel-archetype-dataformat");
+		assertTrue(isPresent());
+		assertFalse(hasErrors());
+	}
+
+	@Test
+	public void camelJavaTest() {
+
+		ProjectFactory.createProject("test", "camel-archetype-java");
+		assertTrue(isPresent());
+		assertFalse(hasErrors());
+	}
+
+	@Test
+	public void camelSCRTest() {
+
+		ProjectFactory.createProject("test", "camel-archetype-scr");
+		assertTrue(isPresent());
+		assertFalse(hasErrors());
+	}
+
+	@Test
+	public void camelSpringTest() {
+
+		ProjectFactory.createProject("test", "camel-archetype-spring");
+		assertTrue(isPresent());
+		assertFalse(hasErrors());
+	}
+
+	@Test
+	public void camelSpringDMTest() {
+
+		ProjectFactory.createProject("test", "camel-archetype-spring-dm");
+		assertTrue(isPresent());
+		assertFalse(hasErrors());
+	}
+
+	@Test
+	public void camelWARTest() {
+
+		ProjectFactory.createProject("test", "camel-archetype-war");
+		assertTrue(isPresent());
+		assertFalse(hasErrors());
+	}
+
+	@Test
+	public void camelWebTest() {
+
+		ProjectFactory.createProject("test", "camel-archetype-web");
+		assertTrue(isPresent());
+		assertFalse(hasErrors());
+	}
+
+	@Test
+	public void camelWebConsoleTest() {
+
+		ProjectFactory.createProject("test", "camel-archetype-webconsole");
+		assertTrue(isPresent());
+		assertFalse(hasErrors());
+	}
+
+	@Test
+	public void camelCxfJaxRSTest() {
+
+		ProjectFactory.createProject("test", "cxf-jaxrs-service");
+		assertTrue(isPresent());
+		assertFalse(hasErrors());
+	}
+
+	@Test
+	public void camelCxfJaxWSTest() {
+
+		ProjectFactory.createProject("test", "cxf-jaxws-javafirst");
+		assertTrue(isPresent());
+		assertFalse(hasErrors());
+	}
+
+	private boolean hasErrors() {
+
+		new ProblemsView().open();
+		for (TreeItem item : new DefaultTree().getItems()) {
+			if (item.getText().toLowerCase().contains("error")) return true;
 		}
+		return false;
+	}
 
-		problemsView.open();
-		errors = problemsView.getAllErrors();
-		assertTrue("After creating the project '" + archetype + "' there are the following errors:\n"
-				+ toString(errors), errors.isEmpty());
+	private boolean isPresent() {
+
+		return new ProjectExplorer().containsProject("test");
 	}
 
 	@After
-	public void deleteAllProjects() throws Exception {
-		ProjectExplorer projectExplorer = new ProjectExplorer();
-		for (Project project : projectExplorer.getProjects()) {
-			project.delete(true);
-		}
-	}
+	public void clean() throws Exception {
 
-	private String toString(List<TreeItem> items) {
-		StringBuffer result = new StringBuffer();
-		for (TreeItem item : items) {
-			result.append(item.getText());
-			result.append("\n");
-		}
-		return result.toString();
+		ShellHandler.getInstance().closeAllNonWorbenchShells();
+		new ProjectExplorer().deleteAllProjects();
 	}
 }
