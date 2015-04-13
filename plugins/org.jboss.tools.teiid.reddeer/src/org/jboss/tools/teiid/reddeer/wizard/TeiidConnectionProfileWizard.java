@@ -62,6 +62,8 @@ public class TeiidConnectionProfileWizard extends ConnectionProfileWizard {
 		dbPage.setPassword(dbProfile.getPassword());
 
 		new PushButton("Test Connection").click(); 
+		
+		new DefaultShell("Success");
 
 		new PushButton("OK").click();
 		

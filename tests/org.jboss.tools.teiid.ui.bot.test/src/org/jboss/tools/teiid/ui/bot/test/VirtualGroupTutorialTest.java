@@ -22,6 +22,7 @@ import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.SQLScrapbookEditor;
 import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
+import org.jboss.tools.teiid.reddeer.manager.ConnectionProfilesConstants;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
@@ -41,7 +42,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
-@TeiidServer(state = ServerReqState.RUNNING)
+@TeiidServer(state = ServerReqState.RUNNING,
+	connectionProfiles={
+		ConnectionProfilesConstants.CP_ORACLE_PARTS,
+		ConnectionProfilesConstants.CP_SQLSERVER_PARTS
+})
 public class VirtualGroupTutorialTest extends SWTBotTestCase {
 
 	@InjectRequirement
@@ -51,11 +56,11 @@ public class VirtualGroupTutorialTest extends SWTBotTestCase {
 
 	private static final String ORACLE_MODEL_NAME = "PartsSupplier_Oracle.xmi";
 
-	private static final String ORACLE_CONNPROFILE_NAME = "PartsSupplier Oracle";
+	private static final String ORACLE_CONNPROFILE_NAME = ConnectionProfilesConstants.CP_ORACLE_PARTS;
 
 	private static final String SQLSERVER_MODEL_NAME = "PartsSupplier_SQLServer.xmi";
 
-	private static final String SQLSERVER_CONNPROFILE_NAME = "PartsSupplier SQL Server";
+	private static final String SQLSERVER_CONNPROFILE_NAME = ConnectionProfilesConstants.CP_SQLSERVER_PARTS;
 
 	private static final String VIRTUAL_MODEL_NAME = "PartsVirtual.xmi";
 
@@ -122,16 +127,9 @@ public class VirtualGroupTutorialTest extends SWTBotTestCase {
 
 	@Test
 	public void virtualGroupTutorialTest() {
-		new WorkbenchShell().maximize();
-		
-		//new ModelProjectWizard().create(PROJECT_NAME);
 		new ModelExplorerManager().createProject(PROJECT_NAME);
 
-		//teiidBot.createDatabaseProfile(ORACLE_CONNPROFILE_NAME, "resources/db/oracle_parts.properties");
-		//teiidBot.createDatabaseProfile(SQLSERVER_CONNPROFILE_NAME, "resources/db/sqlserver_parts.properties");
-		new ConnectionProfileManager().createCPWithDriverDefinition(ORACLE_CONNPROFILE_NAME, "resources/db/oracle_parts.properties");
-		new ConnectionProfileManager().createCPWithDriverDefinition(SQLSERVER_CONNPROFILE_NAME, "resources/db/sqlserver_parts.properties");
-
+	
 		createOracleModel();
 		createSQLServerModel();
 		createViewModel();
