@@ -8,6 +8,7 @@ import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.teiid.reddeer.editor.SQLScrapbookEditor;
@@ -23,12 +24,19 @@ import org.jboss.tools.teiid.reddeer.wizard.WsdlImportWizard;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 
+
+/**
+ * Test for consuming SOAP WS
+ * 
+ * @author mmakovy
+ * 
+ */
 
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
 @Server(type = ServerReqType.ANY, state = ServerReqState.RUNNING)
+
 public class ConsumeSoapWs {
 	
 	private static final String PROJECT_NAME = "SOAP";
@@ -51,7 +59,7 @@ public class ConsumeSoapWs {
 		String profile = "SOAP";
 
 		Properties wsdlCP = new Properties();
-		wsdlCP.setProperty("wsdl", "http://localhost:8080/dv-test-ws/soap?wsdl");
+		wsdlCP.setProperty("wsdl", "http://ws-dvirt.rhcloud.com/dv-test-ws/soap?wsdl");
 		wsdlCP.setProperty("endPoint", "Countries");
 
 		new ConnectionProfileManager().createCPWSDL(profile, wsdlCP);
