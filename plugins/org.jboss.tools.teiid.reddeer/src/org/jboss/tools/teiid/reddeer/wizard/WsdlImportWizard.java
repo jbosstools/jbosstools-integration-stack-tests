@@ -31,7 +31,7 @@ public class WsdlImportWizard extends TeiidImportWizard {
 	private List<String> requestElements;
 	private List<String> responseElements;
 	private List<String> operations;
-	private String projectName;
+	private String projectName;  
 	private String sourceModelName;
 	private String viewModelName;
 
@@ -62,7 +62,7 @@ public class WsdlImportWizard extends TeiidImportWizard {
 		this.profile = profile;
 	}
 	
-	public void setProjectName(String projectName){
+	public void setProjectName(String projectName){ // mmakovy - changes for ImportWizardTest
 		this.projectName = projectName;
 	}
 
@@ -99,17 +99,17 @@ public class WsdlImportWizard extends TeiidImportWizard {
 		}
 		new PushButton("Next >").click();
 		
-		new PushButton(new DefaultGroup("Source Model Definition"),"...").click();
+		/*new PushButton(new DefaultGroup("Source Model Definition"),"...").click(); // mmakovy - changes for ImportWizardTest
 		new DefaultShell("Select a Folder");
 		new DefaultTreeItem(projectName).select();
-		new PushButton("OK").click();
+		new PushButton("OK").click();*/
 		
 		new LabeledText(new DefaultGroup("Source Model Definition"),"Name").setText(sourceModelName);
 		
-		new PushButton(new DefaultGroup("View Model Definition"),"...").click();
+		/*new PushButton(new DefaultGroup("View Model Definition"),"...").click(); // mmakovy - changes for ImportWizardTest
 		new DefaultShell("Select a Folder");
 		new DefaultTreeItem(projectName).select();
-		new PushButton("OK").click();
+		new PushButton("OK").click();*/
 		
 		new LabeledText(new DefaultGroup("View Model Definition"),"Name").setText(viewModelName);
 		
