@@ -150,6 +150,7 @@ public class ImportWizardTest {
 		WsdlImportWizard wsdlWizard = new WsdlImportWizard();
 		
 		wsdlWizard.setProfile(profile);
+
 		wsdlWizard.setSourceModelName("HelloService.xmi");
 		wsdlWizard.setViewModelName("HelloServiceView.xmi");
 		

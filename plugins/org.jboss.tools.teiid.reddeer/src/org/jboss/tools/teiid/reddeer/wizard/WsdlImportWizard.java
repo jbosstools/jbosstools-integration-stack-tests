@@ -63,6 +63,7 @@ public class WsdlImportWizard extends TeiidImportWizard {
 	}
 	
 	public void setProjectName(String projectName){ 
+
 		this.projectName = projectName;
 	}
 
@@ -97,9 +98,12 @@ public class WsdlImportWizard extends TeiidImportWizard {
 		for (String operationName : operations){
 			selectOperation(operationName);			
 		}
-		new PushButton("Next >").click();		
-		new LabeledText(new DefaultGroup("Source Model Definition"),"Name").setText(sourceModelName);		
-		new LabeledText(new DefaultGroup("View Model Definition"),"Name").setText(viewModelName);		
+				
+		new LabeledText(new DefaultGroup("Source Model Definition"),"Name").setText(sourceModelName);
+		
+		
+		new LabeledText(new DefaultGroup("View Model Definition"),"Name").setText(viewModelName);
+		
 		new PushButton("Next >").click();
 		
 		for (String operation : operations){
