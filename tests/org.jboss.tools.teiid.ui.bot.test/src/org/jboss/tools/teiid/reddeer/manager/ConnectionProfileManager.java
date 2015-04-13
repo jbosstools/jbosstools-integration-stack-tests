@@ -8,6 +8,7 @@ import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileSelectPage
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.ConnectionProfileXmlPage;
 import org.jboss.tools.teiid.reddeer.wizard.ConnectionProfileXmlUrlPage;
+import org.jboss.tools.teiid.reddeer.wizard.RestProfileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.TeiidConnectionProfileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.WsdlProfileWizard;
 import org.jboss.tools.teiid.ui.bot.test.TeiidBot;
@@ -165,5 +166,19 @@ public class ConnectionProfileManager {
 		profileWizard.setEndPoint(props.getProperty("endPoint"));//!!!PROBLEM - reddeer
 		profileWizard.execute();
 
+	}
+	
+	public void createCPREST(String name, Properties props){
+		
+		String connectionUrl = props.getProperty("connectionUrl");
+		String type = props.getProperty("type");
+		
+		RestProfileWizard profileWizard = new RestProfileWizard();
+		profileWizard.setConnectionUrl(connectionUrl);
+		profileWizard.setName(name);
+		profileWizard.setType(type);
+		profileWizard.execute();
+		
+		
 	}
 }
