@@ -16,6 +16,7 @@ import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.wizard.FlatImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.ImportGeneralItemWizard;
+import org.jboss.tools.teiid.reddeer.wizard.WsdlImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.MetadataImportWizard.ImportType;
 import org.jboss.tools.teiid.reddeer.wizard.WsdlWebImportWizard;
 import org.junit.AfterClass;
@@ -145,11 +146,18 @@ public class ImportWizardTest {
 		wsdlCP.setProperty("endPoint", "HelloPort");
 
 		new ConnectionProfileManager().createCPWSDL(profile, wsdlCP);
-
-		Properties props = new Properties();
-		props.setProperty("requestElements", "sayHello/sequence/arg0");
-		props.setProperty("responseElements", "sayHelloResponse/sequence/return");
-		new ImportMetadataManager().importFromWSDLToSrcView(MODEL_PROJECT, profile, props);
+		
+		WsdlImportWizard wsdlWizard = new WsdlImportWizard();
+		
+		wsdlWizard.setProfile(profile);
+		wsdlWizard.setSourceModelName("HelloService.xmi");
+		wsdlWizard.setViewModelName("HelloServiceView.xmi");
+		
+		wsdlWizard.addOperation("sayHello");
+		wsdlWizard.addRequestElement("sayHello/sequence/arg0");
+		wsdlWizard.addResponseElement("sayHelloResponse/sequence/return");
+		
+		wsdlWizard.execute();
 
 		teiidBot.assertResource(MODEL_PROJECT, "HelloService.xmi");
 		teiidBot.assertResource(MODEL_PROJECT, "HelloServiceView.xmi");
