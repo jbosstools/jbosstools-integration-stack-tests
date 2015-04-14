@@ -26,12 +26,15 @@ import org.junit.runners.Suite.SuiteClasses;
 	ImportWizardTest.class,
 	LdapImportTest.class,
 	ModelWizardTest.class,
-	CreateRestProcedureTest.class,
-	TopDownWsdlTest.class,
-	VirtualGroupTutorialTest.class,
+	ModelRefactoringTest.class,
+	CreateRestProcedureTest.class,,
 	ConsumeRestWs.class,
 	ConsumeSoapWs.class,
 	E2eRecursiveXmlTextTest.class,
+	RestCallTest.class,
+	WARTest.class,
+	FlatFileTest.class,
+	ProcedurePreviewTest.class,
 })
 @RunWith(RedDeerSuite.class)
 public class AllTests {
