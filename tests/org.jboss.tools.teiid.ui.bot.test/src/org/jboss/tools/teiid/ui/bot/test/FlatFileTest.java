@@ -233,7 +233,7 @@ public class FlatFileTest {
 	 * Checks whether the URI validator works
 	 */
 	@Test
-	public void InvalidFileURL() {
+	public void InvalidFileURLTest() {
 		// Imports local file
 		new ShellMenu("File", "Import...").select();
 		new DefaultShell("Import");
