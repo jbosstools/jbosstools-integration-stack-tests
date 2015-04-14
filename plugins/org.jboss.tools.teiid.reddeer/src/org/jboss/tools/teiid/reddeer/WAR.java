@@ -11,6 +11,7 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
@@ -35,8 +36,8 @@ public class WAR {
 	
 	//properties
 	//public static String PROP_TYPE = "type";
-	public static String JBOSSWS_CXF_TYPE = "Generate JBossWS-CXF War";
-	public static String RESTEASY_TYPE = "Generate RESTEasy War";
+	public static String JBOSSWS_CXF_TYPE = "Generate SOAP War";
+	public static String RESTEASY_TYPE = "Generate REST War";
 	
 	private static final String CONTEXT_NAME="Context Name:";
 	private static final String VDB_JNDI_NAME="VDB JNDI Name:";
@@ -47,8 +48,8 @@ public class WAR {
 	private static final String WEB_SERVER_PORT = "Web Server Port:";
 	private static final String ENABLE_MTOM = "Enable MTOM";
 	private static final String JBOSSWSCXF_SAVE_LOC = "WAR File Save Location:";
-	private static final String USERNAME = "Username:";
-	private static final String PASSWORD = "Password:";
+	public static final String USERNAME = "Username:";
+	public static final String PASSWORD = "Password:";
 	private static final String TARGET_NS = "Target namespace:";
 	
 	public static String NONE_SECURITY="None";
@@ -100,6 +101,7 @@ public class WAR {
 
 	private void setupJBossWSCXFWAR() {
 		setupCommon();
+		new DefaultTabItem("General").activate();
 		if (warProps.containsKey("saveLocation")){
 			String absPath = new File(warProps.getProperty("saveLocation")).getAbsolutePath();
 			new SWTWorkbenchBot().textWithLabel(JBOSSWSCXF_SAVE_LOC).setText(warProps.getProperty("saveLocation"));
@@ -111,7 +113,6 @@ public class WAR {
 		if (warProps.containsKey("port")){
 			new SWTWorkbenchBot().textWithLabel(WEB_SERVER_PORT).setText(warProps.getProperty("port"));
 		}
-		
 		if (warProps.containsKey("username") && warProps.containsKey("password")){
 			new SWTWorkbenchBot().textWithLabel(USERNAME).setText(warProps.getProperty("username"));
 			new SWTWorkbenchBot().textWithLabel(PASSWORD).setText(warProps.getProperty("password"));
@@ -147,6 +148,8 @@ public class WAR {
 		if (warProps.containsKey("securityType")){
 			new RadioButton(warProps.getProperty("securityType")).click();
 			if (warProps.getProperty("securityType").equals(HTTPBasic_SECURITY)){
+				if(!warProps.getProperty("type").equals( WAR.RESTEASY_TYPE))
+				new DefaultTabItem("HTTPBasic Options").activate();
 				//realm, role
 				if (warProps.containsKey("realm")){
 					new SWTWorkbenchBot().textWithLabel("Realm:").setText(warProps.getProperty("realm"));
@@ -154,6 +157,8 @@ public class WAR {
 				if (warProps.containsKey("role")){
 					new SWTWorkbenchBot().textWithLabel("Role:").setText(warProps.getProperty("role"));
 				}
+				if(!warProps.getProperty("type").equals( WAR.RESTEASY_TYPE))
+				new DefaultTabItem("General").activate();
 			}
 		}
 	}
