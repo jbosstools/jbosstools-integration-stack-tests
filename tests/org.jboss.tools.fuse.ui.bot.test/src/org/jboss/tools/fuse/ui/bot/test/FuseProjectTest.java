@@ -12,6 +12,7 @@ import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.C
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.handler.ShellHandler;
+import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.After;
@@ -21,7 +22,7 @@ import org.junit.runner.RunWith;
 /**
  * 
  * @author apodhrad
- * 
+ * @author tsedmik
  */
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
@@ -207,7 +208,9 @@ public class FuseProjectTest {
 	@After
 	public void clean() throws Exception {
 
+		new WorkbenchShell();
 		ShellHandler.getInstance().closeAllNonWorbenchShells();
 		new ProjectExplorer().deleteAllProjects();
+		new WorkbenchShell();
 	}
 }
