@@ -4,15 +4,10 @@ import java.util.Properties;
 
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.eclipse.core.resources.AbstractExplorerItem;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -22,15 +17,13 @@ import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.teiid.reddeer.WAR;
 import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
-import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
+import org.jboss.tools.teiid.reddeer.manager.ConnectionProfilesConstants;
 import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
-import org.jboss.tools.teiid.reddeer.manager.ServerManager;
 import org.jboss.tools.teiid.reddeer.manager.VDBManager;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.wizard.ImportGeneralItemWizard;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,15 +34,15 @@ import org.junit.runner.RunWith;
  *
  */
 @RunWith(RedDeerSuite.class)
-@TeiidServer(state = ServerReqState.RUNNING)
+@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = {
+		ConnectionProfilesConstants.CP_ORACLE_BOOKS
+		})
 public class WARTest extends SWTBotTestCase {
 	private static Logger logger = new Logger(WARTest.class);
 	public static final String MODEL_PROJECT = "jdbcImportTest";
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;
 	private static TeiidBot teiidBot = new TeiidBot();
-	private static final String oracleCP = "Oracle";
-	private static final String oracleCPProps = "resources/db/oracle_books.properties";
 	private static final String projectBooksWS = "BooksWS";
 	private static final String vdbCheckBook="checkBookVdb";
 	private static final String[] pathToCheckBookVDB = new String[]{projectBooksWS, vdbCheckBook+".vdb"};
@@ -64,22 +57,29 @@ public class WARTest extends SWTBotTestCase {
 		//JBossWS-CXF war
 		new ImportManager().importProject("resources/projects/BooksWS");
 		try{
-		new WaitUntil(new ShellWithTextIsActive("Missing Password Required"), TimePeriod.NORMAL);
+		new WaitUntil(new ShellWithTextIsAvailable("Missing Password Required"), TimePeriod.NORMAL);
 		new DefaultShell("Missing Password Required");
 		new DefaultText(0).setText("mm");
 		new PushButton("OK").click();
 		}catch(Exception e){
 			logger.warn("Dialog \"Missing Password Required\" haven't been showed." );
 		}
-		new ConnectionProfileManager().createCPWithDriverDefinition(oracleCP, oracleCPProps);
-		new ModelExplorerManager().changeConnectionProfile(oracleCP, projectBooksWS, "books.xmi");
+		new ModelExplorerManager().changeConnectionProfile(ConnectionProfilesConstants.CP_ORACLE_BOOKS, projectBooksWS, "books.xmi");
 		VDBEditor ed = new VDBManager().getVDBEditor(projectBooksWS, vdbCheckBook);
 		ed.synchronizeAll();
 		ed.close();
 		
 		//RESTEasy war
 		new ImportManager().importProject("resources/projects/BooksRest");
-		new ModelExplorerManager().changeConnectionProfile(oracleCP, projectBooksRest, "BooksSrc.xmi");
+		try{
+		new WaitUntil(new ShellWithTextIsAvailable("Missing Password Required"), TimePeriod.NORMAL);
+		new DefaultShell("Missing Password Required");
+		new DefaultText(0).setText("mm");
+		new PushButton("OK").click();
+		}catch(Exception e){
+			logger.warn("Dialog \"Missing Password Required\" haven't been showed." );
+		}
+		new ModelExplorerManager().changeConnectionProfile(ConnectionProfilesConstants.CP_ORACLE_BOOKS, projectBooksRest, "BooksSrc.xmi");
 		ed = new VDBManager().getVDBEditor(projectBooksRest, vdbBooksRest);
 		ed.synchronizeAll();
 		ed.close();
@@ -105,12 +105,12 @@ public class WARTest extends SWTBotTestCase {
 	public void jbossWSCXFNoneWarTest(){
 
 		Properties warProps = new Properties();
-		warProps.setProperty("type", "Generate SOAP War");
+		warProps.setProperty("type", WAR.JBOSSWS_CXF_TYPE);
 		warProps.setProperty("contextName", vdbCheckBook);
 		warProps.setProperty("vdbJndiName", vdbCheckBook);
 		warProps.setProperty("saveLocation", teiidBot.toAbsolutePath("target"));
 		//http://localhost:8080/checkBookVdb/BooksInterface?wsdl
-		WAR war = new VDBManager().createWAR(warProps, pathToCheckBookVDB);
+		new VDBManager().createWAR(warProps, pathToCheckBookVDB);
 		
 		Properties itemProps = new Properties();
 		itemProps.setProperty("dirName", teiidBot.toAbsolutePath("target"));
@@ -143,7 +143,7 @@ public class WARTest extends SWTBotTestCase {
 		warProps.setProperty("role", "user");///this has to be set also in teiid-security-users,roles
 		//http://localhost:8080/checkBookVdbBasic/BooksInterface?wsdl
 
-		WAR war = new VDBManager().createWAR(warProps, pathToCheckBookVDB);
+		new VDBManager().createWAR(warProps, pathToCheckBookVDB);
 		
 		Properties itemProps = new Properties();
 		itemProps.setProperty("dirName", teiidBot.toAbsolutePath("target"));
