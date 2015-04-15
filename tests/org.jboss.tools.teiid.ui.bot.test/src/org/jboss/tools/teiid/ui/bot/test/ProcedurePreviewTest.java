@@ -1,10 +1,10 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Properties;
 
-import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
@@ -13,57 +13,41 @@ import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.teiid.reddeer.Procedure;
 import org.jboss.tools.teiid.reddeer.Table;
-import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
+import org.jboss.tools.teiid.reddeer.manager.ConnectionProfilesConstants;
 import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.manager.PerspectiveAndViewManager;
-import org.jboss.tools.teiid.reddeer.manager.ServerManager;
-import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.wizard.ImportGeneralItemWizard;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-
 @RunWith(RedDeerSuite.class)
-@TeiidServer(state = ServerReqState.STOPPED)
-public class ProcedurePreviewTest extends SWTBotTestCase{
+@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = {ConnectionProfilesConstants.CP_ORACLE_PARTS})
+public class ProcedurePreviewTest {
 
-	@InjectRequirement
-	private static TeiidServerRequirement teiidServer;
-	
 	private static final String PROJECT_NAME = "Partssupplier";
 	private static final String MODEL_SRC_NAME = "hsqldbParts";
 	private static final String MODEL_VIEW_NAME = "view";
-	private static final String DS1_DATASOURCE = "resources/db/dv6-ds1.properties";
-	private static final String HSQLDB_PROFILE = "Generic HSQLDB Profile";
-	private static final String SERVER_NAME = teiidServer.getServerConfig().getName();
-	private static final String UDF_LIB_PATH = "resources/projects/java/MyTestUdf/lib/";
+	private static final String PROFILE_NAME= ConnectionProfilesConstants.CP_ORACLE_PARTS;
+	private static final String UDF_LIB_PATH = "target/proc-udf/MyTestUdf/lib/";
 	private static final String UDF_LIB = "MyTestUdf-1.0-SNAPSHOT.jar";
 	
 	private static TeiidBot teiidBot = new TeiidBot();
 
 	@BeforeClass
 	public static void createModelProject() {
+		new PerspectiveAndViewManager().openTeiidDesignerPerspective();
 		new ShellMenu("Project", "Build Automatically").select();
-		new ConnectionProfileManager().createCPWithDriverDefinition(HSQLDB_PROFILE, DS1_DATASOURCE);
-		new ImportManager().importProject("resources/projects/"+PROJECT_NAME);
-		new ModelExplorer().changeConnectionProfile(HSQLDB_PROFILE, PROJECT_NAME, MODEL_SRC_NAME);
-		new ServerManager().startServer(SERVER_NAME);
-	}
-	
-	@AfterClass
-	public static void shutdown(){
-		new ServerManager().stopServer(SERVER_NAME);
+		new ImportManager().importProject("resources/projects/" + PROJECT_NAME);
+		new ModelExplorer().changeConnectionProfile(PROFILE_NAME, PROJECT_NAME, MODEL_SRC_NAME);
 	}
 	
 	@Before
 	public void beforeMethod(){
-		new PerspectiveAndViewManager().openTeiidDesignerPerspective();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 	
@@ -78,20 +62,20 @@ public class ProcedurePreviewTest extends SWTBotTestCase{
 		props.setProperty("params", "id");
 		props.setProperty("sql", "CREATE VIRTUAL PROCEDURE BEGIN select hsqldbParts.PARTS.PART_COLOR AS color from hsqldbParts.PARTS where hsqldbParts.PARTS.PART_ID=view.proc.id; END");
 		
-		new ModelExplorerManager().getModelExplorerView().newProcedure(PROJECT_NAME, MODEL_VIEW_NAME+".xmi", proc, props);
+		new ModelExplorerManager().getModelExplorerView().newProcedure(PROJECT_NAME, MODEL_VIEW_NAME + ".xmi", proc, props);
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		ArrayList<String> params = new ArrayList<String>();
 		params.add("P300");
-		new ModelExplorerManager().previewModelObject(params, PROJECT_NAME, MODEL_VIEW_NAME+".xmi", proc);
-		String query = "select * from ( exec \"" + MODEL_VIEW_NAME+"\".\""+proc+"\"('P300') ) AS X_X";
+		new ModelExplorerManager().previewModelObject(params, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi", proc);
+		String query = "select * from ( exec \"" + MODEL_VIEW_NAME + "\".\"" + proc + "\"('P300') ) AS X_X";
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		assertTrue(new ModelExplorerManager().checkPreviewOfModelObject(query));
 	}
 	
 	@Test
 	public void relViewUDF(){
-		//import lib/TestUDF.jar
+		// import lib/MyTestUDF.jar
 		Properties props = new Properties();
 		props.setProperty("dirName", teiidBot.toAbsolutePath(UDF_LIB_PATH));
 		props.setProperty("intoFolder", PROJECT_NAME);
@@ -99,7 +83,7 @@ public class ProcedurePreviewTest extends SWTBotTestCase{
 		props.setProperty("createTopLevel", "true");
 		new ImportManager().importGeneralItem(ImportGeneralItemWizard.Type.FILE_SYSTEM, props);
 		
-		//create UDF
+		// create UDF
 		String proc = "udfConcatNull";
 		props = new Properties();
 		props.setProperty("type", Procedure.Type.RELVIEW_USER_DEFINED_FUNCTION);
@@ -108,18 +92,18 @@ public class ProcedurePreviewTest extends SWTBotTestCase{
 		props.setProperty("functionCategory", "MY_TESTING_FUNCTION_CATEGORY");
 		props.setProperty("javaClass", "userdefinedfunctions.MyConcatNull");//see decompiled jar
 		props.setProperty("javaMethod", "myConcatNull");
-		props.setProperty("udfJarPath", "lib/"+UDF_LIB);
+		props.setProperty("udfJarPath", "lib/" + UDF_LIB);
 		
-		new ModelExplorerManager().getModelExplorerView().newProcedure(PROJECT_NAME, MODEL_VIEW_NAME+".xmi", proc, props);
+		new ModelExplorerManager().getModelExplorerView().newProcedure(PROJECT_NAME, MODEL_VIEW_NAME + ".xmi", proc, props);
 		
-		//create table to test -> use UDF in transformation
+		// create table to test -> use UDF in transformation
 		String table = "tab";
 		String query = "select udfConcatNull(hsqldbParts.PARTS.PART_NAME,hsqldbParts.PARTS.PART_WEIGHT) as NAME_WEIGHT from hsqldbParts.PARTS";
 		props = new Properties();
 		props.setProperty("sql", query);
-		new ModelExplorerManager().getModelExplorerView().newTable(table, Table.Type.VIEW, props, PROJECT_NAME, MODEL_VIEW_NAME+".xmi");
+		new ModelExplorerManager().getModelExplorerView().newTable(table, Table.Type.VIEW, props, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi");
 	
-		new ModelExplorerManager().previewModelObject(null, PROJECT_NAME, MODEL_VIEW_NAME+".xmi", table);
+		new ModelExplorerManager().previewModelObject(null, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi", table);
 		String previewQuery = teiidBot.generateTablePreviewQuery(MODEL_VIEW_NAME, table);
 		assertTrue(new ModelExplorerManager().checkPreviewOfModelObject(previewQuery));
 		
