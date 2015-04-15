@@ -6,6 +6,7 @@ import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.matcher.RegexMatcher;
 import org.jboss.reddeer.swt.wait.TimePeriod;
@@ -92,6 +93,7 @@ public class ModelExplorerManager {
 		}
 		
 		if ((params != null) && (! params.isEmpty())){
+			new DefaultShell("Preview Data");
 			int i = 0;
 			for (String paramName : params){//expects the params are sorted
 				new SWTWorkbenchBot().text(i).setText(paramName);

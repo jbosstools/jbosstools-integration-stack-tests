@@ -2,16 +2,24 @@ package org.jboss.tools.teiid.reddeer;
 
 import java.util.Properties;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Widget;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
+import org.jboss.reddeer.swt.lookup.WidgetLookup;
+import org.jboss.reddeer.swt.util.Display;
 
 public abstract class ModelObject {
 
+	protected static final Logger LOGGER = Logger.getLogger(ModelObject.class);
+	
 	public static final String PROPERTIES = "Properties";
 	public static final String NATIVE_QUERY = "Native Query";
 	public static final String TRANSFORMATION_SQL = "Transformation SQL";
@@ -52,9 +60,8 @@ public abstract class ModelObject {
 		int i = cols.length;
 		for (String col : cols){
 			new PushButton("Add").click();
-			String defaultName = new DefaultTable().getItem(cols.length - i).getText(0);
 			new DefaultTable().getItem(cols.length - i).doubleClick();
-			new DefaultText(defaultName).setText(col);
+			setTextToFocusedTextArea(col);
 			i--;
 		}
 		return cols.length;
@@ -62,10 +69,21 @@ public abstract class ModelObject {
 	
 	public void setupReturnParam(String param, int lines){
 		new PushButton("Add").click();
-		String defaultName = new DefaultTable().getItem(lines).getText(0);
 		new DefaultTable().getItem(lines).doubleClick();
-		new DefaultText(defaultName).setText(param);
+		setTextToFocusedTextArea(param);
 		new SWTWorkbenchBot().table().click(lines,3);
 		new SWTWorkbenchBot().ccomboBox().setSelection("RETURN");
+	}
+	
+	private void setTextToFocusedTextArea(final String text){
+		final Widget w = WidgetLookup.getInstance().getFocusControl();
+		Display.syncExec(new Runnable() {
+			@Override
+			public void run() {
+				LOGGER.debug("Trying to set text \"" + text + "\" to widget \"" + w + "\".");
+				((Text) w).setText(text);
+				KeyboardFactory.getKeyboard().type(SWT.CR);
+			}
+		});
 	}
 }

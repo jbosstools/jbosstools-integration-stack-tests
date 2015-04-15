@@ -14,6 +14,7 @@ import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
@@ -214,7 +215,7 @@ public class Procedure extends ModelObject{
 	}
 	
 	public void create(String name, Properties props) {
-
+		
 		//select procedure type
 		String type = props.getProperty("type");
 		new RadioButton(type).click();
@@ -229,7 +230,11 @@ public class Procedure extends ModelObject{
 		if ((prop = props.getProperty("nameInSrc")) != null){
 			new LabeledText("Name In Source").setText(prop);
 		}
-		
+		if(Type.RELVIEW_PROCEDURE.equals(type)){
+			new DefaultShell("Create Relational View Procedure");
+		} else if(Type.RELVIEW_USER_DEFINED_FUNCTION.equals(type)){
+			new DefaultShell("Create User Defined Function");
+		}
 		//Properties
 		fillProperties(type, props);
 		
@@ -303,19 +308,19 @@ public class Procedure extends ModelObject{
 		String prop = props.getProperty("params");//paramName1,paramName2,...
 		int lines = 0;
 		if (prop != null){
-			new SWTWorkbenchBot().tabItem(PARAMETERS).activate();
+			new DefaultTabItem(PARAMETERS).activate();
 			//ALL add, delete, move up, move down
 			lines = setupTableProps(prop);
 		}
 		prop = props.getProperty("returnParam");
 		if (prop != null){
-			new SWTWorkbenchBot().tabItem(PARAMETERS).activate();
+			new DefaultTabItem(PARAMETERS).activate();
 			setupReturnParam(prop, lines);
 		}
 	}
 
 	private void fillProperties(String type, Properties props) {
-		new SWTWorkbenchBot().tabItem(PROPERTIES).activate();
+		new DefaultTabItem(PROPERTIES).activate();
 		if (type.equals(Type.RELSRC_PROCEDURE) || type.equals(Type.RELVIEW_PROCEDURE)){
 			//update count new org.jboss.reddeer.swt.impl.combo.DefaultCombo().getSelection()
 			//non-prepared new org.jboss.reddeer.swt.impl.button.CheckBox("Non-Prepared").click();

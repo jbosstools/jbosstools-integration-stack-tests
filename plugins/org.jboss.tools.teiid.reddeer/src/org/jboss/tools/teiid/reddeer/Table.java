@@ -4,7 +4,7 @@ import java.util.Properties;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 public class Table extends ModelObject{
@@ -30,6 +30,7 @@ public class Table extends ModelObject{
 	}
 	
 	public void create(Type type, String name, Properties props){
+		new DefaultShell("Create Relational View Table");
 		//Name
 		new LabeledText("Name").setText(name);
 		
