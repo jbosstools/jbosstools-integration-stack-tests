@@ -39,6 +39,7 @@ public class JBPM6ComplexTestDefinitionRequirement implements Requirement<JBPM6C
 		public String dependentOn() default "";
 		public boolean noErrorsInValidation() default true;
 		public boolean useGraphiti() default true;
+		public String[] knownIssues() default {};
 	}
 	
 	private JBPM6ComplexTestDefinition declaration;

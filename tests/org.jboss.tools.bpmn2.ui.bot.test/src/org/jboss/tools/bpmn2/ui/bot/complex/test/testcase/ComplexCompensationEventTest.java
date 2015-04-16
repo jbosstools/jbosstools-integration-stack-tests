@@ -5,9 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.jboss.tools.bpmn2.reddeer.editor.ConnectionType;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.UserTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.CompensationBoundaryEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.endevents.EndEvent;
@@ -24,7 +22,8 @@ import org.kie.api.runtime.process.WorkflowProcessInstance;
 @JBPM6ComplexTestDefinition(projectName="JBPM6ComplexTest",
 							importFolder="resources/bpmn2/model/base",
 							openFile="BaseBPMN2-CompensationEvent.bpmn2",
-							saveAs="BPMN2-CompensationEvent.bpmn2")
+							saveAs="BPMN2-CompensationEvent.bpmn2",
+							knownIssues={"1209449"})
 public class ComplexCompensationEventTest extends JBPM6ComplexTest {
 	
 	private static final String EXPECTED_VALUE = "CompensatedValue";

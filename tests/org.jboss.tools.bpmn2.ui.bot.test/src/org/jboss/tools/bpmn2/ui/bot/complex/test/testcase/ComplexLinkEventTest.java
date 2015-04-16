@@ -19,7 +19,8 @@ import org.kie.api.runtime.process.WorkflowProcessInstance;
 @JBPM6ComplexTestDefinition(projectName="JBPM6ComplexTest",
 							importFolder="resources/bpmn2/model/base",
 							openFile="BaseBPMN2-LinkEvent.bpmn2",
-							saveAs="BPMN2-LinkEvent.bpmn2")
+							saveAs="BPMN2-LinkEvent.bpmn2",
+							knownIssues={"1190688"})
 public class ComplexLinkEventTest extends JBPM6ComplexTest {
 
 	@TestPhase(phase=Phase.MODEL)
