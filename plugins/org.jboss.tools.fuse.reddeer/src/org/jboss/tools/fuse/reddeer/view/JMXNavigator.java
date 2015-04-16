@@ -83,7 +83,7 @@ public class JMXNavigator extends WorkbenchView {
 		List<TreeItem> items = new DefaultTree().getItems();
 		for (TreeItem item : items) {
 			if (item.getText().equals("Local Processes")) {
-				item.expand();
+				expand(item);
 				items = item.getItems();
 				break;
 			}
@@ -104,8 +104,12 @@ public class JMXNavigator extends WorkbenchView {
 
 					item.select();
 					item.doubleClick();
-					item.expand();
+					expand(item);
+					AbstractWait.sleep(TimePeriod.SHORT);
+					item.select();
 					items = item.getItems();
+					log.info("Tree Item '" + item + "' has the following children:" + logTreeItems(items));
+					AbstractWait.sleep(TimePeriod.SHORT);
 					break;
 				}
 
@@ -116,13 +120,42 @@ public class JMXNavigator extends WorkbenchView {
 					}
 
 					item.select();
-					item.expand();
+					expand(item);
+					AbstractWait.sleep(TimePeriod.SHORT);
+					item.select();
 					items = item.getItems();
+					log.info("Tree Item '" + item + "' has the following children:" + logTreeItems(items));
+					AbstractWait.sleep(TimePeriod.SHORT);
 					break;
 				}
 			}
 		}
 
 		return null;
+	}
+
+	private void expand(TreeItem item) {
+
+		for (int i = 0; i < 10; i++) {
+			log.info("Trying to expand '" + item.getText() + "' Tree Item");
+			item.expand();
+			AbstractWait.sleep(TimePeriod.SHORT);
+			if (item.isExpanded()) {
+				log.info("Tree Item '" + item.getText() + "' is expanded");
+				return;
+			}
+			log.error("Tree Item '" + item.getText() + "' is NOT expanded!");
+		}
+	}
+
+	private String logTreeItems(List<TreeItem> items) {
+
+		StringBuilder output = new StringBuilder();
+		output.append("\n");
+		for (TreeItem item : items) {
+			output.append(item.getText());
+			output.append("\n");
+		}
+		return output.toString();
 	}
 }
