@@ -123,12 +123,23 @@ public abstract class JBPM6ComplexTest {
 			
 			captureScreenshotWithDescription("ok-"+definition.saveAs().substring(0, definition.saveAs().length()-6));
 			
-		} catch(InvocationTargetException e) {
+		} catch (Throwable e) {
 			captureScreenshotWithDescription("error-"+definition.saveAs().substring(0, definition.saveAs().length()-6));
-			throw e.getCause();
-		} catch (Exception e) {
-			captureScreenshotWithDescription("error-"+definition.saveAs().substring(0, definition.saveAs().length()-6));
-			throw e;
+			throwExceptionWithKnownIssues(e);
+		}
+	}
+	
+	private void throwExceptionWithKnownIssues(Throwable e) throws Throwable {
+		
+		Throwable cause = e;
+		if(e instanceof InvocationTargetException) {
+			cause = e.getCause();
+		} 
+		
+		if(definition.knownIssues().length == 0) {
+			throw cause;
+		} else {
+			throw new JBPM6ComplexException(definition.knownIssues(), cause);
 		}
 	}
 	
