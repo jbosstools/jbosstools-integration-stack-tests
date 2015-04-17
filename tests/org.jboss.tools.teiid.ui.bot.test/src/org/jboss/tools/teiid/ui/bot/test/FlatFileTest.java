@@ -18,6 +18,7 @@ import org.jboss.reddeer.swt.impl.list.DefaultList;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
@@ -261,6 +262,7 @@ public class FlatFileTest {
 		SQLScrapbookEditor editor = null;
 		for (int i = 0; i < 10; i++) {
 			try {
+				new WorkbenchShell();
 				editor = new SQLScrapbookEditor("SQL Scrapbook" + i);
 				editor.show();
 				try {

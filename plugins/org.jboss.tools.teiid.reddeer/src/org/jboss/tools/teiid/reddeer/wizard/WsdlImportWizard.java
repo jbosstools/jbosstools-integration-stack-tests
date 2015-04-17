@@ -98,6 +98,8 @@ public class WsdlImportWizard extends TeiidImportWizard {
 		for (String operationName : operations){
 			selectOperation(operationName);			
 		}
+		
+		new PushButton("Next >").click();
 				
 		new LabeledText(new DefaultGroup("Source Model Definition"),"Name").setText(sourceModelName);
 		
