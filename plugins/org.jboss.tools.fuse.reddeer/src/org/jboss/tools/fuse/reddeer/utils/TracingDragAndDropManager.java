@@ -67,15 +67,22 @@ public class TracingDragAndDropManager {
 					robot.delay(100);
 					robot.mousePress(InputEvent.BUTTON1_MASK);
 					robot.delay(10);
-					int i = fromCoords.x;
+					int i = fromCoords.y;
+					if (fromCoords.y > toCoords.y) {
+						while (i > toCoords.y) {
+							i -= 1;
+							robot.mouseMove(fromCoords.x, i);
+						}
+					} else {
+						while (i < toCoords.y) {
+							i += 1;
+							robot.mouseMove(fromCoords.x, i);
+						}
+					}
+					i = fromCoords.x;
 					while (i < toCoords.x) {
 						i += 1;
-						robot.mouseMove(i, fromCoords.y);
-					}
-					i = fromCoords.y;
-					while (i > toCoords.y) {
-						i -= 1;
-						robot.mouseMove(toCoords.x, i);
+						robot.mouseMove(i, toCoords.y);
 					}
 				} catch (AWTException e) {
 					log.error("Error during AWT Robot manipulation");
