@@ -80,21 +80,41 @@ public class JMXNavigator extends WorkbenchView {
 	public TreeItem getNode(String... path) {
 
 		open();
+		AbstractWait.sleep(TimePeriod.NORMAL);
 		List<TreeItem> items = new DefaultTree().getItems();
+
 		for (TreeItem item : items) {
 			if (item.getText().equals("Local Processes")) {
-				expand(item);
+				item.expand();
 				items = item.getItems();
 				break;
+			}
+		}
+		
+		// node 'Local Camel Context' could be sometimes named 'maven [pid]' and more than one maven process can be present
+		// connect to all Maven processes -> the right one will be renamed to 'Local Camel Context'
+		boolean camelContext = false;
+		for (TreeItem item : items) {
+			if (item.getText().contains("Local Camel Context")) {
+				camelContext = true;
+				break;
+			}
+		}
+		if (!camelContext) {
+			for (TreeItem item : items) {
+				if (item.getText().startsWith("maven [")) {
+					item.select();
+					item.doubleClick();
+					expand(item);
+					AbstractWait.sleep(TimePeriod.SHORT);
+				}
 			}
 		}
 
 		for (int i = 0; i < path.length; i++) {
 			for (TreeItem item : items) {
 
-				if (i == 0 && 
-						// node 'Local Camel Context' could be sometimes named 'maven [pid]'
-						(path[i].equals("Local Camel Context") && (item.getText().startsWith(path[i]) || item.getText().startsWith("maven [")) ||
+				if (i == 0 && (path[i].equals("Local Camel Context") && item.getText().startsWith(path[i]) ||
 						// node 'JBoss Fuse' could be sometimes named 'karaf'
 						 path[i].equals("karaf") && (item.getText().contains(path[i]) || item.getText().startsWith("JBoss Fuse")))) {
 
