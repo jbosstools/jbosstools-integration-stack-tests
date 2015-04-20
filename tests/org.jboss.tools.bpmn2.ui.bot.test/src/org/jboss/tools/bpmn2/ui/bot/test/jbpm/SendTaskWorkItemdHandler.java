@@ -18,7 +18,7 @@ public class SendTaskWorkItemdHandler implements WorkItemHandler {
 	
 
     public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
-        Object message = workItem.getParameter(msgName);
+        Object message = workItem.getParameter("Message");
         Map<String, Object> results = new HashMap<String, Object>();
         results.put(msgName, message);
         

@@ -42,7 +42,7 @@ public class SendTask extends Task {
 	 * @param operation
 	 */
 	public void setOperation(String operationContractName, Message inMessage, Message outMessage, ErrorRef errorRef) {
-		propertiesHandler.setUp(new OperationSetUp(PropertiesTabs.SEND_TASK_TAB, operationContractName, inMessage, outMessage, errorRef));
+	    propertiesHandler.setUp(new OperationSetUp(PropertiesTabs.SEND_TASK_TAB, operationContractName, inMessage, outMessage, errorRef));
 	}
 	
 	/**

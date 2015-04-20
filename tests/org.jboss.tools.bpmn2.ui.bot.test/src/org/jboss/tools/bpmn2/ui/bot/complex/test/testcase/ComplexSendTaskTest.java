@@ -18,8 +18,8 @@ import org.jboss.tools.bpmn2.ui.bot.complex.test.TestPhase;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.JBPM6ComplexTestDefinitionRequirement.JBPM6ComplexTestDefinition;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.TestPhase.Phase;
 import org.jboss.tools.bpmn2.ui.bot.test.jbpm.JbpmAssertions;
-import org.jboss.tools.bpmn2.ui.bot.test.jbpm.SendTaskWorkItemdHandler;
 import org.jboss.tools.bpmn2.ui.bot.test.jbpm.TriggeredNodesListener;
+import org.jbpm.bpmn2.handler.SendTaskHandler;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
 
@@ -31,15 +31,15 @@ public class ComplexSendTaskTest extends JBPM6ComplexTest {
 
 	@TestPhase(phase=Phase.MODEL)
 	public void model() {
-		Message msg = new Message("msgName", "String");
+        Message msg = new Message("msgName", "String");
 		
 		StartEvent start = new StartEvent("StartProcess");
 		
 		SendTask send = (SendTask) start.append("Send", ElementType.SEND_TASK);
 		send.setImplementation("Unspecified");
-		send.setOperation("Interface 1/operationName", msg, msg, new ErrorRef("errName", "errCode", "String"));
+		send.setOperation("JavaObject/operationName", msg, msg, new ErrorRef("errName", "errCode", "String"));
 		send.setMessage(msg.getName(), msg.getDataType());
-		send.addParameterMapping(new ParameterMapping(new FromVariable("s"), new ToDataInput(msg.getName(), msg.getDataType()), ParameterMapping.Type.INPUT));
+		send.addParameterMapping(new ParameterMapping(new FromVariable("s"), new ToDataInput("Message", msg.getDataType()), ParameterMapping.Type.INPUT));
 		send.connectTo(new TerminateEndEvent("EndProcess"));
 	}
 	
@@ -49,7 +49,9 @@ public class ComplexSendTaskTest extends JBPM6ComplexTest {
 			Arrays.asList("StartProcess", "Send", "EndProcess"), null);
 		kSession.addEventListener(triggeredNodes);
 		
-		kSession.getWorkItemManager().registerWorkItemHandler("Send Task", new SendTaskWorkItemdHandler("msgName"));
+		SendTaskHandler handler = new SendTaskHandler();
+		
+		kSession.getWorkItemManager().registerWorkItemHandler("Send Task", handler);
 		
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("s", "Initialized string");

@@ -35,21 +35,9 @@ public class OperationSetUp implements SetUpAble {
 			new PushButton(2).click();
 			new InterfaceDialog().select(interfaceName);
 			new OperationDialog().addOperation(operationName, inMessage, outMessage, errorRef);
-		}
-		combo.setSelection(interfaceName + "/" + operationName);
-		
-		combo = new DefaultCombo("Source");
-		if (!combo.contains(inMessage.getName())) {
-			throw new UnsupportedOperationException();
-		}
-		combo.setSelection(inMessage.getName());
-		
-		combo = new DefaultCombo("Target");
-		if (!combo.contains(outMessage.getName())) {
-			throw new UnsupportedOperationException();
-		}
-		combo.setSelection(outMessage.getName());
-
+		} else {
+		    combo.setSelection(interfaceName + "/" + operationName);
+	    }
 	}
 
 	@Override
