@@ -20,10 +20,9 @@ public class ComplexImportInterfaceTest extends JBPM6ComplexTest {
 
 	@TestPhase(phase=Phase.MODEL)
 	public void model(){
-		throw new UnsupportedOperationException("TO DO");
-//		Process process = new Process("BPMN2-ImportInterface");
-//		process.importInterface("java.util.Date");
-//		process.click();
+		Process process = new Process("BPMN2-ImportInterface");
+		process.importInterface("java.util.Date");
+		process.click();
 	}
 	
 	@TestPhase(phase=Phase.RUN)

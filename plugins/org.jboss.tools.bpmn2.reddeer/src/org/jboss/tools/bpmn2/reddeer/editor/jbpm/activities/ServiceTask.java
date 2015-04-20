@@ -6,7 +6,8 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ErrorRef;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Message;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
 import org.jboss.tools.bpmn2.reddeer.editor.properties.PropertiesTabs;
-import org.jboss.tools.bpmn2.reddeer.properties.setup.AddParameterMappingSetUp;
+import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItemButton;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.ParameterMappingSetUp;
 import org.jboss.tools.bpmn2.reddeer.properties.setup.CheckBoxSetUp;
 import org.jboss.tools.bpmn2.reddeer.properties.setup.ImplementationSetUp;
 import org.jboss.tools.bpmn2.reddeer.properties.setup.OperationSetUp;
@@ -62,7 +63,10 @@ public class ServiceTask extends Task {
 	 * @param parameter
 	 */
 	public void addParameterMapping(ParameterMapping parameterMapping) {
-		propertiesHandler.setUp(new AddParameterMappingSetUp(parameterMapping));
+		propertiesHandler.setUp(new ParameterMappingSetUp(parameterMapping, SectionToolItemButton.ADD));
 	}
 
+	public void editParameterMapping(ParameterMapping parameterMapping) {
+        propertiesHandler.setUp(new ParameterMappingSetUp(parameterMapping, SectionToolItemButton.EDIT));
+    }
 }

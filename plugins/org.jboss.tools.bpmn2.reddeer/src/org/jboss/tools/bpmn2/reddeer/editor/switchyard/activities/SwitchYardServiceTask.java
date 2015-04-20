@@ -6,8 +6,9 @@ import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.OperationDialog;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
 import org.jboss.tools.bpmn2.reddeer.editor.properties.PropertiesTabs;
-import org.jboss.tools.bpmn2.reddeer.properties.setup.AddParameterMappingSetUp;
+import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItemButton;
 import org.jboss.tools.bpmn2.reddeer.properties.setup.LabeledTextSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.ParameterMappingSetUp;
 import org.jboss.tools.bpmn2.reddeer.properties.setup.ScriptSetUp;
 
 /**
@@ -32,7 +33,7 @@ public class SwitchYardServiceTask extends Element {
 	}
 	
 	public void addParameterMapping(ParameterMapping parameterMapping) {
-		propertiesHandler.setUp(new AddParameterMappingSetUp(parameterMapping));
+		propertiesHandler.setUp(new ParameterMappingSetUp(parameterMapping, SectionToolItemButton.ADD));
 	}
 	
 	public void setTaskAttribute(String attribute, String text){

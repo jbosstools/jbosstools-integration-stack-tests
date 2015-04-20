@@ -2,11 +2,16 @@ package org.jboss.tools.bpmn2.ui.bot.complex.test.testcase;
 
 import static org.junit.Assert.assertEquals;
 
-
-import java.util.Date;
 import java.util.HashMap;
+
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.FromDataOutput;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.FromVariable;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Message;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping.Type;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ToDataInput;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ToVariable;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ServiceTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.endevents.EndEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
@@ -22,7 +27,8 @@ import org.kie.api.runtime.process.WorkflowProcessInstance;
 @JBPM6ComplexTestDefinition(projectName="JBPM6ComplexTest",
 							importFolder="resources/bpmn2/model/base",
 							openFile="BaseBPMN2-ServiceTask.bpmn2",
-							saveAs="BPMN2-ServiceTask.bpmn2")
+							saveAs="BPMN2-ServiceTask.bpmn2",
+							knownIssues={"1213445"})
 public class ComplexServiceTaskTest extends JBPM6ComplexTest {
 
 	@TestPhase(phase=Phase.MODEL)
@@ -32,8 +38,9 @@ public class ComplexServiceTaskTest extends JBPM6ComplexTest {
 			(ServiceTask) start.append("DateService", ElementType.SERVICE_TASK);
 		
 		service.setImplementation("Java");
-		service.setOperation("Date/compareTo", new Message("DateVar", "java.util.Date"), new Message("ObjectVar", "java.lang.Object"), null);
-		
+		service.setOperation("java.util.Date/compareTo", new Message("DateVar", "java.util.Date"), new Message("ObjectVar", "java.lang.Object"), null);
+		service.editParameterMapping(new ParameterMapping(new FromVariable("DateVar"), new ToDataInput("Parameter", "java.util.Date"), Type.INPUT));
+		service.editParameterMapping(new ParameterMapping(new FromDataOutput("Result", "java.lang.Integer"), new ToVariable("ObjectVar"), Type.OUTPUT));
 		service.connectTo(new EndEvent("EndProcess"));
 		
 	}
@@ -42,7 +49,7 @@ public class ComplexServiceTaskTest extends JBPM6ComplexTest {
 	public void run(KieSession kSession) {
 		HashMap<String, Object> args = new HashMap<String, Object>();
 		args.put("ObjectVar", null);
-		args.put("DateVar", new Date());
+		args.put("DateVar", new java.util.Date());
 		
 		kSession.getWorkItemManager().registerWorkItemHandler("Service Task", new ServiceTaskHandler());
 		WorkflowProcessInstance processInstance = (WorkflowProcessInstance) kSession.startProcess("BPMN2ServiceTask", args);

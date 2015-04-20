@@ -10,9 +10,10 @@ import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
 import org.jboss.tools.bpmn2.reddeer.editor.properties.PropertiesTabs;
+import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItemButton;
 import org.jboss.tools.bpmn2.reddeer.properties.setup.AddActorSetUp;
 import org.jboss.tools.bpmn2.reddeer.properties.setup.AddLocalVariableSetUp;
-import org.jboss.tools.bpmn2.reddeer.properties.setup.AddParameterMappingSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.ParameterMappingSetUp;
 import org.jboss.tools.bpmn2.reddeer.properties.setup.CheckBoxSetUp;
 import org.jboss.tools.bpmn2.reddeer.properties.setup.LabeledTextSetUp;
 import org.jboss.tools.bpmn2.reddeer.properties.setup.RemoveActorSetUp;
@@ -165,7 +166,7 @@ public class UserTask extends Task {
 	 * @param parameter
 	 */
 	public void addParameterMapping(ParameterMapping parameterMapping) {
-		propertiesHandler.setUp(new AddParameterMappingSetUp(parameterMapping));
+		propertiesHandler.setUp(new ParameterMappingSetUp(parameterMapping, SectionToolItemButton.ADD));
 	}
 	
 	public void addLocalVariable(String varName, String dataType) {
