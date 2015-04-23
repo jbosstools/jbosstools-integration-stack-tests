@@ -24,7 +24,8 @@ import org.kie.api.runtime.process.WorkflowProcessInstance;
 @JBPM6ComplexTestDefinition(projectName="JBPM6ComplexTest",
 							importFolder="resources/bpmn2/model/base",
 							openFile="BaseBPMN2-EventBasedSplit.bpmn2",
-							saveAs="BPMN2-EventBasedSplit.bpmn2")
+							saveAs="BPMN2-EventBasedSplit.bpmn2",
+							knownIssues={"1184422"})
 public class ComplexEventBasedSplitTest extends JBPM6ComplexTest{
 
 	@TestPhase(phase=Phase.MODEL)

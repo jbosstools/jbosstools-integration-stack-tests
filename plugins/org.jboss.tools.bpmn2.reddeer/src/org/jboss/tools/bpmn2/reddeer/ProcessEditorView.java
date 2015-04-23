@@ -350,7 +350,8 @@ public class ProcessEditorView extends SWTBotGefEditor {
 		@Override
 		public boolean test() {
 			try{
-				new ContextMenu("Show Source View").select();
+			    click(1,1);
+			    new ContextMenu("Show Source View").select();
 			} catch(SWTLayerException e) {
 				return true;
 			}
