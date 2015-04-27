@@ -19,8 +19,6 @@ import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
 import org.jboss.tools.fuse.reddeer.wizard.CamelTestCaseWizard;
 import org.jboss.tools.fuse.ui.bot.test.utils.EditorManipulator;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,7 +35,7 @@ import org.junit.runner.RunWith;
 @CleanWorkspace
 @OpenPerspective(FuseIntegrationPerspective.class)
 @RunWith(RedDeerSuite.class)
-public class ProjectLocalRunTest {
+public class ProjectLocalRunTest extends DefaultTest {
 
 	private static final String PROJECT_ARCHETYPE = "camel-archetype-spring";
 	private static final String PROJECT_NAME = "camel-spring";
@@ -66,14 +64,6 @@ public class ProjectLocalRunTest {
 		log.info("Create a new Fuse project (" + PROJECT_ARCHETYPE + ")");
 		ProjectFactory.createProject(PROJECT_NAME, PROJECT_ARCHETYPE);
 		createTestClass();
-	}
-
-	@After
-	public void terminateConsole() {
-
-		log.info("Try to terminate a console.");
-		new ConsoleView().terminateConsole();
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
 	@Test
@@ -112,12 +102,4 @@ public class ProjectLocalRunTest {
 
 		assertFalse("This build should be successful.", new ConsoleView().getConsoleText().contains("BUILD FAILURE"));
 	}
-
-	@AfterClass
-	public static void deleteProject() {
-
-		new CamelProject(PROJECT_NAME).deleteProject();
-		log.info("Workspace was cleaned!");
-	}
-
 }
