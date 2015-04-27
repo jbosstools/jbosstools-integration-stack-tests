@@ -14,14 +14,11 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.swt.matcher.RegexMatcher;
-import org.jboss.reddeer.swt.matcher.WithTooltipTextMatcher;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.tools.fuse.reddeer.component.CamelComponent;
 import org.jboss.tools.fuse.reddeer.component.CamelComponents;
-import org.jboss.tools.fuse.reddeer.component.Endpoint;
+import org.jboss.tools.fuse.reddeer.component.Generic;
 import org.jboss.tools.fuse.reddeer.component.Log;
 import org.jboss.tools.fuse.reddeer.component.Otherwise;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
@@ -31,7 +28,6 @@ import org.jboss.tools.fuse.ui.bot.test.utils.EditorManipulator;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.xml.sax.SAXException;
@@ -48,19 +44,14 @@ import org.xml.sax.SAXException;
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
 @RunWith(RedDeerSuite.class)
-public class CamelEditorTest {
+public class CamelEditorTest extends DefaultTest {
 
 	protected Logger log = Logger.getLogger(CamelEditorTest.class);
-
-	@BeforeClass
-	public static void setup() {
-
-		new WorkbenchShell().maximize();
-	}
 
 	@Before
 	public void resetCamelContext() {
 
+		new WorkbenchShell();
 		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
 		new ErrorLogView().deleteLog();
 	}
@@ -68,7 +59,7 @@ public class CamelEditorTest {
 	@After
 	public void deleteProjects() {
 
-		new DefaultToolItem(new WorkbenchShell(), 0, new WithTooltipTextMatcher(new RegexMatcher("Save All.*"))).click();
+		new WorkbenchShell();
 		new ProjectExplorer().deleteAllProjects();
 	}
 
@@ -110,9 +101,9 @@ public class CamelEditorTest {
 		CamelEditor editor = new CamelEditor("camel-context.xml");
 		editor.setId("log", "log1");
 		editor.doOperation("choice", "Add", "Routing", "Otherwise");
-		editor.doOperation("otherwise", "Add", "Endpoints", "Log");
+		editor.doOperation("otherwise", "Add", "Components", "Log");
 		editor.setProperty("log", "Message", "Other message");
-		editor.doOperation("log", "Add", "Endpoints", "Endpoint");
+		editor.doOperation("log", "Add", "Components", "Generic");
 		editor.setComboProperty("Endpoint", 0, "file:target/messages/others");
 		editor.setId("log1", "");
 		assertTrue(editor.isComponentAvailable("otherwise"));
@@ -138,7 +129,7 @@ public class CamelEditorTest {
 		editor.addConnection("otherwise", "log");
 		editor.save();
 		AbstractWait.sleep(TimePeriod.getCustom(1));
-		editor.addCamelComponent(new Endpoint());
+		editor.addCamelComponent(new Generic());
 		editor.setComboProperty("Endpoint", 0, "file:target/messages/others");
 		editor.addConnection("log", "file:target/messa...");
 		editor.save();

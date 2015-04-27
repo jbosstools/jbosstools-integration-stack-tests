@@ -220,7 +220,7 @@ public class CamelEditor extends GEFEditor {
 		try {
 			new ContextMenu(operation).select();
 		} catch (SWTLayerException ex) {
-			log.equals("Given operation is not present in the context menu of the component: " + label);
+			log.error("Given operation is not present in the context menu of the component: " + label);
 		}
 	}
 
@@ -239,6 +239,8 @@ public class CamelEditor extends GEFEditor {
 		properties.open();
 		selectEditPart(label);
 		properties.activate();
+		properties.selectTab("Generic");
+		AbstractWait.sleep(TimePeriod.SHORT);
 		new LabeledText("Id").setText(id);
 		activate();
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -290,6 +292,7 @@ public class CamelEditor extends GEFEditor {
 
 		log.debug("Setting '" + value + "' as the property '" + name + "' of selelected component in the Camel Editor");
 		new PropertiesView().open();
+		new PropertiesView().selectTab("Generic");
 		new LabeledText(name).setText(value);
 		activate();
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -312,6 +315,7 @@ public class CamelEditor extends GEFEditor {
 		properties.open();
 		selectEditPart(component);
 		properties.activate();
+		properties.selectTab("Generic");
 		new LabeledText(name).setText(value);
 		activate();
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -335,6 +339,7 @@ public class CamelEditor extends GEFEditor {
 		properties.open();
 		selectEditPart(component);
 		properties.activate();
+		properties.selectTab("Generic");
 		new DefaultCombo(position).setText(value);
 		activate();
 		AbstractWait.sleep(TimePeriod.SHORT);

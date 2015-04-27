@@ -1,10 +1,10 @@
 package org.jboss.tools.fuse.reddeer.component;
 
-public class Endpoint implements CamelComponent {
+public class Generic implements CamelComponent {
 
 	@Override
 	public String getPaletteEntry() {
-		return "Endpoint";
+		return "Generic";
 	}
 
 	@Override
