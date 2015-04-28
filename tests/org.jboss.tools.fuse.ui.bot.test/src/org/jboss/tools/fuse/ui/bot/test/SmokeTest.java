@@ -25,7 +25,7 @@ import org.junit.runner.RunWith;
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
 @RunWith(RedDeerSuite.class)
-public class SmokeTest {
+public class SmokeTest extends DefaultTest {
 
 	private static final String PROJECT_ARCHETYPE = "camel-archetype-spring";
 	private static final String PROJECT_NAME = "camel-spring";
