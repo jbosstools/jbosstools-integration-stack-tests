@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.draw2d.FigureCanvas;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartListener;
 import org.eclipse.gef.GraphicalViewer;
@@ -16,10 +14,10 @@ import org.hamcrest.Matcher;
 import org.jboss.reddeer.gef.GEFLayerException;
 import org.jboss.reddeer.gef.condition.EditorHasEditParts;
 import org.jboss.reddeer.gef.editor.GEFEditor;
-import org.jboss.reddeer.gef.handler.EditPartHandler;
 import org.jboss.reddeer.swt.handler.WidgetHandler;
 import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.tools.bpmn2.reddeer.editor.ConnectionType;
 import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructOfType;
@@ -77,7 +75,7 @@ public class GEFProcessEditor extends GEFEditor {
 		int oldCount = getNumberOfEditParts();
 
 		final ViewerListener viewerListener = new ViewerListener();
-		Display.asyncExec(new Runnable() {
+		Display.syncExec(new Runnable() {
 			@Override
 			public void run() {
 				parent.addEditPartListener(viewerListener);
@@ -96,44 +94,85 @@ public class GEFProcessEditor extends GEFEditor {
 		return new AbsoluteEditPart(viewerListener.getAddedEditPart());
 	}
 	
+	public org.jboss.reddeer.gef.api.EditPart addConnectionFromPalette(ConnectionType connectionType, Element from, Element to) {
+        int oldCount = getNumberOfEditParts();
+
+        final EditPart parent = getRootEditPart();
+        
+        final ViewerListener viewerListener = new ViewerListener();
+        Display.syncExec(new Runnable() {
+            @Override
+            public void run() {
+                parent.addEditPartListener(viewerListener);
+            }
+        });
+
+        getPalette().activateTool(connectionType.toName());
+        click(from);
+        click(to);
+        getPalette().activateTool("Select");
+
+        new WaitUntil(new EditorHasEditParts(this, oldCount));
+
+        if (viewerListener.getAddedEditPart() == null) {
+            throw new GEFLayerException("No new edit part was detected");
+        }
+
+        return new AbsoluteEditPart(viewerListener.getAddedEditPart());
+    }
+	
 	public void click(final Element element) {
-		WidgetHandler handler = WidgetHandler.getInstance();
+		final WidgetHandler handler = WidgetHandler.getInstance();
 		final FigureCanvas figureCanvas = (FigureCanvas) viewer.getControl();
 		
-		final int oldX = element.getBounds().getCenter().x();
-		final int oldY = element.getBounds().getCenter().y();
+		final int centerX = element.getBounds().getCenter().x();
+		final int centerY = element.getBounds().getCenter().y();
 		
 		Display.syncExec(new Runnable() {
 			@Override
 			public void run() {
-				int horizontalSelection = figureCanvas.getHorizontalBar().getSelection();
-				int verticalSelection = figureCanvas.getVerticalBar().getSelection();
-				int xDiff = 0; int yDiff = 0;
-				if(oldX > horizontalSelection+figureCanvas.getBounds().width) {
-					xDiff = oldX - horizontalSelection+figureCanvas.getBounds().width;
+			    
+			    int canvasWidth = figureCanvas.getViewport().getBounds().width;
+				int canvasHeight = figureCanvas.getViewport().getBounds().height;
+				int moveX = 0;
+				int moveY = 0;
+				
+				if(centerX > canvasWidth) {
+					moveX = 10;
 				}
-				if(oldX < horizontalSelection) {
-					xDiff = oldX - horizontalSelection;
+				if(centerX < 0) {
+					moveX = -10;
 				}
-				if(oldY > verticalSelection+figureCanvas.getBounds().height) {
-					yDiff = oldY - verticalSelection+figureCanvas.getBounds().height;
+				if(centerY > canvasHeight) {
+				    moveY = 10;
 				}
-				if(oldY < verticalSelection) {
-					yDiff = oldY - verticalSelection;
+				if(centerY < 0) {
+				    moveY = -10;
 				}
-				figureCanvas.scrollToX(xDiff);
-				figureCanvas.scrollToY(yDiff);
+				
+				if(moveX != 0) {
+				    int base = 0;
+				    while(element.getBounds().getCenter().x() < 0 || element.getBounds().getCenter().x() > canvasWidth) {
+				        figureCanvas.scrollToX(base);
+				        base += moveX;
+				    }
+				}
+				
+				if(moveY != 0) {
+				    int base = 0;
+                    while(element.getBounds().getCenter().y() < 0 || element.getBounds().getCenter().y() > canvasHeight) {
+                        figureCanvas.scrollToY(base);
+                        base += moveY;
+                    }
+				}
 			}
 		});
-		
-		IFigure figure = EditPartHandler.getInstance().getFigure(element.getAbsoluteEditPart().getEditPart());
-		final Rectangle bounds = figure.getBounds().getCopy();
-		figure.translateToAbsolute(bounds);
-		int newX = bounds.getCenter().x();
-		int newY = bounds.getCenter().y();
-		handler.notifyItemMouse(SWT.MouseMove, 0, figureCanvas, null, newX, newY, 0);
-		handler.notifyItemMouse(SWT.MouseDown, 0, figureCanvas, null, newX, newY, 1);
-		handler.notifyItemMouse(SWT.MouseUp, 0, figureCanvas, null, newX, newY, 1);
+		int newX = element.getBounds().getCenter().x(); 
+		int newY = element.getBounds().getCenter().y();
+        
+        handler.notifyItemMouse(SWT.MouseMove, 0, figureCanvas, null, newX, newY, 0);
+        handler.notifyItemMouse(SWT.MouseDown, 0, figureCanvas, null, newX, newY, 1);
+        handler.notifyItemMouse(SWT.MouseUp, 0, figureCanvas, null, newX, newY, 1);
 	}
 	
 	private class ViewerListener implements EditPartListener {
