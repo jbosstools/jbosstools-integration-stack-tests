@@ -3,7 +3,6 @@ package org.jboss.tools.fuse.ui.bot.test;
 import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -11,13 +10,8 @@ import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.C
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.handler.ShellHandler;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.matcher.RegexMatcher;
-import org.jboss.reddeer.swt.matcher.WithTooltipTextMatcher;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
@@ -38,7 +32,7 @@ import org.junit.runner.RunWith;
 @OpenPerspective(FuseIntegrationPerspective.class)
 @RunWith(RedDeerSuite.class)
 @Server(type = ServerReqType.Karaf, state = ServerReqState.PRESENT)
-public class RegressionKarafTest {
+public class RegressionKarafTest extends DefaultTest {
 
 	@InjectRequirement
 	private ServerRequirement serverRequirement;
@@ -50,13 +44,7 @@ public class RegressionKarafTest {
 		if (ServerManipulator.isServerStarted(server)) {
 			ServerManipulator.stopServer(server);
 		}
-		new DefaultToolItem(new WorkbenchShell(), 0, new WithTooltipTextMatcher(new RegexMatcher("Save All.*"))).click();
 		new ProjectExplorer().deleteAllProjects();
-		ShellHandler.getInstance().closeAllNonWorbenchShells();
-		try {
-			new ConsoleView().terminateConsole();
-		} catch (Exception e) {
-		}
 	}
 
 	/**
