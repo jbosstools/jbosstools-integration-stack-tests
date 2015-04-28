@@ -1,9 +1,12 @@
 package org.jboss.tools.fuse.reddeer.debug;
 
-import org.jboss.reddeer.swt.condition.WaitCondition;
+import java.util.List;
+
+import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 
 /**
@@ -21,20 +24,30 @@ public class VariablesView extends WorkbenchView {
 	public String getValue(final String... variablePath) {
 
 		open();
-		new DefaultTreeItem(variablePath).select();
-		new WaitUntil(new WaitCondition() {
-
-			@Override
-			public boolean test() {
-				return new DefaultTreeItem(variablePath).isSelected();
+		new DefaultTree().getItems();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		List<TreeItem> items = new DefaultTree().getItems();
+		for (int i = 0; i < variablePath.length; i++) {
+			boolean found = false;
+			for (TreeItem item : items) {
+				if (item.getText().equals(variablePath[i]) && !(i == variablePath.length - 1)) {
+					item.expand(TimePeriod.SHORT);
+					items = item.getItems();
+					found = true;
+					break;
+				}
+				if (item.getText().equals(variablePath[i]) && (i == variablePath.length - 1)) {
+					item.select();
+					found = true;
+					break;
+				}
 			}
-
-			@Override
-			public String description() {
-				return "Variable is not selected";
+			if (!found) {
+				return null;
 			}
-		});
-		open();
+		}
+		AbstractWait.sleep(TimePeriod.SHORT);
+		activate();
 		return new DefaultStyledText().getText();
 	}
 }

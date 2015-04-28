@@ -11,6 +11,8 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.toolbar.ViewToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 
@@ -40,6 +42,7 @@ public class BreakpointsView extends WorkbenchView {
 
 		log.debug("Accessing breakpoints in Breakpoints view");
 		open();
+		AbstractWait.sleep(TimePeriod.SHORT);
 		List<TreeItem> items = new DefaultTree().getItems();
 		for (TreeItem item : items) {
 			log.debug("		found: " + item.getText());
