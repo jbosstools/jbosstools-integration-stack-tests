@@ -12,6 +12,7 @@ import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.swt.api.Tree;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -48,7 +49,6 @@ public class ServerManipulator {
 		serverRuntime.open();
 		serverRuntime.editServerRuntime(name, path);
 		serverRuntime.ok();
-
 	}
 
 	public static void removeServerRuntime(String name) {
@@ -61,7 +61,19 @@ public class ServerManipulator {
 			log.warn("Cannot remove '" + name + "' server runtime. It is not listed in Server Runtimes!");
 		}
 		serverRuntime.ok();
+	}
 
+	public static void deleteAllServerRuntimes() {
+
+		ServerRuntimePreferencePage serverRuntime = new ServerRuntimePreferencePage();
+		serverRuntime.open();
+		try {
+			for (String runtime : serverRuntime.getServerRuntimes()) {
+				serverRuntime.removeServerRuntime(runtime);
+			}
+		} catch (SWTLayerException ex) {
+		}
+		serverRuntime.ok();
 	}
 
 	public static List<String> getServerRuntimes() {
@@ -71,6 +83,15 @@ public class ServerManipulator {
 		List<String> temp = serverRuntime.getServerRuntimes();
 		serverRuntime.cancel();
 		return temp;
+	}
+
+	public static void deleteAllServers() {
+
+		ServersView view = new ServersView();
+		view.open();
+		for (Server server : view.getServers()) {
+			server.delete(true);
+		}
 	}
 
 	public static void addServer(String type, String hostname, String name, String portNumber, String userName,
@@ -185,6 +206,8 @@ public class ServerManipulator {
 	 */
 	public static void clean(String name) {
 
+		stopServer(name);
+		removeAllModules(name);
 		removeServer(name);
 		removeServerRuntime(name + " Runtime");
 	}
@@ -202,6 +225,7 @@ public class ServerManipulator {
 
 		try {
 			new ServersView().getServer(server).getModule(module);
+			AbstractWait.sleep(TimePeriod.SHORT);
 		} catch (EclipseLayerException ex) {
 			return false;
 		}
@@ -223,6 +247,15 @@ public class ServerManipulator {
 		} catch (EclipseLayerException ex) {
 			return;
 		}
+
+		// Maybe there is nothing  to remove
+		try {
+			new WaitUntil(new ShellWithTextIsAvailable("Server"));
+			new PushButton("OK").click();
+			return;
+		} catch (Exception e) {}
+		
+		// There is something to remove - remove it
 		new DefaultShell("Add and Remove...");
 		FuseModifyModulesPage page = new FuseModifyModulesPage();
 		try {
@@ -257,6 +290,7 @@ public class ServerManipulator {
 		}
 		page.close();
 		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
+		AbstractWait.sleep(TimePeriod.NORMAL);
 	}
 
 	/**
@@ -275,6 +309,7 @@ public class ServerManipulator {
 		page.setImmeadiatelyPublishing(value);
 		page.close();
 		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
+		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 
 	/**
