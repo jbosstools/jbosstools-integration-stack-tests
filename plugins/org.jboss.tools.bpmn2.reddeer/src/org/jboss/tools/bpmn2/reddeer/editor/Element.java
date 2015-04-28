@@ -18,10 +18,13 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
 import org.hamcrest.Matcher;
+import org.jboss.reddeer.gef.GEFLayerException;
 import org.jboss.reddeer.gef.impl.editpart.AbstractEditPart;
 import org.jboss.reddeer.gef.impl.editpart.LabeledEditPart;
 import org.jboss.reddeer.graphiti.impl.graphitieditpart.LabeledGraphitiEditPart;
+import org.jboss.reddeer.swt.condition.WaitCondition;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.bpmn2.reddeer.AbsoluteEditPart;
 import org.jboss.tools.bpmn2.reddeer.GEFProcessEditor;
 import org.jboss.tools.bpmn2.reddeer.JBPM6ComplexEnvironment;
@@ -282,29 +285,11 @@ public class Element {
 	 * Connect this construct to another one using a connector
 	 * of type ${type}.
 	 * 
-	 * @param construct
+	 * @param toElement
 	 * @param connectionType
 	 */
-	public void connectTo(Element construct, ConnectionType connectionType) {
-		log.info("Connecting construct '" + this.name + "' and construct '" + construct.getName() + "' using '" + connectionType + "'.");
-		
-		// Create the connection.
-		// 
-		// Bring forward elements in case they are covered by another bigger
-		// element. Then perform the clicks.
-		processEditor.getPalette().activateTool(connectionType.toName());
-		
-		select();
-		log.debug("\tConnecting points '" + getBounds().getCenter() + "' and '" + construct.getBounds().getCenter() + "'");
-		
-		// ISSUE: Clicking center on a Lane|Subprocess|etc. has a good chance to select something in it!
-		processEditor.click(this);
-		
-		construct.select();
-		processEditor.click(construct);
-		
-		processEditor.getPalette().activateTool("Select");
-		click();
+	public void connectTo(Element toElement, ConnectionType connectionType) {
+	    new WaitUntil(new ConnectionAdded(this, toElement, connectionType));
 	}
 	
 	/**
@@ -473,14 +458,6 @@ public class Element {
 	 * 
 	 * @return
 	 */
-	/*public SWTBotGefEditPart getEditPart() {
-		return editPart;
-	}*/
-
-	/**
-	 * 
-	 * @return
-	 */
 	public org.w3c.dom.Element getEditPartElement() {
 		// Required to store the code to xml
 		editor.save();
@@ -559,5 +536,35 @@ public class Element {
 		}
 		
 		return addedElement;
+	}
+	
+	private class ConnectionAdded implements WaitCondition {
+
+	    private Element from;
+	    private Element to;
+	    private ConnectionType type;
+	    
+	    public ConnectionAdded(Element from, Element to, ConnectionType type) {
+            this.from = from;
+            this.to = to;
+            this.type = type;
+        }
+	    
+        @Override
+        public boolean test() {
+            try {
+                processEditor.addConnectionFromPalette(type, from, to);
+            }catch(GEFLayerException e) {
+                return false;
+            }
+            
+            return true;
+        }
+
+        @Override
+        public String description() {
+            return "test if connection was added";
+        }
+	    
 	}
 }
