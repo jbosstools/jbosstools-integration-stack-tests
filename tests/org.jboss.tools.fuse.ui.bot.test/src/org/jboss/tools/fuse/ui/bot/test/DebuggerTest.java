@@ -5,13 +5,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.AbstractWait;
@@ -42,7 +39,7 @@ import org.junit.runner.RunWith;
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
 @RunWith(RedDeerSuite.class)
-public class DebuggerTest {
+public class DebuggerTest extends DefaultTest {
 
 	private static final String PROJECT_ARCHETYPE = "camel-archetype-spring";
 	private static final String PROJECT_NAME = "camel-spring";
@@ -54,34 +51,20 @@ public class DebuggerTest {
 	@BeforeClass
 	public static void setup() {
 
-		new WorkbenchShell().maximize();
 		ProjectFactory.createProject(PROJECT_NAME, PROJECT_ARCHETYPE);
 		new CamelProject(PROJECT_NAME).openCamelContext(CAMEL_CONTEXT);
-		CamelEditor.switchTab("Design"); // FIXME temporary added due to https://issues.jboss.org/browse/FUSETOOLS-1208
+		CamelEditor.switchTab("Design");
 		CamelEditor editor = new CamelEditor(CAMEL_CONTEXT);
 		editor.setId("choice", CHOICE);
 		editor.setId("log", LOG);
 		editor.setId("log", LOG2);
 		editor.save();
-		new ErrorLogView().deleteLog();
 	}
 
 	@After
 	public void removeAllBreakpoints() {
 
 		new BreakpointsView().removeAllBreakpoints();
-	}
-
-	@After
-	public void stopCamelContext() {
-
-		ConsoleView console = new ConsoleView();
-		console.open();
-		try {
-			console.terminateConsole();
-		} catch (SWTLayerException ex) {
-		}
-		new ErrorLogView().deleteLog();
 	}
 
 	@Test
