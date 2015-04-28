@@ -14,6 +14,7 @@ import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.fuse.reddeer.preference.ConsolePreferencePage;
 import org.jboss.tools.fuse.reddeer.preference.FuseToolingEditorPreferencePage;
+import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
 import org.jboss.tools.fuse.reddeer.view.ErrorLogView;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -91,5 +92,9 @@ public class DefaultTest {
 		
 		log.info("Deleting all projects");
 		new ProjectExplorer().deleteAllProjects();
+
+		log.info("Stopping and deleting configured servers");
+		ServerManipulator.deleteAllServers();
+		ServerManipulator.deleteAllServerRuntimes();
 	}
 }
