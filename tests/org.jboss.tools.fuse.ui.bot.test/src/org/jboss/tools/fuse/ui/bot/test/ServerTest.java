@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -17,7 +16,6 @@ import org.jboss.tools.runtime.reddeer.impl.ServerFuse;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,7 +29,7 @@ import org.junit.runner.RunWith;
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
 @RunWith(RedDeerSuite.class)
-public class ServerTest {
+public class ServerTest extends DefaultTest {
 
 	@InjectRequirement
 	private ServerRequirement serverRequirement;
@@ -41,17 +39,6 @@ public class ServerTest {
 
 		ServerManipulator.removeServer(serverRequirement.getConfig().getName());
 		ServerManipulator.removeServerRuntime(serverRequirement.getConfig().getName() + " Runtime");
-		new ErrorLogView().deleteLog();
-	}
-
-	@After
-	public void cleanUpServer() {
-
-		String serverName = serverRequirement.getConfig().getName();
-		new ProjectExplorer().deleteAllProjects();
-		ServerManipulator.stopServer(serverName);
-		ServerManipulator.removeServer(serverName);
-		ServerManipulator.removeServerRuntime(serverName + " Runtime");
 	}
 
 	@Test
