@@ -10,6 +10,7 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
+import org.jboss.tools.runtime.reddeer.wizard.DroolsRuntimePreferencePage;
 import org.jboss.tools.runtime.reddeer.wizard.ESBRuntimePreferencePage;
 import org.jboss.tools.runtime.reddeer.wizard.JBPMRuntimePreferencePage;
 import org.junit.Test;
@@ -36,9 +37,16 @@ public class RuntimeTest {
 		List<String> jbpmRuntimes = jbpmPage.getJBPMRuntimes();
 		jbpmPage.ok();
 		
+		// Drools Runtimes
+		DroolsRuntimePreferencePage droolsPage = new DroolsRuntimePreferencePage();
+		droolsPage.open();
+		List<String> droolsRuntimes = droolsPage.getDroolsRuntimes();
+		droolsPage.ok();
+		
 		List<String> runtimes = new ArrayList<String>();
 		runtimes.addAll(esbRuntimes);
 		runtimes.addAll(jbpmRuntimes);
+		runtimes.addAll(droolsRuntimes);
 		assertTrue(runtimes.contains(requirement.getConfig().getName()));
 	}
 
