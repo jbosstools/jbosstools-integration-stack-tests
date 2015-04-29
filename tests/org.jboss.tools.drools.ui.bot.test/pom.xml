@@ -15,6 +15,7 @@
   <properties>
     <plugin.version>6.0.1.Final</plugin.version>
     <binaries.brms5>http://download.devel.redhat.com/released/JBossBRMS/5.3.1/brms-p-5.3.1.GA-deployable.zip</binaries.brms5>
+    <systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=${reddeer.config}</systemProperties>
   </properties>
 
   <build>
