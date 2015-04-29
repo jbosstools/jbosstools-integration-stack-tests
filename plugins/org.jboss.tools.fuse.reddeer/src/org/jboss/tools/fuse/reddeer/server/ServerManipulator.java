@@ -9,14 +9,17 @@ import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerLabel;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewException;
 import org.jboss.reddeer.swt.api.Tree;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
@@ -118,14 +121,37 @@ public class ServerManipulator {
 
 	public static void startServer(String name) {
 
-		Server server = new ServersView().getServer(name);
-		server.start();
+		log.info("Start server " + name);
+		new ServersView().open();
+		for (TreeItem item : new DefaultTree().getItems()) {
+			if (item.getText().startsWith(name)) {
+				item.select();
+				if (!item.getText().contains("Stopped")) {
+					throw new ServersViewException("Cannot start server because it is not stopped");
+				}
+				new ContextMenu("Start").select();
 
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		if (server.getLabel().getName().toLowerCase().contains("fuse")) {
-			new WaitUntil(new ConsoleHasText("100%"), TimePeriod.getCustom(300));
+				for (int i = 0; i < 10; i++) {
+					AbstractWait.sleep(TimePeriod.SHORT);
+					if (new ShellWithTextIsAvailable("Password Required").test()) {
+						new DefaultShell("Password Required");
+						new LabeledText("Password:").setText("admin");
+						new PushButton("OK").click();
+						AbstractWait.sleep(TimePeriod.SHORT);
+						new WorkbenchShell();
+						break;
+					}
+				}
+
+				new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+				if (name.toLowerCase().contains("fuse")) {
+					new WaitUntil(new ConsoleHasText("100%"), TimePeriod.getCustom(300));
+				}
+				AbstractWait.sleep(TimePeriod.NORMAL);
+				log.info("Server " + name + " is started");
+				break;
+			}
 		}
-		AbstractWait.sleep(TimePeriod.NORMAL);	
 		new WorkbenchShell().setFocus();
 	}
 
@@ -253,8 +279,9 @@ public class ServerManipulator {
 			new WaitUntil(new ShellWithTextIsAvailable("Server"));
 			new PushButton("OK").click();
 			return;
-		} catch (Exception e) {}
-		
+		} catch (Exception e) {
+		}
+
 		// There is something to remove - remove it
 		new DefaultShell("Add and Remove...");
 		FuseModifyModulesPage page = new FuseModifyModulesPage();
