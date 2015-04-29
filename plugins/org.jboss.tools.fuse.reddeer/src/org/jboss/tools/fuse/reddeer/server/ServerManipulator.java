@@ -9,7 +9,6 @@ import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerLabel;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewException;
 import org.jboss.reddeer.swt.api.Tree;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
@@ -121,15 +120,27 @@ public class ServerManipulator {
 
 	public static void startServer(String name) {
 
+		doOperation("Start", name);
+	}
+
+	public static void debugServer(String name) {
+
+		doOperation("Debug", name);
+	}
+
+	public static void restartInDebug(String name) {
+
+		doOperation("Restart in Debug", name);
+	}
+
+	private static void doOperation(String operation, String name) {
+
 		log.info("Start server " + name);
 		new ServersView().open();
 		for (TreeItem item : new DefaultTree().getItems()) {
 			if (item.getText().startsWith(name)) {
 				item.select();
-				if (!item.getText().contains("Stopped")) {
-					throw new ServersViewException("Cannot start server because it is not stopped");
-				}
-				new ContextMenu("Start").select();
+				new ContextMenu(operation).select();
 
 				for (int i = 0; i < 10; i++) {
 					AbstractWait.sleep(TimePeriod.SHORT);
@@ -139,7 +150,6 @@ public class ServerManipulator {
 						new PushButton("OK").click();
 						AbstractWait.sleep(TimePeriod.SHORT);
 						new WorkbenchShell();
-						break;
 					}
 				}
 
@@ -152,14 +162,6 @@ public class ServerManipulator {
 				break;
 			}
 		}
-		new WorkbenchShell().setFocus();
-	}
-
-	public static void debugServer(String name) {
-
-		Server server = new ServersView().getServer(name);
-		server.debug();
-		AbstractWait.sleep(TimePeriod.NORMAL);
 		new WorkbenchShell().setFocus();
 	}
 

@@ -18,7 +18,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
@@ -27,7 +26,6 @@ import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.handler.ShellHandler;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
@@ -78,7 +76,7 @@ import org.xml.sax.SAXException;
 @OpenPerspective(FuseIntegrationPerspective.class)
 @RunWith(RedDeerSuite.class)
 @Server(type = ServerReqType.Fuse, state = ServerReqState.PRESENT)
-public class RegressionTest {
+public class RegressionTest extends DefaultTest {
 
 	@InjectRequirement
 	private ServerRequirement serverRequirement;
@@ -90,13 +88,7 @@ public class RegressionTest {
 		if (ServerManipulator.isServerStarted(server)) {
 			ServerManipulator.stopServer(server);
 		}
-		new DefaultToolItem(new WorkbenchShell(), 0, new WithTooltipTextMatcher(new RegexMatcher("Save All.*"))).click();
 		new ProjectExplorer().deleteAllProjects();
-		ShellHandler.getInstance().closeAllNonWorbenchShells();
-		try {
-			new ConsoleView().terminateConsole();
-		} catch (Exception e) {
-		}
 	}
 
 	/**
@@ -232,7 +224,9 @@ public class RegressionTest {
 
 		ProjectFactory.createProject("camel-web", "camel-archetype-web");
 		new CamelProject("camel-web").runApplicationContextWithoutTests("applicationContext.xml");
-		new WaitUntil(new ConsoleHasText("[INFO] Started Jetty Server\nHello Web Application, how are you?"), TimePeriod.LONG);
+		new WaitUntil(new ConsoleHasText("[INFO] Started Jetty Server"), TimePeriod.LONG);
+		new WaitUntil(new ConsoleHasText("Hello Web Application, how are you?"), TimePeriod.LONG);
+		
 	}
 
 	/**
@@ -396,7 +390,7 @@ public class RegressionTest {
 		String server = serverRequirement.getConfig().getName();
 		ServerManipulator.addModule(server, "camel-blueprint");
 		ServerManipulator.startServer(server);
-		new ServersView().getServer(server).restartInDebug();
+		ServerManipulator.restartInDebug(server);
 		try {
 			new WaitUntil(new ShellWithTextIsAvailable("Problem Occurred"));
 			new DefaultShell("Problem Occurred");
