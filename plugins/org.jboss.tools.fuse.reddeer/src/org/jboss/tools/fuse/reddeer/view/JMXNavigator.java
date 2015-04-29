@@ -85,6 +85,8 @@ public class JMXNavigator extends WorkbenchView {
 
 		for (TreeItem item : items) {
 			if (item.getText().equals("Local Processes")) {
+				item.collapse();
+				AbstractWait.sleep(TimePeriod.SHORT);
 				item.expand();
 				items = item.getItems();
 				break;
@@ -102,7 +104,7 @@ public class JMXNavigator extends WorkbenchView {
 		}
 		if (!camelContext) {
 			for (TreeItem item : items) {
-				if (item.getText().startsWith("maven [")) {
+				if (item.getText().startsWith("maven [") || item.getText().startsWith("karaf")) {
 					item.select();
 					item.doubleClick();
 					expand(item);
@@ -114,9 +116,9 @@ public class JMXNavigator extends WorkbenchView {
 		for (int i = 0; i < path.length; i++) {
 			for (TreeItem item : items) {
 
-				if (i == 0 && (path[i].equals("Local Camel Context") && item.getText().startsWith(path[i]) ||
-						// node 'JBoss Fuse' could be sometimes named 'karaf'
-						 path[i].equals("karaf") && (item.getText().contains(path[i]) || item.getText().startsWith("JBoss Fuse")))) {
+				if (i == 0 &&
+						(path[0].equals("Local Camel Context") && item.getText().startsWith("Local Camel Context") ||
+						 path[0].equals("karaf") && (item.getText().contains(path[i]) || item.getText().startsWith("JBoss Fuse")))) {
 
 					if (i == path.length - 1) {
 						return item;

@@ -9,11 +9,14 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.swt.handler.ShellHandler;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.fuse.reddeer.condition.FuseLogContainsText;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
+import org.jboss.tools.fuse.reddeer.preference.ConsolePreferencePage;
 import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
 import org.jboss.tools.fuse.reddeer.view.ErrorLogView;
 import org.jboss.tools.fuse.reddeer.view.JMXNavigator;
@@ -21,6 +24,7 @@ import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
@@ -57,22 +61,46 @@ public class JMXNavigatorServerTest {
 			return;
 		}
 
+		// Maximizing workbench shell
+		new WorkbenchShell().maximize();
+
+		// Disable showing Console view after standard output changes
+		ConsolePreferencePage consolePref = new ConsolePreferencePage();
+		consolePref.open();
+		consolePref.toggleShowConsoleErrorWrite(false);
+		consolePref.toggleShowConsoleStandardWrite(false);
+		consolePref.ok();
+
 		ProjectFactory.createProject(PROJECT_NAME, PROJECT_ARCHETYPE);
 		serverName = serverReq.getConfig().getName();
 		ServerManipulator.addModule(serverName, PROJECT_NAME);
 
-		setupIsDone = true;
+		// Deleting Error Log
 		new ErrorLogView().deleteLog();
+
+		setupIsDone = true;
+	}
+
+	@After
+	public void defaultClean() {
+
+		new WorkbenchShell();
+
+		// Closing all non workbench shells 
+		ShellHandler.getInstance().closeAllNonWorbenchShells();
 	}
 
 	@AfterClass
-	public static void cleanUp() {
+	public static void defaultFinalClean() {
 
-		ServerManipulator.removeAllModules(serverName);
+		new WorkbenchShell();
+		
+		// Deleting all projects
 		new ProjectExplorer().deleteAllProjects();
-		ServerManipulator.stopServer(serverName);
-		ServerManipulator.removeServer(serverName);
-		ServerManipulator.removeServerRuntime(serverName + " Runtime");
+
+		// Stopping and deleting configured servers
+		ServerManipulator.deleteAllServers();
+		ServerManipulator.deleteAllServerRuntimes();
 	}
 
 	@Test
@@ -82,7 +110,7 @@ public class JMXNavigatorServerTest {
 		assertNotNull(jmx.getNode("karaf"));
 		jmx.connectTo("karaf");
 		assertNotNull(jmx.getNode("karaf", "Camel", "camel-1", "Endpoints", "timer", "foo?period=5000"));
-		assertNotNull(jmx.getNode("karaf", "Camel", "camel-1", "Routes", "route1", "timer:foo?period=5000", "setBody1", "log1"));
+		assertNotNull(jmx.getNode("karaf", "Camel", "camel-1", "Routes", "route1", "timer:foo?period=5000", "setBody", "log"));
 		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 
