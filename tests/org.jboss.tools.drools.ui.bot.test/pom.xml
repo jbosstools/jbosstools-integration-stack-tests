@@ -15,6 +15,7 @@
   <properties>
     <plugin.version>6.0.1.Final</plugin.version>
     <binaries.brms5>http://download.devel.redhat.com/released/JBossBRMS/5.3.1/brms-p-5.3.1.GA-deployable.zip</binaries.brms5>
+    <reddeer.config>${project.build.directory}/config</reddeer.config>
     <systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=${reddeer.config}</systemProperties>
   </properties>
 
@@ -88,6 +89,55 @@
                 <echo file="resources/project.properties" append="true">location.drools5=${project.build.directory}${file.separator}runtime5${file.separator}binaries${line.separator}</echo>
               </tasks>
             </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.googlecode.maven-download-plugin</groupId>
+        <artifactId>download-maven-plugin</artifactId>
+        <version>1.2.0</version>
+        <configuration>
+          <skip>${skipRequirements}</skip>
+        </configuration>
+        <executions>
+          <execution>
+            <id>download-brms6</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>wget</goal>
+            </goals>
+            <configuration>
+              <url>http://download.devel.redhat.com/released/JBossBRMS/6.1.0/jboss-brms-6.1.0.GA-engine.zip</url>
+              <md5>c9c18c0e286c3d48c485c7988d7e51b9</md5>
+              <unpack>true</unpack>
+              <outputDirectory>${project.build.directory}</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.6</version>
+        <executions>
+          <execution>
+            <id>copy-resources</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <encoding>UTF-8</encoding>
+              <outputDirectory>${project.build.directory}</outputDirectory>
+              <resources>          
+                <resource>
+                  <directory>resources</directory>
+                  <includes>
+                    <include>config/*</include>
+                  </includes>
+                  <filtering>true</filtering>
+                </resource>
+              </resources>
+            </configuration>            
           </execution>
         </executions>
       </plugin>
