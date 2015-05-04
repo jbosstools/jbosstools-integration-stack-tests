@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.Arrays;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Signal;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.UserTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.catchevents.SignalIntermediateCatchEvent;
@@ -33,7 +34,7 @@ public class ComplexIntermediateCatchSignalSingleTest extends JBPM6ComplexTest {
 		
 		SignalIntermediateCatchEvent catchEvent = 
 			(SignalIntermediateCatchEvent) userTask.append("Catch", ElementType.SIGNAL_INTERMEDIATE_CATCH_EVENT);
-		catchEvent.setSignalMapping("BatmanSignal", VARIABLE1);
+		catchEvent.setSignalMapping(new Signal("BatmanSignal"), VARIABLE1);
 		catchEvent.connectTo(new ScriptTask("Script Task"));
 	}
 	

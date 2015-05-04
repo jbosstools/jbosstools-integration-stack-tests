@@ -14,7 +14,7 @@ public class CalledActivityDialog {
 	 * @param callableActivityName
 	 */
 	public void add(String callableActivityName) {
-		new DefaultShell("Called Element").setFocus();
+		new DefaultShell("Called Element");
 		new DefaultText(0).setText(callableActivityName);
 		new PushButton("OK").click();
 	}

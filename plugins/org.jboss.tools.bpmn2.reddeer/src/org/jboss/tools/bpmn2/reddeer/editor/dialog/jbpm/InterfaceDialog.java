@@ -22,7 +22,7 @@ public class InterfaceDialog {
 	 * @param interfaceName
 	 */
 	public void select(String interfaceName) {
-		new DefaultShell("Select an Interface for the new Operation").setFocus();
+		new DefaultShell("Select an Interface for the new Operation");
 		new DefaultTable().select(interfaceName);
 		new PushButton("OK").click();
 	}

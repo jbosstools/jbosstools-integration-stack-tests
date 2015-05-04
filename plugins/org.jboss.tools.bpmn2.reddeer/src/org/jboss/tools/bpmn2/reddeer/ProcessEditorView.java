@@ -309,7 +309,7 @@ public class ProcessEditorView extends SWTBotGefEditor {
 	 */
 	protected void repairProcessModel() {
 		try {
-			new DefaultShell("Selection Needed").setFocus();
+			new DefaultShell("Selection Needed");
 			new PushButton("Select All").click();
 			new PushButton("OK").click();
 		} catch (SWTLayerException e) {
@@ -325,7 +325,7 @@ public class ProcessEditorView extends SWTBotGefEditor {
 		try {
 			log.info("Handling 'BPMN2 Project Nature'. Value '" + on + "'");
 			Thread.sleep(SAVE_SLEEP_TIME);
-			new DefaultShell("Configure BPMN2 Project Nature").setFocus();
+			new DefaultShell("Configure BPMN2 Project Nature");
 			new CheckBox().click();
 			new PushButton(on ? "Yes": "No").click();
 		} catch (InterruptedException e) {

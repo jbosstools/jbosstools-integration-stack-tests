@@ -1,9 +1,17 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions;
 
+import static org.junit.Assert.assertEquals;
+
 import org.jboss.reddeer.swt.api.Combo;
+import org.jboss.reddeer.swt.api.Shell;
+import org.jboss.reddeer.swt.condition.ShellIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.lookup.ShellLookup;
+import org.jboss.reddeer.swt.util.Display;
+import org.jboss.reddeer.swt.util.ResultRunnable;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.EscalationDialog;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.EventDefinition;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Escalation;
@@ -30,15 +38,16 @@ public class EscalationEventDefinition extends EventDefinition {
 	
 	@Override
 	public void setUp() {
-		Combo c = new LabeledCombo("Escalation");
+	    Shell shell = new DefaultShell();
+	    Combo c = new LabeledCombo("Escalation");
 		if (!c.getItems().contains(escalation.getName())) {
 			new PushButton(0).click();
 			new EscalationDialog().add(escalation);
 		} else {
 			c.setSelection(escalation.getName());
 		}
-		
-		new DefaultShell().setFocus();
+		shell.setFocus();
+		new WaitUntil(new ShellIsActive());
 		c = new LabeledCombo(comboForMappingLabel);
 		if (!c.getItems().contains(variableForMaping)) {
 			throw new IllegalArgumentException(variableForMaping + " wasn't in list of variables");
@@ -47,5 +56,4 @@ public class EscalationEventDefinition extends EventDefinition {
 		
 		new SectionToolItem("Escalation Event Definition Details", "Close").click();
 	}
-	
 }

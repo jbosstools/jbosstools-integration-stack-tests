@@ -21,7 +21,7 @@ public class ImportJavaTypeDialog {
 		String typeName = dataType;
 		String typeLabel = typeName.substring(typeName.lastIndexOf(".") + 1) + " - " + typeName;
 		
-		new DefaultShell("Browse for a Java type to Import").setFocus();
+		new DefaultShell("Browse for a Java type to Import");
 		new LabeledText("Type:").typeText(dataType);
 		new DefaultTree().selectItems(new DefaultTreeItem(typeLabel));
 		new PushButton("OK").click();

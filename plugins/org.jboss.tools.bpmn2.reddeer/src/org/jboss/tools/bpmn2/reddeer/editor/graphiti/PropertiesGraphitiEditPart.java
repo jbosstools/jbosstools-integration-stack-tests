@@ -2,6 +2,7 @@ package org.jboss.tools.bpmn2.reddeer.editor.graphiti;
 
 import org.eclipse.gef.EditPart;
 import org.jboss.reddeer.graphiti.impl.graphitieditpart.AbstractGraphitiEditPart;
+import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -24,7 +25,9 @@ public class PropertiesGraphitiEditPart extends AbstractGraphitiEditPart {
 	public void setUpTabs(SetUpAble... tabs) {
 	
 		getContextButton("Show Properties").click();
-		new DefaultShell().setFocus();
+		Shell shell = new DefaultShell();
+		String shellLabel = shell.getText();
+		shell.setFocus();
 		try{
 			for(SetUpAble tab : tabs) {
 				
@@ -38,7 +41,7 @@ public class PropertiesGraphitiEditPart extends AbstractGraphitiEditPart {
 				}
 			}
 		}finally{
-			new DefaultShell().setFocus();
+		    new DefaultShell(shellLabel);
 			new PushButton("OK").click();
 		}
 	}

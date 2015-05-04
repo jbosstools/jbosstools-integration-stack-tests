@@ -1,8 +1,11 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions;
 
 import org.jboss.reddeer.swt.api.Combo;
+import org.eclipse.swt.widgets.ToolBar;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
+import org.jboss.reddeer.swt.lookup.ToolBarLookup;
+import org.jboss.reddeer.swt.lookup.ToolItemLookup;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.ErrorDialog;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.EventDefinition;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ErrorRef;
@@ -45,8 +48,7 @@ public class ErrorEventDefinition extends EventDefinition {
 			errorCombo.setSelection(comboItem);
 		}
 		
-		
-		new SectionToolItem("Error Event Definition Details", "Close").click();
+		//new SectionToolItem("Error Event Definition Details", "Close").click();
 	}
 	
 }

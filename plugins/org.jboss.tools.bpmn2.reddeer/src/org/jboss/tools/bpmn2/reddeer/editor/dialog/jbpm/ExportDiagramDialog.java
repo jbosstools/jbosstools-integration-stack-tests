@@ -38,7 +38,7 @@ public class ExportDiagramDialog {
 	 * @param format
 	 */
 	public void export(ImageFormat format) {
-		new DefaultShell("Export Diagram").setFocus();
+		new DefaultShell("Export Diagram");
 		new RadioButton("All").click();
 		new DefaultCombo().setSelection(format.name());
 		new PushButton("OK").click();

@@ -1,10 +1,11 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm;
 
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
 
 /**
@@ -12,7 +13,8 @@ import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
  */
 public class Escalation {
 
-	private String name;
+	private static final String SHELL_LABEL = "Create New Escalation";
+    private String name;
 	private String code;
 
 	/**
@@ -56,11 +58,12 @@ public class Escalation {
 	}
 	
 	public void setUpViaDialog() {
-		new DefaultShell("Create New Escalation").setFocus();
+		new DefaultShell(SHELL_LABEL);
 		new DefaultTabItem("General").activate();
 		new LabeledText("Name").setText(name);
 		new DefaultTabItem("Escalation").activate();
 		new LabeledText("Escalation Code").setText(code);
 		new PushButton("OK").click();
+		new WaitWhile(new ShellWithTextIsActive(SHELL_LABEL));
 	}
 }

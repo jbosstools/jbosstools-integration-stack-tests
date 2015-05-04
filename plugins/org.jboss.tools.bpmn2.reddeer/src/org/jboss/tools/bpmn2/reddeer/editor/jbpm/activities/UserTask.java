@@ -1,6 +1,5 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 
-import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.impl.button.LabeledCheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -99,8 +98,7 @@ public class UserTask extends Task {
 	
 	public boolean getSkippable() {
 		propertiesHandler.activateGraphitiPropertiesView();
-		Shell shell = new DefaultShell();
-		shell.setFocus();
+		new DefaultShell("Edit User Task");
 		new DefaultTabItem(PropertiesTabs.USER_TASK_TAB).activate();
 		boolean result =  new LabeledCheckBox("Skippable").isChecked();
 		new PushButton("OK").click();

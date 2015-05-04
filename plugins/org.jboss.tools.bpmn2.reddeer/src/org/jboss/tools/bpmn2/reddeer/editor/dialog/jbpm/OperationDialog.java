@@ -21,7 +21,7 @@ public class OperationDialog {
 	 * @param operation
 	 */
 	public void add(Operation operation) {
-		new DefaultShell("Create New Operation").setFocus();
+		new DefaultShell("Create New Operation");
 		operation.setUp();
 		new PushButton("OK").click();
 		new WaitWhile(new ShellWithTextIsActive("Create New Operation"),TimePeriod.LONG);

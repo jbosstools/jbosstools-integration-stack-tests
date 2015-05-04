@@ -4,6 +4,7 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.tools.bpmn2.reddeer.DefaultCombo;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.SignalDialog;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.EventDefinition;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Signal;
 import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
 
 /**
@@ -19,7 +20,7 @@ public class SignalEventDefinition extends EventDefinition {
 		}
 	}
 	
-	private String signalName;
+	private Signal signal;
 	private String variableName;
 	private Type type;
 
@@ -27,8 +28,8 @@ public class SignalEventDefinition extends EventDefinition {
 	 * 
 	 * @param signalName
 	 */
-	public SignalEventDefinition(String signalName, Type type) {
-		this(signalName, null, type);
+	public SignalEventDefinition(Signal signal, Type type) {
+		this(signal, null, type);
 	}
 	
 	/**
@@ -36,8 +37,8 @@ public class SignalEventDefinition extends EventDefinition {
 	 * @param signalName
 	 * @param variableName
 	 */
-	public SignalEventDefinition(String signalName, String variableName, Type type) {
-		this.signalName = signalName;
+	public SignalEventDefinition(Signal signal, String variableName, Type type) {
+		this.signal = signal;
 		this.variableName = variableName;
 		this.type = type;
 	}
@@ -45,11 +46,11 @@ public class SignalEventDefinition extends EventDefinition {
 	@Override
 	public void setUp() {
 		DefaultCombo combo = new DefaultCombo("Signal");
-		if (!combo.contains(signalName)) {
+		if (!combo.contains(signal.getName())) {
 			new PushButton(0).click();
-			new SignalDialog().add(signalName);
+			new SignalDialog().add(signal);
 		}
-		combo.setSelection(signalName);
+		combo.setSelection(signal.getName());
 		
 		new DefaultCombo(type.label()).setSelection( variableName);
 		new SectionToolItem("Signal Event Definition Details", "Close").click();

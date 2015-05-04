@@ -39,7 +39,7 @@ public class InterfacesTab {
 	public void importInterface(String fullQualifiedName){
 		new SectionToolItem("Interface List", "Import").click();
 		
-		new DefaultShell("Browse for a Java type to Import").setFocus();
+		new DefaultShell("Browse for a Java type to Import");
 		new LabeledText("Type:").typeText(fullQualifiedName);
 		
 		String type = fullQualifiedName.substring(fullQualifiedName.lastIndexOf(".")+1);
