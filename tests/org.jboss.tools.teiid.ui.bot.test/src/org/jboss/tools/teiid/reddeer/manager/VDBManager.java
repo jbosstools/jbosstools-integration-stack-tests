@@ -11,6 +11,7 @@ import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.wait.TimePeriod;
@@ -154,15 +155,16 @@ public class VDBManager {
 		if (! pathToVDB[pathToVDB.length-1].contains(".vdb")){
 			pathToVDB[pathToVDB.length-1] = pathToVDB[pathToVDB.length-1].concat(".vdb");
 		}
+		new DefaultShell();
 		new ModelExplorer().getProject(pathToVDB[0]).getProjectItem(pathToVDB[1]).select();
 		new ContextMenu("Modeling", "Create VDB Data Source").select();
 		try{
-			if (new SWTWorkbenchBot().activeShell().getText().equals("VDB Not Yet Deployed ")){
-				new PushButton("Yes").click();//create ds anyway
-			}
+			new DefaultShell("VDB Not Yet Deployed ");
+			new PushButton("Yes").click();//create ds anyway
 		} catch (Exception e){
 			
 		}
+		new DefaultShell();
 		new DefaultText(1).setText(jndiName);
 		if (passThruAuth){
 			new CheckBox("Pass Thru Authentication").click();

@@ -6,6 +6,7 @@ import org.jboss.reddeer.eclipse.datatools.ui.DatabaseProfile;
 import org.jboss.reddeer.eclipse.datatools.ui.FlatFileProfile;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileSelectPage;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileWizard;
+import org.jboss.tools.teiid.reddeer.wizard.ConnectionProfileXmlLocalPage;
 import org.jboss.tools.teiid.reddeer.wizard.ConnectionProfileXmlPage;
 import org.jboss.tools.teiid.reddeer.wizard.ConnectionProfileXmlUrlPage;
 import org.jboss.tools.teiid.reddeer.wizard.RestProfileWizard;
@@ -125,8 +126,9 @@ public class ConnectionProfileManager {
 	 * @param path for URL source, in form "http..."
 	 */
 	public void createCPXml(String name, String path) {//cp
+		boolean isRemote = path.startsWith("http");
 		String xmlProfile = "XML Local File Source";
-		if (path.startsWith("http")) {
+		if (isRemote) {
 			xmlProfile = "XML File URL Source";
 		}
 
@@ -139,8 +141,8 @@ public class ConnectionProfileManager {
 
 		wizard.next();
 
-		ConnectionProfileXmlPage xmlPage = new ConnectionProfileXmlUrlPage();
-		xmlPage.setPath(new TeiidBot().toAbsolutePath(path));
+		ConnectionProfileXmlPage xmlPage = isRemote?new ConnectionProfileXmlUrlPage():new ConnectionProfileXmlLocalPage();
+		xmlPage.setPath(isRemote?path:new TeiidBot().toAbsolutePath(path));
 
 		wizard.finish();
 	}
