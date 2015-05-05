@@ -34,4 +34,12 @@ public class DroolsRuntimePreferencePage extends WorkbenchPreferencePage {
 		dialog.open();
 		dialog.select(this);
 	}
+	
+	public void setDroolsRuntimeAsDefault(String name) {
+        for (TableItem item : new DefaultTable().getItems()) {
+            if (item.getText(0).equals(name)) {
+                item.setChecked(true);
+            }
+        }
+    }
 }

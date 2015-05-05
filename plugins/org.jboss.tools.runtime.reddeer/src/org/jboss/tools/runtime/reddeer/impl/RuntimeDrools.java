@@ -22,6 +22,7 @@ public class RuntimeDrools extends RuntimeBase {
 		droolsRuntimeWizard.setName(getName());
 		droolsRuntimeWizard.setPath(getHome());
 		droolsRuntimeWizard.ok();
+		droolsRuntimePreferencePage.setDroolsRuntimeAsDefault(getName());
 		droolsRuntimePreferencePage.ok();
 	}
 	
