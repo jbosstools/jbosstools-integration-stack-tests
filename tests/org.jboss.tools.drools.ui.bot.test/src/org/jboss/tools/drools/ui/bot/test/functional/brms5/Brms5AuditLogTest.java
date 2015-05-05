@@ -3,6 +3,7 @@ package org.jboss.tools.drools.ui.bot.test.functional.brms5;
 import java.util.List;
 
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -11,27 +12,33 @@ import org.jboss.reddeer.swt.matcher.RegexMatcher;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
 import org.jboss.tools.drools.reddeer.view.AuditView;
+import org.jboss.tools.drools.ui.bot.test.annotation.Drools5Runtime;
 import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
 import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
 import org.jboss.tools.drools.ui.bot.test.group.SmokeTest;
 import org.jboss.tools.drools.ui.bot.test.util.ApplicationIsTerminated;
 import org.jboss.tools.drools.ui.bot.test.util.RunUtility;
-import org.jboss.tools.drools.ui.bot.test.util.RuntimeVersion;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 
+@Runtime(type = RuntimeReqType.DROOLS)
 @RunWith(RedDeerSuite.class)
 public class Brms5AuditLogTest extends TestParent {
+	
+	@InjectRequirement
+	private RuntimeRequirement droolsRequirement;
 
-    public Brms5AuditLogTest() {
-        super(RuntimeVersion.BRMS_5);
-    }
-
-    @Test @Category(SmokeTest.class)
-    @UsePerspective(DroolsPerspective.class) @UseDefaultProject
+    @Test
+    @Category(SmokeTest.class)
+    @UsePerspective(DroolsPerspective.class)
+    @UseDefaultProject
+    @Drools5Runtime
     public void testDefaultProject() {
         RunUtility.runAsJavaApplication(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
         new WaitUntil(new ApplicationIsTerminated());
