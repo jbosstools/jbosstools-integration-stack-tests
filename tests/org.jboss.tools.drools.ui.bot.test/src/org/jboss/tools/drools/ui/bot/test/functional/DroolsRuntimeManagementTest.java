@@ -3,6 +3,7 @@ package org.jboss.tools.drools.ui.bot.test.functional;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -11,26 +12,37 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.tools.drools.reddeer.dialog.DroolsRuntimeDialog;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage.DroolsRuntime;
-import org.jboss.tools.drools.ui.bot.test.group.Brms5Test;
 import org.jboss.tools.drools.ui.bot.test.group.SmokeTest;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
 import org.junit.Assert;
-import org.junit.Assume;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 
+@Runtime(type = RuntimeReqType.DROOLS)
 @RunWith(RedDeerSuite.class)
 public class DroolsRuntimeManagementTest extends TestParent {
     private static final Logger LOGGER = Logger.getLogger(DroolsRuntimeManagementTest.class);
 
+    @InjectRequirement
+	private RuntimeRequirement droolsRequirement;
+    
+    @Before
+	public void clearRuntimes() {
+		deleteAllRuntimes();
+	}
+    
     @Test
     @Category(SmokeTest.class)
     public void testAddAndRemoveRuntime() {
         final String name = "testRuntimeCreation";
 
         // add new runtime
-        DroolsRuntimeManagementTest.addRuntime(name, DEFAULT_DROOLS_RUNTIME_LOCATION, false);
+        DroolsRuntimeManagementTest.addRuntime(name, droolsRequirement.getConfig().getRuntimeFamily().getHome(), false);
 
         // check that runtime was added
         DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
@@ -72,14 +84,15 @@ public class DroolsRuntimeManagementTest extends TestParent {
     @Test
     public void testDuplicateName() {
         final String name = "testDuplicateName";
-        addRuntime(name, DEFAULT_DROOLS_RUNTIME_LOCATION, false);
+        final String runtimeHome = droolsRequirement.getConfig().getRuntimeFamily().getHome();
+        addRuntime(name, runtimeHome, false);
 
         DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
         pref.open();
 
         DroolsRuntimeDialog wiz = pref.addDroolsRuntime();
         wiz.setName(name);
-        wiz.setLocation(DEFAULT_DROOLS_RUNTIME_LOCATION);
+        wiz.setLocation(runtimeHome);
 
         Assert.assertFalse("It is possible to save runtime with duplicate name.", wiz.isValid());
         wiz.cancel();
@@ -90,11 +103,12 @@ public class DroolsRuntimeManagementTest extends TestParent {
     public void testSetDefaultRuntime() {
         final String name1 = "testSetDefaultRuntime1";
         final String name2 = "testSetDefaultRuntime2";
+        final String runtimeHome = droolsRequirement.getConfig().getRuntimeFamily().getHome();
 
         DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
         pref.open();
-        addRuntime(name1, DEFAULT_DROOLS_RUNTIME_LOCATION, false, pref);
-        addRuntime(name2, DEFAULT_DROOLS_RUNTIME_LOCATION, false, pref);
+        addRuntime(name1, runtimeHome, false, pref);
+        addRuntime(name2, runtimeHome, false, pref);
         boolean warning = pref.okCloseWarning();
         Assert.assertFalse("Warning was shown although the default runtime was not set.", warning);
 
@@ -133,11 +147,13 @@ public class DroolsRuntimeManagementTest extends TestParent {
         final String name1 = "testDeleteDefaultRuntime1";
         final String name2 = "testDeleteDefaultRuntime2";
         final String name3 = "testDeleteDefaultRuntime3";
+        final String runtimeHome = droolsRequirement.getConfig().getRuntimeFamily().getHome();
+        
         DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
         pref.open();
-        addRuntime(name1, DEFAULT_DROOLS_RUNTIME_LOCATION, true, pref);
-        addRuntime(name2, DEFAULT_DROOLS_RUNTIME_LOCATION, false, pref);
-        addRuntime(name3, DEFAULT_DROOLS_RUNTIME_LOCATION, false, pref);
+        addRuntime(name1, runtimeHome, true, pref);
+        addRuntime(name2, runtimeHome, false, pref);
+        addRuntime(name3, runtimeHome, false, pref);
         pref.okCloseWarning();
 
         pref.open();
@@ -184,7 +200,7 @@ public class DroolsRuntimeManagementTest extends TestParent {
         pref.open();
         DroolsRuntimeDialog wiz = pref.addDroolsRuntime();
         wiz.setName(getTestName());
-        wiz.setLocation(DEFAULT_DROOLS_RUNTIME_LOCATION);
+        wiz.setLocation(droolsRequirement.getConfig().getRuntimeFamily().getHome());
         Assert.assertTrue("Impossible to use created runtime.", wiz.isValid());
         wiz.ok();
 
@@ -204,23 +220,6 @@ public class DroolsRuntimeManagementTest extends TestParent {
         } finally {
             pref.cancel();
         }
-    }
-
-    @Test
-    @Category({ Brms5Test.class, SmokeTest.class })
-    public void testBrms5Runtime() {
-        Assume.assumeNotNull(DROOLS5_RUNTIME_LOCATION);
-
-        DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
-        pref.open();
-        DroolsRuntimeDialog wiz = pref.addDroolsRuntime();
-        wiz.setName(getTestName());
-        wiz.setLocation(DROOLS5_RUNTIME_LOCATION);
-
-        Assert.assertTrue("Impossible to use created runtime.", wiz.isValid());
-        wiz.ok();
-        Assert.assertEquals("Runtime was not created.", 1, pref.getDroolsRuntimes().size());
-        pref.ok();
     }
 
     public static void addRuntime(String name, String location, boolean setAsDefault) {
