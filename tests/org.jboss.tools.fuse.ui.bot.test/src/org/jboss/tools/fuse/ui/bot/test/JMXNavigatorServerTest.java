@@ -20,6 +20,7 @@ import org.jboss.tools.fuse.reddeer.preference.ConsolePreferencePage;
 import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
 import org.jboss.tools.fuse.reddeer.view.ErrorLogView;
 import org.jboss.tools.fuse.reddeer.view.JMXNavigator;
+import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
@@ -55,7 +56,7 @@ public class JMXNavigatorServerTest {
 	private static ServerRequirement serverReq;
 
 	@Before
-	public void setUp() {
+	public void setUp() throws FuseArchetypeNotFoundException {
 
 		if (setupIsDone) {
 			return;

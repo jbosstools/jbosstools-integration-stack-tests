@@ -16,6 +16,7 @@ import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
 import org.jboss.tools.fuse.reddeer.view.ErrorLogView;
 import org.jboss.tools.fuse.reddeer.view.JMXNavigator;
+import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -43,7 +44,7 @@ public class JMXNavigatorTest extends DefaultTest {
 	private static Logger log = Logger.getLogger(JMXNavigatorTest.class);
 
 	@BeforeClass
-	public static void createProject() {
+	public static void createProject() throws FuseArchetypeNotFoundException {
 
 		log.info("Create a new Fuse project (" + PROJECT_ARCHETYPE + ")");
 		ProjectFactory.createProject(PROJECT_NAME, PROJECT_ARCHETYPE);

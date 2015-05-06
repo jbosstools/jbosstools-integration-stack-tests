@@ -55,6 +55,7 @@ import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
 import org.jboss.tools.fuse.reddeer.utils.ResourceHelper;
 import org.jboss.tools.fuse.reddeer.view.JMXNavigator;
 import org.jboss.tools.fuse.ui.bot.test.utils.EditorManipulator;
+import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
@@ -96,10 +97,11 @@ public class RegressionTest extends DefaultTest {
 	 * https://issues.jboss.org/browse/FUSETOOLS-674
 	 * 
 	 * NOTE: not fixed yet - deferred to 8.0
+	 * @throws FuseArchetypeNotFoundException 
 	 */
 	@Ignore
 	@Test
-	public void issue_674() throws ParserConfigurationException, SAXException, IOException {
+	public void issue_674() throws ParserConfigurationException, SAXException, IOException, FuseArchetypeNotFoundException {
 
 		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
@@ -131,9 +133,10 @@ public class RegressionTest extends DefaultTest {
 	/**
 	 * Propose a DebugAs option to start CamelContext & debug java code used by beans from camel routes
 	 * https://issues.jboss.org/browse/FUSETOOLS-853
+	 * @throws FuseArchetypeNotFoundException 
 	 */
 	@Test
-	public void issue_853() {
+	public void issue_853() throws FuseArchetypeNotFoundException {
 
 		ProjectFactory.createProject("camel-blueprint", "camel-archetype-blueprint");
 		new ProjectExplorer().getProject("camel-blueprint").getProjectItem("src/main/resources", "OSGI-INF", "blueprint", "blueprint.xml").select();
@@ -218,9 +221,10 @@ public class RegressionTest extends DefaultTest {
 	/**
 	 * camel context won't run without tests in eclipse kepler
 	 * https://issues.jboss.org/browse/FUSETOOLS-1077
+	 * @throws FuseArchetypeNotFoundException 
 	 */
 	@Test
-	public void issue_1077() {
+	public void issue_1077() throws FuseArchetypeNotFoundException {
 
 		ProjectFactory.createProject("camel-web", "camel-archetype-web");
 		new CamelProject("camel-web").runApplicationContextWithoutTests("applicationContext.xml");
@@ -232,9 +236,10 @@ public class RegressionTest extends DefaultTest {
 	/**
 	 * An endpoint is lost after saving
 	 * https://issues.jboss.org/browse/FUSETOOLS-1085
+	 * @throws FuseArchetypeNotFoundException 
 	 */
 	@Test
-	public void issue_1085() {
+	public void issue_1085() throws FuseArchetypeNotFoundException {
 
 		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
@@ -256,9 +261,10 @@ public class RegressionTest extends DefaultTest {
 	/**
 	 * JMX Navigator - prevent from close Camel Context
 	 * https://issues.jboss.org/browse/FUSETOOLS-1115
+	 * @throws FuseArchetypeNotFoundException 
 	 */
 	@Test
-	public void issue_1115() {
+	public void issue_1115() throws FuseArchetypeNotFoundException {
 
 		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
 		new CamelProject("camel-spring").runCamelContext("camel-context.xml");
@@ -278,9 +284,10 @@ public class RegressionTest extends DefaultTest {
 	/**
 	 * context id is removed on save
 	 * https://issues.jboss.org/browse/FUSETOOLS-1123
+	 * @throws FuseArchetypeNotFoundException 
 	 */
 	@Test
-	public void issue_1123() {
+	public void issue_1123() throws FuseArchetypeNotFoundException {
 
 		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
@@ -295,9 +302,10 @@ public class RegressionTest extends DefaultTest {
 	/**
 	 * Karaf cannot be started in debug mode
 	 * https://issues.jboss.org/browse/FUSETOOLS-1132
+	 * @throws FuseArchetypeNotFoundException 
 	 */
 	@Test
-	public void issue_1132() {
+	public void issue_1132() throws FuseArchetypeNotFoundException {
 
 		ProjectFactory.createProject("camel-blueprint", "camel-archetype-blueprint");
 		String server = serverRequirement.getConfig().getName();
@@ -342,9 +350,10 @@ public class RegressionTest extends DefaultTest {
 	/**
 	 * uninstall of bundles from servers broken
 	 * https://issues.jboss.org/browse/FUSETOOLS-1152
+	 * @throws FuseArchetypeNotFoundException 
 	 */
 	@Test
-	public void issue_1152() {
+	public void issue_1152() throws FuseArchetypeNotFoundException {
 
 		ProjectFactory.createProject("camel-spring-dm", "camel-archetype-spring-dm");
 		String server = serverRequirement.getConfig().getName();
@@ -358,9 +367,10 @@ public class RegressionTest extends DefaultTest {
 	/**
 	 * remove use of the customId attribute
 	 * https://issues.jboss.org/browse/FUSETOOLS-1172
+	 * @throws FuseArchetypeNotFoundException 
 	 */
 	@Test
-	public void issue_1172() throws ParserConfigurationException, SAXException, IOException {
+	public void issue_1172() throws ParserConfigurationException, SAXException, IOException, FuseArchetypeNotFoundException {
 
 		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
@@ -382,9 +392,10 @@ public class RegressionTest extends DefaultTest {
 	/**
 	 * Problem occurred during restart JBoss Fuse
 	 * https://issues.jboss.org/browse/FUSETOOLS-1252
+	 * @throws FuseArchetypeNotFoundException 
 	 */
 	@Test
-	public void issue_1252() {
+	public void issue_1252() throws FuseArchetypeNotFoundException {
 
 		ProjectFactory.createProject("camel-blueprint", "camel-archetype-blueprint");
 		String server = serverRequirement.getConfig().getName();

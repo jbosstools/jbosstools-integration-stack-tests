@@ -12,6 +12,7 @@ import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.fuse.reddeer.perspectives.Fabric8Perspective;
 import org.jboss.tools.fuse.reddeer.view.Fabric8Explorer;
+import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,7 +50,7 @@ public class FabricInCloudTest {
 	private static Fabric8Explorer fab = new Fabric8Explorer();
 
 	@Test
-	public void testCloudFabric() {
+	public void testCloudFabric() throws FuseArchetypeNotFoundException {
 
 		// create a Fabric in the cloud
 		fab.open();

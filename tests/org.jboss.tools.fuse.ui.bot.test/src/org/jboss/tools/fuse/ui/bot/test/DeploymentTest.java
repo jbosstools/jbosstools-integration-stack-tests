@@ -13,6 +13,7 @@ import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
 import org.jboss.tools.fuse.reddeer.view.FuseShell;
+import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.impl.ServerFuse;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
@@ -49,7 +50,7 @@ public class DeploymentTest extends DefaultTest {
 	private ServerFuse fuse = (ServerFuse) serverRequirement.getConfig().getServerBase();
 	
 	@BeforeClass
-	public static void setUp() {
+	public static void setUp() throws FuseArchetypeNotFoundException {
 
 		ProjectFactory.createProject(PROJECT_NAME, PROJECT_ARCHETYPE);
 		ProjectFactory.createProject(PROJECT2_NAME, PROJECT2_ARCHETYPE);

@@ -10,6 +10,7 @@ import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsDescriptionMatcher;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -36,15 +37,20 @@ public class ProjectFactory {
 	 * Creates a new Fuse project from given archetype 
 	 * 
 	 * @param archetype <i>Artifact ID</i> in the <i>New Fuse Project</i> Wizard
+	 * @throws FuseArchetypeNotFoundException 
 	 */
-	public static void createProject(String name, String archetype) {
+	public static void createProject(String name, String archetype) throws FuseArchetypeNotFoundException {
 
 		FuseProjectWizard projectWizard = new FuseProjectWizard();
 		projectWizard.open();
 		projectWizard.setProjectName(name);
 		projectWizard.next();
 		projectWizard.setFilter(archetype);
-		projectWizard.selectFirstArchetype();
+		try {
+			projectWizard.selectFirstArchetype();
+		} catch (SWTLayerException e) {
+			throw new FuseArchetypeNotFoundException();
+		}
 		projectWizard.finish();
 
 		try {

@@ -2,6 +2,7 @@ package org.jboss.tools.fuse.ui.bot.test;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
@@ -13,6 +14,7 @@ import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.After;
 import org.junit.Test;
@@ -33,161 +35,241 @@ public class FuseProjectTest extends DefaultTest {
 	@Test
 	public void camelCxfCodeTest() {
 
-		ProjectFactory.createProject("test", "camel-cxf-code-first-archetype");
-		assertTrue(isPresent());
-		assertFalse(hasErrors());
+		try {
+			ProjectFactory.createProject("test", "camel-cxf-code-first-archetype");
+		} catch (FuseArchetypeNotFoundException e) {
+			fail("Archetype is not available");
+		}
+		assertTrue("Project is not present in Project Explorer", isPresent());
+		assertFalse("Project was created with errors", hasErrors());
 	}
 
 	@Test
 	public void camelCxfContractTest() {
 
-		ProjectFactory.createProject("test", "camel-cxf-contract-first-archetype");
-		assertTrue(isPresent());
-		assertFalse(hasErrors());
+		try {
+			ProjectFactory.createProject("test", "camel-cxf-contract-first-archetype");
+		} catch (FuseArchetypeNotFoundException e) {
+			fail("Archetype is not available");
+		}
+		assertTrue("Project is not present in Project Explorer", isPresent());
+		assertFalse("Project was created with errors", hasErrors());
 	}
 
 	@Test
 	public void camelDroolsTest() {
 
-		ProjectFactory.createProject("test", "camel-drools-archetype");
-		assertTrue(isPresent());
-		assertFalse(hasErrors());
+		try {
+			ProjectFactory.createProject("test", "camel-drools-archetype");
+		} catch (FuseArchetypeNotFoundException e) {
+			fail("Archetype is not available");
+		}
+		assertTrue("Project is not present in Project Explorer", isPresent());
+		assertFalse("Project was created with errors", hasErrors());
 	}
 
 	@Test
 	public void camelWebServiceTest() {
 
-		ProjectFactory.createProject("test", "camel-webservice-archetype");
-		assertTrue(isPresent());
-		assertFalse(hasErrors());
+		try {
+			ProjectFactory.createProject("test", "camel-webservice-archetype");
+		} catch (FuseArchetypeNotFoundException e) {
+			fail("Archetype is not available");
+		}
+		assertTrue("Project is not present in Project Explorer", isPresent());
+		assertFalse("Project was created with errors", hasErrors());
 	}
 
 	@Test
 	public void camelActiveMQTest() {
 
-		ProjectFactory.createProject("test", "camel-archetype-activemq");
-		assertTrue(isPresent());
-		assertFalse(hasErrors());
+		try {
+			ProjectFactory.createProject("test", "camel-archetype-activemq");
+		} catch (FuseArchetypeNotFoundException e) {
+			fail("Archetype is not available");
+		}
+		assertTrue("Project is not present in Project Explorer", isPresent());
+		assertFalse("Project was created with errors", hasErrors());
 	}
 
 	@Test
 	public void camelAPIComponentTest() {
 
-		ProjectFactory.createProject("test", "camel-archetype-api-component");
-		assertTrue(isPresent());
-		assertFalse(hasErrors());
+		try {
+			ProjectFactory.createProject("test", "camel-archetype-api-component");
+		} catch (FuseArchetypeNotFoundException e) {
+			fail("Archetype is not available");
+		}
+		assertTrue("Project is not present in Project Explorer", isPresent());
+		assertFalse("Project was created with errors", hasErrors());
 	}
 
 	@Test
 	public void camelBlueprintTest() {
 
-		ProjectFactory.createProject("test", "camel-archetype-blueprint");
-		assertTrue(isPresent());
-		assertFalse(hasErrors());
+		try {
+			ProjectFactory.createProject("test", "camel-archetype-blueprint");
+		} catch (FuseArchetypeNotFoundException e) {
+			fail("Archetype is not available");
+		}
+		assertTrue("Project is not present in Project Explorer", isPresent());
+		assertFalse("Project was created with errors", hasErrors());
 	}
 
 	@Test
 	public void camelComponentTest() {
 
-		ProjectFactory.createProject("test", "camel-archetype-component");
-		assertTrue(isPresent());
-		assertFalse(hasErrors());
+		try {
+			ProjectFactory.createProject("test", "camel-archetype-component");
+		} catch (FuseArchetypeNotFoundException e) {
+			fail("Archetype is not available");
+		}
+		assertTrue("Project is not present in Project Explorer", isPresent());
+		assertFalse("Project was created with errors", hasErrors());
 	}
 
 	@Test
 	public void camelCxfCodeFirstBlueprint() {
 
-		ProjectFactory.createProject("test", "camel-archetype-cxf-code-first-blueprint");
-		assertTrue(isPresent());
-		assertFalse(hasErrors());
+		try {
+			ProjectFactory.createProject("test", "camel-archetype-cxf-code-first-blueprint");
+		} catch (FuseArchetypeNotFoundException e) {
+			fail("Archetype is not available");
+		}
+		assertTrue("Project is not present in Project Explorer", isPresent());
+		assertFalse("Project was created with errors", hasErrors());
 	}
 
 	@Test
 	public void camelCxfContractFirstBlueprint() {
 
-		ProjectFactory.createProject("test", "camel-archetype-cxf-contract-first-blueprint");
-		assertTrue(isPresent());
-		assertFalse(hasErrors());
+		try {
+			ProjectFactory.createProject("test", "camel-archetype-cxf-contract-first-blueprint");
+		} catch (FuseArchetypeNotFoundException e) {
+			fail("Archetype is not available");
+		}
+		assertTrue("Project is not present in Project Explorer", isPresent());
+		assertFalse("Project was created with errors", hasErrors());
 	}
 
 	@Test
 	public void camelDataFormatTest() {
 
-		ProjectFactory.createProject("test", "camel-archetype-dataformat");
-		assertTrue(isPresent());
-		assertFalse(hasErrors());
+		try {
+			ProjectFactory.createProject("test", "camel-archetype-dataformat");
+		} catch (FuseArchetypeNotFoundException e) {
+			fail("Archetype is not available");
+		}
+		assertTrue("Project is not present in Project Explorer", isPresent());
+		assertFalse("Project was created with errors", hasErrors());
 	}
 
 	@Test
 	public void camelJavaTest() {
 
-		ProjectFactory.createProject("test", "camel-archetype-java");
-		assertTrue(isPresent());
-		assertFalse(hasErrors());
+		try {
+			ProjectFactory.createProject("test", "camel-archetype-java");
+		} catch (FuseArchetypeNotFoundException e) {
+			fail("Archetype is not available");
+		}
+		assertTrue("Project is not present in Project Explorer", isPresent());
+		assertFalse("Project was created with errors", hasErrors());
 	}
 
 	@Test
 	public void camelSCRTest() {
 
-		ProjectFactory.createProject("test", "camel-archetype-scr");
-		assertTrue(isPresent());
-		assertFalse(hasErrors());
+		try {
+			ProjectFactory.createProject("test", "camel-archetype-scr");
+		} catch (FuseArchetypeNotFoundException e) {
+			fail("Archetype is not available");
+		}
+		assertTrue("Project is not present in Project Explorer", isPresent());
+		assertFalse("Project was created with errors", hasErrors());
 	}
 
 	@Test
 	public void camelSpringTest() {
 
-		ProjectFactory.createProject("test", "camel-archetype-spring");
-		assertTrue(isPresent());
-		assertFalse(hasErrors());
+		try {
+			ProjectFactory.createProject("test", "camel-archetype-spring");
+		} catch (FuseArchetypeNotFoundException e) {
+			fail("Archetype is not available");
+		}
+		assertTrue("Project is not present in Project Explorer", isPresent());
+		assertFalse("Project was created with errors", hasErrors());
 	}
 
 	@Test
 	public void camelSpringDMTest() {
 
-		ProjectFactory.createProject("test", "camel-archetype-spring-dm");
-		assertTrue(isPresent());
-		assertFalse(hasErrors());
+		try {
+			ProjectFactory.createProject("test", "camel-archetype-spring-dm");
+		} catch (FuseArchetypeNotFoundException e) {
+			fail("Archetype is not available");
+		}
+		assertTrue("Project is not present in Project Explorer", isPresent());
+		assertFalse("Project was created with errors", hasErrors());
 	}
 
 	@Test
 	public void camelWARTest() {
 
-		ProjectFactory.createProject("test", "camel-archetype-war");
-		assertTrue(isPresent());
-		assertFalse(hasErrors());
+		try {
+			ProjectFactory.createProject("test", "camel-archetype-war");
+		} catch (FuseArchetypeNotFoundException e) {
+			fail("Archetype is not available");
+		}
+		assertTrue("Project is not present in Project Explorer", isPresent());
+		assertFalse("Project was created with errors", hasErrors());
 	}
 
 	@Test
 	public void camelWebTest() {
 
-		ProjectFactory.createProject("test", "camel-archetype-web");
-		assertTrue(isPresent());
-		assertFalse(hasErrors());
+		try {
+			ProjectFactory.createProject("test", "camel-archetype-web");
+		} catch (FuseArchetypeNotFoundException e) {
+			fail("Archetype is not available");
+		}
+		assertTrue("Project is not present in Project Explorer", isPresent());
+		assertFalse("Project was created with errors", hasErrors());
 	}
 
 	@Test
 	public void camelWebConsoleTest() {
 
-		ProjectFactory.createProject("test", "camel-archetype-webconsole");
-		assertTrue(isPresent());
-		assertFalse(hasErrors());
+		try {
+			ProjectFactory.createProject("test", "camel-archetype-webconsole");
+		} catch (FuseArchetypeNotFoundException e) {
+			fail("Archetype is not available");
+		}
+		assertTrue("Project is not present in Project Explorer", isPresent());
+		assertFalse("Project was created with errors", hasErrors());
 	}
 
 	@Test
 	public void camelCxfJaxRSTest() {
 
-		ProjectFactory.createProject("test", "cxf-jaxrs-service");
-		assertTrue(isPresent());
-		assertFalse(hasErrors());
+		try {
+			ProjectFactory.createProject("test", "cxf-jaxrs-service");
+		} catch (FuseArchetypeNotFoundException e) {
+			fail("Archetype is not available");
+		}
+		assertTrue("Project is not present in Project Explorer", isPresent());
+		assertFalse("Project was created with errors", hasErrors());
 	}
 
 	@Test
 	public void camelCxfJaxWSTest() {
 
-		ProjectFactory.createProject("test", "cxf-jaxws-javafirst");
-		assertTrue(isPresent());
-		assertFalse(hasErrors());
+		try {
+			ProjectFactory.createProject("test", "cxf-jaxws-javafirst");
+		} catch (FuseArchetypeNotFoundException e) {
+			fail("Archetype is not available");
+		}
+		assertTrue("Project is not present in Project Explorer", isPresent());
+		assertFalse("Project was created with errors", hasErrors());
 	}
 
 	private boolean hasErrors() {

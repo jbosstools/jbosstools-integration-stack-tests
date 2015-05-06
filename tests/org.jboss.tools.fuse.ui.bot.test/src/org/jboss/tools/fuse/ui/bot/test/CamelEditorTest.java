@@ -25,6 +25,7 @@ import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
 import org.jboss.tools.fuse.reddeer.view.ErrorLogView;
 import org.jboss.tools.fuse.ui.bot.test.utils.EditorManipulator;
+import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.After;
 import org.junit.Before;
@@ -49,7 +50,7 @@ public class CamelEditorTest extends DefaultTest {
 	protected Logger log = Logger.getLogger(CamelEditorTest.class);
 
 	@Before
-	public void resetCamelContext() {
+	public void resetCamelContext() throws FuseArchetypeNotFoundException {
 
 		new WorkbenchShell();
 		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");

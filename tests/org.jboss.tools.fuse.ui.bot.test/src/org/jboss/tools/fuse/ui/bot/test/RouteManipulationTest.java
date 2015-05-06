@@ -24,6 +24,7 @@ import org.jboss.tools.fuse.reddeer.view.ErrorLogView;
 import org.jboss.tools.fuse.reddeer.view.JMXNavigator;
 import org.jboss.tools.fuse.reddeer.view.MessagesView;
 import org.jboss.tools.fuse.ui.bot.test.utils.EditorManipulator;
+import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.After;
 import org.junit.Before;
@@ -41,7 +42,7 @@ import org.junit.runner.RunWith;
 public class RouteManipulationTest extends DefaultTest {
 
 	@Before
-	public void createAndRunCamelProject() {
+	public void createAndRunCamelProject() throws FuseArchetypeNotFoundException {
 
 		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
 		Shell workbenchShell = new WorkbenchShell();

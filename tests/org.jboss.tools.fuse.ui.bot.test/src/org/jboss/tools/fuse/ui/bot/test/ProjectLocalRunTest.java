@@ -18,6 +18,7 @@ import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
 import org.jboss.tools.fuse.reddeer.wizard.CamelTestCaseWizard;
 import org.jboss.tools.fuse.ui.bot.test.utils.EditorManipulator;
+import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -59,7 +60,7 @@ public class ProjectLocalRunTest extends DefaultTest {
 	}
 
 	@BeforeClass
-	public static void createProject() {
+	public static void createProject() throws FuseArchetypeNotFoundException {
 
 		log.info("Create a new Fuse project (" + PROJECT_ARCHETYPE + ")");
 		ProjectFactory.createProject(PROJECT_NAME, PROJECT_ARCHETYPE);
