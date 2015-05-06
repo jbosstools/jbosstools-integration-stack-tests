@@ -6,6 +6,7 @@ import org.hamcrest.Matcher;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.matcher.RegexMatcher;
 import org.jboss.reddeer.swt.matcher.WithMnemonicTextMatcher;
 import org.jboss.reddeer.swt.wait.TimePeriod;
@@ -50,6 +51,23 @@ public class ProjectItemExt {
 
 	public void runAsJUnitTest() {
 		runAs("JUnit Test");
+	}
+	
+	public void delete() {
+		Exception exception = null;
+		for (int i = 0; i <= 10; i++) {
+			try {
+				exception = null;
+				new WorkbenchShell().setFocus();
+				projectItem.delete();
+				break;
+			} catch (Exception e) {
+				exception = e;
+			}
+		}
+		if (exception != null) {
+			throw new RuntimeException("Cannot delete '" + projectItem.getName() + "'", exception);
+		}
 	}
 
 	private class MenuMatcher extends BaseMatcher<String> {

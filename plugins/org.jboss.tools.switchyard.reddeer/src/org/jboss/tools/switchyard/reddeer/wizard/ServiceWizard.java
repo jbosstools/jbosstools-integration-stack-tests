@@ -4,7 +4,6 @@ import org.hamcrest.core.IsNull;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.swt.condition.TableHasRows;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.link.DefaultLink;
@@ -12,10 +11,12 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.matcher.RegexMatcher;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.switchyard.reddeer.condition.TableHasRow;
 
 /**
  * 
@@ -59,12 +60,12 @@ public class ServiceWizard<T extends ServiceWizard<?>> extends WizardDialog {
 		checkInterfaceType("Java").browse();
 		new DefaultShell("");
 		new DefaultText().setText(javaInterface);
-		new WaitUntil(new TableHasRows(new DefaultTable()), TimePeriod.LONG);
+		new WaitUntil(new TableHasRow(new DefaultTable(), new RegexMatcher(".*" + javaInterface + ".*")));
 		new PushButton("OK").click();
 		new WaitWhile(new ShellWithTextIsActive(new IsNull<String>()));
 		return activate();
 	}
-
+	
 	public T createJavaInterface(String javaInterface) {
 		activate().checkInterfaceType("Java").clickInterface();
 		new JavaInterfaceWizard().activate().setName(javaInterface).finish();

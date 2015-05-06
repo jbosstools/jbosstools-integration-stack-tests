@@ -1,10 +1,13 @@
 package org.jboss.tools.switchyard.reddeer.wizard;
 
+import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.switchyard.reddeer.widget.Link;
 
 /**
@@ -47,7 +50,9 @@ public class PromoteServiceWizard extends ServiceWizard<PromoteServiceWizard> {
 
 	public PromoteServiceWizard doNotCreateTransformers() {
 		activate();
-		getCreateRequiredTransformers().toggle(false);
+		CheckBox checkBox = getCreateRequiredTransformers();
+		new WaitUntil(new WidgetIsEnabled(checkBox), TimePeriod.LONG);
+		checkBox.toggle(false);
 		return this;
 	}
 	
