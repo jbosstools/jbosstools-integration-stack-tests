@@ -24,6 +24,7 @@ import org.jboss.tools.switchyard.reddeer.shell.ProjectCapabilitiesShell;
 
 public class SwitchYardProject extends Project {
 
+	public static final String MAIN_SOURCE = "src/main/java";
 	public static final String TEST_SOURCE = "src/test/java";
 
 	public SwitchYardProject(String projectName) {
@@ -43,6 +44,16 @@ public class SwitchYardProject extends Project {
 		return new SwitchYardEditor();
 	}
 
+	public ProjectItemExt getClass(String... path) {
+		String[] newPath = new String[path.length + 1];
+		newPath[0] = MAIN_SOURCE;
+		for (int i = 0; i < path.length; i++) {
+			newPath[i + 1] = path[i];
+		}
+		ProjectItem projectItem = getProjectItem(newPath);
+		return new ProjectItemExt(projectItem);
+	}
+	
 	public ProjectItemExt getTestClass(String... path) {
 		String[] newPath = new String[path.length + 1];
 		newPath[0] = TEST_SOURCE;
