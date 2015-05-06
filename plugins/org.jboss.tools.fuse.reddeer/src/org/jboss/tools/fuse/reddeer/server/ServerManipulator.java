@@ -153,7 +153,7 @@ public class ServerManipulator {
 					}
 				}
 
-				new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+				new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(300));
 				if (name.toLowerCase().contains("fuse")) {
 					new WaitUntil(new ConsoleHasText("100%"), TimePeriod.getCustom(300));
 				}

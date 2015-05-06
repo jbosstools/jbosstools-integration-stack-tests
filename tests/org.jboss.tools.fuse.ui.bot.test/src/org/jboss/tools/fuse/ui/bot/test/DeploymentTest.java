@@ -21,6 +21,7 @@ import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.junit.After;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -68,17 +69,19 @@ public class DeploymentTest extends DefaultTest {
 	}
 
 	@Test
-	public void testServerCreationDeployment() {
+	public void testServerDeployment() {
 
 		ServerManipulator.addServer(fuse.getServerType(), fuse.getHost(), TEST_SERVER, fuse.getPort(), fuse.getUsername(), fuse.getPassword(), PROJECT_NAME);
 		assertTrue(ServerManipulator.hasServerModule(TEST_SERVER, PROJECT_NAME));
 		ServerManipulator.startServer(TEST_SERVER);
+		ServerManipulator.publish(TEST_SERVER);
 		assertTrue(new FuseShell().containsLog(PROJECT_IS_DEPLOYED));
 		ServerManipulator.removeAllModules(TEST_SERVER);
 		AbstractWait.sleep(TimePeriod.getCustom(10));
 		assertTrue(new FuseShell().containsLog(PROJECT_IS_UNDEPLOYED));
 	}
 
+	@Ignore // TODO need to be reworked see https://github.com/jbosstools/jbosstools-integration-stack-tests/issues/313
 	@Test
 	public void testImmeadiatelyPublishing() {
 
