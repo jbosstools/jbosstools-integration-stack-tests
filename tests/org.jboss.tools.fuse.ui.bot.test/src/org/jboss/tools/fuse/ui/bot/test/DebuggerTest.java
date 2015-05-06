@@ -113,6 +113,7 @@ public class DebuggerTest extends DefaultTest {
 		new WaitUntil(new IsSuspended(), TimePeriod.NORMAL);
 		assertTrue(new ConsoleHasText("Enabling debugger").test());
 		VariablesView variables = new VariablesView();
+		AbstractWait.sleep(TimePeriod.getCustom(5));
 		assertEquals(CHOICE, variables.getValue("Endpoint"));
 
 		// get body of message
@@ -136,6 +137,7 @@ public class DebuggerTest extends DefaultTest {
 		new WaitUntil(new IsSuspended(), TimePeriod.NORMAL);
 		assertTrue(new ConsoleHasText("UK message").test());
 		assertTrue(resume.isEnabled());
+		AbstractWait.sleep(TimePeriod.getCustom(5));
 		assertEquals("to1", variables.getValue("Endpoint"));
 
 		// remove all breakpoints
