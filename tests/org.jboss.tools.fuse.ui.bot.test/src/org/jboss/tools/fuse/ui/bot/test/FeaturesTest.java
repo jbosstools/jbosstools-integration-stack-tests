@@ -25,6 +25,7 @@ import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.preference.FuseToolingEditorPreferencePage;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
+import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,9 +43,10 @@ public class FeaturesTest extends DefaultTest {
 	/**
 	 * Graphical Editor - Add option to configure if labels should be shown or not
 	 * https://issues.jboss.org/browse/FUSETOOLS-837
+	 * @throws FuseArchetypeNotFoundException 
 	 */
 	@Test
-	public void test837() {
+	public void test837() throws FuseArchetypeNotFoundException {
 
 		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
@@ -80,9 +82,10 @@ public class FeaturesTest extends DefaultTest {
 	/**
 	 * Add Context Menu to Camel Contexts folder
 	 * https://issues.jboss.org/browse/FUSETOOLS-1274
+	 * @throws FuseArchetypeNotFoundException 
 	 */
 	@Test
-	public void test1274() {
+	public void test1274() throws FuseArchetypeNotFoundException {
 
 		ProjectFactory.createProject("camel-blueprint", "camel-archetype-blueprint");
 		new ProjectExplorer().getProject("camel-blueprint").getProjectItem("Camel Contexts").select();

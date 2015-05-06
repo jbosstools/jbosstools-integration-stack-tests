@@ -13,6 +13,7 @@ import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.C
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.view.JMXNavigator;
+import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,7 +34,7 @@ public class SmokeTest extends DefaultTest {
 	private static Logger log = Logger.getLogger(SmokeTest.class);
 
 	@Test
-	public void testCreateFuseProject() {
+	public void testCreateFuseProject() throws FuseArchetypeNotFoundException {
 
 		log.info("Create a new Fuse project (" + PROJECT_ARCHETYPE + ")");
 		ProjectFactory.createProject(PROJECT_NAME, PROJECT_ARCHETYPE);
