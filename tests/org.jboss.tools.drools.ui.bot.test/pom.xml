@@ -13,7 +13,7 @@
   <packaging>eclipse-test-plugin</packaging>
 
   <properties>
-    <plugin.version>6.0.1.Final</plugin.version>
+    <plugin.version>6.2.0.Final</plugin.version>
     <reddeer.config>${project.build.directory}/config</reddeer.config>
     <systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=${reddeer.config}</systemProperties>
   </properties>
@@ -55,7 +55,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-clean-plugin</artifactId>
-        <version>2.5</version>
         <configuration>
           <filesets>
             <fileset>
@@ -70,7 +69,6 @@
       <plugin>
         <groupId>com.googlecode.maven-download-plugin</groupId>
         <artifactId>download-maven-plugin</artifactId>
-        <version>1.2.0</version>
         <configuration>
           <skip>${skipRequirements}</skip>
         </configuration>
