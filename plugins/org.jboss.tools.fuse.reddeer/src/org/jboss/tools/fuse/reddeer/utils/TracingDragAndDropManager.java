@@ -129,6 +129,7 @@ public class TracingDragAndDropManager {
 		log.debug("Tries to access 'To' item: " + from);
 		JMXNavigator jmx = new JMXNavigator();
 		jmx.open();
+		jmx.setShouldCollapseLocalProcesses(false);
 		return jmx.getNode(to);
 	}
 

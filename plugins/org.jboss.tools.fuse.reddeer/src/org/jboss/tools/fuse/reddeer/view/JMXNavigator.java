@@ -23,9 +23,21 @@ public class JMXNavigator extends WorkbenchView {
 
 	private static final Logger log = Logger.getLogger(JMXNavigator.class);
 
+	private boolean shouldCollapseLocalProcesses = true;
+
 	public JMXNavigator() {
 		super(TITLE);
 	}
+
+	public boolean isShouldCollapseLocalProcesses() {
+		return shouldCollapseLocalProcesses;
+	}
+
+
+	public void setShouldCollapseLocalProcesses(boolean shouldCollapseLocalProcesses) {
+		this.shouldCollapseLocalProcesses = shouldCollapseLocalProcesses;
+	}
+
 
 	/**
 	 * Tries to connect to a specified node under <i>Local Processes</i> in
@@ -85,7 +97,7 @@ public class JMXNavigator extends WorkbenchView {
 
 		for (TreeItem item : items) {
 			if (item.getText().equals("Local Processes")) {
-				item.collapse();
+				if (shouldCollapseLocalProcesses) item.collapse();
 				AbstractWait.sleep(TimePeriod.SHORT);
 				item.expand();
 				items = item.getItems();
