@@ -106,8 +106,8 @@ public class RouteManipulationTest extends DefaultTest {
 		msg.open();
 		jmx.getNode("Local Camel Context", "Camel", "camel-1", "Endpoints", "file", "target/messages/others").select();
 		new TracingDragAndDropManager(from, to).performDragAndDrop();
-		jmx.getNode("Local Camel Context", "Camel", "camel-1", "Endpoints", "file", "target/messages/others").select();
 		new WaitUntil(new ConsoleHasText("INFO  Other message\n[1) thread #2 - file://src/data] route1                         INFO  UK message"), TimePeriod.getCustom(60));
+		jmx.getNode("Local Camel Context", "Camel", "camel-1", "Endpoints", "file", "target/messages/others").select();
 		new TracingDragAndDropManager(from2, to).performDragAndDrop();
 
 		msg = new MessagesView();
