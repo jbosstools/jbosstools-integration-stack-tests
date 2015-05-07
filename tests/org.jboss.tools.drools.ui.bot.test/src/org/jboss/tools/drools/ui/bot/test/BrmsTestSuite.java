@@ -9,6 +9,7 @@ import org.jboss.tools.drools.ui.bot.test.functional.PerspectiveTest;
 import org.jboss.tools.drools.ui.bot.test.functional.RulesManagementTest;
 import org.jboss.tools.drools.ui.bot.test.functional.brms5.Brms5AuditLogTest;
 import org.jboss.tools.drools.ui.bot.test.functional.brms5.Brms5ProjectTest;
+import org.jboss.tools.drools.ui.bot.test.functional.brms5.Brms5RuntimeManagementTest;
 import org.jboss.tools.drools.ui.bot.test.functional.brms6.Brms6ProjectTest;
 import org.jboss.tools.drools.ui.bot.test.functional.drleditor.ConditionsCompletionTest;
 import org.jboss.tools.drools.ui.bot.test.functional.drleditor.ConsequencesCompletionTest;
@@ -46,7 +47,8 @@ import org.junit.runners.Suite.SuiteClasses;
     AuditLogTest.class,
     // 5.x tests
     Brms5ProjectTest.class,
-    Brms5AuditLogTest.class
+    Brms5AuditLogTest.class,
+    Brms5RuntimeManagementTest.class
 })
 public class BrmsTestSuite {
 

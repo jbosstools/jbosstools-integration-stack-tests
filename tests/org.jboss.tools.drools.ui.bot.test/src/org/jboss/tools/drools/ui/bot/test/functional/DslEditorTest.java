@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.drools.reddeer.dialog.DslLineDialog;
@@ -19,16 +20,23 @@ import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
 import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
 import org.jboss.tools.drools.ui.bot.test.util.OpenUtility;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+@Runtime(type = RuntimeReqType.DROOLS)
 @RunWith(RedDeerSuite.class)
 public class DslEditorTest extends TestParent {
     private static final Logger LOGGER = Logger.getLogger(DslEditorTest.class);
     private static final String MAPPING = "System.out.println(\"Hello World!\");";
     private static final String EXPRESSION = "Print Hello";
+    
+    @InjectRequirement
+	private RuntimeRequirement droolsRequirement;
 
     @Before
     public void createDefaultDsl() {
@@ -43,7 +51,9 @@ public class DslEditorTest extends TestParent {
     }
 
     @Test
-    @UsePerspective(JavaPerspective.class) @Drools6Runtime @UseDefaultProject
+    @UsePerspective(JavaPerspective.class)
+    @Drools6Runtime
+    @UseDefaultProject
     public void testOpen() {
         Project project = new PackageExplorer().getProject(DEFAULT_PROJECT_NAME);
         project.getProjectItem(getResourcePath(getTestName() + ".dsl")).open();
@@ -56,7 +66,9 @@ public class DslEditorTest extends TestParent {
     }
 
     @Test
-    @UsePerspective(JavaPerspective.class) @Drools6Runtime @UseDefaultProject
+    @UsePerspective(JavaPerspective.class)
+    @Drools6Runtime
+    @UseDefaultProject
     public void testAddExpression() {
         DslEditor editor = openTestDslFile();
         List<DslLine> origLines = editor.getDslLines();
@@ -81,7 +93,9 @@ public class DslEditorTest extends TestParent {
     }
 
     @Test
-    @UsePerspective(JavaPerspective.class) @Drools6Runtime @UseDefaultProject
+    @UsePerspective(JavaPerspective.class)
+    @Drools6Runtime
+    @UseDefaultProject
     public void testInsertExpression() {
         DslEditor editor = openTestDslFile();
         List<DslLine> origLines = editor.getDslLines();
@@ -109,7 +123,9 @@ public class DslEditorTest extends TestParent {
     }
 
     @Test
-    @UsePerspective(JavaPerspective.class) @Drools6Runtime @UseDefaultProject
+    @UsePerspective(JavaPerspective.class)
+    @Drools6Runtime
+    @UseDefaultProject
     public void testEditExpression() {
         DslEditor editor = openTestDslFile();
         List<DslLine> origLines = editor.getDslLines();
@@ -135,7 +151,9 @@ public class DslEditorTest extends TestParent {
     }
 
     @Test
-    @UsePerspective(JavaPerspective.class) @Drools6Runtime @UseDefaultProject
+    @UsePerspective(JavaPerspective.class)
+    @Drools6Runtime
+    @UseDefaultProject
     public void testRemoveExpression() {
         DslEditor editor = openTestDslFile();
         List<DslLine> origLines = editor.getDslLines();
@@ -152,7 +170,9 @@ public class DslEditorTest extends TestParent {
     }
 
     @Test
-    @UsePerspective(JavaPerspective.class) @Drools6Runtime @UseDefaultProject
+    @UsePerspective(JavaPerspective.class)
+    @Drools6Runtime
+    @UseDefaultProject
     public void testSort() {
         DslEditor editor = openTestDslFile();
         List<DslLine> origLines = editor.getDslLines();
@@ -170,7 +190,9 @@ public class DslEditorTest extends TestParent {
     }
 
     @Test
-    @UsePerspective(JavaPerspective.class) @Drools6Runtime @UseDefaultProject
+    @UsePerspective(JavaPerspective.class)
+    @Drools6Runtime
+    @UseDefaultProject
     public void testOpenHandwrittenDsl() {
         OpenUtility.openResourceWith("Text Editor", DEFAULT_PROJECT_NAME, getResourcePath(getTestName() + ".dsl"));
 
