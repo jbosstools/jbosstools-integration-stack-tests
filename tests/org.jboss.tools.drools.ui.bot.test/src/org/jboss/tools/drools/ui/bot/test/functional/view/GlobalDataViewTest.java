@@ -2,6 +2,7 @@ package org.jboss.tools.drools.ui.bot.test.functional.view;
 
 import java.util.List;
 
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.StyledText;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
@@ -15,19 +16,28 @@ import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
 import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
 import org.jboss.tools.drools.ui.bot.test.util.OpenUtility;
 import org.jboss.tools.drools.ui.bot.test.util.RunUtility;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+@Runtime(type = RuntimeReqType.DROOLS)
 @RunWith(RedDeerSuite.class)
 public class GlobalDataViewTest extends ViewTestParent {
+	
+	@InjectRequirement
+	private RuntimeRequirement droolsRequirement;
 
     public GlobalDataViewTest() {
         super(GlobalDataView.class);
     }
 
     @Test
-    @UsePerspective(DroolsPerspective.class) @Drools6Runtime @UseDefaultProject
+    @UsePerspective(DroolsPerspective.class)
+    @Drools6Runtime
+    @UseDefaultProject
     public void testNoGlobalsDefined() {
         OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
 
@@ -43,7 +53,9 @@ public class GlobalDataViewTest extends ViewTestParent {
     }
 
     @Test
-    @UsePerspective(DroolsPerspective.class) @Drools6Runtime @UseDefaultProject
+    @UsePerspective(DroolsPerspective.class)
+    @Drools6Runtime
+    @UseDefaultProject
     public void testUninitiatedGlobal() {
         OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
 
@@ -64,7 +76,9 @@ public class GlobalDataViewTest extends ViewTestParent {
     }
 
     @Test
-    @UsePerspective(DroolsPerspective.class) @Drools6Runtime @UseDefaultProject
+    @UsePerspective(DroolsPerspective.class)
+    @Drools6Runtime
+    @UseDefaultProject
     public void testMultipleGlobals() {
         OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
 

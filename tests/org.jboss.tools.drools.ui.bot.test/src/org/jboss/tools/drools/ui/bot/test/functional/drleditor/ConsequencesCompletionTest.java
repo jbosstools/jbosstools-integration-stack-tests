@@ -2,13 +2,17 @@ package org.jboss.tools.drools.ui.bot.test.functional.drleditor;
 
 import java.util.List;
 
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.drools.reddeer.editor.ContentAssist;
 import org.jboss.tools.drools.reddeer.editor.RuleEditor;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
-import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
 import org.jboss.tools.drools.ui.bot.test.annotation.Drools6Runtime;
+import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
 import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,11 +20,17 @@ import org.junit.runner.RunWith;
 /*
  * TODO: modify, insert, retract
  */
+@Runtime(type = RuntimeReqType.DROOLS)
 @RunWith(RedDeerSuite.class)
 public class ConsequencesCompletionTest extends DrlCompletionParent {
+	
+	@InjectRequirement
+	private RuntimeRequirement droolsRequirement;
 
     @Test
-    @UsePerspective(DroolsPerspective.class) @Drools6Runtime @UseDefaultProject
+    @UsePerspective(DroolsPerspective.class)
+    @Drools6Runtime
+    @UseDefaultProject
     public void testConsequencesCompletion() {
         RuleEditor editor = master.showRuleEditor();
         editor.setPosition(2, 0);
@@ -63,5 +73,4 @@ public class ConsequencesCompletionTest extends DrlCompletionParent {
         assist.selectItem("NO_PARAMETER : Object - MyMessage");
         assertCorrectText(editor, "$msg.setParameter(MyMessage.NO_PARAMETER);");
     }
-
 }

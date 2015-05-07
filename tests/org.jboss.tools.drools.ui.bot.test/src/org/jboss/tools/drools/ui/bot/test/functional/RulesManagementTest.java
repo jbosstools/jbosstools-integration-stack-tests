@@ -5,6 +5,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.eclipse.ui.perspectives.ResourcePerspective;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
@@ -30,20 +31,29 @@ import org.jboss.tools.drools.ui.bot.test.util.ApplicationIsTerminated;
 import org.jboss.tools.drools.ui.bot.test.util.OpenUtility;
 import org.jboss.tools.drools.ui.bot.test.util.RunUtility;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 
+@Runtime(type = RuntimeReqType.DROOLS)
 @RunWith(RedDeerSuite.class)
 public class RulesManagementTest extends TestParent {
     private static final Logger LOGGER = Logger.getLogger(RulesManagementTest.class);
     private static final String DEBUG_REGEX = "(SLF4J: .*\n)+?" +
             "(kmodules: file:(/.*)+/kmodule.xml\n)?";
     private static final String SUCCESSFUL_RUN_REGEX = DEBUG_REGEX + "Hello World\nGoodbye cruel world\n";
+    
+    @InjectRequirement
+	private RuntimeRequirement droolsRequirement;
 
     @Test
-    @UsePerspective(JavaPerspective.class) @Drools6Runtime @UseDefaultProject
+    @UsePerspective(JavaPerspective.class)
+    @Drools6Runtime
+    @UseDefaultProject
     public void testRunRulesFromContextMenu() {
         ConsoleView console = new ConsoleView();
         console.open();
@@ -60,7 +70,9 @@ public class RulesManagementTest extends TestParent {
     }
 
     @Test
-    @UsePerspective(JavaPerspective.class) @Drools6Runtime @UseDefaultProject
+    @UsePerspective(JavaPerspective.class)
+    @Drools6Runtime
+    @UseDefaultProject
     public void testRunRulesFromToolbar() {
         ConsoleView console = new ConsoleView();
         console.open();
@@ -109,7 +121,9 @@ public class RulesManagementTest extends TestParent {
     }
 
     @Test
-    @UsePerspective(JavaPerspective.class) @Drools6Runtime @UseDefaultProject
+    @UsePerspective(JavaPerspective.class)
+    @Drools6Runtime
+    @UseDefaultProject
     public void testRenameProject() {
         final String oldName = DEFAULT_PROJECT_NAME;
         final String newName = "renamed" + oldName;
@@ -131,7 +145,9 @@ public class RulesManagementTest extends TestParent {
     }
 
     @Test
-    @UsePerspective(JavaPerspective.class) @Drools6Runtime @UseDefaultProject
+    @UsePerspective(JavaPerspective.class)
+    @Drools6Runtime
+    @UseDefaultProject
     public void testSetBreakpoint() {
         OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
 
@@ -152,8 +168,11 @@ public class RulesManagementTest extends TestParent {
         }
     }
 
-    @Test @Category(SmokeTest.class)
-    @UsePerspective(DroolsPerspective.class) @Drools6Runtime @UseDefaultProject
+    @Test
+    @Category(SmokeTest.class)
+    @UsePerspective(DroolsPerspective.class)
+    @Drools6Runtime
+    @UseDefaultProject
     public void testDebugRule() {
         OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
 
@@ -176,5 +195,4 @@ public class RulesManagementTest extends TestParent {
         consoleText = console.getConsoleText();
         Assert.assertTrue("Wrong console text found\n" + consoleText, consoleText.matches(SUCCESSFUL_RUN_REGEX));
     }
-
 }

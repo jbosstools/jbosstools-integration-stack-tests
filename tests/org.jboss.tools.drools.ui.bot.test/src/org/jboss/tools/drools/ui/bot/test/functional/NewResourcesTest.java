@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.drools.reddeer.editor.DrlEditor;
 import org.jboss.tools.drools.reddeer.wizard.NewDecisionTableWizard;
@@ -20,19 +21,28 @@ import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
 import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
 import org.jboss.tools.drools.ui.bot.test.group.SmokeTest;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 
+@Runtime(type = RuntimeReqType.DROOLS)
 @RunWith(RedDeerSuite.class)
 @Category(SmokeTest.class)
 public class NewResourcesTest extends TestParent {
     private static final Pattern RULE_PATTERN = Pattern.compile("(?s)rule.*?when.*?then.*?end");
+    
+    @InjectRequirement
+	private RuntimeRequirement droolsRequirement;
 
     @Test
-    @UsePerspective(JavaPerspective.class) @Drools6Runtime @UseDefaultProject
+    @UsePerspective(JavaPerspective.class)
+    @Drools6Runtime
+    @UseDefaultProject
     public void testNewDRL() {
         final String resourceName = getTestName();
         final String packageName = "com.redhat";
@@ -60,7 +70,9 @@ public class NewResourcesTest extends TestParent {
     }
 
     @Test
-    @UsePerspective(JavaPerspective.class) @Drools6Runtime @UseDefaultProject
+    @UsePerspective(JavaPerspective.class)
+    @Drools6Runtime
+    @UseDefaultProject
     public void testNewIndividualRule() {
         final String resourceName = "testCreateIndividualRule";
         final String packageName = "com.redhat";
@@ -87,7 +99,9 @@ public class NewResourcesTest extends TestParent {
     }
 
     @Test
-    @UsePerspective(JavaPerspective.class) @Drools6Runtime @UseDefaultProject
+    @UsePerspective(JavaPerspective.class)
+    @Drools6Runtime
+    @UseDefaultProject
     public void testNewDsl() {
         final String resourceName = getTestName();
 
@@ -105,7 +119,9 @@ public class NewResourcesTest extends TestParent {
     }
 
     @Test
-    @UsePerspective(JavaPerspective.class) @Drools6Runtime @UseDefaultProject
+    @UsePerspective(JavaPerspective.class)
+    @Drools6Runtime
+    @UseDefaultProject
     public void testNewDslr() {
         final String resourceName = getTestName();
         final String packageName = "com.redhat";
@@ -136,7 +152,9 @@ public class NewResourcesTest extends TestParent {
 
     @Ignore("Opens the decision table and fails remaining tests")
     @Test
-    @UsePerspective(JavaPerspective.class) @Drools6Runtime @UseDefaultProject
+    @UsePerspective(JavaPerspective.class)
+    @Drools6Runtime
+    @UseDefaultProject
     public void testNewDecisionTable() {
         final String resourceName = getTestName();
 

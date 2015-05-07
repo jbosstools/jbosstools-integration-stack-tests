@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.List;
 
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.StyledText;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -14,22 +16,28 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
 import org.jboss.tools.drools.reddeer.view.AuditView;
+import org.jboss.tools.drools.ui.bot.test.annotation.Drools6Runtime;
 import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
 import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
 import org.jboss.tools.drools.ui.bot.test.util.ApplicationIsTerminated;
 import org.jboss.tools.drools.ui.bot.test.util.OpenUtility;
 import org.jboss.tools.drools.ui.bot.test.util.RunUtility;
-import org.jboss.tools.drools.ui.bot.test.util.RuntimeVersion;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+@Runtime(type = RuntimeReqType.DROOLS)
+@RunWith(RedDeerSuite.class)
 public class AuditLogTest extends TestParent {
-    public AuditLogTest() {
-        super(RuntimeVersion.BRMS_6);
-    }
 
+	@InjectRequirement
+	private RuntimeRequirement droolsRequirement;
+	
     @Before
     public void addLoggerToSession() {
         OpenUtility.openResource(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
@@ -47,6 +55,7 @@ public class AuditLogTest extends TestParent {
     @Test
     @UsePerspective(DroolsPerspective.class)
     @UseDefaultProject
+    @Drools6Runtime
     public void testDefaultProject() {
         RunUtility.runAsJavaApplication(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
         new WaitUntil(new ApplicationIsTerminated());
@@ -80,6 +89,7 @@ public class AuditLogTest extends TestParent {
     @Test
     @UsePerspective(DroolsPerspective.class)
     @UseDefaultProject
+    @Drools6Runtime
     public void testBussinessAuditLog() throws Exception {
         String path = new File("resources/test150.log").getAbsolutePath();
 

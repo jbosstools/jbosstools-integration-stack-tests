@@ -2,6 +2,7 @@ package org.jboss.tools.drools.ui.bot.test.functional.view;
 
 import java.util.List;
 
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.drools.reddeer.editor.DrlEditor;
 import org.jboss.tools.drools.reddeer.editor.RuleEditor;
@@ -12,19 +13,28 @@ import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
 import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
 import org.jboss.tools.drools.ui.bot.test.util.OpenUtility;
 import org.jboss.tools.drools.ui.bot.test.util.RunUtility;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+@Runtime(type = RuntimeReqType.DROOLS)
 @RunWith(RedDeerSuite.class)
 public class AgendaViewTest extends ViewTestParent {
+	
+	@InjectRequirement
+	private RuntimeRequirement droolsRequirement;
 
     public AgendaViewTest() {
         super(AgendaView.class);
     }
 
     @Test
-    @UsePerspective(DroolsPerspective.class) @Drools6Runtime @UseDefaultProject
+    @UsePerspective(DroolsPerspective.class)
+    @Drools6Runtime
+    @UseDefaultProject
     public void testAgendaViewDefaultContent() {
         OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
 
@@ -46,7 +56,9 @@ public class AgendaViewTest extends ViewTestParent {
     }
 
     @Test
-    @UsePerspective(DroolsPerspective.class) @Drools6Runtime @UseDefaultProject
+    @UsePerspective(DroolsPerspective.class)
+    @Drools6Runtime
+    @UseDefaultProject
     public void testCustomAgendaGroup() {
         OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
 
@@ -77,5 +89,4 @@ public class AgendaViewTest extends ViewTestParent {
         Assert.assertTrue("Rule 'Hello World' not activated", activations.contains("Hello World"));
         Assert.assertTrue("Rule 'testRule' not activated", activations.contains("testRule"));
     }
-
 }

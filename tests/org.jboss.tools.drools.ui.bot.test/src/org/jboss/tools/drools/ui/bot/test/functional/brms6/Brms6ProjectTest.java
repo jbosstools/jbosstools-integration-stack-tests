@@ -5,6 +5,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.ide.NewJavaProjectWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
@@ -19,26 +20,31 @@ import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage;
 import org.jboss.tools.drools.reddeer.properties.DroolsProjectProperties;
 import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectSelectRuntimeWizardPage.CodeCompatibility;
 import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectWizard;
+import org.jboss.tools.drools.ui.bot.test.annotation.Drools6Runtime;
 import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
 import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
 import org.jboss.tools.drools.ui.bot.test.group.SmokeTest;
-import org.jboss.tools.drools.ui.bot.test.util.RuntimeVersion;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 
+@Runtime(type = RuntimeReqType.DROOLS)
 @RunWith(RedDeerSuite.class)
 public class Brms6ProjectTest extends TestParent {
     private static final Logger LOGGER = Logger.getLogger(Brms6ProjectTest.class);
+    
+    @InjectRequirement
+	private RuntimeRequirement droolsRequirement;
 
-    public Brms6ProjectTest() {
-        super(RuntimeVersion.BRMS_6);
-    }
-
-    @Test @Category(SmokeTest.class)
+    @Test
+    @Category(SmokeTest.class)
     @UsePerspective(DroolsPerspective.class)
+    @Drools6Runtime
     public void testProjectCreationAndDeletion() {
         final String projectName = "testProjectCreationAndDeletion";
         ProblemsView problems = new ProblemsView();
@@ -61,7 +67,7 @@ public class Brms6ProjectTest extends TestParent {
         Assert.assertTrue("Project was not created.", explorer.containsProject(projectName));
 
         Assert.assertTrue("Project does not have Drools dependencies.", explorer.getProject(projectName).containsItem("Drools Library"));
-        Assert.assertTrue("Wrong drools runtime used.", findDroolsCoreJar(projectName).contains(DEFAULT_DROOLS_RUNTIME_LOCATION));
+        Assert.assertTrue("Wrong drools runtime used.", findDroolsCoreJar(projectName).contains(droolsRequirement.getConfig().getRuntimeFamily().getHome()));
 
         problems = new ProblemsView();
         problems.open();
@@ -74,7 +80,9 @@ public class Brms6ProjectTest extends TestParent {
     }
 
     @Test
-    @UsePerspective(JavaPerspective.class) @UseDefaultProject
+    @UsePerspective(JavaPerspective.class)
+    @UseDefaultProject
+    @Drools6Runtime
     public void testChangeDefaultRuntime() {
         final String secondRuntime = "testChangeDefaultRuntime";
         final String runtimeLocation = createTempDir("testChangeDefaultRuntime");
@@ -113,6 +121,7 @@ public class Brms6ProjectTest extends TestParent {
 
     @Test
     @UsePerspective(JavaPerspective.class)
+    @Drools6Runtime
     public void testConvertJavaProject() {
         final String projectName = "testJavaProject";
         NewJavaProjectWizardDialog diag = new NewJavaProjectWizardDialog();

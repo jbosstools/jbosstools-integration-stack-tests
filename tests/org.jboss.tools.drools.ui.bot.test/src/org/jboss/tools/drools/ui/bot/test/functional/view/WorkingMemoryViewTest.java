@@ -3,6 +3,7 @@ package org.jboss.tools.drools.ui.bot.test.functional.view;
 import java.util.List;
 import java.util.Map;
 
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.StyledText;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
@@ -19,19 +20,28 @@ import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
 import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
 import org.jboss.tools.drools.ui.bot.test.util.OpenUtility;
 import org.jboss.tools.drools.ui.bot.test.util.RunUtility;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+@Runtime(type = RuntimeReqType.DROOLS)
 @RunWith(RedDeerSuite.class)
 public class WorkingMemoryViewTest extends ViewTestParent {
-
+	
+	@InjectRequirement
+	private RuntimeRequirement droolsRequirement;
+	
     public WorkingMemoryViewTest() {
         super(WorkingMemoryView.class);
     }
 
     @Test
-    @UsePerspective(DroolsPerspective.class) @Drools6Runtime @ UseDefaultProject
+    @UsePerspective(DroolsPerspective.class)
+    @Drools6Runtime
+    @UseDefaultProject
     public void testSampleFile() {
         OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
         RuleEditor editor = new DrlEditor().showRuleEditor();
@@ -68,7 +78,9 @@ public class WorkingMemoryViewTest extends ViewTestParent {
     }
 
     @Test
-    @UsePerspective(DroolsPerspective.class) @Drools6Runtime @ UseDefaultProject
+    @UsePerspective(DroolsPerspective.class)
+    @Drools6Runtime
+    @UseDefaultProject
     public void testMultipleFacts() {
         OpenUtility.openResource(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
         TextEditor txtEditor = new TextEditor();

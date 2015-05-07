@@ -1,23 +1,33 @@
 package org.jboss.tools.drools.ui.bot.test.functional.drleditor;
 
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.drools.reddeer.editor.DrlEditor;
 import org.jboss.tools.drools.reddeer.editor.RuleEditor;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
-import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
 import org.jboss.tools.drools.ui.bot.test.annotation.Drools6Runtime;
+import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
 import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+@Runtime(type = RuntimeReqType.DROOLS)
 @RunWith(RedDeerSuite.class)
 public class MetadataCompletionTest extends DrlCompletionParent {
 
+    @InjectRequirement
+    private RuntimeRequirement droolsRequirement;
+
     @Test
-    @UsePerspective(DroolsPerspective.class) @Drools6Runtime @UseDefaultProject
+    @UsePerspective(DroolsPerspective.class)
+    @Drools6Runtime
+    @UseDefaultProject
     public void testImportCodeCompletion() {
         RuleEditor editor = master.showRuleEditor();
         editor.setPosition(2, 0);
@@ -31,7 +41,9 @@ public class MetadataCompletionTest extends DrlCompletionParent {
     }
 
     @Test
-    @UsePerspective(DroolsPerspective.class) @Drools6Runtime @UseDefaultProject
+    @UsePerspective(DroolsPerspective.class)
+    @Drools6Runtime
+    @UseDefaultProject
     public void testStarImportUsage() {
         NewJavaClassWizardDialog diag = new NewJavaClassWizardDialog();
         diag.open();
@@ -61,7 +73,9 @@ public class MetadataCompletionTest extends DrlCompletionParent {
     }
 
     @Test
-    @UsePerspective(DroolsPerspective.class) @Drools6Runtime @UseDefaultProject
+    @UsePerspective(DroolsPerspective.class)
+    @Drools6Runtime
+    @UseDefaultProject
     public void testImportFunctionUsage() {
         RuleEditor editor = master.showRuleEditor();
         editor.setPosition(2, 0);
@@ -77,7 +91,9 @@ public class MetadataCompletionTest extends DrlCompletionParent {
     }
 
     @Test
-    @UsePerspective(DroolsPerspective.class) @Drools6Runtime @UseDefaultProject
+    @UsePerspective(DroolsPerspective.class)
+    @Drools6Runtime
+    @UseDefaultProject
     public void testGlobalCodeCompletion() {
         RuleEditor editor = master.showRuleEditor();
         editor.setPosition(2, 0);
@@ -93,7 +109,9 @@ public class MetadataCompletionTest extends DrlCompletionParent {
     }
 
     @Test
-    @UsePerspective(DroolsPerspective.class) @Drools6Runtime @UseDefaultProject
+    @UsePerspective(DroolsPerspective.class)
+    @Drools6Runtime
+    @UseDefaultProject
     public void testGlobalUsageCondition() {
         RuleEditor editor = master.showRuleEditor();
         editor.setPosition(2, 0);
@@ -107,7 +125,9 @@ public class MetadataCompletionTest extends DrlCompletionParent {
     }
 
     @Test
-    @UsePerspective(DroolsPerspective.class) @Drools6Runtime @UseDefaultProject
+    @UsePerspective(DroolsPerspective.class)
+    @Drools6Runtime
+    @UseDefaultProject
     public void testGlobalUsageConsequence() {
         RuleEditor editor = master.showRuleEditor();
         editor.setPosition(2, 0);
