@@ -27,7 +27,6 @@ import org.jboss.reddeer.swt.lookup.ShellLookup;
 import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
-import org.jboss.tools.drools.reddeer.dialog.DroolsRuntimeDialog;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage.DroolsRuntime;
 import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectSelectRuntimeWizardPage.CodeCompatibility;
@@ -53,24 +52,16 @@ import org.osgi.framework.Bundle;
 @RunWith(RedDeerSuite.class)
 public abstract class TestParent {
     private static final Logger LOGGER = Logger.getLogger(TestParent.class);
-    private static final TestSuiteProperties TEST_PARAMS = new TestSuiteProperties();
-    private static final String LOCAL_RUNTIME = new File("tmp/runtime").getAbsolutePath();
     private static final File SCREENSHOT_DIR = new File("screenshots");
-
     protected static final String DEFAULT_DROOLS_RUNTIME_NAME = "defaultTestRuntime";
-    protected static final String DEFAULT_DROOLS_RUNTIME_LOCATION = TEST_PARAMS.getProperty(TestSuiteProperties.DROOLS6_RUNTIME, LOCAL_RUNTIME);
-    protected static final String DROOLS5_RUNTIME_LOCATION = TEST_PARAMS.getProperty(TestSuiteProperties.DROOLS5_RUNTIME);
     public static final String DEFAULT_PROJECT_NAME = "defaultTestProject";
 
     private static final AtomicBoolean initialized = new AtomicBoolean(false);
+
     private final RuntimeVersion runtimeVersion;
-
+    
     public TestParent() {
-        this(RuntimeVersion.UNDEFINED);
-    }
-
-    public TestParent(RuntimeVersion useRuntime) {
-        this.runtimeVersion = useRuntime;
+    	this.runtimeVersion = RuntimeVersion.UNDEFINED;
     }
 
     @Rule
@@ -132,18 +123,6 @@ public abstract class TestParent {
                     shell.setMaximized(true);
                 }
             });
-
-            // creates the default runtime if it is necessary
-            if (LOCAL_RUNTIME.equals(DEFAULT_DROOLS_RUNTIME_LOCATION)) {
-                new File(LOCAL_RUNTIME).mkdirs();
-                DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
-                pref.open();
-                DroolsRuntimeDialog diag = pref.addDroolsRuntime();
-                diag.setName("creating default runtime");
-                diag.createNewRuntime(LOCAL_RUNTIME);
-                diag.ok();
-                pref.okCloseWarning();
-            }
         }
     }
 
@@ -166,13 +145,10 @@ public abstract class TestParent {
             new JavaPerspective().open();
         }
 
-        // setup default runtime and project
-        setupRuntime(getUsedVersion());
-
         // setup default project
         if (getAnnotationOnMethod(getMethodName(), UseDefaultProject.class) != null) {
             setupProject(getUsedVersion());
-        }
+        } 
     }
 
     @After
@@ -207,15 +183,16 @@ public abstract class TestParent {
         } catch (Exception ex) {
             LOGGER.debug("Console was not cleared", ex);
         }
-
-        // delete all runtimes
-        DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
+    }
+    
+    protected void deleteAllRuntimes() {
+    	DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
         pref.open();
         for (DroolsRuntime runtime : pref.getDroolsRuntimes()) {
             pref.removeDroolsRuntime(runtime.getName());
         }
         pref.okCloseWarning();
-    }
+	}
 
     protected String createTempDir(String name) {
         File dir = new File("tmp", name);
@@ -293,35 +270,7 @@ public abstract class TestParent {
         }
         new SWTWorkbenchBot().closeAllShells();
     }
-
-    private void setupRuntime(RuntimeVersion useRuntime) {
-        String runtimeLocation = null;
-        switch (useRuntime) {
-            case BRMS_5:
-                runtimeLocation = DROOLS5_RUNTIME_LOCATION;
-                break;
-            case BRMS_6:
-                runtimeLocation = DEFAULT_DROOLS_RUNTIME_LOCATION;
-                break;
-            default:
-                runtimeLocation = null;
-                break;
-        }
-
-        if (runtimeLocation != null) {
-            DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
-            pref.open();
-
-            DroolsRuntimeDialog wiz = pref.addDroolsRuntime();
-            wiz.setName(DEFAULT_DROOLS_RUNTIME_NAME);
-            wiz.setLocation(runtimeLocation);
-            wiz.ok();
-            pref.setDroolsRuntimeAsDefault(DEFAULT_DROOLS_RUNTIME_NAME);
-
-            pref.okCloseWarning();
-        }
-    }
-
+    
     private void setupProject(RuntimeVersion useRuntime) {
         if (useRuntime == RuntimeVersion.UNDEFINED) {
             return;
@@ -389,7 +338,7 @@ public abstract class TestParent {
     }
 
     protected String getMethodName() {
-        return name.getMethodName().replaceAll("\\[\\d+\\]", "").replace("default", "").trim();
+        return name.getMethodName().replaceAll("\\[\\d+\\]", "").replace("default", "").replaceAll("brms-.*\\.xml", "").trim();
     }
 
     protected RuntimeVersion getUsedVersion() {
