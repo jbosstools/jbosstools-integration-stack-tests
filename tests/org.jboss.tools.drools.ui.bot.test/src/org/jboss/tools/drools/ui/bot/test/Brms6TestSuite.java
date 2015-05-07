@@ -44,12 +44,8 @@ import org.junit.runners.Suite.SuiteClasses;
     AgendaViewTest.class,
     GlobalDataViewTest.class,
     WorkingMemoryViewTest.class,
-    AuditLogTest.class,
-    // 5.x tests
-    Brms5ProjectTest.class,
-    Brms5AuditLogTest.class,
-    Brms5RuntimeManagementTest.class
+    AuditLogTest.class
 })
-public class BrmsTestSuite {
+public class Brms6TestSuite {
 
 }
