@@ -14,7 +14,6 @@
 
   <properties>
     <plugin.version>6.0.1.Final</plugin.version>
-    <binaries.brms5>http://download.devel.redhat.com/released/JBossBRMS/5.3.1/brms-p-5.3.1.GA-deployable.zip</binaries.brms5>
     <reddeer.config>${project.build.directory}/config</reddeer.config>
     <systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=${reddeer.config}</systemProperties>
   </properties>
@@ -68,30 +67,6 @@
           </filesets>
         </configuration>
       </plugin>
-      <!-- Downloads BRMS 5 runtime -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>prepare-brms5-binaries</id>
-            <goals>
-              <goal>run</goal>
-            </goals>
-            <phase>pre-integration-test</phase>
-            <configuration>
-              <tasks>
-                <echo>Downloading BRMS 5.x runtime</echo>
-                <mkdir dir="${project.build.directory}" />
-                <get src="${binaries.brms5}" dest="target/brms5-deployable.zip" />
-                <unzip src="target/brms5-deployable.zip" dest="target/brms5-deployable" />
-                <unzip src="target/brms5-deployable/jboss-brms-engine.zip" dest="target/runtime5" />
-                <echo file="resources/project.properties" append="true">location.drools5=${project.build.directory}${file.separator}runtime5${file.separator}binaries${line.separator}</echo>
-              </tasks>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
       <plugin>
         <groupId>com.googlecode.maven-download-plugin</groupId>
         <artifactId>download-maven-plugin</artifactId>
@@ -143,46 +118,4 @@
       </plugin>
     </plugins>
   </build>
-
-  <profiles>
-    <profile>
-      <id>prepare-brms6-binaries</id>
-      <activation>
-        <property>
-          <name>binaries.brms6</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>prepare-brms6-binaries</id>
-                <goals>
-                  <goal>run</goal>
-                </goals>
-                <phase>generate-resources</phase>
-                <configuration>
-                  <tasks>
-                    <echo>Downloading BRMS 6.x runtime</echo>
-                    <mkdir dir="${project.build.directory}" />
-                    <get src="${binaries.brms6}" dest="target/brms-engine.zip" />
-                    <unzip src="target/brms-engine.zip" dest="target/brms-engine" />
-                    <move todir="target/runtime6" flatten="true">
-                      <fileset dir="target/brms-engine/${engine.dir}">
-                        <include name="**/*.jar" />
-                      </fileset>
-                    </move>
-                    <echo file="resources/project.properties" append="true">location.drools6=${project.build.directory}${file.separator}runtime6${line.separator}</echo>
-                  </tasks>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 </project>
