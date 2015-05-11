@@ -7,9 +7,9 @@
     http://www.jboss.org/NS/SOAReq http://www.jboss.org/schema/reddeer/3rdparty/SOARequirements.xsd">
 
   <requirements>
-    <runtime:runtime-requirement name="BRMS-6.1.0.GA">
+    <runtime:runtime-requirement name="Drools-6.2.0.Final">
       <runtime:brms>
-        <runtime:home>${project.build.directory}/jboss-brms-6.1.0.GA-redhat-2-engine</runtime:home>
+        <runtime:home>${project.build.directory}/drools-distribution-6.2.0.Final/binaries</runtime:home>
       </runtime:brms>
     </runtime:runtime-requirement>
   </requirements>
