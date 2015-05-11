@@ -338,7 +338,8 @@ public abstract class TestParent {
     }
 
     protected String getMethodName() {
-        return name.getMethodName().replaceAll("\\[\\d+\\]", "").replace("default", "").replaceAll("brms-.*\\.xml", "").trim();
+        return name.getMethodName().replaceAll("\\[\\d+\\]", "").replace("default", "").replaceAll("brms-.*\\.xml", "")
+        		.replaceAll("drools-.*\\.xml", "").trim();
     }
 
     protected RuntimeVersion getUsedVersion() {
