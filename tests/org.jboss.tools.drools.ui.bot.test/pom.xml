@@ -80,8 +80,8 @@
               <goal>wget</goal>
             </goals>
             <configuration>
-              <url>http://download.devel.redhat.com/released/JBossBRMS/6.1.0/jboss-brms-6.1.0.GA-engine.zip</url>
-              <md5>c9c18c0e286c3d48c485c7988d7e51b9</md5>
+              <url>http://download.jboss.org/drools/release/6.2.0.Final/drools-distribution-6.2.0.Final.zip</url>
+              <md5>721a831a83669ad0db22b6c1272785dd</md5>
               <unpack>true</unpack>
               <outputDirectory>${project.build.directory}</outputDirectory>
             </configuration>
