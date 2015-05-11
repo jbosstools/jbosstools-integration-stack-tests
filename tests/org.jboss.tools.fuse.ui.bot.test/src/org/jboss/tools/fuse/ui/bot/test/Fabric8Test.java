@@ -1,6 +1,5 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -15,6 +14,7 @@ import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.AbstractWait;
@@ -54,6 +54,7 @@ public class Fabric8Test {
 		fab.open();
 		fab.addFabricDetails(null, null, "admin", "admin", "admin");
 		fab.connectToFabric(null);
+		new WorkbenchShell().setFocus();
 	}
 
 	@AfterClass
@@ -99,7 +100,6 @@ public class Fabric8Test {
 		new DefaultShell().setFocus();
 	}
 
-	@Test
 	public void testProfilesManipulation() {
 
 		Fabric8Explorer fab = new Fabric8Explorer();
@@ -151,23 +151,27 @@ public class Fabric8Test {
 		prop.open();
 		prop.refresh();
 		assertTrue(prop.isContainerPresent("testContainer"));
-		assertEquals("success", prop.getStatus("testContainer"));
+		assertTrue(new FuseShell().execute("fabric:container-list").contains("testContainer  1.0        karaf   yes          autoscale               success"));
 
 		// Manipulation with the 'root' container
+		prop.activate();
 		prop.selectItem("root");
 		assertFalse(prop.isStartContainerEnabled());
 		assertFalse(prop.isStopContainerEnabled());
 		assertFalse(prop.isDestroyContainerEnabled());
 
 		// Start/Stop/Destroy a container via Properties View
+		prop.activate();
 		prop.selectItem("testContainer");
 		prop.stopContainer();
-		assertEquals("stopped", prop.getStatus("testContainer"));
+		assertTrue(new FuseShell().execute("fabric:container-list").contains("testContainer  1.0        karaf   no           autoscale               stopped"));
 
+		prop.activate();
 		prop.selectItem("testContainer");
 		prop.startContainer();
-		assertEquals("success", prop.getStatus("testContainer"));
+		assertTrue(new FuseShell().execute("fabric:container-list").contains("testContainer  1.0        karaf   yes          autoscale               success"));
 
+		prop.activate();
 		prop.selectItem("testContainer");
 		prop.destroyContainer();
 		assertFalse(prop.isContainerPresent("testContainer"));
@@ -184,7 +188,7 @@ public class Fabric8Test {
 		}
 		fab.selectNode("Fabrics", "Local Fabric", "Containers");
 		prop.open();
-		assertEquals("stopped", prop.getStatus("testContainer"));
+		assertTrue(new FuseShell().execute("fabric:container-list").contains("testContainer  1.0        karaf   no           autoscale               stopped"));
 
 		fab.open();
 		fab.startContainer("testContainer");
@@ -195,6 +199,6 @@ public class Fabric8Test {
 		}
 		fab.selectNode("Fabrics", "Local Fabric", "Containers");
 		prop.open();
-		assertEquals("success", prop.getStatus("testContainer"));
+		assertTrue(new FuseShell().execute("fabric:container-list").contains("testContainer  1.0        karaf   yes          autoscale               success"));
 	}
 }

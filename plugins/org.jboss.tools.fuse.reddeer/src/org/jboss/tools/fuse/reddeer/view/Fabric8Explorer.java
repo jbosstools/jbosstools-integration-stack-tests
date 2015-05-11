@@ -10,12 +10,15 @@ import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.list.DefaultList;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
@@ -104,12 +107,16 @@ public class Fabric8Explorer extends WorkbenchView {
 		String fab = name;
 		if (fab == null) fab = "Local Fabric";
 		log.info("Connecting to the '" + fab + "' fabric");
-		new DefaultTreeItem(NODE_FABRICS, fab).select();
-		try {
-			new ContextMenu(CONTEXT_CONNECT).select();
-			AbstractWait.sleep(TimePeriod.getCustom(5));
-		} catch (Exception e) {
-			log.warn("You are already connected to the '" + fab + "' fabric");
+		for (int i = 1; i < 10; i++) {
+			log.debug(i + ". attempt to connect '" + fab + "'"); 
+			new DefaultTreeItem(NODE_FABRICS, fab).select();
+			try {
+				new ContextMenu(CONTEXT_CONNECT).select();
+				AbstractWait.sleep(TimePeriod.getCustom(5));
+			} catch (Exception e) {
+				log.warn("You are already connected to the '" + fab + "' fabric");
+				break;
+			}
 		}
 	}
 	
@@ -126,8 +133,7 @@ public class Fabric8Explorer extends WorkbenchView {
 		temp.add(0, "Versions");
 		temp.add(0, "Local Fabric");
 		temp.add(0, NODE_FABRICS);
-
-		new DefaultTreeItem(temp.toArray(new String[0])).select();
+		selectNode(temp.toArray(new String[0]));
 		new ContextMenu("Create a new Profile").select();
 		new DefaultShell().setFocus();
 		new DefaultText().setText(name);
@@ -144,7 +150,7 @@ public class Fabric8Explorer extends WorkbenchView {
 	public void deleteProfile(String... path) {
 		
 		log.info("Deleting a profile with the path: " + path);
-		new DefaultTreeItem(path);
+		selectNode(path);
 		deleteProfile();
 		log.info("Profile (" + path + ") was deleted");
 	}
@@ -193,10 +199,9 @@ public class Fabric8Explorer extends WorkbenchView {
 		log.info("Creating a new container: " + name);
 		new DefaultTreeItem(NODE_FABRICS, "Local Fabric", "Containers").select();
 		new ContextMenu("Create a new child container").select();
-		new DefaultShell().setFocus();
-
+		new WaitUntil(new ShellWithTextIsAvailable("Create Child Container"));
+		new DefaultShell("Create Child Container");
 		new LabeledText("Container name").setText(name);
-		
 		new DefaultCombo().setSelection(version);
 		
 		List<TreeItem> items = new DefaultTree().getAllItems();
@@ -209,7 +214,7 @@ public class Fabric8Explorer extends WorkbenchView {
 		
 		new PushButton("OK").click();
 		AbstractWait.sleep(TimePeriod.getCustom(5));
-		new DefaultShell().setFocus();
+		new WorkbenchShell().setFocus();
 		log.info("New container (" + name + ") was created");
 	}
 	
@@ -221,10 +226,11 @@ public class Fabric8Explorer extends WorkbenchView {
 	public void stopContainer(String name) {
 		
 		log.info("Stopping the container: " + name);
-		new DefaultTreeItem(NODE_FABRICS, "Local Fabric", "Containers", name).select();
+		selectNode(NODE_FABRICS, "Local Fabric", "Containers", name);
 		new ContextMenu("Stop Container").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		log.info("The container (" + name + ") was stopped");
+		new WorkbenchShell().setFocus();
 	}
 	
 	
@@ -236,7 +242,7 @@ public class Fabric8Explorer extends WorkbenchView {
 	public void startContainer(String name) {
 		
 		log.info("Starting the container: " + name);
-		new DefaultTreeItem(NODE_FABRICS, "Local Fabric", "Containers", name).select();
+		selectNode(NODE_FABRICS, "Local Fabric", "Containers", name);
 		new ContextMenu("Start Container").select();
 		AbstractWait.sleep(TimePeriod.getCustom(10));
 		log.info("The container (" + name + ") was started");
@@ -256,7 +262,10 @@ public class Fabric8Explorer extends WorkbenchView {
 	 * 
 	 * @param project name of the project in Project Explorer view.
 	 * @param profile name of the profile in Fabric Explorer--Local Fabric--Versions--1.0 view.
+	 * 
+	 * @deprecated deployment is no longer supported in 7.3.0
 	 */
+	@Deprecated
 	public void deployProjectToProfile(String project, String profile) {
 		
 		log.info("Deploing the project (" + project + ") to the profile (" + profile + ")");
@@ -279,7 +288,7 @@ public class Fabric8Explorer extends WorkbenchView {
 		PropertiesView properties = new PropertiesView();
 		properties.open();
 		open();
-		new DefaultTreeItem(path).select();
+		selectNode(path);
 		properties.open();
 		new DefaultShell().setFocus();
 
@@ -352,7 +361,23 @@ public class Fabric8Explorer extends WorkbenchView {
 
 	public void selectNode(String... path) {
 
-		new DefaultTreeItem(path).select();
+		TreeItem temp = new DefaultTreeItem(path[0]);
+		for (int j = 0; j < path.length - 1; j++) {
+			for (int i = 0; i < 10; i++) {
+				temp.select();
+				temp.collapse();
+				AbstractWait.sleep(TimePeriod.SHORT);
+				temp.expand();
+				AbstractWait.sleep(TimePeriod.SHORT);
+				try {
+					temp.getItem("...loading...");
+				} catch (SWTLayerException e) {
+					break;
+				}
+			}
+			temp = temp.getItem(path[j+1]);
+		}
+		temp.select();
 	}
 
 	public void selectContextMenuItem(String... path) {

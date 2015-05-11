@@ -7,6 +7,7 @@ import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.wait.AbstractWait;
@@ -79,6 +80,7 @@ public class FuseContainerProperties extends PropertiesView {
 
 		new DefaultToolItem("Start the Container's JVM").click();
 		AbstractWait.sleep(TimePeriod.getCustom(10)); // TODO use wait condition on container's status
+		new WorkbenchShell().setFocus();
 		refresh();
 	}
 
@@ -101,6 +103,7 @@ public class FuseContainerProperties extends PropertiesView {
 		new DefaultToolItem("Stops the Container's JVM").click();
 		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(10));
 		AbstractWait.sleep(TimePeriod.getCustom(2));
+		new WorkbenchShell().setFocus();
 	}
 
 	/**
@@ -125,7 +128,7 @@ public class FuseContainerProperties extends PropertiesView {
 		new PushButton("OK").click();
 		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(10));
 		AbstractWait.sleep(TimePeriod.getCustom(2));
-		new DefaultShell().setFocus();
+		new WorkbenchShell().setFocus();
 	}
 
 	/**
