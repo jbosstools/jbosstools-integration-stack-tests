@@ -90,38 +90,6 @@ public class RulesManagementTest extends TestParent {
 
     @Test
     @UsePerspective(JavaPerspective.class)
-    public void testRunRulesWithDefaultRuntime() {
-        final String runtimeName = "testRunRulesWithDefaultRuntime";
-        final String projectName = "testRunRulesWithDefaultRuntime";
-        DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
-        pref.open();
-        DroolsRuntimeDialog dialog = pref.addDroolsRuntime();
-        dialog.setName(runtimeName);
-        dialog.createNewRuntime(createTempDir("testRunRulesWithDefaultRuntime"));
-        dialog.ok();
-        pref.setDroolsRuntimeAsDefault(runtimeName);
-        pref.okCloseWarning();
-
-        NewDroolsProjectWizard wiz = new NewDroolsProjectWizard();
-        wiz.createDefaultProjectWithAllSamples(projectName);
-
-
-        ConsoleView console = new ConsoleView();
-        console.open();
-
-        RunUtility.runAsJavaApplication(projectName, "src/main/java", "com.sample", "DroolsTest.java");
-        new WaitUntil(new ApplicationIsTerminated());
-        waitASecond(); // this is quite annoying - the text is updated AFTER the application is terminated
-
-        console.open();
-        String consoleText = console.getConsoleText();
-        Assert.assertNotNull("Console text was empty.", consoleText);
-        LOGGER.debug(consoleText);
-        Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.matches(SUCCESSFUL_RUN_REGEX));
-    }
-
-    @Test
-    @UsePerspective(JavaPerspective.class)
     @Drools6Runtime
     @UseDefaultProject
     public void testRenameProject() {
