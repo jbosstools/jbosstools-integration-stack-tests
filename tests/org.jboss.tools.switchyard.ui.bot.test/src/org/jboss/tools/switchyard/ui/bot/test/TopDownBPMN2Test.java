@@ -19,6 +19,7 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
@@ -77,12 +78,8 @@ public class TopDownBPMN2Test {
 
 	@Before
 	@After
-	public void closeSwitchyardFile() {
-		try {
-			new SwitchYardEditor().saveAndClose();
-		} catch (Exception ex) {
-			// it is ok, we just try to close switchyard.xml if it is open
-		}
+	public void saveAndCloseAllEditors() {
+		EditorHandler.getInstance().closeAll(true);
 	}
 
 	@Test
@@ -125,6 +122,8 @@ public class TopDownBPMN2Test {
 
 		// BPM Process and its properties
 		openFile(PROJECT, PACKAGE_MAIN_RESOURCES, BPMN_FILE_NAME);
+		new DefaultEditor(PROCESS_GREET);
+		new WorkbenchShell().setFocus();
 		new DefaultEditor(PROCESS_GREET);
 		new Process(null).setName(PROCESS_GREET);
 
@@ -188,7 +187,7 @@ public class TopDownBPMN2Test {
 		assertEquals(0, new JUnitView().getNumberOfErrors());
 		assertEquals(0, new JUnitView().getNumberOfFailures());
 	}
-
+	
 	private void openFile(String... file) {
 		// focus on project explorer
 		new WorkbenchView("General", "Project Explorer").open();
