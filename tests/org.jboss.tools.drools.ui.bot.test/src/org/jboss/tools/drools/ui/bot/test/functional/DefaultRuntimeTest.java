@@ -20,9 +20,9 @@ import org.junit.runner.RunWith;
 public class DefaultRuntimeTest extends TestParent {
 	
 	private static final Logger LOGGER = Logger.getLogger(RulesManagementTest.class);
-    private static final String DEBUG_REGEX = "(SLF4J: .*\n)+?" +
-            "(kmodules: file:(/.*)+/kmodule.xml\n)?";
-    private static final String SUCCESSFUL_RUN_REGEX = DEBUG_REGEX + "Hello World\nGoodbye cruel world\n";
+    private static final String DEBUG_REGEX = "(SLF4J: .*[\r\n]+)+?" +
+            "(kmodules: file:(/.*)+/kmodule.xml[\r\n]+)?";
+    private static final String SUCCESSFUL_RUN_REGEX = DEBUG_REGEX + "Hello World[\r\n]+Goodbye cruel world[\r\n]+";
 	
 	@Test
     @UsePerspective(JavaPerspective.class)
