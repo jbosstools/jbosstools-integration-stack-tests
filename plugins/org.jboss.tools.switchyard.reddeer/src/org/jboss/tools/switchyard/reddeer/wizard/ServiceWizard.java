@@ -74,6 +74,7 @@ public class ServiceWizard<T extends ServiceWizard<?>> extends WizardDialog {
 
 	public T selectWSDLInterface(String wsdlInterface) {
 		checkInterfaceType("WSDL").browse();
+		new DefaultShell("Select WSDL file and portType");
 		new DefaultText().setText(wsdlInterface);
 		clickOK();
 		return activate();
