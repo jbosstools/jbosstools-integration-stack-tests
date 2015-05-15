@@ -1,10 +1,8 @@
 package org.jboss.tools.switchyard.reddeer.wizard;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.gef.condition.EditorHasEditParts;
 import org.jboss.reddeer.gef.editor.GEFEditor;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 
@@ -16,30 +14,16 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
 public class CamelXMLWizard extends ServiceWizard<CamelXMLWizard> {
 
 	public static final String DIALOG_TITLE = "New File";
-	
-	public static final String FILE_NAME = "File name:";
-	
-	private static SWTWorkbenchBot bot = new SWTWorkbenchBot();
 
 	private GEFEditor editor;
 
 	public CamelXMLWizard() {
-		super();
+		this(null);
 	}
 
 	public CamelXMLWizard(GEFEditor editor) {
-		super();
+		super(DIALOG_TITLE);
 		this.editor = editor;
-	}
-
-	public CamelXMLWizard activate() {
-		bot.shell(DIALOG_TITLE).activate();
-		return this;
-	}
-
-	public CamelXMLWizard setFileName(String name) {
-		new LabeledText(FILE_NAME).setText(name);
-		return this;
 	}
 	
 	public CamelXMLWizard selectResource(String... path) {

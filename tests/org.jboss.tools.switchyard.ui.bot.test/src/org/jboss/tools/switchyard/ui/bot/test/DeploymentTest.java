@@ -39,7 +39,7 @@ public class DeploymentTest {
 		new SwitchYardProjectWizard(PROJECT_NAME, switchYardRequirement.getConfig().getConfigurationVersion(),
 				switchYardRequirement.getConfig().getLibraryVersion(), "").impl("Bean").binding("HTTP").create();
 
-		new SwitchYardEditor().addBeanImplementation().createNewInterface("Hello").finish();
+		new SwitchYardEditor().addBeanImplementation().createJavaInterface("Hello").finish();
 
 		new SwitchYardComponent("Hello").doubleClick();
 		TextEditor helloEditor = new TextEditor("Hello.java");

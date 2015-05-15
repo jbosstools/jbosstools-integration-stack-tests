@@ -65,7 +65,7 @@ public class DroolsTest {
 		switchyardRequirement.project(PROJECT).impl("Rules (Drools)").groupId(GROUP_ID).packageName(PACKAGE).create();
 		// open sy.xml, add rules, service, promote
 		new SwitchYardEditor().addDroolsImplementation().setFileName(INTERVIEW + ".drl")
-				.createNewInterface(INTERVIEW + "Service").finish();
+				.createJavaInterface(INTERVIEW + "Service").finish();
 		new Service(INTERVIEW + "Service").promoteService().setServiceName(INTERVIEW + "ServiceMain").finish();
 
 		// insert rules

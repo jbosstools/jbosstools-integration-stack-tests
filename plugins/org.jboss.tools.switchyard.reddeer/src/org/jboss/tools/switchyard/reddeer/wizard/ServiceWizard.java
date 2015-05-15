@@ -23,7 +23,7 @@ import org.jboss.tools.switchyard.reddeer.condition.TableHasRow;
  * @author apodhrad
  * 
  */
-public class ServiceWizard<T extends ServiceWizard<?>> extends WizardDialog {
+public abstract class ServiceWizard<T extends ServiceWizard<?>> extends WizardDialog {
 
 	private String dialogTitle;
 
@@ -85,6 +85,11 @@ public class ServiceWizard<T extends ServiceWizard<?>> extends WizardDialog {
 		new Java2WSDLWizard().activate().finish();
 		return activate();
 	}
+	
+	public T setFileName(String fileName) {
+		new LabeledText("File name:").setText(fileName);
+		return activate();
+	}
 
 	public void clickInterface() {
 		new DefaultLink("Interface:").click();
@@ -96,8 +101,6 @@ public class ServiceWizard<T extends ServiceWizard<?>> extends WizardDialog {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
-	protected void browse() {
-		throw new UnsupportedOperationException("You have to implement browse() method!");
-	}
+	protected abstract void browse();
 
 }

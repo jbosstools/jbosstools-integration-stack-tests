@@ -57,13 +57,13 @@ public class ImplementationsPropertiesTest {
 		switchyardRequirement.project(PROJECT).create();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 
-		new SwitchYardEditor().addBeanImplementation().createNewInterface(BEAN).finish();
+		new SwitchYardEditor().addBeanImplementation().createJavaInterface(BEAN).finish();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 
 		new SwitchYardEditor().autoLayout();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 
-		new SwitchYardEditor().addBeanImplementation().createNewInterface(BEAN2).finish();
+		new SwitchYardEditor().addBeanImplementation().createJavaInterface(BEAN2).finish();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 

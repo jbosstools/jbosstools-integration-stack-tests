@@ -91,12 +91,12 @@ public class TopDownBPMN2Test {
 				.create();
 		openFile(PROJECT, PACKAGE_MAIN_RESOURCES, "META-INF", "switchyard.xml");
 
-		new SwitchYardEditor().addBPMNImplementation().setFileName(BPMN_FILE_NAME).createNewInterface(PROCESS_GREET)
+		new SwitchYardEditor().addBPMNImplementation().setFileName(BPMN_FILE_NAME).createJavaInterface(PROCESS_GREET)
 				.finish();
 		new SwitchYardEditor().autoLayout();
 		new SwitchYardEditor().save();
 
-		new SwitchYardEditor().addBeanImplementation().createNewInterface(EVAL_GREET).finish();
+		new SwitchYardEditor().addBeanImplementation().createJavaInterface(EVAL_GREET).finish();
 		new SwitchYardEditor().save();
 
 		// reference to bean

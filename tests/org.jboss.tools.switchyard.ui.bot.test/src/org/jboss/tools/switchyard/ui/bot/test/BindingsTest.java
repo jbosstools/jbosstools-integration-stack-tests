@@ -108,7 +108,7 @@ public class BindingsTest {
 
 		switchyardRequirement.project(PROJECT).binding(GATEWAY_BINDINGS).create();
 
-		new SwitchYardEditor().addBeanImplementation().createNewInterface("Hello").finish();
+		new SwitchYardEditor().addBeanImplementation().createJavaInterface("Hello").finish();
 
 		new SwitchYardComponent("Hello").doubleClick();
 		TextEditor textEditor = new TextEditor("Hello.java");

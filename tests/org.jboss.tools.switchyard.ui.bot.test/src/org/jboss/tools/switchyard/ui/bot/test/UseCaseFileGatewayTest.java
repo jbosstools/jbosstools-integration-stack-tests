@@ -58,7 +58,7 @@ public class UseCaseFileGatewayTest {
 		switchyardRequirement.project(PROJECT).impl("Bean").binding("File").create();
 
 		// Create new service and interface
-		new SwitchYardEditor().addBeanImplementation().createNewInterface("Info").finish();
+		new SwitchYardEditor().addBeanImplementation().createJavaInterface("Info").finish();
 
 		// Edit the interface
 		new SwitchYardComponent("Info").doubleClick();

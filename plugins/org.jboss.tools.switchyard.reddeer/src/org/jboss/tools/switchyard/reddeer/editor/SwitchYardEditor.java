@@ -17,12 +17,15 @@ import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.WaitCondition;
 import org.jboss.reddeer.swt.handler.IBeforeShellIsClosed;
 import org.jboss.reddeer.swt.handler.ShellHandler;
+import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComposite;
 import org.jboss.tools.switchyard.reddeer.preference.CompositePropertiesPage;
+import org.jboss.tools.switchyard.reddeer.wizard.BPELServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.BPMServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.BeanServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.CamelJavaWizard;
@@ -53,11 +56,17 @@ public class SwitchYardEditor extends GEFEditor {
 	private static Shell remainedShell = null;
 
 	protected File sourceFile;
-	protected SwitchYardComponent composite; 
+	protected SwitchYardComponent composite;
 
 	public SwitchYardEditor() {
-		super(TITLE);
+		super(activateDesignTab());
 		composite = getComposite();
+	}
+
+	private static String activateDesignTab() {
+		new DefaultEditor(TITLE);
+		new DefaultCTabItem("Design").activate();
+		return TITLE;
 	}
 
 	public SwitchYardComposite getComposite() {
@@ -116,23 +125,23 @@ public class SwitchYardEditor extends GEFEditor {
 		addTool(TOOL_CAMEL_JAVA, editPart);
 		return new CamelJavaWizard(this);
 	}
-	
+
 	public CamelXMLWizard addCamelXMLImplementation() {
 		return addCamelXmlImplementation(composite);
 	}
-	
+
 	public CamelXMLWizard addCamelXmlImplementation(EditPart editPart) {
 		addTool(TOOL_CAMEL_XML, editPart);
 		return new CamelXMLWizard(this);
 	}
 
-	public void addBPELImplementation() {
-		addBPELImplementation(composite);
+	public BPELServiceWizard addBPELImplementation() {
+		return addBPELImplementation(composite);
 	}
 
-	public void addBPELImplementation(EditPart editPart) {
-		getPalette().activateTool(TOOL_BPEL);
-		editPart.click();
+	public BPELServiceWizard addBPELImplementation(EditPart editPart) {
+		addTool(TOOL_BPEL, editPart);
+		return new BPELServiceWizard();
 	}
 
 	public BPMServiceWizard addBPMNImplementation() {
@@ -157,12 +166,12 @@ public class SwitchYardEditor extends GEFEditor {
 		getPalette().activateTool(tool);
 		editPart.click();
 	}
-	
+
 	public CompositePropertiesPage showProperties() {
 		getComposite().getContextButton("Properties").click();
 		return new CompositePropertiesPage("");
 	}
-	
+
 	public String xpath(String expr) throws FileNotFoundException {
 		XPathEvaluator xpath = new XPathEvaluator(new FileReader(getSourceFile()));
 		String result = xpath.evaluateString(expr);
@@ -179,7 +188,7 @@ public class SwitchYardEditor extends GEFEditor {
 		}
 		return sourceFile;
 	}
-	
+
 	public String getSource() throws IOException {
 		StringBuffer source = new StringBuffer();
 		BufferedReader in = new BufferedReader(new FileReader(getSourceFile()));
@@ -190,24 +199,24 @@ public class SwitchYardEditor extends GEFEditor {
 		in.close();
 		return source.toString();
 	}
-	
+
 	private void doSave() {
 		log.info("Save SwitchYard editor");
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		
+
 		remainedShell = null;
 		ShellHandler.getInstance().closeAllNonWorbenchShells(new IBeforeShellIsClosed() {
-			
+
 			@Override
 			public void runBeforeShellIsClosed(Shell shell) {
 				remainedShell = shell;
 			}
 		});
-		
+
 		super.save();
-		
+
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		
+
 		if (remainedShell != null) {
 			Assert.fail("Shell '" + remainedShell.getText() + "' remains open");
 		}
@@ -222,7 +231,7 @@ public class SwitchYardEditor extends GEFEditor {
 		save();
 		close();
 	}
-	
+
 	private class EditorIsSaved implements WaitCondition {
 
 		@Override
@@ -235,6 +244,6 @@ public class SwitchYardEditor extends GEFEditor {
 		public String description() {
 			return "Editor is still dirty";
 		}
-		
+
 	}
 }

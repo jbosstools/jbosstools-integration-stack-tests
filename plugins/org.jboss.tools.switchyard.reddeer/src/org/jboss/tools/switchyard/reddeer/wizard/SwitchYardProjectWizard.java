@@ -161,6 +161,11 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		}
 		return this;
 	}
+	
+	public SwitchYardProjectWizard implAll() {
+		components.add(new String[] { "Implementation Support" });
+		return this;
+	}
 
 	public SwitchYardProjectWizard binding(String... component) {
 		for (int i = 0; i < component.length; i++) {

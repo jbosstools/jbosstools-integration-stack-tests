@@ -58,7 +58,7 @@ public class HelloWorldTest {
 		buildPath.selectLibrary("JRE System Library [JavaSE-1.6]").edit().selectExecutionEnvironmentWithPrefix("JavaSE-1.7").finish();
 		buildPath.ok();
 
-		new SwitchYardEditor().addBeanImplementation().createNewInterface("Hello").finish();
+		new SwitchYardEditor().addBeanImplementation().createJavaInterface("Hello").finish();
 		new SwitchYardComponent("Hello").doubleClick();
 		TextEditor textEditor = new TextEditor("Hello.java");
 		textEditor.setText("package com.example.switchyard.helloworld;\n\n" + "public interface Hello {\n"

@@ -95,7 +95,7 @@ public class TransformersTest {
 	@Test
 	public void newDozerJava2JavaTest() throws Exception {
 		SwitchYardEditor editor = new SwitchYardProject(PROJECT).openSwitchYardFile();
-		editor.addBeanImplementation().setExistingInterface(SERVICE2).setName(SERVICE2_IMPL).finish();
+		editor.addBeanImplementation().selectJavaInterface(SERVICE2).setName(SERVICE2_IMPL).finish();
 
 		PromoteServiceWizard wizard = new Service(SERVICE2).promoteService();
 		wizard.selectJavaInterface(SERVICE1);
@@ -129,7 +129,7 @@ public class TransformersTest {
 	@Test
 	public void existingDozerJava2JavaFirstTest() throws Exception {
 		SwitchYardEditor editor = new SwitchYardProject(PROJECT).openSwitchYardFile();
-		editor.addBeanImplementation().setExistingInterface(SERVICE2).setName(SERVICE2_IMPL).finish();
+		editor.addBeanImplementation().selectJavaInterface(SERVICE2).setName(SERVICE2_IMPL).finish();
 
 		PromoteServiceWizard wizard = new Service(SERVICE2).promoteService();
 		wizard.selectJavaInterface(SERVICE1);
@@ -175,7 +175,7 @@ public class TransformersTest {
 	@Test
 	public void existingDozerJava2JavaSecondTest() throws Exception {
 		SwitchYardEditor editor = new SwitchYardProject(PROJECT).openSwitchYardFile();
-		editor.addBeanImplementation().setExistingInterface(SERVICE2).setName(SERVICE2_IMPL).finish();
+		editor.addBeanImplementation().selectJavaInterface(SERVICE2).setName(SERVICE2_IMPL).finish();
 
 		PromoteServiceWizard wizard = new Service(SERVICE2).promoteService();
 		wizard.selectJavaInterface(SERVICE1);
@@ -221,7 +221,7 @@ public class TransformersTest {
 	@Test
 	public void existingDozerJava2JavaBothTest() throws Exception {
 		SwitchYardEditor editor = new SwitchYardProject(PROJECT).openSwitchYardFile();
-		editor.addBeanImplementation().setExistingInterface(SERVICE2).setName(SERVICE2_IMPL).finish();
+		editor.addBeanImplementation().selectJavaInterface(SERVICE2).setName(SERVICE2_IMPL).finish();
 
 		PromoteServiceWizard wizard = new Service(SERVICE2).promoteService();
 		wizard.selectJavaInterface(SERVICE1);
@@ -257,7 +257,7 @@ public class TransformersTest {
 	@Test
 	public void dozerXml2JavaTest() throws Exception {
 		SwitchYardEditor editor = new SwitchYardProject(PROJECT).openSwitchYardFile();
-		editor.addBeanImplementation().setExistingInterface(SERVICE2).setName(SERVICE2_IMPL).finish();
+		editor.addBeanImplementation().selectJavaInterface(SERVICE2).setName(SERVICE2_IMPL).finish();
 
 		PromoteServiceWizard wizard = new Service(SERVICE2).promoteService();
 		wizard.selectWSDLInterface(SERVICE1 + ".wsdl");
