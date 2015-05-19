@@ -52,7 +52,7 @@ public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomC
 		
 		ServerReqState state();
 		
-		ServerConnType[] connectionType() default ServerConnType.ANY;
+		ServerConnType[] connectionType() default ServerConnType.LOCAL;
 		
 	}
 

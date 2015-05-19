@@ -35,6 +35,7 @@ public class ServersViewExt extends ServersView {
 	private static final String TEIID_INSTANCE_CONFIG = "Teiid Instance Configuration";
 	private static final String DISCONNECT = "Disconnect";
 	private static final String DATA_SOURCES = "Data Sources";
+	private static final String VDBS = "VDBs";
 	
 	public enum ServerType{
 		 EAP6, EDS5, AS5, DV6
@@ -226,6 +227,23 @@ public class ServersViewExt extends ServersView {
 			}
 		}catch (Exception ex){
 			// ds not on server, ok
+			ex.printStackTrace();
+		}
+	}
+	
+	public void undeployVdb(String serverName, String vdbName){
+		new ServersView().getServer(serverName);
+		try{
+			DefaultTreeItem vdbs = new DefaultTreeItem(getServerLabel(serverName), TEIID_INSTANCE_CONFIG, DV6_PREFIX_URL, VDBS);
+			for (TreeItem treeItem : vdbs.getItems()){
+				if (treeItem.getText().startsWith(vdbName)){
+					treeItem.select();
+					new ContextMenu("Undeploy VDB").select();
+					break;
+				}
+			}
+		}catch (Exception ex){
+			// vdb not in server
 			ex.printStackTrace();
 		}
 	}
