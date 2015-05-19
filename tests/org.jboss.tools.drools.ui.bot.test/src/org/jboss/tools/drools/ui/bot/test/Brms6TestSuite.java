@@ -1,6 +1,7 @@
 package org.jboss.tools.drools.ui.bot.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.tools.drools.ui.bot.test.functional.DefaultRuntimeTest;
 import org.jboss.tools.drools.ui.bot.test.functional.DroolsRuntimeManagementTest;
 import org.jboss.tools.drools.ui.bot.test.functional.DslEditorTest;
 import org.jboss.tools.drools.ui.bot.test.functional.DslrEditorTest;
@@ -23,6 +24,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
     // basic tests
     PerspectiveTest.class,
+    DefaultRuntimeTest.class,
     DroolsRuntimeManagementTest.class,
     Brms6ProjectTest.class,
     NewResourcesTest.class,
