@@ -11,22 +11,22 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
  * @author apodhrad
  * 
  */
-public class CamelXMLWizard extends ServiceWizard<CamelXMLWizard> {
+public class CamelXMLServiceWizard extends ServiceWizard<CamelXMLServiceWizard> {
 
 	public static final String DIALOG_TITLE = "New File";
 
 	private GEFEditor editor;
 
-	public CamelXMLWizard() {
+	public CamelXMLServiceWizard() {
 		this(null);
 	}
 
-	public CamelXMLWizard(GEFEditor editor) {
+	public CamelXMLServiceWizard(GEFEditor editor) {
 		super(DIALOG_TITLE);
 		this.editor = editor;
 	}
-	
-	public CamelXMLWizard selectResource(String... path) {
+
+	public CamelXMLServiceWizard selectResource(String... path) {
 		new DefaultTreeItem(path).select();
 		return this;
 	}
@@ -39,7 +39,6 @@ public class CamelXMLWizard extends ServiceWizard<CamelXMLWizard> {
 	@Override
 	public void finish() {
 		int oldCount = editor.getNumberOfEditParts();
-		activate();
 		super.finish();
 		new WaitUntil(new EditorHasEditParts(editor, oldCount));
 		editor.save();

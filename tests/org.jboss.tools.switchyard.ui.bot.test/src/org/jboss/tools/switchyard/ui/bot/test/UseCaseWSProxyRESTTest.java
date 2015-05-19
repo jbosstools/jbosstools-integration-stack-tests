@@ -25,7 +25,7 @@ import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.jboss.tools.switchyard.reddeer.view.JUnitView;
-import org.jboss.tools.switchyard.reddeer.wizard.CamelJavaWizard;
+import org.jboss.tools.switchyard.reddeer.wizard.CamelJavaServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ImportFileWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.PromoteServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ReferenceWizard;
@@ -83,7 +83,7 @@ public class UseCaseWSProxyRESTTest {
 	public void wsProxyRestTest() {
 		/* Create SwicthYard Project */
 		switchyardRequirement.project(PROJECT).impl("Camel Route").binding("SOAP", "REST").create();
-		new CamelJavaWizard().open().setName("Proxy").createJavaInterface("Hello").finish();
+		new CamelJavaServiceWizard().open().setName("Proxy").createJavaInterface("Hello").finish();
 
 		/* Import Resources */
 		new SwitchYardProject(PROJECT).getProjectItem("src/test/resources").select();

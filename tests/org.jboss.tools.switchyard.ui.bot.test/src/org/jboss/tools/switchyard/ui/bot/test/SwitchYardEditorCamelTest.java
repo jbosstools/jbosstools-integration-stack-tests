@@ -30,8 +30,8 @@ import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
-import org.jboss.tools.switchyard.reddeer.wizard.CamelJavaWizard;
-import org.jboss.tools.switchyard.reddeer.wizard.CamelXMLWizard;
+import org.jboss.tools.switchyard.reddeer.wizard.CamelJavaServiceWizard;
+import org.jboss.tools.switchyard.reddeer.wizard.CamelXMLServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ImportFileWizard;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -102,7 +102,7 @@ public class SwitchYardEditorCamelTest {
 
 	@Test
 	public void camelJavaTest() throws Exception {
-		CamelJavaWizard wizard = new SwitchYardProject(PROJECT_NAME).openSwitchYardFile().addCamelJavaImplementation();
+		CamelJavaServiceWizard wizard = new SwitchYardProject(PROJECT_NAME).openSwitchYardFile().addCamelJavaImplementation();
 		wizard.setName(ROUTE_NAME).selectJavaInterface("Hello").finish();
 
 		SwitchYardEditor editor = new SwitchYardEditor();
@@ -155,7 +155,7 @@ public class SwitchYardEditorCamelTest {
 
 	@Test
 	public void camelXmlTest() throws Exception {
-		CamelXMLWizard wizard = new SwitchYardProject(PROJECT_NAME).openSwitchYardFile().addCamelXMLImplementation();
+		CamelXMLServiceWizard wizard = new SwitchYardProject(PROJECT_NAME).openSwitchYardFile().addCamelXMLImplementation();
 		wizard.setFileName(ROUTE_NAME).selectJavaInterface(INTERFACE_NAME).finish();
 
 		SwitchYardEditor editor = new SwitchYardEditor();

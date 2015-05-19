@@ -26,11 +26,15 @@ import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComposite;
 import org.jboss.tools.switchyard.reddeer.preference.CompositePropertiesPage;
 import org.jboss.tools.switchyard.reddeer.wizard.BPELServiceWizard;
-import org.jboss.tools.switchyard.reddeer.wizard.BPMServiceWizard;
+import org.jboss.tools.switchyard.reddeer.wizard.BPMNServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.BeanServiceWizard;
-import org.jboss.tools.switchyard.reddeer.wizard.CamelJavaWizard;
-import org.jboss.tools.switchyard.reddeer.wizard.CamelXMLWizard;
+import org.jboss.tools.switchyard.reddeer.wizard.CamelJavaServiceWizard;
+import org.jboss.tools.switchyard.reddeer.wizard.CamelXMLServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.DroolsServiceWizard;
+import org.jboss.tools.switchyard.reddeer.wizard.ExistingBPELServiceWizard;
+import org.jboss.tools.switchyard.reddeer.wizard.ExistingBPMNServiceWizard;
+import org.jboss.tools.switchyard.reddeer.wizard.ExistingCamelXMLServiceWizard;
+import org.jboss.tools.switchyard.reddeer.wizard.ExistingDroolsServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ReferenceWizard;
 import org.junit.Assert;
 
@@ -90,11 +94,12 @@ public class SwitchYardEditor extends GEFEditor {
 		save();
 	}
 
-	public void addComponent() {
+	public SwitchYardComponent addComponent() {
 		int oldCount = getNumberOfEditParts();
 		getPalette().activateTool(TOOL_COMPONENT);
 		composite.click();
 		new WaitUntil(new EditorHasEditParts(this, oldCount));
+		return new SwitchYardComponent(TOOL_COMPONENT);
 	}
 
 	public void addService() {
@@ -117,49 +122,53 @@ public class SwitchYardEditor extends GEFEditor {
 		return new BeanServiceWizard();
 	}
 
-	public CamelJavaWizard addCamelJavaImplementation() {
+	public CamelJavaServiceWizard addCamelJavaImplementation() {
 		return addCamelJavaImplementation(composite);
 	}
 
-	public CamelJavaWizard addCamelJavaImplementation(EditPart editPart) {
+	public CamelJavaServiceWizard addCamelJavaImplementation(EditPart editPart) {
 		addTool(TOOL_CAMEL_JAVA, editPart);
-		return new CamelJavaWizard(this);
+		return new CamelJavaServiceWizard(this);
 	}
 
-	public CamelXMLWizard addCamelXMLImplementation() {
-		return addCamelXmlImplementation(composite);
+	public CamelXMLServiceWizard addCamelXMLImplementation() {
+		addCamelXmlImplementation(composite);
+		return new CamelXMLServiceWizard(this);
 	}
 
-	public CamelXMLWizard addCamelXmlImplementation(EditPart editPart) {
+	public ExistingCamelXMLServiceWizard addCamelXmlImplementation(EditPart editPart) {
 		addTool(TOOL_CAMEL_XML, editPart);
-		return new CamelXMLWizard(this);
+		return new ExistingCamelXMLServiceWizard(this);
 	}
 
 	public BPELServiceWizard addBPELImplementation() {
-		return addBPELImplementation(composite);
-	}
-
-	public BPELServiceWizard addBPELImplementation(EditPart editPart) {
-		addTool(TOOL_BPEL, editPart);
+		addBPELImplementation(composite);
 		return new BPELServiceWizard();
 	}
 
-	public BPMServiceWizard addBPMNImplementation() {
-		return addBPMNImplementation(composite);
+	public ExistingBPELServiceWizard addBPELImplementation(EditPart editPart) {
+		addTool(TOOL_BPEL, editPart);
+		return new ExistingBPELServiceWizard();
 	}
 
-	public BPMServiceWizard addBPMNImplementation(EditPart editPart) {
+	public BPMNServiceWizard addBPMNImplementation() {
+		addBPMNImplementation(composite);
+		return new BPMNServiceWizard();
+	}
+
+	public ExistingBPMNServiceWizard addBPMNImplementation(EditPart editPart) {
 		addTool(TOOL_BPMN, editPart);
-		return new BPMServiceWizard();
+		return new ExistingBPMNServiceWizard();
 	}
 
 	public DroolsServiceWizard addDroolsImplementation() {
-		return addDroolsImplementation(composite);
+		addDroolsImplementation(composite);
+		return new DroolsServiceWizard();
 	}
 
-	public DroolsServiceWizard addDroolsImplementation(EditPart editPart) {
+	public ExistingDroolsServiceWizard addDroolsImplementation(EditPart editPart) {
 		addTool(TOOL_RULES, editPart);
-		return new DroolsServiceWizard();
+		return new ExistingDroolsServiceWizard();
 	}
 
 	protected void addTool(String tool, EditPart editPart) {

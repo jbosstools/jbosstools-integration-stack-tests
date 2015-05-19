@@ -8,11 +8,11 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
  * @author apodhrad
  *
  */
-public class BPMServiceWizard extends ServiceWizard<BPMServiceWizard> {
+public class BPMNServiceWizard extends ServiceWizard<BPMNServiceWizard> {
 
 	public static final String DIALOG_TITLE = "New File";
 
-	public BPMServiceWizard activate() {
+	public BPMNServiceWizard activate() {
 		new DefaultShell(DIALOG_TITLE);
 		return this;
 	}

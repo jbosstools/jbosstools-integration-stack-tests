@@ -13,7 +13,7 @@ import org.jboss.tools.switchyard.ui.bot.test.DebuggerTest;
 import org.jboss.tools.switchyard.ui.bot.test.DeploymentTest;
 import org.jboss.tools.switchyard.ui.bot.test.DomainSettingsTest;
 import org.jboss.tools.switchyard.ui.bot.test.DroolsTest;
-import org.jboss.tools.switchyard.ui.bot.test.ImplementationCamelTest;
+import org.jboss.tools.switchyard.ui.bot.test.ImplementationsTest;
 import org.jboss.tools.switchyard.ui.bot.test.ImplementationsPropertiesTest;
 import org.jboss.tools.switchyard.ui.bot.test.ProjectCapabilitiesTest;
 import org.jboss.tools.switchyard.ui.bot.test.ProjectCreationTest;
@@ -39,7 +39,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	BottomUpBPMN2Test.class,
 	TopDownBPMN2Test.class,
 	DroolsTest.class,
-	ImplementationCamelTest.class,
+	ImplementationsTest.class,
 	ImplementationsPropertiesTest.class,
 	DomainSettingsTest.class,
 	BindingsTest.class,

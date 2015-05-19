@@ -13,33 +13,33 @@ import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
  * @author apodhrad
  * 
  */
-public class CamelJavaWizard extends ServiceWizard<CamelJavaWizard> {
+public class CamelJavaServiceWizard extends ServiceWizard<CamelJavaServiceWizard> {
 
 	public static final String DIALOG_TITLE = "New Java Class";
 	private static SWTWorkbenchBot bot = new SWTWorkbenchBot();
 
 	private GEFEditor editor;
 
-	public CamelJavaWizard() {
+	public CamelJavaServiceWizard() {
 		super();
 	}
 
-	public CamelJavaWizard(GEFEditor editor) {
+	public CamelJavaServiceWizard(GEFEditor editor) {
 		super();
 		this.editor = editor;
 	}
 
-	public CamelJavaWizard activate() {
+	public CamelJavaServiceWizard activate() {
 		bot.shell(DIALOG_TITLE).activate();
 		return this;
 	}
 
-	public CamelJavaWizard setName(String name) {
+	public CamelJavaServiceWizard setName(String name) {
 		new LabeledText("Name:").setText(name);
 		return this;
 	}
 
-	public CamelJavaWizard open() {
+	public CamelJavaServiceWizard open() {
 		return new SwitchYardEditor().addCamelJavaImplementation();
 	}
 

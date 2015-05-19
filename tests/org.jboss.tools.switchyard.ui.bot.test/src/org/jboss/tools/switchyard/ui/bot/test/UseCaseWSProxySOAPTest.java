@@ -24,7 +24,7 @@ import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.jboss.tools.switchyard.reddeer.view.JUnitView;
-import org.jboss.tools.switchyard.reddeer.wizard.CamelJavaWizard;
+import org.jboss.tools.switchyard.reddeer.wizard.CamelJavaServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ImportFileWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ReferenceWizard;
 import org.jboss.tools.switchyard.ui.bot.test.util.SOAPService;
@@ -88,7 +88,7 @@ public class UseCaseWSProxySOAPTest {
 		new ImportFileWizard().importFile("resources/messages/WSProxy", "soap-response.xml");
 
 		/* Create Camel Route */
-		new CamelJavaWizard().open().setName("Proxy").selectWSDLInterface(WSDL).setServiceName("Hello").finish();
+		new CamelJavaServiceWizard().open().setName("Proxy").selectWSDLInterface(WSDL).setServiceName("Hello").finish();
 
 		new Service("Hello").promoteService().setServiceName("ProxyService").finish();
 		new Service("ProxyService").addBinding("SOAP");

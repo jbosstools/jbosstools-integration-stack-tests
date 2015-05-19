@@ -65,7 +65,7 @@ public abstract class ServiceWizard<T extends ServiceWizard<?>> extends WizardDi
 		new WaitWhile(new ShellWithTextIsActive(new IsNull<String>()));
 		return activate();
 	}
-	
+
 	public T createJavaInterface(String javaInterface) {
 		activate().checkInterfaceType("Java").clickInterface();
 		new JavaInterfaceWizard().activate().setName(javaInterface).finish();
@@ -85,7 +85,7 @@ public abstract class ServiceWizard<T extends ServiceWizard<?>> extends WizardDi
 		new Java2WSDLWizard().activate().finish();
 		return activate();
 	}
-	
+
 	public T setFileName(String fileName) {
 		new LabeledText("File name:").setText(fileName);
 		return activate();
