@@ -25,6 +25,7 @@ import org.jboss.tools.switchyard.reddeer.wizard.ExistingCamelXMLServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ExistingDroolsServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ImportFileWizard;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -254,6 +255,153 @@ public class ImplementationsTest {
 	}
 
 	@Test
+	public void addExistingBPMNImplementationWithKnowledgeContainerTest() throws Exception {
+		SwitchYardEditor editor = new SwitchYardEditor();
+		SwitchYardComponent component = editor.addComponent();
+		ExistingBPMNServiceWizard bpmnWizard = editor.addBPMNImplementation(component);
+		bpmnWizard.selectKnowledgeContainer();
+		bpmnWizard.getSessionName().setText("session");
+		bpmnWizard.getBaseName().setText("base");
+		bpmnWizard.getGroupID().setText("com.example");
+		bpmnWizard.getArtifactID().setText("hello-world");
+		bpmnWizard.getVersion().setText("1.0.0-SNAPSHOT");
+
+		bpmnWizard.getScanForUpdates().toggle(false);
+		Assert.assertFalse(bpmnWizard.getScanInterval().isEnabled());
+
+		bpmnWizard.getScanForUpdates().toggle(true);
+		Assert.assertTrue(bpmnWizard.getScanInterval().isEnabled());
+		bpmnWizard.getScanInterval().setText("12345");
+
+		bpmnWizard.finish();
+
+		editor.save();
+		removeComponentAfterTest("Component");
+
+		assertEquals("1", editor.xpath("count(/switchyard/composite/component)"));
+		assertEquals("Component", editor.xpath("/switchyard/composite/component/@name"));
+		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.bpm)"));
+		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.bpm/manifest)"));
+		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.bpm/manifest/container)"));
+		assertEquals("session",
+				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/container/@sessionName"));
+		assertEquals("base",
+				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/container/@baseName"));
+		assertEquals("com.example:hello-world:1.0.0-SNAPSHOT",
+				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/container/@releaseId"));
+		assertEquals("true",
+				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/container/@scan"));
+		assertEquals("12345",
+				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/container/@scanInterval"));
+	}
+
+	@Test
+	public void addExistingBPMNImplementationWithRemoteJMSTest() throws Exception {
+		SwitchYardEditor editor = new SwitchYardEditor();
+		SwitchYardComponent component = editor.addComponent();
+		ExistingBPMNServiceWizard bpmnWizard = editor.addBPMNImplementation(component);
+		bpmnWizard.selectRemoteJMS();
+		bpmnWizard.getDeploymentID().setText("jmsID");
+		bpmnWizard.getHostName().setText("jmsHost");
+		bpmnWizard.getRemotingPort().setText("9001");
+		bpmnWizard.getMessagingPort().setText("9002");
+		bpmnWizard.getUserName().setText("jmsAdmin");
+		bpmnWizard.getPassword().setText("jmsAdmin123$");
+		bpmnWizard.getTimeout().setText("123");
+
+		bpmnWizard.getUseSSL().setSelection("false");
+		Assert.assertFalse(bpmnWizard.getKeystorePassword().isEnabled());
+		Assert.assertFalse(bpmnWizard.getKeystoreLocation().isEnabled());
+		Assert.assertFalse(bpmnWizard.getTruststorePassword().isEnabled());
+		Assert.assertFalse(bpmnWizard.getTruststoreLocation().isEnabled());
+
+		bpmnWizard.getUseSSL().setSelection("true");
+		Assert.assertTrue(bpmnWizard.getKeystorePassword().isEnabled());
+		Assert.assertTrue(bpmnWizard.getKeystoreLocation().isEnabled());
+		Assert.assertTrue(bpmnWizard.getTruststorePassword().isEnabled());
+		Assert.assertTrue(bpmnWizard.getTruststoreLocation().isEnabled());
+
+		bpmnWizard.getKeystorePassword().setText("keystorePass");
+		bpmnWizard.getKeystoreLocation().setText("keystoreLoc");
+		bpmnWizard.getTruststorePassword().setText("truststorePass");
+		bpmnWizard.getTruststoreLocation().setText("truststoreLoc");
+
+		bpmnWizard.finish();
+
+		editor.save();
+		removeComponentAfterTest("Component");
+
+		assertEquals("1", editor.xpath("count(/switchyard/composite/component)"));
+		assertEquals("Component", editor.xpath("/switchyard/composite/component/@name"));
+		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.bpm)"));
+		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.bpm/manifest)"));
+		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.bpm/manifest/remoteJms)"));
+		assertEquals("jmsID",
+				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/remoteJms/@deploymentId"));
+		assertEquals("jmsAdmin",
+				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/remoteJms/@userName"));
+		assertEquals("jmsAdmin123$",
+				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/remoteJms/@password"));
+		assertEquals("123",
+				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/remoteJms/@timeout"));
+		assertEquals("jmsHost",
+				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/remoteJms/@hostName"));
+		assertEquals("9001",
+				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/remoteJms/@remotingPort"));
+		assertEquals("9002",
+				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/remoteJms/@messagingPort"));
+		assertEquals("true",
+				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/remoteJms/@useSsl"));
+		assertEquals("keystoreLoc",
+				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/remoteJms/@keystoreLocation"));
+		assertEquals("keystorePass",
+				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/remoteJms/@keystorePassword"));
+		assertEquals(
+				"truststoreLoc",
+				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/remoteJms/@truststoreLocation"));
+		assertEquals(
+				"truststorePass",
+				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/remoteJms/@truststorePassword"));
+	}
+
+	@Test
+	public void addExistingBPMNImplementationWithRemoteRESTTest() throws Exception {
+		SwitchYardEditor editor = new SwitchYardEditor();
+		SwitchYardComponent component = editor.addComponent();
+		ExistingBPMNServiceWizard bpmnWizard = editor.addBPMNImplementation(component);
+		bpmnWizard.selectRemoteREST();
+		bpmnWizard.getDeploymentID().setText("restID");
+		bpmnWizard.getRESTURL().setText("http://localhost/rest");
+		bpmnWizard.getUserName().setText("restAdmin");
+		bpmnWizard.getPassword().setText("restAdmin123$");
+		bpmnWizard.getTimeout().setText("123");
+		bpmnWizard.getUseFormBasedAuthentication().setSelection("true");
+		bpmnWizard.finish();
+
+		editor.save();
+		removeComponentAfterTest("Component");
+
+		assertEquals("1", editor.xpath("count(/switchyard/composite/component)"));
+		assertEquals("Component", editor.xpath("/switchyard/composite/component/@name"));
+		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.bpm)"));
+		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.bpm/manifest)"));
+		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.bpm/manifest/remoteRest)"));
+		assertEquals("restID",
+				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/remoteRest/@deploymentId"));
+		assertEquals("http://localhost/rest",
+				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/remoteRest/@url"));
+		assertEquals("restAdmin",
+				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/remoteRest/@userName"));
+		assertEquals("restAdmin123$",
+				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/remoteRest/@password"));
+		assertEquals("123",
+				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/remoteRest/@timeout"));
+		assertEquals(
+				"true",
+				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/remoteRest/@useFormBasedAuth"));
+	}
+
+	@Test
 	public void addDroolsImplementationWithNewJavaInterfaceTest() throws Exception {
 		SwitchYardEditor editor = new SwitchYardEditor();
 		DroolsServiceWizard droolsWizard = editor.addDroolsImplementation();
@@ -305,6 +453,158 @@ public class ImplementationsTest {
 				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/resources/resource/@location"));
 		assertEquals("DRL",
 				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/resources/resource/@type"));
+	}
+
+	@Test
+	public void addExistingDroolsImplementationWithKnowledgeContainerTest() throws Exception {
+		SwitchYardEditor editor = new SwitchYardEditor();
+		SwitchYardComponent component = editor.addComponent();
+		ExistingDroolsServiceWizard droolsWizard = editor.addDroolsImplementation(component);
+		droolsWizard.selectKnowledgeContainer();
+		droolsWizard.getSessionName().setText("session");
+		droolsWizard.getBaseName().setText("base");
+		droolsWizard.getGroupID().setText("com.example");
+		droolsWizard.getArtifactID().setText("hello-world");
+		droolsWizard.getVersion().setText("1.0.0-SNAPSHOT");
+
+		droolsWizard.getScanForUpdates().toggle(false);
+		Assert.assertFalse(droolsWizard.getScanInterval().isEnabled());
+
+		droolsWizard.getScanForUpdates().toggle(true);
+		Assert.assertTrue(droolsWizard.getScanInterval().isEnabled());
+		droolsWizard.getScanInterval().setText("12345");
+
+		droolsWizard.finish();
+
+		editor.save();
+		removeComponentAfterTest("Component");
+
+		assertEquals("1", editor.xpath("count(/switchyard/composite/component)"));
+		assertEquals("Component", editor.xpath("/switchyard/composite/component/@name"));
+		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.rules)"));
+		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.rules/manifest)"));
+		assertEquals("1",
+				editor.xpath("count(/switchyard/composite/component/implementation.rules/manifest/container)"));
+		assertEquals("session",
+				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/container/@sessionName"));
+		assertEquals("base",
+				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/container/@baseName"));
+		assertEquals("com.example:hello-world:1.0.0-SNAPSHOT",
+				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/container/@releaseId"));
+		assertEquals("true",
+				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/container/@scan"));
+		assertEquals("12345",
+				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/container/@scanInterval"));
+	}
+
+	@Test
+	public void addExistingDroolsImplementationWithRemoteJMSTest() throws Exception {
+		SwitchYardEditor editor = new SwitchYardEditor();
+		SwitchYardComponent component = editor.addComponent();
+		ExistingDroolsServiceWizard droolsWizard = editor.addDroolsImplementation(component);
+		droolsWizard.selectRemoteJMS();
+		droolsWizard.getDeploymentID().setText("jmsID");
+		droolsWizard.getHostName().setText("jmsHost");
+		droolsWizard.getRemotingPort().setText("9001");
+		droolsWizard.getMessagingPort().setText("9002");
+		droolsWizard.getUserName().setText("jmsAdmin");
+		droolsWizard.getPassword().setText("jmsAdmin123$");
+		droolsWizard.getTimeout().setText("123");
+
+		droolsWizard.getUseSSL().setSelection("false");
+		Assert.assertFalse(droolsWizard.getKeystorePassword().isEnabled());
+		Assert.assertFalse(droolsWizard.getKeystoreLocation().isEnabled());
+		Assert.assertFalse(droolsWizard.getTruststorePassword().isEnabled());
+		Assert.assertFalse(droolsWizard.getTruststoreLocation().isEnabled());
+
+		droolsWizard.getUseSSL().setSelection("true");
+		Assert.assertTrue(droolsWizard.getKeystorePassword().isEnabled());
+		Assert.assertTrue(droolsWizard.getKeystoreLocation().isEnabled());
+		Assert.assertTrue(droolsWizard.getTruststorePassword().isEnabled());
+		Assert.assertTrue(droolsWizard.getTruststoreLocation().isEnabled());
+
+		droolsWizard.getKeystorePassword().setText("keystorePass");
+		droolsWizard.getKeystoreLocation().setText("keystoreLoc");
+		droolsWizard.getTruststorePassword().setText("truststorePass");
+		droolsWizard.getTruststoreLocation().setText("truststoreLoc");
+
+		droolsWizard.finish();
+
+		editor.save();
+		removeComponentAfterTest("Component");
+
+		assertEquals("1", editor.xpath("count(/switchyard/composite/component)"));
+		assertEquals("Component", editor.xpath("/switchyard/composite/component/@name"));
+		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.rules)"));
+		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.rules/manifest)"));
+		assertEquals("1",
+				editor.xpath("count(/switchyard/composite/component/implementation.rules/manifest/remoteJms)"));
+		assertEquals("jmsID",
+				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/remoteJms/@deploymentId"));
+		assertEquals("jmsAdmin",
+				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/remoteJms/@userName"));
+		assertEquals("jmsAdmin123$",
+				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/remoteJms/@password"));
+		assertEquals("123",
+				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/remoteJms/@timeout"));
+		assertEquals("jmsHost",
+				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/remoteJms/@hostName"));
+		assertEquals("9001",
+				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/remoteJms/@remotingPort"));
+		assertEquals("9002",
+				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/remoteJms/@messagingPort"));
+		assertEquals("true",
+				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/remoteJms/@useSsl"));
+		assertEquals(
+				"keystoreLoc",
+				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/remoteJms/@keystoreLocation"));
+		assertEquals(
+				"keystorePass",
+				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/remoteJms/@keystorePassword"));
+		assertEquals(
+				"truststoreLoc",
+				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/remoteJms/@truststoreLocation"));
+		assertEquals(
+				"truststorePass",
+				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/remoteJms/@truststorePassword"));
+	}
+
+	@Test
+	public void addExistingDroolsImplementationWithRemoteRESTTest() throws Exception {
+		SwitchYardEditor editor = new SwitchYardEditor();
+		SwitchYardComponent component = editor.addComponent();
+		ExistingDroolsServiceWizard bpmnWizard = editor.addDroolsImplementation(component);
+		bpmnWizard.selectRemoteREST();
+		bpmnWizard.getDeploymentID().setText("restID");
+		bpmnWizard.getRESTURL().setText("http://localhost/rest");
+		bpmnWizard.getUserName().setText("restAdmin");
+		bpmnWizard.getPassword().setText("restAdmin123$");
+		bpmnWizard.getTimeout().setText("123");
+		bpmnWizard.getUseFormBasedAuthentication().setSelection("true");
+		bpmnWizard.finish();
+
+		editor.save();
+		removeComponentAfterTest("Component");
+
+		assertEquals("1", editor.xpath("count(/switchyard/composite/component)"));
+		assertEquals("Component", editor.xpath("/switchyard/composite/component/@name"));
+		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.rules)"));
+		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.rules/manifest)"));
+		assertEquals("1",
+				editor.xpath("count(/switchyard/composite/component/implementation.rules/manifest/remoteRest)"));
+		assertEquals("restID",
+				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/remoteRest/@deploymentId"));
+		assertEquals("http://localhost/rest",
+				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/remoteRest/@url"));
+		assertEquals("restAdmin",
+				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/remoteRest/@userName"));
+		assertEquals("restAdmin123$",
+				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/remoteRest/@password"));
+		assertEquals("123",
+				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/remoteRest/@timeout"));
+		assertEquals(
+				"true",
+				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/remoteRest/@useFormBasedAuth"));
 	}
 
 	private void removeClassAfterTest(String className) {
