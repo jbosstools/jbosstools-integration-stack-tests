@@ -12,6 +12,7 @@ import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
 import org.jboss.tools.drools.ui.bot.test.util.ApplicationIsTerminated;
 import org.jboss.tools.drools.ui.bot.test.util.RunUtility;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -54,4 +55,9 @@ public class DefaultRuntimeTest extends TestParent {
         LOGGER.debug(consoleText);
         Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.matches(SUCCESSFUL_RUN_REGEX));
     }
+
+	@After
+	public void cleanDefaultRuntime() {
+		deleteAllRuntimes();
+	}
 }
