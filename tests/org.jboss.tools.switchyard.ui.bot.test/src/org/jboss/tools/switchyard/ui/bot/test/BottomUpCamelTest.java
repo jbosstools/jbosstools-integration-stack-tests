@@ -3,12 +3,12 @@ package org.jboss.tools.switchyard.ui.bot.test;
 import static org.jboss.tools.switchyard.reddeer.binding.OperationOptionsPage.OPERATION_NAME;
 import static org.junit.Assert.assertEquals;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.condition.TableHasRows;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.wait.TimePeriod;
@@ -46,8 +46,6 @@ public class BottomUpCamelTest {
 	public static final String PACKAGE = "com.example.switchyard.camel_project";
 	public static final String JAVA_FILE = "MyRouteBuilder";
 	
-	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
-	
 	@InjectRequirement
 	private SwitchYardRequirement switchyardRequirement;
 
@@ -79,11 +77,11 @@ public class BottomUpCamelTest {
 
 		// Select existing implementation
 		new PushButton("Browse...").click();
-		bot.shell("Select entries").activate();
+		new DefaultShell("Select entries");
 		new DefaultText(0).setText(JAVA_FILE);
 		new WaitUntil(new TableHasRows(new DefaultTable()));
 		new PushButton("OK").click();
-		bot.shell("Camel Implementation").activate();
+		new DefaultShell("Camel Implementation");
 		new PushButton("Finish").click();
 
 		// Create new service and interface

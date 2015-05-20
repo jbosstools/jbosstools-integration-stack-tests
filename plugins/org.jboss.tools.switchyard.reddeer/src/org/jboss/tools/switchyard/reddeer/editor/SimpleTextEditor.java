@@ -1,55 +1,43 @@
 package org.jboss.tools.switchyard.reddeer.editor;
 
-import java.util.List;
-
-import org.eclipse.jface.bindings.keys.KeyStroke;
-import org.eclipse.jface.bindings.keys.ParseException;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
-import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 
 /**
  * 
  * @author apodhrad
  * 
  */
-public class SimpleTextEditor {
-
-	private SWTBotEclipseEditor editor;
-	private static SWTWorkbenchBot bot = new SWTWorkbenchBot(); 
+public class SimpleTextEditor extends TextEditor {
 
 	public SimpleTextEditor(String fileName) {
-		AbstractWait.sleep(TimePeriod.SHORT);
-		editor = bot.editorByTitle(fileName).toTextEditor();
-		editor.show();
-		editor.setFocus();
+		super(fileName);
 	}
 
 	public SimpleTextEditor type(String text) {
 		AbstractWait.sleep(TimePeriod.SHORT);
-		editor.typeText(text);
-		editor.save();
+		insertText(getCursorOffset(), text);
+		save();
 		return this;
 	}
 
 	public SimpleTextEditor typeAfter(String word, String text) {
-		editor.navigateTo(getLineNum(word) + 1, 0);
+		setCursorPosition(getLineNum(word) + 1, 0);
 		return type(text);
 	}
 
 	public SimpleTextEditor typeBefore(String word, String text) {
-		editor.navigateTo(getLineNum(word) - 1, 0);
+		setCursorPosition(getLineNum(word) - 1, 0);
 		return type(text);
 	}
 
 	public SimpleTextEditor deleteLine(int lineNum) {
-		editor.selectLine(lineNum);
-		editor.pressShortcut(Keystrokes.DELETE);
-		editor.save();
+		selectLine(lineNum);
+		new ShellMenu("Edit", "Delete").select();
+		save();
 		return this;
 	}
 
@@ -63,44 +51,45 @@ public class SimpleTextEditor {
 
 	public void saveAndClose() {
 		formatText();
-		editor.saveAndClose();
+		save();
+		close();
 	}
 
 	public SimpleTextEditor formatText() {
 		AbstractWait.sleep(TimePeriod.SHORT);
-		try {
-			editor.pressShortcut(Keystrokes.CTRL, Keystrokes.SHIFT, KeyStroke.getInstance("O"));
-			editor.pressShortcut(Keystrokes.CTRL, Keystrokes.SHIFT, KeyStroke.getInstance("F"));
-		} catch (ParseException e) {
-			e.printStackTrace();
-			throw new RuntimeException("Shortcut exception");
-		}
-		editor.save();
+		new ShellMenu("Source", "Format").select();
+		new ShellMenu("Source", "Organize Imports").select();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		new PushButton("Select All").click();
+		new PushButton("OK").click();
+		save();
+
 		return this;
 	}
 
 	public int getLineNum(String word) {
-		List<String> lines = editor.getLines();
-		int lineNum = 0;
-		for (String line : lines) {
+		int numberOfLines = getNumberOfLines();
+		for (int i = 0; i < numberOfLines; i++) {
+			String line = getTextAtLine(i);
 			if (line.contains(word)) {
-				return lineNum;
+				return i;
 			}
-			lineNum++;
 		}
 		throw new RuntimeException("Cannot find line with '" + word + "'");
 	}
-	
+
 	/**
 	 * Generate getters and setters to all attributes
-	 * @param firstAttribute name of first attribute
+	 * 
+	 * @param firstAttribute
+	 *            name of first attribute
 	 */
-	public void generateGettersSetters(String firstAttribute){
-		editor.navigateTo(getLineNum(firstAttribute),0);
+	public void generateGettersSetters(String firstAttribute) {
+		setCursorPosition(getLineNum(firstAttribute), 0);
 		new ShellMenu("Source", "Generate Getters and Setters...").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new PushButton("Select All").click();
 		new PushButton("OK").click();
-		editor.save();
+		save();
 	}
 }

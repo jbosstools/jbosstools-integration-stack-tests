@@ -1,8 +1,8 @@
 package org.jboss.tools.switchyard.reddeer.wizard;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 
@@ -16,14 +16,12 @@ public class Java2WSDLWizard extends NewWizardDialog {
 
 	public static final String DIALOG_TITLE = "Java2WSDL";
 
-	private static SWTWorkbenchBot bot = new SWTWorkbenchBot(); 
-
 	public Java2WSDLWizard() {
 		super("SwitchYard", "WSDL File from Java");
 	}
 
 	public Java2WSDLWizard activate() {
-		bot.shell(DIALOG_TITLE).activate();
+		new DefaultShell(DIALOG_TITLE);
 		AbstractWait.sleep(TimePeriod.SHORT);
 		return this;
 	}

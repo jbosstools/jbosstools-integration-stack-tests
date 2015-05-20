@@ -8,7 +8,6 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.tools.switchyard.reddeer.widget.Link;
 
 /**
  * Wizard for promoting a service.
@@ -29,7 +28,7 @@ public class PromoteServiceWizard extends ServiceWizard<PromoteServiceWizard> {
 		new LabeledText("Name:").setText(name);
 		return this;
 	}
-	
+
 	public PromoteServiceWizard setServiceName(String name) {
 		new LabeledText("Service Name:").setText(name);
 		return this;
@@ -41,13 +40,6 @@ public class PromoteServiceWizard extends ServiceWizard<PromoteServiceWizard> {
 		return this;
 	}
 
-	protected void createInterface() {
-		new Link("Interface:").click();
-		Java2WSDLWizard wizard = new Java2WSDLWizard();
-		wizard.next();
-		wizard.finish();
-	}
-
 	public PromoteServiceWizard doNotCreateTransformers() {
 		activate();
 		CheckBox checkBox = getCreateRequiredTransformers();
@@ -55,7 +47,7 @@ public class PromoteServiceWizard extends ServiceWizard<PromoteServiceWizard> {
 		checkBox.toggle(false);
 		return this;
 	}
-	
+
 	public CheckBox getCreateRequiredTransformers() {
 		return new CheckBox("Create required transformers");
 	}
