@@ -1,9 +1,9 @@
 package org.jboss.tools.switchyard.reddeer.binding;
 
-import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.tools.switchyard.reddeer.widget.LabeledTextExt;
 
 /**
  * JMS binding page
@@ -15,19 +15,17 @@ public class JMSBindingPage extends OperationOptionsPage<JMSBindingPage> {
 
 	public static final String TYPE_QUEUE = "Queue";
 	public static final String TYPE_TOPIC = "Topic";
-	
+
 	public static final String QUEUE_TOPIC_NAME = "Queue/Topic Name*";
 
 	public JMSBindingPage setQueueTopicName(String name) {
-		// TODO Replace with RedDeer implementation
-		new SWTBot().textWithLabel(QUEUE_TOPIC_NAME).setFocus();
-		new SWTBot().textWithLabel(QUEUE_TOPIC_NAME).setText(name);
+		new LabeledTextExt(QUEUE_TOPIC_NAME).setFocus();
+		new LabeledTextExt(QUEUE_TOPIC_NAME).setText(name);
 		return this;
 	}
-	
+
 	public String getQueueTopicName() {
-		// TODO Replace with RedDeer implementation
-		return new SWTBot().textWithLabel(QUEUE_TOPIC_NAME).getText();
+		return new LabeledTextExt(QUEUE_TOPIC_NAME).getText();
 	}
 
 	public LabeledText getTransactionManager() {
@@ -62,5 +60,4 @@ public class JMSBindingPage extends OperationOptionsPage<JMSBindingPage> {
 		return new CheckBox("Transacted");
 	}
 
-	
 }
