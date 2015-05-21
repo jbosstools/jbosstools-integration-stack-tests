@@ -23,11 +23,12 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
+import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.switchyard.reddeer.binding.AtomBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.CXFBindingPage;
@@ -133,9 +134,24 @@ public class BindingsTest {
 	}
 
 	@AfterClass
-	public static void deleteProject() {
-		new WorkbenchShell().maximize();
-		new SwitchYardProject(PROJECT).delete(true);
+	public static void deleteAllProjects() {
+		EditorHandler.getInstance().closeAll(true);
+
+		// workaround for deleting all projects
+		Exception exception = null;
+		for (int i = 0; i < 10; i++) {
+			try {
+				exception = null;
+				new WorkbenchShell().setFocus();
+				new ProjectExplorer().deleteAllProjects();
+				break;
+			} catch (Exception e) {
+				exception = e;
+			}
+		}
+		if (exception != null) {
+			throw new RuntimeException("Cannot delete all projects", exception);
+		}
 	}
 
 	@Before
@@ -147,7 +163,6 @@ public class BindingsTest {
 		editor = new SwitchYardEditor();
 		new SwitchYardEditor().addService();
 		new DefaultShell("New Service");
-		new SWTWorkbenchBot().shell("New Service").activate();
 		new DefaultServiceWizard().selectJavaInterface("Hello").setServiceName("HelloService").finish();
 		new SwitchYardEditor().save();
 	}

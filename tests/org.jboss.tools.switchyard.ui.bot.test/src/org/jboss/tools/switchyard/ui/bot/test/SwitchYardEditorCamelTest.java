@@ -1,6 +1,7 @@
 package org.jboss.tools.switchyard.ui.bot.test;
 
-import static org.eclipse.swtbot.swt.finder.SWTBotAssert.assertContains;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertEquals;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
@@ -200,5 +201,16 @@ public class SwitchYardEditorCamelTest {
 		String componentQuery = "/switchyard/composite/component[@name='" + ROUTE_NAME + "']";
 		String path = editor.xpath(componentQuery + "/implementation.camel/xml/@path");
 		assertEquals("myroute.xml", path);
+	}
+	
+
+	/**
+	 * Asserts that the <code>needle</code> is contained within the <code>hayStack</code>.
+	 * 
+	 * @param needle the text to search in the <code>hayStack</code>.
+	 * @param hayStack the text to look within.
+	 */
+	public static void assertContains(String needle, String hayStack) {
+		assertThat(hayStack, containsString(needle));
 	}
 }
