@@ -3,7 +3,7 @@ package org.jboss.tools.bpmn2.reddeer.editor.switchyard.activities;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.OperationDialog;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Element;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ElementWithParamMapping;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
 import org.jboss.tools.bpmn2.reddeer.editor.properties.PropertiesTabs;
 import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItemButton;
@@ -14,7 +14,7 @@ import org.jboss.tools.bpmn2.reddeer.properties.setup.ScriptSetUp;
 /**
  * TODO: apodhrad
  */
-public class SwitchYardServiceTask extends Element {
+public class SwitchYardServiceTask extends ElementWithParamMapping {
 
 	@SuppressWarnings("unused")
 	private static final int ON_ENTRY = 0;

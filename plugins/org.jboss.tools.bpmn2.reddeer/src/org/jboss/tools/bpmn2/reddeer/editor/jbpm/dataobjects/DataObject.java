@@ -19,6 +19,10 @@ public class DataObject extends Element {
 	public DataObject(String name) {
 		super(name, ElementType.DATA_OBJECT);
 	}
+	
+	public DataObject(Element element) {
+		super(element);
+	}
 
 	/**
 	 * 

@@ -1,7 +1,7 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.throwevents;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Element;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ElementWithParamMapping;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Escalation;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.EscalationEventDefinition;
 import org.jboss.tools.bpmn2.reddeer.properties.setup.EventDefinitionSetUp;
@@ -9,7 +9,7 @@ import org.jboss.tools.bpmn2.reddeer.properties.setup.EventDefinitionSetUp;
 /**
  * 
  */
-public class EscalationIntermediateThrowEvent extends Element {
+public class EscalationIntermediateThrowEvent extends ElementWithParamMapping {
 	
 	/**
 	 * 

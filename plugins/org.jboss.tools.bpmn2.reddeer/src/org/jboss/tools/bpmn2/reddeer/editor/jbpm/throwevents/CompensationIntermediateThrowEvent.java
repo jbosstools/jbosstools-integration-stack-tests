@@ -10,6 +10,10 @@ public class CompensationIntermediateThrowEvent extends Element {
 		super(name, ElementType.COMPENSATION_INTERMEDIATE_THROW_EVENT);
 	}
 	
+	public CompensationIntermediateThrowEvent(Element element) {
+		super(element);
+	}
+	
 	public void setCompensationActivity(String activityName) {
 		propertiesHandler.setUp(new CompensationActivitySetUp(activityName));
 	}

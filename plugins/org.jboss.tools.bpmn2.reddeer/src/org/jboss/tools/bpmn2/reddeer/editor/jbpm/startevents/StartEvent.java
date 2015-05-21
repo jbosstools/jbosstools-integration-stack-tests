@@ -1,12 +1,12 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Element;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ElementWithParamMapping;
 
 /**
  * 
  */
-public class StartEvent extends Element {
+public class StartEvent extends ElementWithParamMapping {
 
 	/**
 	 * 

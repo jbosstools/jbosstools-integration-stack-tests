@@ -1,7 +1,7 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.throwevents;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Element;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ElementWithParamMapping;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Message;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.MappingType;
 import org.jboss.tools.bpmn2.reddeer.properties.setup.MessageSetUp;
@@ -9,7 +9,7 @@ import org.jboss.tools.bpmn2.reddeer.properties.setup.MessageSetUp;
 /**
  * 
  */
-public class MessageIntermediateThrowEvent extends Element {
+public class MessageIntermediateThrowEvent extends ElementWithParamMapping {
 	
 	/**
 	 * 

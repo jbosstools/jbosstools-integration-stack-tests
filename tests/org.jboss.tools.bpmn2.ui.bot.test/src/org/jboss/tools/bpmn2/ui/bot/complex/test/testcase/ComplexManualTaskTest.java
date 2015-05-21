@@ -32,9 +32,8 @@ public class ComplexManualTaskTest extends JBPM6ComplexTest {
 	@TestPhase(phase=Phase.MODEL)
 	public void model() {
 		StartEvent start = new StartEvent("StartProcess");
-		start.append("NumberAssertion",ElementType.MANUAL_TASK);
 		
-		ManualTask manual = new ManualTask("NumberAssertion");
+		ManualTask manual = (ManualTask) start.append("NumberAssertion",ElementType.MANUAL_TASK);
 		manual.addParameterMapping(new ParameterMapping(new FromVariable(VARIABLE1), new ToDataInput("internalVariable", "Integer"), ParameterMapping.Type.INPUT));
 		
 		manual.connectTo(new EndEvent("EndProcess"));

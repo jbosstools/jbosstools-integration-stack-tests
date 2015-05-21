@@ -1,7 +1,7 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Element;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ElementWithParamMapping;
 import org.jboss.tools.bpmn2.reddeer.editor.properties.PropertiesTabs;
 import org.jboss.tools.bpmn2.reddeer.properties.setup.ComboSetUp;
 import org.jboss.tools.bpmn2.reddeer.properties.setup.GatewayConditionSetUp;
@@ -11,7 +11,7 @@ import org.jboss.tools.bpmn2.reddeer.properties.setup.GatewayPrioritySetUp;
 /**
  * 
  */
-public class ExclusiveGateway extends Element {
+public class ExclusiveGateway extends ElementWithParamMapping {
 
 	/**
 	 * 

@@ -29,10 +29,9 @@ public class ComplexDataObjectTest extends JBPM6ComplexTest{
 	public void model() {
 		
 		Process process = new Process("BaseBPMN2-DataObject");
-		process.add("employee", ElementType.DATA_OBJECT);
 		
-		DataObject object = new DataObject("employee");
-		object.connectTo(new ScriptTask("Script"), ConnectionType.DATA_ASSOCIATION);
+		DataObject object = (DataObject) process.add("employee", ElementType.DATA_OBJECT);
+		object.connectTo(new ScriptTask("Script"), ConnectionType.ASSOCIATION_ONE_WAY);
 		object.setDataType("String");
 		object.select();
 	}

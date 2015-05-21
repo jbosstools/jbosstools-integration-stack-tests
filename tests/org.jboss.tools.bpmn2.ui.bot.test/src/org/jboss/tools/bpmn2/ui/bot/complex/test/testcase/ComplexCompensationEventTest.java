@@ -31,9 +31,9 @@ public class ComplexCompensationEventTest extends JBPM6ComplexTest {
 	@TestPhase(phase = Phase.MODEL)
 	public void model() {
 		UserTask userTask = new UserTask("WillBeReRun");
-		userTask.append("ThrowCompensation", ElementType.COMPENSATION_INTERMEDIATE_THROW_EVENT);
 		
-		CompensationIntermediateThrowEvent throwEvent = new CompensationIntermediateThrowEvent("ThrowCompensation");
+		CompensationIntermediateThrowEvent throwEvent = 
+			(CompensationIntermediateThrowEvent) userTask.append("ThrowCompensation", ElementType.COMPENSATION_INTERMEDIATE_THROW_EVENT);
 		throwEvent.setCompensationActivity("WillBeReRun");
 		throwEvent.connectTo(new EndEvent("EndProcess"));
 		

@@ -1,22 +1,13 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Element;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ElementWithParamMapping;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.BoundaryEvent;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.CompensationBoundaryEvent;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.ConditionalBoundaryEvent;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.ErrorBoundaryEvent;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.EscalationBoundaryEvent;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.TimerBoundaryEvent;
-import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItemButton;
-import org.jboss.tools.bpmn2.reddeer.properties.setup.ParameterMappingSetUp;
-import org.jboss.tools.bpmn2.reddeer.properties.setup.RemoveParameterMappingSetUp;
 
 /**
  * 
  */
-public class Task extends Element {
+public class Task extends ElementWithParamMapping {
 
 	/**
 	 * 
@@ -45,40 +36,12 @@ public class Task extends Element {
 	
 	/**
 	 * 
-	 * @param parameterMapping
-	 */
-	public void addParameterMapping(ParameterMapping parameterMapping) {
-		propertiesHandler.setUp(new ParameterMappingSetUp(parameterMapping, SectionToolItemButton.ADD));
-	}
-	
-	/**
-	 * 
-	 * @param parameterMapping
-	 */
-	public void removeParameterMapping(ParameterMapping parameterMapping) {
-		propertiesHandler.setUp(new RemoveParameterMappingSetUp(parameterMapping));
-	}
-	
-	/**
-	 * 
 	 * @param name
 	 * @param eventType
 	 */
 	public BoundaryEvent addEvent(String name, ElementType eventType) {
-		switch (eventType) {
-		case CONDITIONAL_BOUNDARY_EVENT:
-			return super.<ConditionalBoundaryEvent>addEvent(name, eventType, ConditionalBoundaryEvent.class);
-		case ERROR_BOUNDARY_EVENT:
-			return super.<ErrorBoundaryEvent>addEvent(name, eventType, ErrorBoundaryEvent.class);
-		case ESCALATION_BOUNDARY_EVENT:
-			return super.<EscalationBoundaryEvent>addEvent(name, eventType, EscalationBoundaryEvent.class);
-		case TIMER_BOUNDARY_EVENT:
-			return super.<TimerBoundaryEvent>addEvent(name, eventType, TimerBoundaryEvent.class);
-		case COMPENSATION_BOUNDARY_EVENT:
-			return super.<CompensationBoundaryEvent>addEvent(name, eventType, CompensationBoundaryEvent.class);
-		default:
-			return null;
-		}
+		return super.addEvent(name, eventType, eventType.getJavaClass());
+		
 	}
 
 }

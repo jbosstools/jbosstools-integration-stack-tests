@@ -1,14 +1,14 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Element;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ElementWithParamMapping;
 import org.jboss.tools.bpmn2.reddeer.editor.properties.PropertiesTabs;
 import org.jboss.tools.bpmn2.reddeer.properties.setup.ComboSetUp;
 
 /**
  * 
  */
-public class ParallelGateway extends Element {
+public class ParallelGateway extends ElementWithParamMapping {
 
 	/**
 	 * 

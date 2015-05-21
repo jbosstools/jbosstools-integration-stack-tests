@@ -1,5 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm;
 
+import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItemButton;
 import org.jboss.tools.bpmn2.reddeer.properties.setup.ParameterMappingSetUp;
@@ -8,22 +9,22 @@ import org.jboss.tools.bpmn2.reddeer.properties.setup.RemoveParameterMappingSetU
 /**
  * 
  */
-public class Element extends org.jboss.tools.bpmn2.reddeer.editor.Element {
+public class ElementWithParamMapping extends Element {
 
 	/**
 	 * 
 	 * @param name
 	 * @param type
 	 */
-	public Element(String name, ElementType type) {
+	public ElementWithParamMapping(String name, ElementType type) {
 		super(name, type);
 	}
 	
-	public Element(String name, ElementType type, org.jboss.tools.bpmn2.reddeer.editor.Element parent) {
+	public ElementWithParamMapping(String name, ElementType type, org.jboss.tools.bpmn2.reddeer.editor.Element parent) {
 		super(name, type, parent);
 	}
 	
-	public Element(org.jboss.tools.bpmn2.reddeer.editor.Element element) {
+	public ElementWithParamMapping(org.jboss.tools.bpmn2.reddeer.editor.Element element) {
 		super(element);
 	}
 	

@@ -71,8 +71,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	ComplexUserTaskTest.class,
 	ComplexXPathExpressionTest.class,
 	ComplexLaneTest.class,
-	// Doesn't work, because of strange context menu appearing during connecting data object with other elements
-	// ComplexDataObjectTest.class, 
+	ComplexDataObjectTest.class, 
 	ComplexMultipleStartEventTest.class,
 	ComplexInclusiveSplitTest.class,
 	ComplexIntermediateThrowMessageEventTest.class,

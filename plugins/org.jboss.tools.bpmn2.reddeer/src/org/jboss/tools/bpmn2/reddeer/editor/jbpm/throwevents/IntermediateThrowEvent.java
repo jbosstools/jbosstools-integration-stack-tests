@@ -1,12 +1,12 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.throwevents;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Element;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ElementWithParamMapping;
 
 /**
  * 
  */
-public class IntermediateThrowEvent extends Element {
+public class IntermediateThrowEvent extends ElementWithParamMapping {
 	
 	/**
 	 * 

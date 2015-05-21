@@ -104,13 +104,12 @@ public class ElementContainer extends Element {
 			parent = parent.getParent();
 		}
 		Element generalElement = putToCanvas(name, type, point, parent);
-		Element specificElement = null;
+		
 		try {
-			specificElement = (Element) type.getJavaClass().getConstructor(Element.class).newInstance(generalElement);
+			return (Element) type.getJavaClass().getConstructor(Element.class).newInstance(generalElement);
 		} catch (Exception e) {
-			
+			throw new RuntimeException("Could not create an instance of type '" + type + "'", e);
 		}
-		return specificElement;
 	}
 	
 	/**

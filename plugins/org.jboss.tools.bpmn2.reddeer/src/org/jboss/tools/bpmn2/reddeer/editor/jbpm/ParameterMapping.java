@@ -3,9 +3,11 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm;
 import org.jboss.tools.bpmn2.reddeer.editor.MappingSide;
 
 /**
+ * A parameter mapping from source to target.
  * 
+ * E.g. from an incoming message to a process variable or vice versa.
  */
-public class ParameterMapping implements org.jboss.tools.bpmn2.reddeer.editor.ParameterMapping {
+public class ParameterMapping {
 
 	public enum Type {
 	    INPUT, OUTPUT;

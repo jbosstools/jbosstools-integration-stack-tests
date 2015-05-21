@@ -196,7 +196,7 @@ public class Element {
 	 * @param name
 	 * @param eventType
 	 */
-	protected <T extends BoundaryEvent> T addEvent(String name, ElementType eventType, Class<T> asType) {
+	protected BoundaryEvent addEvent(String name, ElementType eventType, Class<? extends Element> asType) {
 		if (!eventType.name().endsWith("BOUNDARY_EVENT")) {
 			throw new IllegalArgumentException("Can add only BOUNDARY_EVENT types.");
 		}
@@ -206,7 +206,7 @@ public class Element {
 		newEvent.name = name;
 		
 		try {
-			return (T) asType.getConstructor(Element.class).newInstance(newEvent);
+			return (BoundaryEvent) asType.getConstructor(Element.class).newInstance(newEvent);
 		} catch (Exception e) {
 			throw new RuntimeException("Could not create an instance of type '" + asType + "'", e);
 		}
@@ -261,15 +261,11 @@ public class Element {
 		
 		connectTo(construct, connectionType);
 		
-		Element specificInstance = null;
-		
 		try {
-			specificInstance = (Element) constructType.getJavaClass().getConstructor(Element.class).newInstance(construct);
+			return (Element) constructType.getJavaClass().getConstructor(Element.class).newInstance(construct);
 		} catch (Exception e) {
-			// will be returned null
+			throw new RuntimeException("Could not create an instance of type '" + constructType + "'", e);
 		}
-		
-		return specificInstance;
 	}
 	
 	/**
