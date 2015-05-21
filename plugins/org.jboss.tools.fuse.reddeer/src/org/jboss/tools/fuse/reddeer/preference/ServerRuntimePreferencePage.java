@@ -55,10 +55,6 @@ public class ServerRuntimePreferencePage extends WorkbenchPreferencePage {
 		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 
-	public void downloadserverRuntime() {
-		// TODO Not implemented yet.
-	}
-
 	/**
 	 * Removes the server runtime
 	 * 
@@ -69,6 +65,16 @@ public class ServerRuntimePreferencePage extends WorkbenchPreferencePage {
 		new DefaultTable(0).select(name);
 		new PushButton(REMOVE_BUTTON).click();
 		AbstractWait.sleep(TimePeriod.SHORT);
+	}
+
+	/**
+	 * Removes all configured server runtimes
+	 */
+	public void removeAllServerRuntimes() {
+
+		for (String runtime : getServerRuntimes()) {
+			removeServerRuntime(runtime);
+		}
 	}
 
 	/**
