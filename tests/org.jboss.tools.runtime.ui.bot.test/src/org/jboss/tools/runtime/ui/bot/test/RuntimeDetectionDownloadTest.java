@@ -1,16 +1,18 @@
 package org.jboss.tools.runtime.ui.bot.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
-import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.handler.ShellHandler;
+import org.jboss.tools.fuse.reddeer.preference.ServerRuntimePreferencePage;
+import org.jboss.tools.fuse.reddeer.view.ErrorLogView;
 import org.jboss.tools.runtime.reddeer.preference.JBossRuntimeDetection;
 import org.jboss.tools.runtime.reddeer.wizard.DownloadRuntimesWizard;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -23,18 +25,30 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 public class RuntimeDetectionDownloadTest {
 
+	@Before
+	public void clearErrorLog() {
+
+		// delete Error Log
+		new ErrorLogView().deleteLog();
+	}
+
 	@After
 	public void clean() {
+
+		// close all shells
 		ShellHandler.getInstance().closeAllNonWorbenchShells();
-		ServersView servers = new ServersView();
-		servers.open();
-		for (Server server : servers.getServers()) {
-			servers.getServer(server.getLabel().getName()).delete(true);
-		}
+
+		// remove all configured runtimes (in Runtime Detection)
 		JBossRuntimeDetection prefPage = new JBossRuntimeDetection();
 		prefPage.open();
 		prefPage.removeAllRuntimes();
 		prefPage.ok();
+
+		// remove all configured runtimes (in server runtimes)
+		ServerRuntimePreferencePage runtimePref = new ServerRuntimePreferencePage();
+		runtimePref.open();
+		runtimePref.removeAllServerRuntimes();
+		runtimePref.ok();
 	}
 
 	@Test
@@ -162,6 +176,66 @@ public class RuntimeDetectionDownloadTest {
 		downloadRuntime("WildFly 8.1.0 Final");
 	}
 
+	@Test
+	public void testDownloadKaraf2211() {
+		downloadRuntime("Apache Karaf 2.2.11");
+	}
+
+	@Test
+	public void testDownloadKaraf2210() {
+		downloadRuntime("Apache Karaf 2.3.10");
+	}
+
+	@Test
+	public void testDownloadKaraf241() {
+		downloadRuntime("Apache Karaf 2.4.1");
+	}
+
+	@Test
+	public void testDownloadKaraf303() {
+		downloadRuntime("Apache Karaf 3.0.3");
+	}
+
+	@Test
+	public void testDownloadServiceMix453() {
+		downloadRuntime("Apache ServiceMix 4.5.3");
+	}
+
+	@Test
+	public void testDownloadServiceMix506() {
+		downloadRuntime("Apache ServiceMix 5.0.6");
+	}
+
+	@Test
+	public void testDownloadServiceMix514() {
+		downloadRuntime("Apache ServiceMix 5.1.4");
+	}
+
+	@Test
+	public void testDownloadServiceMix520() {
+		downloadRuntime("Apache ServiceMix 5.2.0");
+	}
+
+	@Test
+	public void testDownloadServiceMix531() {
+		downloadRuntime("Apache ServiceMix 5.3.1");
+	}
+
+	@Test
+	public void testDownloadServiceMix540() {
+		downloadRuntime("Apache ServiceMix 5.4.0");
+	}
+
+	@Test
+	public void testDownloadFuse600() {
+		downloadRuntime("JBoss Fuse 6.0.0");
+	}
+
+	@Test
+	public void testDownloadFuse610() {
+		downloadRuntime("JBoss Fuse 6.1.0");
+	}
+
 	protected static void downloadRuntime(String name) {
 		JBossRuntimeDetection prefPage = new JBossRuntimeDetection();
 		prefPage.open();
@@ -176,9 +250,11 @@ public class RuntimeDetectionDownloadTest {
 		runtimeWiz.finish(name);
 		assertEquals(1, prefPage.getRuntimesCount());
 		prefPage.cancel();
-		ServersView servers = new ServersView();
-		servers.open();
-		assertEquals(1, servers.getServers().size());
+		ServerRuntimePreferencePage runtimePref = new ServerRuntimePreferencePage();
+		runtimePref.open();
+		assertEquals(1, runtimePref.getServerRuntimes().size());
+		runtimePref.cancel();
+		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 
 	/**
