@@ -19,6 +19,7 @@ import static org.jboss.tools.switchyard.reddeer.binding.OperationOptionsPage.XP
 import static org.jboss.tools.switchyard.reddeer.binding.SOAPBindingPage.SOAP_HEADERS_TYPE_DOM;
 import static org.jboss.tools.switchyard.reddeer.binding.SchedulingBindingPage.SCHEDULING_TYPE_CRON;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -26,6 +27,8 @@ import java.io.IOException;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.swt.impl.button.FinishButton;
+import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
@@ -1036,7 +1039,22 @@ public class BindingsTest {
 		wizard.getContextPath().setText("soap-context");
 		wizard.setWsdlURI("hello.wsdl");
 		wizard.getWSDLPort().setText("1234");
+		wizard.getServerPort().setText("foo");
+		assertFalse(new FinishButton().isEnabled());
 		wizard.getServerPort().setText("4321");
+		assertTrue(new FinishButton().isEnabled());
+		wizard.getServerPort().setText(":4321");
+		assertTrue(new FinishButton().isEnabled());
+		wizard.getServerPort().setText("host:4321");
+		assertTrue(new FinishButton().isEnabled());
+		wizard.getServerPort().setText("${propValue}");
+		assertTrue(new FinishButton().isEnabled());
+		wizard.getServerPort().setText(":${propValue}");
+		assertTrue(new FinishButton().isEnabled());
+		wizard.getServerPort().setText("host:${propValue}");
+		assertTrue(new FinishButton().isEnabled());
+		wizard.getServerPort().setText("${propValue}:4321");
+		assertTrue(new FinishButton().isEnabled());
 		wizard.getUnwrappedPayload().toggle(false);
 		wizard.getUnwrappedPayload().toggle(true);
 		wizard.getSOAPHeadersType().setSelection(SOAP_HEADERS_TYPE_DOM);
@@ -1058,7 +1076,7 @@ public class BindingsTest {
 		assertXPath("true", bindingPath + "/messageComposer/@unwrapped");
 		assertXPath("hello.wsdl", bindingPath + "/wsdl");
 		assertXPath("1234", bindingPath + "/wsdlPort");
-		assertXPath(":4321", bindingPath + "/socketAddr");
+		assertXPath("${propValue}:4321", bindingPath + "/socketAddr");
 		assertXPath("soap-context", bindingPath + "/contextPath");
 		assertXPath("soap.conf", bindingPath + "/endpointConfig/@configFile");
 		assertXPath("configName", bindingPath + "/endpointConfig/@configName");
@@ -1070,6 +1088,24 @@ public class BindingsTest {
 		SOAPBindingPage page = properties.selectSOAPBinding("soap-binding");
 		assertEquals("soap-binding", page.getName());
 		assertEquals("soap-context", page.getContextPath().getText());
+		assertEquals("${propValue}:4321", page.getServerPort().getText());
+		page.getServerPort().setText("foo");
+		assertFalse(new OkButton().isEnabled());
+		page.getServerPort().setText("4321");
+		assertTrue(new OkButton().isEnabled());
+		page.getServerPort().setText(":4321");
+		assertTrue(new OkButton().isEnabled());
+		page.getServerPort().setText("host:4321");
+		assertTrue(new OkButton().isEnabled());
+		page.getServerPort().setText("${propValue}");
+		assertTrue(new OkButton().isEnabled());
+		page.getServerPort().setText(":${propValue}");
+		assertTrue(new OkButton().isEnabled());
+		page.getServerPort().setText("host:${propValue}");
+		assertTrue(new OkButton().isEnabled());
+		page.getServerPort().setText("${propValue}:4321");
+		assertTrue(new OkButton().isEnabled());
+
 		properties.ok();
 	}
 
