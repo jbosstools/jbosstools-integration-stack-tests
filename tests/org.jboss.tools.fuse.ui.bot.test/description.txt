@@ -1,8 +1,0 @@
-Prerequisites
--------------
-1. Java 6 (JDK) or higher only Oracle or OpenJDK
-2. Maven 3.0.5 or higher
-3. Git 1.8.3.1 or higher
-4. running VNC server + viewer (e.g. TigerVNC)
-5. properly set settings.xml in ~/.m2 folder see:
-   http://download.englab.brq.redhat.com/scratch/tsedmik/settings.xml
