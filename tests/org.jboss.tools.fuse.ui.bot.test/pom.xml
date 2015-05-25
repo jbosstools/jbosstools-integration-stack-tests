@@ -29,65 +29,12 @@
 		<systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=${reddeer.config} -Dec2.id=${ec2.id} -Dec2.pass=${ec2.pass} -Dec2.email=${ec2.email}</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
 		<test.class>AllTests</test.class>
+		<customization.file>${project.build.directory}/requirements/plugin_customization.ini</customization.file>
 	</properties>
 
 	<build>
 
 		<plugins>
-			<!-- Fuse Bot Tests -->
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-surefire-plugin</artifactId>
-				<configuration>
-					<appArgLine>-eclipse.password resources/security/password -pluginCustomization resources/config/plugin_customization.ini -clean -testpluginname org.jboss.tools.fuse.ui.bot.test</appArgLine>
-					<testSuite>org.jboss.tools.fuse.ui.bot.test</testSuite>
-					<testClass>**/*Test</testClass>
-					<useUIThread>false</useUIThread>
-					<skip>${skipTests}</skip>
-					<systemProperties>
-						<logDebug>${enable.debug.log}</logDebug>
-					</systemProperties>
-
-					<dependencies combine.children="append">
-						<!-- Fuse Camel feature -->
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.fusesource.ide.camel.editor.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<!-- Fuse Core feature -->
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.fusesource.ide.core.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<!-- Fuse Server feature -->
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.fusesource.ide.server.extensions.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<!-- Fuse JMX feature -->
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.fusesource.ide.jmx.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<!-- AS feature -->
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<!-- This entry should enable creating of default JDK on Mac -->
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.eclipse.jdt.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-					</dependencies>
-				</configuration>
-			</plugin>
 
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
@@ -95,7 +42,7 @@
 				<executions>
 					<execution>
 						<id>copy-resources</id>
-						<phase>validate</phase>
+						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>copy-resources</goal>
 						</goals>
@@ -104,7 +51,7 @@
 							<outputDirectory>${project.build.directory}/requirements</outputDirectory>
 							<resources>
 								<resource>
-									<directory>resources/serverConfig</directory>
+									<directory>resources/config</directory>
 									<filtering>true</filtering>
 								</resource>
 							</resources>
@@ -156,6 +103,61 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+
+			<!-- Fuse Bot Tests -->
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<configuration>
+					<appArgLine>-eclipse.password resources/security/password -pluginCustomization ${customization.file} -clean -testpluginname org.jboss.tools.fuse.ui.bot.test</appArgLine>
+					<testSuite>org.jboss.tools.fuse.ui.bot.test</testSuite>
+					<testClass>**/*Test</testClass>
+					<useUIThread>false</useUIThread>
+					<skip>${skipTests}</skip>
+					<systemProperties>
+						<logDebug>${enable.debug.log}</logDebug>
+					</systemProperties>
+
+					<dependencies combine.children="append">
+						<!-- Fuse Camel feature -->
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.fusesource.ide.camel.editor.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+						<!-- Fuse Core feature -->
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.fusesource.ide.core.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+						<!-- Fuse Server feature -->
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.fusesource.ide.server.extensions.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+						<!-- Fuse JMX feature -->
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.fusesource.ide.jmx.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+						<!-- AS feature -->
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+						<!-- This entry should enable creating of default JDK on Mac -->
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.eclipse.jdt.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+					</dependencies>
+				</configuration>
 			</plugin>
 
 		</plugins>
