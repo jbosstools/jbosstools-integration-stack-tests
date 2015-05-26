@@ -33,6 +33,13 @@
 		</xs:annotation>
 	</xs:element>
 
+	<!-- Specify SAP user-requirement -->
+	<xs:element name="sap-requirement" type="server:sapRequirementType" substitutionGroup="rd:abstractRequirement">
+		<xs:annotation>
+			<xs:documentation>Requirement for SAP</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+
 	<xs:complexType name="serverRequirementType">
 		<xs:complexContent>
 			<xs:extension base="rd:abstractRequirementType">
@@ -85,6 +92,47 @@
 						<xs:element name="eap" type="server:jboss-eap" />
 						<xs:element name="wildfly" type="server:jboss-wildfly" />
 					</xs:choice>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<!-- SAP -->
+	<xs:complexType name="sapRequirementType">
+		<xs:complexContent>
+			<xs:extension base="rd:abstractRequirementType">
+				<xs:sequence>
+					<xs:element name="lib" minOccurs="1" maxOccurs="1">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="jco3" type="xs:string" minOccurs="1" maxOccurs="1" />
+								<xs:element name="jidoc" type="xs:string" minOccurs="1" maxOccurs="1" />
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="destination" minOccurs="1" maxOccurs="1">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="ashost" type="xs:string" minOccurs="1" maxOccurs="1" />
+								<xs:element name="sysnr" type="xs:string" minOccurs="1" maxOccurs="1" />
+								<xs:element name="client" type="xs:string" minOccurs="1" maxOccurs="1" />
+								<xs:element name="passwd" type="xs:string" minOccurs="1" maxOccurs="1" />
+								<xs:element name="password" type="xs:string" minOccurs="1" maxOccurs="1" />
+								<xs:element name="user" type="xs:string" minOccurs="1" maxOccurs="1" />
+								<xs:element name="userName" type="xs:string" minOccurs="1" maxOccurs="1" />
+								<xs:element name="lang" type="xs:string" minOccurs="1" maxOccurs="1" />
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="server" minOccurs="1" maxOccurs="1">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="gwhost" type="xs:string" minOccurs="1" maxOccurs="1" />
+								<xs:element name="progid" type="xs:string" minOccurs="1" maxOccurs="1" />
+								<xs:element name="connectionCount" type="xs:string" minOccurs="1" maxOccurs="1" />
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
