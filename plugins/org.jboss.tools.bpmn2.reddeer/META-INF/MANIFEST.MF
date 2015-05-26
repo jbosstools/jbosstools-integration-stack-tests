@@ -27,7 +27,6 @@ Eclipse-BundleShape: dir
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.jboss.tools.bpmn2.reddeer,
- org.jboss.tools.bpmn2.reddeer.awt,
  org.jboss.tools.bpmn2.reddeer.dialog,
  org.jboss.tools.bpmn2.reddeer.editor,
  org.jboss.tools.bpmn2.reddeer.editor.jbpm,
