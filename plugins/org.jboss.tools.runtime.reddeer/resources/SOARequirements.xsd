@@ -27,11 +27,11 @@
 	</xs:element>
 
 	<!-- Specify teiid user-requirement -->
-    <xs:element name="teiid-requirement" type="server:teiidRequirementType" substitutionGroup="rd:abstractRequirement">
+	<xs:element name="teiid-requirement" type="server:teiidRequirementType" substitutionGroup="rd:abstractRequirement">
 		<xs:annotation>
-            <xs:documentation>Requirement for DV server</xs:documentation>
+			<xs:documentation>Requirement for DV server</xs:documentation>
 		</xs:annotation>
-    </xs:element>
+	</xs:element>
 
 	<xs:complexType name="serverRequirementType">
 		<xs:complexContent>
@@ -192,7 +192,7 @@
 			</xs:simpleType>
 		</xs:attribute>
 	</xs:complexType>
-	
+
 	<!-- Apache ServiceMix -->
 	<xs:complexType name="apache-servicemix">
 		<xs:sequence>
@@ -219,7 +219,7 @@
 			</xs:simpleType>
 		</xs:attribute>
 	</xs:complexType>
-	
+
 	<!-- Apache Fabric8 -->
 	<xs:complexType name="apache-fabric8">
 		<xs:sequence>
@@ -317,68 +317,64 @@
 			</xs:simpleType>
 		</xs:attribute>
 	</xs:complexType>
-	
+
 	<!-- JBoss BRMS -->
-    <xs:complexType name="jboss-brms">
-        <xs:sequence>
-            <xs:element name="home" type="xs:string" minOccurs="1" maxOccurs="1" />
-            <xs:element name="properties" minOccurs="0" maxOccurs="1">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-        </xs:sequence>
-    </xs:complexType>
+	<xs:complexType name="jboss-brms">
+		<xs:sequence>
+			<xs:element name="home" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="properties" minOccurs="0" maxOccurs="1">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
 
-    <xs:complexType name="teiidRequirementType">
-        <xs:complexContent>
-            <xs:extension base="rd:abstractRequirementType">
-                <xs:sequence>
-                    <xs:element name="eap" type="server:jboss-eap" />
-                    <xs:element name="connection-profiles" type="server:connectionProfilesType"></xs:element>
-                </xs:sequence>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-
-    <xs:complexType name="connectionProfilesType">
-        <xs:sequence>
-            <xs:element name="connection-profile" type="server:connectionProfileType" minOccurs="0" maxOccurs="unbounded"/>
-        </xs:sequence>
-    </xs:complexType>
-
-    <xs:complexType name="connectionProfileType">
-        <xs:sequence>
-        	<xs:element name="hostname" type="xs:string" maxOccurs="1" minOccurs="0"></xs:element>
-        	<xs:element name="vendor" type="xs:string"></xs:element>
-        	<xs:element name="template" type="xs:string" maxOccurs="1" minOccurs="0"></xs:element>
-        	<xs:element name="name" type="xs:string" maxOccurs="1" minOccurs="0"></xs:element>
-        	<xs:element name="description" type="xs:string"
-        		maxOccurs="1" minOccurs="0">
-        	</xs:element>
-        	<xs:element name="vendor_template" type="xs:string"
-        		maxOccurs="1" minOccurs="0">
-        	</xs:element>
-        	<xs:element name="jdbc_path" type="xs:string" maxOccurs="1" minOccurs="0"></xs:element>
-        	<xs:element name="password" type="xs:string" maxOccurs="1" minOccurs="0"></xs:element>
-        	<xs:element name="version" type="xs:string" maxOccurs="1" minOccurs="0"></xs:element>
-        	<xs:element name="jdbc_class" type="xs:string" maxOccurs="1"
-        		minOccurs="0">
-        	</xs:element>
-        	<xs:element name="port" type="xs:string" maxOccurs="1"
-        		minOccurs="0">
-        	</xs:element>
-        	<xs:element name="username" type="xs:string"></xs:element>
-        	<xs:element name="properties" minOccurs="0" maxOccurs="1">
-			<xs:complexType>
+	<xs:complexType name="teiidRequirementType">
+		<xs:complexContent>
+			<xs:extension base="rd:abstractRequirementType">
 				<xs:sequence>
-					<xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
+					<xs:element name="eap" type="server:jboss-eap" />
+					<xs:element name="connection-profiles" type="server:connectionProfilesType"></xs:element>
 				</xs:sequence>
-			</xs:complexType>
-        	</xs:element>
-        </xs:sequence>
-        <xs:attribute name="name" type="xs:string" use="required"/>
-    </xs:complexType>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="connectionProfilesType">
+		<xs:sequence>
+			<xs:element name="connection-profile" type="server:connectionProfileType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="connectionProfileType">
+		<xs:sequence>
+			<xs:element name="hostname" type="xs:string" maxOccurs="1" minOccurs="0"></xs:element>
+			<xs:element name="vendor" type="xs:string"></xs:element>
+			<xs:element name="template" type="xs:string" maxOccurs="1" minOccurs="0"></xs:element>
+			<xs:element name="name" type="xs:string" maxOccurs="1" minOccurs="0"></xs:element>
+			<xs:element name="description" type="xs:string" maxOccurs="1" minOccurs="0">
+			</xs:element>
+			<xs:element name="vendor_template" type="xs:string" maxOccurs="1" minOccurs="0">
+			</xs:element>
+			<xs:element name="jdbc_path" type="xs:string" maxOccurs="1" minOccurs="0"></xs:element>
+			<xs:element name="password" type="xs:string" maxOccurs="1" minOccurs="0"></xs:element>
+			<xs:element name="version" type="xs:string" maxOccurs="1" minOccurs="0"></xs:element>
+			<xs:element name="jdbc_class" type="xs:string" maxOccurs="1" minOccurs="0">
+			</xs:element>
+			<xs:element name="port" type="xs:string" maxOccurs="1" minOccurs="0">
+			</xs:element>
+			<xs:element name="username" type="xs:string"></xs:element>
+			<xs:element name="properties" minOccurs="0" maxOccurs="1">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:string" use="required" />
+	</xs:complexType>
 </xs:schema>
