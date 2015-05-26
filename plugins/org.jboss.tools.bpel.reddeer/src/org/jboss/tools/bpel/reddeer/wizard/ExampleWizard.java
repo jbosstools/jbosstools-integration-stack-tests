@@ -1,6 +1,7 @@
 package org.jboss.tools.bpel.reddeer.wizard;
 
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
+import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
@@ -27,8 +28,11 @@ public class ExampleWizard extends NewWizardDialog {
 
 		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
 		try {
+			new DefaultShell("New Project Example");
 			new DefaultTreeItem(0, examplePath).select();
 		} catch (Exception e) {
+			new DefaultShell("New Project Example");
+			new CancelButton().click();
 			throw new RuntimeException("Example '" + arrayToString(examplePath) + "' doesn't exist!");
 		}
 
