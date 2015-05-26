@@ -61,7 +61,7 @@ public abstract class ServerBase extends RuntimeBase {
 				server.stop();
 			break;
 		case STOPPED:
-			if (requiredState == ServerReqState.RUNNING) {
+			if (requiredState == ServerReqState.RUNNING && canStart()) {
 				try {
 					server.start();
 				} catch (Exception e) {
@@ -80,6 +80,15 @@ public abstract class ServerBase extends RuntimeBase {
 			new AssertionError("It was expected to have server in " + ServerState.STARTED + " or "
 					+ ServerState.STOPPED + "state." + " Not in state " + currentState + ".");
 		}
+	}
+	
+	/**
+	 * Returns whether the server can be started.
+	 * 
+	 * @return whether the server can be started
+	 */
+	protected boolean canStart() {
+		return true;
 	}
 	
 	/**

@@ -1,5 +1,8 @@
 package org.jboss.tools.runtime.reddeer.impl;
 
+import java.io.IOException;
+import java.net.ServerSocket;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -67,4 +70,17 @@ public class ServerAS extends ServerBase {
 		serverWizard.setRuntime(name);
 		serverWizard.finish();
 	}
+
+	@Override
+	protected boolean canStart() {
+		int port = 8080;
+		try {
+			new ServerSocket(port).close();
+			return true;
+		} catch (IOException e) {
+			throw new RuntimeException("Port '" + port + "' is already in use!", e);
+		}
+	}
+	
+	
 }
