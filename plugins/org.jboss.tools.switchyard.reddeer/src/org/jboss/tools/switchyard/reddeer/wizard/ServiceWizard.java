@@ -1,6 +1,7 @@
 package org.jboss.tools.switchyard.reddeer.wizard;
 
 import org.hamcrest.core.IsNull;
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
@@ -17,6 +18,7 @@ import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.switchyard.reddeer.condition.TableHasRow;
+import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 
 /**
  * 
@@ -25,6 +27,8 @@ import org.jboss.tools.switchyard.reddeer.condition.TableHasRow;
  */
 public abstract class ServiceWizard<T extends ServiceWizard<?>> extends WizardDialog {
 
+	private static Logger log = Logger.getLogger(SwitchYardEditor.class);
+	
 	private String dialogTitle;
 
 	public ServiceWizard() {
@@ -38,8 +42,8 @@ public abstract class ServiceWizard<T extends ServiceWizard<?>> extends WizardDi
 
 	@SuppressWarnings("unchecked")
 	public T activate() {
-		new WaitWhile(new JobIsRunning());
-		new DefaultShell(dialogTitle).setFocus();
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		new DefaultShell(dialogTitle);
 		AbstractWait.sleep(TimePeriod.SHORT);
 		return (T) this;
 	}
@@ -50,6 +54,7 @@ public abstract class ServiceWizard<T extends ServiceWizard<?>> extends WizardDi
 	}
 
 	public T checkInterfaceType(String interfaceType) {
+		log.info("Check interface of type '" + interfaceType + "'");
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new RadioButton(interfaceType).click();
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -57,6 +62,7 @@ public abstract class ServiceWizard<T extends ServiceWizard<?>> extends WizardDi
 	}
 
 	public T selectJavaInterface(String javaInterface) {
+		log.info("Select Java interface '" + javaInterface + "'");
 		checkInterfaceType("Java").browse();
 		new DefaultShell("");
 		new DefaultText().setText(javaInterface);
@@ -73,6 +79,7 @@ public abstract class ServiceWizard<T extends ServiceWizard<?>> extends WizardDi
 	}
 
 	public T selectWSDLInterface(String wsdlInterface) {
+		log.info("Select WSDL interface '" + wsdlInterface + "'");
 		checkInterfaceType("WSDL").browse();
 		new DefaultShell("Select WSDL file and portType");
 		new DefaultText().setText(wsdlInterface);

@@ -95,6 +95,7 @@ public class SwitchYardEditor extends GEFEditor {
 	}
 
 	public SwitchYardComponent addComponent() {
+		log.info("Add generic component");
 		int oldCount = getNumberOfEditParts();
 		getPalette().activateTool(TOOL_COMPONENT);
 		composite.click();
@@ -103,6 +104,7 @@ public class SwitchYardEditor extends GEFEditor {
 	}
 
 	public void addService() {
+		log.info("Add generic service");
 		getPalette().activateTool(TOOL_SERVICE);
 		composite.click();
 	}

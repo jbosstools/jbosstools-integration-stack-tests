@@ -6,6 +6,7 @@ import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.matcher.WithTooltip;
@@ -50,7 +51,7 @@ public class SwitchYardComponent extends AbstractGraphitiEditPart {
 		new DefaultShell(deleteShellText);
 		new PushButton("Yes").click();
 		new WaitWhile(new ShellWithTextIsAvailable(deleteShellText));
-		new WaitWhile(new JobIsRunning());
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		new SwitchYardEditor().save();
 	}
 

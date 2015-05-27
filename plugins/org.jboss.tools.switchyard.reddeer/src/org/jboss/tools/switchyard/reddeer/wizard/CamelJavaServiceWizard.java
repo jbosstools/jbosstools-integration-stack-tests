@@ -3,7 +3,6 @@ package org.jboss.tools.switchyard.reddeer.wizard;
 import org.jboss.reddeer.gef.condition.EditorHasEditParts;
 import org.jboss.reddeer.gef.editor.GEFEditor;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
@@ -20,17 +19,12 @@ public class CamelJavaServiceWizard extends ServiceWizard<CamelJavaServiceWizard
 	private GEFEditor editor;
 
 	public CamelJavaServiceWizard() {
-		super();
+		this(null);
 	}
 
 	public CamelJavaServiceWizard(GEFEditor editor) {
-		super();
+		super(DIALOG_TITLE);
 		this.editor = editor;
-	}
-
-	public CamelJavaServiceWizard activate() {
-		new DefaultShell(DIALOG_TITLE);
-		return this;
 	}
 
 	public CamelJavaServiceWizard setName(String name) {
