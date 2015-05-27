@@ -96,7 +96,7 @@ public class ElementContainer extends Element {
 		}
 
 		// Add the construct using the tool in the palette.
-		select();
+		click();
 		log.info("Adding consturct '" + name + "' of type '" + type + "' to '" + point + "'");
 		
 		EditPart parent = containerShapeEditPart.getEditPart();

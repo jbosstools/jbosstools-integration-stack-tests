@@ -4,16 +4,18 @@ import org.eclipse.gef.EditPart;
 import org.jboss.tools.bpmn2.reddeer.editor.graphiti.PropertiesGraphitiEditPart;
 import org.jboss.tools.bpmn2.reddeer.properties.setup.SetUpAble;
 
-public class PropertiesHandler {
+public abstract class PropertiesHandler {
 	
-	private ProcessPropertiesView propertiesView;
+	private WaitingPropertiesView propertiesView;
 	private PropertiesGraphitiEditPart graphitiProperties;
 	private boolean useGraphitiProperties;
 	
 	public PropertiesHandler(EditPart editPart, boolean useGraphitiProperties) {
-		propertiesView = new ProcessPropertiesView(new AbsoluteEditPart(editPart));
+		propertiesView = new WaitingPropertiesView();
 		graphitiProperties = new PropertiesGraphitiEditPart(editPart);
 		this.useGraphitiProperties = useGraphitiProperties;
+		
+		propertiesView.open();
 	}
 	
 	public void setUp(SetUpAble... properties){
@@ -21,10 +23,10 @@ public class PropertiesHandler {
 			graphitiProperties.setUpTabs(properties);
 		} else {
 			for(SetUpAble property : properties) {
+				focusElement();
 				propertiesView.selectTab(property.getTabLabel());
 				property.setUpCTab();
 			}
-			
 		}
 	}
 	
@@ -46,10 +48,13 @@ public class PropertiesHandler {
 	}
 
 	public void selectTabInPropertiesView(String tabLabel) {
+		focusElement();
 		propertiesView.selectTab(tabLabel);
 	}
 	
 	public String getTitleOfPropertiesView() {
 		return propertiesView.getTitle();
 	}
+	
+	public abstract void focusElement();
 }
