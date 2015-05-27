@@ -103,7 +103,13 @@ public class Element {
 		this.containerShapeEditPart = new AbsoluteEditPart(containerShapeEditPart);
 		processEditor = new GEFProcessEditor();
 		editor = new ProcessEditorView();
-		propertiesHandler = new PropertiesHandler(containerShapeEditPart, useGraphitiProperties);
+		propertiesHandler = new PropertiesHandler(containerShapeEditPart, useGraphitiProperties) {
+			
+			@Override
+			public void focusElement() {
+				Element.this.click();
+			}
+		};
 	}
 	
 	protected Element(Element copyFrom) {
@@ -114,7 +120,7 @@ public class Element {
 		this.containerShapeEditPart = copyFrom.containerShapeEditPart;
 		this.processEditor = copyFrom.processEditor;
 		this.propertiesHandler = copyFrom.propertiesHandler;
-		select();
+		click();
 	}
 	
 	private void setUp(String name, ElementType type, Element parent, int index, boolean select) {
@@ -140,7 +146,13 @@ public class Element {
 			throw new RuntimeException("Reddeer could not find construct with name '" + name + "' of type '" + type.name() + "'");
 		}
 
-		propertiesHandler = new PropertiesHandler(containerShapeEditPart.getEditPart(), useGraphitiProperties);
+		propertiesHandler = new PropertiesHandler(containerShapeEditPart.getEditPart(), useGraphitiProperties) {
+			
+			@Override
+			public void focusElement() {
+				Element.this.click();
+			}
+		};
 	
 		if (select) {
 			select();

@@ -73,7 +73,6 @@ public class ComplexSpecialCharactersAndLenghtsTest extends JBPM6ComplexTest {
 	
 	@TestPhase(phase=Phase.VALIDATE)
 	public void validateBZ1113139() {
-		process.click();
 		assertEquals("BZ 1113139, special characters in group id", "#{variable},secondGroup", userTask.getGroupId());
 	}
 	
