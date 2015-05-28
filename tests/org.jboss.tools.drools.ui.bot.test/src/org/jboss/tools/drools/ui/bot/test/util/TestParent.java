@@ -172,7 +172,9 @@ public abstract class TestParent {
         new JavaPerspective().open();
 
         // refresh and delete all projects (as running the projects creates logs)
-        new PackageExplorer().deleteAllProjects();
+        PackageExplorer pe = new PackageExplorer();
+        pe.deleteAllProjects();
+        pe.deleteAllProjects(); // BZ 1225885
 
         ConsoleView console = new ConsoleView();
         console.open();
