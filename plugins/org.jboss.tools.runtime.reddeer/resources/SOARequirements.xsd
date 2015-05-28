@@ -128,6 +128,7 @@
 						<xs:complexType>
 							<xs:sequence>
 								<xs:element name="gwhost" type="xs:string" minOccurs="1" maxOccurs="1" />
+								<xs:element name="gwport" type="xs:string" minOccurs="1" maxOccurs="1" />
 								<xs:element name="progid" type="xs:string" minOccurs="1" maxOccurs="1" />
 								<xs:element name="connectionCount" type="xs:string" minOccurs="1" maxOccurs="1" />
 							</xs:sequence>
