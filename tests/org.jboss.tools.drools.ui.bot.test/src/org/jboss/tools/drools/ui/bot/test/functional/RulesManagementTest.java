@@ -17,12 +17,9 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.matcher.RegexMatcher;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.drools.reddeer.dialog.DroolsRuntimeDialog;
 import org.jboss.tools.drools.reddeer.editor.DrlEditor;
 import org.jboss.tools.drools.reddeer.editor.RuleEditor;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
-import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage;
-import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectWizard;
 import org.jboss.tools.drools.ui.bot.test.annotation.Drools6Runtime;
 import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
 import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
@@ -43,9 +40,13 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 public class RulesManagementTest extends TestParent {
     private static final Logger LOGGER = Logger.getLogger(RulesManagementTest.class);
-    private static final String DEBUG_REGEX = "(SLF4J: .*\n)+?" +
-            "(kmodules: file:(/.*)+/kmodule.xml\n)?";
-    private static final String SUCCESSFUL_RUN_REGEX = DEBUG_REGEX + "Hello World\nGoodbye cruel world\n";
+    private static final String DEBUG_1 = "KieModule was added:";
+    private static final String DEBUG_2 = "Found kmodule:";
+    private static final String DEBUG_3 = "SLF4J:";
+    private static final String OUTPUT_1 = "Hello World";
+    private static final String OUTPUT_2 = "Goodbye cruel world";
+    private static final String ERROR_1 = "error";
+    private static final String ERROR_2 = "failure";
     
     @InjectRequirement
 	private RuntimeRequirement droolsRequirement;
@@ -66,7 +67,10 @@ public class RulesManagementTest extends TestParent {
         String consoleText = console.getConsoleText();
         Assert.assertNotNull("Console text was empty.", consoleText);
         LOGGER.debug(consoleText);
-        Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.matches(SUCCESSFUL_RUN_REGEX));
+        Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.contains(OUTPUT_1));
+        Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.contains(OUTPUT_2));
+        Assert.assertFalse("Unexpected error in console\n" + consoleText, consoleText.toLowerCase().contains(ERROR_1));
+        Assert.assertFalse("Unexpected error in console\n" + consoleText, consoleText.toLowerCase().contains(ERROR_2));
     }
 
     @Test
@@ -85,7 +89,10 @@ public class RulesManagementTest extends TestParent {
         String consoleText = console.getConsoleText();
         Assert.assertNotNull("Console text was empty.", consoleText);
         LOGGER.debug(consoleText);
-        Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.matches(SUCCESSFUL_RUN_REGEX));
+        Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.contains(OUTPUT_1));
+        Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.contains(OUTPUT_2));
+        Assert.assertFalse("Unexpected error in console\n" + consoleText, consoleText.toLowerCase().contains(ERROR_1));
+        Assert.assertFalse("Unexpected error in console\n" + consoleText, consoleText.toLowerCase().contains(ERROR_2));
     }
 
     @Test
@@ -153,14 +160,22 @@ public class RulesManagementTest extends TestParent {
         String consoleText = console.getConsoleText();
         Assert.assertNotNull("Console text was empty.", consoleText);
         LOGGER.debug(consoleText);
-        Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.matches(DEBUG_REGEX));
+        
+        if (!consoleText.contains(DEBUG_3)) {
+        	Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.contains(DEBUG_1));
+        	Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.contains(DEBUG_2));
+        }
 
         // wait a moment before Debug perspective is fully loaded
         waitASecond();
 
         new ShellMenu(new RegexMatcher("Run"), new RegexMatcher("Resume.*")).select();
         console.open();
+        waitASecond();
         consoleText = console.getConsoleText();
-        Assert.assertTrue("Wrong console text found\n" + consoleText, consoleText.matches(SUCCESSFUL_RUN_REGEX));
+        Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.contains(OUTPUT_1));
+        Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.contains(OUTPUT_2));
+        Assert.assertFalse("Unexpected error in console\n" + consoleText, consoleText.toLowerCase().contains(ERROR_1));
+        Assert.assertFalse("Unexpected error in console\n" + consoleText, consoleText.toLowerCase().contains(ERROR_2));
     }
 }
