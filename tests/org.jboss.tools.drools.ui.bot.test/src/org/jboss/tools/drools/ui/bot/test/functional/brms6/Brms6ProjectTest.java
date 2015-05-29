@@ -1,5 +1,9 @@
 package org.jboss.tools.drools.ui.bot.test.functional.brms6;
 
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 import org.apache.log4j.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ide.NewJavaProjectWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
@@ -45,7 +49,7 @@ public class Brms6ProjectTest extends TestParent {
     @Category(SmokeTest.class)
     @UsePerspective(DroolsPerspective.class)
     @Drools6Runtime
-    public void testProjectCreationAndDeletion() {
+    public void testProjectCreationAndDeletion() throws UnsupportedEncodingException {
         final String projectName = "testProjectCreationAndDeletion";
         ProblemsView problems = new ProblemsView();
         problems.open();
@@ -67,7 +71,9 @@ public class Brms6ProjectTest extends TestParent {
         Assert.assertTrue("Project was not created.", explorer.containsProject(projectName));
 
         Assert.assertTrue("Project does not have Drools dependencies.", explorer.getProject(projectName).containsItem("Drools Library"));
-        Assert.assertTrue("Wrong drools runtime used.", findDroolsCoreJar(projectName).contains(droolsRequirement.getConfig().getRuntimeFamily().getHome()));
+        
+        String runtimeLocation = new File(URLDecoder.decode(droolsRequirement.getConfig().getRuntimeFamily().getHome(), "utf-8")).getPath();
+        Assert.assertTrue("Wrong drools runtime used.", findDroolsCoreJar(projectName).contains(runtimeLocation));
 
         problems = new ProblemsView();
         problems.open();
