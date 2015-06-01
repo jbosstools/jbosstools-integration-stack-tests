@@ -115,11 +115,11 @@ public class RouteManipulationTest extends DefaultTest {
 		jmx.getNode("Local Camel Context", "Camel", "camel-1").select();
 		assertEquals(8, msg.getAllMessages().size());
 		assertEquals("choice1", msg.getMessage(2).getTraceNode());
-		assertEquals("log2", msg.getMessage(3).getTraceNode());
-		assertEquals("to2", msg.getMessage(4).getTraceNode());
+		assertEquals("log1", msg.getMessage(3).getTraceNode());
+		assertEquals("to1", msg.getMessage(4).getTraceNode());
 		assertEquals("choice1", msg.getMessage(6).getTraceNode());
-		assertEquals("log1", msg.getMessage(7).getTraceNode());
-		assertEquals("to1", msg.getMessage(8).getTraceNode());
+		assertEquals("log2", msg.getMessage(7).getTraceNode());
+		assertEquals("to2", msg.getMessage(8).getTraceNode());
 		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 }

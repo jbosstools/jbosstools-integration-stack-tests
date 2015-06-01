@@ -60,7 +60,7 @@ public class MessagesView extends WorkbenchView {
 		TableItem item = table.getItem(i - 1);
 		Message msg = new Message();
 		msg.setTraceId(Integer.parseInt(item.getText()));
-		msg.setTraceNode(item.getText(14));
+		msg.setTraceNode(item.getText(15));
 
 		return msg;
 	}
