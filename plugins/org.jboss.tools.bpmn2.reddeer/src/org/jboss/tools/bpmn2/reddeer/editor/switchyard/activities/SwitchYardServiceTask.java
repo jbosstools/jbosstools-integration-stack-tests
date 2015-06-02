@@ -1,6 +1,7 @@
 package org.jboss.tools.bpmn2.reddeer.editor.switchyard.activities;
 
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.OperationDialog;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ElementWithParamMapping;
@@ -12,17 +13,19 @@ import org.jboss.tools.bpmn2.reddeer.properties.setup.ParameterMappingSetUp;
 import org.jboss.tools.bpmn2.reddeer.properties.setup.ScriptSetUp;
 
 /**
- * TODO: apodhrad
+ * SwitchYard Service Task
  */
 public class SwitchYardServiceTask extends ElementWithParamMapping {
 
-	@SuppressWarnings("unused")
 	private static final int ON_ENTRY = 0;
-	@SuppressWarnings("unused")
 	private static final int ON_EXIT = 1;
 	
 	public SwitchYardServiceTask(String name) {
 		super(name, ElementType.SWITCHYARD_SERVICE_TASK);
+	}
+	
+	public SwitchYardServiceTask(Element element) {
+		super(element);
 	}
 	
 	public void setOperation(String name) {

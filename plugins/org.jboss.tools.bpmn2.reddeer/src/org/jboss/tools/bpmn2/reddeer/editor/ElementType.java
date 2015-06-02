@@ -20,6 +20,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.catchevents.TimerIntermediateCa
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.dataobjects.DataObject;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.endevents.EndEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.endevents.ErrorEndEvent;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.endevents.TerminateEndEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.EventBasedGateway;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.ExclusiveGateway;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.gateways.InclusiveGateway;
@@ -34,6 +35,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.throwevents.CompensationInterme
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.throwevents.EscalationIntermediateThrowEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.throwevents.LinkIntermediateThrowEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.throwevents.MessageIntermediateThrowEvent;
+import org.jboss.tools.bpmn2.reddeer.editor.switchyard.activities.SwitchYardServiceTask;
 
 /**
  * 
@@ -83,7 +85,7 @@ public enum ElementType {
 	ESCALATION_END_EVENT("End Events", "Escalation"),
 	MESSAGE_END_EVENT("End Events", "Message"),
 	SIGNAL_END_EVENT("End Events", "Signal"),
-	TERMINATE_END_EVENT("End Events", "Terminate"),
+	TERMINATE_END_EVENT("End Events", "Terminate", TerminateEndEvent.class),
 	
 	CONDITIONAL_INTERMEDIATE_CATCH_EVENT("Intermediate Catch Events", "Conditional"),
 	MESSAGE_INTERMEDIATE_CATCH_EVENT("Intermediate Catch Events", "Message"),
@@ -115,7 +117,7 @@ public enum ElementType {
 	
 	TEXT_ANNOTATION("Artifacts", "Text Annotation"), 
 	
-	SWITCHYARD_SERVICE_TASK("SwitchYard", "SwitchYard Service Task");
+	SWITCHYARD_SERVICE_TASK("SwitchYard", "SwitchYard Service Task", SwitchYardServiceTask.class);
 
 	private String sectionName;
 	
