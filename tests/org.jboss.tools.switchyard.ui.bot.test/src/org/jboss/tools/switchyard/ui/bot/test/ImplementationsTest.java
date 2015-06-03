@@ -76,8 +76,10 @@ public class ImplementationsTest {
 
 	@After
 	public void deleteCreatedResousources() {
-		for (String component : componentsToDelete) {
-			new SwitchYardComponent(component).delete();
+		List<SwitchYardComponent> components = new SwitchYardEditor().getComponents();
+		while (!components.isEmpty()) {
+			components.get(0).delete();
+			components = new SwitchYardEditor().getComponents();
 		}
 		for (String[] javaClass : classesToDelete) {
 			new SwitchYardProject(PROJECT_NAME).getClass(javaClass).delete();

@@ -5,7 +5,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.Label;
+import org.eclipse.graphiti.ui.platform.GraphitiShapeEditPart;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
@@ -13,6 +18,7 @@ import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.gef.api.EditPart;
 import org.jboss.reddeer.gef.condition.EditorHasEditParts;
 import org.jboss.reddeer.gef.editor.GEFEditor;
+import org.jboss.reddeer.gef.handler.ViewerHandler;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.WaitCondition;
 import org.jboss.reddeer.swt.handler.IBeforeShellIsClosed;
@@ -210,6 +216,32 @@ public class SwitchYardEditor extends GEFEditor {
 		in.close();
 		return source.toString();
 	}
+	
+	public List<SwitchYardComponent> getComponents() {
+		List<SwitchYardComponent> components = new ArrayList<SwitchYardComponent>();
+		String compositeLabel = getCompositeName();
+		
+		List<org.eclipse.gef.EditPart> list = ViewerHandler.getInstance().getEditParts(viewer);
+		for (org.eclipse.gef.EditPart editPart: list) {
+			String label = getLabel(editPart);
+			if (label != null && !label.equals(compositeLabel)) {
+				components.add(new SwitchYardComponent(label));
+			}
+		}
+		return components;
+	}
+	
+	private String getLabel(Object obj) {
+		if (obj instanceof GraphitiShapeEditPart) {
+			IFigure figure = ((GraphitiShapeEditPart) obj).getFigure();
+			IFigure tooltip = figure.getToolTip();
+			if (tooltip instanceof Label) {
+				Label label = (Label) tooltip;
+				return label.getText();
+			}
+		}
+		return null;
+	}
 
 	private void doSave() {
 		log.info("Save SwitchYard editor");
@@ -226,7 +258,8 @@ public class SwitchYardEditor extends GEFEditor {
 
 		super.save();
 
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		new WaitUntil(new JobIsRunning(), TimePeriod.NORMAL, false);
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 
 		if (remainedShell != null) {
 			Assert.fail("Shell '" + remainedShell.getText() + "' remains open");
