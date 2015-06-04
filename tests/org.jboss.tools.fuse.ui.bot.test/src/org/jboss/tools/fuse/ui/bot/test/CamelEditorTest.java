@@ -4,12 +4,14 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
@@ -22,6 +24,7 @@ import org.jboss.tools.fuse.reddeer.component.Generic;
 import org.jboss.tools.fuse.reddeer.component.Log;
 import org.jboss.tools.fuse.reddeer.component.Otherwise;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
+import org.jboss.tools.fuse.reddeer.editor.SourceEditor;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
 import org.jboss.tools.fuse.reddeer.view.ErrorLogView;
 import org.jboss.tools.fuse.ui.bot.test.utils.EditorManipulator;
@@ -139,6 +142,40 @@ public class CamelEditorTest extends DefaultTest {
 		editor.setId("log1", "");
 		CamelEditor.switchTab("Source");
 		assertTrue(EditorManipulator.isEditorContentEqualsFile("resources/camel-context-all.xml"));
+		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
+	}
+
+	@Test
+	public void testCodeCompletion() {
+
+		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
+		CamelEditor.switchTab("Source");
+		EditorManipulator.copyFileContentToCamelXMLEditor("resources/camel-context-all.xml");
+		SourceEditor editor = new SourceEditor();
+		editor.setCursorPosition(713);
+		ContentAssistant assistent = editor.openContentAssistant();
+		List<String> proposals = assistent.getProposals();
+		assertTrue("Content Assistent does not contain 'id' value", proposals.contains("id"));
+		assertTrue("Content Assistent does not contain 'ref' value", proposals.contains("ref"));
+		assertFalse("Content Assistent does contain 'uri' value. The attribute is already set", proposals.contains("uri"));
+		assistent.close();
+		editor.insertTest("id=\"test\" ");
+		assistent = editor.openContentAssistant();
+		proposals = assistent.getProposals();
+		assertFalse("Content Assistent does contain 'id' value", proposals.contains("id"));
+		assistent.close();
+		editor.setCursorPosition(701);
+		assistent = editor.openContentAssistant();
+		assistent.chooseProposal("to");
+		assertTrue("Editor does not contain generated text", editor.getText().contains("<to></to>"));
+		editor.setCursorPosition(704);
+		editor.insertTest(" ");
+		editor.setCursorPosition(705);
+		assistent = editor.openContentAssistant();
+		proposals = assistent.getProposals();
+		assertTrue("Content Assistent does not contain 'uri' value", proposals.contains("uri"));
+		proposals.remove("uri");
+		assertFalse("Content Assistent contains duplicates (e.g. 'uri' value)", proposals.contains("uri"));
 		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 
