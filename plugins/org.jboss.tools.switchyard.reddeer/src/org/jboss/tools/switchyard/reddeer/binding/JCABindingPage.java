@@ -1,5 +1,6 @@
 package org.jboss.tools.switchyard.reddeer.binding;
 
+import org.jboss.reddeer.swt.api.Combo;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
@@ -123,8 +124,8 @@ public class JCABindingPage extends OperationOptionsPage<JMSBindingPage> {
 		return new CheckBox(new DefaultGroup("JMS Endpoint Properties"), "Use JNDI Lookup for Destination");
 	}
 
-	public LabeledText getTransacted() {
-		return new LabeledText("Transacted");
+	public Combo getTransacted() {
+		return new LabeledCombo("Transacted");
 	}
 
 }

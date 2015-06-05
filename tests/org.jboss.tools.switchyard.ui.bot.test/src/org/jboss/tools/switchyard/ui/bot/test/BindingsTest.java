@@ -16,6 +16,7 @@ import static org.jboss.tools.switchyard.reddeer.binding.OperationOptionsPage.JA
 import static org.jboss.tools.switchyard.reddeer.binding.OperationOptionsPage.OPERATION_NAME;
 import static org.jboss.tools.switchyard.reddeer.binding.OperationOptionsPage.REGEX;
 import static org.jboss.tools.switchyard.reddeer.binding.OperationOptionsPage.XPATH;
+import static org.jboss.tools.switchyard.reddeer.binding.SAPBindingPage.SAP_OBJECT_SRFC;
 import static org.jboss.tools.switchyard.reddeer.binding.SOAPBindingPage.SOAP_HEADERS_TYPE_DOM;
 import static org.jboss.tools.switchyard.reddeer.binding.SchedulingBindingPage.SCHEDULING_TYPE_CRON;
 import static org.junit.Assert.assertEquals;
@@ -27,6 +28,7 @@ import java.io.IOException;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.swt.handler.ShellHandler;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -172,6 +174,7 @@ public class BindingsTest {
 
 	@After
 	public void removeAllBindings() {
+		ShellHandler.getInstance().closeAllNonWorbenchShells();
 		new SwitchYardEditor().save();
 		new Service("HelloService").showProperties().selectBindings().removeAll().ok();
 		new SwitchYardEditor().saveAndClose();
@@ -923,19 +926,17 @@ public class BindingsTest {
 		new Service(SERVICE).addBinding("SAP");
 		SAPBindingPage wizard = new SAPBindingPage();
 		wizard.setName("sap-binding");
+		wizard.getSAPObject().setSelection(SAP_OBJECT_SRFC);
 		wizard.getServer().setText("localhost");
 		wizard.getRFCName().setText("rfcName");
-		wizard.getTransacted().toggle(false);
-		wizard.getTransacted().toggle(true);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
 
 		String bindingPath = "/switchyard/composite/service/binding.sap";
 		assertXPath("sap-binding", bindingPath + "/@name");
-		assertXPath("localhost", bindingPath + "/server");
-		assertXPath("rfcName", bindingPath + "/rfcName");
-		assertXPath("true", bindingPath + "/transacted");
+		assertXPath("localhost", bindingPath + "/srfc-server/serverName");
+		assertXPath("rfcName", bindingPath + "/srfc-server/rfcName");
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		SAPBindingPage page = properties.selectSAPBinding("sap-binding");
@@ -949,8 +950,8 @@ public class BindingsTest {
 		SCABindingPage wizard = new SCABindingPage();
 		assertEquals("sca1", wizard.getName());
 		wizard.setName("sca-binding");
-		wizard.getClustered().toggle(false);
-		wizard.getClustered().toggle(true);
+		wizard.getClustered().setSelection("false");
+		wizard.getClustered().setSelection("true");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -962,7 +963,7 @@ public class BindingsTest {
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		SCABindingPage page = properties.selectSCABinding("sca-binding");
 		assertEquals("sca-binding", page.getName());
-		assertTrue(page.getClustered().isChecked());
+		assertEquals("true", page.getClustered().getText());
 		properties.ok();
 	}
 
@@ -1062,10 +1063,11 @@ public class BindingsTest {
 		wizard.getConfigName().setText("configName");
 		wizard.getEnable().toggle(false);
 		wizard.getEnable().toggle(true);
-		wizard.getTemporarilyDisable().toggle(false);
-		wizard.getTemporarilyDisable().toggle(true);
-		wizard.getxopExpand().toggle(false);
-		wizard.getxopExpand().toggle(true);
+
+		wizard.getTemporarilyDisable().setSelection("false");
+		wizard.getTemporarilyDisable().setSelection("true");
+		wizard.getxopExpand().setSelection("false");
+		wizard.getxopExpand().setSelection("true");
 		wizard.getThreshold().setText("963");
 		wizard.finish();
 

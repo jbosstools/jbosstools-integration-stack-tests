@@ -1,6 +1,7 @@
 package org.jboss.tools.switchyard.reddeer.binding;
 
-import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.api.Combo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 
 /**
@@ -11,7 +12,7 @@ import org.jboss.reddeer.swt.impl.group.DefaultGroup;
  */
 public class SCABindingPage extends OperationOptionsPage<SCABindingPage> {
 
-	public CheckBox getClustered() {
-		return new CheckBox(new DefaultGroup("Clustering"), "Clustered");
+	public Combo getClustered() {
+		return new LabeledCombo(new DefaultGroup("Clustering"), "Clustered");
 	}
 }

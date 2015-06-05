@@ -1,6 +1,7 @@
 package org.jboss.tools.switchyard.reddeer.binding;
 
 import org.eclipse.swt.SWT;
+import org.jboss.reddeer.swt.api.Combo;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
@@ -69,12 +70,12 @@ public class SOAPBindingPage extends OperationOptionsPage<SOAPBindingPage> {
 		return new LabeledCombo("SOAP Headers Type");
 	}
 
-	public CheckBox getxopExpand() {
-		return new CheckBox(new DefaultGroup("MTom"), "xopExpand");
+	public Combo getxopExpand() {
+		return new LabeledCombo(new DefaultGroup("MTom"), "xopExpand");
 	}
 
-	public CheckBox getTemporarilyDisable() {
-		return new CheckBox(new DefaultGroup("MTom"), "Temporarily Disable");
+	public Combo getTemporarilyDisable() {
+		return new LabeledCombo(new DefaultGroup("MTom"), "Temporarily Disable");
 	}
 
 	public CheckBox getEnable() {
