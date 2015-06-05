@@ -36,8 +36,7 @@ public class DeploymentTest {
 
 	@Test
 	public void deployTest() throws Exception {
-		new SwitchYardProjectWizard(PROJECT_NAME, switchYardRequirement.getConfig().getConfigurationVersion(),
-				switchYardRequirement.getConfig().getLibraryVersion(), "").impl("Bean").binding("HTTP").create();
+		switchYardRequirement.project(PROJECT_NAME).impl("Bean").binding("HTTP").create();
 
 		new SwitchYardEditor().addBeanImplementation().createJavaInterface("Hello").finish();
 

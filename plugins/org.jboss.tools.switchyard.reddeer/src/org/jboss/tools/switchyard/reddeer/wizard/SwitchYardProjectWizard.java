@@ -38,7 +38,7 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 	public static final String BOM_DEPENDENCY = "Use SwitchYard BOM for Dependency Management";
 
 	public static final String DEFAULT_CONFIGURATION_VERSION = "2.0";
-	public static final String DEFAULT_LIBRARY_VERSION = "2.0.0.Alpha3";
+	public static final String DEFAULT_LIBRARY_VERSION = "2.0.0.Final";
 
 	public static final String SWITCHYARD_COMPONENTS = "SwitchYard Components";
 
