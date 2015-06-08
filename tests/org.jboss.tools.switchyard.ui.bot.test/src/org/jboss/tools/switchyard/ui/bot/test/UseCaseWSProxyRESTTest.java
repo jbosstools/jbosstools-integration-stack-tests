@@ -1,6 +1,10 @@
 package org.jboss.tools.switchyard.ui.bot.test;
 
+import static org.jboss.tools.switchyard.ui.bot.test.util.TemplateHandler.javaSource;
 import static org.junit.Assert.assertEquals;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
@@ -12,13 +16,13 @@ import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.switchyard.reddeer.binding.RESTBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.SOAPBindingPage;
 import org.jboss.tools.switchyard.reddeer.component.Reference;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.condition.JUnitHasFinished;
-import org.jboss.tools.switchyard.reddeer.editor.SimpleTextEditor;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.project.ProjectItemExt;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
@@ -54,7 +58,7 @@ public class UseCaseWSProxyRESTTest {
 	public static final String PACKAGE = "com.example.switchyard.proxy_rest";
 
 	private RESTService restService;
-	
+
 	@InjectRequirement
 	private SwitchYardRequirement switchyardRequirement;
 
@@ -78,9 +82,17 @@ public class UseCaseWSProxyRESTTest {
 	public void stopRestService() {
 		restService.stop();
 	}
-
+	
 	@Test
 	public void wsProxyRestTest() {
+		Map<String, Object> dataModel = new HashMap<String, Object>();
+		dataModel.put("package", PACKAGE);
+		dataModel.put("project", PROJECT);
+		dataModel.put("from", SERVICE);
+		dataModel.put("to", SERVICE_REF);
+		dataModel.put("service", "Hello");
+		dataModel.put("body", "${body}");
+		
 		/* Create SwicthYard Project */
 		switchyardRequirement.project(PROJECT).impl("Camel Route").binding("SOAP", "REST").create();
 		new CamelJavaServiceWizard().open().setName("Proxy").createJavaInterface("Hello").finish();
@@ -93,12 +105,11 @@ public class UseCaseWSProxyRESTTest {
 
 		/* Edit Hello interface */
 		new Service("Hello").doubleClick();
+		TextEditor textEditor = new TextEditor("Hello.java");
+		textEditor.setText(javaSource("RESTHello.java", dataModel));
+		textEditor.save();
+		textEditor.close(true);
 
-		new SimpleTextEditor("Hello.java").typeBefore("Hello", "import javax.ws.rs.Produces;").newLine()
-				.type("import javax.ws.rs.GET;").newLine().type("import javax.ws.rs.Path;").newLine()
-				.type("import javax.ws.rs.PathParam;").newLine().typeAfter("Hello", "@GET()").newLine()
-				.type("@Path(\"/{name}\")").newLine().type("@Produces(\"text/plain\")").newLine()
-				.type("String sayHello(@PathParam(\"name\") String name);").saveAndClose();
 		new SwitchYardEditor().save();
 
 		PromoteServiceWizard wizard = new Service("Hello").promoteService();
@@ -110,13 +121,11 @@ public class UseCaseWSProxyRESTTest {
 
 		/* Edit HelloTransformer */
 		new SwitchYardProject(PROJECT).getProjectItem("src/main/java", PACKAGE, "HelloTransformer.java").open();
-		new SimpleTextEditor("HelloTransformer.java")
-				.deleteLineWith("ToSayHello")
-				.type("public static String transformStringToSayHelloResponse(String from) {")
-				.deleteLineWith("return null")
-				.type("return \"<sayHelloResponse xmlns=\\\"urn:com.example.switchyard:" + PROJECT + ":1.0\\\">"
-						+ "<string>\"+ from + \"</string></sayHelloResponse>\";").deleteLineWith("return null")
-				.type("return from.getTextContent().trim();").saveAndClose();
+		textEditor = new TextEditor("HelloTransformer.java");
+		textEditor.setText(javaSource("HelloTransformer.java", dataModel));
+		textEditor.save();
+		textEditor.close(true);
+
 		new SwitchYardEditor().save();
 
 		/* Expose Proxy Service Through SOAP */
@@ -142,18 +151,19 @@ public class UseCaseWSProxyRESTTest {
 
 		/* Edit Camel Route */
 		new SwitchYardComponent("Proxy").doubleClick();
-		new SimpleTextEditor("Proxy.java").typeAfter("from(", ".to(\"switchyard://" + SERVICE_REF + "\")").saveAndClose();
+		textEditor = new TextEditor("Proxy.java");
+		textEditor.setText(javaSource("ProxyRoute.java", dataModel));
+		textEditor.save();
+		textEditor.close(true);
+
 		new SwitchYardEditor().save();
 
 		/* Test Web Service Proxy */
 		new Service("Hello").newServiceTestClass().setPackage(PACKAGE).selectMixin("HTTP Mix-in").finish();
-		new SimpleTextEditor("HelloTest.java")
-				.deleteLineWith("String message")
-				.deleteLineWith("String result")
-				.deleteLineWith("getContent")
-				.deleteLineWith("assertTrue")
-				.type("httpMixIn.postResourceAndTestXML(\"http://localhost:18080/proxy_rest/Hello\", \"soap-request.xml\", \"soap-response.xml\");")
-				.saveAndClose();
+		textEditor = new TextEditor("HelloTest.java");
+		textEditor.setText(javaSource("HelloTest.java", dataModel));
+		textEditor.save();
+		textEditor.close(true);
 
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		new SwitchYardEditor().save();

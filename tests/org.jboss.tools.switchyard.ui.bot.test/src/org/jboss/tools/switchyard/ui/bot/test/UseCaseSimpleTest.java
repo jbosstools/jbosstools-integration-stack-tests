@@ -1,5 +1,6 @@
 package org.jboss.tools.switchyard.ui.bot.test;
 
+import static org.jboss.tools.switchyard.ui.bot.test.util.TemplateHandler.javaSource;
 import static org.junit.Assert.assertEquals;
 
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
@@ -11,6 +12,7 @@ import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.switchyard.reddeer.binding.SOAPBindingPage;
@@ -18,7 +20,6 @@ import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.condition.ConsoleHasChanged;
 import org.jboss.tools.switchyard.reddeer.condition.JUnitHasFinished;
-import org.jboss.tools.switchyard.reddeer.editor.SimpleTextEditor;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.project.ProjectItemExt;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
@@ -64,7 +65,8 @@ public class UseCaseSimpleTest {
 	@InjectRequirement
 	private SwitchYardRequirement switchyardRequirement;
 
-	@Before @After
+	@Before
+	@After
 	public void closeSwitchyardFile() {
 		try {
 			new SwitchYardEditor().saveAndClose();
@@ -72,7 +74,7 @@ public class UseCaseSimpleTest {
 			// it is ok, we just try to close switchyard.xml if it is open
 		}
 	}
-	
+
 	@Test
 	public void simpleTest() throws Exception {
 		switchyardRequirement.project(PROJECT).impl("Bean").binding("SOAP").create();
@@ -80,21 +82,22 @@ public class UseCaseSimpleTest {
 		new SwitchYardEditor().addBeanImplementation().createJavaInterface("ExampleService").finish();
 
 		new SwitchYardComponent("ExampleService").doubleClick();
-		new SimpleTextEditor("ExampleService.java").typeAfter("interface",
-				"String sayHello(String name);").saveAndClose();
+		TextEditor textEditor = new TextEditor("ExampleService.java");
+		textEditor.setText(javaSource("ExampleService.java", PACKAGE));
+		textEditor.close(true);
 
 		new SwitchYardComponent("ExampleServiceBean").doubleClick();
-		new SimpleTextEditor("ExampleServiceBean.java").typeAfter("public class", "@Override").newLine()
-				.type("public String sayHello(String name) {").newLine()
-				.type("return \"Hello \" + name;}").saveAndClose();
+		textEditor = new TextEditor("ExampleServiceBean.java");
+		textEditor.setText(javaSource("ExampleServiceBean.java", PACKAGE));
+		textEditor.close(true);
+
 		new SwitchYardEditor().save();
 
 		new Service("ExampleService").createNewServiceTestClass();
-		new SwitchYardEditor().save();
+		textEditor = new TextEditor("ExampleServiceTest.java");
+		textEditor.setText(javaSource("ExampleServiceTest.java", PACKAGE));
+		textEditor.close(true);
 
-		new SimpleTextEditor("ExampleServiceTest.java").deleteLineWith("String message")
-				.type("String message=\"Andrej\";").deleteLineWith("assertTrue")
-				.type("Assert.assertEquals(\"Hello Andrej\", result);").saveAndClose();
 		new SwitchYardEditor().save();
 
 		ProjectItem item = new SwitchYardProject(PROJECT).getProjectItem("src/test/java", PACKAGE,
@@ -114,22 +117,17 @@ public class UseCaseSimpleTest {
 		wizard.setTransformerType("Java Transformer").next();
 		wizard.setName("ExampleServiceTransformers").finish();
 
-		new SwitchYardProject(PROJECT)
-				.getProjectItem("src/main/java", PACKAGE, "ExampleServiceTransformers.java").open();
-		new SimpleTextEditor("ExampleServiceTransformers.java")
-				.deleteLineWith("ToSayHello")
-				.type("public static String transformStringToSayHelloResponse(String from) {")
-				.deleteLineWith("return null")
-				.type("return \"<sayHelloResponse xmlns=\\\"urn:com.example.switchyard:" + PROJECT
-						+ ":1.0\\\">" + "<string>\"+ from + \"</string></sayHelloResponse>\";")
-				.deleteLineWith("return null").type("return from.getTextContent().trim();")
-				.saveAndClose();
+		new SwitchYardProject(PROJECT).getProjectItem("src/main/java", PACKAGE, "ExampleServiceTransformers.java")
+				.open();
+		textEditor = new TextEditor("ExampleServiceTransformers.java");
+		textEditor.setText(javaSource("ExampleServiceTransformers.java", PACKAGE));
+		textEditor.close(true);
 
 		new Service("ExampleServicePortType").addBinding("SOAP");
 		SOAPBindingPage soapWizard = new SOAPBindingPage();
 		soapWizard.getContextPath().setText(PROJECT);
 		soapWizard.finish();
-		
+
 		new SwitchYardEditor().save();
 
 		/* Test SOAP Response */
@@ -142,5 +140,4 @@ public class UseCaseSimpleTest {
 
 		new WaitWhile(new ConsoleHasChanged());
 	}
-
 }

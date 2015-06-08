@@ -1,6 +1,10 @@
 package org.jboss.tools.switchyard.ui.bot.test;
 
+import static org.jboss.tools.switchyard.ui.bot.test.util.TemplateHandler.javaSource;
 import static org.junit.Assert.assertEquals;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
@@ -9,12 +13,13 @@ import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.drools.reddeer.editor.DrlEditor;
+import org.jboss.tools.drools.reddeer.editor.RuleEditor;
 import org.jboss.tools.switchyard.reddeer.component.Service;
-import org.jboss.tools.switchyard.reddeer.editor.SimpleTextEditor;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.project.ProjectItemExt;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
@@ -61,6 +66,10 @@ public class DroolsTest {
 
 	@Test
 	public void droolsCreationTest() {
+		Map<String, Object> dataModel = new HashMap<String, Object>();
+		dataModel.put("package", PACKAGE);
+		dataModel.put("project", PROJECT);
+
 		// new project, support rules
 		switchyardRequirement.project(PROJECT).impl("Rules (Drools)").groupId(GROUP_ID).packageName(PACKAGE).create();
 		// open sy.xml, add rules, service, promote
@@ -70,35 +79,34 @@ public class DroolsTest {
 
 		// insert rules
 		openFile(PACKAGE_MAIN_RESOURCES, INTERVIEW + ".drl");
-		new SimpleTextEditor(INTERVIEW + ".drl").deleteLineWith("Interview").deleteLineWith("System.out.println")
-				.deleteLineWith("global").type("global java.lang.String userName").newLine()
-				.type("rule \"Is of valid age\"").typeAfter("when", "$a : Applicant( age > 17 )")
-				.typeAfter("then", "$a.setValid( true );").newLine()
-				.type("System.out.println(\"********** \" + $a.getName() + \" is a valid applicant **********\");")
-				.typeAfter("end", "rule \"Is not of valid age\"").newLine().type("when").newLine()
-				.type("$a : Applicant( age < 18 )").newLine().type("then").newLine().type("$a.setValid( false );")
-				.newLine().type("System.out.println(\"***\" + $a.getName() + \" is not a valid applicant ***\");")
-				.newLine().type("end");
+		RuleEditor editor = new DrlEditor().showRuleEditor();
+		editor.setText(javaSource("Interview.drl", dataModel));
+		editor.save();
+		editor.close(true);
 
 		// insert code
 		openFile(PACKAGE_MAIN_JAVA, PACKAGE, INTERVIEW + "Service.java");
-		new SimpleTextEditor(INTERVIEW + "Service.java").typeAfter("interface", "public void verify(Applicant applicant);");
+		TextEditor textEditor = new TextEditor(INTERVIEW + "Service.java");
+		textEditor.setText(javaSource(INTERVIEW + "Service.java", dataModel));
+		textEditor.save();
+		textEditor.close(true);
 
 		createPojo(APPLICANT);
-		new SimpleTextEditor(APPLICANT + ".java")
-				.typeAfter("class", "private String name; private int age; private boolean valid;").newLine()
-				.type("public Applicant(String name, int age){this.name=name;this.age=age;}")
-				.generateGettersSetters("name");
+		textEditor = new TextEditor(APPLICANT + ".java");
+		textEditor.setText(javaSource(APPLICANT + ".java", dataModel));
+		textEditor.save();
+		textEditor.close(true);
 
 		// test
-		new SwitchYardEditor();
+		new SwitchYardEditor().save();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new Service(INTERVIEW + "Service").createNewServiceTestClass();
-		new SimpleTextEditor(TEST).deleteLineWith("null").type("Applicant message=new Applicant(\"Twenty\", 20);")
-				.deleteLineWith("Implement").type("message=new Applicant(\"Ten\", 10);")
-				.type("service.operation(\"verify\").sendInOnly(message);");
+		textEditor = new TextEditor(TEST);
+		textEditor.setText(javaSource(TEST, dataModel));
+		textEditor.save();
+		textEditor.close(true);
 
-		new ShellMenu("File", "Save All").select();
+		new SwitchYardEditor().save();
 
 		ProjectItem item = new SwitchYardProject(PROJECT).getProjectItem("src/test/java", PACKAGE, TEST);
 		new ProjectItemExt(item).runAsJUnitTest();

@@ -1,5 +1,6 @@
 package org.jboss.tools.switchyard.ui.bot.test;
 
+import static org.jboss.tools.switchyard.ui.bot.test.util.TemplateHandler.javaSource;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -12,13 +13,13 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.switchyard.reddeer.binding.FileBindingPage;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
-import org.jboss.tools.switchyard.reddeer.editor.SimpleTextEditor;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.jboss.tools.switchyard.reddeer.server.ServerDeployment;
@@ -43,8 +44,9 @@ public class UseCaseFileGatewayTest {
 
 	@InjectRequirement
 	private SwitchYardRequirement switchyardRequirement;
-	
-	@Before @After
+
+	@Before
+	@After
 	public void closeSwitchyardFile() {
 		try {
 			new SwitchYardEditor().saveAndClose();
@@ -62,14 +64,14 @@ public class UseCaseFileGatewayTest {
 
 		// Edit the interface
 		new SwitchYardComponent("Info").doubleClick();
-		new SimpleTextEditor("Info.java").typeAfter("interface", "void printInfo(String body);")
-				.saveAndClose();
+		TextEditor textEditor = new TextEditor("Info.java");
+		textEditor.setText(javaSource("Info.java", PACKAGE));
+		textEditor.close(true);
 
 		// Edit the bean
 		new SwitchYardComponent("InfoBean").doubleClick();
-		new SimpleTextEditor("InfoBean.java").typeAfter("public class", "@Override").newLine()
-				.type("public void printInfo(String body) {").newLine()
-				.type("System.out.println(\"Body: \" + body);}").saveAndClose();
+		textEditor = new TextEditor("InfoBean.java");
+		textEditor.setText(javaSource("InfoBean.java", PACKAGE));
 
 		new SwitchYardEditor().save();
 

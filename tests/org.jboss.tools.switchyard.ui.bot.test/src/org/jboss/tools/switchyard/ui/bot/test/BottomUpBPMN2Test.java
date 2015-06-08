@@ -1,6 +1,10 @@
 package org.jboss.tools.switchyard.ui.bot.test;
 
+import static org.jboss.tools.switchyard.ui.bot.test.util.TemplateHandler.javaSource;
 import static org.junit.Assert.assertEquals;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
@@ -19,10 +23,10 @@ import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.uiforms.api.Section;
 import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.condition.JUnitHasFinished;
-import org.jboss.tools.switchyard.reddeer.editor.SimpleTextEditor;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.project.ProjectItemExt;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
@@ -32,6 +36,7 @@ import org.jboss.tools.switchyard.reddeer.view.JUnitView;
 import org.jboss.tools.switchyard.reddeer.widget.DefaultTextExt;
 import org.jboss.tools.switchyard.reddeer.wizard.ImportFileWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.NewServiceWizard;
+import org.jboss.tools.switchyard.ui.bot.test.util.TemplateHandler;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -66,6 +71,11 @@ public class BottomUpBPMN2Test {
 
 	@Test
 	public void bottomUpBPMN2Test() throws Exception {
+		Map<String, Object> dataModel = new HashMap<String, Object>();
+		dataModel.put("package", PACKAGE);
+		dataModel.put("project", PROJECT);
+		dataModel.put("body", "${body}");
+		
 		new WorkbenchShell().maximize();
 
 		switchyardRequirement.project(PROJECT).impl("BPM (jBPM)").create();
@@ -92,7 +102,10 @@ public class BottomUpBPMN2Test {
 
 		// Edit the interface
 		new Service("Hello").doubleClick();
-		new SimpleTextEditor("Hello.java").typeAfter("Hello", "String sayHello(String name);").saveAndClose();
+		TextEditor textEditor = new TextEditor("Hello.java");
+		textEditor.setText(TemplateHandler.javaSource("Hello.java", dataModel));
+		textEditor.save();
+		textEditor.close(true);
 
 		// Edit the BPMN process
 		new SwitchYardComponent("Component").showProperties();
@@ -124,9 +137,10 @@ public class BottomUpBPMN2Test {
 
 		// Create HelloTest
 		new Service("Hello").createNewServiceTestClass();
-		new SimpleTextEditor("HelloTest.java").deleteLineWith("String message").type("String message=\"BPMN2\";")
-				.deleteLineWith("assertTrue").type("Assert.assertEquals(\"Hello BPMN2\", result);").saveAndClose();
-		new SwitchYardEditor().save();
+		textEditor = new TextEditor("HelloTest.java");
+		textEditor.setText(javaSource("HelloSimpleTest.java", dataModel));
+		textEditor.save();
+		textEditor.close(true);
 
 		// Run the test
 		new ProjectExplorer().open();

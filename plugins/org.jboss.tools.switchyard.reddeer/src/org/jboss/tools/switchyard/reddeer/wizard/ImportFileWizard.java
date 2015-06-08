@@ -35,7 +35,7 @@ public class ImportFileWizard extends ImportWizardDialog {
 		open();
 
 		new DefaultShell("Import");
-		new LabeledComboExt("From directory:").typeText(file.getAbsolutePath());
+		new LabeledComboExt("From directory:").typeText("abc");
 		new LabeledComboExt("From directory:").setText(file.getAbsolutePath());
 		new DefaultTree().setFocus();
 		new WaitUntil(new TableHasRows(new DefaultTable()), TimePeriod.NORMAL);

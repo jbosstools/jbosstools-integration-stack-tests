@@ -1,7 +1,11 @@
 package org.jboss.tools.switchyard.ui.bot.test;
 
 import static org.jboss.tools.switchyard.reddeer.binding.OperationOptionsPage.OPERATION_NAME;
+import static org.jboss.tools.switchyard.ui.bot.test.util.TemplateHandler.javaSource;
 import static org.junit.Assert.assertEquals;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
@@ -13,11 +17,11 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.switchyard.reddeer.binding.HTTPBindingPage;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.condition.JUnitHasFinished;
-import org.jboss.tools.switchyard.reddeer.editor.SimpleTextEditor;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.project.ProjectItemExt;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
@@ -60,6 +64,12 @@ public class BottomUpCamelTest {
 
 	@Test
 	public void bottomUpCamelTest() throws Exception {
+		Map<String, Object> dataModel = new HashMap<String, Object>();
+		dataModel.put("package", PACKAGE);
+		dataModel.put("project", PROJECT);
+		dataModel.put("from", "Hello");
+		dataModel.put("body", "${body}");
+		
 		switchyardRequirement.project(PROJECT).impl("Camel Route").binding("HTTP").create();
 
 		// Import java file
@@ -68,8 +78,10 @@ public class BottomUpCamelTest {
 
 		// Edit java file
 		new SwitchYardProject(PROJECT).getProjectItem("src/main/java", PACKAGE, JAVA_FILE + ".java").open();
-		new SimpleTextEditor(JAVA_FILE + ".java").deleteLineWith("package")
-				.type("package " + PACKAGE + ";").saveAndClose();
+		TextEditor textEditor = new TextEditor(JAVA_FILE + ".java");
+		textEditor.setText(javaSource("MyRouteBuilder.java", dataModel));
+		textEditor.save();
+		textEditor.close(true);
 
 		// Add component
 		new SwitchYardEditor().addComponent();
@@ -90,14 +102,10 @@ public class BottomUpCamelTest {
 
 		// Edit the interface
 		new Service("Hello").doubleClick();
-		new SimpleTextEditor("Hello.java").typeAfter("Hello", "String sayHello(String name);")
-				.saveAndClose();
-
-		// Edit the camel route
-		new SwitchYardComponent("Component").doubleClick();
-		new SimpleTextEditor(JAVA_FILE + ".java").deleteLineWith("file:in")
-				.type("from(\"switchyard://Hello\")").deleteLineWith("file:out").type(";")
-				.saveAndClose();
+		textEditor = new TextEditor("Hello.java");
+		textEditor.setText(javaSource("Hello.java", dataModel));
+		textEditor.save();
+		textEditor.close(true);
 
 		PromoteServiceWizard wizard = new Service("Hello").promoteService();
 		wizard.activate().setServiceName("HelloService").finish();
@@ -114,9 +122,10 @@ public class BottomUpCamelTest {
 		
 		// Create HelloTest
 		new Service("Hello").createNewServiceTestClass();
-		new SimpleTextEditor("HelloTest.java").deleteLineWith("String message").type("String message=\"Camel\";")
-				.deleteLineWith("assertTrue").type("Assert.assertEquals(\"Hello Camel\", result);").saveAndClose();
-		new SwitchYardEditor().save();
+		textEditor = new TextEditor("HelloTest.java");
+		textEditor.setText(javaSource("HelloSimpleTest.java", dataModel));
+		textEditor.save();
+		textEditor.close(true);
 
 		// Tun the test
 		ProjectItem item = new SwitchYardProject(PROJECT).getProjectItem("src/test/java", PACKAGE, "HelloTest.java");
