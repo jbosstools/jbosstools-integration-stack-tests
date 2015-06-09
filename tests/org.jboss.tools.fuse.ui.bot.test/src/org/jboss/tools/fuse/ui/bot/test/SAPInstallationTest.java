@@ -5,23 +5,23 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.swt.api.Text;
-import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.impl.button.CancelButton;
-import org.jboss.reddeer.swt.impl.button.FinishButton;
-import org.jboss.reddeer.swt.impl.button.NextButton;
+import org.jboss.reddeer.swt.impl.button.NoButton;
 import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.runtime.reddeer.requirement.SAPRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.SAPRequirement.SAP;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+/**
+ * 
+ * @author apodhrad
+ *
+ */
 @SAP
 @CleanWorkspace
 @RunWith(RedDeerSuite.class)
@@ -29,7 +29,7 @@ public class SAPInstallationTest {
 
 	@InjectRequirement
 	private SAPRequirement sapRequirement;
-	
+
 	@Test
 	public void sapInstalltionTest() {
 		InstallationWizard wizard = new InstallationWizard();
@@ -38,29 +38,19 @@ public class SAPInstallationTest {
 		wizard.next();
 		wizard.getJCo3ArchiveFile().setText(sapRequirement.getConfig().getLib().getJco3());
 		wizard.getIDoc3ArchiveFile().setText(sapRequirement.getConfig().getLib().getJidoc());
-		wizard.finish();
-
-		new WaitUntil(new ShellWithTextIsAvailable("Install"), TimePeriod.VERY_LONG);
-		new DefaultShell("Install");
-		new NextButton().click();
-		new NextButton().click();
-		new RadioButton().click();
-		new FinishButton().click();
+		wizard.finish(TimePeriod.VERY_LONG);
 
 		try {
 			new WaitUntil(new ShellWithTextIsAvailable("Security Warning"), TimePeriod.LONG);
 			new DefaultShell("Security Warning");
 			new OkButton().click();
 		} catch (Exception e) {
-			// sometimes the windows doesn't pop up
+			// sometimes the window doesn't pop up
 		}
-		
-		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
-		new DefaultShell("Restart Eclipse?");
-		new CancelButton().click();
 
-		System.out.println();
-
+		new WaitUntil(new ShellWithTextIsAvailable("Software Updates"), TimePeriod.VERY_LONG);
+		new DefaultShell("Software Updates");
+		new NoButton().click();
 	}
 
 	public class InstallationWizard extends ImportWizardDialog {
