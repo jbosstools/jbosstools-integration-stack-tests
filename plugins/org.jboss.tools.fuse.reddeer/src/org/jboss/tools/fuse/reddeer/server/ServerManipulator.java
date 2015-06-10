@@ -292,6 +292,7 @@ public class ServerManipulator {
 		} catch (Exception ex) {
 			log.debug("Nothing to remove.");
 		}
+		AbstractWait.sleep(TimePeriod.NORMAL);
 		page.close();
 		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
 		new WorkbenchShell().setFocus();
