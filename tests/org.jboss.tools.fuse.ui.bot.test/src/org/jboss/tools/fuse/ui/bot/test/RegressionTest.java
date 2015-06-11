@@ -228,9 +228,8 @@ public class RegressionTest extends DefaultTest {
 
 		ProjectFactory.createProject("camel-web", "camel-archetype-web");
 		new CamelProject("camel-web").runApplicationContextWithoutTests("applicationContext.xml");
-		new WaitUntil(new ConsoleHasText("[INFO] Started Jetty Server"), TimePeriod.LONG);
+		new WaitUntil(new ConsoleHasText("[INFO] Started Jetty Server"), TimePeriod.VERY_LONG);
 		new WaitUntil(new ConsoleHasText("Hello Web Application, how are you?"), TimePeriod.LONG);
-		
 	}
 
 	/**
@@ -308,6 +307,7 @@ public class RegressionTest extends DefaultTest {
 	public void issue_1132() throws FuseArchetypeNotFoundException {
 
 		ProjectFactory.createProject("camel-blueprint", "camel-archetype-blueprint");
+		new ProjectExplorer().getProject("camel-blueprint").getProjectItem("src/test/java", "com.mycompany.camel.blueprint", "RouteTest.java").delete();
 		String server = serverRequirement.getConfig().getName();
 		new BreakpointsView().importBreakpoints(ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID, "resources/breakpoint.bkpt"));
 		ServerManipulator.debugServer(server);
