@@ -405,6 +405,38 @@ public class RegressionTest extends DefaultTest {
 	}
 
 	/**
+	 * Run Configurations dialog shows launch config types for server adapters for Karaf, SMX, Fuse and Fabric8 which partially don't work
+	 * https://issues.jboss.org/browse/FUSETOOLS-1214
+	 * @throws FuseArchetypeNotFoundException 
+	 */
+	@Test
+	public void issue_1214() throws FuseArchetypeNotFoundException {
+
+		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
+		new ProjectExplorer().selectProjects("camel-spring");
+		new ContextMenu("Run As", "Run Configurations...").select();
+		new WaitUntil(new ShellWithTextIsAvailable("Run Configurations"));
+		new DefaultShell("Run Configurations");
+		new DefaultTreeItem("Apache Tomcat").select();
+		try {
+			new DefaultTreeItem("Apache Karaf Launcher").select();
+			fail("Run Configurations contains forbidden item");
+		} catch (SWTLayerException e) {}
+		try {
+			new DefaultTreeItem("Apache ServiceMix Launcher").select();
+			fail("Run Configurations contains forbidden item");
+		} catch (SWTLayerException e) {}
+		try {
+			new DefaultTreeItem("Fabric8 Launcher").select();
+			fail("Run Configurations contains forbidden item");
+		} catch (SWTLayerException e) {}
+		try {
+			new DefaultTreeItem("JBoss Fuse Launcher").select();
+			fail("Run Configurations contains forbidden item");
+		} catch (SWTLayerException e) {}
+	}
+
+	/**
 	 * Problem occurred during restart JBoss Fuse
 	 * https://issues.jboss.org/browse/FUSETOOLS-1252
 	 * @throws FuseArchetypeNotFoundException 
