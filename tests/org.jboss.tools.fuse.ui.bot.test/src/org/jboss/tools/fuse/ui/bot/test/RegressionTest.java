@@ -390,6 +390,21 @@ public class RegressionTest extends DefaultTest {
 	}
 
 	/**
+	 * Opening Camel Editor on Source tab + dirty flag
+	 * https://issues.jboss.org/browse/FUSETOOLS-1243
+	 * @throws FuseArchetypeNotFoundException 
+	 */
+	@Test
+	public void issue_1243() throws FuseArchetypeNotFoundException {
+
+		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
+		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
+		assertFalse("Camel editor should not be dirty", new DefaultToolItem(new WorkbenchShell(), 1, new WithTooltipTextMatcher(new RegexMatcher("Save.*"))).isEnabled());
+		CamelEditor.switchTab("Source");
+		assertFalse("Camel editor should not be dirty", new DefaultToolItem(new WorkbenchShell(), 1, new WithTooltipTextMatcher(new RegexMatcher("Save.*"))).isEnabled());
+	}
+
+	/**
 	 * Problem occurred during restart JBoss Fuse
 	 * https://issues.jboss.org/browse/FUSETOOLS-1252
 	 * @throws FuseArchetypeNotFoundException 
