@@ -1,8 +1,11 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
+import java.util.List;
+
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
+import org.jboss.reddeer.eclipse.ui.views.log.LogMessage;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.handler.ShellHandler;
@@ -96,5 +99,32 @@ public class DefaultTest {
 		log.info("Stopping and deleting configured servers");
 		ServerManipulator.deleteAllServers();
 		ServerManipulator.deleteAllServerRuntimes();
+	}
+
+	/**
+	 * Returns number of error messages in Error Log View originate from fuse plugins
+	 * 
+	 * @return number of error messages from fuse plugins
+	 */
+	protected int getErrorMessages() {
+
+		log.info("Receiving count of errors from fuse plugins");
+		int count = 0;
+		ErrorLogView errorLog = new ErrorLogView();
+		List<LogMessage> messages = errorLog.getErrorMessages();
+		for (LogMessage message : messages) {
+			if (message.getPlugin().toLowerCase().contains("fuse")) count++;
+		}
+		return count;
+	}
+
+	/**
+	 * Deletes Error Log
+	 */
+	protected void deleteErrorLog() {
+
+		log.info("Deleting error log");
+		ErrorLogView errorLog = new ErrorLogView();
+		errorLog.deleteLog();
 	}
 }
