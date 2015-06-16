@@ -16,7 +16,13 @@ import static org.jboss.tools.switchyard.reddeer.binding.OperationOptionsPage.JA
 import static org.jboss.tools.switchyard.reddeer.binding.OperationOptionsPage.OPERATION_NAME;
 import static org.jboss.tools.switchyard.reddeer.binding.OperationOptionsPage.REGEX;
 import static org.jboss.tools.switchyard.reddeer.binding.OperationOptionsPage.XPATH;
+import static org.jboss.tools.switchyard.reddeer.binding.SAPBindingPage.SAP_OBJECT_IDOC;
+import static org.jboss.tools.switchyard.reddeer.binding.SAPBindingPage.SAP_OBJECT_IDOC_LIST;
+import static org.jboss.tools.switchyard.reddeer.binding.SAPBindingPage.SAP_OBJECT_QIDOC;
+import static org.jboss.tools.switchyard.reddeer.binding.SAPBindingPage.SAP_OBJECT_QIDOC_LIST;
+import static org.jboss.tools.switchyard.reddeer.binding.SAPBindingPage.SAP_OBJECT_QRFC;
 import static org.jboss.tools.switchyard.reddeer.binding.SAPBindingPage.SAP_OBJECT_SRFC;
+import static org.jboss.tools.switchyard.reddeer.binding.SAPBindingPage.SAP_OBJECT_TRFC;
 import static org.jboss.tools.switchyard.reddeer.binding.SOAPBindingPage.SOAP_HEADERS_TYPE_DOM;
 import static org.jboss.tools.switchyard.reddeer.binding.SchedulingBindingPage.SCHEDULING_TYPE_CRON;
 import static org.junit.Assert.assertEquals;
@@ -31,7 +37,6 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.handler.ShellHandler;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
@@ -64,7 +69,7 @@ import org.jboss.tools.switchyard.reddeer.preference.binding.BindingsPage;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
-import org.jboss.tools.switchyard.reddeer.wizard.DefaultServiceWizard;
+import org.jboss.tools.switchyard.reddeer.wizard.ReferenceWizard;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -88,6 +93,7 @@ public class BindingsTest {
 
 	public static final String PROJECT = "binding_project";
 	public static final String SERVICE = "HelloService";
+	public static final String REFERENCE_SERVICE = "HelloRefService";
 	public static final String METHOD = "sayHello";
 	public static final String PACKAGE = "com.example.switchyard." + PROJECT;
 	public static final String[] GATEWAY_BINDINGS = new String[] { "Atom", "Camel Core (SEDA/Timer/URI)", "CXF",
@@ -135,6 +141,9 @@ public class BindingsTest {
 		textEditor.close();
 
 		new Service("Hello").promoteService().activate().setServiceName("HelloService").finish();
+		new SwitchYardComponent("HelloBean").getContextButton("Reference").click();
+		new ReferenceWizard().selectJavaInterface("Hello").setServiceName("HelloRef").finish();
+		new Service("HelloRef").promoteReference().activate().setServiceName("HelloRefService").finish();
 		new SwitchYardEditor().save();
 	}
 
@@ -164,19 +173,12 @@ public class BindingsTest {
 		editor = new SwitchYardProject(PROJECT).openSwitchYardFile();
 	}
 
-	public void addService() {
-		editor = new SwitchYardEditor();
-		new SwitchYardEditor().addService();
-		new DefaultShell("New Service");
-		new DefaultServiceWizard().selectJavaInterface("Hello").setServiceName("HelloService").finish();
-		new SwitchYardEditor().save();
-	}
-
 	@After
 	public void removeAllBindings() {
 		ShellHandler.getInstance().closeAllNonWorbenchShells();
 		new SwitchYardEditor().save();
 		new Service("HelloService").showProperties().selectBindings().removeAll().ok();
+		new Service("HelloRefService").showProperties().selectBindings().removeAll().ok();
 		new SwitchYardEditor().saveAndClose();
 	}
 
@@ -922,13 +924,47 @@ public class BindingsTest {
 	}
 
 	@Test
-	public void sapBindingTest() throws Exception {
+	public void sapIDocListBindingTest() throws Exception {
+		new Service(SERVICE).addBinding("SAP");
+		SAPBindingPage wizard = new SAPBindingPage();
+		wizard.setName("sap-binding");
+		wizard.getSAPObject().setSelection(SAP_OBJECT_IDOC_LIST);
+		wizard.getServer().setText("localhost");
+		wizard.getIDocType().setText("docType");
+		wizard.getIDocTypeExtension().setText("ext");
+		wizard.getSystemRelease().setText("sysRel");
+		wizard.getApplicationRelease().setText("appRel");
+		wizard.finish();
+
+		new SwitchYardEditor().save();
+
+		String bindingPath = "/switchyard/composite/service/binding.sap";
+		assertXPath("sap-binding", bindingPath + "/@name");
+		assertXPath("localhost", bindingPath + "/idoclist-server/serverName");
+		assertXPath("docType", bindingPath + "/idoclist-server/idocType");
+		assertXPath("ext", bindingPath + "/idoclist-server/idocTypeExtension");
+		assertXPath("sysRel", bindingPath + "/idoclist-server/systemRelease");
+		assertXPath("appRel", bindingPath + "/idoclist-server/applicationRelease");
+
+		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
+		SAPBindingPage page = properties.selectSAPBinding("sap-binding");
+		assertEquals("sap-binding", page.getName());
+		assertEquals("localhost", page.getServer().getText());
+		assertEquals("docType", page.getIDocType().getText());
+		assertEquals("ext", page.getIDocTypeExtension().getText());
+		assertEquals("sysRel", page.getSystemRelease().getText());
+		assertEquals("appRel", page.getApplicationRelease().getText());
+		properties.ok();
+	}
+
+	@Test
+	public void sapSRFCBindingTest() throws Exception {
 		new Service(SERVICE).addBinding("SAP");
 		SAPBindingPage wizard = new SAPBindingPage();
 		wizard.setName("sap-binding");
 		wizard.getSAPObject().setSelection(SAP_OBJECT_SRFC);
 		wizard.getServer().setText("localhost");
-		wizard.getRFCName().setText("rfcName");
+		wizard.getRFCName().setText("srfcName");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -936,11 +972,266 @@ public class BindingsTest {
 		String bindingPath = "/switchyard/composite/service/binding.sap";
 		assertXPath("sap-binding", bindingPath + "/@name");
 		assertXPath("localhost", bindingPath + "/srfc-server/serverName");
-		assertXPath("rfcName", bindingPath + "/srfc-server/rfcName");
+		assertXPath("srfcName", bindingPath + "/srfc-server/rfcName");
 
 		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
 		SAPBindingPage page = properties.selectSAPBinding("sap-binding");
 		assertEquals("sap-binding", page.getName());
+		assertEquals("localhost", page.getServer().getText());
+		assertEquals("srfcName", page.getRFCName().getText());
+		properties.ok();
+	}
+
+	@Test
+	public void sapTRFCBindingTest() throws Exception {
+		new Service(SERVICE).addBinding("SAP");
+		SAPBindingPage wizard = new SAPBindingPage();
+		wizard.setName("sap-binding");
+		wizard.getSAPObject().setSelection(SAP_OBJECT_TRFC);
+		wizard.getServer().setText("localhost");
+		wizard.getRFCName().setText("trfcName");
+		wizard.finish();
+
+		new SwitchYardEditor().save();
+
+		String bindingPath = "/switchyard/composite/service/binding.sap";
+		assertXPath("sap-binding", bindingPath + "/@name");
+		assertXPath("localhost", bindingPath + "/trfc-server/serverName");
+		assertXPath("trfcName", bindingPath + "/trfc-server/rfcName");
+
+		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
+		SAPBindingPage page = properties.selectSAPBinding("sap-binding");
+		assertEquals("sap-binding", page.getName());
+		assertEquals("localhost", page.getServer().getText());
+		assertEquals("trfcName", page.getRFCName().getText());
+		properties.ok();
+	}
+
+	@Test
+	public void referenceSapIDocBindingTest() throws Exception {
+		new Service(REFERENCE_SERVICE).addBinding("SAP");
+		SAPBindingPage wizard = new SAPBindingPage();
+		wizard.setName("sap-binding");
+		wizard.getSAPObject().setSelection(SAP_OBJECT_IDOC);
+		wizard.getDestinationName().setText("example.com");
+		wizard.getIDocType().setText("docType");
+		wizard.getIDocTypeExtension().setText("ext");
+		wizard.getSystemRelease().setText("sysRel");
+		wizard.getApplicationRelease().setText("appRel");
+		wizard.finish();
+
+		new SwitchYardEditor().save();
+
+		String bindingPath = "/switchyard/composite/reference/binding.sap";
+		assertXPath("sap-binding", bindingPath + "/@name");
+		assertXPath("example.com", bindingPath + "/idoc-destination/destinationName");
+		assertXPath("docType", bindingPath + "/idoc-destination/idocType");
+		assertXPath("ext", bindingPath + "/idoc-destination/idocTypeExtension");
+		assertXPath("sysRel", bindingPath + "/idoc-destination/systemRelease");
+		assertXPath("appRel", bindingPath + "/idoc-destination/applicationRelease");
+
+		BindingsPage properties = new Service(REFERENCE_SERVICE).showProperties().selectBindings();
+		SAPBindingPage page = properties.selectSAPBinding("sap-binding");
+		assertEquals("sap-binding", page.getName());
+		assertEquals("example.com", page.getDestinationName().getText());
+		assertEquals("docType", page.getIDocType().getText());
+		assertEquals("ext", page.getIDocTypeExtension().getText());
+		assertEquals("sysRel", page.getSystemRelease().getText());
+		assertEquals("appRel", page.getApplicationRelease().getText());
+		properties.ok();
+	}
+
+	@Test
+	public void referenceSapIDocListBindingTest() throws Exception {
+		new Service(REFERENCE_SERVICE).addBinding("SAP");
+		SAPBindingPage wizard = new SAPBindingPage();
+		wizard.setName("sap-binding");
+		wizard.getSAPObject().setSelection(SAP_OBJECT_IDOC_LIST);
+		wizard.getDestinationName().setText("example.com");
+		wizard.getIDocType().setText("docType");
+		wizard.getIDocTypeExtension().setText("ext");
+		wizard.getSystemRelease().setText("sysRel");
+		wizard.getApplicationRelease().setText("appRel");
+		wizard.finish();
+
+		new SwitchYardEditor().save();
+
+		String bindingPath = "/switchyard/composite/reference/binding.sap";
+		assertXPath("sap-binding", bindingPath + "/@name");
+		assertXPath("example.com", bindingPath + "/idoclist-destination/destinationName", "SWITCHYARD-2730");
+		assertXPath("docType", bindingPath + "/idoclist-destination/idocType");
+		assertXPath("ext", bindingPath + "/idoclist-destination/idocTypeExtension");
+		assertXPath("sysRel", bindingPath + "/idoclist-destination/systemRelease");
+		assertXPath("appRel", bindingPath + "/idoclist-destination/applicationRelease");
+
+		BindingsPage properties = new Service(REFERENCE_SERVICE).showProperties().selectBindings();
+		SAPBindingPage page = properties.selectSAPBinding("sap-binding");
+		assertEquals("sap-binding", page.getName());
+		assertEquals("example.com", page.getDestinationName().getText());
+		assertEquals("docType", page.getIDocType().getText());
+		assertEquals("ext", page.getIDocTypeExtension().getText());
+		assertEquals("sysRel", page.getSystemRelease().getText());
+		assertEquals("appRel", page.getApplicationRelease().getText());
+		properties.ok();
+	}
+
+	@Test
+	public void referenceSapQIDocBindingTest() throws Exception {
+		new Service(REFERENCE_SERVICE).addBinding("SAP");
+		SAPBindingPage wizard = new SAPBindingPage();
+		wizard.setName("sap-binding");
+		wizard.getSAPObject().setSelection(SAP_OBJECT_QIDOC);
+		wizard.getDestinationName().setText("example.com");
+		wizard.getQueueName().setText("myqueue");
+		wizard.getIDocType().setText("docType");
+		wizard.getIDocTypeExtension().setText("ext");
+		wizard.getSystemRelease().setText("sysRel");
+		wizard.getApplicationRelease().setText("appRel");
+		wizard.finish();
+
+		new SwitchYardEditor().save();
+
+		String bindingPath = "/switchyard/composite/reference/binding.sap";
+		assertXPath("sap-binding", bindingPath + "/@name");
+		assertXPath("example.com", bindingPath + "/qidoc-destination/destinationName");
+		assertXPath("myqueue", bindingPath + "/qidoc-destination/queueName");
+		assertXPath("docType", bindingPath + "/qidoc-destination/idocType");
+		assertXPath("ext", bindingPath + "/qidoc-destination/idocTypeExtension");
+		assertXPath("sysRel", bindingPath + "/qidoc-destination/systemRelease");
+
+		BindingsPage properties = new Service(REFERENCE_SERVICE).showProperties().selectBindings();
+		SAPBindingPage page = properties.selectSAPBinding("sap-binding");
+		assertEquals("sap-binding", page.getName());
+		assertEquals("example.com", page.getDestinationName().getText());
+		assertEquals("myqueue", page.getQueueName().getText());
+		assertEquals("docType", page.getIDocType().getText());
+		assertEquals("ext", page.getIDocTypeExtension().getText());
+		assertEquals("sysRel", page.getSystemRelease().getText());
+		assertEquals("appRel", page.getApplicationRelease().getText());
+		properties.ok();
+	}
+
+	@Test
+	public void referenceSapQIDocListBindingTest() throws Exception {
+		new Service(REFERENCE_SERVICE).addBinding("SAP");
+		SAPBindingPage wizard = new SAPBindingPage();
+		wizard.setName("sap-binding");
+		wizard.getSAPObject().setSelection(SAP_OBJECT_QIDOC_LIST);
+		wizard.getDestinationName().setText("example.com");
+		wizard.getQueueName().setText("myqueue");
+		wizard.getIDocType().setText("docType");
+		wizard.getIDocTypeExtension().setText("ext");
+		wizard.getSystemRelease().setText("sysRel");
+		wizard.getApplicationRelease().setText("appRel");
+		wizard.finish();
+
+		new SwitchYardEditor().save();
+
+		String bindingPath = "/switchyard/composite/reference/binding.sap";
+		assertXPath("sap-binding", bindingPath + "/@name");
+		assertXPath("example.com", bindingPath + "/qidoclist-destination/destinationName");
+		assertXPath("myqueue", bindingPath + "/qidoclist-destination/queueName");
+		assertXPath("docType", bindingPath + "/qidoclist-destination/idocType");
+		assertXPath("ext", bindingPath + "/qidoclist-destination/idocTypeExtension");
+		assertXPath("sysRel", bindingPath + "/qidoclist-destination/systemRelease");
+		assertXPath("appRel", bindingPath + "/qidoclist-destination/applicationRelease");
+
+		BindingsPage properties = new Service(REFERENCE_SERVICE).showProperties().selectBindings();
+		SAPBindingPage page = properties.selectSAPBinding("sap-binding");
+		assertEquals("sap-binding", page.getName());
+		assertEquals("example.com", page.getDestinationName().getText());
+		assertEquals("myqueue", page.getQueueName().getText());
+		assertEquals("docType", page.getIDocType().getText());
+		assertEquals("ext", page.getIDocTypeExtension().getText());
+		assertEquals("sysRel", page.getSystemRelease().getText());
+		assertEquals("appRel", page.getApplicationRelease().getText());
+		properties.ok();
+	}
+
+	@Test
+	public void referenceSapQRFCBindingTest() throws Exception {
+		new Service(REFERENCE_SERVICE).addBinding("SAP");
+		SAPBindingPage wizard = new SAPBindingPage();
+		wizard.setName("sap-binding");
+		wizard.getSAPObject().setSelection(SAP_OBJECT_QRFC);
+		wizard.getDestinationName().setText("example.com");
+		wizard.getQueueName().setText("myqueue");
+		wizard.getRFCName().setText("qrfcName");
+		wizard.getTransacted().setText("${myVar}");
+		wizard.finish();
+
+		new SwitchYardEditor().save();
+
+		String bindingPath = "/switchyard/composite/reference/binding.sap";
+		assertXPath("sap-binding", bindingPath + "/@name");
+		assertXPath("example.com", bindingPath + "/qrfc-destination/destinationName");
+		assertXPath("myqueue", bindingPath + "/qrfc-destination/queueName");
+		assertXPath("qrfcName", bindingPath + "/qrfc-destination/rfcName");
+		assertXPath("${myVar}", bindingPath + "/qrfc-destination/transacted");
+
+		BindingsPage properties = new Service(REFERENCE_SERVICE).showProperties().selectBindings();
+		SAPBindingPage page = properties.selectSAPBinding("sap-binding");
+		assertEquals("sap-binding", page.getName());
+		assertEquals("example.com", page.getDestinationName().getText());
+		assertEquals("myqueue", page.getQueueName().getText());
+		assertEquals("qrfcName", page.getRFCName().getText());
+		assertEquals("${myVar}", page.getTransacted().getText());
+		properties.ok();
+	}
+
+	@Test
+	public void referenceSapSRFCBindingTest() throws Exception {
+		new Service(REFERENCE_SERVICE).addBinding("SAP");
+		SAPBindingPage wizard = new SAPBindingPage();
+		wizard.setName("sap-binding");
+		wizard.getSAPObject().setSelection(SAP_OBJECT_SRFC);
+		wizard.getDestinationName().setText("example.com");
+		wizard.getRFCName().setText("srfcName");
+		wizard.getTransacted().setText("${myVar}");
+		wizard.finish();
+
+		new SwitchYardEditor().save();
+
+		String bindingPath = "/switchyard/composite/reference/binding.sap";
+		assertXPath("sap-binding", bindingPath + "/@name");
+		assertXPath("example.com", bindingPath + "/srfc-destination/destinationName");
+		assertXPath("srfcName", bindingPath + "/srfc-destination/rfcName");
+		assertXPath("${myVar}", bindingPath + "/srfc-destination/transacted");
+
+		BindingsPage properties = new Service(REFERENCE_SERVICE).showProperties().selectBindings();
+		SAPBindingPage page = properties.selectSAPBinding("sap-binding");
+		assertEquals("sap-binding", page.getName());
+		assertEquals("example.com", page.getDestinationName().getText());
+		assertEquals("srfcName", page.getRFCName().getText());
+		assertEquals("${myVar}", page.getTransacted().getText());
+		properties.ok();
+	}
+
+	@Test
+	public void referenceSapTRFCBindingTest() throws Exception {
+		new Service(REFERENCE_SERVICE).addBinding("SAP");
+		SAPBindingPage wizard = new SAPBindingPage();
+		wizard.setName("sap-binding");
+		wizard.getSAPObject().setSelection(SAP_OBJECT_TRFC);
+		wizard.getDestinationName().setText("example.com");
+		wizard.getRFCName().setText("trfcName");
+		wizard.getTransacted().setText("${myVar}");
+		wizard.finish();
+
+		new SwitchYardEditor().save();
+
+		String bindingPath = "/switchyard/composite/reference/binding.sap";
+		assertXPath("sap-binding", bindingPath + "/@name");
+		assertXPath("example.com", bindingPath + "/trfc-destination/destinationName");
+		assertXPath("trfcName", bindingPath + "/trfc-destination/rfcName");
+		assertXPath("${myVar}", bindingPath + "/trfc-destination/transacted");
+
+		BindingsPage properties = new Service(REFERENCE_SERVICE).showProperties().selectBindings();
+		SAPBindingPage page = properties.selectSAPBinding("sap-binding");
+		assertEquals("sap-binding", page.getName());
+		assertEquals("example.com", page.getDestinationName().getText());
+		assertEquals("trfcName", page.getRFCName().getText());
+		assertEquals("${myVar}", page.getTransacted().getText());
 		properties.ok();
 	}
 
@@ -1182,5 +1473,13 @@ public class BindingsTest {
 
 	private void assertXPath(String expected, String xpath) throws IOException {
 		assertEquals(editor.getSource(), expected, editor.xpath(xpath));
+	}
+
+	private void assertXPath(String expected, String xpath, String knownIssue) throws IOException {
+		try {
+			assertEquals(editor.getSource(), expected, editor.xpath(xpath));
+		} catch (Throwable cause) {
+			throw new KnownIssueException(knownIssue, cause);
+		}
 	}
 }
