@@ -42,10 +42,12 @@ import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.fuse.reddeer.component.Log;
 import org.jboss.tools.fuse.reddeer.condition.FuseLogContainsText;
 import org.jboss.tools.fuse.reddeer.debug.BreakpointsView;
 import org.jboss.tools.fuse.reddeer.debug.IsRunning;
+import org.jboss.tools.fuse.reddeer.debug.IsSuspended;
 import org.jboss.tools.fuse.reddeer.debug.ResumeButton;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
@@ -362,6 +364,32 @@ public class RegressionTest extends DefaultTest {
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		ServerManipulator.removeAllModules(server);
 		new WaitUntil(new FuseLogContainsText("Application context succesfully closed (OsgiBundleXmlApplicationContext(bundle=camel-spring-dm"), TimePeriod.VERY_LONG);
+	}
+
+	/**
+	 * fix ugly title when debugging
+	 * https://issues.jboss.org/browse/FUSETOOLS-1158
+	 * @throws FuseArchetypeNotFoundException 
+	 */
+	@Test
+	public void issue_1158() throws FuseArchetypeNotFoundException {
+
+		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
+		CamelProject project = new CamelProject("camel-spring");
+		project.openCamelContext("camel-context.xml");
+		CamelEditor editor = new CamelEditor("camel-context.xml");
+		editor.activate();
+		editor.setBreakpoint("choice");
+		editor.save();
+		project.debugCamelContextWithoutTests("camel-context.xml");
+		new WaitUntil(new IsSuspended(), TimePeriod.LONG);
+		try {
+			new DefaultEditor(new RegexMatcher("CamelContext: context.*"));
+		} catch (Exception e) {
+			fail("Debuger Editor has wrong name");
+		} finally {
+			new ConsoleView().terminateConsole();
+		}
 	}
 
 	/**
