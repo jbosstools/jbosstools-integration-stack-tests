@@ -87,6 +87,7 @@ public class CamelProject {
 
 	public void debugCamelContextWithoutTests(String name) {
 
+		new ProjectExplorer().open();
 		project.getProjectItem("src/main/resources", "META-INF", "spring", name).select();
 		new ContextMenu("Debug As", "3 Local Camel Context (without tests)").select();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
