@@ -1,7 +1,15 @@
 package org.jboss.tools.fuse.reddeer.editor;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.part.FileEditorInput;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.gef.GEFLayerException;
@@ -23,6 +31,7 @@ import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.tools.fuse.reddeer.component.CamelComponent;
 import org.jboss.tools.fuse.reddeer.utils.MouseAWTManager;
+import org.jboss.tools.fuse.reddeer.utils.XPathEvaluator;
 
 /**
  * Manipulates with Camel Editor
@@ -33,6 +42,8 @@ public class CamelEditor extends GEFEditor {
 
 	private static Logger log = Logger.getLogger(CamelEditor.class);
 
+	private File sourceFile;
+	
 	public CamelEditor(String title) {
 
 		super(title);
@@ -404,5 +415,33 @@ public class CamelEditor extends GEFEditor {
 				return new Point(tempX, tempY);
 			}
 		});
+	}
+	
+	public String xpath(String expr) throws FileNotFoundException {
+		XPathEvaluator xpath = new XPathEvaluator(new FileReader(getSourceFile()));
+		String result = xpath.evaluateString(expr);
+		return result;
+	}
+
+	public File getSourceFile() {
+		if (sourceFile == null) {
+			IEditorInput editorInput = editorPart.getEditorInput();
+			if (editorInput instanceof FileEditorInput) {
+				FileEditorInput fileEditorInput = (FileEditorInput) editorInput;
+				sourceFile = fileEditorInput.getPath().toFile();
+			}
+		}
+		return sourceFile;
+	}
+
+	public String getSource() throws IOException {
+		StringBuffer source = new StringBuffer();
+		BufferedReader in = new BufferedReader(new FileReader(getSourceFile()));
+		String line = null;
+		while ((line = in.readLine()) != null) {
+			source.append(line).append("\n");
+		}
+		in.close();
+		return source.toString();
 	}
 }
