@@ -29,7 +29,7 @@ import org.junit.runner.RunWith;
  * 
  * @author tsedmik
  */
-@Server(type = ServerReqType.Fuse, state = ServerReqState.PRESENT)
+@Server(type = {ServerReqType.Fuse, ServerReqType.Karaf, ServerReqType.ServiceMix}, state = ServerReqState.PRESENT)
 @CleanWorkspace
 @OpenPerspective(FuseIntegrationPerspective.class)
 @RunWith(RedDeerSuite.class)

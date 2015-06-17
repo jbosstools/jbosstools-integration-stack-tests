@@ -12,14 +12,14 @@ import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.label.DefaultLabel;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
-import org.jboss.tools.runtime.reddeer.impl.ServerFuse;
+import org.jboss.tools.runtime.reddeer.impl.ServerKaraf;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@Server(type = ServerReqType.Fuse, state = ServerReqState.PRESENT)
+@Server(type = {ServerReqType.Fuse, ServerReqType.Karaf, ServerReqType.ServiceMix}, state = ServerReqState.PRESENT)
 @OpenPerspective(FuseIntegrationPerspective.class)
 @CleanWorkspace
 @RunWith(RedDeerSuite.class)
@@ -31,10 +31,10 @@ public class ServerJRETest extends DefaultTest {
 	@Test
 	public void testJRE() {
 
-		ServerFuse fuse = (ServerFuse) serverRequirement.getConfig().getServerBase();
+		ServerKaraf fuse = (ServerKaraf) serverRequirement.getConfig().getServerBase();
 		assertNotNull("Different JRE is not specified!", fuse.getJre());
 		ServerManipulator.startServer(fuse.getName());
-		new ConsoleView().activate();
+		new ConsoleView().open();
 		assertTrue(new DefaultLabel().getText().contains(fuse.getJre()));
 	}
 }

@@ -43,7 +43,7 @@ import org.junit.runner.RunWith;
 @CleanWorkspace
 @OpenPerspective(FuseIntegrationPerspective.class)
 @RunWith(RedDeerSuite.class)
-@Server(type = ServerReqType.Fuse, state = ServerReqState.RUNNING)
+@Server(type = {ServerReqType.Fuse, ServerReqType.Karaf, ServerReqType.ServiceMix}, state = ServerReqState.RUNNING)
 public class JMXNavigatorServerTest {
 
 	private static final String PROJECT_ARCHETYPE = "camel-archetype-spring-dm";

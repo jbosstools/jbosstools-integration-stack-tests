@@ -11,7 +11,7 @@ import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.C
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
-import org.jboss.tools.runtime.reddeer.impl.ServerFuse;
+import org.jboss.tools.runtime.reddeer.impl.ServerKaraf;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
@@ -24,7 +24,7 @@ import org.junit.runner.RunWith;
  * 
  * @author tsedmik
  */
-@Server(type = ServerReqType.Fuse, state = ServerReqState.PRESENT)
+@Server(type = {ServerReqType.Fuse, ServerReqType.Karaf, ServerReqType.ServiceMix}, state = ServerReqState.PRESENT)
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
 @RunWith(RedDeerSuite.class)
@@ -43,7 +43,7 @@ public class ServerTest extends DefaultTest {
 	@Test
 	public void complexServerTest() {
 
-		ServerFuse fuse = (ServerFuse) serverRequirement.getConfig().getServerBase();
+		ServerKaraf fuse = (ServerKaraf) serverRequirement.getConfig().getServerBase();
 
 		ServerManipulator.addServerRuntime(fuse.getName(), fuse.getHome());
 		assertEquals("New server runtime is not listed in Server Runtimes", 1, ServerManipulator.getServerRuntimes().size());
