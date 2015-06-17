@@ -96,4 +96,19 @@ public class CamelComponents {
 		list.add(new Validate());
 		return list;
 	}
+	
+	public static List<CamelComponent> getSAP() {
+		List<CamelComponent> list = new ArrayList<CamelComponent>();
+		list.add(new SAPIDocListServer());
+		list.add(new SAPSRFCServer());
+		list.add(new SAPTRFCServer());
+		list.add(new SAPIDocDestination());
+		list.add(new SAPIDocListDestination());
+		list.add(new SAPQIDocDestination());
+		list.add(new SAPQIDocListDestination());
+		list.add(new SAPQRFCDestination());
+		list.add(new SAPSRFCDestination());
+		list.add(new SAPTRFCDestination());
+		return list;
+	}
 }
