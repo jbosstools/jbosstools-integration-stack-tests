@@ -5,14 +5,14 @@
 						http://www.jboss.org/NS/SOAReq    http://www.jboss.org/schema/reddeer/3rdparty/SOARequirements.xsd">
 
 	<requirements>
-		<server:server-requirement name="${fuse.name}">
-			<server:fuse version="6.1">
-				<server:home>${fuse.path}</server:home>
-				<server:host>${fuse.hostname}</server:host>
-				<server:port>${fuse.port}</server:port>
-				<server:username>${fuse.username}</server:username>
-				<server:password>${fuse.password}</server:password>
-			</server:fuse>
+		<server:server-requirement name="${karaf.name}">
+			<server:karaf version="3.0">
+				<server:home>${karaf.path}</server:home>
+				<server:host>${karaf.hostname}</server:host>
+				<server:port>${karaf.port}</server:port>
+				<server:username>${karaf.username}</server:username>
+				<server:password>${karaf.password}</server:password>
+			</server:karaf>
 		</server:server-requirement>
 	</requirements>
 
