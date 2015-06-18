@@ -17,14 +17,14 @@
 		<ec2.email>AmazonEC2Owner</ec2.email>
 		<amazon-terminator>https://github.com/tsedmik/amazon-terminator/releases/download/v1.0/amazon-terminator-1.0-jar-with-dependencies.jar</amazon-terminator>
 		<amazon-terminator-jar>amazon-terminator-1.0-jar-with-dependencies.jar</amazon-terminator-jar>
-		<fuse.url>http://download.eng.bos.redhat.com/brewroot/repos/jb-fuse-6-rhel-6-build/latest/maven/org/jboss/fuse/jboss-fuse-full/6.1.1.redhat-412/jboss-fuse-full-6.1.1.redhat-412.zip</fuse.url>
-		<fuse.name>JBoss Fuse 6.1</fuse.name>
-		<fuse.path>${project.build.directory}/requirements/jboss-fuse-6.1.1.redhat-412</fuse.path>
-		<fuse.hostname>localhost</fuse.hostname>
-		<fuse.port>8101</fuse.port>
-		<fuse.username>admin</fuse.username>
-		<fuse.password>admin</fuse.password>
-		<reddeer.config>${project.build.directory}/requirements/fuse-6.1.xml</reddeer.config>
+		<karaf.url>http://apache.miloslavbrada.cz/karaf/3.0.3/apache-karaf-3.0.3.zip</karaf.url>
+		<karaf.path>${project.build.directory}/requirements/apache-karaf-3.0.3</karaf.path>
+		<karaf.name>Apache Karaf 3.0</karaf.name>
+		<karaf.hostname>localhost</karaf.hostname>
+		<karaf.port>8101</karaf.port>
+		<karaf.username>karaf</karaf.username>
+		<karaf.password>karaf</karaf.password>
+		<reddeer.config>${project.build.directory}/requirements/karaf-3.0.3.xml</reddeer.config>
 		<enable.debug.log>false</enable.debug.log>
 		<systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=${reddeer.config} -Dec2.id=${ec2.id} -Dec2.pass=${ec2.pass} -Dec2.email=${ec2.email}</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
@@ -66,34 +66,15 @@
 				<version>1.0.0</version>
 				<executions>
 					<execution>
-						<id>get-fuse</id>
+						<id>get-karaf</id>
 						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>wget</goal>
 						</goals>
 						<configuration>
-							<url>${fuse.url}</url>
+							<url>${karaf.url}</url>
 							<unpack>true</unpack>
 							<outputDirectory>${project.build.directory}/requirements</outputDirectory>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.7</version>
-				<executions>
-					<execution>
-						<id>set-users</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>run</goal>
-						</goals>
-						<configuration>
-							<target>
-								<echo file="${project.build.directory}/requirements/jboss-fuse-6.1.1.redhat-412/etc/users.properties">${fuse.username}=${fuse.password},admin</echo>
-							</target>
 						</configuration>
 					</execution>
 				</executions>
