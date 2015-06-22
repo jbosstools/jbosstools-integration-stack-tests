@@ -4,18 +4,15 @@ import static org.jboss.tools.switchyard.reddeer.binding.OperationOptionsPage.OP
 import static org.junit.Assert.assertEquals;
 
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.switchyard.reddeer.binding.HTTPBindingPage;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
-import org.jboss.tools.switchyard.reddeer.condition.JUnitHasFinished;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.project.ProjectItemExt;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
@@ -121,7 +118,6 @@ public class HelloWorldTest {
 		ProjectItem item = projectExplorer.getProject(PROJECT).getProjectItem("src/test/java", PACKAGE,
 				"HelloTest.java");
 		new ProjectItemExt(item).runAsJUnitTest();
-		new WaitUntil(new JUnitHasFinished(), TimePeriod.LONG);
 
 		JUnitView jUnitView = new JUnitView();
 		jUnitView.open();

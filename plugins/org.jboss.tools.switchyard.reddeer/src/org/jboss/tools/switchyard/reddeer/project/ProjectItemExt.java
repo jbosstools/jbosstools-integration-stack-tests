@@ -3,6 +3,7 @@ package org.jboss.tools.switchyard.reddeer.project;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.jboss.reddeer.direct.preferences.Preferences;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -10,8 +11,9 @@ import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.matcher.RegexMatcher;
 import org.jboss.reddeer.swt.matcher.WithMnemonicTextMatcher;
 import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.switchyard.reddeer.condition.ConsoleHasChanged;
+import org.jboss.tools.switchyard.reddeer.condition.JUnitHasFinished;
 
 /**
  * Extension for project item.
@@ -32,7 +34,6 @@ public class ProjectItemExt {
 		projectItem.select();
 		new ContextMenu(new WithMnemonicTextMatcher("Run As"), new MenuMatcher(menu)).select();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		new WaitWhile(new ConsoleHasChanged(), TimePeriod.LONG);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -50,7 +51,16 @@ public class ProjectItemExt {
 	}
 
 	public void runAsJUnitTest() {
+		String consoleOpenOnErr = Preferences.get("org.eclipse.debug.ui", "DEBUG.consoleOpenOnErr");
+		String consoleOpenOnOut = Preferences.get("org.eclipse.debug.ui", "DEBUG.consoleOpenOnOut");
+		Preferences.set("org.eclipse.debug.ui", "DEBUG.consoleOpenOnErr", "false");
+		Preferences.set("org.eclipse.debug.ui", "DEBUG.consoleOpenOnOut", "false");
+		
 		runAs("JUnit Test");
+		new WaitUntil(new JUnitHasFinished(), TimePeriod.LONG);
+		
+		Preferences.set("org.eclipse.debug.ui", "DEBUG.consoleOpenOnErr", consoleOpenOnErr);
+		Preferences.set("org.eclipse.debug.ui", "DEBUG.consoleOpenOnOut", consoleOpenOnOut);
 	}
 	
 	public void delete() {
