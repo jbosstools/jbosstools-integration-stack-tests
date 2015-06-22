@@ -37,10 +37,38 @@
         </pluginRepository>
       </pluginRepositories>
     </profile>
+    <profile>
+      <id>hudson-repository</id>
+      <repositories>
+        <repository>
+          <id>hudson-repository</id>
+          <url>http://repository.engineering.redhat.com/nexus/content/groups/hudson-jb-ip-6.1-build</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </repository>
+      </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>hudson-repository</id>
+          <url>http://repository.engineering.redhat.com/nexus/content/groups/hudson-jb-ip-6.1-build</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
   </profiles>
 
   <activeProfiles>
     <activeProfile>redhat-techpreview-all-repository</activeProfile>
+    <activeProfile>hudson-repository</activeProfile>
   </activeProfiles>
 
 </settings>
