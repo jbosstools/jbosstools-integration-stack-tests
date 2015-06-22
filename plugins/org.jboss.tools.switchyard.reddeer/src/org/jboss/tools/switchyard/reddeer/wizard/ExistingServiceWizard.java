@@ -34,7 +34,7 @@ public abstract class ExistingServiceWizard<T extends ExistingServiceWizard<?>> 
 
 	@SuppressWarnings("unchecked")
 	public T activate() {
-		new WaitWhile(new JobIsRunning());
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		new DefaultShell(dialogTitle).setFocus();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		return (T) this;
@@ -49,6 +49,11 @@ public abstract class ExistingServiceWizard<T extends ExistingServiceWizard<?>> 
 		new PushButton("OK").click();
 		new WaitWhile(new ShellWithTextIsActive(getSelectionDialogTitle()));
 		return activate();
+	}
+
+	@Override
+	public void finish() {
+		super.finish(TimePeriod.VERY_LONG);
 	}
 
 	protected abstract String getSelectionDialogTitle();
