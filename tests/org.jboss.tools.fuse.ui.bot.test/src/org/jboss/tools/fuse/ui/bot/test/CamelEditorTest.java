@@ -174,8 +174,6 @@ public class CamelEditorTest extends DefaultTest {
 		assistent = editor.openContentAssistant();
 		proposals = assistent.getProposals();
 		assertTrue("Content Assistent does not contain 'uri' value", proposals.contains("uri"));
-		proposals.remove("uri");
-		assertFalse("Content Assistent contains duplicates (e.g. 'uri' value)", proposals.contains("uri"));
 		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 
