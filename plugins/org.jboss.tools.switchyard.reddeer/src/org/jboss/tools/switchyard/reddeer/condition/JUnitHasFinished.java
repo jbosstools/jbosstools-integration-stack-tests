@@ -9,10 +9,15 @@ import org.jboss.tools.switchyard.reddeer.view.JUnitView;
  * 
  */
 public class JUnitHasFinished implements WaitCondition {
+	
+	private JUnitView jUnitView;
+	
+	public JUnitHasFinished() {
+		jUnitView = new JUnitView();
+	}
 
 	@Override
 	public boolean test() {
-		JUnitView jUnitView = new JUnitView();
 		jUnitView.open();
 		String status = jUnitView.getViewStatus();
 		return status.startsWith("Finished");
