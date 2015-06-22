@@ -28,7 +28,7 @@ import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 public abstract class ServiceWizard<T extends ServiceWizard<?>> extends WizardDialog {
 
 	private static Logger log = Logger.getLogger(SwitchYardEditor.class);
-	
+
 	private String dialogTitle;
 
 	public ServiceWizard() {
@@ -106,6 +106,11 @@ public abstract class ServiceWizard<T extends ServiceWizard<?>> extends WizardDi
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		new PushButton("OK").click();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+	}
+
+	@Override
+	public void finish() {
+		super.finish(TimePeriod.VERY_LONG);
 	}
 
 	protected abstract void browse();

@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.swt.impl.button.NoButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
@@ -76,6 +78,13 @@ public class ImplementationsTest {
 
 	@After
 	public void deleteCreatedResousources() {
+		try {
+			new DefaultShell("Replace Current Implementation");
+			new NoButton().click();
+		} catch (Exception e) {
+			// ok
+		}
+
 		List<SwitchYardComponent> components = new SwitchYardEditor().getComponents();
 		while (!components.isEmpty()) {
 			components.get(0).delete();
