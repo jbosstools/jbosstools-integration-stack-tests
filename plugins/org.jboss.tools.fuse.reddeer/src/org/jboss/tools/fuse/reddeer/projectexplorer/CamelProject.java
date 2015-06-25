@@ -53,6 +53,17 @@ public class CamelProject {
 		project.getProjectItem("src/main/resources", "META-INF", "spring", name).select();
 	}
 
+	public void runCamelContext() {
+
+		project.getProjectItem("Camel Contexts").getChildren().get(0).select();
+		try {
+			new ContextMenu("Run As", "2 Local Camel Context").select();
+		} catch (SWTLayerException ex) {
+			new ContextMenu("Run As", "1 Local Camel Context").select();
+		}
+		new WaitUntil(new ConsoleHasText("(CamelContext: camel-1) started"), TimePeriod.getCustom(30));
+	}
+
 	public void runCamelContext(String name) {
 
 		project.getProjectItem("src/main/resources", "META-INF", "spring", name).select();

@@ -77,6 +77,22 @@ public class ProjectFactory {
 	}
 
 	/**
+	 * Retrieve list of all available archetypes
+	 * 
+	 * @return List of artifact ids of available archetypes
+	 */
+	public static List<String> getArchetypes() {
+
+		FuseProjectWizard projectWizard = new FuseProjectWizard();
+		projectWizard.open();
+		projectWizard.setProjectName("test");
+		projectWizard.next();
+		List<String> result = projectWizard.getArchetypes();
+		projectWizard.cancel();
+		return result;
+	}
+
+	/**
 	 * Fixes the first "Plugin execution not covered by lifecycle" error
 	 * 
 	 * TODO(tsedmik) rework this method with RedDeer 0.8.0 which will contain better manipulation with "Quick Fix"

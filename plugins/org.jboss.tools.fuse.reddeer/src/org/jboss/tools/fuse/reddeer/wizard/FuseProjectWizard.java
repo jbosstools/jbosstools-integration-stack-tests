@@ -1,7 +1,11 @@
 package org.jboss.tools.fuse.reddeer.wizard;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.api.Button;
+import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
@@ -34,6 +38,15 @@ public class FuseProjectWizard extends NewWizardDialog {
 
 	public void setProjectName(String name) {
 		new DefaultCombo(0).setText(name);
+	}
+
+	public List<String> getArchetypes() {
+
+		List<String> result = new ArrayList<String>();
+		for (TableItem item : new DefaultTable().getItems()) {
+			result.add(item.getText(1));
+		}
+		return result;
 	}
 
 	@Override
