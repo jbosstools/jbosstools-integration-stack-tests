@@ -1,45 +1,41 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+import static org.junit.Assert.assertEquals;
+
 import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
-import org.jboss.reddeer.eclipse.datatools.ui.FlatFileProfile;
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.ModelBuilder;
 import org.jboss.tools.teiid.reddeer.ModelClass;
 import org.jboss.tools.teiid.reddeer.ModelType;
 import org.jboss.tools.teiid.reddeer.VDB;
-import org.jboss.tools.teiid.reddeer.editor.CriteriaBuilder;
-import org.jboss.tools.teiid.reddeer.editor.CriteriaBuilder.OperatorType;
 import org.jboss.tools.teiid.reddeer.editor.InputSetEditor;
 import org.jboss.tools.teiid.reddeer.editor.MappingDiagramEditor;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
-import org.jboss.tools.teiid.reddeer.editor.Reconciler;
-import org.jboss.tools.teiid.reddeer.editor.Reconciler.ExpressionBuilder;
 import org.jboss.tools.teiid.reddeer.editor.RecursionEditor;
+import org.jboss.tools.teiid.reddeer.editor.SQLScrapbookEditor;
 import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
-import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
-import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
+import org.jboss.tools.teiid.reddeer.manager.ServerManager;
+import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
-import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
-import org.jboss.tools.teiid.reddeer.view.ModelExplorerView.ConnectionSourceType;
+import org.jboss.tools.teiid.reddeer.view.SQLResult;
 import org.jboss.tools.teiid.reddeer.wizard.CreateVDB;
-import org.jboss.tools.teiid.reddeer.wizard.FlatImportWizard;
+import org.jboss.tools.teiid.reddeer.wizard.ImportProjectWizard;
 import org.jboss.tools.teiid.reddeer.wizard.MetadataModelWizard;
-import org.jboss.tools.teiid.reddeer.wizard.XMLSchemaImportWizard;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -50,93 +46,71 @@ import org.junit.runner.RunWith;
  * documents, using the TEXTTABLE function to access the data in a relational
  * fashion, executing queries that return XML documents
  * 
- * @author lfabriko
+ * @author lfabriko, mmakovy
  * 
  */
 @RunWith(RedDeerSuite.class)
+@OpenPerspective(TeiidPerspective.class)
 @TeiidServer(state = ServerReqState.RUNNING)
-public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
+public class E2eRecursiveXmlTextTest {
 	
-	@InjectRequirement
-	private TeiidServerRequirement teiidServer;
+	protected final Logger log = Logger.getLogger(this.getClass());
 
-	// models
+	@InjectRequirement
+	private static TeiidServerRequirement teiidServer;
+
+	private static final String RESOURCES_FLAT = "resources/flat/EmpData.csv";
 	private static final String PROJECT_NAME = "Recursive";
-	private static final String EMPLOYEES_VIEW = "Employees";
-	private static final String EMP_TABLE = "EmpTable";
-	private static final String EMP_V = "EmpV";
 	private static final String VDB = "RecursiveVDB";
-	private static String EMPDATA_SOURCE = "EmpData";
+	private static final String EMPDATA_SOURCE = "EmpData_Source";
 	private static final String EMPLOYEES_SCHEMA_XSD = "EmployeesSchema.xsd";
 	private static final String EMP_DOC_VIEW = "EmpDoc";
 	private static final String SIMPLE_EMPLOYEES_DOCUMENT = "SimpleEmployeesDocument";
-
-	// profile
-	private static FlatFileProfile flatFileProfile;
-	private static final String flatProfile = "Flat Profile";
-
-	// elements
+	private static final String EMPLOYEE_TRANSFORMATION = "SELECT Employees.EmpTable.LastName, Employees.EmpTable.FirstName, Employees.EmpTable.MiddleName "
+			+ "AS MiddleInitial, Employees.EmpTable.Street, Employees.EmpTable.City, Employees.EmpTable.State, convert(Employees.EmpTable.EmpId, "
+			+ "biginteger) AS EmpId,Employees.EmpTable.HomePhone AS Phone, convert(Employees.EmpTable.Manager,biginteger) AS mgrID FROM "
+			+ "Employees.EmpTable";
+	
+	private static final String SUPERVISOR_TRANSFORMATION = "SELECT Employees.EmpTable.LastName, Employees.EmpTable.FirstName, "
+			+ "Employees.EmpTable.MiddleName AS MiddleInitial, Employees.EmpTable.Street," 
+			+ " Employees.EmpTable.City, Employees.EmpTable.State, convert(Employees.EmpTable.EmpId, biginteger) AS EmpId, Employees.EmpTable.HomePhone AS " 
+			+"Phone, convert(Employees.EmpTable.Manager, biginteger) AS mgrID FROM Employees.EmpTable WHERE INPUTS.mgrID = Employees.EmpTable.EmpId"  ;
+	private static final String TESTSQL1 = "SELECT * FROM EmpDoc.SimpleEmployeesDocument WHERE SimpleEmployees.Employee.Name.Firstname LIKE '%i%'";
+	private static final String TESTSQL2 = "SELECT * FROM Employees.EmpTable";
+	private static final String TESTSQL3 = "SELECT * FROM EmpDoc.SimpleEmployeesDocument";
+	
 	private static final String ROOT_ELEM = "SimpleEmployees";
 	private static final String EMPLOYEE = "Employee";
 	private static final String SUPERVISOR = "Supervisor";
 
-	// various
 	private static TeiidBot teiidBot = new TeiidBot();
 
-	// paths
-	private static final String RESOURCES_FLAT = "resources/flat";
-	private static final String RESOURCES_XSD = "resources/xsd";
-	private static final String[] SUPERVISOR_XML_PATH = { SIMPLE_EMPLOYEES_DOCUMENT, ROOT_ELEM, "sequence",
-			EMPLOYEE + " : SimpleEmployeeType", "sequence", SUPERVISOR + " : SimpleEmployeeType" };
 	private static final String[] EMPLOYEE_COLUMNS = { "mgrID : positiveInteger" };
-	private static final String[] SUPERVISOR_COLUMNS1 = { "LastName : string", "FirstName : string",
-			"MiddleInitial : string", "Street : string", "City : string" };
-	private static final String[] SUPERVISOR_COLUMNS2 = { "EmpId : positiveInteger", "Phone : string",
+	private static final String[] SUPERVISOR_COLUMNS1 = { "LastName : string",
+			"FirstName : string", "MiddleInitial : string", "Street : string",
+			"City : string" };
+	private static final String[] SUPERVISOR_COLUMNS2 = {
+			"EmpId : positiveInteger", "Phone : string",
 			"mgrID : positiveInteger" };
-
-	private static final String SQL = "select * from EmpDoc.SimpleEmployeesDocument where SimpleEmployees.Employee.Name.Firstname='Orsal'";
+	
 
 	@BeforeClass
 	public static void createProject() throws Exception {
-		new WorkbenchShell().maximize();
-
-		// create project
-		new ModelExplorerManager().createProject(PROJECT_NAME, true);
-
-		// create connection profile to csv
-		flatFileProfile = new ConnectionProfileManager().createCPFlatFile(flatProfile,
-				new File(RESOURCES_FLAT).getAbsolutePath());
+		new TeiidBot().uncheckBuildAutomatically();
 	}
 
 	@Test
 	public void recursiveXmlTest() throws Exception {
-		// create relational source model
-		FlatImportWizard importWizard = new FlatImportWizard();
-		importWizard.open();
-		importWizard.selectLocalFileImportMode();
-		importWizard.next();
-		importWizard.selectProfile(flatProfile);
-		importWizard.selectFile("EmpData.csv     <<<<");
-		importWizard.setSourceModel(EMPDATA_SOURCE);
-		importWizard.setProject(PROJECT_NAME);
-		importWizard.next();
-		importWizard.next();
-		importWizard.next();
-		importWizard.setViewModel(EMPLOYEES_VIEW);
-		importWizard.setViewTable(EMP_TABLE);
-		importWizard.setProject(PROJECT_NAME);
-		importWizard.finish();
-
-		// import xml schema
-		XMLSchemaImportWizard xmlWizard = new XMLSchemaImportWizard();
-		xmlWizard.open();
-		xmlWizard.selectLocalImportMode();
-		xmlWizard.next();
-		xmlWizard.setFromDirectory(new File(RESOURCES_XSD).getAbsolutePath());
-		xmlWizard.setToDirectory(PROJECT_NAME);
-		xmlWizard.selectSchema(EMPLOYEES_SCHEMA_XSD);
-		xmlWizard.finish();
-
+		
+		Path source = Paths.get(new File(RESOURCES_FLAT).getAbsolutePath());
+		Path target = Paths.get(teiidServer.getServerConfig().getServerBase().getHome() + "/standalone/data/EmpData.csv");
+		
+		Files.copy(source, target,REPLACE_EXISTING);
+		
+		ImportProjectWizard projectWizard = new ImportProjectWizard(
+				"resources/recursiveXML/Recursive");
+		projectWizard.execute();
+		
 		// create virtual document XML model
 		MetadataModelWizard modelWizard = new MetadataModelWizard();
 		modelWizard.open();
@@ -149,83 +123,53 @@ public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 		modelWizard.selectXMLSchemaFile(PROJECT_NAME, EMPLOYEES_SCHEMA_XSD);
 		modelWizard.addElement(ROOT_ELEM);
 		modelWizard.finish();
+		
+		new ServerManager().getServersViewExt().refreshServer(teiidServer.getName());
 
 		// employees mapping transformation model
 		Project project = teiidBot.modelExplorer().getProject(PROJECT_NAME);
-		project.getProjectItem(EMP_DOC_VIEW + ".xmi", SIMPLE_EMPLOYEES_DOCUMENT).open();
+		project.getProjectItem(EMP_DOC_VIEW + ".xmi", SIMPLE_EMPLOYEES_DOCUMENT)
+				.open();
 
-		MappingDiagramEditor mappingDiagramEditor = new MappingDiagramEditor(EMP_DOC_VIEW + ".xmi");
+		MappingDiagramEditor mappingDiagramEditor = new MappingDiagramEditor(
+				EMP_DOC_VIEW + ".xmi");
 		mappingDiagramEditor.addMappingClassColumns(EMPLOYEE, EMPLOYEE_COLUMNS);
 
 		// attributes must be in the same order!
-		mappingDiagramEditor.addMappingClassColumns(SUPERVISOR, SUPERVISOR_COLUMNS1);
+		mappingDiagramEditor.addMappingClassColumns(SUPERVISOR,	SUPERVISOR_COLUMNS1);
+		stupidWait(20);
 		mappingDiagramEditor.copyAttribute(EMPLOYEE, SUPERVISOR, "State");
 		mappingDiagramEditor.addMappingClassColumns(SUPERVISOR, SUPERVISOR_COLUMNS2);
 
 		// employee - transf. diagram
 		new ModelEditor(EMP_DOC_VIEW + ".xmi").showMappingTransformation(EMPLOYEE);
-		ModelExplorerView mew = TeiidPerspective.getInstance().getModelExplorerView();
-		mew.addTransformationSource(PROJECT_NAME, EMPLOYEES_VIEW + ".xmi", EMP_TABLE);
+		new ModelEditor(EMP_DOC_VIEW + ".xmi").setTransformation(EMPLOYEE_TRANSFORMATION);
 		new ModelEditor(EMP_DOC_VIEW + ".xmi").save();
 
-		// reconciller
-		Reconciler rec = new ModelEditor(EMP_DOC_VIEW + ".xmi").openReconciler();
-		rec.bindAttributes("MiddleInitial : string", "MiddleName");
-		rec.bindAttributes("Phone : string", "HomePhone");
-		rec.bindAttributes("mgrID : biginteger", "Manager");
-		rec.clearRemainingUnmatchedSymbols();
-		rec.resolveTypes(ExpressionBuilder.KEEP_VIRTUAL_TARGET);
-		rec.close();
 
 		ModelEditor modelEditor = new ModelEditor(EMP_DOC_VIEW + ".xmi");
 		new SWTWorkbenchBot().toolbarButtonWithTooltip("Show Parent Diagram").click();
+		
+		//supervisor document
 		modelEditor.showMappingTransformation(SUPERVISOR);
-		mew.addTransformationSource(PROJECT_NAME, EMPLOYEES_VIEW + ".xmi", EMP_TABLE);
-		InputSetEditor ise = modelEditor.openInputSetEditor(true);
+		InputSetEditor ise = modelEditor.openInputSetEditor(true);		
 		ise.createNewInputParam(EMPLOYEE, "mgrID : positiveInteger");
-		ise.close();// and save
+		ise.close();
+		
 		modelEditor.save();
+		
+		new SWTWorkbenchBot().toolbarButtonWithTooltip("Show Parent Diagram").click();
+		modelEditor.showMappingTransformation(SUPERVISOR);
+		modelEditor.setTransformation(SUPERVISOR_TRANSFORMATION);
 
-		mappingDiagramEditor = new MappingDiagramEditor(EMP_DOC_VIEW + ".xmi");
-		RecursionEditor recEd = mappingDiagramEditor.clickOnRecursiveButton(SUPERVISOR);
+		modelEditor.save();
+		
+		RecursionEditor recEd = mappingDiagramEditor
+				.clickOnRecursiveButton(SUPERVISOR);
 		recEd.enableRecursion();
 		recEd.close();
 		mappingDiagramEditor.showTransformation();
 		mappingDiagramEditor.save();
-
-		// reconciller
-		rec = modelEditor.openReconciler();
-		rec.bindAttributes("MiddleInitial : string", "MiddleName");
-		rec.bindAttributes("Phone : string", "HomePhone");
-		rec.bindAttributes("mgrID : biginteger", "Manager");
-		rec.clearRemainingUnmatchedSymbols();
-		rec.resolveTypes(ExpressionBuilder.KEEP_VIRTUAL_TARGET);
-		rec.close();
-
-		// criteria builder
-		CriteriaBuilder cb = modelEditor.criteriaBuilder();
-		cb.selectLeftAttribute("INPUTS", "mgrID");
-		cb.selectRightAttribute("Employees.EmpTable", "EmpId");
-		cb.selectOperator(OperatorType.EQUALS);
-		cb.apply();
-		cb.close();
-		modelEditor.save();
-
-		// create new view model
-		modelWizard = new MetadataModelWizard();
-		modelWizard.open();
-		modelWizard.setLocation(PROJECT_NAME);
-		modelWizard.setModelName(EMP_V);
-		modelWizard.selectModelClass(ModelClass.RELATIONAL);
-		modelWizard.selectModelType(ModelType.VIEW);
-		modelWizard.selectModelBuilder(ModelBuilder.TRANSFORM_EXISTING);
-		modelWizard.next();
-		modelWizard.setExistingModel(PROJECT_NAME, EMPLOYEES_VIEW + ".xmi");
-		modelWizard.finish();
-
-		// create data source
-		mew.createDataSource(ConnectionSourceType.USE_MODEL_CONNECTION_INFO, null, PROJECT_NAME, EMPDATA_SOURCE
-				+ "Source.xmi");
 
 		// create new vdb
 		CreateVDB createVDB = new CreateVDB();
@@ -236,31 +180,45 @@ public class E2eRecursiveXmlTextTest extends SWTBotTestCase {
 		// add models to the vdb
 		VDBEditor editor = VDBEditor.getInstance(VDB + ".vdb");
 		editor.show();
-		editor.addModel(PROJECT_NAME, EMPDATA_SOURCE + "Source");
+		editor.addModel(PROJECT_NAME, EMPDATA_SOURCE);
 		editor.addModel(PROJECT_NAME, EMP_DOC_VIEW);
-		editor.addModel(PROJECT_NAME, EMP_V);
 		editor.save();
 
-		// deploy vdb
-		VDB vdb = new ModelExplorer().getModelProject(PROJECT_NAME).getVDB(VDB + ".vdb");
-		vdb.deployVDB();
+		// execute vdb
+		VDB vdb = new ModelExplorer().getModelProject(PROJECT_NAME).getVDB(
+				VDB + ".vdb");
+		vdb.executeVDB();
 
 		// check sql
-		checkSql(SQL);
+		executeSQL(TESTSQL1,VDB);
+		executeSQL(TESTSQL2,VDB);
+		executeSQL(TESTSQL3,VDB);
 	}
 
 	@AfterClass
 	public static void closeShells() {
 		new SWTWorkbenchBot().closeAllShells();
 	}
+	
+	private void executeSQL(String sql, String vdb) {
+		new WorkbenchShell();
 
-	private void checkSql(String sql) throws SQLException {
-		// register teiid driver
-		DriverManager.registerDriver(teiidServer.getTeiidDriver());
-		// create connection
-		Connection conn = DriverManager.getConnection("jdbc:teiid:" + VDB + "@mm://localhost:31000", "user", "user");
-		Statement stmt = conn.createStatement();
-		ResultSet rs = stmt.executeQuery(sql);
-		conn.close();
+		SQLScrapbookEditor editor = new SQLScrapbookEditor("SQL Scrapbook0");
+		editor.show();
+		editor.setDatabase(vdb);
+
+		editor.setText(sql);
+		editor.executeAll();
+
+		SQLResult result = DatabaseDevelopmentPerspective.getInstance()
+				.getSqlResultsView().getByOperation(sql);
+		assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
+
+	}
+	
+	private void stupidWait(int seconds) {
+		long time = seconds * 1000;
+		log.info("Stupid waiting for " + seconds + " s");
+		new SWTWorkbenchBot().sleep(time);
 	}
 }
