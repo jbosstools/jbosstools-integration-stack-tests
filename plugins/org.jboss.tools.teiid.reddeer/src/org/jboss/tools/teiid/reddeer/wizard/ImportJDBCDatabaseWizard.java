@@ -8,8 +8,12 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.reddeer.jface.wizard.ImportWizardDialog;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.matcher.WithMnemonicTextMatcher;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
@@ -65,6 +69,7 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 		setFocus();
 		fillFirstPage();
 		next();
+		new WaitWhile(new ShellWithTextIsAvailable("Progress Information"), TimePeriod.LONG);
 		setFocus();
 		fillSecondPage();
 		next();
@@ -118,14 +123,11 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 
 	private void fillFourthPage() {
 
-		new SWTWorkbenchBot().checkBoxInGroup("Model Object Names (Tables, Procedures, Columns, etc...)", 0).deselect();
-		new SWTWorkbenchBot().textWithLabel("Model Name:").setText(modelName);
-		new SWTWorkbenchBot().checkBox("Update (if existing model selected)").deselect();
-		new SWTWorkbenchBot().button(1).click();
+		new DefaultText(new DefaultGroup(""), 0).setText(modelName);
+		new CheckBox("Update (if existing model selected)").toggle(false);
+		new PushButton(1, new WithMnemonicTextMatcher("...")).click();
 
-		new DefaultShell("Select a Folder");
-		new SWTWorkbenchBot().tree(0).select(projectName);
-		new PushButton("OK").click();
+		new SelectTargetFolder().select(projectName);
 		new WaitWhile(new IsInProgress(), TimePeriod.NORMAL);
 	}
 
