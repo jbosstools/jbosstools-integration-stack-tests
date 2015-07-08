@@ -28,6 +28,7 @@ import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.util.FileUtils;
 import org.jboss.tools.teiid.reddeer.util.TeiidDriver;
+import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.TeiidConnectionProfileWizard;
 
 /**
@@ -99,6 +100,7 @@ public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomC
 		// set username and password
 		try {
 			new WaitUntil(new ConsoleHasText("started in"), TimePeriod.LONG);
+			new ServersViewExt().refreshServer(getName());
 		} catch (Exception e) {
 		}
 		ServersView servers = new ServersView();
