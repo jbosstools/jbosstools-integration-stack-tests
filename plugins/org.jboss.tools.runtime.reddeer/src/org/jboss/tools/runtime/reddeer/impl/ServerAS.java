@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
@@ -25,10 +26,22 @@ import org.jboss.tools.runtime.reddeer.wizard.ServerWizard;
 public class ServerAS extends ServerBase {
 
 	public static final int DEFAULT_HTTP_PORT = 8080;
-
+	public static final String DEFAULT_CONFIGURATION = "standalone.xml";
+    
 	private final String category = "JBoss Community";
 
 	private final String label = "JBoss AS";
+
+	@XmlElement(name = "configuration", namespace = Namespaces.SOA_REQ, defaultValue = DEFAULT_CONFIGURATION)
+	private String configuration;
+
+	public String getConfiguration() {
+		return configuration;
+	}
+
+	public void setConfiguration(String configuration) {
+		this.configuration = configuration;
+	}
 
 	public String getCategory() {
 		return category;
@@ -72,6 +85,7 @@ public class ServerAS extends ServerBase {
 		runtimeWizard.setName(getRuntimeName());
 		runtimeWizard.setHomeDirectory(getHome());
 		runtimeWizard.selectJre(getJreName());
+		runtimeWizard.setConfiguration(getConfiguration());
 		runtimeWizard.finish();
 		runtimePreferencePage.ok();
 

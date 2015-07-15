@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testrun 
+	xmlns="http://www.jboss.org/NS/Req" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:server="http://www.jboss.org/NS/SOAReq"
+	xsi:schemaLocation="http://www.jboss.org/NS/Req http://www.jboss.org/schema/reddeer/RedDeerSchema.xsd 
+						http://www.jboss.org/NS/SOAReq http://www.jboss.org/schema/reddeer/3rdparty/SOARequirements.xsd">
+
+	<requirements>
+		<server:server-requirement name="AS-7.1.1-with-preference">
+			<server:as version="7.1">
+				<server:home>${project.build.directory}/jboss-as-7.1.1.Final</server:home>
+				<server:configuration>standalone-full.xml</server:configuration>
+			</server:as>
+		</server:server-requirement>
+	</requirements>
+</testrun>

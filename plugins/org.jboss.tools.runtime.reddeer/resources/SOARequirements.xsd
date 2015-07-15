@@ -143,6 +143,7 @@
 	<xs:complexType name="jboss-as">
 		<xs:sequence>
 			<xs:element name="home" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="configuration" type="xs:string" minOccurs="0" maxOccurs="1" />
 			<xs:element name="jre" type="xs:string" minOccurs="0" maxOccurs="1" />
 			<xs:element name="properties" minOccurs="0" maxOccurs="1">
 				<xs:complexType>
@@ -169,6 +170,7 @@
 	<xs:complexType name="jboss-eap">
 		<xs:sequence>
 			<xs:element name="home" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="configuration" type="xs:string" minOccurs="0" maxOccurs="1" />
 			<xs:element name="jre" type="xs:string" minOccurs="0" maxOccurs="1" />
 			<xs:element name="properties" minOccurs="0" maxOccurs="1">
 				<xs:complexType>

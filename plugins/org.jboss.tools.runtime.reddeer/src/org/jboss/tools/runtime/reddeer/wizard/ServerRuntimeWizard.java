@@ -1,10 +1,14 @@
 package org.jboss.tools.runtime.reddeer.wizard;
 
+import org.eclipse.swt.widgets.Widget;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
+import org.jboss.reddeer.swt.handler.WidgetHandler;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
+import org.jboss.reddeer.swt.impl.label.DefaultLabel;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 
@@ -41,6 +45,7 @@ public class ServerRuntimeWizard extends WizardDialog {
 	 */
 	public static final String NAME = "Name";
 	public static final String HOME_DIR = "Home Directory";
+	public static final String CONFIGURATION = "Configuration file: ";
 	
 	public ServerRuntimeWizard setName(String name) {
 		new LabeledText(NAME).setText(name);
@@ -49,6 +54,13 @@ public class ServerRuntimeWizard extends WizardDialog {
 
 	public ServerRuntimeWizard setHomeDirectory(String path) {
 		new LabeledText(HOME_DIR).setText(path);
+		return this;
+	}
+	
+	public ServerRuntimeWizard setConfiguration(String configuration) {
+		if (configuration != null) {
+			new LabeledText(CONFIGURATION).setText(configuration);
+		}
 		return this;
 	}
 
