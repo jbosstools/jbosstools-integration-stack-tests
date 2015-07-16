@@ -24,6 +24,7 @@
       </sap:destination>
       <sap:server>
 	<sap:gwhost>localhost</sap:gwhost>
+	<sap:gwport>3900</sap:gwport>
 	<sap:progid>QUICKSTART</sap:progid>
 	<sap:connectionCount>2</sap:connectionCount>
       </sap:server>
