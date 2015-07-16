@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.junit.execution.annotation.RunIf;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.TreeItem;
@@ -21,6 +22,7 @@ import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
+import org.jboss.tools.switchyard.ui.bot.test.condition.SwitchYardRequirementHasServer;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -37,7 +39,7 @@ import org.junit.runner.RunWith;
 public class ProjectCreationTest {
 
 	@InjectRequirement
-	private SwitchYardRequirement switchYardRequirement;
+	private static SwitchYardRequirement switchyardRequirement;
 
 	private SwitchYardProjectWizard wizard;
 
@@ -76,7 +78,7 @@ public class ProjectCreationTest {
 	public void createProjectWithoutServerTest() {
 		String projectName = "noserver";
 
-		wizard = switchYardRequirement.project(projectName);
+		wizard = switchyardRequirement.project(projectName);
 		wizard.open();
 		assertEquals(projectName, wizard.getArtifactId());
 		assertEquals("com.example.switchyard", wizard.getGroupId());
@@ -92,34 +94,35 @@ public class ProjectCreationTest {
 		XPathEvaluator xpath = new XPathEvaluator(new File(new SwitchYardProject(projectName).getFile(), "pom.xml"));
 		assertEquals(projectName, xpath.evaluateString("/project/artifactId"));
 		assertEquals("abcd", xpath.evaluateString("/project/groupId"));
-		assertEquals(switchYardRequirement.getConfig().getLibraryVersion(),
+		assertEquals(switchyardRequirement.getConfig().getLibraryVersion(),
 				xpath.evaluateString("/project/properties/switchyard.version"));
 	}
 
 	@Test
+	@RunIf(conditionClass = SwitchYardRequirementHasServer.class)
 	public void createProjectWithServerTest() {
 		String projectName = "withserver";
 
-		wizard = switchYardRequirement.project(projectName);
+		wizard = switchyardRequirement.project(projectName);
 		wizard.open();
-		assertEquals(switchYardRequirement.getTargetRuntimeLabel(), wizard.getTargetRuntime());
-		assertEquals(switchYardRequirement.getConfig().getLibraryVersion(), wizard.getLibraryVersion());
+		assertEquals(switchyardRequirement.getTargetRuntimeLabel(), wizard.getTargetRuntime());
+		assertEquals(switchyardRequirement.getConfig().getLibraryVersion(), wizard.getLibraryVersion());
 		wizard.setTargetRuntime("<None>");
 		wizard.setLibraryVersion("foo");
 		assertEquals("<None>", wizard.getTargetRuntime());
 		assertEquals("foo", wizard.getLibraryVersion());
-		wizard.setTargetRuntime(switchYardRequirement.getTargetRuntimeLabel());
-		assertEquals(switchYardRequirement.getTargetRuntimeLabel(), wizard.getTargetRuntime());
-		assertEquals(switchYardRequirement.getConfig().getLibraryVersion(), wizard.getLibraryVersion());
-		wizard.setConfigurationVersion(switchYardRequirement.getConfig().getConfigurationVersion());
-		assertEquals(switchYardRequirement.getTargetRuntimeLabel(), wizard.getTargetRuntime());
-		assertEquals(switchYardRequirement.getConfig().getLibraryVersion(), wizard.getLibraryVersion());
+		wizard.setTargetRuntime(switchyardRequirement.getTargetRuntimeLabel());
+		assertEquals(switchyardRequirement.getTargetRuntimeLabel(), wizard.getTargetRuntime());
+		assertEquals(switchyardRequirement.getConfig().getLibraryVersion(), wizard.getLibraryVersion());
+		wizard.setConfigurationVersion(switchyardRequirement.getConfig().getConfigurationVersion());
+		assertEquals(switchyardRequirement.getTargetRuntimeLabel(), wizard.getTargetRuntime());
+		assertEquals(switchyardRequirement.getConfig().getLibraryVersion(), wizard.getLibraryVersion());
 		wizard.finish();
 
 		XPathEvaluator xpath = new XPathEvaluator(new File(new SwitchYardProject(projectName).getFile(), "pom.xml"));
 		assertEquals(projectName, xpath.evaluateString("/project/artifactId"));
 		assertEquals("com.example.switchyard", xpath.evaluateString("/project/groupId"));
-		assertEquals(switchYardRequirement.getConfig().getLibraryVersion(),
+		assertEquals(switchyardRequirement.getConfig().getLibraryVersion(),
 				xpath.evaluateString("/project/properties/switchyard.version"));
 	}
 
@@ -127,8 +130,9 @@ public class ProjectCreationTest {
 	public void createProjectWithOSGiTest() {
 		String projectName = "osgi";
 
-		wizard = switchYardRequirement.project(projectName);
+		wizard = switchyardRequirement.project(projectName);
 		wizard.open();
+		wizard.setTargetRuntime("<None>");
 		assertFalse("OSGi bundle should be unchecked by default", wizard.isOSGiBundle());
 		wizard.setOSGiBundle(true);
 		assertTrue("OSGi bundle cannot be checked", wizard.isOSGiBundle());
@@ -141,7 +145,7 @@ public class ProjectCreationTest {
 		XPathEvaluator xpath = new XPathEvaluator(new File(new SwitchYardProject(projectName).getFile(), "pom.xml"));
 		assertEquals(projectName, xpath.evaluateString("/project/artifactId"));
 		assertEquals("com.example.switchyard", xpath.evaluateString("/project/groupId"));
-		assertEquals(switchYardRequirement.getConfig().getLibraryVersion(),
+		assertEquals(switchyardRequirement.getConfig().getLibraryVersion(),
 				xpath.evaluateString("/project/properties/switchyard.version"));
 		assertEquals("bundle", xpath.evaluateString("/project/packaging"));
 		assertEquals("com.example.switchyard." + projectName + "*",
@@ -154,7 +158,7 @@ public class ProjectCreationTest {
 	public void createProjectWithComponentsTest() {
 		String projectName = "components";
 
-		wizard = switchYardRequirement.project(projectName);
+		wizard = switchyardRequirement.project(projectName);
 		wizard.open();
 		assertComponent("Implementation Support", "Bean");
 		assertComponent("Implementation Support", "BPEL");
@@ -180,7 +184,7 @@ public class ProjectCreationTest {
 		assertComponent("Test Mixins", "Naming Mixin");
 		assertComponent("Test Mixins", "Smooks Mixin");
 
-		if (switchYardRequirement.getConfig().getConfigurationVersion().equals("2.0")) {
+		if (switchyardRequirement.getConfig().getConfigurationVersion().equals("2.0")) {
 			assertComponent("Gateway Bindings", "Atom");
 			assertComponent("Gateway Bindings", "CXF");
 			assertComponent("Gateway Bindings", "RSS");
@@ -194,7 +198,7 @@ public class ProjectCreationTest {
 		XPathEvaluator xpath = new XPathEvaluator(new File(new SwitchYardProject(projectName).getFile(), "pom.xml"));
 		assertEquals(projectName, xpath.evaluateString("/project/artifactId"));
 		assertEquals("com.example.switchyard", xpath.evaluateString("/project/groupId"));
-		assertEquals(switchYardRequirement.getConfig().getLibraryVersion(),
+		assertEquals(switchyardRequirement.getConfig().getLibraryVersion(),
 				xpath.evaluateString("/project/properties/switchyard.version"));
 
 		ProblemsView problemsView = new ProblemsView();
@@ -214,7 +218,7 @@ public class ProjectCreationTest {
 	public void createProjectWithBOMTest() {
 		String projectName = "bom";
 
-		wizard = switchYardRequirement.project(projectName);
+		wizard = switchyardRequirement.project(projectName);
 		wizard.open();
 		wizard.setTargetRuntime("<None>");
 
@@ -229,7 +233,7 @@ public class ProjectCreationTest {
 		wizard.setConfigurationVersion("2.0");
 		assertFalse("BOM dependency should not be enabled with 1.0 version when library version is '1.1.0.Final'", wizard.isBOMDependencyEnabled());
 		
-		wizard.setLibraryVersion("2.0.0.CR1");
+		wizard.setLibraryVersion("2.0.0.Final");
 
 		wizard.setConfigurationVersion("1.0");
 		assertTrue("BOM dependency should be enabled with 1.0 version", wizard.isBOMDependencyEnabled());

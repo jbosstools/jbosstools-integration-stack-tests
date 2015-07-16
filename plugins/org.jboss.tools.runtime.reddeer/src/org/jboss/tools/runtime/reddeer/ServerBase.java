@@ -8,10 +8,25 @@ import javax.xml.bind.annotation.XmlElement;
 
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
+import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
+import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerLabel;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.swt.api.Tree;
+import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.runtime.reddeer.preference.InstalledJREs;
 
 /**
@@ -21,11 +36,12 @@ import org.jboss.tools.runtime.reddeer.preference.InstalledJREs;
  */
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 public abstract class ServerBase extends RuntimeBase {
-	
+
+	public static final String ADD_REMOVE_LABEL = "Add and Remove...";
 	public static final String DEFAULT_JRE = "default";
-	
+
 	private String jre;
-	
+
 	private String jreName;
 
 	@XmlElement(name = "jre", namespace = Namespaces.SOA_REQ, defaultValue = DEFAULT_JRE)
@@ -44,11 +60,13 @@ public abstract class ServerBase extends RuntimeBase {
 		this.jre = jre;
 		this.jreName = jreFile.getName();
 	}
-	
+
 	public String getJreName() {
 		return jreName;
 	}
-	
+
+	public abstract int getHttpPort();
+
 	public String getRuntimeName() {
 		return getName() + " Runtime";
 	}
@@ -85,7 +103,47 @@ public abstract class ServerBase extends RuntimeBase {
 					+ ServerState.STOPPED + "state." + " Not in state " + currentState + ".");
 		}
 	}
-	
+
+	public void deployProject(String project) {
+		deployProject(project, "Deployed \"" + project + ".jar\"");
+	}
+
+	public void deployProject(String project, String checkPhrase) {
+		ConsoleView consoleView = new ConsoleView();
+		consoleView.open();
+		consoleView.clearConsole();
+
+		ServersView serversView = new ServersView();
+		serversView.open();
+		Tree tree = new DefaultTree();
+		for (TreeItem item : tree.getItems()) {
+			ServerLabel serverLabel = new ServerLabel(item);
+			if (serverLabel.getName().equals(getName())) {
+				item.select();
+				new ContextMenu(ADD_REMOVE_LABEL).select();
+				new DefaultShell(ADD_REMOVE_LABEL);
+				new DefaultTreeItem(project).select();
+				new PushButton("Add >").click();
+				new PushButton("Finish").click();
+				new WaitWhile(new ShellWithTextIsActive(ADD_REMOVE_LABEL), TimePeriod.LONG);
+				new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+				checkDeployment(project, checkPhrase);
+				return;
+			}
+		}
+		throw new RuntimeException("Cannot find server '" + getName() + "'");
+	}
+
+	protected void checkDeployment(String project, String checkPhrase) {
+		new WaitUntil(new ConsoleHasText(checkPhrase), TimePeriod.LONG);
+	}
+
+	public String getUrl(String path) {
+		return getUrl("localhost", path);
+	}
+
+	public abstract String getUrl(String host, String path);
+
 	/**
 	 * Returns whether the server can be started.
 	 * 
@@ -94,9 +152,9 @@ public abstract class ServerBase extends RuntimeBase {
 	protected boolean canStart() {
 		return true;
 	}
-	
+
 	/**
-	 * Adds new jre if it is defined. 
+	 * Adds new jre if it is defined.
 	 */
 	protected void addJre() {
 		if (jre != null) {

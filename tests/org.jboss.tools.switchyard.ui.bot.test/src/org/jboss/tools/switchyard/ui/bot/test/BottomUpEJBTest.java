@@ -21,6 +21,7 @@ import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.runtime.reddeer.ServerBase;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.switchyard.reddeer.binding.HTTPBindingPage;
@@ -31,7 +32,6 @@ import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
-import org.jboss.tools.switchyard.reddeer.server.ServerDeployment;
 import org.jboss.tools.switchyard.reddeer.wizard.ImportFileWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.NewServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.PromoteServiceWizard;
@@ -139,9 +139,9 @@ public class BottomUpEJBTest {
 		new SwitchYardEditor().save();
 
 		// Deploy and test the project
-		new ServerDeployment(switchyardRequirement.getConfig().getName()).deployProject(PROJECT);
-		String url = "http://localhost:8080/" + PROJECT;
-		HttpClient httpClient = new HttpClient(url);
+		ServerBase server = switchyardRequirement.getConfig().getServerBase();
+		server.deployProject(PROJECT);
+		HttpClient httpClient = new HttpClient(server.getUrl(PROJECT));
 		assertEquals("EJB: Hello apodhrad", httpClient.post("apodhrad"));
 		assertEquals("EJB: Hello JBoss", httpClient.post("JBoss"));
 		new WaitWhile(new ConsoleHasChanged());

@@ -82,6 +82,14 @@ public class SwitchYardProject extends Project {
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
+	
+	public void enableFuseCamelNature() {
+		select();
+		new ContextMenu("Enable Fuse Camel Nature").select();
+		
+		AbstractWait.sleep(TimePeriod.NORMAL);
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+	}
 
 	public File getFile() {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();

@@ -6,6 +6,7 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.runtime.reddeer.ServerBase;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.switchyard.reddeer.binding.HTTPBindingPage;
@@ -14,8 +15,6 @@ import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
-import org.jboss.tools.switchyard.reddeer.server.ServerDeployment;
-import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
 import org.jboss.tools.switchyard.ui.bot.test.util.HttpClient;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,11 +31,11 @@ public class DeploymentTest {
 	public static final String PROJECT_NAME = "deploy";
 
 	@InjectRequirement
-	private SwitchYardRequirement switchYardRequirement;
+	private SwitchYardRequirement switchyardRequirement;
 
 	@Test
 	public void deployTest() throws Exception {
-		switchYardRequirement.project(PROJECT_NAME).impl("Bean").binding("HTTP").create();
+		switchyardRequirement.project(PROJECT_NAME).impl("Bean").binding("HTTP").create();
 
 		new SwitchYardEditor().addBeanImplementation().createJavaInterface("Hello").finish();
 
@@ -66,8 +65,9 @@ public class DeploymentTest {
 
 		new SwitchYardEditor().save();
 
-		new ServerDeployment(switchYardRequirement.getConfig().getName()).deployProject(PROJECT_NAME);
-		String response = new HttpClient("http://localhost:8080/hello").post("World");
+		ServerBase server = switchyardRequirement.getConfig().getServerBase();
+		server.deployProject(PROJECT_NAME);
+		String response = new HttpClient(server.getUrl("hello")).post("World");
 		assertEquals("Hello World", response);
 	}
 }

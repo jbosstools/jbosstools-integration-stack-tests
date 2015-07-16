@@ -259,6 +259,9 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		selectComponents(components);
 		finish();
 		new SwitchYardProject(name).update();
+		if (targetRuntime != null && targetRuntime.contains("Karaf Extension")) {
+			new SwitchYardProject(name).enableFuseCamelNature();
+		}
 	}
 
 	@Override

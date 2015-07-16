@@ -24,10 +24,12 @@ import org.jboss.tools.runtime.reddeer.wizard.ServerWizard;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ServerAS extends ServerBase {
 
+	public static final int DEFAULT_HTTP_PORT = 8080;
+
 	private final String category = "JBoss Community";
 
 	private final String label = "JBoss AS";
-	
+
 	public String getCategory() {
 		return category;
 	}
@@ -41,12 +43,24 @@ public class ServerAS extends ServerBase {
 	}
 
 	@Override
+	public int getHttpPort() {
+		return DEFAULT_HTTP_PORT;
+	}
+
+	@Override
+	public String getUrl(String host, String path) {
+		StringBuffer result = new StringBuffer();
+		result.append("http://").append(host).append(":").append(getHttpPort()).append("/").append(path);
+		return result.toString();
+	}
+
+	@Override
 	public void create() {
 		addJre();
-		
+
 		WorkbenchPreferenceDialog preferences = new WorkbenchPreferenceDialog();
 		preferences.open();
-		
+
 		// Add runtime
 		RuntimePreferencePage runtimePreferencePage = new RuntimePreferencePage();
 		preferences.select(runtimePreferencePage);
@@ -81,6 +95,5 @@ public class ServerAS extends ServerBase {
 			throw new RuntimeException("Port '" + port + "' is already in use!", e);
 		}
 	}
-	
-	
+
 }

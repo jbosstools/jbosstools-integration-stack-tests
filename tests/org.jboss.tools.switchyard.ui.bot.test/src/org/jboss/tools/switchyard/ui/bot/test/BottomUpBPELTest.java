@@ -6,6 +6,7 @@ import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.runtime.reddeer.ServerBase;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.switchyard.reddeer.binding.SOAPBindingPage;
@@ -16,7 +17,6 @@ import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
-import org.jboss.tools.switchyard.reddeer.server.ServerDeployment;
 import org.jboss.tools.switchyard.reddeer.wizard.ImportFileWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.PromoteServiceWizard;
 import org.jboss.tools.switchyard.ui.bot.test.util.SoapClient;
@@ -36,7 +36,6 @@ import org.junit.runner.RunWith;
 public class BottomUpBPELTest {
 
 	public static final String PROJECT = "bpel_project";
-	public static final String WSDL = "http://localhost:8080/bpel_project/SayHelloService?wsdl";
 
 	@InjectRequirement
 	private SwitchYardRequirement switchyardRequirement;
@@ -87,8 +86,9 @@ public class BottomUpBPELTest {
 		new SwitchYardEditor().save();
 
 		/* Test SOAP Response */
-		new ServerDeployment(switchyardRequirement.getConfig().getName()).deployProject(PROJECT);
-		SoapClient.testResponses(WSDL, "SayHello");
+		ServerBase server = switchyardRequirement.getConfig().getServerBase();
+		server.deployProject(PROJECT);
+		SoapClient.testResponses(server.getUrl(PROJECT + "/SayHelloService?wsdl"), "SayHello");
 		new WaitWhile(new ConsoleHasChanged());
 	}
 }

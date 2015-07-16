@@ -14,6 +14,7 @@ import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.runtime.reddeer.ServerBase;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.switchyard.reddeer.binding.FileBindingPage;
@@ -22,7 +23,6 @@ import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
-import org.jboss.tools.switchyard.reddeer.server.ServerDeployment;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -72,6 +72,7 @@ public class UseCaseFileGatewayTest {
 		new SwitchYardComponent("InfoBean").doubleClick();
 		textEditor = new TextEditor("InfoBean.java");
 		textEditor.setText(javaSource("InfoBean.java", PACKAGE));
+		textEditor.close(true);
 
 		new SwitchYardEditor().save();
 
@@ -92,12 +93,15 @@ public class UseCaseFileGatewayTest {
 		wizard.finish();
 		new SwitchYardEditor().save();
 
-		// Deploy and test the project
-		new ServerDeployment(switchyardRequirement.getConfig().getName()).deployProject(PROJECT);
+		// create the test file
 		FileWriter out = new FileWriter(new File(input, "test.txt"));
 		out.write("Hello File Gateway");
 		out.flush();
 		out.close();
+		
+		// Deploy and test the project
+		ServerBase server = switchyardRequirement.getConfig().getServerBase();
+		server.deployProject(PROJECT);
 
 		new WaitUntil(new ConsoleHasText("Body: Hello File Gateway"));
 

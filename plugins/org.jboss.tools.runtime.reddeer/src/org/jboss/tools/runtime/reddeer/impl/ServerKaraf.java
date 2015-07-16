@@ -2,10 +2,13 @@ package org.jboss.tools.runtime.reddeer.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Properties;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -95,12 +98,36 @@ public class ServerKaraf extends ServerBase {
 	}
 
 	@Override
+	public int getHttpPort() {
+		Properties systemProperties = new Properties();
+		try {
+			systemProperties.load(new FileReader(new File(getHome(), "etc/system.properties")));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return Integer.valueOf(systemProperties.getProperty("org.osgi.service.http.port"));
+	}
+	
+	@Override
+	public String getUrl(String host, String path) {
+		StringBuffer result = new StringBuffer();
+		result.append("http://").append(host).append(":").append(getHttpPort()).append("/");
+		if (path.toLowerCase().endsWith("wsdl")) {
+			result.append("cxf").append("/");
+		}
+		result.append(path);
+		return result.toString();
+	}
+
+	@Override
 	public void create() {
 		addJre();
 
 		WorkbenchPreferenceDialog preferences = new WorkbenchPreferenceDialog();
 		preferences.open();
-		
+
 		// Add runtime
 		RuntimePreferencePage runtimePreferencePage = new RuntimePreferencePage();
 		preferences.select(runtimePreferencePage);
@@ -138,6 +165,11 @@ public class ServerKaraf extends ServerBase {
 		} catch (IOException e) {
 			throw new RuntimeException("Can't copy 'host.key' file!", e);
 		}
+	}
+
+	@Override
+	protected void checkDeployment(String project, String checkPhrase) {
+		return;
 	}
 
 	/**

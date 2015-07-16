@@ -13,6 +13,7 @@ import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.runtime.reddeer.ServerBase;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.switchyard.reddeer.binding.SOAPBindingPage;
@@ -25,7 +26,6 @@ import org.jboss.tools.switchyard.reddeer.project.ProjectItemExt;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
-import org.jboss.tools.switchyard.reddeer.server.ServerDeployment;
 import org.jboss.tools.switchyard.reddeer.view.JUnitView;
 import org.jboss.tools.switchyard.reddeer.wizard.PromoteServiceWizard;
 import org.jboss.tools.switchyard.ui.bot.test.util.SoapClient;
@@ -131,12 +131,9 @@ public class UseCaseSimpleTest {
 		new SwitchYardEditor().save();
 
 		/* Test SOAP Response */
-		new ServerDeployment(switchyardRequirement.getConfig().getName()).deployProject(PROJECT);
-		try {
-			SoapClient.testResponses("http://localhost:8080/" + PROJECT + "/ExampleService?wsdl", "Hello");
-		} catch (Exception ex) {
-			throw ex;
-		}
+		ServerBase server = switchyardRequirement.getConfig().getServerBase();
+		server.deployProject(PROJECT);
+		SoapClient.testResponses(server.getUrl(PROJECT + "/ExampleService?wsdl"), "Hello");
 
 		new WaitWhile(new ConsoleHasChanged());
 	}
