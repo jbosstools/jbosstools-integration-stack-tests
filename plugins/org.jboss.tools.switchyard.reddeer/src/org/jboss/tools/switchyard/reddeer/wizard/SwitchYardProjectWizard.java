@@ -245,10 +245,15 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		open();
 		setText("Group Id:", groupId);
 		setText("Package Name:", packageName);
-		setConfigurationVersion(configurationVersion);
+		if (configurationVersion != null) {
+			if (configurationVersion.equals("1.0") || configurationVersion.equals("1.1")) {
+				setBOMDependency(false);
+			}
+			setConfigurationVersion(configurationVersion);
+		}
 		if (targetRuntime != null) {
 			setTargetRuntime(targetRuntime);
-		} else {
+		} else if (libraryVersion != null) {
 			setLibraryVersion(libraryVersion);
 		}
 		selectComponents(components);

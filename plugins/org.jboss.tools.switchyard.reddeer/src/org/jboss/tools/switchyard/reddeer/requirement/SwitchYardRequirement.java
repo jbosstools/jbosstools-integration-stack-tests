@@ -108,7 +108,7 @@ public class SwitchYardRequirement implements Requirement<SwitchYard>, CustomCon
 		if (targetRuntime == null) {
 			return null;
 		}
-		return targetRuntime + " [" + getConfig().getName() + "]"; 
+		return targetRuntime + " [" + getConfig().getServerBase().getRuntimeName() + "]"; 
 	}
 	
 	public SwitchYardProjectWizard project(String name) {

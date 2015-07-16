@@ -94,10 +94,6 @@ public class ServerKaraf extends ServerBase {
 		return label + " " + getVersion();
 	}
 
-	public String getRuntimeName() {
-		return label + " " + getVersion() + " Runtime";
-	}
-
 	@Override
 	public void create() {
 		addJre();
@@ -112,6 +108,7 @@ public class ServerKaraf extends ServerBase {
 		ServerRuntimeWizard runtimeWizard = new ServerRuntimeWizard();
 		runtimeWizard.setType(getCategory(), getRuntimeType());
 		runtimeWizard.next();
+		runtimeWizard.setName(getRuntimeName());
 		runtimeWizard.setInstallationDir(getHome());
 		runtimeWizard.selectJre(getJreName());
 		runtimeWizard.finish();
@@ -121,7 +118,7 @@ public class ServerKaraf extends ServerBase {
 		ServerWizard serverWizard = new ServerWizard();
 		serverWizard.open();
 		serverWizard.setType(getCategory(), getServerType());
-		serverWizard.setName(name);
+		serverWizard.setName(getName());
 		serverWizard.setRuntime(getRuntimeName());
 		serverWizard.next();
 		closeSecureStorage();

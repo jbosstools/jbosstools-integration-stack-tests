@@ -48,6 +48,10 @@ public abstract class ServerBase extends RuntimeBase {
 	public String getJreName() {
 		return jreName;
 	}
+	
+	public String getRuntimeName() {
+		return getName() + " Runtime";
+	}
 
 	public void setState(ServerReqState requiredState) {
 		ServersView serversView = new ServersView();
