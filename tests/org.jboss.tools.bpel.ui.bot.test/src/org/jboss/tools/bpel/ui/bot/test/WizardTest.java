@@ -98,7 +98,7 @@ public class WizardTest {
 	}
 
 	@Test
-	public void createNewAbstractSyncProcess() {
+	public void createNewAbstractSyncProcess() throws Exception {
 		String projectName = "AbstractProcessProject";
 		String processName = "AbstractProcess";
 

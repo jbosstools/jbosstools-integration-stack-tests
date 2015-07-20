@@ -1,18 +1,15 @@
 package org.jboss.tools.bpel.reddeer.activity;
 
-import static org.hamcrest.core.AllOf.allOf;
-
-import java.util.List;
-
-import org.apache.log4j.Logger;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
+import org.eclipse.gef.EditPart;
 import org.hamcrest.Matcher;
-import org.jboss.reddeer.swt.wait.AbstractWait;
-import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.gef.impl.editpart.AbstractEditPart;
+import org.jboss.reddeer.swt.api.Menu;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.matcher.AndMatcher;
+import org.jboss.reddeer.swt.util.Display;
 import org.jboss.tools.bpel.reddeer.editor.BpelEditor;
-import org.jboss.tools.bpel.reddeer.matcher.ActivityOfType;
-import org.jboss.tools.bpel.reddeer.matcher.ActivityWithName;
 import org.jboss.tools.bpel.reddeer.view.BPELPropertiesView;
 
 /**
@@ -20,7 +17,7 @@ import org.jboss.tools.bpel.reddeer.view.BPELPropertiesView;
  * @author apodhrad
  * 
  */
-public class Activity {
+public class Activity extends AbstractEditPart {
 
 	public static final String ASSIGN = "Assign";
 	public static final String COMPENSATE = "Compensate";
@@ -46,62 +43,42 @@ public class Activity {
 	protected String name;
 	protected String type;
 
-	protected BpelEditor bpelEditor;
-	protected SWTBotGefEditPart editPart;
-	
-	protected static SWTWorkbenchBot bot = new SWTWorkbenchBot();
-
 	protected Logger log = Logger.getLogger(this.getClass());
 
 	public Activity(String name, String type) {
 		this(name, type, null, 0);
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Activity(String name, String type, Activity parent, int index) {
-		if (type == null) {
-			throw new IllegalArgumentException("Activity type must be specified!");
-		}
-		this.bpelEditor = new BpelEditor();
-		this.name = name;
-		this.type = type;
-		
-		Matcher matcher = new ActivityOfType(type);
-		if (name != null) {
-			matcher = allOf(matcher, new ActivityWithName(name));
-		}
-
-		if (parent != null) {
-			List<SWTBotGefEditPart> editParts = bpelEditor.getEditPart(parent.editPart, matcher);
-			if (editParts.isEmpty()) {
-				throw new RuntimeException("Could not find an activity of type " + type + "'");
-			}
-			editPart = editParts.get(index);
-		} else if (name != null) {
-			editPart = bpelEditor.getEditPart(name);
-		} else {
-			editPart = bpelEditor.getEditPart(matcher, index);
-		}
-		select();
+		super(getActivityMatcher(name, type, parent));
 	}
 
-	public void select() {
-		AbstractWait.sleep(TimePeriod.SHORT);
-		bpelEditor.selectEditPart(editPart);
-		new BPELPropertiesView().open();
-		bpelEditor.selectEditPart(editPart);
+	@SuppressWarnings("unchecked")
+	private static Matcher<EditPart> getActivityMatcher(String name, String type, Activity parent) {
+		Matcher<EditPart> matcher = new ActivityOfType(type);
+		if (name != null) {
+			matcher = new AndMatcher(matcher, new ActivityWithName(name));
+		}
+		if (parent != null) {
+			matcher = new AndMatcher(matcher, new ActivityWithParent(parent));
+		}
+		return matcher;
 	}
 
 	public void delete() {
 		menu("Delete");
 	}
 
-	public Activity setName(String name) {
-		select();
-		BPELPropertiesView properties = new BPELPropertiesView();
-		properties.setName(name);
-		bpelEditor.save();
-		return this;
+	@Override
+	public void select() {
+		new BpelEditor().activate();
+		Display.syncExec(new Runnable() {
+			@Override
+			public void run() {
+				getEditPart().getViewer().getControl().setFocus();
+			}
+		});
+		super.select();
 	}
 
 	protected void add(String type) {
@@ -114,20 +91,37 @@ public class Activity {
 		if (name != null) {
 			// we expect that each activity has its default name as its type
 			new Activity(type, type, this, 0).setName(name);
-			bpelEditor.save();
 		}
+	}
+
+	public void setName(String name) {
+		openProperties().setName(name);
+		save();
 	}
 
 	protected void menu(String... menu) {
 		select();
-		for (int i = 0; i < menu.length; i++) {
-			bpelEditor.clickContextMenu(menu[i]);
-		}
-		bpelEditor.save();
+		new ContextMenu(menu).select();
 	}
 
 	public boolean validate(String text) {
 		throw new UnsupportedOperationException();
+	}
+
+	protected EditPart getEditPart() {
+		return editPart;
+	}
+
+	public BPELPropertiesView openProperties() {
+		select();
+		return new BPELPropertiesView();
+	}
+
+	protected void save() {
+		Menu saveMenu = new ShellMenu("File", "Save");
+		if (saveMenu.isEnabled()) {
+			saveMenu.select();
+		}
 	}
 
 }

@@ -41,11 +41,11 @@ public class SimpleDeployTest {
 
 	@InjectRequirement
 	private ServerRequirement serverRequirement;
-	
+
 	@Test
 	public void simpleDeployTest() throws Exception {
 		new WorkbenchShell().maximize();
-		
+
 		String projectName = "deployTest";
 		String processName = "deployHello";
 

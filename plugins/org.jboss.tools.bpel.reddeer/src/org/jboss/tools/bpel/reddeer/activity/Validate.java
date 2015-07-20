@@ -3,7 +3,6 @@ package org.jboss.tools.bpel.reddeer.activity;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.tools.bpel.reddeer.view.BPELPropertiesView;
 
 /**
  * 
@@ -17,12 +16,14 @@ public class Validate extends Activity {
 	}
 
 	public Validate addVariable(String variable) {
-		BPELPropertiesView properties = new BPELPropertiesView();
-		properties.selectDetails();
+		select();
+		openProperties().selectDetails();
 		new PushButton("Add").click();
 		new DefaultShell("Select Variable");
 		new DefaultTable().select(variable);
 		new PushButton("OK").click();
+		save();
+
 		return this;
 	}
 }

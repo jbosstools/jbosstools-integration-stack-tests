@@ -14,7 +14,6 @@ import javax.xml.soap.SOAPException;
 
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLUnit;
-import org.eclipse.swtbot.swt.finder.exceptions.AssertionFailedException;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
@@ -133,7 +132,7 @@ public class ExampleTest {
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
-				throw new AssertionFailedException("IOException during testing response.");
+				throw new RuntimeException("IOException during testing response.");
 			}
 		}
 
@@ -148,13 +147,13 @@ public class ExampleTest {
 						diff.similar());
 			} catch (IOException e) {
 				e.printStackTrace();
-				throw new AssertionFailedException("IOException during testing response.");
+				throw new RuntimeException("IOException during testing response.");
 			} catch (SAXException e) {
 				e.printStackTrace();
-				throw new AssertionFailedException("SAXException during testing response.");
+				throw new RuntimeException("SAXException during testing response.");
 			} catch (SOAPException e) {
 				e.printStackTrace();
-				throw new AssertionFailedException("SOAPException during testing response.");
+				throw new RuntimeException("SOAPException during testing response.");
 			}
 		}
 

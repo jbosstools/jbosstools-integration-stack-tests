@@ -1,12 +1,11 @@
 package org.jboss.tools.bpel.reddeer.view;
 
+import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.clabel.DefaultCLabel;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
-import org.jboss.tools.bpel.reddeer.widget.ListElement;
 import org.jboss.tools.bpel.reddeer.widget.QuickPickTree;
 
 /**
@@ -14,7 +13,7 @@ import org.jboss.tools.bpel.reddeer.widget.QuickPickTree;
  * @author apodhrad
  *
  */
-public class BPELPropertiesView extends WorkbenchView {
+public class BPELPropertiesView extends PropertiesView {
 
 	public static final String TAB_DESCRIPTION = "Description";
 	public static final String TAB_DETAILS = "Details";
@@ -25,7 +24,7 @@ public class BPELPropertiesView extends WorkbenchView {
 	public static final String CHECKBOX_CREATE = "Create a new Process instance if one does not already exist";
 
 	public BPELPropertiesView() {
-		super("General", "Properties");
+		super();
 		open();
 	}
 
@@ -62,16 +61,14 @@ public class BPELPropertiesView extends WorkbenchView {
 		new CheckBox(CHECKBOX_CREATE).toggle(createInstance);
 	}
 
-	public void selectTab(String label) {
-		new ListElement(label).select();
-	}
-
-	public void selectDescription() {
+	public BPELPropertiesView selectDescription() {
 		selectTab(TAB_DESCRIPTION);
+		return this;
 	}
 
-	public void selectDetails() {
+	public BPELPropertiesView selectDetails() {
 		selectTab(TAB_DETAILS);
+		return this;
 	}
 
 	public String getTitle() {

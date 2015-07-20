@@ -30,7 +30,7 @@ import org.junit.runner.RunWith;
 @CleanWorkspace
 @OpenPerspective(BPELPerspective.class)
 // TODO: should be in state NOT_RUNNING
-@Server(type = ServerReqType.ANY, state = ServerReqState.PRESENT)
+//@Server(type = ServerReqType.ANY, state = ServerReqState.PRESENT)
 @RunWith(RedDeerSuite.class)
 public class FaultModelingTest {
 

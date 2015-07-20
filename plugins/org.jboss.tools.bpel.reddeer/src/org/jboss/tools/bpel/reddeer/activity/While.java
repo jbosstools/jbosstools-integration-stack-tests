@@ -1,6 +1,5 @@
 package org.jboss.tools.bpel.reddeer.activity;
 
-import org.jboss.tools.bpel.reddeer.view.BPELPropertiesView;
 
 /**
  * 
@@ -14,9 +13,10 @@ public class While extends ContainerActivity {
 	}
 
 	public While setCondition(String condition) {
-		BPELPropertiesView properties = new BPELPropertiesView();
-		properties.setCondition(condition);
-		bpelEditor.save();
+		select();
+		openProperties().selectDetails().setCondition(condition);
+		save();
+
 		return this;
 	}
 

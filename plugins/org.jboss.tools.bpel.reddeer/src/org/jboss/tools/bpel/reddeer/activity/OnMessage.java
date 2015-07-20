@@ -1,7 +1,5 @@
 package org.jboss.tools.bpel.reddeer.activity;
 
-import org.jboss.tools.bpel.reddeer.view.BPELPropertiesView;
-
 /**
  * 
  * @author apodhrad
@@ -18,9 +16,10 @@ public class OnMessage extends ContainerActivity {
 	}
 
 	public OnMessage pickOperation(String operation) {
-		BPELPropertiesView properties = new BPELPropertiesView();
-		properties.pickOperation(operation);
-		bpelEditor.save();
+		select();
+		openProperties().selectDetails().pickOperation(operation);
+		save();
+
 		return this;
 	}
 }

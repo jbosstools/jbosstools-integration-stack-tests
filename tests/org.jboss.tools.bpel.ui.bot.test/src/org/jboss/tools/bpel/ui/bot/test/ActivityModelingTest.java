@@ -14,6 +14,7 @@ import org.jboss.tools.bpel.reddeer.activity.Pick;
 import org.jboss.tools.bpel.reddeer.activity.RepeatUntil;
 import org.jboss.tools.bpel.reddeer.activity.Scope;
 import org.jboss.tools.bpel.reddeer.activity.Sequence;
+import org.jboss.tools.bpel.reddeer.editor.BpelEditor;
 import org.jboss.tools.bpel.reddeer.perspective.BPELPerspective;
 import org.jboss.tools.bpel.reddeer.wizard.ImportProjectWizard;
 import org.jboss.tools.bpel.ui.bot.test.util.ResourceHelper;
@@ -36,8 +37,8 @@ public class ActivityModelingTest {
 
 	@Before
 	public void setupWorkspace() throws Exception {
-		String projectLocation = ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID,
-				"resources/projects/" + PROJECT_NAME + ".zip");
+		String projectLocation = ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID, "resources/projects/"
+				+ PROJECT_NAME + ".zip");
 		new ImportProjectWizard(projectLocation).execute();
 	}
 
@@ -56,8 +57,7 @@ public class ActivityModelingTest {
 		project.getProjectItem("bpelContent", BPEL_FILE_NAME).open();
 
 		Sequence mainSequence = new Sequence("Main");
-		mainSequence.addReceive("receive").pickOperation("calculateDiscriminant")
-				.checkCreateInstance();
+		mainSequence.addReceive("receive").pickOperation("calculateDiscriminant").checkCreateInstance();
 		Pick pick = mainSequence.addPick("receiveOnPick");
 		// the following line causes xulrunner problem on ubuntu
 		// mainSequence.addRepeatUntil("repeat1").setCondition("false()").addEmpty("empty1");
@@ -66,7 +66,9 @@ public class ActivityModelingTest {
 
 		new RepeatUntil("repeat1").addInvoke("invokePartner3").pickOperation("calculate");
 
-		new OnMessage(pick).pickOperation("calculateDiscriminant").addIf("if1");
+		OnMessage onMessage = new OnMessage(pick);
+		onMessage.pickOperation("calculateDiscriminant");
+		onMessage.addIf("if1");
 		new If("if1").setCondition("true() AND true()").addExit("Quit");
 		new If("if1").addElse().addInvoke("invokePartner1").pickOperation("calculate");
 
@@ -77,6 +79,8 @@ public class ActivityModelingTest {
 		Scope scope = new ForEach("forEach1").setCounterValue("10", "20").getScope();
 		scope.addInvoke("invokePartner2").pickOperation("calculate");
 		scope.addWait("wait1").setCondition("'PT1S'", "Date");
+		
+		new BpelEditor("Discriminant.bpel").saveAndClose();
 	}
 
 }

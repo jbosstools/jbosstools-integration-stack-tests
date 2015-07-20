@@ -21,7 +21,6 @@ import javax.xml.soap.SOAPMessage;
 
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLUnit;
-import org.eclipse.swtbot.swt.finder.exceptions.AssertionFailedException;
 import org.jboss.tools.bpel.ui.bot.test.Activator;
 import org.xml.sax.SAXException;
 
@@ -72,7 +71,7 @@ public class SoapClient {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			throw new AssertionFailedException("IOException during testing response.");
+			throw new RuntimeException("IOException during testing response.");
 		}
 	}
 
@@ -87,13 +86,13 @@ public class SoapClient {
 					diff.similar());
 		} catch (IOException e) {
 			e.printStackTrace();
-			throw new AssertionFailedException("IOException during testing response.");
+			throw new RuntimeException("IOException during testing response.");
 		} catch (SAXException e) {
 			e.printStackTrace();
-			throw new AssertionFailedException("SAXException during testing response.");
+			throw new RuntimeException("SAXException during testing response.");
 		} catch (SOAPException e) {
 			e.printStackTrace();
-			throw new AssertionFailedException("SOAPException during testing response.");
+			throw new RuntimeException("SOAPException during testing response.");
 		}
 	}
 

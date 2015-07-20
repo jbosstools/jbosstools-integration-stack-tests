@@ -1,10 +1,14 @@
 package org.jboss.tools.bpel.reddeer.activity;
 
+import org.jboss.reddeer.swt.api.Tree;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.tools.bpel.reddeer.view.BPELPropertiesView;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.tools.bpel.reddeer.matcher.WithLabelMatcherExt;
 
 /**
  * 
@@ -61,16 +65,18 @@ public class Assign extends Activity {
 	}
 
 	public Assign addAssign(String from, String[] valueFrom, String to, String[] valueTo) {
-		BPELPropertiesView properties = new BPELPropertiesView();
-		properties.selectDetails();
+		openProperties().selectDetails();
+
 		new PushButton("New").click();
 		fillAssignement(LABEL_FROM, from, valueFrom);
 		fillAssignement(LABEL_TO, to, valueTo);
 
+		save();
+
 		// Variable doesn't have initializer. Should it be generated?
 		if (new DefaultShell().getText().equals("Initializer")) {
 			new PushButton("Yes").click();
-			bpelEditor.save();
+			save();
 		}
 		return this;
 	}
@@ -78,15 +84,15 @@ public class Assign extends Activity {
 	private void fillAssignement(String label, String assignment, String... value) {
 		new LabeledCombo(label).setSelection(assignment);
 		if (assignment.equals(VAR)) {
-			bot.treeWithLabel(label).expandNode(value).select();
+			Tree tree = new DefaultTree(new WithLabelMatcherExt(label));
+			new DefaultTreeItem(tree, value).select();
 		}
 		if (assignment.equals(FIX)) {
 			new DefaultText(0).setText("'" + value[0] + "'");
 		}
 		if (assignment.equals(EXP)) {
-			bot.styledTextWithLabel(label).setText(value[0]);
+			new DefaultStyledText(new WithLabelMatcherExt(label)).setText(value[0]);
 		}
-		bpelEditor.save();
 	}
 
 }

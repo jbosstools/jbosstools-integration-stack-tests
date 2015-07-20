@@ -2,7 +2,6 @@ package org.jboss.tools.bpel.reddeer.activity;
 
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.tools.bpel.reddeer.view.BPELPropertiesView;
 
 /**
  * 
@@ -16,9 +15,10 @@ public class Throw extends Activity {
 	}
 
 	public void setUserFaultName(String name) {
-		BPELPropertiesView properties = new BPELPropertiesView();
-		properties.selectDetails();
+		select();
+		openProperties().selectDetails();
 		new RadioButton("User-defined").click();
 		new LabeledText("Fault Name:").setText(name);
+		save();
 	}
 }

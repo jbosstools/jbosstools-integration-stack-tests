@@ -1,4 +1,4 @@
-package org.jboss.tools.bpel.reddeer.matcher;
+package org.jboss.tools.bpel.reddeer.activity;
 
 import org.eclipse.gef.EditPart;
 import org.hamcrest.BaseMatcher;
@@ -9,7 +9,7 @@ import org.hamcrest.Description;
  * @author apodhrad
  * 
  */
-public class ActivityOfType<T extends EditPart> extends BaseMatcher<EditPart> {
+public class ActivityOfType extends BaseMatcher<EditPart> {
 
 	private String type;
 

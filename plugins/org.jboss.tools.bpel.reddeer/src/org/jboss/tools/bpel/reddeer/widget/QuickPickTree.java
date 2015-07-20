@@ -3,9 +3,10 @@ package org.jboss.tools.bpel.reddeer.widget;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.reddeer.swt.api.Tree;
+import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 
 /**
  * 
@@ -13,42 +14,36 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
  *
  */
 public class QuickPickTree {
-	
+
 	public static final String LABEL_QUICK_PICK = "Quick Pick:";
 
-	private static SWTWorkbenchBot bot = new SWTWorkbenchBot();
-	
-	private SWTBotTree tree;
+	private Tree tree;
 
 	public QuickPickTree() {
-		tree = bot.treeWithLabel(LABEL_QUICK_PICK);
+		tree = new DefaultTree();
 	}
 
 	public void pick(String operation) {
-		findItems(tree.getAllItems(), operation).get(0).select();
+		List<TreeItem> operations = findItems(tree.getAllItems(), operation);
+		if (operations.isEmpty()) {
+			throw new RuntimeException("Cannot find operation with name '" + operation + "'");
+		}
+		operations.get(0).select();
+		operations.get(0).doubleClick();
 	}
 
 	public void pick(String[] path) {
-		tree.expandNode(path).select();
+		new DefaultTreeItem(path).select();
 	}
 
-	private List<SWTBotTreeItem> findItems(SWTBotTreeItem[] treeItem, String label) {
-		List<SWTBotTreeItem> treeItems = new ArrayList<SWTBotTreeItem>();
-		for (int i = 0; i < treeItem.length; i++) {
-			treeItems.addAll(findItems(treeItem[i], label));
+	private List<TreeItem> findItems(List<TreeItem> treeItems, String label) {
+		List<TreeItem> result = new ArrayList<TreeItem>();
+		for (TreeItem treeItem : treeItems) {
+			if (label.equals(treeItem.getText())) {
+				result.add(treeItem);
+			}
 		}
-		return treeItems;
+		return result;
 	}
 
-	private List<SWTBotTreeItem> findItems(SWTBotTreeItem treeItem, String label) {
-		List<SWTBotTreeItem> treeItems = new ArrayList<SWTBotTreeItem>();
-		if (treeItem.getText().equals(label)) {
-			treeItems.add(treeItem);
-		}
-		SWTBotTreeItem[] ti = treeItem.getItems();
-		for (int i = 0; i < ti.length; i++) {
-			treeItems.addAll(findItems(ti[i], label));
-		}
-		return treeItems;
-	}
 }

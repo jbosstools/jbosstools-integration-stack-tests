@@ -1,7 +1,6 @@
 package org.jboss.tools.bpel.reddeer.activity;
 
 import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.tools.bpel.reddeer.view.BPELPropertiesView;
 
 /**
  * 
@@ -19,9 +18,11 @@ public class Scope extends ContainerActivity {
 	}
 
 	public Scope checkIsIsolated() {
-		BPELPropertiesView properties = new BPELPropertiesView();
-		properties.selectDetails();
+		select();
+		openProperties().selectDetails();
 		new CheckBox("Isolated").toggle(true);
+		save();
+
 		return this;
 	}
 

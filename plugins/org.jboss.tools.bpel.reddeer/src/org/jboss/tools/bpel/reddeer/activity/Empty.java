@@ -1,7 +1,6 @@
 package org.jboss.tools.bpel.reddeer.activity;
 
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.tools.bpel.reddeer.view.BPELPropertiesView;
 
 /**
  * 
@@ -35,8 +34,10 @@ public class Empty extends Activity {
 	}
 
 	private void changeTo(String num) {
-		BPELPropertiesView properties = new BPELPropertiesView();
-		properties.selectDetails();
+		select();
+		openProperties().selectDetails();
 		new PushButton(num).click();
+
+		save();
 	}
 }

@@ -1,4 +1,4 @@
-package org.jboss.tools.bpel.reddeer.matcher;
+package org.jboss.tools.bpel.reddeer.activity;
 
 import java.lang.reflect.Method;
 
@@ -8,29 +8,30 @@ import org.hamcrest.Description;
 
 /**
  * 
- * @author apodhrad
- * 
+ * @author Andrej Podhradsky (apodhrad@redhat.com)
+ *
  */
-public class ActivityWithName<T extends EditPart> extends BaseMatcher<EditPart> {
+public class ActivityWithName extends BaseMatcher<EditPart> {
 
-	private String label;
+	private String name;
 
-	public ActivityWithName(String label) {
-		this.label = label;
+	public ActivityWithName(String name) {
+		this.name = name;
 	}
 
 	@Override
 	public boolean matches(Object item) {
 		if (item instanceof EditPart) {
 			EditPart editPart = (EditPart) item;
-			return label.equals(getActivityName(editPart));
+			String activityName = getActivityName(editPart);
+			return activityName != null && activityName.equals(name);
 		}
 		return false;
 	}
 
 	@Override
 	public void describeTo(Description description) {
-		description.appendText(" activity with label '" + label + "'");
+		description.appendText("activity with name '" + name + "'");
 	}
 
 	public static String getActivityName(EditPart editPart) {
@@ -42,8 +43,8 @@ public class ActivityWithName<T extends EditPart> extends BaseMatcher<EditPart> 
 			Object result = method.invoke(model);
 			return (String) result;
 		} catch (Exception e) {
-			// e.printStackTrace();
 			return null;
 		}
 	}
+
 }

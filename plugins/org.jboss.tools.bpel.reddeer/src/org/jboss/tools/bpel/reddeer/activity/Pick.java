@@ -1,6 +1,5 @@
 package org.jboss.tools.bpel.reddeer.activity;
 
-import org.jboss.tools.bpel.reddeer.view.BPELPropertiesView;
 
 /**
  * 
@@ -14,9 +13,10 @@ public class Pick extends Activity {
 	}
 
 	public Pick checkCreateInstance() {
-		BPELPropertiesView properties = new BPELPropertiesView();
-		properties.toggleCreateInstance(true);
-		bpelEditor.save();
+		select();
+		openProperties().selectDetails().toggleCreateInstance(true);
+		save();
+
 		return this;
 	}
 
