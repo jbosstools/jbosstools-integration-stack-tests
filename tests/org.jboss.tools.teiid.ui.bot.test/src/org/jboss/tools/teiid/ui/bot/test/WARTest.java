@@ -35,7 +35,7 @@ import org.junit.runner.RunWith;
  */
 @RunWith(RedDeerSuite.class)
 @TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = {
-		ConnectionProfilesConstants.CP_ORACLE_BOOKS
+		ConnectionProfilesConstants.ORACLE_11G_BOOKS
 		})
 public class WARTest extends SWTBotTestCase {
 	private static Logger logger = new Logger(WARTest.class);
@@ -64,7 +64,7 @@ public class WARTest extends SWTBotTestCase {
 		}catch(Exception e){
 			logger.warn("Dialog \"Missing Password Required\" haven't been showed." );
 		}
-		new ModelExplorerManager().changeConnectionProfile(ConnectionProfilesConstants.CP_ORACLE_BOOKS, projectBooksWS, "books.xmi");
+		new ModelExplorerManager().changeConnectionProfile(ConnectionProfilesConstants.ORACLE_11G_BOOKS, projectBooksWS, "books.xmi");
 		VDBEditor ed = new VDBManager().getVDBEditor(projectBooksWS, vdbCheckBook);
 		ed.synchronizeAll();
 		ed.close();
@@ -79,7 +79,7 @@ public class WARTest extends SWTBotTestCase {
 		}catch(Exception e){
 			logger.warn("Dialog \"Missing Password Required\" haven't been showed." );
 		}
-		new ModelExplorerManager().changeConnectionProfile(ConnectionProfilesConstants.CP_ORACLE_BOOKS, projectBooksRest, "BooksSrc.xmi");
+		new ModelExplorerManager().changeConnectionProfile(ConnectionProfilesConstants.ORACLE_11G_BOOKS, projectBooksRest, "BooksSrc.xmi");
 		ed = new VDBManager().getVDBEditor(projectBooksRest, vdbBooksRest);
 		ed.synchronizeAll();
 		ed.close();

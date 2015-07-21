@@ -87,9 +87,9 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 	@Override
 	public void finish() {
 		super.finish();
+		new WaitWhile(new IsInProgress(), TimePeriod.NORMAL);
 		new WaitWhile(new ShellWithTextIsAvailable(TITLE), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
 	}
 
 	private void fillFirstPage() {
@@ -128,7 +128,6 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 		new PushButton(1, new WithMnemonicTextMatcher("...")).click();
 
 		new SelectTargetFolder().select(projectName);
-		new WaitWhile(new IsInProgress(), TimePeriod.NORMAL);
 	}
 
 	public void setConnectionProfile(String connectionProfile) {

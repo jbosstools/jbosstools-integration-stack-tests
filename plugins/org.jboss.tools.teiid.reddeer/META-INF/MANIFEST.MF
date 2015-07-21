@@ -21,7 +21,8 @@ Require-Bundle: org.eclipse.gef,
  org.eclipse.swt,
  org.eclipse.swtbot.forms.finder,
  org.eclipse.ui.forms,
- org.jboss.tools.runtime.reddeer;bundle-version="4.2.0"
+ org.jboss.tools.runtime.reddeer;bundle-version="4.2.0",
+ org.eclipse.datatools.connectivity
 Export-Package: org.jboss.tools.teiid.reddeer,
  org.jboss.tools.teiid.reddeer.condition,
  org.jboss.tools.teiid.reddeer.editor,
@@ -34,4 +35,5 @@ Export-Package: org.jboss.tools.teiid.reddeer,
  org.jboss.tools.teiid.reddeer.util,
  org.jboss.tools.teiid.reddeer.view,
  org.jboss.tools.teiid.reddeer.widget,
+ org.jboss.tools.teiid.reddeer.connection,
  org.jboss.tools.teiid.reddeer.wizard

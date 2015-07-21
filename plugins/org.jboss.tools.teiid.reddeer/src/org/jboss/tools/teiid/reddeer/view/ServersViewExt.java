@@ -201,15 +201,15 @@ public class ServersViewExt extends ServersView {
 		new ServersView().getServer(serverName);
 		new DefaultTreeItem(getServerLabel(serverName), TEIID_INSTANCE_CONFIG, DV6_PREFIX_URL, DATA_SOURCES).select();
 		new ContextMenu("Create Data Source").select();
-		new DefaultShell("Create Data Source");
+		new DefaultShell("");
 		new DefaultText().setText(connectionProfile);
 		new RadioButton("Use Connection Profile Info").click();
 		new DefaultCombo(1).setSelection(connectionProfile);
-		if (! new PushButton("Finish").isEnabled()){
+		if (! new PushButton("OK").isEnabled()){
 			System.err.println("Datasource " + connectionProfile + "exists!");
 			new PushButton("Cancel").click();
 		} else {
-			new PushButton("Finish").click();
+			new PushButton("OK").click();
 		}
 	}
 	

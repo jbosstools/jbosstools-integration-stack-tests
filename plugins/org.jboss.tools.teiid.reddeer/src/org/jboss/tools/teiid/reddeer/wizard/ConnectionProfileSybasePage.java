@@ -16,7 +16,7 @@ public class ConnectionProfileSybasePage extends ConnectionProfileDatabasePage {
 	public static final String LABEL_PORT_NUMBER = "Port:";
 	public static final String LABEL_USER_NAME = "User name:";
 	public static final String LABEL_PASSWORD = "Password:";
-	public static final String LABEL_SAVE_PASSWORD = "Save password";
+	public static final String LABEL_SAVE_PASSWORD = "Save Password";
 
 	public String getDatabase() {
 		return new LabeledText(LABEL_DATABASE).getText();

@@ -44,8 +44,8 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 @TeiidServer(state = ServerReqState.RUNNING,
 	connectionProfiles={
-		ConnectionProfilesConstants.CP_ORACLE_PARTS,
-		ConnectionProfilesConstants.CP_SQLSERVER_PARTS
+		ConnectionProfilesConstants.ORACLE_11G_PARTS_SUPPLIER,
+		ConnectionProfilesConstants.SQL_SERVER_2008_PARTS_SUPPLIER
 })
 public class VirtualGroupTutorialTest extends SWTBotTestCase {
 
@@ -56,11 +56,11 @@ public class VirtualGroupTutorialTest extends SWTBotTestCase {
 
 	private static final String ORACLE_MODEL_NAME = "PartsSupplier_Oracle.xmi";
 
-	private static final String ORACLE_CONNPROFILE_NAME = ConnectionProfilesConstants.CP_ORACLE_PARTS;
+	private static final String ORACLE_CONNPROFILE_NAME = ConnectionProfilesConstants.ORACLE_11G_PARTS_SUPPLIER;
 
 	private static final String SQLSERVER_MODEL_NAME = "PartsSupplier_SQLServer.xmi";
 
-	private static final String SQLSERVER_CONNPROFILE_NAME = ConnectionProfilesConstants.CP_SQLSERVER_PARTS;
+	private static final String SQLSERVER_CONNPROFILE_NAME = ConnectionProfilesConstants.SQL_SERVER_2008_PARTS_SUPPLIER;
 
 	private static final String VIRTUAL_MODEL_NAME = "PartsVirtual.xmi";
 

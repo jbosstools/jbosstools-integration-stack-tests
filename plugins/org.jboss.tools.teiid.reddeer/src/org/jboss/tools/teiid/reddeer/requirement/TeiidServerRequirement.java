@@ -24,6 +24,7 @@ import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.runtime.reddeer.ServerBase;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
+import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileHelper;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.util.FileUtils;
@@ -112,18 +113,10 @@ public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomC
 		new DefaultToolItem(new WorkbenchShell(), 0, new WithTooltipTextMatcher(new RegexMatcher("Save All.*"))).click();
 		
 		// create connection profiles
-
+		ConnectionProfileHelper connectionProfileHelper = new ConnectionProfileHelper();
 		for (String cp : teiid.connectionProfiles()){
 			ConnectionProfileConfig connectionProfile = getServerConfig().getConnectionProfile(cp);
-			String vendor = connectionProfile.getVendor();
-			Properties cpProps = connectionProfile.asProperties();
-			if ("LDAP".equals(vendor)){
-				new TeiidConnectionProfileWizard().createLdapConnectionProfile(cp, cpProps);				
-			}else if("SalesForce".equals(vendor)){
-				new TeiidConnectionProfileWizard().createSalesforceConnectionProfile(cp, cpProps);
-			}else{
-				new TeiidConnectionProfileWizard().createDatabaseProfile(cp, cpProps);
-			}
+			connectionProfileHelper.createConnectionProfile(connectionProfile);
 		}
 		
 	}

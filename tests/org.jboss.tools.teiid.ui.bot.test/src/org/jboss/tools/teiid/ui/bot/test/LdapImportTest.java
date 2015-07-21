@@ -52,8 +52,8 @@ import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
 @TeiidServer(state = ServerReqState.RUNNING, connectionProfiles={
-		ConnectionProfilesConstants.CP_LDAP,
-		ConnectionProfilesConstants.CP_RHDS
+		ConnectionProfilesConstants.LDAP,
+		ConnectionProfilesConstants.RHDS
 })
 public class LdapImportTest {
 	
@@ -89,7 +89,7 @@ public class LdapImportTest {
 		new ImportManager().importFromLdap(
 				NEW_PROJECT,
 				RHDS_MODEL, 
-				ConnectionProfilesConstants.CP_RHDS, 
+				ConnectionProfilesConstants.RHDS, 
 				cpProperties.getProperty("db.hostname"), 
 				cpProperties.getProperty("principalDnSuffix"),
 				importProperties
@@ -126,7 +126,7 @@ public class LdapImportTest {
 		new ImportManager().importFromLdap(
 				NEW_PROJECT,
 				LDAP_MODEL, 
-				ConnectionProfilesConstants.CP_LDAP, 
+				ConnectionProfilesConstants.LDAP, 
 				cpProperties.getProperty("db.hostname"), 
 				cpProperties.getProperty("principalDnSuffix"),
 				importProperties

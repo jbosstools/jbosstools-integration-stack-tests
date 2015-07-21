@@ -26,13 +26,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
-@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = {ConnectionProfilesConstants.CP_ORACLE_PARTS})
+@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = {ConnectionProfilesConstants.ORACLE_11G_PARTS_SUPPLIER})
 public class ProcedurePreviewTest {
 
 	private static final String PROJECT_NAME = "Partssupplier";
 	private static final String MODEL_SRC_NAME = "hsqldbParts";
 	private static final String MODEL_VIEW_NAME = "view";
-	private static final String PROFILE_NAME= ConnectionProfilesConstants.CP_ORACLE_PARTS;
+	private static final String PROFILE_NAME= ConnectionProfilesConstants.ORACLE_11G_PARTS_SUPPLIER;
 	private static final String UDF_LIB_PATH = "target/proc-udf/MyTestUdf/lib/";
 	private static final String UDF_LIB = "MyTestUdf-1.0-SNAPSHOT.jar";
 	

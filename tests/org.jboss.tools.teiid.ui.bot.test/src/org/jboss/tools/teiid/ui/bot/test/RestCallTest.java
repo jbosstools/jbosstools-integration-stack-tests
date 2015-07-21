@@ -31,7 +31,7 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 @TeiidServer(
 		state = ServerReqState.RUNNING
-		,connectionProfiles = {ConnectionProfilesConstants.CP_ORACLE_BOOKS}
+		,connectionProfiles = {ConnectionProfilesConstants.ORACLE_11G_BOOKS}
 )
 public class RestCallTest {
 	
@@ -61,7 +61,7 @@ public class RestCallTest {
 		log.info("After import");
 		new DefaultShell();
 		
-		new ModelExplorerManager().changeConnectionProfile(ConnectionProfilesConstants.CP_ORACLE_BOOKS, PROJECT_NAME, SRC_MODEL);
+		new ModelExplorerManager().changeConnectionProfile(ConnectionProfilesConstants.ORACLE_11G_BOOKS, PROJECT_NAME, SRC_MODEL);
 	}
 
 	@Test
@@ -105,7 +105,7 @@ public class RestCallTest {
 		war.deploy();
 
 		// create data source for BooksSrc
-		new ModelExplorerManager().createDataSource(ModelExplorerView.ConnectionSourceType.USE_CONNECTION_PROFILE_INFO, ConnectionProfilesConstants.CP_ORACLE_BOOKS, PROJECT_NAME, SRC_MODEL);
+		new ModelExplorerManager().createDataSource(ModelExplorerView.ConnectionSourceType.USE_CONNECTION_PROFILE_INFO, ConnectionProfilesConstants.ORACLE_11G_BOOKS, PROJECT_NAME, SRC_MODEL);
 
 		// synchronize vdb before deploying
 		new VDBManager().getVDBEditor(PROJECT_NAME, VDB_NAME_1).synchronizeAll();
@@ -155,7 +155,7 @@ public class RestCallTest {
 
 		// create data source for BooksSrc
 		new ModelExplorerManager().createDataSource(ModelExplorerView.ConnectionSourceType.USE_CONNECTION_PROFILE_INFO,
-				ConnectionProfilesConstants.CP_ORACLE_BOOKS, PROJECT_NAME, SRC_MODEL);
+				ConnectionProfilesConstants.ORACLE_11G_BOOKS, PROJECT_NAME, SRC_MODEL);
 
 		// synchronize vdb before deploying
 		new VDBManager().getVDBEditor(PROJECT_NAME, VDB_NAME_2).synchronizeAll();

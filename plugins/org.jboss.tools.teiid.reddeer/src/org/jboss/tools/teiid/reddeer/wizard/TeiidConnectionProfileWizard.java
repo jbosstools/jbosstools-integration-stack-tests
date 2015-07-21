@@ -13,6 +13,7 @@ import org.jboss.reddeer.eclipse.datatools.ui.DriverTemplate;
 import org.jboss.reddeer.eclipse.datatools.ui.FlatFileProfile;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileDatabasePage;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileFlatFilePage;
+import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileGenericPage;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileSelectPage;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileWizard;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
@@ -40,6 +41,9 @@ public class TeiidConnectionProfileWizard extends ConnectionProfileWizard {
 	public TeiidConnectionProfileWizard() {
 		super();
 		wizardMap.put("DB2 for Linux, UNIX, and Windows", new ConnectionProfileDB2Page());
+		wizardMap.put("HSQLDB", new ConnectionProfileHsqlPage());
+		wizardMap.put("Sybase ASE", new ConnectionProfileGenericPage());
+		wizardMap.put("Ingres", new ConnectionProfileGenericPage());
 	}
 
 	/**
