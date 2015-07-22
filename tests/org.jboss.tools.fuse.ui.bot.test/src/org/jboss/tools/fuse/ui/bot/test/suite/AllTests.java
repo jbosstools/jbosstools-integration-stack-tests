@@ -4,6 +4,7 @@ import junit.framework.TestSuite;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.fuse.ui.bot.test.CamelEditorTest;
+import org.jboss.tools.fuse.ui.bot.test.DataTransformationTest;
 import org.jboss.tools.fuse.ui.bot.test.DebuggerTest;
 import org.jboss.tools.fuse.ui.bot.test.DeploymentTest;
 import org.jboss.tools.fuse.ui.bot.test.DownloadServerTest;
@@ -28,6 +29,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @SuiteClasses({
 	CamelEditorTest.class,
+	DataTransformationTest.class,
 	DebuggerTest.class,
 	DeploymentTest.class,
 	DownloadServerTest.class,
