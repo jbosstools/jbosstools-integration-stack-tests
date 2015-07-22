@@ -13,8 +13,11 @@ import org.eclipse.ui.part.FileEditorInput;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.gef.GEFLayerException;
+import org.jboss.reddeer.gef.api.Palette;
 import org.jboss.reddeer.gef.editor.GEFEditor;
+import org.jboss.reddeer.gef.handler.ViewerHandler;
 import org.jboss.reddeer.gef.impl.editpart.LabeledEditPart;
+import org.jboss.reddeer.gef.view.PaletteView;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -50,6 +53,37 @@ public class CamelEditor extends GEFEditor {
 	}
 
 	/**
+	 * Adds a component into the Camel Editor at given position
+	 * 
+	 * @param component component to add
+	 * @param x x-axis position
+	 * @param y y-axis position
+	 */
+	public void addCamelComponent(CamelComponent component, int x, int y) {
+
+		log.debug("Adding '" + component.getLabel() + "' component into the Camel Editor at position [" + x + "," + y + "]");
+		addToolFromPalette(component.getPaletteEntry(), x, y);
+		AbstractWait.sleep(TimePeriod.SHORT);
+	}
+
+	/**
+	 * Adds a component into the Camel Editor on defined coordinates<br/>
+	 * <b>Note:</b>It does not wait until a new node is in the Camel Editor.
+	 * 
+	 * @param component Name of a component in Palette view
+	 * @param x x-axis coordinate
+	 * @param y y-axis coordinate
+	 */
+	public void addCamelComponent(String component, int x, int y) {
+
+		log.debug("Adding '" + component + "' component into the Camel Editor");
+		new PaletteView().open();
+		Palette palette = ViewerHandler.getInstance().getPalette(viewer);
+		palette.activateTool(component);
+		click(x, y);
+	}
+
+	/**
 	 * Adds a component into the Camel Editor
 	 * 
 	 * @param component
@@ -57,9 +91,7 @@ public class CamelEditor extends GEFEditor {
 	 */
 	public void addCamelComponent(CamelComponent component) {
 
-		log.debug("Adding '" + component.getLabel() + "' component into the Camel Editor");
-		addToolFromPalette(component.getPaletteEntry(), 0, 0);
-		AbstractWait.sleep(TimePeriod.SHORT);
+		addCamelComponent(component, 0, 0);
 	}
 
 	/**
@@ -72,6 +104,19 @@ public class CamelEditor extends GEFEditor {
 
 		log.debug("Removing '" + component.getLabel() + "' component from the Camel Editor");
 		new LabeledEditPart(component.getLabel()).select();
+		new ContextMenu("Remove").select();
+	}
+
+	/**
+	 * Deletes the given component from the Camel Editor
+	 * 
+	 * @param component
+	 *            label of the component to delete
+	 */
+	public void deleteCamelComponent(String component) {
+
+		log.debug("Removing '" + component + "' component from the Camel Editor");
+		new LabeledEditPart(component).select();
 		new ContextMenu("Remove").select();
 	}
 
@@ -328,6 +373,21 @@ public class CamelEditor extends GEFEditor {
 		properties.activate();
 		properties.selectTab("Generic");
 		new LabeledText(name).setText(value);
+		activate();
+		AbstractWait.sleep(TimePeriod.SHORT);
+	}
+
+	/**
+	 * Sets 'Uri' property
+	 * 
+	 * @param value value of 'Uri'
+	 */
+	public void setUriProperty(String value) {
+
+		log.debug("Setting '" + value + "' as the property 'Uri' of selelected component in the Camel Editor");
+		new PropertiesView().open();
+		new PropertiesView().selectTab("Generic");
+		new DefaultCombo(0).setText(value);
 		activate();
 		AbstractWait.sleep(TimePeriod.SHORT);
 	}
