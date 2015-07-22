@@ -27,6 +27,7 @@ import org.jboss.reddeer.swt.lookup.WidgetLookup;
 import org.jboss.reddeer.swt.util.Display;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 
 
 /**
@@ -73,6 +74,16 @@ public class TeiidConnectionImportWizard extends ImportWizardDialog{
 	//specific to JDBC, SF
 	public static final String TABLES_TO_IMPORT = "tablesToImport";
 	
+	public static final String IMPORT_PROPERTY_SCHEMA_PATTERN = "Schema Pattern";
+	public static final String IMPORT_PROPERTY_TABLE_NAME_PATTERN = "Table Name Pattern";
+	public static final String IMPORT_PROPERTY_CATALOG = "catalog";
+	public static final String IMPORT_PROPERTY_EXCEL_FILENAME = "Excel File";
+	public static final String IMPORT_PROPERTY_HEADER_ROW_NUMBER = "Header Row Number";
+	
+	public static final String DATASOURCE_PROPERTY_URL = "* URL, End Point";
+	public static final String DATASOURCE_PROPERTY_PARENT_DIR = "* Parent Directory";
+	
+	
 	/**
 	 * Invoke teiid connection importer
 	 */
@@ -100,12 +111,14 @@ public class TeiidConnectionImportWizard extends ImportWizardDialog{
 		setFocus();
 		
 		next();
+		
+		new WaitWhile(new IsInProgress(), TimePeriod.NORMAL, false);
 		setFocus();
 
 		fillFourthPage();//choose items to be imported<
 		
 		setFocus();
-		finish();
+		finish(TimePeriod.VERY_LONG);
 	}
 	
 	public void fillFirstPage(){

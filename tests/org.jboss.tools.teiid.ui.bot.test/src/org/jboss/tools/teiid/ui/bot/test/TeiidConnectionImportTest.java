@@ -7,7 +7,7 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
+import org.jboss.tools.teiid.reddeer.manager.ConnectionProfilesConstants;
 import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.manager.ImportMetadataManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
@@ -15,126 +15,101 @@ import org.jboss.tools.teiid.reddeer.manager.VDBManager;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
-import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.TeiidConnectionImportWizard;
-import org.jboss.tools.teiid.reddeer.wizard.TeiidConnectionProfileWizard;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
-* Tests functionality of Teiid connection importer
-* @author Lucie Fabrikova, lfabriko@redhat.com
-*
-*/
+ * Tests functionality of Teiid connection importer
+ * 
+ * @author Lucie Fabrikova, lfabriko@redhat.com
+ *
+ */
 @RunWith(RedDeerSuite.class)
-@TeiidServer(state = ServerReqState.RUNNING)
-public class TeiidConnectionImportTest extends SWTBotTestCase{
+@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = { ConnectionProfilesConstants.DB2_101_BQT,
+		ConnectionProfilesConstants.DB2_81_BQT2, ConnectionProfilesConstants.DB2_97_BQT2,
+		ConnectionProfilesConstants.ORACLE_10G_BQT2, ConnectionProfilesConstants.ORACLE_11G_BQT2,
+		ConnectionProfilesConstants.ORACLE_12C_BQT, ConnectionProfilesConstants.SQL_SERVER_2005_BQT2,
+		ConnectionProfilesConstants.SQL_SERVER_2008_BQT2, ConnectionProfilesConstants.SQL_SERVER_2012_BQT2,
+		ConnectionProfilesConstants.DV6_DS1, ConnectionProfilesConstants.AUDIOBOOKS_HSQLDB,
+		ConnectionProfilesConstants.SQL_SERVER_2000_BQT2, ConnectionProfilesConstants.MYSQL_50_BQT2,
+		ConnectionProfilesConstants.MYSQL_51_BQT2, ConnectionProfilesConstants.MYSQL_55_BQT2,
+		ConnectionProfilesConstants.POSTGRESQL_84_BQT2, ConnectionProfilesConstants.POSTGRESQL_91_BQT2,
+		ConnectionProfilesConstants.POSTGRESQL_92_DVQE, ConnectionProfilesConstants.SYBASE_15_BQT2,
+		ConnectionProfilesConstants.INGRES_10_BQT2, ConnectionProfilesConstants.SALESFORCE,
+		ConnectionProfilesConstants.SQL_SERVER_2008_BOOKS })
+public class TeiidConnectionImportTest extends SWTBotTestCase {
 
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;
 
-	private static final String serverFile = "dv6.properties";
 	private static final String PROJECT_NAME = "TeiidConnImporter";
-	private static final String archiveLocation = "resources/projects/TeiidConnImporter.zip";
-	private static final String serverName = "EAP-6.1";
-	
-	//SQL Server
-//	private static final String sqlserverCP = "SQL Server";
-//	private static final String sqlserverCPProps = "resources/db/sqlserver_books.properties";
-//	private static final String sqlserverDSProps = "resources/teiidImporter/sqlserver_books_ds.properties";
-	
+	private static final String projectLocation = "resources/projects/TeiidConnImporter";
+
+	private static final String modeshapeCPName = "ModeShapeDS";
+
 	private static final String sqlserverExistingModelName = "sqlserver";
-	
-	private static final String sqlserverCPName= "sqlserver_books";
+
+	private static final String sqlserverCPName = ConnectionProfilesConstants.SQL_SERVER_2008_BOOKS;
 	private static final String sqlserverModelName = "SqlServerImported";
-	
-	//file
-	private static final String fileDSProps = "resources/teiidImporter/file_items_ds.properties";
-	private static final String FILE_MODEL = "file";
-	
-	//oracle
-	private static final String oracleCPName = "oracle_parts";
+
+	// file
+	private static final String FILE_MODEL = "FileImported";
+
+	// oracle
+	private static final String oracleCPName = ConnectionProfilesConstants.ORACLE_11G_PARTS_SUPPLIER;
 	private static final String oracleModelName = "OracleImported";
-	
-	//hsql
-	private static final String hsqlCPName= "hsqldb";
+
+	// hsql
+	private static final String hsqlCPName = "hsqldb";
 	private static final String hsqlModel = "HsqldbImported";
-	
-	//sybase
-	private static final String sybaseCP = "Sybase";
-	private static final String sybaseCPProps = "resources/db/sybase.properties";
-	private static final String sybaseCPName= "sybase";
-	private static final String sybaseModel = "sybase";
-	
-	//sybase jtds
+
+	// sybase
+	private static final String sybaseCPName = ConnectionProfilesConstants.SYBASE_15_BQT2;
+	private static final String sybaseModelName = "SybaseImported";
+
+	// sybase jtds
 	private static final String sybaseJtdsCP = "SybaseJtds";
 	private static final String sybaseJtdsCPProps = "resources/db/sybase-jtds.properties";
 	private static final String sybaseJtdsModel = "sybaseJtds";
-	
+
 	private static TeiidBot teiidBot = new TeiidBot();
+
 	/**
 	 * Create new Teiid Model Project
 	 */
 	@BeforeClass
-	public static void createProject(){
-		new ImportManager().importProject(teiidBot.toAbsolutePath(archiveLocation));
-		
-		String[] connectionProfiles = {oracleCPName, hsqlCPName, sqlserverCPName};
-		
-		for (String cpName : connectionProfiles){
-			Properties cpProperties = teiidServer.getServerConfig().getConnectionProfile(cpName).asProperties();
-			cpProperties.setProperty(TeiidConnectionProfileWizard.KEY_CONNECT_AFTER_COMPLETING, "false");
-			new ConnectionProfileManager().createCPWithDriverDefinition(cpName,
-					cpProperties);
-			new ServersViewExt().createDatasource(teiidServer.getName(), cpName);
-		}
+	public static void createProject() {
+		new ImportManager().importProject(teiidBot.toAbsolutePath(projectLocation));
 		new ModelExplorer().getModelProject(PROJECT_NAME).open();
 
 	}
-	
-	@Test // NOK -- causes NPE for this test and all remaining, logged as TEIIDDES-2456
-	@Ignore
-	public void fileTest(){
+
+	@Test
+	public void fileTest() {
 		Properties iProps = new Properties();
 		iProps.setProperty(TeiidConnectionImportWizard.CREATE_NEW_DATA_SOURCE, "true");
 		iProps.setProperty(TeiidConnectionImportWizard.NEW_DATA_SOURCE_NAME, "fileDS");
 		iProps.setProperty(TeiidConnectionImportWizard.DRIVER_NAME, "file");
-		
-		new ServersViewExt().deleteDatasource(teiidServer.getName(), iProps.getProperty(TeiidConnectionImportWizard.NEW_DATA_SOURCE_NAME));
-		
+
+		new ServersViewExt().deleteDatasource(teiidServer.getName(), "fileDS");
+
 		Properties dsProps = new Properties();
 		dsProps = teiidBot.getProperties("resources/teiidImporter/file_items_ds.properties");
 		String absPath = teiidBot.toAbsolutePath(dsProps.getProperty("* Parent Directory"));
 		dsProps.setProperty("* Parent Directory", absPath);
-		
+
 		new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME, FILE_MODEL, iProps, dsProps);
 
-		teiidBot.assertResource(PROJECT_NAME, FILE_MODEL + ".xmi", "PARTS");
-	}
-	
-	@Test
-	public void oracleTest(){
-		Properties iProps = new Properties();
-		iProps.setProperty(TeiidConnectionImportWizard.DATA_SOURCE_NAME, oracleCPName);
-		iProps.setProperty(TeiidConnectionImportWizard.DRIVER_NAME, "ojdbc6.jar");//??
-		
-		Properties teiidImporterProperties = new Properties();
-		teiidImporterProperties.setProperty("Schema Pattern", "%PARTSSUPPLIER%");
-		teiidImporterProperties.setProperty("Table Name Pattern", "PARTS");
-		teiidImporterProperties.setProperty("SomeOtherProperty", "someValue");
-		
-		new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME, oracleModelName, iProps, null, teiidImporterProperties);
-
-		teiidBot.assertResource(PROJECT_NAME, oracleModelName + ".xmi", "PARTS");
-		
-		// FIXME: check the imported model
+		teiidBot.assertResource(PROJECT_NAME, FILE_MODEL + ".xmi", "getTextFiles");
 	}
 
 	@Test
-	public void hsqlTest(){
+	public void hsqlTest() {
+		new ServersViewExt().createDatasource(teiidServer.getName(), hsqlCPName);
+
 		Properties iProps = new Properties();
 		iProps.setProperty(TeiidConnectionImportWizard.DATA_SOURCE_NAME, hsqlCPName);
 		iProps.setProperty(TeiidConnectionImportWizard.DRIVER_NAME, "hsqldb.jar");
@@ -142,167 +117,318 @@ public class TeiidConnectionImportTest extends SWTBotTestCase{
 
 		Properties teiidImporterProperties = new Properties();
 		teiidImporterProperties.setProperty("Schema Pattern", "PUBLIC%");
-		
-		new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME,
-			hsqlModel, iProps, null, teiidImporterProperties);
-		
+
+		new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME, hsqlModel, iProps, null,
+				teiidImporterProperties);
 
 		teiidBot.assertResource(PROJECT_NAME, hsqlModel + ".xmi", "CUSTOMER");
-		// FIXME: check the imported model
 	}
-	
-	//@Test OK
-//	public void sqlserverCreateNewDSTest() {
-//		new ConnectionProfileManager().createCPWithDriverDefinition(sqlserverCP, sqlserverCPProps);
-//		new ModelProjectManager().changeConnectionProfile(sqlserverCP, PROJECT_NAME, sqlserverModel);
-//		new ServerManager().startServer(serverName);
-//		
-//		String sqlserverDSProps = "resources/teiidImporter/sqlserver_books_ds.properties";
-//		
-//		// sql server
-//		Properties iProps = new Properties();
-//		iProps.setProperty(
-//				TeiidConnectionImportWizard.CREATE_NEW_DATA_SOURCE, "true");
-//		iProps.setProperty(
-//				TeiidConnectionImportWizard.NEW_DATA_SOURCE_NAME, "sqlDS");
-//		iProps.setProperty(
-//				TeiidConnectionImportWizard.DRIVER_NAME, "sqljdbc4.jar");
-//		iProps.setProperty(
-//				TeiidConnectionImportWizard.TABLES_TO_IMPORT,
-//				"Objects to Create/BOOKS,Objects to Create/AUTHORS");// path separated by /, tables by ,
-//		//create new source
-//		//import from it
-//		new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME, sqlserverModel+"Imp", iProps, new TeiidBot().getProperties(sqlserverDSProps));
-//		teiidBot.checkResource(PROJECT_NAME, sqlserverModel+"Imp.xmi","BOOKS");
-//		teiidBot.checkResource(PROJECT_NAME, sqlserverModel+"Imp.xmi","AUTHORS");
-//	}
-	
-	@Test //OK
-	public void sqlserverTest() {
-		Properties sqlserverImportProps = new Properties();
-		sqlserverImportProps.setProperty(TeiidConnectionImportWizard.DATA_SOURCE_NAME, sqlserverCPName);
-		sqlserverImportProps.setProperty(
-				TeiidConnectionImportWizard.DRIVER_NAME, "sqljdbc4.jar");
 
-		new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME,
-				sqlserverModelName, sqlserverImportProps, null);
-		
-		new DefaultShell();
-		teiidBot.assertResource(PROJECT_NAME, sqlserverModelName + ".xmi","AUTHORS");
-		
-		// FIXME: check the imported model
-	}
-	
-	//@Test //NOK
-//	public void sybaseTest(){//requires module jconn3
-//		setup(sybaseCP, sybaseCPProps, sybaseModel);
-//		
-//		Properties iProps = new Properties();
-//		iProps.setProperty(TeiidConnectionImportWizard.DATA_SOURCE_NAME, sybaseModel);
-//		iProps.setProperty(
-//				TeiidConnectionImportWizard.DRIVER_NAME, "jconn3.jar");
-//
-//		try {
-//			new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME,
-//					sybaseModel+"Imp", iProps, null);
-//		} catch (Exception e){
-//			System.err.println("Sybase jconn3 test failed, " + e.getMessage()); e.printStackTrace();
-//		}
-//	}
-	
-	//@Test //NOK
-//	public void sybaseJtdsTest(){//requires module jtds
-//		setup(sybaseJtdsCP, sybaseJtdsCPProps, sybaseJtdsModel);
-//		
-//		Properties iProps = new Properties();
-//		iProps.setProperty(TeiidConnectionImportWizard.DATA_SOURCE_NAME, sybaseJtdsModel);
-//		iProps.setProperty(
-//				TeiidConnectionImportWizard.DRIVER_NAME, "jtds-1.3.1.jar");
-//
-//		try {
-//			new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME,
-//					sybaseJtdsModel+"Imp", iProps, null);
-//		} catch (Exception e){
-//			System.err.println("Sybase jtds test failed, " + e.getMessage()); e.printStackTrace();
-//		}
-//	}
-	
 	@Test
-	public void h2Test(){
-		//use default DV ds
+	public void h2Test() {
+		// use default DV ds
 		Properties iProps = new Properties();
 		iProps.setProperty(TeiidConnectionImportWizard.DATA_SOURCE_NAME, "ExampleDS");
 		String model = "h2Imp";
 		String items = "Objects to Create/CONSTANTS";
 		iProps.setProperty(TeiidConnectionImportWizard.TABLES_TO_IMPORT, items);
-		
-		
-		new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME, model, iProps, null);
-		teiidBot.assertResource(PROJECT_NAME, model + ".xmi","CONSTANTS");
 
-		// FIXME: check the imported model
+		new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME, model, iProps, null);
+		teiidBot.assertResource(PROJECT_NAME, model + ".xmi", "CONSTANTS");
+
 	}
-	
-	@Test // NOK -- causes NPE for this test and all remaining, logged as TEIIDDES-2456
-	@Ignore
-	public void salesforceTest(){
-		//create new source
+
+	@Test
+	public void salesforceTest() {
 		Properties iProps = new Properties();
 		iProps.setProperty(TeiidConnectionImportWizard.CREATE_NEW_DATA_SOURCE, "true");
 		iProps.setProperty(TeiidConnectionImportWizard.NEW_DATA_SOURCE_NAME, "sfDS");
 		iProps.setProperty(TeiidConnectionImportWizard.DRIVER_NAME, "salesforce");
-		
-		new ServersViewExt().deleteDatasource(teiidServer.getName(), iProps.getProperty(TeiidConnectionImportWizard.NEW_DATA_SOURCE_NAME));
-		
-//		Properties sfProps = teiidBot.getProperties(teiidBot.toAbsolutePath("resources/db/salesforce.properties"));
+
+		new ServersViewExt().deleteDatasource(teiidServer.getName(), "sfDS");
+
 		Properties sfProps = teiidServer.getServerConfig().getConnectionProfile("salesforce").asProperties();
-		
+
 		Properties dsProps = new Properties();
 		dsProps.setProperty("* Password", sfProps.getProperty("db.password"));
 		dsProps.setProperty("* User Name", sfProps.getProperty("db.username"));
-		//import from it
-		
+
 		String model = "sfImp";
-		
+
 		new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME, model, iProps, dsProps);
 
-		// FIXME: check the imported model
 	}
-	
+
 	@Test
-	public void teiidTest(){
+	public void teiidTest() {
 		String sourceVdb = "teiid";
 
-		new ModelExplorerManager().changeConnectionProfile(sqlserverCPName, PROJECT_NAME, sqlserverExistingModelName);
-		
+		new ModelExplorerManager().changeConnectionProfile(ConnectionProfilesConstants.SQL_SERVER_2008_BOOKS,
+				PROJECT_NAME, sqlserverExistingModelName);
+
 		new DefaultShell();
-		
-		String[] pathToVDB = new String[]{PROJECT_NAME, sourceVdb+".vdb"};
-		
+
+		String[] pathToVDB = new String[] { PROJECT_NAME, sourceVdb + ".vdb" };
+
 		try {
 			new VDBManager().getVDBEditor(PROJECT_NAME, sourceVdb + ".vdb").synchronizeAll();
-		} catch (Exception e){
+		} catch (Exception e) {
 			System.out.println("VDB is synchronized");
 		}
-		
+
 		new VDBManager().deployVDB(pathToVDB);
-		
+
 		try {
 			new VDBManager().createVDBDataSource(pathToVDB);
-		} catch (Exception e){
+		} catch (Exception e) {
 			System.err.println("VDB data source exists");
 		}
-		
+
 		Properties iProps = new Properties();
 		iProps.setProperty(TeiidConnectionImportWizard.DATA_SOURCE_NAME, sourceVdb);
-		
-		String model = sourceVdb+"Imp";
-		
-		new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME, model, iProps, null);
-		teiidBot.assertResource(PROJECT_NAME, model + ".xmi","AUTHORS");
 
-		// FIXME: check the imported model
+		String model = sourceVdb + "Imp";
+
+		new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME, model, iProps, null);
+		teiidBot.assertResource(PROJECT_NAME, model + ".xmi", "AUTHORS");
+
 	}
-	
-	//TODO add resources which SHOULD work
+
+	@Test
+	public void db2101Test() {
+		Properties teiidImporterProperties = new Properties();
+		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "SMALL%");
+		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_SCHEMA_PATTERN, "%BQT%");
+		importModel(ConnectionProfilesConstants.DB2_101_BQT, "db2101Model", teiidImporterProperties);
+		checkImportedModel("db2101Model", "SMALLA", "SMALLB");
+
+	}
+
+	@Test
+	public void db281Test() {
+		Properties teiidImporterProperties = new Properties();
+		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "SMALL%");
+		importModel(ConnectionProfilesConstants.DB2_81_BQT2, "db281Model", teiidImporterProperties);
+		checkImportedModel("db281Model", "SMALLA", "SMALLB");
+
+	}
+
+	@Test
+	public void db297Test() {
+		Properties teiidImporterProperties = new Properties();
+		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "SMALL%");
+		importModel(ConnectionProfilesConstants.DB2_97_BQT2, "db297Model", teiidImporterProperties);
+		checkImportedModel("db297Model", "SMALLA", "SMALLB");
+
+	}
+
+	@Test
+	public void ingres10Test() {
+		Properties teiidImporterProperties = new Properties();
+		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "small%");
+		importModel(ConnectionProfilesConstants.INGRES_10_BQT2, "ingres10Model", teiidImporterProperties);
+		checkImportedModel("ingres10Model", "smalla", "smallb");
+
+	}
+
+	@Test
+	public void oracle10gTest() {
+		Properties teiidImporterProperties = new Properties();
+		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "SMALL%");
+		importModel(ConnectionProfilesConstants.ORACLE_10G_BQT2, "oracle10gModel", teiidImporterProperties);
+		checkImportedModel("oracle10gModel", "SMALLA", "SMALLB");
+
+	}
+
+	@Test
+	public void oracle11gTest() {
+		Properties teiidImporterProperties = new Properties();
+		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "SMALL%");
+		importModel(ConnectionProfilesConstants.ORACLE_11G_BQT2, "oracle11gModel", teiidImporterProperties);
+		checkImportedModel("oracle11gModel", "SMALLA", "SMALLB");
+
+	}
+
+	@Test
+	public void oracle12cTest() {
+		Properties teiidImporterProperties = new Properties();
+		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "SMALL%");
+		importModel(ConnectionProfilesConstants.ORACLE_12C_BQT, "oracle12cModel", teiidImporterProperties);
+		checkImportedModel("oracle12cModel", "SMALLA", "SMALLB");
+
+	}
+
+	@Test
+	public void sqlServer2005Test() {
+		Properties teiidImporterProperties = new Properties();
+		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "Small%");
+		importModel(ConnectionProfilesConstants.SQL_SERVER_2005_BQT2, "sqlServer2005Model", teiidImporterProperties);
+		checkImportedModel("sqlServer2005Model", "SmallA", "SmallB");
+
+	}
+
+	@Test
+	public void sqlServer2008Test() {
+		Properties teiidImporterProperties = new Properties();
+		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "Small%");
+		importModel(ConnectionProfilesConstants.SQL_SERVER_2008_BQT2, "sqlServer2008Model", teiidImporterProperties);
+		checkImportedModel("sqlServer2008Model", "SmallA", "SmallB");
+
+	}
+
+	@Test
+	public void sqlServer2012Test() {
+		Properties teiidImporterProperties = new Properties();
+		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "Small%");
+		importModel(ConnectionProfilesConstants.SQL_SERVER_2012_BQT2, "sqlServer2012Model", teiidImporterProperties);
+		checkImportedModel("sqlServer2012Model", "SmallA", "SmallB");
+
+	}
+
+	@Test
+	public void sybaseTest() {
+		Properties teiidImporterProperties = new Properties();
+		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "Small%");
+		importModel(ConnectionProfilesConstants.SYBASE_15_BQT2, "sybaseModel", teiidImporterProperties);
+		checkImportedModel("sybaseModel", "SmallA", "SmallB");
+
+	}
+
+	@Test
+	public void mysql50Test() {
+		Properties teiidImporterProperties = new Properties();
+		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "small%");
+		importModel(ConnectionProfilesConstants.MYSQL_50_BQT2, "mysql50Model", teiidImporterProperties);
+		checkImportedModel("mysql50Model", "smalla", "smallb");
+
+	}
+
+	@Test
+	public void mysql51Test() {
+		Properties teiidImporterProperties = new Properties();
+		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "small%");
+		importModel(ConnectionProfilesConstants.MYSQL_51_BQT2, "mysql51Model", teiidImporterProperties);
+		checkImportedModel("mysql51Model", "smalla", "smallb");
+
+	}
+
+	@Test
+	public void mysql55Test() {
+		Properties teiidImporterProperties = new Properties();
+		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "small%");
+		importModel(ConnectionProfilesConstants.MYSQL_55_BQT2, "mysql55Model", teiidImporterProperties);
+		checkImportedModel("mysql55Model", "smalla", "smallb");
+
+	}
+
+	@Test
+	public void postgresql84Test() {
+		Properties teiidImporterProperties = new Properties();
+		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "small%");
+		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_SCHEMA_PATTERN, "%public%");
+		importModel(ConnectionProfilesConstants.POSTGRESQL_84_BQT2, "postgresql84Model", teiidImporterProperties);
+		checkImportedModel("postgresql84Model", "smalla", "smallb");
+
+	}
+
+	@Test
+	public void postgresql91Test() {
+		Properties teiidImporterProperties = new Properties();
+		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "small%");
+		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_SCHEMA_PATTERN, "public");
+		importModel(ConnectionProfilesConstants.POSTGRESQL_91_BQT2, "postgresql91Model", teiidImporterProperties);
+		checkImportedModel("postgresql91Model", "smalla", "smallb");
+
+	}
+
+	@Test
+	public void postgresql92Test() {
+		Properties teiidImporterProperties = new Properties();
+		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "small%");
+		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_SCHEMA_PATTERN, "public");
+		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_CATALOG, "dvqe");
+		importModel(ConnectionProfilesConstants.POSTGRESQL_92_DVQE, "postgresql92Model", teiidImporterProperties);
+		checkImportedModel("postgresql92Model", "smalla", "smallb");
+
+	}
+
+	@Test
+	public void modeshapeTest() {
+		Properties teiidImporterProperties = new Properties();
+		teiidImporterProperties
+				.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "mix:title");
+		new DefaultShell();
+
+		Properties iProps = new Properties();
+		iProps.setProperty(TeiidConnectionImportWizard.DATA_SOURCE_NAME, modeshapeCPName);
+		new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME, "ModeshapeModel", iProps, null,
+				teiidImporterProperties);
+		checkImportedModel("ModeshapeModel", "mix:title");
+	}
+
+	@Test
+	public void excelTest() {
+		String modelName = "ExcelModel";
+
+		Properties iProps = new Properties();
+		iProps.setProperty(TeiidConnectionImportWizard.CREATE_NEW_DATA_SOURCE, "true");
+		iProps.setProperty(TeiidConnectionImportWizard.NEW_DATA_SOURCE_NAME, "excelDS");
+		iProps.setProperty(TeiidConnectionImportWizard.DRIVER_NAME, "file");
+		iProps.setProperty(TeiidConnectionImportWizard.TRANSLATOR, "excel");
+
+		Properties dsProps = new Properties();
+		dsProps.put(TeiidConnectionImportWizard.DATASOURCE_PROPERTY_PARENT_DIR,
+				teiidBot.toAbsolutePath("resources/excel"));
+
+		Properties teiidImporterProps = new Properties();
+		teiidImporterProps.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_EXCEL_FILENAME, "smalla.xlsx");
+		teiidImporterProps.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_HEADER_ROW_NUMBER, "1");
+
+		new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME, modelName, iProps, dsProps,
+				teiidImporterProps);
+
+		teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", "Sheet1");
+		teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", "Sheet1", "ROW_ID : int");
+		teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", "Sheet1", "StringNum : string(10)");
+	}
+
+	@Test
+	public void odataTest() {
+		String modelName = "OdataModel";
+
+		Properties iProps = new Properties();
+		iProps.setProperty(TeiidConnectionImportWizard.CREATE_NEW_DATA_SOURCE, "true");
+		iProps.setProperty(TeiidConnectionImportWizard.NEW_DATA_SOURCE_NAME, "odataDS");
+		iProps.setProperty(TeiidConnectionImportWizard.DRIVER_NAME, "webservice");
+		iProps.setProperty(TeiidConnectionImportWizard.TRANSLATOR, "odata");
+
+		Properties dsProps = new Properties();
+		dsProps.put(TeiidConnectionImportWizard.DATASOURCE_PROPERTY_URL,
+				"http://services.odata.org/Northwind/Northwind.svc");
+
+		new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME, modelName, iProps, dsProps);
+
+		teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", "Customers");
+		teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", "Customers", "CustomerID : string(5)");
+		teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", "Employees", "EmployeeID : int");
+	}
+
+	private void checkImportedModel(String modelName, String... tables) {
+		new DefaultShell();
+		for (String table : tables) {
+			teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", table);
+		}
+	}
+
+	private void importModel(String cpName, String modelName, Properties teiidImporterProperties) {
+		new DefaultShell();
+		new ServersViewExt().createDatasource(teiidServer.getName(), cpName);
+
+		Properties iProps = new Properties();
+		iProps.setProperty(TeiidConnectionImportWizard.DATA_SOURCE_NAME, cpName);
+
+		new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME, modelName, iProps, null,
+				teiidImporterProperties);
+	}
+
 }
