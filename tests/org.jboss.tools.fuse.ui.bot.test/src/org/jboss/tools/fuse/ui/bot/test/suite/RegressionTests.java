@@ -4,6 +4,7 @@ import junit.framework.TestSuite;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.fuse.ui.bot.test.RegressionKarafTest;
+import org.jboss.tools.fuse.ui.bot.test.RegressionFuseTest;
 import org.jboss.tools.fuse.ui.bot.test.RegressionTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
@@ -15,6 +16,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @SuiteClasses({
 	RegressionTest.class,
+	RegressionFuseTest.class,
 	RegressionKarafTest.class
 })
 @RunWith(RedDeerSuite.class)
