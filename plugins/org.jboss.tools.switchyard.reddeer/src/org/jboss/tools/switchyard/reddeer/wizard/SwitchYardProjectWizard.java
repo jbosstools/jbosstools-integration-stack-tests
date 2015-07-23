@@ -19,6 +19,7 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 
 /**
@@ -258,6 +259,7 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		}
 		selectComponents(components);
 		finish();
+		new SwitchYardEditor();
 		new SwitchYardProject(name).update();
 		if (targetRuntime != null && targetRuntime.contains("Karaf Extension")) {
 			new SwitchYardProject(name).enableFuseCamelNature();
