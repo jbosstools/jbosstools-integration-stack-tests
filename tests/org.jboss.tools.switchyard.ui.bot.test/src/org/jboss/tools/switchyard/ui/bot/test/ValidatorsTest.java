@@ -10,8 +10,10 @@ import org.jboss.tools.switchyard.reddeer.preference.CompositePropertiesPage;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
+import org.jboss.tools.switchyard.reddeer.utils.PreferenceUtils;
 import org.jboss.tools.switchyard.reddeer.wizard.ValidatorWizard;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -33,6 +35,19 @@ public class ValidatorsTest {
 	@InjectRequirement
 	private static SwitchYardRequirement switchYardRequirement;
 
+	private static String autoBuilding;
+	
+	@BeforeClass
+	public static void turnOffAutoBuilding() {
+		autoBuilding = PreferenceUtils.getAutoBuilding();
+		PreferenceUtils.setAutoBuilding("false");
+	}
+
+	@AfterClass
+	public static void turnBackAutoBuilding() {
+		PreferenceUtils.setAutoBuilding(autoBuilding);
+	}
+	
 	@BeforeClass
 	public static void maximizeWorkbench() {
 		new WorkbenchShell().maximize();

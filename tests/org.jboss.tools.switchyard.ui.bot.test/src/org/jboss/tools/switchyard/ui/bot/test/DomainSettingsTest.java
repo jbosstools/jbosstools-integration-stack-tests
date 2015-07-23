@@ -18,6 +18,7 @@ import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
+import org.jboss.tools.switchyard.reddeer.utils.PreferenceUtils;
 import org.jboss.tools.switchyard.reddeer.wizard.SecurityConfigurationWizard;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -40,6 +41,19 @@ public class DomainSettingsTest {
 
 	@InjectRequirement
 	private static SwitchYardRequirement switchyardRequirement;
+	
+	private static String autoBuilding;
+	
+	@BeforeClass
+	public static void turnOffAutoBuilding() {
+		autoBuilding = PreferenceUtils.getAutoBuilding();
+		PreferenceUtils.setAutoBuilding("false");
+	}
+
+	@AfterClass
+	public static void turnBackAutoBuilding() {
+		PreferenceUtils.setAutoBuilding(autoBuilding);
+	}
 	
 	@BeforeClass
 	public static void createProject() {

@@ -33,8 +33,13 @@ public class DomainEditor extends DefaultEditor {
 	private static Shell remainedShell;
 
 	public DomainEditor() {
-		super(SWITCHYARD_FILE);
+		super(activateDomainTab());
+	}
+	
+	private static String activateDomainTab() {
+		new DefaultEditor(SWITCHYARD_FILE);
 		new DefaultCTabItem("Domain").activate();
+		return SWITCHYARD_FILE;
 	}
 
 	public void setMessageTrace(boolean isMessageTrace) {

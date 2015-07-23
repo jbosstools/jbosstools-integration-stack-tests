@@ -27,6 +27,7 @@ import org.jboss.tools.switchyard.reddeer.preference.implementation.Implementati
 import org.jboss.tools.switchyard.reddeer.preference.implementation.ImplementationTransactionPage;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
+import org.jboss.tools.switchyard.reddeer.utils.PreferenceUtils;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -52,6 +53,19 @@ public class ImplementationsPropertiesTest {
 	@InjectRequirement
 	private static SwitchYardRequirement switchyardRequirement;
 
+	private static String autoBuilding;
+	
+	@BeforeClass
+	public static void turnOffAutoBuilding() {
+		autoBuilding = PreferenceUtils.getAutoBuilding();
+		PreferenceUtils.setAutoBuilding("false");
+	}
+
+	@AfterClass
+	public static void turnBackAutoBuilding() {
+		PreferenceUtils.setAutoBuilding(autoBuilding);
+	}
+	
 	@BeforeClass
 	public static void setUp() {
 		switchyardRequirement.project(PROJECT).create();
