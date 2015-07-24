@@ -1,5 +1,6 @@
 package org.jboss.tools.switchyard.reddeer.binding;
 
+import org.jboss.reddeer.swt.api.Text;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
@@ -18,14 +19,8 @@ public class JMSBindingPage extends OperationOptionsPage<JMSBindingPage> {
 
 	public static final String QUEUE_TOPIC_NAME = "Queue/Topic Name*";
 
-	public JMSBindingPage setQueueTopicName(String name) {
-		new LabeledTextExt(QUEUE_TOPIC_NAME).setFocus();
-		new LabeledTextExt(QUEUE_TOPIC_NAME).setText(name);
-		return this;
-	}
-
-	public String getQueueTopicName() {
-		return new LabeledTextExt(QUEUE_TOPIC_NAME).getText();
+	public Text getQueueTopicName() {
+		return new LabeledTextExt(QUEUE_TOPIC_NAME);
 	}
 
 	public LabeledText getTransactionManager() {

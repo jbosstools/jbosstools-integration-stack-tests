@@ -82,4 +82,12 @@ public class FTPBindingPage extends OperationOptionsPage<FTPBindingPage> {
 		return new LabeledText(new DefaultGroup("Poll Options"), "Max Messages Per Poll (Default 0)");
 	}
 
+	public Text getTempPrefix() {
+		return new LabeledText(new DefaultGroup("File and Directory Options"), "Temp Prefix");
+	}
+
+	public Text getFileExist() {
+		return new LabeledText(new DefaultGroup("File and Directory Options"), "File Exist");
+	}
+
 }

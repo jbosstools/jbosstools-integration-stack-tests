@@ -1,5 +1,6 @@
 package org.jboss.tools.switchyard.reddeer.binding;
 
+import org.jboss.reddeer.swt.api.Text;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
@@ -12,7 +13,7 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  * 
  */
 public class MailBindingPage extends OperationOptionsPage<MailBindingPage> {
-	
+
 	public static final String ACCOUNT_TYPE_IMAP = "imap";
 	public static final String ACCOUNT_TYPE_POP3 = "pop3";
 
@@ -54,6 +55,30 @@ public class MailBindingPage extends OperationOptionsPage<MailBindingPage> {
 
 	public CheckBox getSecured() {
 		return new CheckBox("Secured");
+	}
+
+	public Text getReplyTo() {
+		return new LabeledText(new DefaultGroup("Producer Options"), "Reply To");
+	}
+
+	public Text getBCC() {
+		return new LabeledText(new DefaultGroup("Producer Options"), "BCC");
+	}
+
+	public Text getCC() {
+		return new LabeledText(new DefaultGroup("Producer Options"), "CC");
+	}
+
+	public Text getTo() {
+		return new LabeledText(new DefaultGroup("Producer Options"), "To");
+	}
+
+	public Text getFrom() {
+		return new LabeledText(new DefaultGroup("Producer Options"), "From");
+	}
+
+	public Text getSubject() {
+		return new LabeledText(new DefaultGroup("Producer Options"), "Subject");
 	}
 
 }

@@ -52,4 +52,11 @@ public class JPABindingPage extends OperationOptionsPage<JPABindingPage> {
 		return new CheckBox(new DefaultGroup("Consumer Options"), "Delete");
 	}
 
+	public CheckBox getUsePersist() {
+		return new CheckBox(new DefaultGroup("Producer Options"), "Use Persist");
+	}
+
+	public CheckBox getFlushonSend() {
+		return new CheckBox(new DefaultGroup("Producer Options"), "Flush on Send");
+	}
 }

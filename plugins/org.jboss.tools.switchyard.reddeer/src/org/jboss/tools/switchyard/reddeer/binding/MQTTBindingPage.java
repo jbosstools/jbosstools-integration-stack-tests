@@ -27,6 +27,10 @@ public class MQTTBindingPage extends OperationOptionsPage<MQTTBindingPage> {
 		return new LabeledText("Subscribe Topic Name");
 	}
 
+	public LabeledText getPublishTopicName() {
+		return new LabeledText("Publish Topic Name");
+	}
+	
 	public LabeledText getHostURI() {
 		return new LabeledText("Host URI (Default: tcp://127.0.0.1:1883)");
 	}

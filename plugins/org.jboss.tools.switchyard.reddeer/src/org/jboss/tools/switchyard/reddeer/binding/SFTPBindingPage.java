@@ -1,5 +1,6 @@
 package org.jboss.tools.switchyard.reddeer.binding;
 
+import org.jboss.reddeer.swt.api.Text;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
@@ -87,6 +88,14 @@ public class SFTPBindingPage extends OperationOptionsPage<SFTPBindingPage> {
 
 	public CheckBox getUseBinaryTransferMode() {
 		return new CheckBox("Use Binary Transfer Mode");
+	}
+
+	public Text getTempPrefix() {
+		return new LabeledText(new DefaultGroup("File and Directory Options"), "Temp Prefix");
+	}
+
+	public Text getFileExist() {
+		return new LabeledText(new DefaultGroup("File and Directory Options"), "File Exist");
 	}
 
 }

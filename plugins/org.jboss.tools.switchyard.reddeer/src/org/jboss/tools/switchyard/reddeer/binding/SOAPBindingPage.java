@@ -2,6 +2,7 @@ package org.jboss.tools.switchyard.reddeer.binding;
 
 import org.eclipse.swt.SWT;
 import org.jboss.reddeer.swt.api.Combo;
+import org.jboss.reddeer.swt.api.Text;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
@@ -21,7 +22,7 @@ public class SOAPBindingPage extends OperationOptionsPage<SOAPBindingPage> {
 	public static final String SOAP_HEADERS_TYPE_CONFIG = "CONFIG";
 	public static final String SOAP_HEADERS_TYPE_DOM = "DOM";
 	public static final String SOAP_HEADERS_TYPE_XML = "XML";
-	
+
 	public static final String ENDPOINT_ADDRESS = "Endpoint Address";
 
 	public SOAPBindingPage setWsdlURI(String uri) {
@@ -84,6 +85,10 @@ public class SOAPBindingPage extends OperationOptionsPage<SOAPBindingPage> {
 
 	public CheckBox getUnwrappedPayload() {
 		return new CheckBox("Unwrapped Payload");
+	}
+
+	public Text getRequestTimeout() {
+		return new LabeledText("Request Timeout");
 	}
 
 }

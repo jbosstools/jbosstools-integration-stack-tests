@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
+import org.jboss.reddeer.swt.api.Text;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.condition.TableHasRows;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -57,4 +58,7 @@ public class RESTBindingPage extends OperationOptionsPage<RESTBindingPage> {
 		return new ArrayList<String>(Arrays.asList(items));
 	}
 
+	public Text getAddress() {
+		return new LabeledText("Address");
+	}
 }

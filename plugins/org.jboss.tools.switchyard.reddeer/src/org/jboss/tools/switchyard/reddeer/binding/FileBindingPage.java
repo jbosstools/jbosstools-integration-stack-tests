@@ -1,5 +1,6 @@
 package org.jboss.tools.switchyard.reddeer.binding;
 
+import org.jboss.reddeer.swt.api.Text;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
@@ -50,6 +51,14 @@ public class FileBindingPage extends OperationOptionsPage<FileBindingPage> {
 
 	public CheckBox getAutoCreateMissingDirectoriesinFilePath() {
 		return new CheckBox("Auto Create Missing Directories in File Path");
+	}
+
+	public Text getTempPrefix() {
+		return new LabeledText("Temp Prefix");
+	}
+
+	public Text getFileExist() {
+		return new LabeledText("File Exist");
 	}
 
 }

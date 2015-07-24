@@ -1,7 +1,9 @@
 package org.jboss.tools.switchyard.reddeer.binding;
 
+import org.jboss.reddeer.swt.api.Text;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
+import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 /**
@@ -50,6 +52,22 @@ public class CXFBindingPage extends OperationOptionsPage<CXFBindingPage> {
 
 	public CheckBox getRelayHeaders() {
 		return new CheckBox("Relay Headers");
+	}
+
+	public Text getPassword() {
+		return new LabeledText(new DefaultGroup("CXF Client Authentication"), "Password");
+	}
+
+	public Text getUserName() {
+		return new LabeledText(new DefaultGroup("CXF Client Authentication"), "User Name");
+	}
+
+	public Text getDefaultOperationNamespace() {
+		return new LabeledText(new DefaultGroup("Default Operation"), "Namespace");
+	}
+
+	public Text getDefaultOperationName() {
+		return new LabeledText(new DefaultGroup("Default Operation"), "Name");
 	}
 
 }
