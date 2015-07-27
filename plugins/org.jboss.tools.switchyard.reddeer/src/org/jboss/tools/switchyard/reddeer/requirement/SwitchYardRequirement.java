@@ -8,11 +8,12 @@ import java.util.List;
 
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.direct.preferences.Preferences;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.CustomConfiguration;
 import org.jboss.reddeer.junit.requirement.Requirement;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
+import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.tools.runtime.reddeer.ServerBase;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
@@ -67,8 +68,7 @@ public class SwitchYardRequirement implements Requirement<SwitchYard>, CustomCon
 
 	@Override
 	public void fulfill() {
-		new WorkbenchShell().maximize();
-		new CleanWorkspaceRequirement().fulfill();
+		deleteAllProjects();
 		ServerBase serverBase = config.getServerBase();
 		if (serverBase == null) {
 			return;
@@ -92,6 +92,27 @@ public class SwitchYardRequirement implements Requirement<SwitchYard>, CustomCon
 			serverBase.create();
 		}
 		serverBase.setState(switchyard.server().state());
+	}
+	
+	private static void deleteAllProjects() {
+		new WorkbenchShell().maximize();
+		EditorHandler.getInstance().closeAll(true);
+
+		// workaround for deleting all projects
+		Exception exception = null;
+		for (int i = 0; i < 10; i++) {
+			try {
+				exception = null;
+				new WorkbenchShell().setFocus();
+				new ProjectExplorer().deleteAllProjects();
+				break;
+			} catch (Exception e) {
+				exception = e;
+			}
+		}
+		if (exception != null) {
+			throw new RuntimeException("Cannot delete all projects", exception);
+		}
 	}
 
 	@Override
