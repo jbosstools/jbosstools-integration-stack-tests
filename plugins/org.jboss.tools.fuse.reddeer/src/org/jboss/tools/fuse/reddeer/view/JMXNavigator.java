@@ -7,6 +7,7 @@ import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
@@ -33,11 +34,9 @@ public class JMXNavigator extends WorkbenchView {
 		return shouldCollapseLocalProcesses;
 	}
 
-
 	public void setShouldCollapseLocalProcesses(boolean shouldCollapseLocalProcesses) {
 		this.shouldCollapseLocalProcesses = shouldCollapseLocalProcesses;
 	}
-
 
 	/**
 	 * Tries to connect to a specified node under <i>Local Processes</i> in
@@ -91,81 +90,42 @@ public class JMXNavigator extends WorkbenchView {
 	 */
 	public TreeItem getNode(String... path) {
 
-		open();
-		AbstractWait.sleep(TimePeriod.NORMAL);
-		List<TreeItem> items = new DefaultTree().getItems();
-
-		for (TreeItem item : items) {
-			if (item.getText().equals("Local Processes")) {
-				if (shouldCollapseLocalProcesses) item.collapse();
-				AbstractWait.sleep(TimePeriod.SHORT);
-				item.expand();
-				items = item.getItems();
-				break;
-			}
-		}
-		
-		// node 'Local Camel Context' could be sometimes named 'maven [pid]' and more than one maven process can be present
-		// connect to all Maven processes -> the right one will be renamed to 'Local Camel Context'
-		boolean camelContext = false;
-		for (TreeItem item : items) {
-			if (item.getText().contains("Local Camel Context")) {
-				camelContext = true;
-				break;
-			}
-		}
-		if (!camelContext) {
+		if (path == null) return null;
+		log.info("Accessing child items of 'Local Processes'");
+		List<TreeItem> items = new DefaultTreeItem("Local Processes").getItems();
+		log.info("Child items of 'Local Processes' are: " + logTreeItems(items));
+		log.info("Trying to identify the right process");
+		TreeItem rightItem = null;
+		log.info("Looking for '" + path[0] + "' item");
+		rightItem = getTreeItem(items, path[0]);
+		if (rightItem == null) {
 			for (TreeItem item : items) {
-				if (item.getText().startsWith("maven [") || item.getText().startsWith("karaf")) {
+				if (path[0].equals("Local Camel Context") && item.getText().startsWith("maven [") ||
+					path[0].equals("karaf") && (item.getText().contains("karaf") || item.getText().startsWith("JBoss Fuse"))) {
 					item.select();
 					item.doubleClick();
 					expand(item);
-					AbstractWait.sleep(TimePeriod.SHORT);
+					if (getTreeItem(item.getItems(), "Camel") != null) {
+						rightItem = item;
+						log.info("The item with Camel Context was found: " + item.getText());
+						break;
+					}
 				}
 			}
+		} else {
+			log.info("'" + path[0] + "' item was found");
+			rightItem.select();
+			rightItem.doubleClick();
+			expand(rightItem);
 		}
-
-		for (int i = 0; i < path.length; i++) {
-			for (TreeItem item : items) {
-
-				if (i == 0 &&
-						(path[0].equals("Local Camel Context") && item.getText().startsWith("Local Camel Context") ||
-						 path[0].equals("karaf") && (item.getText().contains(path[i]) || item.getText().startsWith("JBoss Fuse")))) {
-
-					if (i == path.length - 1) {
-						return item;
-					}
-
-					item.select();
-					item.doubleClick();
-					expand(item);
-					AbstractWait.sleep(TimePeriod.SHORT);
-					item.select();
-					items = item.getItems();
-					log.info("Tree Item '" + item + "' has the following children:" + logTreeItems(items));
-					AbstractWait.sleep(TimePeriod.SHORT);
-					break;
-				}
-
-				if (item.getText().startsWith(path[i])) {
-
-					if (i == path.length - 1) {
-						return item;
-					}
-
-					item.select();
-					expand(item);
-					AbstractWait.sleep(TimePeriod.SHORT);
-					item.select();
-					items = item.getItems();
-					log.info("Tree Item '" + item + "' has the following children:" + logTreeItems(items));
-					AbstractWait.sleep(TimePeriod.SHORT);
-					break;
-				}
-			}
+		if (rightItem == null) log.warn("'" + path[0] + "' item was NOT found");
+		for (int i = 1; i < path.length; i++) {
+			log.info("Looking for '" + path[i] + "'");
+			rightItem = getTreeItem(rightItem.getItems(), path[i]);
+			rightItem.select();
+			if (i < path.length - 1) expand(rightItem);
 		}
-
-		return null;
+		return rightItem;
 	}
 
 	private void expand(TreeItem item) {
@@ -176,6 +136,7 @@ public class JMXNavigator extends WorkbenchView {
 			AbstractWait.sleep(TimePeriod.SHORT);
 			if (item.isExpanded()) {
 				log.info("Tree Item '" + item.getText() + "' is expanded");
+				AbstractWait.sleep(TimePeriod.SHORT);
 				return;
 			}
 			log.error("Tree Item '" + item.getText() + "' is NOT expanded!");
@@ -191,5 +152,14 @@ public class JMXNavigator extends WorkbenchView {
 			output.append("\n");
 		}
 		return output.toString();
+	}
+
+	private TreeItem getTreeItem(List<TreeItem> items, String name) {
+		for (TreeItem item : items) {
+			if (item.getText().startsWith(name)) {
+				return item;
+			}
+		}
+		return null;
 	}
 }
