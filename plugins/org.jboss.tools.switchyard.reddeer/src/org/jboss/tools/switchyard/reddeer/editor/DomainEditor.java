@@ -3,6 +3,7 @@ package org.jboss.tools.switchyard.reddeer.editor;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Shell;
+import org.jboss.reddeer.swt.api.Text;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.WaitCondition;
@@ -11,11 +12,13 @@ import org.jboss.reddeer.swt.handler.ShellHandler;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.tools.switchyard.reddeer.shell.DomainPropertiesFileShell;
 import org.jboss.tools.switchyard.reddeer.shell.DomainPropertyShell;
 import org.jboss.tools.switchyard.reddeer.wizard.SecurityConfigurationWizard;
 import org.junit.Assert;
@@ -29,13 +32,13 @@ public class DomainEditor extends DefaultEditor {
 
 	public static final String SWITCHYARD_FILE = "switchyard.xml";
 	public static final String ENABLE_MESSAGE_TRACE = "Enable Message Trace";
-	
+
 	private static Shell remainedShell;
 
 	public DomainEditor() {
 		super(activateDomainTab());
 	}
-	
+
 	private static String activateDomainTab() {
 		new DefaultEditor(SWITCHYARD_FILE);
 		new DefaultCTabItem("Domain").activate();
@@ -48,6 +51,15 @@ public class DomainEditor extends DefaultEditor {
 
 	public boolean isMessageTraced() {
 		return new CheckBox(ENABLE_MESSAGE_TRACE).isChecked();
+	}
+
+	public Text getPropertiesFile() {
+		return new LabeledText("Properties File:");
+	}
+
+	public DomainPropertiesFileShell openDomainPropertiesFile() {
+		new PushButton("...").click();
+		return new DomainPropertiesFileShell().activate();
 	}
 
 	public void addProperty(String name, String value) {
@@ -105,8 +117,8 @@ public class DomainEditor extends DefaultEditor {
 		return new DefaultTree(0).getItems();
 	}
 
-	public void addSecurityConfiguration(String name, String rolesAllowed, String runAs,
-			String securityDomain, String handlerClass) {
+	public void addSecurityConfiguration(String name, String rolesAllowed, String runAs, String securityDomain,
+			String handlerClass) {
 		new DomainEditor().clickAddSecurityConfiguration();
 		SecurityConfigurationWizard wizard = new SecurityConfigurationWizard();
 		if (name == null) {
@@ -153,8 +165,7 @@ public class DomainEditor extends DefaultEditor {
 	public void selectSecurityConfiguration(String name) {
 		TreeItem item = getSecurityConfiguration(name);
 		if (item == null) {
-			throw new RuntimeException("Cannot find security configuration with name '" + name
-					+ "'");
+			throw new RuntimeException("Cannot find security configuration with name '" + name + "'");
 		}
 		item.select();
 	}
@@ -173,23 +184,24 @@ public class DomainEditor extends DefaultEditor {
 	public List<TreeItem> getSecurityConfigurations() {
 		return new DefaultTree(1).getItems();
 	}
+
 	private void doSave() {
 		log.info("Save SwitchYard editor");
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		
+
 		remainedShell = null;
 		ShellHandler.getInstance().closeAllNonWorbenchShells(new IBeforeShellIsClosed() {
-			
+
 			@Override
 			public void runBeforeShellIsClosed(Shell shell) {
 				remainedShell = shell;
 			}
 		});
-		
+
 		super.save();
-		
+
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		
+
 		if (remainedShell != null) {
 			Assert.fail("Shell '" + remainedShell.getText() + "' remains open");
 		}
@@ -204,7 +216,7 @@ public class DomainEditor extends DefaultEditor {
 		save();
 		close();
 	}
-	
+
 	private class EditorIsSaved implements WaitCondition {
 
 		@Override
@@ -217,7 +229,7 @@ public class DomainEditor extends DefaultEditor {
 		public String description() {
 			return "Editor is still dirty";
 		}
-		
+
 	}
 
 }

@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
@@ -13,11 +14,13 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
+import org.jboss.tools.switchyard.reddeer.SwitchYardFile;
 import org.jboss.tools.switchyard.reddeer.editor.DomainEditor;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
+import org.jboss.tools.switchyard.reddeer.shell.DomainPropertiesFileShell;
 import org.jboss.tools.switchyard.reddeer.utils.PreferenceUtils;
 import org.jboss.tools.switchyard.reddeer.wizard.SecurityConfigurationWizard;
 import org.junit.AfterClass;
@@ -41,9 +44,9 @@ public class DomainSettingsTest {
 
 	@InjectRequirement
 	private static SwitchYardRequirement switchyardRequirement;
-	
+
 	private static String autoBuilding;
-	
+
 	@BeforeClass
 	public static void turnOffAutoBuilding() {
 		autoBuilding = PreferenceUtils.getAutoBuilding();
@@ -54,7 +57,7 @@ public class DomainSettingsTest {
 	public static void turnBackAutoBuilding() {
 		PreferenceUtils.setAutoBuilding(autoBuilding);
 	}
-	
+
 	@BeforeClass
 	public static void createProject() {
 		closeSwitchYardEditor();
@@ -102,11 +105,39 @@ public class DomainSettingsTest {
 	}
 
 	@Test
+	public void filePropertiesTest() throws Exception {
+		openSwitchYardEditor();
+		DomainPropertiesFileShell domainPropertiesFile = new DomainEditor().openDomainPropertiesFile();
+		domainPropertiesFile.getProjectClasspath().setText("META-INF/switchyard.xml");
+		domainPropertiesFile.ok();
+		new DomainEditor().saveAndClose();
+
+		openSwitchYardEditor();
+		assertEquals("META-INF/switchyard.xml", new DomainEditor().getPropertiesFile().getText());
+		assertXPath("META-INF/switchyard.xml", "/switchyard/domain/properties/@load");
+		domainPropertiesFile = new DomainEditor().openDomainPropertiesFile();
+		domainPropertiesFile.getPublicURL().setText("http://localhost/my.properties");
+		domainPropertiesFile.ok();
+		new DomainEditor().saveAndClose();
+
+		openSwitchYardEditor();
+		assertEquals("http://localhost/my.properties", new DomainEditor().getPropertiesFile().getText());
+		assertXPath("http://localhost/my.properties", "/switchyard/domain/properties/@load");
+		new DomainEditor().getPropertiesFile().setText("my.properties");
+		new DomainEditor().saveAndClose();
+
+		openSwitchYardEditor();
+		assertEquals("my.properties", new DomainEditor().getPropertiesFile().getText());
+		assertXPath("my.properties", "/switchyard/domain/properties/@load");
+		new DomainEditor().saveAndClose();
+	}
+
+	@Test
 	public void securityConfigurationTest() {
 		/* Add configuration security */
 		openSwitchYardEditor();
-		new DomainEditor().addSecurityConfiguration("test-security", "tester, admin", "user",
-				"other", "NamePasswordCallbackHandler");
+		new DomainEditor().addSecurityConfiguration("test-security", "tester, admin", "user", "other",
+				"NamePasswordCallbackHandler");
 		new DomainEditor().saveAndClose();
 
 		/* Test if it is displayed in the editor */
@@ -155,4 +186,10 @@ public class DomainSettingsTest {
 	public static void openSwitchYardEditor() {
 		new SwitchYardProject(PROJECT).getProjectItem("SwitchYard").open();
 	}
+
+	private void assertXPath(String expected, String xpath) throws IOException {
+		SwitchYardFile switchyardFile = new SwitchYardFile(PROJECT);
+		assertEquals(switchyardFile.getSource(), expected, switchyardFile.xpath(xpath));
+	}
+
 }
