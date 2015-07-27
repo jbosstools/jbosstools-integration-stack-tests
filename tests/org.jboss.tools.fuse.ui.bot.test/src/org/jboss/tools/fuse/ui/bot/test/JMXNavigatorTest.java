@@ -63,8 +63,6 @@ public class JMXNavigatorTest extends DefaultTest {
 	public void processesViewTest() {
 
 		JMXNavigator jmx = new JMXNavigator();
-		assertNotNull(jmx.getNode("Local Camel Context"));
-		jmx.getNode("Local Camel Context", "Camel"); // workaround for slow machines
 		assertNotNull(jmx.getNode("Local Camel Context", "Camel", "camel-1", "Endpoints", "file", "src/data?noop=true"));
 		assertNotNull(jmx.getNode("Local Camel Context", "Camel", "camel-1", "Routes", "route1", "file:src/data?noop=true", "choice", "when", "log", "to"));
 		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
@@ -74,7 +72,6 @@ public class JMXNavigatorTest extends DefaultTest {
 	public void contextOperationsTest() {
 
 		JMXNavigator jmx = new JMXNavigator();
-		jmx.getNode("Local Camel Context", "Camel"); // workaround for slow machines
 		new JMXNavigator().getNode("Local Camel Context", "Camel", "camel-1").select();
 		log.info("Suspend Camel Context");
 		new ContextMenu("Suspend Camel Context").select();
