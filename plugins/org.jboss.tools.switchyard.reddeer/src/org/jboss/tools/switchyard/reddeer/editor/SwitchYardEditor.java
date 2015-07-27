@@ -31,6 +31,7 @@ import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComposite;
 import org.jboss.tools.switchyard.reddeer.preference.CompositePropertiesPage;
+import org.jboss.tools.switchyard.reddeer.utils.PreferenceUtils;
 import org.jboss.tools.switchyard.reddeer.wizard.BPELServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.BPMNServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.BeanServiceWizard;
@@ -258,8 +259,12 @@ public class SwitchYardEditor extends GEFEditor {
 
 		super.save();
 
-		new WaitUntil(new JobIsRunning(), TimePeriod.NORMAL, false);
-		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+		if (PreferenceUtils.isAutoBuildingOn()) {
+			new WaitUntil(new JobIsRunning(), TimePeriod.NORMAL, false);
+			new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+		} else {
+			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		}
 
 		if (remainedShell != null) {
 			Assert.fail("Shell '" + remainedShell.getText() + "' remains open");

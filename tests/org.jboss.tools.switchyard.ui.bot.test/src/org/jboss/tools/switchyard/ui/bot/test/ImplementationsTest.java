@@ -15,6 +15,7 @@ import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
+import org.jboss.tools.switchyard.reddeer.utils.PreferenceUtils;
 import org.jboss.tools.switchyard.reddeer.wizard.BPELServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.BPMNServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.BeanServiceWizard;
@@ -27,6 +28,7 @@ import org.jboss.tools.switchyard.reddeer.wizard.ExistingCamelXMLServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ExistingDroolsServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ImportFileWizard;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -50,6 +52,8 @@ public class ImplementationsTest {
 	@InjectRequirement
 	private static SwitchYardRequirement switchYardRequirement;
 
+	private static String autoBuilding;
+
 	private List<String[]> classesToDelete;
 	private List<String[]> resourcesToDelete;
 	private List<String> componentsToDelete;
@@ -60,13 +64,22 @@ public class ImplementationsTest {
 	}
 
 	@BeforeClass
+	public static void turnOffAutoBuilding() {
+		autoBuilding = PreferenceUtils.getAutoBuilding();
+		PreferenceUtils.setAutoBuilding("false");
+	}
+
+	@AfterClass
+	public static void turnBackAutoBuilding() {
+		PreferenceUtils.setAutoBuilding(autoBuilding);
+	}
+
+	@BeforeClass
 	public static void createProject() {
 		switchYardRequirement.project(PROJECT_NAME).implAll().create();
 
 		new SwitchYardProject(PROJECT_NAME).getProjectItem("src/main/resources").select();
 		new ImportFileWizard().importFile("resources/" + PROJECT_NAME);
-
-		System.out.println();
 	}
 
 	@Before
