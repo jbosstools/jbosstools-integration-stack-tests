@@ -12,6 +12,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
+import org.jboss.tools.switchyard.reddeer.preference.implementation.ImplementationKnowledgePage;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
@@ -48,6 +49,9 @@ public class ImplementationsTest {
 	public static final String PROJECT_PACKAGE = "com.example.switchyard." + PROJECT_NAME;
 	public static final String SERVICE__NAME = "Hello";
 	public static final String SERVICE_IMPL_NAME = "HelloImpl";
+
+	public static final String XPATH_RULES = "/switchyard/composite/component/implementation.rules";
+	public static final String XPATH_BPM = "/switchyard/composite/component/implementation.bpm";
 
 	@InjectRequirement
 	private static SwitchYardRequirement switchYardRequirement;
@@ -240,16 +244,16 @@ public class ImplementationsTest {
 
 		assertEquals("1", editor.xpath("count(/switchyard/composite/component)"));
 		assertEquals("NewBPMNImpl", editor.xpath("/switchyard/composite/component/@name"));
-		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.bpm)"));
-		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.bpm/manifest)"));
-		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.bpm/manifest/resources)"));
-		assertEquals("1",
-				editor.xpath("count(/switchyard/composite/component/implementation.bpm/manifest/resources/resource)"));
-		assertEquals(
-				"NewBPMNImpl.bpmn",
-				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/resources/resource/@location"));
-		assertEquals("BPMN2",
-				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/resources/resource/@type"));
+		assertEquals("1", editor.xpath("count(" + XPATH_BPM + ")"));
+		assertEquals("1", editor.xpath("count(" + XPATH_BPM + "/manifest)"));
+		assertEquals("1", editor.xpath("count(" + XPATH_BPM + "/manifest/resources)"));
+		assertEquals("1", editor.xpath("count(" + XPATH_BPM + "/manifest/resources/resource)"));
+		assertEquals("NewBPMNImpl.bpmn", editor.xpath(XPATH_BPM + "/manifest/resources/resource/@location"));
+		assertEquals("BPMN2", editor.xpath(XPATH_BPM + "/manifest/resources/resource/@type"));
+
+		checkBPMOperationsProperties("NewBPMNImpl", "operation1", "START_PROCESS");
+		checkBPMOperationsProperties("NewBPMNImpl", "operation2", "SIGNAL_EVENT");
+		checkBPMAdvancedProperties("NewBPMNImpl");
 	}
 
 	@Test
@@ -266,16 +270,15 @@ public class ImplementationsTest {
 
 		assertEquals("1", editor.xpath("count(/switchyard/composite/component)"));
 		assertEquals("Component", editor.xpath("/switchyard/composite/component/@name"));
-		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.bpm)"));
-		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.bpm/manifest)"));
-		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.bpm/manifest/resources)"));
-		assertEquals("1",
-				editor.xpath("count(/switchyard/composite/component/implementation.bpm/manifest/resources/resource)"));
-		assertEquals(
-				"ExistingBPMNImpl.bpmn",
-				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/resources/resource/@location"));
-		assertEquals("BPMN2",
-				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/resources/resource/@type"));
+		assertEquals("1", editor.xpath("count(" + XPATH_BPM + ")"));
+		assertEquals("1", editor.xpath("count(" + XPATH_BPM + "/manifest)"));
+		assertEquals("1", editor.xpath("count(" + XPATH_BPM + "/manifest/resources)"));
+		assertEquals("1", editor.xpath("count(" + XPATH_BPM + "/manifest/resources/resource)"));
+		assertEquals("ExistingBPMNImpl.bpmn", editor.xpath(XPATH_BPM + "/manifest/resources/resource/@location"));
+		assertEquals("BPMN2", editor.xpath(XPATH_BPM + "/manifest/resources/resource/@type"));
+
+		checkBPMOperationsProperties("Component", "operation1", "START_PROCESS");
+		checkBPMOperationsProperties("Component", "operation2", "SIGNAL_EVENT");
 	}
 
 	@Test
@@ -304,19 +307,15 @@ public class ImplementationsTest {
 
 		assertEquals("1", editor.xpath("count(/switchyard/composite/component)"));
 		assertEquals("Component", editor.xpath("/switchyard/composite/component/@name"));
-		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.bpm)"));
-		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.bpm/manifest)"));
-		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.bpm/manifest/container)"));
-		assertEquals("session",
-				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/container/@sessionName"));
-		assertEquals("base",
-				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/container/@baseName"));
+		assertEquals("1", editor.xpath("count(" + XPATH_BPM + ")"));
+		assertEquals("1", editor.xpath("count(" + XPATH_BPM + "/manifest)"));
+		assertEquals("1", editor.xpath("count(" + XPATH_BPM + "/manifest/container)"));
+		assertEquals("session", editor.xpath(XPATH_BPM + "/manifest/container/@sessionName"));
+		assertEquals("base", editor.xpath(XPATH_BPM + "/manifest/container/@baseName"));
 		assertEquals("com.example:hello-world:1.0.0-SNAPSHOT",
-				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/container/@releaseId"));
-		assertEquals("true",
-				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/container/@scan"));
-		assertEquals("12345",
-				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/container/@scanInterval"));
+				editor.xpath(XPATH_BPM + "/manifest/container/@releaseId"));
+		assertEquals("true", editor.xpath(XPATH_BPM + "/manifest/container/@scan"));
+		assertEquals("12345", editor.xpath(XPATH_BPM + "/manifest/container/@scanInterval"));
 	}
 
 	@Test
@@ -357,35 +356,21 @@ public class ImplementationsTest {
 
 		assertEquals("1", editor.xpath("count(/switchyard/composite/component)"));
 		assertEquals("Component", editor.xpath("/switchyard/composite/component/@name"));
-		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.bpm)"));
-		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.bpm/manifest)"));
-		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.bpm/manifest/remoteJms)"));
-		assertEquals("jmsID",
-				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/remoteJms/@deploymentId"));
-		assertEquals("jmsAdmin",
-				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/remoteJms/@userName"));
-		assertEquals("jmsAdmin123$",
-				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/remoteJms/@password"));
-		assertEquals("123",
-				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/remoteJms/@timeout"));
-		assertEquals("jmsHost",
-				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/remoteJms/@hostName"));
-		assertEquals("9001",
-				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/remoteJms/@remotingPort"));
-		assertEquals("9002",
-				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/remoteJms/@messagingPort"));
-		assertEquals("true",
-				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/remoteJms/@useSsl"));
-		assertEquals("keystoreLoc",
-				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/remoteJms/@keystoreLocation"));
-		assertEquals("keystorePass",
-				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/remoteJms/@keystorePassword"));
-		assertEquals(
-				"truststoreLoc",
-				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/remoteJms/@truststoreLocation"));
-		assertEquals(
-				"truststorePass",
-				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/remoteJms/@truststorePassword"));
+		assertEquals("1", editor.xpath("count(" + XPATH_BPM + ")"));
+		assertEquals("1", editor.xpath("count(" + XPATH_BPM + "/manifest)"));
+		assertEquals("1", editor.xpath("count(" + XPATH_BPM + "/manifest/remoteJms)"));
+		assertEquals("jmsID", editor.xpath(XPATH_BPM + "/manifest/remoteJms/@deploymentId"));
+		assertEquals("jmsAdmin", editor.xpath(XPATH_BPM + "/manifest/remoteJms/@userName"));
+		assertEquals("jmsAdmin123$", editor.xpath(XPATH_BPM + "/manifest/remoteJms/@password"));
+		assertEquals("123", editor.xpath(XPATH_BPM + "/manifest/remoteJms/@timeout"));
+		assertEquals("jmsHost", editor.xpath(XPATH_BPM + "/manifest/remoteJms/@hostName"));
+		assertEquals("9001", editor.xpath(XPATH_BPM + "/manifest/remoteJms/@remotingPort"));
+		assertEquals("9002", editor.xpath(XPATH_BPM + "/manifest/remoteJms/@messagingPort"));
+		assertEquals("true", editor.xpath(XPATH_BPM + "/manifest/remoteJms/@useSsl"));
+		assertEquals("keystoreLoc", editor.xpath(XPATH_BPM + "/manifest/remoteJms/@keystoreLocation"));
+		assertEquals("keystorePass", editor.xpath(XPATH_BPM + "/manifest/remoteJms/@keystorePassword"));
+		assertEquals("truststoreLoc", editor.xpath(XPATH_BPM + "/manifest/remoteJms/@truststoreLocation"));
+		assertEquals("truststorePass", editor.xpath(XPATH_BPM + "/manifest/remoteJms/@truststorePassword"));
 	}
 
 	@Test
@@ -407,22 +392,15 @@ public class ImplementationsTest {
 
 		assertEquals("1", editor.xpath("count(/switchyard/composite/component)"));
 		assertEquals("Component", editor.xpath("/switchyard/composite/component/@name"));
-		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.bpm)"));
-		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.bpm/manifest)"));
-		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.bpm/manifest/remoteRest)"));
-		assertEquals("restID",
-				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/remoteRest/@deploymentId"));
-		assertEquals("http://localhost/rest",
-				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/remoteRest/@url"));
-		assertEquals("restAdmin",
-				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/remoteRest/@userName"));
-		assertEquals("restAdmin123$",
-				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/remoteRest/@password"));
-		assertEquals("123",
-				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/remoteRest/@timeout"));
-		assertEquals(
-				"true",
-				editor.xpath("/switchyard/composite/component/implementation.bpm/manifest/remoteRest/@useFormBasedAuth"));
+		assertEquals("1", editor.xpath("count(" + XPATH_BPM + ")"));
+		assertEquals("1", editor.xpath("count(" + XPATH_BPM + "/manifest)"));
+		assertEquals("1", editor.xpath("count(" + XPATH_BPM + "/manifest/remoteRest)"));
+		assertEquals("restID", editor.xpath(XPATH_BPM + "/manifest/remoteRest/@deploymentId"));
+		assertEquals("http://localhost/rest", editor.xpath(XPATH_BPM + "/manifest/remoteRest/@url"));
+		assertEquals("restAdmin", editor.xpath(XPATH_BPM + "/manifest/remoteRest/@userName"));
+		assertEquals("restAdmin123$", editor.xpath(XPATH_BPM + "/manifest/remoteRest/@password"));
+		assertEquals("123", editor.xpath(XPATH_BPM + "/manifest/remoteRest/@timeout"));
+		assertEquals("true", editor.xpath(XPATH_BPM + "/manifest/remoteRest/@useFormBasedAuth"));
 	}
 
 	@Test
@@ -439,17 +417,16 @@ public class ImplementationsTest {
 
 		assertEquals("1", editor.xpath("count(/switchyard/composite/component)"));
 		assertEquals("NewDroolsImpl", editor.xpath("/switchyard/composite/component/@name"));
-		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.rules)"));
-		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.rules/manifest)"));
-		assertEquals("1",
-				editor.xpath("count(/switchyard/composite/component/implementation.rules/manifest/resources)"));
-		assertEquals("1",
-				editor.xpath("count(/switchyard/composite/component/implementation.rules/manifest/resources/resource)"));
-		assertEquals(
-				"NewDroolsImpl.drl",
-				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/resources/resource/@location"));
-		assertEquals("DRL",
-				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/resources/resource/@type"));
+		assertEquals("1", editor.xpath("count(" + XPATH_RULES + ")"));
+		assertEquals("1", editor.xpath("count(" + XPATH_RULES + "/manifest)"));
+		assertEquals("1", editor.xpath("count(" + XPATH_RULES + "/manifest/resources)"));
+		assertEquals("1", editor.xpath("count(" + XPATH_RULES + "/manifest/resources/resource)"));
+		assertEquals("NewDroolsImpl.drl", editor.xpath(XPATH_RULES + "/manifest/resources/resource/@location"));
+		assertEquals("DRL", editor.xpath(XPATH_RULES + "/manifest/resources/resource/@type"));
+
+		checkDroolsOperationsProperties("NewDroolsImpl", "operation1", "EXECUTE");
+		checkDroolsOperationsProperties("NewDroolsImpl", "operation2", "INSERT");
+		checkDroolsAdvancedProperties("NewDroolsImpl");
 	}
 
 	@Test
@@ -466,17 +443,15 @@ public class ImplementationsTest {
 
 		assertEquals("1", editor.xpath("count(/switchyard/composite/component)"));
 		assertEquals("Component", editor.xpath("/switchyard/composite/component/@name"));
-		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.rules)"));
-		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.rules/manifest)"));
-		assertEquals("1",
-				editor.xpath("count(/switchyard/composite/component/implementation.rules/manifest/resources)"));
-		assertEquals("1",
-				editor.xpath("count(/switchyard/composite/component/implementation.rules/manifest/resources/resource)"));
-		assertEquals(
-				"ExistingDroolsImpl.drl",
-				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/resources/resource/@location"));
-		assertEquals("DRL",
-				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/resources/resource/@type"));
+		assertEquals("1", editor.xpath("count(" + XPATH_RULES + ")"));
+		assertEquals("1", editor.xpath("count(" + XPATH_RULES + "/manifest)"));
+		assertEquals("1", editor.xpath("count(" + XPATH_RULES + "/manifest/resources)"));
+		assertEquals("1", editor.xpath("count(" + XPATH_RULES + "/manifest/resources/resource)"));
+		assertEquals("ExistingDroolsImpl.drl", editor.xpath(XPATH_RULES + "/manifest/resources/resource/@location"));
+		assertEquals("DRL", editor.xpath(XPATH_RULES + "/manifest/resources/resource/@type"));
+
+		checkDroolsOperationsProperties("Component", "operation1", "EXECUTE");
+		checkDroolsOperationsProperties("Component", "operation2", "INSERT");
 	}
 
 	@Test
@@ -505,20 +480,15 @@ public class ImplementationsTest {
 
 		assertEquals("1", editor.xpath("count(/switchyard/composite/component)"));
 		assertEquals("Component", editor.xpath("/switchyard/composite/component/@name"));
-		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.rules)"));
-		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.rules/manifest)"));
-		assertEquals("1",
-				editor.xpath("count(/switchyard/composite/component/implementation.rules/manifest/container)"));
-		assertEquals("session",
-				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/container/@sessionName"));
-		assertEquals("base",
-				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/container/@baseName"));
+		assertEquals("1", editor.xpath("count(" + XPATH_RULES + ")"));
+		assertEquals("1", editor.xpath("count(" + XPATH_RULES + "/manifest)"));
+		assertEquals("1", editor.xpath("count(" + XPATH_RULES + "/manifest/container)"));
+		assertEquals("session", editor.xpath(XPATH_RULES + "/manifest/container/@sessionName"));
+		assertEquals("base", editor.xpath(XPATH_RULES + "/manifest/container/@baseName"));
 		assertEquals("com.example:hello-world:1.0.0-SNAPSHOT",
-				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/container/@releaseId"));
-		assertEquals("true",
-				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/container/@scan"));
-		assertEquals("12345",
-				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/container/@scanInterval"));
+				editor.xpath(XPATH_RULES + "/manifest/container/@releaseId"));
+		assertEquals("true", editor.xpath(XPATH_RULES + "/manifest/container/@scan"));
+		assertEquals("12345", editor.xpath(XPATH_RULES + "/manifest/container/@scanInterval"));
 	}
 
 	@Test
@@ -559,38 +529,21 @@ public class ImplementationsTest {
 
 		assertEquals("1", editor.xpath("count(/switchyard/composite/component)"));
 		assertEquals("Component", editor.xpath("/switchyard/composite/component/@name"));
-		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.rules)"));
-		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.rules/manifest)"));
-		assertEquals("1",
-				editor.xpath("count(/switchyard/composite/component/implementation.rules/manifest/remoteJms)"));
-		assertEquals("jmsID",
-				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/remoteJms/@deploymentId"));
-		assertEquals("jmsAdmin",
-				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/remoteJms/@userName"));
-		assertEquals("jmsAdmin123$",
-				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/remoteJms/@password"));
-		assertEquals("123",
-				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/remoteJms/@timeout"));
-		assertEquals("jmsHost",
-				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/remoteJms/@hostName"));
-		assertEquals("9001",
-				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/remoteJms/@remotingPort"));
-		assertEquals("9002",
-				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/remoteJms/@messagingPort"));
-		assertEquals("true",
-				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/remoteJms/@useSsl"));
-		assertEquals(
-				"keystoreLoc",
-				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/remoteJms/@keystoreLocation"));
-		assertEquals(
-				"keystorePass",
-				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/remoteJms/@keystorePassword"));
-		assertEquals(
-				"truststoreLoc",
-				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/remoteJms/@truststoreLocation"));
-		assertEquals(
-				"truststorePass",
-				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/remoteJms/@truststorePassword"));
+		assertEquals("1", editor.xpath("count(" + XPATH_RULES + ")"));
+		assertEquals("1", editor.xpath("count(" + XPATH_RULES + "/manifest)"));
+		assertEquals("1", editor.xpath("count(" + XPATH_RULES + "/manifest/remoteJms)"));
+		assertEquals("jmsID", editor.xpath(XPATH_RULES + "/manifest/remoteJms/@deploymentId"));
+		assertEquals("jmsAdmin", editor.xpath(XPATH_RULES + "/manifest/remoteJms/@userName"));
+		assertEquals("jmsAdmin123$", editor.xpath(XPATH_RULES + "/manifest/remoteJms/@password"));
+		assertEquals("123", editor.xpath(XPATH_RULES + "/manifest/remoteJms/@timeout"));
+		assertEquals("jmsHost", editor.xpath(XPATH_RULES + "/manifest/remoteJms/@hostName"));
+		assertEquals("9001", editor.xpath(XPATH_RULES + "/manifest/remoteJms/@remotingPort"));
+		assertEquals("9002", editor.xpath(XPATH_RULES + "/manifest/remoteJms/@messagingPort"));
+		assertEquals("true", editor.xpath(XPATH_RULES + "/manifest/remoteJms/@useSsl"));
+		assertEquals("keystoreLoc", editor.xpath(XPATH_RULES + "/manifest/remoteJms/@keystoreLocation"));
+		assertEquals("keystorePass", editor.xpath(XPATH_RULES + "/manifest/remoteJms/@keystorePassword"));
+		assertEquals("truststoreLoc", editor.xpath(XPATH_RULES + "/manifest/remoteJms/@truststoreLocation"));
+		assertEquals("truststorePass", editor.xpath(XPATH_RULES + "/manifest/remoteJms/@truststorePassword"));
 	}
 
 	@Test
@@ -612,23 +565,104 @@ public class ImplementationsTest {
 
 		assertEquals("1", editor.xpath("count(/switchyard/composite/component)"));
 		assertEquals("Component", editor.xpath("/switchyard/composite/component/@name"));
-		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.rules)"));
-		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.rules/manifest)"));
-		assertEquals("1",
-				editor.xpath("count(/switchyard/composite/component/implementation.rules/manifest/remoteRest)"));
-		assertEquals("restID",
-				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/remoteRest/@deploymentId"));
-		assertEquals("http://localhost/rest",
-				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/remoteRest/@url"));
-		assertEquals("restAdmin",
-				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/remoteRest/@userName"));
-		assertEquals("restAdmin123$",
-				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/remoteRest/@password"));
-		assertEquals("123",
-				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/remoteRest/@timeout"));
-		assertEquals(
-				"true",
-				editor.xpath("/switchyard/composite/component/implementation.rules/manifest/remoteRest/@useFormBasedAuth"));
+		assertEquals("1", editor.xpath("count(" + XPATH_RULES + ")"));
+		assertEquals("1", editor.xpath("count(" + XPATH_RULES + "/manifest)"));
+		assertEquals("1", editor.xpath("count(" + XPATH_RULES + "/manifest/remoteRest)"));
+		assertEquals("restID", editor.xpath(XPATH_RULES + "/manifest/remoteRest/@deploymentId"));
+		assertEquals("http://localhost/rest", editor.xpath(XPATH_RULES + "/manifest/remoteRest/@url"));
+		assertEquals("restAdmin", editor.xpath(XPATH_RULES + "/manifest/remoteRest/@userName"));
+		assertEquals("restAdmin123$", editor.xpath(XPATH_RULES + "/manifest/remoteRest/@password"));
+		assertEquals("123", editor.xpath(XPATH_RULES + "/manifest/remoteRest/@timeout"));
+		assertEquals("true", editor.xpath(XPATH_RULES + "/manifest/remoteRest/@useFormBasedAuth"));
+	}
+
+	private void checkBPMOperationsProperties(String tooltip, String operation, String type) throws Exception {
+		checkOperationsProperties(XPATH_BPM, tooltip, operation, type);
+	}
+
+	private void checkDroolsOperationsProperties(String tooltip, String operation, String type) throws Exception {
+		checkOperationsProperties(XPATH_RULES, tooltip, operation, type);
+	}
+
+	private void checkOperationsProperties(String xpath, String tooltip, String operation, String type)
+			throws Exception {
+		SwitchYardEditor editor = new SwitchYardEditor();
+
+		ImplementationKnowledgePage rulesPage = new SwitchYardComponent(tooltip).showProperties()
+				.selectRulesImplementation();
+		rulesPage.selectOperations();
+		rulesPage.addOperation(operation, type, null);
+		rulesPage.addGlobal(operation + "globalfrom", operation + "globalto");
+		rulesPage.addInput(operation + "inputfrom", operation + "inputto", operation + "inputoutput");
+		rulesPage.addOutput(operation + "outputfrom", operation + "outputto");
+		rulesPage.addFault(operation + "faultfrom", operation + "faultto");
+		rulesPage.ok();
+
+		editor.save();
+
+		assertEquals(type, editor.xpath(xpath + "/operations/operation[@name='" + operation + "']/@type"));
+		assertEquals(operation + "globalfrom",
+				editor.xpath(xpath + "/operations/operation[@name='" + operation + "']/globals/global/@from"));
+		assertEquals(operation + "globalto",
+				editor.xpath(xpath + "/operations/operation[@name='" + operation + "']/globals/global/@to"));
+		assertEquals(operation + "inputfrom",
+				editor.xpath(xpath + "/operations/operation[@name='" + operation + "']/inputs/input/@from"));
+		assertEquals(operation + "inputto",
+				editor.xpath(xpath + "/operations/operation[@name='" + operation + "']/inputs/input/@to"));
+		assertEquals(operation + "inputoutput",
+				editor.xpath(xpath + "/operations/operation[@name='" + operation + "']/inputs/input/@output"));
+		assertEquals(operation + "outputfrom",
+				editor.xpath(xpath + "/operations/operation[@name='" + operation + "']/outputs/output/@from"));
+		assertEquals(operation + "outputto",
+				editor.xpath(xpath + "/operations/operation[@name='" + operation + "']/outputs/output/@to"));
+		assertEquals(operation + "faultfrom",
+				editor.xpath(xpath + "/operations/operation[@name='" + operation + "']/faults/fault/@from"));
+		assertEquals(operation + "faultto",
+				editor.xpath(xpath + "/operations/operation[@name='" + operation + "']/faults/fault/@to"));
+	}
+
+	private void checkBPMAdvancedProperties(String tooltip) throws Exception {
+		checkAdvancedProperties(XPATH_BPM, tooltip);
+	}
+
+	private void checkDroolsAdvancedProperties(String tooltip) throws Exception {
+		checkAdvancedProperties(XPATH_RULES, tooltip);
+	}
+
+	private void checkAdvancedProperties(String xpath, String tooltip) throws Exception {
+		try {
+			SwitchYardEditor editor = new SwitchYardEditor();
+
+			ImplementationKnowledgePage knowledgePage = new SwitchYardComponent(tooltip).showProperties()
+					.selectRulesImplementation();
+			knowledgePage.selectAdvanced();
+			knowledgePage.addChannel("myChannel", "myOperation", "myReference", "SwitchYardServiceChannel");
+			knowledgePage.addListener("AgendaStats");
+			knowledgePage.addLogger("CONSOLE", null, null);
+			knowledgePage.addProperty("prop", "val");
+			knowledgePage.ok();
+
+			editor.save();
+
+			assertEquals("1", editor.xpath("count(" + xpath + "/channels)"));
+			assertEquals("myChannel", editor.xpath(xpath + "/channels/channel/@name"));
+			assertEquals("myOperation", editor.xpath(xpath + "/channels/channel/@operation"));
+			assertEquals("myReference", editor.xpath(xpath + "/channels/channel/@reference"));
+			assertEquals("org.switchyard.component.common.knowledge.service.SwitchYardServiceChannel",
+					editor.xpath(xpath + "/channels/channel/@class"));
+			assertEquals("1", editor.xpath("count(" + xpath + "/listeners)"));
+			assertEquals("org.drools.core.management.KieSessionMonitoringImpl$AgendaStats",
+					editor.xpath(xpath + "/listeners/listener/@class"));
+			assertEquals("1", editor.xpath("count(" + xpath + "/loggers)"));
+			assertEquals("CONSOLE", editor.xpath(xpath + "/loggers/logger/@type"));
+			assertEquals("1", editor.xpath("count(" + xpath + "/properties)"));
+			assertEquals("prop", editor.xpath(xpath + "/properties/property/@name"));
+			assertEquals("val", editor.xpath(xpath + "/properties/property/@value"));
+		} catch (Throwable e) {
+			e.printStackTrace();
+			System.out.println();
+		}
+		System.out.println();
 	}
 
 	private void removeClassAfterTest(String className) {

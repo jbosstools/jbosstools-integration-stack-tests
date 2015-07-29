@@ -12,7 +12,7 @@ import org.jboss.tools.switchyard.reddeer.preference.contract.ContractSecurityPa
 import org.jboss.tools.switchyard.reddeer.preference.contract.ContractTransactionPage;
 import org.jboss.tools.switchyard.reddeer.preference.implementation.ImplementationBPMNPage;
 import org.jboss.tools.switchyard.reddeer.preference.implementation.ImplementationPage;
-import org.jboss.tools.switchyard.reddeer.preference.implementation.ImplementationRulesPage;
+import org.jboss.tools.switchyard.reddeer.preference.implementation.ImplementationKnowledgePage;
 import org.jboss.tools.switchyard.reddeer.preference.implementation.ImplementationSecurityPage;
 import org.jboss.tools.switchyard.reddeer.preference.implementation.ImplementationTransactionPage;
 
@@ -108,10 +108,10 @@ public class CompositePropertiesPage extends PreferencePage {
 		return new ImplementationBPMNPage();
 	}
 
-	public ImplementationRulesPage selectRulesImplementation() {
+	public ImplementationKnowledgePage selectRulesImplementation() {
 		log.info("Select 'Implementation' page for Rules (DRL).");
 		new DefaultTreeItem("Implementation").select();
-		return new ImplementationRulesPage();
+		return new ImplementationKnowledgePage();
 	}
 
 	public ThrottlingPage selectThrottling() {

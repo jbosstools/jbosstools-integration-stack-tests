@@ -96,11 +96,11 @@ public class ImplementationPropertiesPage {
 		return new ImplementationBPMNPage();
 	}
 	
-	public ImplementationRulesPage getRulesImplementation() {
+	public ImplementationKnowledgePage getRulesImplementation() {
 		
 		log.info("Open the 'Implementation' page for Rules (DRL).");
 		new DefaultTreeItem("Implementation").select();
-		return new ImplementationRulesPage();
+		return new ImplementationKnowledgePage();
 	}
 	
 	public void ok() {

@@ -22,6 +22,7 @@ public class TableHasRow implements WaitCondition {
 		List<TableItem> items = table.getItems();
 		for (TableItem item: items) {
 			if (matcher.matches(item.getText())) {
+				item.select();
 				return true;
 			}
 		}
