@@ -2,6 +2,7 @@ package org.jboss.tools.runtime.reddeer.impl;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.Socket;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -10,8 +11,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.RuntimePreferencePage;
+import org.jboss.reddeer.eclipse.wst.server.ui.editor.ServerEditor;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.runtime.reddeer.Namespaces;
+import org.jboss.tools.runtime.reddeer.Remote;
 import org.jboss.tools.runtime.reddeer.ServerBase;
+import org.jboss.tools.runtime.reddeer.wizard.NewHostWizard;
 import org.jboss.tools.runtime.reddeer.wizard.ServerRuntimeWizard;
 import org.jboss.tools.runtime.reddeer.wizard.ServerWizard;
 
@@ -31,6 +37,9 @@ public class ServerAS extends ServerBase {
 	private final String category = "JBoss Community";
 
 	private final String label = "JBoss AS";
+
+	@XmlElement(name = "remote", namespace = Namespaces.SOA_REQ)
+	private Remote remote;
 
 	@XmlElement(name = "configuration", namespace = Namespaces.SOA_REQ, defaultValue = DEFAULT_CONFIGURATION)
 	private String configuration;
@@ -69,45 +78,113 @@ public class ServerAS extends ServerBase {
 
 	@Override
 	public void create() {
-		addJre();
+		if (isRemote()) {
+			ServerWizard serverWizard = new ServerWizard();
+			serverWizard.open();
+			serverWizard.setType(getCategory(), getServerType());
+			serverWizard.setName(name);
+			serverWizard.setHostName(remote.getHost());
 
-		WorkbenchPreferenceDialog preferences = new WorkbenchPreferenceDialog();
-		preferences.open();
+			serverWizard.next();
+			serverWizard.setRemote();
+			serverWizard.setUseManagementOperations(remote.isUseManagementOperations());
+			serverWizard.setAssignRuntime(false);
+			serverWizard.setExternallyManaged(remote.isExternallyManaged());
 
-		// Add runtime
-		RuntimePreferencePage runtimePreferencePage = new RuntimePreferencePage();
-		preferences.select(runtimePreferencePage);
-		runtimePreferencePage.addRuntime();
-		ServerRuntimeWizard runtimeWizard = new ServerRuntimeWizard();
-		runtimeWizard.activate();
-		runtimeWizard.setType(getCategory(), getRuntimeType());
-		runtimeWizard.next();
-		runtimeWizard.setName(getRuntimeName());
-		runtimeWizard.setHomeDirectory(getHome());
-		runtimeWizard.selectJre(getJreName());
-		runtimeWizard.setConfiguration(getConfiguration());
-		runtimeWizard.finish();
-		runtimePreferencePage.ok();
+			serverWizard.next();
 
-		// Add server
-		ServerWizard serverWizard = new ServerWizard();
-		serverWizard.open();
-		serverWizard.setType(getCategory(), getServerType());
-		serverWizard.setName(getName());
-		serverWizard.next();
-		serverWizard.setRuntime(getRuntimeName());
-		serverWizard.finish();
+			NewHostWizard hostWizard = serverWizard.addHost().setSshOnly();
+			hostWizard.next();
+			hostWizard.setHostName(remote.getHost()).setConnectionName(remote.getHost()).finish();
+
+			if (!remote.isUseManagementOperations() || !remote.isExternallyManaged()) {
+				serverWizard.setRemoteServerHome(remote.getRemoteHome());
+			}
+
+			serverWizard.finish();
+
+			ServersView servers = new ServersView();
+			servers.open();
+			ServerEditor serverEditor = servers.getServer(name).open();
+			new LabeledText("User Name").setText(remote.getUsername()); // TODO: move this into ServerEditor
+			new LabeledText("Password").setText(remote.getPassword());
+			serverEditor.save();
+			
+		} else {
+			addJre();
+
+			WorkbenchPreferenceDialog preferences = new WorkbenchPreferenceDialog();
+			preferences.open();
+
+			// Add runtime
+			RuntimePreferencePage runtimePreferencePage = new RuntimePreferencePage();
+			preferences.select(runtimePreferencePage);
+			runtimePreferencePage.addRuntime();
+			ServerRuntimeWizard runtimeWizard = new ServerRuntimeWizard();
+			runtimeWizard.activate();
+			runtimeWizard.setType(getCategory(), getRuntimeType());
+			runtimeWizard.next();
+			runtimeWizard.setName(name);
+			runtimeWizard.setHomeDirectory(getHome());
+			runtimeWizard.selectJre(getJreName());
+			runtimeWizard.finish();
+			runtimePreferencePage.ok();
+
+			// Add server
+			ServerWizard serverWizard = new ServerWizard();
+			serverWizard.open();
+			serverWizard.setType(getCategory(), getServerType());
+			serverWizard.setName(name);
+			serverWizard.next();
+			serverWizard.setRuntime(name);
+			serverWizard.finish();
+		}
 	}
 
 	@Override
 	protected boolean canStart() {
 		int port = 8080;
-		try {
-			new ServerSocket(port).close();
+
+		if (isRemote()) {
+			boolean portOpen = false;
+			Socket socket = null;
+
+			try {
+				socket = new Socket(remote.getHost(), port);
+				portOpen = true;
+			} catch (IOException e) {
+				portOpen = false;
+			} finally {
+				if (socket != null) {
+					try {
+						socket.close();
+					} catch (IOException e) {
+						// ignore
+					}
+				}
+			}
+
+			if (remote.isExternallyManaged() && !portOpen) {
+				throw new RuntimeException("No server running on " + remote.getHost() + " on port " + port);
+			}
+			if (!remote.isExternallyManaged() && portOpen) {
+				throw new RuntimeException("Port '" + port + "' is already in use on " + remote.getHost() + "!");
+			}
+
 			return true;
-		} catch (IOException e) {
-			throw new RuntimeException("Port '" + port + "' is already in use!", e);
+		} else {
+			try {
+				new ServerSocket(port).close();
+				return true;
+			} catch (IOException e) {
+				throw new RuntimeException("Port '" + port + "' is already in use!", e);
+			}
 		}
+	}
+
+	@Override
+	public boolean isRemote() {
+		return remote != null;
 	}
 
 }

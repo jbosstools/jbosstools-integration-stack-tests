@@ -35,6 +35,8 @@ public class ServerRequirement implements Requirement<Server>, CustomConfigurati
 		ServerReqState state() default ServerReqState.RUNNING;
 
 		String[] property() default "";
+		
+		ServerConnType[] connectionType() default ServerConnType.ANY;
 	}
 
 	@Override
@@ -46,16 +48,30 @@ public class ServerRequirement implements Requirement<Server>, CustomConfigurati
 				return false;
 			}
 		}
+		
+		boolean serverTypeMatches = false;
+		boolean connectionTypeMatches = false;
+		
 		ServerReqType[] type = server.type();
 		if (type.length == 0) {
-			return true;
+			serverTypeMatches = true;
 		}
 		for (int i = 0; i < type.length; i++) {
 			if (type[i].matches(config.getServerBase())) {
-				return true;
+				serverTypeMatches = true;
+			}
+		}		
+		
+		ServerConnType[] connTypes = server.connectionType();
+		if (connTypes.length == 0) {
+			connectionTypeMatches = true;
+		}
+		for (int i = 0; i < connTypes.length; i++) {
+			if (connTypes[i].matches(config.getServerBase())) {
+				connectionTypeMatches = true;
 			}
 		}
-		return false;
+		return serverTypeMatches && connectionTypeMatches;
 	}
 
 	@Override

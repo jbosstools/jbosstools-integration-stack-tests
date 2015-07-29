@@ -175,5 +175,9 @@ public abstract class ServerBase extends RuntimeBase {
 		}
 		return false;
 	}
+	
+	public boolean isRemote(){
+		return false;
+	}
 
 }

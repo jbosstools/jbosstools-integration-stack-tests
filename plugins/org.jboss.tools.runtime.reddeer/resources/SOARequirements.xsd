@@ -142,7 +142,10 @@
 	<!-- JBoss AS -->
 	<xs:complexType name="jboss-as">
 		<xs:sequence>
-			<xs:element name="home" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:choice>
+				<xs:element name="home" type="xs:string"/>
+				<xs:element name="remote" type="server:remoteType"/>
+			</xs:choice>
 			<xs:element name="configuration" type="xs:string" minOccurs="0" maxOccurs="1" />
 			<xs:element name="jre" type="xs:string" minOccurs="0" maxOccurs="1" />
 			<xs:element name="properties" minOccurs="0" maxOccurs="1">
@@ -169,7 +172,10 @@
 	<!-- JBoss EAP -->
 	<xs:complexType name="jboss-eap">
 		<xs:sequence>
-			<xs:element name="home" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:choice>
+				<xs:element name="home" type="xs:string"/>
+				<xs:element name="remote" type="server:remoteType"/>
+			</xs:choice>
 			<xs:element name="configuration" type="xs:string" minOccurs="0" maxOccurs="1" />
 			<xs:element name="jre" type="xs:string" minOccurs="0" maxOccurs="1" />
 			<xs:element name="properties" minOccurs="0" maxOccurs="1">
@@ -194,7 +200,10 @@
 	<!-- JBoss WildFly -->
 	<xs:complexType name="jboss-wildfly">
 		<xs:sequence>
-			<xs:element name="home" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:choice>
+				<xs:element name="home" type="xs:string"/>
+				<xs:element name="remote" type="server:remoteType"/>
+			</xs:choice>
 			<xs:element name="jre" type="xs:string" minOccurs="0" maxOccurs="1" />
 			<xs:element name="properties" minOccurs="0" maxOccurs="1">
 				<xs:complexType>
@@ -427,5 +436,17 @@
 			</xs:element>
 		</xs:sequence>
 		<xs:attribute name="name" type="xs:string" use="required" />
+	</xs:complexType>
+	
+	<!-- 	remote server definition -->
+	<xs:complexType name="remoteType">
+		<xs:sequence>
+			<xs:element name="host" minOccurs="1" maxOccurs="1" type="xs:string" />
+			<xs:element name="remoteHome" minOccurs="0" maxOccurs="1" type="xs:string" />
+			<xs:element name="username" minOccurs="1" maxOccurs="1" type="xs:string" />
+			<xs:element name="password" minOccurs="1" maxOccurs="1" type="xs:string" />
+			<xs:element name="isExternallyManaged" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+			<xs:element name="useManagementOperations" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+		</xs:sequence>
 	</xs:complexType>
 </xs:schema>

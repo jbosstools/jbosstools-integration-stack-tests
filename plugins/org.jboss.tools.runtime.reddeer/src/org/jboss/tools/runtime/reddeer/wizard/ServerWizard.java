@@ -1,7 +1,12 @@
 package org.jboss.tools.runtime.reddeer.wizard;
 
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.group.DefaultGroup;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 
@@ -15,7 +20,15 @@ public class ServerWizard extends NewWizardDialog {
 	public static final String HOST_NAME = "Server's host name:";
 	public static final String SERVER_NAME = "Server name:";
 	public static final String RUNTIME = "Server runtime environment:";
-	
+	public static final String REMOTE_SERVER_HOME = "Remote Server Home:";
+	public static final String CONNECTION_TYPE_LOCAL = "Local";
+	public static final String CONNECTION_TYPE_REMOTE = "Remote";
+	public static final String CONNTROLLED_BY_MANAGEMENT = "Management Operations";
+	public static final String CONNTROLLED_BY_FILESYSTEM = "Filesystem and shell operations";
+	public static final String REMOTE_RUNTIME_DETAILS = "Remote Runtime Details";
+	public static final String ASSIGN_RUNTIME = "Assign a runtime to this server";
+	public static final String EXTERNALLY_MANAGED = "Server is externally managed. Assume server is started. ";
+
 	public ServerWizard() {
 		super("Server", "Server");
 	}
@@ -37,6 +50,50 @@ public class ServerWizard extends NewWizardDialog {
 			new DefaultCombo(1).setSelection(runtime);
 		}
 		return this;
+	}
+
+	public ServerWizard setRemote() {
+		new RadioButton(CONNECTION_TYPE_REMOTE).click();
+		return this;
+	}
+
+	public ServerWizard setLocal() {
+		new RadioButton(CONNECTION_TYPE_LOCAL).click();
+		return this;
+	}
+
+	public ServerWizard setHostName(String hostName) {
+		new LabeledText(HOST_NAME).setText(hostName);
+		return this;
+	}
+
+	public ServerWizard setUseManagementOperations(boolean mgmt) {
+		if (mgmt) {
+			new RadioButton(CONNTROLLED_BY_MANAGEMENT).click();
+		} else {
+			new RadioButton(CONNTROLLED_BY_FILESYSTEM).click();
+		}
+		return this;
+	}
+	public ServerWizard setExternallyManaged(boolean value) {
+		new CheckBox(EXTERNALLY_MANAGED).toggle(value);
+		return this;
+	}
+
+	public ServerWizard setAssignRuntime(boolean value) {
+		new CheckBox(ASSIGN_RUNTIME).toggle(value);
+		return this;
+	}
+
+	public NewHostWizard addHost() {
+		new PushButton("New Host...").click();
+		return new NewHostWizard();
+	}
+
+	public ServerWizard setRemoteServerHome(String remoteHome) {
+		new DefaultText(new DefaultGroup(REMOTE_RUNTIME_DETAILS),0).setText(remoteHome);
+		return this;
+		
 	}
 
 	/*
