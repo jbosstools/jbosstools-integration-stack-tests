@@ -34,6 +34,7 @@ public class SecurityConfigurationWizard extends WizardDialog {
 	public void setName(String name) {
 		activate();
 		new LabeledText(NAME).typeText(name);
+		new LabeledText(NAME).setText(name);
 		new WaitUntil(new IsButtonEnabled("Finish", ROLES_ALLOWED, NAME), TimePeriod.LONG);
 	}
 
