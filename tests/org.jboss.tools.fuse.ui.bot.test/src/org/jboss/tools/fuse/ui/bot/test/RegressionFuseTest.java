@@ -98,9 +98,10 @@ public class RegressionFuseTest extends DefaultTest {
 		// tests the _Cancel_ button
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new DefaultTreeItem("JBoss Fuse", serverRequirement.getConfig().getServerBase().getName()).select();
+		AbstractWait.sleep(TimePeriod.SHORT);
 		new PushButton("Cancel").click();
+		AbstractWait.sleep(TimePeriod.SHORT);
 		try {
-
 			assertTrue(new DefaultShell().getText().equals("Preferences"));
 		} catch (AssertionError ex) {
 
