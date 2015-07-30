@@ -124,6 +124,7 @@ public class DomainEditor extends DefaultEditor {
 		if (name == null) {
 			throw new IllegalArgumentException("name is required, cannot be null");
 		}
+		wizard.activate();
 		wizard.setName(name);
 		if (rolesAllowed != null) {
 			wizard.setRolesAllowed(rolesAllowed);

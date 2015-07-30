@@ -12,7 +12,6 @@ import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.reference.ReferencedComposite;
 import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
-import org.jboss.tools.switchyard.reddeer.widget.RadioButtonExt;
 
 /**
  * 
@@ -40,33 +39,42 @@ public class ExistingBPMNServiceWizard extends ExistingServiceWizard<ExistingBPM
 	}
 
 	public RadioButton getRemoteREST() {
-		return new RadioButtonExt("Remote REST");
+		return new RadioButton("Remote REST");
 	}
 
 	public RadioButton getRemoteJMS() {
-		return new RadioButtonExt("Remote JMS");
+		return new RadioButton("Remote JMS");
 	}
 
 	public RadioButton getKnowledgeContainer() {
-		return new RadioButtonExt("Knowledge Container");
+		return new RadioButton("Knowledge Container");
 	}
 
 	public RadioButton getProjectResource() {
-		return new RadioButtonExt("Project Resource");
+		return new RadioButton("Project Resource");
 	}
 
 	public ExistingBPMNServiceWizard selectRemoteREST() {
 		getRemoteREST().toggle(true);
+		if (!getRemoteREST().isSelected()) {
+			throw new RuntimeException("Cannot select Remote REST");
+		}
 		return this;
 	}
 
 	public ExistingBPMNServiceWizard selectRemoteJMS() {
 		getRemoteJMS().toggle(true);
+		if (!getRemoteJMS().isSelected()) {
+			throw new RuntimeException("Cannot select Remote JMS");
+		}
 		return this;
 	}
 
 	public ExistingBPMNServiceWizard selectKnowledgeContainer() {
 		getKnowledgeContainer().toggle(true);
+		if (!getKnowledgeContainer().isSelected()) {
+			throw new RuntimeException("Cannot select Knowledge Container");
+		}
 		return this;
 	}
 

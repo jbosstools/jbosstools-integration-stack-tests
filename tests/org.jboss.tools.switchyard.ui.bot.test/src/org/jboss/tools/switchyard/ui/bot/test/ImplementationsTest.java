@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.swt.handler.ShellHandler;
 import org.jboss.reddeer.swt.impl.button.NoButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
@@ -75,7 +76,9 @@ public class ImplementationsTest {
 
 	@AfterClass
 	public static void turnBackAutoBuilding() {
-		PreferenceUtils.setAutoBuilding(autoBuilding);
+		if (autoBuilding != null) {
+			PreferenceUtils.setAutoBuilding(autoBuilding);
+		}
 	}
 
 	@BeforeClass
@@ -101,6 +104,8 @@ public class ImplementationsTest {
 		} catch (Exception e) {
 			// ok
 		}
+		
+		ShellHandler.getInstance().closeAllNonWorbenchShells();
 
 		List<SwitchYardComponent> components = new SwitchYardEditor().getComponents();
 		while (!components.isEmpty()) {
@@ -350,7 +355,7 @@ public class ImplementationsTest {
 		bpmnWizard.getTruststoreLocation().setText("truststoreLoc");
 
 		bpmnWizard.finish();
-
+		
 		editor.save();
 		removeComponentAfterTest("Component");
 
@@ -474,7 +479,7 @@ public class ImplementationsTest {
 		droolsWizard.getScanInterval().setText("12345");
 
 		droolsWizard.finish();
-
+		
 		editor.save();
 		removeComponentAfterTest("Component");
 
@@ -504,7 +509,7 @@ public class ImplementationsTest {
 		droolsWizard.getUserName().setText("jmsAdmin");
 		droolsWizard.getPassword().setText("jmsAdmin123$");
 		droolsWizard.getTimeout().setText("123");
-
+		
 		droolsWizard.getUseSSL().setSelection("false");
 		Assert.assertFalse(droolsWizard.getKeystorePassword().isEnabled());
 		Assert.assertFalse(droolsWizard.getKeystoreLocation().isEnabled());
@@ -630,39 +635,33 @@ public class ImplementationsTest {
 	}
 
 	private void checkAdvancedProperties(String xpath, String tooltip) throws Exception {
-		try {
-			SwitchYardEditor editor = new SwitchYardEditor();
+		SwitchYardEditor editor = new SwitchYardEditor();
 
-			ImplementationKnowledgePage knowledgePage = new SwitchYardComponent(tooltip).showProperties()
-					.selectRulesImplementation();
-			knowledgePage.selectAdvanced();
-			knowledgePage.addChannel("myChannel", "myOperation", "myReference", "SwitchYardServiceChannel");
-			knowledgePage.addListener("AgendaStats");
-			knowledgePage.addLogger("CONSOLE", null, null);
-			knowledgePage.addProperty("prop", "val");
-			knowledgePage.ok();
+		ImplementationKnowledgePage knowledgePage = new SwitchYardComponent(tooltip).showProperties()
+				.selectRulesImplementation();
+		knowledgePage.selectAdvanced();
+		knowledgePage.addChannel("myChannel", "myOperation", "myReference", "SwitchYardServiceChannel");
+		knowledgePage.addListener("AgendaStats");
+		knowledgePage.addLogger("CONSOLE", null, null);
+		knowledgePage.addProperty("prop", "val");
+		knowledgePage.ok();
 
-			editor.save();
+		editor.save();
 
-			assertEquals("1", editor.xpath("count(" + xpath + "/channels)"));
-			assertEquals("myChannel", editor.xpath(xpath + "/channels/channel/@name"));
-			assertEquals("myOperation", editor.xpath(xpath + "/channels/channel/@operation"));
-			assertEquals("myReference", editor.xpath(xpath + "/channels/channel/@reference"));
-			assertEquals("org.switchyard.component.common.knowledge.service.SwitchYardServiceChannel",
-					editor.xpath(xpath + "/channels/channel/@class"));
-			assertEquals("1", editor.xpath("count(" + xpath + "/listeners)"));
-			assertEquals("org.drools.core.management.KieSessionMonitoringImpl$AgendaStats",
-					editor.xpath(xpath + "/listeners/listener/@class"));
-			assertEquals("1", editor.xpath("count(" + xpath + "/loggers)"));
-			assertEquals("CONSOLE", editor.xpath(xpath + "/loggers/logger/@type"));
-			assertEquals("1", editor.xpath("count(" + xpath + "/properties)"));
-			assertEquals("prop", editor.xpath(xpath + "/properties/property/@name"));
-			assertEquals("val", editor.xpath(xpath + "/properties/property/@value"));
-		} catch (Throwable e) {
-			e.printStackTrace();
-			System.out.println();
-		}
-		System.out.println();
+		assertEquals("1", editor.xpath("count(" + xpath + "/channels)"));
+		assertEquals("myChannel", editor.xpath(xpath + "/channels/channel/@name"));
+		assertEquals("myOperation", editor.xpath(xpath + "/channels/channel/@operation"));
+		assertEquals("myReference", editor.xpath(xpath + "/channels/channel/@reference"));
+		assertEquals("org.switchyard.component.common.knowledge.service.SwitchYardServiceChannel",
+				editor.xpath(xpath + "/channels/channel/@class"));
+		assertEquals("1", editor.xpath("count(" + xpath + "/listeners)"));
+		assertEquals("org.drools.core.management.KieSessionMonitoringImpl$AgendaStats",
+				editor.xpath(xpath + "/listeners/listener/@class"));
+		assertEquals("1", editor.xpath("count(" + xpath + "/loggers)"));
+		assertEquals("CONSOLE", editor.xpath(xpath + "/loggers/logger/@type"));
+		assertEquals("1", editor.xpath("count(" + xpath + "/properties)"));
+		assertEquals("prop", editor.xpath(xpath + "/properties/property/@name"));
+		assertEquals("val", editor.xpath(xpath + "/properties/property/@value"));
 	}
 
 	private void removeClassAfterTest(String className) {

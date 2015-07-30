@@ -6,12 +6,12 @@ import org.jboss.reddeer.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.handler.ShellHandler;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.matcher.RegexMatcher;
 import org.jboss.reddeer.swt.wait.WaitUntil;
@@ -152,7 +152,12 @@ public class ImplementationKnowledgePage extends PreferencePage {
 	private void addClass(CellEditor cellEditor, String title, String clazz) {
 		new PushButton(cellEditor, "...").click();
 		if (title != null) {
+			try {
 			new DefaultShell(title);
+			} catch (Exception e) {
+				ShellHandler.getInstance().closeAllNonWorbenchShells();
+				throw new RuntimeException("Cannot find a shell with title '" + title + "'", e);
+			}
 		} else {
 			new DefaultShell();
 		}

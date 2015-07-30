@@ -18,8 +18,9 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
+import org.jboss.tools.switchyard.reddeer.condition.SwitchYardEditorIsOpen;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 
 /**
@@ -142,11 +143,11 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 	public boolean isBOMDependencyChecked() {
 		return new CheckBox(BOM_DEPENDENCY).isChecked();
 	}
-	
+
 	public boolean isBOMDependencyEnabled() {
 		return new CheckBox(BOM_DEPENDENCY).isEnabled();
 	}
-	
+
 	public SwitchYardProjectWizard setComponent(String group, String component, boolean checked) {
 		new DefaultTreeItem(new DefaultGroup(SWITCHYARD_COMPONENTS), group, component).setChecked(checked);
 		return this;
@@ -162,7 +163,7 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		}
 		return this;
 	}
-	
+
 	public SwitchYardProjectWizard implAll() {
 		components.add(new String[] { "Implementation Support" });
 		return this;
@@ -201,7 +202,13 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 	public void setLibraryVersion(String libraryVersion) {
 		LabeledComboExt combo = new LabeledComboExt("Library Version:");
 		if (libraryVersion != null && combo.isEnabled()) {
-			combo.typeText(libraryVersion);
+			try {
+				log.info("Select library version to '" + libraryVersion + "'");
+				combo.setSelection(libraryVersion);
+			} catch (Exception e) {
+				log.info("Type library version to '" + libraryVersion + "'");
+				combo.typeText(libraryVersion);	
+			}
 		}
 	}
 
@@ -228,18 +235,6 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		setName(name);
 		next();
 		activate();
-		
-		if (configurationVersion != null) {
-			if (configurationVersion.equals("1.0") || configurationVersion.equals("1.1")) {
-				setBOMDependency(false);
-			}
-			setConfigurationVersion(configurationVersion);
-		}
-		if (targetRuntime != null) {
-			setTargetRuntime(targetRuntime);
-		} else if (libraryVersion != null) {
-			setLibraryVersion(libraryVersion);
-		}
 	}
 
 	public void create() {
@@ -256,14 +251,20 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 			setTargetRuntime(targetRuntime);
 		} else if (libraryVersion != null) {
 			setLibraryVersion(libraryVersion);
+			String actualLibraryVersion = getLibraryVersion();
+			if (!actualLibraryVersion.equals(libraryVersion)) {
+				throw new RuntimeException("The library version should be '" + libraryVersion + "' but is ' "
+						+ actualLibraryVersion + "'");
+			}
 		}
 		selectComponents(components);
 		finish();
-		new SwitchYardEditor();
+		new WaitUntil(new SwitchYardEditorIsOpen(), TimePeriod.LONG);
 		new SwitchYardProject(name).update();
 		if (targetRuntime != null && targetRuntime.contains("Karaf Extension")) {
 			new SwitchYardProject(name).enableFuseCamelNature();
 		}
+		System.out.println();
 	}
 
 	@Override
@@ -284,26 +285,26 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		new WaitWhile(new ShellWithTextIsActive(DIALOG_TITLE), timeout);
 		new WaitWhile(new JobIsRunning(), timeout);
 	}
-	
+
 	private class LabeledComboExt extends LabeledCombo {
-		
+
 		private final Logger log = Logger.getLogger(LabeledComboExt.class);
-		
+
 		public LabeledComboExt(String label) {
 			super(label);
 		}
-		
+
 		public void setFocus() {
 			log.debug("Set focus to Combo Text");
 			WidgetHandler.getInstance().setFocus(swtWidget);
 		}
-		
+
 		public void typeText(String text) {
 			setText("");
 			setFocus();
 			KeyboardFactory.getKeyboard().type(text);
 			setText(text);
 		}
-		
+
 	}
 }
