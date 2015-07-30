@@ -11,6 +11,7 @@ import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
@@ -149,29 +150,29 @@ public class TeiidInstanceView extends WorkbenchView {//DEPRECATED - JBDS7 only 
 		}
 	}*/
 
-	public void setDefaultTeiidInstance(String teiidInstanceUrl) {//cp to servermgr
-		new GuidesView().chooseAction("Teiid",
-				"Set the Default JBoss / Teiid Instance");
+	public void setDefaultTeiidInstance(String teiidInstanceUrl) {// cp to servermgr
+		new GuidesView().chooseAction("Teiid", "Set the Default JBoss / Teiid Instance");
+
+		new DefaultShell("Server Selection");
+		new DefaultCombo().setSelection(teiidInstanceUrl);
+		new PushButton("OK").click();
 		
+
 		try {
-			new DefaultCombo().setSelection(teiidInstanceUrl);
-			new PushButton("OK").click();
-		} catch (Exception ex){
-			//dialog doesn't appear if only 1 server instance is defined
-		}
-		
-		//dialog doesn't apper if restart of server precedes setup of default teiid instance
-		try {
-			if (new SWTWorkbenchBot().activeShell().getText().equals("Change of Server Version")){
-				new PushButton("Yes").click();// save all opened editors
-			} else {
-				new PushButton("No").click();// disconnect from actual teiid instance (Disconnect Current Default Teiid Instance)
-			}
-		} catch (Exception ex){
+			DefaultShell shell = new DefaultShell("Change of Teiid Version");
+			new PushButton("Yes").click();// save all opened editors
+		} catch (Exception ex) {
+			// dialog doesn't apper if restart of server precedes setup of default teiid instance
 			System.err.println(ex.getCause() + "," + ex.getMessage());
 		}
-		
-		new PushButton("OK").click();// confirm change of default server
+
+		try {
+			new DefaultShell("Default Server Changed");
+			new PushButton("OK").click();// confirm change of default server
+		} catch (Exception ex) {
+			// not shown in some cases
+			System.err.println(ex.getCause() + "," + ex.getMessage());
+		}
 	}
 	
 	public void startServer(String serverName){//--copy to servermgr for servers view

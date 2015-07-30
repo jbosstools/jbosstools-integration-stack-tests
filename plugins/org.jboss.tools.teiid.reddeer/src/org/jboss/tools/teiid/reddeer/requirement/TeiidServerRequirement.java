@@ -6,7 +6,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.List;
-import java.util.Properties;
 
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
@@ -23,6 +22,7 @@ import org.jboss.reddeer.swt.matcher.WithTooltipTextMatcher;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.runtime.reddeer.ServerBase;
+import org.jboss.tools.runtime.reddeer.requirement.ServerConnType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileHelper;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
@@ -30,7 +30,6 @@ import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidSer
 import org.jboss.tools.teiid.reddeer.util.FileUtils;
 import org.jboss.tools.teiid.reddeer.util.TeiidDriver;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
-import org.jboss.tools.teiid.reddeer.wizard.TeiidConnectionProfileWizard;
 
 /**
  * 
@@ -41,6 +40,7 @@ public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomC
 
 	private TeiidConfiguration serverConfig;
 	private TeiidServer teiid;
+	
 
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.TYPE)
@@ -51,6 +51,8 @@ public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomC
 		String[] connectionProfiles() default {};
 		
 		ServerReqState state();
+		
+		ServerConnType[] connectionType() default ServerConnType.ANY;
 		
 	}
 
@@ -67,21 +69,34 @@ public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomC
 	@Override
 	public boolean canFulfill() {
 		ServerReqType[] type = teiid.type();
-		boolean result = false;
+		boolean typeMatches = false;
+		boolean connectionTypeMatches = false;
+		
 		if (type.length == 0) {
-			return true;
+			typeMatches = true;
 		}
 		for (int i = 0; i < type.length; i++) {
 			if (type[i].matches(serverConfig.getServerBase())) {
-				result = true;
+				typeMatches = true;
 			}
 		}
+		
+		ServerConnType[] connTypes = teiid.connectionType();
+		if (connTypes.length == 0) {
+			connectionTypeMatches = true;
+		}
+		for (int i = 0; i < connTypes.length; i++) {
+			if (connTypes[i].matches(serverConfig.getServerBase())) {
+				connectionTypeMatches = true;
+			}
+		}
+		
 		for (String cp : teiid.connectionProfiles()){
 			if (serverConfig.getConnectionProfile(cp) == null){
-				result = false;
+				return false;
 			}
 		}
-		return result;
+		return typeMatches && connectionTypeMatches;
 	}
 
 	@Override

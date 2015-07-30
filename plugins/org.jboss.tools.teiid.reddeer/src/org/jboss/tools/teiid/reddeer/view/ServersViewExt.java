@@ -151,7 +151,7 @@ public class ServersViewExt extends ServersView {
 		Server server = new ServersView().getServer(serverName);
 		String state = server.getLabel().getState().getText();
 		String publishState = server.getLabel().getPublishState().getText();
-		if (publishState != null){
+		if (publishState != null && publishState.length() > 0){
 			return serverName + "  [" + state + ", " + publishState  + "]";
 		}
 		return serverName + "  [" + state + "]";
