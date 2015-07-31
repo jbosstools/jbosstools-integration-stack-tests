@@ -18,11 +18,11 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  */
 @SuiteClasses({
-//	HelloWorldTest.class,
+	HelloWorldTest.class,
 	ImplementationsTest.class,
 	DomainSettingsTest.class,
 	ImplementationsPropertiesTest.class,
-//	ValidatorsTest.class
+	ValidatorsTest.class
 })
 @RunWith(RedDeerSuite.class)
 public class SmokeTests extends TestSuite {
