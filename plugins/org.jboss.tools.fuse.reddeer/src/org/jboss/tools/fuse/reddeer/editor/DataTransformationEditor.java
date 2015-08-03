@@ -12,6 +12,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
@@ -60,6 +61,7 @@ public class DataTransformationEditor extends DefaultEditor {
 		log.info("Select a target entry: " + Arrays.toString(targetPath));
 		invokeMappingContextMenu(target, "Set field");
 		new DefaultTreeItem(targetPath).select();
+		new WaitUntil(new WidgetIsEnabled(new PushButton("OK")));
 		new PushButton("OK").click();
 	}
 

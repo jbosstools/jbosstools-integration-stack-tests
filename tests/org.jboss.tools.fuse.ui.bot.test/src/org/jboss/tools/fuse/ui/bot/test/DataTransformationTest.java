@@ -13,9 +13,6 @@ import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.swt.matcher.RegexMatcher;
-import org.jboss.reddeer.swt.matcher.WithTooltipTextMatcher;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.fuse.reddeer.condition.JUnitHasFinished;
@@ -48,7 +45,6 @@ public class DataTransformationTest extends DefaultTest {
 	 * 
 	 * @throws IOException 
 	 */
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testBasics() throws IOException {
 
@@ -78,7 +74,7 @@ public class DataTransformationTest extends DefaultTest {
 		editor.doOperation("ref:xml2json", "Add", "Components", "File");
 		editor.selectEditPart("file:directoryName");
 		editor.setUriProperty("file:target/messages?fileName=xyz-order.json");
-		editor.save();
+		editor.close(true);
 
 		DataTransformationEditor transEditor = new DataTransformationEditor("transformation.xml");
 		transEditor.createNewVariable("ORIGIN");
@@ -87,7 +83,6 @@ public class DataTransformationTest extends DefaultTest {
 		transEditor.createTransformation("ABCOrder", new String[] {"ABCOrder", "header", "customerNum"}, "XyzOrder", new String[] {"XyzOrder", "custId"});
 		transEditor.createTransformation("ABCOrder", new String[] {"ABCOrder", "header", "orderNum"}, "XyzOrder", new String[] {"XyzOrder", "orderId"});
 		transEditor.createTransformation("ABCOrder", new String[] {"ABCOrder", "header", "status"}, "XyzOrder", new String[] {"XyzOrder", "priority"});
-		transEditor.createTransformation("ABCOrder", new String[] {"ABCOrder", "orderItems", "item"}, "XyzOrder", new String[] {"XyzOrder", "lineItems"});
 		transEditor.createTransformation("ABCOrder", new String[] {"ABCOrder", "orderItems", "item", "id"}, "XyzOrder", new String[] {"XyzOrder", "lineItems", "itemId"});
 		transEditor.createTransformation("ABCOrder", new String[] {"ABCOrder", "orderItems", "item", "price"}, "XyzOrder", new String[] {"XyzOrder", "lineItems", "cost"});
 		transEditor.createTransformation("ABCOrder", new String[] {"ABCOrder", "orderItems", "item", "quantity"}, "XyzOrder", new String[] {"XyzOrder", "lineItems", "amount"});
