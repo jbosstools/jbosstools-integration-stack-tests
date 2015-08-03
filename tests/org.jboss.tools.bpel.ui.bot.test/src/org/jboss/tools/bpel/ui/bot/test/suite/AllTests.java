@@ -14,13 +14,13 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 @SuiteClasses({
-//	SimpleDeployTest.class,
+	SimpleDeployTest.class,
 	WizardTest.class,
 	ActivityModelingTest.class,
-//	AssociateRuntimeTest.class,
+	AssociateRuntimeTest.class,
 	AssignActivityTest.class,
-//	FaultModelingTest.class,
-//	ExampleTest.class
+	FaultModelingTest.class,
+	ExampleTest.class
 })
 @RunWith(RedDeerSuite.class)
 public class AllTests extends TestSuite {
