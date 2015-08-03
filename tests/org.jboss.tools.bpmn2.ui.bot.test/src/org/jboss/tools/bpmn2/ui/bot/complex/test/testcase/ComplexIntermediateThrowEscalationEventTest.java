@@ -17,7 +17,7 @@ import org.kie.api.runtime.process.ProcessInstance;
 							importFolder="resources/bpmn2/model/base",
 							openFile="BaseBPMN2-IntermediateThrowEscalationEvent.bpmn2",
 							saveAs="BPMN2-IntermediateThrowEscalationEvent.bpmn2",
-							knownIssues={"1184422"})
+							knownIssues={"1184422", "1249658"})
 public class ComplexIntermediateThrowEscalationEventTest extends JBPM6ComplexTest {
 
 	@TestPhase(phase=Phase.MODEL)
