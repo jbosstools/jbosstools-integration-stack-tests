@@ -124,7 +124,7 @@ public class ServerAS extends ServerBase {
 			runtimeWizard.activate();
 			runtimeWizard.setType(getCategory(), getRuntimeType());
 			runtimeWizard.next();
-			runtimeWizard.setName(name);
+			runtimeWizard.setName(getRuntimeName());
 			runtimeWizard.setHomeDirectory(getHome());
 			runtimeWizard.selectJre(getJreName());
 			runtimeWizard.finish();
@@ -134,9 +134,9 @@ public class ServerAS extends ServerBase {
 			ServerWizard serverWizard = new ServerWizard();
 			serverWizard.open();
 			serverWizard.setType(getCategory(), getServerType());
-			serverWizard.setName(name);
+			serverWizard.setName(getName());
 			serverWizard.next();
-			serverWizard.setRuntime(name);
+			serverWizard.setRuntime(getRuntimeName());
 			serverWizard.finish();
 		}
 	}

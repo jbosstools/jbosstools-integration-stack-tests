@@ -94,7 +94,7 @@ public class SwitchYardRequirement implements Requirement<SwitchYard>, CustomCon
 		serverBase.setState(switchyard.server().state());
 	}
 	
-	private static void deleteAllProjects() {
+	public void deleteAllProjects() {
 		new WorkbenchShell().maximize();
 		EditorHandler.getInstance().closeAll(true);
 

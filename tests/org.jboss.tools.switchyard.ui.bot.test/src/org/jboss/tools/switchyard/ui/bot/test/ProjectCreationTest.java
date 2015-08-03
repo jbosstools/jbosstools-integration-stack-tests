@@ -8,7 +8,6 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.util.List;
 
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.junit.execution.annotation.RunIf;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
@@ -67,11 +66,8 @@ public class ProjectCreationTest {
 	}
 
 	@After
-	public void deleteSwitchYardProject() {
-		saveAndCloseSwitchYardFile();
-		new WorkbenchShell().setFocus();
-		new ProjectExplorer().open();
-		new ProjectExplorer().deleteAllProjects();
+	public void deleteSwitchYardProjects() {
+		switchyardRequirement.deleteAllProjects();
 	}
 
 	@Test
@@ -88,7 +84,9 @@ public class ProjectCreationTest {
 		assertEquals("abcd", wizard.getGroupId());
 		assertEquals("urn:abcd:noserver:1.0", wizard.gettargetNamespace());
 		assertEquals("abcd.noserver", wizard.getPackageName());
+		wizard.setConfigurationVersion(switchyardRequirement.getConfig().getConfigurationVersion());
 		wizard.setTargetRuntime("<None>");
+		wizard.setLibraryVersion(switchyardRequirement.getConfig().getLibraryVersion());
 		wizard.finish();
 
 		XPathEvaluator xpath = new XPathEvaluator(new File(new SwitchYardProject(projectName).getFile(), "pom.xml"));
@@ -98,13 +96,15 @@ public class ProjectCreationTest {
 				xpath.evaluateString("/project/properties/switchyard.version"));
 	}
 
-	@Test
+	 @Test
 	@RunIf(conditionClass = SwitchYardRequirementHasServer.class)
 	public void createProjectWithServerTest() {
 		String projectName = "withserver";
 
 		wizard = switchyardRequirement.project(projectName);
 		wizard.open();
+		wizard.setConfigurationVersion(switchyardRequirement.getConfig().getConfigurationVersion());
+		wizard.setTargetRuntime(switchyardRequirement.getTargetRuntimeLabel());
 		assertEquals(switchyardRequirement.getTargetRuntimeLabel(), wizard.getTargetRuntime());
 		assertEquals(switchyardRequirement.getConfig().getLibraryVersion(), wizard.getLibraryVersion());
 		wizard.setTargetRuntime("<None>");
@@ -132,7 +132,9 @@ public class ProjectCreationTest {
 
 		wizard = switchyardRequirement.project(projectName);
 		wizard.open();
+		wizard.setConfigurationVersion(switchyardRequirement.getConfig().getConfigurationVersion());
 		wizard.setTargetRuntime("<None>");
+		wizard.setLibraryVersion(switchyardRequirement.getConfig().getLibraryVersion());
 		assertFalse("OSGi bundle should be unchecked by default", wizard.isOSGiBundle());
 		wizard.setOSGiBundle(true);
 		assertTrue("OSGi bundle cannot be checked", wizard.isOSGiBundle());
@@ -160,6 +162,10 @@ public class ProjectCreationTest {
 
 		wizard = switchyardRequirement.project(projectName);
 		wizard.open();
+		wizard.setConfigurationVersion(switchyardRequirement.getConfig().getConfigurationVersion());
+		wizard.setTargetRuntime("<None>");
+		wizard.setLibraryVersion(switchyardRequirement.getConfig().getLibraryVersion());
+		
 		assertComponent("Implementation Support", "Bean");
 		assertComponent("Implementation Support", "BPEL");
 		assertComponent("Implementation Support", "BPM (jBPM)");
