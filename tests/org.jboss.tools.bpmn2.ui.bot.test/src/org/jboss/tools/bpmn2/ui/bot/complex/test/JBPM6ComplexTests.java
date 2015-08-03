@@ -91,7 +91,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	ComplexServiceTaskTest.class,
 	ComplexManualTaskTest.class,
 	ComplexDefinitionViaElementTest.class // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1211647
-										  // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1211611
 })
 @RunWith(RedDeerSuite.class)
 public class JBPM6ComplexTests {

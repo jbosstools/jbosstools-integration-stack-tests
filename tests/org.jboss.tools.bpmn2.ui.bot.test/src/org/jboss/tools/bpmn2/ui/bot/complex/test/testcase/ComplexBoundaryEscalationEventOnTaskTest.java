@@ -32,7 +32,7 @@ import org.kie.api.runtime.process.WorkflowProcessInstance;
 							importFolder="resources/bpmn2/model/base",
 							openFile="BaseBPMN2-BoundaryEscalationEventOnTask.bpmn2",
 							saveAs="BPMN2-BoundaryEscalationEventOnTask.bpmn2",
-							knownIssues={"1184422"})
+							knownIssues={"1184422", "1249658"})
 public class ComplexBoundaryEscalationEventOnTaskTest extends JBPM6ComplexTest {
 	
 	private static final String VARIABLE3 = "Property_3";
