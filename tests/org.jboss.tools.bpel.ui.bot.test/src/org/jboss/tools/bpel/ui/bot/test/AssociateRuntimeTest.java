@@ -48,8 +48,8 @@ public class AssociateRuntimeTest {
 
 		new DefaultTreeItem("Targeted Runtimes").select();
 
-		String serverName = serverRequirement.getConfig().getName();
-		assertTrue(containsItem(new DefaultTable(), serverName));
+		String runtimeName = serverRequirement.getConfig().getName() + " Runtime";
+		assertTrue(containsItem(new DefaultTable(), runtimeName));
 
 		new PushButton("OK").click();
 		
