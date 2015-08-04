@@ -155,8 +155,6 @@
 				<configuration>
 					<appArgLine>-eclipse.password resources/security/password</appArgLine>
 					<useUIThread>false</useUIThread>
-					<surefire.timeout>3600</surefire.timeout>
-					<forkedProcessTimeoutInSeconds>3600</forkedProcessTimeoutInSeconds>
 					<testSuite>org.jboss.tools.teiid.ui.bot.test</testSuite>
 					<testClass>${test.package}.${test.class}</testClass>
 					<skip>${skip.tests}</skip>
