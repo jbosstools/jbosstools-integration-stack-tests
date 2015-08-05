@@ -90,6 +90,7 @@ public class JMXNavigator extends WorkbenchView {
 	 */
 	public TreeItem getNode(String... path) {
 
+		activate();
 		if (path == null) return null;
 		log.info("Accessing child items of 'Local Processes'");
 		List<TreeItem> items = new DefaultTreeItem("Local Processes").getItems();
@@ -118,10 +119,17 @@ public class JMXNavigator extends WorkbenchView {
 			rightItem.doubleClick();
 			expand(rightItem);
 		}
-		if (rightItem == null) log.warn("'" + path[0] + "' item was NOT found");
+		if (rightItem == null) {
+			log.warn("'" + path[0] + "' item was NOT found");
+			return rightItem;
+		}
 		for (int i = 1; i < path.length; i++) {
 			log.info("Looking for '" + path[i] + "'");
 			rightItem = getTreeItem(rightItem.getItems(), path[i]);
+			if (rightItem == null) {
+				log.warn("'" + path[i] + "' item was NOT found");
+				return rightItem;
+			}
 			rightItem.select();
 			if (i < path.length - 1) expand(rightItem);
 		}
