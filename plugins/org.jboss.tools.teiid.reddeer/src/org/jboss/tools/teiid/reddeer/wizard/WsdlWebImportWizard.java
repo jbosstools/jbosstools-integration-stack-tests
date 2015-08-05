@@ -136,6 +136,7 @@ public class WsdlWebImportWizard extends ImportWizardDialog {
 		new SWTWorkbenchBot().textInGroup("Target Workspace Folder").setText(project);
 		if (wsdlLocation.equals(IMPORT_WSDL_FROM_WORKSPACE)){
 			new PushButton(IMPORT_WSDL_FROM_WORKSPACE).click();
+			new DefaultShell("WSDL File Selection");
 			new DefaultTreeItem(project, wsdlName).select();
 			new PushButton("OK").click();return;
 		}

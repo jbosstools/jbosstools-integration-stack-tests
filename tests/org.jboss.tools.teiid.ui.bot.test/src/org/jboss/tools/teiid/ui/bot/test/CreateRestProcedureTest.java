@@ -123,7 +123,7 @@ public class CreateRestProcedureTest {
 
 		checkErrors();
 		checkRestProcedure(TARGET_MODEL_NAME, "PARTS" + REST_PROCEDURE_SUFFIX, "PARTS/{pk_PART_ID_in}");
-		checkRestProcedure(TARGET_MODEL_NAME, "SUPPLIER" + REST_PROCEDURE_SUFFIX, "SUPPLIER/{pk_STATUS_ID_in}");
+		checkRestProcedure(TARGET_MODEL_NAME, "SUPPLIER" + REST_PROCEDURE_SUFFIX, "SUPPLIER/{pk_SUPPLIER_ID_in}");
 
 		createAndDeployVdb(TARGET_MODEL_NAME);
 		generateAndDeployWAR();
@@ -147,7 +147,7 @@ public class CreateRestProcedureTest {
 
 		checkErrors();
 		checkRestProcedure(VIEW_MODEL_NAME, "PARTS" + REST_PROCEDURE_SUFFIX, "PARTS/{pk_PART_ID_in}");
-		checkRestProcedure(VIEW_MODEL_NAME, "SUPPLIER" + REST_PROCEDURE_SUFFIX, "SUPPLIER/{pk_STATUS_ID_in}");
+		checkRestProcedure(VIEW_MODEL_NAME, "SUPPLIER" + REST_PROCEDURE_SUFFIX, "SUPPLIER/{pk_SUPPLIER_ID_in}");
 
 		createAndDeployVdb(VIEW_MODEL_NAME);
 		generateAndDeployWAR();

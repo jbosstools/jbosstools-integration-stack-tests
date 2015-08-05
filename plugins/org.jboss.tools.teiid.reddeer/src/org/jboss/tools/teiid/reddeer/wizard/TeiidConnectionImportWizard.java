@@ -76,6 +76,7 @@ public class TeiidConnectionImportWizard extends ImportWizardDialog{
 	
 	public static final String IMPORT_PROPERTY_SCHEMA_PATTERN = "Schema Pattern";
 	public static final String IMPORT_PROPERTY_TABLE_NAME_PATTERN = "Table Name Pattern";
+	public static final String IMPORT_PROPERTY_USE_FULL_SCHEMA_NAME = "Use Full Schema Name";
 	public static final String IMPORT_PROPERTY_CATALOG = "catalog";
 	public static final String IMPORT_PROPERTY_EXCEL_FILENAME = "Excel File";
 	public static final String IMPORT_PROPERTY_HEADER_ROW_NUMBER = "Header Row Number";

@@ -66,6 +66,7 @@ public class WARTest extends SWTBotTestCase {
 		}
 		new ModelExplorerManager().changeConnectionProfile(ConnectionProfilesConstants.ORACLE_11G_BOOKS, projectBooksWS, "books.xmi");
 		VDBEditor ed = new VDBManager().getVDBEditor(projectBooksWS, vdbCheckBook);
+		AbstractWait.sleep(TimePeriod.SHORT);
 		ed.synchronizeAll();
 		ed.close();
 		
@@ -81,6 +82,7 @@ public class WARTest extends SWTBotTestCase {
 		}
 		new ModelExplorerManager().changeConnectionProfile(ConnectionProfilesConstants.ORACLE_11G_BOOKS, projectBooksRest, "BooksSrc.xmi");
 		ed = new VDBManager().getVDBEditor(projectBooksRest, vdbBooksRest);
+		AbstractWait.sleep(TimePeriod.SHORT);
 		ed.synchronizeAll();
 		ed.close();
 			

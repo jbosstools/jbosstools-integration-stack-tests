@@ -102,6 +102,8 @@ public class WAR {
 	}
 
 	private void setupJBossWSCXFWAR() {
+		new WaitUntil(new ShellWithTextIsAvailable("Create Web Service WAR File"), TimePeriod.NORMAL);
+		new DefaultShell("Create Web Service WAR File");
 		setupCommon();
 		new DefaultTabItem("General").activate();
 		if (warProps.containsKey("saveLocation")){

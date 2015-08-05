@@ -75,12 +75,12 @@ public class ModelEditor extends SWTBotEditor {
 	}
 
 	private GraphicalEditor getGraphicalEditor(String tabLabel) {
-		final SWTBotCTabItem tabItem = showTab(tabLabel);
+		final CTabItem tabItem = showTab(tabLabel);
 		GraphicalEditor graphicalEditor = syncExec(new Result<GraphicalEditor>() {
 
 			@Override
 			public GraphicalEditor run() {
-				Object obj = tabItem.widget.getData();
+				Object obj = tabItem.getSWTWidget().getData();
 				if (obj instanceof GraphicalEditor) {
 					return (GraphicalEditor) obj;
 				}
@@ -119,10 +119,9 @@ public class ModelEditor extends SWTBotEditor {
 		return tabItem;
 	}
 
-	public SWTBotCTabItem showTab(String label) {
-		SWTBotCTabItem tabItem = bot.cTabItem(label);
+	public CTabItem showTab(String label) {
+		DefaultCTabItem tabItem = new DefaultCTabItem(label);
 		tabItem.activate();
-		tabItem.show();
 		return tabItem;
 	}
 	
@@ -276,6 +275,7 @@ public class ModelEditor extends SWTBotEditor {
 			viewer = getGraphicalViewer(MAPPING_DIAGRAM);
 		}
 		viewer.select(parts);
+		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 	
 	
@@ -344,7 +344,7 @@ public class ModelEditor extends SWTBotEditor {
 	public InputSetEditor openInputSetEditor(boolean param){
 		viewer = getGraphicalViewer(DIAGRAM);
 		getModelDiagram(INPUT_SET, DIAGRAM).select();
-		viewer.clickContextMenu("Edit");
+		viewer.clickContextMenu("Edit Input Set");
 		return new InputSetEditor();
 	}
 	

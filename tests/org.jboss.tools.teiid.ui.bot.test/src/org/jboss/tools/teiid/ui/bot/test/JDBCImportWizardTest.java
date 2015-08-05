@@ -16,7 +16,6 @@ import org.jboss.tools.teiid.reddeer.view.GuidesView;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -31,7 +30,7 @@ import org.junit.runner.RunWith;
 		ConnectionProfilesConstants.ORACLE_10G_BQT2, ConnectionProfilesConstants.ORACLE_11G_BQT2,
 		ConnectionProfilesConstants.ORACLE_12C_BQT, ConnectionProfilesConstants.SQL_SERVER_2005_BQT2,
 		ConnectionProfilesConstants.SQL_SERVER_2008_BQT2, ConnectionProfilesConstants.SQL_SERVER_2012_BQT2,
-		ConnectionProfilesConstants.DV6_DS1, ConnectionProfilesConstants.AUDIOBOOKS_HSQLDB,
+		ConnectionProfilesConstants.DV6_DS1,
 		ConnectionProfilesConstants.SQL_SERVER_2000_BQT2, ConnectionProfilesConstants.MYSQL_50_BQT2,
 		ConnectionProfilesConstants.MYSQL_51_BQT2, ConnectionProfilesConstants.MYSQL_55_BQT2,
 		ConnectionProfilesConstants.POSTGRESQL_84_BQT2, ConnectionProfilesConstants.POSTGRESQL_91_BQT2,
@@ -87,20 +86,13 @@ public class JDBCImportWizardTest {
 	}
 
 	@Test
-	public void db281Import() {
+	public void db297Import() {
+		// NPE at
+		// org.teiid.designer.datatools.connection.ConnectionInfoHelper.getCommonProfileProperties(ConnectionInfoHelper.java:214)
 
-		String model = "db281Model";
-		importModel(model, ConnectionProfilesConstants.DB2_81_BQT2, "BQT2/TABLE/SMALLA,BQT2/TABLE/SMALLB");
+		String model = "db297Model";
+		importModel(model, ConnectionProfilesConstants.DB2_97_BQT2, "BQT2/TABLE/SMALLA,BQT2/TABLE/SMALLB");
 		checkImportedModel(model, "SMALLA", "SMALLB");
-	}
-
-	@Test
-	 public void db297Import() {
-	 // NPE at org.teiid.designer.datatools.connection.ConnectionInfoHelper.getCommonProfileProperties(ConnectionInfoHelper.java:214)
-	
-	 String model = "db297Model";
-	 importModel(model, ConnectionProfilesConstants.DB2_97_BQT2, "BQT2/TABLE/SMALLA,BQT2/TABLE/SMALLB");
-	 checkImportedModel(model, "SMALLA", "SMALLB");
 	 }
 
 	@Test
@@ -162,9 +154,8 @@ public class JDBCImportWizardTest {
 		checkImportedModel(model, "SmallA", "SmallB");
 	}
 
-	@Test
+	@Test// TEIIDDES-2458
 	public void sybaseImport() {
-
 		String model = "sybaseModel";
 		importModel(model, ConnectionProfilesConstants.SYBASE_15_BQT2, "bqt2/TABLE/SmallA,bqt2/TABLE/SmallB");
 		checkImportedModel(model, "SmallA", "SmallB");
@@ -176,14 +167,6 @@ public class JDBCImportWizardTest {
 		String model = "dv6Model";
 		importModel(model, ConnectionProfilesConstants.DV6_DS1, "PUBLIC/PUBLIC/TABLE/STATUS,PUBLIC/PUBLIC/TABLE/PARTS");
 		checkImportedModel(model, "STATUS", "PARTS");
-	}
-
-	@Test
-	public void audioBooksImport() {
-
-		String model = "audioBooksModel";
-		importModel(model, ConnectionProfilesConstants.AUDIOBOOKS_HSQLDB, "FIXME");
-		checkImportedModel(model, "FIXME", "FIXME");
 	}
 
 	@Test

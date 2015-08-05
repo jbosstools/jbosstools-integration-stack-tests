@@ -33,6 +33,7 @@ import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -113,8 +114,8 @@ public class ModelRefactoringTest {
 	@Test
 	public void renameFolder() {
 		renameItem(project.getProjectItem("sources"), "sources_X");
-		checkDependentModel("books_X", "books_view_2.xmi", "PUBLISHERS");
-		checkDependentModel("books_X", "views", "books_view.xmi", "PUBLISHERS");
+		checkDependentModel("books", "books_view_2.xmi", "PUBLISHERS");
+		checkDependentModel("books", "views", "books_view.xmi", "PUBLISHERS");
 		checkErrors();
 	}
 
@@ -240,7 +241,7 @@ public class ModelRefactoringTest {
 		ModelExplorerView modelView = TeiidPerspective.getInstance()
 				.getModelExplorerView();
 		modelView.open(PROJECT_NAME, "partssupplier_view.xmi");
-		modelView.open(PROJECT_NAME, "views", "partssupplier_view_2.xmi");
+		modelView.open(PROJECT_NAME, "views_X", "partssupplier_view_2.xmi");
 		modelView.open(PROJECT_NAME, "partssupplier_view_3.xmi");
 		modelView.open(PROJECT_NAME, "partssupplier_view_4.xmi");
 

@@ -12,9 +12,11 @@ import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
@@ -304,20 +306,41 @@ public class Procedure extends ModelObject{
 		}
 	}
 
+
 	private void fillParameters(String type, Properties props) {
-		String prop = props.getProperty("params");//paramName1,paramName2,...
-		int lines = 0;
-		if (prop != null){
+		String prop = props.getProperty("params");// paramName1,paramName2,...
+		if (prop != null) {
 			new DefaultTabItem(PARAMETERS).activate();
-			//ALL add, delete, move up, move down
-			lines = setupTableProps(prop);
+			// ALL add, delete, move up, move down
+			String[] cols = { prop };
+			if (prop.contains(",")) {
+				cols = prop.split(",");
+			}
+			for (String col : cols) {
+				addProcParam(col, false);
+			}
 		}
 		prop = props.getProperty("returnParam");
-		if (prop != null){
+		if (prop != null) {
 			new DefaultTabItem(PARAMETERS).activate();
-			setupReturnParam(prop, lines);
+			addProcParam(prop, true);
 		}
 	}
+
+	private void addProcParam(String name, boolean isReturn) {
+		// TOOD: datatyp
+		new PushButton("Add").click();
+		int lines = new DefaultTable().getItems().size();
+		new DefaultTable().getItem(lines - 1).select();
+		new PushButton("Edit...").click();
+		new DefaultShell("Edit Parameter");
+		new LabeledText("Name").setText(name);
+		if(isReturn){
+			new LabeledCombo("Direction").setSelection("RETURN");
+		}
+		new PushButton("OK").click();
+	}
+
 
 	private void fillProperties(String type, Properties props) {
 		new DefaultTabItem(PROPERTIES).activate();

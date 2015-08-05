@@ -32,7 +32,6 @@ public final class ConnectionProfilesConstants {
 	public static final String SYBASE_JTDS = "sybase-jtds";
 	public static final String DS1 = "ds1";
 	public static final String DV6_DS1 = "dv6-ds1";
-	public static final String AUDIOBOOKS_HSQLDB = "audioBooks_hsqldb";
 	public static final String HSQLDB = "hsqldb";
 	public static final String DV6_DS2 = "dv6-ds2";
 	public static final String SQL_SERVER_2000_BOOKS = "sql_server_2000_books";

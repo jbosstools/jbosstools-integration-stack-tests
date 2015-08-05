@@ -87,7 +87,7 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 	@Override
 	public void finish() {
 		super.finish();
-		new WaitWhile(new IsInProgress(), TimePeriod.NORMAL);
+		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
 		new WaitWhile(new ShellWithTextIsAvailable(TITLE), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}

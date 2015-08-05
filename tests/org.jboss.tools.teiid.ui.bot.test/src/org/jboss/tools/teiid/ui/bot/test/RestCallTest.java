@@ -17,6 +17,7 @@ import org.jboss.tools.teiid.reddeer.manager.VDBManager;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
+import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.ImportGeneralItemWizard;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -30,7 +31,7 @@ import org.junit.runner.RunWith;
  */
 @RunWith(RedDeerSuite.class)
 @TeiidServer(
-		state = ServerReqState.RUNNING
+		state = ServerReqState.PRESENT
 		,connectionProfiles = {ConnectionProfilesConstants.ORACLE_11G_BOOKS}
 )
 public class RestCallTest {
@@ -101,6 +102,10 @@ public class RestCallTest {
 		// connect teiid instance
 		teiidServer.getServerConfig().getServerBase().setState(ServerReqState.RUNNING);
 		AbstractWait.sleep(TimePeriod.getCustom(30));
+		new ServersViewExt().refreshServer(teiidServer.getName());
+		
+		
+		AbstractWait.sleep(TimePeriod.getCustom(30));
 		// testing purposes WAR
 		war.deploy();
 
@@ -122,6 +127,8 @@ public class RestCallTest {
 	@Test
 	public void connectedTeiid() {
 		teiidServer.getServerConfig().getServerBase().setState(ServerReqState.RUNNING);
+		new ServersViewExt().refreshServer(teiidServer.getName());
+		
 		String vdbJndiName1 = "RestTest2";
 		String warCtxName1 = "Rest2";
 
@@ -154,8 +161,8 @@ public class RestCallTest {
 		war.deploy();
 
 		// create data source for BooksSrc
-		new ModelExplorerManager().createDataSource(ModelExplorerView.ConnectionSourceType.USE_CONNECTION_PROFILE_INFO,
-				ConnectionProfilesConstants.ORACLE_11G_BOOKS, PROJECT_NAME, SRC_MODEL);
+		new ModelExplorerManager().createDataSource(ModelExplorerView.ConnectionSourceType.USE_CONNECTION_PROFILE_INFO, ConnectionProfilesConstants.ORACLE_11G_BOOKS, PROJECT_NAME, SRC_MODEL);
+
 
 		// synchronize vdb before deploying
 		new VDBManager().getVDBEditor(PROJECT_NAME, VDB_NAME_2).synchronizeAll();

@@ -52,7 +52,7 @@ public class GenerateRestProcedureWizard {
 	public GenerateRestProcedureWizard setTables(String... tables){
 		focus();
 		
-		DefaultTable table = new DefaultTable(new DefaultGroup("Table Selection"), 0);
+		DefaultTable table = new DefaultTable(new DefaultGroup("Tables Selection"), 0);
 		for (String t : tables) {
 			table.getItem(t).setChecked(true);
 		}

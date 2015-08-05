@@ -191,11 +191,11 @@ public class ModelExplorerView extends AbstractExplorer {
 		if (connectionSourceType.toString().equals(ConnectionSourceType.USE_CONNECTION_PROFILE_INFO)){
 			new DefaultCombo(1).setSelection(connectionProfile);
 		}
-		if (! new PushButton("Finish").isEnabled()){
+		if (! new PushButton("OK").isEnabled()){
 			System.err.println("Datasource " + pathToSourceModel[pathToSourceModel.length-1] + "exists!");
 			new PushButton("Cancel").click();
 		} else {
-			new PushButton("Finish").click();
+			new PushButton("OK").click();
 		}
 		
 	}

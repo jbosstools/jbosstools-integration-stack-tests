@@ -4,11 +4,13 @@ import static org.junit.Assert.assertEquals;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.matcher.TreeItemRegexMatcher;
+import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
@@ -84,7 +86,8 @@ public class GuidesView extends WorkbenchView {
 			//do nothing
 		}
 		
-		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
+		new WaitWhile(new IsInProgress(), TimePeriod.VERY_LONG);
+		new WaitWhile(new ShellWithTextIsAvailable("Preview Data for : " + path[path.length - 1] + " ..."));
 	}
 
 	public boolean canPreviewData(String expectedErrorMessage, String[] pathToTable, String previewSQL) {//nechat tak??? OR ???guides mgr (msg, string[] pathTotable, )
