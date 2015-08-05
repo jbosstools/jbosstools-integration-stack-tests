@@ -3,14 +3,18 @@ package org.jboss.tools.fuse.ui.bot.test.utils;
 import java.util.List;
 
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsDescriptionMatcher;
+import org.jboss.reddeer.eclipse.utils.DeleteUtils;
+import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
 import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -90,6 +94,29 @@ public class ProjectFactory {
 		List<String> result = projectWizard.getArchetypes();
 		projectWizard.cancel();
 		return result;
+	}
+
+	/**
+	 * Removes all projects from file system.
+	 */
+	public static void deleteAllProjects() {
+
+		ProjectExplorer explorer = new ProjectExplorer();
+		explorer.activate();
+		if (explorer.getProjects().size() > 0) {
+			explorer.selectAllProjects();
+			new ContextMenu("Refresh").select();
+			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+			AbstractWait.sleep(TimePeriod.SHORT);
+			new WorkbenchShell();
+			explorer.activate();
+			explorer.selectAllProjects();
+			new ContextMenu("Delete").select();
+			Shell s = new DefaultShell("Delete Resources");
+			new CheckBox().toggle(true);
+			new PushButton("OK").click();
+			DeleteUtils.handleDeletion(s, TimePeriod.LONG);
+		}
 	}
 
 	/**

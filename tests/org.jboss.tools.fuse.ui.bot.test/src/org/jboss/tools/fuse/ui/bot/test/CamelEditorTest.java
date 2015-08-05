@@ -64,7 +64,7 @@ public class CamelEditorTest extends DefaultTest {
 	public void deleteProjects() {
 
 		new WorkbenchShell();
-		new ProjectExplorer().deleteAllProjects();
+		ProjectFactory.deleteAllProjects();
 	}
 
 	@Test
@@ -122,7 +122,7 @@ public class CamelEditorTest extends DefaultTest {
 
 		prepareIDEForManipulationTests();
 		CamelEditor editor = new CamelEditor("camel-context.xml");
-		editor.addCamelComponent(new Otherwise());
+		editor.addCamelComponent(new Otherwise(), 0, -100);
 		editor.addConnection("choice", "otherwise");
 		editor.save();
 		AbstractWait.sleep(TimePeriod.SHORT);
