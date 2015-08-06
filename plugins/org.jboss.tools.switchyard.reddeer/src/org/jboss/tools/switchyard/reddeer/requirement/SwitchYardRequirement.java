@@ -6,9 +6,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.List;
 
+import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.direct.preferences.Preferences;
+import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.utils.DeleteUtils;
 import org.jboss.reddeer.junit.requirement.CustomConfiguration;
 import org.jboss.reddeer.junit.requirement.Requirement;
 import org.jboss.reddeer.requirements.server.ServerReqState;
@@ -28,7 +31,7 @@ import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
 public class SwitchYardRequirement implements Requirement<SwitchYard>, CustomConfiguration<SwitchYardConfig> {
 
 	private static final Logger LOGGER = Logger.getLogger(SwitchYardRequirement.class);
-	
+
 	private SwitchYardConfig config;
 	private SwitchYard switchyard;
 
@@ -93,25 +96,21 @@ public class SwitchYardRequirement implements Requirement<SwitchYard>, CustomCon
 		}
 		serverBase.setState(switchyard.server().state());
 	}
-	
+
 	public void deleteAllProjects() {
 		new WorkbenchShell().maximize();
 		EditorHandler.getInstance().closeAll(true);
 
-		// workaround for deleting all projects
-		Exception exception = null;
-		for (int i = 0; i < 10; i++) {
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		pe.activate();
+		for (Project project : pe.getProjects()) {
 			try {
-				exception = null;
-				new WorkbenchShell().setFocus();
-				new ProjectExplorer().deleteAllProjects();
-				break;
+				DeleteUtils.forceProjectDeletion(project, true);
 			} catch (Exception e) {
-				exception = e;
+				LOGGER.debug("Delete project '" + project.getName() + "' via Eclipse API ");
+				org.jboss.reddeer.direct.project.Project.delete(project.getName(), true, true);
 			}
-		}
-		if (exception != null) {
-			throw new RuntimeException("Cannot delete all projects", exception);
 		}
 	}
 
@@ -125,13 +124,13 @@ public class SwitchYardRequirement implements Requirement<SwitchYard>, CustomCon
 	}
 
 	public String getTargetRuntimeLabel() {
-		String targetRuntime = getConfig().getTargetRuntime(); 
+		String targetRuntime = getConfig().getTargetRuntime();
 		if (targetRuntime == null) {
 			return null;
 		}
-		return targetRuntime + " [" + getConfig().getServerBase().getRuntimeName() + "]"; 
+		return targetRuntime + " [" + getConfig().getServerBase().getRuntimeName() + "]";
 	}
-	
+
 	public SwitchYardProjectWizard project(String name) {
 		return new SwitchYardProjectWizard(name, config.getConfigurationVersion(), config.getLibraryVersion(),
 				getTargetRuntimeLabel());
