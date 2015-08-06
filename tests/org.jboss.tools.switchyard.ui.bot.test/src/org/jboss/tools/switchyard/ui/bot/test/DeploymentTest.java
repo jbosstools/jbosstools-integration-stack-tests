@@ -5,6 +5,9 @@ import static org.junit.Assert.assertEquals;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.runtime.reddeer.ServerBase;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
@@ -65,8 +68,25 @@ public class DeploymentTest {
 
 		new SwitchYardEditor().save();
 
-		ServerBase server = switchyardRequirement.getConfig().getServerBase();
+		final ServerBase server = switchyardRequirement.getConfig().getServerBase();
 		server.deployProject(PROJECT_NAME);
+		new WaitUntil(new WaitCondition() {
+			
+			@Override
+			public boolean test() {
+				try {
+					new HttpClient(server.getUrl("hello")).post("World");
+				} catch (Throwable t) {
+					return false;
+				}
+				return true;
+			}
+			
+			@Override
+			public String description() {
+				return "Checking the deployed project";
+			}
+		}, TimePeriod.LONG, false);
 		String response = new HttpClient(server.getUrl("hello")).post("World");
 		assertEquals("Hello World", response);
 	}

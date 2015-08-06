@@ -9,6 +9,7 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.swt.condition.WaitCondition;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -131,8 +132,25 @@ public class UseCaseSimpleTest {
 		new SwitchYardEditor().save();
 
 		/* Test SOAP Response */
-		ServerBase server = switchyardRequirement.getConfig().getServerBase();
+		final ServerBase server = switchyardRequirement.getConfig().getServerBase();
 		server.deployProject(PROJECT);
+		new WaitUntil(new WaitCondition() {
+			
+			@Override
+			public boolean test() {
+				try {
+					SoapClient.testResponses(server.getUrl(PROJECT + "/ExampleService?wsdl"), "Hello");
+				} catch (Throwable t) {
+					return false;
+				}
+				return true;
+			}
+			
+			@Override
+			public String description() {
+				return "Checking the deployed project";
+			}
+		}, TimePeriod.LONG, false);
 		SoapClient.testResponses(server.getUrl(PROJECT + "/ExampleService?wsdl"), "Hello");
 
 		new WaitWhile(new ConsoleHasChanged());
