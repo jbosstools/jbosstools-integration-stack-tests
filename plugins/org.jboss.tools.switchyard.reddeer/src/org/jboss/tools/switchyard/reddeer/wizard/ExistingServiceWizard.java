@@ -8,7 +8,6 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.matcher.RegexMatcher;
-import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
@@ -36,7 +35,6 @@ public abstract class ExistingServiceWizard<T extends ExistingServiceWizard<?>> 
 	public T activate() {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		new DefaultShell(dialogTitle).setFocus();
-		AbstractWait.sleep(TimePeriod.SHORT);
 		return (T) this;
 	}
 
