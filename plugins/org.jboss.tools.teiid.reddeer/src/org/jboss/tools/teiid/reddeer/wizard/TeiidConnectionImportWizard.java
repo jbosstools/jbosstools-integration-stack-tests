@@ -99,6 +99,7 @@ public class TeiidConnectionImportWizard extends ImportWizardDialog{
 			new PushButton("Cancel").click();
 			return;
 		}
+		setFocus();
 		next();
 		setFocus();
 		fillSecondPage();
@@ -107,8 +108,8 @@ public class TeiidConnectionImportWizard extends ImportWizardDialog{
 		fillThirdPage();
 		next();
 		
-		// wait for the import to finish (default timeout is 120 s, add some wiggle room)
-		new WaitWhile(new ShellWithTextIsAvailable("Progress Information"), TimePeriod.getCustom(150), false);
+		// wait for the import to finish (we set the value to 240, add some wiggle room)
+		new WaitWhile(new ShellWithTextIsAvailable("Progress Information"), TimePeriod.getCustom(300), false);
 		setFocus();
 		
 		next();

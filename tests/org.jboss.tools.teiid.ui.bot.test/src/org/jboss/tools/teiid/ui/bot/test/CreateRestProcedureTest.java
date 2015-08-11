@@ -79,6 +79,7 @@ public class CreateRestProcedureTest {
 		TeiidBot teiidBot = new TeiidBot();
 		new ImportManager().importProject(teiidBot.toAbsolutePath("resources/projects/" + PROJECT_NAME));
 		project = teiidBot.modelExplorer().getProject(PROJECT_NAME);
+		project.select();
 		project.refresh();
 		new ModelExplorer().changeConnectionProfile(ConnectionProfilesConstants.ORACLE_11G_PARTS_SUPPLIER, PROJECT_NAME,
 				SOURCE_MODEL_NAME);

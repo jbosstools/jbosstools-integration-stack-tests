@@ -73,10 +73,7 @@ public class LdapImportWizard extends ImportWizardDialog {
 		
 		// select model project
 		new PushButton(new DefaultGroup(SOURCE_MODEL_DEFINITION),"...").click();
-		new DefaultTreeItem(projectName).select();
-		new DefaultShell(SELECT_FOLDER); // TODO: redundant?
-		new DefaultTreeItem(projectName).select();
-		new PushButton("OK").click();
+		new SelectTargetFolder().select(projectName);
 		
 		// set model name
 		new LabeledText(new DefaultGroup(SOURCE_MODEL_DEFINITION),SOURCE_MODEL_NAME).setText(modelName);

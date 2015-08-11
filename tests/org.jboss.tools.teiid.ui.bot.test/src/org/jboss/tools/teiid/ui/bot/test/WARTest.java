@@ -52,46 +52,32 @@ public class WARTest extends SWTBotTestCase {
 	private String resultRest = "<TheBooks><Book><ISBN>0201877562</ISBN><TITLE>Software Testing in the Real World</TITLE></Book></TheBooks>";
 	
 	@BeforeClass
-	public static void before(){
+	public static void before() {
 		new ShellMenu("Project", "Build Automatically").select();
-		//JBossWS-CXF war
+		// JBossWS-CXF war
 		new ImportManager().importProject("resources/projects/BooksWS");
-		try{
-		new WaitUntil(new ShellWithTextIsAvailable("Missing Password Required"), TimePeriod.NORMAL);
-		new DefaultShell("Missing Password Required");
-		new DefaultText(0).setText("mm");
-		new PushButton("OK").click();
-		}catch(Exception e){
-			logger.warn("Dialog \"Missing Password Required\" haven't been showed." );
-		}
-		new ModelExplorerManager().changeConnectionProfile(ConnectionProfilesConstants.ORACLE_11G_BOOKS, projectBooksWS, "books.xmi");
+		new ModelExplorerManager().changeConnectionProfile(ConnectionProfilesConstants.ORACLE_11G_BOOKS,
+				projectBooksWS, "books.xmi");
 		VDBEditor ed = new VDBManager().getVDBEditor(projectBooksWS, vdbCheckBook);
 		AbstractWait.sleep(TimePeriod.SHORT);
 		ed.synchronizeAll();
 		ed.close();
-		
-		//RESTEasy war
+
+		// RESTEasy war
 		new ImportManager().importProject("resources/projects/BooksRest");
-		try{
-		new WaitUntil(new ShellWithTextIsAvailable("Missing Password Required"), TimePeriod.NORMAL);
-		new DefaultShell("Missing Password Required");
-		new DefaultText(0).setText("mm");
-		new PushButton("OK").click();
-		}catch(Exception e){
-			logger.warn("Dialog \"Missing Password Required\" haven't been showed." );
-		}
-		new ModelExplorerManager().changeConnectionProfile(ConnectionProfilesConstants.ORACLE_11G_BOOKS, projectBooksRest, "BooksSrc.xmi");
+		new ModelExplorerManager().changeConnectionProfile(ConnectionProfilesConstants.ORACLE_11G_BOOKS,
+				projectBooksRest, "BooksSrc.xmi");
 		ed = new VDBManager().getVDBEditor(projectBooksRest, vdbBooksRest);
 		AbstractWait.sleep(TimePeriod.SHORT);
 		ed.synchronizeAll();
 		ed.close();
-			
+
 		new VDBManager().deployVDB(pathToCheckBookVDB);
 		new VDBManager().createVDBDataSource(pathToCheckBookVDB);
-		
+
 		new VDBManager().deployVDB(pathToBooksRestVDB);
 		new VDBManager().createVDBDataSource(pathToBooksRestVDB);
-		
+
 	}
 
 	//@Test
@@ -224,6 +210,7 @@ public class WARTest extends SWTBotTestCase {
 	
 		
 		new ModelExplorerManager().getWAR(projectBooksRest, rbWar+".war").deploy();
+		AbstractWait.sleep(TimePeriod.NORMAL);
 		
 		String url = "-u teiidUser:dvdvdv0! http://localhost:8080/"+rbWar+"/BooksView/book1/0201877562";
 		assertEquals(resultRest, teiidBot.curl(url));

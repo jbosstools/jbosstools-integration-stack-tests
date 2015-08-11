@@ -19,6 +19,9 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.wait.AbstractWait;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.tools.teiid.reddeer.ModelProject;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
@@ -262,7 +265,8 @@ public class TeiidBot {
 	}
 	
 	public void assertResource(String projectName, String... path) {//-> teiidbot
-		new SWTWorkbenchBot().sleep(500);
+		AbstractWait.sleep(TimePeriod.SHORT);
+		new DefaultShell();
 		ModelProject modelproject = new ModelExplorer().getModelProject(projectName);
 		assertTrue(Arrays.toString(path) + " not created!", modelproject.containsItem(path));
 	}

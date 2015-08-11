@@ -116,9 +116,13 @@ public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomC
 		// set username and password
 		try {
 			new WaitUntil(new ConsoleHasText("started in"), TimePeriod.LONG);
-			new ServersViewExt().refreshServer(getName());
 		} catch (Exception e) {
 		}
+		
+		if (teiid.state() == ServerReqState.RUNNING){
+			new ServersViewExt().refreshServer(getName());
+		}
+		
 		ServersView servers = new ServersView();
 		servers.open();
 		servers.getServer(serverConfig.getName()).open();

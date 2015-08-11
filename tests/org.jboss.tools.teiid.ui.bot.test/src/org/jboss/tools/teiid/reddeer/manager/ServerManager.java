@@ -58,7 +58,7 @@ public class ServerManager {
 		new TeiidDesignerPreferencePage().setDefaultTeiidInstanceTargetedVersion(version);
 	}
 	
-	public void setTeiidConnectionImporterTimeout(String secs){
+	public void setTeiidConnectionImporterTimeout(int secs){
 		new TeiidDesignerPreferencePage().setTeiidConnectionImporterTimeout(secs);
 	}
 	

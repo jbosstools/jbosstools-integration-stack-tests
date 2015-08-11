@@ -4,6 +4,8 @@ import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.spinner.DefaultSpinner;
+import org.jboss.reddeer.swt.matcher.WithTooltipTextMatcher;
 import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
 
 /**
@@ -26,9 +28,9 @@ public class TeiidDesignerPreferencePage extends WorkbenchPreferencePage {
 	}
 	
 	//TODO deploy preference for teiid import - seconds to wait
-	public void setTeiidConnectionImporterTimeout(String secs){
+	public void setTeiidConnectionImporterTimeout(int secs){
 		open(); 
-		new SWTWorkbenchBot().textWithTooltip("Set the timeout (in sec) for the Teiid Connection Importer").setText(secs);
+		new DefaultSpinner(new WithTooltipTextMatcher("Set the timeout (in sec) for the Teiid Connection Importer")).setValue(secs);
 		close();
 	}
 	

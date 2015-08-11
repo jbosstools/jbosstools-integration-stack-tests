@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ASCII"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:diagram="http://www.metamatrix.com/metamodels/Diagram" xmlns:jdbc="http://www.metamatrix.com/metamodels/JDBC" xmlns:mmcore="http://www.metamatrix.com/metamodels/Core" xmlns:relational="http://www.metamatrix.com/metamodels/Relational">
-  <mmcore:ModelAnnotation xmi:uuid="mmuuid:a4f26edb-c4ad-467d-ada2-3957d34602e8" primaryMetamodelUri="http://www.metamatrix.com/metamodels/Relational" modelType="PHYSICAL" maxSetSize="1000" ProducerName="Teiid Designer" ProducerVersion="8.3.2.Final-v20140328-2123-B54">
+  <mmcore:ModelAnnotation xmi:uuid="mmuuid:a4f26edb-c4ad-467d-ada2-3957d34602e8" primaryMetamodelUri="http://www.metamatrix.com/metamodels/Relational" modelType="PHYSICAL" maxSetSize="1000" ProducerName="Teiid Designer" ProducerVersion="9.0.3.Final-v20150728-2029-B1148">
     <modelImports xmi:uuid="mmuuid:bbc22cc1-c48f-4468-a56f-432ee2b31cfa" name="SimpleDatatypes-instance" modelLocation="http://www.metamatrix.com/metamodels/SimpleDatatypes-instance" modelType="TYPE" primaryMetamodelUri="http://www.eclipse.org/xsd/2002/XSD"/>
     <modelImports xmi:uuid="mmuuid:c93873f2-2eb1-4628-acd9-46a5c7db98d6" name="XMLSchema" modelLocation="http://www.w3.org/2001/XMLSchema" modelType="TYPE" primaryMetamodelUri="http://www.eclipse.org/xsd/2002/XSD"/>
   </mmcore:ModelAnnotation>
@@ -30,17 +30,6 @@
   </relational:BaseTable>
   <mmcore:AnnotationContainer xmi:uuid="mmuuid:fe5bbcf3-5ba8-4509-a09f-4dc0ffb1e75d">
     <annotations xmi:uuid="mmuuid:25b7b14f-ce9b-494d-a307-20b48911bb28" annotatedObject="mmuuid/a4f26edb-c4ad-467d-ada2-3957d34602e8">
-      <tags xmi:uuid="mmuuid:97a57c99-e770-4f21-a6d9-a9918530a24e" key="connection:driver-class" value="oracle.jdbc.OracleDriver"/>
-      <tags xmi:uuid="mmuuid:83a2612b-118f-425e-9f0f-4f4af4f6836b" key="connectionProfile:connectionProfileName" value="New Oracle"/>
-      <tags xmi:uuid="mmuuid:abfffa0d-5b85-4432-808c-a952a3276eea" key="connection:jarList" value="/home/lfabriko/Work/drivers/ojdbc6.jar"/>
-      <tags xmi:uuid="mmuuid:c966c7dc-2ae1-494a-ab15-d1846e74044c" key="connectionProfile:connectionProfileProviderId" value="org.eclipse.datatools.enablement.oracle.connectionProfile"/>
-      <tags xmi:uuid="mmuuid:0166a0e9-7a79-4bdc-b697-230f0a84b759" key="translator:name" value="oracle"/>
-      <tags xmi:uuid="mmuuid:91fa0bda-3102-4dce-a753-4c6e889dba57" key="connection:connection-url" value="jdbc:oracle:thin:@englxdbs11.mw.lab.eng.bos.redhat.com:1521:ORCL"/>
-      <tags xmi:uuid="mmuuid:9395c556-bb5d-4d94-8504-04874f327389" key="connectionProfile:connectionProfileInstanceID" value="65dfede0-bb32-11e3-98b4-c7224d18fac0"/>
-      <tags xmi:uuid="mmuuid:5a1d55aa-2a1f-4ee8-8ba3-313a2b66631d" key="connection:connectionProfileInstanceID" value="org.eclipse.datatools.enablement.oracle.connectionProfile"/>
-      <tags xmi:uuid="mmuuid:9c308710-bfa1-4491-9fad-dddbe8dcc6f1" key="connectionProfile:connectionProfileDescription" value=""/>
-      <tags xmi:uuid="mmuuid:0b85a81f-691f-4cf8-8628-77f565cb1ec0" key="connection:user-name" value="books"/>
-      <tags xmi:uuid="mmuuid:e9868da6-e72f-4791-9c95-1d6fe5433bbe" key="connectionProfile:connectionProfileCategory" value="org.eclipse.datatools.connectivity.db.category"/>
       <tags xmi:uuid="mmuuid:21f5555f-a47f-4f0f-ae29-3d1d099b16fd" key="modelExtensionDefinition:relational" value="relational"/>
     </annotations>
     <annotations xmi:uuid="mmuuid:5deb002a-d1cd-43fe-b43b-5f275d7d0bfe" annotatedObject="mmuuid/21f5555f-a47f-4f0f-ae29-3d1d099b16fd">
