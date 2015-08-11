@@ -251,7 +251,7 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 		Properties teiidImporterProperties = new Properties();
 		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "SMALL%");
 		importModel(ConnectionProfilesConstants.ORACLE_12C_BQT, "oracle12cModel", teiidImporterProperties);
-		checkImportedModel("oracle12cModel", "DV.SMALLA", "DV.dSMALLB");
+		checkImportedModel("oracle12cModel", "DV.SMALLA", "DV.SMALLB");
 
 	}
 
