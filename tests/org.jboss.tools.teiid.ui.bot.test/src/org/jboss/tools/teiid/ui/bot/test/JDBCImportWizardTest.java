@@ -29,10 +29,10 @@ import org.junit.runner.RunWith;
 @TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = { ConnectionProfilesConstants.DB2_101_BQT,
 		ConnectionProfilesConstants.DB2_81_BQT2, ConnectionProfilesConstants.DB2_97_BQT2,
 		ConnectionProfilesConstants.ORACLE_10G_BQT2, ConnectionProfilesConstants.ORACLE_11G_BQT2,
-		ConnectionProfilesConstants.ORACLE_12C_BQT, ConnectionProfilesConstants.SQL_SERVER_2005_BQT2,
+		ConnectionProfilesConstants.ORACLE_12C_BQT,
 		ConnectionProfilesConstants.SQL_SERVER_2008_BQT2, ConnectionProfilesConstants.SQL_SERVER_2012_BQT2,
 		ConnectionProfilesConstants.DV6_DS1,
-		ConnectionProfilesConstants.SQL_SERVER_2000_BQT2, ConnectionProfilesConstants.MYSQL_50_BQT2,
+		ConnectionProfilesConstants.SQL_SERVER_2000_BQT2,
 		ConnectionProfilesConstants.MYSQL_51_BQT2, ConnectionProfilesConstants.MYSQL_55_BQT2,
 		ConnectionProfilesConstants.POSTGRESQL_84_BQT2, ConnectionProfilesConstants.POSTGRESQL_91_BQT2,
 		ConnectionProfilesConstants.POSTGRESQL_92_DVQE, ConnectionProfilesConstants.SYBASE_15_BQT2,
@@ -89,6 +89,7 @@ public class JDBCImportWizardTest {
 	}
 
 	@Test
+	@Ignore // server down for now
 	public void oracle10gImport() {
 
 		String model = "oracle10gModel";
@@ -110,15 +111,6 @@ public class JDBCImportWizardTest {
 		String model = "oracle12cModel";
 		importModel(model, ConnectionProfilesConstants.ORACLE_12C_BQT, "DV/TABLE/SMALLA,DV/TABLE/SMALLB");
 		checkImportedModel(model, "SMALLA", "SMALLB");
-	}
-
-	@Test
-	public void sqlServer2005Import() {
-
-		String model = "sqlServer2005Model";
-		importModel(model, ConnectionProfilesConstants.SQL_SERVER_2005_BQT2,
-				"bqt2/BQT2/TABLE/SmallA,bqt2/BQT2/TABLE/SmallB");
-		checkImportedModel(model, "SmallA", "SmallB");
 	}
 
 	@Test
@@ -183,14 +175,6 @@ public class JDBCImportWizardTest {
 
 		String model = "postgresql84Model";
 		importModel(model, ConnectionProfilesConstants.POSTGRESQL_84_BQT2, "public/TABLE/smalla,public/TABLE/smallb");
-		checkImportedModel(model, "smalla", "smallb");
-	}
-
-	@Test
-	public void postgresql91Import() {
-
-		String model = "postgresql91Model";
-		importModel(model, ConnectionProfilesConstants.POSTGRESQL_91_BQT2, "public/TABLE/smalla,public/TABLE/smallb");
 		checkImportedModel(model, "smalla", "smallb");
 	}
 
