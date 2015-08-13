@@ -15,6 +15,7 @@ import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
+import org.jboss.tools.teiid.reddeer.condition.IsPreviewInProgress;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt.ServerType;
 
@@ -87,7 +88,8 @@ public class GuidesView extends WorkbenchView {
 		}
 		
 		new WaitWhile(new IsInProgress(), TimePeriod.VERY_LONG);
-		new WaitWhile(new ShellWithTextIsAvailable("Preview Data for : " + path[path.length - 1] + " ..."));
+		AbstractWait.sleep(TimePeriod.SHORT);
+		new WaitWhile(new IsPreviewInProgress(), TimePeriod.VERY_LONG);
 	}
 
 	public boolean canPreviewData(String expectedErrorMessage, String[] pathToTable, String previewSQL) {//nechat tak??? OR ???guides mgr (msg, string[] pathTotable, )

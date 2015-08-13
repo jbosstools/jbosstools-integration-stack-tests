@@ -16,6 +16,7 @@ import org.jboss.tools.teiid.reddeer.view.GuidesView;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -35,7 +36,7 @@ import org.junit.runner.RunWith;
 		ConnectionProfilesConstants.MYSQL_51_BQT2, ConnectionProfilesConstants.MYSQL_55_BQT2,
 		ConnectionProfilesConstants.POSTGRESQL_84_BQT2, ConnectionProfilesConstants.POSTGRESQL_91_BQT2,
 		ConnectionProfilesConstants.POSTGRESQL_92_DVQE, ConnectionProfilesConstants.SYBASE_15_BQT2,
-		ConnectionProfilesConstants.INGRES_10_BQT2, ConnectionProfilesConstants.SALESFORCE })
+		ConnectionProfilesConstants.INGRES_10_BQT2})
 public class JDBCImportWizardTest {
 
 	@InjectRequirement
@@ -58,22 +59,6 @@ public class JDBCImportWizardTest {
 		TeiidPerspective.getInstance();
 	}
 
-	@Test
-	public void salesforceTest() {
-
-		String model = "SFModel";
-
-		String importProps = teiidBot.toAbsolutePath("resources/importWizard/sf.properties");
-		new ImportManager().importFromSalesForce(MODEL_PROJECT, model, ConnectionProfilesConstants.SALESFORCE,
-				teiidBot.getProperties(importProps));
-
-		teiidBot.assertResource(MODEL_PROJECT, model + ".xmi", "salesforce", "AccountFeed");
-		teiidBot.assertFailResource(MODEL_PROJECT, model + ".xmi", "salesforce", "Account");
-		teiidBot.assertFailResource(MODEL_PROJECT, model + ".xmi", "salesforce", "Apex Class");
-
-		Assert.assertTrue(new GuidesView().canPreviewData(null, new String[] { MODEL_PROJECT, model + ".xmi",
-				"salesforce", "Case_" }, "select * from \"SFModel\".\"salesforce\".\"Case_\""));
-	}
 
 	// ============== generated jdbc tests ===========================
 
@@ -170,6 +155,7 @@ public class JDBCImportWizardTest {
 	}
 
 	@Test
+	@Ignore // db server is down
 	public void mysql50Import() {
 
 		String model = "mysql50Model";

@@ -22,6 +22,7 @@ public class SalesforceImportWizard extends ImportWizardDialog {
 	private static final String SF_OBJECTS = "SalesForce Objects.";
 	private static final String MODEL_NAME = "Model Name:";
 	private static final String LOCATION = "Location:";
+	private static final String TITLE = "Create Relational Model from SalesForce Data Model";
 	
 	public SalesforceImportWizard() {
 		super("Teiid Designer", "Salesforce >> Source Model");
@@ -29,14 +30,22 @@ public class SalesforceImportWizard extends ImportWizardDialog {
 
 	public void execute() {
 		open();
+		setFocus();
 		fillFirstPage();
 		next();//wait while shell Progress Information is active
 		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
+		setFocus();
 		fillSecondPage();
 		next();
+		setFocus();
 		fillThirdPage();
 		finish();
 		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
+	}
+
+	private void setFocus() {
+		new DefaultShell(TITLE);
+		
 	}
 
 	private void fillFirstPage() {
