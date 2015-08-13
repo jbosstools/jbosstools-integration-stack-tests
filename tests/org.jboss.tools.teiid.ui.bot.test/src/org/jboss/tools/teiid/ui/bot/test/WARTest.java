@@ -53,7 +53,6 @@ public class WARTest extends SWTBotTestCase {
 	
 	@BeforeClass
 	public static void before() {
-		new ShellMenu("Project", "Build Automatically").select();
 		// JBossWS-CXF war
 		new ImportManager().importProject("resources/projects/BooksWS");
 		new ModelExplorerManager().changeConnectionProfile(ConnectionProfilesConstants.ORACLE_11G_BOOKS,

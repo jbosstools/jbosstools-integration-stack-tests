@@ -161,6 +161,7 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 
 		new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME, model, iProps, dsProps);
 
+		checkImportedModel(model, "Account", "Vote", "Profile");
 	}
 
 	@Test
@@ -308,7 +309,7 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "small%");
 		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_SCHEMA_PATTERN, "%public%");
 		importModel(ConnectionProfilesConstants.POSTGRESQL_84_BQT2, "postgresql84Model", teiidImporterProperties);
-		checkImportedModel("postgresql84Model", "bqt2.smalla", "bqt2.smallb");
+		checkImportedModel("postgresql84Model", "public.smalla", "public.smallb");
 
 	}
 

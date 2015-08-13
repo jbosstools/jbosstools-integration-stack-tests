@@ -53,6 +53,8 @@ public class ModelRefactoringTest {
 				.toAbsolutePath("resources/projects/" + PROJECT_NAME));
 		project = teiidBot.modelExplorer().getProject(PROJECT_NAME);
 		project.refresh();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		project.refresh(); // refresh again (getting desperate here)
 	}
 
 	@After

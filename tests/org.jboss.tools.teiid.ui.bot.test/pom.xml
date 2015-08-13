@@ -153,7 +153,7 @@
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
-					<appArgLine>-eclipse.password resources/security/password</appArgLine>
+					<appArgLine>-eclipse.password resources/security/password -clean</appArgLine>
 					<useUIThread>false</useUIThread>
 					<testSuite>org.jboss.tools.teiid.ui.bot.test</testSuite>
 					<testClass>${test.package}.${test.class}</testClass>

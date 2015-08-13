@@ -41,8 +41,6 @@ public class ModelWizardTest {
 
 	@BeforeClass
 	public static void beforeClass() {
-
-		new org.jboss.reddeer.swt.impl.menu.ShellMenu("Project", "Build Automatically").select();
 		new ModelExplorerManager().createProject(PROJECT_NAME);
 	}
 

@@ -78,6 +78,7 @@ public class CreateRestProcedureTest {
 	public void importProject() {
 		TeiidBot teiidBot = new TeiidBot();
 		new ImportManager().importProject(teiidBot.toAbsolutePath("resources/projects/" + PROJECT_NAME));
+		AbstractWait.sleep(TimePeriod.NORMAL);
 		project = teiidBot.modelExplorer().getProject(PROJECT_NAME);
 		project.select();
 		project.refresh();
@@ -255,7 +256,7 @@ public class CreateRestProcedureTest {
 
 		new ModelExplorerManager().getWAR(PROJECT_NAME, war + ".war").deploy();
 
-		AbstractWait.sleep(TimePeriod.NORMAL);
+		AbstractWait.sleep(TimePeriod.getCustom(30));
 	}
 
 	private void checkRestProcedure(String modelName, String procedureName, String url) {
@@ -274,12 +275,15 @@ public class CreateRestProcedureTest {
 		editor.showSubTabItem("Procedures");
 
 		DefaultTable table = new DefaultTable(0);
+		
+		int restMethodIndex = table.getHeaderIndex("REST:Rest Method");
+		int restUriIndex = table.getHeaderIndex("REST:URI");
 
 		TableItem procItem = table.getItems(new ModelColumnMatcher(modelName, procedureName)).get(0);
 
 		// TODO: this might be fragile, see if it can be done differently
-		assertEquals("Wrong REST url", url, procItem.getText(9));
-		assertEquals("Wrong REST method", "GET", procItem.getText(8));
+		assertEquals("Wrong REST url", url, procItem.getText(restUriIndex));
+		assertEquals("Wrong REST method", "GET", procItem.getText(restMethodIndex));
 
 	}
 

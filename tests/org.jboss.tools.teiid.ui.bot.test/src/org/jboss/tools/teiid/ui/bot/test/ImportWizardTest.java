@@ -41,8 +41,6 @@ public class ImportWizardTest {
 
 	@BeforeClass
 	public static void createModelProject() {
-
-		new ShellMenu("Project", "Build Automatically").select();
 		new ModelExplorerManager().createProject(MODEL_PROJECT);
 	}
 

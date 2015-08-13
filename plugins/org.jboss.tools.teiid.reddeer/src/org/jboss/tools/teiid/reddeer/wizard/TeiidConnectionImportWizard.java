@@ -114,7 +114,7 @@ public class TeiidConnectionImportWizard extends ImportWizardDialog{
 		
 		next();
 		
-		new WaitWhile(new IsInProgress(), TimePeriod.NORMAL, false);
+		new WaitWhile(new IsInProgress(), TimePeriod.LONG, false);
 		setFocus();
 
 		fillFourthPage();//choose items to be imported<
@@ -180,13 +180,13 @@ public class TeiidConnectionImportWizard extends ImportWizardDialog{
 			ex.printStackTrace();
 		}
 		
-		//new WaitWhile(new IsInProgress(), TimePeriod.NORMAL);
 		
 		
 		//set focus somewhere else
 		new LabeledText("Name:").setFocus();
 		
 		new PushButton("OK").click();
+		new WaitWhile(new IsInProgress(), TimePeriod.NORMAL);
 	}
 	
 	

@@ -8,12 +8,14 @@ import java.lang.annotation.Target;
 import java.util.List;
 
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
+import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.junit.requirement.CustomConfiguration;
 import org.jboss.reddeer.junit.requirement.Requirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
@@ -26,9 +28,11 @@ import org.jboss.tools.runtime.reddeer.requirement.ServerConnType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileHelper;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
+import org.jboss.tools.teiid.reddeer.preference.ConsolePreferencePage;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.util.FileUtils;
 import org.jboss.tools.teiid.reddeer.util.TeiidDriver;
+import org.jboss.tools.teiid.reddeer.view.SQLResultView;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 
 /**
@@ -104,16 +108,30 @@ public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomC
 		new WorkbenchShell().maximize();
 		new CleanWorkspaceRequirement().fulfill();
 		new TeiidPerspective().open();
+		
+		// uncheck build automatically
+		if (new ShellMenu("Project", "Build Automatically").isSelected()){
+			new ShellMenu("Project", "Build Automatically").select();
+		}
+		
 		ServerBase serverBase = serverConfig.getServerBase();
 		if (serverBase == null) {
 			return;
 		}
 		if (!serverBase.exists()) {
 			serverBase.create();
+
+			// set username and password
+			ServersView servers = new ServersView();
+			servers.open();
+			servers.getServer(serverConfig.getName()).open();
+			new DefaultCTabItem("Teiid Instance").activate();
+			new DefaultText(0).typeText(serverConfig.getServerBase().getProperty("teiidUser"));
+			new DefaultText(1).typeText(serverConfig.getServerBase().getProperty("teiidPassword"));
+			new DefaultToolItem(new WorkbenchShell(), 0, new WithTooltipTextMatcher(new RegexMatcher("Save All.*"))).click();
 		}
 		serverBase.setState(teiid.state());
 
-		// set username and password
 		try {
 			new WaitUntil(new ConsoleHasText("started in"), TimePeriod.LONG);
 		} catch (Exception e) {
@@ -123,13 +141,6 @@ public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomC
 			new ServersViewExt().refreshServer(getName());
 		}
 		
-		ServersView servers = new ServersView();
-		servers.open();
-		servers.getServer(serverConfig.getName()).open();
-		new DefaultCTabItem("Teiid Instance").activate();
-		new DefaultText(0).typeText(serverConfig.getServerBase().getProperty("teiidUser"));
-		new DefaultText(1).typeText(serverConfig.getServerBase().getProperty("teiidPassword"));
-		new DefaultToolItem(new WorkbenchShell(), 0, new WithTooltipTextMatcher(new RegexMatcher("Save All.*"))).click();
 		
 		// create connection profiles
 		ConnectionProfileHelper connectionProfileHelper = new ConnectionProfileHelper();
@@ -137,7 +148,10 @@ public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomC
 			ConnectionProfileConfig connectionProfile = getServerConfig().getConnectionProfile(cp);
 			connectionProfileHelper.createConnectionProfile(connectionProfile);
 		}
-		
+
+		new SQLResultView().enableUnresolvableCps();
+		new ConsolePreferencePage().toggleShowWhenWriteToStdErr(false);
+		new ConsolePreferencePage().toggleShowWhenWriteToStdOut(false);
 	}
 
 	@Override

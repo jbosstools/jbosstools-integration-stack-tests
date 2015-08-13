@@ -14,8 +14,6 @@ import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
-import org.jboss.reddeer.swt.impl.list.DefaultList;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
@@ -26,14 +24,12 @@ import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
-import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.teiid.reddeer.editor.SQLScrapbookEditor;
 import org.jboss.tools.teiid.reddeer.manager.VDBManager;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
-import org.jboss.tools.teiid.reddeer.util.TeiidDriver;
 import org.jboss.tools.teiid.reddeer.view.SQLResult;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -62,7 +58,6 @@ public class FlatFileTest {
 
 	@BeforeClass
 	public static void before() {
-		new ShellMenu("Project", "Build Automatically").select();
 		// Creates a new project named Flat_file_import
 		new ShellMenu("File", "New", "Teiid Model Project").select();
 		new DefaultShell("New Model Project");
@@ -230,32 +225,6 @@ public class FlatFileTest {
 		assertTrue("Unexpected Query Results", result.compareCSVQueryResults(new File(teiidBot.toAbsolutePath(EXPECTED_RESULT_PATH))));
 	}
 
-	/*
-	 * Checks whether the URI validator works
-	 */
-	@Test
-	public void InvalidFileURLTest() {
-		// Imports local file
-		new ShellMenu("File", "Import...").select();
-		new DefaultShell("Import");
-		new DefaultTreeItem("Teiid Designer", "File Source (Flat) >> Source and View Model").select();
-		new PushButton("Next >").click();
-		new PushButton("Next >").click();
-		// Creates new Connection Profile
-		new PushButton(new DefaultGroup("Data File Source"), "New...").click();
-		new DefaultShell("New Connection Profile");
-		new LabeledText("Name:").setText("invalid");
-		new PushButton("Next >").click();
-		new RadioButton("Enter file URI:").click();
-		new DefaultText(1).setText("Invalid URI"); // adds invalid URL
-		new PushButton("Test Connection").click();
-		new DefaultShell("Error");
-		new PushButton("OK").click();
-		new DefaultShell("New Flat File Data Source Profile");
-		new PushButton("Cancel").click();
-		new DefaultShell("Import From Flat File Source");
-		new PushButton("Cancel").click();
-	}
 
 	private SQLScrapbookEditor getCorrectScrapbook(String database) {
 
