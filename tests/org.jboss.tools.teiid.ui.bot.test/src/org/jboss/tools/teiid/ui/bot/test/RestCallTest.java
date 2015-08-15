@@ -16,6 +16,7 @@ import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.manager.VDBManager;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
+import org.jboss.tools.teiid.reddeer.util.SimpleHttpClient;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.ImportGeneralItemWizard;
@@ -121,7 +122,7 @@ public class RestCallTest {
 		new VDBManager().deployVDB(pathToVDB);
 
 		// run wget
-		Assert.assertEquals(RESULT_1, TEIID_BOT.curl(URL_1));
+		Assert.assertEquals(RESULT_1, new SimpleHttpClient(URL_1).get());
 	}
 
 	@Test
@@ -174,6 +175,6 @@ public class RestCallTest {
 		new VDBManager().deployVDB(pathToVDB);
 
 		// run wget
-		Assert.assertEquals(RESULT_2, TEIID_BOT.curl(URL_2));
+		Assert.assertEquals(RESULT_2, new SimpleHttpClient(URL_2).get());
 	}
 }

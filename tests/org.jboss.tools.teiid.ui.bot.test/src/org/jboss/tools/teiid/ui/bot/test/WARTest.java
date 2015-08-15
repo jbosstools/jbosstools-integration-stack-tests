@@ -23,8 +23,10 @@ import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.manager.VDBManager;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
+import org.jboss.tools.teiid.reddeer.util.SimpleHttpClient;
 import org.jboss.tools.teiid.reddeer.wizard.ImportGeneralItemWizard;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -60,6 +62,7 @@ public class WARTest extends SWTBotTestCase {
 		VDBEditor ed = new VDBManager().getVDBEditor(projectBooksWS, vdbCheckBook);
 		AbstractWait.sleep(TimePeriod.SHORT);
 		ed.synchronizeAll();
+		AbstractWait.sleep(TimePeriod.SHORT);
 		ed.close();
 
 		// RESTEasy war
@@ -69,6 +72,7 @@ public class WARTest extends SWTBotTestCase {
 		ed = new VDBManager().getVDBEditor(projectBooksRest, vdbBooksRest);
 		AbstractWait.sleep(TimePeriod.SHORT);
 		ed.synchronizeAll();
+		AbstractWait.sleep(TimePeriod.SHORT);
 		ed.close();
 
 		new VDBManager().deployVDB(pathToCheckBookVDB);
@@ -106,12 +110,19 @@ public class WARTest extends SWTBotTestCase {
 		new ImportManager().importGeneralItem(ImportGeneralItemWizard.Type.FILE_SYSTEM, itemProps);
 		new ModelExplorerManager().getWAR(projectBooksWS, vdbCheckBook+".war").deploy();
 		AbstractWait.sleep(TimePeriod.NORMAL);
-		String curlNOK = "curl -u teiidUser:dvdvdv0! -H \"Content-Type: text/xml; charset=utf-8\" -H \"SOAPAction:\"  -d @"+teiidBot.toAbsolutePath("resources/wsdl/requestOracleNOK.xml")+" -X POST http://localhost:8080/checkBookVdb/BooksInterface?wsdl";
-		String curlOK = "curl -u teiidUser:dvdvdv0! -H \"Content-Type: text/xml; charset=utf-8\" -H \"SOAPAction:\"  -d @"+teiidBot.toAbsolutePath("resources/wsdl/requestOracleOK.xml")+" -X POST http://localhost:8080/checkBookVdb/BooksInterface?wsdl";
-		String responseNOK = teiidBot.curl(curlNOK);
-		String responseOK = teiidBot.curl(curlOK);
-		assertEquals(teiidBot.loadFileAsString(teiidBot.toAbsolutePath("resources/wsdl/responseOracleNOK.xml")), responseNOK);//sometimes fails even though via command line it works; curl -u testuser:testpassword -d @resources/wsdl/requestOracleNOK.xml -X POST http://localhost:8080/checkBookVdbBasic/BooksInterface?wsdl
-		assertEquals(teiidBot.loadFileAsString(teiidBot.toAbsolutePath("resources/wsdl/responseOracleOK.xml")), responseOK);
+		
+
+		String nok = new SimpleHttpClient("http://localhost:8080/" + vdbCheckBook + "/BooksInterface?wsdl")
+			.addHeader("Content-Type", "text/xml; charset=utf-8")
+			.addHeader("SOAPAction","")
+			.post(teiidBot.loadFileAsString(teiidBot.toAbsolutePath("resources/wsdl/requestOracleNOK.xml")));
+		assertEquals(teiidBot.loadFileAsString(teiidBot.toAbsolutePath("resources/wsdl/responseOracleNOK.xml")), nok);
+
+		String ok = new SimpleHttpClient("http://localhost:8080/" + vdbCheckBook + "/BooksInterface?wsdl")
+			.addHeader("Content-Type", "text/xml; charset=utf-8")
+			.addHeader("SOAPAction", "")
+			.post(teiidBot.loadFileAsString(teiidBot.toAbsolutePath("resources/wsdl/requestOracleOK.xml")));
+		assertEquals(teiidBot.loadFileAsString(teiidBot.toAbsolutePath("resources/wsdl/responseOracleOK.xml")), ok);
 	}
 	
 	/**
@@ -139,12 +150,23 @@ public class WARTest extends SWTBotTestCase {
 		new ImportManager().importGeneralItem(ImportGeneralItemWizard.Type.FILE_SYSTEM, itemProps);
 		new ModelExplorerManager().getWAR(projectBooksWS, warCheckBookBasic+".war").deploy();
 		AbstractWait.sleep(TimePeriod.NORMAL);
-		String curlNOK = "curl -u teiidUser:dvdvdv0! -H \"Content-Type: text/xml; charset=utf-8\" -H \"SOAPAction:\"  -d @"+teiidBot.toAbsolutePath("resources/wsdl/requestOracleNOK.xml")+" -X POST http://localhost:8080/checkBookVdbBasic/BooksInterface?wsdl";
-		String curlOK =  "curl -u teiidUser:dvdvdv0! -H \"Content-Type: text/xml; charset=utf-8\" -H \"SOAPAction:\"  -d @"+teiidBot.toAbsolutePath("resources/wsdl/requestOracleOK.xml")+" -X POST http://localhost:8080/checkBookVdbBasic/BooksInterface?wsdl";
-		String responseNOK = teiidBot.curl(curlNOK);
-		String responseOK = teiidBot.curl(curlOK);
-		assertEquals(teiidBot.loadFileAsString(teiidBot.toAbsolutePath("resources/wsdl/responseOracleNOK.xml")), responseNOK);
-		assertEquals(teiidBot.loadFileAsString(teiidBot.toAbsolutePath("resources/wsdl/responseOracleOK.xml")), responseOK);
+		
+		String username = teiidServer.getServerConfig().getServerBase().getProperty("teiidUser");
+		String password = teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword");
+		
+		String nok = new SimpleHttpClient("http://localhost:8080/" + warCheckBookBasic + "/BooksInterface?wsdl")
+			.setBasicAuth(username, password)
+			.addHeader("Content-Type", "text/xml; charset=utf-8")
+			.addHeader("SOAPAction","")
+			.post(teiidBot.loadFileAsString(teiidBot.toAbsolutePath("resources/wsdl/requestOracleNOK.xml")));
+		assertEquals(teiidBot.loadFileAsString(teiidBot.toAbsolutePath("resources/wsdl/responseOracleNOK.xml")), nok);
+		
+		String ok = new SimpleHttpClient("http://localhost:8080/" + warCheckBookBasic + "/BooksInterface?wsdl")
+			.setBasicAuth(username, password)
+			.addHeader("Content-Type", "text/xml; charset=utf-8")
+			.addHeader("SOAPAction", "")
+			.post(teiidBot.loadFileAsString(teiidBot.toAbsolutePath("resources/wsdl/requestOracleOK.xml")));
+		assertEquals(teiidBot.loadFileAsString(teiidBot.toAbsolutePath("resources/wsdl/responseOracleOK.xml")), ok);
 	}
 	
 	/**
@@ -177,7 +199,7 @@ public class WARTest extends SWTBotTestCase {
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		String url = "http://localhost:8080/"+rbWar+"/BooksView/book1/0201877562";
 		
-		assertEquals(resultRest, teiidBot.curl(url));
+		assertEquals(resultRest, new SimpleHttpClient(url).get());
 		
 	}
 	
@@ -212,7 +234,11 @@ public class WARTest extends SWTBotTestCase {
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		
 		String url = "-u teiidUser:dvdvdv0! http://localhost:8080/"+rbWar+"/BooksView/book1/0201877562";
-		assertEquals(resultRest, teiidBot.curl(url));
+		String username = teiidServer.getServerConfig().getServerBase().getProperty("teiidUser");
+		String password = teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword");
+		SimpleHttpClient client = new SimpleHttpClient("http://localhost:8080/" + rbWar + "/BooksView/book1/0201877562")
+				.setBasicAuth(username, password);
+		assertEquals(resultRest, client.get());
 	}
 
 }

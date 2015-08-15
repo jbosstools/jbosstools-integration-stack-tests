@@ -38,6 +38,7 @@ import org.jboss.tools.teiid.reddeer.matcher.ModelColumnMatcher;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
+import org.jboss.tools.teiid.reddeer.util.SimpleHttpClient;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
@@ -199,8 +200,11 @@ public class CreateRestProcedureTest {
 	private void checkWar(String expected, String url) {
 		String userPass = teiidServer.getServerConfig().getServerBase().getProperty("teiidUser") + ':'
 				+ teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword");
-		String curlArgs = "-u " + userPass + " http://localhost:8080/" + PROJECT_NAME + '/' + url;
-		assertEquals(expected, teiidBot.curl(curlArgs));
+		String response = new SimpleHttpClient("http://localhost:8080/" + PROJECT_NAME + '/' + url).setBasicAuth(teiidServer
+				.getServerConfig().getServerBase().getProperty("teiidUser"), teiidServer.getServerConfig()
+				.getServerBase().getProperty("teiidPassword"))
+				.get();
+		assertEquals(expected, response);
 
 	}
 

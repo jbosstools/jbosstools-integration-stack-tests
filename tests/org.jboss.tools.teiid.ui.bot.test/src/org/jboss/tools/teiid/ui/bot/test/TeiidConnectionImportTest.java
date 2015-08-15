@@ -15,6 +15,7 @@ import org.jboss.tools.teiid.reddeer.manager.VDBManager;
 import org.jboss.tools.teiid.reddeer.preference.TeiidDesignerPreferencePage;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
+import org.jboss.tools.teiid.reddeer.util.SimpleHttpClient;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.TeiidConnectionImportWizard;
@@ -337,11 +338,11 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 		
 		
 		// initialize modeshape
-		String userPass = teiidServer.getServerConfig().getServerBase().getProperty("modeshapeUser") + ':'
-				+ teiidServer.getServerConfig().getServerBase().getProperty("modeshapePassword");
-		String curlArgs = "-u " + userPass + " http://localhost:8080/modeshape-rest/dv/";
-		String modeshapeInit = teiidBot.curl(curlArgs);
-		assertFalse("initializing modeshape failed", modeshapeInit.isEmpty());
+		String resp = new SimpleHttpClient("http://localhost:8080/modeshape-rest/dv/").setBasicAuth(
+				teiidServer.getServerConfig().getServerBase().getProperty("modeshapeUser"),
+				teiidServer.getServerConfig().getServerBase().getProperty("modeshapePassword")).get();
+
+		assertFalse("initializing modeshape failed", resp.isEmpty());
 		
 		new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME, "ModeshapeModel", iProps, null,
 				teiidImporterProperties);
