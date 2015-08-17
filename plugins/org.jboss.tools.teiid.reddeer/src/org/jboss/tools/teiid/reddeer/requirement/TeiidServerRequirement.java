@@ -16,11 +16,13 @@ import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.matcher.RegexMatcher;
 import org.jboss.reddeer.swt.matcher.WithTooltipTextMatcher;
+import org.jboss.reddeer.swt.wait.AbstractWait;
 import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.runtime.reddeer.ServerBase;
@@ -106,8 +108,18 @@ public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomC
 	@Override
 	public void fulfill() {
 		new WorkbenchShell().maximize();
+		
+		// the following helps to sort-of-reliably gain focus on windows 
+		// removing this would cause writing the username/password below 
+		// somewhere else (i.e. to some other window completely)
+		AbstractWait.sleep(TimePeriod.getCustom(3)); 
+		new DefaultShell();
+		
 		new CleanWorkspaceRequirement().fulfill();
 		new TeiidPerspective().open();
+		
+		new ConsolePreferencePage().toggleShowWhenWriteToStdErr(false);
+		new ConsolePreferencePage().toggleShowWhenWriteToStdOut(false);
 		
 		// uncheck build automatically
 		if (new ShellMenu("Project", "Build Automatically").isSelected()){
@@ -126,6 +138,7 @@ public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomC
 			servers.open();
 			servers.getServer(serverConfig.getName()).open();
 			new DefaultCTabItem("Teiid Instance").activate();
+			new DefaultShell();
 			new DefaultText(0).typeText(serverConfig.getServerBase().getProperty("teiidUser"));
 			new DefaultText(1).typeText(serverConfig.getServerBase().getProperty("teiidPassword"));
 			new DefaultToolItem(new WorkbenchShell(), 0, new WithTooltipTextMatcher(new RegexMatcher("Save All.*"))).click();
@@ -150,8 +163,6 @@ public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomC
 		}
 
 		new SQLResultView().enableUnresolvableCps();
-		new ConsolePreferencePage().toggleShowWhenWriteToStdErr(false);
-		new ConsolePreferencePage().toggleShowWhenWriteToStdOut(false);
 	}
 
 	@Override

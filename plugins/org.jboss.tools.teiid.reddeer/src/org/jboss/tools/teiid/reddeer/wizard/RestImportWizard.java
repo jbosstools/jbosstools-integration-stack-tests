@@ -79,6 +79,7 @@ public class RestImportWizard extends TeiidImportWizard{
 		open();
 		new DefaultCombo().setSelection(profileName);
 		
+		next();
 		defineModel("Source Model Definition",projectName,sourceModelName);
 		defineModel("View Model Definition",projectName,viewModelName);
 	

@@ -8,18 +8,24 @@ import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.swt.handler.WorkbenchHandler;
+import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.tools.teiid.reddeer.editor.SQLScrapbookEditor;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.manager.VDBManager;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
+import org.jboss.tools.teiid.reddeer.preference.TeiidDesignerPreferencePage;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
 import org.jboss.tools.teiid.reddeer.view.SQLResult;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.RestImportWizard;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -48,8 +54,17 @@ public class ConsumeRestWs {
 
 	@BeforeClass
 	public static void before() {
-		new TeiidBot().uncheckBuildAutomatically();
 		new ModelExplorerManager().createProject(PROJECT_NAME, false);
+	}
+	
+	@Before
+	public void openPerspective(){
+		TeiidPerspective.getInstance();
+	}
+	
+	@After
+	public void closeAll(){
+		EditorHandler.getInstance().closeAll(false);
 	}
 
 	@Test

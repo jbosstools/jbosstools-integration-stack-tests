@@ -46,7 +46,6 @@ public class ConsumeSoapWs {
 	
 	@BeforeClass
 	public static void before(){
-		new TeiidBot().uncheckBuildAutomatically();	
 		new ModelExplorerManager().createProject(PROJECT_NAME,false);
 	}
 	
