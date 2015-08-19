@@ -14,6 +14,7 @@ import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.matcher.RegexMatcher;
+import org.jboss.reddeer.swt.wait.TimePeriod;
 import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
@@ -153,7 +154,7 @@ public class ImplementationKnowledgePage extends PreferencePage {
 		new PushButton(cellEditor, "...").click();
 		if (title != null) {
 			try {
-			new DefaultShell(title);
+				new DefaultShell(title);
 			} catch (Exception e) {
 				ShellHandler.getInstance().closeAllNonWorbenchShells();
 				throw new RuntimeException("Cannot find a shell with title '" + title + "'", e);
@@ -162,7 +163,7 @@ public class ImplementationKnowledgePage extends PreferencePage {
 			new DefaultShell();
 		}
 		new DefaultText().setText(clazz);
-		new WaitUntil(new TableHasRow(new DefaultTable(), new RegexMatcher(".*" + clazz + ".*")));
+		new WaitUntil(new TableHasRow(new DefaultTable(), new RegexMatcher(".*" + clazz + ".*")), TimePeriod.LONG);
 		new OkButton().click();
 		if (title != null) {
 			new WaitWhile(new ShellWithTextIsAvailable(title));

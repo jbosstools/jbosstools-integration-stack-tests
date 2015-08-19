@@ -1,5 +1,6 @@
 package org.jboss.tools.switchyard.reddeer.condition;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hamcrest.Matcher;
@@ -11,16 +12,18 @@ public class TableHasRow implements WaitCondition {
 
 	private Table table;
 	private Matcher<String> matcher;
+	private List<TableItem> items;
 
 	public TableHasRow(Table table, Matcher<String> matcher) {
 		this.table = table;
 		this.matcher = matcher;
+		this.items = new ArrayList<TableItem>();
 	}
-	
+
 	@Override
 	public boolean test() {
-		List<TableItem> items = table.getItems();
-		for (TableItem item: items) {
+		items = table.getItems();
+		for (TableItem item : items) {
 			if (matcher.matches(item.getText())) {
 				item.select();
 				return true;
@@ -31,7 +34,12 @@ public class TableHasRow implements WaitCondition {
 
 	@Override
 	public String description() {
-		return null;
+		StringBuffer message = new StringBuffer();
+		message.append("an item matching ").append(matcher.toString()).append(" in\n");
+		for (TableItem item : items) {
+			message.append("\t").append(item.getText()).append("\n");
+		}
+		return message.toString();
 	}
 
 }
