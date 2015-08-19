@@ -61,6 +61,80 @@
 					</explodedBundles>
 				</configuration>
 			</plugin>
+	    <plugin>
+	      <groupId>org.codehaus.gmavenplus</groupId>
+	      <artifactId>gmavenplus-plugin</artifactId>
+	      <version>1.5</version>
+	      <executions>
+		<execution>
+		  <id>kill-running-servers-before</id>
+		  <phase>pre-clean</phase>
+		  <goals>
+                    <goal>execute</goal>
+		  </goals>
+		</execution>
+		<execution>
+		  <id>kill-running-servers-after</id>
+		  <phase>post-integration-test</phase>
+		  <goals>
+                    <goal>execute</goal>
+		  </goals>
+		</execution>
+	      </executions>
+	      <configuration>
+                <scripts>
+		  <script>
+<![CDATA[
+killProcess("karaf");
+killProcess("fuse-6");
+killProcess("dv-6");
+killProcess("fsw-6");
+killProcess("soa-5");
+killProcess("switchyard-2");
+
+private String killProcess(String processName) {
+  println "Kill process '" + processName + "'";
+  if (isWindows()) {
+    return killWindowsProcess(processName);
+  } else {
+    return killUnixProcess(processName);
+  }
+}
+
+private String killUnixProcess(String processName) {
+  return executeCommand("sh", "-c", "kill \$(ps -ef | grep '" + processName + "' | grep -v 'grep' | awk '{ print \$2 }')");
+}
+
+private String killWindowsProcess(String processName) {
+  return executeCommand("cmd", "/c", "wmic process where \"commandline like '%" + processName + "%' and name like '%java%'\" call terminate");
+}
+
+private String executeCommand(String... cmd) {
+  println "Command: " + cmd;
+
+  StringBuilder result = new StringBuilder();
+  def process = new ProcessBuilder(cmd).redirectErrorStream(true).start();
+  process.inputStream.eachLine { result.append(it).append("\n") };
+  process.waitFor();
+  return result.toString();
+}
+
+private boolean isWindows() {
+  return System.getProperty("os.name").toLowerCase().contains("windows");
+}
+]]>
+		  </script>
+		</scripts>
+	      </configuration>
+	      <dependencies>
+		<dependency>
+		  <groupId>org.codehaus.groovy</groupId>
+		  <artifactId>groovy-all</artifactId>
+		  <version>2.4.3</version>
+		  <scope>runtime</scope>
+		</dependency>
+	      </dependencies>
+	    </plugin>
 		</plugins>
 	</build>
 </project>
