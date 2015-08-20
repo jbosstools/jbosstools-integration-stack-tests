@@ -336,4 +336,18 @@ public class RegressionTest extends DefaultTest {
 			fail("Run Configurations contains forbidden item");
 		} catch (SWTLayerException e) {}
 	}
+
+	/**
+	 * Camel Editor is still indicating that something was changed
+	 * https://issues.jboss.org/browse/FUSETOOLS-1403
+	 * @throws FuseArchetypeNotFoundException 
+	 */
+	@Test
+	public void issue_1403() throws FuseArchetypeNotFoundException {
+
+		ProjectFactory.createProject("camel-blueprint", "camel-archetype-blueprint");
+		new CamelProject("camel-blueprint").selectProjectItem("src/main/resources", "OSGI-INF", "blueprint", "blueprint.xml");
+		new ContextMenu("Open").select();
+		assertFalse("Camel Editor is dirty! But no editing was performed.", new CamelEditor("blueprint.xml").isDirty());
+	}
 }
