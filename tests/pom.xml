@@ -85,12 +85,12 @@
                 <scripts>
 		  <script>
 <![CDATA[
-killProcess("karaf");
-killProcess("fuse-6");
-killProcess("dv-6");
-killProcess("fsw-6");
-killProcess("soa-5");
-killProcess("switchyard-2");
+println killProcess("karaf");
+println killProcess("fuse-6");
+println killProcess("dv-6");
+println killProcess("fsw-6");
+println killProcess("soa-5");
+println killProcess("switchyard-2");
 
 private String killProcess(String processName) {
   println "Kill process '" + processName + "'";
@@ -102,11 +102,11 @@ private String killProcess(String processName) {
 }
 
 private String killUnixProcess(String processName) {
-  return executeCommand("sh", "-c", "kill \$(ps -ef | grep '" + processName + "' | grep -v 'grep' | awk '{ print \$2 }')");
+  return executeCommand("sh", "-c", "kill \$(ps -ef | grep '" + processName + "' | grep -v 'grep' | grep -v 'reddeer.config' | awk '{ print \$2 }')");
 }
 
 private String killWindowsProcess(String processName) {
-  return executeCommand("cmd", "/c", "wmic process where \"commandline like '%" + processName + "%' and name like '%java%'\" call terminate");
+  return executeCommand("cmd", "/c", "wmic process where \"commandline like '%" + processName + "%' and name like '%java%' and not commandline like '%reddeer.config%'\" call terminate");
 }
 
 private String executeCommand(String... cmd) {
