@@ -1,89 +1,103 @@
 <project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.jboss.tools</groupId>
-		<artifactId>integration-stack-tests</artifactId>
-		<version>4.2.0-SNAPSHOT</version>
-	</parent>
-	<groupId>org.jboss.tools.integration-stack-tests</groupId>
-	<artifactId>tests</artifactId>
-	<name>integration-stack-tests.tests</name>
-	<packaging>pom</packaging>
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+    xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.jboss.tools</groupId>
+    <artifactId>integration-stack-tests</artifactId>
+    <version>4.2.0-SNAPSHOT</version>
+  </parent>
+  <groupId>org.jboss.tools.integration-stack-tests</groupId>
+  <artifactId>tests</artifactId>
+  <name>integration-stack-tests.tests</name>
+  <packaging>pom</packaging>
   
-        <properties>
-            <surefire.timeout>7200</surefire.timeout>
-            <memoryOptions2>-XX:MaxPermSize=384m</memoryOptions2>
-            <swt.bot.test.record.screencast>false</swt.bot.test.record.screencast>
-	    <pauseFailedTest>false</pauseFailedTest>
-            <integrationTestsSystemProperties>-Dswt.bot.test.record.screencast=${swt.bot.test.record.screencast} -Dorg.eclipse.swtbot.screenshots.dir=${project.build.directory}/screenshots -DpauseFailedTest=${pauseFailedTest} -Dorg.jboss.tools.central.donotshow=true</integrationTestsSystemProperties>
-        </properties>
-
-	<modules>
-		<module>org.jboss.tools.runtime.ui.bot.test</module>
-		<module>org.jboss.tools.jbpm.ui.bot.test</module>
-		<module>org.jboss.tools.bpel.ui.bot.test</module>
-		<module>org.jboss.tools.esb.ui.bot.test</module>
-		<module>org.jboss.tools.switchyard.ui.bot.test</module>
-		<module>org.jboss.tools.teiid.ui.bot.test</module>
-		<module>org.jboss.tools.modeshape.ui.bot.test</module>
-		<module>org.jboss.tools.drools.ui.bot.test</module>
-		<module>org.jboss.tools.fuse.ui.bot.test</module>
-		<module>org.jboss.tools.bpmn2.ui.bot.test</module>
-	</modules>
-	<profiles>
-		<profile>
-			<id>windows-xp-memory-options</id>
-			<activation>
-				<os>
-					<name>Windows XP</name>
-					<family>Windows</family>
-				</os>
-			</activation>
-			<properties>
-				<memoryOptions1>-Xms384m -Xmx768m -XX:PermSize=192m</memoryOptions1>
-		        <memoryOptions2>-XX:MaxPermSize=384m</memoryOptions2>
-			</properties>
-		</profile>
-	</profiles>	
-    <build>
-		<plugins>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-surefire-plugin</artifactId>
-				<configuration>
-					<explodedBundles>
-						<bundle>org.mozilla.xulrunner.cocoa.macosx</bundle>
-						<bundle>org.mozilla.xulrunner.gtk.linux.x86</bundle>
-						<bundle>org.mozilla.xulrunner.gtk.linux.x86_64</bundle>
-						<bundle>org.mozilla.xulrunner.win32.win32.x86</bundle>
-					</explodedBundles>
-				</configuration>
-			</plugin>
-	    <plugin>
-	      <groupId>org.codehaus.gmavenplus</groupId>
-	      <artifactId>gmavenplus-plugin</artifactId>
-	      <version>1.5</version>
-	      <executions>
-		<execution>
-		  <id>kill-running-servers-before</id>
-		  <phase>pre-clean</phase>
-		  <goals>
-                    <goal>execute</goal>
-		  </goals>
-		</execution>
-		<execution>
-		  <id>kill-running-servers-after</id>
-		  <phase>post-integration-test</phase>
-		  <goals>
-                    <goal>execute</goal>
-		  </goals>
-		</execution>
-	      </executions>
-	      <configuration>
-                <scripts>
-		  <script>
+  <properties>
+    <surefire.timeout>7200</surefire.timeout>
+    <memoryOptions2>-XX:MaxPermSize=384m</memoryOptions2>
+    <swt.bot.test.record.screencast>false</swt.bot.test.record.screencast>
+    <pauseFailedTest>false</pauseFailedTest>
+    <integrationTestsSystemProperties>-Dswt.bot.test.record.screencast=${swt.bot.test.record.screencast} -Dorg.eclipse.swtbot.screenshots.dir=${project.build.directory}/screenshots -DpauseFailedTest=${pauseFailedTest} -Dorg.jboss.tools.central.donotshow=true</integrationTestsSystemProperties>
+    <killServers>false</killServers>
+  </properties>
+  
+  <modules>
+    <module>org.jboss.tools.runtime.ui.bot.test</module>
+    <module>org.jboss.tools.jbpm.ui.bot.test</module>
+    <module>org.jboss.tools.bpel.ui.bot.test</module>
+    <module>org.jboss.tools.esb.ui.bot.test</module>
+    <module>org.jboss.tools.switchyard.ui.bot.test</module>
+    <module>org.jboss.tools.teiid.ui.bot.test</module>
+    <module>org.jboss.tools.modeshape.ui.bot.test</module>
+    <module>org.jboss.tools.drools.ui.bot.test</module>
+    <module>org.jboss.tools.fuse.ui.bot.test</module>
+    <module>org.jboss.tools.bpmn2.ui.bot.test</module>
+  </modules>
+  
+  <build>
+    <plugins>
+      <plugin>
+	<groupId>org.eclipse.tycho</groupId>
+	<artifactId>tycho-surefire-plugin</artifactId>
+	<configuration>
+	  <explodedBundles>
+	    <bundle>org.mozilla.xulrunner.cocoa.macosx</bundle>
+	    <bundle>org.mozilla.xulrunner.gtk.linux.x86</bundle>
+	    <bundle>org.mozilla.xulrunner.gtk.linux.x86_64</bundle>
+	    <bundle>org.mozilla.xulrunner.win32.win32.x86</bundle>
+	  </explodedBundles>
+	</configuration>
+      </plugin>
+    </plugins>
+  </build>
+  
+  <profiles>
+    <profile>
+      <id>windows-xp-memory-options</id>
+      <activation>
+	<os>
+	  <name>Windows XP</name>
+	  <family>Windows</family>
+	</os>
+      </activation>
+      <properties>
+	<memoryOptions1>-Xms384m -Xmx768m -XX:PermSize=192m</memoryOptions1>
+	<memoryOptions2>-XX:MaxPermSize=384m</memoryOptions2>
+      </properties>
+    </profile>
+    <profile>
+      <id>killServers</id>
+      <activation>
+	<property>
+	  <name>killServers</name>
+	  <value>true</value>
+	</property>
+      </activation>
+      <build>
+	<plugins>
+	  <plugin>
+	    <groupId>org.codehaus.gmavenplus</groupId>
+	    <artifactId>gmavenplus-plugin</artifactId>
+	    <version>1.5</version>
+	    <executions>
+	      <execution>
+		<id>kill-running-servers-before</id>
+		<phase>pre-clean</phase>
+		<goals>
+                  <goal>execute</goal>
+		</goals>
+	      </execution>
+	      <execution>
+		<id>kill-running-servers-after</id>
+		<phase>post-integration-test</phase>
+		<goals>
+                  <goal>execute</goal>
+		</goals>
+	      </execution>
+	    </executions>
+	    <configuration>
+              <scripts>
+		<script>
 <![CDATA[
 println killProcess("karaf");
 println killProcess("fuse-6");
@@ -123,19 +137,22 @@ private boolean isWindows() {
   return System.getProperty("os.name").toLowerCase().contains("windows");
 }
 ]]>
-		  </script>
-		</scripts>
-	      </configuration>
-	      <dependencies>
-		<dependency>
-		  <groupId>org.codehaus.groovy</groupId>
-		  <artifactId>groovy-all</artifactId>
-		  <version>2.4.3</version>
-		  <scope>runtime</scope>
-		</dependency>
-	      </dependencies>
-	    </plugin>
-		</plugins>
-	</build>
+		</script>
+	      </scripts>
+	    </configuration>
+	    <dependencies>
+	      <dependency>
+		<groupId>org.codehaus.groovy</groupId>
+		<artifactId>groovy-all</artifactId>
+		<version>2.4.3</version>
+		<scope>runtime</scope>
+	      </dependency>
+	    </dependencies>
+	  </plugin>
+	</plugins>
+      </build>
+    </profile>
+  </profiles>
+  
 </project>
 
