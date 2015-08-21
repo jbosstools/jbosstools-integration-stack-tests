@@ -36,8 +36,8 @@ public class ServerTest extends DefaultTest {
 	@Before
 	public void cleanUp() {
 
-		ServerManipulator.removeServer(serverRequirement.getConfig().getName());
-		ServerManipulator.removeServerRuntime(serverRequirement.getConfig().getName() + " Runtime");
+		ServerManipulator.deleteAllServers();
+		ServerManipulator.deleteAllServerRuntimes();
 	}
 
 	@Test
@@ -45,9 +45,9 @@ public class ServerTest extends DefaultTest {
 
 		ServerKaraf fuse = (ServerKaraf) serverRequirement.getConfig().getServerBase();
 
-		ServerManipulator.addServerRuntime(fuse.getName(), fuse.getHome());
+		ServerManipulator.addServerRuntime(fuse.getRuntimeType(), fuse.getHome());
 		assertEquals("New server runtime is not listed in Server Runtimes", 1, ServerManipulator.getServerRuntimes().size());
-		ServerManipulator.editServerRuntime(fuse.getName(), fuse.getHome());
+		ServerManipulator.editServerRuntime(fuse.getRuntimeType(), fuse.getHome());
 		ServerManipulator.addServer(fuse.getServerType(), fuse.getHost(), fuse.getName(), fuse.getPort(), fuse.getUsername(), fuse.getPassword());
 		assertEquals("No server's record is in Servers View", 1, ServerManipulator.getServers().size());
 		assertTrue("New server is not listed in Servers View", ServerManipulator.isServerPresent(fuse.getName()));
@@ -60,7 +60,7 @@ public class ServerTest extends DefaultTest {
 		assertTrue("There are some errors in error log", getErrorMessages() == 0);
 		ServerManipulator.removeServer(fuse.getName());
 		assertEquals("Server is listed in Servers View after deletion", 0, ServerManipulator.getServers().size());
-		ServerManipulator.removeServerRuntime(fuse.getName());
+		ServerManipulator.removeServerRuntime(fuse.getRuntimeType());
 		assertEquals("Server runtime is listed after deletion", 0, ServerManipulator.getServerRuntimes().size());
 	}
 }
