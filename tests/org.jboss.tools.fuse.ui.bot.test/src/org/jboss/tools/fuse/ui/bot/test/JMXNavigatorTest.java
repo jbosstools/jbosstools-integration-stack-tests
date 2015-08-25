@@ -43,15 +43,23 @@ public class JMXNavigatorTest extends DefaultTest {
 
 	private static Logger log = Logger.getLogger(JMXNavigatorTest.class);
 
+	/**
+	 * Prepares test environment
+	 * 
+	 * @throws FuseArchetypeNotFoundException Fuse archetype was not found. Tests cannot be executed!
+	 */
 	@BeforeClass
-	public static void createProject() throws FuseArchetypeNotFoundException {
+	public static void setupCreateProject() throws FuseArchetypeNotFoundException {
 
 		log.info("Create a new Fuse project (" + PROJECT_ARCHETYPE + ")");
 		ProjectFactory.createProject(PROJECT_NAME, PROJECT_ARCHETYPE);
 	}
 
+	/**
+	 * Prepares test environment
+	 */
 	@Before
-	public void runCamelContext() {
+	public void setupRunCamelContext() {
 
 		log.info("Run the Fuse project as Local Camel Context");
 		new CamelProject(PROJECT_NAME).runCamelContextWithoutTests(PROJECT_CAMEL_CONTEXT);
@@ -59,8 +67,20 @@ public class JMXNavigatorTest extends DefaultTest {
 		AbstractWait.sleep(TimePeriod.NORMAL);
 	}
 
+	/**
+	 * <p>Test tries to access nodes relevant for Local Camel Context in JMX Navigator view.</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>open Project Explorer View</li>
+	 * <li>run the Fuse project as Local Camel Context</li>
+	 * <li>open JMX Navigator View</li>
+	 * <li>try to access node "Local Camel Context", "Camel", "camel-1", "Endpoints", "file", "src/data?noop=true"</li>
+	 * <li>try to access node "Local Camel Context", "Camel", "camel-1", "Routes", "route1", "file:src/data?noop=true", "choice1", "when1", "log1", "to1"</li>
+	 * </ol>
+	 */
 	@Test
-	public void processesViewTest() {
+	public void testProcessesView() {
 
 		JMXNavigator jmx = new JMXNavigator();
 		assertNotNull(jmx.getNode("Local Camel Context", "Camel", "camel-1", "Endpoints", "file", "src/data?noop=true"));
@@ -68,8 +88,25 @@ public class JMXNavigatorTest extends DefaultTest {
 		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 
+	/**
+	 * <p>Test tries context menu options related to Camel Context runs as Local Camel Context - Suspend/Resume context.</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>open Project Explorer View</li>
+	 * <li>run the Fuse project as Local Camel Context</li>
+	 * <li>open JMX Navigator View</li>
+	 * <li>select node "Local Camel Context", "Camel", "camel-1"</li>
+	 * <li>select the context menu option Suspend Camel Context</li>
+	 * <li>check if the Console View contains the text "route1 suspend complete" (true)</li>
+	 * <li>open JMX Navigator View</li>
+	 * <li>select node "Local Camel Context", "Camel", "camel-1"</li>
+	 * <li>select the context menu option Resume Camel Context</li>
+	 * <li>check if the Console View contains the text "route1 resumed" (true)</li>
+	 * </ol>
+	 */
 	@Test
-	public void contextOperationsTest() {
+	public void testContextOperations() {
 
 		JMXNavigator jmx = new JMXNavigator();
 		new JMXNavigator().getNode("Local Camel Context", "Camel", "camel-1").select();

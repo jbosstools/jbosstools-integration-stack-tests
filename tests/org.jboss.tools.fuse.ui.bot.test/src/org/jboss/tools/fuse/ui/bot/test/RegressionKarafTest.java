@@ -37,8 +37,11 @@ public class RegressionKarafTest extends DefaultTest {
 	@InjectRequirement
 	private ServerRequirement serverRequirement;
 
+	/**
+	 * Cleans up test environment
+	 */
 	@After
-	public void clean() {
+	public void steupClean() {
 
 		String server = serverRequirement.getConfig().getName();
 		if (ServerManipulator.isServerStarted(server)) {
@@ -48,8 +51,8 @@ public class RegressionKarafTest extends DefaultTest {
 	}
 
 	/**
-	 * JMX Node in servers view doesn't work if server has secured JMX access via credentials
-	 * https://issues.jboss.org/browse/FUSETOOLS-1264
+	 * <p>JMX Node in servers view doesn't work if server has secured JMX access via credentials</p>
+	 * <b>Link: </b><a href="https://issues.jboss.org/browse/FUSETOOLS-1264">https://issues.jboss.org/browse/FUSETOOLS-1264</a>
 	 */
 	@Test
 	public void issue_1264() {

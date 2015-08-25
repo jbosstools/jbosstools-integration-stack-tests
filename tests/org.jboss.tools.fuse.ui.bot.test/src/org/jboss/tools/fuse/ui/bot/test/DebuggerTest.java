@@ -49,8 +49,13 @@ public class DebuggerTest extends DefaultTest {
 	private static final String LOG = "log1";
 	private static final String LOG2 = "log2";
 
+	/**
+	 * Prepares test environment
+	 * 
+	 * @throws FuseArchetypeNotFoundException Fuse archetype was not found. Tests cannot be executed!
+	 */
 	@BeforeClass
-	public static void setup() throws FuseArchetypeNotFoundException {
+	public static void setupInitial() throws FuseArchetypeNotFoundException {
 
 		ProjectFactory.createProject(PROJECT_NAME, PROJECT_ARCHETYPE);
 		new CamelProject(PROJECT_NAME).openCamelContext(CAMEL_CONTEXT);
@@ -62,12 +67,39 @@ public class DebuggerTest extends DefaultTest {
 		editor.save();
 	}
 
+	/**
+	 * Cleans up test environment
+	 */
 	@After
-	public void removeAllBreakpoints() {
+	public void setupRemoveAllBreakpoints() {
 
 		new BreakpointsView().removeAllBreakpoints();
 	}
 
+	/**
+	 * <p>Test tries to add/remove/disable/enable breakpoints to the components in the Camel Editor.</p>
+	 * <b>Steps</b>
+	 * <ol>
+	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>open Project Explorer view</li>
+	 * <li>open camel-context.xml file</li>
+	 * <li>set breakpoint to the choice component</li>
+	 * <li>set breakpoint to the log component in the top branch</li>
+	 * <li>open Breakpoints View and check if set breakpoints are present</li>
+	 * <li>open camel-context.xml file</li>
+	 * <li>disable the breakpoint on the choice component</li>
+	 * <li>check if the breakpoint can be disabled again</li>
+	 * <li>check if the breakpoint is disabled in the Breakpoints view</li>
+	 * <li>enable the breakpoint on the choice component</li>
+	 * <li>check if the breakpoint can be enabled again</li>
+	 * <li>check if the breakpoint is enabled in the Breakpoints view</li>
+	 * <li>delete the breakpoint in the CamelEditor</li>
+	 * <li>check if the breakpoint can be deleted again</li>
+	 * <li>check if the breakpoint is no longer available in the Breakpoints view</li>
+	 * <li>remove the breakpoint on the log component via Breakpoints view</li>
+	 * <li>check if the breakpoint is set in the Camel Editor</li>
+	 * </ol>
+	 */
 	@Test
 	public void testBreakpointManipulation() {
 
@@ -101,6 +133,35 @@ public class DebuggerTest extends DefaultTest {
 		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 
+	/**
+	 * <p>Test tries debugging of the Camel route - suspending, resuming, step over, variables values.</p>
+	 * <b>Steps</b>
+	 * <ol>
+	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>open Project Explorer view</li>
+	 * <li>open camel-context.xml file</li>
+	 * <li>set breakpoint to the choice component</li>
+	 * <li>set breakpoint to the log component in the top branch</li>
+	 * <li>debug the Camel Context without tests</li>
+	 * <li>wait until process is suspended</li>
+	 * <li>check if the Console View contains text Enabling Debugger</li>
+	 * <li>check if the Variables View contains variable Endpoint with value choice1</li>
+	 * <li>check if the Variables View contains variable Message with value <city>London</city></li>
+	 * <li>resume debugging</li>
+	 * <li>wait until process is suspended</li>
+	 * <li>check if the Variables View contains variable Endpoint with value log1</li>
+	 * <li>click on the Step over button</li>
+	 * <li>wait until process is suspended</li>
+	 * <li>check if the Console View contains text UK message</li>
+	 * <li>check if the Variables View contains variable Endpoint with value to1</li>
+	 * <li>remove all breakpoints</li>
+	 * <li>check if the Console View contains text Removing breakpoint choice1</li>
+	 * <li>check if the Console View contains text Removing breakpoint log1</li>
+	 * <li>resume debugging</li>
+	 * <li>terminate process via Terminate button in the Console View</li>
+	 * <li>check if the Console View contains text Disabling debugger</li>
+	 * </ol>
+	 */
 	@Test
 	public void testDebugger() {
 
@@ -154,6 +215,28 @@ public class DebuggerTest extends DefaultTest {
 		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 
+	/**
+	 * <p>Test tries conditional debugging of the Camel route - suspending only when condition is fulfilled.</p>
+	 * <b>Steps</b>
+	 * <ol>
+	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>open Project Explorer view</li>
+	 * <li>open camel-context.xml file</li>
+	 * <li>set conditional breakpoint to the choice component - simple with 
+	 * "${in.header.CamelFileName} == 'message1.xml'"</li>
+	 * <li>set conditional breakpoint to the log component in the top branch - simple with 
+	 * "${in.header.CamelFileName} == 'message2.xml'"</li>
+	 * <li>debug the Camel Context without tests</li>
+	 * <li>wait until process is suspended</li>
+	 * <li>check if the Variables View contains variable Endpoint with value choice1</li>
+	 * <li>resume debugging</li>
+	 * <li>check if the Console View contains text UK message</li>
+	 * <li>check if the Console View contains text Other message</li>
+	 * <li>check if the process is not suspended</li>
+	 * <li>terminate process via Terminate button in the Console View</li>
+	 * <li>check if the Console View contains text Disabling debugger</li>
+	 * </ol>
+	 */
 	@Test
 	public void testConditionalBreakpoints() {
 

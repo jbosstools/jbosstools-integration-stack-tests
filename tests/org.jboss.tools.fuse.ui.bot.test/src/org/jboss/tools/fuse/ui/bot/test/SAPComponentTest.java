@@ -54,8 +54,13 @@ public class SAPComponentTest extends DefaultTest {
 	private CamelEditor editor;
 	private CamelComponent stopComponent = new Stop();
 
+	/**
+	 * Prepares test environment
+	 * 
+	 * @throws FuseArchetypeNotFoundException Fuse archetype was not found. Tests cannot be executed!
+	 */
 	@BeforeClass
-	public static void resetCamelContext() throws FuseArchetypeNotFoundException {
+	public static void setupResetCamelContext() throws FuseArchetypeNotFoundException {
 		new WorkbenchShell();
 		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
 		new ErrorLogView().deleteLog();
@@ -65,14 +70,31 @@ public class SAPComponentTest extends DefaultTest {
 		new CamelProject("camel-spring").createCamelContext("camel-context.xml");
 	}
 
+	/**
+	 * Cleans up test environment
+	 */
 	@AfterClass
-	public static void deleteProjects() {
+	public static void setupDeleteProjects() {
 		new WorkbenchShell();
 		new ProjectExplorer().deleteAllProjects();
 	}
 
+	/**
+	 * <p>Tries to create/delete SAP component (see the method name) in the Camel Editor.</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>open Project Explorer view</li>
+	 * <li>delete camel-context.xml and create a new empty one</li>
+	 * <li>try to create a SAP component (see the method name) in Palette View</li>
+	 * <li>check if the component is present in Camel Editorh</li>
+	 * <li>delete the component from Camel Editor</li>
+	 * </ol>
+	 * 
+	 * @throws Exception Something bad happened
+	 */
 	@Test
-	public void sapIDocListServerTest() throws Exception {
+	public void testSAPIDocListServer() throws Exception {
 		AbstractURICamelComponent component = new SAPIDocListServer();
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		log.info("Testing camel component '" + component.getPaletteEntry() + "'");
@@ -89,8 +111,22 @@ public class SAPComponentTest extends DefaultTest {
 		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 
+	/**
+	 * <p>Tries to create/delete SAP component (see the method name) in the Camel Editor.</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>open Project Explorer view</li>
+	 * <li>delete camel-context.xml and create a new empty one</li>
+	 * <li>try to create a SAP component (see the method name) in Palette View</li>
+	 * <li>check if the component is present in Camel Editorh</li>
+	 * <li>delete the component from Camel Editor</li>
+	 * </ol>
+	 * 
+	 * @throws Exception Something bad happened
+	 */
 	@Test
-	public void sapSRFCServerTest() throws Exception {
+	public void testSAPSRFCServer() throws Exception {
 		AbstractURICamelComponent component = new SAPSRFCServer();
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		log.info("Testing camel component '" + component.getPaletteEntry() + "'");
@@ -107,8 +143,22 @@ public class SAPComponentTest extends DefaultTest {
 		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 
+	/**
+	 * <p>Tries to create/delete SAP component (see the method name) in the Camel Editor.</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>open Project Explorer view</li>
+	 * <li>delete camel-context.xml and create a new empty one</li>
+	 * <li>try to create a SAP component (see the method name) in Palette View</li>
+	 * <li>check if the component is present in Camel Editorh</li>
+	 * <li>delete the component from Camel Editor</li>
+	 * </ol>
+	 * 
+	 * @throws Exception Something bad happened
+	 */
 	@Test
-	public void sapTRFCServerTest() throws Exception {
+	public void testSAPTRFCServer() throws Exception {
 		AbstractURICamelComponent component = new SAPTRFCServer();
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		log.info("Testing camel component '" + component.getPaletteEntry() + "'");
@@ -125,8 +175,22 @@ public class SAPComponentTest extends DefaultTest {
 		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 
+	/**
+	 * <p>Tries to create/delete SAP component (see the method name) in the Camel Editor.</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>open Project Explorer view</li>
+	 * <li>delete camel-context.xml and create a new empty one</li>
+	 * <li>try to create a SAP component (see the method name) in Palette View</li>
+	 * <li>check if the component is present in Camel Editorh</li>
+	 * <li>delete the component from Camel Editor</li>
+	 * </ol>
+	 * 
+	 * @throws Exception Something bad happened
+	 */
 	@Test
-	public void sapIDocDestinationTest() throws Exception {
+	public void testSAPIDocDestination() throws Exception {
 		AbstractURICamelComponent component = new SAPIDocDestination();
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		log.info("Testing camel component '" + component.getPaletteEntry() + "'");
@@ -143,8 +207,22 @@ public class SAPComponentTest extends DefaultTest {
 		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 
+	/**
+	 * <p>Tries to create/delete SAP component (see the method name) in the Camel Editor.</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>open Project Explorer view</li>
+	 * <li>delete camel-context.xml and create a new empty one</li>
+	 * <li>try to create a SAP component (see the method name) in Palette View</li>
+	 * <li>check if the component is present in Camel Editorh</li>
+	 * <li>delete the component from Camel Editor</li>
+	 * </ol>
+	 * 
+	 * @throws Exception Something bad happened
+	 */
 	@Test
-	public void sapIDocListDestinationTest() throws Exception {
+	public void testSAPIDocListDestination() throws Exception {
 		AbstractURICamelComponent component = new SAPIDocListDestination();
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		log.info("Testing camel component '" + component.getPaletteEntry() + "'");
@@ -161,8 +239,22 @@ public class SAPComponentTest extends DefaultTest {
 		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 
+	/**
+	 * <p>Tries to create/delete SAP component (see the method name) in the Camel Editor.</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>open Project Explorer view</li>
+	 * <li>delete camel-context.xml and create a new empty one</li>
+	 * <li>try to create a SAP component (see the method name) in Palette View</li>
+	 * <li>check if the component is present in Camel Editorh</li>
+	 * <li>delete the component from Camel Editor</li>
+	 * </ol>
+	 * 
+	 * @throws Exception Something bad happened
+	 */
 	@Test
-	public void sapQIDocDestinationTest() throws Exception {
+	public void testSAPQIDocDestination() throws Exception {
 		AbstractURICamelComponent component = new SAPQIDocDestination();
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		log.info("Testing camel component '" + component.getPaletteEntry() + "'");
@@ -179,8 +271,22 @@ public class SAPComponentTest extends DefaultTest {
 		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 
+	/**
+	 * <p>Tries to create/delete SAP component (see the method name) in the Camel Editor.</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>open Project Explorer view</li>
+	 * <li>delete camel-context.xml and create a new empty one</li>
+	 * <li>try to create a SAP component (see the method name) in Palette View</li>
+	 * <li>check if the component is present in Camel Editorh</li>
+	 * <li>delete the component from Camel Editor</li>
+	 * </ol>
+	 * 
+	 * @throws Exception Something bad happened
+	 */
 	@Test
-	public void sapQIDocListDestinationTest() throws Exception {
+	public void testSAPQIDocListDestination() throws Exception {
 		AbstractURICamelComponent component = new SAPQIDocListDestination();
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		log.info("Testing camel component '" + component.getPaletteEntry() + "'");
@@ -197,8 +303,22 @@ public class SAPComponentTest extends DefaultTest {
 		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 
+	/**
+	 * <p>Tries to create/delete SAP component (see the method name) in the Camel Editor.</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>open Project Explorer view</li>
+	 * <li>delete camel-context.xml and create a new empty one</li>
+	 * <li>try to create a SAP component (see the method name) in Palette View</li>
+	 * <li>check if the component is present in Camel Editorh</li>
+	 * <li>delete the component from Camel Editor</li>
+	 * </ol>
+	 * 
+	 * @throws Exception Something bad happened
+	 */
 	@Test
-	public void sapQRFCDestinationTest() throws Exception {
+	public void testSAPQRFCDestination() throws Exception {
 		AbstractURICamelComponent component = new SAPQRFCDestination();
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		log.info("Testing camel component '" + component.getPaletteEntry() + "'");
@@ -215,8 +335,22 @@ public class SAPComponentTest extends DefaultTest {
 		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 
+	/**
+	 * <p>Tries to create/delete SAP component (see the method name) in the Camel Editor.</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>open Project Explorer view</li>
+	 * <li>delete camel-context.xml and create a new empty one</li>
+	 * <li>try to create a SAP component (see the method name) in Palette View</li>
+	 * <li>check if the component is present in Camel Editorh</li>
+	 * <li>delete the component from Camel Editor</li>
+	 * </ol>
+	 * 
+	 * @throws Exception Something bad happened
+	 */
 	@Test
-	public void sapSRFCDestinationTest() throws Exception {
+	public void testSAPSRFCDestination() throws Exception {
 		AbstractURICamelComponent component = new SAPSRFCDestination();
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		log.info("Testing camel component '" + component.getPaletteEntry() + "'");
@@ -233,8 +367,22 @@ public class SAPComponentTest extends DefaultTest {
 		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 
+	/**
+	 * <p>Tries to create/delete SAP component (see the method name) in the Camel Editor.</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>open Project Explorer view</li>
+	 * <li>delete camel-context.xml and create a new empty one</li>
+	 * <li>try to create a SAP component (see the method name) in Palette View</li>
+	 * <li>check if the component is present in Camel Editorh</li>
+	 * <li>delete the component from Camel Editor</li>
+	 * </ol>
+	 * 
+	 * @throws Exception Something bad happened
+	 */
 	@Test
-	public void sapTRFCDestinationTest() throws Exception {
+	public void testSAPTRFCDestination() throws Exception {
 		AbstractURICamelComponent component = new SAPTRFCDestination();
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		log.info("Testing camel component '" + component.getPaletteEntry() + "'");

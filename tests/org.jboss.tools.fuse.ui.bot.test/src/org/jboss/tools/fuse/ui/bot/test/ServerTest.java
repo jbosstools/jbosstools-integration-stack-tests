@@ -33,15 +33,31 @@ public class ServerTest extends DefaultTest {
 	@InjectRequirement
 	private ServerRequirement serverRequirement;
 
+	/**
+	 * Prepares test environment
+	 */
 	@Before
-	public void cleanUp() {
+	public void setupCleanUp() {
 
 		ServerManipulator.deleteAllServers();
 		ServerManipulator.deleteAllServerRuntimes();
 	}
 
+	/**
+	 * <p>Tests adding/modifying/removing a server and a server runtime</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>add a new server runtime</li>
+	 * <li>edit the server runtime (change name)</li>
+	 * <li>add a new server</li>
+	 * <li>start the server</li>
+	 * <li>stop the server</li>
+	 * <li>remove the server</li>
+	 * <li>remove the server runtime</li>
+	 * </ol>
+	 */
 	@Test
-	public void complexServerTest() {
+	public void testComplexServer() {
 
 		ServerKaraf fuse = (ServerKaraf) serverRequirement.getConfig().getServerBase();
 

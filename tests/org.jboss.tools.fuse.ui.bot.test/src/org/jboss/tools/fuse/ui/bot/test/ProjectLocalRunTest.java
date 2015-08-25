@@ -59,16 +59,33 @@ public class ProjectLocalRunTest extends DefaultTest {
 		log.info("The test case for the Fuse project was created.");
 	}
 
+	/**
+	 * Prepares test environment
+	 * 
+	 * @throws FuseArchetypeNotFoundException Fuse archetype was not found. Tests cannot be executed!
+	 */
 	@BeforeClass
-	public static void createProject() throws FuseArchetypeNotFoundException {
+	public static void setupCreateProject() throws FuseArchetypeNotFoundException {
 
 		log.info("Create a new Fuse project (" + PROJECT_ARCHETYPE + ")");
 		ProjectFactory.createProject(PROJECT_NAME, PROJECT_ARCHETYPE);
 		createTestClass();
 	}
 
+	/**
+	 * <p>Tests option Run a Project as Local Camel Context with tests</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>create a new Camel Test Case in the project</li>
+	 * <li>write a passing test</li>
+	 * <li>Run a Project as Local Camel Context with tests</li>
+	 * <li>check if the Console View contains the text "Total 1 routes, of which 1 is started." (true)</li>
+	 * <li>check if the Console View contains the text "BUILD FAILURE" (false)</li>
+	 * </ol>
+	 */
 	@Test
-	public void runProjectWithPassingTestsTest() {
+	public void testRunProjectWithPassingTests() {
 
 		Shell workbenchShell = new WorkbenchShell();
 		log.info("Run a project as Local Camel Context (Project contains a passing test case).");
@@ -80,8 +97,19 @@ public class ProjectLocalRunTest extends DefaultTest {
 		assertFalse("This build should be successful.", new ConsoleView().getConsoleText().contains("BUILD FAILURE"));
 	}
 
+	/**
+	 * <p>Tests option Run a Project as Local Camel Context with tests</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>create a new Camel Test Case in the project</li>
+	 * <li>write a failing test</li>
+	 * <li>Run a Project as Local Camel Context with tests</li>
+	 * <li>check if the Console View contains the text "BUILD FAILURE" (true)</li>
+	 * </ol>
+	 */
 	@Test
-	public void runProjectWithFailingTestsTest() {
+	public void testRunProjectWithFailingTests() {
 
 		Shell workbenchShell = new WorkbenchShell();
 		log.info("Run a project as Local Camel Context (Project contains a failing test case).");
@@ -91,8 +119,20 @@ public class ProjectLocalRunTest extends DefaultTest {
 		workbenchShell.setFocus();
 	}
 
+	/**
+	 * <p>Tests option Run a Project as Local Camel Context without tests</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>create a new Camel Test Case in the project</li>
+	 * <li>write a failing test</li>
+	 * <li>Run a Project as Local Camel Context without tests</li>
+	 * <li>check if the Console View contains the text "Total 1 routes, of which 1 is started." (true)</li>
+	 * <li>check if the Console View contains the text "BUILD FAILURE" (false)</li>
+	 * </ol>
+	 */
 	@Test
-	public void runProjectWithoutTestsTest() {
+	public void testRunProjectWithoutTests() {
 
 		Shell workbenchShell = new WorkbenchShell();
 		log.info("Run a project as Local Camel Context (without tests).");

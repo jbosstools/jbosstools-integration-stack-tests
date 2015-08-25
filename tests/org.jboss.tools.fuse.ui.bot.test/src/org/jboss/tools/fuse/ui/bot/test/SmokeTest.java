@@ -33,6 +33,14 @@ public class SmokeTest extends DefaultTest {
 
 	private static Logger log = Logger.getLogger(SmokeTest.class);
 
+	/**
+	 * <p>Simple test tries to create a new Fuse project</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * </ol>
+	 * @throws FuseArchetypeNotFoundException Fuse archetype was not found. Tests cannot be executed!
+	 */
 	@Test
 	public void testCreateFuseProject() throws FuseArchetypeNotFoundException {
 
@@ -45,12 +53,26 @@ public class SmokeTest extends DefaultTest {
 		}
 	}
 
+	/**
+	 * <p>Simple test tries to open view related to JBoss Fuse Tooling</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>open JMX Navigator view</li>
+	 * </ol>
+	 */
 	@Test
 	public void testOpenViews() {
 
 		new JMXNavigator().open();
 	}
 
+	/**
+	 * <p>Simple test tries to open perspectives related to JBoss Fuse Tooling</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>open Fuse Integration perspective</li>
+	 * </ol>
+	 */
 	@Test
 	public void testOpenPerspectives() {
 

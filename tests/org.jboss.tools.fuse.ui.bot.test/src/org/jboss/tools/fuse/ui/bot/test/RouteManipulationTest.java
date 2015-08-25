@@ -41,8 +41,13 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 public class RouteManipulationTest extends DefaultTest {
 
+	/**
+	 * Prepares test environment
+	 * 
+	 * @throws FuseArchetypeNotFoundException Fuse archetype was not found. Tests cannot be executed!
+	 */
 	@Before
-	public void createAndRunCamelProject() throws FuseArchetypeNotFoundException {
+	public void setupCreateAndRunCamelProject() throws FuseArchetypeNotFoundException {
 
 		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
 		Shell workbenchShell = new WorkbenchShell();
@@ -53,13 +58,42 @@ public class RouteManipulationTest extends DefaultTest {
 		new ErrorLogView().deleteLog();
 	}
 
+	/**
+	 * Cleans up test environment
+	 */
 	@After
-	public void deleteProjects() {
+	public void setupDeleteProjects() {
 
 		new WorkbenchShell();
 		new ProjectExplorer().deleteAllProjects();
 	}
 
+	/**
+	 * <p>Tests Remote Route Editing of running camel context in JMX Navigator view.</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>Run a Project as Local Camel Context without tests</li>
+	 * <li>open JMX Navigator view</li>
+	 * <li>select the node "Local Camel Context", "Camel", "camel-1"</li>
+	 * <li>select the context menu option Edit Routes</li>
+	 * <li>set focus on the recently opened Camel Editor</li>
+	 * <li>select component log1</li>
+	 * <li>change property Message to XXX</li>
+	 * <li>save the editor</li>
+	 * <li>check if the Console View contains the text Route: route1 is stopped, was consuming from: Endpoint[file://src/data?noop=true]</li>
+	 * <li>check if the Console View contains the text Route: route1 started and consuming from: Endpoint[file://src/data?noop=true]</li>
+	 * <li>check if the Console View contains the text file://src/data] route1                        INFO  XXX</li>
+	 * <li>activate Camel Editor and switch to Source page</li>
+	 * <li>remove otherwise branch</li>
+	 * <li>change attribute message to YYY</li>
+	 * <li>save the editor</li>
+	 * <li>check if the Console View contains the text file://src/data] route1                        INFO  YYY</li>
+	 * <li>open JMX Navigator view</li>
+	 * <li>try to select the node "Local Camel Context", "Camel", "camel-1", "Routes", "route1", "file:src/data?noop=true", "choice1", "choice1", "log1", "to1" (successful)</li>
+	 * <li>try to select the node "Local Camel Context", "Camel", "camel-1", "Routes", "route1", "file:src/data?noop=true", "choice1", "otherwise" (unsuccessful)</li>
+	 * </ol>
+	 */
 	@Test
 	public void testRemoteRouteEditing() {
 
@@ -87,6 +121,25 @@ public class RouteManipulationTest extends DefaultTest {
 		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 
+	/**
+	 * <p>Tests Tracing of running camel context in JMX Navigator view.</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>Run a Project as Local Camel Context without tests</li>
+	 * <li>open JMX Navigator view</li>
+	 * <li>select the node "Local Camel Context", "Camel", "camel-1"</li>
+	 * <li>select the context menu option Start Tracing</li>
+	 * <li>check if the context menu option was changed into Stop Tracing Context</li>
+	 * <li>in Project Explorer open "camel-spring", "src", "data"</li>
+	 * <li>in JMX Navigator open "Local Camel Context", "Camel", "camel-1", "Endpoints", "file"</li>
+	 * <li>perform drag&drop message1.xml from Project Explorer to src/data?noop=true in JMX Navigator</li>
+	 * <li>perform drag&drop message2.xml from Project Explorer to src/data?noop=true in JMX Navigator</li>
+	 * <li>open Message View</li>
+	 * <li>in JMX Navigator open "Local Camel Context", "Camel", "camel-1"</li>
+	 * <li>check if the messages in the Message View corresponds with sent messages</li>
+	 * </ol>
+	 */
 	@Test
 	public void testTracing() {
 

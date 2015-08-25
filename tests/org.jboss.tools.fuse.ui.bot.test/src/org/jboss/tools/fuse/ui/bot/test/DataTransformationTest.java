@@ -2,8 +2,6 @@ package org.jboss.tools.fuse.ui.bot.test;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
-
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.jdt.ui.junit.JUnitView;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -37,16 +35,18 @@ import org.junit.runner.RunWith;
 public class DataTransformationTest extends DefaultTest {
 
 	/**
-	 * - import 'starter' project from 'resources/projects/starter'
-	 * - create a new Data Transformation
-	 * - modify the Camel Route (connect Data Transformation node)
-	 * - create a new Data Transformation test
-	 * - run test and verify output
-	 * 
-	 * @throws IOException 
+	 * <p>Basic Test</p>
+	 * <b>Steps</b>
+	 * <ol>
+	 * <li>import 'starter' project from 'resources/projects/starter'</li>
+	 * <li>create a new Data Transformation</li>
+	 * <li>modify the Camel Route (connect Data Transformation node)</li>
+	 * <li>create a new Data Transformation test</li>
+	 * <li>run test and verify output</li>
+	 * </ol>
 	 */
 	@Test
-	public void testBasics() throws IOException {
+	public void testBasics() {
 
 		// Use the following line only if you want to run test within JBDS
 		// FileUtils.copyDirectory(ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID, "resources/projects/starter"), ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID, "target/starter"));

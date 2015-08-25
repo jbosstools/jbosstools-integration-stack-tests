@@ -1,19 +1,11 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
-import static org.junit.Assert.assertEquals;
-
-import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
 import org.jboss.tools.fuse.reddeer.perspectives.Fabric8Perspective;
 import org.jboss.tools.fuse.reddeer.view.Fabric8Explorer;
 import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
-import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -43,14 +35,20 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 public class FabricInCloudTest {
 
-	private static final String PROJECT_ARCHETYPE = "camel-archetype-spring";
-	private static final String PROJECT_NAME = "camel-spring";
-	private static final String PROJECT_FABS = "mvn:com.mycompany/camel-spring/1.0.0-SNAPSHOT";
-
 	private static Fabric8Explorer fab = new Fabric8Explorer();
 
+	/**
+	 * <p>Tests fabric in the cloud.</p>
+	 * <b>Steps</b>
+	 * <ol>
+	 * <li>create a new cloud detail</li>
+	 * <li>create a new fabric in the cloud</li>
+	 * <li>try to connect to the fabric</li>
+	 * <li>try to go through the fabric</li>
+	 * </ol>
+	 */
 	@Test
-	public void testCloudFabric() throws FuseArchetypeNotFoundException {
+	public void testCloudFabric() {
 
 		// create a Fabric in the cloud
 		fab.open();
@@ -60,14 +58,5 @@ public class FabricInCloudTest {
 		fab.selectNode("Fabrics", "Cloud Fabric");
 		fab.connectToFabric("Cloud Fabric");
 		fab.selectNode("Fabrics", "Cloud Fabric", "Versions", "1.0", "default");
-
-		// Deploy a project to the fabric in the cloud
-		ProjectFactory.createProject(PROJECT_ARCHETYPE, PROJECT_NAME);
-		ProjectExplorer projectExplorer = new ProjectExplorer();
-		projectExplorer.open();
-		projectExplorer.selectProjects(PROJECT_NAME);
-		new ContextMenu("Deploy to...", "Cloud Fabric", "1.0", "autoscale").select();
-		new WaitUntil(new ConsoleHasText("BUILD SUCCESS"), TimePeriod.getCustom(300));
-		assertEquals(PROJECT_FABS, fab.getProfileFABs("Fabrics", "Cloud Fabric", "Versions", "1.0", "default", "autoscale"));
 	}
 }

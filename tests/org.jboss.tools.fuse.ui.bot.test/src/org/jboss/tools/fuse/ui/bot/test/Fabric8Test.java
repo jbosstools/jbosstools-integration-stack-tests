@@ -46,8 +46,11 @@ public class Fabric8Test {
 	@InjectRequirement
 	private static ServerRequirement server;
 
+	/**
+	 * Prepares test environment
+	 */
 	@BeforeClass
-	public static void createFabric() {
+	public static void setupCreateFabric() {
 
 		new FuseShell().createFabric();
 		Fabric8Explorer fab = new Fabric8Explorer();
@@ -57,8 +60,11 @@ public class Fabric8Test {
 		new WorkbenchShell().setFocus();
 	}
 
+	/**
+	 * Cleans up test environment
+	 */
 	@AfterClass
-	public static void cleanUp() {
+	public static void setupCleanUp() {
 
 		// Server
 		String serverName = server.getConfig().getName();
@@ -71,7 +77,18 @@ public class Fabric8Test {
 		fab.open();
 		fab.removeFabric(null);
 	}
-	
+
+	/**
+	 * <p>Tries to create a local fabric. Test Add Fabric Details wizard.</p>
+	 * <b>Steps</b>
+	 * <ol>
+	 * <li>add a new Fuse Server</li>
+	 * <li>open Fabric8 perspective</li>
+	 * <li>open Add Fabric Details wizard</li>
+	 * <li>test entry fields</li>
+	 * <li>try to create a local fabric</li>
+	 * <ol>
+	 */
 	@Test
 	public void testFabricCreation() {
 		
@@ -100,6 +117,19 @@ public class Fabric8Test {
 		new DefaultShell().setFocus();
 	}
 
+	/**
+	 * <p>Tries to create/delete a profile.</p>
+	 * <b>Steps</b>
+	 * <ol>
+	 * <li>add a new Fuse Server</li>
+	 * <li>open Fabric8 perspective</li>
+	 * <li>create a new local fabric</li>
+	 * <li>connect to the fabric</li>
+	 * <li>create a new profile in 1.0 version</li>
+	 * <li>delete the new profile</li>
+	 * <li>check whether the profile is deleted</li>
+	 * <ol>
+	 */
 	public void testProfilesManipulation() {
 
 		Fabric8Explorer fab = new Fabric8Explorer();
@@ -115,6 +145,20 @@ public class Fabric8Test {
 		}
 	}
 
+	/**
+	 * <p>Tries to create/assign a new version.</p>
+	 * <b>Steps</b>
+	 * <ol>
+	 * <li>add a new Fuse Server</li>
+	 * <li>open Fabric8 perspective</li>
+	 * <li>create a new local fabric</li>
+	 * <li>connect to the fabric</li>
+	 * <li>create a new 2.0 profile</li>
+	 * <li>check whether the profile is created</li>
+	 * <li>assign the profile to the root profile</li>
+	 * <li>check whether the profile is assigned</li>
+	 * <ol>
+	 */
 	@Test
 	public void testVersionsManipulation() {
 
@@ -132,6 +176,21 @@ public class Fabric8Test {
 		}
 	}
 
+	/**
+	 * <p>Tries to manipulate with container.</p>
+	 * <b>Steps</b>
+	 * <ol>
+	 * <li>add a new Fuse Server</li>
+	 * <li>open Fabric8 perspective</li>
+	 * <li>create a new local fabric</li>
+	 * <li>connect to the fabric</li>
+	 * <li>create a new container</li>
+	 * <li>select the new container's node</li>
+	 * <li>check whether is the new container is listed (fabric:container-list)</li>
+	 * <li>check allowed operations with root and the new containers</li>
+	 * <li>try to stop/start/destroy the new container</li>
+	 * <ol>
+	 */
 	@Test
 	public void testContainersManipulation() {
 

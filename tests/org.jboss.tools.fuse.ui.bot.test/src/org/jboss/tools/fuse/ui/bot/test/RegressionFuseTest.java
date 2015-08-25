@@ -52,8 +52,11 @@ public class RegressionFuseTest extends DefaultTest {
 	@InjectRequirement
 	private ServerRequirement serverRequirement;
 
+	/**
+	 * Cleans up test environment
+	 */
 	@After
-	public void clean() {
+	public void setupClean() {
 
 		String server = serverRequirement.getConfig().getName();
 		if (ServerManipulator.isServerStarted(server)) {
@@ -63,8 +66,8 @@ public class RegressionFuseTest extends DefaultTest {
 	}
 
 	/**
-	 * New Server Runtime Wizard - Cancel/Finish button error
-	 * https://issues.jboss.org/browse/FUSETOOLS-1067
+	 * <p>New Server Runtime Wizard - Cancel/Finish button error</p>
+	 * <b>Link: </b><a href="https://issues.jboss.org/browse/FUSETOOLS-1067">https://issues.jboss.org/browse/FUSETOOLS-1067</a>
 	 */
 	@Test
 	public void issue_1067() {
@@ -116,9 +119,9 @@ public class RegressionFuseTest extends DefaultTest {
 	}
 
 	/**
-	 * Karaf cannot be started in debug mode
-	 * https://issues.jboss.org/browse/FUSETOOLS-1132
-	 * @throws FuseArchetypeNotFoundException 
+	 * <p>Karaf cannot be started in debug mode</p>
+	 * <b>Link: </b><a href="https://issues.jboss.org/browse/FUSETOOLS-1132">https://issues.jboss.org/browse/FUSETOOLS-1132</a>
+	 * @throws FuseArchetypeNotFoundException Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Test
 	public void issue_1132() throws FuseArchetypeNotFoundException {
@@ -150,9 +153,9 @@ public class RegressionFuseTest extends DefaultTest {
 	}
 
 	/**
-	 * uninstall of bundles from servers broken
-	 * https://issues.jboss.org/browse/FUSETOOLS-1152
-	 * @throws FuseArchetypeNotFoundException 
+	 * <p>uninstall of bundles from servers broken</p>
+	 * <b>Link: </b><a href="https://issues.jboss.org/browse/FUSETOOLS-1152">https://issues.jboss.org/browse/FUSETOOLS-1152</a>
+	 * @throws FuseArchetypeNotFoundException Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Test
 	public void issue_1152() throws FuseArchetypeNotFoundException {
@@ -167,9 +170,9 @@ public class RegressionFuseTest extends DefaultTest {
 	}
 
 	/**
-	 * Problem occurred during restart JBoss Fuse
-	 * https://issues.jboss.org/browse/FUSETOOLS-1252
-	 * @throws FuseArchetypeNotFoundException 
+	 * <p>Problem occurred during restart JBoss Fuse</p>
+	 * <b>Link: </b><a href="https://issues.jboss.org/browse/FUSETOOLS-1252">https://issues.jboss.org/browse/FUSETOOLS-1252</a>
+	 * @throws FuseArchetypeNotFoundException Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Test
 	public void issue_1252() throws FuseArchetypeNotFoundException {

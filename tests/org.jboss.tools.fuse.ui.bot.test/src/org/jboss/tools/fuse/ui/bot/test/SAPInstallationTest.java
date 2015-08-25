@@ -18,9 +18,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
+ * Tests relevant for SAP Tooling
  * 
  * @author apodhrad
- *
  */
 @SAP
 @CleanWorkspace
@@ -30,8 +30,17 @@ public class SAPInstallationTest {
 	@InjectRequirement
 	private SAPRequirement sapRequirement;
 
+	/**
+	 * <p>Tries to install JBoss Fuse SAP Tool Suite</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>open Install JBoss Fuse SAP Tool Suite</li>
+	 * <li>fill required fields</li>
+	 * <li>install SAP Tooling</li>
+	 * </ol>
+	 */
 	@Test
-	public void sapInstalltionTest() {
+	public void testSAPInstalltion() {
 		InstallationWizard wizard = new InstallationWizard();
 		wizard.open();
 		wizard.activate();

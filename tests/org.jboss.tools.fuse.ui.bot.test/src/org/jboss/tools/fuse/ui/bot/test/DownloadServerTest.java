@@ -44,8 +44,19 @@ public class DownloadServerTest extends DefaultTest {
 	private static final String DOWNLOAD_TITLE = "Download Runtimes";
 	private static final String INSTALL_FOLDER = "Install folder:";
 
+	/**
+	 * <p>Tries to download a server runtime.</p>
+	 * <b>Steps</b>
+	 * <ol>
+	 * <li>open Server Runtimes Preference page</li>
+	 * <li>select Karaf 3.0.3 runtime</li>
+	 * <li>check download link</li>
+	 * <li>download the server runtime</li>
+	 * <li>check the server runtime</li>
+	 * </ol>
+	 */
 	@Test
-	public void downloadServerRuntimeTest() {
+	public void testDownloadServerRuntimeTest() {
 
 		new ServerRuntimePreferencePage().open();
 		new PushButton(ADD_BUTTON).click();

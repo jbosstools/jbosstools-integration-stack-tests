@@ -22,6 +22,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+/**
+ * Tests relevant for SAP Tooling
+ * 
+ * @author apodhrad
+ */
 @SAP
 @CleanWorkspace
 @RunWith(RedDeerSuite.class)
@@ -33,20 +38,40 @@ public class SAPConnectionTest {
 	private SAPDestination sapDestination;
 	private SAPServer sapServer;
 
+	/**
+	 * Prepares test environment
+	 */
 	@BeforeClass
-	public static void openPropertiesView() {
+	public static void setupOpenPropertiesView() {
 		new WorkbenchShell().maximize();
 		new PropertiesView().open();
 	}
 
+	/**
+	 * Prepares test environment
+	 */
 	@Before
-	public void initSapVariables() {
+	public void setupInitSapVariables() {
 		sapDestination = sapRequirement.getConfig().getDestination();
 		sapServer = sapRequirement.getConfig().getServer();
 	}
 
+	/**
+	 * <p>Tests SAP Connections view.</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>open SAP Connections view</li>
+	 * <li>define a new destination</li>
+	 * <li>check connection to the destination</li>
+	 * <li>create a new server definition in SAP Connections view</li>
+	 * <li>start the server</li>
+	 * <li>check status of the server</li>
+	 * <li>stop the server</li>
+	 * <li>check status of the server</li>
+	 * </ol>
+	 */
 	@Test
-	public void sapConnectionTest() {
+	public void testSAPConnection() {
 		String destination = "destinationTest";
 		String server = "serverTest";
 

@@ -61,271 +61,25 @@ public class FuseProjectTest extends DefaultTest {
 			"cxf-jaxws-javafirst"
 			);
 
+	/**
+	 * Checks whether the test methods (archetypes) are complete. If they are not, abort testing.
+	 */
 	@BeforeClass
-	public static void checkArchetypes() {
+	public static void setupCheckArchetypes() {
 
-		// Checks whether the test methods (archetypes) are complete. If they are not, abort testing
 		org.junit.Assume.assumeTrue(testArchetypes.containsAll(ProjectFactory.getArchetypes()));
 	}
 
-	@Test
-	public void camelCxfCodeTest() {
+	/**
+	 * Cleans up test environment
+	 */
+	@After
+	public void setupClean() {
 
-		try {
-			ProjectFactory.createProject("camel-cxf-code-first-archetype", "camel-cxf-code-first-archetype");
-			assertTrue("Project is not present in Project Explorer", isPresent("camel-cxf-code-first-archetype"));
-			assertFalse("Project was created with errors", hasErrors());
-			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-cxf-code-first-archetype"));
-		} catch (FuseArchetypeNotFoundException e) {
-			log.warn("Archetype is not available");
-		}
-	}
-
-	@Test
-	public void camelCxfContractTest() {
-
-		try {
-			ProjectFactory.createProject("camel-cxf-contract-first-archetype", "camel-cxf-contract-first-archetype");
-			assertTrue("Project is not present in Project Explorer", isPresent("camel-cxf-contract-first-archetype"));
-			assertFalse("Project was created with errors", hasErrors());
-			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-cxf-contract-first-archetype"));
-		} catch (FuseArchetypeNotFoundException e) {
-			log.warn("Archetype is not available");
-		}
-	}
-
-	@Test
-	public void camelDroolsTest() {
-
-		try {
-			ProjectFactory.createProject("camel-drools-archetype", "camel-drools-archetype");
-			assertTrue("Project is not present in Project Explorer", isPresent("camel-drools-archetype"));
-			assertFalse("Project was created with errors", hasErrors());
-			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-drools-archetype"));
-		} catch (FuseArchetypeNotFoundException e) {
-			log.warn("Archetype is not available");
-		}
-	}
-
-	@Test
-	public void camelWebServiceTest() {
-
-		try {
-			ProjectFactory.createProject("camel-webservice-archetype", "camel-webservice-archetype");
-			assertTrue("Project is not present in Project Explorer", isPresent("camel-webservice-archetype"));
-			assertFalse("Project was created with errors", hasErrors());
-			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-webservice-archetype"));
-		} catch (FuseArchetypeNotFoundException e) {
-			log.warn("Archetype is not available");
-		}
-	}
-
-	@Test
-	public void camelActiveMQTest() {
-
-		try {
-			ProjectFactory.createProject("camel-archetype-activemq", "camel-archetype-activemq");
-			assertTrue("Project is not present in Project Explorer", isPresent("camel-archetype-activemq"));
-			assertFalse("Project was created with errors", hasErrors());
-			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-archetype-activemq"));
-		} catch (FuseArchetypeNotFoundException e) {
-			log.warn("Archetype is not available");
-		}
-	}
-
-	@Test
-	public void camelAPIComponentTest() {
-
-		try {
-			ProjectFactory.createProject("camel-archetype-api-component", "camel-archetype-api-component");
-			assertTrue("Project is not present in Project Explorer", isPresent("camel-archetype-api-component"));
-			assertFalse("Project was created with errors", hasErrors());
-			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-archetype-api-component"));
-		} catch (FuseArchetypeNotFoundException e) {
-			log.warn("Archetype is not available");
-		}
-	}
-
-	@Test
-	public void camelBlueprintTest() {
-
-		try {
-			ProjectFactory.createProject("camel-archetype-blueprint", "camel-archetype-blueprint");
-			assertTrue("Project is not present in Project Explorer", isPresent("camel-archetype-blueprint"));
-			assertFalse("Project was created with errors", hasErrors());
-			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-archetype-blueprint"));
-		} catch (FuseArchetypeNotFoundException e) {
-			log.warn("Archetype is not available");
-		}
-	}
-
-	@Test
-	public void camelComponentTest() {
-
-		try {
-			ProjectFactory.createProject("camel-archetype-component", "camel-archetype-component");
-			assertTrue("Project is not present in Project Explorer", isPresent("camel-archetype-component"));
-			assertFalse("Project was created with errors", hasErrors());
-			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-archetype-component"));
-		} catch (FuseArchetypeNotFoundException e) {
-			log.warn("Archetype is not available");
-		}
-	}
-
-	@Test
-	public void camelCxfCodeFirstBlueprint() {
-
-		try {
-			ProjectFactory.createProject("camel-archetype-cxf-code-first-blueprint", "camel-archetype-cxf-code-first-blueprint");
-			assertTrue("Project is not present in Project Explorer", isPresent("camel-archetype-cxf-code-first-blueprint"));
-			assertFalse("Project was created with errors", hasErrors());
-			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-archetype-cxf-code-first-blueprint"));
-		} catch (FuseArchetypeNotFoundException e) {
-			log.warn("Archetype is not available");
-		}
-	}
-
-	@Test
-	public void camelCxfContractFirstBlueprint() {
-
-		try {
-			ProjectFactory.createProject("camel-archetype-cxf-contract-first-blueprint", "camel-archetype-cxf-contract-first-blueprint");
-			assertTrue("Project is not present in Project Explorer", isPresent("camel-archetype-cxf-contract-first-blueprint"));
-			assertFalse("Project was created with errors", hasErrors());
-			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-archetype-cxf-contract-first-blueprint"));
-		} catch (FuseArchetypeNotFoundException e) {
-			log.warn("Archetype is not available");
-		}
-	}
-
-	@Test
-	public void camelDataFormatTest() {
-
-		try {
-			ProjectFactory.createProject("camel-archetype-dataformat", "camel-archetype-dataformat");
-			assertTrue("Project is not present in Project Explorer", isPresent("camel-archetype-dataformat"));
-			assertFalse("Project was created with errors", hasErrors());
-			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-archetype-dataformat"));
-		} catch (FuseArchetypeNotFoundException e) {
-			log.warn("Archetype is not available");
-		}
-	}
-
-	@Test
-	public void camelJavaTest() {
-
-		try {
-			ProjectFactory.createProject("camel-archetype-java", "camel-archetype-java");
-			assertTrue("Project is not present in Project Explorer", isPresent("camel-archetype-java"));
-			assertFalse("Project was created with errors", hasErrors());
-			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-archetype-java"));
-		} catch (FuseArchetypeNotFoundException e) {
-			log.warn("Archetype is not available");
-		}
-	}
-
-	@Test
-	public void camelSCRTest() {
-
-		try {
-			ProjectFactory.createProject("camel-archetype-scr", "camel-archetype-scr");
-			assertTrue("Project is not present in Project Explorer", isPresent("camel-archetype-scr"));
-			assertFalse("Project was created with errors", hasErrors());
-			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-archetype-scr"));
-		} catch (FuseArchetypeNotFoundException e) {
-			log.warn("Archetype is not available");
-		}
-	}
-
-	@Test
-	public void camelSpringTest() {
-
-		try {
-			ProjectFactory.createProject("camel-archetype-spring", "camel-archetype-spring");
-			assertTrue("Project is not present in Project Explorer", isPresent("camel-archetype-spring"));
-			assertFalse("Project was created with errors", hasErrors());
-			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-archetype-spring"));
-		} catch (FuseArchetypeNotFoundException e) {
-			log.warn("Archetype is not available");
-		}
-	}
-
-	@Test
-	public void camelSpringDMTest() {
-
-		try {
-			ProjectFactory.createProject("camel-archetype-spring-dm", "camel-archetype-spring-dm");
-			assertTrue("Project is not present in Project Explorer", isPresent("camel-archetype-spring-dm"));
-			assertFalse("Project was created with errors", hasErrors());
-			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-archetype-spring-dm"));
-		} catch (FuseArchetypeNotFoundException e) {
-			log.warn("Archetype is not available");
-		}
-	}
-
-	@Test
-	public void camelWARTest() {
-
-		try {
-			ProjectFactory.createProject("camel-archetype-war", "camel-archetype-war");
-			assertTrue("Project is not present in Project Explorer", isPresent("camel-archetype-war"));
-			assertFalse("Project was created with errors", hasErrors());
-			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-archetype-war"));
-		} catch (FuseArchetypeNotFoundException e) {
-			log.warn("Archetype is not available");
-		}
-	}
-
-	@Test
-	public void camelWebTest() {
-
-		try {
-			ProjectFactory.createProject("camel-archetype-web", "camel-archetype-web");
-			assertTrue("Project is not present in Project Explorer", isPresent("camel-archetype-web"));
-			assertFalse("Project was created with errors", hasErrors());
-			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-archetype-web"));
-		} catch (FuseArchetypeNotFoundException e) {
-			log.warn("Archetype is not available");
-		}
-	}
-
-	@Test
-	public void camelWebConsoleTest() {
-
-		try {
-			ProjectFactory.createProject("camel-archetype-webconsole", "camel-archetype-webconsole");
-			assertTrue("Project is not present in Project Explorer", isPresent("camel-archetype-webconsole"));
-			assertFalse("Project was created with errors", hasErrors());
-			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-archetype-webconsole"));
-		} catch (FuseArchetypeNotFoundException e) {
-			log.warn("Archetype is not available");
-		}
-	}
-
-	@Test
-	public void camelCxfJaxRSTest() {
-
-		try {
-			ProjectFactory.createProject("cxf-jaxrs-service", "cxf-jaxrs-service");
-			assertTrue("Project is not present in Project Explorer", isPresent("cxf-jaxrs-service"));
-			assertFalse("Project was created with errors", hasErrors());
-			assertTrue("Project cannot be run as Local Camel Context", canBeRun("cxf-jaxrs-service"));
-		} catch (FuseArchetypeNotFoundException e) {
-			log.warn("Archetype is not available");
-		}
-	}
-
-	@Test
-	public void camelCxfJaxWSTest() {
-
-		try {
-			ProjectFactory.createProject("cxf-jaxws-javafirst", "cxf-jaxws-javafirst");
-			assertTrue("Project is not present in Project Explorer", isPresent("cxf-jaxws-javafirst"));
-			assertFalse("Project was created with errors", hasErrors());
-			assertTrue("Project cannot be run as Local Camel Context", canBeRun("cxf-jaxws-javafirst"));
-		} catch (FuseArchetypeNotFoundException e) {
-			log.warn("Archetype is not available");
-		}
+		defaultClean();
+		new WorkbenchShell();
+		new ProjectExplorer().deleteAllProjects();
+		new WorkbenchShell();
 	}
 
 	private boolean hasErrors() {
@@ -363,12 +117,543 @@ public class FuseProjectTest extends DefaultTest {
 		return true;
 	}
 
-	@After
-	public void clean() throws Exception {
+	/**
+	 * <p>Tries to create a Fuse project from <i>camel-cxf-code-first-archetype</i> archetype
+	 * and tries to run the project as Local Camel Context.</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project</li>
+	 * <li>open Problems view</li>
+	 * <li>check if there are some errors</li>
+	 * <li>(optional) try to update project - Maven --> Update Maven Project --> Force Update</li>
+	 * <li>check if there are some errors</li>
+	 * <li>try to run the project as Local Camel Context</li>
+	 * <li>check the console output, if there are some build errors</li>
+	 * </ol>
+	 */
+	@Test
+	public void testCamelCxfCodeTest() {
 
-		defaultClean();
-		new WorkbenchShell();
-		new ProjectExplorer().deleteAllProjects();
-		new WorkbenchShell();
+		try {
+			ProjectFactory.createProject("camel-cxf-code-first-archetype", "camel-cxf-code-first-archetype");
+			assertTrue("Project is not present in Project Explorer", isPresent("camel-cxf-code-first-archetype"));
+			assertFalse("Project was created with errors", hasErrors());
+			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-cxf-code-first-archetype"));
+		} catch (FuseArchetypeNotFoundException e) {
+			log.warn("Archetype is not available");
+		}
+	}
+
+	/**
+	 * <p>Tries to create a Fuse project from <i>camel-cxf-contract-first-archetype</i> archetype
+	 * and tries to run the project as Local Camel Context.</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project</li>
+	 * <li>open Problems view</li>
+	 * <li>check if there are some errors</li>
+	 * <li>(optional) try to update project - Maven --> Update Maven Project --> Force Update</li>
+	 * <li>check if there are some errors</li>
+	 * <li>try to run the project as Local Camel Context</li>
+	 * <li>check the console output, if there are some build errors</li>
+	 * </ol>
+	 */
+	@Test
+	public void testCamelCxfContractTest() {
+
+		try {
+			ProjectFactory.createProject("camel-cxf-contract-first-archetype", "camel-cxf-contract-first-archetype");
+			assertTrue("Project is not present in Project Explorer", isPresent("camel-cxf-contract-first-archetype"));
+			assertFalse("Project was created with errors", hasErrors());
+			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-cxf-contract-first-archetype"));
+		} catch (FuseArchetypeNotFoundException e) {
+			log.warn("Archetype is not available");
+		}
+	}
+
+	/**
+	 * <p>Tries to create a Fuse project from <i>camel-drools-archetype</i> archetype
+	 * and tries to run the project as Local Camel Context.</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project</li>
+	 * <li>open Problems view</li>
+	 * <li>check if there are some errors</li>
+	 * <li>(optional) try to update project - Maven --> Update Maven Project --> Force Update</li>
+	 * <li>check if there are some errors</li>
+	 * <li>try to run the project as Local Camel Context</li>
+	 * <li>check the console output, if there are some build errors</li>
+	 * </ol>
+	 */
+	@Test
+	public void testCamelDroolsTest() {
+
+		try {
+			ProjectFactory.createProject("camel-drools-archetype", "camel-drools-archetype");
+			assertTrue("Project is not present in Project Explorer", isPresent("camel-drools-archetype"));
+			assertFalse("Project was created with errors", hasErrors());
+			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-drools-archetype"));
+		} catch (FuseArchetypeNotFoundException e) {
+			log.warn("Archetype is not available");
+		}
+	}
+
+	/**
+	 * <p>Tries to create a Fuse project from <i>camel-webservice-archetype</i> archetype
+	 * and tries to run the project as Local Camel Context.</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project</li>
+	 * <li>open Problems view</li>
+	 * <li>check if there are some errors</li>
+	 * <li>(optional) try to update project - Maven --> Update Maven Project --> Force Update</li>
+	 * <li>check if there are some errors</li>
+	 * <li>try to run the project as Local Camel Context</li>
+	 * <li>check the console output, if there are some build errors</li>
+	 * </ol>
+	 */
+	@Test
+	public void testCamelWebServiceTest() {
+
+		try {
+			ProjectFactory.createProject("camel-webservice-archetype", "camel-webservice-archetype");
+			assertTrue("Project is not present in Project Explorer", isPresent("camel-webservice-archetype"));
+			assertFalse("Project was created with errors", hasErrors());
+			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-webservice-archetype"));
+		} catch (FuseArchetypeNotFoundException e) {
+			log.warn("Archetype is not available");
+		}
+	}
+
+	/**
+	 * <p>Tries to create a Fuse project from <i>camel-archetype-activemq</i> archetype
+	 * and tries to run the project as Local Camel Context.</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project</li>
+	 * <li>open Problems view</li>
+	 * <li>check if there are some errors</li>
+	 * <li>(optional) try to update project - Maven --> Update Maven Project --> Force Update</li>
+	 * <li>check if there are some errors</li>
+	 * <li>try to run the project as Local Camel Context</li>
+	 * <li>check the console output, if there are some build errors</li>
+	 * </ol>
+	 */
+	@Test
+	public void testCamelActiveMQTest() {
+
+		try {
+			ProjectFactory.createProject("camel-archetype-activemq", "camel-archetype-activemq");
+			assertTrue("Project is not present in Project Explorer", isPresent("camel-archetype-activemq"));
+			assertFalse("Project was created with errors", hasErrors());
+			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-archetype-activemq"));
+		} catch (FuseArchetypeNotFoundException e) {
+			log.warn("Archetype is not available");
+		}
+	}
+
+	/**
+	 * <p>Tries to create a Fuse project from <i>camel-archetype-api-component</i> archetype
+	 * and tries to run the project as Local Camel Context.</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project</li>
+	 * <li>open Problems view</li>
+	 * <li>check if there are some errors</li>
+	 * <li>(optional) try to update project - Maven --> Update Maven Project --> Force Update</li>
+	 * <li>check if there are some errors</li>
+	 * <li>try to run the project as Local Camel Context</li>
+	 * <li>check the console output, if there are some build errors</li>
+	 * </ol>
+	 */
+	@Test
+	public void testCamelAPIComponentTest() {
+
+		try {
+			ProjectFactory.createProject("camel-archetype-api-component", "camel-archetype-api-component");
+			assertTrue("Project is not present in Project Explorer", isPresent("camel-archetype-api-component"));
+			assertFalse("Project was created with errors", hasErrors());
+			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-archetype-api-component"));
+		} catch (FuseArchetypeNotFoundException e) {
+			log.warn("Archetype is not available");
+		}
+	}
+
+	/**
+	 * <p>Tries to create a Fuse project from <i>camel-archetype-blueprint</i> archetype
+	 * and tries to run the project as Local Camel Context.</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project</li>
+	 * <li>open Problems view</li>
+	 * <li>check if there are some errors</li>
+	 * <li>(optional) try to update project - Maven --> Update Maven Project --> Force Update</li>
+	 * <li>check if there are some errors</li>
+	 * <li>try to run the project as Local Camel Context</li>
+	 * <li>check the console output, if there are some build errors</li>
+	 * </ol>
+	 */
+	@Test
+	public void testCamelBlueprintTest() {
+
+		try {
+			ProjectFactory.createProject("camel-archetype-blueprint", "camel-archetype-blueprint");
+			assertTrue("Project is not present in Project Explorer", isPresent("camel-archetype-blueprint"));
+			assertFalse("Project was created with errors", hasErrors());
+			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-archetype-blueprint"));
+		} catch (FuseArchetypeNotFoundException e) {
+			log.warn("Archetype is not available");
+		}
+	}
+
+	/**
+	 * <p>Tries to create a Fuse project from <i>camel-archetype-component</i> archetype
+	 * and tries to run the project as Local Camel Context.</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project</li>
+	 * <li>open Problems view</li>
+	 * <li>check if there are some errors</li>
+	 * <li>(optional) try to update project - Maven --> Update Maven Project --> Force Update</li>
+	 * <li>check if there are some errors</li>
+	 * <li>try to run the project as Local Camel Context</li>
+	 * <li>check the console output, if there are some build errors</li>
+	 * </ol>
+	 */
+	@Test
+	public void testCamelComponentTest() {
+
+		try {
+			ProjectFactory.createProject("camel-archetype-component", "camel-archetype-component");
+			assertTrue("Project is not present in Project Explorer", isPresent("camel-archetype-component"));
+			assertFalse("Project was created with errors", hasErrors());
+			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-archetype-component"));
+		} catch (FuseArchetypeNotFoundException e) {
+			log.warn("Archetype is not available");
+		}
+	}
+
+	/**
+	 * <p>Tries to create a Fuse project from <i>camel-archetype-cxf-code-first-blueprint</i> archetype
+	 * and tries to run the project as Local Camel Context.</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project</li>
+	 * <li>open Problems view</li>
+	 * <li>check if there are some errors</li>
+	 * <li>(optional) try to update project - Maven --> Update Maven Project --> Force Update</li>
+	 * <li>check if there are some errors</li>
+	 * <li>try to run the project as Local Camel Context</li>
+	 * <li>check the console output, if there are some build errors</li>
+	 * </ol>
+	 */
+	@Test
+	public void testCamelCxfCodeFirstBlueprint() {
+
+		try {
+			ProjectFactory.createProject("camel-archetype-cxf-code-first-blueprint", "camel-archetype-cxf-code-first-blueprint");
+			assertTrue("Project is not present in Project Explorer", isPresent("camel-archetype-cxf-code-first-blueprint"));
+			assertFalse("Project was created with errors", hasErrors());
+			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-archetype-cxf-code-first-blueprint"));
+		} catch (FuseArchetypeNotFoundException e) {
+			log.warn("Archetype is not available");
+		}
+	}
+
+	/**
+	 * <p>Tries to create a Fuse project from <i>camel-archetype-cxf-contract-first-blueprint</i> archetype
+	 * and tries to run the project as Local Camel Context.</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project</li>
+	 * <li>open Problems view</li>
+	 * <li>check if there are some errors</li>
+	 * <li>(optional) try to update project - Maven --> Update Maven Project --> Force Update</li>
+	 * <li>check if there are some errors</li>
+	 * <li>try to run the project as Local Camel Context</li>
+	 * <li>check the console output, if there are some build errors</li>
+	 * </ol>
+	 */
+	@Test
+	public void testCamelCxfContractFirstBlueprint() {
+
+		try {
+			ProjectFactory.createProject("camel-archetype-cxf-contract-first-blueprint", "camel-archetype-cxf-contract-first-blueprint");
+			assertTrue("Project is not present in Project Explorer", isPresent("camel-archetype-cxf-contract-first-blueprint"));
+			assertFalse("Project was created with errors", hasErrors());
+			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-archetype-cxf-contract-first-blueprint"));
+		} catch (FuseArchetypeNotFoundException e) {
+			log.warn("Archetype is not available");
+		}
+	}
+
+	/**
+	 * <p>Tries to create a Fuse project from <i>camel-archetype-dataformat</i> archetype
+	 * and tries to run the project as Local Camel Context.</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project</li>
+	 * <li>open Problems view</li>
+	 * <li>check if there are some errors</li>
+	 * <li>(optional) try to update project - Maven --> Update Maven Project --> Force Update</li>
+	 * <li>check if there are some errors</li>
+	 * <li>try to run the project as Local Camel Context</li>
+	 * <li>check the console output, if there are some build errors</li>
+	 * </ol>
+	 */
+	@Test
+	public void testCamelDataFormatTest() {
+
+		try {
+			ProjectFactory.createProject("camel-archetype-dataformat", "camel-archetype-dataformat");
+			assertTrue("Project is not present in Project Explorer", isPresent("camel-archetype-dataformat"));
+			assertFalse("Project was created with errors", hasErrors());
+			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-archetype-dataformat"));
+		} catch (FuseArchetypeNotFoundException e) {
+			log.warn("Archetype is not available");
+		}
+	}
+
+	/**
+	 * <p>Tries to create a Fuse project from <i>camel-archetype-java</i> archetype
+	 * and tries to run the project as Local Camel Context.</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project</li>
+	 * <li>open Problems view</li>
+	 * <li>check if there are some errors</li>
+	 * <li>(optional) try to update project - Maven --> Update Maven Project --> Force Update</li>
+	 * <li>check if there are some errors</li>
+	 * <li>try to run the project as Local Camel Context</li>
+	 * <li>check the console output, if there are some build errors</li>
+	 * </ol>
+	 */
+	@Test
+	public void testCamelJavaTest() {
+
+		try {
+			ProjectFactory.createProject("camel-archetype-java", "camel-archetype-java");
+			assertTrue("Project is not present in Project Explorer", isPresent("camel-archetype-java"));
+			assertFalse("Project was created with errors", hasErrors());
+			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-archetype-java"));
+		} catch (FuseArchetypeNotFoundException e) {
+			log.warn("Archetype is not available");
+		}
+	}
+
+	/**
+	 * <p>Tries to create a Fuse project from <i>camel-archetype-scr</i> archetype
+	 * and tries to run the project as Local Camel Context.</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project</li>
+	 * <li>open Problems view</li>
+	 * <li>check if there are some errors</li>
+	 * <li>(optional) try to update project - Maven --> Update Maven Project --> Force Update</li>
+	 * <li>check if there are some errors</li>
+	 * <li>try to run the project as Local Camel Context</li>
+	 * <li>check the console output, if there are some build errors</li>
+	 * </ol>
+	 */
+	@Test
+	public void testCamelSCRTest() {
+
+		try {
+			ProjectFactory.createProject("camel-archetype-scr", "camel-archetype-scr");
+			assertTrue("Project is not present in Project Explorer", isPresent("camel-archetype-scr"));
+			assertFalse("Project was created with errors", hasErrors());
+			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-archetype-scr"));
+		} catch (FuseArchetypeNotFoundException e) {
+			log.warn("Archetype is not available");
+		}
+	}
+
+	/**
+	 * <p>Tries to create a Fuse project from <i>camel-archetype-spring</i> archetype
+	 * and tries to run the project as Local Camel Context.</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project</li>
+	 * <li>open Problems view</li>
+	 * <li>check if there are some errors</li>
+	 * <li>(optional) try to update project - Maven --> Update Maven Project --> Force Update</li>
+	 * <li>check if there are some errors</li>
+	 * <li>try to run the project as Local Camel Context</li>
+	 * <li>check the console output, if there are some build errors</li>
+	 * </ol>
+	 */
+	@Test
+	public void testCamelSpringTest() {
+
+		try {
+			ProjectFactory.createProject("camel-archetype-spring", "camel-archetype-spring");
+			assertTrue("Project is not present in Project Explorer", isPresent("camel-archetype-spring"));
+			assertFalse("Project was created with errors", hasErrors());
+			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-archetype-spring"));
+		} catch (FuseArchetypeNotFoundException e) {
+			log.warn("Archetype is not available");
+		}
+	}
+
+	/**
+	 * <p>Tries to create a Fuse project from <i>camel-archetype-spring-dm</i> archetype
+	 * and tries to run the project as Local Camel Context.</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project</li>
+	 * <li>open Problems view</li>
+	 * <li>check if there are some errors</li>
+	 * <li>(optional) try to update project - Maven --> Update Maven Project --> Force Update</li>
+	 * <li>check if there are some errors</li>
+	 * <li>try to run the project as Local Camel Context</li>
+	 * <li>check the console output, if there are some build errors</li>
+	 * </ol>
+	 */
+	@Test
+	public void testCamelSpringDMTest() {
+
+		try {
+			ProjectFactory.createProject("camel-archetype-spring-dm", "camel-archetype-spring-dm");
+			assertTrue("Project is not present in Project Explorer", isPresent("camel-archetype-spring-dm"));
+			assertFalse("Project was created with errors", hasErrors());
+			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-archetype-spring-dm"));
+		} catch (FuseArchetypeNotFoundException e) {
+			log.warn("Archetype is not available");
+		}
+	}
+
+	/**
+	 * <p>Tries to create a Fuse project from <i>camel-archetype-war</i> archetype
+	 * and tries to run the project as Local Camel Context.</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project</li>
+	 * <li>open Problems view</li>
+	 * <li>check if there are some errors</li>
+	 * <li>(optional) try to update project - Maven --> Update Maven Project --> Force Update</li>
+	 * <li>check if there are some errors</li>
+	 * <li>try to run the project as Local Camel Context</li>
+	 * <li>check the console output, if there are some build errors</li>
+	 * </ol>
+	 */
+	@Test
+	public void testCamelWARTest() {
+
+		try {
+			ProjectFactory.createProject("camel-archetype-war", "camel-archetype-war");
+			assertTrue("Project is not present in Project Explorer", isPresent("camel-archetype-war"));
+			assertFalse("Project was created with errors", hasErrors());
+			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-archetype-war"));
+		} catch (FuseArchetypeNotFoundException e) {
+			log.warn("Archetype is not available");
+		}
+	}
+
+	/**
+	 * <p>Tries to create a Fuse project from <i>camel-archetype-web</i> archetype
+	 * and tries to run the project as Local Camel Context.</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project</li>
+	 * <li>open Problems view</li>
+	 * <li>check if there are some errors</li>
+	 * <li>(optional) try to update project - Maven --> Update Maven Project --> Force Update</li>
+	 * <li>check if there are some errors</li>
+	 * <li>try to run the project as Local Camel Context</li>
+	 * <li>check the console output, if there are some build errors</li>
+	 * </ol>
+	 */
+	@Test
+	public void testCamelWebTest() {
+
+		try {
+			ProjectFactory.createProject("camel-archetype-web", "camel-archetype-web");
+			assertTrue("Project is not present in Project Explorer", isPresent("camel-archetype-web"));
+			assertFalse("Project was created with errors", hasErrors());
+			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-archetype-web"));
+		} catch (FuseArchetypeNotFoundException e) {
+			log.warn("Archetype is not available");
+		}
+	}
+
+	/**
+	 * <p>Tries to create a Fuse project from <i>camel-archetype-webconsole</i> archetype
+	 * and tries to run the project as Local Camel Context.</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project</li>
+	 * <li>open Problems view</li>
+	 * <li>check if there are some errors</li>
+	 * <li>(optional) try to update project - Maven --> Update Maven Project --> Force Update</li>
+	 * <li>check if there are some errors</li>
+	 * <li>try to run the project as Local Camel Context</li>
+	 * <li>check the console output, if there are some build errors</li>
+	 * </ol>
+	 */
+	@Test
+	public void testCamelWebConsoleTest() {
+
+		try {
+			ProjectFactory.createProject("camel-archetype-webconsole", "camel-archetype-webconsole");
+			assertTrue("Project is not present in Project Explorer", isPresent("camel-archetype-webconsole"));
+			assertFalse("Project was created with errors", hasErrors());
+			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-archetype-webconsole"));
+		} catch (FuseArchetypeNotFoundException e) {
+			log.warn("Archetype is not available");
+		}
+	}
+
+	/**
+	 * <p>Tries to create a Fuse project from <i>cxf-jaxrs-service</i> archetype
+	 * and tries to run the project as Local Camel Context.</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project</li>
+	 * <li>open Problems view</li>
+	 * <li>check if there are some errors</li>
+	 * <li>(optional) try to update project - Maven --> Update Maven Project --> Force Update</li>
+	 * <li>check if there are some errors</li>
+	 * <li>try to run the project as Local Camel Context</li>
+	 * <li>check the console output, if there are some build errors</li>
+	 * </ol>
+	 */
+	@Test
+	public void testCamelCxfJaxRSTest() {
+
+		try {
+			ProjectFactory.createProject("cxf-jaxrs-service", "cxf-jaxrs-service");
+			assertTrue("Project is not present in Project Explorer", isPresent("cxf-jaxrs-service"));
+			assertFalse("Project was created with errors", hasErrors());
+			assertTrue("Project cannot be run as Local Camel Context", canBeRun("cxf-jaxrs-service"));
+		} catch (FuseArchetypeNotFoundException e) {
+			log.warn("Archetype is not available");
+		}
+	}
+
+	/**
+	 * <p>Tries to create a Fuse project from <i>cxf-jaxws-javafirst</i> archetype
+	 * and tries to run the project as Local Camel Context.</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project</li>
+	 * <li>open Problems view</li>
+	 * <li>check if there are some errors</li>
+	 * <li>(optional) try to update project - Maven --> Update Maven Project --> Force Update</li>
+	 * <li>check if there are some errors</li>
+	 * <li>try to run the project as Local Camel Context</li>
+	 * <li>check the console output, if there are some build errors</li>
+	 * </ol>
+	 */
+	@Test
+	public void testCamelCxfJaxWSTest() {
+
+		try {
+			ProjectFactory.createProject("cxf-jaxws-javafirst", "cxf-jaxws-javafirst");
+			assertTrue("Project is not present in Project Explorer", isPresent("cxf-jaxws-javafirst"));
+			assertFalse("Project was created with errors", hasErrors());
+			assertTrue("Project cannot be run as Local Camel Context", canBeRun("cxf-jaxws-javafirst"));
+		} catch (FuseArchetypeNotFoundException e) {
+			log.warn("Archetype is not available");
+		}
 	}
 }

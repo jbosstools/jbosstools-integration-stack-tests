@@ -33,6 +33,9 @@ public class DefaultTest {
 
 	private static Logger log = Logger.getLogger(DefaultTest.class);
 
+	/**
+	 * Prepares test environment
+	 */
 	@BeforeClass
 	public static void defaultClassSetup() {
 
@@ -53,6 +56,9 @@ public class DefaultTest {
 		consolePref.ok();
 	}
 
+	/**
+	 * Prepares test environment
+	 */
 	@Before
 	public void defaultSetup() {
 
@@ -62,6 +68,9 @@ public class DefaultTest {
 		new ErrorLogView().deleteLog();
 	}
 
+	/**
+	 * Cleans up test environment
+	 */
 	@After
 	public void defaultClean() {
 
@@ -88,6 +97,9 @@ public class DefaultTest {
 		}
 	}
 
+	/**
+	 * Cleans up test environment
+	 */
 	@AfterClass
 	public static void defaultFinalClean() {
 

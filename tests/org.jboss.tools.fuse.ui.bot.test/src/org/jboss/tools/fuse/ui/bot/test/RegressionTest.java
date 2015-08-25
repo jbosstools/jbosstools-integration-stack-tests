@@ -66,16 +66,16 @@ import org.xml.sax.SAXException;
 public class RegressionTest extends DefaultTest {
 
 	@After
-	public void clean() {
+	public void setupClean() {
 
 		new ProjectExplorer().deleteAllProjects();
 	}
 
 	/**
-	 * GUI editor issue when using route scoped onException
-	 * https://issues.jboss.org/browse/FUSETOOLS-674
-	 * 
-	 * NOTE: not fixed yet - deferred to 8.0
+	 * <p>GUI editor issue when using route scoped onException</p>
+	 * <b>Link: </b><a href="https://issues.jboss.org/browse/FUSETOOLS-674">https://issues.jboss.org/browse/FUSETOOLS-674</a>
+	 * <br>
+	 * <i>NOTE: not fixed yet - deferred to 8.0</i>
 	 */
 	@Ignore
 	@Test
@@ -109,8 +109,8 @@ public class RegressionTest extends DefaultTest {
 	}
 
 	/**
-	 * Propose a DebugAs option to start CamelContext & debug java code used by beans from camel routes
-	 * https://issues.jboss.org/browse/FUSETOOLS-853
+	 * <p>Propose a DebugAs option to start CamelContext & debug java code used by beans from camel routes</p>
+	 * <b>Link: </b><a href="https://issues.jboss.org/browse/FUSETOOLS-853">https://issues.jboss.org/browse/FUSETOOLS-853</a>
 	 * @throws FuseArchetypeNotFoundException 
 	 */
 	@Test
@@ -126,8 +126,8 @@ public class RegressionTest extends DefaultTest {
 	}
 
 	/**
-	 * New Server Runtime Wizard - Finish button error
-	 * https://issues.jboss.org/browse/FUSETOOLS-1076
+	 * <p>New Server Runtime Wizard - Finish button error</p>
+	 * <b>Link: </b><a href="https://issues.jboss.org/browse/FUSETOOLS-1076">https://issues.jboss.org/browse/FUSETOOLS-1076</a>
 	 */
 	@Test
 	public void issue_1076() {
@@ -145,9 +145,9 @@ public class RegressionTest extends DefaultTest {
 	}
 
 	/**
-	 * camel context won't run without tests in eclipse kepler
-	 * https://issues.jboss.org/browse/FUSETOOLS-1077
-	 * @throws FuseArchetypeNotFoundException 
+	 * <p>camel context won't run without tests in eclipse kepler</p>
+	 * <b>Link: </b><a href="https://issues.jboss.org/browse/FUSETOOLS-1077">https://issues.jboss.org/browse/FUSETOOLS-1077</a>
+	 * @throws FuseArchetypeNotFoundException Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Test
 	public void issue_1077() throws FuseArchetypeNotFoundException {
@@ -159,9 +159,9 @@ public class RegressionTest extends DefaultTest {
 	}
 
 	/**
-	 * An endpoint is lost after saving
-	 * https://issues.jboss.org/browse/FUSETOOLS-1085
-	 * @throws FuseArchetypeNotFoundException 
+	 * <p>An endpoint is lost after saving</p>
+	 * <b>Link: </b><a href="https://issues.jboss.org/browse/FUSETOOLS-1085">https://issues.jboss.org/browse/FUSETOOLS-1085</a>
+	 * @throws FuseArchetypeNotFoundException Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Test
 	public void issue_1085() throws FuseArchetypeNotFoundException {
@@ -184,9 +184,9 @@ public class RegressionTest extends DefaultTest {
 	}
 
 	/**
-	 * JMX Navigator - prevent from close Camel Context
-	 * https://issues.jboss.org/browse/FUSETOOLS-1115
-	 * @throws FuseArchetypeNotFoundException 
+	 * <p>JMX Navigator - prevent from close Camel Context</p>
+	 * <b>Link: </b><a href="https://issues.jboss.org/browse/FUSETOOLS-1115">https://issues.jboss.org/browse/FUSETOOLS-1115</a>
+	 * @throws FuseArchetypeNotFoundException Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Test
 	public void issue_1115() throws FuseArchetypeNotFoundException {
@@ -207,9 +207,9 @@ public class RegressionTest extends DefaultTest {
 	}
 
 	/**
-	 * context id is removed on save
-	 * https://issues.jboss.org/browse/FUSETOOLS-1123
-	 * @throws FuseArchetypeNotFoundException 
+	 * <p>context id is removed on save</p>
+	 * <b>Link: </b><a href="https://issues.jboss.org/browse/FUSETOOLS-1123">https://issues.jboss.org/browse/FUSETOOLS-1123</a>
+	 * @throws FuseArchetypeNotFoundException Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Test
 	public void issue_1123() throws FuseArchetypeNotFoundException {
@@ -225,8 +225,8 @@ public class RegressionTest extends DefaultTest {
 	}
 
 	/**
-	 * New Fuse Project - Finish button
-	 * https://issues.jboss.org/browse/FUSETOOLS-1149
+	 * <p>New Fuse Project - Finish button</p>
+	 * <b>Link: </b><a href="https://issues.jboss.org/browse/FUSETOOLS-1149">https://issues.jboss.org/browse/FUSETOOLS-1149</a>
 	 */
 	@Test
 	public void issue_1149() {
@@ -240,9 +240,9 @@ public class RegressionTest extends DefaultTest {
 	}
 
 	/**
-	 * fix ugly title when debugging
-	 * https://issues.jboss.org/browse/FUSETOOLS-1158
-	 * @throws FuseArchetypeNotFoundException 
+	 * <p>fix ugly title when debugging</p>
+	 * <b>Link: </b><a href="https://issues.jboss.org/browse/FUSETOOLS-1158">https://issues.jboss.org/browse/FUSETOOLS-1158</a>
+	 * @throws FuseArchetypeNotFoundException Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Test
 	public void issue_1158() throws FuseArchetypeNotFoundException {
@@ -266,9 +266,9 @@ public class RegressionTest extends DefaultTest {
 	}
 
 	/**
-	 * remove use of the customId attribute
-	 * https://issues.jboss.org/browse/FUSETOOLS-1172
-	 * @throws FuseArchetypeNotFoundException 
+	 * <p>remove use of the customId attribute</p>
+	 * <b>Link: </b><a href="https://issues.jboss.org/browse/FUSETOOLS-1172">https://issues.jboss.org/browse/FUSETOOLS-1172</a>
+	 * @throws FuseArchetypeNotFoundException Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Test
 	public void issue_1172() throws ParserConfigurationException, SAXException, IOException, FuseArchetypeNotFoundException {
@@ -291,9 +291,9 @@ public class RegressionTest extends DefaultTest {
 	}
 
 	/**
-	 * Opening Camel Editor on Source tab + dirty flag
-	 * https://issues.jboss.org/browse/FUSETOOLS-1243
-	 * @throws FuseArchetypeNotFoundException 
+	 * <p>Opening Camel Editor on Source tab + dirty flag</p>
+	 * <b>Link: </b><a href="https://issues.jboss.org/browse/FUSETOOLS-1243">https://issues.jboss.org/browse/FUSETOOLS-1243</a>
+	 * @throws FuseArchetypeNotFoundException Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Test
 	public void issue_1243() throws FuseArchetypeNotFoundException {
@@ -306,9 +306,9 @@ public class RegressionTest extends DefaultTest {
 	}
 
 	/**
-	 * Run Configurations dialog shows launch config types for server adapters for Karaf, SMX, Fuse and Fabric8 which partially don't work
-	 * https://issues.jboss.org/browse/FUSETOOLS-1214
-	 * @throws FuseArchetypeNotFoundException 
+	 * <p>Run Configurations dialog shows launch config types for server adapters for Karaf, SMX, Fuse and Fabric8 which partially don't work</p>
+	 * <b>Link: </b><a href="https://issues.jboss.org/browse/FUSETOOLS-1214">https://issues.jboss.org/browse/FUSETOOLS-1214</a>
+	 * @throws FuseArchetypeNotFoundException Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Test
 	public void issue_1214() throws FuseArchetypeNotFoundException {
@@ -338,9 +338,9 @@ public class RegressionTest extends DefaultTest {
 	}
 
 	/**
-	 * Camel Editor is still indicating that something was changed
-	 * https://issues.jboss.org/browse/FUSETOOLS-1403
-	 * @throws FuseArchetypeNotFoundException 
+	 * <p>Camel Editor is still indicating that something was changed</p>
+	 * <b>Link: </b><a href="https://issues.jboss.org/browse/FUSETOOLS-1403">https://issues.jboss.org/browse/FUSETOOLS-1403</a>
+	 * @throws FuseArchetypeNotFoundException Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Test
 	public void issue_1403() throws FuseArchetypeNotFoundException {

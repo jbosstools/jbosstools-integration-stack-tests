@@ -3,10 +3,7 @@ package org.jboss.tools.fuse.ui.bot.test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
 import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
@@ -34,7 +31,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.xml.sax.SAXException;
 
 /**
  * Tests:
@@ -43,7 +39,7 @@ import org.xml.sax.SAXException;
  * <li>manipulation with components in the Camel Editor</li>
  * </ul>
  * 
- * @author apodhrad, tsedmik
+ * @author tsedmik
  */
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
@@ -52,21 +48,53 @@ public class CamelEditorTest extends DefaultTest {
 
 	protected Logger log = Logger.getLogger(CamelEditorTest.class);
 
+	/**
+	 * Prepares test environment
+	 * 
+	 * @throws FuseArchetypeNotFoundException Fuse archetype was not found. Tests cannot be executed!
+	 */
 	@Before
-	public void resetCamelContext() throws FuseArchetypeNotFoundException {
+	public void setupResetCamelContext() throws FuseArchetypeNotFoundException {
 
 		new WorkbenchShell();
 		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
 		new ErrorLogView().deleteLog();
 	}
 
+	/**
+	 * Cleans up test environment
+	 */
 	@After
-	public void deleteProjects() {
+	public void setupDeleteProjects() {
 
 		new WorkbenchShell();
 		ProjectFactory.deleteAllProjects();
 	}
 
+	/**
+	 * Prepares IDE for tests manipulate with components in the Camel Editor
+	 */
+	private static void setupPrepareIDEForManipulationTests() {
+
+		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
+		CamelEditor.switchTab("Source");
+		EditorManipulator.copyFileContentToCamelXMLEditor("resources/camel-context-otherwise.xml");
+		CamelEditor.switchTab("Design");
+	}
+
+	/**
+	 * <p>Test tries to create all components available in the Palette view associated
+	 *  with the Camel Editor.</p>
+	 * <b>Steps</b>
+	 * <ol>
+	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>open Project Explorer view</li>
+	 * <li>delete camel-context.xml and create a new empty one</li>
+	 * <li>try to create all components in Palette View</li>
+	 * <li>check if the component is present in Camel Editor</li>
+	 * <li>delete the component from Camel Editor</li>
+	 * </ol>
+	 */
 	@Test
 	public void testComponents() {
 
@@ -84,10 +112,28 @@ public class CamelEditorTest extends DefaultTest {
 		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 
+	/**
+	 * <p>Test tries to manipulate with XML source of the camel-context.xml file and 
+	 * checks if it affects components in the Camel Editor.</p>
+	 * <b>Steps</b>
+	 * <ol>
+	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>open Project Explorer view</li>
+	 * <li>open camel-context.xml file</li>
+	 * <li>switch to Source tab in the Camel Editor</li>
+	 * <li>cut branch otherwise</li>
+	 * <li>switch to Design tab in the Camel Editor</li>
+	 * <li>check if the otherwise component is no longer available in the Camel Editor</li>
+	 * <li>switch to Source tab in the Camel Editor</li>
+	 * <li>paste branch otherwise</li>
+	 * <li>switch to Design tab in the Camel Editor</li>
+	 * <li>check if the otherwise component is available in the Camel Editor</li>
+	 * </ol>
+	 */
 	@Test
 	public void testXMLEditor() {
 
-		prepareIDEForManipulationTests();
+		setupPrepareIDEForManipulationTests();
 		CamelEditor editor = new CamelEditor("camel-context.xml");
 		assertFalse(editor.isComponentAvailable("otherwise"));
 		CamelEditor.switchTab("Source");
@@ -98,10 +144,25 @@ public class CamelEditorTest extends DefaultTest {
 		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 
+	/**
+	 * <p>Test tries to add components in the Camel Editor via component's context menu and the option Add.</p>
+	 * <b>Steps</b>
+	 * <ol>
+	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>open Project Explorer view</li>
+	 * <li>open camel-context.xml file</li>
+	 * <li>switch to Source tab in the Camel Editor</li>
+	 * <li>remove branch otherwise</li>
+	 * <li>switch to Design tab in the Camel Editor</li>
+	 * <li>add back removed components (from branch otherwise) via the context menu and the option Add</li>
+	 * <li>switch to Source tab in the Camel Editor</li>
+	 * <li>check if the content of the file is equals to content of the same file immediately after project creation</li>
+	 * </ol>
+	 */
 	@Test
 	public void testAddComponents() {
 
-		prepareIDEForManipulationTests();
+		setupPrepareIDEForManipulationTests();
 		CamelEditor editor = new CamelEditor("camel-context.xml");
 		editor.setId("log", "log1");
 		editor.doOperation("choice", "Add", "Routing", "Otherwise");
@@ -117,10 +178,26 @@ public class CamelEditorTest extends DefaultTest {
 		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 
+	/**
+	 * <p>Test tries to add components in the Camel Editor via Drag&Drop feature (Adds components
+	 * from Palette and connections between components via the Camel Editor).</p>
+	 * <ol>
+	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>open Project Explorer view</li>
+	 * <li>open camel-context.xml file</li>
+	 * <li>switch to Source tab in the Camel Editor</li>
+	 * <li>remove branch otherwise</li>
+	 * <li>switch to Design tab in the Camel Editor</li>
+	 * <li>add back removed components (from branch otherwise) via Drag&Drop feature (Adds components from Palette 
+	 * and connections between components via the Camel Editor)</li>
+	 * <li>switch to Source tab in the Camel Editor</li>
+	 * <li>check if the content of the file is equals to content of the same file immediately after project creation</li>
+	 * </ol>
+	 */
 	@Test
-	public void testDragAndDropComponents() throws ParserConfigurationException, SAXException, IOException {
+	public void testDragAndDropComponents() {
 
-		prepareIDEForManipulationTests();
+		setupPrepareIDEForManipulationTests();
 		CamelEditor editor = new CamelEditor("camel-context.xml");
 		editor.addCamelComponent(new Otherwise(), 0, -100);
 		editor.addConnection("choice", "otherwise");
@@ -145,6 +222,22 @@ public class CamelEditorTest extends DefaultTest {
 		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 
+	/**
+	 * <p>Test tries to code completion assistant in the Camel Editor on Source tab.</p>
+	 * <ol>
+	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>open Project Explorer view</li>
+	 * <li>open camel-context.xml file</li>
+	 * <li>switch to Source tab in the Camel Editor</li>
+	 * <li>invoke content assistant on from element</li>
+	 * <li>check available entries (id, ref)</li>
+	 * <li>check that already set attribute uri is not present</li>
+	 * <li>add id attribute</li>
+	 * <li>check that id attribute is not present in content assistant</li>
+	 * <li>invoke content assistant within route element</li>
+	 * <li>insert to element</li>
+	 * </ol>
+	 */
 	@Test
 	public void testCodeCompletion() {
 
@@ -175,16 +268,5 @@ public class CamelEditorTest extends DefaultTest {
 		proposals = assistent.getProposals();
 		assertTrue("Content Assistent does not contain 'uri' value", proposals.contains("uri"));
 		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
-	}
-
-	/**
-	 * Prepares IDE for tests manipulate with components in the Camel Editor
-	 */
-	private static void prepareIDEForManipulationTests() {
-
-		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
-		CamelEditor.switchTab("Source");
-		EditorManipulator.copyFileContentToCamelXMLEditor("resources/camel-context-otherwise.xml");
-		CamelEditor.switchTab("Design");
 	}
 }
