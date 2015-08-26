@@ -49,6 +49,7 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 	private static TeiidServerRequirement teiidServer;
 
 	private static final String PROJECT_NAME = "TeiidConnImporter";
+	private static final String SOURCE_VDB_NAME = "teiid";
 	private static final String projectLocation = "resources/projects/TeiidConnImporter";
 
 	private static final String modeshapeCPName = "ModeShapeDS";
@@ -80,6 +81,7 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 
 	private static TeiidBot teiidBot = new TeiidBot();
 
+
 	/**
 	 * Create new Teiid Model Project
 	 */
@@ -89,6 +91,7 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 		
 		new ImportManager().importProject(teiidBot.toAbsolutePath(projectLocation));
 		new ModelExplorer().getModelProject(PROJECT_NAME).open();
+		
 
 	}
 
@@ -167,36 +170,33 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 
 	@Test
 	public void teiidTest() {
-		String sourceVdb = "teiid";
-
 		new ModelExplorerManager().changeConnectionProfile(ConnectionProfilesConstants.SQL_SERVER_2008_BOOKS,
 				PROJECT_NAME, sqlserverExistingModelName);
 
+
+		VDBManager vdbManager = new VDBManager();
+		vdbManager.createVDB(PROJECT_NAME, SOURCE_VDB_NAME);
+		vdbManager.addModelsToVDB(PROJECT_NAME, SOURCE_VDB_NAME, new String[]{sqlserverExistingModelName});
+		
 		new DefaultShell();
 
-		String[] pathToVDB = new String[] { PROJECT_NAME, sourceVdb + ".vdb" };
+		String[] pathToVDB = new String[] { PROJECT_NAME, SOURCE_VDB_NAME + ".vdb" };
+
+		vdbManager.deployVDB(pathToVDB);
 
 		try {
-			new VDBManager().getVDBEditor(PROJECT_NAME, sourceVdb + ".vdb").synchronizeAll();
-		} catch (Exception e) {
-			System.out.println("VDB is synchronized");
-		}
-
-		new VDBManager().deployVDB(pathToVDB);
-
-		try {
-			new VDBManager().createVDBDataSource(pathToVDB);
+			vdbManager.createVDBDataSource(pathToVDB);
 		} catch (Exception e) {
 			System.err.println("VDB data source exists");
 		}
 
 		Properties iProps = new Properties();
-		iProps.setProperty(TeiidConnectionImportWizard.DATA_SOURCE_NAME, sourceVdb);
+		iProps.setProperty(TeiidConnectionImportWizard.DATA_SOURCE_NAME, SOURCE_VDB_NAME);
 		
 		Properties teiidImporterProperties = new Properties();
 		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_SCHEMA_PATTERN, "%sqlserver%");
 
-		String model = sourceVdb + "Imp";
+		String model = SOURCE_VDB_NAME + "Imp";
 
 		new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME, model, iProps, null, teiidImporterProperties);
 		teiidBot.assertResource(PROJECT_NAME, model + ".xmi", "teiid.sqlserver.AUTHORS");

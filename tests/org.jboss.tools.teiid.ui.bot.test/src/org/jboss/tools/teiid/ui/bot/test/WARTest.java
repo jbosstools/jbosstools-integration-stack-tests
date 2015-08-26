@@ -55,46 +55,35 @@ public class WARTest extends SWTBotTestCase {
 	
 	@BeforeClass
 	public static void before() {
-		// JBossWS-CXF war
-		new ImportManager().importProject("resources/projects/BooksWS");
-		new ModelExplorerManager().changeConnectionProfile(ConnectionProfilesConstants.ORACLE_11G_BOOKS,
-				projectBooksWS, "books.xmi");
-		VDBEditor ed = new VDBManager().getVDBEditor(projectBooksWS, vdbCheckBook);
-		AbstractWait.sleep(TimePeriod.SHORT);
-		ed.synchronizeAll();
-		AbstractWait.sleep(TimePeriod.SHORT);
-		ed.close();
-
+		VDBManager vdbManager = new VDBManager();
+		
 		// RESTEasy war
 		new ImportManager().importProject("resources/projects/BooksRest");
 		new ModelExplorerManager().changeConnectionProfile(ConnectionProfilesConstants.ORACLE_11G_BOOKS,
 				projectBooksRest, "BooksSrc.xmi");
-		ed = new VDBManager().getVDBEditor(projectBooksRest, vdbBooksRest);
-		AbstractWait.sleep(TimePeriod.SHORT);
-		ed.synchronizeAll();
-		AbstractWait.sleep(TimePeriod.SHORT);
-		ed.close();
+		vdbManager.createVDB(projectBooksRest, vdbBooksRest);
+		vdbManager.addModelsToVDB(projectBooksRest, vdbBooksRest, new String[]{"BooksView.xmi"});
+		vdbManager.deployVDB(pathToBooksRestVDB);
+		vdbManager.createVDBDataSource(pathToBooksRestVDB);
+		
 
-		new VDBManager().deployVDB(pathToCheckBookVDB);
-		new VDBManager().createVDBDataSource(pathToCheckBookVDB);
-
-		new VDBManager().deployVDB(pathToBooksRestVDB);
-		new VDBManager().createVDBDataSource(pathToBooksRestVDB);
-
+		// JBossWS-CXF war
+		new ImportManager().importProject("resources/projects/BooksWS");
+		new ModelExplorerManager().changeConnectionProfile(ConnectionProfilesConstants.ORACLE_11G_BOOKS,
+				projectBooksWS, "books.xmi");
+		vdbManager.createVDB(projectBooksWS, vdbCheckBook);
+		vdbManager.addModelsToVDB(projectBooksWS, vdbCheckBook, new String[]{"checkBookWS.xmi"});
+		vdbManager.deployVDB(pathToCheckBookVDB);
+		vdbManager.createVDBDataSource(pathToCheckBookVDB);
+		
 	}
 
-	//@Test
-	public void teiidTest(){//TODO --> move to "server - smoke tests": create source model from VDB, run DV6 and SOA5 simple mgmt tests 
-			//firstly create teiid vdb
-		//create source model from teiid vdb
-	}
-	
 	/**
 	 * Generate and test JBossWS-CXF WAR with security type None
 	 */
 	@Test
 	public void jbossWSCXFNoneWarTest(){
-
+		
 		Properties warProps = new Properties();
 		warProps.setProperty("type", WAR.JBOSSWS_CXF_TYPE);
 		warProps.setProperty("contextName", vdbCheckBook);
