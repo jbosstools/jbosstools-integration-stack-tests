@@ -360,11 +360,13 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 		iProps.setProperty(TeiidConnectionImportWizard.TRANSLATOR, "excel");
 
 		Properties dsProps = new Properties();
+		Properties excelDsProperties = teiidServer.getServerConfig()
+				.getConnectionProfile(ConnectionProfilesConstants.EXCEL_SMALLA).asProperties();
 		dsProps.put(TeiidConnectionImportWizard.DATASOURCE_PROPERTY_PARENT_DIR,
-				teiidBot.toAbsolutePath("resources/excel"));
+				excelDsProperties.getProperty("path"));
 
 		Properties teiidImporterProps = new Properties();
-		teiidImporterProps.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_EXCEL_FILENAME, "smalla.xlsx");
+		teiidImporterProps.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_EXCEL_FILENAME, excelDsProperties.getProperty("filename"));
 		teiidImporterProps.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_HEADER_ROW_NUMBER, "1");
 
 		new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME, modelName, iProps, dsProps,

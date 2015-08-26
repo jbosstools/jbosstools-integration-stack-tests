@@ -49,6 +49,7 @@ public final class ConnectionProfilesConstants {
 	public static final String POSTGRESQL_91_BQT2 = "postgresql_91_bqt2";
 	public static final String POSTGRESQL_92_DVQE = "postgresql_92_dvqe";
 	public static final String INGRES_10_BQT2= "ingres_10_bqt2";
+	public static final String EXCEL_SMALLA = "excel_smalla";
 
 
 }
