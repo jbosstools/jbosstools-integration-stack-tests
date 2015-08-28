@@ -21,6 +21,7 @@ import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
 import org.jboss.tools.fuse.reddeer.view.ErrorLogView;
 import org.jboss.tools.fuse.reddeer.view.JMXNavigator;
 import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
+import org.jboss.tools.fuse.ui.bot.test.utils.LogGrapper;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
@@ -136,7 +137,7 @@ public class JMXNavigatorServerTest {
 		jmx.connectTo("karaf");
 		assertNotNull(jmx.getNode("karaf", "Camel", "camel-1", "Endpoints", "timer", "foo?period=5000"));
 		assertNotNull(jmx.getNode("karaf", "Camel", "camel-1", "Routes", "route1", "timer:foo?period=5000", "setBody", "log"));
-		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
+		assertTrue("There are some errors in Error Log", LogGrapper.getFuseErrors().size() == 0);
 	}
 
 	/**
@@ -170,6 +171,6 @@ public class JMXNavigatorServerTest {
 		new JMXNavigator().getNode("karaf", "Camel", "camel-1").select();
 		new ContextMenu("Resume Camel Context").select();
 		new WaitUntil(new FuseLogContainsText("(CamelContext: camel-1) resumed"), TimePeriod.NORMAL);
-		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
+		assertTrue("There are some errors in Error Log", LogGrapper.getFuseErrors().size() == 0);
 	}
 }
