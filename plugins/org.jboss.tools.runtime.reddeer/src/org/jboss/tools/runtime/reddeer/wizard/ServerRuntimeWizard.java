@@ -2,7 +2,7 @@ package org.jboss.tools.runtime.reddeer.wizard;
 
 import org.eclipse.swt.widgets.Widget;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
-import org.jboss.reddeer.swt.handler.WidgetHandler;
+import org.jboss.reddeer.core.handler.WidgetHandler;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;

@@ -4,8 +4,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.ToolItem;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-import org.jboss.reddeer.swt.handler.ButtonHandler;
-import org.jboss.reddeer.swt.util.Display;
+import org.jboss.reddeer.core.handler.ButtonHandler;
+import org.jboss.reddeer.core.util.Display;
 
 /**
  * Gets all buttons with the same tooltip (e.g. radio buttons column/constant/function in criteria builder)

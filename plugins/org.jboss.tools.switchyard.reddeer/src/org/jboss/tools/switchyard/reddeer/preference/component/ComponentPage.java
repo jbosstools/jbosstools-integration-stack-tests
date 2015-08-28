@@ -1,6 +1,5 @@
 package org.jboss.tools.switchyard.reddeer.preference.component;
 
-import org.jboss.reddeer.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 
 /**
@@ -8,7 +7,7 @@ import org.jboss.reddeer.swt.impl.text.DefaultText;
  * 
  * @author tsedmik, apodhrad
  */
-public class ComponentPage extends PreferencePage {
+public class ComponentPage {
 
 	public ComponentPage setName(String name) {
 		new DefaultText(1).setText(name);

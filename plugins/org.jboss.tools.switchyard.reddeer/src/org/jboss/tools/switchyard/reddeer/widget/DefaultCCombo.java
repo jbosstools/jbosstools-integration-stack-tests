@@ -7,8 +7,8 @@ import org.eclipse.swt.widgets.Event;
 import org.hamcrest.Matcher;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.reference.ReferencedComposite;
-import org.jboss.reddeer.swt.util.Display;
+import org.jboss.reddeer.core.reference.ReferencedComposite;
+import org.jboss.reddeer.core.util.Display;
 import org.jboss.reddeer.swt.widgets.AbstractWidget;
 
 /**

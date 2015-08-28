@@ -4,19 +4,21 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
-import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.ProgressInformationShellIsActive;
+import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.condition.ProgressInformationShellIsActive;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.impl.button.CancelButton;
+import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
 import org.jboss.tools.drools.reddeer.dialog.DroolsRuntimeDialog;
 
@@ -134,5 +136,17 @@ public class DroolsRuntimesPreferencePage extends WorkbenchPreferencePage {
     	WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
     	dialog.open();
     	dialog.select(this);
+    }
+    
+    public void ok() {
+		String title = new DefaultShell().getText();
+		new OkButton().click();
+		new WaitWhile(new ShellWithTextIsAvailable(title));
+    }
+    
+    public void cancel() {
+		String title = new DefaultShell().getText();
+		new CancelButton().click();
+		new WaitWhile(new ShellWithTextIsAvailable(title));
     }
 }

@@ -6,8 +6,8 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-import org.jboss.reddeer.swt.handler.ButtonHandler;
-import org.jboss.reddeer.swt.util.Display;
+import org.jboss.reddeer.core.handler.ButtonHandler;
+import org.jboss.reddeer.core.util.Display;
 
 public class RecursionEditor {
 	private static final String ENABLE_RECURSION = "Enable Recursion";

@@ -1,22 +1,22 @@
 package org.jboss.tools.switchyard.reddeer.shell;
 
-import org.jboss.reddeer.jface.preference.PreferencePage;
-import org.jboss.reddeer.swt.condition.JobIsRunning;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.wait.AbstractWait;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitWhile;
 
 /**
  * 
  * @author apodhrad
  *
  */
-public class ProjectCapabilitiesShell extends PreferencePage {
+public class ProjectCapabilitiesShell {
 
 	public static final String VERSION_DETAILS = "SwitchYard Version Details";
 	public static final String CONFIG_VERSION = "Configuration Version:";
@@ -68,11 +68,10 @@ public class ProjectCapabilitiesShell extends PreferencePage {
 		return this;
 	}
 
-	@Override
 	public void ok() {
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		super.ok();
+		new OkButton().click();
 		new WaitWhile(new ShellWithTextIsAvailable(title));
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);

@@ -1,9 +1,9 @@
 package org.jboss.tools.switchyard.reddeer.component;
 
 import org.jboss.reddeer.jface.wizard.WizardDialog;
-import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.switchyard.reddeer.wizard.PromoteServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ServiceTestClassWizard;
 

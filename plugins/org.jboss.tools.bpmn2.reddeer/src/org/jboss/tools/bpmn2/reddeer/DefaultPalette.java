@@ -12,8 +12,8 @@ import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.jboss.reddeer.swt.util.Display;
-import org.jboss.reddeer.swt.util.ResultRunnable;
+import org.jboss.reddeer.core.util.Display;
+import org.jboss.reddeer.core.util.ResultRunnable;
 import org.jboss.tools.bpmn2.reddeer.finder.PaletteEntryFinder;
 
 /**

@@ -12,10 +12,10 @@ import org.eclipse.swt.widgets.Widget;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.jboss.reddeer.swt.handler.WidgetHandler;
-import org.jboss.reddeer.swt.lookup.WidgetLookup;
-import org.jboss.reddeer.swt.matcher.WithMnemonicTextMatcher;
-import org.jboss.reddeer.swt.util.Display;
+import org.jboss.reddeer.core.handler.WidgetHandler;
+import org.jboss.reddeer.core.lookup.WidgetLookup;
+import org.jboss.reddeer.core.matcher.WithMnemonicTextMatcher;
+import org.jboss.reddeer.core.util.Display;
 
 /**
  * 

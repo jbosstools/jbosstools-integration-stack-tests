@@ -5,7 +5,7 @@ import org.jboss.reddeer.swt.condition.TableHasRows;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitUntil;
 
 /**
  * 

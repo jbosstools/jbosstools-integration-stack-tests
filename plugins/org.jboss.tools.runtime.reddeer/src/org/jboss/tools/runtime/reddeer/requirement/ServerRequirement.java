@@ -116,4 +116,10 @@ public class ServerRequirement implements Requirement<Server>, CustomConfigurati
 	public ServerConfig getConfig() {
 		return this.config;
 	}
+
+	@Override
+	public void cleanUp() {
+		// TODO cleanUp()
+		
+	}
 }

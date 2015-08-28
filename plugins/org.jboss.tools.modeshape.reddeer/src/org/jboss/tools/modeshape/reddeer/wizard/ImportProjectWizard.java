@@ -4,7 +4,7 @@ import org.jboss.reddeer.jface.wizard.ImportWizardDialog;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.TimePeriod;
 
 /**
  * Wizard for importing an existing project.

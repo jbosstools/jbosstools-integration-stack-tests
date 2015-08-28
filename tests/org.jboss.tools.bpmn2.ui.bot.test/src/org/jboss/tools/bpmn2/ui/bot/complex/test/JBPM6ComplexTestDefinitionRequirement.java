@@ -12,7 +12,7 @@ import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.junit.requirement.Requirement;
-import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.WaitCondition;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -20,8 +20,8 @@ import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.util.Display;
-import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.core.util.Display;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.bpmn2.reddeer.JBPM6ComplexEnvironment;
 import org.jboss.tools.bpmn2.reddeer.dialog.JavaProjectWizard;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.JBPM6ComplexTestDefinitionRequirement.JBPM6ComplexTestDefinition;
@@ -128,5 +128,10 @@ public class JBPM6ComplexTestDefinitionRequirement implements Requirement<JBPM6C
 			return "Wait for enabled menu item";
 		}
 		
+	}
+
+	@Override
+	public void cleanUp() {
+		// there's nothing to do here
 	}
 }

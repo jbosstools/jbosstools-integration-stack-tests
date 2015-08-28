@@ -1,6 +1,6 @@
 package org.jboss.tools.teiid.reddeer.preference;
 
-import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
 

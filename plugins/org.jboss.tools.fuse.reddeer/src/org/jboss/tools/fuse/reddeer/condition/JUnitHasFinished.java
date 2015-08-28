@@ -5,8 +5,8 @@ import java.util.regex.Pattern;
 import org.hamcrest.Matcher;
 import org.hamcrest.core.StringContains;
 import org.jboss.reddeer.eclipse.jdt.ui.junit.JUnitView;
-import org.jboss.reddeer.swt.condition.JobIsRunning;
-import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.common.condition.WaitCondition;
 
 /**
  * Wait condition for detecting whether a JUnit run has finished.

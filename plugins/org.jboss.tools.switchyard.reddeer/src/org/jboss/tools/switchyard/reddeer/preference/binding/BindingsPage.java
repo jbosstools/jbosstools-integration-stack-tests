@@ -1,10 +1,13 @@
 package org.jboss.tools.switchyard.reddeer.preference.binding;
 
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.jface.preference.PreferencePage;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.api.List;
+import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.list.DefaultList;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.switchyard.reddeer.binding.AtomBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.CXFBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.CamelBindingPage;
@@ -33,7 +36,7 @@ import org.jboss.tools.switchyard.reddeer.binding.SchedulingBindingPage;
  * 
  * @author apodhrad
  */
-public class BindingsPage extends PreferencePage {
+public class BindingsPage {
 
 	protected final Logger log = Logger.getLogger(this.getClass());
 	
@@ -165,6 +168,12 @@ public class BindingsPage extends PreferencePage {
 	public SQLBindingPage selectSQLBinding(String name) {
 		new DefaultList().select("SQL (" + name + ")");
 		return new SQLBindingPage();
+	}
+	
+	public void ok() {
+		String title = new DefaultShell().getText();
+		new OkButton().click();
+		new WaitWhile(new ShellWithTextIsAvailable(title));
 	}
 
 }

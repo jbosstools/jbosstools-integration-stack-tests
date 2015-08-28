@@ -1,10 +1,10 @@
 package org.jboss.tools.runtime.reddeer.wizard;
 
-import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.common.wait.WaitWhile;
 
 public class DroolsRuntimeWizard {
 	

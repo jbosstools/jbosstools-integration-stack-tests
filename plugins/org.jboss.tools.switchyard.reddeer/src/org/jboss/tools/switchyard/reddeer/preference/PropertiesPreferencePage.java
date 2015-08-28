@@ -1,6 +1,5 @@
 package org.jboss.tools.switchyard.reddeer.preference;
 
-import org.jboss.reddeer.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.impl.list.DefaultList;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
@@ -28,7 +27,7 @@ import org.jboss.tools.switchyard.reddeer.binding.SchedulingBindingPage;
  * @author apodhrad
  * 
  */
-public class PropertiesPreferencePage extends PreferencePage {
+public class PropertiesPreferencePage {
 
 	protected String title;
 

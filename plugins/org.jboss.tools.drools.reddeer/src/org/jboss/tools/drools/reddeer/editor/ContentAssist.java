@@ -11,9 +11,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.texteditor.ITextEditor;
-import org.jboss.reddeer.swt.lookup.ShellLookup;
-import org.jboss.reddeer.swt.util.Display;
-import org.jboss.reddeer.swt.util.ResultRunnable;
+import org.jboss.reddeer.core.lookup.ShellLookup;
+import org.jboss.reddeer.core.util.Display;
+import org.jboss.reddeer.core.util.ResultRunnable;
 
 public class ContentAssist {
     private final ITextEditor editor;

@@ -1,11 +1,11 @@
 package org.jboss.tools.teiid.reddeer.preference;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.spinner.DefaultSpinner;
-import org.jboss.reddeer.swt.matcher.WithTooltipTextMatcher;
+import org.jboss.reddeer.core.matcher.WithTooltipTextMatcher;
 import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
 
 /**

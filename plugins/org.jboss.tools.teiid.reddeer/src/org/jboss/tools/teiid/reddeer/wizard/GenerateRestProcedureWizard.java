@@ -6,7 +6,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.matcher.WithMnemonicTextMatcher;
+import org.jboss.reddeer.core.matcher.WithMnemonicTextMatcher;
 
 public class GenerateRestProcedureWizard {
 

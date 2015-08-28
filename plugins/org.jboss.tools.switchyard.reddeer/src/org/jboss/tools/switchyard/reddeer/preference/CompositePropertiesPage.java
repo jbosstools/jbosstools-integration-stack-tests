@@ -1,6 +1,9 @@
 package org.jboss.tools.switchyard.reddeer.preference;
 
-import org.jboss.reddeer.jface.preference.PreferencePage;
+import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.list.DefaultList;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
@@ -11,8 +14,8 @@ import org.jboss.tools.switchyard.reddeer.preference.contract.ContractPage;
 import org.jboss.tools.switchyard.reddeer.preference.contract.ContractSecurityPage;
 import org.jboss.tools.switchyard.reddeer.preference.contract.ContractTransactionPage;
 import org.jboss.tools.switchyard.reddeer.preference.implementation.ImplementationBPMNPage;
-import org.jboss.tools.switchyard.reddeer.preference.implementation.ImplementationPage;
 import org.jboss.tools.switchyard.reddeer.preference.implementation.ImplementationKnowledgePage;
+import org.jboss.tools.switchyard.reddeer.preference.implementation.ImplementationPage;
 import org.jboss.tools.switchyard.reddeer.preference.implementation.ImplementationSecurityPage;
 import org.jboss.tools.switchyard.reddeer.preference.implementation.ImplementationTransactionPage;
 
@@ -21,8 +24,10 @@ import org.jboss.tools.switchyard.reddeer.preference.implementation.Implementati
  * @author apodhrad
  *
  */
-public class CompositePropertiesPage extends PreferencePage {
+public class CompositePropertiesPage {
 
+	private final Logger log = Logger.getLogger(CompositePropertiesPage.class);
+	
 	protected String title;
 
 	public CompositePropertiesPage(String title) {
@@ -127,10 +132,10 @@ public class CompositePropertiesPage extends PreferencePage {
 		return new BindingsPage();
 	}
 
-	@Override
 	public void ok() {
 		activate();
-		super.ok();
+		new OkButton().click();
+		new WaitWhile(new ShellWithTextIsAvailable("Properties for " + title));
 	}
 
 }

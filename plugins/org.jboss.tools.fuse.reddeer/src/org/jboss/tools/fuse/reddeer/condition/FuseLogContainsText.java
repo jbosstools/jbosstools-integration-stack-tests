@@ -1,6 +1,6 @@
 package org.jboss.tools.fuse.reddeer.condition;
 
-import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.WaitCondition;
 import org.jboss.tools.fuse.reddeer.view.FuseShell;
 
 /**

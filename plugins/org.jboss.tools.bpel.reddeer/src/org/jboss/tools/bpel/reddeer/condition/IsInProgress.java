@@ -1,7 +1,7 @@
 package org.jboss.tools.bpel.reddeer.condition;
 
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.WaitCondition;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 

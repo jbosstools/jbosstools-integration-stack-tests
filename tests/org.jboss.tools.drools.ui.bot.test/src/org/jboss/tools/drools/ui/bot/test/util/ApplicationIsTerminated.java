@@ -1,7 +1,7 @@
 package org.jboss.tools.drools.ui.bot.test.util;
 
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.WaitCondition;
 import org.jboss.reddeer.swt.impl.label.DefaultLabel;
 
 public class ApplicationIsTerminated implements WaitCondition {

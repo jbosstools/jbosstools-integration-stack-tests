@@ -3,8 +3,8 @@ package org.jboss.tools.fuse.reddeer.view;
 import java.io.IOException;
 
 import org.jboss.reddeer.swt.impl.toolbar.ViewToolItem;
-import org.jboss.reddeer.swt.wait.AbstractWait;
-import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.fuse.reddeer.utils.ShellManager;
 

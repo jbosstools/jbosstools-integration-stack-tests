@@ -2,8 +2,8 @@ package org.jboss.tools.switchyard.reddeer.editor;
 
 import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.gef.GraphicalViewer;
-import org.jboss.reddeer.swt.util.Display;
-import org.jboss.reddeer.swt.util.ResultRunnable;
+import org.jboss.reddeer.core.util.Display;
+import org.jboss.reddeer.core.util.ResultRunnable;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 
 /**

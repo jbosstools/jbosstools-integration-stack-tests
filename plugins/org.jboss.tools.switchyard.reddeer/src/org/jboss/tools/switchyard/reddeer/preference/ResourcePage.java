@@ -2,7 +2,6 @@ package org.jboss.tools.switchyard.reddeer.preference;
 
 import java.util.List;
 
-import org.jboss.reddeer.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
@@ -12,7 +11,7 @@ import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
  * 
  * @author tsedmik, apodhrad
  */
-public class ResourcePage extends PreferencePage {
+public class ResourcePage {
 
 	private static final String ATTR_DERIVED = "Derived";
 	// private static final String ENCODING_DEFAULT = "Default (inherited from container: UTF-8)";

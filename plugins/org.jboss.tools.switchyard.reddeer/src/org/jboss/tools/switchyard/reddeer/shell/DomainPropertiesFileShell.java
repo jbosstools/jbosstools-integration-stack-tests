@@ -1,13 +1,13 @@
 package org.jboss.tools.switchyard.reddeer.shell;
 
 import org.jboss.reddeer.swt.api.Text;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.common.wait.WaitWhile;
 
 /**
  * 

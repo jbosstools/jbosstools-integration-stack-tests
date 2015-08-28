@@ -1,6 +1,5 @@
 package org.jboss.tools.switchyard.reddeer.preference.contract;
 
-import org.jboss.reddeer.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
@@ -9,7 +8,7 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  *  
  * @author tsedmik
  */
-public class ContractPage extends PreferencePage {
+public class ContractPage {
 	
 	private static final String INTERFACE = "Interface:";
 	private static final String SERVICE_NAME = "Service Name:";

@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.eclipse.ui.views.properties.TabbedPropertyList;
-import org.jboss.reddeer.swt.condition.WaitCondition;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 
 public class WaitingPropertiesView extends PropertiesView {
 

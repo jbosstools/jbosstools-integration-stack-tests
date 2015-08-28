@@ -2,7 +2,7 @@ package org.jboss.tools.switchyard.reddeer.utils;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
-import org.jboss.reddeer.swt.util.Display;
+import org.jboss.reddeer.core.util.Display;
 
 /**
  * Class which provides various mouse operations.

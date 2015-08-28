@@ -15,9 +15,9 @@ import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.core.Is;
-import org.jboss.reddeer.swt.handler.WidgetHandler;
-import org.jboss.reddeer.swt.lookup.WidgetLookup;
-import org.jboss.reddeer.swt.util.Display;
+import org.jboss.reddeer.core.handler.WidgetHandler;
+import org.jboss.reddeer.core.lookup.WidgetLookup;
+import org.jboss.reddeer.core.util.Display;
 
 public class WithLabelMatcherExt extends BaseMatcher<String> {
 

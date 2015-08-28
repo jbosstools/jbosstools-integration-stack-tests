@@ -1,9 +1,9 @@
 package org.jboss.tools.switchyard.reddeer.debug;
 
-import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.WaitCondition;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 
 public class VariablesView extends WorkbenchView {

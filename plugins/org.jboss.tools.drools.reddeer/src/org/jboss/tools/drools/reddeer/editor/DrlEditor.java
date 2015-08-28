@@ -2,7 +2,7 @@ package org.jboss.tools.drools.reddeer.editor;
 
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.texteditor.ITextEditor;
-import org.jboss.reddeer.swt.util.Display;
+import org.jboss.reddeer.core.util.Display;
 
 public class DrlEditor extends MultiPageEditor {
     private static final String TEXT_EDITOR = "Text Editor";

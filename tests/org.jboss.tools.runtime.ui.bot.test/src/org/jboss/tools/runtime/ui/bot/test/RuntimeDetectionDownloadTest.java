@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.handler.ShellHandler;
+import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.tools.fuse.reddeer.preference.ServerRuntimePreferencePage;
 import org.jboss.tools.fuse.reddeer.view.ErrorLogView;
 import org.jboss.tools.runtime.reddeer.preference.JBossRuntimeDetection;

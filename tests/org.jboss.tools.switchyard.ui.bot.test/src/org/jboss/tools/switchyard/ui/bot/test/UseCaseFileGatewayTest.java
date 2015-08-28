@@ -12,7 +12,7 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.runtime.reddeer.ServerBase;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;

@@ -7,9 +7,9 @@ import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.texteditor.ITextEditor;
-import org.jboss.reddeer.swt.util.Display;
-import org.jboss.reddeer.swt.util.ResultRunnable;
-import org.jboss.reddeer.workbench.exception.WorkbenchPartNotFound;
+import org.jboss.reddeer.core.util.Display;
+import org.jboss.reddeer.core.util.ResultRunnable;
+import org.jboss.reddeer.workbench.exception.WorkbenchLayerException;
 
 public class NestedTextEditor extends NestedEditor {
     private static final Logger LOGGER = Logger.getLogger(NestedTextEditor.class);
@@ -17,7 +17,7 @@ public class NestedTextEditor extends NestedEditor {
     public NestedTextEditor(MultiPageEditor parent, String title) {
         super(parent, title);
         if (!(getEditorPart() instanceof ITextEditor)) {
-            throw new WorkbenchPartNotFound("Given editor is not instance of ITextEditor");
+            throw new WorkbenchLayerException("Given editor is not instance of ITextEditor");
         }
     }
 

@@ -1,6 +1,6 @@
 package org.jboss.tools.bpel.ui.bot.test;
 
-import static org.jboss.reddeer.swt.wait.TimePeriod.NORMAL;
+import static org.jboss.reddeer.common.wait.TimePeriod.NORMAL;
 import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
@@ -10,12 +10,12 @@ import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.C
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.Table;
-import org.jboss.reddeer.swt.condition.ProgressInformationShellIsActive;
+import org.jboss.reddeer.core.condition.ProgressInformationShellIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.bpel.reddeer.perspective.BPELPerspective;
 import org.jboss.tools.bpel.reddeer.wizard.NewProjectWizard;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;

@@ -3,9 +3,9 @@ package org.jboss.tools.bpmn2.ui.bot.reddeer.junit.extension;
 import org.apache.log4j.Logger;
 import org.eclipse.ui.IViewPart;
 import org.jboss.reddeer.junit.extensionpoint.IBeforeTest;
-import org.jboss.reddeer.swt.matcher.WithTextMatcher;
-import org.jboss.reddeer.workbench.handler.ViewHandler;
-import org.jboss.reddeer.workbench.lookup.WorkbenchPartLookup;
+import org.jboss.reddeer.core.matcher.WithTextMatcher;
+import org.jboss.reddeer.core.handler.ViewHandler;
+import org.jboss.reddeer.core.lookup.WorkbenchPartLookup;
 
 public class CloseGuvnorViewExt implements IBeforeTest {
 	

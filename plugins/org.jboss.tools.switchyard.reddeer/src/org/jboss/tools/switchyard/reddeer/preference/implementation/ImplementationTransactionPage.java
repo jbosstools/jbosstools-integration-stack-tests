@@ -2,7 +2,6 @@ package org.jboss.tools.switchyard.reddeer.preference.implementation;
 
 import java.util.List;
 
-import org.jboss.reddeer.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 
 /**
@@ -10,7 +9,7 @@ import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
  * 
  * @author tsedmik, apodhrad
  */
-public class ImplementationTransactionPage extends PreferencePage {
+public class ImplementationTransactionPage {
 
 	private static final int TRANSACTION_POLICY = 0;
 

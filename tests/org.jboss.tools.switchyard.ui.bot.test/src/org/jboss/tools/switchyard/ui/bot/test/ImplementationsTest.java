@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.handler.ShellHandler;
+import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.swt.impl.button.NoButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;

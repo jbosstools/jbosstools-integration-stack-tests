@@ -7,8 +7,8 @@ import org.jboss.reddeer.gef.impl.editpart.AbstractEditPart;
 import org.jboss.reddeer.swt.api.Menu;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.matcher.AndMatcher;
-import org.jboss.reddeer.swt.util.Display;
+import org.jboss.reddeer.core.matcher.AndMatcher;
+import org.jboss.reddeer.core.util.Display;
 import org.jboss.tools.bpel.reddeer.editor.BpelEditor;
 import org.jboss.tools.bpel.reddeer.view.BPELPropertiesView;
 

@@ -10,16 +10,10 @@ Require-Bundle:
  org.eclipse.swtbot.eclipse.gef.finder,
  org.eclipse.swtbot.go,
  org.eclipse.ui.forms,
- org.jboss.reddeer.uiforms;bundle-version="0.7.0",
- org.jboss.reddeer.gef;bundle-version="0.7.0",
- org.jboss.reddeer.graphiti;bundle-version="0.7.0",
- org.jboss.reddeer.swt;bundle-version="0.7.0",
- org.jboss.reddeer.eclipse;bundle-version="0.7.0",
- org.jboss.reddeer.workbench;bundle-version="0.7.0",
- org.jboss.reddeer.jface;bundle-version="0.7.0",
- org.jboss.reddeer.junit;bundle-version="0.7.0",
- org.jboss.reddeer.common;bundle-version="0.7.0",
- org.hamcrest.library;bundle-version="1.3.0"
+ org.hamcrest.library;bundle-version="1.3.0",
+ org.jboss.reddeer.go;bundle-version="0.8.0",
+ org.jboss.reddeer.gef;bundle-version="0.8.0",
+ org.jboss.reddeer.graphiti;bundle-version="0.8.0"
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: JBoss by Red Hat
 Eclipse-RegisterBuddy: org.apache.log4j

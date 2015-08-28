@@ -2,8 +2,8 @@ package org.jboss.tools.switchyard.reddeer.widget;
 
 import org.eclipse.swt.widgets.Text;
 import org.jboss.reddeer.swt.impl.text.AbstractText;
-import org.jboss.reddeer.swt.matcher.ClassMatcher;
-import org.jboss.reddeer.swt.reference.ReferencedComposite;
+import org.jboss.reddeer.core.matcher.ClassMatcher;
+import org.jboss.reddeer.core.reference.ReferencedComposite;
 
 /**
  * 

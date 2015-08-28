@@ -6,7 +6,7 @@ import java.util.List;
 import org.hamcrest.Matcher;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.WaitCondition;
 
 public class TableHasRow implements WaitCondition {
 

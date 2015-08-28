@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.matcher.RegexMatcher;
+import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.drools.reddeer.util.ItemLookup;
 

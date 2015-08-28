@@ -61,4 +61,9 @@ public class RuntimeRequirement implements Requirement<Runtime>, CustomConfigura
 	public RuntimeConfig getConfig() {
 		return this.config;
 	}
+
+	@Override
+	public void cleanUp() {
+		// TODO cleanUp()
+	}
 }

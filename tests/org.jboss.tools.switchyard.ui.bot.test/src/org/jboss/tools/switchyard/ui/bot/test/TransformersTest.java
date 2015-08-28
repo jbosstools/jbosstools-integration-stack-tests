@@ -10,7 +10,7 @@ import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.handler.ShellHandler;
+import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;

@@ -20,11 +20,11 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.swt.matcher.RegexMatcher;
-import org.jboss.reddeer.swt.matcher.WithTooltipTextMatcher;
-import org.jboss.reddeer.swt.wait.AbstractWait;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.common.matcher.RegexMatcher;
+import org.jboss.reddeer.core.matcher.WithTooltipTextMatcher;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.tools.runtime.reddeer.ServerBase;
 import org.jboss.tools.runtime.reddeer.requirement.ServerConnType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
@@ -190,6 +190,11 @@ public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomC
 	public TeiidDriver getTeiidDriver() {
 		String teiidDriverPath = getTeiidDriverPath();
 		return new TeiidDriver(teiidDriverPath);
+	}
+
+	@Override
+	public void cleanUp() {
+		// TODO cleanUp()
 	}
 
 }

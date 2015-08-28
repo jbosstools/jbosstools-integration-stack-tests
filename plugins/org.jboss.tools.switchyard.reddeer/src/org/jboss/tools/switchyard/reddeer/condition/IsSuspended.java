@@ -1,8 +1,8 @@
 package org.jboss.tools.switchyard.reddeer.condition;
 
-import org.jboss.reddeer.swt.condition.WaitCondition;
-import org.jboss.reddeer.swt.wait.AbstractWait;
-import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.tools.switchyard.reddeer.debug.ResumeButton;
 
 /**

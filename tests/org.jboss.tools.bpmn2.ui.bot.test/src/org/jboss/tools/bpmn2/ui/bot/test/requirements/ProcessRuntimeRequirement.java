@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.apache.log4j.Logger;
-import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.jface.preference.PreferencePage;
 import org.jboss.reddeer.junit.requirement.PropertyConfiguration;
 import org.jboss.reddeer.junit.requirement.Requirement;
@@ -81,6 +81,11 @@ public class ProcessRuntimeRequirement implements Requirement<ProcessRuntime>, P
 	 */
 	public void setRuntimeDir(String runtimeDir) {
 		this.runtimeDir = runtimeDir;
+	}
+
+	@Override
+	public void cleanUp() {
+		// TODO cleanUp()
 	}
 	
 }

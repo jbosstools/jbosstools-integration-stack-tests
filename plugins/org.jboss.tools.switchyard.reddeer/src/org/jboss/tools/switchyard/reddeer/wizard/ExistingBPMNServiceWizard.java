@@ -10,7 +10,7 @@ import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.reference.ReferencedComposite;
+import org.jboss.reddeer.core.reference.ReferencedComposite;
 import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
 
 /**

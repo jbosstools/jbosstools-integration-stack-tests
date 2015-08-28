@@ -3,10 +3,10 @@ package org.jboss.tools.teiid.reddeer.condition;
 import org.eclipse.swt.widgets.Shell;
 import org.hamcrest.Matcher;
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.swt.condition.WaitCondition;
-import org.jboss.reddeer.swt.lookup.ShellLookup;
-import org.jboss.reddeer.swt.matcher.RegexMatcher;
-import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.core.lookup.ShellLookup;
+import org.jboss.reddeer.common.matcher.RegexMatcher;
+import org.jboss.reddeer.common.wait.TimePeriod;
 
 public class IsPreviewInProgress implements WaitCondition {
 	private static final Logger log = Logger.getLogger(IsPreviewInProgress.class);

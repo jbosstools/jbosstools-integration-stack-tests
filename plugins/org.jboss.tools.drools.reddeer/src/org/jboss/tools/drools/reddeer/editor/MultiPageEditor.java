@@ -2,16 +2,16 @@ package org.jboss.tools.drools.reddeer.editor;
 
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.part.MultiPageEditorPart;
-import org.jboss.reddeer.swt.util.Display;
-import org.jboss.reddeer.swt.util.ResultRunnable;
-import org.jboss.reddeer.workbench.exception.WorkbenchPartNotFound;
+import org.jboss.reddeer.core.util.Display;
+import org.jboss.reddeer.core.util.ResultRunnable;
+import org.jboss.reddeer.workbench.exception.WorkbenchLayerException;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 
 abstract class MultiPageEditor extends DefaultEditor {
 
     public MultiPageEditor() {
         if (!(editorPart instanceof MultiPageEditorPart)){
-            throw new WorkbenchPartNotFound("Given editor is not instance of MultiPageEditorPart");
+            throw new WorkbenchLayerException("Given editor is not instance of MultiPageEditorPart");
         }
     }
 

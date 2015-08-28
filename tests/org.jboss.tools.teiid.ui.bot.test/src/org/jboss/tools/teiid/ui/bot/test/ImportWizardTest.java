@@ -5,7 +5,7 @@ import java.util.Properties;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.handler.ShellHandler;
+import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;

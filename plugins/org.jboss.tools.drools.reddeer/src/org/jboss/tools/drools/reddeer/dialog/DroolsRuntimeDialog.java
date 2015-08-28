@@ -7,8 +7,8 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.Platform;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.wait.AbstractWait;
-import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.osgi.framework.wiring.BundleWiring;
 
 public class DroolsRuntimeDialog {

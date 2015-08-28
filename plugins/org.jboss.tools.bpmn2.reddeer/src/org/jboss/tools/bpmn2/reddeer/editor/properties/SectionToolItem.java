@@ -6,8 +6,8 @@ import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.forms.widgets.Section;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.toolbar.AbstractToolItem;
-import org.jboss.reddeer.swt.lookup.WidgetLookup;
-import org.jboss.reddeer.swt.util.Display;
+import org.jboss.reddeer.core.lookup.WidgetLookup;
+import org.jboss.reddeer.core.util.Display;
 
 public class SectionToolItem extends AbstractToolItem {
 	public SectionToolItem(final String sectionLabel, final String itemLabel) {

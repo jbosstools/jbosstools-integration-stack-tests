@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.RuntimePreferencePage;
 import org.jboss.reddeer.eclipse.wst.server.ui.editor.ServerEditor;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
@@ -128,7 +128,7 @@ public class ServerAS extends ServerBase {
 			runtimeWizard.setHomeDirectory(getHome());
 			runtimeWizard.selectJre(getJreName());
 			runtimeWizard.finish();
-			runtimePreferencePage.ok();
+			preferences.ok();
 
 			// Add server
 			ServerWizard serverWizard = new ServerWizard();

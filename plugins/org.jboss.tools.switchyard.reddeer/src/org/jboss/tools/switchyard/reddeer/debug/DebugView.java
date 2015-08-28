@@ -1,8 +1,8 @@
 package org.jboss.tools.switchyard.reddeer.debug;
 
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.util.Display;
-import org.jboss.reddeer.swt.util.ResultRunnable;
+import org.jboss.reddeer.core.util.Display;
+import org.jboss.reddeer.core.util.ResultRunnable;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 
 public class DebugView extends WorkbenchView {

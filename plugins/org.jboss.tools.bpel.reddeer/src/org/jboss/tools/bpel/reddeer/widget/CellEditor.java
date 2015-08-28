@@ -10,13 +10,13 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.TableColumn;
 import org.jboss.reddeer.jface.exception.JFaceLayerException;
 import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.handler.TableItemHandler;
-import org.jboss.reddeer.swt.handler.WidgetHandler;
-import org.jboss.reddeer.swt.reference.ReferencedComposite;
-import org.jboss.reddeer.swt.util.Display;
-import org.jboss.reddeer.swt.util.ResultRunnable;
-import org.jboss.reddeer.swt.wait.AbstractWait;
-import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.core.handler.TableItemHandler;
+import org.jboss.reddeer.core.handler.WidgetHandler;
+import org.jboss.reddeer.core.reference.ReferencedComposite;
+import org.jboss.reddeer.core.util.Display;
+import org.jboss.reddeer.core.util.ResultRunnable;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
 
 /**
  * This class helps to activate, deactivate and find an activated edit control using a referenced composite.

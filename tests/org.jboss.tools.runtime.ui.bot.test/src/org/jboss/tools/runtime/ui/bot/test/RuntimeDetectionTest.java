@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.handler.ShellHandler;
+import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.tools.runtime.reddeer.RuntimeEntry;
 import org.jboss.tools.runtime.reddeer.preference.JBossRuntimeDetection;
 import org.jboss.tools.runtime.reddeer.wizard.DownloadRuntimesWizard;

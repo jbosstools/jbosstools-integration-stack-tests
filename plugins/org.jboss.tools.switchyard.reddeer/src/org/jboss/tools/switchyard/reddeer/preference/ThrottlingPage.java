@@ -1,7 +1,10 @@
 package org.jboss.tools.switchyard.reddeer.preference;
 
-import org.jboss.reddeer.jface.preference.PreferencePage;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 /**
@@ -9,7 +12,7 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  * 
  * @author apodhrad
  */
-public class ThrottlingPage extends PreferencePage {
+public class ThrottlingPage {
 
 	public static final String ENABLE_THROTTLING = "Enable throttling";
 	public static final String MAX_REQUESTS = "Maximum Requests:";
@@ -56,5 +59,11 @@ public class ThrottlingPage extends PreferencePage {
 
 	public boolean isTimePeriodReadOnly() {
 		return new LabeledText(TIME_PERIOD).isReadOnly();
+	}
+	
+	public void ok() {
+		String title = new DefaultShell().getText();
+		new OkButton().click();
+		new WaitWhile(new ShellWithTextIsAvailable(title));
 	}
 }

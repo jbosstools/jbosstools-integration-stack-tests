@@ -1,14 +1,14 @@
 package org.jboss.tools.teiid.reddeer;
 
 import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.wait.AbstractWait;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.teiid.reddeer.wizard.TeiidImportWizard;
 
 /**

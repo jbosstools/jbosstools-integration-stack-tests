@@ -2,21 +2,20 @@ package org.jboss.tools.switchyard.reddeer.preference.implementation;
 
 import java.util.List;
 
-import org.jboss.reddeer.jface.preference.PreferencePage;
+import org.jboss.reddeer.common.matcher.RegexMatcher;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.handler.ShellHandler;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.matcher.RegexMatcher;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
 import org.jboss.tools.switchyard.reddeer.condition.TableHasRow;
 import org.jboss.tools.switchyard.reddeer.widget.CellEditor;
@@ -27,7 +26,7 @@ import org.jboss.tools.switchyard.reddeer.widget.DefaultCCombo;
  * 
  * @author apodhrad, tsedmik
  */
-public class ImplementationKnowledgePage extends PreferencePage {
+public class ImplementationKnowledgePage {
 
 	public ImplementationKnowledgePage selectTab(String tab) {
 		new DefaultTabItem(tab).activate();
@@ -168,5 +167,11 @@ public class ImplementationKnowledgePage extends PreferencePage {
 		if (title != null) {
 			new WaitWhile(new ShellWithTextIsAvailable(title));
 		}
+	}
+	
+	public void ok() {
+		String title = new DefaultShell().getText();
+		new OkButton().click();
+		new WaitWhile(new ShellWithTextIsAvailable(title));
 	}
 }

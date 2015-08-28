@@ -1,7 +1,7 @@
 package org.jboss.tools.esb.reddeer.widget;
 
 import org.eclipse.swt.SWT;
-import org.jboss.reddeer.swt.handler.WidgetHandler;
+import org.jboss.reddeer.core.handler.WidgetHandler;
 import org.jboss.reddeer.swt.impl.label.DefaultLabel;
 
 /**

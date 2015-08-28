@@ -2,17 +2,18 @@ package org.jboss.tools.runtime.reddeer.preference;
 
 import java.util.List;
 
-import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
+import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.list.DefaultList;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
 
 /**
@@ -72,4 +73,9 @@ public class InstalledJREs extends WorkbenchPreferencePage {
 		dialog.select(this);
 	}
 
+	public void ok() {
+		String title = new DefaultShell().getText();
+		new OkButton().click();
+		new WaitWhile(new ShellWithTextIsAvailable(title));
+	}
 }

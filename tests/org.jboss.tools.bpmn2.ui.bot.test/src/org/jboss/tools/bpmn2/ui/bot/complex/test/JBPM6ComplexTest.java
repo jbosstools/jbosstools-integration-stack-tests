@@ -10,7 +10,7 @@ import javax.xml.bind.ValidationException;
 import org.apache.log4j.Logger;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
-import org.jboss.reddeer.eclipse.condition.MarkerIsUpdating;
+//import org.jboss.reddeer.eclipse.condition.MarkerIsUpdating;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.ui.problems.Problem;
@@ -18,14 +18,14 @@ import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsResourceMatcher;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.condition.JobIsRunning;
-import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.common.condition.WaitCondition;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.swt.wait.TimePeriod;
-import org.jboss.reddeer.swt.wait.WaitUntil;
-import org.jboss.reddeer.swt.wait.WaitWhile;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.bpmn2.reddeer.ProcessEditorView;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.JBPM6ComplexTestDefinitionRequirement.JBPM6ComplexTestDefinition;
 import org.jboss.tools.bpmn2.ui.bot.test.validator.JBPM6Validator;
@@ -273,7 +273,8 @@ public abstract class JBPM6ComplexTest {
 	protected String getErrorsFromProblemsView(String descriptionPrefix){
 		ProblemsView problems = new ProblemsView();
 		problems.open();
-		new WaitWhile(new MarkerIsUpdating());
+//		TODO Replace MarkerIsUpdating
+//		new WaitWhile(new MarkerIsUpdating());
 		new WaitWhile(new JobIsRunning());
 		new WaitUntil(new ErrorAppearOrDisappear(problems), TimePeriod.getCustom(5), false);
 		

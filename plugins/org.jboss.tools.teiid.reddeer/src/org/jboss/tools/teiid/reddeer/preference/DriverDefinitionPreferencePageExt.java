@@ -4,13 +4,16 @@ import static org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable.syncExec;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.datatools.ui.DriverTemplate;
 import org.jboss.reddeer.eclipse.datatools.ui.preference.DriverDefinitionPreferencePage;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.DriverDefinitionPage;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.DriverDefinitionWizard;
-import org.jboss.reddeer.eclipse.jdt.ui.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.swt.api.Tree;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
@@ -42,6 +45,12 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 		new DriverDefinitionWizardExt(driverDefinition).execute();
 		new DefaultShell("New Driver Definition");
 		new PushButton("OK").click();
+	}
+	
+	public void ok() {
+		String title = new DefaultShell().getText();
+		new OkButton().click();
+		new WaitWhile(new ShellWithTextIsAvailable(title));
 	}
 
 	private class DriverDefinitionWizardExt extends DriverDefinitionWizard {

@@ -1,6 +1,5 @@
 package org.jboss.tools.switchyard.reddeer.preference.implementation;
 
-import org.jboss.reddeer.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 
 /**
@@ -8,7 +7,7 @@ import org.jboss.reddeer.swt.impl.button.CheckBox;
  * 
  * @author apodhrad
  */
-public class ImplementationSecurityPage extends PreferencePage {
+public class ImplementationSecurityPage {
 
 	private static final String AUTHORIZATION = "Requires Authorization";
 

@@ -2,7 +2,6 @@ package org.jboss.tools.switchyard.reddeer.preference.contract;
 
 import java.util.List;
 
-import org.jboss.reddeer.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 
@@ -11,7 +10,7 @@ import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
  * 
  * @author tsedmik, apodhrad
  */
-public class ContractTransactionPage extends PreferencePage {
+public class ContractTransactionPage {
 
 	private static final String TRANSACTION = "Transaction Policy:";
 
