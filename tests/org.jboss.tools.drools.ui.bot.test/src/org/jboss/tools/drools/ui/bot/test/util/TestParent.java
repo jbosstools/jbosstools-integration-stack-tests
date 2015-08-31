@@ -281,8 +281,9 @@ public abstract class TestParent {
         NewDroolsProjectWizard wiz = new NewDroolsProjectWizard();
         wiz.open();
         wiz.getFirstPage().setProjectName(DEFAULT_PROJECT_NAME);
+        wiz.next();
         wiz.getSelectSamplesPage().checkAll();
-
+        wiz.next();
         if (useRuntime == RuntimeVersion.BRMS_5) {
             wiz.getDroolsRuntimePage().setCodeCompatibleWithVersion(CodeCompatibility.Drools51OrAbove);
         }

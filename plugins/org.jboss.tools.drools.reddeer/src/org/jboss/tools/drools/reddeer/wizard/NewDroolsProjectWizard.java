@@ -10,17 +10,14 @@ public class NewDroolsProjectWizard extends NewWizardDialog {
     }
 
     public NewDroolsProjectNameWizardPage getFirstPage() {
-        selectPage(0);
         return new NewDroolsProjectNameWizardPage();
     }
 
     public NewDroolsProjectSelectSamplesWizardPage getSelectSamplesPage() {
-        selectPage(1);
         return new NewDroolsProjectSelectSamplesWizardPage();
     }
 
     public NewDroolsProjectSelectRuntimeWizardPage getDroolsRuntimePage() {
-        selectPage(2);
         return new NewDroolsProjectSelectRuntimeWizardPage();
     }
 
@@ -33,7 +30,9 @@ public class NewDroolsProjectWizard extends NewWizardDialog {
     public void createDefaultProjectWithAllSamples(String projectName) {
         open();
         getFirstPage().setProjectName(projectName);
+        next();
         getSelectSamplesPage().checkAll();
+        next();
         NewDroolsProjectSelectRuntimeWizardPage runtime = getDroolsRuntimePage();
         runtime.setUseDefaultRuntime(true);
         runtime.setCodeCompatibleWithVersion(CodeCompatibility.Drools60x);

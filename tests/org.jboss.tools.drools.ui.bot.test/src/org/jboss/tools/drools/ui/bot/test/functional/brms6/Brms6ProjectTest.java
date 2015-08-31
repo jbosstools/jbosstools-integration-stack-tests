@@ -60,7 +60,9 @@ public class Brms6ProjectTest extends TestParent {
         NewDroolsProjectWizard wiz = new NewDroolsProjectWizard();
         wiz.open();
         wiz.getFirstPage().setProjectName(projectName);
+        wiz.next();
         wiz.getSelectSamplesPage().checkAll();
+        wiz.next();
         wiz.getDroolsRuntimePage().setUseDefaultRuntime(true);
         wiz.getDroolsRuntimePage().setCodeCompatibleWithVersion(CodeCompatibility.Drools60x);
         wiz.getDroolsRuntimePage().setGAV("com.redhat", getTestName(), "1.0-SNAPSHOT");
