@@ -21,6 +21,10 @@ import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
 import org.eclipse.ui.IEditorPart;
 import org.hamcrest.Matcher;
 import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.exception.CoreLayerException;
+import org.jboss.reddeer.core.util.Display;
+import org.jboss.reddeer.core.util.ResultRunnable;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -28,9 +32,6 @@ import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.core.util.Display;
-import org.jboss.reddeer.core.util.ResultRunnable;
-import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructOfType;
@@ -352,7 +353,7 @@ public class ProcessEditorView extends SWTBotGefEditor {
 			try{
 			    click(1,1);
 			    new ContextMenu("Show Source View").select();
-			} catch(SWTLayerException e) {
+			} catch(CoreLayerException|SWTLayerException e) {
 				return true;
 			}
 			return false;
