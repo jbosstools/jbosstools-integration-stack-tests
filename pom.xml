@@ -101,6 +101,15 @@
 		</target>
 	      </configuration>
 	    </plugin>
+            <plugin>
+              <groupId>org.eclipse.tycho</groupId>
+              <artifactId>tycho-compiler-plugin</artifactId>
+              <version>${tychoVersion}</version>
+              <configuration>
+                <source>1.7</source>
+                <target>1.7</target>
+              </configuration>
+            </plugin>
 	  </plugins>
 	</build>
 
