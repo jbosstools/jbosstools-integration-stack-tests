@@ -6,6 +6,10 @@ import static org.junit.Assert.fail;
 
 import java.util.Properties;
 
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.core.exception.CoreLayerException;
+import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
@@ -14,20 +18,11 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.impl.tree.TreeItemNotFoundException;
-import org.jboss.reddeer.core.matcher.WithMnemonicTextMatcher;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.WAR;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfilesConstants;
@@ -46,7 +41,6 @@ import org.jboss.tools.teiid.reddeer.wizard.GenerateRestProcedureWizard;
 import org.jboss.tools.teiid.reddeer.wizard.ImportGeneralItemWizard;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -171,7 +165,7 @@ public class CreateRestProcedureTest {
 		try {
 			wizard.setExistingTargetModel(SOURCE_MODEL_NAME);
 			fail("Should not allow selecting a source model as the target");
-		} catch (TreeItemNotFoundException ex) {
+		} catch (CoreLayerException ex) {
 			new PushButton("Cancel").click();
 		}
 	}
@@ -198,8 +192,6 @@ public class CreateRestProcedureTest {
 	}
 
 	private void checkWar(String expected, String url) {
-		String userPass = teiidServer.getServerConfig().getServerBase().getProperty("teiidUser") + ':'
-				+ teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword");
 		String response = new SimpleHttpClient("http://localhost:8080/" + PROJECT_NAME + '/' + url).setBasicAuth(teiidServer
 				.getServerConfig().getServerBase().getProperty("teiidUser"), teiidServer.getServerConfig()
 				.getServerBase().getProperty("teiidPassword"))
@@ -216,26 +208,6 @@ public class CreateRestProcedureTest {
 		new ServersViewExt().refreshServer(teiidServer.getName());
 		new VDBManager().deployVDB(new String[] { PROJECT_NAME, VDB_NAME + ".vdb" });
 		new VDBManager().createVDBDataSource(new String[] { PROJECT_NAME, VDB_NAME + ".vdb" });
-	}
-
-	private void fixProcedureTransformation(String modelName, String targetModelName, String tableName) {
-		AbstractWait.sleep(TimePeriod.SHORT);
-		ModelExplorerView mew = new ModelExplorerView();
-		mew.open(PROJECT_NAME, modelName);
-		AbstractWait.sleep(TimePeriod.SHORT);
-
-		mew.openTransformationDiagram(PROJECT_NAME, targetModelName, tableName + "RestProc");
-
-		ModelEditor me = new ModelEditor(modelName);
-		me.showTransformation();
-		String transformation = me.getTransformation();
-		me.setTransformation(transformation.replaceFirst("FROM " + tableName, "FROM " + modelName.replace(".xmi", "")
-				+ '.' + tableName));
-
-		new WorkbenchShell();
-		new ShellMenu("File", "Save All").select();
-		me.saveAndClose();
-
 	}
 
 	private void generateAndDeployWAR() {
