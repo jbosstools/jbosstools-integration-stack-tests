@@ -17,7 +17,7 @@ import org.hamcrest.Factory;
 public class RecursiveButtonMatcher extends BaseMatcher<EditPart>{
 
 	private static final String MAPPING_CLASS = "<<Mapping Class>>";
-	private static String prefixMappingClassRecursive;
+	private String prefixMappingClassRecursive;
 	
 	private Clickable b;
 	
@@ -26,6 +26,7 @@ public class RecursiveButtonMatcher extends BaseMatcher<EditPart>{
 	}
 	
 	@Override
+	@SuppressWarnings("unchecked")
 	public boolean matches(Object item) {
 		
 		boolean isMappingClass = false;

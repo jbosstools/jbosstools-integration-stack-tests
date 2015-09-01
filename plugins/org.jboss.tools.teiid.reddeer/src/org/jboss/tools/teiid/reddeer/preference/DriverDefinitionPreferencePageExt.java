@@ -110,13 +110,13 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 
 		public void setDatabaseName(String databaseName) {
 			selectTab(TAB_PROPERTIES);
-			new DefaultTreeItem(0, GENERAL, DATABASE_NAME).doubleClick();
+			new DefaultTreeItem(new DefaultTree(0), GENERAL, DATABASE_NAME).doubleClick();
 			new DefaultText().setText(databaseName);
 		}
 
 		public void setConnectionUrlOther(String connectionUrl) {
 			selectTab(TAB_PROPERTIES);
-			new DefaultTreeItem(0, GENERAL, CONNECTION_URL).doubleClick();
+			new DefaultTreeItem(new DefaultTree(0), GENERAL, CONNECTION_URL).doubleClick();
 			new DefaultText().setText(connectionUrl);
 		}
 
@@ -136,7 +136,7 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 
 		public void setDriverClassGeneric(String driverClass) {
 			selectTab(TAB_PROPERTIES);
-			new DefaultTreeItem(0, GENERAL, DRIVER_CLASS).doubleClick();//kepler 0, juno 1
+			new DefaultTreeItem(new DefaultTree(0), GENERAL, DRIVER_CLASS).doubleClick();//kepler 0, juno 1
 			new PushButton("...").click();
 			new DefaultShell("Available Classes from Jar List");
 			new DefaultText().setText(driverClass);
@@ -145,7 +145,7 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 		
 		public void setDriverClassOther(String driverClass) {
 			selectTab(TAB_PROPERTIES);
-			new DefaultTreeItem(0, GENERAL, DRIVER_CLASS).doubleClick();
+			new DefaultTreeItem(new DefaultTree(0), GENERAL, DRIVER_CLASS).doubleClick();
 			new DefaultText().setText(driverClass);
 		}
 

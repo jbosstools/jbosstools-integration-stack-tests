@@ -1,10 +1,7 @@
 package org.jboss.tools.teiid.reddeer.wizard;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.tools.teiid.reddeer.matcher.AllMatcher;
 
 /**
  * Wizard for creating WSDL connection profile

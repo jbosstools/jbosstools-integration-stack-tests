@@ -1,6 +1,5 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
-import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.allOf;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
 
 import java.io.File;
@@ -20,6 +19,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
@@ -27,12 +27,14 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.teiid.reddeer.Procedure;
 import org.jboss.tools.teiid.reddeer.VDB;
 import org.jboss.tools.teiid.reddeer.editor.CriteriaBuilder;
 import org.jboss.tools.teiid.reddeer.editor.CriteriaBuilder.OperatorType;
 import org.jboss.tools.teiid.reddeer.editor.CriteriaBuilder.RadioButtonType;
+import org.jboss.tools.teiid.reddeer.editor.MappingDiagramEditor;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.Reconciler;
 import org.jboss.tools.teiid.reddeer.editor.Reconciler.ExpressionBuilder;
@@ -99,7 +101,7 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 	private static final String TESTSQL_6 = "EXEC BooksInfo.getXmlBooksByEdition (3)";
 	
 	private String authorAttribute = "author_authors";//by default; reset in one method
-	private static final String TEIID_CONNECTION_PROFILE = "MyTeiidProfile";
+//	private static final String TEIID_CONNECTION_PROFILE = "MyTeiidProfile";
 	
 	/**
 	 * Create new Teiid Model Project
@@ -107,7 +109,7 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 	@Test
 	public void test01(){
 		try {
-		int currentPage = 0;//currentPage of wizard must be set to 0
+//		int currentPage = 0;//currentPage of wizard must be set to 0
 		//new ModelProjectWizard(currentPage).create(PROJECT_NAME, true, "sources", "views", "schemas");
 		new ModelExplorerManager().createProject(PROJECT_NAME, true, "sources", "views", "schemas");
 		} catch (Exception ex){
@@ -146,11 +148,11 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 		
 		//delete the offending FK in BOOKS - FK_PUBLISHER
 		//set focus to tree
-		String[] path2 = {PROJECT_NAME, "Books2.xmi", "BOOKS", "FK_PUBLISHER"};
+//		String[] path2 = {PROJECT_NAME, "Books2.xmi", "BOOKS", "FK_PUBLISHER"};
 		//System.out.println(new SWTWorkbenchBot().getFocusedWidget().getClass());//class org.eclipse.draw2d.FigureCanvas
-		Matcher matcher2 = allOf(widgetOfType(Tree.class));
+		Matcher<Tree> matcher2 = widgetOfType(Tree.class);
 		new SWTBotTree((Tree) new SWTBot().widget(matcher2, 0), matcher2).setFocus();
-		new DefaultTreeItem(0, PROJECT_NAME, SOURCE_MODEL_2+".xmi", "BOOKS", "FK_PUBLISHER").select();
+		new DefaultTreeItem(new DefaultTree(0), PROJECT_NAME, SOURCE_MODEL_2+".xmi", "BOOKS", "FK_PUBLISHER").select();
 		new ContextMenu("Delete").select();
 		
 		//save all
@@ -352,9 +354,10 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 		String[] filePath = {PROJECT_NAME, "schemas", SOAPYBOOKS_MODEL+".xmi", "bookSetMixedDocument"};
 		mew.open(filePath);
 		ModelEditor me = new ModelEditor(SOAPYBOOKS_MODEL+".xmi");
+		MappingDiagramEditor mde = new MappingDiagramEditor(SOAPYBOOKS_MODEL+".xmi");
 		
 		//merge mapping classes starting with "author"
-		List<SWTBotGefEditPart> mappingClassesAuthor = me.getMappingClasses("author");
+		List<SWTBotGefEditPart> mappingClassesAuthor = mde.getMappingClasses("author");
 		me.selectParts(mappingClassesAuthor);
 		if (bot.toolbarButtonWithTooltip("Merge Mapping Classes").isEnabled()){
 			bot.toolbarButtonWithTooltip("Merge Mapping Classes").click();
@@ -362,7 +365,7 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 		}//otherwise they are already merged
 		
 		//delete attributes from author
-		List<String> authorAttrs = me.namesOfAttributes("author");
+		List<String> authorAttrs = mde.namesOfAttributes("author");
 		String firstAuthorRaw = authorAttrs.get(0);//retain this attribute
 		log.info("Retaining author attribute: " + firstAuthorRaw);
 		this.authorAttribute = firstAuthorRaw.substring(0, firstAuthorRaw.indexOf(" "));// author* : string --> author*
@@ -453,7 +456,7 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 		me.showMappingTransformation("author");
 		me.openInputSetEditor();
 		
-		new DefaultTreeItem(1, "bookSetMixed", "isbn : ISBN").select();
+		new DefaultTreeItem(new DefaultTree(1), "bookSetMixed", "isbn : ISBN").select();
 		new PushButton("< New").click();
 
 		bot.toolbarButton(1).click();//close the inputset editor
@@ -517,15 +520,10 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 		//Matcher m = allOf(widgetOfType(Tree.class));
 		//List<Tree> trees = new SWTBot().widgets(m);
 		
-		Matcher m2 = new Matcher(){
+		Matcher<Tree> m2 = new BaseMatcher<Tree>(){
 
 			@Override
 			public void describeTo(Description arg0) {
-				
-			}
-
-			@Override
-			public void _dont_implement_Matcher___instead_extend_BaseMatcher_() {
 				
 			}
 
@@ -553,7 +551,7 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 			
 		};
 		
-		List<Tree> list = new SWTBot().widgets(m2);//just to click somewhere inside the editor (but setFocus isn't enough)
+		new SWTBot().widgets(m2);//just to click somewhere inside the editor (but setFocus isn't enough)
 		
 		new DefaultTreeItem("bookSetMixed").select();
 		new DefaultTreeItem("bookSetMixed", "choice [MC: bookSetMixed]").select();
@@ -791,8 +789,8 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 		SWTBotTreeItem node = treeItem.getNode(3).click(1);
 		node.doubleClick();
 
-		Matcher comboMatcher = allOf(widgetOfType(CCombo.class));
-		List<CCombo> ccombo =  new SWTBot().widgets(comboMatcher);
+		Matcher<CCombo> comboMatcher = widgetOfType(CCombo.class);
+		List<? extends CCombo> ccombo =  new SWTBot().widgets(comboMatcher);
 		new SWTBotCCombo(ccombo.get(0)).setSelection("DEFAULT");
 		} catch (Exception ex){
 			//do it manually
@@ -858,16 +856,16 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 	
 	
 	private void deleteFromContextTree(String... path){
-		Matcher matcher2 = allOf(widgetOfType(Tree.class));
+		Matcher<Tree> matcher2 = widgetOfType(Tree.class);
 		new SWTBotTree((Tree) new SWTBot().widget(matcher2, 0), matcher2).setFocus();
-		new DefaultTreeItem(0, path).select();
+		new DefaultTreeItem(new DefaultTree(0), path).select();
 		new ContextMenu("Delete").select();
 	}
 	
 	private void createFolder(String folderName, String... path){
-		Matcher matcher2 = allOf(widgetOfType(Tree.class));
+		Matcher<Tree> matcher2 = widgetOfType(Tree.class);
 		new SWTBotTree((Tree) new SWTBot().widget(matcher2, 0), matcher2).setFocus();
-		new DefaultTreeItem(0, path).select();
+		new DefaultTreeItem(new DefaultTree(0), path).select();
 		new ContextMenu("New", "Folder").select();
 		new DefaultText(1).setText(folderName);
 		new PushButton("Finish").click();

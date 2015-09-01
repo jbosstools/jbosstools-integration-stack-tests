@@ -63,7 +63,6 @@ public class ConsumeSoapWs {
 		WsdlImportWizard wsdlWizard = new WsdlImportWizard();
 		
 		wsdlWizard.setProfile("SOAP");
-		wsdlWizard.setProjectName(PROJECT_NAME);
 		wsdlWizard.setSourceModelName(SOURCE_MODEL_NAME);
 		wsdlWizard.setViewModelName(VIEW_MODEL_NAME);
 		

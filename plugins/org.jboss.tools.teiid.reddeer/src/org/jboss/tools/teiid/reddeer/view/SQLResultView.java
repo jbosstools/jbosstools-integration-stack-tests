@@ -5,7 +5,7 @@ import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.toolbar.ViewToolItem;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
@@ -34,7 +34,8 @@ public class SQLResultView extends WorkbenchView {
 	
 	public void enableUnresolvableCps(){
 		open();
-		new ViewToolItem("Filter Results").click();
+		activate();
+		new DefaultToolItem("Filter Results").click();
 		new DefaultShell("SQL Results Filters");
 		new CheckBox("Display results of unresolvable connection profiles").toggle(true);
 		new PushButton("OK").click();

@@ -1,20 +1,21 @@
 package org.jboss.tools.teiid.reddeer.preference;
 
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
 
 /**
  * 
  * @author apodhrad
  *
  */
-public class ServerPreferencePage extends WorkbenchPreferencePage {
+public class ServerPreferencePage extends PreferencePage {
 
 	public ServerPreferencePage() {
 		super("Server", "Runtime Environments");
@@ -48,14 +49,14 @@ public class ServerPreferencePage extends WorkbenchPreferencePage {
 		System.arraycopy(type, 0, array, 0, array.length);
 		
 		try {
-			new DefaultTreeItem(0, array).select();//eclipse kepler (0), eclipse juno (1)
+			new DefaultTreeItem(new DefaultTree(0), array).select();//eclipse kepler (0), eclipse juno (1)
 			return;
 		} catch (Exception ex){
 			System.out.println(type + " not found, trying other variants...");
 		}
 		try {
 			array[array.length-1] = type[array.length-1].replaceAll(" Runtime", "+ Runtime");
-			new DefaultTreeItem(0, array).select();//eclipse kepler (0), eclipse juno (1)
+			new DefaultTreeItem(new DefaultTree(0), array).select();//eclipse kepler (0), eclipse juno (1)
 			return;
 		} catch (Exception ex){
 			

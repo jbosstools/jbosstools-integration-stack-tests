@@ -1,13 +1,12 @@
 package org.jboss.tools.teiid.reddeer.wizard;
 
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.scale.DefaultScale;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 
 /**
  * Wizard for importing relational model from DDL
@@ -23,9 +22,7 @@ public class DDLImportWizard extends TeiidImportWizard {
 	public static final String MODEL_TYPE = "Model type: ";
 
 	private String ddlPath;
-	private String modelFolder;
 	private String modelName;
-	private String modelType;
 	private String dialect;
 	private boolean autoselectDialect = false;
 	
@@ -52,18 +49,10 @@ public class DDLImportWizard extends TeiidImportWizard {
 		this.ddlPath = ddlPath;
 	}
 
-	public void setModelFolder(String modelFolder) {
-		this.modelFolder = modelFolder;
-	}
-
 	public void setModelName(String modelName) {
 		this.modelName = modelName;
 	}
-
-	public void setModelType(String modelType) {
-		this.modelType = modelType;
-	}
-
+	
 	public void execute() {
 		open();
 		new WaitUntil(new ShellWithTextIsAvailable("Import DDL"));

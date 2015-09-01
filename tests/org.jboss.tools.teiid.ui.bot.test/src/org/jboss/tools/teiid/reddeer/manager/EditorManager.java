@@ -1,6 +1,5 @@
 package org.jboss.tools.teiid.reddeer.manager;
 
-import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
 
 public class EditorManager {
 

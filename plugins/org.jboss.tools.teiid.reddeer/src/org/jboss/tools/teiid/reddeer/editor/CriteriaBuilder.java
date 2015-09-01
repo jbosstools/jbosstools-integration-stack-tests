@@ -188,7 +188,7 @@ public class CriteriaBuilder {
 	 * @author lfabriko
 	 *
 	 */
-	private class InnerButtonWithToolTipMatcher extends BaseMatcher {
+	private class InnerButtonWithToolTipMatcher extends BaseMatcher<Button> {
 		
 		private String columnToolTip = "Show the Column Editor";
 		private String constantToolTip = "Show the Constant Editor";

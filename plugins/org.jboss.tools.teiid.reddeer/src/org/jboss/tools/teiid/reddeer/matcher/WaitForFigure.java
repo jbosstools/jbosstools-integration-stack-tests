@@ -35,7 +35,7 @@ public class WaitForFigure extends WaitForObjectCondition<IFigure> {
 			private List<IFigure> list = new ArrayList<IFigure>();
 
 			@SuppressWarnings("unchecked")
-			private void find(List<IFigure> figures, Matcher matcher) {
+			private void find(List<IFigure> figures, Matcher<IFigure> matcher) {
 				for (IFigure figure : figures) {
 					if (matcher.matches(figure)) {
 						list.add(figure);
@@ -44,6 +44,7 @@ public class WaitForFigure extends WaitForObjectCondition<IFigure> {
 				}
 			}
 
+			@SuppressWarnings("unchecked")
 			public List<IFigure> run() {
 				find(figureCanvas.getContents().getChildren(), matcher);
 				return list;

@@ -1,12 +1,6 @@
 package org.jboss.tools.teiid.reddeer.extensions;
 
-import java.io.File;
-
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.eclipse.datatools.ui.FlatFileProfile;
-import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileFlatFilePage;
-import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileSelectPage;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
 
 public class FlatFileProfileExt extends FlatFileProfile {
 

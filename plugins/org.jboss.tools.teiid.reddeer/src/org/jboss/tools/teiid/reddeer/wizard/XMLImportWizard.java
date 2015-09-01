@@ -4,14 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.common.wait.WaitUntil;
 
 /**
  * Wizard for importing relational model from XML
@@ -73,7 +74,7 @@ public class XMLImportWizard extends TeiidImportWizard {
 		next();
 		new SWTWorkbenchBot().text(1).setText(rootPath);
 		for (String[] path : elements) {
-			new DefaultTreeItem(0, path).select();
+			new DefaultTreeItem(new DefaultTree(0), path).select();
 			new PushButton("Add").click();
 		}
 

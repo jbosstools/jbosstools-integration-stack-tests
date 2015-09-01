@@ -80,7 +80,7 @@ public class HSQLDBDriverWizard {
 		@Override
 		public void setDriverClass(String driverClass) {
 			selectTab(TAB_PROPERTIES);
-			new DefaultTreeItem(0, "General", "Driver Class").doubleClick();//kepler 0, juno 1
+			new DefaultTreeItem(new DefaultTree(0), "General", "Driver Class").doubleClick();//kepler 0, juno 1
 			new PushButton("...").click();
 			new DefaultText().setText(driverClass);
 			new PushButton("OK").click();

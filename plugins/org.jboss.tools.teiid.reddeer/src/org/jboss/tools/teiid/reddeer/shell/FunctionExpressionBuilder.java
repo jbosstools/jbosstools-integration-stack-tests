@@ -1,6 +1,5 @@
 package org.jboss.tools.teiid.reddeer.shell;
 
-import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.allOf;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
 
 import java.util.ArrayList;
@@ -16,13 +15,11 @@ import org.jboss.tools.teiid.reddeer.editor.CriteriaBuilder;
 
 public class FunctionExpressionBuilder{
 
-	private SWTBotShell shell;
-	private List<Combo> combos = new ArrayList<Combo>();
+	private List<? extends Combo> combos = new ArrayList<Combo>();
 	private CriteriaBuilder cb;
 	
 	public FunctionExpressionBuilder(SWTBotShell sh){
-		this.shell = sh;
-		Matcher m = allOf(widgetOfType(Combo.class));
+		Matcher<Combo> m = widgetOfType(Combo.class);
 		this.combos = new SWTBot().widgets(m);
 	}
 	

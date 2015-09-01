@@ -49,10 +49,7 @@ public class ServerManagementSimpleTest extends SWTBotTestCase {
 	private static final String[] pathToVDB_EAP6 = {
 			"EAP-6.1  [Started, Synchronized]", "Teiid Instance Configuration",
 			"mm://localhost:9999  [default]", "VDBs" };
-	private static TeiidBot teiidBot = new TeiidBot();
-
-	private static String SERVER_NOT_CONNECTED = "Server is not connected";
-	private static String TEIID_CONNECTION_FAILURE = "Teiid Connection Failure";
+	
 	private static String TEST_SQL1 = "select * from \"partssupModel1\".\"PARTS\"";
 	private static String EAP6_URL = "mm://localhost:9999::admin (EAP-6.1)";
 

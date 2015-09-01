@@ -19,7 +19,6 @@ public class SalesforceImportWizard extends ImportWizardDialog {
 
 	private static final String VALIDATE_CONNECTION = "Validate Connection";
 	private static final String CONNECTION_PROFILE = "Connection Profile";
-	private static final String SF_OBJECTS = "SalesForce Objects.";
 	private static final String MODEL_NAME = "Model Name:";
 	private static final String LOCATION = "Location:";
 	private static final String TITLE = "Create Relational Model from SalesForce Data Model";

@@ -13,7 +13,7 @@ import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.toolbar.ViewToolItem;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
@@ -76,7 +76,7 @@ public class ServersViewExt extends ServersView {
 		boolean result = false;
 		String url = getServerURLPrefix(serverType);
 		String[] path = new String[5];
-		Server server = new ServersView().getServer(serverName); 
+		new ServersView().getServer(serverName); 
 		/*String state = server.getLabel().getState().getText();
 		String publishState = server.getLabel().getPublishState().getText();*/ 
 		
@@ -189,7 +189,8 @@ public class ServersViewExt extends ServersView {
 		
 		//refresh 
 		new DefaultTreeItem(label).select();
-		new ViewToolItem(REFRESH).click();
+		activate();
+		new DefaultToolItem(REFRESH).click();
 		
 		//server was refreshed
 		new DefaultShell("Notification");
