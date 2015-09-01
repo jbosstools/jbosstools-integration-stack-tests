@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: jBPM3 Bot Tests
 Bundle-SymbolicName: org.jboss.tools.jbpm.ui.bot.test
 Bundle-Vendor: JBoss by Red Hat
-Bundle-Version: 4.2.0.qualifier
+Bundle-Version: 4.3.0.qualifier
 Bundle-Activator: org.jboss.tools.jbpm.ui.bot.test.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,

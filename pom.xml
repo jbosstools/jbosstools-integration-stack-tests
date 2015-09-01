@@ -5,19 +5,19 @@
 	<parent>
 		<groupId>org.jboss.tools</groupId>
 		<artifactId>parent</artifactId>
-		<version>4.2.3.Final-SNAPSHOT</version>
+		<version>4.3.0.CR1-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools</groupId>
 	<artifactId>integration-stack-tests</artifactId>
-	<version>4.2.0-SNAPSHOT</version>
+	<version>4.3.0-SNAPSHOT</version>
 	<name>integration-stack-tests.all</name>
 	<packaging>pom</packaging>
 
 	<properties>
 	  <tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-integration-stack-tests.git</tycho.scmUrl>
-	  <jbtis.tp.version>4.2.7.Final</jbtis.tp.version>
-	  <jbtis.site>http://download.jboss.org/jbosstools/updates/stable/luna/integration-stack/aggregate/4.2.3.Final</jbtis.site>
-	  <jbtis-ea.site>http://download.jboss.org/jbosstools/updates/stable/luna/integration-stack/aggregate/4.2.3.Final/earlyaccess</jbtis-ea.site>
+	  <jbtis.tp.version>4.3.0.Beta1f-SNAPSHOT</jbtis.tp.version>
+	  <jbtis.site>http://download.jboss.org/jbosstools/mars/development/updates/integration-stack/</jbtis.site>
+	  <jbtis-ea.site>http://download.jboss.org/jbosstools/mars/development/updates/integration-stack/earlyaccess</jbtis-ea.site>
 	  <reddeer.site>http://download.jboss.org/jbosstools/updates/stable/mars/core/reddeer/0.8.0</reddeer.site>
 	  <orbit.site>http://download.eclipse.org/tools/orbit/downloads/drops/R20130517111416/repository</orbit.site>
 	  <swtbot.site>http://download.eclipse.org/technology/swtbot/releases/latest</swtbot.site>

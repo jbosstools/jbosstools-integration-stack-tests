@@ -28,7 +28,12 @@ public class ServerRuntimeWizard extends WizardDialog {
 	}
 
 	public ServerRuntimeWizard setType(String category, String label) {
-		new DefaultTreeItem(category, label).select();
+		try {
+			new DefaultTreeItem(category, label).select();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println();
+		}
 		return this;
 	}
 	
