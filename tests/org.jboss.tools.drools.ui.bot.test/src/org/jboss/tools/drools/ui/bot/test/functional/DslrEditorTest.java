@@ -11,6 +11,7 @@ import org.jboss.tools.drools.reddeer.editor.DslrEditor;
 import org.jboss.tools.drools.reddeer.editor.RuleEditor;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
 import org.jboss.tools.drools.reddeer.wizard.NewDslWizard;
+import org.jboss.tools.drools.reddeer.wizard.NewDslWizardPage;
 import org.jboss.tools.drools.reddeer.wizard.NewRuleResourceWizard;
 import org.jboss.tools.drools.ui.bot.test.annotation.Drools6Runtime;
 import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
@@ -37,8 +38,9 @@ public class DslrEditorTest extends TestParent {
         { // create *.dsl file
             NewDslWizard wizard = new NewDslWizard();
             wizard.open();
-            wizard.getFirstPage().setParentFolder(getRulesLocation());
-            wizard.getFirstPage().setFileName(getTestName());
+            NewDslWizardPage page = new NewDslWizardPage();
+            page.setParentFolder(getRulesLocation());
+            page.setFileName(getTestName());
             wizard.finish();
 
             // close dsl editor
