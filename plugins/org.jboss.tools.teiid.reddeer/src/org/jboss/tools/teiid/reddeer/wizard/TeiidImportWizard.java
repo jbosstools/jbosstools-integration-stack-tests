@@ -16,11 +16,8 @@ import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
  */
 public abstract class TeiidImportWizard extends ImportWizardDialog {
 
-	private String importer;
-
 	public TeiidImportWizard(String importer) {
 		super("Teiid Designer", importer);
-		this.importer = importer;
 	}
 
 	@Override

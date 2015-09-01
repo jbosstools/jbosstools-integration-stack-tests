@@ -45,12 +45,10 @@ public class XmlFileImportTest {
 	private static final String XML_LOCAL_MODEL_PREFIX = "Local";
 	private static final String XML_REMOTE_MODEL_PREFIX = "Remote";
 	private static final String XML_VIEW_MODEL_SUFFIX = "View";
-	private static final String XML_SOURCE_MODEL_SUFFIX = "Source";
 	
 	private static final String TESTLOCAL = "SELECT * FROM LocalView.LocalTable";
 	private static final String TESTREMOTE = "SELECT * FROM RemoteView.RemoteTable";
 	
-	private static int i = 0;
 
 	@BeforeClass
 	public static void prepare() {

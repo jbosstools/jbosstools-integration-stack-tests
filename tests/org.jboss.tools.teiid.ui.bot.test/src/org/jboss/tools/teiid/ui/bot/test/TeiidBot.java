@@ -336,8 +336,8 @@ public class TeiidBot {
 	public String loadFileAsString(String fileName){
 		String result = "";
 		File f = new File(fileName);
-		try {
-			BufferedReader in = new BufferedReader(new FileReader(f));
+		try (BufferedReader in = new BufferedReader(new FileReader(f))){
+			;
 			String line = null;
 			
 			while ((line = in.readLine()) != null) {

@@ -53,7 +53,6 @@ public class ServerManagementTest extends SWTBotTestCase {
 	private static final String[] pathToVDB_AS7 = {
 		"AS-7.1  [Started, Synchronized]", "Teiid Instance Configuration",
 		"mm://localhost:9999  [default]", "VDBs" };
-	private static TeiidBot teiidBot = new TeiidBot();
 
 	private static String SERVER_NOT_CONNECTED = "Server is not connected";
 	private static String TEIID_CONNECTION_FAILURE = "Teiid Connection Failure";

@@ -3,6 +3,7 @@ package org.jboss.tools.teiid.reddeer.wizard;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
@@ -12,10 +13,6 @@ import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.tools.teiid.reddeer.condition.IsItemAdded;
 
 /**
  * Wizard for importing relational model from WSDL
@@ -31,7 +28,6 @@ public class WsdlImportWizard extends TeiidImportWizard {
 	private List<String> requestElements;
 	private List<String> responseElements;
 	private List<String> operations;
-	private String projectName;  
 	private String sourceModelName;
 	private String viewModelName;
 
@@ -60,11 +56,6 @@ public class WsdlImportWizard extends TeiidImportWizard {
 
 	public void setProfile(String profile) {
 		this.profile = profile;
-	}
-	
-	public void setProjectName(String projectName){ 
-
-		this.projectName = projectName;
 	}
 
 	public void addRequestElement(String path) {
@@ -145,11 +136,6 @@ public class WsdlImportWizard extends TeiidImportWizard {
 	private void selectOperation(String operation){
 		new DefaultTable(new DefaultGroup("Select the desired WSDL Operations"),0).getItem(operation).setChecked(true);	
 		
-	}
-
-	private String getLastItem(String path) {
-		String[] items = path.split("/");
-		return items[items.length - 1];
 	}
 
 	// The are some problems on Win7_32. We need to wait due to possible WSDL

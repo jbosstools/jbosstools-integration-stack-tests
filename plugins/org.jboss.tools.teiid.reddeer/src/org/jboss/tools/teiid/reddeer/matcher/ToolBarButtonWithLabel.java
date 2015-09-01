@@ -12,7 +12,7 @@ import org.jboss.reddeer.core.util.Display;
  * @author lfabriko
  *
  */
-public class ToolBarButtonWithLabel extends BaseMatcher {
+public class ToolBarButtonWithLabel extends BaseMatcher<ToolItem> {
 
 	/*private String toolTip;
 	

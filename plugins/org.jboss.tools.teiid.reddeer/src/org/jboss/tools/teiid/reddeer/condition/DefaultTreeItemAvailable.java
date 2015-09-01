@@ -1,10 +1,6 @@
 package org.jboss.tools.teiid.reddeer.condition;
 
-import org.apache.log4j.Logger;
 import org.jboss.reddeer.common.condition.WaitCondition;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 
 /**

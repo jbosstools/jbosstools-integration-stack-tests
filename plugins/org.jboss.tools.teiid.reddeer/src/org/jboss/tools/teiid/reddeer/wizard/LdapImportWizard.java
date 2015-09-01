@@ -1,7 +1,7 @@
 package org.jboss.tools.teiid.reddeer.wizard;
 
-import java.util.Arrays;
-
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.jface.wizard.ImportWizardDialog;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -10,16 +10,12 @@ import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 
 public class LdapImportWizard extends ImportWizardDialog {
 	private static final String TABLE_NAME = "Table Name";
 
 	private static final String SOURCE_MODEL_TABLE_ATTRIBUTES = "Source Model Table Attributes";
-
-	private static final String SELECT_FOLDER = "Select a Folder";
 
 	private static final String SOURCE_MODEL_NAME = "Name";
 

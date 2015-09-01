@@ -30,7 +30,6 @@ public class ServerManagementSimpleEDS5Test extends SWTBotTestCase {
 	@InjectRequirement
 	private ServerRequirement serverRequirement;
 
-	private static final String EDS5_PROPERTIES = "eds5.properties";
 	private static final String EDS5_SERVER = "SOA-5.1";
 	private static final String PROJECT_NAME = "ServerMgmtTest";
 	private static final String MODEL_NAME = "partssupModel1.xmi";

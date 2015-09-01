@@ -1,20 +1,18 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Properties;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.tools.teiid.reddeer.ModelClass;
+import org.jboss.tools.teiid.reddeer.ModelType;
 import org.jboss.tools.teiid.reddeer.manager.ImportMetadataManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
-import org.jboss.tools.teiid.reddeer.wizard.CreateMetadataModel;
-import org.jboss.tools.teiid.reddeer.wizard.CreateMetadataModel.ModelBuilder;
+import org.jboss.tools.teiid.reddeer.wizard.MetadataModelWizard;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,6 +37,11 @@ public class BasicTest {
 		props.setProperty("destination", PROJECT);
 		new ImportMetadataManager().importXMLSchema(PROJECT, props);
 	}
+	
+	@AfterClass
+	public static void pauseAfter(){
+		System.out.println("pause");
+	}
 
 	// BooksInput, BooksUpdate, ISBNInput : mns:ISBNType, putResults :
 	// mns:putResultsType
@@ -49,32 +52,36 @@ public class BasicTest {
 	@Test
 	public void test() {
 
-		prepareModel(++i, new String[] { "BooksInput" });
-		output(i, "BooksInput");
+		String[] elems = new String[] { "BooksInput" };
+		prepareModel(++i, elems);
+		checkModel(i, elems);
 	}
+
 
 	@Test
 	public void test2() {
 
-		String elem = "BooksUpdate";
-		prepareModel(++i, new String[] { elem });
-		output(i, elem);
+		String[] elems = new String[] { "BooksUpdate" };
+		prepareModel(++i, elems);
+		checkModel(i, elems);
+
 	}
 
 	@Test
 	public void test3() {
 
-		String elem = "ISBNInput : mns:ISBNType";
-		prepareModel(++i, new String[] { elem });
-		output(i, elem);
+
+		String[] elems = new String[] { "ISBNInput : mns:ISBNType", "BooksUpdate"  };
+		prepareModel(++i, elems);
+		checkModel(i, elems);
 	}
 
 	@Test
 	public void test4() {
 
-		String elem = "putResults : mns:putResultsType";
-		prepareModel(++i, new String[] { elem });
-		output(i, elem);
+		String[] elems = new String[] {"putResults : mns:putResultsType" };
+		prepareModel(++i, elems);
+		checkModel(i, elems);
 	}
 
 	@Test
@@ -82,10 +89,7 @@ public class BasicTest {
 
 		String[] elems = new String[] { virtDocs[0], virtDocs[1] };
 		prepareModel(++i, elems);
-		for (String s : elems) {
-
-			output(i, s);
-		}
+		checkModel(i, elems);
 	}
 
 	@Test
@@ -93,10 +97,7 @@ public class BasicTest {
 
 		String[] elems = new String[] { virtDocs[1], virtDocs[2] };
 		prepareModel(++i, elems);
-		for (String s : elems) {
-
-			output(i, s);
-		}
+		checkModel(i, elems);
 	}
 
 	@Test
@@ -104,10 +105,7 @@ public class BasicTest {
 
 		String[] elems = new String[] { virtDocs[0], virtDocs[2] };
 		prepareModel(++i, elems);
-		for (String s : elems) {
-
-			output(i, s);
-		}
+		checkModel(i, elems);
 	}
 
 	@Test
@@ -115,10 +113,7 @@ public class BasicTest {
 
 		String[] elems = new String[] { virtDocs[0], virtDocs[3] };
 		prepareModel(++i, elems);
-		for (String s : elems) {
-
-			output(i, s);
-		}
+		checkModel(i, elems);
 	}
 
 	@Test
@@ -126,10 +121,7 @@ public class BasicTest {
 
 		String[] elems = new String[] { virtDocs[1], virtDocs[2] };
 		prepareModel(++i, elems);
-		for (String s : elems) {
-
-			output(i, s);
-		}
+		checkModel(i, elems);
 	}
 
 	@Test
@@ -137,66 +129,57 @@ public class BasicTest {
 
 		String[] elems = new String[] { virtDocs[1], virtDocs[2], virtDocs[3] };
 		prepareModel(++i, elems);
-		for (String s : elems) {
-
-			output(i, s);
-		}
+		checkModel(i, elems);
 	}
 
 	private void prepareModel(int i, String[] virtDocs) {
 
-		CreateMetadataModel createModel = new CreateMetadataModel();
-		createModel.setLocation(PROJECT);
-		createModel.setName(MODEL + i);
-		createModel.setClass(CreateMetadataModel.ModelClass.XML);
-		createModel.setType(CreateMetadataModel.ModelType.VIEW);
-		createModel.setModelBuilder(ModelBuilder.BUILD_FROM_XML_SCHEMA);
-		createModel.setPathToXmlSchema(new String[] { PROJECT, XSD });
-		createModel.setVirtualDocuments(virtDocs);
-		createModel.execute();
+		MetadataModelWizard wizard = new MetadataModelWizard();
+		wizard.open();
+		wizard
+			.setLocation(PROJECT)
+			.setModelName(MODEL + i)
+			.selectModelClass(ModelClass.XML)
+			.selectModelType(ModelType.VIEW)
+			.selectModelBuilder(org.jboss.tools.teiid.reddeer.ModelBuilder.BUILD_FROM_XML_SCHEMA)
+			.next();
+		wizard.selectXMLSchemaFile(new String[] { PROJECT, XSD });
+		for(String elem : virtDocs){
+			wizard.addElement(elem);
+		}
+		
+		wizard.finish();
+		
 	}
 
-	private void output(int j, String elem) {
+	private void checkModel(int i2, String[] elems) {
+		ModelExplorer modelExplorer = new ModelExplorer();
+		modelExplorer.open();
+		for (String elem : elems){
+			String el = "";
+			String el2 = "";
 
-		new ModelExplorer().open();
-		int s = 0;
-
-		// BooksInput, BooksUpdate, ISBNInput : mns:ISBNType, putResults :
-		// mns:putResultsType
-		String el = "";
-		String el2 = "";
-
-		if (elem.equals(virtDocs[0])) {
-			el = "BooksInputDocument";
-			el2 = elem;
-		}
-		if (elem.equals(virtDocs[1])) {
-			el = "BooksUpdateDocument";
-			el2 = elem;
-		}
-		if (elem.equals(virtDocs[2])) {
-			el = "ISBNInputDocument";
-			el2 = "ISBNInput";
-		}
-		if (elem.equals(virtDocs[3])) {
-			el = "putResultsDocument";
-			el2 = "putResults";
-		}
-
-		try {
-			PrintWriter out = new PrintWriter(new BufferedWriter(
-					new FileWriter("/home/tsedmik/tmp/myfile.txt", true)));
-			out.println(MODEL + j + ", " + elem);
-			s = new DefaultTreeItem(PROJECT, MODEL + j + ".xmi", el, el2)
-					.getItems().size();
-			for (int i = 0; i < s; i++) {
-				String data = new DefaultTreeItem(PROJECT, MODEL + j + ".xmi",
-						el, el2).getItems().get(i).getText();
-				out.println(data);
+			if (elem.equals(virtDocs[0])) {
+				el = "BooksInputDocument";
+				el2 = elem;
 			}
-			out.close();
-		} catch (IOException ex) {
-
+			if (elem.equals(virtDocs[1])) {
+				el = "BooksUpdateDocument";
+				el2 = elem;
+			}
+			if (elem.equals(virtDocs[2])) {
+				el = "ISBNInputDocument";
+				el2 = "ISBNInput";
+			}
+			if (elem.equals(virtDocs[3])) {
+				el = "putResultsDocument";
+				el2 = "putResults";
+			}
+			modelExplorer.activate();
+			new DefaultTreeItem(PROJECT, MODEL + i2 + ".xmi", el, el2);
+			teiidBot.assertResource(PROJECT, MODEL + i2 + ".xmi", el, el2, "mns = http://www.teiid.org/UpdateBooks_Output");
 		}
+		
 	}
+
 }

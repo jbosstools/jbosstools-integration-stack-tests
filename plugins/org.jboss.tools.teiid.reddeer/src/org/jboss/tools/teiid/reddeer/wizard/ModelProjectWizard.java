@@ -25,12 +25,10 @@ public class ModelProjectWizard extends NewWizardDialog {
 
 	public ModelProjectWizard() {
 		super(CATEGORY, PROJECT_TITLE);
-		addWizardPage(new ModelProjectPage(), 1);
 	}
 	
 	public ModelProjectWizard(int currentPage) {
 		super(CATEGORY, PROJECT_TITLE);
-		addWizardPage(new ModelProjectPage(), currentPage);
 	}
 
 	public void create(String name) {

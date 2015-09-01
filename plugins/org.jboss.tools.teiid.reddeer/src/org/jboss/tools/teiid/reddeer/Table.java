@@ -13,12 +13,12 @@ public class Table extends ModelObject{
 		VIEW, SRC;
 	}
 	
-	private static final String PROPERTIES = "Properties";
-	private static final String COLUMNS = "Columns";
-	private static final String PRIMARY_KEY = "Primary Key";
-	private static final String UNIQUE_CONSTRAINT = "Unique Constraint";
-	private static final String FOREIGN_KEYS = "Foreign Keys";
-	private static final String INDEXES = "Indexes";
+	public static final String PROPERTIES = "Properties";
+	public static final String COLUMNS = "Columns";
+	public static final String PRIMARY_KEY = "Primary Key";
+	public static final String UNIQUE_CONSTRAINT = "Unique Constraint";
+	public static final String FOREIGN_KEYS = "Foreign Keys";
+	public static final String INDEXES = "Indexes";
 	
 	public static class Template{
 		public static final String SIMPLE = "Simple SELECT";

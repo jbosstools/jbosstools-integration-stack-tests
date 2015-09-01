@@ -2,6 +2,7 @@ package org.jboss.tools.teiid.reddeer.wizard;
 
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 
 /**
@@ -43,14 +44,14 @@ public class ServerWizard extends NewWizardDialog {
 		
 		try {
 			
-			new DefaultTreeItem(0, array).select();//eclipse kepler (0), eclipse juno (1)
+			new DefaultTreeItem(new DefaultTree(0), array).select();//eclipse kepler (0), eclipse juno (1)
 			return;
 		} catch (Exception ex){
 			System.out.println(ex.getMessage());
 		}
 		try {
 			array[array.length-1] = type[array.length-1] + "+";
-			new DefaultTreeItem(0, array).select();//eclipse kepler (0), eclipse juno (1)
+			new DefaultTreeItem(new DefaultTree(0), array).select();//eclipse kepler (0), eclipse juno (1)
 			return;
 		} catch (Exception ex){
 			System.out.println(ex.getMessage());

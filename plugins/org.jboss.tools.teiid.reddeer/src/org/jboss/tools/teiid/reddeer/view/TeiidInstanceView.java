@@ -1,22 +1,20 @@
 package org.jboss.tools.teiid.reddeer.view;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewException;
-import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.teiid.reddeer.condition.ServerHasState;
 
@@ -30,7 +28,6 @@ public class TeiidInstanceView extends WorkbenchView {//DEPRECATED - JBDS7 only 
 //TODO - merge with serversViewExt
 	public static final String TOOLBAR_CREATE_TEIID = "Create a new Teiid instance";
 	public static final String TOOLBAR_RECONNECT_TEIID = "Reconnect to the selected Teiid Instance";
-	private static int TEIID_INSTANCE_TREE_INDEX = 3;
 
 	/**
 	 * Previous to Kepler
@@ -97,7 +94,6 @@ public class TeiidInstanceView extends WorkbenchView {//DEPRECATED - JBDS7 only 
 	 * @return
 	 */
 	public boolean containsVDB(boolean isKeplerOrMore, String... pathToVDB) {//-->move to servermgr
-		SWTBot bot = new SWTWorkbenchBot();
 		
 		//general
 		try {
@@ -128,11 +124,6 @@ public class TeiidInstanceView extends WorkbenchView {//DEPRECATED - JBDS7 only 
 			return false;
 		}
 	}
-	
-	public static void setTeiidInstanceTreeIndex(int index){
-		TEIID_INSTANCE_TREE_INDEX = index;
-	}
-	
 
 	/**
 	 * Previous to Kepler
@@ -159,7 +150,7 @@ public class TeiidInstanceView extends WorkbenchView {//DEPRECATED - JBDS7 only 
 		
 
 		try {
-			DefaultShell shell = new DefaultShell("Change of Teiid Version");
+			new DefaultShell("Change of Teiid Version");
 			new PushButton("Yes").click();// save all opened editors
 		} catch (Exception ex) {
 			// dialog doesn't apper if restart of server precedes setup of default teiid instance

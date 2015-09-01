@@ -71,7 +71,6 @@ public class CreateRestProcedureTest {
 
 	@Before
 	public void importProject() {
-		TeiidBot teiidBot = new TeiidBot();
 		new ImportManager().importProject(teiidBot.toAbsolutePath("resources/projects/" + PROJECT_NAME));
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		project = teiidBot.modelExplorer().getProject(PROJECT_NAME);

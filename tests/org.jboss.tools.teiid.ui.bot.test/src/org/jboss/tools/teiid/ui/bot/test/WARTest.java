@@ -3,20 +3,12 @@ package org.jboss.tools.teiid.ui.bot.test;
 import java.util.Properties;
 
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
-import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.tools.teiid.reddeer.WAR;
-import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfilesConstants;
 import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
@@ -26,7 +18,6 @@ import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidSer
 import org.jboss.tools.teiid.reddeer.util.SimpleHttpClient;
 import org.jboss.tools.teiid.reddeer.wizard.ImportGeneralItemWizard;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -40,7 +31,6 @@ import org.junit.runner.RunWith;
 		ConnectionProfilesConstants.ORACLE_11G_BOOKS
 		})
 public class WARTest extends SWTBotTestCase {
-	private static Logger logger = new Logger(WARTest.class);
 	public static final String MODEL_PROJECT = "jdbcImportTest";
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;
@@ -222,7 +212,6 @@ public class WARTest extends SWTBotTestCase {
 		new ModelExplorerManager().getWAR(projectBooksRest, rbWar+".war").deploy();
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		
-		String url = "-u teiidUser:dvdvdv0! http://localhost:8080/"+rbWar+"/BooksView/book1/0201877562";
 		String username = teiidServer.getServerConfig().getServerBase().getProperty("teiidUser");
 		String password = teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword");
 		SimpleHttpClient client = new SimpleHttpClient("http://localhost:8080/" + rbWar + "/BooksView/book1/0201877562")

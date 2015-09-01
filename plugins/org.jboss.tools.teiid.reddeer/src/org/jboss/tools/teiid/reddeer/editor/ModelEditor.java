@@ -21,18 +21,16 @@ import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefViewer;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.results.Result;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotCTabItem;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.ui.IEditorReference;
 import org.hamcrest.Matcher;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.swt.api.CTabItem;
 import org.jboss.reddeer.swt.api.TabItem;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tab.DefaultTabFolder;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.tools.teiid.reddeer.matcher.AttributeMatcher;
 import org.jboss.tools.teiid.reddeer.matcher.IsTransformation;
 import org.jboss.tools.teiid.reddeer.matcher.MappingClassMatcher;
@@ -244,7 +242,7 @@ public class ModelEditor extends SWTBotEditor {
 	}
 
 	public SWTBotGefFigure tFigure() {
-		Matcher matcher = allOf(instanceOf(ImageFigure.class), new WithBounds(40, 60));
+		Matcher<IFigure> matcher = allOf(instanceOf(ImageFigure.class), new WithBounds(40, 60));
 		return new SWTBotGefFigure(figure(matcher, 0));
 	}
 
@@ -316,7 +314,7 @@ public class ModelEditor extends SWTBotEditor {
 			viewer = getGraphicalViewer(MAPPING_DIAGRAM);
 			AttributeMatcher matcher = AttributeMatcher.createAttributeMatcher();
 			matcher.setPrefix(prefix);
-			List<SWTBotGefEditPart> attributes = viewer.editParts(matcher);//generate list of texts
+			viewer.editParts(matcher);//generate list of texts
 			return matcher.getTexts();
 	}
 	

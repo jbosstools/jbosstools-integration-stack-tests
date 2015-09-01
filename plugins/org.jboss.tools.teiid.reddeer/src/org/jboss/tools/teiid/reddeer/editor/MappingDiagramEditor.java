@@ -1,35 +1,19 @@
 package org.jboss.tools.teiid.reddeer.editor;
 
-import static org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable.asyncExec;
-
 import java.util.List;
 
-import org.eclipse.draw2d.Button;
-import org.eclipse.draw2d.Clickable;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.Label;
-import org.eclipse.gef.EditPart;
-import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefViewer;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
-import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.ui.IEditorReference;
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.matcher.AttributeMatcher;
 import org.jboss.tools.teiid.reddeer.matcher.IsTransformation;
 import org.jboss.tools.teiid.reddeer.matcher.MappingClassMatcher;
 import org.jboss.tools.teiid.reddeer.matcher.RecursiveButtonMatcher;
-import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
-import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
 
 public class MappingDiagramEditor extends SWTBotEditor{
 
@@ -39,7 +23,6 @@ public class MappingDiagramEditor extends SWTBotEditor{
 		new SWTWorkbenchBot().sleep(5 * 1000);
 	}
 
-	private Clickable button;
 	private String prefixMappingClassRecursive;
 	private SWTBotGefViewer viewer;
 	public static final String MAPPING_DIAGRAM = "Mapping Diagram";
@@ -55,7 +38,7 @@ public class MappingDiagramEditor extends SWTBotEditor{
 
 	public RecursionEditor clickOnRecursiveButton(String mappingClass){
 		this.prefixMappingClassRecursive = mappingClass;
-		RecursiveButtonMatcher matcher = RecursiveButtonMatcher.createRecursiveButtonMatcher(mappingClass);
+		RecursiveButtonMatcher matcher = RecursiveButtonMatcher.createRecursiveButtonMatcher(this.prefixMappingClassRecursive);
 		viewer.editParts(matcher);
 		return new RecursionEditor();
 	}
@@ -94,7 +77,7 @@ public class MappingDiagramEditor extends SWTBotEditor{
 			//viewer = new ModelEditor(super.getTitle()).getGraphicalViewer(MAPPING_DIAGRAM);
 			AttributeMatcher matcher = AttributeMatcher.createAttributeMatcher();
 			matcher.setPrefix(prefix);
-			List<SWTBotGefEditPart> attributes = viewer.editParts(matcher);//generate list of texts
+			viewer.editParts(matcher);//generate list of texts
 			return matcher.getTexts();
 	}
 	

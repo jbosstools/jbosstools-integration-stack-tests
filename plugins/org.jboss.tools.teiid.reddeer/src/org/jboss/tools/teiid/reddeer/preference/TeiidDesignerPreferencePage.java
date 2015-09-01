@@ -6,14 +6,14 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.spinner.DefaultSpinner;
 import org.jboss.reddeer.core.matcher.WithTooltipTextMatcher;
-import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
+import org.jboss.reddeer.jface.preference.PreferencePage;
 
 /**
  * 
  * @author apodhrad
  *
  */
-public class TeiidDesignerPreferencePage extends WorkbenchPreferencePage {
+public class TeiidDesignerPreferencePage extends PreferencePage {
 
 	public TeiidDesignerPreferencePage() {
 		super("Teiid Designer");

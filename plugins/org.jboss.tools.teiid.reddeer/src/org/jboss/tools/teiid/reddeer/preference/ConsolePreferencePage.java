@@ -2,9 +2,9 @@ package org.jboss.tools.teiid.reddeer.preference;
 
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
+import org.jboss.reddeer.jface.preference.PreferencePage;
 
-public class ConsolePreferencePage extends WorkbenchPreferencePage {
+public class ConsolePreferencePage extends PreferencePage {
 
 	public ConsolePreferencePage() {
 		super("Run/Debug", "Console");

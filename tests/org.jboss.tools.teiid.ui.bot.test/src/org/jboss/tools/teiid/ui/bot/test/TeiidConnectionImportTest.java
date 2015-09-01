@@ -56,28 +56,14 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 
 	private static final String sqlserverExistingModelName = "sqlserver";
 
-	private static final String sqlserverCPName = ConnectionProfilesConstants.SQL_SERVER_2008_BOOKS;
-	private static final String sqlserverModelName = "SqlServerImported";
 
 	// file
 	private static final String FILE_MODEL = "FileImported";
-
-	// oracle
-	private static final String oracleCPName = ConnectionProfilesConstants.ORACLE_11G_PARTS_SUPPLIER;
-	private static final String oracleModelName = "OracleImported";
 
 	// hsql
 	private static final String hsqlCPName = ConnectionProfilesConstants.HSQLDB;
 	private static final String hsqlModel = "HsqldbImported";
 
-	// sybase
-	private static final String sybaseCPName = ConnectionProfilesConstants.SYBASE_15_BQT2;
-	private static final String sybaseModelName = "SybaseImported";
-
-	// sybase jtds
-	private static final String sybaseJtdsCP = "SybaseJtds";
-	private static final String sybaseJtdsCPProps = "resources/db/sybase-jtds.properties";
-	private static final String sybaseJtdsModel = "sybaseJtds";
 
 	private static TeiidBot teiidBot = new TeiidBot();
 
