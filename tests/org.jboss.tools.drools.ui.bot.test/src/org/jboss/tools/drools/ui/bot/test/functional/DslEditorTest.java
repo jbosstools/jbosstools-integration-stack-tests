@@ -14,7 +14,9 @@ import org.jboss.tools.drools.reddeer.dialog.DslLineDialog.Scope;
 import org.jboss.tools.drools.reddeer.editor.DslEditor;
 import org.jboss.tools.drools.reddeer.editor.DslEditor.DslLine;
 import org.jboss.tools.drools.reddeer.editor.DslEditor.SortBy;
+import org.jboss.tools.drools.reddeer.wizard.NewDslSamplesWizardPage;
 import org.jboss.tools.drools.reddeer.wizard.NewDslWizard;
+import org.jboss.tools.drools.reddeer.wizard.NewDslWizardPage;
 import org.jboss.tools.drools.ui.bot.test.annotation.Drools6Runtime;
 import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
 import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
@@ -42,9 +44,12 @@ public class DslEditorTest extends TestParent {
     public void createDefaultDsl() {
         NewDslWizard wiz = new NewDslWizard();
         wiz.open();
-        wiz.getFirstPage().setParentFolder(getRulesLocation());
-        wiz.getFirstPage().setFileName(getTestName());
-        wiz.getSamplesPage().setAddSampleDsl(true);
+        NewDslWizardPage page = new NewDslWizardPage();
+        page.setParentFolder(getRulesLocation());
+        page.setFileName(getTestName());
+        wiz.next();
+        NewDslSamplesWizardPage samplePage = new NewDslSamplesWizardPage();
+        samplePage.setAddSampleDsl(true);
         wiz.finish();
 
         new DslEditor().close(true);

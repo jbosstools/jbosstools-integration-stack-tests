@@ -11,6 +11,7 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.drools.reddeer.editor.DrlEditor;
 import org.jboss.tools.drools.reddeer.wizard.NewDecisionTableWizard;
 import org.jboss.tools.drools.reddeer.wizard.NewDecisionTableWizardPage;
+import org.jboss.tools.drools.reddeer.wizard.NewDslSamplesWizardPage;
 import org.jboss.tools.drools.reddeer.wizard.NewDslWizard;
 import org.jboss.tools.drools.reddeer.wizard.NewDslWizardPage;
 import org.jboss.tools.drools.reddeer.wizard.NewRuleResourceWizard;
@@ -107,11 +108,13 @@ public class NewResourcesTest extends TestParent {
 
         NewDslWizard wiz = new NewDslWizard();
         wiz.open();
-        NewDslWizardPage page = wiz.getFirstPage();
+        NewDslWizardPage page = new NewDslWizardPage();
         page.setParentFolder(getRulesLocation());
         page.setFileName(resourceName);
         // generate sample DSL lines
-        wiz.getSamplesPage().setAddSampleDsl(true);
+        wiz.next();
+        NewDslSamplesWizardPage samplePage = new NewDslSamplesWizardPage();
+        samplePage.setAddSampleDsl(true);
         wiz.finish();
 
         PackageExplorer pkg = new PackageExplorer();
