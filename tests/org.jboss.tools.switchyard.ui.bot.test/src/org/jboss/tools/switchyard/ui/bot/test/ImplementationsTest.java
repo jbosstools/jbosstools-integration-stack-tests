@@ -5,9 +5,10 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jboss.reddeer.core.handler.ShellHandler;
+import org.jboss.reddeer.junit.execution.annotation.RunIf;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.swt.impl.button.NoButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
@@ -29,6 +30,8 @@ import org.jboss.tools.switchyard.reddeer.wizard.ExistingBPMNServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ExistingCamelXMLServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ExistingDroolsServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ImportFileWizard;
+import org.jboss.tools.switchyard.ui.bot.test.condition.IssueIsClosed;
+import org.jboss.tools.switchyard.ui.bot.test.condition.IssueIsClosed.Jira;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -409,6 +412,8 @@ public class ImplementationsTest {
 	}
 
 	@Test
+	@Jira("SWITCHYARD-2782")
+	@RunIf(conditionClass = IssueIsClosed.class)
 	public void addDroolsImplementationWithNewJavaInterfaceTest() throws Exception {
 		SwitchYardEditor editor = new SwitchYardEditor();
 		DroolsServiceWizard droolsWizard = editor.addDroolsImplementation();
