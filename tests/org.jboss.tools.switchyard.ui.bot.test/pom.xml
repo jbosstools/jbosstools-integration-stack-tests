@@ -13,7 +13,8 @@
 
 	<properties>
 	  <reddeer.config>${project.build.directory}/config/wildfly-810_switchyard-200.xml</reddeer.config>
-	  <systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=${reddeer.config}</systemProperties>
+	  <reddeer.skipUnfixedIssues>false</reddeer.skipUnfixedIssues>
+	  <systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=${reddeer.config} -Dreddeer.skipUnfixedIssues=${reddeer.skipUnfixedIssues}</systemProperties>
 	  <surefire.timeout>10800</surefire.timeout>
 	  <test.class>AllTests</test.class>
 	  <customization.file>resources/settings/plugin_customization.ini</customization.file>
