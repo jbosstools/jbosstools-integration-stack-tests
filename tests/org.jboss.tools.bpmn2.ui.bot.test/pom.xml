@@ -16,8 +16,8 @@
 		<systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.skip=false -Dtest.configurations.dir=resources/ -Dgraphiti.properties=${graphiti.properties}</systemProperties>
 		<droolsjbpm.version>6.3.0.Beta2</droolsjbpm.version>
 		<droolsjbpm.feature.version>6.2.0.Final</droolsjbpm.feature.version>
-		<bpmn2.modeler.version>1.1.3.Final</bpmn2.modeler.version>
-		<bpmn2.metamodel.version>1.1.0.Final</bpmn2.metamodel.version>
+		<bpmn2.modeler.version>1.2.1</bpmn2.modeler.version>
+		<bpmn2.metamodel.version>1.2.1</bpmn2.metamodel.version>
 		<test.class>AllEditorTests</test.class>
 		<graphiti.properties>true</graphiti.properties>
 	</properties>
@@ -118,7 +118,7 @@
 				</dependency>
 				<dependency>
 				  <type>p2-installable-unit</type>
-				  <artifactId>org.eclipse.bpmn2.feature.group</artifactId>
+				  <artifactId>org.eclipse.bpmn2.feature.feature.group</artifactId>
 				  <version>${bpmn2.metamodel.version}</version>
 				</dependency>
 				
