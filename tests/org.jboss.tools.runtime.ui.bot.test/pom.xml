@@ -18,6 +18,11 @@
 	  <systemProperties>${integrationTestsSystemProperties} ${reddeerProperties}</systemProperties>
 	  <surefire.timeout>10800</surefire.timeout>
 	  <maven-download-plugin.version>1.2.0</maven-download-plugin.version>
+	  <skipJBPM>${skipRequirements}</skipJBPM>
+	  <skipESB>${skipRequirements}</skipESB>
+	  <skipAS>${skipRequirements}</skipAS>
+	  <skipWildfly>${skipRequirements}</skipWildfly>
+	  <skipKaraf>${skipRequirements}</skipKaraf>
 	</properties>
 
 	<build>
@@ -106,6 +111,7 @@
                     <goal>wget</goal>
 		  </goals>
 		  <configuration>
+		    <skip>${skipESB}</skip>
                     <url>http://download.jboss.org/jbossesb/4.12/binary/jbossesb-4.12.zip</url>
                     <unpack>true</unpack>
                     <outputDirectory>${project.build.directory}</outputDirectory>
@@ -119,6 +125,7 @@
                     <goal>wget</goal>
 		  </goals>
 		  <configuration>
+		    <skip>${skipAS}</skip>
 		    <url>http://download.jboss.org/jbossas/7.1/jboss-as-7.1.1.Final/jboss-as-7.1.1.Final.zip</url>
                     <unpack>true</unpack>
                     <outputDirectory>${project.build.directory}</outputDirectory>
@@ -132,6 +139,7 @@
                     <goal>wget</goal>
 		  </goals>
 		  <configuration>
+		    <skip>${skipKaraf}</skip>
                     <url>http://archive.apache.org/dist/karaf/2.3.6/apache-karaf-2.3.6.zip</url>
                     <unpack>true</unpack>
                     <outputDirectory>${project.build.directory}</outputDirectory>
@@ -145,6 +153,7 @@
 		    <goal>wget</goal>
 		  </goals>
 		  <configuration>
+		    <skip>${skipJBPM}</skip>
 		    <url>https://repository.jboss.org/nexus/content/groups/public/org/jbpm/jbpm3/jbpm-distribution/3.2.9/jbpm-distribution-3.2.9-installer.jar</url>
 		    <unpack>false</unpack>
                     <outputDirectory>${project.build.directory}</outputDirectory>
@@ -158,6 +167,7 @@
 		    <goal>wget</goal>
 		  </goals>
 		  <configuration>
+		    <skip>${skipWildfly}</skip>
 		    <url>http://download.jboss.org/wildfly/8.1.0.Final/wildfly-8.1.0.Final.zip</url>
 		    <unpack>true</unpack>
                     <outputDirectory>${project.build.directory}</outputDirectory>
@@ -170,7 +180,7 @@
 	      <artifactId>maven-antrun-plugin</artifactId>
 	      <version>1.7</version>
 	      <configuration>
-		<skip>${skipRequirements}</skip>
+		<skip>${skipJBPM}</skip>
 	      </configuration>
 	      <executions>
 		<execution>
@@ -203,10 +213,11 @@
 		<value>SmokeTests</value>
 	      </property>
 	    </activation>
-	    <properties>	      
-	      <reddeerProperties></reddeerProperties>
-	      <test.class>SmokeTests</test.class>
+	    <properties>
 	      <skipRequirements>true</skipRequirements>
+	      <skipWildfly>false</skipWildfly>
+	      <reddeer.config>${project.build.directory}/config/wildfly-810.xml</reddeer.config>
+	      <test.class>SmokeTests</test.class>
 	    </properties>
 	  </profile>
 	</profiles>
