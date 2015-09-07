@@ -14,9 +14,9 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
-import org.jboss.tools.fuse.reddeer.view.ErrorLogView;
 import org.jboss.tools.fuse.reddeer.view.JMXNavigator;
 import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
+import org.jboss.tools.fuse.ui.bot.test.utils.LogGrapper;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -85,7 +85,7 @@ public class JMXNavigatorTest extends DefaultTest {
 		JMXNavigator jmx = new JMXNavigator();
 		assertNotNull(jmx.getNode("Local Camel Context", "Camel", "camel-1", "Endpoints", "file", "src/data?noop=true"));
 		assertNotNull(jmx.getNode("Local Camel Context", "Camel", "camel-1", "Routes", "route1", "file:src/data?noop=true", "choice", "when", "log", "to"));
-		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
+		assertTrue("There are some errors in Error Log", LogGrapper.getFuseErrors().size() == 0);
 	}
 
 	/**
@@ -109,15 +109,16 @@ public class JMXNavigatorTest extends DefaultTest {
 	public void testContextOperations() {
 
 		JMXNavigator jmx = new JMXNavigator();
-		new JMXNavigator().getNode("Local Camel Context", "Camel", "camel-1").select();
+		jmx.open();
+		jmx.getNode("Local Camel Context", "Camel", "camel-1").select();
 		log.info("Suspend Camel Context");
 		new ContextMenu("Suspend Camel Context").select();
 		new WaitUntil(new ConsoleHasText("route1 suspend complete"), TimePeriod.NORMAL);
 		jmx.open();
-		new JMXNavigator().getNode("Local Camel Context", "Camel", "camel-1").select();
+		jmx.getNode("Local Camel Context", "Camel", "camel-1").select();
 		log.info("Resume Camel Context");
 		new ContextMenu("Resume Camel Context").select();
 		new WaitUntil(new ConsoleHasText("route1 resumed"), TimePeriod.NORMAL);
-		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
+		assertTrue("There are some errors in Error Log", LogGrapper.getFuseErrors().size() == 0);
 	}
 }

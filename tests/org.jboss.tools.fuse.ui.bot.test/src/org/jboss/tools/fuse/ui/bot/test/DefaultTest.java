@@ -3,18 +3,18 @@ package org.jboss.tools.fuse.ui.bot.test;
 import java.util.List;
 
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.common.matcher.RegexMatcher;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.exception.CoreLayerException;
+import org.jboss.reddeer.core.handler.ShellHandler;
+import org.jboss.reddeer.core.matcher.WithTooltipTextMatcher;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.views.log.LogMessage;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.core.handler.ShellHandler;
-import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.core.matcher.WithTooltipTextMatcher;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.fuse.reddeer.preference.ConsolePreferencePage;
 import org.jboss.tools.fuse.reddeer.preference.FuseToolingEditorPreferencePage;
 import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
@@ -85,7 +85,7 @@ public class DefaultTest {
 		try {
 			console.terminateConsole();
 			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		} catch (SWTLayerException ex) {
+		} catch (CoreLayerException ex) {
 			log.warn("Cannot terminate a console. Perhaps there is no active console.");
 		}
 

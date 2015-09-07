@@ -11,6 +11,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.exception.CoreLayerException;
+import org.jboss.reddeer.core.util.Display;
+import org.jboss.reddeer.core.util.ResultRunnable;
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.gef.GEFLayerException;
 import org.jboss.reddeer.gef.api.Palette;
@@ -18,8 +24,6 @@ import org.jboss.reddeer.gef.editor.GEFEditor;
 import org.jboss.reddeer.gef.handler.ViewerHandler;
 import org.jboss.reddeer.gef.impl.editpart.LabeledEditPart;
 import org.jboss.reddeer.gef.view.PaletteView;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
@@ -28,10 +32,6 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.core.util.Display;
-import org.jboss.reddeer.core.util.ResultRunnable;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.tools.fuse.reddeer.component.CamelComponent;
 import org.jboss.tools.fuse.reddeer.utils.MouseAWTManager;
 import org.jboss.tools.fuse.reddeer.utils.XPathEvaluator;
@@ -229,7 +229,7 @@ public class CamelEditor extends GEFEditor {
 		new LabeledEditPart(label).select();
 		try {
 			new ContextMenu("Set Breakpoint");
-		} catch (SWTLayerException ex) {
+		} catch (CoreLayerException ex) {
 			return true;
 		}
 
@@ -252,7 +252,7 @@ public class CamelEditor extends GEFEditor {
 		new LabeledEditPart(label).select();
 		try {
 			new ContextMenu("Enable Breakpoint");
-		} catch (SWTLayerException ex) {
+		} catch (CoreLayerException ex) {
 			return true;
 		}
 
@@ -275,7 +275,7 @@ public class CamelEditor extends GEFEditor {
 		new LabeledEditPart(label).select();
 		try {
 			new ContextMenu(operation).select();
-		} catch (SWTLayerException ex) {
+		} catch (CoreLayerException ex) {
 			log.error("Given operation is not present in the context menu of the component: " + label);
 		}
 	}

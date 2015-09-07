@@ -8,12 +8,12 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
-import org.jboss.tools.fuse.reddeer.view.FuseShell;
+import org.jboss.tools.fuse.reddeer.view.TerminalView;
 import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
@@ -91,9 +91,9 @@ public class DeploymentTest extends DefaultTest {
 		assertTrue(ServerManipulator.hasServerModule(serverRequirement.getConfig().getName(), PROJECT_NAME));
 		ServerManipulator.startServer(serverRequirement.getConfig().getName());
 		ServerManipulator.publish(serverRequirement.getConfig().getName());
-		assertTrue(new FuseShell().containsLog(PROJECT_IS_DEPLOYED));
+		assertTrue(new TerminalView().containsLog(PROJECT_IS_DEPLOYED));
 		ServerManipulator.removeAllModules(serverRequirement.getConfig().getName());
-		AbstractWait.sleep(TimePeriod.getCustom(10));
-		assertTrue(new FuseShell().containsLog(PROJECT_IS_UNDEPLOYED));
+		AbstractWait.sleep(TimePeriod.getCustom(30));
+		assertTrue(new TerminalView().containsLog(PROJECT_IS_UNDEPLOYED));
 	}
 }

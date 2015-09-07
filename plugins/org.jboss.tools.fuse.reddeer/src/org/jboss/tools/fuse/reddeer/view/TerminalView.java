@@ -11,15 +11,15 @@ import org.jboss.tools.fuse.reddeer.utils.ShellManager;
 import com.jcraft.jsch.JSchException;
 
 /**
- * Performs operations with the <i>Fuse Shell</i> view.
+ * Performs operations with the <i>Fuse Shell</i> in <i>Terminal</i> view.
  * Command execution is performed via SSH (not via JBoss Fuse Tooling).
  * 
  * @author tsedmik
  */
-public class FuseShell extends WorkbenchView {
+public class TerminalView extends WorkbenchView {
 
-	public FuseShell() {
-		super("Fuse", "Shell");
+	public TerminalView() {
+		super("Terminal", "Terminal");
 	}
 
 	/**

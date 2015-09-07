@@ -3,13 +3,13 @@ package org.jboss.tools.fuse.reddeer.view;
 import java.util.List;
 
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 
 /**
@@ -66,7 +66,7 @@ public class JMXNavigator extends WorkbenchView {
 				AbstractWait.sleep(TimePeriod.getCustom(2));
 				try {
 					new ContextMenu(CONNECT_CONTEXT_MENU).select();
-				} catch (SWTLayerException ex) {
+				} catch (CoreLayerException ex) {
 					log.info("Already connected to '" + name + "'.");
 				}
 				AbstractWait.sleep(TimePeriod.getCustom(2));
