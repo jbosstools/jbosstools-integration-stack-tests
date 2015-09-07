@@ -15,28 +15,28 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.jboss.reddeer.common.matcher.RegexMatcher;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.exception.CoreLayerException;
+import org.jboss.reddeer.core.matcher.WithTooltipTextMatcher;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.core.matcher.WithTooltipTextMatcher;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.fuse.reddeer.component.Log;
 import org.jboss.tools.fuse.reddeer.debug.IsSuspended;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
@@ -68,7 +68,7 @@ public class RegressionTest extends DefaultTest {
 	@After
 	public void setupClean() {
 
-		new ProjectExplorer().deleteAllProjects();
+		ProjectFactory.deleteAllProjects();
 	}
 
 	/**
@@ -174,6 +174,13 @@ public class RegressionTest extends DefaultTest {
 		new WaitUntil(new ShellWithTextIsAvailable("Please confirm..."));
 		new DefaultShell("Please confirm...");
 		new PushButton("No").click();
+		try {
+			new WaitUntil(new ShellWithTextIsAvailable("Please confirm..."));
+			new DefaultShell("Please confirm...");
+			new PushButton("No").click();
+		} catch (Exception e) {
+			// Nothing to do. 
+		}
 		assertTrue(editor.isDirty());
 		new DefaultToolItem(new WorkbenchShell(), 0, new WithTooltipTextMatcher(new RegexMatcher("Save All.*"))).click();
 		new WaitUntil(new ShellWithTextIsAvailable("Please confirm..."));
@@ -197,7 +204,7 @@ public class RegressionTest extends DefaultTest {
 
 		try {
 			new ContextMenu("Close Camel Context");
-		} catch (SWTLayerException ex) {
+		} catch (CoreLayerException ex) {
 			return;
 		} finally {
 			new ConsoleView().terminateConsole();
@@ -322,19 +329,19 @@ public class RegressionTest extends DefaultTest {
 		try {
 			new DefaultTreeItem("Apache Karaf Launcher").select();
 			fail("Run Configurations contains forbidden item");
-		} catch (SWTLayerException e) {}
+		} catch (CoreLayerException e) {}
 		try {
 			new DefaultTreeItem("Apache ServiceMix Launcher").select();
 			fail("Run Configurations contains forbidden item");
-		} catch (SWTLayerException e) {}
+		} catch (CoreLayerException e) {}
 		try {
 			new DefaultTreeItem("Fabric8 Launcher").select();
 			fail("Run Configurations contains forbidden item");
-		} catch (SWTLayerException e) {}
+		} catch (CoreLayerException e) {}
 		try {
 			new DefaultTreeItem("JBoss Fuse Launcher").select();
 			fail("Run Configurations contains forbidden item");
-		} catch (SWTLayerException e) {}
+		} catch (CoreLayerException e) {}
 	}
 
 	/**

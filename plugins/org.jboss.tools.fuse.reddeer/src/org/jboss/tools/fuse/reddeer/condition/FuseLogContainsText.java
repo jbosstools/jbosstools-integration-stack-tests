@@ -1,7 +1,7 @@
 package org.jboss.tools.fuse.reddeer.condition;
 
 import org.jboss.reddeer.common.condition.WaitCondition;
-import org.jboss.tools.fuse.reddeer.view.FuseShell;
+import org.jboss.tools.fuse.reddeer.view.TerminalView;
 
 /**
  * Checks whether Fuse server's log contains specified text
@@ -20,7 +20,7 @@ public class FuseLogContainsText implements WaitCondition {
 	@Override
 	public boolean test() {
 
-		return new FuseShell().execute("log:display").contains(text);
+		return new TerminalView().execute("log:display").contains(text);
 	}
 
 	@Override

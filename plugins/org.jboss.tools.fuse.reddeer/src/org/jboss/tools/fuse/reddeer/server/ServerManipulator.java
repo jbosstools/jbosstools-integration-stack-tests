@@ -18,15 +18,14 @@ import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerLabel;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.swt.api.Tree;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.fuse.reddeer.preference.ServerRuntimePreferencePage;
-import org.jboss.tools.fuse.reddeer.view.FuseShell;
+import org.jboss.tools.fuse.reddeer.view.TerminalView;
 import org.jboss.tools.fuse.reddeer.wizard.ServerWizard;
 
 /**
@@ -60,7 +59,7 @@ public class ServerManipulator {
 		serverRuntime.open();
 		try {
 			serverRuntime.removeServerRuntime(name);
-		} catch (SWTLayerException ex) {
+		} catch (CoreLayerException ex) {
 			log.warn("Cannot remove '" + name + "' server runtime. It is not listed in Server Runtimes!");
 		}
 		serverRuntime.ok();
@@ -74,7 +73,7 @@ public class ServerManipulator {
 			for (String runtime : serverRuntime.getServerRuntimes()) {
 				serverRuntime.removeServerRuntime(runtime);
 			}
-		} catch (SWTLayerException ex) {
+		} catch (CoreLayerException ex) {
 		}
 		serverRuntime.ok();
 	}
@@ -169,7 +168,7 @@ public class ServerManipulator {
 	public static void stopServer(String name) {
 
 		try {
-			new FuseShell().execute("log:clear");
+			new TerminalView().execute("log:clear");
 			ServersView serversView = new ServersView();
 			serversView.open();
 			Server server = serversView.getServer(name);
@@ -190,7 +189,7 @@ public class ServerManipulator {
 			for (TreeItem item : tree.getItems()) {
 				temp.add(new ServerLabel(item).getName());
 			}
-		} catch (CoreLayerException|SWTLayerException e) {
+		} catch (CoreLayerException e) {
 			return temp;
 		}
 
