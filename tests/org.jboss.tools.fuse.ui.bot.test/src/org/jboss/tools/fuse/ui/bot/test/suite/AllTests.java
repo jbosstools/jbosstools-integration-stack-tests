@@ -1,15 +1,11 @@
 package org.jboss.tools.fuse.ui.bot.test.suite;
 
-import junit.framework.TestSuite;
-
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.fuse.ui.bot.test.CamelEditorTest;
 import org.jboss.tools.fuse.ui.bot.test.DataTransformationTest;
 import org.jboss.tools.fuse.ui.bot.test.DebuggerTest;
 import org.jboss.tools.fuse.ui.bot.test.DeploymentTest;
 import org.jboss.tools.fuse.ui.bot.test.DownloadServerTest;
-import org.jboss.tools.fuse.ui.bot.test.Fabric8Test;
-import org.jboss.tools.fuse.ui.bot.test.FabricInCloudTest;
 import org.jboss.tools.fuse.ui.bot.test.FeaturesTest;
 import org.jboss.tools.fuse.ui.bot.test.FuseProjectTest;
 import org.jboss.tools.fuse.ui.bot.test.JMXNavigatorServerTest;
@@ -22,6 +18,8 @@ import org.jboss.tools.fuse.ui.bot.test.SmokeTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
+import junit.framework.TestSuite;
+
 /**
  * Runs all tests
  * 
@@ -33,8 +31,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	DebuggerTest.class,
 	DeploymentTest.class,
 	DownloadServerTest.class,
-	Fabric8Test.class,
-	FabricInCloudTest.class,
 	FeaturesTest.class,
 	FuseProjectTest.class,
 	JMXNavigatorServerTest.class,

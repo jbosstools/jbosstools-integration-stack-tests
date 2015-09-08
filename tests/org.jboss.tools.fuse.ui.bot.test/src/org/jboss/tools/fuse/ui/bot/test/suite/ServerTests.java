@@ -1,15 +1,14 @@
 package org.jboss.tools.fuse.ui.bot.test.suite;
 
-import junit.framework.TestSuite;
-
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.fuse.ui.bot.test.DeploymentTest;
-import org.jboss.tools.fuse.ui.bot.test.Fabric8Test;
 import org.jboss.tools.fuse.ui.bot.test.JMXNavigatorServerTest;
 import org.jboss.tools.fuse.ui.bot.test.ServerJRETest;
 import org.jboss.tools.fuse.ui.bot.test.ServerTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
+
+import junit.framework.TestSuite;
 
 /**
  * Runs tests that need a Fuse server instance on Fuse Tooling
@@ -18,7 +17,6 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @SuiteClasses({
 	DeploymentTest.class,
-	Fabric8Test.class,
 	JMXNavigatorServerTest.class,
 	ServerTest.class,
 	ServerJRETest.class
