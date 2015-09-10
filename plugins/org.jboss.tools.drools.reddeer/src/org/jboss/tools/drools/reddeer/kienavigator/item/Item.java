@@ -22,4 +22,8 @@ public abstract class Item<T extends Properties> {
 	}
 	
 	public abstract T properties();
+	
+	public String getName() {
+		return treeItem.getText();
+	}
 }
