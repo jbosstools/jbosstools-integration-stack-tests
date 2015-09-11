@@ -1,6 +1,6 @@
 package org.jboss.tools.drools.reddeer.kienavigator.properties;
 
-import org.jboss.reddeer.swt.impl.button.LabeledCheckBox;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 public class ServerProperties extends Properties {
@@ -25,7 +25,7 @@ public class ServerProperties extends Properties {
 	}
 	
 	public void useTrustedConnection(boolean checked) {
-		new LabeledCheckBox(TRUST_CONNECTION).toggle(checked);
+		new CheckBox(TRUST_CONNECTION).toggle(checked);
 	}
 	
 	public void setApplicationName(String name) {
@@ -41,7 +41,7 @@ public class ServerProperties extends Properties {
 	}
 	
 	public void useDefaultRepoPath(boolean useDefaultPath) {
-		new LabeledCheckBox(USE_DEFAULT_REPO).toggle(useDefaultPath);
+		new CheckBox(USE_DEFAULT_REPO).toggle(useDefaultPath);
 	}
 	
 	public void setGitRepoPath(String path) {
@@ -61,7 +61,7 @@ public class ServerProperties extends Properties {
 	}
 	
 	public boolean isTrustConnectionUsed() {
-		return new LabeledCheckBox(TRUST_CONNECTION).isChecked();
+		return new CheckBox(TRUST_CONNECTION).isChecked();
 	}
 	
 	public String getKieAppName() {
@@ -77,7 +77,7 @@ public class ServerProperties extends Properties {
 	}
 	
 	public boolean isDefaultRepoPathUsed() {
-		return new LabeledCheckBox(USE_DEFAULT_REPO).isChecked();
+		return new CheckBox(USE_DEFAULT_REPO).isChecked();
 	}
 	
 	public String getGitRepoPath() {

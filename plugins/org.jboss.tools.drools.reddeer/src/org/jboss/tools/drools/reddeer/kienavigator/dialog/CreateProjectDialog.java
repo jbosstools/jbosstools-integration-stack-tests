@@ -1,6 +1,6 @@
 package org.jboss.tools.drools.reddeer.kienavigator.dialog;
 
-import org.jboss.reddeer.swt.impl.button.LabeledCheckBox;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 public class CreateProjectDialog extends Dialog {
@@ -26,6 +26,6 @@ public class CreateProjectDialog extends Dialog {
 	}
 	
 	public void importProjectToWorkspace(boolean importToWorkspace) {
-		new LabeledCheckBox("Import the Project into my Workspace when done").toggle(importToWorkspace);
+		new CheckBox("Import the Project into my Workspace when done").toggle(importToWorkspace);
 	}
 }
