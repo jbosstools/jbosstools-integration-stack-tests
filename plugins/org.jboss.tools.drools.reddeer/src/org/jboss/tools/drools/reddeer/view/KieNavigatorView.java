@@ -9,6 +9,9 @@ import org.jboss.reddeer.swt.impl.link.DefaultLink;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
+import org.jboss.tools.drools.reddeer.kienavigator.item.OrgUnitItem;
+import org.jboss.tools.drools.reddeer.kienavigator.item.ProjectItem;
+import org.jboss.tools.drools.reddeer.kienavigator.item.RepositoryItem;
 import org.jboss.tools.drools.reddeer.kienavigator.item.ServerItem;
 
 public class KieNavigatorView extends WorkbenchView {
@@ -80,5 +83,28 @@ public class KieNavigatorView extends WorkbenchView {
 			}
 		}
 		throw new IllegalArgumentException("No such server: " + name);
+	}
+	
+	public ServerItem getServer(int number) {
+		checkAndOpen();
+		if (!isEmpty()) {
+			List <TreeItem> items = new DefaultTree().getItems();
+			if (number <= items.size() ) {
+				return new ServerItem(items.get(number));
+			}
+		}
+		throw new IllegalArgumentException("No such server: " + number);
+	}
+	
+	public OrgUnitItem getOrgUnit(int serverNumber, String orgUnitName) {
+		return getServer(serverNumber).getOrgUnit(orgUnitName);
+	}
+	
+	public RepositoryItem getRepository(int serverNumber, String orgUnitName, String repoName) {
+		return getOrgUnit(serverNumber, orgUnitName).getRepository(repoName);
+	}
+	
+	public ProjectItem getProject(int serverNumber, String orgUnitName, String repoName, String projectName) {
+		return getRepository(serverNumber, orgUnitName, repoName).getProject(projectName);
 	}
 }
