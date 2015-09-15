@@ -1,11 +1,10 @@
 package org.jboss.tools.drools.ui.bot.test.kienavigator;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 import org.apache.log4j.Logger;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
+import org.jboss.tools.drools.ui.bot.test.util.RestClient;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
 import org.junit.Before;
 
@@ -17,18 +16,14 @@ public class KieNavigatorTestParent extends TestParent {
 	
 	private static final int HTTP_OK = 200;
 	
-	private static final String APP_URL = "http://localhost:8080/business-central/";
+	protected static final String REPO_URL = "https://github.com/jboss-developer/jboss-brms-repository.git";
 	
 	@Before
 	public void waitForServer() throws IOException {
-		URL url = new URL(APP_URL); 
 		int time = 0;
 		int responceCode = 0;
 		while (time < MAX_WAIT_TIME) {
-			HttpURLConnection huc = (HttpURLConnection) url.openConnection(); 
-			huc.setRequestMethod("GET"); 
-			huc.connect(); 
-			responceCode = huc.getResponseCode();
+			responceCode = RestClient.getResponseCode();
 			LOGGER.debug("Waiting for server. Responce code: " + responceCode);
 			if (responceCode == HTTP_OK) {
 				break;
@@ -45,5 +40,4 @@ public class KieNavigatorTestParent extends TestParent {
 		consoleView.open();
 		consoleView.toggleShowConsoleOnStandardOutChange(false);
 	}
-
 }
