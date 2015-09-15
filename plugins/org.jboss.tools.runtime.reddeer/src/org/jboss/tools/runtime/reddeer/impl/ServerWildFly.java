@@ -24,12 +24,12 @@ public class ServerWildFly extends ServerAS {
 
 	@Override
 	public String getServerType() {
-		return label + " " + getVersion();
+		return label + "  " + getVersion();
 	}
 
 	@Override
 	public String getRuntimeType() {
-		return label + " " + getVersion() + " Runtime";
+		return label + "  " + getVersion() + " Runtime";
 	}
 
 }
