@@ -4,16 +4,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.tools.fuse.reddeer.debug.Breakpoint;
 import org.jboss.tools.fuse.reddeer.debug.BreakpointsView;
 import org.jboss.tools.fuse.reddeer.debug.IsRunning;
@@ -182,7 +182,7 @@ public class DebuggerTest extends DefaultTest {
 		variables.close();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		variables.open();
-		new DefaultTreeItem(4).getItems().get(0).select();
+		new DefaultTree().getItems().get(4).getItems().get(0).select();
 		assertTrue(new DefaultStyledText().getText().contains("<city>London</city>"));
 
 		// resume and then should stop on the 'log1' node

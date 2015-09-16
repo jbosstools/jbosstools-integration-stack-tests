@@ -7,7 +7,7 @@ import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.OkButton;
@@ -16,14 +16,14 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 
 /**
  * Represents the Fuse server runtime preference page
  * 
  * @author tsedmik
  */
-public class ServerRuntimePreferencePage extends WorkbenchPreferencePage {
+public class ServerRuntimePreferencePage extends PreferencePage {
 
 	private static final String ADD_BUTTON = "Add...";
 	private static final String NEXT_BUTTON = "Next >";

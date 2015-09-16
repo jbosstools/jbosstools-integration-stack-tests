@@ -2,9 +2,9 @@ package org.jboss.tools.fuse.reddeer.view;
 
 import java.io.IOException;
 
-import org.jboss.reddeer.swt.impl.toolbar.ViewToolItem;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.fuse.reddeer.utils.ShellManager;
 
@@ -50,7 +50,7 @@ public class TerminalView extends WorkbenchView {
 	public void connect() {
 		
 		AbstractWait.sleep(TimePeriod.getCustom(2));
-		new ViewToolItem("Connect").click();
+		new DefaultToolItem("Connect").click();
 		AbstractWait.sleep(TimePeriod.getCustom(2));
 	}
 	

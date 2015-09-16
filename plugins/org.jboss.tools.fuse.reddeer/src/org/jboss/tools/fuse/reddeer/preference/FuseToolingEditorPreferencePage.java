@@ -2,18 +2,18 @@ package org.jboss.tools.fuse.reddeer.preference;
 
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 
 /**
  * Represents the "Fuse Tooling --> Editor" preference page
  * 
  * @author tsedmik
  */
-public class FuseToolingEditorPreferencePage extends WorkbenchPreferencePage {
+public class FuseToolingEditorPreferencePage extends PreferencePage {
 
 	public FuseToolingEditorPreferencePage() {
 		super("Fuse Tooling", "Editor");

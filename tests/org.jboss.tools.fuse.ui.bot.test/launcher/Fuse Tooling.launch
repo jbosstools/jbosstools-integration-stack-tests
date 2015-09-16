@@ -31,9 +31,17 @@
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog -eclipse.password resources/security/password"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="org.jboss.tools.fuse.ui.bot.test"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dosgi.requiredJavaVersion=1.6 -XX:MaxPermSize=256m -Xms40m -Xmx512m&#10;-Dreddeer.config=/home/tsedmik/devel/git/server-installer/fuse-6.1.0.GA/target/server-settings.xml&#10;-Dusage_reporting_enabled=false"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dosgi.requiredJavaVersion=1.6 -XX:MaxPermSize=256m -Xms40m -Xmx512m&#10;-Dreddeer.config=/home/tsedmik/devel/git/server-installer/fuse-6.2.0.GA/target/config&#10;-Dusage_reporting_enabled=false"/>
 <stringAttribute key="pde.version" value="3.3"/>
 <stringAttribute key="product" value="org.eclipse.platform.ide"/>
+<stringAttribute key="rd.launch.property.reddeer.captureScreenshot" value="true"/>
+<stringAttribute key="rd.launch.property.reddeer.close.shells" value="true"/>
+<stringAttribute key="rd.launch.property.reddeer.close.welcome.screen" value="true"/>
+<stringAttribute key="rd.launch.property.reddeer.disable.maven.download.repo.index.on.startup" value="true"/>
+<stringAttribute key="rd.launch.property.reddeer.logLevel" value="ALL"/>
+<stringAttribute key="rd.launch.property.reddeer.logMessageFilter" value="ALL"/>
+<stringAttribute key="rd.launch.property.reddeer.pauseFailedTest" value="false"/>
+<stringAttribute key="rd.launch.property.reddeer.recordScreenCast" value="false"/>
 <booleanAttribute key="show_selected_only" value="false"/>
 <booleanAttribute key="tracing" value="false"/>
 <booleanAttribute key="useCustomFeatures" value="false"/>
