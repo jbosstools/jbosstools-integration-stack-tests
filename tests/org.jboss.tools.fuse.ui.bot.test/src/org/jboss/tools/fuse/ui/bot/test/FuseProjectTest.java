@@ -3,6 +3,7 @@ package org.jboss.tools.fuse.ui.bot.test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.util.Collection;
 
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
@@ -19,10 +20,15 @@ import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.fuse.reddeer.preference.MavenUserSettingsPreferencePage;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
+import org.jboss.tools.fuse.reddeer.utils.FileUtils;
 import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized.Parameters;
@@ -41,6 +47,7 @@ public class FuseProjectTest extends DefaultTest {
 
 	protected Logger log = Logger.getLogger(FuseProjectTest.class);
 	private String archetype;
+	private static String maven;
 	
 	/**
 	 * Sets parameters for parameterized test
@@ -59,6 +66,46 @@ public class FuseProjectTest extends DefaultTest {
 	 */
 	public FuseProjectTest(String archetype) {
 		this.archetype = archetype;
+	}
+
+	/**
+	 * Changes local repository to an empty one
+	 */
+	@BeforeClass
+	public static void setupMaven() {
+
+		MavenUserSettingsPreferencePage pref = new MavenUserSettingsPreferencePage();
+		pref.open();
+		maven = pref.getUserSettings();
+		pref.setUserSettings(System.getProperty("maven.settings"));
+		pref.updateSettings();
+		pref.reindex();
+		pref.ok();
+	}
+
+	/**
+	 * Deletes a local Maven repository
+	 */
+	@Before
+	public void setupDeleteMavenRepo() {
+
+		FileUtils.deleteDir(new File(System.getProperty("maven.repository")));
+	}
+
+	/**
+	 * Revertes change of the local repository
+	 */
+	@AfterClass
+	public static void setupMavenBack() {
+
+		MavenUserSettingsPreferencePage pref = new MavenUserSettingsPreferencePage();
+		pref.open();
+		pref.setUserSettings(maven);
+		pref.updateSettings();
+		pref.reindex();
+		pref.ok();
+
+		FileUtils.deleteDir(new File(System.getProperty("maven.repository")));
 	}
 
 	/**
@@ -94,7 +141,7 @@ public class FuseProjectTest extends DefaultTest {
 			new CamelProject(name).runCamelContext();
 			ConsoleView console = new ConsoleView();
 			if (console.getConsoleText().contains("BUILD FAILURE")
-					|| console.getConsoleText().toLowerCase().contains("error") || console.consoleIsTerminated()) {
+					|| console.getConsoleText().toLowerCase().contains("[ERROR]") || console.consoleIsTerminated()) {
 				log.warn("There is a problem with building '" + name + "' project");
 				return false;
 			}
