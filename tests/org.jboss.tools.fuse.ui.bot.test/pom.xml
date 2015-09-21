@@ -25,6 +25,7 @@
 		<surefire.timeout>10800</surefire.timeout>
 		<test.class>AllTests</test.class>
 		<customization.file>${project.build.directory}/requirements/plugin_customization.ini</customization.file>
+		<maven.repo>${project.build.directory}/requirements/repository/</maven.repo>
 	</properties>
 
 	<build>
@@ -86,6 +87,8 @@
 					<skip>${skipTests}</skip>
 					<systemProperties>
 						<logDebug>${enable.debug.log}</logDebug>
+						<maven.settings>${project.build.directory}/requirements/emptysettings.xml</maven.settings>
+						<maven.repository>${maven.repo}</maven.repository>
 					</systemProperties>
 
 					<dependencies combine.children="append">

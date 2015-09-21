@@ -65,7 +65,9 @@ public class CamelProject {
 		} catch (CoreLayerException ex) {
 			new ContextMenu("Run As", "1 Local Camel Context").select();
 		}
-		new WaitUntil(new ConsoleHasText("(CamelContext: camel-1) started"), TimePeriod.getCustom(30));
+		new WaitUntil(new ConsoleHasText("Starting Camel ..."), TimePeriod.VERY_LONG);
+		AbstractWait.sleep(TimePeriod.NORMAL);
+		new WaitUntil(new ConsoleHasText("(CamelContext: camel-1) started"), TimePeriod.VERY_LONG);
 	}
 
 	public void runCamelContext(String name) {
@@ -76,14 +78,14 @@ public class CamelProject {
 		} catch (CoreLayerException ex) {
 			new ContextMenu("Run As", "1 Local Camel Context").select();
 		}
-		new WaitUntil(new ConsoleHasText("Total 1 routes, of which 1 is started."), TimePeriod.getCustom(300));
+		new WaitUntil(new ConsoleHasText("Total 1 routes, of which 1 is started."), TimePeriod.VERY_LONG);
 	}
 
 	public void runCamelContextWithoutTests(String name) {
 
 		project.getProjectItem("src/main/resources", "META-INF", "spring", name).select();
 		new ContextMenu("Run As", "3 Local Camel Context (without tests)").select();
-		new WaitUntil(new ConsoleHasText("Total 1 routes, of which 1 is started."), TimePeriod.getCustom(300));
+		new WaitUntil(new ConsoleHasText("Total 1 routes, of which 1 is started."), TimePeriod.VERY_LONG);
 	}
 
 	public void runApplicationContextWithoutTests(String name) {
