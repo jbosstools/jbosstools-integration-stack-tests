@@ -19,7 +19,7 @@ import org.kie.api.runtime.process.ProcessInstance;
 							importFolder="resources/bpmn2/model/base",
 							openFile="BaseBPMN2-ConditionalBoundaryEventInterrupting.bpmn2",
 							saveAs="BPMN2-ConditionalBoundaryEventInterrupting.bpmn2",
-							knownIssues={"1165667"})
+							knownIssues={"1165667", "1263526"})
 public class ComplexConditionalBoundaryEventInterruptingTest extends JBPM6ComplexTest {
 	
 	private static final String END_PROCESS2 = "EndProcess2";

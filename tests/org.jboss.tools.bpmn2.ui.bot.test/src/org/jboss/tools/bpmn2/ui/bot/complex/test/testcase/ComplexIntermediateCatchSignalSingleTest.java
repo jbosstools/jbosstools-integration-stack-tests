@@ -24,8 +24,7 @@ import org.kie.api.runtime.process.WorkflowProcessInstance;
 @JBPM6ComplexTestDefinition(projectName="JBPM6ComplexTest",
 							importFolder="resources/bpmn2/model/base",
 							openFile="BaseBPMN2-IntermediateCatchSignalSingle.bpmn2",
-							saveAs="BPMN2-IntermediateCatchSignalSingle.bpmn2",
-							knownIssues={"1184422"})
+							saveAs="BPMN2-IntermediateCatchSignalSingle.bpmn2")
 public class ComplexIntermediateCatchSignalSingleTest extends JBPM6ComplexTest {
 
 	@TestPhase(phase=Phase.MODEL)

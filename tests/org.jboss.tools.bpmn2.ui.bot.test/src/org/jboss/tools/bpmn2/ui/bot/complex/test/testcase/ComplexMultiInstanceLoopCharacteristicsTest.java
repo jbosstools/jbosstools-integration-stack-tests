@@ -21,7 +21,7 @@ import org.kie.api.runtime.process.WorkflowProcessInstance;
 							importFolder="resources/bpmn2/model/base",
 							openFile="BaseBPMN2-MultiInstanceLoopCharacteristics.bpmn2",
 							saveAs="BPMN2-MultiInstanceLoopCharacteristics.bpmn2",
-							knownIssues={"1189454"})
+							knownIssues={"1263294"})
 public class ComplexMultiInstanceLoopCharacteristicsTest extends JBPM6ComplexTest {
 
 	private static final String ITERATOR = "iterator";

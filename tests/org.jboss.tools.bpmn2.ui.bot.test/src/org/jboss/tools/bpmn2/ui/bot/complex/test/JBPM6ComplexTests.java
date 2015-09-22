@@ -47,9 +47,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 @SuiteClasses({
-//	Where is declared escalation or signal
-//	@BZ https://bugzilla.redhat.com/show_bug.cgi?id=1184422
-// --------------------------------------------------------
 	ComplexParalellSplitJoinTest.class,
 	ComplexCallActivityTest.class,
 	ComplexAdHocProcessTest.class,
@@ -61,7 +58,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	ComplexErrorEndEventTest.class,
 	ComplexConditionalStartTest.class,
 	ComplexImportTest.class,
-	ComplexReceiveTaskTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1188592
+	ComplexReceiveTaskTest.class,
 	ComplexParalellSplitTest.class,
 	ComplexSendTaskTest.class,
 	ComplexErrorBoundaryEventOnTaskTest.class,
@@ -80,17 +77,17 @@ import org.junit.runners.Suite.SuiteClasses;
 	ComplexExclusiveSplitPriorityTest.class,
 	ComplexEventBasedSplitTest.class,
 	ComplexBoundaryEscalationEventOnTaskTest.class,
-	ComplexConditionalBoundaryEventInterruptingTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1165667
-	ComplexMultiInstanceLoopCharacteristicsTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1189454
-	ComplexCompensationEventTest.class, // https://bugzilla.redhat.com/show_bug.cgi?id=1209449
-	ComplexLinkEventTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1190688
+	ComplexConditionalBoundaryEventInterruptingTest.class,
+	ComplexMultiInstanceLoopCharacteristicsTest.class,
+	ComplexCompensationEventTest.class,
+	ComplexLinkEventTest.class,
 	ComplexWebDesignerProcessTest.class,
 	ComplexDefaultSkippableTest.class,
 	ComplexSpecialCharactersAndLenghtsTest.class,
 	ComplexImportInterfaceTest.class,
 	ComplexServiceTaskTest.class,
 	ComplexManualTaskTest.class,
-	ComplexDefinitionViaElementTest.class // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1211647
+	ComplexDefinitionViaElementTest.class
 })
 @RunWith(RedDeerSuite.class)
 public class JBPM6ComplexTests {

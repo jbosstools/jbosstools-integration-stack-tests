@@ -18,7 +18,8 @@ import org.kie.api.runtime.KieSession;
 @JBPM6ComplexTestDefinition(projectName="JBPM6ComplexTest",
 							importFolder="resources/bpmn2/model/base",
 							openFile="BaseBPMN2-ConditionalStart.bpmn2",
-							saveAs="BPMN2-ConditionalStart.bpmn2")
+							saveAs="BPMN2-ConditionalStart.bpmn2",
+							knownIssues={"1263526"})
 public class ComplexConditionalStartTest extends JBPM6ComplexTest {
 	
 	private static final String N_START = "Start";

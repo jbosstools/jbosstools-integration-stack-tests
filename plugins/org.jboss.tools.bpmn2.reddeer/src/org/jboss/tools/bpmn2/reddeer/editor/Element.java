@@ -23,8 +23,8 @@ import org.jboss.reddeer.gef.impl.editpart.AbstractEditPart;
 import org.jboss.reddeer.gef.impl.editpart.LabeledEditPart;
 import org.jboss.reddeer.graphiti.impl.graphitieditpart.LabeledGraphitiEditPart;
 import org.jboss.reddeer.common.condition.WaitCondition;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.tools.bpmn2.reddeer.AbsoluteEditPart;
 import org.jboss.tools.bpmn2.reddeer.GEFProcessEditor;
 import org.jboss.tools.bpmn2.reddeer.JBPM6ComplexEnvironment;
@@ -539,7 +539,7 @@ public class Element {
 				addedElement.setName(label);
 			}
 			
-		} catch (SWTLayerException e) {
+		} catch (CoreLayerException e) {
 			addedElement.setName(label);
 		}
 		

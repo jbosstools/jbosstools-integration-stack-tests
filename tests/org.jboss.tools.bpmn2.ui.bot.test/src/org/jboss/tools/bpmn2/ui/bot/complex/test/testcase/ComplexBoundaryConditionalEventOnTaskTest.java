@@ -20,7 +20,8 @@ import org.kie.api.runtime.process.WorkItem;
 @JBPM6ComplexTestDefinition(projectName="JBPM6ComplexTest",
 							importFolder="resources/bpmn2/model/base",
 							openFile="BaseBPMN2-BoundaryConditionalEventOnTask.bpmn2",
-							saveAs="BPMN2-BoundaryConditionalEventOnTask.bpmn2")
+							saveAs="BPMN2-BoundaryConditionalEventOnTask.bpmn2",
+							knownIssues={"1263526"})
 public class ComplexBoundaryConditionalEventOnTaskTest extends JBPM6ComplexTest{
 
 	@TestPhase(phase=Phase.MODEL)

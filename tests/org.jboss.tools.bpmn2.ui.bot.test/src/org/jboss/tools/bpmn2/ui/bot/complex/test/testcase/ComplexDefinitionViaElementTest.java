@@ -22,7 +22,7 @@ import org.jboss.tools.bpmn2.ui.bot.complex.test.TestPhase.Phase;
 							importFolder="resources/bpmn2/model/base",
 							openFile="BaseBPMN2-DefinitionViaElement.bpmn2",
 							saveAs="BPMN2-DefinitionViaElement.bpmn2",
-							knownIssues={"1211647"})
+							knownIssues={"1211647", "1265167"})
 public class ComplexDefinitionViaElementTest extends JBPM6ComplexTest {
 	
 	private Signal signalDef = new Signal("ComplexSignal");
