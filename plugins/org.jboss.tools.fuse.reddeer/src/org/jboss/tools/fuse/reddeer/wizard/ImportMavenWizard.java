@@ -10,6 +10,7 @@ import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.jface.wizard.ImportWizardDialog;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
@@ -44,7 +45,7 @@ public class ImportMavenWizard extends ImportWizardDialog {
 		try {
 			new DefaultShell("Incomplete Maven Goal Execution");
 			new PushButton("OK").click();
-		} catch (CoreLayerException e) {
+		} catch (CoreLayerException|SWTLayerException e) {
 			// ok, it means that the warning wasn't displayed
 		}
 		new WaitWhile(new ShellWithTextIsActive("Import Maven Projects"), TimePeriod.LONG);
