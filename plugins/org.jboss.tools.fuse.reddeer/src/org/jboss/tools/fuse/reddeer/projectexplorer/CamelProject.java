@@ -1,5 +1,6 @@
 package org.jboss.tools.fuse.reddeer.projectexplorer;
 
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -65,7 +66,21 @@ public class CamelProject {
 		} catch (CoreLayerException ex) {
 			new ContextMenu("Run As", "1 Local Camel Context").select();
 		}
-		new WaitUntil(new ConsoleHasText("Starting Camel ..."), TimePeriod.VERY_LONG);
+
+		ConsoleHasText camel = new ConsoleHasText("Starting Camel ...");
+		ConsoleHasText jetty = new ConsoleHasText("Started Jetty Server");
+		boolean started = false;
+		for (int i = 0; i < 300; i++) {
+			if (camel.test() || jetty.test()) {
+				started = true;
+				break;
+			}
+			AbstractWait.sleep(TimePeriod.SHORT);
+		}
+		if (!started) {
+			new WaitTimeoutExpiredException("Console doesn't contains 'Starting Camel ...' or 'Started Jetty Server'");
+		}
+
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		new WaitUntil(new ConsoleHasText("(CamelContext: camel-1) started"), TimePeriod.VERY_LONG);
 	}
