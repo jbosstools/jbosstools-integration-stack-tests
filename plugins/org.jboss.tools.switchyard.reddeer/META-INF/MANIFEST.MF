@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.jboss.tools.switchyard.reddeer
 Bundle-Vendor: JBoss by Red Hat
 Bundle-Version: 4.3.0.qualifier
 Bundle-Activator: org.jboss.tools.switchyard.reddeer.Activator
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.eclipse.ui.ide,
  org.eclipse.core.resources,
  org.eclipse.core.runtime,
