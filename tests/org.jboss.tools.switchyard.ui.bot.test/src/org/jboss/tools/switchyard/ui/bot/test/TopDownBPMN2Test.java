@@ -2,26 +2,27 @@ package org.jboss.tools.switchyard.ui.bot.test;
 
 import static org.junit.Assert.assertEquals;
 
-import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.eclipse.ui.problems.Problem;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.FromDataOutput;
@@ -68,8 +69,6 @@ public class TopDownBPMN2Test {
 	private static final String BPMN_FILE_NAME = "ProcessGreet.bpmn";
 	private static final String PACKAGE_MAIN_JAVA = "src/main/java";
 	private static final String PACKAGE_MAIN_RESOURCES = "src/main/resources";
-	private static final Integer[] BPM_COORDS = { 50, 200 };
-	private static final Integer[] BEAN_COORDS = { 250, 200 };
 	private static final String EVAL_GREET = "EvalGreet";
 	private static final String EVAL_GREET_BEAN = EVAL_GREET + "Bean";
 
@@ -191,7 +190,7 @@ public class TopDownBPMN2Test {
 	private void openFile(String... file) {
 		// focus on project explorer
 		new WorkbenchView("General", "Project Explorer").open();
-		new DefaultTreeItem(0, file).doubleClick();
+		new DefaultTreeItem(file).doubleClick();
 	}
 
 	private void checkBug_SWITCHYARD_2484() {
@@ -207,9 +206,9 @@ public class TopDownBPMN2Test {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		ProblemsView problemsView = new ProblemsView();
 		problemsView.open();
-		for (TreeItem error : problemsView.getAllErrors()) {
-			System.out.println(error.getText());
-			if (error.getText().startsWith("Data Input Association has missing or incomplete Source")) {
+		for (Problem error : problemsView.getProblems(ProblemType.ERROR)) {
+			System.out.println(error.getDescription());
+			if (error.getDescription().startsWith("Data Input Association has missing or incomplete Source")) {
 				Assert.fail("SWITCHYARD_2484: SwitchYard Sevice Task generates wrong data inputs");
 			}
 		}

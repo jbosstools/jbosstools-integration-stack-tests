@@ -6,12 +6,12 @@ import static org.jboss.tools.switchyard.reddeer.wizard.TransformersWizard.TRANS
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
+import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.core.handler.ShellHandler;
-import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardConnection;

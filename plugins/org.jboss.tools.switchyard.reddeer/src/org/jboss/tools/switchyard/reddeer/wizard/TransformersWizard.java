@@ -169,7 +169,7 @@ public class TransformersWizard extends WizardDialog {
 	}
 
 	public TableItem getTransformerTypePairTBI(int row) {
-		return new DefaultTableItem(0, row);
+		return new DefaultTableItem(row);
 	}
 
 	public List getDozerFileOptionsLST() {
