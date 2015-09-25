@@ -8,7 +8,7 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
@@ -18,7 +18,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.runtime.reddeer.RuntimeEntry;
 import org.jboss.tools.runtime.reddeer.wizard.DownloadRuntimesWizard;
 
@@ -27,7 +27,7 @@ import org.jboss.tools.runtime.reddeer.wizard.DownloadRuntimesWizard;
  * 
  * @author tsedmik
  */
-public class JBossRuntimeDetection extends WorkbenchPreferencePage {
+public class JBossRuntimeDetection extends PreferencePage {
 
 	public JBossRuntimeDetection() {
 		super("JBoss Tools", "JBoss Runtime Detection");
