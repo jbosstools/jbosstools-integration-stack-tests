@@ -7,10 +7,11 @@ import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.esb.reddeer.wizard.ESBFileWizard;
 import org.jboss.tools.esb.reddeer.wizard.ESBProjectWizard;
 import org.junit.After;
@@ -58,7 +59,7 @@ public class NewESBFileTest {
 
 		ProblemsView problemsView = new ProblemsView();
 		problemsView.open();
-		assertTrue("ESB Editor opened problems", problemsView.getAllErrors().isEmpty());
+		assertTrue("ESB Editor opened problems", problemsView.getProblems(ProblemType.ERROR).isEmpty());
 	}
 
 }

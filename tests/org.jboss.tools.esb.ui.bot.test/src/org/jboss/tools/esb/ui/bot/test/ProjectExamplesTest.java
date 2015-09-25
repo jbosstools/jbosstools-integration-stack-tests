@@ -9,6 +9,7 @@ import java.util.List;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
@@ -66,7 +67,7 @@ public class ProjectExamplesTest {
 			// check projects
 			ProblemsView problemsView = new ProblemsView();
 			problemsView.open();
-			if (problemsView.getAllErrors().size() > 0) {
+			if (problemsView.getProblems(ProblemType.ERROR).size() > 0) {
 				result.append(Arrays.toString(project));
 			}
 
