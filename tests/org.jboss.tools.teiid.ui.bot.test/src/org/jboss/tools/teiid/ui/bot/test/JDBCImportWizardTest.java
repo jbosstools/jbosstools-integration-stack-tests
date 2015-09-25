@@ -12,8 +12,6 @@ import org.jboss.tools.teiid.reddeer.manager.ServerManager;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
-import org.jboss.tools.teiid.reddeer.view.GuidesView;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -29,19 +27,17 @@ import org.junit.runner.RunWith;
 @TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = { ConnectionProfilesConstants.DB2_101_BQT,
 		ConnectionProfilesConstants.DB2_81_BQT2, ConnectionProfilesConstants.DB2_97_BQT2,
 		ConnectionProfilesConstants.ORACLE_10G_BQT2, ConnectionProfilesConstants.ORACLE_11G_BQT2,
-		ConnectionProfilesConstants.ORACLE_12C_BQT,
-		ConnectionProfilesConstants.SQL_SERVER_2008_BQT2, ConnectionProfilesConstants.SQL_SERVER_2012_BQT2,
-		ConnectionProfilesConstants.DV6_DS1,
-		ConnectionProfilesConstants.SQL_SERVER_2000_BQT2,
-		ConnectionProfilesConstants.MYSQL_51_BQT2, ConnectionProfilesConstants.MYSQL_55_BQT2,
-		ConnectionProfilesConstants.POSTGRESQL_84_BQT2, ConnectionProfilesConstants.POSTGRESQL_91_BQT2,
-		ConnectionProfilesConstants.POSTGRESQL_92_DVQE, ConnectionProfilesConstants.SYBASE_15_BQT2,
-		ConnectionProfilesConstants.INGRES_10_BQT2})
+		ConnectionProfilesConstants.ORACLE_12C_BQT, ConnectionProfilesConstants.SQL_SERVER_2008_BQT2,
+		ConnectionProfilesConstants.SQL_SERVER_2012_BQT2, ConnectionProfilesConstants.DV6_DS1,
+		ConnectionProfilesConstants.SQL_SERVER_2000_BQT2, ConnectionProfilesConstants.MYSQL_51_BQT2,
+		ConnectionProfilesConstants.MYSQL_55_BQT2, ConnectionProfilesConstants.POSTGRESQL_84_BQT2,
+		ConnectionProfilesConstants.POSTGRESQL_91_BQT2, ConnectionProfilesConstants.POSTGRESQL_92_DVQE,
+		ConnectionProfilesConstants.SYBASE_15_BQT2, ConnectionProfilesConstants.INGRES_10_BQT2 })
 public class JDBCImportWizardTest {
 
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;
-
+	
 	public static final String MODEL_PROJECT = "jdbcImportTest";
 
 	private static TeiidBot teiidBot = new TeiidBot();
@@ -58,7 +54,6 @@ public class JDBCImportWizardTest {
 	public void openPerspective() {
 		TeiidPerspective.getInstance();
 	}
-
 
 	// ============== generated jdbc tests ===========================
 
@@ -78,7 +73,7 @@ public class JDBCImportWizardTest {
 		String model = "db297Model";
 		importModel(model, ConnectionProfilesConstants.DB2_97_BQT2, "BQT2/TABLE/SMALLA,BQT2/TABLE/SMALLB");
 		checkImportedModel(model, "SMALLA", "SMALLB");
-	 }
+	}
 
 	@Test
 	public void ingres10Import() {
@@ -131,7 +126,7 @@ public class JDBCImportWizardTest {
 		checkImportedModel(model, "SmallA", "SmallB");
 	}
 
-	@Test// TEIIDDES-2458
+	@Test // TEIIDDES-2458
 	public void sybaseImport() {
 		String model = "sybaseModel";
 		importModel(model, ConnectionProfilesConstants.SYBASE_15_BQT2, "bqt2/TABLE/SmallA,bqt2/TABLE/SmallB");
@@ -195,8 +190,11 @@ public class JDBCImportWizardTest {
 	private void checkImportedModel(String model, String tableA, String tableB) {
 		teiidBot.assertResource(MODEL_PROJECT, model + ".xmi", tableA);
 		teiidBot.assertResource(MODEL_PROJECT, model + ".xmi", tableB);
+		
+		teiidBot.simulatePreview(teiidServer, MODEL_PROJECT, model, new String[]{tableA,tableB});
 
-		Assert.assertTrue(new GuidesView().canPreviewData(null, new String[] { MODEL_PROJECT, model + ".xmi", tableA }));
 	}
+	
+
 
 }

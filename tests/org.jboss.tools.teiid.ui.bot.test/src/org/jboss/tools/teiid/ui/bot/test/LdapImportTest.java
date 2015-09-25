@@ -27,9 +27,7 @@ import org.jboss.tools.teiid.reddeer.matcher.ModelColumnMatcher;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
-import org.jboss.tools.teiid.reddeer.view.GuidesView;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -98,8 +96,8 @@ public class LdapImportTest {
 		ProjectItem modelItem = project.getProjectItem(RHDS_MODEL + ".xmi");
 		addColumn(modelItem, "ou=People", "dn", "string");
 		
-		Assert.assertTrue(new GuidesView().canPreviewData(null, new String[] {
-				NEW_PROJECT, RHDS_MODEL + ".xmi", "ou=People" }));
+		teiidBot.simulatePreview(teiidServer, NEW_PROJECT, RHDS_MODEL, new String[]{"ou=People","ou=Apps"});
+		
 	}
 	
 	@Test
@@ -135,8 +133,8 @@ public class LdapImportTest {
 		ProjectItem modelItem = project.getProjectItem(LDAP_MODEL + ".xmi");
 		addColumn(modelItem, "ou=groups", "dn", "string");
 		
-		Assert.assertTrue(new GuidesView().canPreviewData(null, new String[] {
-				NEW_PROJECT, LDAP_MODEL + ".xmi", "ou=groups" }));
+		teiidBot.simulatePreview(teiidServer, NEW_PROJECT, LDAP_MODEL, new String[]{"ou=people","ou=groups"});
+		
 	}
 	
 	private void assertColumns(DefaultTable table, String selectedColumns){

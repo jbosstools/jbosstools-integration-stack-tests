@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.util.TeiidDriver;
 
 /**
@@ -24,15 +25,14 @@ public class TeiidJDBCHelper {
 	private String username;
 	private String password;
 	private String vdbName;
-	
+
 	private static final String TEIID_DRIVER_CLASS = "org.teiid.jdbc.TeiidDriver";
 	private static Logger log = Logger.getLogger(TeiidJDBCHelper.class);
-	
 
-	public TeiidJDBCHelper(String pathToDriver, String vdbName, String username, String password) {
-		this.pathToDriver = pathToDriver;
-		this.username = username;
-		this.password = password;
+	public TeiidJDBCHelper(TeiidServerRequirement teiidServer, String vdbName) {
+		this.pathToDriver = teiidServer.getTeiidDriverPath();
+		this.username = teiidServer.getServerConfig().getServerBase().getProperty("teiidUser");
+		this.password = teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword");
 		this.vdbName = vdbName;
 	}
 
@@ -47,10 +47,13 @@ public class TeiidJDBCHelper {
 	 *            password for connection
 	 */
 	public void createConnection() throws SQLException {
-		if (username == null) throw new IllegalArgumentException("username is null");
-		if (password == null) throw new IllegalArgumentException("password is null");
-		if (vdbName == null) throw new IllegalArgumentException("vdbName is null");
-		
+		if (username == null)
+			throw new IllegalArgumentException("username is null");
+		if (password == null)
+			throw new IllegalArgumentException("password is null");
+		if (vdbName == null)
+			throw new IllegalArgumentException("vdbName is null");
+
 		registerDriver();
 		log.info("Connecting to VDB " + vdbName + " with username " + username + " and password " + password);
 		connection = DriverManager.getConnection("jdbc:teiid:" + vdbName + "@mm://localhost:31000", username, password);
@@ -70,7 +73,7 @@ public class TeiidJDBCHelper {
 		if (connection == null) {
 			throw new IllegalArgumentException("Connection is null (not established?)");
 		}
-		
+
 		Statement st = connection.createStatement();
 		log.info("Executing query " + query);
 		ResultSet resultSet = st.executeQuery(query);
@@ -91,6 +94,50 @@ public class TeiidJDBCHelper {
 				log.error("Error while closing the connection");
 				ex.printStackTrace();
 			}
+		}
+
+	}
+
+	/**
+	 * Public method for simple checking if query execution was successful
+	 * 
+	 * @param sql
+	 *            SQL query
+	 * @return true if query was successful, false otherwise
+	 */
+	public boolean isQuerySuccessful(String sql) {
+
+		try {
+			ResultSet results = this.executeQuery(sql);
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			closeConnection();
+		}
+	}
+
+	/**
+	 * Public method for retrieving number of results of supplied query
+	 * 
+	 * @param sql
+	 *            SQL query
+	 * @return number of results or -1 in case of failure
+	 */
+	public int getNumberOfResults(String sql) {
+		try {
+			ResultSet results = this.executeQuery(sql);
+			int count = 0;
+			while (results.next()) {
+				++count;
+			}
+			return count;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return -1;
+		} finally {
+			closeConnection();
 		}
 
 	}

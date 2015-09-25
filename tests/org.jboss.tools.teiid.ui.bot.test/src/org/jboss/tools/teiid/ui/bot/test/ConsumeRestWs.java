@@ -5,19 +5,19 @@ import static org.junit.Assert.assertEquals;
 import java.util.Properties;
 
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
-import org.jboss.tools.teiid.reddeer.editor.SQLScrapbookEditor;
+import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.manager.VDBManager;
-import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
+import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
-import org.jboss.tools.teiid.reddeer.view.SQLResult;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.RestImportWizard;
 import org.junit.After;
@@ -49,18 +49,21 @@ public class ConsumeRestWs {
 	private static final String SOURCE_MODEL_JSON = "RestJSONSource";
 	private static final String VIEW_MODEL_JSON = "RestJSONView";
 
+	@InjectRequirement
+	private static TeiidServerRequirement teiidServer;
+	
 	@BeforeClass
 	public static void before() {
 		new ModelExplorerManager().createProject(PROJECT_NAME, false);
 	}
-	
+
 	@Before
-	public void openPerspective(){
+	public void openPerspective() {
 		TeiidPerspective.getInstance();
 	}
-	
+
 	@After
-	public void closeAll(){
+	public void closeAll() {
 		EditorHandler.getInstance().closeAll(false);
 	}
 
@@ -68,12 +71,10 @@ public class ConsumeRestWs {
 	public void testXml() {
 
 		Properties restCpXml = new Properties();
-		restCpXml.setProperty("connectionUrl",
-				"http://ws-dvirt.rhcloud.com/dv-test-ws/rest/xml");
+		restCpXml.setProperty("connectionUrl", "http://ws-dvirt.rhcloud.com/dv-test-ws/rest/xml");
 		restCpXml.setProperty("type", "xml");
 
-		new ConnectionProfileManager()
-				.createCPREST(XML_PROFILE_NAME, restCpXml);
+		new ConnectionProfileManager().createCPREST(XML_PROFILE_NAME, restCpXml);
 
 		RestImportWizard restWizardXML = new RestImportWizard();
 
@@ -92,29 +93,26 @@ public class ConsumeRestWs {
 		restWizardXML.execute();
 
 		new VDBManager().createVDB(PROJECT_NAME, VDBXML);
-		new VDBManager().addModelsToVDB(PROJECT_NAME, VDBXML, new String[] {
-				SOURCE_MODEL_XML, VIEW_MODEL_XML });
+		new VDBManager().addModelsToVDB(PROJECT_NAME, VDBXML, new String[] { SOURCE_MODEL_XML, VIEW_MODEL_XML });
 
 		new ServersView().open();
-		new ServersViewExt().refreshServer(new ServersView().getServers()
-				.get(0).getLabel().getName());
+		new ServersViewExt().refreshServer(new ServersView().getServers().get(0).getLabel().getName());
 
 		new ModelExplorerView().executeVDB(PROJECT_NAME, VDBXML + ".vdb");
-
-		executeSQL("exec " + VIEW_MODEL_XML + "." + PROCEDURE_NAME + "()",
-				VDBXML);
+		
+		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, VDBXML);
+		assertEquals(16, jdbchelper.getNumberOfResults("exec " + VIEW_MODEL_XML + "." + PROCEDURE_NAME + "()"));
 
 	}
 
 	@Test
 	public void testJson() {
+
 		Properties restCpJson = new Properties();
-		restCpJson.setProperty("connectionUrl",
-				"http://ws-dvirt.rhcloud.com/dv-test-ws/rest/json");
+		restCpJson.setProperty("connectionUrl", "http://ws-dvirt.rhcloud.com/dv-test-ws/rest/json");
 		restCpJson.setProperty("type", "json");
 
-		new ConnectionProfileManager().createCPREST(JSON_PROFILE_NAME,
-				restCpJson);
+		new ConnectionProfileManager().createCPREST(JSON_PROFILE_NAME, restCpJson);
 
 		RestImportWizard restWizardJson = new RestImportWizard();
 
@@ -133,33 +131,17 @@ public class ConsumeRestWs {
 		restWizardJson.execute();
 
 		new VDBManager().createVDB(PROJECT_NAME, VDBJSON);
-		new VDBManager().addModelsToVDB(PROJECT_NAME, VDBJSON, new String[] {
-				SOURCE_MODEL_JSON, VIEW_MODEL_JSON });
+		new VDBManager().addModelsToVDB(PROJECT_NAME, VDBJSON, new String[] { SOURCE_MODEL_JSON, VIEW_MODEL_JSON });
 
 		new ServersView().open();
-		new ServersViewExt().refreshServer(new ServersView().getServers()
-				.get(0).getLabel().getName());
+		new ServersViewExt().refreshServer(new ServersView().getServers().get(0).getLabel().getName());
 
 		new ModelExplorerView().executeVDB(PROJECT_NAME, VDBJSON + ".vdb");
-
-		executeSQL("exec " + VIEW_MODEL_JSON + "." + PROCEDURE_NAME + "()",
-				VDBJSON);
-
+		
+		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, VDBJSON);
+		assertEquals(16, jdbchelper.getNumberOfResults("exec " + VIEW_MODEL_JSON + "." + PROCEDURE_NAME + "()"));
+		
 	}
 
-	private void executeSQL(String sql, String vdb) {
-
-		SQLScrapbookEditor editor = new SQLScrapbookEditor("SQL Scrapbook0");
-		editor.show();
-		editor.setDatabase(vdb);
-
-		editor.setText(sql);
-		editor.executeAll();
-
-		SQLResult result = DatabaseDevelopmentPerspective.getInstance()
-				.getSqlResultsView().getByOperation(sql);
-		assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
-
-	}
 
 }
