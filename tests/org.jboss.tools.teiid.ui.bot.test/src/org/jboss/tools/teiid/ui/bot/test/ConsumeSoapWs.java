@@ -5,18 +5,18 @@ import static org.junit.Assert.assertEquals;
 import java.util.Properties;
 
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.tools.teiid.reddeer.editor.SQLScrapbookEditor;
+import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.manager.VDBManager;
-import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
+import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
-import org.jboss.tools.teiid.reddeer.view.SQLResult;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.WsdlImportWizard;
 import org.junit.BeforeClass;
@@ -40,9 +40,12 @@ public class ConsumeSoapWs {
 	private static final String PROJECT_NAME = "SOAP";
 	private static final String SOURCE_MODEL_NAME = "Soap_Source.xmi";
 	private static final String VIEW_MODEL_NAME = "Soap_View.xmi";
-	private static final String VDB = "SOAP_VDB";
+	private static final String VDB_NAME = "SOAP_VDB";
 	private static final String TESTSQL = "exec FullCountryInfo('US')";
 	private static final String TESTSQL1 = "exec FullCountryInfoAllCountries()";
+	
+	@InjectRequirement
+	private static TeiidServerRequirement teiidServer;
 	
 	@BeforeClass
 	public static void before(){
@@ -85,31 +88,19 @@ public class ConsumeSoapWs {
 		wsdlWizard.addResponseElement("FullCountryInfoAllCountriesResponse/sequence/return/sequence/phoneCode");
 		wsdlWizard.execute();
 		
-		new VDBManager().createVDB(PROJECT_NAME, VDB);
-		new VDBManager().addModelsToVDB(PROJECT_NAME, VDB, new String[] {SOURCE_MODEL_NAME, VIEW_MODEL_NAME});
+		new VDBManager().createVDB(PROJECT_NAME, VDB_NAME);
+		new VDBManager().addModelsToVDB(PROJECT_NAME, VDB_NAME, new String[] {SOURCE_MODEL_NAME, VIEW_MODEL_NAME});
 			
 		new ServersView().open();
 		new ServersViewExt().refreshServer(new ServersView().getServers().get(0).getLabel().getName());
 		
-		new ModelExplorerView().executeVDB(PROJECT_NAME, VDB + ".vdb");
+		new ModelExplorerView().executeVDB(PROJECT_NAME, VDB_NAME + ".vdb");
 		
-		executeSQL(TESTSQL,VDB);
-		executeSQL(TESTSQL1,VDB);
-				
-	}
-
-	private void executeSQL(String sql, String vdb){
+		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, VDB_NAME);
 		
-		SQLScrapbookEditor editor = new SQLScrapbookEditor("SQL Scrapbook0");
-		editor.show();
-		editor.setDatabase(vdb);
+		assertEquals(1,jdbchelper.getNumberOfResults(TESTSQL));
+		assertEquals(3,jdbchelper.getNumberOfResults(TESTSQL1));
 
-		editor.setText(sql);
-		editor.executeAll();
-
-		SQLResult result = DatabaseDevelopmentPerspective.getInstance().getSqlResultsView().getByOperation(sql);
-		assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
-		
 	}
 	
 

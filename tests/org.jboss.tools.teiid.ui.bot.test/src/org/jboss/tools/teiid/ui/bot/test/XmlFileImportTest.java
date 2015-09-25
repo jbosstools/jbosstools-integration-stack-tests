@@ -5,21 +5,19 @@ import static org.junit.Assert.assertEquals;
 import java.util.Properties;
 
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.tools.teiid.reddeer.editor.SQLScrapbookEditor;
+import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
 import org.jboss.tools.teiid.reddeer.manager.ImportMetadataManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.manager.VDBManager;
-import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
+import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
-import org.jboss.tools.teiid.reddeer.view.SQLResult;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -48,6 +46,9 @@ public class XmlFileImportTest {
 	
 	private static final String TESTLOCAL = "SELECT * FROM LocalView.LocalTable";
 	private static final String TESTREMOTE = "SELECT * FROM RemoteView.RemoteTable";
+	
+	@InjectRequirement
+	private static TeiidServerRequirement teiidServer;
 	
 
 	@BeforeClass
@@ -97,8 +98,9 @@ public class XmlFileImportTest {
 	public void executeVdb(){
 		new ModelExplorerView().executeVDB(PROJECT, VDB + ".vdb");
 		
-		executeSQL(TESTLOCAL,VDB);
-		executeSQL(TESTREMOTE,VDB);
+		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, VDB);
+		assertEquals(26,jdbchelper.getNumberOfResults(TESTLOCAL));
+		assertEquals(26,jdbchelper.getNumberOfResults(TESTREMOTE));
 	}
 	
 	public void refreshServer(){
@@ -106,21 +108,6 @@ public class XmlFileImportTest {
 		new ServersViewExt().refreshServer(new ServersView().getServers().get(0).getLabel().getName());
 	}
 	
-	private void executeSQL(String sql, String vdb){
-		
-		SQLScrapbookEditor editor = new SQLScrapbookEditor("SQL Scrapbook0");
-		editor.show();
-		editor.setDatabase(vdb);
-
-		editor.setText(sql);
-		editor.executeAll();
-		
-		AbstractWait.sleep(TimePeriod.SHORT);
-
-		SQLResult result = DatabaseDevelopmentPerspective.getInstance().getSqlResultsView().getByOperation(sql);
-		
-		assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
-		
-	}
+	
 	
 }
