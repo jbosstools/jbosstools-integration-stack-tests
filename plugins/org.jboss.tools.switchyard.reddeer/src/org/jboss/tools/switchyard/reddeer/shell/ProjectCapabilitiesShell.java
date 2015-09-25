@@ -9,6 +9,7 @@ import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 
 /**
@@ -60,11 +61,11 @@ public class ProjectCapabilitiesShell {
 	}
 
 	public boolean isComponentChecked(String group, String component) {
-		return new DefaultTreeItem(new DefaultGroup(COMPONENTS), group, component).isChecked();
+		return new DefaultTreeItem(new DefaultTree(new DefaultGroup(COMPONENTS)), group, component).isChecked();
 	}
 
 	public ProjectCapabilitiesShell toggleComponent(String group, String component, boolean checked) {
-		new DefaultTreeItem(new DefaultGroup(COMPONENTS), group, component).setChecked(checked);
+		new DefaultTreeItem(new DefaultTree(new DefaultGroup(COMPONENTS)), group, component).setChecked(checked);
 		return this;
 	}
 

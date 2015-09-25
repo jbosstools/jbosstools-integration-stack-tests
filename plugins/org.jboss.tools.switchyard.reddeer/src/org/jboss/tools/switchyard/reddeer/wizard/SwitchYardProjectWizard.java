@@ -4,22 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
-import org.jboss.reddeer.swt.api.Combo;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.handler.WidgetHandler;
+import org.jboss.reddeer.jface.wizard.NewWizardDialog;
+import org.jboss.reddeer.swt.api.Combo;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.switchyard.reddeer.condition.SwitchYardEditorIsOpen;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 
@@ -149,12 +150,12 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 	}
 
 	public SwitchYardProjectWizard setComponent(String group, String component, boolean checked) {
-		new DefaultTreeItem(new DefaultGroup(SWITCHYARD_COMPONENTS), group, component).setChecked(checked);
+		new DefaultTreeItem(new DefaultTree(new DefaultGroup(SWITCHYARD_COMPONENTS)), group, component).setChecked(checked);
 		return this;
 	}
 
 	public boolean isComponent(String group, String component) {
-		return new DefaultTreeItem(new DefaultGroup(SWITCHYARD_COMPONENTS), group, component).isChecked();
+		return new DefaultTreeItem(new DefaultTree(new DefaultGroup(SWITCHYARD_COMPONENTS)), group, component).isChecked();
 	}
 
 	public SwitchYardProjectWizard impl(String... component) {

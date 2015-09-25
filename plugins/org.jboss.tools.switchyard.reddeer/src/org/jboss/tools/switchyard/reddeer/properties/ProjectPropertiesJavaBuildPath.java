@@ -6,6 +6,7 @@ import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 
 /**
@@ -30,7 +31,7 @@ public class ProjectPropertiesJavaBuildPath {
 	
 	public ProjectPropertiesJavaBuildPath selectLibrary(String library) {
 		selectLibrariesTab();
-		new DefaultTreeItem(1, library).select();
+		new DefaultTreeItem(new DefaultTree(1), library).select();
 		return this;
 	}
 

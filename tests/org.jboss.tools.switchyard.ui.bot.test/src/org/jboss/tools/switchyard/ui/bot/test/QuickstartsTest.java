@@ -9,19 +9,20 @@ import java.util.List;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.handler.ShellHandler;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.switchyard.reddeer.condition.ErrorsExist;
@@ -70,9 +71,9 @@ public abstract class QuickstartsTest {
 		
 		ErrorsExist errorsExistCondition = new ErrorsExist();
 		new WaitUntil(errorsExistCondition, TimePeriod.LONG, false);
-		List<TreeItem> allErrors = errorsExistCondition.getAllErrors();
-		List<TreeItem> errors = new ArrayList<TreeItem>();
-		for (TreeItem error: allErrors) {
+		List<Problem> allErrors = errorsExistCondition.getAllErrors();
+		List<Problem> errors = new ArrayList<Problem>();
+		for (Problem error: allErrors) {
 			if(excludeMatcher != null && excludeMatcher.matches(error)) {
 				continue;
 			}
@@ -92,10 +93,10 @@ public abstract class QuickstartsTest {
 		packageExplorer.deleteAllProjects(false);
 	}
 
-	protected String toString(List<TreeItem> items) {
+	protected String toString(List<Problem> problems) {
 		StringBuffer result = new StringBuffer();
-		for (TreeItem item : items) {
-			result.append(item.getText());
+		for (Problem problem : problems) {
+			result.append(problem.getDescription());
 			result.append("\n");
 		}
 		return result.toString();

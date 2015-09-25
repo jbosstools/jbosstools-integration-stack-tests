@@ -7,7 +7,6 @@ import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.swt.impl.toolbar.ViewToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 
@@ -44,7 +43,7 @@ public class BreakpointsView extends WorkbenchView {
 
 	public void removeAllBreakpoints() {
 		open();
-		new ViewToolItem("Remove All Breakpoints").click();
+		new DefaultToolItem("Remove All Breakpoints").click();
 		new DefaultShell("Remove All Breakpoints").setFocus();
 		new PushButton("Yes").click();
 	}
