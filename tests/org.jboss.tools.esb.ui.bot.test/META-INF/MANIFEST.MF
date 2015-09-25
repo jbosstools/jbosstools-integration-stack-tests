@@ -12,7 +12,7 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.tools.esb.reddeer;bundle-version="4.2.0",
  org.jboss.tools.runtime.reddeer;bundle-version="4.2.0"
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Vendor: JBoss by Red Hat
 Eclipse-RegisterBuddy: org.apache.log4j
 Eclipse-BundleShape: dir

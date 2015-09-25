@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.jboss.tools.modeshape.reddeer
 Bundle-Vendor: JBoss by Red Hat
 Bundle-Version: 4.2.0.qualifier
 Bundle-Activator: org.jboss.tools.modeshape.reddeer.Activator
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.eclipse.swtbot.go,
  org.jboss.reddeer.go;bundle-version="0.8.0"
 Export-Package: org.jboss.tools.modeshape.reddeer.perspective,
