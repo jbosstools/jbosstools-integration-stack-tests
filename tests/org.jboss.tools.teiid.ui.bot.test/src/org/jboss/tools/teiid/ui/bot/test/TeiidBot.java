@@ -66,67 +66,6 @@ public class TeiidBot {
 		return modelEditor;
 	}
 
-	/*
-	 * public FlatFileProfile createFlatFileProfile(String name, String folder) {//cp mgr FlatFileProfile flatProfile =
-	 * new FlatFileProfile(); flatProfile.setName(name); flatProfile.setFolder(folder); flatProfile.setCharset("UTF-8");
-	 * flatProfile.setStyle("CSV");
-	 * 
-	 * ConnectionProfileWizard connWizard = new ConnectionProfileWizardExt(); connWizard.open();
-	 * connWizard.createFlatFileProfile(flatProfile); return flatProfile; }
-	 */
-
-	/*
-	 * public void createXmlProfile(String name, String path) {//cp String xmlProfile = "XML Local File Source"; if
-	 * (path.startsWith("http")) { xmlProfile = "XML File URL Source"; }
-	 * 
-	 * TeiidConnectionProfileWizard wizard = new TeiidConnectionProfileWizard(); wizard.open();
-	 * 
-	 * ConnectionProfileSelectPage selectPage = wizard.getFirstPage(); selectPage.setConnectionProfile(xmlProfile);
-	 * selectPage.setName(name);
-	 * 
-	 * wizard.next();
-	 * 
-	 * ConnectionProfileXmlPage xmlPage = (ConnectionProfileXmlPage) wizard.getSecondPage();
-	 * xmlPage.setPath(toAbsolutePath(path));
-	 * 
-	 * wizard.finish(); }
-	 */
-
-	/*
-	 * public void createDatabaseProfile(String name, String fileName) {//cp mgr Properties props = new Properties();
-	 * try { props.load(new FileReader(fileName)); } catch (FileNotFoundException e) { e.printStackTrace(); return; }
-	 * catch (IOException e) { e.printStackTrace(); return; } createDatabaseProfile(name, props);
-	 * 
-	 * }
-	 */
-
-	/**
-	 * 
-	 * @param name
-	 *            of connection profile (e.g. My oracle profile)
-	 * @param props
-	 */
-	/*
-	 * public void createDatabaseProfile(String name, Properties props) {//cp ext DriverTemplate drvTemp = new
-	 * DriverTemplate(props.getProperty("db.template"), props.getProperty("db.version"));
-	 * 
-	 * DriverDefinition driverDefinition = new DriverDefinition(); driverDefinition.setDriverName(name + "Driver");
-	 * driverDefinition.setDriverTemplate(drvTemp); String driverPath = new
-	 * File(props.getProperty("db.jdbc_path")).getAbsolutePath(); driverDefinition.setDriverLibrary(driverPath);
-	 * 
-	 * DriverDefinitionPreferencePageExt prefPage = new DriverDefinitionPreferencePageExt(); prefPage.open();
-	 * prefPage.addDriverDefinition(driverDefinition); prefPage.ok();
-	 * 
-	 * DatabaseProfile dbProfile = new DatabaseProfile(); dbProfile.setDriverDefinition(driverDefinition);
-	 * dbProfile.setName(name); dbProfile.setDatabase(props.getProperty("db.name"));
-	 * dbProfile.setHostname(props.getProperty("db.hostname")); dbProfile.setUsername(props.getProperty("db.username"));
-	 * dbProfile.setPassword(props.getProperty("db.password")); dbProfile.setVendor(props.getProperty("db.vendor"));
-	 * dbProfile.setPort(props.getProperty("db.port"));
-	 * 
-	 * TeiidConnectionProfileWizard wizard = new TeiidConnectionProfileWizard(); wizard.open();
-	 * wizard.createDatabaseProfile(dbProfile); }
-	 */
-
 	/**
 	 * Create connection profile to HSQL database
 	 * 
@@ -165,50 +104,7 @@ public class TeiidBot {
 		return new File(path).getAbsolutePath();
 	}
 
-	// private class ConnectionProfileWizardExt extends ConnectionProfileWizard {//remove, cp
-
-	/*
-	 * @Override public void createFlatFileProfile(FlatFileProfile flatProfile) { ConnectionProfileSelectPage selectPage
-	 * = getFirstPage(); selectPage.setConnectionProfile("Flat File Data Source");
-	 * selectPage.setName(flatProfile.getName());
-	 * 
-	 * next();
-	 * 
-	 * ConnectionProfileFlatFilePage flatPage = (ConnectionProfileFlatFilePage) getSecondPage();
-	 * 
-	 * // TODO: LabeledText // flatPage.setHomeFolder(flatProfile.getFolder()); new SWTWorkbenchBot().text().setText(new
-	 * File(flatProfile.getFolder()).getAbsolutePath());//should be absolute path!
-	 * 
-	 * //switch off validation of home folder new CheckBox("Validate home folder").click();
-	 * 
-	 * flatPage.setCharset(flatProfile.getCharset()); flatPage.setStyle(flatProfile.getStyle());
-	 * 
-	 * finish(); }
-	 */
-
-	// }
-
-	/*
-	 * public void createFlatFileProfileExt(FlatFileProfileExt flatProfile) { ConnectionProfileSelectPage selectPage =
-	 * getFirstPage(); selectPage.setConnectionProfile(FLAT_FILE_DATA_SOURCE);
-	 * selectPage.setName(flatProfile.getName());
-	 * 
-	 * next();
-	 * 
-	 * ConnectionProfileFlatFilePage flatPage = (ConnectionProfileFlatFilePage) getSecondPage();
-	 * 
-	 * if (flatProfile.getFolder() != null) { // TODO: LabeledText flatPage.setHomeFolder(flatProfile.getFolder()); }
-	 * else if (flatProfile.getURI() != null){ new SWTWorkbenchBot().text().setText(new
-	 * File(flatProfile.getFolder()).getAbsolutePath());//should be absolute path! } if
-	 * (flatProfile.isValidateHomeFolder() == false) { // switch off validation of home folder new CheckBox(
-	 * "Validate home folder").click(); }
-	 * 
-	 * flatPage.setCharset(flatProfile.getCharset());//not null, set in constructor
-	 * flatPage.setStyle(flatProfile.getStyle());
-	 * 
-	 * finish(); }
-	 */
-
+	
 	/**
 	 * Save all
 	 */
