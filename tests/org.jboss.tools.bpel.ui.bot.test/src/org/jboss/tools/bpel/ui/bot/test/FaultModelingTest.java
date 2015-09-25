@@ -5,8 +5,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.bpel.reddeer.activity.Assign;
 import org.jboss.tools.bpel.reddeer.activity.Catch;
 import org.jboss.tools.bpel.reddeer.activity.CompensationHandler;
@@ -18,8 +17,6 @@ import org.jboss.tools.bpel.reddeer.activity.Sequence;
 import org.jboss.tools.bpel.reddeer.perspective.BPELPerspective;
 import org.jboss.tools.bpel.reddeer.wizard.ImportProjectWizard;
 import org.jboss.tools.bpel.ui.bot.test.util.ResourceHelper;
-import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
-import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

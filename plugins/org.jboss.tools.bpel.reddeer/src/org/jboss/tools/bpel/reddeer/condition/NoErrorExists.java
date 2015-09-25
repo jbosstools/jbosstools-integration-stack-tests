@@ -2,9 +2,10 @@ package org.jboss.tools.bpel.reddeer.condition;
 
 import java.util.List;
 
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.eclipse.ui.problems.Problem;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 
 /**
  * Returns true if there is no error
@@ -14,13 +15,13 @@ import org.jboss.reddeer.common.condition.WaitCondition;
  */
 public class NoErrorExists implements WaitCondition {
 
-	private List<TreeItem> errors;
+	private List<Problem> errors;
 
 	@Override
 	public boolean test() {
 		ProblemsView problemsView = new ProblemsView();
 		problemsView.open();
-		errors = problemsView.getAllErrors();
+		errors = problemsView.getProblems(ProblemType.ERROR);
 		return errors.isEmpty();
 	}
 
@@ -30,8 +31,8 @@ public class NoErrorExists implements WaitCondition {
 		if (errors != null && errors.size() > 0) {
 			result.append("There are the following " + errors.size() + " errors:");
 			result.append(System.getProperty("line.separator"));
-			for (TreeItem error : errors) {
-				result.append(error.getText());
+			for (Problem error : errors) {
+				result.append(error.getDescription());
 				result.append(System.getProperty("line.separator"));
 			}
 		} else {

@@ -22,9 +22,13 @@ public class NewProcessWizard extends NewWizardDialog {
 
 	private String projectName;
 	private String processName;
+	@SuppressWarnings("unused")
 	private String serviceName;
+	@SuppressWarnings("unused")
 	private String serviceAddress;
+	@SuppressWarnings("unused")
 	private String portName;
+	@SuppressWarnings("unused")
 	private String creationMode;
 	private String bindingProtocol;
 	private String namespace;
