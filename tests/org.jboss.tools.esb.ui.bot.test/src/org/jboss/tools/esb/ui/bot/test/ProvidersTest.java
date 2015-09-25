@@ -2,14 +2,14 @@ package org.jboss.tools.esb.ui.bot.test;
 
 import static org.junit.Assert.assertFalse;
 
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.esb.reddeer.editor.ESBEditor;
 import org.jboss.tools.esb.reddeer.wizard.ESBProjectWizard;
 import org.jboss.tools.esb.reddeer.wizard.ESBProviderWizard;
