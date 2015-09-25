@@ -12,10 +12,12 @@ import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.swt.api.Menu;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
@@ -111,6 +113,15 @@ public class SwitchYardProject extends Project {
 		select();
 		new ContextMenu("Properties").select();
 		return new ProjectProperties();
+	}
+	
+	public void build() {
+		select();
+		Menu menu = new ShellMenu("Project", "Build Project");
+		if (menu.isEnabled()) {
+			menu.select();
+		}
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
 }
