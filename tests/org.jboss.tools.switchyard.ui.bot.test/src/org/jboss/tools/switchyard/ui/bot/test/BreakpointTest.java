@@ -15,6 +15,7 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.ui.perspectives.DebugPerspective;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
@@ -313,7 +314,7 @@ public class BreakpointTest {
 		try {
 			new DefaultTreeItem("Service Breakpoint Properties").select();
 			fail("Item 'Service Breakpoint Properties' is still available");
-		} catch (SWTLayerException ex) {
+		} catch (SWTLayerException|CoreLayerException ex) {
 			// ok
 		}
 		new PushButton("OK").click();
@@ -415,7 +416,7 @@ public class BreakpointTest {
 		try {
 			new DefaultTreeItem("Service Breakpoint Properties").select();
 			fail("Item 'Service Breakpoint Properties' is still available");
-		} catch (SWTLayerException ex) {
+		} catch (SWTLayerException|CoreLayerException ex) {
 			// ok
 		}
 		new PushButton("OK").click();
