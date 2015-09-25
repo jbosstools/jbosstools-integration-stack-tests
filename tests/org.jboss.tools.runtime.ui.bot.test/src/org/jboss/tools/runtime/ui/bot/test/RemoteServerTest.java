@@ -7,8 +7,6 @@ import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.tools.runtime.reddeer.ServerBase;
-import org.jboss.tools.runtime.reddeer.impl.ServerAS;
 import org.jboss.tools.runtime.reddeer.requirement.ServerConnType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
