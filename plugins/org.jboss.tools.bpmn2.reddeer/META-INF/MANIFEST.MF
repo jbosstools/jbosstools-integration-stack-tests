@@ -19,7 +19,7 @@ Bundle-Vendor: JBoss by Red Hat
 Eclipse-RegisterBuddy: org.apache.log4j
 Eclipse-BundleShape: dir
 Import-Package: org.apache.log4j
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.jboss.tools.bpmn2.reddeer,
  org.jboss.tools.bpmn2.reddeer.dialog,
  org.jboss.tools.bpmn2.reddeer.editor,
