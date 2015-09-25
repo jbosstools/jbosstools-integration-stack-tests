@@ -17,6 +17,7 @@ import org.jboss.reddeer.gef.editor.GEFEditor;
  */
 public class BpelEditor extends GEFEditor {
 
+	@SuppressWarnings("unused")
 	private Logger log = Logger.getLogger(BpelEditor.class);
 	
 	protected File sourceFile;

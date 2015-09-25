@@ -29,7 +29,7 @@ public class ExampleWizard extends NewWizardDialog {
 		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
 		try {
 			new DefaultShell("New Project Example");
-			new DefaultTreeItem(0, examplePath).select();
+			new DefaultTreeItem(examplePath).select();
 		} catch (Exception e) {
 			new DefaultShell("New Project Example");
 			new CancelButton().click();
