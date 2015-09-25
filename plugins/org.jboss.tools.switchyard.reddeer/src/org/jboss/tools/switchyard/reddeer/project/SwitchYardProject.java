@@ -21,6 +21,8 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.properties.ProjectProperties;
 import org.jboss.tools.switchyard.reddeer.shell.ProjectCapabilitiesShell;
+import org.jboss.reddeer.swt.api.Menu;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 
 public class SwitchYardProject extends Project {
 
@@ -113,4 +115,12 @@ public class SwitchYardProject extends Project {
 		return new ProjectProperties();
 	}
 
+	public void build() {
+		select();
+		Menu menu = new ShellMenu("Project", "Build Project");
+		if (menu.isEnabled()) {
+			menu.select();
+		}
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+	}
 }
