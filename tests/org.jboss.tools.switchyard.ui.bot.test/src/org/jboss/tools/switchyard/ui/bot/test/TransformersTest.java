@@ -6,11 +6,12 @@ import static org.jboss.tools.switchyard.reddeer.wizard.TransformersWizard.TRANS
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
+import org.jboss.reddeer.core.exception.CoreLayerException;
+import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
@@ -85,7 +86,7 @@ public class TransformersTest {
 		}
 		try {
 			new SwitchYardProject(PROJECT).getClass(PACKAGE, SERVICE2_IMPL + ".java").delete();
-		} catch (EclipseLayerException e) {
+		} catch (EclipseLayerException|CoreLayerException e) {
 			// ok
 		}
 		new SwitchYardEditor().save();
