@@ -85,7 +85,7 @@ public class DeploymentTest {
 		ESBProjectWizard projectWizard = new ESBProjectWizard();
 		projectWizard.open();
 		projectWizard.setName(PROJECT);
-		projectWizard.setServer(serverRequirement.getConfig().getName());
+		projectWizard.setServer(serverRequirement.getConfig().getServerBase().getRuntimeName());
 		projectWizard.setVersion(esbRequirement.getConfig().getRuntimeFamily().getVersion());
 		projectWizard.finish();
 

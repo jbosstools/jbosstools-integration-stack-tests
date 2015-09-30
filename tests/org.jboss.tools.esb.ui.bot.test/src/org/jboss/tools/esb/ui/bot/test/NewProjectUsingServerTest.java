@@ -57,7 +57,7 @@ public class NewProjectUsingServerTest {
 		ESBProjectWizard wizard = new ESBProjectWizard();
 		wizard.open();
 		wizard.setName(project);
-		wizard.setServer(serverRequirement.getConfig().getName());
+		wizard.setServer(serverRequirement.getConfig().getServerBase().getRuntimeName());
 		wizard.setVersion(esbRequirement.getConfig().getRuntimeFamily().getVersion());
 		wizard.finish();
 
