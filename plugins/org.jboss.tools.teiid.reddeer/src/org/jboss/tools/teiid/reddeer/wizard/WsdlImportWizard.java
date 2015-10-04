@@ -98,6 +98,7 @@ public class WsdlImportWizard extends TeiidImportWizard {
 		new LabeledText(new DefaultGroup("View Model Definition"),"Name").setText(viewModelName);
 		
 		new PushButton("Next >").click();
+		new PushButton("Next >").click();
 		
 		for (String operation : operations){
 			new DefaultCombo(new DefaultGroup("Operations"),0).setSelection(operation);
