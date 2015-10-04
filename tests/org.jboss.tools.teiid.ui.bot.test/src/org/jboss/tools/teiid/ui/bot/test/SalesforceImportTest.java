@@ -42,9 +42,9 @@ public class SalesforceImportTest {
 		new ImportManager().importFromSalesForce(MODEL_PROJECT, model, ConnectionProfilesConstants.SALESFORCE,
 				teiidBot.getProperties(importProps));
 
-		teiidBot.assertResource(MODEL_PROJECT, model + ".xmi", "salesforce", "AccountFeed");
-		teiidBot.assertFailResource(MODEL_PROJECT, model + ".xmi", "salesforce", "Account");
-		teiidBot.assertFailResource(MODEL_PROJECT, model + ".xmi", "salesforce", "Apex Class");
+		teiidBot.assertResource(MODEL_PROJECT, model + ".xmi", "AccountFeed");
+		teiidBot.assertFailResource(MODEL_PROJECT, model + ".xmi", "Account");
+		teiidBot.assertFailResource(MODEL_PROJECT, model + ".xmi", "Apex Class");
 		
 		//old TD(prior to 9.0.4) needs table name "salesforce.Case_". From TD 9.0.4 there is no schema "salesforce" when importing from SF.
 		teiidBot.simulatePreview(teiidServer, MODEL_PROJECT, model, new String[]{"Case_"});
