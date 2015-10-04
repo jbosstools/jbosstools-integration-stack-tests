@@ -31,8 +31,8 @@ public class TeiidDesignerPreferencePage extends PreferencePage {
 	// TODO deploy preference for teiid import - seconds to wait
 	public void setTeiidConnectionImporterTimeout(int secs) {
 		open();
-		new DefaultSpinner(new WithTooltipTextMatcher("Set the timeout (in sec) for the Teiid Connection Importer"))
-				.setValue(secs);
+		new DefaultSpinner(new WithTooltipTextMatcher(
+				"Set the timeout (in sec) for the Teiid Connection Importer. (use 0 for no timeout)")).setValue(secs);
 		close();
 	}
 
