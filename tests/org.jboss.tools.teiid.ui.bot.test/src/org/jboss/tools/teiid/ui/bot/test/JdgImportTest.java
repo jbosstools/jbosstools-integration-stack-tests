@@ -38,7 +38,7 @@ public class JdgImportTest {
 
 		teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", "SmallA");
 		teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", "SmallA", "SmallAObject : object");
-		teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", "SmallA", "intKey : int");
+		teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", "SmallA", "intKey : biginteger");
 		teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", "SmallA", "PK_INTKEY");
 	}
 
