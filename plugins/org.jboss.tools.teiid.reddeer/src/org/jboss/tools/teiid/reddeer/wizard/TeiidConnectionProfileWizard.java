@@ -92,11 +92,13 @@ public class TeiidConnectionProfileWizard extends ConnectionProfileWizard {
 		next();
 		
 		ConnectionProfileLdapPage dbPage = new ConnectionProfileLdapPage();
+		dbPage.setHostname(dbProfile.getHostname());
+		dbPage.setPort(dbProfile.getPort());
+		
+		next();
+		
 		dbPage.setUsername(dbProfile.getUsername());
 		dbPage.setPassword(dbProfile.getPassword());
-		dbPage.setHostname(dbProfile.getHostname());
-		dbPage.setPrincipalDnSuffix(cpProperties.getProperty("principalDnSuffix"));
-		dbPage.setContextFactoryName(cpProperties.getProperty("contextFactoryName"));
 
 		new PushButton("Test Connection").click(); 
 
@@ -173,7 +175,7 @@ public class TeiidConnectionProfileWizard extends ConnectionProfileWizard {
 		}
 		
 		if ((loadedProperty = props.getProperty("db.port")) != null){
-			dbProfile.setVendor(loadedProperty);
+			dbProfile.setPort(loadedProperty);
 		}
 		return dbProfile;
 	}
