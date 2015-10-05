@@ -169,10 +169,24 @@ public class CreateRestProcedureTest {
 		try {
 			wizard.setNewTargetModel(SOURCE_MODEL_NAME);
 			wizard.setTables("PARTS", "SUPPLIER").finish();
-			fail("Should not allow typing name of a source model as the target");
+			fail("Should not allow typing name of a source model with xmi extension as the target");
 		} catch (Exception ex) {
 			new PushButton("Cancel").click();
 		}
+		
+		
+		openRestProcedureWizard(SOURCE_MODEL_NAME);
+
+		wizard = new GenerateRestProcedureWizard().setProject(PROJECT_NAME);
+		try {
+			wizard.setNewTargetModel(SOURCE_MODEL_NAME.replaceAll(".xmi$", ""));
+			wizard.setTables("PARTS", "SUPPLIER").finish();
+			fail("Should not allow typing name of a source model without xmi extension as the target");
+		} catch (Exception ex) {
+			new PushButton("Cancel").click();
+		}
+		
+		teiidBot.modelEditor(SOURCE_MODEL_NAME).close();
 	}
 
 	private void openRestProcedureWizard(String modelName) {
