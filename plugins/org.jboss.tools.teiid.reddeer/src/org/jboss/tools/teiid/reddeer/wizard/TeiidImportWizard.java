@@ -2,7 +2,9 @@ package org.jboss.tools.teiid.reddeer.wizard;
 
 import org.jboss.reddeer.jface.wizard.ImportWizardDialog;
 import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -26,7 +28,12 @@ public abstract class TeiidImportWizard extends ImportWizardDialog {
 		super.finish();
 		// wait for 'Progress Information'
 		log.info("Progress waiting started ...");
-		new WaitWhile(new IsInProgress(), TimePeriod.VERY_LONG);
+		try{
+			new WaitWhile(new IsInProgress(), TimePeriod.VERY_LONG);
+		} catch(WaitTimeoutExpiredException ex){
+			new PushButton("Cancel").click();
+			throw ex;
+		}
 		log.info("Progress waiting stopped.");
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		log.info("No running job");
