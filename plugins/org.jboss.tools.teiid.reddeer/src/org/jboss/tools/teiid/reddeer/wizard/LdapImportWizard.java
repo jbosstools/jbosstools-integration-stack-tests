@@ -1,16 +1,23 @@
 package org.jboss.tools.teiid.reddeer.wizard;
 
+import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.matcher.TreeItemTextMatcher;
 import org.jboss.reddeer.jface.wizard.ImportWizardDialog;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
+import org.jboss.tools.teiid.reddeer.condition.TreeItemHasChild;
 
 public class LdapImportWizard extends ImportWizardDialog {
 	private static final String TABLE_NAME = "Table Name";
@@ -70,6 +77,12 @@ public class LdapImportWizard extends ImportWizardDialog {
 
 		// set model name
 		new LabeledText(new DefaultGroup(SOURCE_MODEL_DEFINITION), SOURCE_MODEL_NAME).setText(modelName);
+
+		new PushButton("Fetch Base DNs").click();
+		LabeledCombo ldapBaseDnCombo = new LabeledCombo("LDAP Base DN:");
+		new WaitUntil(new WidgetIsEnabled(ldapBaseDnCombo), TimePeriod.LONG);
+		ldapBaseDnCombo.setSelection(principalDnSuffix);
+
 	}
 
 	private void fillSelectTablesPage() {
@@ -92,27 +105,43 @@ public class LdapImportWizard extends ImportWizardDialog {
 	}
 
 	public void selectTableEntry(String entryName, String entryAlias) {
-		String treeRootName = getTreeRootName();
-		new DefaultTreeItem(treeRootName).expand();
 
 		String[] tablePath = entryName.split("/");
-		String[] fullPath = new String[tablePath.length + 1];
-		fullPath[0] = treeRootName;
-		System.arraycopy(tablePath, 0, fullPath, 1, tablePath.length);
+		TreeItemTextMatcher[] matchers = new TreeItemTextMatcher[tablePath.length + 3];
 
-		TreeItem entryTreeItem = new DefaultTreeItem(fullPath);
+		// we need the RegexMatchers here because the text of the tree item changes --
+		// it contains the number of children, but only *after* it has been
+		// expanded at least once
+		matchers[0] = new TreeItemTextMatcher("DIT");
+		matchers[1] = new TreeItemTextMatcher(new RegexMatcher("^Root DSE.*"));
+		matchers[2] = new TreeItemTextMatcher(new RegexMatcher('^' + principalDnSuffix + ".*"));
+		for (int i = 0; i < tablePath.length; i++) {
+			matchers[i + 3] = new TreeItemTextMatcher(new RegexMatcher('^' + tablePath[i] + ".*"));
+		}
+
+		// here we expand the tree items one by one, because the wizard
+		// fetches the children of each item from the ldap server
+		// and that takes some time, so we have to wait until
+		// the child node is available
+		// trying `new DefaultTreeItem(matchers)` right away fails.
+		for (int i = 0; i < matchers.length - 1; i++) {
+			TreeItemTextMatcher[] partialMatchers = new TreeItemTextMatcher[i + 1];
+			System.arraycopy(matchers, 0, partialMatchers, 0, i + 1);
+			DefaultTreeItem partialTreeItem = new DefaultTreeItem(partialMatchers);
+			partialTreeItem.expand();
+			new WaitUntil(new TreeItemHasChild(partialTreeItem, matchers[i + 1]));
+		}
+
+		TreeItem entryTreeItem = new DefaultTreeItem(matchers);
 
 		entryTreeItem.select();
 		entryTreeItem.setChecked(true);
+		new DefaultToolItem("Add the selected LDAP entries").click();
 
 		if (entryAlias != null) {
 			new LabeledText(new DefaultGroup(SOURCE_MODEL_TABLE_ATTRIBUTES), TABLE_NAME).setText(entryAlias);
 		}
 
-	}
-
-	private String getTreeRootName() {
-		return connectionUrl + '/' + principalDnSuffix;
 	}
 
 	public void setConnectionProfile(String connectionProfile) {

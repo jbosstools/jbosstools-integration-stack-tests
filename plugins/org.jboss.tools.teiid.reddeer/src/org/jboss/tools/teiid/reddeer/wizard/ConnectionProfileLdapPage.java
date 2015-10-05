@@ -1,13 +1,14 @@
 package org.jboss.tools.teiid.reddeer.wizard;
 
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileDatabasePage;
+import org.jboss.reddeer.swt.impl.spinner.LabeledSpinner;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 public class ConnectionProfileLdapPage extends ConnectionProfileDatabasePage {
 
-	public static final String LABEL_CONNECTION_URL = "Connection URL";
-	public static final String LABEL_USER_NAME = "Connection Username";
-	public static final String LABEL_PASSWORD = "Connection Password";
+	public static final String HOSTNAME = "Hostname";
+	public static final String LABEL_USER_NAME = "Bind DN or user";
+	public static final String LABEL_PASSWORD = "Bind password";
 	public static final String LABEL_PRINCIPAL_DN_SUFFIX = "Principal DN Suffix";
 	public static final String LABEL_CONTEXT_FACTORY_NAME = "Context Factory Name";
 
@@ -19,13 +20,13 @@ public class ConnectionProfileLdapPage extends ConnectionProfileDatabasePage {
 
 	@Override
 	public void setHostname(String hostname) {
-		new LabeledText(LABEL_CONNECTION_URL).setText(hostname);
+		new LabeledText(HOSTNAME).setText(hostname);
 
 	}
 
 	@Override
 	public void setPort(String port) {
-		// not set
+		new LabeledSpinner("Port").setValue(Integer.valueOf(port));
 	}
 
 	@Override
