@@ -4,6 +4,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -11,16 +16,11 @@ import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.C
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.fuse.reddeer.condition.FuseLogContainsText;
 import org.jboss.tools.fuse.reddeer.debug.BreakpointsView;
 import org.jboss.tools.fuse.reddeer.debug.IsRunning;
@@ -31,6 +31,7 @@ import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
 import org.jboss.tools.fuse.reddeer.utils.ResourceHelper;
 import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
+import org.jboss.tools.runtime.reddeer.impl.ServerKaraf;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
@@ -100,7 +101,8 @@ public class RegressionFuseTest extends DefaultTest {
 
 		// tests the _Cancel_ button
 		AbstractWait.sleep(TimePeriod.SHORT);
-		new DefaultTreeItem("JBoss Fuse", serverRequirement.getConfig().getServerBase().getName()).select();
+		ServerKaraf fuse = (ServerKaraf) serverRequirement.getConfig().getServerBase();
+		new DefaultTreeItem("JBoss Fuse", fuse.getRuntimeType()).select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new PushButton("Cancel").click();
 		AbstractWait.sleep(TimePeriod.SHORT);

@@ -21,6 +21,7 @@ import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
@@ -197,7 +198,7 @@ public class RegressionTest extends DefaultTest {
 
 		try {
 			new ContextMenu("Close Camel Context");
-		} catch (SWTLayerException ex) {
+		} catch (SWTLayerException|CoreLayerException ex) {
 			return;
 		} finally {
 			new ConsoleView().terminateConsole();
@@ -322,19 +323,19 @@ public class RegressionTest extends DefaultTest {
 		try {
 			new DefaultTreeItem("Apache Karaf Launcher").select();
 			fail("Run Configurations contains forbidden item");
-		} catch (SWTLayerException e) {}
+		} catch (SWTLayerException|CoreLayerException e) {}
 		try {
 			new DefaultTreeItem("Apache ServiceMix Launcher").select();
 			fail("Run Configurations contains forbidden item");
-		} catch (SWTLayerException e) {}
+		} catch (SWTLayerException|CoreLayerException e) {}
 		try {
 			new DefaultTreeItem("Fabric8 Launcher").select();
 			fail("Run Configurations contains forbidden item");
-		} catch (SWTLayerException e) {}
+		} catch (SWTLayerException|CoreLayerException e) {}
 		try {
 			new DefaultTreeItem("JBoss Fuse Launcher").select();
 			fail("Run Configurations contains forbidden item");
-		} catch (SWTLayerException e) {}
+		} catch (SWTLayerException|CoreLayerException e) {}
 	}
 
 	/**

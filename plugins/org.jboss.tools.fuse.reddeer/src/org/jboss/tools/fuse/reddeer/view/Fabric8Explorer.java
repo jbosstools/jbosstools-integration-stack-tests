@@ -11,6 +11,7 @@ import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
@@ -371,7 +372,7 @@ public class Fabric8Explorer extends WorkbenchView {
 				AbstractWait.sleep(TimePeriod.SHORT);
 				try {
 					temp.getItem("...loading...");
-				} catch (SWTLayerException e) {
+				} catch (SWTLayerException|CoreLayerException e) {
 					break;
 				}
 			}

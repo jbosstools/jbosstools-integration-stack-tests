@@ -19,6 +19,7 @@ import org.jboss.reddeer.gef.handler.ViewerHandler;
 import org.jboss.reddeer.gef.impl.editpart.LabeledEditPart;
 import org.jboss.reddeer.gef.view.PaletteView;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
@@ -229,7 +230,7 @@ public class CamelEditor extends GEFEditor {
 		new LabeledEditPart(label).select();
 		try {
 			new ContextMenu("Set Breakpoint");
-		} catch (SWTLayerException ex) {
+		} catch (SWTLayerException|CoreLayerException ex) {
 			return true;
 		}
 
@@ -252,7 +253,7 @@ public class CamelEditor extends GEFEditor {
 		new LabeledEditPart(label).select();
 		try {
 			new ContextMenu("Enable Breakpoint");
-		} catch (SWTLayerException ex) {
+		} catch (SWTLayerException|CoreLayerException ex) {
 			return true;
 		}
 
@@ -275,7 +276,7 @@ public class CamelEditor extends GEFEditor {
 		new LabeledEditPart(label).select();
 		try {
 			new ContextMenu(operation).select();
-		} catch (SWTLayerException ex) {
+		} catch (SWTLayerException|CoreLayerException ex) {
 			log.error("Given operation is not present in the context menu of the component: " + label);
 		}
 	}

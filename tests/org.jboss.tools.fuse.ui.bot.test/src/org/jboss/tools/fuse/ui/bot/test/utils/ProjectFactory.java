@@ -13,6 +13,7 @@ import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -52,7 +53,7 @@ public class ProjectFactory {
 		projectWizard.setFilter(archetype);
 		try {
 			projectWizard.selectFirstArchetype();
-		} catch (SWTLayerException e) {
+		} catch (SWTLayerException|CoreLayerException e) {
 			throw new FuseArchetypeNotFoundException();
 		}
 		projectWizard.finish();

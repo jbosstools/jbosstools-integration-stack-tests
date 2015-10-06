@@ -6,6 +6,7 @@ import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -62,7 +63,7 @@ public class CamelProject {
 		project.getProjectItem("Camel Contexts").getChildren().get(0).select();
 		try {
 			new ContextMenu("Run As", "2 Local Camel Context").select();
-		} catch (SWTLayerException ex) {
+		} catch (SWTLayerException|CoreLayerException ex) {
 			new ContextMenu("Run As", "1 Local Camel Context").select();
 		}
 		new WaitUntil(new ConsoleHasText("(CamelContext: camel-1) started"), TimePeriod.getCustom(30));
@@ -73,7 +74,7 @@ public class CamelProject {
 		project.getProjectItem("src/main/resources", "META-INF", "spring", name).select();
 		try {
 			new ContextMenu("Run As", "2 Local Camel Context").select();
-		} catch (SWTLayerException ex) {
+		} catch (SWTLayerException|CoreLayerException ex) {
 			new ContextMenu("Run As", "1 Local Camel Context").select();
 		}
 		new WaitUntil(new ConsoleHasText("Total 1 routes, of which 1 is started."), TimePeriod.getCustom(300));

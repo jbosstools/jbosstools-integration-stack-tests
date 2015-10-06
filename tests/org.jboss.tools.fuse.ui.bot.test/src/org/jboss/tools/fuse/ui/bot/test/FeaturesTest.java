@@ -9,6 +9,7 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -96,7 +97,7 @@ public class FeaturesTest extends DefaultTest {
 		// 1. check context menu item "New Camel XML File"
 		try {
 			new ContextMenu("New Camel XML File");
-		} catch (SWTLayerException ex){
+		} catch (SWTLayerException|CoreLayerException ex){
 			fail("'Camel Contexts' does not have a context menu entry 'New Camel XML File'!");
 		}
 

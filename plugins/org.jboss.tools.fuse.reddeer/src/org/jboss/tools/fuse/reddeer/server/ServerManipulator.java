@@ -60,7 +60,7 @@ public class ServerManipulator {
 		serverRuntime.open();
 		try {
 			serverRuntime.removeServerRuntime(name);
-		} catch (SWTLayerException ex) {
+		} catch (SWTLayerException|CoreLayerException ex) {
 			log.warn("Cannot remove '" + name + "' server runtime. It is not listed in Server Runtimes!");
 		}
 		serverRuntime.ok();
@@ -74,7 +74,7 @@ public class ServerManipulator {
 			for (String runtime : serverRuntime.getServerRuntimes()) {
 				serverRuntime.removeServerRuntime(runtime);
 			}
-		} catch (SWTLayerException ex) {
+		} catch (SWTLayerException|CoreLayerException ex) {
 		}
 		serverRuntime.ok();
 	}
