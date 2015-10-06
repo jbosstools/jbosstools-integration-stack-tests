@@ -243,9 +243,7 @@ public class CreateRestProcedureTest {
 		itemProps.setProperty("intoFolder", PROJECT_NAME);
 		new ImportManager().importGeneralItem(ImportGeneralItemWizard.Type.FILE_SYSTEM, itemProps);
 
-		new ModelExplorerManager().getWAR(PROJECT_NAME, war + ".war").deploy();
-
-		AbstractWait.sleep(TimePeriod.getCustom(30));
+		new ModelExplorerManager().getWAR(PROJECT_NAME, war + ".war").deploy(teiidServer.getName());
 	}
 
 	private void checkRestProcedure(String modelName, String procedureName, String url) {

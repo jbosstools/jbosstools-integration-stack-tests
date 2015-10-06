@@ -138,9 +138,11 @@ public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomC
 			servers.getServer(serverConfig.getName()).open();
 			new DefaultCTabItem("Teiid Instance").activate();
 			new DefaultShell();
-			new DefaultText(0).typeText(serverConfig.getServerBase().getProperty("teiidUser"));
-			new DefaultText(1).typeText(serverConfig.getServerBase().getProperty("teiidPassword"));
-			new DefaultToolItem(new WorkbenchShell(), 0, new WithTooltipTextMatcher(new RegexMatcher("Save All.*"))).click();
+			new DefaultText(0).setText(serverConfig.getServerBase().getProperty("teiidUser"));
+			new DefaultText(1).setText(serverConfig.getServerBase().getProperty("teiidPassword"));
+			new WorkbenchShell();
+			AbstractWait.sleep(TimePeriod.SHORT);
+			new ShellMenu("File", "Save All").select();
 		}
 		serverBase.setState(teiid.state());
 
