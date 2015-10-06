@@ -254,6 +254,7 @@ public class ModelRefactoringTest {
 		new ModelExplorer();
 		project.getProjectItem(path).select();
 		new ContextMenu("Modeling", "Update Imports").select();
+		new WaitWhile(new ShellWithTextIsAvailable("Progress Information"), TimePeriod.SHORT);
 	}
 
 	private void checkErrors() {
