@@ -3,8 +3,6 @@ package org.jboss.tools.teiid.ui.bot.test;
 import java.util.Properties;
 
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
@@ -57,8 +55,8 @@ public class WARTest extends SWTBotTestCase {
 
 		// JBossWS-CXF war
 		new ImportManager().importProject("resources/projects/BooksWS");
-		new ModelExplorerManager().changeConnectionProfile(ConnectionProfilesConstants.ORACLE_11G_BOOKS, projectBooksWS,
-				"books.xmi");
+		new ModelExplorerManager().changeConnectionProfile(ConnectionProfilesConstants.ORACLE_11G_BOOKS,
+				projectBooksWS, "books.xmi");
 		vdbManager.createVDB(projectBooksWS, vdbCheckBook);
 		vdbManager.addModelsToVDB(projectBooksWS, vdbCheckBook, new String[] { "checkBookWS.xmi" });
 		vdbManager.deployVDB(pathToCheckBookVDB);
@@ -85,8 +83,7 @@ public class WARTest extends SWTBotTestCase {
 		itemProps.setProperty("intoFolder", projectBooksWS);
 		itemProps.setProperty("file", vdbCheckBook + ".war");
 		new ImportManager().importGeneralItem(ImportGeneralItemWizard.Type.FILE_SYSTEM, itemProps);
-		new ModelExplorerManager().getWAR(projectBooksWS, vdbCheckBook + ".war").deploy();
-		AbstractWait.sleep(TimePeriod.NORMAL);
+		new ModelExplorerManager().getWAR(projectBooksWS, vdbCheckBook + ".war").deploy(teiidServer.getName());
 
 		String nok = new SimpleHttpClient("http://localhost:8080/" + vdbCheckBook + "/BooksInterface?wsdl")
 				.addHeader("Content-Type", "text/xml; charset=utf-8").addHeader("SOAPAction", "")
@@ -112,7 +109,7 @@ public class WARTest extends SWTBotTestCase {
 		warProps.setProperty("saveLocation", teiidBot.toAbsolutePath("target"));
 		warProps.setProperty("securityType", WAR.HTTPBasic_SECURITY);
 		warProps.setProperty("realm", "teiid-security");
-		warProps.setProperty("role", "user");/// this has to be set also in teiid-security-users,roles
+		warProps.setProperty("role", "user");// / this has to be set also in teiid-security-users,roles
 		// http://localhost:8080/checkBookVdbBasic/BooksInterface?wsdl
 
 		new VDBManager().createWAR(warProps, pathToCheckBookVDB);
@@ -122,8 +119,7 @@ public class WARTest extends SWTBotTestCase {
 		itemProps.setProperty("intoFolder", projectBooksWS);
 		itemProps.setProperty("file", warCheckBookBasic + ".war");
 		new ImportManager().importGeneralItem(ImportGeneralItemWizard.Type.FILE_SYSTEM, itemProps);
-		new ModelExplorerManager().getWAR(projectBooksWS, warCheckBookBasic + ".war").deploy();
-		AbstractWait.sleep(TimePeriod.NORMAL);
+		new ModelExplorerManager().getWAR(projectBooksWS, warCheckBookBasic + ".war").deploy(teiidServer.getName());
 
 		String username = teiidServer.getServerConfig().getServerBase().getProperty("teiidUser");
 		String password = teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword");
@@ -165,8 +161,7 @@ public class WARTest extends SWTBotTestCase {
 
 		new ImportManager().importGeneralItem(ImportGeneralItemWizard.Type.FILE_SYSTEM, itemProps);
 
-		new ModelExplorerManager().getWAR(projectBooksRest, rbWar + ".war").deploy();
-		AbstractWait.sleep(TimePeriod.NORMAL);
+		new ModelExplorerManager().getWAR(projectBooksRest, rbWar + ".war").deploy(teiidServer.getName());
 		String url = "http://localhost:8080/" + rbWar + "/BooksView/book1/0201877562";
 
 		assertEquals(resultRest, new SimpleHttpClient(url).get());
@@ -199,8 +194,7 @@ public class WARTest extends SWTBotTestCase {
 		itemProps.setProperty("intoFolder", projectBooksRest);
 		new ImportManager().importGeneralItem(ImportGeneralItemWizard.Type.FILE_SYSTEM, itemProps);
 
-		new ModelExplorerManager().getWAR(projectBooksRest, rbWar + ".war").deploy();
-		AbstractWait.sleep(TimePeriod.NORMAL);
+		new ModelExplorerManager().getWAR(projectBooksRest, rbWar + ".war").deploy(teiidServer.getName());
 
 		String username = teiidServer.getServerConfig().getServerBase().getProperty("teiidUser");
 		String password = teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword");

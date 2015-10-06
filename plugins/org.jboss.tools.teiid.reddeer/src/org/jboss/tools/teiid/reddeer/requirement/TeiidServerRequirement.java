@@ -136,21 +136,11 @@ public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomC
 		if (serverBase == null) {
 			return;
 		}
-		if (!serverBase.exists()) {
-			serverBase.create();
 
-			// set username and password
-			ServersView servers = new ServersView();
-			servers.open();
-			servers.getServer(serverConfig.getName()).open();
-			new DefaultCTabItem("Teiid Instance").activate();
-			new DefaultShell();
-			new DefaultText(0).typeText(serverConfig.getServerBase().getProperty("teiidUser"));
-			new DefaultText(1).typeText(serverConfig.getServerBase().getProperty("teiidPassword"));
-			new DefaultToolItem(new WorkbenchShell(), 0, new WithTooltipTextMatcher(new RegexMatcher("Save All.*")))
-					.click();
+		if (!serverBase.exists()) {
 			createServer(serverBase);
 		}
+
 		serverBase.setState(teiid.state());
 
 		try {
