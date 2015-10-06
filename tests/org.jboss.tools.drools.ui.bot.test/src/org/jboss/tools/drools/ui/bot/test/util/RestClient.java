@@ -8,8 +8,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.List;
+
+import javax.xml.bind.DatatypeConverter;
 
 import org.jboss.tools.drools.reddeer.kienavigator.structure.OrganizationalUnit;
 import org.jboss.tools.drools.reddeer.kienavigator.structure.Project;
@@ -32,7 +33,7 @@ public class RestClient {
 	private static HttpURLConnection getConnection(String url) throws MalformedURLException, IOException {
 		HttpURLConnection huc = (HttpURLConnection) new URL(url).openConnection(); 
 		huc.setRequestMethod("GET");
-		String basicAuth = "Basic " + new String(Base64.getEncoder().encode(USER_PASS.getBytes()));
+		String basicAuth = "Basic " + new String(DatatypeConverter.printBase64Binary(USER_PASS.getBytes()));
 		huc.setRequestProperty("Authorization", basicAuth);
 		huc.connect();
 		return huc;
