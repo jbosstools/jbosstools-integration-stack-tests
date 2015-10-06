@@ -1,13 +1,17 @@
 package org.jboss.tools.teiid.reddeer;
 
+import java.util.List;
 import java.util.Properties;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.jboss.reddeer.common.condition.WaitCondition;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerModule;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
@@ -15,6 +19,7 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.tools.teiid.reddeer.condition.WarIsDeployed;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 
 /**
@@ -160,15 +165,16 @@ public class WAR {
 		}
 	}
 	
-	public void deploy() {
+	public void deploy(String serverName) {
 
+		String warName = null;
 		if (warProjectItem != null) { 
-
 			//newly created war is not by default in the project...
 			warProjectItem.select();
+			warName = warProjectItem.getName();
 		} else {
-
 			new ModelExplorer().getProject(pathToVDB[0]).getProjectItem(warProps.getProperty("contextName")+".war").select();
+			warName = warProps.getProperty("contextName");
 		}
 	
 		new ContextMenu(MARK_AS_DEPLOYABLE).select();
@@ -178,9 +184,11 @@ public class WAR {
 		new DefaultShell().setFocus();
 		if (new DefaultShell().getText().equals("Select a server to publish to")) {
 
-			new DefaultTreeItem(warProps.getProperty("serverName")).select();
+			new DefaultTreeItem(serverName).select();
 			new PushButton("OK").click();
 		}
+		
+		new WaitUntil(new WarIsDeployed(serverName, warName), TimePeriod.LONG);
 	}
 	
 	public void undeploy(){

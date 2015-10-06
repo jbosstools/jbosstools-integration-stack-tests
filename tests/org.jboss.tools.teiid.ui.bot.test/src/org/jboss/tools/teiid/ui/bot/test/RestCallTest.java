@@ -108,7 +108,7 @@ public class RestCallTest {
 		
 		AbstractWait.sleep(TimePeriod.getCustom(30));
 		// testing purposes WAR
-		war.deploy();
+		war.deploy(teiidServer.getName());
 
 		// create data source for BooksSrc
 		new ModelExplorerManager().createDataSource(ModelExplorer.ConnectionSourceType.USE_CONNECTION_PROFILE_INFO, ConnectionProfilesConstants.ORACLE_11G_BOOKS, PROJECT_NAME, SRC_MODEL);
@@ -159,7 +159,7 @@ public class RestCallTest {
 
 		new ImportManager().importGeneralItem(ImportGeneralItemWizard.Type.FILE_SYSTEM, itemProps);
 
-		war.deploy();
+		war.deploy(teiidServer.getName());
 
 		// create data source for BooksSrc
 		new ModelExplorerManager().createDataSource(ModelExplorer.ConnectionSourceType.USE_CONNECTION_PROFILE_INFO, ConnectionProfilesConstants.ORACLE_11G_BOOKS, PROJECT_NAME, SRC_MODEL);
