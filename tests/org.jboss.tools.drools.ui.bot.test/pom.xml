@@ -13,7 +13,7 @@
   <packaging>eclipse-test-plugin</packaging>
 
   <properties>
-    <pluginVersion>6.2.0.Final</pluginVersion>
+    <pluginVersion>6.3.0.Final</pluginVersion>
     <reddeer.config>${project.build.directory}/config</reddeer.config>
     <systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=${reddeer.config}</systemProperties>
   </properties>
