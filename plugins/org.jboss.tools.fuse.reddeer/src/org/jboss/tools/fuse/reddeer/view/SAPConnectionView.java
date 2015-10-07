@@ -52,7 +52,9 @@ public class SAPConnectionView extends WorkbenchView {
 
 	public SAPDestinationProperties openDestinationProperties(String name) {
 		selectDestination(name);
-		return new SAPDestinationProperties();
+		SAPDestinationProperties sapDestinationProperties = new SAPDestinationProperties();
+		sapDestinationProperties.open();
+		return sapDestinationProperties;
 	}
 
 	public void selectServer() {
@@ -87,7 +89,9 @@ public class SAPConnectionView extends WorkbenchView {
 
 	public SAPServerProperties openServerProperties(String name) {
 		selectServer(name);
-		return new SAPServerProperties();
+		SAPServerProperties sapServerProperties = new SAPServerProperties();
+		sapServerProperties.open();
+		return sapServerProperties;
 	}
 
 	public class TestDestinationConnection {
