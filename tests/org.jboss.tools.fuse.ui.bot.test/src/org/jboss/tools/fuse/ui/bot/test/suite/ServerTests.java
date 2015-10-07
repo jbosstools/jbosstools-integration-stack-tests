@@ -1,6 +1,7 @@
 package org.jboss.tools.fuse.ui.bot.test.suite;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.tools.fuse.ui.bot.test.DeploymentEAPTest;
 import org.jboss.tools.fuse.ui.bot.test.DeploymentTest;
 import org.jboss.tools.fuse.ui.bot.test.JMXNavigatorServerTest;
 import org.jboss.tools.fuse.ui.bot.test.ServerJRETest;
@@ -16,6 +17,7 @@ import junit.framework.TestSuite;
  * @author tsedmik
  */
 @SuiteClasses({
+	DeploymentEAPTest.class,
 	DeploymentTest.class,
 	JMXNavigatorServerTest.class,
 	ServerTest.class,
