@@ -11,5 +11,3 @@ nment: JavaSE-1.7
 Bundle-Vendor: JBoss by Red Hat
 Eclipse-RegisterBuddy: org.apache.log4j
 Eclipse-BundleShape: dir
-Import-Package: org.jboss.tools.fuse.reddeer.preference,
- org.jboss.tools.fuse.reddeer.view

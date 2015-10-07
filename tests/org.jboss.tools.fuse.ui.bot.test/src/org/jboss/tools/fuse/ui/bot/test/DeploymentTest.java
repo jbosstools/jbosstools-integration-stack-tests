@@ -12,13 +12,13 @@ import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
-import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
-import org.jboss.tools.fuse.reddeer.view.TerminalView;
 import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
+import org.jboss.tools.runtime.reddeer.utils.FuseServerManipulator;
+import org.jboss.tools.runtime.reddeer.view.TerminalView;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -62,9 +62,9 @@ public class DeploymentTest extends DefaultTest {
 	public void setupManageServers() {
 
 		new WorkbenchShell().setFocus();
-		ServerManipulator.removeAllModules(serverRequirement.getConfig().getName());
-		ServerManipulator.stopServer(serverRequirement.getConfig().getName());
-		ServerManipulator.removeServer(serverRequirement.getConfig().getName());
+		FuseServerManipulator.removeAllModules(serverRequirement.getConfig().getName());
+		FuseServerManipulator.stopServer(serverRequirement.getConfig().getName());
+		FuseServerManipulator.removeServer(serverRequirement.getConfig().getName());
 	}
 
 	/**
@@ -87,12 +87,12 @@ public class DeploymentTest extends DefaultTest {
 	 */
 	@Test
 	public void testServerDeployment() {
-		ServerManipulator.addModule(serverRequirement.getConfig().getName(), PROJECT_NAME);
-		assertTrue(ServerManipulator.hasServerModule(serverRequirement.getConfig().getName(), PROJECT_NAME));
-		ServerManipulator.startServer(serverRequirement.getConfig().getName());
-		ServerManipulator.publish(serverRequirement.getConfig().getName());
+		FuseServerManipulator.addModule(serverRequirement.getConfig().getName(), PROJECT_NAME);
+		assertTrue(FuseServerManipulator.hasServerModule(serverRequirement.getConfig().getName(), PROJECT_NAME));
+		FuseServerManipulator.startServer(serverRequirement.getConfig().getName());
+		FuseServerManipulator.publish(serverRequirement.getConfig().getName());
 		assertTrue(new TerminalView().containsLog(PROJECT_IS_DEPLOYED));
-		ServerManipulator.removeAllModules(serverRequirement.getConfig().getName());
+		FuseServerManipulator.removeAllModules(serverRequirement.getConfig().getName());
 		AbstractWait.sleep(TimePeriod.getCustom(30));
 		assertTrue(new TerminalView().containsLog(PROJECT_IS_UNDEPLOYED));
 	}

@@ -7,9 +7,9 @@ import java.io.File;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.core.handler.ShellHandler;
-import org.jboss.tools.fuse.reddeer.preference.ServerRuntimePreferencePage;
-import org.jboss.tools.fuse.reddeer.view.ErrorLogView;
+import org.jboss.reddeer.eclipse.ui.views.log.LogView;
 import org.jboss.tools.runtime.reddeer.preference.JBossRuntimeDetection;
+import org.jboss.tools.runtime.reddeer.preference.FuseServerRuntimePreferencePage;
 import org.jboss.tools.runtime.reddeer.wizard.DownloadRuntimesWizard;
 import org.junit.After;
 import org.junit.Before;
@@ -29,7 +29,9 @@ public class RuntimeDetectionDownloadTest {
 	public void clearErrorLog() {
 
 		// delete Error Log
-		new ErrorLogView().deleteLog();
+		LogView log = new LogView();
+		log.open();
+		log.clearLog();
 	}
 
 	@After
@@ -45,7 +47,7 @@ public class RuntimeDetectionDownloadTest {
 		prefPage.ok();
 
 		// remove all configured runtimes (in server runtimes)
-		ServerRuntimePreferencePage runtimePref = new ServerRuntimePreferencePage();
+		FuseServerRuntimePreferencePage runtimePref = new FuseServerRuntimePreferencePage();
 		runtimePref.open();
 		runtimePref.removeAllServerRuntimes();
 		runtimePref.ok();
@@ -250,11 +252,12 @@ public class RuntimeDetectionDownloadTest {
 		runtimeWiz.finish(name);
 		assertEquals(1, prefPage.getRuntimesCount());
 		prefPage.cancel();
-		ServerRuntimePreferencePage runtimePref = new ServerRuntimePreferencePage();
+		FuseServerRuntimePreferencePage runtimePref = new FuseServerRuntimePreferencePage();
 		runtimePref.open();
 		assertEquals(1, runtimePref.getServerRuntimes().size());
 		runtimePref.cancel();
-		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
+		new LogView().open();
+		assertTrue(new LogView().getErrorMessages().size() == 0);
 	}
 
 	/**
