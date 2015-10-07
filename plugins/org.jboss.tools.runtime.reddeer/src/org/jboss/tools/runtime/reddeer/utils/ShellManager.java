@@ -1,4 +1,4 @@
-package org.jboss.tools.fuse.reddeer.utils;
+package org.jboss.tools.runtime.reddeer.utils;
 
 import java.io.IOException;
 import java.io.InputStream;

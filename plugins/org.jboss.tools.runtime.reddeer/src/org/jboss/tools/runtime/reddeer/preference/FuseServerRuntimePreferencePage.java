@@ -1,4 +1,4 @@
-package org.jboss.tools.fuse.reddeer.preference;
+package org.jboss.tools.runtime.reddeer.preference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
  * 
  * @author tsedmik
  */
-public class ServerRuntimePreferencePage extends PreferencePage {
+public class FuseServerRuntimePreferencePage extends PreferencePage {
 
 	private static final String ADD_BUTTON = "Add...";
 	private static final String NEXT_BUTTON = "Next >";
@@ -36,7 +36,7 @@ public class ServerRuntimePreferencePage extends PreferencePage {
 	private static final String NAME = "Name";
 	private static final String SERVER_SECTION = "JBoss Fuse";
 
-	public ServerRuntimePreferencePage() {
+	public FuseServerRuntimePreferencePage() {
 		super("Server", "Runtime Environments");
 	}
 

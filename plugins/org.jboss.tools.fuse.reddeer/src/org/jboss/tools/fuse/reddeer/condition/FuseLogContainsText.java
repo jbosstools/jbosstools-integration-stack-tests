@@ -1,7 +1,7 @@
 package org.jboss.tools.fuse.reddeer.condition;
 
 import org.jboss.reddeer.common.condition.WaitCondition;
-import org.jboss.tools.fuse.reddeer.view.TerminalView;
+import org.jboss.tools.runtime.reddeer.view.TerminalView;
 
 /**
  * Checks whether Fuse server's log contains specified text

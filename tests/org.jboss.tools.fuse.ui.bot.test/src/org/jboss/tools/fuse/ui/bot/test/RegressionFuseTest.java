@@ -26,14 +26,14 @@ import org.jboss.tools.fuse.reddeer.debug.BreakpointsView;
 import org.jboss.tools.fuse.reddeer.debug.IsRunning;
 import org.jboss.tools.fuse.reddeer.debug.ResumeButton;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
-import org.jboss.tools.fuse.reddeer.preference.ServerRuntimePreferencePage;
-import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
 import org.jboss.tools.fuse.reddeer.utils.ResourceHelper;
 import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
+import org.jboss.tools.runtime.reddeer.preference.FuseServerRuntimePreferencePage;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
+import org.jboss.tools.runtime.reddeer.utils.FuseServerManipulator;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,8 +59,8 @@ public class RegressionFuseTest extends DefaultTest {
 	public void setupClean() {
 
 		String server = serverRequirement.getConfig().getName();
-		if (ServerManipulator.isServerStarted(server)) {
-			ServerManipulator.stopServer(server);
+		if (FuseServerManipulator.isServerStarted(server)) {
+			FuseServerManipulator.stopServer(server);
 		}
 		new ProjectExplorer().deleteAllProjects();
 	}
@@ -72,7 +72,7 @@ public class RegressionFuseTest extends DefaultTest {
 	@Test
 	public void issue_1067() {
 
-		new ServerRuntimePreferencePage().open();
+		new FuseServerRuntimePreferencePage().open();
 
 		new PushButton("Add...").click();
 		new DefaultShell("New Server Runtime Environment").setFocus();
@@ -130,8 +130,8 @@ public class RegressionFuseTest extends DefaultTest {
 		new ProjectExplorer().getProject("camel-blueprint").getProjectItem("src/test/java", "com.mycompany.camel.blueprint", "RouteTest.java").delete();
 		String server = serverRequirement.getConfig().getName();
 		new BreakpointsView().importBreakpoints(ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID, "resources/breakpoint.bkpt"));
-		ServerManipulator.debugServer(server);
-		ServerManipulator.addModule(server, "camel-blueprint");
+		FuseServerManipulator.debugServer(server);
+		FuseServerManipulator.addModule(server, "camel-blueprint");
 		try {	
 			new WaitUntil(new ShellWithTextIsAvailable("Confirm Perspective Switch"), TimePeriod.LONG);
 			new DefaultShell("Confirm Perspective Switch");
@@ -148,7 +148,7 @@ public class RegressionFuseTest extends DefaultTest {
 			if (resume.isEnabled()) {
 				resume.select();
 			}
-			ServerManipulator.removeAllModules(server);
+			FuseServerManipulator.removeAllModules(server);
 		}
 	}
 
@@ -162,10 +162,10 @@ public class RegressionFuseTest extends DefaultTest {
 
 		ProjectFactory.createProject("camel-spring-dm", "camel-archetype-spring-dm");
 		String server = serverRequirement.getConfig().getName();
-		ServerManipulator.startServer(server);
-		ServerManipulator.addModule(server, "camel-spring-dm");
+		FuseServerManipulator.startServer(server);
+		FuseServerManipulator.addModule(server, "camel-spring-dm");
 		AbstractWait.sleep(TimePeriod.NORMAL);
-		ServerManipulator.removeAllModules(server);
+		FuseServerManipulator.removeAllModules(server);
 		new WaitUntil(new FuseLogContainsText("Application context succesfully closed (OsgiBundleXmlApplicationContext(bundle=camel-spring-dm"), TimePeriod.VERY_LONG);
 	}
 
@@ -179,9 +179,9 @@ public class RegressionFuseTest extends DefaultTest {
 
 		ProjectFactory.createProject("camel-blueprint", "camel-archetype-blueprint");
 		String server = serverRequirement.getConfig().getName();
-		ServerManipulator.addModule(server, "camel-blueprint");
-		ServerManipulator.startServer(server);
-		ServerManipulator.restartInDebug(server);
+		FuseServerManipulator.addModule(server, "camel-blueprint");
+		FuseServerManipulator.startServer(server);
+		FuseServerManipulator.restartInDebug(server);
 		try {
 			new WaitUntil(new ShellWithTextIsAvailable("Problem Occurred"));
 			new DefaultShell("Problem Occurred");

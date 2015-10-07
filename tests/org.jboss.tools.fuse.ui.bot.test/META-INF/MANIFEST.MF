@@ -11,7 +11,8 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.tools.fuse.reddeer;bundle-version="4.2.0",
  org.jboss.reddeer.go;bundle-version="0.8.0",
  org.jboss.reddeer.gef;bundle-version="0.8.0",
- org.jboss.reddeer.graphiti;bundle-version="0.8.0"
+ org.jboss.reddeer.graphiti;bundle-version="0.8.0",
+ org.jboss.tools.runtime.reddeer
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Vendor: JBoss by Red Hat

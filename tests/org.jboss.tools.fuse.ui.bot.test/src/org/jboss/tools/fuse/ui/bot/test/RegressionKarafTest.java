@@ -15,10 +15,10 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
-import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
+import org.jboss.tools.runtime.reddeer.utils.FuseServerManipulator;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,8 +44,8 @@ public class RegressionKarafTest extends DefaultTest {
 	public void steupClean() {
 
 		String server = serverRequirement.getConfig().getName();
-		if (ServerManipulator.isServerStarted(server)) {
-			ServerManipulator.stopServer(server);
+		if (FuseServerManipulator.isServerStarted(server)) {
+			FuseServerManipulator.stopServer(server);
 		}
 		new ProjectExplorer().deleteAllProjects();
 	}
@@ -58,7 +58,7 @@ public class RegressionKarafTest extends DefaultTest {
 	public void issue_1264() {
 
 		String server = serverRequirement.getConfig().getName();
-		ServerManipulator.startServer(server);
+		FuseServerManipulator.startServer(server);
 		new ServersView().open();
 		TreeItem item = new DefaultTree(0).getAllItems().get(0);
 		item.expand(TimePeriod.NORMAL);

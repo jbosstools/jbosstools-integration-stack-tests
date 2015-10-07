@@ -1,4 +1,4 @@
-package org.jboss.tools.fuse.reddeer.server;
+package org.jboss.tools.runtime.reddeer.utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,22 +24,23 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.tools.fuse.reddeer.preference.ServerRuntimePreferencePage;
-import org.jboss.tools.fuse.reddeer.view.TerminalView;
-import org.jboss.tools.fuse.reddeer.wizard.ServerWizard;
+import org.jboss.tools.runtime.reddeer.preference.FuseServerRuntimePreferencePage;
+import org.jboss.tools.runtime.reddeer.view.TerminalView;
+import org.jboss.tools.runtime.reddeer.wizard.FuseModifyModulesPage;
+import org.jboss.tools.runtime.reddeer.wizard.FuseServerWizard;
 
 /**
  * Performs operation with a Fuse server
  * 
  * @author tsedmik
  */
-public class ServerManipulator {
+public class FuseServerManipulator {
 
-	private static final Logger log = Logger.getLogger(ServerManipulator.class);
+	private static final Logger log = Logger.getLogger(FuseServerManipulator.class);
 
 	public static void addServerRuntime(String type, String path) {
 
-		ServerRuntimePreferencePage serverRuntime = new ServerRuntimePreferencePage();
+		FuseServerRuntimePreferencePage serverRuntime = new FuseServerRuntimePreferencePage();
 		serverRuntime.open();
 		serverRuntime.addServerRuntime(type, path);
 		serverRuntime.ok();
@@ -47,7 +48,7 @@ public class ServerManipulator {
 
 	public static void editServerRuntime(String name, String path) {
 
-		ServerRuntimePreferencePage serverRuntime = new ServerRuntimePreferencePage();
+		FuseServerRuntimePreferencePage serverRuntime = new FuseServerRuntimePreferencePage();
 		serverRuntime.open();
 		serverRuntime.editServerRuntime(name, path);
 		serverRuntime.ok();
@@ -55,7 +56,7 @@ public class ServerManipulator {
 
 	public static void removeServerRuntime(String name) {
 
-		ServerRuntimePreferencePage serverRuntime = new ServerRuntimePreferencePage();
+		FuseServerRuntimePreferencePage serverRuntime = new FuseServerRuntimePreferencePage();
 		serverRuntime.open();
 		try {
 			serverRuntime.removeServerRuntime(name);
@@ -67,7 +68,7 @@ public class ServerManipulator {
 
 	public static void deleteAllServerRuntimes() {
 
-		ServerRuntimePreferencePage serverRuntime = new ServerRuntimePreferencePage();
+		FuseServerRuntimePreferencePage serverRuntime = new FuseServerRuntimePreferencePage();
 		serverRuntime.open();
 		try {
 			for (String runtime : serverRuntime.getServerRuntimes()) {
@@ -80,7 +81,7 @@ public class ServerManipulator {
 
 	public static List<String> getServerRuntimes() {
 
-		ServerRuntimePreferencePage serverRuntime = new ServerRuntimePreferencePage();
+		FuseServerRuntimePreferencePage serverRuntime = new FuseServerRuntimePreferencePage();
 		serverRuntime.open();
 		List<String> temp = serverRuntime.getServerRuntimes();
 		serverRuntime.cancel();
@@ -99,7 +100,7 @@ public class ServerManipulator {
 	public static void addServer(String type, String hostname, String name, String portNumber, String userName,
 			String password, String... projects) {
 
-		ServerWizard serverWizard = new ServerWizard();
+		FuseServerWizard serverWizard = new FuseServerWizard();
 		serverWizard.setType(type);
 		serverWizard.setHostName(hostname);
 		serverWizard.setName(name);

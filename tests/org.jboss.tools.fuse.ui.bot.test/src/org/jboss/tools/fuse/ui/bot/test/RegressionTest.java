@@ -41,13 +41,13 @@ import org.jboss.tools.fuse.reddeer.component.Log;
 import org.jboss.tools.fuse.reddeer.debug.IsSuspended;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
-import org.jboss.tools.fuse.reddeer.preference.ServerRuntimePreferencePage;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
 import org.jboss.tools.fuse.reddeer.utils.ResourceHelper;
 import org.jboss.tools.fuse.reddeer.view.JMXNavigator;
 import org.jboss.tools.fuse.ui.bot.test.utils.EditorManipulator;
 import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
+import org.jboss.tools.runtime.reddeer.preference.FuseServerRuntimePreferencePage;
 import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -132,7 +132,7 @@ public class RegressionTest extends DefaultTest {
 	@Test
 	public void issue_1076() {
 
-		ServerRuntimePreferencePage serverRuntime = new ServerRuntimePreferencePage();
+		FuseServerRuntimePreferencePage serverRuntime = new FuseServerRuntimePreferencePage();
 		serverRuntime.open();
 		new PushButton("Add...").click();
 		new DefaultShell("New Server Runtime Environment").setFocus();
