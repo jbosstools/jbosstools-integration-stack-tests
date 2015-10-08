@@ -13,11 +13,11 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
-import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
 import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
+import org.jboss.tools.runtime.reddeer.utils.FuseServerManipulator;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -56,7 +56,7 @@ public class DeploymentEAPTest extends DefaultTest {
 	@After
 	public void setupManageServers() {
 
-		ServerManipulator.removeAllModules(serverRequirement.getConfig().getName());
+		FuseServerManipulator.removeAllModules(serverRequirement.getConfig().getName());
 	}
 
 	/**
@@ -78,18 +78,18 @@ public class DeploymentEAPTest extends DefaultTest {
 	@Test
 	public void testDeployment() {
 
-		ServerManipulator.addModule(serverRequirement.getConfig().getName(), PROJECT_NAME);
-		assertTrue(ServerManipulator.hasServerModule(serverRequirement.getConfig().getName(), PROJECT_NAME));
+		FuseServerManipulator.addModule(serverRequirement.getConfig().getName(), PROJECT_NAME);
+		assertTrue(FuseServerManipulator.hasServerModule(serverRequirement.getConfig().getName(), PROJECT_NAME));
 		new WaitUntil(new ConsoleHasText("(CamelContext: spring-context) started"));
 		new WaitUntil(new ConsoleHasText("Deployed \"wildfly-spring.war\""));
 		BrowserView browser = new BrowserView();
 		browser.open();
 		browser.openPageURL("http://localhost:8080/wildfly-spring");
 		assertEquals("Hello null", browser.getText());
-		ServerManipulator.removeAllModules(serverRequirement.getConfig().getName());
+		FuseServerManipulator.removeAllModules(serverRequirement.getConfig().getName());
 		new WaitUntil(new ConsoleHasText("(CamelContext: spring-context) is shutdown"));
 		new WaitUntil(new ConsoleHasText("Undeployed \"wildfly-spring.war\""));
-		assertFalse(ServerManipulator.hasServerModule(serverRequirement.getConfig().getName(), PROJECT_NAME));
+		assertFalse(FuseServerManipulator.hasServerModule(serverRequirement.getConfig().getName(), PROJECT_NAME));
 		browser.open();
 		browser.openPageURL("http://localhost:8080/wildfly-spring");
 		assertTrue(browser.getText().contains("404"));

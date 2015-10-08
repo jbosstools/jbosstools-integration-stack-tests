@@ -7,7 +7,7 @@ Bundle-Activator: org.jboss.tools.fuse.ui.bot.test.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.osgi,
  org.eclipse.core.runtime,
- org.junit;bundle-version="4.10.0",
+ org.junit;bundle-version="4.12.0",
  org.jboss.tools.fuse.reddeer;bundle-version="4.2.0",
  org.jboss.reddeer.go;bundle-version="0.8.0",
  org.jboss.reddeer.gef;bundle-version="0.8.0",
