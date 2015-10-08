@@ -8,8 +8,11 @@ import java.util.Properties;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.junit.execution.annotation.RunIf;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
+import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.teiid.reddeer.Procedure;
 import org.jboss.tools.teiid.reddeer.Table;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfilesConstants;
@@ -72,6 +75,8 @@ public class ProcedurePreviewTest {
 	}
 	
 	@Test
+	@Jira("TEIIDDES-2677")
+	@RunIf(conditionClass = IssueIsClosed.class)
 	public void relViewUDF(){
 		// import lib/MyTestUDF.jar
 		Properties props = new Properties();
