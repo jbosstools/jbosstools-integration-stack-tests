@@ -17,6 +17,13 @@ import org.jboss.tools.drools.ui.bot.test.functional.view.AgendaViewTest;
 import org.jboss.tools.drools.ui.bot.test.functional.view.AuditLogTest;
 import org.jboss.tools.drools.ui.bot.test.functional.view.GlobalDataViewTest;
 import org.jboss.tools.drools.ui.bot.test.functional.view.WorkingMemoryViewTest;
+import org.jboss.tools.drools.ui.bot.test.kienavigator.CloneRepoTest;
+import org.jboss.tools.drools.ui.bot.test.kienavigator.CreateItemsRestTest;
+import org.jboss.tools.drools.ui.bot.test.kienavigator.CreateItemsTest;
+import org.jboss.tools.drools.ui.bot.test.kienavigator.KieNavigatorTestParent;
+import org.jboss.tools.drools.ui.bot.test.kienavigator.OpenKieNavigatorTest;
+import org.jboss.tools.drools.ui.bot.test.kienavigator.RepositoryManipulationTest;
+import org.jboss.tools.drools.ui.bot.test.kienavigator.ServerConnectionTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
@@ -34,16 +41,24 @@ import org.junit.runners.Suite.SuiteClasses;
     DeclareCompletionTest.class,
     ConditionsCompletionTest.class,
     ConsequencesCompletionTest.class,
-    // dsl editor
+    // DSL editor
     DslEditorTest.class,
-    // dslr editor
+    // DSLR editor
     DslrEditorTest.class,
-    // TODO: debugging tests
+    // TODO debugging tests
     // views test
     AgendaViewTest.class,
     GlobalDataViewTest.class,
     WorkingMemoryViewTest.class,
-    AuditLogTest.class
+    AuditLogTest.class,
+    // Kie Navigator tests
+    CloneRepoTest.class,
+    CreateItemsRestTest.class,
+    CreateItemsTest.class,
+    KieNavigatorTestParent.class,
+    OpenKieNavigatorTest.class,
+    RepositoryManipulationTest.class,
+    ServerConnectionTest.class
 })
 public class Brms6TestSuite {
 
