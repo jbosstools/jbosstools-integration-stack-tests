@@ -29,10 +29,10 @@ public class ComplexAdHocProcessTest extends JBPM6ComplexTest {
 		process.setAddHoc(true);
 		
 		ScriptTask task2 = (ScriptTask) process.add("Task 2", ElementType.SCRIPT_TASK);
-		task2.setScript("", "System.out.println(\"Task2\");");
+		task2.setScript("Java", "System.out.println(\"Task2\");");
 		
 		ScriptTask task1 = (ScriptTask) process.add("Task 1", ElementType.SCRIPT_TASK, task2, Position.NORTH);
-		task1.setScript("", "System.out.println(\"Task1\");");
+		task1.setScript("Java", "System.out.println(\"Task1\");");
 	}
 	
 	@TestPhase(phase=Phase.RUN)
