@@ -16,7 +16,6 @@
 	  <reddeer.config>${project.build.directory}/config</reddeer.config>
 	  <reddeerProperties>-Dreddeer.config=${reddeer.config}</reddeerProperties>
 	  <systemProperties>${integrationTestsSystemProperties} ${reddeerProperties}</systemProperties>
-	  <surefire.timeout>10800</surefire.timeout>
 	  <maven-download-plugin.version>1.2.0</maven-download-plugin.version>
 	  <skipJBPM>${skipRequirements}</skipJBPM>
 	  <skipESB>${skipRequirements}</skipESB>
