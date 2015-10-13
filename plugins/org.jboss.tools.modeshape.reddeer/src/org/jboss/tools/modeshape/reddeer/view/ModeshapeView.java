@@ -94,6 +94,7 @@ public class ModeshapeView extends WorkbenchView {
 	
 	public List<String> getPublishAreas(String url, String repository, String workspace){
 		List<String> publishAreas = new ArrayList<String>();
+		open();
 		for (TreeItem pa : new DefaultTreeItem(url, repository, workspace).getItems()) {
 			publishAreas.add(pa.getText());
 		} 
