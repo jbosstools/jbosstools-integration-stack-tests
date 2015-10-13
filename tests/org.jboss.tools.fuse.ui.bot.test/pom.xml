@@ -27,7 +27,6 @@
 		<reddeer.config>${project.build.directory}/requirements/karaf-3.0.3.xml</reddeer.config>
 		<enable.debug.log>false</enable.debug.log>
 		<systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=${reddeer.config} -Dec2.id=${ec2.id} -Dec2.pass=${ec2.pass} -Dec2.email=${ec2.email}</systemProperties>
-		<surefire.timeout>10800</surefire.timeout>
 		<test.class>AllTests</test.class>
 		<customization.file>${project.build.directory}/requirements/plugin_customization.ini</customization.file>
 	</properties>
