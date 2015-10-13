@@ -26,7 +26,6 @@
 	      <artifactId>tycho-surefire-plugin</artifactId>
 	      <configuration>
 		<appArgLine>-eclipse.password ${project.basedir}/resources/security/password -pluginCustomization ${customization.file} -clean</appArgLine>
-		<forkedProcessTimeoutInSeconds>7200</forkedProcessTimeoutInSeconds>
 		<useUIThread>false</useUIThread>
 		<skip>${skipTests}</skip>
 		<dependencies combine.children="append">

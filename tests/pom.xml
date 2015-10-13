@@ -13,7 +13,7 @@
   <packaging>pom</packaging>
   
   <properties>
-    <surefire.timeout>7200</surefire.timeout>
+    <surefire.timeout>10800</surefire.timeout>
     <memoryOptions2>-XX:MaxPermSize=384m</memoryOptions2>
     <swt.bot.test.record.screencast>false</swt.bot.test.record.screencast>
     <pauseFailedTest>false</pauseFailedTest>
