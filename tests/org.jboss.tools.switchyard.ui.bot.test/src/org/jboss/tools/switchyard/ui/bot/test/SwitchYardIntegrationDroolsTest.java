@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
 @SwitchYard
 @OpenPerspective(JavaEEPerspective.class)
 @RunWith(RedDeerSuite.class)
-public class DroolsTest {
+public class SwitchYardIntegrationDroolsTest {
 
 	private static final String PROJECT = "switchyard-drools-interview";
 	private static final String PACKAGE = "org.switchyard.quickstarts.drools.service";

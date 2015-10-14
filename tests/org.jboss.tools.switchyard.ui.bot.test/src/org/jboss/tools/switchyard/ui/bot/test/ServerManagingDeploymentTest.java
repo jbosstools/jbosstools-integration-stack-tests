@@ -29,7 +29,7 @@ import org.junit.runner.RunWith;
  */
 @SwitchYard(server = @Server(type = ServerReqType.ANY, state = ServerReqState.RUNNING))
 @RunWith(RedDeerSuite.class)
-public class DeploymentTest {
+public class ServerManagingDeploymentTest {
 
 	public static final String PROJECT_NAME = "deploy";
 

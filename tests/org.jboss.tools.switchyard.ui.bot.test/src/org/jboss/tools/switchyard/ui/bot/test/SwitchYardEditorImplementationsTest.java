@@ -1,6 +1,8 @@
 package org.jboss.tools.switchyard.ui.bot.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,11 +12,22 @@ import org.jboss.reddeer.junit.execution.annotation.RunIf;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.impl.button.NoButton;
+import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
+import org.jboss.tools.switchyard.reddeer.editor.DomainEditor;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
+import org.jboss.tools.switchyard.reddeer.preference.CompositePropertiesPage;
+import org.jboss.tools.switchyard.reddeer.preference.component.ComponentPage;
+import org.jboss.tools.switchyard.reddeer.preference.component.ComponentPropertiesPage;
+import org.jboss.tools.switchyard.reddeer.preference.contract.ContractPage;
+import org.jboss.tools.switchyard.reddeer.preference.contract.ContractSecurityPage;
+import org.jboss.tools.switchyard.reddeer.preference.contract.ContractTransactionPage;
 import org.jboss.tools.switchyard.reddeer.preference.implementation.ImplementationKnowledgePage;
+import org.jboss.tools.switchyard.reddeer.preference.implementation.ImplementationPage;
+import org.jboss.tools.switchyard.reddeer.preference.implementation.ImplementationSecurityPage;
+import org.jboss.tools.switchyard.reddeer.preference.implementation.ImplementationTransactionPage;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
@@ -47,7 +60,7 @@ import org.junit.runner.RunWith;
  */
 @SwitchYard
 @RunWith(RedDeerSuite.class)
-public class ImplementationsTest {
+public class SwitchYardEditorImplementationsTest {
 
 	public static final String PROJECT_NAME = "sy_implementations";
 	public static final String PROJECT_PACKAGE = "com.example.switchyard." + PROJECT_NAME;
@@ -56,6 +69,8 @@ public class ImplementationsTest {
 
 	public static final String XPATH_RULES = "/switchyard/composite/component/implementation.rules";
 	public static final String XPATH_BPM = "/switchyard/composite/component/implementation.bpm";
+	
+	private static int index = 0;
 
 	@InjectRequirement
 	private static SwitchYardRequirement switchYardRequirement;
@@ -107,7 +122,7 @@ public class ImplementationsTest {
 		} catch (Exception e) {
 			// ok
 		}
-		
+
 		ShellHandler.getInstance().closeAllNonWorbenchShells();
 
 		List<SwitchYardComponent> components = new SwitchYardEditor().getComponents();
@@ -140,6 +155,9 @@ public class ImplementationsTest {
 		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.bean)"));
 		assertEquals(PROJECT_PACKAGE + ".NewBeanImpl",
 				editor.xpath("/switchyard/composite/component/implementation.bean/@class"));
+		checkImplementationProperties("NewBeanImpl", "com.example.switchyard.sy_implementations.NewBeanImpl");
+		checkContractProperties("NewBeanImpl", "NewBeanInterface", "Java");
+		checkComponentProperties("NewBeanImpl", "NewBeanImpl");
 	}
 
 	@Test
@@ -160,6 +178,9 @@ public class ImplementationsTest {
 		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.camel/java)"));
 		assertEquals(PROJECT_PACKAGE + ".NewCamelJavaImpl",
 				editor.xpath("/switchyard/composite/component/implementation.camel/java/@class"));
+		checkImplementationProperties("NewCamelJavaImpl", "com.example.switchyard.sy_implementations.NewCamelJavaImpl");
+		checkContractProperties("NewCamelJavaImpl", "NewCamelJavaInterface", "Java");
+		checkComponentProperties("NewCamelJavaImpl", "NewCamelJavaImpl");
 	}
 
 	@Test
@@ -180,6 +201,9 @@ public class ImplementationsTest {
 		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.camel/xml)"));
 		assertEquals("NewCamelXMLImpl.xml",
 				editor.xpath("/switchyard/composite/component/implementation.camel/xml/@path"));
+		checkImplementationProperties("NewCamelXMLImpl", "NewCamelXMLImpl.xml");
+		checkContractProperties("NewCamelXMLImpl", "NewCamelXMLInterface", "Java");
+		checkComponentProperties("NewCamelXMLImpl", "NewCamelXMLImpl");
 	}
 
 	@Test
@@ -218,6 +242,9 @@ public class ImplementationsTest {
 		assertEquals("1", editor.xpath("count(/switchyard/composite/component/implementation.bpel)"));
 		assertEquals("newBPELImpl:NewBPELImpl",
 				editor.xpath("/switchyard/composite/component/implementation.bpel/@process"));
+		checkImplementationProperties("NewBPELImpl", "{urn:com.example.switchyard:sy_implementations:1.0}NewBPELImpl");
+		checkContractProperties("NewBPELImpl", "NewBPELInterface", "WSDL");
+		checkComponentProperties("NewBPELImpl", "NewBPELImpl");
 	}
 
 	@Test
@@ -358,7 +385,7 @@ public class ImplementationsTest {
 		bpmnWizard.getTruststoreLocation().setText("truststoreLoc");
 
 		bpmnWizard.finish();
-		
+
 		editor.save();
 		removeComponentAfterTest("Component");
 
@@ -484,7 +511,7 @@ public class ImplementationsTest {
 		droolsWizard.getScanInterval().setText("12345");
 
 		droolsWizard.finish();
-		
+
 		editor.save();
 		removeComponentAfterTest("Component");
 
@@ -514,7 +541,7 @@ public class ImplementationsTest {
 		droolsWizard.getUserName().setText("jmsAdmin");
 		droolsWizard.getPassword().setText("jmsAdmin123$");
 		droolsWizard.getTimeout().setText("123");
-		
+
 		droolsWizard.getUseSSL().setSelection("false");
 		Assert.assertFalse(droolsWizard.getKeystorePassword().isEnabled());
 		Assert.assertFalse(droolsWizard.getKeystoreLocation().isEnabled());
@@ -584,6 +611,111 @@ public class ImplementationsTest {
 		assertEquals("restAdmin123$", editor.xpath(XPATH_RULES + "/manifest/remoteRest/@password"));
 		assertEquals("123", editor.xpath(XPATH_RULES + "/manifest/remoteRest/@timeout"));
 		assertEquals("true", editor.xpath(XPATH_RULES + "/manifest/remoteRest/@useFormBasedAuth"));
+	}
+
+	private void checkImplementationProperties(String tooltip, String name) throws Exception {
+		CompositePropertiesPage properties = new SwitchYardComponent(tooltip).showProperties();
+
+		ImplementationPage implPage = properties.selectImplementation();
+		assertEquals(name, implPage.getName());
+		assertTrue(implPage.isBrowseButtonEnabled());
+
+		ImplementationTransactionPage implTransactionpage = properties.selectImplementationTransaction();
+		assertTrue(implTransactionpage.isTransactionPolicyComboEnabled());
+		assertEquals(0, implTransactionpage.getComboSelectionIndex());
+		assertEquals(4, implTransactionpage.getAllTransactionPolicies().size());
+		assertTrue(implTransactionpage.getAllTransactionPolicies().contains("None"));
+		assertTrue(implTransactionpage.getAllTransactionPolicies().contains("managedTransaction.Local"));
+		assertTrue(implTransactionpage.getAllTransactionPolicies().contains("managedTransaction.Global"));
+		assertTrue(implTransactionpage.getAllTransactionPolicies().contains("noManagedTransaction"));
+		implTransactionpage.setTransactionPolicy("managedTransaction.Local");
+
+		ImplementationSecurityPage implSecurityPage = properties.selectImplementationSecurity();
+		assertTrue(implSecurityPage.isAuthorizationEnabled());
+		implSecurityPage.setAuthorization(true);
+		properties.ok();
+		properties = new SwitchYardComponent(tooltip).showProperties();
+		assertTrue(implSecurityPage.isAuthorizationChecked());
+		implSecurityPage.setAuthorization(false);
+		properties.ok();
+		properties = new SwitchYardComponent(tooltip).showProperties();
+		assertFalse(implSecurityPage.isAuthorizationChecked());
+
+		properties.ok();
+	}
+
+	private void checkContractProperties(String tooltip, String name, String type) throws Exception {
+		CompositePropertiesPage properties = new SwitchYardComponent(tooltip).showProperties();
+
+		ContractPage contractPage = properties.selectContract();
+
+		assertEquals(type.equals("Java"), contractPage.isInterfaceTypeSelected("Java"));
+		assertEquals(type.equals("WSDL"), contractPage.isInterfaceTypeSelected("WSDL"));
+		assertEquals(type.equals("ESB"), contractPage.isInterfaceTypeSelected("ESB"));
+		assertEquals(name, contractPage.getServiceName());
+
+		ContractTransactionPage contractTransactionPage = properties.selectContractTransaction();
+
+		assertTrue(contractTransactionPage.isComboEnabled());
+		assertEquals(0, contractTransactionPage.getComboSelectionIndex());
+		assertEquals(3, contractTransactionPage.getAllTransactionPolicies().size());
+		assertTrue(contractTransactionPage.getAllTransactionPolicies().contains("None"));
+		assertTrue(contractTransactionPage.getAllTransactionPolicies().contains("propagatesTransaction"));
+		assertTrue(contractTransactionPage.getAllTransactionPolicies().contains("suspendsTransaction"));
+
+		contractTransactionPage.setTransactionPolicy("propagatesTransaction");
+
+		ContractSecurityPage page = properties.selectContractSecurity();
+
+		assertTrue(page.isAuthenticationEnabled());
+		assertTrue(page.isConfidentalityEnabled());
+		assertFalse(page.isAuthenticationChecked());
+		assertFalse(page.isConfidentalityChecked());
+
+		page.setAuthentication(true);
+		page.setConfidentality(true);
+
+		assertTrue(page.isAuthenticationChecked());
+		assertTrue(page.isConfidentalityChecked());
+
+		properties.ok();
+
+		DomainEditor domain = new DomainEditor();
+		String securityConfiguration1 = "default" + index++;
+		String securityConfiguration2 = "default" + index++;
+		domain.addSecurityConfiguration(securityConfiguration1, null, null, null, null);
+		domain.addSecurityConfiguration(securityConfiguration2, null, null, null, null);
+		new DefaultCTabItem("Design").activate();
+		properties = new SwitchYardComponent(tooltip).showProperties();
+		page = properties.selectContractSecurity();
+		assertTrue(page.isSecurityConfComboEnabled());
+		page.setSecurityConf(securityConfiguration1);
+
+		// Complete the following use case
+		// Check bug: https://issues.jboss.org/browse/SWITCHYARD-1732
+		// properties.ok();
+		// properties = new SwitchYardComponent(BEAN2 + "Bean").showProperties();
+		// page = properties.selectContractSecurity();
+		// assertFalse(page.isAuthenticationChecked());
+		// assertFalse(page.isConfidentalityChecked());
+
+		properties.ok();
+	}
+
+	private void checkComponentProperties(String tooltip, String name) throws Exception {
+		CompositePropertiesPage properties = new SwitchYardComponent(tooltip).showProperties();
+
+		ComponentPage componanetPage = properties.selectComponent();
+		assertEquals(name, componanetPage.getName());
+
+		ComponentPropertiesPage componentPropertiesPage = properties.selectComponentProperties();
+		assertEquals(0, componentPropertiesPage.getPropertiesCount());
+		componentPropertiesPage.addProperty("AAA", "BBB");
+		assertEquals(1, componentPropertiesPage.getPropertiesCount());
+		componentPropertiesPage.removeProperty("AAA");
+		assertEquals(0, componentPropertiesPage.getPropertiesCount());
+
+		properties.ok();
 	}
 
 	private void checkBPMOperationsProperties(String tooltip, String operation, String type) throws Exception {

@@ -11,7 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * Test importing rtgov quickstarts
+ * Test importing camel quickstarts
  * 
  * @author apodhrad
  * 
@@ -19,29 +19,20 @@ import org.junit.runner.RunWith;
 @SwitchYard(server = @Server(type = ServerReqType.ANY, state = ServerReqState.PRESENT))
 @OpenPerspective(JavaEEPerspective.class)
 @RunWith(RedDeerSuite.class)
-public class RTGovQuickstartsTest extends QuickstartsTest {
+public class QuickstartsCamelTest extends QuickstartsTest {
 
-	public RTGovQuickstartsTest() {
-		super("quickstarts/overlord/rtgov");
-	}
-	
-	@Test
-	public void activityClientTest() {
-		testQuickstart("activityclient");
+	public QuickstartsCamelTest() {
+		super("quickstarts/camel");
 	}
 
 	@Test
-	public void orderMgmtTest() {
-		testQuickstart("ordermgmt");
+	public void camelExampleCxfTomcatTest() {
+		testQuickstart("camel-example-cxf-tomcat");
 	}
 
 	@Test
-	public void policyTest() {
-		testQuickstart("policy");
+	public void camelExampleServletTomcatTest() {
+		testQuickstart("camel-example-servlet-tomcat");
 	}
 
-	@Test
-	public void slaTest() {
-		testQuickstart("sla");
-	}
 }
