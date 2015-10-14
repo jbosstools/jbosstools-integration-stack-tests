@@ -30,7 +30,7 @@ import org.junit.runner.RunWith;
 @SwitchYard
 @OpenPerspective(JavaEEPerspective.class)
 @RunWith(RedDeerSuite.class)
-public class ThrottlingTest {
+public class SwitchYardEditorThrottlingTest {
 
 	public static final String PROJECT = "throttling_project";
 	public static final String SERVICE = "HelloService";

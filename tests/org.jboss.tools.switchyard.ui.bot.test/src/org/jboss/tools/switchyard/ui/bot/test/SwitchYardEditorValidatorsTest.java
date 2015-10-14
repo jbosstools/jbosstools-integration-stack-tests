@@ -27,7 +27,7 @@ import org.junit.runner.RunWith;
  */
 @SwitchYard
 @RunWith(RedDeerSuite.class)
-public class ValidatorsTest {
+public class SwitchYardEditorValidatorsTest {
 
 	public static final String PROJECT_NAME = "sy_validator_project";
 	public static final String PROJECT_PACKAGE = "com.example.switchyard." + PROJECT_NAME;

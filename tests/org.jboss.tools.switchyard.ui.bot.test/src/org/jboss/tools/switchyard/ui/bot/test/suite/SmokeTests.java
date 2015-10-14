@@ -3,11 +3,10 @@ package org.jboss.tools.switchyard.ui.bot.test.suite;
 import junit.framework.TestSuite;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.tools.switchyard.ui.bot.test.DomainSettingsTest;
-import org.jboss.tools.switchyard.ui.bot.test.HelloWorldTest;
-import org.jboss.tools.switchyard.ui.bot.test.ImplementationsPropertiesTest;
-import org.jboss.tools.switchyard.ui.bot.test.ImplementationsTest;
-import org.jboss.tools.switchyard.ui.bot.test.ValidatorsTest;
+import org.jboss.tools.switchyard.ui.bot.test.SwitchYardEditorDomainSettingsTest;
+import org.jboss.tools.switchyard.ui.bot.test.SwitchYardEditorImplementationsTest;
+import org.jboss.tools.switchyard.ui.bot.test.SwitchYardEditorValidatorsTest;
+import org.jboss.tools.switchyard.ui.bot.test.SwitchYardIntegrationBeanTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
@@ -18,11 +17,10 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  */
 @SuiteClasses({
-	HelloWorldTest.class,
-	ImplementationsTest.class,
-	DomainSettingsTest.class,
-	ImplementationsPropertiesTest.class,
-	ValidatorsTest.class
+	SwitchYardIntegrationBeanTest.class,
+	SwitchYardEditorImplementationsTest.class,
+	SwitchYardEditorDomainSettingsTest.class,
+	SwitchYardEditorValidatorsTest.class
 })
 @RunWith(RedDeerSuite.class)
 public class SmokeTests extends TestSuite {

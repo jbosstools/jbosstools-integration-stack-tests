@@ -90,7 +90,7 @@ import org.junit.runner.RunWith;
  */
 @SwitchYard
 @RunWith(RedDeerSuite.class)
-public class BindingsTest {
+public class SwitchYardEditorBindingsTest {
 
 	public static final String CONTEXT_PATH = "Context Path";
 

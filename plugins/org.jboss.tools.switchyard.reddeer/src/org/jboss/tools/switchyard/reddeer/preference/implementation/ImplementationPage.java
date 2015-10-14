@@ -12,7 +12,7 @@ public class ImplementationPage {
 
 	private static final String BUTTON_BROWSE = "Browse...";
 
-	public String getBeanClass() {
+	public String getName() {
 		return new DefaultText(1).getText();
 	}
 

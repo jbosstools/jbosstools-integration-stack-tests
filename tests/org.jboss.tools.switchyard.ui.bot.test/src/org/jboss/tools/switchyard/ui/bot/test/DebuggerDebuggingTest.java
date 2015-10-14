@@ -50,7 +50,7 @@ import org.junit.runner.RunWith;
 @CleanWorkspace
 @OpenPerspective(DebugPerspective.class)
 @RunWith(RedDeerSuite.class)
-public class DebuggerTest {
+public class DebuggerDebuggingTest {
 
 	public static final String PACKAGE = "com.example.switchyard.hello";
 	public static final String HELLO_TEST = "HelloTest.java";
