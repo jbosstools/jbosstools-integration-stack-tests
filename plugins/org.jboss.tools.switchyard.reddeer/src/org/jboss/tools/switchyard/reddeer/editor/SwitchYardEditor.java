@@ -10,23 +10,30 @@ import java.util.List;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
+import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.graphiti.ui.platform.GraphitiShapeEditPart;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.gef.api.EditPart;
-import org.jboss.reddeer.gef.condition.EditorHasEditParts;
-import org.jboss.reddeer.gef.editor.GEFEditor;
-import org.jboss.reddeer.gef.handler.ViewerHandler;
-import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.common.condition.WaitCondition;
-import org.jboss.reddeer.core.handler.IBeforeShellIsClosed;
-import org.jboss.reddeer.core.handler.ShellHandler;
-import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.handler.IBeforeShellIsClosed;
+import org.jboss.reddeer.core.handler.ShellHandler;
+import org.jboss.reddeer.core.util.Display;
+import org.jboss.reddeer.core.util.ResultRunnable;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.eclipse.ui.perspectives.ResourcePerspective;
+import org.jboss.reddeer.gef.api.EditPart;
+import org.jboss.reddeer.gef.api.Palette;
+import org.jboss.reddeer.gef.condition.EditorHasEditParts;
+import org.jboss.reddeer.gef.editor.GEFEditor;
+import org.jboss.reddeer.gef.handler.ViewerHandler;
+import org.jboss.reddeer.gef.view.PaletteView;
+import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComposite;
@@ -185,6 +192,24 @@ public class SwitchYardEditor extends GEFEditor {
 		editPart.click();
 	}
 
+	@Override
+	public Palette getPalette() {
+		new PaletteView().open();
+		PaletteViewer paletteViewer = Display.syncExec(new ResultRunnable<PaletteViewer>() {
+
+			@Override
+			public PaletteViewer run() {
+				return viewer.getEditDomain().getPaletteViewer();
+			}
+		});
+		// Workaround for JBTISTEST-379
+		if (paletteViewer == null) {
+			new ResourcePerspective().open();
+			new JavaEEPerspective().open();
+		}
+		return super.getPalette();
+	}
+
 	public CompositePropertiesPage showProperties() {
 		getComposite().getContextButton("Properties").click();
 		return new CompositePropertiesPage("");
@@ -217,13 +242,13 @@ public class SwitchYardEditor extends GEFEditor {
 		in.close();
 		return source.toString();
 	}
-	
+
 	public List<SwitchYardComponent> getComponents() {
 		List<SwitchYardComponent> components = new ArrayList<SwitchYardComponent>();
 		String compositeLabel = getCompositeName();
-		
+
 		List<org.eclipse.gef.EditPart> list = ViewerHandler.getInstance().getEditParts(viewer);
-		for (org.eclipse.gef.EditPart editPart: list) {
+		for (org.eclipse.gef.EditPart editPart : list) {
 			String label = getLabel(editPart);
 			if (label != null && !label.equals(compositeLabel)) {
 				components.add(new SwitchYardComponent(label));
@@ -231,7 +256,7 @@ public class SwitchYardEditor extends GEFEditor {
 		}
 		return components;
 	}
-	
+
 	private String getLabel(Object obj) {
 		if (obj instanceof GraphitiShapeEditPart) {
 			IFigure figure = ((GraphitiShapeEditPart) obj).getFigure();
