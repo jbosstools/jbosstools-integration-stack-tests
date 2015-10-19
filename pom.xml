@@ -15,7 +15,7 @@
 
 	<properties>
 	  <tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-integration-stack-tests.git</tycho.scmUrl>
-	  <jbtis.tp.version>4.2.7.Final</jbtis.tp.version>
+	  <jbtis.tp.version>4.2.8.Final</jbtis.tp.version>
 	  <jbtis.site>http://download.jboss.org/jbosstools/builds/staging/development/luna/integration-stack/aggregate/4.2.4.CR2/</jbtis.site>
 	  <reddeer.site>http://download.jboss.org/jbosstools/updates/stable/mars/core/reddeer/0.8.0</reddeer.site>
 	  <orbit.site>http://download.eclipse.org/tools/orbit/downloads/drops/R20130517111416/repository</orbit.site>
