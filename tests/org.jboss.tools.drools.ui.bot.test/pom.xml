@@ -13,7 +13,7 @@
   <packaging>eclipse-test-plugin</packaging>
 
   <properties>
-    <plugin.version>6.2.0.Final</plugin.version>
+    <pluginVersion>6.2.0.Final</pluginVersion>
     <reddeer.config>${project.build.directory}/config</reddeer.config>
     <systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=${reddeer.config}</systemProperties>
   </properties>
@@ -27,7 +27,7 @@
           <useUIThread>false</useUIThread>
           <product>com.jboss.jbds.product</product>
           <testSuite>org.jboss.tools.drools.ui.bot.test</testSuite>
-          <testClass>org.jboss.tools.drools.ui.bot.test.BrmsTestSuite</testClass>
+          <testClass>org.jboss.tools.drools.ui.bot.test.Brms6TestSuite</testClass>
           <systemProperties>
             <logDebug>false</logDebug>
           </systemProperties>
@@ -36,24 +36,24 @@
             <dependency>
               <type>p2-installable-unit</type>
               <artifactId>org.guvnor.tools.feature.feature.group</artifactId>
-              <version>${plugin.version}</version>
+              <version>${pluginVersion}</version>
             </dependency>
             <dependency>
               <type>p2-installable-unit</type>
               <artifactId>org.drools.eclipse.feature.feature.group</artifactId>
-              <version>${plugin.version}</version>
+              <version>${pluginVersion}</version>
             </dependency>
             <dependency>
               <type>p2-installable-unit</type>
               <artifactId>org.jbpm.eclipse.feature.feature.group</artifactId>
-              <version>${plugin.version}</version>
+              <version>${pluginVersion}</version>
             </dependency>
-	    <!-- This entry should enable creating of default JDK on Mac -->
-	    <dependency>
-	      <type>p2-installable-unit</type>
-	      <artifactId>org.eclipse.jdt.feature.group</artifactId>
-	      <version>0.0.0</version>
-	    </dependency>
+	        <!-- This entry should enable creating of default JDK on Mac -->
+	        <dependency>
+	          <type>p2-installable-unit</type>
+	          <artifactId>org.eclipse.jdt.feature.group</artifactId>
+	          <version>0.0.0</version>
+	        </dependency>
           </dependencies>
         </configuration>
       </plugin>
@@ -86,8 +86,7 @@
               <goal>wget</goal>
             </goals>
             <configuration>
-              <url>http://download.jboss.org/drools/release/6.2.0.Final/drools-distribution-6.2.0.Final.zip</url>
-              <md5>721a831a83669ad0db22b6c1272785dd</md5>
+              <url>http://download.jboss.org/drools/release/${pluginVersion}/drools-distribution-${pluginVersion}.zip</url>
               <unpack>true</unpack>
               <outputDirectory>${project.build.directory}</outputDirectory>
             </configuration>
