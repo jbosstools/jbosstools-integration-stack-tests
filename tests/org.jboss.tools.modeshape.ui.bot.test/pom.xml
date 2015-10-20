@@ -20,6 +20,7 @@
 		<reddeer.config>${project.build.directory}/config/as-711_modeshape-301.xml</reddeer.config>
 		<reddeerProperties>-Dreddeer.config=${reddeer.config}</reddeerProperties>
 		<systemProperties>${integrationTestsSystemProperties} ${reddeerProperties}</systemProperties>
+		<customization.file>resources/settings/plugin_customization.ini</customization.file>
 		<test.class>AllTests</test.class>
 	</properties>
 
@@ -30,7 +31,7 @@
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
-					<appArgLine>-eclipse.password resources/security/password -clean -testpluginname org.jboss.tools.modeshape.ui.bot.test</appArgLine>
+					<appArgLine>-eclipse.password resources/security/password -pluginCustomization ${customization.file} -clean -testpluginname org.jboss.tools.modeshape.ui.bot.test</appArgLine>
 					<testSuite>org.jboss.tools.modeshape.ui.bot.test</testSuite>
 					<testClass>**/*Test</testClass>
 					<useUIThread>false</useUIThread>

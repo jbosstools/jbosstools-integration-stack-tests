@@ -20,6 +20,7 @@
 		<bpmn2.metamodel.version>1.2.1</bpmn2.metamodel.version>
 		<test.class>AllEditorTests</test.class>
 		<graphiti.properties>true</graphiti.properties>
+		<customization.file>resources/settings/plugin_customization.ini</customization.file>
 	</properties>
 
 	<dependencies>
@@ -97,6 +98,7 @@
 		    <groupId>org.eclipse.tycho</groupId>
 		    <artifactId>tycho-surefire-plugin</artifactId>
 		    <configuration>
+		      <appArgLine>-eclipse.password ${project.basedir}/resources/security/password -pluginCustomization ${customization.file} -clean</appArgLine>
 		      <systemProperties>
 		        <!--graphiti.properties>${graphiti.properties}</graphiti.properties-->
 		      </systemProperties>

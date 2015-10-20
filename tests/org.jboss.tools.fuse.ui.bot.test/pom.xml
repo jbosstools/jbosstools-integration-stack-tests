@@ -23,7 +23,7 @@
 		<enable.debug.log>false</enable.debug.log>
 		<systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=${reddeer.config}</systemProperties>
 		<test.class>AllTests</test.class>
-		<customization.file>${project.build.directory}/requirements/plugin_customization.ini</customization.file>
+		<customization.file>resources/settings/plugin_customization.ini</customization.file>
 		<maven.repo>${project.build.directory}/requirements/repository/</maven.repo>
 	</properties>
 
