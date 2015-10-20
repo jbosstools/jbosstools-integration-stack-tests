@@ -22,6 +22,7 @@
 	  <skipAS>${skipRequirements}</skipAS>
 	  <skipWildfly>${skipRequirements}</skipWildfly>
 	  <skipKaraf>${skipRequirements}</skipKaraf>
+	  <customization.file>resources/settings/plugin_customization.ini</customization.file>
 	</properties>
 
 	<build>
@@ -58,7 +59,7 @@
 	      <groupId>org.eclipse.tycho</groupId>
 	      <artifactId>tycho-surefire-plugin</artifactId>
 	      <configuration>
-		<appArgLine>-eclipse.password ${project.basedir}/resources/security/password -clean</appArgLine>
+		<appArgLine>-eclipse.password ${project.basedir}/resources/security/password -pluginCustomization ${customization.file} -clean</appArgLine>
 		<useUIThread>false</useUIThread>
 		<skip>${skipTests}</skip>
 		<dependencies combine.children="append">

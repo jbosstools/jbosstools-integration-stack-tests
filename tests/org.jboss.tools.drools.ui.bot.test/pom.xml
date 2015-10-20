@@ -16,6 +16,7 @@
     <pluginVersion>6.2.0.Final</pluginVersion>
     <reddeer.config>${project.build.directory}/config</reddeer.config>
     <systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=${reddeer.config}</systemProperties>
+    <customization.file>resources/settings/plugin_customization.ini</customization.file>
   </properties>
 
   <build>
@@ -24,6 +25,7 @@
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-surefire-plugin</artifactId>
         <configuration>
+	  <appArgLine>-eclipse.password ${project.basedir}/resources/security/password -pluginCustomization ${customization.file} -clean</appArgLine>
           <useUIThread>false</useUIThread>
           <product>com.jboss.jbds.product</product>
           <testSuite>org.jboss.tools.drools.ui.bot.test</testSuite>
