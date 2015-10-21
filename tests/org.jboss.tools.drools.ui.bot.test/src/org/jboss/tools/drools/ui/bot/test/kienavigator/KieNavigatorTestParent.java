@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
+import org.jboss.tools.drools.reddeer.kienavigator.properties.ServerProperties;
 import org.jboss.tools.drools.ui.bot.test.util.RestClient;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
 import org.junit.Before;
@@ -57,11 +58,12 @@ public class KieNavigatorTestParent extends TestParent {
 		gitDirectory = createTempDir(GIT_DIR_NAME);
 	}
 	
-	protected String getGitDirectory() {
-		if (gitDirectory.equals("")) {
-			return System.getProperty("java.io.tmpdir");
-		} else {
-			return gitDirectory;
-		}
+	protected void setCorrectServerProperties(ServerProperties sp) {
+		sp.setUsername(USERNAME);
+		sp.setPassword(PASSWORD);
+		sp.setApplicationName(WEB_APP_NAME);
+		sp.setHttpPort(HTTP_PORT);
+		sp.setGitPort(GIT_PORT);
+		sp.setGitRepoPath(gitDirectory);
 	}
 }
