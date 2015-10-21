@@ -32,12 +32,7 @@ public class OpenKieNavigatorTest extends KieNavigatorTestParent {
 		ServerItem si = knv.getServers().get(0);
 		
 		ServerProperties sp = si.properties();
-		sp.setUsername(USERNAME);
-		sp.setPassword(PASSWORD);
-		sp.setApplicationName(WEB_APP_NAME);
-		sp.setHttpPort(HTTP_PORT);
-		sp.setGitPort(GIT_PORT);
-		sp.setGitRepoPath(getGitDirectory());
+		setCorrectServerProperties(sp);
 		sp.apply();
 		sp.ok();
 		

@@ -6,12 +6,14 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.drools.reddeer.kienavigator.item.OrgUnitItem;
+import org.jboss.tools.drools.reddeer.kienavigator.item.ServerItem;
 import org.jboss.tools.drools.reddeer.kienavigator.properties.ServerProperties;
 import org.jboss.tools.drools.reddeer.view.KieNavigatorView;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -21,6 +23,18 @@ public class ServerConnectionTest extends KieNavigatorTestParent {
 	
 	@InjectRequirement
 	private ServerRequirement serverReq;
+	
+	@Before
+	public void setProperties() {
+		KieNavigatorView knv = new KieNavigatorView();
+		knv.open();
+		ServerItem si = knv.getServer(0);
+		ServerProperties sp = si.properties();
+		setCorrectServerProperties(sp);
+		si.refresh();
+		sp.apply();
+		sp.ok();
+	}
 	
 	@Test
 	public void incorrectPasswordTest() {
@@ -70,6 +84,6 @@ public class ServerConnectionTest extends KieNavigatorTestParent {
 		knv.getServer(0).refresh();
 		List<OrgUnitItem> ouList = knv.getServer(0).getOrgUnits();
 		Assert.assertEquals(1, ouList.size());
-		Assert.assertEquals("Error", ouList.get(0).getName());
+		Assert.assertTrue(ouList.get(0).getName().contains("Server returned"));
 	}
 }
