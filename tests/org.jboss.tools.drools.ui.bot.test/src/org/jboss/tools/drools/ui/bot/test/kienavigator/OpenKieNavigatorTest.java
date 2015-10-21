@@ -9,6 +9,7 @@ import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.drools.reddeer.kienavigator.item.OrgUnitItem;
 import org.jboss.tools.drools.reddeer.kienavigator.item.RepositoryItem;
 import org.jboss.tools.drools.reddeer.kienavigator.item.ServerItem;
+import org.jboss.tools.drools.reddeer.kienavigator.properties.ServerProperties;
 import org.jboss.tools.drools.reddeer.view.KieNavigatorView;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
@@ -29,15 +30,25 @@ public class OpenKieNavigatorTest extends KieNavigatorTestParent {
 		KieNavigatorView knv = new KieNavigatorView();
 		knv.open();
 		ServerItem si = knv.getServers().get(0);
+		
+		ServerProperties sp = si.properties();
+		sp.setUsername(USERNAME);
+		sp.setPassword(PASSWORD);
+		sp.setApplicationName(WEB_APP_NAME);
+		sp.setHttpPort(HTTP_PORT);
+		sp.setGitPort(GIT_PORT);
+		sp.setGitRepoPath(getGitDirectory());
+		sp.apply();
+		sp.ok();
+		
 		List<OrgUnitItem> orgUnits = si.getOrgUnits();
 		
 		Assert.assertEquals(1, orgUnits.size());
-		Assert.assertEquals("demo", orgUnits.get(0).getName());
+		Assert.assertEquals("example", orgUnits.get(0).getName());
 		
 		List<RepositoryItem> ril = orgUnits.get(0).getRepositories();
 		
-		Assert.assertEquals(2, ril.size());
-		Assert.assertEquals("jbpm-playground", ril.get(0).getName());
-		Assert.assertEquals("uf-playground", ril.get(1).getName());
+		Assert.assertEquals(1, ril.size());
+		Assert.assertEquals("repository1", ril.get(0).getName());
 	}
 }

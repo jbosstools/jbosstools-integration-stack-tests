@@ -11,8 +11,8 @@ public class ServerProperties extends Properties {
 	private static final String PASSWORD = "Password:";
 	private static final String TRUST_CONNECTION = "Trust connections to this Server";
 	private static final String APP_NAME = "KIE Application Name:";
-	private static final String HTTP_PORT = "HTTP Port";
-	private static final String GIT_PORT = "Git Port";
+	private static final String HTTP_PORT = "HTTP Port:";
+	private static final String GIT_PORT = "Git Port:";
 	private static final String USE_DEFAULT_REPO = "Use default Git Repository Pat";
 	private static final String GIT_REPO_PATH = "Git Repository Path";
 	
@@ -45,7 +45,8 @@ public class ServerProperties extends Properties {
 	}
 	
 	public void setGitRepoPath(String path) {
-		new LabeledText(GIT_REPO_PATH).setText(path);
+		new LabeledText(GIT_REPO_PATH).setText("");
+		new LabeledText(GIT_REPO_PATH).typeText(path);
 	}
 	
 	public String getServerName() {
