@@ -55,11 +55,11 @@ public class DataTransformationEditor extends DefaultEditor {
 		activate();
 		new DefaultToolItem("Add a new mapping").click();
 		log.info("Select a source entry: " + Arrays.toString(sourcePath));
-		invokeMappingContextMenu(source, "Set field");
+		invokeMappingContextMenu(source, "Set property");
 		new DefaultTreeItem(sourcePath).select();
 		new PushButton("OK").click();
 		log.info("Select a target entry: " + Arrays.toString(targetPath));
-		invokeMappingContextMenu(target, "Set field");
+		invokeMappingContextMenu(target, "Set property");
 		new DefaultTreeItem(targetPath).select();
 		new WaitUntil(new WidgetIsEnabled(new PushButton("OK")));
 		new PushButton("OK").click();
@@ -84,7 +84,7 @@ public class DataTransformationEditor extends DefaultEditor {
 		new DefaultCombo().setSelection(name);
 		new PushButton("OK").click();
 		log.info("Select a target entry: " + Arrays.toString(targetPath));
-		invokeMappingContextMenu(target, "Set field");
+		invokeMappingContextMenu(target, "Set property");
 		new DefaultTreeItem(targetPath).select();
 		new PushButton("OK").click();
 	}
@@ -110,7 +110,7 @@ public class DataTransformationEditor extends DefaultEditor {
 		new DefaultText().setText(expression);
 		new PushButton("OK").click();
 		log.info("Select a target entry: " + Arrays.toString(targetPath));
-		invokeMappingContextMenu(target, "Set field");
+		invokeMappingContextMenu(target, "Set property");
 		new DefaultTreeItem(targetPath).select();
 		new PushButton("OK").click();
 	}
