@@ -18,6 +18,20 @@ public class KieNavigatorTestParent extends TestParent {
 	
 	protected static final String REPO_URL = "https://github.com/jboss-developer/jboss-brms-repository.git";
 	
+	protected static final String WEB_APP_NAME = "business-central";
+	
+	protected static final String USERNAME = "testadmin";
+	
+	protected static final String PASSWORD = "admin1234;";
+	
+	protected static final String HTTP_PORT = "8080";
+	
+	protected static final String GIT_PORT = "8001";
+	
+	protected static final String GIT_DIR_NAME = "tmpgit";
+	
+	private String gitDirectory = "";
+	
 	@Before
 	public void waitForServer() throws IOException {
 		int time = 0;
@@ -39,5 +53,15 @@ public class KieNavigatorTestParent extends TestParent {
 		ConsoleView consoleView = new ConsoleView();
 		consoleView.open();
 		consoleView.toggleShowConsoleOnStandardOutChange(false);
+		
+		gitDirectory = createTempDir(GIT_DIR_NAME);
+	}
+	
+	protected String getGitDirectory() {
+		if (gitDirectory.equals("")) {
+			return System.getProperty("java.io.tmpdir");
+		} else {
+			return gitDirectory;
+		}
 	}
 }
