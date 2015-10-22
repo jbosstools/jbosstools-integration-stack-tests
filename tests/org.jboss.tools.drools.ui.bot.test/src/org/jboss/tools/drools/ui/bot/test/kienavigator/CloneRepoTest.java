@@ -7,9 +7,6 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.tools.drools.reddeer.kienavigator.dialog.CreateOrgUnitDialog;
 import org.jboss.tools.drools.reddeer.kienavigator.dialog.CreateRepositoryDialog;
 import org.jboss.tools.drools.reddeer.kienavigator.item.RepositoryItem;
-import org.jboss.tools.drools.reddeer.kienavigator.item.ServerItem;
-import org.jboss.tools.drools.reddeer.kienavigator.properties.ServerProperties;
-import org.jboss.tools.drools.reddeer.view.KieNavigatorView;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
@@ -25,16 +22,7 @@ public class CloneRepoTest extends KieNavigatorTestParent {
 	private ServerRequirement serverReq;
 	
 	@Test
-	public void cloneRepoTest() { 
-		KieNavigatorView knv = new KieNavigatorView();
-		knv.open(); 
-		
-		ServerItem si = knv.getServers().get(0);
-		ServerProperties sp = si.properties();
-		setCorrectServerProperties(sp);
-		sp.apply();
-		sp.ok();
-		
+	public void cloneRepoTest() {
  		CreateOrgUnitDialog cod = knv.getServer(0).createOrgUnit();
 		cod.setName("clonename");
 		cod.setOwner("somebody");
