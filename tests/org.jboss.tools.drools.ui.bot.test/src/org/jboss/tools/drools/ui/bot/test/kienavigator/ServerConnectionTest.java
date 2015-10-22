@@ -6,14 +6,12 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.drools.reddeer.kienavigator.item.OrgUnitItem;
-import org.jboss.tools.drools.reddeer.kienavigator.item.ServerItem;
 import org.jboss.tools.drools.reddeer.kienavigator.properties.ServerProperties;
 import org.jboss.tools.drools.reddeer.view.KieNavigatorView;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -24,21 +22,8 @@ public class ServerConnectionTest extends KieNavigatorTestParent {
 	@InjectRequirement
 	private ServerRequirement serverReq;
 	
-	@Before
-	public void setProperties() {
-		KieNavigatorView knv = new KieNavigatorView();
-		knv.open();
-		ServerItem si = knv.getServer(0);
-		ServerProperties sp = si.properties();
-		setCorrectServerProperties(sp);
-		si.refresh();
-		sp.apply();
-		sp.ok();
-	}
-	
 	@Test
 	public void incorrectPasswordTest() {
-		KieNavigatorView knv = new KieNavigatorView();
 		knv.open();
 		ServerProperties sp = knv.getServer(0).properties();
 		sp.setPassword("1234nc");
@@ -49,7 +34,7 @@ public class ServerConnectionTest extends KieNavigatorTestParent {
 	
 	@Test
 	public void incorrectLoginTest() {
-		KieNavigatorView knv = new KieNavigatorView();
+		knv = new KieNavigatorView();
 		knv.open();
 		ServerProperties sp = knv.getServer(0).properties();
 		sp.setUsername("otheradmin");
@@ -60,7 +45,7 @@ public class ServerConnectionTest extends KieNavigatorTestParent {
 	
 	@Test
 	public void incorrectAppNameTest() {
-		KieNavigatorView knv = new KieNavigatorView();
+		knv = new KieNavigatorView();
 		knv.open();
 		ServerProperties sp = knv.getServer(0).properties();
 		sp.setApplicationName("kie-wb");
@@ -71,7 +56,7 @@ public class ServerConnectionTest extends KieNavigatorTestParent {
 	
 	@Test
 	public void incorrectPortTest() {
-		KieNavigatorView knv = new KieNavigatorView();
+		knv = new KieNavigatorView();
 		knv.open();
 		ServerProperties sp = knv.getServer(0).properties();
 		sp.setHttpPort("8081");

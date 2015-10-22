@@ -4,7 +4,9 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
+import org.jboss.tools.drools.reddeer.kienavigator.item.ServerItem;
 import org.jboss.tools.drools.reddeer.kienavigator.properties.ServerProperties;
+import org.jboss.tools.drools.reddeer.view.KieNavigatorView;
 import org.jboss.tools.drools.ui.bot.test.util.RestClient;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
 import org.junit.Before;
@@ -33,6 +35,8 @@ public class KieNavigatorTestParent extends TestParent {
 	
 	private String gitDirectory = "";
 	
+	protected KieNavigatorView knv;
+	
 	@Before
 	public void waitForServer() throws IOException {
 		int time = 0;
@@ -56,9 +60,18 @@ public class KieNavigatorTestParent extends TestParent {
 		consoleView.toggleShowConsoleOnStandardOutChange(false);
 		
 		gitDirectory = createTempDir(GIT_DIR_NAME);
+		
+		KieNavigatorView knv = new KieNavigatorView();
+		knv.open();
+		ServerItem si = knv.getServer(0);
+		ServerProperties sp = si.properties();
+		setCorrectServerProperties(sp);
+		sp.apply();
+		sp.ok();
+		si.refresh();
 	}
 	
-	protected void setCorrectServerProperties(ServerProperties sp) {
+	private void setCorrectServerProperties(ServerProperties sp) {
 		sp.setUsername(USERNAME);
 		sp.setPassword(PASSWORD);
 		sp.setApplicationName(WEB_APP_NAME);
