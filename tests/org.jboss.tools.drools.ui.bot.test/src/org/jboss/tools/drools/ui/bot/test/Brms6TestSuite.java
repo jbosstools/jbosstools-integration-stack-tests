@@ -20,7 +20,6 @@ import org.jboss.tools.drools.ui.bot.test.functional.view.WorkingMemoryViewTest;
 import org.jboss.tools.drools.ui.bot.test.kienavigator.CloneRepoTest;
 import org.jboss.tools.drools.ui.bot.test.kienavigator.CreateItemsRestTest;
 import org.jboss.tools.drools.ui.bot.test.kienavigator.CreateItemsTest;
-import org.jboss.tools.drools.ui.bot.test.kienavigator.KieNavigatorTestParent;
 import org.jboss.tools.drools.ui.bot.test.kienavigator.OpenKieNavigatorTest;
 import org.jboss.tools.drools.ui.bot.test.kienavigator.RepositoryManipulationTest;
 import org.jboss.tools.drools.ui.bot.test.kienavigator.ServerConnectionTest;
@@ -55,7 +54,6 @@ import org.junit.runners.Suite.SuiteClasses;
     CloneRepoTest.class,
     CreateItemsRestTest.class,
     CreateItemsTest.class,
-    KieNavigatorTestParent.class,
     OpenKieNavigatorTest.class,
     RepositoryManipulationTest.class,
     ServerConnectionTest.class
