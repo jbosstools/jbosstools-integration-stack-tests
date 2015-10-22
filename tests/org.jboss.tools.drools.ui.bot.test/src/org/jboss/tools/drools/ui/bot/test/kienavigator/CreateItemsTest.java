@@ -12,8 +12,6 @@ import org.jboss.tools.drools.reddeer.kienavigator.item.ServerItem;
 import org.jboss.tools.drools.reddeer.kienavigator.properties.OrgUnitProperties;
 import org.jboss.tools.drools.reddeer.kienavigator.properties.ProjectProperties;
 import org.jboss.tools.drools.reddeer.kienavigator.properties.RepositoryProperties;
-import org.jboss.tools.drools.reddeer.kienavigator.properties.ServerProperties;
-import org.jboss.tools.drools.reddeer.view.KieNavigatorView;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
@@ -30,13 +28,7 @@ public class CreateItemsTest extends KieNavigatorTestParent {
 	
 	@Test
 	public void createItemsTest() {
-		KieNavigatorView knv = new KieNavigatorView();
-		knv.open(); 
 		ServerItem si = knv.getServers().get(0);
-		ServerProperties sp = si.properties();
-		setCorrectServerProperties(sp);
-		sp.apply();
-		sp.ok();
 		
 		CreateOrgUnitDialog cod = si.createOrgUnit();
 		cod.setName("orgname");

@@ -12,8 +12,6 @@ import org.jboss.tools.drools.reddeer.kienavigator.dialog.CreateOrgUnitDialog;
 import org.jboss.tools.drools.reddeer.kienavigator.dialog.CreateProjectDialog;
 import org.jboss.tools.drools.reddeer.kienavigator.dialog.CreateRepositoryDialog;
 import org.jboss.tools.drools.reddeer.kienavigator.item.RepositoryItem;
-import org.jboss.tools.drools.reddeer.kienavigator.item.ServerItem;
-import org.jboss.tools.drools.reddeer.kienavigator.properties.ServerProperties;
 import org.jboss.tools.drools.reddeer.kienavigator.structure.OrganizationalUnit;
 import org.jboss.tools.drools.reddeer.kienavigator.structure.Project;
 import org.jboss.tools.drools.reddeer.kienavigator.structure.Repository;
@@ -34,16 +32,7 @@ public class CreateItemsRestTest extends KieNavigatorTestParent {
 	private ServerRequirement serverReq;
 	
 	@Test
-	public void createItemsRestTest() throws MalformedURLException, IOException {
-		KieNavigatorView knv = new KieNavigatorView();
-		knv.open(); 
-		
-		ServerItem si = knv.getServers().get(0);
-		ServerProperties sp = si.properties();
-		setCorrectServerProperties(sp);
-		sp.apply();
-		sp.ok();
-		
+	public void createItemsRestTest() throws MalformedURLException, IOException {		
 		initServerStructure(knv);
 		
 		OrganizationalUnit ou = RestClient.getOrganizationalUnit("restname");
