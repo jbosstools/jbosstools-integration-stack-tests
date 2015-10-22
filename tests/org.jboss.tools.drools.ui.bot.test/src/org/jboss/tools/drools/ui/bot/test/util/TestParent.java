@@ -146,7 +146,8 @@ public abstract class TestParent {
         }
 
         // setup default project
-        if (getAnnotationOnMethod(getMethodName(), UseDefaultProject.class) != null) {
+        String methodName = getMethodName();
+        if (getAnnotationOnMethod(methodName, UseDefaultProject.class) != null) {
             setupProject(getUsedVersion());
         } 
     }
@@ -342,7 +343,7 @@ public abstract class TestParent {
 
     protected String getMethodName() {
         return name.getMethodName().replaceAll("\\[\\d+\\]", "").replace("default", "").replaceAll("brms-.*\\.xml", "")
-        		.replaceAll("drools-.*\\.xml", "").trim();
+        		.replaceAll("drools-.*\\.xml", "").replaceAll("eap-.*\\.xml", "").trim();
     }
 
     protected RuntimeVersion getUsedVersion() {
