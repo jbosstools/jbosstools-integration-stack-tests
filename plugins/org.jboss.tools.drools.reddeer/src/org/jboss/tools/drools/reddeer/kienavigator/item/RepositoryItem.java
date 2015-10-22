@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.tools.drools.reddeer.kienavigator.dialog.CreateProjectDialog;
 import org.jboss.tools.drools.reddeer.kienavigator.dialog.RemoveRepositoryDialog;
 import org.jboss.tools.drools.reddeer.kienavigator.properties.RepositoryProperties;
@@ -21,7 +22,7 @@ public class RepositoryItem extends Item<RepositoryProperties> {
 	}
 
 	public void importRepository() {
-		selectAction("Import Repository");
+		selectEnabledAction("Import Repository");
 	}
 	
 	public CreateProjectDialog createProject() {
