@@ -61,7 +61,7 @@ public class KieNavigatorTestParent extends TestParent {
 		
 		gitDirectory = createTempDir(GIT_DIR_NAME);
 		
-		KieNavigatorView knv = new KieNavigatorView();
+		knv = new KieNavigatorView();
 		knv.open();
 		ServerItem si = knv.getServer(0);
 		ServerProperties sp = si.properties();
