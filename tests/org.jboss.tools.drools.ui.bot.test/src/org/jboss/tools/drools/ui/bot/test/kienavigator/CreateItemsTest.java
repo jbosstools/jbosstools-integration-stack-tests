@@ -7,9 +7,12 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.tools.drools.reddeer.kienavigator.dialog.CreateOrgUnitDialog;
 import org.jboss.tools.drools.reddeer.kienavigator.dialog.CreateProjectDialog;
 import org.jboss.tools.drools.reddeer.kienavigator.dialog.CreateRepositoryDialog;
+import org.jboss.tools.drools.reddeer.kienavigator.item.RepositoryItem;
+import org.jboss.tools.drools.reddeer.kienavigator.item.ServerItem;
 import org.jboss.tools.drools.reddeer.kienavigator.properties.OrgUnitProperties;
 import org.jboss.tools.drools.reddeer.kienavigator.properties.ProjectProperties;
 import org.jboss.tools.drools.reddeer.kienavigator.properties.RepositoryProperties;
+import org.jboss.tools.drools.reddeer.kienavigator.properties.ServerProperties;
 import org.jboss.tools.drools.reddeer.view.KieNavigatorView;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
@@ -29,8 +32,13 @@ public class CreateItemsTest extends KieNavigatorTestParent {
 	public void createItemsTest() {
 		KieNavigatorView knv = new KieNavigatorView();
 		knv.open(); 
+		ServerItem si = knv.getServers().get(0);
+		ServerProperties sp = si.properties();
+		setCorrectServerProperties(sp);
+		sp.apply();
+		sp.ok();
 		
-		CreateOrgUnitDialog cod = knv.getServer(0).createOrgUnit();
+		CreateOrgUnitDialog cod = si.createOrgUnit();
 		cod.setName("orgname");
 		cod.setDescription("orgdescr");
 		cod.setOwner("owner@email.com");
@@ -57,7 +65,9 @@ public class CreateItemsTest extends KieNavigatorTestParent {
 		Assert.assertEquals("repouser", rp.getUserName());
 		rp.ok();
 		
-		CreateProjectDialog cpd = knv.getRepository(0, "orgname", "reponame").createProject();
+		RepositoryItem ri = knv.getRepository(0, "orgname", "reponame");
+		ri.importRepository();
+		CreateProjectDialog cpd = ri.createProject();
 		cpd.setName("projectname");
 		cpd.setDescription("projectdecr");
 		cpd.setGroupId("projectgid");
