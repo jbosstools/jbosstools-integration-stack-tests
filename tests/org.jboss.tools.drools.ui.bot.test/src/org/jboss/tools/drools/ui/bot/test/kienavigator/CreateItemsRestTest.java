@@ -11,6 +11,9 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.tools.drools.reddeer.kienavigator.dialog.CreateOrgUnitDialog;
 import org.jboss.tools.drools.reddeer.kienavigator.dialog.CreateProjectDialog;
 import org.jboss.tools.drools.reddeer.kienavigator.dialog.CreateRepositoryDialog;
+import org.jboss.tools.drools.reddeer.kienavigator.item.RepositoryItem;
+import org.jboss.tools.drools.reddeer.kienavigator.item.ServerItem;
+import org.jboss.tools.drools.reddeer.kienavigator.properties.ServerProperties;
 import org.jboss.tools.drools.reddeer.kienavigator.structure.OrganizationalUnit;
 import org.jboss.tools.drools.reddeer.kienavigator.structure.Project;
 import org.jboss.tools.drools.reddeer.kienavigator.structure.Repository;
@@ -34,6 +37,12 @@ public class CreateItemsRestTest extends KieNavigatorTestParent {
 	public void createItemsRestTest() throws MalformedURLException, IOException {
 		KieNavigatorView knv = new KieNavigatorView();
 		knv.open(); 
+		
+		ServerItem si = knv.getServers().get(0);
+		ServerProperties sp = si.properties();
+		setCorrectServerProperties(sp);
+		sp.apply();
+		sp.ok();
 		
 		initServerStructure(knv);
 		
@@ -98,7 +107,9 @@ public class CreateItemsRestTest extends KieNavigatorTestParent {
 		crd2.setRepositoryUrl(REPO_URL);
 		crd2.ok();
 		
-		CreateProjectDialog cpd = knv.getRepository(0, "restname", "restreponame1").createProject();
+		RepositoryItem ri = knv.getRepository(0, "restname", "restreponame");
+		ri.importRepository();
+		CreateProjectDialog cpd = ri.createProject();
 		cpd.setName("restprojectname");
 		cpd.setDescription("restprojectdescr");
 		cpd.setGroupId("resrprojectgid");
