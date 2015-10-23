@@ -51,10 +51,10 @@ import org.junit.runners.Suite.SuiteClasses;
     WorkingMemoryViewTest.class,
     AuditLogTest.class,
     // Kie Navigator tests
+    OpenKieNavigatorTest.class,
     CloneRepoTest.class,
     CreateItemsRestTest.class,
     CreateItemsTest.class,
-    OpenKieNavigatorTest.class,
     RepositoryManipulationTest.class,
     ServerConnectionTest.class
 })

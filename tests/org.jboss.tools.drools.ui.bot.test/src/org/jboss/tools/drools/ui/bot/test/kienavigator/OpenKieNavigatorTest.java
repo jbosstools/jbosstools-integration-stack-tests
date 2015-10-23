@@ -26,13 +26,8 @@ public class OpenKieNavigatorTest extends KieNavigatorTestParent {
 	@Test
 	public void openKieNavigatorTest() throws IOException, InterruptedException {
 		ServerItem si = knv.getServers().get(0);
-		
-		List<OrgUnitItem> orgUnits = si.getOrgUnits();
-		
-		Assert.assertEquals("example", orgUnits.get(0).getName());
-		
-		List<RepositoryItem> ril = orgUnits.get(0).getRepositories();
-		
+		OrgUnitItem oui = si.getOrgUnit("example");
+		List<RepositoryItem> ril = oui.getRepositories();
 		Assert.assertEquals(1, ril.size());
 		Assert.assertEquals("repository1", ril.get(0).getName());
 	}
