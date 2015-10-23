@@ -15,7 +15,7 @@ public class KieNavigatorTestParent extends TestParent {
 	
 	private static final Logger LOGGER = Logger.getLogger(KieNavigatorTestParent.class);
 	 
-	private static final int MAX_WAIT_TIME = 60;
+	private static final int MAX_WAIT_TIME = 300;
 	
 	private static final int HTTP_OK = 200;
 	
@@ -51,7 +51,7 @@ public class KieNavigatorTestParent extends TestParent {
 			time += 1;
 		}
 		if (responceCode != HTTP_OK) {
-			throw new RuntimeException("Server application is not available.");
+			throw new RuntimeException("Server application is not available. Timeout exceeded 5 minutes.");
 		}
 		
 		// disable console to be view on top
