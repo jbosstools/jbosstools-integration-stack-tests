@@ -29,7 +29,6 @@ public class OpenKieNavigatorTest extends KieNavigatorTestParent {
 		
 		List<OrgUnitItem> orgUnits = si.getOrgUnits();
 		
-		Assert.assertEquals(1, orgUnits.size());
 		Assert.assertEquals("example", orgUnits.get(0).getName());
 		
 		List<RepositoryItem> ril = orgUnits.get(0).getRepositories();

@@ -101,6 +101,8 @@ public class KieNavigatorView extends WorkbenchView {
 	}
 	
 	public RepositoryItem getRepository(int serverNumber, String orgUnitName, String repoName) {
+		RepositoryItem ri = getOrgUnit(serverNumber, orgUnitName).getRepository(repoName);
+		ri.importRepository();
 		return getOrgUnit(serverNumber, orgUnitName).getRepository(repoName);
 	}
 	
