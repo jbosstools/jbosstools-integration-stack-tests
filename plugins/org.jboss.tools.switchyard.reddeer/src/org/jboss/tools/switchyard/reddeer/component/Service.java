@@ -34,6 +34,11 @@ public class Service extends SwitchYardComponent {
 		return new PromoteServiceWizard("Promote Component Reference").activate();
 	}
 
+	public ServiceTestClassWizard openNewServiceTestClass() {
+		getContextButton("New Service Test Class").click();
+		return new ServiceTestClassWizard().activate();
+	}
+	
 	public void createNewServiceTestClass(String... mixin) {
 		getContextButton("New Service Test Class").click();
 		new ServiceTestClassWizard().activate().selectMixin(mixin).finish();
