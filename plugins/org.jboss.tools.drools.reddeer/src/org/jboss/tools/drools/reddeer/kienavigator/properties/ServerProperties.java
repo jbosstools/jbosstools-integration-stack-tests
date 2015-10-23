@@ -47,6 +47,7 @@ public class ServerProperties extends Properties {
 	public void setGitRepoPath(String path) {
 		new LabeledText(GIT_REPO_PATH).setText("");
 		new LabeledText(GIT_REPO_PATH).typeText(path);
+		new LabeledText(GIT_REPO_PATH).setText(path);
 	}
 	
 	public String getServerName() {

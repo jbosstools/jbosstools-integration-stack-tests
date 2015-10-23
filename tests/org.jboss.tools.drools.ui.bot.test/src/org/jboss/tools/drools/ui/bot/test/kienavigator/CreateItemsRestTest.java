@@ -7,7 +7,8 @@ import java.util.List;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.button.YesButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.drools.reddeer.kienavigator.dialog.CreateOrgUnitDialog;
 import org.jboss.tools.drools.reddeer.kienavigator.dialog.CreateProjectDialog;
 import org.jboss.tools.drools.reddeer.kienavigator.dialog.CreateRepositoryDialog;
@@ -107,6 +108,7 @@ public class CreateItemsRestTest extends KieNavigatorTestParent {
 		cpd.importProjectToWorkspace(false);
 		cpd.ok();
 		
-		new PushButton("Yes").click();
+		new DefaultShell("Connect to Server");
+		new YesButton().click();
 	}
 }
