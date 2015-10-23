@@ -123,4 +123,21 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>smoke</id>
+      <activation>
+	<property>
+	  <name>test</name>
+	  <value>SmokeTests</value>
+	</property>
+      </activation>
+      <properties>
+	<!-- Just a temorary solution till the new version of drools is included in JBDS-IS -->
+	<pluginVersion>6.2.0.Final</pluginVersion>
+      </properties>
+    </profile>
+  </profiles>
+
 </project>
