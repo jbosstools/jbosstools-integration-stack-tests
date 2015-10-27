@@ -1,5 +1,6 @@
 package org.jboss.tools.switchyard.reddeer.wizard;
 
+import org.jboss.reddeer.core.matcher.WithMnemonicTextMatcher;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
@@ -25,7 +26,7 @@ public class BeanServiceWizard extends ServiceWizard<BeanServiceWizard> {
 
 	@Override
 	protected void browse() {
-		new PushButton(2, "Browse...").click();
+		new PushButton(2, new WithMnemonicTextMatcher("Browse...")).click();
 	}
 
 }

@@ -3,16 +3,16 @@ package org.jboss.tools.switchyard.reddeer.project;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.jboss.reddeer.direct.preferences.Preferences;
-import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.core.matcher.WithMnemonicTextMatcher;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.matcher.WithMnemonicTextMatcher;
+import org.jboss.reddeer.direct.preferences.Preferences;
+import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.switchyard.reddeer.condition.JUnitHasFinished;
 
 /**

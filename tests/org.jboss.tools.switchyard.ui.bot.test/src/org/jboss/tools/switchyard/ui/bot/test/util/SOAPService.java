@@ -7,7 +7,6 @@ import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.xml.ws.Endpoint;
 
-@SuppressWarnings("restriction")
 public class SOAPService {
 
 	public static final int DEFAULT_PORT = 8080;

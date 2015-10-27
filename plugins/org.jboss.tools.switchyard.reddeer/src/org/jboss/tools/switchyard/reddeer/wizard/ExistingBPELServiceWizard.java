@@ -11,15 +11,12 @@ public class ExistingBPELServiceWizard extends ExistingServiceWizard<ExistingBPE
 
 	public static final String DIALOG_TITLE = "";
 
-	private GEFEditor editor;
-
 	public ExistingBPELServiceWizard() {
 		this(null);
 	}
 
 	public ExistingBPELServiceWizard(GEFEditor editor) {
 		super(DIALOG_TITLE);
-		this.editor = editor;
 	}
 
 	@Override

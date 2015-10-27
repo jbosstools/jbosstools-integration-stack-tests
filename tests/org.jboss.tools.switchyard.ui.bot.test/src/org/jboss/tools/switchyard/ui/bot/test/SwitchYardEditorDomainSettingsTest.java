@@ -13,7 +13,7 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.switchyard.reddeer.SwitchYardFile;
 import org.jboss.tools.switchyard.reddeer.editor.DomainEditor;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;

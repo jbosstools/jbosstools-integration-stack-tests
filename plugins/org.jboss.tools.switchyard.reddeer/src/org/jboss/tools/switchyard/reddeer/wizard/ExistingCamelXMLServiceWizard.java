@@ -11,15 +11,12 @@ public class ExistingCamelXMLServiceWizard extends ExistingServiceWizard<Existin
 
 	public static final String DIALOG_TITLE = "";
 
-	private GEFEditor editor;
-
 	public ExistingCamelXMLServiceWizard() {
 		this(null);
 	}
 
 	public ExistingCamelXMLServiceWizard(GEFEditor editor) {
 		super(DIALOG_TITLE);
-		this.editor = editor;
 	}
 
 	@Override

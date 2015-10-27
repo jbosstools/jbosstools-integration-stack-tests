@@ -6,6 +6,7 @@ import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 
 /**
@@ -27,10 +28,10 @@ public class ProjectPropertiesJavaBuildPath {
 		new DefaultTabItem("Libraries").activate();
 		return this;
 	}
-	
+
 	public ProjectPropertiesJavaBuildPath selectLibrary(String library) {
 		selectLibrariesTab();
-		new DefaultTreeItem(1, library).select();
+		new DefaultTreeItem(new DefaultTree(1), library).select();
 		return this;
 	}
 
@@ -38,7 +39,7 @@ public class ProjectPropertiesJavaBuildPath {
 		new PushButton("Edit...").click();
 		return new EditLibraryPage();
 	}
-	
+
 	public void ok() {
 		String title = new DefaultShell().getText();
 		new OkButton().click();
