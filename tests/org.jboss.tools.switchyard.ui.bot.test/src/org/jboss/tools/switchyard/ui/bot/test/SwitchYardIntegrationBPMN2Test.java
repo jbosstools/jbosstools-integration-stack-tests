@@ -8,13 +8,11 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -53,12 +51,10 @@ import org.junit.runner.RunWith;
 /**
  * Create simple BPMN process with a switchyard service task, run JUnit test.
  * 
- * @author lfabriko
  * @author apodhrad
  * 
  */
 @SwitchYard
-@OpenPerspective(JavaEEPerspective.class)
 @RunWith(RedDeerSuite.class)
 public class SwitchYardIntegrationBPMN2Test {
 
@@ -82,7 +78,7 @@ public class SwitchYardIntegrationBPMN2Test {
 	}
 
 	@Test
-	public void topDownBPMN2Test() {
+	public void switchyardBPMN2IntegrationTest() {
 		new WorkbenchShell().maximize();
 
 		// Create new Switchyard project, Add support for Bean, BPM
