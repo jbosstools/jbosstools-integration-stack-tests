@@ -1,7 +1,6 @@
 package org.jboss.tools.switchyard.ui.bot.test;
 
 import static org.jboss.tools.switchyard.ui.bot.test.util.TemplateHandler.javaSource;
-import static org.junit.Assert.assertEquals;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +25,6 @@ import org.jboss.tools.switchyard.reddeer.project.ProjectItemExt;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
-import org.jboss.tools.switchyard.reddeer.view.JUnitView;
 import org.jboss.tools.switchyard.reddeer.wizard.BPELServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ImportFileWizard;
 import org.junit.After;

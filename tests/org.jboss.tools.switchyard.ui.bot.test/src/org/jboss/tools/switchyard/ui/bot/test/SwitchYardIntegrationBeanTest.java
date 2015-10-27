@@ -48,7 +48,7 @@ public class SwitchYardIntegrationBeanTest {
 	}
 
 	@Test
-	public void helloWorldTest() {
+	public void switchyardBeanIntegrationTest() {
 		switchyardRequirement.project(PROJECT).impl("Bean").binding("HTTP").create();
 		
 		ProjectPropertiesJavaBuildPath buildPath = new SwitchYardProject(PROJECT).openProperties().selectJavaBuildPath();

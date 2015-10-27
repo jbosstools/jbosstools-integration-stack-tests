@@ -50,6 +50,18 @@
 		    <artifactId>org.switchyard.tools.bpmn2.feature.feature.group</artifactId>
 		    <version>2.0.0</version>
 		  </dependency>
+		  <!-- Fuse Camel feature -->
+		  <dependency>
+		    <type>p2-installable-unit</type>
+		    <artifactId>org.fusesource.ide.camel.editor.feature.feature.group</artifactId>
+		    <version>0.0.0</version>
+		  </dependency>
+		  <!-- Drools feature -->
+		  <dependency>
+		    <type>p2-installable-unit</type>
+		    <artifactId>org.drools.eclipse.feature.feature.group</artifactId>
+		    <version>0.0.0</version>
+		  </dependency>
 		  <!-- AS fature -->
 		  <dependency>
 		    <type>p2-installable-unit</type>

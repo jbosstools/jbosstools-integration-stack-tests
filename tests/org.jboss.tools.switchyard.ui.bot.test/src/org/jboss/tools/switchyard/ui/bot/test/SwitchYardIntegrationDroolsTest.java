@@ -6,16 +6,14 @@ import static org.junit.Assert.assertEquals;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.drools.reddeer.editor.DrlEditor;
 import org.jboss.tools.drools.reddeer.editor.RuleEditor;
@@ -38,7 +36,6 @@ import org.junit.runner.RunWith;
  *
  */
 @SwitchYard
-@OpenPerspective(JavaEEPerspective.class)
 @RunWith(RedDeerSuite.class)
 public class SwitchYardIntegrationDroolsTest {
 
@@ -65,7 +62,7 @@ public class SwitchYardIntegrationDroolsTest {
 	}
 
 	@Test
-	public void droolsCreationTest() {
+	public void switchyardDroolsIntegrationTest() {
 		Map<String, Object> dataModel = new HashMap<String, Object>();
 		dataModel.put("package", PACKAGE);
 		dataModel.put("project", PROJECT);

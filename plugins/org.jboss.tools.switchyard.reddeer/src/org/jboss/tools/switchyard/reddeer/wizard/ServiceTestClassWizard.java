@@ -18,10 +18,17 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 public class ServiceTestClassWizard extends WizardDialog {
 
 	public static final String DIALOG_TITLE = "Service Test Class";
+	public static final String NAME = "Name:";
 	public static final String PACKAGE = "Package:";
 
 	public ServiceTestClassWizard activate() {
 		new DefaultShell(DIALOG_TITLE);
+		return this;
+	}
+	
+	public ServiceTestClassWizard setName(String name) {
+		new LabeledText(NAME).setFocus();
+		new LabeledText(NAME).setText(name);
 		return this;
 	}
 	
