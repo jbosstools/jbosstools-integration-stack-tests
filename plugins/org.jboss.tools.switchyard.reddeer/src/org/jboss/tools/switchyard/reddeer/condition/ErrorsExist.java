@@ -3,9 +3,10 @@ package org.jboss.tools.switchyard.reddeer.condition;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.eclipse.ui.problems.Problem;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 
 /**
  * 
@@ -14,13 +15,13 @@ import org.jboss.reddeer.common.condition.WaitCondition;
  */
 public class ErrorsExist implements WaitCondition {
 	
-	private List<TreeItem> errors = new ArrayList<TreeItem>();
+	private List<Problem> errors = new ArrayList<Problem>();
 
 	@Override
 	public boolean test() {
 		ProblemsView problemsView = new ProblemsView();
 		problemsView.open();
-		errors = problemsView.getAllErrors();
+		errors = problemsView.getProblems(ProblemType.ERROR);
 		return !errors.isEmpty();
 	}
 
@@ -29,7 +30,7 @@ public class ErrorsExist implements WaitCondition {
 		return "There are no errors in Problems view";
 	}
 	
-	public List<TreeItem> getAllErrors() {
+	public List<Problem> getAllErrors() {
 		return errors;
 	}
 

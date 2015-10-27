@@ -22,15 +22,12 @@ public class ExistingBPMNServiceWizard extends ExistingServiceWizard<ExistingBPM
 
 	public static final String DIALOG_TITLE = "";
 
-	private GEFEditor editor;
-
 	public ExistingBPMNServiceWizard() {
 		this(null);
 	}
 
 	public ExistingBPMNServiceWizard(GEFEditor editor) {
 		super(DIALOG_TITLE);
-		this.editor = editor;
 	}
 
 	@Override
