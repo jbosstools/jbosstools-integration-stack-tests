@@ -24,6 +24,7 @@ import org.jboss.reddeer.gef.editor.GEFEditor;
 import org.jboss.reddeer.gef.handler.ViewerHandler;
 import org.jboss.reddeer.gef.impl.editpart.LabeledEditPart;
 import org.jboss.reddeer.gef.view.PaletteView;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
@@ -35,6 +36,7 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.fuse.reddeer.component.CamelComponent;
 import org.jboss.tools.fuse.reddeer.utils.MouseAWTManager;
 import org.jboss.tools.fuse.reddeer.utils.XPathEvaluator;
+import org.jboss.tools.fuse.reddeer.widget.LabeledTextExt;
 
 /**
  * Manipulates with Camel Editor
@@ -229,7 +231,7 @@ public class CamelEditor extends GEFEditor {
 		new LabeledEditPart(label).select();
 		try {
 			new ContextMenu("Set Breakpoint");
-		} catch (CoreLayerException ex) {
+		} catch (SWTLayerException|CoreLayerException ex) {
 			return true;
 		}
 
@@ -252,7 +254,7 @@ public class CamelEditor extends GEFEditor {
 		new LabeledEditPart(label).select();
 		try {
 			new ContextMenu("Enable Breakpoint");
-		} catch (CoreLayerException ex) {
+		} catch (SWTLayerException|CoreLayerException ex) {
 			return true;
 		}
 
@@ -275,7 +277,7 @@ public class CamelEditor extends GEFEditor {
 		new LabeledEditPart(label).select();
 		try {
 			new ContextMenu(operation).select();
-		} catch (CoreLayerException ex) {
+		} catch (SWTLayerException|CoreLayerException ex) {
 			log.error("Given operation is not present in the context menu of the component: " + label);
 		}
 	}
@@ -349,7 +351,7 @@ public class CamelEditor extends GEFEditor {
 		log.debug("Setting '" + value + "' as the property '" + name + "' of selelected component in the Camel Editor");
 		new PropertiesView().open();
 		new PropertiesView().selectTab("Generic");
-		new LabeledText(name).setText(value);
+		new LabeledTextExt(name).setText(value);
 		activate();
 		AbstractWait.sleep(TimePeriod.SHORT);
 	}
@@ -372,7 +374,7 @@ public class CamelEditor extends GEFEditor {
 		selectEditPart(component);
 		properties.activate();
 		properties.selectTab("Generic");
-		new LabeledText(name).setText(value);
+		new LabeledTextExt(name).setText(value);
 		activate();
 		AbstractWait.sleep(TimePeriod.SHORT);
 	}
