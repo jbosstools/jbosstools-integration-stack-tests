@@ -3,20 +3,21 @@ package org.jboss.tools.switchyard.reddeer.editor;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Shell;
-import org.jboss.reddeer.swt.api.Text;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.handler.IBeforeShellIsClosed;
 import org.jboss.reddeer.core.handler.ShellHandler;
+import org.jboss.reddeer.core.matcher.WithMnemonicTextMatcher;
+import org.jboss.reddeer.swt.api.Text;
+import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.switchyard.reddeer.shell.DomainPropertiesFileShell;
 import org.jboss.tools.switchyard.reddeer.shell.DomainPropertyShell;
@@ -95,11 +96,11 @@ public class DomainEditor extends DefaultEditor {
 	}
 
 	public void clickAddProperty() {
-		new PushButton(0, "Add").click();
+		new PushButton("Add").click();
 	}
 
 	public void clickRemoveProperty() {
-		new PushButton(0, "Remove").click();
+		new PushButton("Remove").click();
 	}
 
 	public void selectProperty(String name) {
@@ -142,7 +143,7 @@ public class DomainEditor extends DefaultEditor {
 	}
 
 	public void clickAddSecurityConfiguration() {
-		new PushButton(1, "Add").click();
+		new PushButton(1, new WithMnemonicTextMatcher("Add")).click();
 	}
 
 	public void clickEditSecurityConfiguration() {
@@ -160,7 +161,8 @@ public class DomainEditor extends DefaultEditor {
 	}
 
 	public void clickRemoveSecurityConfiguration() {
-		new PushButton(1, "Remove").click();
+		new PushButton(1, new WithMnemonicTextMatcher("Remove")).click();
+
 	}
 
 	public void selectSecurityConfiguration(String name) {

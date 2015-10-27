@@ -8,13 +8,14 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.util.List;
 
+import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.junit.execution.annotation.RunIf;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.XPathEvaluator;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
@@ -209,12 +210,12 @@ public class ProjectExplorerProjectCreationTest {
 
 		ProblemsView problemsView = new ProblemsView();
 		problemsView.open();
-		List<TreeItem> errors = problemsView.getAllErrors();
+		List<Problem> errors = problemsView.getProblems(ProblemType.ERROR);
 		if (!errors.isEmpty()) {
 			StringBuffer msg = new StringBuffer("The following errors occured during creating SY project:");
 			msg.append(System.getProperty("line.separator"));
-			for (TreeItem error : errors) {
-				msg.append(error.getText()).append(System.getProperty("line.separator"));
+			for (Problem error : errors) {
+				msg.append(error.getDescription()).append(System.getProperty("line.separator"));
 			}
 			fail(msg.toString());
 		}
