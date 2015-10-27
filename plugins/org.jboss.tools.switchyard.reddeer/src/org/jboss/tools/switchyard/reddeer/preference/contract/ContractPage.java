@@ -17,6 +17,11 @@ public class ContractPage {
 		
 		return new RadioButton(type).isEnabled();
 	}
+	
+	public boolean isInterfaceTypeSelected(String type) {
+		
+		return new RadioButton(type).isSelected();
+	}
 
 	public String getInterface() {
 		

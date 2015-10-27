@@ -60,7 +60,7 @@ import org.junit.runner.RunWith;
 @SwitchYard
 @OpenPerspective(JavaEEPerspective.class)
 @RunWith(RedDeerSuite.class)
-public class TopDownBPMN2Test {
+public class SwitchYardIntegrationBPMN2Test {
 
 	private static final String PROJECT = "switchyard-bpm-processgreet";
 	private static final String PACKAGE = "org.switchyard.quickstarts.bpm.service";

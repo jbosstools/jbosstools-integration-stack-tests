@@ -114,7 +114,7 @@ public class SwitchYardProject extends Project {
 		new ContextMenu("Properties").select();
 		return new ProjectProperties();
 	}
-	
+
 	public void build() {
 		select();
 		Menu menu = new ShellMenu("Project", "Build Project");
@@ -123,5 +123,4 @@ public class SwitchYardProject extends Project {
 		}
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
-
 }

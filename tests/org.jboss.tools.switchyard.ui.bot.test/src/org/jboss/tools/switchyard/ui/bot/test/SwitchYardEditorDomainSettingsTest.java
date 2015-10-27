@@ -37,7 +37,7 @@ import org.junit.runner.RunWith;
 @SwitchYard
 @OpenPerspective(JavaEEPerspective.class)
 @RunWith(RedDeerSuite.class)
-public class DomainSettingsTest {
+public class SwitchYardEditorDomainSettingsTest {
 
 	public static final String PROJECT = "domain-project";
 	public static final String CALLBACK_CLASS = "org.switchyard.security.callback.handler.NamePasswordCallbackHandler";

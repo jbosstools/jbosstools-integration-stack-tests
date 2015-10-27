@@ -54,7 +54,6 @@ public class TransformersWizard extends WizardDialog {
 		return activate();
 	}
 
-
 	public TransformersWizard browseDozerFile(String fileName) {
 		getBrowseBTN().click();
 		SelectDozerFileShell wizard = new SelectDozerFileShell();
@@ -63,7 +62,7 @@ public class TransformersWizard extends WizardDialog {
 		wizard.ok();
 		return activate();
 	}
-	
+
 	public LabeledCombo getTransformerTypeCMB() {
 		return new LabeledCombo("Transformer Type:");
 	}

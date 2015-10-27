@@ -162,6 +162,7 @@ public class DomainEditor extends DefaultEditor {
 
 	public void clickRemoveSecurityConfiguration() {
 		new PushButton(1, new WithMnemonicTextMatcher("Remove")).click();
+
 	}
 
 	public void selectSecurityConfiguration(String name) {

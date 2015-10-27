@@ -19,9 +19,9 @@ import org.junit.runner.RunWith;
 @OpenPerspective(JavaEEPerspective.class)
 @SwitchYard(server = @Server(type = ServerReqType.ANY, state = ServerReqState.PRESENT))
 @RunWith(RedDeerSuite.class)
-public class DemoQuickstartsTest extends QuickstartsTest {
+public class QuickstartsDemoTest extends QuickstartsTest {
 
-	public DemoQuickstartsTest() {
+	public QuickstartsDemoTest() {
 		super("quickstarts/switchyard/demos");
 	}
 

@@ -3,24 +3,22 @@ package org.jboss.tools.switchyard.ui.bot.test.suite;
 import junit.framework.TestSuite;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.tools.switchyard.ui.bot.test.BindingsTest;
-import org.jboss.tools.switchyard.ui.bot.test.BottomUpBPELTest;
-import org.jboss.tools.switchyard.ui.bot.test.BottomUpBPMN2Test;
-import org.jboss.tools.switchyard.ui.bot.test.BottomUpCamelTest;
-import org.jboss.tools.switchyard.ui.bot.test.BottomUpEJBTest;
-import org.jboss.tools.switchyard.ui.bot.test.BreakpointTest;
-import org.jboss.tools.switchyard.ui.bot.test.DebuggerTest;
-import org.jboss.tools.switchyard.ui.bot.test.DeploymentTest;
-import org.jboss.tools.switchyard.ui.bot.test.DomainSettingsTest;
-import org.jboss.tools.switchyard.ui.bot.test.DroolsTest;
-import org.jboss.tools.switchyard.ui.bot.test.ImplementationsTest;
-import org.jboss.tools.switchyard.ui.bot.test.ImplementationsPropertiesTest;
-import org.jboss.tools.switchyard.ui.bot.test.ProjectCapabilitiesTest;
-import org.jboss.tools.switchyard.ui.bot.test.ProjectCreationTest;
-import org.jboss.tools.switchyard.ui.bot.test.ThrottlingTest;
-import org.jboss.tools.switchyard.ui.bot.test.TopDownBPMN2Test;
-import org.jboss.tools.switchyard.ui.bot.test.TransformersTest;
-import org.jboss.tools.switchyard.ui.bot.test.ValidatorsTest;
+import org.jboss.tools.switchyard.ui.bot.test.DebuggerBreakpointTest;
+import org.jboss.tools.switchyard.ui.bot.test.DebuggerDebuggingTest;
+import org.jboss.tools.switchyard.ui.bot.test.ProjectExplorerProjectCapabilitiesTest;
+import org.jboss.tools.switchyard.ui.bot.test.ProjectExplorerProjectCreationTest;
+import org.jboss.tools.switchyard.ui.bot.test.ServerManagingDeploymentTest;
+import org.jboss.tools.switchyard.ui.bot.test.SwitchYardEditorBindingsTest;
+import org.jboss.tools.switchyard.ui.bot.test.SwitchYardEditorDomainSettingsTest;
+import org.jboss.tools.switchyard.ui.bot.test.SwitchYardEditorImplementationsTest;
+import org.jboss.tools.switchyard.ui.bot.test.SwitchYardEditorThrottlingTest;
+import org.jboss.tools.switchyard.ui.bot.test.SwitchYardEditorTransformersTest;
+import org.jboss.tools.switchyard.ui.bot.test.SwitchYardEditorValidatorsTest;
+import org.jboss.tools.switchyard.ui.bot.test.SwitchYardIntegrationBPELTest;
+import org.jboss.tools.switchyard.ui.bot.test.SwitchYardIntegrationBPMN2Test;
+import org.jboss.tools.switchyard.ui.bot.test.SwitchYardIntegrationBeanTest;
+import org.jboss.tools.switchyard.ui.bot.test.SwitchYardIntegrationCamelTest;
+import org.jboss.tools.switchyard.ui.bot.test.SwitchYardIntegrationDroolsTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
@@ -31,24 +29,22 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  */
 @SuiteClasses({
-	ProjectCreationTest.class,
-	ProjectCapabilitiesTest.class,
-	BottomUpBPELTest.class,
-	BottomUpCamelTest.class,
-	BottomUpEJBTest.class,
-	BottomUpBPMN2Test.class,
-	TopDownBPMN2Test.class,
-	DroolsTest.class,
-	ImplementationsTest.class,
-	ImplementationsPropertiesTest.class,
-	DomainSettingsTest.class,
-	BindingsTest.class,
-	ThrottlingTest.class,
-	TransformersTest.class,
-	ValidatorsTest.class,
-	BreakpointTest.class,
-	DebuggerTest.class,
-	DeploymentTest.class
+	ProjectExplorerProjectCreationTest.class,
+	ProjectExplorerProjectCapabilitiesTest.class,
+	SwitchYardEditorImplementationsTest.class,
+	SwitchYardEditorDomainSettingsTest.class,
+	SwitchYardEditorBindingsTest.class,
+	SwitchYardEditorThrottlingTest.class,
+	SwitchYardEditorTransformersTest.class,
+	SwitchYardEditorValidatorsTest.class,
+	SwitchYardIntegrationBeanTest.class,
+	SwitchYardIntegrationBPELTest.class,
+	SwitchYardIntegrationBPMN2Test.class,
+	SwitchYardIntegrationCamelTest.class,
+	SwitchYardIntegrationDroolsTest.class,
+	DebuggerBreakpointTest.class,
+	DebuggerDebuggingTest.class,
+	ServerManagingDeploymentTest.class
 })
 @RunWith(RedDeerSuite.class)
 public class AllTests extends TestSuite {

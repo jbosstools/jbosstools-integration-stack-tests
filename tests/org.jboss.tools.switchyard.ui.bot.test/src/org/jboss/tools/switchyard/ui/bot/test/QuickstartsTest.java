@@ -47,13 +47,14 @@ public abstract class QuickstartsTest {
 
 	@InjectRequirement
 	private SwitchYardRequirement switchyardRequirement;
-	
+
 	public QuickstartsTest(String quickstartPath) {
 		this.quickstartPath = quickstartPath;
 	}
 
 	protected void testQuickstart(String path) {
-		String fullPath = switchyardRequirement.getConfig().getServerBase().getHome() + "/" + quickstartPath + "/" + path;
+		String fullPath = switchyardRequirement.getConfig().getServerBase().getHome() + "/" + quickstartPath + "/"
+				+ path;
 		assertTrue("Path '" + fullPath + "' doesn exist!", new File(fullPath).exists());
 
 		new ImportMavenWizard().importProject(fullPath);
@@ -64,30 +65,31 @@ public abstract class QuickstartsTest {
 	protected void checkErrors(String path) {
 		checkErrors(path, null);
 	}
-	
+
 	protected void checkErrors(String path, Matcher<TreeItem> excludeMatcher) {
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		
+
 		ErrorsExist errorsExistCondition = new ErrorsExist();
 		new WaitUntil(errorsExistCondition, TimePeriod.LONG, false);
 		List<Problem> allErrors = errorsExistCondition.getAllErrors();
 		List<Problem> errors = new ArrayList<Problem>();
-		for (Problem error: allErrors) {
-			if(excludeMatcher != null && excludeMatcher.matches(error)) {
+		for (Problem error : allErrors) {
+			if (excludeMatcher != null && excludeMatcher.matches(error)) {
 				continue;
 			}
 			errors.add(error);
 		}
-		
-		assertTrue("After importing the quickstart '" + path
-				+ "' there are the following errors:\n" + toString(errors), errors.isEmpty());
+
+		assertTrue(
+				"After importing the quickstart '" + path + "' there are the following errors:\n" + toString(errors),
+				errors.isEmpty());
 	}
 
 	@After
 	public void deleteAllProjects() {
 		ShellHandler.getInstance().closeAllNonWorbenchShells();
-		
+
 		PackageExplorer packageExplorer = new PackageExplorer();
 		packageExplorer.open();
 		packageExplorer.deleteAllProjects(false);
@@ -101,9 +103,9 @@ public abstract class QuickstartsTest {
 		}
 		return result.toString();
 	}
-	
+
 	private class FixableErrorMatcher extends BaseMatcher<TreeItem> {
-		
+
 		public static final String NOT_COVERED = "Plugin execution not covered by lifecycle configuration";
 
 		@Override
@@ -118,9 +120,9 @@ public abstract class QuickstartsTest {
 
 		@Override
 		public void describeTo(Description desc) {
-			
+
 		}
-		
+
 	}
 
 }

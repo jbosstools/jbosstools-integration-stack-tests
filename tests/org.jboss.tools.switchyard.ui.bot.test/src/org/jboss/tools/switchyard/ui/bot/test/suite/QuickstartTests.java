@@ -3,12 +3,12 @@ package org.jboss.tools.switchyard.ui.bot.test.suite;
 import junit.framework.TestSuite;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.tools.switchyard.ui.bot.test.CamelQuickstartsTest;
-import org.jboss.tools.switchyard.ui.bot.test.DTGovQuickstartsTest;
-import org.jboss.tools.switchyard.ui.bot.test.DemoQuickstartsTest;
-import org.jboss.tools.switchyard.ui.bot.test.RTGovQuickstartsTest;
-import org.jboss.tools.switchyard.ui.bot.test.SRampQuickstartsTest;
-import org.jboss.tools.switchyard.ui.bot.test.SwitchYardQuickstartsTest;
+import org.jboss.tools.switchyard.ui.bot.test.QuickstartsCamelTest;
+import org.jboss.tools.switchyard.ui.bot.test.QuickstartsDTGovTest;
+import org.jboss.tools.switchyard.ui.bot.test.QuickstartsDemoTest;
+import org.jboss.tools.switchyard.ui.bot.test.QuickstartsRTGovTest;
+import org.jboss.tools.switchyard.ui.bot.test.QuickstartsSRampTest;
+import org.jboss.tools.switchyard.ui.bot.test.QuickstartsSwitchYardTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
@@ -19,12 +19,12 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  */
 @SuiteClasses({
-	SwitchYardQuickstartsTest.class,
-	DemoQuickstartsTest.class,
-	DTGovQuickstartsTest.class,
-	RTGovQuickstartsTest.class,
-	SRampQuickstartsTest.class,
-	CamelQuickstartsTest.class
+	QuickstartsSwitchYardTest.class,
+	QuickstartsDemoTest.class,
+	QuickstartsDTGovTest.class,
+	QuickstartsRTGovTest.class,
+	QuickstartsSRampTest.class,
+	QuickstartsCamelTest.class
 })
 @RunWith(RedDeerSuite.class)
 public class QuickstartTests extends TestSuite {

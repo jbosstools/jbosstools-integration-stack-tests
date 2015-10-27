@@ -43,7 +43,7 @@ import org.junit.runner.RunWith;
  */
 @SwitchYard
 @RunWith(RedDeerSuite.class)
-public class ProjectCapabilitiesTest {
+public class ProjectExplorerProjectCapabilitiesTest {
 
 	public static final String SY_PROJECT = "switchyard-child";
 	public static final String SY_PARENT_PROJECT = "switchyard-parent";

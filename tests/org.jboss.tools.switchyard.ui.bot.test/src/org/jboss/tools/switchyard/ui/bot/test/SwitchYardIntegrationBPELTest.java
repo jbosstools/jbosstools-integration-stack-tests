@@ -33,7 +33,7 @@ import org.junit.runner.RunWith;
  */
 @SwitchYard(server = @Server(type = ServerReqType.ANY, state = ServerReqState.RUNNING))
 @RunWith(RedDeerSuite.class)
-public class BottomUpBPELTest {
+public class SwitchYardIntegrationBPELTest {
 
 	public static final String PROJECT = "bpel_project";
 

@@ -41,7 +41,7 @@ import org.junit.runner.RunWith;
 
 @SwitchYard
 @RunWith(RedDeerSuite.class)
-public class SwitchYardEditorCamelTest {
+public class SwitchYardIntegrationCamelTest {
 
 	public static final String PROJECT_NAME = "camelimpl";
 	public static final String INTERFACE_NAME = "Hello";

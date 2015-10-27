@@ -31,7 +31,7 @@ import org.junit.runner.RunWith;
 
 @SwitchYard
 @RunWith(RedDeerSuite.class)
-public class TransformersTest {
+public class SwitchYardEditorTransformersTest {
 
 	public static final String PROJECT = "sy_transformer";
 	public static final String PACKAGE = "com.example.switchyard." + PROJECT;

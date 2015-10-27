@@ -208,7 +208,7 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 				combo.setSelection(libraryVersion);
 			} catch (Exception e) {
 				log.info("Type library version to '" + libraryVersion + "'");
-				combo.typeText(libraryVersion);	
+				combo.typeText(libraryVersion);
 			}
 		}
 	}

@@ -36,7 +36,7 @@ import org.junit.runner.RunWith;
  */
 @SwitchYard
 @RunWith(RedDeerSuite.class)
-public class ProjectCreationTest {
+public class ProjectExplorerProjectCreationTest {
 
 	@InjectRequirement
 	private static SwitchYardRequirement switchyardRequirement;

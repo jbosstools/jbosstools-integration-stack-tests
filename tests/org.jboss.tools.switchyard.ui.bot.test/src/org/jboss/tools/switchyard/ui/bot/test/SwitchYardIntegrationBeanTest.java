@@ -27,7 +27,7 @@ import org.junit.runner.RunWith;
 
 @SwitchYard
 @RunWith(RedDeerSuite.class)
-public class HelloWorldTest {
+public class SwitchYardIntegrationBeanTest {
 
 	protected final Logger log = Logger.getLogger(this.getClass());
 
