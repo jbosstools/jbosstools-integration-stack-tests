@@ -24,8 +24,8 @@ public class ServerItem extends Item<ServerProperties> {
 	}
 
 	public List<OrgUnitItem> getOrgUnits() {
-		treeItem.expand();
-		List<TreeItem> treeItemList = treeItem.getItems();
+		expand();
+		List<TreeItem> treeItemList = getItems();
 		List<OrgUnitItem> orgUnitItemsList = new ArrayList<OrgUnitItem>();
 		for (TreeItem item : treeItemList) {
 			orgUnitItemsList.add(new OrgUnitItem(item));
@@ -34,8 +34,8 @@ public class ServerItem extends Item<ServerProperties> {
 	}
 	
 	public OrgUnitItem getOrgUnit(String name) {
-		treeItem.expand();
-		List<TreeItem> treeItemList = treeItem.getItems();
+		expand();
+		List<TreeItem> treeItemList = getItems();
 		for (TreeItem item : treeItemList) {
 			if (item.getText().equals(name)) {
 				return new OrgUnitItem(item);

@@ -37,8 +37,8 @@ public class OrgUnitItem extends Item<OrgUnitProperties> {
 	}
 	
 	public List<RepositoryItem> getRepositories() {
-		treeItem.expand();
-		List<TreeItem> treeItemsList = treeItem.getItems();
+		expand();
+		List<TreeItem> treeItemsList = getItems();
 		List<RepositoryItem> repositoryItemsList = new ArrayList<RepositoryItem>();
 		for (TreeItem item : treeItemsList) {
 			repositoryItemsList.add(new RepositoryItem(item));
@@ -47,8 +47,8 @@ public class OrgUnitItem extends Item<OrgUnitProperties> {
 	}
 	
 	public RepositoryItem getRepository(String name) {
-		treeItem.expand();
-		List<TreeItem> items = treeItem.getItems();
+		expand();
+		List<TreeItem> items = getItems();
 		for (TreeItem item : items) {
 			if (item.getText().equals(name)) {
 				return new RepositoryItem(item);

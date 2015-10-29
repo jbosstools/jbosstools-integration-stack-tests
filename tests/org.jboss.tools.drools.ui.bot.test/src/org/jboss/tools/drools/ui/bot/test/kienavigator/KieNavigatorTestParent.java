@@ -3,7 +3,11 @@ package org.jboss.tools.drools.ui.bot.test.kienavigator;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.drools.reddeer.kienavigator.item.ServerItem;
 import org.jboss.tools.drools.reddeer.kienavigator.properties.ServerProperties;
 import org.jboss.tools.drools.reddeer.view.KieNavigatorView;
@@ -18,6 +22,8 @@ public class KieNavigatorTestParent extends TestParent {
 	private static final int MAX_WAIT_TIME = 300;
 	
 	private static final int HTTP_OK = 200;
+	
+	private static final String PROGRESS_INFORMATION_LABEL = "Progress Information";
 	
 	protected static final String REPO_URL = "https://github.com/jboss-developer/jboss-brms-repository.git";
 	
@@ -78,5 +84,14 @@ public class KieNavigatorTestParent extends TestParent {
 		sp.setHttpPort(HTTP_PORT);
 		sp.setGitPort(GIT_PORT);
 		sp.setGitRepoPath(gitDirectory);
+	}
+	
+	protected void progressInformationWaiting() {
+		try {
+            new DefaultShell(PROGRESS_INFORMATION_LABEL);
+            new WaitWhile(new ShellWithTextIsActive(PROGRESS_INFORMATION_LABEL), TimePeriod.VERY_LONG);
+        } catch (Exception ex) {
+            LOGGER.debug("'" + PROGRESS_INFORMATION_LABEL + "' shell was not shown.");
+        }
 	}
 }

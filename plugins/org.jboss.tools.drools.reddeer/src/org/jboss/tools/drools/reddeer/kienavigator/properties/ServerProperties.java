@@ -45,9 +45,9 @@ public class ServerProperties extends Properties {
 	}
 	
 	public void setGitRepoPath(String path) {
-		new LabeledText(GIT_REPO_PATH).setText("");
-		new LabeledText(GIT_REPO_PATH).typeText(path);
 		new LabeledText(GIT_REPO_PATH).setText(path);
+		new LabeledText(HTTP_PORT).setFocus();          // workaround - apply button is not allowed after set text
+		new LabeledText(GIT_REPO_PATH).setFocus();
 	}
 	
 	public String getServerName() {
