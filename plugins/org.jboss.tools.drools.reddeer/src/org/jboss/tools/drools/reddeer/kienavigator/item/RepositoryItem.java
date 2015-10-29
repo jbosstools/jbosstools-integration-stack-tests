@@ -39,8 +39,8 @@ public class RepositoryItem extends Item<RepositoryProperties> {
 	}
 	
 	public List<ProjectItem> getProjects() {
-		treeItem.expand();
-		List<TreeItem> treeItemsList = treeItem.getItems();
+		expand();
+		List<TreeItem> treeItemsList = getItems();
 		List<ProjectItem> projecItemsList = new ArrayList<ProjectItem>();
 		for (TreeItem item : treeItemsList) {
 			projecItemsList.add(new ProjectItem(item));
@@ -49,8 +49,8 @@ public class RepositoryItem extends Item<RepositoryProperties> {
 	}
 	
 	public ProjectItem getProject(String name) {
-		treeItem.expand();
-		List<TreeItem> items = treeItem.getItems();
+		expand();
+		List<TreeItem> items = getItems();
 		for (TreeItem item : items) {
 			if (item.getText().equals(name)) {
 				return new ProjectItem(item);

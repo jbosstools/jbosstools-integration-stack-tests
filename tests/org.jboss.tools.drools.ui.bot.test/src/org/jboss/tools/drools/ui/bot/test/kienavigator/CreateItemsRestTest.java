@@ -82,12 +82,16 @@ public class CreateItemsRestTest extends KieNavigatorTestParent {
 		cod.setDefaultGroupId("restgroupid");
 		cod.ok();
 		
+		progressInformationWaiting();
+		
 		CreateRepositoryDialog crd = knv.getOrgUnit(0, "restname").createRepository();
 		crd.setName("restreponame");
 		crd.setDescription("restrepodescript");
 		crd.setUsername("restrepouser");
 		crd.createNewRepository();
 		crd.ok();
+		
+		progressInformationWaiting();
 		
 		CreateRepositoryDialog crd2 = knv.getOrgUnit(0, "restname").createRepository();
 		crd2.setName("restreponame2");
@@ -96,6 +100,8 @@ public class CreateItemsRestTest extends KieNavigatorTestParent {
 		crd2.cloneAnExistingRepository();
 		crd2.setRepositoryUrl(REPO_URL);
 		crd2.ok();
+		
+		progressInformationWaiting();
 		
 		RepositoryItem ri = knv.getRepository(0, "restname", "restreponame");
 		ri.importRepository();
@@ -107,6 +113,8 @@ public class CreateItemsRestTest extends KieNavigatorTestParent {
 		cpd.setVersion("restprojectversion");
 		cpd.importProjectToWorkspace(false);
 		cpd.ok();
+		
+		progressInformationWaiting();
 		
 		new DefaultShell("Connect to Server");
 		new YesButton().click();

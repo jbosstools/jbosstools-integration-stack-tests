@@ -33,14 +33,23 @@ public class RepositoryManipulationTest extends KieNavigatorTestParent {
 		cod.setOwner("owner");
 		cod.ok();
 		
+		progressInformationWaiting();
+		
 		CreateRepositoryDialog crd = knv.getOrgUnit(0, "repotest").createRepository();
 		crd.setName("newrepo");
 		crd.ok();
+		
+		progressInformationWaiting();
+		
 		knv.getRepository(0, "repotest", "newrepo").removeRepository().yes();
+		
+		progressInformationWaiting();
 		
 		AddRepositoryDialog ard = knv.getOrgUnit(0, "repotest").addRepository();
 		ard.selectRepository("newrepo");
 		ard.ok();
+		
+		progressInformationWaiting();
 		
 		List<RepositoryItem> riList = knv.getOrgUnit(0, "repotest").getRepositories();
 		Assert.assertEquals(1, riList.size());
