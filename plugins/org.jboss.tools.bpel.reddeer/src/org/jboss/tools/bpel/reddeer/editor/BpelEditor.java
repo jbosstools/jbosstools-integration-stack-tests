@@ -7,8 +7,11 @@ import java.io.IOException;
 
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
+import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.eclipse.ui.views.contentoutline.OutlineView;
 import org.jboss.reddeer.gef.editor.GEFEditor;
+import org.jboss.reddeer.swt.api.TreeItem;
 
 /**
  * 
@@ -17,7 +20,6 @@ import org.jboss.reddeer.gef.editor.GEFEditor;
  */
 public class BpelEditor extends GEFEditor {
 
-	@SuppressWarnings("unused")
 	private Logger log = Logger.getLogger(BpelEditor.class);
 	
 	protected File sourceFile;
@@ -75,9 +77,35 @@ public class BpelEditor extends GEFEditor {
 	public void addVariable() {
 		throw new UnsupportedOperationException();
 	}
+	
+	public Variable getVariable(String variableName) {
+		OutlineView outlineView = new OutlineView();
+		outlineView.open();
+		for (TreeItem treeItem :outlineView.outlineElements()) {
+			if ("Variables".equals(treeItem.getText())) {
+				for (TreeItem variableItem : treeItem.getItems()) {
+					if (variableItem.getText().equals(variableName)) {
+						return new Variable(variableItem);
+					}
+				}
+			}
+		}
+		throw new RedDeerException("Cannot find a variable with name '" + variableName + "'");
+	}
 
 	public void removeVariable() {
 		throw new UnsupportedOperationException();
 
+	}
+	
+	public void debug() {
+		try {
+			getVariable("sayHelloRequest").setType("Messages", "sayHello");
+			getVariable("sayHelloResponse").setType("Messages", "sayHelloResponse");
+			System.out.println("done");
+		} catch (Throwable t) {
+			t.printStackTrace();
+			System.out.println();
+		}
 	}
 }

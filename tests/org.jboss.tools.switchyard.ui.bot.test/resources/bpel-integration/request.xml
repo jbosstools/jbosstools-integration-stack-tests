@@ -1,0 +1,3 @@
+<tns:sayHello xmlns:tns="http://www.jboss.org/bpel/examples">
+	<tns:string>World</tns:string>
+</tns:sayHello>

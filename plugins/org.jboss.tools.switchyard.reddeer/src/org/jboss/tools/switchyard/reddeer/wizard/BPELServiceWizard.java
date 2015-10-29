@@ -1,6 +1,7 @@
 package org.jboss.tools.switchyard.reddeer.wizard;
 
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.tools.switchyard.reddeer.widget.LabeledText;
 
 /**
  * 
@@ -28,6 +29,10 @@ public class BPELServiceWizard extends ServiceWizard<BPELServiceWizard> {
 	@Override
 	protected void browse() {
 		new PushButton("Browse...").click();
+	}
+	
+	public void setNamespace(String namespace) {
+		new LabeledText("Namespace:").setText(namespace);
 	}
 
 }

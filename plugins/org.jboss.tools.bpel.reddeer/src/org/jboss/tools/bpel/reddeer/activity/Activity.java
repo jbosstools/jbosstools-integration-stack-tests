@@ -81,13 +81,26 @@ public class Activity extends AbstractEditPart {
 		super.select();
 	}
 
-	protected void add(String type) {
+	public void add(String type) {
 		menu("Add", type);
 	}
 
-	protected void add(String type, String name) {
+	public void add(String type, String name) {
 		log.info("Add activity '" + name + "' of type <" + type + ">");
 		add(type);
+		if (name != null) {
+			// we expect that each activity has its default name as its type
+			new Activity(type, type, this, 0).setName(name);
+		}
+	}
+	
+	public void insertBefore(String type) {
+		menu("Insert Before", type);
+	}
+
+	public void insertBefore(String type, String name) {
+		log.info("Insert before activity '" + name + "' of type <" + type + ">");
+		insertBefore(type);
 		if (name != null) {
 			// we expect that each activity has its default name as its type
 			new Activity(type, type, this, 0).setName(name);
