@@ -4,6 +4,7 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.drools.reddeer.kienavigator.dialog.CreateOrgUnitDialog;
 import org.jboss.tools.drools.reddeer.kienavigator.dialog.CreateProjectDialog;
 import org.jboss.tools.drools.reddeer.kienavigator.dialog.CreateRepositoryDialog;
@@ -37,6 +38,8 @@ public class CreateItemsTest extends KieNavigatorTestParent {
 		cod.setDefaultGroupId("orggroupid");
 		cod.ok();
 		
+		progressInformationWaiting();
+		
 		OrgUnitProperties op = knv.getOrgUnit(0, "orgname").properties();
 		Assert.assertEquals("orgname", op.getOrganizationName());
 		Assert.assertEquals("owner@email.com", op.getOwner());
@@ -49,6 +52,8 @@ public class CreateItemsTest extends KieNavigatorTestParent {
 		crd.setUsername("repouser");
 		crd.createNewRepository();
 		crd.ok();
+		
+		progressInformationWaiting();
 		
 		RepositoryProperties rp = knv.getRepository(0, "orgname", "reponame").properties();
 		Assert.assertEquals("reponame", rp.getRepositoryName());
@@ -68,6 +73,9 @@ public class CreateItemsTest extends KieNavigatorTestParent {
 		cpd.importProjectToWorkspace(false);
 		cpd.ok();
 		
+		progressInformationWaiting();
+		
+		new DefaultShell("Connect to Server");
 		new PushButton("Yes").click(); // confirm dialog
 		
 		ProjectProperties pp = knv.getProject(0, "orgname", "reponame", "projectname").properties();		

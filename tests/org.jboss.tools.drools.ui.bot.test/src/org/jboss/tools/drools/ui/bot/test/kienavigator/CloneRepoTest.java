@@ -29,11 +29,15 @@ public class CloneRepoTest extends KieNavigatorTestParent {
 		cod.setDefaultGroupId("gid");
 		cod.ok();
 		
+		progressInformationWaiting();
+		
 		CreateRepositoryDialog crd = knv.getOrgUnit(0, "clonename").createRepository();
 		crd.setName("clonerepo");
 		crd.cloneAnExistingRepository();
 		crd.setRepositoryUrl(REPO_URL);
 		crd.ok();
+		
+		progressInformationWaiting();
 	
 		RepositoryItem ri = knv.getRepository(0, "clonename", "clonerepo");
 		ri.importRepository();
