@@ -14,17 +14,18 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
+import org.jboss.reddeer.core.handler.ShellHandler;
+import org.jboss.reddeer.core.lookup.ShellLookup;
+import org.jboss.reddeer.core.util.Display;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.junit.screenshot.CaptureScreenshotException;
+import org.jboss.reddeer.junit.screenshot.ScreenshotCapturer;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.core.lookup.ShellLookup;
-import org.jboss.reddeer.core.util.Display;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage;
@@ -242,7 +243,11 @@ public abstract class TestParent {
 
         int index = SCREENSHOT_DIR.list().length;
         File screenshotFile = new File(SCREENSHOT_DIR, String.format("%03d-%s.png", index, name ));
-        SWTUtils.captureScreenshot(screenshotFile.getAbsolutePath());
+        try {
+			ScreenshotCapturer.getInstance().captureScreenshot(screenshotFile.getAbsolutePath());
+		} catch (CaptureScreenshotException e) {
+			e.printStackTrace();
+		}
     }
 
     private <T extends Annotation> T getAnnotationOnMethod(String methodName, Class<T> annotationClass) {
@@ -271,7 +276,7 @@ public abstract class TestParent {
                 break;
             }
         }
-        new SWTWorkbenchBot().closeAllShells();
+        ShellHandler.getInstance().closeAllNonWorbenchShells();
     }
     
     private void setupProject(RuntimeVersion useRuntime) {

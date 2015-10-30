@@ -24,7 +24,6 @@ Require-Bundle:
  org.eclipse.debug.ui,
  org.eclipse.core.runtime,
  org.apache.log4j,
- org.eclipse.swtbot.eclipse.finder,
  org.hamcrest.library,
  org.jboss.reddeer.go;bundle-version="0.8.0"
 Bundle-ActivationPolicy: lazy
