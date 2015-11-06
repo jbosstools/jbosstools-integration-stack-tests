@@ -1,11 +1,16 @@
 package org.jboss.tools.runtime.reddeer.wizard;
 
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
@@ -31,6 +36,14 @@ public class ServerWizard extends NewWizardDialog {
 
 	public ServerWizard() {
 		super("Server", "Server");
+	}
+
+	@Override
+	public void open() {
+		super.open();
+		new WaitUntil(new ShellWithTextIsAvailable("New Server"));
+		AbstractWait.sleep(TimePeriod.SHORT);
+		new DefaultShell("New Server");
 	}
 
 	public ServerWizard setType(String category, String label) {
