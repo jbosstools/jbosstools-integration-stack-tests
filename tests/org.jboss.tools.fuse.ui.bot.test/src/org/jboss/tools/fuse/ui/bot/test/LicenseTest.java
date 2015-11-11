@@ -88,7 +88,13 @@ public class LicenseTest {
 	}
 
 	/**
-	 * TODO JavaDoc
+	 * <p>Tests validity of the license agreement used with JBoss Fuse Tooling</p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>open 'Installation Details'</li>
+	 * <li>open Properties of all installed Fuse plugins</li>
+	 * <li>check validity of the License Agreement</li>
+	 * </ol>
 	 */
 	@Test
 	public void testLicense() {

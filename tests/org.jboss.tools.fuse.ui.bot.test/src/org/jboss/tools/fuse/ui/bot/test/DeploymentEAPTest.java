@@ -69,10 +69,13 @@ public class DeploymentEAPTest extends DefaultTest {
 	 * <li>check if the server contains the project in Add and Remove ... dialog window</li>
 	 * <li>start the server</li>
 	 * <li>open Fuse Shell view and execute command log:display</li>
-	 * <li>check if Fuse Shell view contains text TODO</li>
+	 * <li>check if Fuse Shell view contains text "(CamelContext: spring-context) started"</li>
+	 * <li>check if Fuse Shell view contains text "Deployed "wildfly-spring.war""</li>
+	 * <li>open Browser View and try to open URL "http://localhost:8080/wildfly-spring"</li>
 	 * <li>remove all deployed modules</li>
 	 * <li>open Fuse Shell view and execute command log:display</li>
-	 * <li>check if Fuse Shell view contains text TODO</li>
+	 * <li>check if Fuse Shell view contains text "(CamelContext: spring-context) is shutdown"</li>
+	 * <li>check if Fuse Shell view contains text "Undeployed "wildfly-spring.war""</li>
 	 * </ol>
 	 */
 	@Test
