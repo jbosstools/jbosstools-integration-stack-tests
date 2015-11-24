@@ -115,6 +115,12 @@
 							<artifactId>org.fusesource.ide.jmx.feature.feature.group</artifactId>
 							<version>0.0.0</version>
 						</dependency>
+						<!-- Fuse Data Transformation feature -->
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.jboss.tools.fuse.transformation.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
 						<!-- AS feature -->
 						<dependency>
 							<type>p2-installable-unit</type>
