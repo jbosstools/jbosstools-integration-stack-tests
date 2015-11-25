@@ -50,6 +50,7 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -529,6 +530,7 @@ public class SwitchYardEditorImplementationsTest {
 	}
 
 	@Test
+	@Ignore("Removed as a part of SWITCHYARD-2817")
 	public void addExistingDroolsImplementationWithRemoteJMSTest() throws Exception {
 		SwitchYardEditor editor = new SwitchYardEditor();
 		SwitchYardComponent component = editor.addComponent();
@@ -584,6 +586,7 @@ public class SwitchYardEditorImplementationsTest {
 	}
 
 	@Test
+	@Ignore("Removed as a part of SWITCHYARD-2817")
 	public void addExistingDroolsImplementationWithRemoteRESTTest() throws Exception {
 		SwitchYardEditor editor = new SwitchYardEditor();
 		SwitchYardComponent component = editor.addComponent();
