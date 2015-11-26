@@ -54,6 +54,16 @@ public class CamelEditor extends GEFEditor {
 		super(title);
 	}
 
+	
+	@Override
+	public void save() {
+		activate();
+		click(1, 1);
+		new ContextMenu("Layout Diagram").select();
+		super.save();
+	}
+
+
 	/**
 	 * Adds a component into the Camel Editor at given position
 	 * 
