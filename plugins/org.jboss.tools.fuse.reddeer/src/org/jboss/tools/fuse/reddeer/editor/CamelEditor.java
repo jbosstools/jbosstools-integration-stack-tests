@@ -34,9 +34,9 @@ import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.fuse.reddeer.component.CamelComponent;
+import org.jboss.tools.fuse.reddeer.ext.LabeledTextExt;
 import org.jboss.tools.fuse.reddeer.utils.MouseAWTManager;
 import org.jboss.tools.fuse.reddeer.utils.XPathEvaluator;
-import org.jboss.tools.fuse.reddeer.widget.LabeledTextExt;
 
 /**
  * Manipulates with Camel Editor
@@ -384,6 +384,29 @@ public class CamelEditor extends GEFEditor {
 		selectEditPart(component);
 		properties.activate();
 		properties.selectTab("Generic");
+		new LabeledTextExt(name).setText(value);
+		activate();
+		AbstractWait.sleep(TimePeriod.SHORT);
+	}
+	
+	/**
+	 * Sets a property to desired value.
+	 * 
+	 * @param component
+	 * 			  component in the Camel editor
+	 * @param name
+	 *            name of the property
+	 * @param value
+	 *            value of the property
+	 */
+	public void setAdvancedProperty(String component, String name, String value) {
+
+		log.debug("Setting '" + value + "' as the advanced property '" + name + "' of selelected component in the Camel Editor");
+		PropertiesView properties = new PropertiesView();
+		properties.open();
+		selectEditPart(component);
+		properties.activate();
+		properties.selectTab("Advanced");
 		new LabeledTextExt(name).setText(value);
 		activate();
 		AbstractWait.sleep(TimePeriod.SHORT);

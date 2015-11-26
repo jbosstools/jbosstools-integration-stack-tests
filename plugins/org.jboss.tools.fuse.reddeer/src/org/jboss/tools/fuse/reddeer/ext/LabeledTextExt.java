@@ -1,4 +1,4 @@
-package org.jboss.tools.fuse.reddeer.widget;
+package org.jboss.tools.fuse.reddeer.ext;
 
 import org.jboss.reddeer.swt.impl.text.AbstractText;
 
