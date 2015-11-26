@@ -183,10 +183,17 @@ public class DebuggerTest extends DefaultTest {
 		AbstractWait.sleep(TimePeriod.SHORT);
 		variables.open();
 		new DefaultTreeItem(4).getItems().get(0).select();
-		assertTrue(new DefaultStyledText().getText().contains("<city>London</city>"));
+		assertTrue(new DefaultStyledText().getText().contains("<city>Tampa</city>"));
+
+		// resume and then should stop on the 'choice' node
+		ResumeButton resume = new ResumeButton();
+		assertTrue(resume.isEnabled());
+		resume.select();
+		new WaitUntil(new IsSuspended(), TimePeriod.NORMAL);
+		AbstractWait.sleep(TimePeriod.getCustom(2));
+		assertEquals(CHOICE, variables.getValue("Endpoint"));
 
 		// resume and then should stop on the 'log1' node
-		ResumeButton resume = new ResumeButton();
 		assertTrue(resume.isEnabled());
 		resume.select();
 		new WaitUntil(new IsSuspended(), TimePeriod.NORMAL);
