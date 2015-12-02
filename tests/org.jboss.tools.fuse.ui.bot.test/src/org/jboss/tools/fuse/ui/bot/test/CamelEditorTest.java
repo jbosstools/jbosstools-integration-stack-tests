@@ -2,6 +2,7 @@ package org.jboss.tools.fuse.ui.bot.test;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ import org.jboss.tools.fuse.reddeer.component.Generic;
 import org.jboss.tools.fuse.reddeer.component.Log;
 import org.jboss.tools.fuse.reddeer.component.Otherwise;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
+import org.jboss.tools.fuse.reddeer.editor.CamelEditorException;
 import org.jboss.tools.fuse.reddeer.editor.SourceEditor;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
 import org.jboss.tools.fuse.reddeer.view.ErrorLogView;
@@ -171,6 +173,11 @@ public class CamelEditorTest extends DefaultTest {
 		editor.doOperation("log", "Add", "Components", "Generic");
 		editor.setComboProperty("Endpoint", 0, "file:target/messages/others");
 		editor.setId("log1", "");
+		try {
+			editor.save();
+		} catch (CamelEditorException e) {
+			fail("There are unconnected endpoints in the diagram");
+		}
 		assertTrue(editor.isComponentAvailable("otherwise"));
 		assertTrue(editor.isComponentAvailable("file:target/messa..."));
 		CamelEditor.switchTab("Source");
@@ -201,19 +208,31 @@ public class CamelEditorTest extends DefaultTest {
 		CamelEditor editor = new CamelEditor("camel-context.xml");
 		editor.addCamelComponent(new Otherwise(), 0, -100);
 		editor.addConnection("choice", "otherwise");
-		editor.save();
+		try {
+			editor.save();
+		} catch (CamelEditorException e) {
+			fail("Connection between 'choice' and 'otherwise' wasn't created");
+		}
 		AbstractWait.sleep(TimePeriod.SHORT);
 		editor.setId("log", "log1");
 		editor.setId("file:target/messa...", "temp");
 		editor.addCamelComponent(new Log());
 		editor.setProperty("log", "Message", "Other message");
 		editor.addConnection("otherwise", "log");
-		editor.save();
+		try {
+			editor.save();
+		} catch (CamelEditorException e) {
+			fail("Connection between 'otherwise' and 'log' wasn't created");
+		}
 		AbstractWait.sleep(TimePeriod.getCustom(1));
 		editor.addCamelComponent(new Generic());
 		editor.setComboProperty("Endpoint", 0, "file:target/messages/others");
 		editor.addConnection("log", "file:target/messa...");
-		editor.save();
+		try {
+			editor.save();
+		} catch (CamelEditorException e) {
+			fail("Connection between 'log' and 'file:target/messa...' wasn't created");
+		}
 		AbstractWait.sleep(TimePeriod.getCustom(1));
 		editor.setId("temp", "");
 		editor.setId("log1", "");
