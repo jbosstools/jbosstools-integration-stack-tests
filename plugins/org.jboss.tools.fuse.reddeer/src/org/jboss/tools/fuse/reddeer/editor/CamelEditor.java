@@ -10,9 +10,11 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.core.util.Display;
@@ -26,9 +28,11 @@ import org.jboss.reddeer.gef.impl.editpart.LabeledEditPart;
 import org.jboss.reddeer.gef.view.PaletteView;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.button.YesButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
@@ -54,15 +58,27 @@ public class CamelEditor extends GEFEditor {
 		super(title);
 	}
 
-	
 	@Override
 	public void save() {
 		activate();
 		click(1, 1);
 		new ContextMenu("Layout Diagram").select();
-		super.save();
+		new ShellMenu("File", "Save").select();
+		try {
+			new WaitUntil(new ShellWithTextIsAvailable("Please confirm..."));
+			new DefaultShell("Please confirm...");
+			new YesButton().click();
+			throw new CamelEditorException("There are unconnected endpoints in the diagram!");
+		} catch (WaitTimeoutExpiredException e) {
+			// The dialog "Please confirm..." didn't show up => everything is OK
+		}
 	}
 
+	@Override
+	public void close() {
+		save();
+		super.close();
+	}
 
 	/**
 	 * Adds a component into the Camel Editor at given position
@@ -315,7 +331,7 @@ public class CamelEditor extends GEFEditor {
 	}
 
 	/**
-	 * Switchs between 'Design' and 'Source' tab of the Camel Editor
+	 * Switches between 'Design' and 'Source' tab of the Camel Editor
 	 * 
 	 * @param name
 	 *            'Design' or 'Source'
