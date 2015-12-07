@@ -31,7 +31,6 @@ import org.junit.runner.RunWith;
  */
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
-@TeiidServer(state = ServerReqState.PRESENT)
 public class ModelWizardTest {
 
 	private static final String PROJECT_NAME = "ModelWizardTestProject";
