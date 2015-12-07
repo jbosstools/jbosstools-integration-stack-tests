@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<launchConfiguration type="org.eclipse.swtbot.eclipse.ui.launcher.JunitLaunchConfig">
+<launchConfiguration type="org.jboss.reddeer.eclipse.ui.launcher.JunitLaunchConfig">
 <booleanAttribute key="append.args" value="true"/>
 <booleanAttribute key="askclear" value="false"/>
 <booleanAttribute key="automaticAdd" value="true"/>
@@ -26,15 +26,26 @@
 <booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>
 <stringAttribute key="org.eclipse.jdt.junit.TESTNAME" value=""/>
 <stringAttribute key="org.eclipse.jdt.junit.TEST_KIND" value="org.eclipse.jdt.junit.loader.junit4"/>
+<booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
 <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.jboss.tools.teiid.ui.bot.test.suite.SmokeTests"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog -eclipse.password resources/security/password"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog -eclipse.password resources/security/password -pluginCustomization resources/settings/plugin_customization.ini"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="org.jboss.tools.teiid.ui.bot.test"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dswtbot.test.properties.file=swtbot.properties -Xms256m -Xmx512m -XX:PermSize=256m -XX:MaxPermSize=384m -Dusage_reporting_enabled=false"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xms256m -Xmx512m -XX:PermSize=256m -XX:MaxPermSize=384m -Dusage_reporting_enabled=false -Dreddeer.config=/Users/mmakovy/server-installer/dv-6.2.0.GA/target/config"/>
 <stringAttribute key="pde.version" value="3.3"/>
-<stringAttribute key="product" value="org.eclipse.platform.ide"/>
+<stringAttribute key="product" value="com.jboss.jbds.product.product"/>
+<stringAttribute key="rd.launch.property.logDebug" value="true"/>
+<stringAttribute key="rd.launch.property.reddeer.captureScreenshot" value="true"/>
+<stringAttribute key="rd.launch.property.reddeer.close.shells" value="true"/>
+<stringAttribute key="rd.launch.property.reddeer.close.welcome.screen" value="true"/>
+<stringAttribute key="rd.launch.property.reddeer.disable.maven.download.repo.index.on.startup" value="true"/>
+<stringAttribute key="rd.launch.property.reddeer.logLevel" value="ALL"/>
+<stringAttribute key="rd.launch.property.reddeer.logMessageFilter" value="ALL"/>
+<stringAttribute key="rd.launch.property.reddeer.pauseFailedTest" value="false"/>
+<stringAttribute key="rd.launch.property.reddeer.recordScreenCast" value="false"/>
 <booleanAttribute key="show_selected_only" value="false"/>
+<stringAttribute key="templateConfig" value="${target_home}/configuration/config.ini"/>
 <booleanAttribute key="tracing" value="false"/>
 <booleanAttribute key="useCustomFeatures" value="false"/>
 <booleanAttribute key="useDefaultConfig" value="true"/>
