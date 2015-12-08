@@ -4,6 +4,7 @@ import junit.framework.TestSuite;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.fuse.ui.bot.test.DeploymentEAPTest;
+import org.jboss.tools.fuse.ui.bot.test.DataTransformationDeploymentTest;
 import org.jboss.tools.fuse.ui.bot.test.DeploymentTest;
 import org.jboss.tools.fuse.ui.bot.test.Fabric8Test;
 import org.jboss.tools.fuse.ui.bot.test.JMXNavigatorServerTest;
@@ -19,6 +20,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @SuiteClasses({
 	DeploymentEAPTest.class,
+	DataTransformationDeploymentTest.class,
 	DeploymentTest.class,
 	Fabric8Test.class,
 	JMXNavigatorServerTest.class,
