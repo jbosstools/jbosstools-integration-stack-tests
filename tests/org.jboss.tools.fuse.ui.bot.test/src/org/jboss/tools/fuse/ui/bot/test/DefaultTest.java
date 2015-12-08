@@ -10,7 +10,6 @@ import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.core.matcher.WithTooltipTextMatcher;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.views.log.LogMessage;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
@@ -18,6 +17,7 @@ import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.fuse.reddeer.preference.ConsolePreferencePage;
 import org.jboss.tools.fuse.reddeer.preference.FuseToolingEditorPreferencePage;
 import org.jboss.tools.fuse.reddeer.view.ErrorLogView;
+import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.utils.FuseServerManipulator;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -106,7 +106,7 @@ public class DefaultTest {
 		new WorkbenchShell();
 		
 		log.info("Deleting all projects");
-		new ProjectExplorer().deleteAllProjects();
+		ProjectFactory.deleteAllProjects();
 
 		log.info("Stopping and deleting configured servers");
 		FuseServerManipulator.deleteAllServers();

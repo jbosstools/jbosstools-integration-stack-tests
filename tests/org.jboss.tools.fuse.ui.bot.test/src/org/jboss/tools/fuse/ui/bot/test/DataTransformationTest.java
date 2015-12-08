@@ -2,15 +2,16 @@ package org.jboss.tools.fuse.ui.bot.test;
 
 import static org.junit.Assert.assertEquals;
 
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.jdt.ui.junit.JUnitView;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
-import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.fuse.reddeer.condition.JUnitHasFinished;
@@ -18,11 +19,11 @@ import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.editor.DataTransformationEditor;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
 import org.jboss.tools.fuse.reddeer.utils.ResourceHelper;
-import org.jboss.tools.fuse.reddeer.wizard.ImportMavenWizard;
 import org.jboss.tools.fuse.reddeer.wizard.NewFuseTransformationTestWizard;
 import org.jboss.tools.fuse.reddeer.wizard.NewFuseTransformationWizard;
 import org.jboss.tools.fuse.reddeer.wizard.NewFuseTransformationWizard.TransformationType;
 import org.jboss.tools.fuse.reddeer.wizard.NewFuseTransformationWizard.TypeDefinition;
+import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -48,11 +49,7 @@ public class DataTransformationTest extends DefaultTest {
 	@Test
 	public void testBasics() {
 
-		// Use the following line only if you want to run test within JBDS
-		// FileUtils.copyDirectory(ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID, "resources/projects/starter"), ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID, "target/starter"));
-		// new ImportMavenWizard().importProject(ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID, "target/starter"));
-
-		new ImportMavenWizard().importProject(ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID, "resources/projects/starter"));
+		ProjectFactory.importExistingProject(ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID, "resources/projects/starter"), "starter", true, true);
 		new CamelProject("starter").openCamelContext("camel-context.xml");
 		CamelEditor editor = new CamelEditor("camel-context.xml");
 		editor.activate();
@@ -101,7 +98,7 @@ public class DataTransformationTest extends DefaultTest {
 		new DefaultShell("Run As");
 		new DefaultTableItem("JUnit Test").select();
 		new PushButton("OK").click();
-		new WaitUntil(new JUnitHasFinished());
+		new WaitUntil(new JUnitHasFinished(), TimePeriod.getCustom(20));
 		new WorkbenchShell();
 		assertEquals("Result of JUnit test is wrong", "1/1", new JUnitView().getRunStatus());
 		new WaitUntil(new ConsoleHasText("{\"custId\":\"ACME-123\",\"priority\":\"GOLD\",\"orderId\":\"ORDER1\",\"origin\":\"ORIGIN\",\"approvalCode\":\"AUTO_OK\",\"lineItems\":[{\"itemId\":\"PICKLE\",\"amount\":1000,\"cost\":2.25},{\"itemId\":\"BANANA\",\"amount\":400,\"cost\":1.25}]}"));

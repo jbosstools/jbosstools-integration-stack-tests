@@ -16,6 +16,7 @@ import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.fuse.reddeer.wizard.CamelXmlFileWizard;
 
 /**
@@ -36,10 +37,15 @@ public class CamelProject {
 		project.getProjectItem(path).select();
 	}
 
+	public void openFile(String... path) {
+
+		ProjectItem item = project.getProjectItem(path);
+		item.open();
+	}
+
 	public void openCamelContext(String name) {
 
-		ProjectItem item = project.getProjectItem("src/main/resources", "META-INF", "spring");
-		item.getChild(name).open();
+		openFile("src/main/resources", "META-INF", "spring", name);
 	}
 
 	public void deleteCamelContext(String name) {
@@ -139,6 +145,33 @@ public class CamelProject {
 	public void deleteProject() {
 
 		new ProjectExplorer().getProject(project.getName()).delete(true);
+	}
+
+	public void close() {
+
+		new WorkbenchShell();
+		project.select();
+		new ContextMenu("Close Project").select();
+		new WaitWhile(new JobIsRunning());
+	}
+
+	public void open() {
+
+		new WorkbenchShell();
+		project.select();
+		new ContextMenu("Open Project").select();
+		new WaitWhile(new JobIsRunning());
+	}
+
+	public void enableCamelNature() {
+
+		project.select();
+		try {
+			new ContextMenu("Enable Fuse Camel Nature").select();
+			new WaitWhile(new JobIsRunning());
+		} catch (CoreLayerException e) {
+			// Nature is probably already enabled
+		}
 	}
 
 	/**
