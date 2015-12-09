@@ -41,9 +41,11 @@ public class ModelWizardTest {
 	public static final String WEBSERVICE_MODEL_NAME = "webservice_view";
 	public static final String MODELEXT_MODEL_NAME = "modelext";
 	public static final String FUNCTION_MODEL_NAME = "function_userdef";
+	private static TeiidBot teiidBot = new TeiidBot();
 
 	@BeforeClass
 	public static void beforeClass() {
+		teiidBot.uncheckBuildAutomatically();
 		new ModelExplorerManager().createProject(PROJECT_NAME);
 	}
 

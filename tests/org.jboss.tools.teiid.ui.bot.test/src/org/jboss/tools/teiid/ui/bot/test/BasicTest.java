@@ -29,6 +29,7 @@ public class BasicTest {
 
 	@BeforeClass
 	public static void prepare() {
+		teiidBot.uncheckBuildAutomatically();
 		new ModelExplorerManager().createProject(PROJECT);
 		Properties props = new Properties();
 		props.setProperty("local", "true");
