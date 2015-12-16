@@ -18,7 +18,7 @@
 	  <jbtis.tp.version>4.3.0.Beta1f-SNAPSHOT</jbtis.tp.version>
 	  <jbtis.site>http://download.jboss.org/jbosstools/mars/staging/updates/integration-stack/</jbtis.site>
 	  <jbtis-ea.site>http://download.jboss.org/jbosstools/mars/staging/updates/integration-stack/earlyaccess</jbtis-ea.site>
-	  <reddeer.site>http://download.jboss.org/jbosstools/updates/stable/mars/core/reddeer/0.8.0</reddeer.site>
+	  <reddeer.site>http://download.jboss.org/jbosstools/updates/stable/mars/core/reddeer/1.0.0</reddeer.site>
 	  <orbit.site>http://download.eclipse.org/tools/orbit/downloads/drops/R20130517111416/repository</orbit.site>
 	  <swtbot.site>http://download.eclipse.org/technology/swtbot/releases/latest</swtbot.site>
 	  <skipRequirements>${skipTests}</skipRequirements>

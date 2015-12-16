@@ -56,14 +56,14 @@ public class ServerWizard extends NewWizardDialog {
 		
 		try {
 			
-			new DefaultTreeItem(0, array).select();//eclipse kepler (0), eclipse juno (1)
+			new DefaultTreeItem(array).select();//eclipse kepler (0), eclipse juno (1)
 			return;
 		} catch (Exception ex){
 			System.out.println(ex.getMessage());
 		}
 		try {
 			array[array.length-1] = type[array.length-1] + "+";
-			new DefaultTreeItem(0, array).select();//eclipse kepler (0), eclipse juno (1)
+			new DefaultTreeItem(array).select();//eclipse kepler (0), eclipse juno (1)
 			return;
 		} catch (Exception ex){
 			System.out.println(ex.getMessage());

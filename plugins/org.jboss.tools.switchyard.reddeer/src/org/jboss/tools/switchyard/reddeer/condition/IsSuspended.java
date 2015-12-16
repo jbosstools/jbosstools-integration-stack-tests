@@ -1,6 +1,6 @@
 package org.jboss.tools.switchyard.reddeer.condition;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.tools.switchyard.reddeer.debug.ResumeButton;
@@ -10,7 +10,7 @@ import org.jboss.tools.switchyard.reddeer.debug.ResumeButton;
  * @author apodhrad
  * 
  */
-public class IsSuspended implements WaitCondition {
+public class IsSuspended extends AbstractWaitCondition {
 
 	private ResumeButton resumeButton;
 	

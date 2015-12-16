@@ -93,4 +93,9 @@ public class NestedEditor implements Editor {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
+	public ContentAssistant getAutoContentAssistant(Runnable execute) {
+		throw new UnsupportedOperationException();
+	}
+
 }

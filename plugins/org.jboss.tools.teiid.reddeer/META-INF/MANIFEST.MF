@@ -17,7 +17,7 @@ Require-Bundle: org.eclipse.gef,
  org.eclipse.ui.forms,
  org.jboss.tools.runtime.reddeer;bundle-version="4.3.0",
  org.eclipse.datatools.connectivity,
- org.jboss.reddeer.go;bundle-version="0.8.0"
+ org.jboss.reddeer.go;bundle-version="1.0.0"
 Export-Package: org.jboss.tools.teiid.reddeer,
  org.jboss.tools.teiid.reddeer.condition,
  org.jboss.tools.teiid.reddeer.connection,

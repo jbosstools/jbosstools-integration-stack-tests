@@ -32,10 +32,20 @@
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog -eclipse.password resources/security/password -pluginCustomization resources/settings/plugin_customization.ini"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="org.jboss.tools.switchyard.ui.bot.test"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xms256m -Xmx512m -XX:PermSize=256m -XX:MaxPermSize=384m -Dusage_reporting_enabled=false -Dreddeer.config=target/config/switchyard-200.xml"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xms256m -Xmx512m -XX:PermSize=256m -XX:MaxPermSize=384m -Dusage_reporting_enabled=false -Drd.config=target/config/switchyard-200.xml"/>
 <stringAttribute key="pde.version" value="3.3"/>
 <stringAttribute key="product" value="com.jboss.jbds.product.product"/>
 <stringAttribute key="rd.launch.property.logDebug" value="true"/>
+<stringAttribute key="rd.launch.property.rd.captureScreenshot" value="true"/>
+<stringAttribute key="rd.launch.property.rd.closeShells" value="true"/>
+<stringAttribute key="rd.launch.property.rd.closeWelcomeScreen" value="true"/>
+<stringAttribute key="rd.launch.property.rd.disableMavenIndex" value="true"/>
+<stringAttribute key="rd.launch.property.rd.logLevel" value="ALL"/>
+<stringAttribute key="rd.launch.property.rd.logMessageFilter" value="ALL"/>
+<stringAttribute key="rd.launch.property.rd.openAssociatedPerspective" value="never"/>
+<stringAttribute key="rd.launch.property.rd.pauseFailedTest" value="false"/>
+<stringAttribute key="rd.launch.property.rd.recordScreenCast" value="false"/>
+<stringAttribute key="rd.launch.property.rd.timePeriodFactor" value="1.0"/>
 <stringAttribute key="rd.launch.property.reddeer.captureScreenshot" value="true"/>
 <stringAttribute key="rd.launch.property.reddeer.close.shells" value="true"/>
 <stringAttribute key="rd.launch.property.reddeer.close.welcome.screen" value="true"/>

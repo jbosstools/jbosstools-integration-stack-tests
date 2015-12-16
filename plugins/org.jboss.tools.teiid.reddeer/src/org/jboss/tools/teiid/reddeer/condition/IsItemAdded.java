@@ -3,9 +3,9 @@ package org.jboss.tools.teiid.reddeer.condition;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.common.condition.WaitCondition;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
@@ -16,7 +16,7 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
  * @author apodhrad
  * 
  */
-public class IsItemAdded implements WaitCondition {
+public class IsItemAdded extends AbstractWaitCondition {
 
 	private String item;
 	private String tab;

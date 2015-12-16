@@ -8,7 +8,7 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.util.List;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -264,7 +264,7 @@ public class DebuggerBreakpointTest {
 		breakpoints = new BreakpointsView().getBreakpoints();
 		assertEquals("No breakpoint found", 1, breakpoints.size());
 		// wait for the change
-		new WaitUntil(new WaitCondition() {
+		new WaitUntil(new AbstractWaitCondition() {
 
 			@Override
 			public boolean test() {
@@ -367,7 +367,7 @@ public class DebuggerBreakpointTest {
 		assertEquals("No breakpoint found", 1, breakpoints.size());
 		breakpoint = breakpoints.get(0);
 		// wait for the change
-		new WaitUntil(new WaitCondition() {
+		new WaitUntil(new AbstractWaitCondition() {
 
 			@Override
 			public boolean test() {

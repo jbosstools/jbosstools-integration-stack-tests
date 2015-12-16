@@ -1,6 +1,6 @@
 package org.jboss.tools.teiid.reddeer.condition;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 
 /**
@@ -9,7 +9,7 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
  * @author apodhrad
  * 
  */
-public class DefaultTreeItemAvailable implements WaitCondition {
+public class DefaultTreeItemAvailable extends AbstractWaitCondition {
 
 	private String[] PATH;
 

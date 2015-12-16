@@ -1,6 +1,6 @@
 package org.jboss.tools.switchyard.reddeer.condition;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 
 /**
@@ -8,7 +8,7 @@ import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
  * @author apodhrad
  *
  */
-public class SwitchYardEditorIsOpen implements WaitCondition {
+public class SwitchYardEditorIsOpen extends AbstractWaitCondition {
 
 	@Override
 	public boolean test() {

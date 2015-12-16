@@ -1,6 +1,7 @@
 package org.jboss.tools.drools.ui.bot.test.functional.drleditor;
 
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
+import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
@@ -47,8 +48,8 @@ public class MetadataCompletionTest extends DrlCompletionParent {
     public void testStarImportUsage() {
         NewJavaClassWizardDialog diag = new NewJavaClassWizardDialog();
         diag.open();
-        diag.getFirstPage().setName("TestDomainClass");
-        diag.getFirstPage().setPackage("com.sample.domain");
+        new NewJavaClassWizardPage().setName("TestDomainClass");
+        new NewJavaClassWizardPage().setPackage("com.sample.domain");
         new LabeledText("Source folder:").setText(DEFAULT_PROJECT_NAME + "/src/main/java");
         diag.finish();
 

@@ -1,23 +1,27 @@
 package org.jboss.tools.drools.ui.bot.test.functional.brms6;
 
+import static org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType.ERROR;
+import static org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType.WARNING;
+
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
 import org.apache.log4j.Logger;
+import org.jboss.reddeer.common.matcher.RegexMatcher;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.jdt.ui.ide.NewJavaProjectWizardDialog;
+import org.jboss.reddeer.eclipse.jdt.ui.ide.NewJavaProjectWizardPage;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.drools.reddeer.dialog.DroolsRuntimeDialog;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage;
@@ -54,8 +58,8 @@ public class Brms6ProjectTest extends TestParent {
         ProblemsView problems = new ProblemsView();
         problems.open();
         waitASecond();
-        final int errors = problems.getAllErrors().size();
-        final int warnings = problems.getAllWarnings().size();
+        final int errors = problems.getProblems(ERROR).size();
+        final int warnings = problems.getProblems(WARNING).size();
         
         NewDroolsProjectWizard wiz = new NewDroolsProjectWizard();
         wiz.open();
@@ -80,8 +84,8 @@ public class Brms6ProjectTest extends TestParent {
         problems = new ProblemsView();
         problems.open();
         waitASecond();
-        Assert.assertEquals("There are errors in newly created project.", errors ,problems.getAllErrors().size());
-        Assert.assertEquals("There are warnings in newly created project.", warnings, problems.getAllWarnings().size());
+        Assert.assertEquals("There are errors in newly created project.", errors ,problems.getProblems(ERROR).size());
+        Assert.assertEquals("There are warnings in newly created project.", warnings, problems.getProblems(WARNING).size());
 
         explorer.getProject(projectName).delete(true);
         Assert.assertFalse("Project was not deleted.", explorer.containsProject(projectName));
@@ -97,8 +101,8 @@ public class Brms6ProjectTest extends TestParent {
         ProblemsView problems = new ProblemsView();
         problems.open();
         waitASecond();
-        final int errors = problems.getAllErrors().size();
-        final int warnings = problems.getAllWarnings().size();
+        final int errors = problems.getProblems(ERROR).size();
+        final int warnings = problems.getProblems(WARNING).size();
 
         // create new runtime
         DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
@@ -123,8 +127,8 @@ public class Brms6ProjectTest extends TestParent {
         problems = new ProblemsView();
         problems.open();
         waitASecond();
-        Assert.assertEquals("New errors occured.", errors, problems.getAllErrors().size());
-        Assert.assertEquals("New warnings occured.", warnings, problems.getAllWarnings().size());
+        Assert.assertEquals("New errors occured.", errors, problems.getProblems(ERROR).size());
+        Assert.assertEquals("New warnings occured.", warnings, problems.getProblems(WARNING).size());
     }
 
     @Test
@@ -134,7 +138,7 @@ public class Brms6ProjectTest extends TestParent {
         final String projectName = "testJavaProject";
         NewJavaProjectWizardDialog diag = new NewJavaProjectWizardDialog();
         diag.open();
-        diag.getFirstPage().setProjectName("testJavaProject");
+        new NewJavaProjectWizardPage().setProjectName("testJavaProject");
         try {
             diag.finish();
         } catch (SWTLayerException ex) {

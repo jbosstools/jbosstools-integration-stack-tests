@@ -14,8 +14,8 @@
 	<properties>
 		<server.name>AS-7.1.1.Final</server.name>
 		<server.home>${project.build.directory}/requirements/jboss-as-7.1.1.Final</server.home>
-		<reddeer.config>${project.build.directory}/config/as-711_teiid-830.xml</reddeer.config>
-		<systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=${reddeer.config}</systemProperties>
+		<rd.config>${project.build.directory}/config/as-711_teiid-830.xml</rd.config>
+		<systemProperties>${integrationTestsSystemProperties} -Drd.config=${rd.config}</systemProperties>
 		<test.package>org.jboss.tools.teiid.ui.bot.test.suite</test.package>
 		<test.class>AllTests</test.class>
 		<jdbc.dir>${requirementsDirectory}/lib</jdbc.dir>

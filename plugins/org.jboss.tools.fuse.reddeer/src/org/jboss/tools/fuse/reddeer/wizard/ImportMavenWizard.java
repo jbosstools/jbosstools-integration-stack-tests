@@ -1,6 +1,6 @@
 package org.jboss.tools.fuse.reddeer.wizard;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -67,7 +67,7 @@ public class ImportMavenWizard extends ImportWizardDialog {
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 
-	protected class ProjectsIsLoaded implements WaitCondition {
+	protected class ProjectsIsLoaded extends AbstractWaitCondition {
 
 		@Override
 		public boolean test() {

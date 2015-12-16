@@ -3,11 +3,11 @@ package org.jboss.tools.bpmn2.reddeer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
-import org.jboss.reddeer.eclipse.ui.views.properties.TabbedPropertyList;
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
+import org.jboss.reddeer.eclipse.ui.views.properties.TabbedPropertyList;
 
 public class WaitingPropertiesView extends PropertiesView {
 
@@ -25,7 +25,7 @@ public class WaitingPropertiesView extends PropertiesView {
 		super.selectTab(label);
 	}
 	
-	private class AnotherTabsRendered implements WaitCondition {
+	private class AnotherTabsRendered extends AbstractWaitCondition {
 
 		private List<String> old;
 		

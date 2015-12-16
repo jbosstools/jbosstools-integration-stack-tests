@@ -1,9 +1,9 @@
 package org.jboss.tools.teiid.reddeer.condition;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.swt.api.StyledText;
 
-public class StyledTextHasText implements WaitCondition {
+public class StyledTextHasText extends  AbstractWaitCondition {
 
 	private final StyledText widget;
 

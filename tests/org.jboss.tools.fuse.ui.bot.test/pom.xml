@@ -19,9 +19,9 @@
 		<karaf.port>8101</karaf.port>
 		<karaf.username>karaf</karaf.username>
 		<karaf.password>karaf</karaf.password>
-		<reddeer.config>${project.build.directory}/requirements/karaf-3.0.3.xml</reddeer.config>
+		<rd.config>${project.build.directory}/requirements/karaf-3.0.3.xml</rd.config>
 		<enable.debug.log>false</enable.debug.log>
-		<systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=${reddeer.config}</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Drd.config=${rd.config}</systemProperties>
 		<test.class>AllTests</test.class>
 		<customization.file>resources/settings/plugin_customization.ini</customization.file>
 		<maven.repo>${project.build.directory}/requirements/repository/</maven.repo>

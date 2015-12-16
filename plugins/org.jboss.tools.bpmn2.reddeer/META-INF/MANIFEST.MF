@@ -11,9 +11,9 @@ Require-Bundle:
  org.eclipse.swtbot.go,
  org.eclipse.ui.forms,
  org.hamcrest.library;bundle-version="1.3.0",
- org.jboss.reddeer.go;bundle-version="0.8.0",
- org.jboss.reddeer.gef;bundle-version="0.8.0",
- org.jboss.reddeer.graphiti;bundle-version="0.8.0"
+ org.jboss.reddeer.go;bundle-version="1.0.0",
+ org.jboss.reddeer.gef;bundle-version="1.0.0",
+ org.jboss.reddeer.graphiti;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: JBoss by Red Hat
 Eclipse-RegisterBuddy: org.apache.log4j

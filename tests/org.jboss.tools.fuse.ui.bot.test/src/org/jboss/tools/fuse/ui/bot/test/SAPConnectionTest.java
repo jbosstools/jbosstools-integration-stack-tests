@@ -1,13 +1,13 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.swt.api.Text;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.reddeer.common.condition.WaitCondition;
-import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.tools.fuse.reddeer.view.SAPConnectionView;
 import org.jboss.tools.fuse.reddeer.view.SAPConnectionView.TestDestinationConnection;
 import org.jboss.tools.fuse.reddeer.view.SAPConnectionView.TestServerConnection;
@@ -116,7 +116,7 @@ public class SAPConnectionTest {
 	
 	// TODO Write test for exporting, wait for https://issues.jboss.org/browse/FUSETOOLS-1374
 
-	private class ContainsText implements WaitCondition {
+	private class ContainsText extends AbstractWaitCondition {
 
 		private Text text;
 		private String actualText;

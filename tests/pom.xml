@@ -154,11 +154,11 @@ private String killProcess(String processName) {
 }
 
 private String killUnixProcess(String processName) {
-  return executeCommand("sh", "-c", "kill \$(ps -ef | grep '" + processName + "' | grep -v 'grep' | grep -v 'reddeer.config' | awk '{ print \$2 }')");
+  return executeCommand("sh", "-c", "kill \$(ps -ef | grep '" + processName + "' | grep -v 'grep' | grep -v 'rd.config' | awk '{ print \$2 }')");
 }
 
 private String killWindowsProcess(String processName) {
-  return executeCommand("cmd", "/c", "wmic process where \"commandline like '%" + processName + "%' and name like '%java%' and not commandline like '%reddeer.config%'\" call terminate");
+  return executeCommand("cmd", "/c", "wmic process where \"commandline like '%" + processName + "%' and name like '%java%' and not commandline like '%rd.config%'\" call terminate");
 }
 
 private String executeCommand(String... cmd) {

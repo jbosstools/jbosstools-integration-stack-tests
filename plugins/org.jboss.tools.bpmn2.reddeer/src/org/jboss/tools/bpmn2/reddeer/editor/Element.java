@@ -18,13 +18,13 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
 import org.hamcrest.Matcher;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.gef.GEFLayerException;
 import org.jboss.reddeer.gef.impl.editpart.AbstractEditPart;
 import org.jboss.reddeer.gef.impl.editpart.LabeledEditPart;
 import org.jboss.reddeer.graphiti.impl.graphitieditpart.LabeledGraphitiEditPart;
-import org.jboss.reddeer.common.condition.WaitCondition;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.tools.bpmn2.reddeer.AbsoluteEditPart;
 import org.jboss.tools.bpmn2.reddeer.GEFProcessEditor;
 import org.jboss.tools.bpmn2.reddeer.JBPM6ComplexEnvironment;
@@ -546,7 +546,7 @@ public class Element {
 		return addedElement;
 	}
 	
-	private class ConnectionAdded implements WaitCondition {
+	private class ConnectionAdded extends AbstractWaitCondition {
 
 	    private Element from;
 	    private Element to;

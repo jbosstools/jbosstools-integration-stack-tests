@@ -1,6 +1,6 @@
 package org.jboss.tools.fuse.reddeer.condition;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.tools.runtime.reddeer.view.TerminalView;
 
 /**
@@ -8,7 +8,7 @@ import org.jboss.tools.runtime.reddeer.view.TerminalView;
  * 
  * @author tsedmik
  */
-public class FuseLogContainsText implements WaitCondition {
+public class FuseLogContainsText extends AbstractWaitCondition {
 
 	private String text;
 

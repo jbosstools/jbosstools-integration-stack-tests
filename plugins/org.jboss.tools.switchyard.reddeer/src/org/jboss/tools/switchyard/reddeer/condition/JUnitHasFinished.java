@@ -1,6 +1,6 @@
 package org.jboss.tools.switchyard.reddeer.condition;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.tools.switchyard.reddeer.view.JUnitView;
 
 /**
@@ -8,7 +8,7 @@ import org.jboss.tools.switchyard.reddeer.view.JUnitView;
  * @author apodhrad
  * 
  */
-public class JUnitHasFinished implements WaitCondition {
+public class JUnitHasFinished extends AbstractWaitCondition {
 	
 	private JUnitView jUnitView;
 	

@@ -3,7 +3,7 @@ package org.jboss.tools.switchyard.reddeer.condition;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
@@ -13,7 +13,7 @@ import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
  * @author apodhrad
  *
  */
-public class ErrorsExist implements WaitCondition {
+public class ErrorsExist extends AbstractWaitCondition {
 	
 	private List<Problem> errors = new ArrayList<Problem>();
 

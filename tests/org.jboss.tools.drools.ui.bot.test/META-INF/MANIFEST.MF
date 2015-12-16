@@ -10,7 +10,7 @@ Require-Bundle: org.eclipse.ui,
  org.apache.log4j,
  org.jboss.tools.drools.reddeer;bundle-version="4.3.0",
  org.jboss.tools.runtime.reddeer;bundle-version="4.3.0",
- org.jboss.reddeer.go;bundle-version="0.8.0"
+ org.jboss.reddeer.go;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Eclipse-RegisterBuddy: org.apache.log4j

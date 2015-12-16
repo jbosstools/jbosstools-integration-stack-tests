@@ -196,4 +196,9 @@ public class PermissionWizardTreeItem implements TreeItem {
 		}
 	}
 
+	@Override
+	public TreeItem getItem(String... path) {
+		return delegate.getItem(path);
+	}
+
 }
