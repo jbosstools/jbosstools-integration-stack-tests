@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<vdb name="UdfProcedureVdb" version="1">
+	<description />
+	<property name="validationDateTime" value="Tue Nov 10 13:18:14 CET 2015" />
+	<property name="validationVersion" value="8.7.1" />
+	<model name="ProcedureModel" type="VIRTUAL">
+		<metadata type="DDL"><![CDATA[
+CREATE VIRTUAL PROCEDURE testProc (p1 string(4000)) RETURNS TABLE ( xml_out xml)
+	AS
+ BEGIN
+	SELECT XMLELEMENT(NAME test, XMLFOREST(ProcedureModel.testProc.p1 AS c1, 'c2' AS c2)) AS xml_out;
+END;
+
+CREATE VIRTUAL FUNCTION udfConcatNull (stringLeft string(4000), stringRight string(4000)) RETURNS string OPTIONS("FUNCTION-CATEGORY" 'MY_TESTING_FUNCTION_CATEGORY', JAVA_CLASS 'userdefinedfunctions.MyConcatNull', JAVA_METHOD 'myConcatNull')
+
+]]></metadata>
+	</model>
+</vdb>

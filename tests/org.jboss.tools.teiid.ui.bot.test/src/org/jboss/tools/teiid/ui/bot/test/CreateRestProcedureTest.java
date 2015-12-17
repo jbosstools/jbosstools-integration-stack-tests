@@ -35,7 +35,6 @@ import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.util.SimpleHttpClient;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
-import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.GenerateRestProcedureWizard;
 import org.jboss.tools.teiid.reddeer.wizard.ImportGeneralItemWizard;
@@ -242,7 +241,7 @@ public class CreateRestProcedureTest {
 			// no editors open, ignore
 		}
 
-		ModelExplorerView mew = new ModelExplorerView();
+		ModelExplorer mew = new ModelExplorer();
 		mew.open(PROJECT_NAME, modelName);
 		ModelEditor editor = teiidBot.modelEditor(modelName);
 		assertTrue(editor.isActive());

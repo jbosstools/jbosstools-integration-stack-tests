@@ -30,7 +30,6 @@ import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
-import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -185,7 +184,7 @@ public class ModelRefactoringTest {
 	public void moveSourceModelIntoFolder() {
 		moveItem(project.getProjectItem("partssupplier.xmi"), "sources2");
 
-		ModelExplorerView modelView = TeiidPerspective.getInstance()
+		ModelExplorer modelView = TeiidPerspective.getInstance()
 				.getModelExplorerView();
 		modelView.open(PROJECT_NAME, "partssupplier_view.xmi");
 		modelView.open(PROJECT_NAME, "views", "partssupplier_view_2.xmi");
@@ -205,7 +204,7 @@ public class ModelRefactoringTest {
 		updateImports("partssupplier_view_4.xmi");
 		updateImports("partssupplier_view.xmi");
 
-		ModelExplorerView modelView = TeiidPerspective.getInstance()
+		ModelExplorer modelView = TeiidPerspective.getInstance()
 				.getModelExplorerView();
 		modelView.open(PROJECT_NAME, "partssupplier_view.xmi");
 		modelView.open(PROJECT_NAME, "views", "partssupplier_view_2.xmi");
@@ -239,7 +238,7 @@ public class ModelRefactoringTest {
 	public void renameFolderWithViewModel() {
 		renameItem(project.getProjectItem("views"), "views_X");
 
-		ModelExplorerView modelView = TeiidPerspective.getInstance()
+		ModelExplorer modelView = TeiidPerspective.getInstance()
 				.getModelExplorerView();
 		modelView.open(PROJECT_NAME, "partssupplier_view.xmi");
 		modelView.open(PROJECT_NAME, "views_X", "partssupplier_view_2.xmi");
@@ -289,7 +288,7 @@ public class ModelRefactoringTest {
 	}
 
 	private void checkDependentModel(String expectedSourceTable, String... path) {
-		ModelExplorerView modelView = TeiidPerspective.getInstance()
+		ModelExplorer modelView = TeiidPerspective.getInstance()
 				.getModelExplorerView();
 		modelView.openTransformationDiagram(PROJECT_NAME, path);
 

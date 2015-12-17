@@ -17,7 +17,7 @@ import org.jboss.tools.teiid.reddeer.manager.VDBManager;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
-import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
+import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.RestImportWizard;
 import org.junit.After;
@@ -98,7 +98,7 @@ public class ConsumeRestWs {
 		new ServersView().open();
 		new ServersViewExt().refreshServer(new ServersView().getServers().get(0).getLabel().getName());
 
-		new ModelExplorerView().executeVDB(PROJECT_NAME, VDBXML + ".vdb");
+		new ModelExplorer().executeVDB(PROJECT_NAME, VDBXML + ".vdb");
 		
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, VDBXML);
 		assertEquals(16, jdbchelper.getNumberOfResults("exec " + VIEW_MODEL_XML + "." + PROCEDURE_NAME + "()"));
@@ -136,7 +136,7 @@ public class ConsumeRestWs {
 		new ServersView().open();
 		new ServersViewExt().refreshServer(new ServersView().getServers().get(0).getLabel().getName());
 
-		new ModelExplorerView().executeVDB(PROJECT_NAME, VDBJSON + ".vdb");
+		new ModelExplorer().executeVDB(PROJECT_NAME, VDBJSON + ".vdb");
 		
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, VDBJSON);
 		assertEquals(16, jdbchelper.getNumberOfResults("exec " + VIEW_MODEL_JSON + "." + PROCEDURE_NAME + "()"));

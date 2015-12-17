@@ -3,12 +3,12 @@ package org.jboss.tools.teiid.ui.bot.test;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.tools.teiid.reddeer.WAR;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfilesConstants;
 import org.jboss.tools.teiid.reddeer.manager.ImportManager;
@@ -17,7 +17,7 @@ import org.jboss.tools.teiid.reddeer.manager.VDBManager;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.util.SimpleHttpClient;
-import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
+import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.ImportGeneralItemWizard;
 import org.junit.Assert;
@@ -111,7 +111,7 @@ public class RestCallTest {
 		war.deploy();
 
 		// create data source for BooksSrc
-		new ModelExplorerManager().createDataSource(ModelExplorerView.ConnectionSourceType.USE_CONNECTION_PROFILE_INFO, ConnectionProfilesConstants.ORACLE_11G_BOOKS, PROJECT_NAME, SRC_MODEL);
+		new ModelExplorerManager().createDataSource(ModelExplorer.ConnectionSourceType.USE_CONNECTION_PROFILE_INFO, ConnectionProfilesConstants.ORACLE_11G_BOOKS, PROJECT_NAME, SRC_MODEL);
 
 		// synchronize vdb before deploying
 		new VDBManager().getVDBEditor(PROJECT_NAME, VDB_NAME_1).synchronizeAll();
@@ -162,7 +162,7 @@ public class RestCallTest {
 		war.deploy();
 
 		// create data source for BooksSrc
-		new ModelExplorerManager().createDataSource(ModelExplorerView.ConnectionSourceType.USE_CONNECTION_PROFILE_INFO, ConnectionProfilesConstants.ORACLE_11G_BOOKS, PROJECT_NAME, SRC_MODEL);
+		new ModelExplorerManager().createDataSource(ModelExplorer.ConnectionSourceType.USE_CONNECTION_PROFILE_INFO, ConnectionProfilesConstants.ORACLE_11G_BOOKS, PROJECT_NAME, SRC_MODEL);
 
 
 		// synchronize vdb before deploying

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vdb name="MatViewsVdb" version="1">
+	<description>For testing of materialized views</description>
+
+	<model name="Source">
+		<source name="Source" translator-name="h2-override"
+			connection-jndi-name="java:/mat-views-ds" />
+		<metadata type="DDL"><![CDATA[
+		
+		CREATE FOREIGN TABLE customers (
+			id integer,
+			name string(4000),
+			address string(4000),
+			CONSTRAINT PK_ID PRIMARY KEY(id)
+		) OPTIONS(NAMEINSOURCE 'customer')
+		
+		CREATE FOREIGN TABLE orders (
+			id integer,
+			customer_id integer,
+			amount integer,
+			CONSTRAINT PK_ID PRIMARY KEY(id),
+			CONSTRAINT FK_CUST FOREIGN KEY(customer_id) REFERENCES customers(id)
+		) OPTIONS(NAMEINSOURCE 'order')
+			]]>
+		</metadata>
+	</model>
+
+	<!-- TODO: change the CONVERTs to integer once TEIIDDES-2737 is resolved -->
+	<model name="ViewModel" type="VIRTUAL">
+		<metadata type="DDL"><![CDATA[
+        CREATE VIEW internal_short_ttl (
+           customer_id integer NOT NULL,
+           total_amount integer
+        ) OPTIONS (MATERIALIZED 'TRUE',
+        	"teiid_rel:MATVIEW_BEFORE_LOAD_SCRIPT" 'execute Source.native(''INSERT INTO check_table(id,before_load) VALUES (''internal_short_ttl'',1) ON DUPLICATE KEY UPDATE before_load=before_load+1;'');',
+             "teiid_rel:MATVIEW_AFTER_LOAD_SCRIPT" 'execute Source.native(''INSERT INTO check_table(id,after_load) VALUES (''internal_short_ttl'',1) ON DUPLICATE KEY UPDATE after_load=after_load+1;'')'
+        	)
+              AS /*+ cache(ttl:100)*/SELECT c.id AS customer_id, CONVERT(SUM(o.amount),biginteger) AS total_amount FROM customers c INNER JOIN orders o ON c.id = o.customer_id GROUP BY c.id;
+              
+        CREATE VIEW internal_long_ttl (
+           customer_id integer PRIMARY KEY,
+           total_amount integer
+        ) OPTIONS (MATERIALIZED 'TRUE', UPDATABLE 'FALSE')
+              AS /*+ cache(ttl:1000 updatable)*/SELECT c.id AS customer_id, CONVERT(SUM(o.amount),biginteger) AS total_amount FROM customers c INNER JOIN orders o ON c.id = o.customer_id GROUP BY c.id;
+
+        CREATE VIEW external_long_ttl (
+           customer_id integer NOT NULL,
+           total_amount integer
+        ) OPTIONS (MATERIALIZED 'TRUE', UPDATABLE 'FALSE',
+         	MATERIALIZED_TABLE 'Source.DB.PUBLIC.MAT_VIEW',
+         	  "teiid_rel:ALLOW_MATVIEW_MANAGEMENT" 'true',
+              "teiid_rel:MATVIEW_STATUS_TABLE" 'Source.DB.PUBLIC.STATUS',
+              "teiid_rel:ON_VDB_START_SCRIPT" 'exec Source.native(''MERGE INTO check_table(id,vdb_create) KEY(id) VALUES (''''external_long_ttl'''',COALESCE((SELECT vdb_create from check_table WHERE id=''''external_long_ttl''''),0)+1)'');',
+              "teiid_rel:ON_VDB_DROP_SCRIPT" 'exec Source.native(''MERGE INTO check_table(id,vdb_drop) KEY(id) VALUES (''''external_long_ttl'''',COALESCE((SELECT vdb_drop from check_table WHERE id=''''external_long_ttl''''),0)+1)'');',
+              "teiid_rel:MATVIEW_LOAD_SCRIPT" 'INSERT INTO mat_view_stage(customer_id,total_amount) SELECT c.id AS customer_id, CONVERT(SUM(o.amount),integer) AS total_amount FROM customers c INNER JOIN orders o ON c.id = o.customer_id GROUP BY c.id;',
+              "teiid_rel:MATVIEW_BEFORE_LOAD_SCRIPT" 'execute Source.native(''truncate table mat_view_stage'');exec Source.native(''MERGE INTO check_table(id,before_load) KEY(id) VALUES (''''external_long_ttl'''',COALESCE((SELECT before_load from check_table WHERE id=''''external_long_ttl''''),0)+1)'');',
+              "teiid_rel:MATVIEW_AFTER_LOAD_SCRIPT" 'exec Source.native(''ALTER TABLE mat_view_stage RENAME TO mat_view_temp'');exec Source.native(''ALTER TABLE mat_view RENAME TO mat_view_stage'');exec Source.native(''ALTER TABLE mat_view_temp RENAME TO mat_view'');exec Source.native(''MERGE INTO check_table(id,after_load) KEY(id) VALUES (''''external_long_ttl'''',COALESCE((SELECT after_load from check_table WHERE id=''''external_long_ttl''''),0)+1)'');',
+              "teiid_rel:MATVIEW_ONERROR_ACTION" 'THROW_EXCEPTION',
+         	  "teiid_rel:MATVIEW_TTL" 2000)
+              AS SELECT c.id AS customer_id, CONVERT(SUM(o.amount),biginteger) AS total_amount FROM customers c INNER JOIN orders o ON c.id = o.customer_id GROUP BY c.id;
+     ]]>
+		</metadata>
+	</model>
+	<translator name="h2-override" type="h2">
+		<property name="SupportsDirectQueryProcedure" value="true" />
+	</translator>
+</vdb>

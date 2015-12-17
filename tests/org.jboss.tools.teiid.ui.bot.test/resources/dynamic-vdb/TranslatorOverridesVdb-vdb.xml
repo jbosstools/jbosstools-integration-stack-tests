@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<vdb name="TranslatorOverridesVdb" version="1">
+<description/>
+<property name="validationDateTime" value="Tue Nov 10 13:15:47 CET 2015"/>
+<property name="validationVersion" value="8.7.1"/>
+<model name="postgresql92Model">
+<source connection-jndi-name="postgresql92Model" name="postgresql92Model" translator-name="postgresOverride"/>
+<metadata type="DDL"><![CDATA[
+CREATE FOREIGN TABLE smalla (
+	doublenum float OPTIONS(NAMEINSOURCE '"doublenum"', NATIVE_TYPE 'float4', FIXED_LENGTH 'TRUE'),
+	booleanvalue boolean OPTIONS(NAMEINSOURCE '"booleanvalue"', NATIVE_TYPE 'bool', FIXED_LENGTH 'TRUE'),
+	intnum integer OPTIONS(NAMEINSOURCE '"intnum"', NATIVE_TYPE 'int4', FIXED_LENGTH 'TRUE'),
+	longnum long OPTIONS(NAMEINSOURCE '"longnum"', NATIVE_TYPE 'int8', FIXED_LENGTH 'TRUE'),
+	floatnum float OPTIONS(NAMEINSOURCE '"floatnum"', NATIVE_TYPE 'float4', FIXED_LENGTH 'TRUE'),
+	bytenum bigdecimal(20) OPTIONS(NAMEINSOURCE '"bytenum"', NATIVE_TYPE 'numeric', FIXED_LENGTH 'TRUE'),
+	stringkey string(20) OPTIONS(NAMEINSOURCE '"stringkey"', NATIVE_TYPE 'varchar'),
+	objectvalue string(2147483647) OPTIONS(NAMEINSOURCE '"objectvalue"', NATIVE_TYPE 'text'),
+	stringnum string(20) OPTIONS(NAMEINSOURCE '"stringnum"', NATIVE_TYPE 'varchar'),
+	bigintegervalue bigdecimal(20) OPTIONS(NAMEINSOURCE '"bigintegervalue"', NATIVE_TYPE 'numeric', FIXED_LENGTH 'TRUE'),
+	datevalue date OPTIONS(NAMEINSOURCE '"datevalue"', NATIVE_TYPE 'date', FIXED_LENGTH 'TRUE'),
+	charvalue string(1) OPTIONS(NAMEINSOURCE '"charvalue"', NATIVE_TYPE 'bpchar', FIXED_LENGTH 'TRUE'),
+	timevalue time OPTIONS(NAMEINSOURCE '"timevalue"', NATIVE_TYPE 'time', FIXED_LENGTH 'TRUE'),
+	bigdecimalvalue bigdecimal(20) OPTIONS(NAMEINSOURCE '"bigdecimalvalue"', NATIVE_TYPE 'numeric', FIXED_LENGTH 'TRUE'),
+	timestampvalue timestamp OPTIONS(NAMEINSOURCE '"timestampvalue"', NATIVE_TYPE 'timestamp', FIXED_LENGTH 'TRUE'),
+	intkey integer OPTIONS(NAMEINSOURCE '"intkey"', NATIVE_TYPE 'int4', FIXED_LENGTH 'TRUE'),
+	shortvalue short OPTIONS(NAMEINSOURCE '"shortvalue"', NATIVE_TYPE 'int2', FIXED_LENGTH 'TRUE'),
+	CONSTRAINT PK_A PRIMARY KEY(intkey)
+) OPTIONS(NAMEINSOURCE '"public"."smalla"')
+
+CREATE FOREIGN TABLE smallb (
+	doublenum float OPTIONS(NAMEINSOURCE '"doublenum"', NATIVE_TYPE 'float4', FIXED_LENGTH 'TRUE'),
+	booleanvalue boolean OPTIONS(NAMEINSOURCE '"booleanvalue"', NATIVE_TYPE 'bool', FIXED_LENGTH 'TRUE'),
+	intnum integer OPTIONS(NAMEINSOURCE '"intnum"', NATIVE_TYPE 'int4', FIXED_LENGTH 'TRUE'),
+	longnum long OPTIONS(NAMEINSOURCE '"longnum"', NATIVE_TYPE 'int8', FIXED_LENGTH 'TRUE'),
+	floatnum float OPTIONS(NAMEINSOURCE '"floatnum"', NATIVE_TYPE 'float4', FIXED_LENGTH 'TRUE'),
+	bytenum bigdecimal(20) OPTIONS(NAMEINSOURCE '"bytenum"', NATIVE_TYPE 'numeric', FIXED_LENGTH 'TRUE'),
+	stringkey string(20) OPTIONS(NAMEINSOURCE '"stringkey"', NATIVE_TYPE 'varchar'),
+	objectvalue string(2147483647) OPTIONS(NAMEINSOURCE '"objectvalue"', NATIVE_TYPE 'text'),
+	stringnum string(20) OPTIONS(NAMEINSOURCE '"stringnum"', NATIVE_TYPE 'varchar'),
+	bigintegervalue bigdecimal(20) OPTIONS(NAMEINSOURCE '"bigintegervalue"', NATIVE_TYPE 'numeric', FIXED_LENGTH 'TRUE'),
+	datevalue date OPTIONS(NAMEINSOURCE '"datevalue"', NATIVE_TYPE 'date', FIXED_LENGTH 'TRUE'),
+	charvalue string(1) OPTIONS(NAMEINSOURCE '"charvalue"', NATIVE_TYPE 'bpchar', FIXED_LENGTH 'TRUE'),
+	timevalue time OPTIONS(NAMEINSOURCE '"timevalue"', NATIVE_TYPE 'time', FIXED_LENGTH 'TRUE'),
+	bigdecimalvalue bigdecimal(20) OPTIONS(NAMEINSOURCE '"bigdecimalvalue"', NATIVE_TYPE 'numeric', FIXED_LENGTH 'TRUE'),
+	timestampvalue timestamp OPTIONS(NAMEINSOURCE '"timestampvalue"', NATIVE_TYPE 'timestamp', FIXED_LENGTH 'TRUE'),
+	intkey integer OPTIONS(NAMEINSOURCE '"intkey"', NATIVE_TYPE 'int4', FIXED_LENGTH 'TRUE'),
+	shortvalue short OPTIONS(NAMEINSOURCE '"shortvalue"', NATIVE_TYPE 'int2', FIXED_LENGTH 'TRUE'),
+	CONSTRAINT PK_B PRIMARY KEY(intkey, stringkey),
+	CONSTRAINT FK_1 FOREIGN KEY(intnum) REFERENCES smalla(intkey)
+) OPTIONS(NAMEINSOURCE '"public"."smallb"')
+
+]]></metadata>
+</model>
+<translator description="" name="postgresOverride" type="postgresql">
+<property name="MyCustomProperty" value="customValue"/>
+<property name="TrimStrings" value="true"/>
+</translator>
+</vdb>

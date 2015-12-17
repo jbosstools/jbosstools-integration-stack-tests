@@ -1,7 +1,7 @@
 package org.jboss.tools.teiid.reddeer.perspective;
 
 import org.jboss.reddeer.eclipse.ui.perspectives.AbstractPerspective;
-import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
+import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 
 /**
  * Represents a Teiid perspective. It is a singleton. 
@@ -15,7 +15,7 @@ public class TeiidPerspective extends AbstractPerspective {
 	
 	private static final TeiidPerspective INSTANCE = new TeiidPerspective();
 	
-	private ModelExplorerView modelExplorerView;
+	private ModelExplorer modelExplorerView;
 	
 	public TeiidPerspective() {
 		super(NAME);
@@ -38,9 +38,9 @@ public class TeiidPerspective extends AbstractPerspective {
 		return teiidInstanceView;
 	}*/
 	
-	public ModelExplorerView getModelExplorerView() {
+	public ModelExplorer getModelExplorerView() {
 		if (modelExplorerView == null){
-			modelExplorerView = new ModelExplorerView();
+			modelExplorerView = new ModelExplorer();
 		}
 		return modelExplorerView;
 	}
