@@ -18,7 +18,6 @@ import org.jboss.tools.teiid.reddeer.WAR;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
-import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
 import org.jboss.tools.teiid.reddeer.view.SQLResult;
 import org.jboss.tools.teiid.reddeer.wizard.ModelProjectWizard;
 
@@ -55,14 +54,14 @@ public class ModelExplorerManager {
 	}
 	
 	public void createDataSource(String modelExplorerViewConnSourceType, String connProfile, String... pathToSourceModel){
-		new ModelExplorerView().createDataSource(modelExplorerViewConnSourceType, connProfile, pathToSourceModel);;
+		new ModelExplorer().createDataSource(modelExplorerViewConnSourceType, connProfile, pathToSourceModel);;
 	}
 	
 	public void openModel(String... pathToModel){
 		if (! pathToModel[pathToModel.length-1].contains(".")){
 			pathToModel[pathToModel.length-1] = pathToModel[pathToModel.length-1]+".xmi";
 		}
-		new ModelExplorerView().open(pathToModel);
+		new ModelExplorer().open(pathToModel);
 	}
 	
 	public WAR getWAR(String projectName, String warName){
@@ -70,21 +69,21 @@ public class ModelExplorerManager {
 	}
 	
 	public Procedure getProcedure(String project, String model, String procedure){
-			new ModelExplorerView().open();
+			new ModelExplorer().open();
 			new DefaultTreeItem(new DefaultTree(0), project, model, procedure).select();
 			return new Procedure(project, model, procedure);
 		}
 		
 	public Procedure createProcedure(String project, String model, String procedure){
-			return new ModelExplorerView().newProcedure(project, model, procedure, true);
+			return new ModelExplorer().newProcedure(project, model, procedure, true);
 		}
 	
-	public ModelExplorerView getModelExplorerView(){
-		return new ModelExplorerView();
+	public ModelExplorer getModelExplorerView(){
+		return new ModelExplorer();
 	}
 	
 	public void previewModelObject(List<String> params, String... pathToObject){
-		new ModelExplorerView().open();
+		new ModelExplorer().open();
 		new DefaultTreeItem(new DefaultTree(0), pathToObject).select();
 		new ContextMenu("Modeling", "Preview Data").select();
 		try {

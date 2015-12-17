@@ -14,6 +14,8 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.view.GuidesView;
+import org.jboss.tools.teiid.reddeer.wizard.GenerateDynamicVdbWizard;
+import org.jboss.tools.teiid.reddeer.wizard.GenerateVdbArchiveWizard;
 
 /**
  * This class represents a virtual database.
@@ -22,25 +24,15 @@ import org.jboss.tools.teiid.reddeer.view.GuidesView;
  * 
  */
 public class VDB {
+	
+	private static final String GENERATE_VDB_ARCHIVE = "Generate VDB Archive and Models";
+	private static final String GENERATE_DYNAMIC_VDB = "Generate Dynamic VDB";
 
 	private ProjectItem projectItem;
 	
 	public VDB(ProjectItem projectItem) {
 		this.projectItem = projectItem;
 	}
-
-	/**
-	 * Adds a module to this VDB
-	 * 
-	 * @param module
-	 */
-//	public void addModule(String module) {
-//		VDBEditor vdbEditor = getVDBEditor();
-//		vdbEditor.show();
-//		vdbEditor.addModel(getProject().getName(), module);
-//		vdbEditor.save();
-//		vdbEditor.close();
-//	}
 
 	/**
 	 * Deployes this VDB
@@ -92,7 +84,17 @@ public class VDB {
 		} else {
 			executeVDB();
 		}
-		//new WaitWhile(new IsInProgress(), TimePeriod.VERY_LONG);
-		//new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+	}
+	
+	public GenerateDynamicVdbWizard generateDynamicVDB(){
+		projectItem.select();
+		new ContextMenu("Modeling", GENERATE_DYNAMIC_VDB).select();
+		return new GenerateDynamicVdbWizard().activate();
+	}
+	
+	public GenerateVdbArchiveWizard generateVdbArchive(){
+		projectItem.select();
+		new ContextMenu("Modeling", GENERATE_VDB_ARCHIVE).select();
+		return new GenerateVdbArchiveWizard().activate();
 	}
 }

@@ -16,7 +16,7 @@ import org.jboss.tools.teiid.reddeer.manager.VDBManager;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
-import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
+import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.WsdlImportWizard;
 import org.junit.BeforeClass;
@@ -94,7 +94,7 @@ public class ConsumeSoapWs {
 		new ServersView().open();
 		new ServersViewExt().refreshServer(new ServersView().getServers().get(0).getLabel().getName());
 		
-		new ModelExplorerView().executeVDB(PROJECT_NAME, VDB_NAME + ".vdb");
+		new ModelExplorer().executeVDB(PROJECT_NAME, VDB_NAME + ".vdb");
 		
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, VDB_NAME);
 		

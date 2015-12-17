@@ -17,7 +17,7 @@ import org.jboss.tools.teiid.reddeer.manager.VDBManager;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
-import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
+import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -96,7 +96,7 @@ public class XmlFileImportTest {
 	}
 	
 	public void executeVdb(){
-		new ModelExplorerView().executeVDB(PROJECT, VDB + ".vdb");
+		new ModelExplorer().executeVDB(PROJECT, VDB + ".vdb");
 		
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, VDB);
 		assertEquals(26,jdbchelper.getNumberOfResults(TESTLOCAL));
