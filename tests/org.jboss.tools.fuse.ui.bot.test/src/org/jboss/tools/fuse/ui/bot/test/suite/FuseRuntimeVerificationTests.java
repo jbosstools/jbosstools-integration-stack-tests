@@ -5,6 +5,7 @@ import junit.framework.TestSuite;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.fuse.ui.bot.test.DeploymentTest;
 import org.jboss.tools.fuse.ui.bot.test.JMXNavigatorServerTest;
+import org.jboss.tools.fuse.ui.bot.test.QuickStartsTest;
 import org.jboss.tools.fuse.ui.bot.test.ServerTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
@@ -17,7 +18,8 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
 	DeploymentTest.class,
 	ServerTest.class,
-	JMXNavigatorServerTest.class
+	JMXNavigatorServerTest.class,
+	QuickStartsTest.class
 })
 @RunWith(RedDeerSuite.class)
 public class FuseRuntimeVerificationTests extends TestSuite {

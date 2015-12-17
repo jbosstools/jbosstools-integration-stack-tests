@@ -296,7 +296,7 @@ public class FuseServerManipulator {
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		page.close();
 		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
-		new WorkbenchShell().setFocus();
+		new WorkbenchShell();
 	}
 
 	/**
