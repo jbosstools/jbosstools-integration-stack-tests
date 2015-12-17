@@ -71,7 +71,7 @@ public class ImportGeneralItemWizard extends ImportWizardDialog {
 		new DefaultTable().getItem(file).setChecked(true);
 		new LabeledText(INTO_FOLDER).setText(intoFolder);
 		if (createTopLevel != null){
-			new CheckBox("Create top-level folder").click();
+			new CheckBox("Create top-level folder").toggle(Boolean.valueOf(createTopLevel));
 		}
 	}
 

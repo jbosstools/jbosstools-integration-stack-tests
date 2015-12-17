@@ -46,7 +46,6 @@ import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.shell.FunctionExpressionBuilder;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
-import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
 import org.jboss.tools.teiid.reddeer.view.SQLResult;
 import org.jboss.tools.teiid.reddeer.wizard.CreateMetadataModel;
 import org.jboss.tools.teiid.reddeer.wizard.CreateMetadataModel.ModelBuilder;
@@ -238,7 +237,7 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 		teiidBot.closeActiveShell();
 		
 		// create table bookInfo
-		ModelExplorerView modelView = TeiidPerspective.getInstance()
+		ModelExplorer modelView = TeiidPerspective.getInstance()
 				.getModelExplorerView();
 		modelView.newBaseTable(PROJECT_NAME, BOOKSINFO_MODEL+".xmi",
 				BOOKINFO_VIRTUAL_TABLE_, false);
@@ -350,7 +349,7 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 	public void test09(){
 		try{
 		//open bookSetMixed diagram
-		ModelExplorerView mew = new ModelExplorerView();
+		ModelExplorer mew = new ModelExplorer();
 		String[] filePath = {PROJECT_NAME, "schemas", SOAPYBOOKS_MODEL+".xmi", "bookSetMixedDocument"};
 		mew.open(filePath);
 		ModelEditor me = new ModelEditor(SOAPYBOOKS_MODEL+".xmi");
@@ -403,7 +402,7 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 	@Test
 	public void test10(){
 		try{
-		ModelExplorerView mew = TeiidPerspective.getInstance()
+		ModelExplorer mew = TeiidPerspective.getInstance()
 				.getModelExplorerView();
 		String[] filePath = {PROJECT_NAME, "schemas", SOAPYBOOKS_MODEL+".xmi", BOOKSETMIXED_DOCUMENT};
 		mew.open(filePath);
@@ -448,7 +447,7 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 	@Test
 	public void test11(){
 		try{
-		ModelExplorerView mew = TeiidPerspective.getInstance()
+		ModelExplorer mew = TeiidPerspective.getInstance()
 				.getModelExplorerView();
 		String[] filePath = {PROJECT_NAME, "schemas", SOAPYBOOKS_MODEL+".xmi", BOOKSETMIXED_DOCUMENT};
 		mew.open(filePath);
@@ -506,7 +505,7 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 	@Test
 	public void test12(){
 		try{
-		ModelExplorerView mew = TeiidPerspective.getInstance()
+		ModelExplorer mew = TeiidPerspective.getInstance()
 				.getModelExplorerView();
 		String[] filePath = {PROJECT_NAME, "schemas", SOAPYBOOKS_MODEL+".xmi", BOOKSETMIXED_DOCUMENT};
 		mew.open(filePath);
@@ -715,7 +714,7 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 	@Test
 	public void test15(){
 		try{
-		ModelExplorerView modelView = TeiidPerspective.getInstance().getModelExplorerView();
+		ModelExplorer modelView = TeiidPerspective.getInstance().getModelExplorerView();
 		Procedure procedure = new Procedure(PROJECT_NAME, BOOKSINFO_MODEL+".xmi");
 		procedure.create(GET_BOOKS_EDITION, true);
 		procedure.addParameter(true, "editionIn");
@@ -746,7 +745,7 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 	@Test
 	public void test16(){
 		try{
-		ModelExplorerView modelView = TeiidPerspective.getInstance().getModelExplorerView();
+		ModelExplorer modelView = TeiidPerspective.getInstance().getModelExplorerView();
 		Procedure procedure = new Procedure(PROJECT_NAME, BOOKSINFO_MODEL+".xmi");
 		procedure.create(GET_XML_BOOKS_EDITION, true);
 		procedure.addParameter(true, "editionIn");
@@ -774,7 +773,7 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 	public void test17(){
 		try{
 		//open SoapyBooks
-		ModelExplorerView mv = TeiidPerspective.getInstance().getModelExplorerView();
+		ModelExplorer mv = TeiidPerspective.getInstance().getModelExplorerView();
 		mv.open(PROJECT_NAME, "schemas", SOAPYBOOKS_MODEL+".xmi", BOOKSETMIXED_DOCUMENT);
 		
 		//focus on model explorer!!!
@@ -803,7 +802,7 @@ public class E2eAudioBooksVdbExecutionTest extends SWTBotTestCase{
 	@Test
 	public void test18(){
 		try{
-		ModelExplorerView mv = TeiidPerspective.getInstance().getModelExplorerView();
+		ModelExplorer mv = TeiidPerspective.getInstance().getModelExplorerView();
 		mv.open(PROJECT_NAME, VDB_NAME+".vdb");
 		ModelExplorer modelExplorer = new ModelExplorer();
 		modelExplorer.open();

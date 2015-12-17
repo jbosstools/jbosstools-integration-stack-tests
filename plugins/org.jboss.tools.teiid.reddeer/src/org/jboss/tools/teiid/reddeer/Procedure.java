@@ -4,10 +4,12 @@ import java.util.Arrays;
 import java.util.Properties;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.jboss.reddeer.swt.api.Shell;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
@@ -20,11 +22,9 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
-import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
+import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 
 public class Procedure extends ModelObject{
 
@@ -126,7 +126,7 @@ public class Procedure extends ModelObject{
 		new DefaultTreeItem(pathToNewParam).select();	
 		ModelEditor me = new ModelEditor("BooksInfo.xmi");
 		me.show();
-		ModelExplorerView modelView = TeiidPerspective.getInstance().getModelExplorerView();
+		ModelExplorer modelView = TeiidPerspective.getInstance().getModelExplorerView();
 		modelView.open();
 		new DefaultTreeItem(pathToNewParam).select();
 		new ContextMenu("Rename...").select();//highlights text to be edited
@@ -161,7 +161,7 @@ public class Procedure extends ModelObject{
 	}
 	
 	private void addParameterName2(String parameter) {
-		new ModelExplorerView().open();
+		new ModelExplorer().open();
 		new DefaultTreeItem(project, model, procedure).select();
 		new ContextMenu("New Child", "Procedure Parameter").select();
 		new DefaultText("NewProcedureParameter").setText(parameter);
@@ -180,7 +180,7 @@ public class Procedure extends ModelObject{
 	}
 	
 	private void addParameterType2(String parameter, String type) {
-		new ModelExplorerView().open();
+		new ModelExplorer().open();
 		new DefaultTreeItem(project, model, procedure).expand();
 		new DefaultTreeItem(project, model, procedure, parameter).select();
 		new ContextMenu("Modeling", "Set Datatype").select();

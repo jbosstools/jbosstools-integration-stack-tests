@@ -1,17 +1,27 @@
 package org.jboss.tools.teiid.reddeer.editor;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.matcher.WithTooltipTextMatcher;
+import org.jboss.reddeer.swt.api.TableItem;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.jboss.reddeer.swt.impl.group.DefaultGroup;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.jboss.tools.teiid.reddeer.widget.TeiidEditorTableItem;
 
 public class VDBEditor extends SWTBotEditor {
 	
@@ -66,6 +76,22 @@ public class VDBEditor extends SWTBotEditor {
 	public String getModel(int index){
 		return new SWTWorkbenchBot().table(0).cell(index, 0);
 	}
+	
+	public void setModelTranslator(String modelName, String sourceName, String translatorName){
+		new DefaultCTabItem("Content").activate();
+		new DefaultCTabItem("Models").activate();
+		new DefaultTable(0).getItem(modelName).select();
+		TeiidEditorTableItem sourceItem = new TeiidEditorTableItem(new DefaultTable(1).getItem(sourceName));
+		sourceItem.select();
+		sourceItem.setText(1, translatorName);
+	}
+	
+	public String getDataSourceName(String modelName){
+		new DefaultCTabItem("Content").activate();
+		new DefaultCTabItem("Models").activate();
+		new DefaultTable(0).getItem(modelName).select();
+		return new DefaultTable(1).getItem(0).getText(0);
+	}
 
 	public void synchronizeAll() {
 
@@ -83,49 +109,100 @@ public class VDBEditor extends SWTBotEditor {
 		new PushButton("OK").click();
 	}
 	
-	//TODO ALL FOLLOWING VIA PROPERTIES
-	
-	//1. ctab item models 
-		//1a. model details
-		//1b. source binding definition
-		//1c. problems
-	
-	public void operateModelsTab(Properties props){
-		
+	public void setGenerateRestWar(boolean check) {
+		new DefaultCTabItem("Advanced").activate();
+		new DefaultCTabItem("Properties").activate();
+		new CheckBox(new DefaultGroup("General"), "Auto-generate REST WAR").toggle(check);
 	}
 	
-	//2. ctab item udf jars!!!!!!!!!!!!!
-		//tooltip add udf jar file 
-	public void operateUdfJarsTab(Properties props){
+	public DataRolesEditor addDataRole(){
+		new DefaultCTabItem("Advanced").activate();
+		new DefaultCTabItem("Data Roles").activate();
+		new DefaultToolItem("Add data role").click();
+		return new DataRolesEditor(DataRolesEditor.CREATE_TITLE);
+	}
+
+	public DataRolesEditor getDataRole(String roleName) {
+		new DefaultCTabItem("Advanced").activate();
+		new DefaultCTabItem("Data Roles").activate();
+
+		new DefaultTable(0).getItem(roleName).select();
+		new DefaultToolItem("Edit selected data role").click();
 		
+		return new DataRolesEditor(DataRolesEditor.EDIT_TITLE);
 	}
 	
-	
-	//3. ctab item other files
-		//tooltip add file
-	public void operateOtherFilesTab(Properties props){
-		
+	public void addTranslatorOverride(String overrideName, String translatorName){
+		new DefaultCTabItem("Advanced").activate();
+		new DefaultCTabItem("Translator Overrides").activate();
+		new PushButton(new WithTooltipTextMatcher("Add a translator whose properties you want to override")).click();
+
+		new DefaultShell("Add Translator Override");
+		new LabeledText("Name:").setText(overrideName);
+		new DefaultTable().getItem(translatorName).select();
+		new PushButton("OK").click();
 	}
 	
-	
-	//4. ctab data roles !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		//tooltip add data role, edit selected data roles, remove selected data roles
-		//shell
-	public void operateDataRolesTab(Properties props){
+	public void addTranslatorOverrideProperty(String overrideName, String propertyName, String propertyValue){
+		new DefaultCTabItem("Advanced").activate();
+		new DefaultCTabItem("Translator Overrides").activate();
+		new DefaultTable(0).getItem(overrideName).select();
+
+		if (new DefaultTable(1).containsItem(propertyName)) {
+			// known property
+			TeiidEditorTableItem item = new TeiidEditorTableItem(new DefaultTable(1).getItem(propertyName));
+			item.select();
+			item.setText(1, propertyValue);
+
+		} else {
+			// custom property
+			new PushButton(new WithTooltipTextMatcher("Add a custom property")).click();
+			new DefaultShell("Add New Property");
+			new LabeledText("Name:").setText(propertyName);
+			new LabeledText("Value:").setText(propertyValue);
+			new PushButton("OK").click();
+		}
+	}
+
+	public void addUserDefinedProperty(String name, String value) {
+		new DefaultCTabItem("Advanced").activate();
+		new DefaultCTabItem("User Defined Properties").activate();
+
+		new PushButton(new WithTooltipTextMatcher("Add New Property")).click();
 		
+		new DefaultShell("Add New Property");
+		new LabeledText("Name:").setText(name);
+		new LabeledText("Value:").setText(value);
+
+		new PushButton("OK").click();
 	}
 	
-	//5. ctab properties!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	public void operatePropertiesTab(Properties props){
+	public List<String> getTranslatorOverrides(){
+		new DefaultCTabItem("Advanced").activate();
+		new DefaultCTabItem("Translator Overrides").activate();
 		
+		List<String> result = new ArrayList<>();
+		for(TableItem it : new DefaultTable(0).getItems()){
+			result.add(it.getText());
+		}
+		
+		
+		return result;
 	}
 	
-	//6. ctab description
-	public void operateDescriptionTab(Properties props){
+	public Properties getTranslatorOverrideProperties(String translatorOverrideName){
+		new DefaultCTabItem("Advanced").activate();
+		new DefaultCTabItem("Translator Overrides").activate();
+		
+		new DefaultTable(0).getItem(translatorOverrideName).select();
+		
+		Properties props = new Properties();
+		
+		for(TableItem it : new DefaultTable(1).getItems()){
+			props.put(it.getText(0), it.getText(1));
+		}
+		return props;
 		
 	}
-	//7. ctab translator overrides
-	public void operateTranslatorOverridesTab(Properties props){
-	
-}
+
 }

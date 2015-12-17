@@ -18,10 +18,13 @@ import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.workbench.impl.editor.AbstractEditor;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.ModelProject;
 import org.jboss.tools.teiid.reddeer.VDB;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
@@ -273,6 +276,52 @@ public class TeiidBot {
 			String previewSQL = generateTablePreviewQuery(model, tables[i]);
 			assertTrue(jdbcHelper.isQuerySuccessful(previewSQL));
 		}
+
+	}
+	
+	
+	public ModelEditor openModelEditor(String projectName, String modelName){
+		ModelExplorer modelExplorer = new ModelExplorer();
+		modelExplorer.open();
+		Project project = modelExplorer.getProject(projectName);
+		project.getProjectItem(modelName + ".xmi").open();
+		
+		ModelEditor editor = modelEditor(modelName + ".xmi");
+		return editor;
+	}
+	
+
+	public void deleteProjectSafely(String projectName) {
+		/*
+		 * Saving and closing all editors sometimes does not work for some reason until we focus an editor. However, we
+		 * are not sure an editor is even open, so we first try to focus one, then save all and then close all. This
+		 * will hopefully ensure that all editors are closed before attempting to delete the project.
+		 */
+		ShellHandler.getInstance().closeAllNonWorbenchShells();
+		try {
+			new AbstractEditor();
+		} catch (Exception ex) {
+			// no editor, ignore
+		}
+		try {
+			new ShellMenu("File", "Save All").select();
+			AbstractWait.sleep(TimePeriod.getCustom(3));
+		} catch (Exception ex) {
+			// no editors need saving, ignore
+		}
+		try {
+			new ShellMenu("File", "Close All").select();
+		} catch (Exception ex) {
+			// no editors open, ignore
+		}
+
+		new WorkbenchShell();
+		new ModelExplorer();
+
+		Project project = modelExplorer().getProject(projectName);
+		project.select();
+		project.refresh();
+		project.delete(true);
 
 	}
 

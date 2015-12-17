@@ -2,11 +2,14 @@ package org.jboss.tools.teiid.reddeer.view;
 import org.apache.log4j.Logger;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.forms.finder.SWTFormsBot;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
@@ -15,10 +18,8 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.tools.teiid.reddeer.condition.ServerHasState;
+import org.jboss.tools.teiid.reddeer.widget.StatusLineCLabel;
 
 /**
  * 
@@ -199,12 +200,12 @@ public class ServersViewExt extends ServersView {
 		new DefaultShell();
 	}
 	
-	public void createDatasource(String serverName, String connectionProfile){
+	public void createDatasource(String serverName, String connectionProfile, String datasourceName){
 		new ServersView().getServer(serverName);
 		new DefaultTreeItem(getServerLabel(serverName), TEIID_INSTANCE_CONFIG, DV6_PREFIX_URL, DATA_SOURCES).select();
 		new ContextMenu("Create Data Source").select();
 		new DefaultShell("");
-		new DefaultText().setText(connectionProfile);
+		new DefaultText().setText(datasourceName);
 		new RadioButton("Use Connection Profile Info").click();
 		new DefaultCombo(1).setSelection(connectionProfile);
 		if (! new PushButton("OK").isEnabled()){
@@ -213,6 +214,10 @@ public class ServersViewExt extends ServersView {
 		} else {
 			new PushButton("OK").click();
 		}
+	}
+	
+	public void createDatasource(String serverName, String connectionProfile){
+		createDatasource(serverName, connectionProfile, connectionProfile);
 	}
 	
 	public void deleteDatasource(String serverName, String dsName){
@@ -249,4 +254,16 @@ public class ServersViewExt extends ServersView {
 		}
 	}
 	
+	public String getVdbStatus(String serverName, String vdbName) {
+		new ServersView().getServer(serverName);
+		DefaultTreeItem vdbs = new DefaultTreeItem(getServerLabel(serverName), TEIID_INSTANCE_CONFIG, DV6_PREFIX_URL,
+				VDBS);
+		for (TreeItem treeItem : vdbs.getItems()) {
+			if (treeItem.getText().startsWith(vdbName)) {
+				treeItem.select();
+				return new StatusLineCLabel().getText();
+			}
+		}
+		return null;
+	}
 }

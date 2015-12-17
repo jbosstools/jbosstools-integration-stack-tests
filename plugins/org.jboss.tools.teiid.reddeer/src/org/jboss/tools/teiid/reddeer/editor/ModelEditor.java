@@ -5,6 +5,7 @@ import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widget
 import static org.hamcrest.core.AllOf.allOf;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.draw2d.FigureCanvas;
@@ -26,17 +27,25 @@ import org.eclipse.ui.IEditorReference;
 import org.hamcrest.Matcher;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.core.matcher.AndMatcher;
 import org.jboss.reddeer.swt.api.CTabItem;
 import org.jboss.reddeer.swt.api.TabItem;
+import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.tools.teiid.reddeer.matcher.AttributeMatcher;
 import org.jboss.tools.teiid.reddeer.matcher.IsTransformation;
 import org.jboss.tools.teiid.reddeer.matcher.MappingClassMatcher;
+import org.jboss.tools.teiid.reddeer.matcher.ModelColumnMatcher;
+import org.jboss.tools.teiid.reddeer.matcher.TableItemMatcher;
 import org.jboss.tools.teiid.reddeer.matcher.WaitForFigure;
 import org.jboss.tools.teiid.reddeer.matcher.WithBounds;
 import org.jboss.tools.teiid.reddeer.matcher.WithLabel;
+import org.jboss.tools.teiid.reddeer.modeling.ModelColumn;
+import org.jboss.tools.teiid.reddeer.modeling.ModelProcedureParameter;
+import org.jboss.tools.teiid.reddeer.modeling.ModelTable;
 import org.jboss.tools.teiid.reddeer.widget.SWTBotGefFigure;
 import org.jboss.tools.teiid.reddeer.widget.TeiidStyledText;
 
@@ -48,6 +57,12 @@ import org.jboss.tools.teiid.reddeer.widget.TeiidStyledText;
  */
 public class ModelEditor extends SWTBotEditor {
 
+	public static final String BASE_TABLES = "Base Tables";
+	public static final String PROCEDURES = "Procedures";
+	public static final String PROCEDURE_PARAMETERS = "Procedure Parameters";
+	public static final String FOREIGN_KEYS = "Foreign Keys";
+	public static final String PRIMARY_KEYS = "Primary Keys";
+	public static final String UNIQUE_CONSTRAINTS = "Unique Constraints";
 	public static final String TRANSFORMATION_DIAGRAM = "Transformation Diagram";
 	public static final String MAPPING_DIAGRAM = "Mapping Diagram";
 	public static final String PACKAGE_DIAGRAM = "Package Diagram";
@@ -229,7 +244,7 @@ public class ModelEditor extends SWTBotEditor {
 
 	private SWTBotGefFigureCanvas getFigureCanvas() {
 		Matcher<FigureCanvas> matcher = widgetOfType(FigureCanvas.class);
-		return new SWTBotGefFigureCanvas((FigureCanvas) bot.widget(matcher, 0));
+		return new SWTBotGefFigureCanvas(bot.widget(matcher, 0));
 	}
 
 	public SWTBotGefFigure figureWithLabel(String label) {
@@ -345,6 +360,98 @@ public class ModelEditor extends SWTBotEditor {
 		viewer.clickContextMenu("Edit Input Set");
 		return new InputSetEditor();
 	}
+	
+	public List<ModelColumn> getColumns(String tableName){
+		List<ModelColumn> result = new ArrayList<ModelColumn>();
+		
+		setFocus();
+		showTabItem(ModelEditor.TABLE_EDITOR);
+		showSubTabItem(COLUMNS);
+		DefaultTable table = new DefaultTable(0);
+		for(TableItem it : table.getItems()){
+			ModelColumn c = new ModelColumn(it);
+			if(c.getLocation().equalsIgnoreCase(tableName)){
+				result.add(c);
+			}
+		}
+		
+		return result;
+	}
+	public List<ModelTable> getTables(){
+		List<ModelTable> result = new ArrayList<ModelTable>();
+		
+		setFocus();
+		showTabItem(ModelEditor.TABLE_EDITOR);
+		showSubTabItem(BASE_TABLES);
+		DefaultTable table = new DefaultTable(0);
+		for(TableItem it : table.getItems()){
+			result.add(new ModelTable(it));
+		}
+		
+		return result;
+	}
+	
+	public ModelTable getTable(String tableName){
+		
+		setFocus();
+		showTabItem(ModelEditor.TABLE_EDITOR);
+		showSubTabItem(BASE_TABLES);
+		DefaultTable table = new DefaultTable(0);
+
+		int headerIndex = table.getHeaderIndex("Name");
+		if (table.containsItem(tableName, headerIndex)) {
+			return new ModelTable(table.getItem(tableName, headerIndex));
+		} else {
+			return null;
+		}
+	}
+	
+	public ModelColumn getColumn(String tableName, String columnName){
+		setFocus();
+		showTabItem(ModelEditor.TABLE_EDITOR);
+		showSubTabItem(COLUMNS);
+		DefaultTable table = new DefaultTable(0);
+		List<TableItem> matchingItems = table.getItems(new ModelColumnMatcher(tableName, columnName));
+		if(matchingItems.size() == 1){
+			return new ModelColumn(matchingItems.get(0));
+		}else{
+			return null;
+		}
+	}
+	
+	public ModelProcedureParameter getProcedureParameters(String procName){
+		setFocus();
+		showTabItem(ModelEditor.TABLE_EDITOR);
+		showSubTabItem(BASE_TABLES);
+		DefaultTable table = new DefaultTable(0);
+
+		int headerIndex = table.getHeaderIndex("Location");
+		if (table.containsItem(procName, headerIndex)) {
+			return new ModelProcedureParameter(table.getItem(procName, headerIndex));
+		} else {
+			return null;
+		}
+	}
+	
+	public ModelProcedureParameter getProcedureParameter(String procName, String parameterName) {
+		setFocus();
+		showTabItem(ModelEditor.TABLE_EDITOR);
+		showSubTabItem(PROCEDURE_PARAMETERS);
+		DefaultTable table = new DefaultTable(0);
+		int locationIndex = table.getHeaderIndex("Location");
+		int nameIndex = table.getHeaderIndex("Name");
+		@SuppressWarnings("unchecked")
+		List<TableItem> matchingItems = table.getItems(new AndMatcher(new TableItemMatcher(locationIndex, procName),
+				new TableItemMatcher(nameIndex, parameterName)));
+		if (matchingItems.size() == 1) {
+			return new ModelProcedureParameter(matchingItems.get(0));
+		} else {
+			return null;
+		}
+	}
+	
+	
+	
 	
 	//TODO transformation editor options - supports update
 }

@@ -29,7 +29,6 @@ import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.DataSourceExplorer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
-import org.jboss.tools.teiid.reddeer.view.ModelExplorerView;
 import org.jboss.tools.teiid.reddeer.view.SQLResult;
 import org.jboss.tools.teiid.reddeer.view.SQLResultView;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
@@ -176,7 +175,7 @@ public class VirtualGroupTutorialTest extends SWTBotTestCase {
 	}
 
 	public void createTransformation() {
-		ModelExplorerView modelView = TeiidPerspective.getInstance().getModelExplorerView();
+		ModelExplorer modelView = TeiidPerspective.getInstance().getModelExplorerView();
 		modelView.newBaseTable(PROJECT_NAME, VIRTUAL_MODEL_NAME, VIRTUAL_TABLE_NAME);
 		modelView.openTransformationDiagram(PROJECT_NAME, VIRTUAL_MODEL_NAME, VIRTUAL_TABLE_NAME);
 		DefaultToolItem addTransformation = new DefaultToolItem("Add Transformation Source(s)");
@@ -275,7 +274,7 @@ public class VirtualGroupTutorialTest extends SWTBotTestCase {
 	}
 
 	public void createProcedure() {
-		ModelExplorerView modelView = TeiidPerspective.getInstance().getModelExplorerView();
+		ModelExplorer modelView = TeiidPerspective.getInstance().getModelExplorerView();
 		Procedure procedure = modelView.newProcedure(PROJECT_NAME, VIRTUAL_MODEL_NAME, PROCEDURE_NAME);
 		procedure.addParameter("qtyIn", "short : xs:int");
 		modelView.openTransformationDiagram(PROJECT_NAME, VIRTUAL_MODEL_NAME, PROCEDURE_NAME);
