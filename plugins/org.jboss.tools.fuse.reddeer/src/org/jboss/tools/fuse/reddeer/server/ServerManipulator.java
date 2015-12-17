@@ -22,9 +22,9 @@ import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.fuse.reddeer.preference.ServerRuntimePreferencePage;
 import org.jboss.tools.fuse.reddeer.view.FuseShell;
 import org.jboss.tools.fuse.reddeer.wizard.ServerWizard;
@@ -296,7 +296,7 @@ public class ServerManipulator {
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		page.close();
 		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
-		new WorkbenchShell().setFocus();
+		new WorkbenchShell();
 	}
 
 	/**

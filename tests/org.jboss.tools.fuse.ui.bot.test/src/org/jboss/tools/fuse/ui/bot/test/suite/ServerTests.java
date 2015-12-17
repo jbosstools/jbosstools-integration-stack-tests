@@ -8,6 +8,7 @@ import org.jboss.tools.fuse.ui.bot.test.DataTransformationDeploymentTest;
 import org.jboss.tools.fuse.ui.bot.test.DeploymentTest;
 import org.jboss.tools.fuse.ui.bot.test.Fabric8Test;
 import org.jboss.tools.fuse.ui.bot.test.JMXNavigatorServerTest;
+import org.jboss.tools.fuse.ui.bot.test.QuickStartsTest;
 import org.jboss.tools.fuse.ui.bot.test.ServerJRETest;
 import org.jboss.tools.fuse.ui.bot.test.ServerTest;
 import org.junit.runner.RunWith;
@@ -24,6 +25,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	DeploymentTest.class,
 	Fabric8Test.class,
 	JMXNavigatorServerTest.class,
+	QuickStartsTest.class,
 	ServerTest.class,
 	ServerJRETest.class
 })
