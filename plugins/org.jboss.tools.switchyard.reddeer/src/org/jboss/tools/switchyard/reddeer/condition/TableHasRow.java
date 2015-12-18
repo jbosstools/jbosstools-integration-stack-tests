@@ -6,9 +6,9 @@ import java.util.List;
 import org.hamcrest.Matcher;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 
-public class TableHasRow implements WaitCondition {
+public class TableHasRow extends AbstractWaitCondition {
 
 	private Table table;
 	private Matcher<String> matcher;

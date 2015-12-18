@@ -17,8 +17,8 @@
 		<modeshape>sample</modeshape>
 		<modeshapeUser>admin</modeshapeUser>
 		<modeshapePassword>admin</modeshapePassword>
-		<reddeer.config>${project.build.directory}/config/as-711_modeshape-301.xml</reddeer.config>
-		<reddeerProperties>-Dreddeer.config=${reddeer.config}</reddeerProperties>
+		<rd.config>${project.build.directory}/config/as-711_modeshape-301.xml</rd.config>
+		<reddeerProperties>-Drd.config=${rd.config}</reddeerProperties>
 		<systemProperties>${integrationTestsSystemProperties} ${reddeerProperties}</systemProperties>
 		<test.class>AllTests</test.class>
 	</properties>

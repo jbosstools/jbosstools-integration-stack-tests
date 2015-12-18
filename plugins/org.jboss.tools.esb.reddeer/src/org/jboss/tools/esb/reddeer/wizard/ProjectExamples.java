@@ -61,7 +61,7 @@ public class ProjectExamples extends NewWizardDialog {
 	 * @param path Path to the given project
 	 */
 	public void selectProject(String[] path) {
-		new DefaultTreeItem(0, path).select();
+		new DefaultTreeItem(path).select();
 	}
 
 	/**

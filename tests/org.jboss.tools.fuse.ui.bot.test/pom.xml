@@ -24,10 +24,10 @@
 		<karaf.port>8101</karaf.port>
 		<karaf.username>karaf</karaf.username>
 		<karaf.password>karaf</karaf.password>
-		<reddeer.config>${project.build.directory}/requirements/karaf-3.0.3.xml</reddeer.config>
+		<rd.config>${project.build.directory}/requirements/karaf-3.0.3.xml</rd.config>
 		<enable.debug.log>false</enable.debug.log>
 		<sap.url>https://devstudio.redhat.com/updates/8.0/integration-stack/extras/</sap.url>
-		<systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=${reddeer.config} -Dec2.id=${ec2.id} -Dec2.pass=${ec2.pass} -Dec2.email=${ec2.email} -Djboss.discovery.site.integration-stack-sap.feature=org.fusesource.ide.sap.feature.feature.group -Djboss.discovery.site.integration-stack-sap.url=${sap.url}</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Drd.config=${rd.config} -Dec2.id=${ec2.id} -Dec2.pass=${ec2.pass} -Dec2.email=${ec2.email} -Djboss.discovery.site.integration-stack-sap.feature=org.fusesource.ide.sap.feature.feature.group -Djboss.discovery.site.integration-stack-sap.url=${sap.url}</systemProperties>
 		<test.class>AllTests</test.class>
 		<customization.file>${project.build.directory}/requirements/plugin_customization.ini</customization.file>
 	</properties>

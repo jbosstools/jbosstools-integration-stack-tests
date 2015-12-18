@@ -92,4 +92,9 @@ public class TeiidEditorTableItem implements TableItem {
 		});
 	}
 
+	@Override
+	public boolean isDisposed() {
+		return delegate.isDisposed();
+	}
+
 }

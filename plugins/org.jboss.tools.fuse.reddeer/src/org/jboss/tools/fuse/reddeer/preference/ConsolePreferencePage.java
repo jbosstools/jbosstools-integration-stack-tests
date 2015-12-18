@@ -6,14 +6,14 @@ import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
+import org.jboss.reddeer.jface.preference.PreferencePage;
 
 /**
  * Represents <i>Console</i> preference page
  * 
  * @author tsedmik
  */
-public class ConsolePreferencePage extends WorkbenchPreferencePage {
+public class ConsolePreferencePage extends PreferencePage {
 
 	public ConsolePreferencePage() {
 		super("Run/Debug", "Console");

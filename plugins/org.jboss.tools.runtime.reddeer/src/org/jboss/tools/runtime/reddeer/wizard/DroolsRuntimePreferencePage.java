@@ -11,9 +11,9 @@ import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
+import org.jboss.reddeer.jface.preference.PreferencePage;
 
-public class DroolsRuntimePreferencePage extends WorkbenchPreferencePage {
+public class DroolsRuntimePreferencePage extends PreferencePage {
 	
 	public DroolsRuntimePreferencePage() {
 		super("Drools", "Installed Drools Runtimes");

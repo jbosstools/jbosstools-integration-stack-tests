@@ -20,7 +20,7 @@ import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
 import org.eclipse.ui.IEditorPart;
 import org.hamcrest.Matcher;
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.core.util.Display;
@@ -346,7 +346,7 @@ public class ProcessEditorView extends SWTBotGefEditor {
 		projectNature(true);
 	}
 	
-	private class SourceCodeIsNotShown implements WaitCondition {
+	private class SourceCodeIsNotShown extends AbstractWaitCondition {
 
 		@Override
 		public boolean test() {

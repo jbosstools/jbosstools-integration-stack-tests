@@ -1,7 +1,7 @@
 package org.jboss.tools.switchyard.reddeer.condition;
 
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 
@@ -10,7 +10,7 @@ import org.jboss.reddeer.common.wait.TimePeriod;
  * @author apodhrad
  * 
  */
-public class ConsoleHasChanged implements WaitCondition {
+public class ConsoleHasChanged extends AbstractWaitCondition {
 
 	@Override
 	public boolean test() {

@@ -19,7 +19,7 @@ import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsResourceMatcher;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
@@ -192,7 +192,7 @@ public abstract class JBPM6ComplexTest {
 		SWTUtils.captureScreenshot(fileName);
 	}
 	
-	private class ErrorAppearOrDisappear implements WaitCondition {
+	private class ErrorAppearOrDisappear extends AbstractWaitCondition {
 
 		private int oldCount;
 		private ProblemsView problems;
@@ -246,7 +246,7 @@ public abstract class JBPM6ComplexTest {
 		new WaitWhile(new SaveWasNotSuccessfull());
 	}
 	
-	private class SaveWasNotSuccessfull implements WaitCondition {
+	private class SaveWasNotSuccessfull extends AbstractWaitCondition {
 
 		@Override
 		public boolean test() {

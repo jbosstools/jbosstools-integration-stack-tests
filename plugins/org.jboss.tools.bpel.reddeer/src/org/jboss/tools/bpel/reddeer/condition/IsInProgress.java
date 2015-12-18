@@ -1,7 +1,7 @@
 package org.jboss.tools.bpel.reddeer.condition;
 
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 
@@ -11,7 +11,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
  * @author apodhrad
  * 
  */
-public class IsInProgress implements WaitCondition {
+public class IsInProgress extends AbstractWaitCondition {
 
 	public static final String DIALOG_TITLE = "Progress Information";
 	public static final String ERROR_TITLE = "Error creating tables in view model AccountView";

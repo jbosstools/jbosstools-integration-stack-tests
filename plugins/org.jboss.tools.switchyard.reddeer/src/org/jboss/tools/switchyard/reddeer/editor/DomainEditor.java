@@ -3,7 +3,7 @@ package org.jboss.tools.switchyard.reddeer.editor;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Shell;
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -220,7 +220,7 @@ public class DomainEditor extends DefaultEditor {
 		close();
 	}
 
-	private class EditorIsSaved implements WaitCondition {
+	private class EditorIsSaved extends AbstractWaitCondition {
 
 		@Override
 		public boolean test() {

@@ -15,7 +15,7 @@ import org.eclipse.graphiti.ui.platform.GraphitiShapeEditPart;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -306,7 +306,7 @@ public class SwitchYardEditor extends GEFEditor {
 		close();
 	}
 
-	private class EditorIsSaved implements WaitCondition {
+	private class EditorIsSaved extends AbstractWaitCondition {
 
 		@Override
 		public boolean test() {

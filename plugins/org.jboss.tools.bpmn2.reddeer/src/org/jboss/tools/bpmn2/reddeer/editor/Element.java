@@ -22,7 +22,7 @@ import org.jboss.reddeer.gef.GEFLayerException;
 import org.jboss.reddeer.gef.impl.editpart.AbstractEditPart;
 import org.jboss.reddeer.gef.impl.editpart.LabeledEditPart;
 import org.jboss.reddeer.graphiti.impl.graphitieditpart.LabeledGraphitiEditPart;
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.exception.CoreLayerException;
@@ -547,7 +547,7 @@ public class Element {
 		return addedElement;
 	}
 	
-	private class ConnectionAdded implements WaitCondition {
+	private class ConnectionAdded extends AbstractWaitCondition {
 
 	    private Element from;
 	    private Element to;

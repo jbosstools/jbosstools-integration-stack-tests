@@ -1,6 +1,6 @@
 package org.jboss.tools.fuse.reddeer.debug;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 
@@ -9,7 +9,7 @@ import org.jboss.reddeer.common.wait.TimePeriod;
  * 
  * @author apodhrad
  */
-public class IsSuspended implements WaitCondition {
+public class IsSuspended extends AbstractWaitCondition {
 
 	@Override
 	public boolean test() {

@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 
 /**
  * Condition that specifies if a server has state either 'Stopped' or 'Started'
@@ -12,7 +12,7 @@ import org.jboss.reddeer.common.condition.WaitCondition;
  * @author apodhrad
  * 
  */
-public class ServerHasState implements WaitCondition {
+public class ServerHasState extends AbstractWaitCondition {
 
 	protected Logger log = Logger.getLogger(this.getClass());
 

@@ -2,10 +2,10 @@ package org.jboss.tools.drools.reddeer.waitcondition;
 
 import java.util.List;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.swt.api.TreeItem;
 
-public class LoadingTextIsVisible implements WaitCondition {
+public class LoadingTextIsVisible extends AbstractWaitCondition {
 	
 	private static final String LOADING_TEXT = "Loading...";
 	

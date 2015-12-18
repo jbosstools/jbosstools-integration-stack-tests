@@ -4,20 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.ui.views.log.LogMessage;
 import org.jboss.reddeer.eclipse.ui.views.log.LogView;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ToolbarMenu;
+import org.jboss.reddeer.swt.impl.menu.ViewMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
-import org.jboss.reddeer.swt.impl.toolbar.ViewToolItem;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 
 /**
  * Represents <i>Error Log</i> view
@@ -29,7 +29,7 @@ public class ErrorLogView extends LogView {
 	@Override
 	public void deleteLog() {
 		open();
-		ViewToolItem deleteLog = new ViewToolItem("Delete Log");
+		DefaultToolItem deleteLog = new DefaultToolItem("Delete Log");
 		log.info("Deleting all logs in Error log.");
 		if (deleteLog.isEnabled()) {
 			deleteLog.click();
@@ -57,7 +57,7 @@ public class ErrorLogView extends LogView {
 	}
 
 	private void setFilter(String severity){
-		ToolbarMenu tmenu = new ToolbarMenu("Filters...");
+		ViewMenu tmenu = new ViewMenu("Filters...");
 		tmenu.select();
 		new WaitUntil(new ShellWithTextIsAvailable("Log Filters"));
 		new DefaultShell("Log Filters");

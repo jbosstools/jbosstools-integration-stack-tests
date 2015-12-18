@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
@@ -14,7 +14,7 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  * 
  * @author tsedmik
  */
-public class IsButtonEnabled implements WaitCondition {
+public class IsButtonEnabled extends AbstractWaitCondition {
 
 	private String button;
 	private List<String> texts;

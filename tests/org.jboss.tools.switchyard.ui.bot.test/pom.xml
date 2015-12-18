@@ -12,9 +12,9 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-	  <reddeer.config>${project.build.directory}/config/wildfly-810_switchyard-200.xml</reddeer.config>
+	  <rd.config>${project.build.directory}/config/wildfly-810_switchyard-200.xml</rd.config>
 	  <reddeer.skipUnfixedIssues>false</reddeer.skipUnfixedIssues>
-	  <systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=${reddeer.config} -Dreddeer.skipUnfixedIssues=${reddeer.skipUnfixedIssues}</systemProperties>
+	  <systemProperties>${integrationTestsSystemProperties} -Drd.config=${rd.config} -Dreddeer.skipUnfixedIssues=${reddeer.skipUnfixedIssues}</systemProperties>
 	  <test.class>AllTests</test.class>
 	  <customization.file>resources/settings/plugin_customization.ini</customization.file>
 	</properties>
@@ -160,7 +160,7 @@
 	      </property>
 	    </activation>
 	    <properties>	      
-	      <reddeer.config>${project.build.directory}/config/switchyard-200.xml</reddeer.config>
+	      <rd.config>${project.build.directory}/config/switchyard-200.xml</rd.config>
 	      <test.class>SmokeTests</test.class>
 	      <skipRequirements>true</skipRequirements>
 	    </properties>

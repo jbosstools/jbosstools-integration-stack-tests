@@ -2,7 +2,7 @@ package org.jboss.tools.teiid.reddeer.condition;
 
 import org.apache.log4j.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 
 /**
  * Condition that specifies if a given project item was created
@@ -10,7 +10,7 @@ import org.jboss.reddeer.common.condition.WaitCondition;
  * @author apodhrad
  * 
  */
-public class IsProjectItemCreated implements WaitCondition {
+public class IsProjectItemCreated extends AbstractWaitCondition {
 
 	private String projectName;
 	private String[] projectItem;

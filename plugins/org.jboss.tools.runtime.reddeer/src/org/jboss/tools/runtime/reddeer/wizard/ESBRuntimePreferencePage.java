@@ -12,14 +12,14 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
+import org.jboss.reddeer.jface.preference.PreferencePage;
 
 /**
  * 
  * @author apodhrad
  * 
  */
-public class ESBRuntimePreferencePage extends WorkbenchPreferencePage {
+public class ESBRuntimePreferencePage extends PreferencePage {
 
 	public ESBRuntimePreferencePage() {
 		super("JBoss Tools", "JBoss ESB Runtimes");

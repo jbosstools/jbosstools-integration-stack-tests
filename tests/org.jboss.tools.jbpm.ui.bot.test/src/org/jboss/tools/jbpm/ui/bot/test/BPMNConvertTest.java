@@ -1,6 +1,7 @@
 package org.jboss.tools.jbpm.ui.bot.test;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ide.NewJavaProjectWizardDialog;
+import org.jboss.reddeer.eclipse.jdt.ui.ide.NewJavaProjectWizardPage;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -30,7 +31,7 @@ public class BPMNConvertTest {
 		// Create Java Project
 		NewJavaProjectWizardDialog projectWizard = new NewJavaProjectWizardDialog();
 		projectWizard.open();
-		projectWizard.getFirstPage().setProjectName(projectName);
+		new NewJavaProjectWizardPage().setProjectName(projectName);
 		projectWizard.finish();
 
 		// create original folder

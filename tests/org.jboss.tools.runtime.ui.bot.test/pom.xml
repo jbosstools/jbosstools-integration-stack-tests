@@ -13,8 +13,8 @@
 
 	<properties>
 	  <server.jre>default</server.jre>
-	  <reddeer.config>${project.build.directory}/config</reddeer.config>
-	  <reddeerProperties>-Dreddeer.config=${reddeer.config}</reddeerProperties>
+	  <rd.config>${project.build.directory}/config</rd.config>
+	  <reddeerProperties>-Drd.config=${rd.config}</reddeerProperties>
 	  <systemProperties>${integrationTestsSystemProperties} ${reddeerProperties}</systemProperties>
 	  <maven-download-plugin.version>1.2.0</maven-download-plugin.version>
 	  <skipJBPM>${skipRequirements}</skipJBPM>
@@ -215,7 +215,7 @@
 	    <properties>
 	      <skipRequirements>true</skipRequirements>
 	      <skipWildfly>false</skipWildfly>
-	      <reddeer.config>${project.build.directory}/config/wildfly-810.xml</reddeer.config>
+	      <rd.config>${project.build.directory}/config/wildfly-810.xml</rd.config>
 	      <test.class>SmokeTests</test.class>
 	    </properties>
 	  </profile>

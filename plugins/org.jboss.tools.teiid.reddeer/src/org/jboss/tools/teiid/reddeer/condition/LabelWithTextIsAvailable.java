@@ -1,9 +1,9 @@
 package org.jboss.tools.teiid.reddeer.condition;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.swt.impl.label.DefaultLabel;
 
-public class LabelWithTextIsAvailable implements WaitCondition {
+public class LabelWithTextIsAvailable extends AbstractWaitCondition {
 
 	private String text;
 	

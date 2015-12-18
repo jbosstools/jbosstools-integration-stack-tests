@@ -19,10 +19,10 @@ import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
+import org.jboss.reddeer.jface.preference.PreferencePage;
 import org.jboss.tools.drools.reddeer.dialog.DroolsRuntimeDialog;
 
-public class DroolsRuntimesPreferencePage extends WorkbenchPreferencePage {
+public class DroolsRuntimesPreferencePage extends PreferencePage {
     private static final Logger LOGGER = Logger.getLogger(DroolsRuntimesPreferencePage.class);
 
     public DroolsRuntimesPreferencePage() {
@@ -104,7 +104,7 @@ public class DroolsRuntimesPreferencePage extends WorkbenchPreferencePage {
     public boolean okCloseWarning() {
     	String shellText = new DefaultShell().getText();
 		Button b = new PushButton("OK");
-		log.info("Close Preferences dialog");
+		LOGGER.info("Close Preferences dialog");
 		b.click();
 		
 		boolean warning;

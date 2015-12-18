@@ -9,7 +9,8 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.toolbar.ViewToolItem;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
@@ -73,7 +74,7 @@ public class BreakpointsView extends WorkbenchView {
 	public void removeAllBreakpoints() {
 
 		open();
-		new ViewToolItem("Remove All Breakpoints").click();
+		new DefaultToolItem("Remove All Breakpoints").click();
 		if (new ShellWithTextIsAvailable("Remove All Breakpoints").test()) {
 			new DefaultShell("Remove All Breakpoints").setFocus();
 			new PushButton("Yes").click();

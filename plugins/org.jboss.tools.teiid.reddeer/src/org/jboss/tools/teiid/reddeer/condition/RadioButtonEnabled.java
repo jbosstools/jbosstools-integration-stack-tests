@@ -1,6 +1,6 @@
 package org.jboss.tools.teiid.reddeer.condition;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 
 /**
@@ -9,7 +9,7 @@ import org.jboss.reddeer.swt.impl.button.RadioButton;
  * @author apodhrad
  * 
  */
-public class RadioButtonEnabled implements WaitCondition {
+public class RadioButtonEnabled extends AbstractWaitCondition {
 
 	private String LABEL;
 

@@ -14,8 +14,8 @@
 
   <properties>
     <pluginVersion>6.3.0.Final</pluginVersion>
-    <reddeer.config>${project.build.directory}/config</reddeer.config>
-    <systemProperties>${integrationTestsSystemProperties} -Dreddeer.config=${reddeer.config}</systemProperties>
+    <rd.config>${project.build.directory}/config</rd.config>
+    <systemProperties>${integrationTestsSystemProperties} -Drd.config=${rd.config}</systemProperties>
   </properties>
 
   <build>

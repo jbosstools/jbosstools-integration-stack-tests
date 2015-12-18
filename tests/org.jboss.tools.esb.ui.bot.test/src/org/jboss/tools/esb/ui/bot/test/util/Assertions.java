@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.swt.api.Button;
 
 public class Assertions {
@@ -59,6 +60,6 @@ public class Assertions {
 	public static void assertEmptyProblemsView(String msg) {
 		ProblemsView problemsView = new ProblemsView();
 		problemsView.open();
-		assertTrue("ESB Editor has errors in 'Problems View' - " + msg, problemsView.getAllErrors().isEmpty());
+		assertTrue("ESB Editor has errors in 'Problems View' - " + msg, problemsView.getProblems(ProblemType.ERROR).isEmpty());
 	}
 }

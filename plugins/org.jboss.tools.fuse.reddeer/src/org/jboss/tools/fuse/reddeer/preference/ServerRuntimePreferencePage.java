@@ -16,14 +16,14 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.workbench.preference.WorkbenchPreferencePage;
+import org.jboss.reddeer.jface.preference.PreferencePage;
 
 /**
  * Represents the Fuse server runtime preference page
  * 
  * @author tsedmik
  */
-public class ServerRuntimePreferencePage extends WorkbenchPreferencePage {
+public class ServerRuntimePreferencePage extends PreferencePage {
 
 	private static final String ADD_BUTTON = "Add...";
 	private static final String NEXT_BUTTON = "Next >";

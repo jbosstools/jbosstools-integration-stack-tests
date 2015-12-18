@@ -1,6 +1,6 @@
 package org.jboss.tools.switchyard.reddeer.condition;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.tools.switchyard.reddeer.debug.TerminateButton;
 
 /**
@@ -8,7 +8,7 @@ import org.jboss.tools.switchyard.reddeer.debug.TerminateButton;
  * @author apodhrad
  * 
  */
-public class IsTerminated implements WaitCondition {
+public class IsTerminated extends AbstractWaitCondition {
 
 	@Override
 	public boolean test() {

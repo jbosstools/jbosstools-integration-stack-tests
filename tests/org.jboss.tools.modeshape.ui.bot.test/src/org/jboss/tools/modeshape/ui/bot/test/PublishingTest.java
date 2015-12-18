@@ -6,7 +6,9 @@ import static org.junit.Assert.assertTrue;
 import java.net.URL;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ide.NewJavaProjectWizardDialog;
+import org.jboss.reddeer.eclipse.jdt.ui.ide.NewJavaProjectWizardPage;
 import org.jboss.reddeer.eclipse.ui.ide.NewFileCreationWizardDialog;
+import org.jboss.reddeer.eclipse.ui.ide.NewFileCreationWizardPage;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -55,14 +57,14 @@ public class PublishingTest {
 		/* Create Java Project */
 		NewJavaProjectWizardDialog projectWizard = new NewJavaProjectWizardDialog();
 		projectWizard.open();
-		projectWizard.getFirstPage().setProjectName(PROJECT_NAME);
+		new NewJavaProjectWizardPage().setProjectName(PROJECT_NAME);
 		projectWizard.finish();
 
 		/* Create Text File */
 		NewFileCreationWizardDialog fileWizard = new NewFileCreationWizardDialog();
 		fileWizard.open();
-		fileWizard.getFirstPage().setFolderPath(PROJECT_NAME);
-		fileWizard.getFirstPage().setFileName(FILE_NAME);
+		new NewFileCreationWizardPage().setFolderPath(PROJECT_NAME);
+		new NewFileCreationWizardPage().setFileName(FILE_NAME);
 		fileWizard.finish();
 
 		/* Edit Text File */

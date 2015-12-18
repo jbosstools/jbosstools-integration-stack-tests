@@ -12,7 +12,7 @@ import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.junit.requirement.Requirement;
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -111,7 +111,7 @@ public class JBPM6ComplexTestDefinitionRequirement implements Requirement<JBPM6C
 		}
 	}
 
-	private class MenuItemIsDisabled implements WaitCondition {
+	private class MenuItemIsDisabled extends AbstractWaitCondition {
 
 		@Override
 		public boolean test() {

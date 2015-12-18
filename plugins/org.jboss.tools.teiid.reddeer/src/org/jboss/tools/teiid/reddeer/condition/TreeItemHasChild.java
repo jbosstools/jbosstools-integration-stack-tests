@@ -1,10 +1,10 @@
 package org.jboss.tools.teiid.reddeer.condition;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.core.matcher.TreeItemTextMatcher;
 import org.jboss.reddeer.swt.api.TreeItem;
 
-public class TreeItemHasChild implements WaitCondition {
+public class TreeItemHasChild extends AbstractWaitCondition {
 
 	private final TreeItem treeItem;
 	private TreeItemTextMatcher matcher;

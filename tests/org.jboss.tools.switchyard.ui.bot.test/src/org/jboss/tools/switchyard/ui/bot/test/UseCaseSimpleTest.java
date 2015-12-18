@@ -9,7 +9,7 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -134,7 +134,7 @@ public class UseCaseSimpleTest {
 		/* Test SOAP Response */
 		final ServerBase server = switchyardRequirement.getConfig().getServerBase();
 		server.deployProject(PROJECT);
-		new WaitUntil(new WaitCondition() {
+		new WaitUntil(new AbstractWaitCondition() {
 			
 			@Override
 			public boolean test() {

@@ -4,9 +4,11 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
+import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.drools.reddeer.editor.ContentAssist;
 import org.jboss.tools.drools.reddeer.editor.DrlEditor;
@@ -30,8 +32,8 @@ public abstract class DrlCompletionParent extends TestParent {
         // create domain class
         NewJavaClassWizardDialog diag = new NewJavaClassWizardDialog();
         diag.open();
-        diag.getFirstPage().setName("MyMessage");
-        diag.getFirstPage().setPackage("com.sample.domain");
+        new NewJavaClassWizardPage().setName("MyMessage");
+        new NewJavaClassWizardPage().setPackage("com.sample.domain");
         diag.finish();
 
         TextEditor txtEditor = new TextEditor();
@@ -41,8 +43,8 @@ public abstract class DrlCompletionParent extends TestParent {
 
         ProblemsView problems = new ProblemsView();
         problems.open();
-        errors = problems.getAllErrors().size();
-        warnings = problems.getAllWarnings().size();
+        errors = problems.getProblems(ProblemType.ERROR).size();
+        warnings = problems.getProblems(ProblemType.WARNING).size();
 
         // create RuleResource
         NewRuleResourceWizard wiz = new NewRuleResourceWizard();
@@ -88,14 +90,14 @@ public abstract class DrlCompletionParent extends TestParent {
         ProblemsView problems = new ProblemsView();
         problems.open();
 
-        List<TreeItem> items = problems.getAllErrors();
-        for (TreeItem error : items) {
-            LOGGER.debug(error.getText());
+        List<Problem> items = problems.getProblems(ProblemType.ERROR);
+        for (Problem error : items) {
+            LOGGER.debug(error.getDescription());
         }
         Assert.assertEquals("New errors occured!", errors, items.size());
-        items = problems.getAllWarnings();
-        for (TreeItem warning : items) {
-            LOGGER.debug(warning.getText());
+        items = problems.getProblems(ProblemType.WARNING);
+        for (Problem warning : items) {
+            LOGGER.debug(warning.getDescription());
         }
         Assert.assertEquals("New warnings occured!", warnings, items.size());
     }

@@ -5,7 +5,7 @@ import org.jboss.reddeer.jface.wizard.ImportWizardDialog;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.common.condition.WaitCondition;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -67,7 +67,7 @@ public class ImportMavenWizard extends ImportWizardDialog {
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 
-	protected class ProjectsIsLoaded implements WaitCondition {
+	protected class ProjectsIsLoaded extends AbstractWaitCondition {
 
 		@Override
 		public boolean test() {

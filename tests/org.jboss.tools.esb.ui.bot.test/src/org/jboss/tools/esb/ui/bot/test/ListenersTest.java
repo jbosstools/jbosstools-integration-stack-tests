@@ -14,7 +14,7 @@ import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.C
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.api.Combo;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.esb.reddeer.editor.ESBEditor;
 import org.jboss.tools.esb.reddeer.wizard.ESBListenerWizard;
 import org.jboss.tools.esb.reddeer.wizard.ESBProjectWizard;

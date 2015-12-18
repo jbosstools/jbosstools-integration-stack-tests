@@ -3,7 +3,7 @@ package org.jboss.tools.modeshape.reddeer.view;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.shell.WorkbenchShell;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.modeshape.reddeer.shell.PublishedLocations;
 import org.jboss.tools.modeshape.reddeer.wizard.ModeshapePublishWizard;
 

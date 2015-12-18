@@ -12,8 +12,8 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-	  <reddeer.config>${project.build.directory}/config</reddeer.config>
-	  <reddeerProperties>-Dreddeer.config=${reddeer.config}</reddeerProperties>
+	  <rd.config>${project.build.directory}/config</rd.config>
+	  <reddeerProperties>-Drd.config=${rd.config}</reddeerProperties>
 	  <systemProperties>${integrationTestsSystemProperties} ${reddeerProperties}</systemProperties>
 	</properties>
 

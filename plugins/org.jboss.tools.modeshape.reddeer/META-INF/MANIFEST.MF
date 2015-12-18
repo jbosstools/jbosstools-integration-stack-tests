@@ -7,7 +7,7 @@ Bundle-Version: 4.2.0.qualifier
 Bundle-Activator: org.jboss.tools.modeshape.reddeer.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.eclipse.swtbot.go,
- org.jboss.reddeer.go;bundle-version="0.8.0"
+ org.jboss.reddeer.go;bundle-version="1.0.0"
 Export-Package: org.jboss.tools.modeshape.reddeer.perspective,
  org.jboss.tools.modeshape.reddeer.shell,
  org.jboss.tools.modeshape.reddeer.util,

@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.jboss.tools.runtime.ui.bot.test
 Bundle-Version: 4.2.0.qualifier
 Require-Bundle: org.junit;bundle-version="4.11.0",
  org.jboss.tools.runtime.reddeer;bundle-version="4.2.0",
- org.jboss.reddeer.go;bundle-version="0.8.0"
+ org.jboss.reddeer.go;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 nment: JavaSE-1.7
 Bundle-Vendor: JBoss by Red Hat
