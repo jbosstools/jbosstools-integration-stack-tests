@@ -2,22 +2,49 @@
 
 ## How to run
 
-To execute jBPM3 bot tests just run 
+At first, please read a general documentation about [running bot tests](../../README.md).
 
-    $ mvn clean verify [-B -U -fae]
+To run the tests
 
-If you want to run tests which require a server 
+    $ mvn clean verify -pl tests/org.jboss.tools.jbpm.ui.bot.test -am -Dtest=SmokeTests
 
-    $ mvn clean verify [-B -U -fae] -Pas51
+To run the tests with a configuration
 
-We recommend to run the tests on another display (Xephyr, Vnc, ...)
+    $ mvn clean verify -pl tests/org.jboss.tools.jbpm.ui.bot.test -am -Drd.config=...
 
-In case you want to build it whithout running the tests
+The configuration file must follow the [SOA XSD schema](http://www.jboss.org/schema/reddeer/3rdparty/SOARequirements.xsd).
 
-    $ mvn clean install -DskipTests
+Example:
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<testrun
+  xmlns="http://www.jboss.org/NS/Req"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:server="http://www.jboss.org/NS/SOAReq"
+  xmlns:runtime="http://www.jboss.org/NS/SOAReq"
+  xsi:schemaLocation="http://www.jboss.org/NS/Req	http://www.jboss.org/schema/reddeer/RedDeerSchema.xsd
+                      http://www.jboss.org/NS/SOAReq	http://www.jboss.org/schema/reddeer/3rdparty/SOARequirements.xsd">
 
-## Importing into Eclipse IDE
+  <requirements>
+    <server:server-requirement name="SOA-5.3.1.GA">
+      <server:eap version="5.x">
+        <server:home>/home/apodhrad/Projects/server-installer/soa-5.3.1.GA/target/jboss-soa-p-5/jboss-as</server:home>
+        <server:jre>/opt/java/jdk1.7.0_79</server:jre>
+      </server:eap>
+    </server:server-requirement>
+    <runtime:runtime-requirement name="jBPM-3.2.14">
+      <runtime:jbpm version="3.2">
+	<runtime:home>/home/apodhrad/Projects/server-installer/soa-5.3.1.GA/target/jboss-soa-p-5/jbpm-jpdl</runtime:home>
+      </runtime:jbpm>
+    </runtime:runtime-requirement>
+  </requirements>
 
-For importing the project into Eclipse IDE you need:
+</testrun>
+```
 
-Eclipse Kepler, JBTIS 4.1.0, SWTBot 2.1.1, and Red Deer 0.4.0
+To run the tests from IDE import the following projects as an existing maven project
+- org.jboss.tools.common.reddeer
+- org.jboss.tools.runtime.reddeer
+- org.jboss.tools.jbpm.ui.bot.test
+
+Then, open **Run > Run Configurations...** and find the category **RedDeer Test**. Switch to the tab **Arguments** and add a VM argument **-Drd.config=...** if needed.

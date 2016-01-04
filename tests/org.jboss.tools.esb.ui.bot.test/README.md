@@ -1,4 +1,4 @@
-# BPEL Bot Tests
+# ESB Bot Tests
 
 ## How to run
 
@@ -6,11 +6,11 @@ At first, please read a general documentation about [running bot tests](../../RE
 
 To run the tests
 
-    $ mvn clean verify -pl tests/org.jboss.tools.bpel.ui.bot.test -am -Dtest=SmokeTests
+    $ mvn clean verify -pl tests/org.jboss.tools.esb.ui.bot.test -am -Dtest=SmokeTests
 
 To run the tests with a configuration
 
-    $ mvn clean verify -pl tests/org.jboss.tools.bpel.ui.bot.test -am -Drd.config=...
+    $ mvn clean verify -pl tests/org.jboss.tools.esb.ui.bot.test -am -Drd.config=...
 
 The configuration file must follow the [SOA XSD schema](http://www.jboss.org/schema/reddeer/3rdparty/SOARequirements.xsd).
 
@@ -32,15 +32,21 @@ Example:
 	<server:jre>/opt/java/jdk1.7.0_79</server:jre>
       </server:eap>
     </server:server-requirement>
+    <runtime:runtime-requirement name="ESB-4.11">
+      <runtime:esb version="4.11">
+	<runtime:home>/home/apodhrad/Projects/server-installer/soa-5.3.1.GA/target/jboss-soa-p-5</runtime:home>
+      </runtime:esb>
+    </runtime:runtime-requirement>
   </requirements>
 
 </testrun>
+
 ```
 
 To run the tests from IDE import the following projects as an existing maven project
 - org.jboss.tools.common.reddeer
 - org.jboss.tools.runtime.reddeer
-- org.jboss.tools.bpel.reddeer
-- org.jboss.tools.bpel.ui.bot.test
+- org.jboss.tools.esb.reddeer
+- org.jboss.tools.esb.ui.bot.test
 
 Then, open **Run > Run Configurations...** and find the category **RedDeer Test**. Switch to the tab **Arguments** and add a VM argument **-Drd.config=...** if needed.
