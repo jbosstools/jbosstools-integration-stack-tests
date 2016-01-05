@@ -2,9 +2,10 @@ package org.jboss.tools.teiid.ui.bot.test;
 
 import static org.junit.Assert.assertTrue;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.eclipse.core.resources.Project;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
@@ -46,9 +47,9 @@ public class ModelWizardTest {
 
 	@AfterClass
 	public static void saveAllFiles() {
-
+		AbstractWait.sleep(TimePeriod.NORMAL);
 		new ShellMenu("File", "Save All").select();
-		new SWTWorkbenchBot().sleep(1000);
+		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 
 	@After
