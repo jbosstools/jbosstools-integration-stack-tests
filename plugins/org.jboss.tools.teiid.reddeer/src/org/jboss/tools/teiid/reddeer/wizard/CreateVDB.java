@@ -1,11 +1,11 @@
 package org.jboss.tools.teiid.reddeer.wizard;
 
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.teiid.reddeer.view.GuidesView;
 
 /**
@@ -45,6 +45,7 @@ public class CreateVDB extends NewWizardDialog {
 			new DefaultShell("Define VDB").setFocus();
 			
 			new PushButton("New...").click();
+			new DefaultShell("New VDB");
 			fillFirstPage();
 			finish();
 			
@@ -56,15 +57,10 @@ public class CreateVDB extends NewWizardDialog {
 	}
 
 	private void fillFirstPage() {
-		// TODO: LabeledText
-		// new LabeledText("In Folder:").setText(folder);
-		// TODO: Do we really need to set folder?
-		// new SWTWorkbenchBot().textWithLabel("In Folder:").setText(folder);
-		// TODO: LabeledText
-		// new LabeledText("VDB Name:").setText(name);
-		new SWTWorkbenchBot().textWithLabel("VDB Name:").setText(name);
+		new LabeledText("VDB Name:").setText(name);
 		if (this.folder != null){
-			new SWTWorkbenchBot().textWithLabel("In Folder:").setText(folder);
+			new PushButton("...").click();
+			new SelectTargetFolder().select(folder);
 		}
 	}
 

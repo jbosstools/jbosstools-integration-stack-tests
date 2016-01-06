@@ -359,7 +359,7 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 				teiidImporterProps);
 
 		teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", "Sheet1");
-		teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", "Sheet1", "ROW_ID : int");
+		teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", "Sheet1", "ROW_ID : biginteger");
 		teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", "Sheet1", "StringNum : string(10)");
 	}
 
@@ -381,7 +381,7 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 
 		teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", "Customers");
 		teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", "Customers", "CustomerID : string(5)");
-		teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", "Employees", "EmployeeID : int");
+		teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", "Employees", "EmployeeID : biginteger");
 	}
 
 	private void checkImportedModel(String modelName, String... tables) {

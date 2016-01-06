@@ -87,8 +87,7 @@ public class WARTest extends SWTBotTestCase {
 		itemProps.setProperty("intoFolder", projectBooksWS);
 		itemProps.setProperty("file", vdbCheckBook+".war");
 		new ImportManager().importGeneralItem(ImportGeneralItemWizard.Type.FILE_SYSTEM, itemProps);
-		new ModelExplorerManager().getWAR(projectBooksWS, vdbCheckBook+".war").deploy();
-		AbstractWait.sleep(TimePeriod.NORMAL);
+		new ModelExplorerManager().getWAR(projectBooksWS, vdbCheckBook+".war").deploy(teiidServer.getName());
 		
 
 		String nok = new SimpleHttpClient("http://localhost:8080/" + vdbCheckBook + "/BooksInterface?wsdl")
@@ -127,8 +126,7 @@ public class WARTest extends SWTBotTestCase {
 		itemProps.setProperty("intoFolder", projectBooksWS);
 		itemProps.setProperty("file", warCheckBookBasic+".war");
 		new ImportManager().importGeneralItem(ImportGeneralItemWizard.Type.FILE_SYSTEM, itemProps);
-		new ModelExplorerManager().getWAR(projectBooksWS, warCheckBookBasic+".war").deploy();
-		AbstractWait.sleep(TimePeriod.NORMAL);
+		new ModelExplorerManager().getWAR(projectBooksWS, warCheckBookBasic+".war").deploy(teiidServer.getName());
 		
 		String username = teiidServer.getServerConfig().getServerBase().getProperty("teiidUser");
 		String password = teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword");
@@ -174,8 +172,7 @@ public class WARTest extends SWTBotTestCase {
 		new ImportManager().importGeneralItem(ImportGeneralItemWizard.Type.FILE_SYSTEM, itemProps);
 
 		
-		new ModelExplorerManager().getWAR(projectBooksRest, rbWar+".war").deploy();
-		AbstractWait.sleep(TimePeriod.NORMAL);
+		new ModelExplorerManager().getWAR(projectBooksRest, rbWar+".war").deploy(teiidServer.getName());
 		String url = "http://localhost:8080/"+rbWar+"/BooksView/book1/0201877562";
 		
 		assertEquals(resultRest, new SimpleHttpClient(url).get());
@@ -209,8 +206,7 @@ public class WARTest extends SWTBotTestCase {
 		new ImportManager().importGeneralItem(ImportGeneralItemWizard.Type.FILE_SYSTEM, itemProps);
 	
 		
-		new ModelExplorerManager().getWAR(projectBooksRest, rbWar+".war").deploy();
-		AbstractWait.sleep(TimePeriod.NORMAL);
+		new ModelExplorerManager().getWAR(projectBooksRest, rbWar+".war").deploy(teiidServer.getName());
 		
 		String username = teiidServer.getServerConfig().getServerBase().getProperty("teiidUser");
 		String password = teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword");
