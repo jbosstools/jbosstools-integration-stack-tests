@@ -13,7 +13,7 @@ import org.jboss.tools.bpmn2.reddeer.properties.setup.ScriptSetUp;
  * 
  */
 public class ManualTask extends Task {
-	
+
 	/**
 	 * 
 	 * @param name
@@ -21,7 +21,7 @@ public class ManualTask extends Task {
 	public ManualTask(String name) {
 		super(name, ElementType.MANUAL_TASK);
 	}
-	
+
 	public ManualTask(Element element) {
 		super(element);
 	}

@@ -5,8 +5,8 @@ import org.jboss.reddeer.swt.impl.button.CheckBox;
 
 public class NewDslSamplesWizardPage extends WizardPage {
 
-    public void setAddSampleDsl(boolean value) {
-        new CheckBox("Create the DSL file with some sample DSL statements").toggle(value);
-    }
+	public void setAddSampleDsl(boolean value) {
+		new CheckBox("Create the DSL file with some sample DSL statements").toggle(value);
+	}
 
 }

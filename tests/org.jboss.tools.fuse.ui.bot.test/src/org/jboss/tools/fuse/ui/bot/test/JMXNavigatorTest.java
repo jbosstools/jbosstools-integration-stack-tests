@@ -46,7 +46,8 @@ public class JMXNavigatorTest extends DefaultTest {
 	/**
 	 * Prepares test environment
 	 * 
-	 * @throws FuseArchetypeNotFoundException Fuse archetype was not found. Tests cannot be executed!
+	 * @throws FuseArchetypeNotFoundException
+	 *             Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@BeforeClass
 	public static void setupCreateProject() throws FuseArchetypeNotFoundException {
@@ -68,7 +69,9 @@ public class JMXNavigatorTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>Test tries to access nodes relevant for Local Camel Context in JMX Navigator view.</p>
+	 * <p>
+	 * Test tries to access nodes relevant for Local Camel Context in JMX Navigator view.
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>create a new project with camel-archetype-spring archetype</li>
@@ -76,20 +79,25 @@ public class JMXNavigatorTest extends DefaultTest {
 	 * <li>run the Fuse project as Local Camel Context</li>
 	 * <li>open JMX Navigator View</li>
 	 * <li>try to access node "Local Camel Context", "Camel", "camel-1", "Endpoints", "file", "src/data?noop=true"</li>
-	 * <li>try to access node "Local Camel Context", "Camel", "camel-1", "Routes", "route1", "file:src/data?noop=true", "choice1", "when1", "log1", "to1"</li>
+	 * <li>try to access node "Local Camel Context", "Camel", "camel-1", "Routes", "route1", "file:src/data?noop=true",
+	 * "choice1", "when1", "log1", "to1"</li>
 	 * </ol>
 	 */
 	@Test
 	public void testProcessesView() {
 
 		JMXNavigator jmx = new JMXNavigator();
-		assertNotNull(jmx.getNode("Local Camel Context", "Camel", "camel-1", "Endpoints", "file", "src/data?noop=true"));
-		assertNotNull(jmx.getNode("Local Camel Context", "Camel", "camel-1", "Routes", "route1", "file:src/data?noop=true", "choice", "when", "log", "to"));
+		assertNotNull(
+				jmx.getNode("Local Camel Context", "Camel", "camel-1", "Endpoints", "file", "src/data?noop=true"));
+		assertNotNull(jmx.getNode("Local Camel Context", "Camel", "camel-1", "Routes", "route1",
+				"file:src/data?noop=true", "choice", "when", "log", "to"));
 		assertTrue("There are some errors in Error Log", LogGrapper.getFuseErrors().size() == 0);
 	}
 
 	/**
-	 * <p>Test tries context menu options related to Camel Context runs as Local Camel Context - Suspend/Resume context.</p>
+	 * <p>
+	 * Test tries context menu options related to Camel Context runs as Local Camel Context - Suspend/Resume context.
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>create a new project with camel-archetype-spring archetype</li>

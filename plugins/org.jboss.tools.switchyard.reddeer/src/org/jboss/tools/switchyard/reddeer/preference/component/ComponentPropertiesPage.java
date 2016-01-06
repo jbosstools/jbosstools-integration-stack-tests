@@ -34,7 +34,8 @@ public class ComponentPropertiesPage {
 		propName.setText(name);
 		propValue.setText(value);
 
-		new WaitUntil(new IsButtonEnabled(NEW_PROP_DIALOG_OK, NEW_PROP_DIALOG_NAME, NEW_PROP_DIALOG_VALUE), TimePeriod.LONG);
+		new WaitUntil(new IsButtonEnabled(NEW_PROP_DIALOG_OK, NEW_PROP_DIALOG_NAME, NEW_PROP_DIALOG_VALUE),
+				TimePeriod.LONG);
 		new PushButton(NEW_PROP_DIALOG_OK).click();
 
 		return this;

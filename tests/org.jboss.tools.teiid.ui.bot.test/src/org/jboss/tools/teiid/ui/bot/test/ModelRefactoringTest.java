@@ -37,7 +37,7 @@ import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
 @TeiidServer(state = ServerReqState.STOPPED)
-@OpenPerspective(value=TeiidPerspective.class)
+@OpenPerspective(value = TeiidPerspective.class)
 public class ModelRefactoringTest {
 
 	private static final String PROJECT_NAME = "ModelRefactoringProject";
@@ -47,8 +47,7 @@ public class ModelRefactoringTest {
 	@Before
 	public void importProject() {
 		TeiidBot teiidBot = new TeiidBot();
-		new ImportManager().importProject(teiidBot
-				.toAbsolutePath("resources/projects/" + PROJECT_NAME));
+		new ImportManager().importProject(teiidBot.toAbsolutePath("resources/projects/" + PROJECT_NAME));
 		project = teiidBot.modelExplorer().getProject(PROJECT_NAME);
 		project.refresh();
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -63,7 +62,7 @@ public class ModelRefactoringTest {
 		} catch (Exception ex) {
 			// no editors open, ignore
 		}
-		
+
 		new WorkbenchShell();
 		new ModelExplorer();
 		project.select();
@@ -71,22 +70,17 @@ public class ModelRefactoringTest {
 		project.delete(true);
 	}
 
-
 	@Test
 	public void renameSourceModel() {
-		renameItem(project.getProjectItem("partssupplier.xmi"),
-				"partssupplier_X.xmi");
-		checkDependentModel("partssupplier_X", "partssupplier_view.xmi",
-				"SUPPLIER");
-		checkDependentModel("partssupplier_X", "views",
-				"partssupplier_view_2.xmi", "SUPPLIER");
+		renameItem(project.getProjectItem("partssupplier.xmi"), "partssupplier_X.xmi");
+		checkDependentModel("partssupplier_X", "partssupplier_view.xmi", "SUPPLIER");
+		checkDependentModel("partssupplier_X", "views", "partssupplier_view_2.xmi", "SUPPLIER");
 		checkErrors();
 	}
 
 	@Test
 	public void renameSourceModelInFolder() {
-		renameItem(project.getProjectItem("sources", "books.xmi"),
-				"books_X.xmi");
+		renameItem(project.getProjectItem("sources", "books.xmi"), "books_X.xmi");
 		checkDependentModel("books_X", "books_view_2.xmi", "PUBLISHERS");
 		checkDependentModel("books_X", "views", "books_view.xmi", "PUBLISHERS");
 		checkErrors();
@@ -95,19 +89,15 @@ public class ModelRefactoringTest {
 
 	@Test
 	public void renameViewModel() {
-		renameItem(project.getProjectItem("partssupplier_view_3.xmi"),
-				"partssupplier_view_X.xmi");
-		checkDependentModel("partssupplier_view_X", "partssupplier_view_4.xmi",
-				"SUPPLIER");
+		renameItem(project.getProjectItem("partssupplier_view_3.xmi"), "partssupplier_view_X.xmi");
+		checkDependentModel("partssupplier_view_X", "partssupplier_view_4.xmi", "SUPPLIER");
 		checkErrors();
 	}
 
 	@Test
 	public void renameViewModelInFolder() {
-		renameItem(project.getProjectItem("views", "partssupplier_view_2.xmi"),
-				"partssupplier_view_X.xmi");
-		checkDependentModel("partssupplier_view_X", "partssupplier_view_3.xmi",
-				"SUPPLIER");
+		renameItem(project.getProjectItem("views", "partssupplier_view_2.xmi"), "partssupplier_view_X.xmi");
+		checkDependentModel("partssupplier_view_X", "partssupplier_view_3.xmi", "SUPPLIER");
 		checkErrors();
 	}
 
@@ -148,15 +138,14 @@ public class ModelRefactoringTest {
 		checkErrors();
 		checkDependentModel("partssupplier_view_3", "partssupplier_view_4.xmi", "SUPPLIER");
 	}
-	
 
 	@Test
 	public void moveViewModelIntoFolderWithUpdate() {
 		moveItem(project.getProjectItem("partssupplier_view_3.xmi"), "views");
-		
+
 		updateImports("partssupplier_view_4.xmi");
 		updateImports("views", "partssupplier_view_3.xmi");
-		
+
 		checkErrors();
 		checkDependentModel("partssupplier_view_3", "partssupplier_view_4.xmi", "SUPPLIER");
 	}
@@ -167,7 +156,7 @@ public class ModelRefactoringTest {
 		checkErrors();
 		checkDependentModel("partssupplier_view_2", "partssupplier_view_3.xmi", "SUPPLIER");
 	}
-	
+
 	@Test
 	public void moveViewModelOutOfFolderWithUpdate() {
 		moveItem(project.getProjectItem("views", "partssupplier_view_2.xmi"));
@@ -175,7 +164,7 @@ public class ModelRefactoringTest {
 		updateImports("partssupplier_view_2.xmi");
 		updateImports("partssupplier_view_3.xmi");
 		updateImports("partssupplier_view_4.xmi");
-		
+
 		checkErrors();
 		checkDependentModel("partssupplier_view_2", "partssupplier_view_3.xmi", "SUPPLIER");
 	}
@@ -184,8 +173,7 @@ public class ModelRefactoringTest {
 	public void moveSourceModelIntoFolder() {
 		moveItem(project.getProjectItem("partssupplier.xmi"), "sources2");
 
-		ModelExplorer modelView = TeiidPerspective.getInstance()
-				.getModelExplorerView();
+		ModelExplorer modelView = TeiidPerspective.getInstance().getModelExplorerView();
 		modelView.open(PROJECT_NAME, "partssupplier_view.xmi");
 		modelView.open(PROJECT_NAME, "views", "partssupplier_view_2.xmi");
 		modelView.open(PROJECT_NAME, "partssupplier_view_3.xmi");
@@ -204,8 +192,7 @@ public class ModelRefactoringTest {
 		updateImports("partssupplier_view_4.xmi");
 		updateImports("partssupplier_view.xmi");
 
-		ModelExplorer modelView = TeiidPerspective.getInstance()
-				.getModelExplorerView();
+		ModelExplorer modelView = TeiidPerspective.getInstance().getModelExplorerView();
 		modelView.open(PROJECT_NAME, "partssupplier_view.xmi");
 		modelView.open(PROJECT_NAME, "views", "partssupplier_view_2.xmi");
 		modelView.open(PROJECT_NAME, "partssupplier_view_3.xmi");
@@ -238,8 +225,7 @@ public class ModelRefactoringTest {
 	public void renameFolderWithViewModel() {
 		renameItem(project.getProjectItem("views"), "views_X");
 
-		ModelExplorer modelView = TeiidPerspective.getInstance()
-				.getModelExplorerView();
+		ModelExplorer modelView = TeiidPerspective.getInstance().getModelExplorerView();
 		modelView.open(PROJECT_NAME, "partssupplier_view.xmi");
 		modelView.open(PROJECT_NAME, "views_X", "partssupplier_view_2.xmi");
 		modelView.open(PROJECT_NAME, "partssupplier_view_3.xmi");
@@ -257,8 +243,7 @@ public class ModelRefactoringTest {
 
 	private void checkErrors() {
 		ProblemsView problems = new ProblemsView();
-		assertTrue("There are validation errors",
-				problems.getProblems(ProblemType.ERROR).isEmpty());
+		assertTrue("There are validation errors", problems.getProblems(ProblemType.ERROR).isEmpty());
 	}
 
 	private void renameItem(ProjectItem projectItem, String newName) {
@@ -269,8 +254,7 @@ public class ModelRefactoringTest {
 		new LabeledText("New name:").setText(newName);
 		new OkButton().click();
 		new WaitWhile(new ShellWithTextIsActive("Rename Resource " + oldName));
-		assertFalse("Refactoring failed", new ShellWithTextIsAvailable(
-				"Rename Resource " + oldName).test());
+		assertFalse("Refactoring failed", new ShellWithTextIsAvailable("Rename Resource " + oldName).test());
 
 	}
 
@@ -288,15 +272,14 @@ public class ModelRefactoringTest {
 	}
 
 	private void checkDependentModel(String expectedSourceTable, String... path) {
-		ModelExplorer modelView = TeiidPerspective.getInstance()
-				.getModelExplorerView();
+		ModelExplorer modelView = TeiidPerspective.getInstance().getModelExplorerView();
 		modelView.openTransformationDiagram(PROJECT_NAME, path);
 
 		ModelEditor me = new ModelEditor(path[path.length - 2]);
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		me.showTransformation();
-		assertTrue("Transformation not updated after refactoring", me
-				.getTransformation().contains(expectedSourceTable));
+		assertTrue("Transformation not updated after refactoring",
+				me.getTransformation().contains(expectedSourceTable));
 	}
 
 }

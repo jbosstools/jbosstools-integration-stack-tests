@@ -21,18 +21,17 @@ public class SQLResultView extends WorkbenchView {
 
 		open();
 		AbstractWait.sleep(TimePeriod.getCustom(1));
-		
+
 		for (TreeItem item : new DefaultTree().getItems()) {
 			if (item.getCell(1).trim().equals(operation)) {
 				return new SQLResult(item);
 			}
 		}
-		
+
 		throw new WidgetNotFoundException("Cannot find sql result for operation " + operation);
 	}
-	
-	
-	public void enableUnresolvableCps(){
+
+	public void enableUnresolvableCps() {
 		open();
 		activate();
 		new DefaultToolItem("Filter Results").click();

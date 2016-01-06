@@ -114,8 +114,8 @@ public class ImplementationKnowledgePage {
 		new DefaultSection(section).setExpanded(true);
 		Button addButton = new PushButton(new DefaultSection(section), "Add");
 		if (!addButton.isEnabled()) {
-			throw new IllegalStateException("Cannot add an item in '" + section
-					+ "'. Ensure that an operation is selected.");
+			throw new IllegalStateException(
+					"Cannot add an item in '" + section + "'. Ensure that an operation is selected.");
 		}
 		addButton.click();
 		List<TableItem> tableItems = new DefaultTable(new DefaultSection(section)).getItems();
@@ -168,7 +168,7 @@ public class ImplementationKnowledgePage {
 			new WaitWhile(new ShellWithTextIsAvailable(title));
 		}
 	}
-	
+
 	public void ok() {
 		String title = new DefaultShell().getText();
 		new OkButton().click();

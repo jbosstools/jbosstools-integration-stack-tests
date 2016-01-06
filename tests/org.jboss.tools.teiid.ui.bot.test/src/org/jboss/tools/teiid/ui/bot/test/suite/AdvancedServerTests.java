@@ -6,14 +6,12 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 /**
- * Tests which require server setup via jboss-cli prior to running (deploy
- * driver, add module)
+ * Tests which require server setup via jboss-cli prior to running (deploy driver, add module)
  * 
  * @author lfabriko
  */
-@SuiteClasses({
-	TeiidConnectionImportTest.class
-	// TODO not supported yet
+@SuiteClasses({ TeiidConnectionImportTest.class
+		// TODO not supported yet
 })
 @RunWith(RedDeerSuite.class)
 public class AdvancedServerTests {

@@ -24,8 +24,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	QuickstartsDTGovTest.class,
 	QuickstartsRTGovTest.class,
 	QuickstartsSRampTest.class,
-	QuickstartsCamelTest.class
-})
+	QuickstartsCamelTest.class })
 @RunWith(RedDeerSuite.class)
 public class QuickstartTests extends TestSuite {
 

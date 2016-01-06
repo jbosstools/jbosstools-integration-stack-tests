@@ -14,7 +14,7 @@ public class MessageDialog {
 
 	private static final String SHELL_LABEL = "Create New Message";
 
-    /**
+	/**
 	 * 
 	 * @param name
 	 * @param dataType
@@ -22,7 +22,7 @@ public class MessageDialog {
 	public void addMessage(String name, String dataType) {
 		add(new Message(name, dataType));
 	}
-	
+
 	/**
 	 * 
 	 * @param message
@@ -34,5 +34,5 @@ public class MessageDialog {
 		new PushButton("OK").click();
 		new WaitWhile(new ShellWithTextIsActive(SHELL_LABEL));
 	}
-	
+
 }

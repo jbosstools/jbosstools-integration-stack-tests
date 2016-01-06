@@ -14,17 +14,16 @@ public class ExportDiagramDialog {
 	public enum ImageFormat {
 		BMP, GIF, JPG, PNG, RLE;
 	}
-	
-	
+
 	ProcessEditorView editor;
-	
+
 	/**
 	 * 
 	 */
 	public ExportDiagramDialog() {
 		this(new ProcessEditorView());
 	}
-	
+
 	/**
 	 * 
 	 * @param editor
@@ -32,7 +31,7 @@ public class ExportDiagramDialog {
 	public ExportDiagramDialog(ProcessEditorView editor) {
 		this.editor = editor;
 	}
-	
+
 	/**
 	 * 
 	 * @param format
@@ -44,5 +43,5 @@ public class ExportDiagramDialog {
 		new PushButton("OK").click();
 		// TBD: handle the native file dialog
 	}
-	
+
 }

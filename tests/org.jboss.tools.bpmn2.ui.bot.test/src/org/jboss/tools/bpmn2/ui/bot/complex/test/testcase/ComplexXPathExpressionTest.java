@@ -22,35 +22,30 @@ import org.kie.api.runtime.process.ProcessInstance;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-@JBPM6ComplexTestDefinition(projectName="JBPM6ComplexTest",
-							importFolder="resources/bpmn2/model/base",
-							openFile="BaseBPMN2-XPathExpression.bpmn2",
-							saveAs="BPMN2-XPathExpression.bpmn2")
-public class ComplexXPathExpressionTest extends JBPM6ComplexTest{
+@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-XPathExpression.bpmn2", saveAs = "BPMN2-XPathExpression.bpmn2")
+public class ComplexXPathExpressionTest extends JBPM6ComplexTest {
 
-	@TestPhase(phase=Phase.MODEL)
+	@TestPhase(phase = Phase.MODEL)
 	public void model() {
 		ExclusiveGateway splitGw = new ExclusiveGateway("Split");
-		splitGw.setCondition("Split -> Task1", "XPath 1.0", "count($instanceMetadata/instanceMetadata/user[@approved='true']) = 1");
-		splitGw.setCondition("Split -> Task2", "XPath 1.0", "count($instanceMetadata/instanceMetadata/user[@approved='false']) = 1");
+		splitGw.setCondition("Split -> Task1", "XPath 1.0",
+				"count($instanceMetadata/instanceMetadata/user[@approved='true']) = 1");
+		splitGw.setCondition("Split -> Task2", "XPath 1.0",
+				"count($instanceMetadata/instanceMetadata/user[@approved='false']) = 1");
 	}
-	
-	@TestPhase(phase=Phase.RUN)
+
+	@TestPhase(phase = Phase.RUN)
 	public void run(KieSession kSession) throws SAXException, IOException, ParserConfigurationException {
-		
-		Document document = DocumentBuilderFactory
-                .newInstance()
-                .newDocumentBuilder()
-                .parse(new ByteArrayInputStream(
-                        "<instanceMetadata><user approved=\"false\" /></instanceMetadata>"
-                                .getBytes()));
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("instanceMetadata", document);
-        params.put(VARIABLE1, 5);
-		
+
+		Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new ByteArrayInputStream(
+				"<instanceMetadata><user approved=\"false\" /></instanceMetadata>".getBytes()));
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("instanceMetadata", document);
+		params.put(VARIABLE1, 5);
+
 		ProcessInstance processInstance = kSession.startProcess("BPMN2XPathExpression", params);
 		JbpmAssertions.assertProcessInstanceCompleted(processInstance, kSession);
-		
-		assertEquals(10, ((WorkflowProcessInstance)processInstance).getVariable(VARIABLE1));
+
+		assertEquals(10, ((WorkflowProcessInstance) processInstance).getVariable(VARIABLE1));
 	}
 }

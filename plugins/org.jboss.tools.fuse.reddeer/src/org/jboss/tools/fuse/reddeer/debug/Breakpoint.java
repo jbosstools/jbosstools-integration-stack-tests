@@ -17,7 +17,7 @@ public class Breakpoint extends DefaultTreeItem {
 	public Breakpoint(String label) {
 
 		super(label);
-	}	
+	}
 
 	/**
 	 * Removes the breakpoint
@@ -44,8 +44,7 @@ public class Breakpoint extends DefaultTreeItem {
 	}
 
 	/**
-	 * Checks whether is given operation enabled in the context menu of the
-	 * breakpoint
+	 * Checks whether is given operation enabled in the context menu of the breakpoint
 	 * 
 	 * @param operation
 	 *            Name of operation in the context menu
@@ -65,8 +64,8 @@ public class Breakpoint extends DefaultTreeItem {
 	}
 
 	/**
-	 * Tries to perform given operation on the breakpoint. Operations are
-	 * selected from the context menu of the breakpoint.
+	 * Tries to perform given operation on the breakpoint. Operations are selected from the context menu of the
+	 * breakpoint.
 	 * 
 	 * @param operation
 	 *            Name of operation in the context menu

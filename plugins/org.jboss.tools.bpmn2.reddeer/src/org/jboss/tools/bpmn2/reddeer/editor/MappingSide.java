@@ -8,7 +8,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
  * @see ParameterMapping
  */
 public interface MappingSide {
-	
+
 	/**
 	 * 
 	 * @return
@@ -16,9 +16,8 @@ public interface MappingSide {
 	String getName();
 
 	/**
-	 * Perform user actions which are required to set up this object
-	 * in the UI.
+	 * Perform user actions which are required to set up this object in the UI.
 	 */
 	void setUp();
-	
+
 }

@@ -26,10 +26,10 @@ public class RelationalSourceModelTest {
 	private static final String PROJECT = "RelSrcModel";
 	private static final String MODEL = "relModel.xmi";
 	private static TeiidBot teiidBot = new TeiidBot();
-	
+
 	@BeforeClass
 	public static void before() {
-		
+
 		new ModelExplorerManager().createProject(PROJECT);
 
 		MetadataModelWizard modelWizard = new MetadataModelWizard();
@@ -41,7 +41,7 @@ public class RelationalSourceModelTest {
 		modelWizard.selectModelType(ModelType.SOURCE);
 		modelWizard.finish();
 	}
-	
+
 	@Test
 	public void createProcedure() {
 
@@ -56,16 +56,16 @@ public class RelationalSourceModelTest {
 		props.setProperty("params", "myparam1,myparam2");
 		props.setProperty("updateCount", Procedure.UpdateCount.ONE);
 		props.setProperty("nonPrepared", "true");
-		
+
 		new ModelExplorerManager().getModelExplorerView().newProcedure(PROJECT, MODEL, proc, props);
-		
+
 		assertTrue(teiidBot.checkResource(PROJECT, MODEL, proc, "myparam1 : string(4000)"));
 		assertTrue(teiidBot.checkResource(PROJECT, MODEL, proc, "myparam2 : string(4000)"));
 		assertTrue(teiidBot.checkResource(PROJECT, MODEL, proc, "resSet", "col1 : string(4000)"));
 		assertTrue(teiidBot.checkResource(PROJECT, MODEL, proc, "resSet", "col2 : string(4000)"));
 		assertTrue(teiidBot.checkResource(PROJECT, MODEL, proc, "resSet", "col3 : string(4000)"));
 	}
-	
+
 	@Test
 	public void createSrcFunction() {
 
@@ -74,14 +74,16 @@ public class RelationalSourceModelTest {
 		props.setProperty("type", Procedure.Type.RELSRC_SOURCE_FUNCTION);
 		props.setProperty("description", "this is relsrc proc");
 		props.setProperty("params", "myparam2,myparam3");
-		props.setProperty("functionProps", Procedure.FunctionProperties.DETERMINISTIC+","+Procedure.FunctionProperties.VARIABLE_ARGUMENTS);
-		props.setProperty("aggregateProps", Procedure.AggregateProperties.AGG + ","+Procedure.AggregateProperties.DECOMPOSABLE);
-		
+		props.setProperty("functionProps",
+				Procedure.FunctionProperties.DETERMINISTIC + "," + Procedure.FunctionProperties.VARIABLE_ARGUMENTS);
+		props.setProperty("aggregateProps",
+				Procedure.AggregateProperties.AGG + "," + Procedure.AggregateProperties.DECOMPOSABLE);
+
 		new ModelExplorerManager().getModelExplorerView().newProcedure(PROJECT, MODEL, proc, props);
-		
+
 		assertTrue(teiidBot.checkResource(PROJECT, MODEL, proc, "myparam2 : string(4000)"));
 		assertTrue(teiidBot.checkResource(PROJECT, MODEL, proc, "myparam3 : string(4000)"));
 	}
-	
-	//TODO associations 1:N,...
+
+	// TODO associations 1:N,...
 }

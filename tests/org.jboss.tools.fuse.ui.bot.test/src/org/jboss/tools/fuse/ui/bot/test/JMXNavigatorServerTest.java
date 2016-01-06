@@ -44,7 +44,7 @@ import org.junit.runner.RunWith;
 @CleanWorkspace
 @OpenPerspective(FuseIntegrationPerspective.class)
 @RunWith(RedDeerSuite.class)
-@Server(type = {ServerReqType.Fuse, ServerReqType.Karaf, ServerReqType.ServiceMix}, state = ServerReqState.RUNNING)
+@Server(type = { ServerReqType.Fuse, ServerReqType.Karaf, ServerReqType.ServiceMix }, state = ServerReqState.RUNNING)
 public class JMXNavigatorServerTest {
 
 	private static final String PROJECT_ARCHETYPE = "camel-archetype-spring-dm";
@@ -59,7 +59,8 @@ public class JMXNavigatorServerTest {
 	/**
 	 * Prepares test environment
 	 * 
-	 * @throws FuseArchetypeNotFoundException Fuse archetype was not found. Tests cannot be executed!
+	 * @throws FuseArchetypeNotFoundException
+	 *             Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Before
 	public void setup() throws FuseArchetypeNotFoundException {
@@ -96,7 +97,7 @@ public class JMXNavigatorServerTest {
 
 		new WorkbenchShell();
 
-		// Closing all non workbench shells 
+		// Closing all non workbench shells
 		ShellHandler.getInstance().closeAllNonWorbenchShells();
 	}
 
@@ -107,7 +108,7 @@ public class JMXNavigatorServerTest {
 	public static void setupDefaultFinalClean() {
 
 		new WorkbenchShell();
-		
+
 		// Deleting all projects
 		new ProjectExplorer().deleteAllProjects();
 
@@ -117,7 +118,9 @@ public class JMXNavigatorServerTest {
 	}
 
 	/**
-	 * <p>Test tries to access nodes relevant for JBoss Fuse in JMX Navigator view.</p>
+	 * <p>
+	 * Test tries to access nodes relevant for JBoss Fuse in JMX Navigator view.
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>create a new project with camel-archetype-spring-dm archetype</li>
@@ -126,7 +129,8 @@ public class JMXNavigatorServerTest {
 	 * <li>start the server</li>
 	 * <li>open JMX Navigator View</li>
 	 * <li>try to access node "karaf", "Camel", "camel-1", "Endpoints", "timer", "foo?period=5000"</li>
-	 * <li>try to access node "karaf", "Camel", "camel-1", "Routes", "route1", "timer:foo?period=5000", "setBody1", "log1"</li>
+	 * <li>try to access node "karaf", "Camel", "camel-1", "Routes", "route1", "timer:foo?period=5000", "setBody1",
+	 * "log1"</li>
 	 * </ol>
 	 */
 	@Test
@@ -136,12 +140,15 @@ public class JMXNavigatorServerTest {
 		assertNotNull(jmx.getNode("karaf"));
 		jmx.connectTo("karaf");
 		assertNotNull(jmx.getNode("karaf", "Camel", "camel-1", "Endpoints", "timer", "foo?period=5000"));
-		assertNotNull(jmx.getNode("karaf", "Camel", "camel-1", "Routes", "route1", "timer:foo?period=5000", "setBody", "log"));
+		assertNotNull(jmx.getNode("karaf", "Camel", "camel-1", "Routes", "route1", "timer:foo?period=5000", "setBody",
+				"log"));
 		assertTrue("There are some errors in Error Log", LogGrapper.getFuseErrors().size() == 0);
 	}
 
 	/**
-	 * <p>Test tries context menu options related to Camel Context deployed on the Fuse server - Suspend/Resume context.</p>
+	 * <p>
+	 * Test tries context menu options related to Camel Context deployed on the Fuse server - Suspend/Resume context.
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>create a new project with camel-archetype-spring-dm archetype</li>

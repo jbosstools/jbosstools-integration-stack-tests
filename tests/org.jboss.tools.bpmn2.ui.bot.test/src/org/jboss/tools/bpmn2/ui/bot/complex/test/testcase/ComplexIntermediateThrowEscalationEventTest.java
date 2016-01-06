@@ -13,25 +13,22 @@ import org.jboss.tools.bpmn2.ui.bot.test.jbpm.JbpmAssertions;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
 
-@JBPM6ComplexTestDefinition(projectName="JBPM6ComplexTest",
-							importFolder="resources/bpmn2/model/base",
-							openFile="BaseBPMN2-IntermediateThrowEscalationEvent.bpmn2",
-							saveAs="BPMN2-IntermediateThrowEscalationEvent.bpmn2",
-							knownIssues={"1249658"})
+@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-IntermediateThrowEscalationEvent.bpmn2", saveAs = "BPMN2-IntermediateThrowEscalationEvent.bpmn2", knownIssues = {
+	"1249658" })
 public class ComplexIntermediateThrowEscalationEventTest extends JBPM6ComplexTest {
 
-	@TestPhase(phase=Phase.MODEL)
+	@TestPhase(phase = Phase.MODEL)
 	public void model() {
-		
+
 		StartEvent start = new StartEvent("StartProcess");
-		
-		EscalationIntermediateThrowEvent ithrow = 
-			(EscalationIntermediateThrowEvent) start.append("Escalation Event", ElementType.ESCALATION_INTERMEDIATE_THROW_EVENT);
+
+		EscalationIntermediateThrowEvent ithrow = (EscalationIntermediateThrowEvent) start.append("Escalation Event",
+				ElementType.ESCALATION_INTERMEDIATE_THROW_EVENT);
 		ithrow.setEscalation(new Escalation("EscName", "MyEscalation"), VARIABLE1);
 		ithrow.connectTo(new EndEvent("TotalEnd"));
 	}
-	
-	@TestPhase(phase=Phase.RUN)
+
+	@TestPhase(phase = Phase.RUN)
 	public void run(KieSession kSession) {
 		ProcessInstance processInstance = kSession.startProcess("BPMN2IntermediateThrowEscalationEvent");
 		JbpmAssertions.assertProcessInstanceCompleted(processInstance, kSession);

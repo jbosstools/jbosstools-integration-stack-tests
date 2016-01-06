@@ -19,11 +19,11 @@ public class SubProcess extends ElementContainer {
 	public SubProcess(String name) {
 		super(name, ElementType.SUB_PROCESS);
 	}
-	
+
 	public SubProcess(Element element) {
 		super(element);
 	}
-	
+
 	/**
 	 * 
 	 * @param varName
@@ -32,7 +32,7 @@ public class SubProcess extends ElementContainer {
 	public void addLocalVariable(String varName, String dataType) {
 		propertiesHandler.setUp(new AddLocalVariableSetUp(PropertiesTabs.SUB_PROCESS_TAB, varName, dataType));
 	}
-	
+
 	/**
 	 *
 	 * @param language

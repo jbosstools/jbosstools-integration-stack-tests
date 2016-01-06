@@ -21,8 +21,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	DeploymentTest.class,
 	ServerTest.class,
 	JMXNavigatorServerTest.class,
-	QuickStartsTest.class
-})
+	QuickStartsTest.class })
 @RunWith(RedDeerSuite.class)
 public class FuseRuntimeVerificationTests extends TestSuite {
 

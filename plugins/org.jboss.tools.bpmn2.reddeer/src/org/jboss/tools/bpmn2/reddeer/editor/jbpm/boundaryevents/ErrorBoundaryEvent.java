@@ -18,18 +18,19 @@ public class ErrorBoundaryEvent extends BoundaryEvent {
 	public ErrorBoundaryEvent(String name) {
 		super(name, ElementType.ERROR_BOUNDARY_EVENT);
 	}
-	
+
 	public ErrorBoundaryEvent(Element element) {
 		super(element);
 	}
-	
+
 	/**
 	 * 
 	 * @param errorRef
 	 */
 	public void setErrorEvent(ErrorRef errorRef, String variableForMapping) {
-		propertiesHandler.setUp(new EventDefinitionSetUp(new ErrorEventDefinition(errorRef, variableForMapping, "Target")));
+		propertiesHandler
+				.setUp(new EventDefinitionSetUp(new ErrorEventDefinition(errorRef, variableForMapping, "Target")));
 		refresh();
 	}
-	
+
 }

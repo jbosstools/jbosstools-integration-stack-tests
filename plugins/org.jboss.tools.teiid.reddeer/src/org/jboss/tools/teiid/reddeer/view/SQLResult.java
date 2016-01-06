@@ -33,65 +33,72 @@ public class SQLResult {
 
 	/**
 	 * Converts current SQL result into CSV format
+	 * 
 	 * @return
 	 */
-	public String getResultAsCSV(){
+	public String getResultAsCSV() {
 		new DefaultCTabItem("Result1");
-		DefaultTable table=new DefaultTable();
-		int colNum=table.getHeaders().size();
-		StringBuilder csv=new StringBuilder();
-		for(int i=1;i<table.getHeaders().size();i++){
+		DefaultTable table = new DefaultTable();
+		int colNum = table.getHeaders().size();
+		StringBuilder csv = new StringBuilder();
+		for (int i = 1; i < table.getHeaders().size(); i++) {
 			csv.append('\"').append(table.getHeaders().get(i)).append('\"').append(',');
 		}
-		csv.setCharAt(csv.length()-1, '\n');
-		for(TableItem t: table.getItems()){
-			for(int i=1;i<colNum;i++){
+		csv.setCharAt(csv.length() - 1, '\n');
+		for (TableItem t : table.getItems()) {
+			for (int i = 1; i < colNum; i++) {
 				csv.append('\"').append(t.getText(i)).append('\"').append(',');
 			}
-			csv.setCharAt(csv.length()-1, '\n');
+			csv.setCharAt(csv.length() - 1, '\n');
 		}
 		return csv.toString();
 	}
+
 	/**
 	 * Compares current query result with expected result. It converts the result into CSV.
-	 * @param pathToExpectedResult path to CSV file with expected result
+	 * 
+	 * @param pathToExpectedResult
+	 *            path to CSV file with expected result
 	 * @return true if the current and expected result are the same
 	 */
-	public boolean compareCSVQueryResults(File pathToExpectedResult){
-		String expected=null;
+	public boolean compareCSVQueryResults(File pathToExpectedResult) {
+		String expected = null;
 		try {
-			expected=convertFileToString(pathToExpectedResult);
+			expected = convertFileToString(pathToExpectedResult);
 		} catch (IOException e) {
 			logger.error("Can't compare query resuts", e);
 			throw new RuntimeException(e);
 		}
-		String actual=getResultAsCSV();
-		boolean result=expected.equals(actual);
-		if(!result){
-			logger.warn("Comparing of query results failed: Expected result: "+expected+"\nBut was: "+actual);
+		String actual = getResultAsCSV();
+		boolean result = expected.equals(actual);
+		if (!result) {
+			logger.warn("Comparing of query results failed: Expected result: " + expected + "\nBut was: " + actual);
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Converts file into String and skips blank lines
-	 * @param file Path to file to be converted
+	 * 
+	 * @param file
+	 *            Path to file to be converted
 	 * @return file as a String
-	 * @throws IOException if a file has not been found
+	 * @throws IOException
+	 *             if a file has not been found
 	 */
-	private String convertFileToString(File file) throws IOException{
-		    BufferedReader reader = new BufferedReader( new FileReader (file));
-		    String         line = null;
-		    StringBuilder  stringBuilder = new StringBuilder();
-		    while( ( line = reader.readLine() ) != null ) {
-		    	if(line.trim().length()==0){
-		    		continue;
-		    	}
-		        stringBuilder.append( line );
-		        stringBuilder.append( '\n');
-		    }
-		    reader.close();
-		    return stringBuilder.toString();
+	private String convertFileToString(File file) throws IOException {
+		BufferedReader reader = new BufferedReader(new FileReader(file));
+		String line = null;
+		StringBuilder stringBuilder = new StringBuilder();
+		while ((line = reader.readLine()) != null) {
+			if (line.trim().length() == 0) {
+				continue;
+			}
+			stringBuilder.append(line);
+			stringBuilder.append('\n');
 		}
-	
+		reader.close();
+		return stringBuilder.toString();
+	}
+
 }

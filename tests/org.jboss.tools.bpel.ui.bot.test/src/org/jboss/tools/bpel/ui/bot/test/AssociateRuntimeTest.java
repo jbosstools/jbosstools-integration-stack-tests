@@ -37,7 +37,7 @@ public class AssociateRuntimeTest {
 
 	@InjectRequirement
 	private ServerRequirement serverRequirement;
-	
+
 	@Test
 	public void testModeling() throws Exception {
 		new NewProjectWizard("runtimeTest").execute();
@@ -52,7 +52,7 @@ public class AssociateRuntimeTest {
 		assertTrue(containsItem(new DefaultTable(), runtimeName));
 
 		new PushButton("OK").click();
-		
+
 		new WaitWhile(new ProgressInformationShellIsActive(), NORMAL);
 	}
 

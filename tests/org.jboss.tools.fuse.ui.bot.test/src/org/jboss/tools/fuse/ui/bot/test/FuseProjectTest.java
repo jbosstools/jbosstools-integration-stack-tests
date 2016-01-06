@@ -48,7 +48,7 @@ public class FuseProjectTest extends DefaultTest {
 	protected Logger log = Logger.getLogger(FuseProjectTest.class);
 	private String archetype;
 	private static String maven;
-	
+
 	/**
 	 * Sets parameters for parameterized test
 	 * 
@@ -62,7 +62,8 @@ public class FuseProjectTest extends DefaultTest {
 	/**
 	 * Utilizes passing parameters using the constructor
 	 * 
-	 * @param archetype a Fuse project archetype
+	 * @param archetype
+	 *            a Fuse project archetype
 	 */
 	public FuseProjectTest(String archetype) {
 		this.archetype = archetype;
@@ -124,7 +125,8 @@ public class FuseProjectTest extends DefaultTest {
 
 		new ProblemsView().open();
 		for (TreeItem item : new DefaultTree().getItems()) {
-			if (item.getText().toLowerCase().contains("error")) return true;
+			if (item.getText().toLowerCase().contains("error"))
+				return true;
 		}
 		return false;
 	}
@@ -151,13 +153,15 @@ public class FuseProjectTest extends DefaultTest {
 			log.warn("There is a problem with building '" + name + "' project");
 			return false;
 		}
-		
+
 		return true;
 	}
 
 	/**
-	 * <p>Tries to create a Fuse project from <i>${FUSE-ARCHETYPE}</i> archetype
-	 * and tries to run the project as Local Camel Context.</p>
+	 * <p>
+	 * Tries to create a Fuse project from <i>${FUSE-ARCHETYPE}</i> archetype and tries to run the project as Local
+	 * Camel Context.
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>create a new project</li>

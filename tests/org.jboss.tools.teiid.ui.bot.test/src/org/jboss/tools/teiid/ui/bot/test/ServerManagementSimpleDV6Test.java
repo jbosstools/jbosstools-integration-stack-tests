@@ -28,7 +28,7 @@ public class ServerManagementSimpleDV6Test {
 
 	@InjectRequirement
 	private TeiidServerRequirement teiidServer;
-	
+
 	private static final String DV6_SERVER = "EAP-6.1";
 	private static final String PROJECT_NAME = "ServerMgmtTest";
 	private static final String MODEL_NAME = "partssupModel1.xmi";
@@ -50,29 +50,29 @@ public class ServerManagementSimpleDV6Test {
 
 	@AfterClass
 	public static void stopServer() {
-		
+
 		TeiidPerspective.getInstance();
 		new ServerManager().stopServer(DV6_SERVER);
 	}
-	
+
 	@Test
 	public void test() {
 
-			// TODO: Fix setDefaultTeiidInstance
-			// new ServerManager().setDefaultTeiidInstance(DV6_SERVER, ServerType.DV6);
-			Assert.assertTrue(new GuidesView().canPreviewData(null, new String[] {PROJECT_NAME, MODEL_NAME, "PARTS" }));
+		// TODO: Fix setDefaultTeiidInstance
+		// new ServerManager().setDefaultTeiidInstance(DV6_SERVER, ServerType.DV6);
+		Assert.assertTrue(new GuidesView().canPreviewData(null, new String[] { PROJECT_NAME, MODEL_NAME, "PARTS" }));
 
-			TeiidPerspective.getInstance();
-			new VDBManager().createVDB(PROJECT_NAME, VDB);
-			new VDBManager().addModelsToVDB(PROJECT_NAME, VDB, new String[] { MODEL_NAME });
-			Assert.assertTrue(new VDBManager().isVDBCreated(PROJECT_NAME, VDB));
+		TeiidPerspective.getInstance();
+		new VDBManager().createVDB(PROJECT_NAME, VDB);
+		new VDBManager().addModelsToVDB(PROJECT_NAME, VDB, new String[] { MODEL_NAME });
+		Assert.assertTrue(new VDBManager().isVDBCreated(PROJECT_NAME, VDB));
 
-			TeiidPerspective.getInstance();
-			new VDBManager().deployVDB(new String[] { PROJECT_NAME, VDB });
-			// TODO: Fix isVDBDeployed
-			// Assert.assertTrue(new VDBManager().isVDBDeployed(DV6_SERVER, ServerType.DV6, VDB));
+		TeiidPerspective.getInstance();
+		new VDBManager().deployVDB(new String[] { PROJECT_NAME, VDB });
+		// TODO: Fix isVDBDeployed
+		// Assert.assertTrue(new VDBManager().isVDBDeployed(DV6_SERVER, ServerType.DV6, VDB));
 
-			new VDBManager().executeVDB(true, PROJECT_NAME, VDB);
-			Assert.assertTrue(new VDBManager().queryPassed(VDB, TEST_SQL1));
+		new VDBManager().executeVDB(true, PROJECT_NAME, VDB);
+		Assert.assertTrue(new VDBManager().queryPassed(VDB, TEST_SQL1));
 	}
 }

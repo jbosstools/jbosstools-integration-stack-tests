@@ -11,12 +11,12 @@ public class LinkEventTargetSetUp implements SetUpAble {
 
 	private String targetEventName;
 	private String targetElementEvent;
-	
-	public LinkEventTargetSetUp(String targetEventName,String targetElementEvent) {
+
+	public LinkEventTargetSetUp(String targetEventName, String targetElementEvent) {
 		this.targetEventName = targetEventName;
 		this.targetElementEvent = targetElementEvent;
 	}
-	
+
 	@Override
 	public void setUpCTab() {
 		new DefaultTable(new DefaultSection("Event Definitions")).select(0);

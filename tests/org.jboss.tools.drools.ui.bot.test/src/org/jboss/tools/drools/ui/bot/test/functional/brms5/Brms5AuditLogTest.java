@@ -30,42 +30,42 @@ import org.junit.runner.RunWith;
 @Runtime(type = RuntimeReqType.DROOLS)
 @RunWith(RedDeerSuite.class)
 public class Brms5AuditLogTest extends TestParent {
-	
+
 	@InjectRequirement
 	private RuntimeRequirement droolsRequirement;
 
-    @Test
-    @Category(SmokeTest.class)
-    @UsePerspective(DroolsPerspective.class)
-    @UseDefaultProject
-    @Drools5Runtime
-    public void testDefaultProject() {
-        RunUtility.runAsJavaApplication(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
-        new WaitUntil(new ApplicationIsTerminated());
+	@Test
+	@Category(SmokeTest.class)
+	@UsePerspective(DroolsPerspective.class)
+	@UseDefaultProject
+	@Drools5Runtime
+	public void testDefaultProject() {
+		RunUtility.runAsJavaApplication(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
+		new WaitUntil(new ApplicationIsTerminated());
 
-        PackageExplorer explorer = new PackageExplorer();
-        explorer.open();
-        explorer.getProject(DEFAULT_PROJECT_NAME).select();
+		PackageExplorer explorer = new PackageExplorer();
+		explorer.open();
+		explorer.getProject(DEFAULT_PROJECT_NAME).select();
 
-        new ContextMenu(new RegexMatcher("Refresh.*")).select();
+		new ContextMenu(new RegexMatcher("Refresh.*")).select();
 
-        explorer = new PackageExplorer();
-        explorer.open();
-        explorer.getProject(DEFAULT_PROJECT_NAME).getProjectItem("test.log").select();
+		explorer = new PackageExplorer();
+		explorer.open();
+		explorer.getProject(DEFAULT_PROJECT_NAME).getProjectItem("test.log").select();
 
-        new ContextMenu(new RegexMatcher("Properties.*")).select();
+		new ContextMenu(new RegexMatcher("Properties.*")).select();
 
-        String location = new LabeledText("Location:").getText();
-        new PushButton("Cancel").click();
+		String location = new LabeledText("Location:").getText();
+		new PushButton("Cancel").click();
 
-        AuditView view = new AuditView();
-        view.open();
-        view.openLog(location);
+		AuditView view = new AuditView();
+		view.open();
+		view.openLog(location);
 
-        List<String> events = view.getEvents();
-        Assert.assertEquals("Wrong number of audit log events", 3, events.size());
-        Assert.assertTrue("Wrong event encountered", events.get(0).contains("Object inserted"));
-        Assert.assertTrue("Wrong event encountered", events.get(1).contains("Activation executed"));
-        Assert.assertTrue("Wrong event encountered", events.get(2).contains("Activation executed"));
-    }
+		List<String> events = view.getEvents();
+		Assert.assertEquals("Wrong number of audit log events", 3, events.size());
+		Assert.assertTrue("Wrong event encountered", events.get(0).contains("Object inserted"));
+		Assert.assertTrue("Wrong event encountered", events.get(1).contains("Activation executed"));
+		Assert.assertTrue("Wrong event encountered", events.get(2).contains("Activation executed"));
+	}
 }

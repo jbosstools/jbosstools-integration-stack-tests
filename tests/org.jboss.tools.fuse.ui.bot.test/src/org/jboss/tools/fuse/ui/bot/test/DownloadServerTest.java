@@ -45,7 +45,9 @@ public class DownloadServerTest extends DefaultTest {
 	private static final String INSTALL_FOLDER = "Install folder:";
 
 	/**
-	 * <p>Tries to download a server runtime.</p>
+	 * <p>
+	 * Tries to download a server runtime.
+	 * </p>
 	 * <b>Steps</b>
 	 * <ol>
 	 * <li>open Server Runtimes Preference page</li>
@@ -66,7 +68,8 @@ public class DownloadServerTest extends DefaultTest {
 
 		DefaultLink downloadLink = new DefaultLink(DOWNLOAD_LINK);
 		for (int i = 0; i < 10; i++) {
-			if (downloadLink.isEnabled()) break;
+			if (downloadLink.isEnabled())
+				break;
 			AbstractWait.sleep(TimePeriod.SHORT);
 		}
 		new DefaultLink(DOWNLOAD_LINK).click();
@@ -105,8 +108,8 @@ public class DownloadServerTest extends DefaultTest {
 
 		AbstractWait.sleep(TimePeriod.getCustom(2));
 		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(3600));
- 		AbstractWait.sleep(TimePeriod.getCustom(2));
+		AbstractWait.sleep(TimePeriod.getCustom(2));
 		new PushButton(FINISH_BUTTON).click();
-		assertEquals(1, FuseServerManipulator.getServerRuntimes().size());	
+		assertEquals(1, FuseServerManipulator.getServerRuntimes().size());
 	}
 }

@@ -27,7 +27,6 @@ public class Service extends SwitchYardComponent {
 		getContextButton("Promote Service").click();
 		return new PromoteServiceWizard("Promote Component Service").activate();
 	}
-	
 
 	public PromoteServiceWizard promoteReference() {
 		getContextButton("Promote Reference").click();
@@ -38,12 +37,12 @@ public class Service extends SwitchYardComponent {
 		getContextButton("New Service Test Class").click();
 		return new ServiceTestClassWizard().activate();
 	}
-	
+
 	public void createNewServiceTestClass(String... mixin) {
 		getContextButton("New Service Test Class").click();
 		new ServiceTestClassWizard().activate().selectMixin(mixin).finish();
 	}
-	
+
 	public ServiceTestClassWizard newServiceTestClass() {
 		getContextButton("New Service Test Class").click();
 		return new ServiceTestClassWizard().activate();

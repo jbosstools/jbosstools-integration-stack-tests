@@ -26,18 +26,17 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * Test server management use cases start with -Pprofiles - this will load and
- * install all required servers
+ * Test server management use cases start with -Pprofiles - this will load and install all required servers
  * 
- * @author lfabriko 
+ * @author lfabriko
  */
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
 public class ServerManagementTest extends SWTBotTestCase {
 
-	public static String[] properties = { "dv6.properties", "as5.properties" , "as7.properties"};
+	public static String[] properties = { "dv6.properties", "as5.properties", "as7.properties" };
 
-	public static String[] serverNames = { "EAP-6.1", "AS-5.1" , "AS-7.1"};
+	public static String[] serverNames = { "EAP-6.1", "AS-5.1", "AS-7.1" };
 
 	private static final String PROJECT_NAME = "ServerMgmtTest";
 	private static final String MODEL_NAME = "partssupModel1.xmi";
@@ -45,14 +44,20 @@ public class ServerManagementTest extends SWTBotTestCase {
 	private static final String VDB = "vdb";
 	private static int n = -1;
 	private static final String[] pathToVDB_EAP6 = {
-			"EAP-6.1  [Started, Synchronized]", "Teiid Instance Configuration",
-			"mm://localhost:9999  [default]", "VDBs" };
+		"EAP-6.1  [Started, Synchronized]",
+		"Teiid Instance Configuration",
+		"mm://localhost:9999  [default]",
+		"VDBs" };
 	private static final String[] pathToVDB_AS5 = {
-			"AS-5.1  [Started, Synchronized]", "Teiid Instance Configuration",
-			"mms://localhost:31443  [default]", "VDBs" };
+		"AS-5.1  [Started, Synchronized]",
+		"Teiid Instance Configuration",
+		"mms://localhost:31443  [default]",
+		"VDBs" };
 	private static final String[] pathToVDB_AS7 = {
-		"AS-7.1  [Started, Synchronized]", "Teiid Instance Configuration",
-		"mm://localhost:9999  [default]", "VDBs" };
+		"AS-7.1  [Started, Synchronized]",
+		"Teiid Instance Configuration",
+		"mm://localhost:9999  [default]",
+		"VDBs" };
 
 	private static String SERVER_NOT_CONNECTED = "Server is not connected";
 	private static String TEIID_CONNECTION_FAILURE = "Teiid Connection Failure";
@@ -60,30 +65,26 @@ public class ServerManagementTest extends SWTBotTestCase {
 	private static String EAP6_URL = "mm://localhost:9999::admin (EAP-6.1)";
 	private static String AS5_URL = "mms://localhost:31443::admin (AS-5.1)";
 	private static String AS7_URL = "mm://localhost:9999::admin (AS-7.1)";
-	
+
 	@BeforeClass
 	public static void createModelProject() {
 		/*
-		 * if (System.getProperty("swtbot.PLAYBACK_DELAY") == null) {
-		 * SWTBotPreferences.PLAYBACK_DELAY = 1000; } else {
-		 * SWTBotPreferences.PLAYBACK_DELAY = new Integer(
-		 * System.getProperty("swtbot.PLAYBACK_DELAY"));//
+		 * if (System.getProperty("swtbot.PLAYBACK_DELAY") == null) { SWTBotPreferences.PLAYBACK_DELAY = 1000; } else {
+		 * SWTBotPreferences.PLAYBACK_DELAY = new Integer( System.getProperty("swtbot.PLAYBACK_DELAY"));//
 		 * -Dswtbot.PLAYBACK_DELAY }
 		 */
 
 		// create HSQL profile
 		try {
-			//teiidBot.createHsqlProfile("resources/db/ds1.properties", HSQLDB_PROFILE, true, true);
+			// teiidBot.createHsqlProfile("resources/db/ds1.properties", HSQLDB_PROFILE, true, true);
 			new ConnectionProfileManager().createCPWithDriverDefinition(HSQLDB_PROFILE, "resources/db/ds1.properties");
 		} catch (Exception ex) {
 			// redo manually
 		}
 		try {
-			new ImportProjectWizard("resources/projects/ServerMgmtTest.zip")
-					.execute(); // incorrect connection profile
+			new ImportProjectWizard("resources/projects/ServerMgmtTest.zip").execute(); // incorrect connection profile
 			// set connection profile
-			new ModelExplorer().changeConnectionProfile(HSQLDB_PROFILE,
-					PROJECT_NAME, MODEL_NAME);
+			new ModelExplorer().changeConnectionProfile(HSQLDB_PROFILE, PROJECT_NAME, MODEL_NAME);
 		} catch (Exception ex) {
 			// redo manually
 		}
@@ -127,8 +128,8 @@ public class ServerManagementTest extends SWTBotTestCase {
 			for (int i = 0; i < properties.length; i++) {
 				// TODO: Don't use properties anymore!
 				// TeiidSuite.addServerWithProperties(properties[i]);// define
-																	// AS-5,
-																	// EAP-6.1
+				// AS-5,
+				// EAP-6.1
 			}
 		} catch (Exception ex) {
 			// redo manually
@@ -157,7 +158,7 @@ public class ServerManagementTest extends SWTBotTestCase {
 	/**
 	 * Servers both defined and started
 	 */
-	
+
 	/**
 	 * DV 6
 	 */
@@ -183,8 +184,7 @@ public class ServerManagementTest extends SWTBotTestCase {
 			assertTrue(canCreateVDB(VDB + n, MODEL_NAME));
 
 			// deploy VDB - pass
-			assertTrue(canDeployVDB(null, VDB + n,
-					createPathToVDB(VDB + n, pathToVDB_EAP6)));
+			assertTrue(canDeployVDB(null, VDB + n, createPathToVDB(VDB + n, pathToVDB_EAP6)));
 
 			// execute VDB - pass
 			assertTrue(canExecuteVDB(null, VDB + n, TEST_SQL1));
@@ -200,12 +200,12 @@ public class ServerManagementTest extends SWTBotTestCase {
 			// redo manually
 		}
 	}
-	
+
 	/**
 	 * AS 5
 	 */
 	@Test
-	public void test05(){
+	public void test05() {
 		TeiidInstanceView teiidInstanceView = new TeiidInstanceView(true);
 		// server AS-5
 		try {
@@ -228,8 +228,7 @@ public class ServerManagementTest extends SWTBotTestCase {
 			assertTrue(canCreateVDB(VDB + n, MODEL_NAME));
 
 			// deploy VDB - pass
-			assertTrue(canDeployVDB(null, VDB + n,
-					createPathToVDB(VDB + n, pathToVDB_AS5)));
+			assertTrue(canDeployVDB(null, VDB + n, createPathToVDB(VDB + n, pathToVDB_AS5)));
 
 			// execute vdb - pass
 			assertTrue(canExecuteVDB(null, VDB + n, TEST_SQL1));
@@ -244,12 +243,12 @@ public class ServerManagementTest extends SWTBotTestCase {
 			// redo manually
 		}
 	}
-	
+
 	/**
 	 * AS 7
 	 */
 	@Test
-	public void test06(){
+	public void test06() {
 		TeiidInstanceView teiidInstanceView = new TeiidInstanceView(true);
 		// server AS-7
 		try {
@@ -269,8 +268,7 @@ public class ServerManagementTest extends SWTBotTestCase {
 			assertTrue(canCreateVDB(VDB + n, MODEL_NAME));
 
 			// deploy VDB - pass
-			assertTrue(canDeployVDB(null, VDB + n,
-					createPathToVDB(VDB + n, pathToVDB_AS7)));
+			assertTrue(canDeployVDB(null, VDB + n, createPathToVDB(VDB + n, pathToVDB_AS7)));
 
 			// execute vdb - pass
 			assertTrue(canExecuteVDB(null, VDB + n, TEST_SQL1));
@@ -295,10 +293,11 @@ public class ServerManagementTest extends SWTBotTestCase {
 			bot.activeShell().close();
 			return false;
 		} else {
-			//new GuidesView().previewData(true, PROJECT_NAME, MODEL_NAME,tableName);
-			new GuidesView().previewData(PROJECT_NAME, MODEL_NAME,tableName);
-			SQLResult result = DatabaseDevelopmentPerspective.getInstance()
-					.getSqlResultsView().getByOperation(TEST_SQL1);// "select * from \""+MODEL_NAME.substring(0,MODEL_NAME.indexOf("."))+"\".\""+tableName+"\""
+			// new GuidesView().previewData(true, PROJECT_NAME, MODEL_NAME,tableName);
+			new GuidesView().previewData(PROJECT_NAME, MODEL_NAME, tableName);
+			SQLResult result = DatabaseDevelopmentPerspective.getInstance().getSqlResultsView()
+					.getByOperation(TEST_SQL1);// "select * from
+												// \""+MODEL_NAME.substring(0,MODEL_NAME.indexOf("."))+"\".\""+tableName+"\""
 			assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
 			return true;
 		}
@@ -316,14 +315,11 @@ public class ServerManagementTest extends SWTBotTestCase {
 		editor.save();
 
 		// check if VDB is in project
-		return new PackageExplorer().getProject(PROJECT_NAME).containsItem(
-				vdb + ".vdb");
+		return new PackageExplorer().getProject(PROJECT_NAME).containsItem(vdb + ".vdb");
 	}
 
-	private boolean canDeployVDB(String message, String vdb,
-			String... pathToVDB) {
-		VDB vdbItem = new ModelExplorer().getModelProject(PROJECT_NAME).getVDB(
-				vdb + ".vdb");
+	private boolean canDeployVDB(String message, String vdb, String... pathToVDB) {
+		VDB vdbItem = new ModelExplorer().getModelProject(PROJECT_NAME).getVDB(vdb + ".vdb");
 		vdbItem.deployVDB();
 		if (message != null) {
 			assertEquals(bot.activeShell().getText(), message);
@@ -337,8 +333,7 @@ public class ServerManagementTest extends SWTBotTestCase {
 	}
 
 	private boolean canExecuteVDB(String message, String vdbName, String sql) {
-		VDB vdb = new ModelExplorer().getModelProject(PROJECT_NAME).getVDB(
-				vdbName + ".vdb");
+		VDB vdb = new ModelExplorer().getModelProject(PROJECT_NAME).getVDB(vdbName + ".vdb");
 
 		if (message != null) {
 			new GuidesView().chooseAction("Model JDBC Source", "Execute VDB");// just
@@ -366,8 +361,7 @@ public class ServerManagementTest extends SWTBotTestCase {
 
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 
-		SQLResult result = DatabaseDevelopmentPerspective.getInstance()
-				.getSqlResultsView().getByOperation(sql);
+		SQLResult result = DatabaseDevelopmentPerspective.getInstance().getSqlResultsView().getByOperation(sql);
 		assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
 
 		editor.close();

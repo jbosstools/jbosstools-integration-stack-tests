@@ -25,11 +25,11 @@ public class SendTask extends Task {
 	public SendTask(String name) {
 		super(name, ElementType.SEND_TASK);
 	}
-	
+
 	public SendTask(Element element) {
 		super(element);
 	}
-	
+
 	/**
 	 * 
 	 * @param implementationUri
@@ -37,22 +37,23 @@ public class SendTask extends Task {
 	public void setImplementation(String implementationUri) {
 		propertiesHandler.setUp(new ComboSetUp(PropertiesTabs.SEND_TASK_TAB, "Implementation", implementationUri));
 	}
-	
+
 	/**
 	 * 
 	 * @param operation
 	 */
 	public void setOperation(String operationContractName, Message inMessage, Message outMessage, ErrorRef errorRef) {
-	    propertiesHandler.setUp(new OperationSetUp(PropertiesTabs.SEND_TASK_TAB, operationContractName, inMessage, outMessage, errorRef));
+		propertiesHandler.setUp(new OperationSetUp(PropertiesTabs.SEND_TASK_TAB, operationContractName, inMessage,
+				outMessage, errorRef));
 	}
-	
+
 	/**
 	 * 
 	 * @param name
 	 * @param dataType
 	 */
 	public void setMessage(String name, String dataType) {
-		propertiesHandler.setUp(new ComboSetUp(PropertiesTabs.SEND_TASK_TAB, "Message", name+"("+dataType+")"));
+		propertiesHandler.setUp(new ComboSetUp(PropertiesTabs.SEND_TASK_TAB, "Message", name + "(" + dataType + ")"));
 	}
 
 	/**

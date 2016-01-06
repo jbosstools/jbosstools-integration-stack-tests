@@ -91,7 +91,8 @@ public class DefaultTest {
 
 		log.info("Save editor");
 		try {
-			new DefaultToolItem(new WorkbenchShell(), 0, new WithTooltipTextMatcher(new RegexMatcher("Save All.*"))).click();
+			new DefaultToolItem(new WorkbenchShell(), 0, new WithTooltipTextMatcher(new RegexMatcher("Save All.*")))
+					.click();
 		} catch (Exception e) {
 			log.info("Nothing to save");
 		}
@@ -104,7 +105,7 @@ public class DefaultTest {
 	public static void defaultFinalClean() {
 
 		new WorkbenchShell();
-		
+
 		log.info("Deleting all projects");
 		ProjectFactory.deleteAllProjects();
 
@@ -125,7 +126,8 @@ public class DefaultTest {
 		ErrorLogView errorLog = new ErrorLogView();
 		List<LogMessage> messages = errorLog.getErrorMessages();
 		for (LogMessage message : messages) {
-			if (message.getPlugin().toLowerCase().contains("fuse")) count++;
+			if (message.getPlugin().toLowerCase().contains("fuse"))
+				count++;
 		}
 		return count;
 	}

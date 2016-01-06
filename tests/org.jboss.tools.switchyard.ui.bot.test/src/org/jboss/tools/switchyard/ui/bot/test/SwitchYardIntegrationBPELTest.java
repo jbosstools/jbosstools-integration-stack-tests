@@ -97,14 +97,16 @@ public class SwitchYardIntegrationBPELTest {
 
 		Assign assign = new Sequence("MainSequence").addAssign("Assign");
 		assign.addExpToVar("concat('Hello ', $sayHelloRequest.parameters/ns:string)", new String[] {
-				"sayHelloResponse : sayHelloResponse", "parameters : sayHelloResponse", "string : string" });
+			"sayHelloResponse : sayHelloResponse",
+			"parameters : sayHelloResponse",
+			"string : string" });
 
 		Reply reply = new Sequence("MainSequence").addReply("Reply");
 		reply.pickOperation("sayHello");
 
 		bpelEditor.save();
 		System.out.println();
-		
+
 		ProjectExplorer projectExplorer = new ProjectExplorer();
 		projectExplorer.open();
 		ProjectItem item = projectExplorer.getProject(PROJECT).getProjectItem("pom.xml");

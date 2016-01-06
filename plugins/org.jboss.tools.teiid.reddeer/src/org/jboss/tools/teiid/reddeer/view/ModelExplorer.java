@@ -34,16 +34,15 @@ import org.jboss.tools.teiid.reddeer.wizard.ModelProjectWizard;
 public class ModelExplorer extends AbstractExplorer {
 
 	private static String CONNECTION_PROFILE_CHANGE = "Confirm Connection Profile Change";
-	
 
 	private static final String MODELING_MENU_ITEM = "Modeling";
 	private static final String CREATE_DATA_SOURCE = "Create Data Source";
-	
+
 	public static class ConnectionSourceType {
 		public static final String USE_MODEL_CONNECTION_INFO = "Use Model Connection Info";
 		public static final String USE_CONNECTION_PROFILE_INFO = "Use Connection Profile Info";
 	}
-	
+
 	public ModelExplorer() {
 		super("Model Explorer");
 	}
@@ -69,11 +68,11 @@ public class ModelExplorer extends AbstractExplorer {
 	public ModelProject getModelProject(String modelName) {
 		return new ModelProject(getProject(modelName));
 	}
-	
-	public void changeConnectionProfile(String connectionProfile, String projectName, String... projectItem){
-		//if no extension specified, add .xmi
-		if (! projectItem[projectItem.length -1].contains(".")){
-			projectItem[projectItem.length -1] = projectItem[projectItem.length -1].concat(".xmi");
+
+	public void changeConnectionProfile(String connectionProfile, String projectName, String... projectItem) {
+		// if no extension specified, add .xmi
+		if (!projectItem[projectItem.length - 1].contains(".")) {
+			projectItem[projectItem.length - 1] = projectItem[projectItem.length - 1].concat(".xmi");
 		}
 		new DefaultShell();
 		new ModelExplorer().getProject(projectName).getProjectItem(projectItem).select();
@@ -98,36 +97,38 @@ public class ModelExplorer extends AbstractExplorer {
 		new LabeledText("Name").setText(tableName);
 		new PushButton("OK").click();
 	}
-	
+
 	/**
 	 * Create new (base) table in view model
+	 * 
 	 * @param project
 	 * @param model
 	 * @param tableName
-	 * @param baseTable true if context menu contains "Base Table"
+	 * @param baseTable
+	 *            true if context menu contains "Base Table"
 	 */
 	public void newBaseTable(String project, String model, String tableName, boolean baseTable) {
 		open();
 
 		new DefaultTreeItem(project, model).select();
-		if (baseTable){
+		if (baseTable) {
 			new ContextMenu("New Child", "Base Table...").select();
 		} else {
 			new ContextMenu("New Child", "Table...").select();
 		}
-		
+
 		new DefaultShell("Create Relational View Table");
 		new LabeledText("Name").setText(tableName);
 		new PushButton("OK").click();
 	}
-	
-	public void newTable(String tableName, Table.Type type, Properties props, String... pathToModelXmi){
+
+	public void newTable(String tableName, Table.Type type, Properties props, String... pathToModelXmi) {
 		open();
 
 		new DefaultTreeItem(pathToModelXmi).select();
 		new ContextMenu("New Child", "Table...").select();
 		new Table().create(type, tableName, props);
-		new ModelEditor(pathToModelXmi[pathToModelXmi.length - 1]).save();//the last member is modelXmi
+		new ModelEditor(pathToModelXmi[pathToModelXmi.length - 1]).save();// the last member is modelXmi
 	}
 
 	public Procedure newProcedure(String project, String model, String procedure) {
@@ -139,28 +140,27 @@ public class ModelExplorer extends AbstractExplorer {
 
 		return new Procedure(project, model, procedure);
 	}
-	
+
 	public Procedure newProcedure(String project, String model, String procedure, boolean procedureNotFunction) {
 		open();
 
 		new DefaultTreeItem(project, model).select();
 		new ContextMenu("New Child", "Procedure...").select();
 		new DefaultShell("Select Procedure Type");
-		
-		if (procedureNotFunction){
-			//Procedure?/(Function) - OK
+
+		if (procedureNotFunction) {
+			// Procedure?/(Function) - OK
 			new PushButton("OK").click();
 		}
-		
+
 		new DefaultShell("Create Relational View Procedure");
 		new LabeledText("Name").setText(procedure);
 		new PushButton("OK").click();
 		new WaitWhile(new ShellWithTextIsAvailable("Create Relational View Procedure"));
-		
+
 		return new Procedure(project, model, procedure);
 	}
-	
-	
+
 	public void newProcedure(String project, String modelXmi, String procedure, Properties props) {
 
 		open();
@@ -168,14 +168,14 @@ public class ModelExplorer extends AbstractExplorer {
 		new DefaultTreeItem(project, modelXmi).select();
 		new ContextMenu("New Child", "Procedure...").select();
 		new DefaultShell("Select Procedure Type");
-		
+
 		new Procedure().create(procedure, props);
 		new ModelEditor(modelXmi).save();
 	}
 
 	public void addTransformationSource(String project, String model, String tableName) {
 
-		open();		
+		open();
 		getProject(project).getProjectItem(model, tableName).select();
 	}
 
@@ -200,8 +200,6 @@ public class ModelExplorer extends AbstractExplorer {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
-	
-	
 	@Override
 	public void open() {
 		super.open();
@@ -219,29 +217,30 @@ public class ModelExplorer extends AbstractExplorer {
 
 		getProject(project).getProjectItem(filePath).getChild("Transformation Diagram").open();
 	}
-	
-	public void createDataSource(String connectionSourceType, String connectionProfile, String... pathToSourceModel){
+
+	public void createDataSource(String connectionSourceType, String connectionProfile, String... pathToSourceModel) {
 		open();
-		//if last without ., set to .xmi
-		if (! pathToSourceModel[pathToSourceModel.length-1].contains(".")){
-			pathToSourceModel[pathToSourceModel.length-1] = pathToSourceModel[pathToSourceModel.length-1].concat(".xmi");
+		// if last without ., set to .xmi
+		if (!pathToSourceModel[pathToSourceModel.length - 1].contains(".")) {
+			pathToSourceModel[pathToSourceModel.length - 1] = pathToSourceModel[pathToSourceModel.length - 1]
+					.concat(".xmi");
 		}
 		new WorkbenchShell();
 		new DefaultTreeItem(pathToSourceModel).select();
 		new ContextMenu(MODELING_MENU_ITEM, CREATE_DATA_SOURCE).select();
-		//wait until radio button is enabled
+		// wait until radio button is enabled
 		new WaitUntil(new RadioButtonEnabled(connectionSourceType), TimePeriod.NORMAL);
 		new RadioButton(connectionSourceType).click();
-		//in case of connection profile -> choose connection profile
-		if (connectionSourceType.toString().equals(ConnectionSourceType.USE_CONNECTION_PROFILE_INFO)){
+		// in case of connection profile -> choose connection profile
+		if (connectionSourceType.toString().equals(ConnectionSourceType.USE_CONNECTION_PROFILE_INFO)) {
 			new DefaultCombo(1).setSelection(connectionProfile);
 		}
-		if (! new PushButton("OK").isEnabled()){
-			System.err.println("Datasource " + pathToSourceModel[pathToSourceModel.length-1] + "exists!");
+		if (!new PushButton("OK").isEnabled()) {
+			System.err.println("Datasource " + pathToSourceModel[pathToSourceModel.length - 1] + "exists!");
 			new PushButton("Cancel").click();
 		} else {
 			new PushButton("OK").click();
 		}
-		
+
 	}
 }

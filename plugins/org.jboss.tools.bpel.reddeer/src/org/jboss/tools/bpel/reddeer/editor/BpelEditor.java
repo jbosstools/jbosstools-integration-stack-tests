@@ -21,7 +21,7 @@ import org.jboss.reddeer.swt.api.TreeItem;
 public class BpelEditor extends GEFEditor {
 
 	private Logger log = Logger.getLogger(BpelEditor.class);
-	
+
 	protected File sourceFile;
 
 	public BpelEditor() {
@@ -77,11 +77,11 @@ public class BpelEditor extends GEFEditor {
 	public void addVariable() {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	public Variable getVariable(String variableName) {
 		OutlineView outlineView = new OutlineView();
 		outlineView.open();
-		for (TreeItem treeItem :outlineView.outlineElements()) {
+		for (TreeItem treeItem : outlineView.outlineElements()) {
 			if ("Variables".equals(treeItem.getText())) {
 				for (TreeItem variableItem : treeItem.getItems()) {
 					if (variableItem.getText().equals(variableName)) {
@@ -97,7 +97,7 @@ public class BpelEditor extends GEFEditor {
 		throw new UnsupportedOperationException();
 
 	}
-	
+
 	public void debug() {
 		try {
 			getVariable("sayHelloRequest").setType("Messages", "sayHello");

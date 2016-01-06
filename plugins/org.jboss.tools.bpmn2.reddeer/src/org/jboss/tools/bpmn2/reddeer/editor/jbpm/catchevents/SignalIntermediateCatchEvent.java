@@ -19,20 +19,20 @@ public class SignalIntermediateCatchEvent extends IntermediateCatchEvent {
 	public SignalIntermediateCatchEvent(String name) {
 		super(name, ElementType.SIGNAL_INTERMEDIATE_CATCH_EVENT);
 	}
-	
+
 	public SignalIntermediateCatchEvent(Element element) {
 		super(element);
 	}
-	
+
 	/**
 	 * 
 	 * @param signal
 	 * @param variable
 	 */
 	public void setSignalMapping(Signal signal, String targetVariable) {
-		propertiesHandler.setUp(new EventDefinitionSetUp(new SignalEventDefinition(signal, targetVariable, Type.TARGET)));
+		propertiesHandler
+				.setUp(new EventDefinitionSetUp(new SignalEventDefinition(signal, targetVariable, Type.TARGET)));
 		refresh();
 	}
-	
-	
+
 }

@@ -277,7 +277,7 @@ public class FuseServerManipulator {
 			return;
 		}
 
-		// Maybe there is nothing  to remove
+		// Maybe there is nothing to remove
 		try {
 			new WaitUntil(new ShellWithTextIsAvailable("Server"));
 			new PushButton("OK").click();
@@ -357,8 +357,8 @@ public class FuseServerManipulator {
 	}
 
 	/**
-	 * If stopping a server takes a long time, <i>Terminate Server</i> window is
-	 * appeared. This method tries to close the window.
+	 * If stopping a server takes a long time, <i>Terminate Server</i> window is appeared. This method tries to close
+	 * the window.
 	 */
 	private static void hack_General_CloseServerTerminateWindow() {
 

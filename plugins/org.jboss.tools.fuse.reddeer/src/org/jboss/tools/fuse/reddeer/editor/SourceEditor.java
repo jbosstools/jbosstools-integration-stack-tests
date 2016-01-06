@@ -15,7 +15,8 @@ public class SourceEditor extends DefaultEditor {
 	/**
 	 * Sets position of the cursor to the specified position
 	 * 
-	 * @param position position in the editor
+	 * @param position
+	 *            position in the editor
 	 */
 	public void setCursorPosition(int position) {
 
@@ -25,7 +26,8 @@ public class SourceEditor extends DefaultEditor {
 	/**
 	 * Inserts given text on the cursor position
 	 * 
-	 * @param text text to be inserted
+	 * @param text
+	 *            text to be inserted
 	 */
 	public void insertTest(String text) {
 

@@ -52,7 +52,7 @@ public class SWTBotGefFigure {
 
 		log.info("Figure relative level:" + level);
 		log.info("Figure clas:" + figure.getClass()); //$NON-NLS-1$
-		log.info("Figure bounds:" + rect.x + "," + rect.y + "," + (rect.x + rect.width) + "," + (rect.y + rect.height)); //$NON-NLS //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		log.info("Figure bounds:" + rect.x + "," + rect.y + "," + (rect.x + rect.width) + "," + (rect.y + rect.height)); // $NON-NLS //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
 		if (figure instanceof Label) {
 			Label label = (Label) figure;

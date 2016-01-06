@@ -12,14 +12,13 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(RedDeerSuite.class)
 @SuiteClasses({
-    // Kie Navigator tests
+	// Kie Navigator tests
 	OpenKieNavigatorTest.class,
-    CloneRepoTest.class,
-    CreateItemsRestTest.class,
-    CreateItemsTest.class,
-    RepositoryManipulationTest.class,
-    ServerConnectionTest.class
-})
+	CloneRepoTest.class,
+	CreateItemsRestTest.class,
+	CreateItemsTest.class,
+	RepositoryManipulationTest.class,
+	ServerConnectionTest.class })
 public class KieNavigatorTestSuite {
 
 }

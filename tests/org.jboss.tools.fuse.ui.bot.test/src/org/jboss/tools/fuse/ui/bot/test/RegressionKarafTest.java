@@ -51,8 +51,11 @@ public class RegressionKarafTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>JMX Node in servers view doesn't work if server has secured JMX access via credentials</p>
-	 * <b>Link: </b><a href="https://issues.jboss.org/browse/FUSETOOLS-1264">https://issues.jboss.org/browse/FUSETOOLS-1264</a>
+	 * <p>
+	 * JMX Node in servers view doesn't work if server has secured JMX access via credentials
+	 * </p>
+	 * <b>Link: </b>
+	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-1264">https://issues.jboss.org/browse/FUSETOOLS-1264</a>
 	 */
 	@Test
 	public void issue_1264() {

@@ -33,13 +33,13 @@ import org.xml.sax.SAXParseException;
 public class BPMN2Validator {
 
 	private static final Logger log = Logger.getLogger(BPMN2Validator.class);
-	
+
 	protected final List<String> warningList;
 	protected final List<String> errorList;
 	protected final List<String> fatalErrorList;
-	
+
 	protected List<Source> schemaList;
-	
+
 	/**
 	 * 
 	 */
@@ -47,11 +47,11 @@ public class BPMN2Validator {
 		warningList = new ArrayList<String>();
 		errorList = new ArrayList<String>();
 		fatalErrorList = new ArrayList<String>();
-		
+
 		schemaList = new ArrayList<Source>();
 		schemaList.add(new StreamSource(getResourceAbsolutePath(Activator.PLUGIN_ID, "resources/bpmn2/BPMN20.xsd")));
 	}
-	
+
 	/**
 	 * 
 	 * @param xmlFile
@@ -73,10 +73,10 @@ public class BPMN2Validator {
 				log.error(e.getMessage());
 			}
 		}
-		
+
 		return validate(content);
 	}
-	
+
 	/**
 	 * 
 	 * @param xmlContent
@@ -84,8 +84,8 @@ public class BPMN2Validator {
 	 */
 	public boolean validate(String xml) {
 		try {
-			Source[] sa = schemaList.toArray(new Source[schemaList.size()]); 
-			
+			Source[] sa = schemaList.toArray(new Source[schemaList.size()]);
+
 			SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 			Schema s = sf.newSchema(sa);
 
@@ -93,17 +93,20 @@ public class BPMN2Validator {
 			v.setErrorHandler(new ErrorHandler());
 			v.validate(new StreamSource(new ByteArrayInputStream(xml.getBytes())));
 
-			if (!fatalErrorList.isEmpty()) logIssues(Level.FATAL, fatalErrorList.size() + " Fatal Errors:", fatalErrorList);
-			if (!errorList.isEmpty()) logIssues(Level.ERROR, errorList.size() + " Errors:", errorList);
-			if (!warningList.isEmpty()) logIssues(Level.WARN, warningList.size() + " Warnings:", warningList);
-			
+			if (!fatalErrorList.isEmpty())
+				logIssues(Level.FATAL, fatalErrorList.size() + " Fatal Errors:", fatalErrorList);
+			if (!errorList.isEmpty())
+				logIssues(Level.ERROR, errorList.size() + " Errors:", errorList);
+			if (!warningList.isEmpty())
+				logIssues(Level.WARN, warningList.size() + " Warnings:", warningList);
+
 			return errorList.isEmpty() && fatalErrorList.isEmpty();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -111,7 +114,7 @@ public class BPMN2Validator {
 	public List<String> getWarningList() {
 		return warningList;
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -119,7 +122,7 @@ public class BPMN2Validator {
 	public List<String> getErrorList() {
 		return errorList;
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -127,7 +130,7 @@ public class BPMN2Validator {
 	public List<String> getFatalErrorList() {
 		return fatalErrorList;
 	}
-	
+
 	/**
 	 * 
 	 * @param stringList
@@ -138,9 +141,9 @@ public class BPMN2Validator {
 			log.log(level, "\t" + s);
 		}
 	}
-	
+
 	/**
-	 * Error handler. 
+	 * Error handler.
 	 */
 	private class ErrorHandler implements org.xml.sax.ErrorHandler {
 
@@ -149,7 +152,7 @@ public class BPMN2Validator {
 			errorList.clear();
 			fatalErrorList.clear();
 		}
-		
+
 		public void warning(SAXParseException e) throws SAXException {
 			warningList.add(format(e));
 		}
@@ -161,17 +164,20 @@ public class BPMN2Validator {
 		public void fatalError(SAXParseException e) throws SAXException {
 			fatalErrorList.add(format(e));
 		}
-		
+
 		private String format(SAXParseException e) {
 			return e.getLineNumber() + ":" + e.getColumnNumber() + " - " + e.getMessage();
 		}
-		
+
 	}
-	
+
 	/**
 	 * Provide bundle resource absolute path
-	 * @param pluginId - plugin id
-	 * @param path - resource relative path
+	 * 
+	 * @param pluginId
+	 *            - plugin id
+	 * @param path
+	 *            - resource relative path
 	 * @return resource absolute path
 	 */
 	private static String getResourceAbsolutePath(String pluginId, String... path) {
@@ -184,18 +190,16 @@ public class BPMN2Validator {
 
 		String filePath = "";
 		try {
-			filePath = FileLocator.toFileURL(
-					Platform.getBundle(pluginId).getEntry("/")).getFile()
-					+ "resources" + builder.toString();
+			filePath = FileLocator.toFileURL(Platform.getBundle(pluginId).getEntry("/")).getFile() + "resources"
+					+ builder.toString();
 			File file = new File(filePath);
 			if (!file.isFile()) {
-				filePath = FileLocator.toFileURL(
-						Platform.getBundle(pluginId).getEntry("/")).getFile()
+				filePath = FileLocator.toFileURL(Platform.getBundle(pluginId).getEntry("/")).getFile()
 						+ builder.toString();
 			}
 		} catch (IOException ex) {
 			String message = filePath + " resource file not found";
-			//log.error(message);
+			// log.error(message);
 			fail(message);
 		}
 

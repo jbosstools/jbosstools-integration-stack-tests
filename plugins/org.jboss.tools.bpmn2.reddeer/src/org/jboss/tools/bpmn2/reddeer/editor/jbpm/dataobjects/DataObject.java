@@ -19,7 +19,7 @@ public class DataObject extends Element {
 	public DataObject(String name) {
 		super(name, ElementType.DATA_OBJECT);
 	}
-	
+
 	public DataObject(Element element) {
 		super(element);
 	}
@@ -33,7 +33,8 @@ public class DataObject extends Element {
 	}
 
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.Element#append(java.lang.String, org.jboss.tools.bpmn2.reddeer.editor.ElementType)
+	 * @see org.jboss.tools.bpmn2.reddeer.editor.Element#append(java.lang.String,
+	 *      org.jboss.tools.bpmn2.reddeer.editor.ElementType)
 	 */
 	@Override
 	public Element append(String name, ElementType constructType) {
@@ -41,7 +42,8 @@ public class DataObject extends Element {
 	}
 
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.Element#append(java.lang.String, org.jboss.tools.bpmn2.reddeer.editor.ElementType, org.jboss.tools.bpmn2.reddeer.editor.Position)
+	 * @see org.jboss.tools.bpmn2.reddeer.editor.Element#append(java.lang.String,
+	 *      org.jboss.tools.bpmn2.reddeer.editor.ElementType, org.jboss.tools.bpmn2.reddeer.editor.Position)
 	 */
 	@Override
 	public Element append(String name, ElementType constructType, Position position) {
@@ -49,7 +51,8 @@ public class DataObject extends Element {
 	}
 
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.Element#append(java.lang.String, org.jboss.tools.bpmn2.reddeer.editor.ElementType, org.jboss.tools.bpmn2.reddeer.editor.ConnectionType)
+	 * @see org.jboss.tools.bpmn2.reddeer.editor.Element#append(java.lang.String,
+	 *      org.jboss.tools.bpmn2.reddeer.editor.ElementType, org.jboss.tools.bpmn2.reddeer.editor.ConnectionType)
 	 */
 	@Override
 	public Element append(String name, ElementType constructType, ConnectionType connectionType) {
@@ -57,10 +60,13 @@ public class DataObject extends Element {
 	}
 
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.Element#append(java.lang.String, org.jboss.tools.bpmn2.reddeer.editor.ElementType, org.jboss.tools.bpmn2.reddeer.editor.ConnectionType, org.jboss.tools.bpmn2.reddeer.editor.Position)
+	 * @see org.jboss.tools.bpmn2.reddeer.editor.Element#append(java.lang.String,
+	 *      org.jboss.tools.bpmn2.reddeer.editor.ElementType, org.jboss.tools.bpmn2.reddeer.editor.ConnectionType,
+	 *      org.jboss.tools.bpmn2.reddeer.editor.Position)
 	 */
 	@Override
-	public Element append(String name, ElementType constructType, ConnectionType connectionType, Position relativePosition) {
+	public Element append(String name, ElementType constructType, ConnectionType connectionType,
+			Position relativePosition) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -73,7 +79,8 @@ public class DataObject extends Element {
 	}
 
 	/**
-	 * @see org.jboss.tools.bpmn2.reddeer.editor.Element#connectTo(org.jboss.tools.bpmn2.reddeer.editor.Element, org.jboss.tools.bpmn2.reddeer.editor.ConnectionType)
+	 * @see org.jboss.tools.bpmn2.reddeer.editor.Element#connectTo(org.jboss.tools.bpmn2.reddeer.editor.Element,
+	 *      org.jboss.tools.bpmn2.reddeer.editor.ConnectionType)
 	 */
 	@Override
 	public void connectTo(Element construct, ConnectionType connectionType) {
@@ -82,5 +89,5 @@ public class DataObject extends Element {
 		}
 		super.connectTo(construct, connectionType);
 	}
-	
+
 }

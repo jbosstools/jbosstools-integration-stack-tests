@@ -22,14 +22,15 @@ public class EscalationBoundaryEvent extends BoundaryEvent {
 	public EscalationBoundaryEvent(Element element) {
 		super(element);
 	}
-	
+
 	/**
 	 * 
 	 * @param escalation
 	 */
 	public void setEscalation(Escalation escalation, String variableForMapping) {
-		propertiesHandler.setUp(new EventDefinitionSetUp(new EscalationEventDefinition(escalation, variableForMapping, "Target")));
+		propertiesHandler.setUp(
+				new EventDefinitionSetUp(new EscalationEventDefinition(escalation, variableForMapping, "Target")));
 		refresh();
 	}
-	
+
 }

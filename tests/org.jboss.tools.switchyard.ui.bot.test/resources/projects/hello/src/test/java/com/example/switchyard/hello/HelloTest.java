@@ -13,17 +13,19 @@ import org.switchyard.test.SwitchYardRunner;
 import org.switchyard.test.SwitchYardTestCaseConfig;
 
 @RunWith(SwitchYardRunner.class)
-@SwitchYardTestCaseConfig(config = SwitchYardTestCaseConfig.SWITCHYARD_XML, mixins = { CDIMixIn.class, HTTPMixIn.class })
+@SwitchYardTestCaseConfig(config = SwitchYardTestCaseConfig.SWITCHYARD_XML, mixins = {
+	CDIMixIn.class,
+	HTTPMixIn.class })
 public class HelloTest {
 
-    @ServiceOperation("Hello")
-    private Invoker service;
+	@ServiceOperation("Hello")
+	private Invoker service;
 
 	@BeforeDeploy
 	public void setProperties() {
 		System.setProperty("org.switchyard.component.http.standalone.port", "8081");
 	}
-	
+
 	@Test
 	public void testSayHello() throws Exception {
 		String result = service.operation("sayHello").sendInOut("Johnny Cash").getContent(String.class);

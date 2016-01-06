@@ -64,13 +64,15 @@ public class HSQLDBProfileWizard extends ConnectionProfileWizard {
 		new CheckBox("Save password").click();
 		finish();
 	}
-	
+
 	/**
 	 * Create new HSQLDB profile via Preferences page
-	 * @param setLockFalse set JDBC URL property hsqldb.lock_file=false - disable creating locks on database
+	 * 
+	 * @param setLockFalse
+	 *            set JDBC URL property hsqldb.lock_file=false - disable creating locks on database
 	 */
-	public void create(boolean setLocksFalse){
-		if (setLocksFalse){
+	public void create(boolean setLocksFalse) {
+		if (setLocksFalse) {
 			open();
 			new DefaultTable().select("Generic JDBC");
 			new LabeledText("Name:").setText(name);

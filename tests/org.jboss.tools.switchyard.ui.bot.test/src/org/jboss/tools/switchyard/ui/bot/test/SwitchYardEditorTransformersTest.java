@@ -63,8 +63,8 @@ public class SwitchYardEditorTransformersTest {
 				"Service2.java");
 
 		new SwitchYardProject(PROJECT).getProjectItem("src/main/resources").select();
-		new ImportFileWizard()
-				.importFile("resources/" + PROJECT, "Service1.wsdl", "Service2.wsdl", DOZER_FILE_EXISTING);
+		new ImportFileWizard().importFile("resources/" + PROJECT, "Service1.wsdl", "Service2.wsdl",
+				DOZER_FILE_EXISTING);
 	}
 
 	@After
@@ -86,7 +86,7 @@ public class SwitchYardEditorTransformersTest {
 		}
 		try {
 			new SwitchYardProject(PROJECT).getClass(PACKAGE, SERVICE2_IMPL + ".java").delete();
-		} catch (EclipseLayerException|CoreLayerException e) {
+		} catch (EclipseLayerException | CoreLayerException e) {
 			// ok
 		}
 		new SwitchYardEditor().save();
@@ -111,19 +111,15 @@ public class SwitchYardEditorTransformersTest {
 		assertArraySize(0, transformersWizard.getDozerFileOptionsLST().getListItems());
 		transformersWizard.newDozerFile(DOZER_FILE_NEW);
 		assertArraySize(1, transformersWizard.getDozerFileOptionsLST().getListItems());
-		assertEquals("/" + PROJECT + "/src/main/resources/" + DOZER_FILE_NEW, transformersWizard
-				.getDozerFileOptionsLST().getListItems()[0]);
+		assertEquals("/" + PROJECT + "/src/main/resources/" + DOZER_FILE_NEW,
+				transformersWizard.getDozerFileOptionsLST().getListItems()[0]);
 		transformersWizard.finish();
 
 		editor.save();
-		assertEquals(
-				DOZER_FILE_NEW,
-				editor.xpath("/switchyard/transforms/transform.dozer[@from='" + OBJECT1_URI + "' and @to='"
-						+ OBJECT2_URI + "']/mappingFiles/entry[1]/@file"));
-		assertEquals(
-				DOZER_FILE_NEW,
-				editor.xpath("/switchyard/transforms/transform.dozer[@from='" + OBJECT2_URI + "' and @to='"
-						+ OBJECT1_URI + "']/mappingFiles/entry[1]/@file"));
+		assertEquals(DOZER_FILE_NEW, editor.xpath("/switchyard/transforms/transform.dozer[@from='" + OBJECT1_URI
+				+ "' and @to='" + OBJECT2_URI + "']/mappingFiles/entry[1]/@file"));
+		assertEquals(DOZER_FILE_NEW, editor.xpath("/switchyard/transforms/transform.dozer[@from='" + OBJECT2_URI
+				+ "' and @to='" + OBJECT1_URI + "']/mappingFiles/entry[1]/@file"));
 
 	}
 
@@ -157,19 +153,15 @@ public class SwitchYardEditorTransformersTest {
 		transformersWizard.browseDozerFile(DOZER_FILE_EXISTING);
 
 		assertArraySize(1, transformersWizard.getDozerFileOptionsLST().getListItems());
-		assertEquals("/" + PROJECT + "/src/main/resources/" + DOZER_FILE_EXISTING, transformersWizard
-				.getDozerFileOptionsLST().getListItems()[0]);
+		assertEquals("/" + PROJECT + "/src/main/resources/" + DOZER_FILE_EXISTING,
+				transformersWizard.getDozerFileOptionsLST().getListItems()[0]);
 		transformersWizard.finish();
 
 		editor.save();
-		assertEquals(
-				DOZER_FILE_EXISTING,
-				editor.xpath("/switchyard/transforms/transform.dozer[@from='" + OBJECT1_URI + "' and @to='"
-						+ OBJECT2_URI + "']/mappingFiles/entry[1]/@file"));
-		assertEquals(
-				"",
-				editor.xpath("/switchyard/transforms/transform.dozer[@from='" + OBJECT2_URI + "' and @to='"
-						+ OBJECT1_URI + "']/mappingFiles/entry[1]/@file"));
+		assertEquals(DOZER_FILE_EXISTING, editor.xpath("/switchyard/transforms/transform.dozer[@from='" + OBJECT1_URI
+				+ "' and @to='" + OBJECT2_URI + "']/mappingFiles/entry[1]/@file"));
+		assertEquals("", editor.xpath("/switchyard/transforms/transform.dozer[@from='" + OBJECT2_URI + "' and @to='"
+				+ OBJECT1_URI + "']/mappingFiles/entry[1]/@file"));
 
 	}
 
@@ -203,19 +195,15 @@ public class SwitchYardEditorTransformersTest {
 		transformersWizard.browseDozerFile(DOZER_FILE_EXISTING);
 
 		assertArraySize(1, transformersWizard.getDozerFileOptionsLST().getListItems());
-		assertEquals("/" + PROJECT + "/src/main/resources/" + DOZER_FILE_EXISTING, transformersWizard
-				.getDozerFileOptionsLST().getListItems()[0]);
+		assertEquals("/" + PROJECT + "/src/main/resources/" + DOZER_FILE_EXISTING,
+				transformersWizard.getDozerFileOptionsLST().getListItems()[0]);
 		transformersWizard.finish();
 
 		editor.save();
-		assertEquals(
-				"",
-				editor.xpath("/switchyard/transforms/transform.dozer[@from='" + OBJECT1_URI + "' and @to='"
-						+ OBJECT2_URI + "']/mappingFiles/entry[1]/@file"));
-		assertEquals(
-				DOZER_FILE_EXISTING,
-				editor.xpath("/switchyard/transforms/transform.dozer[@from='" + OBJECT2_URI + "' and @to='"
-						+ OBJECT1_URI + "']/mappingFiles/entry[1]/@file"));
+		assertEquals("", editor.xpath("/switchyard/transforms/transform.dozer[@from='" + OBJECT1_URI + "' and @to='"
+				+ OBJECT2_URI + "']/mappingFiles/entry[1]/@file"));
+		assertEquals(DOZER_FILE_EXISTING, editor.xpath("/switchyard/transforms/transform.dozer[@from='" + OBJECT2_URI
+				+ "' and @to='" + OBJECT1_URI + "']/mappingFiles/entry[1]/@file"));
 
 	}
 
@@ -239,19 +227,15 @@ public class SwitchYardEditorTransformersTest {
 		transformersWizard.browseDozerFile(DOZER_FILE_EXISTING);
 
 		assertArraySize(1, transformersWizard.getDozerFileOptionsLST().getListItems());
-		assertEquals("/" + PROJECT + "/src/main/resources/" + DOZER_FILE_EXISTING, transformersWizard
-				.getDozerFileOptionsLST().getListItems()[0]);
+		assertEquals("/" + PROJECT + "/src/main/resources/" + DOZER_FILE_EXISTING,
+				transformersWizard.getDozerFileOptionsLST().getListItems()[0]);
 		transformersWizard.finish();
 
 		editor.save();
-		assertEquals(
-				DOZER_FILE_EXISTING,
-				editor.xpath("/switchyard/transforms/transform.dozer[@from='" + OBJECT1_URI + "' and @to='"
-						+ OBJECT2_URI + "']/mappingFiles/entry[1]/@file"));
-		assertEquals(
-				DOZER_FILE_EXISTING,
-				editor.xpath("/switchyard/transforms/transform.dozer[@from='" + OBJECT2_URI + "' and @to='"
-						+ OBJECT1_URI + "']/mappingFiles/entry[1]/@file"));
+		assertEquals(DOZER_FILE_EXISTING, editor.xpath("/switchyard/transforms/transform.dozer[@from='" + OBJECT1_URI
+				+ "' and @to='" + OBJECT2_URI + "']/mappingFiles/entry[1]/@file"));
+		assertEquals(DOZER_FILE_EXISTING, editor.xpath("/switchyard/transforms/transform.dozer[@from='" + OBJECT2_URI
+				+ "' and @to='" + OBJECT1_URI + "']/mappingFiles/entry[1]/@file"));
 
 	}
 

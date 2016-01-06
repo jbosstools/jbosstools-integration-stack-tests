@@ -7,11 +7,11 @@ import org.hamcrest.Description;
 public class EditPartOfClassName extends BaseMatcher<EditPart> {
 
 	private String className;
-	
+
 	public EditPartOfClassName(String className) {
 		this.className = className;
 	}
-	
+
 	@Override
 	public boolean matches(Object item) {
 		return item.getClass().getSimpleName().equals(className);
@@ -19,9 +19,8 @@ public class EditPartOfClassName extends BaseMatcher<EditPart> {
 
 	@Override
 	public void describeTo(Description description) {
-		description.appendText("of class '").appendText(className)
-		.appendText("'");
-		
+		description.appendText("of class '").appendText(className).appendText("'");
+
 	}
 
 }

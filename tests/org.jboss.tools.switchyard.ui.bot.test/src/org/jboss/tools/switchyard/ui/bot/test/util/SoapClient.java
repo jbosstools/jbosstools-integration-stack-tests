@@ -51,8 +51,7 @@ public class SoapClient {
 		URL endpoint = new URL(url);
 
 		MessageFactory factory = MessageFactory.newInstance();
-		SOAPMessage soapRequest = factory.createMessage(null,
-				new ByteArrayInputStream(message.getBytes()));
+		SOAPMessage soapRequest = factory.createMessage(null, new ByteArrayInputStream(message.getBytes()));
 		SOAPConnection connection = SOAPConnectionFactory.newInstance().createConnection();
 		SOAPMessage soapResponse = connection.call(soapRequest, endpoint);
 
@@ -73,8 +72,7 @@ public class SoapClient {
 			e.printStackTrace();
 			ConsoleView consoleView = new ConsoleView();
 			consoleView.open();
-			throw new RuntimeException("IOException during testing response.\n"
-					+ consoleView.getConsoleText());
+			throw new RuntimeException("IOException during testing response.\n" + consoleView.getConsoleText());
 		}
 	}
 
@@ -85,8 +83,7 @@ public class SoapClient {
 			String responseMessage = getMessageFromFile(responseFile);
 			String response = SoapClient.sendMessage(url, requestMessage);
 			Diff diff = new Diff(response, responseMessage);
-			assertTrue("Expected response is\n" + responseMessage + "\nbut it was\n" + response,
-					diff.similar());
+			assertTrue("Expected response is\n" + responseMessage + "\nbut it was\n" + response, diff.similar());
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new RuntimeException("IOException during testing response.");

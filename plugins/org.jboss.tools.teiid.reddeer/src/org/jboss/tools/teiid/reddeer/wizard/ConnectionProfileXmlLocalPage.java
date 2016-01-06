@@ -16,5 +16,5 @@ public class ConnectionProfileXmlLocalPage extends WizardPage implements Connect
 	public void setPath(String path) {
 		new LabeledText(LABEL_FILE_NAME).setText(path);
 	}
-	
+
 }

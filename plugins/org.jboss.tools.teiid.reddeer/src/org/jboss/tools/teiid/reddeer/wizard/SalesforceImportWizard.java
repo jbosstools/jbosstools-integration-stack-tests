@@ -15,14 +15,14 @@ public class SalesforceImportWizard extends ImportWizardDialog {
 	private String modelName;
 	private String[] deselectedObjects;
 	private String[] selectedObjects;
-	//private String[] importOptions
+	// private String[] importOptions
 
 	private static final String VALIDATE_CONNECTION = "Validate Connection";
 	private static final String CONNECTION_PROFILE = "Connection Profile";
 	private static final String MODEL_NAME = "Model Name:";
 	private static final String LOCATION = "Location:";
 	private static final String TITLE = "Create Relational Model from SalesForce Data Model";
-	
+
 	public SalesforceImportWizard() {
 		super("Teiid Designer", "Salesforce >> Source Model");
 	}
@@ -31,7 +31,7 @@ public class SalesforceImportWizard extends ImportWizardDialog {
 		open();
 		setFocus();
 		fillFirstPage();
-		next();//wait while shell Progress Information is active
+		next();// wait while shell Progress Information is active
 		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
 		setFocus();
 		fillSecondPage();
@@ -44,7 +44,7 @@ public class SalesforceImportWizard extends ImportWizardDialog {
 
 	private void setFocus() {
 		new DefaultShell(TITLE);
-		
+
 	}
 
 	private void fillFirstPage() {
@@ -53,16 +53,16 @@ public class SalesforceImportWizard extends ImportWizardDialog {
 	}
 
 	private void fillSecondPage() {
-		//either deselect or select
-		if (deselectedObjects != null){
-			for (int i = 0; i < deselectedObjects.length; i++){
-				new org.jboss.reddeer.swt.impl.table.DefaultTable().getItem(deselectedObjects[i].trim()).setChecked(false);
+		// either deselect or select
+		if (deselectedObjects != null) {
+			for (int i = 0; i < deselectedObjects.length; i++) {
+				new org.jboss.reddeer.swt.impl.table.DefaultTable().getItem(deselectedObjects[i].trim())
+						.setChecked(false);
 			}
-		}
-		else if (selectedObjects != null){
+		} else if (selectedObjects != null) {
 			new PushButton("Deselect All").click();
-			for (int i = 0; i < selectedObjects.length; i++){
-				//new SWTWorkbenchBot().tableInGroup(SF_OBJECTS).select(selectedObjects[i].trim());
+			for (int i = 0; i < selectedObjects.length; i++) {
+				// new SWTWorkbenchBot().tableInGroup(SF_OBJECTS).select(selectedObjects[i].trim());
 				new org.jboss.reddeer.swt.impl.table.DefaultTable().getItem(selectedObjects[i].trim()).setChecked(true);
 			}
 		}
@@ -72,8 +72,8 @@ public class SalesforceImportWizard extends ImportWizardDialog {
 		new DefaultShell("Create Relational Model from SalesForce Data Model");
 		new SWTWorkbenchBot().textWithLabel(MODEL_NAME).setText(modelName);
 		new SWTWorkbenchBot().textWithLabel(LOCATION).setText(projectName);
-		
-		//if importOptions != null ...
+
+		// if importOptions != null ...
 	}
 
 	public void setConnectionProfile(String connectionProfile) {

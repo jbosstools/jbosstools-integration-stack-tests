@@ -27,7 +27,7 @@ import org.junit.runner.RunWith;
  * @author apodhrad
  *
  */
-@SwitchYard(server = @Server(type = ServerReqType.ANY, state = ServerReqState.RUNNING))
+@SwitchYard(server = @Server(type = ServerReqType.ANY, state = ServerReqState.RUNNING) )
 @RunWith(RedDeerSuite.class)
 public class ServerManagingDeploymentTest {
 
@@ -51,10 +51,10 @@ public class ServerManagingDeploymentTest {
 
 		new SwitchYardComponent("HelloBean").doubleClick();
 		TextEditor helloBeanEditor = new TextEditor("HelloBean.java");
-		helloBeanEditor.setText("package com.example.switchyard.deploy;\n"
-				+ "import org.switchyard.component.bean.Service;\n" + "@Service(Hello.class)\n"
-				+ "public class HelloBean implements Hello {\n" + "\t@Override\n"
-				+ "\tpublic String sayHello(String name) {\n" + "\t\treturn \"Hello \" + name;\n\t}\n}");
+		helloBeanEditor
+				.setText("package com.example.switchyard.deploy;\n" + "import org.switchyard.component.bean.Service;\n"
+						+ "@Service(Hello.class)\n" + "public class HelloBean implements Hello {\n" + "\t@Override\n"
+						+ "\tpublic String sayHello(String name) {\n" + "\t\treturn \"Hello \" + name;\n\t}\n}");
 		helloBeanEditor.save();
 		helloBeanEditor.close();
 
@@ -71,7 +71,7 @@ public class ServerManagingDeploymentTest {
 		final ServerBase server = switchyardRequirement.getConfig().getServerBase();
 		server.deployProject(PROJECT_NAME);
 		new WaitUntil(new AbstractWaitCondition() {
-			
+
 			@Override
 			public boolean test() {
 				try {
@@ -81,7 +81,7 @@ public class ServerManagingDeploymentTest {
 				}
 				return true;
 			}
-			
+
 			@Override
 			public String description() {
 				return "Checking the deployed project";

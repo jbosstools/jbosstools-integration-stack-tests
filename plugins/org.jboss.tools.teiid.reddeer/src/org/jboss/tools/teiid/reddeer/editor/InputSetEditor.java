@@ -12,22 +12,22 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
  */
 public class InputSetEditor {
 
-	public InputSetEditor(){
+	public InputSetEditor() {
 		new DefaultShell("Edit Input Set");
 	}
-	
-	public InputSetEditor(String title){
+
+	public InputSetEditor(String title) {
 		new ModelEditor(title).openInputSetEditor();
 		new DefaultShell("Edit Input Set");
 	}
-	
-	public void createNewInputParam(String... pathToParam){
+
+	public void createNewInputParam(String... pathToParam) {
 		new DefaultTree();
 		new DefaultTreeItem(pathToParam).select();
 		new PushButton("< New").click();
 	}
-	
-	public void close(){
+
+	public void close() {
 		new PushButton("OK").click();
 	}
 }

@@ -40,11 +40,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
-@TeiidServer(state = ServerReqState.RUNNING,
-	connectionProfiles={
-		ConnectionProfilesConstants.ORACLE_11G_PARTS_SUPPLIER,
-		ConnectionProfilesConstants.SQL_SERVER_2008_PARTS_SUPPLIER
-})
+@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = {
+	ConnectionProfilesConstants.ORACLE_11G_PARTS_SUPPLIER,
+	ConnectionProfilesConstants.SQL_SERVER_2008_PARTS_SUPPLIER })
 public class VirtualGroupTutorialTest extends SWTBotTestCase {
 
 	@InjectRequirement
@@ -69,21 +67,19 @@ public class VirtualGroupTutorialTest extends SWTBotTestCase {
 	private static final String TRANSFORMATION_SQL = "SELECT\n\t\t" +
 
 	"PartsSupplier_Oracle.SUPPLIER.SUPPLIER_ID, " + "PartsSupplier_Oracle.SUPPLIER.SUPPLIER_NAME, "
-			+ "PartsSupplier_Oracle.SUPPLIER.SUPPLIER_STATUS, "
-			+ "PartsSupplier_Oracle.SUPPLIER.SUPPLIER_CITY, "
+			+ "PartsSupplier_Oracle.SUPPLIER.SUPPLIER_STATUS, " + "PartsSupplier_Oracle.SUPPLIER.SUPPLIER_CITY, "
 			+ "PartsSupplier_Oracle.SUPPLIER.SUPPLIER_STATE, " + "PartsSupplier_SQLServer.SUPPLIER_PARTS."
 			+ "SUPPLIER_ID AS " + "SUPPLIER_ID_1, " + "PartsSupplier_SQLServer.SUPPLIER_PARTS.PART_ID, "
 			+ "PartsSupplier_SQLServer.SUPPLIER_PARTS.QUANTITY, "
 			+ "PartsSupplier_SQLServer.SUPPLIER_PARTS.SHIPPER_ID\n\t" +
 
-			"FROM\n\t\t" +
+	"FROM\n\t\t" +
 
-			"PartsSupplier_Oracle.SUPPLIER, " + "PartsSupplier_SQLServer.SUPPLIER_PARTS\n\t" +
+	"PartsSupplier_Oracle.SUPPLIER, " + "PartsSupplier_SQLServer.SUPPLIER_PARTS\n\t" +
 
-			"WHERE\n\t\t" +
+	"WHERE\n\t\t" +
 
-			"PartsSupplier_SQLServer.SUPPLIER_PARTS." + "SUPPLIER_ID = " + "PartsSupplier_Oracle.SUPPLIER."
-			+ "SUPPLIER_ID";
+	"PartsSupplier_SQLServer.SUPPLIER_PARTS." + "SUPPLIER_ID = " + "PartsSupplier_Oracle.SUPPLIER." + "SUPPLIER_ID";
 
 	private static final String PROCEDURE_SQL = "CREATE VIRTUAL PROCEDURE\n" + "BEGIN\n\t"
 			+ "SELECT * FROM PartsVirtual.OnHand " + "WHERE PartsVirtual.OnHand.QUANTITY = "
@@ -127,7 +123,6 @@ public class VirtualGroupTutorialTest extends SWTBotTestCase {
 	public void virtualGroupTutorialTest() {
 		new ModelExplorerManager().createProject(PROJECT_NAME);
 
-	
 		createOracleModel();
 		createSQLServerModel();
 		createViewModel();
@@ -326,8 +321,7 @@ public class VirtualGroupTutorialTest extends SWTBotTestCase {
 		editor.setText(TESTSQL_5);
 		editor.executeAll();
 
-		SQLResult result = DatabaseDevelopmentPerspective.getInstance().getSqlResultsView()
-				.getByOperation(TESTSQL_5);
+		SQLResult result = DatabaseDevelopmentPerspective.getInstance().getSqlResultsView().getByOperation(TESTSQL_5);
 		assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
 		// The procedure doesn't return result, is this really intended?
 		// assertEquals(30, result.getCount());

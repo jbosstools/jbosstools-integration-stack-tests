@@ -25,8 +25,8 @@ public class DDLImportWizard extends TeiidImportWizard {
 	private String modelName;
 	private String dialect;
 	private boolean autoselectDialect = false;
-	
-	//dialects
+
+	// dialects
 	public static final String TEIID = "TEIID";
 	public static final String SQL92 = "SQL92";
 	public static final String ORACLE = "ORACLE";
@@ -52,18 +52,18 @@ public class DDLImportWizard extends TeiidImportWizard {
 	public void setModelName(String modelName) {
 		this.modelName = modelName;
 	}
-	
+
 	public void execute() {
 		open();
 		new WaitUntil(new ShellWithTextIsAvailable("Import DDL"));
 		new DefaultShell("Import DDL");
 		new DefaultCombo(0).setText(ddlPath);
-		if (autoselectDialect){
-			//click on autoselect 
+		if (autoselectDialect) {
+			// click on autoselect
 			new SWTWorkbenchBot().checkBox("Auto-select").click();
 		} else {
-			if (dialect != null){
-				//click on combo 
+			if (dialect != null) {
+				// click on combo
 				new DefaultCombo(1).setSelection(dialect);
 			}
 		}

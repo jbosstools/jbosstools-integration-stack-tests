@@ -54,9 +54,9 @@ public class ProcessTab {
 	 * @param value
 	 */
 	public void setExecutable(boolean value) {
-		//new DefaultCheckBox("Is Executable").setChecked(value); TMP UNTIL REDDEER 0.7.0 WILL AVAILABLE
+		// new DefaultCheckBox("Is Executable").setChecked(value); TMP UNTIL REDDEER 0.7.0 WILL AVAILABLE
 		CheckBox executable = new CheckBox(1);
-		if((executable.isChecked() && !value) || (!executable.isChecked() && value)){
+		if ((executable.isChecked() && !value) || (!executable.isChecked() && value)) {
 			executable.click();
 		}
 	}

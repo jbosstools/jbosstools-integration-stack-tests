@@ -14,16 +14,16 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 
 public class DroolsRuntimePreferencePage extends PreferencePage {
-	
+
 	public DroolsRuntimePreferencePage() {
 		super("Drools", "Installed Drools Runtimes");
 	}
-	
+
 	public DroolsRuntimeWizard addRuntime() {
 		new PushButton("Add...").click();
 		return new DroolsRuntimeWizard();
 	}
-	
+
 	public List<String> getDroolsRuntimes() {
 		List<String> droolsRuntimes = new ArrayList<String>();
 		List<TableItem> items = new DefaultTable().getItems();
@@ -32,21 +32,21 @@ public class DroolsRuntimePreferencePage extends PreferencePage {
 		}
 		return droolsRuntimes;
 	}
-	
+
 	public void open() {
 		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
 		dialog.open();
 		dialog.select(this);
 	}
-	
+
 	public void setDroolsRuntimeAsDefault(String name) {
-        for (TableItem item : new DefaultTable().getItems()) {
-            if (item.getText(0).equals(name)) {
-                item.setChecked(true);
-            }
-        }
-    }
-	
+		for (TableItem item : new DefaultTable().getItems()) {
+			if (item.getText(0).equals(name)) {
+				item.setChecked(true);
+			}
+		}
+	}
+
 	public void ok() {
 		String title = new DefaultShell().getText();
 		new OkButton().click();

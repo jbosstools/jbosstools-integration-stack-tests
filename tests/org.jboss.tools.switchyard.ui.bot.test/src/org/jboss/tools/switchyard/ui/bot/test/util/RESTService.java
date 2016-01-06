@@ -88,7 +88,7 @@ public class RESTService {
 	protected static void info(String msg) {
 		System.out.println(new Date() + "\tINFO\t" + msg);
 	}
-	
+
 	public static void main(String[] args) {
 		new RESTService(8123).start();
 	}

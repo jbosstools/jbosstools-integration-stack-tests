@@ -23,21 +23,21 @@ public class RepositoryItem extends Item<RepositoryProperties> {
 	public void importRepository() {
 		selectEnabledAction("Import Repository");
 	}
-	
+
 	public CreateProjectDialog createProject() {
 		selectAction("Create Project...");
 		return new CreateProjectDialog();
 	}
-	
+
 	public RemoveRepositoryDialog removeRepository() {
 		selectAction("Remove Repository...");
 		return new RemoveRepositoryDialog();
 	}
-	
+
 	public void showInGitRepositoryView() {
 		selectAction("Show in Git Repository View");
 	}
-	
+
 	public List<ProjectItem> getProjects() {
 		expand();
 		List<TreeItem> treeItemsList = getItems();
@@ -47,7 +47,7 @@ public class RepositoryItem extends Item<RepositoryProperties> {
 		}
 		return projecItemsList;
 	}
-	
+
 	public ProjectItem getProject(String name) {
 		expand();
 		List<TreeItem> items = getItems();

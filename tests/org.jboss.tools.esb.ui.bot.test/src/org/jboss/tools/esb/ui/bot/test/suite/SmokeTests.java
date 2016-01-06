@@ -7,9 +7,7 @@ import org.jboss.tools.esb.ui.bot.test.NewESBFileTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
-@SuiteClasses({
-	NewESBFileTest.class,
-})
+@SuiteClasses({ NewESBFileTest.class, })
 @RunWith(RedDeerSuite.class)
 public class SmokeTests extends TestSuite {
 

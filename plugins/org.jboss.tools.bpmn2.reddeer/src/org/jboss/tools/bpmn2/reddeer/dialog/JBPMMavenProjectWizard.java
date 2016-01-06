@@ -17,7 +17,7 @@ public class JBPMMavenProjectWizard extends NewWizardDialog {
 	public JBPMMavenProjectWizard() {
 		super("jBPM", "jBPM project (Maven)");
 	}
-	
+
 	/**
 	 * 
 	 * @param projectName
@@ -28,5 +28,5 @@ public class JBPMMavenProjectWizard extends NewWizardDialog {
 		finish();
 		assertTrue("Project '" + projectName + "' was not created", new PackageExplorer().containsProject(projectName));
 	}
-	
+
 }

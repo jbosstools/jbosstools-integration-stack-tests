@@ -13,15 +13,15 @@ import org.jboss.tools.switchyard.reddeer.debug.ResumeButton;
 public class IsSuspended extends AbstractWaitCondition {
 
 	private ResumeButton resumeButton;
-	
+
 	public IsSuspended() {
 		this(new ResumeButton());
 	}
-	
+
 	public IsSuspended(ResumeButton resumeButton) {
 		this.resumeButton = resumeButton;
 	}
-	
+
 	@Override
 	public boolean test() {
 		if (resumeButton.isEnabled()) {

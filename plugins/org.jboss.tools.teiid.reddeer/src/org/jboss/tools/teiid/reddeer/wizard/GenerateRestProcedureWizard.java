@@ -13,11 +13,11 @@ public class GenerateRestProcedureWizard {
 	private static final String TITLE = "Generate REST Virtual Procedures";
 	private String projectName;
 
-	public GenerateRestProcedureWizard(){
+	public GenerateRestProcedureWizard() {
 		focus();
 	}
-	
-	public GenerateRestProcedureWizard setProject(String projectName){
+
+	public GenerateRestProcedureWizard setProject(String projectName) {
 		this.projectName = projectName;
 
 		focus();
@@ -26,7 +26,7 @@ public class GenerateRestProcedureWizard {
 		new DefaultShell("Select a Folder");
 		new DefaultTreeItem(projectName).select();
 		new PushButton("OK").click();
-		
+
 		return this;
 	}
 
@@ -41,22 +41,22 @@ public class GenerateRestProcedureWizard {
 
 		return this;
 	}
-	
-	public GenerateRestProcedureWizard setNewTargetModel(String targetName){
+
+	public GenerateRestProcedureWizard setNewTargetModel(String targetName) {
 		focus();
 		new LabeledText("Name:").setText(targetName);
-		
+
 		return this;
 	}
-	
-	public GenerateRestProcedureWizard setTables(String... tables){
+
+	public GenerateRestProcedureWizard setTables(String... tables) {
 		focus();
-		
+
 		DefaultTable table = new DefaultTable(new DefaultGroup("Tables Selection"), 0);
 		for (String t : tables) {
 			table.getItem(t).setChecked(true);
 		}
-		
+
 		return this;
 	}
 
@@ -64,8 +64,8 @@ public class GenerateRestProcedureWizard {
 		new DefaultShell(TITLE);
 		return this;
 	}
-	
-	public void finish(){
+
+	public void finish() {
 		focus();
 		new PushButton("OK").click();
 	}

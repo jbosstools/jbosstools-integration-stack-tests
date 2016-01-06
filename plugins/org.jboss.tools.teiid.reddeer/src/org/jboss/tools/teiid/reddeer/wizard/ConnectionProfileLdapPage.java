@@ -10,8 +10,7 @@ public class ConnectionProfileLdapPage extends ConnectionProfileDatabasePage {
 	public static final String LABEL_PASSWORD = "Connection Password";
 	public static final String LABEL_PRINCIPAL_DN_SUFFIX = "Principal DN Suffix";
 	public static final String LABEL_CONTEXT_FACTORY_NAME = "Context Factory Name";
-	
-	
+
 	@Override
 	public void setDatabase(String database) {
 		// not set
@@ -39,13 +38,13 @@ public class ConnectionProfileLdapPage extends ConnectionProfileDatabasePage {
 		new LabeledText(LABEL_PASSWORD).setText(password);
 	}
 
-	public void setPrincipalDnSuffix(String principalDnSuffix){
+	public void setPrincipalDnSuffix(String principalDnSuffix) {
 		new LabeledText(LABEL_PRINCIPAL_DN_SUFFIX).setText(principalDnSuffix);
-		
+
 	}
-	
-	public void setContextFactoryName(String contextFactoryName){
+
+	public void setContextFactoryName(String contextFactoryName) {
 		new LabeledText(LABEL_CONTEXT_FACTORY_NAME).setText(contextFactoryName);
-		
+
 	}
 }

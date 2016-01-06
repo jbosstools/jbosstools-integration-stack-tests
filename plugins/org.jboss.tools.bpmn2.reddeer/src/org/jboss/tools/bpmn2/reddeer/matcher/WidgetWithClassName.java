@@ -34,8 +34,7 @@ public class WidgetWithClassName extends BaseMatcher<Widget> {
 
 	@Override
 	public void describeTo(Description description) {
-		description.appendText("of class '").appendText(simpleClassName)
-				.appendText("'");
+		description.appendText("of class '").appendText(simpleClassName).appendText("'");
 	}
 
 }

@@ -1,6 +1,5 @@
 package org.jboss.tools.fuse.reddeer.component;
 
-
 /**
  * 
  * @author apodhrad

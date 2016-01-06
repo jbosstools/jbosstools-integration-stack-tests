@@ -17,18 +17,18 @@ public class TimerBoundaryEvent extends BoundaryEvent {
 	public TimerBoundaryEvent(String name) {
 		super(name, ElementType.ERROR_BOUNDARY_EVENT);
 	}
-	
+
 	public TimerBoundaryEvent(Element element) {
 		super(element);
 	}
-	
+
 	public void setTimer(TimerType timerType, String value) {
 		propertiesHandler.setUp(new TimerSetUp(timerType, value));
 		refresh();
 	}
-	
+
 	public void setTimer(String duration) {
 		setTimer(TimerType.DURATION, duration);
 	}
-	
+
 }

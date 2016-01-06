@@ -12,32 +12,29 @@ import org.jboss.tools.bpmn2.ui.bot.test.jbpm.JbpmAssertions;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
 
-@JBPM6ComplexTestDefinition(projectName="JBPM6ComplexTest",
-							importFolder="resources/bpmn2/model/base",
-							openFile="BaseBPMN2-IntermediateCatchEventTimerCycle.bpmn2",
-							saveAs="BPMN2-IntermediateCatchEventTimerCycle.bpmn2")
+@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-IntermediateCatchEventTimerCycle.bpmn2", saveAs = "BPMN2-IntermediateCatchEventTimerCycle.bpmn2")
 public class ComplexIntermediateCatchEventTimerCycleTest extends JBPM6ComplexTest {
-	
-	@TestPhase(phase=Phase.MODEL)
+
+	@TestPhase(phase = Phase.MODEL)
 	public void model() {
 		StartEvent startEvent = new StartEvent("StartProcess");
-		
-		TimerIntermediateCatchEvent catchEvent =
-			(TimerIntermediateCatchEvent) startEvent.append("Timer", ElementType.TIMER_INTERMEDIATE_CATCH_EVENT);
+
+		TimerIntermediateCatchEvent catchEvent = (TimerIntermediateCatchEvent) startEvent.append("Timer",
+				ElementType.TIMER_INTERMEDIATE_CATCH_EVENT);
 		catchEvent.setTimer("500ms");
 		catchEvent.connectTo(new ScriptTask("Event"));
 	}
-	
-	@TestPhase(phase=Phase.RUN)
+
+	@TestPhase(phase = Phase.RUN)
 	public void run(KieSession kSession) {
 		ProcessInstance processInstance = kSession.startProcess("BPMN2IntermediateCatchEventTimerCycle");
-		
+
 		try {
-		    Thread.sleep(550);                 //1000 milliseconds is one second.
-		} catch(InterruptedException ex) {
-		    Thread.currentThread().interrupt();
+			Thread.sleep(550); // 1000 milliseconds is one second.
+		} catch (InterruptedException ex) {
+			Thread.currentThread().interrupt();
 		}
-		
+
 		JbpmAssertions.assertProcessInstanceCompleted(processInstance, kSession);
 	}
 

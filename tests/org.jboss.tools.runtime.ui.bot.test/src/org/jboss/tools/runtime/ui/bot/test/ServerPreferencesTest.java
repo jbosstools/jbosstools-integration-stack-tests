@@ -23,13 +23,13 @@ public class ServerPreferencesTest {
 	@Test
 	public void serverPreferenceTest() {
 		MavenSettingsPreferencePage page = new MavenSettingsPreferencePage();
-		
+
 		WorkbenchPreferenceDialog preferences = new WorkbenchPreferenceDialog();
 		preferences.open();
 		preferences.select(page);
 		String location = page.getUserSettingsLocation();
 		preferences.cancel();
-		
+
 		assertEquals("target/settings.xml", location);
 	}
 

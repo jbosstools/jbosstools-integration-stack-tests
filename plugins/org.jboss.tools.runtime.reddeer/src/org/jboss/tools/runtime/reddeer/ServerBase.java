@@ -99,8 +99,8 @@ public abstract class ServerBase extends RuntimeBase {
 			}
 			break;
 		default:
-			new AssertionError("It was expected to have server in " + ServerState.STARTED + " or "
-					+ ServerState.STOPPED + "state." + " Not in state " + currentState + ".");
+			new AssertionError("It was expected to have server in " + ServerState.STARTED + " or " + ServerState.STOPPED
+					+ "state." + " Not in state " + currentState + ".");
 		}
 	}
 
@@ -175,8 +175,8 @@ public abstract class ServerBase extends RuntimeBase {
 		}
 		return false;
 	}
-	
-	public boolean isRemote(){
+
+	public boolean isRemote() {
 		return false;
 	}
 

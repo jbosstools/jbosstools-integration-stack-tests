@@ -22,129 +22,129 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 public class MetadataCompletionTest extends DrlCompletionParent {
 
-    @InjectRequirement
-    private RuntimeRequirement droolsRequirement;
+	@InjectRequirement
+	private RuntimeRequirement droolsRequirement;
 
-    @Test
-    @UsePerspective(DroolsPerspective.class)
-    @Drools6Runtime
-    @UseDefaultProject
-    public void testImportCodeCompletion() {
-        RuleEditor editor = master.showRuleEditor();
-        editor.setPosition(2, 0);
+	@Test
+	@UsePerspective(DroolsPerspective.class)
+	@Drools6Runtime
+	@UseDefaultProject
+	public void testImportCodeCompletion() {
+		RuleEditor editor = master.showRuleEditor();
+		editor.setPosition(2, 0);
 
-        selectFromContentAssist(editor, "import");
+		selectFromContentAssist(editor, "import");
 
-        editor.writeText("my");
-        selectFromContentAssist(editor, "MyMessage - com.sample.domain");
+		editor.writeText("my");
+		selectFromContentAssist(editor, "MyMessage - com.sample.domain");
 
-        assertCorrectText(editor, "import com.sample.domain.MyMessage");
-    }
+		assertCorrectText(editor, "import com.sample.domain.MyMessage");
+	}
 
-    @Test
-    @UsePerspective(DroolsPerspective.class)
-    @Drools6Runtime
-    @UseDefaultProject
-    public void testStarImportUsage() {
-        NewJavaClassWizardDialog diag = new NewJavaClassWizardDialog();
-        diag.open();
-        new NewJavaClassWizardPage().setName("TestDomainClass");
-        new NewJavaClassWizardPage().setPackage("com.sample.domain");
-        new LabeledText("Source folder:").setText(DEFAULT_PROJECT_NAME + "/src/main/java");
-        diag.finish();
+	@Test
+	@UsePerspective(DroolsPerspective.class)
+	@Drools6Runtime
+	@UseDefaultProject
+	public void testStarImportUsage() {
+		NewJavaClassWizardDialog diag = new NewJavaClassWizardDialog();
+		diag.open();
+		new NewJavaClassWizardPage().setName("TestDomainClass");
+		new NewJavaClassWizardPage().setPackage("com.sample.domain");
+		new LabeledText("Source folder:").setText(DEFAULT_PROJECT_NAME + "/src/main/java");
+		diag.finish();
 
-        new TextEditor().close();
+		new TextEditor().close();
 
-        master = new DrlEditor();
-        RuleEditor editor = master.showRuleEditor();
-        editor.setPosition(2, 0);
-        editor.writeText("import com.sample.domain.*");
+		master = new DrlEditor();
+		RuleEditor editor = master.showRuleEditor();
+		editor.setPosition(2, 0);
+		editor.writeText("import com.sample.domain.*");
 
-        editor.setPosition(6, 21);
-        editor.writeText("\n        ");
+		editor.setPosition(6, 21);
+		editor.writeText("\n        ");
 
-        selectFromContentAssist(editor, "TestDomainClass");
-        assertCorrectText(editor, "TestDomainClass(  )");
+		selectFromContentAssist(editor, "TestDomainClass");
+		assertCorrectText(editor, "TestDomainClass(  )");
 
-        editor.setPosition(7, 27);
-        editor.writeText("\n        ");
+		editor.setPosition(7, 27);
+		editor.writeText("\n        ");
 
-        selectFromContentAssist(editor, "MyMessage");
-        assertCorrectText(editor, "MyMessage(  )");
-    }
+		selectFromContentAssist(editor, "MyMessage");
+		assertCorrectText(editor, "MyMessage(  )");
+	}
 
-    @Test
-    @UsePerspective(DroolsPerspective.class)
-    @Drools6Runtime
-    @UseDefaultProject
-    public void testImportFunctionUsage() {
-        RuleEditor editor = master.showRuleEditor();
-        editor.setPosition(2, 0);
-        editor.writeText("import static java.lang.String.format");
+	@Test
+	@UsePerspective(DroolsPerspective.class)
+	@Drools6Runtime
+	@UseDefaultProject
+	public void testImportFunctionUsage() {
+		RuleEditor editor = master.showRuleEditor();
+		editor.setPosition(2, 0);
+		editor.writeText("import static java.lang.String.format");
 
-        editor.setPosition(8, 31);
-        editor.writeText("\n        ");
+		editor.setPosition(8, 31);
+		editor.writeText("\n        ");
 
-        selectFromContentAssist(editor, "format()");
-        editor.writeText("\"formatted text '%s'\", $s");
+		selectFromContentAssist(editor, "format()");
+		editor.writeText("\"formatted text '%s'\", $s");
 
-        assertCorrectText(editor, "format(\"formatted text '%s'\", $s);");
-    }
+		assertCorrectText(editor, "format(\"formatted text '%s'\", $s);");
+	}
 
-    @Test
-    @UsePerspective(DroolsPerspective.class)
-    @Drools6Runtime
-    @UseDefaultProject
-    public void testGlobalCodeCompletion() {
-        RuleEditor editor = master.showRuleEditor();
-        editor.setPosition(2, 0);
-        editor.writeText("import java.util.List\n\n");
+	@Test
+	@UsePerspective(DroolsPerspective.class)
+	@Drools6Runtime
+	@UseDefaultProject
+	public void testGlobalCodeCompletion() {
+		RuleEditor editor = master.showRuleEditor();
+		editor.setPosition(2, 0);
+		editor.writeText("import java.util.List\n\n");
 
-        selectFromContentAssist(editor, "global");
-        editor.writeText("list");
+		selectFromContentAssist(editor, "global");
+		editor.writeText("list");
 
-        selectFromContentAssist(editor, "List");
-        editor.writeText("list");
+		selectFromContentAssist(editor, "List");
+		editor.writeText("list");
 
-        assertCorrectText(editor, "global List list");
-    }
+		assertCorrectText(editor, "global List list");
+	}
 
-    @Test
-    @UsePerspective(DroolsPerspective.class)
-    @Drools6Runtime
-    @UseDefaultProject
-    public void testGlobalUsageCondition() {
-        RuleEditor editor = master.showRuleEditor();
-        editor.setPosition(2, 0);
-        editor.writeText("import java.util.List\n\nglobal List list");
+	@Test
+	@UsePerspective(DroolsPerspective.class)
+	@Drools6Runtime
+	@UseDefaultProject
+	public void testGlobalUsageCondition() {
+		RuleEditor editor = master.showRuleEditor();
+		editor.setPosition(2, 0);
+		editor.writeText("import java.util.List\n\nglobal List list");
 
-        editor.setPosition(8, 20);
-        editor.writeText("this memberOf ");
-        selectFromContentAssist(editor, "list");
+		editor.setPosition(8, 20);
+		editor.writeText("this memberOf ");
+		selectFromContentAssist(editor, "list");
 
-        assertCorrectText(editor, "$s : String(this memberOf list)");
-    }
+		assertCorrectText(editor, "$s : String(this memberOf list)");
+	}
 
-    @Test
-    @UsePerspective(DroolsPerspective.class)
-    @Drools6Runtime
-    @UseDefaultProject
-    public void testGlobalUsageConsequence() {
-        RuleEditor editor = master.showRuleEditor();
-        editor.setPosition(2, 0);
-        editor.writeText("import java.util.List\n\nglobal List list");
+	@Test
+	@UsePerspective(DroolsPerspective.class)
+	@Drools6Runtime
+	@UseDefaultProject
+	public void testGlobalUsageConsequence() {
+		RuleEditor editor = master.showRuleEditor();
+		editor.setPosition(2, 0);
+		editor.writeText("import java.util.List\n\nglobal List list");
 
-        editor.setPosition(10, 31);
-        editor.writeText("\n        ");
-        selectFromContentAssist(editor, "list : List");
+		editor.setPosition(10, 31);
+		editor.writeText("\n        ");
+		selectFromContentAssist(editor, "list : List");
 
-        editor.writeText(".");
-        selectFromContentAssist(editor, "add(Object e) : boolean - List");
-        editor.writeText("$s");
+		editor.writeText(".");
+		selectFromContentAssist(editor, "add(Object e) : boolean - List");
+		editor.writeText("$s");
 
-        editor.setPosition(11, 20);
-        editor.writeText(";");
+		editor.setPosition(11, 20);
+		editor.writeText(";");
 
-        assertCorrectText(editor, "list.add($s);");
-    }
+		assertCorrectText(editor, "list.add($s);");
+	}
 }

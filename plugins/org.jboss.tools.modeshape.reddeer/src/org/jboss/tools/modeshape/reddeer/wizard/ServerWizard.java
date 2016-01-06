@@ -30,42 +30,42 @@ public class ServerWizard extends NewWizardDialog {
 	public void execute() {
 		open();
 
-		//new DefaultTreeItem(type).select();
+		// new DefaultTreeItem(type).select();
 		selectType(type);
 		new LabeledText("Server name:").setText(name);
 		next();
 		finish();
 	}
-	
+
 	@Override
-	public void open(){
+	public void open() {
 		try {
 			super.open();
-		} catch (Exception e){
+		} catch (Exception e) {
 			new DefaultTreeItem("Server").collapse();
 			new DefaultTreeItem("Server", "Server").expand();
 			new DefaultTreeItem("Server", "Server").select();
 			next();
 		}
-		
+
 	}
-	
-	private void selectType(String[] type){
+
+	private void selectType(String[] type) {
 		String[] array = new String[type.length];
 		System.arraycopy(type, 0, array, 0, array.length);
-		
+
 		try {
-			
-			new DefaultTreeItem(array).select();//eclipse kepler (0), eclipse juno (1)
+
+			new DefaultTreeItem(array).select();// eclipse kepler (0), eclipse juno (1)
 			return;
-		} catch (Exception ex){
+		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
 		}
 		try {
-			array[array.length-1] = type[array.length-1] + "+";
-			new DefaultTreeItem(array).select();//eclipse kepler (0), eclipse juno (1)
+			array[array.length - 1] = type[array.length - 1] + "+";
+			new DefaultTreeItem(array).select();// eclipse kepler (0), eclipse juno (1)
 			return;
-		} catch (Exception ex){
+		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
 		}
 	}

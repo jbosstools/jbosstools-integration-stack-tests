@@ -11,12 +11,12 @@ public class CompensationActivitySetUp implements SetUpAble {
 
 	private String activityName;
 	private boolean waitForCompletion;
-	
+
 	public CompensationActivitySetUp(String activityName, boolean waitForCompletion) {
 		this.activityName = activityName;
 		this.waitForCompletion = waitForCompletion;
 	}
-	
+
 	@Override
 	public void setUpCTab() {
 		new DefaultTable(new DefaultSection("Event Definitions")).select(0);

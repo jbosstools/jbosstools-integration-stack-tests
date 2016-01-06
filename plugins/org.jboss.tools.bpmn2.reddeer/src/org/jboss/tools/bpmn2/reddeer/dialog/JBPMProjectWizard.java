@@ -14,29 +14,27 @@ import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 public class JBPMProjectWizard extends NewWizardDialog {
 
 	public enum ProcessType {
-		
-		SIMPLE(0),
-		ADVANCED(1),
-		NONE(2);
-		
+
+		SIMPLE(0), ADVANCED(1), NONE(2);
+
 		private int buttonIndex;
-		
+
 		ProcessType(int buttonIndex) {
 			this.buttonIndex = buttonIndex;
 		}
-		
+
 		public int getButtonIndex() {
 			return buttonIndex;
 		}
 	}
-	
+
 	/**
 	 * 
 	 */
 	public JBPMProjectWizard() {
 		super("jBPM", "jBPM project");
 	}
-	
+
 	/**
 	 * 
 	 * @param projectName
@@ -44,7 +42,7 @@ public class JBPMProjectWizard extends NewWizardDialog {
 	public void execute(String projectName) {
 		execute(projectName, ProcessType.NONE, false);
 	}
-	
+
 	/**
 	 * 
 	 * @param projectName
@@ -56,9 +54,10 @@ public class JBPMProjectWizard extends NewWizardDialog {
 		new LabeledText("Project name:").setText(projectName);
 		next();
 		new RadioButton(processType.getButtonIndex()).click();
-		if (!includeTestClass) new CheckBox().click();
+		if (!includeTestClass)
+			new CheckBox().click();
 		finish();
 		assertTrue("Project '" + projectName + "' was not created", new PackageExplorer().containsProject(projectName));
 	}
-	
+
 }

@@ -30,7 +30,7 @@ public class Java2WSDLWizard extends NewWizardDialog {
 		open();
 		return this;
 	}
-	
+
 	public Java2WSDLWizard nextDialog() {
 		next();
 		return this;

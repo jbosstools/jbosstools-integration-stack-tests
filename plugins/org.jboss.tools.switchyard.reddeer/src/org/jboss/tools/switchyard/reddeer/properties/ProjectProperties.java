@@ -11,10 +11,10 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 public class ProjectProperties {
 
 	private final Logger log = Logger.getLogger(ProjectProperties.class);
-	
+
 	public ProjectPropertiesJavaBuildPath selectJavaBuildPath() {
 		log.info("Select 'Java Build Path' page.");
 		new DefaultTreeItem("Java Build Path").select();
-		return new  ProjectPropertiesJavaBuildPath();
+		return new ProjectPropertiesJavaBuildPath();
 	}
 }

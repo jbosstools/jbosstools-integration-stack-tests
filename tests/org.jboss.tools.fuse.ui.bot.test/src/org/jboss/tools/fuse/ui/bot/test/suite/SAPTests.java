@@ -13,10 +13,7 @@ import org.junit.runners.Suite.SuiteClasses;
  * 
  * @author tsedmik
  */
-@SuiteClasses({
-		SAPComponentTest.class,
-		SAPConnectionTest.class
-})
+@SuiteClasses({ SAPComponentTest.class, SAPConnectionTest.class })
 @RunWith(RedDeerSuite.class)
 public class SAPTests extends TestSuite {
 

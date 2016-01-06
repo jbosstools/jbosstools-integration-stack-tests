@@ -20,7 +20,7 @@ public class SAPRequirementTest {
 	public void sapRequirementTest() {
 		assertEquals("sapjco3-3.0.11.zip", sapRequirement.getConfig().getLib().getJco3());
 		assertEquals("sapjidoc30P_10-10009485.zip", sapRequirement.getConfig().getLib().getJidoc());
-		
+
 		assertEquals("localhost", sapRequirement.getConfig().getDestination().getAshost());
 		assertEquals("200", sapRequirement.getConfig().getDestination().getClient());
 		assertEquals("00", sapRequirement.getConfig().getDestination().getSysnr());
@@ -29,7 +29,7 @@ public class SAPRequirementTest {
 		assertEquals("admin123$", sapRequirement.getConfig().getDestination().getPasswd());
 		assertEquals("admin123$", sapRequirement.getConfig().getDestination().getPassword());
 		assertEquals("en", sapRequirement.getConfig().getDestination().getLang());
-		
+
 		assertEquals("localhost", sapRequirement.getConfig().getServer().getGwhost());
 		assertEquals("QUICKSTART", sapRequirement.getConfig().getServer().getProgid());
 		assertEquals("2", sapRequirement.getConfig().getServer().getConnectionCount());

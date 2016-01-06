@@ -9,7 +9,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.MappingSide;
 public class ToVariable implements MappingSide {
 
 	private String variableName;
-	
+
 	/**
 	 * 
 	 * @param variableName
@@ -17,12 +17,12 @@ public class ToVariable implements MappingSide {
 	public ToVariable(String variableName) {
 		this.variableName = variableName;
 	}
-	
+
 	@Override
 	public void setUp() {
 		new LabeledCombo("Target").setSelection(variableName);
 	}
-	
+
 	@Override
 	public String getName() {
 		return variableName;

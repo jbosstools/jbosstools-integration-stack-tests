@@ -18,38 +18,38 @@ import org.junit.Test;
 public class JBPMProjectWizardTest extends SWTBotTestCase {
 
 	ProjectExplorer explorerView = new ProjectExplorer();
-	JBPMProjectWizard wizardView  = new JBPMProjectWizard();
-	
+	JBPMProjectWizard wizardView = new JBPMProjectWizard();
+
 	@After
 	public void deleteAllProjects() {
 		for (Project p : explorerView.getProjects()) {
 			p.delete(true);
 		}
 	}
-	
+
 	@Test
 	public void newProjectWithSimpleProcessTest() throws Exception {
 		wizardView.execute("TestProject", JBPMProjectWizard.ProcessType.SIMPLE, false);
-		
+
 		Project p = explorerView.getProject("TestProject");
 		assertTrue(p.containsItem("src/main/resources", "sample.bpmn"));
 		assertTrue(p.containsItem("src/main/java", "com.sample", "ProcessMain.java"));
 	}
-	
+
 	@Test
 	public void newProjectWithAdvancedProcessTest() {
 		wizardView.execute("TestProject", JBPMProjectWizard.ProcessType.ADVANCED, true);
-		
+
 		Project p = explorerView.getProject("TestProject");
 		assertTrue(p.containsItem("src/main/resources", "sample.bpmn"));
 		assertTrue(p.containsItem("TestProject", "src/main/java", "com.sample", "ProcessMain.java"));
 		assertTrue(p.containsItem("TestProject", "src/main/java", "com.sample", "ProcessTest.java"));
 	}
-	
+
 	@Test()
 	public void newEmptyProjectTest() throws Exception {
 		wizardView.execute("TestProject");
-		
+
 		// the node list will contain one empty node!
 		assertTrue(new DefaultTreeItem("TestProject", "src/main/java").getItems().isEmpty());
 		assertTrue(new DefaultTreeItem("TestProject", "src/main/resources").getItems().isEmpty());
@@ -66,5 +66,5 @@ public class JBPMProjectWizardTest extends SWTBotTestCase {
 			wizardView.cancel();
 		}
 	}
-	
+
 }

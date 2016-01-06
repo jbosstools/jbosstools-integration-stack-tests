@@ -51,8 +51,7 @@ public class SoapClient {
 		URL endpoint = new URL(url);
 
 		MessageFactory factory = MessageFactory.newInstance();
-		SOAPMessage soapRequest = factory.createMessage(null,
-				new ByteArrayInputStream(message.getBytes()));
+		SOAPMessage soapRequest = factory.createMessage(null, new ByteArrayInputStream(message.getBytes()));
 		SOAPConnection connection = SOAPConnectionFactory.newInstance().createConnection();
 		SOAPMessage soapResponse = connection.call(soapRequest, endpoint);
 
@@ -82,8 +81,7 @@ public class SoapClient {
 			String responseMessage = getMessageFromFile(responseFile);
 			String response = SoapClient.sendMessage(url, requestMessage);
 			Diff diff = new Diff(response, responseMessage);
-			assertTrue("Expected response is\n" + responseMessage + "\nbut it was\n" + response,
-					diff.similar());
+			assertTrue("Expected response is\n" + responseMessage + "\nbut it was\n" + response, diff.similar());
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new RuntimeException("IOException during testing response.");
@@ -98,8 +96,8 @@ public class SoapClient {
 
 	private static List<String> getRequestMessages(String dir) throws IOException {
 		List<String> messages = new ArrayList<String>();
-		File messages_dir = new File(ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID,
-				MESSAGE_DIR + "/" + dir));
+		File messages_dir = new File(
+				ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID, MESSAGE_DIR + "/" + dir));
 		String[] file = messages_dir.list();
 		for (int i = 0; i < file.length; i++) {
 			if (file[i].endsWith(".xml") && file[i].contains("request")) {

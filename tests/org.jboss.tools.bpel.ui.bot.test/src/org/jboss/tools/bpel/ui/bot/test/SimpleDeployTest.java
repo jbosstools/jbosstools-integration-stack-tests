@@ -62,7 +62,9 @@ public class SimpleDeployTest {
 		Assign assign = new Empty("FIX_ME-Add_Business_Logic_Here").toAssign();
 		assign.setName("addHello");
 		assign.addExpToVar("concat('Hello ', $input.payload/tns:input)", new String[] {
-				"output : deployHelloResponseMessage", "payload : deployHelloResponse", "result : string" });
+			"output : deployHelloResponseMessage",
+			"payload : deployHelloResponse",
+			"result : string" });
 
 		// create descriptor
 		new NewDescriptorWizard(projectName).execute();

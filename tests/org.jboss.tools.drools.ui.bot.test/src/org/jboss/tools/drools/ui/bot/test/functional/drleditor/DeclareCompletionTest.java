@@ -19,131 +19,131 @@ import org.junit.runner.RunWith;
 @Runtime(type = RuntimeReqType.DROOLS)
 @RunWith(RedDeerSuite.class)
 public class DeclareCompletionTest extends DrlCompletionParent {
-	
+
 	@InjectRequirement
 	private RuntimeRequirement droolsRequirement;
-	
-    @Test
-    @UsePerspective(DroolsPerspective.class)
-    @Drools6Runtime
-    @UseDefaultProject
-    public void testFactTypeDeclare() {
-        RuleEditor editor = master.showRuleEditor();
-        editor.setPosition(2, 0);
 
-        selectFromContentAssist(editor, "declare");
+	@Test
+	@UsePerspective(DroolsPerspective.class)
+	@Drools6Runtime
+	@UseDefaultProject
+	public void testFactTypeDeclare() {
+		RuleEditor editor = master.showRuleEditor();
+		editor.setPosition(2, 0);
 
-        // TODO: not implemented in plugin, hard to tell what the line will look like
-    }
+		selectFromContentAssist(editor, "declare");
 
-    @Test
-    @UsePerspective(DroolsPerspective.class)
-    @Drools6Runtime
-    @UseDefaultProject
-    public void testFactTypeUsage() {
-        RuleEditor editor = master.showRuleEditor();
-        editor.setPosition(2, 0);
-        editor.writeText("declare Person\n\tname : String\n\tage : int\nend\n");
+		// TODO: not implemented in plugin, hard to tell what the line will look like
+	}
 
-        editor.setPosition(9, 21);
-        editor.writeText("\n        ");
+	@Test
+	@UsePerspective(DroolsPerspective.class)
+	@Drools6Runtime
+	@UseDefaultProject
+	public void testFactTypeUsage() {
+		RuleEditor editor = master.showRuleEditor();
+		editor.setPosition(2, 0);
+		editor.writeText("declare Person\n\tname : String\n\tage : int\nend\n");
 
-        selectFromContentAssist(editor, "Person");
-        selectFromContentAssist(editor, "name");
-        editor.writeText("!= null, ");
-        selectFromContentAssist(editor, "age");
-        editor.writeText("> 18");
+		editor.setPosition(9, 21);
+		editor.writeText("\n        ");
 
-        assertCorrectText(editor, "Person( name != null, age > 18 )");
-    }
+		selectFromContentAssist(editor, "Person");
+		selectFromContentAssist(editor, "name");
+		editor.writeText("!= null, ");
+		selectFromContentAssist(editor, "age");
+		editor.writeText("> 18");
 
-    @Test
-    @UsePerspective(DroolsPerspective.class)
-    @Drools6Runtime
-    @UseDefaultProject
-    public void testQueryDeclare() {
-        RuleEditor editor = master.showRuleEditor();
-        editor.setPosition(2, 0);
-        editor.writeText("import com.sample.domain.MyMessage\n\n");
+		assertCorrectText(editor, "Person( name != null, age > 18 )");
+	}
 
-        selectFromContentAssist(editor, "query");
+	@Test
+	@UsePerspective(DroolsPerspective.class)
+	@Drools6Runtime
+	@UseDefaultProject
+	public void testQueryDeclare() {
+		RuleEditor editor = master.showRuleEditor();
+		editor.setPosition(2, 0);
+		editor.writeText("import com.sample.domain.MyMessage\n\n");
 
-        editor.setPosition(4, 6);
-        editor.replaceText("testQuery", 12);
-        assertCorrectText(editor, "query testQuery");
+		selectFromContentAssist(editor, "query");
 
-        editor.setPosition(5, 1);
-        editor.replaceText("", 12); // delete "#consequences"
+		editor.setPosition(4, 6);
+		editor.replaceText("testQuery", 12);
+		assertCorrectText(editor, "query testQuery");
 
-        selectFromContentAssist(editor, "MyMessage");
-        assertCorrectText(editor, "MyMessage( )");
-    }
+		editor.setPosition(5, 1);
+		editor.replaceText("", 12); // delete "#consequences"
 
-    @Test
-    @UsePerspective(DroolsPerspective.class)
-    @Drools6Runtime
-    @UseDefaultProject
-    public void testQueryUsage() {
-        RuleEditor editor = master.showRuleEditor();
-        editor.setPosition(2, 0);
-        editor.writeText("import com.sample.domain.MyMessage\n\nquery testQuery\n\tMyMessage()\nend\n");
+		selectFromContentAssist(editor, "MyMessage");
+		assertCorrectText(editor, "MyMessage( )");
+	}
 
-        editor.setPosition(10, 21);
-        editor.writeText("\n        ");
+	@Test
+	@UsePerspective(DroolsPerspective.class)
+	@Drools6Runtime
+	@UseDefaultProject
+	public void testQueryUsage() {
+		RuleEditor editor = master.showRuleEditor();
+		editor.setPosition(2, 0);
+		editor.writeText("import com.sample.domain.MyMessage\n\nquery testQuery\n\tMyMessage()\nend\n");
 
-        selectFromContentAssist(editor, "testQuery");
-        assertCorrectText(editor, "testQuery( )");
-    }
+		editor.setPosition(10, 21);
+		editor.writeText("\n        ");
 
-    @Test
-    @UsePerspective(DroolsPerspective.class)
-    @Drools6Runtime
-    @UseDefaultProject
-    public void testFunctionDeclare() {
-        RuleEditor editor = master.showRuleEditor();
-        editor.setPosition(2, 0);
-        editor.writeText("import com.sample.domain.MyMessage\n\n");
-        selectFromContentAssist(editor, "function");
+		selectFromContentAssist(editor, "testQuery");
+		assertCorrectText(editor, "testQuery( )");
+	}
 
-        editor.setPosition(4, 9);
-        editor.replaceText("String formatMessage(MyMessage msg)", 27);
+	@Test
+	@UsePerspective(DroolsPerspective.class)
+	@Drools6Runtime
+	@UseDefaultProject
+	public void testFunctionDeclare() {
+		RuleEditor editor = master.showRuleEditor();
+		editor.setPosition(2, 0);
+		editor.writeText("import com.sample.domain.MyMessage\n\n");
+		selectFromContentAssist(editor, "function");
 
-        assertCorrectText(editor, "function String formatMessage(MyMessage msg) {");
+		editor.setPosition(4, 9);
+		editor.replaceText("String formatMessage(MyMessage msg)", 27);
 
-        editor.setPosition(5, 1);
-        editor.replaceText("return m", 19);
+		assertCorrectText(editor, "function String formatMessage(MyMessage msg) {");
 
-        selectFromContentAssist(editor, "msg : MyMessage");
+		editor.setPosition(5, 1);
+		editor.replaceText("return m", 19);
 
-        editor.writeText(".");
+		selectFromContentAssist(editor, "msg : MyMessage");
 
-        selectFromContentAssist(editor, "getText() : String - MyMessage");
+		editor.writeText(".");
 
-        editor.writeText(";");
+		selectFromContentAssist(editor, "getText() : String - MyMessage");
 
-        assertCorrectText(editor, "return msg.getText();");
-    }
+		editor.writeText(";");
 
-    @Test
-    @UsePerspective(DroolsPerspective.class)
-    @Drools6Runtime
-    @UseDefaultProject
-    public void testFunctionUsage() {
-        RuleEditor editor = master.showRuleEditor();
-        editor.setPosition(2, 0);
-        editor.writeText("import com.sample.domain.MyMessage\n\nfunction String formatMessage(MyMessage msg) {\n");
-        editor.writeText("    return msg.getText();\n}");
+		assertCorrectText(editor, "return msg.getText();");
+	}
 
-        editor.setPosition(10, 8);
-        editor.replaceText("$msg: MyMessage()", 13);
+	@Test
+	@UsePerspective(DroolsPerspective.class)
+	@Drools6Runtime
+	@UseDefaultProject
+	public void testFunctionUsage() {
+		RuleEditor editor = master.showRuleEditor();
+		editor.setPosition(2, 0);
+		editor.writeText("import com.sample.domain.MyMessage\n\nfunction String formatMessage(MyMessage msg) {\n");
+		editor.writeText("    return msg.getText();\n}");
 
-        editor.setPosition(12, 8);
-        editor.replaceText("", 23);
+		editor.setPosition(10, 8);
+		editor.replaceText("$msg: MyMessage()", 13);
 
-        selectFromContentAssist(editor, "formatMessage()");
+		editor.setPosition(12, 8);
+		editor.replaceText("", 23);
 
-        editor.writeText("$msg");
+		selectFromContentAssist(editor, "formatMessage()");
 
-        assertCorrectText(editor, "formatMessage($msg);");
-    }
+		editor.writeText("$msg");
+
+		assertCorrectText(editor, "formatMessage($msg);");
+	}
 }

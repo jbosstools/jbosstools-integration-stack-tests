@@ -9,7 +9,7 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  * @author tsedmik
  */
 public class SSH2PreferencePage extends PreferencePage {
-	
+
 	private static final String SSH2HOME = "SSH2 home:";
 
 	public SSH2PreferencePage() {

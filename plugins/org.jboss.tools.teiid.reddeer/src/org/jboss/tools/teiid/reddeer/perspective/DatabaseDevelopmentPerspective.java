@@ -13,40 +13,40 @@ import org.jboss.tools.teiid.reddeer.view.SQLResultView;
 public class DatabaseDevelopmentPerspective extends AbstractPerspective {
 
 	private static final String NAME = "Database Development";
-	
+
 	private static final DatabaseDevelopmentPerspective INSTANCE = new DatabaseDevelopmentPerspective();
-	
+
 	private DataSourceExplorer explorerView;
-	
+
 	private SQLResultView sqlResultsView;
-	
+
 	private DatabaseDevelopmentPerspective() {
 		super(NAME);
 	}
 
-	public static final DatabaseDevelopmentPerspective getInstance(){
+	public static final DatabaseDevelopmentPerspective getInstance() {
 		INSTANCE.open();
 		return INSTANCE;
 	}
-	
+
 	public DataSourceExplorer getExplorerView() {
-		if (explorerView == null){
+		if (explorerView == null) {
 			explorerView = new DataSourceExplorer();
 		}
 		return explorerView;
 	}
-	
+
 	public SQLResultView getSqlResultsView() {
-		if (sqlResultsView == null){
+		if (sqlResultsView == null) {
 			sqlResultsView = new SQLResultView();
 		}
 		return sqlResultsView;
 	}
-	
-	//@TODO
-	//public void createConnectionProfile(){//string type, wizard profile
-		//toolbar New Connection Profile
-		//select type
-		//fill in according to the wizard
-	//}
+
+	// @TODO
+	// public void createConnectionProfile(){//string type, wizard profile
+	// toolbar New Connection Profile
+	// select type
+	// fill in according to the wizard
+	// }
 }

@@ -17,8 +17,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * Tests functionality of download runtime option in <i>JBoss Runtime Detection</i>
- * in <i>Preferences</i>
+ * Tests functionality of download runtime option in <i>JBoss Runtime Detection</i> in <i>Preferences</i>
  * 
  * @author tsedmik
  */

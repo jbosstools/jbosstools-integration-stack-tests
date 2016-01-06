@@ -38,8 +38,12 @@ public class FlatImportWizard extends TeiidImportWizard {
 
 	public enum DelimiterCharacter {
 
-		COMMA("Comma \',\'"), SPACE("Space \'\'"), TAB("Tab"), SEMICOLON("Semicolon \':\'"), BAR("Bar \'|\'"), OTHER(
-				"Other");
+		COMMA("Comma \',\'"),
+		SPACE("Space \'\'"),
+		TAB("Tab"),
+		SEMICOLON("Semicolon \':\'"),
+		BAR("Bar \'|\'"),
+		OTHER("Other");
 
 		private String label;
 		private String delimiterCharacter;

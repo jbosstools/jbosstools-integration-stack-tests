@@ -10,19 +10,17 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 /**
- * E2e tests
- * Run at least locally
+ * E2e tests Run at least locally
  * 
  * @author lfabriko
  * 
  */
-@SuiteClasses({//TODO update tests
+@SuiteClasses({ // TODO update tests
 	E2eRecursiveXmlTextTest.class,
 	TopDownWsdlTest.class,
 	E2eAudioBooksVdbExecutionTest.class,
 	RestCallTest.class,
-	ServerManagementTest.class
-})
+	ServerManagementTest.class })
 @RunWith(RedDeerSuite.class)
 public class E2eTests {
 

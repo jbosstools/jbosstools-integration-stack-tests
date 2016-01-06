@@ -36,84 +36,89 @@ import org.junit.runner.RunWith;
 @Runtime(type = RuntimeReqType.DROOLS)
 @RunWith(RedDeerSuite.class)
 public class Brms5ProjectTest extends TestParent {
-    private static final Logger LOGGER = Logger.getLogger(Brms5ProjectTest.class);
-    
-    @InjectRequirement
+	private static final Logger LOGGER = Logger.getLogger(Brms5ProjectTest.class);
+
+	@InjectRequirement
 	private RuntimeRequirement droolsRequirement;
 
-    @Test
-    @Category(SmokeTest.class)
-    @UsePerspective(DroolsPerspective.class)
-    @Drools5Runtime
-    public void testProjectCreationAndDeletion() {
-        final String projectName = "testProjectCreationAndDeletion";
-        ProblemsView problems = new ProblemsView();
-        problems.open();
-        waitASecond();
-        final int errors = problems.getProblems(ERROR).size();
-        final int warnings = problems.getProblems(WARNING).size();
+	@Test
+	@Category(SmokeTest.class)
+	@UsePerspective(DroolsPerspective.class)
+	@Drools5Runtime
+	public void testProjectCreationAndDeletion() {
+		final String projectName = "testProjectCreationAndDeletion";
+		ProblemsView problems = new ProblemsView();
+		problems.open();
+		waitASecond();
+		final int errors = problems.getProblems(ERROR).size();
+		final int warnings = problems.getProblems(WARNING).size();
 
-        NewDroolsProjectWizard wiz = new NewDroolsProjectWizard();
-        wiz.open();
-        wiz.getFirstPage().setProjectName(projectName);
-        wiz.next();
-        wiz.getSelectSamplesPage().checkAll();
-        wiz.next();
-        wiz.getDroolsRuntimePage().setUseDefaultRuntime(true);
-        wiz.getDroolsRuntimePage().setCodeCompatibleWithVersion(CodeCompatibility.Drools51OrAbove);
-        wiz.finish();
-        new WaitWhile(new JobIsRunning());
+		NewDroolsProjectWizard wiz = new NewDroolsProjectWizard();
+		wiz.open();
+		wiz.getFirstPage().setProjectName(projectName);
+		wiz.next();
+		wiz.getSelectSamplesPage().checkAll();
+		wiz.next();
+		wiz.getDroolsRuntimePage().setUseDefaultRuntime(true);
+		wiz.getDroolsRuntimePage().setCodeCompatibleWithVersion(CodeCompatibility.Drools51OrAbove);
+		wiz.finish();
+		new WaitWhile(new JobIsRunning());
 
-        PackageExplorer explorer = new PackageExplorer();
-        Assert.assertTrue("Project was not created.", explorer.containsProject(projectName));
+		PackageExplorer explorer = new PackageExplorer();
+		Assert.assertTrue("Project was not created.", explorer.containsProject(projectName));
 
-        Assert.assertTrue("Project does not have Drools dependencies.", explorer.getProject(projectName).containsItem("Drools Library")); 
-        Assert.assertTrue("Wrong drools runtime used.", findDroolsCoreJar(projectName).contains(droolsRequirement.getConfig().getRuntimeFamily().getHome()));
+		Assert.assertTrue("Project does not have Drools dependencies.",
+				explorer.getProject(projectName).containsItem("Drools Library"));
+		Assert.assertTrue("Wrong drools runtime used.",
+				findDroolsCoreJar(projectName).contains(droolsRequirement.getConfig().getRuntimeFamily().getHome()));
 
-        problems = new ProblemsView();
-        problems.open();
-        waitASecond();
-        Assert.assertEquals("There are errors in newly created project.", errors ,problems.getProblems(ERROR).size());
-        Assert.assertEquals("There are warnings in newly created project.", warnings, problems.getProblems(WARNING).size());
+		problems = new ProblemsView();
+		problems.open();
+		waitASecond();
+		Assert.assertEquals("There are errors in newly created project.", errors, problems.getProblems(ERROR).size());
+		Assert.assertEquals("There are warnings in newly created project.", warnings,
+				problems.getProblems(WARNING).size());
 
-        explorer.getProject(projectName).delete(true);
-        Assert.assertFalse("Project was not deleted.", explorer.containsProject(projectName));
-    }
+		explorer.getProject(projectName).delete(true);
+		Assert.assertFalse("Project was not deleted.", explorer.containsProject(projectName));
+	}
 
-    @Test
-    @UsePerspective(JavaPerspective.class)
-    @Drools5Runtime
-    public void testConvertJavaProject() {
-        final String projectName = "testJavaProject";
-        NewJavaProjectWizardDialog diag = new NewJavaProjectWizardDialog();
-        diag.open();
-        new NewJavaProjectWizardPage().setProjectName("testJavaProject");
-        try {
-            diag.finish();
-        } catch (SWTLayerException ex) {
-            LOGGER.debug("'Open Associated Perspective' dialog was not shown");
-        }
+	@Test
+	@UsePerspective(JavaPerspective.class)
+	@Drools5Runtime
+	public void testConvertJavaProject() {
+		final String projectName = "testJavaProject";
+		NewJavaProjectWizardDialog diag = new NewJavaProjectWizardDialog();
+		diag.open();
+		new NewJavaProjectWizardPage().setProjectName("testJavaProject");
+		try {
+			diag.finish();
+		} catch (SWTLayerException ex) {
+			LOGGER.debug("'Open Associated Perspective' dialog was not shown");
+		}
 
-        PackageExplorer explorer = new PackageExplorer();
-        Assert.assertTrue("Project was not created", explorer.containsProject(projectName));
-        Assert.assertFalse("Project already has Drools dependencies.", explorer.getProject(projectName).containsItem("Drools Library"));
+		PackageExplorer explorer = new PackageExplorer();
+		Assert.assertTrue("Project was not created", explorer.containsProject(projectName));
+		Assert.assertFalse("Project already has Drools dependencies.",
+				explorer.getProject(projectName).containsItem("Drools Library"));
 
-        explorer.getProject(projectName).select();
-        new ContextMenu(new RegexMatcher("Configure.*"), new RegexMatcher("Convert to Drools Project.*")).select();
-        new WaitWhile(new JobIsRunning());
+		explorer.getProject(projectName).select();
+		new ContextMenu(new RegexMatcher("Configure.*"), new RegexMatcher("Convert to Drools Project.*")).select();
+		new WaitWhile(new JobIsRunning());
 
-        Assert.assertTrue("Project does not have Drools dependencies.", explorer.getProject(projectName).containsItem("Drools Library"));
-    }
+		Assert.assertTrue("Project does not have Drools dependencies.",
+				explorer.getProject(projectName).containsItem("Drools Library"));
+	}
 
-    private String findDroolsCoreJar(String projectName) {
-        new PackageExplorer().open();
-        TreeItem lib = new DefaultTreeItem(projectName, "Drools Library");
-        for (TreeItem libItem : lib.getItems()) {
-            if (libItem.getText().startsWith("drools-core")) {
-                return libItem.getText();
-            }
-        }
+	private String findDroolsCoreJar(String projectName) {
+		new PackageExplorer().open();
+		TreeItem lib = new DefaultTreeItem(projectName, "Drools Library");
+		for (TreeItem libItem : lib.getItems()) {
+			if (libItem.getText().startsWith("drools-core")) {
+				return libItem.getText();
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 }

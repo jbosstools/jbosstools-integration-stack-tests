@@ -19,44 +19,43 @@ public class TeiidDesignerPreferencePage extends PreferencePage {
 
 	public TeiidDesignerPreferencePage() {
 		super("Teiid Designer");
-		
+
 	}
 
-	
-	public void setDefaultTeiidInstanceTargetedVersion(String version){
-		open(); 
+	public void setDefaultTeiidInstanceTargetedVersion(String version) {
+		open();
 		new DefaultCombo().setSelection(version);
 		close();
 	}
-	
-	//TODO deploy preference for teiid import - seconds to wait
-	public void setTeiidConnectionImporterTimeout(int secs){
-		open(); 
-		new DefaultSpinner(new WithTooltipTextMatcher("Set the timeout (in sec) for the Teiid Connection Importer")).setValue(secs);
+
+	// TODO deploy preference for teiid import - seconds to wait
+	public void setTeiidConnectionImporterTimeout(int secs) {
+		open();
+		new DefaultSpinner(new WithTooltipTextMatcher("Set the timeout (in sec) for the Teiid Connection Importer"))
+				.setValue(secs);
 		close();
 	}
-	
-	
-	public void setAutoToggleDataRoleChildren(boolean check){
+
+	public void setAutoToggleDataRoleChildren(boolean check) {
 		open();
-		new CheckBox(new DefaultGroup("Preview Data/VDB Execution"),"Enable auto-toggling children of the checked model object").toggle(check);
+		new CheckBox(new DefaultGroup("Preview Data/VDB Execution"),
+				"Enable auto-toggling children of the checked model object").toggle(check);
 		close();
 
 	}
-	
-	
-	public void close(){
+
+	public void close() {
 		new PushButton("Apply").click();
-		if (new SWTWorkbenchBot().activeShell().getText().equals("Changing Teiid Instance version")){
+		if (new SWTWorkbenchBot().activeShell().getText().equals("Changing Teiid Instance version")) {
 			new PushButton("Yes").click();
 		}
 		new PushButton("OK").click();
 	}
-	
+
 	public void open() {
 		WorkbenchPreferenceDialog preferences = new WorkbenchPreferenceDialog();
 		preferences.open();
 		preferences.select(this);
 	}
-	
+
 }

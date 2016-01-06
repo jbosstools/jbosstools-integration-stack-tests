@@ -50,20 +50,20 @@ public class ErrorLogView extends LogView {
 		DefaultTree tree = new DefaultTree();
 		List<TreeItem> treeItems = tree.getAllItems();
 		List<LogMessage> messages = new ArrayList<LogMessage>();
-		for(TreeItem item : treeItems){
+		for (TreeItem item : treeItems) {
 			messages.add(new LogMessage(item, IStatus.ERROR));
 		}
 		return messages;
 	}
 
-	private void setFilter(String severity){
+	private void setFilter(String severity) {
 		ViewMenu tmenu = new ViewMenu("Filters...");
 		tmenu.select();
 		new WaitUntil(new ShellWithTextIsAvailable("Log Filters"));
 		new DefaultShell("Log Filters");
 		new CheckBox(OK_SEVERITY).toggle(false);
 		new CheckBox(INFORMATION_SEVERITY).toggle(false);
-		new CheckBox( WARNING_SEVERITY).toggle(false);
+		new CheckBox(WARNING_SEVERITY).toggle(false);
 		new CheckBox(ERROR_SEVERITY).toggle(false);
 		new CheckBox(severity).toggle(true);
 		new CheckBox("Limit visible events to:").toggle(false);

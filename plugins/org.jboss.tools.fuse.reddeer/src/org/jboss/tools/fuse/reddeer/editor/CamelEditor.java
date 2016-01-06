@@ -52,7 +52,7 @@ public class CamelEditor extends GEFEditor {
 	private static Logger log = Logger.getLogger(CamelEditor.class);
 
 	private File sourceFile;
-	
+
 	public CamelEditor(String title) {
 
 		super(title);
@@ -83,13 +83,17 @@ public class CamelEditor extends GEFEditor {
 	/**
 	 * Adds a component into the Camel Editor at given position
 	 * 
-	 * @param component component to add
-	 * @param x x-axis position
-	 * @param y y-axis position
+	 * @param component
+	 *            component to add
+	 * @param x
+	 *            x-axis position
+	 * @param y
+	 *            y-axis position
 	 */
 	public void addCamelComponent(CamelComponent component, int x, int y) {
 
-		log.debug("Adding '" + component.getLabel() + "' component into the Camel Editor at position [" + x + "," + y + "]");
+		log.debug("Adding '" + component.getLabel() + "' component into the Camel Editor at position [" + x + "," + y
+				+ "]");
 		addToolFromPalette(component.getPaletteEntry(), x, y);
 		AbstractWait.sleep(TimePeriod.SHORT);
 	}
@@ -98,9 +102,12 @@ public class CamelEditor extends GEFEditor {
 	 * Adds a component into the Camel Editor on defined coordinates<br/>
 	 * <b>Note:</b>It does not wait until a new node is in the Camel Editor.
 	 * 
-	 * @param component Name of a component in Palette view
-	 * @param x x-axis coordinate
-	 * @param y y-axis coordinate
+	 * @param component
+	 *            Name of a component in Palette view
+	 * @param x
+	 *            x-axis coordinate
+	 * @param y
+	 *            y-axis coordinate
 	 */
 	public void addCamelComponent(String component, int x, int y) {
 
@@ -257,7 +264,7 @@ public class CamelEditor extends GEFEditor {
 		new LabeledEditPart(label).select();
 		try {
 			new ContextMenu("Set Breakpoint");
-		} catch (SWTLayerException|CoreLayerException ex) {
+		} catch (SWTLayerException | CoreLayerException ex) {
 			return true;
 		}
 
@@ -280,7 +287,7 @@ public class CamelEditor extends GEFEditor {
 		new LabeledEditPart(label).select();
 		try {
 			new ContextMenu("Enable Breakpoint");
-		} catch (SWTLayerException|CoreLayerException ex) {
+		} catch (SWTLayerException | CoreLayerException ex) {
 			return true;
 		}
 
@@ -288,8 +295,7 @@ public class CamelEditor extends GEFEditor {
 	}
 
 	/**
-	 * Performs the given operation on a component described with the given
-	 * label
+	 * Performs the given operation on a component described with the given label
 	 * 
 	 * @param label
 	 *            label of instance of component in Camel Editor
@@ -303,7 +309,7 @@ public class CamelEditor extends GEFEditor {
 		new LabeledEditPart(label).select();
 		try {
 			new ContextMenu(operation).select();
-		} catch (SWTLayerException|CoreLayerException ex) {
+		} catch (SWTLayerException | CoreLayerException ex) {
 			log.error("Given operation is not present in the context menu of the component: " + label);
 		}
 	}
@@ -343,8 +349,7 @@ public class CamelEditor extends GEFEditor {
 	}
 
 	/**
-	 * Checks whether a component with given name is available in the Camel
-	 * Editor
+	 * Checks whether a component with given name is available in the Camel Editor
 	 * 
 	 * @param name
 	 *            name of the component
@@ -366,7 +371,7 @@ public class CamelEditor extends GEFEditor {
 	 * Sets a property to desired value. It presumes that some component in the Camel Editor is selected.
 	 * 
 	 * @param component
-	 * 			  component in the Camel editor
+	 *            component in the Camel editor
 	 * @param name
 	 *            name of the property
 	 * @param value
@@ -386,7 +391,7 @@ public class CamelEditor extends GEFEditor {
 	 * Sets a property to desired value.
 	 * 
 	 * @param component
-	 * 			  component in the Camel editor
+	 *            component in the Camel editor
 	 * @param name
 	 *            name of the property
 	 * @param value
@@ -408,7 +413,8 @@ public class CamelEditor extends GEFEditor {
 	/**
 	 * Sets 'Uri' property
 	 * 
-	 * @param value value of 'Uri'
+	 * @param value
+	 *            value of 'Uri'
 	 */
 	public void setUriProperty(String value) {
 
@@ -424,7 +430,7 @@ public class CamelEditor extends GEFEditor {
 	 * Sets a property to desired value.
 	 * 
 	 * @param component
-	 * 			  component in the Camel editor
+	 *            component in the Camel editor
 	 * @param name
 	 *            name of the property
 	 * @param value
@@ -460,9 +466,11 @@ public class CamelEditor extends GEFEditor {
 		MouseAWTManager.AWTMouseMove(fromCoords.x, fromCoords.y);
 		new LabeledEditPart(source).click();
 		AbstractWait.sleep(TimePeriod.SHORT);
-		MouseAWTManager.AWTMouseMoveFromTo(new Point(fromCoords.x + 70, fromCoords.y + 20), new Point(fromCoords.x + 140, fromCoords.y + 20));
+		MouseAWTManager.AWTMouseMoveFromTo(new Point(fromCoords.x + 70, fromCoords.y + 20),
+				new Point(fromCoords.x + 140, fromCoords.y + 20));
 		MouseAWTManager.AWTMousePress();
-		MouseAWTManager.AWTMouseMoveFromTo(new Point(fromCoords.x + 140, fromCoords.y + 20), new Point(toCoords.x + 10, toCoords.y + 20));
+		MouseAWTManager.AWTMouseMoveFromTo(new Point(fromCoords.x + 140, fromCoords.y + 20),
+				new Point(toCoords.x + 10, toCoords.y + 20));
 		MouseAWTManager.AWTMouseRelease();
 		activate();
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -471,10 +479,11 @@ public class CamelEditor extends GEFEditor {
 	/**
 	 * Selects an edit part with a given name
 	 * 
-	 * @param name name of edit part
+	 * @param name
+	 *            name of edit part
 	 */
 	public void selectEditPart(String name) {
-		
+
 		activate();
 		new LabeledEditPart(name).select();
 	}
@@ -496,7 +505,7 @@ public class CamelEditor extends GEFEditor {
 
 			@Override
 			public Point run() {
-				
+
 				Composite parent = component.getControl().getParent();
 				int tempX = x + parent.toDisplay(1, 1).x;
 				int tempY = y + parent.toDisplay(1, 1).y;
@@ -504,7 +513,7 @@ public class CamelEditor extends GEFEditor {
 			}
 		});
 	}
-	
+
 	public String xpath(String expr) throws FileNotFoundException {
 		XPathEvaluator xpath = new XPathEvaluator(new FileReader(getSourceFile()));
 		String result = xpath.evaluateString(expr);

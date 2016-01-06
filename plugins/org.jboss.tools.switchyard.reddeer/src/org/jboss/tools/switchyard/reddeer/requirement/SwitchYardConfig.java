@@ -31,7 +31,7 @@ public class SwitchYardConfig extends ServerConfig {
 	public void setConfigurationVersion(String configurationVersion) {
 		this.configurationVersion = configurationVersion;
 	}
-	
+
 	public String getTargetRuntime() {
 		return targetRuntime;
 	}

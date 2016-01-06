@@ -58,7 +58,8 @@ public class LicenseTest {
 				fusePlugins.add(item.getText());
 			}
 		}
-		new PushButton("Close").click();;
+		new PushButton("Close").click();
+		;
 		return fusePlugins;
 	}
 
@@ -88,7 +89,9 @@ public class LicenseTest {
 	}
 
 	/**
-	 * <p>Tests validity of the license agreement used with JBoss Fuse Tooling</p>
+	 * <p>
+	 * Tests validity of the license agreement used with JBoss Fuse Tooling
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>open 'Installation Details'</li>

@@ -13,7 +13,7 @@ import org.jboss.tools.bpmn2.reddeer.properties.setup.ScriptSetUp;
  * 
  */
 public class CallActivity extends Task {
-	
+
 	/**
 	 * 
 	 * @param name
@@ -21,8 +21,8 @@ public class CallActivity extends Task {
 	public CallActivity(String name) {
 		super(name, ElementType.CALL_ACTIVITY);
 	}
-	
-	public CallActivity(org.jboss.tools.bpmn2.reddeer.editor.Element element){
+
+	public CallActivity(org.jboss.tools.bpmn2.reddeer.editor.Element element) {
 		super(element);
 	}
 
@@ -33,7 +33,7 @@ public class CallActivity extends Task {
 	public void setIndependent(boolean value) {
 		propertiesHandler.setUp(new CheckBoxSetUp(PropertiesTabs.CALL_ACTIVITY_TAB, "Independent", value));
 	}
-	
+
 	/**
 	 * 
 	 * @param value
@@ -41,7 +41,7 @@ public class CallActivity extends Task {
 	public void setWaitForCompletion(boolean value) {
 		propertiesHandler.setUp(new CheckBoxSetUp(PropertiesTabs.CALL_ACTIVITY_TAB, "Independent", value));
 	}
-	
+
 	/**
 	 * 
 	 * @param activityName
@@ -83,5 +83,5 @@ public class CallActivity extends Task {
 	public void addParameterMapping(ParameterMapping parameterMapping) {
 		propertiesHandler.setUp(new ParameterMappingSetUp(parameterMapping, SectionToolItemButton.ADD));
 	}
-	
+
 }

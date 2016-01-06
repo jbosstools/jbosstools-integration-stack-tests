@@ -39,143 +39,143 @@ import org.junit.runner.RunWith;
 @Runtime(type = RuntimeReqType.DROOLS)
 @RunWith(RedDeerSuite.class)
 public class RulesManagementTest extends TestParent {
-    private static final Logger LOGGER = Logger.getLogger(RulesManagementTest.class);
-    private static final String DEBUG_1 = "KieModule was added:";
-    private static final String DEBUG_2 = "Found kmodule:";
-    private static final String DEBUG_3 = "SLF4J:";
-    private static final String OUTPUT_1 = "Hello World";
-    private static final String OUTPUT_2 = "Goodbye cruel world";
-    private static final String ERROR_1 = "error";
-    private static final String ERROR_2 = "failure";
-    
-    @InjectRequirement
+	private static final Logger LOGGER = Logger.getLogger(RulesManagementTest.class);
+	private static final String DEBUG_1 = "KieModule was added:";
+	private static final String DEBUG_2 = "Found kmodule:";
+	private static final String DEBUG_3 = "SLF4J:";
+	private static final String OUTPUT_1 = "Hello World";
+	private static final String OUTPUT_2 = "Goodbye cruel world";
+	private static final String ERROR_1 = "error";
+	private static final String ERROR_2 = "failure";
+
+	@InjectRequirement
 	private RuntimeRequirement droolsRequirement;
 
-    @Test
-    @UsePerspective(JavaPerspective.class)
-    @Drools6Runtime
-    @UseDefaultProject
-    public void testRunRulesFromContextMenu() {
-        ConsoleView console = new ConsoleView();
-        console.open();
+	@Test
+	@UsePerspective(JavaPerspective.class)
+	@Drools6Runtime
+	@UseDefaultProject
+	public void testRunRulesFromContextMenu() {
+		ConsoleView console = new ConsoleView();
+		console.open();
 
-        RunUtility.runAsJavaApplication(true, DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
-        new WaitUntil(new ApplicationIsTerminated());
-        waitASecond(); // this is quite annoying - the text is updated AFTER the application is terminated
+		RunUtility.runAsJavaApplication(true, DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
+		new WaitUntil(new ApplicationIsTerminated());
+		waitASecond(); // this is quite annoying - the text is updated AFTER the application is terminated
 
-        console.open();
-        String consoleText = console.getConsoleText();
-        Assert.assertNotNull("Console text was empty.", consoleText);
-        LOGGER.debug(consoleText);
-        Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.contains(OUTPUT_1));
-        Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.contains(OUTPUT_2));
-        Assert.assertFalse("Unexpected error in console\n" + consoleText, consoleText.toLowerCase().contains(ERROR_1));
-        Assert.assertFalse("Unexpected error in console\n" + consoleText, consoleText.toLowerCase().contains(ERROR_2));
-    }
+		console.open();
+		String consoleText = console.getConsoleText();
+		Assert.assertNotNull("Console text was empty.", consoleText);
+		LOGGER.debug(consoleText);
+		Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.contains(OUTPUT_1));
+		Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.contains(OUTPUT_2));
+		Assert.assertFalse("Unexpected error in console\n" + consoleText, consoleText.toLowerCase().contains(ERROR_1));
+		Assert.assertFalse("Unexpected error in console\n" + consoleText, consoleText.toLowerCase().contains(ERROR_2));
+	}
 
-    @Test
-    @UsePerspective(JavaPerspective.class)
-    @Drools6Runtime
-    @UseDefaultProject
-    public void testRunRulesFromToolbar() {
-        ConsoleView console = new ConsoleView();
-        console.open();
+	@Test
+	@UsePerspective(JavaPerspective.class)
+	@Drools6Runtime
+	@UseDefaultProject
+	public void testRunRulesFromToolbar() {
+		ConsoleView console = new ConsoleView();
+		console.open();
 
-        RunUtility.runAsJavaApplication(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
-        new WaitUntil(new ApplicationIsTerminated());
-        waitASecond(); // this is quite annoying - the text is updated AFTER the application is terminated
+		RunUtility.runAsJavaApplication(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
+		new WaitUntil(new ApplicationIsTerminated());
+		waitASecond(); // this is quite annoying - the text is updated AFTER the application is terminated
 
-        console.open();
-        String consoleText = console.getConsoleText();
-        Assert.assertNotNull("Console text was empty.", consoleText);
-        LOGGER.debug(consoleText);
-        Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.contains(OUTPUT_1));
-        Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.contains(OUTPUT_2));
-        Assert.assertFalse("Unexpected error in console\n" + consoleText, consoleText.toLowerCase().contains(ERROR_1));
-        Assert.assertFalse("Unexpected error in console\n" + consoleText, consoleText.toLowerCase().contains(ERROR_2));
-    }
+		console.open();
+		String consoleText = console.getConsoleText();
+		Assert.assertNotNull("Console text was empty.", consoleText);
+		LOGGER.debug(consoleText);
+		Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.contains(OUTPUT_1));
+		Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.contains(OUTPUT_2));
+		Assert.assertFalse("Unexpected error in console\n" + consoleText, consoleText.toLowerCase().contains(ERROR_1));
+		Assert.assertFalse("Unexpected error in console\n" + consoleText, consoleText.toLowerCase().contains(ERROR_2));
+	}
 
-    @Test
-    @UsePerspective(JavaPerspective.class)
-    @Drools6Runtime
-    @UseDefaultProject
-    public void testRenameProject() {
-        final String oldName = DEFAULT_PROJECT_NAME;
-        final String newName = "renamed" + oldName;
+	@Test
+	@UsePerspective(JavaPerspective.class)
+	@Drools6Runtime
+	@UseDefaultProject
+	public void testRenameProject() {
+		final String oldName = DEFAULT_PROJECT_NAME;
+		final String newName = "renamed" + oldName;
 
-        PackageExplorer explorer = new PackageExplorer();
-        Assert.assertTrue("The original project was not created.", explorer.containsProject(oldName));
-        explorer.getProject(oldName).select();
+		PackageExplorer explorer = new PackageExplorer();
+		Assert.assertTrue("The original project was not created.", explorer.containsProject(oldName));
+		explorer.getProject(oldName).select();
 
-        new ContextMenu(new RegexMatcher("Refactor.*"), new RegexMatcher("Rename.*")).select();
+		new ContextMenu(new RegexMatcher("Refactor.*"), new RegexMatcher("Rename.*")).select();
 
-        new DefaultShell("Rename Java Project");
-        new LabeledText("New name:").setText(newName);
-        new PushButton("OK").click();
-        new WaitWhile(new JobIsRunning());
+		new DefaultShell("Rename Java Project");
+		new LabeledText("New name:").setText(newName);
+		new PushButton("OK").click();
+		new WaitWhile(new JobIsRunning());
 
-        waitASecond();
-        Assert.assertFalse("The original project is still present.", explorer.containsProject(oldName));
-        Assert.assertTrue("The renamed project is not present.", explorer.containsProject(newName));
-    }
+		waitASecond();
+		Assert.assertFalse("The original project is still present.", explorer.containsProject(oldName));
+		Assert.assertTrue("The renamed project is not present.", explorer.containsProject(newName));
+	}
 
-    @Test
-    @UsePerspective(JavaPerspective.class)
-    @Drools6Runtime
-    @UseDefaultProject
-    public void testSetBreakpoint() {
-        OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
+	@Test
+	@UsePerspective(JavaPerspective.class)
+	@Drools6Runtime
+	@UseDefaultProject
+	public void testSetBreakpoint() {
+		OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
 
-        RuleEditor editor = new DrlEditor().showRuleEditor();
-        editor.setPosition(8, 0);
+		RuleEditor editor = new DrlEditor().showRuleEditor();
+		editor.setPosition(8, 0);
 
-        new ResourcePerspective().open();
-        new JavaPerspective().open();
+		new ResourcePerspective().open();
+		new JavaPerspective().open();
 
-        try {
-            new ShellMenu(new RegexMatcher("Run"), new RegexMatcher("Toggle Breakpoint.*")).select();
-        } catch (SWTLayerException ex) {
-            if ("Menu item is not enabled".equals(ex.getMessage())) {
-                Assert.fail("Toggle Breakpoint menu item is not enabled!");
-            } else {
-                throw ex;
-            }
-        }
-    }
+		try {
+			new ShellMenu(new RegexMatcher("Run"), new RegexMatcher("Toggle Breakpoint.*")).select();
+		} catch (SWTLayerException ex) {
+			if ("Menu item is not enabled".equals(ex.getMessage())) {
+				Assert.fail("Toggle Breakpoint menu item is not enabled!");
+			} else {
+				throw ex;
+			}
+		}
+	}
 
-    @Test
-    @Category(SmokeTest.class)
-    @UsePerspective(DroolsPerspective.class)
-    @Drools6Runtime
-    @UseDefaultProject
-    public void testDebugRule() {
-        OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
+	@Test
+	@Category(SmokeTest.class)
+	@UsePerspective(DroolsPerspective.class)
+	@Drools6Runtime
+	@UseDefaultProject
+	public void testDebugRule() {
+		OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
 
-        new DrlEditor().showRuleEditor().setBreakpoint(8);
+		new DrlEditor().showRuleEditor().setBreakpoint(8);
 
-        RunUtility.debugAsDroolsApplication(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
+		RunUtility.debugAsDroolsApplication(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
 
-        ConsoleView console = new ConsoleView();
-        console.open();
-        String consoleText = console.getConsoleText();
-        Assert.assertNotNull("Console text was empty.", consoleText);
-        LOGGER.debug(consoleText);
-        
-        if (!consoleText.contains(DEBUG_3)) {
-        	Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.contains(DEBUG_1));
-        	Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.contains(DEBUG_2));
-        }
+		ConsoleView console = new ConsoleView();
+		console.open();
+		String consoleText = console.getConsoleText();
+		Assert.assertNotNull("Console text was empty.", consoleText);
+		LOGGER.debug(consoleText);
 
-        // wait a moment before Debug perspective is fully loaded
-        waitASecond();
+		if (!consoleText.contains(DEBUG_3)) {
+			Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.contains(DEBUG_1));
+			Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.contains(DEBUG_2));
+		}
 
-        new ShellMenu(new RegexMatcher("Run"), new RegexMatcher("Resume.*")).select();
-        console.open();
-        waitASecond();
-        consoleText = console.getConsoleText();
-        Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.contains(OUTPUT_1));
-        Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.contains(OUTPUT_2));
-        Assert.assertFalse("Unexpected error in console\n" + consoleText, consoleText.toLowerCase().contains(ERROR_1));
-        Assert.assertFalse("Unexpected error in console\n" + consoleText, consoleText.toLowerCase().contains(ERROR_2));
-    }
+		// wait a moment before Debug perspective is fully loaded
+		waitASecond();
+
+		new ShellMenu(new RegexMatcher("Run"), new RegexMatcher("Resume.*")).select();
+		console.open();
+		waitASecond();
+		consoleText = console.getConsoleText();
+		Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.contains(OUTPUT_1));
+		Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.contains(OUTPUT_2));
+		Assert.assertFalse("Unexpected error in console\n" + consoleText, consoleText.toLowerCase().contains(ERROR_1));
+		Assert.assertFalse("Unexpected error in console\n" + consoleText, consoleText.toLowerCase().contains(ERROR_2));
+	}
 }

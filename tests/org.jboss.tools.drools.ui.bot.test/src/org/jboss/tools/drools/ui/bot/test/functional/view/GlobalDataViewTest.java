@@ -26,89 +26,89 @@ import org.junit.runner.RunWith;
 @Runtime(type = RuntimeReqType.DROOLS)
 @RunWith(RedDeerSuite.class)
 public class GlobalDataViewTest extends ViewTestParent {
-	
+
 	@InjectRequirement
 	private RuntimeRequirement droolsRequirement;
 
-    public GlobalDataViewTest() {
-        super(GlobalDataView.class);
-    }
+	public GlobalDataViewTest() {
+		super(GlobalDataView.class);
+	}
 
-    @Test
-    @UsePerspective(DroolsPerspective.class)
-    @Drools6Runtime
-    @UseDefaultProject
-    public void testNoGlobalsDefined() {
-        OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
+	@Test
+	@UsePerspective(DroolsPerspective.class)
+	@Drools6Runtime
+	@UseDefaultProject
+	public void testNoGlobalsDefined() {
+		OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
 
-        RuleEditor editor = new DrlEditor().showRuleEditor();
-        editor.setBreakpoint(8);
+		RuleEditor editor = new DrlEditor().showRuleEditor();
+		editor.setBreakpoint(8);
 
-        RunUtility.debugAsDroolsApplication(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
+		RunUtility.debugAsDroolsApplication(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
 
-        GlobalDataView globals = new GlobalDataView();
-        globals.open();
+		GlobalDataView globals = new GlobalDataView();
+		globals.open();
 
-        Assert.assertEquals("Undefined globals found", 0, globals.getGlobalsList().size());
-    }
+		Assert.assertEquals("Undefined globals found", 0, globals.getGlobalsList().size());
+	}
 
-    @Test
-    @UsePerspective(DroolsPerspective.class)
-    @Drools6Runtime
-    @UseDefaultProject
-    public void testUninitiatedGlobal() {
-        OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
+	@Test
+	@UsePerspective(DroolsPerspective.class)
+	@Drools6Runtime
+	@UseDefaultProject
+	public void testUninitiatedGlobal() {
+		OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
 
-        RuleEditor editor = new DrlEditor().showRuleEditor();
-        editor.setPosition(3, 0);
-        editor.writeText("\nglobal String stringVar\n");
-        editor.save();
-        editor.setBreakpoint(10);
+		RuleEditor editor = new DrlEditor().showRuleEditor();
+		editor.setPosition(3, 0);
+		editor.writeText("\nglobal String stringVar\n");
+		editor.save();
+		editor.setBreakpoint(10);
 
-        RunUtility.debugAsDroolsApplication(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
+		RunUtility.debugAsDroolsApplication(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
 
-        GlobalDataView globals = new GlobalDataView();
-        globals.open();
+		GlobalDataView globals = new GlobalDataView();
+		globals.open();
 
-        List<String> names = globals.getGlobalsList();
-        Assert.assertEquals("Wrong number of globals found", 1, names.size());
-        Assert.assertEquals("Wrong global name encountered", "stringVar", names.get(0));
-    }
+		List<String> names = globals.getGlobalsList();
+		Assert.assertEquals("Wrong number of globals found", 1, names.size());
+		Assert.assertEquals("Wrong global name encountered", "stringVar", names.get(0));
+	}
 
-    @Test
-    @UsePerspective(DroolsPerspective.class)
-    @Drools6Runtime
-    @UseDefaultProject
-    public void testMultipleGlobals() {
-        OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
+	@Test
+	@UsePerspective(DroolsPerspective.class)
+	@Drools6Runtime
+	@UseDefaultProject
+	public void testMultipleGlobals() {
+		OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
 
-        RuleEditor editor = new DrlEditor().showRuleEditor();
+		RuleEditor editor = new DrlEditor().showRuleEditor();
 
-        editor.setPosition(3, 0);
-        editor.writeText("import java.util.List\n\n");
-        editor.writeText("global String stringVar\n");
-        editor.writeText("global Object objectVar\n");
-        editor.writeText("global List listVar\n");
-        editor.save();
-        editor.setBreakpoint(13);
+		editor.setPosition(3, 0);
+		editor.writeText("import java.util.List\n\n");
+		editor.writeText("global String stringVar\n");
+		editor.writeText("global Object objectVar\n");
+		editor.writeText("global List listVar\n");
+		editor.save();
+		editor.setBreakpoint(13);
 
-        OpenUtility.openResource(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
-        TextEditor txtEditor = new TextEditor();
-        StyledText text = new DefaultStyledText();
-        text.insertText(17, 0, "\n            kSession.setGlobal(\"stringVar\", \"testStringValue\");\n");
-        text.insertText(18, 0, "\n            kSession.setGlobal(\"objectVar\", new Object());\n");
-        text.insertText(19, 0, "\n            kSession.setGlobal(\"listVar\", java.util.Arrays.asList(1, 2, 3));\n");
-        txtEditor.save();
+		OpenUtility.openResource(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
+		TextEditor txtEditor = new TextEditor();
+		StyledText text = new DefaultStyledText();
+		text.insertText(17, 0, "\n            kSession.setGlobal(\"stringVar\", \"testStringValue\");\n");
+		text.insertText(18, 0, "\n            kSession.setGlobal(\"objectVar\", new Object());\n");
+		text.insertText(19, 0, "\n            kSession.setGlobal(\"listVar\", java.util.Arrays.asList(1, 2, 3));\n");
+		txtEditor.save();
 
-        RunUtility.debugAsDroolsApplication(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
+		RunUtility.debugAsDroolsApplication(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
 
-        GlobalDataView globals = new GlobalDataView();
-        globals.open();
+		GlobalDataView globals = new GlobalDataView();
+		globals.open();
 
-        List<String> names = globals.getGlobalsList();
-        Assert.assertEquals("Wrong number of globals found", 3, names.size());
-        Assert.assertTrue("Global 'stringVar' not found", names.contains("stringVar"));
-        Assert.assertTrue("Global 'objectVar' not found", names.contains("objectVar"));
-        Assert.assertTrue("Global 'listVar' not found", names.contains("listVar"));
-    }
+		List<String> names = globals.getGlobalsList();
+		Assert.assertEquals("Wrong number of globals found", 3, names.size());
+		Assert.assertTrue("Global 'stringVar' not found", names.contains("stringVar"));
+		Assert.assertTrue("Global 'objectVar' not found", names.contains("objectVar"));
+		Assert.assertTrue("Global 'listVar' not found", names.contains("listVar"));
+	}
 }

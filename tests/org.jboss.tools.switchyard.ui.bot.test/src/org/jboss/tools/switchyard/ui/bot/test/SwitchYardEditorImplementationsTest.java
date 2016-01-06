@@ -69,7 +69,7 @@ public class SwitchYardEditorImplementationsTest {
 
 	public static final String XPATH_RULES = "/switchyard/composite/component/implementation.rules";
 	public static final String XPATH_BPM = "/switchyard/composite/component/implementation.bpm";
-	
+
 	private static int index = 0;
 
 	@InjectRequirement

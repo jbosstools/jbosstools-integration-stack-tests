@@ -31,7 +31,9 @@ public class SAPInstallationTest {
 	private SAPRequirement sapRequirement;
 
 	/**
-	 * <p>Tries to install JBoss Fuse SAP Tool Suite</p>
+	 * <p>
+	 * Tries to install JBoss Fuse SAP Tool Suite
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>open Install JBoss Fuse SAP Tool Suite</li>

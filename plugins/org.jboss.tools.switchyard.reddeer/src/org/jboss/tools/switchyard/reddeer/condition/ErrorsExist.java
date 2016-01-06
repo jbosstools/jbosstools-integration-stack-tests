@@ -14,7 +14,7 @@ import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
  *
  */
 public class ErrorsExist extends AbstractWaitCondition {
-	
+
 	private List<Problem> errors = new ArrayList<Problem>();
 
 	@Override
@@ -29,7 +29,7 @@ public class ErrorsExist extends AbstractWaitCondition {
 	public String description() {
 		return "There are no errors in Problems view";
 	}
-	
+
 	public List<Problem> getAllErrors() {
 		return errors;
 	}

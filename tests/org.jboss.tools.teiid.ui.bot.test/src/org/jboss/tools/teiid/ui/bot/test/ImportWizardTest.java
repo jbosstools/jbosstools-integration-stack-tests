@@ -105,7 +105,7 @@ public class ImportWizardTest {
 		importWizard.next();
 		importWizard.finish();
 		new WorkbenchShell();
-		
+
 		teiidBot.assertResource(MODEL_PROJECT, "ItemSource.xmi");
 		teiidBot.assertResource(MODEL_PROJECT, "ViewModel.xmi");
 		teiidBot.checkDiagram(MODEL_PROJECT, "ItemSource.xmi", "getTextFiles");
@@ -135,7 +135,7 @@ public class ImportWizardTest {
 
 	@Test
 	public void wsdlToSOAPImportTest() {
-		
+
 		String profile = "Hello Service";
 
 		Properties wsdlCP = new Properties();
@@ -143,18 +143,18 @@ public class ImportWizardTest {
 		wsdlCP.setProperty("endPoint", "HelloPort");
 
 		new ConnectionProfileManager().createCPWSDL(profile, wsdlCP);
-		
+
 		WsdlImportWizard wsdlWizard = new WsdlImportWizard();
-		
+
 		wsdlWizard.setProfile(profile);
 
 		wsdlWizard.setSourceModelName("HelloService.xmi");
 		wsdlWizard.setViewModelName("HelloServiceView.xmi");
-		
+
 		wsdlWizard.addOperation("sayHello");
 		wsdlWizard.addRequestElement("sayHello/sequence/arg0");
 		wsdlWizard.addResponseElement("sayHelloResponse/sequence/return");
-		
+
 		wsdlWizard.execute();
 
 		teiidBot.assertResource(MODEL_PROJECT, "HelloService.xmi");
@@ -180,8 +180,11 @@ public class ImportWizardTest {
 		iProps.setProperty("modelName", "WsdlToWS");
 		iProps.setProperty("project", MODEL_PROJECT);
 		iProps.setProperty("wsdlName", "Hello.wsdl");
-		new ImportMetadataManager().importFromWSDLToWebService(iProps,
-				WsdlWebImportWizard.IMPORT_WSDL_FROM_WORKSPACE); // generates Hello.xsd WsdlToWS.xmi - Hello
+		new ImportMetadataManager().importFromWSDLToWebService(iProps, WsdlWebImportWizard.IMPORT_WSDL_FROM_WORKSPACE); // generates
+																														// Hello.xsd
+																														// WsdlToWS.xmi
+																														// -
+																														// Hello
 		new WorkbenchShell();
 
 		// import from URL

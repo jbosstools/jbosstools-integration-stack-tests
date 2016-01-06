@@ -175,8 +175,7 @@ public class CamelProject {
 	}
 
 	/**
-	 * Tries to close 'Confirm Perspective Switch' window. This window is
-	 * appeared after debugging is started.
+	 * Tries to close 'Confirm Perspective Switch' window. This window is appeared after debugging is started.
 	 */
 	private void closePerspectiveSwitchWindow() {
 

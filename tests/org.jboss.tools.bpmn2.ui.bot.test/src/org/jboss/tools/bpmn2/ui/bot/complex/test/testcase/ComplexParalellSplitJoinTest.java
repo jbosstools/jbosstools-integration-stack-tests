@@ -24,11 +24,8 @@ import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
 import org.kie.api.runtime.process.WorkItem;
 
-@JBPM6ComplexTestDefinition(projectName="JBPM6ComplexTest",
-							importFolder="resources/bpmn2/model/base",
-							openFile="BaseBPMN2-ParalellSplitJoin.bpmn2",
-							saveAs="BPMN2-ParalellSplitJoin.bpmn2")
-public class ComplexParalellSplitJoinTest extends JBPM6ComplexTest{
+@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-ParalellSplitJoin.bpmn2", saveAs = "BPMN2-ParalellSplitJoin.bpmn2")
+public class ComplexParalellSplitJoinTest extends JBPM6ComplexTest {
 
 	private static final String END = "End";
 	private static final String START = "Start";
@@ -37,38 +34,39 @@ public class ComplexParalellSplitJoinTest extends JBPM6ComplexTest{
 	private static final String UT_PM_EVALUATION = "PM Evaluation";
 	private static final String UT_HR_EVALUATION = "HR Evaluation";
 	private static final String UT_SELF_EVALUATION = "Self Evaluation";
-	
-	@TestPhase(phase=Phase.MODEL)
+
+	@TestPhase(phase = Phase.MODEL)
 	public void model() {
 		UserTask selfEvaluation = new UserTask("Self Evaluation");
 		UserTask hrEvaluation = new UserTask("HR Evaluation");
 		UserTask pmEvaluation = new UserTask("PM Evaluation");
-		
-		ParallelGateway gateway1 = (ParallelGateway) selfEvaluation.append("Gateway1", ElementType.PARALLEL_GATEWAY, ConnectionType.SEQUENCE_FLOW);
+
+		ParallelGateway gateway1 = (ParallelGateway) selfEvaluation.append("Gateway1", ElementType.PARALLEL_GATEWAY,
+				ConnectionType.SEQUENCE_FLOW);
 		gateway1.setDirection(Direction.DIVERGING);
-		
+
 		gateway1.connectTo(hrEvaluation);
 		gateway1.connectTo(pmEvaluation);
 
-		ParallelGateway gateway2 = (ParallelGateway) hrEvaluation.append("Gateway2", ElementType.PARALLEL_GATEWAY, ConnectionType.SEQUENCE_FLOW, Position.SOUTH_EAST);
+		ParallelGateway gateway2 = (ParallelGateway) hrEvaluation.append("Gateway2", ElementType.PARALLEL_GATEWAY,
+				ConnectionType.SEQUENCE_FLOW, Position.SOUTH_EAST);
 		gateway2.setDirection(Direction.CONVERGING);
 		gateway2.connectTo(new EndEvent("End"));
 
 		pmEvaluation.connectTo(gateway2);
 	}
-	
-	@TestPhase(phase=Phase.RUN)
+
+	@TestPhase(phase = Phase.RUN)
 	public void run(KieSession kSession) {
 		PersistenceWorkItemHandler workItemHandler = new PersistenceWorkItemHandler();
 		kSession.getWorkItemManager().registerWorkItemHandler("Human Task", workItemHandler);
-	    
-		TriggeredNodesListener triggeredNodes = new TriggeredNodesListener(
-			Arrays.asList(START, UT_PM_EVALUATION, UT_HR_EVALUATION, UT_SELF_EVALUATION, 
-			GATEWAY_CON, GATEWAY_DIV, END), null);
-		ParallelGatewaysListener gatewaysEventListener = new ParallelGatewaysListener(GATEWAY_DIV, GATEWAY_CON); 
+
+		TriggeredNodesListener triggeredNodes = new TriggeredNodesListener(Arrays.asList(START, UT_PM_EVALUATION,
+				UT_HR_EVALUATION, UT_SELF_EVALUATION, GATEWAY_CON, GATEWAY_DIV, END), null);
+		ParallelGatewaysListener gatewaysEventListener = new ParallelGatewaysListener(GATEWAY_DIV, GATEWAY_CON);
 		kSession.addEventListener(gatewaysEventListener);
 		kSession.addEventListener(triggeredNodes);
-		
+
 		ProcessInstance processInstance = kSession.startProcess("Evaluation");
 		JbpmAssertions.assertProcessInstanceActive(processInstance, kSession);
 
@@ -76,13 +74,13 @@ public class ComplexParalellSplitJoinTest extends JBPM6ComplexTest{
 
 		WorkItem workItem = workItemHandler.getWorkItem(UT_SELF_EVALUATION);
 		assertNotNull(workItem);
-		workItemHandler.completeWorkItem(workItem,kSession.getWorkItemManager());
-		
+		workItemHandler.completeWorkItem(workItem, kSession.getWorkItemManager());
+
 		assertTrue(workItemHandler.getWorkItems().size() == 2);
-		
-		workItemHandler.completeWorkItem(workItemHandler.getWorkItem(UT_HR_EVALUATION),kSession.getWorkItemManager());
-		workItemHandler.completeWorkItem(workItemHandler.getWorkItem(UT_PM_EVALUATION),kSession.getWorkItemManager());
-		
+
+		workItemHandler.completeWorkItem(workItemHandler.getWorkItem(UT_HR_EVALUATION), kSession.getWorkItemManager());
+		workItemHandler.completeWorkItem(workItemHandler.getWorkItem(UT_PM_EVALUATION), kSession.getWorkItemManager());
+
 		JbpmAssertions.assertProcessInstanceCompleted(processInstance, kSession);
 	}
 }

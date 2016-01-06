@@ -14,11 +14,7 @@ import org.junit.runners.Suite.SuiteClasses;
  * 
  * @author tsedmik
  */
-@SuiteClasses({
-	RegressionTest.class,
-	RegressionFuseTest.class,
-	RegressionKarafTest.class
-})
+@SuiteClasses({ RegressionTest.class, RegressionFuseTest.class, RegressionKarafTest.class })
 @RunWith(RedDeerSuite.class)
 public class RegressionTests extends TestSuite {
 

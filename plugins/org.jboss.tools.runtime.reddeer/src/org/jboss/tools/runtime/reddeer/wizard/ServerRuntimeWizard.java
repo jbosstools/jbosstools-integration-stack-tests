@@ -15,7 +15,7 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
  * 
  */
 public class ServerRuntimeWizard extends WizardDialog {
-	
+
 	public static final String TITLE = "New Server Runtime Environment";
 
 	public ServerRuntimeWizard activate() {
@@ -27,13 +27,13 @@ public class ServerRuntimeWizard extends WizardDialog {
 		new DefaultTreeItem(category, label).select();
 		return this;
 	}
-	
+
 	public void selectJre(String jreName) {
 		if (jreName == null) {
 			return;
 		}
-		new RadioButton(new DefaultGroup("Runtime JRE"),"Alternate JRE: ").click();
-		new DefaultCombo(new DefaultGroup("Runtime JRE"),1).setSelection(jreName);
+		new RadioButton(new DefaultGroup("Runtime JRE"), "Alternate JRE: ").click();
+		new DefaultCombo(new DefaultGroup("Runtime JRE"), 1).setSelection(jreName);
 	}
 
 	/*
@@ -42,7 +42,7 @@ public class ServerRuntimeWizard extends WizardDialog {
 	public static final String NAME = "Name";
 	public static final String HOME_DIR = "Home Directory";
 	public static final String CONFIGURATION = "Configuration file: ";
-	
+
 	public ServerRuntimeWizard setName(String name) {
 		new LabeledText(NAME).setText(name);
 		return this;
@@ -52,7 +52,7 @@ public class ServerRuntimeWizard extends WizardDialog {
 		new LabeledText(HOME_DIR).setText(path);
 		return this;
 	}
-	
+
 	public ServerRuntimeWizard setConfiguration(String configuration) {
 		if (configuration != null) {
 			new LabeledText(CONFIGURATION).setText(configuration);
@@ -64,7 +64,7 @@ public class ServerRuntimeWizard extends WizardDialog {
 	 * JBoss Fuse
 	 */
 	public static final String INSTALL_DIR = "Home Directory";
-	
+
 	public ServerRuntimeWizard setInstallationDir(String path) {
 		new LabeledText(INSTALL_DIR).setText(path);
 		return this;

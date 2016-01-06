@@ -1,6 +1,5 @@
 package org.jboss.tools.bpel.reddeer.activity;
 
-
 /**
  * 
  * @author apodhrad

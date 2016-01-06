@@ -9,7 +9,7 @@ import org.jboss.tools.bpmn2.reddeer.properties.setup.EventDefinitionSetUp;
  * 
  */
 public class EscalationEndEvent extends EndEvent {
-	
+
 	/**
 	 * 
 	 * @param name
@@ -23,8 +23,9 @@ public class EscalationEndEvent extends EndEvent {
 	 * @param escalation
 	 */
 	public void setEscalation(Escalation escalation, String variableForMapping) {
-		propertiesHandler.setUp(new EventDefinitionSetUp(new EscalationEventDefinition(escalation, variableForMapping, "Source")));
+		propertiesHandler.setUp(
+				new EventDefinitionSetUp(new EscalationEventDefinition(escalation, variableForMapping, "Source")));
 		refresh();
 	}
-	
+
 }

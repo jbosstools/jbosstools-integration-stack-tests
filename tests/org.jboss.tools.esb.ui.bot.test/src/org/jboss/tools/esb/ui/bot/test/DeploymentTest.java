@@ -53,7 +53,7 @@ import org.junit.runner.RunWith;
  * 
  */
 @Runtime(type = RuntimeReqType.ESB)
-@Server(type = {ServerReqType.AS, ServerReqType.EAP}, state = ServerReqState.RUNNING)
+@Server(type = { ServerReqType.AS, ServerReqType.EAP }, state = ServerReqState.RUNNING)
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
 @RunWith(RedDeerSuite.class)

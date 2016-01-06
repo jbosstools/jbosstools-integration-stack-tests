@@ -13,12 +13,12 @@ public class ModelColumn {
 	private String datatype;
 	private Integer numericPrecision;
 	private Integer numericScale;
-	
-	public ModelColumn(){
-		
+
+	public ModelColumn() {
+
 	}
-	
-	public ModelColumn(TableItem it){
+
+	public ModelColumn(TableItem it) {
 		Table parent = it.getParent();
 		location = it.getText(parent.getHeaderIndex("Location"));
 		name = it.getText(parent.getHeaderIndex("Name"));
@@ -29,41 +29,51 @@ public class ModelColumn {
 		numericScale = Integer.valueOf(it.getText(parent.getHeaderIndex("Numeric Scale")));
 		datatype = it.getText(parent.getHeaderIndex("Datatype")).split(" :")[0];
 	}
-	
-	
+
 	public String getLocation() {
 		return location;
 	}
+
 	public void setLocation(String location) {
 		this.location = location;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public String getNameInSource() {
 		return nameInSource;
 	}
+
 	public void setNameInSource(String nameInSource) {
 		this.nameInSource = nameInSource;
 	}
+
 	public String getNativeType() {
 		return nativeType;
 	}
+
 	public void setNativeType(String nativeType) {
 		this.nativeType = nativeType;
 	}
+
 	public Integer getLength() {
 		return length;
 	}
+
 	public void setLength(Integer length) {
 		this.length = length;
 	}
+
 	public String getDatatype() {
 		return datatype;
 	}
+
 	public void setDatatype(String datatype) {
 		this.datatype = datatype;
 	}
@@ -83,6 +93,5 @@ public class ModelColumn {
 	public void setNumericScale(Integer numericScale) {
 		this.numericScale = numericScale;
 	}
-	
 
 }

@@ -25,8 +25,7 @@ import junit.framework.TestSuite;
 	JMXNavigatorServerTest.class,
 	QuickStartsTest.class,
 	ServerTest.class,
-	ServerJRETest.class
-})
+	ServerJRETest.class })
 @RunWith(RedDeerSuite.class)
 public class ServerTests extends TestSuite {
 

@@ -34,12 +34,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
-@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles={
-		ConnectionProfilesConstants.LDAP,
-		ConnectionProfilesConstants.RHDS
-})
+@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = {
+	ConnectionProfilesConstants.LDAP,
+	ConnectionProfilesConstants.RHDS })
 public class LdapImportTest {
-	
+
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;
 
@@ -47,110 +46,99 @@ public class LdapImportTest {
 	private static TeiidBot teiidBot = new TeiidBot();
 	private static final String LDAP_MODEL = "LdapImp";
 	private static final String RHDS_MODEL = "RhdsImp";
-		
-	
-	
-	
+
 	@BeforeClass
 	public static void prepare() {
 		new TeiidBot().uncheckBuildAutomatically();
 		new ModelExplorerManager().createProject(NEW_PROJECT);
-		
+
 	}
-	
+
 	@Before
-	public void openTeiidPerspective(){
+	public void openTeiidPerspective() {
 		new TeiidPerspective().open();
 	}
-	
+
 	@Test
 	public void rhdsImport() {
-		
-		Properties cpProperties = teiidServer.getServerConfig().getConnectionProfile("rhds").asProperties();
-		Properties importProperties = teiidBot.getProperties(teiidBot.toAbsolutePath("resources/importWizard/rhds.properties"));
 
-		new ImportManager().importFromLdap(
-				NEW_PROJECT,
-				RHDS_MODEL, 
-				ConnectionProfilesConstants.RHDS, 
-				cpProperties.getProperty("db.hostname"), 
-				cpProperties.getProperty("principalDnSuffix"),
-				importProperties
-				);
-		
+		Properties cpProperties = teiidServer.getServerConfig().getConnectionProfile("rhds").asProperties();
+		Properties importProperties = teiidBot
+				.getProperties(teiidBot.toAbsolutePath("resources/importWizard/rhds.properties"));
+
+		new ImportManager().importFromLdap(NEW_PROJECT, RHDS_MODEL, ConnectionProfilesConstants.RHDS,
+				cpProperties.getProperty("db.hostname"), cpProperties.getProperty("principalDnSuffix"),
+				importProperties);
+
 		ModelExplorer modelExplorer = new ModelExplorer();
 		modelExplorer.open();
 		Project project = modelExplorer.getProject(NEW_PROJECT);
 		project.getProjectItem(RHDS_MODEL + ".xmi").open();
-		
+
 		ModelEditor editor = teiidBot.modelEditor(RHDS_MODEL + ".xmi");
 		assertTrue(editor.isActive());
 		editor.showTabItem(ModelEditor.TABLE_EDITOR);
 		editor.showSubTabItem("Columns");
 		DefaultTable table = new DefaultTable(0);
-		
+
 		assertColumns(table, importProperties.getProperty("selectedColumns"));
 
 		modelExplorer.activate();
-		
+
 		ProjectItem modelItem = project.getProjectItem(RHDS_MODEL + ".xmi");
 		addColumn(modelItem, "ou=People", "dn", "string");
-		
-		teiidBot.simulatePreview(teiidServer, NEW_PROJECT, RHDS_MODEL, new String[]{"ou=People","ou=Apps"});
-		
+
+		teiidBot.simulatePreview(teiidServer, NEW_PROJECT, RHDS_MODEL, new String[] { "ou=People", "ou=Apps" });
+
 	}
-	
+
 	@Test
 	public void ldapImport() {
-		
-		Properties cpProperties = teiidServer.getServerConfig().getConnectionProfile("ldap").asProperties();
-		Properties importProperties = teiidBot.getProperties(teiidBot.toAbsolutePath("resources/importWizard/ldap.properties"));
 
-		new ImportManager().importFromLdap(
-				NEW_PROJECT,
-				LDAP_MODEL, 
-				ConnectionProfilesConstants.LDAP, 
-				cpProperties.getProperty("db.hostname"), 
-				cpProperties.getProperty("principalDnSuffix"),
-				importProperties
-				);
+		Properties cpProperties = teiidServer.getServerConfig().getConnectionProfile("ldap").asProperties();
+		Properties importProperties = teiidBot
+				.getProperties(teiidBot.toAbsolutePath("resources/importWizard/ldap.properties"));
+
+		new ImportManager().importFromLdap(NEW_PROJECT, LDAP_MODEL, ConnectionProfilesConstants.LDAP,
+				cpProperties.getProperty("db.hostname"), cpProperties.getProperty("principalDnSuffix"),
+				importProperties);
 
 		ModelExplorer modelExplorer = new ModelExplorer();
 		modelExplorer.open();
 		Project project = modelExplorer.getProject(NEW_PROJECT);
 		project.getProjectItem(LDAP_MODEL + ".xmi").open();
-		
+
 		ModelEditor editor = teiidBot.modelEditor(LDAP_MODEL + ".xmi");
 		assertTrue(editor.isActive());
 		editor.showTabItem(ModelEditor.TABLE_EDITOR);
 		editor.showSubTabItem("Columns");
 		DefaultTable table = new DefaultTable(0);
-		
+
 		assertColumns(table, importProperties.getProperty("selectedColumns"));
 
 		modelExplorer.activate();
 
 		ProjectItem modelItem = project.getProjectItem(LDAP_MODEL + ".xmi");
 		addColumn(modelItem, "ou=groups", "dn", "string");
-		
-		teiidBot.simulatePreview(teiidServer, NEW_PROJECT, LDAP_MODEL, new String[]{"ou=people","ou=groups"});
-		
+
+		teiidBot.simulatePreview(teiidServer, NEW_PROJECT, LDAP_MODEL, new String[] { "ou=people", "ou=groups" });
+
 	}
-	
-	private void assertColumns(DefaultTable table, String selectedColumns){
-		
+
+	private void assertColumns(DefaultTable table, String selectedColumns) {
+
 		String[] columns = selectedColumns.split(",");
-		for(String column : columns){
+		for (String column : columns) {
 			String[] path = column.split("/");
 			assertEquals(1, table.getItems(new ModelColumnMatcher(path[0], path[1])).size());
 		}
-			
+
 		assertEquals(columns.length, table.getItems().size());
-		
+
 	}
-	
-	private void addColumn(ProjectItem modelItem, String tableName, String columnName, String dataType){
-		try{
+
+	private void addColumn(ProjectItem modelItem, String tableName, String columnName, String dataType) {
+		try {
 			new DefaultShell();
 			new ModelExplorer().activate();
 			ProjectItem tableItem = modelItem.getChild(tableName);
@@ -161,16 +149,17 @@ public class LdapImportTest {
 			// Type Enter, selecting something else does not seem to work
 			KeyboardFactory.getKeyboard().type(SWT.CR);
 			// wait until the column is renamed, should probably implement a condition
-			AbstractWait.sleep(TimePeriod.NORMAL); 
+			AbstractWait.sleep(TimePeriod.NORMAL);
 			new ModelExplorer().activate();
 			tableItem.getChild(columnName).select();
 			new ContextMenu("Modeling", "Set Datatype").select();
-			new DefaultTable().getItem(dataType).select();;
+			new DefaultTable().getItem(dataType).select();
+			;
 			new OkButton().click();
 			new ModelEditor(modelItem.getName()).save();
-		}catch(Exception ex){
+		} catch (Exception ex) {
 			System.out.println(ex);
 		}
 	}
-		
+
 }

@@ -15,7 +15,7 @@ public class StartEvent extends ElementWithParamMapping {
 	public StartEvent(String name) {
 		this(name, ElementType.START_EVENT);
 	}
-	
+
 	public StartEvent(org.jboss.tools.bpmn2.reddeer.editor.Element element) {
 		super(element);
 	}
@@ -25,8 +25,8 @@ public class StartEvent extends ElementWithParamMapping {
 	 * @param name
 	 * @param type
 	 */
-    StartEvent(String name, ElementType type) {
+	StartEvent(String name, ElementType type) {
 		super(name, type);
 	}
-	
+
 }

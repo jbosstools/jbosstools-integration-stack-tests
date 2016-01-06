@@ -25,17 +25,16 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 public class ImportGeneralItemWizard extends ImportWizardDialog {
 
 	private static final String ARCHIVE_LABEL = "Select archive file:";
-	
 
-	public static class Type{
+	public static class Type {
 		public static final String ARCHIVE_FILE = "Archive File";
 		public static final String EXISTING_PROJECTS_INTO_WORKSPACE = "Existing Projects into Workspace";
 		public static final String FILE_SYSTEM = "File System";
 		public static final String PREFERENCES = "Preferences";
 	}
-	
+
 	private static final String INTO_FOLDER = "Into folder:";
-	
+
 	private String generalItemType;
 	private Properties itemProps;
 
@@ -44,38 +43,37 @@ public class ImportGeneralItemWizard extends ImportWizardDialog {
 		this.itemProps = itemProps;
 		this.generalItemType = generalItemType;
 	}
-	
-	public void execute(){
+
+	public void execute() {
 		open();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new DefaultShell();
-		
-		if (generalItemType.equals(Type.EXISTING_PROJECTS_INTO_WORKSPACE)){
+
+		if (generalItemType.equals(Type.EXISTING_PROJECTS_INTO_WORKSPACE)) {
 			executeExistingProjects();
-		}
-		else if (generalItemType.equals(Type.FILE_SYSTEM)){
+		} else if (generalItemType.equals(Type.FILE_SYSTEM)) {
 			executeFileSystem();
 		}
-		//TODO if needed - archive file and preferences
+		// TODO if needed - archive file and preferences
 		finish();
 	}
-	
+
 	private void executeFileSystem() {
-		String dirName = new File(itemProps.getProperty("dirName")).getAbsolutePath();//from where is imported
-		String intoFolder = itemProps.getProperty("intoFolder");//project name
+		String dirName = new File(itemProps.getProperty("dirName")).getAbsolutePath();// from where is imported
+		String intoFolder = itemProps.getProperty("intoFolder");// project name
 		String file = itemProps.getProperty("file");
-		String createTopLevel = itemProps.getProperty("createTopLevel");//ie. import lib/abc and create folder lib
-		
+		String createTopLevel = itemProps.getProperty("createTopLevel");// ie. import lib/abc and create folder lib
+
 		new DefaultCombo().setText(dirName);
 		new LabeledText(INTO_FOLDER).setFocus();
 		new DefaultTable().getItem(file).setChecked(true);
 		new LabeledText(INTO_FOLDER).setText(intoFolder);
-		if (createTopLevel != null){
+		if (createTopLevel != null) {
 			new CheckBox("Create top-level folder").toggle(Boolean.valueOf(createTopLevel));
 		}
 	}
 
-	private void executeExistingProjects() {//existing projects into ws
+	private void executeExistingProjects() {// existing projects into ws
 		String location = itemProps.getProperty("location");
 		if (location.toLowerCase().endsWith(".zip")) {
 			new RadioButton(ARCHIVE_LABEL).click();
@@ -85,7 +83,7 @@ public class ImportGeneralItemWizard extends ImportWizardDialog {
 		}
 
 		new PushButton("Refresh").click();
-		
+
 	}
 
 }

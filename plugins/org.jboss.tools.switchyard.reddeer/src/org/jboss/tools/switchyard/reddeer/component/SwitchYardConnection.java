@@ -26,7 +26,7 @@ public class SwitchYardConnection extends DefaultConnection {
 	public SwitchYardConnection(int index) {
 		super(index);
 	}
-	
+
 	public void createRequiredTransformers() {
 		select();
 		new ContextMenu("Create Required Transformers").select();

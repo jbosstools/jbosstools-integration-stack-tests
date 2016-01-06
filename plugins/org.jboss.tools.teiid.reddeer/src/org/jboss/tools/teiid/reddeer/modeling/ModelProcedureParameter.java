@@ -5,7 +5,7 @@ import org.jboss.reddeer.swt.api.TableItem;
 
 // TODO: might want to extend ModelColumn
 public class ModelProcedureParameter {
-	
+
 	private String direction;
 	private String location;
 	private String name;
@@ -16,9 +16,9 @@ public class ModelProcedureParameter {
 	private Integer numericPrecision;
 	private Integer numericScale;
 
-	public ModelProcedureParameter(TableItem it){
+	public ModelProcedureParameter(TableItem it) {
 		Table parent = it.getParent();
-		direction =  it.getText(parent.getHeaderIndex("Direction"));
+		direction = it.getText(parent.getHeaderIndex("Direction"));
 		location = it.getText(parent.getHeaderIndex("Location"));
 		name = it.getText(parent.getHeaderIndex("Name"));
 		nameInSource = it.getText(parent.getHeaderIndex("Name In Source"));
@@ -100,6 +100,5 @@ public class ModelProcedureParameter {
 	public void setNumericScale(Integer numericScale) {
 		this.numericScale = numericScale;
 	}
-	
-	
+
 }

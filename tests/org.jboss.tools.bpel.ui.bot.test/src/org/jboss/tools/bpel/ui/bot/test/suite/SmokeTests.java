@@ -7,9 +7,7 @@ import org.jboss.tools.bpel.ui.bot.test.WizardTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
-@SuiteClasses({
-	WizardTest.class
-})
+@SuiteClasses({ WizardTest.class })
 @RunWith(RedDeerSuite.class)
 public class SmokeTests extends TestSuite {
 

@@ -17,8 +17,7 @@ public class JUnitView extends WorkbenchView {
 	}
 
 	/**
-	 * Returns run status in the form x/y where x is the number of executed
-	 * tests and y is the number of all tests.
+	 * Returns run status in the form x/y where x is the number of executed tests and y is the number of all tests.
 	 * 
 	 * @return run status
 	 */

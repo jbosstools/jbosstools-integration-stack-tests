@@ -19,8 +19,8 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 
 /**
- * Represents <i>Download Runtimes</i> dialog that is displayed after click on <i>Download...</i>
- * button in <i>JBoss Runtime Detection</i> preference page.
+ * Represents <i>Download Runtimes</i> dialog that is displayed after click on <i>Download...</i> button in <i>JBoss
+ * Runtime Detection</i> preference page.
  * 
  * @author tsedmik
  */
@@ -29,7 +29,7 @@ public class DownloadRuntimesWizard extends WizardDialog {
 	/**
 	 * Accesses names of all available runtimes.
 	 * 
-	 * @return List with names 
+	 * @return List with names
 	 */
 	public List<String> getAllRuntimes() {
 
@@ -43,7 +43,8 @@ public class DownloadRuntimesWizard extends WizardDialog {
 	/**
 	 * Select a given runtime
 	 * 
-	 * @param runtime name of the runtime
+	 * @param runtime
+	 *            name of the runtime
 	 */
 	public void selectRuntime(String runtime) {
 
@@ -53,7 +54,8 @@ public class DownloadRuntimesWizard extends WizardDialog {
 	/**
 	 * Gets project URL (if available)
 	 * 
-	 * @param runtime name of the runtime
+	 * @param runtime
+	 *            name of the runtime
 	 * @return project URL
 	 */
 	public String getProjectURL(String runtime) {
@@ -65,7 +67,8 @@ public class DownloadRuntimesWizard extends WizardDialog {
 	/**
 	 * Gets download URL (if available)
 	 * 
-	 * @param runtime name of the runtime
+	 * @param runtime
+	 *            name of the runtime
 	 * @return download URL
 	 */
 	public String getDownloadURL(String runtime) {

@@ -12,18 +12,18 @@ import org.hamcrest.Description;
 import org.hamcrest.Factory;
 
 /**
- * This matcher tells if a particular EditPart is an attribute with label starting with 
- * given prefix.
+ * This matcher tells if a particular EditPart is an attribute with label starting with given prefix.
  * 
  * @author lfabriko
  * 
  */
 public class AttributeMatcher extends BaseMatcher<EditPart> {
 
-	/*public static final int WIDTH = 40;
-	public static final int HEIGHT = 60;*/
+	/*
+	 * public static final int WIDTH = 40; public static final int HEIGHT = 60;
+	 */
 	public String prefix = "";
-	
+
 	public String getPrefix() {
 		return prefix;
 	}
@@ -34,20 +34,17 @@ public class AttributeMatcher extends BaseMatcher<EditPart> {
 
 	public List<String> texts = new ArrayList<String>();
 
-	
 	@Override
 	public boolean matches(Object item) {
 		if (item instanceof GraphicalEditPart) {
-			if (item.getClass()
-					.toString()
+			if (item.getClass().toString()
 					.equals("class org.teiid.designer.diagram.ui.notation.uml.part.UmlAttributeEditPart")) {
 				IFigure figure = ((GraphicalEditPart) item).getFigure();
 				for (Object o : figure.getChildren()) {
-					if ((o instanceof Label)
-							&& (((Label) o).getText().startsWith(this.prefix))) {
+					if ((o instanceof Label) && (((Label) o).getText().startsWith(this.prefix))) {
 						texts.add(((Label) o).getText());
 						return true;
-					} 
+					}
 				}
 			}
 		}

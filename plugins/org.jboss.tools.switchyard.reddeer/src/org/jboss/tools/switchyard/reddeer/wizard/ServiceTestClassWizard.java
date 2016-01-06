@@ -25,13 +25,13 @@ public class ServiceTestClassWizard extends WizardDialog {
 		new DefaultShell(DIALOG_TITLE);
 		return this;
 	}
-	
+
 	public ServiceTestClassWizard setName(String name) {
 		new LabeledText(NAME).setFocus();
 		new LabeledText(NAME).setText(name);
 		return this;
 	}
-	
+
 	public ServiceTestClassWizard setPackage(String pkg) {
 		new LabeledText(PACKAGE).setFocus();
 		new LabeledText(PACKAGE).setText(pkg);
@@ -41,7 +41,7 @@ public class ServiceTestClassWizard extends WizardDialog {
 	public String getPackage() {
 		return new LabeledText(PACKAGE).getText();
 	}
-	
+
 	public ServiceTestClassWizard selectMixin(String... mixin) {
 		Table table = new DefaultTable();
 		List<TableItem> items = table.getItems();

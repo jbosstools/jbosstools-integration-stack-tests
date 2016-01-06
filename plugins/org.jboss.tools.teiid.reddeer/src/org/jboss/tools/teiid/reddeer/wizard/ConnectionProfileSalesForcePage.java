@@ -3,25 +3,24 @@ package org.jboss.tools.teiid.reddeer.wizard;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileDatabasePage;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
-public class ConnectionProfileSalesForcePage extends
-		ConnectionProfileDatabasePage {
-	
+public class ConnectionProfileSalesForcePage extends ConnectionProfileDatabasePage {
+
 	private static final String USERNAME = "User Name";
 	private static final String PASSWORD = "Password";
 
 	@Override
 	public void setDatabase(String database) {
-		//not set
+		// not set
 	}
 
 	@Override
 	public void setHostname(String hostname) {
-		//not set
+		// not set
 	}
 
 	@Override
 	public void setPort(String port) {
-		//not set
+		// not set
 	}
 
 	@Override
@@ -33,9 +32,11 @@ public class ConnectionProfileSalesForcePage extends
 	public void setPassword(String password) {
 		new LabeledText(PASSWORD).setText(password);
 	}
-	
-	/*public void performAdditionalSteps(){
-		
-	}*/
+
+	/*
+	 * public void performAdditionalSteps(){
+	 * 
+	 * }
+	 */
 
 }

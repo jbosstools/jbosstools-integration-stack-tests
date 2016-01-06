@@ -11,7 +11,7 @@ import org.jboss.reddeer.core.lookup.ShellLookup;
 public class IsPreviewInProgress extends AbstractWaitCondition {
 	private static final Logger log = Logger.getLogger(IsPreviewInProgress.class);
 	private static final Matcher<String> matcher = new RegexMatcher("Preview.*");
-	
+
 	@Override
 	public boolean test() {
 		log.debug("Waiting while preview is in progress");

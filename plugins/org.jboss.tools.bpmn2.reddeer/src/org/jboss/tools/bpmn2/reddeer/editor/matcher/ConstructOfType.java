@@ -41,7 +41,7 @@ public class ConstructOfType<T extends EditPart> extends BaseMatcher<EditPart> {
 	public void describeTo(Description description) {
 		description.appendText(" construct of type '" + constructTypeName + "'");
 	}
-	
+
 	/**
 	 * 
 	 * @param editPart
@@ -67,22 +67,21 @@ public class ConstructOfType<T extends EditPart> extends BaseMatcher<EditPart> {
 		}
 		return false;
 	}
-	
+
 	/**
-	 * A label is of type org.eclipse.graphiti.ui.internal.figures.GFMultilineText,
-	 * so return false if it is.
+	 * A label is of type org.eclipse.graphiti.ui.internal.figures.GFMultilineText, so return false if it is.
 	 * 
 	 * @param className
 	 * @return
 	 */
 	public static boolean isLabel(EditPart editPart) {
-			String className = "GFMultilineText";
-			IFigure figure = ((GraphicalEditPart) editPart).getFigure();
-			@SuppressWarnings("unchecked")
-			List<Object> children = figure.getChildren();
-			return (children.size() == 1 && children.get(0).getClass().getSimpleName().equals(className));
+		String className = "GFMultilineText";
+		IFigure figure = ((GraphicalEditPart) editPart).getFigure();
+		@SuppressWarnings("unchecked")
+		List<Object> children = figure.getChildren();
+		return (children.size() == 1 && children.get(0).getClass().getSimpleName().equals(className));
 	}
-	
+
 	public static boolean isType(Object object, String simpleClassName) {
 		Class<?>[] classArray = object.getClass().getInterfaces();
 		if (classArray.length > 0) {
@@ -94,5 +93,5 @@ public class ConstructOfType<T extends EditPart> extends BaseMatcher<EditPart> {
 		}
 		return false;
 	}
-	
+
 }

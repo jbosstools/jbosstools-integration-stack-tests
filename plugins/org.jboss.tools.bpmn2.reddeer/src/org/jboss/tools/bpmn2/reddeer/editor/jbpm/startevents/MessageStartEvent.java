@@ -18,7 +18,7 @@ public class MessageStartEvent extends StartEvent {
 	public MessageStartEvent(String name) {
 		super(name, ElementType.MESSAGE_START_EVENT);
 	}
-	
+
 	public MessageStartEvent(Element element) {
 		super(element);
 	}
@@ -32,5 +32,5 @@ public class MessageStartEvent extends StartEvent {
 		propertiesHandler.setUp(new MessageSetUp(message, targetVariable, MappingType.TARGET));
 		refresh();
 	}
-	
+
 }

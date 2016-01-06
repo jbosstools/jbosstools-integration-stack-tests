@@ -45,7 +45,7 @@ public class FlatFileTest {
 	private static final String MODEL_PROJECT = "Flat_file_import";
 	private final String LOCAL_FILE_PATH = "resources/flat/productdata_data.csv";
 	private final String REMOTE_FILE_PATH = "https://raw.githubusercontent.com/mmakovy/import-files/master/productdata_data.csv";
-	//private final String EXPECTED_RESULT_PATH = "resources/query_results/flat_file_importer.csv";
+	// private final String EXPECTED_RESULT_PATH = "resources/query_results/flat_file_importer.csv";
 
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;
@@ -130,7 +130,7 @@ public class FlatFileTest {
 
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, VDB_FILELOCAL);
 		assertEquals(122, jdbchelper.getNumberOfResults("SELECT * FROM local_products"));
-		/* TODO compare results to CSV - EXPECTED_RESULT_PATH*/
+		/* TODO compare results to CSV - EXPECTED_RESULT_PATH */
 
 	}
 
@@ -199,11 +199,11 @@ public class FlatFileTest {
 		new VDBManager().executeVDB(false, MODEL_PROJECT, VDB_FILEREMOTE);
 
 		new WaitWhile(new ShellWithTextIsActive("Progress Information"));
-		
+
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, VDB_FILEREMOTE);
 		assertEquals(122, jdbchelper.getNumberOfResults("SELECT * FROM PRODUCTS"));
-	
-		/* TODO compare results to CSV - EXPECTED_RESULT_PATH*/
+
+		/* TODO compare results to CSV - EXPECTED_RESULT_PATH */
 	}
 
 }

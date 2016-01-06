@@ -28,16 +28,17 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
-@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = {ConnectionProfilesConstants.ORACLE_11G_PARTS_SUPPLIER})
+@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = {
+	ConnectionProfilesConstants.ORACLE_11G_PARTS_SUPPLIER })
 public class ProcedurePreviewTest {
 
 	private static final String PROJECT_NAME = "Partssupplier";
 	private static final String MODEL_SRC_NAME = "hsqldbParts";
 	private static final String MODEL_VIEW_NAME = "view";
-	private static final String PROFILE_NAME= ConnectionProfilesConstants.ORACLE_11G_PARTS_SUPPLIER;
+	private static final String PROFILE_NAME = ConnectionProfilesConstants.ORACLE_11G_PARTS_SUPPLIER;
 	private static final String UDF_LIB_PATH = "target/proc-udf/MyTestUdf/lib/";
 	private static final String UDF_LIB = "MyTestUdf-1.0-SNAPSHOT.jar";
-	
+
 	private static TeiidBot teiidBot = new TeiidBot();
 
 	@BeforeClass
@@ -46,14 +47,14 @@ public class ProcedurePreviewTest {
 		new ImportManager().importProject("resources/projects/" + PROJECT_NAME);
 		new ModelExplorer().changeConnectionProfile(PROFILE_NAME, PROJECT_NAME, MODEL_SRC_NAME);
 	}
-	
+
 	@Before
-	public void beforeMethod(){
+	public void beforeMethod() {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
-	
+
 	@Test
-	public void relViewProcedure(){
+	public void relViewProcedure() {
 		String proc = "proc";
 		Properties props = new Properties();
 		props.setProperty("type", Procedure.Type.RELVIEW_PROCEDURE);
@@ -61,10 +62,12 @@ public class ProcedurePreviewTest {
 		props.setProperty("resultSetName", "rs");
 		props.setProperty("cols", "color");
 		props.setProperty("params", "id");
-		props.setProperty("sql", "CREATE VIRTUAL PROCEDURE BEGIN select hsqldbParts.PARTS.PART_COLOR AS color from hsqldbParts.PARTS where hsqldbParts.PARTS.PART_ID=view.proc.id; END");
-		
-		new ModelExplorerManager().getModelExplorerView().newProcedure(PROJECT_NAME, MODEL_VIEW_NAME + ".xmi", proc, props);
-		
+		props.setProperty("sql",
+				"CREATE VIRTUAL PROCEDURE BEGIN select hsqldbParts.PARTS.PART_COLOR AS color from hsqldbParts.PARTS where hsqldbParts.PARTS.PART_ID=view.proc.id; END");
+
+		new ModelExplorerManager().getModelExplorerView().newProcedure(PROJECT_NAME, MODEL_VIEW_NAME + ".xmi", proc,
+				props);
+
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		ArrayList<String> params = new ArrayList<String>();
 		params.add("P300");
@@ -73,11 +76,11 @@ public class ProcedurePreviewTest {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		assertTrue(new ModelExplorerManager().checkPreviewOfModelObject(query));
 	}
-	
+
 	@Test
 	@Jira("TEIIDDES-2677")
 	@RunIf(conditionClass = IssueIsClosed.class)
-	public void relViewUDF(){
+	public void relViewUDF() {
 		// import lib/MyTestUDF.jar
 		Properties props = new Properties();
 		props.setProperty("dirName", teiidBot.toAbsolutePath(UDF_LIB_PATH));
@@ -85,7 +88,7 @@ public class ProcedurePreviewTest {
 		props.setProperty("file", UDF_LIB);
 		props.setProperty("createTopLevel", "true");
 		new ImportManager().importGeneralItem(ImportGeneralItemWizard.Type.FILE_SYSTEM, props);
-		
+
 		// create UDF
 		String proc = "udfConcatNull";
 		props = new Properties();
@@ -93,25 +96,27 @@ public class ProcedurePreviewTest {
 		props.setProperty("params", "stringLeft,stringRight");
 		props.setProperty("returnParam", "concatenatedResult");
 		props.setProperty("functionCategory", "MY_TESTING_FUNCTION_CATEGORY");
-		props.setProperty("javaClass", "userdefinedfunctions.MyConcatNull");//see decompiled jar
+		props.setProperty("javaClass", "userdefinedfunctions.MyConcatNull");// see decompiled jar
 		props.setProperty("javaMethod", "myConcatNull");
 		props.setProperty("udfJarPath", "lib/" + UDF_LIB);
-		
-		new ModelExplorerManager().getModelExplorerView().newProcedure(PROJECT_NAME, MODEL_VIEW_NAME + ".xmi", proc, props);
-		
+
+		new ModelExplorerManager().getModelExplorerView().newProcedure(PROJECT_NAME, MODEL_VIEW_NAME + ".xmi", proc,
+				props);
+
 		// create table to test -> use UDF in transformation
 		String table = "tab";
 		String query = "select udfConcatNull(hsqldbParts.PARTS.PART_NAME,hsqldbParts.PARTS.PART_WEIGHT) as NAME_WEIGHT from hsqldbParts.PARTS";
 		props = new Properties();
 		props.setProperty("sql", query);
-		new ModelExplorerManager().getModelExplorerView().newTable(table, Table.Type.VIEW, props, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi");
-	
+		new ModelExplorerManager().getModelExplorerView().newTable(table, Table.Type.VIEW, props, PROJECT_NAME,
+				MODEL_VIEW_NAME + ".xmi");
+
 		new ModelExplorerManager().previewModelObject(null, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi", table);
 		String previewQuery = teiidBot.generateTablePreviewQuery(MODEL_VIEW_NAME, table);
 		assertTrue(new ModelExplorerManager().checkPreviewOfModelObject(previewQuery));
-		
-		//TODO? test also via procedure?
+
+		// TODO? test also via procedure?
 	}
-	
-	//TODO source defined functions - test in importTest with server
+
+	// TODO source defined functions - test in importTest with server
 }

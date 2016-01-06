@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface TestPhase {
 	public Phase phase();
-	
+
 	public enum Phase {
 		MODEL, VALIDATE, RUN
 	}

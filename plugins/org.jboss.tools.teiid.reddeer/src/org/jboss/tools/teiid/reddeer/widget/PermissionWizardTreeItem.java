@@ -24,11 +24,10 @@ public class PermissionWizardTreeItem implements TreeItem {
 
 	private TreeItem delegate;
 
-	public PermissionWizardTreeItem(String... path){
+	public PermissionWizardTreeItem(String... path) {
 		delegate = new DefaultTreeItem(path);
 	}
-	
-	
+
 	public PermissionWizardTreeItem(TreeItem delegate) {
 		this.delegate = delegate;
 	}

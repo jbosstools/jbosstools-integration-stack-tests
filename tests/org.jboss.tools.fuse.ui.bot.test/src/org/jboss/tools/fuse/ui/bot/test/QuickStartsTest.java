@@ -79,13 +79,16 @@ public class QuickStartsTest {
 	}
 
 	/**
-	 * <p>Test tries to deploy 'beginner-camel-cbr' quickstart to JBoss Fuse Runtime.</p>
+	 * <p>
+	 * Test tries to deploy 'beginner-camel-cbr' quickstart to JBoss Fuse Runtime.
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>import 'beginner-camel-cbr' project from JBoss Fuse quickstarts</li>
 	 * <li>check that project is ok (no errors, unresolved dependencies, ...)</li>
 	 * <li>deploy the project to JBoss Fuse</li>
-	 * <li>check whether the project is successfully deployed (check whether JBoss Fuse log contains '(CamelContext: cbr-example-context) started')</li>
+	 * <li>check whether the project is successfully deployed (check whether JBoss Fuse log contains '(CamelContext:
+	 * cbr-example-context) started')</li>
 	 * </ol>
 	 */
 	@Test
@@ -106,19 +109,23 @@ public class QuickStartsTest {
 	}
 
 	/**
-	 * <p>Test tries to deploy 'beginner-camel-eips' quickstart to JBoss Fuse Runtime.</p>
+	 * <p>
+	 * Test tries to deploy 'beginner-camel-eips' quickstart to JBoss Fuse Runtime.
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>import 'beginner-camel-eips' project from JBoss Fuse quickstarts</li>
 	 * <li>check that project is ok (no errors, unresolved dependencies, ...)</li>
 	 * <li>deploy the project to JBoss Fuse</li>
-	 * <li>check whether the project is successfully deployed (check whether JBoss Fuse log contains '(CamelContext: eip-example-context) started')</li>
+	 * <li>check whether the project is successfully deployed (check whether JBoss Fuse log contains '(CamelContext:
+	 * eip-example-context) started')</li>
 	 * </ol>
 	 */
 	@Test
 	public void testBeginnerCamelEIPs() {
 
-		String quickstart = serverRequirement.getConfig().getServerBase().getHome() + "/quickstarts/beginner/camel-eips";
+		String quickstart = serverRequirement.getConfig().getServerBase().getHome()
+				+ "/quickstarts/beginner/camel-eips";
 		new ImportMavenWizard().importProject(quickstart);
 		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 		assertTrue(new ProblemsView().getProblems(ProblemType.ERROR).size() == 0);
@@ -133,19 +140,23 @@ public class QuickStartsTest {
 	}
 
 	/**
-	 * <p>Test tries to deploy 'beginner-camel-errorhandler' quickstart to JBoss Fuse Runtime.</p>
+	 * <p>
+	 * Test tries to deploy 'beginner-camel-errorhandler' quickstart to JBoss Fuse Runtime.
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>import 'beginner-camel-errorhandler' project from JBoss Fuse quickstarts</li>
 	 * <li>check that project is ok (no errors, unresolved dependencies, ...)</li>
 	 * <li>deploy the project to JBoss Fuse</li>
-	 * <li>check whether the project is successfully deployed (check whether JBoss Fuse log contains '(CamelContext: errors-example-context) started')</li>
+	 * <li>check whether the project is successfully deployed (check whether JBoss Fuse log contains '(CamelContext:
+	 * errors-example-context) started')</li>
 	 * </ol>
 	 */
 	@Test
 	public void testBeginnerCamelErrorHandler() {
 
-		String quickstart = serverRequirement.getConfig().getServerBase().getHome() + "/quickstarts/beginner/camel-errorhandler";
+		String quickstart = serverRequirement.getConfig().getServerBase().getHome()
+				+ "/quickstarts/beginner/camel-errorhandler";
 		new ImportMavenWizard().importProject(quickstart);
 		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 		assertTrue(new ProblemsView().getProblems(ProblemType.ERROR).size() == 0);
@@ -160,13 +171,16 @@ public class QuickStartsTest {
 	}
 
 	/**
-	 * <p>Test tries to deploy 'beginner-camel-log' quickstart to JBoss Fuse Runtime.</p>
+	 * <p>
+	 * Test tries to deploy 'beginner-camel-log' quickstart to JBoss Fuse Runtime.
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>import 'beginner-camel-log' project from JBoss Fuse quickstarts</li>
 	 * <li>check that project is ok (no errors, unresolved dependencies, ...)</li>
 	 * <li>deploy the project to JBoss Fuse</li>
-	 * <li>check whether the project is successfully deployed (check whether JBoss Fuse log contains '(CamelContext: log-example-context) started')</li>
+	 * <li>check whether the project is successfully deployed (check whether JBoss Fuse log contains '(CamelContext:
+	 * log-example-context) started')</li>
 	 * </ol>
 	 */
 	@Test

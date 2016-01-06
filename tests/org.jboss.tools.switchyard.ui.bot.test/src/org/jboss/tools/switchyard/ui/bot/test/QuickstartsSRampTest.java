@@ -16,7 +16,7 @@ import org.junit.runner.RunWith;
  * @author apodhrad
  * 
  */
-@SwitchYard(server = @Server(type = ServerReqType.ANY, state = ServerReqState.PRESENT))
+@SwitchYard(server = @Server(type = ServerReqType.ANY, state = ServerReqState.PRESENT) )
 @OpenPerspective(JavaEEPerspective.class)
 @RunWith(RedDeerSuite.class)
 public class QuickstartsSRampTest extends QuickstartsTest {
@@ -44,7 +44,7 @@ public class QuickstartsSRampTest extends QuickstartsTest {
 	public void sRampDemosDerivedArtifactsTest() {
 		testQuickstart("s-ramp-demos-derived-artifacts");
 	}
-	
+
 	@Test
 	public void sRampDemosMvnIntegrationTest() {
 		testQuickstart("s-ramp-demos-mvn-integration");

@@ -18,7 +18,7 @@ public class SignalStartEvent extends StartEvent {
 	public SignalStartEvent(String name) {
 		super(name, ElementType.SIGNAL_START_EVENT);
 	}
-	
+
 	public SignalStartEvent(Element element) {
 		super(element);
 	}

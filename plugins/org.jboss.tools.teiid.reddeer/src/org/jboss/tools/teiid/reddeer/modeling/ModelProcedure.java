@@ -9,12 +9,11 @@ public class ModelProcedure {
 	private String function;
 	private String restMethod;
 	private String restUri;
-	
 
 	public ModelProcedure() {
 	}
-	
-	public ModelProcedure(TableItem it){
+
+	public ModelProcedure(TableItem it) {
 		Table parent = it.getParent();
 		name = it.getText(parent.getHeaderIndex("Name"));
 		nameInSource = it.getText(parent.getHeaderIndex("Name In Source"));
@@ -62,6 +61,5 @@ public class ModelProcedure {
 	public void setRestUri(String restUri) {
 		this.restUri = restUri;
 	}
-	
-	
+
 }

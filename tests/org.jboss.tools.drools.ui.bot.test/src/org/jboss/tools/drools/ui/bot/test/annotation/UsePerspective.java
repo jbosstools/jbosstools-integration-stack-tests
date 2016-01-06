@@ -10,5 +10,5 @@ import org.jboss.reddeer.eclipse.ui.perspectives.AbstractPerspective;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface UsePerspective {
-    Class<? extends AbstractPerspective> value();
+	Class<? extends AbstractPerspective> value();
 }

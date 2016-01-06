@@ -10,14 +10,14 @@ public class ScriptSetUp implements SetUpAble {
 	private String script;
 	private String tabLabel;
 	private String sectionLabel;
-	
+
 	public ScriptSetUp(String tabLabel, String section, String language, String script) {
 		this.tabLabel = tabLabel;
 		this.language = language;
 		this.script = script;
 		this.sectionLabel = section;
 	}
-	
+
 	@Override
 	public void setUpCTab() {
 		DefaultSection section = new DefaultSection(sectionLabel);

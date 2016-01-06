@@ -55,14 +55,14 @@ public class ProjectItemExt {
 		String consoleOpenOnOut = Preferences.get("org.eclipse.debug.ui", "DEBUG.consoleOpenOnOut");
 		Preferences.set("org.eclipse.debug.ui", "DEBUG.consoleOpenOnErr", "false");
 		Preferences.set("org.eclipse.debug.ui", "DEBUG.consoleOpenOnOut", "false");
-		
+
 		runAs("JUnit Test");
 		new WaitUntil(new JUnitHasFinished(), TimePeriod.LONG);
-		
+
 		Preferences.set("org.eclipse.debug.ui", "DEBUG.consoleOpenOnErr", consoleOpenOnErr);
 		Preferences.set("org.eclipse.debug.ui", "DEBUG.consoleOpenOnOut", consoleOpenOnOut);
 	}
-	
+
 	public void delete() {
 		Exception exception = null;
 		for (int i = 0; i <= 10; i++) {

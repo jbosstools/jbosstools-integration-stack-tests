@@ -19,31 +19,35 @@ public class XmlFileValidator {
 	private final static XPathFactory xpFactory = XPathFactory.newInstance();
 	private final Document doc;
 	private final XPath xpath;
-	
+
 	public XmlFileValidator(String xmlContent) throws Exception {
 		DocumentBuilder db = docFactory.newDocumentBuilder();
 		doc = db.parse(new InputSource(new StringReader(xmlContent)));
 		xpath = xpFactory.newXPath();
 	}
+
 	public Document getDocument() {
 		return doc;
 	}
+
 	public XPath getXpath() {
 		return xpath;
 	}
+
 	public boolean executeBoolean(String expr) {
 		try {
-			return (Boolean)xpath.evaluate(expr, getDocument(), XPathConstants.BOOLEAN);
+			return (Boolean) xpath.evaluate(expr, getDocument(), XPathConstants.BOOLEAN);
 		} catch (XPathExpressionException e) {
-			log.error("Error evaluating xPath '"+expr+"'", e);
+			log.error("Error evaluating xPath '" + expr + "'", e);
 			return false;
 		}
 	}
+
 	public String executeString(String expr) {
 		try {
-			return (String)xpath.evaluate(expr, getDocument(), XPathConstants.STRING);
+			return (String) xpath.evaluate(expr, getDocument(), XPathConstants.STRING);
 		} catch (XPathExpressionException e) {
-			log.error("Error evaluating xPath '"+expr+"'", e);
+			log.error("Error evaluating xPath '" + expr + "'", e);
 			return null;
 		}
 	}

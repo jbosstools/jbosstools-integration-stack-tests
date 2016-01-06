@@ -20,11 +20,11 @@ public class ExclusiveGateway extends ElementWithParamMapping {
 	public ExclusiveGateway(String name) {
 		super(name, ElementType.EXCLUSIVE_GATEWAY);
 	}
-	
-	public ExclusiveGateway(org.jboss.tools.bpmn2.reddeer.editor.Element element){
+
+	public ExclusiveGateway(org.jboss.tools.bpmn2.reddeer.editor.Element element) {
 		super(element);
 	}
-	
+
 	/**
 	 * 
 	 * @param flow
@@ -42,7 +42,7 @@ public class ExclusiveGateway extends ElementWithParamMapping {
 	public void setDefaultBranch(String flow) {
 		propertiesHandler.setUp(new GatewayDefaultBranchSetUp(flow));
 	}
-	
+
 	/**
 	 * 
 	 * @param flow
@@ -51,7 +51,7 @@ public class ExclusiveGateway extends ElementWithParamMapping {
 	public void setPriority(String flow, String priority) {
 		propertiesHandler.setUp(new GatewayPrioritySetUp(flow, priority));
 	}
-	
+
 	/**
 	 * 
 	 * @param direction

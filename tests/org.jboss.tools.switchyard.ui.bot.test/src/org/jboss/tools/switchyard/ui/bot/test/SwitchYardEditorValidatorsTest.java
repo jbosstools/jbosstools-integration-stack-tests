@@ -36,7 +36,7 @@ public class SwitchYardEditorValidatorsTest {
 	private static SwitchYardRequirement switchYardRequirement;
 
 	private static String autoBuilding;
-	
+
 	@BeforeClass
 	public static void turnOffAutoBuilding() {
 		autoBuilding = PreferenceUtils.getAutoBuilding();
@@ -47,7 +47,7 @@ public class SwitchYardEditorValidatorsTest {
 	public static void turnBackAutoBuilding() {
 		PreferenceUtils.setAutoBuilding(autoBuilding);
 	}
-	
+
 	@BeforeClass
 	public static void maximizeWorkbench() {
 		new WorkbenchShell().maximize();

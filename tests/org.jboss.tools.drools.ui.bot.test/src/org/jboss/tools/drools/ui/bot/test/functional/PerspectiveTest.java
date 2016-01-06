@@ -14,23 +14,23 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 public class PerspectiveTest extends TestParent {
 
-    @Test
-    @Category(SmokeTest.class)
-    public void testOpenDroolsPerspective() {
-        DroolsPerspective perspective = new DroolsPerspective();
-        perspective.open();
+	@Test
+	@Category(SmokeTest.class)
+	public void testOpenDroolsPerspective() {
+		DroolsPerspective perspective = new DroolsPerspective();
+		perspective.open();
 
-        DefaultShell shell = new DefaultShell();
-        Assert.assertTrue("Drools perspective was not opened.", shell.getText().startsWith("Drools"));
-    }
+		DefaultShell shell = new DefaultShell();
+		Assert.assertTrue("Drools perspective was not opened.", shell.getText().startsWith("Drools"));
+	}
 
-    @Test
-    @Category(SmokeTest.class)
-    public void testOpenJbpmPerspective() {
-        JbpmPerspective perspective = new JbpmPerspective();
-        perspective.open();
+	@Test
+	@Category(SmokeTest.class)
+	public void testOpenJbpmPerspective() {
+		JbpmPerspective perspective = new JbpmPerspective();
+		perspective.open();
 
-        DefaultShell shell = new DefaultShell();
-        Assert.assertTrue("jBPM perspective was not opened.", shell.getText().startsWith("jBPM"));
-    }
+		DefaultShell shell = new DefaultShell();
+		Assert.assertTrue("jBPM perspective was not opened.", shell.getText().startsWith("jBPM"));
+	}
 }

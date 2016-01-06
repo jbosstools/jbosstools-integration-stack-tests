@@ -26,232 +26,234 @@ import org.junit.runner.RunWith;
 @Runtime(type = RuntimeReqType.DROOLS)
 @RunWith(RedDeerSuite.class)
 public class DroolsRuntimeManagementTest extends TestParent {
-    private static final Logger LOGGER = Logger.getLogger(DroolsRuntimeManagementTest.class);
+	private static final Logger LOGGER = Logger.getLogger(DroolsRuntimeManagementTest.class);
 
-    @InjectRequirement
+	@InjectRequirement
 	private RuntimeRequirement droolsRequirement;
-    
-    @Before
+
+	@Before
 	public void clearRuntimes() {
 		deleteAllRuntimes();
 	}
-    
-    @Test
-    @Category(SmokeTest.class)
-    public void testAddAndRemoveRuntime() {
-        final String name = "testRuntimeCreation";
 
-        // add new runtime
-        DroolsRuntimeManagementTest.addRuntime(name, droolsRequirement.getConfig().getRuntimeFamily().getHome(), false);
+	@Test
+	@Category(SmokeTest.class)
+	public void testAddAndRemoveRuntime() {
+		final String name = "testRuntimeCreation";
 
-        // check that runtime was added
-        DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
-        pref.open();
-        DroolsRuntime runtime = null;
-        for (DroolsRuntime r : pref.getDroolsRuntimes()) {
-            if (r.getName().equals(name)) {
-                runtime = r;
-                break;
-            }
-        }
-        Assert.assertNotNull("Runtime was not created.", runtime);
+		// add new runtime
+		DroolsRuntimeManagementTest.addRuntime(name, droolsRequirement.getConfig().getRuntimeFamily().getHome(), false);
 
-        // remove runtime
-        pref.removeDroolsRuntime(name);
+		// check that runtime was added
+		DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
+		pref.open();
+		DroolsRuntime runtime = null;
+		for (DroolsRuntime r : pref.getDroolsRuntimes()) {
+			if (r.getName().equals(name)) {
+				runtime = r;
+				break;
+			}
+		}
+		Assert.assertNotNull("Runtime was not created.", runtime);
 
-        // check that runtime was deleted
-        for (DroolsRuntime r : pref.getDroolsRuntimes()) {
-            Assert.assertNotSame("Runtime was not deleted.", name, r.getName());
-        }
-    }
+		// remove runtime
+		pref.removeDroolsRuntime(name);
 
-    @Test
-    public void testWrongLocation() {
-        final String name = "testWrongLocation";
-        final String location = "/path/to/runtime";
+		// check that runtime was deleted
+		for (DroolsRuntime r : pref.getDroolsRuntimes()) {
+			Assert.assertNotSame("Runtime was not deleted.", name, r.getName());
+		}
+	}
 
-        DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
-        pref.open();
-        DroolsRuntimeDialog wiz = pref.addDroolsRuntime();
-        wiz.setName(name);
-        wiz.setLocation(location);
+	@Test
+	public void testWrongLocation() {
+		final String name = "testWrongLocation";
+		final String location = "/path/to/runtime";
 
-        Assert.assertFalse("It is possible to save invalid path to runtime.", wiz.isValid());
-        wiz.cancel();
-        pref.cancel();
-    }
+		DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
+		pref.open();
+		DroolsRuntimeDialog wiz = pref.addDroolsRuntime();
+		wiz.setName(name);
+		wiz.setLocation(location);
 
-    @Test
-    public void testDuplicateName() {
-        final String name = "testDuplicateName";
-        final String runtimeHome = droolsRequirement.getConfig().getRuntimeFamily().getHome();
-        addRuntime(name, runtimeHome, false);
+		Assert.assertFalse("It is possible to save invalid path to runtime.", wiz.isValid());
+		wiz.cancel();
+		pref.cancel();
+	}
 
-        DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
-        pref.open();
+	@Test
+	public void testDuplicateName() {
+		final String name = "testDuplicateName";
+		final String runtimeHome = droolsRequirement.getConfig().getRuntimeFamily().getHome();
+		addRuntime(name, runtimeHome, false);
 
-        DroolsRuntimeDialog wiz = pref.addDroolsRuntime();
-        wiz.setName(name);
-        wiz.setLocation(runtimeHome);
+		DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
+		pref.open();
 
-        Assert.assertFalse("It is possible to save runtime with duplicate name.", wiz.isValid());
-        wiz.cancel();
-        pref.cancel();
-    }
+		DroolsRuntimeDialog wiz = pref.addDroolsRuntime();
+		wiz.setName(name);
+		wiz.setLocation(runtimeHome);
 
-    @Test
-    public void testSetDefaultRuntime() {
-        final String name1 = "testSetDefaultRuntime1";
-        final String name2 = "testSetDefaultRuntime2";
-        final String runtimeHome = droolsRequirement.getConfig().getRuntimeFamily().getHome();
+		Assert.assertFalse("It is possible to save runtime with duplicate name.", wiz.isValid());
+		wiz.cancel();
+		pref.cancel();
+	}
 
-        DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
-        pref.open();
-        addRuntime(name1, runtimeHome, false, pref);
-        addRuntime(name2, runtimeHome, false, pref);
-        boolean warning = pref.okCloseWarning();
-        Assert.assertFalse("Warning was shown although the default runtime was not set.", warning);
+	@Test
+	public void testSetDefaultRuntime() {
+		final String name1 = "testSetDefaultRuntime1";
+		final String name2 = "testSetDefaultRuntime2";
+		final String runtimeHome = droolsRequirement.getConfig().getRuntimeFamily().getHome();
 
-        pref.open();
-        pref.setDroolsRuntimeAsDefault(name1);
-        warning = pref.okCloseWarning();
-        Assert.assertFalse("Warning was not shown although the default runtime has changed.", warning);
+		DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
+		pref.open();
+		addRuntime(name1, runtimeHome, false, pref);
+		addRuntime(name2, runtimeHome, false, pref);
+		boolean warning = pref.okCloseWarning();
+		Assert.assertFalse("Warning was shown although the default runtime was not set.", warning);
 
-        pref.open();
-        Table table = new DefaultTable();
-        for (int row = 0; row < table.rowCount(); row++) {
-            if (table.getItem(row).getText(0).equals(name1)) {
-                Assert.assertTrue("Default runtime is not checked", table.getItem(row).isChecked());
-            } else {
-                Assert.assertFalse("Other than default runtime is checked", table.getItem(row).isChecked());
-            }
-        }
+		pref.open();
+		pref.setDroolsRuntimeAsDefault(name1);
+		warning = pref.okCloseWarning();
+		Assert.assertFalse("Warning was not shown although the default runtime has changed.", warning);
 
-        pref.setDroolsRuntimeAsDefault(name2);
-        warning = pref.okCloseWarning();
-        Assert.assertTrue("Warning was  not shown although the default runtime has changed.", warning);
+		pref.open();
+		Table table = new DefaultTable();
+		for (int row = 0; row < table.rowCount(); row++) {
+			if (table.getItem(row).getText(0).equals(name1)) {
+				Assert.assertTrue("Default runtime is not checked", table.getItem(row).isChecked());
+			} else {
+				Assert.assertFalse("Other than default runtime is checked", table.getItem(row).isChecked());
+			}
+		}
 
-        pref.open();
-        table = new DefaultTable();
-        for (int row = 0; row < table.rowCount(); row++) {
-            if (table.getItem(row).getText(0).equals(name2)) {
-                Assert.assertTrue("Default runtime is not checked", table.getItem(row).isChecked());
-            } else {
-                Assert.assertFalse("Other than default runtime is checked", table.getItem(row).isChecked());
-            }
-        }
-    }
+		pref.setDroolsRuntimeAsDefault(name2);
+		warning = pref.okCloseWarning();
+		Assert.assertTrue("Warning was  not shown although the default runtime has changed.", warning);
 
-    @Test
-    public void testDeleteDefaultRuntime() {
-        final String name1 = "testDeleteDefaultRuntime1";
-        final String name2 = "testDeleteDefaultRuntime2";
-        final String name3 = "testDeleteDefaultRuntime3";
-        final String runtimeHome = droolsRequirement.getConfig().getRuntimeFamily().getHome();
-        
-        DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
-        pref.open();
-        addRuntime(name1, runtimeHome, true, pref);
-        addRuntime(name2, runtimeHome, false, pref);
-        addRuntime(name3, runtimeHome, false, pref);
-        pref.okCloseWarning();
+		pref.open();
+		table = new DefaultTable();
+		for (int row = 0; row < table.rowCount(); row++) {
+			if (table.getItem(row).getText(0).equals(name2)) {
+				Assert.assertTrue("Default runtime is not checked", table.getItem(row).isChecked());
+			} else {
+				Assert.assertFalse("Other than default runtime is checked", table.getItem(row).isChecked());
+			}
+		}
+	}
 
-        pref.open();
-        Table table = new DefaultTable();
-        for (int row = 0; row < table.rowCount(); row++) {
-            if (table.getItem(row).getText(0).equals(name1)) {
-                Assert.assertTrue("Default runtime is not checked", table.getItem(row).isChecked());
-            } else {
-                Assert.assertFalse("Other than default runtime is checked", table.getItem(row).isChecked());
-            }
-        }
-        pref.removeDroolsRuntime(name1);
+	@Test
+	public void testDeleteDefaultRuntime() {
+		final String name1 = "testDeleteDefaultRuntime1";
+		final String name2 = "testDeleteDefaultRuntime2";
+		final String name3 = "testDeleteDefaultRuntime3";
+		final String runtimeHome = droolsRequirement.getConfig().getRuntimeFamily().getHome();
 
-        Assert.assertEquals("Default runtime was not deleted.", 2, pref.getDroolsRuntimes().size());
-        table = new DefaultTable();
-        for (int row = 0; row < table.rowCount(); row++) {
-            Assert.assertFalse("Default runtime is set although it was deleted earlier", table.getItem(row).isChecked());
-        }
+		DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
+		pref.open();
+		addRuntime(name1, runtimeHome, true, pref);
+		addRuntime(name2, runtimeHome, false, pref);
+		addRuntime(name3, runtimeHome, false, pref);
+		pref.okCloseWarning();
 
-        pref.setDroolsRuntimeAsDefault(name2);
-        pref.removeDroolsRuntime(name2);
+		pref.open();
+		Table table = new DefaultTable();
+		for (int row = 0; row < table.rowCount(); row++) {
+			if (table.getItem(row).getText(0).equals(name1)) {
+				Assert.assertTrue("Default runtime is not checked", table.getItem(row).isChecked());
+			} else {
+				Assert.assertFalse("Other than default runtime is checked", table.getItem(row).isChecked());
+			}
+		}
+		pref.removeDroolsRuntime(name1);
 
-        Assert.assertEquals("Default runtime was not deleted.", 1, pref.getDroolsRuntimes().size());
-        table = new DefaultTable();
-        Assert.assertEquals("Wrong runtimes deleted.", name3, table.getItem(0).getText(0));
-    }
+		Assert.assertEquals("Default runtime was not deleted.", 2, pref.getDroolsRuntimes().size());
+		table = new DefaultTable();
+		for (int row = 0; row < table.rowCount(); row++) {
+			Assert.assertFalse("Default runtime is set although it was deleted earlier",
+					table.getItem(row).isChecked());
+		}
 
-    @Test
-    public void testCreateRuntime() {
-        DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
-        pref.open();
-        DroolsRuntimeDialog wiz = pref.addDroolsRuntime();
-        wiz.setName("testCreateRuntime");
-        wiz.createNewRuntime(createTempDir("testCreateRuntime"));
-        Assert.assertTrue("Impossible to use created runtime.", wiz.isValid());
-        wiz.ok();
-        Assert.assertEquals("Runtime was not created.", 1, pref.getDroolsRuntimes().size());
-        pref.ok();
-    }
+		pref.setDroolsRuntimeAsDefault(name2);
+		pref.removeDroolsRuntime(name2);
 
-    @Test
-    public void testApply() {
-        DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
-        pref.open();
-        DroolsRuntimeDialog wiz = pref.addDroolsRuntime();
-        wiz.setName(getTestName());
-        wiz.setLocation(droolsRequirement.getConfig().getRuntimeFamily().getHome());
-        Assert.assertTrue("Impossible to use created runtime.", wiz.isValid());
-        wiz.ok();
+		Assert.assertEquals("Default runtime was not deleted.", 1, pref.getDroolsRuntimes().size());
+		table = new DefaultTable();
+		Assert.assertEquals("Wrong runtimes deleted.", name3, table.getItem(0).getText(0));
+	}
 
-        Assert.assertEquals("The runtime was not created!", 1, pref.getDroolsRuntimes().size());
-        pref.setDroolsRuntimeAsDefault(getTestName());
-        Assert.assertNotNull("The default runtime was not set!", pref.getDefaultDroolsRuntime());
-        pref.apply();
-        try {
-            new DefaultShell("Warning");
-            new PushButton("OK").click();
-        } catch (Exception ex) {
-            LOGGER.info("'Default runtime changed' warning was not shown.");
-        }
+	@Test
+	public void testCreateRuntime() {
+		DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
+		pref.open();
+		DroolsRuntimeDialog wiz = pref.addDroolsRuntime();
+		wiz.setName("testCreateRuntime");
+		wiz.createNewRuntime(createTempDir("testCreateRuntime"));
+		Assert.assertTrue("Impossible to use created runtime.", wiz.isValid());
+		wiz.ok();
+		Assert.assertEquals("Runtime was not created.", 1, pref.getDroolsRuntimes().size());
+		pref.ok();
+	}
 
-        try {
-            Assert.assertNotNull("The default runtime was reset!", pref.getDefaultDroolsRuntime());
-        } finally {
-            pref.cancel();
-        }
-    }
+	@Test
+	public void testApply() {
+		DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
+		pref.open();
+		DroolsRuntimeDialog wiz = pref.addDroolsRuntime();
+		wiz.setName(getTestName());
+		wiz.setLocation(droolsRequirement.getConfig().getRuntimeFamily().getHome());
+		Assert.assertTrue("Impossible to use created runtime.", wiz.isValid());
+		wiz.ok();
 
-    public static void addRuntime(String name, String location, boolean setAsDefault) {
-        DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
-        pref.open();
-        addRuntime(name, location, setAsDefault, pref);
-        pref.okCloseWarning();
-    }
+		Assert.assertEquals("The runtime was not created!", 1, pref.getDroolsRuntimes().size());
+		pref.setDroolsRuntimeAsDefault(getTestName());
+		Assert.assertNotNull("The default runtime was not set!", pref.getDefaultDroolsRuntime());
+		pref.apply();
+		try {
+			new DefaultShell("Warning");
+			new PushButton("OK").click();
+		} catch (Exception ex) {
+			LOGGER.info("'Default runtime changed' warning was not shown.");
+		}
 
-    private static void addRuntime(String name, String location, boolean setAsDefault, DroolsRuntimesPreferencePage pref) {
-        DroolsRuntimeDialog wiz = pref.addDroolsRuntime();
-        wiz.setName(name);
-        wiz.setLocation(location);
-        wiz.ok();
+		try {
+			Assert.assertNotNull("The default runtime was reset!", pref.getDefaultDroolsRuntime());
+		} finally {
+			pref.cancel();
+		}
+	}
 
-        if (setAsDefault) {
-            pref.setDroolsRuntimeAsDefault(name);
-        }
+	public static void addRuntime(String name, String location, boolean setAsDefault) {
+		DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
+		pref.open();
+		addRuntime(name, location, setAsDefault, pref);
+		pref.okCloseWarning();
+	}
 
-        Collection<DroolsRuntime> runtimes = pref.getDroolsRuntimes();
-        Assert.assertNotSame("No runtimes are present.", 0, runtimes.size());
+	private static void addRuntime(String name, String location, boolean setAsDefault,
+			DroolsRuntimesPreferencePage pref) {
+		DroolsRuntimeDialog wiz = pref.addDroolsRuntime();
+		wiz.setName(name);
+		wiz.setLocation(location);
+		wiz.ok();
 
-        DroolsRuntime runtime = getRuntime(name, pref);
-        Assert.assertNotNull("Requested runtime was not created.", runtime);
-    }
+		if (setAsDefault) {
+			pref.setDroolsRuntimeAsDefault(name);
+		}
 
-    private static DroolsRuntime getRuntime(String name, DroolsRuntimesPreferencePage pref) {
-        for (DroolsRuntime runtime : pref.getDroolsRuntimes()) {
-            if (runtime.getName().equals(name)) {
-                return runtime;
-            }
-        }
-        return null;
-    }
+		Collection<DroolsRuntime> runtimes = pref.getDroolsRuntimes();
+		Assert.assertNotSame("No runtimes are present.", 0, runtimes.size());
+
+		DroolsRuntime runtime = getRuntime(name, pref);
+		Assert.assertNotNull("Requested runtime was not created.", runtime);
+	}
+
+	private static DroolsRuntime getRuntime(String name, DroolsRuntimesPreferencePage pref) {
+		for (DroolsRuntime runtime : pref.getDroolsRuntimes()) {
+			if (runtime.getName().equals(name)) {
+				return runtime;
+			}
+		}
+		return null;
+	}
 }

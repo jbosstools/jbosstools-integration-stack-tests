@@ -11,8 +11,8 @@ import org.jboss.reddeer.eclipse.jdt.ui.junit.JUnitView;
 /**
  * Wait condition for detecting whether a JUnit run has finished.
  * 
- * An error may occurs if the run writes to the Console view. Make sure that you
- * have disabled activating the Console view.
+ * An error may occurs if the run writes to the Console view. Make sure that you have disabled activating the Console
+ * view.
  * 
  * @author apodhrad
  * 

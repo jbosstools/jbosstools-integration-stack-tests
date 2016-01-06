@@ -20,9 +20,9 @@ import org.hamcrest.Factory;
 public class MappingClassMatcher extends BaseMatcher<EditPart> {
 
 	public static final String MAPPING_CLASS = "<<Mapping Class>>";
-	
+
 	public String prefix = "";
-	
+
 	public String getPrefix() {
 		return prefix;
 	}
@@ -33,39 +33,38 @@ public class MappingClassMatcher extends BaseMatcher<EditPart> {
 
 	public List<String> texts = new ArrayList<String>();
 
-	
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean matches(Object item) {
 		boolean isMappingClass = false;
 		boolean startsWithPrefix = false;
 		if (item instanceof GraphicalEditPart) {
-			if (item.getClass()
-					.toString()
+			if (item.getClass().toString()
 					.equals("class org.teiid.designer.diagram.ui.notation.uml.part.UmlClassifierEditPart")) {
 				IFigure figure = ((GraphicalEditPart) item).getFigure();
-				
+
 				List<IFigure> children = figure.getChildren();
-				for (IFigure figure2 : children){
-					if (figure2.getClass().toString().equals("class org.teiid.designer.diagram.ui.notation.uml.figure.UmlClassifierHeader")){
+				for (IFigure figure2 : children) {
+					if (figure2.getClass().toString()
+							.equals("class org.teiid.designer.diagram.ui.notation.uml.figure.UmlClassifierHeader")) {
 						List<IFigure> children2 = figure2.getChildren();
-						for (IFigure figure3 : children2){
-							if (figure3 instanceof Label ){
+						for (IFigure figure3 : children2) {
+							if (figure3 instanceof Label) {
 								String text = ((Label) figure3).getText();
-								if (text.equals(MAPPING_CLASS)){
+								if (text.equals(MAPPING_CLASS)) {
 									isMappingClass = true;
 								}
-								if (text.startsWith(this.prefix)){
+								if (text.startsWith(this.prefix)) {
 									startsWithPrefix = true;
 									texts.add(text);
 								}
-								
-							} 
+
+							}
 						}
 					}
 				}
 			}
-			if (isMappingClass && startsWithPrefix){
+			if (isMappingClass && startsWithPrefix) {
 				return true;
 			}
 		}

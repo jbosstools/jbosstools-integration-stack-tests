@@ -1,19 +1,19 @@
 package org.jboss.tools.drools.reddeer.kienavigator.structure;
 
 public class Repository {
-	
+
 	private String name;
-	
+
 	private String description;
-	
+
 	private String username;
-	
+
 	private String password;
-	
+
 	private String requestType;
-	
+
 	private String gitUrl;
-	
+
 	public Repository(String[] restResponse) {
 		this.name = restResponse[0].split(":")[1];
 		this.description = restResponse[1].split(":")[1];

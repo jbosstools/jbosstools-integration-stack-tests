@@ -34,7 +34,7 @@ public class WithLabelMatcherExt extends BaseMatcher<String> {
 		if (!(obj instanceof Text || obj instanceof Combo || obj instanceof org.eclipse.swt.widgets.List)) {
 			return false;
 		}
-		
+
 		findAllWidgets();
 
 		int widgetIndex = allWidgets.indexOf(obj);

@@ -18,14 +18,14 @@ public class AdHocSubProcess extends ElementContainer {
 	public AdHocSubProcess(String name) {
 		super(name, ElementType.AD_HOC_SUB_PROCESS);
 	}
-	
+
 	public AdHocSubProcess(Element element) {
 		super(element);
 	}
-	
+
 	public void setCompletionCondition(String language, String script) {
 		propertiesHandler.setUp(new ScriptSetUp(PropertiesTabs.AD_HOC_SUBPROCESS_TAB, "Attributes", language, script));
-		
+
 	}
-	
+
 }

@@ -17,7 +17,7 @@ public class TimerIntermediateCatchEvent extends IntermediateCatchEvent {
 	public TimerIntermediateCatchEvent(String name) {
 		super(name, ElementType.TIMER_INTERMEDIATE_CATCH_EVENT);
 	}
-	
+
 	public TimerIntermediateCatchEvent(Element element) {
 		super(element);
 	}
@@ -26,9 +26,9 @@ public class TimerIntermediateCatchEvent extends IntermediateCatchEvent {
 		propertiesHandler.setUp(new TimerSetUp(timerType, value));
 		refresh();
 	}
-	
+
 	public void setTimer(String duration) {
 		setTimer(TimerType.DURATION, duration);
 	}
-	
+
 }

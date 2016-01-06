@@ -35,140 +35,140 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 @Category(SmokeTest.class)
 public class NewResourcesTest extends TestParent {
-    private static final Pattern RULE_PATTERN = Pattern.compile("(?s)rule.*?when.*?then.*?end");
-    
-    @InjectRequirement
+	private static final Pattern RULE_PATTERN = Pattern.compile("(?s)rule.*?when.*?then.*?end");
+
+	@InjectRequirement
 	private RuntimeRequirement droolsRequirement;
 
-    @Test
-    @UsePerspective(JavaPerspective.class)
-    @Drools6Runtime
-    @UseDefaultProject
-    public void testNewDRL() {
-        final String resourceName = getTestName();
-        final String packageName = "com.redhat";
+	@Test
+	@UsePerspective(JavaPerspective.class)
+	@Drools6Runtime
+	@UseDefaultProject
+	public void testNewDRL() {
+		final String resourceName = getTestName();
+		final String packageName = "com.redhat";
 
-        NewRuleResourceWizard wiz = new NewRuleResourceWizard();
-        wiz.open();
-        NewRuleResourceWizardPage page = wiz.getFirstPage();
-        page.setParentFolder(getRulesLocation());
-        page.setFileName(resourceName);
-        page.setRulePackageName(packageName);
-        page.setTypeOfRuleResource(RuleResourceType.rulePackage);
-        wiz.finish();
+		NewRuleResourceWizard wiz = new NewRuleResourceWizard();
+		wiz.open();
+		NewRuleResourceWizardPage page = wiz.getFirstPage();
+		page.setParentFolder(getRulesLocation());
+		page.setFileName(resourceName);
+		page.setRulePackageName(packageName);
+		page.setTypeOfRuleResource(RuleResourceType.rulePackage);
+		wiz.finish();
 
-        PackageExplorer explorer = new PackageExplorer();
-        explorer.open();
-        Project p = explorer.getProject(DEFAULT_PROJECT_NAME);
-        Assert.assertTrue("Rule resource was not created", p.containsItem(getResourcePath(resourceName + ".drl")));
+		PackageExplorer explorer = new PackageExplorer();
+		explorer.open();
+		Project p = explorer.getProject(DEFAULT_PROJECT_NAME);
+		Assert.assertTrue("Rule resource was not created", p.containsItem(getResourcePath(resourceName + ".drl")));
 
-        String text = new DrlEditor().showRuleEditor().getText();
-        Assert.assertTrue("Wrong package declaration.", text.contains("package " + packageName));
-        Matcher m = RULE_PATTERN.matcher(text);
-        Assert.assertTrue("No rule present in file", m.find());
-        Assert.assertTrue("Only one rule present in file", m.find());
-        Assert.assertFalse("More than two rules present in file", m.find());
-    }
+		String text = new DrlEditor().showRuleEditor().getText();
+		Assert.assertTrue("Wrong package declaration.", text.contains("package " + packageName));
+		Matcher m = RULE_PATTERN.matcher(text);
+		Assert.assertTrue("No rule present in file", m.find());
+		Assert.assertTrue("Only one rule present in file", m.find());
+		Assert.assertFalse("More than two rules present in file", m.find());
+	}
 
-    @Test
-    @UsePerspective(JavaPerspective.class)
-    @Drools6Runtime
-    @UseDefaultProject
-    public void testNewIndividualRule() {
-        final String resourceName = "testCreateIndividualRule";
-        final String packageName = "com.redhat";
+	@Test
+	@UsePerspective(JavaPerspective.class)
+	@Drools6Runtime
+	@UseDefaultProject
+	public void testNewIndividualRule() {
+		final String resourceName = "testCreateIndividualRule";
+		final String packageName = "com.redhat";
 
-        NewRuleResourceWizard wiz = new NewRuleResourceWizard();
-        wiz.open();
-        NewRuleResourceWizardPage page = wiz.getFirstPage();
-        page.setParentFolder(getRulesLocation());
-        page.setFileName(resourceName);
-        page.setRulePackageName(packageName);
-        page.setTypeOfRuleResource(RuleResourceType.individualRule);
-        wiz.finish();
+		NewRuleResourceWizard wiz = new NewRuleResourceWizard();
+		wiz.open();
+		NewRuleResourceWizardPage page = wiz.getFirstPage();
+		page.setParentFolder(getRulesLocation());
+		page.setFileName(resourceName);
+		page.setRulePackageName(packageName);
+		page.setTypeOfRuleResource(RuleResourceType.individualRule);
+		wiz.finish();
 
-        PackageExplorer explorer = new PackageExplorer();
-        explorer.open();
-        Project p = explorer.getProject(DEFAULT_PROJECT_NAME);
-        Assert.assertTrue("Rule resource was not created", p.containsItem(getResourcePath(resourceName + ".drl")));
+		PackageExplorer explorer = new PackageExplorer();
+		explorer.open();
+		Project p = explorer.getProject(DEFAULT_PROJECT_NAME);
+		Assert.assertTrue("Rule resource was not created", p.containsItem(getResourcePath(resourceName + ".drl")));
 
-        String text = new DrlEditor().showRuleEditor().getText();
-        Assert.assertTrue("Wrong package declaration.", text.contains("package " + packageName));
-        Matcher m = RULE_PATTERN.matcher(text);
-        Assert.assertTrue("No rule present in file", m.find());
-        Assert.assertFalse("More than one rules present in file", m.find());
-    }
+		String text = new DrlEditor().showRuleEditor().getText();
+		Assert.assertTrue("Wrong package declaration.", text.contains("package " + packageName));
+		Matcher m = RULE_PATTERN.matcher(text);
+		Assert.assertTrue("No rule present in file", m.find());
+		Assert.assertFalse("More than one rules present in file", m.find());
+	}
 
-    @Test
-    @UsePerspective(JavaPerspective.class)
-    @Drools6Runtime
-    @UseDefaultProject
-    public void testNewDsl() {
-        final String resourceName = getTestName();
+	@Test
+	@UsePerspective(JavaPerspective.class)
+	@Drools6Runtime
+	@UseDefaultProject
+	public void testNewDsl() {
+		final String resourceName = getTestName();
 
-        NewDslWizard wiz = new NewDslWizard();
-        wiz.open();
-        NewDslWizardPage page = new NewDslWizardPage();
-        page.setParentFolder(getRulesLocation());
-        page.setFileName(resourceName);
-        // generate sample DSL lines
-        wiz.next();
-        NewDslSamplesWizardPage samplePage = new NewDslSamplesWizardPage();
-        samplePage.setAddSampleDsl(true);
-        wiz.finish();
+		NewDslWizard wiz = new NewDslWizard();
+		wiz.open();
+		NewDslWizardPage page = new NewDslWizardPage();
+		page.setParentFolder(getRulesLocation());
+		page.setFileName(resourceName);
+		// generate sample DSL lines
+		wiz.next();
+		NewDslSamplesWizardPage samplePage = new NewDslSamplesWizardPage();
+		samplePage.setAddSampleDsl(true);
+		wiz.finish();
 
-        PackageExplorer pkg = new PackageExplorer();
-        Assert.assertTrue(pkg.getProject(DEFAULT_PROJECT_NAME).containsItem(getResourcePath(resourceName + ".dsl")));
-    }
+		PackageExplorer pkg = new PackageExplorer();
+		Assert.assertTrue(pkg.getProject(DEFAULT_PROJECT_NAME).containsItem(getResourcePath(resourceName + ".dsl")));
+	}
 
-    @Test
-    @UsePerspective(JavaPerspective.class)
-    @Drools6Runtime
-    @UseDefaultProject
-    public void testNewDslr() {
-        final String resourceName = getTestName();
-        final String packageName = "com.redhat";
+	@Test
+	@UsePerspective(JavaPerspective.class)
+	@Drools6Runtime
+	@UseDefaultProject
+	public void testNewDslr() {
+		final String resourceName = getTestName();
+		final String packageName = "com.redhat";
 
-        NewRuleResourceWizard wiz = new NewRuleResourceWizard();
-        wiz.open();
-        NewRuleResourceWizardPage page = wiz.getFirstPage();
-        page.setParentFolder(getRulesLocation());
-        page.setFileName(resourceName);
-        page.setRulePackageName(packageName);
-        page.setTypeOfRuleResource(RuleResourceType.rulePackage);
-        page.setUseDSL(true);
-        wiz.finish();
+		NewRuleResourceWizard wiz = new NewRuleResourceWizard();
+		wiz.open();
+		NewRuleResourceWizardPage page = wiz.getFirstPage();
+		page.setParentFolder(getRulesLocation());
+		page.setFileName(resourceName);
+		page.setRulePackageName(packageName);
+		page.setTypeOfRuleResource(RuleResourceType.rulePackage);
+		page.setUseDSL(true);
+		wiz.finish();
 
-        PackageExplorer explorer = new PackageExplorer();
-        explorer.open();
-        Project p = explorer.getProject(DEFAULT_PROJECT_NAME);
-        Assert.assertTrue("Rule resource was not created", p.containsItem(getResourcePath(resourceName + ".dslr")));
+		PackageExplorer explorer = new PackageExplorer();
+		explorer.open();
+		Project p = explorer.getProject(DEFAULT_PROJECT_NAME);
+		Assert.assertTrue("Rule resource was not created", p.containsItem(getResourcePath(resourceName + ".dslr")));
 
-        String text = new DrlEditor().showRuleEditor().getText();
-        Assert.assertTrue("Wrong package declaration.", text.contains("package " + packageName));
-        Matcher m = RULE_PATTERN.matcher(text);
-        Assert.assertTrue("No expander definition found!", Pattern.compile("expander .*\\.dsl").matcher(text).find());
-        Assert.assertTrue("No rule present in file", m.find());
-        Assert.assertTrue("Only one rule present in file", m.find());
-        Assert.assertFalse("More than two rules present in file", m.find());
-    }
+		String text = new DrlEditor().showRuleEditor().getText();
+		Assert.assertTrue("Wrong package declaration.", text.contains("package " + packageName));
+		Matcher m = RULE_PATTERN.matcher(text);
+		Assert.assertTrue("No expander definition found!", Pattern.compile("expander .*\\.dsl").matcher(text).find());
+		Assert.assertTrue("No rule present in file", m.find());
+		Assert.assertTrue("Only one rule present in file", m.find());
+		Assert.assertFalse("More than two rules present in file", m.find());
+	}
 
-    @Ignore("Opens the decision table and fails remaining tests")
-    @Test
-    @UsePerspective(JavaPerspective.class)
-    @Drools6Runtime
-    @UseDefaultProject
-    public void testNewDecisionTable() {
-        final String resourceName = getTestName();
+	@Ignore("Opens the decision table and fails remaining tests")
+	@Test
+	@UsePerspective(JavaPerspective.class)
+	@Drools6Runtime
+	@UseDefaultProject
+	public void testNewDecisionTable() {
+		final String resourceName = getTestName();
 
-        NewDecisionTableWizard wiz = new NewDecisionTableWizard();
-        wiz.open();
-        NewDecisionTableWizardPage page = wiz.getFirstPage();
-        page.setParentFolder(getRulesLocation());
-        page.setFileName(resourceName);
-        wiz.finish();
+		NewDecisionTableWizard wiz = new NewDecisionTableWizard();
+		wiz.open();
+		NewDecisionTableWizardPage page = wiz.getFirstPage();
+		page.setParentFolder(getRulesLocation());
+		page.setFileName(resourceName);
+		wiz.finish();
 
-        PackageExplorer pkg = new PackageExplorer();
-        Assert.assertTrue(pkg.getProject(DEFAULT_PROJECT_NAME).containsItem(getResourcePath(resourceName + ".xls")));
-    }
+		PackageExplorer pkg = new PackageExplorer();
+		Assert.assertTrue(pkg.getProject(DEFAULT_PROJECT_NAME).containsItem(getResourcePath(resourceName + ".xls")));
+	}
 }

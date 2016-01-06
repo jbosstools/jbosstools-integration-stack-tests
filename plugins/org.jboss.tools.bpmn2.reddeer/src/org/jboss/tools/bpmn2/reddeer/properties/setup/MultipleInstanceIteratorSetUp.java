@@ -7,9 +7,7 @@ public class MultipleInstanceIteratorSetUp implements SetUpAble {
 
 	private String tabLabel;
 	private String value;
-	
-	
-	
+
 	public MultipleInstanceIteratorSetUp(String tabLabel, String value) {
 		super();
 		this.tabLabel = tabLabel;

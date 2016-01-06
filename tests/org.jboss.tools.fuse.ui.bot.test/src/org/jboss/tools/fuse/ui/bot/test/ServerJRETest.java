@@ -24,7 +24,7 @@ import org.junit.runner.RunWith;
  * 
  * @author tsedmik
  */
-@Server(type = {ServerReqType.Fuse, ServerReqType.Karaf, ServerReqType.ServiceMix}, state = ServerReqState.PRESENT)
+@Server(type = { ServerReqType.Fuse, ServerReqType.Karaf, ServerReqType.ServiceMix }, state = ServerReqState.PRESENT)
 @OpenPerspective(FuseIntegrationPerspective.class)
 @CleanWorkspace
 @RunWith(RedDeerSuite.class)
@@ -34,7 +34,9 @@ public class ServerJRETest extends DefaultTest {
 	private ServerRequirement serverRequirement;
 
 	/**
-	 * <p>Tries to run JBoss Fuse server with different JRE than runs JBDS</p>
+	 * <p>
+	 * Tries to run JBoss Fuse server with different JRE than runs JBDS
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>add new JRE different from that runs JBDS</li>
