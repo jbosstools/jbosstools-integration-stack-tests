@@ -41,7 +41,7 @@ public class RegressionKarafTest extends DefaultTest {
 	 * Cleans up test environment
 	 */
 	@After
-	public void steupClean() {
+	public void setupClean() {
 
 		String server = serverRequirement.getConfig().getName();
 		if (FuseServerManipulator.isServerStarted(server)) {

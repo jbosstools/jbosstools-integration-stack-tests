@@ -55,7 +55,7 @@ public class FuseProjectTest extends DefaultTest {
 	 * @return List of all available Fuse project archetypes
 	 */
 	@Parameters
-	public static Collection<String> data() {
+	public static Collection<String> setupData() {
 		return ProjectFactory.getArchetypes();
 	}
 

@@ -61,7 +61,7 @@ public class QuickStartsTest {
 	 * Prepares test environment
 	 */
 	@Before
-	public void defaultSetup() {
+	public void setupDefault() {
 
 		new WorkbenchShell();
 		new ErrorLogView().deleteLog();

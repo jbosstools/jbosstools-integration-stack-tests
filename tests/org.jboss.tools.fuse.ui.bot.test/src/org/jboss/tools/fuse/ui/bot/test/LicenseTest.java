@@ -48,7 +48,7 @@ public class LicenseTest {
 	 * @return List of all available Fuse plugins
 	 */
 	@Parameters
-	public static Collection<String> data() {
+	public static Collection<String> setupData() {
 		new ShellMenu("Help", "Installation Details").select();
 		new DefaultShell("JBoss Developer Studio Installation Details");
 		new DefaultTabItem("Installed Software").activate();
