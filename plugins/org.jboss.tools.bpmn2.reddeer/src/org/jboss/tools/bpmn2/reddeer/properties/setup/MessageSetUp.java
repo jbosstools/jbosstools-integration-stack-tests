@@ -15,13 +15,13 @@ public class MessageSetUp implements SetUpAble {
 	private Message message;
 	private String variableName;
 	private MappingType mappingType;
-	
+
 	public MessageSetUp(Message msg, String var, MappingType type) {
 		message = msg;
 		variableName = var;
 		mappingType = type;
 	}
-	
+
 	@Override
 	public void setUpCTab() {
 		DefaultSection section = new DefaultSection("Event Definitions");
@@ -35,18 +35,18 @@ public class MessageSetUp implements SetUpAble {
 				new SectionToolItem("Event Definitions", "Edit").click();
 			}
 		}
-		
+
 		section = new DefaultSection("Message Event Definition Details");
-		
+
 		DefaultCombo combo = new DefaultCombo(section, "Message");
 		String comboItem = message.getName() + "(" + message.getDataType() + ")";
 		if (!combo.contains(comboItem)) {
 			new PushButton(0).click();
 			new MessageDialog().add(message);
-		}else {
+		} else {
 			combo.setSelection(comboItem);
 		}
-		
+
 		new DefaultCombo(section, mappingType.label()).setSelection(variableName);
 		new SectionToolItem("Message Event Definition Details", "Close").click();
 	}

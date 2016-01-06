@@ -9,9 +9,9 @@ import org.jboss.tools.switchyard.reddeer.view.JUnitView;
  * 
  */
 public class JUnitHasFinished extends AbstractWaitCondition {
-	
+
 	private JUnitView jUnitView;
-	
+
 	public JUnitHasFinished() {
 		jUnitView = new JUnitView();
 	}

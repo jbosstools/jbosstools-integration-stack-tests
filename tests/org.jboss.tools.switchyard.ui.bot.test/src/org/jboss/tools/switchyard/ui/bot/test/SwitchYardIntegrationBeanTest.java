@@ -50,9 +50,11 @@ public class SwitchYardIntegrationBeanTest {
 	@Test
 	public void switchyardBeanIntegrationTest() {
 		switchyardRequirement.project(PROJECT).impl("Bean").binding("HTTP").create();
-		
-		ProjectPropertiesJavaBuildPath buildPath = new SwitchYardProject(PROJECT).openProperties().selectJavaBuildPath();
-		buildPath.selectLibrary("JRE System Library [JavaSE-1.6]").edit().selectExecutionEnvironmentWithPrefix("JavaSE-1.7").finish();
+
+		ProjectPropertiesJavaBuildPath buildPath = new SwitchYardProject(PROJECT).openProperties()
+				.selectJavaBuildPath();
+		buildPath.selectLibrary("JRE System Library [JavaSE-1.6]").edit()
+				.selectExecutionEnvironmentWithPrefix("JavaSE-1.7").finish();
 		buildPath.ok();
 
 		new SwitchYardEditor().addBeanImplementation().createJavaInterface("Hello").finish();
@@ -67,10 +69,10 @@ public class SwitchYardIntegrationBeanTest {
 
 		new SwitchYardComponent("HelloBean").doubleClick();
 		textEditor = new TextEditor("HelloBean.java");
-		textEditor.setText("package com.example.switchyard.helloworld;\n\n"
-				+ "import org.switchyard.component.bean.Service;\n\n" + "@Service(Hello.class)\n"
-				+ "public class HelloBean implements Hello {\n" + "\t@Override\n"
-				+ "\tpublic String sayHello(String name) {\n" + "\t\treturn \"Hello \" + name;\n" + "\t}\n}");
+		textEditor.setText(
+				"package com.example.switchyard.helloworld;\n\n" + "import org.switchyard.component.bean.Service;\n\n"
+						+ "@Service(Hello.class)\n" + "public class HelloBean implements Hello {\n" + "\t@Override\n"
+						+ "\tpublic String sayHello(String name) {\n" + "\t\treturn \"Hello \" + name;\n" + "\t}\n}");
 		textEditor.save();
 		textEditor.close();
 
@@ -88,24 +90,19 @@ public class SwitchYardIntegrationBeanTest {
 
 		new Service("Hello").createNewServiceTestClass("HTTP Mix-in");
 		textEditor = new TextEditor("HelloTest.java");
-		textEditor
-				.setText("package com.example.switchyard.helloworld;\n\n"
-						+ "import org.junit.Assert;\n"
-						+ "import org.junit.Test;\n"
-						+ "import org.junit.runner.RunWith;\n"
-						+ "import org.switchyard.component.test.mixins.cdi.CDIMixIn;\n"
-						+ "import org.switchyard.component.test.mixins.http.HTTPMixIn;\n"
-						+ "import org.switchyard.test.BeforeDeploy;\n"
-						+ "import org.switchyard.test.SwitchYardRunner;\n"
-						+ "import org.switchyard.test.SwitchYardTestCaseConfig;\n\n"
-						+ "@RunWith(SwitchYardRunner.class)\n"
-						+ "@SwitchYardTestCaseConfig(config = SwitchYardTestCaseConfig.SWITCHYARD_XML, mixins = { CDIMixIn.class, HTTPMixIn.class })\n"
-						+ "\tpublic class HelloTest {\n\n" + "\tprivate HTTPMixIn httpMixIn;\n\n" + "\t@BeforeDeploy\n"
-						+ "\tpublic void setProperties() {\n"
-						+ "\t\tSystem.setProperty(\"org.switchyard.component.http.standalone.port\", \"8123\");\n}"
-						+ "\t@Test\n" + "\tpublic void testSayHello() throws Exception {\n"
-						+ "\t\tString response = httpMixIn.postString(\"http://localhost:8123/hello\", \"World\");\n"
-						+ "\t\tAssert.assertEquals(\"Hello World\", response);\n" + "\t}\n\n}");
+		textEditor.setText("package com.example.switchyard.helloworld;\n\n" + "import org.junit.Assert;\n"
+				+ "import org.junit.Test;\n" + "import org.junit.runner.RunWith;\n"
+				+ "import org.switchyard.component.test.mixins.cdi.CDIMixIn;\n"
+				+ "import org.switchyard.component.test.mixins.http.HTTPMixIn;\n"
+				+ "import org.switchyard.test.BeforeDeploy;\n" + "import org.switchyard.test.SwitchYardRunner;\n"
+				+ "import org.switchyard.test.SwitchYardTestCaseConfig;\n\n" + "@RunWith(SwitchYardRunner.class)\n"
+				+ "@SwitchYardTestCaseConfig(config = SwitchYardTestCaseConfig.SWITCHYARD_XML, mixins = { CDIMixIn.class, HTTPMixIn.class })\n"
+				+ "\tpublic class HelloTest {\n\n" + "\tprivate HTTPMixIn httpMixIn;\n\n" + "\t@BeforeDeploy\n"
+				+ "\tpublic void setProperties() {\n"
+				+ "\t\tSystem.setProperty(\"org.switchyard.component.http.standalone.port\", \"8123\");\n}"
+				+ "\t@Test\n" + "\tpublic void testSayHello() throws Exception {\n"
+				+ "\t\tString response = httpMixIn.postString(\"http://localhost:8123/hello\", \"World\");\n"
+				+ "\t\tAssert.assertEquals(\"Hello World\", response);\n" + "\t}\n\n}");
 		textEditor.save();
 		textEditor.close();
 

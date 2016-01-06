@@ -33,19 +33,26 @@ public class JBPM6ComplexTestDefinitionRequirement implements Requirement<JBPM6C
 	@Target(ElementType.TYPE)
 	public @interface JBPM6ComplexTestDefinition {
 		public String projectName();
+
 		public String importFolder() default "";
+
 		public String saveAs();
+
 		public String openFile();
+
 		public String dependentOn() default "";
+
 		public boolean noErrorsInValidation() default true;
+
 		public boolean useGraphiti() default true;
+
 		public String[] knownIssues() default {};
 	}
-	
+
 	private JBPM6ComplexTestDefinition declaration;
 	private static boolean configureShellHandled;
 	private static List<String> foldersToImport = new ArrayList<String>(Arrays.asList(""));
-	
+
 	@Override
 	public boolean canFulfill() {
 		return true;
@@ -54,18 +61,18 @@ public class JBPM6ComplexTestDefinitionRequirement implements Requirement<JBPM6C
 	@Override
 	public void fulfill() {
 		JBPM6ComplexEnvironment.getInstance().setUseGraphiti(declaration.useGraphiti());
-		
+
 		Display.getDisplay().syncExec(new Runnable() {
 			public void run() {
 				new DefaultShell().getSWTWidget().setMaximized(true);
 			}
 		});
-		
+
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
 		if (!pe.containsProject(declaration.projectName())) {
 			new JavaProjectWizard().execute(declaration.projectName());
-			
+
 			try {
 				new DefaultShell("Open Associated Perspective?");
 				new PushButton("No").click();
@@ -73,34 +80,34 @@ public class JBPM6ComplexTestDefinitionRequirement implements Requirement<JBPM6C
 				// ignore
 			}
 		}
-		
-		if(!foldersToImport.contains(declaration.importFolder())){
+
+		if (!foldersToImport.contains(declaration.importFolder())) {
 			foldersToImport.add(declaration.importFolder());
 			new ImportFileWizard().importFile(declaration.importFolder());
 		}
-		
+
 		Project project = new ProjectExplorer().getProject(declaration.projectName());
 		project.getProjectItem(declaration.openFile()).open();
-		
+
 		saveAs(declaration.saveAs());
-		
+
 	}
 
 	@Override
 	public void setDeclaration(JBPM6ComplexTestDefinition declaration) {
 		this.declaration = declaration;
-		
+
 	}
-	
+
 	private void saveAs(String filename) {
 		new WaitWhile(new MenuItemIsDisabled());
 		new DefaultShell("Save As");
 		new DefaultTreeItem(declaration.projectName()).select();
 		new LabeledText("File name:").setText(filename);
 		new PushButton("OK").click();
-		
-		if(!configureShellHandled) {
-			try{
+
+		if (!configureShellHandled) {
+			try {
 				new DefaultShell("Configure BPMN2 Project");
 				new CheckBox().toggle(true);
 				new PushButton("Yes").click();
@@ -115,9 +122,9 @@ public class JBPM6ComplexTestDefinitionRequirement implements Requirement<JBPM6C
 
 		@Override
 		public boolean test() {
-			try{
-				new ShellMenu(new String[]{"File", "Save As..."}).select();
-			} catch(SWTLayerException e) {
+			try {
+				new ShellMenu(new String[] { "File", "Save As..." }).select();
+			} catch (SWTLayerException e) {
 				return true;
 			}
 			return false;
@@ -127,7 +134,7 @@ public class JBPM6ComplexTestDefinitionRequirement implements Requirement<JBPM6C
 		public String description() {
 			return "Wait for enabled menu item";
 		}
-		
+
 	}
 
 	@Override

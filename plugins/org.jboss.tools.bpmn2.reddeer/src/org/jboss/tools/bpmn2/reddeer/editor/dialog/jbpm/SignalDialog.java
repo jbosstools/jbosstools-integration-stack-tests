@@ -14,14 +14,14 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Signal;
 public class SignalDialog {
 
 	private static final String SHELL_LABEL = "Create New Signal";
-	
+
 	public void add(Signal signal) {
 		new DefaultShell(SHELL_LABEL);
 		new DefaultTabItem("General").activate();
 		new LabeledText("Name").setText(signal.getName());
-		
+
 		new PushButton("OK").click();
 		new WaitWhile(new ShellWithTextIsActive(SHELL_LABEL));
 	}
-	
+
 }

@@ -37,7 +37,7 @@ public class SelectDozerFileShell {
 		getDefaultTableTBL().getItem(fileName).select();
 		return this;
 	}
-	
+
 	public SelectDozerFileShell waitForTableHasRows() {
 		new WaitUntil(new TableHasRows(new DefaultTable()), TimePeriod.LONG);
 		return this;

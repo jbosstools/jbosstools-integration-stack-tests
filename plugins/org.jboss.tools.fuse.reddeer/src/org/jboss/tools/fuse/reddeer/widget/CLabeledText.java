@@ -13,5 +13,4 @@ public class CLabeledText extends AbstractText {
 		super(null, 0, new WithCLabelMatcher(label));
 	}
 
-
 }

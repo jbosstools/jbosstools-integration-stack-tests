@@ -14,11 +14,10 @@ public class EventDefinition {
 	}
 
 	/**
-	 * Take care of the UI user actions required
-	 * to set up the definition.
+	 * Take care of the UI user actions required to set up the definition.
 	 */
 	public void setUp() {
 		throw new UnsupportedOperationException();
 	}
-	
+
 }

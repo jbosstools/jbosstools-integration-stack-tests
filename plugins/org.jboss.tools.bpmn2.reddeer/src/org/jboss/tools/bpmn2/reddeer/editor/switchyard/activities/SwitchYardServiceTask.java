@@ -19,44 +19,45 @@ public class SwitchYardServiceTask extends ElementWithParamMapping {
 
 	private static final int ON_ENTRY = 0;
 	private static final int ON_EXIT = 1;
-	
+
 	public SwitchYardServiceTask(String name) {
 		super(name, ElementType.SWITCHYARD_SERVICE_TASK);
 	}
-	
+
 	public SwitchYardServiceTask(Element element) {
 		super(element);
 	}
-	
+
 	public void setOperation(String name) {
 		propertiesHandler.selectTabInPropertiesView("Service Task");
-		 
+
 		new PushButton(0).click();
 		new OperationDialog().addOperation(name, null, null, null);
 	}
-	
+
 	public void addParameterMapping(ParameterMapping parameterMapping) {
 		propertiesHandler.setUp(new ParameterMappingSetUp(parameterMapping, SectionToolItemButton.ADD));
 	}
-	
-	public void setTaskAttribute(String attribute, String text){
+
+	public void setTaskAttribute(String attribute, String text) {
 		propertiesHandler.setUpNormal(new LabeledTextSetUp(PropertiesTabs.SWITCHYARD_TAB, attribute, text));
 	}
-	
+
 	/**
 	 * 
 	 * @param scriptLang
 	 * @param text
-	 * @param type ON_ENTRY|ON_EXIT
+	 * @param type
+	 *            ON_ENTRY|ON_EXIT
 	 */
-	public void setScript(String scriptLang, String text, int type){
+	public void setScript(String scriptLang, String text, int type) {
 		String section = null;
 		switch (type) {
-			case ON_ENTRY:
-				section = "On Entry Script";
-				break;
-			case ON_EXIT:
-				section = "On Exit Script";
+		case ON_ENTRY:
+			section = "On Entry Script";
+			break;
+		case ON_EXIT:
+			section = "On Exit Script";
 		}
 		propertiesHandler.setUpNormal(new ScriptSetUp(PropertiesTabs.SWITCHYARD_TAB, section, scriptLang, text));
 	}

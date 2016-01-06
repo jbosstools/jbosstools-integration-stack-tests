@@ -25,11 +25,12 @@ public class SwitchYardComponent extends AbstractGraphitiEditPart {
 		super(new WithTooltip(tooltip), activateSwitchYardEditor(index));
 		this.tooltip = tooltip;
 	}
-	
+
 	/**
 	 * Activates SwitchYard editor before calling super constructor.
 	 * 
-	 * @param index index
+	 * @param index
+	 *            index
 	 * @return the same index
 	 */
 	private static int activateSwitchYardEditor(int index) {

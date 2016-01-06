@@ -21,9 +21,9 @@ import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessRuntimeRequirement.
 public class ProcessRuntimeRequirement implements Requirement<ProcessRuntime>, PropertyConfiguration {
 
 	private static final String RUNTIME_NAME = "jbpm6";
-	
+
 	private String runtimeDir; // = System.getProperty("jbpm.runtime.dir");
-	
+
 	/**
 	 *
 	 */
@@ -43,11 +43,11 @@ public class ProcessRuntimeRequirement implements Requirement<ProcessRuntime>, P
 		WorkbenchPreferenceDialog preferences = new WorkbenchPreferenceDialog();
 		preferences.open();
 		preferences.select("jBPM", "Installed jBPM Runtimes");
-		
+
 		boolean runtimeFound = false;
 		Table table = new DefaultTable();
 		if (table.rowCount() > 0) {
-			for (int row=0; row<table.rowCount(); row++) {
+			for (int row = 0; row < table.rowCount(); row++) {
 				if (table.getItem(row).getText(0).equals(RUNTIME_NAME)) {
 					runtimeFound = true;
 					break;
@@ -60,10 +60,10 @@ public class ProcessRuntimeRequirement implements Requirement<ProcessRuntime>, P
 			new DefaultText(0).setText(RUNTIME_NAME);
 			new DefaultText(1).setText(runtimeDir);
 			new PushButton("OK").click();
-			
+
 			Logger.getLogger(ProcessRuntimeRequirement.class).info("jBPM Runtime '" + RUNTIME_NAME + "' added.");
 		}
-		
+
 		table.getItem(RUNTIME_NAME).setChecked(true);
 		new PushButton("OK").click();
 	}
@@ -72,7 +72,7 @@ public class ProcessRuntimeRequirement implements Requirement<ProcessRuntime>, P
 	public void setDeclaration(ProcessRuntime declaration) {
 		// Not required
 	}
-	
+
 	/**
 	 * 
 	 * @param runtimeDir
@@ -85,5 +85,5 @@ public class ProcessRuntimeRequirement implements Requirement<ProcessRuntime>, P
 	public void cleanUp() {
 		// TODO cleanUp()
 	}
-	
+
 }

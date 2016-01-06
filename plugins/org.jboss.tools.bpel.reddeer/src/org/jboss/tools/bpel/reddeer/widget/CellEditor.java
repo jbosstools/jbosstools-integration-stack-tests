@@ -69,8 +69,8 @@ public class CellEditor implements ReferencedComposite {
 				WidgetHandler.getInstance().notifyItemMouse(SWT.MouseDown, SWT.NONE,
 						tableItem.getParent().getSWTWidget(), tableItem.getSWTWidget(), x, y, 1);
 				AbstractWait.sleep(TimePeriod.getCustom(1));
-				WidgetHandler.getInstance().notifyItemMouse(SWT.MouseUp, SWT.NONE,
-						tableItem.getParent().getSWTWidget(), tableItem.getSWTWidget(), x, y, 1);
+				WidgetHandler.getInstance().notifyItemMouse(SWT.MouseUp, SWT.NONE, tableItem.getParent().getSWTWidget(),
+						tableItem.getSWTWidget(), x, y, 1);
 
 			}
 		});
@@ -129,15 +129,15 @@ public class CellEditor implements ReferencedComposite {
 
 				TableColumn col = tableItem.getParent().getSWTWidget().getColumn(index);
 				Object colData = col.getData(COLUMN_VIEWER_ID);
-				
+
 				ViewerColumn viewCol = (ViewerColumn) colData;
 				ColumnViewerEditor colViewerEditor = viewCol.getViewer().getColumnViewerEditor();
 
 				try {
 					Field f = ColumnViewerEditor.class.getDeclaredField("cellEditor");
 					if (f == null) {
-						throw new JFaceLayerException("Cannot find a cell editor at index '" + index
-								+ "'. Probably you didn't activate it.");
+						throw new JFaceLayerException(
+								"Cannot find a cell editor at index '" + index + "'. Probably you didn't activate it.");
 					}
 					f.setAccessible(true);
 					Object obj = f.get(colViewerEditor);

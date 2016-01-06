@@ -7,8 +7,8 @@ import org.jboss.reddeer.eclipse.ui.perspectives.AbstractPerspective;
  */
 public class JbpmPerspective extends AbstractPerspective {
 
-    public JbpmPerspective() {
-        super("jBPM");
-    }
+	public JbpmPerspective() {
+		super("jBPM");
+	}
 
 }

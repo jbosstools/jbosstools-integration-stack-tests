@@ -19,18 +19,18 @@ import org.jboss.reddeer.core.util.Display;
 public abstract class ModelObject {
 
 	protected static final Logger LOGGER = Logger.getLogger(ModelObject.class);
-	
+
 	public static final String PROPERTIES = "Properties";
 	public static final String NATIVE_QUERY = "Native Query";
 	public static final String TRANSFORMATION_SQL = "Transformation SQL";
-	
+
 	public void fillTransformationSQL(Properties props) {
-		
+
 		String prop = props.getProperty("template");
 		new DefaultTabItem(TRANSFORMATION_SQL).activate();
-		
+
 		if (prop != null) {
-			
+
 			new PushButton("Select SQL Template").click();
 			new RadioButton(prop).click();
 			new PushButton("OK").click();
@@ -38,27 +38,27 @@ public abstract class ModelObject {
 
 		prop = props.getProperty("sql");
 		if (prop != null) {
-			
+
 			new DefaultStyledText().setText(prop);
 		}
 	}
-	
+
 	public void fillNativeQuery(Properties props) {
-			String prop = props.getProperty("nativeQuery");
-			if (prop != null){
-				new SWTWorkbenchBot().tabItem(NATIVE_QUERY).activate();
-				new SWTWorkbenchBot().styledText().setText(prop);
-			}
-		
+		String prop = props.getProperty("nativeQuery");
+		if (prop != null) {
+			new SWTWorkbenchBot().tabItem(NATIVE_QUERY).activate();
+			new SWTWorkbenchBot().styledText().setText(prop);
+		}
+
 	}
-	
-	public int setupTableProps(String prop){
-		String[] cols = {prop};
-		if (prop.contains(",")){
+
+	public int setupTableProps(String prop) {
+		String[] cols = { prop };
+		if (prop.contains(",")) {
 			cols = prop.split(",");
-		} 	
+		}
 		int i = cols.length;
-		for (String col : cols){
+		for (String col : cols) {
 			new PushButton("Add").click();
 			new DefaultTable().getItem(cols.length - i).doubleClick();
 			setTextToFocusedTextArea(col);
@@ -66,16 +66,16 @@ public abstract class ModelObject {
 		}
 		return cols.length;
 	}
-	
-	public void setupReturnParam(String param, int lines){
+
+	public void setupReturnParam(String param, int lines) {
 		new PushButton("Add").click();
 		new DefaultTable().getItem(lines).doubleClick();
 		setTextToFocusedTextArea(param);
-		new SWTWorkbenchBot().table().click(lines,3);
+		new SWTWorkbenchBot().table().click(lines, 3);
 		new SWTWorkbenchBot().ccomboBox().setSelection("RETURN");
 	}
-	
-	private void setTextToFocusedTextArea(final String text){
+
+	private void setTextToFocusedTextArea(final String text) {
 		final Widget w = WidgetLookup.getInstance().getFocusControl();
 		Display.syncExec(new Runnable() {
 			@Override

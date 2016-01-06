@@ -31,29 +31,29 @@ public class ServerWizard extends NewWizardDialog {
 		open();
 
 		selectType(type);
-		
+
 		new LabeledText("Server name:").setText(name);
 
 		next();
 		finish();
 	}
-	
-	private void selectType(String[] type){
+
+	private void selectType(String[] type) {
 		String[] array = new String[type.length];
 		System.arraycopy(type, 0, array, 0, array.length);
-		
+
 		try {
-			
-			new DefaultTreeItem(new DefaultTree(0), array).select();//eclipse kepler (0), eclipse juno (1)
+
+			new DefaultTreeItem(new DefaultTree(0), array).select();// eclipse kepler (0), eclipse juno (1)
 			return;
-		} catch (Exception ex){
+		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
 		}
 		try {
-			array[array.length-1] = type[array.length-1] + "+";
-			new DefaultTreeItem(new DefaultTree(0), array).select();//eclipse kepler (0), eclipse juno (1)
+			array[array.length - 1] = type[array.length - 1] + "+";
+			new DefaultTreeItem(new DefaultTree(0), array).select();// eclipse kepler (0), eclipse juno (1)
 			return;
-		} catch (Exception ex){
+		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
 		}
 	}

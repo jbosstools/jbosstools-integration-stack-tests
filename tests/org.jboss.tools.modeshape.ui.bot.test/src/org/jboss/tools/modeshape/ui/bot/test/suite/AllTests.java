@@ -8,10 +8,7 @@ import org.jboss.tools.modeshape.ui.bot.test.TeiidPublishingTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
-@SuiteClasses({
-	PublishingTest.class,
-	TeiidPublishingTest.class
-})
+@SuiteClasses({ PublishingTest.class, TeiidPublishingTest.class })
 @RunWith(RedDeerSuite.class)
 public class AllTests extends TestSuite {
 

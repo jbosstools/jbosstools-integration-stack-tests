@@ -18,5 +18,5 @@ public class EventDefinitionTypeDialog {
 		new DefaultTable().select(eventDefinitionName);
 		new PushButton("OK").click();
 	}
-	
+
 }

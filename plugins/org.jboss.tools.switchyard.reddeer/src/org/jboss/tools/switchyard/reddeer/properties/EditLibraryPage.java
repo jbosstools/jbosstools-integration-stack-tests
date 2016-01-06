@@ -17,29 +17,29 @@ public class EditLibraryPage extends WizardDialog {
 	public EditLibraryPage() {
 		activate();
 	}
-	
+
 	public EditLibraryPage activate() {
 		new DefaultShell("Edit Library");
 		return this;
 	}
-	
+
 	public EditLibraryPage selectExecutionEnvironment(String env) {
 		new RadioButton(new DefaultGroup("System library"), "Execution environment:").click();
-		new DefaultCombo(new DefaultGroup("System library"),0).setSelection(env);
+		new DefaultCombo(new DefaultGroup("System library"), 0).setSelection(env);
 		return this;
 	}
-	
+
 	public EditLibraryPage selectExecutionEnvironmentWithPrefix(String prefix) {
 		new RadioButton(new DefaultGroup("System library"), "Execution environment:").click();
-		
-		Combo combo = new DefaultCombo(new DefaultGroup("System library"),0);
+
+		Combo combo = new DefaultCombo(new DefaultGroup("System library"), 0);
 		selectItemWithPrefix(combo, prefix);
 		return this;
 	}
-	
+
 	private void selectItemWithPrefix(Combo combo, String prefix) {
-		for (String item: combo.getItems()) {
-			if(item.startsWith(prefix)) {
+		for (String item : combo.getItems()) {
+			if (item.startsWith(prefix)) {
 				combo.setSelection(item);
 				return;
 			}

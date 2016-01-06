@@ -57,7 +57,8 @@ public class SAPComponentTest extends DefaultTest {
 	/**
 	 * Prepares test environment
 	 * 
-	 * @throws FuseArchetypeNotFoundException Fuse archetype was not found. Tests cannot be executed!
+	 * @throws FuseArchetypeNotFoundException
+	 *             Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@BeforeClass
 	public static void setupResetCamelContext() throws FuseArchetypeNotFoundException {
@@ -80,7 +81,9 @@ public class SAPComponentTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>Tries to create/delete SAP component (see the method name) in the Camel Editor.</p>
+	 * <p>
+	 * Tries to create/delete SAP component (see the method name) in the Camel Editor.
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>create a new project with camel-archetype-spring archetype</li>
@@ -91,7 +94,8 @@ public class SAPComponentTest extends DefaultTest {
 	 * <li>delete the component from Camel Editor</li>
 	 * </ol>
 	 * 
-	 * @throws Exception Something bad happened
+	 * @throws Exception
+	 *             Something bad happened
 	 */
 	@Test
 	public void testSAPIDocListServer() throws Exception {
@@ -112,7 +116,9 @@ public class SAPComponentTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>Tries to create/delete SAP component (see the method name) in the Camel Editor.</p>
+	 * <p>
+	 * Tries to create/delete SAP component (see the method name) in the Camel Editor.
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>create a new project with camel-archetype-spring archetype</li>
@@ -123,7 +129,8 @@ public class SAPComponentTest extends DefaultTest {
 	 * <li>delete the component from Camel Editor</li>
 	 * </ol>
 	 * 
-	 * @throws Exception Something bad happened
+	 * @throws Exception
+	 *             Something bad happened
 	 */
 	@Test
 	public void testSAPSRFCServer() throws Exception {
@@ -144,7 +151,9 @@ public class SAPComponentTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>Tries to create/delete SAP component (see the method name) in the Camel Editor.</p>
+	 * <p>
+	 * Tries to create/delete SAP component (see the method name) in the Camel Editor.
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>create a new project with camel-archetype-spring archetype</li>
@@ -155,7 +164,8 @@ public class SAPComponentTest extends DefaultTest {
 	 * <li>delete the component from Camel Editor</li>
 	 * </ol>
 	 * 
-	 * @throws Exception Something bad happened
+	 * @throws Exception
+	 *             Something bad happened
 	 */
 	@Test
 	public void testSAPTRFCServer() throws Exception {
@@ -176,7 +186,9 @@ public class SAPComponentTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>Tries to create/delete SAP component (see the method name) in the Camel Editor.</p>
+	 * <p>
+	 * Tries to create/delete SAP component (see the method name) in the Camel Editor.
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>create a new project with camel-archetype-spring archetype</li>
@@ -187,7 +199,8 @@ public class SAPComponentTest extends DefaultTest {
 	 * <li>delete the component from Camel Editor</li>
 	 * </ol>
 	 * 
-	 * @throws Exception Something bad happened
+	 * @throws Exception
+	 *             Something bad happened
 	 */
 	@Test
 	public void testSAPIDocDestination() throws Exception {
@@ -208,7 +221,9 @@ public class SAPComponentTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>Tries to create/delete SAP component (see the method name) in the Camel Editor.</p>
+	 * <p>
+	 * Tries to create/delete SAP component (see the method name) in the Camel Editor.
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>create a new project with camel-archetype-spring archetype</li>
@@ -219,7 +234,8 @@ public class SAPComponentTest extends DefaultTest {
 	 * <li>delete the component from Camel Editor</li>
 	 * </ol>
 	 * 
-	 * @throws Exception Something bad happened
+	 * @throws Exception
+	 *             Something bad happened
 	 */
 	@Test
 	public void testSAPIDocListDestination() throws Exception {
@@ -240,7 +256,9 @@ public class SAPComponentTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>Tries to create/delete SAP component (see the method name) in the Camel Editor.</p>
+	 * <p>
+	 * Tries to create/delete SAP component (see the method name) in the Camel Editor.
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>create a new project with camel-archetype-spring archetype</li>
@@ -251,7 +269,8 @@ public class SAPComponentTest extends DefaultTest {
 	 * <li>delete the component from Camel Editor</li>
 	 * </ol>
 	 * 
-	 * @throws Exception Something bad happened
+	 * @throws Exception
+	 *             Something bad happened
 	 */
 	@Test
 	public void testSAPQIDocDestination() throws Exception {
@@ -272,7 +291,9 @@ public class SAPComponentTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>Tries to create/delete SAP component (see the method name) in the Camel Editor.</p>
+	 * <p>
+	 * Tries to create/delete SAP component (see the method name) in the Camel Editor.
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>create a new project with camel-archetype-spring archetype</li>
@@ -283,7 +304,8 @@ public class SAPComponentTest extends DefaultTest {
 	 * <li>delete the component from Camel Editor</li>
 	 * </ol>
 	 * 
-	 * @throws Exception Something bad happened
+	 * @throws Exception
+	 *             Something bad happened
 	 */
 	@Test
 	public void testSAPQIDocListDestination() throws Exception {
@@ -304,7 +326,9 @@ public class SAPComponentTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>Tries to create/delete SAP component (see the method name) in the Camel Editor.</p>
+	 * <p>
+	 * Tries to create/delete SAP component (see the method name) in the Camel Editor.
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>create a new project with camel-archetype-spring archetype</li>
@@ -315,7 +339,8 @@ public class SAPComponentTest extends DefaultTest {
 	 * <li>delete the component from Camel Editor</li>
 	 * </ol>
 	 * 
-	 * @throws Exception Something bad happened
+	 * @throws Exception
+	 *             Something bad happened
 	 */
 	@Test
 	public void testSAPQRFCDestination() throws Exception {
@@ -336,7 +361,9 @@ public class SAPComponentTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>Tries to create/delete SAP component (see the method name) in the Camel Editor.</p>
+	 * <p>
+	 * Tries to create/delete SAP component (see the method name) in the Camel Editor.
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>create a new project with camel-archetype-spring archetype</li>
@@ -347,7 +374,8 @@ public class SAPComponentTest extends DefaultTest {
 	 * <li>delete the component from Camel Editor</li>
 	 * </ol>
 	 * 
-	 * @throws Exception Something bad happened
+	 * @throws Exception
+	 *             Something bad happened
 	 */
 	@Test
 	public void testSAPSRFCDestination() throws Exception {
@@ -368,7 +396,9 @@ public class SAPComponentTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>Tries to create/delete SAP component (see the method name) in the Camel Editor.</p>
+	 * <p>
+	 * Tries to create/delete SAP component (see the method name) in the Camel Editor.
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>create a new project with camel-archetype-spring archetype</li>
@@ -379,7 +409,8 @@ public class SAPComponentTest extends DefaultTest {
 	 * <li>delete the component from Camel Editor</li>
 	 * </ol>
 	 * 
-	 * @throws Exception Something bad happened
+	 * @throws Exception
+	 *             Something bad happened
 	 */
 	@Test
 	public void testSAPTRFCDestination() throws Exception {

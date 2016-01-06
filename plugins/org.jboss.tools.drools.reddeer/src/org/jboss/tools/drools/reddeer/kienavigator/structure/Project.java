@@ -1,15 +1,15 @@
 package org.jboss.tools.drools.reddeer.kienavigator.structure;
 
 public class Project {
-	
+
 	private String name;
-	
+
 	private String description;
-	
+
 	private String groupId;
-	
+
 	private String version;
-	
+
 	public Project(String[] restResponse) {
 		this.name = restResponse[0].split(":")[1];
 		this.description = restResponse[1].split(":")[1];

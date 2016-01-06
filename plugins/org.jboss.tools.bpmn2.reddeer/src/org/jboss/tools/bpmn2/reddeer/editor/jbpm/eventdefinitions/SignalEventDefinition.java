@@ -14,12 +14,12 @@ public class SignalEventDefinition extends EventDefinition {
 
 	public enum Type {
 		SOURCE, TARGET;
-		
+
 		public String label() {
 			return name().charAt(0) + name().substring(1).toLowerCase();
 		}
 	}
-	
+
 	private Signal signal;
 	private String variableName;
 	private Type type;
@@ -31,7 +31,7 @@ public class SignalEventDefinition extends EventDefinition {
 	public SignalEventDefinition(Signal signal, Type type) {
 		this(signal, null, type);
 	}
-	
+
 	/**
 	 * 
 	 * @param signalName
@@ -42,7 +42,7 @@ public class SignalEventDefinition extends EventDefinition {
 		this.variableName = variableName;
 		this.type = type;
 	}
-	
+
 	@Override
 	public void setUp() {
 		DefaultCombo combo = new DefaultCombo("Signal");
@@ -51,9 +51,9 @@ public class SignalEventDefinition extends EventDefinition {
 			new SignalDialog().add(signal);
 		}
 		combo.setSelection(signal.getName());
-		
-		new DefaultCombo(type.label()).setSelection( variableName);
+
+		new DefaultCombo(type.label()).setSelection(variableName);
 		new SectionToolItem("Signal Event Definition Details", "Close").click();
 	}
-	
+
 }

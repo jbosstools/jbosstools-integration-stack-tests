@@ -30,26 +30,25 @@ import org.jboss.tools.teiid.reddeer.wizard.CreateVDB;
 public class VDBManager {
 
 	private static final Logger log = Logger.getLogger(VDBManager.class);
-	
-	public void createVDB(String projectName, String vdbName){
+
+	public void createVDB(String projectName, String vdbName) {
 		CreateVDB createVDB = new CreateVDB();
 		createVDB.setFolder(projectName);
 		createVDB.setName(vdbName);
 		createVDB.execute(true);
 	}
-	
-	
-	public VDBEditor getVDBEditor(String projectName, String vdbName){
-		//double click to vdb
+
+	public VDBEditor getVDBEditor(String projectName, String vdbName) {
+		// double click to vdb
 		openVDBEditor(projectName, vdbName);
-		
-		if (vdbName.contains(".vdb")){
+
+		if (vdbName.contains(".vdb")) {
 			return VDBEditor.getInstance(vdbName);
 		}
 		return VDBEditor.getInstance(vdbName + ".vdb");
 	}
-	
-	public void addModelsToVDB(String projectName, String vdbName, String... models){//move to vdb editor ?
+
+	public void addModelsToVDB(String projectName, String vdbName, String... models) {// move to vdb editor ?
 		VDBEditor editor = getVDBEditor(projectName, vdbName);
 		editor.show();
 		String model = "";
@@ -67,9 +66,9 @@ public class VDBManager {
 		}
 		editor.save();
 	}
-	
-	// TODO CHECK 
-	public void removeModelFromVDB(String projectName, String vdbName, String[] models){
+
+	// TODO CHECK
+	public void removeModelFromVDB(String projectName, String vdbName, String[] models) {
 		VDBEditor editor = getVDBEditor(projectName, vdbName);
 		editor.show();
 		String model = "";
@@ -83,45 +82,44 @@ public class VDBManager {
 		}
 		editor.save();
 	}
-	
-	public void openVDBEditor(String projectName, String vdbName){
-		if (vdbName.contains(".vdb")){
+
+	public void openVDBEditor(String projectName, String vdbName) {
+		if (vdbName.contains(".vdb")) {
 			new ModelExplorer().getModelProject(projectName).open(vdbName);
 		} else {
 			new ModelExplorer().getModelProject(projectName).open(vdbName + ".vdb");
 		}
 	}
-	
-	public boolean isVDBCreated(String projectName, String vdbName){
-		if (vdbName.contains(".vdb")){
+
+	public boolean isVDBCreated(String projectName, String vdbName) {
+		if (vdbName.contains(".vdb")) {
 			return new PackageExplorer().getProject(projectName).containsItem(vdbName);
 		}
 		return new PackageExplorer().getProject(projectName).containsItem(vdbName + ".vdb");
 	}
-	
+
 	/**
 	 * 
-	 * @param pathToVDB [project_name, vdb_name]
+	 * @param pathToVDB
+	 *            [project_name, vdb_name]
 	 */
-	public void deployVDB(String[] pathToVDB){
-		String vdb = pathToVDB[pathToVDB.length-1];
-		if (!vdb.contains(".vdb")){
+	public void deployVDB(String[] pathToVDB) {
+		String vdb = pathToVDB[pathToVDB.length - 1];
+		if (!vdb.contains(".vdb")) {
 			vdb = vdb + ".vdb";
 		}
 		VDB vdbItem = new ModelExplorer().getModelProject(pathToVDB[0]).getVDB(vdb);
 		vdbItem.deployVDB();
 	}
-	
-	public boolean isVDBDeployed(String serverName, ServerType serverType, String vdbName){
+
+	public boolean isVDBDeployed(String serverName, ServerType serverType, String vdbName) {
 		return new ServerManager().isVDBDeployed(serverName, serverType, vdbName);
 	}
-
 
 	public void executeVDB(Boolean viaGuides, String projectName, String vdbName) {
 		VDB vdb = new ModelExplorer().getModelProject(projectName).getVDB(vdbName + ".vdb");
 		vdb.executeVDB(viaGuides);
 	}
-
 
 	public boolean queryPassed(String vdb, String sql) {
 
@@ -133,65 +131,66 @@ public class VDBManager {
 		editor.executeAll();
 
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		
+
 		SQLResultView resView = new SQLResultView();
 		resView.open();
 		SQLResult result = resView.getByOperation(sql);
-		
+
 		assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
 
 		editor.close();
-		
+
 		return true;
 	}
-	
-	public void createVDBDataSource(String[] pathToVDB){
-		String vdb =  pathToVDB[pathToVDB.length-1];
-		if (pathToVDB[pathToVDB.length-1].contains(".vdb")){
-			vdb = pathToVDB[pathToVDB.length-1].substring(0, pathToVDB[pathToVDB.length-1].indexOf("."));
+
+	public void createVDBDataSource(String[] pathToVDB) {
+		String vdb = pathToVDB[pathToVDB.length - 1];
+		if (pathToVDB[pathToVDB.length - 1].contains(".vdb")) {
+			vdb = pathToVDB[pathToVDB.length - 1].substring(0, pathToVDB[pathToVDB.length - 1].indexOf("."));
 		}
-		
+
 		createVDBDataSource(pathToVDB, vdb, false);
 	}
-	
-	public void createVDBDataSource(String[] pathToVDB, String jndiName, boolean passThruAuth){
-		
-		if (! pathToVDB[pathToVDB.length-1].contains(".vdb")){
-			pathToVDB[pathToVDB.length-1] = pathToVDB[pathToVDB.length-1].concat(".vdb");
+
+	public void createVDBDataSource(String[] pathToVDB, String jndiName, boolean passThruAuth) {
+
+		if (!pathToVDB[pathToVDB.length - 1].contains(".vdb")) {
+			pathToVDB[pathToVDB.length - 1] = pathToVDB[pathToVDB.length - 1].concat(".vdb");
 		}
 		new DefaultShell();
 		new ModelExplorer().getProject(pathToVDB[0]).getProjectItem(pathToVDB[1]).select();
 		new ContextMenu("Modeling", "Create VDB Data Source").select();
-		try{
+		try {
 			new DefaultShell("VDB Not Yet Deployed ");
-			new PushButton("Yes").click();//create ds anyway
-		} catch (Exception e){
-			
+			new PushButton("Yes").click();// create ds anyway
+		} catch (Exception e) {
+
 		}
 		new DefaultShell();
 		new DefaultText(1).setText(jndiName);
-		if (passThruAuth){
+		if (passThruAuth) {
 			new CheckBox("Pass Thru Authentication").click();
 		}
 		new PushButton("OK").click();
 	}
-	
-	/*public void synchronizeAll(String... pathToVDB){
-		// TODO
-		this.getVDBEditor(pathToVDB[0], pathToVDB[1]);
-		new PushButton("Synchronize All").click();
-	}*/
-	
-	/*public WAR operateWAR(String... pathToWar){
-		return new WAR(new ModelExplorer().getProject(pathToWar[0]).getProjectItem(pathToWar[1]));
-	}*/
-	
-	/*public WAR createWAR(Properties warProps, String... pathToVDB){
-		return new WAR(warProps, new ModelExplorer().getProject(pathToVDB[0]).getProjectItem(pathToVDB[1]));
-	}*/
-	
-	public WAR createWAR(Properties warProps, String... pathToVDB){
-		WAR war =new WAR(warProps, pathToVDB);
+
+	/*
+	 * public void synchronizeAll(String... pathToVDB){ // TODO this.getVDBEditor(pathToVDB[0], pathToVDB[1]); new
+	 * PushButton("Synchronize All").click(); }
+	 */
+
+	/*
+	 * public WAR operateWAR(String... pathToWar){ return new WAR(new
+	 * ModelExplorer().getProject(pathToWar[0]).getProjectItem(pathToWar[1])); }
+	 */
+
+	/*
+	 * public WAR createWAR(Properties warProps, String... pathToVDB){ return new WAR(warProps, new
+	 * ModelExplorer().getProject(pathToVDB[0]).getProjectItem(pathToVDB[1])); }
+	 */
+
+	public WAR createWAR(Properties warProps, String... pathToVDB) {
+		WAR war = new WAR(warProps, pathToVDB);
 		war.createWAR();
 		return war;
 	}

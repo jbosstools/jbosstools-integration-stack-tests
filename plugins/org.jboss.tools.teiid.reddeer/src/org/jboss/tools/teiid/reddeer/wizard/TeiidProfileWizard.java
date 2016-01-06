@@ -38,14 +38,14 @@ public abstract class TeiidProfileWizard extends NewWizardDialog {
 	public void open() {
 		log.info("Open Connection Profile");
 		try {
-		super.open();
-		} catch (Exception ex){
+			super.open();
+		} catch (Exception ex) {
 			new DefaultTreeItem("Connection Profiles").collapse();
 			new DefaultTreeItem("Connection Profiles", "Connection Profile").expand();
 			new DefaultTreeItem("Connection Profiles", "Connection Profile").select();
 			next();
 		}
-		
+
 		new DefaultTable().select(profile);
 		new LabeledText(LABEL_NAME).setText(name);
 		// TODO: LabeledText

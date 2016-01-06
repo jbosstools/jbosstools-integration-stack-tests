@@ -8,7 +8,7 @@ import java.io.ByteArrayOutputStream;
  * @author tsedmik
  */
 public class StatusByteArrayOutputStream extends ByteArrayOutputStream {
-	
+
 	private boolean closeStatus = false;
 
 	/**
@@ -17,15 +17,15 @@ public class StatusByteArrayOutputStream extends ByteArrayOutputStream {
 	 * @return <b>true</b> - stream is closed, <b>false</b> - otherwise
 	 */
 	public boolean isClosed() {
-		
+
 		return closeStatus;
 	}
-	
+
 	/**
 	 * Closes the output stream
 	 */
 	public void close() {
-		
+
 		this.close();
 		closeStatus = true;
 	}

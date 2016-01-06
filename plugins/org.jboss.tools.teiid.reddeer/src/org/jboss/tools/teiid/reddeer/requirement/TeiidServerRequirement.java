@@ -50,9 +50,8 @@ public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomC
 
 	private TeiidConfiguration serverConfig;
 	private TeiidServer teiid;
-	
+
 	public static final String SECURE_STORAGE_PASSWORD_TITLE = "Secure Storage Password";
-	
 
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.TYPE)
@@ -61,11 +60,11 @@ public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomC
 		ServerReqType[] type() default { ServerReqType.AS, ServerReqType.EAP };
 
 		String[] connectionProfiles() default {};
-		
+
 		ServerReqState state();
-		
+
 		ServerConnType[] connectionType() default ServerConnType.LOCAL;
-		
+
 	}
 
 	@Override
@@ -83,7 +82,7 @@ public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomC
 		ServerReqType[] type = teiid.type();
 		boolean typeMatches = false;
 		boolean connectionTypeMatches = false;
-		
+
 		if (type.length == 0) {
 			typeMatches = true;
 		}
@@ -92,7 +91,7 @@ public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomC
 				typeMatches = true;
 			}
 		}
-		
+
 		ServerConnType[] connTypes = teiid.connectionType();
 		if (connTypes.length == 0) {
 			connectionTypeMatches = true;
@@ -102,9 +101,9 @@ public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomC
 				connectionTypeMatches = true;
 			}
 		}
-		
-		for (String cp : teiid.connectionProfiles()){
-			if (serverConfig.getConnectionProfile(cp) == null){
+
+		for (String cp : teiid.connectionProfiles()) {
+			if (serverConfig.getConnectionProfile(cp) == null) {
 				return false;
 			}
 		}
@@ -114,25 +113,25 @@ public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomC
 	@Override
 	public void fulfill() {
 		new WorkbenchShell().maximize();
-		
-		// the following helps to sort-of-reliably gain focus on windows 
-		// removing this would cause writing the username/password below 
+
+		// the following helps to sort-of-reliably gain focus on windows
+		// removing this would cause writing the username/password below
 		// somewhere else (i.e. to some other window completely)
-		AbstractWait.sleep(TimePeriod.getCustom(3)); 
+		AbstractWait.sleep(TimePeriod.getCustom(3));
 		new DefaultShell();
-		
+
 		new CleanWorkspaceRequirement().fulfill();
 		new TeiidPerspective().open();
-		
+
 		new ConsolePreferencePage().toggleShowWhenWriteToStdErr(false);
 		new ConsolePreferencePage().toggleShowWhenWriteToStdOut(false);
 		new TeiidDesignerPreferencePage().setAutoToggleDataRoleChildren(true);
-		
+
 		// uncheck build automatically
-		if (new ShellMenu("Project", "Build Automatically").isSelected()){
+		if (new ShellMenu("Project", "Build Automatically").isSelected()) {
 			new ShellMenu("Project", "Build Automatically").select();
 		}
-		
+
 		ServerBase serverBase = serverConfig.getServerBase();
 		if (serverBase == null) {
 			return;
@@ -148,7 +147,8 @@ public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomC
 			new DefaultShell();
 			new DefaultText(0).typeText(serverConfig.getServerBase().getProperty("teiidUser"));
 			new DefaultText(1).typeText(serverConfig.getServerBase().getProperty("teiidPassword"));
-			new DefaultToolItem(new WorkbenchShell(), 0, new WithTooltipTextMatcher(new RegexMatcher("Save All.*"))).click();
+			new DefaultToolItem(new WorkbenchShell(), 0, new WithTooltipTextMatcher(new RegexMatcher("Save All.*")))
+					.click();
 			createServer(serverBase);
 		}
 		serverBase.setState(teiid.state());
@@ -157,15 +157,14 @@ public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomC
 			new WaitUntil(new ConsoleHasText("started in"), TimePeriod.LONG);
 		} catch (Exception e) {
 		}
-		
-		if (teiid.state() == ServerReqState.RUNNING){
+
+		if (teiid.state() == ServerReqState.RUNNING) {
 			new ServersViewExt().refreshServer(getName());
 		}
-		
-		
+
 		// create connection profiles
 		ConnectionProfileHelper connectionProfileHelper = new ConnectionProfileHelper();
-		for (String cp : teiid.connectionProfiles()){
+		for (String cp : teiid.connectionProfiles()) {
 			ConnectionProfileConfig connectionProfile = getServerConfig().getConnectionProfile(cp);
 			connectionProfileHelper.createConnectionProfile(connectionProfile);
 		}
@@ -180,15 +179,15 @@ public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomC
 		ServersView servers = new ServersView();
 		servers.open();
 		servers.getServer(serverConfig.getName()).open();
-		
+
 		// this is necessary when running locally
 		new WaitUntil(new ShellWithTextIsAvailable(SECURE_STORAGE_PASSWORD_TITLE), TimePeriod.SHORT, false);
-		if(new ShellWithTextIsAvailable(SECURE_STORAGE_PASSWORD_TITLE).test()){
+		if (new ShellWithTextIsAvailable(SECURE_STORAGE_PASSWORD_TITLE).test()) {
 			new DefaultShell(SECURE_STORAGE_PASSWORD_TITLE);
 			new LabeledText("Password:").setText(serverConfig.getServerBase().getProperty("secureStoragePassword"));
 			new PushButton("OK").click();
 		}
-		
+
 		new DefaultCTabItem("Teiid Instance").activate();
 		new DefaultShell();
 		new DefaultText(0).setText(serverConfig.getServerBase().getProperty("teiidUser"));
@@ -204,14 +203,14 @@ public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomC
 		this.teiid = teiid;
 	}
 
-	public TeiidConfiguration getServerConfig() { 
+	public TeiidConfiguration getServerConfig() {
 		return serverConfig;
 	}
-	
+
 	public String getName() {
 		return serverConfig.getName();
 	}
-	
+
 	public String getTeiidDriverPath() {
 		String serverPath = serverConfig.getServerBase().getHome();
 		List<File> files = FileUtils.find(serverPath, "teiid.*[jdbc|client].jar");

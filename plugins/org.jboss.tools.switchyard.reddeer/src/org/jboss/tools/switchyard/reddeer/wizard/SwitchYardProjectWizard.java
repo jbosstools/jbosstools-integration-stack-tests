@@ -63,7 +63,8 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		this(name, configurationVersion, libraryVersion, null);
 	}
 
-	public SwitchYardProjectWizard(String name, String configurationVersion, String libraryVersion, String targetRuntime) {
+	public SwitchYardProjectWizard(String name, String configurationVersion, String libraryVersion,
+			String targetRuntime) {
 		super("SwitchYard", "SwitchYard Project");
 		this.name = name;
 		this.configurationVersion = configurationVersion;
@@ -150,12 +151,14 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 	}
 
 	public SwitchYardProjectWizard setComponent(String group, String component, boolean checked) {
-		new DefaultTreeItem(new DefaultTree(new DefaultGroup(SWITCHYARD_COMPONENTS)), group, component).setChecked(checked);
+		new DefaultTreeItem(new DefaultTree(new DefaultGroup(SWITCHYARD_COMPONENTS)), group, component)
+				.setChecked(checked);
 		return this;
 	}
 
 	public boolean isComponent(String group, String component) {
-		return new DefaultTreeItem(new DefaultTree(new DefaultGroup(SWITCHYARD_COMPONENTS)), group, component).isChecked();
+		return new DefaultTreeItem(new DefaultTree(new DefaultGroup(SWITCHYARD_COMPONENTS)), group, component)
+				.isChecked();
 	}
 
 	public SwitchYardProjectWizard impl(String... component) {

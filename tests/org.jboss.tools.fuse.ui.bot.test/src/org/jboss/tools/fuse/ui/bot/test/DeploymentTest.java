@@ -29,7 +29,7 @@ import org.junit.runner.RunWith;
  * 
  * @author tsedmik
  */
-@Server(type = {ServerReqType.Fuse, ServerReqType.Karaf, ServerReqType.ServiceMix}, state = ServerReqState.PRESENT)
+@Server(type = { ServerReqType.Fuse, ServerReqType.Karaf, ServerReqType.ServiceMix }, state = ServerReqState.PRESENT)
 @CleanWorkspace
 @OpenPerspective(FuseIntegrationPerspective.class)
 @RunWith(RedDeerSuite.class)
@@ -39,20 +39,22 @@ public class DeploymentTest extends DefaultTest {
 	private static final String PROJECT_NAME = "camel-blueprint";
 	private static final String PROJECT_IS_DEPLOYED = "Route: timerToLog started and consuming from: Endpoint[timer://foo?period=5000";
 	private static final String PROJECT_IS_UNDEPLOYED = "(CamelContext: camel-1) is shutdown";
-	
+
 	@InjectRequirement
 	private static ServerRequirement serverRequirement;
 
 	/**
 	 * Prepares test environment
 	 * 
-	 * @throws FuseArchetypeNotFoundException Fuse archetype was not found. Tests cannot be executed!
+	 * @throws FuseArchetypeNotFoundException
+	 *             Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@BeforeClass
 	public static void setupInitial() throws FuseArchetypeNotFoundException {
 
 		ProjectFactory.createProject(PROJECT_NAME, PROJECT_ARCHETYPE);
-		new ProjectExplorer().getProject(PROJECT_NAME).getProjectItem("src/test/java", "com.mycompany.camel.blueprint", "RouteTest.java").delete();
+		new ProjectExplorer().getProject(PROJECT_NAME)
+				.getProjectItem("src/test/java", "com.mycompany.camel.blueprint", "RouteTest.java").delete();
 	}
 
 	/**
@@ -68,7 +70,9 @@ public class DeploymentTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>Test tries to deploy a project on Fuse server.</p>
+	 * <p>
+	 * Test tries to deploy a project on Fuse server.
+	 * </p>
 	 * <b>Steps</b>
 	 * <ol>
 	 * <li>create a new project with camel-archetype-blueprint archetype</li>
@@ -77,12 +81,12 @@ public class DeploymentTest extends DefaultTest {
 	 * <li>check if the server contains the project in Add and Remove ... dialog window</li>
 	 * <li>start the server</li>
 	 * <li>open Fuse Shell view and execute command log:display</li>
-	 * <li>check if Fuse Shell view contains text Route: timerToLog started and consuming from: 
+	 * <li>check if Fuse Shell view contains text Route: timerToLog started and consuming from:
 	 * Endpoint[timer://foo?period=5000 (project is deployed)</li>
 	 * <li>remove all deployed modules</li>
 	 * <li>open Fuse Shell view and execute command log:display</li>
-	 * <li>check if Fuse Shell view contains text (CamelContext: blueprintContext) is shutdown
-	 * (project is undeployed)</li>
+	 * <li>check if Fuse Shell view contains text (CamelContext: blueprintContext) is shutdown (project is undeployed)
+	 * </li>
 	 * </ol>
 	 */
 	@Test

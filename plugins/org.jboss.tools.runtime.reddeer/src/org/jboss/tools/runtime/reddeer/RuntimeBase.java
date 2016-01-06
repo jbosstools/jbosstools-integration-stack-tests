@@ -61,7 +61,7 @@ public abstract class RuntimeBase {
 	public String getProperty(String key) {
 		return properties != null ? properties.getProperty(key) : null;
 	}
-	
+
 	public List<String> getProperties(String key) {
 		return properties != null ? properties.getProperties(key) : new ArrayList<String>();
 	}

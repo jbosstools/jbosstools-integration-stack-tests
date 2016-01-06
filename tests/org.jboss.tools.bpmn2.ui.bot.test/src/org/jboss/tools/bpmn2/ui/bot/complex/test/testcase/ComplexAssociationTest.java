@@ -11,20 +11,17 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.artifacts.TextAnnotation;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
 
-@JBPM6ComplexTestDefinition(projectName="JBPM6ComplexTest",
-							importFolder="resources/bpmn2/model/base",
-							openFile="BaseBPMN2-Association.bpmn2",
-							saveAs="BPMN2-Association.bpmn2")
-public class ComplexAssociationTest extends JBPM6ComplexTest{
+@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-Association.bpmn2", saveAs = "BPMN2-Association.bpmn2")
+public class ComplexAssociationTest extends JBPM6ComplexTest {
 
-	@TestPhase(phase=Phase.MODEL)
+	@TestPhase(phase = Phase.MODEL)
 	public void model() {
 		ScriptTask script = new ScriptTask("Log");
 		TextAnnotation annotation = new TextAnnotation();
 		annotation.connectTo(script, ConnectionType.ASSOCIATION_UNDIRECTED);
 	}
-	
-	@TestPhase(phase=Phase.RUN)
+
+	@TestPhase(phase = Phase.RUN)
 	public void run(KieSession kSession) {
 		ProcessInstance processInstance = kSession.startProcess("BPMN2Association");
 		JbpmAssertions.assertProcessInstanceCompleted(processInstance, kSession);

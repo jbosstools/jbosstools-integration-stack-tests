@@ -19,7 +19,7 @@ import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 public class MouseAWTManager {
 
 	private static Logger log = Logger.getLogger(CamelEditor.class);
-	
+
 	public static void AWTMouseMove(final int x, final int y) {
 		Display.syncExec(new Runnable() {
 

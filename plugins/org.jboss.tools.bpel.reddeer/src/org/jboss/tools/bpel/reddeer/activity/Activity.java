@@ -93,7 +93,7 @@ public class Activity extends AbstractEditPart {
 			new Activity(type, type, this, 0).setName(name);
 		}
 	}
-	
+
 	public void insertBefore(String type) {
 		menu("Insert Before", type);
 	}

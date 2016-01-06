@@ -51,9 +51,9 @@ public class PublishingTest {
 	public void publishingTest() throws Exception {
 
 		String repository = server.getConfig().getServerBase().getProperty("modeshape");
-		String user =  server.getConfig().getServerBase().getProperty("modeshapeUser");
-		String password =  server.getConfig().getServerBase().getProperty("modeshapePassword");
-		
+		String user = server.getConfig().getServerBase().getProperty("modeshapeUser");
+		String password = server.getConfig().getServerBase().getProperty("modeshapePassword");
+
 		/* Create Java Project */
 		NewJavaProjectWizardDialog projectWizard = new NewJavaProjectWizardDialog();
 		projectWizard.open();
@@ -75,14 +75,15 @@ public class PublishingTest {
 
 		/* Create ModeSHape Server */
 		new ModeshapeView().addServer(SERVER_URL, user, password);
-		
+
 		/* Add publish area */
 		new ModeshapeView().addPublishArea(SERVER_URL, repository, WORKSPACE, PUBLISH_AREA);
 		System.out.println("DEBUG: publishing area " + PUBLISH_AREA + " added");
 
 		/* Publish */
 		new ModeshapeExplorer().publish(PROJECT_NAME).finish();
-		assertTrue(new ModeshapeWebdav(SERVER_URL + "/v1", repository, WORKSPACE + "/items", PUBLISH_AREA).isFileAvailable(FILE_NAME, user, password));
+		assertTrue(new ModeshapeWebdav(SERVER_URL + "/v1", repository, WORKSPACE + "/items", PUBLISH_AREA)
+				.isFileAvailable(FILE_NAME, user, password));
 		System.out.println("DEBUG: files published (webdav)");
 
 		/* Published Locations */
@@ -94,8 +95,8 @@ public class PublishingTest {
 
 		/* Unpublish */
 		new ModeshapeExplorer().unpublish(PROJECT_NAME).finish();
-		assertFalse(new ModeshapeWebdav(SERVER_URL + "/v1", repository, WORKSPACE + "/items", PUBLISH_AREA).isFileAvailable(PROJECT_NAME + "/" + FILE_NAME, user, password));
+		assertFalse(new ModeshapeWebdav(SERVER_URL + "/v1", repository, WORKSPACE + "/items", PUBLISH_AREA)
+				.isFileAvailable(PROJECT_NAME + "/" + FILE_NAME, user, password));
 		System.out.println("DEBUG: files unpublished");
 	}
 }
-

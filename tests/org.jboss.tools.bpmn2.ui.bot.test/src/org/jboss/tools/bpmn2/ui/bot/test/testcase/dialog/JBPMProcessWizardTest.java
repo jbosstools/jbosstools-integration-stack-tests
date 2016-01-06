@@ -19,28 +19,27 @@ public class JBPMProcessWizardTest {
 	static ProjectExplorer packageView = new ProjectExplorer();
 	static JBPMProjectWizard projectWizardView = new JBPMProjectWizard();
 	static JBPMProcessWizard processWizardView = new JBPMProcessWizard();
-	
+
 	@BeforeClass
 	public static void createProject() {
 		projectWizardView.execute("TestProject");
 	}
-	
+
 	@AfterClass
 	public static void deleteProject() {
 		packageView.getProject("TestProject").delete(true);
 	}
-	
+
 	@Test
 	public void newProcessTest() {
-		processWizardView.execute(new String[] {"TestProject", "src/main/resources"}, "SampleProcess");
-		Assert.assertTrue(packageView.getProject("TestProject").containsItem("src/main/resources", "SampleProcess.bpmn"));
+		processWizardView.execute(new String[] { "TestProject", "src/main/resources" }, "SampleProcess");
+		Assert.assertTrue(
+				packageView.getProject("TestProject").containsItem("src/main/resources", "SampleProcess.bpmn"));
 	}
-	
+
 	/**
-	 * ISSUES:
-	 * 	1) make sure an empty name may not be added.
-	 *  2) should it be legal to create a name without .bpmn suffix?
-	 *  
+	 * ISSUES: 1) make sure an empty name may not be added. 2) should it be legal to create a name without .bpmn suffix?
+	 * 
 	 * @throws Exception
 	 */
 	@Test
@@ -53,5 +52,5 @@ public class JBPMProcessWizardTest {
 			processWizardView.cancel();
 		}
 	}
-	
+
 }

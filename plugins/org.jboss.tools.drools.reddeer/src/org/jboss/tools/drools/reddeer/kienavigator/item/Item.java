@@ -11,9 +11,9 @@ import org.jboss.tools.drools.reddeer.kienavigator.properties.Properties;
 import org.jboss.tools.drools.reddeer.waitcondition.LoadingTextIsVisible;
 
 public abstract class Item<T extends Properties> {
-	
+
 	private static final Logger LOGGER = Logger.getLogger(Item.class);
-	
+
 	private TreeItem treeItem;
 
 	public Item(TreeItem treeItem) {
@@ -23,12 +23,12 @@ public abstract class Item<T extends Properties> {
 	public void refresh() {
 		selectAction("Refresh");
 	}
-	
+
 	protected void selectAction(String actionName) {
 		treeItem.select();
 		new ContextMenu(actionName).select();
 	}
-	
+
 	protected void selectEnabledAction(String actionName) {
 		treeItem.select();
 		ContextMenu cm = new ContextMenu(actionName);
@@ -37,17 +37,17 @@ public abstract class Item<T extends Properties> {
 			new PushButton("Yes").click();
 		}
 	}
-	
+
 	public abstract T properties();
-	
+
 	public String getName() {
 		return treeItem.getText();
 	}
-	
+
 	public List<TreeItem> getItems() {
 		return treeItem.getItems();
 	}
-	
+
 	public void expand() {
 		treeItem.expand();
 		try {

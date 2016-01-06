@@ -66,7 +66,7 @@ public class InstalledJREs extends PreferencePage {
 		}
 		return false;
 	}
-	
+
 	public void open() {
 		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
 		dialog.open();

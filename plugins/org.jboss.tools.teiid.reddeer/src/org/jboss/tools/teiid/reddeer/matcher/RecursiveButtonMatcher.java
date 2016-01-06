@@ -14,27 +14,26 @@ import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Factory;
 
-public class RecursiveButtonMatcher extends BaseMatcher<EditPart>{
+public class RecursiveButtonMatcher extends BaseMatcher<EditPart> {
 
 	private static final String MAPPING_CLASS = "<<Mapping Class>>";
 	private String prefixMappingClassRecursive;
-	
+
 	private Clickable b;
-	
-	public RecursiveButtonMatcher(String prefixMappingClassRecursive){
+
+	public RecursiveButtonMatcher(String prefixMappingClassRecursive) {
 		this.prefixMappingClassRecursive = prefixMappingClassRecursive;
 	}
-	
+
 	@Override
 	@SuppressWarnings("unchecked")
 	public boolean matches(Object item) {
-		
+
 		boolean isMappingClass = false;
 		boolean startsWithPrefix = false;
-		
+
 		if (item instanceof GraphicalEditPart) {
-			if (item.getClass()
-					.toString()
+			if (item.getClass().toString()
 					.equals("class org.teiid.designer.diagram.ui.notation.uml.part.UmlClassifierEditPart")) {
 				IFigure figure = ((GraphicalEditPart) item).getFigure();
 
@@ -45,14 +44,13 @@ public class RecursiveButtonMatcher extends BaseMatcher<EditPart>{
 																// button
 				for (IFigure figure2 : children) {
 					if (figure2 instanceof Clickable) {
-						
-						//verify correct mapping class
-						for (IFigure sibling : children){
-							if (sibling.getClass()
-									.toString()
-									.equals("class org.teiid.designer.diagram.ui.notation.uml.figure.UmlClassifierHeader")){
+
+						// verify correct mapping class
+						for (IFigure sibling : children) {
+							if (sibling.getClass().toString().equals(
+									"class org.teiid.designer.diagram.ui.notation.uml.figure.UmlClassifierHeader")) {
 								List<IFigure> siblingChildren = sibling.getChildren();
-								for (IFigure siblingChild : siblingChildren){
+								for (IFigure siblingChild : siblingChildren) {
 									if (siblingChild instanceof Label) {
 										String text = ((Label) siblingChild).getText();
 										if (text.equals(MAPPING_CLASS)) {
@@ -65,22 +63,22 @@ public class RecursiveButtonMatcher extends BaseMatcher<EditPart>{
 								}
 							}
 						}
-						System.out.println(isMappingClass +", "+ startsWithPrefix);
-						
-						if (isMappingClass && startsWithPrefix){
-							b =(Clickable) figure2; 
+						System.out.println(isMappingClass + ", " + startsWithPrefix);
+
+						if (isMappingClass && startsWithPrefix) {
+							b = (Clickable) figure2;
 							asyncExec(new VoidResult() {
 								@Override
-								public void run() {										
+								public void run() {
 									b.doClick();
 								}
 							});
 							return true;
 						}
-						
+
 					}
 				}
-				
+
 			}
 		}
 		return false;
@@ -88,9 +86,9 @@ public class RecursiveButtonMatcher extends BaseMatcher<EditPart>{
 
 	@Override
 	public void describeTo(Description description) {
-		
+
 	}
-	
+
 	@Factory
 	public static RecursiveButtonMatcher createRecursiveButtonMatcher(String prefix) {
 		return new RecursiveButtonMatcher(prefix);

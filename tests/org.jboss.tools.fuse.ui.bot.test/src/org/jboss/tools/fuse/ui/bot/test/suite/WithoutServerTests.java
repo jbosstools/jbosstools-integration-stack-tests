@@ -31,8 +31,7 @@ import junit.framework.TestSuite;
 	LicenseTest.class,
 	ProjectLocalRunTest.class,
 	RouteManipulationTest.class,
-	SmokeTest.class
-})
+	SmokeTest.class })
 @RunWith(RedDeerSuite.class)
 public class WithoutServerTests extends TestSuite {
 

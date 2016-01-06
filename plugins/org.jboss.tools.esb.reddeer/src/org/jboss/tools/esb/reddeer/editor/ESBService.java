@@ -21,7 +21,7 @@ public class ESBService extends DefaultTreeItem {
 	public void setInvmScope(String scope) {
 		new LabeledComboExt("Invm Scope:").setSelection(scope);
 	}
-	
+
 	public ESBActionWizard addAction(String category, String action) {
 		return addAction(category, action, "Add " + action);
 	}

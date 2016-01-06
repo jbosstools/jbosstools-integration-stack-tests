@@ -13,7 +13,7 @@ import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 public class TeiidEditorTableItem implements TableItem {
 
 	private TableItem delegate;
-	
+
 	public TeiidEditorTableItem(TableItem delegate) {
 		this.delegate = delegate;
 	}

@@ -119,14 +119,14 @@ public class ModelEditor extends SWTBotEditor {
 
 		return new SWTBotGefViewer(graphicalViewer);
 	}
-	
-	public CTabItem showTabItem(String label){
+
+	public CTabItem showTabItem(String label) {
 		DefaultCTabItem tabItem = new DefaultCTabItem(label);
 		tabItem.activate();
 		return tabItem;
 	}
-	
-	public TabItem showSubTabItem(String label){
+
+	public TabItem showSubTabItem(String label) {
 		DefaultTabItem tabItem = new DefaultTabItem(label);
 		tabItem.activate();
 		return tabItem;
@@ -137,8 +137,8 @@ public class ModelEditor extends SWTBotEditor {
 		tabItem.activate();
 		return tabItem;
 	}
-	
-	public TabItem showSubTab(String label){
+
+	public TabItem showSubTab(String label) {
 		DefaultTabItem tabItem = new DefaultTabItem(label);
 		tabItem.activate();
 		return tabItem;
@@ -162,7 +162,7 @@ public class ModelEditor extends SWTBotEditor {
 	}
 
 	public CriteriaBuilder criteriaBuilder() {
-		bot.toolbarButtonWithTooltip("Criteria Builder").click();		
+		bot.toolbarButtonWithTooltip("Criteria Builder").click();
 		return new CriteriaBuilder();
 	}
 
@@ -175,20 +175,21 @@ public class ModelEditor extends SWTBotEditor {
 		styledText.navigateTo(2, procedure.length() / 2);
 		styledText.mouseClickOnCaret();
 	}
-	
+
 	/**
 	 * 
 	 * @param procedure
-	 * @param notReplacingDefault false if editor contains <--.*--> to be replaced, true otherwise 
+	 * @param notReplacingDefault
+	 *            false if editor contains <--.*--> to be replaced, true otherwise
 	 */
 	public void setTransformationProcedureBody(String procedure, boolean notReplacingDefault) {
-		String transformationText = getTransformation();//""
-		if (transformationText.equals("") || (notReplacingDefault)){
+		String transformationText = getTransformation();// ""
+		if (transformationText.equals("") || (notReplacingDefault)) {
 			transformationText = procedure;
 		} else {
 			transformationText = transformationText.replaceAll("<--.*-->;", procedure);
 		}
-		
+
 		TeiidStyledText styledText = new TeiidStyledText(0);
 		styledText.setFocus();
 		styledText.setText(transformationText);
@@ -277,122 +278,123 @@ public class ModelEditor extends SWTBotEditor {
 		SWTBotGefEditPart editPart = viewer.getEditPart(label);
 		if (editPart != null) {
 			return new ModelDiagram(editPart);
-			//return new ModelDiagram(viewer.getEditPart(label));
+			// return new ModelDiagram(viewer.getEditPart(label));
 		} else {
 			return null;
 		}
 	}
-	
-	public void selectParts(List<SWTBotGefEditPart> parts){
-		if (viewer == null){
+
+	public void selectParts(List<SWTBotGefEditPart> parts) {
+		if (viewer == null) {
 			viewer = getGraphicalViewer(MAPPING_DIAGRAM);
 		}
 		viewer.select(parts);
 		AbstractWait.sleep(TimePeriod.SHORT);
 	}
-	
-	
+
 	/**
 	 * Moved to MappingDiagramEditor
+	 * 
 	 * @param prefix
 	 * @return all attributes (type Label) with name starting with prefix
 	 */
 	@Deprecated
-	public List<SWTBotGefEditPart> getAttributes(String prefix){
+	public List<SWTBotGefEditPart> getAttributes(String prefix) {
 		viewer = getGraphicalViewer(MAPPING_DIAGRAM);
 		AttributeMatcher matcher = AttributeMatcher.createAttributeMatcher();
 		matcher.setPrefix(prefix);
-		return viewer.editParts(matcher); 
+		return viewer.editParts(matcher);
 	}
-	
-	
+
 	/**
 	 * Moved to MappingDiagramEditor
+	 * 
 	 * @param prefix
 	 * @return all mapping classes (type Label) with name starting with prefix
 	 */
 	@Deprecated
-	public List<SWTBotGefEditPart> getMappingClasses(String prefix){
+	public List<SWTBotGefEditPart> getMappingClasses(String prefix) {
 		viewer = getGraphicalViewer(MAPPING_DIAGRAM);
 		MappingClassMatcher matcher = MappingClassMatcher.createMappingClassMatcher();
 		matcher.setPrefix(prefix);
 		return viewer.editParts(matcher);
 	}
-	
+
 	/**
 	 * Moved to MappingDiagramEditor
+	 * 
 	 * @param prefix
 	 * @return list of attributes starting with prefix
 	 */
 	@Deprecated
-	public List<String> namesOfAttributes(String prefix){
-			viewer = getGraphicalViewer(MAPPING_DIAGRAM);
-			AttributeMatcher matcher = AttributeMatcher.createAttributeMatcher();
-			matcher.setPrefix(prefix);
-			viewer.editParts(matcher);//generate list of texts
-			return matcher.getTexts();
+	public List<String> namesOfAttributes(String prefix) {
+		viewer = getGraphicalViewer(MAPPING_DIAGRAM);
+		AttributeMatcher matcher = AttributeMatcher.createAttributeMatcher();
+		matcher.setPrefix(prefix);
+		viewer.editParts(matcher);// generate list of texts
+		return matcher.getTexts();
 	}
-	
-	
-	public void deleteLabeledItem(String label){
+
+	public void deleteLabeledItem(String label) {
 		viewer = getGraphicalViewer(MAPPING_DIAGRAM);
 		viewer.select(label);
 		viewer.clickContextMenu("Delete");
 		log.info("Deleting labeled item " + label);
 	}
-	
-	public Reconciler openReconciler(){
+
+	public Reconciler openReconciler() {
 		bot.toolbarButtonWithTooltip("Reconcile Transformation SQL with Target Columns").click();
 		SWTBotShell shell = bot.shell("Reconcile Virtual Target Columns");
 		shell.activate();
 		return new Reconciler(shell);
 	}
-	
-	public void openInputSetEditor(){
+
+	public void openInputSetEditor() {
 		viewer = getGraphicalViewer(DIAGRAM);
 		getModelDiagram(INPUT_SET, DIAGRAM).select();
 		viewer.clickContextMenu("Edit");
 	}
-	
-	public InputSetEditor openInputSetEditor(boolean param){
+
+	public InputSetEditor openInputSetEditor(boolean param) {
 		viewer = getGraphicalViewer(DIAGRAM);
 		getModelDiagram(INPUT_SET, DIAGRAM).select();
 		viewer.clickContextMenu("Edit Input Set");
 		return new InputSetEditor();
 	}
-	
-	public List<ModelColumn> getColumns(String tableName){
+
+	public List<ModelColumn> getColumns(String tableName) {
 		List<ModelColumn> result = new ArrayList<ModelColumn>();
-		
+
 		setFocus();
 		showTabItem(ModelEditor.TABLE_EDITOR);
 		showSubTabItem(COLUMNS);
 		DefaultTable table = new DefaultTable(0);
-		for(TableItem it : table.getItems()){
+		for (TableItem it : table.getItems()) {
 			ModelColumn c = new ModelColumn(it);
-			if(c.getLocation().equalsIgnoreCase(tableName)){
+			if (c.getLocation().equalsIgnoreCase(tableName)) {
 				result.add(c);
 			}
 		}
-		
+
 		return result;
 	}
-	public List<ModelTable> getTables(){
+
+	public List<ModelTable> getTables() {
 		List<ModelTable> result = new ArrayList<ModelTable>();
-		
+
 		setFocus();
 		showTabItem(ModelEditor.TABLE_EDITOR);
 		showSubTabItem(BASE_TABLES);
 		DefaultTable table = new DefaultTable(0);
-		for(TableItem it : table.getItems()){
+		for (TableItem it : table.getItems()) {
 			result.add(new ModelTable(it));
 		}
-		
+
 		return result;
 	}
-	
-	public ModelTable getTable(String tableName){
-		
+
+	public ModelTable getTable(String tableName) {
+
 		setFocus();
 		showTabItem(ModelEditor.TABLE_EDITOR);
 		showSubTabItem(BASE_TABLES);
@@ -405,21 +407,21 @@ public class ModelEditor extends SWTBotEditor {
 			return null;
 		}
 	}
-	
-	public ModelColumn getColumn(String tableName, String columnName){
+
+	public ModelColumn getColumn(String tableName, String columnName) {
 		setFocus();
 		showTabItem(ModelEditor.TABLE_EDITOR);
 		showSubTabItem(COLUMNS);
 		DefaultTable table = new DefaultTable(0);
 		List<TableItem> matchingItems = table.getItems(new ModelColumnMatcher(tableName, columnName));
-		if(matchingItems.size() == 1){
+		if (matchingItems.size() == 1) {
 			return new ModelColumn(matchingItems.get(0));
-		}else{
+		} else {
 			return null;
 		}
 	}
-	
-	public ModelProcedureParameter getProcedureParameters(String procName){
+
+	public ModelProcedureParameter getProcedureParameters(String procName) {
 		setFocus();
 		showTabItem(ModelEditor.TABLE_EDITOR);
 		showSubTabItem(BASE_TABLES);
@@ -432,7 +434,7 @@ public class ModelEditor extends SWTBotEditor {
 			return null;
 		}
 	}
-	
+
 	public ModelProcedureParameter getProcedureParameter(String procName, String parameterName) {
 		setFocus();
 		showTabItem(ModelEditor.TABLE_EDITOR);
@@ -449,9 +451,6 @@ public class ModelEditor extends SWTBotEditor {
 			return null;
 		}
 	}
-	
-	
-	
-	
-	//TODO transformation editor options - supports update
+
+	// TODO transformation editor options - supports update
 }

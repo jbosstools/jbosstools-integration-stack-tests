@@ -254,8 +254,8 @@ public class ListenersTest {
 		Assertions.assertEmptyProblemsView("after " + name + " was added");
 
 		/*
-		 * Added test for - https://issues.jboss.org/browse/JBQA-6527 - Add
-		 * support for gateway messaging priority in the ESB editor
+		 * Added test for - https://issues.jboss.org/browse/JBQA-6527 - Add support for gateway messaging priority in
+		 * the ESB editor
 		 */
 		if (name.contains("gateway")) {
 			Combo combo = new ESBEditor().getMessageFlowPriorityCombo();

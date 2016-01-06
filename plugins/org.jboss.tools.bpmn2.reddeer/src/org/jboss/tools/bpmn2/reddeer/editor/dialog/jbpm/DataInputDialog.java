@@ -7,7 +7,7 @@ import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 public class DataInputDialog {
-	
+
 	public void add(String varName, String varType) {
 		new DefaultShell("Edit Data Input");
 		new DefaultTabItem("Data Input").activate();

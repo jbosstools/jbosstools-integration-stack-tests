@@ -5,10 +5,10 @@ import org.jboss.tools.bpmn2.reddeer.DefaultCombo;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.ImplementationDialog;
 
 public class ImplementationSetUp implements SetUpAble {
-	
+
 	private String tabName;
 	private String implementationUri;
-	
+
 	public ImplementationSetUp(String tabName, String implementationUri) {
 		this.tabName = tabName;
 		this.implementationUri = implementationUri;

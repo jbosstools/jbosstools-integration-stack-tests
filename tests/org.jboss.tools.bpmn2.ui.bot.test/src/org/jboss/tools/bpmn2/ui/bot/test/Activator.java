@@ -13,7 +13,7 @@ public class Activator extends AbstractUIPlugin {
 
 	/** The shared instance */
 	private static Activator plugin;
-	
+
 	/**
 	 * The constructor
 	 */
@@ -23,7 +23,6 @@ public class Activator extends AbstractUIPlugin {
 	/**
 	 * 
 	 * @param context
-	 * @throws
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
@@ -33,7 +32,6 @@ public class Activator extends AbstractUIPlugin {
 	/**
 	 * 
 	 * @param context
-	 * @throws
 	 */
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;

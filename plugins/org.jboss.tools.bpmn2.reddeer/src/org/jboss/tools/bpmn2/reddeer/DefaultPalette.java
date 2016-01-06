@@ -28,7 +28,7 @@ public class DefaultPalette {
 	 * @param paletteViewer
 	 */
 	public DefaultPalette(PaletteViewer paletteViewer) {
-		if(paletteViewer == null) {
+		if (paletteViewer == null) {
 			throw new NullPointerException("PaletteViewer cannot be null!");
 		}
 		this.paletteViewer = paletteViewer;
@@ -38,7 +38,7 @@ public class DefaultPalette {
 	 * 
 	 * @param tool
 	 */
-	public void activateTool(String ... tool) {
+	public void activateTool(String... tool) {
 		List<String> pathToEntry = Arrays.asList(tool);
 		List<PaletteEntry> entries = getPaletteEntries(new PaletteEntryWithPath(pathToEntry));
 		if (entries.isEmpty()) {
@@ -98,13 +98,13 @@ public class DefaultPalette {
 		public PaletteEntryWithPath(List<String> pathToEntry) {
 			this.tool = pathToEntry.get(pathToEntry.size() - 1);
 			this.section = pathToEntry.subList(0, pathToEntry.size() - 1);
-			
+
 		}
 
 		@Override
 		public boolean matches(Object obj) {
 			List<String> entrySection = new ArrayList<String>();
-			
+
 			if (obj instanceof ToolEntry) {
 				ToolEntry entry = (ToolEntry) obj;
 				if (entry.getLabel().equals(tool)) {
@@ -129,4 +129,3 @@ public class DefaultPalette {
 	}
 
 }
-

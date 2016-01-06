@@ -9,12 +9,12 @@ public class GatewayPrioritySetUp implements SetUpAble {
 
 	private String priority;
 	private String flow;
-	
+
 	public GatewayPrioritySetUp(String flow, String priority) {
 		this.flow = flow;
 		this.priority = priority;
 	}
-	
+
 	@Override
 	public void setUpCTab() {
 		new DefaultTable(0).select(flow);

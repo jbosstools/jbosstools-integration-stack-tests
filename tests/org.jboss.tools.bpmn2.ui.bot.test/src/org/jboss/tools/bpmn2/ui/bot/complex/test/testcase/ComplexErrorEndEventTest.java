@@ -12,23 +12,20 @@ import org.jboss.tools.bpmn2.ui.bot.test.jbpm.JbpmAssertions;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
 
-@JBPM6ComplexTestDefinition(projectName="JBPM6ComplexTest",
-							importFolder="resources/bpmn2/model/base",
-							openFile="BaseBPMN2-ErrorEndEvent.bpmn2",
-							saveAs="BPMN2-ErrorEndEvent.bpmn2")
+@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-ErrorEndEvent.bpmn2", saveAs = "BPMN2-ErrorEndEvent.bpmn2")
 public class ComplexErrorEndEventTest extends JBPM6ComplexTest {
 
-	@TestPhase(phase=Phase.MODEL)
+	@TestPhase(phase = Phase.MODEL)
 	public void model() {
 		StartEvent start = new StartEvent("StartProcess");
-		
+
 		ErrorEndEvent end = (ErrorEndEvent) start.append("ErrorEvent", ElementType.ERROR_END_EVENT);
 		end.setErrorEvent(new ErrorRef("SimpleError", "error", "String"), VARIABLE1);
 	}
-	
-	@TestPhase(phase=Phase.RUN)
+
+	@TestPhase(phase = Phase.RUN)
 	public void run(KieSession kSession) {
-		ProcessInstance processInstance = kSession.startProcess("BPMN2ErrorEndEvent");		
+		ProcessInstance processInstance = kSession.startProcess("BPMN2ErrorEndEvent");
 		JbpmAssertions.assertProcessInstanceAborted(processInstance, kSession);
 	}
 }

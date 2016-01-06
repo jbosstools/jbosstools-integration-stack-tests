@@ -60,7 +60,7 @@ public class ThrottlingPage {
 	public boolean isTimePeriodReadOnly() {
 		return new LabeledText(TIME_PERIOD).isReadOnly();
 	}
-	
+
 	public void ok() {
 		String title = new DefaultShell().getText();
 		new OkButton().click();

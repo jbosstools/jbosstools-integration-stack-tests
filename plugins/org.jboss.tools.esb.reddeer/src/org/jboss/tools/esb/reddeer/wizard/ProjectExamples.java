@@ -25,7 +25,7 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 public class ProjectExamples extends NewWizardDialog {
 
 	private final static String DIALOG_TITLE = "New Project Example";
-	private final static String[] MENU_PATH = {"Examples", "JBoss Tools", "Project Examples"};
+	private final static String[] MENU_PATH = { "Examples", "JBoss Tools", "Project Examples" };
 
 	public ProjectExamples() {
 		super(MENU_PATH);
@@ -44,13 +44,13 @@ public class ProjectExamples extends NewWizardDialog {
 		new DefaultShell(DIALOG_TITLE);
 		new FinishButton().click();
 		new WaitUntil(new ShellWithTextIsAvailable(DIALOG_TITLE), TimePeriod.VERY_LONG);
-		
+
 		new DefaultShell(DIALOG_TITLE);
 		if (new CheckBox(0).isEnabled()) {
 			new CheckBox(0).toggle(false);
 		}
 		new CheckBox(1).toggle(false);
-		
+
 		new PushButton("Finish").click();
 		new WaitWhile(new ShellWithTextIsAvailable(DIALOG_TITLE));
 	}
@@ -58,7 +58,8 @@ public class ProjectExamples extends NewWizardDialog {
 	/**
 	 * Selects a given project
 	 * 
-	 * @param path Path to the given project
+	 * @param path
+	 *            Path to the given project
 	 */
 	public void selectProject(String[] path) {
 		new DefaultTreeItem(path).select();
@@ -67,7 +68,8 @@ public class ProjectExamples extends NewWizardDialog {
 	/**
 	 * Accesses project examples related to JBoss ESB
 	 * 
-	 * @param version Version of used SOA Platform ('5.0')
+	 * @param version
+	 *            Version of used SOA Platform ('5.0')
 	 * @return List of the ESB projects examples
 	 */
 	public List<String[]> getESBProjects(String version) {

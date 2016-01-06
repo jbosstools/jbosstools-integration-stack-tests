@@ -5,12 +5,12 @@ import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 
 public class PerspectiveAndViewManager {
 
-	public void openTeiidDesignerPerspective(){
+	public void openTeiidDesignerPerspective() {
 		TeiidPerspective.getInstance().open();
 	}
-	
-	public void openDatabaseDevelopmentPerspective(){
+
+	public void openDatabaseDevelopmentPerspective() {
 		new DatabaseDevelopmentPerspective().open();
 	}
-	
+
 }

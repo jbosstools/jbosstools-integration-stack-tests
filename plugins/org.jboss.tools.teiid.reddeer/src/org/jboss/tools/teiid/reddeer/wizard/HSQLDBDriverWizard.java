@@ -46,32 +46,32 @@ public class HSQLDBDriverWizard {
 
 	public void create() {
 		new DriverDefinitionPreferencePageExt().open();
-		//new SWTWorkbenchBot().sleep(10000);
+		// new SWTWorkbenchBot().sleep(10000);
 		new PushButton("Add...").click();
-		//new SWTWorkbenchBot().sleep(10000);
+		// new SWTWorkbenchBot().sleep(10000);
 		DriverDefinitionPageExt page = new DriverDefinitionPageExt();
-		
-		//System.out.println(new SWTWorkbenchBot().activeShell().getText());
-		//new SWTWorkbenchBot().sleep(10000);
+
+		// System.out.println(new SWTWorkbenchBot().activeShell().getText());
+		// new SWTWorkbenchBot().sleep(10000);
 		page.selectDriverTemplate(true, "Generic JDBC Driver", "1.0");
-		
-		//System.out.println(new SWTWorkbenchBot().activeShell().getText());
-		//System.out.println("Should set name to " + name);
-		//new SWTWorkbenchBot().sleep(10000);
+
+		// System.out.println(new SWTWorkbenchBot().activeShell().getText());
+		// System.out.println("Should set name to " + name);
+		// new SWTWorkbenchBot().sleep(10000);
 		page.setName(name);
-		
+
 		System.out.println(new SWTWorkbenchBot().activeShell().getText());
 		System.out.println("should set library to " + library);
-		//new SWTWorkbenchBot().sleep(10000);
+		// new SWTWorkbenchBot().sleep(10000);
 		page.addDriverLibrary(library);
-		
-		//System.out.println(new SWTWorkbenchBot().activeShell().getText());
+
+		// System.out.println(new SWTWorkbenchBot().activeShell().getText());
 		System.out.println("should set driver to " + driver);
-		//new SWTWorkbenchBot().sleep(10000);
+		// new SWTWorkbenchBot().sleep(10000);
 		page.setDriverClass(driver);
-		//new SWTWorkbenchBot().sleep(10000);
+		// new SWTWorkbenchBot().sleep(10000);
 		new PushButton("OK").click();
-		//new SWTWorkbenchBot().sleep(10000);
+		// new SWTWorkbenchBot().sleep(10000);
 		new PushButton("OK").click();
 	}
 
@@ -80,7 +80,7 @@ public class HSQLDBDriverWizard {
 		@Override
 		public void setDriverClass(String driverClass) {
 			selectTab(TAB_PROPERTIES);
-			new DefaultTreeItem(new DefaultTree(0), "General", "Driver Class").doubleClick();//kepler 0, juno 1
+			new DefaultTreeItem(new DefaultTree(0), "General", "Driver Class").doubleClick();// kepler 0, juno 1
 			new PushButton("...").click();
 			new DefaultText().setText(driverClass);
 			new PushButton("OK").click();
@@ -93,9 +93,8 @@ public class HSQLDBDriverWizard {
 			addItem(driverLocation);
 			removeDriverLibrary(driverLocation);
 		}
-		
-		
-		public void selectDriverTemplate(boolean b, String type, String version){
+
+		public void selectDriverTemplate(boolean b, String type, String version) {
 			System.out.println("SELECT DRIVER TEMPLATE");
 			selectTab(TAB_NAME_TYPE);
 			Tree tree = new DefaultTree();
@@ -104,32 +103,21 @@ public class HSQLDBDriverWizard {
 			for (TreeItem item : root.getItems()) {
 				if (type.equals(item.getCell(0))) {
 					System.out.println("TYPE FOUND");
-					/*try {
-						System.out.println(item.getCell(2));
-						
-						if (item.getCell(2) == null){
-							System.out.println("---is null");
-						}
-						
-						if (item.getCell(2).equals(null)) {
-							System.out.println("---null");
-						}
-						if (item.getCell(2).isEmpty()){
-							System.out.println("---is empty");
-						}
-						
-						
-					}catch (Exception ex){
-						System.out.println("EXC "+ ex.getMessage());
-						
-						if (item.getCell(2).isEmpty()){
-							System.out.println("is empty");
-						}
-					}*/
-					
-					
-					
-					if (item.getCell(2).isEmpty() || version.equals(item.getCell(2))){
+					/*
+					 * try { System.out.println(item.getCell(2));
+					 * 
+					 * if (item.getCell(2) == null){ System.out.println("---is null"); }
+					 * 
+					 * if (item.getCell(2).equals(null)) { System.out.println("---null"); } if
+					 * (item.getCell(2).isEmpty()){ System.out.println("---is empty"); }
+					 * 
+					 * 
+					 * }catch (Exception ex){ System.out.println("EXC "+ ex.getMessage());
+					 * 
+					 * if (item.getCell(2).isEmpty()){ System.out.println("is empty"); } }
+					 */
+
+					if (item.getCell(2).isEmpty() || version.equals(item.getCell(2))) {
 						item.select();
 						break;
 					}

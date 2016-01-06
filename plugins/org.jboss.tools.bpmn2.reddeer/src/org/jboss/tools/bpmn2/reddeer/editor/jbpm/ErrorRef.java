@@ -17,7 +17,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.DataTypeDialog;
 public class ErrorRef {
 
 	private static final String SHELL_LABEL = "Create New Error";
-    private String name;
+	private String name;
 	private String code;
 	private String dataType;
 
@@ -60,17 +60,16 @@ public class ErrorRef {
 	public String getDataType() {
 		return dataType;
 	}
-	
+
 	/**
-	 * Perform user actions which are required to set up this object
-	 * in the UI.
+	 * Perform user actions which are required to set up this object in the UI.
 	 */
 	public void setUp() {
 		new LabeledText(new DefaultSection("Error Details"), "Name").setText(name);
 		new LabeledText("Error Code").setText(code);
 		setUpDataType();
 	}
-	
+
 	public void setUpViaDialog() {
 		new DefaultShell(SHELL_LABEL);
 		new DefaultTabItem("General").activate();
@@ -82,7 +81,7 @@ public class ErrorRef {
 		new PushButton("OK").click();
 		new WaitWhile(new ShellWithTextIsActive(SHELL_LABEL));
 	}
-	
+
 	private void setUpDataType() {
 		Combo dataTypeCombo = new LabeledCombo("Data Type");
 		if (!dataTypeCombo.getItems().contains(dataType)) {

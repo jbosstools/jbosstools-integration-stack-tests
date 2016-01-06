@@ -43,13 +43,13 @@ import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructWithName;
 public class ProcessEditorView extends SWTBotGefEditor {
 
 	private static final int SAVE_SLEEP_TIME = 4000;
-	
+
 	private static Logger log = Logger.getLogger(ProcessEditorView.class);
-	
+
 	private static SWTWorkbenchBot bot = new SWTWorkbenchBot();
-	
+
 	private DefaultPalette palette;
-	
+
 	/**
 	 * 
 	 */
@@ -57,7 +57,7 @@ public class ProcessEditorView extends SWTBotGefEditor {
 		super(bot.activeEditor().getReference(), bot);
 		palette = new DefaultPalette(getGraphicalViewer().getEditDomain().getPaletteViewer());
 	}
-	
+
 	/**
 	 * 
 	 * @param title
@@ -66,7 +66,7 @@ public class ProcessEditorView extends SWTBotGefEditor {
 		super(bot.editorByTitle(title).getReference(), bot);
 		palette = new DefaultPalette(getGraphicalViewer().getEditDomain().getPaletteViewer());
 	}
-	
+
 	/**
 	 * 
 	 * @param section
@@ -75,17 +75,16 @@ public class ProcessEditorView extends SWTBotGefEditor {
 	public void activateTool(String section, String label) {
 		palette.activateTool(section, label);
 	}
-	
+
 	/**
-	 * Get the process being created in this editor without 
-	 * selecting it.
+	 * Get the process being created in this editor without selecting it.
 	 * 
 	 * @return
 	 */
 	public Element getProcess() {
 		return getProcess(false);
 	}
-	
+
 	/**
 	 * 
 	 * @param select
@@ -94,7 +93,7 @@ public class ProcessEditorView extends SWTBotGefEditor {
 	public Element getProcess(boolean select) {
 		return new Element(null, ElementType.PROCESS, null, 0, select);
 	}
-	
+
 	/**
 	 * 
 	 * @param editPart
@@ -112,7 +111,7 @@ public class ProcessEditorView extends SWTBotGefEditor {
 	public List<SWTBotGefEditPart> getSelectedEditParts() {
 		return selectedEditParts();
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -124,7 +123,7 @@ public class ProcessEditorView extends SWTBotGefEditor {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * 
 	 * @param matcher
@@ -144,7 +143,7 @@ public class ProcessEditorView extends SWTBotGefEditor {
 	public List<SWTBotGefEditPart> getEditParts(Matcher<? extends EditPart> matcher) {
 		return editParts(matcher);
 	}
-	
+
 	/**
 	 * 
 	 * @param label
@@ -152,7 +151,7 @@ public class ProcessEditorView extends SWTBotGefEditor {
 	public List<SWTBotGefEditPart> getEditParts(String label) {
 		return editParts(new ConstructWithName<EditPart>(label));
 	}
-	
+
 	/**
 	 * 
 	 * @param label
@@ -174,7 +173,7 @@ public class ProcessEditorView extends SWTBotGefEditor {
 	public List<SWTBotGefEditPart> getEditParts(SWTBotGefEditPart editPart, Matcher<? extends EditPart> matcher) {
 		return editPart.descendants(matcher);
 	}
-	
+
 	/**
 	 * 
 	 * @param editPart
@@ -183,7 +182,7 @@ public class ProcessEditorView extends SWTBotGefEditor {
 	public Rectangle getBounds(SWTBotGefEditPart editPart) {
 		return getBounds((GraphicalEditPart) editPart.part());
 	}
-	
+
 	/**
 	 * 
 	 * @param part
@@ -195,7 +194,7 @@ public class ProcessEditorView extends SWTBotGefEditor {
 		figure.translateToAbsolute(bounds);
 		return bounds;
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -219,12 +218,13 @@ public class ProcessEditorView extends SWTBotGefEditor {
 					}
 				}
 			}
-			throw new RuntimeException("Failed to resolve name for editPart '" + editPart + "' - Pictogram link is null.");
+			throw new RuntimeException(
+					"Failed to resolve name for editPart '" + editPart + "' - Pictogram link is null.");
 		} else {
 			throw new UnsupportedOperationException("Unsupported object type: " + editPart);
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param label
@@ -246,7 +246,7 @@ public class ProcessEditorView extends SWTBotGefEditor {
 	public void selectConstruct(Matcher<? extends EditPart> matcher, int index) {
 		selectEditPart(getEditPart(matcher, index));
 	}
-	
+
 	/**
 	 * 
 	 * @param constructType
@@ -261,7 +261,7 @@ public class ProcessEditorView extends SWTBotGefEditor {
 		}
 		return constructList;
 	}
-	
+
 	/**
 	 * 
 	 * @param connectionType
@@ -274,21 +274,21 @@ public class ProcessEditorView extends SWTBotGefEditor {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * @return xml source code of opened process
 	 */
 	public String getSourceText() {
 		new WaitWhile(new SourceCodeIsNotShown());
-		
+
 		DefaultStyledText styled = new DefaultStyledText();
 		String text = styled.getText();
-		
+
 		new DefaultCTabItem("Source").close();
-		
+
 		return text;
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -301,10 +301,10 @@ public class ProcessEditorView extends SWTBotGefEditor {
 				return (GraphicalViewer) editor.getAdapter(GraphicalViewer.class);
 			}
 		});
-		
+
 		return viewer;
 	}
-	
+
 	/**
 	 * Sometimes generated IDs are not unique. Fix it!
 	 */
@@ -317,7 +317,7 @@ public class ProcessEditorView extends SWTBotGefEditor {
 			log.warn(e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param on
@@ -328,14 +328,14 @@ public class ProcessEditorView extends SWTBotGefEditor {
 			Thread.sleep(SAVE_SLEEP_TIME);
 			new DefaultShell("Configure BPMN2 Project Nature");
 			new CheckBox().click();
-			new PushButton(on ? "Yes": "No").click();
+			new PushButton(on ? "Yes" : "No").click();
 		} catch (InterruptedException e) {
 			// ignore - no worries
 		} catch (SWTLayerException e) {
 			log.warn(e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * @see org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor#save()
 	 */
@@ -345,15 +345,15 @@ public class ProcessEditorView extends SWTBotGefEditor {
 		repairProcessModel();
 		projectNature(true);
 	}
-	
+
 	private class SourceCodeIsNotShown extends AbstractWaitCondition {
 
 		@Override
 		public boolean test() {
-			try{
-			    click(1,1);
-			    new ContextMenu("Show Source View").select();
-			} catch(CoreLayerException|SWTLayerException e) {
+			try {
+				click(1, 1);
+				new ContextMenu("Show Source View").select();
+			} catch (CoreLayerException | SWTLayerException e) {
 				return true;
 			}
 			return false;
@@ -363,7 +363,7 @@ public class ProcessEditorView extends SWTBotGefEditor {
 		public String description() {
 			return "Wait while source code is not shown";
 		}
-		
+
 	}
 
 }

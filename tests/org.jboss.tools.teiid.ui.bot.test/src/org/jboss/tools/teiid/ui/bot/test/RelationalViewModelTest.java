@@ -31,7 +31,7 @@ public class RelationalViewModelTest {
 	public static void prepare() {
 
 		new ModelExplorerManager().createProject(PROJECT);
-		
+
 		MetadataModelWizard modelWizard = new MetadataModelWizard();
 		modelWizard.open();
 		modelWizard.activate();
@@ -79,7 +79,8 @@ public class RelationalViewModelTest {
 		props.setProperty("javaMethod", "myJavaMethod");
 		props.setProperty("udfJarPath", "/some/path.jar");
 		props.setProperty("functionProps", Procedure.FunctionProperties.RETURNS_NULL_ON_NULL);
-		props.setProperty("aggregateProps", Procedure.AggregateProperties.AGG + "," + Procedure.AggregateProperties.ANALYTIC);
+		props.setProperty("aggregateProps",
+				Procedure.AggregateProperties.AGG + "," + Procedure.AggregateProperties.ANALYTIC);
 
 		new ModelExplorerManager().getModelExplorerView().newProcedure(PROJECT, MODEL, proc, props);
 

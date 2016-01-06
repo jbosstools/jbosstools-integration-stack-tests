@@ -16,7 +16,7 @@ import org.junit.runner.RunWith;
  * @author apodhrad
  * 
  */
-@SwitchYard(server = @Server(type = ServerReqType.ANY, state = ServerReqState.PRESENT))
+@SwitchYard(server = @Server(type = ServerReqType.ANY, state = ServerReqState.PRESENT) )
 @OpenPerspective(JavaEEPerspective.class)
 @RunWith(RedDeerSuite.class)
 public class QuickstartsSwitchYardTest extends QuickstartsTest {
@@ -166,7 +166,7 @@ public class QuickstartsSwitchYardTest extends QuickstartsTest {
 	public void soapBindingRpcTest() {
 		testQuickstart("soap-binding-rpc");
 	}
-	
+
 	@Test
 	public void soapMtomTest() {
 		testQuickstart("soap-mtom");

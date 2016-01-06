@@ -15,7 +15,7 @@ public class EscalationDialog {
 	public void addEscalation(String name, String code) {
 		add(new Escalation(name, code));
 	}
-	
+
 	/**
 	 * 
 	 * @param escalation
@@ -23,5 +23,5 @@ public class EscalationDialog {
 	public void add(Escalation escalation) {
 		escalation.setUpViaDialog();
 	}
-	
+
 }

@@ -10,7 +10,7 @@ import org.jboss.tools.bpmn2.reddeer.properties.setup.EventDefinitionSetUp;
  * 
  */
 public class ErrorEndEvent extends EndEvent {
-	
+
 	/**
 	 * 
 	 * @param name
@@ -22,14 +22,15 @@ public class ErrorEndEvent extends EndEvent {
 	public ErrorEndEvent(Element element) {
 		super(element);
 	}
-	
+
 	/**
 	 * 
 	 * @param errorRef
 	 */
 	public void setErrorEvent(ErrorRef errorRef, String variableForMapping) {
-		propertiesHandler.setUp(new EventDefinitionSetUp(new ErrorEventDefinition(errorRef, variableForMapping, "Source")));
+		propertiesHandler
+				.setUp(new EventDefinitionSetUp(new ErrorEventDefinition(errorRef, variableForMapping, "Source")));
 		refresh();
 	}
-	
+
 }

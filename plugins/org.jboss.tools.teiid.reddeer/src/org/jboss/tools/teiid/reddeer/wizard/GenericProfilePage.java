@@ -13,7 +13,7 @@ public class GenericProfilePage extends ConnectionProfileDatabasePage {
 	public static final String LABEL_PASSWORD = "Password:";
 	public static final String LABEL_SAVE_PASSWORD = "Save password";
 	public static final String URL = "URL:";
-	
+
 	private static final String HSQL_LOCK = ";hsqldb.lock_file=false";
 	private static final String HSQL_PREFIX = "jdbc:hsqldb:";
 
@@ -24,15 +24,15 @@ public class GenericProfilePage extends ConnectionProfileDatabasePage {
 
 	@Override
 	public void setHostname(String hostname) {
-		if (hostname.contains("hsql")){//
+		if (hostname.contains("hsql")) {//
 			hostname = new File(hostname).getAbsolutePath();
-			if (!(hostname.contains(";hsqldb.lock_file"))){
+			if (!(hostname.contains(";hsqldb.lock_file"))) {
 				hostname = hostname + HSQL_LOCK;
 			}
-			if (!(hostname.contains(HSQL_PREFIX))){
+			if (!(hostname.contains(HSQL_PREFIX))) {
 				hostname = HSQL_PREFIX + hostname;
 			}
-		} 
+		}
 		new LabeledText(URL).setText(hostname);
 	}
 
@@ -51,6 +51,5 @@ public class GenericProfilePage extends ConnectionProfileDatabasePage {
 		new LabeledText(LABEL_PASSWORD).setText(password);
 		new CheckBox(LABEL_SAVE_PASSWORD).click();
 	}
-
 
 }

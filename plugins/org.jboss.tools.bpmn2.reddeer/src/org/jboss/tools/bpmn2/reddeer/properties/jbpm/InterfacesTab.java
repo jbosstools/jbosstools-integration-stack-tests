@@ -21,36 +21,35 @@ public class InterfacesTab {
 	 * @param implementation
 	 * @param operationList
 	 */
-	public void addInterface(String name, String implementation, String [] operationList, boolean typeText) {
+	public void addInterface(String name, String implementation, String[] operationList, boolean typeText) {
 		new SectionToolItem("Interface List", "Add").click();
-		
-		if(typeText) {
+
+		if (typeText) {
 			new LabeledText("Name").typeText(name);
 			new LabeledText("Implementation").typeText(implementation);
 		} else {
 			new LabeledText("Name").setText(name);
 			new LabeledText("Implementation").setText(implementation);
 		}
-		
 
-//		// Add operations
+		// // Add operations
 	}
-	
-	public void importInterface(String fullQualifiedName){
+
+	public void importInterface(String fullQualifiedName) {
 		new SectionToolItem("Interface List", "Import").click();
-		
+
 		new DefaultShell("Browse for a Java type to Import");
 		new LabeledText("Type:").typeText(fullQualifiedName);
-		
-		String type = fullQualifiedName.substring(fullQualifiedName.lastIndexOf(".")+1);
-		
+
+		String type = fullQualifiedName.substring(fullQualifiedName.lastIndexOf(".") + 1);
+
 		new DefaultTree(0).selectItems(new DefaultTreeItem(type + " - " + fullQualifiedName));
-		
+
 		new PushButton("Select All").click();
 		new CheckBox(0).click();
 		new PushButton("OK").click();
 	}
-	
+
 	/**
 	 * 
 	 * @param name

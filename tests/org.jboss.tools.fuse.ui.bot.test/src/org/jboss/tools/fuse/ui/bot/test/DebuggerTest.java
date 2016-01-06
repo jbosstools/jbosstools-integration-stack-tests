@@ -52,7 +52,8 @@ public class DebuggerTest extends DefaultTest {
 	/**
 	 * Prepares test environment
 	 * 
-	 * @throws FuseArchetypeNotFoundException Fuse archetype was not found. Tests cannot be executed!
+	 * @throws FuseArchetypeNotFoundException
+	 *             Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@BeforeClass
 	public static void setupInitial() throws FuseArchetypeNotFoundException {
@@ -77,7 +78,9 @@ public class DebuggerTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>Test tries to add/remove/disable/enable breakpoints to the components in the Camel Editor.</p>
+	 * <p>
+	 * Test tries to add/remove/disable/enable breakpoints to the components in the Camel Editor.
+	 * </p>
 	 * <b>Steps</b>
 	 * <ol>
 	 * <li>create a new project with camel-archetype-spring archetype</li>
@@ -134,7 +137,9 @@ public class DebuggerTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>Test tries debugging of the Camel route - suspending, resuming, step over, variables values.</p>
+	 * <p>
+	 * Test tries debugging of the Camel route - suspending, resuming, step over, variables values.
+	 * </p>
 	 * <b>Steps</b>
 	 * <ol>
 	 * <li>create a new project with camel-archetype-spring archetype</li>
@@ -216,15 +221,17 @@ public class DebuggerTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>Test tries conditional debugging of the Camel route - suspending only when condition is fulfilled.</p>
+	 * <p>
+	 * Test tries conditional debugging of the Camel route - suspending only when condition is fulfilled.
+	 * </p>
 	 * <b>Steps</b>
 	 * <ol>
 	 * <li>create a new project with camel-archetype-spring archetype</li>
 	 * <li>open Project Explorer view</li>
 	 * <li>open camel-context.xml file</li>
-	 * <li>set conditional breakpoint to the choice component - simple with 
+	 * <li>set conditional breakpoint to the choice component - simple with
 	 * "${in.header.CamelFileName} == 'message1.xml'"</li>
-	 * <li>set conditional breakpoint to the log component in the top branch - simple with 
+	 * <li>set conditional breakpoint to the log component in the top branch - simple with
 	 * "${in.header.CamelFileName} == 'message2.xml'"</li>
 	 * <li>debug the Camel Context without tests</li>
 	 * <li>wait until process is suspended</li>

@@ -11,11 +11,11 @@ import org.jboss.tools.bpmn2.reddeer.editor.properties.PropertiesTabs;
 import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
 
 public class SignalSetUp implements SetUpAble {
-	
+
 	private Signal signal;
 	private String variableName;
 	private MappingType mappingType;
-	
+
 	public SignalSetUp(Signal signal, String var, MappingType type) {
 		this.signal = signal;
 		this.variableName = var;
@@ -35,9 +35,9 @@ public class SignalSetUp implements SetUpAble {
 				new SectionToolItem("Event Definitions", "Edit").click();
 			}
 		}
-		
+
 		section = new DefaultSection("Signal Event Definition Details");
-		
+
 		DefaultCombo combo = new DefaultCombo(section, "Signal");
 		String comboItem = signal.getName();
 		if (!combo.contains(comboItem)) {
@@ -46,7 +46,7 @@ public class SignalSetUp implements SetUpAble {
 		} else {
 			combo.setSelection(comboItem);
 		}
-		
+
 		new DefaultCombo(section, mappingType.label()).setSelection(variableName);
 		new SectionToolItem("Signal Event Definition Details", "Close").click();
 	}

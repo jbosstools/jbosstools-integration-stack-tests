@@ -44,8 +44,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	SwitchYardIntegrationDroolsTest.class,
 	DebuggerBreakpointTest.class,
 	DebuggerDebuggingTest.class,
-	ServerManagingDeploymentTest.class
-})
+	ServerManagingDeploymentTest.class })
 @RunWith(RedDeerSuite.class)
 public class AllTests extends TestSuite {
 

@@ -69,7 +69,8 @@ import org.xml.sax.InputSource;
 
 @RunWith(RedDeerSuite.class)
 @TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = {
-		ConnectionProfilesConstants.ORACLE_11G_PARTS_SUPPLIER, ConnectionProfilesConstants.POSTGRESQL_92_DVQE })
+	ConnectionProfilesConstants.ORACLE_11G_PARTS_SUPPLIER,
+	ConnectionProfilesConstants.POSTGRESQL_92_DVQE })
 public class DynamicVdbTest {
 
 	private static final String PROCEDURE_MODEL = "ProcedureModel";
@@ -168,12 +169,9 @@ public class DynamicVdbTest {
 		// create dynamic vdb from static
 		String dynamicVdbContent = createDynamicVdb(PROJECT_NAME, staticVdbName, dynamicVdbName);
 
-		collector
-				.checkThat(
-						"wrong foreign key in ddl",
-						getXPath(dynamicVdbContent, "/vdb/model[@name='FkModel']/metadata[1]"),
-						new StringContains(
-								"CONSTRAINT FKI_SECOND_THIRD_ID FOREIGN KEY(CatalogSecondID, CatalogThirdID) REFERENCES Catalog(SecondID, ThirdID)"));
+		collector.checkThat("wrong foreign key in ddl",
+				getXPath(dynamicVdbContent, "/vdb/model[@name='FkModel']/metadata[1]"), new StringContains(
+						"CONSTRAINT FKI_SECOND_THIRD_ID FOREIGN KEY(CatalogSecondID, CatalogThirdID) REFERENCES Catalog(SecondID, ThirdID)"));
 	}
 
 	@Test
@@ -200,12 +198,12 @@ public class DynamicVdbTest {
 		String procViewMetadata2 = getXPath(dynamicVdbContent, "/vdb/model[@name='ProcedureModel']/metadata[1]")
 				.replace('\n', ' ');
 
-		collector.checkThat("rest options not in ddl", procViewMetadata2, new RegexMatcher(
-				".*OPTIONS \\(.*\"REST:METHOD\" 'GET', \"REST:URI\" 'proc1/\\{p1\\}'\\).*"));
+		collector.checkThat("rest options not in ddl", procViewMetadata2,
+				new RegexMatcher(".*OPTIONS \\(.*\"REST:METHOD\" 'GET', \"REST:URI\" 'proc1/\\{p1\\}'\\).*"));
 		collector.checkThat("RETURNS clause not in ddl", procViewMetadata2, new RegexMatcher(".*RETURNS TABLE.*"));
 		collector.checkThat("wrong procedure body", procViewMetadata2, new RegexMatcher(".*XMLELEMENT.*"));
-		collector.checkThat("REST namespace not set in ddl", procViewMetadata2, new RegexMatcher(
-				".*SET NAMESPACE 'http://teiid.org/rest' AS REST;.*"));
+		collector.checkThat("REST namespace not set in ddl", procViewMetadata2,
+				new RegexMatcher(".*SET NAMESPACE 'http://teiid.org/rest' AS REST;.*"));
 
 		// check deployment
 		checkDeployOk(staticVdbName, dynamicVdbName);
@@ -271,8 +269,8 @@ public class DynamicVdbTest {
 		// check ddl
 		String metadata = getXPath(dynamicVdbContent, "vdb/model[@name='ProcedureModel']/metadata[1]").replace('\n',
 				' ');
-		collector.checkThat("Wrong metadata for UDF", metadata, new RegexMatcher(
-				".*CREATE VIRTUAL FUNCTION udfConcatNull "
+		collector.checkThat("Wrong metadata for UDF", metadata,
+				new RegexMatcher(".*CREATE VIRTUAL FUNCTION udfConcatNull "
 						+ "\\(stringLeft string\\(4000\\), stringRight string\\(4000\\)\\) RETURNS string "
 						+ "OPTIONS\\(\"FUNCTION-CATEGORY\" 'MY_TESTING_FUNCTION_CATEGORY', "
 						+ "JAVA_CLASS 'userdefinedfunctions.MyConcatNull', JAVA_METHOD 'myConcatNull'\\).*"));
@@ -429,16 +427,17 @@ public class DynamicVdbTest {
 		// check overriden translator properties
 		collector.checkThat("wrong translator override type",
 				getXPath(dynamicVdbContent, "/vdb/translator[@name='postgresOverride']/@type"), is("postgresql"));
-		collector.checkThat(
-				"translator override property with default value created",
-				getXPath(dynamicVdbContent,
-						"/vdb/translator[@name='postgresOverride']/property[@name='Immutable']/@value"), is(""));
-		collector.checkThat(
-				"known translator override property not created",
-				getXPath(dynamicVdbContent,
-						"/vdb/translator[@name='postgresOverride']/property[@name='TrimStrings']/@value"), is("true"));
-		collector.checkThat(
-				"custom translator override property not created",
+		collector
+				.checkThat("translator override property with default value created",
+						getXPath(dynamicVdbContent,
+								"/vdb/translator[@name='postgresOverride']/property[@name='Immutable']/@value"),
+						is(""));
+		collector
+				.checkThat("known translator override property not created",
+						getXPath(dynamicVdbContent,
+								"/vdb/translator[@name='postgresOverride']/property[@name='TrimStrings']/@value"),
+						is("true"));
+		collector.checkThat("custom translator override property not created",
 				getXPath(dynamicVdbContent,
 						"/vdb/translator[@name='postgresOverride']/property[@name='MyCustomProperty']/@value"),
 				is("customValue"));
@@ -469,15 +468,18 @@ public class DynamicVdbTest {
 				.select();
 
 		PropertiesView propertiesView = new PropertiesView();
-		collector.checkThat("UDF Jar path not set", propertiesView.getProperty("Extension", "relational:UDF Jar Path")
-				.getPropertyValue(), new IsNot<>(new IsEmptyString()));
+		collector.checkThat("UDF Jar path not set",
+				propertiesView.getProperty("Extension", "relational:UDF Jar Path").getPropertyValue(),
+				new IsNot<>(new IsEmptyString()));
 		collector.checkThat("wrong function category",
 				propertiesView.getProperty("Extension", "relational:Function Category").getPropertyValue(),
 				is("MY_TESTING_FUNCTION_CATEGORY"));
-		collector.checkThat("wrong java class", propertiesView.getProperty("Extension", "relational:Java Class")
-				.getPropertyValue(), is("userdefinedfunctions.MyConcatNull"));
-		collector.checkThat("wrong java method", propertiesView.getProperty("Extension", "relational:Java Method")
-				.getPropertyValue(), is("myConcatNull"));
+		collector.checkThat("wrong java class",
+				propertiesView.getProperty("Extension", "relational:Java Class").getPropertyValue(),
+				is("userdefinedfunctions.MyConcatNull"));
+		collector.checkThat("wrong java method",
+				propertiesView.getProperty("Extension", "relational:Java Method").getPropertyValue(),
+				is("myConcatNull"));
 
 		ProblemsView problemsView = new ProblemsView();
 		collector.checkThat("Errors in imported view model",
@@ -530,8 +532,8 @@ public class DynamicVdbTest {
 		for (String tableName : new String[] { "internal_short_ttl", "internal_long_ttl", "external_long_ttl" }) {
 			new ModelExplorer().getProject(IMPORT_PROJECT_NAME).getProjectItem(viewModelName + ".xmi", tableName)
 					.select();
-			collector.checkThat("materialized property not set", propertiesView.getProperty("Misc", "Materialized")
-					.getPropertyValue(), is("true"));
+			collector.checkThat("materialized property not set",
+					propertiesView.getProperty("Misc", "Materialized").getPropertyValue(), is("true"));
 		}
 		collector.checkThat("materialized table property not set",
 				propertiesView.getProperty("Misc", "Materialized Table").getPropertyValue(),
@@ -545,15 +547,15 @@ public class DynamicVdbTest {
 				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(staticVdbName + ".vdb")),
 				empty());
 
-		String transformation = getTransformation(IMPORT_PROJECT_NAME, viewModelName, "internal_short_ttl").replaceAll(
-				"\\s+", " ");
-		collector.checkThat("cache hint not in transformation", transformation, new StringContains(
-				"/*+ cache(ttl:100)*/"));
+		String transformation = getTransformation(IMPORT_PROJECT_NAME, viewModelName, "internal_short_ttl")
+				.replaceAll("\\s+", " ");
+		collector.checkThat("cache hint not in transformation", transformation,
+				new StringContains("/*+ cache(ttl:100)*/"));
 
 		transformation = getTransformation(IMPORT_PROJECT_NAME, viewModelName, "internal_long_ttl").replaceAll("\\s+",
 				" ");
-		collector.checkThat("cache hint not in transformation", transformation, new StringContains(
-				"/*+ cache(ttl:1000)*/"));
+		collector.checkThat("cache hint not in transformation", transformation,
+				new StringContains("/*+ cache(ttl:1000)*/"));
 
 		// TODO: check all the other materialized properties once TEIIDDES-2745 is resolved
 	}
@@ -703,8 +705,8 @@ public class DynamicVdbTest {
 		ed.showTabItem(ModelEditor.TABLE_EDITOR);
 		ed.showSubTabItem(ModelEditor.UNIQUE_CONSTRAINTS);
 		TableItem uc = new DefaultTable(0).getItems(new TableItemMatcher(1, "UC")).get(0);
-		collector
-				.checkThat("column not referenced in unique constraint", uc.getText(3), new StringContains("SecondID"));
+		collector.checkThat("column not referenced in unique constraint", uc.getText(3),
+				new StringContains("SecondID"));
 		collector.checkThat("column not referenced in unique constraint", uc.getText(3), new StringContains("ThirdID"));
 
 		// check foreign key in source model
@@ -717,8 +719,8 @@ public class DynamicVdbTest {
 		ed.showTabItem(ModelEditor.TABLE_EDITOR);
 		ed.showSubTabItem(ModelEditor.UNIQUE_CONSTRAINTS);
 		uc = new DefaultTable(0).getItems(new TableItemMatcher(1, "UC")).get(0);
-		collector
-				.checkThat("column not referenced in unique constraint", uc.getText(3), new StringContains("SecondID"));
+		collector.checkThat("column not referenced in unique constraint", uc.getText(3),
+				new StringContains("SecondID"));
 		collector.checkThat("column not referenced in unique constraint", uc.getText(3), new StringContains("ThirdID"));
 
 		// check foreign key in view model
@@ -768,13 +770,13 @@ public class DynamicVdbTest {
 
 		String transformation = getTransformation(IMPORT_PROJECT_NAME, VIEW_MODEL, "smalla").replaceAll("\\s+", " ");
 		;
-		collector.checkThat("Wrong transformation for smalla", transformation, new RegexMatcher(
-				"SELECT \\* FROM postgresql92Model\\.smalla"));
+		collector.checkThat("Wrong transformation for smalla", transformation,
+				new RegexMatcher("SELECT \\* FROM postgresql92Model\\.smalla"));
 
 		transformation = getTransformation(IMPORT_PROJECT_NAME, VIEW_MODEL, "smallb").replaceAll("\\s+", " ");
 		;
-		collector.checkThat("Wrong transformation for smallb", transformation, new RegexMatcher(
-				"SELECT \\* FROM postgresql92Model\\.smallb"));
+		collector.checkThat("Wrong transformation for smallb", transformation,
+				new RegexMatcher("SELECT \\* FROM postgresql92Model\\.smallb"));
 
 		ProblemsView problemsView = new ProblemsView();
 		collector.checkThat("Errors in imported view model",
@@ -811,8 +813,8 @@ public class DynamicVdbTest {
 		ed.showTabItem(ModelEditor.TABLE_EDITOR);
 		ed.showSubTabItem(ModelEditor.PROCEDURE_PARAMETERS);
 
-		ModelProcedureParameter modelProcedureParameter = new ModelProcedureParameter(new DefaultTable().getItem(
-				"testProc", 0));
+		ModelProcedureParameter modelProcedureParameter = new ModelProcedureParameter(
+				new DefaultTable().getItem("testProc", 0));
 		collector.checkThat("wrong parameter name", modelProcedureParameter.getName(), is("p1"));
 		collector.checkThat("wrong parameter name", modelProcedureParameter.getNativeType(), is("STRING"));
 		collector.checkThat("wrong parameter name", modelProcedureParameter.getDatatype(), is("string"));
@@ -820,9 +822,10 @@ public class DynamicVdbTest {
 		String transformation = getTransformation(IMPORT_PROJECT_NAME, PROCEDURE_MODEL, "testProc").replaceAll("\\s+",
 				" ");
 		;
-		collector.checkThat("Wrong transformation for testProc", transformation, is("BEGIN SELECT "
-				+ "XMLELEMENT(NAME test, XMLFOREST(ProcedureModel.testProc.p1 AS elem1, 'elem2' AS elem2)) "
-				+ "AS xml_out; END"));
+		collector.checkThat("Wrong transformation for testProc", transformation,
+				is("BEGIN SELECT "
+						+ "XMLELEMENT(NAME test, XMLFOREST(ProcedureModel.testProc.p1 AS elem1, 'elem2' AS elem2)) "
+						+ "AS xml_out; END"));
 
 		ProblemsView problemsView = new ProblemsView();
 		collector.checkThat("Errors in imported view model",
@@ -891,8 +894,9 @@ public class DynamicVdbTest {
 								break;
 							}
 						}
-						collector.checkThat("Column " + origTable.getName() + "." + origColumn.getName()
-								+ " not created", columnFound, is(true));
+						collector.checkThat(
+								"Column " + origTable.getName() + "." + origColumn.getName() + " not created",
+								columnFound, is(true));
 					}
 					break;
 				}

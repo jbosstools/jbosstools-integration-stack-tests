@@ -43,7 +43,7 @@ public class ESBRuntimeWizard extends WizardDialog {
 	public String getHomeFolder() {
 		return new LabeledText(HOME_FOLDER).getText();
 	}
-	
+
 	public String getInfoText() {
 		return new LabeledText(JBOSS_ESB_RUNTIME).getText().trim();
 	}

@@ -13,7 +13,7 @@ import org.jboss.tools.bpmn2.reddeer.ProcessEditorView;
 public class ConstructOnPoint<T extends EditPart> extends BaseMatcher<EditPart> {
 
 	private Point p;
-	
+
 	/**
 	 * 
 	 * @param p

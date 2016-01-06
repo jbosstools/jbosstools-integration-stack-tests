@@ -73,18 +73,10 @@ public class RuntimeDetectionTest {
 	/**
 	 * This test has following prerequisites:
 	 * 
-	 * 1)
-	 * -Dreddeer.config must be set on root folder of
-	 * https://github.com/apodhrad/server-installer.git
+	 * 1) -Dreddeer.config must be set on root folder of https://github.com/apodhrad/server-installer.git
 	 * 
-	 * 2)
-	 * following server runtimes have to be installed:
-	 * - as-7.1.1.Final
-	 * - eap-6.3.0.GA
-	 * - fsw-6.0.0.GA
-	 * - fuse-6.1.0.GA
-	 * - soa-5.3.1.GA
-	 * Hint: mvn clean install -pl as-7.1.1.Final,fuse-6.1.0.GA,soa-5.3.1.GA,eap-6.3.0.GA,fsw-6.0.0.GA
+	 * 2) following server runtimes have to be installed: - as-7.1.1.Final - eap-6.3.0.GA - fsw-6.0.0.GA - fuse-6.1.0.GA
+	 * - soa-5.3.1.GA Hint: mvn clean install -pl as-7.1.1.Final,fuse-6.1.0.GA,soa-5.3.1.GA,eap-6.3.0.GA,fsw-6.0.0.GA
 	 */
 	@Test
 	public void testRuntimesDetection() {
@@ -101,7 +93,8 @@ public class RuntimeDetectionTest {
 		temp.add(new RuntimeEntry("", "AS", "7.1", pathToServers + "/as-7.1.1.Final/target/jboss-as-7.1.1.Final"));
 		temp.add(new RuntimeEntry("", "SOA", "6.0", pathToServers + "/fsw-6.0.0.GA/target/jboss-eap-6.1"));
 		temp.add(new RuntimeEntry("", "EAP", "6.3", pathToServers + "/eap-6.3.0.GA/target/jboss-eap-6.3"));
-		temp.add(new RuntimeEntry("", "FUSE6x", "6.1", pathToServers + "/fuse-6.1.0.GA/target/jboss-fuse-6.1.0.redhat-379"));
+		temp.add(new RuntimeEntry("", "FUSE6x", "6.1",
+				pathToServers + "/fuse-6.1.0.GA/target/jboss-fuse-6.1.0.redhat-379"));
 		temp.add(new RuntimeEntry("", "SOA-P", "5.3", pathToServers + "/soa-5.3.1.GA/target/jboss-soa-p-5"));
 		for (RuntimeEntry item : entries) {
 			if (!temp.contains(item)) {
@@ -115,7 +108,8 @@ public class RuntimeDetectionTest {
 	/**
 	 * Checks whether a given URL is accessible
 	 * 
-	 * @param url URL address
+	 * @param url
+	 *            URL address
 	 * @return true - URL is accessible, false - otherwise
 	 */
 	private static boolean checkURL(String url) {
@@ -124,7 +118,8 @@ public class RuntimeDetectionTest {
 		try {
 			HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
 			con.setRequestMethod("GET");
-			return ((con.getResponseCode() == HttpURLConnection.HTTP_OK) || (con.getResponseCode() == HttpURLConnection.HTTP_MOVED_TEMP));
+			return ((con.getResponseCode() == HttpURLConnection.HTTP_OK)
+					|| (con.getResponseCode() == HttpURLConnection.HTTP_MOVED_TEMP));
 		} catch (Exception e) {
 			return false;
 		}

@@ -11,7 +11,7 @@ import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 public class ReferenceWizard extends ServiceWizard<ReferenceWizard> {
 
 	public static final String DIALOG_TITLE = "New Reference";
-	
+
 	public ReferenceWizard() {
 		super(DIALOG_TITLE);
 	}

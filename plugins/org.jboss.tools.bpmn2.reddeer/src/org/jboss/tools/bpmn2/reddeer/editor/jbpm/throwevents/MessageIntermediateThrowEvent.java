@@ -10,7 +10,7 @@ import org.jboss.tools.bpmn2.reddeer.properties.setup.MessageSetUp;
  * 
  */
 public class MessageIntermediateThrowEvent extends ElementWithParamMapping {
-	
+
 	/**
 	 * 
 	 * @param name
@@ -19,10 +19,10 @@ public class MessageIntermediateThrowEvent extends ElementWithParamMapping {
 		super(name, ElementType.MESSAGE_INTERMEDIATE_THROW_EVENT);
 	}
 
-	public MessageIntermediateThrowEvent(org.jboss.tools.bpmn2.reddeer.editor.Element element){
+	public MessageIntermediateThrowEvent(org.jboss.tools.bpmn2.reddeer.editor.Element element) {
 		super(element);
 	}
-	
+
 	/**
 	 * 
 	 * @param message
@@ -32,5 +32,5 @@ public class MessageIntermediateThrowEvent extends ElementWithParamMapping {
 		propertiesHandler.setUp(new MessageSetUp(message, sourceVariable, MappingType.SOURCE));
 		refresh();
 	}
-	
+
 }

@@ -15,8 +15,8 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 
 /**
  * 
- * Extended LabeledText by focusOut() method. This method is needed in binding pages so that
- * SWTValueUpdater is called (without this some changed values are not stored).
+ * Extended LabeledText by focusOut() method. This method is needed in binding pages so that SWTValueUpdater is called
+ * (without this some changed values are not stored).
  * 
  * @author apodhrad
  *

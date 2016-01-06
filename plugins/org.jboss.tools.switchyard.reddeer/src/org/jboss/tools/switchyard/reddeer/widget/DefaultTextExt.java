@@ -14,7 +14,7 @@ public class DefaultTextExt extends AbstractText {
 	public DefaultTextExt(ReferencedComposite ref) {
 		this(ref, 0);
 	}
-	
+
 	public DefaultTextExt(ReferencedComposite ref, int index) {
 		super(new ControlReferencedComposite(ref, new ClassMatcher(Text.class), index), 0);
 	}

@@ -27,7 +27,7 @@ import org.jboss.tools.switchyard.reddeer.preference.implementation.Implementati
 public class CompositePropertiesPage {
 
 	private final Logger log = Logger.getLogger(CompositePropertiesPage.class);
-	
+
 	protected String title;
 
 	public CompositePropertiesPage(String title) {
@@ -45,7 +45,7 @@ public class CompositePropertiesPage {
 		new DefaultTreeItem("Validators").select();
 		return new ValidatorsPage();
 	}
-	
+
 	public TransformsPage selectTransforms() {
 		activate();
 		log.info("Select 'Transforms' page");

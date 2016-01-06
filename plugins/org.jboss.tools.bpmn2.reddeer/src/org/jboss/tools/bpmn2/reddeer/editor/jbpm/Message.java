@@ -7,7 +7,6 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.DataTypeDialog;
 
-
 /**
  * 
  */
@@ -43,8 +42,7 @@ public class Message {
 	}
 
 	/**
-	 * Perform user actions which are required to set up this object
-	 * in the UI
+	 * Perform user actions which are required to set up this object in the UI
 	 */
 	public void setUp(String sectionName) {
 		new LabeledText(new DefaultSection(sectionName), "Name").setText(name);

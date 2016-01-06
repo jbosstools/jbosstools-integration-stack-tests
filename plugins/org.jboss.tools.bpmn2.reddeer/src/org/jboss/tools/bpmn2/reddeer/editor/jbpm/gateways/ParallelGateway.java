@@ -17,7 +17,7 @@ public class ParallelGateway extends ElementWithParamMapping {
 	public ParallelGateway(String name) {
 		super(name, ElementType.PARALLEL_GATEWAY);
 	}
-	
+
 	public ParallelGateway(org.jboss.tools.bpmn2.reddeer.editor.Element element) {
 		super(element);
 	}
@@ -29,5 +29,5 @@ public class ParallelGateway extends ElementWithParamMapping {
 	public void setDirection(Direction direction) {
 		propertiesHandler.setUp(new ComboSetUp(PropertiesTabs.GATEWAY_TAB, "Gateway Direction", direction.label()));
 	}
-	
+
 }

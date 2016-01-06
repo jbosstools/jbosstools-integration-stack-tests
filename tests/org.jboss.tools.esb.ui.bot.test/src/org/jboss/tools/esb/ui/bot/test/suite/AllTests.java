@@ -24,8 +24,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	NewProjectUsingRuntimeTest.class,
 	NewProjectUsingServerTest.class,
 	DeploymentTest.class,
-	ProjectExamplesTest.class
-})
+	ProjectExamplesTest.class })
 @RunWith(RedDeerSuite.class)
 public class AllTests extends TestSuite {
 

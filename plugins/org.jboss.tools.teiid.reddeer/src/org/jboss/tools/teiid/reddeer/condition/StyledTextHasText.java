@@ -3,7 +3,7 @@ package org.jboss.tools.teiid.reddeer.condition;
 import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.swt.api.StyledText;
 
-public class StyledTextHasText extends  AbstractWaitCondition {
+public class StyledTextHasText extends AbstractWaitCondition {
 
 	private final StyledText widget;
 
@@ -18,7 +18,7 @@ public class StyledTextHasText extends  AbstractWaitCondition {
 
 	@Override
 	public String description() {
-		return "StyledText has text"; 
+		return "StyledText has text";
 	}
 
 }

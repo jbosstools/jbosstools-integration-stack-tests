@@ -168,9 +168,9 @@ public class ConnectionProfileConfig {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	private void putIfNotNull(Properties props, String key, String value){
-		if (value != null){
+
+	private void putIfNotNull(Properties props, String key, String value) {
+		if (value != null) {
 			props.put(key, value);
 		}
 	}

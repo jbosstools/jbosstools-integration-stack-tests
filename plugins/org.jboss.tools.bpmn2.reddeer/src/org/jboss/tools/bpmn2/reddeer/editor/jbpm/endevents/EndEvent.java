@@ -7,7 +7,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
  * 
  */
 public class EndEvent extends Element {
-	
+
 	/**
 	 * 
 	 * @param name
@@ -15,7 +15,7 @@ public class EndEvent extends Element {
 	public EndEvent(String name) {
 		super(name, ElementType.END_EVENT);
 	}
-	
+
 	public EndEvent(Element element) {
 		super(element);
 	}
@@ -28,5 +28,5 @@ public class EndEvent extends Element {
 	EndEvent(String name, ElementType type) {
 		super(name, type);
 	}
-	
+
 }

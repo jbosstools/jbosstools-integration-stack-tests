@@ -25,7 +25,7 @@ public class EscalationEventDefinition extends EventDefinition {
 	private Escalation escalation;
 	private String variableForMaping;
 	private String comboForMappingLabel;
-	
+
 	/**
 	 * 
 	 * @param escalation
@@ -35,11 +35,11 @@ public class EscalationEventDefinition extends EventDefinition {
 		this.variableForMaping = variableForMapping;
 		this.comboForMappingLabel = comboForMapingLabel;
 	}
-	
+
 	@Override
 	public void setUp() {
-	    Shell shell = new DefaultShell();
-	    Combo c = new LabeledCombo("Escalation");
+		Shell shell = new DefaultShell();
+		Combo c = new LabeledCombo("Escalation");
 		if (!c.getItems().contains(escalation.getName())) {
 			new PushButton(0).click();
 			new EscalationDialog().add(escalation);
@@ -53,7 +53,7 @@ public class EscalationEventDefinition extends EventDefinition {
 			throw new IllegalArgumentException(variableForMaping + " wasn't in list of variables");
 		}
 		c.setSelection(variableForMaping);
-		
+
 		new SectionToolItem("Escalation Event Definition Details", "Close").click();
 	}
 }

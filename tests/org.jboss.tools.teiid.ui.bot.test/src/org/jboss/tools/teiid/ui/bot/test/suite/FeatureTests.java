@@ -6,15 +6,13 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 /**
- * Test suite concentrating on specific features, used e.g. to test a bug
- * presence, run locally
+ * Test suite concentrating on specific features, used e.g. to test a bug presence, run locally
  * 
  * @author lfabriko
  */
-@SuiteClasses({
-	BasicTest.class
-	// ServerManagementSimpleTest.class,
-	// ServerManagementTest.class
+@SuiteClasses({ BasicTest.class
+		// ServerManagementSimpleTest.class,
+		// ServerManagementTest.class
 })
 @RunWith(RedDeerSuite.class)
 public class FeatureTests {

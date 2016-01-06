@@ -20,8 +20,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	SwitchYardIntegrationBeanTest.class,
 	SwitchYardEditorImplementationsTest.class,
 	SwitchYardEditorDomainSettingsTest.class,
-	SwitchYardEditorValidatorsTest.class
-})
+	SwitchYardEditorValidatorsTest.class })
 @RunWith(RedDeerSuite.class)
 public class SmokeTests extends TestSuite {
 

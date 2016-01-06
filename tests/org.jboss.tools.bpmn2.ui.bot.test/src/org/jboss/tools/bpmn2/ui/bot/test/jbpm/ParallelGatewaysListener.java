@@ -15,17 +15,17 @@ public class ParallelGatewaysListener implements ProcessEventListener {
 
 	private String diverging;
 	private String converging;
-	
+
 	private NodeInstance divergingGateway;
 	private NodeInstance convergingGateway;
-	
+
 	public ParallelGatewaysListener(String diverging, String converging) {
 		this.diverging = diverging;
 		this.converging = converging;
 		divergingGateway = null;
 		convergingGateway = null;
 	}
-	
+
 	@Override
 	public void beforeProcessStarted(ProcessStartedEvent event) {
 		JbpmAssertions.assertNumOfIncommingConnections(event.getProcessInstance(), diverging, 1);
@@ -37,40 +37,40 @@ public class ParallelGatewaysListener implements ProcessEventListener {
 	@Override
 	public void afterProcessStarted(ProcessStartedEvent event) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void beforeProcessCompleted(ProcessCompletedEvent event) {
-		
+
 	}
 
 	@Override
 	public void afterProcessCompleted(ProcessCompletedEvent event) {
-		
+
 	}
 
 	@Override
 	public void beforeNodeTriggered(ProcessNodeTriggeredEvent event) {
 		NodeInstance node = event.getNodeInstance();
 		String nodeName = node.getNodeName();
-		
-		if(nodeName.compareTo(diverging) == 0) {
+
+		if (nodeName.compareTo(diverging) == 0) {
 			assertNull(convergingGateway);
 			divergingGateway = node;
 		}
-		
-		if(nodeName.compareTo(converging) == 0) {
+
+		if (nodeName.compareTo(converging) == 0) {
 			assertNotNull(divergingGateway);
 			convergingGateway = node;
 		}
-		
+
 	}
 
 	@Override
 	public void afterNodeTriggered(ProcessNodeTriggeredEvent event) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -81,18 +81,18 @@ public class ParallelGatewaysListener implements ProcessEventListener {
 	@Override
 	public void afterNodeLeft(ProcessNodeLeftEvent event) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void beforeVariableChanged(ProcessVariableChangedEvent event) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void afterVariableChanged(ProcessVariableChangedEvent event) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

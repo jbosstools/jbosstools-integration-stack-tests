@@ -82,10 +82,16 @@ public class E2eRecursiveXmlTextTest {
 	private static TeiidBot teiidBot = new TeiidBot();
 
 	private static final String[] EMPLOYEE_COLUMNS = { "mgrID : positiveInteger" };
-	private static final String[] SUPERVISOR_COLUMNS1 = { "LastName : string", "FirstName : string",
-			"MiddleInitial : string", "Street : string", "City : string" };
-	private static final String[] SUPERVISOR_COLUMNS2 = { "EmpId : positiveInteger", "Phone : string",
-			"mgrID : positiveInteger" };
+	private static final String[] SUPERVISOR_COLUMNS1 = {
+		"LastName : string",
+		"FirstName : string",
+		"MiddleInitial : string",
+		"Street : string",
+		"City : string" };
+	private static final String[] SUPERVISOR_COLUMNS2 = {
+		"EmpId : positiveInteger",
+		"Phone : string",
+		"mgrID : positiveInteger" };
 
 	@BeforeClass
 	public static void createProject() throws Exception {
@@ -178,9 +184,9 @@ public class E2eRecursiveXmlTextTest {
 		vdb.executeVDB();
 
 		// check sql
-		
+
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, VDB_NAME);
-		
+
 		// TODO CHECK VDB more precisely
 		assertTrue(jdbchelper.isQuerySuccessful(TESTSQL1));
 		assertTrue(jdbchelper.isQuerySuccessful(TESTSQL2));

@@ -22,7 +22,7 @@ public class LdapImportWizard extends ImportWizardDialog {
 	private static final String SOURCE_MODEL_DEFINITION = "Source Model Definition";
 
 	private static final String CONNECTION_PROFILE = "Connection Profile";
-	
+
 	private String connectionProfile;
 	private String projectName;
 	private String modelName;
@@ -30,15 +30,13 @@ public class LdapImportWizard extends ImportWizardDialog {
 	private String connectionUrl;
 	private String principalDnSuffix;
 
-
 	private String[] selectedEntries;
 	private String[] selectedColumns;
 
 	public LdapImportWizard() {
 		super("Teiid Designer", "LDAP Service >> Source Model");
 	}
-	
-	
+
 	public void execute() {
 		open();
 		fillModelInfoPage();
@@ -51,75 +49,72 @@ public class LdapImportWizard extends ImportWizardDialog {
 		finish();
 		new WaitWhile(new IsInProgress(), TimePeriod.SHORT);
 	}
-	
+
 	private void fillSelectColumnsPage() {
-		for(String column : selectedColumns){
+		for (String column : selectedColumns) {
 			String[] path = column.split("/");
 			selectColumnEntry(path[0], path[1], null);
 		}
-		
+
 	}
 
-
-	private void fillModelInfoPage(){
+	private void fillModelInfoPage() {
 		new DefaultShell("Create Relational Model from LDAP Service");
-		
+
 		// select connection profile
 		new DefaultCombo(new DefaultGroup(CONNECTION_PROFILE), 0).setSelection(connectionProfile);
-		
+
 		// select model project
-		new PushButton(new DefaultGroup(SOURCE_MODEL_DEFINITION),"...").click();
+		new PushButton(new DefaultGroup(SOURCE_MODEL_DEFINITION), "...").click();
 		new SelectTargetFolder().select(projectName);
-		
+
 		// set model name
-		new LabeledText(new DefaultGroup(SOURCE_MODEL_DEFINITION),SOURCE_MODEL_NAME).setText(modelName);
+		new LabeledText(new DefaultGroup(SOURCE_MODEL_DEFINITION), SOURCE_MODEL_NAME).setText(modelName);
 	}
-	
-	private void fillSelectTablesPage(){
-		for (String entry : selectedEntries){
+
+	private void fillSelectTablesPage() {
+		for (String entry : selectedEntries) {
 			selectTableEntry(entry, null);
 		}
 	}
-	
-	public void selectColumnEntry(String tableName, String entryName, String entryAlias){
+
+	public void selectColumnEntry(String tableName, String entryName, String entryAlias) {
 		new DefaultTreeItem(tableName).expand();
-		
+
 		TreeItem entryTreeItem = new DefaultTreeItem(tableName, entryName);
 		entryTreeItem.select();
 		entryTreeItem.setChecked(true);
 
-		if (entryAlias != null){
-			new LabeledText(new DefaultGroup(SOURCE_MODEL_TABLE_ATTRIBUTES),TABLE_NAME).setText(entryAlias);
+		if (entryAlias != null) {
+			new LabeledText(new DefaultGroup(SOURCE_MODEL_TABLE_ATTRIBUTES), TABLE_NAME).setText(entryAlias);
 		}
 
-
 	}
-	
-	public void selectTableEntry(String entryName, String entryAlias){
+
+	public void selectTableEntry(String entryName, String entryAlias) {
 		String treeRootName = getTreeRootName();
 		new DefaultTreeItem(treeRootName).expand();
-		
+
 		String[] tablePath = entryName.split("/");
 		String[] fullPath = new String[tablePath.length + 1];
 		fullPath[0] = treeRootName;
 		System.arraycopy(tablePath, 0, fullPath, 1, tablePath.length);
-		
+
 		TreeItem entryTreeItem = new DefaultTreeItem(fullPath);
-		
+
 		entryTreeItem.select();
 		entryTreeItem.setChecked(true);
 
-		if (entryAlias != null){
-			new LabeledText(new DefaultGroup(SOURCE_MODEL_TABLE_ATTRIBUTES),TABLE_NAME).setText(entryAlias);
+		if (entryAlias != null) {
+			new LabeledText(new DefaultGroup(SOURCE_MODEL_TABLE_ATTRIBUTES), TABLE_NAME).setText(entryAlias);
 		}
 
-
 	}
-	
-	private String getTreeRootName(){
+
+	private String getTreeRootName() {
 		return connectionUrl + '/' + principalDnSuffix;
 	}
-	
+
 	public void setConnectionProfile(String connectionProfile) {
 		this.connectionProfile = connectionProfile;
 	}
@@ -131,19 +126,18 @@ public class LdapImportWizard extends ImportWizardDialog {
 	public void setModelName(String modelName) {
 		this.modelName = modelName;
 	}
-	
-	public void setConnectionUrl(String connectionUrl){
+
+	public void setConnectionUrl(String connectionUrl) {
 		this.connectionUrl = connectionUrl;
 	}
-	
-	public void setSelectedEntries(String[] selectedEntries){
+
+	public void setSelectedEntries(String[] selectedEntries) {
 		this.selectedEntries = selectedEntries;
 	}
-	
-	public void setPrincipalDnSuffix(String principalDnSuffix){
+
+	public void setPrincipalDnSuffix(String principalDnSuffix) {
 		this.principalDnSuffix = principalDnSuffix;
 	}
-
 
 	public void setSelectedColumns(String[] selectedColumns) {
 		this.selectedColumns = selectedColumns;

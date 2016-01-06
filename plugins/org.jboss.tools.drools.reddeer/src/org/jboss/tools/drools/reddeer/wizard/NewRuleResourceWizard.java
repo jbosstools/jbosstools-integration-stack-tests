@@ -4,12 +4,12 @@ import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 
 public class NewRuleResourceWizard extends NewWizardDialog {
 
-    public NewRuleResourceWizard() {
-        super("Drools", "Rule Resource");
-    }
+	public NewRuleResourceWizard() {
+		super("Drools", "Rule Resource");
+	}
 
-    public NewRuleResourceWizardPage getFirstPage() {
-        return new NewRuleResourceWizardPage();
-    }
+	public NewRuleResourceWizardPage getFirstPage() {
+		return new NewRuleResourceWizardPage();
+	}
 
 }

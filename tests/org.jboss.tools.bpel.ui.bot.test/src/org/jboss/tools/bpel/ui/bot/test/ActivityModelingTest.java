@@ -37,8 +37,8 @@ public class ActivityModelingTest {
 
 	@Before
 	public void setupWorkspace() throws Exception {
-		String projectLocation = ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID, "resources/projects/"
-				+ PROJECT_NAME + ".zip");
+		String projectLocation = ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID,
+				"resources/projects/" + PROJECT_NAME + ".zip");
 		new ImportProjectWizard(projectLocation).execute();
 	}
 
@@ -79,7 +79,7 @@ public class ActivityModelingTest {
 		Scope scope = new ForEach("forEach1").setCounterValue("10", "20").getScope();
 		scope.addInvoke("invokePartner2").pickOperation("calculate");
 		scope.addWait("wait1").setCondition("'PT1S'", "Date");
-		
+
 		new BpelEditor("Discriminant.bpel").saveAndClose();
 	}
 

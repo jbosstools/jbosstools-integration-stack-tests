@@ -56,11 +56,12 @@ public class ExampleTest {
 
 	@InjectRequirement
 	private ServerRequirement serverRequirement;
-	
+
 	public ExampleTest() {
 		add("A simple BPEL example", "HelloWorld", "bpel/processes/helloWorld");
 		add("Hello_World_Header_Ode", "Hello_World_Header_Ode", "Quickstart_bpel_hello_world_header_odeWS");
-		add("A Hello World Header WSDL BPEL example", "Hello_World_Header_WSDL", "Quickstart_bpel_hello_world_header_wsdlWS");
+		add("A Hello World Header WSDL BPEL example", "Hello_World_Header_WSDL",
+				"Quickstart_bpel_hello_world_header_wsdlWS");
 		add("A Math BPEL example", "Math", "MathProcess");
 		add("A Salutations BPEL example", "Salutations", "SalutationsProcess");
 		add("A Say Hello BPEL example", "Say_Hello", "SayHelloProcess");
@@ -68,11 +69,15 @@ public class ExampleTest {
 		add("A Simple Pick BPEL example", "Simple_Pick", "Quickstart_bpel_simple_pickWS");
 		add("A correlation BPEL example", "Simple_Correlation", "Quickstart_bpel_simple_correlationWS");
 		add("A Fault Compensation BPEL example", "Fault_Compensation", "Quickstart_bpel_fault_compensationWS");
-		add("A Synchronous Web Service Interactions BPEL example", "BluePrint1", "BPEL_BluePrint1_PurchaseOrderService");
-		add("A Asynchronous Web Service Interactions BPEL example", "BluePrint2", "BPEL_BluePrint2_PurchaseOrderService");
+		add("A Synchronous Web Service Interactions BPEL example", "BluePrint1",
+				"BPEL_BluePrint1_PurchaseOrderService");
+		add("A Asynchronous Web Service Interactions BPEL example", "BluePrint2",
+				"BPEL_BluePrint2_PurchaseOrderService");
 		add("A Fault Handling BPEL example", "BluePrint3", "BPEL_BluePrint3_PurchaseOrderService");
-		add("A Message-Based Coordination of Events BPEL example", "BluePrint4", "BPEL_BluePrint4_PurchaseOrderService");
-		add("A Concurrent Asynchronous Coordination Events BPEL example", "BluePrint5", "BPEL_BluePrint5_ReservationService");
+		add("A Message-Based Coordination of Events BPEL example", "BluePrint4",
+				"BPEL_BluePrint4_PurchaseOrderService");
+		add("A Concurrent Asynchronous Coordination Events BPEL example", "BluePrint5",
+				"BPEL_BluePrint5_ReservationService");
 	}
 
 	private void add(String example, String project, String wsdl) {
@@ -148,8 +153,7 @@ public class ExampleTest {
 				String responseMessage = getMessageFromFile(responseFile);
 				String response = SoapClient.sendMessage(url, requestMessage);
 				Diff diff = new Diff(response, responseMessage);
-				assertTrue("Expected response is\n" + responseMessage + "\nbut it was\n" + response,
-						diff.similar());
+				assertTrue("Expected response is\n" + responseMessage + "\nbut it was\n" + response, diff.similar());
 			} catch (IOException e) {
 				e.printStackTrace();
 				throw new RuntimeException("IOException during testing response.");
@@ -164,8 +168,8 @@ public class ExampleTest {
 
 		private List<String> getRequestMessages(String dir) throws IOException {
 			List<String> messages = new ArrayList<String>();
-			File messages_dir = new File(ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID,
-					MESSAGE_DIR + "/" + dir));
+			File messages_dir = new File(
+					ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID, MESSAGE_DIR + "/" + dir));
 			String[] file = messages_dir.list();
 			for (int i = 0; i < file.length; i++) {
 				if (file[i].endsWith(".xml") && file[i].contains("request")) {

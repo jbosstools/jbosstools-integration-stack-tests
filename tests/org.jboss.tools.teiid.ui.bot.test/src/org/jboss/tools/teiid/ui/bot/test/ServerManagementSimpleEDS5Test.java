@@ -26,7 +26,7 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 @TeiidServer(state = ServerReqState.RUNNING)
 public class ServerManagementSimpleEDS5Test extends SWTBotTestCase {
-	
+
 	@InjectRequirement
 	private ServerRequirement serverRequirement;
 
@@ -42,7 +42,7 @@ public class ServerManagementSimpleEDS5Test extends SWTBotTestCase {
 	public static void createModelProject() {
 		new ShellMenu("Project", "Build Automatically").select();
 		new ConnectionProfileManager().createCPWithDriverDefinition(HSQLDB_PROFILE, DS1_PROPS);
-		new ImportProjectWizard("resources/projects/ServerMgmtTest.zip").execute(); 
+		new ImportProjectWizard("resources/projects/ServerMgmtTest.zip").execute();
 		new ModelExplorer().changeConnectionProfile(HSQLDB_PROFILE, PROJECT_NAME, MODEL_NAME);
 	}
 
@@ -50,71 +50,89 @@ public class ServerManagementSimpleEDS5Test extends SWTBotTestCase {
 	public void test() {
 		try {
 			new ServerManager().editLaunchConfigProgramArgs(EDS5_SERVER, "-Dremoting.stream.host=localhost");
-		} catch (Exception ex){
+		} catch (Exception ex) {
 			System.err.println("Cannot edit launch config," + ex.getMessage());
 		}
-		
+
 		try {
-			// TODO: fix  setDefaultTeiidInstance
+			// TODO: fix setDefaultTeiidInstance
 			// new ServerManager().setDefaultTeiidInstance(EDS5_SERVER, ??);
-		} catch (Exception ex){
+		} catch (Exception ex) {
 			System.err.println("Cannot set default instance, " + ex.getMessage());
 		}
-		
+
 		try {
-			System.out.println("Can preview data? " + new GuidesView().canPreviewData(null, new String[]{PROJECT_NAME, MODEL_NAME, "PARTS"}));//if assert fails, whole test fails -> but it may have failed just because the tree didn't expand
-		} catch (Exception ex){
+			System.out.println("Can preview data? "
+					+ new GuidesView().canPreviewData(null, new String[] { PROJECT_NAME, MODEL_NAME, "PARTS" }));// if
+																													// assert
+																													// fails,
+																													// whole
+																													// test
+																													// fails
+																													// ->
+																													// but
+																													// it
+																													// may
+																													// have
+																													// failed
+																													// just
+																													// because
+																													// the
+																													// tree
+																													// didn't
+																													// expand
+		} catch (Exception ex) {
 			System.err.println("cannot preview data, " + ex.getMessage());
 		}
-		
+
 		// switch back to Teiid Designer Perspective
-		try{
+		try {
 			TeiidPerspective.getInstance();
-		} catch (Exception ex){
+		} catch (Exception ex) {
 			System.err.println(ex.getMessage());
 		}
-		
+
 		// create VDB - pass
-		try{
+		try {
 			new VDBManager().createVDB(PROJECT_NAME, VDB);
-			new VDBManager().addModelsToVDB(PROJECT_NAME, VDB, new String[]{MODEL_NAME});
-			System.out.println("VDB created? " + new VDBManager().isVDBCreated(PROJECT_NAME, VDB));	
-		} catch (Exception ex){
+			new VDBManager().addModelsToVDB(PROJECT_NAME, VDB, new String[] { MODEL_NAME });
+			System.out.println("VDB created? " + new VDBManager().isVDBCreated(PROJECT_NAME, VDB));
+		} catch (Exception ex) {
 			System.err.println("Cannot create vdb, " + ex.getMessage());
 		}
-		
+
 		TeiidPerspective.getInstance();
 		// deploy VDB - pass
-		try{
-			new VDBManager().deployVDB(new String[]{PROJECT_NAME, VDB});
+		try {
+			new VDBManager().deployVDB(new String[] { PROJECT_NAME, VDB });
 			// TOD: fix isVDBDeployed
-			// System.out.println("VDB deployed? " + new VDBManager().isVDBDeployed(EDS5_SERVER, ServerType.EDS5, VDB));//or serverManager, its ==
-		} catch (Exception ex){
-			//do it manually
+			// System.out.println("VDB deployed? " + new VDBManager().isVDBDeployed(EDS5_SERVER, ServerType.EDS5,
+			// VDB));//or serverManager, its ==
+		} catch (Exception ex) {
+			// do it manually
 			System.err.println("VDB may not be deployed, " + ex.getMessage());
 		}
-		
+
 		// execute VDB - pass
-		try{
-			new VDBManager().executeVDB(true,PROJECT_NAME, VDB);
+		try {
+			new VDBManager().executeVDB(true, PROJECT_NAME, VDB);
 			System.out.println("Query passed? " + new VDBManager().queryPassed(VDB, TEST_SQL1));
-		} catch (Exception ex){
+		} catch (Exception ex) {
 			System.err.println("Query may not passed, " + ex.getMessage());
 		}
-		
+
 		// switch back to teiid designer perspective
-		try{
-		TeiidPerspective.getInstance();
-		} catch (Exception ex){
+		try {
+			TeiidPerspective.getInstance();
+		} catch (Exception ex) {
 			System.err.println(ex.getMessage());
 		}
-		
-		try{
+
+		try {
 			new ServerManager().stopServer(EDS5_SERVER);
-		} catch (Exception ex){
+		} catch (Exception ex) {
 			System.err.println("Server stop problem, " + ex.getMessage());
 		}
 	}
-
 
 }

@@ -27,11 +27,11 @@ public class DefaultCCombo extends AbstractWidget<org.eclipse.swt.custom.CCombo>
 	public DefaultCCombo(int index, Matcher<?>... matchers) {
 		this(null, index, matchers);
 	}
-	
+
 	public DefaultCCombo(ReferencedComposite refComposite, Matcher<?>... matchers) {
 		super(org.eclipse.swt.custom.CCombo.class, refComposite, 0, matchers);
 	}
-	
+
 	public DefaultCCombo(ReferencedComposite refComposite, int index, Matcher<?>... matchers) {
 		super(org.eclipse.swt.custom.CCombo.class, refComposite, index, matchers);
 	}

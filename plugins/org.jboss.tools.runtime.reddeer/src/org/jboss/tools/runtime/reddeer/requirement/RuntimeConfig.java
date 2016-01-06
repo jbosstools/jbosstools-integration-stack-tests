@@ -31,9 +31,10 @@ public class RuntimeConfig {
 		return name;
 	}
 
-	@XmlElements({ @XmlElement(name = "esb", namespace = Namespaces.SOA_REQ, type = RuntimeESB.class),
-			@XmlElement(name = "jbpm", namespace = Namespaces.SOA_REQ, type = RuntimeJBPM.class),
-			@XmlElement(name = "brms", namespace = Namespaces.SOA_REQ, type = RuntimeDrools.class) })
+	@XmlElements({
+		@XmlElement(name = "esb", namespace = Namespaces.SOA_REQ, type = RuntimeESB.class),
+		@XmlElement(name = "jbpm", namespace = Namespaces.SOA_REQ, type = RuntimeJBPM.class),
+		@XmlElement(name = "brms", namespace = Namespaces.SOA_REQ, type = RuntimeDrools.class) })
 	private RuntimeBase runtimeBase;
 
 	public RuntimeBase getRuntimeFamily() {

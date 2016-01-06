@@ -54,7 +54,8 @@ public class TopDownWsdlTest {
 		new WsdlWebImportWizard().importWsdl(WS_NAME, PROJECT_NAME, "TpcrOrderChecking.wsdl");
 
 		/* Create DB connection profile */
-		new ConnectionProfileManager().createCPWithDriverDefinition(CONNECTION_PROFILE, "resources/db/sqlserver_tpcr.properties");
+		new ConnectionProfileManager().createCPWithDriverDefinition(CONNECTION_PROFILE,
+				"resources/db/sqlserver_tpcr.properties");
 
 		/* Import a Relational Source */
 		String fileName = "TPCR_S2k.xmi";
@@ -84,9 +85,7 @@ public class TopDownWsdlTest {
 		modelEditor.save();
 
 		/* Build the WS Operation's transformation */
-		String procedureSql = "CREATE VIRTUAL PROCEDURE\n"
-				+ "BEGIN\n"
-				+ "\tDECLARE string VARIABLES.IN_ShipDateHigh;\n"
+		String procedureSql = "CREATE VIRTUAL PROCEDURE\n" + "BEGIN\n" + "\tDECLARE string VARIABLES.IN_ShipDateHigh;\n"
 				+ "\tVARIABLES.IN_ShipDateHigh = xpathValue(ChkOrdSvc.Service1Soap.CheckOrder.OCin, '/*:OC_Input/*:ShipDateHigh');\n"
 				+ "\tDECLARE string VARIABLES.IN_ShipDateLow;\n"
 				+ "\tVARIABLES.IN_ShipDateLow = xpathValue(ChkOrdSvc.Service1Soap.CheckOrder.OCin, '/*:OC_Input/*:ShipDateLow');\n"
@@ -113,29 +112,27 @@ public class TopDownWsdlTest {
 		editor.show();
 		editor.addModel(PROJECT_NAME, WS_NAME + ".xmi");
 		editor.save();
-		
+
 		new ServersView().open();
 		new ServersViewExt().refreshServer(new ServersView().getServers().get(0).getLabel().getName());
 		new ModelExplorer().executeVDB(PROJECT_NAME, VDB_NAME + ".vdb");
-		
+
 		String testSql = "SELECT * FROM ChkOrdSvcResponses.Service1Soap_CheckOrder_OCout";
 		Assert.assertEquals(SQLResult.STATUS_SUCCEEDED, executeSQL(VDB_NAME, testSql).getStatus());
 
 		testSql = "EXEC ChkOrdSvc.Service1Soap.CheckOrder('<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-				+ "<OC_Input xmlns=\"http://com.metamatrix/TPCRwsdl_VDB\">"
-				+ "<OrderDate>1993-03-31</OrderDate>"
-				+ "<ShipDateLow>1993-04-01</ShipDateLow>"
-				+ "<ShipDateHigh>1993-04-02</ShipDateHigh>" + "</OC_Input>')";
+				+ "<OC_Input xmlns=\"http://com.metamatrix/TPCRwsdl_VDB\">" + "<OrderDate>1993-03-31</OrderDate>"
+				+ "<ShipDateLow>1993-04-01</ShipDateLow>" + "<ShipDateHigh>1993-04-02</ShipDateHigh>" + "</OC_Input>')";
 
 		Assert.assertEquals(SQLResult.STATUS_SUCCEEDED, executeSQL(VDB_NAME, testSql).getStatus());
 	}
 
 	private static void open(String... path) {
-		
+
 		new DefaultShell().setFocus();
 		new ModelExplorer().getModelProject(PROJECT_NAME).open(path);
 	}
-	
+
 	private static SQLResult executeSQL(String datasource, String sql) {
 
 		new DefaultShell();

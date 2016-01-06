@@ -37,7 +37,7 @@ public class DomainPropertyShell {
 	}
 
 	public void ok() {
-		new WaitUntil(new IsButtonEnabled("OK",	NAME, VALUE));
+		new WaitUntil(new IsButtonEnabled("OK", NAME, VALUE));
 		new PushButton("OK").click();
 		waitForFinish();
 	}

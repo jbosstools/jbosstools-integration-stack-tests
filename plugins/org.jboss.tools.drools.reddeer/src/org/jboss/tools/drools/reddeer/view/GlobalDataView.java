@@ -10,31 +10,31 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 
 public class GlobalDataView extends WorkbenchView {
-    private static final Pattern NO_GLOBALS = Pattern.compile("The selected working memory has no globals defined\\.");
-    private static final Pattern GLOBAL_NAME = Pattern.compile("[^=]+");
+	private static final Pattern NO_GLOBALS = Pattern.compile("The selected working memory has no globals defined\\.");
+	private static final Pattern GLOBAL_NAME = Pattern.compile("[^=]+");
 
-    public GlobalDataView() {
-        super("Drools", "Global Data");
-    }
+	public GlobalDataView() {
+		super("Drools", "Global Data");
+	}
 
-    public List<String> getGlobalsList() {
-        open();
-        List<String> globals = new LinkedList<String>();
+	public List<String> getGlobalsList() {
+		open();
+		List<String> globals = new LinkedList<String>();
 
-        String itemText;
-        Matcher m;
-        for (TreeItem item : new DefaultTree().getItems()) {
-            itemText = item.getText();
-            if (NO_GLOBALS.matcher(itemText).matches()) {
-                // no globals defined
-                break;
-            } else {
-                m = GLOBAL_NAME.matcher(itemText);
-                m.find();
-                globals.add(m.group());
-            }
-        }
+		String itemText;
+		Matcher m;
+		for (TreeItem item : new DefaultTree().getItems()) {
+			itemText = item.getText();
+			if (NO_GLOBALS.matcher(itemText).matches()) {
+				// no globals defined
+				break;
+			} else {
+				m = GLOBAL_NAME.matcher(itemText);
+				m.find();
+				globals.add(m.group());
+			}
+		}
 
-        return globals;
-    }
+		return globals;
+	}
 }

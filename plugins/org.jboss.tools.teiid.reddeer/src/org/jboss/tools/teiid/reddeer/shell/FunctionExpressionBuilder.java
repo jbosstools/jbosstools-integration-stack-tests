@@ -13,40 +13,39 @@ import org.hamcrest.Matcher;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.tools.teiid.reddeer.editor.CriteriaBuilder;
 
-public class FunctionExpressionBuilder{
+public class FunctionExpressionBuilder {
 
 	private List<? extends Combo> combos = new ArrayList<Combo>();
 	private CriteriaBuilder cb;
-	
-	public FunctionExpressionBuilder(SWTBotShell sh){
+
+	public FunctionExpressionBuilder(SWTBotShell sh) {
 		Matcher<Combo> m = widgetOfType(Combo.class);
 		this.combos = new SWTBot().widgets(m);
 	}
-	
-	
-	public void setCategory(String category){
+
+	public void setCategory(String category) {
 		new SWTBotCombo(combos.get(0)).setSelection(category);
 	}
 
-	public void setFunction(String function){
+	public void setFunction(String function) {
 		new SWTBotCombo(combos.get(1)).setSelection(function);
 	}
-	
-	public void apply(){
+
+	public void apply() {
 		new PushButton("Apply").click();
 	}
-	
-	public void close(){
+
+	public void close() {
 		new PushButton("OK").click();
 	}
-	
-	public void setRadioButtonType(String typeOfRadioButton){
+
+	public void setRadioButtonType(String typeOfRadioButton) {
 		this.cb = new CriteriaBuilder();
 		cb.selectRadioButton(typeOfRadioButton, 0);
 	}
-	
-	public void setColumn(String document, String element){
+
+	public void setColumn(String document, String element) {
 		cb.selectLeftAttribute(document, element, true);
 	}
-	
+
 }

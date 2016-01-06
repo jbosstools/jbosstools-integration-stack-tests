@@ -19,42 +19,41 @@ import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
 public class DefaultRuntimeTest extends TestParent {
-	
+
 	private static final Logger LOGGER = Logger.getLogger(RulesManagementTest.class);
-    private static final String DEBUG_REGEX = "(SLF4J: .*[\r\n]+)+?" +
-            "(kmodules: file:(/.*)+/kmodule.xml[\r\n]+)?";
-    private static final String SUCCESSFUL_RUN_REGEX = DEBUG_REGEX + "Hello World[\r\n]+Goodbye cruel world[\r\n]+";
-	
+	private static final String DEBUG_REGEX = "(SLF4J: .*[\r\n]+)+?" + "(kmodules: file:(/.*)+/kmodule.xml[\r\n]+)?";
+	private static final String SUCCESSFUL_RUN_REGEX = DEBUG_REGEX + "Hello World[\r\n]+Goodbye cruel world[\r\n]+";
+
 	@Test
-    @UsePerspective(JavaPerspective.class)
-    public void testRunRulesWithDefaultRuntime() {
-        final String runtimeName = "testRunRulesWithDefaultRuntime";
-        final String projectName = "testRunRulesWithDefaultRuntime";
-        DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
-        pref.open();
-        DroolsRuntimeDialog dialog = pref.addDroolsRuntime();
-        dialog.setName(runtimeName);
-        dialog.createNewRuntime(createTempDir("testRunRulesWithDefaultRuntime"));
-        dialog.ok();
-        pref.setDroolsRuntimeAsDefault(runtimeName);
-        pref.okCloseWarning();
+	@UsePerspective(JavaPerspective.class)
+	public void testRunRulesWithDefaultRuntime() {
+		final String runtimeName = "testRunRulesWithDefaultRuntime";
+		final String projectName = "testRunRulesWithDefaultRuntime";
+		DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
+		pref.open();
+		DroolsRuntimeDialog dialog = pref.addDroolsRuntime();
+		dialog.setName(runtimeName);
+		dialog.createNewRuntime(createTempDir("testRunRulesWithDefaultRuntime"));
+		dialog.ok();
+		pref.setDroolsRuntimeAsDefault(runtimeName);
+		pref.okCloseWarning();
 
-        NewDroolsProjectWizard wiz = new NewDroolsProjectWizard();
-        wiz.createDefaultProjectWithAllSamples(projectName);
+		NewDroolsProjectWizard wiz = new NewDroolsProjectWizard();
+		wiz.createDefaultProjectWithAllSamples(projectName);
 
-        ConsoleView console = new ConsoleView();
-        console.open();
+		ConsoleView console = new ConsoleView();
+		console.open();
 
-        RunUtility.runAsJavaApplication(projectName, "src/main/java", "com.sample", "DroolsTest.java");
-        new WaitUntil(new ApplicationIsTerminated());
-        waitASecond(); // this is quite annoying - the text is updated AFTER the application is terminated
+		RunUtility.runAsJavaApplication(projectName, "src/main/java", "com.sample", "DroolsTest.java");
+		new WaitUntil(new ApplicationIsTerminated());
+		waitASecond(); // this is quite annoying - the text is updated AFTER the application is terminated
 
-        console.open();
-        String consoleText = console.getConsoleText();
-        Assert.assertNotNull("Console text was empty.", consoleText);
-        LOGGER.debug(consoleText);
-        Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.matches(SUCCESSFUL_RUN_REGEX));
-    }
+		console.open();
+		String consoleText = console.getConsoleText();
+		Assert.assertNotNull("Console text was empty.", consoleText);
+		LOGGER.debug(consoleText);
+		Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.matches(SUCCESSFUL_RUN_REGEX));
+	}
 
 	@After
 	public void cleanDefaultRuntime() {

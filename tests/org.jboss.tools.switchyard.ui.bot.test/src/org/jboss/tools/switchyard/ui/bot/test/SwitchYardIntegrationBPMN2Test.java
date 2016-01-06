@@ -127,8 +127,8 @@ public class SwitchYardIntegrationBPMN2Test {
 		SwitchYardServiceTask task = new SwitchYardServiceTask("EvalGreet");
 		task.setTaskAttribute("Operation Name", "checkGreet");
 		task.setTaskAttribute("Service Name", EVAL_GREET);
-		task.addParameterMapping(new ParameterMapping(new FromVariable("Parameter"), new ToDataInput("Parameter",
-				"String"), ParameterMapping.Type.INPUT));
+		task.addParameterMapping(new ParameterMapping(new FromVariable("Parameter"),
+				new ToDataInput("Parameter", "String"), ParameterMapping.Type.INPUT));
 		task.addParameterMapping(new ParameterMapping(new FromDataOutput("Result", "String"), new ToVariable("Result"),
 				ParameterMapping.Type.OUTPUT));
 		task.append("EndProcess", ElementType.TERMINATE_END_EVENT);
@@ -139,30 +139,22 @@ public class SwitchYardIntegrationBPMN2Test {
 
 		// Junit
 		new Service(PROCESS_GREET, 0).createNewServiceTestClass();
-		new TextEditor(PROCESS_GREET + "Test.java")
-				.setText("package org.switchyard.quickstarts.bpm.service;\n\n"
-						+ "import org.junit.Assert;\n"
-						+ "import org.junit.Test;\n"
-						+ "import org.junit.runner.RunWith;\n"
-						+ "import org.switchyard.component.test.mixins.cdi.CDIMixIn;\n"
-						+ "import org.switchyard.test.Invoker;\n"
-						+ "import org.switchyard.test.ServiceOperation;\n"
-						+ "import org.switchyard.test.SwitchYardRunner;\n"
-						+ "import org.switchyard.test.SwitchYardTestCaseConfig;\n"
-						+ "import org.switchyard.test.SwitchYardTestKit;\n\n"
-						+ "@RunWith(SwitchYardRunner.class)\n"
-						+ "@SwitchYardTestCaseConfig(config = SwitchYardTestCaseConfig.SWITCHYARD_XML, mixins = { CDIMixIn.class })\n"
-						+ "public class ProcessGreetTest {\n\n"
-						+ "\tprivate SwitchYardTestKit testKit;\n"
-						+ "\tprivate CDIMixIn cdiMixIn;\n"
-						+ "\t@ServiceOperation(\"ProcessGreet\")\n"
-						+ "\tprivate Invoker service;\n\n"
-						+ "\t@Test\n"
-						+ "\tpublic void testCheckGreetIsPolite() throws Exception {\n"
-						+ "\t\tboolean result = service.operation(\"checkGreetIsPolite\").sendInOut(\"Good evening\").getContent(boolean.class);\n"
-						+ "\t\tAssert.assertTrue(result);\n"
-						+ "\t\tAssert.assertFalse(service.operation(\"checkGreetIsPolite\").sendInOut(\"hi\").getContent(Boolean.class));\n"
-						+ "\t}\n" + "}");
+		new TextEditor(PROCESS_GREET + "Test.java").setText("package org.switchyard.quickstarts.bpm.service;\n\n"
+				+ "import org.junit.Assert;\n" + "import org.junit.Test;\n" + "import org.junit.runner.RunWith;\n"
+				+ "import org.switchyard.component.test.mixins.cdi.CDIMixIn;\n"
+				+ "import org.switchyard.test.Invoker;\n" + "import org.switchyard.test.ServiceOperation;\n"
+				+ "import org.switchyard.test.SwitchYardRunner;\n"
+				+ "import org.switchyard.test.SwitchYardTestCaseConfig;\n"
+				+ "import org.switchyard.test.SwitchYardTestKit;\n\n" + "@RunWith(SwitchYardRunner.class)\n"
+				+ "@SwitchYardTestCaseConfig(config = SwitchYardTestCaseConfig.SWITCHYARD_XML, mixins = { CDIMixIn.class })\n"
+				+ "public class ProcessGreetTest {\n\n" + "\tprivate SwitchYardTestKit testKit;\n"
+				+ "\tprivate CDIMixIn cdiMixIn;\n" + "\t@ServiceOperation(\"ProcessGreet\")\n"
+				+ "\tprivate Invoker service;\n\n" + "\t@Test\n"
+				+ "\tpublic void testCheckGreetIsPolite() throws Exception {\n"
+				+ "\t\tboolean result = service.operation(\"checkGreetIsPolite\").sendInOut(\"Good evening\").getContent(boolean.class);\n"
+				+ "\t\tAssert.assertTrue(result);\n"
+				+ "\t\tAssert.assertFalse(service.operation(\"checkGreetIsPolite\").sendInOut(\"hi\").getContent(Boolean.class));\n"
+				+ "\t}\n" + "}");
 
 		try {
 			new ShellMenu("File", "Save All").select();
@@ -182,7 +174,7 @@ public class SwitchYardIntegrationBPMN2Test {
 		assertEquals(0, new JUnitView().getNumberOfErrors());
 		assertEquals(0, new JUnitView().getNumberOfFailures());
 	}
-	
+
 	private void openFile(String... file) {
 		// focus on project explorer
 		new WorkbenchView("General", "Project Explorer").open();

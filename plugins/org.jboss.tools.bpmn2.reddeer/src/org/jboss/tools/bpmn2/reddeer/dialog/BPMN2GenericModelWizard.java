@@ -13,29 +13,27 @@ public class BPMN2GenericModelWizard extends NewWizardDialog {
 	 * 
 	 */
 	public enum ModelType {
-		
-		PROCESS(0),
-		COLLABORATION(1),
-		CHOREOGRAPHY(2);
-		
+
+		PROCESS(0), COLLABORATION(1), CHOREOGRAPHY(2);
+
 		private int buttonIndex;
-		
+
 		ModelType(int buttonIndex) {
 			this.buttonIndex = buttonIndex;
 		}
-		
+
 		public int getButtonIndex() {
 			return buttonIndex;
 		}
 	}
-	
+
 	/**
-	 * Creates a new instance of BPMN2GenericModelWizard. 
+	 * Creates a new instance of BPMN2GenericModelWizard.
 	 */
 	public BPMN2GenericModelWizard() {
 		super("BPMN2", "Generic BPMN 2.0 Diagram");
 	}
-	
+
 	/**
 	 * 
 	 * @param location

@@ -15,13 +15,13 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@Server(type = {ServerReqType.EAP, ServerReqType.WildFly}, state = ServerReqState.RUNNING)
+@Server(type = { ServerReqType.EAP, ServerReqType.WildFly }, state = ServerReqState.RUNNING)
 @RunWith(RedDeerSuite.class)
 public class ServerConnectionTest extends KieNavigatorTestParent {
-	
+
 	@InjectRequirement
 	private ServerRequirement serverReq;
-	
+
 	@Test
 	public void incorrectPasswordTest() {
 		knv.open();
@@ -31,7 +31,7 @@ public class ServerConnectionTest extends KieNavigatorTestParent {
 		sp.ok();
 		checkError(knv);
 	}
-	
+
 	@Test
 	public void incorrectLoginTest() {
 		knv = new KieNavigatorView();
@@ -42,7 +42,7 @@ public class ServerConnectionTest extends KieNavigatorTestParent {
 		sp.ok();
 		checkError(knv);
 	}
-	
+
 	@Test
 	public void incorrectAppNameTest() {
 		knv = new KieNavigatorView();
@@ -53,7 +53,7 @@ public class ServerConnectionTest extends KieNavigatorTestParent {
 		sp.ok();
 		checkError(knv);
 	}
-	
+
 	@Test
 	public void incorrectPortTest() {
 		knv = new KieNavigatorView();
@@ -64,7 +64,7 @@ public class ServerConnectionTest extends KieNavigatorTestParent {
 		sp.ok();
 		checkError(knv);
 	}
-	
+
 	private void checkError(KieNavigatorView knv) {
 		knv.getServer(0).refresh();
 		List<OrgUnitItem> ouList = knv.getServer(0).getOrgUnits();

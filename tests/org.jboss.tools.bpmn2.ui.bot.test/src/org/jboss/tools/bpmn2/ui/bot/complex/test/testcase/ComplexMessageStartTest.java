@@ -19,40 +19,37 @@ import org.kie.api.event.process.ProcessStartedEvent;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.WorkflowProcessInstance;
 
-@JBPM6ComplexTestDefinition(projectName="JBPM6ComplexTest",
-							importFolder="resources/bpmn2/model/base",
-							openFile="BaseBPMN2-MessageStart.bpmn2",
-							saveAs="BPMN2-MessageStart.bpmn2")
-public class ComplexMessageStartTest extends JBPM6ComplexTest{
-	
+@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-MessageStart.bpmn2", saveAs = "BPMN2-MessageStart.bpmn2")
+public class ComplexMessageStartTest extends JBPM6ComplexTest {
+
 	private String changedVar = "";
 
-	@TestPhase(phase=Phase.MODEL)
+	@TestPhase(phase = Phase.MODEL)
 	public void model() {
 		Process process = new Process("BPMN2-MessageStart");
-		
+
 		MessageStartEvent start = (MessageStartEvent) process.add("StartProcess", ElementType.MESSAGE_START_EVENT);
 		start.setMessageMapping(new Message("HelloMessage", "String"), VARIABLE1);
 		start.connectTo(new ScriptTask("Script"));
 	}
-	
-	@TestPhase(phase=Phase.RUN)
+
+	@TestPhase(phase = Phase.RUN)
 	public void run(KieSession kSession) {
- 		TriggeredNodesListener triggered = new TriggeredNodesListener(
-			Arrays.asList("StartProcess", "Script", "EndProcess"), null); 
+		TriggeredNodesListener triggered = new TriggeredNodesListener(
+				Arrays.asList("StartProcess", "Script", "EndProcess"), null);
 		kSession.addEventListener(triggered);
-		
+
 		kSession.addEventListener(new DefaultProcessEventListener() {
 			public void afterProcessStarted(ProcessStartedEvent event) {
-			
+
 				changedVar = (String) ((WorkflowProcessInstance) event.getProcessInstance()).getVariable(VARIABLE1);
 			}
 		});
-		
-		
+
 		kSession.signalEvent("Message-HelloMessage", "bpmn rules world");
-		
-		assertEquals("Variable "+VARIABLE1+" schould change because of start message", "bpmn rules world", changedVar);
+
+		assertEquals("Variable " + VARIABLE1 + " schould change because of start message", "bpmn rules world",
+				changedVar);
 		assertEquals("There shouldn't be a active process instance", 0, kSession.getProcessInstances().size());
 
 	}

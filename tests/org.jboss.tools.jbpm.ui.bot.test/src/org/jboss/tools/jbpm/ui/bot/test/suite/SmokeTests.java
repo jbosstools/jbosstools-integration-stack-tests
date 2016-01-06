@@ -10,12 +10,7 @@ import org.jboss.tools.jbpm.ui.bot.test.PerspectiveTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
-@SuiteClasses({
-	PerspectiveTest.class,
-	JBPMProjectTest.class, 
-	GPDTest.class, 
-	GPDPaletteTest.class
-})
+@SuiteClasses({ PerspectiveTest.class, JBPMProjectTest.class, GPDTest.class, GPDPaletteTest.class })
 @RunWith(RedDeerSuite.class)
 public class SmokeTests extends TestSuite {
 

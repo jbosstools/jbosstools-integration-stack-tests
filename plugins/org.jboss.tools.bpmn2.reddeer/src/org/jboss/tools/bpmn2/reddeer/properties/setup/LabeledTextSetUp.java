@@ -7,13 +7,13 @@ public class LabeledTextSetUp implements SetUpAble {
 	private String tabLabel;
 	private String textLabel;
 	private String value;
-	
+
 	public LabeledTextSetUp(String tabLabel, String textLabel, String value) {
 		this.tabLabel = tabLabel;
 		this.textLabel = textLabel;
 		this.value = value;
 	}
-	
+
 	@Override
 	public void setUpCTab() {
 		new LabeledText(textLabel).setText(value);

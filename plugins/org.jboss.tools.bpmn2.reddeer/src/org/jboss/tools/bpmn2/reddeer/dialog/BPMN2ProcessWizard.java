@@ -14,15 +14,15 @@ public class BPMN2ProcessWizard extends NewWizardDialog {
 	public BPMN2ProcessWizard() {
 		super("BPMN2", "jBPM Process Diagram");
 	}
-	
+
 	/**
 	 * 
 	 * @param fileName
 	 */
 	public void execute(String fileName) {
-		execute(new String[0], fileName);	
+		execute(new String[0], fileName);
 	}
-	
+
 	/**
 	 *
 	 * @param location
@@ -43,11 +43,16 @@ public class BPMN2ProcessWizard extends NewWizardDialog {
 	public void execute(String[] location, String fileName, String processName, String processId, String packageName) {
 		open();
 		// if these are null use predefined values by the editor wizard.
-		if (processName != null && !processName.isEmpty()) new LabeledText("Process name:").setText(processName);
-		if (packageName != null && !packageName.isEmpty()) new LabeledText("Package:").setText(packageName);
-		if (processId != null && !processId.isEmpty()) new LabeledText("Process ID:").setText(processId);
-		if (location != null && location.length > 0) new LabeledText("Container:").setText(ProjectPath.valueOf(location));
-		if (fileName != null && !fileName.isEmpty()) new LabeledText("File name:").setText(fileName);
+		if (processName != null && !processName.isEmpty())
+			new LabeledText("Process name:").setText(processName);
+		if (packageName != null && !packageName.isEmpty())
+			new LabeledText("Package:").setText(packageName);
+		if (processId != null && !processId.isEmpty())
+			new LabeledText("Process ID:").setText(processId);
+		if (location != null && location.length > 0)
+			new LabeledText("Container:").setText(ProjectPath.valueOf(location));
+		if (fileName != null && !fileName.isEmpty())
+			new LabeledText("File name:").setText(fileName);
 		finish();
 	}
 }

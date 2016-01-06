@@ -43,25 +43,24 @@ import org.w3c.dom.NodeList;
  * Represents an element in the editor canvas.
  */
 public class Element {
-	
-	private boolean useGraphitiProperties = 
-		JBPM6ComplexEnvironment.getInstance().useGraphiti();
+
+	private boolean useGraphitiProperties = JBPM6ComplexEnvironment.getInstance().useGraphiti();
 
 	protected Logger log = Logger.getLogger(getClass());
-	
+
 	protected ProcessEditorView editor;
 	protected PropertiesHandler propertiesHandler;
-	
+
 	protected String name;
 	protected ElementType type;
 	protected Element parent;
 	protected AbsoluteEditPart containerShapeEditPart;
 	protected GEFProcessEditor processEditor;
-	
-	protected Element(){
-		
+
+	protected Element() {
+
 	}
-	
+
 	/**
 	 * @param name
 	 * @param type
@@ -78,11 +77,10 @@ public class Element {
 	public Element(String name, ElementType type, Element parent) {
 		this(name, type, parent, 0, true);
 	}
-	
+
 	/**
-	 * Creates a new instance of Construct. The Construct must already be present
-	 * in the editor. If not found base either based on ${name} or ${type} then a
-	 * RuntimeException will be thrown. 
+	 * Creates a new instance of Construct. The Construct must already be present in the editor. If not found base
+	 * either based on ${name} or ${type} then a RuntimeException will be thrown.
 	 * 
 	 * @param name
 	 * @param type
@@ -94,24 +92,24 @@ public class Element {
 		this.name = name;
 		this.type = type;
 		this.parent = parent;
-		
+
 		setUp(name, type, parent, index, select);
 	}
-	
+
 	protected Element(EditPart containerShapeEditPart, ElementType type) {
 		this.type = type;
 		this.containerShapeEditPart = new AbsoluteEditPart(containerShapeEditPart);
 		processEditor = new GEFProcessEditor();
 		editor = new ProcessEditorView();
 		propertiesHandler = new PropertiesHandler(containerShapeEditPart, useGraphitiProperties) {
-			
+
 			@Override
 			public void focusElement() {
 				Element.this.click();
 			}
 		};
 	}
-	
+
 	protected Element(Element copyFrom) {
 		this.name = copyFrom.name;
 		this.type = copyFrom.type;
@@ -122,11 +120,11 @@ public class Element {
 		this.propertiesHandler = copyFrom.propertiesHandler;
 		click();
 	}
-	
+
 	private void setUp(String name, ElementType type, Element parent, int index, boolean select) {
 		processEditor = new GEFProcessEditor();
 		editor = new ProcessEditorView();
-		
+
 		List<Matcher<? super EditPart>> matcherList = new ArrayList<Matcher<? super EditPart>>();
 		if (name != null) {
 			matcherList.add(new ConstructWithName<EditPart>(name));
@@ -134,8 +132,8 @@ public class Element {
 		if (type != null) {
 			matcherList.add(new ConstructOfType<EditPart>(type));
 		}
-		
-		if(type != ElementType.PROCESS) {
+
+		if (type != ElementType.PROCESS) {
 			matcherList.add(new EditPartOfClassName("ContainerShapeEditPart"));
 			containerShapeEditPart = new AbsoluteEditPart(allOf(matcherList), index);
 		} else {
@@ -143,37 +141,38 @@ public class Element {
 		}
 
 		if (containerShapeEditPart == null) {
-			throw new RuntimeException("Reddeer could not find construct with name '" + name + "' of type '" + type.name() + "'");
+			throw new RuntimeException(
+					"Reddeer could not find construct with name '" + name + "' of type '" + type.name() + "'");
 		}
 
 		propertiesHandler = new PropertiesHandler(containerShapeEditPart.getEditPart(), useGraphitiProperties) {
-			
+
 			@Override
 			public void focusElement() {
 				Element.this.click();
 			}
 		};
-	
+
 		if (select) {
 			select();
 		}
-		
-		if(type == ElementType.PROCESS) {
-			containerShapeEditPart.click(0,0);
-			if(name == null) {
+
+		if (type == ElementType.PROCESS) {
+			containerShapeEditPart.click(0, 0);
+			if (name == null) {
 				propertiesHandler.activatePropertiesView();
 				this.name = propertiesHandler.getTitleOfPropertiesView();
 			}
 		}
 	}
-	
+
 	/**
 	 * 
 	 */
 	public void refresh() {
 		setUp(name, type, parent, 0, true);
 	}
-	
+
 	/**
 	 * Set the name of this construct.
 	 * 
@@ -183,12 +182,12 @@ public class Element {
 		this.name = name;
 		propertiesHandler.setUp(new LabeledTextSetUp("General", "Name", name));
 	}
-	
+
 	/**
 	 * Select this construct. Select the pictogram not the label.
 	 */
 	public void select() {
-		if(name != null && type != ElementType.PROCESS) {
+		if (name != null && type != ElementType.PROCESS) {
 			new LabeledEditPart(name).select();
 		} else {
 			containerShapeEditPart.select();
@@ -201,10 +200,10 @@ public class Element {
 	public void click() {
 		containerShapeEditPart.click();
 	}
-	
+
 	/**
 	 * Add a boundary event to this construct.
-	 *  
+	 * 
 	 * @param name
 	 * @param eventType
 	 */
@@ -216,14 +215,14 @@ public class Element {
 		Point p = getBounds().getTopLeft();
 		Element newEvent = putToCanvas(name, eventType, p, containerShapeEditPart.getEditPart().getParent());
 		newEvent.name = name;
-		
+
 		try {
 			return (BoundaryEvent) asType.getConstructor(Element.class).newInstance(newEvent);
 		} catch (Exception e) {
 			throw new RuntimeException("Could not create an instance of type '" + asType + "'", e);
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param name
@@ -232,7 +231,7 @@ public class Element {
 	public Element append(String name, ElementType constructType) {
 		return append(name, constructType, ConnectionType.SEQUENCE_FLOW, Position.EAST);
 	}
-	
+
 	/**
 	 * 
 	 * @param name
@@ -242,7 +241,7 @@ public class Element {
 	public Element append(String name, ElementType constructType, Position position) {
 		return append(name, constructType, ConnectionType.SEQUENCE_FLOW, position);
 	}
-	
+
 	/**
 	 * 
 	 * @param name
@@ -252,7 +251,7 @@ public class Element {
 	public Element append(String name, ElementType constructType, ConnectionType connectionType) {
 		return append(name, constructType, connectionType, Position.EAST);
 	}
-	
+
 	/**
 	 * 
 	 * @param name
@@ -260,26 +259,28 @@ public class Element {
 	 * @param connectionType
 	 * @param relativePosition
 	 */
-	public Element append(String name, ElementType constructType, ConnectionType connectionType, Position relativePosition) {
+	public Element append(String name, ElementType constructType, ConnectionType connectionType,
+			Position relativePosition) {
 		select();
-		log.info("Appending construct name '" + name + "' of type '" + constructType + "' after construct with name '" + this.name + "'.");
-		
+		log.info("Appending construct name '" + name + "' of type '" + constructType + "' after construct with name '"
+				+ this.name + "'.");
+
 		Point point = findPoint(parent, this, relativePosition);
 		if (!isAvailable(point)) {
 			throw new RuntimeException(point + " is not available ");
 		}
-		
+
 		Element construct = putToCanvas(name, constructType, point, containerShapeEditPart.getEditPart().getParent());
-		
+
 		connectTo(construct, connectionType);
-		
+
 		try {
 			return (Element) constructType.getJavaClass().getConstructor(Element.class).newInstance(construct);
 		} catch (Exception e) {
 			throw new RuntimeException("Could not create an instance of type '" + constructType + "'", e);
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param construct
@@ -287,19 +288,18 @@ public class Element {
 	public void connectTo(Element construct) {
 		connectTo(construct, ConnectionType.SEQUENCE_FLOW);
 	}
-	
+
 	/**
 	 * 
-	 * Connect this construct to another one using a connector
-	 * of type ${type}.
+	 * Connect this construct to another one using a connector of type ${type}.
 	 * 
 	 * @param toElement
 	 * @param connectionType
 	 */
 	public void connectTo(Element toElement, ConnectionType connectionType) {
-	    new WaitUntil(new ConnectionAdded(this, toElement, connectionType));
+		new WaitUntil(new ConnectionAdded(this, toElement, connectionType));
 	}
-	
+
 	/**
 	 * Delete this construct. Cannot be undone.
 	 */
@@ -307,7 +307,7 @@ public class Element {
 		select();
 		new LabeledGraphitiEditPart(name).getContextButton("Delete").click();
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -315,22 +315,22 @@ public class Element {
 	public ElementType getType() {
 		return type;
 	}
-	
+
 	/**
 	 * Check if ${p} in the parent is not covered by another construct.
-	 *  
+	 * 
 	 * @param p
 	 * @return
 	 */
 	protected boolean isAvailable(Point p) {
 		// Check weather the point is not already taken by another child editPart.
-		List<EditPart> result = processEditor.getAllChildContainerShapeEditParts(containerShapeEditPart.getEditPart().getParent(), new ConstructOnPoint<EditPart>(p));
+		List<EditPart> result = processEditor.getAllChildContainerShapeEditParts(
+				containerShapeEditPart.getEditPart().getParent(), new ConstructOnPoint<EditPart>(p));
 		return result.isEmpty();
 	}
-	
+
 	/**
-	 * Get a point inside ${parent} and next to ${child} with relative
-	 * ${position} to which another child can be added. 
+	 * Get a point inside ${parent} and next to ${child} with relative ${position} to which another child can be added.
 	 * 
 	 * @param parent
 	 * @param nextToChild
@@ -339,59 +339,61 @@ public class Element {
 	 */
 	protected Point findPoint(Element parent, Element nextToChild, Position relativePosition) {
 		Rectangle childBounds = nextToChild.getBounds();
-		
+
 		int childStartX = childBounds.x();
 		int childEndX = childBounds.right();
-		
+
 		int childStartY = childBounds.y();
 		int childEndY = childBounds.bottom();
-		
+
 		int childCenterX = childBounds.getCenter().x();
 		int childCenterY = childBounds.getCenter().y();
-		
-		int nearOffset  = 75; //nextToChild.type.isContainer() ? 2 * 75 : 75;
-		int farOffset = 100; //nextToChild.type.isContainer() ? 2 * 100 : 100;
-		
+
+		int nearOffset = 75; // nextToChild.type.isContainer() ? 2 * 75 : 75;
+		int farOffset = 100; // nextToChild.type.isContainer() ? 2 * 100 : 100;
+
 		Point point = new Point(-1, -1);
 		switch (relativePosition) {
-			case NORTH:
-				point.x = childCenterX;
-				point.y = childStartY - farOffset;
-				break;
-			case NORTH_EAST:
-				point.x = childEndX + nearOffset;
-				point.y = childStartY - farOffset;
-				break;
-			case EAST:
-				point.x = childEndX + farOffset;
-				point.y = childCenterY;
-				break;
-			case SOUTH_EAST:
-				point.x = childEndX  + nearOffset;
-				point.y = childEndY + farOffset;
-				break;
-			case SOUTH:
-				point.x = childCenterX;
-				point.y = childEndY + farOffset;
-				break;
-			case SOUTH_WEST:
-				point.x = childStartX - nearOffset;
-				point.y = childEndY + farOffset;
-				break;
-			case WEST:
-				point.x = childStartX - farOffset;
-				point.y = childCenterY;
-				break;
-			case NORTH_WEST:
-				point.x = childStartX - nearOffset;
-				point.y = childStartY - farOffset;
-				break;
-			default:
-				throw new UnsupportedOperationException();
+		case NORTH:
+			point.x = childCenterX;
+			point.y = childStartY - farOffset;
+			break;
+		case NORTH_EAST:
+			point.x = childEndX + nearOffset;
+			point.y = childStartY - farOffset;
+			break;
+		case EAST:
+			point.x = childEndX + farOffset;
+			point.y = childCenterY;
+			break;
+		case SOUTH_EAST:
+			point.x = childEndX + nearOffset;
+			point.y = childEndY + farOffset;
+			break;
+		case SOUTH:
+			point.x = childCenterX;
+			point.y = childEndY + farOffset;
+			break;
+		case SOUTH_WEST:
+			point.x = childStartX - nearOffset;
+			point.y = childEndY + farOffset;
+			break;
+		case WEST:
+			point.x = childStartX - farOffset;
+			point.y = childCenterY;
+			break;
+		case NORTH_WEST:
+			point.x = childStartX - nearOffset;
+			point.y = childStartY - farOffset;
+			break;
+		default:
+			throw new UnsupportedOperationException();
 		}
 		// Check parent bounds. In case the point (marked as '+') is out of bounds.
-		// 	- '*'  signals a properly added construct.
-		// 	- '->' marks a connection between to '*'
+		// - '*' signals a properly added construct.
+		// - '->' marks a connection between to '*'
+		//
+		// @formatter:off
 		// 
 		//     + N
 		//    ________
@@ -400,7 +402,10 @@ public class Element {
 		// W | *->*   | E
 		//   |________|
 		//       +
-        //       S
+		//       S
+		//
+		// @formatter:off
+		//
 		if (parent != null) {
 			Rectangle parentBounds = parent.getBounds();
 			

@@ -14,35 +14,35 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@Server(type = {ServerReqType.EAP, ServerReqType.WildFly}, state = ServerReqState.RUNNING)
+@Server(type = { ServerReqType.EAP, ServerReqType.WildFly }, state = ServerReqState.RUNNING)
 @RunWith(RedDeerSuite.class)
 public class CloneRepoTest extends KieNavigatorTestParent {
 
 	@InjectRequirement
 	private ServerRequirement serverReq;
-	
+
 	@Test
 	public void cloneRepoTest() {
- 		CreateOrgUnitDialog cod = knv.getServer(0).createOrgUnit();
+		CreateOrgUnitDialog cod = knv.getServer(0).createOrgUnit();
 		cod.setName("clonename");
 		cod.setOwner("somebody");
 		cod.setDefaultGroupId("gid");
 		cod.ok();
-		
+
 		progressInformationWaiting();
-		
+
 		CreateRepositoryDialog crd = knv.getOrgUnit(0, "clonename").createRepository();
 		crd.setName("clonerepo");
 		crd.cloneAnExistingRepository();
 		crd.setRepositoryUrl(REPO_URL);
 		crd.ok();
-		
+
 		progressInformationWaiting();
-	
+
 		RepositoryItem ri = knv.getRepository(0, "clonename", "clonerepo");
 		ri.importRepository();
 		ri.showInGitRepositoryView();
-		
+
 		Assert.assertEquals(true, new DefaultTree().getItems().get(0).getText().contains("clonerepo"));
 	}
 }

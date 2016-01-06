@@ -7,11 +7,7 @@ import org.jboss.tools.teiid.ui.bot.test.TeiidConnectionImportTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
-@SuiteClasses({ 
-	TeiidConnectionImportTest.class,
-	JDBCImportWizardTest.class,
-	SalesforceImportTest.class,
-	})
+@SuiteClasses({ TeiidConnectionImportTest.class, JDBCImportWizardTest.class, SalesforceImportTest.class, })
 @RunWith(RedDeerSuite.class)
 public class ImportTests {
 

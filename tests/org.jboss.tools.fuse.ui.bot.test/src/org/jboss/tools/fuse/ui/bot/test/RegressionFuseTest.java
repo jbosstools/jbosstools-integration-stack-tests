@@ -66,8 +66,11 @@ public class RegressionFuseTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>New Server Runtime Wizard - Cancel/Finish button error</p>
-	 * <b>Link: </b><a href="https://issues.jboss.org/browse/FUSETOOLS-1067">https://issues.jboss.org/browse/FUSETOOLS-1067</a>
+	 * <p>
+	 * New Server Runtime Wizard - Cancel/Finish button error
+	 * </p>
+	 * <b>Link: </b>
+	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-1067">https://issues.jboss.org/browse/FUSETOOLS-1067</a>
 	 */
 	@Test
 	public void issue_1067() {
@@ -119,20 +122,27 @@ public class RegressionFuseTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>Karaf cannot be started in debug mode</p>
-	 * <b>Link: </b><a href="https://issues.jboss.org/browse/FUSETOOLS-1132">https://issues.jboss.org/browse/FUSETOOLS-1132</a>
-	 * @throws FuseArchetypeNotFoundException Fuse archetype was not found. Tests cannot be executed!
+	 * <p>
+	 * Karaf cannot be started in debug mode
+	 * </p>
+	 * <b>Link: </b>
+	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-1132">https://issues.jboss.org/browse/FUSETOOLS-1132</a>
+	 * 
+	 * @throws FuseArchetypeNotFoundException
+	 *             Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Test
 	public void issue_1132() throws FuseArchetypeNotFoundException {
 
 		ProjectFactory.createProject("camel-blueprint", "camel-archetype-blueprint");
-		new ProjectExplorer().getProject("camel-blueprint").getProjectItem("src/test/java", "com.mycompany.camel.blueprint", "RouteTest.java").delete();
+		new ProjectExplorer().getProject("camel-blueprint")
+				.getProjectItem("src/test/java", "com.mycompany.camel.blueprint", "RouteTest.java").delete();
 		String server = serverRequirement.getConfig().getName();
-		new BreakpointsView().importBreakpoints(ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID, "resources/breakpoint.bkpt"));
+		new BreakpointsView().importBreakpoints(
+				ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID, "resources/breakpoint.bkpt"));
 		FuseServerManipulator.debugServer(server);
 		FuseServerManipulator.addModule(server, "camel-blueprint");
-		try {	
+		try {
 			new WaitUntil(new ShellWithTextIsAvailable("Confirm Perspective Switch"), TimePeriod.LONG);
 			new DefaultShell("Confirm Perspective Switch");
 			new CheckBox(0).toggle(true);
@@ -153,9 +163,14 @@ public class RegressionFuseTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>uninstall of bundles from servers broken</p>
-	 * <b>Link: </b><a href="https://issues.jboss.org/browse/FUSETOOLS-1152">https://issues.jboss.org/browse/FUSETOOLS-1152</a>
-	 * @throws FuseArchetypeNotFoundException Fuse archetype was not found. Tests cannot be executed!
+	 * <p>
+	 * uninstall of bundles from servers broken
+	 * </p>
+	 * <b>Link: </b>
+	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-1152">https://issues.jboss.org/browse/FUSETOOLS-1152</a>
+	 * 
+	 * @throws FuseArchetypeNotFoundException
+	 *             Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Test
 	public void issue_1152() throws FuseArchetypeNotFoundException {
@@ -166,13 +181,21 @@ public class RegressionFuseTest extends DefaultTest {
 		FuseServerManipulator.addModule(server, "camel-spring-dm");
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		FuseServerManipulator.removeAllModules(server);
-		new WaitUntil(new FuseLogContainsText("Application context succesfully closed (OsgiBundleXmlApplicationContext(bundle=camel-spring-dm"), TimePeriod.VERY_LONG);
+		new WaitUntil(
+				new FuseLogContainsText(
+						"Application context succesfully closed (OsgiBundleXmlApplicationContext(bundle=camel-spring-dm"),
+				TimePeriod.VERY_LONG);
 	}
 
 	/**
-	 * <p>Problem occurred during restart JBoss Fuse</p>
-	 * <b>Link: </b><a href="https://issues.jboss.org/browse/FUSETOOLS-1252">https://issues.jboss.org/browse/FUSETOOLS-1252</a>
-	 * @throws FuseArchetypeNotFoundException Fuse archetype was not found. Tests cannot be executed!
+	 * <p>
+	 * Problem occurred during restart JBoss Fuse
+	 * </p>
+	 * <b>Link: </b>
+	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-1252">https://issues.jboss.org/browse/FUSETOOLS-1252</a>
+	 * 
+	 * @throws FuseArchetypeNotFoundException
+	 *             Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Test
 	public void issue_1252() throws FuseArchetypeNotFoundException {

@@ -9,8 +9,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 /**
- * Tests with prerequisites (drivers, installed server)
- * Run on all platforms
+ * Tests with prerequisites (drivers, installed server) Run on all platforms
  * 
  * @author lfabriko
  * 
@@ -20,10 +19,10 @@ import org.junit.runners.Suite.SuiteClasses;
 	JDBCImportWizardTest.class,
 	ServerManagementSimpleDV6Test.class,
 	ProcedurePreviewTest.class
-	//TODO planned tests:
-	//DataSourcesTest - TODO add preview operation to JDBCImportWizardTest
-	//TeiidConnectionImportTest - TODO solve issues with DV setup
-	//AdvancedServerOpsTest - TODO 
+		// TODO planned tests:
+		// DataSourcesTest - TODO add preview operation to JDBCImportWizardTest
+		// TeiidConnectionImportTest - TODO solve issues with DV setup
+		// AdvancedServerOpsTest - TODO
 })
 @RunWith(RedDeerSuite.class)
 public class ServerTests {

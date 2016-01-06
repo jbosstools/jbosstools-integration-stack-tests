@@ -25,9 +25,6 @@ public class Remote {
 	@XmlElement(namespace = Namespaces.SOA_REQ)
 	private boolean useManagementOperations;
 
-	
-	
-	
 	public String getHost() {
 		return host;
 	}
@@ -75,5 +72,5 @@ public class Remote {
 	public void setUseManagementOperations(boolean useManagementOperations) {
 		this.useManagementOperations = useManagementOperations;
 	}
-	
+
 }

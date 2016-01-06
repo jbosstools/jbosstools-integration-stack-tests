@@ -17,8 +17,6 @@ import org.jboss.tools.bpmn2.reddeer.properties.setup.OperationSetUp;
  */
 public class ServiceTask extends Task {
 
-	
-
 	/**
 	 * 
 	 * @param name
@@ -26,11 +24,11 @@ public class ServiceTask extends Task {
 	public ServiceTask(String name) {
 		super(name, ElementType.SERVICE_TASK);
 	}
-	
-	public ServiceTask(Element element){
+
+	public ServiceTask(Element element) {
 		super(element);
 	}
-	
+
 	/**
 	 * 
 	 * @param implementationUri
@@ -38,7 +36,7 @@ public class ServiceTask extends Task {
 	public void setImplementation(String implementationUri) {
 		propertiesHandler.setUp(new ImplementationSetUp(PropertiesTabs.SERVICE_TASK_TAB, implementationUri));
 	}
-	
+
 	/**
 	 * 
 	 * @param operationContractName
@@ -47,7 +45,8 @@ public class ServiceTask extends Task {
 	 * @param errorRef
 	 */
 	public void setOperation(String operationContractName, Message inMessage, Message outMessage, ErrorRef errorRef) {
-		propertiesHandler.setUp(new OperationSetUp(PropertiesTabs.SERVICE_TASK_TAB, operationContractName, inMessage, outMessage, errorRef));
+		propertiesHandler.setUp(new OperationSetUp(PropertiesTabs.SERVICE_TASK_TAB, operationContractName, inMessage,
+				outMessage, errorRef));
 	}
 
 	/**
@@ -67,6 +66,6 @@ public class ServiceTask extends Task {
 	}
 
 	public void editParameterMapping(ParameterMapping parameterMapping) {
-        propertiesHandler.setUp(new ParameterMappingSetUp(parameterMapping, SectionToolItemButton.EDIT));
-    }
+		propertiesHandler.setUp(new ParameterMappingSetUp(parameterMapping, SectionToolItemButton.EDIT));
+	}
 }

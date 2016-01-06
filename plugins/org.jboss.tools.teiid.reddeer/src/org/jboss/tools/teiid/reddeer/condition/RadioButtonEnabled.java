@@ -13,10 +13,10 @@ public class RadioButtonEnabled extends AbstractWaitCondition {
 
 	private String LABEL;
 
-	public RadioButtonEnabled(String label){
+	public RadioButtonEnabled(String label) {
 		this.LABEL = label;
 	}
-	
+
 	@Override
 	public boolean test() {
 		try {

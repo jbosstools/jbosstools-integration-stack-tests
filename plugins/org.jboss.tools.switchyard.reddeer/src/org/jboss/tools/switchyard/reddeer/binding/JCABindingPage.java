@@ -13,15 +13,15 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  * 
  */
 public class JCABindingPage extends OperationOptionsPage<JMSBindingPage> {
-	
+
 	public static final String RESOURCE_ADAPTER_GENERIC = "Generic Resource Adapter";
 	public static final String RESOURCE_ADAPTER_HORNETQ_QUEUE = "HornetQ Queue Resource Adapter";
 	public static final String RESOURCE_ADAPTER_HORNETQ_TOPIC = "HornetQ Topic Resource Adapter";
-	
+
 	public static final String ENDPOINT_JMS = "JMS Endpoint";
 	public static final String ENDPOINT_CCI = "CCI Endpoint";
 	public static final String ENDPOINT_CUSTOM = "Custom";
-	
+
 	public static final String ACKNOWLEDGE_MODE_AUTO = "Auto-acknowledge";
 	public static final String ACKNOWLEDGE_MODE_DUPS_OK = "Dups-ok-acknowledge";
 

@@ -41,7 +41,8 @@ public class SwitchYardRequirement implements Requirement<SwitchYard>, CustomCon
 
 		String libraryVersion() default SwitchYardProjectWizard.DEFAULT_LIBRARY_VERSION;
 
-		Server server() default @Server(type = {}, state = ServerReqState.PRESENT);
+		Server server() default @Server(type = {}, state = ServerReqState.PRESENT)
+		;
 	}
 
 	@Override

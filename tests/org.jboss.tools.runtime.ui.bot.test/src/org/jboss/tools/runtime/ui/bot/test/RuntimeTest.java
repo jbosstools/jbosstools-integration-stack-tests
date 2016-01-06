@@ -30,19 +30,19 @@ public class RuntimeTest {
 		esbPage.open();
 		List<String> esbRuntimes = esbPage.getESBRuntimes();
 		esbPage.ok();
-		
+
 		// jBPM Runtimes
 		JBPMRuntimePreferencePage jbpmPage = new JBPMRuntimePreferencePage();
 		jbpmPage.open();
 		List<String> jbpmRuntimes = jbpmPage.getJBPMRuntimes();
 		jbpmPage.ok();
-		
+
 		// Drools Runtimes
 		DroolsRuntimePreferencePage droolsPage = new DroolsRuntimePreferencePage();
 		droolsPage.open();
 		List<String> droolsRuntimes = droolsPage.getDroolsRuntimes();
 		droolsPage.ok();
-		
+
 		List<String> runtimes = new ArrayList<String>();
 		runtimes.addAll(esbRuntimes);
 		runtimes.addAll(jbpmRuntimes);

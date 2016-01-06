@@ -17,6 +17,7 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 
 /**
  * Temporary copy, while is not included in RedDeer
+ * 
  * @author apodhrad
  * 
  */
@@ -27,7 +28,7 @@ public class ImportFileWizard extends ImportWizardDialog {
 	}
 
 	public void importFile(String folder, String... fileNames) {
-		
+
 		File file = new File(folder);
 		if (!file.exists()) {
 			throw new RuntimeException("File '" + folder + "' not found!");
@@ -50,7 +51,7 @@ public class ImportFileWizard extends ImportWizardDialog {
 
 		finish();
 	}
-	
+
 	private class LabeledComboExt extends LabeledCombo {
 
 		public LabeledComboExt(String label) {
@@ -58,12 +59,12 @@ public class ImportFileWizard extends ImportWizardDialog {
 		}
 
 		public void setFocus() {
-			
+
 			WidgetHandler.getInstance().setFocus(swtWidget);
 		}
-		
+
 		public void typeText(String text) {
-			
+
 			setText("");
 			setFocus();
 			KeyboardFactory.getKeyboard().type(text);

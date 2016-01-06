@@ -14,5 +14,5 @@ public class CompensationStartEvent extends StartEvent {
 	public CompensationStartEvent(String name) {
 		super(name, ElementType.COMPENSATION_START_EVENT);
 	}
-	
+
 }

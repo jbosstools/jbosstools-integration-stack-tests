@@ -39,8 +39,7 @@ public class JMXNavigator extends WorkbenchView {
 	}
 
 	/**
-	 * Tries to connect to a specified node under <i>Local Processes</i> in
-	 * <i>JMX Navigator</i> View.
+	 * Tries to connect to a specified node under <i>Local Processes</i> in <i>JMX Navigator</i> View.
 	 * 
 	 * @param name
 	 *            prefix name of the node
@@ -58,8 +57,8 @@ public class JMXNavigator extends WorkbenchView {
 				items = item.getItems();
 				break;
 			}
-		}				 				
-			 				
+		}
+
 		for (TreeItem item : items) {
 			if (item.getText().contains(name)) {
 				item.select();
@@ -79,19 +78,19 @@ public class JMXNavigator extends WorkbenchView {
 	}
 
 	/**
-	 * Tries to decide if a particular node described with the path is in the
-	 * tree in <i>JMX Navigator</i> View (below the node <i>Local
-	 * Processes</i>).
+	 * Tries to decide if a particular node described with the path is in the tree in <i>JMX Navigator</i> View (below
+	 * the node <i>Local Processes</i>).
 	 * 
 	 * @param path
-	 *            Path to the desired node (names of nodes in the tree in <i>JMX
-	 *            Navigator</i> View without the <i>Local Processes</i> node.
+	 *            Path to the desired node (names of nodes in the tree in <i>JMX Navigator</i> View without the <i>Local
+	 *            Processes</i> node.
 	 * @return The node if exists, <b>null</b> - otherwise
 	 */
 	public TreeItem getNode(String... path) {
 
 		activate();
-		if (path == null) return null;
+		if (path == null)
+			return null;
 		log.info("Accessing child items of 'Local Processes'");
 		List<TreeItem> items = new DefaultTreeItem("Local Processes").getItems();
 		log.info("Child items of 'Local Processes' are: " + logTreeItems(items));
@@ -101,8 +100,9 @@ public class JMXNavigator extends WorkbenchView {
 		rightItem = getTreeItem(items, path[0]);
 		if (rightItem == null) {
 			for (TreeItem item : items) {
-				if (path[0].equals("Local Camel Context") && item.getText().startsWith("maven [") ||
-					path[0].equals("karaf") && (item.getText().contains("karaf") || item.getText().startsWith("JBoss Fuse"))) {
+				if (path[0].equals("Local Camel Context") && item.getText().startsWith("maven [")
+						|| path[0].equals("karaf")
+								&& (item.getText().contains("karaf") || item.getText().startsWith("JBoss Fuse"))) {
 					item.select();
 					item.doubleClick();
 					expand(item);
@@ -131,7 +131,8 @@ public class JMXNavigator extends WorkbenchView {
 				return rightItem;
 			}
 			rightItem.select();
-			if (i < path.length - 1) expand(rightItem);
+			if (i < path.length - 1)
+				expand(rightItem);
 		}
 		return rightItem;
 	}

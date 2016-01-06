@@ -33,7 +33,7 @@ public class ServerAS extends ServerBase {
 
 	public static final int DEFAULT_HTTP_PORT = 8080;
 	public static final String DEFAULT_CONFIGURATION = "standalone.xml";
-    
+
 	private final String category = "JBoss Community";
 
 	private final String label = "JBoss AS";
@@ -109,7 +109,7 @@ public class ServerAS extends ServerBase {
 			new LabeledText("User Name").setText(remote.getUsername()); // TODO: move this into ServerEditor
 			new LabeledText("Password").setText(remote.getPassword());
 			serverEditor.save();
-			
+
 		} else {
 			addJre();
 

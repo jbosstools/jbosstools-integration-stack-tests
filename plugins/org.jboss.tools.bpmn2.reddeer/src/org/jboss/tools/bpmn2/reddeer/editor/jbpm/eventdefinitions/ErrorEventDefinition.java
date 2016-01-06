@@ -25,16 +25,16 @@ public class ErrorEventDefinition extends EventDefinition {
 		this.variableForMaping = variableForMaping;
 		this.comboLabel = comboLabel;
 	}
-	
+
 	@Override
 	public void setUp() {
-		
+
 		Combo mappingCombo = new LabeledCombo(comboLabel);
 		if (!mappingCombo.getItems().contains(variableForMaping)) {
 			throw new IllegalArgumentException(variableForMaping + " isn't in list of defined errors");
 		}
 		mappingCombo.setSelection(variableForMaping);
-		
+
 		Combo errorCombo = new LabeledCombo("Error");
 		String comboItem = errorRef.getName() + "(" + errorRef.getDataType() + ")";
 		if (!errorCombo.getItems().contains(comboItem)) {
@@ -43,8 +43,8 @@ public class ErrorEventDefinition extends EventDefinition {
 		} else {
 			errorCombo.setSelection(comboItem);
 		}
-		
-		//new SectionToolItem("Error Event Definition Details", "Close").click();
+
+		// new SectionToolItem("Error Event Definition Details", "Close").click();
 	}
-	
+
 }

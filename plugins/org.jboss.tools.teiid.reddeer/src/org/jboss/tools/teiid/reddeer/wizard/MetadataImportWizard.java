@@ -48,7 +48,7 @@ public class MetadataImportWizard extends TeiidImportWizard {
 
 	public void execute() {
 		open();
-		
+
 		new DefaultCombo().setSelection(importType);
 
 		next();

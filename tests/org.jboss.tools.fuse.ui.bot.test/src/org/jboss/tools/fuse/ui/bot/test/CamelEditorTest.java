@@ -53,7 +53,8 @@ public class CamelEditorTest extends DefaultTest {
 	/**
 	 * Prepares test environment
 	 * 
-	 * @throws FuseArchetypeNotFoundException Fuse archetype was not found. Tests cannot be executed!
+	 * @throws FuseArchetypeNotFoundException
+	 *             Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Before
 	public void setupResetCamelContext() throws FuseArchetypeNotFoundException {
@@ -85,8 +86,9 @@ public class CamelEditorTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>Test tries to create all components available in the Palette view associated
-	 *  with the Camel Editor.</p>
+	 * <p>
+	 * Test tries to create all components available in the Palette view associated with the Camel Editor.
+	 * </p>
 	 * <b>Steps</b>
 	 * <ol>
 	 * <li>create a new project with camel-archetype-spring archetype</li>
@@ -115,8 +117,10 @@ public class CamelEditorTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>Test tries to manipulate with XML source of the camel-context.xml file and 
-	 * checks if it affects components in the Camel Editor.</p>
+	 * <p>
+	 * Test tries to manipulate with XML source of the camel-context.xml file and checks if it affects components in the
+	 * Camel Editor.
+	 * </p>
 	 * <b>Steps</b>
 	 * <ol>
 	 * <li>create a new project with camel-archetype-spring archetype</li>
@@ -147,7 +151,9 @@ public class CamelEditorTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>Test tries to add components in the Camel Editor via component's context menu and the option Add.</p>
+	 * <p>
+	 * Test tries to add components in the Camel Editor via component's context menu and the option Add.
+	 * </p>
 	 * <b>Steps</b>
 	 * <ol>
 	 * <li>create a new project with camel-archetype-spring archetype</li>
@@ -158,7 +164,8 @@ public class CamelEditorTest extends DefaultTest {
 	 * <li>switch to Design tab in the Camel Editor</li>
 	 * <li>add back removed components (from branch otherwise) via the context menu and the option Add</li>
 	 * <li>switch to Source tab in the Camel Editor</li>
-	 * <li>check if the content of the file is equals to content of the same file immediately after project creation</li>
+	 * <li>check if the content of the file is equals to content of the same file immediately after project creation
+	 * </li>
 	 * </ol>
 	 */
 	@Test
@@ -186,8 +193,10 @@ public class CamelEditorTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>Test tries to add components in the Camel Editor via Drag&Drop feature (Adds components
-	 * from Palette and connections between components via the Camel Editor).</p>
+	 * <p>
+	 * Test tries to add components in the Camel Editor via Drag&Drop feature (Adds components from Palette and
+	 * connections between components via the Camel Editor).
+	 * </p>
 	 * <ol>
 	 * <li>create a new project with camel-archetype-spring archetype</li>
 	 * <li>open Project Explorer view</li>
@@ -195,10 +204,11 @@ public class CamelEditorTest extends DefaultTest {
 	 * <li>switch to Source tab in the Camel Editor</li>
 	 * <li>remove branch otherwise</li>
 	 * <li>switch to Design tab in the Camel Editor</li>
-	 * <li>add back removed components (from branch otherwise) via Drag&Drop feature (Adds components from Palette 
-	 * and connections between components via the Camel Editor)</li>
+	 * <li>add back removed components (from branch otherwise) via Drag&Drop feature (Adds components from Palette and
+	 * connections between components via the Camel Editor)</li>
 	 * <li>switch to Source tab in the Camel Editor</li>
-	 * <li>check if the content of the file is equals to content of the same file immediately after project creation</li>
+	 * <li>check if the content of the file is equals to content of the same file immediately after project creation
+	 * </li>
 	 * </ol>
 	 */
 	@Test
@@ -242,7 +252,9 @@ public class CamelEditorTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>Test tries to code completion assistant in the Camel Editor on Source tab.</p>
+	 * <p>
+	 * Test tries to code completion assistant in the Camel Editor on Source tab.
+	 * </p>
 	 * <ol>
 	 * <li>create a new project with camel-archetype-spring archetype</li>
 	 * <li>open Project Explorer view</li>
@@ -269,7 +281,8 @@ public class CamelEditorTest extends DefaultTest {
 		List<String> proposals = assistent.getProposals();
 		assertTrue("Content Assistent does not contain 'id' value", proposals.contains("id"));
 		assertTrue("Content Assistent does not contain 'ref' value", proposals.contains("ref"));
-		assertFalse("Content Assistent does contain 'uri' value. The attribute is already set", proposals.contains("uri"));
+		assertFalse("Content Assistent does contain 'uri' value. The attribute is already set",
+				proposals.contains("uri"));
 		assistent.close();
 		editor.insertTest("id=\"test\" ");
 		assistent = editor.openContentAssistant();

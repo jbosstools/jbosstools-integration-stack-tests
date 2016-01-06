@@ -33,7 +33,7 @@ public class DefinitionsTab {
 		new DefaultTable(s).select(name);
 		new SectionToolItem("Imports", "Remove").click();
 	}
-	
+
 	/**
 	 * 
 	 * @param name
@@ -53,19 +53,19 @@ public class DefinitionsTab {
 		new DefaultTable(s).select(name);
 		new SectionToolItem("Data Type Details", "Remove").click();
 	}
-	
+
 	/**
 	 * 
 	 * @param name
 	 * @param dataType
 	 */
 	public void addMessage(String name, String dataType) {
-		
+
 		new SectionToolItem("Message List", "Add").click();
 		new Message(name, dataType).setUp("Message Details");
 		new SectionToolItem("Message Details", "Close").click();
 	}
-	
+
 	/**
 	 * 
 	 * @param name
@@ -87,7 +87,7 @@ public class DefinitionsTab {
 		new ErrorRef(name, code, dataType).setUp();
 		new SectionToolItem("Error Details", "Close").click();
 	}
-	
+
 	/**
 	 * 
 	 * @param name
@@ -117,7 +117,7 @@ public class DefinitionsTab {
 		new DefaultTable(s).select(name);
 		new SectionToolItem("Signal List", "Remove").click();
 	}
-	
+
 	/**
 	 * 
 	 * @param name
@@ -127,13 +127,13 @@ public class DefinitionsTab {
 		Escalation escalation = new Escalation(name, code);
 		addEscalation(escalation);
 	}
-	
+
 	public void addEscalation(Escalation escalation) {
 		new SectionToolItem("Escalation List", "Add").click();
 		escalation.setUpViaProcessDefinitions();
 		new SectionToolItem("Escalation Details", "Close").click();
 	}
-	
+
 	/**
 	 * 
 	 * @param name

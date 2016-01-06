@@ -21,74 +21,77 @@ public class TriggeredNodesListener implements ProcessEventListener {
 	private int toNotBeTriggeredCount;
 	private int expectedFinalProcessState = -1;
 	private boolean wasCompletitionReached = false;
-	
+
 	public TriggeredNodesListener(Collection<String> toBeTriggered, Collection<String> notToBeTriggered) {
-		if(toBeTriggered != null) {
+		if (toBeTriggered != null) {
 			nodesToBeTriggered = new HashSet<String>(toBeTriggered);
 		} else {
 			nodesToBeTriggered = new HashSet<String>();
 		}
-		
-		if(notToBeTriggered != null) {
+
+		if (notToBeTriggered != null) {
 			nodesNotToBeTriggered = new HashSet<String>(notToBeTriggered);
 		} else {
 			nodesNotToBeTriggered = new HashSet<String>();
 		}
-		
+
 		toNotBeTriggeredCount = nodesNotToBeTriggered.size();
 	}
-	
+
 	@Override
 	public void beforeProcessStarted(ProcessStartedEvent event) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void afterProcessStarted(ProcessStartedEvent event) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void beforeProcessCompleted(ProcessCompletedEvent event) {
 		StringBuilder errorMessage = new StringBuilder("There were not triggered nodes: ");
-		for(String s : nodesToBeTriggered) {
+		for (String s : nodesToBeTriggered) {
 			errorMessage.append(s).append(", ");
 		}
-		
+
 		assertEquals(errorMessage.toString(), 0, nodesToBeTriggered.size());
-		
+
 		errorMessage = new StringBuilder("These nodes were not executed: ");
-		for(String s : nodesNotToBeTriggered) {
+		for (String s : nodesNotToBeTriggered) {
 			errorMessage.append(s).append(", ");
 		}
 		errorMessage.append(" but it is less than excpeted");
-		
+
 		assertEquals(errorMessage.toString(), toNotBeTriggeredCount, nodesNotToBeTriggered.size());
-		
-		if(expectedFinalProcessState != -1) {
+
+		if (expectedFinalProcessState != -1) {
 			switch (expectedFinalProcessState) {
 			case ProcessInstance.STATE_ABORTED:
-				assertEquals("Process was not aborted", ProcessInstance.STATE_ABORTED, event.getProcessInstance().getState());
+				assertEquals("Process was not aborted", ProcessInstance.STATE_ABORTED,
+						event.getProcessInstance().getState());
 				break;
 			case ProcessInstance.STATE_COMPLETED:
-				assertEquals("Process was not completed", ProcessInstance.STATE_COMPLETED, event.getProcessInstance().getState());
+				assertEquals("Process was not completed", ProcessInstance.STATE_COMPLETED,
+						event.getProcessInstance().getState());
 				break;
 
 			case ProcessInstance.STATE_ACTIVE:
-				assertEquals("Process was not active", ProcessInstance.STATE_ACTIVE, event.getProcessInstance().getState());
+				assertEquals("Process was not active", ProcessInstance.STATE_ACTIVE,
+						event.getProcessInstance().getState());
 				break;
-			}			
+			}
 			wasCompletitionReached = true;
 		}
-		
+
 	}
 
 	@Override
 	public void afterProcessCompleted(ProcessCompletedEvent event) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -122,13 +125,13 @@ public class TriggeredNodesListener implements ProcessEventListener {
 	@Override
 	public void beforeVariableChanged(ProcessVariableChangedEvent event) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void afterVariableChanged(ProcessVariableChangedEvent event) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public int getExpectedFinalProcessState() {

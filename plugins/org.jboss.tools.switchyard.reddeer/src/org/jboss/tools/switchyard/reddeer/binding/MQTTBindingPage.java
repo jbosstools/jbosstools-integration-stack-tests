@@ -10,7 +10,7 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  * 
  */
 public class MQTTBindingPage extends OperationOptionsPage<MQTTBindingPage> {
-	
+
 	public static final String QOS_AT_LEAST_ONCE = "AtLeastOnce";
 	public static final String QOS_AT_MOST_ONCE = "AtMostOnce";
 	public static final String QOS_EXACTLY_ONCE = "ExactlyOnce";
@@ -30,7 +30,7 @@ public class MQTTBindingPage extends OperationOptionsPage<MQTTBindingPage> {
 	public LabeledText getPublishTopicName() {
 		return new LabeledText("Publish Topic Name");
 	}
-	
+
 	public LabeledText getHostURI() {
 		return new LabeledText("Host URI (Default: tcp://127.0.0.1:1883)");
 	}

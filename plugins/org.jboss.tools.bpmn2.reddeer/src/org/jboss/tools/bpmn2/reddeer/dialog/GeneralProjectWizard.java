@@ -13,8 +13,8 @@ public class GeneralProjectWizard extends NewWizardDialog {
 	 */
 	public GeneralProjectWizard() {
 		super("General", "Project");
-	}	
-	
+	}
+
 	/**
 	 * 
 	 * @param projectName
@@ -24,5 +24,5 @@ public class GeneralProjectWizard extends NewWizardDialog {
 		new LabeledText("Project name:").setText(projectName);
 		finish();
 	}
-	
+
 }

@@ -9,7 +9,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.MappingSide;
 public class FromVariable implements MappingSide {
 
 	private String variableName;
-	
+
 	/**
 	 * 
 	 * @param variableName
@@ -17,7 +17,7 @@ public class FromVariable implements MappingSide {
 	public FromVariable(String variableName) {
 		this.variableName = variableName;
 	}
-	
+
 	@Override
 	public void setUp() {
 		new LabeledCombo("Source").setSelection(variableName);
@@ -27,5 +27,5 @@ public class FromVariable implements MappingSide {
 	public String getName() {
 		return variableName;
 	}
-	
+
 }

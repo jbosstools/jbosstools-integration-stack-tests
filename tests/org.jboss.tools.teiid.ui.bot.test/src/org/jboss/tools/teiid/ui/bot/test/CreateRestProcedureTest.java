@@ -45,7 +45,8 @@ import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
-@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = { ConnectionProfilesConstants.ORACLE_11G_PARTS_SUPPLIER})
+@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = {
+	ConnectionProfilesConstants.ORACLE_11G_PARTS_SUPPLIER })
 public class CreateRestProcedureTest {
 	private static final String SUPPLIER_EXPECTED = "<elems pk_SUPPLIER_ID_in=\"S108\"><elem><SUPPLIER_ID>S108</SUPPLIER_ID><SUPPLIER_NAME>Olsen</SUPPLIER_NAME><SUPPLIER_STATUS>20</SUPPLIER_STATUS><SUPPLIER_CITY>Atlanta</SUPPLIER_CITY><SUPPLIER_STATE>GA</SUPPLIER_STATE></elem></elems>";
 
@@ -110,11 +111,8 @@ public class CreateRestProcedureTest {
 		new WorkbenchShell();
 
 		openRestProcedureWizard(SOURCE_MODEL_NAME);
-		new GenerateRestProcedureWizard()
-			.setProject(PROJECT_NAME)
-			.setNewTargetModel(TARGET_MODEL_NAME)
-			.setTables("PARTS", "SUPPLIER")
-			.finish();
+		new GenerateRestProcedureWizard().setProject(PROJECT_NAME).setNewTargetModel(TARGET_MODEL_NAME)
+				.setTables("PARTS", "SUPPLIER").finish();
 
 		checkErrors();
 		checkRestProcedure(TARGET_MODEL_NAME, "PARTS" + REST_PROCEDURE_SUFFIX, "PARTS/{pk_PART_ID_in}");
@@ -132,13 +130,8 @@ public class CreateRestProcedureTest {
 	public void testCreateProceduresFromViewModel() {
 		new WorkbenchShell();
 
-
 		openRestProcedureWizard(VIEW_MODEL_NAME);
-		new GenerateRestProcedureWizard()
-			.setProject(PROJECT_NAME)
-			.setTables("PARTS", "SUPPLIER")
-			.finish();
-
+		new GenerateRestProcedureWizard().setProject(PROJECT_NAME).setTables("PARTS", "SUPPLIER").finish();
 
 		checkErrors();
 		checkRestProcedure(VIEW_MODEL_NAME, "PARTS" + REST_PROCEDURE_SUFFIX, "PARTS/{pk_PART_ID_in}");
@@ -190,9 +183,9 @@ public class CreateRestProcedureTest {
 	}
 
 	private void checkWar(String expected, String url) {
-		String response = new SimpleHttpClient("http://localhost:8080/" + PROJECT_NAME + '/' + url).setBasicAuth(teiidServer
-				.getServerConfig().getServerBase().getProperty("teiidUser"), teiidServer.getServerConfig()
-				.getServerBase().getProperty("teiidPassword"))
+		String response = new SimpleHttpClient("http://localhost:8080/" + PROJECT_NAME + '/' + url)
+				.setBasicAuth(teiidServer.getServerConfig().getServerBase().getProperty("teiidUser"),
+						teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword"))
 				.get();
 		assertEquals(expected, response);
 
@@ -249,7 +242,7 @@ public class CreateRestProcedureTest {
 		editor.showSubTabItem("Procedures");
 
 		DefaultTable table = new DefaultTable(0);
-		
+
 		int restMethodIndex = table.getHeaderIndex("REST:Rest Method");
 		int restUriIndex = table.getHeaderIndex("REST:URI");
 

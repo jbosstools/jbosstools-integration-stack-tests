@@ -9,7 +9,7 @@ import org.jboss.tools.bpmn2.reddeer.properties.setup.MessageSetUp;
  * 
  */
 public class MessageEndEvent extends EndEvent {
-	
+
 	/**
 	 * 
 	 * @param name
@@ -17,7 +17,7 @@ public class MessageEndEvent extends EndEvent {
 	public MessageEndEvent(String name) {
 		super(name, ElementType.MESSAGE_END_EVENT);
 	}
-	
+
 	public void setMessage(Message message, String variableName) {
 		propertiesHandler.setUp(new MessageSetUp(message, variableName, MappingType.SOURCE));
 	}

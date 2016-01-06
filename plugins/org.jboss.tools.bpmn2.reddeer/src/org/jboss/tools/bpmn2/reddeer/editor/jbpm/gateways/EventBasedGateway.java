@@ -11,15 +11,15 @@ import org.jboss.tools.bpmn2.reddeer.properties.setup.GatewayConditionSetUp;
  *  
  */
 public class EventBasedGateway extends ElementWithParamMapping {
-	
+
 	public enum Type {
 		EXCLUSIVE, PARALLEL;
-		
+
 		public String label() {
-		    return name().charAt(0) + name().substring(1).toLowerCase();
+			return name().charAt(0) + name().substring(1).toLowerCase();
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param name
@@ -27,11 +27,11 @@ public class EventBasedGateway extends ElementWithParamMapping {
 	public EventBasedGateway(String name) {
 		super(name, ElementType.EVENT_BASED_GATEWAY);
 	}
-	
-	public EventBasedGateway(org.jboss.tools.bpmn2.reddeer.editor.Element element){
+
+	public EventBasedGateway(org.jboss.tools.bpmn2.reddeer.editor.Element element) {
 		super(element);
 	}
-	
+
 	/**
 	 * 
 	 * @param type

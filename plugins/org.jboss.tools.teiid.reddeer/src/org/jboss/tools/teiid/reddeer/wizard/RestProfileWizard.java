@@ -13,57 +13,49 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  */
 
 public class RestProfileWizard extends TeiidProfileWizard {
-	
+
 	private String connectionUrl;
 	private String type;
 
 	public RestProfileWizard() {
 		super("Web Services Data Source (REST)");
 	}
-	
 
 	public String getConnectionUrl() {
 		return connectionUrl;
 	}
 
-
-
 	public void setConnectionUrl(String connectionUrl) {
 		this.connectionUrl = connectionUrl;
 	}
-
-
 
 	public String getType() {
 		return type;
 	}
 
-
-
 	public void setType(String type) {
 		this.type = type;
 	}
 
-
-
 	@Override
 	public void execute() {
 		open();
-		
-		new LabeledText(new DefaultGroup("Properties"),"Connection URL").setText(connectionUrl);
-		
-		if (type==null) throw new NullPointerException("type is null");
-		
+
+		new LabeledText(new DefaultGroup("Properties"), "Connection URL").setText(connectionUrl);
+
+		if (type == null)
+			throw new NullPointerException("type is null");
+
 		new DefaultShell("New connection profile");
-		
-		if (type.toLowerCase().equals("xml")){
+
+		if (type.toLowerCase().equals("xml")) {
 			new DefaultCombo().setSelection("XML");
 		} else if (type.toLowerCase().equals("json")) {
 			new DefaultCombo().setSelection("JSON");
 		}
-		
+
 		finish();
-		
+
 	}
 
 }

@@ -27,7 +27,7 @@ import org.junit.runner.RunWith;
 @CleanWorkspace
 @OpenPerspective(BPELPerspective.class)
 // TODO: should be in state NOT_RUNNING
-//@Server(type = ServerReqType.ANY, state = ServerReqState.PRESENT)
+// @Server(type = ServerReqType.ANY, state = ServerReqState.PRESENT)
 @RunWith(RedDeerSuite.class)
 public class FaultModelingTest {
 
@@ -35,8 +35,7 @@ public class FaultModelingTest {
 	public static final String BPEL_FILE_NAME = "scope.bpel";
 
 	/**
-	 * - sequence - scope - flow - throw - rethrow - compensate -
-	 * compensateScope
+	 * - sequence - scope - flow - throw - rethrow - compensate - compensateScope
 	 * 
 	 * @throws Exception
 	 */

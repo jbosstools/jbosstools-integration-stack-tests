@@ -20,38 +20,40 @@ public class DataItemsTab {
 	 * @param local
 	 */
 	public void addVariable(String name, String dataType, boolean local, String processName, boolean typeText) {
- 		
-		new SectionToolItem(
-				(local ? "Local" : "Global") + " Variable List for Process \"" + processName + "\"",
-				"Add").click();
- 		LabeledText variableName = new LabeledText(new DefaultSection((local ? "Local" : "Global") + " Variable Details"), "Name");
- 		if(typeText) {
- 			variableName.typeText(name); 		
- 		} else {
- 			variableName.setText(name);
- 		}
-		
+
+		new SectionToolItem((local ? "Local" : "Global") + " Variable List for Process \"" + processName + "\"", "Add")
+				.click();
+		LabeledText variableName = new LabeledText(
+				new DefaultSection((local ? "Local" : "Global") + " Variable Details"), "Name");
+		if (typeText) {
+			variableName.typeText(name);
+		} else {
+			variableName.setText(name);
+		}
+
 		DefaultCombo c = new DefaultCombo("Data Type");
 		if (!c.contains(dataType)) {
 			new PushButton(0).click();
 			new DataTypeDialog().add(dataType);
 		}
 		c.setSelection(dataType);
-		
+
 		new SectionToolItem((local ? "Local" : "Global") + " Variable Details", "Close").click();
 	}
-	
+
 	/**
 	 * 
 	 * @param name
 	 * @param local
 	 */
 	public void removeVariable(String name, boolean local, String processName) {
-		DefaultSection s = new DefaultSection((local ? "Local" : "Global") + " List for Process \"" + processName + "\"");
+		DefaultSection s = new DefaultSection(
+				(local ? "Local" : "Global") + " List for Process \"" + processName + "\"");
 		new DefaultTable(s).select(name);
-		new SectionToolItem((local ? "Local" : "Global") + " List for Process \"" + processName + "\"", "Remove").click();
+		new SectionToolItem((local ? "Local" : "Global") + " List for Process \"" + processName + "\"", "Remove")
+				.click();
 	}
-	
+
 	/**
 	 * 
 	 * @param name
@@ -60,7 +62,7 @@ public class DataItemsTab {
 	public void addGlobalVariable(String name, String dataType, String processName) {
 		addVariable(name, dataType, false, processName, false);
 	}
-	
+
 	/**
 	 * 
 	 * @param name
@@ -68,7 +70,7 @@ public class DataItemsTab {
 	public void removeGlobalVariable(String name, String processName) {
 		removeVariable(name, false, processName);
 	}
-	
+
 	/**
 	 * 
 	 * @param name
@@ -77,7 +79,7 @@ public class DataItemsTab {
 	public void addLocalVariable(String name, String dataType, String processName, boolean typeText) {
 		addVariable(name, dataType, true, processName, typeText);
 	}
-	
+
 	/**
 	 * 
 	 * @param name
@@ -85,5 +87,5 @@ public class DataItemsTab {
 	public void removeLocalVariable(String name, String processName) {
 		removeVariable(name, true, processName);
 	}
-	
+
 }

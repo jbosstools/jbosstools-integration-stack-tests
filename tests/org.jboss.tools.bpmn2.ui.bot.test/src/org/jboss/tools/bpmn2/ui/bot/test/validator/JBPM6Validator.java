@@ -21,16 +21,16 @@ import org.kie.api.io.ResourceType;
  * 
  */
 public class JBPM6Validator {
-	
+
 	Results results;
-	
+
 	/**
 	 * 
 	 */
 	public JBPM6Validator() {
-		
+
 	}
-	
+
 	/**
 	 * 
 	 * @param file
@@ -41,7 +41,7 @@ public class JBPM6Validator {
 		resource.setTargetPath("/" + file.getName());
 		return validate(resource);
 	}
-	
+
 	/**
 	 * 
 	 * @param xml
@@ -50,14 +50,14 @@ public class JBPM6Validator {
 	public boolean validate(String xml) {
 		Resource resource = KieServices.Factory.get().getResources().newByteArrayResource(xml.getBytes());
 		/*
-		 * ISSUE: if this path does not end with bpmn2 or bpmn then the validation will pass as nothing
-		 *        happened wrong event though the definition contains errors. IMO the behaviour should be
-		 *        based on the resource type set in validate(Resource) method but it's ignored.
+		 * ISSUE: if this path does not end with bpmn2 or bpmn then the validation will pass as nothing happened wrong
+		 * event though the definition contains errors. IMO the behaviour should be based on the resource type set in
+		 * validate(Resource) method but it's ignored.
 		 */
 		resource.setTargetPath("/ValidatedProcess.bpmn2");
 		return validate(resource);
 	}
-	
+
 	/**
 	 * 
 	 * @param resource
@@ -65,29 +65,29 @@ public class JBPM6Validator {
 	 */
 	protected boolean validate(Resource resource) {
 		resource.setResourceType(ResourceType.BPMN2);
-		
+
 		try {
 			KieServices ks = KieServices.Factory.get();
 			KieFileSystem kfs = ks.newKieFileSystem();
 			kfs.write(resource);
-	
+
 			KieBuilder kb = ks.newKieBuilder(kfs);
 			kb.buildAll();
-			
+
 			results = kb.getResults();
 		} catch (Exception e) {
 			Writer sw = new StringWriter();
 			e.printStackTrace(new PrintWriter(sw));
-			
+
 			ResultsImpl resultsImpl = new ResultsImpl();
 			resultsImpl.addMessage(Level.ERROR, "Unknown", sw.toString());
-			
+
 			results = resultsImpl;
 		}
-		
+
 		return !results.hasMessages(Level.ERROR);
-    }
-	
+	}
+
 	/**
 	 * 
 	 * @return
@@ -101,7 +101,7 @@ public class JBPM6Validator {
 		}
 		return ret;
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -115,7 +115,7 @@ public class JBPM6Validator {
 		}
 		return ret;
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -127,5 +127,5 @@ public class JBPM6Validator {
 		}
 		return resultMessage;
 	}
-	
+
 }

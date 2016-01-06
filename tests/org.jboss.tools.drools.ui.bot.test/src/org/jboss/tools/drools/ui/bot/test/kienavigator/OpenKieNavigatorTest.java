@@ -16,13 +16,13 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@Server(type = {ServerReqType.EAP, ServerReqType.WildFly}, state = ServerReqState.RUNNING)
+@Server(type = { ServerReqType.EAP, ServerReqType.WildFly }, state = ServerReqState.RUNNING)
 @RunWith(RedDeerSuite.class)
 public class OpenKieNavigatorTest extends KieNavigatorTestParent {
-	
+
 	@InjectRequirement
 	private ServerRequirement serverReq;
-	
+
 	@Test
 	public void openKieNavigatorTest() throws IOException, InterruptedException {
 		ServerItem si = knv.getServers().get(0);

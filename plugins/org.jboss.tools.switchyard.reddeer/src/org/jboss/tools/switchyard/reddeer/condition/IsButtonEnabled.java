@@ -9,8 +9,7 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 /**
- * Check if a PushButton is enabled. Depends on switching some input text fields
- * (LabeledText).
+ * Check if a PushButton is enabled. Depends on switching some input text fields (LabeledText).
  * 
  * @author tsedmik
  */

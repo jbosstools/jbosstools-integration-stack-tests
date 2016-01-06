@@ -13,15 +13,15 @@ import org.junit.Test;
 public class JBPMMavenProjectWizardTest extends SWTBotTestCase {
 
 	ProjectExplorer explorerView = new ProjectExplorer();
-	JBPMMavenProjectWizard wizardView  = new JBPMMavenProjectWizard();
-	
+	JBPMMavenProjectWizard wizardView = new JBPMMavenProjectWizard();
+
 	@After
 	public void deleteAllProjects() {
 		for (Project p : explorerView.getProjects()) {
 			p.delete(true);
 		}
 	}
-	
+
 	@Test
 	public void newProjectWithSimpleProcessTest() throws Exception {
 		wizardView.execute("TestMavenProject");
@@ -30,5 +30,5 @@ public class JBPMMavenProjectWizardTest extends SWTBotTestCase {
 		assertTrue(p.containsItem("src/main/resources", "META-INF", "kmodule.xml"));
 		assertTrue(p.containsItem("src/main/java", "com.sample", "ProcessMain.java"));
 	}
-	
+
 }

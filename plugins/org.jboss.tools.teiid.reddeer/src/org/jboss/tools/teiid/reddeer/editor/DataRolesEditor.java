@@ -18,32 +18,27 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.teiid.reddeer.widget.PermissionWizardTreeItem;
 
 public class DataRolesEditor {
-	
-	public enum PermissionType{
-		CREATE("Create"),
-		READ("Read"),
-		UPDATE("Update"),
-		DELETE("Delete"),
-		EXECUTE("Execute"),
-		ALTER("Alter");
-		
+
+	public enum PermissionType {
+		CREATE("Create"), READ("Read"), UPDATE("Update"), DELETE("Delete"), EXECUTE("Execute"), ALTER("Alter");
+
 		private String header;
 
-		PermissionType(String header){
+		PermissionType(String header) {
 			this.header = header;
 		}
-		
-		public String getHeader(){
+
+		public String getHeader() {
 			return header;
 		}
 	}
-	
+
 	public static final String CREATE_TITLE = "New VDB Data Role";
 	public static final String EDIT_TITLE = "Edit VDB Data Role";
-	
+
 	private String title;
-	
-	public DataRolesEditor(String title){
+
+	public DataRolesEditor(String title) {
 		this.title = title;
 		activate();
 	}
@@ -53,49 +48,49 @@ public class DataRolesEditor {
 		return this;
 	}
 
-	public DataRolesEditor setName(String name){
+	public DataRolesEditor setName(String name) {
 		new LabeledText("Name").setText(name);
 		return this;
 	}
-	
-	public DataRolesEditor addRole(String roleName){
+
+	public DataRolesEditor addRole(String roleName) {
 		new DefaultCTabItem("Mapped Enterprise Role or Group").activate();
 		new PushButton("Add...").click();
 		new DefaultShell("Add Mapped Data Role Name");
-		new DefaultText(new DefaultGroup("Name"),0).setText(roleName);
+		new DefaultText(new DefaultGroup("Name"), 0).setText(roleName);
 		new PushButton("OK").click();
 		activate();
 		return this;
 	}
-	
-	public boolean getModelPermission(PermissionType permType, String... path){
+
+	public boolean getModelPermission(PermissionType permType, String... path) {
 		new DefaultCTabItem("Permissions").activate();
 		new DefaultCTabItem("Model").activate();
 		PermissionWizardTreeItem columnItem = new PermissionWizardTreeItem(path);
-		
+
 		return columnItem.getChecked(getColumnForPermission(permType));
 	}
-	
-	public DataRolesEditor setModelPermission(PermissionType permType, boolean allowed, String... path){
+
+	public DataRolesEditor setModelPermission(PermissionType permType, boolean allowed, String... path) {
 		new DefaultCTabItem("Permissions").activate();
 		new DefaultCTabItem("Model").activate();
 		PermissionWizardTreeItem columnItem = new PermissionWizardTreeItem(path);
 		columnItem.select();
-		
+
 		columnItem.setChecked(allowed, getColumnForPermission(permType));
 		return this;
 	}
-	
-	
-	public DataRolesEditor addRowFilter(String condition, boolean constraint, String... target){
+
+	public DataRolesEditor addRowFilter(String condition, boolean constraint, String... target) {
 		new DefaultCTabItem("Permissions").activate();
 		new DefaultCTabItem("Row Filter").activate();
 		new PushButton("Add").click();
-		
+
 		new DefaultShell("Add Row Filter Definition");
 		new DefaultStyledText(new DefaultGroup("Condition")).setText(condition);
-		new CheckBox("Constraint  >> When enabled, condition will be applied to insert/update/deletes").toggle(constraint);
-		
+		new CheckBox("Constraint  >> When enabled, condition will be applied to insert/update/deletes")
+				.toggle(constraint);
+
 		new PushButton("...").click();
 		new DefaultShell("Target Selection");
 		new DefaultTreeItem(target).select();
@@ -103,39 +98,38 @@ public class DataRolesEditor {
 
 		new DefaultShell("Add Row Filter Definition");
 		new PushButton("OK").click();
-		
+
 		return this;
 	}
-	
-	public String getRowFilterCondition(String path){
+
+	public String getRowFilterCondition(String path) {
 		return getRowFilterValue(path, 2);
 	}
-	
-	public String getRowFilterConstraint(String path){
+
+	public String getRowFilterConstraint(String path) {
 		return getRowFilterValue(path, 1);
 	}
-	
-	public String getRowFilterValue(String path, int index){
+
+	public String getRowFilterValue(String path, int index) {
 		new DefaultCTabItem("Permissions").activate();
 		new DefaultCTabItem("Row Filter").activate();
 		TableItem item = new DefaultTable().getItem(path, 0);
-		if(item != null){
+		if (item != null) {
 			return item.getText(index);
 		}
 		return "";
 	}
-	
 
-	public DataRolesEditor addColumnMask(String condition, String columnExpression, int order, String... target){
+	public DataRolesEditor addColumnMask(String condition, String columnExpression, int order, String... target) {
 		new DefaultCTabItem("Permissions").activate();
 		new DefaultCTabItem("Column Masking").activate();
 		new PushButton("Add").click();
-		
+
 		new DefaultShell("Add Column Mask");
 		new DefaultStyledText(new DefaultGroup("Condition")).setText(condition);
 		new DefaultStyledText(new DefaultGroup("Column Expression")).setText(columnExpression);
 		new LabeledText("Order").setText(String.valueOf(order));
-		
+
 		new PushButton("...").click();
 		new DefaultShell("Target Selection");
 		new DefaultTreeItem(target).select();
@@ -143,25 +137,24 @@ public class DataRolesEditor {
 
 		new DefaultShell("Add Column Mask");
 		new PushButton("OK").click();
-		
+
 		return this;
 	}
-	
-	public String getColumnMask(String column){
+
+	public String getColumnMask(String column) {
 		return getColumnMaskValue(column, 3);
 	}
-	
-	public String getColumnMaskCondition(String column){
+
+	public String getColumnMaskCondition(String column) {
 		return getColumnMaskValue(column, 1);
 	}
-	
-	
-	private String getColumnMaskValue(String column, int index){
+
+	private String getColumnMaskValue(String column, int index) {
 		new DefaultCTabItem("Permissions").activate();
 		new DefaultCTabItem("Column Masking").activate();
-		
+
 		TableItem item = new DefaultTable().getItem(column, 0);
-		if(item != null){
+		if (item != null) {
 			return item.getText(index);
 		}
 		return "";
@@ -170,24 +163,22 @@ public class DataRolesEditor {
 	private int getColumnForPermission(PermissionType permType) {
 		return new DefaultTree().getHeaderColumns().indexOf(permType.getHeader());
 	}
-	
-	
-	public void finish(){
+
+	public void finish() {
 		new PushButton("Finish").click();
 	}
-	
 
-	public void cancel(){
+	public void cancel() {
 		new PushButton("Cancel").click();
 	}
 
 	public List<String> getRoles() {
 		new DefaultCTabItem("Mapped Enterprise Role or Group").activate();
 		List<String> result = new ArrayList<String>();
-		for(TableItem it : new DefaultTable().getItems()){
+		for (TableItem it : new DefaultTable().getItems()) {
 			result.add(it.getText());
 		}
-		
+
 		return result;
 	}
 }

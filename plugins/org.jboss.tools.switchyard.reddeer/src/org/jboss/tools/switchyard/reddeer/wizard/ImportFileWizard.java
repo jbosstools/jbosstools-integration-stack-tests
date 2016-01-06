@@ -50,7 +50,7 @@ public class ImportFileWizard extends ImportWizardDialog {
 
 		finish();
 	}
-	
+
 	private class LabeledComboExt extends LabeledCombo {
 
 		public LabeledComboExt(String label) {
@@ -61,7 +61,7 @@ public class ImportFileWizard extends ImportWizardDialog {
 			log.debug("Set focus to Combo");
 			WidgetHandler.getInstance().setFocus(swtWidget);
 		}
-		
+
 		public void typeText(String text) {
 			log.info("Type text " + text);
 			setText("");

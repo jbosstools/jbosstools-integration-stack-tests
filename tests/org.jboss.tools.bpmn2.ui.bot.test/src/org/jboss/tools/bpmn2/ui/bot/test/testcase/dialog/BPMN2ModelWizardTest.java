@@ -21,18 +21,18 @@ public class BPMN2ModelWizardTest {
 	public static void createProject() {
 		new JBPMProjectWizard().execute("TestProject");
 	}
-	
+
 	@AfterClass
 	public static void deleteProject() throws Exception {
 		new PackageExplorer().getProject("TestProject").delete(true);
 	}
-	
+
 	@Test
 	public void newModelTest() throws Exception {
-		new BPMN2ModelWizard().execute(new String[] {"TestProject"}, "SampleProcess.bpmn2");
+		new BPMN2ModelWizard().execute(new String[] { "TestProject" }, "SampleProcess.bpmn2");
 		Assert.assertTrue(new ProjectExplorer().getProject("TestProject").containsItem("SampleProcess.bpmn2"));
 	}
-	
+
 	@Test
 	public void newModelFormValidationTest() throws Exception {
 		BPMN2ModelWizard wizard = new BPMN2ModelWizard();
@@ -44,5 +44,5 @@ public class BPMN2ModelWizardTest {
 			wizard.cancel();
 		}
 	}
-	
+
 }

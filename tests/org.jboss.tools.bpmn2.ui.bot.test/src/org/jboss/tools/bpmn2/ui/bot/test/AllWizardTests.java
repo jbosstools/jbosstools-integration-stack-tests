@@ -9,13 +9,12 @@ import org.jboss.tools.bpmn2.ui.bot.test.testcase.dialog.*;
 
 @RunWith(RedDeerSuite.class)
 @SuiteClasses({
-// Wizard tests
-// ------------
-//	BPMN2GenericModelWizardTest.class,
-//	BPMN2ModelWizardTest.class,
-//	JBPMProcessWizardTest.class,
-//	JBPMProjectWizardTest.class,
-	JBPMMavenProjectWizardTest.class,
-})
+	// Wizard tests
+	// ------------
+	// BPMN2GenericModelWizardTest.class,
+	// BPMN2ModelWizardTest.class,
+	// JBPMProcessWizardTest.class,
+	// JBPMProjectWizardTest.class,
+	JBPMMavenProjectWizardTest.class, })
 public class AllWizardTests extends TestSuite {
 }

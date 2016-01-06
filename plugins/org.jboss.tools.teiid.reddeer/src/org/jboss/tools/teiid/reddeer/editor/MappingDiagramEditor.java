@@ -15,10 +15,9 @@ import org.jboss.tools.teiid.reddeer.matcher.IsTransformation;
 import org.jboss.tools.teiid.reddeer.matcher.MappingClassMatcher;
 import org.jboss.tools.teiid.reddeer.matcher.RecursiveButtonMatcher;
 
-public class MappingDiagramEditor extends SWTBotEditor{
+public class MappingDiagramEditor extends SWTBotEditor {
 
-	public MappingDiagramEditor(IEditorReference editorReference, SWTWorkbenchBot bot)
-			throws WidgetNotFoundException {
+	public MappingDiagramEditor(IEditorReference editorReference, SWTWorkbenchBot bot) throws WidgetNotFoundException {
 		super(editorReference, bot);
 		new SWTWorkbenchBot().sleep(5 * 1000);
 	}
@@ -31,86 +30,87 @@ public class MappingDiagramEditor extends SWTBotEditor{
 
 	public MappingDiagramEditor(String title) {
 		super(new SWTWorkbenchBot().editorByTitle(title).getReference(), new SWTWorkbenchBot());
-		//new SWTWorkbenchBot().sleep(5 * 1000);
+		// new SWTWorkbenchBot().sleep(5 * 1000);
 		this.me = new ModelEditor(title);
 		viewer = me.getGraphicalViewer(MAPPING_DIAGRAM);
 	}
 
-	public RecursionEditor clickOnRecursiveButton(String mappingClass){
+	public RecursionEditor clickOnRecursiveButton(String mappingClass) {
 		this.prefixMappingClassRecursive = mappingClass;
-		RecursiveButtonMatcher matcher = RecursiveButtonMatcher.createRecursiveButtonMatcher(this.prefixMappingClassRecursive);
+		RecursiveButtonMatcher matcher = RecursiveButtonMatcher
+				.createRecursiveButtonMatcher(this.prefixMappingClassRecursive);
 		viewer.editParts(matcher);
 		return new RecursionEditor();
 	}
-	
+
 	/**
 	 * 
 	 * @param prefix
 	 * @return all attributes (type Label) with name starting with prefix
 	 */
-	public List<SWTBotGefEditPart> getAttributes(String prefix){
-		//viewer = new ModelEditor(super.getTitle()).getGraphicalViewer(MAPPING_DIAGRAM);
+	public List<SWTBotGefEditPart> getAttributes(String prefix) {
+		// viewer = new ModelEditor(super.getTitle()).getGraphicalViewer(MAPPING_DIAGRAM);
 		AttributeMatcher matcher = AttributeMatcher.createAttributeMatcher();
 		matcher.setPrefix(prefix);
-		return viewer.editParts(matcher); 
+		return viewer.editParts(matcher);
 	}
-	
-	
+
 	/**
 	 * 
 	 * @param prefix
 	 * @return all mapping classes (type Label) with name starting with prefix
 	 */
-	public List<SWTBotGefEditPart> getMappingClasses(String prefix){
-		//viewer = new ModelEditor(super.getTitle()).getGraphicalViewer(MAPPING_DIAGRAM);
+	public List<SWTBotGefEditPart> getMappingClasses(String prefix) {
+		// viewer = new ModelEditor(super.getTitle()).getGraphicalViewer(MAPPING_DIAGRAM);
 		MappingClassMatcher matcher = MappingClassMatcher.createMappingClassMatcher();
 		matcher.setPrefix(prefix);
 		return viewer.editParts(matcher);
 	}
-	
+
 	/**
 	 * 
 	 * @param prefix
 	 * @return list of attributes starting with prefix
 	 */
-	public List<String> namesOfAttributes(String prefix){
-			//viewer = new ModelEditor(super.getTitle()).getGraphicalViewer(MAPPING_DIAGRAM);
-			AttributeMatcher matcher = AttributeMatcher.createAttributeMatcher();
-			matcher.setPrefix(prefix);
-			viewer.editParts(matcher);//generate list of texts
-			return matcher.getTexts();
+	public List<String> namesOfAttributes(String prefix) {
+		// viewer = new ModelEditor(super.getTitle()).getGraphicalViewer(MAPPING_DIAGRAM);
+		AttributeMatcher matcher = AttributeMatcher.createAttributeMatcher();
+		matcher.setPrefix(prefix);
+		viewer.editParts(matcher);// generate list of texts
+		return matcher.getTexts();
 	}
-	
+
 	/**
 	 * 
 	 * @param mappingClass
-	 * @param column in form "columnName : type"
+	 * @param column
+	 *            in form "columnName : type"
 	 */
-	public void addMappingClassColumns(String mappingClass, String... columns){
-		for (String column : columns){
-			//new ModelExplorerView().open();
+	public void addMappingClassColumns(String mappingClass, String... columns) {
+		for (String column : columns) {
+			// new ModelExplorerView().open();
 			new SWTWorkbenchBot().sleep(5000);
 			me.selectParts(getMappingClasses(mappingClass));
-			//new WaitWhile(new IsInProgress(), TimePeriod.NORMAL);
+			// new WaitWhile(new IsInProgress(), TimePeriod.NORMAL);
 			new ContextMenu("New Child", "Mapping Class Column").select();
 			new org.jboss.reddeer.swt.impl.text.DefaultText(0).setText(column);
 			new SWTWorkbenchBot().activeShell().pressShortcut(Keystrokes.TAB);
 			me.save();
-			//new SWTWorkbenchBot().sleep(5000);
-			//click somewhere else
-			//new org.jboss.reddeer.swt.impl.tree.DefaultTreeItem(0).select();//chooses the xml schema
-			//new ModelExplorerView().open();
+			// new SWTWorkbenchBot().sleep(5000);
+			// click somewhere else
+			// new org.jboss.reddeer.swt.impl.tree.DefaultTreeItem(0).select();//chooses the xml schema
+			// new ModelExplorerView().open();
 		}
 	}
-	
+
 	public void showTransformation() {
 		viewer = me.getGraphicalViewer(DIAGRAM);
 		viewer.editParts(IsTransformation.isTransformation()).get(0).select();
 		viewer.clickContextMenu("Edit");
 		new SWTWorkbenchBot().sleep(5 * 1000);
 	}
-	
-	public void copyAttribute(String fromClass, String toClass, String attr){
+
+	public void copyAttribute(String fromClass, String toClass, String attr) {
 		me.selectParts(this.getMappingClasses(fromClass));
 		me.selectParts(this.getAttributes(attr));
 		new ContextMenu("Copy").select();

@@ -23,7 +23,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-
 /**
  * Test for consuming SOAP WS
  * 
@@ -36,25 +35,25 @@ import org.junit.runner.RunWith;
 @TeiidServer(state = ServerReqState.RUNNING)
 
 public class ConsumeSoapWs {
-	
+
 	private static final String PROJECT_NAME = "SOAP";
 	private static final String SOURCE_MODEL_NAME = "Soap_Source.xmi";
 	private static final String VIEW_MODEL_NAME = "Soap_View.xmi";
 	private static final String VDB_NAME = "SOAP_VDB";
 	private static final String TESTSQL = "exec FullCountryInfo('US')";
 	private static final String TESTSQL1 = "exec FullCountryInfoAllCountries()";
-	
+
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;
-	
+
 	@BeforeClass
-	public static void before(){
-		new ModelExplorerManager().createProject(PROJECT_NAME,false);
+	public static void before() {
+		new ModelExplorerManager().createProject(PROJECT_NAME, false);
 	}
-	
+
 	@Test
-	public void test(){
-		
+	public void test() {
+
 		String profile = "SOAP";
 
 		Properties wsdlCP = new Properties();
@@ -62,24 +61,24 @@ public class ConsumeSoapWs {
 		wsdlCP.setProperty("endPoint", "Countries");
 
 		new ConnectionProfileManager().createCPWSDL(profile, wsdlCP);
-		
+
 		WsdlImportWizard wsdlWizard = new WsdlImportWizard();
-		
+
 		wsdlWizard.setProfile("SOAP");
 		wsdlWizard.setSourceModelName(SOURCE_MODEL_NAME);
 		wsdlWizard.setViewModelName(VIEW_MODEL_NAME);
-		
+
 		wsdlWizard.addOperation("FullCountryInfo");
 		wsdlWizard.addOperation("FullCountryInfoAllCountries");
 		wsdlWizard.addRequestElement("FullCountryInfo/sequence/arg0");
-		
+
 		wsdlWizard.addResponseElement("FullCountryInfoResponse/sequence/return/sequence/capitalCity");
 		wsdlWizard.addResponseElement("FullCountryInfoResponse/sequence/return/sequence/continentCode");
 		wsdlWizard.addResponseElement("FullCountryInfoResponse/sequence/return/sequence/currencyIsoCode");
 		wsdlWizard.addResponseElement("FullCountryInfoResponse/sequence/return/sequence/isoCode");
 		wsdlWizard.addResponseElement("FullCountryInfoResponse/sequence/return/sequence/name");
 		wsdlWizard.addResponseElement("FullCountryInfoResponse/sequence/return/sequence/phoneCode");
-		
+
 		wsdlWizard.addResponseElement("FullCountryInfoAllCountriesResponse/sequence/return/sequence/capitalCity");
 		wsdlWizard.addResponseElement("FullCountryInfoAllCountriesResponse/sequence/return/sequence/continentCode");
 		wsdlWizard.addResponseElement("FullCountryInfoAllCountriesResponse/sequence/return/sequence/currencyIsoCode");
@@ -87,21 +86,20 @@ public class ConsumeSoapWs {
 		wsdlWizard.addResponseElement("FullCountryInfoAllCountriesResponse/sequence/return/sequence/name");
 		wsdlWizard.addResponseElement("FullCountryInfoAllCountriesResponse/sequence/return/sequence/phoneCode");
 		wsdlWizard.execute();
-		
+
 		new VDBManager().createVDB(PROJECT_NAME, VDB_NAME);
-		new VDBManager().addModelsToVDB(PROJECT_NAME, VDB_NAME, new String[] {SOURCE_MODEL_NAME, VIEW_MODEL_NAME});
-			
+		new VDBManager().addModelsToVDB(PROJECT_NAME, VDB_NAME, new String[] { SOURCE_MODEL_NAME, VIEW_MODEL_NAME });
+
 		new ServersView().open();
 		new ServersViewExt().refreshServer(new ServersView().getServers().get(0).getLabel().getName());
-		
+
 		new ModelExplorer().executeVDB(PROJECT_NAME, VDB_NAME + ".vdb");
-		
+
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, VDB_NAME);
-		
-		assertEquals(1,jdbchelper.getNumberOfResults(TESTSQL));
-		assertEquals(3,jdbchelper.getNumberOfResults(TESTSQL1));
+
+		assertEquals(1, jdbchelper.getNumberOfResults(TESTSQL));
+		assertEquals(3, jdbchelper.getNumberOfResults(TESTSQL1));
 
 	}
-	
 
 }

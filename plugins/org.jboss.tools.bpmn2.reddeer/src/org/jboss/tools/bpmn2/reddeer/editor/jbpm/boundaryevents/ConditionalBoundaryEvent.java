@@ -16,11 +16,11 @@ public class ConditionalBoundaryEvent extends BoundaryEvent {
 	public ConditionalBoundaryEvent(String name) {
 		super(name, ElementType.CONDITIONAL_BOUNDARY_EVENT);
 	}
-	
+
 	public ConditionalBoundaryEvent(Element element) {
 		super(element);
 	}
-	
+
 	/**
 	 * 
 	 * @param language
@@ -30,5 +30,5 @@ public class ConditionalBoundaryEvent extends BoundaryEvent {
 		propertiesHandler.setUp(new ConditionSetUp(language, script));
 		refresh();
 	}
-	
+
 }

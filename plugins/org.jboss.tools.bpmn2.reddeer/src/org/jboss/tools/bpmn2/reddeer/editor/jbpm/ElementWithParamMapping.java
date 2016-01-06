@@ -19,15 +19,15 @@ public class ElementWithParamMapping extends Element {
 	public ElementWithParamMapping(String name, ElementType type) {
 		super(name, type);
 	}
-	
+
 	public ElementWithParamMapping(String name, ElementType type, org.jboss.tools.bpmn2.reddeer.editor.Element parent) {
 		super(name, type, parent);
 	}
-	
+
 	public ElementWithParamMapping(org.jboss.tools.bpmn2.reddeer.editor.Element element) {
 		super(element);
 	}
-	
+
 	/**
 	 * 
 	 * @param parameterMapping
@@ -35,7 +35,7 @@ public class ElementWithParamMapping extends Element {
 	protected void addParameterMapping(ParameterMapping parameterMapping) {
 		propertiesHandler.setUp(new ParameterMappingSetUp(parameterMapping, SectionToolItemButton.ADD));
 	}
-	
+
 	/**
 	 * 
 	 * @param parameterMapping
@@ -43,5 +43,5 @@ public class ElementWithParamMapping extends Element {
 	protected void removeParameterMapping(ParameterMapping parameterMapping) {
 		propertiesHandler.setUp(new RemoveParameterMappingSetUp(parameterMapping));
 	}
-	
+
 }

@@ -10,25 +10,28 @@ public class ModelTable {
 	private String name;
 	private String nameInSource;
 	private List<ModelColumn> columns = Collections.emptyList();
-	
+
 	public ModelTable() {
 	}
-	
-	public ModelTable(TableItem it){
+
+	public ModelTable(TableItem it) {
 		Table parent = it.getParent();
 		name = it.getText(parent.getHeaderIndex("Name"));
 		nameInSource = it.getText(parent.getHeaderIndex("Name In Source"));
 	}
-	
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public String getNameInSource() {
 		return nameInSource;
 	}
+
 	public void setNameInSource(String nameInSource) {
 		this.nameInSource = nameInSource;
 	}
@@ -40,6 +43,5 @@ public class ModelTable {
 	public void setColumns(List<ModelColumn> columns) {
 		this.columns = columns;
 	}
-	
-	
+
 }

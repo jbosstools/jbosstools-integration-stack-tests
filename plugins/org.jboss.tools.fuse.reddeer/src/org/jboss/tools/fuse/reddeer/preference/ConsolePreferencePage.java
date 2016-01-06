@@ -32,7 +32,7 @@ public class ConsolePreferencePage extends PreferencePage {
 		dialog.open();
 		dialog.select(this);
 	}
-	
+
 	public void ok() {
 		String title = new DefaultShell().getText();
 		new OkButton().click();

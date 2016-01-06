@@ -17,7 +17,7 @@ public class ServerServiceMix extends ServerKaraf {
 
 	private final String category = "JBoss Fuse";
 	private final String label = "Apache ServiceMix";
-	
+
 	@Override
 	public String getCategory() {
 		return category;

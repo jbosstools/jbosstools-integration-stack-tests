@@ -13,13 +13,13 @@ public class GatewayConditionSetUp implements SetUpAble {
 	private String flow;
 	private String lang;
 	private String condition;
-	
+
 	public GatewayConditionSetUp(String flow, String lang, String condition) {
 		this.flow = flow;
 		this.lang = lang;
 		this.condition = condition;
 	}
-	
+
 	@Override
 	public void setUpCTab() {
 		new DefaultTable(new DefaultSection("Sequence Flow List")).select(flow);

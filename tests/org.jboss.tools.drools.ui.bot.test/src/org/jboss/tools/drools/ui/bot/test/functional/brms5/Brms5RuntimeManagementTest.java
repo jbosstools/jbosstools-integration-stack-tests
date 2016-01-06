@@ -20,31 +20,31 @@ import org.junit.runner.RunWith;
 @Runtime(type = RuntimeReqType.DROOLS)
 @RunWith(RedDeerSuite.class)
 public class Brms5RuntimeManagementTest extends TestParent {
-	
+
 	@InjectRequirement
 	private RuntimeRequirement droolsRequirement;
-	
+
 	@Before
 	public void clearRuntimes() {
 		deleteAllRuntimes();
 	}
-	
+
 	@Test
-    @Category(SmokeTest.class)
+	@Category(SmokeTest.class)
 	@Drools5Runtime
-    public void testBrms5Runtime() {
+	public void testBrms5Runtime() {
 		String runtimeHome = droolsRequirement.getConfig().getRuntimeFamily().getHome();
-        Assume.assumeNotNull(runtimeHome);
+		Assume.assumeNotNull(runtimeHome);
 
-        DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
-        pref.open();
-        DroolsRuntimeDialog wiz = pref.addDroolsRuntime();
-        wiz.setName(getTestName());
-        wiz.setLocation(runtimeHome);
+		DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
+		pref.open();
+		DroolsRuntimeDialog wiz = pref.addDroolsRuntime();
+		wiz.setName(getTestName());
+		wiz.setLocation(runtimeHome);
 
-        Assert.assertTrue("Impossible to use created runtime.", wiz.isValid());
-        wiz.ok();
-        Assert.assertEquals("Runtime was not created.", 1, pref.getDroolsRuntimes().size());
-        pref.ok();
-    }
+		Assert.assertTrue("Impossible to use created runtime.", wiz.isValid());
+		wiz.ok();
+		Assert.assertEquals("Runtime was not created.", 1, pref.getDroolsRuntimes().size());
+		pref.ok();
+	}
 }

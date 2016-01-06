@@ -13,7 +13,7 @@ import org.jboss.tools.runtime.reddeer.wizard.DroolsRuntimeWizard;
 @XmlRootElement(name = "brms", namespace = Namespaces.SOA_REQ)
 @XmlAccessorType(XmlAccessType.FIELD)
 public class RuntimeDrools extends RuntimeBase {
-	
+
 	@Override
 	public void create() {
 		DroolsRuntimePreferencePage droolsRuntimePreferencePage = new DroolsRuntimePreferencePage();
@@ -25,7 +25,7 @@ public class RuntimeDrools extends RuntimeBase {
 		droolsRuntimePreferencePage.setDroolsRuntimeAsDefault(getName());
 		droolsRuntimePreferencePage.ok();
 	}
-	
+
 	@Override
 	public boolean exists() {
 		String droolsDefinition = Preferences.get("org.drools.eclipse", "Drools.Runtimes");

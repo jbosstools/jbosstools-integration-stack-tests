@@ -9,11 +9,8 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(RedDeerSuite.class)
 @SuiteClasses({
-    // 5.x tests
-    Brms5ProjectTest.class,
-    Brms5AuditLogTest.class,
-    Brms5RuntimeManagementTest.class
-})
+	// 5.x tests
+	Brms5ProjectTest.class, Brms5AuditLogTest.class, Brms5RuntimeManagementTest.class })
 public class Brms5TestSuite {
 
 }

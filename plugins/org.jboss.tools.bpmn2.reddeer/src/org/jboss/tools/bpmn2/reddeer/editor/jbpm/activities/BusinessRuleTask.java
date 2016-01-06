@@ -11,7 +11,7 @@ import org.jboss.tools.bpmn2.reddeer.properties.setup.ScriptSetUp;
  * 
  */
 public class BusinessRuleTask extends Task {
-	
+
 	/**
 	 * 
 	 * @param name
@@ -19,7 +19,7 @@ public class BusinessRuleTask extends Task {
 	public BusinessRuleTask(String name) {
 		super(name, ElementType.BUSINESS_RULE_TASK);
 	}
-	
+
 	public BusinessRuleTask(Element element) {
 		super(element);
 	}
@@ -29,7 +29,7 @@ public class BusinessRuleTask extends Task {
 	 * @param group
 	 */
 	public void setRuleFlowGroup(String group) {
-		propertiesHandler.setUp(new LabeledTextSetUp(PropertiesTabs.B_RULE_TASK_TAB, "Rule Flow Group" , group));
+		propertiesHandler.setUp(new LabeledTextSetUp(PropertiesTabs.B_RULE_TASK_TAB, "Rule Flow Group", group));
 	}
 
 	/**
@@ -57,5 +57,5 @@ public class BusinessRuleTask extends Task {
 	public void setOnExistScript(String language, String script) {
 		propertiesHandler.setUp(new ScriptSetUp(PropertiesTabs.B_RULE_TASK_TAB, "On Exit Script", language, script));
 	}
-	
+
 }

@@ -6,7 +6,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
  * 
  */
 public class SignalEndEvent extends EndEvent {
-	
+
 	/**
 	 * 
 	 * @param name
