@@ -31,8 +31,7 @@ public class EditorManipulator {
 	private static Logger log = Logger.getLogger(EditorManipulator.class);
 
 	/**
-	 * Replaces content of a file opened in active text editor with content of
-	 * the file <i>source</i>
+	 * Replaces content of a file opened in active text editor with content of the file <i>source</i>
 	 * 
 	 * @param source
 	 *            Path to the source file
@@ -45,8 +44,7 @@ public class EditorManipulator {
 	}
 
 	/**
-	 * Replaces content of a file opened in active XML editor of the CamelEditor
-	 * with content of the file <i>source</i>
+	 * Replaces content of a file opened in active XML editor of the CamelEditor with content of the file <i>source</i>
 	 * 
 	 * @param source
 	 *            Path to the source file
@@ -55,7 +53,7 @@ public class EditorManipulator {
 
 		new DefaultStyledText().setText(EditorManipulator.getFileContent(source));
 		new DefaultToolItem(new WorkbenchShell(), 0, new WithTooltipTextMatcher(new RegexMatcher("Save.*"))).click();
-		
+
 		// FIXME temporary added due to https://issues.jboss.org/browse/FUSETOOLS-1208
 		try {
 			log.debug("Check whether 'Could not parse your changes to the XML' dialog is appeared");
@@ -94,28 +92,29 @@ public class EditorManipulator {
 	}
 
 	/**
-	 * Compares content of the active XML editor of the Camel Editor with
-	 * content of the given file
+	 * Compares content of the active XML editor of the Camel Editor with content of the given file
 	 * 
 	 * @param file
 	 *            path to the file
-	 * @return true - content of the file and the text editor is the same, false
-	 *         - otherwise
+	 * @return true - content of the file and the text editor is the same, false - otherwise
 	 */
 	public static boolean isEditorContentEqualsFile(String file) {
 
 		String editorText = new DefaultStyledText().getText();
 		if (file.equals("resources/camel-context-all.xml")) {
 			XPathEvaluator xpath = new XPathEvaluator(new StringReader(editorText));
-			if (	(xpath.evaluateBoolean("/beans/camelContext/route/*[1]/@uri = 'file:src/data?noop=true'")) &&
-					(xpath.evaluateString("/beans/camelContext/route/choice/*[1]/*[1][text()]").equals("/person/city = 'London'")) &&
-					(xpath.evaluateBoolean("/beans/camelContext/route/choice/*[1]/*[2]/@message = 'UK message'")) &&
-					(xpath.evaluateBoolean("/beans/camelContext/route/choice/*[1]/*[3]/@uri = 'file:target/messages/uk'")) &&
-					(xpath.evaluateBoolean("/beans/camelContext/route/choice/*[2]/*[1]/@message = 'Other message'")) &&
-					(xpath.evaluateBoolean("/beans/camelContext/route/choice/*[2]/*[2]/@uri = 'file:target/messages/others'"))) return true;
+			if ((xpath.evaluateBoolean("/beans/camelContext/route/*[1]/@uri = 'file:src/data?noop=true'"))
+					&& (xpath.evaluateString("/beans/camelContext/route/choice/*[1]/*[1][text()]")
+							.equals("/person/city = 'London'"))
+					&& (xpath.evaluateBoolean("/beans/camelContext/route/choice/*[1]/*[2]/@message = 'UK message'"))
+					&& (xpath.evaluateBoolean(
+							"/beans/camelContext/route/choice/*[1]/*[3]/@uri = 'file:target/messages/uk'"))
+					&& (xpath.evaluateBoolean("/beans/camelContext/route/choice/*[2]/*[1]/@message = 'Other message'"))
+					&& (xpath.evaluateBoolean(
+							"/beans/camelContext/route/choice/*[2]/*[2]/@uri = 'file:target/messages/others'")))
+				return true;
 			return false;
-		}
-		else {
+		} else {
 			String fileText = getFileContent(file);
 			return editorText.equals(fileText);
 		}

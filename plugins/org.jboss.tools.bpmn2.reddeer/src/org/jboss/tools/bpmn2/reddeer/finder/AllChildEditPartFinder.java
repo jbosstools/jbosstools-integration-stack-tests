@@ -8,8 +8,8 @@ import org.eclipse.gef.EditPart;
 import org.hamcrest.Matcher;
 
 /**
- * Serves for finding EditPart's by given Matcher
- * Method find doesn't include argument parent in output, even if parent matches given Matcher
+ * Serves for finding EditPart's by given Matcher Method find doesn't include argument parent in output, even if parent
+ * matches given Matcher
  * 
  * @author jomarko
  *
@@ -41,7 +41,7 @@ public class AllChildEditPartFinder extends Finder<EditPart> {
 		}
 		return list;
 	}
-	
+
 	@Override
 	public List<EditPart> getChildren(EditPart child) {
 		return (List<EditPart>) child.getChildren();

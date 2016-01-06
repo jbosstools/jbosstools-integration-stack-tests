@@ -80,7 +80,9 @@ public class Fabric8Test {
 	}
 
 	/**
-	 * <p>Tries to create a local fabric. Test Add Fabric Details wizard.</p>
+	 * <p>
+	 * Tries to create a local fabric. Test Add Fabric Details wizard.
+	 * </p>
 	 * <b>Steps</b>
 	 * <ol>
 	 * <li>add a new Fuse Server</li>
@@ -92,11 +94,11 @@ public class Fabric8Test {
 	 */
 	@Test
 	public void testFabricCreation() {
-		
+
 		Fabric8Explorer fab = new Fabric8Explorer();
 		fab.open();
 		new DefaultTreeItem("Fabrics").select();
-		new ContextMenu("Add Fabric details").select();		
+		new ContextMenu("Add Fabric details").select();
 		new DefaultShell().setFocus();
 		PushButton ok = new PushButton("OK");
 
@@ -119,7 +121,9 @@ public class Fabric8Test {
 	}
 
 	/**
-	 * <p>Tries to create/delete a profile.</p>
+	 * <p>
+	 * Tries to create/delete a profile.
+	 * </p>
 	 * <b>Steps</b>
 	 * <ol>
 	 * <li>add a new Fuse Server</li>
@@ -136,18 +140,20 @@ public class Fabric8Test {
 		Fabric8Explorer fab = new Fabric8Explorer();
 		fab.open();
 		fab.createProfile("test", "1.0", "default");
-		
+
 		fab.selectNode("Fabrics", "Local Fabric", "Versions", "1.0", "default", "test");
 		fab.deleteProfile();
 		try {
 			fab.selectNode("Fabrics", "Local Fabric", "Versions", "1.0", "default", "test");
 			fail("Profile 'test' was deleted. It should not be available in the Fabric Explorer view!");
-		} catch (SWTLayerException|CoreLayerException ex) {
+		} catch (SWTLayerException | CoreLayerException ex) {
 		}
 	}
 
 	/**
-	 * <p>Tries to create/assign a new version.</p>
+	 * <p>
+	 * Tries to create/assign a new version.
+	 * </p>
 	 * <b>Steps</b>
 	 * <ol>
 	 * <li>add a new Fuse Server</li>
@@ -173,12 +179,14 @@ public class Fabric8Test {
 		try {
 			fab.selectContextMenuItem("Set Version", "2.0");
 			fail("Context menu item 'Set Version -> 2.0' should be disabled!");
-		} catch (SWTLayerException|CoreLayerException ex) {
+		} catch (SWTLayerException | CoreLayerException ex) {
 		}
 	}
 
 	/**
-	 * <p>Tries to manipulate with container.</p>
+	 * <p>
+	 * Tries to manipulate with container.
+	 * </p>
 	 * <b>Steps</b>
 	 * <ol>
 	 * <li>add a new Fuse Server</li>
@@ -211,7 +219,8 @@ public class Fabric8Test {
 		prop.open();
 		prop.refresh();
 		assertTrue(prop.isContainerPresent("test-container"));
-		assertTrue(new FuseShell().execute("fabric:container-list").contains("test-container  1.0        karaf   yes          autoscale               success"));
+		assertTrue(new FuseShell().execute("fabric:container-list")
+				.contains("test-container  1.0        karaf   yes          autoscale               success"));
 
 		// Manipulation with the 'root' container
 		prop.activate();
@@ -224,12 +233,14 @@ public class Fabric8Test {
 		prop.activate();
 		prop.selectItem("test-container");
 		prop.stopContainer();
-		assertTrue(new FuseShell().execute("fabric:container-list").contains("test-container  1.0        karaf   no           autoscale               stopped"));
+		assertTrue(new FuseShell().execute("fabric:container-list")
+				.contains("test-container  1.0        karaf   no           autoscale               stopped"));
 
 		prop.activate();
 		prop.selectItem("test-container");
 		prop.startContainer();
-		assertTrue(new FuseShell().execute("fabric:container-list").contains("test-container  1.0        karaf   yes          autoscale               success"));
+		assertTrue(new FuseShell().execute("fabric:container-list")
+				.contains("test-container  1.0        karaf   yes          autoscale               success"));
 
 		prop.activate();
 		prop.selectItem("test-container");
@@ -244,21 +255,23 @@ public class Fabric8Test {
 		try {
 			fab.stopContainer("test-container");
 			fail("Context menu should not contains 'Stop Container'! The container is already stopped");
-		} catch (SWTLayerException|CoreLayerException ex) {
+		} catch (SWTLayerException | CoreLayerException ex) {
 		}
 		fab.selectNode("Fabrics", "Local Fabric", "Containers");
 		prop.open();
-		assertTrue(new FuseShell().execute("fabric:container-list").contains("test-container  1.0        karaf   no           autoscale               stopped"));
+		assertTrue(new FuseShell().execute("fabric:container-list")
+				.contains("test-container  1.0        karaf   no           autoscale               stopped"));
 
 		fab.open();
 		fab.startContainer("test-container");
 		try {
 			fab.startContainer("test-container");
 			fail("Context menu should not contains 'Start Container'! The container is already started");
-		} catch (SWTLayerException|CoreLayerException ex) {
+		} catch (SWTLayerException | CoreLayerException ex) {
 		}
 		fab.selectNode("Fabrics", "Local Fabric", "Containers");
 		prop.open();
-		assertTrue(new FuseShell().execute("fabric:container-list").contains("test-container  1.0        karaf   yes          autoscale               success"));
+		assertTrue(new FuseShell().execute("fabric:container-list")
+				.contains("test-container  1.0        karaf   yes          autoscale               success"));
 	}
 }

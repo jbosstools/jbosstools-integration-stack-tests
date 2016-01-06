@@ -17,7 +17,7 @@ public class ServerFabric8 extends ServerKaraf {
 
 	private final String category = "JBoss Fuse";
 	private final String label = "Fabric8";
-	
+
 	@Override
 	public String getCategory() {
 		return category;

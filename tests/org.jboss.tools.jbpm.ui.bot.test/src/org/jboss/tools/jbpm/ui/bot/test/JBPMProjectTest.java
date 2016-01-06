@@ -32,7 +32,7 @@ public class JBPMProjectTest {
 
 	@InjectRequirement
 	protected RuntimeRequirement requirement;
-	
+
 	@Test
 	public void createProject() {
 		/* Create Project */
@@ -42,9 +42,9 @@ public class JBPMProjectTest {
 		projectWizard.setRuntime(requirement.getConfig().getName()).finish();
 
 		new ProjectExplorer().getProject("test").getProjectItem("src", "main", "jpdl", "simple.jpdl.xml").open();
-		
+
 		new DefaultEditor("simple.jpdl.xml");
-	
+
 	}
 
 }

@@ -10,13 +10,12 @@ public class TableItemMatcher extends BaseMatcher<TableItem> {
 
 	private int columnIndex;
 	private Matcher<String> matcher;
-	
-	
+
 	public TableItemMatcher(int columnIndex, String text) {
 		this.columnIndex = columnIndex;
 		matcher = new IsEqual<String>(text);
 	}
-	
+
 	public TableItemMatcher(int columnIndex, Matcher<String> matcher) {
 		this.columnIndex = columnIndex;
 		this.matcher = matcher;
@@ -24,8 +23,8 @@ public class TableItemMatcher extends BaseMatcher<TableItem> {
 
 	@Override
 	public boolean matches(Object obj) {
-		if(obj instanceof TableItem){
-			TableItem item = ((TableItem)obj);
+		if (obj instanceof TableItem) {
+			TableItem item = ((TableItem) obj);
 			return matcher.matches(item.getText(columnIndex));
 		}
 		return false;

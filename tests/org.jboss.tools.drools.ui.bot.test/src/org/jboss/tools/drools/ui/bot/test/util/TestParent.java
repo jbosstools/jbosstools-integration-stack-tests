@@ -52,312 +52,321 @@ import org.osgi.framework.Bundle;
 @SuppressWarnings("restriction")
 @RunWith(RedDeerSuite.class)
 public abstract class TestParent {
-    private static final Logger LOGGER = Logger.getLogger(TestParent.class);
-    private static final File SCREENSHOT_DIR = new File("screenshots");
-    protected static final String DEFAULT_DROOLS_RUNTIME_NAME = "defaultTestRuntime";
-    public static final String DEFAULT_PROJECT_NAME = "defaultTestProject";
+	private static final Logger LOGGER = Logger.getLogger(TestParent.class);
+	private static final File SCREENSHOT_DIR = new File("screenshots");
+	protected static final String DEFAULT_DROOLS_RUNTIME_NAME = "defaultTestRuntime";
+	public static final String DEFAULT_PROJECT_NAME = "defaultTestProject";
 
-    private static final AtomicBoolean initialized = new AtomicBoolean(false);
+	private static final AtomicBoolean initialized = new AtomicBoolean(false);
 
-    private final RuntimeVersion runtimeVersion;
-    
-    public TestParent() {
-    	this.runtimeVersion = RuntimeVersion.UNDEFINED;
-    }
+	private final RuntimeVersion runtimeVersion;
 
-    @Rule
-    public TestName name = new TestName();
-
-    @ClassRule
-    public static TestWatcher classWatcher = new TestWatcher() {
-        @Override
-        protected void starting(Description description) {
-            LOGGER.info(String.format("%n%n%25s Starting [%s]%n", "", description.getClassName()));
-        }
-    };
-
-    @Rule
-    public TestWatcher resultWatcher = new TestWatcher() {
-        protected void starting(Description description) {
-            LOGGER.info(String.format("==== %s ====", description.getMethodName()));
-        };
-
-        protected void succeeded(Description description) {
-            LOGGER.info(String.format("succeded %s - %s", description.getClassName(), description.getMethodName()));
-        };
-
-        protected void skipped(AssumptionViolatedException e, Description description) {
-            LOGGER.info(String.format("skipped %s - %s", description.getClassName(), description.getMethodName()));
-        }
-
-        protected void failed(Throwable e, Description description) {
-            LOGGER.warn(String.format("failed %s - %s", description.getClassName(), description.getMethodName()));
-        };
-    };
-
-    @BeforeClass
-    public static void closeStartUpDialogsAndViews() {
-        if (!initialized.getAndSet(true)) {
-            try {
-                new DefaultShell("JBoss Developer Studio Usage");
-                new PushButton("No").click();
-            } catch (Exception ex) {
-                LOGGER.debug("JBoss Tools Usage dialog was not found.");
-            }
-
-            try {
-                new WorkbenchView("Welcome") {}.close();
-            } catch (Exception ex) {
-                LOGGER.debug("Eclipse Welcome view not found.");
-            }
-
-            try {
-                new DefaultEditor("JBoss Central").close();
-            } catch (Exception ex) {
-                LOGGER.debug("JBoss Central editor was not found.");
-            }
-
-            // maximizes the window
-            final org.eclipse.swt.widgets.Shell shell = ShellLookup.getInstance().getActiveShell();
-            Display.syncExec(new Runnable() {
-                public void run() {
-                    shell.setMaximized(true);
-                }
-            });
-        }
-    }
-
-    @Before
-    public void setUpEnvironment() {
-        // first set up the correct perspective
-        UsePerspective def = getAnnotationOnMethod(getMethodName(), UsePerspective.class);
-        boolean opened = false;
-        try {
-            if (def != null) {
-                def.value().newInstance().open();
-                opened = true;
-            }
-        } catch (InstantiationException ex) {
-            LOGGER.error("Unable to instantiate perspective", ex);
-        } catch (IllegalAccessException ex) {
-            LOGGER.error("Unable to instantiate perspective", ex);
-        }
-        if (!opened) {
-            new JavaPerspective().open();
-        }
-
-        // setup default project
-        String methodName = getMethodName();
-        if (getAnnotationOnMethod(methodName, UseDefaultProject.class) != null) {
-            setupProject(getUsedVersion());
-        } 
-    }
-
-    @After
-    public void cleanUp() {
-        // take screenshot before cleaning up
-        takeScreenshot(String.format("%s-%s", getClass().getName(), getTestName()));
-
-        closeAllDialogs();
-
-        // save and close editors
-        while (true) {
-            try {
-                new DefaultEditor().save();
-                new DefaultEditor().close();
-            } catch (Exception ex) {
-                break;
-            }
-        }
-
-        // switch to Java perspective
-        new JavaPerspective().open();
-
-        // refresh and delete all projects (as running the projects creates logs)
-        PackageExplorer pe = new PackageExplorer();
-        pe.deleteAllProjects();
-        pe.deleteAllProjects(); // BZ 1225885
-
-        ConsoleView console = new ConsoleView();
-        console.open();
-        try {
-            // FIXME uncomment once my pull request is applied
-            //console.removeAllTerminatedLaunches();
-            new DefaultToolItem("Remove All Terminated Launches").click();
-        } catch (Exception ex) {
-            LOGGER.debug("Console was not cleared", ex);
-        }
-    }
-    
-    protected void deleteAllRuntimes() {
-    	DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
-        pref.open();
-        for (DroolsRuntime runtime : pref.getDroolsRuntimes()) {
-            pref.removeDroolsRuntime(runtime.getName());
-        }
-        pref.okCloseWarning();
+	public TestParent() {
+		this.runtimeVersion = RuntimeVersion.UNDEFINED;
 	}
 
-    protected String createTempDir(String name) {
-        File dir = new File("tmp", name);
-        dir.mkdirs();
+	@Rule
+	public TestName name = new TestName();
 
-        return dir.getAbsolutePath();
-    }
+	@ClassRule
+	public static TestWatcher classWatcher = new TestWatcher() {
+		@Override
+		protected void starting(Description description) {
+			LOGGER.info(String.format("%n%n%25s Starting [%s]%n", "", description.getClassName()));
+		}
+	};
 
-    protected static String getTemplateText(String templateName) {
-        Bundle bundle = Platform.getBundle(Activator.PLUGIN_ID);
-        StringWriter w = new StringWriter();
-        BufferedReader br = null;
-        PrintWriter pw = null;
-        try {
-            br = new BufferedReader(new InputStreamReader(bundle.getResource(templateName).openStream()));
-            pw = new PrintWriter(w);
-            String l;
-            while ((l = br.readLine()) != null) {
-                pw.println(l);
-            }
-        } catch (IOException ex) {
-            LOGGER.error("Unable to close template stream", ex);
-        } finally {
-            try {
-                if (br != null) br.close();
-            } catch (IOException ex) {
-                throw new RuntimeException("Error closing BufferedReader", ex);
-            }
-            if (pw != null) pw.close();
-        }
+	@Rule
+	public TestWatcher resultWatcher = new TestWatcher() {
+		protected void starting(Description description) {
+			LOGGER.info(String.format("==== %s ====", description.getMethodName()));
+		};
 
-        return w.toString();
-    }
+		protected void succeeded(Description description) {
+			LOGGER.info(String.format("succeded %s - %s", description.getClassName(), description.getMethodName()));
+		};
 
-    /**
-     * Takes the screenshot of Eclipse. It is stored in screenshot directory. The file name follows pattern  <code>001-${name}.png</code>.
-     * 
-     * @param name name of the screenshot (needs not be unique)
-     */
-    protected static void takeScreenshot(String name) {
-        if (!SCREENSHOT_DIR.exists()) {
-            SCREENSHOT_DIR.mkdirs();
-        }
+		protected void skipped(AssumptionViolatedException e, Description description) {
+			LOGGER.info(String.format("skipped %s - %s", description.getClassName(), description.getMethodName()));
+		}
 
-        int index = SCREENSHOT_DIR.list().length;
-        File screenshotFile = new File(SCREENSHOT_DIR, String.format("%03d-%s.png", index, name ));
-        try {
+		protected void failed(Throwable e, Description description) {
+			LOGGER.warn(String.format("failed %s - %s", description.getClassName(), description.getMethodName()));
+		};
+	};
+
+	@BeforeClass
+	public static void closeStartUpDialogsAndViews() {
+		if (!initialized.getAndSet(true)) {
+			try {
+				new DefaultShell("JBoss Developer Studio Usage");
+				new PushButton("No").click();
+			} catch (Exception ex) {
+				LOGGER.debug("JBoss Tools Usage dialog was not found.");
+			}
+
+			try {
+				new WorkbenchView("Welcome") {
+				}.close();
+			} catch (Exception ex) {
+				LOGGER.debug("Eclipse Welcome view not found.");
+			}
+
+			try {
+				new DefaultEditor("JBoss Central").close();
+			} catch (Exception ex) {
+				LOGGER.debug("JBoss Central editor was not found.");
+			}
+
+			// maximizes the window
+			final org.eclipse.swt.widgets.Shell shell = ShellLookup.getInstance().getActiveShell();
+			Display.syncExec(new Runnable() {
+				public void run() {
+					shell.setMaximized(true);
+				}
+			});
+		}
+	}
+
+	@Before
+	public void setUpEnvironment() {
+		// first set up the correct perspective
+		UsePerspective def = getAnnotationOnMethod(getMethodName(), UsePerspective.class);
+		boolean opened = false;
+		try {
+			if (def != null) {
+				def.value().newInstance().open();
+				opened = true;
+			}
+		} catch (InstantiationException ex) {
+			LOGGER.error("Unable to instantiate perspective", ex);
+		} catch (IllegalAccessException ex) {
+			LOGGER.error("Unable to instantiate perspective", ex);
+		}
+		if (!opened) {
+			new JavaPerspective().open();
+		}
+
+		// setup default project
+		String methodName = getMethodName();
+		if (getAnnotationOnMethod(methodName, UseDefaultProject.class) != null) {
+			setupProject(getUsedVersion());
+		}
+	}
+
+	@After
+	public void cleanUp() {
+		// take screenshot before cleaning up
+		takeScreenshot(String.format("%s-%s", getClass().getName(), getTestName()));
+
+		closeAllDialogs();
+
+		// save and close editors
+		while (true) {
+			try {
+				new DefaultEditor().save();
+				new DefaultEditor().close();
+			} catch (Exception ex) {
+				break;
+			}
+		}
+
+		// switch to Java perspective
+		new JavaPerspective().open();
+
+		// refresh and delete all projects (as running the projects creates logs)
+		PackageExplorer pe = new PackageExplorer();
+		pe.deleteAllProjects();
+		pe.deleteAllProjects(); // BZ 1225885
+
+		ConsoleView console = new ConsoleView();
+		console.open();
+		try {
+			// FIXME uncomment once my pull request is applied
+			// console.removeAllTerminatedLaunches();
+			new DefaultToolItem("Remove All Terminated Launches").click();
+		} catch (Exception ex) {
+			LOGGER.debug("Console was not cleared", ex);
+		}
+	}
+
+	protected void deleteAllRuntimes() {
+		DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
+		pref.open();
+		for (DroolsRuntime runtime : pref.getDroolsRuntimes()) {
+			pref.removeDroolsRuntime(runtime.getName());
+		}
+		pref.okCloseWarning();
+	}
+
+	protected String createTempDir(String name) {
+		File dir = new File("tmp", name);
+		dir.mkdirs();
+
+		return dir.getAbsolutePath();
+	}
+
+	protected static String getTemplateText(String templateName) {
+		Bundle bundle = Platform.getBundle(Activator.PLUGIN_ID);
+		StringWriter w = new StringWriter();
+		BufferedReader br = null;
+		PrintWriter pw = null;
+		try {
+			br = new BufferedReader(new InputStreamReader(bundle.getResource(templateName).openStream()));
+			pw = new PrintWriter(w);
+			String l;
+			while ((l = br.readLine()) != null) {
+				pw.println(l);
+			}
+		} catch (IOException ex) {
+			LOGGER.error("Unable to close template stream", ex);
+		} finally {
+			try {
+				if (br != null)
+					br.close();
+			} catch (IOException ex) {
+				throw new RuntimeException("Error closing BufferedReader", ex);
+			}
+			if (pw != null)
+				pw.close();
+		}
+
+		return w.toString();
+	}
+
+	/**
+	 * Takes the screenshot of Eclipse. It is stored in screenshot directory. The file name follows pattern
+	 * <code>001-${name}.png</code>.
+	 * 
+	 * @param name
+	 *            name of the screenshot (needs not be unique)
+	 */
+	protected static void takeScreenshot(String name) {
+		if (!SCREENSHOT_DIR.exists()) {
+			SCREENSHOT_DIR.mkdirs();
+		}
+
+		int index = SCREENSHOT_DIR.list().length;
+		File screenshotFile = new File(SCREENSHOT_DIR, String.format("%03d-%s.png", index, name));
+		try {
 			ScreenshotCapturer.getInstance().captureScreenshot(screenshotFile.getAbsolutePath());
 		} catch (CaptureScreenshotException e) {
 			e.printStackTrace();
 		}
-    }
+	}
 
-    private <T extends Annotation> T getAnnotationOnMethod(String methodName, Class<T> annotationClass) {
-        Method m = null;
-        try {
-            m = getClass().getMethod(methodName);
-        } catch (NoSuchMethodException ex) {
-            return null;
-        }
-        return m.getAnnotation(annotationClass);
-    }
+	private <T extends Annotation> T getAnnotationOnMethod(String methodName, Class<T> annotationClass) {
+		Method m = null;
+		try {
+			m = getClass().getMethod(methodName);
+		} catch (NoSuchMethodException ex) {
+			return null;
+		}
+		return m.getAnnotation(annotationClass);
+	}
 
-    /**
-     * Try not to use thread sleep to wait for events (there has to be a better way)
-     */
-    protected void waitASecond() {
-        try { Thread.sleep(1000); } catch (InterruptedException ex) {}
-    }
+	/**
+	 * Try not to use thread sleep to wait for events (there has to be a better way)
+	 */
+	protected void waitASecond() {
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException ex) {
+		}
+	}
 
-    protected void closeAllDialogs() {
-        // press as many "Cancel" buttons as possible to clear out the shells
-        while (true) {
-            try {
-                new PushButton("Cancel").click();
-            } catch (Exception ex) {
-                break;
-            }
-        }
-        ShellHandler.getInstance().closeAllNonWorbenchShells();
-    }
-    
-    private void setupProject(RuntimeVersion useRuntime) {
-        if (useRuntime == RuntimeVersion.UNDEFINED) {
-            return;
-        }
+	protected void closeAllDialogs() {
+		// press as many "Cancel" buttons as possible to clear out the shells
+		while (true) {
+			try {
+				new PushButton("Cancel").click();
+			} catch (Exception ex) {
+				break;
+			}
+		}
+		ShellHandler.getInstance().closeAllNonWorbenchShells();
+	}
 
-        NewDroolsProjectWizard wiz = new NewDroolsProjectWizard();
-        wiz.open();
-        wiz.getFirstPage().setProjectName(DEFAULT_PROJECT_NAME);
-        wiz.next();
-        wiz.getSelectSamplesPage().checkAll();
-        wiz.next();
-        if (useRuntime == RuntimeVersion.BRMS_5) {
-            wiz.getDroolsRuntimePage().setCodeCompatibleWithVersion(CodeCompatibility.Drools51OrAbove);
-        }
-        if (useRuntime == RuntimeVersion.BRMS_6) {
-            wiz.getDroolsRuntimePage().setCodeCompatibleWithVersion(CodeCompatibility.Drools60x);
-            wiz.getDroolsRuntimePage().setGAV("com.redhat", "test", "1.0.0-SNAPSHOT");
-        }
+	private void setupProject(RuntimeVersion useRuntime) {
+		if (useRuntime == RuntimeVersion.UNDEFINED) {
+			return;
+		}
 
-        wiz.finish();
-    }
+		NewDroolsProjectWizard wiz = new NewDroolsProjectWizard();
+		wiz.open();
+		wiz.getFirstPage().setProjectName(DEFAULT_PROJECT_NAME);
+		wiz.next();
+		wiz.getSelectSamplesPage().checkAll();
+		wiz.next();
+		if (useRuntime == RuntimeVersion.BRMS_5) {
+			wiz.getDroolsRuntimePage().setCodeCompatibleWithVersion(CodeCompatibility.Drools51OrAbove);
+		}
+		if (useRuntime == RuntimeVersion.BRMS_6) {
+			wiz.getDroolsRuntimePage().setCodeCompatibleWithVersion(CodeCompatibility.Drools60x);
+			wiz.getDroolsRuntimePage().setGAV("com.redhat", "test", "1.0.0-SNAPSHOT");
+		}
 
-    protected String getResourcesLocation() {
-        switch (getUsedVersion()) {
-            case BRMS_5:
-                return "src/main/rules";
-            case BRMS_6:
-                return "src/main/resources";
-            default:
-                return null;
-        }
-    }
+		wiz.finish();
+	}
 
-    protected String getRulesLocation() {
-        return getRulesLocation(DEFAULT_PROJECT_NAME);
-    }
-    protected String getRulesLocation(String projectName) {
-        StringBuilder sb = new StringBuilder();
+	protected String getResourcesLocation() {
+		switch (getUsedVersion()) {
+		case BRMS_5:
+			return "src/main/rules";
+		case BRMS_6:
+			return "src/main/resources";
+		default:
+			return null;
+		}
+	}
 
-        sb.append(projectName).append("/").append(getResourcesLocation());
-        if (getUsedVersion() == RuntimeVersion.BRMS_6) {
-                sb.append("/").append("rules");
-        }
+	protected String getRulesLocation() {
+		return getRulesLocation(DEFAULT_PROJECT_NAME);
+	}
 
-        return sb.toString();
-    }
+	protected String getRulesLocation(String projectName) {
+		StringBuilder sb = new StringBuilder();
 
-    protected String[] getResourcePath(String resourceName) {
-        return getResourcePath("rules", resourceName);
-    }
+		sb.append(projectName).append("/").append(getResourcesLocation());
+		if (getUsedVersion() == RuntimeVersion.BRMS_6) {
+			sb.append("/").append("rules");
+		}
 
-    protected String[] getResourcePath(String packageName, String resourceName) {
-        List<String> result = new LinkedList<String>();
+		return sb.toString();
+	}
 
-        result.add(getResourcesLocation());
-        if (getUsedVersion() == RuntimeVersion.BRMS_6) {
-            result.add(packageName);
-        }
-        result.add(resourceName);
+	protected String[] getResourcePath(String resourceName) {
+		return getResourcePath("rules", resourceName);
+	}
 
-        return result.toArray(new String[result.size()]);
-    }
+	protected String[] getResourcePath(String packageName, String resourceName) {
+		List<String> result = new LinkedList<String>();
 
-    protected String getTestName() {
-        return name.getMethodName().replaceAll("[\\[\\] ]", "");
-    }
+		result.add(getResourcesLocation());
+		if (getUsedVersion() == RuntimeVersion.BRMS_6) {
+			result.add(packageName);
+		}
+		result.add(resourceName);
 
-    protected String getMethodName() {
-        return name.getMethodName().replaceAll("\\[\\d+\\]", "").replace("default", "").replaceAll("brms-.*\\.xml", "")
-        		.replaceAll("drools-.*\\.xml", "").replaceAll("eap-.*\\.xml", "").trim();
-    }
+		return result.toArray(new String[result.size()]);
+	}
 
-    protected RuntimeVersion getUsedVersion() {
-        if (getAnnotationOnMethod(getMethodName(), Drools6Runtime.class) != null) {
-            return RuntimeVersion.BRMS_6;
-        } else if (getAnnotationOnMethod(getMethodName(), Drools5Runtime.class) != null) {
-            return RuntimeVersion.BRMS_5;
-        } else {
-            return runtimeVersion;
-        }
-    }
+	protected String getTestName() {
+		return name.getMethodName().replaceAll("[\\[\\] ]", "");
+	}
+
+	protected String getMethodName() {
+		return name.getMethodName().replaceAll("\\[\\d+\\]", "").replace("default", "").replaceAll("brms-.*\\.xml", "")
+				.replaceAll("drools-.*\\.xml", "").replaceAll("eap-.*\\.xml", "").trim();
+	}
+
+	protected RuntimeVersion getUsedVersion() {
+		if (getAnnotationOnMethod(getMethodName(), Drools6Runtime.class) != null) {
+			return RuntimeVersion.BRMS_6;
+		} else if (getAnnotationOnMethod(getMethodName(), Drools5Runtime.class) != null) {
+			return RuntimeVersion.BRMS_5;
+		} else {
+			return runtimeVersion;
+		}
+	}
 }

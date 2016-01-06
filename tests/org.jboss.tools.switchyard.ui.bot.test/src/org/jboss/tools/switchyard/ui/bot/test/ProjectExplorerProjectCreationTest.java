@@ -97,7 +97,7 @@ public class ProjectExplorerProjectCreationTest {
 				xpath.evaluateString("/project/properties/switchyard.version"));
 	}
 
-	 @Test
+	@Test
 	@RunIf(conditionClass = SwitchYardRequirementHasServer.class)
 	public void createProjectWithServerTest() {
 		String projectName = "withserver";
@@ -166,7 +166,7 @@ public class ProjectExplorerProjectCreationTest {
 		wizard.setConfigurationVersion(switchyardRequirement.getConfig().getConfigurationVersion());
 		wizard.setTargetRuntime("<None>");
 		wizard.setLibraryVersion(switchyardRequirement.getConfig().getLibraryVersion());
-		
+
 		assertComponent("Implementation Support", "Bean");
 		assertComponent("Implementation Support", "BPEL");
 		assertComponent("Implementation Support", "BPM (jBPM)");
@@ -232,14 +232,17 @@ public class ProjectExplorerProjectCreationTest {
 		wizard.setLibraryVersion("1.1.0.Final");
 
 		wizard.setConfigurationVersion("1.0");
-		assertFalse("BOM dependency should not be enabled with 1.0 version when library version is '1.1.0.Final'", wizard.isBOMDependencyEnabled());
+		assertFalse("BOM dependency should not be enabled with 1.0 version when library version is '1.1.0.Final'",
+				wizard.isBOMDependencyEnabled());
 
 		wizard.setConfigurationVersion("1.1");
-		assertFalse("BOM dependency should not be enabled with 1.0 version when library version is '1.1.0.Final'", wizard.isBOMDependencyEnabled());
+		assertFalse("BOM dependency should not be enabled with 1.0 version when library version is '1.1.0.Final'",
+				wizard.isBOMDependencyEnabled());
 
 		wizard.setConfigurationVersion("2.0");
-		assertFalse("BOM dependency should not be enabled with 1.0 version when library version is '1.1.0.Final'", wizard.isBOMDependencyEnabled());
-		
+		assertFalse("BOM dependency should not be enabled with 1.0 version when library version is '1.1.0.Final'",
+				wizard.isBOMDependencyEnabled());
+
 		wizard.setLibraryVersion("2.0.0.Final");
 
 		wizard.setConfigurationVersion("1.0");

@@ -59,12 +59,15 @@ public class DataTransformationDeploymentTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>Test tries to deploy a Fuse project with defined Data Transformation to JBoss Fuse runtime</p>
+	 * <p>
+	 * Test tries to deploy a Fuse project with defined Data Transformation to JBoss Fuse runtime
+	 * </p>
 	 * <b>Steps</b>
 	 * <ol>
 	 * <li>start JBoss Fuse</li>
 	 * <li>import 'XML-to-JSON' project from 'resources/projects/XML-to-JSON'</li>
-	 * <li>enable Fuse Camel Nature on the project (has to be done to ensure that project can be deployed to JBoss Fuse Runtime)</li>
+	 * <li>enable Fuse Camel Nature on the project (has to be done to ensure that project can be deployed to JBoss Fuse
+	 * Runtime)</li>
 	 * <li>deploy the project</li>
 	 * <li>invoke the route with copying a file</li>
 	 * <li>check log of JBoss Fuse (deployed project should log transformed XML file in JSON format)</li>
@@ -75,7 +78,9 @@ public class DataTransformationDeploymentTest extends DefaultTest {
 	@RunIf(conditionClass = IssueIsClosed.class)
 	public void testDeployment() {
 
-		ProjectFactory.importExistingProject(ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID, "resources/projects/XML-to-JSON"), "XML-to-JSON", true, true);
+		ProjectFactory.importExistingProject(
+				ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID, "resources/projects/XML-to-JSON"),
+				"XML-to-JSON", true, true);
 		CamelProject project = new CamelProject("XML-to-JSON");
 		project.close();
 		project.open();
@@ -83,7 +88,8 @@ public class DataTransformationDeploymentTest extends DefaultTest {
 		ServerManipulator.addModule(serverRequirement.getConfig().getName(), "XML-to-JSON");
 
 		// invoke the route with copying a file
-		String from = ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID, "resources/projects/XML-to-JSON/src/main/resources/data/abc-order.xml");
+		String from = ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID,
+				"resources/projects/XML-to-JSON/src/main/resources/data/abc-order.xml");
 		String to = serverRequirement.getConfig().getServerBase().getHome() + "/src/main/resources/data/abc-order.xml";
 		try {
 			Files.copy(new File(from).toPath(), new File(to).toPath(), REPLACE_EXISTING);
@@ -92,7 +98,8 @@ public class DataTransformationDeploymentTest extends DefaultTest {
 			fail("Tests cannot copy XML file to home folder of JBoss Fuse Runtime!");
 		}
 		try {
-			new WaitUntil(new FuseLogContainsText("{\"custId\":\"ACME-123\",\"priority\":\"GOLD\",\"orderId\":\"[ORDER1]\",\"origin\":\"web\",\"approvalCode\":\"AUTO_OK\",\"lineItems\":[{\"itemId\":\"PICKLE\",\"amount\":1000,\"cost\":2.25},{\"itemId\":\"BANANA\",\"amount\":400,\"cost\":1.25}]}"));
+			new WaitUntil(new FuseLogContainsText(
+					"{\"custId\":\"ACME-123\",\"priority\":\"GOLD\",\"orderId\":\"[ORDER1]\",\"origin\":\"web\",\"approvalCode\":\"AUTO_OK\",\"lineItems\":[{\"itemId\":\"PICKLE\",\"amount\":1000,\"cost\":2.25},{\"itemId\":\"BANANA\",\"amount\":400,\"cost\":1.25}]}"));
 		} catch (WaitTimeoutExpiredException e) {
 			fail("Transformation is broken! \n\n" + new FuseShell().execute("log:display"));
 		}

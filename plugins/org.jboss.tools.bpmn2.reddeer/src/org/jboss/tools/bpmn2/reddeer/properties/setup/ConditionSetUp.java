@@ -11,12 +11,12 @@ public class ConditionSetUp implements SetUpAble {
 
 	private String language;
 	private String condition;
-	
+
 	public ConditionSetUp(String language, String condition) {
 		this.language = language;
 		this.condition = condition;
 	}
-	
+
 	@Override
 	public void setUpCTab() {
 		DefaultSection section = new DefaultSection("Event Definitions");
@@ -30,9 +30,9 @@ public class ConditionSetUp implements SetUpAble {
 				new SectionToolItem("Event Definitions", "Edit").click();
 			}
 		}
-		
-		new LabeledCombo( "Script Language").setSelection(language);
-		new LabeledText( "Script").setText(condition);
+
+		new LabeledCombo("Script Language").setSelection(language);
+		new LabeledText("Script").setText(condition);
 		new SectionToolItem("Conditional Event Definition Details", "Close").click();
 	}
 

@@ -69,7 +69,7 @@ public class CamelProject {
 		project.getProjectItem("Camel Contexts").getChildren().get(0).select();
 		try {
 			new ContextMenu("Run As", "2 Local Camel Context").select();
-		} catch (SWTLayerException|CoreLayerException ex) {
+		} catch (SWTLayerException | CoreLayerException ex) {
 			new ContextMenu("Run As", "1 Local Camel Context").select();
 		}
 		new WaitUntil(new ConsoleHasText("(CamelContext: camel-1) started"), TimePeriod.getCustom(30));
@@ -80,7 +80,7 @@ public class CamelProject {
 		project.getProjectItem("src/main/resources", "META-INF", "spring", name).select();
 		try {
 			new ContextMenu("Run As", "2 Local Camel Context").select();
-		} catch (SWTLayerException|CoreLayerException ex) {
+		} catch (SWTLayerException | CoreLayerException ex) {
 			new ContextMenu("Run As", "1 Local Camel Context").select();
 		}
 		new WaitUntil(new ConsoleHasText("Total 1 routes, of which 1 is started."), TimePeriod.getCustom(300));
@@ -159,8 +159,7 @@ public class CamelProject {
 	}
 
 	/**
-	 * Tries to close 'Confirm Perspective Switch' window. This window is
-	 * appeared after debugging is started.
+	 * Tries to close 'Confirm Perspective Switch' window. This window is appeared after debugging is started.
 	 */
 	private void closePerspectiveSwitchWindow() {
 

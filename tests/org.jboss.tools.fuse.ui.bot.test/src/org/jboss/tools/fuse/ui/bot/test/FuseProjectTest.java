@@ -38,19 +38,11 @@ import org.junit.runner.RunWith;
 public class FuseProjectTest extends DefaultTest {
 
 	protected Logger log = Logger.getLogger(FuseProjectTest.class);
-	private static final List<String> testArchetypes = Arrays.asList(
-			"camel-archetype-activemq",
-			"camel-archetype-blueprint",
-			"camel-archetype-cxf-code-first-blueprint",
-			"camel-archetype-cxf-contract-first-blueprint",
-			"camel-archetype-java",
-			"camel-archetype-spring",
-			"camel-archetype-spring-dm",
-			"camel-archetype-web",
-			"cxf-jaxrs-service",
-			"cxf-jaxws-javafirst",
-			"wildfly-camel-archetype-spring"
-			);
+	private static final List<String> testArchetypes = Arrays.asList("camel-archetype-activemq",
+			"camel-archetype-blueprint", "camel-archetype-cxf-code-first-blueprint",
+			"camel-archetype-cxf-contract-first-blueprint", "camel-archetype-java", "camel-archetype-spring",
+			"camel-archetype-spring-dm", "camel-archetype-web", "cxf-jaxrs-service", "cxf-jaxws-javafirst",
+			"wildfly-camel-archetype-spring");
 
 	/**
 	 * Checks whether the test methods (archetypes) are complete. If they are not, abort testing.
@@ -77,7 +69,8 @@ public class FuseProjectTest extends DefaultTest {
 
 		new ProblemsView().open();
 		for (TreeItem item : new DefaultTree().getItems()) {
-			if (item.getText().toLowerCase().contains("error")) return true;
+			if (item.getText().toLowerCase().contains("error"))
+				return true;
 		}
 		return false;
 	}
@@ -104,13 +97,15 @@ public class FuseProjectTest extends DefaultTest {
 			log.warn("There is a problem with building '" + name + "' project");
 			return false;
 		}
-		
+
 		return true;
 	}
 
 	/**
-	 * <p>Tries to create a Fuse project from <i>camel-archetype-activemq</i> archetype
-	 * and tries to run the project as Local Camel Context.</p>
+	 * <p>
+	 * Tries to create a Fuse project from <i>camel-archetype-activemq</i> archetype and tries to run the project as
+	 * Local Camel Context.
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>create a new project</li>
@@ -136,8 +131,10 @@ public class FuseProjectTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>Tries to create a Fuse project from <i>camel-archetype-blueprint</i> archetype
-	 * and tries to run the project as Local Camel Context.</p>
+	 * <p>
+	 * Tries to create a Fuse project from <i>camel-archetype-blueprint</i> archetype and tries to run the project as
+	 * Local Camel Context.
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>create a new project</li>
@@ -163,8 +160,10 @@ public class FuseProjectTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>Tries to create a Fuse project from <i>camel-archetype-cxf-code-first-blueprint</i> archetype
-	 * and tries to run the project as Local Camel Context.</p>
+	 * <p>
+	 * Tries to create a Fuse project from <i>camel-archetype-cxf-code-first-blueprint</i> archetype and tries to run
+	 * the project as Local Camel Context.
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>create a new project</li>
@@ -180,18 +179,23 @@ public class FuseProjectTest extends DefaultTest {
 	public void testCamelCxfCodeFirstBlueprint() {
 
 		try {
-			ProjectFactory.createProject("camel-archetype-cxf-code-first-blueprint", "camel-archetype-cxf-code-first-blueprint");
-			assertTrue("Project is not present in Project Explorer", isPresent("camel-archetype-cxf-code-first-blueprint"));
+			ProjectFactory.createProject("camel-archetype-cxf-code-first-blueprint",
+					"camel-archetype-cxf-code-first-blueprint");
+			assertTrue("Project is not present in Project Explorer",
+					isPresent("camel-archetype-cxf-code-first-blueprint"));
 			assertFalse("Project was created with errors", hasErrors());
-			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-archetype-cxf-code-first-blueprint"));
+			assertTrue("Project cannot be run as Local Camel Context",
+					canBeRun("camel-archetype-cxf-code-first-blueprint"));
 		} catch (FuseArchetypeNotFoundException e) {
 			log.warn("Archetype is not available");
 		}
 	}
 
 	/**
-	 * <p>Tries to create a Fuse project from <i>camel-archetype-cxf-contract-first-blueprint</i> archetype
-	 * and tries to run the project as Local Camel Context.</p>
+	 * <p>
+	 * Tries to create a Fuse project from <i>camel-archetype-cxf-contract-first-blueprint</i> archetype and tries to
+	 * run the project as Local Camel Context.
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>create a new project</li>
@@ -207,18 +211,23 @@ public class FuseProjectTest extends DefaultTest {
 	public void testCamelCxfContractFirstBlueprint() {
 
 		try {
-			ProjectFactory.createProject("camel-archetype-cxf-contract-first-blueprint", "camel-archetype-cxf-contract-first-blueprint");
-			assertTrue("Project is not present in Project Explorer", isPresent("camel-archetype-cxf-contract-first-blueprint"));
+			ProjectFactory.createProject("camel-archetype-cxf-contract-first-blueprint",
+					"camel-archetype-cxf-contract-first-blueprint");
+			assertTrue("Project is not present in Project Explorer",
+					isPresent("camel-archetype-cxf-contract-first-blueprint"));
 			assertFalse("Project was created with errors", hasErrors());
-			assertTrue("Project cannot be run as Local Camel Context", canBeRun("camel-archetype-cxf-contract-first-blueprint"));
+			assertTrue("Project cannot be run as Local Camel Context",
+					canBeRun("camel-archetype-cxf-contract-first-blueprint"));
 		} catch (FuseArchetypeNotFoundException e) {
 			log.warn("Archetype is not available");
 		}
 	}
 
 	/**
-	 * <p>Tries to create a Fuse project from <i>camel-archetype-java</i> archetype
-	 * and tries to run the project as Local Camel Context.</p>
+	 * <p>
+	 * Tries to create a Fuse project from <i>camel-archetype-java</i> archetype and tries to run the project as Local
+	 * Camel Context.
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>create a new project</li>
@@ -244,8 +253,10 @@ public class FuseProjectTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>Tries to create a Fuse project from <i>camel-archetype-spring</i> archetype
-	 * and tries to run the project as Local Camel Context.</p>
+	 * <p>
+	 * Tries to create a Fuse project from <i>camel-archetype-spring</i> archetype and tries to run the project as Local
+	 * Camel Context.
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>create a new project</li>
@@ -271,8 +282,10 @@ public class FuseProjectTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>Tries to create a Fuse project from <i>camel-archetype-spring-dm</i> archetype
-	 * and tries to run the project as Local Camel Context.</p>
+	 * <p>
+	 * Tries to create a Fuse project from <i>camel-archetype-spring-dm</i> archetype and tries to run the project as
+	 * Local Camel Context.
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>create a new project</li>
@@ -298,8 +311,10 @@ public class FuseProjectTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>Tries to create a Fuse project from <i>camel-archetype-web</i> archetype
-	 * and tries to run the project as Local Camel Context.</p>
+	 * <p>
+	 * Tries to create a Fuse project from <i>camel-archetype-web</i> archetype and tries to run the project as Local
+	 * Camel Context.
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>create a new project</li>
@@ -324,10 +339,11 @@ public class FuseProjectTest extends DefaultTest {
 		}
 	}
 
-
 	/**
-	 * <p>Tries to create a Fuse project from <i>cxf-jaxrs-service</i> archetype
-	 * and tries to run the project as Local Camel Context.</p>
+	 * <p>
+	 * Tries to create a Fuse project from <i>cxf-jaxrs-service</i> archetype and tries to run the project as Local
+	 * Camel Context.
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>create a new project</li>
@@ -353,8 +369,10 @@ public class FuseProjectTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>Tries to create a Fuse project from <i>cxf-jaxws-javafirst</i> archetype
-	 * and tries to run the project as Local Camel Context.</p>
+	 * <p>
+	 * Tries to create a Fuse project from <i>cxf-jaxws-javafirst</i> archetype and tries to run the project as Local
+	 * Camel Context.
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>create a new project</li>
@@ -380,8 +398,10 @@ public class FuseProjectTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>Tries to create a Fuse project from <i>wildfly-camel-archetype-spring</i> archetype
-	 * and tries to run the project as Local Camel Context.</p>
+	 * <p>
+	 * Tries to create a Fuse project from <i>wildfly-camel-archetype-spring</i> archetype and tries to run the project
+	 * as Local Camel Context.
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>create a new project</li>

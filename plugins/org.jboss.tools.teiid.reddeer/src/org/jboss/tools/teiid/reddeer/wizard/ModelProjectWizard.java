@@ -26,7 +26,7 @@ public class ModelProjectWizard extends NewWizardDialog {
 	public ModelProjectWizard() {
 		super(CATEGORY, PROJECT_TITLE);
 	}
-	
+
 	public ModelProjectWizard(int currentPage) {
 		super(CATEGORY, PROJECT_TITLE);
 	}
@@ -36,90 +36,97 @@ public class ModelProjectWizard extends NewWizardDialog {
 		new ModelProjectPage().setProjectName(name);
 		finish();
 	}
-	
+
 	@Override
-	public void open(){
+	public void open() {
 		try {
 			super.open();
-		} catch (Exception e){
+		} catch (Exception e) {
 			new DefaultTreeItem(CATEGORY).collapse();
 			new DefaultTreeItem(CATEGORY, PROJECT_TITLE).expand();
 			new DefaultTreeItem(CATEGORY, PROJECT_TITLE).select();
 			next();
 		}
 	}
-	
+
 	/**
 	 * Create new model project via action sets
-	 * @param name project name (e.g. MyFirstProject)
-	 * @param viaGuides true -- via action from modelling guide, false -- via main menu
+	 * 
+	 * @param name
+	 *            project name (e.g. MyFirstProject)
+	 * @param viaGuides
+	 *            true -- via action from modelling guide, false -- via main menu
 	 */
-	public void create(String name, boolean viaGuides){
-		if (viaGuides){
+	public void create(String name, boolean viaGuides) {
+		if (viaGuides) {
 			new GuidesView().chooseAction("Model JDBC Source", "Define Teiid Model Project");
 			new DefaultShell("Define Model Project");
 			new SWTWorkbenchBot().button("New...").click();
 			new DefaultShell("New Model Project");
 			new LabeledText("Project name:").setText(name);
-			//TODO: select folders - source, schema, view,...
+			// TODO: select folders - source, schema, view,...
 			finish();
 			new DefaultShell("Define Model Project");
 			new PushButton("OK").click();
 		} else {
 			create(name);
 		}
-		
+
 	}
-	
+
 	/**
 	 * Create new model project via action sets
-	 * @param name project name (e.g. MyFirstProject)
-	 * @param viaGuides true -- via action from modelling guide, false -- via main menu
-	 * @param folders 
+	 * 
+	 * @param name
+	 *            project name (e.g. MyFirstProject)
+	 * @param viaGuides
+	 *            true -- via action from modelling guide, false -- via main menu
+	 * @param folders
 	 */
-	public void create(String name, boolean viaGuides, String... folders){
-		if (viaGuides){
+	public void create(String name, boolean viaGuides, String... folders) {
+		if (viaGuides) {
 			new GuidesView().chooseAction("Model JDBC Source", "Define Teiid Model Project");
 			new SWTWorkbenchBot().button("New...").click();
-			
-			//New Model Project (1. page)
+
+			// New Model Project (1. page)
 			new ModelProjectPage().setProjectName(name);
 			new SWTWorkbenchBot().button("&Next >").click();
-			//Project References (2. page)
+			// Project References (2. page)
 			new SWTWorkbenchBot().button("&Next >").click();
-			//Model Project Options (3. page)
+			// Model Project Options (3. page)
 			checkSelectedFolders(folders);
 			finish();
-			
-			new SWTWorkbenchBot().shell("Define Model Project").close();//this shell isn't active after executing method create(name)
+
+			new SWTWorkbenchBot().shell("Define Model Project").close();// this shell isn't active after executing
+																		// method create(name)
 		} else {
 			create(name);
-		}	
+		}
 	}
-	
+
 	/**
 	 * Checks selected folders
-	 * @param folders the folders which should be created in a project
+	 * 
+	 * @param folders
+	 *            the folders which should be created in a project
 	 */
-	private void checkSelectedFolders(String... folders){
+	private void checkSelectedFolders(String... folders) {
 		List<String> selectedFoldersArray = Arrays.asList(folders);
-		String[] allFolders0 = {"sources", "views", "schemas", "web_services", "functions", "extensions"};
+		String[] allFolders0 = { "sources", "views", "schemas", "web_services", "functions", "extensions" };
 		HashMap<String, Integer> allFoldersMap = new HashMap<String, Integer>();
-		
-		for (int i = 0; i < allFolders0.length; i++){
+
+		for (int i = 0; i < allFolders0.length; i++) {
 			allFoldersMap.put(allFolders0[i], i);
 		}
-	
-		for (String folderName : allFoldersMap.keySet()){
-			if (selectedFoldersArray.contains(folderName)){
+
+		for (String folderName : allFoldersMap.keySet()) {
+			if (selectedFoldersArray.contains(folderName)) {
 				new SWTWorkbenchBot().checkBox("Name", allFoldersMap.get(folderName)).select();
 			} else {
 				new SWTWorkbenchBot().checkBox("Name", allFoldersMap.get(folderName)).deselect();
 			}
 		}
-		
+
 	}
-	
-	
 
 }

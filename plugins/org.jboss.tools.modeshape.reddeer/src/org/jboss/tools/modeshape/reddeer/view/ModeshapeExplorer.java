@@ -8,8 +8,8 @@ import org.jboss.tools.modeshape.reddeer.shell.PublishedLocations;
 import org.jboss.tools.modeshape.reddeer.wizard.ModeshapePublishWizard;
 
 /**
- * ModeShape Explorer is an imaginary explorer (doesn't exist) which can used for
- * publishing/unpublish to the repository.
+ * ModeShape Explorer is an imaginary explorer (doesn't exist) which can used for publishing/unpublish to the
+ * repository.
  * 
  * @author apodhrad
  * 
@@ -38,11 +38,11 @@ public class ModeshapeExplorer extends ProjectExplorer {
 		new DefaultShell("Published Locations");
 		return new PublishedLocations();
 	}
-	
+
 	public void selectItem(String project, String... item) {
 		new WorkbenchShell();
 		open();
 		getProject(project).getProjectItem(item).select();
 	}
-	
+
 }

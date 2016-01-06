@@ -16,13 +16,13 @@ public class ExportBPMNWizard extends ExportWizardDialog {
 
 	public void exportFile(String... path) {
 		open();
-		
+
 		next();
 		next();
 		next();
-		
+
 		new DefaultTreeItem(path).select();
-		
+
 		finish();
 	}
 }

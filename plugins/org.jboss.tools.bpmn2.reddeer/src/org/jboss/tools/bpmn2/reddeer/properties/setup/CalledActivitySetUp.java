@@ -7,16 +7,16 @@ import org.jboss.tools.bpmn2.reddeer.editor.properties.PropertiesTabs;
 public class CalledActivitySetUp implements SetUpAble {
 
 	private String activityName;
-	
+
 	public CalledActivitySetUp(String activityName) {
 		this.activityName = activityName;
 	}
-	
+
 	@Override
 	public void setUpCTab() {
 		new PushButton(0).click();
 		new CalledActivityDialog().add(activityName);
-		
+
 	}
 
 	@Override

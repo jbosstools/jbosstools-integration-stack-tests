@@ -24,12 +24,12 @@ import org.jboss.tools.teiid.reddeer.wizard.GenerateVdbArchiveWizard;
  * 
  */
 public class VDB {
-	
+
 	private static final String GENERATE_VDB_ARCHIVE = "Generate VDB Archive and Models";
 	private static final String GENERATE_DYNAMIC_VDB = "Generate Dynamic VDB";
 
 	private ProjectItem projectItem;
-	
+
 	public VDB(ProjectItem projectItem) {
 		this.projectItem = projectItem;
 	}
@@ -63,36 +63,37 @@ public class VDB {
 		new WaitWhile(new IsInProgress(), TimePeriod.VERY_LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
-	
+
 	/**
 	 * Executes this VDB via Modelling actions guides
+	 * 
 	 * @param viaGuides
 	 */
-	public void executeVDB(boolean viaGuides){
-		if (viaGuides){
+	public void executeVDB(boolean viaGuides) {
+		if (viaGuides) {
 			projectItem.select();
 			new GuidesView().chooseAction("Model JDBC Source", "Execute VDB");
 			new DefaultShell("Execute VDB");
-			//VDB should be selected from previous step, if not:
-			if (! new DefaultText(0).getText().isEmpty()){
+			// VDB should be selected from previous step, if not:
+			if (!new DefaultText(0).getText().isEmpty()) {
 				new SWTWorkbenchBot().button("OK").click();
 			} else {
 				new PushButton("Cancel").click();
 				executeVDB();
 			}
-			
+
 		} else {
 			executeVDB();
 		}
 	}
-	
-	public GenerateDynamicVdbWizard generateDynamicVDB(){
+
+	public GenerateDynamicVdbWizard generateDynamicVDB() {
 		projectItem.select();
 		new ContextMenu("Modeling", GENERATE_DYNAMIC_VDB).select();
 		return new GenerateDynamicVdbWizard().activate();
 	}
-	
-	public GenerateVdbArchiveWizard generateVdbArchive(){
+
+	public GenerateVdbArchiveWizard generateVdbArchive() {
 		projectItem.select();
 		new ContextMenu("Modeling", GENERATE_VDB_ARCHIVE).select();
 		return new GenerateVdbArchiveWizard().activate();

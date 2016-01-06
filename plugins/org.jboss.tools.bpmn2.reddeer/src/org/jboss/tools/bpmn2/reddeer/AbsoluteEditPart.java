@@ -14,24 +14,24 @@ import org.eclipse.gef.EditPart;
  * @author jomarko
  *
  */
-public class AbsoluteEditPart extends AbstractEditPart {	
-	
+public class AbsoluteEditPart extends AbstractEditPart {
+
 	public AbsoluteEditPart(EditPart editPart) {
 		super(editPart);
 	}
-	
+
 	public AbsoluteEditPart(String label) {
 		this(new IsEditPartWithLabel(label));
 	}
-	
+
 	public AbsoluteEditPart(Matcher<org.eclipse.gef.EditPart> matcher) {
 		this(matcher, 0);
 	}
-	
+
 	public AbsoluteEditPart(Matcher<org.eclipse.gef.EditPart> matcher, int index) {
 		super(matcher, index);
 	}
-	
+
 	@Override
 	public void click() {
 		Rectangle bounds = getFigure().getBounds();
@@ -41,21 +41,21 @@ public class AbsoluteEditPart extends AbstractEditPart {
 		int y = rec.y + rec.height / 2;
 		new GEFEditor().click(x, y);
 	}
-	
+
 	public void click(int x, int y) {
 		Rectangle bounds = getFigure().getBounds();
 		final Rectangle rec = bounds.getCopy();
 		getFigure().translateToAbsolute(rec);
 		new GEFEditor().click(rec.x + x, rec.y + y);
 	}
-	
+
 	public Rectangle getBounds() {
 		IFigure figure = super.getFigure();
 		final Rectangle bounds = figure.getBounds().getCopy();
 		figure.translateToAbsolute(bounds);
 		return bounds;
 	}
-	
+
 	public EditPart getEditPart() {
 		return editPart;
 	}

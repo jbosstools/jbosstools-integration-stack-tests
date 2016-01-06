@@ -524,7 +524,7 @@ public class SAPComponentTest extends DefaultTest {
 		List<LogMessage> errors = new ErrorLogView().getErrorMessages();
 		if (!errors.isEmpty()) {
 			log.warn("The following errors occured in Error Log:");
-			for (LogMessage error: errors) {
+			for (LogMessage error : errors) {
 				log.warn(error.getMessage());
 			}
 		}

@@ -30,11 +30,11 @@ public class WsdlProfileWizard extends TeiidProfileWizard {
 	}
 
 	@Override
-	public void execute() {//TODO URL if security not default -- this was also somewhere in web service model
+	public void execute() {// TODO URL if security not default -- this was also somewhere in web service model
 		open();
 		new SWTWorkbenchBot().textWithLabel(WSDL_PATH).setText(wsdl);
 		next();
-		new DefaultCombo().setSelection(endPoint); 
+		new DefaultCombo().setSelection(endPoint);
 		finish();
 	}
 

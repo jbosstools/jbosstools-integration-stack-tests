@@ -74,14 +74,14 @@ public class TeiidDriver implements Driver {
 		return Logger.getLogger("TeiidDriver");
 	}
 
-	public static String getDriverPath(String serverPath){
+	public static String getDriverPath(String serverPath) {
 		String driverName = "";
 		File dir = new File(serverPath + "/dataVirtualization/jdbc/");
-		for(File file : dir.listFiles()) {
-			if(file.getName().startsWith("teiid-") && file.getName().endsWith(".jar")){
-		    	driverName = file.getName();
-		    	break;
-		    }
+		for (File file : dir.listFiles()) {
+			if (file.getName().startsWith("teiid-") && file.getName().endsWith(".jar")) {
+				driverName = file.getName();
+				break;
+			}
 		}
 		return "/dataVirtualization/jdbc/" + driverName;
 	}

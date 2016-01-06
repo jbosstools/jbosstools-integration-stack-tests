@@ -30,7 +30,7 @@ public class BPELServiceWizard extends ServiceWizard<BPELServiceWizard> {
 	protected void browse() {
 		new PushButton("Browse...").click();
 	}
-	
+
 	public void setNamespace(String namespace) {
 		new LabeledText("Namespace:").setText(namespace);
 	}

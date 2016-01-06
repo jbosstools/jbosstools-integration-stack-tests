@@ -25,20 +25,20 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 
 	private static final String GENERIC_JDBC = "Generic JDBC";
 	public static final CharSequence OTHER = "Other";
-	
+
 	public void open() {
 		try {
 			WorkbenchPreferenceDialog preferences = new WorkbenchPreferenceDialog();
 			preferences.open();
 			preferences.select(this);
-		} catch (Exception e){
+		} catch (Exception e) {
 			new DefaultTreeItem("Data Management").collapse();
 			new DefaultTreeItem("Data Management", "Connectivity", "Driver Definitions").expand();
 			new DefaultTreeItem("Data Management", "Connectivity", "Driver Definitions").select();
 		}
 	}
 
-	//public void addDriverDefinition(DriverDefinition driverDefinition) {
+	// public void addDriverDefinition(DriverDefinition driverDefinition) {
 	public void addDriverDefinition(DriverDefinitionExt driverDefinition) {
 		new PushButton("Add...").click();
 		new DefaultShell("New Driver Definition");
@@ -46,7 +46,7 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 		new DefaultShell("New Driver Definition");
 		new PushButton("OK").click();
 	}
-	
+
 	public void ok() {
 		String title = new DefaultShell().getText();
 		new OkButton().click();
@@ -55,10 +55,10 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 
 	private class DriverDefinitionWizardExt extends DriverDefinitionWizard {
 
-		//private DriverDefinition driverDefinition;
+		// private DriverDefinition driverDefinition;
 		private DriverDefinitionExt driverDefinition;
 
-		//public DriverDefinitionWizardExt(DriverDefinition driverDefinition) {
+		// public DriverDefinitionWizardExt(DriverDefinition driverDefinition) {
 		public DriverDefinitionWizardExt(DriverDefinitionExt driverDefinition) {
 			this.driverDefinition = driverDefinition;
 		}
@@ -66,21 +66,24 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 		public void execute() {
 
 			DriverTemplate drvTemp = driverDefinition.getDriverTemplate();
-			
-			if (drvTemp.getType().contains(GENERIC_JDBC)) { //e.g. HSQL with Generic driver and with Generic CP 
+
+			if (drvTemp.getType().contains(GENERIC_JDBC)) { // e.g. HSQL with Generic driver and with Generic CP
 
 				DriverDefinitionPageExt pageExt = new DriverDefinitionPageExt();
-				pageExt.selectDriverTemplate(drvTemp.getType(), drvTemp.getVersion());//!!!! if at least database matches and others are empty, select it
+				pageExt.selectDriverTemplate(drvTemp.getType(), drvTemp.getVersion());// !!!! if at least database
+																						// matches and others are empty,
+																						// select it
 				pageExt.setName(driverDefinition.getDriverName());
 				pageExt.addDriverLibrary(driverDefinition.getDriverLibrary());
 				pageExt.setDriverClassGeneric(driverDefinition.getDriverClass());
 				return;
-			} 
-			
-			if (drvTemp.getType().contains(OTHER)) { //e.g. Sybase jtds
+			}
+
+			if (drvTemp.getType().contains(OTHER)) { // e.g. Sybase jtds
 
 				DriverDefinitionPageExt pageExt = new DriverDefinitionPageExt();
-				pageExt.selectDriverTemplate(drvTemp.getType(), drvTemp.getVersion(), driverDefinition.getVendorTemplate());
+				pageExt.selectDriverTemplate(drvTemp.getType(), drvTemp.getVersion(),
+						driverDefinition.getVendorTemplate());
 				pageExt.setName(driverDefinition.getDriverName());
 				pageExt.addDriverLibrary(driverDefinition.getDriverLibrary());
 				pageExt.setDriverClassOther(driverDefinition.getDriverClass());
@@ -88,19 +91,20 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 				pageExt.setDatabaseName(driverDefinition.getDatabaseName());
 				new DefaultShell("New Driver Definition").setFocus();
 				return;
-			} 
-			
+			}
+
 			else {
-				//normal jdbc (e.g. HSQL with HSQL CP, Sybase jconn3)
+				// normal jdbc (e.g. HSQL with HSQL CP, Sybase jconn3)
 				DriverDefinitionPage page = new DriverDefinitionPage();
 				page.selectDriverTemplate(drvTemp.getType(), drvTemp.getVersion());
 				page.setName(driverDefinition.getDriverName());
-				page.addDriverLibrary(driverDefinition.getDriverLibrary());//firstly clears all suggested jars, but for Generic the list is empty
+				page.addDriverLibrary(driverDefinition.getDriverLibrary());// firstly clears all suggested jars, but for
+																			// Generic the list is empty
 			}
 		}
-		
+
 	}
-	
+
 	private class DriverDefinitionPageExt extends DriverDefinitionPage {
 
 		private static final String DATABASE_NAME = "Database Name";
@@ -120,14 +124,14 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 			new DefaultText().setText(connectionUrl);
 		}
 
-		public void selectDriverTemplate(String type, String version,
-				String vendorTemplate) {
+		public void selectDriverTemplate(String type, String version, String vendorTemplate) {
 			selectTab(TAB_NAME_TYPE);
 			Tree tree = new DefaultTree();
 			// Database
 			TreeItem root = tree.getItems().get(0);
 			for (TreeItem item : root.getItems()) {
-				if (type.equals(item.getCell(0)) && version.equals(item.getCell(2)) && vendorTemplate.equals(item.getCell(1))) {
+				if (type.equals(item.getCell(0)) && version.equals(item.getCell(2))
+						&& vendorTemplate.equals(item.getCell(1))) {
 					item.select();
 					break;
 				}
@@ -136,13 +140,13 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 
 		public void setDriverClassGeneric(String driverClass) {
 			selectTab(TAB_PROPERTIES);
-			new DefaultTreeItem(new DefaultTree(0), GENERAL, DRIVER_CLASS).doubleClick();//kepler 0, juno 1
+			new DefaultTreeItem(new DefaultTree(0), GENERAL, DRIVER_CLASS).doubleClick();// kepler 0, juno 1
 			new PushButton("...").click();
 			new DefaultShell("Available Classes from Jar List");
 			new DefaultText().setText(driverClass);
 			new PushButton("OK").click();
 		}
-		
+
 		public void setDriverClassOther(String driverClass) {
 			selectTab(TAB_PROPERTIES);
 			new DefaultTreeItem(new DefaultTree(0), GENERAL, DRIVER_CLASS).doubleClick();
@@ -156,7 +160,7 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 			addItem(driverLocation);
 			removeDriverLibrary(driverLocation);
 		}
-		
+
 		private void addItem(final String item) {
 			syncExec(new VoidResult() {
 
@@ -166,7 +170,7 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 				}
 			});
 		}
-		
+
 		@Override
 		public void selectDriverTemplate(String type, String version) {
 			selectTab(TAB_NAME_TYPE);
@@ -179,12 +183,12 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 					return;
 				}
 			}
-			for (TreeItem item : root.getItems()) {//if matches at least the type
+			for (TreeItem item : root.getItems()) {// if matches at least the type
 				if (type.equals(item.getCell(0))) {
 					item.select();
 					return;
- 				}
- 			}
+				}
+			}
 		}
 
 	}

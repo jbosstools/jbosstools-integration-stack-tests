@@ -20,7 +20,7 @@ public class ConditionalStartEvent extends StartEvent {
 	public ConditionalStartEvent(Element element) {
 		super(element);
 	}
-	
+
 	/**
 	 * 
 	 * @param language
@@ -30,5 +30,5 @@ public class ConditionalStartEvent extends StartEvent {
 		propertiesHandler.setUp(new ConditionSetUp(language, script));
 		refresh();
 	}
-	
+
 }

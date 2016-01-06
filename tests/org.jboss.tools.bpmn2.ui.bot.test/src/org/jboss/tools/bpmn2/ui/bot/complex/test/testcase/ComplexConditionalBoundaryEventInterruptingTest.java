@@ -15,13 +15,10 @@ import org.jboss.tools.bpmn2.ui.bot.test.jbpm.TriggeredNodesListener;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
 
-@JBPM6ComplexTestDefinition(projectName="JBPM6ComplexTest",
-							importFolder="resources/bpmn2/model/base",
-							openFile="BaseBPMN2-ConditionalBoundaryEventInterrupting.bpmn2",
-							saveAs="BPMN2-ConditionalBoundaryEventInterrupting.bpmn2",
-							knownIssues={"1165667"})
+@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-ConditionalBoundaryEventInterrupting.bpmn2", saveAs = "BPMN2-ConditionalBoundaryEventInterrupting.bpmn2", knownIssues = {
+	"1165667" })
 public class ComplexConditionalBoundaryEventInterruptingTest extends JBPM6ComplexTest {
-	
+
 	private static final String END_PROCESS2 = "EndProcess2";
 	private static final String HANDLER = "Handler";
 	private static final String END_SUB = "EndSubProcess";
@@ -30,27 +27,26 @@ public class ComplexConditionalBoundaryEventInterruptingTest extends JBPM6Comple
 	private static final String END_PROCESS = "EndProcess";
 	private static final String SUB_PROCESS = "IncrementorSubProcess";
 	private static final String START_PROCESS = "StartProcess";
-	
-	@TestPhase(phase=Phase.MODEL)
+
+	@TestPhase(phase = Phase.MODEL)
 	public void model() {
-		
+
 		SubProcess subProcess = new SubProcess(SUB_PROCESS);
-		
-		ConditionalBoundaryEvent conditionalBoundaryEvent = 
-			(ConditionalBoundaryEvent) subProcess.add("Conditional Boundary Event Process", ElementType.CONDITIONAL_BOUNDARY_EVENT);
+
+		ConditionalBoundaryEvent conditionalBoundaryEvent = (ConditionalBoundaryEvent) subProcess
+				.add("Conditional Boundary Event Process", ElementType.CONDITIONAL_BOUNDARY_EVENT);
 		conditionalBoundaryEvent.setScript("Java", "return " + VARIABLE1 + " > 5;");
 		conditionalBoundaryEvent.connectTo(new ScriptTask(HANDLER));
 	}
-	
-	@TestPhase(phase=Phase.RUN)
+
+	@TestPhase(phase = Phase.RUN)
 	public void run(KieSession kSession) {
 		ProcessInstance processInstance = kSession.startProcess("BPMN2ConditionalBoundaryEventInterrupting");
 		TriggeredNodesListener triggered = new TriggeredNodesListener(
-				Arrays.asList(START_PROCESS, SUB_PROCESS, START_SUB, INCREMENTOR, 
-				END_SUB, HANDLER, END_PROCESS2), 
+				Arrays.asList(START_PROCESS, SUB_PROCESS, START_SUB, INCREMENTOR, END_SUB, HANDLER, END_PROCESS2),
 				Arrays.asList(END_PROCESS));
 		kSession.addEventListener(triggered);
-		
+
 		JbpmAssertions.assertProcessInstanceCompleted(processInstance, kSession);
 	}
 

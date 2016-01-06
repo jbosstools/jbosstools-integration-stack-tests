@@ -7,9 +7,7 @@ import org.jboss.tools.modeshape.ui.bot.test.ModeShapeViewTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
-@SuiteClasses({
-	ModeShapeViewTest.class
-})
+@SuiteClasses({ ModeShapeViewTest.class })
 @RunWith(RedDeerSuite.class)
 public class SmokeTests extends TestSuite {
 

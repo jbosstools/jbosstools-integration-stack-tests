@@ -1,6 +1,5 @@
 package org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm;
 
-
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -24,10 +23,10 @@ public class OperationDialog {
 		new DefaultShell("Create New Operation");
 		operation.setUp();
 		new PushButton("OK").click();
-		new WaitWhile(new ShellWithTextIsActive("Create New Operation"),TimePeriod.LONG);
+		new WaitWhile(new ShellWithTextIsActive("Create New Operation"), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
-	
+
 	/**
 	 * 
 	 * @param operationName
@@ -38,5 +37,5 @@ public class OperationDialog {
 	public void addOperation(String name, Message inMessage, Message outMessage, ErrorRef errorRef) {
 		add(new Operation(name, inMessage, outMessage, errorRef));
 	}
-	
+
 }

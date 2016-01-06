@@ -41,10 +41,11 @@ public class ProjectFactory {
 	private static Logger log = Logger.getLogger(ProjectFactory.class);
 
 	/**
-	 * Creates a new Fuse project from given archetype 
+	 * Creates a new Fuse project from given archetype
 	 * 
-	 * @param archetype <i>Artifact ID</i> in the <i>New Fuse Project</i> Wizard
-	 * @throws FuseArchetypeNotFoundException 
+	 * @param archetype
+	 *            <i>Artifact ID</i> in the <i>New Fuse Project</i> Wizard
+	 * @throws FuseArchetypeNotFoundException
 	 */
 	public static void createProject(String name, String archetype) throws FuseArchetypeNotFoundException {
 
@@ -55,7 +56,7 @@ public class ProjectFactory {
 		projectWizard.setFilter(archetype);
 		try {
 			projectWizard.selectFirstArchetype();
-		} catch (SWTLayerException|CoreLayerException e) {
+		} catch (SWTLayerException | CoreLayerException e) {
 			throw new FuseArchetypeNotFoundException();
 		}
 		projectWizard.finish();
@@ -73,13 +74,15 @@ public class ProjectFactory {
 		log.info("Try to fix errors 'not covered by lifecycle'");
 		ProblemsView problems = new ProblemsView();
 		problems.open();
-		List<Problem> errors = problems.getProblems(ProblemType.ERROR, new ProblemsDescriptionMatcher(new RegexMatcher("Plugin execution not covered by lifecycle.*")));
+		List<Problem> errors = problems.getProblems(ProblemType.ERROR,
+				new ProblemsDescriptionMatcher(new RegexMatcher("Plugin execution not covered by lifecycle.*")));
 		while (!errors.isEmpty()) {
 
 			fixPluginError();
 			problems.activate();
 			AbstractWait.sleep(TimePeriod.getCustom(3));
-			errors = problems.getProblems(ProblemType.ERROR, new ProblemsDescriptionMatcher(new RegexMatcher("Plugin execution not covered by lifecycle.*")));
+			errors = problems.getProblems(ProblemType.ERROR,
+					new ProblemsDescriptionMatcher(new RegexMatcher("Plugin execution not covered by lifecycle.*")));
 		}
 	}
 
@@ -125,10 +128,14 @@ public class ProjectFactory {
 	/**
 	 * Import existing project into workspace
 	 * 
-	 * @param path Path to the project
-	 * @param name Name of the project
-	 * @param maven true - if the imported project is Maven project
-	 * @param fuse true - if the imported project is Fuse project
+	 * @param path
+	 *            Path to the project
+	 * @param name
+	 *            Name of the project
+	 * @param maven
+	 *            true - if the imported project is Maven project
+	 * @param fuse
+	 *            true - if the imported project is Fuse project
 	 */
 	public static void importExistingProject(String path, String name, boolean maven, boolean fuse) {
 

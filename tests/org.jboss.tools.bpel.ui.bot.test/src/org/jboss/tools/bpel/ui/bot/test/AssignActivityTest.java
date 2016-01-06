@@ -46,18 +46,21 @@ public class AssignActivityTest {
 		// variables
 		String[] simpleIn = new String[] { "simpleIn : simpleRequestMessage", "payload : string" };
 		String[] simpleOut = new String[] { "simpleOut : simpleResponseMessage", "payload : string" };
-		String[] complexOut = new String[] { "complexOut : complexResponseMessage",
-				"complexResponse : complexResponse", "result : string" };
-		String[] moderateOut = new String[] { "moderateOut : moderateResponseMessage",
-				"moderateResponse : complexResponseType", "result : string" };
+		String[] complexOut = new String[] {
+			"complexOut : complexResponseMessage",
+			"complexResponse : complexResponse",
+			"result : string" };
+		String[] moderateOut = new String[] {
+			"moderateOut : moderateResponseMessage",
+			"moderateResponse : complexResponseType",
+			"result : string" };
 
 		Sequence main = new Sequence("main");
 		main.addReceive("receiveSimple").pickOperation("simple").checkCreateInstance();
 		main.addAssign("assignSimpleToSimple").addVarToVar(simpleIn, simpleOut);
 		main.addAssign("assignSimpleToComplex").addVarToVar(simpleIn, complexOut);
 		main.addAssign("assignSimpleToModerate").addVarToVar(simpleIn, moderateOut);
-		main.addAssign("assignExpToExp").addExpToExp("$simpleIn.payload",
-				"$moderateOut.moderateResponse/result");
+		main.addAssign("assignExpToExp").addExpToExp("$simpleIn.payload", "$moderateOut.moderateResponse/result");
 		main.addAssign("assignFixToExp").addFixToExp("Fixed Expression", "$simpleOut.payload");
 		main.addReply("replySimple").pickOperation("simple");
 
@@ -69,21 +72,34 @@ public class AssignActivityTest {
 		new BPELProject("DiscriminantProcess").openBpelProcess("Discriminant");
 
 		// variables
-		String[] discriminantA = new String[] { "DiscriminantRequest : DiscriminantRequestMessage",
-				"parameters : DiscriminantRequest", "a : decimal" };
-		String[] discriminantB = new String[] { "DiscriminantRequest : DiscriminantRequestMessage",
-				"parameters : DiscriminantRequest", "b : decimal" };
+		String[] discriminantA = new String[] {
+			"DiscriminantRequest : DiscriminantRequestMessage",
+			"parameters : DiscriminantRequest",
+			"a : decimal" };
+		String[] discriminantB = new String[] {
+			"DiscriminantRequest : DiscriminantRequestMessage",
+			"parameters : DiscriminantRequest",
+			"b : decimal" };
 		String[] discriminantResult = new String[] {
-				"DiscriminantResponse : DiscriminantResponseMessage",
-				"parameters : DiscriminantResponse", "result : int" };
-		String[] mathA = new String[] { "MathRequest1 : MathRequestMessage",
-				"parameters : MathRequest", "a : decimal" };
-		String[] mathB = new String[] { "MathRequest1 : MathRequestMessage",
-				"parameters : MathRequest", "b : decimal" };
-		String[] mathOperator = new String[] { "MathRequest1 : MathRequestMessage",
-				"parameters : MathRequest", "operator : string" };
-		String[] mathResult = new String[] { "MathResponse1 : MathResponseMessage",
-				"parameters : MathResponse", "result : decimal" };
+			"DiscriminantResponse : DiscriminantResponseMessage",
+			"parameters : DiscriminantResponse",
+			"result : int" };
+		String[] mathA = new String[] {
+			"MathRequest1 : MathRequestMessage",
+			"parameters : MathRequest",
+			"a : decimal" };
+		String[] mathB = new String[] {
+			"MathRequest1 : MathRequestMessage",
+			"parameters : MathRequest",
+			"b : decimal" };
+		String[] mathOperator = new String[] {
+			"MathRequest1 : MathRequestMessage",
+			"parameters : MathRequest",
+			"operator : string" };
+		String[] mathResult = new String[] {
+			"MathResponse1 : MathResponseMessage",
+			"parameters : MathResponse",
+			"result : decimal" };
 
 		Sequence main = new Sequence("Main");
 		main.addReceive("receive").pickOperation("calculateDiscriminant").checkCreateInstance();

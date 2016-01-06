@@ -28,36 +28,35 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(RedDeerSuite.class)
 @SuiteClasses({
-    // basic tests
-    PerspectiveTest.class,
-    DefaultRuntimeTest.class,
-    DroolsRuntimeManagementTest.class,
-    Brms6ProjectTest.class,
-    NewResourcesTest.class,
-    RulesManagementTest.class,
-    // DRL editor code completion
-    MetadataCompletionTest.class,
-    DeclareCompletionTest.class,
-    ConditionsCompletionTest.class,
-    ConsequencesCompletionTest.class,
-    // DSL editor
-    DslEditorTest.class,
-    // DSLR editor
-    DslrEditorTest.class,
-    // TODO debugging tests
-    // views test
-    AgendaViewTest.class,
-    GlobalDataViewTest.class,
-    WorkingMemoryViewTest.class,
-    AuditLogTest.class,
-    // Kie Navigator tests
-    OpenKieNavigatorTest.class,
-    CloneRepoTest.class,
-    CreateItemsRestTest.class,
-    CreateItemsTest.class,
-    RepositoryManipulationTest.class,
-    ServerConnectionTest.class
-})
+	// basic tests
+	PerspectiveTest.class,
+	DefaultRuntimeTest.class,
+	DroolsRuntimeManagementTest.class,
+	Brms6ProjectTest.class,
+	NewResourcesTest.class,
+	RulesManagementTest.class,
+	// DRL editor code completion
+	MetadataCompletionTest.class,
+	DeclareCompletionTest.class,
+	ConditionsCompletionTest.class,
+	ConsequencesCompletionTest.class,
+	// DSL editor
+	DslEditorTest.class,
+	// DSLR editor
+	DslrEditorTest.class,
+	// TODO debugging tests
+	// views test
+	AgendaViewTest.class,
+	GlobalDataViewTest.class,
+	WorkingMemoryViewTest.class,
+	AuditLogTest.class,
+	// Kie Navigator tests
+	OpenKieNavigatorTest.class,
+	CloneRepoTest.class,
+	CreateItemsRestTest.class,
+	CreateItemsTest.class,
+	RepositoryManipulationTest.class,
+	ServerConnectionTest.class })
 public class Brms6TestSuite {
 
 }

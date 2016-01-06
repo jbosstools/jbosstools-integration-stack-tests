@@ -7,14 +7,14 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.common.wait.WaitWhile;
 
 public class DroolsRuntimeWizard {
-	
+
 	public static final String DROOLS_LABEL = "Drools Runtime";
-	
+
 	public DroolsRuntimeWizard() {
 		super();
-		new DefaultShell(DROOLS_LABEL); 
+		new DefaultShell(DROOLS_LABEL);
 	}
-	
+
 	public void setName(String name) {
 		new LabeledText("Name:").setText(name);
 	}
@@ -22,7 +22,7 @@ public class DroolsRuntimeWizard {
 	public void setPath(String path) {
 		new LabeledText("Path:").setText(path);
 	}
-	
+
 	public void ok() {
 		new DefaultShell(DROOLS_LABEL);
 		new PushButton("OK").click();

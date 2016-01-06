@@ -10,7 +10,7 @@ import org.jboss.tools.bpmn2.reddeer.properties.setup.EventDefinitionSetUp;
  * 
  */
 public class EscalationIntermediateThrowEvent extends ElementWithParamMapping {
-	
+
 	/**
 	 * 
 	 * @param name
@@ -18,8 +18,8 @@ public class EscalationIntermediateThrowEvent extends ElementWithParamMapping {
 	public EscalationIntermediateThrowEvent(String name) {
 		super(name, ElementType.ESCALATION_INTERMEDIATE_THROW_EVENT);
 	}
-	
-	public EscalationIntermediateThrowEvent(org.jboss.tools.bpmn2.reddeer.editor.Element element){
+
+	public EscalationIntermediateThrowEvent(org.jboss.tools.bpmn2.reddeer.editor.Element element) {
 		super(element);
 	}
 
@@ -29,8 +29,9 @@ public class EscalationIntermediateThrowEvent extends ElementWithParamMapping {
 	 */
 	public void setEscalation(Escalation escalation, String variableForMapping) {
 		select();
-		propertiesHandler.setUp(new EventDefinitionSetUp(new EscalationEventDefinition(escalation, variableForMapping, "Source")));
+		propertiesHandler.setUp(
+				new EventDefinitionSetUp(new EscalationEventDefinition(escalation, variableForMapping, "Source")));
 		refresh();
 	}
-	
+
 }

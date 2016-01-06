@@ -24,7 +24,7 @@ import org.junit.runner.RunWith;
  * 
  * @author tsedmik
  */
-@Server(type = {ServerReqType.Fuse, ServerReqType.Karaf, ServerReqType.ServiceMix}, state = ServerReqState.PRESENT)
+@Server(type = { ServerReqType.Fuse, ServerReqType.Karaf, ServerReqType.ServiceMix }, state = ServerReqState.PRESENT)
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
 @RunWith(RedDeerSuite.class)
@@ -44,7 +44,9 @@ public class ServerTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>Tests adding/modifying/removing a server and a server runtime</p>
+	 * <p>
+	 * Tests adding/modifying/removing a server and a server runtime
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>add a new server runtime</li>
@@ -62,9 +64,11 @@ public class ServerTest extends DefaultTest {
 		ServerKaraf fuse = (ServerKaraf) serverRequirement.getConfig().getServerBase();
 
 		ServerManipulator.addServerRuntime(fuse.getRuntimeType(), fuse.getHome());
-		assertEquals("New server runtime is not listed in Server Runtimes", 1, ServerManipulator.getServerRuntimes().size());
+		assertEquals("New server runtime is not listed in Server Runtimes", 1,
+				ServerManipulator.getServerRuntimes().size());
 		ServerManipulator.editServerRuntime(fuse.getRuntimeType(), fuse.getHome());
-		ServerManipulator.addServer(fuse.getServerType(), fuse.getHost(), fuse.getName(), fuse.getPort(), fuse.getUsername(), fuse.getPassword());
+		ServerManipulator.addServer(fuse.getServerType(), fuse.getHost(), fuse.getName(), fuse.getPort(),
+				fuse.getUsername(), fuse.getPassword());
 		assertEquals("No server's record is in Servers View", 1, ServerManipulator.getServers().size());
 		assertTrue("New server is not listed in Servers View", ServerManipulator.isServerPresent(fuse.getName()));
 		ServerManipulator.startServer(fuse.getName());

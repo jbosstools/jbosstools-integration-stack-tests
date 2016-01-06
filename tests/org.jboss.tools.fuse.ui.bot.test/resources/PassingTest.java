@@ -9,14 +9,13 @@ import org.apache.camel.test.spring.CamelSpringTestSupport;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-
 public class CamelContextXmlTest extends CamelSpringTestSupport {
 
 	// TODO Create test message bodies that work for the route(s) being tested
 	// Expected message bodies
 	protected Object[] expectedBodies = {
-			"<something id='1'>expectedBody1</something>",
-			"<something id='2'>expectedBody2</something>" };
+		"<something id='1'>expectedBody1</something>",
+		"<something id='2'>expectedBody2</something>" };
 	// Templates to send to input endpoints
 	@Produce(uri = "file:src/data?noop=true")
 	protected ProducerTemplate inputEndpoint;
@@ -28,13 +27,12 @@ public class CamelContextXmlTest extends CamelSpringTestSupport {
 
 	@Test
 	public void testCamelRoute() throws Exception {
-		
+
 	}
 
 	@Override
 	protected ClassPathXmlApplicationContext createApplicationContext() {
-		return new ClassPathXmlApplicationContext(
-				"META-INF/spring/camel-context.xml");
+		return new ClassPathXmlApplicationContext("META-INF/spring/camel-context.xml");
 	}
 
 }

@@ -41,7 +41,7 @@ public abstract class OperationOptionsPage<T> extends WizardDialog {
 		setOperationValue(value);
 		return (T) this;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public T setOperationSelector(String selector) {
 		new DefaultCombo(new DefaultGroup(OPERATION_SELECTOR), 0).setSelection(selector);
@@ -74,7 +74,7 @@ public abstract class OperationOptionsPage<T> extends WizardDialog {
 		AbstractWait.sleep(TimePeriod.SHORT);
 		super.finish();
 	}
-	
+
 	public void ok() {
 		AbstractWait.sleep(TimePeriod.SHORT);
 

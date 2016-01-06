@@ -39,7 +39,7 @@ import org.jboss.tools.switchyard.reddeer.binding.SchedulingBindingPage;
 public class BindingsPage {
 
 	protected final Logger log = Logger.getLogger(this.getClass());
-	
+
 	public BindingsPage remove() {
 		new PushButton("Remove").click();
 		return this;
@@ -52,7 +52,7 @@ public class BindingsPage {
 			log.info("\tno binding is available available");
 			return this;
 		}
-		for (String binding: bindings.getListItems()) {
+		for (String binding : bindings.getListItems()) {
 			log.info("\t" + binding + " will be removed");
 		}
 		bindings.selectAll();
@@ -169,7 +169,7 @@ public class BindingsPage {
 		new DefaultList().select("SQL (" + name + ")");
 		return new SQLBindingPage();
 	}
-	
+
 	public void ok() {
 		String title = new DefaultShell().getText();
 		new OkButton().click();

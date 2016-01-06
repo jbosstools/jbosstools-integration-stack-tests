@@ -17,5 +17,5 @@ public class ProjectPath {
 		}
 		return builder.toString();
 	}
-	
+
 }

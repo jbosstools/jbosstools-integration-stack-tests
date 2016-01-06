@@ -34,14 +34,15 @@ public class DeploymentEAPTest extends DefaultTest {
 
 	private static final String PROJECT_ARCHETYPE = "wildfly-camel-archetype-spring";
 	private static final String PROJECT_NAME = "wildfly-spring";
-	
+
 	@InjectRequirement
 	private static ServerRequirement serverRequirement;
 
 	/**
 	 * Prepares test environment
 	 * 
-	 * @throws FuseArchetypeNotFoundException Fuse archetype was not found. Tests cannot be executed!
+	 * @throws FuseArchetypeNotFoundException
+	 *             Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@BeforeClass
 	public static void setupInitial() throws FuseArchetypeNotFoundException {
@@ -59,7 +60,9 @@ public class DeploymentEAPTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>Test tries to deploy a project on Fuse on EAP server.</p>
+	 * <p>
+	 * Test tries to deploy a project on Fuse on EAP server.
+	 * </p>
 	 * <b>Steps</b>
 	 * <ol>
 	 * <li>create a new project with wildfly-camel-archetype-spring archetype</li>

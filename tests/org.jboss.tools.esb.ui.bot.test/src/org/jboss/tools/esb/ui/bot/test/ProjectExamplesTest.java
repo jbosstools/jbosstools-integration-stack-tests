@@ -29,7 +29,7 @@ import org.junit.runner.RunWith;
  * @author tsedmik
  */
 @CleanWorkspace
-@Server(type = {ServerReqType.AS, ServerReqType.EAP}, state = ServerReqState.PRESENT)
+@Server(type = { ServerReqType.AS, ServerReqType.EAP }, state = ServerReqState.PRESENT)
 @OpenPerspective(JavaEEPerspective.class)
 @RunWith(RedDeerSuite.class)
 public class ProjectExamplesTest {
@@ -48,7 +48,7 @@ public class ProjectExamplesTest {
 		List<String[]> projects;
 		ProjectExamples wizard = new ProjectExamples();
 		StringBuilder result = new StringBuilder();
-		
+
 		// get all available projects
 		wizard.open();
 		projects = wizard.getESBProjects("5.0");

@@ -10,8 +10,8 @@ public class ModelDiagram {
 	protected SWTBotGefEditPart editPart;
 
 	public ModelDiagram(SWTBotGefEditPart editPart) {
-		if(editPart.getClass().toString().equals("")) {
-			
+		if (editPart.getClass().toString().equals("")) {
+
 		}
 		this.editPart = editPart;
 	}
@@ -23,10 +23,10 @@ public class ModelDiagram {
 	public void select() {
 		editPart.select();
 	}
-	
+
 	public List<String> getModelAttributes(SWTBotGefEditPart editPart) {
 		List<String> modelAttributes = new ArrayList<String>();
 		return modelAttributes;
 	}
-	
+
 }

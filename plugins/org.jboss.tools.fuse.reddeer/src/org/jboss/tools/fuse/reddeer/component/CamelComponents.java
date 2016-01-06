@@ -96,7 +96,7 @@ public class CamelComponents {
 		list.add(new Validate());
 		return list;
 	}
-	
+
 	public static List<CamelComponent> getSAP() {
 		List<CamelComponent> list = new ArrayList<CamelComponent>();
 		list.add(new SAPIDocListServer());

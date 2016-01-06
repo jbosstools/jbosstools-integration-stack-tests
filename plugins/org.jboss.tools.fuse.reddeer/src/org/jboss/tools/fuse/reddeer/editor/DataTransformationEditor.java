@@ -41,13 +41,16 @@ public class DataTransformationEditor extends DefaultEditor {
 	}
 
 	/**
-	 * Creates a basic transformation.
-	 * NOTE: Supports XML and JSON data types.
+	 * Creates a basic transformation. NOTE: Supports XML and JSON data types.
 	 * 
-	 * @param source Name of the source (root element)
-	 * @param sourcePath Path to the source element
-	 * @param target Name of the target (root element)
-	 * @param targetPath Path to the target element
+	 * @param source
+	 *            Name of the source (root element)
+	 * @param sourcePath
+	 *            Path to the source element
+	 * @param target
+	 *            Name of the target (root element)
+	 * @param targetPath
+	 *            Path to the target element
 	 */
 	public void createTransformation(String source, String[] sourcePath, String target, String[] targetPath) {
 
@@ -66,13 +69,16 @@ public class DataTransformationEditor extends DefaultEditor {
 	}
 
 	/**
-	 * Creates a transformation 'variable' --> 'element'.
-	 * NOTE: Supports XML and JSON data types.
+	 * Creates a transformation 'variable' --> 'element'. NOTE: Supports XML and JSON data types.
 	 * 
-	 * @param source Name of the source (root element)
-	 * @param name Name of the variable
-	 * @param target Name of the target (root element)
-	 * @param targetPath Path to the target element
+	 * @param source
+	 *            Name of the source (root element)
+	 * @param name
+	 *            Name of the variable
+	 * @param target
+	 *            Name of the target (root element)
+	 * @param targetPath
+	 *            Path to the target element
 	 */
 	public void createVariableTransformation(String source, String name, String target, String[] targetPath) {
 
@@ -90,16 +96,21 @@ public class DataTransformationEditor extends DefaultEditor {
 	}
 
 	/**
-	 * Creates a transformation 'expression' --> 'element'
-	 * NOTE: Supports XML and JSON data types.
+	 * Creates a transformation 'expression' --> 'element' NOTE: Supports XML and JSON data types.
 	 * 
-	 * @param source Name of the source (root element)
-	 * @param language Expression language
-	 * @param expression Expression value
-	 * @param target Name of the target (root element)
-	 * @param targetPath Path to the target element
+	 * @param source
+	 *            Name of the source (root element)
+	 * @param language
+	 *            Expression language
+	 * @param expression
+	 *            Expression value
+	 * @param target
+	 *            Name of the target (root element)
+	 * @param targetPath
+	 *            Path to the target element
 	 */
-	public void createExpressionTransformation(String source, String language, String expression, String target, String[] targetPath) {
+	public void createExpressionTransformation(String source, String language, String expression, String target,
+			String[] targetPath) {
 
 		log.info("Create a new expression transformation");
 		activate();
@@ -116,10 +127,10 @@ public class DataTransformationEditor extends DefaultEditor {
 	}
 
 	/**
-	 * Creates a new variable.
-	 * NOTE: Without support of setting its value. Default value (name) is used.
+	 * Creates a new variable. NOTE: Without support of setting its value. Default value (name) is used.
 	 * 
-	 * @param name Name of the variable
+	 * @param name
+	 *            Name of the variable
 	 */
 	public void createNewVariable(String name) {
 
@@ -136,7 +147,8 @@ public class DataTransformationEditor extends DefaultEditor {
 	/**
 	 * Search for all children widgets of given parent recursively
 	 * 
-	 * @param parent a control which child widgets we want to find 
+	 * @param parent
+	 *            a control which child widgets we want to find
 	 * @return all children widgets of given parent
 	 */
 	private List<Control> findAllWidgets(final Control parent) {
@@ -156,7 +168,8 @@ public class DataTransformationEditor extends DefaultEditor {
 	/**
 	 * It is related to {@link #findAllWidgets(Control)}
 	 * 
-	 * @param control a control which child widgets we want to find 
+	 * @param control
+	 *            a control which child widgets we want to find
 	 */
 	private void findWidgets(Control control) {
 		allWidgets.add(control);
@@ -171,10 +184,12 @@ public class DataTransformationEditor extends DefaultEditor {
 	/**
 	 * Invokes the context menu on one of mapping's nodes (source or target) and selects a context menu item
 	 * 
-	 * @param name Name of the transformation node in mapping detail (in case of XML/JSON it is name of the root element) 
-	 * @param type Name of the context menu item we want to select
+	 * @param name
+	 *            Name of the transformation node in mapping detail (in case of XML/JSON it is name of the root element)
+	 * @param type
+	 *            Name of the context menu item we want to select
 	 */
-	private void invokeMappingContextMenu (final String name, final String type) {
+	private void invokeMappingContextMenu(final String name, final String type) {
 
 		log.debug("Start invoking mapping context menu");
 		log.debug("Looking for the right widget (" + name + ") and opening the context menu");

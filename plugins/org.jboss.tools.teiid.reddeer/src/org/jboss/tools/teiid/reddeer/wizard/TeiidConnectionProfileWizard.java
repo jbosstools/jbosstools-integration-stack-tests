@@ -30,12 +30,13 @@ import org.jboss.tools.teiid.reddeer.extensions.DriverDefinitionExt;
 import org.jboss.tools.teiid.reddeer.preference.DriverDefinitionPreferencePageExt;
 
 /**
- * Extends reddeer class 
+ * Extends reddeer class
+ * 
  * @author apodhrad, lfabriko
  *
  */
-public class TeiidConnectionProfileWizard extends ConnectionProfileWizard { 
-	
+public class TeiidConnectionProfileWizard extends ConnectionProfileWizard {
+
 	public static final String KEY_CONNECT_AFTER_COMPLETING = "connectAfterCompleting";
 
 	public TeiidConnectionProfileWizard() {
@@ -48,11 +49,12 @@ public class TeiidConnectionProfileWizard extends ConnectionProfileWizard {
 
 	/**
 	 * Only for: SalesForce
+	 * 
 	 * @param profileName
 	 * @param props
-	 * @return 
+	 * @return
 	 */
-	public DatabaseProfile createSalesforceConnectionProfile(String profileName, Properties props){
+	public DatabaseProfile createSalesforceConnectionProfile(String profileName, Properties props) {
 		DatabaseProfile dbProfile = this.prepareDatabaseProfile(profileName, props);
 		open();
 		ConnectionProfileSelectPage selectPage = new ConnectionProfileSelectPage();
@@ -60,29 +62,29 @@ public class TeiidConnectionProfileWizard extends ConnectionProfileWizard {
 		selectPage.setName(dbProfile.getName());
 
 		next();
-		
+
 		ConnectionProfileDatabasePage dbPage = new ConnectionProfileSalesForcePage();
 		dbPage.setUsername(dbProfile.getUsername());
 		dbPage.setPassword(dbProfile.getPassword());
 
-		new PushButton("Test Connection").click(); 
-		
+		new PushButton("Test Connection").click();
+
 		new DefaultShell("Success");
 
 		new PushButton("OK").click();
-		
+
 		finish();
 		return dbProfile;
 	}
-	
-	
+
 	/**
 	 * Only for: LDAP
+	 * 
 	 * @param profileName
 	 * @param props
-	 * @return 
+	 * @return
 	 */
-	public DatabaseProfile createLdapConnectionProfile(String profileName, Properties cpProperties){
+	public DatabaseProfile createLdapConnectionProfile(String profileName, Properties cpProperties) {
 		DatabaseProfile dbProfile = this.prepareDatabaseProfile(profileName, cpProperties);
 		open();
 		ConnectionProfileSelectPage selectPage = new ConnectionProfileSelectPage();
@@ -90,97 +92,99 @@ public class TeiidConnectionProfileWizard extends ConnectionProfileWizard {
 		selectPage.setName(dbProfile.getName());
 
 		next();
-		
+
 		ConnectionProfileLdapPage dbPage = new ConnectionProfileLdapPage();
 		dbPage.setHostname(dbProfile.getHostname());
 		dbPage.setPort(dbProfile.getPort());
-		
+
 		next();
-		
+
 		dbPage.setUsername(dbProfile.getUsername());
 		dbPage.setPassword(dbProfile.getPassword());
 
-		new PushButton("Test Connection").click(); 
+		new PushButton("Test Connection").click();
 
 		new WaitUntil(new ShellWithTextIsAvailable("Success"));
 		new DefaultShell("Success");
 		new PushButton("OK").click();
-		
+
 		new DefaultShell("New connection profile");
 		finish();
 		return dbProfile;
 	}
-	
+
 	/**
 	 * Only for: SalesForce
+	 * 
 	 * @param profileName
 	 * @param props
-	 * @return 
+	 * @return
 	 */
-	public DatabaseProfile createSalesforceConnectionProfile(String profileName, String props){
+	public DatabaseProfile createSalesforceConnectionProfile(String profileName, String props) {
 		return this.createSalesforceConnectionProfile(profileName, props);
 	}
-	
+
 	/**
 	 * Only for: Oracle, HSQLDB, SQL Server, XML, SalesForce
-	 * @param name of connection profile (e.g. My Oracle profile)
+	 * 
+	 * @param name
+	 *            of connection profile (e.g. My Oracle profile)
 	 * @param props
 	 */
 	public void createDatabaseProfileWithoutCreatingDriver(String name, String props) {
 		DatabaseProfile dbProfile = this.prepareDatabaseProfile(name, this.getProperties(props));
-		
+
 		open();
 
 		createDatabaseProfile(dbProfile);
 	}
-	
-	public DatabaseProfile prepareDatabaseProfile(String name, Properties props){
-		//TODO  add some boolean param to createDatabaseProfile -> add driver 
-				DriverTemplate drvTemp = new DriverTemplate(props.getProperty("db.template"),
-						props.getProperty("db.version"));
 
-				//DriverDefinition driverDefinition = new DriverDefinition();
-				DriverDefinitionExt driverDefinition = new DriverDefinitionExt();
-				
-				driverDefinition.setDriverName(props.getProperty("driverName"));
-				driverDefinition.setDriverTemplate(drvTemp);
-				
-				driverDefinition = loadDriverDefinition(driverDefinition, props);
-				
-				//do not create a new driver definition
-				
+	public DatabaseProfile prepareDatabaseProfile(String name, Properties props) {
+		// TODO add some boolean param to createDatabaseProfile -> add driver
+		DriverTemplate drvTemp = new DriverTemplate(props.getProperty("db.template"), props.getProperty("db.version"));
+
+		// DriverDefinition driverDefinition = new DriverDefinition();
+		DriverDefinitionExt driverDefinition = new DriverDefinitionExt();
+
+		driverDefinition.setDriverName(props.getProperty("driverName"));
+		driverDefinition.setDriverTemplate(drvTemp);
+
+		driverDefinition = loadDriverDefinition(driverDefinition, props);
+
+		// do not create a new driver definition
+
 		DatabaseProfile dbProfile = new DatabaseProfile();
 		dbProfile.setName(name);
 		dbProfile.setDriverDefinition(driverDefinition);
-		
+
 		String loadedProperty = null;
-		if ((loadedProperty = props.getProperty("db.name")) != null){
+		if ((loadedProperty = props.getProperty("db.name")) != null) {
 			dbProfile.setDatabase(loadedProperty);
 		}
-		
-		if ((loadedProperty = props.getProperty("db.hostname")) != null){
+
+		if ((loadedProperty = props.getProperty("db.hostname")) != null) {
 			dbProfile.setHostname(loadedProperty);
 		}
-		
-		if ((loadedProperty = props.getProperty("db.username")) != null){
+
+		if ((loadedProperty = props.getProperty("db.username")) != null) {
 			dbProfile.setUsername(loadedProperty);
 		}
-		
-		if ((loadedProperty = props.getProperty("db.password")) != null){
+
+		if ((loadedProperty = props.getProperty("db.password")) != null) {
 			dbProfile.setPassword(loadedProperty);
 		}
-		
-		if ((loadedProperty = props.getProperty("db.vendor")) != null){
+
+		if ((loadedProperty = props.getProperty("db.vendor")) != null) {
 			dbProfile.setVendor(loadedProperty);
 		}
-		
-		if ((loadedProperty = props.getProperty("db.port")) != null){
+
+		if ((loadedProperty = props.getProperty("db.port")) != null) {
 			dbProfile.setPort(loadedProperty);
 		}
 		return dbProfile;
 	}
 
-	public Properties getProperties(String fileName){
+	public Properties getProperties(String fileName) {
 		Properties props = new Properties();
 		try {
 			props.load(new FileReader(fileName));
@@ -191,7 +195,7 @@ public class TeiidConnectionProfileWizard extends ConnectionProfileWizard {
 		}
 		return props;
 	}
-	
+
 	@Override
 	public void createFlatFileProfile(FlatFileProfile flatProfile) {
 		ConnectionProfileSelectPage selectPage = new ConnectionProfileSelectPage();
@@ -200,48 +204,43 @@ public class TeiidConnectionProfileWizard extends ConnectionProfileWizard {
 
 		next();
 
-		ConnectionProfileFlatFilePage flatPage =  new ConnectionProfileFlatFilePage();
-		new SWTWorkbenchBot().text().setText(new File(flatProfile.getFolder()).getAbsolutePath());//should be absolute path!
-		//switch off validation of home folder
+		ConnectionProfileFlatFilePage flatPage = new ConnectionProfileFlatFilePage();
+		new SWTWorkbenchBot().text().setText(new File(flatProfile.getFolder()).getAbsolutePath());// should be absolute
+																									// path!
+		// switch off validation of home folder
 		new CheckBox("Validate home folder").click();
 		flatPage.setCharset(flatProfile.getCharset());
 		flatPage.setStyle(flatProfile.getStyle());
 
 		finish();
 	}
-	
+
 	/**
 	 * 
-	 * @param name of connection profile (e.g. My oracle profile)
+	 * @param name
+	 *            of connection profile (e.g. My oracle profile)
 	 * @param props
 	 */
-	public void createDatabaseProfile(String name, Properties props) {//cp ext
-		DriverTemplate drvTemp = new DriverTemplate(props.getProperty("db.template"),
-				props.getProperty("db.version"));
+	public void createDatabaseProfile(String name, Properties props) {// cp ext
+		DriverTemplate drvTemp = new DriverTemplate(props.getProperty("db.template"), props.getProperty("db.version"));
 
-		//DriverDefinition driverDefinition = new DriverDefinition();
+		// DriverDefinition driverDefinition = new DriverDefinition();
 		DriverDefinitionExt driverDefinition = new DriverDefinitionExt();
-		
+
 		driverDefinition.setDriverName(name + " Driver");
 		driverDefinition.setDriverTemplate(drvTemp);
-		
+
 		driverDefinition = loadDriverDefinition(driverDefinition, props);
-		
-		/*String driverPath = new File(props.getProperty("db.jdbc_path")).getAbsolutePath();
-		driverDefinition.setDriverLibrary(driverPath);
-		//in case of Generic JDBC: also db.jdbc_class
-		String driverClass;
-		if ((driverClass = props.getProperty("db.jdbc_class")) != null){
-			driverDefinition.setDriverClass(driverClass);
-		}
-		String vendorTemplate = props.getProperty("db.vendor_template");
-		if (vendorTemplate != null){
-			driverDefinition.setVendorTemplate(vendorTemplate);
-		}
-		String loadedProperty;
-		if ((loadedProperty = props.getProperty("db.conn_url")) != null){
-			driverDefinition.setConnectionUrl(loadedProperty);
-		}*/
+
+		/*
+		 * String driverPath = new File(props.getProperty("db.jdbc_path")).getAbsolutePath();
+		 * driverDefinition.setDriverLibrary(driverPath); //in case of Generic JDBC: also db.jdbc_class String
+		 * driverClass; if ((driverClass = props.getProperty("db.jdbc_class")) != null){
+		 * driverDefinition.setDriverClass(driverClass); } String vendorTemplate =
+		 * props.getProperty("db.vendor_template"); if (vendorTemplate != null){
+		 * driverDefinition.setVendorTemplate(vendorTemplate); } String loadedProperty; if ((loadedProperty =
+		 * props.getProperty("db.conn_url")) != null){ driverDefinition.setConnectionUrl(loadedProperty); }
+		 */
 
 		DriverDefinitionPreferencePageExt prefPage = new DriverDefinitionPreferencePageExt();
 		prefPage.open();
@@ -259,13 +258,14 @@ public class TeiidConnectionProfileWizard extends ConnectionProfileWizard {
 		dbProfile.setPort(props.getProperty("db.port"));
 
 		open();
-		createDatabaseProfile(dbProfile, false, Boolean.valueOf(props.getProperty(KEY_CONNECT_AFTER_COMPLETING, "true")));
+		createDatabaseProfile(dbProfile, false,
+				Boolean.valueOf(props.getProperty(KEY_CONNECT_AFTER_COMPLETING, "true")));
 	}
-	
-	public void createDatabaseProfile(DatabaseProfile dbProfile, boolean test){
+
+	public void createDatabaseProfile(DatabaseProfile dbProfile, boolean test) {
 		createDatabaseProfile(dbProfile, test, true);
 	}
-	
+
 	public void createDatabaseProfile(DatabaseProfile dbProfile, boolean test, boolean connect) {
 		ConnectionProfileSelectPage selectPage = new ConnectionProfileSelectPage();
 		selectPage.setConnectionProfile(dbProfile.getVendor());
@@ -281,7 +281,7 @@ public class TeiidConnectionProfileWizard extends ConnectionProfileWizard {
 		dbPage.setPort(dbProfile.getPort());
 		dbPage.setUsername(dbProfile.getUsername());
 		dbPage.setPassword(dbProfile.getPassword());
-		
+
 		if (test) {
 			String success = "Success";
 			new PushButton("Test Connection").click();
@@ -294,48 +294,45 @@ public class TeiidConnectionProfileWizard extends ConnectionProfileWizard {
 		}
 
 		new CheckBox("Connect when the wizard completes").toggle(connect);
-		
 
 		finish();
 	}
 
-	public DriverDefinitionExt loadDriverDefinition(
-			DriverDefinitionExt driverDefinition, Properties props) {
-		
-		
+	public DriverDefinitionExt loadDriverDefinition(DriverDefinitionExt driverDefinition, Properties props) {
+
 		String loadedProperty;
-		if ((loadedProperty = props.getProperty("db.jdbc_path")) != null){
+		if ((loadedProperty = props.getProperty("db.jdbc_path")) != null) {
 			String driverPath = new File(props.getProperty("db.jdbc_path")).getAbsolutePath();
 			driverDefinition.setDriverLibrary(driverPath);
 		}
-		
-		if ((loadedProperty = props.getProperty("db.jdbc_class")) != null){
+
+		if ((loadedProperty = props.getProperty("db.jdbc_class")) != null) {
 			driverDefinition.setDriverClass(loadedProperty);
 		}
-	
-		if ((loadedProperty = props.getProperty("db.vendor_template")) != null){
+
+		if ((loadedProperty = props.getProperty("db.vendor_template")) != null) {
 			driverDefinition.setVendorTemplate(loadedProperty);
 		}
-		
-		if ((loadedProperty = props.getProperty("db.conn_url")) != null){
+
+		if ((loadedProperty = props.getProperty("db.conn_url")) != null) {
 			driverDefinition.setConnectionUrl(loadedProperty);
 		}
-		if ((loadedProperty = props.getProperty("db.name")) != null){
+		if ((loadedProperty = props.getProperty("db.name")) != null) {
 			driverDefinition.setDatabaseName(loadedProperty);
 		}
 		return driverDefinition;
 	}
-	
+
 	@Override
-	public void open(){
+	public void open() {
 		try {
 			super.open();
-		} catch (Exception ex){
+		} catch (Exception ex) {
 			new DefaultTreeItem("Connection Profiles").collapse();
 			new DefaultTreeItem("Connection Profiles", "Connection Profile").expand();
 			new DefaultTreeItem("Connection Profiles", "Connection Profile").select();
 			next();
 		}
 	}
-	
-	}
+
+}

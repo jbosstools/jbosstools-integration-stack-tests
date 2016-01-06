@@ -36,7 +36,9 @@ import org.junit.runner.RunWith;
 public class DataTransformationTest extends DefaultTest {
 
 	/**
-	 * <p>Basic Test</p>
+	 * <p>
+	 * Basic Test
+	 * </p>
 	 * <b>Steps</b>
 	 * <ol>
 	 * <li>import 'starter' project from 'resources/projects/starter'</li>
@@ -49,7 +51,9 @@ public class DataTransformationTest extends DefaultTest {
 	@Test
 	public void testBasics() {
 
-		ProjectFactory.importExistingProject(ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID, "resources/projects/starter"), "starter", true, true);
+		ProjectFactory.importExistingProject(
+				ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID, "resources/projects/starter"), "starter",
+				true, true);
 		new CamelProject("starter").openCamelContext("camel-context.xml");
 		CamelEditor editor = new CamelEditor("camel-context.xml");
 		editor.activate();
@@ -75,14 +79,22 @@ public class DataTransformationTest extends DefaultTest {
 
 		DataTransformationEditor transEditor = new DataTransformationEditor("transformation.xml");
 		transEditor.createNewVariable("ORIGIN");
-		transEditor.createVariableTransformation("ABCOrder", "ORIGIN", "XyzOrder", new String[] {"XyzOrder", "origin"});
-		transEditor.createExpressionTransformation("ABCOrder", "Header", "approvalID", "XyzOrder", new String[] {"XyzOrder", "approvalCode"});
-		transEditor.createTransformation("ABCOrder", new String[] {"ABCOrder", "header", "customerNum"}, "XyzOrder", new String[] {"XyzOrder", "custId"});
-		transEditor.createTransformation("ABCOrder", new String[] {"ABCOrder", "header", "orderNum"}, "XyzOrder", new String[] {"XyzOrder", "orderId"});
-		transEditor.createTransformation("ABCOrder", new String[] {"ABCOrder", "header", "status"}, "XyzOrder", new String[] {"XyzOrder", "priority"});
-		transEditor.createTransformation("ABCOrder", new String[] {"ABCOrder", "orderItems", "item", "id"}, "XyzOrder", new String[] {"XyzOrder", "lineItems", "itemId"});
-		transEditor.createTransformation("ABCOrder", new String[] {"ABCOrder", "orderItems", "item", "price"}, "XyzOrder", new String[] {"XyzOrder", "lineItems", "cost"});
-		transEditor.createTransformation("ABCOrder", new String[] {"ABCOrder", "orderItems", "item", "quantity"}, "XyzOrder", new String[] {"XyzOrder", "lineItems", "amount"});
+		transEditor.createVariableTransformation("ABCOrder", "ORIGIN", "XyzOrder",
+				new String[] { "XyzOrder", "origin" });
+		transEditor.createExpressionTransformation("ABCOrder", "Header", "approvalID", "XyzOrder",
+				new String[] { "XyzOrder", "approvalCode" });
+		transEditor.createTransformation("ABCOrder", new String[] { "ABCOrder", "header", "customerNum" }, "XyzOrder",
+				new String[] { "XyzOrder", "custId" });
+		transEditor.createTransformation("ABCOrder", new String[] { "ABCOrder", "header", "orderNum" }, "XyzOrder",
+				new String[] { "XyzOrder", "orderId" });
+		transEditor.createTransformation("ABCOrder", new String[] { "ABCOrder", "header", "status" }, "XyzOrder",
+				new String[] { "XyzOrder", "priority" });
+		transEditor.createTransformation("ABCOrder", new String[] { "ABCOrder", "orderItems", "item", "id" },
+				"XyzOrder", new String[] { "XyzOrder", "lineItems", "itemId" });
+		transEditor.createTransformation("ABCOrder", new String[] { "ABCOrder", "orderItems", "item", "price" },
+				"XyzOrder", new String[] { "XyzOrder", "lineItems", "cost" });
+		transEditor.createTransformation("ABCOrder", new String[] { "ABCOrder", "orderItems", "item", "quantity" },
+				"XyzOrder", new String[] { "XyzOrder", "lineItems", "amount" });
 
 		new CamelProject("starter").selectProjectItem("src/main/resources", "META-INF", "spring", "camel-context.xml");
 		NewFuseTransformationTestWizard test = new NewFuseTransformationTestWizard();
@@ -91,7 +103,8 @@ public class DataTransformationTest extends DefaultTest {
 		test.selectTransformationID("xml2json");
 		test.finish();
 		TextEditor javaEditor = new TextEditor("TransformationTest.java");
-		javaEditor.insertLine(25, "startEndpoint.sendBodyAndHeader(readFile(\"src/data/abc-order.xml\"), \"approvalID\", \"AUTO_OK\");");
+		javaEditor.insertLine(25,
+				"startEndpoint.sendBodyAndHeader(readFile(\"src/data/abc-order.xml\"), \"approvalID\", \"AUTO_OK\");");
 		javaEditor.save();
 		new ShellMenu("Run", "Run").select();
 		new WaitUntil(new ShellWithTextIsAvailable("Run As"));
@@ -101,6 +114,7 @@ public class DataTransformationTest extends DefaultTest {
 		new WaitUntil(new JUnitHasFinished(), TimePeriod.getCustom(20));
 		new WorkbenchShell();
 		assertEquals("Result of JUnit test is wrong", "1/1", new JUnitView().getRunStatus());
-		new WaitUntil(new ConsoleHasText("{\"custId\":\"ACME-123\",\"priority\":\"GOLD\",\"orderId\":\"ORDER1\",\"origin\":\"ORIGIN\",\"approvalCode\":\"AUTO_OK\",\"lineItems\":[{\"itemId\":\"PICKLE\",\"amount\":1000,\"cost\":2.25},{\"itemId\":\"BANANA\",\"amount\":400,\"cost\":1.25}]}"));
+		new WaitUntil(new ConsoleHasText(
+				"{\"custId\":\"ACME-123\",\"priority\":\"GOLD\",\"orderId\":\"ORDER1\",\"origin\":\"ORIGIN\",\"approvalCode\":\"AUTO_OK\",\"lineItems\":[{\"itemId\":\"PICKLE\",\"amount\":1000,\"cost\":2.25},{\"itemId\":\"BANANA\",\"amount\":400,\"cost\":1.25}]}"));
 	}
 }

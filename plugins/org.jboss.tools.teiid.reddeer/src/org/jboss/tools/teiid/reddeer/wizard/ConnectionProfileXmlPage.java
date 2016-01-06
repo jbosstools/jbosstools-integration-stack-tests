@@ -6,6 +6,6 @@ package org.jboss.tools.teiid.reddeer.wizard;
  *
  */
 public interface ConnectionProfileXmlPage {
-	
+
 	public void setPath(String path);
 }

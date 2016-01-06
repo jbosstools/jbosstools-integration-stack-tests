@@ -72,16 +72,17 @@ public class ModeshapeView extends WorkbenchView {
 		}
 		newServer().activate().setUrl(url).setUser(user).setPassword(password).testServerConnection().finish();
 	}
-	
+
 	/**
 	 * Create new publish area
+	 * 
 	 * @param url
 	 * @param repository
 	 * @param workspace
-	 * @param publishArea 
+	 * @param publishArea
 	 */
-	public void addPublishArea(String url, String repository, String workspace, String publishArea){
-		if (getPublishAreas(url, repository, workspace).contains(publishArea)){
+	public void addPublishArea(String url, String repository, String workspace, String publishArea) {
+		if (getPublishAreas(url, repository, workspace).contains(publishArea)) {
 			return;
 		}
 		new WorkbenchShell();
@@ -91,13 +92,13 @@ public class ModeshapeView extends WorkbenchView {
 		new DefaultText().setText(publishArea);
 		new PushButton("OK").click();
 	}
-	
-	public List<String> getPublishAreas(String url, String repository, String workspace){
+
+	public List<String> getPublishAreas(String url, String repository, String workspace) {
 		List<String> publishAreas = new ArrayList<String>();
 		open();
 		for (TreeItem pa : new DefaultTreeItem(url, repository, workspace).getItems()) {
 			publishAreas.add(pa.getText());
-		} 
+		}
 		return publishAreas;
 	}
 

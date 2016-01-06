@@ -5,7 +5,7 @@ import org.jboss.tools.drools.reddeer.kienavigator.dialog.Dialog;
 import org.jboss.tools.drools.reddeer.kienavigator.properties.ProjectProperties;
 
 public class ProjectItem extends Item<ProjectProperties> {
-	
+
 	public ProjectItem(TreeItem treeItem) {
 		super(treeItem);
 	}
@@ -15,11 +15,11 @@ public class ProjectItem extends Item<ProjectProperties> {
 		selectAction("Properties");
 		return new ProjectProperties();
 	}
-	
+
 	public void importProject() {
 		selectAction("Import Project");
 	}
-	
+
 	public Dialog deleteProject() {
 		selectAction("Delete Project...");
 		return new Dialog();

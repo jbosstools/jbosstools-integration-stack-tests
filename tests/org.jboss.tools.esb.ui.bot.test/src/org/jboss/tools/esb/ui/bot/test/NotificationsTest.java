@@ -276,10 +276,7 @@ public class NotificationsTest {
 
 	private void check(Map<String, String> map) {
 		String source = new ESBEditor().getSource();
-		String xpath = "count(//jbossesb/services/service[@name='"
-				+ SERVICE
-				+ "']/actions/action[@name='"
-				+ NOTIFIER
+		String xpath = "count(//jbossesb/services/service[@name='" + SERVICE + "']/actions/action[@name='" + NOTIFIER
 				+ "' and @class='org.jboss.soa.esb.actions.Notifier']/property[@name='destinations']/NotificationList[@type='"
 				+ NOTIFICATION_LIST + "']/target[" + mapToXPath(map) + "])=1";
 		Assertions.assertXmlContentBool(source, xpath);

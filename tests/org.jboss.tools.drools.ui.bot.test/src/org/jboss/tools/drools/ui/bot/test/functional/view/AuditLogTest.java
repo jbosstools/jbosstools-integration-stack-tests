@@ -37,68 +37,69 @@ public class AuditLogTest extends TestParent {
 
 	@InjectRequirement
 	private RuntimeRequirement droolsRequirement;
-	
-    @Before
-    public void addLoggerToSession() {
-        OpenUtility.openResource(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
-        TextEditor editor = new TextEditor();
-        StyledText text = new DefaultStyledText();
 
-        text.insertText(3, 0, "import org.kie.api.logger.KieRuntimeLogger;\n");
-        text.insertText(17, 0, "            KieRuntimeLogger logger = ks.getLoggers().newFileLogger(kSession, \"test\");\n");
-        text.insertText(24, 0, "\n            logger.close();\n");
+	@Before
+	public void addLoggerToSession() {
+		OpenUtility.openResource(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
+		TextEditor editor = new TextEditor();
+		StyledText text = new DefaultStyledText();
 
-        editor.save();
-        editor.close();
-    }
+		text.insertText(3, 0, "import org.kie.api.logger.KieRuntimeLogger;\n");
+		text.insertText(17, 0,
+				"            KieRuntimeLogger logger = ks.getLoggers().newFileLogger(kSession, \"test\");\n");
+		text.insertText(24, 0, "\n            logger.close();\n");
 
-    @Test
-    @UsePerspective(DroolsPerspective.class)
-    @UseDefaultProject
-    @Drools6Runtime
-    public void testDefaultProject() {
-        RunUtility.runAsJavaApplication(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
-        new WaitUntil(new ApplicationIsTerminated());
+		editor.save();
+		editor.close();
+	}
 
-        PackageExplorer explorer = new PackageExplorer();
-        explorer.open();
-        explorer.getProject(DEFAULT_PROJECT_NAME).select();
+	@Test
+	@UsePerspective(DroolsPerspective.class)
+	@UseDefaultProject
+	@Drools6Runtime
+	public void testDefaultProject() {
+		RunUtility.runAsJavaApplication(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
+		new WaitUntil(new ApplicationIsTerminated());
 
-        new ContextMenu(new RegexMatcher("Refresh.*")).select();
+		PackageExplorer explorer = new PackageExplorer();
+		explorer.open();
+		explorer.getProject(DEFAULT_PROJECT_NAME).select();
 
-        explorer = new PackageExplorer();
-        explorer.open();
-        explorer.getProject(DEFAULT_PROJECT_NAME).getProjectItem("test.log").select();
+		new ContextMenu(new RegexMatcher("Refresh.*")).select();
 
-        new ContextMenu(new RegexMatcher("Properties.*")).select();
+		explorer = new PackageExplorer();
+		explorer.open();
+		explorer.getProject(DEFAULT_PROJECT_NAME).getProjectItem("test.log").select();
 
-        String location = new LabeledText("Location:").getText();
-        new PushButton("Cancel").click();
+		new ContextMenu(new RegexMatcher("Properties.*")).select();
 
-        AuditView view = new AuditView();
-        view.open();
-        view.openLog(location);
+		String location = new LabeledText("Location:").getText();
+		new PushButton("Cancel").click();
 
-        List<String> events = view.getEvents();
-        Assert.assertEquals("Wrong number of audit log events", 3, events.size());
-        Assert.assertTrue("Wrong event encountered", events.get(0).contains("Object inserted"));
-        Assert.assertTrue("Wrong event encountered", events.get(1).contains("Activation executed"));
-        Assert.assertTrue("Wrong event encountered", events.get(2).contains("Activation executed"));
-    }
+		AuditView view = new AuditView();
+		view.open();
+		view.openLog(location);
 
-    @Test
-    @UsePerspective(DroolsPerspective.class)
-    @UseDefaultProject
-    @Drools6Runtime
-    public void testBussinessAuditLog() throws Exception {
-        String path = new File("resources/test150.log").getAbsolutePath();
+		List<String> events = view.getEvents();
+		Assert.assertEquals("Wrong number of audit log events", 3, events.size());
+		Assert.assertTrue("Wrong event encountered", events.get(0).contains("Object inserted"));
+		Assert.assertTrue("Wrong event encountered", events.get(1).contains("Activation executed"));
+		Assert.assertTrue("Wrong event encountered", events.get(2).contains("Activation executed"));
+	}
 
-        AuditView view = new AuditView();
-        view.open();
-        view.openLog(path);
+	@Test
+	@UsePerspective(DroolsPerspective.class)
+	@UseDefaultProject
+	@Drools6Runtime
+	public void testBussinessAuditLog() throws Exception {
+		String path = new File("resources/test150.log").getAbsolutePath();
 
-        List<String> events = view.getEvents();
-        // do not hunt for all the events, just check the number
-        Assert.assertEquals(events.toString(), 313, events.size());
-    }
+		AuditView view = new AuditView();
+		view.open();
+		view.openLog(path);
+
+		List<String> events = view.getEvents();
+		// do not hunt for all the events, just check the number
+		Assert.assertEquals(events.toString(), 313, events.size());
+	}
 }

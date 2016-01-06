@@ -4,11 +4,11 @@ import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 
 public class NewDecisionTableWizard extends NewWizardDialog {
 
-    public NewDecisionTableWizard() {
-        super("Drools", "Decision Table");
-    }
+	public NewDecisionTableWizard() {
+		super("Drools", "Decision Table");
+	}
 
-    public NewDecisionTableWizardPage getFirstPage() {
-        return new NewDecisionTableWizardPage();
-    }
+	public NewDecisionTableWizardPage getFirstPage() {
+		return new NewDecisionTableWizardPage();
+	}
 }

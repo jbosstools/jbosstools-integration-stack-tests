@@ -48,7 +48,7 @@ public class TeiidPublishingTest {
 
 	@InjectRequirement
 	private ServerRequirement server;
-	
+
 	public static final String SERVER_URL = "http://localhost:8080/modeshape-rest";
 	public static final String PUBLISH_AREA = "files";
 	public static final String WORKSPACE = "default";
@@ -56,8 +56,8 @@ public class TeiidPublishingTest {
 	@Test
 	public void publishingTest() throws Exception {
 
-		String user =  server.getConfig().getServerBase().getProperty("modeshapeUser");
-		String password =  server.getConfig().getServerBase().getProperty("modeshapePassword");
+		String user = server.getConfig().getServerBase().getProperty("modeshapeUser");
+		String password = server.getConfig().getServerBase().getProperty("modeshapePassword");
 
 		new ModeshapeView().addServer(SERVER_URL, user, password);
 		new ImportProjectWizard("resources/projects/ModeShapeGoodies.zip").execute();
@@ -125,11 +125,11 @@ public class TeiidPublishingTest {
 
 	private void checkPublishedFile(String path) throws IOException {
 
-		String user =  server.getConfig().getServerBase().getProperty("modeshapeUser");
-		String password =  server.getConfig().getServerBase().getProperty("modeshapePassword");
+		String user = server.getConfig().getServerBase().getProperty("modeshapeUser");
+		String password = server.getConfig().getServerBase().getProperty("modeshapePassword");
 		String repository = server.getConfig().getServerBase().getProperty("modeshape");
-		boolean result = new ModeshapeWebdav(SERVER_URL + "/v1", repository, WORKSPACE + "/items", PUBLISH_AREA).isFileAvailable(path, user, password);
+		boolean result = new ModeshapeWebdav(SERVER_URL + "/v1", repository, WORKSPACE + "/items", PUBLISH_AREA)
+				.isFileAvailable(path, user, password);
 		assertTrue("File '" + path + "' isn't published", result);
 	}
 }
-

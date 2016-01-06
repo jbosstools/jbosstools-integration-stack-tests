@@ -30,11 +30,11 @@ public class UserTask extends Task {
 	public UserTask(String name) {
 		super(name, ElementType.USER_TASK);
 	}
-	
+
 	public UserTask(Element element) {
 		super(element);
 	}
-	
+
 	/**
 	 * 
 	 * @param name
@@ -42,13 +42,13 @@ public class UserTask extends Task {
 	public void setTaskName(String name) {
 		propertiesHandler.setUp(new LabeledTextSetUp(PropertiesTabs.USER_TASK_TAB, "Task Name", name));
 	}
-	
+
 	public String getTaskName() {
 		propertiesHandler.selectTabInPropertiesView(PropertiesTabs.USER_TASK_TAB);
 		return new LabeledText("Task Name").getText();
-		
+
 	}
-	
+
 	/**
 	 * 
 	 * @param priority
@@ -56,9 +56,10 @@ public class UserTask extends Task {
 	public void setPriority(int priority) {
 		setPriority(String.valueOf(priority));
 	}
-	
+
 	/**
 	 * USE ONLY FOR numbers bigger than int
+	 * 
 	 * @param priority
 	 */
 	public void setPriority(String priority) {
@@ -72,39 +73,39 @@ public class UserTask extends Task {
 	public void setComment(String comment) {
 		propertiesHandler.setUp(new LabeledTextSetUp(PropertiesTabs.USER_TASK_TAB, "Comment", comment));
 	}
-	
+
 	/**
 	 * 
 	 * @param id
 	 */
 	public void setGroupId(String id) {
 		propertiesHandler.setUp(new LabeledTextSetUp(PropertiesTabs.USER_TASK_TAB, "Group Id", id));
-		
+
 	}
-	
+
 	public String getGroupId() {
 		propertiesHandler.selectTabInPropertiesView(PropertiesTabs.USER_TASK_TAB);
 		return new LabeledText("Group Id").getText();
 	}
-	
+
 	/**
 	 * 
 	 * @param skippable
 	 */
 	public void setSkippable(boolean skippable) {
 		propertiesHandler.setUp(new CheckBoxSetUp(PropertiesTabs.USER_TASK_TAB, "Skippable", skippable));
-		
+
 	}
-	
+
 	public boolean getSkippable() {
 		propertiesHandler.activateGraphitiPropertiesView();
 		new DefaultShell("Edit User Task");
 		new DefaultTabItem(PropertiesTabs.USER_TASK_TAB).activate();
-		boolean result =  new LabeledCheckBox("Skippable").isChecked();
+		boolean result = new LabeledCheckBox("Skippable").isChecked();
 		new PushButton("OK").click();
 		return result;
 	}
-	
+
 	/**
 	 * 
 	 * @param content
@@ -112,7 +113,7 @@ public class UserTask extends Task {
 	public void setContent(String content) {
 		propertiesHandler.setUp(new LabeledTextSetUp(PropertiesTabs.USER_TASK_TAB, "Content", content));
 	}
-	
+
 	/**
 	 * 
 	 * @param locale
@@ -120,7 +121,7 @@ public class UserTask extends Task {
 	public void setLocale(String locale) {
 		propertiesHandler.setUp(new LabeledTextSetUp(PropertiesTabs.USER_TASK_TAB, "Locale", locale));
 	}
-	
+
 	/**
 	 * 
 	 * @param actor
@@ -128,7 +129,7 @@ public class UserTask extends Task {
 	public void addActor(String actor) {
 		propertiesHandler.setUp(new AddActorSetUp(PropertiesTabs.USER_TASK_TAB, actor));
 	}
-	
+
 	public void removeActor(String actorName) {
 		propertiesHandler.setUp(new RemoveActorSetUp(PropertiesTabs.USER_TASK_TAB, actorName));
 	}
@@ -166,7 +167,7 @@ public class UserTask extends Task {
 	public void addParameterMapping(ParameterMapping parameterMapping) {
 		propertiesHandler.setUp(new ParameterMappingSetUp(parameterMapping, SectionToolItemButton.ADD));
 	}
-	
+
 	public void addLocalVariable(String varName, String dataType) {
 		propertiesHandler.setUp(new AddLocalVariableSetUp(PropertiesTabs.USER_TASK_TAB, varName, dataType));
 	}

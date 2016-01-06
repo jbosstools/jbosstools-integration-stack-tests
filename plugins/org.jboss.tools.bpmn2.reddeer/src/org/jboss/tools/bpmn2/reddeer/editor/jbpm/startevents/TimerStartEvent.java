@@ -17,7 +17,7 @@ public class TimerStartEvent extends StartEvent {
 	public TimerStartEvent(String name) {
 		super(name, ElementType.TIMER_START_EVENT);
 	}
-	
+
 	public TimerStartEvent(Element element) {
 		super(element);
 	}
@@ -26,9 +26,9 @@ public class TimerStartEvent extends StartEvent {
 		propertiesHandler.setUp(new TimerSetUp(timerType, duration));
 		refresh();
 	}
-	
+
 	public void setTimer(String duration) {
 		setTimer(TimerType.DURATION, duration);
 	}
-	
+
 }

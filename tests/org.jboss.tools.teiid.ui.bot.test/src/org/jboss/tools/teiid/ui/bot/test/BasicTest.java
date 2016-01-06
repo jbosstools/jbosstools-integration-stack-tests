@@ -38,17 +38,19 @@ public class BasicTest {
 		props.setProperty("destination", PROJECT);
 		new ImportMetadataManager().importXMLSchema(PROJECT, props);
 	}
-	
+
 	@AfterClass
-	public static void pauseAfter(){
+	public static void pauseAfter() {
 		System.out.println("pause");
 	}
 
 	// BooksInput, BooksUpdate, ISBNInput : mns:ISBNType, putResults :
 	// mns:putResultsType
-	private static String[] virtDocs = new String[] { "BooksInput",
-			"BooksUpdate", "ISBNInput : mns:ISBNType",
-			"putResults : mns:putResultsType" };
+	private static String[] virtDocs = new String[] {
+		"BooksInput",
+		"BooksUpdate",
+		"ISBNInput : mns:ISBNType",
+		"putResults : mns:putResultsType" };
 
 	@Test
 	public void test() {
@@ -57,7 +59,6 @@ public class BasicTest {
 		prepareModel(++i, elems);
 		checkModel(i, elems);
 	}
-
 
 	@Test
 	public void test2() {
@@ -71,8 +72,7 @@ public class BasicTest {
 	@Test
 	public void test3() {
 
-
-		String[] elems = new String[] { "ISBNInput : mns:ISBNType", "BooksUpdate"  };
+		String[] elems = new String[] { "ISBNInput : mns:ISBNType", "BooksUpdate" };
 		prepareModel(++i, elems);
 		checkModel(i, elems);
 	}
@@ -80,7 +80,7 @@ public class BasicTest {
 	@Test
 	public void test4() {
 
-		String[] elems = new String[] {"putResults : mns:putResultsType" };
+		String[] elems = new String[] { "putResults : mns:putResultsType" };
 		prepareModel(++i, elems);
 		checkModel(i, elems);
 	}
@@ -137,26 +137,22 @@ public class BasicTest {
 
 		MetadataModelWizard wizard = new MetadataModelWizard();
 		wizard.open();
-		wizard
-			.setLocation(PROJECT)
-			.setModelName(MODEL + i)
-			.selectModelClass(ModelClass.XML)
-			.selectModelType(ModelType.VIEW)
-			.selectModelBuilder(org.jboss.tools.teiid.reddeer.ModelBuilder.BUILD_FROM_XML_SCHEMA)
-			.next();
+		wizard.setLocation(PROJECT).setModelName(MODEL + i).selectModelClass(ModelClass.XML)
+				.selectModelType(ModelType.VIEW)
+				.selectModelBuilder(org.jboss.tools.teiid.reddeer.ModelBuilder.BUILD_FROM_XML_SCHEMA).next();
 		wizard.selectXMLSchemaFile(new String[] { PROJECT, XSD });
-		for(String elem : virtDocs){
+		for (String elem : virtDocs) {
 			wizard.addElement(elem);
 		}
-		
+
 		wizard.finish();
-		
+
 	}
 
 	private void checkModel(int i2, String[] elems) {
 		ModelExplorer modelExplorer = new ModelExplorer();
 		modelExplorer.open();
-		for (String elem : elems){
+		for (String elem : elems) {
 			String el = "";
 			String el2 = "";
 
@@ -178,9 +174,10 @@ public class BasicTest {
 			}
 			modelExplorer.activate();
 			new DefaultTreeItem(PROJECT, MODEL + i2 + ".xmi", el, el2);
-			teiidBot.assertResource(PROJECT, MODEL + i2 + ".xmi", el, el2, "mns = http://www.teiid.org/UpdateBooks_Output");
+			teiidBot.assertResource(PROJECT, MODEL + i2 + ".xmi", el, el2,
+					"mns = http://www.teiid.org/UpdateBooks_Output");
 		}
-		
+
 	}
 
 }

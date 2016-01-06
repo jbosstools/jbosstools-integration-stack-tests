@@ -1,6 +1,5 @@
 package org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm;
 
-
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -15,7 +14,7 @@ public class DataTypeDialog {
 
 	private static final String SHELL_LABEL = "Create New Data Type";
 
-    /**
+	/**
 	 * 
 	 * @param type
 	 */
@@ -26,5 +25,5 @@ public class DataTypeDialog {
 		new PushButton("OK").click();
 		new WaitWhile(new ShellWithTextIsActive(SHELL_LABEL));
 	}
-	
+
 }

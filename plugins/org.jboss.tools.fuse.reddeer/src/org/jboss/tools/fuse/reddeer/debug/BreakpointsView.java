@@ -36,8 +36,7 @@ public class BreakpointsView extends WorkbenchView {
 	 * 
 	 * @param label
 	 *            Label or some label's substring of the breakpoint
-	 * @return breakpoint - there is some breakpoint with given label, null -
-	 *         otherwise
+	 * @return breakpoint - there is some breakpoint with given label, null - otherwise
 	 */
 	public Breakpoint getBreakpoint(String label) {
 
@@ -84,7 +83,8 @@ public class BreakpointsView extends WorkbenchView {
 	/**
 	 * Imports breakpoints from a file
 	 * 
-	 * @param path path to the file
+	 * @param path
+	 *            path to the file
 	 */
 	public void importBreakpoints(String path) {
 

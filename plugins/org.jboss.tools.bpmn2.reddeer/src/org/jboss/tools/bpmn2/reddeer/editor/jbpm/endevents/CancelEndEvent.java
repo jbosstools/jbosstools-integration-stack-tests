@@ -6,7 +6,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
  * 
  */
 public class CancelEndEvent extends EndEvent {
-	
+
 	/**
 	 * 
 	 * @param name

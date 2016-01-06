@@ -9,7 +9,7 @@ public class CompensationBoundaryEvent extends BoundaryEvent {
 	public CompensationBoundaryEvent(String name) {
 		super(name, ElementType.COMPENSATION_BOUNDARY_EVENT);
 	}
-	
+
 	public CompensationBoundaryEvent(Element element) {
 		super(element);
 	}
@@ -17,5 +17,5 @@ public class CompensationBoundaryEvent extends BoundaryEvent {
 	public void setCompensationActivity(String activityName) {
 		propertiesHandler.setUp(new CompensationActivitySetUp(activityName));
 	}
-	
+
 }

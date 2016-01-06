@@ -34,13 +34,14 @@ public class ServerConfig {
 		return name;
 	}
 
-	@XmlElements({ @XmlElement(name = "as", namespace = Namespaces.SOA_REQ, type = ServerAS.class),
-			@XmlElement(name = "eap", namespace = Namespaces.SOA_REQ, type = ServerEAP.class),
-			@XmlElement(name = "wildfly", namespace = Namespaces.SOA_REQ, type = ServerWildFly.class),
-			@XmlElement(name = "karaf", namespace = Namespaces.SOA_REQ, type = ServerKaraf.class),
-			@XmlElement(name = "fuse", namespace = Namespaces.SOA_REQ, type = ServerFuse.class),
-			@XmlElement(name = "servicemix", namespace = Namespaces.SOA_REQ, type = ServerServiceMix.class),
-			@XmlElement(name = "fabric8", namespace = Namespaces.SOA_REQ, type = ServerServiceMix.class) })
+	@XmlElements({
+		@XmlElement(name = "as", namespace = Namespaces.SOA_REQ, type = ServerAS.class),
+		@XmlElement(name = "eap", namespace = Namespaces.SOA_REQ, type = ServerEAP.class),
+		@XmlElement(name = "wildfly", namespace = Namespaces.SOA_REQ, type = ServerWildFly.class),
+		@XmlElement(name = "karaf", namespace = Namespaces.SOA_REQ, type = ServerKaraf.class),
+		@XmlElement(name = "fuse", namespace = Namespaces.SOA_REQ, type = ServerFuse.class),
+		@XmlElement(name = "servicemix", namespace = Namespaces.SOA_REQ, type = ServerServiceMix.class),
+		@XmlElement(name = "fabric8", namespace = Namespaces.SOA_REQ, type = ServerServiceMix.class) })
 	private ServerBase serverBase;
 
 	public ServerBase getServerBase() {

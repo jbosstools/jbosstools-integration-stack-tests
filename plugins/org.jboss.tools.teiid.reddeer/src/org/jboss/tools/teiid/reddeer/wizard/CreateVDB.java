@@ -31,10 +31,12 @@ public class CreateVDB extends NewWizardDialog {
 		finish();
 		new DefaultShell().setFocus();
 	}
-	
+
 	/**
 	 * Define new VDB
-	 * @param viaGuides true if set via Modelling actions
+	 * 
+	 * @param viaGuides
+	 *            true if set via Modelling actions
 	 */
 	public void execute(boolean viaGuides) {
 
@@ -43,12 +45,12 @@ public class CreateVDB extends NewWizardDialog {
 			new GuidesView().chooseAction("Model JDBC Source", "Define VDB");
 			AbstractWait.sleep(TimePeriod.SHORT);
 			new DefaultShell("Define VDB").setFocus();
-			
+
 			new PushButton("New...").click();
 			new DefaultShell("New VDB");
 			fillFirstPage();
 			finish();
-			
+
 			new DefaultShell("Define VDB").setFocus();
 			new PushButton("OK").click();
 		} else {
@@ -58,7 +60,7 @@ public class CreateVDB extends NewWizardDialog {
 
 	private void fillFirstPage() {
 		new LabeledText("VDB Name:").setText(name);
-		if (this.folder != null){
+		if (this.folder != null) {
 			new PushButton("...").click();
 			new SelectTargetFolder().select(folder);
 		}

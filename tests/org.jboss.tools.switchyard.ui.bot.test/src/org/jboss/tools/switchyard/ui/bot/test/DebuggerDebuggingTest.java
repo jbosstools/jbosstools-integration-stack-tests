@@ -304,20 +304,17 @@ public class DebuggerDebuggingTest {
 
 	private static void assertBreakpoint(Breakpoint breakpoint, TriggeringPhase triggeringPhase, boolean checked) {
 		if (checked) {
-			assertTrue(
-					"Breakpoint '" + breakpoint.getText() + "' has unchecked triggering phase '"
-							+ triggeringPhase.getLabel() + "'", breakpoint.isChecked(triggeringPhase));
+			assertTrue("Breakpoint '" + breakpoint.getText() + "' has unchecked triggering phase '"
+					+ triggeringPhase.getLabel() + "'", breakpoint.isChecked(triggeringPhase));
 		} else {
-			assertFalse(
-					"Breakpoint '" + breakpoint.getText() + "' has checked triggering phase '"
-							+ triggeringPhase.getLabel() + "'", breakpoint.isChecked(triggeringPhase));
+			assertFalse("Breakpoint '" + breakpoint.getText() + "' has checked triggering phase '"
+					+ triggeringPhase.getLabel() + "'", breakpoint.isChecked(triggeringPhase));
 		}
 	}
 
 	private static void assertBreakpoint(Breakpoint breakpoint, TriggerOn triggerOn, boolean checked) {
 		if (checked) {
-			assertTrue(
-					"Breakpoint '" + breakpoint.getText() + "' has unchecked trigger '" + triggerOn.getLabel() + "'",
+			assertTrue("Breakpoint '" + breakpoint.getText() + "' has unchecked trigger '" + triggerOn.getLabel() + "'",
 					breakpoint.isChecked(triggerOn));
 		} else {
 			assertFalse("Breakpoint '" + breakpoint.getText() + "' has checked trigger '" + triggerOn.getLabel() + "'",

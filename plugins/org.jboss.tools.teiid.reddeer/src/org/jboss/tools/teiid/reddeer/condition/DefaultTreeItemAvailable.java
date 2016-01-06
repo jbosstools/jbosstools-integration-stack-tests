@@ -13,10 +13,10 @@ public class DefaultTreeItemAvailable extends AbstractWaitCondition {
 
 	private String[] PATH;
 
-	public DefaultTreeItemAvailable(String... path){
+	public DefaultTreeItemAvailable(String... path) {
 		this.PATH = path;
 	}
-	
+
 	@Override
 	public boolean test() {
 		try {

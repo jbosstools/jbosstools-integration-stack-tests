@@ -12,32 +12,32 @@ import org.junit.After;
 import org.junit.Before;
 
 public abstract class ViewTestParent extends TestParent {
-    private static final Logger LOGGER = Logger.getLogger(ViewTestParent.class);
+	private static final Logger LOGGER = Logger.getLogger(ViewTestParent.class);
 
-    final Class<? extends View> viewClass; 
+	final Class<? extends View> viewClass;
 
-    public ViewTestParent(Class<? extends View> viewClass) {
-        this.viewClass = viewClass;
-    }
+	public ViewTestParent(Class<? extends View> viewClass) {
+		this.viewClass = viewClass;
+	}
 
-    @Before
-    public void openWorkingMemoryViewInDebug() throws InstantiationException, IllegalAccessException {
-        new DebugPerspective().open();
-        viewClass.newInstance().open();
-        new DroolsPerspective().open();
-    }
+	@Before
+	public void openWorkingMemoryViewInDebug() throws InstantiationException, IllegalAccessException {
+		new DebugPerspective().open();
+		viewClass.newInstance().open();
+		new DroolsPerspective().open();
+	}
 
-    @After
-    public void terminateDebugRun() {
-        closeAllDialogs();
-        new DebugPerspective().open();
-        DebugView v = new DebugView();
-        v.open();
-        v.selectItem(new RegexMatcher("DroolsTest.*"));
-        try {
-            new ShellMenu(new RegexMatcher("Run"), new RegexMatcher("Terminate.*")).select();
-        } catch (Exception ex) {
-            LOGGER.debug("Unable to resume debugging", ex);
-        }
-    }
+	@After
+	public void terminateDebugRun() {
+		closeAllDialogs();
+		new DebugPerspective().open();
+		DebugView v = new DebugView();
+		v.open();
+		v.selectItem(new RegexMatcher("DroolsTest.*"));
+		try {
+			new ShellMenu(new RegexMatcher("Run"), new RegexMatcher("Terminate.*")).select();
+		} catch (Exception ex) {
+			LOGGER.debug("Unable to resume debugging", ex);
+		}
+	}
 }

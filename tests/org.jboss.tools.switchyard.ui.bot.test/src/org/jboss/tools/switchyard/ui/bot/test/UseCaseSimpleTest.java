@@ -55,7 +55,7 @@ import org.junit.runner.RunWith;
  * @author apodhrad
  * 
  */
-@SwitchYard(server = @Server(type = ServerReqType.ANY, state = ServerReqState.RUNNING))
+@SwitchYard(server = @Server(type = ServerReqType.ANY, state = ServerReqState.RUNNING) )
 @OpenPerspective(JavaEEPerspective.class)
 @RunWith(RedDeerSuite.class)
 public class UseCaseSimpleTest {
@@ -135,7 +135,7 @@ public class UseCaseSimpleTest {
 		final ServerBase server = switchyardRequirement.getConfig().getServerBase();
 		server.deployProject(PROJECT);
 		new WaitUntil(new AbstractWaitCondition() {
-			
+
 			@Override
 			public boolean test() {
 				try {
@@ -145,7 +145,7 @@ public class UseCaseSimpleTest {
 				}
 				return true;
 			}
-			
+
 			@Override
 			public String description() {
 				return "Checking the deployed project";

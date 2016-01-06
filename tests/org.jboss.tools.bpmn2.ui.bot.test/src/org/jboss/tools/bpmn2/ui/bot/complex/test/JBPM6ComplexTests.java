@@ -1,6 +1,5 @@
 package org.jboss.tools.bpmn2.ui.bot.complex.test;
 
-
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexAdHocProcessTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexAdHocSubprocessTest;
@@ -47,9 +46,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 @SuiteClasses({
-//	Where is declared escalation or signal
-//	@BZ https://bugzilla.redhat.com/show_bug.cgi?id=1184422
-// --------------------------------------------------------
+	// Where is declared escalation or signal
+	// @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1184422
+	// --------------------------------------------------------
 	ComplexParalellSplitJoinTest.class,
 	ComplexCallActivityTest.class,
 	ComplexAdHocProcessTest.class,
@@ -71,7 +70,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	ComplexUserTaskTest.class,
 	ComplexXPathExpressionTest.class,
 	ComplexLaneTest.class,
-	ComplexDataObjectTest.class, 
+	ComplexDataObjectTest.class,
 	ComplexMultipleStartEventTest.class,
 	ComplexInclusiveSplitTest.class,
 	ComplexIntermediateThrowMessageEventTest.class,

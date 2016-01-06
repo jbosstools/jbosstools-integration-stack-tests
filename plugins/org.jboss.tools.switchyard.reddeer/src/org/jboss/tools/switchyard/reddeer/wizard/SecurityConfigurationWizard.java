@@ -101,6 +101,5 @@ public class SecurityConfigurationWizard extends WizardDialog {
 		new WaitUntil(new IsButtonEnabled("Finish", NAME, ROLES_ALLOWED, RUN_AS, SECURITY_DOMAIN));
 		super.finish();
 	}
-	
-	
+
 }

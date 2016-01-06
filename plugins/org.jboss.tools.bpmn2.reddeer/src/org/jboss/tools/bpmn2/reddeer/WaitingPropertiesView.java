@@ -15,34 +15,34 @@ public class WaitingPropertiesView extends PropertiesView {
 	public void selectTab(String label) {
 		activate();
 		List<String> old = new ArrayList<String>();
-		
-		try{
+
+		try {
 			old = new TabbedPropertyList().getTabs();
-		}catch(Exception ex) {
-			//probably not rendered yet
+		} catch (Exception ex) {
+			// probably not rendered yet
 		}
 		new WaitUntil(new AnotherTabsRendered(old), TimePeriod.NORMAL, false);
 		super.selectTab(label);
 	}
-	
+
 	private class AnotherTabsRendered extends AbstractWaitCondition {
 
 		private List<String> old;
-		
+
 		public AnotherTabsRendered(List<String> old) {
 			this.old = old;
 		}
-		
+
 		@Override
 		public boolean test() {
 			List<String> actual = new ArrayList<String>();
-			
-			try{
+
+			try {
 				actual = new TabbedPropertyList().getTabs();
-			}catch(Exception ex) {
-				//probably not rendered yet
+			} catch (Exception ex) {
+				// probably not rendered yet
 			}
-			
+
 			return !actual.equals(old);
 		}
 
@@ -50,6 +50,6 @@ public class WaitingPropertiesView extends PropertiesView {
 		public String description() {
 			return "Wait for tabs to be rendered";
 		}
-		
+
 	}
 }

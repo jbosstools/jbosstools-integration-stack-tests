@@ -15,10 +15,10 @@ public class Lane extends ElementContainer {
 		super(name, ElementType.LANE);
 	}
 
-	public Lane(Element element){
+	public Lane(Element element) {
 		super(element);
 	}
-	
+
 	@Override
 	public void connectTo(Element construct) {
 		// See connectTo(Construct, ConnectionType)
@@ -29,12 +29,11 @@ public class Lane extends ElementContainer {
 		// No operation! Lane cannot have any appendices It's only an organizational
 		// structure.
 	}
-	
-	public void  changeOrientation() {
+
+	public void changeOrientation() {
 		click();
 		new ContextMenu("Change Lane Orientation").select();
-		
+
 	}
-	
-	
+
 }

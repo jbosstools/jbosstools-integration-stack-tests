@@ -49,8 +49,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	RouteManipulationTest.class,
 	ServerTest.class,
 	SmokeTest.class,
-	ServerJRETest.class
-})
+	ServerJRETest.class })
 @RunWith(RedDeerSuite.class)
 public class AllTests extends TestSuite {
 

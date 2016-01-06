@@ -10,11 +10,11 @@ import org.jboss.tools.bpmn2.reddeer.editor.MappingSide;
 public class ParameterMapping {
 
 	public enum Type {
-	    INPUT, OUTPUT;
-	
-	    public String label() {
-	        return name().charAt(0) + name().substring(1).toLowerCase();
-	    }
+		INPUT, OUTPUT;
+
+		public String label() {
+			return name().charAt(0) + name().substring(1).toLowerCase();
+		}
 	}
 
 	private MappingSide from;
@@ -32,7 +32,7 @@ public class ParameterMapping {
 		this.to = to;
 		this.type = type;
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -56,14 +56,13 @@ public class ParameterMapping {
 	public Type getType() {
 		return type;
 	}
-	
+
 	/**
-	 * Perform user actions which are required to set up this object
-	 * in the UI.
+	 * Perform user actions which are required to set up this object in the UI.
 	 */
 	public void setUp() {
 		from.setUp();
 		to.setUp();
 	}
-	
+
 }

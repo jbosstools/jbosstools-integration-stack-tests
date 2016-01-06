@@ -30,79 +30,79 @@ import org.junit.runner.RunWith;
 @Runtime(type = RuntimeReqType.DROOLS)
 @RunWith(RedDeerSuite.class)
 public class WorkingMemoryViewTest extends ViewTestParent {
-	
+
 	@InjectRequirement
 	private RuntimeRequirement droolsRequirement;
-	
-    public WorkingMemoryViewTest() {
-        super(WorkingMemoryView.class);
-    }
 
-    @Test
-    @UsePerspective(DroolsPerspective.class)
-    @Drools6Runtime
-    @UseDefaultProject
-    public void testSampleFile() {
-        OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
-        RuleEditor editor = new DrlEditor().showRuleEditor();
-        editor.setBreakpoint(8);
-        editor.setBreakpoint(18);
+	public WorkingMemoryViewTest() {
+		super(WorkingMemoryView.class);
+	}
 
-        RunUtility.debugAsDroolsApplication(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
-        WorkingMemoryView view = new WorkingMemoryView();
-        view.open();
+	@Test
+	@UsePerspective(DroolsPerspective.class)
+	@Drools6Runtime
+	@UseDefaultProject
+	public void testSampleFile() {
+		OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
+		RuleEditor editor = new DrlEditor().showRuleEditor();
+		editor.setBreakpoint(8);
+		editor.setBreakpoint(18);
 
-        List<String> objects = view.getObjects();
-        Assert.assertEquals("Unexpected number of objects in WM", 1, objects.size());
+		RunUtility.debugAsDroolsApplication(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
+		WorkingMemoryView view = new WorkingMemoryView();
+		view.open();
 
-        Map<String, String> attribs = view.getObjectAttributes(objects.get(0));
-        Assert.assertTrue("Unable to find attribute 'message'", attribs.containsKey("message"));
-        Assert.assertEquals("Wrong value of 'message' attribute", "\"Hello World\"", attribs.get("message"));
+		List<String> objects = view.getObjects();
+		Assert.assertEquals("Unexpected number of objects in WM", 1, objects.size());
 
-        Assert.assertTrue("Unable to find attribute 'status'", attribs.containsKey("status"));
-        Assert.assertEquals("Wrong value of 'status' attribute", "0", attribs.get("status"));
+		Map<String, String> attribs = view.getObjectAttributes(objects.get(0));
+		Assert.assertTrue("Unable to find attribute 'message'", attribs.containsKey("message"));
+		Assert.assertEquals("Wrong value of 'message' attribute", "\"Hello World\"", attribs.get("message"));
 
-        new DebugView().selectItem(new RegexMatcher("DroolsTest.*"), new RegexMatcher("com\\.sample\\.DroolsTest.*"));
-        new ShellMenu(new RegexMatcher("Run"), new RegexMatcher("Resume.*")).select();
-        waitASecond();
+		Assert.assertTrue("Unable to find attribute 'status'", attribs.containsKey("status"));
+		Assert.assertEquals("Wrong value of 'status' attribute", "0", attribs.get("status"));
 
-        objects = view.getObjects();
-        Assert.assertEquals("Unexpected number of objects in WM", 1, objects.size());
+		new DebugView().selectItem(new RegexMatcher("DroolsTest.*"), new RegexMatcher("com\\.sample\\.DroolsTest.*"));
+		new ShellMenu(new RegexMatcher("Run"), new RegexMatcher("Resume.*")).select();
+		waitASecond();
 
-        attribs = view.getObjectAttributes(objects.get(0));
-        Assert.assertTrue("Unable to find attribute 'message'", attribs.containsKey("message"));
-        Assert.assertEquals("Wrong value of 'message' attribute", "\"Goodbye cruel world\"", attribs.get("message"));
+		objects = view.getObjects();
+		Assert.assertEquals("Unexpected number of objects in WM", 1, objects.size());
 
-        Assert.assertTrue("Unable to find attribute 'status'", attribs.containsKey("status"));
-        Assert.assertEquals("Wrong value of 'status' attribute", "1", attribs.get("status"));
-    }
+		attribs = view.getObjectAttributes(objects.get(0));
+		Assert.assertTrue("Unable to find attribute 'message'", attribs.containsKey("message"));
+		Assert.assertEquals("Wrong value of 'message' attribute", "\"Goodbye cruel world\"", attribs.get("message"));
 
-    @Test
-    @UsePerspective(DroolsPerspective.class)
-    @Drools6Runtime
-    @UseDefaultProject
-    public void testMultipleFacts() {
-        OpenUtility.openResource(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
-        TextEditor txtEditor = new TextEditor();
-        StyledText text = new DefaultStyledText();
-        text.insertText(17, 0, "\n            kSession.insert(\"testString\");\n");
-        text.insertText(18, 0, "            kSession.insert(new Object());\n");
-        text.insertText(19, 0, "            kSession.insert(java.util.Arrays.asList(1, 2, 3));\n");
-        txtEditor.save();
+		Assert.assertTrue("Unable to find attribute 'status'", attribs.containsKey("status"));
+		Assert.assertEquals("Wrong value of 'status' attribute", "1", attribs.get("status"));
+	}
 
-        OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
-        RuleEditor editor = new DrlEditor().showRuleEditor();
-        editor.setBreakpoint(8);
+	@Test
+	@UsePerspective(DroolsPerspective.class)
+	@Drools6Runtime
+	@UseDefaultProject
+	public void testMultipleFacts() {
+		OpenUtility.openResource(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
+		TextEditor txtEditor = new TextEditor();
+		StyledText text = new DefaultStyledText();
+		text.insertText(17, 0, "\n            kSession.insert(\"testString\");\n");
+		text.insertText(18, 0, "            kSession.insert(new Object());\n");
+		text.insertText(19, 0, "            kSession.insert(java.util.Arrays.asList(1, 2, 3));\n");
+		txtEditor.save();
 
-        RunUtility.debugAsDroolsApplication(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
-        WorkingMemoryView view = new WorkingMemoryView();
-        view.open();
+		OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
+		RuleEditor editor = new DrlEditor().showRuleEditor();
+		editor.setBreakpoint(8);
 
-        List<String> objects = view.getObjects();
-        Assert.assertEquals("Unexpected number of objects in WM", 4, objects.size());
-        Assert.assertTrue("Expected object not found 'testString'", objects.contains("\"testString\""));
-        Assert.assertTrue("Expected object not found 'Object'", objects.contains("Object"));
-        Assert.assertTrue("Expected object not found 'Arrays$ArrayList<E>'", objects.contains("Arrays$ArrayList<E>"));
-        Assert.assertTrue("Expected object not found 'DroolsTest$Message'", objects.contains("DroolsTest$Message"));
-    }
+		RunUtility.debugAsDroolsApplication(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
+		WorkingMemoryView view = new WorkingMemoryView();
+		view.open();
+
+		List<String> objects = view.getObjects();
+		Assert.assertEquals("Unexpected number of objects in WM", 4, objects.size());
+		Assert.assertTrue("Expected object not found 'testString'", objects.contains("\"testString\""));
+		Assert.assertTrue("Expected object not found 'Object'", objects.contains("Object"));
+		Assert.assertTrue("Expected object not found 'Arrays$ArrayList<E>'", objects.contains("Arrays$ArrayList<E>"));
+		Assert.assertTrue("Expected object not found 'DroolsTest$Message'", objects.contains("DroolsTest$Message"));
+	}
 }

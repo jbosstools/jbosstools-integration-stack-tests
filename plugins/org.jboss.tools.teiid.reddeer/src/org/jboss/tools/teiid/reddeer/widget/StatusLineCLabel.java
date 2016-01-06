@@ -11,13 +11,14 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 
 public class StatusLineCLabel extends DefaultCLabel {
 
-	public StatusLineCLabel(){
+	public StatusLineCLabel() {
 		// couldn't find any easier way to get to the status line text
-		super(new DefaultReferencedComposite(WidgetLookup.getInstance().activeWidget(new DefaultShell(), Composite.class, 0, new StatusLineMatcher())));
-		
+		super(new DefaultReferencedComposite(WidgetLookup.getInstance().activeWidget(new DefaultShell(),
+				Composite.class, 0, new StatusLineMatcher())));
+
 	}
-	
-	private static class StatusLineMatcher extends BaseMatcher<Widget>{
+
+	private static class StatusLineMatcher extends BaseMatcher<Widget> {
 
 		@Override
 		public boolean matches(Object widget) {

@@ -31,15 +31,12 @@ import org.junit.runner.RunWith;
  * @author lfabriko + jstastny
  */
 @RunWith(RedDeerSuite.class)
-@TeiidServer(
-		state = ServerReqState.PRESENT
-		,connectionProfiles = {ConnectionProfilesConstants.ORACLE_11G_BOOKS}
-)
+@TeiidServer(state = ServerReqState.PRESENT, connectionProfiles = { ConnectionProfilesConstants.ORACLE_11G_BOOKS })
 public class RestCallTest {
-	
+
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;
-	
+
 	private static Logger log = Logger.getLogger(RestCallTest.class);
 
 	private static final String PROJECT_NAME = "RestCallTest";
@@ -48,7 +45,7 @@ public class RestCallTest {
 	private static final String VIEW_MODEL_2 = "BooksView2";
 	private static final String VDB_NAME_1 = "restcall1";
 	private static final String VDB_NAME_2 = "restcall2";
-	private static final String PROJECT_LOCATION = "resources/projects/"+ PROJECT_NAME;
+	private static final String PROJECT_LOCATION = "resources/projects/" + PROJECT_NAME;
 	private static final TeiidBot TEIID_BOT = new TeiidBot();
 
 	private static final String URL_1 = "http://localhost:8080/Rest1/BooksView1/book1/0201877562";
@@ -62,8 +59,9 @@ public class RestCallTest {
 
 		log.info("After import");
 		new DefaultShell();
-		
-		new ModelExplorerManager().changeConnectionProfile(ConnectionProfilesConstants.ORACLE_11G_BOOKS, PROJECT_NAME, SRC_MODEL);
+
+		new ModelExplorerManager().changeConnectionProfile(ConnectionProfilesConstants.ORACLE_11G_BOOKS, PROJECT_NAME,
+				SRC_MODEL);
 	}
 
 	@Test
@@ -73,7 +71,7 @@ public class RestCallTest {
 		String warCtxName1 = "Rest1";
 
 		teiidServer.getServerConfig().getServerBase().setState(ServerReqState.STOPPED);
-		
+
 		// create vdb
 		new VDBManager().createVDB(PROJECT_NAME, VDB_NAME_1);
 		new VDBManager().addModelsToVDB(PROJECT_NAME, VDB_NAME_1, new String[] { VIEW_MODEL_1 });
@@ -104,14 +102,14 @@ public class RestCallTest {
 		teiidServer.getServerConfig().getServerBase().setState(ServerReqState.RUNNING);
 		AbstractWait.sleep(TimePeriod.getCustom(30));
 		new ServersViewExt().refreshServer(teiidServer.getName());
-		
-		
+
 		AbstractWait.sleep(TimePeriod.getCustom(30));
 		// testing purposes WAR
 		war.deploy(teiidServer.getName());
 
 		// create data source for BooksSrc
-		new ModelExplorerManager().createDataSource(ModelExplorer.ConnectionSourceType.USE_CONNECTION_PROFILE_INFO, ConnectionProfilesConstants.ORACLE_11G_BOOKS, PROJECT_NAME, SRC_MODEL);
+		new ModelExplorerManager().createDataSource(ModelExplorer.ConnectionSourceType.USE_CONNECTION_PROFILE_INFO,
+				ConnectionProfilesConstants.ORACLE_11G_BOOKS, PROJECT_NAME, SRC_MODEL);
 
 		// synchronize vdb before deploying
 		new VDBManager().getVDBEditor(PROJECT_NAME, VDB_NAME_1).synchronizeAll();
@@ -129,7 +127,7 @@ public class RestCallTest {
 	public void connectedTeiid() {
 		teiidServer.getServerConfig().getServerBase().setState(ServerReqState.RUNNING);
 		new ServersViewExt().refreshServer(teiidServer.getName());
-		
+
 		String vdbJndiName1 = "RestTest2";
 		String warCtxName1 = "Rest2";
 
@@ -162,8 +160,8 @@ public class RestCallTest {
 		war.deploy(teiidServer.getName());
 
 		// create data source for BooksSrc
-		new ModelExplorerManager().createDataSource(ModelExplorer.ConnectionSourceType.USE_CONNECTION_PROFILE_INFO, ConnectionProfilesConstants.ORACLE_11G_BOOKS, PROJECT_NAME, SRC_MODEL);
-
+		new ModelExplorerManager().createDataSource(ModelExplorer.ConnectionSourceType.USE_CONNECTION_PROFILE_INFO,
+				ConnectionProfilesConstants.ORACLE_11G_BOOKS, PROJECT_NAME, SRC_MODEL);
 
 		// synchronize vdb before deploying
 		new VDBManager().getVDBEditor(PROJECT_NAME, VDB_NAME_2).synchronizeAll();

@@ -38,7 +38,7 @@ public class TransformationDragAndDropManager {
 	}
 
 	public void performVariableDragAndDrop(String from, String[] to) {
-		
+
 		final Point fromCoords = getCoords(getFromTableItem(from));
 		final Point toCoords = getCoords(getToTreeItemVariable(to));
 		doDragAndDrop(fromCoords, toCoords);

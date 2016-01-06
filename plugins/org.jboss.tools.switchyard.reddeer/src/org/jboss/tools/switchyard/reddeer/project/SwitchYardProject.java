@@ -65,27 +65,27 @@ public class SwitchYardProject extends Project {
 		new PushButton("Finish").click();
 		new WaitWhile(new ShellWithTextIsActive("New Java Interface"));
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		
+
 		getProjectItem(MAIN_JAVA, pkg, name + ".java").open();
 		return new TextEditor(name + ".java");
 	}
-	
+
 	public ProjectItemExt getClass(String... path) {
 		return getProjectItemExt(MAIN_JAVA, path);
 	}
-	
+
 	public ProjectItemExt getTestClass(String... path) {
 		return getProjectItemExt(TEST_JAVA, path);
 	}
-	
+
 	public ProjectItemExt getResource(String... path) {
 		return getProjectItemExt(MAIN_RESOURCE, path);
 	}
-	
+
 	public ProjectItemExt getTestResource(String... path) {
 		return getProjectItemExt(TEST_RESOURCE, path);
 	}
-	
+
 	public ProjectItemExt getProjectItemExt(String category, String... path) {
 		String[] newPath = new String[path.length + 1];
 		newPath[0] = category;
@@ -106,11 +106,11 @@ public class SwitchYardProject extends Project {
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
-	
+
 	public void enableFuseCamelNature() {
 		select();
 		new ContextMenu("Enable Fuse Camel Nature").select();
-		
+
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
@@ -118,7 +118,6 @@ public class SwitchYardProject extends Project {
 	public File getFile() {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IWorkspaceRoot root = workspace.getRoot();
-		
 
 		return new File(new File(root.getLocationURI().getPath()), getName());
 	}
@@ -130,7 +129,7 @@ public class SwitchYardProject extends Project {
 		new ContextMenu("SwitchYard", "Configure Capabilities...").select();
 		return new ProjectCapabilitiesShell("Properties for " + getName());
 	}
-	
+
 	public ProjectProperties openProperties() {
 		select();
 		new ContextMenu("Properties").select();

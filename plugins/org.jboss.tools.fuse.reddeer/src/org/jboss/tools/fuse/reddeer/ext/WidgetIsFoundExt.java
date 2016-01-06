@@ -12,25 +12,31 @@ import org.jboss.reddeer.core.matcher.AndMatcher;
 
 /**
  * WidgetIsFound is general condition to find desired widget
+ * 
  * @author Jiri Peterka
  * 
- * @param <T> widget class
+ * @param <T>
+ *            widget class
  */
-public class WidgetIsFoundExt <T extends Widget> extends AbstractWaitCondition {
+public class WidgetIsFoundExt<T extends Widget> extends AbstractWaitCondition {
 
 	private Control parent;
 	private AndMatcher am;
 	private int index;
 	private Widget properWidget;
 	WidgetLookupExt widgetLookup = WidgetLookupExt.getInstance();
-	
+
 	/**
 	 * Looks for widgets under given parent control with given index and matching matchers.
 	 *
-	 * @param <T> the generic type
-	 * @param parent given parent control
-	 * @param index given index
-	 * @param matchers given matchers
+	 * @param <T>
+	 *            the generic type
+	 * @param parent
+	 *            given parent control
+	 * @param index
+	 *            given index
+	 * @param matchers
+	 *            given matchers
 	 */
 	@SuppressWarnings("hiding")
 	public <T extends Widget> WidgetIsFoundExt(Control parent, int index, Matcher<?>... matchers) {
@@ -39,17 +45,20 @@ public class WidgetIsFoundExt <T extends Widget> extends AbstractWaitCondition {
 		} else {
 			this.parent = parent;
 		}
-		this.am=new AndMatcher(matchers);
-		this.index=index;
+		this.am = new AndMatcher(matchers);
+		this.index = index;
 	}
 
 	/**
 	 * Looks for first widget under given parent control matching matchers.
 	 *
-	 * @param <T> the generic type
-	 * @param parent given parent control
-	 * @param matchers given matchers
-	 */	
+	 * @param <T>
+	 *            the generic type
+	 * @param parent
+	 *            given parent control
+	 * @param matchers
+	 *            given matchers
+	 */
 	@SuppressWarnings("hiding")
 	public <T extends Widget> WidgetIsFoundExt(Control parent, Matcher<?>... matchers) {
 		this(parent, 0, matchers);
@@ -58,12 +67,14 @@ public class WidgetIsFoundExt <T extends Widget> extends AbstractWaitCondition {
 	/**
 	 * Looks for first widget under default parent control matching matchers.
 	 *
-	 * @param <T> the generic type
-	 * @param matchers given matchers
-	 */		
+	 * @param <T>
+	 *            the generic type
+	 * @param matchers
+	 *            given matchers
+	 */
 	@SuppressWarnings("hiding")
-	public <T extends Widget> WidgetIsFoundExt(Matcher<?>... matchers) {		
-		this(null,0, matchers);
+	public <T extends Widget> WidgetIsFoundExt(Matcher<?>... matchers) {
+		this(null, 0, matchers);
 	}
 
 	/**
@@ -72,10 +83,10 @@ public class WidgetIsFoundExt <T extends Widget> extends AbstractWaitCondition {
 	 * @return true if widget is found, false otherwise
 	 */
 	public boolean test() {
-		
+
 		properWidget = widgetLookup.getProperWidget(widgetLookup.activeWidgets(parent, am), index);
 
-		if(properWidget == null){
+		if (properWidget == null) {
 			return false;
 		}
 		return true;
@@ -86,11 +97,11 @@ public class WidgetIsFoundExt <T extends Widget> extends AbstractWaitCondition {
 	 *
 	 * @return found widget
 	 */
-	public Widget getWidget(){
+	public Widget getWidget() {
 		setFocus();
 		return properWidget;
 	}
-	
+
 	/**
 	 * Returns condition description.
 	 *
@@ -101,9 +112,9 @@ public class WidgetIsFoundExt <T extends Widget> extends AbstractWaitCondition {
 		return "widget is found";
 	}
 
-	private void setFocus(){
-		if (RunningPlatform.isWindows() && properWidget instanceof Button &&
-				((WidgetHandler.getInstance().getStyle((Button)properWidget) & SWT.RADIO) != 0)){
+	private void setFocus() {
+		if (RunningPlatform.isWindows() && properWidget instanceof Button
+				&& ((WidgetHandler.getInstance().getStyle((Button) properWidget) & SWT.RADIO) != 0)) {
 			// do not set focus because it also select radio button on Windows
 		} else {
 			WidgetHandler.getInstance().setFocus(properWidget);

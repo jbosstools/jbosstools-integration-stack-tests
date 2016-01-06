@@ -60,7 +60,7 @@ public class ServerManipulator {
 		serverRuntime.open();
 		try {
 			serverRuntime.removeServerRuntime(name);
-		} catch (SWTLayerException|CoreLayerException ex) {
+		} catch (SWTLayerException | CoreLayerException ex) {
 			log.warn("Cannot remove '" + name + "' server runtime. It is not listed in Server Runtimes!");
 		}
 		serverRuntime.ok();
@@ -74,7 +74,7 @@ public class ServerManipulator {
 			for (String runtime : serverRuntime.getServerRuntimes()) {
 				serverRuntime.removeServerRuntime(runtime);
 			}
-		} catch (SWTLayerException|CoreLayerException ex) {
+		} catch (SWTLayerException | CoreLayerException ex) {
 		}
 		serverRuntime.ok();
 	}
@@ -190,7 +190,7 @@ public class ServerManipulator {
 			for (TreeItem item : tree.getItems()) {
 				temp.add(new ServerLabel(item).getName());
 			}
-		} catch (CoreLayerException|SWTLayerException e) {
+		} catch (CoreLayerException | SWTLayerException e) {
 			return temp;
 		}
 
@@ -277,7 +277,7 @@ public class ServerManipulator {
 			return;
 		}
 
-		// Maybe there is nothing  to remove
+		// Maybe there is nothing to remove
 		try {
 			new WaitUntil(new ShellWithTextIsAvailable("Server"));
 			new PushButton("OK").click();
@@ -357,8 +357,8 @@ public class ServerManipulator {
 	}
 
 	/**
-	 * If stopping a server takes a long time, <i>Terminate Server</i> window is
-	 * appeared. This method tries to close the window.
+	 * If stopping a server takes a long time, <i>Terminate Server</i> window is appeared. This method tries to close
+	 * the window.
 	 */
 	private static void hack_General_CloseServerTerminateWindow() {
 

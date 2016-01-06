@@ -88,6 +88,7 @@ public class ServerWizard extends NewWizardDialog {
 		}
 		return this;
 	}
+
 	public ServerWizard setExternallyManaged(boolean value) {
 		new CheckBox(EXTERNALLY_MANAGED).toggle(value);
 		return this;
@@ -104,9 +105,9 @@ public class ServerWizard extends NewWizardDialog {
 	}
 
 	public ServerWizard setRemoteServerHome(String remoteHome) {
-		new DefaultText(new DefaultGroup(REMOTE_RUNTIME_DETAILS),0).setText(remoteHome);
+		new DefaultText(new DefaultGroup(REMOTE_RUNTIME_DETAILS), 0).setText(remoteHome);
 		return this;
-		
+
 	}
 
 	/*
@@ -115,7 +116,7 @@ public class ServerWizard extends NewWizardDialog {
 	public static final String PORT_NUMBER = "SSH Port: ";
 	public static final String USER_NAME = "User Name:";
 	public static final String PASSWORD = "Password: ";
-	
+
 	public ServerWizard setPort(String port) {
 		new LabeledText(PORT_NUMBER).setText(port);
 		return this;

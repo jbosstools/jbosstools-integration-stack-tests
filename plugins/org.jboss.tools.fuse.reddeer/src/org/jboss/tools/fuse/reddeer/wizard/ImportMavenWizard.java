@@ -45,7 +45,7 @@ public class ImportMavenWizard extends ImportWizardDialog {
 		try {
 			new DefaultShell("Incomplete Maven Goal Execution");
 			new PushButton("OK").click();
-		} catch (SWTLayerException|CoreLayerException e) {
+		} catch (SWTLayerException | CoreLayerException e) {
 			// ok, it means that the warning wasn't displayed
 		}
 		new WaitWhile(new ShellWithTextIsActive("Import Maven Projects"), TimePeriod.LONG);

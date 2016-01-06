@@ -20,11 +20,11 @@ public class InclusiveGateway extends ElementWithParamMapping {
 	public InclusiveGateway(String name) {
 		super(name, ElementType.INCLUSIVE_GATEWAY);
 	}
-	
+
 	public InclusiveGateway(org.jboss.tools.bpmn2.reddeer.editor.Element element) {
 		super(element);
 	}
-	
+
 	/**
 	 * 
 	 * @param flow
@@ -42,7 +42,7 @@ public class InclusiveGateway extends ElementWithParamMapping {
 	public void setDefaultBranch(String flow) {
 		propertiesHandler.setUp(new GatewayDefaultBranchSetUp(flow));
 	}
-	
+
 	/**
 	 * 
 	 * @param flow
@@ -51,7 +51,7 @@ public class InclusiveGateway extends ElementWithParamMapping {
 	public void setPriority(String flow, String priority) {
 		propertiesHandler.setUp(new GatewayPrioritySetUp(flow, priority));
 	}
-	
+
 	/**
 	 * 
 	 * @param direction
@@ -59,5 +59,5 @@ public class InclusiveGateway extends ElementWithParamMapping {
 	public void setDirection(Direction direction) {
 		propertiesHandler.setUp(new ComboSetUp(PropertiesTabs.GATEWAY_TAB, "Gateway Direction", direction.label()));
 	}
-	
+
 }

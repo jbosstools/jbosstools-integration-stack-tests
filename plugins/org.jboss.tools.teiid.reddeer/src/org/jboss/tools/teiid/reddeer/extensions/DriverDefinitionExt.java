@@ -31,14 +31,14 @@ public class DriverDefinitionExt extends DriverDefinition {
 	}
 
 	public String getDatabaseName() {
-		if (databaseName == null){
+		if (databaseName == null) {
 			return DEFAULT_DATABASE_NAME;
 		}
-		return this.databaseName ;
+		return this.databaseName;
 	}
 
 	public void setDatabaseName(String databaseName) {
 		this.databaseName = databaseName;
 	}
-	
+
 }

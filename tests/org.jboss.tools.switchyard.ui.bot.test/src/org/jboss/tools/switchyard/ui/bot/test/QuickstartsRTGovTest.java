@@ -16,7 +16,7 @@ import org.junit.runner.RunWith;
  * @author apodhrad
  * 
  */
-@SwitchYard(server = @Server(type = ServerReqType.ANY, state = ServerReqState.PRESENT))
+@SwitchYard(server = @Server(type = ServerReqType.ANY, state = ServerReqState.PRESENT) )
 @OpenPerspective(JavaEEPerspective.class)
 @RunWith(RedDeerSuite.class)
 public class QuickstartsRTGovTest extends QuickstartsTest {
@@ -24,7 +24,7 @@ public class QuickstartsRTGovTest extends QuickstartsTest {
 	public QuickstartsRTGovTest() {
 		super("quickstarts/overlord/rtgov");
 	}
-	
+
 	@Test
 	public void activityClientTest() {
 		testQuickstart("activityclient");

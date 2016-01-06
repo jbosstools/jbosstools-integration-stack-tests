@@ -37,16 +37,15 @@ public class Expression {
 	public String getScript() {
 		return script;
 	}
-	
+
 	/**
-	 * Perform user actions which are required to set up this object
-	 * in the UI.
+	 * Perform user actions which are required to set up this object in the UI.
 	 */
 	public void setUp() {
 		new DefaultCombo("Script Language").setSelection(language);
 		new LabeledText("Script").setText(script);
 	}
-	
+
 	/**
 	 * 
 	 * @param sectionName
@@ -56,5 +55,5 @@ public class Expression {
 		new DefaultCombo(section, "Script Language").setSelection(language);
 		new LabeledText(section, "Script").setText(script);
 	}
-	
+
 }

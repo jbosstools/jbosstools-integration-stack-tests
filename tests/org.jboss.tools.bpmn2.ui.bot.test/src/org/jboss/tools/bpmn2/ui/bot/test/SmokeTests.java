@@ -7,9 +7,7 @@ import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexParalellSplitJo
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
-@SuiteClasses({
-	ComplexParalellSplitJoinTest.class
-})
+@SuiteClasses({ ComplexParalellSplitJoinTest.class })
 @RunWith(RedDeerSuite.class)
 public class SmokeTests extends TestSuite {
 

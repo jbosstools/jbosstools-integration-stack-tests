@@ -19,7 +19,7 @@ import org.jboss.reddeer.core.util.Display;
 /**
  * 
  */
-public class DefaultSection extends AbstractSWTBot<Section> implements ReferencedComposite{
+public class DefaultSection extends AbstractSWTBot<Section> implements ReferencedComposite {
 
 	private SWTBot bot;
 
@@ -30,7 +30,7 @@ public class DefaultSection extends AbstractSWTBot<Section> implements Reference
 	public DefaultSection(String text) {
 		this(getSection(text));
 	}
-	
+
 	/**
 	 * 
 	 * @param section
@@ -39,7 +39,7 @@ public class DefaultSection extends AbstractSWTBot<Section> implements Reference
 		super(section);
 		bot = new SWTBot(section);
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -47,7 +47,7 @@ public class DefaultSection extends AbstractSWTBot<Section> implements Reference
 	public SWTBotTable getTable() {
 		return bot.table();
 	}
-	
+
 	/**
 	 * 
 	 * @param tooltip
@@ -56,7 +56,7 @@ public class DefaultSection extends AbstractSWTBot<Section> implements Reference
 	public SWTBotToolbarButton getToolbarButton(String tooltip) {
 		return bot.toolbarButtonWithTooltip(tooltip);
 	}
-	
+
 	/**
 	 * 
 	 * @param label
@@ -65,7 +65,7 @@ public class DefaultSection extends AbstractSWTBot<Section> implements Reference
 	public SWTBotText getText(String label) {
 		return bot.textWithLabel(label);
 	}
-	
+
 	/**
 	 * 
 	 * @param label
@@ -74,7 +74,7 @@ public class DefaultSection extends AbstractSWTBot<Section> implements Reference
 	public SWTBotCombo getComboBox(String label) {
 		return bot.comboBoxWithLabel(label);
 	}
-	
+
 	/**
 	 * 
 	 * @param expanded
@@ -84,11 +84,11 @@ public class DefaultSection extends AbstractSWTBot<Section> implements Reference
 			@Override
 			public void run() {
 				widget.setExpanded(expanded);
-				
+
 			}
 		});
 	}
-	
+
 	/**
 	 * 
 	 * @param name
@@ -98,7 +98,8 @@ public class DefaultSection extends AbstractSWTBot<Section> implements Reference
 		return UIThreadRunnable.syncExec(new Result<Section>() {
 
 			public Section run() {
-				List<? extends Section> sectionList = new SWTBot().widgets(WidgetMatcherFactory.widgetOfType(Section.class));
+				List<? extends Section> sectionList = new SWTBot()
+						.widgets(WidgetMatcherFactory.widgetOfType(Section.class));
 				for (Section s : sectionList) {
 					if (name.equals(s.getText())) {
 						return s;
@@ -106,9 +107,9 @@ public class DefaultSection extends AbstractSWTBot<Section> implements Reference
 				}
 				return null;
 			}
-			
+
 		});
-		
+
 	}
 
 	@Override

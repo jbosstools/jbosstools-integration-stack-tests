@@ -51,7 +51,7 @@ public class ConsumeRestWs {
 
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;
-	
+
 	@BeforeClass
 	public static void before() {
 		new ModelExplorerManager().createProject(PROJECT_NAME, false);
@@ -99,7 +99,7 @@ public class ConsumeRestWs {
 		new ServersViewExt().refreshServer(new ServersView().getServers().get(0).getLabel().getName());
 
 		new ModelExplorer().executeVDB(PROJECT_NAME, VDBXML + ".vdb");
-		
+
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, VDBXML);
 		assertEquals(16, jdbchelper.getNumberOfResults("exec " + VIEW_MODEL_XML + "." + PROCEDURE_NAME + "()"));
 
@@ -137,11 +137,10 @@ public class ConsumeRestWs {
 		new ServersViewExt().refreshServer(new ServersView().getServers().get(0).getLabel().getName());
 
 		new ModelExplorer().executeVDB(PROJECT_NAME, VDBJSON + ".vdb");
-		
+
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, VDBJSON);
 		assertEquals(16, jdbchelper.getNumberOfResults("exec " + VIEW_MODEL_JSON + "." + PROCEDURE_NAME + "()"));
-		
-	}
 
+	}
 
 }

@@ -14,7 +14,8 @@ public class FuseModifyModulesPage extends ModifyModulesPage {
 	/**
 	 * Sets option 'If server is started, publish changes immediately'
 	 * 
-	 * @param value true - option is checked, false - option is not checked
+	 * @param value
+	 *            true - option is checked, false - option is not checked
 	 */
 	public void setImmeadiatelyPublishing(boolean value) {
 

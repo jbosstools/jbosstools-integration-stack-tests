@@ -13,7 +13,7 @@ public class ConnectionProfileXmlUrlPage extends WizardPage implements Connectio
 	public static final String LABEL_URL = "Connection URL";
 
 	public ConnectionProfileXmlUrlPage() {
-		
+
 	}
 
 	@Override

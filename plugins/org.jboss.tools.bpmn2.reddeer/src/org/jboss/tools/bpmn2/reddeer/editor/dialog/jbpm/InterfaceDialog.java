@@ -16,7 +16,7 @@ public class InterfaceDialog {
 	public void add(String implementationUri) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	/**
 	 * 
 	 * @param interfaceName
@@ -26,5 +26,5 @@ public class InterfaceDialog {
 		new DefaultTable().select(interfaceName);
 		new PushButton("OK").click();
 	}
-	
+
 }

@@ -18,7 +18,7 @@ public class Breakpoint extends DefaultTreeItem {
 	public Breakpoint(String label) {
 
 		super(label);
-	}	
+	}
 
 	/**
 	 * Removes the breakpoint
@@ -45,8 +45,7 @@ public class Breakpoint extends DefaultTreeItem {
 	}
 
 	/**
-	 * Checks whether is given operation enabled in the context menu of the
-	 * breakpoint
+	 * Checks whether is given operation enabled in the context menu of the breakpoint
 	 * 
 	 * @param operation
 	 *            Name of operation in the context menu
@@ -59,15 +58,15 @@ public class Breakpoint extends DefaultTreeItem {
 		try {
 			ContextMenu menuitem = new ContextMenu(operation);
 			return menuitem.isEnabled();
-		} catch (SWTLayerException|CoreLayerException ex) {
+		} catch (SWTLayerException | CoreLayerException ex) {
 			log.debug("Operation '" + operation + "' not found!");
 			return false;
 		}
 	}
 
 	/**
-	 * Tries to perform given operation on the breakpoint. Operations are
-	 * selected from the context menu of the breakpoint.
+	 * Tries to perform given operation on the breakpoint. Operations are selected from the context menu of the
+	 * breakpoint.
 	 * 
 	 * @param operation
 	 *            Name of operation in the context menu

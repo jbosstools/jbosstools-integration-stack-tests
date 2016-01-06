@@ -18,15 +18,19 @@ public class FileUtils {
 	/**
 	 * Copy given directory, sub-directories and files
 	 * 
-	 * @param from a file system path to the 'from' directory
-	 * @param to a file system path to the destination
-	 * @throws IOException 
+	 * @param from
+	 *            a file system path to the 'from' directory
+	 * @param to
+	 *            a file system path to the destination
+	 * @throws IOException
 	 */
 	public static void copyDirectory(String fromPath, String toPath) throws IOException {
-		
+
 		Path from = Paths.get(fromPath);
 		Path to = Paths.get(toPath);
-		CopyOption[] options = new CopyOption[] {StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES};
+		CopyOption[] options = new CopyOption[] {
+			StandardCopyOption.REPLACE_EXISTING,
+			StandardCopyOption.COPY_ATTRIBUTES };
 		Files.copy(from, to, options);
 		for (File item : from.toFile().listFiles()) {
 			if (item.isDirectory()) {

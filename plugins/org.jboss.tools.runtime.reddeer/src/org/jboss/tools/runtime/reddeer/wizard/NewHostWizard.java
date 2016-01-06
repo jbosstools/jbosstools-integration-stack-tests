@@ -21,17 +21,15 @@ public class NewHostWizard extends WizardDialog {
 		new DefaultTreeItem(GENERAL, SSH_ONLY).select();
 		return this;
 	}
-	
-	
-	public NewHostWizard setHostName(String hostName){
+
+	public NewHostWizard setHostName(String hostName) {
 		new LabeledCombo(HOST_NAME).setText(hostName);
 		return this;
 	}
-	
-	public NewHostWizard setConnectionName(String connectionName){
+
+	public NewHostWizard setConnectionName(String connectionName) {
 		new LabeledText(CONNECTION_NAME).setText(connectionName);
 		return this;
 	}
-	
-	
+
 }

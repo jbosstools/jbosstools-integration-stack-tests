@@ -107,7 +107,6 @@ public class TeiidBot {
 		return new File(path).getAbsolutePath();
 	}
 
-	
 	/**
 	 * Save all
 	 */
@@ -278,18 +277,16 @@ public class TeiidBot {
 		}
 
 	}
-	
-	
-	public ModelEditor openModelEditor(String projectName, String modelName){
+
+	public ModelEditor openModelEditor(String projectName, String modelName) {
 		ModelExplorer modelExplorer = new ModelExplorer();
 		modelExplorer.open();
 		Project project = modelExplorer.getProject(projectName);
 		project.getProjectItem(modelName + ".xmi").open();
-		
+
 		ModelEditor editor = modelEditor(modelName + ".xmi");
 		return editor;
 	}
-	
 
 	public void deleteProjectSafely(String projectName) {
 		/*

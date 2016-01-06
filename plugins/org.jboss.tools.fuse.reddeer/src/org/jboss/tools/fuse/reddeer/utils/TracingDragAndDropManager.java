@@ -17,9 +17,8 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.tools.fuse.reddeer.view.JMXNavigator;
 
 /**
- * Utilizes sending messages into the Camel Endpoint - drag a message XML file
- * in 'Project Explorer' and drop it on a Camel Endpoint in 'JMX Navigator'
- * View.
+ * Utilizes sending messages into the Camel Endpoint - drag a message XML file in 'Project Explorer' and drop it on a
+ * Camel Endpoint in 'JMX Navigator' View.
  * 
  * @author tsedmik
  */

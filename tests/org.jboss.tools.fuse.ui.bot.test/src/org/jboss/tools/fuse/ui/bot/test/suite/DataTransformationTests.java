@@ -11,10 +11,7 @@ import org.junit.runners.Suite.SuiteClasses;
  * 
  * @author tsedmik
  */
-@SuiteClasses({
-	DataTransformationTest.class,
-	DataTransformationDeploymentTest.class
-})
+@SuiteClasses({ DataTransformationTest.class, DataTransformationDeploymentTest.class })
 @RunWith(RedDeerSuite.class)
 public class DataTransformationTests {
 

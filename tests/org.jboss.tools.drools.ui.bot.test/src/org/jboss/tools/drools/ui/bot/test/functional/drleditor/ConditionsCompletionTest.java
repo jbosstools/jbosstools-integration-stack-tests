@@ -24,64 +24,65 @@ import org.junit.runner.RunWith;
 @Runtime(type = RuntimeReqType.DROOLS)
 @RunWith(RedDeerSuite.class)
 public class ConditionsCompletionTest extends DrlCompletionParent {
-	
+
 	@InjectRequirement
 	private RuntimeRequirement droolsRequirement;
-	
-    @Test
-    @UsePerspective(DroolsPerspective.class)
-    @Drools6Runtime
-    @UseDefaultProject
-    public void testFactTypeCompletion() {
-        RuleEditor editor = master.showRuleEditor();
-        editor.setPosition(2, 0);
 
-        editor.writeText("import com.sample.domain.MyMessage\n\n");
+	@Test
+	@UsePerspective(DroolsPerspective.class)
+	@Drools6Runtime
+	@UseDefaultProject
+	public void testFactTypeCompletion() {
+		RuleEditor editor = master.showRuleEditor();
+		editor.setPosition(2, 0);
 
-        selectFromContentAssist(editor, "rule");
-        assertCorrectText(editor, "rule \"new rule\"");
+		editor.writeText("import com.sample.domain.MyMessage\n\n");
 
-        editor.setPosition(6, 2);
-        selectFromContentAssist(editor, "MyMessage");
-        assertCorrectText(editor, "MyMessage(  )");
-    }
+		selectFromContentAssist(editor, "rule");
+		assertCorrectText(editor, "rule \"new rule\"");
 
-    @Test
-    @UsePerspective(DroolsPerspective.class)
-    @Drools6Runtime
-    @UseDefaultProject
-    public void testConstraintsCompletion() {
-        RuleEditor editor = master.showRuleEditor();
-        editor.setPosition(2, 0);
-        editor.writeText("import com.sample.domain.MyMessage\n\nrule newRule\n\twhen\n\t\tMyMessage( )\n\tthen\nend\n");
+		editor.setPosition(6, 2);
+		selectFromContentAssist(editor, "MyMessage");
+		assertCorrectText(editor, "MyMessage(  )");
+	}
 
-        editor.setPosition(6, 11);
+	@Test
+	@UsePerspective(DroolsPerspective.class)
+	@Drools6Runtime
+	@UseDefaultProject
+	public void testConstraintsCompletion() {
+		RuleEditor editor = master.showRuleEditor();
+		editor.setPosition(2, 0);
+		editor.writeText("import com.sample.domain.MyMessage\n\nrule newRule\n\twhen\n\t\tMyMessage( )\n\tthen\nend\n");
 
-        ContentAssist assist = editor.createContentAssist();
-        List<String> items = assist.getItems();
-        Assert.assertTrue("Text field is not available", items.contains("text"));
-        Assert.assertTrue("Parameter field is not available", items.contains("parameter"));
-        Assert.assertTrue("Parameterized field is not available", items.contains("parameterized"));
+		editor.setPosition(6, 11);
 
-        assist.selectItem("text");
-        assertCorrectText(editor, "Message( text )");
+		ContentAssist assist = editor.createContentAssist();
+		List<String> items = assist.getItems();
+		Assert.assertTrue("Text field is not available", items.contains("text"));
+		Assert.assertTrue("Parameter field is not available", items.contains("parameter"));
+		Assert.assertTrue("Parameterized field is not available", items.contains("parameterized"));
 
-        // finish the constraint
-        editor.writeText("!= null, ");
+		assist.selectItem("text");
+		assertCorrectText(editor, "Message( text )");
 
-        assist = editor.createContentAssist();
-        items = assist.getItems();
-        Assert.assertTrue("Text field is not available as second constraint", items.contains("text"));
-        Assert.assertTrue("Parameter field is not available as second constraint", items.contains("parameter"));
-        Assert.assertTrue("Parameterized field is not available as second constraint", items.contains("parameterized"));
-        assist.close();
+		// finish the constraint
+		editor.writeText("!= null, ");
 
-        editor.writeText("$var: ");
-        assist = editor.createContentAssist();
-        items = assist.getItems();
-        Assert.assertTrue("Text field is not available for variable assignment", items.contains("text"));
-        Assert.assertTrue("Parameter field is not available for variable assignment", items.contains("parameter"));
-        Assert.assertTrue("Parameterized field is not available for variable assignment", items.contains("parameterized"));
+		assist = editor.createContentAssist();
+		items = assist.getItems();
+		Assert.assertTrue("Text field is not available as second constraint", items.contains("text"));
+		Assert.assertTrue("Parameter field is not available as second constraint", items.contains("parameter"));
+		Assert.assertTrue("Parameterized field is not available as second constraint", items.contains("parameterized"));
+		assist.close();
 
-    }
+		editor.writeText("$var: ");
+		assist = editor.createContentAssist();
+		items = assist.getItems();
+		Assert.assertTrue("Text field is not available for variable assignment", items.contains("text"));
+		Assert.assertTrue("Parameter field is not available for variable assignment", items.contains("parameter"));
+		Assert.assertTrue("Parameterized field is not available for variable assignment",
+				items.contains("parameterized"));
+
+	}
 }

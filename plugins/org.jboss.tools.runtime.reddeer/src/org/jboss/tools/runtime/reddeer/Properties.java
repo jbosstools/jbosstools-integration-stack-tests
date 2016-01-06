@@ -37,7 +37,7 @@ public class Properties {
 		}
 		return null;
 	}
-	
+
 	public List<String> getProperties(String key) {
 		List<String> values = new ArrayList<String>();
 		for (Element element : any) {

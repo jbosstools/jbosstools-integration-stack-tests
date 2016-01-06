@@ -12,56 +12,56 @@ import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.drools.reddeer.util.ItemLookup;
 
 public class AgendaView extends WorkbenchView {
-    private static final Pattern NAME_PATTERN = Pattern.compile("[\\w\\s]*");
+	private static final Pattern NAME_PATTERN = Pattern.compile("[\\w\\s]*");
 
-    public AgendaView() {
-        super("Drools", "Agenda");
-    }
+	public AgendaView() {
+		super("Drools", "Agenda");
+	}
 
-    public List<String> getAgendaGroupNames() {
-        open();
-        List<String> groups = new LinkedList<String>();
+	public List<String> getAgendaGroupNames() {
+		open();
+		List<String> groups = new LinkedList<String>();
 
-        for (TreeItem item : new DefaultTree().getItems()) {
-            groups.add(cleanAgendaGroupName(item.getText()));
-        }
+		for (TreeItem item : new DefaultTree().getItems()) {
+			groups.add(cleanAgendaGroupName(item.getText()));
+		}
 
-        return groups;
-    }
+		return groups;
+	}
 
-    public void selectAgendaGroup(String name) {
-        open();
-        ItemLookup.getItemInTree(new DefaultTree(), new RegexMatcher(name + ".*"));
-    }
+	public void selectAgendaGroup(String name) {
+		open();
+		ItemLookup.getItemInTree(new DefaultTree(), new RegexMatcher(name + ".*"));
+	}
 
-    public List<String> getActivations() {
-        open();
-        List<String> activations = new LinkedList<String>();
+	public List<String> getActivations() {
+		open();
+		List<String> activations = new LinkedList<String>();
 
-        for (String group : getAgendaGroupNames()) {
-            activations.addAll(getActivationsForGroup(group));
-        }
+		for (String group : getAgendaGroupNames()) {
+			activations.addAll(getActivationsForGroup(group));
+		}
 
-        return activations;
-    }
+		return activations;
+	}
 
-    public List<String> getActivationsForGroup(String groupName) {
-        open();
-        TreeItem group = ItemLookup.getItemInTree(new DefaultTree(), new RegexMatcher(groupName + ".*"));
+	public List<String> getActivationsForGroup(String groupName) {
+		open();
+		TreeItem group = ItemLookup.getItemInTree(new DefaultTree(), new RegexMatcher(groupName + ".*"));
 
-        List<String> activations = new LinkedList<String>();
+		List<String> activations = new LinkedList<String>();
 
-        for (TreeItem item : group.getItems()) {
-            String ruleLine = item.getItems().get(0).getText();
-            activations.add(ruleLine.substring(11, ruleLine.lastIndexOf('"')));
-        }
+		for (TreeItem item : group.getItems()) {
+			String ruleLine = item.getItems().get(0).getText();
+			activations.add(ruleLine.substring(11, ruleLine.lastIndexOf('"')));
+		}
 
-        return activations;
-    }
+		return activations;
+	}
 
-    private String cleanAgendaGroupName(String original) {
-        Matcher m = NAME_PATTERN.matcher(original);
-        m.find();
-        return m.group();
-    }
+	private String cleanAgendaGroupName(String original) {
+		Matcher m = NAME_PATTERN.matcher(original);
+		m.find();
+		return m.group();
+	}
 }

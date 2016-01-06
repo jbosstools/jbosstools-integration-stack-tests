@@ -8,7 +8,7 @@ public class LinkIntermediateThrowEvent extends IntermediateThrowEvent {
 	public LinkIntermediateThrowEvent(String name) {
 		super(name);
 	}
-	
+
 	public LinkIntermediateThrowEvent(Element element) {
 		super(element);
 	}

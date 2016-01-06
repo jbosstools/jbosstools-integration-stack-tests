@@ -25,11 +25,11 @@ public class ReceiveTask extends Task {
 	public ReceiveTask(String name) {
 		super(name, ElementType.RECEIVE_TASK);
 	}
-	
+
 	public ReceiveTask(Element element) {
 		super(element);
 	}
-	
+
 	/**
 	 * 
 	 * @param implementationUri
@@ -37,7 +37,7 @@ public class ReceiveTask extends Task {
 	public void setImplementation(String implementationUri) {
 		propertiesHandler.setUp(new ComboSetUp(PropertiesTabs.RECEIVE_TASK_TAB, "Implementation", implementationUri));
 	}
-	
+
 	/**
 	 * 
 	 * @param operationContractName
@@ -46,18 +46,20 @@ public class ReceiveTask extends Task {
 	 * @param errorRef
 	 */
 	public void setOperation(String operationContractName, Message inMessage, Message outMessage, ErrorRef errorRef) {
-		propertiesHandler.setUp(new OperationSetUp(PropertiesTabs.RECEIVE_TASK_TAB, operationContractName, inMessage, outMessage, errorRef));
+		propertiesHandler.setUp(new OperationSetUp(PropertiesTabs.RECEIVE_TASK_TAB, operationContractName, inMessage,
+				outMessage, errorRef));
 	}
-	
+
 	/**
 	 * 
 	 * @param name
 	 * @param dataType
 	 */
 	public void setMessage(String name, String dataType) {
-		propertiesHandler.setUp(new ComboSetUp(PropertiesTabs.RECEIVE_TASK_TAB, "Message", name + "(" + dataType + ")"));
+		propertiesHandler
+				.setUp(new ComboSetUp(PropertiesTabs.RECEIVE_TASK_TAB, "Message", name + "(" + dataType + ")"));
 	}
-	
+
 	/**
 	 *
 	 * @param value
@@ -91,7 +93,7 @@ public class ReceiveTask extends Task {
 	public void addParameterMapping(ParameterMapping parameterMapping) {
 		propertiesHandler.setUp(new ParameterMappingSetUp(parameterMapping, SectionToolItemButton.ADD));
 	}
-	
+
 	public void setTarget(String varName) {
 		propertiesHandler.setUp(new ComboSetUp(PropertiesTabs.RECEIVE_TASK_TAB, "Target", varName));
 	}

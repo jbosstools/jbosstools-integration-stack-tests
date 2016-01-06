@@ -50,66 +50,82 @@ public class WidgetLookupExt {
 	 * @return WidgetLookupExt instance
 	 */
 	public static WidgetLookupExt getInstance() {
-		if (instance == null) instance = new WidgetLookupExt();
+		if (instance == null)
+			instance = new WidgetLookupExt();
 		return instance;
 	}
 
 	/**
-	 * Method looks for active widget located in specified referenced composite, laying on specified index and matching specified matchers.
+	 * Method looks for active widget located in specified referenced composite, laying on specified index and matching
+	 * specified matchers.
 	 *
-	 * @param <T> the generic type
-	 * @param refComposite reference composite to search for widgets
-	 * @param clazz class type of widget
-	 * @param index index of widget within referenced composite
-	 * @param matchers matchers to match widget
-	 * @return widget located withing specified referenced composite, laying on specified index and matching specified matchers
+	 * @param <T>
+	 *            the generic type
+	 * @param refComposite
+	 *            reference composite to search for widgets
+	 * @param clazz
+	 *            class type of widget
+	 * @param index
+	 *            index of widget within referenced composite
+	 * @param matchers
+	 *            matchers to match widget
+	 * @return widget located withing specified referenced composite, laying on specified index and matching specified
+	 *         matchers
 	 */
-	@SuppressWarnings({ "rawtypes","unchecked" })
-	public <T extends Widget> T activeWidget(ReferencedComposite refComposite, Class<T> clazz, int index, Matcher... matchers) {				
-		logger.debug("Looking up active widget with class type " + clazz.getName() +  ", index " + index + " and " + createMatcherDebugMsg(matchers));
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public <T extends Widget> T activeWidget(ReferencedComposite refComposite, Class<T> clazz, int index,
+			Matcher... matchers) {
+		logger.debug("Looking up active widget with class type " + clazz.getName() + ", index " + index + " and "
+				+ createMatcherDebugMsg(matchers));
 
 		ClassMatcher cm = new ClassMatcher(clazz);
 		Matcher[] allMatchers = MatcherBuilder.getInstance().addMatcher(matchers, cm);
-		AndMatcherExt am  = new AndMatcherExt(allMatchers);
+		AndMatcherExt am = new AndMatcherExt(allMatchers);
 
 		Control parentControl = getParentControl(refComposite);
 		WidgetIsFoundExt found = new WidgetIsFoundExt(parentControl, index, am.getMatchers());
-		try{
+		try {
 			new WaitUntil(found, TimePeriod.SHORT);
-		} catch (WaitTimeoutExpiredException ex){
+		} catch (WaitTimeoutExpiredException ex) {
 			String exceptionText = "No matching widget found with " + am.toString();
 			exceptionText += "\n" + new DiagnosticTool().getDiagnosticInformation(parentControl);
-			logger.error("Active widget with class type " + clazz.getName() +  " and index " + index + " was not found");
+			logger.error("Active widget with class type " + clazz.getName() + " and index " + index + " was not found");
 			throw new CoreLayerException(exceptionText, ex);
 		}
 
-		logger.debug("Active widget with class type " + clazz.getName() +  " and index " + index + " was found");
-		return (T)found.getWidget();
+		logger.debug("Active widget with class type " + clazz.getName() + " and index " + index + " was found");
+		return (T) found.getWidget();
 	}
-	
+
 	/**
 	 * Method looks for active widgets located in specified referenced composite and matching specified matchers.
 	 *
-	 * @param <T> the generic type
-	 * @param refComposite reference composite to search for widgets
-	 * @param clazz class type of widgets
-	 * @param matchers matchers to match widget
+	 * @param <T>
+	 *            the generic type
+	 * @param refComposite
+	 *            reference composite to search for widgets
+	 * @param clazz
+	 *            class type of widgets
+	 * @param matchers
+	 *            matchers to match widget
 	 * @return widgets located in specified referenced composite and matching specified matchers
 	 */
-	public <T extends Widget> List<T> activeWidgets(ReferencedComposite refComposite, Class<T> clazz, Matcher<?>... matchers) {				
-		logger.debug("Looking up active widgets with class type " + clazz.getName() +  " and " + createMatcherDebugMsg(matchers));
+	public <T extends Widget> List<T> activeWidgets(ReferencedComposite refComposite, Class<T> clazz,
+			Matcher<?>... matchers) {
+		logger.debug("Looking up active widgets with class type " + clazz.getName() + " and "
+				+ createMatcherDebugMsg(matchers));
 
 		ClassMatcher cm = new ClassMatcher(clazz);
 		Matcher<?>[] allMatchers = MatcherBuilder.getInstance().addMatcher(matchers, cm);
-		AndMatcher am  = new AndMatcher(allMatchers);
+		AndMatcher am = new AndMatcher(allMatchers);
 
 		List<T> foundWidgets = activeWidgets(refComposite.getControl(), am);
 		logger.debug("Found " + foundWidgets.size() + " widgets");
 		return foundWidgets;
 	}
 
-	private Control getParentControl(ReferencedComposite refComposite){
-		if (refComposite == null){
+	private Control getParentControl(ReferencedComposite refComposite) {
+		if (refComposite == null) {
 			return findParent();
 		}
 		return refComposite.getControl();
@@ -118,14 +134,14 @@ public class WidgetLookupExt {
 	/**
 	 * Finds parent control of active widget .
 	 *
-	 * @return parent control of active widget  or throws an exception if null
+	 * @return parent control of active widget or throws an exception if null
 	 */
-	public Control findParent(){
+	public Control findParent() {
 		logger.debug("No parent specified, finding one");
 		Control parent = getActiveWidgetParentControl();
 		logger.debug("Parent found successfully");
 
-		if (parent == null){
+		if (parent == null) {
 			logger.error("Unable to determine active parent");
 			throw new CoreLayerException("Unable to determine active parent");
 		}
@@ -136,9 +152,12 @@ public class WidgetLookupExt {
 	/**
 	 * Finds active widget or reference composite matching given matcher.
 	 *
-	 * @param <T> the generic type
-	 * @param refComposite given reference composite
-	 * @param matcher given matcher
+	 * @param <T>
+	 *            the generic type
+	 * @param refComposite
+	 *            given reference composite
+	 * @param matcher
+	 *            given matcher
 	 * @return active widget
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -149,54 +168,56 @@ public class WidgetLookupExt {
 		return widgets;
 	}
 
-
 	/**
 	 * Finds out whether extra shell (shell different than workbench shell) is active.
-	 *  
+	 * 
 	 * @return true if extra shell is active, false otherwise
 	 */
 	public boolean isExtraShellActive() {
-		IWorkbenchPartReference activeWorkbenchReference = WorkbenchPartLookup.getInstance().findActiveWorkbenchPartReference();
+		IWorkbenchPartReference activeWorkbenchReference = WorkbenchPartLookup.getInstance()
+				.findActiveWorkbenchPartReference();
 		Shell activeWorkbenchParentShell = getShellForActiveWorkbench(activeWorkbenchReference);
 
 		Shell activeShell = ShellLookup.getInstance().getActiveShell();
-		if (activeWorkbenchParentShell == null || activeWorkbenchParentShell != activeShell){
+		if (activeWorkbenchParentShell == null || activeWorkbenchParentShell != activeShell) {
 			return true;
 		}
 		return false;
 	}
 
-
 	/**
-	 * Gets active parent control. Method finds either active workbench referenced control active shell. 
+	 * Gets active parent control. Method finds either active workbench referenced control active shell.
 	 *
 	 * @return active workbench control or active shell
 	 */
 	public Control getActiveWidgetParentControl() {
 		Control control = null;
 
-		IWorkbenchPartReference activeWorkbenchReference =  WorkbenchPartLookup.getInstance().findActiveWorkbenchPartReference();
+		IWorkbenchPartReference activeWorkbenchReference = WorkbenchPartLookup.getInstance()
+				.findActiveWorkbenchPartReference();
 		Shell activeWorkbenchParentShell = getShellForActiveWorkbench(activeWorkbenchReference);
 		Shell activeShell = ShellLookup.getInstance().getActiveShell();
 
 		if ((activeWorkbenchParentShell == null || !activeWorkbenchParentShell.equals(activeShell))
-				&& activeShell != null){
-			logger.trace("Setting active shell with title \"" + WidgetHandler.getInstance().getText(activeShell) + "\" as the parent");
-			control = activeShell;	
-		}			
-		else {
-			if (activeWorkbenchReference != null){
-				logger.trace("Setting workbench part with title \"" + getTitle(activeWorkbenchReference) + "\"as the parent");
+				&& activeShell != null) {
+			logger.trace("Setting active shell with title \"" + WidgetHandler.getInstance().getText(activeShell)
+					+ "\" as the parent");
+			control = activeShell;
+		} else {
+			if (activeWorkbenchReference != null) {
+				logger.trace("Setting workbench part with title \"" + getTitle(activeWorkbenchReference)
+						+ "\"as the parent");
 				control = WorkbenchPartLookup.getInstance().getWorkbenchControl(activeWorkbenchReference);
 			}
-		}	
+		}
 		return control;
 	}
 
 	/**
 	 * Gets the shell for active workbench.
 	 *
-	 * @param workbenchReference the workbench reference
+	 * @param workbenchReference
+	 *            the workbench reference
 	 * @return the shell for active workbench
 	 */
 	protected Shell getShellForActiveWorkbench(IWorkbenchPartReference workbenchReference) {
@@ -217,18 +238,22 @@ public class WidgetLookupExt {
 	/**
 	 * Get widget with given index from list of widgets .
 	 *
-	 * @param <T> the generic type
-	 * @param widgets list of widgets
-	 * @param index widget index
+	 * @param <T>
+	 *            the generic type
+	 * @param widgets
+	 *            list of widgets
+	 * @param index
+	 *            widget index
 	 * @return widget with given index or null if out of range
 	 */
 	public <T extends Widget> T getProperWidget(List<T> widgets, int index) {
 		T widget = null;
-		if (widgets.size() > index){
+		if (widgets.size() > index) {
 			logger.trace("Selecting widget with the specified index (" + index + ")");
 			widget = widgets.get(index);
 		} else {
-			logger.trace("The specified index is bigger than the size of found widgets (" + index + " > " + widgets.size() + ")");
+			logger.trace("The specified index is bigger than the size of found widgets (" + index + " > "
+					+ widgets.size() + ")");
 		}
 		return widget;
 	}
@@ -236,9 +261,12 @@ public class WidgetLookupExt {
 	/**
 	 * Finds list of controls matching specified matcher for active parent widget.
 	 *
-	 * @param <T> the generic type
-	 * @param matcher matcher to match parent controls
-	 * @param recursive true for recursive lookup of control widgets
+	 * @param <T>
+	 *            the generic type
+	 * @param matcher
+	 *            matcher to match parent controls
+	 * @param recursive
+	 *            true for recursive lookup of control widgets
 	 * @return list of parent controls for active parent or single parent control
 	 */
 	public <T extends Widget> List<T> findActiveParentControls(final Matcher<T> matcher, final boolean recursive) {
@@ -249,13 +277,16 @@ public class WidgetLookupExt {
 	/**
 	 * Finds list of controls matching specified matchers for parent widget.
 	 * 
-	 * @param parentWidget parent widget to search for controls
-	 * @param matcher matcher to match controls
-	 * @param recursive true for recursive lookup
+	 * @param parentWidget
+	 *            parent widget to search for controls
+	 * @param matcher
+	 *            matcher to match controls
+	 * @param recursive
+	 *            true for recursive lookup
 	 * @return list of control widgets matching specified matchers of single parent control
 	 */
-	private <T extends Widget> List<T> findControls(final Widget parentWidget, 
-			final Matcher<T> matcher, final boolean recursive) {
+	private <T extends Widget> List<T> findControls(final Widget parentWidget, final Matcher<T> matcher,
+			final boolean recursive) {
 		List<T> ret = Display.syncExec(new ResultRunnable<List<T>>() {
 
 			@Override
@@ -283,22 +314,23 @@ public class WidgetLookupExt {
 		return c;
 	}
 
-
 	/**
-	 * Gets list of children control widgets located within specified 
-	 * parent widget matching specified matcher.
+	 * Gets list of children control widgets located within specified parent widget matching specified matcher.
 	 * 
-	 * @param parentWidget parent widget
-	 * @param matcher matcher to match widgets
-	 * @param recursive true for recursive search, false otherwise
+	 * @param parentWidget
+	 *            parent widget
+	 * @param matcher
+	 *            matcher to match widgets
+	 * @param recursive
+	 *            true for recursive search, false otherwise
 	 * @return children control widget matching specified matcher
 	 */
 	@SuppressWarnings("unchecked")
-	private <T extends Widget> List<T> findControlsUI(final Widget parentWidget, final Matcher<T> matcher, final boolean recursive) {
+	private <T extends Widget> List<T> findControlsUI(final Widget parentWidget, final Matcher<T> matcher,
+			final boolean recursive) {
 
 		if ((parentWidget == null) || parentWidget.isDisposed())
 			return new ArrayList<T>();
-
 
 		if (!visible(parentWidget)) {
 			return new ArrayList<T>();
@@ -310,7 +342,8 @@ public class WidgetLookupExt {
 			try {
 				controls.add((T) parentWidget);
 			} catch (ClassCastException exception) {
-				throw new IllegalArgumentException("The specified matcher should only match against is declared type.", exception);
+				throw new IllegalArgumentException("The specified matcher should only match against is declared type.",
+						exception);
 			}
 		if (recursive) {
 			List<Widget> children = WidgetResolver.getInstance().getChildren(parentWidget);
@@ -320,17 +353,21 @@ public class WidgetLookupExt {
 	}
 
 	/**
-	 * Gets list of children control widgets matching specified matcher from specified list of widgets. Method
-	 * can be used recursively to get all children in descendants.
+	 * Gets list of children control widgets matching specified matcher from specified list of widgets. Method can be
+	 * used recursively to get all children in descendants.
 	 * 
 	 * Note: Must be used in UI Thread
 	 * 
-	 * @param widgets list of widgets to get children from
-	 * @param matcher matcher to match widgets
-	 * @param recursive true for recursive search, false otherwise
+	 * @param widgets
+	 *            list of widgets to get children from
+	 * @param matcher
+	 *            matcher to match widgets
+	 * @param recursive
+	 *            true for recursive search, false otherwise
 	 * @return list of children widgets of widgets from specified list
 	 */
-	private <T extends Widget> List<T> findControlsUI(final List<Widget> widgets, final Matcher<T> matcher, final boolean recursive) {
+	private <T extends Widget> List<T> findControlsUI(final List<Widget> widgets, final Matcher<T> matcher,
+			final boolean recursive) {
 		LinkedHashSet<T> list = new LinkedHashSet<T>();
 		for (Widget w : widgets) {
 			list.addAll(findControlsUI(w, matcher, recursive));
@@ -341,14 +378,15 @@ public class WidgetLookupExt {
 	/**
 	 * Finds out whether widget is visible or not.
 	 * 
-	 * @param w widget to resolve
+	 * @param w
+	 *            widget to resolve
 	 * @return true if widget is visible, false otherwise
 	 */
 	private boolean visible(Widget w) {
 		return !((w instanceof Control) && !((Control) w).getVisible());
 	}
 
-	private String getTitle(final IWorkbenchPartReference part){
+	private String getTitle(final IWorkbenchPartReference part) {
 		return Display.syncExec(new ResultRunnable<String>() {
 			@Override
 			public String run() {
@@ -360,15 +398,15 @@ public class WidgetLookupExt {
 	private String createMatcherDebugMsg(Matcher<?>[] matchers) {
 		StringBuilder sb = new StringBuilder();
 
-		if (matchers.length == 0){
+		if (matchers.length == 0) {
 			sb.append("no matchers specified");
 		} else {
 			sb.append("following matchers specified (");
 		}
 
-		for (int ind = 0 ; ind < matchers.length ; ind++ ){
+		for (int ind = 0; ind < matchers.length; ind++) {
 			sb.append(matchers[ind].getClass());
-			if (ind < matchers.length - 1){
+			if (ind < matchers.length - 1) {
 				sb.append(", ");
 			} else {
 				sb.append(")");
@@ -392,12 +430,11 @@ public class WidgetLookupExt {
 
 			@Override
 			public void describeTo(Description desc) {
-				
+
 			}
-			
+
 		}, true);
 		return allWidgets;
 	}
 
 }
-

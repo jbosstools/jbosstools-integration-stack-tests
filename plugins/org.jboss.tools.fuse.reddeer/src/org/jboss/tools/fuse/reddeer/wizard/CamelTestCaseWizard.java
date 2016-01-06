@@ -12,7 +12,5 @@ public class CamelTestCaseWizard extends NewWizardDialog {
 	public CamelTestCaseWizard() {
 		super("Fuse Tooling", "Camel Test Case");
 	}
-	
-	
 
 }

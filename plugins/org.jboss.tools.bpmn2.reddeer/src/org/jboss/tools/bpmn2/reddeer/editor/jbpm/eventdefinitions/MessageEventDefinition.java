@@ -13,12 +13,10 @@ import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
  */
 public class MessageEventDefinition extends EventDefinition {
 
-	
-	
 	private Message message;
 	private String variableName;
 	private MappingType type;
-	
+
 	/**
 	 * 
 	 * @param signalName
@@ -26,7 +24,7 @@ public class MessageEventDefinition extends EventDefinition {
 	public MessageEventDefinition(Message message, MappingType type) {
 		this(message, null, type);
 	}
-	
+
 	/**
 	 * 
 	 * @param signalName
@@ -37,13 +35,12 @@ public class MessageEventDefinition extends EventDefinition {
 		this.variableName = variableName;
 		this.type = type;
 	}
-	
-	
+
 	@Override
 	public void setUp() {
-		
+
 		DefaultSection section = new DefaultSection("Message Event Definition Details");
-		
+
 		DefaultCombo combo = new DefaultCombo(section, "Message");
 		String comboItem = message.getName() + "(" + message.getDataType() + ")";
 		if (!combo.contains(comboItem)) {
@@ -51,11 +48,9 @@ public class MessageEventDefinition extends EventDefinition {
 			new MessageDialog().add(message);
 		}
 		combo.setSelection(comboItem);
-		
+
 		new DefaultCombo(section, type.label()).setSelection(variableName);
 		new SectionToolItem("Message Event Definition Details", "Close").click();
 	}
-	
-	
-	
+
 }

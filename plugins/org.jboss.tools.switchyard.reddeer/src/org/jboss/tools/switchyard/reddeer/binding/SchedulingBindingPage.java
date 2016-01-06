@@ -10,7 +10,7 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  * 
  */
 public class SchedulingBindingPage extends OperationOptionsPage<SchedulingBindingPage> {
-	
+
 	public static final String SCHEDULING_TYPE_CRON = "cron";
 	public static final String SCHEDULING_TYPE_TRIGGER = "trigger";
 

@@ -110,7 +110,7 @@ public class ServerKaraf extends ServerBase {
 		}
 		return Integer.valueOf(systemProperties.getProperty("org.osgi.service.http.port"));
 	}
-	
+
 	@Override
 	public String getUrl(String host, String path) {
 		StringBuffer result = new StringBuffer();
@@ -140,7 +140,7 @@ public class ServerKaraf extends ServerBase {
 		runtimeWizard.setInstallationDir(getHome());
 		runtimeWizard.selectJre(getJreName());
 		runtimeWizard.finish();
-		
+
 		// TODO Replace ok() method
 		new OkButton().click();
 

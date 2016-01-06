@@ -15,13 +15,13 @@ import org.jboss.tools.drools.reddeer.kienavigator.item.RepositoryItem;
 import org.jboss.tools.drools.reddeer.kienavigator.item.ServerItem;
 
 public class KieNavigatorView extends WorkbenchView {
-	
+
 	private static final String NO_SERVERS_TEXT = "Use the Servers View to create a new server...";
 
 	public KieNavigatorView() {
 		super("Drools", "Kie Navigator");
 	}
-	
+
 	/**
 	 * Opens Kie Navigator if it is not opened.
 	 */
@@ -30,21 +30,22 @@ public class KieNavigatorView extends WorkbenchView {
 			open();
 		}
 	}
-	
+
 	/**
 	 * Checks if Kie Navigator contains any server.
+	 * 
 	 * @return false if no servers are available; true otherwise
 	 */
 	private boolean isEmpty() {
 		checkAndOpen();
 		try {
-        	new DefaultLink(NO_SERVERS_TEXT);
-        } catch (CoreLayerException e) {
-        	return false;
-        }
+			new DefaultLink(NO_SERVERS_TEXT);
+		} catch (CoreLayerException e) {
+			return false;
+		}
 		return true;
 	}
-	
+
 	/**
 	 * Refreshes Kie Navigator.
 	 */
@@ -52,9 +53,10 @@ public class KieNavigatorView extends WorkbenchView {
 		checkAndOpen();
 		new ContextMenu("Refresh");
 	}
-	
+
 	/**
 	 * Returns list of server placed in Kie Navigator.
+	 * 
 	 * @return List of Kie Navigator servers.
 	 */
 	public List<ServerItem> getServers() {
@@ -67,10 +69,12 @@ public class KieNavigatorView extends WorkbenchView {
 		}
 		return serversList;
 	}
-	
+
 	/**
 	 * Returns server item with specified name.
-	 * @param name Server name.
+	 * 
+	 * @param name
+	 *            Server name.
 	 * @return Server item with specified name.
 	 */
 	public ServerItem getServer(String name) {
@@ -84,28 +88,28 @@ public class KieNavigatorView extends WorkbenchView {
 		}
 		throw new IllegalArgumentException("No such server: " + name);
 	}
-	
+
 	public ServerItem getServer(int number) {
 		checkAndOpen();
 		if (!isEmpty()) {
-			List <TreeItem> items = new DefaultTree().getItems();
-			if (number <= items.size() ) {
+			List<TreeItem> items = new DefaultTree().getItems();
+			if (number <= items.size()) {
 				return new ServerItem(items.get(number));
 			}
 		}
 		throw new IllegalArgumentException("No such server: " + number);
 	}
-	
+
 	public OrgUnitItem getOrgUnit(int serverNumber, String orgUnitName) {
 		return getServer(serverNumber).getOrgUnit(orgUnitName);
 	}
-	
+
 	public RepositoryItem getRepository(int serverNumber, String orgUnitName, String repoName) {
 		RepositoryItem ri = getOrgUnit(serverNumber, orgUnitName).getRepository(repoName);
 		ri.importRepository();
 		return getOrgUnit(serverNumber, orgUnitName).getRepository(repoName);
 	}
-	
+
 	public ProjectItem getProject(int serverNumber, String orgUnitName, String repoName, String projectName) {
 		return getRepository(serverNumber, orgUnitName, repoName).getProject(projectName);
 	}

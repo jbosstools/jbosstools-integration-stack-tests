@@ -21,13 +21,12 @@ import org.jboss.tools.jbpm.ui.bot.test.JBPMProjectTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
-@SuiteClasses({ 
-	JBPMProjectTest.class, 
-	GPDTest.class, 
+@SuiteClasses({
+	JBPMProjectTest.class,
+	GPDTest.class,
 	GPDPaletteTest.class,
-	JBPMDeployTest.class, 
-	BPMNConvertTest.class 
-})
+	JBPMDeployTest.class,
+	BPMNConvertTest.class })
 @RunWith(RedDeerSuite.class)
 public class AllTests extends TestSuite {
 

@@ -60,7 +60,7 @@ public class ConnectionProfileHelper {
 				e.printStackTrace();
 			}
 		}
-		
+
 		cpProps.put(TeiidConnectionProfileWizard.KEY_CONNECT_AFTER_COMPLETING, "false");
 		if ("LDAP".equals(vendor)) {
 			new TeiidConnectionProfileWizard().createLdapConnectionProfile(cpName, cpProps);

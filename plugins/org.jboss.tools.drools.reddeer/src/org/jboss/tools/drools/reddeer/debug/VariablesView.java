@@ -7,12 +7,12 @@ import org.jboss.tools.drools.reddeer.util.ItemLookup;
 
 public class VariablesView extends WorkbenchView {
 
-    public VariablesView() {
-        super("Debug", "Variables");
-    }
+	public VariablesView() {
+		super("Debug", "Variables");
+	}
 
-    public void selectItem(Matcher<String>... matchers) {
-        open();
-        ItemLookup.getItemInTree(new DefaultTree(), matchers).select();
-    }
+	public void selectItem(Matcher<String>... matchers) {
+		open();
+		ItemLookup.getItemInTree(new DefaultTree(), matchers).select();
+	}
 }

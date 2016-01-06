@@ -7,8 +7,8 @@ import org.jboss.reddeer.eclipse.ui.perspectives.AbstractPerspective;
  */
 public class DroolsPerspective extends AbstractPerspective {
 
-    public DroolsPerspective() {
-        super("Drools");
-    }
+	public DroolsPerspective() {
+		super("Drools");
+	}
 
 }

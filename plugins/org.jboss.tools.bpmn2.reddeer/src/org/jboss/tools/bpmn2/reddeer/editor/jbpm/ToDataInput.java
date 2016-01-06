@@ -12,11 +12,11 @@ import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.DataTypeDialog;
  * Represents the target side of parameter mapping.
  */
 public class ToDataInput implements MappingSide {
-	
+
 	private String name;
-	
+
 	private String dataType;
-	
+
 	/**
 	 * @deprecated
 	 * @param name
@@ -24,32 +24,32 @@ public class ToDataInput implements MappingSide {
 	public ToDataInput(String name) {
 		this(name, "");
 	}
-	
+
 	/**
 	 * 
 	 * @param name
 	 * @param dataType
 	 */
-    public ToDataInput(String name, String dataType) {
+	public ToDataInput(String name, String dataType) {
 		this.name = name;
 		this.dataType = dataType;
 	}
-	
-    @Override
-    public void setUp() {
-    	new LabeledText("Name").setText(name);
-		
+
+	@Override
+	public void setUp() {
+		new LabeledText("Name").setText(name);
+
 		Combo dataTypeCombo = new LabeledCombo(new DefaultGroup("To"), "Data Type");
 		if (!dataTypeCombo.getItems().contains(dataType)) {
 			new PushButton(0).click();
 			new DataTypeDialog().add(dataType);
 		}
 		dataTypeCombo.setSelection(dataType);
-    }
+	}
 
-    @Override
-    public String getName() {
+	@Override
+	public String getName() {
 		return name;
 	}
-    
+
 }

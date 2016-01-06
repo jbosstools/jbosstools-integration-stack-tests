@@ -13,10 +13,7 @@ import junit.framework.TestSuite;
  * 
  * @author tsedmik
  */
-@SuiteClasses({
-		ProjectLocalRunTest.class,
-		SmokeTest.class
-})
+@SuiteClasses({ ProjectLocalRunTest.class, SmokeTest.class })
 @RunWith(RedDeerSuite.class)
 public class SmokeTests extends TestSuite {
 

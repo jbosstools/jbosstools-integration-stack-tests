@@ -18,7 +18,7 @@ public class StyledTextHasText extends AbstractWaitCondition {
 
 	@Override
 	public String description() {
-		return "StyledText has text"; 
+		return "StyledText has text";
 	}
 
 }

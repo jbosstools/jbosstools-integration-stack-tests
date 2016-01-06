@@ -18,5 +18,5 @@ public class CalledActivityDialog {
 		new DefaultText(0).setText(callableActivityName);
 		new PushButton("OK").click();
 	}
-	
+
 }

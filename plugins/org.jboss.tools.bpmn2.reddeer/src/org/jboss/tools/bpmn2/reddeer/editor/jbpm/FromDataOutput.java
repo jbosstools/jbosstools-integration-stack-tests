@@ -14,17 +14,17 @@ import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.DataTypeDialog;
 public class FromDataOutput implements MappingSide {
 
 	private String name;
-	
+
 	private String dataType;
 
 	/**
-	 * @deprecated 
+	 * @deprecated
 	 * @param name
 	 */
 	public FromDataOutput(String name) {
 		this(name, "");
 	}
-	
+
 	/**
 	 * 
 	 * @param name
@@ -34,11 +34,11 @@ public class FromDataOutput implements MappingSide {
 		this.name = name;
 		this.dataType = dataType;
 	}
-	
+
 	@Override
 	public void setUp() {
 		new LabeledText("Name").setText(name);
-		
+
 		Combo dataTypeCombo = new LabeledCombo(new DefaultGroup("From"), "Data Type");
 		if (!dataTypeCombo.getItems().contains(dataType)) {
 			new PushButton(0).click();
@@ -51,5 +51,5 @@ public class FromDataOutput implements MappingSide {
 	public String getName() {
 		return name;
 	}
-	
+
 }

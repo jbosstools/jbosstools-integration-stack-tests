@@ -49,8 +49,7 @@ public class DefaultOutlineView extends OutlineView {
 	public TreeItem findItem(String label, int index) {
 		List<TreeItem> foundItems = findItems(new TreeItemWithText(label));
 		if (foundItems.isEmpty()) {
-			throw new RuntimeException("Cannot find TreeItem with text '" + label + "' at index '"
-					+ index + "'");
+			throw new RuntimeException("Cannot find TreeItem with text '" + label + "' at index '" + index + "'");
 		}
 		return foundItems.get(index);
 	}

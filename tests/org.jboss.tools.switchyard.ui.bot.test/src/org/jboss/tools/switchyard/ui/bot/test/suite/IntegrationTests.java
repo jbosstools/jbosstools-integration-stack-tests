@@ -22,8 +22,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	SwitchYardIntegrationBPELTest.class,
 	SwitchYardIntegrationBPMN2Test.class,
 	SwitchYardIntegrationCamelTest.class,
-	SwitchYardIntegrationDroolsTest.class,
-})
+	SwitchYardIntegrationDroolsTest.class, })
 @RunWith(RedDeerSuite.class)
 public class IntegrationTests extends TestSuite {
 

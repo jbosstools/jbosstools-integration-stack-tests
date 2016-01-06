@@ -33,5 +33,4 @@ public class RemoteServerTest {
 		assertEquals(requirement.getConfig().getName(), server.getLabel().getName());
 	}
 
-
 }

@@ -33,8 +33,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	WARTest.class,
 	ConsumeRestWs.class,
 	ConsumeSoapWs.class,
-	E2eRecursiveXmlTextTest.class,
-})
+	E2eRecursiveXmlTextTest.class, })
 @RunWith(RedDeerSuite.class)
 public class AllTests {
 }

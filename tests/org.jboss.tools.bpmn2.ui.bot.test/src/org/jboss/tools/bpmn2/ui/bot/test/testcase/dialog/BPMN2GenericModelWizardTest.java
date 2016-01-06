@@ -15,46 +15,47 @@ import org.junit.Test;
 /**
  * Verify functionality of the generic bpmn2 model wizard.
  * 
- * ISSUES:
- * 	1) Finish button will not be enabled unless the project is chosen using the browse 
- *     button. Writing the text into the field does not work!
- *  2) When a file name is entered and the user attempts to change the package then the
- *     name will be reset!
+ * ISSUES: 1) Finish button will not be enabled unless the project is chosen using the browse button. Writing the text
+ * into the field does not work! 2) When a file name is entered and the user attempts to change the package then the
+ * name will be reset!
  */
 @ProcessRuntime()
 public class BPMN2GenericModelWizardTest {
 
 	public static final String NAMESPACE = "http://jboss.org/bpmn2";
-	public static final String PROJECT   = "TestProject"; 
-	
+	public static final String PROJECT = "TestProject";
+
 	@BeforeClass
 	public static void createProject() {
 		new JBPMProjectWizard().execute(PROJECT);
 	}
-	
+
 	@AfterClass
 	public static void deleteProject() throws Exception {
 		new PackageExplorer().getProject(PROJECT).delete(true);
 	}
-	
+
 	@Test
 	public void newProcessModelTest() throws Exception {
-		new BPMN2GenericModelWizard().execute(new String[] {PROJECT}, "ProcessModel.bpmn2", NAMESPACE, ModelType.PROCESS);
+		new BPMN2GenericModelWizard().execute(new String[] { PROJECT }, "ProcessModel.bpmn2", NAMESPACE,
+				ModelType.PROCESS);
 		Assert.assertTrue(new ProjectExplorer().getProject(PROJECT).containsItem("ProcessModel.bpmn2"));
 	}
-	
+
 	@Test
 	public void newChoreographyModelTest() throws Exception {
-		new BPMN2GenericModelWizard().execute(new String[] {PROJECT}, "ChoreographyModel.bpmn2", NAMESPACE, ModelType.CHOREOGRAPHY);
+		new BPMN2GenericModelWizard().execute(new String[] { PROJECT }, "ChoreographyModel.bpmn2", NAMESPACE,
+				ModelType.CHOREOGRAPHY);
 		Assert.assertTrue(new ProjectExplorer().getProject(PROJECT).containsItem("ChoreographyModel.bpmn2"));
 	}
-	
+
 	@Test
 	public void newCollaborationModelTest() throws Exception {
-		new BPMN2GenericModelWizard().execute(new String[] {PROJECT}, "CollaborationModel.bpmn2", NAMESPACE, ModelType.COLLABORATION);
+		new BPMN2GenericModelWizard().execute(new String[] { PROJECT }, "CollaborationModel.bpmn2", NAMESPACE,
+				ModelType.COLLABORATION);
 		Assert.assertTrue(new ProjectExplorer().getProject(PROJECT).containsItem("CollaborationModel.bpmn2"));
 	}
-	
+
 	@Test
 	public void newModelFormValidationTest() throws Exception {
 		BPMN2GenericModelWizard wizard = new BPMN2GenericModelWizard();
@@ -66,5 +67,5 @@ public class BPMN2GenericModelWizardTest {
 			wizard.cancel();
 		}
 	}
-	
+
 }

@@ -27,7 +27,7 @@ import org.jboss.tools.teiid.reddeer.view.GuidesView;
 public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 
 	public static final String TITLE = "Import Database via JDBC";
-	
+
 	private String connectionProfile;
 	private String projectName;
 	private String modelName;
@@ -38,7 +38,7 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 		super("Teiid Designer", "JDBC Database >> Source Model");
 		itemList = new ArrayList<String>();
 	}
-	
+
 	public void openUsingGuideView() {
 		new GuidesView().chooseAction("Model JDBC Source", "Create source model for JDBC data source");
 		setFocus();
@@ -50,21 +50,23 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 		fill();
 		finish();
 	}
-	
+
 	/**
 	 * Create source model for JDBC data source
-	 * @param viaGuides true if should be executed via guides
+	 * 
+	 * @param viaGuides
+	 *            true if should be executed via guides
 	 */
 	public void execute(boolean viaGuide) {
 		if (viaGuide) {
 			openUsingGuideView();
 		} else {
-			open();	
+			open();
 		}
 		fill();
 		finish();
 	}
-	
+
 	public void fill() {
 		setFocus();
 		fillFirstPage();
@@ -79,7 +81,7 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 		setFocus();
 		fillFourthPage();
 	}
-	
+
 	public void setFocus() {
 		new DefaultShell(TITLE);
 	}
@@ -105,7 +107,7 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 
 	private void fillThirdPage() {
 
-		if ((itemList != null) && (! itemList.isEmpty())) {
+		if ((itemList != null) && (!itemList.isEmpty())) {
 			new PushButton("Deselect All").click();
 		}
 		for (String item : itemList) {

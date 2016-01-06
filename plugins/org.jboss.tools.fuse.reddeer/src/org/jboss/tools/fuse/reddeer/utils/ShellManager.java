@@ -36,8 +36,7 @@ public class ShellManager {
 	 *            Port number
 	 * 
 	 * @throws JSchException
-	 *             In case something is wrong (username+password, connection
-	 *             establishing, ...)
+	 *             In case something is wrong (username+password, connection establishing, ...)
 	 */
 	public ShellManager(String user, String password, String host, int port) throws JSchException {
 
@@ -51,8 +50,8 @@ public class ShellManager {
 	}
 
 	/**
-	 * Executes given command. Execution is synchronous - Method waits until
-	 * reaction to given command is complete (InputStream is closed).
+	 * Executes given command. Execution is synchronous - Method waits until reaction to given command is complete
+	 * (InputStream is closed).
 	 * 
 	 * @param command
 	 *            Command that is sent to the host for execution
@@ -61,8 +60,7 @@ public class ShellManager {
 	 * @throws JSchException
 	 *             In case something is wrong with command execution
 	 * @throws IOException
-	 *             In case something is wrong with reading reaction to given
-	 *             command
+	 *             In case something is wrong with reading reaction to given command
 	 */
 	public String execute(String command) throws JSchException, IOException {
 
@@ -103,8 +101,7 @@ public class ShellManager {
 	}
 
 	/**
-	 * Executes given command. Execution is asynchronous - Command execution is
-	 * performed in a new thread.
+	 * Executes given command. Execution is asynchronous - Command execution is performed in a new thread.
 	 * 
 	 * @param command
 	 *            Command that is sent to the host for execution
@@ -145,8 +142,7 @@ public class ShellManager {
 	}
 
 	/**
-	 * Closes session. Should be called after services of ServiceManager is no
-	 * longer needed.
+	 * Closes session. Should be called after services of ServiceManager is no longer needed.
 	 */
 	public void close() {
 		log.debug("Closing connection...");

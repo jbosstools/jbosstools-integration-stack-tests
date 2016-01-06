@@ -14,18 +14,19 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
-@TeiidServer(state = ServerReqState.RUNNING, connectionType=ServerConnType.REMOTE)
+@TeiidServer(state = ServerReqState.RUNNING, connectionType = ServerConnType.REMOTE)
 public class JdgImportTest {
 
 	private static final String PROJECT_NAME = "JdgImportProject";
 	private static TeiidBot teiidBot = new TeiidBot();
-	
+
 	@BeforeClass
 	public static void createProject() {
 		teiidBot.createModelProject(PROJECT_NAME);
 		new ModelExplorer().getModelProject(PROJECT_NAME).open();
 
 	}
+
 	@Test
 	public void jdgImport() {
 		String modelName = "JdgModel";
@@ -33,7 +34,7 @@ public class JdgImportTest {
 		Properties iProps = new Properties();
 		iProps.setProperty(TeiidConnectionImportWizard.DATA_SOURCE_NAME, "infinispan-remote-cache");
 		iProps.setProperty(TeiidConnectionImportWizard.TRANSLATOR, "infinispan-cache-dsl");
-		
+
 		new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME, modelName, iProps, null);
 
 		teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", "SmallA");

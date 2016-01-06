@@ -37,7 +37,7 @@ public class WsdlImportWizard extends TeiidImportWizard {
 		responseElements = new ArrayList<String>();
 		operations = new ArrayList<String>();
 	}
-	
+
 	public String getViewModelName() {
 		return viewModelName;
 	}
@@ -45,7 +45,7 @@ public class WsdlImportWizard extends TeiidImportWizard {
 	public void setViewModelName(String viewModelName) {
 		this.viewModelName = viewModelName;
 	}
-	
+
 	public String getSourceModelName() {
 		return sourceModelName;
 	}
@@ -65,9 +65,9 @@ public class WsdlImportWizard extends TeiidImportWizard {
 	public void addResponseElement(String path) {
 		responseElements.add(path);
 	}
-	
+
 	public void addOperation(String name) {
-		operations.add(name);	
+		operations.add(name);
 	}
 
 	@Override
@@ -85,38 +85,40 @@ public class WsdlImportWizard extends TeiidImportWizard {
 	@Override
 	public void execute() {
 		open();
-		new DefaultCombo(0).setSelection(profile);//TODO end point - binding, service mode
-		for (String operationName : operations){
-			selectOperation(operationName);			
+		new DefaultCombo(0).setSelection(profile);// TODO end point - binding, service mode
+		for (String operationName : operations) {
+			selectOperation(operationName);
 		}
-		
+
 		new PushButton("Next >").click();
-				
-		new LabeledText(new DefaultGroup("Source Model Definition"),"Name").setText(sourceModelName);
-		
-		
-		new LabeledText(new DefaultGroup("View Model Definition"),"Name").setText(viewModelName);
-		
+
+		new LabeledText(new DefaultGroup("Source Model Definition"), "Name").setText(sourceModelName);
+
+		new LabeledText(new DefaultGroup("View Model Definition"), "Name").setText(viewModelName);
+
 		new PushButton("Next >").click();
 		new PushButton("Next >").click();
-		
-		for (String operation : operations){
-			new DefaultCombo(new DefaultGroup("Operations"),0).setSelection(operation);
-			
+
+		for (String operation : operations) {
+			new DefaultCombo(new DefaultGroup("Operations"), 0).setSelection(operation);
+
 			for (String path : requestElements) {
-				if (path.split("/")[0].equals(operation)) addElement("Request", path);
+				if (path.split("/")[0].equals(operation))
+					addElement("Request", path);
 			}
 			// Add response elements
 			for (String path : responseElements) {
-				if (path.split("/")[0].equals(operation + "Response")) addElement("Response", path);
+				if (path.split("/")[0].equals(operation + "Response"))
+					addElement("Response", path);
 			}
-			
+
 		}
-		
-		//TODO source model definition, view model def, procedure gen. options
-		//TODO select operation; for request procedure: check generated sql statement, CRUD with element info; body/header
-		//TODO response: body, header, root path; operations with columns? (ordinality)
-		//TODO wrapper procedure: generated procedure name
+
+		// TODO source model definition, view model def, procedure gen. options
+		// TODO select operation; for request procedure: check generated sql statement, CRUD with element info;
+		// body/header
+		// TODO response: body, header, root path; operations with columns? (ordinality)
+		// TODO wrapper procedure: generated procedure name
 		// Add request elements
 
 		finish();
@@ -130,13 +132,14 @@ public class WsdlImportWizard extends TeiidImportWizard {
 		} catch (Exception e) {
 		}
 		new PushButton("Add").click();
-		/*String lastItem = getLastItem(path);
-		new WaitUntil(new IsItemAdded(lastItem, tab), TimePeriod.NORMAL);*/
+		/*
+		 * String lastItem = getLastItem(path); new WaitUntil(new IsItemAdded(lastItem, tab), TimePeriod.NORMAL);
+		 */
 	}
-	
-	private void selectOperation(String operation){
-		new DefaultTable(new DefaultGroup("Select the desired WSDL Operations"),0).getItem(operation).setChecked(true);	
-		
+
+	private void selectOperation(String operation) {
+		new DefaultTable(new DefaultGroup("Select the desired WSDL Operations"), 0).getItem(operation).setChecked(true);
+
 	}
 
 	// The are some problems on Win7_32. We need to wait due to possible WSDL

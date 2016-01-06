@@ -18,9 +18,9 @@ public class EscalationStartEvent extends StartEvent {
 		super(name, ElementType.ESCALATION_START_EVENT);
 	}
 
-	
 	public void setEscalation(Escalation escalation, String variableForMapping) {
-		propertiesHandler.setUp(new EventDefinitionSetUp(new EscalationEventDefinition(escalation, variableForMapping, "Target")));
+		propertiesHandler.setUp(
+				new EventDefinitionSetUp(new EscalationEventDefinition(escalation, variableForMapping, "Target")));
 		refresh();
 	}
 }

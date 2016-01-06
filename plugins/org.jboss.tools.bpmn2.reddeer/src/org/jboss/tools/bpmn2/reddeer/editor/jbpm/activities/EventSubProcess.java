@@ -6,7 +6,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 public class EventSubProcess extends ElementContainer {
 
 	public EventSubProcess(String name) {
-		super(name, ElementType. EVENT_SUB_PROCESS);
+		super(name, ElementType.EVENT_SUB_PROCESS);
 	}
 
 }

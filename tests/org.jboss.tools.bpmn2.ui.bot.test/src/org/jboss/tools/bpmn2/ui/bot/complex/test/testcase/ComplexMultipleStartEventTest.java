@@ -21,41 +21,39 @@ import org.jboss.tools.bpmn2.ui.bot.test.jbpm.TriggeredNodesListener;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
 
-@JBPM6ComplexTestDefinition(projectName="JBPM6ComplexTest",
-							importFolder="resources/bpmn2/model/base",
-							openFile="BaseBPMN2-MultipleStartEvent.bpmn2",
-							saveAs="BPMN2-MultipleStartEvent.bpmn2",
-							knownIssues={"1184422"})
+@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-MultipleStartEvent.bpmn2", saveAs = "BPMN2-MultipleStartEvent.bpmn2", knownIssues = {
+	"1184422" })
 public class ComplexMultipleStartEventTest extends JBPM6ComplexTest {
 
-	@TestPhase(phase=Phase.MODEL)
-	public void model(){
-		
+	@TestPhase(phase = Phase.MODEL)
+	public void model() {
+
 		ExclusiveGateway gateway = new ExclusiveGateway("Split");
-		
+
 		Process process = new Process("BPMN2-MultipleStartEvent");
-		
-		SignalStartEvent start = (SignalStartEvent) process.add("StartProcess", ElementType.SIGNAL_START_EVENT);;
+
+		SignalStartEvent start = (SignalStartEvent) process.add("StartProcess", ElementType.SIGNAL_START_EVENT);
+		;
 		start.setSignal(new Signal("BlockingSignal"), VARIABLE1);
 		start.connectTo(gateway);
 
-		TimerStartEvent start2 = (TimerStartEvent) process.add("StartTimer", ElementType.TIMER_START_EVENT, start, Position.SOUTH_WEST);
+		TimerStartEvent start2 = (TimerStartEvent) process.add("StartTimer", ElementType.TIMER_START_EVENT, start,
+				Position.SOUTH_WEST);
 		start2.setTimer("5000ms");
 		start2.connectTo(gateway);
-		
+
 	}
-	
-	@TestPhase(phase=Phase.RUN)
+
+	@TestPhase(phase = Phase.RUN)
 	public void run(KieSession kSession) {
 		PersistenceWorkItemHandler handler = new PersistenceWorkItemHandler();
 		kSession.getWorkItemManager().registerWorkItemHandler("Human Task", handler);
-		
+
 		TriggeredNodesListener triggered = new TriggeredNodesListener(
-			Arrays.asList("StartProcess", "Split", "User Task", "EndProcess"),
-			Arrays.asList("StartTimer"));
+				Arrays.asList("StartProcess", "Split", "User Task", "EndProcess"), Arrays.asList("StartTimer"));
 		triggered.setExpectedFinalProcessState(ProcessInstance.STATE_COMPLETED);
 		kSession.addEventListener(triggered);
-		
+
 		kSession.signalEvent("BlockingSignal", "any data");
 		ArrayList<ProcessInstance> list = new ArrayList<ProcessInstance>(kSession.getProcessInstances());
 		assertEquals(1, list.size());

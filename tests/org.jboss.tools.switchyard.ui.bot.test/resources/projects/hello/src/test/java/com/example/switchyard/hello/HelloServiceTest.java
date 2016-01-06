@@ -11,7 +11,9 @@ import org.switchyard.test.SwitchYardRunner;
 import org.switchyard.test.SwitchYardTestCaseConfig;
 
 @RunWith(SwitchYardRunner.class)
-@SwitchYardTestCaseConfig(config = SwitchYardTestCaseConfig.SWITCHYARD_XML, mixins = { CDIMixIn.class, HTTPMixIn.class })
+@SwitchYardTestCaseConfig(config = SwitchYardTestCaseConfig.SWITCHYARD_XML, mixins = {
+	CDIMixIn.class,
+	HTTPMixIn.class })
 public class HelloServiceTest {
 
 	private HTTPMixIn httpMixIn;

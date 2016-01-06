@@ -22,7 +22,8 @@ public class FuseToolingEditorPreferencePage extends PreferencePage {
 	/**
 	 * Sets checkbox "If enabled the ID values will be used for labels if existing"
 	 * 
-	 * @param value true - check the checkbox, false - uncheck the checkbox
+	 * @param value
+	 *            true - check the checkbox, false - uncheck the checkbox
 	 */
 	public void setShowIDinEditor(boolean value) {
 
@@ -34,7 +35,7 @@ public class FuseToolingEditorPreferencePage extends PreferencePage {
 		dialog.open();
 		dialog.select(this);
 	}
-	
+
 	public void ok() {
 		String title = new DefaultShell().getText();
 		new OkButton().click();

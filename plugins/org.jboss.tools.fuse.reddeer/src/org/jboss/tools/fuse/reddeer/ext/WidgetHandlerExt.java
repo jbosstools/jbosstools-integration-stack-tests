@@ -34,7 +34,7 @@ import org.jboss.reddeer.core.util.ObjectUtil;
 import org.jboss.reddeer.core.util.ResultRunnable;
 
 /**
- * Contains methods for handling UI operations on {@link Widget}. 
+ * Contains methods for handling UI operations on {@link Widget}.
  * 
  * @author Jiri Peterka
  * @author Rastislav Wagner
@@ -63,7 +63,8 @@ public class WidgetHandlerExt {
 	/**
 	 * Finds out whether specified {@link Widget} is enabled or not.
 	 * 
-	 * @param widget widget to handle
+	 * @param widget
+	 *            widget to handle
 	 * @return true if widget is enabled, false otherwise
 	 */
 	public boolean isEnabled(Widget widget) {
@@ -82,11 +83,12 @@ public class WidgetHandlerExt {
 		}
 		return ret;
 	}
-	
+
 	/**
 	 * Finds out whether specified {@link Widget} is disposed or not.
 	 * 
-	 * @param widget widget to handle
+	 * @param widget
+	 *            widget to handle
 	 * @return true if widget is disposed, false otherwise
 	 */
 	public boolean isDisposed(final Widget widget) {
@@ -102,7 +104,8 @@ public class WidgetHandlerExt {
 	/**
 	 * Finds out whether specified {@link Widget} is visible or not.
 	 * 
-	 * @param widget widget to handle
+	 * @param widget
+	 *            widget to handle
 	 * @return true if widget is visible, false otherwise
 	 */
 	public boolean isVisible(Widget widget) {
@@ -111,8 +114,7 @@ public class WidgetHandlerExt {
 		try {
 			o = ObjectUtil.invokeMethod(widget, "isVisible");
 		} catch (RuntimeException e) {
-			throw new CoreLayerException(
-					"Runtime error during checking widget visibility", e);
+			throw new CoreLayerException("Runtime error during checking widget visibility", e);
 		}
 		if (o == null) {
 			return ret;
@@ -123,12 +125,13 @@ public class WidgetHandlerExt {
 		return ret;
 	}
 
-
 	/**
 	 * Gets style of specified widget.
 	 *
-	 * @param <T> the generic type
-	 * @param w widget to handle
+	 * @param <T>
+	 *            the generic type
+	 * @param w
+	 *            widget to handle
 	 * @return style of specified widget
 	 */
 	public <T extends Widget> int getStyle(final T w) {
@@ -149,31 +152,34 @@ public class WidgetHandlerExt {
 	/**
 	 * Sets specified text to specified widget.
 	 *
-	 * @param <T> the generic type
-	 * @param widget widget to handle
-	 * @param text text to set
+	 * @param <T>
+	 *            the generic type
+	 * @param widget
+	 *            widget to handle
+	 * @param text
+	 *            text to set
 	 */
 	public <T extends Widget> void setText(final T widget, final String text) {
 		try {
-			ObjectUtil.invokeMethod(widget, "setText",
-					new Class[] { String.class }, new Object[] { text });
+			ObjectUtil.invokeMethod(widget, "setText", new Class[] { String.class }, new Object[] { text });
 		} catch (RuntimeException e) {
-			throw new CoreLayerException(
-					"Runtime error during setting widget's text", e);
+			throw new CoreLayerException("Runtime error during setting widget's text", e);
 		}
 	}
 
 	/**
 	 * Gets text of specified widget.
 	 *
-	 * @param <T> the generic type
-	 * @param widget widget to handle
+	 * @param <T>
+	 *            the generic type
+	 * @param widget
+	 *            widget to handle
 	 * @return text of specified widget
 	 */
 	public <T extends Widget> String getText(final T widget) {
 		Object o = ObjectUtil.invokeMethod(widget, "getText");
 
-		if (o == null){
+		if (o == null) {
 			return null;
 		}
 
@@ -181,16 +187,17 @@ public class WidgetHandlerExt {
 			return (String) o;
 		}
 
-		throw new CoreLayerException(
-				"Return value of method getText() on class " + o.getClass()
-						+ " should be String, but was " + o.getClass());
+		throw new CoreLayerException("Return value of method getText() on class " + o.getClass()
+				+ " should be String, but was " + o.getClass());
 	}
 
 	/**
 	 * Gets label of specified widget.
 	 *
-	 * @param <T> the generic type
-	 * @param w widget to handle
+	 * @param <T>
+	 *            the generic type
+	 * @param w
+	 *            widget to handle
 	 * @return label of specified widget
 	 */
 	public <T extends Widget> String getLabel(final T w) {
@@ -199,8 +206,7 @@ public class WidgetHandlerExt {
 			@Override
 			public String run() {
 				Control parent = ((Control) w).getParent();
-				java.util.List<Widget> children = WidgetResolver.getInstance()
-						.getChildren(parent);
+				java.util.List<Widget> children = WidgetResolver.getInstance().getChildren(parent);
 				// check whether a label is defined using form data layout
 				for (Widget child : children) {
 					if (child instanceof Label || child instanceof CLabel) {
@@ -250,8 +256,10 @@ public class WidgetHandlerExt {
 	/**
 	 * Gets tool tip text of specified widget.
 	 *
-	 * @param <T> the generic type
-	 * @param widget widget to handle
+	 * @param <T>
+	 *            the generic type
+	 * @param widget
+	 *            widget to handle
 	 * @return tool tip text of specified widget
 	 */
 	public <T extends Widget> String getToolTipText(final T widget) {
@@ -259,8 +267,7 @@ public class WidgetHandlerExt {
 		try {
 			o = ObjectUtil.invokeMethod(widget, "getToolTipText");
 		} catch (RuntimeException e) {
-			throw new CoreLayerException(
-					"Runtime error during retrieving widget's text", e);
+			throw new CoreLayerException("Runtime error during retrieving widget's text", e);
 		}
 		if (o == null) {
 			return null;
@@ -270,18 +277,18 @@ public class WidgetHandlerExt {
 			return (String) o;
 		}
 
-		throw new CoreLayerException(
-				"Return value of method getText() on class " + o.getClass()
-						+ " should be String, but was " + o.getClass());
+		throw new CoreLayerException("Return value of method getText() on class " + o.getClass()
+				+ " should be String, but was " + o.getClass());
 	}
 
 	/**
-	 * Sets focus to specified widget. The method is called from {@link WidgetLookup}
-	 * so it need to be common for all widgets and cannot be decomposed to
-	 * separate handlers.
+	 * Sets focus to specified widget. The method is called from {@link WidgetLookup} so it need to be common for all
+	 * widgets and cannot be decomposed to separate handlers.
 	 *
-	 * @param <T> the generic type
-	 * @param w widget to handle
+	 * @param <T>
+	 *            the generic type
+	 * @param w
+	 *            widget to handle
 	 */
 	public <T extends Widget> void setFocus(final T w) {
 
@@ -298,7 +305,7 @@ public class WidgetHandlerExt {
 		} else if (w instanceof Shell) {
 			ShellHandler.getInstance().setFocus((Shell) w);
 		} else if (w instanceof ToolItem) {
-			//ToolItem can't have focus -> set focus to parent ToolBar
+			// ToolItem can't have focus -> set focus to parent ToolBar
 			setFocus(ToolItemHandler.getInstance().getParent((ToolItem) w));
 		} else {
 			Display.syncExec(new Runnable() {
@@ -317,18 +324,20 @@ public class WidgetHandlerExt {
 	/**
 	 * Sends a click (SWT.Selection) notification to specified widget.
 	 * 
-	 * @param widget widget to handle
+	 * @param widget
+	 *            widget to handle
 	 */
 	public void sendClickNotifications(Widget widget) {
 		notify(SWT.Selection, widget);
 	}
 
 	/**
-	 * Notifies specified widget about the event of specified event type. 
-	 * See {@link Event}.
+	 * Notifies specified widget about the event of specified event type. See {@link Event}.
 	 * 
-	 * @param eventType type of the event
-	 * @param widget widget to handle
+	 * @param eventType
+	 *            type of the event
+	 * @param widget
+	 *            widget to handle
 	 */
 	public void notify(int eventType, Widget widget) {
 		Event event = createEvent(widget);
@@ -336,48 +345,58 @@ public class WidgetHandlerExt {
 	}
 
 	/**
-	 * Notifies specified widget about the event of specified event type with 
-	 * specified details and item. See {@link Event}.
+	 * Notifies specified widget about the event of specified event type with specified details and item. See
+	 * {@link Event}.
 	 * 
-	 * @param eventType type of the event
-	 * @param detail details of the event
-	 * @param widget widget to handle
-	 * @param widgetItem item of the event
+	 * @param eventType
+	 *            type of the event
+	 * @param detail
+	 *            details of the event
+	 * @param widget
+	 *            widget to handle
+	 * @param widgetItem
+	 *            item of the event
 	 */
-	public void notifyItem(int eventType, int detail, Widget widget,
-			Widget widgetItem) {
+	public void notifyItem(int eventType, int detail, Widget widget, Widget widgetItem) {
 		Event event = createEventItem(eventType, detail, widget, widgetItem);
 		notify(eventType, event, widget);
 	}
 
 	/**
-	 * Notifies specified widget about the mouse event of specified event type,
-	 * specified position, button and item. See {@link Event}.
+	 * Notifies specified widget about the mouse event of specified event type, specified position, button and item. See
+	 * {@link Event}.
 	 * 
-	 * @param eventType type of the event
-	 * @param detail details of the event
-	 * @param widget widget to handle
-	 * @param widgetItem item of the event
-	 * @param x x of the event
-	 * @param y y of the event
-	 * @param button button of the event
+	 * @param eventType
+	 *            type of the event
+	 * @param detail
+	 *            details of the event
+	 * @param widget
+	 *            widget to handle
+	 * @param widgetItem
+	 *            item of the event
+	 * @param x
+	 *            x of the event
+	 * @param y
+	 *            y of the event
+	 * @param button
+	 *            button of the event
 	 */
-	public void notifyItemMouse(int eventType, int detail, Widget widget,
-			Widget widgetItem, int x, int y, int button) {
-		Event event = createMouseItemEvent(eventType, detail, widget,
-				widgetItem, x, y, button);
+	public void notifyItemMouse(int eventType, int detail, Widget widget, Widget widgetItem, int x, int y, int button) {
+		Event event = createMouseItemEvent(eventType, detail, widget, widgetItem, x, y, button);
 		notify(eventType, event, widget);
 	}
 
 	/**
 	 * Notifies specified widget about specified event of specified type. See {@link Event}.
 	 * 
-	 * @param eventType type of specified event
-	 * @param createEvent event
-	 * @param widget widget to handle
+	 * @param eventType
+	 *            type of specified event
+	 * @param createEvent
+	 *            event
+	 * @param widget
+	 *            widget to handle
 	 */
-	public void notify(final int eventType, final Event createEvent,
-			final Widget widget) {
+	public void notify(final int eventType, final Event createEvent, final Widget widget) {
 		createEvent.type = eventType;
 
 		Display.asyncExec(new Runnable() {
@@ -406,8 +425,7 @@ public class WidgetHandlerExt {
 		return event;
 	}
 
-	private Event createEventItem(int eventType, int detail, Widget widget,
-			Widget widgetItem) {
+	private Event createEventItem(int eventType, int detail, Widget widget, Widget widgetItem) {
 		Event event = new Event();
 		event.display = Display.getDisplay();
 		event.time = (int) System.currentTimeMillis();
@@ -418,8 +436,8 @@ public class WidgetHandlerExt {
 		return event;
 	}
 
-	private Event createMouseItemEvent(int eventType, int detail,
-			Widget widget, Widget widgetItem, int x, int y, int button) {
+	private Event createMouseItemEvent(int eventType, int detail, Widget widget, Widget widgetItem, int x, int y,
+			int button) {
 		Event event = new Event();
 		event.display = Display.getDisplay();
 		event.time = (int) System.currentTimeMillis();
@@ -432,13 +450,14 @@ public class WidgetHandlerExt {
 		event.y = y;
 		return event;
 	}
-	
+
 	/**
-	 * Gets path to widget within widget tree including widget getting path for
-	 * as last element of returned list.
+	 * Gets path to widget within widget tree including widget getting path for as last element of returned list.
 	 *
-	 * @param widget widget to get path for
-	 * @param classFilter optional array of classes included in returned list
+	 * @param widget
+	 *            widget to get path for
+	 * @param classFilter
+	 *            optional array of classes included in returned list
 	 * @return ordered list of widgets
 	 */
 	public List<Widget> getPathToWidget(final Widget widget, final Class<?>... classFilter) {
@@ -447,12 +466,12 @@ public class WidgetHandlerExt {
 			@Override
 			public List<Widget> run() {
 				LinkedList<Widget> result = new LinkedList<Widget>();
-				if (WidgetHandlerExt.isClassOf(widget.getClass(), classFilter)){
+				if (WidgetHandlerExt.isClassOf(widget.getClass(), classFilter)) {
 					result.add(widget);
 				}
 				Control control = firstParent;
-				while (control != null){
-					if (WidgetHandlerExt.isClassOf(control.getClass(), classFilter)){
+				while (control != null) {
+					if (WidgetHandlerExt.isClassOf(control.getClass(), classFilter)) {
 						result.addFirst(control);
 					}
 					control = control.getParent();
@@ -462,17 +481,18 @@ public class WidgetHandlerExt {
 		});
 		return parents;
 	}
-	
+
 	/**
 	 * Gets parent of specified widget.
 	 * 
-	 * @param widget widget to find parent
+	 * @param widget
+	 *            widget to find parent
 	 * @return parent widget of specified widget
 	 */
 	public Control getParent(final Widget widget) {
 		Object o = ObjectUtil.invokeMethod(widget, "getParent");
 
-		if (o == null){
+		if (o == null) {
 			return null;
 		}
 
@@ -480,15 +500,15 @@ public class WidgetHandlerExt {
 			return (Control) o;
 		}
 
-		throw new CoreLayerException(
-				"Return value of method getObject() on class " + o.getClass()
-						+ " should be Control, but was " + o.getClass());
+		throw new CoreLayerException("Return value of method getObject() on class " + o.getClass()
+				+ " should be Control, but was " + o.getClass());
 	}
-	
+
 	/**
 	 * Returns control children.
 	 *
-	 * @param composite the composite
+	 * @param composite
+	 *            the composite
 	 * @return the children
 	 */
 	public Control[] getChildren(final Composite composite) {
@@ -499,22 +519,21 @@ public class WidgetHandlerExt {
 			}
 		});
 	}
-	
-	private static boolean isClassOf(Class<?> clazz,Class<?>[] classes){
+
+	private static boolean isClassOf(Class<?> clazz, Class<?>[] classes) {
 		boolean filterPassed = false;
-		if (classes != null && classes.length > 0){
+		if (classes != null && classes.length > 0) {
 			int index = 0;
-			while (!filterPassed && index < classes.length){
-				if (clazz.getName().equals(classes[index].getName())){
+			while (!filterPassed && index < classes.length) {
+				if (clazz.getName().equals(classes[index].getName())) {
 					filterPassed = true;
 				}
 				index++;
 			}
-		}
-		else{
+		} else {
 			filterPassed = true;
 		}
-		
+
 		return filterPassed;
 	}
 }

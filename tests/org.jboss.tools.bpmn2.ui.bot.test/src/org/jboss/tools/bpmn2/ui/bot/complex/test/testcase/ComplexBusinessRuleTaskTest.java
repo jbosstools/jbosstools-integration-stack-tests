@@ -15,23 +15,19 @@ import org.jbpm.process.instance.event.listeners.RuleAwareProcessEventLister;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
 
-@JBPM6ComplexTestDefinition(projectName="JBPM6ComplexTest",
-							importFolder="resources/bpmn2/model/base",
-							dependentOn="DependencyBPMN2-BusinessRuleTask.drl",
-							openFile="BaseBPMN2-BusinessRuleTask.bpmn2",
-							saveAs="BPMN2-BusinessRuleTask.bpmn2")
-public class ComplexBusinessRuleTaskTest extends JBPM6ComplexTest{
+@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", dependentOn = "DependencyBPMN2-BusinessRuleTask.drl", openFile = "BaseBPMN2-BusinessRuleTask.bpmn2", saveAs = "BPMN2-BusinessRuleTask.bpmn2")
+public class ComplexBusinessRuleTaskTest extends JBPM6ComplexTest {
 
-	@TestPhase(phase=Phase.MODEL)
+	@TestPhase(phase = Phase.MODEL)
 	public void model() {
 		StartEvent start = new StartEvent("StartProcess");
-		
+
 		BusinessRuleTask task = (BusinessRuleTask) start.append("Business Rule Task", ElementType.BUSINESS_RULE_TASK);
 		task.setRuleFlowGroup("MyRuleFlow");
 		task.connectTo(new EndEvent("EndProcess"));
 	}
-	
-	@TestPhase(phase=Phase.RUN)
+
+	@TestPhase(phase = Phase.RUN)
 	public void run(KieSession kSession) {
 		kSession.addEventListener(new RuleAwareProcessEventLister());
 		ProcessInstance processInstance = kSession.startProcess("BPMN2BusinessRuleTask");

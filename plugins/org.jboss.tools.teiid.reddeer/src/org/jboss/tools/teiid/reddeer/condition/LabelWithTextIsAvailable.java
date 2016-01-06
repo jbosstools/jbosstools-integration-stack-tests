@@ -6,17 +6,17 @@ import org.jboss.reddeer.swt.impl.label.DefaultLabel;
 public class LabelWithTextIsAvailable extends AbstractWaitCondition {
 
 	private String text;
-	
+
 	public LabelWithTextIsAvailable(String text) {
 		this.text = text;
 	}
-	
+
 	@Override
 	public boolean test() {
-		try{
+		try {
 			new DefaultLabel(text);
 			return true;
-		}catch(Exception ex){
+		} catch (Exception ex) {
 			return false;
 		}
 	}

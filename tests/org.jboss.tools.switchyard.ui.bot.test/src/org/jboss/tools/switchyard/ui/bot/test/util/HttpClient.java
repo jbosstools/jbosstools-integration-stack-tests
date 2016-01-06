@@ -19,7 +19,7 @@ public class HttpClient {
 	public HttpClient(String url) {
 		this.url = url;
 	}
-	
+
 	public String get() throws MalformedURLException, IOException {
 		StringBuffer response = new StringBuffer();
 		HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();

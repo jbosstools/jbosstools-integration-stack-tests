@@ -27,20 +27,29 @@ import org.junit.runner.RunWith;
  * @author lfabriko
  */
 @RunWith(RedDeerSuite.class)
-@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = { ConnectionProfilesConstants.DB2_101_BQT,
-		ConnectionProfilesConstants.DB2_81_BQT2, ConnectionProfilesConstants.DB2_97_BQT2,
-		ConnectionProfilesConstants.ORACLE_10G_BQT2, ConnectionProfilesConstants.ORACLE_11G_BQT2,
-		ConnectionProfilesConstants.ORACLE_12C_BQT, ConnectionProfilesConstants.SQL_SERVER_2008_BQT2,
-		ConnectionProfilesConstants.SQL_SERVER_2012_BQT2, ConnectionProfilesConstants.DV6_DS1,
-		ConnectionProfilesConstants.SQL_SERVER_2000_BQT2, ConnectionProfilesConstants.MYSQL_51_BQT2,
-		ConnectionProfilesConstants.MYSQL_55_BQT2, ConnectionProfilesConstants.POSTGRESQL_84_BQT2,
-		ConnectionProfilesConstants.POSTGRESQL_91_BQT2, ConnectionProfilesConstants.POSTGRESQL_92_DVQE,
-		ConnectionProfilesConstants.SYBASE_15_BQT2, ConnectionProfilesConstants.INGRES_10_BQT2 })
+@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = {
+	ConnectionProfilesConstants.DB2_101_BQT,
+	ConnectionProfilesConstants.DB2_81_BQT2,
+	ConnectionProfilesConstants.DB2_97_BQT2,
+	ConnectionProfilesConstants.ORACLE_10G_BQT2,
+	ConnectionProfilesConstants.ORACLE_11G_BQT2,
+	ConnectionProfilesConstants.ORACLE_12C_BQT,
+	ConnectionProfilesConstants.SQL_SERVER_2008_BQT2,
+	ConnectionProfilesConstants.SQL_SERVER_2012_BQT2,
+	ConnectionProfilesConstants.DV6_DS1,
+	ConnectionProfilesConstants.SQL_SERVER_2000_BQT2,
+	ConnectionProfilesConstants.MYSQL_51_BQT2,
+	ConnectionProfilesConstants.MYSQL_55_BQT2,
+	ConnectionProfilesConstants.POSTGRESQL_84_BQT2,
+	ConnectionProfilesConstants.POSTGRESQL_91_BQT2,
+	ConnectionProfilesConstants.POSTGRESQL_92_DVQE,
+	ConnectionProfilesConstants.SYBASE_15_BQT2,
+	ConnectionProfilesConstants.INGRES_10_BQT2 })
 public class JDBCImportWizardTest {
 
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;
-	
+
 	public static final String MODEL_PROJECT = "jdbcImportTest";
 
 	private static TeiidBot teiidBot = new TeiidBot();
@@ -195,11 +204,9 @@ public class JDBCImportWizardTest {
 	private void checkImportedModel(String model, String tableA, String tableB) {
 		teiidBot.assertResource(MODEL_PROJECT, model + ".xmi", tableA);
 		teiidBot.assertResource(MODEL_PROJECT, model + ".xmi", tableB);
-		
-		teiidBot.simulatePreview(teiidServer, MODEL_PROJECT, model, new String[]{tableA,tableB});
+
+		teiidBot.simulatePreview(teiidServer, MODEL_PROJECT, model, new String[] { tableA, tableB });
 
 	}
-	
-
 
 }

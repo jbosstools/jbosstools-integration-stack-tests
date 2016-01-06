@@ -15,8 +15,7 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 
 /**
- * Performs operation with <i>Properties View</i> according to JBoss Fuse Fabric
- * Containers
+ * Performs operation with <i>Properties View</i> according to JBoss Fuse Fabric Containers
  * 
  * @author tsedmik
  */
@@ -118,8 +117,7 @@ public class FuseContainerProperties extends PropertiesView {
 	}
 
 	/**
-	 * Clicks on the ToolItem 'Destroys the Container's JVM and configuration in
-	 * the Fabric'
+	 * Clicks on the ToolItem 'Destroys the Container's JVM and configuration in the Fabric'
 	 */
 	public void destroyContainer() {
 
@@ -132,8 +130,7 @@ public class FuseContainerProperties extends PropertiesView {
 	}
 
 	/**
-	 * Checks whether is the ToolItem 'Destroys the Container's JVM and
-	 * configuration in the Fabric' enabled
+	 * Checks whether is the ToolItem 'Destroys the Container's JVM and configuration in the Fabric' enabled
 	 * 
 	 * @return <b>true</b> - the item is enabled<br/>
 	 *         <b>false</b> - otherwise
@@ -149,8 +146,7 @@ public class FuseContainerProperties extends PropertiesView {
 	 * @param id
 	 *            name of the container
 	 * @return <b>null</b> - the container is not even listed in the table<br/>
-	 *         <b>otherwise</b> - an item corresponding with the name of the
-	 *         container
+	 *         <b>otherwise</b> - an item corresponding with the name of the container
 	 */
 	private TableItem getItem(String id) {
 

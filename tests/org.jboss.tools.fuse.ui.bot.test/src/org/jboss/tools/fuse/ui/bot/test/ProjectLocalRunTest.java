@@ -25,11 +25,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * Tests option <i>Run a Project as Local Camel Context (with or without
- * tests)</i>. The option is tested on a project from archetype
- * <i>camel-archetype-spring</i>. If you want to change archetype (see static
- * variables), you have to change <i>resources/FailingTest.java</i> and
- * <i>resources/PassingTest.java</i> too (to correspondent with a new project).
+ * Tests option <i>Run a Project as Local Camel Context (with or without tests)</i>. The option is tested on a project
+ * from archetype <i>camel-archetype-spring</i>. If you want to change archetype (see static variables), you have to
+ * change <i>resources/FailingTest.java</i> and <i>resources/PassingTest.java</i> too (to correspondent with a new
+ * project).
  * 
  * @author tsedmik
  */
@@ -62,7 +61,8 @@ public class ProjectLocalRunTest extends DefaultTest {
 	/**
 	 * Prepares test environment
 	 * 
-	 * @throws FuseArchetypeNotFoundException Fuse archetype was not found. Tests cannot be executed!
+	 * @throws FuseArchetypeNotFoundException
+	 *             Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@BeforeClass
 	public static void setupCreateProject() throws FuseArchetypeNotFoundException {
@@ -73,7 +73,9 @@ public class ProjectLocalRunTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>Tests option Run a Project as Local Camel Context with tests</p>
+	 * <p>
+	 * Tests option Run a Project as Local Camel Context with tests
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>create a new project with camel-archetype-spring archetype</li>
@@ -98,7 +100,9 @@ public class ProjectLocalRunTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>Tests option Run a Project as Local Camel Context with tests</p>
+	 * <p>
+	 * Tests option Run a Project as Local Camel Context with tests
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>create a new project with camel-archetype-spring archetype</li>
@@ -120,7 +124,9 @@ public class ProjectLocalRunTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>Tests option Run a Project as Local Camel Context without tests</p>
+	 * <p>
+	 * Tests option Run a Project as Local Camel Context without tests
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>create a new project with camel-archetype-spring archetype</li>

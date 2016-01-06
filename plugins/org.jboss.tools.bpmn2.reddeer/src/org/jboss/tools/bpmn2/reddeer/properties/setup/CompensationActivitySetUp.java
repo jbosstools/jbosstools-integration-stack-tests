@@ -9,11 +9,11 @@ import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
 public class CompensationActivitySetUp implements SetUpAble {
 
 	private String activityName;
-	
+
 	public CompensationActivitySetUp(String activityName) {
 		this.activityName = activityName;
 	}
-	
+
 	@Override
 	public void setUpCTab() {
 		new DefaultTable(new DefaultSection("Event Definitions")).select(0);

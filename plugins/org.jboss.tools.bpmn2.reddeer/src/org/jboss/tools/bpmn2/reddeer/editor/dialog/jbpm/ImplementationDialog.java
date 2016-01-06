@@ -18,5 +18,5 @@ public class ImplementationDialog {
 		new DefaultText(0).setText(implementationUri);
 		new PushButton("OK").click();
 	}
-	
+
 }

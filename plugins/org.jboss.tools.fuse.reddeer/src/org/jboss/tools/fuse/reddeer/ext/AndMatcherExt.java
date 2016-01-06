@@ -18,19 +18,22 @@ import org.hamcrest.Matcher;
 public class AndMatcherExt extends BaseMatcher {
 
 	private Matcher[] matchers;
-	
+
 	/**
 	 * Constructs new AndMatcher.
 	 * 
-	 * @param matchers matchers to be evaluated conjunctively
+	 * @param matchers
+	 *            matchers to be evaluated conjunctively
 	 */
 	public AndMatcherExt(Matcher... matchers) {
-		if(matchers == null)
+		if (matchers == null)
 			throw new NullPointerException("matchers");
 		this.matchers = matchers;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.hamcrest.Matcher#matches(java.lang.Object)
 	 */
 	@Override
@@ -50,16 +53,20 @@ public class AndMatcherExt extends BaseMatcher {
 	public Matcher[] getMatchers() {
 		return matchers;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.hamcrest.SelfDescribing#describeTo(org.hamcrest.Description)
 	 */
 	@Override
 	public void describeTo(Description description) {
 		description.appendList("(", " " + "and" + " ", ")", Arrays.asList(matchers));
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.hamcrest.BaseMatcher#toString()
 	 */
 	@Override

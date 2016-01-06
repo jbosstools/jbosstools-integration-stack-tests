@@ -57,7 +57,9 @@ public class SAPConnectionTest {
 	}
 
 	/**
-	 * <p>Tests SAP Connections view.</p>
+	 * <p>
+	 * Tests SAP Connections view.
+	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>open SAP Connections view</li>
@@ -113,7 +115,7 @@ public class SAPConnectionTest {
 		testServerConnection.clear();
 		testServerConnection.close();
 	}
-	
+
 	// TODO Write test for exporting, wait for https://issues.jboss.org/browse/FUSETOOLS-1374
 
 	private class ContainsText extends AbstractWaitCondition {

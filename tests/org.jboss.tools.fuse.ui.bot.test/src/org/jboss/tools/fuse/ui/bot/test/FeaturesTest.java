@@ -42,10 +42,14 @@ import org.junit.runner.RunWith;
 public class FeaturesTest extends DefaultTest {
 
 	/**
-	 * <p>Graphical Editor - Add option to configure if labels should be shown or not<p>
-	 * <b>Link: </b><a href="https://issues.jboss.org/browse/FUSETOOLS-837">https://issues.jboss.org/browse/FUSETOOLS-837</a>
+	 * <p>
+	 * Graphical Editor - Add option to configure if labels should be shown or not
+	 * <p>
+	 * <b>Link: </b>
+	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-837">https://issues.jboss.org/browse/FUSETOOLS-837</a>
 	 *
-	 * @throws FuseArchetypeNotFoundException Fuse archetype was not found. Tests cannot be executed!
+	 * @throws FuseArchetypeNotFoundException
+	 *             Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Test
 	public void test_837() throws FuseArchetypeNotFoundException {
@@ -68,7 +72,7 @@ public class FeaturesTest extends DefaultTest {
 		} catch (Exception e) {
 			fail("'From' endpoint should be named after id value 'start'");
 		}
-		
+
 		// disable "If enabled the ID values will be used for labels if existing"
 		prefPage.open();
 		prefPage.setShowIDinEditor(false);
@@ -82,10 +86,14 @@ public class FeaturesTest extends DefaultTest {
 	}
 
 	/**
-	 * <p>Add Context Menu to Camel Contexts folder<p>
-	 * <b>Link: </b><a href="https://issues.jboss.org/browse/FUSETOOLS-1274">https://issues.jboss.org/browse/FUSETOOLS-1274</a>
+	 * <p>
+	 * Add Context Menu to Camel Contexts folder
+	 * <p>
+	 * <b>Link: </b>
+	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-1274">https://issues.jboss.org/browse/FUSETOOLS-1274</a>
 	 *
-	 * @throws FuseArchetypeNotFoundException Fuse archetype was not found. Tests cannot be executed!
+	 * @throws FuseArchetypeNotFoundException
+	 *             Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Test
 	public void test_1274() throws FuseArchetypeNotFoundException {
@@ -97,7 +105,7 @@ public class FeaturesTest extends DefaultTest {
 		// 1. check context menu item "New Camel XML File"
 		try {
 			new ContextMenu("New Camel XML File");
-		} catch (SWTLayerException|CoreLayerException ex){
+		} catch (SWTLayerException | CoreLayerException ex) {
 			fail("'Camel Contexts' does not have a context menu entry 'New Camel XML File'!");
 		}
 
@@ -108,7 +116,7 @@ public class FeaturesTest extends DefaultTest {
 		assertTrue(new LabeledText("RouteContainer:").getText().contains("src/main/resources/OSGI-INF/blueprint"));
 		new PushButton("Finish").click();
 		new WaitWhile(new ShellWithTextIsAvailable("New Camel Context XML File"));
-		
+
 		// 3. check that wizard didn't overwrite existing file
 		new ProjectExplorer().getProject("camel-blueprint").getProjectItem("Camel Contexts").select();
 		AbstractWait.sleep(TimePeriod.SHORT);

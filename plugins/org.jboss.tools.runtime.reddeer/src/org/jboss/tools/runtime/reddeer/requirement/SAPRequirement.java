@@ -60,6 +60,6 @@ public class SAPRequirement implements Requirement<SAP>, CustomConfiguration<SAP
 
 	@Override
 	public void cleanUp() {
-		// TODO cleanUp()		
+		// TODO cleanUp()
 	}
 }

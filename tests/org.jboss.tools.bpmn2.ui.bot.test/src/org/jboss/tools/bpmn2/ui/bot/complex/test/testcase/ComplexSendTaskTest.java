@@ -23,39 +23,37 @@ import org.jbpm.bpmn2.handler.SendTaskHandler;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
 
-@JBPM6ComplexTestDefinition(projectName="JBPM6ComplexTest",
-							importFolder="resources/bpmn2/model/base",
-							openFile="BaseBPMN2-SendTask.bpmn2",
-							saveAs="BPMN2-SendTask.bpmn2")
+@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-SendTask.bpmn2", saveAs = "BPMN2-SendTask.bpmn2")
 public class ComplexSendTaskTest extends JBPM6ComplexTest {
 
-	@TestPhase(phase=Phase.MODEL)
+	@TestPhase(phase = Phase.MODEL)
 	public void model() {
-        Message msg = new Message("msgName", "String");
-		
+		Message msg = new Message("msgName", "String");
+
 		StartEvent start = new StartEvent("StartProcess");
-		
+
 		SendTask send = (SendTask) start.append("Send", ElementType.SEND_TASK);
 		send.setImplementation("Unspecified");
 		send.setOperation("JavaObject/operationName", msg, msg, new ErrorRef("errName", "errCode", "String"));
 		send.setMessage(msg.getName(), msg.getDataType());
-		send.addParameterMapping(new ParameterMapping(new FromVariable("s"), new ToDataInput("Message", msg.getDataType()), ParameterMapping.Type.INPUT));
+		send.addParameterMapping(new ParameterMapping(new FromVariable("s"),
+				new ToDataInput("Message", msg.getDataType()), ParameterMapping.Type.INPUT));
 		send.connectTo(new TerminateEndEvent("EndProcess"));
 	}
-	
-	@TestPhase(phase=Phase.RUN)
+
+	@TestPhase(phase = Phase.RUN)
 	public void run(KieSession kSession) {
 		TriggeredNodesListener triggeredNodes = new TriggeredNodesListener(
-			Arrays.asList("StartProcess", "Send", "EndProcess"), null);
+				Arrays.asList("StartProcess", "Send", "EndProcess"), null);
 		kSession.addEventListener(triggeredNodes);
-		
+
 		SendTaskHandler handler = new SendTaskHandler();
-		
+
 		kSession.getWorkItemManager().registerWorkItemHandler("Send Task", handler);
-		
+
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("s", "Initialized string");
-		
+
 		ProcessInstance processInstance = kSession.startProcess("BPMN2SendTask", params);
 		JbpmAssertions.assertProcessInstanceCompleted(processInstance, kSession);
 	}

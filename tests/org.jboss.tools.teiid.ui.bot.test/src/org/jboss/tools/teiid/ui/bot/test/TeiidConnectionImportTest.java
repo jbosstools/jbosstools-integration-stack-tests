@@ -31,18 +31,26 @@ import org.junit.runner.RunWith;
  *
  */
 @RunWith(RedDeerSuite.class)
-@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = { ConnectionProfilesConstants.DB2_101_BQT,
-		ConnectionProfilesConstants.DB2_81_BQT2, ConnectionProfilesConstants.DB2_97_BQT2,
-		ConnectionProfilesConstants.ORACLE_10G_BQT2, ConnectionProfilesConstants.ORACLE_11G_BQT2,
-		ConnectionProfilesConstants.ORACLE_12C_BQT,
-		ConnectionProfilesConstants.SQL_SERVER_2008_BQT2, ConnectionProfilesConstants.SQL_SERVER_2012_BQT2,
-		ConnectionProfilesConstants.DV6_DS1, ConnectionProfilesConstants.HSQLDB,
-		ConnectionProfilesConstants.SQL_SERVER_2000_BQT2,
-		ConnectionProfilesConstants.MYSQL_51_BQT2, ConnectionProfilesConstants.MYSQL_55_BQT2,
-		ConnectionProfilesConstants.POSTGRESQL_84_BQT2,
-		ConnectionProfilesConstants.POSTGRESQL_92_DVQE, ConnectionProfilesConstants.SYBASE_15_BQT2,
-		ConnectionProfilesConstants.INGRES_10_BQT2, ConnectionProfilesConstants.SALESFORCE,
-		ConnectionProfilesConstants.SQL_SERVER_2008_BOOKS })
+@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = {
+	ConnectionProfilesConstants.DB2_101_BQT,
+	ConnectionProfilesConstants.DB2_81_BQT2,
+	ConnectionProfilesConstants.DB2_97_BQT2,
+	ConnectionProfilesConstants.ORACLE_10G_BQT2,
+	ConnectionProfilesConstants.ORACLE_11G_BQT2,
+	ConnectionProfilesConstants.ORACLE_12C_BQT,
+	ConnectionProfilesConstants.SQL_SERVER_2008_BQT2,
+	ConnectionProfilesConstants.SQL_SERVER_2012_BQT2,
+	ConnectionProfilesConstants.DV6_DS1,
+	ConnectionProfilesConstants.HSQLDB,
+	ConnectionProfilesConstants.SQL_SERVER_2000_BQT2,
+	ConnectionProfilesConstants.MYSQL_51_BQT2,
+	ConnectionProfilesConstants.MYSQL_55_BQT2,
+	ConnectionProfilesConstants.POSTGRESQL_84_BQT2,
+	ConnectionProfilesConstants.POSTGRESQL_92_DVQE,
+	ConnectionProfilesConstants.SYBASE_15_BQT2,
+	ConnectionProfilesConstants.INGRES_10_BQT2,
+	ConnectionProfilesConstants.SALESFORCE,
+	ConnectionProfilesConstants.SQL_SERVER_2008_BOOKS })
 public class TeiidConnectionImportTest extends SWTBotTestCase {
 
 	@InjectRequirement
@@ -56,7 +64,6 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 
 	private static final String sqlserverExistingModelName = "sqlserver";
 
-
 	// file
 	private static final String FILE_MODEL = "FileImported";
 
@@ -64,9 +71,7 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 	private static final String hsqlCPName = ConnectionProfilesConstants.HSQLDB;
 	private static final String hsqlModel = "HsqldbImported";
 
-
 	private static TeiidBot teiidBot = new TeiidBot();
-
 
 	/**
 	 * Create new Teiid Model Project
@@ -74,10 +79,9 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 	@BeforeClass
 	public static void createProject() {
 		new TeiidDesignerPreferencePage().setTeiidConnectionImporterTimeout(240);
-		
+
 		new ImportManager().importProject(teiidBot.toAbsolutePath(projectLocation));
 		new ModelExplorer().getModelProject(PROJECT_NAME).open();
-		
 
 	}
 
@@ -159,11 +163,10 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 		new ModelExplorerManager().changeConnectionProfile(ConnectionProfilesConstants.SQL_SERVER_2008_BOOKS,
 				PROJECT_NAME, sqlserverExistingModelName);
 
-
 		VDBManager vdbManager = new VDBManager();
 		vdbManager.createVDB(PROJECT_NAME, SOURCE_VDB_NAME);
-		vdbManager.addModelsToVDB(PROJECT_NAME, SOURCE_VDB_NAME, new String[]{sqlserverExistingModelName});
-		
+		vdbManager.addModelsToVDB(PROJECT_NAME, SOURCE_VDB_NAME, new String[] { sqlserverExistingModelName });
+
 		new DefaultShell();
 
 		String[] pathToVDB = new String[] { PROJECT_NAME, SOURCE_VDB_NAME + ".vdb" };
@@ -178,13 +181,14 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 
 		Properties iProps = new Properties();
 		iProps.setProperty(TeiidConnectionImportWizard.DATA_SOURCE_NAME, SOURCE_VDB_NAME);
-		
+
 		Properties teiidImporterProperties = new Properties();
 		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_SCHEMA_PATTERN, "%sqlserver%");
 
 		String model = SOURCE_VDB_NAME + "Imp";
 
-		new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME, model, iProps, null, teiidImporterProperties);
+		new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME, model, iProps, null,
+				teiidImporterProperties);
 		teiidBot.assertResource(PROJECT_NAME, model + ".xmi", "teiid.sqlserver.AUTHORS");
 
 	}
@@ -300,7 +304,6 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 
 	}
 
-
 	@Test
 	public void postgresql92Test() {
 		Properties teiidImporterProperties = new Properties();
@@ -315,21 +318,21 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 	@Test
 	public void modeshapeTest() {
 		Properties teiidImporterProperties = new Properties();
-		teiidImporterProperties
-				.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "mix:title");
+		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN,
+				"mix:title");
 		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_USE_FULL_SCHEMA_NAME, "false");
-	
+
 		Properties iProps = new Properties();
 		iProps.setProperty(TeiidConnectionImportWizard.DATA_SOURCE_NAME, modeshapeCPName);
-		
-		
+
 		// initialize modeshape
-		String resp = new SimpleHttpClient("http://localhost:8080/modeshape-rest/dv/").setBasicAuth(
-				teiidServer.getServerConfig().getServerBase().getProperty("modeshapeUser"),
-				teiidServer.getServerConfig().getServerBase().getProperty("modeshapePassword")).get();
+		String resp = new SimpleHttpClient("http://localhost:8080/modeshape-rest/dv/")
+				.setBasicAuth(teiidServer.getServerConfig().getServerBase().getProperty("modeshapeUser"),
+						teiidServer.getServerConfig().getServerBase().getProperty("modeshapePassword"))
+				.get();
 
 		assertFalse("initializing modeshape failed", resp.isEmpty());
-		
+
 		new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME, "ModeshapeModel", iProps, null,
 				teiidImporterProperties);
 		checkImportedModel("ModeshapeModel", "mix:title");
@@ -348,11 +351,11 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 		Properties dsProps = new Properties();
 		Properties excelDsProperties = teiidServer.getServerConfig()
 				.getConnectionProfile(ConnectionProfilesConstants.EXCEL_SMALLA).asProperties();
-		dsProps.put(TeiidConnectionImportWizard.DATASOURCE_PROPERTY_PARENT_DIR,
-				excelDsProperties.getProperty("path"));
+		dsProps.put(TeiidConnectionImportWizard.DATASOURCE_PROPERTY_PARENT_DIR, excelDsProperties.getProperty("path"));
 
 		Properties teiidImporterProps = new Properties();
-		teiidImporterProps.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_EXCEL_FILENAME, excelDsProperties.getProperty("filename"));
+		teiidImporterProps.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_EXCEL_FILENAME,
+				excelDsProperties.getProperty("filename"));
 		teiidImporterProps.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_HEADER_ROW_NUMBER, "1");
 
 		new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME, modelName, iProps, dsProps,

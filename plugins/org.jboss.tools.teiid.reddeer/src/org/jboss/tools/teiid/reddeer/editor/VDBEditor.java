@@ -24,28 +24,29 @@ import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.tools.teiid.reddeer.widget.TeiidEditorTableItem;
 
 public class VDBEditor extends SWTBotEditor {
-	
-	public VDBEditor(String name){
+
+	public VDBEditor(String name) {
 		super(new SWTWorkbenchBot().editorByTitle(name).getReference(), new SWTWorkbenchBot());
 	}
-	
-	public static VDBEditor getInstance(String name){
+
+	public static VDBEditor getInstance(String name) {
 		VDBEditor editor = new VDBEditor(name);
 		editor.show();
 		return editor;
 	}
-	
+
 	/**
 	 * 
 	 * @param projectName
-	 * @param modelXmi whole name (with ending)
+	 * @param modelXmi
+	 *            whole name (with ending)
 	 */
-	public void addModel(String projectName, String modelXmi){
-		if (! modelXmi.contains(".")){
+	public void addModel(String projectName, String modelXmi) {
+		if (!modelXmi.contains(".")) {
 			modelXmi = modelXmi + ".xmi";
 		}
 		new SWTWorkbenchBot().toolbarButtonWithTooltip("Add model").click();
-		
+
 		SWTBotShell shell = bot.shell("Add File(s) to VDB");
 		shell.activate();
 		shell.bot().tree(0).expandNode(projectName).select(modelXmi);
@@ -54,16 +55,17 @@ public class VDBEditor extends SWTBotEditor {
 		new WaitWhile(new ShellWithTextIsActive(shell.getText()), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
-	
+
 	/**
 	 * 
 	 * @param projectName
 	 * @param model
-	 * @param longerPath true if path to model contains folders
+	 * @param longerPath
+	 *            true if path to model contains folders
 	 */
-	public void addModel(boolean longerPath, String... pathToModel){
+	public void addModel(boolean longerPath, String... pathToModel) {
 		new SWTWorkbenchBot().toolbarButtonWithTooltip("Add model").click();
-		
+
 		SWTBotShell shell = bot.shell("Add File(s) to VDB");
 		shell.activate();
 		shell.bot().tree(0).expandNode(pathToModel).select();
@@ -72,12 +74,12 @@ public class VDBEditor extends SWTBotEditor {
 		new WaitWhile(new ShellWithTextIsActive(shell.getText()), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
-	
-	public String getModel(int index){
+
+	public String getModel(int index) {
 		return new SWTWorkbenchBot().table(0).cell(index, 0);
 	}
-	
-	public void setModelTranslator(String modelName, String sourceName, String translatorName){
+
+	public void setModelTranslator(String modelName, String sourceName, String translatorName) {
 		new DefaultCTabItem("Content").activate();
 		new DefaultCTabItem("Models").activate();
 		new DefaultTable(0).getItem(modelName).select();
@@ -85,8 +87,8 @@ public class VDBEditor extends SWTBotEditor {
 		sourceItem.select();
 		sourceItem.setText(1, translatorName);
 	}
-	
-	public String getDataSourceName(String modelName){
+
+	public String getDataSourceName(String modelName) {
 		new DefaultCTabItem("Content").activate();
 		new DefaultCTabItem("Models").activate();
 		new DefaultTable(0).getItem(modelName).select();
@@ -95,27 +97,27 @@ public class VDBEditor extends SWTBotEditor {
 
 	public void synchronizeAll() {
 
-		if (new PushButton("Synchronize All").isEnabled()){
+		if (new PushButton("Synchronize All").isEnabled()) {
 			new PushButton("Synchronize All").click();
 		}
 	}
 
-	//TODO CHECK
+	// TODO CHECK
 	public void removeModel(String projectName, String model) {
-		//ctab item models
+		// ctab item models
 		new DefaultCTabItem("Models").activate();
 		new DefaultTable().getItem(model, 0).select();
 		new SWTWorkbenchBot().toolbarButtonWithTooltip("Remove selected model(s)").click();
 		new PushButton("OK").click();
 	}
-	
+
 	public void setGenerateRestWar(boolean check) {
 		new DefaultCTabItem("Advanced").activate();
 		new DefaultCTabItem("Properties").activate();
 		new CheckBox(new DefaultGroup("General"), "Auto-generate REST WAR").toggle(check);
 	}
-	
-	public DataRolesEditor addDataRole(){
+
+	public DataRolesEditor addDataRole() {
 		new DefaultCTabItem("Advanced").activate();
 		new DefaultCTabItem("Data Roles").activate();
 		new DefaultToolItem("Add data role").click();
@@ -128,11 +130,11 @@ public class VDBEditor extends SWTBotEditor {
 
 		new DefaultTable(0).getItem(roleName).select();
 		new DefaultToolItem("Edit selected data role").click();
-		
+
 		return new DataRolesEditor(DataRolesEditor.EDIT_TITLE);
 	}
-	
-	public void addTranslatorOverride(String overrideName, String translatorName){
+
+	public void addTranslatorOverride(String overrideName, String translatorName) {
 		new DefaultCTabItem("Advanced").activate();
 		new DefaultCTabItem("Translator Overrides").activate();
 		new PushButton(new WithTooltipTextMatcher("Add a translator whose properties you want to override")).click();
@@ -142,8 +144,8 @@ public class VDBEditor extends SWTBotEditor {
 		new DefaultTable().getItem(translatorName).select();
 		new PushButton("OK").click();
 	}
-	
-	public void addTranslatorOverrideProperty(String overrideName, String propertyName, String propertyValue){
+
+	public void addTranslatorOverrideProperty(String overrideName, String propertyName, String propertyValue) {
 		new DefaultCTabItem("Advanced").activate();
 		new DefaultCTabItem("Translator Overrides").activate();
 		new DefaultTable(0).getItem(overrideName).select();
@@ -169,40 +171,39 @@ public class VDBEditor extends SWTBotEditor {
 		new DefaultCTabItem("User Defined Properties").activate();
 
 		new PushButton(new WithTooltipTextMatcher("Add New Property")).click();
-		
+
 		new DefaultShell("Add New Property");
 		new LabeledText("Name:").setText(name);
 		new LabeledText("Value:").setText(value);
 
 		new PushButton("OK").click();
 	}
-	
-	public List<String> getTranslatorOverrides(){
+
+	public List<String> getTranslatorOverrides() {
 		new DefaultCTabItem("Advanced").activate();
 		new DefaultCTabItem("Translator Overrides").activate();
-		
+
 		List<String> result = new ArrayList<>();
-		for(TableItem it : new DefaultTable(0).getItems()){
+		for (TableItem it : new DefaultTable(0).getItems()) {
 			result.add(it.getText());
 		}
-		
-		
+
 		return result;
 	}
-	
-	public Properties getTranslatorOverrideProperties(String translatorOverrideName){
+
+	public Properties getTranslatorOverrideProperties(String translatorOverrideName) {
 		new DefaultCTabItem("Advanced").activate();
 		new DefaultCTabItem("Translator Overrides").activate();
-		
+
 		new DefaultTable(0).getItem(translatorOverrideName).select();
-		
+
 		Properties props = new Properties();
-		
-		for(TableItem it : new DefaultTable(1).getItems()){
+
+		for (TableItem it : new DefaultTable(1).getItems()) {
 			props.put(it.getText(0), it.getText(1));
 		}
 		return props;
-		
+
 	}
 
 }

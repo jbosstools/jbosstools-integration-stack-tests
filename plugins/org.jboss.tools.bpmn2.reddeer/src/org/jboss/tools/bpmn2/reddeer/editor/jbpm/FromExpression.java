@@ -10,9 +10,9 @@ import org.jboss.tools.bpmn2.reddeer.editor.MappingSide;
 public class FromExpression implements MappingSide {
 
 	private String scriptLanguage;
-	
+
 	private String script;
-	
+
 	/**
 	 * 
 	 * @param scriptLanguage
@@ -21,8 +21,8 @@ public class FromExpression implements MappingSide {
 	public FromExpression(String scriptLanguage, String script) {
 		this.scriptLanguage = scriptLanguage;
 		this.script = script;
-	} 
-	
+	}
+
 	@Override
 	public void setUp() {
 		new RadioButton("Expression").click();
@@ -33,5 +33,5 @@ public class FromExpression implements MappingSide {
 	public String getName() {
 		return script;
 	}
-	
+
 }

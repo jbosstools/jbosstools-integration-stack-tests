@@ -13,13 +13,13 @@ public class DefaultCombo extends LabeledCombo {
 	 * @param label
 	 */
 	public DefaultCombo(String label) {
-		super(label);	
+		super(label);
 	}
-	
-	
+
 	public DefaultCombo(ReferencedComposite section, String label) {
-		super(section, label);	
+		super(section, label);
 	}
+
 	/**
 	 * 
 	 * @param text
@@ -28,5 +28,5 @@ public class DefaultCombo extends LabeledCombo {
 	public boolean contains(String text) {
 		return getItems().contains(text);
 	}
-	
+
 }

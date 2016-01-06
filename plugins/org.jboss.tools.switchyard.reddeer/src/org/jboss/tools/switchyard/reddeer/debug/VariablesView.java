@@ -16,12 +16,12 @@ public class VariablesView extends WorkbenchView {
 		open();
 		new DefaultTreeItem(variablePath).select();
 		new WaitUntil(new AbstractWaitCondition() {
-			
+
 			@Override
 			public boolean test() {
 				return new DefaultTreeItem(variablePath).isSelected();
 			}
-			
+
 			@Override
 			public String description() {
 				return "Variable is not selected";

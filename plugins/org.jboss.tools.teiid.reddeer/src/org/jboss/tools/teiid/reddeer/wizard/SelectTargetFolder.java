@@ -10,8 +10,8 @@ public class SelectTargetFolder {
 	public SelectTargetFolder() {
 		new DefaultShell(SELECT_FOLDER);
 	}
-	
-	public void select(String... path){
+
+	public void select(String... path) {
 		new DefaultTreeItem(path).select();
 		new OkButton().click();
 	}

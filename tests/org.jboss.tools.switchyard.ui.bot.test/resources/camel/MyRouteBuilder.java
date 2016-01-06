@@ -12,9 +12,7 @@ import org.apache.camel.builder.RouteBuilder;
 public class MyRouteBuilder extends RouteBuilder {
 
 	public void configure() {
-		from("file:in")
-				.streamCaching()
-				.log("Received message '${body}' from ${header.camelfilename}")
+		from("file:in").streamCaching().log("Received message '${body}' from ${header.camelfilename}")
 				.process(new Processor() {
 
 					@Override

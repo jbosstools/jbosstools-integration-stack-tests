@@ -52,8 +52,19 @@ public class GPDPaletteTest {
 		/* Open Simple Diagram */
 		new ProjectExplorer().getProject(PROJECT).getProjectItem("src", "main", "jpdl", "simple.jpdl.xml").open();
 
-		String[] entities = { "Start", "State", "End", "Fork", "Join", "Decision", "Node", "Task Node", "Mail Node",
-				"ESB Service", "Process State", "Super State" };
+		String[] entities = {
+			"Start",
+			"State",
+			"End",
+			"Fork",
+			"Join",
+			"Decision",
+			"Node",
+			"Task Node",
+			"Mail Node",
+			"ESB Service",
+			"Process State",
+			"Super State" };
 
 		/* Add All Entities */
 		JBPMEditor editor = new JBPMEditor("simple.jpdl.xml");

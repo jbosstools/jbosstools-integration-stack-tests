@@ -67,7 +67,7 @@ public class ModelProject {
 	public void open(String... path) {
 		project.getProjectItem(path).open();
 	}
-	
+
 	public File getFile() {
 		String wsPath = ResourcesPlugin.getWorkspace().getRoot().getLocationURI().getPath();
 		return new File(wsPath, project.getName());

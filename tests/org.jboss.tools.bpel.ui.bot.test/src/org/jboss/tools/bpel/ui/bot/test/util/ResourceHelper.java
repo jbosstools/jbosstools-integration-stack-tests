@@ -1,6 +1,5 @@
 package org.jboss.tools.bpel.ui.bot.test.util;
 
-
 import static org.junit.Assert.fail;
 
 import java.io.File;
@@ -9,18 +8,20 @@ import java.io.IOException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 
-
 /**
  * Class provides resource related static methods
  * 
  * Taken from ui.bot.ext
  */
 public class ResourceHelper {
-	
+
 	/**
 	 * Provide bundle resource absolute path
-	 * @param pluginId - plugin id
-	 * @param path - resource relative path
+	 * 
+	 * @param pluginId
+	 *            - plugin id
+	 * @param path
+	 *            - resource relative path
 	 * @return resource absolute path
 	 */
 	public static String getResourceAbsolutePath(String pluginId, String... path) {
@@ -33,22 +34,20 @@ public class ResourceHelper {
 
 		String filePath = "";
 		try {
-			filePath = FileLocator.toFileURL(
-					Platform.getBundle(pluginId).getEntry("/")).getFile()
-					+ "resources" + builder.toString();
+			filePath = FileLocator.toFileURL(Platform.getBundle(pluginId).getEntry("/")).getFile() + "resources"
+					+ builder.toString();
 			File file = new File(filePath);
 			if (!file.isFile()) {
-				filePath = FileLocator.toFileURL(
-						Platform.getBundle(pluginId).getEntry("/")).getFile()
+				filePath = FileLocator.toFileURL(Platform.getBundle(pluginId).getEntry("/")).getFile()
 						+ builder.toString();
 			}
 		} catch (IOException ex) {
 			String message = filePath + " resource file not found";
-			//log.error(message);
+			// log.error(message);
 			fail(message);
 		}
 
 		return filePath;
 	}
-	
+
 }

@@ -8,11 +8,11 @@ import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
 public class GatewayDefaultBranchSetUp implements SetUpAble {
 
 	private String flow;
-	
+
 	public GatewayDefaultBranchSetUp(String flow) {
 		this.flow = flow;
 	}
-	
+
 	@Override
 	public void setUpCTab() {
 		new DefaultTable(0).select(flow);

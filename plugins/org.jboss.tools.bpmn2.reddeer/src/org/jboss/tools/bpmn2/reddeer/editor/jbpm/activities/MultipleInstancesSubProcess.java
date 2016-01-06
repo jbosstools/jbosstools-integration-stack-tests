@@ -11,12 +11,14 @@ public class MultipleInstancesSubProcess extends ElementContainer {
 	public MultipleInstancesSubProcess(String name) {
 		super(name, ElementType.MULTIPLE_SUB_PROCESS);
 	}
-	
+
 	public void setInputCollection(String collectionName) {
-		propertiesHandler.setUp(new ComboSetUp(PropertiesTabs.SUB_PROCESS_TAB, "Input Data Collection",collectionName));
+		propertiesHandler
+				.setUp(new ComboSetUp(PropertiesTabs.SUB_PROCESS_TAB, "Input Data Collection", collectionName));
 	}
-	
+
 	public void setIteratorTroughCollection(String iteratorName) {
-		propertiesHandler.setUp(new LabeledTextSetUp(PropertiesTabs.SUB_PROCESS_TAB, "Input Instance Parameter", iteratorName));
+		propertiesHandler
+				.setUp(new LabeledTextSetUp(PropertiesTabs.SUB_PROCESS_TAB, "Input Instance Parameter", iteratorName));
 	}
 }

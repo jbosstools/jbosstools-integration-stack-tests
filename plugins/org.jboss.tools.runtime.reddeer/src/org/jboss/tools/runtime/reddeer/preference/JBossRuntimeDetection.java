@@ -81,13 +81,13 @@ public class JBossRuntimeDetection extends PreferencePage {
 		dialog.open();
 		dialog.select(this);
 	}
-	
+
 	public void ok() {
 		String title = new DefaultShell().getText();
 		new OkButton().click();
 		new WaitWhile(new ShellWithTextIsAvailable(title));
 	}
-	
+
 	public void cancel() {
 		String title = new DefaultShell().getText();
 		new CancelButton().click();
