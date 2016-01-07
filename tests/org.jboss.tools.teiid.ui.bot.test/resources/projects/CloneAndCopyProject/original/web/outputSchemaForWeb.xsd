@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xs:schema xmlns="http://www.metamatrix.com/ProductsInfo_Output" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.metamatrix.com/ProductsInfo_Output">
+  <xs:element name="ProductsInfo_Output">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="ProductsInfo_Output_Instance" type="ProductsInfo_Output_Type"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="ProductsInfo_Output_Type">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="0" name="INSTR_ID" nillable="false" type="xs:string"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="SYMBOL_TYPE" nillable="true" type="xs:integer"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="SYMBOL" nillable="false" type="xs:string"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="CUSIP" nillable="true" type="xs:string"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="NAME" nillable="true" type="xs:string"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="TYPE" nillable="true" type="xs:string"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="ISSUER" nillable="true" type="xs:string"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="EXCHANGE" nillable="true" type="xs:string"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="ISDJI" nillable="false" type="xs:boolean"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="ISSP500" nillable="false" type="xs:boolean"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="ISNAS100" nillable="false" type="xs:boolean"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="ISAMEXINT" nillable="false" type="xs:boolean"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="PRIBUSINESS" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

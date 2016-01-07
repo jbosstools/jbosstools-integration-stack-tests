@@ -174,10 +174,18 @@ public class VDBManager {
 		new PushButton("OK").click();
 	}
 
-	/*
-	 * public void synchronizeAll(String... pathToVDB){ // TODO this.getVDBEditor(pathToVDB[0], pathToVDB[1]); new
-	 * PushButton("Synchronize All").click(); }
+	/**
+	 * Synchronizes all model's in VDB.
+	 * @param projectName
+	 * @param vdbName
 	 */
+	public void synchronizeAll(String projectName, String vdbName){
+		openVDBEditor(projectName, vdbName);
+		PushButton syncAllButton = new PushButton("Synchronize All");
+		if (syncAllButton.isEnabled()){
+			syncAllButton.click();
+		}
+	}
 
 	/*
 	 * public WAR operateWAR(String... pathToWar){ return new WAR(new
