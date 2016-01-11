@@ -1,7 +1,7 @@
 package org.jboss.tools.drools.reddeer.preference;
 
-import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.jface.preference.PreferencePage;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
 
 /**
  * Drools Flow nodes preference page: Drools -> Drools Flow nodes

@@ -111,7 +111,7 @@ public class WARTest extends SWTBotTestCase {
 		warProps.setProperty("saveLocation", teiidBot.toAbsolutePath("target"));
 		warProps.setProperty("securityType", WAR.HTTPBasic_SECURITY);
 		warProps.setProperty("realm", "teiid-security");
-		warProps.setProperty("role", "user");/// this has to be set also in teiid-security-users,roles
+		warProps.setProperty("role", "user");// this has to be set also in teiid-security-users,roles
 		// http://localhost:8080/checkBookVdbBasic/BooksInterface?wsdl
 
 		new VDBManager().createWAR(warProps, pathToCheckBookVDB);

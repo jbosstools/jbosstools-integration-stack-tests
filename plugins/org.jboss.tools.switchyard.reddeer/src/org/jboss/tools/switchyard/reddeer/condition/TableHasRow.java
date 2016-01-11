@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hamcrest.Matcher;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 
 public class TableHasRow extends AbstractWaitCondition {
 

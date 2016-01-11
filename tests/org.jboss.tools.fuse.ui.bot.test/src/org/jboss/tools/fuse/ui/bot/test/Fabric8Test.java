@@ -5,6 +5,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
@@ -14,20 +17,17 @@ import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.core.exception.CoreLayerException;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.fuse.reddeer.perspectives.Fabric8Perspective;
-import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
 import org.jboss.tools.fuse.reddeer.view.Fabric8Explorer;
 import org.jboss.tools.fuse.reddeer.view.FuseContainerProperties;
-import org.jboss.tools.fuse.reddeer.view.FuseShell;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
+import org.jboss.tools.runtime.reddeer.utils.FuseServerManipulator;
+import org.jboss.tools.runtime.reddeer.view.TerminalView;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -53,7 +53,7 @@ public class Fabric8Test {
 	@BeforeClass
 	public static void setupCreateFabric() {
 
-		new FuseShell().createFabric();
+		new TerminalView().createFabric();
 		Fabric8Explorer fab = new Fabric8Explorer();
 		fab.open();
 		fab.addFabricDetails(null, null, "admin", "admin", "admin");
@@ -69,9 +69,9 @@ public class Fabric8Test {
 
 		// Server
 		String serverName = server.getConfig().getName();
-		ServerManipulator.stopServer(serverName);
-		ServerManipulator.removeServer(serverName);
-		ServerManipulator.removeServerRuntime(serverName + " Runtime");
+		FuseServerManipulator.stopServer(serverName);
+		FuseServerManipulator.removeServer(serverName);
+		FuseServerManipulator.removeServerRuntime(serverName + " Runtime");
 
 		// Fabric
 		Fabric8Explorer fab = new Fabric8Explorer();
@@ -219,7 +219,7 @@ public class Fabric8Test {
 		prop.open();
 		prop.refresh();
 		assertTrue(prop.isContainerPresent("test-container"));
-		assertTrue(new FuseShell().execute("fabric:container-list")
+		assertTrue(new TerminalView().execute("fabric:container-list")
 				.contains("test-container  1.0        karaf   yes          autoscale               success"));
 
 		// Manipulation with the 'root' container
@@ -233,13 +233,13 @@ public class Fabric8Test {
 		prop.activate();
 		prop.selectItem("test-container");
 		prop.stopContainer();
-		assertTrue(new FuseShell().execute("fabric:container-list")
+		assertTrue(new TerminalView().execute("fabric:container-list")
 				.contains("test-container  1.0        karaf   no           autoscale               stopped"));
 
 		prop.activate();
 		prop.selectItem("test-container");
 		prop.startContainer();
-		assertTrue(new FuseShell().execute("fabric:container-list")
+		assertTrue(new TerminalView().execute("fabric:container-list")
 				.contains("test-container  1.0        karaf   yes          autoscale               success"));
 
 		prop.activate();
@@ -259,7 +259,7 @@ public class Fabric8Test {
 		}
 		fab.selectNode("Fabrics", "Local Fabric", "Containers");
 		prop.open();
-		assertTrue(new FuseShell().execute("fabric:container-list")
+		assertTrue(new TerminalView().execute("fabric:container-list")
 				.contains("test-container  1.0        karaf   no           autoscale               stopped"));
 
 		fab.open();
@@ -271,7 +271,7 @@ public class Fabric8Test {
 		}
 		fab.selectNode("Fabrics", "Local Fabric", "Containers");
 		prop.open();
-		assertTrue(new FuseShell().execute("fabric:container-list")
+		assertTrue(new TerminalView().execute("fabric:container-list")
 				.contains("test-container  1.0        karaf   yes          autoscale               success"));
 	}
 }

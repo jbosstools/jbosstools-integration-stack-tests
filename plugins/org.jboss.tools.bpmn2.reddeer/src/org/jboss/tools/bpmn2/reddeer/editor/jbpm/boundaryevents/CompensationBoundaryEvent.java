@@ -14,8 +14,7 @@ public class CompensationBoundaryEvent extends BoundaryEvent {
 		super(element);
 	}
 
-	public void setCompensationActivity(String activityName) {
-		propertiesHandler.setUp(new CompensationActivitySetUp(activityName));
+	public void setCompensationActivity(String activityName, boolean waitForCompletion) {
+		propertiesHandler.setUp(new CompensationActivitySetUp(activityName, waitForCompletion));
 	}
-
 }

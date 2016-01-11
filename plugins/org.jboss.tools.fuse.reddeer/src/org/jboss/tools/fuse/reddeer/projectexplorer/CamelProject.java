@@ -1,21 +1,21 @@
 package org.jboss.tools.fuse.reddeer.projectexplorer;
 
-import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.exception.CoreLayerException;
+import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
+import org.jboss.reddeer.eclipse.core.resources.Project;
+import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.fuse.reddeer.wizard.CamelXmlFileWizard;
 
@@ -69,10 +69,26 @@ public class CamelProject {
 		project.getProjectItem("Camel Contexts").getChildren().get(0).select();
 		try {
 			new ContextMenu("Run As", "2 Local Camel Context").select();
-		} catch (SWTLayerException | CoreLayerException ex) {
+		} catch (CoreLayerException ex) {
 			new ContextMenu("Run As", "1 Local Camel Context").select();
 		}
-		new WaitUntil(new ConsoleHasText("(CamelContext: camel-1) started"), TimePeriod.getCustom(30));
+
+		ConsoleHasText camel = new ConsoleHasText("Starting Camel ...");
+		ConsoleHasText jetty = new ConsoleHasText("Started Jetty Server");
+		boolean started = false;
+		for (int i = 0; i < 300; i++) {
+			if (camel.test() || jetty.test()) {
+				started = true;
+				break;
+			}
+			AbstractWait.sleep(TimePeriod.SHORT);
+		}
+		if (!started) {
+			new WaitTimeoutExpiredException("Console doesn't contains 'Starting Camel ...' or 'Started Jetty Server'");
+		}
+
+		AbstractWait.sleep(TimePeriod.NORMAL);
+		new WaitUntil(new ConsoleHasText("(CamelContext: camel-1) started"), TimePeriod.VERY_LONG);
 	}
 
 	public void runCamelContext(String name) {
@@ -80,17 +96,17 @@ public class CamelProject {
 		project.getProjectItem("src/main/resources", "META-INF", "spring", name).select();
 		try {
 			new ContextMenu("Run As", "2 Local Camel Context").select();
-		} catch (SWTLayerException | CoreLayerException ex) {
+		} catch (CoreLayerException ex) {
 			new ContextMenu("Run As", "1 Local Camel Context").select();
 		}
-		new WaitUntil(new ConsoleHasText("Total 1 routes, of which 1 is started."), TimePeriod.getCustom(300));
+		new WaitUntil(new ConsoleHasText("Total 1 routes, of which 1 is started."), TimePeriod.VERY_LONG);
 	}
 
 	public void runCamelContextWithoutTests(String name) {
 
 		project.getProjectItem("src/main/resources", "META-INF", "spring", name).select();
 		new ContextMenu("Run As", "3 Local Camel Context (without tests)").select();
-		new WaitUntil(new ConsoleHasText("Total 1 routes, of which 1 is started."), TimePeriod.getCustom(300));
+		new WaitUntil(new ConsoleHasText("Total 1 routes, of which 1 is started."), TimePeriod.VERY_LONG);
 	}
 
 	public void runApplicationContextWithoutTests(String name) {

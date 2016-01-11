@@ -1,7 +1,7 @@
 package org.jboss.tools.fuse.reddeer.preference;
 
-import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.jface.preference.PreferencePage;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 /**
  * Represents the SSH2 (Network Connections) preference page

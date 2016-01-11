@@ -12,14 +12,13 @@ import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.core.matcher.WithTooltipTextMatcher;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.views.log.LogMessage;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.fuse.reddeer.preference.ConsolePreferencePage;
 import org.jboss.tools.fuse.reddeer.preference.FuseToolingEditorPreferencePage;
-import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
 import org.jboss.tools.fuse.reddeer.view.ErrorLogView;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
+import org.jboss.tools.runtime.reddeer.utils.FuseServerManipulator;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -86,7 +85,7 @@ public class DefaultTest {
 		try {
 			console.terminateConsole();
 			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		} catch (SWTLayerException | CoreLayerException ex) {
+		} catch (CoreLayerException ex) {
 			log.warn("Cannot terminate a console. Perhaps there is no active console.");
 		}
 
@@ -111,8 +110,8 @@ public class DefaultTest {
 		ProjectFactory.deleteAllProjects();
 
 		log.info("Stopping and deleting configured servers");
-		ServerManipulator.deleteAllServers();
-		ServerManipulator.deleteAllServerRuntimes();
+		FuseServerManipulator.deleteAllServers();
+		FuseServerManipulator.deleteAllServerRuntimes();
 	}
 
 	/**

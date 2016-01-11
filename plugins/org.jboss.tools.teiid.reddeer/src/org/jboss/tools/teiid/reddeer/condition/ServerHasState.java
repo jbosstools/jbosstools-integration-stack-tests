@@ -1,10 +1,10 @@
 package org.jboss.tools.teiid.reddeer.condition;
 
 import org.apache.log4j.Logger;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 
 /**
  * Condition that specifies if a server has state either 'Stopped' or 'Started'

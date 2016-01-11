@@ -1,4 +1,4 @@
-package org.jboss.tools.fuse.reddeer.server;
+package org.jboss.tools.runtime.reddeer.utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,29 +18,29 @@ import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerLabel;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.swt.api.Tree;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.tools.fuse.reddeer.preference.ServerRuntimePreferencePage;
-import org.jboss.tools.fuse.reddeer.view.FuseShell;
-import org.jboss.tools.fuse.reddeer.wizard.ServerWizard;
+import org.jboss.tools.runtime.reddeer.preference.FuseServerRuntimePreferencePage;
+import org.jboss.tools.runtime.reddeer.view.TerminalView;
+import org.jboss.tools.runtime.reddeer.wizard.FuseModifyModulesPage;
+import org.jboss.tools.runtime.reddeer.wizard.FuseServerWizard;
 
 /**
  * Performs operation with a Fuse server
  * 
  * @author tsedmik
  */
-public class ServerManipulator {
+public class FuseServerManipulator {
 
-	private static final Logger log = Logger.getLogger(ServerManipulator.class);
+	private static final Logger log = Logger.getLogger(FuseServerManipulator.class);
 
 	public static void addServerRuntime(String type, String path) {
 
-		ServerRuntimePreferencePage serverRuntime = new ServerRuntimePreferencePage();
+		FuseServerRuntimePreferencePage serverRuntime = new FuseServerRuntimePreferencePage();
 		serverRuntime.open();
 		serverRuntime.addServerRuntime(type, path);
 		serverRuntime.ok();
@@ -48,7 +48,7 @@ public class ServerManipulator {
 
 	public static void editServerRuntime(String name, String path) {
 
-		ServerRuntimePreferencePage serverRuntime = new ServerRuntimePreferencePage();
+		FuseServerRuntimePreferencePage serverRuntime = new FuseServerRuntimePreferencePage();
 		serverRuntime.open();
 		serverRuntime.editServerRuntime(name, path);
 		serverRuntime.ok();
@@ -56,11 +56,11 @@ public class ServerManipulator {
 
 	public static void removeServerRuntime(String name) {
 
-		ServerRuntimePreferencePage serverRuntime = new ServerRuntimePreferencePage();
+		FuseServerRuntimePreferencePage serverRuntime = new FuseServerRuntimePreferencePage();
 		serverRuntime.open();
 		try {
 			serverRuntime.removeServerRuntime(name);
-		} catch (SWTLayerException | CoreLayerException ex) {
+		} catch (CoreLayerException ex) {
 			log.warn("Cannot remove '" + name + "' server runtime. It is not listed in Server Runtimes!");
 		}
 		serverRuntime.ok();
@@ -68,20 +68,20 @@ public class ServerManipulator {
 
 	public static void deleteAllServerRuntimes() {
 
-		ServerRuntimePreferencePage serverRuntime = new ServerRuntimePreferencePage();
+		FuseServerRuntimePreferencePage serverRuntime = new FuseServerRuntimePreferencePage();
 		serverRuntime.open();
 		try {
 			for (String runtime : serverRuntime.getServerRuntimes()) {
 				serverRuntime.removeServerRuntime(runtime);
 			}
-		} catch (SWTLayerException | CoreLayerException ex) {
+		} catch (CoreLayerException ex) {
 		}
 		serverRuntime.ok();
 	}
 
 	public static List<String> getServerRuntimes() {
 
-		ServerRuntimePreferencePage serverRuntime = new ServerRuntimePreferencePage();
+		FuseServerRuntimePreferencePage serverRuntime = new FuseServerRuntimePreferencePage();
 		serverRuntime.open();
 		List<String> temp = serverRuntime.getServerRuntimes();
 		serverRuntime.cancel();
@@ -100,7 +100,7 @@ public class ServerManipulator {
 	public static void addServer(String type, String hostname, String name, String portNumber, String userName,
 			String password, String... projects) {
 
-		ServerWizard serverWizard = new ServerWizard();
+		FuseServerWizard serverWizard = new FuseServerWizard();
 		serverWizard.setType(type);
 		serverWizard.setHostName(hostname);
 		serverWizard.setName(name);
@@ -169,7 +169,7 @@ public class ServerManipulator {
 	public static void stopServer(String name) {
 
 		try {
-			new FuseShell().execute("log:clear");
+			new TerminalView().execute("log:clear");
 			ServersView serversView = new ServersView();
 			serversView.open();
 			Server server = serversView.getServer(name);
@@ -190,7 +190,7 @@ public class ServerManipulator {
 			for (TreeItem item : tree.getItems()) {
 				temp.add(new ServerLabel(item).getName());
 			}
-		} catch (CoreLayerException | SWTLayerException e) {
+		} catch (CoreLayerException e) {
 			return temp;
 		}
 

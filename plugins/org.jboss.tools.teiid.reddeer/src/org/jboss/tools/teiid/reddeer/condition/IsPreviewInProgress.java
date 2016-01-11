@@ -2,11 +2,11 @@ package org.jboss.tools.teiid.reddeer.condition;
 
 import org.eclipse.swt.widgets.Shell;
 import org.hamcrest.Matcher;
-import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.core.lookup.ShellLookup;
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.core.lookup.ShellLookup;
 
 public class IsPreviewInProgress extends AbstractWaitCondition {
 	private static final Logger log = Logger.getLogger(IsPreviewInProgress.class);

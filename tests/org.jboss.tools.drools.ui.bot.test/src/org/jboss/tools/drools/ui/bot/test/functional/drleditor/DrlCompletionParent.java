@@ -1,5 +1,8 @@
 package org.jboss.tools.drools.ui.bot.test.functional.drleditor;
 
+import static org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType.ERROR;
+import static org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType.WARNING;
+
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -8,7 +11,6 @@ import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.drools.reddeer.editor.ContentAssist;
 import org.jboss.tools.drools.reddeer.editor.DrlEditor;
@@ -43,8 +45,8 @@ public abstract class DrlCompletionParent extends TestParent {
 
 		ProblemsView problems = new ProblemsView();
 		problems.open();
-		errors = problems.getProblems(ProblemType.ERROR).size();
-		warnings = problems.getProblems(ProblemType.WARNING).size();
+		errors = problems.getProblems(ERROR).size();
+		warnings = problems.getProblems(WARNING).size();
 
 		// create RuleResource
 		NewRuleResourceWizard wiz = new NewRuleResourceWizard();
@@ -90,12 +92,12 @@ public abstract class DrlCompletionParent extends TestParent {
 		ProblemsView problems = new ProblemsView();
 		problems.open();
 
-		List<Problem> items = problems.getProblems(ProblemType.ERROR);
+		List<Problem> items = problems.getProblems(ERROR);
 		for (Problem error : items) {
 			LOGGER.debug(error.getDescription());
 		}
 		Assert.assertEquals("New errors occured!", errors, items.size());
-		items = problems.getProblems(ProblemType.WARNING);
+		items = problems.getProblems(WARNING);
 		for (Problem warning : items) {
 			LOGGER.debug(warning.getDescription());
 		}

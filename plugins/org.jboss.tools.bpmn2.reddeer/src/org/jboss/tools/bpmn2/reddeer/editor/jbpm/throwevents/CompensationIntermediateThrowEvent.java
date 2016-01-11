@@ -14,7 +14,7 @@ public class CompensationIntermediateThrowEvent extends Element {
 		super(element);
 	}
 
-	public void setCompensationActivity(String activityName) {
-		propertiesHandler.setUp(new CompensationActivitySetUp(activityName));
+	public void setCompensationActivity(String activityName, boolean waitForCompletion) {
+		propertiesHandler.setUp(new CompensationActivitySetUp(activityName, waitForCompletion));
 	}
 }

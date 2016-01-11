@@ -4,7 +4,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.ElementContainer;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.properties.PropertiesTabs;
 import org.jboss.tools.bpmn2.reddeer.properties.setup.ComboSetUp;
-import org.jboss.tools.bpmn2.reddeer.properties.setup.LabeledTextSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.MultipleInstanceIteratorSetUp;
 
 public class MultipleInstancesSubProcess extends ElementContainer {
 
@@ -18,7 +18,6 @@ public class MultipleInstancesSubProcess extends ElementContainer {
 	}
 
 	public void setIteratorTroughCollection(String iteratorName) {
-		propertiesHandler
-				.setUp(new LabeledTextSetUp(PropertiesTabs.SUB_PROCESS_TAB, "Input Instance Parameter", iteratorName));
+		propertiesHandler.setUp(new MultipleInstanceIteratorSetUp(PropertiesTabs.SUB_PROCESS_TAB, iteratorName));
 	}
 }

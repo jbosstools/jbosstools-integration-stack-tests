@@ -17,9 +17,9 @@ import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.tools.fuse.reddeer.preference.ServerRuntimePreferencePage;
-import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
 import org.jboss.tools.fuse.reddeer.utils.ResourceHelper;
+import org.jboss.tools.runtime.reddeer.preference.FuseServerRuntimePreferencePage;
+import org.jboss.tools.runtime.reddeer.utils.FuseServerManipulator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -60,7 +60,7 @@ public class DownloadServerTest extends DefaultTest {
 	@Test
 	public void testDownloadServerRuntimeTest() {
 
-		new ServerRuntimePreferencePage().open();
+		new FuseServerRuntimePreferencePage().open();
 		new PushButton(ADD_BUTTON).click();
 		new DefaultShell(NEW_WINDOW).setFocus();
 		new DefaultTreeItem(SERVER_SECTION, SERVER_TYPE).select();
@@ -110,6 +110,6 @@ public class DownloadServerTest extends DefaultTest {
 		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(3600));
 		AbstractWait.sleep(TimePeriod.getCustom(2));
 		new PushButton(FINISH_BUTTON).click();
-		assertEquals(1, ServerManipulator.getServerRuntimes().size());
+		assertEquals(1, FuseServerManipulator.getServerRuntimes().size());
 	}
 }
