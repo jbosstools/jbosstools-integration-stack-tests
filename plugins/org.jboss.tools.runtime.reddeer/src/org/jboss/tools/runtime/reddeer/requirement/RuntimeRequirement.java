@@ -39,7 +39,10 @@ public class RuntimeRequirement implements Requirement<Runtime>, CustomConfigura
 	public void fulfill() {
 		RuntimeBase runtimeFamily = config.getRuntimeFamily();
 		if (!runtimeFamily.exists()) {
+			LOGGER.info("Creating runtime '" + runtimeFamily.getName() + "'.");
 			runtimeFamily.create();
+		} else {
+			LOGGER.info("Runtime '" + runtimeFamily.getName() + "' already exists.");
 		}
 	}
 

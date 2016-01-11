@@ -2,6 +2,7 @@ package org.jboss.tools.fuse.ui.bot.test;
 
 import static org.jboss.reddeer.requirements.server.ServerReqState.RUNNING;
 import static org.jboss.tools.runtime.reddeer.requirement.ServerReqType.EAP;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -12,11 +13,11 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
-import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
 import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
+import org.jboss.tools.runtime.reddeer.utils.FuseServerManipulator;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -56,7 +57,7 @@ public class DeploymentEAPTest extends DefaultTest {
 	@After
 	public void setupManageServers() {
 
-		ServerManipulator.removeAllModules(serverRequirement.getConfig().getName());
+		FuseServerManipulator.removeAllModules(serverRequirement.getConfig().getName());
 	}
 
 	/**
@@ -71,27 +72,30 @@ public class DeploymentEAPTest extends DefaultTest {
 	 * <li>check if the server contains the project in Add and Remove ... dialog window</li>
 	 * <li>start the server</li>
 	 * <li>open Fuse Shell view and execute command log:display</li>
-	 * <li>check if Fuse Shell view contains text TODO</li>
+	 * <li>check if Fuse Shell view contains text "(CamelContext: spring-context) started"</li>
+	 * <li>check if Fuse Shell view contains text "Deployed "wildfly-spring.war""</li>
+	 * <li>open Browser View and try to open URL "http://localhost:8080/wildfly-spring"</li>
 	 * <li>remove all deployed modules</li>
 	 * <li>open Fuse Shell view and execute command log:display</li>
-	 * <li>check if Fuse Shell view contains text TODO</li>
+	 * <li>check if Fuse Shell view contains text "(CamelContext: spring-context) is shutdown"</li>
+	 * <li>check if Fuse Shell view contains text "Undeployed "wildfly-spring.war""</li>
 	 * </ol>
 	 */
 	@Test
 	public void testDeployment() {
 
-		ServerManipulator.addModule(serverRequirement.getConfig().getName(), PROJECT_NAME);
-		assertTrue(ServerManipulator.hasServerModule(serverRequirement.getConfig().getName(), PROJECT_NAME));
+		FuseServerManipulator.addModule(serverRequirement.getConfig().getName(), PROJECT_NAME);
+		assertTrue(FuseServerManipulator.hasServerModule(serverRequirement.getConfig().getName(), PROJECT_NAME));
 		new WaitUntil(new ConsoleHasText("(CamelContext: spring-context) started"));
 		new WaitUntil(new ConsoleHasText("Deployed \"wildfly-spring.war\""));
 		BrowserView browser = new BrowserView();
 		browser.open();
 		browser.openPageURL("http://localhost:8080/wildfly-spring");
-		assertTrue(browser.getText().contains("Hello null"));
-		ServerManipulator.removeAllModules(serverRequirement.getConfig().getName());
+		assertEquals("Hello null", browser.getText());
+		FuseServerManipulator.removeAllModules(serverRequirement.getConfig().getName());
 		new WaitUntil(new ConsoleHasText("(CamelContext: spring-context) is shutdown"));
 		new WaitUntil(new ConsoleHasText("Undeployed \"wildfly-spring.war\""));
-		assertFalse(ServerManipulator.hasServerModule(serverRequirement.getConfig().getName(), PROJECT_NAME));
+		assertFalse(FuseServerManipulator.hasServerModule(serverRequirement.getConfig().getName(), PROJECT_NAME));
 		browser.open();
 		browser.openPageURL("http://localhost:8080/wildfly-spring");
 		assertTrue(browser.getText().contains("404"));

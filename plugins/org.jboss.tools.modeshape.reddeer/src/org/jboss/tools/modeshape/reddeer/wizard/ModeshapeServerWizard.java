@@ -47,6 +47,7 @@ public class ModeshapeServerWizard extends WizardDialog {
 		String message = new SWTWorkbenchBot().label(1).getText();
 		assertEquals(message, "Successfully connected using the specified server properties.", message);
 		new PushButton("OK").click();
+		activate();
 
 		return this;
 	}

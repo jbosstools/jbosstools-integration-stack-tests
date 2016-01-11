@@ -147,6 +147,7 @@ public class ServerKaraf extends ServerBase {
 		// Add server
 		ServerWizard serverWizard = new ServerWizard();
 		serverWizard.open();
+		AbstractWait.sleep(TimePeriod.SHORT);
 		serverWizard.setType(getCategory(), getServerType());
 		serverWizard.setName(getName());
 		serverWizard.setRuntime(getRuntimeName());

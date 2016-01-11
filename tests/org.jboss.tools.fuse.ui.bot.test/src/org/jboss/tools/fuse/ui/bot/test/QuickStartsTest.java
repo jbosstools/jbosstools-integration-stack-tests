@@ -17,11 +17,11 @@ import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.fuse.reddeer.condition.FuseLogContainsText;
 import org.jboss.tools.fuse.reddeer.preference.ConsolePreferencePage;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
-import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
 import org.jboss.tools.fuse.reddeer.view.ErrorLogView;
 import org.jboss.tools.fuse.reddeer.wizard.ImportMavenWizard;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
+import org.jboss.tools.runtime.reddeer.utils.FuseServerManipulator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -61,7 +61,7 @@ public class QuickStartsTest {
 	 * Prepares test environment
 	 */
 	@Before
-	public void defaultSetup() {
+	public void setupDefault() {
 
 		new WorkbenchShell();
 		new ErrorLogView().deleteLog();
@@ -75,7 +75,7 @@ public class QuickStartsTest {
 
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		new WorkbenchShell();
-		ServerManipulator.removeAllModules(serverRequirement.getConfig().getName());
+		FuseServerManipulator.removeAllModules(serverRequirement.getConfig().getName());
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class QuickStartsTest {
 		assertTrue(new ProblemsView().getProblems(ProblemType.ERROR).size() == 0);
 		CamelProject project = new CamelProject("beginner-camel-cbr");
 		project.enableCamelNature();
-		ServerManipulator.addModule(serverRequirement.getConfig().getName(), "beginner-camel-cbr");
+		FuseServerManipulator.addModule(serverRequirement.getConfig().getName(), "beginner-camel-cbr");
 		try {
 			new WaitUntil(new FuseLogContainsText("(CamelContext: cbr-example-context) started"));
 		} catch (WaitTimeoutExpiredException e) {
@@ -131,7 +131,7 @@ public class QuickStartsTest {
 		assertTrue(new ProblemsView().getProblems(ProblemType.ERROR).size() == 0);
 		CamelProject project = new CamelProject("beginner-camel-eips");
 		project.enableCamelNature();
-		ServerManipulator.addModule(serverRequirement.getConfig().getName(), "beginner-camel-eips");
+		FuseServerManipulator.addModule(serverRequirement.getConfig().getName(), "beginner-camel-eips");
 		try {
 			new WaitUntil(new FuseLogContainsText("(CamelContext: eip-example-context) started"));
 		} catch (WaitTimeoutExpiredException e) {
@@ -162,7 +162,7 @@ public class QuickStartsTest {
 		assertTrue(new ProblemsView().getProblems(ProblemType.ERROR).size() == 0);
 		CamelProject project = new CamelProject("beginner-camel-errorhandler");
 		project.enableCamelNature();
-		ServerManipulator.addModule(serverRequirement.getConfig().getName(), "beginner-camel-errorhandler");
+		FuseServerManipulator.addModule(serverRequirement.getConfig().getName(), "beginner-camel-errorhandler");
 		try {
 			new WaitUntil(new FuseLogContainsText("(CamelContext: errors-example-context) started"));
 		} catch (WaitTimeoutExpiredException e) {
@@ -192,7 +192,7 @@ public class QuickStartsTest {
 		assertTrue(new ProblemsView().getProblems(ProblemType.ERROR).size() == 0);
 		CamelProject project = new CamelProject("beginner-camel-log");
 		project.enableCamelNature();
-		ServerManipulator.addModule(serverRequirement.getConfig().getName(), "beginner-camel-log");
+		FuseServerManipulator.addModule(serverRequirement.getConfig().getName(), "beginner-camel-log");
 		try {
 			new WaitUntil(new FuseLogContainsText("(CamelContext: log-example-context) started"));
 		} catch (WaitTimeoutExpiredException e) {

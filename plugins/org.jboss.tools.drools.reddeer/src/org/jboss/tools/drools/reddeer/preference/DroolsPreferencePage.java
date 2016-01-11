@@ -1,8 +1,8 @@
 package org.jboss.tools.drools.reddeer.preference;
 
+import org.jboss.reddeer.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.jface.preference.PreferencePage;
 
 /**
  * Drools preference page.

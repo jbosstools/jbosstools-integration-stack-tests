@@ -17,7 +17,6 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.tools.fuse.reddeer.condition.FuseLogContainsText;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.preference.ConsolePreferencePage;
-import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
 import org.jboss.tools.fuse.reddeer.view.ErrorLogView;
 import org.jboss.tools.fuse.reddeer.view.JMXNavigator;
 import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
@@ -26,6 +25,7 @@ import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
+import org.jboss.tools.runtime.reddeer.utils.FuseServerManipulator;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -81,7 +81,7 @@ public class JMXNavigatorServerTest {
 
 		ProjectFactory.createProject(PROJECT_NAME, PROJECT_ARCHETYPE);
 		serverName = serverReq.getConfig().getName();
-		ServerManipulator.addModule(serverName, PROJECT_NAME);
+		FuseServerManipulator.addModule(serverName, PROJECT_NAME);
 
 		// Deleting Error Log
 		new ErrorLogView().deleteLog();
@@ -113,8 +113,8 @@ public class JMXNavigatorServerTest {
 		new ProjectExplorer().deleteAllProjects();
 
 		// Stopping and deleting configured servers
-		ServerManipulator.deleteAllServers();
-		ServerManipulator.deleteAllServerRuntimes();
+		FuseServerManipulator.deleteAllServers();
+		FuseServerManipulator.deleteAllServerRuntimes();
 	}
 
 	/**

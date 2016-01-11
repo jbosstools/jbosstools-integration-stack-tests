@@ -31,12 +31,12 @@ public class ComplexCompensationEventTest extends JBPM6ComplexTest {
 
 		CompensationIntermediateThrowEvent throwEvent = (CompensationIntermediateThrowEvent) userTask
 				.append("ThrowCompensation", ElementType.COMPENSATION_INTERMEDIATE_THROW_EVENT);
-		throwEvent.setCompensationActivity("WillBeReRun");
+		throwEvent.setCompensationActivity("WillBeReRun", true);
 		throwEvent.connectTo(new EndEvent("EndProcess"));
 
 		CompensationBoundaryEvent handlerStart = (CompensationBoundaryEvent) userTask.addEvent("HandlerStart",
 				ElementType.COMPENSATION_BOUNDARY_EVENT);
-		handlerStart.setCompensationActivity("Handler");
+		handlerStart.setCompensationActivity("Handler", true);
 	}
 
 	@TestPhase(phase = Phase.RUN)

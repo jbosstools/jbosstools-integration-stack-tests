@@ -1,4 +1,4 @@
-package org.jboss.tools.fuse.reddeer.wizard;
+package org.jboss.tools.runtime.reddeer.wizard;
 
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesPage;
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
@@ -16,7 +16,7 @@ import org.jboss.reddeer.common.wait.WaitUntil;
  * 
  * @author tsedmik
  */
-public class ServerWizard extends NewWizardDialog {
+public class FuseServerWizard extends NewWizardDialog {
 
 	private static final String SERVER_SECTION = "JBoss Fuse";
 	private static final String HOST_NAME = "Server's host name:";
@@ -33,7 +33,7 @@ public class ServerWizard extends NewWizardDialog {
 	private String password;
 	private String[] projects;
 
-	public ServerWizard() {
+	public FuseServerWizard() {
 		super("Server", "Server");
 	}
 

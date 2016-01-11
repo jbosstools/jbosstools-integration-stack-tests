@@ -1,4 +1,4 @@
-package org.jboss.tools.fuse.reddeer.server;
+package org.jboss.tools.runtime.reddeer.wizard;
 
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesPage;
 import org.jboss.reddeer.swt.impl.button.CheckBox;

@@ -4,11 +4,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -16,25 +11,29 @@ import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.C
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.fuse.reddeer.condition.FuseLogContainsText;
 import org.jboss.tools.fuse.reddeer.debug.BreakpointsView;
 import org.jboss.tools.fuse.reddeer.debug.IsRunning;
 import org.jboss.tools.fuse.reddeer.debug.ResumeButton;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
-import org.jboss.tools.fuse.reddeer.preference.ServerRuntimePreferencePage;
-import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
 import org.jboss.tools.fuse.reddeer.utils.ResourceHelper;
 import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
-import org.jboss.tools.runtime.reddeer.impl.ServerKaraf;
+import org.jboss.tools.runtime.reddeer.preference.FuseServerRuntimePreferencePage;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
+import org.jboss.tools.runtime.reddeer.utils.FuseServerManipulator;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -60,8 +59,8 @@ public class RegressionFuseTest extends DefaultTest {
 	public void setupClean() {
 
 		String server = serverRequirement.getConfig().getName();
-		if (ServerManipulator.isServerStarted(server)) {
-			ServerManipulator.stopServer(server);
+		if (FuseServerManipulator.isServerStarted(server)) {
+			FuseServerManipulator.stopServer(server);
 		}
 		new ProjectExplorer().deleteAllProjects();
 	}
@@ -76,7 +75,7 @@ public class RegressionFuseTest extends DefaultTest {
 	@Test
 	public void issue_1067() {
 
-		new ServerRuntimePreferencePage().open();
+		new FuseServerRuntimePreferencePage().open();
 
 		new PushButton("Add...").click();
 		new DefaultShell("New Server Runtime Environment").setFocus();
@@ -104,8 +103,7 @@ public class RegressionFuseTest extends DefaultTest {
 
 		// tests the _Cancel_ button
 		AbstractWait.sleep(TimePeriod.SHORT);
-		ServerKaraf fuse = (ServerKaraf) serverRequirement.getConfig().getServerBase();
-		new DefaultTreeItem("JBoss Fuse", fuse.getRuntimeType()).select();
+		new DefaultTreeItem("JBoss Fuse", serverRequirement.getConfig().getServerBase().getName()).select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new PushButton("Cancel").click();
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -142,8 +140,8 @@ public class RegressionFuseTest extends DefaultTest {
 		String server = serverRequirement.getConfig().getName();
 		new BreakpointsView().importBreakpoints(
 				ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID, "resources/breakpoint.bkpt"));
-		ServerManipulator.debugServer(server);
-		ServerManipulator.addModule(server, "camel-blueprint");
+		FuseServerManipulator.debugServer(server);
+		FuseServerManipulator.addModule(server, "camel-blueprint");
 		try {
 			new WaitUntil(new ShellWithTextIsAvailable("Confirm Perspective Switch"), TimePeriod.LONG);
 			new DefaultShell("Confirm Perspective Switch");
@@ -160,7 +158,7 @@ public class RegressionFuseTest extends DefaultTest {
 			if (resume.isEnabled()) {
 				resume.select();
 			}
-			ServerManipulator.removeAllModules(server);
+			FuseServerManipulator.removeAllModules(server);
 		}
 	}
 
@@ -179,10 +177,10 @@ public class RegressionFuseTest extends DefaultTest {
 
 		ProjectFactory.createProject("camel-spring-dm", "camel-archetype-spring-dm");
 		String server = serverRequirement.getConfig().getName();
-		ServerManipulator.startServer(server);
-		ServerManipulator.addModule(server, "camel-spring-dm");
+		FuseServerManipulator.startServer(server);
+		FuseServerManipulator.addModule(server, "camel-spring-dm");
 		AbstractWait.sleep(TimePeriod.NORMAL);
-		ServerManipulator.removeAllModules(server);
+		FuseServerManipulator.removeAllModules(server);
 		new WaitUntil(
 				new FuseLogContainsText(
 						"Application context succesfully closed (OsgiBundleXmlApplicationContext(bundle=camel-spring-dm"),
@@ -204,9 +202,9 @@ public class RegressionFuseTest extends DefaultTest {
 
 		ProjectFactory.createProject("camel-blueprint", "camel-archetype-blueprint");
 		String server = serverRequirement.getConfig().getName();
-		ServerManipulator.addModule(server, "camel-blueprint");
-		ServerManipulator.startServer(server);
-		ServerManipulator.restartInDebug(server);
+		FuseServerManipulator.addModule(server, "camel-blueprint");
+		FuseServerManipulator.startServer(server);
+		FuseServerManipulator.restartInDebug(server);
 		try {
 			new WaitUntil(new ShellWithTextIsAvailable("Problem Occurred"));
 			new DefaultShell("Problem Occurred");
