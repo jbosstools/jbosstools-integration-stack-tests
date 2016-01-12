@@ -18,15 +18,15 @@ public class WarIsDeployed extends AbstractWaitCondition {
 		server = new ServersView().getServer(serverName);
 		this.warName = warName;
 	}
-	
+
 	@Override
 	public boolean test() {
-		try{
+		try {
 			ModuleLabel label = server.getModule(new RegexMatcher(".*" + warName + ".*")).getLabel();
 			return ServerPublishState.SYNCHRONIZED.equals(label.getPublishState())
 					&& ServerState.STARTED.equals(label.getState());
-			
-		} catch (EclipseLayerException ex){
+
+		} catch (EclipseLayerException ex) {
 			return false;
 		}
 	}

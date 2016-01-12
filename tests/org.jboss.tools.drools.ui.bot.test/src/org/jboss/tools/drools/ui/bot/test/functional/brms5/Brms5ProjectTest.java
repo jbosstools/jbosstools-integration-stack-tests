@@ -76,8 +76,7 @@ public class Brms5ProjectTest extends TestParent {
 		problems.open();
 		waitASecond();
 		Assert.assertEquals("There are errors in newly created project.", errors, problems.getProblems(ERROR).size());
-		Assert.assertEquals("There are warnings in newly created project.", warnings,
-				problems.getProblems(WARNING).size());
+		Assert.assertEquals("There are warnings in newly created project.", warnings, problems.getProblems(WARNING).size());
 
 		explorer.getProject(projectName).delete(true);
 		Assert.assertFalse("Project was not deleted.", explorer.containsProject(projectName));

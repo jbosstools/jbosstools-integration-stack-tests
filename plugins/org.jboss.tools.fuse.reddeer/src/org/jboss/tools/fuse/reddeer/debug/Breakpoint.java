@@ -2,6 +2,7 @@ package org.jboss.tools.fuse.reddeer.debug;
 
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.core.exception.CoreLayerException;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 
@@ -57,7 +58,7 @@ public class Breakpoint extends DefaultTreeItem {
 		try {
 			ContextMenu menuitem = new ContextMenu(operation);
 			return menuitem.isEnabled();
-		} catch (CoreLayerException ex) {
+		} catch (SWTLayerException | CoreLayerException ex) {
 			log.debug("Operation '" + operation + "' not found!");
 			return false;
 		}

@@ -98,8 +98,8 @@ public class WsdlImportWizard extends TeiidImportWizard {
 
 		new PushButton("Next >").click();
 		new PushButton("Next >").click();
-		
-		for (String operation : operations){
+
+		for (String operation : operations) {
 			new DefaultCombo(new DefaultGroup("Operations"), 0).setSelection(operation);
 
 			for (String path : requestElements) {
