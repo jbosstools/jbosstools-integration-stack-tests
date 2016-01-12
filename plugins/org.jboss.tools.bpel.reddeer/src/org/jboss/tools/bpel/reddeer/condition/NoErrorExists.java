@@ -21,7 +21,7 @@ public class NoErrorExists extends AbstractWaitCondition {
 	public boolean test() {
 		ProblemsView problemsView = new ProblemsView();
 		problemsView.open();
-		problemsView.getProblems(ProblemType.ERROR);
+		errors = problemsView.getProblems(ProblemType.ERROR);
 		return errors.isEmpty();
 	}
 

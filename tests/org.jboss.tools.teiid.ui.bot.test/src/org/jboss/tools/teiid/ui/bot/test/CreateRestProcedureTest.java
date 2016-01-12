@@ -173,8 +173,7 @@ public class CreateRestProcedureTest {
 		} catch (Exception ex) {
 			new PushButton("Cancel").click();
 		}
-		
-		
+
 		openRestProcedureWizard(SOURCE_MODEL_NAME);
 
 		wizard = new GenerateRestProcedureWizard().setProject(PROJECT_NAME);
@@ -185,7 +184,7 @@ public class CreateRestProcedureTest {
 		} catch (Exception ex) {
 			new PushButton("Cancel").click();
 		}
-		
+
 		teiidBot.modelEditor(SOURCE_MODEL_NAME).close();
 	}
 

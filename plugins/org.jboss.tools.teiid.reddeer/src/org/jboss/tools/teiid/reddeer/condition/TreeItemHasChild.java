@@ -8,7 +8,7 @@ public class TreeItemHasChild extends AbstractWaitCondition {
 
 	private final TreeItem treeItem;
 	private TreeItemTextMatcher matcher;
-	
+
 	public TreeItemHasChild(TreeItem treeItem, TreeItemTextMatcher matcher) {
 		this.treeItem = treeItem;
 		this.matcher = matcher;
@@ -16,8 +16,8 @@ public class TreeItemHasChild extends AbstractWaitCondition {
 
 	@Override
 	public boolean test() {
-		for (TreeItem it : treeItem.getItems()){
-			if (matcher.matches(it.getSWTWidget())){
+		for (TreeItem it : treeItem.getItems()) {
+			if (matcher.matches(it.getSWTWidget())) {
 				return true;
 			}
 		}

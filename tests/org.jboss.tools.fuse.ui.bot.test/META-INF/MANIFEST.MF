@@ -8,11 +8,11 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.osgi,
  org.eclipse.core.runtime,
  org.junit;bundle-version="4.12.0",
- org.jboss.tools.fuse.reddeer;bundle-version="4.3.0",
  org.jboss.reddeer.go;bundle-version="1.0.0",
  org.jboss.reddeer.gef;bundle-version="1.0.0",
  org.jboss.reddeer.graphiti;bundle-version="1.0.0",
- org.jboss.tools.runtime.reddeer
+ org.jboss.tools.runtime.reddeer;bundle-version="4.3.0",
+ org.jboss.tools.fuse.reddeer;bundle-version="4.3.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Vendor: JBoss by Red Hat

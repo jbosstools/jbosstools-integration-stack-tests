@@ -3,6 +3,8 @@ package org.jboss.tools.teiid.ui.bot.test;
 import java.util.Properties;
 
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
@@ -55,8 +57,8 @@ public class WARTest extends SWTBotTestCase {
 
 		// JBossWS-CXF war
 		new ImportManager().importProject("resources/projects/BooksWS");
-		new ModelExplorerManager().changeConnectionProfile(ConnectionProfilesConstants.ORACLE_11G_BOOKS,
-				projectBooksWS, "books.xmi");
+		new ModelExplorerManager().changeConnectionProfile(ConnectionProfilesConstants.ORACLE_11G_BOOKS, projectBooksWS,
+				"books.xmi");
 		vdbManager.createVDB(projectBooksWS, vdbCheckBook);
 		vdbManager.addModelsToVDB(projectBooksWS, vdbCheckBook, new String[] { "checkBookWS.xmi" });
 		vdbManager.deployVDB(pathToCheckBookVDB);
@@ -109,7 +111,7 @@ public class WARTest extends SWTBotTestCase {
 		warProps.setProperty("saveLocation", teiidBot.toAbsolutePath("target"));
 		warProps.setProperty("securityType", WAR.HTTPBasic_SECURITY);
 		warProps.setProperty("realm", "teiid-security");
-		warProps.setProperty("role", "user");// / this has to be set also in teiid-security-users,roles
+		warProps.setProperty("role", "user");// this has to be set also in teiid-security-users,roles
 		// http://localhost:8080/checkBookVdbBasic/BooksInterface?wsdl
 
 		new VDBManager().createWAR(warProps, pathToCheckBookVDB);

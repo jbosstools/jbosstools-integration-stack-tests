@@ -16,7 +16,7 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.reddeer.go;bundle-version="1.0.0",
  org.jboss.reddeer.gef;bundle-version="1.0.0",
  org.jboss.reddeer.graphiti;bundle-version="1.0.0",
- org.jboss.tools.runtime.reddeer
+ org.jboss.tools.runtime.reddeer;bundle-version="4.3.0"
 Export-Package: org.jboss.tools.fuse.reddeer.component,
  org.jboss.tools.fuse.reddeer.condition,
  org.jboss.tools.fuse.reddeer.debug,

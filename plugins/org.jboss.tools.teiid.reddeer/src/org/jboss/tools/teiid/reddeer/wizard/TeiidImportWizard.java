@@ -28,9 +28,9 @@ public abstract class TeiidImportWizard extends ImportWizardDialog {
 		super.finish();
 		// wait for 'Progress Information'
 		log.info("Progress waiting started ...");
-		try{
+		try {
 			new WaitWhile(new IsInProgress(), TimePeriod.VERY_LONG);
-		} catch(WaitTimeoutExpiredException ex){
+		} catch (WaitTimeoutExpiredException ex) {
 			new PushButton("Cancel").click();
 			throw ex;
 		}
