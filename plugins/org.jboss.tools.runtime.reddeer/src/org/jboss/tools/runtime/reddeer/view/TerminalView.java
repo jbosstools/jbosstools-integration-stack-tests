@@ -1,25 +1,25 @@
-package org.jboss.tools.fuse.reddeer.view;
+package org.jboss.tools.runtime.reddeer.view;
 
 import java.io.IOException;
 
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
-import org.jboss.tools.fuse.reddeer.utils.ShellManager;
+import org.jboss.tools.runtime.reddeer.utils.ShellManager;
 
 import com.jcraft.jsch.JSchException;
 
 /**
- * Performs operations with the <i>Fuse Shell</i> view. Command execution is performed via SSH (not via JBoss Fuse
- * Tooling).
+ * Performs operations with the <i>Fuse Shell</i> in <i>Terminal</i> view. Command execution is performed via SSH (not
+ * via JBoss Fuse Tooling).
  * 
  * @author tsedmik
  */
-public class FuseShell extends WorkbenchView {
+public class TerminalView extends WorkbenchView {
 
-	public FuseShell() {
-		super("Fuse", "Shell");
+	public TerminalView() {
+		super("Terminal", "Terminal");
 	}
 
 	/**

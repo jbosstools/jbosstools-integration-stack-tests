@@ -11,11 +11,11 @@ import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.label.DefaultLabel;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
-import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
 import org.jboss.tools.runtime.reddeer.impl.ServerKaraf;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
+import org.jboss.tools.runtime.reddeer.utils.FuseServerManipulator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -50,7 +50,7 @@ public class ServerJRETest extends DefaultTest {
 
 		ServerKaraf fuse = (ServerKaraf) serverRequirement.getConfig().getServerBase();
 		assertNotNull("Different JRE is not specified!", fuse.getJre());
-		ServerManipulator.startServer(fuse.getName());
+		FuseServerManipulator.startServer(fuse.getName());
 		new ConsoleView().open();
 		assertTrue(new DefaultLabel().getText().contains(fuse.getJre()));
 	}

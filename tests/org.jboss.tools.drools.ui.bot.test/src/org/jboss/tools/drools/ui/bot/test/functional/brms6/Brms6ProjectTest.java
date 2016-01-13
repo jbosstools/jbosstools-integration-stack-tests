@@ -1,5 +1,8 @@
 package org.jboss.tools.drools.ui.bot.test.functional.brms6;
 
+import static org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType.ERROR;
+import static org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType.WARNING;
+
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -13,7 +16,6 @@ import org.jboss.reddeer.eclipse.jdt.ui.ide.NewJavaProjectWizardPage;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.TreeItem;
@@ -56,8 +58,8 @@ public class Brms6ProjectTest extends TestParent {
 		ProblemsView problems = new ProblemsView();
 		problems.open();
 		waitASecond();
-		final int errors = problems.getProblems(ProblemType.ERROR).size();
-		final int warnings = problems.getProblems(ProblemType.WARNING).size();
+		final int errors = problems.getProblems(ERROR).size();
+		final int warnings = problems.getProblems(WARNING).size();
 
 		NewDroolsProjectWizard wiz = new NewDroolsProjectWizard();
 		wiz.open();
@@ -84,10 +86,9 @@ public class Brms6ProjectTest extends TestParent {
 		problems = new ProblemsView();
 		problems.open();
 		waitASecond();
-		Assert.assertEquals("There are errors in newly created project.", errors,
-				problems.getProblems(ProblemType.ERROR).size());
+		Assert.assertEquals("There are errors in newly created project.", errors, problems.getProblems(ERROR).size());
 		Assert.assertEquals("There are warnings in newly created project.", warnings,
-				problems.getProblems(ProblemType.WARNING).size());
+				problems.getProblems(WARNING).size());
 
 		explorer.getProject(projectName).delete(true);
 		Assert.assertFalse("Project was not deleted.", explorer.containsProject(projectName));
@@ -103,8 +104,8 @@ public class Brms6ProjectTest extends TestParent {
 		ProblemsView problems = new ProblemsView();
 		problems.open();
 		waitASecond();
-		final int errors = problems.getProblems(ProblemType.ERROR).size();
-		final int warnings = problems.getProblems(ProblemType.WARNING).size();
+		final int errors = problems.getProblems(ERROR).size();
+		final int warnings = problems.getProblems(WARNING).size();
 
 		// create new runtime
 		DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
@@ -130,8 +131,8 @@ public class Brms6ProjectTest extends TestParent {
 		problems = new ProblemsView();
 		problems.open();
 		waitASecond();
-		Assert.assertEquals("New errors occured.", errors, problems.getProblems(ProblemType.ERROR).size());
-		Assert.assertEquals("New warnings occured.", warnings, problems.getProblems(ProblemType.WARNING).size());
+		Assert.assertEquals("New errors occured.", errors, problems.getProblems(ERROR).size());
+		Assert.assertEquals("New warnings occured.", warnings, problems.getProblems(WARNING).size());
 	}
 
 	@Test

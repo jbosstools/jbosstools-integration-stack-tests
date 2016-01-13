@@ -18,12 +18,12 @@ import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.fuse.reddeer.condition.FuseLogContainsText;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
-import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
 import org.jboss.tools.fuse.reddeer.utils.ResourceHelper;
-import org.jboss.tools.fuse.reddeer.view.FuseShell;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
+import org.jboss.tools.runtime.reddeer.utils.FuseServerManipulator;
+import org.jboss.tools.runtime.reddeer.view.TerminalView;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -46,7 +46,7 @@ public class DataTransformationDeploymentTest extends DefaultTest {
 	 */
 	@BeforeClass
 	public static void setupStartServer() {
-		ServerManipulator.startServer(serverRequirement.getConfig().getName());
+		FuseServerManipulator.startServer(serverRequirement.getConfig().getName());
 	}
 
 	/**
@@ -54,8 +54,8 @@ public class DataTransformationDeploymentTest extends DefaultTest {
 	 */
 	@AfterClass
 	public static void setupStopServer() {
-		ServerManipulator.removeAllModules(serverRequirement.getConfig().getName());
-		ServerManipulator.stopServer(serverRequirement.getConfig().getName());
+		FuseServerManipulator.removeAllModules(serverRequirement.getConfig().getName());
+		FuseServerManipulator.stopServer(serverRequirement.getConfig().getName());
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class DataTransformationDeploymentTest extends DefaultTest {
 		project.close();
 		project.open();
 		project.enableCamelNature();
-		ServerManipulator.addModule(serverRequirement.getConfig().getName(), "XML-to-JSON");
+		FuseServerManipulator.addModule(serverRequirement.getConfig().getName(), "XML-to-JSON");
 
 		// invoke the route with copying a file
 		String from = ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID,
@@ -101,7 +101,7 @@ public class DataTransformationDeploymentTest extends DefaultTest {
 			new WaitUntil(new FuseLogContainsText(
 					"{\"custId\":\"ACME-123\",\"priority\":\"GOLD\",\"orderId\":\"[ORDER1]\",\"origin\":\"web\",\"approvalCode\":\"AUTO_OK\",\"lineItems\":[{\"itemId\":\"PICKLE\",\"amount\":1000,\"cost\":2.25},{\"itemId\":\"BANANA\",\"amount\":400,\"cost\":1.25}]}"));
 		} catch (WaitTimeoutExpiredException e) {
-			fail("Transformation is broken! \n\n" + new FuseShell().execute("log:display"));
+			fail("Transformation is broken! \n\n" + new TerminalView().execute("log:display"));
 		}
 	}
 }

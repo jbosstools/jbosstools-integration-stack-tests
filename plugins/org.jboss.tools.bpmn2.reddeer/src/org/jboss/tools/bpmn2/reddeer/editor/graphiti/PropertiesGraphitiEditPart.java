@@ -1,6 +1,9 @@
 package org.jboss.tools.bpmn2.reddeer.editor.graphiti;
 
 import org.eclipse.gef.EditPart;
+import org.jboss.reddeer.core.exception.CoreLayerException;
+import org.jboss.reddeer.core.lookup.ShellLookup;
+import org.jboss.reddeer.core.util.Display;
 import org.jboss.reddeer.graphiti.impl.graphitieditpart.AbstractGraphitiEditPart;
 import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
@@ -25,7 +28,7 @@ public class PropertiesGraphitiEditPart extends AbstractGraphitiEditPart {
 
 		getContextButton("Show Properties").click();
 		Shell shell = new DefaultShell();
-		String shellLabel = shell.getText();
+		final String shellLabel = shell.getText();
 		shell.setFocus();
 		try {
 			for (SetUpAble tab : tabs) {
@@ -39,6 +42,20 @@ public class PropertiesGraphitiEditPart extends AbstractGraphitiEditPart {
 					tab.setUpCTab();
 				}
 			}
+		} catch (SWTLayerException | CoreLayerException e) {
+			// Maybe some other popups are still opened
+			Display.syncExec(new Runnable() {
+
+				@Override
+				public void run() {
+					org.eclipse.swt.widgets.Shell[] shells = ShellLookup.getInstance().getShells();
+					if (shells != null) {
+						for (int i = shells.length - 1; i > 1; i--) {
+							shells[i].close();
+						}
+					}
+				}
+			});
 		} finally {
 			new DefaultShell(shellLabel);
 			new PushButton("OK").click();

@@ -10,11 +10,11 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.tools.fuse.reddeer.server.ServerManipulator;
 import org.jboss.tools.runtime.reddeer.impl.ServerKaraf;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
+import org.jboss.tools.runtime.reddeer.utils.FuseServerManipulator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,8 +39,8 @@ public class ServerTest extends DefaultTest {
 	@Before
 	public void setupCleanUp() {
 
-		ServerManipulator.deleteAllServers();
-		ServerManipulator.deleteAllServerRuntimes();
+		FuseServerManipulator.deleteAllServers();
+		FuseServerManipulator.deleteAllServerRuntimes();
 	}
 
 	/**
@@ -63,24 +63,24 @@ public class ServerTest extends DefaultTest {
 
 		ServerKaraf fuse = (ServerKaraf) serverRequirement.getConfig().getServerBase();
 
-		ServerManipulator.addServerRuntime(fuse.getRuntimeType(), fuse.getHome());
+		FuseServerManipulator.addServerRuntime(fuse.getRuntimeType(), fuse.getHome());
 		assertEquals("New server runtime is not listed in Server Runtimes", 1,
-				ServerManipulator.getServerRuntimes().size());
-		ServerManipulator.editServerRuntime(fuse.getRuntimeType(), fuse.getHome());
-		ServerManipulator.addServer(fuse.getServerType(), fuse.getHost(), fuse.getName(), fuse.getPort(),
+				FuseServerManipulator.getServerRuntimes().size());
+		FuseServerManipulator.editServerRuntime(fuse.getRuntimeType(), fuse.getHome());
+		FuseServerManipulator.addServer(fuse.getServerType(), fuse.getHost(), fuse.getName(), fuse.getPort(),
 				fuse.getUsername(), fuse.getPassword());
-		assertEquals("No server's record is in Servers View", 1, ServerManipulator.getServers().size());
-		assertTrue("New server is not listed in Servers View", ServerManipulator.isServerPresent(fuse.getName()));
-		ServerManipulator.startServer(fuse.getName());
-		assertTrue("Server is not started", ServerManipulator.isServerStarted(fuse.getName()));
+		assertEquals("No server's record is in Servers View", 1, FuseServerManipulator.getServers().size());
+		assertTrue("New server is not listed in Servers View", FuseServerManipulator.isServerPresent(fuse.getName()));
+		FuseServerManipulator.startServer(fuse.getName());
+		assertTrue("Server is not started", FuseServerManipulator.isServerStarted(fuse.getName()));
 		assertTrue("There are some errors in error log", getErrorMessages() == 0);
 		deleteErrorLog();
-		ServerManipulator.stopServer(fuse.getName());
-		assertFalse("Server is not stopped", ServerManipulator.isServerStarted(fuse.getName()));
+		FuseServerManipulator.stopServer(fuse.getName());
+		assertFalse("Server is not stopped", FuseServerManipulator.isServerStarted(fuse.getName()));
 		assertTrue("There are some errors in error log", getErrorMessages() == 0);
-		ServerManipulator.removeServer(fuse.getName());
-		assertEquals("Server is listed in Servers View after deletion", 0, ServerManipulator.getServers().size());
-		ServerManipulator.removeServerRuntime(fuse.getRuntimeType());
-		assertEquals("Server runtime is listed after deletion", 0, ServerManipulator.getServerRuntimes().size());
+		FuseServerManipulator.removeServer(fuse.getName());
+		assertEquals("Server is listed in Servers View after deletion", 0, FuseServerManipulator.getServers().size());
+		FuseServerManipulator.removeServerRuntime(fuse.getRuntimeType());
+		assertEquals("Server runtime is listed after deletion", 0, FuseServerManipulator.getServerRuntimes().size());
 	}
 }
