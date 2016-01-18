@@ -387,7 +387,7 @@ public class RegressionTest extends DefaultTest {
 		new ContextMenu("Run As", "Run Configurations...").select();
 		new WaitUntil(new ShellWithTextIsAvailable("Run Configurations"));
 		new DefaultShell("Run Configurations");
-		new DefaultTreeItem("Apache Tomcat").select();
+		new DefaultTreeItem("Java Application").select();
 		try {
 			new DefaultTreeItem("Apache Karaf Launcher").select();
 			fail("Run Configurations contains forbidden item");
