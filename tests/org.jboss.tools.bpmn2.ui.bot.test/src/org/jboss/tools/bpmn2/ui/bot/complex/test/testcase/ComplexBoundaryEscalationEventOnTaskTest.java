@@ -3,6 +3,7 @@ package org.jboss.tools.bpmn2.ui.bot.complex.test.testcase;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,9 +29,7 @@ import org.kie.api.runtime.process.ProcessInstance;
 import org.kie.api.runtime.process.WorkItem;
 import org.kie.api.runtime.process.WorkflowProcessInstance;
 
-@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-BoundaryEscalationEventOnTask.bpmn2", saveAs = "BPMN2-BoundaryEscalationEventOnTask.bpmn2", knownIssues = {
-	"1184422",
-	"1249658" })
+@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-BoundaryEscalationEventOnTask.bpmn2", saveAs = "BPMN2-BoundaryEscalationEventOnTask.bpmn2")
 public class ComplexBoundaryEscalationEventOnTaskTest extends JBPM6ComplexTest {
 
 	private static final String VARIABLE3 = "Property_3";
@@ -52,6 +51,7 @@ public class ComplexBoundaryEscalationEventOnTaskTest extends JBPM6ComplexTest {
 				ElementType.ESCALATION_BOUNDARY_EVENT);
 		boundaryEventSub.setEscalation(escalation, VARIABLE3);
 		boundaryEventSub.connectTo(new ScriptTask("SubHandler"));
+		boundaryEventSub.setCancelActivity(false);
 
 		UserTask userTask = new UserTask("User Task");
 		EscalationBoundaryEvent boundaryEvent = (EscalationBoundaryEvent) userTask.addEvent("Escalation Boundary Event",
@@ -70,13 +70,13 @@ public class ComplexBoundaryEscalationEventOnTaskTest extends JBPM6ComplexTest {
 
 		TriggeredNodesListener triggered = new TriggeredNodesListener(
 				Arrays.asList("StartProcess", "Split", "User Task", "Script Task", "EndProcess", "EndProcess2",
-						"SubHandler", "SubHandlerEnd", "SubStart", "ThrowEscalation"),
-				Arrays.asList("OnlyForSyntaxEnd", "SubEnd"));
+						"SubHandler", "SubHandlerEnd", "SubStart", "ThrowEscalation","OnlyForSyntaxEnd", "SubEnd"),
+				new ArrayList<String>());
 
 		kSession.addEventListener(triggered);
 
 		Map<String, Object> sessionArgs = new HashMap<String, Object>();
-		sessionArgs.put("Property_2", new java.lang.RuntimeException());
+		sessionArgs.put(VARIABLE2, new java.lang.RuntimeException());
 
 		ProcessInstance processInstance = kSession.startProcess("BPMN2BoundaryEscalationEventOnTask", sessionArgs);
 

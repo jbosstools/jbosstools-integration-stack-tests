@@ -10,7 +10,6 @@ import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexBoundaryEscalat
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexBusinessRuleTaskTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexCallActivityTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexCompensationEventTest;
-import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexConditionalBoundaryEventInterruptingTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexConditionalStartTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexDataObjectTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexDefaultSkippableTest;
@@ -46,50 +45,46 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 @SuiteClasses({
-	// Where is declared escalation or signal
-	// @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1184422
-	// --------------------------------------------------------
-	ComplexParalellSplitJoinTest.class,
-	ComplexCallActivityTest.class,
 	ComplexAdHocProcessTest.class,
 	ComplexAdHocSubprocessTest.class,
 	ComplexAssociationTest.class,
 	ComplexBooleanStructureReferenceTest.class,
-	ComplexBusinessRuleTaskTest.class,
 	ComplexBoundaryConditionalEventOnTaskTest.class,
-	ComplexErrorEndEventTest.class,
+	ComplexBoundaryEscalationEventOnTaskTest.class,
+	ComplexBusinessRuleTaskTest.class,
+	ComplexCallActivityTest.class,
+	ComplexCompensationEventTest.class, // https://bugzilla.redhat.com/show_bug.cgi?id=1209449
 	ComplexConditionalStartTest.class,
-	ComplexImportTest.class,
-	ComplexReceiveTaskTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1188592
-	ComplexParalellSplitTest.class,
-	ComplexSendTaskTest.class,
+	ComplexDataObjectTest.class,
+	ComplexDefaultSkippableTest.class,
+	ComplexDefinitionViaElementTest.class,
 	ComplexErrorBoundaryEventOnTaskTest.class,
+	ComplexErrorEndEventTest.class,
+	ComplexEventBasedSplitTest.class,
+	ComplexExclusiveSplitPriorityTest.class,
+	ComplexImportInterfaceTest.class,
+	ComplexImportTest.class,
+	ComplexInclusiveSplitTest.class,
 	ComplexIntermediateCatchEventTimerCycleTest.class,
+	ComplexIntermediateCatchSignalSingleTest.class,
+	ComplexIntermediateThrowEscalationEventTest.class,
+	ComplexIntermediateThrowMessageEventTest.class,
+	ComplexLaneTest.class,
+	ComplexLinkEventTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1190688
+	ComplexManualTaskTest.class,
 	ComplexMessageStartTest.class,
+	ComplexMultiInstanceLoopCharacteristicsTest.class,
+	ComplexMultipleStartEventTest.class,
+	ComplexParalellSplitJoinTest.class,
+	ComplexParalellSplitTest.class,
+	ComplexReceiveTaskTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1188592
+	ComplexSendTaskTest.class,
+	ComplexServiceTaskTest.class,
+	ComplexSpecialCharactersAndLenghtsTest.class,
 	ComplexSubProcessTest.class,
 	ComplexUserTaskTest.class,
-	ComplexXPathExpressionTest.class,
-	ComplexLaneTest.class,
-	ComplexDataObjectTest.class,
-	ComplexMultipleStartEventTest.class,
-	ComplexInclusiveSplitTest.class,
-	ComplexIntermediateThrowMessageEventTest.class,
-	ComplexIntermediateThrowEscalationEventTest.class,
-	ComplexIntermediateCatchSignalSingleTest.class,
-	ComplexExclusiveSplitPriorityTest.class,
-	ComplexEventBasedSplitTest.class,
-	ComplexBoundaryEscalationEventOnTaskTest.class,
-	ComplexConditionalBoundaryEventInterruptingTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1165667
-	ComplexMultiInstanceLoopCharacteristicsTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1189454
-	ComplexCompensationEventTest.class, // https://bugzilla.redhat.com/show_bug.cgi?id=1209449
-	ComplexLinkEventTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1190688
 	ComplexWebDesignerProcessTest.class,
-	ComplexDefaultSkippableTest.class,
-	ComplexSpecialCharactersAndLenghtsTest.class,
-	ComplexImportInterfaceTest.class,
-	ComplexServiceTaskTest.class,
-	ComplexManualTaskTest.class,
-	ComplexDefinitionViaElementTest.class // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1211647
+	ComplexXPathExpressionTest.class,
 })
 @RunWith(RedDeerSuite.class)
 public class JBPM6ComplexTests {

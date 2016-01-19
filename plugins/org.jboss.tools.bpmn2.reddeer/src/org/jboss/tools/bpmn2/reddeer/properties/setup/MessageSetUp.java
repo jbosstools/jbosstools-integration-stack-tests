@@ -47,7 +47,7 @@ public class MessageSetUp implements SetUpAble {
 			combo.setSelection(comboItem);
 		}
 
-		new DefaultCombo(section, mappingType.label()).setSelection(variableName);
+		new DefaultCombo(mappingType.label()).setSelection(variableName);
 		new SectionToolItem("Message Event Definition Details", "Close").click();
 	}
 
