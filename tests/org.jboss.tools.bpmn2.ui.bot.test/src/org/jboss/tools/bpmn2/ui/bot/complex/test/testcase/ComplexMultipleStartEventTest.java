@@ -21,8 +21,7 @@ import org.jboss.tools.bpmn2.ui.bot.test.jbpm.TriggeredNodesListener;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
 
-@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-MultipleStartEvent.bpmn2", saveAs = "BPMN2-MultipleStartEvent.bpmn2", knownIssues = {
-	"1184422" })
+@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-MultipleStartEvent.bpmn2", saveAs = "BPMN2-MultipleStartEvent.bpmn2")
 public class ComplexMultipleStartEventTest extends JBPM6ComplexTest {
 
 	@TestPhase(phase = Phase.MODEL)

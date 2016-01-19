@@ -192,12 +192,8 @@ public class Process extends ElementContainer {
 	 * @param operationList
 	 */
 	public void addInterface(String name, String implementation, String... operationList) {
-		addInterface(name, implementation, false, operationList);
-	}
-
-	public void addInterface(String name, String implementation, boolean typeText, String... operationList) {
 		propertiesHandler.selectTabInPropertiesView(INTERFACES_TAB);
-		interfacesTab.addInterface(name, implementation, operationList, typeText);
+		interfacesTab.addInterface(name, implementation, operationList);
 	}
 
 	public void importInterface(String fullQualifiedName) {

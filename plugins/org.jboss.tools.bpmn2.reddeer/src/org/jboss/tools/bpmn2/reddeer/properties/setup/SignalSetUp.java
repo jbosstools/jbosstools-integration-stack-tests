@@ -47,7 +47,7 @@ public class SignalSetUp implements SetUpAble {
 			combo.setSelection(comboItem);
 		}
 
-		new DefaultCombo(section, mappingType.label()).setSelection(variableName);
+		new DefaultCombo(mappingType.label()).setSelection(variableName);
 		new SectionToolItem("Signal Event Definition Details", "Close").click();
 	}
 

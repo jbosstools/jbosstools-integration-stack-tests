@@ -21,16 +21,12 @@ public class InterfacesTab {
 	 * @param implementation
 	 * @param operationList
 	 */
-	public void addInterface(String name, String implementation, String[] operationList, boolean typeText) {
-		new SectionToolItem("Interface List", "Add").click();
-
-		if (typeText) {
-			new LabeledText("Name").typeText(name);
-			new LabeledText("Implementation").typeText(implementation);
-		} else {
-			new LabeledText("Name").setText(name);
-			new LabeledText("Implementation").setText(implementation);
-		}
+	public void addInterface(String name, String implementation, String[] operationList) {
+		new SectionToolItem("Interface List", "Add").click();	
+		new LabeledText("Name").typeText(name);
+		new PushButton(0).click();
+		broseForTypeForImport(implementation);
+		new PushButton("OK").click();
 
 		// // Add operations
 	}
@@ -38,12 +34,7 @@ public class InterfacesTab {
 	public void importInterface(String fullQualifiedName) {
 		new SectionToolItem("Interface List", "Import").click();
 
-		new DefaultShell("Browse for a Java type to Import");
-		new LabeledText("Type:").typeText(fullQualifiedName);
-
-		String type = fullQualifiedName.substring(fullQualifiedName.lastIndexOf(".") + 1);
-
-		new DefaultTree(0).selectItems(new DefaultTreeItem(type + " - " + fullQualifiedName));
+		broseForTypeForImport(fullQualifiedName);
 
 		new PushButton("Select All").click();
 		new CheckBox(0).click();
@@ -58,5 +49,14 @@ public class InterfacesTab {
 		DefaultSection s = new DefaultSection("Interface List");
 		new DefaultTable(s).select(name);
 		new SectionToolItem("Interface List", "Remove").click();
+	}
+	
+	private void broseForTypeForImport(String fullQualifiedType) {
+		new DefaultShell("Browse for a Java type to Import");
+		new LabeledText("Type:").typeText(fullQualifiedType);
+
+		String type = fullQualifiedType.substring(fullQualifiedType.lastIndexOf(".") + 1);
+
+		new DefaultTree(0).selectItems(new DefaultTreeItem(type + " - " + fullQualifiedType));
 	}
 }
