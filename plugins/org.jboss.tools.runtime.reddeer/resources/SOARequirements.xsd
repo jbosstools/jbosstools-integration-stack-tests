@@ -83,6 +83,7 @@
 					</xs:element>
 					<xs:element name="targetRuntime" type="xs:string" minOccurs="0" />
 					<xs:element name="libraryVersion" type="xs:string" />
+					<xs:element name="componentRestriction" type="xs:string" minOccurs="0" />
 					<xs:choice minOccurs="0">
 						<xs:element name="karaf" type="server:apache-karaf" />
 						<xs:element name="servicemix" type="server:apache-servicemix" />
