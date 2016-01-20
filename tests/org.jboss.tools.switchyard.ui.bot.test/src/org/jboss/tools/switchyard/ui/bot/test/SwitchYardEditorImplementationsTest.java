@@ -43,8 +43,8 @@ import org.jboss.tools.switchyard.reddeer.wizard.ExistingBPMNServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ExistingCamelXMLServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ExistingDroolsServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ImportFileWizard;
-import org.jboss.tools.switchyard.ui.bot.test.condition.IssueIsClosed;
-import org.jboss.tools.switchyard.ui.bot.test.condition.IssueIsClosed.Jira;
+import org.jboss.tools.switchyard.ui.bot.test.condition.SwitchYardRequirementSupportBPMN;
+import org.jboss.tools.switchyard.ui.bot.test.condition.SwitchYardRequirementSupportDrools;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -73,7 +73,7 @@ public class SwitchYardEditorImplementationsTest {
 	private static int index = 0;
 
 	@InjectRequirement
-	private static SwitchYardRequirement switchYardRequirement;
+	private static SwitchYardRequirement switchyardRequirement;
 
 	private static String autoBuilding;
 
@@ -101,7 +101,7 @@ public class SwitchYardEditorImplementationsTest {
 
 	@BeforeClass
 	public static void createProject() {
-		switchYardRequirement.project(PROJECT_NAME).implAll().create();
+		switchyardRequirement.project(PROJECT_NAME).implAll().create();
 
 		new SwitchYardProject(PROJECT_NAME).getProjectItem("src/main/resources").select();
 		new ImportFileWizard().importFile("resources/" + PROJECT_NAME);
@@ -266,6 +266,7 @@ public class SwitchYardEditorImplementationsTest {
 	}
 
 	@Test
+	@RunIf(conditionClass = SwitchYardRequirementSupportBPMN.class)
 	public void addBPMNImplementationWithNewJavaInterfaceTest() throws Exception {
 		SwitchYardEditor editor = new SwitchYardEditor();
 		BPMNServiceWizard bpmnWizard = editor.addBPMNImplementation();
@@ -292,6 +293,7 @@ public class SwitchYardEditorImplementationsTest {
 	}
 
 	@Test
+	@RunIf(conditionClass = SwitchYardRequirementSupportBPMN.class)
 	public void addExistingBPMNImplementationTest() throws Exception {
 		SwitchYardEditor editor = new SwitchYardEditor();
 		SwitchYardComponent component = editor.addComponent();
@@ -317,6 +319,7 @@ public class SwitchYardEditorImplementationsTest {
 	}
 
 	@Test
+	@RunIf(conditionClass = SwitchYardRequirementSupportBPMN.class)
 	public void addExistingBPMNImplementationWithKnowledgeContainerTest() throws Exception {
 		SwitchYardEditor editor = new SwitchYardEditor();
 		SwitchYardComponent component = editor.addComponent();
@@ -354,6 +357,7 @@ public class SwitchYardEditorImplementationsTest {
 	}
 
 	@Test
+	@RunIf(conditionClass = SwitchYardRequirementSupportBPMN.class)
 	public void addExistingBPMNImplementationWithRemoteJMSTest() throws Exception {
 		SwitchYardEditor editor = new SwitchYardEditor();
 		SwitchYardComponent component = editor.addComponent();
@@ -409,6 +413,7 @@ public class SwitchYardEditorImplementationsTest {
 	}
 
 	@Test
+	@RunIf(conditionClass = SwitchYardRequirementSupportBPMN.class)
 	public void addExistingBPMNImplementationWithRemoteRESTTest() throws Exception {
 		SwitchYardEditor editor = new SwitchYardEditor();
 		SwitchYardComponent component = editor.addComponent();
@@ -439,8 +444,7 @@ public class SwitchYardEditorImplementationsTest {
 	}
 
 	@Test
-	@Jira("SWITCHYARD-2782")
-	@RunIf(conditionClass = IssueIsClosed.class)
+	@RunIf(conditionClass = SwitchYardRequirementSupportDrools.class)
 	public void addDroolsImplementationWithNewJavaInterfaceTest() throws Exception {
 		SwitchYardEditor editor = new SwitchYardEditor();
 		DroolsServiceWizard droolsWizard = editor.addDroolsImplementation();
@@ -467,6 +471,7 @@ public class SwitchYardEditorImplementationsTest {
 	}
 
 	@Test
+	@RunIf(conditionClass = SwitchYardRequirementSupportDrools.class)
 	public void addExistingDroolsImplementationTest() throws Exception {
 		SwitchYardEditor editor = new SwitchYardEditor();
 		SwitchYardComponent component = editor.addComponent();
@@ -492,6 +497,7 @@ public class SwitchYardEditorImplementationsTest {
 	}
 
 	@Test
+	@RunIf(conditionClass = SwitchYardRequirementSupportDrools.class)
 	public void addExistingDroolsImplementationWithKnowledgeContainerTest() throws Exception {
 		SwitchYardEditor editor = new SwitchYardEditor();
 		SwitchYardComponent component = editor.addComponent();
@@ -529,6 +535,8 @@ public class SwitchYardEditorImplementationsTest {
 	}
 
 	@Test
+	@Ignore("Removed as a part of SWITCHYARD-2817")
+	@RunIf(conditionClass = SwitchYardRequirementSupportDrools.class)
 	public void addExistingDroolsImplementationWithRemoteJMSTest() throws Exception {
 		SwitchYardEditor editor = new SwitchYardEditor();
 		SwitchYardComponent component = editor.addComponent();
@@ -584,6 +592,8 @@ public class SwitchYardEditorImplementationsTest {
 	}
 
 	@Test
+	@Ignore("Removed as a part of SWITCHYARD-2817")
+	@RunIf(conditionClass = SwitchYardRequirementSupportDrools.class)
 	public void addExistingDroolsImplementationWithRemoteRESTTest() throws Exception {
 		SwitchYardEditor editor = new SwitchYardEditor();
 		SwitchYardComponent component = editor.addComponent();
