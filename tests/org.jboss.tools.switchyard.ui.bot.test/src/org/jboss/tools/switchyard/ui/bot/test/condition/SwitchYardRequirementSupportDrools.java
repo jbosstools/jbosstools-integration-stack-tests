@@ -12,7 +12,7 @@ import org.junit.runners.model.FrameworkMethod;
  * @author apodhrad
  *
  */
-public class SwitchYardRequirementHasServer implements TestMethodShouldRun {
+public class SwitchYardRequirementSupportDrools implements TestMethodShouldRun {
 
 	@Override
 	public boolean shouldRun(FrameworkMethod method) {
@@ -24,7 +24,14 @@ public class SwitchYardRequirementHasServer implements TestMethodShouldRun {
 			if (obj instanceof SwitchYardRequirement) {
 				SwitchYardRequirement switchYardRequirement = (SwitchYardRequirement) obj;
 				SwitchYardConfig config = switchYardRequirement.getConfig();
-				return config.getServerBase() != null;
+				String componentRestriction = config.getComponentRestriction();
+				if (componentRestriction == null) {
+					return true;
+				}
+				if (componentRestriction.contains("drools") || componentRestriction.contains("rules")) {
+					return true;
+				}
+				return false;
 			}
 		} catch (Exception e) {
 			throw new SwitchYardConditionException("Cannot parse switchyardRequirement.", e);

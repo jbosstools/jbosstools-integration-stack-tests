@@ -23,6 +23,8 @@ public class SwitchYardConfig extends ServerConfig {
 	private String targetRuntime;
 	@XmlElement(name = "libraryVersion", namespace = Namespaces.SOA_REQ)
 	private String libraryVersion;
+	@XmlElement(name = "componentRestriction", namespace = Namespaces.SOA_REQ)
+	private String componentRestriction;
 
 	public String getConfigurationVersion() {
 		return configurationVersion;
@@ -46,6 +48,14 @@ public class SwitchYardConfig extends ServerConfig {
 
 	public void setLibraryVersion(String libraryVersion) {
 		this.libraryVersion = libraryVersion;
+	}
+
+	public String getComponentRestriction() {
+		return componentRestriction;
+	}
+
+	public void setComponentRestriction(String componentRestriction) {
+		this.componentRestriction = componentRestriction;
 	}
 
 }
