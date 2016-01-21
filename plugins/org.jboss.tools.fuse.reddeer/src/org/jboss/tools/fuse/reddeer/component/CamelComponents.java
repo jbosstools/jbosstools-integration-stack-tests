@@ -17,10 +17,54 @@ public class CamelComponents {
 
 	public static List<CamelComponent> getEndpoints() {
 		List<CamelComponent> list = new ArrayList<CamelComponent>();
-		list.add(new Generic());
+		list.add(new ActiveMQ());
+		list.add(new AMQBroker());
+		list.add(new Atom());
 		list.add(new Bean());
+		list.add(new ControlBus());
+		list.add(new CXF());
+		list.add(new CXFRS());
+		list.add(new Direct());
+		list.add(new DirectVM());
+		list.add(new EJB());
+		list.add(new File());
+		list.add(new FTP());
+		list.add(new FTPS());
+		list.add(new IMAP());
+		list.add(new IMAPS());
+		list.add(new JDBC());
+		list.add(new JGroups());
+		list.add(new JMS());
+		list.add(new Language());
+		list.add(new Linkedin());
 		list.add(new Log());
+		list.add(new Mina2());
+		list.add(new MQTT());
+		list.add(new MVEL());
+		list.add(new Netty());
+		list.add(new NettyHTTP());
+		list.add(new Netty4());
+		list.add(new Netty4HTTP());
+		list.add(new POP3());
+		list.add(new POP3S());
 		list.add(new Process());
+		list.add(new Quartz());
+		list.add(new Quartz2());
+		list.add(new Restlet());
+		list.add(new RSS());
+		list.add(new Salesforce());
+		list.add(new SAPNetWeaver());
+		list.add(new Scheduler());
+		list.add(new SEDA());
+		list.add(new Servlet());
+		list.add(new SFTP());
+		list.add(new SMTP());
+		list.add(new SMTPS());
+		list.add(new SQL());
+		list.add(new Timer());
+		list.add(new VM());
+		list.add(new XQuery());
+		list.add(new XSLT());
 		return list;
 	}
 
@@ -28,7 +72,6 @@ public class CamelComponents {
 		List<CamelComponent> list = new ArrayList<CamelComponent>();
 		list.add(new Aggregate());
 		list.add(new Choice());
-		list.add(new DynamicRouter());
 		list.add(new Filter());
 		list.add(new IdempotentConsumer());
 		list.add(new LoadBalance());
@@ -37,6 +80,7 @@ public class CamelComponents {
 		list.add(new Pipeline());
 		list.add(new RecipientList());
 		list.add(new Resequence());
+		list.add(new Route());
 		list.add(new RoutingSlip());
 		list.add(new Sort());
 		list.add(new Split());
@@ -47,9 +91,9 @@ public class CamelComponents {
 
 	public static List<CamelComponent> getControlFlow() {
 		List<CamelComponent> list = new ArrayList<CamelComponent>();
-		list.add(new Catch());
 		list.add(new Delay());
-		list.add(new Finally());
+		list.add(new DoCatch());
+		list.add(new DoFinally());
 		list.add(new Intercept());
 		list.add(new InterceptFrom());
 		list.add(new InterceptSendToEndpoint());
@@ -60,13 +104,13 @@ public class CamelComponents {
 		list.add(new Throttle());
 		list.add(new ThrowException());
 		list.add(new Transacted());
-		list.add(new Try());
+		list.add(new DoTry());
 		return list;
 	}
 
 	public static List<CamelComponent> getTransformation() {
 		List<CamelComponent> list = new ArrayList<CamelComponent>();
-		list.add(new ConvertBody());
+		list.add(new ConvertBodyTo());
 		list.add(new Enrich());
 		list.add(new InOnly());
 		list.add(new InOut());
@@ -74,6 +118,7 @@ public class CamelComponents {
 		list.add(new PollEnrich());
 		list.add(new RemoveHeader());
 		list.add(new RemoveHeaders());
+		list.add(new RemoveProperties());
 		list.add(new RemoveProperty());
 		list.add(new SetBody());
 		list.add(new SetExchangePattern());
@@ -90,7 +135,7 @@ public class CamelComponents {
 		List<CamelComponent> list = new ArrayList<CamelComponent>();
 		list.add(new AOP());
 		list.add(new Policy());
-		list.add(new Sampling());
+		list.add(new Sample());
 		list.add(new Stop());
 		list.add(new Threads());
 		list.add(new Validate());

@@ -9,12 +9,12 @@ public class InterceptSendToEndpoint implements CamelComponent {
 
 	@Override
 	public String getPaletteEntry() {
-		return "InterceptSendToEndpoint";
+		return "Intercept Send To Endpoint";
 	}
 
 	@Override
 	public String getLabel() {
-		return "intercept";
+		return "interceptSendToEn...";
 	}
 
 	@Override

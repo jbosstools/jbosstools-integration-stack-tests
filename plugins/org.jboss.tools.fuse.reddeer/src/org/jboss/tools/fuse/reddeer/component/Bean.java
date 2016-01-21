@@ -19,7 +19,7 @@ public class Bean implements CamelComponent {
 
 	@Override
 	public String getTooltip() {
-		return null;
+		return "Calls a java bean";
 	}
 
 }

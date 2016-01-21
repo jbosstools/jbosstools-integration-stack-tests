@@ -9,12 +9,12 @@ public class SetOutHeader implements CamelComponent {
 
 	@Override
 	public String getPaletteEntry() {
-		return "SetOutHeader";
+		return "Set Out Header";
 	}
 
 	@Override
 	public String getLabel() {
-		return "setOutHeader[null]";
+		return "setOutHeader";
 	}
 
 	@Override

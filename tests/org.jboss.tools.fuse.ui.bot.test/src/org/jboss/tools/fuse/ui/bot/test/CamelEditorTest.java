@@ -1,5 +1,6 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -7,18 +8,20 @@ import static org.junit.Assert.fail;
 import java.util.List;
 
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.gef.view.PaletteView;
 import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.workbench.exception.WorkbenchLayerException;
+import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.fuse.reddeer.component.CamelComponent;
 import org.jboss.tools.fuse.reddeer.component.CamelComponents;
-import org.jboss.tools.fuse.reddeer.component.Generic;
+import org.jboss.tools.fuse.reddeer.component.File;
 import org.jboss.tools.fuse.reddeer.component.Log;
 import org.jboss.tools.fuse.reddeer.component.Otherwise;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
@@ -46,6 +49,7 @@ import org.junit.runner.RunWith;
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
 @RunWith(RedDeerSuite.class)
+@AutoBuilding(false)
 public class CamelEditorTest extends DefaultTest {
 
 	protected Logger log = Logger.getLogger(CamelEditorTest.class);
@@ -64,6 +68,17 @@ public class CamelEditorTest extends DefaultTest {
 		new ErrorLogView().deleteLog();
 	}
 
+	@Before
+	public void setupClosePaletteView() {
+		new WorkbenchShell();
+		log.info("Trying to close Palette View (if it's open)");
+		try {
+			new PaletteView().close();
+		} catch (WorkbenchLayerException ex) {
+			log.info("Palette view is already closed. Nothing to do.");
+		}
+	}
+
 	/**
 	 * Cleans up test environment
 	 */
@@ -71,6 +86,7 @@ public class CamelEditorTest extends DefaultTest {
 	public void setupDeleteProjects() {
 
 		new WorkbenchShell();
+		EditorHandler.getInstance().closeAll(true);
 		ProjectFactory.deleteAllProjects();
 	}
 
@@ -87,14 +103,43 @@ public class CamelEditorTest extends DefaultTest {
 
 	/**
 	 * <p>
-	 * Test tries to create all components available in the Palette view associated with the Camel Editor.
+	 * Test tries <i>Palette</i> inside Camel Editor
+	 * </p>
+	 * <ol>
+	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>open Project Explorer view</li>
+	 * <li>open camel-context.xml file</li>
+	 * <li>get number of palette items</li>
+	 * <li>search for <i>File</i> component</li>
+	 * <li>check that <i>File</i> component was found</li>
+	 * <li>clear search box</li>
+	 * <li>check that all components are available</li>
+	 * </ol>
+	 */
+	@Test
+	public void testPalette() {
+
+		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
+		CamelEditor editor = new CamelEditor("camel-context.xml");
+		editor.activate();
+		int initSize = editor.palleteGetComponents().size();
+		editor.paletteSearch("File");
+		assertEquals(2, editor.palleteGetComponents().size());
+		editor.paletteSearch("");
+		assertEquals(initSize, editor.palleteGetComponents().size());
+	}
+
+	/**
+	 * <p>
+	 * Test tries to create all endpoint components available in the Palette view
+	 * associated with the Camel Editor.
 	 * </p>
 	 * <b>Steps</b>
 	 * <ol>
 	 * <li>create a new project with camel-archetype-spring archetype</li>
 	 * <li>open Project Explorer view</li>
 	 * <li>delete camel-context.xml and create a new empty one</li>
-	 * <li>try to create all components in Palette View</li>
+	 * <li>try to create all endpoint components in Palette View</li>
 	 * <li>check if the component is present in Camel Editor</li>
 	 * <li>delete the component from Camel Editor</li>
 	 * </ol>
@@ -105,21 +150,34 @@ public class CamelEditorTest extends DefaultTest {
 		new ProjectExplorer().open();
 		new CamelProject("camel-spring").deleteCamelContext("camel-context.xml");
 		new CamelProject("camel-spring").createCamelContext("camel-context.xml");
+		CamelEditor editor = new CamelEditor("camel-context.xml");
 
-		for (CamelComponent component : CamelComponents.getAll()) {
+		for (CamelComponent component : CamelComponents.getEndpoints()) {
 			new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 			log.info("Testing camel component '" + component.getPaletteEntry() + "'");
-			CamelEditor editor = new CamelEditor("camel-context.xml");
-			editor.addCamelComponent(component);
-			editor.deleteCamelComponent(component);
+			editor.activate();
+			editor.addCamelComponent(component, "Route _route1");
+			switch (component.getPaletteEntry()) {
+			case "Bean":
+				editor.deleteCamelComponent("Bean _bean1");
+				break;
+			case "Log":
+				editor.deleteCamelComponent("Log _log1");
+				break;
+			case "Process":
+				editor.deleteCamelComponent("Process _process1");
+				break;
+			default:
+				editor.deleteCamelComponent("To _to1");
+			}
 		}
 		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 
 	/**
 	 * <p>
-	 * Test tries to manipulate with XML source of the camel-context.xml file and checks if it affects components in the
-	 * Camel Editor.
+	 * Test tries to manipulate with XML source of the camel-context.xml file
+	 * and checks if it affects components in the Camel Editor.
 	 * </p>
 	 * <b>Steps</b>
 	 * <ol>
@@ -129,11 +187,13 @@ public class CamelEditorTest extends DefaultTest {
 	 * <li>switch to Source tab in the Camel Editor</li>
 	 * <li>cut branch otherwise</li>
 	 * <li>switch to Design tab in the Camel Editor</li>
-	 * <li>check if the otherwise component is no longer available in the Camel Editor</li>
+	 * <li>check if the otherwise component is no longer available in the Camel
+	 * Editor</li>
 	 * <li>switch to Source tab in the Camel Editor</li>
 	 * <li>paste branch otherwise</li>
 	 * <li>switch to Design tab in the Camel Editor</li>
-	 * <li>check if the otherwise component is available in the Camel Editor</li>
+	 * <li>check if the otherwise component is available in the Camel Editor
+	 * </li>
 	 * </ol>
 	 */
 	@Test
@@ -145,115 +205,15 @@ public class CamelEditorTest extends DefaultTest {
 		CamelEditor.switchTab("Source");
 		EditorManipulator.copyFileContentToCamelXMLEditor("resources/camel-context-all.xml");
 		CamelEditor.switchTab("Design");
-		assertTrue(editor.isComponentAvailable("otherwise"));
-		assertTrue(editor.isComponentAvailable("file:target/messa..."));
+		assertTrue(editor.isComponentAvailable("Otherwise _otherwise1"));
+		assertTrue(editor.isComponentAvailable("To _to2"));
 		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 
 	/**
 	 * <p>
-	 * Test tries to add components in the Camel Editor via component's context menu and the option Add.
-	 * </p>
-	 * <b>Steps</b>
-	 * <ol>
-	 * <li>create a new project with camel-archetype-spring archetype</li>
-	 * <li>open Project Explorer view</li>
-	 * <li>open camel-context.xml file</li>
-	 * <li>switch to Source tab in the Camel Editor</li>
-	 * <li>remove branch otherwise</li>
-	 * <li>switch to Design tab in the Camel Editor</li>
-	 * <li>add back removed components (from branch otherwise) via the context menu and the option Add</li>
-	 * <li>switch to Source tab in the Camel Editor</li>
-	 * <li>check if the content of the file is equals to content of the same file immediately after project creation
-	 * </li>
-	 * </ol>
-	 */
-	@Test
-	public void testAddComponents() {
-
-		setupPrepareIDEForManipulationTests();
-		CamelEditor editor = new CamelEditor("camel-context.xml");
-		editor.setId("log", "log1");
-		editor.doOperation("choice", "Add", "Routing", "Otherwise");
-		editor.doOperation("otherwise", "Add", "Components", "Log");
-		editor.setProperty("log", "Message", "Other message");
-		editor.doOperation("log", "Add", "Components", "Generic");
-		editor.setComboProperty("Endpoint", 0, "file:target/messages/others");
-		editor.setId("log1", "");
-		try {
-			editor.save();
-		} catch (CamelEditorException e) {
-			fail("There are unconnected endpoints in the diagram");
-		}
-		assertTrue(editor.isComponentAvailable("otherwise"));
-		assertTrue(editor.isComponentAvailable("file:target/messa..."));
-		CamelEditor.switchTab("Source");
-		assertTrue(EditorManipulator.isEditorContentEqualsFile("resources/camel-context-all.xml"));
-		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
-	}
-
-	/**
-	 * <p>
-	 * Test tries to add components in the Camel Editor via Drag&Drop feature (Adds components from Palette and
-	 * connections between components via the Camel Editor).
-	 * </p>
-	 * <ol>
-	 * <li>create a new project with camel-archetype-spring archetype</li>
-	 * <li>open Project Explorer view</li>
-	 * <li>open camel-context.xml file</li>
-	 * <li>switch to Source tab in the Camel Editor</li>
-	 * <li>remove branch otherwise</li>
-	 * <li>switch to Design tab in the Camel Editor</li>
-	 * <li>add back removed components (from branch otherwise) via Drag&Drop feature (Adds components from Palette and
-	 * connections between components via the Camel Editor)</li>
-	 * <li>switch to Source tab in the Camel Editor</li>
-	 * <li>check if the content of the file is equals to content of the same file immediately after project creation
-	 * </li>
-	 * </ol>
-	 */
-	@Test
-	public void testDragAndDropComponents() {
-
-		setupPrepareIDEForManipulationTests();
-		CamelEditor editor = new CamelEditor("camel-context.xml");
-		editor.addCamelComponent(new Otherwise(), 0, -100);
-		editor.addConnection("choice", "otherwise");
-		try {
-			editor.save();
-		} catch (CamelEditorException e) {
-			fail("Connection between 'choice' and 'otherwise' wasn't created");
-		}
-		AbstractWait.sleep(TimePeriod.SHORT);
-		editor.setId("log", "log1");
-		editor.setId("file:target/messa...", "temp");
-		editor.addCamelComponent(new Log());
-		editor.setProperty("log", "Message", "Other message");
-		editor.addConnection("otherwise", "log");
-		try {
-			editor.save();
-		} catch (CamelEditorException e) {
-			fail("Connection between 'otherwise' and 'log' wasn't created");
-		}
-		AbstractWait.sleep(TimePeriod.getCustom(1));
-		editor.addCamelComponent(new Generic());
-		editor.setComboProperty("Endpoint", 0, "file:target/messages/others");
-		editor.addConnection("log", "file:target/messa...");
-		try {
-			editor.save();
-		} catch (CamelEditorException e) {
-			fail("Connection between 'log' and 'file:target/messa...' wasn't created");
-		}
-		AbstractWait.sleep(TimePeriod.getCustom(1));
-		editor.setId("temp", "");
-		editor.setId("log1", "");
-		CamelEditor.switchTab("Source");
-		assertTrue(EditorManipulator.isEditorContentEqualsFile("resources/camel-context-all.xml"));
-		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
-	}
-
-	/**
-	 * <p>
-	 * Test tries to code completion assistant in the Camel Editor on Source tab.
+	 * Test tries to code completion assistant in the Camel Editor on Source
+	 * tab.
 	 * </p>
 	 * <ol>
 	 * <li>create a new project with camel-archetype-spring archetype</li>
@@ -299,6 +259,63 @@ public class CamelEditorTest extends DefaultTest {
 		assistent = editor.openContentAssistant();
 		proposals = assistent.getProposals();
 		assertTrue("Content Assistent does not contain 'uri' value", proposals.contains("uri"));
+		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
+	}
+
+	/**
+	 * <p>
+	 * Test tries to add components in the Camel Editor via Drag&Drop feature
+	 * (Adds components from Palette and connections between components via the
+	 * Camel Editor).
+	 * </p>
+	 * <ol>
+	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>open Project Explorer view</li>
+	 * <li>open camel-context.xml file</li>
+	 * <li>switch to Source tab in the Camel Editor</li>
+	 * <li>remove branch otherwise</li>
+	 * <li>switch to Design tab in the Camel Editor</li>
+	 * <li>add back removed components (from branch otherwise) via Drag&Drop
+	 * feature (Adds components from Palette and connections between components
+	 * via the Camel Editor)</li>
+	 * <li>switch to Source tab in the Camel Editor</li>
+	 * <li>check if the content of the file is equals to content of the same
+	 * file immediately after project creation</li>
+	 * </ol>
+	 */
+	@Test
+	public void testDragAndDropComponents() {
+
+		setupPrepareIDEForManipulationTests();
+		CamelEditor editor = new CamelEditor("camel-context.xml");
+		editor.addCamelComponent(new Otherwise(), "Choice _choice1");
+
+		editor.layoutDiagram("Choice _choice1");
+		editor.layoutDiagram("Route _route1");
+
+		editor.addCamelComponent(new Log(), "Otherwise _otherwise1");
+		editor.setProperty("Log _log2", "Message *", "Other message");
+
+		editor.layoutDiagram("Otherwise _otherwise1");
+		editor.layoutDiagram("Choice _choice1");
+		editor.layoutDiagram("Route _route1");
+
+		editor.addCamelComponent(new File(), "Otherwise _otherwise1");
+		editor.setProperty("To _to2", "Uri", "file:target/messages/others");
+
+		editor.layoutDiagram("Otherwise _otherwise1");
+		editor.layoutDiagram("Choice _choice1");
+		editor.layoutDiagram("Route _route1");
+
+		editor.clickOnEditPart("Otherwise _otherwise1");
+		editor.addConnection("Log _log2", "To _to2");
+		try {
+			editor.save();
+		} catch (CamelEditorException e) {
+			fail("Connection between 'Log _log2' and 'To _to2' wasn't created");
+		}
+		CamelEditor.switchTab("Source");
+		assertTrue(EditorManipulator.isEditorContentEqualsFile("resources/camel-context-all.xml"));
 		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 }

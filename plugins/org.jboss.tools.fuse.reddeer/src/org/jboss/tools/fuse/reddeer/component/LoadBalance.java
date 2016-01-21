@@ -4,12 +4,12 @@ public class LoadBalance implements CamelComponent {
 
 	@Override
 	public String getPaletteEntry() {
-		return "LoadBalance";
+		return "Load Balance";
 	}
 
 	@Override
 	public String getLabel() {
-		return "load balance";
+		return "loadBalance";
 	}
 
 	@Override

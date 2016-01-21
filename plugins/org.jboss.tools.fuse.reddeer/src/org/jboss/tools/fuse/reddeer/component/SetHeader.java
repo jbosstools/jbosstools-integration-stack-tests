@@ -9,12 +9,12 @@ public class SetHeader implements CamelComponent {
 
 	@Override
 	public String getPaletteEntry() {
-		return "SetHeader";
+		return "Set Header";
 	}
 
 	@Override
 	public String getLabel() {
-		return "setHeader[null]";
+		return "setHeader";
 	}
 
 	@Override

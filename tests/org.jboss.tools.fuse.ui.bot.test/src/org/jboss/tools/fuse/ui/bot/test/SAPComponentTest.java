@@ -105,7 +105,7 @@ public class SAPComponentTest extends DefaultTest {
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		log.info("Testing camel component '" + component.getPaletteEntry() + "'");
 		editor = new CamelEditor("camel-context.xml");
-		editor.addCamelComponent(component);
+		editor.addCamelComponent(component, "_route1");
 		editor.doOperation(component.getLabel(), "Add", "Miscellaneous", "Stop");
 		editor.save();
 		assertXPath(editor.getSource(), component.getUri(), "//route/from/@uri");
@@ -149,7 +149,7 @@ public class SAPComponentTest extends DefaultTest {
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		log.info("Testing camel component '" + component.getPaletteEntry() + "'");
 		editor = new CamelEditor("camel-context.xml");
-		editor.addCamelComponent(component);
+		editor.addCamelComponent(component, "_route1");
 		editor.doOperation(component.getLabel(), "Add", "Miscellaneous", "Stop");
 		editor.save();
 		assertXPath(editor.getSource(), component.getUri(), "//route/from/@uri");
@@ -190,7 +190,7 @@ public class SAPComponentTest extends DefaultTest {
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		log.info("Testing camel component '" + component.getPaletteEntry() + "'");
 		editor = new CamelEditor("camel-context.xml");
-		editor.addCamelComponent(component);
+		editor.addCamelComponent(component, "_route1");
 		editor.doOperation(component.getLabel(), "Add", "Miscellaneous", "Stop");
 		editor.save();
 		assertXPath(editor.getSource(), component.getUri(), "//route/from/@uri");
@@ -231,7 +231,7 @@ public class SAPComponentTest extends DefaultTest {
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		log.info("Testing camel component '" + component.getPaletteEntry() + "'");
 		editor = new CamelEditor("camel-context.xml");
-		editor.addCamelComponent(component);
+		editor.addCamelComponent(component, "_route1");
 		editor.doOperation(component.getLabel(), "Add", "Miscellaneous", "Stop");
 		editor.save();
 		assertXPath(editor.getSource(), component.getUri(), "//route/from/@uri");
@@ -275,7 +275,7 @@ public class SAPComponentTest extends DefaultTest {
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		log.info("Testing camel component '" + component.getPaletteEntry() + "'");
 		editor = new CamelEditor("camel-context.xml");
-		editor.addCamelComponent(component);
+		editor.addCamelComponent(component, "_route1");
 		editor.doOperation(component.getLabel(), "Add", "Miscellaneous", "Stop");
 		editor.save();
 		assertXPath(editor.getSource(), component.getUri(), "//route/from/@uri");
@@ -319,7 +319,7 @@ public class SAPComponentTest extends DefaultTest {
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		log.info("Testing camel component '" + component.getPaletteEntry() + "'");
 		editor = new CamelEditor("camel-context.xml");
-		editor.addCamelComponent(component);
+		editor.addCamelComponent(component, "_route1");
 		editor.doOperation(component.getLabel(), "Add", "Miscellaneous", "Stop");
 		editor.save();
 		assertXPath(editor.getSource(), component.getUri(), "//route/from/@uri");
@@ -364,7 +364,7 @@ public class SAPComponentTest extends DefaultTest {
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		log.info("Testing camel component '" + component.getPaletteEntry() + "'");
 		editor = new CamelEditor("camel-context.xml");
-		editor.addCamelComponent(component);
+		editor.addCamelComponent(component, "_route1");
 		editor.doOperation(component.getLabel(), "Add", "Miscellaneous", "Stop");
 		editor.save();
 		assertXPath(editor.getSource(), component.getUri(), "//route/from/@uri");
@@ -409,7 +409,7 @@ public class SAPComponentTest extends DefaultTest {
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		log.info("Testing camel component '" + component.getPaletteEntry() + "'");
 		editor = new CamelEditor("camel-context.xml");
-		editor.addCamelComponent(component);
+		editor.addCamelComponent(component, "_route1");
 		editor.doOperation(component.getLabel(), "Add", "Miscellaneous", "Stop");
 		editor.save();
 		assertXPath(editor.getSource(), component.getUri(), "//route/from/@uri");
@@ -451,7 +451,7 @@ public class SAPComponentTest extends DefaultTest {
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		log.info("Testing camel component '" + component.getPaletteEntry() + "'");
 		editor = new CamelEditor("camel-context.xml");
-		editor.addCamelComponent(component);
+		editor.addCamelComponent(component, "_route1");
 		editor.doOperation(component.getLabel(), "Add", "Miscellaneous", "Stop");
 		editor.save();
 		assertXPath(editor.getSource(), component.getUri(), "//route/from/@uri");
@@ -492,7 +492,7 @@ public class SAPComponentTest extends DefaultTest {
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		log.info("Testing camel component '" + component.getPaletteEntry() + "'");
 		editor = new CamelEditor("camel-context.xml");
-		editor.addCamelComponent(component);
+		editor.addCamelComponent(component, "_route1");
 		editor.doOperation(component.getLabel(), "Add", "Miscellaneous", "Stop");
 		editor.save();
 		assertXPath(editor.getSource(), component.getUri(), "//route/from/@uri");

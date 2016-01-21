@@ -9,12 +9,12 @@ public class RoutingSlip implements CamelComponent {
 
 	@Override
 	public String getPaletteEntry() {
-		return "RoutingSlip";
+		return "Routing Slip";
 	}
 
 	@Override
 	public String getLabel() {
-		return "routingSlip[simpl...";
+		return "routingSlip";
 	}
 
 	@Override

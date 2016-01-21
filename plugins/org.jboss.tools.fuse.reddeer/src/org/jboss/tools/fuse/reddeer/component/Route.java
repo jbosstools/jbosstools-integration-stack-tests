@@ -1,20 +1,15 @@
 package org.jboss.tools.fuse.reddeer.component;
 
-/**
- * 
- * @author apodhrad
- *
- */
-public class ConvertBody implements CamelComponent {
+public class Route implements CamelComponent {
 
 	@Override
 	public String getPaletteEntry() {
-		return "ConvertBody";
+		return "Route";
 	}
 
 	@Override
 	public String getLabel() {
-		return "convertBody";
+		return "route";
 	}
 
 	@Override

@@ -1,20 +1,15 @@
 package org.jboss.tools.fuse.reddeer.component;
 
-/**
- * 
- * @author apodhrad
- *
- */
-public class Sampling implements CamelComponent {
+public class SQL implements CamelComponent {
 
 	@Override
 	public String getPaletteEntry() {
-		return "Sampling";
+		return "SQL";
 	}
 
 	@Override
 	public String getLabel() {
-		return "sample[1 Exchange...";
+		return "sql:query";
 	}
 
 	@Override

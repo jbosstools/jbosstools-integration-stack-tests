@@ -2,7 +2,6 @@ package org.jboss.tools.fuse.ui.bot.test;
 
 import static org.jboss.reddeer.requirements.server.ServerReqState.RUNNING;
 import static org.jboss.tools.runtime.reddeer.requirement.ServerReqType.EAP;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -91,7 +90,7 @@ public class DeploymentEAPTest extends DefaultTest {
 		BrowserView browser = new BrowserView();
 		browser.open();
 		browser.openPageURL("http://localhost:8080/wildfly-spring");
-		assertEquals("Hello null", browser.getText());
+		assertTrue(browser.getText().contains("Hello null"));
 		FuseServerManipulator.removeAllModules(serverRequirement.getConfig().getName());
 		new WaitUntil(new ConsoleHasText("(CamelContext: spring-context) is shutdown"));
 		new WaitUntil(new ConsoleHasText("Undeployed \"wildfly-spring.war\""));

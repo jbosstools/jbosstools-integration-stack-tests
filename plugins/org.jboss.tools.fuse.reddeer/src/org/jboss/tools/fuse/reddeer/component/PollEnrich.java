@@ -9,12 +9,12 @@ public class PollEnrich implements CamelComponent {
 
 	@Override
 	public String getPaletteEntry() {
-		return "PollEnrich";
+		return "Poll Enrich";
 	}
 
 	@Override
 	public String getLabel() {
-		return "poll enrich";
+		return "pollEnrich";
 	}
 
 	@Override

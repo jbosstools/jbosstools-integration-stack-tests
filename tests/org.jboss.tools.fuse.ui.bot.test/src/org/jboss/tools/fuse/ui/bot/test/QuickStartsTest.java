@@ -19,6 +19,7 @@ import org.jboss.tools.fuse.reddeer.preference.ConsolePreferencePage;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
 import org.jboss.tools.fuse.reddeer.view.ErrorLogView;
 import org.jboss.tools.fuse.reddeer.wizard.ImportMavenWizard;
+import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.runtime.reddeer.utils.FuseServerManipulator;
@@ -76,6 +77,14 @@ public class QuickStartsTest {
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		new WorkbenchShell();
 		FuseServerManipulator.removeAllModules(serverRequirement.getConfig().getName());
+	}
+
+	/**
+	 * Deletes all created projects
+	 */
+	@After
+	public void setupDeleteProjects() {
+		ProjectFactory.deleteAllProjects();
 	}
 
 	/**

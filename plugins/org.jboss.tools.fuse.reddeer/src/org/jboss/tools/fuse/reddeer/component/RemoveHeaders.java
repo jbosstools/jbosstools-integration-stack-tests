@@ -9,12 +9,12 @@ public class RemoveHeaders implements CamelComponent {
 
 	@Override
 	public String getPaletteEntry() {
-		return "RemoveHeaders";
+		return "Remove Headers";
 	}
 
 	@Override
 	public String getLabel() {
-		return "removeHeaders[null]";
+		return "removeHeaders";
 	}
 
 	@Override

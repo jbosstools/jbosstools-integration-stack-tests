@@ -9,7 +9,7 @@ public class SetExchangePattern implements CamelComponent {
 
 	@Override
 	public String getPaletteEntry() {
-		return "SetExchangePattern";
+		return "Set Exchange Pattern";
 	}
 
 	@Override

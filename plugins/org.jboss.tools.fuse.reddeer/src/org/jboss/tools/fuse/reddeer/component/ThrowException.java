@@ -9,12 +9,12 @@ public class ThrowException implements CamelComponent {
 
 	@Override
 	public String getPaletteEntry() {
-		return "ThrowException";
+		return "Throw Exception";
 	}
 
 	@Override
 	public String getLabel() {
-		return "throwException[re...";
+		return "throwException";
 	}
 
 	@Override
