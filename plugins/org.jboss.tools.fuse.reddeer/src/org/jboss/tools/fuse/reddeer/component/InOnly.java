@@ -4,7 +4,7 @@ public class InOnly implements CamelComponent {
 
 	@Override
 	public String getPaletteEntry() {
-		return "InOnly";
+		return "In Only";
 	}
 
 	@Override

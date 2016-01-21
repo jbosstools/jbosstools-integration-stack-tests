@@ -14,7 +14,7 @@ public class Delay implements CamelComponent {
 
 	@Override
 	public String getLabel() {
-		return "delay[simple{}]";
+		return "delay";
 	}
 
 	@Override

@@ -9,12 +9,12 @@ public class SetBody implements CamelComponent {
 
 	@Override
 	public String getPaletteEntry() {
-		return "SetBody";
+		return "Set Body";
 	}
 
 	@Override
 	public String getLabel() {
-		return "setBody[simple{}]";
+		return "setBody";
 	}
 
 	@Override

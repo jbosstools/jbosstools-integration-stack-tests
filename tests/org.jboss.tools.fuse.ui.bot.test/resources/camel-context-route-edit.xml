@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<routes xmlns="http://camel.apache.org/schema/spring">
-    <route id="route1">
-        <from uri="file:src/data?noop=true"/>
-        <choice id="choice1">
-            <when id="when1">
+<?xml version="1.0" encoding="UTF-8"?>
+<routes id="camelContext-2bdf671e-538a-4c32-be6b-c7615895c306" xmlns="http://camel.apache.org/schema/spring">
+    <route customId="true" id="_route1">
+        <from customId="true" id="_from1" uri="file:src/data?noop=true"/>
+        <choice customId="true" id="_choice1">
+            <when customId="true" id="_when1">
                 <xpath>/person/city = 'London'</xpath>
-                <log message="YYY" id="log1"/>
-                <to uri="file:target/messages/uk" id="to1"/>
+                <log customId="true" id="_log1" message="YYY"/>
+                <to customId="true" id="_to1" uri="file:target/messages/uk"/>
             </when>
         </choice>
     </route>

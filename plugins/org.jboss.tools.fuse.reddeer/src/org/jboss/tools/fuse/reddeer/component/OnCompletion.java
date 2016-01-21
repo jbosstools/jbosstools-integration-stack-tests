@@ -9,7 +9,7 @@ public class OnCompletion implements CamelComponent {
 
 	@Override
 	public String getPaletteEntry() {
-		return "OnCompletion";
+		return "On Completion";
 	}
 
 	@Override

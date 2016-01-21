@@ -1,20 +1,15 @@
 package org.jboss.tools.fuse.reddeer.component;
 
-/**
- * 
- * @author apodhrad
- *
- */
-public class Catch implements CamelComponent {
+public class MVEL implements CamelComponent {
 
 	@Override
 	public String getPaletteEntry() {
-		return "Catch";
+		return "MVEL";
 	}
 
 	@Override
 	public String getLabel() {
-		return "catch";
+		return "mvel:resourceUri";
 	}
 
 	@Override

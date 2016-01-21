@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
 
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.swt.widgets.Composite;
@@ -61,8 +62,6 @@ public class CamelEditor extends GEFEditor {
 	@Override
 	public void save() {
 		activate();
-		click(1, 1);
-		new ContextMenu("Layout Diagram").select();
 		new ShellMenu("File", "Save").select();
 		try {
 			new WaitUntil(new ShellWithTextIsAvailable("Please confirm..."));
@@ -119,14 +118,18 @@ public class CamelEditor extends GEFEditor {
 	}
 
 	/**
-	 * Adds a component into the Camel Editor
+	 * Adds a component into the Camel Editor into defined route
 	 * 
 	 * @param component
-	 *            component to add
+	 *            Name of a component in Palette view
+	 * @param route
+	 *            Name of a route in Camel Editor
 	 */
-	public void addCamelComponent(CamelComponent component) {
+	public void addCamelComponent(CamelComponent component, String route) {
 
-		addCamelComponent(component, 0, 0);
+		log.debug("Adding '" + component + "' component into '" + route + "' route");
+		Point r = getInEditorCoords(route);
+		addCamelComponent(component, r.x + 10, r.y + 50);
 	}
 
 	/**
@@ -295,7 +298,8 @@ public class CamelEditor extends GEFEditor {
 	}
 
 	/**
-	 * Performs the given operation on a component described with the given label
+	 * Performs the given operation on a component described with the given
+	 * label
 	 * 
 	 * @param label
 	 *            label of instance of component in Camel Editor
@@ -349,7 +353,8 @@ public class CamelEditor extends GEFEditor {
 	}
 
 	/**
-	 * Checks whether a component with given name is available in the Camel Editor
+	 * Checks whether a component with given name is available in the Camel
+	 * Editor
 	 * 
 	 * @param name
 	 *            name of the component
@@ -359,6 +364,7 @@ public class CamelEditor extends GEFEditor {
 
 		log.debug("Looking for '" + name + "' component in the Camel Editor");
 		new GEFEditor().click(5, 5);
+		AbstractWait.sleep(TimePeriod.SHORT);
 		try {
 			new LabeledEditPart(name).select();
 		} catch (GEFLayerException ex) {
@@ -368,7 +374,8 @@ public class CamelEditor extends GEFEditor {
 	}
 
 	/**
-	 * Sets a property to desired value. It presumes that some component in the Camel Editor is selected.
+	 * Sets a property to desired value. It presumes that some component in the
+	 * Camel Editor is selected.
 	 * 
 	 * @param component
 	 *            component in the Camel editor
@@ -380,8 +387,10 @@ public class CamelEditor extends GEFEditor {
 	public void setProperty(String name, String value) {
 
 		log.debug("Setting '" + value + "' as the property '" + name + "' of selelected component in the Camel Editor");
-		new PropertiesView().open();
-		new PropertiesView().selectTab("Generic");
+		PropertiesView prop = new PropertiesView();
+		prop.open();
+		prop.activate();
+		prop.selectTab("Details");
 		new LabeledTextExt(name).setText(value);
 		activate();
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -404,7 +413,7 @@ public class CamelEditor extends GEFEditor {
 		properties.open();
 		selectEditPart(component);
 		properties.activate();
-		properties.selectTab("Generic");
+		properties.selectTab("Details");
 		new LabeledTextExt(name).setText(value);
 		activate();
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -491,7 +500,7 @@ public class CamelEditor extends GEFEditor {
 		new LabeledEditPart(source).click();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		MouseAWTManager.AWTMouseMoveFromTo(new Point(fromCoords.x + 70, fromCoords.y + 20),
-				new Point(fromCoords.x + 140, fromCoords.y + 20));
+				new Point(fromCoords.x + 150, fromCoords.y + 20));
 		MouseAWTManager.AWTMousePress();
 		MouseAWTManager.AWTMouseMoveFromTo(new Point(fromCoords.x + 140, fromCoords.y + 20),
 				new Point(toCoords.x + 10, toCoords.y + 20));
@@ -509,7 +518,31 @@ public class CamelEditor extends GEFEditor {
 	public void selectEditPart(String name) {
 
 		activate();
-		new LabeledEditPart(name).select();
+		new CamelComponentEditPart(name).select();
+	}
+
+	/**
+	 * Click on an edit part with a given name
+	 * 
+	 * @param name
+	 *            name of edit part
+	 */
+	public void clickOnEditPart(String name) {
+
+		activate();
+		new CamelComponentEditPart(name).click();
+	}
+
+	/**
+	 * Invoke 'Layout Diagram' from the context menu of given component
+	 * 
+	 * @param name
+	 *            name of edit part
+	 */
+	public void layoutDiagram(String name) {
+
+		new CamelComponentEditPart(name).select();
+		new ContextMenu("Layout Diagram").select();
 	}
 
 	/**
@@ -538,6 +571,21 @@ public class CamelEditor extends GEFEditor {
 		});
 	}
 
+	/**
+	 * Retrieves coordinates of given component
+	 * 
+	 * @param name
+	 *            name of camel component
+	 * @return relative coordinates of given element in Camel Editor
+	 */
+	private Point getInEditorCoords(String name) {
+		activate();
+		final CamelComponentEditPart component = new CamelComponentEditPart(name);
+		final int x = component.getBounds().x;
+		final int y = component.getBounds().y;
+		return new Point(x, y);
+	}
+
 	public String xpath(String expr) throws FileNotFoundException {
 		XPathEvaluator xpath = new XPathEvaluator(new FileReader(getSourceFile()));
 		String result = xpath.evaluateString(expr);
@@ -564,5 +612,29 @@ public class CamelEditor extends GEFEditor {
 		}
 		in.close();
 		return source.toString();
+	}
+
+	/**
+	 * Types text into Search box in Palette
+	 * 
+	 * @param text
+	 *            search box input
+	 */
+	public void paletteSearch(String text) {
+		new DefaultText().typeText(text);
+	}
+
+	/**
+	 * Retrieves all available palette components
+	 * 
+	 * @return List of available components names
+	 */
+	public List<String> palleteGetComponents() {
+		return getPalette().getTools();
+	}
+
+	@Override
+	public Palette getPalette() {
+		return ViewerHandler.getInstance().getPalette(viewer);
 	}
 }

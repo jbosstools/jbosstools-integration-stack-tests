@@ -9,12 +9,12 @@ public class OnException implements CamelComponent {
 
 	@Override
 	public String getPaletteEntry() {
-		return "OnException";
+		return "On Exception";
 	}
 
 	@Override
 	public String getLabel() {
-		return "on exception []";
+		return "onException";
 	}
 
 	@Override

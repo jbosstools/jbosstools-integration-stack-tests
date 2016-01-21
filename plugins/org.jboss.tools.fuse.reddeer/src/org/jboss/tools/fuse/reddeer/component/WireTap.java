@@ -9,12 +9,12 @@ public class WireTap implements CamelComponent {
 
 	@Override
 	public String getPaletteEntry() {
-		return "WireTap";
+		return "Wire Tap";
 	}
 
 	@Override
 	public String getLabel() {
-		return "wireTap[no uri or...";
+		return "wireTap";
 	}
 
 	@Override

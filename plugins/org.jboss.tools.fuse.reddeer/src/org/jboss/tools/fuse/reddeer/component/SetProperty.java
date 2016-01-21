@@ -9,12 +9,12 @@ public class SetProperty implements CamelComponent {
 
 	@Override
 	public String getPaletteEntry() {
-		return "SetProperty";
+		return "Set Property";
 	}
 
 	@Override
 	public String getLabel() {
-		return "setProperty[null]";
+		return "setProperty";
 	}
 
 	@Override

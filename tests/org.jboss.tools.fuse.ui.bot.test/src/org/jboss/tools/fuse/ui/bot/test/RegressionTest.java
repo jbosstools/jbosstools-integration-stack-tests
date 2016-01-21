@@ -190,7 +190,7 @@ public class RegressionTest extends DefaultTest {
 		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		CamelEditor editor = new CamelEditor("camel-context.xml");
-		editor.addCamelComponent(new Log());
+		editor.addCamelComponent(new Log(), "_route1");
 		new DefaultToolItem(new WorkbenchShell(), 0, new WithTooltipTextMatcher(new RegexMatcher("Save All.*")))
 				.click();
 		new WaitUntil(new ShellWithTextIsAvailable("Please confirm..."));

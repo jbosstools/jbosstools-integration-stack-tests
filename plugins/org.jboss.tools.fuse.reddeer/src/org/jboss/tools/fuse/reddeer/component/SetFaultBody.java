@@ -9,12 +9,12 @@ public class SetFaultBody implements CamelComponent {
 
 	@Override
 	public String getPaletteEntry() {
-		return "SetFaultBody";
+		return "Set Fault Body";
 	}
 
 	@Override
 	public String getLabel() {
-		return "setFaultBody[simp...";
+		return "setFaultBody";
 	}
 
 	@Override

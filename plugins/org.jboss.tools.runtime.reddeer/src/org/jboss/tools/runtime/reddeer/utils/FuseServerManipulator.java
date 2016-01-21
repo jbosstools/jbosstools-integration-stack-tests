@@ -136,7 +136,6 @@ public class FuseServerManipulator {
 
 	private static void doOperation(String operation, String name) {
 
-		log.info("Start server " + name);
 		new ServersView().open();
 		for (TreeItem item : new DefaultTree().getItems()) {
 			if (item.getText().startsWith(name)) {
@@ -159,7 +158,6 @@ public class FuseServerManipulator {
 					new WaitUntil(new ConsoleHasText("100%"), TimePeriod.getCustom(300));
 				}
 				AbstractWait.sleep(TimePeriod.NORMAL);
-				log.info("Server " + name + " is started");
 				break;
 			}
 		}

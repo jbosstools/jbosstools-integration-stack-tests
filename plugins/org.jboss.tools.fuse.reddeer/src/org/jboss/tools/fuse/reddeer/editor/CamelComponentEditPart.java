@@ -1,7 +1,6 @@
 package org.jboss.tools.fuse.reddeer.editor;
 
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.jboss.reddeer.gef.impl.editpart.AbstractEditPart;
 import org.jboss.reddeer.gef.matcher.IsEditPartWithLabel;
 
 /**
@@ -9,8 +8,8 @@ import org.jboss.reddeer.gef.matcher.IsEditPartWithLabel;
  * 
  * @author tsedmik
  */
-public class CamelComponentEditPart extends AbstractEditPart {
-
+public class CamelComponentEditPart extends FuseEditPart {
+	
 	public CamelComponentEditPart(String label) {
 		this(label, 0);
 	}

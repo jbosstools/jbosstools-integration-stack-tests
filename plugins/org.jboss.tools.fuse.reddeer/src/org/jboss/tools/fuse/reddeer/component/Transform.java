@@ -14,7 +14,7 @@ public class Transform implements CamelComponent {
 
 	@Override
 	public String getLabel() {
-		return "transform[simple{}]";
+		return "transform";
 	}
 
 	@Override
