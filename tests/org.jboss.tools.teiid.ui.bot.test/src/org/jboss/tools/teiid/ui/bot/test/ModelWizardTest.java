@@ -2,14 +2,11 @@ package org.jboss.tools.teiid.ui.bot.test;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.teiid.reddeer.ModelClass;
 import org.jboss.tools.teiid.reddeer.ModelType;
@@ -18,7 +15,6 @@ import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.wizard.MetadataModelWizard;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,13 +42,6 @@ public class ModelWizardTest {
 	public static void beforeClass() {
 		teiidBot.uncheckBuildAutomatically();
 		new ModelExplorerManager().createProject(PROJECT_NAME);
-	}
-
-	@AfterClass
-	public static void saveAllFiles() {
-		AbstractWait.sleep(TimePeriod.NORMAL);
-		new ShellMenu("File", "Save All").select();
-		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 
 	@After
