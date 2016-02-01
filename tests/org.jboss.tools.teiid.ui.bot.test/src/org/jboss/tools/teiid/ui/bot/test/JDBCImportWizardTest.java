@@ -17,7 +17,6 @@ import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -29,19 +28,15 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 @TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = {
 	ConnectionProfilesConstants.DB2_101_BQT,
-	ConnectionProfilesConstants.DB2_81_BQT2,
 	ConnectionProfilesConstants.DB2_97_BQT2,
-	ConnectionProfilesConstants.ORACLE_10G_BQT2,
 	ConnectionProfilesConstants.ORACLE_11G_BQT2,
 	ConnectionProfilesConstants.ORACLE_12C_BQT,
 	ConnectionProfilesConstants.SQL_SERVER_2008_BQT2,
 	ConnectionProfilesConstants.SQL_SERVER_2012_BQT2,
 	ConnectionProfilesConstants.DV6_DS1,
-	ConnectionProfilesConstants.SQL_SERVER_2000_BQT2,
 	ConnectionProfilesConstants.MYSQL_51_BQT2,
 	ConnectionProfilesConstants.MYSQL_55_BQT2,
 	ConnectionProfilesConstants.POSTGRESQL_84_BQT2,
-	ConnectionProfilesConstants.POSTGRESQL_91_BQT2,
 	ConnectionProfilesConstants.POSTGRESQL_92_DVQE,
 	ConnectionProfilesConstants.SYBASE_15_BQT2,
 	ConnectionProfilesConstants.INGRES_10_BQT2 })
@@ -79,8 +74,6 @@ public class JDBCImportWizardTest {
 
 	@Test
 	public void db297Import() {
-		// NPE at
-		// org.teiid.designer.datatools.connection.ConnectionInfoHelper.getCommonProfileProperties(ConnectionInfoHelper.java:214)
 
 		String model = "db297Model";
 		importModel(model, ConnectionProfilesConstants.DB2_97_BQT2, "BQT2/TABLE/SMALLA,BQT2/TABLE/SMALLB");
@@ -93,15 +86,6 @@ public class JDBCImportWizardTest {
 		String model = "ingres10Model";
 		importModel(model, ConnectionProfilesConstants.INGRES_10_BQT2, "bqt2/TABLE/smalla,bqt2/TABLE/smallb");
 		checkImportedModel(model, "smalla", "smallb");
-	}
-
-	@Test
-	@Ignore // server down for now
-	public void oracle10gImport() {
-
-		String model = "oracle10gModel";
-		importModel(model, ConnectionProfilesConstants.ORACLE_10G_BQT2, "BQT2/TABLE/SMALLA,BQT2/TABLE/SMALLB");
-		checkImportedModel(model, "SMALLA", "SMALLB");
 	}
 
 	@Test
@@ -153,15 +137,6 @@ public class JDBCImportWizardTest {
 		String model = "dv6Model";
 		importModel(model, ConnectionProfilesConstants.DV6_DS1, "PUBLIC/PUBLIC/TABLE/STATUS,PUBLIC/PUBLIC/TABLE/PARTS");
 		checkImportedModel(model, "STATUS", "PARTS");
-	}
-
-	@Test
-	@Ignore // db server is down
-	public void mysql50Import() {
-
-		String model = "mysql50Model";
-		importModel(model, ConnectionProfilesConstants.MYSQL_50_BQT2, "bqt2/TABLE/smalla,bqt2/TABLE/smallb");
-		checkImportedModel(model, "smalla", "smallb");
 	}
 
 	@Test

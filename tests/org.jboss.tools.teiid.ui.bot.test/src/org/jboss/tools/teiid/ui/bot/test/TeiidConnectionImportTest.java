@@ -20,7 +20,6 @@ import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.TeiidConnectionImportWizard;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -33,16 +32,12 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 @TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = {
 	ConnectionProfilesConstants.DB2_101_BQT,
-	ConnectionProfilesConstants.DB2_81_BQT2,
 	ConnectionProfilesConstants.DB2_97_BQT2,
-	ConnectionProfilesConstants.ORACLE_10G_BQT2,
 	ConnectionProfilesConstants.ORACLE_11G_BQT2,
 	ConnectionProfilesConstants.ORACLE_12C_BQT,
 	ConnectionProfilesConstants.SQL_SERVER_2008_BQT2,
 	ConnectionProfilesConstants.SQL_SERVER_2012_BQT2,
-	ConnectionProfilesConstants.DV6_DS1,
 	ConnectionProfilesConstants.HSQLDB,
-	ConnectionProfilesConstants.SQL_SERVER_2000_BQT2,
 	ConnectionProfilesConstants.MYSQL_51_BQT2,
 	ConnectionProfilesConstants.MYSQL_55_BQT2,
 	ConnectionProfilesConstants.POSTGRESQL_84_BQT2,
@@ -222,16 +217,6 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 	}
 
 	@Test
-	@Ignore // server down
-	public void oracle10gTest() {
-		Properties teiidImporterProperties = new Properties();
-		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "SMALL%");
-		importModel(ConnectionProfilesConstants.ORACLE_10G_BQT2, "oracle10gModel", teiidImporterProperties);
-		checkImportedModel("oracle10gModel", "SMALLA", "SMALLB");
-
-	}
-
-	@Test
 	public void oracle11gTest() {
 		Properties teiidImporterProperties = new Properties();
 		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "SMALL%");
@@ -362,7 +347,7 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 				teiidImporterProps);
 
 		teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", "Sheet1");
-		teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", "Sheet1", "ROW_ID : biginteger");
+		teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", "Sheet1", "ROW_ID : int");
 		teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", "Sheet1", "StringNum : string(10)");
 	}
 
@@ -384,7 +369,7 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 
 		teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", "Customers");
 		teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", "Customers", "CustomerID : string(5)");
-		teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", "Employees", "EmployeeID : biginteger");
+		teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", "Employees", "EmployeeID : int");
 	}
 
 	private void checkImportedModel(String modelName, String... tables) {
