@@ -27,6 +27,7 @@ public class SQLResult {
 	}
 
 	public int getCount() {
+		resultRow.doubleClick();
 		new SWTWorkbenchBot().cTabItem("Result1").activate();
 		return new SWTWorkbenchBot().table().rowCount();
 	}
@@ -37,7 +38,8 @@ public class SQLResult {
 	 * @return
 	 */
 	public String getResultAsCSV() {
-		new DefaultCTabItem("Result1");
+		resultRow.doubleClick();
+		new DefaultCTabItem("Result1").activate();
 		DefaultTable table = new DefaultTable();
 		int colNum = table.getHeaders().size();
 		StringBuilder csv = new StringBuilder();
