@@ -5,11 +5,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.ArrayList;
-
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfilesConstants;
 import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
-import org.jboss.tools.teiid.reddeer.manager.VDBManager;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -19,7 +17,6 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
-import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
@@ -29,6 +26,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+/**
+ * @author mkralik
+ */
 
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
@@ -44,7 +45,6 @@ public class PreviewModelTest {
 	private static final String NAME_ORACLE_MODEL = "partsSourceOracle";
 	private static final String NAME_SQL_MODEL = "partsSourceSQLServer";
 	private static final String NAME_VIEW_MODEL = "partsView";
-	private static final String VDB_NAME = "previewVDB";
 	private static final String PATH_PARTS_ORACLE_CSV = teiidBot.toAbsolutePath("resources/preview/oracleSource.csv") ;
 	private static final String PATH_PARTS_MSSQL_CSV = teiidBot.toAbsolutePath("resources/preview/mssqlSource.csv") ;
 	private static final String PATH_VIEW_TABLE_CSV = teiidBot.toAbsolutePath("resources/preview/viewTable.csv") ;
