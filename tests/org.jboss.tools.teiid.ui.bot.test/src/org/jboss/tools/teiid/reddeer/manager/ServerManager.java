@@ -29,8 +29,8 @@ public class ServerManager {
 		return new ServersViewExt();
 	}
 
-	public void setDefaultTeiidInstance(String serverName, ServerType type) {
-		new GuidesView().setDefaultTeiidInstance(serverName, type);
+	public void setDefaultTeiidInstance(String serverName) {
+		new GuidesView().setDefaultTeiidInstance(serverName);
 	}
 
 	public boolean isVDBDeployed(String serverName, ServerType serverType, String vdbName) {

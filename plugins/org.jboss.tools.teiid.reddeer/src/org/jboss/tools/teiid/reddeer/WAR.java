@@ -1,17 +1,13 @@
 package org.jboss.tools.teiid.reddeer;
 
-import java.util.List;
 import java.util.Properties;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerModule;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
@@ -126,7 +122,7 @@ public class WAR {
 		}
 	}
 
-	private void setupRESTWAR() {
+	public void setupRESTWAR() {
 		new WaitUntil(new ShellWithTextIsAvailable("Create REST WAR File"), TimePeriod.NORMAL);
 		new DefaultShell("Create REST WAR File");
 		setupCommon();
