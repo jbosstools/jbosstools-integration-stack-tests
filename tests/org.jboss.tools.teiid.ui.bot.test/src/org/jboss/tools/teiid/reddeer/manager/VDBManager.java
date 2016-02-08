@@ -8,7 +8,6 @@ import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -48,23 +47,9 @@ public class VDBManager {
 		return VDBEditor.getInstance(vdbName + ".vdb");
 	}
 
-	public void addModelsToVDB(String projectName, String vdbName, String... models) {// move to vdb editor ?
+	public void addModelsToVDB(String projectName, String vdbName, String[] models){
 		VDBEditor editor = getVDBEditor(projectName, vdbName);
-		editor.show();
-		String model = "";
-		for (int i = 0; i < models.length; i++) {
-			try {
-				model = models[i];
-				editor.addModel(projectName, model);
-			} catch (Exception ex) {
-				if (new ShellWithTextIsAvailable("Add File(s) to VDB").test()) {
-					new DefaultShell("Add File(s) to VDB");
-					new PushButton("Cancel").click();
-				}
-				log.warn("Cannot add model " + model);
-			}
-		}
-		editor.save();
+		editor.addModelsToVDB(projectName, models);  // addModels function moved to VDBEditor	
 	}
 
 	// TODO CHECK

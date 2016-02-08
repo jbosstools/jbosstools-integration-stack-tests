@@ -56,6 +56,20 @@ public class VDBEditor extends SWTBotEditor {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
+	public void addModelsToVDB(String projectName, String[] models){
+		show();
+		String model = "";
+		try {
+			for (int i = 0; i < models.length; i++) {
+				model = models[i];
+				addModel(projectName, model);
+			}
+		} catch (Exception ex) {
+			log.warn("Cannot add model " + model);
+		}
+		save();
+	}
+	
 	/**
 	 * 
 	 * @param projectName
