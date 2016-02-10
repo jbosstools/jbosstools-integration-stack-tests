@@ -71,8 +71,7 @@ public class PreviewModelTest {
 	@Test
 	public void previewDataSourceModel(){
 		String tableOracle = "STATUS";
-		String tableSQL = "SUPPLIER";
-		
+		String tableSQL = "SHIP_VIA";
 		String queryOracle = "select * from \"" + NAME_ORACLE_MODEL + "\".\""+ tableOracle +"\"";
 		String querySQL = "select * from \"" + NAME_SQL_MODEL + "\".\""+ tableSQL +"\"";
 		
@@ -85,7 +84,7 @@ public class PreviewModelTest {
 		assertTrue(checkPreviewCSV(querySQL,PATH_PARTS_MSSQL_CSV));
 		
 		assertEquals(3,getCount(queryOracle));
-		assertEquals(16,getCount(querySQL));
+		assertEquals(3,getCount(querySQL));
 	}
 	
 	@Test
