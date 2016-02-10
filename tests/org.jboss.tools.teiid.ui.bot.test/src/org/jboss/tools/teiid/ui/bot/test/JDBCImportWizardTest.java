@@ -1,11 +1,18 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
 import java.util.Properties;
 
 import org.jboss.reddeer.junit.execution.annotation.RunIf;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.swt.api.TableItem;
+import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfilesConstants;
@@ -31,7 +38,7 @@ import org.junit.runner.RunWith;
 	ConnectionProfilesConstants.DB2_97_BQT2,
 	ConnectionProfilesConstants.ORACLE_11G_BQT2,
 	ConnectionProfilesConstants.ORACLE_12C_BQT,
-	ConnectionProfilesConstants.SQL_SERVER_2008_BQT2,
+	ConnectionProfilesConstants.SQL_SERVER_2008_PARTS_SUPPLIER,
 	ConnectionProfilesConstants.SQL_SERVER_2012_BQT2,
 	ConnectionProfilesConstants.DV6_DS1,
 	ConnectionProfilesConstants.MYSQL_51_BQT2,
@@ -106,11 +113,10 @@ public class JDBCImportWizardTest {
 
 	@Test
 	public void sqlServer2008Import() {
-
 		String model = "sqlServer2008Model";
-		importModel(model, ConnectionProfilesConstants.SQL_SERVER_2008_BQT2,
-				"bqt2/dbo/TABLE/SmallA,bqt2/dbo/TABLE/SmallB");
-		checkImportedModel(model, "SmallA", "SmallB");
+		importModel(model, ConnectionProfilesConstants.SQL_SERVER_2008_PARTS_SUPPLIER,"partssupplier/dbo/TABLE/SHIP_VIA,partssupplier/dbo/TABLE/PARTS");
+		assertTrue(checkNameInTable("\"AVERAGE TIME DELIVERY\"",6,2));
+		checkImportedModel(model, "SHIP_VIA", "PARTS");
 	}
 
 	@Test
@@ -183,5 +189,14 @@ public class JDBCImportWizardTest {
 		teiidBot.simulatePreview(teiidServer, MODEL_PROJECT, model, new String[] { tableA, tableB });
 
 	}
-
+	/**
+	 * true if the text in the table (the intersection of the row and column) is equal to the argument
+	 */
+	private boolean checkNameInTable(String value,int row, int column){
+		new DefaultCTabItem("Table Editor").activate();
+		new DefaultTabItem("Columns").activate();
+		List<TableItem> items = new DefaultTable().getItems();
+		String nis = items.get(row).getText(column);
+		return value.equals(nis);
+	}
 }
