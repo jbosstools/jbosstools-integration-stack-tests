@@ -43,8 +43,6 @@ public class ErrorEventDefinition extends EventDefinition {
 		} else {
 			errorCombo.setSelection(comboItem);
 		}
-
-		// new SectionToolItem("Error Event Definition Details", "Close").click();
 	}
 
 }

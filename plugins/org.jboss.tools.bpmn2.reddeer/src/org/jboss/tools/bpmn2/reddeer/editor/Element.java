@@ -36,6 +36,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructOnPoint;
 import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructWithName;
 import org.jboss.tools.bpmn2.reddeer.matcher.EditPartOfClassName;
 import org.jboss.tools.bpmn2.reddeer.properties.setup.LabeledTextSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.MetaDataSetUp;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
@@ -181,6 +182,10 @@ public class Element {
 	public void setName(String name) {
 		this.name = name;
 		propertiesHandler.setUp(new LabeledTextSetUp("General", "Name", name));
+	}
+	
+	public void setMetaData(String key, String value) {
+		propertiesHandler.setUp(new MetaDataSetUp(key, value));
 	}
 
 	/**

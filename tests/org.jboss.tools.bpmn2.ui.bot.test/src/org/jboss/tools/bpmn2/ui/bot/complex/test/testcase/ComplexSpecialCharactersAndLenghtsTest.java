@@ -11,8 +11,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Process;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.UserTask;
 import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
 
-@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-SpecialCharactersAndLengths.bpmn2", saveAs = "BPMN2-SpecialCharactersAndLenghths.bpmn2", noErrorsInValidation = false, knownIssues = {
-	"1263294" })
+@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-SpecialCharactersAndLengths.bpmn2", saveAs = "BPMN2-SpecialCharactersAndLenghths.bpmn2", noErrorsInValidation = false)
 public class ComplexSpecialCharactersAndLenghtsTest extends JBPM6ComplexTest {
 
 	private static final String PROCESS = "BPMN2-SpecialCharactersAndLengths";
