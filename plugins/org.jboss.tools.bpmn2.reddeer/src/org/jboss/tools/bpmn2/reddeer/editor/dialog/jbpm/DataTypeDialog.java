@@ -21,7 +21,8 @@ public class DataTypeDialog {
 	public void add(String type) {
 		new DefaultShell(SHELL_LABEL);
 		new DefaultTabItem("Data Type").activate();
-		new LabeledText("Structure").setText(type);
+		new PushButton(0).click();
+		new ImportJavaTypeDialog().add(type);
 		new PushButton("OK").click();
 		new WaitWhile(new ShellWithTextIsActive(SHELL_LABEL));
 	}

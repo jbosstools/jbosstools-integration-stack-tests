@@ -28,8 +28,7 @@ import org.kie.api.runtime.process.ProcessInstance;
 import org.kie.api.runtime.process.WorkItem;
 import org.kie.api.runtime.process.WorkflowProcessInstance;
 
-@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-BoundaryEscalationEventOnTask.bpmn2", saveAs = "BPMN2-BoundaryEscalationEventOnTask.bpmn2", knownIssues = {
-	"1249658" })
+@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-BoundaryEscalationEventOnTask.bpmn2", saveAs = "BPMN2-BoundaryEscalationEventOnTask.bpmn2")
 public class ComplexBoundaryEscalationEventOnTaskTest extends JBPM6ComplexTest {
 
 	private static final String VARIABLE3 = "Property_3";
@@ -75,7 +74,7 @@ public class ComplexBoundaryEscalationEventOnTaskTest extends JBPM6ComplexTest {
 		kSession.addEventListener(triggered);
 
 		Map<String, Object> sessionArgs = new HashMap<String, Object>();
-		sessionArgs.put("Property_2", new java.lang.RuntimeException());
+		sessionArgs.put(VARIABLE2, new java.lang.RuntimeException());
 
 		ProcessInstance processInstance = kSession.startProcess("BPMN2BoundaryEscalationEventOnTask", sessionArgs);
 

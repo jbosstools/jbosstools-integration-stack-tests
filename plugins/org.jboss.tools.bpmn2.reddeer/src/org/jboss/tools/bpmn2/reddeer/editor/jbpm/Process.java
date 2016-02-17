@@ -15,6 +15,7 @@ import org.jboss.tools.bpmn2.reddeer.properties.jbpm.InterfacesTab;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.ProcessTab;
 import org.jboss.tools.bpmn2.reddeer.properties.setup.CheckBoxSetUp;
 import org.jboss.tools.bpmn2.reddeer.properties.setup.LabeledTextSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.MetaDataSetUp;
 
 /**
  * 
@@ -260,5 +261,10 @@ public class Process extends ElementContainer {
 		}
 
 		return errors;
+	}
+	
+	@Override
+	public void setMetaData(String key, String value) {
+		propertiesHandler.setUpNormal(new MetaDataSetUp(key, value));
 	}
 }

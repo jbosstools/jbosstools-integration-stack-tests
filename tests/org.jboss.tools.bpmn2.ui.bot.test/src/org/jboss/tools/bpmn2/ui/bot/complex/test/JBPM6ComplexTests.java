@@ -10,7 +10,6 @@ import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexBoundaryEscalat
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexBusinessRuleTaskTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexCallActivityTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexCompensationEventTest;
-import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexConditionalBoundaryEventInterruptingTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexConditionalStartTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexDataObjectTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexDefaultSkippableTest;
@@ -30,7 +29,9 @@ import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexLaneTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexLinkEventTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexManualTaskTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexMessageStartTest;
+import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexMetaDataNamespaceTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexMultiInstanceLoopCharacteristicsTest;
+import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexMultipleNoneStartEventsTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexMultipleStartEventTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexParalellSplitJoinTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexParalellSplitTest;
@@ -46,48 +47,50 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 @SuiteClasses({
-	ComplexParalellSplitJoinTest.class,
-	ComplexCallActivityTest.class,
 	ComplexAdHocProcessTest.class,
 	ComplexAdHocSubprocessTest.class,
 	ComplexAssociationTest.class,
 	ComplexBooleanStructureReferenceTest.class,
-	ComplexBusinessRuleTaskTest.class,
 	ComplexBoundaryConditionalEventOnTaskTest.class,
-	ComplexErrorEndEventTest.class,
+	ComplexBoundaryEscalationEventOnTaskTest.class,
+	ComplexBusinessRuleTaskTest.class,
+	ComplexCallActivityTest.class,
+	ComplexCompensationEventTest.class,
 	ComplexConditionalStartTest.class,
-	ComplexImportTest.class,
-	ComplexReceiveTaskTest.class,
-	ComplexParalellSplitTest.class,
-	ComplexSendTaskTest.class,
+	ComplexDataObjectTest.class,
+	ComplexDefaultSkippableTest.class,
+	ComplexDefinitionViaElementTest.class, 
 	ComplexErrorBoundaryEventOnTaskTest.class,
+	ComplexErrorEndEventTest.class,
+	ComplexEventBasedSplitTest.class,
+	ComplexExclusiveSplitPriorityTest.class,
+	ComplexImportInterfaceTest.class,
+	ComplexImportTest.class,
+	ComplexInclusiveSplitTest.class,
 	ComplexIntermediateCatchEventTimerCycleTest.class,
+	ComplexIntermediateCatchSignalSingleTest.class,
+	ComplexIntermediateThrowEscalationEventTest.class,
+	ComplexIntermediateThrowMessageEventTest.class,
+	ComplexLaneTest.class,
+	ComplexLinkEventTest.class,
+	ComplexManualTaskTest.class,
 	ComplexMessageStartTest.class,
+	ComplexMetaDataNamespaceTest.class,
+	ComplexMultiInstanceLoopCharacteristicsTest.class,
+	ComplexMultipleNoneStartEventsTest.class,
+	ComplexMultipleStartEventTest.class,
+	ComplexParalellSplitJoinTest.class,
+	ComplexParalellSplitTest.class,
+	ComplexReceiveTaskTest.class,
+	ComplexSendTaskTest.class,
+	ComplexServiceTaskTest.class,
+	ComplexSpecialCharactersAndLenghtsTest.class,
 	ComplexSubProcessTest.class,
 	ComplexUserTaskTest.class,
-	ComplexXPathExpressionTest.class,
-	ComplexLaneTest.class,
-	ComplexDataObjectTest.class,
-	ComplexMultipleStartEventTest.class,
-	ComplexInclusiveSplitTest.class,
-	ComplexIntermediateThrowMessageEventTest.class,
-	ComplexIntermediateThrowEscalationEventTest.class,
-	ComplexIntermediateCatchSignalSingleTest.class,
-	ComplexExclusiveSplitPriorityTest.class,
-	ComplexEventBasedSplitTest.class,
-	ComplexBoundaryEscalationEventOnTaskTest.class,
-	ComplexConditionalBoundaryEventInterruptingTest.class,
-	ComplexMultiInstanceLoopCharacteristicsTest.class,
-	ComplexCompensationEventTest.class,
-	ComplexLinkEventTest.class,
 	ComplexWebDesignerProcessTest.class,
-	ComplexDefaultSkippableTest.class,
-	ComplexSpecialCharactersAndLenghtsTest.class,
-	ComplexImportInterfaceTest.class,
-	ComplexServiceTaskTest.class,
-	ComplexManualTaskTest.class,
-	ComplexDefinitionViaElementTest.class })
+	ComplexXPathExpressionTest.class
+	})
 @RunWith(RedDeerSuite.class)
 public class JBPM6ComplexTests {
-
+	
 }
