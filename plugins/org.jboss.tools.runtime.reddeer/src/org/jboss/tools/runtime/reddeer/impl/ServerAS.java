@@ -128,7 +128,7 @@ public class ServerAS extends ServerBase {
 			runtimeWizard.setName(getRuntimeName());
 			runtimeWizard.setHomeDirectory(getHome());
 			runtimeWizard.selectJre(getJreName());
-			runtimeWizard.finish(TimePeriod.LONG);
+			runtimeWizard.finish(TimePeriod.VERY_LONG);
 			preferences.ok();
 
 			// Add server
