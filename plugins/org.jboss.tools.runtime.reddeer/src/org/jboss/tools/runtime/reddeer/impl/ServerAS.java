@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.eclipse.wst.server.ui.RuntimePreferencePage;
 import org.jboss.reddeer.eclipse.wst.server.ui.editor.ServerEditor;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
@@ -127,7 +128,7 @@ public class ServerAS extends ServerBase {
 			runtimeWizard.setName(getRuntimeName());
 			runtimeWizard.setHomeDirectory(getHome());
 			runtimeWizard.selectJre(getJreName());
-			runtimeWizard.finish();
+			runtimeWizard.finish(TimePeriod.LONG);
 			preferences.ok();
 
 			// Add server

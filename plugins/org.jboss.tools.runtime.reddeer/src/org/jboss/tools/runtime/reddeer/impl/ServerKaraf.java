@@ -139,7 +139,7 @@ public class ServerKaraf extends ServerBase {
 		runtimeWizard.setName(getRuntimeName());
 		runtimeWizard.setInstallationDir(getHome());
 		runtimeWizard.selectJre(getJreName());
-		runtimeWizard.finish();
+		runtimeWizard.finish(TimePeriod.LONG);
 
 		// TODO Replace ok() method
 		new OkButton().click();
