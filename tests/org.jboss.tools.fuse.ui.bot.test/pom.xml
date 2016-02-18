@@ -21,7 +21,8 @@
 		<karaf.password>karaf</karaf.password>
 		<rd.config>${project.build.directory}/requirements/karaf-3.0.3.xml</rd.config>
 		<enable.debug.log>false</enable.debug.log>
-		<systemProperties>${integrationTestsSystemProperties} -Drd.config=${rd.config}</systemProperties>
+		<sap.url>http://download.jboss.org/jbosstools/mars/integration/updates/integration-stack/extras/jboss-fuse-sap-tool-suite/8.0.0.Beta1/all/</sap.url>
+		<systemProperties>${integrationTestsSystemProperties} -Drd.config=${rd.config} -Djboss.discovery.site.integration-stack-sap.feature=org.fusesource.ide.sap.feature.feature.group -Djboss.discovery.site.integration-stack-sap.url=${sap.url}</systemProperties>
 		<test.class>AllTests</test.class>
 		<customization.file>resources/settings/plugin_customization.ini</customization.file>
 		<maven.repo>${project.build.directory}/requirements/repository/</maven.repo>
