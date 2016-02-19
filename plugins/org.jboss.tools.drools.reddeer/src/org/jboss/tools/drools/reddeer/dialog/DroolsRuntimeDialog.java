@@ -27,8 +27,8 @@ public class DroolsRuntimeDialog {
 		ClassLoader pluginCl = Platform.getBundle("org.drools.eclipse").adapt(BundleWiring.class).getClassLoader();
 		try {
 			Class<?> clazz = pluginCl.loadClass("org.drools.eclipse.util.DroolsRuntimeManager");
-			Method method = clazz.getMethod("createDefaultRuntime", String.class);
-			method.invoke(null, location);
+			Method method = clazz.getMethod("createBundleRuntime", String.class);
+			method.invoke(clazz.newInstance(), location);
 		} catch (ClassNotFoundException ex) {
 			LOGGER.error(ex);
 		} catch (NoSuchMethodException ex) {
@@ -36,6 +36,10 @@ public class DroolsRuntimeDialog {
 		} catch (InvocationTargetException ex) {
 			LOGGER.error(ex);
 		} catch (IllegalAccessException ex) {
+			LOGGER.error(ex);
+		} catch (IllegalArgumentException ex) {
+			LOGGER.error(ex);
+		} catch (InstantiationException ex) {
 			LOGGER.error(ex);
 		}
 		setLocation(location);
