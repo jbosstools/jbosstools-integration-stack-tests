@@ -14,6 +14,7 @@ import org.jboss.tools.teiid.reddeer.matcher.AttributeMatcher;
 import org.jboss.tools.teiid.reddeer.matcher.IsTransformation;
 import org.jboss.tools.teiid.reddeer.matcher.MappingClassMatcher;
 import org.jboss.tools.teiid.reddeer.matcher.RecursiveButtonMatcher;
+import org.jboss.tools.teiid.reddeer.matcher.RefArrowMatcher;
 
 public class MappingDiagramEditor extends SWTBotEditor{
 
@@ -129,5 +130,15 @@ public class MappingDiagramEditor extends SWTBotEditor{
 		me.selectParts(this.getMappingClasses(className));
 		me.selectParts(this.getAttributes(attrName));
 		new ContextMenu("Delete").select();
+	}
+	
+	/** 
+	 * Return list of ref. arrows. (ref. on mapping class, staging table,...)
+	 */
+	public List<SWTBotGefEditPart> getRefArrows(){
+		// TODO add attr. to find exact ref. arrow
+		//		but only dif. i found are context menu and tooltip and could reach them.
+		RefArrowMatcher matcher = RefArrowMatcher.createRefArrowMatcher();
+		return viewer.editParts(matcher);
 	}
 }

@@ -71,6 +71,7 @@ public class CloneAndCopyTest {
 	private static final String WEBSERVICE_VIEW_MODEL_SAVE_NAME = "WebServiceViewModelSaveAs";
 	
 	private static Project project;
+	private ModelExplorerManager modelExplorerManager = new ModelExplorerManager();
 	
 	@BeforeClass
 	public static void importProject() {
@@ -101,8 +102,9 @@ public class CloneAndCopyTest {
 	
 	@Test
 	public void TestCopyRelationalSourceModel(){
-		performCopyModel(ORIGINAL_RELATIONAL_SOURCE_MODEL_PATH,
+		modelExplorerManager.copyModel(ORIGINAL_RELATIONAL_SOURCE_MODEL_PATH,
 						 RELATIONAL_SOURCE_MODEL_COPY_NAME, 
+						 DIR_COPY_PATH,
 						 ModelClass.RELATIONAL, 
 						 ModelType.SOURCE);
 		checkModel(DIR_COPY_NAME, RELATIONAL_SOURCE_MODEL_COPY_NAME + ".xmi");
@@ -113,8 +115,9 @@ public class CloneAndCopyTest {
 	@Jira("TEIIDDES-2641")
 	@RunIf(conditionClass = IssueIsClosed.class)
 	public void TestCopyRelationalViewModel(){
-		performCopyModel(ORIGINAL_RELATIONAL_VIEW_MODEL_PATH,
+		modelExplorerManager.copyModel(ORIGINAL_RELATIONAL_VIEW_MODEL_PATH,
 				         RELATIONAL_VIEW_MODEL_COPY_NAME, 
+				         DIR_COPY_PATH,
 						 ModelClass.RELATIONAL, 
 						 ModelType.VIEW);
 		checkModel(DIR_COPY_NAME, RELATIONAL_VIEW_MODEL_COPY_NAME + ".xmi");	
@@ -124,8 +127,9 @@ public class CloneAndCopyTest {
 	@Jira("TEIIDDES-2641")
 	@RunIf(conditionClass = IssueIsClosed.class)
 	public void TestCopyXmlViewModel(){
-		performCopyModel(ORIGINAL_XML_VIEW_MODEL_PATH,
+		modelExplorerManager.copyModel(ORIGINAL_XML_VIEW_MODEL_PATH,
 				         XML_VIEW_MODEL_COPY_NAME, 
+				         DIR_COPY_PATH,
 						 ModelClass.XML, 
 						 ModelType.VIEW);
 		checkModel(DIR_COPY_NAME, XML_VIEW_MODEL_COPY_NAME + ".xmi");
@@ -133,8 +137,9 @@ public class CloneAndCopyTest {
 	
 	@Test
 	public void TestCopyXmlSchemaModel(){
-		performCopyModel(ORIGINAL_XML_SCHEMA_MODEL_PATH,
-				         XML_SCHEMA_MODEL_COPY_NAME, 
+		modelExplorerManager.copyModel(ORIGINAL_XML_SCHEMA_MODEL_PATH,
+				         XML_SCHEMA_MODEL_COPY_NAME,
+				         DIR_COPY_PATH,
 						 ModelClass.XSD, 
 						 ModelType.DATATYPE);
 		checkModel(DIR_COPY_NAME, XML_SCHEMA_MODEL_COPY_NAME + ".xsd");
@@ -144,8 +149,9 @@ public class CloneAndCopyTest {
 	@Jira("TEIIDDES-2641")
 	@RunIf(conditionClass = IssueIsClosed.class)
 	public void TestCopyWebServiceViewModel(){
-		performCopyModel(ORIGINAL_WEBSERVICE_VIEW_MODEL_PATH,
+		modelExplorerManager.copyModel(ORIGINAL_WEBSERVICE_VIEW_MODEL_PATH,
 				         WEBSERVICE_VIEW_MODEL_COPY_NAME, 
+				         DIR_COPY_PATH,
 						 ModelClass.WEBSERVICE, 
 						 ModelType.VIEW);
 		checkModel(DIR_COPY_NAME, WEBSERVICE_VIEW_MODEL_COPY_NAME + ".xmi");
@@ -153,8 +159,9 @@ public class CloneAndCopyTest {
 	
 	@Test
 	public void TestSaveAsRelationalSourceModel(){
-		performSaveAsModel(ORIGINAL_RELATIONAL_SOURCE_MODEL_PATH, 
+		modelExplorerManager.saveModelAs(ORIGINAL_RELATIONAL_SOURCE_MODEL_PATH, 
 						   RELATIONAL_SOURCE_MODEL_SAVE_NAME,
+						   DIR_SAVEAS_PATH,
 						   Boolean.FALSE);
 		checkModel(DIR_SAVEAS_NAME, RELATIONAL_SOURCE_MODEL_SAVE_NAME + ".xmi");
 	}
@@ -163,24 +170,27 @@ public class CloneAndCopyTest {
 	@Jira("TEIIDDES-2641")
 	@RunIf(conditionClass = IssueIsClosed.class)
 	public void TestSaveAsRelationalViewModel(){
-		performSaveAsModel(ORIGINAL_RELATIONAL_VIEW_MODEL_PATH, 
+		modelExplorerManager.saveModelAs(ORIGINAL_RELATIONAL_VIEW_MODEL_PATH, 
 				           RELATIONAL_VIEW_MODEL_SAVE_NAME,
+				           DIR_SAVEAS_PATH,
 				           Boolean.FALSE);
 		checkModel(DIR_SAVEAS_NAME, RELATIONAL_VIEW_MODEL_SAVE_NAME + ".xmi");
 	}
 	
 	@Test
 	public void TestSaveAsXmlViewModel(){
-		performSaveAsModel(ORIGINAL_XML_VIEW_MODEL_PATH, 
+		modelExplorerManager.saveModelAs(ORIGINAL_XML_VIEW_MODEL_PATH, 
 				           XML_VIEW_MODEL_SAVE_NAME,
+				           DIR_SAVEAS_PATH,
 						   Boolean.FALSE);
 		checkModel(DIR_SAVEAS_NAME, XML_VIEW_MODEL_SAVE_NAME + ".xmi");	
 	}
 	
 	@Test
 	public void TestSaveAsXmlSchemaModel(){
-		performSaveAsModel(ORIGINAL_XML_SCHEMA_MODEL_PATH, 
+		modelExplorerManager.saveModelAs(ORIGINAL_XML_SCHEMA_MODEL_PATH, 
 				           XML_SCHEMA_MODEL_SAVE_NAME,
+				           DIR_SAVEAS_PATH,
 						   Boolean.TRUE);
 		checkModel(DIR_SAVEAS_NAME, XML_SCHEMA_MODEL_SAVE_NAME + ".xsd");			
 	}	
@@ -189,8 +199,9 @@ public class CloneAndCopyTest {
 	@Jira("TEIIDDES-2641")
 	@RunIf(conditionClass = IssueIsClosed.class)
 	public void TestSaveAsWebServiceViewModel(){
-		performSaveAsModel(ORIGINAL_WEBSERVICE_VIEW_MODEL_PATH, 
+		modelExplorerManager.saveModelAs(ORIGINAL_WEBSERVICE_VIEW_MODEL_PATH, 
 				           WEBSERVICE_VIEW_MODEL_SAVE_NAME,
+				           DIR_SAVEAS_PATH,
 				           Boolean.FALSE);
 		checkModel(DIR_SAVEAS_NAME, WEBSERVICE_VIEW_MODEL_SAVE_NAME + ".xmi");		
 	}	
@@ -229,59 +240,6 @@ public class CloneAndCopyTest {
 		modelPath = ORIGINAL_WEBSERVICE_VIEW_MODEL_PATH.split("/");
 		modelPathWithoutProject = Arrays.copyOfRange(modelPath, 1, modelPath.length);
 		assertTrue(clonedProject.containsItem(modelPathWithoutProject));
-	}
-	
-	/**
-	 * Performs copy model action. 
-	 * (new model location is set to "<PROJECT_NAME>/Copy" folder)
-	 * 
-	 * @param String originalModelPath - <PROJECT_NAME>/<FOLDER(S)>/<NAME>.<EXT> 
-	 * 		- where the original model is located and its name
-	 * @param newModelName - name of the new model
-	 * @param newModelClass - model class of the new model
-	 * @param newModelType - model type of the new model
-	 */
-	private void performCopyModel(String originalModelPath, 
-								  String newModelName,
-								  ModelClass newModelClass,
-								  ModelType newModelType){
-		MetadataModelWizard modelWizard = new MetadataModelWizard();
-		modelWizard.open();
-		modelWizard.activate();
-		modelWizard.setLocation(DIR_COPY_PATH.split("/"));
-		modelWizard.setModelName(newModelName);
-		modelWizard.selectModelClass(newModelClass);
-		modelWizard.selectModelType(newModelType);
-		modelWizard.selectModelBuilder(ModelBuilder.COPY_EXISTING);
-		modelWizard.next();
-		modelWizard.setExistingModel(originalModelPath.split("/"));
-		modelWizard.finish();
-		ShellMenu saveAllMenu = new ShellMenu("File","Save All");
-		if (saveAllMenu.isEnabled()){
-			saveAllMenu.select();
-		}
-	}
-	
-	/**
-	 * Performs save model as action. 
-	 * (new model location is set to "<PROJECT_NAME>/SaveAs" folder)
-	 * 
-	 * @param String originalModelPath - <PROJECT_NAME>/<FOLDER(S)>/<NAME>.<EXT> 
-	 * 		- where the original model is located and its name
-	 * @param newModelName - name of the new model
-	 * @param isSchemaModel - whether original model is XML Schema Model or not (for dialog purposes).
-	 */
-	private void performSaveAsModel(String originalModelPath, 
-									String newModelName, 
-									boolean isSchemaModel){
-		ModelExplorerManager manager = new ModelExplorerManager();
-		manager.getModelExplorerView().open(originalModelPath.split("/"));
-		SaveAsDialog saveAsDialog = new SaveAsDialog(isSchemaModel);
-		saveAsDialog.open();
-		saveAsDialog.activate();
-		saveAsDialog.setLocation(DIR_SAVEAS_PATH.split("/"));
-		saveAsDialog.setModelName(newModelName);
-		saveAsDialog.ok();
 	}
 	
 	/**
