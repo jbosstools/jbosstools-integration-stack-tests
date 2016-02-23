@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<xs:schema elementFormDefault="unqualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element abstract="false" name="ResultSet">
+        <xs:complexType mixed="false">
+            <xs:sequence maxOccurs="1" minOccurs="1">
+                <xs:element maxOccurs="unbounded" minOccurs="0"
+                    name="producer" type="producerType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType abstract="false" mixed="false" name="producerType">
+        <xs:sequence maxOccurs="1" minOccurs="1">
+            <xs:element maxOccurs="1" minOccurs="1" name="producerID" type="xs:double"/>
+            <xs:element maxOccurs="1" minOccurs="1" name="name" type="xs:string"/>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="shows" type="tvType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType abstract="false" mixed="false" name="tvType">
+        <xs:sequence maxOccurs="1" minOccurs="1">
+            <xs:element maxOccurs="1" minOccurs="1" name="programId" type="xs:double"/>
+            <xs:element maxOccurs="1" minOccurs="1" name="programName" type="xs:string"/>
+            <xs:element maxOccurs="1" minOccurs="1" name="rating" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

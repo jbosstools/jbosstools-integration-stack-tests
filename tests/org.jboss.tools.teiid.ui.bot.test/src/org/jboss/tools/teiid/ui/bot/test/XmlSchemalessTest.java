@@ -17,6 +17,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.eclipse.core.resources.Project;
@@ -69,6 +71,7 @@ public class XmlSchemalessTest {
 	private static TeiidServerRequirement teiidServer;
 	
 	private static Project project;
+	private ModelExplorerManager modelExplorerManager = new ModelExplorerManager();
 	
 	@BeforeClass
 	public static void importProject(){
@@ -93,21 +96,22 @@ public class XmlSchemalessTest {
 		modelWizard.selectModelClass(ModelClass.XML);
 		modelWizard.selectModelType(ModelType.VIEW);
 		modelWizard.finish();	
-		new ModelExplorerManager().getModelExplorerView().open(PROJECT_NAME,"BooksXml.xmi");
-		new ContextMenu("New Child","XML Document").select();
+		modelExplorerManager.getModelExplorerView().open(PROJECT_NAME,"BooksXml.xmi");
+		modelExplorerManager.addChildToItem(new String[]{PROJECT_NAME,"BooksXml.xmi"}, "XML Document");
 		new DefaultShell("Build XML Documents From XML Schema");
 		new FinishButton().click();
-		new DefaultText(0).setText("bookListingDocument");
-		project.refresh();
+		new SWTWorkbenchBot().activeShell().pressShortcut(Keystrokes.TAB);
+		modelExplorerManager.renameItem(new String[]{PROJECT_NAME,"BooksXml.xmi","NewXMLDocument"}, "bookListingDocument");
 		AbstractWait.sleep(TimePeriod.SHORT);
+		project.refresh();
 		new ShellMenu("File","Save All").select();
 		
 		// 2. Model the document structure
 		String xmlStructureBuilt = "XmlSchemalessProject/BooksXml.xmi/bookListingDocument";
-		renameItem((xmlStructureBuilt + "/Root_Element").split("/"), "bookListing");
+		modelExplorerManager.renameItem((xmlStructureBuilt + "/Root_Element").split("/"), "bookListing");
 		xmlStructureBuilt += "/bookListing";
 		
-		addChildToItem(xmlStructureBuilt.split("/"), "Namespace Declaration");
+		modelExplorerManager.addChildToItem(xmlStructureBuilt.split("/"), "Namespace Declaration");
 		new DefaultTreeItem(xmlStructureBuilt.split("/")).doubleClick();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new DefaultCTabItem("Table Editor").activate();
@@ -122,30 +126,30 @@ public class XmlSchemalessTest {
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new DefaultCTabItem("Mapping Diagram").activate();
 
-		addChildToItem(xmlStructureBuilt.split("/"), "sequence");
+		modelExplorerManager.addChildToItem(xmlStructureBuilt.split("/"), "sequence");
 		xmlStructureBuilt += "/sequence";
 		
-		addChildToItem(xmlStructureBuilt.split("/"), "Element");
-		renameItem((xmlStructureBuilt + "/NewXmlElement").split("/"), "book");
+		modelExplorerManager.addChildToItem(xmlStructureBuilt.split("/"), "Element");
+		modelExplorerManager.renameItem((xmlStructureBuilt + "/NewXmlElement").split("/"), "book");
 		xmlStructureBuilt += "/book";
 		
-		addChildToItem(xmlStructureBuilt.split("/"), "sequence");
+		modelExplorerManager.addChildToItem(xmlStructureBuilt.split("/"), "sequence");
 		xmlStructureBuilt += "/sequence";
 		
-		addChildToItem(xmlStructureBuilt.split("/"), "Element");
-		renameItem((xmlStructureBuilt + "/NewXmlElement").split("/"), "isbn");
+		modelExplorerManager.addChildToItem(xmlStructureBuilt.split("/"), "Element");
+		modelExplorerManager.renameItem((xmlStructureBuilt + "/NewXmlElement").split("/"), "isbn");
 		
-		addChildToItem(xmlStructureBuilt.split("/"), "Element");
-		renameItem((xmlStructureBuilt + "/NewXmlElement").split("/"), "title");
+		modelExplorerManager.addChildToItem(xmlStructureBuilt.split("/"), "Element");
+		modelExplorerManager.renameItem((xmlStructureBuilt + "/NewXmlElement").split("/"), "title");
 		
-		addChildToItem(xmlStructureBuilt.split("/"), "Element");
-		renameItem((xmlStructureBuilt + "/NewXmlElement").split("/"), "edition");
+		modelExplorerManager.addChildToItem(xmlStructureBuilt.split("/"), "Element");
+		modelExplorerManager.renameItem((xmlStructureBuilt + "/NewXmlElement").split("/"), "edition");
 		
-		addChildToItem(xmlStructureBuilt.split("/"), "Element");
-		renameItem((xmlStructureBuilt + "/NewXmlElement").split("/"), "publisherName");
+		modelExplorerManager.addChildToItem(xmlStructureBuilt.split("/"), "Element");
+		modelExplorerManager.renameItem((xmlStructureBuilt + "/NewXmlElement").split("/"), "publisherName");
 		
-		addChildToItem(xmlStructureBuilt.split("/"), "Element");
-		renameItem((xmlStructureBuilt + "/NewXmlElement").split("/"), "publisherLocation");
+		modelExplorerManager.addChildToItem(xmlStructureBuilt.split("/"), "Element");
+		modelExplorerManager.renameItem((xmlStructureBuilt + "/NewXmlElement").split("/"), "publisherLocation");
 		
 		project.refresh();
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -168,6 +172,8 @@ public class XmlSchemalessTest {
 		editor.setTransformation("SELECT ISBN, TITLE, convert(EDITION, string) AS edition, NAME AS publisherName, LOCATION AS publisherLocation"
 				+ " FROM Books.BOOKS, Books.PUBLISHERS WHERE PUBLISHER = PUBLISHER_ID");
 		editor.saveAndValidateSql();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		new WorkbenchShell();
 		
 		project.refresh();
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -216,24 +222,24 @@ public class XmlSchemalessTest {
  		new ContextMenu("New Sibling","Element").select();
  		new WorkbenchView("Model Explorer");
  		AbstractWait.sleep(TimePeriod.getCustom(2));
- 		renameItem((xmlStructureBuilt + "/NewXmlElement").split("/"), "authors");
+ 		modelExplorerManager.renameItem((xmlStructureBuilt + "/NewXmlElement").split("/"), "authors");
  		xmlStructureBuilt += "/authors";
  		
- 		addChildToItem(xmlStructureBuilt.split("/"), "sequence");
+ 		modelExplorerManager.addChildToItem(xmlStructureBuilt.split("/"), "sequence");
  		xmlStructureBuilt += "/sequence";
  		
- 		addChildToItem(xmlStructureBuilt.split("/"), "Element");
- 		renameItem((xmlStructureBuilt + "/NewXmlElement").split("/"), "author");
+ 		modelExplorerManager.addChildToItem(xmlStructureBuilt.split("/"), "Element");
+ 		modelExplorerManager.renameItem((xmlStructureBuilt + "/NewXmlElement").split("/"), "author");
  		xmlStructureBuilt += "/author";
  		
- 		addChildToItem(xmlStructureBuilt.split("/"), "sequence");
+ 		modelExplorerManager.addChildToItem(xmlStructureBuilt.split("/"), "sequence");
  		xmlStructureBuilt += "/sequence";
  		
- 		addChildToItem(xmlStructureBuilt.split("/"), "Element");
- 		renameItem((xmlStructureBuilt + "/NewXmlElement").split("/"), "lastName");
+ 		modelExplorerManager.addChildToItem(xmlStructureBuilt.split("/"), "Element");
+ 		modelExplorerManager.renameItem((xmlStructureBuilt + "/NewXmlElement").split("/"), "lastName");
  		
- 		addChildToItem(xmlStructureBuilt.split("/"), "Element");
- 		renameItem((xmlStructureBuilt + "/NewXmlElement").split("/"), "firstName");
+ 		modelExplorerManager.addChildToItem(xmlStructureBuilt.split("/"), "Element");
+ 		modelExplorerManager.renameItem((xmlStructureBuilt + "/NewXmlElement").split("/"), "firstName");
  		
  		project.refresh();
  		AbstractWait.sleep(TimePeriod.SHORT);
@@ -247,17 +253,22 @@ public class XmlSchemalessTest {
  		AbstractWait.sleep(TimePeriod.SHORT);
  		mappingEditor.deleteAttribute("author", "author");
  		
- 		editor.selectParts(mappingEditor.getMappingClasses("author"));
+ 		editor.selectParts(mappingEditor.getMappingClasses("author")); 
  		new ContextMenu("Open").select();
+ 		
  		editor.openInputSetEditor(true);
  		InputSetEditor inputSetEditor = new InputSetEditor();
  		inputSetEditor.createNewInputParam(new String[]{"book","isbn : string"});
  		inputSetEditor.close();
  		
  		mappingEditor.showTransformation();
+ 		AbstractWait.sleep(TimePeriod.SHORT);
+ 		new WorkbenchShell();
  		editor.setTransformation("SELECT LASTNAME, FIRSTNAME FROM Books.AUTHORS, Books.BOOK_AUTHORS WHERE" 
  				+ "(INPUTS.isbn = ISBN) AND (Books.AUTHORS.AUTHOR_ID = Books.BOOK_AUTHORS.AUTHOR_ID)");
  		editor.saveAndValidateSql();
+ 		AbstractWait.sleep(TimePeriod.SHORT);
+ 		new WorkbenchShell();
  		
  		project.refresh();
  		AbstractWait.sleep(TimePeriod.SHORT);
@@ -296,33 +307,5 @@ public class XmlSchemalessTest {
  		} 	
  	  
  	    assertEquals(output, expectedOutput); 	
-	}
-	
-	/**
-	 * Adds child to specified item of model's tree structure.
-	 * @param itemPath - path to item
-	 * @param childType - type of new child
-	 */
-	private void addChildToItem(String[] itemPath, String childType) {
-		project.refresh();
-		new DefaultTreeItem(itemPath).select();
-		new ContextMenu("New Child",childType).select();
-		new DefaultTreeItem(itemPath).expand();
-		new WorkbenchView("Model Explorer");
-		AbstractWait.sleep(TimePeriod.SHORT);
-	}
-	
-	/**
-	 * Renames specified item of model's tree structure.
-	 * @param itemPath - path to item
-	 * @param newName - value of new name
-	 */
-	private void renameItem(String[] itemPath, String newName){
-		project.refresh();
-		new DefaultTreeItem(itemPath).select();
-		new ContextMenu("Rename...").select();
-		new DefaultText().setText(newName);
-		new WorkbenchView("Model Explorer");
-		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 }
