@@ -1,5 +1,7 @@
 package org.jboss.tools.bpmn2.ui.bot.complex.test.testcase;
 
+import static org.junit.Assert.fail;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +22,7 @@ import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
 import org.kie.api.runtime.process.WorkItem;
 
-@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-ErrorBoundaryEventOnTask.bpmn2", saveAs = "BPMN2-ErrorBoundaryEventOnTask.bpmn2")
+@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-ErrorBoundaryEventOnTask.bpmn2", saveAs = "BPMN2-ErrorBoundaryEventOnTask.bpmn2", knownIssues={"1311135"})
 public class ComplexErrorBoundaryEventOnTaskTest extends JBPM6ComplexTest {
 
 	@TestPhase(phase = Phase.MODEL)
@@ -32,7 +34,16 @@ public class ComplexErrorBoundaryEventOnTaskTest extends JBPM6ComplexTest {
 		boundaryEvent.setErrorEvent(
 				new ErrorRef("MyError", "java.lang.IllegalArgumentException", "java.lang.IllegalArgumentException"),
 				VARIABLE1);
-		boundaryEvent.connectTo(new ScriptTask("Script Task"));
+		ScriptTask scriptTask = new ScriptTask("Script Task");
+		boundaryEvent.connectTo(scriptTask);
+		
+ 		scriptTask.addEvent("WrongEvent", ElementType.ERROR_BOUNDARY_EVENT);
+		try {
+			new ErrorBoundaryEvent("WrongEvent");
+			fail("boundary events prohibitted on script tasks");
+		} catch (RuntimeException e) {
+			// ok
+		}
 	}
 
 	@TestPhase(phase = Phase.RUN)
