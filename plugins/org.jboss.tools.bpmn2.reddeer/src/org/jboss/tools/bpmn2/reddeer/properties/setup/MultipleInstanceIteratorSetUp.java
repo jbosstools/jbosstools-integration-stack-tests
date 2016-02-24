@@ -1,6 +1,7 @@
 package org.jboss.tools.bpmn2.reddeer.properties.setup;
 
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.DataInputDialog;
 
 public class MultipleInstanceIteratorSetUp implements SetUpAble {
@@ -16,7 +17,7 @@ public class MultipleInstanceIteratorSetUp implements SetUpAble {
 
 	@Override
 	public void setUpCTab() {
-		new PushButton(1).click();
+		new PushButton(new DefaultSection(new DefaultSection("Multi-Instance Loop Characteristics"), "Input Data Items"), 1).click();
 		new DataInputDialog().add(value, "Object");
 	}
 
