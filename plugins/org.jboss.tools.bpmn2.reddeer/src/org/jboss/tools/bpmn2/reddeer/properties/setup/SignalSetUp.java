@@ -1,6 +1,7 @@
 package org.jboss.tools.bpmn2.reddeer.properties.setup;
 
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
 import org.jboss.tools.bpmn2.reddeer.DefaultCombo;
@@ -46,8 +47,8 @@ public class SignalSetUp implements SetUpAble {
 		} else {
 			combo.setSelection(comboItem);
 		}
-
-		new DefaultCombo(section, mappingType.label()).setSelection(variableName);
+		
+		new DefaultCombo(new DefaultGroup(section), mappingType.label()).setSelection(variableName);
 		new SectionToolItem("Signal Event Definition Details", "Close").click();
 	}
 
@@ -55,5 +56,4 @@ public class SignalSetUp implements SetUpAble {
 	public String getTabLabel() {
 		return PropertiesTabs.EVENT_TAB;
 	}
-
 }
