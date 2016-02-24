@@ -1,6 +1,7 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions;
 
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
 import org.jboss.tools.bpmn2.reddeer.DefaultCombo;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.MessageDialog;
@@ -49,7 +50,7 @@ public class MessageEventDefinition extends EventDefinition {
 		}
 		combo.setSelection(comboItem);
 
-		new DefaultCombo(section, type.label()).setSelection(variableName);
+		new DefaultCombo(new DefaultGroup(section), type.label()).setSelection(variableName);
 		new SectionToolItem("Message Event Definition Details", "Close").click();
 	}
 
