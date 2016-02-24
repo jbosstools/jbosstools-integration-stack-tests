@@ -37,10 +37,9 @@ public class ComplexMultiInstanceLoopCharacteristicsTest extends JBPM6ComplexTes
 		numbers.add(2);
 		numbers.add(3);
 		args.put(VARIABLE2, numbers);
-		args.put(VARIABLE1, 0);
 		kSession.addEventListener(new RepeaterListener());
 		WorkflowProcessInstance processInstance = (WorkflowProcessInstance) kSession
-				.startProcess("BPMN2MultiInstanceLoopCharactestics", args);
+				.startProcess("BPMN2MultiInstanceLoopCharacteristics", args);
 		JbpmAssertions.assertProcessInstanceCompleted(processInstance, kSession);
 	}
 
