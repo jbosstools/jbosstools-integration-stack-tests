@@ -30,7 +30,7 @@ import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage.DroolsRuntime;
-import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectSelectRuntimeWizardPage.CodeCompatibility;
+import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectWithExamplesWizardPage;
 import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectWizard;
 import org.jboss.tools.drools.ui.bot.test.Activator;
 import org.jboss.tools.drools.ui.bot.test.annotation.Drools5Runtime;
@@ -294,17 +294,11 @@ public abstract class TestParent {
 
 		NewDroolsProjectWizard wiz = new NewDroolsProjectWizard();
 		wiz.open();
-		wiz.getFirstPage().setProjectName(DEFAULT_PROJECT_NAME);
+		wiz.getFirstPage().selectProjectWithExamples();
 		wiz.next();
-		wiz.getSelectSamplesPage().checkAll();
-		wiz.next();
-		if (useRuntime == RuntimeVersion.BRMS_5) {
-			wiz.getDroolsRuntimePage().setCodeCompatibleWithVersion(CodeCompatibility.Drools51OrAbove);
-		}
-		if (useRuntime == RuntimeVersion.BRMS_6) {
-			wiz.getDroolsRuntimePage().setCodeCompatibleWithVersion(CodeCompatibility.Drools60x);
-			wiz.getDroolsRuntimePage().setGAV("com.redhat", "test", "1.0.0-SNAPSHOT");
-		}
+		NewDroolsProjectWithExamplesWizardPage page = wiz.getProjectWithExamplesPage();
+		page.setProjectName(DEFAULT_PROJECT_NAME);
+		page.checkAll();
 
 		wiz.finish();
 	}
