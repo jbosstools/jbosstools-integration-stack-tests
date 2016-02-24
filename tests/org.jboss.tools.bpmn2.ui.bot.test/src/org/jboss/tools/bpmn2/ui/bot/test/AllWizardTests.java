@@ -13,8 +13,8 @@ import org.jboss.tools.bpmn2.ui.bot.test.testcase.dialog.*;
 	// ------------
 	// BPMN2GenericModelWizardTest.class,
 	// BPMN2ModelWizardTest.class,
-	// JBPMProcessWizardTest.class,
-	// JBPMProjectWizardTest.class,
-	JBPMMavenProjectWizardTest.class, })
+	JBPMProcessWizardTest.class,
+	JBPMProjectWizardTest.class
+	})
 public class AllWizardTests extends TestSuite {
 }

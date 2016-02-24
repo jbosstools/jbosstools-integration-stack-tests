@@ -12,7 +12,7 @@ public class JBPMProcessWizard extends NewWizardDialog {
 	 * 
 	 */
 	public JBPMProcessWizard() {
-		super("jBPM", "BPMN2 Process");
+		super("jBPM", "jBPM Process Diagram");
 	}
 
 	/**
@@ -35,8 +35,8 @@ public class JBPMProcessWizard extends NewWizardDialog {
 	 */
 	public void execute(String[] location, String processName) {
 		open();
-		new LabeledText("Enter or select the parent folder:").setText(ProjectPath.valueOf(location));
-		new LabeledText("File name:").setText(processName);
+		new LabeledText("Container:").setText(ProjectPath.valueOf(location));
+		new LabeledText("Process name:").setText(processName);
 		finish();
 	}
 

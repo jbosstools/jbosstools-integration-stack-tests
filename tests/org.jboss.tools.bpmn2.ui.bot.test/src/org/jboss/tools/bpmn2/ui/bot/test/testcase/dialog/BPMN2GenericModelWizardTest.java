@@ -6,6 +6,7 @@ import org.jboss.reddeer.jface.exception.JFaceLayerException;
 import org.jboss.tools.bpmn2.reddeer.dialog.BPMN2GenericModelWizard;
 import org.jboss.tools.bpmn2.reddeer.dialog.BPMN2GenericModelWizard.ModelType;
 import org.jboss.tools.bpmn2.reddeer.dialog.JBPMProjectWizard;
+import org.jboss.tools.bpmn2.reddeer.dialog.JBPMProjectWizard.ProjectType;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessRuntimeRequirement.ProcessRuntime;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -27,7 +28,7 @@ public class BPMN2GenericModelWizardTest {
 
 	@BeforeClass
 	public static void createProject() {
-		new JBPMProjectWizard().execute(PROJECT);
+		new JBPMProjectWizard().execute(PROJECT, ProjectType.EMPTY);
 	}
 
 	@AfterClass

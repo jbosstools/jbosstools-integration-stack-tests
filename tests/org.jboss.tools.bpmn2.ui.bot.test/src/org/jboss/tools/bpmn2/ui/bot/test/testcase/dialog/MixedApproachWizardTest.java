@@ -5,6 +5,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.jface.exception.JFaceLayerException;
 import org.jboss.tools.bpmn2.reddeer.dialog.BPMN2ProcessWizard;
 import org.jboss.tools.bpmn2.reddeer.dialog.JBPMProjectWizard;
+import org.jboss.tools.bpmn2.reddeer.dialog.JBPMProjectWizard.ProjectType;
 import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessRuntimeRequirement.ProcessRuntime;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -19,7 +20,7 @@ public class MixedApproachWizardTest {
 
 	@BeforeClass
 	public static void createProject() {
-		new JBPMProjectWizard().execute("TestProject");
+		new JBPMProjectWizard().execute("TestProject", ProjectType.EMPTY);
 	}
 
 	@AfterClass
