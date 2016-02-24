@@ -2,12 +2,12 @@ package org.jboss.tools.bpmn2.reddeer.properties.jbpm;
 
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
+import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.ImportJavaTypeDialog;
 import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
 
 /**
@@ -21,16 +21,12 @@ public class InterfacesTab {
 	 * @param implementation
 	 * @param operationList
 	 */
-	public void addInterface(String name, String implementation, String[] operationList, boolean typeText) {
+	public void addInterface(String name, String implementation, String[] operationList) {
 		new SectionToolItem("Interface List", "Add").click();
-
-		if (typeText) {
-			new LabeledText("Name").typeText(name);
-			new LabeledText("Implementation").typeText(implementation);
-		} else {
-			new LabeledText("Name").setText(name);
-			new LabeledText("Implementation").setText(implementation);
-		}
+		new LabeledText("Name").typeText(name);
+		new PushButton(0).click();
+		new ImportJavaTypeDialog().add(implementation);
+		
 
 		// // Add operations
 	}
@@ -38,8 +34,7 @@ public class InterfacesTab {
 	public void importInterface(String fullQualifiedName) {
 		new SectionToolItem("Interface List", "Import").click();
 
-		new DefaultShell("Browse for a Java type to Import");
-		new LabeledText("Type:").typeText(fullQualifiedName);
+		new ImportJavaTypeDialog().add(fullQualifiedName);
 
 		String type = fullQualifiedName.substring(fullQualifiedName.lastIndexOf(".") + 1);
 

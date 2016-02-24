@@ -28,7 +28,6 @@ public class ComplexSpecialCharactersAndLenghtsTest extends JBPM6ComplexTest {
 		new SectionToolItem("Global Variable List for Process \"BPMN2-SpecialCharactersAndLengths\"", "Add").click();
 		process.setExecutable(false);
 		process.setPackageName("1 invalid");
-		process.addInterface("Document", "org.w3c.dom%)&#$# .Document", true);
 
 		StringBuilder longTaskName = new StringBuilder();
 		for (int i = 0; i < 300; i++) {
@@ -81,11 +80,5 @@ public class ComplexSpecialCharactersAndLenghtsTest extends JBPM6ComplexTest {
 	@TestPhase(phase = Phase.VALIDATE)
 	public void validateBZ1179057() {
 		assertEquals("BZ 1179057, max length of user task attributes", 255, userTask.getTaskName().length());
-	}
-
-	@TestPhase(phase = Phase.VALIDATE)
-	public void validateBZ1188909() {
-		assertTrue("BZ 1188909, interface package validation", isInSourceCode(
-				"<bpmn2:interface id=\"Interface_1\" implementationRef=\"org.w3c.dom$.Document\" name=\"Document\"/>"));
 	}
 }
