@@ -12,18 +12,26 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.osgi.framework.wiring.BundleWiring;
 
 public class DroolsRuntimeDialog {
+
 	private static final Logger LOGGER = Logger.getLogger(DroolsRuntimeDialog.class);
 
+	private static final String NAME_LABEL = "Name:";
+	private static final String PATH_LABEL = "Path:";
+	private static final String VERSION_LABEL = "Version:";
+
 	public void setName(String name) {
-		new LabeledText("Name:").setText(name);
+		new LabeledText(NAME_LABEL).setText(name);
 	}
 
 	public void setLocation(String location) {
-		new LabeledText("Path:").setText(location);
+		new LabeledText(PATH_LABEL).setText(location);
+	}
+
+	public void setVersion(String version) {
+		new LabeledText(VERSION_LABEL).setText(version);
 	}
 
 	public void createNewRuntime(String location) {
-		// FIXME find a way to do this using SWTBot/RedDeer
 		ClassLoader pluginCl = Platform.getBundle("org.drools.eclipse").adapt(BundleWiring.class).getClassLoader();
 		try {
 			Class<?> clazz = pluginCl.loadClass("org.drools.eclipse.util.DroolsRuntimeManager");

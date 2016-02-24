@@ -19,7 +19,7 @@ import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
-import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectSelectRuntimeWizardPage.CodeCompatibility;
+import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectWithExamplesWizardPage;
 import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectWizard;
 import org.jboss.tools.drools.ui.bot.test.annotation.Drools5Runtime;
 import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
@@ -55,12 +55,12 @@ public class Brms5ProjectTest extends TestParent {
 
 		NewDroolsProjectWizard wiz = new NewDroolsProjectWizard();
 		wiz.open();
-		wiz.getFirstPage().setProjectName(projectName);
+		wiz.getFirstPage().selectProjectWithExamples();
 		wiz.next();
-		wiz.getSelectSamplesPage().checkAll();
-		wiz.next();
-		wiz.getDroolsRuntimePage().setUseDefaultRuntime(true);
-		wiz.getDroolsRuntimePage().setCodeCompatibleWithVersion(CodeCompatibility.Drools51OrAbove);
+		NewDroolsProjectWithExamplesWizardPage page = wiz.getProjectWithExamplesPage();
+		page.setProjectName(projectName);
+		page.checkAll();
+		page.setUseDefaultRuntime(true);
 		wiz.finish();
 		new WaitWhile(new JobIsRunning());
 

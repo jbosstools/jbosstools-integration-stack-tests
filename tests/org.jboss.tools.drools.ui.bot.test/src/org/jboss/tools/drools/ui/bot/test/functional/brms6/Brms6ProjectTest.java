@@ -26,7 +26,7 @@ import org.jboss.tools.drools.reddeer.dialog.DroolsRuntimeDialog;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage;
 import org.jboss.tools.drools.reddeer.properties.DroolsProjectProperties;
-import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectSelectRuntimeWizardPage.CodeCompatibility;
+import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectWithExamplesWizardPage;
 import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectWizard;
 import org.jboss.tools.drools.ui.bot.test.annotation.Drools6Runtime;
 import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
@@ -63,13 +63,12 @@ public class Brms6ProjectTest extends TestParent {
 
 		NewDroolsProjectWizard wiz = new NewDroolsProjectWizard();
 		wiz.open();
-		wiz.getFirstPage().setProjectName(projectName);
+		wiz.getFirstPage().selectProjectWithExamples();
 		wiz.next();
-		wiz.getSelectSamplesPage().checkAll();
-		wiz.next();
-		wiz.getDroolsRuntimePage().setUseDefaultRuntime(true);
-		wiz.getDroolsRuntimePage().setCodeCompatibleWithVersion(CodeCompatibility.Drools60x);
-		wiz.getDroolsRuntimePage().setGAV("com.redhat", getTestName(), "1.0-SNAPSHOT");
+		NewDroolsProjectWithExamplesWizardPage page = wiz.getProjectWithExamplesPage();
+		page.setProjectName(projectName);
+		page.checkAll();
+		page.setUseDefaultRuntime(true);
 		wiz.finish();
 		new WaitWhile(new JobIsRunning());
 

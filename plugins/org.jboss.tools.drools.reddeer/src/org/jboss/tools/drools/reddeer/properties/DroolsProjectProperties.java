@@ -28,7 +28,7 @@ public class DroolsProjectProperties {
 
 	public void setDefaultDroolsRuntime(String runtimeName) {
 		setEnableSpecificSettings(true);
-		new LabeledCombo("Drools Runtime:").setSelection(runtimeName);
+		new LabeledCombo("Runtime:").setSelection(runtimeName);
 	}
 
 	public void ok() {
