@@ -35,12 +35,6 @@
 		    <artifactId>org.jboss.tools.bpel.feature.feature.group</artifactId>
 		    <version>0.0.0</version>
 		  </dependency>
-		  <!-- JBoss Examples feature -->
-		  <dependency>
-		    <type>p2-installable-unit</type>
-		    <artifactId>org.jboss.tools.community.project.examples.feature.feature.group</artifactId>
-		    <version>0.0.0</version>
-		  </dependency>
 		  <!-- AS feature -->
 		  <dependency>
 		    <type>p2-installable-unit</type>
