@@ -34,7 +34,7 @@ public class InterfacesTab {
 	public void importInterface(String fullQualifiedName) {
 		new SectionToolItem("Interface List", "Import").click();
 
-		new ImportJavaTypeDialog().add(fullQualifiedName);
+		new ImportJavaTypeDialog(false).add(fullQualifiedName);
 
 		String type = fullQualifiedName.substring(fullQualifiedName.lastIndexOf(".") + 1);
 
