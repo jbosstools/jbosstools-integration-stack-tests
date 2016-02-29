@@ -11,6 +11,16 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
  */
 public class ImportJavaTypeDialog {
 
+	private boolean confirmWithOk;
+	
+	public ImportJavaTypeDialog() {
+		this.confirmWithOk = true;
+	}
+	
+	public ImportJavaTypeDialog(boolean confirmWithOk) {
+		this.confirmWithOk = confirmWithOk;
+	}
+	
 	/**
 	 * The data type name must be typed - otherwise the lookup listener will not be activated.
 	 * 
@@ -23,7 +33,8 @@ public class ImportJavaTypeDialog {
 		new DefaultShell("Browse for a Java type to Import");
 		new LabeledText("Type:").typeText(dataType);
 		new DefaultTree().selectItems(new DefaultTreeItem(typeLabel));
-		new PushButton("OK").click();
+		if(confirmWithOk) {
+			new PushButton("OK").click();
+		}
 	}
-
 }
