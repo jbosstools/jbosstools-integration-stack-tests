@@ -72,7 +72,6 @@ public class KieNavigatorTestParent extends TestParent {
 		ServerItem si = knv.getServer(0);
 		ServerProperties sp = si.properties();
 		setCorrectServerProperties(sp);
-		sp.apply();
 		sp.ok();
 		si.refresh();
 	}
