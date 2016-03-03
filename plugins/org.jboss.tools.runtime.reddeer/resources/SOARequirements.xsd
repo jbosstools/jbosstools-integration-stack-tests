@@ -84,6 +84,14 @@
 					<xs:element name="targetRuntime" type="xs:string" minOccurs="0" />
 					<xs:element name="libraryVersion" type="xs:string" />
 					<xs:element name="componentRestriction" type="xs:string" minOccurs="0" />
+					<xs:element name="integrationPack" minOccurs="0" maxOccurs="1">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="kieVersion" type="xs:string" minOccurs="1" maxOccurs="1" />
+								<xs:element name="integrationPackVersion" type="xs:string" minOccurs="1" maxOccurs="1" />
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
 					<xs:choice minOccurs="0">
 						<xs:element name="karaf" type="server:apache-karaf" />
 						<xs:element name="servicemix" type="server:apache-servicemix" />

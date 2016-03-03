@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.eclipse.wst.server.ui.RuntimePreferencePage;
 import org.jboss.reddeer.eclipse.wst.server.ui.editor.ServerEditor;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
@@ -18,6 +19,7 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.runtime.reddeer.Namespaces;
 import org.jboss.tools.runtime.reddeer.Remote;
 import org.jboss.tools.runtime.reddeer.ServerBase;
+import org.jboss.tools.runtime.reddeer.condition.JobIsKilled;
 import org.jboss.tools.runtime.reddeer.wizard.NewHostWizard;
 import org.jboss.tools.runtime.reddeer.wizard.ServerRuntimeWizard;
 import org.jboss.tools.runtime.reddeer.wizard.ServerWizard;
@@ -128,6 +130,7 @@ public class ServerAS extends ServerBase {
 			runtimeWizard.setName(getRuntimeName());
 			runtimeWizard.setHomeDirectory(getHome());
 			runtimeWizard.selectJre(getJreName());
+			new WaitUntil(new JobIsKilled("Refreshing server adapter list"), TimePeriod.LONG, false);
 			runtimeWizard.finish(TimePeriod.VERY_LONG);
 			preferences.ok();
 
@@ -138,6 +141,7 @@ public class ServerAS extends ServerBase {
 			serverWizard.setName(getName());
 			serverWizard.next();
 			serverWizard.setRuntime(getRuntimeName());
+			new WaitUntil(new JobIsKilled("Refreshing server adapter list"), TimePeriod.LONG, false);
 			serverWizard.finish();
 		}
 	}

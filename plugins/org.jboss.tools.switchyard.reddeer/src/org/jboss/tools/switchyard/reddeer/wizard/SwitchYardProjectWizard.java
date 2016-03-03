@@ -1,7 +1,10 @@
 package org.jboss.tools.switchyard.reddeer.wizard;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.transform.stream.StreamResult;
 
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.TimePeriod;
@@ -22,7 +25,10 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.tools.switchyard.reddeer.condition.SwitchYardEditorIsOpen;
+import org.jboss.tools.switchyard.reddeer.editor.XPathEvaluator;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
+import org.jboss.tools.switchyard.reddeer.requirement.IntegrationPack;
+import org.w3c.dom.Node;
 
 /**
  * Wizard for creating a SwitchYard project.
@@ -53,6 +59,7 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 	private String configurationVersion;
 	private String targetRuntime;
 	private String libraryVersion;
+	private IntegrationPack integrationPack;
 	private List<String[]> components;
 
 	public SwitchYardProjectWizard(String name) {
@@ -65,11 +72,17 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 
 	public SwitchYardProjectWizard(String name, String configurationVersion, String libraryVersion,
 			String targetRuntime) {
+		this(name, configurationVersion, libraryVersion, targetRuntime, null);
+	}
+
+	public SwitchYardProjectWizard(String name, String configurationVersion, String libraryVersion,
+			String targetRuntime, IntegrationPack integrationPack) {
 		super("SwitchYard", "SwitchYard Project");
 		this.name = name;
 		this.configurationVersion = configurationVersion;
 		this.targetRuntime = targetRuntime;
 		this.libraryVersion = libraryVersion;
+		this.integrationPack = integrationPack;
 		components = new ArrayList<String[]>();
 	}
 
@@ -198,6 +211,19 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		}
 	}
 
+	public Combo getIntegrationPackLibraryVersion() {
+		return new LabeledCombo(new DefaultGroup("Integration Pack Version Details"),
+				"Integration Pack Library Version:");
+	}
+
+	public Combo getKieBPMRulesVersion() {
+		return new LabeledCombo(new DefaultGroup("Integration Pack Version Details"), "Kie (BPM  Rules) Version:");
+	}
+
+	public CheckBox getConfigureIntegrationPackVersionDetails() {
+		return new CheckBox("Configure Integration Pack Version Details");
+	}
+
 	public String getLibraryVersion() {
 		Combo combo = new LabeledCombo("Library Version:");
 		return combo.getText();
@@ -261,14 +287,33 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 						+ actualLibraryVersion + "'");
 			}
 		}
+		if (integrationPack != null) {
+			getConfigureIntegrationPackVersionDetails().toggle(true);
+		}
 		selectComponents(components);
 		finish();
+
+		// fix kie version if needed
+		if (integrationPack != null) {
+			try {
+				String kieVersion = integrationPack.getKieVersion();
+				File pomFile = new File(new SwitchYardProject(name).getFile(), "pom.xml");
+				XPathEvaluator xpath = new XPathEvaluator(pomFile);
+				Node kieVersionNode = xpath.evaluateNode("/project/properties/kie.version");
+				if (!kieVersion.equals(kieVersionNode.getTextContent())) {
+					kieVersionNode.setTextContent(kieVersion);
+					xpath.printDocument(new StreamResult(pomFile));
+				}
+			} catch (Throwable e) {
+				throw new RuntimeException(e);
+			}
+		}
+
 		new WaitUntil(new SwitchYardEditorIsOpen(), TimePeriod.LONG);
 		new SwitchYardProject(name).update();
 		if (targetRuntime != null && targetRuntime.contains("Karaf Extension")) {
 			new SwitchYardProject(name).enableFuseCamelNature();
 		}
-		System.out.println();
 	}
 
 	@Override

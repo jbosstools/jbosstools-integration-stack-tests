@@ -25,6 +25,8 @@ public class SwitchYardConfig extends ServerConfig {
 	private String libraryVersion;
 	@XmlElement(name = "componentRestriction", namespace = Namespaces.SOA_REQ)
 	private String componentRestriction;
+	@XmlElement(name = "integrationPack", namespace = Namespaces.SOA_REQ)
+	private IntegrationPack integrationPack;
 
 	public String getConfigurationVersion() {
 		return configurationVersion;
@@ -56,6 +58,14 @@ public class SwitchYardConfig extends ServerConfig {
 
 	public void setComponentRestriction(String componentRestriction) {
 		this.componentRestriction = componentRestriction;
+	}
+
+	public IntegrationPack getIntegrationPack() {
+		return integrationPack;
+	}
+
+	public void setIntegrationPack(IntegrationPack integrationPack) {
+		this.integrationPack = integrationPack;
 	}
 
 }

@@ -8,5 +8,7 @@ public class KnownIssue extends AssertionError {
 		super("Please see https://issues.jboss.org/browse/" + issue);
 	}
 
-	
+	public KnownIssue(String issue, Throwable cause) {
+		super("Please see https://issues.jboss.org/browse/" + issue, cause);
+	}
 }
