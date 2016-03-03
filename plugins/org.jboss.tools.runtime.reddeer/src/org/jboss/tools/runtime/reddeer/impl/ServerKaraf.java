@@ -29,6 +29,7 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.tools.runtime.reddeer.Activator;
 import org.jboss.tools.runtime.reddeer.Namespaces;
 import org.jboss.tools.runtime.reddeer.ServerBase;
+import org.jboss.tools.runtime.reddeer.condition.JobIsKilled;
 import org.jboss.tools.runtime.reddeer.wizard.ServerRuntimeWizard;
 import org.jboss.tools.runtime.reddeer.wizard.ServerWizard;
 
@@ -139,6 +140,7 @@ public class ServerKaraf extends ServerBase {
 		runtimeWizard.setName(getRuntimeName());
 		runtimeWizard.setInstallationDir(getHome());
 		runtimeWizard.selectJre(getJreName());
+		new WaitUntil(new JobIsKilled("Refreshing server adapter list"), TimePeriod.LONG, false);
 		runtimeWizard.finish(TimePeriod.VERY_LONG);
 
 		// TODO Replace ok() method
@@ -156,6 +158,7 @@ public class ServerKaraf extends ServerBase {
 		serverWizard.setPort(getPort());
 		serverWizard.setUsername(getUsername());
 		serverWizard.setPassword(getPassword());
+		new WaitUntil(new JobIsKilled("Refreshing server adapter list"), TimePeriod.LONG, false);
 		serverWizard.finish();
 
 		// Set ssh home

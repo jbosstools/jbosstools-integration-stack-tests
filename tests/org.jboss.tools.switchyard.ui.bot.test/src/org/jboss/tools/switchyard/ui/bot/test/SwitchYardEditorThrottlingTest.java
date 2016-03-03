@@ -4,6 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+import java.io.IOException;
+
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.stream.StreamResult;
+
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
@@ -12,7 +18,9 @@ import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
+import org.jboss.tools.switchyard.reddeer.editor.XPathEvaluator;
 import org.jboss.tools.switchyard.reddeer.preference.ThrottlingPage;
+import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.jboss.tools.switchyard.reddeer.wizard.DefaultServiceWizard;
@@ -20,6 +28,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.w3c.dom.Node;
 
 /**
  * Test for setting throttling
@@ -51,11 +60,29 @@ public class SwitchYardEditorThrottlingTest {
 		}
 
 	}
+	
+	private void foo() {
+
+		try {
+		File pomFile = new File(new SwitchYardProject(PROJECT).getFile(), "pom.xml");
+		XPathEvaluator xpath = new XPathEvaluator(pomFile);
+		String kieVersion = xpath.evaluateString("/project/properties/kie.version");
+		Node kieNode = xpath.evaluateNode("/project/properties/kie.version");
+		kieNode.setTextContent("6.3.0.Final-redhat-7");
+		kieVersion = "xxxx";
+		xpath.printDocument(new StreamResult(pomFile));
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		System.out.println();
+	}
 
 	@Test
 	public void throttlingTest() {
 		/* Create SY Project */
 		switchyardRequirement.project(PROJECT).create();
+		
+		foo();
 
 		/* Add Service */
 		new SwitchYardEditor().addService();

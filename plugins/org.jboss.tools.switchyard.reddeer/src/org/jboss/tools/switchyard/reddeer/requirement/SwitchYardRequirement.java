@@ -132,7 +132,7 @@ public class SwitchYardRequirement implements Requirement<SwitchYard>, CustomCon
 
 	public SwitchYardProjectWizard project(String name) {
 		return new SwitchYardProjectWizard(name, config.getConfigurationVersion(), config.getLibraryVersion(),
-				getTargetRuntimeLabel());
+				getTargetRuntimeLabel(), config.getIntegrationPack());
 	}
 
 	@Override

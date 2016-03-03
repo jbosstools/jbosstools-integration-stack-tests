@@ -122,13 +122,28 @@ public class ProjectExplorerProjectCreationTest {
 		wizard.setConfigurationVersion(switchyardRequirement.getConfig().getConfigurationVersion());
 		assertEquals(switchyardRequirement.getTargetRuntimeLabel(), wizard.getTargetRuntime());
 		assertEquals(switchyardRequirement.getConfig().getLibraryVersion(), wizard.getLibraryVersion());
+		if (switchyardRequirement.getConfig().getIntegrationPack() != null) {
+			wizard.getConfigureIntegrationPackVersionDetails().toggle(true);
+			assertEqualsWithKnownIssue("SWITCHYARD-2834",
+					switchyardRequirement.getConfig().getIntegrationPack().getIntegrationPackVersion(),
+					wizard.getIntegrationPackLibraryVersion().getText());
+			assertEqualsWithKnownIssue("SWITCHYARD-2834",
+					switchyardRequirement.getConfig().getIntegrationPack().getKieVersion(),
+					wizard.getKieBPMRulesVersion().getText());
+		}
 		wizard.finish();
 
 		XPathEvaluator xpath = new XPathEvaluator(new File(new SwitchYardProject(projectName).getFile(), "pom.xml"));
 		assertEquals(projectName, xpath.evaluateString("/project/artifactId"));
 		assertEquals("com.example.switchyard", xpath.evaluateString("/project/groupId"));
 		assertEquals(switchyardRequirement.getConfig().getLibraryVersion(),
-				xpath.evaluateString("/project/properties/switchyard.version|/project/properties/integration.version"));
+				xpath.evaluateString("/project/properties/switchyard.version"));
+		if (switchyardRequirement.getConfig().getIntegrationPack() != null) {
+			assertEquals(switchyardRequirement.getConfig().getIntegrationPack().getKieVersion(),
+					xpath.evaluateString("/project/properties/kie.version"));
+			assertEquals(switchyardRequirement.getConfig().getIntegrationPack().getIntegrationPackVersion(),
+					xpath.evaluateString("/project/properties/integration.version"));
+		}
 	}
 
 	@Test
@@ -184,6 +199,9 @@ public class ProjectExplorerProjectCreationTest {
 			wizard.setTargetRuntime(switchyardRequirement.getTargetRuntimeLabel());
 		} else {
 			wizard.setLibraryVersion(switchyardRequirement.getConfig().getLibraryVersion());
+		}
+		if (switchyardRequirement.getConfig().getIntegrationPack() != null) {
+			wizard.getConfigureIntegrationPackVersionDetails().toggle(true);
 		}
 
 		assertComponent("Implementation Support", "Bean");
@@ -305,5 +323,13 @@ public class ProjectExplorerProjectCreationTest {
 		assertFalse("" + component + " should by unchecked by default", wizard.isComponent(group, component));
 		wizard.setComponent(group, component, true);
 		assertTrue("" + component + " cannot be checked", wizard.isComponent(group, component));
+	}
+
+	private static void assertEqualsWithKnownIssue(String issue, Object expected, Object actual) {
+		try {
+			assertEquals(expected, actual);
+		} catch (Throwable t) {
+			throw new KnownIssue(issue, t);
+		}
 	}
 }
