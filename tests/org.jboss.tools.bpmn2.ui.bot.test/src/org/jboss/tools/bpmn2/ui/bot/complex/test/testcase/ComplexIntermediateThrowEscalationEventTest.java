@@ -3,6 +3,7 @@ package org.jboss.tools.bpmn2.ui.bot.complex.test.testcase;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Escalation;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.endevents.EndEvent;
+import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.EscalationStartEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.throwevents.EscalationIntermediateThrowEvent;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.JBPM6ComplexTest;
@@ -25,6 +26,7 @@ public class ComplexIntermediateThrowEscalationEventTest extends JBPM6ComplexTes
 				ElementType.ESCALATION_INTERMEDIATE_THROW_EVENT);
 		ithrow.setEscalation(new Escalation("EscName", "MyEscalation"), VARIABLE1);
 		ithrow.connectTo(new EndEvent("TotalEnd"));
+		new EscalationStartEvent("HandlerStart").setIsInterrupting(false);
 	}
 
 	@TestPhase(phase = Phase.RUN)
