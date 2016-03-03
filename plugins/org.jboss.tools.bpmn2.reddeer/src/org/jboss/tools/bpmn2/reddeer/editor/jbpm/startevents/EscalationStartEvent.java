@@ -3,8 +3,6 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Escalation;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions.EscalationEventDefinition;
-import org.jboss.tools.bpmn2.reddeer.editor.properties.PropertiesTabs;
-import org.jboss.tools.bpmn2.reddeer.properties.setup.CheckBoxSetUp;
 import org.jboss.tools.bpmn2.reddeer.properties.setup.EventDefinitionSetUp;
 
 /**
@@ -24,9 +22,5 @@ public class EscalationStartEvent extends StartEvent {
 		propertiesHandler.setUp(
 				new EventDefinitionSetUp(new EscalationEventDefinition(escalation, variableForMapping, "Target")));
 		refresh();
-	}
-	
-	public void setIsInterrupting(boolean value) {
-		propertiesHandler.setUp(new CheckBoxSetUp(PropertiesTabs.EVENT_TAB, "Is Interrupting", value));
 	}
 }

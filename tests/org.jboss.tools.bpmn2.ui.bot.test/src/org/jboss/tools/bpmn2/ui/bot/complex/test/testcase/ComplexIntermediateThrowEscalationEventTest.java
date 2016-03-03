@@ -32,9 +32,7 @@ public class ComplexIntermediateThrowEscalationEventTest extends JBPM6ComplexTes
 				ElementType.ESCALATION_INTERMEDIATE_THROW_EVENT);
 		ithrow.setEscalation(new Escalation("EscName", "MyEscalation"), VARIABLE1);
 		ithrow.connectTo(new EndEvent("TotalEnd"));
-		
-		EscalationStartEvent handlerStart = new EscalationStartEvent("HandlerStart");
-		handlerStart.setIsInterrupting(false);
+		new EscalationStartEvent("HandlerStart").setIsInterrupting(false);
 	}
 
 	@TestPhase(phase = Phase.RUN)
