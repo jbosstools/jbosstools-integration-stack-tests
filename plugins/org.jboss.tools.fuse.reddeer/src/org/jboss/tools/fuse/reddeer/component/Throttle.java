@@ -14,7 +14,7 @@ public class Throttle implements CamelComponent {
 
 	@Override
 	public String getLabel() {
-		return "throttle[simple{}...";
+		return "throttle";
 	}
 
 	@Override

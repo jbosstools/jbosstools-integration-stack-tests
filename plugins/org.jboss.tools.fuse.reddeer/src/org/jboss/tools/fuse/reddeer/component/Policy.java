@@ -14,7 +14,7 @@ public class Policy implements CamelComponent {
 
 	@Override
 	public String getLabel() {
-		return "policy[null]";
+		return "policy";
 	}
 
 	@Override

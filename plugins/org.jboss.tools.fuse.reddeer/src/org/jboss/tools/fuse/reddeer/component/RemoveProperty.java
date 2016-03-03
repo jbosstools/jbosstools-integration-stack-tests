@@ -9,12 +9,12 @@ public class RemoveProperty implements CamelComponent {
 
 	@Override
 	public String getPaletteEntry() {
-		return "RemoveProperty";
+		return "Remove Property";
 	}
 
 	@Override
 	public String getLabel() {
-		return "remove property";
+		return "removeProperty";
 	}
 
 	@Override

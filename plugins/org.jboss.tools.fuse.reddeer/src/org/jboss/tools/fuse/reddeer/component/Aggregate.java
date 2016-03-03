@@ -9,7 +9,7 @@ public class Aggregate implements CamelComponent {
 
 	@Override
 	public String getLabel() {
-		return "aggregate[]";
+		return "aggregate";
 	}
 
 	@Override

@@ -9,7 +9,7 @@ public class InterceptFrom implements CamelComponent {
 
 	@Override
 	public String getPaletteEntry() {
-		return "InterceptFrom";
+		return "Intercept From";
 	}
 
 	@Override

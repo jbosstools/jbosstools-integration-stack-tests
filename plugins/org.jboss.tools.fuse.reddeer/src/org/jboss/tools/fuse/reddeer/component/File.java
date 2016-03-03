@@ -1,25 +1,20 @@
 package org.jboss.tools.fuse.reddeer.component;
 
-/**
- * 
- * @author apodhrad
- *
- */
-public class Try implements CamelComponent {
+public class File implements CamelComponent {
 
 	@Override
 	public String getPaletteEntry() {
-		return "Try";
+		return "File";
 	}
 
 	@Override
 	public String getLabel() {
-		return "try";
+		return "file:directoryName";
 	}
 
 	@Override
 	public String getTooltip() {
-		return null;
+		return "The File Component provides access to file systems";
 	}
 
 }

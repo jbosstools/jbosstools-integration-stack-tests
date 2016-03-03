@@ -1,25 +1,20 @@
 package org.jboss.tools.fuse.reddeer.component;
 
-/**
- * 
- * @author apodhrad
- *
- */
-public class Finally implements CamelComponent {
+public class JDBC implements CamelComponent {
 
 	@Override
 	public String getPaletteEntry() {
-		return "Finally";
+		return "JDBC";
 	}
 
 	@Override
 	public String getLabel() {
-		return "finally";
+		return "jdbc:dataSource";
 	}
 
 	@Override
 	public String getTooltip() {
-		return null;
+		return "Camel JDBC support";
 	}
 
 }

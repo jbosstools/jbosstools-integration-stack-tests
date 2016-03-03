@@ -1,20 +1,20 @@
 package org.jboss.tools.fuse.reddeer.component;
 
-public class Generic implements CamelComponent {
+public class CXF implements CamelComponent {
 
 	@Override
 	public String getPaletteEntry() {
-		return "Generic";
+		return "CXF";
 	}
 
 	@Override
 	public String getLabel() {
-		return "Endpoint";
+		return "cxf:beanId:address";
 	}
 
 	@Override
 	public String getTooltip() {
-		return null;
+		return "Defines the CXF Component";
 	}
 
 }

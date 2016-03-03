@@ -14,7 +14,7 @@ public class Transacted implements CamelComponent {
 
 	@Override
 	public String getLabel() {
-		return "transacted[]";
+		return "transacted";
 	}
 
 	@Override

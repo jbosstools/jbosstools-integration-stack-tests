@@ -9,12 +9,12 @@ public class RecipientList implements CamelComponent {
 
 	@Override
 	public String getPaletteEntry() {
-		return "RecipientList";
+		return "Recipient List";
 	}
 
 	@Override
 	public String getLabel() {
-		return "recipientList[sim...";
+		return "recipientList";
 	}
 
 	@Override

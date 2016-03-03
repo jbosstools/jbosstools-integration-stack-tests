@@ -9,7 +9,7 @@ public class AOP implements CamelComponent {
 
 	@Override
 	public String getPaletteEntry() {
-		return "AOP";
+		return "Aop";
 	}
 
 	@Override

@@ -14,7 +14,7 @@ public class Loop implements CamelComponent {
 
 	@Override
 	public String getLabel() {
-		return "loop[simple{}]";
+		return "loop";
 	}
 
 	@Override

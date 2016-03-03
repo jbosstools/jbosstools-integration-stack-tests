@@ -14,7 +14,7 @@ public class Validate implements CamelComponent {
 
 	@Override
 	public String getLabel() {
-		return "validate[simple{}]";
+		return "validate";
 	}
 
 	@Override

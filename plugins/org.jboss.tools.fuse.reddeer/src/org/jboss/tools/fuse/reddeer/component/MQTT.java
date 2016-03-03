@@ -1,15 +1,15 @@
 package org.jboss.tools.fuse.reddeer.component;
 
-public class DynamicRouter implements CamelComponent {
+public class MQTT implements CamelComponent {
 
 	@Override
 	public String getPaletteEntry() {
-		return "DynamicRouter";
+		return "MQTT";
 	}
 
 	@Override
 	public String getLabel() {
-		return "dynamicRouter[sim...";
+		return "mqtt:name";
 	}
 
 	@Override

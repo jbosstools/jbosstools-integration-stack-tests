@@ -4,7 +4,7 @@ public class InOut implements CamelComponent {
 
 	@Override
 	public String getPaletteEntry() {
-		return "InOut";
+		return "In Out";
 	}
 
 	@Override

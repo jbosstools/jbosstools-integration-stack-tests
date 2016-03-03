@@ -14,7 +14,7 @@ public class Split implements CamelComponent {
 
 	@Override
 	public String getLabel() {
-		return "split[simple{}]";
+		return "split";
 	}
 
 	@Override

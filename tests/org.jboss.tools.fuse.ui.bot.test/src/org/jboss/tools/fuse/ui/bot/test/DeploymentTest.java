@@ -38,7 +38,7 @@ public class DeploymentTest extends DefaultTest {
 	private static final String PROJECT_ARCHETYPE = "camel-archetype-blueprint";
 	private static final String PROJECT_NAME = "camel-blueprint";
 	private static final String PROJECT_IS_DEPLOYED = "Route: timerToLog started and consuming from: Endpoint[timer://foo?period=5000";
-	private static final String PROJECT_IS_UNDEPLOYED = "(CamelContext: camel-1) is shutdown";
+	private static final String PROJECT_IS_UNDEPLOYED = "Route: timerToLog shutdown complete, was consuming from: Endpoint[timer://foo?period=5000]";
 
 	@InjectRequirement
 	private static ServerRequirement serverRequirement;

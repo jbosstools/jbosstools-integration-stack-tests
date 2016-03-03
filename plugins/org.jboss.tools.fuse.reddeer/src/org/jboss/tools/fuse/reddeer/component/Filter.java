@@ -9,7 +9,7 @@ public class Filter implements CamelComponent {
 
 	@Override
 	public String getLabel() {
-		return "filter[simple{}]";
+		return "filter";
 	}
 
 	@Override

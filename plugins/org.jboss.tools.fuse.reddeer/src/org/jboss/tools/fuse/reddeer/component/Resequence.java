@@ -14,7 +14,7 @@ public class Resequence implements CamelComponent {
 
 	@Override
 	public String getLabel() {
-		return "resequencer[]";
+		return "resequence";
 	}
 
 	@Override
