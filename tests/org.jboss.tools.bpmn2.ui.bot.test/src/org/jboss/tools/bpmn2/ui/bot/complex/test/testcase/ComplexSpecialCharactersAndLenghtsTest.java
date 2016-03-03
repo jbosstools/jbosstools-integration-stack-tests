@@ -16,7 +16,6 @@ public class ComplexSpecialCharactersAndLenghtsTest extends JBPM6ComplexTest {
 
 	private static final String PROCESS = "BPMN2-SpecialCharactersAndLengths";
 	private static final String PROBLEM_ONE = "Global Variable";
-	private static final String PROBLEM_TWO = "Package name is invalid";
 
 	private Process process;
 	private UserTask userTask;
@@ -27,7 +26,7 @@ public class ComplexSpecialCharactersAndLenghtsTest extends JBPM6ComplexTest {
 		process.addLocalVariable("var-iable", "String", true);
 		new SectionToolItem("Global Variable List for Process \"BPMN2-SpecialCharactersAndLengths\"", "Add").click();
 		process.setExecutable(false);
-		process.setPackageName("1 invalid");
+		process.setPackageName("invalid @#!1", true);
 
 		StringBuilder longTaskName = new StringBuilder();
 		for (int i = 0; i < 300; i++) {
@@ -63,8 +62,9 @@ public class ComplexSpecialCharactersAndLenghtsTest extends JBPM6ComplexTest {
 
 	@TestPhase(phase = Phase.VALIDATE)
 	public void validateBZ1182875() {
-		String error = getErrorsFromProblemsView(PROBLEM_TWO);
-		assertTrue("BZ 1182875, package name", error.startsWith(PROBLEM_TWO));
+		process.click();
+		assertEquals("invalid1", process.getPackageName());
+		assertTrue("BZ#1182875", isInSourceCode("tns:packageName=\"invalid1\""));
 	}
 
 	@TestPhase(phase = Phase.VALIDATE)
