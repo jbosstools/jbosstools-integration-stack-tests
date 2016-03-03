@@ -47,11 +47,11 @@
 		    <version>0.0.0</version>
 		  </dependency>-->
 		  <!-- JBoss Examples Feature -->
-		  <dependency>
+		  <!--dependency>
 		    <type>p2-installable-unit</type>
 		    <artifactId>org.jboss.tools.community.project.examples.feature.feature.group</artifactId>
 		    <version>0.0.0</version>
-		  </dependency>
+		  </dependency-->
 		  <!-- This entry should enable creating of default JDK on Mac -->
 		  <dependency>
 		    <type>p2-installable-unit</type>
