@@ -6,6 +6,7 @@ import java.util.List;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementContainer;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
@@ -22,6 +23,7 @@ import org.jboss.tools.bpmn2.reddeer.properties.setup.MetaDataSetUp;
  */
 public class Process extends ElementContainer {
 
+	private static final String PACKAGE_NAME_LABEL = "Package Name";
 	private static final String PROCESS_TAB = "Process";
 	private static final String DEFINITIONS_TAB = "Definitions";
 	private static final String DATA_ITEMS_TAB = "Data Items";
@@ -78,8 +80,13 @@ public class Process extends ElementContainer {
 	 * 
 	 * @param name
 	 */
-	public void setPackageName(String packageName) {
-		propertiesHandler.setUpNormal(new LabeledTextSetUp(PROCESS_TAB, "Package Name", packageName));
+	public void setPackageName(String packageName, boolean putByTyping) {
+		propertiesHandler.setUpNormal(new LabeledTextSetUp(PROCESS_TAB, PACKAGE_NAME_LABEL, packageName, putByTyping));
+	}
+	
+	public String getPackageName() {
+		propertiesHandler.selectTabInPropertiesView(PROCESS_TAB);
+		return new LabeledText(PACKAGE_NAME_LABEL).getText();
 	}
 
 	/**
