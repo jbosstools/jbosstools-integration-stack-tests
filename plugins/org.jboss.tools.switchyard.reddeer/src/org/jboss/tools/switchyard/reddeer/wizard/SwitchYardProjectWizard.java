@@ -293,17 +293,23 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		selectComponents(components);
 		finish();
 
-		// fix kie version if needed
+		// fix kie version if needed due to SWITCHYARD-2834
 		if (integrationPack != null) {
 			try {
-				String kieVersion = integrationPack.getKieVersion();
 				File pomFile = new File(new SwitchYardProject(name).getFile(), "pom.xml");
 				XPathEvaluator xpath = new XPathEvaluator(pomFile);
-				Node kieVersionNode = xpath.evaluateNode("/project/properties/kie.version");
-				if (!kieVersion.equals(kieVersionNode.getTextContent())) {
-					kieVersionNode.setTextContent(kieVersion);
-					xpath.printDocument(new StreamResult(pomFile));
+				Node node = null;
+				for (String artifactId: new String[] {"switchyard", "kie", "drools", "jbpm"}) {
+					node = xpath.evaluateNode("/project/dependencyManagement/dependencies/dependency[artifactId='" + artifactId + "-bom']");
+					if (node != null) {
+						node.getParentNode().removeChild(node);
+					}
 				}
+				node = xpath.evaluateNode("/project/build/plugins/plugin/executions/execution/configuration/versions/switchyard.osgi.version");
+				if (node != null) {
+					node.setTextContent("${switchyard.version}");
+				}
+				xpath.printDocument(new StreamResult(pomFile));
 			} catch (Throwable e) {
 				throw new RuntimeException(e);
 			}
