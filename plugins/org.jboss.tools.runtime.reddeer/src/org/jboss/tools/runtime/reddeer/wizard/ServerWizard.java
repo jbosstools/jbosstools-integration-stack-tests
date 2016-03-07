@@ -32,7 +32,7 @@ public class ServerWizard extends NewWizardDialog {
 	public static final String CONNTROLLED_BY_FILESYSTEM = "Filesystem and shell operations";
 	public static final String REMOTE_RUNTIME_DETAILS = "Remote Runtime Details";
 	public static final String ASSIGN_RUNTIME = "Assign a runtime to this server";
-	public static final String EXTERNALLY_MANAGED = "Server is externally managed. Assume server is started. ";
+	public static final String EXTERNALLY_MANAGED = "Server lifecycle is externally managed.";
 
 	public ServerWizard() {
 		super("Server", "Server");
