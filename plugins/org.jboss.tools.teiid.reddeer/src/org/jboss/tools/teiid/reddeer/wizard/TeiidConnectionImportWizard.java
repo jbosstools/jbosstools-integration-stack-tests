@@ -79,6 +79,7 @@ public class TeiidConnectionImportWizard extends ImportWizardDialog {
 	public static final String IMPORT_PROPERTY_CATALOG = "catalog";
 	public static final String IMPORT_PROPERTY_EXCEL_FILENAME = "Excel File";
 	public static final String IMPORT_PROPERTY_HEADER_ROW_NUMBER = "Header Row Number";
+	public static final String IMPORT_PROPERTY_TABLE_TYPES = "Table Types";
 
 	public static final String DATASOURCE_PROPERTY_URL = "* URL, End Point";
 	public static final String DATASOURCE_PROPERTY_PARENT_DIR = "* Parent Directory";
