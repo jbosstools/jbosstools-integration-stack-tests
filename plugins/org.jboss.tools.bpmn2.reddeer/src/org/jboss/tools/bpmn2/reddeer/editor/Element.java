@@ -28,7 +28,6 @@ import org.jboss.reddeer.graphiti.impl.graphitieditpart.LabeledGraphitiEditPart;
 import org.jboss.tools.bpmn2.reddeer.AbsoluteEditPart;
 import org.jboss.tools.bpmn2.reddeer.GEFProcessEditor;
 import org.jboss.tools.bpmn2.reddeer.JBPM6ComplexEnvironment;
-import org.jboss.tools.bpmn2.reddeer.ProcessEditorView;
 import org.jboss.tools.bpmn2.reddeer.PropertiesHandler;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.BoundaryEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructOfType;
@@ -47,8 +46,6 @@ public class Element {
 	private boolean useGraphitiProperties = JBPM6ComplexEnvironment.getInstance().useGraphiti();
 
 	protected Logger log = Logger.getLogger(getClass());
-
-	protected ProcessEditorView editor;
 	protected PropertiesHandler propertiesHandler;
 
 	protected String name;
@@ -100,7 +97,6 @@ public class Element {
 		this.type = type;
 		this.containerShapeEditPart = new AbsoluteEditPart(containerShapeEditPart);
 		processEditor = new GEFProcessEditor();
-		editor = new ProcessEditorView();
 		propertiesHandler = new PropertiesHandler(containerShapeEditPart, useGraphitiProperties) {
 
 			@Override
@@ -114,7 +110,6 @@ public class Element {
 		this.name = copyFrom.name;
 		this.type = copyFrom.type;
 		this.parent = copyFrom.parent;
-		this.editor = copyFrom.editor;
 		this.containerShapeEditPart = copyFrom.containerShapeEditPart;
 		this.processEditor = copyFrom.processEditor;
 		this.propertiesHandler = copyFrom.propertiesHandler;
@@ -123,8 +118,6 @@ public class Element {
 
 	private void setUp(String name, ElementType type, Element parent, int index, boolean select) {
 		processEditor = new GEFProcessEditor();
-		editor = new ProcessEditorView();
-
 		List<Matcher<? super EditPart>> matcherList = new ArrayList<Matcher<? super EditPart>>();
 		if (name != null) {
 			matcherList.add(new ConstructWithName<EditPart>(name));
@@ -473,10 +466,10 @@ public class Element {
 	 */
 	public org.w3c.dom.Element getEditPartElement() {
 		// Required to store the code to xml
-		editor.save();
+		processEditor.save();
 		// Find the element
 		try {
-			InputStream inputStream = new ByteArrayInputStream(editor.getSourceText().getBytes());		
+			InputStream inputStream = new ByteArrayInputStream(processEditor.getSourceText().getBytes());
 			Document xmlDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputStream);
 					
 			XPathFactory xPathFactory = XPathFactory.newInstance();

@@ -132,18 +132,4 @@ public class ElementContainer extends Element {
 		// Out of bounds.
 		return false;
 	}
-
-	/**
-	 * 
-	 */
-	public void pushDown() {
-		editor.clickContextMenu("Push down");
-	}
-
-	/**
-	 * 
-	 */
-	public void undoPushDown() {
-		editor.clickContextMenu("Undo Push down");
-	}
 }

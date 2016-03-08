@@ -4,7 +4,7 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.tools.bpmn2.reddeer.ProcessEditorView;
+import org.jboss.tools.bpmn2.reddeer.GEFProcessEditor;
 
 /**
  * 
@@ -15,20 +15,20 @@ public class ExportDiagramDialog {
 		BMP, GIF, JPG, PNG, RLE;
 	}
 
-	ProcessEditorView editor;
+	GEFProcessEditor editor;
 
 	/**
 	 * 
 	 */
 	public ExportDiagramDialog() {
-		this(new ProcessEditorView());
+		this(new GEFProcessEditor());
 	}
 
 	/**
 	 * 
 	 * @param editor
 	 */
-	public ExportDiagramDialog(ProcessEditorView editor) {
+	public ExportDiagramDialog(GEFProcessEditor editor) {
 		this.editor = editor;
 	}
 
