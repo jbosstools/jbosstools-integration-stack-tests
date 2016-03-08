@@ -6,17 +6,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.draw2d.FigureCanvas;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartListener;
+import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.swt.SWT;
 import org.hamcrest.Matcher;
 import org.jboss.reddeer.gef.GEFLayerException;
 import org.jboss.reddeer.gef.condition.EditorHasEditParts;
 import org.jboss.reddeer.gef.editor.GEFEditor;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.core.handler.WidgetHandler;
 import org.jboss.reddeer.core.util.Display;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.bpmn2.reddeer.editor.ConnectionType;
 import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
@@ -30,6 +40,14 @@ public class GEFProcessEditor extends GEFEditor {
 	private AllEditPartFinder finder = new AllEditPartFinder();
 	private AllChildEditPartFinder childFinder = new AllChildEditPartFinder();
 
+	public GEFProcessEditor() {
+		super();
+	}
+	
+	public GEFProcessEditor(String title) {
+		super(title);
+	}
+	
 	public List<EditPart> getAllContainerShapeEditParts(ElementType type) {
 		EditPart parent = viewer.getContents();
 		return finder.find(parent, allOf(createContainerMatcherList(new ConstructOfType<EditPart>(type))));
@@ -123,6 +141,24 @@ public class GEFProcessEditor extends GEFEditor {
 
 		return new AbsoluteEditPart(viewerListener.getAddedEditPart());
 	}
+	
+	public String getSourceText() {
+		new WaitWhile(new SourceCodeIsNotShown());
+
+		DefaultStyledText styled = new DefaultStyledText();
+		String text = styled.getText();
+
+		new DefaultCTabItem("Source").close();
+
+		return text;
+	}
+	
+	public Rectangle getBounds(GraphicalEditPart part) {
+		IFigure figure = part.getFigure();
+		Rectangle bounds = figure.getBounds().getCopy();
+		figure.translateToAbsolute(bounds);
+		return bounds;
+	}
 
 	public void click(final Element element) {
 		final WidgetHandler handler = WidgetHandler.getInstance();
@@ -212,6 +248,26 @@ public class GEFProcessEditor extends GEFEditor {
 		@Override
 		public void selectedStateChanged(EditPart editpart) {
 
+		}
+
+	}
+	
+	private class SourceCodeIsNotShown extends AbstractWaitCondition {
+
+		@Override
+		public boolean test() {
+			try {
+				click(1, 1);
+				new ContextMenu("Show Source View").select();
+			} catch (CoreLayerException | SWTLayerException e) {
+				return true;
+			}
+			return false;
+		}
+
+		@Override
+		public String description() {
+			return "Wait while source code is not shown";
 		}
 
 	}
