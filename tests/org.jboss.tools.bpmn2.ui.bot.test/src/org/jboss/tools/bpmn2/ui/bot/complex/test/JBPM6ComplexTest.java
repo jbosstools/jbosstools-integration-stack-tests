@@ -25,7 +25,7 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.tools.bpmn2.reddeer.ProcessEditorView;
+import org.jboss.tools.bpmn2.reddeer.GEFProcessEditor;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.JBPM6ComplexTestDefinitionRequirement.JBPM6ComplexTestDefinition;
 import org.jboss.tools.bpmn2.ui.bot.test.validator.JBPM6Validator;
 import org.junit.Assert;
@@ -91,7 +91,7 @@ public abstract class JBPM6ComplexTest {
 
 			saveViaReddeer();
 
-			ProcessEditorView editor = new ProcessEditorView(filenameTitle);
+			GEFProcessEditor editor = new GEFProcessEditor(filenameTitle);
 			diagramSourceCode = editor.getSourceText();
 
 			removeBaseFileFromProject();
@@ -220,8 +220,7 @@ public abstract class JBPM6ComplexTest {
 		Resource resource = null;
 
 		if (dependencyFileName.endsWith("bpmn2")) {
-			ProcessEditorView editor = new ProcessEditorView();
-			editor.setFocus();
+			GEFProcessEditor editor = new GEFProcessEditor();
 			String source = editor.getSourceText();
 			resource = ResourceFactory.newByteArrayResource(source.getBytes());
 			resource.setResourceType(ResourceType.BPMN2);

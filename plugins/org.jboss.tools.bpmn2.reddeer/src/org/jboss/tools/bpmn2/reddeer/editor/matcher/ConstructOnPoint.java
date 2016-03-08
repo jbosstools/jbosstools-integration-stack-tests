@@ -5,7 +5,7 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalEditPart;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-import org.jboss.tools.bpmn2.reddeer.ProcessEditorView;
+import org.jboss.tools.bpmn2.reddeer.GEFProcessEditor;
 
 /**
  * Returns an edit part which is on a given location (given by X, Y) in the editor.
@@ -24,7 +24,7 @@ public class ConstructOnPoint<T extends EditPart> extends BaseMatcher<EditPart> 
 
 	@Override
 	public boolean matches(Object item) {
-		return new ProcessEditorView().getBounds((GraphicalEditPart) item).contains(p);
+		return new GEFProcessEditor().getBounds((GraphicalEditPart) item).contains(p);
 	}
 
 	@Override
