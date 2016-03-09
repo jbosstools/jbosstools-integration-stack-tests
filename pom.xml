@@ -15,9 +15,10 @@
 
 	<properties>
 	  <tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-integration-stack-tests.git</tycho.scmUrl>
-	  <jbtis.tp.version>4.3.1.Beta1a</jbtis.tp.version>
-	  <jbtis.site>http://download.jboss.org/jbosstools/mars/staging/updates/integration-stack/4.3.0.Beta1/earlyaccess</jbtis.site>
-	  <jbtis-ea.site>http://download.jboss.org/jbosstools/mars/staging/updates/integration-stack/4.3.0.Beta1/earlyaccess</jbtis-ea.site>
+	  <jbtis.tp.version>4.3.1.Beta1b</jbtis.tp.version>
+	  <jbtis.repo>staging</jbtis.repo>
+	  <jbtis.site>http://download.jboss.org/jbosstools/mars/${jbtis.repo}/updates/integration-stack/</jbtis.site>
+	  <jbtis-ea.site>${jbtis.site}/earlyaccess/</jbtis-ea.site>
 	  <reddeer.site>http://download.jboss.org/jbosstools/updates/stable/mars/core/reddeer/1.0.1</reddeer.site>
 	  <orbit.site>http://download.eclipse.org/tools/orbit/downloads/drops/R20130517111416/repository</orbit.site>
 	  <swtbot.site>http://download.eclipse.org/technology/swtbot/releases/latest</swtbot.site>
@@ -112,6 +113,27 @@
             </plugin>
 	  </plugins>
 	</build>
+
+	<profiles>
+	  <profile>
+	    <id>staging</id>
+	    <properties>
+	      <jbtis.repo>staging</jbtis.repo>
+	    </properties>
+	  </profile>
+	  <profile>
+	    <id>development</id>
+	    <properties>
+	      <jbtis.repo>development</jbtis.repo>
+	    </properties>
+	  </profile>
+	  <profile>
+	    <id>stable</id>
+	    <properties>
+	      <jbtis.repo>stable</jbtis.repo>
+	    </properties>
+	  </profile>
+	</profiles>
 
 </project>
 
