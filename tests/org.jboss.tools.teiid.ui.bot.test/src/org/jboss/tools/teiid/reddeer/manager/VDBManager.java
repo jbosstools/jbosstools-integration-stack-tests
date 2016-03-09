@@ -47,7 +47,7 @@ public class VDBManager {
 		return VDBEditor.getInstance(vdbName + ".vdb");
 	}
 
-	public void addModelsToVDB(String projectName, String vdbName, String[] models){
+	public void addModelsToVDB(String projectName, String vdbName, String... models){
 		VDBEditor editor = getVDBEditor(projectName, vdbName);
 		editor.addModelsToVDB(projectName, models);  // addModels function moved to VDBEditor	
 	}
