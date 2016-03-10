@@ -188,9 +188,9 @@ public class E2eRecursiveXmlTextTest {
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, VDB_NAME);
 
 		// TODO CHECK VDB more precisely
-		assertTrue(jdbchelper.isQuerySuccessful(TESTSQL1));
-		assertTrue(jdbchelper.isQuerySuccessful(TESTSQL2));
-		assertTrue(jdbchelper.isQuerySuccessful(TESTSQL3));
+		assertTrue(jdbchelper.isQuerySuccessful(TESTSQL1,true));
+		assertTrue(jdbchelper.isQuerySuccessful(TESTSQL2,true));
+		assertTrue(jdbchelper.isQuerySuccessful(TESTSQL3,true));
 	}
 
 	@AfterClass

@@ -189,7 +189,7 @@ public class XmlSchemalessTest {
 		
 		String output = null;
 		try {
-			ResultSet rs = jdbchelper.executeQuery("SELECT * FROM bookListingDocument");
+			ResultSet rs = jdbchelper.executeQueryWithResultSet("SELECT * FROM bookListingDocument");
 			rs.next();			
             output = rs.getString(1);
 		} catch (SQLException e) {
@@ -282,7 +282,7 @@ public class XmlSchemalessTest {
  		
  		output = null;
  		try {
- 			ResultSet rs = jdbchelper.executeQuery("SELECT * FROM bookListingDocument");
+ 			ResultSet rs = jdbchelper.executeQueryWithResultSet("SELECT * FROM bookListingDocument");
  			rs.next(); 			
             output = rs.getString(1);           
  		} catch (SQLException e) {

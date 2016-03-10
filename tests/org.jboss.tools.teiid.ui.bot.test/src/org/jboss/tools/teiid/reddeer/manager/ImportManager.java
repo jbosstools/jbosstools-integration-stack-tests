@@ -68,11 +68,12 @@ public class ImportManager {
 	 * @param propsFile
 	 *            itemList (e.g. PUBLIC/PUBLIC/TABLE/PARTS,...)
 	 */
-	public void importFromDatabase(String projectName, String modelName, String connectionProfile, Properties props) {
+	public void importFromDatabase(String projectName, String modelName, String connectionProfile, Properties props, boolean importProcedures) {
 		ImportJDBCDatabaseWizard wizard = new ImportJDBCDatabaseWizard();
 		wizard.setConnectionProfile(connectionProfile);
 		wizard.setProjectName(projectName);
 		wizard.setModelName(modelName);
+		wizard.setImportProcedures(importProcedures);
 
 		if (props.getProperty("itemList") != null) {
 			String loadedProperty = props.getProperty("itemList");

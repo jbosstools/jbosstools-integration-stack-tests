@@ -60,7 +60,8 @@ public class TeiidJDBCHelper {
 	}
 
 	/**
-	 * Method executes query against existing database connection
+	 * Method executes query against existing database connection and expects
+	 * result set
 	 * 
 	 * @param connection
 	 *            existing database connection
@@ -68,7 +69,7 @@ public class TeiidJDBCHelper {
 	 *            actual SQL query
 	 * @return resultSet - result of the execution of query
 	 */
-	public ResultSet executeQuery(String query) throws SQLException {
+	public ResultSet executeQueryWithResultSet(String query) throws SQLException {
 		createConnection();
 		if (connection == null) {
 			throw new IllegalArgumentException("Connection is null (not established?)");
@@ -79,6 +80,27 @@ public class TeiidJDBCHelper {
 		ResultSet resultSet = st.executeQuery(query);
 		return resultSet;
 
+	}
+
+	/**
+	 * Method executes query that has no result set against existing database connection
+	 * 
+	 * @param connection
+	 *            existing database connection
+	 * @param query
+	 *            actual SQL query
+	 * @return boolean - true if query has no result set, false otherwise
+	 */
+	public boolean executeQueryNoResultSet(String query) throws SQLException {
+		createConnection();
+		if (connection == null) {
+			throw new IllegalArgumentException("Connection is null (not established?)");
+		}
+
+		Statement st = connection.createStatement();
+		log.info("Executing query " + query);
+		boolean hasResultSet = st.execute(query);
+		return !hasResultSet;
 	}
 
 	public void closeConnection() {
@@ -105,11 +127,16 @@ public class TeiidJDBCHelper {
 	 *            SQL query
 	 * @return true if query was successful, false otherwise
 	 */
-	public boolean isQuerySuccessful(String sql) {
+	public boolean isQuerySuccessful(String sql, boolean hasResultSet) {
 
 		try {
-			ResultSet results = this.executeQuery(sql);
-			return true;
+			if (hasResultSet) {
+				this.executeQueryWithResultSet(sql);
+				return true;
+			} else {
+				return (this.executeQueryNoResultSet(sql));
+			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
@@ -127,7 +154,7 @@ public class TeiidJDBCHelper {
 	 */
 	public int getNumberOfResults(String sql) {
 		try {
-			ResultSet results = this.executeQuery(sql);
+			ResultSet results = this.executeQueryWithResultSet(sql);
 			int count = 0;
 			while (results.next()) {
 				++count;

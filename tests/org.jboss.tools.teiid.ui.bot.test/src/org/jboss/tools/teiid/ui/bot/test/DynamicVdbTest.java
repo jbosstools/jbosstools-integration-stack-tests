@@ -982,7 +982,7 @@ public class DynamicVdbTest {
 			@Override
 			public Object call() throws Exception {
 				TeiidJDBCHelper helper = new TeiidJDBCHelper(teiidServer, vdbName);
-				ResultSet rs = helper.executeQuery(query);
+				ResultSet rs = helper.executeQueryWithResultSet(query);
 				rs.close();
 				helper.closeConnection();
 				return null;
