@@ -32,6 +32,7 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 	private String projectName;
 	private String modelName;
 	private List<String> itemList;
+	private boolean importProcedures;
 
 	public ImportJDBCDatabaseWizard() {
 
@@ -103,6 +104,9 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 
 		new PushButton("Deselect All").click();
 		new SWTWorkbenchBot().tableInGroup("Table Types").select("TABLE");
+		if(importProcedures){
+			new CheckBox("Procedures").toggle(true);
+		}
 	}
 
 	private void fillThirdPage() {
@@ -151,4 +155,13 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 
 		itemList.add(item);
 	}
+
+	public boolean isImportProcedures() {
+		return importProcedures;
+	}
+
+	public void setImportProcedures(boolean importProcedures) {
+		this.importProcedures = importProcedures;
+	}
+	
 }

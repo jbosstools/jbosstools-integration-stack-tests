@@ -88,7 +88,7 @@ public class LdapImportTest {
 		ProjectItem modelItem = project.getProjectItem(RHDS_MODEL + ".xmi");
 		addColumn(modelItem, "ou=People", "dn", "string");
 
-		teiidBot.simulatePreview(teiidServer, NEW_PROJECT, RHDS_MODEL, new String[] { "ou=People", "ou=Apps" });
+		teiidBot.simulateTablesPreview(teiidServer, NEW_PROJECT, RHDS_MODEL, new String[] { "ou=People", "ou=Apps" });
 
 	}
 
@@ -121,7 +121,7 @@ public class LdapImportTest {
 		ProjectItem modelItem = project.getProjectItem(LDAP_MODEL + ".xmi");
 		addColumn(modelItem, "ou=groups", "dn", "string");
 
-		teiidBot.simulatePreview(teiidServer, NEW_PROJECT, LDAP_MODEL, new String[] { "ou=people", "ou=groups" });
+		teiidBot.simulateTablesPreview(teiidServer, NEW_PROJECT, LDAP_MODEL, new String[] { "ou=people", "ou=groups" });
 
 	}
 

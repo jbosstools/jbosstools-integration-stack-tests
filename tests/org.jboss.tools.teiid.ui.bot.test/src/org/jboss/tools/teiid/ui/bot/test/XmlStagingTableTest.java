@@ -255,10 +255,10 @@ public class XmlStagingTableTest {
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, vdbName); 
 		
 		try {
-			ResultSet withStRs = jdbchelper.executeQuery("SELECT * FROM TvGuideRootAll ORDER BY producerID, programID");
+			ResultSet withStRs = jdbchelper.executeQueryWithResultSet("SELECT * FROM TvGuideRootAll ORDER BY producerID, programID");
 			withStRs.next(); 			
             String outputWithST = withStRs.getString(1); 
-			ResultSet withoutStRs = jdbchelper.executeQuery("SELECT * FROM TvGuideNoStaging ORDER BY producerID, programID");
+			ResultSet withoutStRs = jdbchelper.executeQueryWithResultSet("SELECT * FROM TvGuideNoStaging ORDER BY producerID, programID");
 			withoutStRs.next(); 			
             String outputWithoutST = withoutStRs.getString(1); 
             assertEquals(outputWithoutST, outputWithST);
@@ -267,10 +267,10 @@ public class XmlStagingTableTest {
 		}
 		
 		try {
-			ResultSet withStRs = jdbchelper.executeQuery("SELECT * FROM TvGuideRootAll WHERE programName LIKE '%Project%' ORDER BY producerID, programID");
+			ResultSet withStRs = jdbchelper.executeQueryWithResultSet("SELECT * FROM TvGuideRootAll WHERE programName LIKE '%Project%' ORDER BY producerID, programID");
 			withStRs.next(); 			
             String outputWithST = withStRs.getString(1); 
-			ResultSet withoutStRs = jdbchelper.executeQuery("SELECT * FROM TvGuideNoStaging WHERE programName LIKE '%Project%' ORDER BY producerID, programID");
+			ResultSet withoutStRs = jdbchelper.executeQueryWithResultSet("SELECT * FROM TvGuideNoStaging WHERE programName LIKE '%Project%' ORDER BY producerID, programID");
 			withoutStRs.next(); 			
             String outputWithoutST = withoutStRs.getString(1); 
             assertEquals(outputWithoutST, outputWithST);

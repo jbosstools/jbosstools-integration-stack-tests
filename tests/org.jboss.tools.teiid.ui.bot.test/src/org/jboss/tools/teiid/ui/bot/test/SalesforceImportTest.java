@@ -48,7 +48,7 @@ public class SalesforceImportTest {
 
 		// old TD(prior to 9.0.4) needs table name "salesforce.Case_". From TD 9.0.4 there is no schema "salesforce"
 		// when importing from SF.
-		teiidBot.simulatePreview(teiidServer, MODEL_PROJECT, model, new String[] { "Case_" });
+		teiidBot.simulateTablesPreview(teiidServer, MODEL_PROJECT, model, new String[] { "Case_" });
 
 	}
 }

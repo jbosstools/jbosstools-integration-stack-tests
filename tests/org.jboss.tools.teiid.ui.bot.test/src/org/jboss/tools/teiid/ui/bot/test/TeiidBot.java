@@ -229,7 +229,7 @@ public class TeiidBot {
 		}
 		params = params.substring(0, params.length() - 1);
 
-		return "select * from ( exec \"" + modelName + "\".\"" + procedureName + "\"(" + params + ") ) AS X_X";
+		return "exec \"" + modelName + "\".\"" + procedureName + "\"(" + params + ")";
 	}
 
 	public String generateTablePreviewQuery(String modelName, String tableName) {
@@ -249,7 +249,7 @@ public class TeiidBot {
 	 * @param tables
 	 *            tables to be queried
 	 */
-	public void simulatePreview(TeiidServerRequirement teiidServer, String project, String model, String[] tables) {
+	public void simulateTablesPreview(TeiidServerRequirement teiidServer, String project, String model, String[] tables) {
 
 		String vdb_name = "Check_" + model;
 
@@ -273,8 +273,37 @@ public class TeiidBot {
 		// try simple select for every table
 		for (int i = 0; i < tables.length; i++) {
 			String previewSQL = generateTablePreviewQuery(model, tables[i]);
-			assertTrue(jdbcHelper.isQuerySuccessful(previewSQL));
+			assertTrue(jdbcHelper.isQuerySuccessful(previewSQL,true));
 		}
+
+	}
+	
+	public void simulateProcedurePreview(TeiidServerRequirement teiidServer, String project, String model, String procedure, String...parameters) {
+
+		String vdb_name = "Check_" + model;
+
+		// create VDB
+		CreateVDB createVDB = new CreateVDB();
+		createVDB.setFolder(project);
+		createVDB.setName(vdb_name);
+		createVDB.execute(true);
+
+		// add models to the vdb
+		VDBEditor editor = VDBEditor.getInstance(vdb_name + ".vdb");
+		editor.show();
+		editor.addModel(project, model);
+		editor.save();
+
+		VDB vdb = new ModelExplorer().getModelProject(project).getVDB(vdb_name + ".vdb");
+		vdb.executeVDB();
+
+		TeiidJDBCHelper jdbcHelper = new TeiidJDBCHelper(teiidServer, vdb_name);
+		
+		ArrayList<String> parametersList = new ArrayList<String>(Arrays.asList(parameters));
+
+		// try simple query
+		String previewSQL = generateProcedurePreviewQuery(model, procedure, parametersList);
+		assertTrue(jdbcHelper.isQuerySuccessful(previewSQL,false));
 
 	}
 

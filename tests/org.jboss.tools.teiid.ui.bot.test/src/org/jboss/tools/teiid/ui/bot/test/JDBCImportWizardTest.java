@@ -37,6 +37,7 @@ import org.junit.runner.RunWith;
 	ConnectionProfilesConstants.DB2_101_BQT,
 	ConnectionProfilesConstants.DB2_97_BQT2,
 	ConnectionProfilesConstants.ORACLE_11G_BQT2,
+	ConnectionProfilesConstants.ORACLE_11G_BOOKS,
 	ConnectionProfilesConstants.ORACLE_12C_BQT,
 	ConnectionProfilesConstants.SQL_SERVER_2008_PARTS_SUPPLIER,
 	ConnectionProfilesConstants.SQL_SERVER_2012_BQT2,
@@ -75,48 +76,55 @@ public class JDBCImportWizardTest {
 	public void db2101Import() {
 
 		String model = "db2101Model";
-		importModel(model, ConnectionProfilesConstants.DB2_101_BQT, "BQT/TABLE/SMALLA,BQT/TABLE/SMALLB");
-		checkImportedModel(model, "SMALLA", "SMALLB");
+		importModel(model, ConnectionProfilesConstants.DB2_101_BQT, "BQT/TABLE/SMALLA,BQT/TABLE/SMALLB", false);
+		checkImportedTablesInModel(model, "SMALLA", "SMALLB");
 	}
 
 	@Test
 	public void db297Import() {
 
 		String model = "db297Model";
-		importModel(model, ConnectionProfilesConstants.DB2_97_BQT2, "BQT2/TABLE/SMALLA,BQT2/TABLE/SMALLB");
-		checkImportedModel(model, "SMALLA", "SMALLB");
+		importModel(model, ConnectionProfilesConstants.DB2_97_BQT2, "BQT2/TABLE/SMALLA,BQT2/TABLE/SMALLB", false);
+		checkImportedTablesInModel(model, "SMALLA", "SMALLB");
 	}
 
 	@Test
 	public void ingres10Import() {
 
 		String model = "ingres10Model";
-		importModel(model, ConnectionProfilesConstants.INGRES_10_BQT2, "bqt2/TABLE/smalla,bqt2/TABLE/smallb");
-		checkImportedModel(model, "smalla", "smallb");
+		importModel(model, ConnectionProfilesConstants.INGRES_10_BQT2, "bqt2/TABLE/smalla,bqt2/TABLE/smallb", false);
+		checkImportedTablesInModel(model, "smalla", "smallb");
 	}
 
 	@Test
 	public void oracle11gImport() {
 
 		String model = "oracle11gModel";
-		importModel(model, ConnectionProfilesConstants.ORACLE_11G_BQT2, "BQT2/TABLE/SMALLA,BQT2/TABLE/SMALLB");
-		checkImportedModel(model, "SMALLA", "SMALLB");
+		importModel(model, ConnectionProfilesConstants.ORACLE_11G_BQT2, "BQT2/TABLE/SMALLA,BQT2/TABLE/SMALLB", false);
+		checkImportedTablesInModel(model, "SMALLA", "SMALLB");
+	}
+	
+	@Test
+	public void oracle11gPackageImport() {
+		String model = "oracle11gModelPackage";
+		importModel(model, ConnectionProfilesConstants.ORACLE_11G_BOOKS, "BOOKS/procedure/REMOVE_AUTHOR2", true);
+		checkImportedProcedureInModel(model,"REMOVE_AUTHOR2","90");
 	}
 
 	@Test
 	public void oracle12cImport() {
 
 		String model = "oracle12cModel";
-		importModel(model, ConnectionProfilesConstants.ORACLE_12C_BQT, "DV/TABLE/SMALLA,DV/TABLE/SMALLB");
-		checkImportedModel(model, "SMALLA", "SMALLB");
+		importModel(model, ConnectionProfilesConstants.ORACLE_12C_BQT, "DV/TABLE/SMALLA,DV/TABLE/SMALLB", false);
+		checkImportedTablesInModel(model, "SMALLA", "SMALLB");
 	}
 
 	@Test
 	public void sqlServer2008Import() {
 		String model = "sqlServer2008Model";
-		importModel(model, ConnectionProfilesConstants.SQL_SERVER_2008_PARTS_SUPPLIER,"partssupplier/dbo/TABLE/SHIP_VIA,partssupplier/dbo/TABLE/PARTS");
+		importModel(model, ConnectionProfilesConstants.SQL_SERVER_2008_PARTS_SUPPLIER,"partssupplier/dbo/TABLE/SHIP_VIA,partssupplier/dbo/TABLE/PARTS", false);
 		assertTrue(checkNameInTable("\"AVERAGE TIME DELIVERY\"",6,2));
-		checkImportedModel(model, "SHIP_VIA", "PARTS");
+		checkImportedTablesInModel(model, "SHIP_VIA", "PARTS");
 	}
 
 	@Test
@@ -124,8 +132,8 @@ public class JDBCImportWizardTest {
 
 		String model = "sqlServer2012Model";
 		importModel(model, ConnectionProfilesConstants.SQL_SERVER_2012_BQT2,
-				"bqt2/dbo/TABLE/SmallA,bqt2/dbo/TABLE/SmallB");
-		checkImportedModel(model, "SmallA", "SmallB");
+				"bqt2/dbo/TABLE/SmallA,bqt2/dbo/TABLE/SmallB", false);
+		checkImportedTablesInModel(model, "SmallA", "SmallB");
 	}
 
 	@Test
@@ -133,61 +141,65 @@ public class JDBCImportWizardTest {
 	@RunIf(conditionClass = IssueIsClosed.class)
 	public void sybaseImport() {
 		String model = "sybaseModel";
-		importModel(model, ConnectionProfilesConstants.SYBASE_15_BQT2, "bqt2/TABLE/SmallA,bqt2/TABLE/SmallB");
-		checkImportedModel(model, "SmallA", "SmallB");
+		importModel(model, ConnectionProfilesConstants.SYBASE_15_BQT2, "bqt2/TABLE/SmallA,bqt2/TABLE/SmallB", false);
+		checkImportedTablesInModel(model, "SmallA", "SmallB");
 	}
 
 	@Test
 	public void dv6Import() {
 
 		String model = "dv6Model";
-		importModel(model, ConnectionProfilesConstants.DV6_DS1, "PUBLIC/PUBLIC/TABLE/STATUS,PUBLIC/PUBLIC/TABLE/PARTS");
-		checkImportedModel(model, "STATUS", "PARTS");
+		importModel(model, ConnectionProfilesConstants.DV6_DS1, "PUBLIC/PUBLIC/TABLE/STATUS,PUBLIC/PUBLIC/TABLE/PARTS", false);
+		checkImportedTablesInModel(model, "STATUS", "PARTS");
 	}
 
 	@Test
 	public void mysql51Import() {
 		String model = "mysql51Model";
-		importModel(model, ConnectionProfilesConstants.MYSQL_51_BQT2, "bqt2/TABLE/smalla,bqt2/TABLE/smallb");
-		checkImportedModel(model, "smalla", "smallb");
+		importModel(model, ConnectionProfilesConstants.MYSQL_51_BQT2, "bqt2/TABLE/smalla,bqt2/TABLE/smallb", false);
+		checkImportedTablesInModel(model, "smalla", "smallb");
 	}
 
 	@Test
 	public void mysql55Import() {
 
 		String model = "mysql55Model";
-		importModel(model, ConnectionProfilesConstants.MYSQL_55_BQT2, "bqt2/TABLE/smalla,bqt2/TABLE/smallb");
-		checkImportedModel(model, "smalla", "smallb");
+		importModel(model, ConnectionProfilesConstants.MYSQL_55_BQT2, "bqt2/TABLE/smalla,bqt2/TABLE/smallb", false);
+		checkImportedTablesInModel(model, "smalla", "smallb");
 	}
 
 	@Test
 	public void postgresql84Import() {
 
 		String model = "postgresql84Model";
-		importModel(model, ConnectionProfilesConstants.POSTGRESQL_84_BQT2, "public/TABLE/smalla,public/TABLE/smallb");
-		checkImportedModel(model, "smalla", "smallb");
+		importModel(model, ConnectionProfilesConstants.POSTGRESQL_84_BQT2, "public/TABLE/smalla,public/TABLE/smallb", false);
+		checkImportedTablesInModel(model, "smalla", "smallb");
 	}
 
 	@Test
 	public void postgresql92Import() {
 
 		String model = "postgresql92Model";
-		importModel(model, ConnectionProfilesConstants.POSTGRESQL_92_DVQE, "public/TABLE/smalla,public/TABLE/smallb");
-		checkImportedModel(model, "smalla", "smallb");
+		importModel(model, ConnectionProfilesConstants.POSTGRESQL_92_DVQE, "public/TABLE/smalla,public/TABLE/smallb", false);
+		checkImportedTablesInModel(model, "smalla", "smallb");
 	}
 
-	private void importModel(String modelName, String connectionProfile, String itemList) {
+	private void importModel(String modelName, String connectionProfile, String itemList, boolean importProcedures) {
 		Properties iProps = new Properties();
 		iProps.setProperty("itemList", itemList);
-		new ImportManager().importFromDatabase(MODEL_PROJECT, modelName, connectionProfile, iProps);
+		new ImportManager().importFromDatabase(MODEL_PROJECT, modelName, connectionProfile, iProps, importProcedures);
 	}
 
-	private void checkImportedModel(String model, String tableA, String tableB) {
+	private void checkImportedTablesInModel(String model, String tableA, String tableB) {
 		teiidBot.assertResource(MODEL_PROJECT, model + ".xmi", tableA);
 		teiidBot.assertResource(MODEL_PROJECT, model + ".xmi", tableB);
+		teiidBot.simulateTablesPreview(teiidServer, MODEL_PROJECT, model, new String[] { tableA, tableB });
 
-		teiidBot.simulatePreview(teiidServer, MODEL_PROJECT, model, new String[] { tableA, tableB });
-
+	}
+	
+	private void checkImportedProcedureInModel(String model, String procedure, String...parameters) {
+		teiidBot.assertResource(MODEL_PROJECT, model + ".xmi", procedure);
+		teiidBot.simulateProcedurePreview(teiidServer, MODEL_PROJECT, model, procedure, parameters);
 	}
 	/**
 	 * true if the text in the table (the intersection of the row and column) is equal to the argument
