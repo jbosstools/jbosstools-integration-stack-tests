@@ -35,6 +35,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructOnPoint;
 import org.jboss.tools.bpmn2.reddeer.editor.matcher.ConstructWithName;
 import org.jboss.tools.bpmn2.reddeer.matcher.EditPartOfClassName;
 import org.jboss.tools.bpmn2.reddeer.properties.setup.LabeledTextSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.MetaDataSetUp;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
@@ -506,6 +507,10 @@ public class Element {
 	 */
 	public Rectangle getBounds() {
 		return containerShapeEditPart.getBounds();
+	}
+	
+	public void setMetaData(String key, String value) {
+		propertiesHandler.setUp(new MetaDataSetUp(key, value));
 	}
 	
 	protected Element putToCanvas(String name, ElementType type, Point point, EditPart parent) {

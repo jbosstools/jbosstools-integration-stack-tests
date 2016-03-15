@@ -63,7 +63,7 @@ public class ComplexSpecialCharactersAndLenghtsTest extends JBPM6ComplexTest {
 
 	@TestPhase(phase = Phase.VALIDATE)
 	public void validateBZ1182875() {
-		assertTrue("BZ 1182875, package name", isInSourceCode("tns:packageName=\"defaultPackage\""));
+		assertTrue("BZ 1182875, package name", isInSourceCode("tns:packageName=\"invalid\""));
 	}
 
 	@TestPhase(phase = Phase.VALIDATE)

@@ -49,7 +49,7 @@ public abstract class JBPM6ComplexTest {
 	private List<Method> validateMethods;
 	private List<Method> runMethods;
 
-	private String diagramSourceCode = "";
+	protected String diagramSourceCode = "";
 	private String filenameTitle;
 
 	protected static final String VARIABLE1 = "VariableOne";

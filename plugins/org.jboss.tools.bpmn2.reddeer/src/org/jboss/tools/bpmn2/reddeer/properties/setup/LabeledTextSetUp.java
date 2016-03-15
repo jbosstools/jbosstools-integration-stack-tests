@@ -7,16 +7,26 @@ public class LabeledTextSetUp implements SetUpAble {
 	private String tabLabel;
 	private String textLabel;
 	private String value;
+	private boolean putByTyping;
 
 	public LabeledTextSetUp(String tabLabel, String textLabel, String value) {
+		this(tabLabel, textLabel, value, false);
+	}
+	
+	public LabeledTextSetUp(String tabLabel, String textLabel, String value, boolean putByTyping) {
 		this.tabLabel = tabLabel;
 		this.textLabel = textLabel;
 		this.value = value;
+		this.putByTyping = putByTyping;
 	}
 
 	@Override
 	public void setUpCTab() {
-		new LabeledText(textLabel).setText(value);
+		if(putByTyping) {
+			new LabeledText(textLabel).typeText(value);
+		} else {
+			new LabeledText(textLabel).setText(value);
+		}
 	}
 
 	@Override

@@ -24,7 +24,7 @@ public class InterfacesTab {
 	 */
 	public void addInterface(String name, String implementation, String[] operationList) {
 		new SectionToolItem("Interface List", "Add").click();	
-		new LabeledText("Name").typeText(name);
+		new LabeledText("Interface Name").typeText(name);
 		new PushButton(0).click();
 		broseForTypeForImport(implementation);
 		new PushButton("OK").click();

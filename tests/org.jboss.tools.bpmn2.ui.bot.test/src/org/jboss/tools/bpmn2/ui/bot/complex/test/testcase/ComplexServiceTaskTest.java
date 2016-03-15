@@ -25,7 +25,7 @@ import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.WorkflowProcessInstance;
 
 @JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-ServiceTask.bpmn2", saveAs = "BPMN2-ServiceTask.bpmn2", knownIssues = {
-	"1213445" })
+	"1213445", "1316040" })
 public class ComplexServiceTaskTest extends JBPM6ComplexTest {
 
 	@TestPhase(phase = Phase.MODEL)

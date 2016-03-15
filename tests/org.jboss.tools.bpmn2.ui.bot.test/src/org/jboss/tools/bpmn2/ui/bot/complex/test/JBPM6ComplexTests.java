@@ -29,6 +29,7 @@ import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexLaneTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexLinkEventTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexManualTaskTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexMessageStartTest;
+import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexMetaDataNamespaceTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexMultiInstanceLoopCharacteristicsTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexMultipleStartEventTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexParalellSplitJoinTest;
@@ -73,6 +74,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	ComplexLinkEventTest.class, // @BZ https://bugzilla.redhat.com/show_bug.cgi?id=1190688
 	ComplexManualTaskTest.class,
 	ComplexMessageStartTest.class,
+	ComplexMetaDataNamespaceTest.class,
 	ComplexMultiInstanceLoopCharacteristicsTest.class,
 	ComplexMultipleStartEventTest.class,
 	ComplexParalellSplitJoinTest.class,
