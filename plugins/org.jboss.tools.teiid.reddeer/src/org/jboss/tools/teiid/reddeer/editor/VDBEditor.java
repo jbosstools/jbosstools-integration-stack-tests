@@ -62,7 +62,11 @@ public class VDBEditor extends SWTBotEditor {
 		try {
 			for (int i = 0; i < models.length; i++) {
 				model = models[i];
-				addModel(projectName, model);
+				if (model.contains("/")){
+					addModel(true, model.split("/"));
+				} else {
+					addModel(projectName, model);
+				}
 			}
 		} catch (Exception ex) {
 			log.warn("Cannot add model " + model);

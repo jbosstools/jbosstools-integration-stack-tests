@@ -54,16 +54,15 @@ import org.junit.runner.RunWith;
  */
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
- @TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = {
- ConnectionProfilesConstants.SQL_SERVER_2000_SEARCHB})
+@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = { ConnectionProfilesConstants.ORACLE_11G_BOOKS})
 public class XmlStagingTableTest {
-	private static final String PROJECT_NAME = "XmlStagingProject";
+	private static final String PROJECT_NAME = "XmlStagingTableProject";
 
 	 @InjectRequirement
 	 private static TeiidServerRequirement teiidServer;
 
 	private static Project project;
-
+	
 	@BeforeClass
 	public static void importProject() {
 		new WorkbenchShell().maximize();
@@ -73,8 +72,7 @@ public class XmlStagingTableTest {
 		project = teiidBot.modelExplorer().getProject(PROJECT_NAME);
 		project.refresh();
 
-		 new ModelExplorer().changeConnectionProfile(ConnectionProfilesConstants.SQL_SERVER_2000_SEARCHB,
-		 PROJECT_NAME, "TvGuideStaging.xmi");
+		new ModelExplorer().changeConnectionProfile(ConnectionProfilesConstants.ORACLE_11G_BOOKS, PROJECT_NAME, "sources", "Books.xmi");
 	}
 
 	@Test
@@ -83,30 +81,32 @@ public class XmlStagingTableTest {
 		project.select();
 		MetadataModelWizard modelWizard = new MetadataModelWizard();
 		modelWizard.open();
-		modelWizard.setModelName("SchemaModel")
+		modelWizard.setLocation(PROJECT_NAME, "views")
+				.setModelName("SchemaModel")
 				.selectModelClass(ModelClass.XML)
 				.selectModelType(ModelType.VIEW)
 				.selectModelBuilder(ModelBuilder.BUILD_FROM_XML_SCHEMA);
 		modelWizard.next();
-		modelWizard.selectXMLSchemaFile(PROJECT_NAME, "ProducersAndShowsSchema.xsd")
+		modelWizard.selectXMLSchemaFile(PROJECT_NAME, "schemas", "PublisherSchema.xsd")
 				.addElement("ResultSet");
 		modelWizard.finish();
 
 		// 2. Model XML document without staging table
 		project.select();
-		new DefaultTreeItem(PROJECT_NAME,"SchemaModel.xmi","ResultSetDocument").select();
+		new DefaultTreeItem(PROJECT_NAME,"views","SchemaModel.xmi","ResultSetDocument").select();
 		new ContextMenu("Rename...").select();
-		new DefaultText().setText("TvGuideNoStaging");
+		new DefaultText().setText("NoStagingDocument");
 		new SWTWorkbenchBot().activeShell().pressShortcut(Keystrokes.TAB);	
 		AbstractWait.sleep(TimePeriod.SHORT);
 		
-		new ModelExplorerManager().getModelExplorerView().open(PROJECT_NAME,"SchemaModel.xmi","TvGuideNoStaging");
+		new ModelExplorerManager().getModelExplorerView().open(PROJECT_NAME,"views","SchemaModel.xmi","NoStagingDocument");
 		MappingDiagramEditor mappingEditor = new MappingDiagramEditor("SchemaModel.xmi");
 		ModelEditor editor = new ModelEditor("SchemaModel.xmi");		
 
-		editor.showMappingTransformation("producer");
-		editor.setTransformation("SELECT convert(ID, double) AS producerID, NAME "
-				+ "FROM TvGuideStaging.PRODUCTION_HOUSES");
+		editor.showMappingTransformation("publisher");
+		editor.setTransformation("SELECT "
+				+ "convert(Books.PUBLISHERS.PUBLISHER_ID, double) AS publisherId, Books.PUBLISHERS.NAME "
+				+ "FROM Books.PUBLISHERS");
 		editor.saveAndValidateSql();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new WorkbenchShell();
@@ -115,45 +115,45 @@ public class XmlStagingTableTest {
 		editor.clickButtonOnToolbar("Show Parent Diagram");	
 		AbstractWait.sleep(TimePeriod.SHORT);
 		
-		editor.selectParts(mappingEditor.getMappingClasses("shows"));
+		editor.selectParts(mappingEditor.getMappingClasses("book"));
 		new ContextMenu("Open").select();
 		
 		editor.openInputSetEditor(true);
  		InputSetEditor inputSetEditor = new InputSetEditor();
- 		inputSetEditor.createNewInputParam(new String[]{"producer","producerID : double"});
+ 		inputSetEditor.createNewInputParam(new String[]{"publisher","publisherId : double"});
  		inputSetEditor.close();
  		
  		mappingEditor.showTransformation();
  		AbstractWait.sleep(TimePeriod.SHORT);
  		new WorkbenchShell();
- 		editor.setTransformation("SELECT convert(TvGuideStaging.AVAILABLE_PROGRAMS.ID, double) "
- 				+ "AS programId, TvGuideStaging.AVAILABLE_PROGRAMS.NAME AS programName, TvGuideStaging.AVAILABLE_PROGRAMS.RATING "
- 				+ "FROM TvGuideStaging.AVAILABLE_PROGRAMS "
- 				+ "WHERE INPUTS.producerID = TvGuideStaging.AVAILABLE_PROGRAMS.PRODID "
- 				+ "ORDER BY programId");
+ 		editor.setTransformation("SELECT Books.BOOKS.ISBN AS isbn, Books.BOOKS.TITLE AS title "
+ 				+ "FROM Books.BOOKS "
+ 				+ "WHERE INPUTS.publisherId = Books.BOOKS.PUBLISHER "
+ 				+ "ORDER BY isbn ");
  		editor.saveAndValidateSql();
  		AbstractWait.sleep(TimePeriod.SHORT);
  		new WorkbenchShell();
 
+ 		AbstractWait.sleep(TimePeriod.SHORT);
 		new ShellMenu("File","Save All").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		assertTrue("There are validation errors", new ProblemsView().getProblems(ProblemType.ERROR).isEmpty());
 		
 		// 3. Model XML document with staging table
 		project.select();
-		new DefaultTreeItem(new String[]{PROJECT_NAME,"SchemaModel.xmi","TvGuideNoStaging"}).select();
+		new DefaultTreeItem(PROJECT_NAME,"views","SchemaModel.xmi","NoStagingDocument").select();
 		new ContextMenu("New Sibling","XML Document").select();
 		new DefaultShell("Build XML Documents From XML Schema");
 		new PushButton("...").click();
 		new DefaultShell("Select an XML Schema");
-		new DefaultTreeItem(PROJECT_NAME, "ProducersAndShowsSchema.xsd").select();
+		new DefaultTreeItem(PROJECT_NAME,"schemas","PublisherSchema.xsd").select();
 		new PushButton("OK").click();
 		new DefaultTable().select("ResultSet");
 		new PushButton(1).click();
 		new FinishButton().click();
 		new SWTWorkbenchBot().activeShell().pressShortcut(Keystrokes.TAB);
 		AbstractWait.sleep(TimePeriod.SHORT);
-		new ModelExplorerManager().renameItem(new String[]{PROJECT_NAME,"SchemaModel.xmi","ResultSetDocument"}, "TvGuideRootAll");
+		new ModelExplorerManager().renameItem(new String[]{PROJECT_NAME,"views","SchemaModel.xmi","ResultSetDocument"}, "StagingDocument");
 		
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new DefaultTreeItem("ResultSet").select();
@@ -165,13 +165,11 @@ public class XmlStagingTableTest {
 		mappingEditor.showTransformation();
 		AbstractWait.sleep(TimePeriod.SHORT);
  		new WorkbenchShell();
-		editor.setTransformation("SELECT TvGuideStaging.AVAILABLE_PROGRAMS.ID, TvGuideStaging.AVAILABLE_PROGRAMS.NAME AS showName, "
-				+ "TvGuideStaging.AVAILABLE_PROGRAMS.LENGTH, TvGuideStaging.AVAILABLE_PROGRAMS.DESCRIPTION, TvGuideStaging.AVAILABLE_PROGRAMS.RATING, "
-				+ "TvGuideStaging.AVAILABLE_PROGRAMS.BROADCASTCOUNT, TvGuideStaging.PRODUCTION_HOUSES.ID AS PRODID, "
-				+ "TvGuideStaging.PRODUCTION_HOUSES.NAME AS ProducerName, TvGuideStaging.PRODUCTION_HOUSES.ADDRESS, TvGuideStaging.PRODUCTION_HOUSES.CITY, "
-				+ "TvGuideStaging.PRODUCTION_HOUSES.POSTALCODE, TvGuideStaging.PRODUCTION_HOUSES.COUNTRYCODE "
-				+ "FROM TVguideStaging.PRODUCTION_HOUSES LEFT OUTER JOIN TVguideStaging.AVAILABLE_PROGRAMS "
-				+ "ON TvGuideStaging.AVAILABLE_PROGRAMS.PRODID = TvGuideStaging.PRODUCTION_HOUSES.ID");
+		editor.setTransformation("SELECT "
+				+ "Books.BOOKS.ISBN AS BookISBN, Books.BOOKS.TITLE AS BookTITLE, Books.BOOKS.SUBTITLE, "
+				+ "Books.BOOKS.PUBLISH_YEAR, Books.BOOKS.EDITION, Books.BOOKS.TYPE, Books.PUBLISHERS.PUBLISHER_ID, "
+				+ "Books.PUBLISHERS.NAME AS PublisherName, Books.PUBLISHERS.LOCATION AS PublisherLocation "
+				+ "FROM Books.PUBLISHERS LEFT OUTER JOIN Books.BOOKS ON Books.PUBLISHERS.PUBLISHER_ID = Books.BOOKS.PUBLISHER");
 		editor.saveAndValidateSql();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new WorkbenchShell();
@@ -180,7 +178,7 @@ public class XmlStagingTableTest {
 		editor.clickButtonOnToolbar("Show Parent Diagram");	
 		AbstractWait.sleep(TimePeriod.SHORT);
 		
-		editor.selectParts(mappingEditor.getMappingClasses("producer"));
+		editor.selectParts(mappingEditor.getMappingClasses("publisher"));
 		new ContextMenu("Open").select();
 		
  		for ( SWTBotGefEditPart part : mappingEditor.getRefArrows()){
@@ -198,9 +196,10 @@ public class XmlStagingTableTest {
 		mappingEditor.showTransformation();
 		AbstractWait.sleep(TimePeriod.SHORT);
  		new WorkbenchShell();
- 		editor.setTransformation("SELECT DISTINCT convert(SchemaModel.TvGuideRootAll.MappingClasses.ST_ResultSet.PRODID, double) AS producerID, "
- 				+ "SchemaModel.TvGuideRootAll.MappingClasses.ST_ResultSet.ProducerName AS name "
- 				+ "FROM SchemaModel.TvGuideRootAll.MappingClasses.ST_ResultSet");
+ 		editor.setTransformation("SELECT DISTINCT "
+ 				+ "convert(SchemaModel.StagingDocument.MappingClasses.ST_ResultSet.PUBLISHER_ID, double) AS publisherId, "
+ 				+ "SchemaModel.StagingDocument.MappingClasses.ST_ResultSet.PublisherName AS name "
+ 				+ "FROM SchemaModel.StagingDocument.MappingClasses.ST_ResultSet");
 		editor.saveAndValidateSql();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new WorkbenchShell();
@@ -209,12 +208,12 @@ public class XmlStagingTableTest {
 		editor.clickButtonOnToolbar("Show Parent Diagram");	
 		AbstractWait.sleep(TimePeriod.SHORT);
 		
-		editor.selectParts(mappingEditor.getMappingClasses("shows"));
+		editor.selectParts(mappingEditor.getMappingClasses("book"));
 		new ContextMenu("Open").select();
 		
 		editor.openInputSetEditor(true);
  		inputSetEditor = new InputSetEditor();
- 		inputSetEditor.createNewInputParam(new String[]{"producer","producerID : double"});
+ 		inputSetEditor.createNewInputParam(new String[]{"publisher","publisherId : double"});
  		inputSetEditor.close();
  		
  		for ( SWTBotGefEditPart part : mappingEditor.getRefArrows()){
@@ -232,10 +231,11 @@ public class XmlStagingTableTest {
  		mappingEditor.showTransformation();
  		AbstractWait.sleep(TimePeriod.SHORT);
  		new WorkbenchShell();
- 		editor.setTransformation("SELECT convert(SchemaModel.TvGuideRootAll.MappingClasses.ST_ResultSet.ID, double) AS programId, "
- 				+ "SchemaModel.TvGuideRootAll.MappingClasses.ST_ResultSet.showName AS programName, SchemaModel.TvGuideRootAll.MappingClasses.ST_ResultSet.RATING "
- 				+ "FROM SchemaModel.TvGuideRootAll.MappingClasses.ST_ResultSet "
- 				+ "WHERE INPUTS.producerID = SchemaModel.TvGuideRootAll.MappingClasses.ST_ResultSet.PRODID");
+ 		editor.setTransformation("SELECT "
+ 				+ "SchemaModel.StagingDocument.MappingClasses.ST_ResultSet.BookISBN AS isbn, "
+ 				+ "SchemaModel.StagingDocument.MappingClasses.ST_ResultSet.BookTITLE AS title "
+ 				+ "FROM SchemaModel.StagingDocument.MappingClasses.ST_ResultSet "
+ 				+ "WHERE INPUTS.publisherId = SchemaModel.StagingDocument.MappingClasses.ST_ResultSet.PUBLISHER_ID");
  		editor.saveAndValidateSql();
  		AbstractWait.sleep(TimePeriod.SHORT);
  		new WorkbenchShell();
@@ -248,17 +248,17 @@ public class XmlStagingTableTest {
 		VDBManager mgr = new VDBManager();
 		String vdbName = "XmlStagingVdb";
 		mgr.createVDB(PROJECT_NAME, vdbName);
-		mgr.addModelsToVDB(PROJECT_NAME, vdbName, "SchemaModel.xmi");
+		mgr.addModelsToVDB(PROJECT_NAME, vdbName, PROJECT_NAME + "/views/SchemaModel.xmi");
 		mgr.deployVDB(new String[]{PROJECT_NAME, vdbName});
 		
 		// 5. Test the created models
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, vdbName); 
 		
 		try {
-			ResultSet withStRs = jdbchelper.executeQueryWithResultSet("SELECT * FROM TvGuideRootAll ORDER BY producerID, programID");
+			ResultSet withStRs = jdbchelper.executeQueryWithResultSet("SELECT * FROM NoStagingDocument ORDER BY publisherId, isbn");
 			withStRs.next(); 			
             String outputWithST = withStRs.getString(1); 
-			ResultSet withoutStRs = jdbchelper.executeQueryWithResultSet("SELECT * FROM TvGuideNoStaging ORDER BY producerID, programID");
+			ResultSet withoutStRs = jdbchelper.executeQueryWithResultSet("SELECT * FROM StagingDocument ORDER BY publisherId, isbn");
 			withoutStRs.next(); 			
             String outputWithoutST = withoutStRs.getString(1); 
             assertEquals(outputWithoutST, outputWithST);
@@ -267,10 +267,10 @@ public class XmlStagingTableTest {
 		}
 		
 		try {
-			ResultSet withStRs = jdbchelper.executeQueryWithResultSet("SELECT * FROM TvGuideRootAll WHERE programName LIKE '%Project%' ORDER BY producerID, programID");
+			ResultSet withStRs = jdbchelper.executeQueryWithResultSet("SELECT * FROM StagingDocument WHERE title LIKE '%Software%' ORDER BY publisherId, isbn");
 			withStRs.next(); 			
             String outputWithST = withStRs.getString(1); 
-			ResultSet withoutStRs = jdbchelper.executeQueryWithResultSet("SELECT * FROM TvGuideNoStaging WHERE programName LIKE '%Project%' ORDER BY producerID, programID");
+			ResultSet withoutStRs = jdbchelper.executeQueryWithResultSet("SELECT * FROM NoStagingDocument WHERE title LIKE '%Software%' ORDER BY publisherId, isbn");
 			withoutStRs.next(); 			
             String outputWithoutST = withoutStRs.getString(1); 
             assertEquals(outputWithoutST, outputWithST);
