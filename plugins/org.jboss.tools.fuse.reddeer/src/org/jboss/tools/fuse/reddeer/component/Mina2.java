@@ -9,7 +9,7 @@ public class Mina2 implements CamelComponent {
 
 	@Override
 	public String getLabel() {
-		return "mina2:protocol:ho...";
+		return "mina2:protocol:host:port";
 	}
 
 	@Override

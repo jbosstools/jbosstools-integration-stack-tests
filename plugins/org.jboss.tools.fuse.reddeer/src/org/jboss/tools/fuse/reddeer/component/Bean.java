@@ -14,7 +14,7 @@ public class Bean implements CamelComponent {
 
 	@Override
 	public String getLabel() {
-		return "bean";
+		return "Bean _bean1";
 	}
 
 	@Override

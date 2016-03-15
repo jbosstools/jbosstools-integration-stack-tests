@@ -9,7 +9,7 @@ public class JMS implements CamelComponent {
 
 	@Override
 	public String getLabel() {
-		return "jms:destinationTy...";
+		return "jms:destinationType:destinationName";
 	}
 
 	@Override

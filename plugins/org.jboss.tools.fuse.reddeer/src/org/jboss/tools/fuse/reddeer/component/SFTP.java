@@ -9,7 +9,7 @@ public class SFTP implements CamelComponent {
 
 	@Override
 	public String getLabel() {
-		return "sftp:host:port/di...";
+		return "sftp:host:port/directoryName";
 	}
 
 	@Override

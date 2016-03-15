@@ -9,7 +9,7 @@ public class Log implements CamelComponent {
 
 	@Override
 	public String getLabel() {
-		return "log";
+		return "Log _log1";
 	}
 
 	@Override

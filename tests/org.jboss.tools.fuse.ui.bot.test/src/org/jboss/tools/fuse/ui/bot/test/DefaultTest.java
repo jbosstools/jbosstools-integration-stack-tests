@@ -15,7 +15,6 @@ import org.jboss.reddeer.eclipse.ui.views.log.LogMessage;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.fuse.reddeer.preference.ConsolePreferencePage;
-import org.jboss.tools.fuse.reddeer.preference.FuseToolingEditorPreferencePage;
 import org.jboss.tools.fuse.reddeer.view.ErrorLogView;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.utils.FuseServerManipulator;
@@ -41,12 +40,6 @@ public class DefaultTest {
 
 		log.info("Maximizing workbench shell.");
 		new WorkbenchShell().maximize();
-
-		log.info("Set 'ID values will be used for labels if existing'");
-		FuseToolingEditorPreferencePage preferences = new FuseToolingEditorPreferencePage();
-		preferences.open();
-		preferences.setShowIDinEditor(true);
-		preferences.ok();
 
 		log.info("Disable showing Console view after standard output changes");
 		ConsolePreferencePage consolePref = new ConsolePreferencePage();

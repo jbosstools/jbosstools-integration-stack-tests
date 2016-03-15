@@ -9,7 +9,7 @@ public class Quartz implements CamelComponent {
 
 	@Override
 	public String getLabel() {
-		return "quartz:groupName/...";
+		return "quartz:groupName/timerName";
 	}
 
 	@Override

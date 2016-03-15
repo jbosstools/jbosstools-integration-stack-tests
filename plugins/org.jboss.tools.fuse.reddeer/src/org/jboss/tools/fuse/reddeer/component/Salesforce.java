@@ -9,7 +9,7 @@ public class Salesforce implements CamelComponent {
 
 	@Override
 	public String getLabel() {
-		return "salesforce:operat...";
+		return "salesforce:operationName:topicName";
 	}
 
 	@Override

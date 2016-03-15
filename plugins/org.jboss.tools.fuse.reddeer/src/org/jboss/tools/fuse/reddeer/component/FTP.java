@@ -9,7 +9,7 @@ public class FTP implements CamelComponent {
 
 	@Override
 	public String getLabel() {
-		return "ftp:host:port/dir...";
+		return "ftp:host:port/directoryName";
 	}
 
 	@Override

@@ -9,7 +9,7 @@ public class Process implements CamelComponent {
 
 	@Override
 	public String getLabel() {
-		return "process";
+		return "Process _process1";
 	}
 
 	@Override
