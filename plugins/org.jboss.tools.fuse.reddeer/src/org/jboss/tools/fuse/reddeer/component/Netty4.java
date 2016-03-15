@@ -9,7 +9,7 @@ public class Netty4 implements CamelComponent {
 
 	@Override
 	public String getLabel() {
-		return "netty4:protocol:h...";
+		return "netty4:protocol:host:port";
 	}
 
 	@Override

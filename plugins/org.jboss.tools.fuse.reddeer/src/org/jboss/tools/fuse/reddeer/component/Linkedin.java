@@ -9,7 +9,7 @@ public class Linkedin implements CamelComponent {
 
 	@Override
 	public String getLabel() {
-		return "linkedin:apiName/...";
+		return "linkedin:apiName/methodName";
 	}
 
 	@Override

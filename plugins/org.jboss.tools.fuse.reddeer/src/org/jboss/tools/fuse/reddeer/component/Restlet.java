@@ -9,7 +9,7 @@ public class Restlet implements CamelComponent {
 
 	@Override
 	public String getLabel() {
-		return "restlet:protocol:...";
+		return "restlet:protocol:host:port/uriPattern";
 	}
 
 	@Override

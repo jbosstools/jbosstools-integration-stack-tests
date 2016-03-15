@@ -118,6 +118,26 @@ public class CamelEditor extends GEFEditor {
 	}
 
 	/**
+	 * Adds a component into the Camel Editor into defined route<br/>
+	 * <b>Note:</b>It does not wait until a new node is in the Camel Editor.
+	 * 
+	 * @param component
+	 *            Name of a component in Palette view
+	 * 
+	 * @param route
+	 *            Name of a route in Camel Editor
+	 */
+	public void addCamelComponent(String component, String route) {
+
+		log.debug("Adding '" + component + "' component into the Camel Editor");
+		new PaletteView().open();
+		Palette palette = ViewerHandler.getInstance().getPalette(viewer);
+		palette.activateTool(component);
+		Point r = getInEditorCoords(route);
+		addCamelComponent(component, r.x + 10, r.y + 50);
+	}
+
+	/**
 	 * Adds a component into the Camel Editor into defined route
 	 * 
 	 * @param component
@@ -129,7 +149,7 @@ public class CamelEditor extends GEFEditor {
 
 		log.debug("Adding '" + component + "' component into '" + route + "' route");
 		Point r = getInEditorCoords(route);
-		addCamelComponent(component, r.x + 10, r.y + 50);
+		addCamelComponent(component, r.x + 10, r.y + 10);
 	}
 
 	/**
@@ -298,8 +318,7 @@ public class CamelEditor extends GEFEditor {
 	}
 
 	/**
-	 * Performs the given operation on a component described with the given
-	 * label
+	 * Performs the given operation on a component described with the given label
 	 * 
 	 * @param label
 	 *            label of instance of component in Camel Editor
@@ -353,8 +372,7 @@ public class CamelEditor extends GEFEditor {
 	}
 
 	/**
-	 * Checks whether a component with given name is available in the Camel
-	 * Editor
+	 * Checks whether a component with given name is available in the Camel Editor
 	 * 
 	 * @param name
 	 *            name of the component
@@ -374,8 +392,7 @@ public class CamelEditor extends GEFEditor {
 	}
 
 	/**
-	 * Sets a property to desired value. It presumes that some component in the
-	 * Camel Editor is selected.
+	 * Sets a property to desired value. It presumes that some component in the Camel Editor is selected.
 	 * 
 	 * @param component
 	 *            component in the Camel editor
@@ -499,11 +516,11 @@ public class CamelEditor extends GEFEditor {
 		MouseAWTManager.AWTMouseMove(fromCoords.x, fromCoords.y);
 		new LabeledEditPart(source).click();
 		AbstractWait.sleep(TimePeriod.SHORT);
-		MouseAWTManager.AWTMouseMoveFromTo(new Point(fromCoords.x + 70, fromCoords.y + 20),
-				new Point(fromCoords.x + 150, fromCoords.y + 20));
+		MouseAWTManager.AWTMouseMoveFromTo(new Point(fromCoords.x, fromCoords.y),
+				new Point(fromCoords.x + getFigureWidth(source) + 5, fromCoords.y));
 		MouseAWTManager.AWTMousePress();
-		MouseAWTManager.AWTMouseMoveFromTo(new Point(fromCoords.x + 140, fromCoords.y + 20),
-				new Point(toCoords.x + 10, toCoords.y + 20));
+		MouseAWTManager.AWTMouseMoveFromTo(new Point(fromCoords.x + getFigureWidth(source) + 5, fromCoords.y),
+				new Point(toCoords.x + 10, toCoords.y + 10));
 		MouseAWTManager.AWTMouseRelease();
 		activate();
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -569,6 +586,12 @@ public class CamelEditor extends GEFEditor {
 				return new Point(tempX, tempY);
 			}
 		});
+	}
+
+	private int getFigureWidth(String name) {
+		activate();
+		CamelComponentEditPart component = new CamelComponentEditPart(name);
+		return component.getBounds().width;
 	}
 
 	/**

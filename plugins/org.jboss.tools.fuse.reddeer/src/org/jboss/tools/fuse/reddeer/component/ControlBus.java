@@ -9,7 +9,7 @@ public class ControlBus implements CamelComponent {
 
 	@Override
 	public String getLabel() {
-		return "controlbus:comman...";
+		return "controlbus:command:language";
 	}
 
 	@Override

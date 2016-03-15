@@ -9,7 +9,7 @@ public class Language implements CamelComponent {
 
 	@Override
 	public String getLabel() {
-		return "language:language...";
+		return "language:languageName";
 	}
 
 	@Override
