@@ -153,9 +153,9 @@ public class FuseServerManipulator {
 					}
 				}
 
-				new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(300));
+				new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 				if (name.toLowerCase().contains("fuse")) {
-					new WaitUntil(new ConsoleHasText("100%"), TimePeriod.getCustom(300));
+					new WaitUntil(new ConsoleHasText("100%"), TimePeriod.VERY_LONG);
 				}
 				AbstractWait.sleep(TimePeriod.NORMAL);
 				break;
