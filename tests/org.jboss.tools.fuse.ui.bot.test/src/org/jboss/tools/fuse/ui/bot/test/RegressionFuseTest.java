@@ -103,7 +103,7 @@ public class RegressionFuseTest extends DefaultTest {
 
 		// tests the _Cancel_ button
 		AbstractWait.sleep(TimePeriod.SHORT);
-		new DefaultTreeItem("JBoss Fuse", serverRequirement.getConfig().getServerBase().getName()).select();
+		new DefaultTreeItem("JBoss Fuse", "JBoss Fuse " + serverRequirement.getConfig().getServerBase().getVersion()).select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new PushButton("Cancel").click();
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -183,7 +183,7 @@ public class RegressionFuseTest extends DefaultTest {
 		FuseServerManipulator.removeAllModules(server);
 		new WaitUntil(
 				new FuseLogContainsText(
-						"Application context succesfully closed (OsgiBundleXmlApplicationContext(bundle=camel-spring-dm"),
+						"Application context succesfully closed (OsgiBundleXmlApplicationContext(bundle=camel-archetype-spring-dm"),
 				TimePeriod.VERY_LONG);
 	}
 
