@@ -58,7 +58,7 @@ public class FeaturesTest extends DefaultTest {
 		CamelEditor.switchTab("Design");
 		CamelEditor editor = new CamelEditor("camel-context.xml");
 		editor.activate();
-		editor.setId("file:src/data?noo...", "start");
+		editor.setId("file:src/data?noop=true", "start");
 
 		// enable "If enabled the ID values will be used for labels if existing"
 		FuseToolingEditorPreferencePage prefPage = new FuseToolingEditorPreferencePage();
@@ -67,7 +67,7 @@ public class FeaturesTest extends DefaultTest {
 		prefPage.ok();
 		editor.activate();
 		try {
-			new LabeledEditPart("start").select();
+			new LabeledEditPart("From start").select();
 		} catch (Exception e) {
 			fail("'From' endpoint should be named after id value 'start'");
 		}
@@ -78,7 +78,7 @@ public class FeaturesTest extends DefaultTest {
 		prefPage.ok();
 		editor.activate();
 		try {
-			new LabeledEditPart("file:src/data?noo...").select();
+			new LabeledEditPart("file:src/data?noop=true").select();
 		} catch (Exception e) {
 			fail("'From' endpoint should be named after uri value 'file:src/data?noo...'");
 		}
