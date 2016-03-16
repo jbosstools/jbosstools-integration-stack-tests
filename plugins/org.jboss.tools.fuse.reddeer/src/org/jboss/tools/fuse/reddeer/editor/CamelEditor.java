@@ -352,7 +352,7 @@ public class CamelEditor extends GEFEditor {
 		properties.open();
 		selectEditPart(label);
 		properties.activate();
-		properties.selectTab("Generic");
+		properties.selectTab("Details");
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new LabeledText("Id").setText(id);
 		activate();
