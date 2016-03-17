@@ -24,6 +24,7 @@ import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -105,6 +106,7 @@ public class JDBCImportWizardTest {
 	}
 	
 	@Test
+	@Ignore
 	public void oracle11gPackageImport() {
 		String model = "oracle11gModelPackage";
 		importModel(model, ConnectionProfilesConstants.ORACLE_11G_BOOKS, "BOOKS/procedure/REMOVE_AUTHOR2", true);
