@@ -73,40 +73,35 @@ public class RouteManipulationTest extends DefaultTest {
 
 	/**
 	 * <p>
-	 * Tests Remote Route Editing of running camel context in JMX Navigator
-	 * view.
+	 * Tests Remote Route Editing of running camel context in JMX Navigator view.
 	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>create a new project with camel-archetype-spring archetype</li>
 	 * <li>Run a Project as Local Camel Context without tests</li>
 	 * <li>open JMX Navigator view</li>
-	 * <li>select the node "Local Camel Context", "Camel", "camelContext..."
-	 * </li>
+	 * <li>select the node "Local Camel Context", "Camel", "camelContext..."</li>
 	 * <li>select the context menu option Edit Routes</li>
 	 * <li>set focus on the recently opened Camel Editor</li>
 	 * <li>select component Log _log1</li>
 	 * <li>change property Message to XXX</li>
 	 * <li>save the editor</li>
-	 * <li>check if the Console View contains the text Route: _route1 is
-	 * stopped, was consuming from: Endpoint[file://src/data?noop=true]</li>
-	 * <li>check if the Console View contains the text Route: _route1 started
-	 * and consuming from: Endpoint[file://src/data?noop=true]</li>
-	 * <li>check if the Console View contains the text file://src/data] _route1
-	 * INFO XXX</li>
+	 * <li>check if the Console View contains the text Route: _route1 is stopped, was consuming from:
+	 * Endpoint[file://src/data?noop=true]</li>
+	 * <li>check if the Console View contains the text Route: _route1 started and consuming from:
+	 * Endpoint[file://src/data?noop=true]</li>
+	 * <li>check if the Console View contains the text file://src/data] _route1 INFO XXX</li>
 	 * <li>activate Camel Editor and switch to Source page</li>
 	 * <li>remove otherwise branch</li>
 	 * <li>change attribute message to YYY</li>
 	 * <li>save the editor</li>
-	 * <li>check if the Console View contains the text file://src/data] _route1
-	 * INFO YYY</li>
+	 * <li>check if the Console View contains the text file://src/data] _route1 INFO YYY</li>
 	 * <li>open JMX Navigator view</li>
-	 * <li>try to select the node "Local Camel Context", "Camel",
-	 * "camelContext...", "Routes", "_route1", "From _from1", "Choice _choice1",
-	 * "When _when1", "Log _log1", "To _to1" (successful)</li>
-	 * <li>try to select the node "Local Camel Context", "Camel",
-	 * "camelContext...", "Routes", "_route1", "From _from1", "Choice _choice1",
-	 * "Otherwise _otherwise1" (unsuccessful)</li>
+	 * <li>try to select the node "Local Camel Context", "Camel", "camelContext", "Routes", "_route1",
+	 * "file:src/data?noop=true", "Choice", "When /person/city = 'London'", "Log _log1", "file:target/messages/uk"
+	 * (successful)</li>
+	 * <li>try to select the node "Local Camel Context", "Camel", "camelContext", "Routes", "_route1",
+	 * "file:src/data?noop=true", "Choice", "Otherwise"" (unsuccessful)</li>
 	 * </ol>
 	 */
 	@Test
@@ -115,12 +110,14 @@ public class RouteManipulationTest extends DefaultTest {
 		JMXNavigator jmx = new JMXNavigator();
 		jmx.getNode("Local Camel Context", "Camel");
 		AbstractWait.sleep(TimePeriod.NORMAL);
-		assertNotNull(jmx.getNode("Local Camel Context", "Camel", "camelContext", "Routes", "_route1", "From _from1",
-				"Choice _choice1", "Otherwise _otherwise1"));
+		assertNotNull(jmx.getNode("Local Camel Context", "Camel", "camelContext", "Routes", "_route1",
+				"file:src/data?noop=true", "Choice", "Otherwise"));
 		jmx.getNode("Local Camel Context", "Camel", "camelContext").select();
 		new ContextMenu("Edit Routes").select();
 		CamelEditor editor = new CamelEditor(new DefaultEditor(new RegexMatcher("Remote CamelContext:.*")).getTitle());
 		assertTrue(editor.isComponentAvailable("Log _log1"));
+		editor.selectEditPart("Route _route1");
+		AbstractWait.sleep(TimePeriod.SHORT);
 		editor.selectEditPart("Log _log1");
 		editor.setProperty("Message *", "XXX");
 		editor.save();
@@ -134,10 +131,11 @@ public class RouteManipulationTest extends DefaultTest {
 		EditorManipulator.copyFileContentToCamelXMLEditor("resources/camel-context-route-edit.xml");
 		CamelEditor.switchTab("Design");
 		new WaitUntil(new ConsoleHasText("file://src/data] _route1                        INFO  YYY"));
-		assertNotNull(jmx.getNode("Local Camel Context", "Camel", "camelContext", "Routes", "_route1", "From _from1",
-				"Choice _choice1", "When _when1", "Log _log1", "To _to1"));
-		assertNull(jmx.getNode("Local Camel Context", "Camel", "camelContext", "Routes", "_route1", "From _from1",
-				"Choice _choice1", "Otherwise _otherwise1"));
+		assertNotNull(jmx.getNode("Local Camel Context", "Camel", "camelContext", "Routes", "_route1",
+				"file:src/data?noop=true", "Choice", "When /person/city = 'London'", "Log _log1",
+				"file:target/messages/uk"));
+		assertNull(jmx.getNode("Local Camel Context", "Camel", "camelContext", "Routes", "_route1",
+				"file:src/data?noop=true", "Choice", "Otherwise"));
 		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
 	}
 
@@ -152,19 +150,14 @@ public class RouteManipulationTest extends DefaultTest {
 	 * <li>open JMX Navigator view</li>
 	 * <li>select the node "Local Camel Context", "Camel", "camel-1"</li>
 	 * <li>select the context menu option Start Tracing</li>
-	 * <li>check if the context menu option was changed into Stop Tracing
-	 * Context</li>
+	 * <li>check if the context menu option was changed into Stop Tracing Context</li>
 	 * <li>in Project Explorer open "camel-spring", "src", "data"</li>
-	 * <li>in JMX Navigator open "Local Camel Context", "Camel", "camel-1",
-	 * "Endpoints", "file"</li>
-	 * <li>perform drag&drop message1.xml from Project Explorer to
-	 * src/data?noop=true in JMX Navigator</li>
-	 * <li>perform drag&drop message2.xml from Project Explorer to
-	 * src/data?noop=true in JMX Navigator</li>
+	 * <li>in JMX Navigator open "Local Camel Context", "Camel", "camel-1", "Endpoints", "file"</li>
+	 * <li>perform drag&drop message1.xml from Project Explorer to src/data?noop=true in JMX Navigator</li>
+	 * <li>perform drag&drop message2.xml from Project Explorer to src/data?noop=true in JMX Navigator</li>
 	 * <li>open Message View</li>
 	 * <li>in JMX Navigator open "Local Camel Context", "Camel", "camel-1"</li>
-	 * <li>check if the messages in the Message View corresponds with sent
-	 * messages</li>
+	 * <li>check if the messages in the Message View corresponds with sent messages</li>
 	 * </ol>
 	 */
 	@Test
@@ -184,13 +177,15 @@ public class RouteManipulationTest extends DefaultTest {
 		String[] to = { "Local Camel Context", "Camel", "camelContext", "Endpoints", "file", "src/data?noop=true" };
 		MessagesView msg = new MessagesView();
 		msg.open();
-		jmx.getNode("Local Camel Context", "Camel", "camelContext", "Endpoints", "file", "target/messages/others").select();
+		jmx.refreshNode("Local Camel Context", "Camel", "camelContext");
+		jmx.getNode("Local Camel Context", "Camel", "camelContext", "Endpoints", "file", "target/messages/others")
+				.select();
 		new TracingDragAndDropManager(from, to).performDragAndDrop();
 		new WaitUntil(
-				new ConsoleHasText(
-						"INFO  Other message\n[1) thread #2 - file://src/data] route1                         INFO  UK message"),
+				new ConsoleHasText("thread #2 - file://src/data] _route1                        INFO  UK message"),
 				TimePeriod.getCustom(60));
-		jmx.getNode("Local Camel Context", "Camel", "camelContext", "Endpoints", "file", "target/messages/others").select();
+		jmx.getNode("Local Camel Context", "Camel", "camelContext", "Endpoints", "file", "target/messages/others")
+				.select();
 		new TracingDragAndDropManager(from2, to).performDragAndDrop();
 
 		msg = new MessagesView();
