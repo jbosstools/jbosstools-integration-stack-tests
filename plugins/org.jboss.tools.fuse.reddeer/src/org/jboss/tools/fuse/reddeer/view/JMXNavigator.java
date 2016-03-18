@@ -137,6 +137,12 @@ public class JMXNavigator extends WorkbenchView {
 		return rightItem;
 	}
 
+	public void refreshNode(String... path) {
+		getNode(path);
+		new ContextMenu("Refresh").select();
+		AbstractWait.sleep(TimePeriod.SHORT);
+	}
+
 	/**
 	 * Tries to suspend Local Camel Context
 	 * 
