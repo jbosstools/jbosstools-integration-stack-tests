@@ -71,8 +71,7 @@ public class JMXNavigatorTest extends DefaultTest {
 
 	/**
 	 * <p>
-	 * Test tries to access nodes relevant for Local Camel Context in JMX
-	 * Navigator view.
+	 * Test tries to access nodes relevant for Local Camel Context in JMX Navigator view.
 	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
@@ -80,11 +79,10 @@ public class JMXNavigatorTest extends DefaultTest {
 	 * <li>open Project Explorer View</li>
 	 * <li>run the Fuse project as Local Camel Context</li>
 	 * <li>open JMX Navigator View</li>
-	 * <li>try to access node "Local Camel Context", "Camel",
-	 * "camelContext-...", "Endpoints", "file", "src/data?noop=true"</li>
-	 * <li>try to access node "Local Camel Context", "Camel",
-	 * "camelContext-...", "Routes", "_route1", "From _from1", "Choice _choice1"
-	 * , "When _when1", "Log _log1", "To _to1"</li>
+	 * <li>try to access node "Local Camel Context", "Camel", "camelContext-...", "Endpoints", "file",
+	 * "src/data?noop=true"</li>
+	 * <li>try to access node "Local Camel Context", "Camel", "camelContext", "Routes", "_route1",
+	 * "file:src/data?noop=true", "Choice", "When /person/city = 'London'", "Log _log1", "file:target/messages/uk"</li>
 	 * </ol>
 	 */
 	@Test
@@ -95,16 +93,16 @@ public class JMXNavigatorTest extends DefaultTest {
 				"The following path is inaccesible: Local Camel Context/Camel/camelContext-.../Endpoints/file/src/data?noop=true",
 				jmx.getNode("Local Camel Context", "Camel", "camelContext", "Endpoints", "file", "src/data?noop=true"));
 		assertNotNull(
-				"The following path is inaccesible: Local Camel Context/Camel/camelContext-.../Routes/_route1/From _from1/Choice _choice1/When _when1/Log _log1/To _to1",
-				jmx.getNode("Local Camel Context", "Camel", "camelContext", "Routes", "_route1", "From _from1",
-						"Choice _choice1", "When _when1", "Log _log1", "To _to1"));
+				"The following path is inaccesible: Local Camel Context/Camel/camelContext-.../Routes/_route1/file:src/data?noop=true/Choice/When /person/city = 'London'/Log _log1/file:target/messages/uk",
+				jmx.getNode("Local Camel Context", "Camel", "camelContext", "Routes", "_route1",
+						"file:src/data?noop=true", "Choice", "When /person/city = 'London'", "Log _log1",
+						"file:target/messages/uk"));
 		assertTrue("There are some errors in Error Log", LogGrapper.getFuseErrors().size() == 0);
 	}
 
 	/**
 	 * <p>
-	 * Test tries context menu options related to Camel Context runs as Local
-	 * Camel Context - Suspend/Resume context.
+	 * Test tries context menu options related to Camel Context runs as Local Camel Context - Suspend/Resume context.
 	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
@@ -114,13 +112,11 @@ public class JMXNavigatorTest extends DefaultTest {
 	 * <li>open JMX Navigator View</li>
 	 * <li>select node "Local Camel Context", "Camel", "camelContext-..."</li>
 	 * <li>select the context menu option Suspend Camel Context</li>
-	 * <li>check if the Console View contains the text "_route1 suspend complete"
-	 * (true)</li>
+	 * <li>check if the Console View contains the text "_route1 suspend complete" (true)</li>
 	 * <li>open JMX Navigator View</li>
 	 * <li>select node "Local Camel Context", "Camel", "camelContext-..."</li>
 	 * <li>select the context menu option Resume Camel Context</li>
-	 * <li>check if the Console View contains the text "_route1 resumed" (true)
-	 * </li>
+	 * <li>check if the Console View contains the text "_route1 resumed" (true)</li>
 	 * </ol>
 	 */
 	@Test
