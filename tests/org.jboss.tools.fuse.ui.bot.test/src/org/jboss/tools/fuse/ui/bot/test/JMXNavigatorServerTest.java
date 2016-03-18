@@ -130,10 +130,9 @@ public class JMXNavigatorServerTest {
 	 * <li>add a new Fuse server</li>
 	 * <li>start the server</li>
 	 * <li>open JMX Navigator View</li>
-	 * <li>try to access node "karaf", "Camel", "camelContext-...", "Endpoints",
-	 * "timer", "foo?period=5000"</li>
-	 * <li>try to access node "karaf", "Camel", "camelContext-...", "Routes",
-	 * "route1", "timer:foo?period=5000", "setBody1", "log1"</li>
+	 * <li>try to access node "karaf", "Camel", "camelContext-...", "Endpoints", "timer", "foo?period=5000"</li>
+	 * <li>try to access node "karaf", "Camel", "camelContext-...", "Routes", "route1", "timer:foo?period=5000",
+	 * "setBody1", "log1"</li>
 	 * </ol>
 	 */
 	@Test
@@ -147,15 +146,14 @@ public class JMXNavigatorServerTest {
 				jmx.getNode("karaf", "Camel", "camelContext", "Endpoints", "timer", "foo?period=5000"));
 		assertNotNull(
 				"The following path is inaccesible: karaf/Camel/camel-*/Routes/route/timer:foo?period=5000/setBody/log",
-				jmx.getNode("karaf", "Camel", "camelContext", "Routes", "_route1", "From _from1", "SetBody _setBody1",
-						"Log _log1"));
+				jmx.getNode("karaf", "Camel", "camelContext", "Routes", "_route1", "timer:foo?period=5000",
+						"SetBody _setBody1", "Log _log1"));
 		assertTrue("There are some errors in Error Log", LogGrapper.getFuseErrors().size() == 0);
 	}
 
 	/**
 	 * <p>
-	 * Test tries context menu options related to Camel Context deployed on the
-	 * Fuse server - Suspend/Resume context.
+	 * Test tries context menu options related to Camel Context deployed on the Fuse server - Suspend/Resume context.
 	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
@@ -167,14 +165,12 @@ public class JMXNavigatorServerTest {
 	 * <li>select node "karaf", "Camel", "camelContext-..."</li>
 	 * <li>select the context menu option Suspend Camel Context</li>
 	 * <li>open Fuse Shell view and execute command log:display</li>
-	 * <li>check if Fuse Shell view contains text
-	 * "(CamelContext: camel-1) is suspended" (true)</li>
+	 * <li>check if Fuse Shell view contains text "(CamelContext: camel-1) is suspended" (true)</li>
 	 * <li>open JMX Navigator View</li>
 	 * <li>select node "karaf", "Camel", "camelContext-..."</li>
 	 * <li>select the context menu option Resume Camel Context</li>
 	 * <li>open Fuse Shell view and execute command log:display</li>
-	 * <li>check if Fuse Shell view contains text
-	 * "(CamelContext: camel-1) resumed" (true)</li>
+	 * <li>check if Fuse Shell view contains text "(CamelContext: camel-1) resumed" (true)</li>
 	 * </ol>
 	 */
 	@Test
