@@ -10,7 +10,7 @@
   <requirements>
     <switchyard:switchyard-requirement name="SwitchYard-2.0.0.Final">
       <switchyard:configurationVersion>2.0</switchyard:configurationVersion>
-      <switchyard:libraryVersion>2.0.0.Final</switchyard:libraryVersion>
+      <switchyard:switchyardVersion>2.0.0.Final</switchyard:switchyardVersion>
     </switchyard:switchyard-requirement>
   </requirements>
 

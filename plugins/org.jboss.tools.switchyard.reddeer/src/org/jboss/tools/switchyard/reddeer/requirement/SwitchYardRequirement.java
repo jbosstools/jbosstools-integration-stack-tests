@@ -17,6 +17,8 @@ import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.runtime.reddeer.ServerBase;
+import org.jboss.tools.runtime.reddeer.impl.ServerAS;
+import org.jboss.tools.runtime.reddeer.impl.ServerKaraf;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
@@ -124,19 +126,57 @@ public class SwitchYardRequirement implements Requirement<SwitchYard>, CustomCon
 
 	public String getTargetRuntimeLabel() {
 		String targetRuntime = getConfig().getTargetRuntime();
-		if (targetRuntime == null) {
-			return null;
+		ServerBase server = getConfig().getServerBase();
+		if (targetRuntime != null) {
+			if (server != null && !targetRuntime.matches(".* \\[.*\\]")) {
+				targetRuntime += " [" + server.getRuntimeName() + "]";
+			}
+			return targetRuntime;
 		}
-		return targetRuntime + " [" + getConfig().getServerBase().getRuntimeName() + "]";
+		if (server == null) {
+			return "<None>";
+		} else if (server instanceof ServerAS) {
+			targetRuntime = "SwitchYard: AS7 Extension " + getConfig().getSwitchyardVersion();
+		} else if (server instanceof ServerKaraf) {
+			targetRuntime = "SwitchYard: Karaf Extension " + getConfig().getSwitchyardVersion();
+		}
+		IntegrationPack integrationPack = getConfig().getIntegrationPack();
+		if (integrationPack != null) {
+			if (server instanceof ServerAS) {
+				targetRuntime = "Fuse Integration " + integrationPack.getIntegrationPackVersion();
+			}
+			if (server instanceof ServerKaraf) {
+				targetRuntime = "SwitchYard: Integration Extension " + integrationPack.getIntegrationPackVersion();
+			}
+		}
+		return targetRuntime + " [" + server.getRuntimeName() + "]";
+	}
+
+	public String getLibraryVersionLabel() {
+		String libraryVersion = getConfig().getLibraryVersion();
+		if (libraryVersion != null) {
+			return libraryVersion;
+		}
+		IntegrationPack integrationPack = getConfig().getIntegrationPack();
+		if (integrationPack != null) {
+			libraryVersion = integrationPack.getIntegrationPackVersion();
+		} else {
+			libraryVersion = getConfig().getSwitchyardVersion();
+		}
+		return libraryVersion;
 	}
 
 	public SwitchYardProjectWizard project(String name) {
-		return new SwitchYardProjectWizard(name, config.getConfigurationVersion(), config.getLibraryVersion(),
-				getTargetRuntimeLabel());
+		SwitchYardProjectWizard project = new SwitchYardProjectWizard(name);
+		project.config(config.getConfigurationVersion());
+		project.library(getLibraryVersionLabel());
+		project.runtime(getTargetRuntimeLabel());
+		return project;
 	}
 
 	@Override
 	public void cleanUp() {
 		// TODO cleanUp()
 	}
+
 }

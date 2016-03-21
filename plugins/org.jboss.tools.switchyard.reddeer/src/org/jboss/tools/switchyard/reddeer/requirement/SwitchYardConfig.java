@@ -23,8 +23,12 @@ public class SwitchYardConfig extends ServerConfig {
 	private String targetRuntime;
 	@XmlElement(name = "libraryVersion", namespace = Namespaces.SOA_REQ)
 	private String libraryVersion;
+	@XmlElement(name = "switchyardVersion", namespace = Namespaces.SOA_REQ)
+	private String switchyardVersion;
 	@XmlElement(name = "componentRestriction", namespace = Namespaces.SOA_REQ)
 	private String componentRestriction;
+	@XmlElement(name = "integrationPack", namespace = Namespaces.SOA_REQ)
+	private IntegrationPack integrationPack;
 
 	public String getConfigurationVersion() {
 		return configurationVersion;
@@ -50,12 +54,28 @@ public class SwitchYardConfig extends ServerConfig {
 		this.libraryVersion = libraryVersion;
 	}
 
+	public String getSwitchyardVersion() {
+		return switchyardVersion;
+	}
+
+	public void setSwitchyardVersion(String switchyardVersion) {
+		this.switchyardVersion = switchyardVersion;
+	}
+
 	public String getComponentRestriction() {
 		return componentRestriction;
 	}
 
 	public void setComponentRestriction(String componentRestriction) {
 		this.componentRestriction = componentRestriction;
+	}
+
+	public IntegrationPack getIntegrationPack() {
+		return integrationPack;
+	}
+
+	public void setIntegrationPack(IntegrationPack integrationPack) {
+		this.integrationPack = integrationPack;
 	}
 
 }
