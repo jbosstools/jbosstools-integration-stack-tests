@@ -3,6 +3,7 @@ package org.jboss.tools.bpmn2.reddeer.properties.setup;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
+import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
 
 public class MetaDataSetUp implements SetUpAble {
 	
@@ -16,10 +17,10 @@ public class MetaDataSetUp implements SetUpAble {
 
 	@Override
 	public void setUpCTab() {
-		new DefaultSection("Metadata").setExpanded(true);;
-		new PushButton(new DefaultSection("Metadata"), 0).click();
-		new LabeledText(new DefaultSection("Metadata"), "Name").setText(key);
-		new LabeledText(new DefaultSection("Metadata"), "Value").setText(value);
+		new SectionToolItem("Metadata", "Add").click();
+		new LabeledText(new DefaultSection("Meta Data Type Details"), "Name").setText(key);
+		new LabeledText(new DefaultSection("Meta Data Type Details"), "Value").setText(value);
+		new SectionToolItem("Meta Data Type Details", "Close").click();
 	}
 
 	@Override

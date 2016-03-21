@@ -11,6 +11,7 @@ import java.util.List;
 import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.util.Display;
+import org.jboss.reddeer.direct.preferences.Preferences;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
@@ -51,6 +52,7 @@ public class JBPM6ComplexTestDefinitionRequirement implements Requirement<JBPM6C
 
 	private JBPM6ComplexTestDefinition declaration;
 	private static boolean configureShellHandled;
+	private static boolean expertModeEnabled = false;
 	private static List<String> foldersToImport = new ArrayList<String>(Arrays.asList(""));
 
 	@Override
@@ -67,6 +69,11 @@ public class JBPM6ComplexTestDefinitionRequirement implements Requirement<JBPM6C
 				new DefaultShell().getSWTWidget().setMaximized(true);
 			}
 		});
+		
+		if(!expertModeEnabled) {
+			Preferences.set("org.eclipse.bpmn2.modeler.core", "show.advanced.properties", "true");
+			expertModeEnabled = true;
+		}
 
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();

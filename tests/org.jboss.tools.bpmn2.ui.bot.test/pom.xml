@@ -18,7 +18,7 @@
 		<droolsjbpm.feature.version>6.2.0.Final</droolsjbpm.feature.version>
 		<bpmn2.modeler.version>1.2.1</bpmn2.modeler.version>
 		<bpmn2.metamodel.version>1.2.1</bpmn2.metamodel.version>
-		<test.class>AllEditorTests</test.class>
+		<test.class>JBPM6ComplexTests</test.class>
 		<graphiti.properties>true</graphiti.properties>
 		<customization.file>resources/settings/plugin_customization.ini</customization.file>
 	</properties>
@@ -99,11 +99,8 @@
 		    <artifactId>tycho-surefire-plugin</artifactId>
 		    <configuration>
 		      <appArgLine>-eclipse.password ${project.basedir}/resources/security/password -pluginCustomization ${customization.file} -clean</appArgLine>
-		      <systemProperties>
-		        <!--graphiti.properties>${graphiti.properties}</graphiti.properties-->
-		      </systemProperties>
 		      <testSuite>org.jboss.tools.bpmn2.ui.bot.test</testSuite>
-		      <testClass>org.jboss.tools.bpmn2.ui.bot.test.${test.class}</testClass>
+		      <testClass>org.jboss.tools.bpmn2.ui.bot.complex.test.${test.class}</testClass>
 		      <useUIThread>false</useUIThread>
 		      <skip>${skipTests}</skip>
 		      <dependencies combine.children="append">

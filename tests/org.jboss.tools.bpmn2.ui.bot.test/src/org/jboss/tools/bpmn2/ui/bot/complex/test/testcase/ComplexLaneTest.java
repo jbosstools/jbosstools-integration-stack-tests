@@ -21,8 +21,7 @@ import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
 import org.kie.api.runtime.process.WorkflowProcessInstance;
 
-@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-Lane.bpmn2", saveAs = "BPMN2-Lane.bpmn2", knownIssues = {
-	"1263551" })
+@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-Lane.bpmn2", saveAs = "BPMN2-Lane.bpmn2")
 public class ComplexLaneTest extends JBPM6ComplexTest {
 
 	private static final String EXPECTED_VALUE = "123456";
