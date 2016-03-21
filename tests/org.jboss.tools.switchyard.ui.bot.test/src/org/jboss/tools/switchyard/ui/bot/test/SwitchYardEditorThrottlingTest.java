@@ -60,29 +60,11 @@ public class SwitchYardEditorThrottlingTest {
 		}
 
 	}
-	
-	private void foo() {
-
-		try {
-		File pomFile = new File(new SwitchYardProject(PROJECT).getFile(), "pom.xml");
-		XPathEvaluator xpath = new XPathEvaluator(pomFile);
-		String kieVersion = xpath.evaluateString("/project/properties/kie.version");
-		Node kieNode = xpath.evaluateNode("/project/properties/kie.version");
-		kieNode.setTextContent("6.3.0.Final-redhat-7");
-		kieVersion = "xxxx";
-		xpath.printDocument(new StreamResult(pomFile));
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-		System.out.println();
-	}
 
 	@Test
 	public void throttlingTest() {
 		/* Create SY Project */
 		switchyardRequirement.project(PROJECT).create();
-		
-		foo();
 
 		/* Add Service */
 		new SwitchYardEditor().addService();
