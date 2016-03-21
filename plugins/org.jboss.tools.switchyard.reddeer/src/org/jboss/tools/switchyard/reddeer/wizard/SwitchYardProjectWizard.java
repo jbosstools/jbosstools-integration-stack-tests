@@ -50,29 +50,29 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 	private String name;
 	private String groupId;
 	private String packageName;
+	private String targetNamespace;
 	private String configurationVersion;
 	private String targetRuntime;
 	private String libraryVersion;
+	private Boolean osgi;
+	private Boolean useBom;
 	private List<String[]> components;
 
-	public SwitchYardProjectWizard(String name) {
-		this(name, DEFAULT_CONFIGURATION_VERSION, DEFAULT_LIBRARY_VERSION);
-	}
-
-	public SwitchYardProjectWizard(String name, String configurationVersion, String libraryVersion) {
-		this(name, configurationVersion, libraryVersion, null);
-	}
-
-	public SwitchYardProjectWizard(String name, String configurationVersion, String libraryVersion,
-			String targetRuntime) {
+	public SwitchYardProjectWizard() {
 		super("SwitchYard", "SwitchYard Project");
-		this.name = name;
-		this.configurationVersion = configurationVersion;
-		this.targetRuntime = targetRuntime;
-		this.libraryVersion = libraryVersion;
-		components = new ArrayList<String[]>();
+		this.configurationVersion = DEFAULT_CONFIGURATION_VERSION;
+		this.libraryVersion = DEFAULT_LIBRARY_VERSION;
+		this.components = new ArrayList<String[]>();
 	}
 
+	public SwitchYardProjectWizard(String name) {
+		this();
+		name(name);
+	}
+
+	/*
+	 * Project name
+	 */
 	public SwitchYardProjectWizard name(String name) {
 		this.name = name;
 		return this;
@@ -87,10 +87,16 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		return new LabeledText(PROJECT_NAME).getText();
 	}
 
+	/*
+	 * Artifact ID (artifact ID is the same as the project name)
+	 */
 	public String getArtifactId() {
 		return new LabeledText(ARTIFACT_ID).getText();
 	}
 
+	/*
+	 * Group ID
+	 */
 	public SwitchYardProjectWizard groupId(String groupId) {
 		this.groupId = groupId;
 		return this;
@@ -105,6 +111,14 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		return new LabeledText(GROUP_ID).getText();
 	}
 
+	/*
+	 * Target namespace
+	 */
+	public SwitchYardProjectWizard namespace(String targetNamespace) {
+		new LabeledText(TARGET_NAMESPACE).setText(targetNamespace);
+		return this;
+	}
+
 	public SwitchYardProjectWizard setTargetNamespace(String targetNamespace) {
 		new LabeledText(TARGET_NAMESPACE).setText(targetNamespace);
 		return this;
@@ -114,6 +128,9 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		return new LabeledText(TARGET_NAMESPACE).getText();
 	}
 
+	/*
+	 * Package name
+	 */
 	public SwitchYardProjectWizard packageName(String packageName) {
 		this.packageName = packageName;
 		return this;
@@ -128,6 +145,18 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		return new LabeledText(PACKAGE_NAME).getText();
 	}
 
+	/*
+	 * OSGi
+	 */
+	public SwitchYardProjectWizard osgi() {
+		return osgi(true);
+	}
+
+	public SwitchYardProjectWizard osgi(boolean isOsgi) {
+		this.osgi = isOsgi;
+		return this;
+	}
+
 	public SwitchYardProjectWizard setOSGiBundle(boolean checked) {
 		new CheckBox(OSGI_BUNDLE).toggle(checked);
 		return this;
@@ -135,6 +164,18 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 
 	public boolean isOSGiBundle() {
 		return new CheckBox(OSGI_BUNDLE).isChecked();
+	}
+
+	/*
+	 * BOM
+	 */
+	public SwitchYardProjectWizard useBom() {
+		return useBom(true);
+	}
+
+	public SwitchYardProjectWizard useBom(boolean useBom) {
+		this.useBom = useBom;
+		return this;
 	}
 
 	public SwitchYardProjectWizard setBOMDependency(boolean checked) {
@@ -150,17 +191,9 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		return new CheckBox(BOM_DEPENDENCY).isEnabled();
 	}
 
-	public SwitchYardProjectWizard setComponent(String group, String component, boolean checked) {
-		new DefaultTreeItem(new DefaultTree(new DefaultGroup(SWITCHYARD_COMPONENTS)), group, component)
-				.setChecked(checked);
-		return this;
-	}
-
-	public boolean isComponent(String group, String component) {
-		return new DefaultTreeItem(new DefaultTree(new DefaultGroup(SWITCHYARD_COMPONENTS)), group, component)
-				.isChecked();
-	}
-
+	/*
+	 * Components
+	 */
 	public SwitchYardProjectWizard impl(String... component) {
 		for (int i = 0; i < component.length; i++) {
 			components.add(new String[] { "Implementation Support", component[i] });
@@ -180,22 +213,50 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		return this;
 	}
 
-	public SwitchYardProjectWizard activate() {
-		new DefaultShell(DIALOG_TITLE);
+	public SwitchYardProjectWizard setComponent(String group, String component, boolean checked) {
+		new DefaultTreeItem(new DefaultTree(new DefaultGroup(SWITCHYARD_COMPONENTS)), group, component)
+				.setChecked(checked);
 		return this;
 	}
 
-	private void setText(String label, String value) {
-		if (value != null) {
-			new LabeledText(label).setText(value);
+	public boolean isComponent(String group, String component) {
+		return new DefaultTreeItem(new DefaultTree(new DefaultGroup(SWITCHYARD_COMPONENTS)), group, component)
+				.isChecked();
+	}
+
+	private void selectComponents(List<String[]> components) {
+		for (String[] component : components) {
+			new DefaultTreeItem(component).setChecked(true);
 		}
 	}
 
-	public void setConfigurationVersion(String configurationVersion) {
+	/*
+	 * Configuration version
+	 */
+	public SwitchYardProjectWizard config(String configurationVersion) {
+		this.configurationVersion = configurationVersion;
+		return this;
+	}
+
+	public SwitchYardProjectWizard setConfigurationVersion(String configurationVersion) {
 		Combo combo = new LabeledCombo("Configuration Version:");
 		if (configurationVersion != null && combo.isEnabled()) {
 			combo.setSelection(configurationVersion);
 		}
+		return this;
+	}
+
+	public String getConfigurationVersion() {
+		Combo combo = new LabeledCombo("Configuration Version:");
+		return combo.getText();
+	}
+
+	/*
+	 * Library version
+	 */
+	public SwitchYardProjectWizard library(String libraryVersion) {
+		this.libraryVersion = libraryVersion;
+		return this;
 	}
 
 	public String getLibraryVersion() {
@@ -203,7 +264,7 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		return combo.getText();
 	}
 
-	public void setLibraryVersion(String libraryVersion) {
+	public SwitchYardProjectWizard setLibraryVersion(String libraryVersion) {
 		LabeledComboExt combo = new LabeledComboExt("Library Version:");
 		if (libraryVersion != null && combo.isEnabled()) {
 			try {
@@ -214,6 +275,15 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 				combo.typeText(libraryVersion);
 			}
 		}
+		return this;
+	}
+
+	/*
+	 * Target runtime
+	 */
+	public SwitchYardProjectWizard runtime(String targetRuntime) {
+		this.targetRuntime = targetRuntime;
+		return this;
 	}
 
 	public String getTargetRuntime() {
@@ -221,15 +291,10 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		return combo.getSelection();
 	}
 
-	public void setTargetRuntime(String targetRuntime) {
+	public SwitchYardProjectWizard setTargetRuntime(String targetRuntime) {
 		Combo combo = new LabeledCombo("Target Runtime:");
 		combo.setSelection(targetRuntime);
-	}
-
-	private void selectComponents(List<String[]> components) {
-		for (String[] component : components) {
-			new DefaultTreeItem(component).setChecked(true);
-		}
+		return this;
 	}
 
 	@Override
@@ -243,15 +308,20 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 
 	public void create() {
 		open();
-		setText("Group Id:", groupId);
-		setText("Package Name:", packageName);
+		// artifact ID cannot be set since it is the same as the project name
+		if (groupId != null) {
+			setGroupId(groupId);
+		}
+		if (packageName != null) {
+			setPackageName(packageName);
+		}
+		if (targetNamespace != null) {
+			setTargetNamespace(targetNamespace);
+		}
 		if (configurationVersion != null) {
-			if (configurationVersion.equals("1.0") || configurationVersion.equals("1.1")) {
-				setBOMDependency(false);
-			}
 			setConfigurationVersion(configurationVersion);
 		}
-		if (targetRuntime != null) {
+		if (targetRuntime != null && !targetRuntime.equals("<None>")) {
 			setTargetRuntime(targetRuntime);
 		} else if (libraryVersion != null) {
 			setLibraryVersion(libraryVersion);
@@ -261,14 +331,25 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 						+ actualLibraryVersion + "'");
 			}
 		}
+		if (osgi != null) {
+			setOSGiBundle(osgi);
+		}
+		if (useBom != null) {
+			setBOMDependency(useBom);
+		}
 		selectComponents(components);
 		finish();
+
 		new WaitUntil(new SwitchYardEditorIsOpen(), TimePeriod.LONG);
 		new SwitchYardProject(name).update();
 		if (targetRuntime != null && targetRuntime.contains("Karaf Extension")) {
 			new SwitchYardProject(name).enableFuseCamelNature();
 		}
-		System.out.println();
+	}
+
+	public SwitchYardProjectWizard activate() {
+		new DefaultShell(DIALOG_TITLE);
+		return this;
 	}
 
 	@Override
