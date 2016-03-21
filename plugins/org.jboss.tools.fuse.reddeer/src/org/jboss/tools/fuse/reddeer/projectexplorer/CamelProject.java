@@ -88,7 +88,7 @@ public class CamelProject {
 		}
 
 		AbstractWait.sleep(TimePeriod.NORMAL);
-		new WaitUntil(new ConsoleHasText("(CamelContext: camel-1) started"), TimePeriod.VERY_LONG);
+		new WaitUntil(new ConsoleHasText("started and consuming from"), TimePeriod.VERY_LONG);
 	}
 
 	public void runCamelContext(String name) {
