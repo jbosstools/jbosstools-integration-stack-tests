@@ -19,8 +19,7 @@ import org.jboss.tools.bpmn2.ui.bot.test.jbpm.PersistenceWorkItemHandler;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.WorkflowProcessInstance;
 
-@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-CompensationEvent.bpmn2", saveAs = "BPMN2-CompensationEvent.bpmn2", knownIssues = {
-	"1209449" })
+@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-CompensationEvent.bpmn2", saveAs = "BPMN2-CompensationEvent.bpmn2")
 public class ComplexCompensationEventTest extends JBPM6ComplexTest {
 
 	private static final String EXPECTED_VALUE = "CompensatedValue";

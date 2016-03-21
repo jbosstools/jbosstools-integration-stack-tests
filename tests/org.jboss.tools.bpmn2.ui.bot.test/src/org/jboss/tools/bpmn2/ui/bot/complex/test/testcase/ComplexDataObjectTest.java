@@ -19,7 +19,7 @@ import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
 import org.kie.api.runtime.process.WorkflowProcessInstance;
 
-@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-DataObject.bpmn2", saveAs = "BPMN2-DataObject.bpmn2")
+@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-DataObject.bpmn2", saveAs = "BPMN2-DataObject.bpmn2", knownIssues = {"1319754"})
 public class ComplexDataObjectTest extends JBPM6ComplexTest {
 
 	@TestPhase(phase = Phase.MODEL)

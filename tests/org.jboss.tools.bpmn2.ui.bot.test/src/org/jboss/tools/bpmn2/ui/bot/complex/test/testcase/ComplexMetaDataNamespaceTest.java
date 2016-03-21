@@ -13,7 +13,7 @@ import org.jboss.tools.bpmn2.ui.bot.test.jbpm.JbpmAssertions;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
 
-@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-MetaDataNamespace.bpmn2", saveAs = "BPMN2-MetaDataNamespace.bpmn2", knownIssues = {"1293238", "1309950", "1317957"})
+@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-MetaDataNamespace.bpmn2", saveAs = "BPMN2-MetaDataNamespace.bpmn2")
 public class ComplexMetaDataNamespaceTest extends JBPM6ComplexTest {
 
 	@TestPhase(phase = Phase.MODEL)

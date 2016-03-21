@@ -18,7 +18,7 @@
 		<droolsjbpm.feature.version>6.2.0.Final</droolsjbpm.feature.version>
 		<bpmn2.modeler.version>1.1.3.Final</bpmn2.modeler.version>
 		<bpmn2.metamodel.version>1.1.0.Final</bpmn2.metamodel.version>
-		<test.class>AllEditorTests</test.class>
+		<test.class>JBPM6ComplexTests</test.class>
 		<graphiti.properties>true</graphiti.properties>
 	</properties>
 
@@ -97,11 +97,8 @@
 		    <groupId>org.eclipse.tycho</groupId>
 		    <artifactId>tycho-surefire-plugin</artifactId>
 		    <configuration>
-		      <systemProperties>
-		        <!--graphiti.properties>${graphiti.properties}</graphiti.properties-->
-		      </systemProperties>
 		      <testSuite>org.jboss.tools.bpmn2.ui.bot.test</testSuite>
-		      <testClass>org.jboss.tools.bpmn2.ui.bot.test.${test.class}</testClass>
+		      <testClass>org.jboss.tools.bpmn2.ui.bot.complex.test.${test.class}</testClass>
 		      <useUIThread>false</useUIThread>
 		      <skip>${skipTests}</skip>
 		      <dependencies combine.children="append">
