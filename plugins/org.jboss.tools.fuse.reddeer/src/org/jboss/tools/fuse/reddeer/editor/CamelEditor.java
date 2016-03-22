@@ -25,7 +25,6 @@ import org.jboss.reddeer.gef.GEFLayerException;
 import org.jboss.reddeer.gef.api.Palette;
 import org.jboss.reddeer.gef.editor.GEFEditor;
 import org.jboss.reddeer.gef.handler.ViewerHandler;
-import org.jboss.reddeer.gef.impl.editpart.LabeledEditPart;
 import org.jboss.reddeer.gef.view.PaletteView;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -161,7 +160,7 @@ public class CamelEditor extends GEFEditor {
 	public void deleteCamelComponent(CamelComponent component) {
 
 		log.debug("Removing '" + component.getLabel() + "' component from the Camel Editor");
-		new LabeledEditPart(component.getLabel()).select();
+		new CamelComponentEditPart(component.getLabel()).select();
 		new ContextMenu("Remove").select();
 	}
 
@@ -174,7 +173,7 @@ public class CamelEditor extends GEFEditor {
 	public void deleteCamelComponent(String component) {
 
 		log.debug("Removing '" + component + "' component from the Camel Editor");
-		new LabeledEditPart(component).select();
+		new CamelComponentEditPart(component).select();
 		new ContextMenu("Remove").select();
 	}
 
@@ -284,7 +283,7 @@ public class CamelEditor extends GEFEditor {
 	public boolean isBreakpointSet(String label) {
 
 		new GEFEditor().click(5, 5);
-		new LabeledEditPart(label).select();
+		new CamelComponentEditPart(label).select();
 		try {
 			new ContextMenu("Set Breakpoint");
 		} catch (SWTLayerException | CoreLayerException ex) {
@@ -307,7 +306,7 @@ public class CamelEditor extends GEFEditor {
 			return false;
 
 		new GEFEditor().click(5, 5);
-		new LabeledEditPart(label).select();
+		new CamelComponentEditPart(label).select();
 		try {
 			new ContextMenu("Enable Breakpoint");
 		} catch (SWTLayerException | CoreLayerException ex) {
@@ -329,7 +328,7 @@ public class CamelEditor extends GEFEditor {
 
 		log.debug("Executing operation '" + operation + "' on the component: " + label);
 		new GEFEditor().click(5, 5);
-		new LabeledEditPart(label).select();
+		new CamelComponentEditPart(label).select();
 		try {
 			new ContextMenu(operation).select();
 		} catch (SWTLayerException | CoreLayerException ex) {
@@ -384,7 +383,7 @@ public class CamelEditor extends GEFEditor {
 		new GEFEditor().click(5, 5);
 		AbstractWait.sleep(TimePeriod.SHORT);
 		try {
-			new LabeledEditPart(name).select();
+			new CamelComponentEditPart(name).select();
 		} catch (GEFLayerException ex) {
 			return false;
 		}
@@ -514,7 +513,7 @@ public class CamelEditor extends GEFEditor {
 		final Point fromCoords = getCoords(source);
 		final Point toCoords = getCoords(target);
 		MouseAWTManager.AWTMouseMove(fromCoords.x, fromCoords.y);
-		new LabeledEditPart(source).click();
+		new CamelComponentEditPart(source).click();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		MouseAWTManager.AWTMouseMoveFromTo(new Point(fromCoords.x, fromCoords.y),
 				new Point(fromCoords.x + getFigureWidth(source) + 5, fromCoords.y));
