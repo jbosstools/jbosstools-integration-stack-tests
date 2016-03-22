@@ -13,6 +13,7 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.handler.WidgetHandler;
+import org.jboss.reddeer.core.reference.ReferencedComposite;
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.api.Combo;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
@@ -27,7 +28,6 @@ import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.tools.switchyard.reddeer.condition.SwitchYardEditorIsOpen;
 import org.jboss.tools.switchyard.reddeer.editor.XPathEvaluator;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
-import org.jboss.tools.switchyard.reddeer.requirement.IntegrationPack;
 import org.w3c.dom.Node;
 
 /**
@@ -45,6 +45,9 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 	public static final String PACKAGE_NAME = "Package Name:";
 	public static final String OSGI_BUNDLE = "OSGI Bundle";
 	public static final String BOM_DEPENDENCY = "Use SwitchYard BOM for Dependency Management";
+	public static final String INTEGRATION_PACK = "Integration Pack Version Details";
+	public static final String INTEGRATION_PACK_VERSION = "Integration Pack Library Version:";
+	public static final String INTEGRATION_PACK_KIE_VERSION = "Kie (BPM  Rules) Version:";
 
 	public static final String DEFAULT_CONFIGURATION_VERSION = "2.0";
 	public static final String DEFAULT_LIBRARY_VERSION = "2.0.0.Final";
@@ -56,36 +59,34 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 	private String name;
 	private String groupId;
 	private String packageName;
+	private String targetNamespace;
 	private String configurationVersion;
 	private String targetRuntime;
 	private String libraryVersion;
-	private IntegrationPack integrationPack;
+	private Boolean osgi;
+	private Boolean useBom;
 	private List<String[]> components;
+	/*
+	 * Integration Pack
+	 */
+	private String intpkgVersion;
+	private String intpkgKieVersion;
+
+	public SwitchYardProjectWizard() {
+		super("SwitchYard", "SwitchYard Project");
+		this.configurationVersion = DEFAULT_CONFIGURATION_VERSION;
+		this.libraryVersion = DEFAULT_LIBRARY_VERSION;
+		this.components = new ArrayList<String[]>();
+	}
 
 	public SwitchYardProjectWizard(String name) {
-		this(name, DEFAULT_CONFIGURATION_VERSION, DEFAULT_LIBRARY_VERSION);
+		this();
+		name(name);
 	}
 
-	public SwitchYardProjectWizard(String name, String configurationVersion, String libraryVersion) {
-		this(name, configurationVersion, libraryVersion, null);
-	}
-
-	public SwitchYardProjectWizard(String name, String configurationVersion, String libraryVersion,
-			String targetRuntime) {
-		this(name, configurationVersion, libraryVersion, targetRuntime, null);
-	}
-
-	public SwitchYardProjectWizard(String name, String configurationVersion, String libraryVersion,
-			String targetRuntime, IntegrationPack integrationPack) {
-		super("SwitchYard", "SwitchYard Project");
-		this.name = name;
-		this.configurationVersion = configurationVersion;
-		this.targetRuntime = targetRuntime;
-		this.libraryVersion = libraryVersion;
-		this.integrationPack = integrationPack;
-		components = new ArrayList<String[]>();
-	}
-
+	/*
+	 * Project name
+	 */
 	public SwitchYardProjectWizard name(String name) {
 		this.name = name;
 		return this;
@@ -100,10 +101,16 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		return new LabeledText(PROJECT_NAME).getText();
 	}
 
+	/*
+	 * Artifact ID (artifact ID is the same as the project name)
+	 */
 	public String getArtifactId() {
 		return new LabeledText(ARTIFACT_ID).getText();
 	}
 
+	/*
+	 * Group ID
+	 */
 	public SwitchYardProjectWizard groupId(String groupId) {
 		this.groupId = groupId;
 		return this;
@@ -118,6 +125,14 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		return new LabeledText(GROUP_ID).getText();
 	}
 
+	/*
+	 * Target namespace
+	 */
+	public SwitchYardProjectWizard namespace(String targetNamespace) {
+		new LabeledText(TARGET_NAMESPACE).setText(targetNamespace);
+		return this;
+	}
+
 	public SwitchYardProjectWizard setTargetNamespace(String targetNamespace) {
 		new LabeledText(TARGET_NAMESPACE).setText(targetNamespace);
 		return this;
@@ -127,6 +142,9 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		return new LabeledText(TARGET_NAMESPACE).getText();
 	}
 
+	/*
+	 * Package name
+	 */
 	public SwitchYardProjectWizard packageName(String packageName) {
 		this.packageName = packageName;
 		return this;
@@ -141,6 +159,18 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		return new LabeledText(PACKAGE_NAME).getText();
 	}
 
+	/*
+	 * OSGi
+	 */
+	public SwitchYardProjectWizard osgi() {
+		return osgi(true);
+	}
+
+	public SwitchYardProjectWizard osgi(boolean isOsgi) {
+		this.osgi = isOsgi;
+		return this;
+	}
+
 	public SwitchYardProjectWizard setOSGiBundle(boolean checked) {
 		new CheckBox(OSGI_BUNDLE).toggle(checked);
 		return this;
@@ -148,6 +178,18 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 
 	public boolean isOSGiBundle() {
 		return new CheckBox(OSGI_BUNDLE).isChecked();
+	}
+
+	/*
+	 * BOM
+	 */
+	public SwitchYardProjectWizard useBom() {
+		return useBom(true);
+	}
+
+	public SwitchYardProjectWizard useBom(boolean useBom) {
+		this.useBom = useBom;
+		return this;
 	}
 
 	public SwitchYardProjectWizard setBOMDependency(boolean checked) {
@@ -163,17 +205,9 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		return new CheckBox(BOM_DEPENDENCY).isEnabled();
 	}
 
-	public SwitchYardProjectWizard setComponent(String group, String component, boolean checked) {
-		new DefaultTreeItem(new DefaultTree(new DefaultGroup(SWITCHYARD_COMPONENTS)), group, component)
-				.setChecked(checked);
-		return this;
-	}
-
-	public boolean isComponent(String group, String component) {
-		return new DefaultTreeItem(new DefaultTree(new DefaultGroup(SWITCHYARD_COMPONENTS)), group, component)
-				.isChecked();
-	}
-
+	/*
+	 * Components
+	 */
 	public SwitchYardProjectWizard impl(String... component) {
 		for (int i = 0; i < component.length; i++) {
 			components.add(new String[] { "Implementation Support", component[i] });
@@ -193,35 +227,50 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		return this;
 	}
 
-	public SwitchYardProjectWizard activate() {
-		new DefaultShell(DIALOG_TITLE);
+	public SwitchYardProjectWizard setComponent(String group, String component, boolean checked) {
+		new DefaultTreeItem(new DefaultTree(new DefaultGroup(SWITCHYARD_COMPONENTS)), group, component)
+				.setChecked(checked);
 		return this;
 	}
 
-	private void setText(String label, String value) {
-		if (value != null) {
-			new LabeledText(label).setText(value);
+	public boolean isComponent(String group, String component) {
+		return new DefaultTreeItem(new DefaultTree(new DefaultGroup(SWITCHYARD_COMPONENTS)), group, component)
+				.isChecked();
+	}
+
+	private void selectComponents(List<String[]> components) {
+		for (String[] component : components) {
+			new DefaultTreeItem(component).setChecked(true);
 		}
 	}
 
-	public void setConfigurationVersion(String configurationVersion) {
+	/*
+	 * Configuration version
+	 */
+	public SwitchYardProjectWizard config(String configurationVersion) {
+		this.configurationVersion = configurationVersion;
+		return this;
+	}
+
+	public SwitchYardProjectWizard setConfigurationVersion(String configurationVersion) {
 		Combo combo = new LabeledCombo("Configuration Version:");
 		if (configurationVersion != null && combo.isEnabled()) {
 			combo.setSelection(configurationVersion);
 		}
+		return this;
 	}
 
-	public Combo getIntegrationPackLibraryVersion() {
-		return new LabeledCombo(new DefaultGroup("Integration Pack Version Details"),
-				"Integration Pack Library Version:");
+	public String getConfigurationVersion() {
+		Combo combo = new LabeledCombo("Configuration Version:");
+		return combo.getText();
 	}
 
-	public Combo getKieBPMRulesVersion() {
-		return new LabeledCombo(new DefaultGroup("Integration Pack Version Details"), "Kie (BPM  Rules) Version:");
-	}
-
-	public CheckBox getConfigureIntegrationPackVersionDetails() {
-		return new CheckBox("Configure Integration Pack Version Details");
+	/*
+	 * Library version
+	 */
+	public SwitchYardProjectWizard library(String libraryVersion) {
+		this.libraryVersion = libraryVersion;
+		return this;
 	}
 
 	public String getLibraryVersion() {
@@ -229,7 +278,7 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		return combo.getText();
 	}
 
-	public void setLibraryVersion(String libraryVersion) {
+	public SwitchYardProjectWizard setLibraryVersion(String libraryVersion) {
 		LabeledComboExt combo = new LabeledComboExt("Library Version:");
 		if (libraryVersion != null && combo.isEnabled()) {
 			try {
@@ -240,6 +289,15 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 				combo.typeText(libraryVersion);
 			}
 		}
+		return this;
+	}
+
+	/*
+	 * Target runtime
+	 */
+	public SwitchYardProjectWizard runtime(String targetRuntime) {
+		this.targetRuntime = targetRuntime;
+		return this;
 	}
 
 	public String getTargetRuntime() {
@@ -247,15 +305,46 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		return combo.getSelection();
 	}
 
-	public void setTargetRuntime(String targetRuntime) {
+	public SwitchYardProjectWizard setTargetRuntime(String targetRuntime) {
 		Combo combo = new LabeledCombo("Target Runtime:");
 		combo.setSelection(targetRuntime);
+		return this;
 	}
 
-	private void selectComponents(List<String[]> components) {
-		for (String[] component : components) {
-			new DefaultTreeItem(component).setChecked(true);
-		}
+	/*
+	 * Integration Pack
+	 */
+	public SwitchYardProjectWizard intpkg(String intpkgVersion) {
+		this.intpkgVersion = intpkgVersion;
+		return this;
+	}
+
+	public SwitchYardProjectWizard intpkgKie(String intpkgKieVersion) {
+		this.intpkgKieVersion = intpkgKieVersion;
+		return this;
+	}
+
+	public String getIntegrationPackLibraryVersion() {
+		return new LabeledCombo(new DefaultGroup(INTEGRATION_PACK), INTEGRATION_PACK_VERSION).getText();
+	}
+
+	public SwitchYardProjectWizard setIntegrationPackLibraryVersion(String intpkgVersion) {
+		getConfigureIntegrationPackVersionDetailsCHB().toggle(true);
+		new LabeledComboExt(new DefaultGroup(INTEGRATION_PACK), INTEGRATION_PACK_VERSION).setText(intpkgVersion);
+		return this;
+	}
+
+	public String getKieBPMRulesVersion() {
+		return new LabeledCombo(new DefaultGroup(INTEGRATION_PACK), INTEGRATION_PACK_KIE_VERSION).getText();
+	}
+
+	public SwitchYardProjectWizard setKieBPMRulesVersion(String intpkgKieVersion) {
+		new LabeledComboExt(new DefaultGroup(INTEGRATION_PACK), INTEGRATION_PACK_KIE_VERSION).setText(intpkgKieVersion);
+		return this;
+	}
+
+	public CheckBox getConfigureIntegrationPackVersionDetailsCHB() {
+		return new CheckBox("Configure Integration Pack Version Details");
 	}
 
 	@Override
@@ -269,15 +358,20 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 
 	public void create() {
 		open();
-		setText("Group Id:", groupId);
-		setText("Package Name:", packageName);
+		// artifact ID cannot be set since it is the same as the project name
+		if (groupId != null) {
+			setGroupId(groupId);
+		}
+		if (packageName != null) {
+			setPackageName(packageName);
+		}
+		if (targetNamespace != null) {
+			setTargetNamespace(targetNamespace);
+		}
 		if (configurationVersion != null) {
-			if (configurationVersion.equals("1.0") || configurationVersion.equals("1.1")) {
-				setBOMDependency(false);
-			}
 			setConfigurationVersion(configurationVersion);
 		}
-		if (targetRuntime != null) {
+		if (targetRuntime != null && !targetRuntime.equals("<None>")) {
 			setTargetRuntime(targetRuntime);
 		} else if (libraryVersion != null) {
 			setLibraryVersion(libraryVersion);
@@ -287,25 +381,36 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 						+ actualLibraryVersion + "'");
 			}
 		}
-		if (integrationPack != null) {
-			getConfigureIntegrationPackVersionDetails().toggle(true);
+		if (osgi != null) {
+			setOSGiBundle(osgi);
+		}
+		if (useBom != null) {
+			setBOMDependency(useBom);
+		}
+		if (intpkgVersion != null) {
+			setIntegrationPackLibraryVersion(intpkgVersion);
+		}
+		if (intpkgKieVersion != null) {
+			setKieBPMRulesVersion(intpkgKieVersion);
 		}
 		selectComponents(components);
 		finish();
 
 		// fix kie version if needed due to SWITCHYARD-2834
-		if (integrationPack != null) {
+		if (intpkgVersion != null) {
 			try {
 				File pomFile = new File(new SwitchYardProject(name).getFile(), "pom.xml");
 				XPathEvaluator xpath = new XPathEvaluator(pomFile);
 				Node node = null;
-				for (String artifactId: new String[] {"switchyard", "kie", "drools", "jbpm"}) {
-					node = xpath.evaluateNode("/project/dependencyManagement/dependencies/dependency[artifactId='" + artifactId + "-bom']");
+				for (String artifactId : new String[] { "switchyard", "kie", "drools", "jbpm" }) {
+					node = xpath.evaluateNode("/project/dependencyManagement/dependencies/dependency[artifactId='"
+							+ artifactId + "-bom']");
 					if (node != null) {
 						node.getParentNode().removeChild(node);
 					}
 				}
-				node = xpath.evaluateNode("/project/build/plugins/plugin/executions/execution/configuration/versions/switchyard.osgi.version");
+				node = xpath.evaluateNode(
+						"/project/build/plugins/plugin/executions/execution/configuration/versions/switchyard.osgi.version");
 				if (node != null) {
 					node.setTextContent("${switchyard.version}");
 				}
@@ -320,6 +425,11 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		if (targetRuntime != null && targetRuntime.contains("Karaf Extension")) {
 			new SwitchYardProject(name).enableFuseCamelNature();
 		}
+	}
+
+	public SwitchYardProjectWizard activate() {
+		new DefaultShell(DIALOG_TITLE);
+		return this;
 	}
 
 	@Override
@@ -347,6 +457,10 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 
 		public LabeledComboExt(String label) {
 			super(label);
+		}
+
+		public LabeledComboExt(ReferencedComposite referencedComposite, String label) {
+			super(referencedComposite, label);
 		}
 
 		public void setFocus() {
