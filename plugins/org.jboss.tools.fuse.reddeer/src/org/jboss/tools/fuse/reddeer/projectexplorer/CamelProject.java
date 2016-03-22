@@ -13,6 +13,7 @@ import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -41,6 +42,15 @@ public class CamelProject {
 
 		ProjectItem item = project.getProjectItem(path);
 		item.open();
+	}
+
+	public void deleteFile(String... path) {
+		selectProjectItem(path);
+		new ContextMenu("Delete").select();
+		new WaitUntil(new ShellWithTextIsAvailable("Delete"));
+		new DefaultShell("Delete");
+		new OkButton().click();
+		new WorkbenchShell();
 	}
 
 	public void openCamelContext(String name) {

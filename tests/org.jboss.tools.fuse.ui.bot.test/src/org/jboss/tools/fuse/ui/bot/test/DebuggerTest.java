@@ -24,8 +24,8 @@ import org.jboss.tools.fuse.reddeer.debug.TerminateButton;
 import org.jboss.tools.fuse.reddeer.debug.VariablesView;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
-import org.jboss.tools.fuse.reddeer.view.ErrorLogView;
 import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
+import org.jboss.tools.fuse.ui.bot.test.utils.LogGrapper;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.After;
 import org.junit.BeforeClass;
@@ -45,9 +45,10 @@ public class DebuggerTest extends DefaultTest {
 	private static final String PROJECT_ARCHETYPE = "camel-archetype-spring";
 	private static final String PROJECT_NAME = "camel-spring";
 	private static final String CAMEL_CONTEXT = "camel-context.xml";
-	private static final String CHOICE = "choice1";
-	private static final String LOG = "log1";
-	private static final String LOG2 = "log2";
+	private static final String CHOICE = "Choice";
+	private static final String CHOICE_ID = "_choice1";
+	private static final String LOG = "Log _log1";
+	private static final String LOG_ID = "_log1";
 
 	/**
 	 * Prepares test environment
@@ -59,13 +60,7 @@ public class DebuggerTest extends DefaultTest {
 	public static void setupInitial() throws FuseArchetypeNotFoundException {
 
 		ProjectFactory.createProject(PROJECT_NAME, PROJECT_ARCHETYPE);
-		new CamelProject(PROJECT_NAME).openCamelContext(CAMEL_CONTEXT);
-		CamelEditor.switchTab("Design");
-		CamelEditor editor = new CamelEditor(CAMEL_CONTEXT);
-		editor.setId("choice", CHOICE);
-		editor.setId("log", LOG);
-		editor.setId("log", LOG2);
-		editor.save();
+		new CamelProject(PROJECT_NAME).deleteFile("src", "data", "message2.xml");
 	}
 
 	/**
@@ -114,26 +109,27 @@ public class DebuggerTest extends DefaultTest {
 
 		// check Breakpoints View
 		BreakpointsView view = new BreakpointsView();
-		assertTrue(view.isBreakpointSet(CHOICE));
-		assertTrue(view.isBreakpointSet(LOG));
+		assertTrue(view.isBreakpointSet(CHOICE_ID));
+		assertTrue(view.isBreakpointSet(LOG_ID));
 
 		// do some operations (disable/enable/remove) and check
-		Breakpoint choice = view.getBreakpoint(CHOICE);
+		Breakpoint choice = view.getBreakpoint(CHOICE_ID);
 		choice.disable();
 		assertFalse(choice.isEnabled());
 		assertFalse(editor.isBreakpointEnabled(CHOICE));
 		editor.enableBreakpoint(CHOICE);
 		assertTrue(editor.isBreakpointEnabled(CHOICE));
 		view.open();
+		choice = view.getBreakpoint(CHOICE_ID);
 		assertTrue(choice.isEnabled());
 		editor.deleteBreakpoint(CHOICE);
 		assertFalse(editor.isBreakpointSet(CHOICE));
 		view.open();
-		assertTrue(view.getBreakpoint(CHOICE) == null);
+		assertTrue(view.getBreakpoint(CHOICE_ID) == null);
 		view.open();
-		view.getBreakpoint(LOG).remove();
+		view.getBreakpoint(LOG_ID).remove();
 		assertFalse(editor.isBreakpointSet(LOG));
-		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
+		assertTrue(LogGrapper.getFuseErrors().size() == 0);
 	}
 
 	/**
@@ -181,7 +177,7 @@ public class DebuggerTest extends DefaultTest {
 		assertTrue(new ConsoleHasText("Enabling debugger").test());
 		VariablesView variables = new VariablesView();
 		AbstractWait.sleep(TimePeriod.getCustom(5));
-		assertEquals(CHOICE, variables.getValue("Endpoint"));
+		assertEquals(CHOICE_ID, variables.getValue("Endpoint"));
 
 		// get body of message
 		variables.close();
@@ -196,7 +192,7 @@ public class DebuggerTest extends DefaultTest {
 		resume.select();
 		new WaitUntil(new IsSuspended(), TimePeriod.NORMAL);
 		AbstractWait.sleep(TimePeriod.getCustom(2));
-		assertEquals(LOG, variables.getValue("Endpoint"));
+		assertEquals(LOG_ID, variables.getValue("Endpoint"));
 
 		// step over then should stop on the 'to1' endpoint
 		assertTrue(resume.isEnabled());
@@ -205,19 +201,19 @@ public class DebuggerTest extends DefaultTest {
 		assertTrue(new ConsoleHasText("UK message").test());
 		assertTrue(resume.isEnabled());
 		AbstractWait.sleep(TimePeriod.getCustom(5));
-		assertEquals("to1", variables.getValue("Endpoint"));
+		assertEquals("_to1", variables.getValue("Endpoint"));
 
 		// remove all breakpoints
 		new BreakpointsView().removeAllBreakpoints();
-		assertTrue(new ConsoleHasText("Removing breakpoint choice1").test());
-		assertTrue(new ConsoleHasText("Removing breakpoint log1").test());
+		assertTrue(new ConsoleHasText("Removing breakpoint _choice1").test());
+		assertTrue(new ConsoleHasText("Removing breakpoint _log1").test());
 		resume.select();
 
 		// all breakpoints should be processed
 		new WaitUntil(new IsRunning(), TimePeriod.NORMAL);
 		new TerminateButton().select();
 		assertTrue(new ConsoleHasText("Disabling debugger").test());
-		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
+		assertTrue(LogGrapper.getFuseErrors().size() == 0);
 	}
 
 	/**
@@ -255,18 +251,17 @@ public class DebuggerTest extends DefaultTest {
 		new CamelProject(PROJECT_NAME).debugCamelContextWithoutTests(CAMEL_CONTEXT);
 		new WaitUntil(new IsSuspended(), TimePeriod.NORMAL);
 
-		// should stop on 'choice1' node
+		// should stop on '_choice1' node
 		VariablesView variables = new VariablesView();
-		assertEquals(CHOICE, variables.getValue("Endpoint"));
+		assertEquals(CHOICE_ID, variables.getValue("Endpoint"));
 		assertTrue(resume.isEnabled());
 
 		// all breakpoint should be processed
 		resume.select();
 		new WaitUntil(new IsRunning(), TimePeriod.NORMAL);
 		assertTrue(new ConsoleHasText("UK message").test());
-		assertTrue(new ConsoleHasText("Other message").test());
 		new TerminateButton().select();
 		assertTrue(new ConsoleHasText("Disabling debugger").test());
-		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
+		assertTrue(LogGrapper.getFuseErrors().size() == 0);
 	}
 }
