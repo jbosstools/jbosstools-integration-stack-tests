@@ -16,7 +16,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
@@ -37,7 +36,6 @@ import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.tools.fuse.reddeer.component.Log;
 import org.jboss.tools.fuse.reddeer.debug.IsSuspended;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
@@ -46,10 +44,10 @@ import org.jboss.tools.fuse.reddeer.utils.ResourceHelper;
 import org.jboss.tools.fuse.reddeer.view.JMXNavigator;
 import org.jboss.tools.fuse.ui.bot.test.utils.EditorManipulator;
 import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
+import org.jboss.tools.fuse.ui.bot.test.utils.LogGrapper;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.preference.FuseServerRuntimePreferencePage;
 import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.w3c.dom.Document;
@@ -77,11 +75,11 @@ public class RegressionTest extends DefaultTest {
 	 * </p>
 	 * <b>Link: </b>
 	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-674">https://issues.jboss.org/browse/FUSETOOLS-674</a> <br>
-	 * <i>NOTE: not fixed yet - deferred to 8.0</i>
+	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-1728">https://issues.jboss.org/browse/FUSETOOLS-1728</a> <br>
+	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-1729">https://issues.jboss.org/browse/FUSETOOLS-1729</a> <br>
 	 */
-	@Ignore
 	@Test
-	public void issue_674()
+	public void issue_674_1728_1729()
 			throws ParserConfigurationException, SAXException, IOException, FuseArchetypeNotFoundException {
 
 		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
@@ -109,6 +107,7 @@ public class RegressionTest extends DefaultTest {
 		int i = doc.getElementsByTagName("onException").item(0).getChildNodes().getLength();
 
 		assertEquals("'camel-context.xml' file was changed!", 11, i);
+		assertTrue(LogGrapper.getFuseErrors().size() == 0);
 	}
 
 	/**
@@ -172,45 +171,6 @@ public class RegressionTest extends DefaultTest {
 		new CamelProject("camel-web").runApplicationContextWithoutTests("applicationContext.xml");
 		new WaitUntil(new ConsoleHasText("[INFO] Started Jetty Server"), TimePeriod.VERY_LONG);
 		new WaitUntil(new ConsoleHasText("Hello Web Application, how are you?"), TimePeriod.LONG);
-	}
-
-	/**
-	 * <p>
-	 * An endpoint is lost after saving
-	 * </p>
-	 * <b>Link: </b>
-	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-1085">https://issues.jboss.org/browse/FUSETOOLS-1085</a>
-	 * 
-	 * @throws FuseArchetypeNotFoundException
-	 *             Fuse archetype was not found. Tests cannot be executed!
-	 */
-	@Test
-	public void issue_1085() throws FuseArchetypeNotFoundException {
-
-		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
-		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
-		CamelEditor editor = new CamelEditor("camel-context.xml");
-		editor.addCamelComponent(new Log(), "_route1");
-		new DefaultToolItem(new WorkbenchShell(), 0, new WithTooltipTextMatcher(new RegexMatcher("Save All.*")))
-				.click();
-		new WaitUntil(new ShellWithTextIsAvailable("Please confirm..."));
-		new DefaultShell("Please confirm...");
-		new PushButton("No").click();
-		try {
-			new WaitUntil(new ShellWithTextIsAvailable("Please confirm..."));
-			new DefaultShell("Please confirm...");
-			new PushButton("No").click();
-		} catch (Exception e) {
-			// Nothing to do.
-		}
-		assertTrue(editor.isDirty());
-		new DefaultToolItem(new WorkbenchShell(), 0, new WithTooltipTextMatcher(new RegexMatcher("Save All.*")))
-				.click();
-		new WaitUntil(new ShellWithTextIsAvailable("Please confirm..."));
-		new DefaultShell("Please confirm...");
-		new PushButton("Yes").click();
-		AbstractWait.sleep(TimePeriod.getCustom(5));
-		assertFalse(editor.isDirty());
 	}
 
 	/**
@@ -300,12 +260,11 @@ public class RegressionTest extends DefaultTest {
 		project.openCamelContext("camel-context.xml");
 		CamelEditor editor = new CamelEditor("camel-context.xml");
 		editor.activate();
-		editor.setBreakpoint("choice");
-		editor.save();
+		editor.setBreakpoint("Choice");
 		project.debugCamelContextWithoutTests("camel-context.xml");
 		new WaitUntil(new IsSuspended(), TimePeriod.LONG);
 		try {
-			new DefaultEditor(new RegexMatcher("CamelContext: context.*"));
+			new DefaultEditor(new RegexMatcher("camel-context.xml"));
 		} catch (Exception e) {
 			fail("Debuger Editor has wrong name");
 		} finally {
@@ -332,7 +291,7 @@ public class RegressionTest extends DefaultTest {
 		CamelEditor.switchTab("Design");
 		CamelEditor editor = new CamelEditor("camel-context.xml");
 		editor.click(5, 5);
-		editor.setProperty("Id", "1");
+		editor.setProperty("Route _route1", "Id", "1");
 		editor.save();
 		CamelEditor.switchTab("Source");
 
@@ -342,6 +301,7 @@ public class RegressionTest extends DefaultTest {
 		InputSource is = new InputSource(new StringReader(new DefaultStyledText().getText()));
 		Document doc = builder.parse(is);
 		assertNull(doc.getElementsByTagName("route").item(0).getAttributes().getNamedItem("customId"));
+		editor.close(true);
 	}
 
 	/**
@@ -366,6 +326,9 @@ public class RegressionTest extends DefaultTest {
 		assertFalse("Camel editor should not be dirty",
 				new DefaultToolItem(new WorkbenchShell(), 1, new WithTooltipTextMatcher(new RegexMatcher("Save.*")))
 						.isEnabled());
+		DefaultEditor editor = new DefaultEditor("camel-context.xml");
+		editor.activate();
+		editor.close();
 	}
 
 	/**
