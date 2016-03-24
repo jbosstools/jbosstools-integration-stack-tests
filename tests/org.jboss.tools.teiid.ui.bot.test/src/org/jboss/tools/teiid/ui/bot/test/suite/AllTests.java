@@ -6,7 +6,6 @@ import org.jboss.tools.teiid.ui.bot.test.CloneAndCopyTest;
 import org.jboss.tools.teiid.ui.bot.test.ConsumeRestWs;
 import org.jboss.tools.teiid.ui.bot.test.ConsumeSoapWs;
 import org.jboss.tools.teiid.ui.bot.test.CreateRestProcedureTest;
-import org.jboss.tools.teiid.ui.bot.test.DynamicVdbTest;
 import org.jboss.tools.teiid.ui.bot.test.E2eRecursiveXmlTextTest;
 import org.jboss.tools.teiid.ui.bot.test.FlatFileTest;
 import org.jboss.tools.teiid.ui.bot.test.GuidesTest;
@@ -33,7 +32,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	ConsumeRestWs.class,
 	ConsumeSoapWs.class,
 	CreateRestProcedureTest.class,
-	DynamicVdbTest.class,
 	E2eRecursiveXmlTextTest.class,
 	FlatFileTest.class,
 	GuidesTest.class,
