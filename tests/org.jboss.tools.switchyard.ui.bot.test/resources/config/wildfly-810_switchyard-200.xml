@@ -11,7 +11,7 @@
     <switchyard:switchyard-requirement name="WildFly-8.1.0.Final">
       <switchyard:configurationVersion>2.0</switchyard:configurationVersion>
       <switchyard:targetRuntime>SwitchYard: WildFly Extension 2.0.0.Final</switchyard:targetRuntime>
-      <switchyard:libraryVersion>2.0.0.Final</switchyard:libraryVersion>
+      <switchyard:switchyardVersion>2.0.0.Final</switchyard:switchyardVersion>
       <server:wildfly version="8.x">
         <server:home>${project.build.directory}/wildfly-8.1.0.Final</server:home>
       </server:wildfly>

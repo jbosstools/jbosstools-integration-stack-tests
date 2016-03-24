@@ -82,7 +82,7 @@ public class ProjectExplorerProjectCapabilitiesTest {
 		new DefaultShell("Select Dependency");
 		new LabeledText("Group Id:").setText("org.switchyard.components");
 		new LabeledText("Artifact Id:").setText("switchyard-component-http");
-		new LabeledText("Version: ").setText(switchYardRequirement.getConfig().getLibraryVersion());
+		new LabeledText("Version: ").setText(switchYardRequirement.getConfig().getSwitchyardVersion());
 		new PushButton("OK").click();
 		new DefaultEditor(SY_PARENT_PROJECT + "/pom.xml").save();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
@@ -167,7 +167,7 @@ public class ProjectExplorerProjectCapabilitiesTest {
 		capabilities.setConfigurationVersion("1.1").ok();
 		assertSwitchYardNamespace("1.1");
 		/* Set configuration version to 2.0 */
-		if (switchYardRequirement.getConfig().getLibraryVersion().startsWith("2")) {
+		if (switchYardRequirement.getConfig().getSwitchyardVersion().startsWith("2")) {
 			capabilities = new SwitchYardProject(SY_PROJECT).configureCapabilities();
 			capabilities.setConfigurationVersion("2.0").ok();
 			assertSwitchYardNamespace("2.0");
