@@ -349,7 +349,9 @@ public class CamelEditor extends GEFEditor {
 		log.debug("Setting id '" + id + "' to the component: " + label);
 		PropertiesView properties = new PropertiesView();
 		properties.open();
+		AbstractWait.sleep(TimePeriod.SHORT);
 		selectEditPart(label);
+		AbstractWait.sleep(TimePeriod.SHORT);
 		properties.activate();
 		properties.selectTab("Details");
 		AbstractWait.sleep(TimePeriod.SHORT);

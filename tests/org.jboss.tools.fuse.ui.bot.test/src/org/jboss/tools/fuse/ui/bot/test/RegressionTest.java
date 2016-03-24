@@ -15,7 +15,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
+import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
@@ -26,6 +28,9 @@ import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.swt.impl.button.CancelButton;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -391,5 +396,43 @@ public class RegressionTest extends DefaultTest {
 				"blueprint.xml");
 		new ContextMenu("Open").select();
 		assertFalse("Camel Editor is dirty! But no editing was performed.", new CamelEditor("blueprint.xml").isDirty());
+	}
+
+	/**
+	 * <p>
+	 * Error during a project deletion if switched to source after saving modifications in design editor
+	 * </p>
+	 * <b>Link:</b>
+	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-1730">https://issues.jboss.org/browse/FUSETOOLS-1730</a>
+	 * 
+	 * @throws FuseArchetypeNotFoundException
+	 *             Fuse archetype was not found. Tests cannot be executed!
+	 */
+	@Test
+	public void issue_1730() throws FuseArchetypeNotFoundException {
+		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
+		CamelEditor editor = new CamelEditor("camel-context.xml");
+		editor.activate();
+		editor.setId("Route _route1", "1");
+		editor.save();
+		CamelEditor.switchTab("Source");
+		new ProjectExplorer().getProject("camel-spring").select();
+		new ContextMenu("Delete").select();
+		new WaitUntil(new ShellWithTextIsAvailable("Delete Resources"));
+		new DefaultShell("Delete Resources");
+		new CheckBox().toggle(true);
+		new OkButton().click();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		try {
+			// issue occurred!
+			new WaitUntil(new ShellWithTextIsAvailable("Delete Resources"));
+			new CancelButton().click();
+			// perform workaround to project deletion
+			new DefaultEditor().close();
+			new ProjectExplorer().deleteAllProjects();
+			fail("Error during project deletion occurred - see https://issues.jboss.org/browse/FUSETOOLS-1730");
+		} catch (WaitTimeoutExpiredException e) {
+			// issue is not present - great :-)
+		}
 	}
 }
