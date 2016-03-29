@@ -1,7 +1,10 @@
 package org.jboss.tools.switchyard.reddeer.wizard;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.transform.stream.StreamResult;
 
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.TimePeriod;
@@ -22,7 +25,9 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.tools.switchyard.reddeer.condition.SwitchYardEditorIsOpen;
+import org.jboss.tools.switchyard.reddeer.editor.XPathEvaluator;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
+import org.w3c.dom.Node;
 
 /**
  * Wizard for creating a SwitchYard project.
@@ -54,6 +59,7 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 	private String configurationVersion;
 	private String targetRuntime;
 	private String libraryVersion;
+	private String switchyardVersion;
 	private Boolean osgi;
 	private Boolean useBom;
 	private List<String[]> components;
@@ -279,6 +285,14 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 	}
 
 	/*
+	 * SwitchYard version
+	 */
+	public SwitchYardProjectWizard switchyardVersion(String switchyardVersion) {
+		this.switchyardVersion = switchyardVersion;
+		return this;
+	}
+
+	/*
 	 * Target runtime
 	 */
 	public SwitchYardProjectWizard runtime(String targetRuntime) {
@@ -340,11 +354,28 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		selectComponents(components);
 		finish();
 
+		// fix switchyard version if needed due to SWITCHYARD-2834
+		try {
+			File pomFile = new File(new SwitchYardProject(name).getFile(), "pom.xml");
+			XPathEvaluator xpath = new XPathEvaluator(pomFile);
+			Node node = xpath.evaluateNode("//switchyard.osgi.version");
+			if (node != null && node.getTextContent().equals("${integration.version}")) {
+				if (switchyardVersion == null) {
+					throw new IllegalStateException("Cannot set the switchyardVersion '" + switchyardVersion + "'");
+				}
+				node.setTextContent(switchyardVersion);
+				xpath.printDocument(new StreamResult(pomFile));
+			}
+		} catch (Throwable e) {
+			throw new RuntimeException(e);
+		}
+
 		new WaitUntil(new SwitchYardEditorIsOpen(), TimePeriod.LONG);
 		new SwitchYardProject(name).update();
-		if (targetRuntime != null && targetRuntime.contains("Karaf Extension")) {
+		if ((osgi != null && osgi.booleanValue()) || (targetRuntime != null && isKaraf(targetRuntime))) {
 			new SwitchYardProject(name).enableFuseCamelNature();
 		}
+
 	}
 
 	public SwitchYardProjectWizard activate() {
@@ -391,5 +422,9 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 			setText(text);
 		}
 
+	}
+
+	private static boolean isKaraf(String runtime) {
+		return runtime.contains("Karaf Extension") || runtime.contains("Integration Extension");
 	}
 }

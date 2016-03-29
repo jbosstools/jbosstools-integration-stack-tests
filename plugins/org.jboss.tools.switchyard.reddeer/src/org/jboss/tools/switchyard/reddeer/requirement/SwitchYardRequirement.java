@@ -171,6 +171,7 @@ public class SwitchYardRequirement implements Requirement<SwitchYard>, CustomCon
 		project.config(config.getConfigurationVersion());
 		project.library(getLibraryVersionLabel());
 		project.runtime(getTargetRuntimeLabel());
+		project.switchyardVersion(config.getSwitchyardVersion());
 		return project;
 	}
 
