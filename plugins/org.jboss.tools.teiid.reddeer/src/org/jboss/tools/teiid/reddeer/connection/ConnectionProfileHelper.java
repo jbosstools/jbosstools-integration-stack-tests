@@ -88,6 +88,7 @@ public class ConnectionProfileHelper {
 		props.put("org.eclipse.datatools.connectivity.db.username", cp.getUsername());
 		props.put("org.eclipse.datatools.connectivity.db.password", cp.getPassword());
 		props.put("org.eclipse.datatools.connectivity.db.URL", cpProps.getProperty("url"));
+		props.put("org.eclipse.datatools.connectivity.db.vendor", cp.getVendor());
 
 		DriverInstance di = DriverManager.getInstance().createNewDriverInstance(cpProps.getProperty("defnType"),
 				cp.getName() + "Driver", cp.getJdbcPath());
