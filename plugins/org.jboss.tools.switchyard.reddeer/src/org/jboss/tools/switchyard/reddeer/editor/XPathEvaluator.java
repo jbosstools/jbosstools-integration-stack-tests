@@ -22,6 +22,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -80,6 +81,16 @@ public class XPathEvaluator {
 	public String evaluateString(String expr) {
 		try {
 			return (String) XPATH.evaluate(expr, doc, XPathConstants.STRING);
+		} catch (XPathExpressionException e) {
+			e.printStackTrace();
+			System.out.println("Error evaluating xPath '" + expr + "'");
+			return null;
+		}
+	}
+	
+	public Node evaluateNode(String expr) {
+		try {
+			return (Node) XPATH.evaluate(expr, doc, XPathConstants.NODE);
 		} catch (XPathExpressionException e) {
 			e.printStackTrace();
 			System.out.println("Error evaluating xPath '" + expr + "'");
