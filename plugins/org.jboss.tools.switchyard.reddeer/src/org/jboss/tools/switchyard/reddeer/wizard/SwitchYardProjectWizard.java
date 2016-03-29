@@ -422,9 +422,10 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 
 		new WaitUntil(new SwitchYardEditorIsOpen(), TimePeriod.LONG);
 		new SwitchYardProject(name).update();
-		if (targetRuntime != null && targetRuntime.contains("Karaf Extension")) {
+		if ((osgi != null && osgi.booleanValue()) || (targetRuntime != null && isKaraf(targetRuntime))) {
 			new SwitchYardProject(name).enableFuseCamelNature();
 		}
+
 	}
 
 	public SwitchYardProjectWizard activate() {
@@ -475,5 +476,9 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 			setText(text);
 		}
 
+	}
+
+	private static boolean isKaraf(String runtime) {
+		return runtime.contains("Karaf Extension") || runtime.contains("Integration Extension");
 	}
 }
