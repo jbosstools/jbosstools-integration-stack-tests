@@ -50,5 +50,5 @@ public final class ConnectionProfilesConstants {
 	public static final String POSTGRESQL_92_DVQE = "postgresql_92_dvqe";
 	public static final String INGRES_10_BQT2 = "ingres_10_bqt2";
 	public static final String EXCEL_SMALLA = "excel_smalla";
-
+	public static final String SAP_HANA = "sap_hana";
 }
