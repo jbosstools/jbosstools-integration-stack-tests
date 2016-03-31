@@ -208,7 +208,7 @@ public class XmlSchemalessTest {
             StreamResult result = new StreamResult(sw);
             transformer.transform(source, result);
             
-            expectedOutput = sw.getBuffer().toString().replaceAll("\n|\t", "");            
+            expectedOutput = sw.getBuffer().toString().replaceAll("\r|\n|\t", "");            
 		} catch (IOException | TransformerException e) {
 			fail(e.getMessage());
 		} 	
@@ -301,7 +301,7 @@ public class XmlSchemalessTest {
              StreamResult result = new StreamResult(sw);             
              transformer.transform(source, result);
             
-             expectedOutput = sw.getBuffer().toString().replaceAll("\n|\t", "");             
+             expectedOutput = sw.getBuffer().toString().replaceAll("\r|\n|\t", "");             
  		} catch (IOException | TransformerException e) {
  			fail(e.getMessage());
  		} 	

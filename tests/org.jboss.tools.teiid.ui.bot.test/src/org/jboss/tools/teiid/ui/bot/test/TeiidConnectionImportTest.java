@@ -46,7 +46,8 @@ import org.junit.runner.RunWith;
 	ConnectionProfilesConstants.SYBASE_15_BQT2,
 	ConnectionProfilesConstants.INGRES_10_BQT2,
 	ConnectionProfilesConstants.SALESFORCE,
-	ConnectionProfilesConstants.SQL_SERVER_2008_BOOKS })
+	ConnectionProfilesConstants.SQL_SERVER_2008_BOOKS,
+	ConnectionProfilesConstants.SAP_HANA })
 public class TeiidConnectionImportTest extends SWTBotTestCase {
 
 	@InjectRequirement
@@ -376,6 +377,25 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 		teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", "Customers", "CustomerID : string(5)");
 		teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", "Employees", "EmployeeID : int");
 	}
+	
+	@Test
+	public void sapHanaTest() {
+		String modelName = "sapHanaModel";
+		
+		Properties teiidImportProps = new Properties();
+		teiidImportProps.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_SCHEMA_PATTERN, "BQT1");
+		teiidImportProps.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "SMALL%");
+		
+		// TODO temp till hana translator is not set automatically (updated importModel method)
+		Properties importProps = new Properties();
+		importProps.setProperty(TeiidConnectionImportWizard.DATA_SOURCE_NAME, ConnectionProfilesConstants.SAP_HANA);
+		importProps.setProperty(TeiidConnectionImportWizard.TRANSLATOR, "hana");
+		ImportMetadataManager importMgr = new ImportMetadataManager();
+		importMgr.importFromTeiidConnection(PROJECT_NAME, modelName, importProps, null, teiidImportProps);
+//		importModel(ConnectionProfilesConstants.SAP_HANA, modelName, teiidImportProps);
+		
+		checkImportedModel(modelName, "SMALLA", "SMALLB");
+	}
 
 	private void checkImportedModel(String modelName, String... tables) {
 		for (String table : tables) {
@@ -390,8 +410,8 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 		Properties iProps = new Properties();
 		iProps.setProperty(TeiidConnectionImportWizard.DATA_SOURCE_NAME, cpName);
 
-		new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME, modelName, iProps, null,
-				teiidImporterProperties);
+		ImportMetadataManager importMgr = new ImportMetadataManager();
+		importMgr.importFromTeiidConnection(PROJECT_NAME, modelName, iProps, null, teiidImporterProperties);
 	}
 
 }

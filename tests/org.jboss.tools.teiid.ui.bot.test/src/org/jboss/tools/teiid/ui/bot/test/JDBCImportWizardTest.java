@@ -15,6 +15,9 @@ import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
+import org.jboss.tools.teiid.reddeer.VDB;
+import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
+import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfilesConstants;
 import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
@@ -22,6 +25,8 @@ import org.jboss.tools.teiid.reddeer.manager.ServerManager;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
+import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
+import org.jboss.tools.teiid.reddeer.wizard.CreateVDB;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -47,7 +52,8 @@ import org.junit.runner.RunWith;
 	ConnectionProfilesConstants.POSTGRESQL_84_BQT2,
 	ConnectionProfilesConstants.POSTGRESQL_92_DVQE,
 	ConnectionProfilesConstants.SYBASE_15_BQT2,
-	ConnectionProfilesConstants.INGRES_10_BQT2 })
+	ConnectionProfilesConstants.INGRES_10_BQT2,
+	ConnectionProfilesConstants.SAP_HANA})
 public class JDBCImportWizardTest {
 
 	@InjectRequirement
@@ -74,7 +80,6 @@ public class JDBCImportWizardTest {
 
 	@Test
 	public void db2101Import() {
-
 		String model = "db2101Model";
 		importModel(model, ConnectionProfilesConstants.DB2_101_BQT, "BQT/TABLE/SMALLA,BQT/TABLE/SMALLB", false);
 		checkImportedTablesInModel(model, "SMALLA", "SMALLB");
@@ -82,7 +87,6 @@ public class JDBCImportWizardTest {
 
 	@Test
 	public void db297Import() {
-
 		String model = "db297Model";
 		importModel(model, ConnectionProfilesConstants.DB2_97_BQT2, "BQT2/TABLE/SMALLA,BQT2/TABLE/SMALLB", false);
 		checkImportedTablesInModel(model, "SMALLA", "SMALLB");
@@ -90,7 +94,6 @@ public class JDBCImportWizardTest {
 
 	@Test
 	public void ingres10Import() {
-
 		String model = "ingres10Model";
 		importModel(model, ConnectionProfilesConstants.INGRES_10_BQT2, "bqt2/TABLE/smalla,bqt2/TABLE/smallb", false);
 		checkImportedTablesInModel(model, "smalla", "smallb");
@@ -98,7 +101,6 @@ public class JDBCImportWizardTest {
 
 	@Test
 	public void oracle11gImport() {
-
 		String model = "oracle11gModel";
 		importModel(model, ConnectionProfilesConstants.ORACLE_11G_BQT2, "BQT2/TABLE/SMALLA,BQT2/TABLE/SMALLB", false);
 		checkImportedTablesInModel(model, "SMALLA", "SMALLB");
@@ -113,7 +115,6 @@ public class JDBCImportWizardTest {
 
 	@Test
 	public void oracle12cImport() {
-
 		String model = "oracle12cModel";
 		importModel(model, ConnectionProfilesConstants.ORACLE_12C_BQT, "DV/TABLE/SMALLA,DV/TABLE/SMALLB", false);
 		checkImportedTablesInModel(model, "SMALLA", "SMALLB");
@@ -129,7 +130,6 @@ public class JDBCImportWizardTest {
 
 	@Test
 	public void sqlServer2012Import() {
-
 		String model = "sqlServer2012Model";
 		importModel(model, ConnectionProfilesConstants.SQL_SERVER_2012_BQT2,
 				"bqt2/dbo/TABLE/SmallA,bqt2/dbo/TABLE/SmallB", false);
@@ -147,7 +147,6 @@ public class JDBCImportWizardTest {
 
 	@Test
 	public void dv6Import() {
-
 		String model = "dv6Model";
 		importModel(model, ConnectionProfilesConstants.DV6_DS1, "PUBLIC/PUBLIC/TABLE/STATUS,PUBLIC/PUBLIC/TABLE/PARTS", false);
 		checkImportedTablesInModel(model, "STATUS", "PARTS");
@@ -162,7 +161,6 @@ public class JDBCImportWizardTest {
 
 	@Test
 	public void mysql55Import() {
-
 		String model = "mysql55Model";
 		importModel(model, ConnectionProfilesConstants.MYSQL_55_BQT2, "bqt2/TABLE/smalla,bqt2/TABLE/smallb", false);
 		checkImportedTablesInModel(model, "smalla", "smallb");
@@ -170,7 +168,6 @@ public class JDBCImportWizardTest {
 
 	@Test
 	public void postgresql84Import() {
-
 		String model = "postgresql84Model";
 		importModel(model, ConnectionProfilesConstants.POSTGRESQL_84_BQT2, "public/TABLE/smalla,public/TABLE/smallb", false);
 		checkImportedTablesInModel(model, "smalla", "smallb");
@@ -178,11 +175,42 @@ public class JDBCImportWizardTest {
 
 	@Test
 	public void postgresql92Import() {
-
 		String model = "postgresql92Model";
 		importModel(model, ConnectionProfilesConstants.POSTGRESQL_92_DVQE, "public/TABLE/smalla,public/TABLE/smallb", false);
 		checkImportedTablesInModel(model, "smalla", "smallb");
 	}
+	
+	@Test
+	public void sapHanaImport() {
+		String model = "sapHanaModel";
+		importModel(model, ConnectionProfilesConstants.SAP_HANA, "BQT1/TABLE/SMALLA,BQT1/TABLE/SMALLB", false);
+		
+		// TODO temp till hana translator is not set automatically (updated checkImportedTablesInModel method)
+		teiidBot.assertResource(MODEL_PROJECT, model + ".xmi", "SMALLA");
+		teiidBot.assertResource(MODEL_PROJECT, model + ".xmi", "SMALLB");
+		String vdb_name = "Check_" + model;
+		CreateVDB createVDB = new CreateVDB();
+		createVDB.setFolder(MODEL_PROJECT);
+		createVDB.setName(vdb_name);
+		createVDB.execute(true);
+		VDBEditor editor = VDBEditor.getInstance(vdb_name + ".vdb");
+		editor.show();
+		editor.addModel(MODEL_PROJECT, model);
+		editor.save();
+		editor.show();
+		editor.setModelTranslator(model + ".xmi", model, "hana");
+		editor.save();		
+		VDB vdb = new ModelExplorer().getModelProject(MODEL_PROJECT).getVDB(vdb_name + ".vdb");
+		vdb.deployVDB();
+		TeiidJDBCHelper jdbcHelper = new TeiidJDBCHelper(teiidServer, vdb_name);
+		String[] tables = new String[] { "SMALLA", "SMALLB" };
+		for (int i = 0; i < tables.length; i++) {
+			String previewSQL = "select * from \"" + model + "\".\"" + tables[i] + "\"";
+			assertTrue(jdbcHelper.isQuerySuccessful(previewSQL,true));
+		}		
+		//checkImportedTablesInModel(model, "SMALLA", "SMALLB");
+	}
+	
 
 	private void importModel(String modelName, String connectionProfile, String itemList, boolean importProcedures) {
 		Properties iProps = new Properties();
