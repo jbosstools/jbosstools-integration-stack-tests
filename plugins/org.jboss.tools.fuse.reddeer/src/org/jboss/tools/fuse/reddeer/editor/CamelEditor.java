@@ -518,9 +518,9 @@ public class CamelEditor extends GEFEditor {
 		new CamelComponentEditPart(source).click();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		MouseAWTManager.AWTMouseMoveFromTo(new Point(fromCoords.x, fromCoords.y),
-				new Point(fromCoords.x + getFigureWidth(source) + 5, fromCoords.y));
+				new Point(fromCoords.x + getFigureWidth(source) + 5, fromCoords.y + 5));
 		MouseAWTManager.AWTMousePress();
-		MouseAWTManager.AWTMouseMoveFromTo(new Point(fromCoords.x + getFigureWidth(source) + 5, fromCoords.y),
+		MouseAWTManager.AWTMouseMoveFromTo(new Point(fromCoords.x + getFigureWidth(source) + 5, fromCoords.y + 5),
 				new Point(toCoords.x + 10, toCoords.y + 10));
 		MouseAWTManager.AWTMouseRelease();
 		activate();
