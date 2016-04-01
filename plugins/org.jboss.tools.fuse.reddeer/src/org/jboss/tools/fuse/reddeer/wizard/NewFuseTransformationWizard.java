@@ -1,9 +1,11 @@
 package org.jboss.tools.fuse.reddeer.wizard;
 
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.jface.wizard.WizardDialog;
+import org.jboss.reddeer.common.matcher.RegexMatcher;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
@@ -11,7 +13,7 @@ import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.tools.common.reddeer.condition.TableHasRow;
 
 /**
  * Represents 'New Fuse Transformation Wizard'
@@ -59,7 +61,9 @@ public class NewFuseTransformationWizard extends WizardDialog {
 		new PushButton("...").click();
 		new WaitUntil(new ShellWithTextIsAvailable("Select XSD From Project"));
 		new DefaultShell("Select XSD From Project");
-		new DefaultTable().select(name);
+		DefaultTable table = new DefaultTable();
+		new WaitUntil(new TableHasRow(table, new RegexMatcher(name)));
+		table.select(name);
 		new PushButton("OK").click();
 		new WaitUntil(new ShellWithTextIsActive("New Fuse Transformation"));
 	}
@@ -74,7 +78,9 @@ public class NewFuseTransformationWizard extends WizardDialog {
 		new PushButton("...").click();
 		new WaitUntil(new ShellWithTextIsAvailable("Select JSON From Project"));
 		new DefaultShell("Select JSON From Project");
-		new DefaultTable().select(name);
+		DefaultTable table = new DefaultTable();
+		new WaitUntil(new TableHasRow(table, new RegexMatcher(name)));
+		table.select(name);
 		new PushButton("OK").click();
 		new WaitUntil(new ShellWithTextIsActive("New Fuse Transformation"));
 	}

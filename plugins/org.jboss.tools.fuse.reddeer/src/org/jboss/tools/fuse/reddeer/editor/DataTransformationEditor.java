@@ -8,22 +8,23 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.util.Display;
+import org.jboss.reddeer.core.util.ResultRunnable;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
-import org.jboss.reddeer.swt.impl.label.DefaultLabel;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.core.util.Display;
-import org.jboss.reddeer.core.util.ResultRunnable;
-import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 
 /**
@@ -58,11 +59,11 @@ public class DataTransformationEditor extends DefaultEditor {
 		activate();
 		new DefaultToolItem("Add a new mapping").click();
 		log.info("Select a source entry: " + Arrays.toString(sourcePath));
-		invokeMappingContextMenu(source, "Set field");
+		invokeMappingContextMenu(source, "Set property");
 		new DefaultTreeItem(sourcePath).select();
 		new PushButton("OK").click();
 		log.info("Select a target entry: " + Arrays.toString(targetPath));
-		invokeMappingContextMenu(target, "Set field");
+		invokeMappingContextMenu(target, "Set property");
 		new DefaultTreeItem(targetPath).select();
 		new WaitUntil(new WidgetIsEnabled(new PushButton("OK")));
 		new PushButton("OK").click();
@@ -90,7 +91,7 @@ public class DataTransformationEditor extends DefaultEditor {
 		new DefaultCombo().setSelection(name);
 		new PushButton("OK").click();
 		log.info("Select a target entry: " + Arrays.toString(targetPath));
-		invokeMappingContextMenu(target, "Set field");
+		invokeMappingContextMenu(target, "Set property");
 		new DefaultTreeItem(targetPath).select();
 		new PushButton("OK").click();
 	}
@@ -121,7 +122,7 @@ public class DataTransformationEditor extends DefaultEditor {
 		new DefaultText().setText(expression);
 		new PushButton("OK").click();
 		log.info("Select a target entry: " + Arrays.toString(targetPath));
-		invokeMappingContextMenu(target, "Set field");
+		invokeMappingContextMenu(target, "Set property");
 		new DefaultTreeItem(targetPath).select();
 		new PushButton("OK").click();
 	}
@@ -197,11 +198,17 @@ public class DataTransformationEditor extends DefaultEditor {
 
 			@Override
 			public Control run() {
-				List<Control> temp = findAllWidgets(new DefaultLabel(name).getSWTWidget().getParent());
-				Control label = temp.get(temp.size() - 1); // the last label is the right one
-				label.setFocus();
-				label.notifyListeners(SWT.MouseUp, new Event());
-				return label;
+				DefaultStyledText text = new DefaultStyledText(name);
+				List<Control> widgets = findAllWidgets(text.getSWTWidget().getParent().getParent());
+				for (Control c : widgets) {
+					if (c instanceof Label) {
+						c.setFocus();
+						c.notifyListeners(SWT.MouseUp, new Event());
+						return c;
+					}
+				}
+				log.error("Cannot find the right widget!");
+				return null;
 			}
 		});
 

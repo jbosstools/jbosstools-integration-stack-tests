@@ -1,13 +1,16 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.jdt.ui.junit.JUnitView;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -17,6 +20,7 @@ import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.fuse.reddeer.condition.JUnitHasFinished;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.editor.DataTransformationEditor;
+import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
 import org.jboss.tools.fuse.reddeer.utils.ResourceHelper;
 import org.jboss.tools.fuse.reddeer.wizard.NewFuseTransformationTestWizard;
@@ -33,6 +37,7 @@ import org.junit.runner.RunWith;
  * @author tsedmik
  */
 @RunWith(RedDeerSuite.class)
+@OpenPerspective(FuseIntegrationPerspective.class)
 public class DataTransformationTest extends DefaultTest {
 
 	/**
@@ -57,8 +62,8 @@ public class DataTransformationTest extends DefaultTest {
 		new CamelProject("starter").openCamelContext("camel-context.xml");
 		CamelEditor editor = new CamelEditor("camel-context.xml");
 		editor.activate();
-		editor.deleteCamelComponent("file:target/messa...");
-		editor.addCamelComponent("Data Transformation", 200, 200);
+		editor.deleteCamelComponent("file:target/messages?fileName=xyz-order.json");
+		editor.addCamelComponent("Data Transformation", "Route _route1");
 		NewFuseTransformationWizard wizard = new NewFuseTransformationWizard();
 		wizard.setTransformationID("xml2json");
 		wizard.setSourceType(TransformationType.XML);
@@ -71,10 +76,10 @@ public class DataTransformationTest extends DefaultTest {
 		wizard.setJSONTargetFile("xyz-order.json");
 		wizard.finish();
 		editor.activate();
-		editor.addConnection("file:src/data?fil...", "ref:xml2json");
-		editor.doOperation("ref:xml2json", "Add", "Components", "File");
-		editor.selectEditPart("file:directoryName");
-		editor.setUriProperty("file:target/messages?fileName=xyz-order.json");
+		editor.addConnection("file:src/data?fileName=abc-order.xml&noop=true", "ref:xml2json");
+		editor.addCamelComponent("File", "Route _route1");
+		editor.setProperty("file:directoryName", "Uri *", "file:target/messages?fileName=xyz-order.json");
+		editor.addConnection("ref:xml2json", "file:target/messages?fileName=xyz-order.json");
 		editor.close(true);
 
 		DataTransformationEditor transEditor = new DataTransformationEditor("transformation.xml");
@@ -89,16 +94,21 @@ public class DataTransformationTest extends DefaultTest {
 				new String[] { "XyzOrder", "orderId" });
 		transEditor.createTransformation("ABCOrder", new String[] { "ABCOrder", "header", "status" }, "XyzOrder",
 				new String[] { "XyzOrder", "priority" });
-		transEditor.createTransformation("ABCOrder", new String[] { "ABCOrder", "orderItems", "item", "id" },
-				"XyzOrder", new String[] { "XyzOrder", "lineItems", "itemId" });
-		transEditor.createTransformation("ABCOrder", new String[] { "ABCOrder", "orderItems", "item", "price" },
-				"XyzOrder", new String[] { "XyzOrder", "lineItems", "cost" });
-		transEditor.createTransformation("ABCOrder", new String[] { "ABCOrder", "orderItems", "item", "quantity" },
-				"XyzOrder", new String[] { "XyzOrder", "lineItems", "amount" });
+		transEditor.createTransformation("ABCOrder", new String[] { "ABCOrder", "orderItems", "item[ ]", "id" },
+				"XyzOrder", new String[] { "XyzOrder", "lineItems[ ]", "itemId" });
+		transEditor.createTransformation("ABCOrder", new String[] { "ABCOrder", "orderItems", "item[ ]", "price" },
+				"XyzOrder", new String[] { "XyzOrder", "lineItems[ ]", "cost" });
+		transEditor.createTransformation("ABCOrder", new String[] { "ABCOrder", "orderItems", "item[ ]", "quantity" },
+				"XyzOrder", new String[] { "XyzOrder", "lineItems[ ]", "amount" });
 
 		new CamelProject("starter").selectProjectItem("src/main/resources", "META-INF", "spring", "camel-context.xml");
 		NewFuseTransformationTestWizard test = new NewFuseTransformationTestWizard();
 		test.open();
+		try {
+			new WaitUntil(new ShellWithTextIsAvailable("New Fuse Transformation Test"));
+		} catch (WaitTimeoutExpiredException e) {
+			fail("'New Fuse Transformation Test' wizard is not opened!");
+		}
 		test.setPackage("example");
 		test.selectTransformationID("xml2json");
 		test.finish();
