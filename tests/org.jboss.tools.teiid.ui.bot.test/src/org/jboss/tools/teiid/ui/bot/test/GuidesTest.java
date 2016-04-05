@@ -26,20 +26,24 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
+import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.util.SimpleHttpClient;
 import org.jboss.tools.teiid.reddeer.view.GuidesView;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
+import org.jboss.tools.teiid.reddeer.view.SQLResult;
 import org.jboss.tools.teiid.reddeer.wizard.FlatImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.ImportGeneralItemWizard;
 import org.jboss.tools.teiid.reddeer.wizard.ImportJDBCDatabaseWizard;
@@ -92,6 +96,7 @@ public class GuidesTest {
 		createJDBCSource(model_JDBC_name,project_JDBC_name,CONNECTION_PROFILE);
 		
 		guides.previewDataViaActionSet(actionSet,project_JDBC_name, model_JDBC_name+".xmi","PARTS"); 
+		assertTrue(testLastPreview());
 		
 		guides.defineVDB(actionSet, project_JDBC_name,vdb_JDBC_name, model_JDBC_name);
 		
@@ -127,6 +132,7 @@ public class GuidesTest {
 		wsdlImportWizard(soapProfile, model_SOAP_name, view_SOAP_name);
 		
 		guides.previewDataViaActionSet(actionSet, project_SOAP_name, view_SOAP_name+".xmi","FullCountryInfoAllCountries");
+		assertTrue(testLastPreview());
 
 		guides.defineVDB(actionSet, project_SOAP_name, vdb_SOAP_name, view_SOAP_name);
 
@@ -172,6 +178,7 @@ public class GuidesTest {
 		String param = "Park";
 		new ModelEditor(view_REST_name + ".xmi").save();
 		guides.previewDataViaActionSetWithParam(actionSet, param, project_REST_name, view_REST_name+".xmi",procedure_REST_name); 
+		assertTrue(testLastPreview());
 
 		guides.defineVDB(actionSet, project_REST_name,vdb_REST_name, view_REST_name);
 		
@@ -222,7 +229,8 @@ public class GuidesTest {
 		createFlatLocalSource(flatProfile,project_Flat_name,model_Flat_name, view_Flat_name,view_Flat_table);
 		
 		guides.previewDataViaActionSet(actionSet,project_Flat_name, view_Flat_name+".xmi",view_Flat_table);
-		
+		assertTrue(testLastPreview());
+
 		guides.defineVDB(actionSet, project_Flat_name,vdb_Flat_name, view_Flat_name);
 		
 		assertTrue(guides.editVDB(actionSet, project_Flat_name, vdb_Flat_name));
@@ -256,7 +264,8 @@ public class GuidesTest {
 		new ImportMetadataManager().importFromXML(xmlLocalprofile , xmlLocalName, xmlLocalprofile, props);
 		
 		guides.previewDataViaActionSet(actionSet,xmlLocalprofile, xmlLocalName+"View.xmi",xmlLocalName+"Table");
-		
+		assertTrue(testLastPreview());
+
 		guides.defineVDB(actionSet, xmlLocalprofile,vdb_localXML_name, xmlLocalName+"View"); 
 		
 		assertTrue(guides.editVDB(actionSet, xmlLocalprofile, vdb_localXML_name));
@@ -290,7 +299,8 @@ public class GuidesTest {
 		new ImportMetadataManager().importFromXML(xmlRemoteprofile , xmlRemoteName, xmlRemoteprofile, props);
 		
 		guides.previewDataViaActionSet(actionSet,xmlRemoteprofile, xmlRemoteName+"View.xmi",xmlRemoteName+"Table");
-		
+		assertTrue(testLastPreview());
+
 		guides.defineVDB(actionSet, xmlRemoteprofile,vdb_remoteXML_name, xmlRemoteName+"View"); 
 		
 		assertTrue(guides.editVDB(actionSet, xmlRemoteprofile, vdb_remoteXML_name));
@@ -316,15 +326,20 @@ public class GuidesTest {
 		
 		guides.createSourceModelFromTeiid(modelName, dataSource,null,"dbo");
 		
+		TeiidPerspective.getInstance();
+
 		guides.chooseAction(actionSet, "Set Connection Profile");
 		new DefaultShell("Set Connection Profile");
 		new DefaultTreeItem("Teiid Importer Connections", "TeiidImportCP_" + dataSource).select();
 		new PushButton("OK").click();
-		new TeiidBot().saveAll();
 		
 		new WaitWhile(new IsPreviewInProgress(), TimePeriod.NORMAL);
 		new WaitWhile(new IsInProgress(), TimePeriod.NORMAL);
+		new TeiidBot().saveAll();
+
 		guides.previewDataViaActionSet(actionSet, projectName, modelName+".xmi","STATUS"); 	
+		assertTrue(testLastPreview());
+
 		guides.defineVDB(actionSet, projectName, vdbName, modelName);
 				
 		List<Integer> results = guides.executeVDB(actionSet, teiidServer, vdbName,test_SQL);
@@ -414,12 +429,14 @@ public class GuidesTest {
 		new Table().create(Table.Type.VIEW, tableName, props);
     }
     private void defineProcedure(String procedureName, String query, String uri){
-		Matcher<String> matcher = new WithMnemonicTextMatcher("New...");
+    	new DefaultShell("Define View Procedure");
+    	Matcher<String> matcher = new WithMnemonicTextMatcher("New...");
     	new PushButton(1, matcher).click();
 		Properties props = new Properties();
 		props.setProperty("sql",query);
 		props.setProperty("type", Procedure.Type.RELVIEW_PROCEDURE);
 		props.setProperty("params", "nameIN");
+		new DefaultShell("Select Procedure Type");
 		new Procedure().create(procedureName, props);
 		new DefaultShell("Define View Procedure");
 		new DefaultCombo().setSelection("GET");
@@ -437,6 +454,12 @@ public class GuidesTest {
 		guides.chooseAction("Teiid", "Set the Default ");
 		new DefaultCombo().setSelection(0);
 		new PushButton("OK").click();
+		try { // if show untested teiid version dialog
+		        new DefaultShell("Untested Teiid Version");
+		        new PushButton("Yes").click();
+		}catch(Exception ex){
+		        // dialog doesn't appear
+		}
 		new DefaultShell("Default Server Changed");
 		new PushButton("OK").click();
 		servers.get(0).start();
@@ -446,5 +469,13 @@ public class GuidesTest {
 		new PushButton("OK").click();
 		new DefaultShell("Notification");
 		new PushButton("OK").click();
+    }
+    
+    private boolean testLastPreview(){
+    	DatabaseDevelopmentPerspective.getInstance().getSqlResultsView();
+		List<TreeItem> items = new DefaultTree().getItems();
+		String status = items.get(items.size() - 1).getCell(0);
+		TeiidPerspective.getInstance();
+		return SQLResult.STATUS_SUCCEEDED.equals(status);
     }
 }
