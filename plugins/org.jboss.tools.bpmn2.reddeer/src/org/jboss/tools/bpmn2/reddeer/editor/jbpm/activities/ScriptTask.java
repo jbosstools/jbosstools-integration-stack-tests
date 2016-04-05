@@ -1,5 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.properties.PropertiesTabs;
@@ -35,6 +36,11 @@ public class ScriptTask extends Task {
 	public void setScript(String language, String script) {
 		propertiesHandler.setUp(new ScriptSetUp(PropertiesTabs.SCRIPT_TASK_TAB, "Attributes", language, script));
 
+	}
+	
+	public String getScript() {
+		propertiesHandler.selectTabInPropertiesView(PropertiesTabs.SCRIPT_TASK_TAB);
+		return new LabeledText("Script").getText();
 	}
 
 	/**

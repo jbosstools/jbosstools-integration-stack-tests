@@ -3,6 +3,8 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ElementWithParamMapping;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.boundaryevents.BoundaryEvent;
+import org.jboss.tools.bpmn2.reddeer.editor.properties.PropertiesTabs;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.CheckBoxSetUp;
 
 /**
  * 
@@ -44,4 +46,7 @@ public class Task extends ElementWithParamMapping {
 
 	}
 
+	public void setIsAsync(boolean isAsync) {
+		propertiesHandler.setUp(new CheckBoxSetUp(PropertiesTabs.SCRIPT_TASK_TAB, "Is Async", isAsync));
+	}
 }

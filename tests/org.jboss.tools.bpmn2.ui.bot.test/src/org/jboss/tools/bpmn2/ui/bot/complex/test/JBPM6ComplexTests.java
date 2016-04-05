@@ -4,6 +4,7 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexAdHocProcessTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexAdHocSubprocessTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexAssociationTest;
+import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexAsyncLongScriptTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexBooleanStructureReferenceTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexBoundaryConditionalEventOnTaskTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexBoundaryEscalationEventOnTaskTest;
@@ -50,6 +51,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	ComplexAdHocProcessTest.class,
 	ComplexAdHocSubprocessTest.class,
 	ComplexAssociationTest.class,
+	ComplexAsyncLongScriptTest.class,
 	ComplexBooleanStructureReferenceTest.class,
 	ComplexBoundaryConditionalEventOnTaskTest.class,
 	ComplexBoundaryEscalationEventOnTaskTest.class,
