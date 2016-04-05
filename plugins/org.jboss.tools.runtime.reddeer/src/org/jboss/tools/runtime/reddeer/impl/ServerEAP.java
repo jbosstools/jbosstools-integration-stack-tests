@@ -18,7 +18,7 @@ public class ServerEAP extends ServerAS {
 
 	public static final String CATEGORY = "Red Hat JBoss Middleware";
 
-	private final String label = "JBoss Enterprise Application Platform";
+	private final String label = "Red Hat JBoss Enterprise Application Platform";
 
 	@Override
 	public String getCategory() {
