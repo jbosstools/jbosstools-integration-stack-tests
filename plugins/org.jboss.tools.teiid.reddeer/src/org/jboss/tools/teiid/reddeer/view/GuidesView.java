@@ -277,14 +277,14 @@ public class GuidesView extends WorkbenchView {
 	}
 
 	public WAR createWAR(String actionSet, String warName, String warType, String JndiName, String path, String[] pathVDB){
-		chooseAction(actionSet, "Generate REST");
-		new PushButton("OK").click();
 		Properties warProps = new Properties();
 		warProps.setProperty("contextName", warName);
 		warProps.setProperty("vdbJndiName", JndiName);
 		warProps.setProperty("securityType", warType);
 		warProps.setProperty("saveLocation", path);
 		WAR war = new WAR(warProps,pathVDB);
+		chooseAction(actionSet, "Generate REST");
+		new PushButton("OK").click();
 		war.setupRESTWAR();  //private -> public
 		new PushButton("OK").click();
 		try{
@@ -328,13 +328,13 @@ public class GuidesView extends WorkbenchView {
 		servers.get(0).stop();
 		servers.get(1).start();
 		new WaitWhile(new IsInProgress(), TimePeriod.SHORT);
-		new ShellMenu("File", "Save All").select();
-		new WaitWhile(new IsInProgress(), TimePeriod.SHORT);
 		chooseAction("Teiid", "Refresh ");
 		new DefaultCombo().setSelection(serverName);
 		new PushButton("OK").click();
 		new DefaultShell("Notification");
 		new PushButton("OK").click();
+		new ShellMenu("File", "Save All").select();
+		new WaitWhile(new IsInProgress(), TimePeriod.SHORT);
 	}
 	
 	public void createDataSource(String name, String connectionProfile){
