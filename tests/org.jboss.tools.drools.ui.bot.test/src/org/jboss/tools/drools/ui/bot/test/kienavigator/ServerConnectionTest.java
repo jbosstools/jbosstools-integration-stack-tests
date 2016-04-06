@@ -68,7 +68,7 @@ public class ServerConnectionTest extends KieNavigatorTestParent {
 	private void checkError(KieNavigatorView knv) {
 		knv.getServer(0).refresh();
 		List<OrgUnitItem> ouList = knv.getServer(0).getOrgUnits();
-		Assert.assertEquals(1, ouList.size());
+		Assert.assertEquals("BZ1269106", 1, ouList.size());
 		Assert.assertTrue(ouList.get(0).getName().contains("Server returned"));
 	}
 }

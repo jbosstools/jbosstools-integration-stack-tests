@@ -38,7 +38,7 @@ public class CreateItemsRestTest extends KieNavigatorTestParent {
 
 		OrganizationalUnit ou = RestClient.getOrganizationalUnit("restname");
 		Assert.assertEquals("restname", ou.getName());
-		Assert.assertEquals("restdescr", ou.getDescription());
+		Assert.assertEquals("BZ1262213", "restdescr", ou.getDescription());
 		Assert.assertEquals("rest@drools.org", ou.getOwner());
 		Assert.assertEquals("restgroupid", ou.getGroupId());
 

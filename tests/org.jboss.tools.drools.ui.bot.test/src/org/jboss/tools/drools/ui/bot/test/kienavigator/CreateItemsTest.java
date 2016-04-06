@@ -58,7 +58,7 @@ public class CreateItemsTest extends KieNavigatorTestParent {
 		RepositoryProperties rp = knv.getRepository(0, "orgname", "reponame").properties();
 		Assert.assertEquals("reponame", rp.getRepositoryName());
 		Assert.assertEquals("orgname", rp.getOrganizationalUnit());
-		Assert.assertEquals("repodescript", rp.getDescription());
+		Assert.assertEquals("BZ 1262213", "repodescript", rp.getDescription());
 		Assert.assertEquals("repouser", rp.getUserName());
 		rp.ok();
 
