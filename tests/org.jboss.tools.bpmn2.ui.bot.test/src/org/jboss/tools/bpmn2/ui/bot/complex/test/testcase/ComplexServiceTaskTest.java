@@ -5,13 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.HashMap;
 
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.FromDataOutput;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.FromVariable;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.Message;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping.Type;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ToDataInput;
-import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ToVariable;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ServiceTask;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.endevents.EndEvent;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.startevents.StartEvent;
@@ -25,7 +19,7 @@ import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.WorkflowProcessInstance;
 
 @JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-ServiceTask.bpmn2", saveAs = "BPMN2-ServiceTask.bpmn2", knownIssues = {
-	"1213445", "1309953", "1309958", "1309951", "1316040" })
+	"1309951", "1316040" })
 public class ComplexServiceTaskTest extends JBPM6ComplexTest {
 
 	@TestPhase(phase = Phase.MODEL)
@@ -36,12 +30,10 @@ public class ComplexServiceTaskTest extends JBPM6ComplexTest {
 		service.setImplementation("Java");
 		service.setOperation("java.util.Date/compareTo", new Message("DateVar", "java.util.Date"),
 				new Message("ObjectVar", "java.lang.Object"), null);
-		service.editParameterMapping(new ParameterMapping(new FromVariable("DateVar"),
-				new ToDataInput("Parameter", "java.util.Date"), Type.INPUT));
-		service.editParameterMapping(new ParameterMapping(new FromDataOutput("Result", "java.lang.Integer"),
-				new ToVariable("ObjectVar"), Type.OUTPUT));
+		
+		service.setServiceInputVariable("DateVar");
+		service.setServiceOutputVariable("ObjectVar");
 		service.connectTo(new EndEvent("EndProcess"));
-
 	}
 
 	@TestPhase(phase = Phase.RUN)

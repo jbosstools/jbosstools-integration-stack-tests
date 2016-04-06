@@ -23,7 +23,7 @@ import org.kie.api.runtime.process.WorkItem;
 import org.kie.api.runtime.process.WorkItemHandler;
 import org.kie.api.runtime.process.WorkItemManager;
 
-@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-ManualTask.bpmn2", saveAs = "BPMN2-ManualTask.bpmn2", knownIssues={"1308969"})
+@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-ManualTask.bpmn2", saveAs = "BPMN2-ManualTask.bpmn2")
 public class ComplexManualTaskTest extends JBPM6ComplexTest {
 
 	@TestPhase(phase = Phase.MODEL)
@@ -33,7 +33,7 @@ public class ComplexManualTaskTest extends JBPM6ComplexTest {
 		ManualTask manual = (ManualTask) start.append("NumberAssertion", ElementType.MANUAL_TASK);
 		manual.addParameterMapping(new ParameterMapping(new FromVariable(VARIABLE1),
 				new ToDataInput("internalVariable", "Integer"), ParameterMapping.Type.INPUT));
-
+		manual.setActorId("actorForManualTask");
 		manual.connectTo(new EndEvent("EndProcess"));
 	}
 
