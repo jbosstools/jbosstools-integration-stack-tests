@@ -37,10 +37,9 @@ public class ComplexErrorBoundaryEventOnTaskTest extends JBPM6ComplexTest {
 		ScriptTask scriptTask = new ScriptTask("Script Task");
 		boundaryEvent.connectTo(scriptTask);
 		
- 		scriptTask.addEvent("WrongEvent", ElementType.ERROR_BOUNDARY_EVENT);
 		try {
-			new ErrorBoundaryEvent("WrongEvent");
-			fail("boundary events prohibitted on script tasks");
+			scriptTask.addEvent("WrongEvent", ElementType.ERROR_BOUNDARY_EVENT);
+			fail("Boundary events are prohibitted on script tasks");
 		} catch (RuntimeException e) {
 			// ok
 		}

@@ -15,8 +15,7 @@ import org.jbpm.bpmn2.handler.ReceiveTaskHandler;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.WorkflowProcessInstance;
 
-@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-ReceiveTask.bpmn2", saveAs = "BPMN2-ReceiveTask.bpmn2", knownIssues = {
-	"1188592" })
+@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-ReceiveTask.bpmn2", saveAs = "BPMN2-ReceiveTask.bpmn2")
 public class ComplexReceiveTaskTest extends JBPM6ComplexTest {
 
 	@TestPhase(phase = Phase.MODEL)
