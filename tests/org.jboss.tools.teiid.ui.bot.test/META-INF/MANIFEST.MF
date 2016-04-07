@@ -21,5 +21,6 @@ Require-Bundle: org.eclipse.swtbot.eclipse.gef.finder;bundle-version="2.0.5",
  org.eclipse.swtbot.forms.finder,
  org.jboss.reddeer.go;bundle-version="1.0.0",
  org.jboss.tools.common.reddeer;bundle-version="4.3.0",
- org.hamcrest.library
+ org.hamcrest.library,
+ com.google.gson;bundle-version="2.1.0"
 Export-Package: org.jboss.tools.teiid.reddeer.manager

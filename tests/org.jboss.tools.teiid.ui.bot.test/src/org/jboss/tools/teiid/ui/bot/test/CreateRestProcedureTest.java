@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.ArrayList;
 import java.util.Properties;
 
 import org.jboss.reddeer.common.wait.AbstractWait;
@@ -43,11 +44,17 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
 @TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = {
-	ConnectionProfilesConstants.ORACLE_11G_PARTS_SUPPLIER })
+		ConnectionProfilesConstants.ORACLE_11G_PARTS_SUPPLIER })
 public class CreateRestProcedureTest {
+
 	private static final String SUPPLIER_EXPECTED = "<elems pk_SUPPLIER_ID_in=\"S108\"><elem><SUPPLIER_ID>S108</SUPPLIER_ID><SUPPLIER_NAME>Olsen</SUPPLIER_NAME><SUPPLIER_STATUS>20</SUPPLIER_STATUS><SUPPLIER_CITY>Atlanta</SUPPLIER_CITY><SUPPLIER_STATE>GA</SUPPLIER_STATE></elem></elems>";
 
 	private static final String PARTS_EXPECTED = "<elems pk_PART_ID_in=\"P305\"><elem><PART_ID>P305</PART_ID><PART_NAME>Cog</PART_NAME><PART_COLOR>Red</PART_COLOR><PART_WEIGHT>20</PART_WEIGHT></elem></elems>";
@@ -65,6 +72,7 @@ public class CreateRestProcedureTest {
 	private static final String TARGET_MODEL_NAME = "ProcView.xmi";
 
 	private static final String REST_PROCEDURE_SUFFIX = "RestProc";
+	private ArrayList<String> allowedPaths = new ArrayList<String>();
 
 	private Project project;
 	private static TeiidBot teiidBot = new TeiidBot();
@@ -122,8 +130,11 @@ public class CreateRestProcedureTest {
 		generateAndDeployWAR();
 
 		String modelUrl = TARGET_MODEL_NAME.replace(".xmi", "");
+		
+		checkSwagger(modelUrl);
 		checkWar(PARTS_EXPECTED, modelUrl + "/PARTS/P305");
 		checkWar(SUPPLIER_EXPECTED, modelUrl + "/SUPPLIER/S108");
+
 	}
 
 	@Test
@@ -141,6 +152,8 @@ public class CreateRestProcedureTest {
 		generateAndDeployWAR();
 
 		String modelUrl = VIEW_MODEL_NAME.replace(".xmi", "");
+		
+		checkSwagger(modelUrl);
 		checkWar(PARTS_EXPECTED, modelUrl + "/PARTS/P305");
 		checkWar(SUPPLIER_EXPECTED, modelUrl + "/SUPPLIER/S108");
 
@@ -268,6 +281,38 @@ public class CreateRestProcedureTest {
 	private void checkErrors() {
 		ProblemsView problems = new ProblemsView();
 		assertTrue("There are validation errors", problems.getProblems(ProblemType.ERROR).isEmpty());
+	}
+
+	private void checkSwagger(String modelName) {
+		
+		//Checks if the main page is available
+		String checkSwagger = new SimpleHttpClient("http://localhost:8080/" + PROJECT_NAME)
+				.setBasicAuth(teiidServer.getServerConfig().getServerBase().getProperty("teiidUser"),
+						teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword"))
+				.get();
+		
+		allowedPaths.clear();
+		allowedPaths.add("\"/"+ modelName +"/PARTS/{pk_PART_ID_in}\"");
+		allowedPaths.add("\"/"+ modelName +"/SUPPLIER/{pk_SUPPLIER_ID_in}\"");
+		allowedPaths.add("\"/"+ modelName +"/json/SUPPLIER/{pk_SUPPLIER_ID_in}\"");
+		allowedPaths.add("\"/"+ modelName +"/json/PARTS/{pk_PART_ID_in}\"");
+
+		//Checks that paths to procedures are correct
+		String response = new SimpleHttpClient("http://localhost:8080/" + PROJECT_NAME + "/api-docs/" + modelName)
+				.setBasicAuth(teiidServer.getServerConfig().getServerBase().getProperty("teiidUser"),
+						teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword"))
+				.get();
+		
+		JsonObject wholeJson = new JsonParser().parse(response).getAsJsonObject();
+		JsonArray apisArray = wholeJson.get("apis").getAsJsonArray();
+
+		for (int i = 0; i < apisArray.size(); i++) {
+			JsonElement element = apisArray.get(i);
+			String path = element.getAsJsonObject().get("path").toString();
+			assertTrue(allowedPaths.contains(path));
+			allowedPaths.remove(path);
+		}
+
 	}
 
 }
