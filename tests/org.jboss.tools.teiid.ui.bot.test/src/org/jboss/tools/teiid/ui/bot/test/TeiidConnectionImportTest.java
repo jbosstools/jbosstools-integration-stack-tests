@@ -18,7 +18,6 @@ import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidSer
 import org.jboss.tools.teiid.reddeer.util.SimpleHttpClient;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
-import org.jboss.tools.teiid.reddeer.wizard.ImportGeneralItemWizard;
 import org.jboss.tools.teiid.reddeer.wizard.TeiidConnectionImportWizard;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -387,6 +386,8 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 		teiidImportProps.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "SMALL%");
 		
 		// TODO temp till hana translator is not set automatically (updated importModel method)
+		new DefaultShell();
+		new ServersViewExt().createDatasource(teiidServer.getName(), ConnectionProfilesConstants.SAP_HANA);
 		Properties importProps = new Properties();
 		importProps.setProperty(TeiidConnectionImportWizard.DATA_SOURCE_NAME, ConnectionProfilesConstants.SAP_HANA);
 		importProps.setProperty(TeiidConnectionImportWizard.TRANSLATOR, "hana");
