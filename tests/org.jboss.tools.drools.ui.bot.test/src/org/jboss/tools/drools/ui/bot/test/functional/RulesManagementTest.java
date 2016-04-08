@@ -8,7 +8,7 @@ import org.jboss.reddeer.eclipse.ui.perspectives.ResourcePerspective;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
@@ -134,11 +134,11 @@ public class RulesManagementTest extends TestParent {
 
 		try {
 			new ShellMenu(new RegexMatcher("Run"), new RegexMatcher("Toggle Breakpoint.*")).select();
-		} catch (SWTLayerException ex) {
-			if ("Menu item is not enabled".equals(ex.getMessage())) {
-				Assert.fail("Toggle Breakpoint menu item is not enabled!");
+		} catch (CoreLayerException exception) {
+			if (exception.getMessage().contains("Menu item is not enabled")) {
+				Assert.fail("BZ1012380: Unable to toggle breakpoint in rules");
 			} else {
-				throw ex;
+				throw exception;
 			}
 		}
 	}
