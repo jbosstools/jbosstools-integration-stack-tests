@@ -122,7 +122,7 @@ public class DslEditorTest extends TestParent {
 
 		// FIXME this doesn't really work, it needs to be addressed in bz#1013750
 		DslLine line = newLines.get(position + 1);
-		Assert.assertEquals("Wrong mapping!", MAPPING, line.getMapping());
+		Assert.assertEquals("BZ1013750: DSL Editor can't change the order of DSL lines", MAPPING, line.getMapping());
 		Assert.assertEquals("Wrong expression!", EXPRESSION, line.getExpression());
 		Assert.assertEquals("Wrong scope!", Scope.CONSEQUENCE.toEditorString(), line.getScope());
 	}

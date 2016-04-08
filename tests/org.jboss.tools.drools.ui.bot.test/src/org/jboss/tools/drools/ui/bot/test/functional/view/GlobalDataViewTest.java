@@ -71,7 +71,7 @@ public class GlobalDataViewTest extends ViewTestParent {
 		globals.open();
 
 		List<String> names = globals.getGlobalsList();
-		Assert.assertEquals("Wrong number of globals found", 1, names.size());
+		Assert.assertEquals("Known issue: Wrong number of globals found", 1, names.size());
 		Assert.assertEquals("Wrong global name encountered", "stringVar", names.get(0));
 	}
 
@@ -106,7 +106,7 @@ public class GlobalDataViewTest extends ViewTestParent {
 		globals.open();
 
 		List<String> names = globals.getGlobalsList();
-		Assert.assertEquals("Wrong number of globals found", 3, names.size());
+		Assert.assertEquals("Known issue: Wrong number of globals found", 3, names.size());
 		Assert.assertTrue("Global 'stringVar' not found", names.contains("stringVar"));
 		Assert.assertTrue("Global 'objectVar' not found", names.contains("objectVar"));
 		Assert.assertTrue("Global 'listVar' not found", names.contains("listVar"));

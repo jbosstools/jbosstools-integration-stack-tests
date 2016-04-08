@@ -15,6 +15,7 @@ import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -101,9 +102,17 @@ public class MetadataCompletionTest extends DrlCompletionParent {
 		editor.writeText("import java.util.List\n\n");
 
 		selectFromContentAssist(editor, "global");
-		editor.writeText("list");
-
-		selectFromContentAssist(editor, "List");
+		
+		try {
+			selectFromContentAssist(editor, "List");
+		} catch (AssertionError exception) {
+			if (exception.getMessage().contains("Could not find 'List' in content assist")) {
+				Assert.fail("BZ1029429: No code completion after 'global'");
+			} else {
+				throw exception;
+			}
+		}
+		
 		editor.writeText("list");
 
 		assertCorrectText(editor, "global List list");

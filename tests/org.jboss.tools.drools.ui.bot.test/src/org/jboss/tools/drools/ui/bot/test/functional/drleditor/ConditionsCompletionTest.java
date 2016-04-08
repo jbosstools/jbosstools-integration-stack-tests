@@ -55,7 +55,7 @@ public class ConditionsCompletionTest extends DrlCompletionParent {
 		editor.setPosition(2, 0);
 		editor.writeText("import com.sample.domain.MyMessage\n\nrule newRule\n\twhen\n\t\tMyMessage( )\n\tthen\nend\n");
 
-		editor.setPosition(6, 11);
+		editor.setPosition(6, 13);
 
 		ContentAssist assist = editor.createContentAssist();
 		List<String> items = assist.getItems();
@@ -64,7 +64,7 @@ public class ConditionsCompletionTest extends DrlCompletionParent {
 		Assert.assertTrue("Parameterized field is not available", items.contains("parameterized"));
 
 		assist.selectItem("text");
-		assertCorrectText(editor, "Message( text )");
+		assertCorrectText(editor, "MyMessage( text )");
 
 		// finish the constraint
 		editor.writeText("!= null, ");
@@ -83,6 +83,6 @@ public class ConditionsCompletionTest extends DrlCompletionParent {
 		Assert.assertTrue("Parameter field is not available for variable assignment", items.contains("parameter"));
 		Assert.assertTrue("Parameterized field is not available for variable assignment",
 				items.contains("parameterized"));
-
+		assist.selectItem("text");
 	}
 }

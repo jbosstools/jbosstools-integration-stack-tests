@@ -102,7 +102,7 @@ public class DslrEditorTest extends TestParent {
 			}
 		}
 
-		Assert.assertEquals("No DSL files were found/proposed", 1, dsls);
+		Assert.assertEquals("Known issue: No DSL files were found/proposed", 1, dsls);
 	}
 
 	@Test
@@ -116,7 +116,7 @@ public class DslrEditorTest extends TestParent {
 		ContentAssist assist = editor.createContentAssist();
 		List<String> items = assist.getItems();
 
-		Assert.assertTrue("DSL for rule keyword was not proposed", items.contains("pravidlo"));
+		Assert.assertTrue("Known issue: DSL for rule keyword was not proposed", items.contains("pravidlo"));
 
 		assist.selectItem("pravidlo");
 		Assert.assertEquals("Wrong text was inserted", "pravidlo \"new rule\"", editor.getTextOnCurrentLine());

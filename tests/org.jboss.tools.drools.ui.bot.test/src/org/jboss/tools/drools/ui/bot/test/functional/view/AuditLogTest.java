@@ -100,6 +100,6 @@ public class AuditLogTest extends TestParent {
 
 		List<String> events = view.getEvents();
 		// do not hunt for all the events, just check the number
-		Assert.assertEquals(events.toString(), 313, events.size());
+		Assert.assertEquals("BZ1135925: Audit View fails to open logs which includes a ruleflow", 313, events.size());
 	}
 }

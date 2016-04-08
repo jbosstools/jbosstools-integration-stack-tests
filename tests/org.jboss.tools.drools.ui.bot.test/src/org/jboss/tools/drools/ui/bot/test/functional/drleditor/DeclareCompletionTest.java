@@ -10,6 +10,7 @@ import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -31,7 +32,15 @@ public class DeclareCompletionTest extends DrlCompletionParent {
 		RuleEditor editor = master.showRuleEditor();
 		editor.setPosition(2, 0);
 
-		selectFromContentAssist(editor, "declare");
+		try {
+			selectFromContentAssist(editor, "declare");
+		} catch (AssertionError exception) {
+			if (exception.getMessage().contains("Could not find 'declare' in content assist")) {
+				Assert.fail("BZ1029044: No content assist for declarations");
+			} else {
+				throw exception;
+			}
+		}
 
 		// TODO: not implemented in plugin, hard to tell what the line will look like
 	}
@@ -45,10 +54,18 @@ public class DeclareCompletionTest extends DrlCompletionParent {
 		editor.setPosition(2, 0);
 		editor.writeText("declare Person\n\tname : String\n\tage : int\nend\n");
 
-		editor.setPosition(9, 21);
+		editor.setPosition(10, 21);
 		editor.writeText("\n        ");
 
-		selectFromContentAssist(editor, "Person");
+		try {
+			selectFromContentAssist(editor, "Person");
+		} catch (AssertionError exception) {
+			if (exception.getMessage().contains("Could not find 'Person' in content assist")) {
+				Assert.fail("BZ1029040: Content assist does not offer types declared in DRL file");
+			} else {
+				throw exception;
+			}
+		}
 		selectFromContentAssist(editor, "name");
 		editor.writeText("!= null, ");
 		selectFromContentAssist(editor, "age");
@@ -73,9 +90,18 @@ public class DeclareCompletionTest extends DrlCompletionParent {
 		assertCorrectText(editor, "query testQuery");
 
 		editor.setPosition(5, 1);
-		editor.replaceText("", 12); // delete "#consequences"
+		editor.replaceText("\n", 12); // delete "#consequences"
+		editor.setPosition(5, 1);
 
-		selectFromContentAssist(editor, "MyMessage");
+		try {
+			selectFromContentAssist(editor, "MyMessage");
+		} catch (AssertionError exception) {
+			if (exception.getMessage().contains("Could not find 'MyMessage' in content assist")) {
+				Assert.fail("BZ1031618: Wrong code completion for query");
+			} else {
+				throw exception;
+			}
+		}
 		assertCorrectText(editor, "MyMessage( )");
 	}
 
@@ -88,10 +114,18 @@ public class DeclareCompletionTest extends DrlCompletionParent {
 		editor.setPosition(2, 0);
 		editor.writeText("import com.sample.domain.MyMessage\n\nquery testQuery\n\tMyMessage()\nend\n");
 
-		editor.setPosition(10, 21);
+		editor.setPosition(11, 21);
 		editor.writeText("\n        ");
 
-		selectFromContentAssist(editor, "testQuery");
+		try {
+			selectFromContentAssist(editor, "testQuery");
+		} catch (AssertionError exception) {
+			if (exception.getMessage().contains("Could not find 'testQuery' in content assist")) {
+				Assert.fail("BZ1029054: Queries are not included in content assist");
+			} else {
+				throw exception;
+			}
+		}
 		assertCorrectText(editor, "testQuery( )");
 	}
 
