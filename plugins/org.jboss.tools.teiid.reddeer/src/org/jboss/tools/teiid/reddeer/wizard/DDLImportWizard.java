@@ -16,11 +16,16 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
  */
 public class DDLImportWizard extends TeiidImportWizard {
 
-	public static final String DDL_FILE = "DDL file: ";
 	public static final String MODEL_FOLDER = "Model folder: ";
 	public static final String MODEL_NAME = "Model name: ";
 	public static final String MODEL_TYPE = "Model type: ";
-
+	public static final String TEIID_WIZARD = "DDL File (Teiid) >> Source or View Model";
+	public static final String CUSTOM_WIZARD = "DDL File (General) >> Source or View Model";
+	public static final String Source_Type = "Source Model";
+	public static final String View_Type = "View Model";
+	
+	private String type;
+	private String modelType;
 	private String ddlPath;
 	private String modelName;
 	private String dialect;
@@ -32,17 +37,14 @@ public class DDLImportWizard extends TeiidImportWizard {
 	public static final String ORACLE = "ORACLE";
 	public static final String POSTGRES = "POSTGRES";
 	public static final String DERBY = "DERBY";
-
-	public void setAutoselectDialect(boolean autoselectDialect) {
-		this.autoselectDialect = autoselectDialect;
-	}
-
-	public void setDialect(String dialect) {
-		this.dialect = dialect;
-	}
-
-	public DDLImportWizard() {
-		super("DDL File >> Source or View Model");
+	
+	/**
+	 * Constructor
+	 * @param type - Select type of wizard (TEIID_WIZARD or CUSTOM_WIZARD)
+	 */
+	public DDLImportWizard(String type) {
+		super(type);
+		this.type=type;
 	}
 
 	public void setDdlPath(String ddlPath) {
@@ -52,28 +54,51 @@ public class DDLImportWizard extends TeiidImportWizard {
 	public void setModelName(String modelName) {
 		this.modelName = modelName;
 	}
+	
+	public void setModelType(String modelType) {
+		this.modelType = modelType;
+	}
+	
+	public void setAutoselectDialect(boolean autoselectDialect) {
+		this.autoselectDialect = autoselectDialect;
+	}
+
+	public void setDialect(String dialect) {
+		this.dialect = dialect;
+	}
 
 	public void execute() {
 		open();
-		new WaitUntil(new ShellWithTextIsAvailable("Import DDL"));
-		new DefaultShell("Import DDL");
-		new DefaultCombo(0).setText(ddlPath);
-		if (autoselectDialect) {
-			// click on autoselect
-			new SWTWorkbenchBot().checkBox("Auto-select").click();
-		} else {
-			if (dialect != null) {
-				// click on combo
-				new DefaultCombo(1).setSelection(dialect);
+		if(TEIID_WIZARD.equals(type)){
+			new WaitUntil(new ShellWithTextIsAvailable("Import Teiid DDL"));
+			new DefaultShell("Import Teiid DDL");
+			new DefaultCombo(0).setText(ddlPath);
+		}else if(CUSTOM_WIZARD.equals(type)){
+			new WaitUntil(new ShellWithTextIsAvailable("Import DDL"));
+			new DefaultShell("Import DDL");
+			new DefaultCombo(0).setText(ddlPath);
+			if (!autoselectDialect) { //default auto-select is clicked
+				if (dialect != null) {
+					// click on combo
+					new DefaultCombo(1).setSelection(dialect);
+				}
 			}
 		}
-		// TODO: LabeledText
-		// new LabeledText(MODEL_NAME).setText(modelName);
-		new SWTWorkbenchBot().textWithLabel(MODEL_NAME).setText(modelName);
-
+		new SWTWorkbenchBot().textWithLabel("Model name: ").setText(modelName);
+		if(modelType != null){
+			if(TEIID_WIZARD.equals(type)){
+				new DefaultCombo(1).setText(modelType);
+			}else if(CUSTOM_WIZARD.equals(type)){
+				new DefaultCombo(2).setText(modelType);
+			}
+		}
 		next();
 		AbstractWait.sleep(TimePeriod.SHORT);
-		new DefaultShell("Import DDL");
+		if(TEIID_WIZARD.equals(type)){
+			new DefaultShell("Import Teiid DDL");
+		}else if(CUSTOM_WIZARD.equals(type)){
+			new DefaultShell("Import DDL");
+		}
 		finish();
 	}
 
