@@ -21,7 +21,6 @@ import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.core.util.Display;
 import org.jboss.reddeer.core.util.ResultRunnable;
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
-import org.jboss.reddeer.gef.GEFLayerException;
 import org.jboss.reddeer.gef.api.Palette;
 import org.jboss.reddeer.gef.editor.GEFEditor;
 import org.jboss.reddeer.gef.handler.ViewerHandler;
@@ -386,7 +385,7 @@ public class CamelEditor extends GEFEditor {
 		AbstractWait.sleep(TimePeriod.SHORT);
 		try {
 			new CamelComponentEditPart(name).select();
-		} catch (GEFLayerException ex) {
+		} catch (CoreLayerException ex) {
 			return false;
 		}
 		return true;
