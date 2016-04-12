@@ -4,7 +4,6 @@ import java.util.Properties;
 
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.ModelProject;
-import org.jboss.tools.teiid.reddeer.wizard.CreateMetadataModel;
 import org.jboss.tools.teiid.reddeer.wizard.DDLImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.MetadataImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.TeiidConnectionImportWizard;
@@ -24,13 +23,27 @@ public class ImportMetadataManager {
 	public void importWSDLToWSModel(String name, String project, String wsdl) {
 		new WsdlWebImportWizard().importWsdl(name, project, wsdl);
 	}
-
-	public void importFromDDL(String projectName, String modelName, String ddlPath, Properties importProps) {
-		DDLImportWizard importWizard = new DDLImportWizard();
+	
+	/**
+	 * Teiid Designer: DDL File >> Source or View Model
+	 * @param wizardType - can be DDLImportWizard.CUSTOM_WIZARD or DDLImportWizard.TEIID_WIZARD
+	 * @param importProps - can contains 'autoselectDialect' and 'modelType'(DDLImportWizard.Source_Type or DDLImportWizard.View_Type)
+	 */
+	public void importFromDDL(String projectName, String modelName, String ddlPath, String wizardType, Properties importProps) {
+		if(!(wizardType.equals(DDLImportWizard.CUSTOM_WIZARD)||wizardType.equals(DDLImportWizard.TEIID_WIZARD))){
+			throw new IllegalArgumentException("ddl wizard type is invalid");
+		}
+		DDLImportWizard importWizard = new DDLImportWizard(wizardType);
 		String ddl = teiidBot.toAbsolutePath(ddlPath);// if already absolute, returned as is
 		importWizard.setDdlPath(ddl);
 		importWizard.setModelName(modelName);
-
+		String modelType = null;
+		if ((modelType = importProps.getProperty("modelType")) != null) {
+			if(!(modelType.equals(DDLImportWizard.Source_Type)||modelType.equals(DDLImportWizard.View_Type))){
+				throw new IllegalArgumentException("model type for ddl wizard is invalid");
+			}
+			importWizard.setModelType(modelType);
+		}
 		String loadedProperty = null;
 		if ((loadedProperty = importProps.getProperty("autoselectDialect")) != null) {
 			importWizard.setAutoselectDialect(Boolean.valueOf(loadedProperty));
@@ -195,40 +208,6 @@ public class ImportMetadataManager {
 			importWizard.setTranslator(loadedProperty);
 		}
 		importWizard.execute();
-	}
-
-	/**
-	 * New Teiid Metadata Model
-	 */
-	public void createNewMetadataModel(String projectName, String modelName, Properties props) {
-		// CreateMetadataModel
-		CreateMetadataModel newModel = new CreateMetadataModel();
-		String loadedProperty = null;
-
-		newModel.setLocation(projectName);
-		newModel.setName(modelName);
-		if ((loadedProperty = props.getProperty("clazz")) != null) {
-			newModel.setClass(loadedProperty);
-		}
-		if ((loadedProperty = props.getProperty("type")) != null) {
-			newModel.setType(loadedProperty);
-		}
-		if ((loadedProperty = props.getProperty("modelBuilder")) != null) {
-			newModel.setModelBuilder(loadedProperty);
-		}
-		if ((loadedProperty = props.getProperty("pathToXmlSchema")) != null) {
-			String[] path = loadedProperty.split("/");
-			newModel.setPathToXmlSchema(path);
-		}
-		if ((loadedProperty = props.getProperty("rootElement")) != null) {
-			newModel.setModelBuilder(loadedProperty);
-		}
-		if ((loadedProperty = props.getProperty("pathToExistingModel")) != null) {
-			String[] path = loadedProperty.split("/");
-			newModel.setPathToExistingModel(path);
-		}
-
-		newModel.execute();
 	}
 
 	/**
