@@ -1,16 +1,13 @@
 package org.jboss.tools.fuse.reddeer.editor;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.part.FileEditorInput;
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.AbstractWait;
@@ -36,6 +33,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.tools.fuse.reddeer.component.AbstractURICamelComponent;
 import org.jboss.tools.fuse.reddeer.component.CamelComponent;
 import org.jboss.tools.fuse.reddeer.ext.LabeledTextExt;
 import org.jboss.tools.fuse.reddeer.utils.MouseAWTManager;
@@ -49,8 +47,6 @@ import org.jboss.tools.fuse.reddeer.utils.XPathEvaluator;
 public class CamelEditor extends GEFEditor {
 
 	private static Logger log = Logger.getLogger(CamelEditor.class);
-
-	private File sourceFile;
 
 	public CamelEditor(String title) {
 
@@ -459,6 +455,33 @@ public class CamelEditor extends GEFEditor {
 		activate();
 		AbstractWait.sleep(TimePeriod.SHORT);
 	}
+	
+	/**
+	 * Sets a property to desired value.
+	 * 
+	 * @param component
+	 *            camel component
+	 * @param name
+	 *            name of the property
+	 * @param value
+	 *            value of the property
+	 */
+	public void setAdvancedProperty(AbstractURICamelComponent component, String name, String value) {
+
+		log.debug("Setting '" + value + "' as the advanced property '" + name
+				+ "' of selelected component in the Camel Editor");
+		PropertiesView properties = new PropertiesView();
+		properties.open();
+		activate();
+		new CamelComponentEditPart(component).select();
+		properties.activate();
+		properties.selectTab("Advanced");
+		new LabeledTextExt(name).setText(value);
+		component.setProperty(name, value);
+		activate();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		save();
+	}
 
 	/**
 	 * Sets 'Uri' property
@@ -609,32 +632,19 @@ public class CamelEditor extends GEFEditor {
 		return new Point(x, y);
 	}
 
-	public String xpath(String expr) throws FileNotFoundException {
-		XPathEvaluator xpath = new XPathEvaluator(new FileReader(getSourceFile()));
+	public String xpath(String expr) throws CoreException {
+		XPathEvaluator xpath = new XPathEvaluator(getInputStream());
 		String result = xpath.evaluateString(expr);
 		return result;
 	}
 
-	public File getSourceFile() {
-		if (sourceFile == null) {
-			IEditorInput editorInput = editorPart.getEditorInput();
-			if (editorInput instanceof FileEditorInput) {
-				FileEditorInput fileEditorInput = (FileEditorInput) editorInput;
-				sourceFile = fileEditorInput.getPath().toFile();
-			}
+	public InputStream getInputStream() throws CoreException {
+		IEditorInput editorInput = editorPart.getEditorInput();
+		IFile iFile = editorInput.getAdapter(IFile.class);
+		if (iFile == null) {
+			throw new RuntimeException("No file is associated to the Camel editor");
 		}
-		return sourceFile;
-	}
-
-	public String getSource() throws IOException {
-		StringBuffer source = new StringBuffer();
-		BufferedReader in = new BufferedReader(new FileReader(getSourceFile()));
-		String line = null;
-		while ((line = in.readLine()) != null) {
-			source.append(line).append("\n");
-		}
-		in.close();
-		return source.toString();
+		return iFile.getContents();
 	}
 
 	/**

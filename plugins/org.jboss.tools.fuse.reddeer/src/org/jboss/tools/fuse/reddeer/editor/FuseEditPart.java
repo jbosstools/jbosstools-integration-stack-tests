@@ -4,15 +4,15 @@ import java.util.List;
 
 import org.hamcrest.Matcher;
 import org.jboss.reddeer.gef.handler.ViewerHandler;
-import org.jboss.reddeer.gef.impl.editpart.AbstractEditPart;
 import org.jboss.reddeer.gef.lookup.ViewerLookup;
+import org.jboss.reddeer.graphiti.impl.graphitieditpart.AbstractGraphitiEditPart;
 
 /**
  * Abstract class for EditPart implementation in Camel Editor 
  * 
  * @author tsedmik
  */
-public abstract class FuseEditPart extends AbstractEditPart {
+public abstract class FuseEditPart extends AbstractGraphitiEditPart {
 
 	protected org.eclipse.gef.GraphicalViewer viewer;
 	protected org.eclipse.gef.EditPart editPart;

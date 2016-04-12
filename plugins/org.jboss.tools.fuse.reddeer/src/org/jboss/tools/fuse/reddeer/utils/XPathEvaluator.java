@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringWriter;
 
@@ -22,6 +23,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -49,10 +51,28 @@ public class XPathEvaluator {
 		this(reader, DEFAULT_NAMESPACE_AWARE);
 	}
 
+	public XPathEvaluator(InputStream inputStream) {
+		this(inputStream, DEFAULT_NAMESPACE_AWARE);
+	}
+
 	public XPathEvaluator(Reader reader, boolean namespaceAware) {
 		try {
 			DOC_FACTORY.setNamespaceAware(namespaceAware);
 			doc = DOC_FACTORY.newDocumentBuilder().parse(new InputSource(reader));
+		} catch (SAXException e) {
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} catch (ParserConfigurationException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public XPathEvaluator(InputStream inputStream, boolean namespaceAware) {
+		try {
+			DOC_FACTORY.setNamespaceAware(namespaceAware);
+			doc = DOC_FACTORY.newDocumentBuilder().parse(new InputSource(inputStream));
+			inputStream.close();
 		} catch (SAXException e) {
 			throw new RuntimeException(e);
 		} catch (IOException e) {
@@ -83,6 +103,16 @@ public class XPathEvaluator {
 	public String evaluateString(String expr) {
 		try {
 			return (String) XPATH.evaluate(expr, doc, XPathConstants.STRING);
+		} catch (XPathExpressionException e) {
+			e.printStackTrace();
+			System.out.println("Error evaluating xPath '" + expr + "'");
+			return null;
+		}
+	}
+
+	public Node evaluateNode(String expr) {
+		try {
+			return (Node) XPATH.evaluate(expr, doc, XPathConstants.NODE);
 		} catch (XPathExpressionException e) {
 			e.printStackTrace();
 			System.out.println("Error evaluating xPath '" + expr + "'");
