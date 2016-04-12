@@ -1,19 +1,24 @@
 package org.jboss.tools.fuse.reddeer.component;
 
+import static org.jboss.tools.fuse.reddeer.component.SAPLabels.RFC;
+import static org.jboss.tools.fuse.reddeer.component.SAPLabels.SERVER;
+
 /**
  * 
  * @author apodhrad
  *
  */
 public class SAPTRFCServer extends AbstractURICamelComponent {
-	@Override
-	public String getPaletteEntry() {
-		return "SAP tRFC Server";
+
+	public SAPTRFCServer() {
+		super("sap-trfc-server");
+		addProperty(SERVER, "server");
+		addProperty(RFC, "rfc");
 	}
 
 	@Override
-	public String getUri() {
-		return "sap-trfc-server:server:rfc";
+	public String getPaletteEntry() {
+		return "SAP tRFC Server";
 	}
 
 }

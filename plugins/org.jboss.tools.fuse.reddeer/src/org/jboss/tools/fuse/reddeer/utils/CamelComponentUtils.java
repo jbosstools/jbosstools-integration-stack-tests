@@ -7,11 +7,14 @@ package org.jboss.tools.fuse.reddeer.utils;
  */
 public class CamelComponentUtils {
 
+	public static final int MAX = 30;
+	public static final String DOTS = "...";
+
 	public static String getLabel(String description) {
-		if (description.length() <= 20) {
+		if (description.length() <= MAX) {
 			return description;
 		} else {
-			return description.substring(0, 17) + "...";
+			return description.substring(0, MAX - 2) + DOTS;
 		}
 	}
 

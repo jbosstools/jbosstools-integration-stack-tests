@@ -25,7 +25,8 @@ public class WithLabelMatcherExt extends BaseMatcher<String> {
 		if ((item instanceof List) || (item instanceof Text) || (item instanceof Button) || (item instanceof Combo)
 				|| (item instanceof CCombo) || (item instanceof Spinner)) {
 			String widgetLabel = WidgetHandlerExt.getInstance().getLabel((Widget) item);
-			if (widgetLabel != null && matcher.matches(widgetLabel)) {
+			String widgetLabelExt = widgetLabel.replace("*", "").trim();
+			if (widgetLabel != null && (matcher.matches(widgetLabel) || matcher.matches(widgetLabelExt))) {
 				return true;
 			}
 		}

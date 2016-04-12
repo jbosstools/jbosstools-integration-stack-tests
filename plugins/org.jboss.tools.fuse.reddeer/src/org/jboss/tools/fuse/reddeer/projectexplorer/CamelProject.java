@@ -1,5 +1,10 @@
 package org.jboss.tools.fuse.reddeer.projectexplorer;
 
+import java.io.File;
+
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
@@ -198,4 +203,23 @@ public class CamelProject {
 			AbstractWait.sleep(TimePeriod.SHORT);
 		}
 	}
+	
+	public File getFile() {
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		IWorkspaceRoot root = workspace.getRoot();
+
+		return new File(new File(root.getLocationURI().getPath()), project.getName());
+	}
+	
+	public void update() {
+		project.select();
+		new ContextMenu("Maven", "Update Project...").select();
+		new DefaultShell("Update Maven Project");
+		new CheckBox("Force Update of Snapshots/Releases").toggle(true);
+		new PushButton("OK").click();
+
+		AbstractWait.sleep(TimePeriod.NORMAL);
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+	}
+
 }

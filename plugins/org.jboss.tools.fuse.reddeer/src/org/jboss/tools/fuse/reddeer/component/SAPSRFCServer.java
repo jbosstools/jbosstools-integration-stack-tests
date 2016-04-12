@@ -1,5 +1,8 @@
 package org.jboss.tools.fuse.reddeer.component;
 
+import static org.jboss.tools.fuse.reddeer.component.SAPLabels.RFC;
+import static org.jboss.tools.fuse.reddeer.component.SAPLabels.SERVER;
+
 /**
  * 
  * @author apodhrad
@@ -7,14 +10,15 @@ package org.jboss.tools.fuse.reddeer.component;
  */
 public class SAPSRFCServer extends AbstractURICamelComponent {
 
-	@Override
-	public String getPaletteEntry() {
-		return "SAP sRFC Server";
+	public SAPSRFCServer() {
+		super("sap-srfc-server");
+		addProperty(SERVER, "server");
+		addProperty(RFC, "rfc");
 	}
 
 	@Override
-	public String getUri() {
-		return "sap-srfc-server:server:rfc";
+	public String getPaletteEntry() {
+		return "SAP sRFC Server";
 	}
 
 }
