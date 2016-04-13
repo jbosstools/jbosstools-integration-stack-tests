@@ -85,6 +85,7 @@ public class RestImportWizard extends TeiidImportWizard {
 		new LabeledText(new DefaultGroup("View Model Definition"), "New View Procedure Name:").setText(procedureName);
 
 		next();
+		next();
 		defineRootPath(rootPath);
 		for (String column : columns) {
 			defineColumn(column);

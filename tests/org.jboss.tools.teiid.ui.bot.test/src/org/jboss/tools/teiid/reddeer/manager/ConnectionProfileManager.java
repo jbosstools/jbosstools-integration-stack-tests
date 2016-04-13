@@ -182,6 +182,10 @@ public class ConnectionProfileManager {
 		profileWizard.setConnectionUrl(connectionUrl);
 		profileWizard.setName(name);
 		profileWizard.setType(type);
+		profileWizard.setAuthType(props.getProperty("authType"));
+		profileWizard.setUsername(props.getProperty("username"));
+		profileWizard.setPassword(props.getProperty("password"));
+		
 		profileWizard.execute();
 
 	}
