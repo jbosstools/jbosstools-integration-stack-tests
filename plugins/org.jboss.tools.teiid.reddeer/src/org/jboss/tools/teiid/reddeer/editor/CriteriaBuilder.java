@@ -1,49 +1,28 @@
 package org.jboss.tools.teiid.reddeer.editor;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotRadio;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
+import org.jboss.reddeer.core.matcher.WithLabelMatcher;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.tools.teiid.reddeer.shell.FunctionExpressionBuilder;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.tools.teiid.reddeer.matcher.ButtonWithToolTipMatcher;
 
 public class CriteriaBuilder {
-
-	private SWTBotShell shell;
-	// private InnerButtonWithToolTipMatcher matcher;
-
-	private List<Button> columnButtons = new ArrayList<Button>();
-	private List<Button> constantButtons = new ArrayList<Button>();
-	private List<Button> functionButtons = new ArrayList<Button>();
-
-	public CriteriaBuilder() {
-		new DefaultShell("Criteria Builder");
-		new DefaultCTabItem("Tree View").activate();
-		// TODO: removw swtbot dependency
-		this.shell = new SWTBot().shell("Criteria Builder");
-		new SWTBot().widgets(new InnerButtonWithToolTipMatcher());// fill lists of column/constant/function buttons
-	}
-
-	public static class RadioButtonType {
+	public static class CriteriaSide {
 		public static final int LEFT = 0;
 		public static final int RIGHT = 1;
-
-		public static final String COLUMN = "columnRadioButton";
-		public static final String CONSTANT = "constantRadioButton";
-		public static final String FUNCTION = "functionRadioButton";
 	}
-
+	public static class RadioButtonType {
+		public static final String COLUMN = "Show the Column Editor";
+		public static final String CONSTANT = "Show the Constant Editor";
+		public static final String FUNCTION = "Show the Function Display Editor";
+	}
 	public static class OperatorType {
 		public static final int EQUALS = 0;// =
 		public static final int NOT_EQUAL = 1;// <>
@@ -53,178 +32,130 @@ public class CriteriaBuilder {
 		public static final int GREATER_OR_EQUAL = 5;// >=
 		public static final int IS_NULL = 6;// IS NULL
 		public static final int LIKE = 7;// LIKE
-		public static final int IN = 8;// IN
+		public static final int IN = 8;// IN		
+		public static final String AND = "AND";
+		public static final String OR = "OR";
+		public static final String NOT = "NOT";
+	}
+	
+	public CriteriaBuilder() {
+		activate();
 	}
 
-	public List<Button> getColumnButtons() {
-		return columnButtons;
-	}
-
-	public List<Button> getConstantButtons() {
-		return constantButtons;
-	}
-
-	public List<Button> getFunctionButtons() {
-		return functionButtons;
-	}
-
-	/**
-	 * Just for relational view models from JDBC, not for sources with XML
-	 * 
-	 * @param table
-	 * @param attribute
-	 */
-	public void selectLeftAttribute(String table, String attribute) {
-		shell.bot().tree(1).setFocus();
-		shell.bot().tree(1).expandNode(table).select(getAttributeName(table, attribute));
-	}
-
-	public void selectLeftAttribute(String document, String element, boolean isXMLSource) {
-		if (isXMLSource) {
-			shell.bot().tree(1).setFocus();
-			shell.bot().tree(1).expandNode(document).select(element);
-		} else {
-			selectLeftAttribute(document, element);
-		}
-
+	public CriteriaBuilder activate(){
+		new DefaultShell("Criteria Builder");
+		new DefaultCTabItem("Tree View").activate();
+		return this;
 	}
 
 	/**
-	 * Just for relational view models from JDBC, not for sources with XML
-	 * 
-	 * @param table
-	 * @param attribute
-	 */
-	public void selectRightAttribute(String table, String attribute) {
-		shell.bot().tree(2).setFocus();
-		shell.bot().tree(2).expandNode(table).select(getAttributeName(table, attribute));
-	}
-
-	public void selectRightAttribute(String document, String element, boolean isXMLSource) {
-		if (isXMLSource) {
-			shell.bot().tree(2).setFocus();
-			shell.bot().tree(2).expandNode(document).select(element);
-		} else {
-			selectLeftAttribute(document, element);
-		}
-	}
-
-	public void apply() {
-		shell.bot().button("Apply").click();
-	}
-
-	public void finish() {
-		new PushButton("OK").click();
-	}
-
-	private String getAttributeName(String table, String attribute) {
-		return table + "." + attribute;
-	}
-
-	/**
-	 * 
-	 * @param type
-	 *            of radio button (RadioButtonType.COLUMN|CONSTANT|FUNCTION)
-	 * @param leftRight
-	 *            (RadioButtonType.LEFT|RIGHT)
+	 * @param type - CriteriaBuilder.RadioButtonType.COLUMN|CONSTANT|FUNCTION
+	 * @param leftRight - CriteriaBuilder.CriteriaSide.LEFT|RIGHT
 	 */
 	public void selectRadioButton(String type, int leftRight) {
-		// left - 0, right - 1
-		if (type.equals(RadioButtonType.COLUMN)) {
-			new SWTBotRadio(getColumnButtons().get(leftRight)).click();
-		}
-		if (type.equals(RadioButtonType.CONSTANT)) {
-			new SWTBotRadio(getConstantButtons().get(leftRight)).click();
-		}
-		if (type.equals(RadioButtonType.FUNCTION)) {
-			new SWTBotRadio(getFunctionButtons().get(leftRight)).click();
-		}
+		new RadioButton(leftRight,new ButtonWithToolTipMatcher(type)).click();
+	}
+	
+	/**
+	 * apply criteria
+	 */
+	public void apply() {
+		new PushButton("Apply").click();
 	}
 
 	/**
-	 * 
-	 * @param operatorType
-	 *            OperatorType.EQUALS|NOT_EQUAL|LT|GT|...
+	 * (combo box)
+	 * @param operatorType - CriteriaBuilder.OperatorType.EQUALS|NOT_EQUAL|LT|GT|...
 	 */
 	public void selectOperator(int operatorType) {
-		if (operatorType > 8) {
-			return;
-		}
 		new DefaultCombo(0).setSelection(operatorType);
 	}
-
+	
 	/**
-	 * problematic if constant = constant... but this shouldn't occur...
-	 * 
-	 * @param text
+	 * (button)
+	 * @param operatorType - CriteriaBuilder.OperatorType.AND|OR|NOT
 	 */
-	public void setConstant(String text) {
-		new DefaultText(0).setText(text);
+	public void clickOperator(String operatorType) {
+		new PushButton(operatorType).click();
+	}
+	
+	/**
+	 * clear already set criteria
+	 */
+	public void clearCriteria() {
+		new PushButton("Delete").click();
+	}
+	
+	/**
+	 * select item in Tree View
+	 * @param itemPath
+	 */
+	public void selectTreeViewItem(String... itemPath) {
+		new DefaultCTabItem("Tree View").activate();
+		new DefaultTreeItem(itemPath).select();
+	}
+	
+	/**
+	 * get current text from SQL View
+	 * @param itemPath
+	 */
+	public String getCurrentSqlContent() {
+		DefaultCTabItem tab = new DefaultCTabItem("SQL View");
+		tab.activate();			
+		return new DefaultStyledText().getText();
+	}
+	
+	/**
+	 * select column attribute (for relational sources)
+	 * @param index - if column is selected on both sides, use CriteriaBuilder.CriteriaSide.LEFT|RIGHT
+	 * 				- if only one side, use 0 
+	 */
+	public void selectAttribute(String table, String attribute, int index) {
+		DefaultTree tree = new DefaultTree(index + 1);
+		tree.setFocus();
+		new DefaultTreeItem(tree, table, table + "." + attribute).select();
+	}
+	
+	/**
+	 * for XML sources
+	 */
+	public void selectXmlAttribute(String document, String element, int index) {
+		// TODO impl. this according relational if needed
+//			shell.bot().tree(index).setFocus();
+//			shell.bot().tree(index).expandNode(document).select(element);
+	}
+	
+	/** 
+	 * open function expression builder
+	 * @param index - if function is selected on both sides, use CriteriaBuilder.CriteriaSide.LEFT|RIGHT
+	 * 				- if only one side, use 0
+	 */
+	public ExpressionBuilder editFunction(int index) {
+		return new ExpressionBuilder(index);	
+	}
+	
+	/**
+	 * set value in type combo box under constant editor
+	 * @param index - if constant is selected on both sides, use CriteriaBuilder.CriteriaSide.LEFT|RIGHT
+	 * 				- if only one side, use 0
+	 */
+	public void selectConstantType(String type, int index){
+		new DefaultCombo(index,new WithLabelMatcher("Type:")).setSelection(type);
+	}
+	
+	/**
+	 * set value in value text field under constant editor
+	 * @param index - if constant is selected on both sides, use CriteriaBuilder.CriteriaSide.LEFT|RIGHT
+	 * 				- if only one side, use 0
+	 */
+	public void selectConstantValue(String value, int index){
+		new DefaultText(new DefaultGroup("Value"),index).setText(value);
 	}
 
-	public void close() {
+	/**
+	 * finish criteria builder
+	 */
+	public void finish() {
 		new PushButton("OK").click();
-	}
-
-	public void selectInList() {
-		new RadioButton(3).click();
-	}
-
-	public void selectInSubQuery() {
-		new RadioButton(4).click();
-	}
-
-	public void addConstantsToList(String... constants) {
-		// new PushButton("Add...").click();
-		// FunctionExpressionBuilder feb = new FunctionExpressionBuilder(new SWTWorkbenchBot().activeShell());
-		for (String constant : constants) {
-			new PushButton("Add...").click();
-			FunctionExpressionBuilder feb = new FunctionExpressionBuilder(new SWTWorkbenchBot().activeShell());
-			feb.setRadioButtonType(RadioButtonType.CONSTANT);
-			new DefaultText(0).setText(constant);
-			feb.apply();
-			feb.close();
-		}
-	}
-
-	/**
-	 * This class is created for efficiency reason -- inner matcher goes through all widgets on page once (instead of
-	 * calling e.g. ButtonWithToolTip thrice with different tooltips for column, constant, function)
-	 * 
-	 * @author lfabriko
-	 *
-	 */
-	private class InnerButtonWithToolTipMatcher extends BaseMatcher<Button> {
-
-		private String columnToolTip = "Show the Column Editor";
-		private String constantToolTip = "Show the Constant Editor";
-		private String functionToolTip = "Show the Function Display Editor";
-
-		@Override
-		public boolean matches(Object o) {
-			if (o instanceof Button) {
-				Button but = (Button) o;
-				if (but.getToolTipText().equals(this.columnToolTip)) {
-					columnButtons.add(but);
-					return true;
-				}
-				if (but.getToolTipText().equals(this.constantToolTip)) {
-					constantButtons.add(but);
-					return true;
-				}
-				if (but.getToolTipText().equals(this.functionToolTip)) {
-					functionButtons.add(but);
-					return true;
-				}
-
-			}
-			return false;
-		}
-
-		@Override
-		public void describeTo(Description arg0) {
-
-		}
-
 	}
 }

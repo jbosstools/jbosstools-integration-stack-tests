@@ -20,9 +20,11 @@ import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefFigureCanvas;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefViewer;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.eclipse.swtbot.swt.finder.results.Result;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 import org.eclipse.ui.IEditorReference;
 import org.hamcrest.Matcher;
 import org.jboss.reddeer.common.wait.AbstractWait;
@@ -31,14 +33,21 @@ import org.jboss.reddeer.core.matcher.AndMatcher;
 import org.jboss.reddeer.swt.api.CTabItem;
 import org.jboss.reddeer.swt.api.TabItem;
 import org.jboss.reddeer.swt.api.TableItem;
+import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.jboss.reddeer.swt.impl.group.DefaultGroup;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.spinner.LabeledSpinner;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.teiid.reddeer.matcher.AttributeMatcher;
+import org.jboss.tools.teiid.reddeer.matcher.ButtonWithToolTipMatcher;
 import org.jboss.tools.teiid.reddeer.matcher.IsTransformation;
-import org.jboss.tools.teiid.reddeer.matcher.MappingClassMatcher;
 import org.jboss.tools.teiid.reddeer.matcher.ModelColumnMatcher;
+import org.jboss.tools.teiid.reddeer.matcher.ModelEditorItemMatcher;
 import org.jboss.tools.teiid.reddeer.matcher.TableItemMatcher;
 import org.jboss.tools.teiid.reddeer.matcher.WaitForFigure;
 import org.jboss.tools.teiid.reddeer.matcher.WithBounds;
@@ -151,6 +160,7 @@ public class ModelEditor extends SWTBotEditor {
 		new SWTWorkbenchBot().sleep(5 * 1000);
 	}
 
+	@Deprecated
 	public void showMappingTransformation(String label) {
 
 		viewer = getGraphicalViewer(MAPPING_DIAGRAM);
@@ -161,9 +171,16 @@ public class ModelEditor extends SWTBotEditor {
 		new DefaultShell().setFocus();
 	}
 
-	public CriteriaBuilder criteriaBuilder() {
+	public CriteriaBuilder openCriteriaBuilder() {
 		bot.toolbarButtonWithTooltip("Criteria Builder").click();
 		return new CriteriaBuilder();
+	}
+	
+	public ExpressionBuilder openExpressionBuilder(){
+		SWTBotToolbarButton tbb =  bot.toolbarButtonWithTooltip("Expression Builder");
+		tbb.click();
+		System.out.println(tbb.getClass().getName());
+		return new ExpressionBuilder();
 	}
 
 	public void setTransformationProcedureBody(String procedure) {
@@ -203,6 +220,10 @@ public class ModelEditor extends SWTBotEditor {
 
 	public void setTransformation(String text) {
 		new SWTWorkbenchBot().styledText(0).setText(text);
+	}
+	
+	public void typeTransformation(String text) {
+		new SWTWorkbenchBot().styledText(0).typeText(text);
 	}
 
 	public void saveAndValidateSql() {
@@ -292,49 +313,6 @@ public class ModelEditor extends SWTBotEditor {
 		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 
-	/**
-	 * Moved to MappingDiagramEditor
-	 * 
-	 * @param prefix
-	 * @return all attributes (type Label) with name starting with prefix
-	 */
-	@Deprecated
-	public List<SWTBotGefEditPart> getAttributes(String prefix) {
-		viewer = getGraphicalViewer(MAPPING_DIAGRAM);
-		AttributeMatcher matcher = AttributeMatcher.createAttributeMatcher();
-		matcher.setPrefix(prefix);
-		return viewer.editParts(matcher);
-	}
-
-	/**
-	 * Moved to MappingDiagramEditor
-	 * 
-	 * @param prefix
-	 * @return all mapping classes (type Label) with name starting with prefix
-	 */
-	@Deprecated
-	public List<SWTBotGefEditPart> getMappingClasses(String prefix) {
-		viewer = getGraphicalViewer(MAPPING_DIAGRAM);
-		MappingClassMatcher matcher = MappingClassMatcher.createMappingClassMatcher();
-		matcher.setPrefix(prefix);
-		return viewer.editParts(matcher);
-	}
-
-	/**
-	 * Moved to MappingDiagramEditor
-	 * 
-	 * @param prefix
-	 * @return list of attributes starting with prefix
-	 */
-	@Deprecated
-	public List<String> namesOfAttributes(String prefix) {
-		viewer = getGraphicalViewer(MAPPING_DIAGRAM);
-		AttributeMatcher matcher = AttributeMatcher.createAttributeMatcher();
-		matcher.setPrefix(prefix);
-		viewer.editParts(matcher);// generate list of texts
-		return matcher.getTexts();
-	}
-
 	public void deleteLabeledItem(String label) {
 		viewer = getGraphicalViewer(MAPPING_DIAGRAM);
 		viewer.select(label);
@@ -419,6 +397,42 @@ public class ModelEditor extends SWTBotEditor {
 		} else {
 			return null;
 		}
+	}
+	
+	/**
+	 * @param removeFromTransformation - whether remove column from transformation too
+	 */
+	public void deleteColumnFromTable(String tableName, String columnName, boolean removeFromTransformation){
+		setFocus();
+		selectParts(viewer.editParts(new ModelEditorItemMatcher(ModelEditorItemMatcher.TABLE, tableName)));
+		selectParts(viewer.editParts(new AttributeMatcher(columnName, ModelEditorItemMatcher.TABLE, tableName)));
+		new ContextMenu("Delete").select();	
+		AbstractWait.sleep(TimePeriod.SHORT);
+		PushButton button = (removeFromTransformation) ? new PushButton("Yes") : new PushButton("No");
+		button.click();
+	}
+	
+	public void renameColumn(String tableName, String columnName, String newName){
+		setFocus();
+		selectParts(viewer.editParts(new ModelEditorItemMatcher(ModelEditorItemMatcher.TABLE, tableName)));
+		selectParts(viewer.editParts(new AttributeMatcher(columnName, ModelEditorItemMatcher.TABLE, tableName)));
+		new ContextMenu("Rename").select();
+		new DefaultText(0).setText(newName);
+		new SWTWorkbenchBot().activeShell().pressShortcut(Keystrokes.TAB);
+	}
+	
+	public void setDataTypeToColumn(String tableName, String columnName, String dataType, Integer length){
+		setFocus();
+		selectParts(viewer.editParts(new ModelEditorItemMatcher(ModelEditorItemMatcher.TABLE, tableName)));
+		selectParts(viewer.editParts(new AttributeMatcher(columnName, ModelEditorItemMatcher.TABLE, tableName)));
+		new ContextMenu("Modeling","Set Datatype").select();
+		new DefaultShell("Select a Datatype");
+		new DefaultText(0).setText(dataType);
+		new DefaultTable().getItem(0).click();
+		if (length != null){
+			new LabeledSpinner("'string' length value").setValue(length);
+		}		
+		new PushButton("OK").click();
 	}
 
 	public ModelProcedureParameter getProcedureParameters(String procName) {
