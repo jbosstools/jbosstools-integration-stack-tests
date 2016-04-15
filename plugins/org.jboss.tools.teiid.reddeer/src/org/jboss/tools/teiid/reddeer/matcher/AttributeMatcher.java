@@ -12,38 +12,50 @@ import org.hamcrest.Description;
 import org.hamcrest.Factory;
 
 /**
- * This matcher tells if a particular EditPart is an attribute with label starting with given prefix.
- * 
- * @author lfabriko
- * 
+ * Decides whether item of model editor is attribute with given name. 
  */
 public class AttributeMatcher extends BaseMatcher<EditPart> {
-
-	/*
-	 * public static final int WIDTH = 40; public static final int HEIGHT = 60;
+	private String prefix;
+	private String parentType;
+	private String parentPrefix;
+	private List<String> texts = new ArrayList<String>();
+	
+	/** 
+	 * @param prefix - prefix of name or full name of the attribute
 	 */
-	public String prefix = "";
-
-	public String getPrefix() {
-		return prefix;
-	}
-
-	public void setPrefix(String prefix) {
+	public AttributeMatcher(String prefix){
 		this.prefix = prefix;
-	}
-
-	public List<String> texts = new ArrayList<String>();
+		parentType = null;
+		parentPrefix = null;
+	}	
+	
+	/** 
+	 * will match only attributes of given parent type, prefix
+	 * @param prefix - prefix of name or full name of the attribute
+	 * @param parentType MAPPING_CLASS|TABLE|...
+	 * @param parentPrefix - prefix of name or full name of the item
+	 */
+	public AttributeMatcher(String prefix, String parentType, String parentPrefix){
+		this.prefix = prefix;
+		this.parentType = parentType;
+		this.parentPrefix = parentPrefix;
+	}	
 
 	@Override
 	public boolean matches(Object item) {
-		if (item instanceof GraphicalEditPart) {
-			if (item.getClass().toString()
-					.equals("class org.teiid.designer.diagram.ui.notation.uml.part.UmlAttributeEditPart")) {
-				IFigure figure = ((GraphicalEditPart) item).getFigure();
-				for (Object o : figure.getChildren()) {
+		if (item instanceof GraphicalEditPart) {			
+			if (item.getClass().toString().equals("class org.teiid.designer.diagram.ui.notation.uml.part.UmlAttributeEditPart")) {
+				for (Object o : ((GraphicalEditPart) item).getFigure().getChildren()) {
 					if ((o instanceof Label) && (((Label) o).getText().startsWith(this.prefix))) {
-						texts.add(((Label) o).getText());
-						return true;
+						if (parentType == null){
+							texts.add(((Label) o).getText());
+							return true;
+						} else {
+							if (new ModelEditorItemMatcher(parentType, parentPrefix).matches(((GraphicalEditPart) item).getParent().getParent())){
+								texts.add(((Label) o).getText());
+								return true;
+							}
+						}
 					}
 				}
 			}
@@ -56,13 +68,7 @@ public class AttributeMatcher extends BaseMatcher<EditPart> {
 		description.appendText("is an attribute starting with given prefix");
 	}
 
-	@Factory
-	public static AttributeMatcher createAttributeMatcher() {
-		return new AttributeMatcher();
-	}
-
 	public List<String> getTexts() {
 		return texts;
 	}
-
 }
