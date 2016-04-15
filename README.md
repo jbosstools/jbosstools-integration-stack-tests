@@ -150,7 +150,7 @@ participate and contribute!
 
 If you want to fix a bug or make any changes, please do following:
 
-1. Log an issue describing the bug or new feature here on [GitHub](https://github.com/jbosstools/jbosstools-integration-stack-tests/issues/new)
+1. Log an issue describing the bug or new feature here on [JIRA](https://issues.jboss.org/browse/JBTIS/) with component set to **QE**.
 2. Update your local master branch
 
 	```
@@ -162,7 +162,7 @@ If you want to fix a bug or make any changes, please do following:
 3. Make the changes on a topic branch named with issue number. For example, this command creates a branch for the *#1234* issue:
 
 	```
-	$ git checkout -b JBTISTEST-1234
+	$ git checkout -b JBTIS-1234
 	```
 
 4. After you're happy with your changes and a full build (with unit tests) runs successfully, commit your changes on your topic branch (with good comments):
@@ -172,7 +172,7 @@ If you want to fix a bug or make any changes, please do following:
 	$ git commit                        # makes a commit from all added files
 	```
 
-   **Note:** _We recommend making a comment of the commit with name of the issue on GitHub plus *'#1234' (issue number)*. The issue number in the comment cause that your commit is visible in issue's comments._
+   **Note:** _We recommend making a comment of the commit starting with issue number plus name of the issue in JIRA (e.g. "JBTIS-633 - Add tests for global elements in Camel Editor"). The issue number in the comment cause that your commit is visible directly on JIRA._
 
 5. Check for any recent changes that were made in the official repository:
 
@@ -180,7 +180,7 @@ If you want to fix a bug or make any changes, please do following:
 	$ git checkout master               # switches to the 'master' branch
 	$ git pull upstream master          # fetches all 'upstream' changes and merges 'upstream/master'
 	                                      onto your 'master' branch
-	$ git checkout JBTISTEST-1234       # switches to your topic branch
+	$ git checkout JBTIS-1234           # switches to your topic branch
 	$ git rebase master                 # reapplies your changes on top of the latest in master
 	                                      (i.e., the latest from master will be the new base for your changes)
 	```
@@ -190,25 +190,9 @@ If you want to fix a bug or make any changes, please do following:
 6. Push your topic branch and its changes into your public fork repository:
 
 	```
-	$ git push origin JBTISTEST-1234    # pushes your topic branch into your public fork of JBTIS Tests
+	$ git push origin JBTIS-1234        # pushes your topic branch into your public fork of JBTIS Tests
 	```
 
-7. Link your topic branch with the created issue:
-   * clone this repository:
-
-	```
-	$ git clone https://github.com/apodhrad/simple-github-client
-	```
-
-     **Note:** _It contains only one Groovy script that links your topic branch on GitHub with the corresponding issue in JBoss Tools Integration Stack Tests repository._
-
-   * run the Groovy script 
-
-	```
-	$ groovy create_pull_request.groovy
-	username: <you>                     # username on GitHub
-	password: <password>                # password associated with your username on GitHub
-	issue: 1234                         # number of the issue
-	```
-
-8. Check that your issue on GitHub was moved to [Pull Requests](https://github.com/jbosstools/jbosstools-integration-stack-tests/pulls). Then we can review the proposed changes, comment on them, discuss them with you, and if everything is good merge the changes right into the official repository
+7. On GitHub web interface create a new pull request from your topic branch to master (or other desired branch)
+8. Link your pull request with the logged issue on JIRA (this can be done via button *Link Pull Request* in JIRA)
+9. Resolve your issue on JIRA. Then we can review the proposed changes, comment on them, discuss them with you, and if everything is good merge the changes right into the official repository
