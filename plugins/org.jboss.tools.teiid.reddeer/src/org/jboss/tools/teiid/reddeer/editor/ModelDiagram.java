@@ -1,9 +1,9 @@
 package org.jboss.tools.teiid.reddeer.editor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
+import org.jboss.tools.teiid.reddeer.matcher.AttributeMatcher;
 
 public class ModelDiagram {
 
@@ -24,9 +24,12 @@ public class ModelDiagram {
 		editPart.select();
 	}
 
-	public List<String> getModelAttributes(SWTBotGefEditPart editPart) {
-		List<String> modelAttributes = new ArrayList<String>();
-		return modelAttributes;
+	public List<String> getModelAttributes() {		
+		AttributeMatcher matcher = new AttributeMatcher("");
+		for (SWTBotGefEditPart ch : editPart.children().get(0).children()){
+			matcher.matches(ch.part());
+		} 
+		return matcher.getTexts();
 	}
 
 }

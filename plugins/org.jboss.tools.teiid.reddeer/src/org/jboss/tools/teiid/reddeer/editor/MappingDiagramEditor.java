@@ -12,7 +12,7 @@ import org.eclipse.ui.IEditorReference;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.tools.teiid.reddeer.matcher.AttributeMatcher;
 import org.jboss.tools.teiid.reddeer.matcher.IsTransformation;
-import org.jboss.tools.teiid.reddeer.matcher.MappingClassMatcher;
+import org.jboss.tools.teiid.reddeer.matcher.ModelEditorItemMatcher;
 import org.jboss.tools.teiid.reddeer.matcher.RecursiveButtonMatcher;
 import org.jboss.tools.teiid.reddeer.matcher.RefArrowMatcher;
 
@@ -50,10 +50,7 @@ public class MappingDiagramEditor extends SWTBotEditor{
 	 * @return all attributes (type Label) with name starting with prefix
 	 */
 	public List<SWTBotGefEditPart> getAttributes(String prefix){
-		//viewer = new ModelEditor(super.getTitle()).getGraphicalViewer(MAPPING_DIAGRAM);
-		AttributeMatcher matcher = AttributeMatcher.createAttributeMatcher();
-		matcher.setPrefix(prefix);
-		return viewer.editParts(matcher); 
+		return viewer.editParts(new AttributeMatcher(prefix)); 
 	}
 	
 	
@@ -63,10 +60,7 @@ public class MappingDiagramEditor extends SWTBotEditor{
 	 * @return all mapping classes (type Label) with name starting with prefix
 	 */
 	public List<SWTBotGefEditPart> getMappingClasses(String prefix){
-		//viewer = new ModelEditor(super.getTitle()).getGraphicalViewer(MAPPING_DIAGRAM);
-		MappingClassMatcher matcher = MappingClassMatcher.createMappingClassMatcher();
-		matcher.setPrefix(prefix);
-		return viewer.editParts(matcher);
+		return viewer.editParts(new ModelEditorItemMatcher(ModelEditorItemMatcher.MAPPING_CLASS, prefix));
 	}
 	
 	/**
@@ -76,9 +70,8 @@ public class MappingDiagramEditor extends SWTBotEditor{
 	 */
 	public List<String> namesOfAttributes(String prefix){
 			//viewer = new ModelEditor(super.getTitle()).getGraphicalViewer(MAPPING_DIAGRAM);
-			AttributeMatcher matcher = AttributeMatcher.createAttributeMatcher();
-			matcher.setPrefix(prefix);
-			viewer.editParts(matcher);//generate list of texts
+			AttributeMatcher matcher = new AttributeMatcher(prefix);
+			viewer.editParts(matcher);
 			return matcher.getTexts();
 	}
 	

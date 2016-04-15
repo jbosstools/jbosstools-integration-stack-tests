@@ -2,11 +2,8 @@ package org.jboss.tools.teiid.reddeer.editor;
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
 
 public class Reconciler {
 
@@ -14,7 +11,7 @@ public class Reconciler {
 
 	private SWTBotShell shell;
 
-	public static class ExpressionBuilder {
+	public static class ResolverType {
 		public static final String KEEP_VIRTUAL_TARGET = "Convert all source SQL symbol datatypes";
 		public static final String KEEP_SQL_SYMBOLS = "Change all target column datatypes";
 	}
@@ -49,15 +46,11 @@ public class Reconciler {
 		new DefaultTable(1).select(unmatchedSQLSymbol);
 		new PushButton("< New").click();
 	}
-
-	public void expressionBuilderConstant(String virtualTargetColumn, String constantType, String value) {
-		new DefaultTable().select(virtualTargetColumn);
-		shell.bot().buttonWithTooltip("Create Expression").click();
-		new RadioButton("Constant").click();
-		new DefaultCombo(0).setSelection(constantType);
-		new DefaultText().setText(value);
-		new PushButton("Apply").click();
-		new PushButton("OK").click();
+	
+	public ExpressionBuilder openExpressionBuilder(String attribute){
+		new DefaultTable(0).deselectAll();
+		new DefaultTable(0).select(attribute);
+		return new ExpressionBuilder(true);
 	}
 
 	public void clearRemainingUnmatchedSymbols() {
@@ -75,8 +68,7 @@ public class Reconciler {
 
 	/**
 	 * 
-	 * @param resolveType
-	 *            constant from ExpressionBuilder - e.g. ExpressionBuilder.KEEP_VIRTUAL_TARGET
+	 * @param resolveType - Reconciler.ResolverType..KEEP_VIRTUAL_TARGET|KEEP_SQL_SYMBOLS
 	 */
 	public void resolveTypes(String resolveType) {
 		activate();
