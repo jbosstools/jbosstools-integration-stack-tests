@@ -19,6 +19,8 @@ import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement
 import org.jboss.reddeer.workbench.exception.WorkbenchLayerException;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.common.reddeer.LogGrapper;
+import org.jboss.tools.common.reddeer.view.ErrorLogView;
 import org.jboss.tools.fuse.reddeer.component.CamelComponent;
 import org.jboss.tools.fuse.reddeer.component.CamelComponents;
 import org.jboss.tools.fuse.reddeer.component.File;
@@ -28,10 +30,8 @@ import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditorException;
 import org.jboss.tools.fuse.reddeer.editor.SourceEditor;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
-import org.jboss.tools.fuse.reddeer.view.ErrorLogView;
 import org.jboss.tools.fuse.ui.bot.test.utils.EditorManipulator;
 import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
-import org.jboss.tools.fuse.ui.bot.test.utils.LogGrapper;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.After;
 import org.junit.Before;
@@ -159,7 +159,7 @@ public class CamelEditorTest extends DefaultTest {
 			editor.addCamelComponent(component, "Route _route1");
 			editor.deleteCamelComponent(component);
 		}
-		assertTrue(LogGrapper.getFuseErrors().size() == 0);
+		assertTrue(LogGrapper.getPluginErrors("fuse").size() == 0);
 	}
 
 	/**
@@ -193,7 +193,7 @@ public class CamelEditorTest extends DefaultTest {
 		CamelEditor.switchTab("Design");
 		assertTrue(editor.isComponentAvailable("Otherwise"));
 		assertTrue(editor.isComponentAvailable("file:target/messages/others"));
-		assertTrue(LogGrapper.getFuseErrors().size() == 0);
+		assertTrue(LogGrapper.getPluginErrors("fuse").size() == 0);
 	}
 
 	/**
@@ -244,7 +244,7 @@ public class CamelEditorTest extends DefaultTest {
 		assistent = editor.openContentAssistant();
 		proposals = assistent.getProposals();
 		assertTrue("Content Assistent does not contain 'uri' value", proposals.contains("uri"));
-		assertTrue(LogGrapper.getFuseErrors().size() == 0);
+		assertTrue(LogGrapper.getPluginErrors("fuse").size() == 0);
 	}
 
 	/**
@@ -284,6 +284,6 @@ public class CamelEditorTest extends DefaultTest {
 		}
 		CamelEditor.switchTab("Source");
 		assertTrue(EditorManipulator.isEditorContentEqualsFile("resources/camel-context-all.xml"));
-		assertTrue(LogGrapper.getFuseErrors().size() == 0);
+		assertTrue(LogGrapper.getPluginErrors("fuse").size() == 0);
 	}
 }

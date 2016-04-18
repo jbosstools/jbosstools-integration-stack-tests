@@ -8,24 +8,24 @@ import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
+import org.jboss.reddeer.eclipse.debug.core.Breakpoint;
+import org.jboss.reddeer.eclipse.debug.core.BreakpointsView;
+import org.jboss.reddeer.eclipse.debug.core.IsSuspended;
+import org.jboss.reddeer.eclipse.debug.core.ResumeButton;
+import org.jboss.reddeer.eclipse.debug.core.TerminateButton;
+import org.jboss.reddeer.eclipse.debug.core.VariablesView;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.tools.fuse.reddeer.debug.Breakpoint;
-import org.jboss.tools.fuse.reddeer.debug.BreakpointsView;
-import org.jboss.tools.fuse.reddeer.debug.IsRunning;
-import org.jboss.tools.fuse.reddeer.debug.IsSuspended;
-import org.jboss.tools.fuse.reddeer.debug.ResumeButton;
-import org.jboss.tools.fuse.reddeer.debug.StepOverButton;
-import org.jboss.tools.fuse.reddeer.debug.TerminateButton;
-import org.jboss.tools.fuse.reddeer.debug.VariablesView;
+import org.jboss.tools.common.reddeer.LogGrapper;
+import org.jboss.tools.common.reddeer.debug.IsRunning;
+import org.jboss.tools.common.reddeer.debug.StepOverButton;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
 import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
-import org.jboss.tools.fuse.ui.bot.test.utils.LogGrapper;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.After;
 import org.junit.BeforeClass;
@@ -109,8 +109,8 @@ public class DebuggerTest extends DefaultTest {
 
 		// check Breakpoints View
 		BreakpointsView view = new BreakpointsView();
-		assertTrue(view.isBreakpointSet(CHOICE_ID));
-		assertTrue(view.isBreakpointSet(LOG_ID));
+		assertTrue(view.isBreakpointAvailable(CHOICE_ID));
+		assertTrue(view.isBreakpointAvailable(LOG_ID));
 
 		// do some operations (disable/enable/remove) and check
 		Breakpoint choice = view.getBreakpoint(CHOICE_ID);
@@ -129,7 +129,7 @@ public class DebuggerTest extends DefaultTest {
 		view.open();
 		view.getBreakpoint(LOG_ID).remove();
 		assertFalse(editor.isBreakpointSet(LOG));
-		assertTrue(LogGrapper.getFuseErrors().size() == 0);
+		assertTrue(LogGrapper.getPluginErrors("fuse").size() == 0);
 	}
 
 	/**
@@ -189,7 +189,7 @@ public class DebuggerTest extends DefaultTest {
 		// resume and then should stop on the 'log1' node
 		ResumeButton resume = new ResumeButton();
 		assertTrue(resume.isEnabled());
-		resume.select();
+		resume.click();
 		new WaitUntil(new IsSuspended(), TimePeriod.NORMAL);
 		AbstractWait.sleep(TimePeriod.getCustom(2));
 		assertEquals(LOG_ID, variables.getValue("Endpoint"));
@@ -207,13 +207,13 @@ public class DebuggerTest extends DefaultTest {
 		new BreakpointsView().removeAllBreakpoints();
 		assertTrue(new ConsoleHasText("Removing breakpoint _choice1").test());
 		assertTrue(new ConsoleHasText("Removing breakpoint _log1").test());
-		resume.select();
+		resume.click();
 
 		// all breakpoints should be processed
 		new WaitUntil(new IsRunning(), TimePeriod.NORMAL);
-		new TerminateButton().select();
+		new TerminateButton().click();
 		assertTrue(new ConsoleHasText("Disabling debugger").test());
-		assertTrue(LogGrapper.getFuseErrors().size() == 0);
+		assertTrue(LogGrapper.getPluginErrors("fuse").size() == 0);
 	}
 
 	/**
@@ -257,11 +257,11 @@ public class DebuggerTest extends DefaultTest {
 		assertTrue(resume.isEnabled());
 
 		// all breakpoint should be processed
-		resume.select();
+		resume.click();
 		new WaitUntil(new IsRunning(), TimePeriod.NORMAL);
 		assertTrue(new ConsoleHasText("UK message").test());
-		new TerminateButton().select();
+		new TerminateButton().click();
 		assertTrue(new ConsoleHasText("Disabling debugger").test());
-		assertTrue(LogGrapper.getFuseErrors().size() == 0);
+		assertTrue(LogGrapper.getPluginErrors("fuse").size() == 0);
 	}
 }

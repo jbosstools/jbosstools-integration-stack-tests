@@ -2,7 +2,7 @@ package org.jboss.tools.fuse.reddeer.view;
 
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.swt.api.Text;
-import org.jboss.tools.fuse.reddeer.widget.CLabeledText;
+import org.jboss.tools.common.reddeer.widget.CLabeledText;
 
 /**
  * 

@@ -18,13 +18,13 @@ import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.common.reddeer.view.ErrorLogView;
+import org.jboss.tools.common.reddeer.view.MessagesView;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
 import org.jboss.tools.fuse.reddeer.utils.TracingDragAndDropManager;
-import org.jboss.tools.fuse.reddeer.view.ErrorLogView;
-import org.jboss.tools.fuse.reddeer.view.JMXNavigator;
-import org.jboss.tools.fuse.reddeer.view.MessagesView;
+import org.jboss.tools.fuse.reddeer.view.FuseJMXNavigator;
 import org.jboss.tools.fuse.ui.bot.test.utils.EditorManipulator;
 import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
@@ -107,7 +107,7 @@ public class RouteManipulationTest extends DefaultTest {
 	@Test
 	public void testRemoteRouteEditing() {
 
-		JMXNavigator jmx = new JMXNavigator();
+		FuseJMXNavigator jmx = new FuseJMXNavigator();
 		jmx.getNode("Local Camel Context", "Camel");
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		assertNotNull(jmx.getNode("Local Camel Context", "Camel", "camelContext", "Routes", "_route1",
@@ -163,7 +163,7 @@ public class RouteManipulationTest extends DefaultTest {
 	@Test
 	public void testTracing() {
 
-		JMXNavigator jmx = new JMXNavigator();
+		FuseJMXNavigator jmx = new FuseJMXNavigator();
 		jmx.getNode("Local Camel Context", "Camel");
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		jmx.getNode("Local Camel Context", "Camel", "camelContext").select();

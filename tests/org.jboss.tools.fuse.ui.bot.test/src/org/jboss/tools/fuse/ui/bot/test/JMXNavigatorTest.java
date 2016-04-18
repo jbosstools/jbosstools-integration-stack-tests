@@ -13,11 +13,11 @@ import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.tools.common.reddeer.LogGrapper;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
-import org.jboss.tools.fuse.reddeer.view.JMXNavigator;
+import org.jboss.tools.fuse.reddeer.view.FuseJMXNavigator;
 import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
-import org.jboss.tools.fuse.ui.bot.test.utils.LogGrapper;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -88,7 +88,7 @@ public class JMXNavigatorTest extends DefaultTest {
 	@Test
 	public void testProcessesView() {
 
-		JMXNavigator jmx = new JMXNavigator();
+		FuseJMXNavigator jmx = new FuseJMXNavigator();
 		assertNotNull(
 				"The following path is inaccesible: Local Camel Context/Camel/camelContext-.../Endpoints/file/src/data?noop=true",
 				jmx.getNode("Local Camel Context", "Camel", "camelContext", "Endpoints", "file", "src/data?noop=true"));
@@ -97,7 +97,7 @@ public class JMXNavigatorTest extends DefaultTest {
 				jmx.getNode("Local Camel Context", "Camel", "camelContext", "Routes", "_route1",
 						"file:src/data?noop=true", "Choice", "When /person/city = 'London'", "Log _log1",
 						"file:target/messages/uk"));
-		assertTrue("There are some errors in Error Log", LogGrapper.getFuseErrors().size() == 0);
+		assertTrue("There are some errors in Error Log", LogGrapper.getPluginErrors("fuse").size() == 0);
 	}
 
 	/**
@@ -122,7 +122,7 @@ public class JMXNavigatorTest extends DefaultTest {
 	@Test
 	public void testContextOperations() {
 
-		JMXNavigator jmx = new JMXNavigator();
+		FuseJMXNavigator jmx = new FuseJMXNavigator();
 		jmx.open();
 		assertTrue("Suspension was not performed",
 				jmx.suspendCamelContext("Local Camel Context", "Camel", "camelContext"));
@@ -138,6 +138,6 @@ public class JMXNavigatorTest extends DefaultTest {
 		} catch (WaitTimeoutExpiredException e) {
 			fail("Camel context was not resumed!");
 		}
-		assertTrue("There are some errors in Error Log", LogGrapper.getFuseErrors().size() == 0);
+		assertTrue("There are some errors in Error Log", LogGrapper.getPluginErrors("fuse").size() == 0);
 	}
 }
