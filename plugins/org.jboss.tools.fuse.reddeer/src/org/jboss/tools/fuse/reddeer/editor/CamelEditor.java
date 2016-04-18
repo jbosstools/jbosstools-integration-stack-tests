@@ -33,11 +33,11 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.tools.common.reddeer.MouseAWTManager;
+import org.jboss.tools.common.reddeer.XPathEvaluator;
+import org.jboss.tools.common.reddeer.widget.LabeledTextExt;
 import org.jboss.tools.fuse.reddeer.component.AbstractURICamelComponent;
 import org.jboss.tools.fuse.reddeer.component.CamelComponent;
-import org.jboss.tools.fuse.reddeer.ext.LabeledTextExt;
-import org.jboss.tools.fuse.reddeer.utils.MouseAWTManager;
-import org.jboss.tools.fuse.reddeer.utils.XPathEvaluator;
 
 /**
  * Manipulates with Camel Editor

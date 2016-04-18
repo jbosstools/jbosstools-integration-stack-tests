@@ -17,7 +17,7 @@ import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.tools.fuse.reddeer.utils.ResourceHelper;
+import org.jboss.tools.common.reddeer.ResourceHelper;
 import org.jboss.tools.runtime.reddeer.preference.FuseServerRuntimePreferencePage;
 import org.jboss.tools.runtime.reddeer.utils.FuseServerManipulator;
 import org.junit.Test;

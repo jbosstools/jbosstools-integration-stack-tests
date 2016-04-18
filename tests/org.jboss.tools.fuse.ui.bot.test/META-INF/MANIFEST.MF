@@ -12,14 +12,20 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.reddeer.gef;bundle-version="1.0.0",
  org.jboss.reddeer.graphiti;bundle-version="1.0.0",
  org.jboss.tools.runtime.reddeer;bundle-version="4.3.0",
- org.jboss.tools.fuse.reddeer;bundle-version="4.3.0"
+ org.jboss.tools.fuse.reddeer;bundle-version="4.3.0",
+ org.jboss.reddeer.eclipse
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Vendor: JBoss by Red Hat
 Eclipse-RegisterBuddy: org.apache.log4j
 Eclipse-BundleShape: dir
 Import-Package: org.jboss.reddeer.common.logging,
+ org.jboss.tools.common.reddeer,
  org.jboss.tools.common.reddeer.condition,
+ org.jboss.tools.common.reddeer.debug,
+ org.jboss.tools.common.reddeer.preference,
+ org.jboss.tools.common.reddeer.view,
+ org.jboss.tools.common.reddeer.wizard,
  org.jboss.tools.runtime.reddeer,
  org.jboss.tools.runtime.reddeer.impl,
  org.jboss.tools.runtime.reddeer.requirement

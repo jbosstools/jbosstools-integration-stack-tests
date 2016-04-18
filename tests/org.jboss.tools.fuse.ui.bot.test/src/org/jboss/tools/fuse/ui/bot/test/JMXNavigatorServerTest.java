@@ -18,13 +18,13 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.common.reddeer.LogGrapper;
+import org.jboss.tools.common.reddeer.preference.ConsolePreferencePage;
+import org.jboss.tools.common.reddeer.view.ErrorLogView;
 import org.jboss.tools.fuse.reddeer.condition.FuseLogContainsText;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
-import org.jboss.tools.fuse.reddeer.preference.ConsolePreferencePage;
-import org.jboss.tools.fuse.reddeer.view.ErrorLogView;
-import org.jboss.tools.fuse.reddeer.view.JMXNavigator;
+import org.jboss.tools.fuse.reddeer.view.FuseJMXNavigator;
 import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
-import org.jboss.tools.fuse.ui.bot.test.utils.LogGrapper;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
@@ -138,7 +138,7 @@ public class JMXNavigatorServerTest {
 	@Test
 	public void testServerInJMXNavigator() {
 
-		JMXNavigator jmx = new JMXNavigator();
+		FuseJMXNavigator jmx = new FuseJMXNavigator();
 		jmx.open();
 		assertNotNull("There is no Fuse node in JMX Navigator View!", jmx.getNode("karaf"));
 		jmx.connectTo("karaf");
@@ -148,7 +148,7 @@ public class JMXNavigatorServerTest {
 				"The following path is inaccesible: karaf/Camel/camel-*/Routes/route/timer:foo?period=5000/setBody/log",
 				jmx.getNode("karaf", "Camel", "camelContext", "Routes", "_route1", "timer:foo?period=5000",
 						"SetBody _setBody1", "Log _log1"));
-		assertTrue("There are some errors in Error Log", LogGrapper.getFuseErrors().size() == 0);
+		assertTrue("There are some errors in Error Log", LogGrapper.getPluginErrors("fuse").size() == 0);
 	}
 
 	/**
@@ -176,7 +176,7 @@ public class JMXNavigatorServerTest {
 	@Test
 	public void testServerContextOperationsInJMXNavigator() {
 
-		JMXNavigator jmx = new JMXNavigator();
+		FuseJMXNavigator jmx = new FuseJMXNavigator();
 		jmx.open();
 		String camel = jmx.getNode("karaf", "Camel", "camelContext").getText();
 		assertNotNull("Camel context was not found in JMX Navigator View!", camel);
@@ -192,6 +192,6 @@ public class JMXNavigatorServerTest {
 		} catch (WaitTimeoutExpiredException e) {
 			fail("Camel context was not resumed!");
 		}
-		assertTrue("There are some errors in Error Log", LogGrapper.getFuseErrors().size() == 0);
+		assertTrue("There are some errors in Error Log", LogGrapper.getPluginErrors("fuse").size() == 0);
 	}
 }

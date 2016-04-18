@@ -24,6 +24,7 @@ import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.core.matcher.WithTooltipTextMatcher;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
+import org.jboss.reddeer.eclipse.debug.core.IsSuspended;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -41,15 +42,14 @@ import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.tools.fuse.reddeer.debug.IsSuspended;
+import org.jboss.tools.common.reddeer.LogGrapper;
+import org.jboss.tools.common.reddeer.ResourceHelper;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
-import org.jboss.tools.fuse.reddeer.utils.ResourceHelper;
-import org.jboss.tools.fuse.reddeer.view.JMXNavigator;
+import org.jboss.tools.fuse.reddeer.view.FuseJMXNavigator;
 import org.jboss.tools.fuse.ui.bot.test.utils.EditorManipulator;
 import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
-import org.jboss.tools.fuse.ui.bot.test.utils.LogGrapper;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.preference.FuseServerRuntimePreferencePage;
 import org.junit.After;
@@ -112,7 +112,7 @@ public class RegressionTest extends DefaultTest {
 		int i = doc.getElementsByTagName("onException").item(0).getChildNodes().getLength();
 
 		assertEquals("'camel-context.xml' file was changed!", 11, i);
-		assertTrue(LogGrapper.getFuseErrors().size() == 0);
+		assertTrue(LogGrapper.getPluginErrors("fuse").size() == 0);
 	}
 
 	/**
@@ -193,7 +193,7 @@ public class RegressionTest extends DefaultTest {
 
 		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
 		new CamelProject("camel-spring").runCamelContext("camel-context.xml");
-		new JMXNavigator().getNode("Local Camel Context", "Camel", "camel").select();
+		new FuseJMXNavigator().getNode("Local Camel Context", "Camel", "camel").select();
 
 		try {
 			new ContextMenu("Close Camel Context");

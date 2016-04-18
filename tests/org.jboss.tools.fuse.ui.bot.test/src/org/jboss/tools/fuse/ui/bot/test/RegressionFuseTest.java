@@ -4,6 +4,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import org.jboss.reddeer.eclipse.debug.core.BreakpointsView;
+import org.jboss.reddeer.eclipse.debug.core.ResumeButton;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -21,12 +23,10 @@ import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.tools.common.reddeer.ResourceHelper;
+import org.jboss.tools.common.reddeer.debug.IsRunning;
 import org.jboss.tools.fuse.reddeer.condition.FuseLogContainsText;
-import org.jboss.tools.fuse.reddeer.debug.BreakpointsView;
-import org.jboss.tools.fuse.reddeer.debug.IsRunning;
-import org.jboss.tools.fuse.reddeer.debug.ResumeButton;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
-import org.jboss.tools.fuse.reddeer.utils.ResourceHelper;
 import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.preference.FuseServerRuntimePreferencePage;
@@ -156,7 +156,7 @@ public class RegressionFuseTest extends DefaultTest {
 			new WorkbenchShell().setFocus();
 			ResumeButton resume = new ResumeButton();
 			if (resume.isEnabled()) {
-				resume.select();
+				resume.click();
 			}
 			FuseServerManipulator.removeAllModules(server);
 		}
