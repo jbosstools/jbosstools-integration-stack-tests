@@ -15,7 +15,7 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 public class RestProfileWizard extends TeiidProfileWizard {
 
 	public static final String AUTH_TYPE_BASIC = "HTTPBasic";
-	public static final String AUTH_TYPE_DIGEST = "HTTPDigest";
+	public static final String AUTH_TYPE_DIGEST = "Digest";
 	
 	private String connectionUrl;
 	private String type;
