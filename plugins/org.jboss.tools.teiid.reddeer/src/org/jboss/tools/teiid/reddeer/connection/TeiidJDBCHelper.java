@@ -8,6 +8,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
@@ -82,6 +84,36 @@ public class TeiidJDBCHelper {
 
 	}
 
+	/**
+	 * Method executes queries against existing database connection 
+	 * DDL queries don't return result set only just write in the console, how many lines was updated for each queries
+	 * @param queries - list of queries
+	 * @return list - list of result sets for each queries (except DDL queries)
+	 * @throws SQLException
+	 */
+	public List<ResultSet> executeMultiQuery(String... queries) throws SQLException{
+		createConnection();
+		List<ResultSet> list = new ArrayList<ResultSet>();
+		if (connection == null) {
+			throw new IllegalArgumentException("Connection is null (not established?)");
+		}
+		ResultSet rs = null;
+		for( int i = 0; i <= queries.length - 1; i++)
+		{
+			Statement st = connection.createStatement();
+			log.info("Executing query " + queries[i]);
+			if(queries[i].toLowerCase().contains("insert")||queries[i].toLowerCase().contains("delete")
+					||queries[i].toLowerCase().contains("update")||queries[i].toLowerCase().contains("alter")){ //some DDL
+				int numberUpdate = st.executeUpdate(queries[i]);
+				log.info("DDL query change " + numberUpdate + " row/s");
+			}else{
+				rs = st.executeQuery(queries[i]);
+				list.add(rs);
+			}
+		}
+		return list;
+	}
+	
 	/**
 	 * Method executes query that has no result set against existing database connection
 	 * 
