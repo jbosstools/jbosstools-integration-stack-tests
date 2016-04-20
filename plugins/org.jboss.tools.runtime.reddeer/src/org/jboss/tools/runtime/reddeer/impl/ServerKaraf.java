@@ -15,17 +15,19 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.jboss.reddeer.direct.preferences.Preferences;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
-import org.jboss.reddeer.eclipse.wst.server.ui.RuntimePreferencePage;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.direct.preferences.Preferences;
+import org.jboss.reddeer.eclipse.wst.server.ui.RuntimePreferencePage;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.jboss.tools.common.reddeer.condition.TreeHasItem;
 import org.jboss.tools.runtime.reddeer.Activator;
 import org.jboss.tools.runtime.reddeer.Namespaces;
 import org.jboss.tools.runtime.reddeer.ServerBase;
@@ -135,6 +137,7 @@ public class ServerKaraf extends ServerBase {
 		preferences.select(runtimePreferencePage);
 		runtimePreferencePage.addRuntime();
 		ServerRuntimeWizard runtimeWizard = new ServerRuntimeWizard();
+		new WaitUntil(new TreeHasItem(new DefaultTree(), getCategory(), getRuntimeType()));
 		runtimeWizard.setType(getCategory(), getRuntimeType());
 		runtimeWizard.next();
 		runtimeWizard.setName(getRuntimeName());
@@ -149,7 +152,7 @@ public class ServerKaraf extends ServerBase {
 		// Add server
 		ServerWizard serverWizard = new ServerWizard();
 		serverWizard.open();
-		AbstractWait.sleep(TimePeriod.SHORT);
+		new WaitUntil(new TreeHasItem(new DefaultTree(), getCategory(), getServerType()));
 		serverWizard.setType(getCategory(), getServerType());
 		serverWizard.setName(getName());
 		serverWizard.setRuntime(getRuntimeName());
