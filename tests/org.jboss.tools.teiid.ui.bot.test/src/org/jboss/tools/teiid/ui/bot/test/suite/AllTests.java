@@ -15,6 +15,7 @@ import org.jboss.tools.teiid.ui.bot.test.ModelRefactoringTest;
 import org.jboss.tools.teiid.ui.bot.test.ModelWizardTest;
 import org.jboss.tools.teiid.ui.bot.test.PreviewModelTest;
 import org.jboss.tools.teiid.ui.bot.test.ProcedurePreviewTest;
+import org.jboss.tools.teiid.ui.bot.test.UDFTest;
 import org.jboss.tools.teiid.ui.bot.test.WARTest;
 import org.jboss.tools.teiid.ui.bot.test.XmlFileImportTest;
 import org.jboss.tools.teiid.ui.bot.test.XmlSchemalessTest;
@@ -43,7 +44,9 @@ import org.junit.runners.Suite.SuiteClasses;
 	ProcedurePreviewTest.class,
 	WARTest.class,
 	XmlFileImportTest.class,
-	XmlSchemalessTest.class})
+	XmlSchemalessTest.class,
+	UDFTest.class})
+
 @RunWith(RedDeerSuite.class)
 public class AllTests {
 }

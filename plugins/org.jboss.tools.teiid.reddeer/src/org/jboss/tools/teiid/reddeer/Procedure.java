@@ -226,7 +226,7 @@ public class Procedure extends ModelObject {
 
 		new PushButton("OK").click();
 
-		new DefaultShell("Create Relational View Procedure");
+		new DefaultShell("Create User Defined Function");
 
 		// Name
 		new LabeledText("Name").setText(name);
