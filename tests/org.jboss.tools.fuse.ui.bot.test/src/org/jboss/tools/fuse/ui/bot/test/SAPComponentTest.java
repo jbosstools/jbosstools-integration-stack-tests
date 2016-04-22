@@ -135,6 +135,9 @@ public class SAPComponentTest extends DefaultTest {
 	 * <li>delete camel-context.xml and create a new empty one</li>
 	 * <li>try to create a SAP component (see the method name) in Palette View</li>
 	 * <li>check if the component is present in Camel Editor</li>
+	 * <li>set all properties in Advanced tab</li>
+	 * <li>check the xml file for each property change</li>
+	 * <li>check Error Log</li>
 	 * <li>delete the component from Camel Editor</li>
 	 * </ol>
 	 * 
@@ -175,7 +178,10 @@ public class SAPComponentTest extends DefaultTest {
 	 * <li>open Project Explorer view</li>
 	 * <li>delete camel-context.xml and create a new empty one</li>
 	 * <li>try to create a SAP component (see the method name) in Palette View</li>
-	 * <li>check if the component is present in Camel Editorh</li>
+	 * <li>check if the component is present in Camel Editor</li>
+	 * <li>set all properties in Advanced tab</li>
+	 * <li>check the xml file for each property change</li>
+	 * <li>check Error Log</li>
 	 * <li>delete the component from Camel Editor</li>
 	 * </ol>
 	 * 
@@ -211,6 +217,9 @@ public class SAPComponentTest extends DefaultTest {
 	 * <li>delete camel-context.xml and create a new empty one</li>
 	 * <li>try to create a SAP component (see the method name) in Palette View</li>
 	 * <li>check if the component is present in Camel Editor</li>
+	 * <li>set all properties in Advanced tab</li>
+	 * <li>check the xml file for each property change</li>
+	 * <li>check Error Log</li>
 	 * <li>delete the component from Camel Editor</li>
 	 * </ol>
 	 * 
@@ -245,7 +254,10 @@ public class SAPComponentTest extends DefaultTest {
 	 * <li>open Project Explorer view</li>
 	 * <li>delete camel-context.xml and create a new empty one</li>
 	 * <li>try to create a SAP component (see the method name) in Palette View</li>
-	 * <li>check if the component is present in Camel Editorh</li>
+	 * <li>check if the component is present in Camel Editor</li>
+	 * <li>set all properties in Advanced tab</li>
+	 * <li>check the xml file for each property change</li>
+	 * <li>check Error Log</li>
 	 * <li>delete the component from Camel Editor</li>
 	 * </ol>
 	 * 
@@ -286,7 +298,10 @@ public class SAPComponentTest extends DefaultTest {
 	 * <li>open Project Explorer view</li>
 	 * <li>delete camel-context.xml and create a new empty one</li>
 	 * <li>try to create a SAP component (see the method name) in Palette View</li>
-	 * <li>check if the component is present in Camel Editorh</li>
+	 * <li>check if the component is present in Camel Editor</li>
+	 * <li>set all properties in Advanced tab</li>
+	 * <li>check the xml file for each property change</li>
+	 * <li>check Error Log</li>
 	 * <li>delete the component from Camel Editor</li>
 	 * </ol>
 	 * 
@@ -327,7 +342,10 @@ public class SAPComponentTest extends DefaultTest {
 	 * <li>open Project Explorer view</li>
 	 * <li>delete camel-context.xml and create a new empty one</li>
 	 * <li>try to create a SAP component (see the method name) in Palette View</li>
-	 * <li>check if the component is present in Camel Editorh</li>
+	 * <li>check if the component is present in Camel Editor</li>
+	 * <li>set all properties in Advanced tab</li>
+	 * <li>check the xml file for each property change</li>
+	 * <li>check Error Log</li>
 	 * <li>delete the component from Camel Editor</li>
 	 * </ol>
 	 * 
@@ -370,7 +388,10 @@ public class SAPComponentTest extends DefaultTest {
 	 * <li>open Project Explorer view</li>
 	 * <li>delete camel-context.xml and create a new empty one</li>
 	 * <li>try to create a SAP component (see the method name) in Palette View</li>
-	 * <li>check if the component is present in Camel Editorh</li>
+	 * <li>check if the component is present in Camel Editor</li>
+	 * <li>set all properties in Advanced tab</li>
+	 * <li>check the xml file for each property change</li>
+	 * <li>check Error Log</li>
 	 * <li>delete the component from Camel Editor</li>
 	 * </ol>
 	 * 
@@ -413,7 +434,10 @@ public class SAPComponentTest extends DefaultTest {
 	 * <li>open Project Explorer view</li>
 	 * <li>delete camel-context.xml and create a new empty one</li>
 	 * <li>try to create a SAP component (see the method name) in Palette View</li>
-	 * <li>check if the component is present in Camel Editorh</li>
+	 * <li>check if the component is present in Camel Editor</li>
+	 * <li>set all properties in Advanced tab</li>
+	 * <li>check the xml file for each property change</li>
+	 * <li>check Error Log</li>
 	 * <li>delete the component from Camel Editor</li>
 	 * </ol>
 	 * 
@@ -450,7 +474,10 @@ public class SAPComponentTest extends DefaultTest {
 	 * <li>open Project Explorer view</li>
 	 * <li>delete camel-context.xml and create a new empty one</li>
 	 * <li>try to create a SAP component (see the method name) in Palette View</li>
-	 * <li>check if the component is present in Camel Editorh</li>
+	 * <li>check if the component is present in Camel Editor</li>
+	 * <li>set all properties in Advanced tab</li>
+	 * <li>check the xml file for each property change</li>
+	 * <li>check Error Log</li>
 	 * <li>delete the component from Camel Editor</li>
 	 * </ol>
 	 * 
@@ -488,7 +515,10 @@ public class SAPComponentTest extends DefaultTest {
 	 * <li>open Project Explorer view</li>
 	 * <li>delete camel-context.xml and create a new empty one</li>
 	 * <li>try to create a SAP component (see the method name) in Palette View</li>
-	 * <li>check if the component is present in Camel Editorh</li>
+	 * <li>check if the component is present in Camel Editor</li>
+	 * <li>set all properties in Advanced tab</li>
+	 * <li>check the xml file for each property change</li>
+	 * <li>check Error Log</li>
 	 * <li>delete the component from Camel Editor</li>
 	 * </ol>
 	 * 
