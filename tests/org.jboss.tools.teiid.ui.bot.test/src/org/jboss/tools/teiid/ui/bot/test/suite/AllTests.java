@@ -16,6 +16,7 @@ import org.jboss.tools.teiid.ui.bot.test.ModelWizardTest;
 import org.jboss.tools.teiid.ui.bot.test.PreviewModelTest;
 import org.jboss.tools.teiid.ui.bot.test.ProcedurePreviewTest;
 import org.jboss.tools.teiid.ui.bot.test.RecursiveCommonTableExpression;
+import org.jboss.tools.teiid.ui.bot.test.UDFTest;
 import org.jboss.tools.teiid.ui.bot.test.WARTest;
 import org.jboss.tools.teiid.ui.bot.test.XmlFileImportTest;
 import org.jboss.tools.teiid.ui.bot.test.XmlSchemalessTest;
@@ -45,7 +46,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	WARTest.class,
 	XmlFileImportTest.class,
 	XmlSchemalessTest.class,
-	RecursiveCommonTableExpression.class})
+	RecursiveCommonTableExpression.class,
+	UDFTest.class})
 @RunWith(RedDeerSuite.class)
 public class AllTests {
 }
