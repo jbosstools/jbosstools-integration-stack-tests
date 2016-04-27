@@ -107,7 +107,7 @@ public class E2eRecursiveXmlTextTest {
 
 		Files.copy(source, target, REPLACE_EXISTING);
 
-		ImportProjectWizard projectWizard = new ImportProjectWizard("resources/recursiveXML/Recursive");
+		ImportProjectWizard projectWizard = new ImportProjectWizard("resources/projects/Recursive");
 		projectWizard.execute();
 
 		// create virtual document XML model
