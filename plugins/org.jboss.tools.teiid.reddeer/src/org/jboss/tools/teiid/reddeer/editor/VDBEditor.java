@@ -30,6 +30,7 @@ public class VDBEditor extends SWTBotEditor {
 	}
 
 	public static VDBEditor getInstance(String name) {
+		name = (name.contains(".vdb")) ? name : name + ".vdb";
 		VDBEditor editor = new VDBEditor(name);
 		editor.show();
 		return editor;
@@ -114,9 +115,9 @@ public class VDBEditor extends SWTBotEditor {
 	}
 
 	public void synchronizeAll() {
-
-		if (new PushButton("Synchronize All").isEnabled()) {
-			new PushButton("Synchronize All").click();
+		PushButton syncAll = new PushButton("Synchronize All");
+		if (syncAll.isEnabled()) {
+			syncAll.click();
 		}
 	}
 

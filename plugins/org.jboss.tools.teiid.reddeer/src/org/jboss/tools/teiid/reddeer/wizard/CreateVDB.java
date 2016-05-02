@@ -14,6 +14,7 @@ import org.jboss.tools.teiid.reddeer.view.GuidesView;
  * @author Lucia Jelinkova
  * 
  */
+@Deprecated // use org.jboss.tools.teiid.reddeer.wizard.VdbWizard
 public class CreateVDB extends NewWizardDialog {
 
 	private String folder;
