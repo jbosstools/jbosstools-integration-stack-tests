@@ -62,6 +62,7 @@
 				<xs:choice>
 					<xs:element name="esb" type="server:jboss-esb" />
 					<xs:element name="jbpm" type="server:jboss-jbpm" />
+					<xs:element name="bpms" type="server:jboss-bpms" />
 					<xs:element name="brms" type="server:jboss-brms" />
 				</xs:choice>
 			</xs:extension>
@@ -386,6 +387,20 @@
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
+	</xs:complexType>
+
+	<!-- JBoss BPMS -->
+	<xs:complexType name="jboss-bpms">
+		<xs:sequence>
+			<xs:element name="home" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="properties" minOccurs="0" maxOccurs="1">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
 	</xs:complexType>
 
 	<!-- JBoss BRMS -->
