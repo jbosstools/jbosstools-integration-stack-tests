@@ -82,7 +82,8 @@
 						</xs:simpleType>
 					</xs:element>
 					<xs:element name="targetRuntime" type="xs:string" minOccurs="0" />
-					<xs:element name="libraryVersion" type="xs:string" />
+					<xs:element name="libraryVersion" type="xs:string" minOccurs="0" />
+					<xs:element name="switchyardVersion" type="xs:string" />
 					<xs:element name="componentRestriction" type="xs:string" minOccurs="0" />
 					<xs:element name="integrationPack" minOccurs="0" maxOccurs="1">
 						<xs:complexType>
