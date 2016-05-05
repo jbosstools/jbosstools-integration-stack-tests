@@ -8,7 +8,7 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 
 public class DroolsRuntimeWizard {
 
-	public static final String DROOLS_LABEL = "Drools Runtime";
+	public static final String DROOLS_LABEL = "Add Runtime";
 
 	public DroolsRuntimeWizard() {
 		super();

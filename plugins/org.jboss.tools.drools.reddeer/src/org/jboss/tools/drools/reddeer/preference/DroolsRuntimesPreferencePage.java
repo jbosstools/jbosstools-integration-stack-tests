@@ -65,13 +65,14 @@ public class DroolsRuntimesPreferencePage extends PreferencePage {
 
 	public Collection<DroolsRuntime> getDroolsRuntimes() {
 		Collection<DroolsRuntime> result = new ArrayList<DroolsRuntimesPreferencePage.DroolsRuntime>();
-		String name, location;
+		String name, version, location;
 		boolean isDefault;
 		for (TableItem item : new DefaultTable().getItems()) {
 			name = item.getText(0);
-			location = item.getText(1);
+			version = item.getText(1);
+			location = item.getText(2);
 			isDefault = item.isChecked();
-			result.add(new DroolsRuntime(name, location, isDefault));
+			result.add(new DroolsRuntime(name, version, location, isDefault));
 		}
 
 		return result;
@@ -79,11 +80,13 @@ public class DroolsRuntimesPreferencePage extends PreferencePage {
 
 	public static class DroolsRuntime {
 		private final String name;
+		private final String version;
 		private final String location;
 		private final boolean isDefault;
 
-		public DroolsRuntime(String name, String location, boolean isDefault) {
+		public DroolsRuntime(String name, String version, String location, boolean isDefault) {
 			this.name = name;
+			this.version = version;
 			this.location = location;
 			this.isDefault = isDefault;
 		}
@@ -91,7 +94,11 @@ public class DroolsRuntimesPreferencePage extends PreferencePage {
 		public String getName() {
 			return name;
 		}
-
+		
+		public String getVersion() {
+			return version;
+		}
+		
 		public String getLocation() {
 			return location;
 		}

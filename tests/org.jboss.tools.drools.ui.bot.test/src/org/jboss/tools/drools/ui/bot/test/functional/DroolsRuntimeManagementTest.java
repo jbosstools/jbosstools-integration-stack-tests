@@ -92,9 +92,10 @@ public class DroolsRuntimeManagementTest extends TestParent {
 
 		DroolsRuntimeDialog wiz = pref.addDroolsRuntime();
 		wiz.setName(name);
+		Assert.assertEquals("The Runtime \"" + name + "\" is already registered", wiz.getWarningText());
+		
 		wiz.setLocation(runtimeHome);
-
-		Assert.assertFalse("It is possible to save runtime with duplicate name.", wiz.isValid());
+		Assert.assertFalse("DROOLS-1160: It is possible to save runtime with duplicate name.", wiz.isValid());
 		wiz.cancel();
 		pref.cancel();
 	}
@@ -183,19 +184,6 @@ public class DroolsRuntimeManagementTest extends TestParent {
 	}
 
 	@Test
-	public void testCreateRuntime() {
-		DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
-		pref.open();
-		DroolsRuntimeDialog wiz = pref.addDroolsRuntime();
-		wiz.setName("testCreateRuntime");
-		wiz.createNewRuntime(createTempDir("testCreateRuntime"));
-		Assert.assertTrue("Impossible to use created runtime.", wiz.isValid());
-		wiz.ok();
-		Assert.assertEquals("Runtime was not created.", 1, pref.getDroolsRuntimes().size());
-		pref.ok();
-	}
-
-	@Test
 	public void testApply() {
 		DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
 		pref.open();
@@ -217,13 +205,13 @@ public class DroolsRuntimeManagementTest extends TestParent {
 		}
 
 		try {
-			Assert.assertNotNull("The default runtime was reset!", pref.getDefaultDroolsRuntime());
+			Assert.assertNotNull("DROOLS-1161: The default runtime was reset!", pref.getDefaultDroolsRuntime());
 		} finally {
 			pref.cancel();
 		}
 	}
 
-	public static void addRuntime(String name, String location, boolean setAsDefault) {
+	private static void addRuntime(String name, String location, boolean setAsDefault) {
 		DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
 		pref.open();
 		addRuntime(name, location, setAsDefault, pref);
@@ -245,7 +233,7 @@ public class DroolsRuntimeManagementTest extends TestParent {
 		Assert.assertNotSame("No runtimes are present.", 0, runtimes.size());
 
 		DroolsRuntime runtime = getRuntime(name, pref);
-		Assert.assertNotNull("Requested runtime was not created.", runtime);
+		Assert.assertNotNull("DROOLS-1162: Requested runtime was not created.", runtime);
 	}
 
 	private static DroolsRuntime getRuntime(String name, DroolsRuntimesPreferencePage pref) {
