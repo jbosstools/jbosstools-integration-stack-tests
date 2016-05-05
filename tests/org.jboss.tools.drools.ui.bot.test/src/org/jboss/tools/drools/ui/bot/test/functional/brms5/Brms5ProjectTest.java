@@ -60,7 +60,7 @@ public class Brms5ProjectTest extends TestParent {
 		NewDroolsProjectWithExamplesWizardPage page = wiz.getProjectWithExamplesPage();
 		page.setProjectName(projectName);
 		page.checkAll();
-		page.setUseDefaultRuntime(true);
+		page.useRuntime();
 		wiz.finish();
 		new WaitWhile(new JobIsRunning());
 

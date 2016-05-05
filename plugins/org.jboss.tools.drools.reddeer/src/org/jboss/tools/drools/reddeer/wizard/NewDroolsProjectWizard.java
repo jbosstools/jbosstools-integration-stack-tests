@@ -19,16 +19,4 @@ public class NewDroolsProjectWizard extends NewWizardDialog {
     public NewDroolsProjectWithExamplesWizardPage getProjectWithExamplesPage() {
         return new NewDroolsProjectWithExamplesWizardPage();
     }
-
-    public void createDefaultProjectWithAllSamples(String projectName) {
-        open();
-        getFirstPage().selectProjectWithExamples();
-        next();
-        NewDroolsProjectWithExamplesWizardPage projectPage = getProjectWithExamplesPage();
-        projectPage.setProjectName(projectName);
-        projectPage.setUseDefaultLocation(true);
-        projectPage.setUseDefaultRuntime(true);
-        projectPage.checkAll();
-        finish();
-    }
 }
