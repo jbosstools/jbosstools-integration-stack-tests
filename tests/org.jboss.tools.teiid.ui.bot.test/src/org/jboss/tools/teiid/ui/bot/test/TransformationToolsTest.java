@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -20,16 +19,16 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.teiid.reddeer.ChildType;
 import org.jboss.tools.teiid.reddeer.editor.CriteriaBuilder;
 import org.jboss.tools.teiid.reddeer.editor.ExpressionBuilder;
 import org.jboss.tools.teiid.reddeer.editor.ModelDiagram;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.Reconciler;
-import org.jboss.tools.teiid.reddeer.manager.ImportManager;
-import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
-import org.jboss.tools.teiid.reddeer.widget.TeiidStyledText;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,37 +48,34 @@ import org.junit.runner.RunWith;
 public class TransformationToolsTest {
 	private static final String PROJECT_NAME = "TransformationToolsProject";
 	
-	private static Project project;
-	
+	private static ModelExplorer modelExplorer;
+
 	@BeforeClass
 	public static void importProject() {
 		new WorkbenchShell().maximize();
-		
-		TeiidBot teiidBot = new TeiidBot();
-		new ImportManager().importProject(teiidBot.toAbsolutePath("resources/projects/" + PROJECT_NAME));
-	
-		project = teiidBot.modelExplorer().getProject(PROJECT_NAME);
+		modelExplorer = new ModelExplorer();
+		modelExplorer.importProject("resources/projects/" + PROJECT_NAME);
+		modelExplorer.getProject(PROJECT_NAME).refresh();
 	}
 	
 	@Test
 	public void test(){
 		// 1. Add the transformation sources
-		project.select();
-		new ModelExplorerManager().getModelExplorerView().open(PROJECT_NAME,"PartsView.xmi","SupplierParts");
+		modelExplorer.open(PROJECT_NAME,"PartsView.xmi","SupplierParts");
 		ModelEditor editor = new ModelEditor("PartsView.xmi");
 		editor.showTransformation();
 		
-		new ModelExplorer().activate();
+		modelExplorer.activate();
 		new DefaultTreeItem(PROJECT_NAME,"PartsSupplier.xmi","SUPPLIER").select();
 		new ContextMenu("Modeling","Add Transformation Source(s)").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
-		assertTrue("transformation text not set", editor.getTransformation().replaceAll(" |\t|\n" ,"").equals("SELECT*FROMPartsSupplier.SUPPLIER"));	
+		assertTrue("transformation text not set", editor.getTransformation().replaceAll(" |\t|\n|\r" ,"").equals("SELECT*FROMPartsSupplier.SUPPLIER"));	
 		
 		editor.setTransformation("SELECT * FROM PartsSupplier.SUPPLIER, PartsSupplier.PARTS, PartsSupplier.SUPPLIER_PARTS");
 		editor.saveAndValidateSql();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new WorkbenchShell();
-		project.refresh();
+		modelExplorer.getProject(PROJECT_NAME).refresh();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new ShellMenu("File","Save All").select();
 		
@@ -120,8 +116,8 @@ public class TransformationToolsTest {
 				"PartsSupplier.SUPPLIER.SUPPLIER_ID = PartsSupplier.SUPPLIER_PARTS.SUPPLIER_ID");
 		criteriaBuilder.clickOperator(CriteriaBuilder.OperatorType.AND);
 		AbstractWait.sleep(TimePeriod.SHORT);
-		
 		criteriaBuilder.selectRadioButton(CriteriaBuilder.RadioButtonType.FUNCTION, CriteriaBuilder.CriteriaSide.LEFT);
+		
 		ExpressionBuilder expressionBuilder = criteriaBuilder.editFunction(CriteriaBuilder.CriteriaSide.LEFT);
 		expressionBuilder.selectFunctionCategory("Numeric");
 		expressionBuilder.selectFunctionValue("(OP1*OP2)");
@@ -169,20 +165,19 @@ public class TransformationToolsTest {
 		editor.saveAndValidateSql();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new WorkbenchShell();
-		project.refresh();
+		modelExplorer.getProject(PROJECT_NAME);
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new ShellMenu("File","Save All").select();
 		AbstractWait.sleep(TimePeriod.getCustom(3));
 		assertTrue("There are validation errors", new ProblemsView().getProblems(ProblemType.ERROR).isEmpty());		
 		
 		// 3. Create a new view table and use the Reconciler to map columns
-		ModelExplorerManager mem = new ModelExplorerManager();
-		mem.addChildToItem(new String[]{PROJECT_NAME, "PartsView.xmi"}, "Table...");
+	    modelExplorer.addChildToModelItem(PROJECT_NAME + "/PartsView.xmi", "", ChildType.TABLE);
 		new DefaultShell("Create Relational View Table");
 		new LabeledText("Name").setText("AltParts");
 		new PushButton("OK").click();	
 		
-		mem.getModelExplorerView().open(PROJECT_NAME,"PartsView.xmi","AltParts");
+		modelExplorer.open(PROJECT_NAME,"PartsView.xmi","AltParts");
 		editor = new ModelEditor("PartsView.xmi");
 		new WorkbenchShell();
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -243,9 +238,7 @@ public class TransformationToolsTest {
 		AbstractWait.sleep(TimePeriod.SHORT);
 		assertTrue(editor.getTransformation().contains("PartsSupplier.PARTS.PART_ID AS ID, CONCAT(PartsSupplier.PARTS.PART_COLOR, PartsSupplier.PARTS.PART_NAME) AS COLOR_NAME, convert(PartsSupplier.PARTS.PART_WEIGHT, bigdecimal) AS PART_WEIGHT"));
 	
-		TeiidStyledText transformationText = new TeiidStyledText(0);
-		transformationText.navigateTo(1, 41);
-		transformationText.mouseClickOnCaret();
+		editor.setCoursorPositionInTransformation(47);	
 		
 		ExpressionBuilder expressionBuilder3 = editor.openExpressionBuilder();
 		expressionBuilder3.selectTreeViewItem("CONCAT(PartsSupplier.PARTS.PART_COLOR, PartsSupplier.PARTS.PART_NAME)","PartsSupplier.PARTS.PART_COLOR");
