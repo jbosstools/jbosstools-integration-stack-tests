@@ -88,6 +88,7 @@ public class VDBManager {
 	 * @param pathToVDB
 	 *            [project_name, vdb_name]
 	 */
+	@Deprecated // use org.jboss.tools.teiid.reddeer.view.ModelExplorer.deployVdb()
 	public void deployVDB(String[] pathToVDB) {
 		String vdb = pathToVDB[pathToVDB.length - 1];
 		if (!vdb.contains(".vdb")) {
@@ -157,19 +158,6 @@ public class VDBManager {
 			new CheckBox("Pass Thru Authentication").click();
 		}
 		new PushButton("OK").click();
-	}
-
-	/**
-	 * Synchronizes all model's in VDB.
-	 * @param projectName
-	 * @param vdbName
-	 */
-	public void synchronizeAll(String projectName, String vdbName){
-		openVDBEditor(projectName, vdbName);
-		PushButton syncAllButton = new PushButton("Synchronize All");
-		if (syncAllButton.isEnabled()){
-			syncAllButton.click();
-		}
 	}
 
 	/*

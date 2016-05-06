@@ -1,8 +1,6 @@
-package org.jboss.tools.teiid.reddeer.manager;
-
-@Deprecated // use org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants
-public final class ConnectionProfilesConstants {
-
+package org.jboss.tools.teiid.reddeer.connection;
+ 
+public final class ConnectionProfileConstants {
 	public static final String DB2_101_BQT = "db2_101_bqt";
 	public static final String DB2_81_BQT2 = "db2_81_bqt2";
 	public static final String DB2_81_PARTS_SUPPLIER = "db2_81_parts_supplier";
@@ -51,5 +49,5 @@ public final class ConnectionProfilesConstants {
 	public static final String POSTGRESQL_92_DVQE = "postgresql_92_dvqe";
 	public static final String INGRES_10_BQT2 = "ingres_10_bqt2";
 	public static final String EXCEL_SMALLA = "excel_smalla";
-
+	public static final String SAP_HANA = "sap_hana";
 }
