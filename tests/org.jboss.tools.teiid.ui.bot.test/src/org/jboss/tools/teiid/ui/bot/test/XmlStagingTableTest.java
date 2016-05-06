@@ -4,16 +4,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
-import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
@@ -26,25 +23,25 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.ModelBuilder;
 import org.jboss.tools.teiid.reddeer.ModelClass;
 import org.jboss.tools.teiid.reddeer.ModelType;
+import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.editor.InputSetEditor;
 import org.jboss.tools.teiid.reddeer.editor.MappingDiagramEditor;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
-import org.jboss.tools.teiid.reddeer.manager.ConnectionProfilesConstants;
-import org.jboss.tools.teiid.reddeer.manager.ImportManager;
-import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
-import org.jboss.tools.teiid.reddeer.manager.VDBManager;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.wizard.MetadataModelWizard;
+import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -54,31 +51,27 @@ import org.junit.runner.RunWith;
  */
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
-@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = { ConnectionProfilesConstants.ORACLE_11G_BOOKS})
+@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = {ConnectionProfileConstants.ORACLE_11G_BOOKS})
 public class XmlStagingTableTest {
 	private static final String PROJECT_NAME = "XmlStagingTableProject";
 
-	 @InjectRequirement
-	 private static TeiidServerRequirement teiidServer;
+	@InjectRequirement
+	private static TeiidServerRequirement teiidServer;
 
-	private static Project project;
-	
+	private static ModelExplorer modelExplorer;
+
 	@BeforeClass
 	public static void importProject() {
 		new WorkbenchShell().maximize();
-
-		TeiidBot teiidBot = new TeiidBot();
-		new ImportManager().importProject(teiidBot.toAbsolutePath("resources/projects/" + PROJECT_NAME));
-		project = teiidBot.modelExplorer().getProject(PROJECT_NAME);
-		project.refresh();
-
-		new ModelExplorer().changeConnectionProfile(ConnectionProfilesConstants.ORACLE_11G_BOOKS, PROJECT_NAME, "sources", "Books.xmi");
+		modelExplorer = new ModelExplorer();
+		modelExplorer.importProject("resources/projects/" + PROJECT_NAME);
+		modelExplorer.getProject(PROJECT_NAME).refresh();
+		modelExplorer.changeConnectionProfile(ConnectionProfileConstants.ORACLE_11G_BOOKS, PROJECT_NAME, "sources", "Books.xmi");
 	}
 
 	@Test
 	public void test() {
 		// 1. Create an XML document model using a schema
-		project.select();
 		MetadataModelWizard modelWizard = new MetadataModelWizard();
 		modelWizard.open();
 		modelWizard.setLocation(PROJECT_NAME, "views")
@@ -92,18 +85,15 @@ public class XmlStagingTableTest {
 		modelWizard.finish();
 
 		// 2. Model XML document without staging table
-		project.select();
-		new DefaultTreeItem(PROJECT_NAME,"views","SchemaModel.xmi","ResultSetDocument").select();
-		new ContextMenu("Rename...").select();
-		new DefaultText().setText("NoStagingDocument");
-		new SWTWorkbenchBot().activeShell().pressShortcut(Keystrokes.TAB);	
-		AbstractWait.sleep(TimePeriod.SHORT);
+		modelExplorer.renameModelItem(PROJECT_NAME + "/views/SchemaModel.xmi", "ResultSetDocument", "NoStagingDocument");
 		
-		new ModelExplorerManager().getModelExplorerView().open(PROJECT_NAME,"views","SchemaModel.xmi","NoStagingDocument");
+		modelExplorer.open(PROJECT_NAME,"views","SchemaModel.xmi","NoStagingDocument");
 		MappingDiagramEditor mappingEditor = new MappingDiagramEditor("SchemaModel.xmi");
 		ModelEditor editor = new ModelEditor("SchemaModel.xmi");		
-
-		editor.showMappingTransformation("publisher");
+		
+		editor.selectParts(mappingEditor.getMappingClasses("publisher"));
+		new ContextMenu("Open").select();
+		mappingEditor.showTransformation();
 		editor.setTransformation("SELECT "
 				+ "convert(Books.PUBLISHERS.PUBLISHER_ID, double) AS publisherId, Books.PUBLISHERS.NAME "
 				+ "FROM Books.PUBLISHERS");
@@ -140,7 +130,7 @@ public class XmlStagingTableTest {
 		assertTrue("There are validation errors", new ProblemsView().getProblems(ProblemType.ERROR).isEmpty());
 		
 		// 3. Model XML document with staging table
-		project.select();
+		modelExplorer.getProject(PROJECT_NAME).refresh();
 		new DefaultTreeItem(PROJECT_NAME,"views","SchemaModel.xmi","NoStagingDocument").select();
 		new ContextMenu("New Sibling","XML Document").select();
 		new DefaultShell("Build XML Documents From XML Schema");
@@ -151,9 +141,9 @@ public class XmlStagingTableTest {
 		new DefaultTable().select("ResultSet");
 		new PushButton(1).click();
 		new FinishButton().click();
-		new SWTWorkbenchBot().activeShell().pressShortcut(Keystrokes.TAB);
+		KeyboardFactory.getKeyboard().type(KeyEvent.VK_TAB);
 		AbstractWait.sleep(TimePeriod.SHORT);
-		new ModelExplorerManager().renameItem(new String[]{PROJECT_NAME,"views","SchemaModel.xmi","ResultSetDocument"}, "StagingDocument");
+		modelExplorer.renameModelItem(PROJECT_NAME + "/views/SchemaModel.xmi", "ResultSetDocument", "StagingDocument");
 		
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new DefaultTreeItem("ResultSet").select();
@@ -193,6 +183,7 @@ public class XmlStagingTableTest {
 			}
 		}
 		
+ 		editor.show();
 		mappingEditor.showTransformation();
 		AbstractWait.sleep(TimePeriod.SHORT);
  		new WorkbenchShell();
@@ -228,6 +219,7 @@ public class XmlStagingTableTest {
 			}
 		}
  		
+ 		editor.show();
  		mappingEditor.showTransformation();
  		AbstractWait.sleep(TimePeriod.SHORT);
  		new WorkbenchShell();
@@ -245,11 +237,17 @@ public class XmlStagingTableTest {
 		assertTrue("There are validation errors", new ProblemsView().getProblems(ProblemType.ERROR).isEmpty());
 
 		// 4.Create a VDB, deploy  XmlStagingVdb
-		VDBManager mgr = new VDBManager();
 		String vdbName = "XmlStagingVdb";
-		mgr.createVDB(PROJECT_NAME, vdbName);
-		mgr.addModelsToVDB(PROJECT_NAME, vdbName, PROJECT_NAME + "/views/SchemaModel.xmi");
-		mgr.deployVDB(new String[]{PROJECT_NAME, vdbName});
+		
+		VdbWizard vdbWizard = new VdbWizard();
+		vdbWizard.open();
+		vdbWizard.activate();
+		vdbWizard.setLocation(PROJECT_NAME)
+				.setName(vdbName)
+				.addModel(PROJECT_NAME, "views", "SchemaModel.xmi");
+		vdbWizard.finish();
+		
+		modelExplorer.deployVdb(PROJECT_NAME, vdbName);
 		
 		// 5. Test the created models
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, vdbName); 

@@ -51,7 +51,6 @@ public class ExpressionBuilder {
 	 * default - e.b. must be opened before
 	 */
 	public ExpressionBuilder(){
-		//new PushButton(new ButtonWithToolTipMatcher("Expression Builder")).click();
 		activate();
 	}
 	
