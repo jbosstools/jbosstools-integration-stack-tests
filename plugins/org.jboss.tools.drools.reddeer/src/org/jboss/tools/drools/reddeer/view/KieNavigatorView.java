@@ -38,6 +38,14 @@ public class KieNavigatorView extends WorkbenchView {
 	 */
 	private boolean isEmpty() {
 		checkAndOpen();
+		return isLinkToServersViewExists();
+	}
+	
+	/**
+	 * Checks if the link to create a new server exists.
+	 * @return true if exists, false otherwise
+	 */
+	public boolean isLinkToServersViewExists() {
 		try {
 			new DefaultLink(NO_SERVERS_TEXT);
 		} catch (CoreLayerException e) {

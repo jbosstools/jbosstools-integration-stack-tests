@@ -6,9 +6,7 @@ import org.jboss.tools.drools.ui.bot.test.functional.DslEditorTest;
 import org.jboss.tools.drools.ui.bot.test.functional.DslrEditorTest;
 import org.jboss.tools.drools.ui.bot.test.functional.MavenProjectTest;
 import org.jboss.tools.drools.ui.bot.test.functional.NewResourcesTest;
-import org.jboss.tools.drools.ui.bot.test.functional.PerspectiveTest;
 import org.jboss.tools.drools.ui.bot.test.functional.RulesManagementTest;
-import org.jboss.tools.drools.ui.bot.test.functional.brms6.Brms6ProjectTest;
 import org.jboss.tools.drools.ui.bot.test.functional.drleditor.ConditionsCompletionTest;
 import org.jboss.tools.drools.ui.bot.test.functional.drleditor.ConsequencesCompletionTest;
 import org.jboss.tools.drools.ui.bot.test.functional.drleditor.DeclareCompletionTest;
@@ -23,16 +21,21 @@ import org.jboss.tools.drools.ui.bot.test.kienavigator.CreateItemsTest;
 import org.jboss.tools.drools.ui.bot.test.kienavigator.OpenKieNavigatorTest;
 import org.jboss.tools.drools.ui.bot.test.kienavigator.RepositoryManipulationTest;
 import org.jboss.tools.drools.ui.bot.test.kienavigator.ServerConnectionTest;
+import org.jboss.tools.drools.ui.bot.test.smoke.DroolsProjectTest;
+import org.jboss.tools.drools.ui.bot.test.smoke.KieNavigatorTest;
+import org.jboss.tools.drools.ui.bot.test.smoke.PerspectiveTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(RedDeerSuite.class)
 @SuiteClasses({
-	// basic tests
+	// smoke tests
 	PerspectiveTest.class,
+	KieNavigatorTest.class,
+	DroolsProjectTest.class,
+	// basic tests
 	MavenProjectTest.class,
 	DroolsRuntimeManagementTest.class,
-	Brms6ProjectTest.class,
 	NewResourcesTest.class,
 	RulesManagementTest.class,
 	// DRL editor code completion

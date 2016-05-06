@@ -1,5 +1,7 @@
 package org.jboss.tools.drools.reddeer.wizard;
 
+import java.util.List;
+
 import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
@@ -33,7 +35,7 @@ public class NewDroolsEmptyProjectWizardPage extends WizardPage {
 	
 	public void useRuntime(String runtimeName) {
 		useRuntime();
-		new DefaultCombo(VERSION_LABEL).setSelection(runtimeName);
+		new DefaultCombo(0).setSelection(runtimeName);
 	}
 	
 	public void useRuntime() {
@@ -53,5 +55,9 @@ public class NewDroolsEmptyProjectWizardPage extends WizardPage {
 	
 	public void manageRuntimeDefinition() {
 		new DefaultLink(MANAGE_RUNTIMES_LABEL).click();
+	}
+	
+	public List<String> getInstalledRuntimes() {
+		return new DefaultCombo(0).getItems();
 	}
 }
