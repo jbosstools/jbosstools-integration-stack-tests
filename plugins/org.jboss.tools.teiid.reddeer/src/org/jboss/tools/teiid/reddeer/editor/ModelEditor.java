@@ -5,6 +5,7 @@ import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widget
 import static org.hamcrest.core.AllOf.allOf;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +21,6 @@ import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefFigureCanvas;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefViewer;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.eclipse.swtbot.swt.finder.results.Result;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
@@ -35,16 +35,15 @@ import org.jboss.reddeer.swt.api.TabItem;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
-import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.spinner.LabeledSpinner;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.tools.teiid.reddeer.matcher.AttributeMatcher;
-import org.jboss.tools.teiid.reddeer.matcher.ButtonWithToolTipMatcher;
 import org.jboss.tools.teiid.reddeer.matcher.IsTransformation;
 import org.jboss.tools.teiid.reddeer.matcher.ModelColumnMatcher;
 import org.jboss.tools.teiid.reddeer.matcher.ModelEditorItemMatcher;
@@ -223,9 +222,15 @@ public class ModelEditor extends SWTBotEditor {
 	}
 	
 	public void typeTransformation(String text) {
-		new SWTWorkbenchBot().styledText(0).typeText(text);
+		new DefaultStyledText(0);
+		KeyboardFactory.getKeyboard().type(text);
 	}
-
+	
+	public void setCoursorPositionInTransformation(int position){
+		new DefaultStyledText(0).selectPosition(position);
+		new TeiidStyledText(0).mouseClickOnCaret();
+	}
+	
 	public void saveAndValidateSql() {
 		clickButtonOnToolbar("Save/Validate SQL");
 	}
@@ -322,9 +327,7 @@ public class ModelEditor extends SWTBotEditor {
 
 	public Reconciler openReconciler() {
 		bot.toolbarButtonWithTooltip("Reconcile Transformation SQL with Target Columns").click();
-		SWTBotShell shell = bot.shell("Reconcile Virtual Target Columns");
-		shell.activate();
-		return new Reconciler(shell);
+		return new Reconciler();
 	}
 
 	public void openInputSetEditor() {
@@ -418,7 +421,7 @@ public class ModelEditor extends SWTBotEditor {
 		selectParts(viewer.editParts(new AttributeMatcher(columnName, ModelEditorItemMatcher.TABLE, tableName)));
 		new ContextMenu("Rename").select();
 		new DefaultText(0).setText(newName);
-		new SWTWorkbenchBot().activeShell().pressShortcut(Keystrokes.TAB);
+		KeyboardFactory.getKeyboard().type(KeyEvent.VK_TAB);
 	}
 	
 	public void setDataTypeToColumn(String tableName, String columnName, String dataType, Integer length){

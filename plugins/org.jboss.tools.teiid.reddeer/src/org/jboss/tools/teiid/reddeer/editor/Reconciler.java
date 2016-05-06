@@ -1,23 +1,19 @@
 package org.jboss.tools.teiid.reddeer.editor;
 
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 
 public class Reconciler {
-
 	public static final String DIALOG_TITLE = "Reconcile Virtual Target Columns";
-
-	private SWTBotShell shell;
 
 	public static class ResolverType {
 		public static final String KEEP_VIRTUAL_TARGET = "Convert all source SQL symbol datatypes";
 		public static final String KEEP_SQL_SYMBOLS = "Change all target column datatypes";
 	}
 
-	public Reconciler(SWTBotShell shell) {
-		this.shell = shell;
+	public Reconciler() {
+		activate();
 	}
 
 	public Reconciler activate() {
@@ -26,18 +22,15 @@ public class Reconciler {
 	}
 
 	/**
-	 * 
-	 * @param left
-	 *            -- virtual target column
-	 * @param right
-	 *            -- unmatched SQL symbol
+	 * @param left - virtual target column
+	 * @param right - unmatched SQL symbol
 	 */
 	public void bindAttributes(String left, String right) {
 		activate();
 		new DefaultTable(0).deselectAll();
 		new DefaultTable(1).deselectAll();
-		new DefaultTable().select(left);// left -- virtual target column
-		new DefaultTable(1).select(right);// right -- unmatched SQL symbol
+		new DefaultTable().select(left);
+		new DefaultTable(1).select(right);
 		new PushButton("< Bind").click();
 	}
 

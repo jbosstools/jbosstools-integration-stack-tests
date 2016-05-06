@@ -1,29 +1,45 @@
 package org.jboss.tools.teiid.reddeer.view;
 
+import java.awt.event.KeyEvent;
+import java.io.File;
 import java.util.Properties;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.jboss.reddeer.eclipse.jdt.ui.AbstractExplorer;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.handler.ShellHandler;
+import org.jboss.reddeer.eclipse.jdt.ui.AbstractExplorer;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
+import org.jboss.reddeer.workbench.impl.editor.AbstractEditor;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.tools.teiid.reddeer.ChildType;
+import org.jboss.tools.teiid.reddeer.ModelBuilder;
+import org.jboss.tools.teiid.reddeer.ModelClass;
 import org.jboss.tools.teiid.reddeer.ModelProject;
+import org.jboss.tools.teiid.reddeer.ModelType;
 import org.jboss.tools.teiid.reddeer.Procedure;
 import org.jboss.tools.teiid.reddeer.Table;
+import org.jboss.tools.teiid.reddeer.VDB;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.condition.RadioButtonEnabled;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
+import org.jboss.tools.teiid.reddeer.wizard.ImportProjectWizard;
+import org.jboss.tools.teiid.reddeer.wizard.MetadataModelWizard;
 import org.jboss.tools.teiid.reddeer.wizard.ModelProjectWizard;
+import org.jboss.tools.teiid.reddeer.wizard.SaveAsDialog;
 
 /**
  * This class represents a model explorer
@@ -45,6 +61,7 @@ public class ModelExplorer extends AbstractExplorer {
 
 	public ModelExplorer() {
 		super("Model Explorer");
+		this.activate();
 	}
 
 	/**
@@ -190,15 +207,7 @@ public class ModelExplorer extends AbstractExplorer {
 		new WorkbenchShell();
 	}
 
-	public void deployVDB(String project, String vdb) {
-		open();
-
-		new DefaultTreeItem(project, vdb).select();
-		new ContextMenu(MODELING_MENU_ITEM, "Deploy").select();
-
-		new WaitWhile(new IsInProgress(), TimePeriod.VERY_LONG);
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-	}
+	
 
 	@Override
 	public void open() {
@@ -212,6 +221,7 @@ public class ModelExplorer extends AbstractExplorer {
 		new SWTWorkbenchBot().tree(0).expandNode(filePath).doubleClick();
 	}
 
+	@Deprecated
 	public void openTransformationDiagram(String project, String... filePath) {
 		open();
 
@@ -241,6 +251,137 @@ public class ModelExplorer extends AbstractExplorer {
 		} else {
 			new PushButton("OK").click();
 		}
+	}
+	
+	
+	
+	
 
+	
+	
+	public void deployVdb(String project, String vdb) {
+		vdb = (vdb.contains(".vdb")) ? vdb : vdb + ".vdb";
+		new VDB(this.getProject(project).getProjectItem(vdb)).deployVDB();
+	}
+	
+	/**
+	 * Performs save model as action. 
+	 * 
+	 * @param originalModelPath - full path to original model (starts with project name) 
+	 * @param newModelName - name of the new model
+	 * @param newModelPath - full path to folder where new model will be located (starts with project name) 
+	 * @param isSchemaModel - whether original model is XML Schema Model or not (for dialog purposes)
+	 */
+	public void saveModelAs(String originalModelPath, String newModelName, String newModelPath, boolean isSchemaModel){
+		this.open(originalModelPath.split("/"));
+		SaveAsDialog saveAsDialog = new SaveAsDialog(isSchemaModel);
+		saveAsDialog.open();
+		saveAsDialog.activate();
+		saveAsDialog.setLocation(newModelPath.split("/"));
+		saveAsDialog.setModelName(newModelName);
+		saveAsDialog.ok();
+		AbstractWait.sleep(TimePeriod.SHORT);
+	}
+	
+	/**
+	 * Performs copy model action. 
+	 * 
+	 * @param originalModelPath - full path to original model (starts with project name) 
+	 * @param newModelName - name of the new model
+	 * @param newModelPath - full path to folder where new model will be located (starts with project name) 
+	 * @param newModelClass - org.jboss.tools.teiid.reddeer.ModelClass.*
+	 * @param newModelType - org.jboss.tools.teiid.reddeer.ModelType.*
+	 */
+	public void copyModel(String originalModelPath, String newModelName, String newModelPath, 
+		ModelClass newModelClass, ModelType newModelType){
+		MetadataModelWizard modelWizard = new MetadataModelWizard();
+		modelWizard.open();
+		modelWizard.activate();
+		modelWizard.setLocation(newModelPath.split("/"));
+		modelWizard.setModelName(newModelName);
+		modelWizard.selectModelClass(newModelClass);
+		modelWizard.selectModelType(newModelType);
+		modelWizard.selectModelBuilder(ModelBuilder.COPY_EXISTING);
+		modelWizard.next();
+		modelWizard.setExistingModel(originalModelPath.split("/"));
+		modelWizard.finish();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		ShellMenu saveMenu = new ShellMenu("File","Save");
+		if (saveMenu.isEnabled()){
+			saveMenu.select();
+			AbstractWait.sleep(TimePeriod.SHORT);
+		}
+	}
+	
+	/**
+	 * Adds child to specified item of model's tree structure.
+	 * 
+	 * @param pathToModel - path to model (starts with project name)
+	 * @param pathToItem - path to item (in model) ("" if directly to model)
+	 * @param childType - org.jboss.tools.teiid.reddeer.ChildType.*
+	 */
+	public void addChildToModelItem(String pathToModel, String pathToItem, ChildType childType) {
+		this.getProject(pathToModel.split("/")[0]).refresh();
+		pathToItem = (pathToItem.equals("")) ? pathToItem : "/" + pathToItem;
+		new DefaultTreeItem((pathToModel + pathToItem).split("/")).select();
+		new ContextMenu("New Child",childType.getText()).select();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		KeyboardFactory.getKeyboard().type(KeyEvent.VK_TAB);
+		AbstractWait.sleep(TimePeriod.SHORT);
+	}
+	
+	/**
+	 * Renames specified item of model's tree structure.
+	 * 
+	 * @param pathToModel - path to model (starts with project name)
+	 * @param pathToItem - path to item (in model)
+	 * @param newName - value of new name
+	 */
+	public void renameModelItem(String pathToModel, String pathToItem, String newName){
+		this.getProject(pathToModel.split("/")[0]).refresh();
+		pathToItem = (pathToItem.equals("")) ? pathToItem : "/" + pathToItem;
+		new DefaultTreeItem((pathToModel + pathToItem).split("/")).select();
+		new ContextMenu("Rename...").select();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		new DefaultText().setText(newName);
+		KeyboardFactory.getKeyboard().type(KeyEvent.VK_TAB);
+		AbstractWait.sleep(TimePeriod.SHORT);
+	}
+	
+	/**
+	 * Imports project into workspace (directory or archive)
+	 * 
+	 * @param location - resource URL (resources/...)
+	 */
+	public void importProject(String location) {
+		new ImportProjectWizard(new File(location).getAbsolutePath()).execute();
+	}
+	
+	/**
+	 * Saving and closing all editors sometimes does not work for some reason until we focus an editor. However, we
+	 * are not sure an editor is even open, so we first try to focus one, then save all and then close all. This
+	 * will hopefully ensure that all editors are closed before attempting to delete the project.
+	 */
+	public void deleteAllProjectsSafely() {
+		ShellHandler.getInstance().closeAllNonWorbenchShells();
+		try {
+			new AbstractEditor();
+		} catch (Exception ex) {
+			// no editor, ignore
+		}
+		try {
+			new ShellMenu("File", "Save All").select();
+			AbstractWait.sleep(TimePeriod.getCustom(3));
+		} catch (Exception ex) {
+			// no editors need saving, ignore
+		}
+		try {
+			new ShellMenu("File", "Close All").select();
+		} catch (Exception ex) {
+			// no editors open, ignore
+		}
+		new WorkbenchShell();
+		this.activate();
+		this.deleteAllProjects();
 	}
 }
