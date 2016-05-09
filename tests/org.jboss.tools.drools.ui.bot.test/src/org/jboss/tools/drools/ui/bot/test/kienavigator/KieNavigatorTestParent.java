@@ -3,6 +3,7 @@ package org.jboss.tools.drools.ui.bot.test.kienavigator;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
+import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
@@ -53,7 +54,7 @@ public class KieNavigatorTestParent extends TestParent {
 			if (responceCode == HTTP_OK) {
 				break;
 			}
-			waitASecond();
+			AbstractWait.sleep(TimePeriod.SHORT);
 			time += 1;
 		}
 		if (responceCode != HTTP_OK) {

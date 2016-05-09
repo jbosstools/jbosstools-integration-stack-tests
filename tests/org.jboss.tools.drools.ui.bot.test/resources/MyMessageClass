@@ -34,5 +34,4 @@ public class MyMessage {
     public boolean isParameterized() {
         return this.parameter != NO_PARAMETER;
     }
-
 }

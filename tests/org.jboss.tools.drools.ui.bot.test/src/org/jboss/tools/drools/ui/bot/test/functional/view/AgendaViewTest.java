@@ -8,11 +8,10 @@ import org.jboss.tools.drools.reddeer.editor.DrlEditor;
 import org.jboss.tools.drools.reddeer.editor.RuleEditor;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
 import org.jboss.tools.drools.reddeer.view.AgendaView;
-import org.jboss.tools.drools.ui.bot.test.annotation.Drools6Runtime;
-import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
-import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
 import org.jboss.tools.drools.ui.bot.test.util.OpenUtility;
 import org.jboss.tools.drools.ui.bot.test.util.RunUtility;
+import org.jboss.tools.drools.ui.bot.test.util.annotation.UseDefaultProject;
+import org.jboss.tools.drools.ui.bot.test.util.annotation.UsePerspective;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
@@ -33,7 +32,6 @@ public class AgendaViewTest extends ViewTestParent {
 
 	@Test
 	@UsePerspective(DroolsPerspective.class)
-	@Drools6Runtime
 	@UseDefaultProject
 	public void testAgendaViewDefaultContent() {
 		OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
@@ -57,7 +55,6 @@ public class AgendaViewTest extends ViewTestParent {
 
 	@Test
 	@UsePerspective(DroolsPerspective.class)
-	@Drools6Runtime
 	@UseDefaultProject
 	public void testCustomAgendaGroup() {
 		OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));

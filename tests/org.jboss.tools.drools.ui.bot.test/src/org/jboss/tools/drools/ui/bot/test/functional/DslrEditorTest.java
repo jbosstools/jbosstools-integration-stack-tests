@@ -13,11 +13,10 @@ import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
 import org.jboss.tools.drools.reddeer.wizard.NewDslWizard;
 import org.jboss.tools.drools.reddeer.wizard.NewDslWizardPage;
 import org.jboss.tools.drools.reddeer.wizard.NewRuleResourceWizard;
-import org.jboss.tools.drools.ui.bot.test.annotation.Drools6Runtime;
-import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
-import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
 import org.jboss.tools.drools.ui.bot.test.util.OpenUtility;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
+import org.jboss.tools.drools.ui.bot.test.util.annotation.UseDefaultProject;
+import org.jboss.tools.drools.ui.bot.test.util.annotation.UsePerspective;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
@@ -74,7 +73,6 @@ public class DslrEditorTest extends TestParent {
 
 	@Test
 	@UsePerspective(DroolsPerspective.class)
-	@Drools6Runtime
 	@UseDefaultProject
 	public void testTranslation() {
 		DslrEditor editor = openTestDslr();
@@ -86,7 +84,6 @@ public class DslrEditorTest extends TestParent {
 
 	@Test
 	@UsePerspective(DroolsPerspective.class)
-	@Drools6Runtime
 	@UseDefaultProject
 	public void testExpanderCompletion() {
 		RuleEditor editor = openTestDslr().showRuleEditor();
@@ -107,7 +104,6 @@ public class DslrEditorTest extends TestParent {
 
 	@Test
 	@UsePerspective(DroolsPerspective.class)
-	@Drools6Runtime
 	@UseDefaultProject
 	public void testKeywordCompletion() {
 		RuleEditor editor = openTestDslr().showRuleEditor();
@@ -129,7 +125,6 @@ public class DslrEditorTest extends TestParent {
 
 	@Test
 	@UsePerspective(DroolsPerspective.class)
-	@Drools6Runtime
 	@UseDefaultProject
 	public void testConditionCompletion() {
 		RuleEditor editor = openTestDslr().showRuleEditor();
@@ -155,7 +150,6 @@ public class DslrEditorTest extends TestParent {
 
 	@Test
 	@UsePerspective(DroolsPerspective.class)
-	@Drools6Runtime
 	@UseDefaultProject
 	public void testConstraintsCompletion() {
 		RuleEditor editor = openTestDslr().showRuleEditor();
@@ -186,7 +180,6 @@ public class DslrEditorTest extends TestParent {
 
 	@Test
 	@UsePerspective(DroolsPerspective.class)
-	@Drools6Runtime
 	@UseDefaultProject
 	public void testConsequenceCompletion() {
 		DslrEditor master = openTestDslr();

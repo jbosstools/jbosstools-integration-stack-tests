@@ -16,13 +16,12 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
 import org.jboss.tools.drools.reddeer.view.AuditView;
-import org.jboss.tools.drools.ui.bot.test.annotation.Drools6Runtime;
-import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
-import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
 import org.jboss.tools.drools.ui.bot.test.util.ApplicationIsTerminated;
 import org.jboss.tools.drools.ui.bot.test.util.OpenUtility;
 import org.jboss.tools.drools.ui.bot.test.util.RunUtility;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
+import org.jboss.tools.drools.ui.bot.test.util.annotation.UseDefaultProject;
+import org.jboss.tools.drools.ui.bot.test.util.annotation.UsePerspective;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
@@ -56,7 +55,6 @@ public class AuditLogTest extends TestParent {
 	@Test
 	@UsePerspective(DroolsPerspective.class)
 	@UseDefaultProject
-	@Drools6Runtime
 	public void testDefaultProject() {
 		RunUtility.runAsJavaApplication(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
 		new WaitUntil(new ApplicationIsTerminated());
@@ -90,7 +88,6 @@ public class AuditLogTest extends TestParent {
 	@Test
 	@UsePerspective(DroolsPerspective.class)
 	@UseDefaultProject
-	@Drools6Runtime
 	public void testBussinessAuditLog() throws Exception {
 		String path = new File("resources/test150.log").getAbsolutePath();
 

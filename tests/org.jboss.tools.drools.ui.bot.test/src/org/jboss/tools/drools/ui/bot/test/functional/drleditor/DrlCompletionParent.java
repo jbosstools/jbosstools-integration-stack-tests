@@ -6,6 +6,8 @@ import static org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType.WAR
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
@@ -67,7 +69,7 @@ public abstract class DrlCompletionParent extends TestParent {
 	@After
 	public void checkNoNewErrorsAndRete() {
 		master.save();
-		waitASecond();
+		AbstractWait.sleep(TimePeriod.SHORT);
 
 		assertNoNewProblems();
 		assertWorkingReteTree();

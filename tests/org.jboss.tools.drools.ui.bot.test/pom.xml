@@ -30,7 +30,7 @@
           <useUIThread>false</useUIThread>
           <product>com.jboss.jbds.product</product>
           <testSuite>org.jboss.tools.drools.ui.bot.test</testSuite>
-          <testClass>org.jboss.tools.drools.ui.bot.test.Brms6TestSuite</testClass>
+          <testClass>org.jboss.tools.drools.ui.bot.test.DroolsTests</testClass>
           <systemProperties>
             <logDebug>false</logDebug>
           </systemProperties>
@@ -93,7 +93,7 @@
         </configuration>
         <executions>
           <execution>
-            <id>download-brms6</id>
+            <id>download-drools</id>
             <phase>pre-integration-test</phase>
             <goals>
               <goal>wget</goal>

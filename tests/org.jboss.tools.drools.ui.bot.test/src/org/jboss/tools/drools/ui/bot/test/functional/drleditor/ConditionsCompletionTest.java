@@ -7,9 +7,8 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.drools.reddeer.editor.ContentAssist;
 import org.jboss.tools.drools.reddeer.editor.RuleEditor;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
-import org.jboss.tools.drools.ui.bot.test.annotation.Drools6Runtime;
-import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
-import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
+import org.jboss.tools.drools.ui.bot.test.util.annotation.UseDefaultProject;
+import org.jboss.tools.drools.ui.bot.test.util.annotation.UsePerspective;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
@@ -30,7 +29,6 @@ public class ConditionsCompletionTest extends DrlCompletionParent {
 
 	@Test
 	@UsePerspective(DroolsPerspective.class)
-	@Drools6Runtime
 	@UseDefaultProject
 	public void testFactTypeCompletion() {
 		RuleEditor editor = master.showRuleEditor();
@@ -48,7 +46,6 @@ public class ConditionsCompletionTest extends DrlCompletionParent {
 
 	@Test
 	@UsePerspective(DroolsPerspective.class)
-	@Drools6Runtime
 	@UseDefaultProject
 	public void testConstraintsCompletion() {
 		RuleEditor editor = master.showRuleEditor();

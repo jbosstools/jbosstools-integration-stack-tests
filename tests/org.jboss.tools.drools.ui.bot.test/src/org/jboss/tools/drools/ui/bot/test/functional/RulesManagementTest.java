@@ -15,25 +15,24 @@ import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.drools.reddeer.editor.DrlEditor;
 import org.jboss.tools.drools.reddeer.editor.RuleEditor;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
-import org.jboss.tools.drools.ui.bot.test.annotation.Drools6Runtime;
-import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
-import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
-import org.jboss.tools.drools.ui.bot.test.group.SmokeTest;
 import org.jboss.tools.drools.ui.bot.test.util.ApplicationIsTerminated;
 import org.jboss.tools.drools.ui.bot.test.util.OpenUtility;
 import org.jboss.tools.drools.ui.bot.test.util.RunUtility;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
+import org.jboss.tools.drools.ui.bot.test.util.annotation.UseDefaultProject;
+import org.jboss.tools.drools.ui.bot.test.util.annotation.UsePerspective;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 
 @Runtime(type = RuntimeReqType.DROOLS)
@@ -53,7 +52,6 @@ public class RulesManagementTest extends TestParent {
 
 	@Test
 	@UsePerspective(JavaPerspective.class)
-	@Drools6Runtime
 	@UseDefaultProject
 	public void testRunRulesFromContextMenu() {
 		ConsoleView console = new ConsoleView();
@@ -61,7 +59,7 @@ public class RulesManagementTest extends TestParent {
 
 		RunUtility.runAsJavaApplication(true, DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
 		new WaitUntil(new ApplicationIsTerminated());
-		waitASecond(); // this is quite annoying - the text is updated AFTER the application is terminated
+		AbstractWait.sleep(TimePeriod.SHORT); // this is quite annoying - the text is updated AFTER the application is terminated
 
 		console.open();
 		String consoleText = console.getConsoleText();
@@ -75,7 +73,6 @@ public class RulesManagementTest extends TestParent {
 
 	@Test
 	@UsePerspective(JavaPerspective.class)
-	@Drools6Runtime
 	@UseDefaultProject
 	public void testRunRulesFromToolbar() {
 		ConsoleView console = new ConsoleView();
@@ -83,7 +80,7 @@ public class RulesManagementTest extends TestParent {
 
 		RunUtility.runAsJavaApplication(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
 		new WaitUntil(new ApplicationIsTerminated());
-		waitASecond(); // this is quite annoying - the text is updated AFTER the application is terminated
+		AbstractWait.sleep(TimePeriod.SHORT); // this is quite annoying - the text is updated AFTER the application is terminated
 
 		console.open();
 		String consoleText = console.getConsoleText();
@@ -97,7 +94,6 @@ public class RulesManagementTest extends TestParent {
 
 	@Test
 	@UsePerspective(JavaPerspective.class)
-	@Drools6Runtime
 	@UseDefaultProject
 	public void testRenameProject() {
 		final String oldName = DEFAULT_PROJECT_NAME;
@@ -114,14 +110,13 @@ public class RulesManagementTest extends TestParent {
 		new PushButton("OK").click();
 		new WaitWhile(new JobIsRunning());
 
-		waitASecond();
+		AbstractWait.sleep(TimePeriod.SHORT);
 		Assert.assertFalse("The original project is still present.", explorer.containsProject(oldName));
 		Assert.assertTrue("The renamed project is not present.", explorer.containsProject(newName));
 	}
 
 	@Test
 	@UsePerspective(JavaPerspective.class)
-	@Drools6Runtime
 	@UseDefaultProject
 	public void testSetBreakpoint() {
 		OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
@@ -144,9 +139,7 @@ public class RulesManagementTest extends TestParent {
 	}
 
 	@Test
-	@Category(SmokeTest.class)
 	@UsePerspective(DroolsPerspective.class)
-	@Drools6Runtime
 	@UseDefaultProject
 	public void testDebugRule() {
 		OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
@@ -167,11 +160,11 @@ public class RulesManagementTest extends TestParent {
 		}
 
 		// wait a moment before Debug perspective is fully loaded
-		waitASecond();
+		AbstractWait.sleep(TimePeriod.SHORT);
 
 		new ShellMenu(new RegexMatcher("Run"), new RegexMatcher("Resume.*")).select();
 		console.open();
-		waitASecond();
+		AbstractWait.sleep(TimePeriod.SHORT);
 		consoleText = console.getConsoleText();
 		Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.contains(OUTPUT_1));
 		Assert.assertTrue("Unexpected text in console\n" + consoleText, consoleText.contains(OUTPUT_2));

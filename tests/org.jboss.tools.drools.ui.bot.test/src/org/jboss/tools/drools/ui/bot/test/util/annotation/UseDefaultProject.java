@@ -1,4 +1,4 @@
-package org.jboss.tools.drools.ui.bot.test.annotation;
+package org.jboss.tools.drools.ui.bot.test.util.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,5 +7,5 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface Drools5Runtime {
+public @interface UseDefaultProject {
 }

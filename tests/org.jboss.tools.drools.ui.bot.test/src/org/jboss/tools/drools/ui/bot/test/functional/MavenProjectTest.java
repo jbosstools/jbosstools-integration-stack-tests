@@ -5,8 +5,8 @@ import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectWithExamplesWizardPage;
 import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectWizard;
-import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
+import org.jboss.tools.drools.ui.bot.test.util.annotation.UsePerspective;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

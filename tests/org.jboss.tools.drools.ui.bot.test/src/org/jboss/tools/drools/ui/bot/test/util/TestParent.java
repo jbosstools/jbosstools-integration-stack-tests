@@ -36,10 +36,8 @@ import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage.Dr
 import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectWithExamplesWizardPage;
 import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectWizard;
 import org.jboss.tools.drools.ui.bot.test.Activator;
-import org.jboss.tools.drools.ui.bot.test.annotation.Drools5Runtime;
-import org.jboss.tools.drools.ui.bot.test.annotation.Drools6Runtime;
-import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
-import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
+import org.jboss.tools.drools.ui.bot.test.util.annotation.UseDefaultProject;
+import org.jboss.tools.drools.ui.bot.test.util.annotation.UsePerspective;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -58,18 +56,12 @@ import org.osgi.framework.Bundle;
 public abstract class TestParent {
 	private static final Logger LOGGER = Logger.getLogger(TestParent.class);
 	private static final File SCREENSHOT_DIR = new File("screenshots");
-	private static final String DEBUG_REGEX = "(SLF4J: .*[\r\n]+)+?" + "(kmodules: file:(/.*)+/kmodule.xml[\r\n]+)?";
+	private static final String DEBUG_REGEX = "(SLF4J: .*[\r\n]+)+?(.*[\r\n]+)*?";
 	private static final String SUCCESSFUL_RUN_REGEX = DEBUG_REGEX + "Hello World[\r\n]+Goodbye cruel world[\r\n]+";
 	protected static final String DEFAULT_DROOLS_RUNTIME_NAME = "defaultTestRuntime";
 	public static final String DEFAULT_PROJECT_NAME = "defaultTestProject";
 
 	private static final AtomicBoolean initialized = new AtomicBoolean(false);
-
-	private final RuntimeVersion runtimeVersion;
-
-	public TestParent() {
-		this.runtimeVersion = RuntimeVersion.UNDEFINED;
-	}
 
 	@Rule
 	public TestName name = new TestName();
@@ -271,16 +263,6 @@ public abstract class TestParent {
 		return m.getAnnotation(annotationClass);
 	}
 
-	/**
-	 * Try not to use thread sleep to wait for events (there has to be a better way)
-	 */
-	protected void waitASecond() {
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException ex) {
-		}
-	}
-
 	protected void closeAllDialogs() {
 		// press as many "Cancel" buttons as possible to clear out the shells
 		while (true) {
@@ -309,14 +291,7 @@ public abstract class TestParent {
 	}
 
 	protected String getResourcesLocation() {
-		switch (getUsedVersion()) {
-		case BRMS_5:
-			return "src/main/rules";
-		case BRMS_6:
-			return "src/main/resources";
-		default:
-			return null;
-		}
+		return "src/main/resources";
 	}
 
 	protected String getRulesLocation() {
@@ -325,12 +300,11 @@ public abstract class TestParent {
 
 	protected String getRulesLocation(String projectName) {
 		StringBuilder sb = new StringBuilder();
-
-		sb.append(projectName).append("/").append(getResourcesLocation());
-		if (getUsedVersion() == RuntimeVersion.BRMS_6) {
-			sb.append("/").append("rules");
-		}
-
+		sb.append(projectName)
+				.append("/")
+				.append(getResourcesLocation())
+				.append("/")
+				.append("rules");
 		return sb.toString();
 	}
 
@@ -342,9 +316,7 @@ public abstract class TestParent {
 		List<String> result = new LinkedList<String>();
 
 		result.add(getResourcesLocation());
-		if (getUsedVersion() == RuntimeVersion.BRMS_6) {
-			result.add(packageName);
-		}
+		result.add(packageName);
 		result.add(resourceName);
 
 		return result.toArray(new String[result.size()]);
@@ -357,16 +329,6 @@ public abstract class TestParent {
 	protected String getMethodName() {
 		return name.getMethodName().replaceAll("\\[\\d+\\]", "").replace("default", "").replaceAll("brms-.*\\.xml", "")
 				.replaceAll("drools-.*\\.xml", "").replaceAll("eap-.*\\.xml", "").trim();
-	}
-
-	protected RuntimeVersion getUsedVersion() {
-		if (getAnnotationOnMethod(getMethodName(), Drools6Runtime.class) != null) {
-			return RuntimeVersion.BRMS_6;
-		} else if (getAnnotationOnMethod(getMethodName(), Drools5Runtime.class) != null) {
-			return RuntimeVersion.BRMS_5;
-		} else {
-			return runtimeVersion;
-		}
 	}
 	
 	protected void runAndCheckDroolsTest(String projectName) {

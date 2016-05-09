@@ -20,9 +20,8 @@ import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
-import org.jboss.tools.drools.ui.bot.test.annotation.Drools6Runtime;
-import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
+import org.jboss.tools.drools.ui.bot.test.util.annotation.UsePerspective;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
@@ -42,7 +41,6 @@ public class DroolsProjectTest extends TestParent {
 	private RuntimeRequirement droolsRuntime;
 
 	@Test
-	@Drools6Runtime
 	@UsePerspective(DroolsPerspective.class)
 	public void createRunAndDeleteProjectTest() throws UnsupportedEncodingException {
 		final String projectName = this.getMethodName();
@@ -63,7 +61,6 @@ public class DroolsProjectTest extends TestParent {
 	}
 	
 	@Test
-	@Drools6Runtime
 	@UsePerspective(JavaPerspective.class)
 	public void convertToDroolsProjectTest() {
 		final String projectName = this.getMethodName();

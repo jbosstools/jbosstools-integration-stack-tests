@@ -9,17 +9,18 @@ import org.jboss.reddeer.swt.api.StyledText;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.drools.reddeer.debug.DebugView;
 import org.jboss.tools.drools.reddeer.editor.DrlEditor;
 import org.jboss.tools.drools.reddeer.editor.RuleEditor;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
 import org.jboss.tools.drools.reddeer.view.WorkingMemoryView;
-import org.jboss.tools.drools.ui.bot.test.annotation.Drools6Runtime;
-import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
-import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
 import org.jboss.tools.drools.ui.bot.test.util.OpenUtility;
 import org.jboss.tools.drools.ui.bot.test.util.RunUtility;
+import org.jboss.tools.drools.ui.bot.test.util.annotation.UseDefaultProject;
+import org.jboss.tools.drools.ui.bot.test.util.annotation.UsePerspective;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
@@ -40,7 +41,6 @@ public class WorkingMemoryViewTest extends ViewTestParent {
 
 	@Test
 	@UsePerspective(DroolsPerspective.class)
-	@Drools6Runtime
 	@UseDefaultProject
 	public void testSampleFile() {
 		OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
@@ -64,7 +64,7 @@ public class WorkingMemoryViewTest extends ViewTestParent {
 
 		new DebugView().selectItem(new RegexMatcher("DroolsTest.*"), new RegexMatcher("com\\.sample\\.DroolsTest.*"));
 		new ShellMenu(new RegexMatcher("Run"), new RegexMatcher("Resume.*")).select();
-		waitASecond();
+		AbstractWait.sleep(TimePeriod.SHORT);
 
 		objects = view.getObjects();
 		Assert.assertEquals("Unexpected number of objects in WM", 1, objects.size());
@@ -79,7 +79,6 @@ public class WorkingMemoryViewTest extends ViewTestParent {
 
 	@Test
 	@UsePerspective(DroolsPerspective.class)
-	@Drools6Runtime
 	@UseDefaultProject
 	public void testMultipleFacts() {
 		OpenUtility.openResource(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");

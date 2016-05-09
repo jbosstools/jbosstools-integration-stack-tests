@@ -12,7 +12,6 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.tools.drools.reddeer.dialog.DroolsRuntimeDialog;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage.DroolsRuntime;
-import org.jboss.tools.drools.ui.bot.test.group.SmokeTest;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
@@ -20,7 +19,6 @@ import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 
 @Runtime(type = RuntimeReqType.DROOLS)
@@ -37,7 +35,6 @@ public class DroolsRuntimeManagementTest extends TestParent {
 	}
 
 	@Test
-	@Category(SmokeTest.class)
 	public void testAddAndRemoveRuntime() {
 		final String name = "testRuntimeCreation";
 

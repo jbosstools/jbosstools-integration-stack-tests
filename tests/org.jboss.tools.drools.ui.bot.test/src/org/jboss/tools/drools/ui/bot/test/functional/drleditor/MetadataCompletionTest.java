@@ -9,9 +9,8 @@ import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.drools.reddeer.editor.DrlEditor;
 import org.jboss.tools.drools.reddeer.editor.RuleEditor;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
-import org.jboss.tools.drools.ui.bot.test.annotation.Drools6Runtime;
-import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
-import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
+import org.jboss.tools.drools.ui.bot.test.util.annotation.UseDefaultProject;
+import org.jboss.tools.drools.ui.bot.test.util.annotation.UsePerspective;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
@@ -28,7 +27,6 @@ public class MetadataCompletionTest extends DrlCompletionParent {
 
 	@Test
 	@UsePerspective(DroolsPerspective.class)
-	@Drools6Runtime
 	@UseDefaultProject
 	public void testImportCodeCompletion() {
 		RuleEditor editor = master.showRuleEditor();
@@ -44,7 +42,6 @@ public class MetadataCompletionTest extends DrlCompletionParent {
 
 	@Test
 	@UsePerspective(DroolsPerspective.class)
-	@Drools6Runtime
 	@UseDefaultProject
 	public void testStarImportUsage() {
 		NewJavaClassWizardDialog diag = new NewJavaClassWizardDialog();
@@ -76,7 +73,6 @@ public class MetadataCompletionTest extends DrlCompletionParent {
 
 	@Test
 	@UsePerspective(DroolsPerspective.class)
-	@Drools6Runtime
 	@UseDefaultProject
 	public void testImportFunctionUsage() {
 		RuleEditor editor = master.showRuleEditor();
@@ -94,7 +90,6 @@ public class MetadataCompletionTest extends DrlCompletionParent {
 
 	@Test
 	@UsePerspective(DroolsPerspective.class)
-	@Drools6Runtime
 	@UseDefaultProject
 	public void testGlobalCodeCompletion() {
 		RuleEditor editor = master.showRuleEditor();
@@ -120,7 +115,6 @@ public class MetadataCompletionTest extends DrlCompletionParent {
 
 	@Test
 	@UsePerspective(DroolsPerspective.class)
-	@Drools6Runtime
 	@UseDefaultProject
 	public void testGlobalUsageCondition() {
 		RuleEditor editor = master.showRuleEditor();
@@ -136,7 +130,6 @@ public class MetadataCompletionTest extends DrlCompletionParent {
 
 	@Test
 	@UsePerspective(DroolsPerspective.class)
-	@Drools6Runtime
 	@UseDefaultProject
 	public void testGlobalUsageConsequence() {
 		RuleEditor editor = master.showRuleEditor();

@@ -17,23 +17,19 @@ import org.jboss.tools.drools.reddeer.wizard.NewDslWizardPage;
 import org.jboss.tools.drools.reddeer.wizard.NewRuleResourceWizard;
 import org.jboss.tools.drools.reddeer.wizard.NewRuleResourceWizardPage;
 import org.jboss.tools.drools.reddeer.wizard.NewRuleResourceWizardPage.RuleResourceType;
-import org.jboss.tools.drools.ui.bot.test.annotation.Drools6Runtime;
-import org.jboss.tools.drools.ui.bot.test.annotation.UseDefaultProject;
-import org.jboss.tools.drools.ui.bot.test.annotation.UsePerspective;
-import org.jboss.tools.drools.ui.bot.test.group.SmokeTest;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
+import org.jboss.tools.drools.ui.bot.test.util.annotation.UseDefaultProject;
+import org.jboss.tools.drools.ui.bot.test.util.annotation.UsePerspective;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 
 @Runtime(type = RuntimeReqType.DROOLS)
 @RunWith(RedDeerSuite.class)
-@Category(SmokeTest.class)
 public class NewResourcesTest extends TestParent {
 	private static final Pattern RULE_PATTERN = Pattern.compile("(?s)rule.*?when.*?then.*?end");
 
@@ -42,7 +38,6 @@ public class NewResourcesTest extends TestParent {
 
 	@Test
 	@UsePerspective(JavaPerspective.class)
-	@Drools6Runtime
 	@UseDefaultProject
 	public void testNewDRL() {
 		final String resourceName = getTestName();
@@ -72,7 +67,6 @@ public class NewResourcesTest extends TestParent {
 
 	@Test
 	@UsePerspective(JavaPerspective.class)
-	@Drools6Runtime
 	@UseDefaultProject
 	public void testNewIndividualRule() {
 		final String resourceName = "testCreateIndividualRule";
@@ -101,7 +95,6 @@ public class NewResourcesTest extends TestParent {
 
 	@Test
 	@UsePerspective(JavaPerspective.class)
-	@Drools6Runtime
 	@UseDefaultProject
 	public void testNewDsl() {
 		final String resourceName = getTestName();
@@ -123,7 +116,6 @@ public class NewResourcesTest extends TestParent {
 
 	@Test
 	@UsePerspective(JavaPerspective.class)
-	@Drools6Runtime
 	@UseDefaultProject
 	public void testNewDslr() {
 		final String resourceName = getTestName();
@@ -156,7 +148,6 @@ public class NewResourcesTest extends TestParent {
 	@Ignore("Opens the decision table and fails remaining tests")
 	@Test
 	@UsePerspective(JavaPerspective.class)
-	@Drools6Runtime
 	@UseDefaultProject
 	public void testNewDecisionTable() {
 		final String resourceName = getTestName();
