@@ -95,6 +95,8 @@ public class ModelExplorerManager {
 		} catch (Exception e) {
 
 		}
+		
+		new PushButton("OK").click();
 
 		if ((params != null) && (!params.isEmpty())) {
 			new DefaultShell("Preview Data");
