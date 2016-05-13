@@ -2,6 +2,7 @@ package org.jboss.tools.teiid.reddeer;
 
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -37,11 +38,15 @@ public class VDB {
 	/**
 	 * Deployes this VDB
 	 */
-	public void deployVDB() {
+	public void deployVDB(){
 		new WorkbenchShell();
 		projectItem.select();
 		new ContextMenu("Modeling", "Deploy").select();
-
+		
+		if (new ShellWithTextIsActive("Server is not connected").test()){
+			new PushButton("OK").click();
+			throw new Error("Server is not connected");
+		}
 		try {
 			new WaitUntil(new ShellWithTextIsAvailable("Create VDB Data Source"), TimePeriod.NORMAL);
 			new DefaultShell("Create VDB Data Source");
