@@ -14,6 +14,7 @@ Require-Bundle: org.junit;bundle-version="4.11.0",
  com.jcraft.jsch;bundle-version="0.1.50",
  org.jboss.tools.common.reddeer;bundle-version="4.3.0"
 Export-Package: org.jboss.tools.runtime.reddeer,
+ org.jboss.tools.runtime.reddeer.condition,
  org.jboss.tools.runtime.reddeer.impl,
  org.jboss.tools.runtime.reddeer.preference,
  org.jboss.tools.runtime.reddeer.requirement,

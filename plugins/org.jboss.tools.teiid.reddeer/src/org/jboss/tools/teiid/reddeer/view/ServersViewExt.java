@@ -6,7 +6,7 @@ import org.eclipse.swtbot.forms.finder.SWTFormsBot;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
@@ -152,10 +152,15 @@ public class ServersViewExt extends ServersView {
 		if (type.equals(ServerType.EDS5)) {
 			connectTeiidInstance(serverName);
 		}
-		// FIXME temporary workaround to https://issues.jboss.org/browse/TEIIDDES-2341
-		new GuidesView().chooseAction("Teiid", "Refresh");
-		new WaitUntil(new ShellWithTextIsAvailable("Notification"));
-		new PushButton("OK").click();
+		new GuidesView().chooseAction("Teiid", "Refresh ");
+		if (new ShellWithTextIsActive("Server Selection").test()){ //if you want to disconnect old instance before switching
+			new DefaultCombo().setSelection(serverName);
+			new PushButton("OK").click();
+		}
+		new DefaultShell("Notification");
+		new PushButton("OK").click();		
+		AbstractWait.sleep(TimePeriod.SHORT);
+		new DefaultShell();
 	}
 
 	public String getServerLabel(String serverName) {// TEST!!!
@@ -187,6 +192,10 @@ public class ServersViewExt extends ServersView {
 		new ContextMenu(DISCONNECT).select();
 	}
 
+	public void setDefaultTeiidInstance(String serverName){
+		new GuidesView().setDefaultTeiidInstance(serverName);
+	}
+	
 	public void connectTeiidInstance(String serverName) {
 		String label = getServerLabel(serverName);
 		// refresh

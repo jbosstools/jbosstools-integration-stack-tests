@@ -141,6 +141,12 @@ public class GuidesView extends WorkbenchView {
 		}catch(Exception ex){
 			// dialog doesn't appear if teiid instances are same version
 		}
+		try { // if test untestet teiid version
+			new DefaultShell("Untested Teiid Version");
+			new PushButton("Yes").click();
+		}catch(Exception ex){
+			// dialog doesn't appear 
+		}
 		try{ // if you wish to disconnect old instance before switching
 			new DefaultShell("Disconnect Current Default Instance");
 			new PushButton("Yes").click();
