@@ -174,10 +174,10 @@ public class ModelRefactoringTest {
 		moveItem(project.getProjectItem("partssupplier.xmi"), "sources2");
 
 		ModelExplorer modelView = TeiidPerspective.getInstance().getModelExplorerView();
-		modelView.open(PROJECT_NAME, "partssupplier_view.xmi");
-		modelView.open(PROJECT_NAME, "views", "partssupplier_view_2.xmi");
-		modelView.open(PROJECT_NAME, "partssupplier_view_3.xmi");
-		modelView.open(PROJECT_NAME, "partssupplier_view_4.xmi");
+		modelView.openModelEditor(PROJECT_NAME, "partssupplier_view.xmi");
+		modelView.openModelEditor(PROJECT_NAME, "views", "partssupplier_view_2.xmi");
+		modelView.openModelEditor(PROJECT_NAME, "partssupplier_view_3.xmi");
+		modelView.openModelEditor(PROJECT_NAME, "partssupplier_view_4.xmi");
 		checkErrors();
 	}
 
@@ -193,10 +193,10 @@ public class ModelRefactoringTest {
 		updateImports("partssupplier_view.xmi");
 
 		ModelExplorer modelView = TeiidPerspective.getInstance().getModelExplorerView();
-		modelView.open(PROJECT_NAME, "partssupplier_view.xmi");
-		modelView.open(PROJECT_NAME, "views", "partssupplier_view_2.xmi");
-		modelView.open(PROJECT_NAME, "partssupplier_view_3.xmi");
-		modelView.open(PROJECT_NAME, "partssupplier_view_4.xmi");
+		modelView.openModelEditor(PROJECT_NAME, "partssupplier_view.xmi");
+		modelView.openModelEditor(PROJECT_NAME, "views", "partssupplier_view_2.xmi");
+		modelView.openModelEditor(PROJECT_NAME, "partssupplier_view_3.xmi");
+		modelView.openModelEditor(PROJECT_NAME, "partssupplier_view_4.xmi");
 		checkErrors();
 	}
 
@@ -226,10 +226,10 @@ public class ModelRefactoringTest {
 		renameItem(project.getProjectItem("views"), "views_X");
 
 		ModelExplorer modelView = TeiidPerspective.getInstance().getModelExplorerView();
-		modelView.open(PROJECT_NAME, "partssupplier_view.xmi");
-		modelView.open(PROJECT_NAME, "views_X", "partssupplier_view_2.xmi");
-		modelView.open(PROJECT_NAME, "partssupplier_view_3.xmi");
-		modelView.open(PROJECT_NAME, "partssupplier_view_4.xmi");
+		modelView.openModelEditor(PROJECT_NAME, "partssupplier_view.xmi");
+		modelView.openModelEditor(PROJECT_NAME, "views_X", "partssupplier_view_2.xmi");
+		modelView.openModelEditor(PROJECT_NAME, "partssupplier_view_3.xmi");
+		modelView.openModelEditor(PROJECT_NAME, "partssupplier_view_4.xmi");
 
 		checkErrors();
 	}

@@ -26,10 +26,12 @@ import org.jboss.tools.teiid.reddeer.view.SQLResultView;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt.ServerType;
 import org.jboss.tools.teiid.reddeer.wizard.CreateVDB;
 
+@Deprecated // use VdbWizard and VDBEditor
 public class VDBManager {
 
 	private static final Logger log = Logger.getLogger(VDBManager.class);
 
+	@Deprecated // use VdbWizard
 	public void createVDB(String projectName, String vdbName) {
 		CreateVDB createVDB = new CreateVDB();
 		createVDB.setFolder(projectName);
