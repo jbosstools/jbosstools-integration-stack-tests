@@ -145,7 +145,7 @@ public class GeometryTypeTest {
 	
 	private void setGeometryDatatype(String... tables){ 
 		new ModelExplorer().activate();
-		new ModelExplorerManager().getModelExplorerView().open(tables[0],tables[1],tables[2],tables[3]);
+		new ModelExplorerManager().getModelExplorerView().openModelEditor(tables[0],tables[1],tables[2],tables[3]);
 		new WaitWhile(new IsInProgress(), TimePeriod.SHORT); 
 		new ContextMenu("Modeling","Set Datatype").select();
 		new DefaultShell("Select a Datatype");

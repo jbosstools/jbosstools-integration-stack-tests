@@ -1,61 +1,39 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
-import java.awt.event.KeyEvent;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
+import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.jface.viewers.CellEditor;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.impl.button.FinishButton;
-import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.teiid.reddeer.ChildType;
 import org.jboss.tools.teiid.reddeer.ModelClass;
 import org.jboss.tools.teiid.reddeer.ModelType;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
+import org.jboss.tools.teiid.reddeer.connection.TeiidFileHelper;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
-import org.jboss.tools.teiid.reddeer.editor.InputSetEditor;
-import org.jboss.tools.teiid.reddeer.editor.MappingDiagramEditor;
-import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
+import org.jboss.tools.teiid.reddeer.dialog.InputSetEditorDialog;
+import org.jboss.tools.teiid.reddeer.dialog.XmlDocumentBuilderDialog;
+import org.jboss.tools.teiid.reddeer.editor.TableEditor;
+import org.jboss.tools.teiid.reddeer.editor.TransformationEditor;
 import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
+import org.jboss.tools.teiid.reddeer.editor.XmlModelEditor;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.wizard.MetadataModelWizard;
 import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -68,8 +46,8 @@ import org.junit.runner.RunWith;
 @TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = {ConnectionProfileConstants.ORACLE_11G_BOOKS})
 public class XmlSchemalessTest {
 	private static final String PROJECT_NAME = "XmlSchemalessProject";
+	private static final String VIEW_MODEL = "BooksXml.xmi";
 	private static final String VDB_NAME = "XmlSchemalessVdb";
-	private static final String MODEL_NAME = "BooksXml.xmi";
 	
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;
@@ -86,26 +64,26 @@ public class XmlSchemalessTest {
 	}
 	
 	@Test
-	public void test(){
+	public void test() throws Exception {
 		// 1. Create an XML document model
 		MetadataModelWizard modelWizard = new MetadataModelWizard();
 		modelWizard.open();
-		modelWizard.activate();
-		modelWizard.setModelName(MODEL_NAME.substring(0,8))
+		modelWizard.setModelName(VIEW_MODEL.substring(0,8))
 				.selectModelClass(ModelClass.XML)
 		        .selectModelType(ModelType.VIEW);
 		modelWizard.finish();	
-		String modelPath = PROJECT_NAME + "/" + MODEL_NAME;
-		modelExplorer.open(modelPath.split("/"));
+		
+		String modelPath = PROJECT_NAME + "/" + VIEW_MODEL;
+		modelExplorer.openModelEditor(modelPath.split("/"));
+		XmlModelEditor editor = new XmlModelEditor(VIEW_MODEL);
+		
 		modelExplorer.addChildToModelItem(modelPath, "", ChildType.XML_DOCUMENT);
-		new DefaultShell("Build XML Documents From XML Schema");
-		new FinishButton().click();
-		KeyboardFactory.getKeyboard().type(KeyEvent.VK_TAB);
+		XmlDocumentBuilderDialog xmlDocumentBuilder = new XmlDocumentBuilderDialog();
+		xmlDocumentBuilder.finish();
 		modelExplorer.renameModelItem(modelPath,"NewXMLDocument", "bookListingDocument");
+		
 		AbstractWait.sleep(TimePeriod.SHORT);
-		modelExplorer.getProject(PROJECT_NAME).refresh();
-		new ShellMenu("File","Save All").select();
-		AbstractWait.sleep(TimePeriod.SHORT);
+		editor.save();
 		
 		// 2. Model the document structure
 		String xmlStructureBuilt = "bookListingDocument";
@@ -113,9 +91,10 @@ public class XmlSchemalessTest {
 		xmlStructureBuilt += "/bookListing";
 		
 		modelExplorer.addChildToModelItem(modelPath, xmlStructureBuilt, ChildType.NAME_SPACE);
-		new DefaultTreeItem((modelPath + "/" + xmlStructureBuilt).split("/")).doubleClick();
-		AbstractWait.sleep(TimePeriod.SHORT);
-		new DefaultCTabItem("Table Editor").activate();
+
+		editor.show();
+		TableEditor tableEditor = editor.openTableEditor(XmlModelEditor.MAPPING_DIAGRAM);
+		//TODO begin: this move to TableEditor (after his implementation)
 		new DefaultTabItem("Xml Namespaces").activate();
 		new DefaultTable().getItem("bookListing").doubleClick(1);
 		new DefaultText(new CellEditor(new DefaultTable().getItem("bookListing"),1)).setText("xsd");
@@ -124,9 +103,9 @@ public class XmlSchemalessTest {
 		new DefaultTable().getItem("bookListing").doubleClick(2);
 		new DefaultText(new CellEditor(new DefaultTable().getItem("bookListing"),2)).setText("http://www.w3.org/2001/XMLSchema");
 		new DefaultTable().getItem("bookListing").click();
-		AbstractWait.sleep(TimePeriod.SHORT);
-		new DefaultCTabItem("Mapping Diagram").activate();
-
+		//TODO end
+		tableEditor.close();
+		
 		modelExplorer.addChildToModelItem(modelPath, xmlStructureBuilt, ChildType.SEQUENCE);
 		xmlStructureBuilt += "/sequence";
 		
@@ -151,85 +130,47 @@ public class XmlSchemalessTest {
 		
 		modelExplorer.addChildToModelItem(modelPath, xmlStructureBuilt, ChildType.ELEMENT);
 		modelExplorer.renameModelItem(modelPath, xmlStructureBuilt + "/NewXmlElement", "publisherLocation");
-		
-		modelExplorer.getProject(PROJECT_NAME).refresh();
+
 		AbstractWait.sleep(TimePeriod.SHORT);
-		new ShellMenu("File","Save All").select();
-		AbstractWait.sleep(TimePeriod.SHORT);
+		editor.save();
 		
 		// 3. Define the transformation
 		modelExplorer.getProject(PROJECT_NAME).refresh();
-		modelExplorer.open(PROJECT_NAME, MODEL_NAME, "bookListingDocument");
-		MappingDiagramEditor mappingEditor = new MappingDiagramEditor(MODEL_NAME);
-		ModelEditor editor = new ModelEditor(MODEL_NAME);
+		editor.show();
 		
-		new DefaultTreeItem("bookListing","sequence").select();
-		editor.clickButtonOnToolbar("New Mapping Class");
-		AbstractWait.sleep(TimePeriod.SHORT);
-		mappingEditor.deleteAttribute("book", "book");
-		
-		editor.selectParts(mappingEditor.getMappingClasses("book"));
-		new ContextMenu("Open").select();
-		mappingEditor.showTransformation();
-		editor.setTransformation("SELECT ISBN, TITLE, convert(EDITION, string) AS edition, NAME AS publisherName, LOCATION AS publisherLocation"
+		editor.createMappingClass("bookListing","sequence");
+		editor.deleteAttribute("book", "book");
+		editor.openMappingClass("book");
+		TransformationEditor bookTransfEditor = editor.openTransformationEditor();
+		bookTransfEditor.insertAndValidateSql("SELECT ISBN, TITLE, convert(EDITION, string) AS edition, NAME AS publisherName, LOCATION AS publisherLocation"
 				+ " FROM Books.BOOKS, Books.PUBLISHERS WHERE PUBLISHER = PUBLISHER_ID");
-		editor.saveAndValidateSql();
+		bookTransfEditor.close();
 		AbstractWait.sleep(TimePeriod.SHORT);
-		new WorkbenchShell();
+		editor.save();
+		editor.returnToMappingClassOverview();
 		
-		modelExplorer.getProject(PROJECT_NAME).refresh();
 		AbstractWait.sleep(TimePeriod.SHORT);
-		new ShellMenu("File","Save All").select();
+		assertTrue("Validation errors!", new ProblemsView().getProblems(ProblemType.ERROR).isEmpty());
 		
 		// 4. Create a VDB and query
 		VdbWizard vdbWizard = new VdbWizard();
 		vdbWizard.open();
-		vdbWizard.activate();
 		vdbWizard.setLocation(PROJECT_NAME)
 				.setName(VDB_NAME)
-				.addModel(PROJECT_NAME, MODEL_NAME);
+				.addModel(PROJECT_NAME, VIEW_MODEL);
 		vdbWizard.finish();
 		
 		modelExplorer.deployVdb(PROJECT_NAME, VDB_NAME);
 		
-		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, VDB_NAME);
+		TeiidJDBCHelper jdbcHelper = new TeiidJDBCHelper(teiidServer, VDB_NAME);
+		TeiidFileHelper fileHelper = new TeiidFileHelper();
 		
-		String output = null;
-		try {
-			ResultSet rs = jdbchelper.executeQueryWithResultSet("SELECT * FROM bookListingDocument");
-			rs.next();			
-            output = rs.getString(1);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			fail(e.getMessage());
-		}
-		
-		String expectedOutput = null;	
-		try {			
-			TransformerFactory tFactory = TransformerFactory.newInstance();
-            Transformer transformer = tFactory.newTransformer();
-            
-            String pathToFile = "resources/expectedResults/forXmlSchemalessTest.xml";
-            InputStream is = new FileInputStream(new File(pathToFile).getAbsolutePath());
-            StreamSource source = new StreamSource(is);           
-            StringWriter sw = new StringWriter();
-            StreamResult result = new StreamResult(sw);
-            transformer.transform(source, result);
-            
-            expectedOutput = sw.getBuffer().toString().replaceAll("\r|\n|\t", "");            
-		} catch (IOException | TransformerException e) {
-			fail(e.getMessage());
-		} 	
-	  
-	    assertEquals(output, expectedOutput); 	
+		String output = jdbcHelper.executeQueryWithXmlStringResult("SELECT * FROM bookListingDocument");
+		String expectedOutput = fileHelper.getXmlExpectedResult("forXmlSchemalessTest",false);
+		assertEquals(output, expectedOutput);
 	    
 	    // 5. Expand the document	    
-	    modelExplorer.getProject(PROJECT_NAME).refresh();
- 		new DefaultTreeItem((modelPath + "/" + xmlStructureBuilt).split("/")).expand();
- 		new DefaultTreeItem((modelPath + "/" + xmlStructureBuilt + "/edition").split("/")).select();
- 		new ContextMenu("New Sibling","Element").select();
- 		new WorkbenchView("Model Explorer");
- 		AbstractWait.sleep(TimePeriod.getCustom(2));
+	    modelExplorer.addSiblingToModelItem(modelPath, xmlStructureBuilt + "/edition", ChildType.ELEMENT);
  		modelExplorer.renameModelItem(modelPath, xmlStructureBuilt + "/NewXmlElement", "authors");
  		xmlStructureBuilt += "/authors";
  		
@@ -248,76 +189,33 @@ public class XmlSchemalessTest {
  		
  		modelExplorer.addChildToModelItem(modelPath, xmlStructureBuilt, ChildType.ELEMENT);
  		modelExplorer.renameModelItem(modelPath, xmlStructureBuilt + "/NewXmlElement", "firstName");
- 		
- 		modelExplorer.getProject(PROJECT_NAME).refresh();
+
  		AbstractWait.sleep(TimePeriod.SHORT);
- 		new ShellMenu("File","Save All").select();
- 		
- 		modelExplorer.getProject(PROJECT_NAME).refresh();
- 		modelExplorer.open(PROJECT_NAME,MODEL_NAME,"bookListingDocument");
- 		AbstractWait.sleep(TimePeriod.SHORT);
- 		new DefaultTreeItem("bookListing","sequence [MC: book]","book","sequence","authors","sequence").select();
- 		editor.clickButtonOnToolbar("New Mapping Class");
- 		AbstractWait.sleep(TimePeriod.SHORT);
- 		mappingEditor.deleteAttribute("author", "author");
- 		AbstractWait.sleep(TimePeriod.SHORT);
- 		editor.selectParts(mappingEditor.getMappingClasses("author"));
- 		AbstractWait.sleep(TimePeriod.SHORT);
- 		new ContextMenu("Open").select();
- 		
- 		editor.openInputSetEditor(true);
- 		InputSetEditor inputSetEditor = new InputSetEditor();
- 		inputSetEditor.createNewInputParam(new String[]{"book","isbn : string"});
- 		inputSetEditor.close();
- 		
- 		mappingEditor.showTransformation();
- 		AbstractWait.sleep(TimePeriod.SHORT);
- 		new WorkbenchShell();
- 		editor.setTransformation("SELECT LASTNAME, FIRSTNAME FROM Books.AUTHORS, Books.BOOK_AUTHORS WHERE" 
+ 		editor.save();
+		
+		editor.createMappingClass("bookListing","sequence [MC: book]","book","sequence","authors","sequence");
+		editor.deleteAttribute("author", "author");
+		editor.openMappingClass("author");
+		InputSetEditorDialog inputSetEditor = editor.openInputSetEditor();
+		inputSetEditor.addNewInputParam("book","isbn : string");
+		inputSetEditor.finish();
+		TransformationEditor authTransfEditor = editor.openTransformationEditor();
+		authTransfEditor.insertAndValidateSql("SELECT LASTNAME, FIRSTNAME FROM Books.AUTHORS, Books.BOOK_AUTHORS WHERE" 
  				+ "(INPUTS.isbn = ISBN) AND (Books.AUTHORS.AUTHOR_ID = Books.BOOK_AUTHORS.AUTHOR_ID)");
- 		editor.saveAndValidateSql();
- 		AbstractWait.sleep(TimePeriod.SHORT);
- 		new WorkbenchShell();
- 		
- 		modelExplorer.getProject(PROJECT_NAME).refresh();
- 		AbstractWait.sleep(TimePeriod.SHORT);
- 		new ShellMenu("File","Save All").select();
- 		AbstractWait.sleep(TimePeriod.SHORT);
+		authTransfEditor.close();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		editor.save();
+		editor.returnToMappingClassOverview();
+		
+		AbstractWait.sleep(TimePeriod.SHORT);
+		assertTrue("Validation errors!", new ProblemsView().getProblems(ProblemType.ERROR).isEmpty());
  		
  		//6. Query the expanded model
  		VDBEditor.getInstance(VDB_NAME).synchronizeAll();
- 		AbstractWait.sleep(TimePeriod.SHORT);
  		modelExplorer.deployVdb(PROJECT_NAME, VDB_NAME);
  		
- 		jdbchelper = new TeiidJDBCHelper(teiidServer, VDB_NAME);
- 		
- 		output = null;
- 		try {
- 			ResultSet rs = jdbchelper.executeQueryWithResultSet("SELECT * FROM bookListingDocument");
- 			rs.next(); 			
-            output = rs.getString(1);           
- 		} catch (SQLException e) {
- 			e.printStackTrace();
- 			fail(e.getMessage());
- 		}	
- 		
- 		expectedOutput = null;	
- 		try {			
- 			TransformerFactory tFactory = TransformerFactory.newInstance();
-             Transformer transformer = tFactory.newTransformer();
-             
-             String pathToFile = "resources/expectedResults/forXmlSchemalessTest2.xml";
-             InputStream is = new FileInputStream(new File(pathToFile).getAbsolutePath());
-             StreamSource source = new StreamSource(is);         
-             StringWriter sw = new StringWriter();
-             StreamResult result = new StreamResult(sw);             
-             transformer.transform(source, result);
-            
-             expectedOutput = sw.getBuffer().toString().replaceAll("\r|\n|\t", "");             
- 		} catch (IOException | TransformerException e) {
- 			fail(e.getMessage());
- 		} 	
- 	  
+ 		output = jdbcHelper.executeQueryWithXmlStringResult("SELECT * FROM bookListingDocument");
+ 		expectedOutput = fileHelper.getXmlExpectedResult("forXmlSchemalessTest2",false);	
  	    assertEquals(output, expectedOutput); 	
 	}
 }

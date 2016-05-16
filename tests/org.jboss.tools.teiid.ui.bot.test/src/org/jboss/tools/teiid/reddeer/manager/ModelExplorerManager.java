@@ -65,7 +65,7 @@ public class ModelExplorerManager {
 		if (!pathToModel[pathToModel.length - 1].contains(".")) {
 			pathToModel[pathToModel.length - 1] = pathToModel[pathToModel.length - 1] + ".xmi";
 		}
-		new ModelExplorer().open(pathToModel);
+		new ModelExplorer().openModelEditor(pathToModel);
 	}
 
 	public WAR getWAR(String projectName, String warName) {

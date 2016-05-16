@@ -10,6 +10,7 @@ import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 
+@Deprecated // use TeiidJdbcHelper
 public class SQLScrapbookEditor extends SWTBotEditor {
 
 	public SQLScrapbookEditor() {

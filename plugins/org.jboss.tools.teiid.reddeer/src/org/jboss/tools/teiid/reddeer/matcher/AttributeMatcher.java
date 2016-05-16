@@ -32,7 +32,7 @@ public class AttributeMatcher extends BaseMatcher<EditPart> {
 	/** 
 	 * will match only attributes of given parent type, prefix
 	 * @param prefix - prefix of name or full name of the attribute
-	 * @param parentType MAPPING_CLASS|TABLE|...
+	 * @param parentType ModelEditorItemMatcher.MAPPING_CLASS|TABLE|...
 	 * @param parentPrefix - prefix of name or full name of the item
 	 */
 	public AttributeMatcher(String prefix, String parentType, String parentPrefix){

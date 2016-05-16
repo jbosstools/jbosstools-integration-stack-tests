@@ -43,6 +43,10 @@ import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
+import org.jboss.tools.teiid.reddeer.dialog.CriteriaBuilderDialog;
+import org.jboss.tools.teiid.reddeer.dialog.ExpressionBuilderDialog;
+import org.jboss.tools.teiid.reddeer.dialog.InputSetEditorDialog;
+import org.jboss.tools.teiid.reddeer.dialog.ReconcilerDialog;
 import org.jboss.tools.teiid.reddeer.matcher.AttributeMatcher;
 import org.jboss.tools.teiid.reddeer.matcher.IsTransformation;
 import org.jboss.tools.teiid.reddeer.matcher.ModelColumnMatcher;
@@ -159,27 +163,24 @@ public class ModelEditor extends SWTBotEditor {
 		new SWTWorkbenchBot().sleep(5 * 1000);
 	}
 
-	@Deprecated
-	public void showMappingTransformation(String label) {
-
-		viewer = getGraphicalViewer(MAPPING_DIAGRAM);
-		viewer.getEditPart(label).select();
-		viewer.clickContextMenu("Edit");
-
-		AbstractWait.sleep(TimePeriod.SHORT);
-		new DefaultShell().setFocus();
-	}
-
-	public CriteriaBuilder openCriteriaBuilder() {
+	@Deprecated // use TransformationEditor.openCriteriaBuilder()
+	public CriteriaBuilderDialog openCriteriaBuilder() {
 		bot.toolbarButtonWithTooltip("Criteria Builder").click();
-		return new CriteriaBuilder();
+		return new CriteriaBuilderDialog();
 	}
 	
-	public ExpressionBuilder openExpressionBuilder(){
+	@Deprecated // use TransformationEditor.openExpressionBuilder()
+	public ExpressionBuilderDialog openExpressionBuilder(){
 		SWTBotToolbarButton tbb =  bot.toolbarButtonWithTooltip("Expression Builder");
 		tbb.click();
 		System.out.println(tbb.getClass().getName());
-		return new ExpressionBuilder();
+		return new ExpressionBuilderDialog();
+	}
+	
+	@Deprecated // use TransformationEditor.openReconciler()
+	public ReconcilerDialog openReconciler() {
+		bot.toolbarButtonWithTooltip("Reconcile Transformation SQL with Target Columns").click();
+		return new ReconcilerDialog();
 	}
 
 	public void setTransformationProcedureBody(String procedure) {
@@ -325,22 +326,17 @@ public class ModelEditor extends SWTBotEditor {
 		log.info("Deleting labeled item " + label);
 	}
 
-	public Reconciler openReconciler() {
-		bot.toolbarButtonWithTooltip("Reconcile Transformation SQL with Target Columns").click();
-		return new Reconciler();
-	}
-
 	public void openInputSetEditor() {
 		viewer = getGraphicalViewer(DIAGRAM);
 		getModelDiagram(INPUT_SET, DIAGRAM).select();
 		viewer.clickContextMenu("Edit");
 	}
 
-	public InputSetEditor openInputSetEditor(boolean param) {
+	public InputSetEditorDialog openInputSetEditor(boolean param) {
 		viewer = getGraphicalViewer(DIAGRAM);
 		getModelDiagram(INPUT_SET, DIAGRAM).select();
 		viewer.clickContextMenu("Edit Input Set");
-		return new InputSetEditor();
+		return new InputSetEditorDialog();
 	}
 
 	public List<ModelColumn> getColumns(String tableName) {
@@ -468,6 +464,4 @@ public class ModelEditor extends SWTBotEditor {
 			return null;
 		}
 	}
-
-	// TODO transformation editor options - supports update
 }
