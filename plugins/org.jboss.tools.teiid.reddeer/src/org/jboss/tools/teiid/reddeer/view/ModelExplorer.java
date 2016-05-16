@@ -35,11 +35,11 @@ import org.jboss.tools.teiid.reddeer.Table;
 import org.jboss.tools.teiid.reddeer.VDB;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.condition.RadioButtonEnabled;
+import org.jboss.tools.teiid.reddeer.dialog.SaveAsDialog;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.wizard.ImportProjectWizard;
 import org.jboss.tools.teiid.reddeer.wizard.MetadataModelWizard;
 import org.jboss.tools.teiid.reddeer.wizard.ModelProjectWizard;
-import org.jboss.tools.teiid.reddeer.wizard.SaveAsDialog;
 
 /**
  * This class represents a model explorer
@@ -62,18 +62,6 @@ public class ModelExplorer extends AbstractExplorer {
 	public ModelExplorer() {
 		super("Model Explorer");
 		this.activate();
-	}
-
-	/**
-	 * Creates a new model project
-	 * 
-	 * @param modelName
-	 * @return
-	 */
-	public ModelProject createModelProject(String modelName) {
-		ModelProjectWizard wizard = new ModelProjectWizard(0);
-		wizard.create(modelName);
-		return getModelProject(modelName);
 	}
 
 	/**
@@ -215,12 +203,6 @@ public class ModelExplorer extends AbstractExplorer {
 		new WorkbenchShell();
 	}
 
-	public void open(String... filePath) {
-		open();
-
-		new SWTWorkbenchBot().tree(0).expandNode(filePath).doubleClick();
-	}
-
 	@Deprecated
 	public void openTransformationDiagram(String project, String... filePath) {
 		open();
@@ -255,9 +237,27 @@ public class ModelExplorer extends AbstractExplorer {
 	
 	
 	
+	// ### updated down from here
 	
-
+	/**
+	 * Creates a new model project with specified name.
+	 */
+	public void createModelProject(String projectName) {
+		ModelProjectWizard wizard = new ModelProjectWizard(0);
+		wizard.create(projectName);
+	}
 	
+	/**
+	 * Opens editor of specified model. 
+	 * @param pathToModel - path to model (<PROJECT>, ..., <MODEL>)
+	 * Note: path can end with every item of model which is able to be opened.
+	 */
+	public void openModelEditor(String... pathToModel) {
+		open();
+		this.getProject(pathToModel[0]).refresh();
+		new DefaultTreeItem(pathToModel).doubleClick();		
+		AbstractWait.sleep(TimePeriod.getCustom(3));
+	}
 	
 	public void deployVdb(String project, String vdb) {
 		vdb = (vdb.contains(".vdb")) ? vdb : vdb + ".vdb";
@@ -266,29 +266,24 @@ public class ModelExplorer extends AbstractExplorer {
 	
 	/**
 	 * Performs save model as action. 
-	 * 
-	 * @param originalModelPath - full path to original model (starts with project name) 
-	 * @param newModelName - name of the new model
-	 * @param newModelPath - full path to folder where new model will be located (starts with project name) 
+	 * @param originalModelPath - full path to original model (<PROJECT>/.../<MODEL>) 
+	 * @param newModelPath - full path to folder where new model will be located (<PROJECT>/.../<FOLDER>) 
 	 * @param isSchemaModel - whether original model is XML Schema Model or not (for dialog purposes)
 	 */
 	public void saveModelAs(String originalModelPath, String newModelName, String newModelPath, boolean isSchemaModel){
-		this.open(originalModelPath.split("/"));
+		this.openModelEditor(originalModelPath.split("/"));
+		new ShellMenu("File","Save As...").select();
 		SaveAsDialog saveAsDialog = new SaveAsDialog(isSchemaModel);
-		saveAsDialog.open();
-		saveAsDialog.activate();
 		saveAsDialog.setLocation(newModelPath.split("/"));
 		saveAsDialog.setModelName(newModelName);
-		saveAsDialog.ok();
+		saveAsDialog.finish();
 		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 	
 	/**
 	 * Performs copy model action. 
-	 * 
-	 * @param originalModelPath - full path to original model (starts with project name) 
-	 * @param newModelName - name of the new model
-	 * @param newModelPath - full path to folder where new model will be located (starts with project name) 
+	 * @param originalModelPath - full path to original model (<PROJECT>/.../<MODEL>) 
+	 * @param newModelPath - full path to folder where new model will be located (<PROJECT>/.../<FOLDER>) 
 	 * @param newModelClass - org.jboss.tools.teiid.reddeer.ModelClass.*
 	 * @param newModelType - org.jboss.tools.teiid.reddeer.ModelType.*
 	 */
@@ -315,9 +310,8 @@ public class ModelExplorer extends AbstractExplorer {
 	
 	/**
 	 * Adds child to specified item of model's tree structure.
-	 * 
-	 * @param pathToModel - path to model (starts with project name)
-	 * @param pathToItem - path to item (in model) ("" if directly to model)
+	 * @param pathToModel - path to model (<PROJECT>/.../<MODEL>)
+	 * @param pathToItem - path to item (.../<ITEM>) ("" if directly to model)
 	 * @param childType - org.jboss.tools.teiid.reddeer.ChildType.*
 	 */
 	public void addChildToModelItem(String pathToModel, String pathToItem, ChildType childType) {
@@ -331,11 +325,25 @@ public class ModelExplorer extends AbstractExplorer {
 	}
 	
 	/**
+	 * Adds sibling to specified item of model's tree structure.
+	 * @param pathToModel - path to model (<PROJECT>/.../<MODEL>)
+	 * @param pathToItem - path to item (.../<ITEM>) ("" if directly to model)
+	 * @param siblingType - org.jboss.tools.teiid.reddeer.ChildType.*
+	 */
+	public void addSiblingToModelItem(String pathToModel, String pathToItem, ChildType siblingType){
+		this.getProject(pathToModel.split("/")[0]).refresh();
+		pathToItem = (pathToItem.equals("")) ? pathToItem : "/" + pathToItem;
+		new DefaultTreeItem((pathToModel + pathToItem).split("/")).select();
+		new ContextMenu("New Sibling",siblingType.getText()).select();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		KeyboardFactory.getKeyboard().type(KeyEvent.VK_TAB);
+		AbstractWait.sleep(TimePeriod.SHORT);
+	}
+	
+	/**
 	 * Renames specified item of model's tree structure.
-	 * 
-	 * @param pathToModel - path to model (starts with project name)
-	 * @param pathToItem - path to item (in model)
-	 * @param newName - value of new name
+	 * @param pathToModel - path to model (<PROJECT>/.../<MODEL>)
+	 * @param pathToItem - path to item (.../<ITEM>)
 	 */
 	public void renameModelItem(String pathToModel, String pathToItem, String newName){
 		this.getProject(pathToModel.split("/")[0]).refresh();
@@ -350,7 +358,6 @@ public class ModelExplorer extends AbstractExplorer {
 	
 	/**
 	 * Imports project into workspace (directory or archive)
-	 * 
 	 * @param location - resource URL (resources/...)
 	 */
 	public void importProject(String location) {
@@ -358,9 +365,8 @@ public class ModelExplorer extends AbstractExplorer {
 	}
 	
 	/**
-	 * Saving and closing all editors sometimes does not work for some reason until we focus an editor. However, we
-	 * are not sure an editor is even open, so we first try to focus one, then save all and then close all. This
-	 * will hopefully ensure that all editors are closed before attempting to delete the project.
+	 * Saves and closes all editors, then removes specified project
+	 * @param project
 	 */
 	public void deleteAllProjectsSafely() {
 		ShellHandler.getInstance().closeAllNonWorbenchShells();

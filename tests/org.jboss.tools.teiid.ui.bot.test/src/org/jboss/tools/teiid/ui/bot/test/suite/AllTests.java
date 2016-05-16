@@ -6,7 +6,7 @@ import org.jboss.tools.teiid.ui.bot.test.CloneAndCopyTest;
 import org.jboss.tools.teiid.ui.bot.test.ConsumeRestWs;
 import org.jboss.tools.teiid.ui.bot.test.ConsumeSoapWs;
 import org.jboss.tools.teiid.ui.bot.test.CreateRestProcedureTest;
-import org.jboss.tools.teiid.ui.bot.test.E2eRecursiveXmlTextTest;
+import org.jboss.tools.teiid.ui.bot.test.XmlRecursiveTest;
 import org.jboss.tools.teiid.ui.bot.test.FlatFileTest;
 import org.jboss.tools.teiid.ui.bot.test.GuidesTest;
 import org.jboss.tools.teiid.ui.bot.test.ImportWizardTest;
@@ -16,10 +16,12 @@ import org.jboss.tools.teiid.ui.bot.test.ModelWizardTest;
 import org.jboss.tools.teiid.ui.bot.test.PreviewModelTest;
 import org.jboss.tools.teiid.ui.bot.test.ProcedurePreviewTest;
 import org.jboss.tools.teiid.ui.bot.test.RecursiveCommonTableExpression;
+import org.jboss.tools.teiid.ui.bot.test.TransformationToolsTest;
 import org.jboss.tools.teiid.ui.bot.test.UDFTest;
 import org.jboss.tools.teiid.ui.bot.test.WARTest;
 import org.jboss.tools.teiid.ui.bot.test.XmlFileImportTest;
 import org.jboss.tools.teiid.ui.bot.test.XmlSchemalessTest;
+import org.jboss.tools.teiid.ui.bot.test.XmlStagingTableTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
@@ -34,7 +36,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	ConsumeRestWs.class,
 	ConsumeSoapWs.class,
 	CreateRestProcedureTest.class,
-	E2eRecursiveXmlTextTest.class,
+	XmlRecursiveTest.class,
 	FlatFileTest.class,
 	GuidesTest.class,
 	ImportWizardTest.class,
@@ -46,6 +48,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	WARTest.class,
 	XmlFileImportTest.class,
 	XmlSchemalessTest.class,
+	XmlStagingTableTest.class,
+	TransformationToolsTest.class,
 	RecursiveCommonTableExpression.class,
 	UDFTest.class})
 @RunWith(RedDeerSuite.class)

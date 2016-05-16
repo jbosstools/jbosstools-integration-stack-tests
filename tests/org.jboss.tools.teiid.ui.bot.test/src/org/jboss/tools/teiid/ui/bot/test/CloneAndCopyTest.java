@@ -6,6 +6,8 @@ import java.util.Arrays;
 
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
@@ -146,7 +148,9 @@ public class CloneAndCopyTest {
 		new DefaultShell("Clone Model Project");
 		new LabeledText("Project name:").setText(clonedProjectName);
 		new FinishButton().click();
+		new WaitWhile(new ShellWithTextIsActive("Clone Model Project"), TimePeriod.NORMAL);
 		AbstractWait.sleep(TimePeriod.SHORT);
+		new WorkbenchShell();
 		
 		assertTrue(modelExplorer.containsProject(clonedProjectName));
 		
