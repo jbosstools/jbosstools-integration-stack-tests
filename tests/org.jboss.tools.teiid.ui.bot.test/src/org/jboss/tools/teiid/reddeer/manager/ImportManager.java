@@ -139,6 +139,7 @@ public class ImportManager {
 	 * props); }
 	 */
 
+	@Deprecated // use org.jboss.tools.teiid.reddeer.view.ModelExplorer.importProject(String)
 	public void importProject(String location) {// TODO use generalItem instead
 		new ImportProjectWizard(location).execute();
 	}

@@ -20,11 +20,11 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.ChildType;
-import org.jboss.tools.teiid.reddeer.editor.CriteriaBuilder;
-import org.jboss.tools.teiid.reddeer.editor.ExpressionBuilder;
+import org.jboss.tools.teiid.reddeer.dialog.CriteriaBuilderDialog;
+import org.jboss.tools.teiid.reddeer.dialog.ExpressionBuilderDialog;
+import org.jboss.tools.teiid.reddeer.dialog.ReconcilerDialog;
 import org.jboss.tools.teiid.reddeer.editor.ModelDiagram;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
-import org.jboss.tools.teiid.reddeer.editor.Reconciler;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.junit.After;
@@ -61,7 +61,7 @@ public class TransformationToolsTest {
 	@Test
 	public void test(){
 		// 1. Add the transformation sources
-		modelExplorer.open(PROJECT_NAME,"PartsView.xmi","SupplierParts");
+		modelExplorer.openModelEditor(PROJECT_NAME,"PartsView.xmi","SupplierParts");
 		ModelEditor editor = new ModelEditor("PartsView.xmi");
 		editor.showTransformation();
 		
@@ -101,62 +101,64 @@ public class TransformationToolsTest {
 		
 		// 2. Create a WHERE clause using Criteria Builder
 		editor.show();
-		CriteriaBuilder criteriaBuilder = editor.openCriteriaBuilder();
-		criteriaBuilder.selectAttribute("PartsSupplier.PARTS", "PART_ID",CriteriaBuilder.CriteriaSide.LEFT);
-		criteriaBuilder.selectAttribute("PartsSupplier.SUPPLIER_PARTS", "PART_ID",CriteriaBuilder.CriteriaSide.RIGHT);
-		criteriaBuilder.selectOperator(CriteriaBuilder.OperatorType.EQUALS);
-		criteriaBuilder.apply();
-		criteriaBuilder.clickOperator(CriteriaBuilder.OperatorType.AND);
-		AbstractWait.sleep(TimePeriod.SHORT);
-		criteriaBuilder.selectAttribute("PartsSupplier.SUPPLIER", "SUPPLIER_ID",CriteriaBuilder.CriteriaSide.LEFT);
-		criteriaBuilder.selectAttribute("PartsSupplier.SUPPLIER_PARTS", "SUPPLIER_ID",CriteriaBuilder.CriteriaSide.RIGHT);
-		criteriaBuilder.selectOperator(CriteriaBuilder.OperatorType.EQUALS);
-		criteriaBuilder.apply();
-		criteriaBuilder.selectTreeViewItem("(PartsSupplier.PARTS.PART_ID = PartsSupplier.SUPPLIER_PARTS.PART_ID) AND (PartsSupplier.SUPPLIER.SUPPLIER_ID = PartsSupplier.SUPPLIER_PARTS.SUPPLIER_ID)",
-				"PartsSupplier.SUPPLIER.SUPPLIER_ID = PartsSupplier.SUPPLIER_PARTS.SUPPLIER_ID");
-		criteriaBuilder.clickOperator(CriteriaBuilder.OperatorType.AND);
-		AbstractWait.sleep(TimePeriod.SHORT);
-		criteriaBuilder.selectRadioButton(CriteriaBuilder.RadioButtonType.FUNCTION, CriteriaBuilder.CriteriaSide.LEFT);
+		CriteriaBuilderDialog criteriaBuilder = editor.openCriteriaBuilder();
+		criteriaBuilder.selectAttribute("PartsSupplier.PARTS", "PART_ID",CriteriaBuilderDialog.CriteriaSide.LEFT)
+				.selectAttribute("PartsSupplier.SUPPLIER_PARTS", "PART_ID",CriteriaBuilderDialog.CriteriaSide.RIGHT)
+				.selectOperator(CriteriaBuilderDialog.OperatorType.EQUALS)
+				.apply()
+				.clickOperator(CriteriaBuilderDialog.OperatorType.AND)
+				.selectAttribute("PartsSupplier.SUPPLIER", "SUPPLIER_ID",CriteriaBuilderDialog.CriteriaSide.LEFT)
+				.selectAttribute("PartsSupplier.SUPPLIER_PARTS", "SUPPLIER_ID",CriteriaBuilderDialog.CriteriaSide.RIGHT)
+				.selectOperator(CriteriaBuilderDialog.OperatorType.EQUALS)
+				.apply()
+				.selectTreeViewItem("(PartsSupplier.PARTS.PART_ID = PartsSupplier.SUPPLIER_PARTS.PART_ID) "
+						+ "AND (PartsSupplier.SUPPLIER.SUPPLIER_ID = PartsSupplier.SUPPLIER_PARTS.SUPPLIER_ID)",
+						"PartsSupplier.SUPPLIER.SUPPLIER_ID = PartsSupplier.SUPPLIER_PARTS.SUPPLIER_ID")
+				.clickOperator(CriteriaBuilderDialog.OperatorType.AND)
+				.selectRadioButton(CriteriaBuilderDialog.RadioButtonType.FUNCTION, CriteriaBuilderDialog.CriteriaSide.LEFT);
 		
-		ExpressionBuilder expressionBuilder = criteriaBuilder.editFunction(CriteriaBuilder.CriteriaSide.LEFT);
-		expressionBuilder.selectFunctionCategory("Numeric");
-		expressionBuilder.selectFunctionValue("(OP1*OP2)");
-		expressionBuilder.apply();
-		expressionBuilder.selectRadioButton(ExpressionBuilder.RadioButtonType.FUNCTION);
-		expressionBuilder.selectFunctionCategory("Numeric");
-		expressionBuilder.selectFunctionValue("(OP1/OP2)");
-		expressionBuilder.apply();
-		expressionBuilder.selectTreeViewItem("((<undefined> / <undefined>) * <undefined>)","(<undefined> / <undefined>)","<undefined>");
-		expressionBuilder.selectRadioButton(ExpressionBuilder.RadioButtonType.FUNCTION);
-		expressionBuilder.selectFunctionCategory("Conversion");
-		expressionBuilder.selectFunctionValue("CONVERT(VALUE, TARGET)");
-		expressionBuilder.apply();
-		expressionBuilder.selectTreeViewItem("((CONVERT(<undefined>, string) / <undefined>) * <undefined>)","(CONVERT(<undefined>, string) / <undefined>)","CONVERT(<undefined>, string)","<undefined>");
-		expressionBuilder.selectRadioButton(ExpressionBuilder.RadioButtonType.COLUMN);
-		expressionBuilder.selectColumnAttribute("PartsSupplier.PARTS", "PART_WEIGHT");
-		expressionBuilder.apply();
-		expressionBuilder.selectRadioButton(ExpressionBuilder.RadioButtonType.CONSTANT);
-		expressionBuilder.selectConstantType("bigdecimal");
-		expressionBuilder.apply();
-		expressionBuilder.selectTreeViewItem("((CONVERT(PartsSupplier.PARTS.PART_WEIGHT, bigdecimal) / <undefined>) * <undefined>)","(CONVERT(PartsSupplier.PARTS.PART_WEIGHT, bigdecimal) / <undefined>)","<undefined>");
-		expressionBuilder.selectRadioButton(ExpressionBuilder.RadioButtonType.CONSTANT);
-		expressionBuilder.selectConstantType("bigdecimal");
-		expressionBuilder.selectConstantValue("1000");
-		expressionBuilder.apply();
-		expressionBuilder.selectTreeViewItem("((CONVERT(PartsSupplier.PARTS.PART_WEIGHT, bigdecimal) / 1000) * <undefined>)","<undefined>");
-		expressionBuilder.selectRadioButton(ExpressionBuilder.RadioButtonType.COLUMN);
-		expressionBuilder.selectColumnAttribute("PartsSupplier.SUPPLIER_PARTS", "QUANTITY");
-		expressionBuilder.apply();
-		expressionBuilder.finsih();
+		ExpressionBuilderDialog expressionBuilder = criteriaBuilder.openFunctionBuilder(CriteriaBuilderDialog.CriteriaSide.LEFT);
+		expressionBuilder.selectFunctionCategory("Numeric")
+				.selectFunctionValue("(OP1*OP2)")
+				.apply()
+				.selectRadioButton(ExpressionBuilderDialog.RadioButtonType.FUNCTION)
+				.selectFunctionCategory("Numeric")
+				.selectFunctionValue("(OP1/OP2)")
+				.apply()
+				.selectTreeViewItem("((<undefined> / <undefined>) * <undefined>)","(<undefined> / <undefined>)","<undefined>")
+				.selectRadioButton(ExpressionBuilderDialog.RadioButtonType.FUNCTION)
+				.selectFunctionCategory("Conversion")
+				.selectFunctionValue("CONVERT(VALUE, TARGET)")
+				.apply()
+				.selectTreeViewItem("((CONVERT(<undefined>, string) / <undefined>) * <undefined>)", 
+						"(CONVERT(<undefined>, string) / <undefined>)","CONVERT(<undefined>, string)","<undefined>")
+				.selectRadioButton(ExpressionBuilderDialog.RadioButtonType.COLUMN)
+				.selectColumnAttribute("PartsSupplier.PARTS", "PART_WEIGHT")
+				.apply()
+				.selectRadioButton(ExpressionBuilderDialog.RadioButtonType.CONSTANT)
+				.selectConstantType("bigdecimal")
+				.apply()
+				.selectTreeViewItem("((CONVERT(PartsSupplier.PARTS.PART_WEIGHT, bigdecimal) / <undefined>) * <undefined>)",
+						"(CONVERT(PartsSupplier.PARTS.PART_WEIGHT, bigdecimal) / <undefined>)","<undefined>")
+				.selectRadioButton(ExpressionBuilderDialog.RadioButtonType.CONSTANT)
+				.selectConstantType("bigdecimal")
+				.selectConstantValue("1000")
+				.apply()
+				.selectTreeViewItem("((CONVERT(PartsSupplier.PARTS.PART_WEIGHT, bigdecimal) / 1000) * <undefined>)","<undefined>")
+				.selectRadioButton(ExpressionBuilderDialog.RadioButtonType.COLUMN)
+				.selectColumnAttribute("PartsSupplier.SUPPLIER_PARTS", "QUANTITY")
+				.apply();
+		expressionBuilder.finish();
 		
 		criteriaBuilder.activate();
-		criteriaBuilder.selectRadioButton(CriteriaBuilder.RadioButtonType.CONSTANT, CriteriaBuilder.CriteriaSide.RIGHT);
-		criteriaBuilder.selectConstantType("bigdecimal", 0);
-		criteriaBuilder.selectConstantValue("10", 0);
-		criteriaBuilder.selectOperator(CriteriaBuilder.OperatorType.LT);
-		criteriaBuilder.apply();
+		criteriaBuilder.selectRadioButton(CriteriaBuilderDialog.RadioButtonType.CONSTANT, CriteriaBuilderDialog.CriteriaSide.RIGHT)
+				.selectConstantType("bigdecimal", 0)
+				.selectConstantValue("10", 0)
+				.selectOperator(CriteriaBuilderDialog.OperatorType.LT)
+				.apply();
 		
-		String expectedSql = "(PartsSupplier.PARTS.PART_ID = PartsSupplier.SUPPLIER_PARTS.PART_ID) AND ((PartsSupplier.SUPPLIER.SUPPLIER_ID = PartsSupplier.SUPPLIER_PARTS.SUPPLIER_ID) AND (((CONVERT(PartsSupplier.PARTS.PART_WEIGHT, bigdecimal) / 1000) * PartsSupplier.SUPPLIER_PARTS.QUANTITY) < 10))";
+		String expectedSql = "(PartsSupplier.PARTS.PART_ID = PartsSupplier.SUPPLIER_PARTS.PART_ID) AND ((PartsSupplier.SUPPLIER.SUPPLIER_ID = PartsSupplier.SUPPLIER_PARTS.SUPPLIER_ID) "
+				+ "AND (((CONVERT(PartsSupplier.PARTS.PART_WEIGHT, bigdecimal) / 1000) * PartsSupplier.SUPPLIER_PARTS.QUANTITY) < 10))";
 		assertEquals(expectedSql, criteriaBuilder.getCurrentSqlContent());	
 		criteriaBuilder.finish();
 		
@@ -177,7 +179,7 @@ public class TransformationToolsTest {
 		new LabeledText("Name").setText("AltParts");
 		new PushButton("OK").click();	
 		
-		modelExplorer.open(PROJECT_NAME,"PartsView.xmi","AltParts");
+		modelExplorer.openModelEditor(PROJECT_NAME,"PartsView.xmi","AltParts");
 		editor = new ModelEditor("PartsView.xmi");
 		new WorkbenchShell();
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -214,44 +216,47 @@ public class TransformationToolsTest {
 		new ShellMenu("File","Save All").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		
-		Reconciler reconciler = editor.openReconciler();
+		ReconcilerDialog reconciler = editor.openReconciler();
 		reconciler.bindAttributes("ID : string","PART_ID");
 		
-		ExpressionBuilder expressionBuilder2 = reconciler.openExpressionBuilder("COLOR_NAME : string");
-		expressionBuilder2.selectRadioButton(ExpressionBuilder.RadioButtonType.FUNCTION);
-		expressionBuilder2.selectFunctionCategory("String");
-		expressionBuilder2.selectFunctionValue("CONCAT(STRING1, STRING2)");
-		expressionBuilder2.apply();
-		expressionBuilder2.selectRadioButton(ExpressionBuilder.RadioButtonType.COLUMN);
-		expressionBuilder2.selectColumnAttribute("PartsSupplier.PARTS", "PART_COLOR");
-		expressionBuilder2.apply();
-		expressionBuilder2.selectRadioButton(ExpressionBuilder.RadioButtonType.COLUMN);
-		expressionBuilder2.selectColumnAttribute("PartsSupplier.PARTS", "PART_NAME");
-		expressionBuilder2.apply();
-		expressionBuilder2.finsih();
+		ExpressionBuilderDialog expressionBuilder2 = reconciler.openExpressionBuilder("COLOR_NAME : string");
+		expressionBuilder2.selectRadioButton(ExpressionBuilderDialog.RadioButtonType.FUNCTION)
+				.selectFunctionCategory("String")
+				.selectFunctionValue("CONCAT(STRING1, STRING2)")
+				.apply()
+				.selectRadioButton(ExpressionBuilderDialog.RadioButtonType.COLUMN)
+				.selectColumnAttribute("PartsSupplier.PARTS", "PART_COLOR")
+				.apply()
+				.selectRadioButton(ExpressionBuilderDialog.RadioButtonType.COLUMN)
+				.selectColumnAttribute("PartsSupplier.PARTS", "PART_NAME")
+				.apply();
+		expressionBuilder2.finish();
 		
 		reconciler.activate();
-		reconciler.resolveTypes(Reconciler.ResolverType.KEEP_VIRTUAL_TARGET);
+		reconciler.resolveTypes(ReconcilerDialog.ResolverType.KEEP_VIRTUAL_TARGET);
+		reconciler.activate();
 		reconciler.clearRemainingUnmatchedSymbols();
-		reconciler.close();
+		reconciler.finish();
 	
 		AbstractWait.sleep(TimePeriod.SHORT);
-		assertTrue(editor.getTransformation().contains("PartsSupplier.PARTS.PART_ID AS ID, CONCAT(PartsSupplier.PARTS.PART_COLOR, PartsSupplier.PARTS.PART_NAME) AS COLOR_NAME, convert(PartsSupplier.PARTS.PART_WEIGHT, bigdecimal) AS PART_WEIGHT"));
+		assertTrue(editor.getTransformation().contains("PartsSupplier.PARTS.PART_ID AS ID, CONCAT(PartsSupplier.PARTS.PART_COLOR, "
+				+ "PartsSupplier.PARTS.PART_NAME) AS COLOR_NAME, convert(PartsSupplier.PARTS.PART_WEIGHT, bigdecimal) AS PART_WEIGHT"));
 	
 		editor.setCoursorPositionInTransformation(47);	
 		
-		ExpressionBuilder expressionBuilder3 = editor.openExpressionBuilder();
-		expressionBuilder3.selectTreeViewItem("CONCAT(PartsSupplier.PARTS.PART_COLOR, PartsSupplier.PARTS.PART_NAME)","PartsSupplier.PARTS.PART_COLOR");
-		expressionBuilder3.selectRadioButton(ExpressionBuilder.RadioButtonType.FUNCTION);
-		expressionBuilder3.selectFunctionCategory("String");
-		expressionBuilder3.selectFunctionValue("CONCAT(STRING1, STRING2)");
-		expressionBuilder3.apply();
-		expressionBuilder3.selectTreeViewItem("CONCAT(CONCAT(PartsSupplier.PARTS.PART_COLOR, PartsSupplier.PARTS.PART_NAME), PartsSupplier.PARTS.PART_NAME)","CONCAT(PartsSupplier.PARTS.PART_COLOR, PartsSupplier.PARTS.PART_NAME)","PartsSupplier.PARTS.PART_NAME");
-		expressionBuilder3.selectRadioButton(ExpressionBuilder.RadioButtonType.CONSTANT);
-		expressionBuilder3.selectConstantType("string");
-		expressionBuilder3.selectConstantValue(" ");
-		expressionBuilder3.apply();
-		expressionBuilder3.finsih();
+		ExpressionBuilderDialog expressionBuilder3 = editor.openExpressionBuilder();
+		expressionBuilder3.selectTreeViewItem("CONCAT(PartsSupplier.PARTS.PART_COLOR, PartsSupplier.PARTS.PART_NAME)","PartsSupplier.PARTS.PART_COLOR")
+				.selectRadioButton(ExpressionBuilderDialog.RadioButtonType.FUNCTION)
+				.selectFunctionCategory("String")
+				.selectFunctionValue("CONCAT(STRING1, STRING2)")
+				.apply()
+				.selectTreeViewItem("CONCAT(CONCAT(PartsSupplier.PARTS.PART_COLOR, PartsSupplier.PARTS.PART_NAME), PartsSupplier.PARTS.PART_NAME)",
+						"CONCAT(PartsSupplier.PARTS.PART_COLOR, PartsSupplier.PARTS.PART_NAME)","PartsSupplier.PARTS.PART_NAME")
+				.selectRadioButton(ExpressionBuilderDialog.RadioButtonType.CONSTANT)
+				.selectConstantType("string")
+				.selectConstantValue(" ")
+				.apply();
+		expressionBuilder3.finish();
 		
 		new WorkbenchShell();
 		assertTrue(editor.getTransformation().contains("CONCAT(CONCAT(PartsSupplier.PARTS.PART_COLOR, ' '), PartsSupplier.PARTS.PART_NAME)"));
