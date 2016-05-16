@@ -4,7 +4,6 @@ import java.util.Properties;
 
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.ModelProject;
-import org.jboss.tools.teiid.reddeer.wizard.CreateMetadataModel;
 import org.jboss.tools.teiid.reddeer.wizard.DDLImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.MetadataImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.TeiidConnectionImportWizard;
@@ -195,40 +194,6 @@ public class ImportMetadataManager {
 			importWizard.setTranslator(loadedProperty);
 		}
 		importWizard.execute();
-	}
-
-	/**
-	 * New Teiid Metadata Model
-	 */
-	public void createNewMetadataModel(String projectName, String modelName, Properties props) {
-		// CreateMetadataModel
-		CreateMetadataModel newModel = new CreateMetadataModel();
-		String loadedProperty = null;
-
-		newModel.setLocation(projectName);
-		newModel.setName(modelName);
-		if ((loadedProperty = props.getProperty("clazz")) != null) {
-			newModel.setClass(loadedProperty);
-		}
-		if ((loadedProperty = props.getProperty("type")) != null) {
-			newModel.setType(loadedProperty);
-		}
-		if ((loadedProperty = props.getProperty("modelBuilder")) != null) {
-			newModel.setModelBuilder(loadedProperty);
-		}
-		if ((loadedProperty = props.getProperty("pathToXmlSchema")) != null) {
-			String[] path = loadedProperty.split("/");
-			newModel.setPathToXmlSchema(path);
-		}
-		if ((loadedProperty = props.getProperty("rootElement")) != null) {
-			newModel.setModelBuilder(loadedProperty);
-		}
-		if ((loadedProperty = props.getProperty("pathToExistingModel")) != null) {
-			String[] path = loadedProperty.split("/");
-			newModel.setPathToExistingModel(path);
-		}
-
-		newModel.execute();
 	}
 
 	/**

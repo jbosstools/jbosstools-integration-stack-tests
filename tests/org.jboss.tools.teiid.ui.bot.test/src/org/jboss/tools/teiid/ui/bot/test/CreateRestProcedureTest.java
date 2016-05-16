@@ -246,7 +246,7 @@ public class CreateRestProcedureTest {
 		}
 
 		ModelExplorer mew = new ModelExplorer();
-		mew.open(PROJECT_NAME, modelName);
+		mew.openModelEditor(PROJECT_NAME, modelName);
 		ModelEditor editor = teiidBot.modelEditor(modelName);
 		assertTrue(editor.isActive());
 		editor.showTabItem(ModelEditor.TABLE_EDITOR);

@@ -81,6 +81,15 @@ public class TeiidJDBCHelper {
 		return resultSet;
 
 	}
+	
+	/**
+	 * Executes query and retrieves XML output as String from ResultSet.
+	 */
+	public String executeQueryWithXmlStringResult(String query) throws SQLException {
+		ResultSet rs = executeQueryWithResultSet(query);
+		rs.next(); 			
+        return rs.getString(1); 
+	}
 
 	/**
 	 * Method executes query that has no result set against existing database connection

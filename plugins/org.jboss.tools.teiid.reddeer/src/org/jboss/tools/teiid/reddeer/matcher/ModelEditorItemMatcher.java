@@ -15,12 +15,15 @@ import org.hamcrest.Description;
 public class ModelEditorItemMatcher extends BaseMatcher<EditPart> {
 	public static final String MAPPING_CLASS = "<<Mapping Class>>";
 	public static final String TABLE = "<<Table>>";
+	public static final String XML_DOCUMENT = "<<XML Document>>";
+	public static final String INPUT_SET = "<<Input Set>>";
+	public static final String STAGING_TABLE = "<<Staging Table>>";
 	
 	private String type;
 	private String prefix;
 	
 	/** 
-	 * @param type MAPPING_CLASS|TABLE|...
+	 * @param type ModelEditorItemMatcher.MAPPING_CLASS|TABLE|...
 	 * @param prefix - prefix of name or full name of the item
 	 */
 	public ModelEditorItemMatcher(String type, String prefix){
@@ -33,9 +36,13 @@ public class ModelEditorItemMatcher extends BaseMatcher<EditPart> {
 		boolean isGivenType = false;
 		boolean startsWithPrefix = false;
 		if (item instanceof GraphicalEditPart) {
-			if (item.getClass().toString().equals("class org.teiid.designer.diagram.ui.notation.uml.part.UmlClassifierEditPart")) {
+			String itemClass = item.getClass().toString();
+			if (itemClass.equals("class org.teiid.designer.diagram.ui.notation.uml.part.UmlClassifierEditPart")
+					|| itemClass.equals("class org.teiid.designer.diagram.ui.notation.uml.part.UmlPackageEditPart")) {
 				for (IFigure itemChild : new ArrayList<IFigure>(((GraphicalEditPart) item).getFigure().getChildren())) {
-					if (itemChild.getClass().toString().equals("class org.teiid.designer.diagram.ui.notation.uml.figure.UmlClassifierHeader")) {
+					String itemChildClass = itemChild.getClass().toString();
+					if (itemChildClass.equals("class org.teiid.designer.diagram.ui.notation.uml.figure.UmlClassifierHeader")
+							|| itemChildClass.equals("class org.teiid.designer.diagram.ui.figure.LabeledRectangleFigure")) {
 						for (IFigure headerChild : new ArrayList<IFigure>(itemChild.getChildren())) {
 							if (headerChild instanceof Label) {
 								String text = ((Label) headerChild).getText();
@@ -56,6 +63,6 @@ public class ModelEditorItemMatcher extends BaseMatcher<EditPart> {
 
 	@Override
 	public void describeTo(Description description) {
-		description.appendText("is a " + type);
+		description.appendText(" is a " + type + " with prefix " + prefix);
 	}
 }

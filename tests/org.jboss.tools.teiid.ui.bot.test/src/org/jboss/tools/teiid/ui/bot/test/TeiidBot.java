@@ -51,10 +51,11 @@ public class TeiidBot {
 		return teiidView;
 	}
 
-	public ModelProject createModelProject(String name) {
+	@Deprecated // use ModelExplorer.createModelProject()
+	public void createModelProject(String name) {
 		ModelExplorer modelExplorer = new ModelExplorer();
 		modelExplorer.open();
-		return modelExplorer.createModelProject(name);
+		modelExplorer.createModelProject(name);
 	}
 
 	public ModelExplorer modelExplorer() {
