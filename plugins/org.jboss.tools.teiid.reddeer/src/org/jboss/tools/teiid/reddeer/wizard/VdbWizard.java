@@ -16,6 +16,12 @@ public class VdbWizard extends NewWizardDialog {
 		super("Teiid Designer", "Teiid VDB");
 	}
 	
+	@Override
+	public void open() {
+		super.open();
+		activate();
+	}
+
 	public VdbWizard activate() {
 		new DefaultShell(DIALOG_TITLE);
 		return this;
