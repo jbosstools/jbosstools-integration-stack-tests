@@ -1,5 +1,10 @@
 package org.jboss.tools.switchyard.reddeer.project;
 
+import java.io.File;
+
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -61,6 +66,31 @@ public class ProjectItemExt {
 
 		Preferences.set("org.eclipse.debug.ui", "DEBUG.consoleOpenOnErr", consoleOpenOnErr);
 		Preferences.set("org.eclipse.debug.ui", "DEBUG.consoleOpenOnOut", consoleOpenOnOut);
+	}
+	
+	public void select() {
+		projectItem.select();
+	}
+	
+	public File toFile() {
+		String projectName = projectItem.getProject().getName();
+		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+		IFile file = project.getFile(joinStrings(projectItem.getTreeItem().getPath(), "/"));
+		return file.getLocation().toFile();
+	}
+	
+	private static String joinStrings(String[] strings, String delimiter) {
+	    StringBuilder sbStr = new StringBuilder();
+	    for (int i = 1, il = strings.length; i < il; i++) {
+	        if (i > 0)
+	            sbStr.append(delimiter);
+	        sbStr.append(strings[i]);
+	    }
+	    return sbStr.toString();
+	}
+	
+	public ProjectItem getProjectItem() {
+		return projectItem;
 	}
 
 	public void delete() {
