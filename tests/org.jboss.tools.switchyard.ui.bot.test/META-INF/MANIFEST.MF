@@ -24,7 +24,8 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.tools.drools.reddeer;bundle-version="4.2.0",
  org.jboss.reddeer.go;bundle-version="1.0.0",
  org.jboss.reddeer.gef;bundle-version="1.0.0",
- org.jboss.reddeer.graphiti;bundle-version="1.0.0"
+ org.jboss.reddeer.graphiti;bundle-version="1.0.0",
+ org.eclipse.core.resources
 Bundle-ActivationPolicy: lazy
 Import-Package: org.apache.log4j,
  org.eclipse.draw2d.geometry
