@@ -6,8 +6,11 @@ import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.swt.impl.ccombo.LabeledCCombo;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.fuse.reddeer.component.SetBody;
 import org.jboss.tools.fuse.reddeer.editor.CamelComponentEditPart;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.switchyard.reddeer.component.Service;
@@ -17,7 +20,6 @@ import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.jboss.tools.switchyard.reddeer.view.JUnitView;
-import org.jboss.tools.switchyard.reddeer.widget.LabeledTextExt;
 import org.jboss.tools.switchyard.reddeer.wizard.CamelXMLServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ServiceTestClassWizard;
 import org.jboss.tools.switchyard.ui.bot.test.util.TemplateHandler;
@@ -77,12 +79,14 @@ public class SwitchYardIntegrationCamelTest {
 		/* Edit Camel XML implementation */
 		new SwitchYardComponent(ROUTE_NAME).doubleClick();
 		CamelEditor camelEditor = new CamelEditor(ROUTE_NAME + ".xml");
-		camelEditor.doOperation("log", "Add", "Transformation", "SetBody");
+		camelEditor.addCamelComponent(new SetBody(), "Route _route1");
+		camelEditor.save();
 		PropertiesView propertiesView = new PropertiesView();
 		propertiesView.open();
-		new CamelComponentEditPart("setBody[simple{}]").select();
-		propertiesView.selectTab("Generic");
-		new LabeledTextExt("Expression").setText("Hello ${body}");
+		new CamelComponentEditPart("SetBody _setBody1").select();
+		propertiesView.selectTab("Details");
+		new LabeledCCombo("Expression *").setSelection("simple");
+		new LabeledText("Expression *").setText("Hello ${body}");
 		camelEditor.save();
 
 		/* Create the test */
