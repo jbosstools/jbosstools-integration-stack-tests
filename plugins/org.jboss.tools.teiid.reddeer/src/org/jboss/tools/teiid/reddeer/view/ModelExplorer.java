@@ -194,6 +194,17 @@ public class ModelExplorer extends AbstractExplorer {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		new WorkbenchShell();
 	}
+	
+	public void deleteTable(String project, String model, String table){
+		open();
+		
+		new DefaultTreeItem(project, model, table).select();
+		new ContextMenu("Delete").select();
+		
+		new WaitWhile(new IsInProgress(), TimePeriod.VERY_LONG);
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		new WorkbenchShell();
+	}
 
 	
 

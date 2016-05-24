@@ -11,6 +11,7 @@ import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.teiid.reddeer.Procedure;
 import org.jboss.tools.teiid.reddeer.Table;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
+import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfilesConstants;
 import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
@@ -86,6 +87,10 @@ public class UDFTest {
 		props.setProperty("sql", query);
 		new ModelExplorerManager().getModelExplorerView().newTable(table, Table.Type.VIEW, props, PROJECT_NAME,
 				MODEL_VIEW_NAME + ".xmi");
+		
+		new ModelExplorer().deleteTable(PROJECT_NAME, MODEL_VIEW_NAME + ".xmi", "TABLE1");
+		new ModelEditor(MODEL_VIEW_NAME + ".xmi").save();
+		
 
 		new VDBManager().createVDB(PROJECT_NAME, VDB_NAME);
 		new VDBManager().addModelsToVDB(PROJECT_NAME, VDB_NAME, new String[] { MODEL_SRC_NAME, MODEL_VIEW_NAME });
