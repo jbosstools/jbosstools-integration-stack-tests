@@ -2,6 +2,7 @@ package org.jboss.tools.runtime.reddeer.impl;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -10,6 +11,9 @@ import org.jboss.tools.runtime.reddeer.Namespaces;
 @XmlRootElement(name = "destination", namespace = Namespaces.SOA_REQ)
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SAPDestination {
+
+	@XmlAttribute(name = "name")
+	private String name;
 
 	@XmlElement(name = "ashost", namespace = Namespaces.SOA_REQ)
 	private String ashost;
@@ -34,6 +38,14 @@ public class SAPDestination {
 
 	@XmlElement(name = "lang", namespace = Namespaces.SOA_REQ)
 	private String lang;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	public String getAshost() {
 		return ashost;

@@ -74,12 +74,12 @@ public class SAPConnectionTest {
 	 */
 	@Test
 	public void testSAPConnection() {
-		String destination = "destinationTest";
-		String server = "serverTest";
+		String destination = sapDestination.getName();
+		String server = sapServer.getName();
 
 		SAPConnectionView sapConnectionView = new SAPConnectionView();
 		sapConnectionView.open();
-		sapConnectionView.newDestination(destination);
+		sapConnectionView.newDestination(sapDestination.getName());
 
 		SAPDestinationProperties sapDestinationProperties = sapConnectionView.openDestinationProperties(destination);
 		sapDestinationProperties.getSAPApplicationServerText().setText(sapDestination.getAshost());
@@ -101,9 +101,9 @@ public class SAPConnectionTest {
 
 		SAPServerProperties sapServerProperties = sapConnectionView.openServerProperties(server);
 		sapServerProperties.getGatewayHostText().setText(sapServer.getGwhost());
-		sapServerProperties.getGatewayPortText().setText("3300");
+		sapServerProperties.getGatewayPortText().setText(sapServer.getGwport());
 		sapServerProperties.getProgramIDText().setText(sapServer.getProgid());
-		sapServerProperties.getRepositoryDestinationText().setText(destination);
+		sapServerProperties.getRepositoryDestinationText().setText(sapServer.getDestination());
 		sapServerProperties.getConnectionCountText().setText(sapServer.getConnectionCount());
 
 		TestServerConnection testServerConnection = sapConnectionView.openServerTest(server);
