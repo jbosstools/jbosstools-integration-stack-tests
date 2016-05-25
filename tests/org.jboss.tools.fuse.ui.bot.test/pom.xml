@@ -17,7 +17,7 @@
 		<ec2.email>AmazonEC2Owner</ec2.email>
 		<amazon-terminator>https://github.com/tsedmik/amazon-terminator/releases/download/v1.0/amazon-terminator-1.0-jar-with-dependencies.jar</amazon-terminator>
 		<amazon-terminator-jar>amazon-terminator-1.0-jar-with-dependencies.jar</amazon-terminator-jar>
-		<karaf.url>http://apache.miloslavbrada.cz/karaf/3.0.3/apache-karaf-3.0.3.zip</karaf.url>
+		<karaf.url>http://archive.apache.org/dist/karaf/3.0.3/apache-karaf-3.0.3.zip</karaf.url>
 		<karaf.path>${project.build.directory}/requirements/apache-karaf-3.0.3</karaf.path>
 		<karaf.name>Apache Karaf 3.0</karaf.name>
 		<karaf.hostname>localhost</karaf.hostname>
