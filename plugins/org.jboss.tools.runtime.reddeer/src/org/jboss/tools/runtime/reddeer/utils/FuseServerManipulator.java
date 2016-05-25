@@ -318,7 +318,7 @@ public class FuseServerManipulator {
 			log.error("Cannot add '" + project + "' project to the server.");
 		}
 		page.close();
-		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		AbstractWait.sleep(TimePeriod.NORMAL);
 	}
 
