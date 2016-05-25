@@ -93,7 +93,7 @@ public class DataTransformationDeploymentEAPTest extends DefaultTest {
 
 		// check whether transformation was sucessful
 		try {
-			new WaitUntil(new ConsoleHasText("file://src/data) Creating JAXBContext"));
+			new WaitUntil(new ConsoleHasText("file://src/data) Created XMLInputFactory"));
 		} catch (WaitTimeoutExpiredException e) {
 			fail("Transformation did not happen! ");
 		}
