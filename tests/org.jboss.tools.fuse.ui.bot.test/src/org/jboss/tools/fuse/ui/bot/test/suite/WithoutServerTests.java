@@ -10,7 +10,7 @@ import org.jboss.tools.fuse.ui.bot.test.JMXNavigatorTest;
 import org.jboss.tools.fuse.ui.bot.test.LicenseTest;
 import org.jboss.tools.fuse.ui.bot.test.ProjectLocalRunTest;
 import org.jboss.tools.fuse.ui.bot.test.RouteManipulationTest;
-import org.jboss.tools.fuse.ui.bot.test.SmokeTest;
+import org.jboss.tools.fuse.ui.bot.test.SimpleTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
@@ -31,7 +31,7 @@ import junit.framework.TestSuite;
 	LicenseTest.class,
 	ProjectLocalRunTest.class,
 	RouteManipulationTest.class,
-	SmokeTest.class })
+	SimpleTest.class })
 @RunWith(RedDeerSuite.class)
 public class WithoutServerTests extends TestSuite {
 
