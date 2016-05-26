@@ -21,7 +21,7 @@ import org.jboss.tools.fuse.ui.bot.test.QuickStartsTest;
 import org.jboss.tools.fuse.ui.bot.test.RouteManipulationTest;
 import org.jboss.tools.fuse.ui.bot.test.ServerJRETest;
 import org.jboss.tools.fuse.ui.bot.test.ServerTest;
-import org.jboss.tools.fuse.ui.bot.test.SmokeTest;
+import org.jboss.tools.fuse.ui.bot.test.SimpleTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
@@ -48,7 +48,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	QuickStartsTest.class,
 	RouteManipulationTest.class,
 	ServerTest.class,
-	SmokeTest.class,
+	SimpleTest.class,
 	ServerJRETest.class })
 @RunWith(RedDeerSuite.class)
 public class AllTests extends TestSuite {

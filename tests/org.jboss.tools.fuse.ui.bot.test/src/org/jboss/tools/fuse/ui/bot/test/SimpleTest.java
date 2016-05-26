@@ -26,12 +26,12 @@ import org.junit.runner.RunWith;
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
 @RunWith(RedDeerSuite.class)
-public class SmokeTest extends DefaultTest {
+public class SimpleTest extends DefaultTest {
 
 	private static final String PROJECT_ARCHETYPE = "camel-archetype-spring";
 	private static final String PROJECT_NAME = "camel-spring";
 
-	private static Logger log = Logger.getLogger(SmokeTest.class);
+	private static Logger log = Logger.getLogger(SimpleTest.class);
 
 	/**
 	 * <p>
