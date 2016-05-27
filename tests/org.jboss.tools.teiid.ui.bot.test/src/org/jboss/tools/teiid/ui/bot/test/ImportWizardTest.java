@@ -99,7 +99,7 @@ public class ImportWizardTest {
 		importWizard.selectLocalFileImportMode();
 		importWizard.next();
 		importWizard.selectProfile(flatProfile);
-		importWizard.selectFile("items.csv     <<<<");
+		importWizard.selectFile("items.csv");
 		importWizard.setSourceModel("Item");
 		importWizard.setProject(MODEL_PROJECT);
 		importWizard.next();
@@ -108,10 +108,10 @@ public class ImportWizardTest {
 		importWizard.finish();
 		new WorkbenchShell();
 
-		teiidBot.assertResource(MODEL_PROJECT, "ItemSource.xmi");
+		teiidBot.assertResource(MODEL_PROJECT, "Item.xmi");
 		teiidBot.assertResource(MODEL_PROJECT, "ViewModel.xmi");
-		teiidBot.checkDiagram(MODEL_PROJECT, "ItemSource.xmi", "getTextFiles");
-		teiidBot.checkDiagram(MODEL_PROJECT, "ItemSource.xmi", "Result");
+		teiidBot.checkDiagram(MODEL_PROJECT, "Item.xmi", "getTextFiles");
+		teiidBot.checkDiagram(MODEL_PROJECT, "Item.xmi", "Result");
 		teiidBot.checkDiagram(MODEL_PROJECT, "ViewModel.xmi", "new_table");
 	}
 

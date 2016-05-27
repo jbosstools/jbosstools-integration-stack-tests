@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.eclipse.datatools.ui.DatabaseProfile;
 import org.jboss.reddeer.eclipse.datatools.ui.DriverDefinition;
 import org.jboss.reddeer.eclipse.datatools.ui.DriverTemplate;
@@ -23,6 +22,8 @@ import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -205,8 +206,8 @@ public class TeiidConnectionProfileWizard extends ConnectionProfileWizard {
 		next();
 
 		ConnectionProfileFlatFilePage flatPage = new ConnectionProfileFlatFilePage();
-		new SWTWorkbenchBot().text().setText(new File(flatProfile.getFolder()).getAbsolutePath());// should be absolute
-																									// path!
+		new DefaultText(0).setText(new File(flatProfile.getFolder()).getAbsolutePath());
+		// path!
 		// switch off validation of home folder
 		new CheckBox("Validate home folder").click();
 		flatPage.setCharset(flatProfile.getCharset());
@@ -214,7 +215,17 @@ public class TeiidConnectionProfileWizard extends ConnectionProfileWizard {
 
 		finish();
 	}
-
+	
+	public void createFlatFileURLProfile(String name, String URL) {
+		open();
+		ConnectionProfileSelectPage selectPage = new ConnectionProfileSelectPage();
+		selectPage.setConnectionProfile("Flat File URL Source");
+		selectPage.setName(name);
+		next();
+		new LabeledText("Connection URL").setText(URL);
+		finish();
+	}
+	
 	/**
 	 * 
 	 * @param name

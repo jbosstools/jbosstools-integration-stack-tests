@@ -22,7 +22,7 @@ public class FlatImportWizard extends TeiidImportWizard {
 
 	public static final String LABEL_FORMAT_OPRIONS = "Format Options";
 	public static final String LOCAL_FILE_MODE = "Flat file on local file system";
-	public static final String REMOTE_URL_MODE = "Flat file via remote url";
+	public static final String REMOTE_URL_MODE = "Flat file via remote URL";
 
 	public FlatImportWizard() {
 		super("File Source (Flat) >> Source and View Model");
@@ -99,7 +99,7 @@ public class FlatImportWizard extends TeiidImportWizard {
 
 	public FlatImportWizard setSourceModel(String sourceModelName) {
 		log.info("Set source model to '" + sourceModelName + "'");
-		new SWTWorkbenchBot().textWithLabel("Name:").setText(sourceModelName + "Source");
+		new SWTWorkbenchBot().textWithLabel("Name:").setText(sourceModelName);
 		return this;
 	}
 
@@ -150,7 +150,7 @@ public class FlatImportWizard extends TeiidImportWizard {
 
 	protected void setCheckedFile(String fileName, boolean checked) {
 		SWTBotTable table = new SWTWorkbenchBot().tableInGroup("Available Data Files");
-		SWTBotTableItem item = table.getTableItem(fileName);
+		SWTBotTableItem item = table.getTableItem(fileName + "     <<<<");
 		if (checked) {
 			item.check();
 		} else {
