@@ -32,7 +32,7 @@ public class JdgImportTest {
 		String modelName = "JdgModel";
 
 		Properties iProps = new Properties();
-		iProps.setProperty(TeiidConnectionImportWizard.DATA_SOURCE_NAME, "infinispan-remote-cache");
+		iProps.setProperty(TeiidConnectionImportWizard.DATA_SOURCE_NAME, "infinispan-remote-cache-ds");
 		iProps.setProperty(TeiidConnectionImportWizard.TRANSLATOR, "infinispan-cache-dsl");
 
 		new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME, modelName, iProps, null);
