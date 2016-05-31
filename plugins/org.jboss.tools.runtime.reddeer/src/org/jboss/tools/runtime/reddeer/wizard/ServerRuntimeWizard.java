@@ -1,5 +1,7 @@
 package org.jboss.tools.runtime.reddeer.wizard;
 
+import java.util.List;
+
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
@@ -34,6 +36,18 @@ public class ServerRuntimeWizard extends WizardDialog {
 		}
 		new RadioButton(new DefaultGroup("Runtime JRE"), "Alternate JRE: ").click();
 		new DefaultCombo(new DefaultGroup("Runtime JRE"), 1).setSelection(jreName);
+	}
+
+	public String getExecutionEnvironment() {
+		return new DefaultCombo(new DefaultGroup("Runtime JRE"), 0).getSelection();
+	}
+
+	public List<String> getExecutionEnvironments() {
+		return new DefaultCombo(new DefaultGroup("Runtime JRE"), 0).getItems();
+	}
+
+	public void selectExecutionEnvironment(String temp) {
+		new DefaultCombo(new DefaultGroup("Runtime JRE"), 0).setSelection(temp);
 	}
 
 	/*
