@@ -3,9 +3,9 @@ package org.jboss.tools.teiid.reddeer;
 public enum ModelClass {
 
 	RELATIONAL("Relational"),
-	XML("XML"),
-	XSD("XML Schema (XSD)"),
-	WEBSERVICE("Web Service"),
+	XML("XML (Deprecated)"),
+	XSD("XML Schema (XSD) (Deprecated)"),
+	WEBSERVICE("Web Service (Deprecated)"),
 	MODEL_EXTENSION("Model Extension (Deprecated)"),
 	FUNCTION("Function (Deprecated)");
 

@@ -19,7 +19,7 @@
 		<test.package>org.jboss.tools.teiid.ui.bot.test.suite</test.package>
 		<test.class>AllTests</test.class>
 		<jdbc.dir>${requirementsDirectory}/lib</jdbc.dir>
-		<teiid.site>${jbtis.site}</teiid.site>
+		<teiid.site>http://download.jboss.org/jbosstools/updates/development/mars/integration-stack/teiiddesigner/</teiid.site>
 		<customization.file>resources/settings/plugin_customization.ini</customization.file>
 	</properties>
 
