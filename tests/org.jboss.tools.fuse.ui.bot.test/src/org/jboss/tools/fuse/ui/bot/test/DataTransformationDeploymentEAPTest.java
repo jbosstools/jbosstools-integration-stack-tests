@@ -1,7 +1,7 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
-import static org.jboss.reddeer.requirements.server.ServerReqState.RUNNING;
+import static org.jboss.reddeer.requirements.server.ServerReqState.PRESENT;
 import static org.jboss.tools.runtime.reddeer.requirement.ServerReqType.EAP;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -11,20 +11,28 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.List;
 import java.util.Scanner;
 
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
+import org.jboss.reddeer.eclipse.wst.server.ui.RuntimePreferencePage;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.common.reddeer.FileUtils;
 import org.jboss.tools.common.reddeer.ResourceHelper;
+import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
+import org.jboss.tools.runtime.reddeer.ServerBase;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.runtime.reddeer.utils.FuseServerManipulator;
+import org.jboss.tools.runtime.reddeer.wizard.ServerRuntimeWizard;
 import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -34,11 +42,41 @@ import org.junit.runner.RunWith;
  * @author tsedmik
  */
 @RunWith(RedDeerSuite.class)
-@Server(type = EAP, state = RUNNING)
+@Server(type = EAP, state = PRESENT)
 public class DataTransformationDeploymentEAPTest extends DefaultTest {
 
 	@InjectRequirement
 	private static ServerRequirement serverRequirement;
+
+	/**
+	 * Prepares test environment
+	 */
+	@BeforeClass
+	public static void setupInit() {
+
+		// change default runtime JRE -- due to https://issues.jboss.org/browse/JBTIS-719
+		ServerBase base = serverRequirement.getConfig().getServerBase();
+		if (base.getJreName() == null) {
+			WorkbenchPreferenceDialog preferences = new WorkbenchPreferenceDialog();
+			preferences.open();
+			RuntimePreferencePage prefs = new RuntimePreferencePage();
+			preferences.select(prefs);
+			prefs.editRuntime(prefs.getServerRuntimes().get(0).getName());
+			ServerRuntimeWizard runtimeWizard = new ServerRuntimeWizard();
+			if (runtimeWizard.getExecutionEnvironment().contains("1.6")) {
+				List<String> list = runtimeWizard.getExecutionEnvironments();
+				for (String temp : list) {
+					if (temp.contains("1.7") || temp.contains("1.8")) {
+						runtimeWizard.selectExecutionEnvironment(temp);
+						break;
+					}
+				}
+			}
+			runtimeWizard.finish();
+			preferences.ok();
+		}
+		new ServersView().getServer(base.getName()).start();
+	}
 
 	/**
 	 * Cleans up test environment
@@ -67,10 +105,11 @@ public class DataTransformationDeploymentEAPTest extends DefaultTest {
 	 */
 	@Test
 	public void testDeployment() throws FileNotFoundException {
-		
+
 		// import and deploy the project
 		ProjectFactory.importExistingProject(ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID,
 				"resources/projects/wildfly-transformation"), "wildfly-transformation", false, false);
+		new CamelProject("wildfly-transformation").update();
 		FuseServerManipulator.addModule(serverRequirement.getConfig().getName(), "wildfly-transformation");
 		try {
 			new WaitUntil(new ConsoleHasText(
