@@ -128,8 +128,9 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 	}
 
 	private void fillFourthPage() {
-
-		new DefaultText(new DefaultGroup(""), 0).setText(modelName);
+		if(!new DefaultText(new DefaultGroup(""), 0).isReadOnly()){
+			new DefaultText(new DefaultGroup(""), 0).setText(modelName);
+		}
 		new CheckBox("Update (if existing model selected)").toggle(false);
 		new PushButton(1, new WithMnemonicTextMatcher("...")).click();
 

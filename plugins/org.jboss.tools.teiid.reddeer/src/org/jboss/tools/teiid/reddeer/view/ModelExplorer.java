@@ -4,7 +4,6 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.Properties;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -186,6 +185,7 @@ public class ModelExplorer extends AbstractExplorer {
 
 	public void executeVDB(String project, String vdb) {
 		open();
+		vdb = (vdb.contains(".vdb")) ? vdb : vdb + ".vdb";
 
 		new DefaultTreeItem(project, vdb).select();
 		new ContextMenu(MODELING_MENU_ITEM, "Execute VDB").select();
