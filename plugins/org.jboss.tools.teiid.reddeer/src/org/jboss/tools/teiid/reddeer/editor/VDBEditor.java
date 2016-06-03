@@ -1,5 +1,6 @@
 package org.jboss.tools.teiid.reddeer.editor;
 
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -12,15 +13,19 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.matcher.WithTooltipTextMatcher;
+import org.jboss.reddeer.jface.viewers.CellEditor;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.ccombo.DefaultCCombo;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.tools.teiid.reddeer.widget.TeiidEditorTableItem;
 
 public class VDBEditor extends SWTBotEditor {
@@ -224,5 +229,21 @@ public class VDBEditor extends SWTBotEditor {
 		return props;
 
 	}
-
+	
+	public void setVersion(int version){
+		new LabeledText("Version").setText(Integer.toString(version));
+	}
+	
+	public void setImportVDB(String nameVDB,int version, boolean dataPolicies){
+		new PushButton("Show Import VDBs").click();
+		new DefaultShell("Import VDBs");
+		TableItem vdb = new DefaultTable().getItem("sourceVDB");
+		vdb.click(1);
+		new DefaultText(new CellEditor(vdb),0).setText(Integer.toString(version));
+		KeyboardFactory.getKeyboard().type(KeyEvent.VK_TAB);
+		vdb.click(2);
+		new DefaultCCombo(new CellEditor(vdb)).setSelection(Boolean.toString(dataPolicies));
+		vdb.click();
+		new PushButton("OK").click();
+	}
 }
