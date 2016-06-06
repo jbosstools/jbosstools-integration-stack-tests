@@ -39,10 +39,11 @@ public abstract class ServerBase extends RuntimeBase {
 
 	public static final String ADD_REMOVE_LABEL = "Add and Remove...";
 	public static final String DEFAULT_JRE = "default";
+	public static final String DEFAULT_EXEC_ENV = "default";
 
 	private String jre;
-
 	private String jreName;
+	private String execEnv;
 
 	@XmlElement(name = "jre", namespace = Namespaces.SOA_REQ, defaultValue = DEFAULT_JRE)
 	public String getJre() {
@@ -63,6 +64,15 @@ public abstract class ServerBase extends RuntimeBase {
 
 	public String getJreName() {
 		return jreName;
+	}
+
+	@XmlElement(name = "exec-env", namespace = Namespaces.SOA_REQ, defaultValue = DEFAULT_EXEC_ENV)
+	public String getExecEnv() {
+		return execEnv;
+	}
+	
+	public void setExecEnv(String execEnv) {
+		this.execEnv = execEnv;
 	}
 
 	public abstract int getHttpPort();
