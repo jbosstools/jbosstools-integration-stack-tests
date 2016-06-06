@@ -143,6 +143,7 @@ public class ServerKaraf extends ServerBase {
 		runtimeWizard.setName(getRuntimeName());
 		runtimeWizard.setInstallationDir(getHome());
 		runtimeWizard.selectJre(getJreName());
+		runtimeWizard.selectExecutionEnvironment(getExecEnv());
 		new WaitUntil(new JobIsKilled("Refreshing server adapter list"), TimePeriod.LONG, false);
 		runtimeWizard.finish(TimePeriod.VERY_LONG);
 

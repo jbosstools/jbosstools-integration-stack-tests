@@ -47,6 +47,7 @@ public class ServerRuntimeWizard extends WizardDialog {
 	}
 
 	public void selectExecutionEnvironment(String temp) {
+		if (temp == null) return;
 		new DefaultCombo(new DefaultGroup("Runtime JRE"), 0).setSelection(temp);
 	}
 

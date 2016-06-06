@@ -130,6 +130,7 @@ public class ServerAS extends ServerBase {
 			runtimeWizard.setName(getRuntimeName());
 			runtimeWizard.setHomeDirectory(getHome());
 			runtimeWizard.selectJre(getJreName());
+			runtimeWizard.selectExecutionEnvironment(getExecEnv());
 			new WaitUntil(new JobIsKilled("Refreshing server adapter list"), TimePeriod.LONG, false);
 			runtimeWizard.finish(TimePeriod.VERY_LONG);
 			preferences.ok();
