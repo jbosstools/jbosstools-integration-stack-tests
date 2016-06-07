@@ -41,7 +41,7 @@ abstract class MultiPageEditor extends DefaultEditor {
 		return editor;
 	}
 
-	protected MultiPageEditorPart getEditorPart() {
+	public MultiPageEditorPart getEditorPart() {
 		if (editorPart == null) {
 			throw new RuntimeException("workbenchPart is null");
 		}
