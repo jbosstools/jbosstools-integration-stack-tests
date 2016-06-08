@@ -23,9 +23,6 @@
 	<bundle id="org.jboss.tools.drools.ui.bot.test"><category name="JBoss Tools Integration Stack Tests"/></bundle>
 	<bundle id="org.jboss.tools.fuse.reddeer"><category name="JBoss Tools Integration Stack Tests"/></bundle>
 	<bundle id="org.jboss.tools.fuse.ui.bot.test"><category name="JBoss Tools Integration Stack Tests"/></bundle>
-	<bundle id="org.jboss.tools.esb.reddeer"><category name="JBoss Tools Integration Stack Tests"/></bundle>
-	<bundle id="org.jboss.tools.esb.ui.bot.test"><category name="JBoss Tools Integration Stack Tests"/></bundle>
-	<bundle id="org.jboss.tools.jbpm.ui.bot.test"><category name="JBoss Tools Integration Stack Tests"/></bundle>
 	<bundle id="org.jboss.tools.modeshape.reddeer"><category name="JBoss Tools Integration Stack Tests"/></bundle>
 	<bundle id="org.jboss.tools.modeshape.ui.bot.test"><category name="JBoss Tools Integration Stack Tests"/></bundle>
 	<bundle id="org.jboss.tools.switchyard.reddeer"><category name="JBoss Tools Integration Stack Tests"/></bundle>
@@ -45,9 +42,6 @@
 	<bundle id="org.jboss.tools.drools.ui.bot.test.source"><category name="JBoss Tools Integration Stack Tests Sources"/></bundle>
 	<bundle id="org.jboss.tools.fuse.reddeer.source"><category name="JBoss Tools Integration Stack Tests Sources"/></bundle>
 	<bundle id="org.jboss.tools.fuse.ui.bot.test.source"><category name="JBoss Tools Integration Stack Tests Sources"/></bundle>
-	<bundle id="org.jboss.tools.esb.reddeer.source"><category name="JBoss Tools Integration Stack Tests Sources"/></bundle>
-	<bundle id="org.jboss.tools.esb.ui.bot.test.source"><category name="JBoss Tools Integration Stack Tests Sources"/></bundle>
-	<bundle id="org.jboss.tools.jbpm.ui.bot.test.source"><category name="JBoss Tools Integration Stack Tests Sources"/></bundle>
 	<bundle id="org.jboss.tools.modeshape.reddeer.source"><category name="JBoss Tools Integration Stack Tests Sources"/></bundle>
 	<bundle id="org.jboss.tools.modeshape.ui.bot.test.source"><category name="JBoss Tools Integration Stack Tests Sources"/></bundle>
 	<bundle id="org.jboss.tools.switchyard.reddeer.source"><category name="JBoss Tools Integration Stack Tests Sources"/></bundle>
