@@ -12,32 +12,33 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Properties;
 
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.jface.viewers.CellEditor;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.TableItem;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.ccombo.DefaultCCombo;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
-import org.jboss.tools.teiid.reddeer.manager.ConnectionProfilesConstants;
-import org.jboss.tools.teiid.reddeer.manager.ImportManager;
-import org.jboss.tools.teiid.reddeer.manager.ImportMetadataManager;
+import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
-import org.jboss.tools.teiid.reddeer.manager.VDBManager;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
-import org.jboss.tools.teiid.reddeer.wizard.DDLExportWizard;
-import org.jboss.tools.teiid.reddeer.wizard.DDLImportWizard;
+import org.jboss.tools.teiid.reddeer.wizard.DDLTeiidExportWizard;
+import org.jboss.tools.teiid.reddeer.wizard.DDLTeiidImportWizard;
+import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -50,7 +51,7 @@ import org.junit.runner.RunWith;
 @OpenPerspective(TeiidPerspective.class)
 
 @TeiidServer(state = ServerReqState.RUNNING, connectionProfiles={
-		ConnectionProfilesConstants.ORACLE_11G_PARTS_SUPPLIER,
+		ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER,
 })
 
 public class ImportDDLtest {
@@ -69,32 +70,55 @@ public class ImportDDLtest {
 	private static final String PATH_TO_DDL = teiidBot.toAbsolutePath("resources/ddl/viewModel.ddl");
 	private static final String PATH_TO_ORIGINAL_DDL = teiidBot.toAbsolutePath("resources/ddl/viewModelOriginal.ddl");
 
-	
 	@BeforeClass
 	public static void openPerspective() {
-		new ImportManager().importProject(PROJECT_LOCATION);
-    	new ModelExplorerManager().changeConnectionProfile(ConnectionProfilesConstants.ORACLE_11G_PARTS_SUPPLIER, PROJECT_NAME, NAME_SOURCE_MODEL);
+		new ModelExplorer().importProject(PROJECT_LOCATION);
+    	new ModelExplorerManager().changeConnectionProfile(ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER, PROJECT_NAME, NAME_SOURCE_MODEL);
 	}	
 
 	@Test
 	public void importDDL(){
-		Properties props = new Properties();
-		props.setProperty("modelType", DDLImportWizard.View_Type);
-		new ImportMetadataManager().importFromDDL(PROJECT_NAME, NAME_VIEW_MODEL, PATH_TO_DDL ,DDLImportWizard.TEIID_WIZARD, props);
-				
+		//ddl importer 
+		DDLTeiidImportWizard importWizard = new DDLTeiidImportWizard();
+		importWizard.open();
+		importWizard.setPath(PATH_TO_DDL)
+					.setFolder(PROJECT_NAME)
+					.setName(NAME_VIEW_MODEL)
+					.setModelType(DDLTeiidImportWizard.View_Type)
+					.generateValidDefaultSQL(true)
+					.next();
+		importWizard.finish();
+		
 		new ModelExplorer().getModelProject(PROJECT_NAME).open();
 		new DefaultTreeItem(PROJECT_NAME,NAME_VIEW_MODEL + ".xmi","tempTable").doubleClick();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new DefaultCTabItem("Table Editor").activate();
 		new DefaultTabItem("Base Tables").activate();
 		List<TableItem> items = new DefaultTable().getItems();
-		//if table was set to temp
+		
+		//check if table was set to temp
 		assertTrue("true".equals(items.get(0).getText(10)));
-			
-		VDBManager vdb = new VDBManager();
-		vdb.createVDB(PROJECT_NAME, NAME_VDB);
-		vdb.addModelsToVDB(PROJECT_NAME, NAME_VDB, new String[]{NAME_SOURCE_MODEL + ".xmi", NAME_VIEW_MODEL + ".xmi"});
-		vdb.deployVDB(new String[]{PROJECT_NAME, NAME_VDB});
+		
+		//set supports update
+		TableItem row = items.get(0);
+		if(row.getText(5).equals("false")){
+			row.doubleClick(5);
+			new DefaultCCombo(new CellEditor(row)).setSelection("true");
+			row.click();
+			if (new ShellWithTextIsActive("Table 'Supports Update' Property Changed").test()){
+				new PushButton("Yes").click();
+			}
+			new TeiidBot().saveAll();
+		}
+		
+		VdbWizard wizardVDB = new VdbWizard();
+		wizardVDB.open();
+		wizardVDB.setLocation(PROJECT_NAME)
+				 .setName(NAME_VDB)
+				 .addModel(PROJECT_NAME,NAME_VIEW_MODEL + ".xmi")
+				 .finish();
+
+		new ModelExplorer().deployVdb(PROJECT_NAME, NAME_VDB);
 		
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, NAME_VDB);
 		try {
@@ -135,12 +159,13 @@ public class ImportDDLtest {
 		//TEIIDDES-2827
 		new ModelExplorer().getModelProject(PROJECT_NAME).open();
 		new DefaultTreeItem(PROJECT_NAME,NAME_VIEW_ORIGINAL_MODEL + ".xmi").select();
-		
-		DDLExportWizard export = new DDLExportWizard(DDLExportWizard.TEIID_WIZARD);		
-		export.setPathToModel(PROJECT_NAME,NAME_VIEW_ORIGINAL_MODEL + ".xmi");
-		export.setExportName("originalDDL");
-		export.setExportLocation(PROJECT_NAME);
-		export.execute();
+
+		DDLTeiidExportWizard exportDDL = new DDLTeiidExportWizard();		
+		exportDDL.open();
+		exportDDL.setLocation(PROJECT_NAME,NAME_VIEW_ORIGINAL_MODEL + ".xmi")
+	     		 .next();
+		exportDDL.exportToWorkspace("originalDDL", PROJECT_NAME)
+			     .finish();
 		
 		new ModelExplorer().getModelProject(PROJECT_NAME).open();
 		new DefaultTreeItem(PROJECT_NAME,"originalDDL").doubleClick();

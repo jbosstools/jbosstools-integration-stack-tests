@@ -13,7 +13,7 @@ import org.jboss.tools.teiid.reddeer.manager.ImportMetadataManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
-import org.jboss.tools.teiid.reddeer.wizard.DDLImportWizard;
+import org.jboss.tools.teiid.reddeer.wizard.DDLCustomImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.FlatImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.ImportGeneralItemWizard;
 import org.jboss.tools.teiid.reddeer.wizard.MetadataImportWizard.ImportType;
@@ -59,10 +59,17 @@ public class ImportWizardTest {
 	public void ddlImportTest() {
 
 		String ddl = teiidBot.toAbsolutePath("resources/ddl/hsqldb.ddl");
-		Properties props = new Properties();
-		props.setProperty("autoselectDialect", "true");
-		props.setProperty("modelType", DDLImportWizard.View_Type);
-		new ImportMetadataManager().importFromDDL(MODEL_PROJECT, "CustomerHsqldb", ddl,DDLImportWizard.CUSTOM_WIZARD, props);
+		
+		DDLCustomImportWizard wizard = new DDLCustomImportWizard();
+		wizard.open();
+		wizard.setPath(ddl)
+			  .setFolder(MODEL_PROJECT)
+			  .setName("CustomerHsqldb")
+			  .autoSelect(true)
+			  .setModelType(DDLCustomImportWizard.View_Type)
+			  .next();
+		wizard.finish();
+		
 		teiidBot.assertResource(MODEL_PROJECT, "CustomerHsqldb.xmi");
 		teiidBot.checkDiagram(MODEL_PROJECT, "CustomerHsqldb.xmi", "USER");
 		teiidBot.checkDiagram(MODEL_PROJECT, "CustomerHsqldb.xmi", "ADDRESS");
