@@ -29,6 +29,7 @@ public class ImportMetadataManager {
 	 * @param wizardType - can be DDLImportWizard.CUSTOM_WIZARD or DDLImportWizard.TEIID_WIZARD
 	 * @param importProps - can contains 'autoselectDialect' and 'modelType'(DDLImportWizard.Source_Type or DDLImportWizard.View_Type)
 	 */
+	@Deprecated //use DDLCustomImportWizard or DDLTeiidImportWizard
 	public void importFromDDL(String projectName, String modelName, String ddlPath, String wizardType, Properties importProps) {
 		if(!(wizardType.equals(DDLImportWizard.CUSTOM_WIZARD)||wizardType.equals(DDLImportWizard.TEIID_WIZARD))){
 			throw new IllegalArgumentException("ddl wizard type is invalid");

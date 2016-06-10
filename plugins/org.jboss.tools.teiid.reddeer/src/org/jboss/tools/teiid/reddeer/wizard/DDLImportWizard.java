@@ -14,6 +14,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
  * @author apodhrad
  * 
  */
+@Deprecated //use DDLCustomImportWizard or DDLTeiidImportWizard
 public class DDLImportWizard extends TeiidImportWizard {
 
 	public static final String MODEL_FOLDER = "Model folder: ";
