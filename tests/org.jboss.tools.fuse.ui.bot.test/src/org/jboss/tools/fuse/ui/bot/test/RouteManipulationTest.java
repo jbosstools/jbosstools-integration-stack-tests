@@ -1,5 +1,6 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
+import static org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard.ProjectType.Spring;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -26,7 +27,6 @@ import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
 import org.jboss.tools.fuse.reddeer.utils.TracingDragAndDropManager;
 import org.jboss.tools.fuse.reddeer.view.FuseJMXNavigator;
 import org.jboss.tools.fuse.ui.bot.test.utils.EditorManipulator;
-import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.After;
 import org.junit.Before;
@@ -46,13 +46,13 @@ public class RouteManipulationTest extends DefaultTest {
 	/**
 	 * Prepares test environment
 	 * 
-	 * @throws FuseArchetypeNotFoundException
+	 * @throws FuseTemplateNotFoundException
 	 *             Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Before
-	public void setupCreateAndRunCamelProject() throws FuseArchetypeNotFoundException {
+	public void setupCreateAndRunCamelProject() {
 
-		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
+		ProjectFactory.createProject("camel-spring", "Content Based Router", Spring);
 		Shell workbenchShell = new WorkbenchShell();
 		new CamelProject("camel-spring").runCamelContextWithoutTests("camel-context.xml");
 		new WaitUntil(new ConsoleHasText("Route: _route1 started and consuming"), TimePeriod.getCustom(300));
@@ -77,7 +77,7 @@ public class RouteManipulationTest extends DefaultTest {
 	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
-	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>create a new project from 'Content Based Router' template</li>
 	 * <li>Run a Project as Local Camel Context without tests</li>
 	 * <li>open JMX Navigator view</li>
 	 * <li>select the node "Local Camel Context", "Camel", "camelContext..."</li>
@@ -145,7 +145,7 @@ public class RouteManipulationTest extends DefaultTest {
 	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
-	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>create a new project from 'Content Based Router' template</li>
 	 * <li>Run a Project as Local Camel Context without tests</li>
 	 * <li>open JMX Navigator view</li>
 	 * <li>select the node "Local Camel Context", "Camel", "camel-1"</li>

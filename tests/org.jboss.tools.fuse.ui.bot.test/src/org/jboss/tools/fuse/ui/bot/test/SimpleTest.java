@@ -13,7 +13,7 @@ import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.C
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.view.FuseJMXNavigator;
-import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
+import org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard.ProjectType;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,9 +28,6 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 public class SimpleTest extends DefaultTest {
 
-	private static final String PROJECT_ARCHETYPE = "camel-archetype-spring";
-	private static final String PROJECT_NAME = "camel-spring";
-
 	private static Logger log = Logger.getLogger(SimpleTest.class);
 
 	/**
@@ -39,19 +36,16 @@ public class SimpleTest extends DefaultTest {
 	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
-	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>create a new project from <i>Content Based Router</i></li>
 	 * </ol>
-	 * 
-	 * @throws FuseArchetypeNotFoundException
-	 *             Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Test
-	public void testCreateFuseProject() throws FuseArchetypeNotFoundException {
+	public void testCreateFuseProject() {
 
-		log.info("Create a new Fuse project (" + PROJECT_ARCHETYPE + ")");
-		ProjectFactory.createProject(PROJECT_NAME, PROJECT_ARCHETYPE);
+		log.info("Create a new Fuse project from 'Content Based Router'");
+		ProjectFactory.createProject("cbr", "Content Based Router", ProjectType.Spring);
 		try {
-			new ProjectExplorer().getProject(PROJECT_NAME);
+			new ProjectExplorer().getProject("cbr");
 		} catch (EclipseLayerException ex) {
 			fail("Created project is not present in Project Explorer");
 		}

@@ -18,7 +18,6 @@ public class CamelComponents {
 	public static List<CamelComponent> getEndpoints() {
 		List<CamelComponent> list = new ArrayList<CamelComponent>();
 		list.add(new ActiveMQ());
-		list.add(new AMQBroker());
 		list.add(new Atom());
 		list.add(new Bean());
 		list.add(new ControlBus());

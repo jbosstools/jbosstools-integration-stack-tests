@@ -5,6 +5,7 @@ import java.io.File;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
@@ -23,6 +24,7 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.wizard.CamelXmlFileWizard;
 
 /**
@@ -108,26 +110,22 @@ public class CamelProject {
 
 	public void runCamelContext(String name) {
 
+		String id = getCamelContextId("src/main/resources", "META-INF", "spring", name);
 		project.getProjectItem("src/main/resources", "META-INF", "spring", name).select();
 		try {
 			new ContextMenu("Run As", "2 Local Camel Context").select();
 		} catch (CoreLayerException ex) {
 			new ContextMenu("Run As", "1 Local Camel Context").select();
 		}
-		new WaitUntil(new ConsoleHasText("Total 1 routes, of which 1 is started."), TimePeriod.VERY_LONG);
+		new WaitUntil(new ConsoleHasText("(CamelContext: " + id + ") started"), TimePeriod.VERY_LONG);
 	}
 
 	public void runCamelContextWithoutTests(String name) {
 
+		String id = getCamelContextId("src/main/resources", "META-INF", "spring", name);
 		project.getProjectItem("src/main/resources", "META-INF", "spring", name).select();
 		new ContextMenu("Run As", "3 Local Camel Context (without tests)").select();
-		new WaitUntil(new ConsoleHasText("Total 1 routes, of which 1 is started."), TimePeriod.VERY_LONG);
-	}
-
-	public void runApplicationContextWithoutTests(String name) {
-
-		project.getProjectItem("src", "main", "webapp", "WEB-INF", name).select();
-		new ContextMenu("Run As", "3 Local Camel Context (without tests)").select();
+		new WaitUntil(new ConsoleHasText("(CamelContext: " + id + ") started"), TimePeriod.VERY_LONG);
 	}
 
 	public void debugCamelContext(String name) {
@@ -222,4 +220,25 @@ public class CamelProject {
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 
+	/**
+	 * Retrieves value of id attribute of given Camel Context file.
+	 * Important - This method will work only on blueprint or spring projects!
+	 * 
+	 * @param name Name of a Camel Context file
+	 * @return value of id attribute
+	 * @throws CoreException 
+	 */
+	public String getCamelContextId(String... path) {
+		openFile(path);
+		CamelEditor editor = new CamelEditor(path[path.length - 1]);
+		try {
+			if (editor.xpath("/blueprint").equals("true")) {
+				return editor.xpath("/blueprint/camelContext/@id");
+			} else {
+				return editor.xpath("/beans/camelContext/@id");
+			}
+		} catch (CoreException e) {
+			return null;
+		}
+	}
 }

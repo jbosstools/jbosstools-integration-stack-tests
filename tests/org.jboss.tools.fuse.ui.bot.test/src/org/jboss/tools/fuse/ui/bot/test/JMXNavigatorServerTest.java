@@ -1,6 +1,7 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
 import static org.jboss.reddeer.requirements.server.ServerReqState.RUNNING;
+import static org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard.ProjectType.Blueprint;
 import static org.jboss.tools.runtime.reddeer.requirement.ServerReqType.Fuse;
 import static org.jboss.tools.runtime.reddeer.requirement.ServerReqType.Karaf;
 import static org.jboss.tools.runtime.reddeer.requirement.ServerReqType.ServiceMix;
@@ -24,7 +25,6 @@ import org.jboss.tools.common.reddeer.view.ErrorLogView;
 import org.jboss.tools.fuse.reddeer.condition.FuseLogContainsText;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.view.FuseJMXNavigator;
-import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
@@ -50,8 +50,7 @@ import org.junit.runner.RunWith;
 @Server(type = { Fuse, Karaf, ServiceMix }, state = RUNNING)
 public class JMXNavigatorServerTest {
 
-	private static final String PROJECT_ARCHETYPE = "camel-archetype-spring-dm";
-	private static final String PROJECT_NAME = "camel-spring-dm";
+	private static final String PROJECT_NAME = "cbr-blueprint";
 
 	private static String serverName;
 	private static boolean setupIsDone = false;
@@ -61,12 +60,9 @@ public class JMXNavigatorServerTest {
 
 	/**
 	 * Prepares test environment
-	 * 
-	 * @throws FuseArchetypeNotFoundException
-	 *             Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Before
-	public void setup() throws FuseArchetypeNotFoundException {
+	public void setup() {
 
 		if (setupIsDone) {
 			return;
@@ -82,7 +78,7 @@ public class JMXNavigatorServerTest {
 		consolePref.toggleShowConsoleStandardWrite(false);
 		consolePref.ok();
 
-		ProjectFactory.createProject(PROJECT_NAME, PROJECT_ARCHETYPE);
+		ProjectFactory.createProject(PROJECT_NAME, "Content Based Router", Blueprint);
 		serverName = serverReq.getConfig().getName();
 		FuseServerManipulator.addModule(serverName, PROJECT_NAME);
 
@@ -126,7 +122,7 @@ public class JMXNavigatorServerTest {
 	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
-	 * <li>create a new project with camel-archetype-spring-dm archetype</li>
+	 * <li>create a new project from 'Content Based Router' template</li>
 	 * <li>add a new Fuse server</li>
 	 * <li>start the server</li>
 	 * <li>open JMX Navigator View</li>
@@ -157,7 +153,7 @@ public class JMXNavigatorServerTest {
 	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
-	 * <li>create a new project with camel-archetype-spring-dm archetype</li>
+	 * <li>create a new project from 'Content Based Router' template</li>
 	 * <li>add a new Fuse server</li>
 	 * <li>add the project to the server</li>
 	 * <li>start the server</li>

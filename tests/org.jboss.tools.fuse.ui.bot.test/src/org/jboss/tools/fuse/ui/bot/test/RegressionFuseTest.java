@@ -1,9 +1,15 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
+import static org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard.ProjectType.Blueprint;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.debug.core.BreakpointsView;
 import org.jboss.reddeer.eclipse.debug.core.ResumeButton;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
@@ -13,21 +19,15 @@ import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.C
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.common.reddeer.ResourceHelper;
 import org.jboss.tools.common.reddeer.debug.IsRunning;
 import org.jboss.tools.fuse.reddeer.condition.FuseLogContainsText;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
-import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.preference.FuseServerRuntimePreferencePage;
 import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
@@ -127,14 +127,11 @@ public class RegressionFuseTest extends DefaultTest {
 	 * </p>
 	 * <b>Link: </b>
 	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-1132">https://issues.jboss.org/browse/FUSETOOLS-1132</a>
-	 * 
-	 * @throws FuseArchetypeNotFoundException
-	 *             Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Test
-	public void issue_1132() throws FuseArchetypeNotFoundException {
+	public void issue_1132() {
 
-		ProjectFactory.createProject("camel-blueprint", "camel-archetype-blueprint");
+		ProjectFactory.createProject("camel-blueprint", "Content Based Router", Blueprint);
 		new ProjectExplorer().getProject("camel-blueprint")
 				.getProjectItem("src/test/java", "com.mycompany.camel.blueprint", "RouteTest.java").delete();
 		String server = serverRequirement.getConfig().getName();
@@ -168,14 +165,11 @@ public class RegressionFuseTest extends DefaultTest {
 	 * </p>
 	 * <b>Link: </b>
 	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-1152">https://issues.jboss.org/browse/FUSETOOLS-1152</a>
-	 * 
-	 * @throws FuseArchetypeNotFoundException
-	 *             Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Test
-	public void issue_1152() throws FuseArchetypeNotFoundException {
+	public void issue_1152() {
 
-		ProjectFactory.createProject("camel-spring-dm", "camel-archetype-spring-dm");
+		ProjectFactory.createProject("camel-spring-dm", "Content Based Router", Blueprint);
 		String server = serverRequirement.getConfig().getName();
 		FuseServerManipulator.startServer(server);
 		FuseServerManipulator.addModule(server, "camel-spring-dm");
@@ -193,14 +187,11 @@ public class RegressionFuseTest extends DefaultTest {
 	 * </p>
 	 * <b>Link: </b>
 	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-1252">https://issues.jboss.org/browse/FUSETOOLS-1252</a>
-	 * 
-	 * @throws FuseArchetypeNotFoundException
-	 *             Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Test
-	public void issue_1252() throws FuseArchetypeNotFoundException {
+	public void issue_1252() {
 
-		ProjectFactory.createProject("camel-blueprint", "camel-archetype-blueprint");
+		ProjectFactory.createProject("camel-blueprint", "Content Based Router", Blueprint);
 		String server = serverRequirement.getConfig().getName();
 		FuseServerManipulator.addModule(server, "camel-blueprint");
 		FuseServerManipulator.startServer(server);

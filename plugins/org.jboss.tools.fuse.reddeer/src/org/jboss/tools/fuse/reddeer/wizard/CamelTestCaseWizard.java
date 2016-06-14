@@ -10,7 +10,7 @@ import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 public class CamelTestCaseWizard extends NewWizardDialog {
 
 	public CamelTestCaseWizard() {
-		super("Fuse Tooling", "Camel Test Case");
+		super("JBoss Fuse", "Camel Test Case");
 	}
 
 }

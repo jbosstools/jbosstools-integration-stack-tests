@@ -1,5 +1,6 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
+import static org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard.ProjectType.Spring;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -25,7 +26,6 @@ import org.jboss.tools.common.reddeer.debug.IsRunning;
 import org.jboss.tools.common.reddeer.debug.StepOverButton;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
-import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.After;
 import org.junit.BeforeClass;
@@ -42,25 +42,25 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 public class DebuggerTest extends DefaultTest {
 
-	private static final String PROJECT_ARCHETYPE = "camel-archetype-spring";
-	private static final String PROJECT_NAME = "camel-spring";
+	private static final String PROJECT_ARCHETYPE = "Content Based Router";
+	private static final String PROJECT_NAME = "cbr";
 	private static final String CAMEL_CONTEXT = "camel-context.xml";
 	private static final String CHOICE = "Choice";
 	private static final String CHOICE_ID = "_choice1";
-	private static final String LOG = "Log _log1";
-	private static final String LOG_ID = "_log1";
+	private static final String LOG = "Log _log2";
+	private static final String LOG_ID = "_log2";
 
 	/**
 	 * Prepares test environment
-	 * 
-	 * @throws FuseArchetypeNotFoundException
-	 *             Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@BeforeClass
-	public static void setupInitial() throws FuseArchetypeNotFoundException {
+	public static void setupInitial() {
 
-		ProjectFactory.createProject(PROJECT_NAME, PROJECT_ARCHETYPE);
-		new CamelProject(PROJECT_NAME).deleteFile("src", "data", "message2.xml");
+		ProjectFactory.createProject(PROJECT_NAME, PROJECT_ARCHETYPE, Spring);
+		CamelEditor editor = new CamelEditor(CAMEL_CONTEXT);
+		editor.selectEditPart("file:work/cbr/input");
+		editor.setProperty("Uri *", "file:src/main/data");
+		editor.save();
 	}
 
 	/**
@@ -78,7 +78,7 @@ public class DebuggerTest extends DefaultTest {
 	 * </p>
 	 * <b>Steps</b>
 	 * <ol>
-	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>create a new project from template 'Content Based Router'</li>
 	 * <li>open Project Explorer view</li>
 	 * <li>open camel-context.xml file</li>
 	 * <li>set breakpoint to the choice component</li>
@@ -113,6 +113,7 @@ public class DebuggerTest extends DefaultTest {
 		assertTrue(view.isBreakpointAvailable(LOG_ID));
 
 		// do some operations (disable/enable/remove) and check
+		view.activate();
 		Breakpoint choice = view.getBreakpoint(CHOICE_ID);
 		choice.disable();
 		assertFalse(choice.isEnabled());
@@ -138,7 +139,7 @@ public class DebuggerTest extends DefaultTest {
 	 * </p>
 	 * <b>Steps</b>
 	 * <ol>
-	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>create a new project from template 'Content Based Router'</li>
 	 * <li>open Project Explorer view</li>
 	 * <li>open camel-context.xml file</li>
 	 * <li>set breakpoint to the choice component</li>
@@ -222,19 +223,21 @@ public class DebuggerTest extends DefaultTest {
 	 * </p>
 	 * <b>Steps</b>
 	 * <ol>
-	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>create a new project from template 'Content Based Router'</li>
 	 * <li>open Project Explorer view</li>
 	 * <li>open camel-context.xml file</li>
 	 * <li>set conditional breakpoint to the choice component - simple with
-	 * "${in.header.CamelFileName} == 'message1.xml'"</li>
+	 * "${in.header.CamelFileName} == 'order1.xml'"</li>
 	 * <li>set conditional breakpoint to the log component in the top branch - simple with
-	 * "${in.header.CamelFileName} == 'message2.xml'"</li>
+	 * "${in.header.CamelFileName} == 'order1.xml'"</li>
 	 * <li>debug the Camel Context without tests</li>
 	 * <li>wait until process is suspended</li>
 	 * <li>check if the Variables View contains variable Endpoint with value choice1</li>
 	 * <li>resume debugging</li>
-	 * <li>check if the Console View contains text UK message</li>
-	 * <li>check if the Console View contains text Other message</li>
+	 * <li>check if the Console View contains text "Receiving order order1.xml"</li>
+	 * <li>check if the Console View contains text "Receiving order order2.xml"</li>
+	 * <li>check if the Console View contains text "Receiving order order3.xml"</li>
+	 * <li>check if the Console View contains text "Receiving order order4.xml"</li>
 	 * <li>check if the process is not suspended</li>
 	 * <li>terminate process via Terminate button in the Console View</li>
 	 * <li>check if the Console View contains text Disabling debugger</li>
@@ -245,8 +248,8 @@ public class DebuggerTest extends DefaultTest {
 
 		new CamelProject(PROJECT_NAME).openCamelContext(CAMEL_CONTEXT);
 		CamelEditor editor = new CamelEditor(CAMEL_CONTEXT);
-		editor.setConditionalBreakpoint(CHOICE, "simple", "${in.header.CamelFileName} == 'message1.xml'");
-		editor.setConditionalBreakpoint(LOG, "simple", "${in.header.CamelFileName} == 'message2.xml'");
+		editor.setConditionalBreakpoint(CHOICE, "simple", "${in.header.CamelFileName} == 'order1.xml'");
+		editor.setConditionalBreakpoint(LOG, "simple", "${in.header.CamelFileName} == 'order1.xml'");
 		ResumeButton resume = new ResumeButton();
 		new CamelProject(PROJECT_NAME).debugCamelContextWithoutTests(CAMEL_CONTEXT);
 		new WaitUntil(new IsSuspended(), TimePeriod.NORMAL);
@@ -259,9 +262,11 @@ public class DebuggerTest extends DefaultTest {
 		// all breakpoint should be processed
 		resume.click();
 		new WaitUntil(new IsRunning(), TimePeriod.NORMAL);
-		assertTrue(new ConsoleHasText("UK message").test());
+		assertTrue(new ConsoleHasText("Receiving order order1.xml").test());
+		assertTrue(new ConsoleHasText("Receiving order order2.xml").test());
+		assertTrue(new ConsoleHasText("Receiving order order3.xml").test());
+		assertTrue(new ConsoleHasText("Receiving order order4.xml").test());
 		new TerminateButton().click();
-		assertTrue(new ConsoleHasText("Disabling debugger").test());
 		assertTrue(LogGrapper.getPluginErrors("fuse").size() == 0);
 	}
 }

@@ -1,5 +1,7 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
+import static org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard.ProjectType.Blueprint;
+import static org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard.ProjectType.Spring;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -25,7 +27,6 @@ import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.preference.FuseToolingEditorPreferencePage;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
-import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,14 +47,11 @@ public class FeaturesTest extends DefaultTest {
 	 * <p>
 	 * <b>Link: </b>
 	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-837">https://issues.jboss.org/browse/FUSETOOLS-837</a>
-	 *
-	 * @throws FuseArchetypeNotFoundException
-	 *             Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Test
-	public void test_837() throws FuseArchetypeNotFoundException {
+	public void test_837() {
 
-		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
+		ProjectFactory.createProject("camel-spring", "Content Based Router", Spring);
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		CamelEditor.switchTab("Design");
 		CamelEditor editor = new CamelEditor("camel-context.xml");
@@ -90,14 +88,11 @@ public class FeaturesTest extends DefaultTest {
 	 * <p>
 	 * <b>Link: </b>
 	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-1274">https://issues.jboss.org/browse/FUSETOOLS-1274</a>
-	 *
-	 * @throws FuseArchetypeNotFoundException
-	 *             Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Test
-	public void test_1274() throws FuseArchetypeNotFoundException {
+	public void test_1274() {
 
-		ProjectFactory.createProject("camel-blueprint", "camel-archetype-blueprint");
+		ProjectFactory.createProject("camel-blueprint", "Content Based Router", Blueprint);
 		new ProjectExplorer().getProject("camel-blueprint").getProjectItem("Camel Contexts").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 

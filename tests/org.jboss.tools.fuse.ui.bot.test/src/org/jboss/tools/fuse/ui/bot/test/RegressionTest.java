@@ -1,5 +1,6 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
+import static org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard.ProjectType.Spring;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
@@ -23,7 +24,6 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.core.matcher.WithTooltipTextMatcher;
-import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.debug.core.IsSuspended;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
@@ -49,7 +49,6 @@ import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
 import org.jboss.tools.fuse.reddeer.view.FuseJMXNavigator;
 import org.jboss.tools.fuse.ui.bot.test.utils.EditorManipulator;
-import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.preference.FuseServerRuntimePreferencePage;
 import org.junit.After;
@@ -85,9 +84,9 @@ public class RegressionTest extends DefaultTest {
 	 */
 	@Test
 	public void issue_674_1728_1729()
-			throws ParserConfigurationException, SAXException, IOException, FuseArchetypeNotFoundException {
+			throws ParserConfigurationException, SAXException, IOException {
 
-		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
+		ProjectFactory.createProject("camel-spring", "Content Based Router", Spring);
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		new DefaultCTabItem("Source").activate();
 
@@ -121,13 +120,11 @@ public class RegressionTest extends DefaultTest {
 	 * </p>
 	 * <b>Link: </b>
 	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-853">https://issues.jboss.org/browse/FUSETOOLS-853</a>
-	 * 
-	 * @throws FuseArchetypeNotFoundException
 	 */
 	@Test
-	public void issue_853() throws FuseArchetypeNotFoundException {
+	public void issue_853() {
 
-		ProjectFactory.createProject("camel-blueprint", "camel-archetype-blueprint");
+		ProjectFactory.createProject("camel-blueprint", "Content Based Router", Spring);
 		new ProjectExplorer().getProject("camel-blueprint")
 				.getProjectItem("src/main/resources", "OSGI-INF", "blueprint", "blueprint.xml").select();
 		try {
@@ -161,37 +158,15 @@ public class RegressionTest extends DefaultTest {
 
 	/**
 	 * <p>
-	 * camel context won't run without tests in eclipse kepler
-	 * </p>
-	 * <b>Link: </b>
-	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-1077">https://issues.jboss.org/browse/FUSETOOLS-1077</a>
-	 * 
-	 * @throws FuseArchetypeNotFoundException
-	 *             Fuse archetype was not found. Tests cannot be executed!
-	 */
-	@Test
-	public void issue_1077() throws FuseArchetypeNotFoundException {
-
-		ProjectFactory.createProject("camel-web", "camel-archetype-web");
-		new CamelProject("camel-web").runApplicationContextWithoutTests("applicationContext.xml");
-		new WaitUntil(new ConsoleHasText("[INFO] Started Jetty Server"), TimePeriod.VERY_LONG);
-		new WaitUntil(new ConsoleHasText("Hello Web Application, how are you?"), TimePeriod.LONG);
-	}
-
-	/**
-	 * <p>
 	 * JMX Navigator - prevent from close Camel Context
 	 * </p>
 	 * <b>Link: </b>
 	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-1115">https://issues.jboss.org/browse/FUSETOOLS-1115</a>
-	 * 
-	 * @throws FuseArchetypeNotFoundException
-	 *             Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Test
-	public void issue_1115() throws FuseArchetypeNotFoundException {
+	public void issue_1115() {
 
-		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
+		ProjectFactory.createProject("camel-spring", "Content Based Router", Spring);
 		new CamelProject("camel-spring").runCamelContext("camel-context.xml");
 		new FuseJMXNavigator().getNode("Local Camel Context", "Camel", "camel").select();
 
@@ -213,13 +188,13 @@ public class RegressionTest extends DefaultTest {
 	 * <b>Link: </b>
 	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-1123">https://issues.jboss.org/browse/FUSETOOLS-1123</a>
 	 * 
-	 * @throws FuseArchetypeNotFoundException
+	 * @throws FuseTemplateNotFoundException
 	 *             Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Test
-	public void issue_1123() throws FuseArchetypeNotFoundException {
+	public void issue_1123() {
 
-		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
+		ProjectFactory.createProject("camel-spring", "Content Based Router", Spring);
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		CamelEditor.switchTab("Source");
 		EditorManipulator.copyFileContentToCamelXMLEditor("resources/camel-context-routeContextId.xml");
@@ -253,14 +228,11 @@ public class RegressionTest extends DefaultTest {
 	 * </p>
 	 * <b>Link: </b>
 	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-1158">https://issues.jboss.org/browse/FUSETOOLS-1158</a>
-	 * 
-	 * @throws FuseArchetypeNotFoundException
-	 *             Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Test
-	public void issue_1158() throws FuseArchetypeNotFoundException {
+	public void issue_1158() {
 
-		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
+		ProjectFactory.createProject("camel-spring", "Content Based Router", Spring);
 		CamelProject project = new CamelProject("camel-spring");
 		project.openCamelContext("camel-context.xml");
 		CamelEditor editor = new CamelEditor("camel-context.xml");
@@ -283,15 +255,12 @@ public class RegressionTest extends DefaultTest {
 	 * </p>
 	 * <b>Link: </b>
 	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-1172">https://issues.jboss.org/browse/FUSETOOLS-1172</a>
-	 * 
-	 * @throws FuseArchetypeNotFoundException
-	 *             Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Test
 	public void issue_1172()
-			throws ParserConfigurationException, SAXException, IOException, FuseArchetypeNotFoundException {
+			throws ParserConfigurationException, SAXException, IOException {
 
-		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
+		ProjectFactory.createProject("camel-spring", "Content Based Router", Spring);
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		CamelEditor.switchTab("Design");
 		CamelEditor editor = new CamelEditor("camel-context.xml");
@@ -315,14 +284,11 @@ public class RegressionTest extends DefaultTest {
 	 * </p>
 	 * <b>Link: </b>
 	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-1243">https://issues.jboss.org/browse/FUSETOOLS-1243</a>
-	 * 
-	 * @throws FuseArchetypeNotFoundException
-	 *             Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Test
-	public void issue_1243() throws FuseArchetypeNotFoundException {
+	public void issue_1243() {
 
-		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
+		ProjectFactory.createProject("camel-spring", "Content Based Router", Spring);
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		assertFalse("Camel editor should not be dirty",
 				new DefaultToolItem(new WorkbenchShell(), 1, new WithTooltipTextMatcher(new RegexMatcher("Save.*")))
@@ -343,14 +309,11 @@ public class RegressionTest extends DefaultTest {
 	 * </p>
 	 * <b>Link: </b>
 	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-1214">https://issues.jboss.org/browse/FUSETOOLS-1214</a>
-	 * 
-	 * @throws FuseArchetypeNotFoundException
-	 *             Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Test
-	public void issue_1214() throws FuseArchetypeNotFoundException {
+	public void issue_1214() {
 
-		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
+		ProjectFactory.createProject("camel-spring", "Content Based Router", Spring);
 		new ProjectExplorer().selectProjects("camel-spring");
 		new ContextMenu("Run As", "Run Configurations...").select();
 		new WaitUntil(new ShellWithTextIsAvailable("Run Configurations"));
@@ -384,14 +347,11 @@ public class RegressionTest extends DefaultTest {
 	 * </p>
 	 * <b>Link: </b>
 	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-1403">https://issues.jboss.org/browse/FUSETOOLS-1403</a>
-	 * 
-	 * @throws FuseArchetypeNotFoundException
-	 *             Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Test
-	public void issue_1403() throws FuseArchetypeNotFoundException {
+	public void issue_1403() {
 
-		ProjectFactory.createProject("camel-blueprint", "camel-archetype-blueprint");
+		ProjectFactory.createProject("camel-blueprint", "Content Based Router", Spring);
 		new CamelProject("camel-blueprint").selectProjectItem("src/main/resources", "OSGI-INF", "blueprint",
 				"blueprint.xml");
 		new ContextMenu("Open").select();
@@ -404,13 +364,10 @@ public class RegressionTest extends DefaultTest {
 	 * </p>
 	 * <b>Link:</b>
 	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-1730">https://issues.jboss.org/browse/FUSETOOLS-1730</a>
-	 * 
-	 * @throws FuseArchetypeNotFoundException
-	 *             Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Test
-	public void issue_1730() throws FuseArchetypeNotFoundException {
-		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
+	public void issue_1730() {
+		ProjectFactory.createProject("camel-spring", "Content Based Router", Spring);
 		CamelEditor editor = new CamelEditor("camel-context.xml");
 		editor.activate();
 		editor.setId("Route _route1", "1");
