@@ -1,5 +1,6 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
+import static org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard.ProjectType.Spring;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -31,7 +32,6 @@ import org.jboss.tools.fuse.reddeer.editor.CamelEditorException;
 import org.jboss.tools.fuse.reddeer.editor.SourceEditor;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
 import org.jboss.tools.fuse.ui.bot.test.utils.EditorManipulator;
-import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.After;
 import org.junit.Before;
@@ -57,15 +57,12 @@ public class CamelEditorTest extends DefaultTest {
 
 	/**
 	 * Prepares test environment
-	 * 
-	 * @throws FuseArchetypeNotFoundException
-	 *             Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Before
-	public void setupResetCamelContext() throws FuseArchetypeNotFoundException {
+	public void setupResetCamelContext() {
 
 		new WorkbenchShell();
-		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
+		ProjectFactory.createProject("cbr", "Content Based Router", Spring);
 		new ErrorLogView().deleteLog();
 	}
 
@@ -96,7 +93,7 @@ public class CamelEditorTest extends DefaultTest {
 	 */
 	private static void setupPrepareIDEForManipulationTests() {
 
-		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
+		new CamelProject("cbr").openCamelContext("camel-context.xml");
 		CamelEditor.switchTab("Source");
 		EditorManipulator.copyFileContentToCamelXMLEditor("resources/camel-context-otherwise.xml");
 		CamelEditor.switchTab("Design");
@@ -107,7 +104,7 @@ public class CamelEditorTest extends DefaultTest {
 	 * Test tries <i>Palette</i> inside Camel Editor
 	 * </p>
 	 * <ol>
-	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>create a new project from template 'Content Based Router'</li>
 	 * <li>open Project Explorer view</li>
 	 * <li>open camel-context.xml file</li>
 	 * <li>get number of palette items</li>
@@ -120,7 +117,7 @@ public class CamelEditorTest extends DefaultTest {
 	@Test
 	public void testPalette() {
 
-		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
+		new CamelProject("cbr").openCamelContext("camel-context.xml");
 		CamelEditor editor = new CamelEditor("camel-context.xml");
 		editor.activate();
 		int initSize = editor.palleteGetComponents().size();
@@ -136,7 +133,7 @@ public class CamelEditorTest extends DefaultTest {
 	 * </p>
 	 * <b>Steps</b>
 	 * <ol>
-	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>create a new project from template 'Content Based Router'</li>
 	 * <li>open Project Explorer view</li>
 	 * <li>delete camel-context.xml and create a new empty one</li>
 	 * <li>try to create all endpoint components in Palette View</li>
@@ -148,12 +145,12 @@ public class CamelEditorTest extends DefaultTest {
 	public void testComponents() {
 
 		new ProjectExplorer().open();
-		new CamelProject("camel-spring").deleteCamelContext("camel-context.xml");
-		new CamelProject("camel-spring").createCamelContext("camel-context.xml");
+		new CamelProject("cbr").deleteCamelContext("camel-context.xml");
+		new CamelProject("cbr").createCamelContext("camel-context.xml");
 		CamelEditor editor = new CamelEditor("camel-context.xml");
 
 		for (CamelComponent component : CamelComponents.getEndpoints()) {
-			new CamelProject("camel-spring").openCamelContext("camel-context.xml");
+			new CamelProject("cbr").openCamelContext("camel-context.xml");
 			log.info("Testing camel component '" + component.getPaletteEntry() + "'");
 			editor.activate();
 			editor.addCamelComponent(component, "Route _route1");
@@ -169,7 +166,7 @@ public class CamelEditorTest extends DefaultTest {
 	 * </p>
 	 * <b>Steps</b>
 	 * <ol>
-	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>create a new project from template 'Content Based Router'</li>
 	 * <li>open Project Explorer view</li>
 	 * <li>open camel-context.xml file</li>
 	 * <li>switch to Source tab in the Camel Editor</li>
@@ -201,7 +198,7 @@ public class CamelEditorTest extends DefaultTest {
 	 * Test tries to code completion assistant in the Camel Editor on Source tab.
 	 * </p>
 	 * <ol>
-	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>create a new project from template 'Content Based Router'</li>
 	 * <li>open Project Explorer view</li>
 	 * <li>open camel-context.xml file</li>
 	 * <li>switch to Source tab in the Camel Editor</li>
@@ -217,7 +214,7 @@ public class CamelEditorTest extends DefaultTest {
 	@Test
 	public void testCodeCompletion() {
 
-		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
+		new CamelProject("cbr").openCamelContext("camel-context.xml");
 		CamelEditor.switchTab("Source");
 		EditorManipulator.copyFileContentToCamelXMLEditor("resources/camel-context-all.xml");
 		SourceEditor editor = new SourceEditor();
@@ -253,7 +250,7 @@ public class CamelEditorTest extends DefaultTest {
 	 * connections between components via the Camel Editor).
 	 * </p>
 	 * <ol>
-	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>create a new project from template 'Content Based Router'</li>
 	 * <li>open Project Explorer view</li>
 	 * <li>open camel-context.xml file</li>
 	 * <li>switch to Source tab in the Camel Editor</li>

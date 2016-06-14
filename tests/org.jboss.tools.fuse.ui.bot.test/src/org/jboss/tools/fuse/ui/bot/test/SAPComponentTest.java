@@ -8,6 +8,7 @@ import static org.jboss.tools.fuse.reddeer.component.SAPLabels.QUEUE;
 import static org.jboss.tools.fuse.reddeer.component.SAPLabels.RFC;
 import static org.jboss.tools.fuse.reddeer.component.SAPLabels.SERVER;
 import static org.jboss.tools.fuse.reddeer.component.SAPLabels.SYSTEM_RELEASE;
+import static org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard.ProjectType.Spring;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
@@ -39,7 +40,6 @@ import org.jboss.tools.fuse.reddeer.component.SAPTRFCServer;
 import org.jboss.tools.fuse.reddeer.editor.CamelComponentEditPart;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
-import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.requirement.SAPRequirement.SAP;
 import org.junit.After;
@@ -68,14 +68,11 @@ public class SAPComponentTest extends DefaultTest {
 
 	/**
 	 * Prepares test environment
-	 * 
-	 * @throws FuseArchetypeNotFoundException
-	 *             Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@BeforeClass
-	public static void setupResetCamelContext() throws FuseArchetypeNotFoundException, Exception {
+	public static void setupResetCamelContext() throws Exception {
 		new WorkbenchShell();
-		ProjectFactory.createProject("camel-spring", "camel-archetype-spring");
+		ProjectFactory.createProject("camel-spring", "Content Based Router", Spring);
 		new ErrorLogView().deleteLog();
 
 		new ProjectExplorer().open();
@@ -130,7 +127,7 @@ public class SAPComponentTest extends DefaultTest {
 	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
-	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>create a new project from 'Content Based Router' template</li>
 	 * <li>open Project Explorer view</li>
 	 * <li>delete camel-context.xml and create a new empty one</li>
 	 * <li>try to create a SAP component (see the method name) in Palette View</li>
@@ -174,7 +171,7 @@ public class SAPComponentTest extends DefaultTest {
 	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
-	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>create a new project from 'Content Based Router' template</li>
 	 * <li>open Project Explorer view</li>
 	 * <li>delete camel-context.xml and create a new empty one</li>
 	 * <li>try to create a SAP component (see the method name) in Palette View</li>
@@ -212,7 +209,7 @@ public class SAPComponentTest extends DefaultTest {
 	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
-	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>create a new project from 'Content Based Router' template</li>
 	 * <li>open Project Explorer view</li>
 	 * <li>delete camel-context.xml and create a new empty one</li>
 	 * <li>try to create a SAP component (see the method name) in Palette View</li>
@@ -250,7 +247,7 @@ public class SAPComponentTest extends DefaultTest {
 	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
-	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>create a new project from 'Content Based Router' template</li>
 	 * <li>open Project Explorer view</li>
 	 * <li>delete camel-context.xml and create a new empty one</li>
 	 * <li>try to create a SAP component (see the method name) in Palette View</li>
@@ -294,7 +291,7 @@ public class SAPComponentTest extends DefaultTest {
 	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
-	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>create a new project from 'Content Based Router' template</li>
 	 * <li>open Project Explorer view</li>
 	 * <li>delete camel-context.xml and create a new empty one</li>
 	 * <li>try to create a SAP component (see the method name) in Palette View</li>
@@ -338,7 +335,7 @@ public class SAPComponentTest extends DefaultTest {
 	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
-	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>create a new project from 'Content Based Router' template</li>
 	 * <li>open Project Explorer view</li>
 	 * <li>delete camel-context.xml and create a new empty one</li>
 	 * <li>try to create a SAP component (see the method name) in Palette View</li>
@@ -384,7 +381,7 @@ public class SAPComponentTest extends DefaultTest {
 	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
-	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>create a new project from 'Content Based Router' template</li>
 	 * <li>open Project Explorer view</li>
 	 * <li>delete camel-context.xml and create a new empty one</li>
 	 * <li>try to create a SAP component (see the method name) in Palette View</li>
@@ -430,7 +427,7 @@ public class SAPComponentTest extends DefaultTest {
 	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
-	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>create a new project from 'Content Based Router' template</li>
 	 * <li>open Project Explorer view</li>
 	 * <li>delete camel-context.xml and create a new empty one</li>
 	 * <li>try to create a SAP component (see the method name) in Palette View</li>
@@ -470,7 +467,7 @@ public class SAPComponentTest extends DefaultTest {
 	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
-	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>create a new project from 'Content Based Router' template</li>
 	 * <li>open Project Explorer view</li>
 	 * <li>delete camel-context.xml and create a new empty one</li>
 	 * <li>try to create a SAP component (see the method name) in Palette View</li>
@@ -511,7 +508,7 @@ public class SAPComponentTest extends DefaultTest {
 	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
-	 * <li>create a new project with camel-archetype-spring archetype</li>
+	 * <li>create a new project from 'Content Based Router' template</li>
 	 * <li>open Project Explorer view</li>
 	 * <li>delete camel-context.xml and create a new empty one</li>
 	 * <li>try to create a SAP component (see the method name) in Palette View</li>

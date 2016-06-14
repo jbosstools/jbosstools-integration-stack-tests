@@ -13,9 +13,11 @@ Require-Bundle: org.junit;bundle-version="4.11.0",
 Export-Package: org.jboss.tools.common.reddeer,
  org.jboss.tools.common.reddeer.condition,
  org.jboss.tools.common.reddeer.debug,
+ org.jboss.tools.common.reddeer.ext,
  org.jboss.tools.common.reddeer.preference,
  org.jboss.tools.common.reddeer.view,
  org.jboss.tools.common.reddeer.widget,
  org.jboss.tools.common.reddeer.wizard
 Eclipse-BundleShape: dir
-Import-Package: org.eclipse.draw2d.geometry
+Import-Package: org.eclipse.core.resources,
+ org.eclipse.draw2d.geometry

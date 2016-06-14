@@ -47,6 +47,10 @@ public class DefaultTest {
 		consolePref.toggleShowConsoleErrorWrite(false);
 		consolePref.toggleShowConsoleStandardWrite(false);
 		consolePref.ok();
+
+		log.info("Disable showing Error Log view after changes");
+		ErrorLogView error = new ErrorLogView();
+		error.selectActivateOnNewEvents();
 	}
 
 	/**

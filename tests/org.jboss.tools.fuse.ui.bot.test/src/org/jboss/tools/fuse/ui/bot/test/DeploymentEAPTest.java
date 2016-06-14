@@ -1,6 +1,7 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
 import static org.jboss.reddeer.requirements.server.ServerReqState.RUNNING;
+import static org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard.ProjectType.Spring;
 import static org.jboss.tools.runtime.reddeer.requirement.ServerReqType.EAP;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -13,7 +14,6 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
-import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
@@ -33,7 +33,6 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 public class DeploymentEAPTest extends DefaultTest {
 
-	private static final String PROJECT_ARCHETYPE = "wildfly-camel-archetype-spring";
 	private static final String PROJECT_NAME = "wildfly-spring";
 
 	@InjectRequirement
@@ -41,14 +40,11 @@ public class DeploymentEAPTest extends DefaultTest {
 
 	/**
 	 * Prepares test environment
-	 * 
-	 * @throws FuseArchetypeNotFoundException
-	 *             Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@BeforeClass
-	public static void setupInitial() throws FuseArchetypeNotFoundException {
+	public static void setupInitial() {
 
-		ProjectFactory.createProject(PROJECT_NAME, PROJECT_ARCHETYPE);
+		ProjectFactory.createProject(PROJECT_NAME, "Content Based Router", Spring);
 	}
 
 	/**

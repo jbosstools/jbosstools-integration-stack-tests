@@ -4,6 +4,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Collection;
 
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
@@ -23,7 +24,7 @@ import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.common.reddeer.FileUtils;
 import org.jboss.tools.common.reddeer.preference.MavenUserSettingsPreferencePage;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
-import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
+import org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard.ProjectType;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -46,7 +47,7 @@ import org.junit.runners.Parameterized.UseParametersRunnerFactory;
 public class FuseProjectTest extends DefaultTest {
 
 	protected Logger log = Logger.getLogger(FuseProjectTest.class);
-	private String archetype;
+	private String template;
 	private static String maven;
 
 	/**
@@ -56,17 +57,18 @@ public class FuseProjectTest extends DefaultTest {
 	 */
 	@Parameters
 	public static Collection<String> setupData() {
-		return ProjectFactory.getArchetypes();
+
+		return Arrays.asList("Content Based Router", "ActiveMQ");
 	}
 
 	/**
 	 * Utilizes passing parameters using the constructor
 	 * 
-	 * @param archetype
+	 * @param template
 	 *            a Fuse project archetype
 	 */
-	public FuseProjectTest(String archetype) {
-		this.archetype = archetype;
+	public FuseProjectTest(String template) {
+		this.template = template;
 	}
 
 	/**
@@ -159,8 +161,8 @@ public class FuseProjectTest extends DefaultTest {
 
 	/**
 	 * <p>
-	 * Tries to create a Fuse project from <i>${FUSE-ARCHETYPE}</i> archetype and tries to run the project as Local
-	 * Camel Context.
+	 * Tries to create a Fuse project from <i>${FUSE-TEMPLATE}</i> template and tries to run the project as Local Camel
+	 * Context.
 	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
@@ -176,13 +178,9 @@ public class FuseProjectTest extends DefaultTest {
 	@Test
 	public void testArchetype() {
 
-		try {
-			ProjectFactory.createProject(archetype, archetype);
-			assertTrue("Project '" + archetype + "' is not present in Project Explorer", isPresent(archetype));
-			assertFalse("Project '" + archetype + "' was created with errors", hasErrors());
-			assertTrue("Project '" + archetype + "' cannot be run as Local Camel Context", canBeRun(archetype));
-		} catch (FuseArchetypeNotFoundException e) {
-			log.warn("Archetype '" + archetype + "'is not available");
-		}
+		ProjectFactory.createProject(template, template, ProjectType.Spring);
+		assertTrue("Project '" + template + "' is not present in Project Explorer", isPresent(template));
+		assertFalse("Project '" + template + "' was created with errors", hasErrors());
+		assertTrue("Project '" + template + "' cannot be run as Local Camel Context", canBeRun(template));
 	}
 }

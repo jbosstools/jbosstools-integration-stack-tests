@@ -11,7 +11,7 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 public class CamelXmlFileWizard extends NewWizardDialog {
 
 	public CamelXmlFileWizard() {
-		super("Fuse Tooling", "Camel XML File");
+		super("JBoss Fuse", "Camel XML File");
 	}
 
 	public CamelXmlFileWizard openWizard() {

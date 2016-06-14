@@ -1,36 +1,23 @@
 package org.jboss.tools.fuse.ui.bot.test.utils;
 
-import java.util.List;
-
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.core.matcher.WithTooltipTextMatcher;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.problems.Problem;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
-import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsDescriptionMatcher;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
 import org.jboss.reddeer.eclipse.utils.DeleteUtils;
 import org.jboss.reddeer.swt.api.Shell;
-import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.tools.fuse.reddeer.wizard.FuseProjectWizard;
+import org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard;
+import org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard.ProjectType;
 
 /**
  * Can create new Fuse projects or import existing
@@ -39,76 +26,61 @@ import org.jboss.tools.fuse.reddeer.wizard.FuseProjectWizard;
  */
 public class ProjectFactory {
 
-	private static Logger log = Logger.getLogger(ProjectFactory.class);
-
 	/**
-	 * Creates a new Fuse project from given archetype
+	 * Creates an empty Fuse Integration Project
 	 * 
-	 * @param archetype
-	 *            <i>Artifact ID</i> in the <i>New Fuse Project</i> Wizard
-	 * @throws FuseArchetypeNotFoundException
+	 * @param name
+	 *            Name of the project
+	 * @param type
+	 *            Project type (Spring, Blueprint, Java)
 	 */
-	public static void createProject(String name, String archetype) throws FuseArchetypeNotFoundException {
-
-		FuseProjectWizard projectWizard = new FuseProjectWizard();
-		projectWizard.open();
-		projectWizard.setProjectName(name);
-		projectWizard.next();
-		projectWizard.setFilter(archetype);
-		try {
-			projectWizard.selectFirstArchetype();
-		} catch (CoreLayerException e) {
-			throw new FuseArchetypeNotFoundException();
-		}
-		projectWizard.finish();
-
-		try {
-			new WaitUntil(new ShellWithTextIsAvailable("Open Associated Perspective?"), TimePeriod.NORMAL);
-			new DefaultShell("Open Associated Perspective?");
-			new PushButton("No").click();
-		} catch (Exception ex) {
-		}
-
+	public static void createEmptyProject(String name, ProjectType type) {
+		NewFuseIntegrationProjectWizard wiz = new NewFuseIntegrationProjectWizard();
+		wiz.open();
+		wiz.setProjectName(name);
+		wiz.next();
+		wiz.next();
+		wiz.setProjectType(type);
+		wiz.finish();
+		openAssociatedPerspective();
 		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(300));
-		log.info("The Fuse project from archetype: " + archetype + " was created.");
-
-		log.info("Try to fix errors 'not covered by lifecycle'");
-		ProblemsView problems = new ProblemsView();
-		problems.open();
-		List<Problem> errors = problems.getProblems(ProblemType.ERROR,
-				new ProblemsDescriptionMatcher(new RegexMatcher("Plugin execution not covered by lifecycle.*")));
-		while (!errors.isEmpty()) {
-
-			fixPluginError();
-			problems.activate();
-			AbstractWait.sleep(TimePeriod.getCustom(3));
-			errors = problems.getProblems(ProblemType.ERROR,
-					new ProblemsDescriptionMatcher(new RegexMatcher("Plugin execution not covered by lifecycle.*")));
-		}
-
-		log.info("Save editor");
-		try {
-			new DefaultToolItem(new WorkbenchShell(), 0, new WithTooltipTextMatcher(new RegexMatcher("Save All.*")))
-					.click();
-		} catch (Exception e) {
-			log.info("Nothing to save");
-		}
 	}
 
 	/**
-	 * Retrieve list of all available archetypes
+	 * Creates a Fuse Integration Project from given template
 	 * 
-	 * @return List of artifact ids of available archetypes
+	 * @param name
+	 *            Name of the project
+	 * @param template
+	 *            Name of the template
+	 * @param type
+	 *            Project type (Spring, Blueprint, Java)
 	 */
-	public static List<String> getArchetypes() {
+	public static void createProject(String name, String template, ProjectType type) {
+		NewFuseIntegrationProjectWizard wiz = new NewFuseIntegrationProjectWizard();
+		wiz.open();
+		wiz.setProjectName(name);
+		wiz.next();
+		wiz.next();
+		wiz.selectTemplate(template);
+		wiz.setProjectType(type);
+		wiz.finish();
+		openAssociatedPerspective();
+		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(300));
+	}
 
-		FuseProjectWizard projectWizard = new FuseProjectWizard();
-		projectWizard.open();
-		projectWizard.setProjectName("test");
-		projectWizard.next();
-		List<String> result = projectWizard.getArchetypes();
-		projectWizard.cancel();
-		return result;
+	public static void createProject(String name, String camelVersion, String template, ProjectType type) {
+		NewFuseIntegrationProjectWizard wiz = new NewFuseIntegrationProjectWizard();
+		wiz.open();
+		wiz.setProjectName(name);
+		wiz.next();
+		wiz.selectCamelVersion(camelVersion);
+		wiz.next();
+		wiz.selectTemplate(template);
+		wiz.setProjectType(type);
+		wiz.finish();
+		openAssociatedPerspective();
+		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(300));
 	}
 
 	/**
@@ -169,33 +141,12 @@ public class ProjectFactory {
 		}
 	}
 
-	/**
-	 * Fixes the first "Plugin execution not covered by lifecycle" error
-	 * 
-	 * TODO(tsedmik) rework this method with RedDeer 0.8.0 which will contain better manipulation with "Quick Fix"
-	 */
-	private static void fixPluginError() {
-
-		new ProblemsView();
-		List<TreeItem> items = new DefaultTree().getItems();
-		for (TreeItem item : items) {
-			if (item.getText().toLowerCase().contains("error")) {
-				items = item.getItems();
-				break;
-			}
+	private static void openAssociatedPerspective() {
+		try {
+			new WaitUntil(new ShellWithTextIsAvailable("Open Associated Perspective?"), TimePeriod.NORMAL);
+			new DefaultShell("Open Associated Perspective?");
+			new PushButton("No").click();
+		} catch (Exception ex) {
 		}
-		for (TreeItem item : items) {
-			if (item.getCell(0).contains("Plugin execution not covered by lifecycle")) {
-				item.select();
-				break;
-			}
-		}
-		new ContextMenu("Quick Fix").select();
-		new WaitUntil(new ShellWithTextIsAvailable("Quick Fix"));
-		new DefaultShell("Quick Fix");
-		new DefaultTable().select(1);
-		new PushButton("Finish").click();
-		new WaitWhile(new ShellWithTextIsAvailable("Quick Fix"));
-		new WorkbenchShell();
 	}
 }

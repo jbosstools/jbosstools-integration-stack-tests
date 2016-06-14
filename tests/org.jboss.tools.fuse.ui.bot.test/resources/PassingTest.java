@@ -1,4 +1,4 @@
-package com.mycompany.camel.spring;
+package my.company.camel.cbr;
 
 import org.apache.camel.EndpointInject;
 import org.apache.camel.Produce;
