@@ -59,6 +59,7 @@ public abstract class TestParent {
 	private static final String DEBUG_REGEX = "(SLF4J: .*[\r\n]+)+?(.*[\r\n]+)*?";
 	private static final String SUCCESSFUL_RUN_REGEX = DEBUG_REGEX + "Hello World[\r\n]+Goodbye cruel world[\r\n]+";
 	protected static final String DEFAULT_DROOLS_RUNTIME_NAME = "defaultTestRuntime";
+	protected static final String DEFAULT_PACKAGE_NAME = "org.jboss.qa";
 	public static final String DEFAULT_PROJECT_NAME = "defaultTestProject";
 
 	private static final AtomicBoolean initialized = new AtomicBoolean(false);
