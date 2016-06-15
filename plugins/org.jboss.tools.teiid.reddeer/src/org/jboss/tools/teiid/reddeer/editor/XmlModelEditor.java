@@ -9,11 +9,18 @@ import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefViewer;
 import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.dialog.InputSetEditorDialog;
 import org.jboss.tools.teiid.reddeer.matcher.AttributeMatcher;
 import org.jboss.tools.teiid.reddeer.matcher.IsTransformation;
@@ -41,6 +48,50 @@ public class XmlModelEditor extends AbstractModelEditor {
 		viewer.select(viewer.editParts(new ModelEditorItemMatcher(ModelEditorItemMatcher.XML_DOCUMENT, document)));
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new ContextMenu("Open").select();
+		AbstractWait.sleep(TimePeriod.SHORT);
+	}
+	
+	/**
+	 * Deletes specified document.
+	 * Note: document overview (=Package Diagram) must be opened.
+	 */
+	public void deleteDocument(String document){
+		SWTBotGefViewer viewer = this.getEditorViewer(PACKAGE_DIAGRAM);
+		viewer.select(viewer.editParts(new ModelEditorItemMatcher(ModelEditorItemMatcher.XML_DOCUMENT, document)));
+		AbstractWait.sleep(TimePeriod.SHORT);
+		new ContextMenu("Delete").select();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		try {
+			new DefaultShell("Dependent Models Detected");
+			new PushButton("Yes").click();
+			new WaitWhile(new ShellWithTextIsActive("Dependent Models Detected"), TimePeriod.NORMAL);
+		} catch (SWTLayerException e) {	
+			// shell not opened -> continue
+		}
+		AbstractWait.sleep(TimePeriod.SHORT);
+		try {
+			new DefaultShell("Confirm SQL Update");
+			new PushButton("Yes").click();
+			new WaitWhile(new ShellWithTextIsActive("Confirm SQL Update"), TimePeriod.NORMAL);
+		} catch (SWTLayerException e) {	
+			// shell not opened -> continue
+		}
+		AbstractWait.sleep(TimePeriod.SHORT);
+		this.show();
+	}
+	
+	/**
+	 * Renames specified document to specified new name.
+	 * Note: document overview (=Package Diagram) must be opened.
+	 */
+	public void renameDocument(String document, String newName){
+		SWTBotGefViewer viewer = this.getEditorViewer(PACKAGE_DIAGRAM);
+		viewer.select(viewer.editParts(new ModelEditorItemMatcher(ModelEditorItemMatcher.XML_DOCUMENT, document)));
+		AbstractWait.sleep(TimePeriod.SHORT);
+		new ContextMenu("Rename").select();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		new DefaultText().setText(newName);
+		KeyboardFactory.getKeyboard().type(KeyEvent.VK_TAB);
 		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 	
@@ -146,7 +197,6 @@ public class XmlModelEditor extends AbstractModelEditor {
 	 * @param fromEditor - XmlModelEditor.PACKAGE_DIAGRAM|...
 	 */
 	public TableEditor openTableEditor(String fromEditor){
-		System.out.println(this.getTitle());
 		return new TableEditor(this.getTitle(), fromEditor);
 	}
 	

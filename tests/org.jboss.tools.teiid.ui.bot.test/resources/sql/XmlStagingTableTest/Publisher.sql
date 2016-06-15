@@ -1,0 +1,2 @@
+SELECT convert(Books.PUBLISHERS.PUBLISHER_ID, double) AS publisherId, Books.PUBLISHERS.NAME 
+FROM Books.PUBLISHERS

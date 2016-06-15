@@ -18,6 +18,7 @@ public class ModelEditorItemMatcher extends BaseMatcher<EditPart> {
 	public static final String XML_DOCUMENT = "<<XML Document>>";
 	public static final String INPUT_SET = "<<Input Set>>";
 	public static final String STAGING_TABLE = "<<Staging Table>>";
+	public static final String INTERFACE = "<<Interface>>";
 	
 	private String type;
 	private String prefix;

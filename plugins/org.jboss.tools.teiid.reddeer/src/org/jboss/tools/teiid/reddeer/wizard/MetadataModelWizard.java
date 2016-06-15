@@ -1,5 +1,9 @@
 package org.jboss.tools.teiid.reddeer.wizard;
 
+import java.util.Arrays;
+
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
@@ -31,7 +35,7 @@ public class MetadataModelWizard extends NewWizardDialog {
 
 	public MetadataModelWizard setLocation(String... path) {
 		activate();
-		log.info("Set location to '" + pathToString(path) + "'");
+		log.info("Set location to '" + Arrays.toString(path) + "'");
 		new PushButton("Browse...").click();
 		new DefaultShell("Select a Folder");
 		new DefaultTreeItem(path).select();
@@ -69,7 +73,7 @@ public class MetadataModelWizard extends NewWizardDialog {
 
 	public MetadataModelWizard selectXMLSchemaFile(String... path) {
 		activate();
-		log.info("Set xml schema file to '" + pathToString(path) + "'");
+		log.info("Set xml schema file to '" + Arrays.toString(path) + "'");
 		new PushButton("...").click();
 		new DefaultShell("Select an XML Schema");
 		new DefaultTreeItem(path).select();
@@ -89,22 +93,27 @@ public class MetadataModelWizard extends NewWizardDialog {
 
 	public MetadataModelWizard setExistingModel(String... path) {
 		activate();
-		log.info("Set existing model to '" + pathToString(path) + "'");
+		log.info("Set existing model to '" + Arrays.toString(path) + "'");
 		new PushButton("...").click();
 		new DefaultShell("Select a Model File");
 		new DefaultTreeItem(path).select();
 		new PushButton("OK").click();
 		return this;
 	}
-
-	private static String pathToString(String... path) {
-		StringBuffer result = new StringBuffer();
-		for (int i = 0; i < path.length; i++) {
-			result.append(path[i]);
-			if (path.length < i - 1) {
-				result.append(" > ");
-			}
-		}
-		return result.toString();
+	
+	public MetadataModelWizard setWsdlFileFromWorkspace(String... path){
+		activate();
+		new PushButton("Workspace...").click();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		new DefaultShell("WSDL File Selection");
+		new DefaultTreeItem(path).select();
+		new PushButton("OK").click();
+		return this;
+	}
+	
+	public MetadataModelWizard setXmlModelNameForWebService(String name){
+		activate();
+		new LabeledText("XML Model:").setText(name);
+		return this;
 	}
 }

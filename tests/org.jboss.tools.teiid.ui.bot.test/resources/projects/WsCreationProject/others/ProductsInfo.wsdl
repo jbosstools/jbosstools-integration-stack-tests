@@ -1,0 +1,192 @@
+<?xml version='1.0' encoding='UTF-8'?><definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://teiid.org" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:schema1="http://www.metamatrix.com/ProductsInfo" xmlns="http://schemas.xmlsoap.org/wsdl/" name="ProductInfoVdb" targetNamespace="http://teiid.org">
+    <types>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://teiid.org" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns="http://www.metamatrix.com/ProductsInfo" targetNamespace="http://www.metamatrix.com/ProductsInfo">
+
+            <xsd:complexType name="ProductsInfo_Input_Type">
+                <xsd:sequence>
+                    <xsd:element maxOccurs="1" minOccurs="0" name="INSTR_ID" nillable="false" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="ProductsInfo_Input" type="ProductsInfo_Input_Type"/>
+            <xsd:element name="ProductsInfo_New_Input">  
+                <xsd:complexType>  
+                    <xsd:sequence>  
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="ProductsInfo_New_Input_Instance" type="ProductsInfo_New_Input_Type"/>  
+                    </xsd:sequence>  
+                </xsd:complexType>  
+            </xsd:element>  
+            <xsd:complexType name="ProductsInfo_New_Input_Type">  
+                <xsd:sequence>  
+                    <xsd:element maxOccurs="1" minOccurs="0" name="INSTR_ID" nillable="false" type="xsd:string"/>  
+                    <xsd:element maxOccurs="1" minOccurs="0" name="SYMBOL_TYPE" nillable="true" type="xsd:integer"/>  
+                    <xsd:element maxOccurs="1" minOccurs="0" name="SYMBOL" nillable="false" type="xsd:string"/>  
+                    <xsd:element maxOccurs="1" minOccurs="0" name="CUSIP" nillable="true" type="xsd:string"/>  
+                    <xsd:element maxOccurs="1" minOccurs="0" name="NAME" nillable="true" type="xsd:string"/>  
+                    <xsd:element maxOccurs="1" minOccurs="0" name="TYPE" nillable="true" type="xsd:string"/>  
+                    <xsd:element maxOccurs="1" minOccurs="0" name="ISSUER" nillable="true" type="xsd:string"/>  
+                    <xsd:element maxOccurs="1" minOccurs="0" name="EXCHANGE" nillable="true" type="xsd:string"/>  
+                    <xsd:element maxOccurs="1" minOccurs="0" name="ISDJI" nillable="false" type="xsd:boolean"/>  
+                    <xsd:element maxOccurs="1" minOccurs="0" name="ISSP500" nillable="false" type="xsd:boolean"/>  
+                    <xsd:element maxOccurs="1" minOccurs="0" name="ISNAS100" nillable="false" type="xsd:boolean"/>  
+                    <xsd:element maxOccurs="1" minOccurs="0" name="ISAMEXINT" nillable="false" type="xsd:boolean"/>  
+                    <xsd:element maxOccurs="1" minOccurs="0" name="PRIBUSINESS" nillable="true" type="xsd:string"/>  
+                </xsd:sequence>  
+            </xsd:complexType>  
+
+            <xsd:element name="ProductsInfo_AllProducts">
+                <xsd:complexType>
+                    <xsd:sequence>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+
+            <xsd:element name="ProductsInfo_Output">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="ProductsInfo_Output_Instance" type="ProductsInfo_Output_Type"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:complexType name="ProductsInfo_Output_Type">
+                <xsd:sequence>
+                    <xsd:element maxOccurs="1" minOccurs="0" name="INSTR_ID" nillable="false" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0" name="SYMBOL_TYPE" nillable="true" type="xsd:integer"/>
+                    <xsd:element maxOccurs="1" minOccurs="0" name="SYMBOL" nillable="false" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0" name="CUSIP" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0" name="NAME" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0" name="TYPE" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0" name="ISSUER" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0" name="EXCHANGE" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0" name="ISDJI" nillable="false" type="xsd:boolean"/>
+                    <xsd:element maxOccurs="1" minOccurs="0" name="ISSP500" nillable="false" type="xsd:boolean"/>
+                    <xsd:element maxOccurs="1" minOccurs="0" name="ISNAS100" nillable="false" type="xsd:boolean"/>
+                    <xsd:element maxOccurs="1" minOccurs="0" name="ISAMEXINT" nillable="false" type="xsd:boolean"/>
+                    <xsd:element maxOccurs="1" minOccurs="0" name="PRIBUSINESS" nillable="true" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="putResultsType">  
+                <xsd:sequence>  
+                    <xsd:element name="results" type="xsd:string"/>  
+                </xsd:sequence>  
+            </xsd:complexType>  
+            <xsd:element name="putResults" type="putResultsType">  
+                <xsd:annotation>  
+                    <xsd:documentation>Results of the operation appear in this doc</xsd:documentation>  
+                </xsd:annotation>  
+            </xsd:element>  
+
+        </xsd:schema>
+    </types>
+    <message name="deleteProductsInfo_InstrIdInput">
+        <documentation>Input message for operation ProductsInfo/deleteProductsInfo.</documentation>
+        <part element="schema1:ProductsInfo_Input" name="deleteProductsInfo_InstrIdInput">
+        </part>
+    </message>
+    <message name="insertProductsInfo_ProductInput">
+        <documentation>Input message for operation ProductsInfo/insertProductsInfo.</documentation>
+        <part element="schema1:ProductsInfo_New_Input" name="insertProductsInfo_ProductInput">
+        </part>
+    </message>
+    <message name="insertProductsInfo_ResultOutput">
+        <documentation>Output message for operation ProductsInfo/insertProductsInfo.</documentation>
+        <part element="schema1:putResults" name="insertProductsInfo_ResultOutput">
+        </part>
+    </message>
+    <message name="getProductsInfo_OutputMsg">
+        <documentation>Output message for operation ProductsInfo/getProductsInfo.</documentation>
+        <part element="schema1:ProductsInfo_Output" name="getProductsInfo_OutputMsg">
+        </part>
+    </message>
+    <message name="getAllProductsInfo_Input">
+        <documentation>Input message for operation ProductsInfo/getAllProductsInfo.</documentation>
+        <part element="schema1:ProductsInfo_AllProducts" name="getAllProductsInfo_Input">
+        </part>
+    </message>
+    <message name="deleteProductsInfo_ResultOutput">
+        <documentation>Output message for operation ProductsInfo/deleteProductsInfo.</documentation>
+        <part element="schema1:putResults" name="deleteProductsInfo_ResultOutput">
+        </part>
+    </message>
+    <message name="getAllProductsInfo_NewOutput">
+        <documentation>Output message for operation ProductsInfo/getAllProductsInfo.</documentation>
+        <part element="schema1:ProductsInfo_Output" name="getAllProductsInfo_NewOutput">
+        </part>
+    </message>
+    <message name="getProductsInfo_InputMsg">
+        <documentation>Input message for operation ProductsInfo/getProductsInfo.</documentation>
+        <part element="schema1:ProductsInfo_Input" name="getProductsInfo_InputMsg">
+        </part>
+    </message>
+    <portType name="ProductInfo">
+        <operation name="getProductInfo">
+            <input message="tns:getProductsInfo_InputMsg">
+            </input>
+            <output message="tns:getProductsInfo_OutputMsg">
+            </output>
+        </operation>
+        <operation name="insertProductInfo">
+            <input message="tns:insertProductsInfo_ProductInput">
+            </input>
+            <output message="tns:insertProductsInfo_ResultOutput">
+            </output>
+        </operation>
+        <operation name="deleteProductInfo">
+            <input message="tns:deleteProductsInfo_InstrIdInput">
+            </input>
+            <output message="tns:deleteProductsInfo_ResultOutput">
+            </output>
+        </operation>
+        <operation name="getAllProductInfo">
+            <input message="tns:getAllProductsInfo_Input">
+            </input>
+            <output message="tns:getAllProductsInfo_NewOutput">
+            </output>
+        </operation>
+    </portType>
+    <binding name="ProductInfo" type="tns:ProductInfo">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="getProductInfo">
+            <soap:operation soapAction="getProductInfo" style="document"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="insertProductInfo">
+            <soap:operation soapAction="insertProductInfo" style="document"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="deleteProductInfo">
+            <soap:operation soapAction="deleteProductInfo" style="document"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="getAllProductInfo">
+            <soap:operation soapAction="getAllProductInfo" style="document"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+    <service name="ProductInfoVdb">
+        <port binding="tns:ProductInfo" name="ProductInfo">
+            <soap:address location="http://localhost:8080/ProductInfoVdb/ProductInfo"/>
+        </port>
+    </service>
+</definitions>

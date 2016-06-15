@@ -30,6 +30,7 @@ public class TransformationEditor {
 	
 	public void close() {
 		new DefaultToolItem("Close").click();
+		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 	
 	public CriteriaBuilderDialog openCriteriaBuilder() {

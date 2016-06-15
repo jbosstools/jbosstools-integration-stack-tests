@@ -118,6 +118,13 @@ public class VDBEditor extends SWTBotEditor {
 		new DefaultTable(0).getItem(modelName).select();
 		return new DefaultTable(1).getItem(0).getText(0);
 	}
+	
+	public String getTranslatorName(String modelName) {
+		new DefaultCTabItem("Content").activate();
+		new DefaultCTabItem("Models").activate();
+		new DefaultTable(0).getItem(modelName).select();
+		return new DefaultTable(1).getItem(0).getText(1);
+	}
 
 	public void synchronizeAll() {
 		PushButton syncAll = new PushButton("Synchronize All");

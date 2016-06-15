@@ -110,28 +110,6 @@ public class VDBManager {
 		vdb.executeVDB(viaGuides);
 	}
 
-	public boolean queryPassed(String vdb, String sql) {
-
-		new WorkbenchShell();
-		new DataSourceExplorer().openSQLScrapbook(vdb);
-		SQLScrapbookEditor editor = new SQLScrapbookEditor();
-		editor.show();
-		editor.setText(sql);
-		editor.executeAll();
-
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-
-		SQLResultView resView = new SQLResultView();
-		resView.open();
-		SQLResult result = resView.getByOperation(sql);
-
-		assertEquals(SQLResult.STATUS_SUCCEEDED, result.getStatus());
-
-		editor.close();
-
-		return true;
-	}
-
 	public void createVDBDataSource(String[] pathToVDB) {
 		String vdb = pathToVDB[pathToVDB.length - 1];
 		if (pathToVDB[pathToVDB.length - 1].contains(".vdb")) {
@@ -162,16 +140,6 @@ public class VDBManager {
 		}
 		new PushButton("OK").click();
 	}
-
-	/*
-	 * public WAR operateWAR(String... pathToWar){ return new WAR(new
-	 * ModelExplorer().getProject(pathToWar[0]).getProjectItem(pathToWar[1])); }
-	 */
-
-	/*
-	 * public WAR createWAR(Properties warProps, String... pathToVDB){ return new WAR(warProps, new
-	 * ModelExplorer().getProject(pathToVDB[0]).getProjectItem(pathToVDB[1])); }
-	 */
 
 	public WAR createWAR(Properties warProps, String... pathToVDB) {
 		WAR war = new WAR(warProps, pathToVDB);

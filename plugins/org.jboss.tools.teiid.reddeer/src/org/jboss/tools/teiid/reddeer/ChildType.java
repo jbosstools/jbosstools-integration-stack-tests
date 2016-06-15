@@ -6,8 +6,11 @@ public enum ChildType {
 	NAME_SPACE("Namespace Declaration"),
 	SEQUENCE("sequence"),
 	ELEMENT("Element"),
-	TABLE("Table...");
-
+	TABLE("Table..."),
+	OPERATION("Operation"),
+	INPUT("Input"),
+	OUTPUT("Output");
+	
 	private String text;
 
 	private ChildType(String text) {

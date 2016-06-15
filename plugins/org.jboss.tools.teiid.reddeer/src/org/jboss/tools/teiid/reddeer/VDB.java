@@ -4,6 +4,7 @@ import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -24,6 +25,7 @@ import org.jboss.tools.teiid.reddeer.wizard.GenerateVdbArchiveWizard;
  * @author apodhrad
  * 
  */
+@Deprecated
 public class VDB {
 
 	private static final String GENERATE_VDB_ARCHIVE = "Generate VDB Archive and Models";
@@ -38,6 +40,7 @@ public class VDB {
 	/**
 	 * Deployes this VDB
 	 */
+	@Deprecated //use ModelExplorer.deployVdb()
 	public void deployVDB(){
 		new WorkbenchShell();
 		projectItem.select();
@@ -61,6 +64,7 @@ public class VDB {
 	/**
 	 * Executes this VDB
 	 */
+	@Deprecated //use ModelExplorer.deployVdb() (we are using JdbcHelper => no need database perspective => no need execute VDB)
 	public void executeVDB() {
 		new WorkbenchShell();
 		projectItem.select();
@@ -74,6 +78,7 @@ public class VDB {
 	 * 
 	 * @param viaGuides
 	 */
+	@Deprecated //use ModelExplorer.deployVdb() (we are using JdbcHelper => no need database perspective => no need execute VDB)
 	public void executeVDB(boolean viaGuides) {
 		if (viaGuides) {
 			projectItem.select();
@@ -91,13 +96,13 @@ public class VDB {
 			executeVDB();
 		}
 	}
-
+	@Deprecated //use ModelExplorer.generateDynamicVDB()
 	public GenerateDynamicVdbWizard generateDynamicVDB() {
 		projectItem.select();
 		new ContextMenu("Modeling", GENERATE_DYNAMIC_VDB).select();
 		return new GenerateDynamicVdbWizard().activate();
 	}
-
+	@Deprecated //use ModelExplorer.generateVdbArchive()
 	public GenerateVdbArchiveWizard generateVdbArchive() {
 		projectItem.select();
 		new ContextMenu("Modeling", GENERATE_VDB_ARCHIVE).select();
