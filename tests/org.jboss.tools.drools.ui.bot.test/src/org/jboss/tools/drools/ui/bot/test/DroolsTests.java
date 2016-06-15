@@ -5,7 +5,6 @@ import org.jboss.tools.drools.ui.bot.test.functional.DroolsRuntimeManagementTest
 import org.jboss.tools.drools.ui.bot.test.functional.DslEditorTest;
 import org.jboss.tools.drools.ui.bot.test.functional.DslrEditorTest;
 import org.jboss.tools.drools.ui.bot.test.functional.MavenProjectTest;
-import org.jboss.tools.drools.ui.bot.test.functional.NewResourcesTest;
 import org.jboss.tools.drools.ui.bot.test.functional.RulesManagementTest;
 import org.jboss.tools.drools.ui.bot.test.functional.drleditor.ConditionsCompletionTest;
 import org.jboss.tools.drools.ui.bot.test.functional.drleditor.ConsequencesCompletionTest;
@@ -23,6 +22,7 @@ import org.jboss.tools.drools.ui.bot.test.kienavigator.RepositoryManipulationTes
 import org.jboss.tools.drools.ui.bot.test.kienavigator.ServerConnectionTest;
 import org.jboss.tools.drools.ui.bot.test.smoke.DroolsProjectTest;
 import org.jboss.tools.drools.ui.bot.test.smoke.KieNavigatorTest;
+import org.jboss.tools.drools.ui.bot.test.smoke.NewResourcesTest;
 import org.jboss.tools.drools.ui.bot.test.smoke.PerspectiveTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
@@ -33,10 +33,10 @@ import org.junit.runners.Suite.SuiteClasses;
 	PerspectiveTest.class,
 	KieNavigatorTest.class,
 	DroolsProjectTest.class,
+	NewResourcesTest.class,
 	// basic tests
 	MavenProjectTest.class,
 	DroolsRuntimeManagementTest.class,
-	NewResourcesTest.class,
 	RulesManagementTest.class,
 	// DRL editor code completion
 	MetadataCompletionTest.class,
