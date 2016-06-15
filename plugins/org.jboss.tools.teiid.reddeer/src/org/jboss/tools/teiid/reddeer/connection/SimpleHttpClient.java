@@ -1,4 +1,4 @@
-package org.jboss.tools.teiid.reddeer.util;
+package org.jboss.tools.teiid.reddeer.connection;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,6 +10,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import org.jboss.tools.teiid.reddeer.util.Base64;
 
 /**
  * A very simple implemetation of a http client before I figure out how to include Apache HttpClient dependency
@@ -51,20 +53,15 @@ public class SimpleHttpClient {
 		}
 	}
 
-	public String post(String data) {
-		try {
-			HttpURLConnection connection = (HttpURLConnection) new URL(this.url).openConnection();
-			connection.setRequestMethod("POST");
-			connection.setDoOutput(true);
-			addBasicHeader(connection);
-			addHeaders(connection);
-			connection.connect();
-			writeRequestData(connection, data);
-			return readResponse(connection);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "";
-		}
+	public String post(String data) throws IOException {
+		HttpURLConnection connection = (HttpURLConnection) new URL(this.url).openConnection();
+		connection.setRequestMethod("POST");
+		connection.setDoOutput(true);
+		addBasicHeader(connection);
+		addHeaders(connection);
+		connection.connect();
+		writeRequestData(connection, data);
+		return readResponse(connection);	
 	}
 
 	private void writeRequestData(HttpURLConnection connection, String data) throws IOException {
@@ -110,8 +107,8 @@ public class SimpleHttpClient {
 		} finally {
 			try {
 				response.close();
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (NullPointerException e) {
+				// ignore - connection is null
 			}
 		}
 	}

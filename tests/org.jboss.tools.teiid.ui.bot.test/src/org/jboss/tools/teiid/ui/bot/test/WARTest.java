@@ -1,5 +1,6 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
+import java.io.IOException;
 import java.util.Properties;
 
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
@@ -9,13 +10,13 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.teiid.reddeer.WAR;
-import org.jboss.tools.teiid.reddeer.manager.ConnectionProfilesConstants;
+import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
+import org.jboss.tools.teiid.reddeer.connection.SimpleHttpClient;
 import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.manager.VDBManager;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
-import org.jboss.tools.teiid.reddeer.util.SimpleHttpClient;
 import org.jboss.tools.teiid.reddeer.wizard.ImportGeneralItemWizard;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -28,7 +29,7 @@ import org.junit.runner.RunWith;
  *
  */
 @RunWith(RedDeerSuite.class)
-@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = { ConnectionProfilesConstants.ORACLE_11G_BOOKS })
+@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = { ConnectionProfileConstants.ORACLE_11G_BOOKS })
 public class WARTest extends SWTBotTestCase {
 	public static final String MODEL_PROJECT = "jdbcImportTest";
 	@InjectRequirement
@@ -48,7 +49,7 @@ public class WARTest extends SWTBotTestCase {
 
 		// RESTEasy war
 		new ImportManager().importProject("resources/projects/BooksRest");
-		new ModelExplorerManager().changeConnectionProfile(ConnectionProfilesConstants.ORACLE_11G_BOOKS,
+		new ModelExplorerManager().changeConnectionProfile(ConnectionProfileConstants.ORACLE_11G_BOOKS,
 				projectBooksRest, "BooksSrc.xmi");
 		vdbManager.createVDB(projectBooksRest, vdbBooksRest);
 		vdbManager.addModelsToVDB(projectBooksRest, vdbBooksRest, new String[] { "BooksView.xmi" });
@@ -57,7 +58,7 @@ public class WARTest extends SWTBotTestCase {
 
 		// JBossWS-CXF war
 		new ImportManager().importProject("resources/projects/BooksWS");
-		new ModelExplorerManager().changeConnectionProfile(ConnectionProfilesConstants.ORACLE_11G_BOOKS, projectBooksWS,
+		new ModelExplorerManager().changeConnectionProfile(ConnectionProfileConstants.ORACLE_11G_BOOKS, projectBooksWS,
 				"books.xmi");
 		vdbManager.createVDB(projectBooksWS, vdbCheckBook);
 		vdbManager.addModelsToVDB(projectBooksWS, vdbCheckBook, new String[] { "checkBookWS.xmi" });
@@ -68,9 +69,11 @@ public class WARTest extends SWTBotTestCase {
 
 	/**
 	 * Generate and test JBossWS-CXF WAR with security type None
+	 * @throws IOException 
 	 */
 	@Test
-	public void jbossWSCXFNoneWarTest() {
+	@Deprecated
+	public void jbossWSCXFNoneWarTest() throws IOException {
 
 		Properties warProps = new Properties();
 		warProps.setProperty("type", WAR.JBOSSWS_CXF_TYPE);
@@ -100,9 +103,11 @@ public class WARTest extends SWTBotTestCase {
 
 	/**
 	 * Generate and test JBossWS-CXF WAR with security type Http Basic
+	 * @throws IOException 
 	 */
 	@Test
-	public void jbossWSCXFHttpBasicWarTest() {
+	@Deprecated
+	public void jbossWSCXFHttpBasicWarTest() throws IOException {
 		String warCheckBookBasic = vdbCheckBook + "Basic";
 		Properties warProps = new Properties();
 		warProps.setProperty("type", WAR.JBOSSWS_CXF_TYPE);

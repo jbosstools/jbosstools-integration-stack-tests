@@ -4,14 +4,19 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.Properties;
 
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.eclipse.jdt.ui.AbstractExplorer;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.swt.impl.button.LabeledCheckBox;
+import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
@@ -31,11 +36,16 @@ import org.jboss.tools.teiid.reddeer.ModelProject;
 import org.jboss.tools.teiid.reddeer.ModelType;
 import org.jboss.tools.teiid.reddeer.Procedure;
 import org.jboss.tools.teiid.reddeer.Table;
-import org.jboss.tools.teiid.reddeer.VDB;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.condition.RadioButtonEnabled;
+import org.jboss.tools.teiid.reddeer.condition.WarIsDeployed;
+import org.jboss.tools.teiid.reddeer.dialog.CreateWarDialog;
+import org.jboss.tools.teiid.reddeer.dialog.CreateWebServiceDialog;
 import org.jboss.tools.teiid.reddeer.dialog.SaveAsDialog;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
+import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
+import org.jboss.tools.teiid.reddeer.wizard.GenerateDynamicVdbWizard;
+import org.jboss.tools.teiid.reddeer.wizard.GenerateVdbArchiveWizard;
 import org.jboss.tools.teiid.reddeer.wizard.ImportProjectWizard;
 import org.jboss.tools.teiid.reddeer.wizard.MetadataModelWizard;
 import org.jboss.tools.teiid.reddeer.wizard.ModelProjectWizard;
@@ -250,6 +260,30 @@ public class ModelExplorer extends AbstractExplorer {
 	
 	// ### updated down from here
 	
+	
+	
+	/**
+	 * Selects Modeling/Create Web Service and returns related dialog. 
+	 * @param PathFrom - path to model from which WS will be created (<PROJECT>, ..., <ITEM>)
+	 * @param IsXml - false - create from relation model 
+	 * 				- true - create from XML model
+	 */
+	public CreateWebServiceDialog modelingWebService(boolean fromXml, String... PathFrom){
+		this.selectItem(PathFrom);
+		new ContextMenu("Modeling", "Create Web Service").select();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		return new CreateWebServiceDialog(fromXml);
+	}
+	
+	/**
+	 * Selects specified item of tree structure. 
+	 * @param path (<PROJECT>, ..., <ITEM>)
+	 */
+	public void selectItem(String... path){
+		getProject(path[0]).refresh();
+		new DefaultTreeItem(path).select();
+	}
+	
 	/**
 	 * Creates a new model project with specified name.
 	 */
@@ -270,9 +304,104 @@ public class ModelExplorer extends AbstractExplorer {
 		AbstractWait.sleep(TimePeriod.getCustom(3));
 	}
 	
-	public void deployVdb(String project, String vdb) {
-		vdb = (vdb.contains(".vdb")) ? vdb : vdb + ".vdb";
-		new VDB(this.getProject(project).getProjectItem(vdb)).deployVDB();
+	/**
+	 * Deploys specified VDB
+	 * @param vdbpath - path to VDB (<PROJECT>, ..., <VDB>)
+	 */
+	public void deployVdb(/*boolean passThruAuth, */String... vdbpath) {
+		new WorkbenchShell();
+		int i = vdbpath.length -1;
+		vdbpath[i] = (vdbpath[i].contains(".vdb")) ? vdbpath[i] : vdbpath[i] + ".vdb";
+		this.selectItem(vdbpath);
+		new ContextMenu("Modeling", "Deploy").select();
+		AbstractWait.sleep(TimePeriod.getCustom(3));
+		if (new ShellWithTextIsActive("Server is not connected").test()){
+			new PushButton("OK").click();
+			throw new Error("Server is not connected");
+		}
+		try {
+			new DefaultShell("Create VDB Data Source");
+			new LabeledCheckBox("JNDI Name >>    java:/").toggle(true/*passThruAuth*/);
+			new PushButton("Create Source").click();
+			new WaitWhile(new ShellWithTextIsActive("Create VDB Data Source"), TimePeriod.NORMAL);
+		} catch (SWTLayerException e) {	
+			// shell not opened -> continue
+		}
+	}
+	
+	/**
+	 * Generates dynamic VDB from specified VDB
+	 * @param vdbpath - path to VDB (<PROJECT>, ..., <VDB>)
+	 */
+	public GenerateDynamicVdbWizard generateDynamicVDB(String... vdbpath) {
+		this.selectItem(vdbpath);
+		new ContextMenu("Modeling", "Generate Dynamic VDB").select();
+		return new GenerateDynamicVdbWizard().activate();
+	}
+	
+	/**
+	 * Generates VDB archive from specified VDB
+	 * @param vdbpath - path to VDB (<PROJECT>, ..., <VDB>)
+	 */
+	public GenerateVdbArchiveWizard generateVdbArchive(String... vdbpath) {
+		this.selectItem(vdbpath);
+		new ContextMenu("Modeling", "Generate VDB Archive and Models").select();
+		return new GenerateVdbArchiveWizard().activate();
+	}
+	
+	/**
+	 * Generates SOAP WAR file from specified VDB.
+	 * @param vdbPath - path to VDB (<PROJECT>, ..., <VDB>)
+	 * @param soap - whether generate SOAP WAR or REST WAR 
+	 */
+	public CreateWarDialog generateWar(boolean soap, String... vdbPath){
+		new WorkbenchShell();
+		int i = vdbPath.length -1;
+		vdbPath[i] = (vdbPath[i].contains(".vdb")) ? vdbPath[i] : vdbPath[i] + ".vdb";
+		this.selectItem(vdbPath);
+		new ContextMenu("Modeling", soap ? "Generate SOAP War" : "Generate REST War").select();
+		AbstractWait.sleep(TimePeriod.getCustom(3));
+		return new CreateWarDialog(soap);
+	}
+
+	/**
+	 * Deploys specified WAR.
+	 * @param - name of the server where WAR will be deployed (TeiidServerRequirement.getName())
+	 * @param warPath - path to WAR (<PROJECT>, ..., <WAR>)
+	 */
+	public void deployWar(TeiidServerRequirement teiidServer, String... warPath){
+		new WorkbenchShell();
+		int iWar = warPath.length -1;
+		warPath[iWar] = (warPath[iWar].contains(".war")) ? warPath[iWar] : warPath[iWar] + ".war";
+		this.selectItem(warPath);
+		new ContextMenu("Mark as Deployable").select();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		if (new ShellWithTextIsActive("No deployable servers found").test()){
+			new PushButton("OK").click();
+			throw new Error("Server is not connected");
+		}
+		new WaitUntil(new WarIsDeployed(teiidServer.getName(), warPath[iWar]), TimePeriod.LONG);
+		AbstractWait.sleep(TimePeriod.getCustom(5));
+	}
+	
+	/**
+	 * Undeploys specified WAR.
+	 * @param warPath - path to WAR (<PROJECT>, ..., <WAR>)
+	 */
+	public void undeployWar(String... warPath){
+		new WorkbenchShell();
+		int iWar = warPath.length -1;
+		warPath[iWar] = (warPath[iWar].contains(".war")) ? warPath[iWar] : warPath[iWar] + ".war";
+		this.selectItem(warPath);
+		new ContextMenu("Unmark as Deployable").select();
+		AbstractWait.sleep(TimePeriod.getCustom(5));
+	}
+	
+	/**
+	 * Returns absolute path of specified project (/.../<WORKSPACE>/<PROJECT>)
+	 */
+	public String getProjectPath(String project){
+		return ResourcesPlugin.getWorkspace().getRoot().getLocationURI().getPath() + "/" + project;
 	}
 	
 	/**
@@ -303,11 +432,11 @@ public class ModelExplorer extends AbstractExplorer {
 		MetadataModelWizard modelWizard = new MetadataModelWizard();
 		modelWizard.open();
 		modelWizard.activate();
-		modelWizard.setLocation(newModelPath.split("/"));
-		modelWizard.setModelName(newModelName);
-		modelWizard.selectModelClass(newModelClass);
-		modelWizard.selectModelType(newModelType);
-		modelWizard.selectModelBuilder(ModelBuilder.COPY_EXISTING);
+		modelWizard.setLocation(newModelPath.split("/"))
+				.setModelName(newModelName)
+				.selectModelClass(newModelClass)
+				.selectModelType(newModelType)
+				.selectModelBuilder(ModelBuilder.COPY_EXISTING);
 		modelWizard.next();
 		modelWizard.setExistingModel(originalModelPath.split("/"));
 		modelWizard.finish();
@@ -368,11 +497,44 @@ public class ModelExplorer extends AbstractExplorer {
 	}
 	
 	/**
-	 * Imports project into workspace (directory or archive)
-	 * @param location - resource URL (resources/...)
+	 * Renames specified model.
+	 * @param pathToModel - path to model (<PROJECT>/.../<MODEL>)
+	 * Note: new name must contains extension of model.
 	 */
-	public void importProject(String location) {
-		new ImportProjectWizard(new File(location).getAbsolutePath()).execute();
+	public void renameModel(String pathToModel, String newName){
+		this.getProject(pathToModel.split("/")[0]).refresh();
+		new DefaultTreeItem((pathToModel).split("/")).select();
+		new ContextMenu("Refactor", "Rename...").select();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		new LabeledText("New name:").setText(newName);
+		new OkButton().click();
+		AbstractWait.sleep(TimePeriod.SHORT);
+	}
+	
+	/**
+	 * Deletes specified model.
+	 * @param pathToModel - path to model (<PROJECT>/.../<MODEL>)
+	 */
+	public void deleteModel(String pathToModel){
+		this.getProject(pathToModel.split("/")[0]).refresh();
+		new DefaultTreeItem((pathToModel).split("/")).select();
+		new ContextMenu("Delete").select();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		try {
+			new DefaultShell("Delete Resources");
+			new OkButton().click();
+			new WaitWhile(new ShellWithTextIsActive("Delete Resources"), TimePeriod.NORMAL);
+		} catch (SWTLayerException e) {	
+			// shell not opened -> continue
+		}
+	}
+	
+	/**
+	 * Imports specified project into workspace (directory or archive)
+	 * @param projectName = name of folder in 'resources/projects/' folder
+	 */
+	public void importProject(String projectName) {
+		new ImportProjectWizard(new File("resources/projects/" + projectName).getAbsolutePath()).execute();
 	}
 	
 	/**
@@ -394,6 +556,7 @@ public class ModelExplorer extends AbstractExplorer {
 		}
 		try {
 			new ShellMenu("File", "Close All").select();
+			AbstractWait.sleep(TimePeriod.getCustom(3));
 		} catch (Exception ex) {
 			// no editors open, ignore
 		}

@@ -155,7 +155,7 @@ public class ModelEditor extends SWTBotEditor {
 		tabItem.activate();
 		return tabItem;
 	}
-
+	@Deprecated // use %ModelEditor.openTransformantion()
 	public void showTransformation() {
 		viewer = getGraphicalViewer(TRANSFORMATION_DIAGRAM);
 		viewer.editParts(IsTransformation.isTransformation()).get(0).select();
@@ -182,7 +182,7 @@ public class ModelEditor extends SWTBotEditor {
 		bot.toolbarButtonWithTooltip("Reconcile Transformation SQL with Target Columns").click();
 		return new ReconcilerDialog();
 	}
-
+	@Deprecated // TODO not used?
 	public void setTransformationProcedureBody(String procedure) {
 		String transformationText = getTransformation();
 		transformationText = transformationText.replaceAll("<--.*-->;", procedure);
@@ -199,6 +199,7 @@ public class ModelEditor extends SWTBotEditor {
 	 * @param notReplacingDefault
 	 *            false if editor contains <--.*--> to be replaced, true otherwise
 	 */
+	@Deprecated // TODO not used?
 	public void setTransformationProcedureBody(String procedure, boolean notReplacingDefault) {
 		String transformationText = getTransformation();// ""
 		if (transformationText.equals("") || (notReplacingDefault)) {
@@ -213,36 +214,46 @@ public class ModelEditor extends SWTBotEditor {
 		styledText.navigateTo(2, procedure.length() / 2);
 		styledText.mouseClickOnCaret();
 	}
+	@Deprecated // TODO not used?
+	public ModelProcedureParameter getProcedureParameters(String procName) {
+		setFocus();
+		showTabItem(ModelEditor.TABLE_EDITOR);
+		showSubTabItem(BASE_TABLES);
+		DefaultTable table = new DefaultTable(0);
 
+		int headerIndex = table.getHeaderIndex("Location");
+		if (table.containsItem(procName, headerIndex)) {
+			return new ModelProcedureParameter(table.getItem(procName, headerIndex));
+		} else {
+			return null;
+		}
+	}
+	@Deprecated // TODO move to TransformationEditor
 	public String getTransformation() {
 		return bot.styledText(0).getText();
 	}
-
+	@Deprecated // use TransformationEditor
 	public void setTransformation(String text) {
 		new SWTWorkbenchBot().styledText(0).setText(text);
 	}
-	
+	@Deprecated // TODO move to TransformationEditor
 	public void typeTransformation(String text) {
 		new DefaultStyledText(0);
 		KeyboardFactory.getKeyboard().type(text);
 	}
-	
+	@Deprecated // use TransformationEditor
 	public void setCoursorPositionInTransformation(int position){
 		new DefaultStyledText(0).selectPosition(position);
 		new TeiidStyledText(0).mouseClickOnCaret();
 	}
-	
+
+	@Deprecated // use TransformationEditor
 	public void saveAndValidateSql() {
 		clickButtonOnToolbar("Save/Validate SQL");
 	}
-
+	@Deprecated // use TransforamtionEditor
 	public void clickButtonOnToolbar(String button) {
 		bot.toolbarButtonWithTooltip(button).click();
-	}
-
-	public void showTransformation(String label) {
-		SWTBotGefFigure figureBot = figureWithLabel(label);
-		editFigure(figureBot);
 	}
 
 	public void editFigure(SWTBotGefFigure figureBot) {
@@ -318,27 +329,9 @@ public class ModelEditor extends SWTBotEditor {
 		viewer.select(parts);
 		AbstractWait.sleep(TimePeriod.SHORT);
 	}
-
-	public void deleteLabeledItem(String label) {
-		viewer = getGraphicalViewer(MAPPING_DIAGRAM);
-		viewer.select(label);
-		viewer.clickContextMenu("Delete");
-		log.info("Deleting labeled item " + label);
-	}
-
-	public void openInputSetEditor() {
-		viewer = getGraphicalViewer(DIAGRAM);
-		getModelDiagram(INPUT_SET, DIAGRAM).select();
-		viewer.clickContextMenu("Edit");
-	}
-
-	public InputSetEditorDialog openInputSetEditor(boolean param) {
-		viewer = getGraphicalViewer(DIAGRAM);
-		getModelDiagram(INPUT_SET, DIAGRAM).select();
-		viewer.clickContextMenu("Edit Input Set");
-		return new InputSetEditorDialog();
-	}
-
+	/**
+     * TODO should be in TableEditor (analyze dynamic VDB test)
+     */
 	public List<ModelColumn> getColumns(String tableName) {
 		List<ModelColumn> result = new ArrayList<ModelColumn>();
 
@@ -355,7 +348,9 @@ public class ModelEditor extends SWTBotEditor {
 
 		return result;
 	}
-
+	/**
+     * TODO should be in TableEditor (analyze dynamic VDB test)
+     */
 	public List<ModelTable> getTables() {
 		List<ModelTable> result = new ArrayList<ModelTable>();
 
@@ -369,7 +364,9 @@ public class ModelEditor extends SWTBotEditor {
 
 		return result;
 	}
-
+	/**
+     * TODO should be in TableEditor (analyze dynamic VDB test)
+     */
 	public ModelTable getTable(String tableName) {
 
 		setFocus();
@@ -384,7 +381,9 @@ public class ModelEditor extends SWTBotEditor {
 			return null;
 		}
 	}
-
+    /**
+     * TODO should be in TableEditor (analyze dynamic VDB test)
+     */
 	public ModelColumn getColumn(String tableName, String columnName) {
 		setFocus();
 		showTabItem(ModelEditor.TABLE_EDITOR);
@@ -397,57 +396,9 @@ public class ModelEditor extends SWTBotEditor {
 			return null;
 		}
 	}
-	
 	/**
-	 * @param removeFromTransformation - whether remove column from transformation too
-	 */
-	public void deleteColumnFromTable(String tableName, String columnName, boolean removeFromTransformation){
-		setFocus();
-		selectParts(viewer.editParts(new ModelEditorItemMatcher(ModelEditorItemMatcher.TABLE, tableName)));
-		selectParts(viewer.editParts(new AttributeMatcher(columnName, ModelEditorItemMatcher.TABLE, tableName)));
-		new ContextMenu("Delete").select();	
-		AbstractWait.sleep(TimePeriod.SHORT);
-		PushButton button = (removeFromTransformation) ? new PushButton("Yes") : new PushButton("No");
-		button.click();
-	}
-	
-	public void renameColumn(String tableName, String columnName, String newName){
-		setFocus();
-		selectParts(viewer.editParts(new ModelEditorItemMatcher(ModelEditorItemMatcher.TABLE, tableName)));
-		selectParts(viewer.editParts(new AttributeMatcher(columnName, ModelEditorItemMatcher.TABLE, tableName)));
-		new ContextMenu("Rename").select();
-		new DefaultText(0).setText(newName);
-		KeyboardFactory.getKeyboard().type(KeyEvent.VK_TAB);
-	}
-	
-	public void setDataTypeToColumn(String tableName, String columnName, String dataType, Integer length){
-		setFocus();
-		selectParts(viewer.editParts(new ModelEditorItemMatcher(ModelEditorItemMatcher.TABLE, tableName)));
-		selectParts(viewer.editParts(new AttributeMatcher(columnName, ModelEditorItemMatcher.TABLE, tableName)));
-		new ContextMenu("Modeling","Set Datatype").select();
-		new DefaultShell("Select a Datatype");
-		new DefaultText(0).setText(dataType);
-		new DefaultTable().getItem(0).click();
-		if (length != null){
-			new LabeledSpinner("'string' length value").setValue(length);
-		}		
-		new PushButton("OK").click();
-	}
-
-	public ModelProcedureParameter getProcedureParameters(String procName) {
-		setFocus();
-		showTabItem(ModelEditor.TABLE_EDITOR);
-		showSubTabItem(BASE_TABLES);
-		DefaultTable table = new DefaultTable(0);
-
-		int headerIndex = table.getHeaderIndex("Location");
-		if (table.containsItem(procName, headerIndex)) {
-			return new ModelProcedureParameter(table.getItem(procName, headerIndex));
-		} else {
-			return null;
-		}
-	}
-
+     * TODO only in dynamic VDB test
+     */
 	public ModelProcedureParameter getProcedureParameter(String procName, String parameterName) {
 		setFocus();
 		showTabItem(ModelEditor.TABLE_EDITOR);
@@ -463,5 +414,45 @@ public class ModelEditor extends SWTBotEditor {
 		} else {
 			return null;
 		}
+	}
+	/**
+	 * TODO should be in RelationalModelEditor
+	 * @param removeFromTransformation - whether remove column from transformation too
+	 */
+	public void deleteColumnFromTable(String tableName, String columnName, boolean removeFromTransformation){
+		setFocus();
+		selectParts(viewer.editParts(new ModelEditorItemMatcher(ModelEditorItemMatcher.TABLE, tableName)));
+		selectParts(viewer.editParts(new AttributeMatcher(columnName, ModelEditorItemMatcher.TABLE, tableName)));
+		new ContextMenu("Delete").select();	
+		AbstractWait.sleep(TimePeriod.SHORT);
+		PushButton button = (removeFromTransformation) ? new PushButton("Yes") : new PushButton("No");
+		button.click();
+	}
+	/**
+	 * TODO should be in RelationalModelEditor
+	 */
+	public void renameColumn(String tableName, String columnName, String newName){
+		setFocus();
+		selectParts(viewer.editParts(new ModelEditorItemMatcher(ModelEditorItemMatcher.TABLE, tableName)));
+		selectParts(viewer.editParts(new AttributeMatcher(columnName, ModelEditorItemMatcher.TABLE, tableName)));
+		new ContextMenu("Rename").select();
+		new DefaultText(0).setText(newName);
+		KeyboardFactory.getKeyboard().type(KeyEvent.VK_TAB);
+	}
+	/**
+	 * TODO should be in RelationalModelEditor
+	 */
+	public void setDataTypeToColumn(String tableName, String columnName, String dataType, Integer length){
+		setFocus();
+		selectParts(viewer.editParts(new ModelEditorItemMatcher(ModelEditorItemMatcher.TABLE, tableName)));
+		selectParts(viewer.editParts(new AttributeMatcher(columnName, ModelEditorItemMatcher.TABLE, tableName)));
+		new ContextMenu("Modeling","Set Datatype").select();
+		new DefaultShell("Select a Datatype");
+		new DefaultText(0).setText(dataType);
+		new DefaultTable().getItem(0).click();
+		if (length != null){
+			new LabeledSpinner("'string' length value").setValue(length);
+		}		
+		new PushButton("OK").click();
 	}
 }

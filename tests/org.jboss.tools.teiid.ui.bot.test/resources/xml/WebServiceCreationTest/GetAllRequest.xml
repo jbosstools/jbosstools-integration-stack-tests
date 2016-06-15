@@ -1,0 +1,6 @@
+<x:Envelope xmlns:x="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pro="http://www.metamatrix.com/ProductsInfo">
+    <x:Header/>
+    <x:Body>
+        <pro:ProductsInfo_AllProducts/>
+    </x:Body>
+</x:Envelope>

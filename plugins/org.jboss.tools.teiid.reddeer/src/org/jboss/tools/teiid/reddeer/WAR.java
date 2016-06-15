@@ -23,6 +23,7 @@ import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
  * @author lfabriko
  *
  */
+@Deprecated // use ModelExplorer.generateWar()/deployWar()
 public class WAR {
 
 	// private static final String PROP_CONTEXT_NAME = "contextName";
@@ -186,28 +187,6 @@ public class WAR {
 		}
 
 		new WaitUntil(new WarIsDeployed(serverName, warName), TimePeriod.LONG);
-	}
-
-	public void undeploy() {
-		if (warProjectItem != null) {
-			warProjectItem.select();
-		} else {
-			new ModelExplorer().getProject(pathToVDB[0]).getProjectItem(warProps.getProperty("contextName") + ".war")
-					.select();
-		}
-		warProjectItem.select();
-		new ContextMenu(UNMARK_AS_DEPLOYABLE).select();
-	}
-
-	public void delete() {
-		if (warProjectItem != null) {
-			warProjectItem.select();
-		} else {
-			new ModelExplorer().getProject(pathToVDB[0]).getProjectItem(warProps.getProperty("contextName") + ".war")
-					.select();
-		}
-		warProjectItem.select();
-		new ContextMenu("Delete").select();
 	}
 
 }

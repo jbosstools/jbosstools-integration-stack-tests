@@ -45,12 +45,6 @@ import org.jboss.tools.teiid.reddeer.wizard.HSQLDBProfileWizard;
  */
 public class TeiidBot {
 
-	public TeiidView showTeiidView() {// -> perspective + view mgr
-		TeiidView teiidView = new TeiidView();
-		teiidView.open();
-		return teiidView;
-	}
-
 	@Deprecated // use ModelExplorer.createModelProject()
 	public void createModelProject(String name) {
 		ModelExplorer modelExplorer = new ModelExplorer();
@@ -172,40 +166,13 @@ public class TeiidBot {
 		assertNotNull("Diagram '" + label + "' not found!", modelEditor.getModeDiagram(label));
 	}
 
-	public String curl(String url) {
-		Process pr = null;
-		String result = "";
-		Runtime run = Runtime.getRuntime();
-		try {
-			pr = run.exec("curl " + url);
-			BufferedReader in = new BufferedReader(new InputStreamReader(pr.getInputStream()));
-			String line = null;
-
-			while ((line = in.readLine()) != null) {
-				result = result.concat(line);
-			}
-		} catch (Exception ex) {
-			// throw new RuntimeException("Executing " + cmdline, ex);
-		} finally {
-			try {
-				// close all those bloody streams
-				pr.getErrorStream().close();
-				pr.getInputStream().close();
-				pr.getOutputStream().close();
-			} catch (Exception ex) {
-				// Log.get().exception(Log.Level.Error, "Closing stream: ", ex);
-			}
-		}
-		System.out.println("-----Curl returned: " + result);
-		return result;
-	}
-
 	public void uncheckBuildAutomatically() {
 		if (new ShellMenu("Project", "Build Automatically").isSelected()) {
 			new ShellMenu("Project", "Build Automatically").select();// ie unselect
 		}
 	}
 
+	@Deprecated // use ResourceFileHelper
 	public String loadFileAsString(String fileName) {
 		String result = "";
 		File f = new File(fileName);

@@ -1,0 +1,1585 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+	<soap:Body>
+		<ProductsInfo:ProductsInfo_Output
+			xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			xmlns:schema1="http://www.metamatrix.com/ProductsInfo" xmlns:tns="http://teiid.org"
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+			xmlns:ProductsInfo="http://www.metamatrix.com/ProductsInfo">
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01095</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>INTC</SYMBOL>
+				<CUSIP xsi:nil="true" />
+				<NAME>Intel Corporation3</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>Toronto</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>biotechnology</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01096</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>CBTE</SYMBOL>
+				<CUSIP>202739108</CUSIP>
+				<NAME>New Name</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NasdaqSC</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>biotechnology</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01097</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>BBIOD</SYMBOL>
+				<CUSIP>110515202</CUSIP>
+				<NAME>British Biotechnology plc</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NasdaqNM</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>pharmaceuticals</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01098</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>SBC</SYMBOL>
+				<CUSIP>78387G103</CUSIP>
+				<NAME>SBC Communications Incorporated</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>true</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>communications</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01099</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>HON</SYMBOL>
+				<CUSIP>438516106</CUSIP>
+				<NAME>Honeywell International</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>true</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01100</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>HLT</SYMBOL>
+				<CUSIP>432848109</CUSIP>
+				<NAME>Hilton Hotels Corporation</NAME>
+				<TYPE>Stock2</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>resorts</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01101</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>HLT5E06</SYMBOL>
+				<CUSIP xsi:nil="true" />
+				<NAME>Hilton Hotels Corporation</NAME>
+				<TYPE>Corporate Bond</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01102</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>SYMC</SYMBOL>
+				<CUSIP>589405109</CUSIP>
+				<NAME>Symantec Corporation</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NasdaqNM</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>true</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>computer software</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01225</INSTR_ID>
+				<SYMBOL_TYPE xsi:nil="true" />
+				<SYMBOL>GLYN</SYMBOL>
+				<CUSIP>36458R101</CUSIP>
+				<NAME>Galyans Trading</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NasdaqNM</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>Shipping and transportation</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01002</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>BA</SYMBOL>
+				<CUSIP>097023105</CUSIP>
+				<NAME>The Boeing Company</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>true</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>defense</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01003</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>MON</SYMBOL>
+				<CUSIP>61166W101</CUSIP>
+				<NAME>Monsanto Company</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01004</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>ORCL</SYMBOL>
+				<CUSIP>68389X105</CUSIP>
+				<NAME>Oracle Corporation</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NasdaqNM</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>true</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>computer software</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01005</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>SY</SYMBOL>
+				<CUSIP>871130100</CUSIP>
+				<NAME>Sybase Incorporated</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>computer software</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01006</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>MSFT</SYMBOL>
+				<CUSIP>594918104</CUSIP>
+				<NAME>Microsoft Corporation</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NasdaqNM</EXCHANGE>
+				<ISDJI>true</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>true</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>computer software</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01007</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>IBM</SYMBOL>
+				<CUSIP>459200101</CUSIP>
+				<NAME>International Business Machines Corporation</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>true</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01008</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>DELL</SYMBOL>
+				<CUSIP>247025109</CUSIP>
+				<NAME>Dell Computer Corporation</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NasdaqNM</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>true</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>computer hardware</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01009</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>NOSIX</SYMBOL>
+				<CUSIP xsi:nil="true" />
+				<NAME>NORTHERN STOCK INDEX FUND</NAME>
+				<TYPE>Mutual Fund</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01010</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>HPQ</SYMBOL>
+				<CUSIP>428236103</CUSIP>
+				<NAME>Hewlett-Packard Company</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>true</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>computer hardware</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01011</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>ACN</SYMBOL>
+				<CUSIP>367626108</CUSIP>
+				<NAME>Accenture PLC</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>computer hardware</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01012</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>GE</SYMBOL>
+				<CUSIP>369604103</CUSIP>
+				<NAME>General Electric Company</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>true</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01013</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>MRK</SYMBOL>
+				<CUSIP>589331107</CUSIP>
+				<NAME>Merck and Company</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>true</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>pharmaceuticals</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01014</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>DIS</SYMBOL>
+				<CUSIP>254687106</CUSIP>
+				<NAME>Walt Disney Company</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>true</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>entertainment</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01015</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>MCD</SYMBOL>
+				<CUSIP>580135101</CUSIP>
+				<NAME>McDonalds Corporation</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>true</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>food</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01016</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>DOW</SYMBOL>
+				<CUSIP>260543103</CUSIP>
+				<NAME>Dow Chemical Company</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>chemicals</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01017</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>GMA0AI02</SYMBOL>
+				<CUSIP xsi:nil="true" />
+				<NAME>General Motors Corporation</NAME>
+				<TYPE>Corporate Bond</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01018</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>GM</SYMBOL>
+				<CUSIP>370442105</CUSIP>
+				<NAME>General Motors Corporation</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>true</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>automobiles</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01019</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>GM.TO</SYMBOL>
+				<CUSIP xsi:nil="true" />
+				<NAME>General Motors Corporation</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>Toronto</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>automobiles</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01020</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>PSFT</SYMBOL>
+				<CUSIP>712713106</CUSIP>
+				<NAME>Peoplesoft Incorporated</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NasdaqNM</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>true</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>computer software</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01021</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>DOX</SYMBOL>
+				<CUSIP>75409P202</CUSIP>
+				<NAME>AMDOCS Limited</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>true</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>computer software</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01022</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>SUNW</SYMBOL>
+				<CUSIP>866810104</CUSIP>
+				<NAME>Sun Microsystems Incorporated</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NasdaqNM</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>true</ISNAS100>
+				<ISAMEXINT>true</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01023</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>HMT</SYMBOL>
+				<CUSIP>44107P104</CUSIP>
+				<NAME>Host Marriott Corporation</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>resorts</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01024</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>SBGI</SYMBOL>
+				<CUSIP>829226109</CUSIP>
+				<NAME>Sinclair Broadcast Group Incorporated</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NasdaqNM</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01025</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>COLM</SYMBOL>
+				<CUSIP>198516106</CUSIP>
+				<NAME>Columbia Sportsware Company</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NasdaqNM</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01026</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>COLB</SYMBOL>
+				<CUSIP>197236102</CUSIP>
+				<NAME>Columbia Banking System Incorporated</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NasdaqNM</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01027</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>CSCO</SYMBOL>
+				<CUSIP xsi:nil="true" />
+				<NAME>Cisco Systems Inc.</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01028</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>C</SYMBOL>
+				<CUSIP>111013108</CUSIP>
+				<NAME>Citigroup Inc.</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01029</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>CSVFX</SYMBOL>
+				<CUSIP>198526105</CUSIP>
+				<NAME>Columbia Strategic Value Fund</NAME>
+				<TYPE>Mutual Fund</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>Nasdaq</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01030</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>CMTFX</SYMBOL>
+				<CUSIP>198545105</CUSIP>
+				<NAME>Columbia Technology Fund</NAME>
+				<TYPE>Mutual Fund</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>Nasdaq</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01031</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>F</SYMBOL>
+				<CUSIP>345370860</CUSIP>
+				<NAME>Ford Motor Company</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>automobiles</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01032</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>BIGAX</SYMBOL>
+				<CUSIP xsi:nil="true" />
+				<NAME>NORTHERN INSTI INTERNATIONAL GROWTH CLASS A</NAME>
+				<TYPE>Mutual Fund</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01033</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>FCZ</SYMBOL>
+				<CUSIP>345397202</CUSIP>
+				<NAME>Ford Motor Credit Company</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01034</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>SAP</SYMBOL>
+				<CUSIP>803054204</CUSIP>
+				<NAME>SAP AG</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01035</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>SAP.TO</SYMBOL>
+				<CUSIP xsi:nil="true" />
+				<NAME>Saputo Incorporated</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>Toronto</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01036</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>TM</SYMBOL>
+				<CUSIP>892331307</CUSIP>
+				<NAME>Toyota Motor Corporation</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>automobiles</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01037</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>FFFFX</SYMBOL>
+				<CUSIP xsi:nil="true" />
+				<NAME>FIDELITY FREEDOM 2040</NAME>
+				<TYPE>Mutual Fund</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01038</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>HMC</SYMBOL>
+				<CUSIP>438128308</CUSIP>
+				<NAME>Honda Motor Company Limited</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>automobiles</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01039</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>LMT</SYMBOL>
+				<CUSIP>539830109</CUSIP>
+				<NAME>Lockheed Martin Corporation</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>defense</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01040</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>FSBI</SYMBOL>
+				<CUSIP>315831107</CUSIP>
+				<NAME>Fidelity Bancorp Incorporated of Pennsylvania</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NasdaqNM</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>banking</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01041</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>EPGAX</SYMBOL>
+				<CUSIP>315805853</CUSIP>
+				<NAME>Fidelity Advisor Series I Equity Growth Fund</NAME>
+				<TYPE>Mutual Fund</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>Nasdaq</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01042</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>FABTX</SYMBOL>
+				<CUSIP>315918672</CUSIP>
+				<NAME>Fidelity Advisor Series VII Technology Fund</NAME>
+				<TYPE>Mutual Fund</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>Nasdaq</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01043</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>FACDX</SYMBOL>
+				<CUSIP>315918847</CUSIP>
+				<NAME>Fidelity Advisor Series VII Healthcare Fund</NAME>
+				<TYPE>Mutual Fund</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>Nasdaq</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01044</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>FAFDX</SYMBOL>
+				<CUSIP>315918813</CUSIP>
+				<NAME>Fidelity Advisor Series VII Financial Services Fund</NAME>
+				<TYPE>Mutual Fund</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>Nasdaq</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01045</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>AMD</SYMBOL>
+				<CUSIP>31620P109</CUSIP>
+				<NAME>Advanced Micro Devices, Inc.</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NasdaqNM</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01046</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>LLY</SYMBOL>
+				<CUSIP>532457108</CUSIP>
+				<NAME>Eli Lilly and Company</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>pharmaceuticals</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01047</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>CNC</SYMBOL>
+				<CUSIP>696642107</CUSIP>
+				<NAME>Centene Corp</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>true</ISAMEXINT>
+				<PRIBUSINESS>computer hardware</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01048</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>HNZ</SYMBOL>
+				<CUSIP>423074103</CUSIP>
+				<NAME>H. J. Heinz Company</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>food</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01049</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>KO</SYMBOL>
+				<CUSIP>191216100</CUSIP>
+				<NAME>Coca-Cola Company</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>true</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>soft drinks</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01050</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>PEP</SYMBOL>
+				<CUSIP>713448108</CUSIP>
+				<NAME>PepsiCo, Incorporated</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>soft drinks</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01051</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>MACPX</SYMBOL>
+				<CUSIP>590192100</CUSIP>
+				<NAME>Merrill Lynch Balanced Capital Fund</NAME>
+				<TYPE>Mutual Fund</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>Nasdaq</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01052</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>FASOX</SYMBOL>
+				<CUSIP>59019V108</CUSIP>
+				<NAME>FIDELITY ADVISOR VALUE STRAT CL I</NAME>
+				<TYPE>Mutual Fund</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>Nasdaq</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01053</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>MADVX</SYMBOL>
+				<CUSIP>589927201</CUSIP>
+				<NAME>Merrill Lynch Equity Income Fund</NAME>
+				<TYPE>Mutual Fund</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>Nasdaq</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01054</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>MAFGX</SYMBOL>
+				<CUSIP>589958107</CUSIP>
+				<NAME>Merrill Lynch Fundamental Growth Fund Incorporated</NAME>
+				<TYPE>Mutual Fund</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>Nasdaq</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01055</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>MAGGX</SYMBOL>
+				<CUSIP>59020J100</CUSIP>
+				<NAME>Merrill Lynch Global Growth Fund Incorporated</NAME>
+				<TYPE>Mutual Fund</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>Nasdaq</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01056</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>MAGTX</SYMBOL>
+				<CUSIP>589983105</CUSIP>
+				<NAME>Merrill Lynch Global Technology Fund Incorporated</NAME>
+				<TYPE>Mutual Fund</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>Nasdaq</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01057</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>CNSAX</SYMBOL>
+				<CUSIP>616960100</CUSIP>
+				<NAME>Morgan Stanley Convertible Securities Trust</NAME>
+				<TYPE>Mutual Fund</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>Nasdaq</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01058</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>CPOAX</SYMBOL>
+				<CUSIP>61747T106</CUSIP>
+				<NAME>Morgan Stanley Capital Opportunities Trust Fund</NAME>
+				<TYPE>Mutual Fund</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>Nasdaq</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01059</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>DGRAX</SYMBOL>
+				<CUSIP>616937108</CUSIP>
+				<NAME>Morgan Stanley Developing Growth Securities Trust</NAME>
+				<TYPE>Mutual Fund</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>Nasdaq</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01060</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>PNRA</SYMBOL>
+				<CUSIP>616959201</CUSIP>
+				<NAME>Panera Bread Co.</NAME>
+				<TYPE>Mutual Fund</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>Nasdaq</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01061</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>GRTAX</SYMBOL>
+				<CUSIP>616922100</CUSIP>
+				<NAME>Morgan Stanley Growth A</NAME>
+				<TYPE>Mutual Fund</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NasdaqSC</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01062</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>NCAPX</SYMBOL>
+				<CUSIP>616974101</CUSIP>
+				<NAME>NEW CENTURY OPPORTUNISTIC PORTFOLIO</NAME>
+				<TYPE>Mutual Fund</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>Nasdaq</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01063</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>BBW</SYMBOL>
+				<CUSIP>749121109</CUSIP>
+				<NAME>Build-A-Bear Workshop Inc</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>true</ISAMEXINT>
+				<PRIBUSINESS>communications</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01064</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>ANAT</SYMBOL>
+				<CUSIP>028591105</CUSIP>
+				<NAME>American National Insurance Company</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NasdaqNM</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>insurance</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01065</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>NWLIA</SYMBOL>
+				<CUSIP>638522102</CUSIP>
+				<NAME>National Western Life Insurance Company</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NasdaqNM</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>insurance</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01066</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>CSLI</SYMBOL>
+				<CUSIP>221774102</CUSIP>
+				<NAME>Cotton States Life Insurance Company</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NasdaqNM</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>insurance</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01067</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>KCLI</SYMBOL>
+				<CUSIP>484836101</CUSIP>
+				<NAME>Kansas City Life Insurance Company</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NasdaqSC</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>insurance</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01068</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>NCLIP</SYMBOL>
+				<CUSIP>658654207</CUSIP>
+				<NAME>North Coast Life Insurance Company</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NasdaqSC</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>insurance</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01069</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>TNA7E08</SYMBOL>
+				<CUSIP xsi:nil="true" />
+				<NAME>Terra Nova Insurance Holdings PLC</NAME>
+				<TYPE>Corporate Bond</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01070</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>TW</SYMBOL>
+				<CUSIP>90130N103</CUSIP>
+				<NAME>21st Century Insurance Group</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>insurance</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01071</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>WTM</SYMBOL>
+				<CUSIP>G9618E107</CUSIP>
+				<NAME>White Mountains Insurance Group</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>insurance</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01072</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>LG</SYMBOL>
+				<CUSIP>989390109</CUSIP>
+				<NAME>Laclede Group Inc</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>insurance</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01073</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>IAG.TO</SYMBOL>
+				<CUSIP xsi:nil="true" />
+				<NAME>Industrial-Alliance Life Insurance Company</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>Toronto</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>insurance</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01074</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>SSLI</SYMBOL>
+				<CUSIP>843805102</CUSIP>
+				<NAME>Southern Security Life Insurance Company</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NasdaqSC</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>insurance</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01075</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>EMR</SYMBOL>
+				<CUSIP>59189N108</CUSIP>
+				<NAME>Emerson Electric Co.</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01076</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>RBS</SYMBOL>
+				<CUSIP>100843408</CUSIP>
+				<NAME>Royal Bank of Scotland Group PLC</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NasdaqNM</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>biotechnology</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01077</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>IBNK</SYMBOL>
+				<CUSIP>45814P105</CUSIP>
+				<NAME>Integra Bank Corporation</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NasdaqNM</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>banking</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01078</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>PBIX</SYMBOL>
+				<CUSIP>70335P103</CUSIP>
+				<NAME>Patriot Bank Corporation</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NasdaqNM</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>banking</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01079</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>CBCF</SYMBOL>
+				<CUSIP>174420109</CUSIP>
+				<NAME>Citizens Banking Corporation</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NasdaqNM</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>banking</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01080</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>CHTR</SYMBOL>
+				<CUSIP>16117M107</CUSIP>
+				<NAME>Charter Communications, Incorporated</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NasdaqNM</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>true</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>cable television</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01081</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>EMMS</SYMBOL>
+				<CUSIP>291525103</CUSIP>
+				<NAME>Emmis Communications Corporation</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NasdaqNM</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>broadcasting</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01082</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>NXTL</SYMBOL>
+				<CUSIP>65332V103</CUSIP>
+				<NAME>Nextel Communications, Incorporated</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NasdaqNM</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>true</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>communications</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01083</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>TWX</SYMBOL>
+				<CUSIP>00184A105</CUSIP>
+				<NAME>AOL-Time Warner, Incorporated</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>true</ISAMEXINT>
+				<PRIBUSINESS>internet service</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01084</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>AGE</SYMBOL>
+				<CUSIP>281760108</CUSIP>
+				<NAME>A. G. Edwards Incorporated</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>financial services</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01085</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>YHOO</SYMBOL>
+				<CUSIP>984332106</CUSIP>
+				<NAME>Yahoo Incorporated</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NasdaqNM</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>true</ISNAS100>
+				<ISAMEXINT>true</ISAMEXINT>
+				<PRIBUSINESS>internet service</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01086</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>ELNK</SYMBOL>
+				<CUSIP>270321102</CUSIP>
+				<NAME>Earthlink Incorporated</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NasdaqNM</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>true</ISAMEXINT>
+				<PRIBUSINESS>internet service</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01087</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>NOC</SYMBOL>
+				<CUSIP>666807102</CUSIP>
+				<NAME>Northrop Grumman Systems Corporation</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>defense</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01088</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>KATY</SYMBOL>
+				<CUSIP>670006105</CUSIP>
+				<NAME>Katy Ind Inc.</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NasdaqNM</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>true</ISAMEXINT>
+				<PRIBUSINESS>computer software</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01089</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>AMZN</SYMBOL>
+				<CUSIP>023135106</CUSIP>
+				<NAME>Amazon.com, Incorporated</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NasdaqNM</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>true</ISNAS100>
+				<ISAMEXINT>true</ISAMEXINT>
+				<PRIBUSINESS>internet retailer</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01090</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>JNPR</SYMBOL>
+				<CUSIP>48203R104</CUSIP>
+				<NAME>Juniper Networks, Incorporated</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NasdaqNM</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>true</ISNAS100>
+				<ISAMEXINT>true</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01091</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>RHT</SYMBOL>
+				<CUSIP>756577102</CUSIP>
+				<NAME>Red Hat, Incorporated</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NasdaqNM</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>true</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01092</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>BSX</SYMBOL>
+				<CUSIP>101137107</CUSIP>
+				<NAME>Boston Scientific Corporation</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>medical supplies</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01093</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>IEX.TO</SYMBOL>
+				<CUSIP xsi:nil="true" />
+				<NAME>Inex Pharmaceuticals, Incorporated</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>Toronto</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>pharmaceuticals</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01094</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>ACI</SYMBOL>
+				<CUSIP>89589H104</CUSIP>
+				<NAME>Arch Coal, Inc.</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>pharmaceuticals</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>LOGTEST002</INSTR_ID>
+				<SYMBOL_TYPE xsi:nil="true" />
+				<SYMBOL>DDD</SYMBOL>
+				<CUSIP>1002</CUSIP>
+				<NAME>Duck</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>true</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>true</ISNAS100>
+				<ISAMEXINT>true</ISAMEXINT>
+				<PRIBUSINESS>pharmaceuticals</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>PRD01220</INSTR_ID>
+				<SYMBOL_TYPE xsi:nil="true" />
+				<SYMBOL>UIS</SYMBOL>
+				<CUSIP>909214108</CUSIP>
+				<NAME>Unisys Corporation</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>false</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS>Computer Services</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+			<ProductsInfo_Output_Instance>
+				<INSTR_ID>R123</INSTR_ID>
+				<SYMBOL_TYPE>2</SYMBOL_TYPE>
+				<SYMBOL>REDDY</SYMBOL>
+				<CUSIP>67890</CUSIP>
+				<NAME>Reddy Consulting</NAME>
+				<TYPE>STOCK</TYPE>
+				<ISSUER>2</ISSUER>
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>true</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>true</ISNAS100>
+				<ISAMEXINT>true</ISAMEXINT>
+				<PRIBUSINESS>Goofing Around</PRIBUSINESS>
+			</ProductsInfo_Output_Instance>
+		</ProductsInfo:ProductsInfo_Output>
+	</soap:Body>
+</soap:Envelope>

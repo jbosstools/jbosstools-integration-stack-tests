@@ -3,6 +3,8 @@ package org.jboss.tools.teiid.ui.bot.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.sql.SQLException;
+
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
@@ -20,7 +22,7 @@ import org.jboss.tools.teiid.reddeer.ChildType;
 import org.jboss.tools.teiid.reddeer.ModelClass;
 import org.jboss.tools.teiid.reddeer.ModelType;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
-import org.jboss.tools.teiid.reddeer.connection.TeiidFileHelper;
+import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.dialog.InputSetEditorDialog;
 import org.jboss.tools.teiid.reddeer.dialog.XmlDocumentBuilderDialog;
@@ -34,6 +36,7 @@ import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidSer
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.wizard.MetadataModelWizard;
 import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -52,19 +55,23 @@ public class XmlSchemalessTest {
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;
 	
-	private static ModelExplorer modelExplorer;
+	private ModelExplorer modelExplorer;
+	private ResourceFileHelper fileHelper;
+	private TeiidJDBCHelper jdbcHelper;
 	
-	@BeforeClass
-	public static void importProject() {
+	@Before
+	public  void importProject() {
 		new WorkbenchShell().maximize();
 		modelExplorer = new ModelExplorer();
-		modelExplorer.importProject("resources/projects/" + PROJECT_NAME);
+		modelExplorer.importProject(PROJECT_NAME);
 		modelExplorer.getProject(PROJECT_NAME).refresh();
 		modelExplorer.changeConnectionProfile(ConnectionProfileConstants.ORACLE_11G_BOOKS, PROJECT_NAME, "Books.xmi");
+		fileHelper = new ResourceFileHelper();
+		jdbcHelper = new TeiidJDBCHelper(teiidServer, VDB_NAME);
 	}
 	
 	@Test
-	public void test() throws Exception {
+	public void test() throws SQLException {
 		// 1. Create an XML document model
 		MetadataModelWizard modelWizard = new MetadataModelWizard();
 		modelWizard.open();
@@ -94,16 +101,9 @@ public class XmlSchemalessTest {
 
 		editor.show();
 		TableEditor tableEditor = editor.openTableEditor(XmlModelEditor.MAPPING_DIAGRAM);
-		//TODO begin: this move to TableEditor (after his implementation)
-		new DefaultTabItem("Xml Namespaces").activate();
-		new DefaultTable().getItem("bookListing").doubleClick(1);
-		new DefaultText(new CellEditor(new DefaultTable().getItem("bookListing"),1)).setText("xsd");
-		new DefaultTable().getItem("bookListing").click();
-		AbstractWait.sleep(TimePeriod.SHORT);
-		new DefaultTable().getItem("bookListing").doubleClick(2);
-		new DefaultText(new CellEditor(new DefaultTable().getItem("bookListing"),2)).setText("http://www.w3.org/2001/XMLSchema");
-		new DefaultTable().getItem("bookListing").click();
-		//TODO end
+		tableEditor.openTab(TableEditor.Tabs.XML_NAMESPACES);
+		tableEditor.setCellText("bookListing", "Prefix", "xsd");
+		tableEditor.setCellText("bookListing", "Uri", "http://www.w3.org/2001/XMLSchema");
 		tableEditor.close();
 		
 		modelExplorer.addChildToModelItem(modelPath, xmlStructureBuilt, ChildType.SEQUENCE);
@@ -142,12 +142,12 @@ public class XmlSchemalessTest {
 		editor.deleteAttribute("book", "book");
 		editor.openMappingClass("book");
 		TransformationEditor bookTransfEditor = editor.openTransformationEditor();
-		bookTransfEditor.insertAndValidateSql("SELECT ISBN, TITLE, convert(EDITION, string) AS edition, NAME AS publisherName, LOCATION AS publisherLocation"
-				+ " FROM Books.BOOKS, Books.PUBLISHERS WHERE PUBLISHER = PUBLISHER_ID");
+		bookTransfEditor.insertAndValidateSql(fileHelper.getSql("XmlSchemalessTest/Book"));
 		bookTransfEditor.close();
+		editor.returnToMappingClassOverview();
+		
 		AbstractWait.sleep(TimePeriod.SHORT);
 		editor.save();
-		editor.returnToMappingClassOverview();
 		
 		AbstractWait.sleep(TimePeriod.SHORT);
 		assertTrue("Validation errors!", new ProblemsView().getProblems(ProblemType.ERROR).isEmpty());
@@ -162,11 +162,8 @@ public class XmlSchemalessTest {
 		
 		modelExplorer.deployVdb(PROJECT_NAME, VDB_NAME);
 		
-		TeiidJDBCHelper jdbcHelper = new TeiidJDBCHelper(teiidServer, VDB_NAME);
-		TeiidFileHelper fileHelper = new TeiidFileHelper();
-		
 		String output = jdbcHelper.executeQueryWithXmlStringResult("SELECT * FROM bookListingDocument");
-		String expectedOutput = fileHelper.getXmlExpectedResult("forXmlSchemalessTest",false);
+		String expectedOutput = fileHelper.getXml("XmlSchemalessTest/BuiltDocument");
 		assertEquals(output, expectedOutput);
 	    
 	    // 5. Expand the document	    
@@ -200,12 +197,12 @@ public class XmlSchemalessTest {
 		inputSetEditor.addNewInputParam("book","isbn : string");
 		inputSetEditor.finish();
 		TransformationEditor authTransfEditor = editor.openTransformationEditor();
-		authTransfEditor.insertAndValidateSql("SELECT LASTNAME, FIRSTNAME FROM Books.AUTHORS, Books.BOOK_AUTHORS WHERE" 
- 				+ "(INPUTS.isbn = ISBN) AND (Books.AUTHORS.AUTHOR_ID = Books.BOOK_AUTHORS.AUTHOR_ID)");
+		authTransfEditor.insertAndValidateSql(fileHelper.getSql("XmlSchemalessTest/Author"));
 		authTransfEditor.close();
+		editor.returnToMappingClassOverview();
+		
 		AbstractWait.sleep(TimePeriod.SHORT);
 		editor.save();
-		editor.returnToMappingClassOverview();
 		
 		AbstractWait.sleep(TimePeriod.SHORT);
 		assertTrue("Validation errors!", new ProblemsView().getProblems(ProblemType.ERROR).isEmpty());
@@ -215,7 +212,7 @@ public class XmlSchemalessTest {
  		modelExplorer.deployVdb(PROJECT_NAME, VDB_NAME);
  		
  		output = jdbcHelper.executeQueryWithXmlStringResult("SELECT * FROM bookListingDocument");
- 		expectedOutput = fileHelper.getXmlExpectedResult("forXmlSchemalessTest2",false);	
+ 		expectedOutput = fileHelper.getXml("XmlSchemalessTest/BuiltDocumentExtended");	
  	    assertEquals(output, expectedOutput); 	
 	}
 }

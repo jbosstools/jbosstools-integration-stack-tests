@@ -1,15 +1,11 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 import org.jboss.reddeer.common.wait.AbstractWait;
@@ -24,7 +20,7 @@ import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.ModelBuilder;
 import org.jboss.tools.teiid.reddeer.ModelClass;
 import org.jboss.tools.teiid.reddeer.ModelType;
-import org.jboss.tools.teiid.reddeer.connection.TeiidFileHelper;
+import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.dialog.InputSetEditorDialog;
 import org.jboss.tools.teiid.reddeer.editor.RecursionEditor;
@@ -38,7 +34,7 @@ import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.MetadataModelWizard;
 import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -58,20 +54,22 @@ public class XmlRecursiveTest {
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;
 	
-	private static ModelExplorer modelExplorer;
+	private ModelExplorer modelExplorer;
+	private ResourceFileHelper fileHelper;
+	private TeiidJDBCHelper jdbcHelper;
 
-	@BeforeClass
-	public static void importProject() throws IOException {
+	@Before
+	public void setUp() throws Exception {
 		new WorkbenchShell().maximize();
-		
-		Path source = Paths.get(new File("resources/flat/EmpData.csv").getAbsolutePath());
-		Path target = Paths.get(teiidServer.getServerConfig().getServerBase().getHome() + "/standalone/data/EmpData.csv");
-		Files.copy(source, target, REPLACE_EXISTING);
-		new ServersViewExt().refreshServer(teiidServer.getName());
-		
 		modelExplorer = new ModelExplorer();
-		modelExplorer.importProject("resources/projects/" + PROJECT_NAME);
+		modelExplorer.importProject(PROJECT_NAME);
 		modelExplorer.getProject(PROJECT_NAME).refresh();
+		fileHelper = new ResourceFileHelper();
+		jdbcHelper = new TeiidJDBCHelper(teiidServer, VDB_NAME);
+		
+		fileHelper.copyFileToServer(new File("resources/flat/EmpData.csv").getAbsolutePath(), 
+				teiidServer.getServerConfig().getServerBase().getHome() + "/standalone/data/EmpData.csv");
+		new ServersViewExt().refreshServer(teiidServer.getName());
 	}
 
 	@Test
@@ -125,10 +123,7 @@ public class XmlRecursiveTest {
 		editor.openMappingClass(EMPLOYEE_MC);
 		
 		TransformationEditor empTransfEditor = editor.openTransformationEditor();
-		empTransfEditor.insertAndValidateSql("SELECT Employees.EmpTable.LastName, Employees.EmpTable.FirstName, Employees.EmpTable.MiddleName "
-				+ "AS MiddleInitial, Employees.EmpTable.Street, Employees.EmpTable.City, Employees.EmpTable.State, convert(Employees.EmpTable.EmpId, "
-				+ "biginteger) AS EmpId,Employees.EmpTable.HomePhone AS Phone, convert(Employees.EmpTable.Manager,biginteger) AS mgrID FROM "
-				+ "Employees.EmpTable");
+		empTransfEditor.insertAndValidateSql(fileHelper.getSql("XmlRecursiveTest/Employee"));
 		empTransfEditor.close();
 		
 		editor.save();
@@ -142,13 +137,9 @@ public class XmlRecursiveTest {
 		inputSetEditor.finish();
 		
 		TransformationEditor supTransfEditor = editor.openTransformationEditor();
-		supTransfEditor.insertAndValidateSql("SELECT Employees.EmpTable.LastName, Employees.EmpTable.FirstName, "
-	    		+ "Employees.EmpTable.MiddleName AS MiddleInitial, Employees.EmpTable.Street, "
-				+ "Employees.EmpTable.City, Employees.EmpTable.State, convert(Employees.EmpTable.EmpId, biginteger) AS EmpId, Employees.EmpTable.HomePhone AS "
-				+ "Phone, convert(Employees.EmpTable.Manager, biginteger) AS mgrID FROM Employees.EmpTable WHERE INPUTS.mgrID = Employees.EmpTable.EmpId");
+		supTransfEditor.insertAndValidateSql(fileHelper.getSql("XmlRecursiveTest/Supervisor"));
 		supTransfEditor.close();
-		
-		AbstractWait.sleep(TimePeriod.SHORT);		
+	
 		editor.save();
 		
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -164,7 +155,6 @@ public class XmlRecursiveTest {
 		
 		modelExplorer.deployVdb(PROJECT_NAME, VDB_NAME);
 
-		TeiidJDBCHelper jdbcHelper = new TeiidJDBCHelper(teiidServer, VDB_NAME);
 		assertTrue(jdbcHelper.isQuerySuccessful("SELECT * FROM Employees.EmpTable",true));
 					
         String output = jdbcHelper.executeQueryWithXmlStringResult("SELECT * FROM EmpDoc.SimpleEmployeesDocument");          
@@ -175,7 +165,6 @@ public class XmlRecursiveTest {
 		
 		// 4. Enable recursion and test it
 		String recursionQuery = "SELECT * FROM EmpDoc.SimpleEmployeesDocument WHERE SimpleEmployees.Employee.EmpId LIKE '90001%'"; 
-		TeiidFileHelper fileHelper = new TeiidFileHelper();
 		
 		// 4.1. Test recursion without limit
 		editor.show();
@@ -188,7 +177,7 @@ public class XmlRecursiveTest {
 		modelExplorer.deployVdb(PROJECT_NAME, VDB_NAME);
 		
  		output = jdbcHelper.executeQueryWithXmlStringResult(recursionQuery);
-		String expectedOutput = fileHelper.getXmlExpectedResult("forXmlRecursiveTest",false);
+		String expectedOutput = fileHelper.getXml("XmlRecursiveTest/RecursionWithoutLimit");
 		assertEquals(output, expectedOutput);	
 		
 		// 4.2. Test recursion with limit and actions when exceeded
@@ -210,7 +199,7 @@ public class XmlRecursiveTest {
 		VDBEditor.getInstance(VDB_NAME).synchronizeAll();
 		modelExplorer.deployVdb(PROJECT_NAME, VDB_NAME);
 		output = jdbcHelper.executeQueryWithXmlStringResult(recursionQuery);
-		expectedOutput = fileHelper.getXmlExpectedResult("forXmlRecursiveTest2",false);
+		expectedOutput = fileHelper.getXml("XmlRecursiveTest/RecursionWithLimit");
 		assertEquals(output, expectedOutput);
 		
 		editor.show();
@@ -221,7 +210,7 @@ public class XmlRecursiveTest {
 		VDBEditor.getInstance(VDB_NAME).synchronizeAll();
 		modelExplorer.deployVdb(PROJECT_NAME, VDB_NAME);
 		output = jdbcHelper.executeQueryWithXmlStringResult(recursionQuery);
-		expectedOutput = fileHelper.getXmlExpectedResult("forXmlRecursiveTest2",false);
+		expectedOutput = fileHelper.getXml("XmlRecursiveTest/RecursionWithLimit");
 		assertEquals(output, expectedOutput);	
 		// TODO what exactly is record here? - no mention in documentation
 	}

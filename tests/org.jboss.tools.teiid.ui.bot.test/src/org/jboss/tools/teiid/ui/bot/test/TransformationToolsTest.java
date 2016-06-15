@@ -54,7 +54,7 @@ public class TransformationToolsTest {
 	public static void importProject() {
 		new WorkbenchShell().maximize();
 		modelExplorer = new ModelExplorer();
-		modelExplorer.importProject("resources/projects/" + PROJECT_NAME);
+		modelExplorer.importProject(PROJECT_NAME);
 		modelExplorer.getProject(PROJECT_NAME).refresh();
 	}
 	
