@@ -11,6 +11,7 @@ import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 
@@ -30,6 +31,7 @@ public class WsdlImportWizard extends TeiidImportWizard {
 	private List<String> operations;
 	private String sourceModelName;
 	private String viewModelName;
+	private String jndiName;
 
 	public WsdlImportWizard() {
 		super(IMPORTER);
@@ -70,6 +72,14 @@ public class WsdlImportWizard extends TeiidImportWizard {
 		operations.add(name);
 	}
 
+	public String getJndiName() {
+		return jndiName;
+	}
+
+	public void setJndiName(String jdniName) {
+		this.jndiName = jdniName;
+	}
+
 	@Override
 	public void open() {
 		log.info("Open " + IMPORTER);
@@ -97,6 +107,16 @@ public class WsdlImportWizard extends TeiidImportWizard {
 		new LabeledText(new DefaultGroup("View Model Definition"), "Name").setText(viewModelName);
 
 		new PushButton("Next >").click();
+		
+		//Data Source JNDI page
+		
+		if (jndiName != null){
+			new DefaultText(new DefaultGroup("JBoss Data Source Information"),0).setText(jndiName);
+		}
+		
+		new PushButton("Next >").click();
+		
+		// Type of procedures page
 		new PushButton("Next >").click();
 
 		for (String operation : operations) {

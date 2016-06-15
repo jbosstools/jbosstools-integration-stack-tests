@@ -10,6 +10,7 @@ import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
+import org.jboss.reddeer.junit.execution.annotation.RunIf;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
@@ -19,8 +20,10 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
+import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
-import org.jboss.tools.teiid.reddeer.manager.ConnectionProfilesConstants;
+import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
+import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.matcher.ModelColumnMatcher;
@@ -35,8 +38,8 @@ import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
 @TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = {
-	ConnectionProfilesConstants.LDAP,
-	ConnectionProfilesConstants.RHDS })
+	ConnectionProfileConstants.LDAP,
+	ConnectionProfileConstants.RHDS })
 public class LdapImportTest {
 
 	@InjectRequirement
@@ -66,7 +69,7 @@ public class LdapImportTest {
 		Properties importProperties = teiidBot
 				.getProperties(teiidBot.toAbsolutePath("resources/importWizard/rhds.properties"));
 
-		new ImportManager().importFromLdap(NEW_PROJECT, RHDS_MODEL, ConnectionProfilesConstants.RHDS,
+		new ImportManager().importFromLdap(NEW_PROJECT, RHDS_MODEL, ConnectionProfileConstants.RHDS,
 				cpProperties.getProperty("db.hostname"), cpProperties.getProperty("principalDnSuffix"),
 				importProperties);
 
@@ -93,13 +96,15 @@ public class LdapImportTest {
 	}
 
 	@Test
+	@Jira("TEIIDDES-2793")
+	@RunIf(conditionClass = IssueIsClosed.class)
 	public void ldapImport() {
 
 		Properties cpProperties = teiidServer.getServerConfig().getConnectionProfile("ldap").asProperties();
 		Properties importProperties = teiidBot
 				.getProperties(teiidBot.toAbsolutePath("resources/importWizard/ldap.properties"));
 
-		new ImportManager().importFromLdap(NEW_PROJECT, LDAP_MODEL, ConnectionProfilesConstants.LDAP,
+		new ImportManager().importFromLdap(NEW_PROJECT, LDAP_MODEL, ConnectionProfileConstants.LDAP,
 				cpProperties.getProperty("db.hostname"), cpProperties.getProperty("principalDnSuffix"),
 				importProperties);
 

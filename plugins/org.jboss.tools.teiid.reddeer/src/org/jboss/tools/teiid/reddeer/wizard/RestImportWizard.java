@@ -9,6 +9,7 @@ import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 
@@ -30,6 +31,7 @@ public class RestImportWizard extends TeiidImportWizard {
 	private String procedureName;
 	private String rootPath;
 	private List<String> columns;
+	private String jndiName;
 
 	public RestImportWizard() {
 		super(IMPORTER);
@@ -64,6 +66,14 @@ public class RestImportWizard extends TeiidImportWizard {
 		columns.add(column);
 	}
 
+	public String getJndiName() {
+		return jndiName;
+	}
+
+	public void setJndiName(String jndiName) {
+		this.jndiName = jndiName;
+	}
+
 	public void open() {
 		log.info("Open " + IMPORTER);
 		new ShellMenu(getMenuPath()).select();
@@ -85,6 +95,11 @@ public class RestImportWizard extends TeiidImportWizard {
 		new LabeledText(new DefaultGroup("View Model Definition"), "New View Procedure Name:").setText(procedureName);
 
 		next();
+		
+		if (jndiName != null){
+			new DefaultText(new DefaultGroup("JBoss Data Source Information"),0).setText(jndiName);
+		}
+			
 		next();
 		defineRootPath(rootPath);
 		for (String column : columns) {

@@ -81,6 +81,11 @@ public class ImportMetadataManager {
 				importWizard.addElement(element.trim());
 			}
 		}
+		
+		if ((loadedProperty = props.getProperty("JNDI Name")) != null) {
+			importWizard.setJndiName(props.getProperty("JNDI Name"));
+		}
+		
 		importModel(projectName, importWizard);
 	}
 
