@@ -53,6 +53,8 @@ public class FlatFileTest {
 	private static final String REMOTE_VIEW_MODEL = "remoteViewModel";
 	private static final String REMOTE_VIEW_TABLE = "remoteViewTable";
 	private static final String REMOTE_VDB = "RemoteFileVDB";
+	private static final String JNDI_NAME_LOCAL = "LocalSource";
+	private static final String JNDI_NAME_REMOTE = "RemoteSource";
 
 	private final String EMPTY_SPACE_PATH = "resources/flat/folder empty space";
 
@@ -84,6 +86,8 @@ public class FlatFileTest {
 					.setSourceModel(LOCAL_SOURCE_MODEL)
 					.setProject(PROJECT_NAME)
 					.next();
+		importWizard.setJndiName(JNDI_NAME_LOCAL);
+		importWizard.next();
 		importWizard.next();
 		importWizard.next();
 		importWizard.setViewModel(LOCAL_VIEW_MODEL)
@@ -122,6 +126,8 @@ public class FlatFileTest {
 					.setSourceModel(REMOTE_SOURCE_MODEL)
 					.setProject(PROJECT_NAME)
 					.next();
+		importWizard.setJndiName(JNDI_NAME_REMOTE);
+		importWizard.next();
 		importWizard.next();
 		importWizard.next();
 		importWizard.setViewModel(REMOTE_VIEW_MODEL)

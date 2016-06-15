@@ -56,6 +56,7 @@ public class XmlFileImportTest {
 		props.setProperty("destination", PROJECT_NAME);
 		props.setProperty("elements",
 				"CATALOG/CD/TITLE,CATALOG/CD/ARTIST,CATALOG/CD/COUNTRY,CATALOG/CD/COMPANY,CATALOG/CD/PRICE,CATALOG/CD/YEAR");
+		props.setProperty("JNDI Name", "XmlLocalSource");
 		new ImportMetadataManager().importFromXML(PROJECT_NAME, LOCAL_MODEL_PREFIX, LOCAL_CP_NAME, props);		
 		
 		// Import from remote XML file
@@ -66,6 +67,7 @@ public class XmlFileImportTest {
 		props.setProperty("destination", PROJECT_NAME);
 		props.setProperty("elements",
 				"CATALOG/CD/TITLE,CATALOG/CD/ARTIST,CATALOG/CD/COUNTRY,CATALOG/CD/COMPANY,CATALOG/CD/PRICE,CATALOG/CD/YEAR");
+		props.setProperty("JNDI Name", "XmlRemoteSource");
 		new ImportMetadataManager().importFromXML(PROJECT_NAME, REMOTE_MODEL_PREFIX, REMOTE_CP_NAME, props);
 		
 		// Create VDB and test it.

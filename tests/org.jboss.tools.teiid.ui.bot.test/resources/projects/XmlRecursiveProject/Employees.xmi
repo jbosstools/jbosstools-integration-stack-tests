@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ASCII"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:diagram="http://www.metamatrix.com/metamodels/Diagram" xmlns:mmcore="http://www.metamatrix.com/metamodels/Core" xmlns:relational="http://www.metamatrix.com/metamodels/Relational" xmlns:transformation="http://www.metamatrix.com/metamodels/Transformation">
-  <mmcore:ModelAnnotation xmi:uuid="mmuuid:cab3e1e9-5b02-4dd4-8b26-7dda9e6635a6" primaryMetamodelUri="http://www.metamatrix.com/metamodels/Relational" modelType="VIRTUAL" ProducerName="Teiid Designer" ProducerVersion="8.3.4.Final-v20140912-1304-B264">
+  <mmcore:ModelAnnotation xmi:uuid="mmuuid:cab3e1e9-5b02-4dd4-8b26-7dda9e6635a6" primaryMetamodelUri="http://www.metamatrix.com/metamodels/Relational" modelType="VIRTUAL" ProducerName="Teiid Designer" ProducerVersion="10.0.1.Beta1-v20160524-2113-B1">
     <modelImports xmi:uuid="mmuuid:1685c9c1-5625-4c8f-aa33-1f59f3bba444" name="XMLSchema" modelLocation="http://www.w3.org/2001/XMLSchema" modelType="TYPE" primaryMetamodelUri="http://www.eclipse.org/xsd/2002/XSD"/>
     <modelImports xmi:uuid="mmuuid:84733e61-c4e7-4fb4-9a77-3fe006d78b3b" name="EmpData_Source" modelLocation="EmpData_Source.xmi" uuid="mmuuid:0e390dee-e33e-4f21-b364-ef391384cd8a" modelType="PHYSICAL" primaryMetamodelUri="http://www.metamatrix.com/metamodels/Relational"/>
   </mmcore:ModelAnnotation>
@@ -416,7 +416,7 @@
   <transformation:TransformationContainer xmi:uuid="mmuuid:fb33d5d1-a873-40fe-a312-7c5ebfba60e0">
     <transformationMappings xsi:type="transformation:SqlTransformationMappingRoot" xmi:uuid="mmuuid:88a69086-7b7c-42dd-81a1-f03df2397d60" outputs="mmuuid/edc9d9ec-3430-47ee-bc19-c40158cde01b" target="mmuuid/edc9d9ec-3430-47ee-bc19-c40158cde01b">
       <helper xsi:type="transformation:SqlTransformation" xmi:uuid="mmuuid:aa847876-0655-4cfe-9498-89599bd36387">
-        <nested xsi:type="transformation:SqlTransformation" xmi:uuid="mmuuid:b09b452e-bb89-45c7-bc5d-95a6af960d1e" selectSql="SELECT &#xa;&#x9;A.ID, A.LastName, A.FirstName, A.MiddleName, A.EmpId, A.Department, A.AnnualSalary, A.Title, A.HomePhone, A.Manager, A.Street, A.City, A.State, A.Zip&#xa;FROM&#xa;&#x9;(EXEC EmpData_Source.getTextFiles('EmpData.csv')) AS f, TEXTTABLE(file COLUMNS ID string, LastName string, FirstName string, MiddleName string, EmpId string, Department string, AnnualSalary string, Title string, HomePhone string, Manager string, Street string, City string, State string, Zip string  HEADER) AS A"/>
+        <nested xsi:type="transformation:SqlTransformation" xmi:uuid="mmuuid:b09b452e-bb89-45c7-bc5d-95a6af960d1e" selectSql="SELECT A.ID, A.LastName, A.FirstName, A.MiddleName, convert(A.EmpId, biginteger) AS EmpId, A.Department, A.AnnualSalary, A.Title, A.HomePhone, A.Manager, A.Street, A.City, A.State, A.Zip FROM (EXEC EmpData_Source.getTextFiles('EmpData.csv')) AS f, TEXTTABLE(f.file COLUMNS ID string, LastName string, FirstName string, MiddleName string, EmpId string, Department string, AnnualSalary string, Title string, HomePhone string, Manager string, Street string, City string, State string, Zip string HEADER) AS A"/>
         <aliases xmi:uuid="mmuuid:14cd9062-05ba-4a75-ada5-f5330c0a2f94" alias="getTextFiles">
           <aliasedObject href="EmpData_Source.xmi#mmuuid/4455857a-191d-46d7-885a-2c68feb63884"/>
         </aliases>
@@ -451,8 +451,8 @@
     <columns xmi:uuid="mmuuid:5336b6dc-8919-41e8-93bf-8f160fdbdb19" name="MiddleName" nameInSource="MiddleName" length="4000" defaultValue="" updateable="false">
       <type href="http://www.w3.org/2001/XMLSchema#string"/>
     </columns>
-    <columns xmi:uuid="mmuuid:b6e80b82-636d-4c20-8380-d0a37e4cd66b" name="EmpId" nameInSource="EmpId" length="4000" defaultValue="" updateable="false">
-      <type href="http://www.w3.org/2001/XMLSchema#string"/>
+    <columns xmi:uuid="mmuuid:b6e80b82-636d-4c20-8380-d0a37e4cd66b" name="EmpId" nameInSource="EmpId" defaultValue="" updateable="false">
+      <type href="http://www.w3.org/2001/XMLSchema#positiveInteger"/>
     </columns>
     <columns xmi:uuid="mmuuid:10077cc6-d07c-4905-9357-fe1b6de22a0f" name="Department" nameInSource="Department" length="4000" defaultValue="" updateable="false">
       <type href="http://www.w3.org/2001/XMLSchema#string"/>

@@ -31,7 +31,7 @@ public class ModelProject {
 	public void importModel(TeiidImportWizard importWizard) {
 		project.select();
 		importWizard.execute();
-		AbstractWait.sleep(TimePeriod.SHORT);
+		AbstractWait.sleep(TimePeriod.NORMAL);
 		new WorkbenchShell().setFocus();
 	}
 
