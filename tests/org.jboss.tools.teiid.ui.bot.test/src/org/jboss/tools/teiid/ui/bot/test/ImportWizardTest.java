@@ -3,10 +3,13 @@ package org.jboss.tools.teiid.ui.bot.test;
 import java.util.Properties;
 
 import org.jboss.reddeer.core.handler.ShellHandler;
+import org.jboss.reddeer.junit.execution.annotation.RunIf;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
+import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
 import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.manager.ImportMetadataManager;
@@ -175,6 +178,8 @@ public class ImportWizardTest {
 	}
 
 	@Test
+	@Jira("TEIIDDES-2855")
+	@RunIf(conditionClass = IssueIsClosed.class)
 	public void wsdlToWSImportTest() {
 
 		// import wsdl

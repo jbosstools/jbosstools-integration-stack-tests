@@ -9,7 +9,9 @@ import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
@@ -27,6 +29,7 @@ public class XMLImportWizard extends TeiidImportWizard {
 	private String profileName;
 	private String rootPath;
 	private List<String[]> elements;
+	private String jndiName;
 
 	public XMLImportWizard() {
 		super("File Source (XML) >> Source and View Model");
@@ -57,6 +60,14 @@ public class XMLImportWizard extends TeiidImportWizard {
 		elements.add(path.split("/"));
 	}
 
+	public String getJndiName() {
+		return jndiName;
+	}
+
+	public void setJndiName(String jndiName) {
+		this.jndiName = jndiName;
+	}
+
 	public void execute() {
 		open();
 		new WaitUntil(new ShellWithTextIsAvailable("Import From XML File Source"));
@@ -72,6 +83,12 @@ public class XMLImportWizard extends TeiidImportWizard {
 		new LabeledText("Name:").setText(name + "Source");
 
 		next();
+		
+		if(jndiName != null){
+			new DefaultText(new DefaultGroup("JBoss Data Source Information"),0).setText(jndiName);
+		}
+		next();
+		
 		new SWTWorkbenchBot().text(1).setText(rootPath);
 		for (String[] path : elements) {
 			new DefaultTreeItem(new DefaultTree(0), path).select();

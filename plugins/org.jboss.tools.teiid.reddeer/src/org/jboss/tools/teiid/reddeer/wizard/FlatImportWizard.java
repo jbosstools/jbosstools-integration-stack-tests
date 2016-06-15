@@ -7,6 +7,7 @@ import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
@@ -128,6 +129,12 @@ public class FlatImportWizard extends TeiidImportWizard {
 	public FlatImportWizard setDataLine(String num) {
 		log.info("Set data line to '" + num + "'");
 		new LabeledText("Data line #").setText(num);
+		return this;
+	}
+	
+	public FlatImportWizard setJndiName(String jndiName) {
+		log.info("Setting JNDI name");
+		new DefaultText(new DefaultGroup("JBoss Data Source Information"),0).setText(jndiName);
 		return this;
 	}
 

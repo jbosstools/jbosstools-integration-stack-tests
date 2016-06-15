@@ -13,7 +13,6 @@ import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
-import org.jboss.tools.teiid.reddeer.manager.VDBManager;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
@@ -21,6 +20,7 @@ import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.RestImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.RestProfileWizard;
+import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -99,10 +99,16 @@ public class ConsumeRestWs {
 		restWizardXML.addColumn("end");
 		restWizardXML.addColumn("programme/title");
 
+		restWizardXML.setJndiName("restXMLSource");
+		
 		restWizardXML.execute();
-
-		new VDBManager().createVDB(PROJECT_NAME, VDBXML);
-		new VDBManager().addModelsToVDB(PROJECT_NAME, VDBXML, new String[] { SOURCE_MODEL_XML, VIEW_MODEL_XML });
+		
+		VdbWizard vdbWizard = new VdbWizard();
+		vdbWizard.open();
+		vdbWizard.setLocation(PROJECT_NAME);
+		vdbWizard.setName(VDBXML);
+		vdbWizard.addModel(new String[] { PROJECT_NAME, VIEW_MODEL_XML + ".xmi" });
+		vdbWizard.finish();
 
 		new ServersView().open();
 		new ServersViewExt().refreshServer(new ServersView().getServers().get(0).getLabel().getName());
@@ -136,11 +142,17 @@ public class ConsumeRestWs {
 		restWizardJson.addColumn("start");
 		restWizardJson.addColumn("end");
 		restWizardJson.addColumn("programme/title");
+		
+		restWizardJson.setJndiName("restJsonSource");
 
 		restWizardJson.execute();
-
-		new VDBManager().createVDB(PROJECT_NAME, VDBJSON);
-		new VDBManager().addModelsToVDB(PROJECT_NAME, VDBJSON, new String[] { SOURCE_MODEL_JSON, VIEW_MODEL_JSON });
+		
+		VdbWizard vdbWizard = new VdbWizard();
+		vdbWizard.open();
+		vdbWizard.setLocation(PROJECT_NAME);
+		vdbWizard.setName(VDBJSON);
+		vdbWizard.addModel(new String[] { PROJECT_NAME, VIEW_MODEL_JSON + ".xmi" });
+		vdbWizard.finish();
 
 		new ServersView().open();
 		new ServersViewExt().refreshServer(new ServersView().getServers().get(0).getLabel().getName());
@@ -177,11 +189,17 @@ public class ConsumeRestWs {
 		restWizardXML.addColumn("start");
 		restWizardXML.addColumn("end");
 		restWizardXML.addColumn("programme/title");
+		
+		restWizardXML.setJndiName("restXMLDigestSource");
 
 		restWizardXML.execute();
-
-		new VDBManager().createVDB(PROJECT_NAME, VDBXMLDIGEST);
-		new VDBManager().addModelsToVDB(PROJECT_NAME, VDBXMLDIGEST, new String[] { SOURCE_MODEL_XML_DIGEST, VIEW_MODEL_XML_DIGEST });
+		
+		VdbWizard vdbWizard = new VdbWizard();
+		vdbWizard.open();
+		vdbWizard.setLocation(PROJECT_NAME);
+		vdbWizard.setName(VDBXMLDIGEST);
+		vdbWizard.addModel(new String[] { PROJECT_NAME, VIEW_MODEL_XML_DIGEST + ".xmi" });
+		vdbWizard.finish();
 
 		new ServersView().open();
 		new ServersViewExt().refreshServer(new ServersView().getServers().get(0).getLabel().getName());
@@ -218,11 +236,17 @@ public class ConsumeRestWs {
 		restWizardJson.addColumn("start");
 		restWizardJson.addColumn("end");
 		restWizardJson.addColumn("programme/title");
+		
+		restWizardJson.setJndiName("restJsonDigestSource");
 
 		restWizardJson.execute();
-
-		new VDBManager().createVDB(PROJECT_NAME, VDBJSONDIGEST);
-		new VDBManager().addModelsToVDB(PROJECT_NAME, VDBJSONDIGEST, new String[] { SOURCE_MODEL_JSON_DIGEST, VIEW_MODEL_JSON_DIGEST });
+		
+		VdbWizard vdbWizard = new VdbWizard();
+		vdbWizard.open();
+		vdbWizard.setLocation(PROJECT_NAME);
+		vdbWizard.setName(VDBJSONDIGEST);
+		vdbWizard.addModel(new String[] { PROJECT_NAME, VIEW_MODEL_JSON_DIGEST + ".xmi" });
+		vdbWizard.finish();
 
 		new ServersView().open();
 		new ServersViewExt().refreshServer(new ServersView().getServers().get(0).getLabel().getName());
