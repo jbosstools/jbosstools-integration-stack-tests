@@ -2,6 +2,7 @@ package org.jboss.tools.drools.ui.bot.test.util;
 
 import org.apache.log4j.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -10,13 +11,11 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 
 public final class RunUtility {
 	private static final Logger LOGGER = Logger.getLogger(RunUtility.class);
-
-	private RunUtility() {
-	}
 
 	public static void runAsJavaApplication(String projectName, String... path) {
 		runAsJavaApplication(false, projectName, path);
@@ -57,6 +56,24 @@ public final class RunUtility {
 		} catch (Exception ex) {
 			LOGGER.debug("Confirm Perspective Switch dialog not shown.");
 		}
+	}
+
+	public static String runTest(String projectName, String className) {
+		final String testDirectory = "src/main/java";
+		final String testPackage = "com.sample";
+
+		ConsoleView consoleView = new ConsoleView();
+		consoleView.open();
+
+		runAsJavaApplication(projectName, testDirectory, testPackage, className);
+		new WaitUntil(new ApplicationIsTerminated());
+
+		consoleView.open();
+
+		String consoleText = consoleView.getConsoleText();
+		LOGGER.debug(consoleText);
+
+		return consoleText;
 	}
 
 	private static void selectProject(String projectName, String... path) {

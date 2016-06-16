@@ -14,9 +14,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.Platform;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.core.lookup.ShellLookup;
 import org.jboss.reddeer.core.util.Display;
@@ -33,13 +30,10 @@ import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage.DroolsRuntime;
-import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectWithExamplesWizardPage;
-import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectWizard;
 import org.jboss.tools.drools.ui.bot.test.Activator;
 import org.jboss.tools.drools.ui.bot.test.util.annotation.UseDefaultProject;
 import org.jboss.tools.drools.ui.bot.test.util.annotation.UsePerspective;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -56,11 +50,9 @@ import org.osgi.framework.Bundle;
 public abstract class TestParent {
 	private static final Logger LOGGER = Logger.getLogger(TestParent.class);
 	private static final File SCREENSHOT_DIR = new File("screenshots");
-	private static final String DEBUG_REGEX = "(SLF4J: .*[\r\n]+)+?(.*[\r\n]+)*?";
-	private static final String SUCCESSFUL_RUN_REGEX = DEBUG_REGEX + "Hello World[\r\n]+Goodbye cruel world[\r\n]+";
 	protected static final String DEFAULT_DROOLS_RUNTIME_NAME = "defaultTestRuntime";
 	protected static final String DEFAULT_PACKAGE_NAME = "org.jboss.qa";
-	public static final String DEFAULT_PROJECT_NAME = "defaultTestProject";
+	protected static final String DEFAULT_PROJECT_NAME = "defaultTestProject";
 
 	private static final AtomicBoolean initialized = new AtomicBoolean(false);
 
@@ -149,7 +141,7 @@ public abstract class TestParent {
 		// setup default project
 		String methodName = getMethodName();
 		if (getAnnotationOnMethod(methodName, UseDefaultProject.class) != null) {
-			createDroolsProjectWithSamples(DEFAULT_PROJECT_NAME);
+			ProjectUtility.createDroolsProjectWithAllSamples(DEFAULT_PROJECT_NAME);
 		}
 	}
 
@@ -275,21 +267,6 @@ public abstract class TestParent {
 		}
 		ShellHandler.getInstance().closeAllNonWorbenchShells();
 	}
-	
-	protected void createDroolsProjectWithSamples(String projectName) {
-		NewDroolsProjectWizard newDroolsProjectWizard = new NewDroolsProjectWizard();
-		newDroolsProjectWizard.open();
-		newDroolsProjectWizard.getFirstPage().selectProjectWithExamples();
-		newDroolsProjectWizard.next();
-		NewDroolsProjectWithExamplesWizardPage pageWithExamples = newDroolsProjectWizard.getProjectWithExamplesPage();
-		pageWithExamples.setProjectName(projectName);
-		pageWithExamples.setUseDefaultLocation(true);
-		pageWithExamples.checkAll();
-		pageWithExamples.useRuntime();
-		Assert.assertTrue("No runtime is installed.", pageWithExamples.getInstalledRuntimes().size() > 0);
-		newDroolsProjectWizard.finish();
-		new WaitWhile(new JobIsRunning());
-	}
 
 	protected String getResourcesLocation() {
 		return "src/main/resources";
@@ -330,19 +307,5 @@ public abstract class TestParent {
 	protected String getMethodName() {
 		return name.getMethodName().replaceAll("\\[\\d+\\]", "").replace("default", "").replaceAll("brms-.*\\.xml", "")
 				.replaceAll("drools-.*\\.xml", "").replaceAll("eap-.*\\.xml", "").trim();
-	}
-	
-	protected void runAndCheckDroolsTest(String projectName) {
-		ConsoleView consoleView = new ConsoleView();
-		consoleView.open();
-		
-		RunUtility.runAsJavaApplication(projectName, "src/main/java", "com.sample", "DroolsTest.java");
-		new WaitUntil(new ApplicationIsTerminated());
-		
-		consoleView.open();
-		String consoleText = consoleView.getConsoleText();
-		LOGGER.debug(consoleText);
-		Assert.assertNotNull("Console text is empty.", consoleText);
-		Assert.assertTrue("Unexpected text in console:\n" + consoleText, consoleText.matches(SUCCESSFUL_RUN_REGEX));
 	}
 }

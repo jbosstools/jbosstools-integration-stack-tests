@@ -20,6 +20,7 @@ import org.jboss.tools.drools.ui.bot.test.kienavigator.CreateItemsTest;
 import org.jboss.tools.drools.ui.bot.test.kienavigator.OpenKieNavigatorTest;
 import org.jboss.tools.drools.ui.bot.test.kienavigator.RepositoryManipulationTest;
 import org.jboss.tools.drools.ui.bot.test.kienavigator.ServerConnectionTest;
+import org.jboss.tools.drools.ui.bot.test.smoke.ConvertProjectTest;
 import org.jboss.tools.drools.ui.bot.test.smoke.DroolsProjectTest;
 import org.jboss.tools.drools.ui.bot.test.smoke.KieNavigatorTest;
 import org.jboss.tools.drools.ui.bot.test.smoke.NewResourcesTest;
@@ -34,6 +35,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	KieNavigatorTest.class,
 	DroolsProjectTest.class,
 	NewResourcesTest.class,
+	ConvertProjectTest.class,
 	// basic tests
 	MavenProjectTest.class,
 	DroolsRuntimeManagementTest.class,
