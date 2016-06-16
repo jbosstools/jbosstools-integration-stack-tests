@@ -1,36 +1,51 @@
 package org.jboss.tools.drools.ui.bot.test.functional;
 
-import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectWithExamplesWizardPage;
-import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectWizard;
-import org.jboss.tools.drools.ui.bot.test.util.TestParent;
+import org.jboss.tools.drools.ui.bot.test.util.ProjectTestParent;
+import org.jboss.tools.drools.ui.bot.test.util.ProjectUtility;
+import org.jboss.tools.drools.ui.bot.test.util.RunUtility;
 import org.jboss.tools.drools.ui.bot.test.util.annotation.UsePerspective;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
-public class MavenProjectTest extends TestParent {
+public class MavenProjectTest extends ProjectTestParent {
 
 	@Test
 	@UsePerspective(JavaPerspective.class)
-	public void createMavenProjectTest() {
+	public void testMavenDecisionTableClass() {
 		final String projectName = this.getMethodName();
-		createMavenProjectWithAllSamples(projectName);
-		runAndCheckDroolsTest(projectName);
+		final String className = "DecisionTableTest.java"; 
+
+		ProjectUtility.createMavenProjectWithDecisionTableSample(projectName);
+		String consoleText = RunUtility.runTest(projectName, className);
+
+		assertConsoleText(consoleText, HELLO_GOODBYE_WORLD_REGEX);
+
+	}
+
+	@Test
+	@UsePerspective(JavaPerspective.class)
+	public void testMavenDroolsClass() {
+		final String projectName = this.getMethodName();
+		final String className = "DroolsTest.java"; 
+
+		ProjectUtility.createMavenProjectWithRuleSample(projectName);
+		String consoleText = RunUtility.runTest(projectName, className);
+
+		assertConsoleText(consoleText, HELLO_GOODBYE_WORLD_REGEX);
 	}
 	
-	private void createMavenProjectWithAllSamples(String projectName) {
-		NewDroolsProjectWizard projectWizard = new NewDroolsProjectWizard();
-		projectWizard.open();
-		projectWizard.getFirstPage().selectProjectWithExamples();
-		projectWizard.next();
-		NewDroolsProjectWithExamplesWizardPage projectWithExamplesWizardPage = projectWizard.getProjectWithExamplesPage();
-		projectWithExamplesWizardPage.setProjectName(projectName);
-		projectWithExamplesWizardPage.setUseDefaultLocation(true);
-		projectWithExamplesWizardPage.useMaven();
-		projectWithExamplesWizardPage.checkAll();
-		projectWizard.finish(TimePeriod.VERY_LONG);
+	@Test
+	@UsePerspective(JavaPerspective.class)
+	public void testMavenProcessClass() {
+		final String projectName = this.getMethodName();
+		final String className = "ProcessTest.java"; 
+
+		ProjectUtility.createMavenProjectWithProcessSample(projectName);
+		String consoleText = RunUtility.runTest(projectName, className);
+
+		assertConsoleText(consoleText, HELLO_WORLD_REGEX);
 	}
 }

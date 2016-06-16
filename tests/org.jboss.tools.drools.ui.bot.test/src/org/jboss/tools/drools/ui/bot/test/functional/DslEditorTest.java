@@ -45,7 +45,7 @@ public class DslEditorTest extends TestParent {
 		wiz.open();
 		NewDslWizardPage page = new NewDslWizardPage();
 		page.setParentFolder(getRulesLocation());
-		page.setFileName(getTestName());
+		page.setFileName(getMethodName());
 		wiz.next();
 		NewDslSamplesWizardPage samplePage = new NewDslSamplesWizardPage();
 		samplePage.setAddSampleDsl(true);
@@ -59,7 +59,7 @@ public class DslEditorTest extends TestParent {
 	@UseDefaultProject
 	public void testOpen() {
 		Project project = new PackageExplorer().getProject(DEFAULT_PROJECT_NAME);
-		project.getProjectItem(getResourcePath(getTestName() + ".dsl")).open();
+		project.getProjectItem(getResourcePath(getMethodName() + ".dsl")).open();
 
 		DslEditor editor = new DslEditor();
 		Assert.assertNotSame("No DSL lines were generated", 0, editor.getDslLines().size());
@@ -191,14 +191,14 @@ public class DslEditorTest extends TestParent {
 	@UsePerspective(JavaPerspective.class)
 	@UseDefaultProject
 	public void testOpenHandwrittenDsl() {
-		OpenUtility.openResourceWith("Text Editor", DEFAULT_PROJECT_NAME, getResourcePath(getTestName() + ".dsl"));
+		OpenUtility.openResourceWith("Text Editor", DEFAULT_PROJECT_NAME, getResourcePath(getMethodName() + ".dsl"));
 
 		TextEditor txtEditor = new TextEditor();
 		txtEditor.setText(getTemplateText("DslTestContent"));
 		txtEditor.save();
 		txtEditor.close();
 
-		OpenUtility.openResourceWith("DSL Editor", DEFAULT_PROJECT_NAME, getResourcePath(getTestName() + ".dsl"));
+		OpenUtility.openResourceWith("DSL Editor", DEFAULT_PROJECT_NAME, getResourcePath(getMethodName() + ".dsl"));
 
 		DslEditor editor = new DslEditor();
 		List<DslLine> lines = editor.getDslLines();
@@ -207,7 +207,7 @@ public class DslEditorTest extends TestParent {
 	}
 
 	private DslEditor openTestDslFile() {
-		OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath(getTestName() + ".dsl"));
+		OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath(getMethodName() + ".dsl"));
 
 		return new DslEditor();
 	}
