@@ -54,7 +54,7 @@ public abstract class DrlCompletionParent extends TestParent {
 		NewRuleResourceWizard wiz = new NewRuleResourceWizard();
 		wiz.open();
 		wiz.getFirstPage().setParentFolder(getRulesLocation());
-		wiz.getFirstPage().setFileName(getTestName());
+		wiz.getFirstPage().setFileName(getMethodName());
 		wiz.getFirstPage().setRulePackageName("com.sample");
 		wiz.finish();
 
@@ -117,7 +117,7 @@ public abstract class DrlCompletionParent extends TestParent {
 	private DrlEditor openDrlEditor() {
 		PackageExplorer explorer = new PackageExplorer();
 		explorer.open();
-		explorer.getProject(DEFAULT_PROJECT_NAME).getProjectItem(getResourcePath(getTestName() + ".drl")).open();
+		explorer.getProject(DEFAULT_PROJECT_NAME).getProjectItem(getResourcePath(getMethodName() + ".drl")).open();
 
 		return new DrlEditor();
 	}
