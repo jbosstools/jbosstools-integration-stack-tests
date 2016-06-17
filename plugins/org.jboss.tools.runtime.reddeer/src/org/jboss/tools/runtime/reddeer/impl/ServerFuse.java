@@ -2,6 +2,7 @@ package org.jboss.tools.runtime.reddeer.impl;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.jboss.tools.runtime.reddeer.Namespaces;
@@ -16,8 +17,18 @@ import org.jboss.tools.runtime.reddeer.Namespaces;
 public class ServerFuse extends ServerKaraf {
 
 	private final String category = "JBoss Fuse";
-
 	private final String label = "JBoss Fuse";
+
+	@XmlElement(name = "camel-version", namespace = Namespaces.SOA_REQ)
+	private String camelVersion;
+
+	public String getCamelVersion() {
+		return camelVersion;
+	}
+
+	public void setCamelVersion(String camelVersion) {
+		this.camelVersion = camelVersion;
+	}
 
 	@Override
 	public String getCategory() {
