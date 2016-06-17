@@ -2,9 +2,10 @@ package org.jboss.tools.fuse.reddeer.editor;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
@@ -20,7 +21,7 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
  * 
  * @author djelinek
  */
-public class CamelEndpointDialog {
+public class CamelEndpointDialog extends WizardDialog {
 	
 	private static final String TYPE = "JBoss Fuse";
 
@@ -37,30 +38,6 @@ public class CamelEndpointDialog {
 	 */
 	public void chooseCamelComponent(String component) {
 		new DefaultTreeItem(new String[] { component }).select();
-	}
-	
-	public PushButton getFinish() {
-		return new PushButton("Finish");
-	}
-	
-	public PushButton getCancel() {
-		return new PushButton("Cancel");
-	}
-	
-	/**
-	 * Click on the Finish button in Camel endpoint dialog<br/>
-	 */
-	public void Finish() {
-		new PushButton("Finish").click();
-		new WaitWhile(new ShellWithTextIsAvailable("Choose Global Camel endpoint"));
-	}
-	
-	/**
-	 * Click on the Cancel button in Camel endpoint dialog<br/>
-	 */
-	public void Cancel() {
-		new PushButton("Cancel").click();
-		new WaitWhile(new ShellWithTextIsAvailable("Choose Global Camel endpoint"));
 	}
 	
 	public LabeledText getId() {
@@ -145,7 +122,7 @@ public class CamelEndpointDialog {
 		for (TreeItem treeItem : items) {
 			components.add(treeItem.getText());
 		}				
-		endpointDialog.Cancel();
+		endpointDialog.cancel();
 		return components;
 	}
 }

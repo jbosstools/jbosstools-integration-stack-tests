@@ -1,9 +1,10 @@
 package org.jboss.tools.fuse.reddeer.editor;
 
 import java.util.List;
+
 import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -15,37 +16,13 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
  * 
  * @author djelinek
  */
-public class CamelDataFormatDialog {
+public class CamelDataFormatDialog extends WizardDialog {
 	
 	private static final String TYPE = "JBoss Fuse";
 	
 	public void activate() {
 		new WaitUntil(new ShellWithTextIsAvailable("Create a new Data Format..."));
 		new DefaultShell("Create a new Data Format...");		
-	}
-	
-	/**
-	 * Click on the Finish button in Camel Data Foramt dialog<br/>
-	 */
-	public void Finish() {
-		new PushButton("Finish").click();
-		new WaitWhile(new ShellWithTextIsAvailable("Create a global Data Format"));
-	}
-	
-	/**
-	 * Click on the Cancel button in Camel Data Foramt dialog<br/>
-	 */
-	public void Cancel() {
-		new PushButton("Cancel").click();
-		new WaitWhile(new ShellWithTextIsAvailable("Create a global Data Format"));
-	}
-	
-	public PushButton getFinish() {
-		return new PushButton("Finish");
-	}
-	
-	public PushButton getCancel() {
-		return new PushButton("Cancel");
 	}
 	
 	public LabeledText getId() {
@@ -100,7 +77,7 @@ public class CamelDataFormatDialog {
 		CamelDataFormatDialog formatDialog = new CamelDataFormatDialog();
 		formatDialog.activate();			
 		List<String> items = new LabeledCombo("Data Format:").getItems();	
-		formatDialog.Cancel();
+		formatDialog.cancel();
 		return items;
 	}
 }
