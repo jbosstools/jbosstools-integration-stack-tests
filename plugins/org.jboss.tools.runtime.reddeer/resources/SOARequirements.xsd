@@ -366,6 +366,7 @@
 				<xs:element name="jre" type="xs:string" />
 				<xs:element name="exec-env" type="xs:string" />
 			</xs:choice>
+			<xs:element name="camel-version" type="xs:string" minOccurs="1" maxOccurs="1"/>
 			<xs:element name="host" type="xs:string" minOccurs="0" maxOccurs="1" />
 			<xs:element name="port" type="xs:string" minOccurs="0" maxOccurs="1" />
 			<xs:element name="username" type="xs:string" minOccurs="0" maxOccurs="1" />
@@ -384,6 +385,7 @@
 					<xs:enumeration value="6.0" />
 					<xs:enumeration value="6.1" />
 					<xs:enumeration value="6.2" />
+					<xs:enumeration value="6.3" />
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
