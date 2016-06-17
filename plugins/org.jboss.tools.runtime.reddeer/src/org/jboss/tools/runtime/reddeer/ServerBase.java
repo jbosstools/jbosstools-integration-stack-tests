@@ -66,7 +66,7 @@ public abstract class ServerBase extends RuntimeBase {
 		return jreName;
 	}
 
-	@XmlElement(name = "exec-env", namespace = Namespaces.SOA_REQ, defaultValue = DEFAULT_EXEC_ENV)
+	@XmlElement(name = "execEnv", namespace = Namespaces.SOA_REQ, defaultValue = DEFAULT_EXEC_ENV)
 	public String getExecEnv() {
 		return execEnv;
 	}
