@@ -23,8 +23,8 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.common.reddeer.FileUtils;
 import org.jboss.tools.common.reddeer.preference.MavenUserSettingsPreferencePage;
+import org.jboss.tools.fuse.reddeer.ProjectType;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
-import org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard.ProjectType;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -178,7 +178,7 @@ public class FuseProjectTest extends DefaultTest {
 	@Test
 	public void testArchetype() {
 
-		ProjectFactory.createProject(template, template, ProjectType.Spring);
+		ProjectFactory.createProject(template, template, ProjectType.SPRING);
 		assertTrue("Project '" + template + "' is not present in Project Explorer", isPresent(template));
 		assertFalse("Project '" + template + "' was created with errors", hasErrors());
 		assertTrue("Project '" + template + "' cannot be run as Local Camel Context", canBeRun(template));

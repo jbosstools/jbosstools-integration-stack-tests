@@ -1,6 +1,6 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
-import static org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard.ProjectType.Spring;
+import static org.jboss.tools.fuse.reddeer.ProjectType.SPRING;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -62,7 +62,7 @@ public class CamelEditorTest extends DefaultTest {
 	public void setupResetCamelContext() {
 
 		new WorkbenchShell();
-		ProjectFactory.createProject("cbr", "Content Based Router", Spring);
+		ProjectFactory.createProject("cbr", "Content Based Router", SPRING);
 		new ErrorLogView().deleteLog();
 	}
 

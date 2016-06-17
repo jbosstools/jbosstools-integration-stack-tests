@@ -1,6 +1,6 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
-import static org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard.ProjectType.Blueprint;
+import static org.jboss.tools.fuse.reddeer.ProjectType.BLUEPRINT;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -131,7 +131,7 @@ public class RegressionFuseTest extends DefaultTest {
 	@Test
 	public void issue_1132() {
 
-		ProjectFactory.createProject("camel-blueprint", "Content Based Router", Blueprint);
+		ProjectFactory.createProject("camel-blueprint", "Content Based Router", BLUEPRINT);
 		new ProjectExplorer().getProject("camel-blueprint")
 				.getProjectItem("src/test/java", "com.mycompany.camel.blueprint", "RouteTest.java").delete();
 		String server = serverRequirement.getConfig().getName();
@@ -169,7 +169,7 @@ public class RegressionFuseTest extends DefaultTest {
 	@Test
 	public void issue_1152() {
 
-		ProjectFactory.createProject("camel-spring-dm", "Content Based Router", Blueprint);
+		ProjectFactory.createProject("camel-spring-dm", "Content Based Router", BLUEPRINT);
 		String server = serverRequirement.getConfig().getName();
 		FuseServerManipulator.startServer(server);
 		FuseServerManipulator.addModule(server, "camel-spring-dm");
@@ -191,7 +191,7 @@ public class RegressionFuseTest extends DefaultTest {
 	@Test
 	public void issue_1252() {
 
-		ProjectFactory.createProject("camel-blueprint", "Content Based Router", Blueprint);
+		ProjectFactory.createProject("camel-blueprint", "Content Based Router", BLUEPRINT);
 		String server = serverRequirement.getConfig().getName();
 		FuseServerManipulator.addModule(server, "camel-blueprint");
 		FuseServerManipulator.startServer(server);

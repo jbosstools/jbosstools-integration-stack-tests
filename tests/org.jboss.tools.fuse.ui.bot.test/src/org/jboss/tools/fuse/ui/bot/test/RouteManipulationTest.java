@@ -1,6 +1,6 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
-import static org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard.ProjectType.Spring;
+import static org.jboss.tools.fuse.reddeer.ProjectType.SPRING;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -52,7 +52,7 @@ public class RouteManipulationTest extends DefaultTest {
 	@Before
 	public void setupCreateAndRunCamelProject() {
 
-		ProjectFactory.createProject("camel-spring", "Content Based Router", Spring);
+		ProjectFactory.createProject("camel-spring", "Content Based Router", SPRING);
 		Shell workbenchShell = new WorkbenchShell();
 		new CamelProject("camel-spring").runCamelContextWithoutTests("camel-context.xml");
 		new WaitUntil(new ConsoleHasText("Route: _route1 started and consuming"), TimePeriod.getCustom(300));
