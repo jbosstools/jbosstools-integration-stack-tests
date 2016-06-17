@@ -59,7 +59,7 @@ public class ConfigurationsEditor extends GEFEditor {
 		endpointDialog.activate();
 		endpointDialog.setId(title);
 		endpointDialog.chooseCamelComponent(component);
-		endpointDialog.Finish();	
+		endpointDialog.finish();	
 	}
 	
 	/**
@@ -84,7 +84,7 @@ public class ConfigurationsEditor extends GEFEditor {
 		formatDialog.activate();
 		formatDialog.setIdText(title);
 		formatDialog.chooseDataFormat(format);
-		formatDialog.Finish();
+		formatDialog.finish();
 	}
 	
 	/**

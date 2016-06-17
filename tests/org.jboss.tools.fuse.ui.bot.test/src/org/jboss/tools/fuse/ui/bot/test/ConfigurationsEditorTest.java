@@ -23,7 +23,7 @@ import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.editor.CamelEndpointDialog;
 import org.jboss.tools.fuse.reddeer.editor.ConfigurationsEditor;
 import org.jboss.tools.fuse.reddeer.editor.ConfigurationsEditor.Element;
-import org.jboss.tools.fuse.ui.bot.test.utils.FuseArchetypeNotFoundException;
+import org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.After;
 import org.junit.Before;
@@ -43,9 +43,8 @@ public class ConfigurationsEditorTest extends DefaultTest {
 
 	protected Logger log = Logger.getLogger(ConfigurationsEditorTest.class);
 	
-	private static final String PROJECT = "camel-spring";
+	private static final String PROJECT_NAME = "camel-spring";
 	private static final String CONTEXT = "camel-context.xml";
-	private static final String ARCHETYPE = "camel-archetype-spring";
 	private static final String TYPE = "JBoss Fuse";
 	
 	/**
@@ -54,10 +53,10 @@ public class ConfigurationsEditorTest extends DefaultTest {
 	 *             Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Before
-	public void setupResetCamelContext() throws FuseArchetypeNotFoundException {
+	public void setupResetCamelContext() {
 
 		new WorkbenchShell();
-		ProjectFactory.createProject(PROJECT, ARCHETYPE);
+		ProjectFactory.createProject(PROJECT_NAME, "2.15.1.redhat-621084", "Content Based Router", NewFuseIntegrationProjectWizard.ProjectType.Spring);
 		new ErrorLogView().deleteLog();
 	}
 	
@@ -89,7 +88,7 @@ public class ConfigurationsEditorTest extends DefaultTest {
 	@Test
 	public void testCreateGlobalEndpoint() {
 		
-		ConfigurationsEditor confEditor = new ConfigurationsEditor(PROJECT, CONTEXT);
+		ConfigurationsEditor confEditor = new ConfigurationsEditor(PROJECT_NAME, CONTEXT);
 		List<String> endpoints = CamelEndpointDialog.getEndpoints();
 		List<String> errors = new ArrayList<String>();
 		for (String element : endpoints) {
@@ -128,7 +127,7 @@ public class ConfigurationsEditorTest extends DefaultTest {
 	@Test
 	public void testCreateGlobalDataFormat()	{
 		
-		ConfigurationsEditor confEditor = new ConfigurationsEditor(PROJECT, CONTEXT);
+		ConfigurationsEditor confEditor = new ConfigurationsEditor(PROJECT_NAME, CONTEXT);
 		List<String> dataFormats = CamelDataFormatDialog.getDataFormats();
 		List<String> errors = new ArrayList<String>();
 		for (String element : dataFormats) {
@@ -168,7 +167,7 @@ public class ConfigurationsEditorTest extends DefaultTest {
 	@Test
 	public void testEditGlobalEndpoint()	{
 		
-		ConfigurationsEditor confEditor = new ConfigurationsEditor(PROJECT, CONTEXT);
+		ConfigurationsEditor confEditor = new ConfigurationsEditor(PROJECT_NAME, CONTEXT);
 		List<String> endpoints = CamelEndpointDialog.getEndpoints();
 		List<String> errors = new ArrayList<String>();
 		for (String element : endpoints) {
@@ -211,7 +210,7 @@ public class ConfigurationsEditorTest extends DefaultTest {
 	@Test
 	public void testEditGlobalDataFormat()	{
 		
-		ConfigurationsEditor confEditor = new ConfigurationsEditor(PROJECT, CONTEXT);
+		ConfigurationsEditor confEditor = new ConfigurationsEditor(PROJECT_NAME, CONTEXT);
 		List<String> dataFormats = CamelDataFormatDialog.getDataFormats();
 		List<String> errors = new ArrayList<String>();
 		for (String element : dataFormats) {
@@ -258,7 +257,7 @@ public class ConfigurationsEditorTest extends DefaultTest {
 	@Test
 	public void testDeleteGlobalElement()	{
 		
-		ConfigurationsEditor confEditor = new ConfigurationsEditor(PROJECT, CONTEXT);
+		ConfigurationsEditor confEditor = new ConfigurationsEditor(PROJECT_NAME, CONTEXT);
 		List<String> endpoints = CamelEndpointDialog.getEndpoints();
 		List<String> dataFormats = CamelDataFormatDialog.getDataFormats();		
 		List<String> errors = new ArrayList<String>();
@@ -319,7 +318,7 @@ public class ConfigurationsEditorTest extends DefaultTest {
 	@Test
 	public void testSourceXML()	{
 		
-		ConfigurationsEditor confEditor = new ConfigurationsEditor(PROJECT, CONTEXT);
+		ConfigurationsEditor confEditor = new ConfigurationsEditor(PROJECT_NAME, CONTEXT);
 		List<String> endpoints = CamelEndpointDialog.getEndpoints();
 		List<String> dataFormats = CamelDataFormatDialog.getDataFormats();		
 		List<String> errors = new ArrayList<String>();
