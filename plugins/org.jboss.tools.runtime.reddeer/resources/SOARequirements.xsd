@@ -183,7 +183,7 @@
 			<xs:element name="configuration" type="xs:string" minOccurs="0" maxOccurs="1" />
 			<xs:choice minOccurs="0" maxOccurs="1">
 				<xs:element name="jre" type="xs:string" />
-				<xs:element name="exec-env" type="xs:string" />
+				<xs:element name="execEnv" type="xs:string" />
 			</xs:choice>
 			<xs:element name="properties" minOccurs="0" maxOccurs="1">
 				<xs:complexType>
@@ -216,7 +216,7 @@
 			<xs:element name="configuration" type="xs:string" minOccurs="0" maxOccurs="1" />
 			<xs:choice minOccurs="0" maxOccurs="1">
 				<xs:element name="jre" type="xs:string" />
-				<xs:element name="exec-env" type="xs:string" />
+				<xs:element name="execEnv" type="xs:string" />
 			</xs:choice>
 			<xs:element name="properties" minOccurs="0" maxOccurs="1">
 				<xs:complexType>
@@ -246,7 +246,7 @@
 			</xs:choice>
 			<xs:choice minOccurs="0" maxOccurs="1">
 				<xs:element name="jre" type="xs:string" />
-				<xs:element name="exec-env" type="xs:string" />
+				<xs:element name="execEnv" type="xs:string" />
 			</xs:choice>
 			<xs:element name="properties" minOccurs="0" maxOccurs="1">
 				<xs:complexType>
@@ -271,7 +271,7 @@
 			<xs:element name="home" type="xs:string" minOccurs="1" maxOccurs="1" />
 			<xs:choice minOccurs="0" maxOccurs="1">
 				<xs:element name="jre" type="xs:string" />
-				<xs:element name="exec-env" type="xs:string" />
+				<xs:element name="execEnv" type="xs:string" />
 			</xs:choice>
 			<xs:element name="host" type="xs:string" minOccurs="0" maxOccurs="1" />
 			<xs:element name="port" type="xs:string" minOccurs="0" maxOccurs="1" />
@@ -305,7 +305,7 @@
 			<xs:element name="home" type="xs:string" minOccurs="1" maxOccurs="1" />
 			<xs:choice minOccurs="0" maxOccurs="1">
 				<xs:element name="jre" type="xs:string" />
-				<xs:element name="exec-env" type="xs:string" />
+				<xs:element name="execEnv" type="xs:string" />
 			</xs:choice>
 			<xs:element name="host" type="xs:string" minOccurs="0" maxOccurs="1" />
 			<xs:element name="port" type="xs:string" minOccurs="0" maxOccurs="1" />
@@ -335,7 +335,7 @@
 			<xs:element name="home" type="xs:string" minOccurs="1" maxOccurs="1" />
 			<xs:choice minOccurs="0" maxOccurs="1">
 				<xs:element name="jre" type="xs:string" />
-				<xs:element name="exec-env" type="xs:string" />
+				<xs:element name="execEnv" type="xs:string" />
 			</xs:choice>
 			<xs:element name="host" type="xs:string" minOccurs="0" maxOccurs="1" />
 			<xs:element name="port" type="xs:string" minOccurs="0" maxOccurs="1" />
@@ -364,7 +364,7 @@
 			<xs:element name="home" type="xs:string" minOccurs="1" maxOccurs="1" />
 			<xs:choice minOccurs="0" maxOccurs="1">
 				<xs:element name="jre" type="xs:string" />
-				<xs:element name="exec-env" type="xs:string" />
+				<xs:element name="execEnv" type="xs:string" />
 			</xs:choice>
 			<xs:element name="camelVersion" type="xs:string" minOccurs="1" maxOccurs="1"/>
 			<xs:element name="host" type="xs:string" minOccurs="0" maxOccurs="1" />
