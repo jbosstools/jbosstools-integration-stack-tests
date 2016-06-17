@@ -16,8 +16,9 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.fuse.reddeer.ProjectTemplate;
+import org.jboss.tools.fuse.reddeer.ProjectType;
 import org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard;
-import org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard.ProjectType;
 
 /**
  * Can create new Fuse projects or import existing
@@ -25,6 +26,57 @@ import org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard.Proje
  * @author tsedmik
  */
 public class ProjectFactory {
+	
+	private String name;
+	private String version;
+	private String template;
+	private ProjectType type;
+	
+	private ProjectFactory(String name) {
+		this.name = name;
+	}
+	
+	public ProjectFactory version(String version) {
+		this.version = version;
+		return this;
+	}
+
+	public ProjectFactory template(ProjectTemplate template) {
+		this.template = template.getName();
+		return this;
+	}
+	
+	public ProjectFactory template(String template) {
+		this.template = template;
+		return this;
+	}
+	
+	public ProjectFactory type(ProjectType type) {
+		this.type = type;
+		return this;
+	}
+	
+	public void create() {
+		NewFuseIntegrationProjectWizard wiz = new NewFuseIntegrationProjectWizard();
+		wiz.open();
+		wiz.setProjectName(name);
+		wiz.next();
+		if (version != null) {
+			wiz.selectCamelVersion(version);
+		}
+		wiz.next();
+		if (template != null) {
+			wiz.selectTemplate(template);
+		}
+		wiz.setProjectType(type);
+		wiz.finish();
+		openAssociatedPerspective();
+		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(300));
+	}
+	
+	public static ProjectFactory newProject(String name) {
+		return new ProjectFactory(name);
+	}
 
 	/**
 	 * Creates an empty Fuse Integration Project

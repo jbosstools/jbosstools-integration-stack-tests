@@ -3,19 +3,20 @@ package org.jboss.tools.fuse.reddeer.editor;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.gef.editor.GEFEditor;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
+import org.jboss.tools.fuse.reddeer.wizard.SAPConfigurationWizard;
 
 /**
  * Manipulates with Configurations Tab in Camel Editor
  * 
  * @author djelinek
  */
-public class ConfigurationsEditor extends GEFEditor {
-
+public class ConfigurationsEditor extends DefaultEditor {
+	
 	private static Logger log = Logger.getLogger(ConfigurationsEditor.class);
 	private static final String TYPE = "JBoss Fuse";	
 	
@@ -34,6 +35,30 @@ public class ConfigurationsEditor extends GEFEditor {
 		
 		log.info("Switching to Configurations Tab");
 		CamelEditor.switchTab("Configurations");		
+	}
+	
+	public void selectConfig(String... path) {
+		activate();
+		new DefaultTreeItem(path).select();
+	}
+	
+	public void addConfig(String... path) {
+		activate();
+		new PushButton("Add").click();
+		new WaitUntil(new ShellWithTextIsAvailable("Create new global element..."));
+		new DefaultShell("Create new global element...");
+		new DefaultTreeItem(path).select();	
+		new PushButton("OK").click();
+	}
+	
+	public void editConfig(String... path) {
+		selectConfig(path);
+		new PushButton("Edit").click();
+	}
+
+	public void deleteConfig(String... path) {
+		selectConfig(path);
+		new PushButton("Delete").click();
 	}
 
 	/**
@@ -145,4 +170,27 @@ public class ConfigurationsEditor extends GEFEditor {
 			log.error("Component with title - " + title + " isn't exist", e);
 		}		
 	}
+	
+	/*
+	 * SAP
+	 */
+
+	public static final String[] SAP_CONNECTION_PATH = new String[] {"SAP", "SAP Connection"};
+	public static final String[] SAP_CONFIG_PATH = new String[] {"SAP", "sap-configuration (SAP Connection)"};
+	
+	public SAPConfigurationWizard addSapConfig() {
+		addConfig(SAP_CONNECTION_PATH);
+		return new SAPConfigurationWizard();
+	}
+	
+	public SAPConfigurationWizard editSapConfig() {
+		editConfig(SAP_CONFIG_PATH);
+		return new SAPConfigurationWizard();
+	}
+
+	public SAPConfigurationWizard deleteSapConfig() {
+		deleteConfig(SAP_CONFIG_PATH);
+		return new SAPConfigurationWizard();
+	}
+	
 }

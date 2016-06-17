@@ -1,7 +1,7 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
 import static org.jboss.reddeer.requirements.server.ServerReqState.PRESENT;
-import static org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard.ProjectType.Blueprint;
+import static org.jboss.tools.fuse.reddeer.ProjectType.BLUEPRINT;
 import static org.jboss.tools.runtime.reddeer.requirement.ServerReqType.Fuse;
 import static org.junit.Assert.assertTrue;
 
@@ -47,7 +47,7 @@ public class DeploymentTest extends DefaultTest {
 	@BeforeClass
 	public static void setupInitial() {
 
-		ProjectFactory.createProject(PROJECT_NAME, "Content Based Router", Blueprint);
+		ProjectFactory.createProject(PROJECT_NAME, "Content Based Router", BLUEPRINT);
 	}
 
 	/**

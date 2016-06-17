@@ -1,6 +1,6 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
-import static org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard.ProjectType.Spring;
+import static org.jboss.tools.fuse.reddeer.ProjectType.SPRING;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -49,7 +49,7 @@ public class JMXNavigatorTest extends DefaultTest {
 	public static void setupCreateProject() {
 
 		log.info("Create a new Fuse project from 'Content Based Router' template");
-		ProjectFactory.createProject(PROJECT_NAME, "Content Based Router", Spring);
+		ProjectFactory.createProject(PROJECT_NAME, "Content Based Router", SPRING);
 	}
 
 	/**

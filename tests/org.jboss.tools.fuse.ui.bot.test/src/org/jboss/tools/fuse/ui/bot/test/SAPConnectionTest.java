@@ -1,16 +1,15 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.reddeer.swt.api.Text;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.fuse.reddeer.condition.ContainsText;
+import org.jboss.tools.fuse.reddeer.dialog.SAPTestDestinationDialog;
+import org.jboss.tools.fuse.reddeer.dialog.SAPTestServerDialog;
 import org.jboss.tools.fuse.reddeer.view.SAPConnectionView;
-import org.jboss.tools.fuse.reddeer.view.SAPConnectionView.TestDestinationConnection;
-import org.jboss.tools.fuse.reddeer.view.SAPConnectionView.TestServerConnection;
 import org.jboss.tools.fuse.reddeer.view.SAPDestinationProperties;
 import org.jboss.tools.fuse.reddeer.view.SAPServerProperties;
 import org.jboss.tools.runtime.reddeer.impl.SAPDestination;
@@ -89,10 +88,10 @@ public class SAPConnectionTest {
 		sapDestinationProperties.getLogonPasswordText().setText(sapDestination.getPassword());
 		sapDestinationProperties.getLogonLanguageText().setText(sapDestination.getLang());
 
-		TestDestinationConnection testDestinationConnection = sapConnectionView.openDestinationTest(destination);
+		SAPTestDestinationDialog testDestinationConnection = sapConnectionView.openDestinationTest(destination);
 		testDestinationConnection.test();
 		String expected = "Connection test for destination '" + destination + "' succeeded.";
-		new WaitUntil(new ContainsText(testDestinationConnection.getResultText(), expected));
+		new WaitUntil(new ContainsText(testDestinationConnection.getResultTXT(), expected));
 		testDestinationConnection.clear();
 		testDestinationConnection.close();
 
@@ -106,7 +105,7 @@ public class SAPConnectionTest {
 		sapServerProperties.getRepositoryDestinationText().setText(sapServer.getDestination());
 		sapServerProperties.getConnectionCountText().setText(sapServer.getConnectionCount());
 
-		TestServerConnection testServerConnection = sapConnectionView.openServerTest(server);
+		SAPTestServerDialog testServerConnection = sapConnectionView.openServerTest(server);
 		testServerConnection.start();
 		new WaitUntil(new ContainsText(testServerConnection.getResultText(), "Server state: STARTED"));
 		new WaitUntil(new ContainsText(testServerConnection.getResultText(), "Server state: ALIVE"));
@@ -117,29 +116,5 @@ public class SAPConnectionTest {
 	}
 
 	// TODO Write test for exporting, wait for https://issues.jboss.org/browse/FUSETOOLS-1374
-
-	private class ContainsText extends AbstractWaitCondition {
-
-		private Text text;
-		private String actualText;
-		private String expectedText;
-
-		public ContainsText(Text text, String expectedText) {
-			this.text = text;
-			this.expectedText = expectedText;
-		}
-
-		@Override
-		public boolean test() {
-			actualText = text.getText();
-			return actualText.contains(expectedText);
-		}
-
-		@Override
-		public String description() {
-			return "Expected '" + expectedText + "' but was '" + actualText + "'";
-		}
-
-	}
 
 }

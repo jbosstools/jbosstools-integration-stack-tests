@@ -1,6 +1,6 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
-import static org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard.ProjectType.Spring;
+import static org.jboss.tools.fuse.reddeer.ProjectType.SPRING;
 import static org.junit.Assert.assertFalse;
 
 import org.jboss.reddeer.common.logging.Logger;
@@ -65,7 +65,7 @@ public class ProjectLocalRunTest extends DefaultTest {
 	public static void setupCreateProject() {
 
 		log.info("Create a new Fuse project from 'Content Based Router' template");
-		ProjectFactory.createProject(PROJECT_NAME, "2.15.1.redhat-621084", "Content Based Router", Spring);
+		ProjectFactory.createProject(PROJECT_NAME, "2.15.1.redhat-621084", "Content Based Router", SPRING);
 		createTestClass();
 	}
 

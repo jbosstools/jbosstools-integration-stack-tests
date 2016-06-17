@@ -11,9 +11,9 @@ import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.tools.fuse.reddeer.ProjectType;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.view.FuseJMXNavigator;
-import org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard.ProjectType;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,7 +43,7 @@ public class SimpleTest extends DefaultTest {
 	public void testCreateFuseProject() {
 
 		log.info("Create a new Fuse project from 'Content Based Router'");
-		ProjectFactory.createProject("cbr", "Content Based Router", ProjectType.Spring);
+		ProjectFactory.createProject("cbr", "Content Based Router", ProjectType.SPRING);
 		try {
 			new ProjectExplorer().getProject("cbr");
 		} catch (EclipseLayerException ex) {

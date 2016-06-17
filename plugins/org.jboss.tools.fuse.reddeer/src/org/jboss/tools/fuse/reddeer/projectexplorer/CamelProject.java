@@ -1,6 +1,7 @@
 package org.jboss.tools.fuse.reddeer.projectexplorer;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -61,8 +62,11 @@ public class CamelProject {
 	}
 
 	public void openCamelContext(String name) {
-
-		openFile("src/main/resources", "META-INF", "spring", name);
+		try {
+			openFile("src/main/resources", "META-INF", "spring", name);
+		} catch (Throwable t) {
+			openFile("src/main/resources", "OSGI-INF", "blueprint", name);
+		}
 	}
 
 	public void deleteCamelContext(String name) {
@@ -201,14 +205,30 @@ public class CamelProject {
 			AbstractWait.sleep(TimePeriod.SHORT);
 		}
 	}
-	
+
 	public File getFile() {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IWorkspaceRoot root = workspace.getRoot();
 
 		return new File(new File(root.getLocationURI().getPath()), project.getName());
 	}
-	
+
+	public File getPomFile() {
+		return new File(getFile(), "pom.xml");
+	}
+
+	public File getCamelContextFile(String name) throws FileNotFoundException {
+		File file = new File(getFile(), "src/main/resources/META-INF/spring/" + name);
+		if (file.exists()) {
+			return file;
+		}
+		file = new File(getFile(), "src/main/resources/OSGI-INF/blueprint/" + name);
+		if (file.exists()) {
+			return file;
+		}
+		throw new FileNotFoundException("Cannot find '" + name + "'");
+	}
+
 	public void update() {
 		project.select();
 		new ContextMenu("Maven", "Update Project...").select();
@@ -221,12 +241,13 @@ public class CamelProject {
 	}
 
 	/**
-	 * Retrieves value of id attribute of given Camel Context file.
-	 * Important - This method will work only on blueprint or spring projects!
+	 * Retrieves value of id attribute of given Camel Context file. Important - This method will work only on blueprint
+	 * or spring projects!
 	 * 
-	 * @param name Name of a Camel Context file
+	 * @param name
+	 *            Name of a Camel Context file
 	 * @return value of id attribute
-	 * @throws CoreException 
+	 * @throws CoreException
 	 */
 	public String getCamelContextId(String... path) {
 		openFile(path);

@@ -1,7 +1,7 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
-import static org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard.ProjectType.Blueprint;
-import static org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard.ProjectType.Spring;
+import static org.jboss.tools.fuse.reddeer.ProjectType.BLUEPRINT;
+import static org.jboss.tools.fuse.reddeer.ProjectType.SPRING;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -51,7 +51,7 @@ public class FeaturesTest extends DefaultTest {
 	@Test
 	public void test_837() {
 
-		ProjectFactory.createProject("camel-spring", "Content Based Router", Spring);
+		ProjectFactory.createProject("camel-spring", "Content Based Router", SPRING);
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		CamelEditor.switchTab("Design");
 		CamelEditor editor = new CamelEditor("camel-context.xml");
@@ -92,7 +92,7 @@ public class FeaturesTest extends DefaultTest {
 	@Test
 	public void test_1274() {
 
-		ProjectFactory.createProject("camel-blueprint", "Content Based Router", Blueprint);
+		ProjectFactory.createProject("camel-blueprint", "Content Based Router", BLUEPRINT);
 		new ProjectExplorer().getProject("camel-blueprint").getProjectItem("Camel Contexts").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 
