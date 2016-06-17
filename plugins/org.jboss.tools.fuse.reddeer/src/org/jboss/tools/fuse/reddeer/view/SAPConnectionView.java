@@ -1,16 +1,15 @@
 package org.jboss.tools.fuse.reddeer.view;
 
-import org.jboss.reddeer.swt.api.Text;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
+import org.jboss.tools.fuse.reddeer.dialog.SAPTestDestinationDialog;
+import org.jboss.tools.fuse.reddeer.dialog.SAPTestServerDialog;
 
 public class SAPConnectionView extends WorkbenchView {
 
@@ -44,10 +43,10 @@ public class SAPConnectionView extends WorkbenchView {
 		new ContextMenu("Delete").select();
 	}
 
-	public TestDestinationConnection openDestinationTest(String name) {
+	public SAPTestDestinationDialog openDestinationTest(String name) {
 		selectDestination(name);
 		new ContextMenu("Test").select();
-		return new TestDestinationConnection().activate();
+		return new SAPTestDestinationDialog().activate();
 	}
 
 	public SAPDestinationProperties openDestinationProperties(String name) {
@@ -81,10 +80,10 @@ public class SAPConnectionView extends WorkbenchView {
 		new ContextMenu("Delete").select();
 	}
 
-	public TestServerConnection openServerTest(String name) {
+	public SAPTestServerDialog openServerTest(String name) {
 		selectServer(name);
 		new ContextMenu("Test").select();
-		return new TestServerConnection().activate();
+		return new SAPTestServerDialog().activate();
 	}
 
 	public SAPServerProperties openServerProperties(String name) {
@@ -92,73 +91,6 @@ public class SAPConnectionView extends WorkbenchView {
 		SAPServerProperties sapServerProperties = new SAPServerProperties();
 		sapServerProperties.open();
 		return sapServerProperties;
-	}
-
-	public class TestDestinationConnection {
-
-		public static final String TITLE = "Test Destination Connection";
-
-		public TestDestinationConnection activate() {
-			new DefaultShell(TITLE);
-			return this;
-		}
-
-		public void test() {
-			activate();
-			new PushButton("Test").click();
-		}
-
-		public void clear() {
-			activate();
-			new PushButton("Clear").click();
-		}
-
-		public void close() {
-			activate();
-			new PushButton("Close").click();
-			new WaitWhile(new ShellWithTextIsAvailable(TITLE));
-		}
-
-		public Text getResultText() {
-			activate();
-			return new DefaultText();
-		}
-	}
-
-	public class TestServerConnection {
-
-		public static final String TITLE = "Test Server Connection";
-
-		public TestServerConnection activate() {
-			new DefaultShell(TITLE);
-			return this;
-		}
-
-		public void start() {
-			activate();
-			new PushButton("Start").click();
-		}
-
-		public void stop() {
-			activate();
-			new PushButton("Stop").click();
-		}
-
-		public void clear() {
-			activate();
-			new PushButton("Clear").click();
-		}
-
-		public void close() {
-			activate();
-			new PushButton("Close").click();
-			new WaitWhile(new ShellWithTextIsAvailable(TITLE));
-		}
-
-		public Text getResultText() {
-			activate();
-			return new DefaultText();
-		}
 	}
 
 }

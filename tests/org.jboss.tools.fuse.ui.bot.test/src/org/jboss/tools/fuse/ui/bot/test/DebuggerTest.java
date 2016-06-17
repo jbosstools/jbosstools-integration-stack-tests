@@ -1,6 +1,6 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
-import static org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard.ProjectType.Spring;
+import static org.jboss.tools.fuse.reddeer.ProjectType.SPRING;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -56,7 +56,7 @@ public class DebuggerTest extends DefaultTest {
 	@BeforeClass
 	public static void setupInitial() {
 
-		ProjectFactory.createProject(PROJECT_NAME, PROJECT_ARCHETYPE, Spring);
+		ProjectFactory.createProject(PROJECT_NAME, PROJECT_ARCHETYPE, SPRING);
 		CamelEditor editor = new CamelEditor(CAMEL_CONTEXT);
 		editor.selectEditPart("file:work/cbr/input");
 		editor.setProperty("Uri *", "file:src/main/data");

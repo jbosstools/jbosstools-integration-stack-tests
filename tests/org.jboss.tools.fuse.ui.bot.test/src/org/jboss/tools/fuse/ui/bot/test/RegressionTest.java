@@ -1,6 +1,6 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
-import static org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard.ProjectType.Spring;
+import static org.jboss.tools.fuse.reddeer.ProjectType.SPRING;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
@@ -86,7 +86,7 @@ public class RegressionTest extends DefaultTest {
 	public void issue_674_1728_1729()
 			throws ParserConfigurationException, SAXException, IOException {
 
-		ProjectFactory.createProject("camel-spring", "Content Based Router", Spring);
+		ProjectFactory.createProject("camel-spring", "Content Based Router", SPRING);
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		new DefaultCTabItem("Source").activate();
 
@@ -124,7 +124,7 @@ public class RegressionTest extends DefaultTest {
 	@Test
 	public void issue_853() {
 
-		ProjectFactory.createProject("camel-blueprint", "Content Based Router", Spring);
+		ProjectFactory.createProject("camel-blueprint", "Content Based Router", SPRING);
 		new ProjectExplorer().getProject("camel-blueprint")
 				.getProjectItem("src/main/resources", "OSGI-INF", "blueprint", "blueprint.xml").select();
 		try {
@@ -166,7 +166,7 @@ public class RegressionTest extends DefaultTest {
 	@Test
 	public void issue_1115() {
 
-		ProjectFactory.createProject("camel-spring", "Content Based Router", Spring);
+		ProjectFactory.createProject("camel-spring", "Content Based Router", SPRING);
 		new CamelProject("camel-spring").runCamelContext("camel-context.xml");
 		new FuseJMXNavigator().getNode("Local Camel Context", "Camel", "camel").select();
 
@@ -194,7 +194,7 @@ public class RegressionTest extends DefaultTest {
 	@Test
 	public void issue_1123() {
 
-		ProjectFactory.createProject("camel-spring", "Content Based Router", Spring);
+		ProjectFactory.createProject("camel-spring", "Content Based Router", SPRING);
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		CamelEditor.switchTab("Source");
 		EditorManipulator.copyFileContentToCamelXMLEditor("resources/camel-context-routeContextId.xml");
@@ -232,7 +232,7 @@ public class RegressionTest extends DefaultTest {
 	@Test
 	public void issue_1158() {
 
-		ProjectFactory.createProject("camel-spring", "Content Based Router", Spring);
+		ProjectFactory.createProject("camel-spring", "Content Based Router", SPRING);
 		CamelProject project = new CamelProject("camel-spring");
 		project.openCamelContext("camel-context.xml");
 		CamelEditor editor = new CamelEditor("camel-context.xml");
@@ -260,7 +260,7 @@ public class RegressionTest extends DefaultTest {
 	public void issue_1172()
 			throws ParserConfigurationException, SAXException, IOException {
 
-		ProjectFactory.createProject("camel-spring", "Content Based Router", Spring);
+		ProjectFactory.createProject("camel-spring", "Content Based Router", SPRING);
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		CamelEditor.switchTab("Design");
 		CamelEditor editor = new CamelEditor("camel-context.xml");
@@ -288,7 +288,7 @@ public class RegressionTest extends DefaultTest {
 	@Test
 	public void issue_1243() {
 
-		ProjectFactory.createProject("camel-spring", "Content Based Router", Spring);
+		ProjectFactory.createProject("camel-spring", "Content Based Router", SPRING);
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		assertFalse("Camel editor should not be dirty",
 				new DefaultToolItem(new WorkbenchShell(), 1, new WithTooltipTextMatcher(new RegexMatcher("Save.*")))
@@ -313,7 +313,7 @@ public class RegressionTest extends DefaultTest {
 	@Test
 	public void issue_1214() {
 
-		ProjectFactory.createProject("camel-spring", "Content Based Router", Spring);
+		ProjectFactory.createProject("camel-spring", "Content Based Router", SPRING);
 		new ProjectExplorer().selectProjects("camel-spring");
 		new ContextMenu("Run As", "Run Configurations...").select();
 		new WaitUntil(new ShellWithTextIsAvailable("Run Configurations"));
@@ -351,7 +351,7 @@ public class RegressionTest extends DefaultTest {
 	@Test
 	public void issue_1403() {
 
-		ProjectFactory.createProject("camel-blueprint", "Content Based Router", Spring);
+		ProjectFactory.createProject("camel-blueprint", "Content Based Router", SPRING);
 		new CamelProject("camel-blueprint").selectProjectItem("src/main/resources", "OSGI-INF", "blueprint",
 				"blueprint.xml");
 		new ContextMenu("Open").select();
@@ -367,7 +367,7 @@ public class RegressionTest extends DefaultTest {
 	 */
 	@Test
 	public void issue_1730() {
-		ProjectFactory.createProject("camel-spring", "Content Based Router", Spring);
+		ProjectFactory.createProject("camel-spring", "Content Based Router", SPRING);
 		CamelEditor editor = new CamelEditor("camel-context.xml");
 		editor.activate();
 		editor.setId("Route _route1", "1");

@@ -8,7 +8,7 @@ import static org.jboss.tools.fuse.reddeer.component.SAPLabels.QUEUE;
 import static org.jboss.tools.fuse.reddeer.component.SAPLabels.RFC;
 import static org.jboss.tools.fuse.reddeer.component.SAPLabels.SERVER;
 import static org.jboss.tools.fuse.reddeer.component.SAPLabels.SYSTEM_RELEASE;
-import static org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard.ProjectType.Spring;
+import static org.jboss.tools.fuse.reddeer.ProjectType.SPRING;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
@@ -72,7 +72,7 @@ public class SAPComponentTest extends DefaultTest {
 	@BeforeClass
 	public static void setupResetCamelContext() throws Exception {
 		new WorkbenchShell();
-		ProjectFactory.createProject("camel-spring", "Content Based Router", Spring);
+		ProjectFactory.createProject("camel-spring", "Content Based Router", SPRING);
 		new ErrorLogView().deleteLog();
 
 		new ProjectExplorer().open();

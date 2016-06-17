@@ -18,12 +18,12 @@ import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.common.reddeer.XPathEvaluator;
 import org.jboss.tools.common.reddeer.view.ErrorLogView;
+import org.jboss.tools.fuse.reddeer.ProjectType;
 import org.jboss.tools.fuse.reddeer.editor.CamelDataFormatDialog;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.editor.CamelEndpointDialog;
 import org.jboss.tools.fuse.reddeer.editor.ConfigurationsEditor;
 import org.jboss.tools.fuse.reddeer.editor.ConfigurationsEditor.Element;
-import org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.After;
 import org.junit.Before;
@@ -56,7 +56,7 @@ public class ConfigurationsEditorTest extends DefaultTest {
 	public void setupResetCamelContext() {
 
 		new WorkbenchShell();
-		ProjectFactory.createProject(PROJECT_NAME, "2.15.1.redhat-621084", "Content Based Router", NewFuseIntegrationProjectWizard.ProjectType.Spring);
+		ProjectFactory.createProject(PROJECT_NAME, "2.15.1.redhat-621084", "Content Based Router", ProjectType.SPRING);
 		new ErrorLogView().deleteLog();
 	}
 	

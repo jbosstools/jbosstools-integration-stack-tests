@@ -1,7 +1,7 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
 import static org.jboss.reddeer.requirements.server.ServerReqState.RUNNING;
-import static org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard.ProjectType.Blueprint;
+import static org.jboss.tools.fuse.reddeer.ProjectType.BLUEPRINT;
 import static org.jboss.tools.runtime.reddeer.requirement.ServerReqType.Fuse;
 import static org.jboss.tools.runtime.reddeer.requirement.ServerReqType.Karaf;
 import static org.jboss.tools.runtime.reddeer.requirement.ServerReqType.ServiceMix;
@@ -78,7 +78,7 @@ public class JMXNavigatorServerTest {
 		consolePref.toggleShowConsoleStandardWrite(false);
 		consolePref.ok();
 
-		ProjectFactory.createProject(PROJECT_NAME, "Content Based Router", Blueprint);
+		ProjectFactory.createProject(PROJECT_NAME, "Content Based Router", BLUEPRINT);
 		serverName = serverReq.getConfig().getName();
 		FuseServerManipulator.addModule(serverName, PROJECT_NAME);
 

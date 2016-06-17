@@ -15,6 +15,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.tools.fuse.reddeer.ProjectType;
 import org.jboss.tools.runtime.reddeer.wizard.ServerRuntimeWizard;
 
 /**
@@ -96,15 +97,15 @@ public class NewFuseIntegrationProjectWizard extends NewWizardDialog {
 
 	public void setProjectType(ProjectType type) {
 		switch (type) {
-		case Java:
+		case JAVA:
 			log.debug("Setting project type to: Java DSL");
 			new RadioButton("Java DSL").toggle(true);
 			break;
-		case Spring:
+		case SPRING:
 			log.debug("Setting project type to: Spring DSL");
 			new RadioButton("Spring DSL").toggle(true);
 			break;
-		case Blueprint:
+		case BLUEPRINT:
 			log.debug("Setting project type to: Blueprint DSL");
 			new RadioButton("Blueprint DSL").toggle(true);
 			break;
@@ -113,15 +114,15 @@ public class NewFuseIntegrationProjectWizard extends NewWizardDialog {
 
 	public boolean isProjectTypeAvailable(ProjectType type) {
 		switch (type) {
-		case Java:
+		case JAVA:
 			log.debug("Trying to determine whether 'Java DSL' project type is available");
-			return new RadioButton("Java DSL").isEnabled();
-		case Spring:
+			return new RadioButton(type.getDescription()).isEnabled();
+		case SPRING:
 			log.debug("Trying to determine whether 'Spring DSL' project type is available");
-			return new RadioButton("Spring DSL").isEnabled();
-		case Blueprint:
+			return new RadioButton(type.getDescription()).isEnabled();
+		case BLUEPRINT:
 			log.debug("Trying to determine whether 'Blueprint DSL' project type is available");
-			return new RadioButton("Blueprint DSL").isEnabled();
+			return new RadioButton(type.getDescription()).isEnabled();
 		default:
 			return true;
 		}
@@ -156,9 +157,5 @@ public class NewFuseIntegrationProjectWizard extends NewWizardDialog {
 
 	public List<String> getAllAvailableTemplates() {
 		return null;
-	}
-
-	public enum ProjectType {
-		Java, Spring, Blueprint
 	}
 }
