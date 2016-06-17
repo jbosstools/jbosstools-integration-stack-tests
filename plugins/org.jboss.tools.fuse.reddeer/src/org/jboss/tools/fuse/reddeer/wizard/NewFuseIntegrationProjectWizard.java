@@ -14,6 +14,7 @@ import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.runtime.reddeer.wizard.ServerRuntimeWizard;
 
 /**
@@ -64,14 +65,28 @@ public class NewFuseIntegrationProjectWizard extends NewWizardDialog {
 		return new DefaultCombo(0).getItems();
 	}
 
+	public String getTargetRuntime() {
+		log.debug("Getting selected Target Runtime");
+		return new DefaultCombo(0).getSelection();
+	}
+
 	public List<String> getCamelVersions() {
 		log.debug("Getting all available camel versions");
 		return new DefaultCombo(1).getItems();
 	}
 
+	public String getCamelVersion() {
+		log.debug("Getting selected Camel version");
+		return new DefaultCombo(1).getText();
+	}
+
 	public void selectCamelVersion(String version) {
 		log.debug("Selecting 'Camel Version' to: " + version);
 		new DefaultCombo(1).setSelection(version);
+	}
+
+	public boolean isCamelVersionEditable() {
+		return new DefaultCombo(1).isEnabled();
 	}
 
 	public void setCamelVersion(String version) {
@@ -126,6 +141,17 @@ public class NewFuseIntegrationProjectWizard extends NewWizardDialog {
 			}
 		}
 		throw new NewFuseIntegrationProjectWizardException("Given template is not available: " + name);
+	}
+
+	public void selectTemplate(String... path) {
+		log.debug("Selecting a predefined template: " + path);
+		new RadioButton("Use a predefined template").toggle(true);
+		try {
+			new DefaultTreeItem(path).select();
+		} catch (Exception e) {
+			throw new NewFuseIntegrationProjectWizardException("Given template is not available: " + path);
+		}
+		
 	}
 
 	public List<String> getAllAvailableTemplates() {
