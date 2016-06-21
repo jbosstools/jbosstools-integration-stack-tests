@@ -33,14 +33,12 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
-import org.jboss.tools.teiid.reddeer.WAR;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.condition.IsPreviewInProgress;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
-import org.jboss.tools.teiid.reddeer.wizard.CreateVDB;
 import org.jboss.tools.teiid.reddeer.wizard.ModelProjectPage;
 
 public class GuidesView extends WorkbenchView {
@@ -236,12 +234,12 @@ public class GuidesView extends WorkbenchView {
 		chooseAction(actionSet, "Define VDB");
 		new DefaultShell("Define VDB");
 		new PushButton("New...").click();
-		CreateVDB vdb = new CreateVDB();
-		vdb.setFolder(projectName);
-		vdb.setName(vdbName);
-		vdb.fillFirstPageForGuides(); // TODO -> private function
-		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
-		vdb.finish();
+//		CreateVDB vdb = new CreateVDB();  // TODO VdbWizard
+//		vdb.setFolder(projectName);
+//		vdb.setName(vdbName);
+//		vdb.fillFirstPageForGuides(); // TODO -> private function
+//		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
+//		vdb.finish();
 		new DefaultShell("Define VDB");
 		new PushButton("OK").click();
 		VDBEditor vdbEditor = new VDBEditor(vdbName+".vdb");
@@ -282,27 +280,27 @@ public class GuidesView extends WorkbenchView {
 		return result;
 	}
 
-	public WAR createWAR(String actionSet, String warName, String warType, String JndiName, String path, String[] pathVDB){
-		Properties warProps = new Properties();
-		warProps.setProperty("contextName", warName);
-		warProps.setProperty("vdbJndiName", JndiName);
-		warProps.setProperty("securityType", warType);
-		warProps.setProperty("saveLocation", path);
-		WAR war = new WAR(warProps,pathVDB);
-		chooseAction(actionSet, "Generate REST");
-		new PushButton("OK").click();
-		war.setupRESTWAR();  //private -> public
-		new PushButton("OK").click();
-		try{
-			new DefaultShell("Overwrite existing WAR file?");
-			new PushButton("Yes").click();
-
-		}catch(Exception ex){
-			
-		}
-		new PushButton("OK").click();
-		return war; 
-	}
+//	public WAR createWAR(String actionSet, String warName, String warType, String JndiName, String path, String[] pathVDB){
+//		Properties warProps = new Properties();
+//		warProps.setProperty("contextName", warName);
+//		warProps.setProperty("vdbJndiName", JndiName);
+//		warProps.setProperty("securityType", warType);
+//		warProps.setProperty("saveLocation", path);
+//		WAR war = new WAR(warProps,pathVDB);
+//		chooseAction(actionSet, "Generate REST");
+//		new PushButton("OK").click();
+//		//war.setupRESTWAR();  //private -> public // TODO CreateWarDialog
+//		new PushButton("OK").click();
+//		try{
+//			new DefaultShell("Overwrite existing WAR file?");
+//			new PushButton("Yes").click();
+//
+//		}catch(Exception ex){
+//			
+//		}
+//		new PushButton("OK").click();
+//		return war; 
+//	}
 	
 	public void newServer(String serverName){
 		chooseAction("Teiid", "Configure new JBoss Server");

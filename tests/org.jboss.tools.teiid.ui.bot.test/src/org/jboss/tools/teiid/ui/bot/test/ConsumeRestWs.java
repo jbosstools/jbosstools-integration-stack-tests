@@ -9,10 +9,9 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.workbench.handler.EditorHandler;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
-import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
@@ -38,7 +37,6 @@ import org.junit.runner.RunWith;
 @OpenPerspective(TeiidPerspective.class)
 @TeiidServer(state = ServerReqState.RUNNING)
 public class ConsumeRestWs {
-
 	private static final String PROJECT_NAME = "REST";
 	private static final String XML_PROFILE_NAME = "REST_XML";
 	private static final String JSON_PROFILE_NAME = "REST_JSON";
@@ -63,22 +61,21 @@ public class ConsumeRestWs {
 
 	@BeforeClass
 	public static void before() {
-		new ModelExplorerManager().createProject(PROJECT_NAME, false);
+		new WorkbenchShell().maximize();
 	}
 
 	@Before
-	public void openPerspective() {
-		TeiidPerspective.getInstance();
+	public void createProject() {
+		new ModelExplorer().createModelProject(PROJECT_NAME);
 	}
 
 	@After
-	public void closeAll() {
-		EditorHandler.getInstance().closeAll(false);
+	public void cleanUp(){
+		new ModelExplorer().deleteAllProjectsSafely();
 	}
 
 	@Test
 	public void testXml() {
-
 		Properties restCpXml = new Properties();
 		restCpXml.setProperty("connectionUrl", "http://ws-dvirt.rhcloud.com/dv-test-ws/rest/xml");
 		restCpXml.setProperty("type", "xml");
@@ -102,27 +99,26 @@ public class ConsumeRestWs {
 		restWizardXML.setJndiName("restXMLSource");
 		
 		restWizardXML.execute();
-		
+
 		VdbWizard vdbWizard = new VdbWizard();
 		vdbWizard.open();
-		vdbWizard.setLocation(PROJECT_NAME);
-		vdbWizard.setName(VDBXML);
-		vdbWizard.addModel(new String[] { PROJECT_NAME, VIEW_MODEL_XML + ".xmi" });
+		vdbWizard.setLocation(PROJECT_NAME)
+				.setName(VDBXML)
+				.addModel(PROJECT_NAME, SOURCE_MODEL_XML + ".xmi")
+				.addModel(PROJECT_NAME, VIEW_MODEL_XML + ".xmi");
 		vdbWizard.finish();
 
 		new ServersView().open();
 		new ServersViewExt().refreshServer(new ServersView().getServers().get(0).getLabel().getName());
 
-		new ModelExplorer().executeVDB(PROJECT_NAME, VDBXML + ".vdb");
+		new ModelExplorer().deployVdb(PROJECT_NAME, VDBXML);
 
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, VDBXML);
 		assertEquals(16, jdbchelper.getNumberOfResults("exec " + VIEW_MODEL_XML + "." + PROCEDURE_NAME + "()"));
-
 	}
 
 	@Test
 	public void testJson() {
-
 		Properties restCpJson = new Properties();
 		restCpJson.setProperty("connectionUrl", "http://ws-dvirt.rhcloud.com/dv-test-ws/rest/json");
 		restCpJson.setProperty("type", "json");
@@ -149,24 +145,23 @@ public class ConsumeRestWs {
 		
 		VdbWizard vdbWizard = new VdbWizard();
 		vdbWizard.open();
-		vdbWizard.setLocation(PROJECT_NAME);
-		vdbWizard.setName(VDBJSON);
-		vdbWizard.addModel(new String[] { PROJECT_NAME, VIEW_MODEL_JSON + ".xmi" });
+		vdbWizard.setLocation(PROJECT_NAME)
+				.setName(VDBJSON)
+				.addModel(PROJECT_NAME, SOURCE_MODEL_JSON + ".xmi")
+				.addModel(PROJECT_NAME, VIEW_MODEL_JSON + ".xmi");
 		vdbWizard.finish();
 
 		new ServersView().open();
 		new ServersViewExt().refreshServer(new ServersView().getServers().get(0).getLabel().getName());
 
-		new ModelExplorer().executeVDB(PROJECT_NAME, VDBJSON + ".vdb");
+		new ModelExplorer().deployVdb(PROJECT_NAME, VDBJSON);
 
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, VDBJSON);
 		assertEquals(16, jdbchelper.getNumberOfResults("exec " + VIEW_MODEL_JSON + "." + PROCEDURE_NAME + "()"));
-
 	}
 	
 	@Test
 	public void testXmlHttpDigest() {
-
 		Properties restCpXml = new Properties();
 		restCpXml.setProperty("connectionUrl", "http://ws-dvirt.rhcloud.com/dv-test-ws-digest/rest/xml");
 		restCpXml.setProperty("type", "xml");
@@ -193,27 +188,26 @@ public class ConsumeRestWs {
 		restWizardXML.setJndiName("restXMLDigestSource");
 
 		restWizardXML.execute();
-		
+
 		VdbWizard vdbWizard = new VdbWizard();
 		vdbWizard.open();
-		vdbWizard.setLocation(PROJECT_NAME);
-		vdbWizard.setName(VDBXMLDIGEST);
-		vdbWizard.addModel(new String[] { PROJECT_NAME, VIEW_MODEL_XML_DIGEST + ".xmi" });
+		vdbWizard.setLocation(PROJECT_NAME)
+				.setName(VDBXMLDIGEST)
+				.addModel(PROJECT_NAME, SOURCE_MODEL_XML_DIGEST + ".xmi")
+				.addModel(PROJECT_NAME, VIEW_MODEL_XML_DIGEST + ".xmi");
 		vdbWizard.finish();
 
 		new ServersView().open();
 		new ServersViewExt().refreshServer(new ServersView().getServers().get(0).getLabel().getName());
 
-		new ModelExplorer().executeVDB(PROJECT_NAME, VDBXMLDIGEST + ".vdb");
+		new ModelExplorer().deployVdb(PROJECT_NAME, VDBXMLDIGEST);
 
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, VDBXMLDIGEST);
 		assertEquals(16, jdbchelper.getNumberOfResults("exec " + VIEW_MODEL_XML_DIGEST + "." + PROCEDURE_NAME + "()"));
-
 	}
 	
 	@Test
 	public void testHttpDigestJson() {
-
 		Properties restCpJson = new Properties();
 		restCpJson.setProperty("connectionUrl", "http://ws-dvirt.rhcloud.com/dv-test-ws-digest/rest/json");
 		restCpJson.setProperty("type", "json");
@@ -240,22 +234,22 @@ public class ConsumeRestWs {
 		restWizardJson.setJndiName("restJsonDigestSource");
 
 		restWizardJson.execute();
-		
+
 		VdbWizard vdbWizard = new VdbWizard();
 		vdbWizard.open();
-		vdbWizard.setLocation(PROJECT_NAME);
-		vdbWizard.setName(VDBJSONDIGEST);
-		vdbWizard.addModel(new String[] { PROJECT_NAME, VIEW_MODEL_JSON_DIGEST + ".xmi" });
+		vdbWizard.setLocation(PROJECT_NAME)
+				.setName(VDBJSONDIGEST)
+				.addModel(PROJECT_NAME, SOURCE_MODEL_JSON_DIGEST + ".xmi")
+				.addModel(PROJECT_NAME, VIEW_MODEL_JSON_DIGEST + ".xmi");
 		vdbWizard.finish();
 
 		new ServersView().open();
 		new ServersViewExt().refreshServer(new ServersView().getServers().get(0).getLabel().getName());
 
-		new ModelExplorer().executeVDB(PROJECT_NAME, VDBJSONDIGEST + ".vdb");
+		new ModelExplorer().deployVdb(PROJECT_NAME, VDBJSONDIGEST);
 
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, VDBJSONDIGEST);
 		assertEquals(16, jdbchelper.getNumberOfResults("exec " + VIEW_MODEL_JSON_DIGEST + "." + PROCEDURE_NAME + "()"));
-
 	}
 
 }

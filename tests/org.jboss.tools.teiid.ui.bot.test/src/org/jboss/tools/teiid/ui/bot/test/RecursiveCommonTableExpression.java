@@ -6,15 +6,14 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
-import org.jboss.tools.teiid.reddeer.manager.ConnectionProfilesConstants;
-import org.jboss.tools.teiid.reddeer.manager.ImportManager;
-import org.jboss.tools.teiid.reddeer.manager.VDBManager;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
+import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,7 +27,7 @@ import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
-@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = { ConnectionProfilesConstants.ORACLE_11G_BQT2 })
+@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = { ConnectionProfileConstants.ORACLE_11G_BQT2 })
 public class RecursiveCommonTableExpression {
 
 	private static final String PROJECT_NAME = "RecursiveCTE";
@@ -44,8 +43,8 @@ public class RecursiveCommonTableExpression {
 
 	@Before
 	public void before() {
-		new ImportManager().importProject(teiidBot.toAbsolutePath("resources/projects/" + PROJECT_NAME));
-		new ModelExplorer().changeConnectionProfile(ConnectionProfilesConstants.ORACLE_11G_BQT2, PROJECT_NAME,
+		new ModelExplorer().importProject(teiidBot.toAbsolutePath("resources/projects/" + PROJECT_NAME));
+		new ModelExplorer().changeConnectionProfile(ConnectionProfileConstants.ORACLE_11G_BQT2, PROJECT_NAME,
 				SOURCE_MODEL_NAME);
 
 	}
@@ -60,10 +59,15 @@ public class RecursiveCommonTableExpression {
 		me.setTransformation(TRANSFORMATION_SQL);
 		me.saveAndValidateSql();
 
-		VDBManager VDBmgr = new VDBManager();
-		VDBmgr.createVDB(PROJECT_NAME, VDB_NAME);
-		VDBmgr.addModelsToVDB(PROJECT_NAME, VDB_NAME, SOURCE_MODEL_NAME, VIEW_MODEL_NAME);
-		VDBmgr.executeVDB(false, PROJECT_NAME, VDB_NAME);
+		VdbWizard vdbWizard = new VdbWizard();
+		vdbWizard.open();
+		vdbWizard.setLocation(PROJECT_NAME)
+				.setName(VDB_NAME)
+				.addModel(PROJECT_NAME, SOURCE_MODEL_NAME)
+				.addModel(PROJECT_NAME, VIEW_MODEL_NAME);
+		vdbWizard.finish();
+		
+		new ModelExplorer().deployVdb(PROJECT_NAME, VDB_NAME);
 
 		TeiidJDBCHelper JDBCHelper = new TeiidJDBCHelper(teiidServer, VDB_NAME);
 

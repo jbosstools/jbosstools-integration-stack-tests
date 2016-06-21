@@ -10,16 +10,16 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.teiid.reddeer.Procedure;
 import org.jboss.tools.teiid.reddeer.Table;
-import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
+import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.manager.PerspectiveAndViewManager;
-import org.jboss.tools.teiid.reddeer.manager.VDBManager;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.wizard.ImportGeneralItemWizard;
+import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -46,7 +46,7 @@ public class UDFTest {
 	@BeforeClass
 	public static void createModelProject() {
 		new PerspectiveAndViewManager().openTeiidDesignerPerspective();
-		new ImportManager().importProject("resources/projects/" + PROJECT_NAME);
+		new ModelExplorer().importProject("resources/projects/" + PROJECT_NAME);
 		new ModelExplorer().changeConnectionProfile(PROFILE_NAME, PROJECT_NAME, MODEL_SRC_NAME);
 	}
 
@@ -87,9 +87,15 @@ public class UDFTest {
 		new ModelExplorerManager().getModelExplorerView().newTable(table, Table.Type.VIEW, props, PROJECT_NAME,
 				MODEL_VIEW_NAME + ".xmi");
 
-		new VDBManager().createVDB(PROJECT_NAME, VDB_NAME);
-		new VDBManager().addModelsToVDB(PROJECT_NAME, VDB_NAME, new String[] { MODEL_SRC_NAME, MODEL_VIEW_NAME });
-		new ModelExplorer().executeVDB(PROJECT_NAME, VDB_NAME + ".vdb");
+		VdbWizard vdbWizard = new VdbWizard();
+		vdbWizard.open();
+		vdbWizard.setLocation(PROJECT_NAME)
+				.setName(VDB_NAME)
+				.addModel(PROJECT_NAME, MODEL_SRC_NAME + ".xmi")
+				.addModel(PROJECT_NAME, MODEL_VIEW_NAME + ".xmi");
+		vdbWizard.finish();
+		
+		new ModelExplorer().deployVdb(PROJECT_NAME, VDB_NAME);
 		
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, VDB_NAME);
 		jdbchelper.isQuerySuccessful("SELECT * FROM tab", true);
