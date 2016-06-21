@@ -62,4 +62,15 @@ public class FileUtils {
 
 		return dir.delete();
 	}
+
+	/**
+	 * Retrieve content of a given file
+	 * 
+	 * @param path Absolute path to the file
+	 * @return Content of the file
+	 * @throws IOException Something went wrong
+	 */
+	public static String getFileContent(String path) throws IOException {
+		return new String (Files.readAllBytes(new File(path).toPath()));
+	}
 }
