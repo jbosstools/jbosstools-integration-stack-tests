@@ -3,20 +3,18 @@ package org.jboss.tools.teiid.ui.bot.test;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.tools.teiid.reddeer.manager.ConnectionProfilesConstants;
+import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.manager.ServerManager;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
-import org.jboss.tools.teiid.reddeer.view.GuidesView;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
-@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = { ConnectionProfilesConstants.SALESFORCE })
+@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = { ConnectionProfileConstants.SALESFORCE })
 public class SalesforceImportTest {
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;
@@ -39,7 +37,7 @@ public class SalesforceImportTest {
 		String model = "SFModel";
 
 		String importProps = teiidBot.toAbsolutePath("resources/importWizard/sf.properties");
-		new ImportManager().importFromSalesForce(MODEL_PROJECT, model, ConnectionProfilesConstants.SALESFORCE,
+		new ImportManager().importFromSalesForce(MODEL_PROJECT, model, ConnectionProfileConstants.SALESFORCE,
 				teiidBot.getProperties(importProps));
 
 		teiidBot.assertResource(MODEL_PROJECT, model + ".xmi", "AccountFeed");

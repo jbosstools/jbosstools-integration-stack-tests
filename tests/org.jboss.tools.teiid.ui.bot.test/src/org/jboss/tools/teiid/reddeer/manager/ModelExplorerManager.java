@@ -15,7 +15,6 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.teiid.reddeer.ModelProject;
 import org.jboss.tools.teiid.reddeer.Procedure;
-import org.jboss.tools.teiid.reddeer.WAR;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
@@ -34,22 +33,10 @@ public class ModelExplorerManager {
 		me.open();
 		return me.getModelProject(modelProjectName);
 	}
-
-	/**
-	 * New Teiid Model Project
-	 * 
-	 * @param modelProjectName
-	 */
-	public void createProject(String modelProjectName, boolean viaGuides) {
-		new ModelProjectWizard(0).create(modelProjectName, viaGuides);
-	}
-
+	
+	@Deprecated // use ModelExplorer.createModelProject()
 	public void createProject(String modelProjectName) {
 		new ModelProjectWizard(0).create(modelProjectName);
-	}
-
-	public void createProject(String modelProjectName, boolean viaGuides, String... folders) {
-		new ModelProjectWizard(0).create(modelProjectName, viaGuides, folders);
 	}
 
 	public void changeConnectionProfile(String connectionProfile, String projectName, String... projectItem) {
@@ -67,10 +54,6 @@ public class ModelExplorerManager {
 			pathToModel[pathToModel.length - 1] = pathToModel[pathToModel.length - 1] + ".xmi";
 		}
 		new ModelExplorer().openModelEditor(pathToModel);
-	}
-
-	public WAR getWAR(String projectName, String warName) {
-		return new WAR(projectName, warName);
 	}
 
 	public Procedure getProcedure(String project, String model, String procedure) {

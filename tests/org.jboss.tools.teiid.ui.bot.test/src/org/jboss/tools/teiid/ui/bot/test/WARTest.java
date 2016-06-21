@@ -1,20 +1,15 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
-import java.io.IOException;
 import java.util.Properties;
 
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.tools.teiid.reddeer.WAR;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.SimpleHttpClient;
 import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
-import org.jboss.tools.teiid.reddeer.manager.VDBManager;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.wizard.ImportGeneralItemWizard;
@@ -30,6 +25,7 @@ import org.junit.runner.RunWith;
  */
 @RunWith(RedDeerSuite.class)
 @TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = { ConnectionProfileConstants.ORACLE_11G_BOOKS })
+@Deprecated // duplicate(WsCreation,CreateRestProc.) - TODO remove resources too
 public class WARTest extends SWTBotTestCase {
 	public static final String MODEL_PROJECT = "jdbcImportTest";
 	@InjectRequirement
@@ -45,133 +41,57 @@ public class WARTest extends SWTBotTestCase {
 
 	@BeforeClass
 	public static void before() {
-		VDBManager vdbManager = new VDBManager();
+//		VDBManager vdbManager = new VDBManager();
+//
+//		// RESTEasy war
+//		new ImportManager().importProject("resources/projects/BooksRest");
+//		new ModelExplorerManager().changeConnectionProfile(ConnectionProfileConstants.ORACLE_11G_BOOKS,
+//				projectBooksRest, "BooksSrc.xmi");
+//		vdbManager.createVDB(projectBooksRest, vdbBooksRest);
+//		vdbManager.addModelsToVDB(projectBooksRest, vdbBooksRest, new String[] { "BooksView.xmi" });
+//		vdbManager.deployVDB(pathToBooksRestVDB);
+//		vdbManager.createVDBDataSource(pathToBooksRestVDB);
+//
+//		// JBossWS-CXF war
+//		new ImportManager().importProject("resources/projects/BooksWS");
+//		new ModelExplorerManager().changeConnectionProfile(ConnectionProfileConstants.ORACLE_11G_BOOKS, projectBooksWS,
+//				"books.xmi");
+//		vdbManager.createVDB(projectBooksWS, vdbCheckBook);
+//		vdbManager.addModelsToVDB(projectBooksWS, vdbCheckBook, new String[] { "checkBookWS.xmi" });
+//		vdbManager.deployVDB(pathToCheckBookVDB);
+//		vdbManager.createVDBDataSource(pathToCheckBookVDB);
 
-		// RESTEasy war
-		new ImportManager().importProject("resources/projects/BooksRest");
-		new ModelExplorerManager().changeConnectionProfile(ConnectionProfileConstants.ORACLE_11G_BOOKS,
-				projectBooksRest, "BooksSrc.xmi");
-		vdbManager.createVDB(projectBooksRest, vdbBooksRest);
-		vdbManager.addModelsToVDB(projectBooksRest, vdbBooksRest, new String[] { "BooksView.xmi" });
-		vdbManager.deployVDB(pathToBooksRestVDB);
-		vdbManager.createVDBDataSource(pathToBooksRestVDB);
-
-		// JBossWS-CXF war
-		new ImportManager().importProject("resources/projects/BooksWS");
-		new ModelExplorerManager().changeConnectionProfile(ConnectionProfileConstants.ORACLE_11G_BOOKS, projectBooksWS,
-				"books.xmi");
-		vdbManager.createVDB(projectBooksWS, vdbCheckBook);
-		vdbManager.addModelsToVDB(projectBooksWS, vdbCheckBook, new String[] { "checkBookWS.xmi" });
-		vdbManager.deployVDB(pathToCheckBookVDB);
-		vdbManager.createVDBDataSource(pathToCheckBookVDB);
-
-	}
-
-	/**
-	 * Generate and test JBossWS-CXF WAR with security type None
-	 * @throws IOException 
-	 */
-	@Test
-	@Deprecated
-	public void jbossWSCXFNoneWarTest() throws IOException {
-
-		Properties warProps = new Properties();
-		warProps.setProperty("type", WAR.JBOSSWS_CXF_TYPE);
-		warProps.setProperty("contextName", vdbCheckBook);
-		warProps.setProperty("vdbJndiName", vdbCheckBook);
-		warProps.setProperty("saveLocation", teiidBot.toAbsolutePath("target"));
-		// http://localhost:8080/checkBookVdb/BooksInterface?wsdl
-		new VDBManager().createWAR(warProps, pathToCheckBookVDB);
-
-		Properties itemProps = new Properties();
-		itemProps.setProperty("dirName", teiidBot.toAbsolutePath("target"));
-		itemProps.setProperty("intoFolder", projectBooksWS);
-		itemProps.setProperty("file", vdbCheckBook + ".war");
-		new ImportManager().importGeneralItem(ImportGeneralItemWizard.Type.FILE_SYSTEM, itemProps);
-		new ModelExplorerManager().getWAR(projectBooksWS, vdbCheckBook + ".war").deploy(teiidServer.getName());
-
-		String nok = new SimpleHttpClient("http://localhost:8080/" + vdbCheckBook + "/BooksInterface?wsdl")
-				.addHeader("Content-Type", "text/xml; charset=utf-8").addHeader("SOAPAction", "")
-				.post(teiidBot.loadFileAsString(teiidBot.toAbsolutePath("resources/wsdl/requestOracleNOK.xml")));
-		assertEquals(teiidBot.loadFileAsString(teiidBot.toAbsolutePath("resources/wsdl/responseOracleNOK.xml")), nok);
-
-		String ok = new SimpleHttpClient("http://localhost:8080/" + vdbCheckBook + "/BooksInterface?wsdl")
-				.addHeader("Content-Type", "text/xml; charset=utf-8").addHeader("SOAPAction", "")
-				.post(teiidBot.loadFileAsString(teiidBot.toAbsolutePath("resources/wsdl/requestOracleOK.xml")));
-		assertEquals(teiidBot.loadFileAsString(teiidBot.toAbsolutePath("resources/wsdl/responseOracleOK.xml")), ok);
-	}
-
-	/**
-	 * Generate and test JBossWS-CXF WAR with security type Http Basic
-	 * @throws IOException 
-	 */
-	@Test
-	@Deprecated
-	public void jbossWSCXFHttpBasicWarTest() throws IOException {
-		String warCheckBookBasic = vdbCheckBook + "Basic";
-		Properties warProps = new Properties();
-		warProps.setProperty("type", WAR.JBOSSWS_CXF_TYPE);
-		warProps.setProperty("contextName", warCheckBookBasic);
-		warProps.setProperty("vdbJndiName", vdbCheckBook);
-		warProps.setProperty("saveLocation", teiidBot.toAbsolutePath("target"));
-		warProps.setProperty("securityType", WAR.HTTPBasic_SECURITY);
-		warProps.setProperty("realm", "teiid-security");
-		warProps.setProperty("role", "user");// this has to be set also in teiid-security-users,roles
-		// http://localhost:8080/checkBookVdbBasic/BooksInterface?wsdl
-
-		new VDBManager().createWAR(warProps, pathToCheckBookVDB);
-
-		Properties itemProps = new Properties();
-		itemProps.setProperty("dirName", teiidBot.toAbsolutePath("target"));
-		itemProps.setProperty("intoFolder", projectBooksWS);
-		itemProps.setProperty("file", warCheckBookBasic + ".war");
-		new ImportManager().importGeneralItem(ImportGeneralItemWizard.Type.FILE_SYSTEM, itemProps);
-		new ModelExplorerManager().getWAR(projectBooksWS, warCheckBookBasic + ".war").deploy(teiidServer.getName());
-
-		String username = teiidServer.getServerConfig().getServerBase().getProperty("teiidUser");
-		String password = teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword");
-
-		String nok = new SimpleHttpClient("http://localhost:8080/" + warCheckBookBasic + "/BooksInterface?wsdl")
-				.setBasicAuth(username, password).addHeader("Content-Type", "text/xml; charset=utf-8")
-				.addHeader("SOAPAction", "")
-				.post(teiidBot.loadFileAsString(teiidBot.toAbsolutePath("resources/wsdl/requestOracleNOK.xml")));
-		assertEquals(teiidBot.loadFileAsString(teiidBot.toAbsolutePath("resources/wsdl/responseOracleNOK.xml")), nok);
-
-		String ok = new SimpleHttpClient("http://localhost:8080/" + warCheckBookBasic + "/BooksInterface?wsdl")
-				.setBasicAuth(username, password).addHeader("Content-Type", "text/xml; charset=utf-8")
-				.addHeader("SOAPAction", "")
-				.post(teiidBot.loadFileAsString(teiidBot.toAbsolutePath("resources/wsdl/requestOracleOK.xml")));
-		assertEquals(teiidBot.loadFileAsString(teiidBot.toAbsolutePath("resources/wsdl/responseOracleOK.xml")), ok);
 	}
 
 	/**
 	 * Create RESTEasy WAR with security type None
 	 */
 	@Test
+	@Deprecated
 	public void restWarNoneTest() {
 
-		String rbWar = "restBooks";
-
-		Properties warProps = new Properties();
-		warProps.setProperty("type", WAR.RESTEASY_TYPE);
-		warProps.setProperty("contextName", rbWar);
-		warProps.setProperty("vdbJndiName", vdbBooksRest);
-		warProps.setProperty("saveLocation", teiidBot.toAbsolutePath("target"));
-		warProps.setProperty("securityType", WAR.NONE_SECURITY);
-		new VDBManager().createWAR(warProps, pathToBooksRestVDB);
-
-		// import created war
-		Properties itemProps = new Properties();
-		itemProps.setProperty("dirName", teiidBot.toAbsolutePath("target"));
-		itemProps.setProperty("file", rbWar + ".war");
-		itemProps.setProperty("intoFolder", projectBooksRest);
-
-		new ImportManager().importGeneralItem(ImportGeneralItemWizard.Type.FILE_SYSTEM, itemProps);
-
-		new ModelExplorerManager().getWAR(projectBooksRest, rbWar + ".war").deploy(teiidServer.getName());
-		String url = "http://localhost:8080/" + rbWar + "/BooksView/book1/0201877562";
-
-		assertEquals(resultRest, new SimpleHttpClient(url).get());
+//		String rbWar = "restBooks";
+//
+//		Properties warProps = new Properties();
+//		warProps.setProperty("type", WAR.RESTEASY_TYPE);
+//		warProps.setProperty("contextName", rbWar);
+//		warProps.setProperty("vdbJndiName", vdbBooksRest);
+//		warProps.setProperty("saveLocation", teiidBot.toAbsolutePath("target"));
+//		warProps.setProperty("securityType", WAR.NONE_SECURITY);
+//		//new VDBManager().createWAR(warProps, pathToBooksRestVDB);
+//
+//		// import created war
+//		Properties itemProps = new Properties();
+//		itemProps.setProperty("dirName", teiidBot.toAbsolutePath("target"));
+//		itemProps.setProperty("file", rbWar + ".war");
+//		itemProps.setProperty("intoFolder", projectBooksRest);
+//
+//		new ImportManager().importGeneralItem(ImportGeneralItemWizard.Type.FILE_SYSTEM, itemProps);
+//
+//		new ModelExplorerManager().getWAR(projectBooksRest, rbWar + ".war").deploy(teiidServer.getName());
+//		String url = "http://localhost:8080/" + rbWar + "/BooksView/book1/0201877562";
+//
+//		assertEquals(resultRest, new SimpleHttpClient(url).get());
 
 	}
 
@@ -179,35 +99,36 @@ public class WARTest extends SWTBotTestCase {
 	 * Create RESTEasy WAR with security type Http Basic
 	 */
 	@Test
+	@Deprecated
 	public void restWarBasicTest() {
 
-		String rbWar = "restBooksBasic";
-
-		Properties warProps = new Properties();
-		warProps.setProperty("type", WAR.RESTEASY_TYPE);
-		warProps.setProperty("contextName", rbWar);
-		warProps.setProperty("vdbJndiName", vdbBooksRest);
-		warProps.setProperty("saveLocation", teiidBot.toAbsolutePath("target"));
-		warProps.setProperty("securityType", WAR.HTTPBasic_SECURITY);
-		warProps.setProperty("realm", "teiid-security");
-		warProps.setProperty("role", "user");
-
-		new VDBManager().createWAR(warProps, pathToBooksRestVDB);
-
-		// import created war
-		Properties itemProps = new Properties();
-		itemProps.setProperty("dirName", teiidBot.toAbsolutePath("target"));
-		itemProps.setProperty("file", rbWar + ".war");
-		itemProps.setProperty("intoFolder", projectBooksRest);
-		new ImportManager().importGeneralItem(ImportGeneralItemWizard.Type.FILE_SYSTEM, itemProps);
-
-		new ModelExplorerManager().getWAR(projectBooksRest, rbWar + ".war").deploy(teiidServer.getName());
-
-		String username = teiidServer.getServerConfig().getServerBase().getProperty("teiidUser");
-		String password = teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword");
-		SimpleHttpClient client = new SimpleHttpClient("http://localhost:8080/" + rbWar + "/BooksView/book1/0201877562")
-				.setBasicAuth(username, password);
-		assertEquals(resultRest, client.get());
+//		String rbWar = "restBooksBasic";
+//
+//		Properties warProps = new Properties();
+//		warProps.setProperty("type", WAR.RESTEASY_TYPE);
+//		warProps.setProperty("contextName", rbWar);
+//		warProps.setProperty("vdbJndiName", vdbBooksRest);
+//		warProps.setProperty("saveLocation", teiidBot.toAbsolutePath("target"));
+//		warProps.setProperty("securityType", WAR.HTTPBasic_SECURITY);
+//		warProps.setProperty("realm", "teiid-security");
+//		warProps.setProperty("role", "user");
+//
+//		//new VDBManager().createWAR(warProps, pathToBooksRestVDB);
+//
+//		// import created war
+//		Properties itemProps = new Properties();
+//		itemProps.setProperty("dirName", teiidBot.toAbsolutePath("target"));
+//		itemProps.setProperty("file", rbWar + ".war");
+//		itemProps.setProperty("intoFolder", projectBooksRest);
+//		new ImportManager().importGeneralItem(ImportGeneralItemWizard.Type.FILE_SYSTEM, itemProps);
+//
+//		new ModelExplorerManager().getWAR(projectBooksRest, rbWar + ".war").deploy(teiidServer.getName());
+//
+//		String username = teiidServer.getServerConfig().getServerBase().getProperty("teiidUser");
+//		String password = teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword");
+//		SimpleHttpClient client = new SimpleHttpClient("http://localhost:8080/" + rbWar + "/BooksView/book1/0201877562")
+//				.setBasicAuth(username, password);
+//		assertEquals(resultRest, client.get());
 	}
 
 }

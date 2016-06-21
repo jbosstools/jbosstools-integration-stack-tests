@@ -15,7 +15,7 @@ import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.teiid.reddeer.Procedure;
 import org.jboss.tools.teiid.reddeer.Table;
-import org.jboss.tools.teiid.reddeer.manager.ConnectionProfilesConstants;
+import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.manager.PerspectiveAndViewManager;
@@ -29,13 +29,13 @@ import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
 @TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = {
-		ConnectionProfilesConstants.ORACLE_11G_PARTS_SUPPLIER })
+		ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER })
 public class ProcedurePreviewTest {
 
 	private static final String PROJECT_NAME = "Partssupplier";
 	private static final String MODEL_SRC_NAME = "hsqldbParts";
 	private static final String MODEL_VIEW_NAME = "view";
-	private static final String PROFILE_NAME = ConnectionProfilesConstants.ORACLE_11G_PARTS_SUPPLIER;
+	private static final String PROFILE_NAME = ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER;
 	private static final String UDF_LIB_PATH = "target/proc-udf/MyTestUdf/lib/";
 	private static final String UDF_LIB = "MyTestUdf-1.0-SNAPSHOT.jar";
 

@@ -11,7 +11,6 @@ import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
-import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
@@ -33,9 +32,7 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
 @TeiidServer(state = ServerReqState.RUNNING)
-
 public class ConsumeSoapWs {
-
 	private static final String PROJECT_NAME = "SOAP";
 	private static final String SOURCE_MODEL_NAME = "Soap_Source.xmi";
 	private static final String VIEW_MODEL_NAME = "Soap_View.xmi";
@@ -48,19 +45,16 @@ public class ConsumeSoapWs {
 
 	@BeforeClass
 	public static void before() {
-		new ModelExplorerManager().createProject(PROJECT_NAME, false);
+		new ModelExplorer().createModelProject(PROJECT_NAME);
 	}
 
 	@Test
 	public void test() {
-
-		String profile = "SOAP";
-
 		Properties wsdlCP = new Properties();
 		wsdlCP.setProperty("wsdl", "http://ws-dvirt.rhcloud.com/dv-test-ws/soap?wsdl");
 		wsdlCP.setProperty("endPoint", "Countries");
 
-		new ConnectionProfileManager().createCPWSDL(profile, wsdlCP);
+		new ConnectionProfileManager().createCPWSDL("SOAP", wsdlCP);
 
 		WsdlImportWizard wsdlWizard = new WsdlImportWizard();
 
@@ -88,24 +82,24 @@ public class ConsumeSoapWs {
 		
 		wsdlWizard.setJndiName("SOAPSource");
 		wsdlWizard.execute();
-		
+
 		VdbWizard vdbWizard = new VdbWizard();
 		vdbWizard.open();
-		vdbWizard.setLocation(PROJECT_NAME);
-		vdbWizard.setName(VDB_NAME);
-		vdbWizard.addModel(new String[] { PROJECT_NAME, VIEW_MODEL_NAME });
+		vdbWizard.setLocation(PROJECT_NAME)
+				.setName(VDB_NAME)
+				.addModel(PROJECT_NAME, SOURCE_MODEL_NAME + ".xmi")
+				.addModel(PROJECT_NAME, VIEW_MODEL_NAME + ".xmi");
 		vdbWizard.finish();
 
 		new ServersView().open();
 		new ServersViewExt().refreshServer(new ServersView().getServers().get(0).getLabel().getName());
 
-		new ModelExplorer().executeVDB(PROJECT_NAME, VDB_NAME + ".vdb");
+		new ModelExplorer().deployVdb(PROJECT_NAME, VDB_NAME);
 
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, VDB_NAME);
 
 		assertEquals(1, jdbchelper.getNumberOfResults(TESTSQL));
 		assertEquals(3, jdbchelper.getNumberOfResults(TESTSQL1));
-
 	}
 
 }

@@ -1,23 +1,12 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.List;
 import java.util.Properties;
+
 import org.hamcrest.Matcher;
-import org.jboss.tools.teiid.reddeer.ModelClass;
-import org.jboss.tools.teiid.reddeer.ModelType;
-import org.jboss.tools.teiid.reddeer.Procedure;
-import org.jboss.tools.teiid.reddeer.Table;
-import org.jboss.tools.teiid.reddeer.WAR;
-import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
-import org.jboss.tools.teiid.reddeer.condition.IsPreviewInProgress;
-import org.jboss.tools.teiid.reddeer.connection.SimpleHttpClient;
-import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
-import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
-import org.jboss.tools.teiid.reddeer.manager.ConnectionProfilesConstants;
-import org.jboss.tools.teiid.reddeer.manager.ImportManager;
-import org.jboss.tools.teiid.reddeer.manager.ImportMetadataManager;
-import org.jboss.tools.teiid.reddeer.manager.VDBManager;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.matcher.WithMnemonicTextMatcher;
@@ -37,6 +26,18 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
+import org.jboss.tools.teiid.reddeer.ModelClass;
+import org.jboss.tools.teiid.reddeer.ModelType;
+import org.jboss.tools.teiid.reddeer.Procedure;
+import org.jboss.tools.teiid.reddeer.Table;
+import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
+import org.jboss.tools.teiid.reddeer.condition.IsPreviewInProgress;
+import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
+import org.jboss.tools.teiid.reddeer.connection.SimpleHttpClient;
+import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
+import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
+import org.jboss.tools.teiid.reddeer.manager.ImportManager;
+import org.jboss.tools.teiid.reddeer.manager.ImportMetadataManager;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
@@ -59,15 +60,15 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
 @TeiidServer(state = ServerReqState.RUNNING, connectionProfiles={
-		ConnectionProfilesConstants.ORACLE_11G_PARTS_SUPPLIER,
-		ConnectionProfilesConstants.SQL_SERVER_2008_PARTS_SUPPLIER,
+		ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER,
+		ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER,
 })
 
 public class GuidesTest {
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;
 	
-	private static final String CONNECTION_PROFILE= ConnectionProfilesConstants.SQL_SERVER_2008_PARTS_SUPPLIER;
+	private static final String CONNECTION_PROFILE= ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER;
 	
 	private static final GuidesView guides = new GuidesView();
 	
@@ -187,22 +188,22 @@ public class GuidesTest {
 		new PushButton("OK").click();
 		new WaitWhile(new IsInProgress(), TimePeriod.NORMAL);
 		String[] pathToVDB = new String[] { project_REST_name, vdb_REST_name };
-		new VDBManager().createVDBDataSource(pathToVDB, vdbJndiName , false);
+		new ModelExplorer().createVDBDataSource(pathToVDB, vdbJndiName , false);
 		
 		String path = new TeiidBot().toAbsolutePath("target");
-		WAR war = guides.createWAR(actionSet, vdb_REST_name, WAR.NONE_SECURITY, vdbJndiName, path, pathToVDB);
+		//WAR war = guides.createWAR(actionSet, vdb_REST_name, WAR.NONE_SECURITY, vdbJndiName, path, pathToVDB);
 
 		guides.chooseAction(actionSet, "Deploy WAR file "); 
 		new DefaultShell("Deploy WAR Instructions");
 		new PushButton("OK").click();
-		
+		// TODO following code (import WAR) is not needed
 		Properties itemProps = new Properties();
 		itemProps.setProperty("dirName", new TeiidBot().toAbsolutePath("target"));
 		itemProps.setProperty("file", vdb_REST_name + ".war");
 		itemProps.setProperty("intoFolder", project_REST_name);
 		new ImportManager().importGeneralItem(ImportGeneralItemWizard.Type.FILE_SYSTEM, itemProps);
 
-		war.deploy(teiidServer.getName());
+		//war.deploy(teiidServer.getName()); // TODO modelExplorer.deployWar
 		String url = "http://localhost:8080/"+vdb_REST_name+"/REST_WarView/supplier/Park";
 		
 		assertEquals(result, new SimpleHttpClient(url).get());
@@ -322,7 +323,7 @@ public class GuidesTest {
 		
 		guides.createProjectViaGuides(actionSet, projectName);
 		
-		guides.createDataSource(dataSource, ConnectionProfilesConstants.SQL_SERVER_2008_PARTS_SUPPLIER);
+		guides.createDataSource(dataSource, ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER);
 		
 		guides.createSourceModelFromTeiid(modelName, dataSource,null,"dbo");
 		

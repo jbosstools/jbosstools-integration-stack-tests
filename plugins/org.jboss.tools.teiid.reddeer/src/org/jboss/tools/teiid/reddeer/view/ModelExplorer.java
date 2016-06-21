@@ -15,6 +15,7 @@ import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.eclipse.jdt.ui.AbstractExplorer;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.LabeledCheckBox;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -328,6 +329,28 @@ public class ModelExplorer extends AbstractExplorer {
 		} catch (SWTLayerException e) {	
 			// shell not opened -> continue
 		}
+	}
+	
+	public void createVDBDataSource(String[] pathToVDB, String jndiName, boolean passThruAuth) {
+
+		if (!pathToVDB[pathToVDB.length - 1].contains(".vdb")) {
+			pathToVDB[pathToVDB.length - 1] = pathToVDB[pathToVDB.length - 1].concat(".vdb");
+		}
+		new DefaultShell();
+		new ModelExplorer().getProject(pathToVDB[0]).getProjectItem(pathToVDB[1]).select();
+		new ContextMenu("Modeling", "Create VDB Data Source").select();
+		try {
+			new DefaultShell("VDB Not Yet Deployed ");
+			new PushButton("Yes").click();// create ds anyway
+		} catch (Exception e) {
+
+		}
+		new DefaultShell();
+		new DefaultText(1).setText(jndiName);
+		if (passThruAuth) {
+			new CheckBox("Pass Thru Authentication").click();
+		}
+		new PushButton("OK").click();
 	}
 	
 	/**

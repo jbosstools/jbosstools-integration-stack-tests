@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Properties;
@@ -26,16 +25,13 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.workbench.impl.editor.AbstractEditor;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.ModelProject;
-import org.jboss.tools.teiid.reddeer.VDB;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
-import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
-import org.jboss.tools.teiid.reddeer.view.TeiidView;
-import org.jboss.tools.teiid.reddeer.wizard.CreateVDB;
 import org.jboss.tools.teiid.reddeer.wizard.HSQLDBDriverWizard;
 import org.jboss.tools.teiid.reddeer.wizard.HSQLDBProfileWizard;
+import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
 
 /**
  * Bot operations specific for Teiid Designer.
@@ -221,20 +217,15 @@ public class TeiidBot {
 
 		String vdb_name = "Check_" + model;
 
-		// create VDB
-		CreateVDB createVDB = new CreateVDB();
-		createVDB.setFolder(project);
-		createVDB.setName(vdb_name);
-		createVDB.execute(true);
+		// create VDB		
+		VdbWizard vdbWizard = new VdbWizard();
+		vdbWizard.open();
+		vdbWizard.setLocation(project)
+				.setName(vdb_name)
+				.addModel(project, model);
+		vdbWizard.finish();
 
-		// add models to the vdb
-		VDBEditor editor = VDBEditor.getInstance(vdb_name + ".vdb");
-		editor.show();
-		editor.addModel(project, model);
-		editor.save();
-
-		VDB vdb = new ModelExplorer().getModelProject(project).getVDB(vdb_name + ".vdb");
-		vdb.executeVDB();
+		new ModelExplorer().deployVdb(project, vdb_name);
 
 		TeiidJDBCHelper jdbcHelper = new TeiidJDBCHelper(teiidServer, vdb_name);
 
@@ -243,35 +234,6 @@ public class TeiidBot {
 			String previewSQL = generateTablePreviewQuery(model, tables[i]);
 			assertTrue(jdbcHelper.isQuerySuccessful(previewSQL,true));
 		}
-
-	}
-	
-	public void simulateProcedurePreview(TeiidServerRequirement teiidServer, String project, String model, String procedure, String...parameters) {
-
-		String vdb_name = "Check_" + model;
-
-		// create VDB
-		CreateVDB createVDB = new CreateVDB();
-		createVDB.setFolder(project);
-		createVDB.setName(vdb_name);
-		createVDB.execute(true);
-
-		// add models to the vdb
-		VDBEditor editor = VDBEditor.getInstance(vdb_name + ".vdb");
-		editor.show();
-		editor.addModel(project, model);
-		editor.save();
-
-		VDB vdb = new ModelExplorer().getModelProject(project).getVDB(vdb_name + ".vdb");
-		vdb.executeVDB();
-
-		TeiidJDBCHelper jdbcHelper = new TeiidJDBCHelper(teiidServer, vdb_name);
-		
-		ArrayList<String> parametersList = new ArrayList<String>(Arrays.asList(parameters));
-
-		// try simple query
-		String previewSQL = generateProcedurePreviewQuery(model, procedure, parametersList);
-		assertTrue(jdbcHelper.isQuerySuccessful(previewSQL,false));
 
 	}
 

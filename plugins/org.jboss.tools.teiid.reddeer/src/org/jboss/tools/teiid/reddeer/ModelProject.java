@@ -35,31 +35,6 @@ public class ModelProject {
 		new WorkbenchShell().setFocus();
 	}
 
-	/**
-	 * Creates a new VDB
-	 * 
-	 * @param name
-	 * @return
-	 */
-	public VDB createVDB(String name) {
-		project.select();
-		new ContextMenu("New", "Teiid VDB").select();
-		new LabeledText("VDB Name:").setText(name);
-		new PushButton("Finish").click();
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		return getVDB(name + ".vdb");
-	}
-
-	/**
-	 * Returns VDB with a given name
-	 * 
-	 * @param name
-	 * @return
-	 */
-	public VDB getVDB(String name) {
-		return new VDB(project.getProjectItem(name));
-	}
-
 	public boolean containsItem(String... path) {
 		return project.containsItem(path);
 	}

@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
-import java.util.Properties;
 
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
@@ -24,13 +23,10 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.tools.teiid.reddeer.WAR;
+import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.SimpleHttpClient;
+import org.jboss.tools.teiid.reddeer.dialog.CreateWarDialog;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
-import org.jboss.tools.teiid.reddeer.manager.ConnectionProfilesConstants;
-import org.jboss.tools.teiid.reddeer.manager.ImportManager;
-import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
-import org.jboss.tools.teiid.reddeer.manager.VDBManager;
 import org.jboss.tools.teiid.reddeer.matcher.ModelColumnMatcher;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
@@ -38,7 +34,7 @@ import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidSer
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.GenerateRestProcedureWizard;
-import org.jboss.tools.teiid.reddeer.wizard.ImportGeneralItemWizard;
+import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,8 +47,7 @@ import com.google.gson.JsonParser;
 
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
-@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = {
-		ConnectionProfilesConstants.ORACLE_11G_PARTS_SUPPLIER })
+@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = {ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER })
 public class CreateRestProcedureTest {
 
 	private static final String SUPPLIER_EXPECTED = "<elems pk_SUPPLIER_ID_in=\"S108\"><elem><SUPPLIER_ID>S108</SUPPLIER_ID><SUPPLIER_NAME>Olsen</SUPPLIER_NAME><SUPPLIER_STATUS>20</SUPPLIER_STATUS><SUPPLIER_CITY>Atlanta</SUPPLIER_CITY><SUPPLIER_STATE>GA</SUPPLIER_STATE></elem></elems>";
@@ -67,7 +62,7 @@ public class CreateRestProcedureTest {
 	private static final String SOURCE_MODEL_NAME = "Parts.xmi";
 
 	private static final String PROJECT_NAME = "CreateRestProcedureProject";
-	private static final String VDB_NAME = PROJECT_NAME + "Vdb";
+	private static final String VDB_NAME = "CreateRestProcedureVdb";
 
 	private static final String TARGET_MODEL_NAME = "ProcView.xmi";
 
@@ -79,12 +74,12 @@ public class CreateRestProcedureTest {
 
 	@Before
 	public void importProject() {
-		new ImportManager().importProject(teiidBot.toAbsolutePath("resources/projects/" + PROJECT_NAME));
+		new ModelExplorer().importProject(teiidBot.toAbsolutePath("resources/projects/" + PROJECT_NAME));
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		project = teiidBot.modelExplorer().getProject(PROJECT_NAME);
 		project.select();
 		project.refresh();
-		new ModelExplorer().changeConnectionProfile(ConnectionProfilesConstants.ORACLE_11G_PARTS_SUPPLIER, PROJECT_NAME,
+		new ModelExplorer().changeConnectionProfile(ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER, PROJECT_NAME,
 				SOURCE_MODEL_NAME);
 	}
 
@@ -218,36 +213,26 @@ public class CreateRestProcedureTest {
 	}
 
 	private void createAndDeployVdb(String modelName) {
-		VDBManager vdbManager = new VDBManager();
-		vdbManager.createVDB(PROJECT_NAME, VDB_NAME);
-		vdbManager.addModelsToVDB(PROJECT_NAME, VDB_NAME, new String[] { modelName });
-
+		VdbWizard vdbWizard = new VdbWizard();
+		vdbWizard.open();
+		vdbWizard.setLocation(PROJECT_NAME)
+				.setName(VDB_NAME)
+				.addModel(PROJECT_NAME, modelName);
+		vdbWizard.finish();
+		
 		new ServersViewExt().refreshServer(teiidServer.getName());
-		new VDBManager().deployVDB(new String[] { PROJECT_NAME, VDB_NAME + ".vdb" });
-		new VDBManager().createVDBDataSource(new String[] { PROJECT_NAME, VDB_NAME + ".vdb" });
+		
+		new ModelExplorer().deployVdb(PROJECT_NAME, VDB_NAME);
 	}
 
-	private void generateAndDeployWAR() {
-		String war = PROJECT_NAME;
-
-		Properties warProps = new Properties();
-		warProps.setProperty("type", WAR.RESTEASY_TYPE);
-		warProps.setProperty("contextName", war);
-		warProps.setProperty("vdbJndiName", VDB_NAME);
-		warProps.setProperty("saveLocation", teiidBot.toAbsolutePath("target"));
-		warProps.setProperty("securityType", WAR.HTTPBasic_SECURITY);
-		warProps.setProperty("realm", "teiid-security");
-		warProps.setProperty("role", "user");
-
-		new VDBManager().createWAR(warProps, PROJECT_NAME, VDB_NAME + ".vdb");
-
-		Properties itemProps = new Properties();
-		itemProps.setProperty("dirName", teiidBot.toAbsolutePath("target"));
-		itemProps.setProperty("file", war + ".war");
-		itemProps.setProperty("intoFolder", PROJECT_NAME);
-		new ImportManager().importGeneralItem(ImportGeneralItemWizard.Type.FILE_SYSTEM, itemProps);
-
-		new ModelExplorerManager().getWAR(PROJECT_NAME, war + ".war").deploy(teiidServer.getName());
+	private void generateAndDeployWAR() {		
+		CreateWarDialog dialog = new ModelExplorer().generateWar(true, PROJECT_NAME, VDB_NAME);
+		dialog.setVdbJndiName(VDB_NAME)
+			.setWarFileLocation(new ModelExplorer().getProjectPath(PROJECT_NAME))
+			.setHttpBasicSecurity("teiid-security", "user");
+		dialog.finish();
+		
+		new ModelExplorer().deployWar(teiidServer, PROJECT_NAME, VDB_NAME);
 	}
 
 	private void checkRestProcedure(String modelName, String procedureName, String url) {
@@ -284,9 +269,8 @@ public class CreateRestProcedureTest {
 	}
 
 	private void checkSwagger(String modelName) {
-		
 		//Checks if the main page is available
-		String checkSwagger = new SimpleHttpClient("http://localhost:8080/" + PROJECT_NAME)
+		new SimpleHttpClient("http://localhost:8080/" + VDB_NAME)
 				.setBasicAuth(teiidServer.getServerConfig().getServerBase().getProperty("teiidUser"),
 						teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword"))
 				.get();
@@ -298,7 +282,7 @@ public class CreateRestProcedureTest {
 		allowedPaths.add("\"/"+ modelName +"/json/PARTS/{pk_PART_ID_in}\"");
 
 		//Checks that paths to procedures are correct
-		String response = new SimpleHttpClient("http://localhost:8080/" + PROJECT_NAME + "/api-docs/" + modelName)
+		String response = new SimpleHttpClient("http://localhost:8080/" + VDB_NAME + "/api-docs/" + modelName)
 				.setBasicAuth(teiidServer.getServerConfig().getServerBase().getProperty("teiidUser"),
 						teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword"))
 				.get();
@@ -312,7 +296,6 @@ public class CreateRestProcedureTest {
 			assertTrue(allowedPaths.contains(path));
 			allowedPaths.remove(path);
 		}
-
 	}
 
 }
