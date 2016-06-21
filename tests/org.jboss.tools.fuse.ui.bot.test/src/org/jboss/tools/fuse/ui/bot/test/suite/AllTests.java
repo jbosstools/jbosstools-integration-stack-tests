@@ -13,6 +13,7 @@ import org.jboss.tools.fuse.ui.bot.test.FuseProjectTest;
 import org.jboss.tools.fuse.ui.bot.test.JMXNavigatorServerTest;
 import org.jboss.tools.fuse.ui.bot.test.JMXNavigatorTest;
 import org.jboss.tools.fuse.ui.bot.test.LicenseTest;
+import org.jboss.tools.fuse.ui.bot.test.NewFuseProjectWizardTest;
 import org.jboss.tools.fuse.ui.bot.test.ProjectLocalRunTest;
 import org.jboss.tools.fuse.ui.bot.test.QuickStartsTest;
 import org.jboss.tools.fuse.ui.bot.test.RouteManipulationTest;
@@ -42,6 +43,7 @@ import junit.framework.TestSuite;
 	JMXNavigatorServerTest.class,
 	JMXNavigatorTest.class,
 	LicenseTest.class,
+	NewFuseProjectWizardTest.class,
 	ProjectLocalRunTest.class,
 	QuickStartsTest.class,
 	RouteManipulationTest.class,

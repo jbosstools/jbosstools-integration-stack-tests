@@ -82,7 +82,7 @@ public class NewFuseIntegrationProjectWizard extends NewWizardDialog {
 
 	public void selectCamelVersion(String version) {
 		log.debug("Selecting 'Camel Version' to: " + version);
-		new DefaultCombo(1).setSelection(version);
+		new DefaultCombo(1).setText(version);
 	}
 
 	public boolean isCamelVersionEditable() {
