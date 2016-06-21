@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
+import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
@@ -96,8 +97,6 @@ public class ModelExplorerManager {
 
 		}
 		
-		new PushButton("OK").click();
-
 		if ((params != null) && (!params.isEmpty())) {
 			new DefaultShell("Preview Data");
 			int i = 0;
@@ -107,6 +106,8 @@ public class ModelExplorerManager {
 			}
 			new PushButton("OK").click();
 		}
+		
+		new PushButton("OK").click();
 
 	}
 

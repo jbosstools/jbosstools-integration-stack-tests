@@ -62,6 +62,7 @@ public class ModelExplorer extends AbstractExplorer {
 
 	private static final String MODELING_MENU_ITEM = "Modeling";
 	private static final String CREATE_DATA_SOURCE = "Create Data Source";
+	private static final String SET_JNDI_NAME = "Set Data Source JNDI Name";
 
 	public static class ConnectionSourceType {
 		public static final String USE_MODEL_CONNECTION_INFO = "Use Model Connection Info";
@@ -563,5 +564,22 @@ public class ModelExplorer extends AbstractExplorer {
 		new WorkbenchShell();
 		this.activate();
 		this.deleteAllProjects();
+	}
+	
+	/**
+	 * set jndi name for source model
+	 */
+	public void setJndiName(String jndiName, String... pathToSourceModel) {
+		open();
+		if (!pathToSourceModel[pathToSourceModel.length - 1].contains(".")) {
+			pathToSourceModel[pathToSourceModel.length - 1] = pathToSourceModel[pathToSourceModel.length - 1]
+					.concat(".xmi");
+		}
+		new WorkbenchShell();
+		new DefaultTreeItem(pathToSourceModel).select();
+		new ContextMenu(MODELING_MENU_ITEM, SET_JNDI_NAME).select();
+		new DefaultShell("Set JBoss Data Source JNDI Name");
+		new DefaultText(0).setText(jndiName);
+		new PushButton("OK").click();
 	}
 }

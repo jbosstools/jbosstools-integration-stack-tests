@@ -5,8 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.ArrayList;
-import org.jboss.tools.teiid.reddeer.manager.ConnectionProfilesConstants;
-import org.jboss.tools.teiid.reddeer.manager.ImportManager;
+import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.TimePeriod;
@@ -21,6 +20,7 @@ import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
+import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.SQLResult;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -34,14 +34,13 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
 @TeiidServer(state = ServerReqState.RUNNING, connectionProfiles={
-		ConnectionProfilesConstants.ORACLE_11G_PARTS_SUPPLIER,
-		ConnectionProfilesConstants.SQL_SERVER_2008_PARTS_SUPPLIER,
+		ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER,
+		ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER,
 })
 public class PreviewModelTest {
 
 	private static final String PROJECT_NAME = "PreviewProject";
 	private static TeiidBot teiidBot = new TeiidBot();
-	private static final String PROJECT_LOCATION = "resources/projects/"+ PROJECT_NAME;
 	private static final String NAME_ORACLE_MODEL = "partsSourceOracle";
 	private static final String NAME_SQL_MODEL = "partsSourceSQLServer";
 	private static final String NAME_VIEW_MODEL = "partsView";
@@ -57,10 +56,19 @@ public class PreviewModelTest {
 		
 	@BeforeClass
 	public static void before() {
-		new ImportManager().importProject(PROJECT_LOCATION);
-		new ModelExplorerManager().changeConnectionProfile(ConnectionProfilesConstants.ORACLE_11G_PARTS_SUPPLIER, PROJECT_NAME, NAME_ORACLE_MODEL);
-		new ModelExplorerManager().changeConnectionProfile(ConnectionProfilesConstants.SQL_SERVER_2008_PARTS_SUPPLIER, PROJECT_NAME, NAME_SQL_MODEL);
-
+		ModelExplorer explorer = new ModelExplorer();
+		explorer.importProject(PROJECT_NAME);
+		explorer.changeConnectionProfile(ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER, PROJECT_NAME, NAME_ORACLE_MODEL);
+		explorer.changeConnectionProfile(ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER, PROJECT_NAME, NAME_SQL_MODEL);
+		explorer.createDataSource(ModelExplorer.ConnectionSourceType.USE_CONNECTION_PROFILE_INFO, 
+							      ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER, 
+							      PROJECT_NAME, NAME_ORACLE_MODEL);
+		explorer.createDataSource(ModelExplorer.ConnectionSourceType.USE_CONNECTION_PROFILE_INFO,
+								  ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER,
+								  PROJECT_NAME, NAME_SQL_MODEL);
+		explorer.setJndiName(NAME_ORACLE_MODEL,PROJECT_NAME, NAME_ORACLE_MODEL);
+		explorer.setJndiName(NAME_SQL_MODEL,PROJECT_NAME, NAME_SQL_MODEL);
+		teiidBot.saveAll();
 	}
 	
 	@Before
