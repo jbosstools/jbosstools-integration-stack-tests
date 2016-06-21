@@ -1,6 +1,6 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -21,14 +21,13 @@ import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.common.reddeer.JiraClient;
 import org.jboss.tools.runtime.reddeer.condition.JobIsKilled;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
-import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
-import org.jboss.tools.teiid.reddeer.manager.VDBManager;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.ServerWizard;
+import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,7 +47,6 @@ public class ServerManipulationTest {
 	private static final String LOCAL_SERVER_NAME = "localServer";
 	private static final String REMOTE_SERVER_NAME = "remoteServer";
 	private static final String PROJECT_NAME = "ServerProject";
-	private static final String PROJECT_LOCATION = "resources/projects/"+ PROJECT_NAME;
 	private static final String NAME_SOURCE_MODEL = "partsSourceOracle";
 	private static final String VDB_NAME = "serverVDB";
 
@@ -181,11 +179,16 @@ public class ServerManipulationTest {
 	}
 	
 	private boolean testDeployVDB(){
-		new ImportManager().importProject(PROJECT_LOCATION);
+		new ModelExplorer().importProject(PROJECT_NAME);
 		new ModelExplorerManager().changeConnectionProfile(ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER, PROJECT_NAME, NAME_SOURCE_MODEL);
-		VDBManager vdb = new VDBManager(); 
-		vdb.createVDB(PROJECT_NAME, VDB_NAME);
-		vdb.addModelsToVDB(PROJECT_NAME, VDB_NAME, new String[]{NAME_SOURCE_MODEL + ".xmi"});
+		
+		VdbWizard vdbWizard = new VdbWizard();
+		vdbWizard.open();
+		vdbWizard.setLocation(PROJECT_NAME)
+				.setName(VDB_NAME)
+				.addModel(PROJECT_NAME, NAME_SOURCE_MODEL + ".xmi");
+		vdbWizard.finish();
+		
 		try{
 			new ModelExplorer().deployVdb(PROJECT_NAME, VDB_NAME);
 		}catch(Error ex){

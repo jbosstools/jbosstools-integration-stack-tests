@@ -126,6 +126,7 @@ public class WebServiceCreationTest {
 		XmlModelEditor xmlEditor = new XmlModelEditor("XmlModel.xmi");
 		
 		xmlEditor.deleteDocument("ProductInfo_getAllProductInfo_getAllProductsInfo_NewOutput");
+		new WebServiceModelEditor(WS_MODEL).close();
 		xmlEditor.renameDocument("ProductInfo_getProductInfo_getProductsInfo_OutputMsg", DOCUMENT_PRODUCT);
 		xmlEditor.renameDocument("ProductInfo_deleteProductInfo_deleteProductsInfo_ResultOutput", DOCUMENT_GOOD);
 		xmlEditor.renameDocument("ProductInfo_insertProductInfo_insertProductsInfo_ResultOutput", DOCUMENT_BAD);
@@ -158,6 +159,7 @@ public class WebServiceCreationTest {
 		xmlEditor.saveAndClose();
 		
 		// 3. Define web service operations
+		modelExplorer.openModelEditor(PROJECT_NAME, "web_services", WS_MODEL);
 		WebServiceModelEditor wsEditor = new WebServiceModelEditor(WS_MODEL);
 		wsEditor.openOperationEditor();
 		
@@ -184,7 +186,7 @@ public class WebServiceCreationTest {
 		assertTrue("Validation errors!", new ProblemsView().getProblems(ProblemType.ERROR).isEmpty());	
 		
 		// 4. Generate WAR and test it
-//		generateWarAndTestIt();
+		generateWarAndTestIt();
 	}
 	
 	@Test
@@ -319,7 +321,7 @@ public class WebServiceCreationTest {
 		assertTrue("Validation errors!", new ProblemsView().getProblems(ProblemType.ERROR).isEmpty());	
 		
 		// 4. Generate WAR and test it
-//		generateWarAndTestIt();
+		generateWarAndTestIt();
 	}
 	
 	@Test
@@ -422,7 +424,7 @@ public class WebServiceCreationTest {
 		assertTrue("Validation errors!", new ProblemsView().getProblems(ProblemType.ERROR).isEmpty());	
 		
 		// 3. Generate WAR and test it
-//		generateWarAndTestIt();
+		generateWarAndTestIt();
 	}
 
 	private void generateWarAndTestIt() throws IOException{
@@ -466,9 +468,14 @@ public class WebServiceCreationTest {
 //			// expected
 //		}
 		
-		postRequestHttpBasicSecurity("insertProductInfo", 
-				fileHelper.getXmlNoHeader("WebServiceCreationTest/InsertRequest.xml"), 
-				fileHelper.getXmlNoHeader("WebServiceCreationTest/ResponseSuccessful.xml"));
+		try {
+			postRequestHttpBasicSecurity("insertProductInfo", 
+					fileHelper.getXmlNoHeader("WebServiceCreationTest/InsertRequest.xml"), 
+					fileHelper.getXmlNoHeader("WebServiceCreationTest/ResponseSuccessful.xml"));
+		} catch (AssertionError e){
+			System.err.println("PREVIOUSLY INSERTED DATA ARE NOT REMOVED FROM DATABASE!!!");
+			throw new AssertionError(e);
+		} 
 		
 		try {
 			postRequestHttpBasicSecurity("insertProductInfo", 
@@ -528,10 +535,15 @@ public class WebServiceCreationTest {
 		postRequestNoneSecurity("getAllProductInfo",
 				fileHelper.getXmlNoHeader("WebServiceCreationTest/GetAllRequest.xml"), 
 				fileHelper.getXmlNoHeader("WebServiceCreationTest/GetAllResponse.xml"));
-		
-		postRequestNoneSecurity("insertProductInfo", 
-				fileHelper.getXmlNoHeader("WebServiceCreationTest/InsertRequest.xml"), 
-				fileHelper.getXmlNoHeader("WebServiceCreationTest/ResponseSuccessful.xml"));
+
+		try {
+			postRequestNoneSecurity("insertProductInfo", 
+					fileHelper.getXmlNoHeader("WebServiceCreationTest/InsertRequest.xml"), 
+					fileHelper.getXmlNoHeader("WebServiceCreationTest/ResponseSuccessful.xml"));
+		} catch (AssertionError e){
+			System.err.println("PREVIOUSLY INSERTED DATA ARE NOT REMOVED FROM DATABASE!!!");
+			throw new AssertionError(e);
+		}
 		
 		try {
 			postRequestNoneSecurity("insertProductInfo", 

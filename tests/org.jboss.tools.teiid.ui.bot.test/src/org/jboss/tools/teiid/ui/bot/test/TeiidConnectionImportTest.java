@@ -7,18 +7,17 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.SimpleHttpClient;
-import org.jboss.tools.teiid.reddeer.manager.ConnectionProfilesConstants;
-import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.manager.ImportMetadataManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
-import org.jboss.tools.teiid.reddeer.manager.VDBManager;
 import org.jboss.tools.teiid.reddeer.preference.TeiidDesignerPreferencePage;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.TeiidConnectionImportWizard;
+import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,22 +30,22 @@ import org.junit.runner.RunWith;
  */
 @RunWith(RedDeerSuite.class)
 @TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = {
-	ConnectionProfilesConstants.DB2_101_BQT,
-	ConnectionProfilesConstants.DB2_97_BQT2,
-	ConnectionProfilesConstants.ORACLE_11G_BQT2,
-	ConnectionProfilesConstants.ORACLE_12C_BQT,
-	ConnectionProfilesConstants.SQL_SERVER_2008_BQT2,
-	ConnectionProfilesConstants.SQL_SERVER_2012_BQT2,
-	ConnectionProfilesConstants.HSQLDB,
-	ConnectionProfilesConstants.MYSQL_51_BQT2,
-	ConnectionProfilesConstants.MYSQL_55_BQT2,
-	ConnectionProfilesConstants.POSTGRESQL_84_BQT2,
-	ConnectionProfilesConstants.POSTGRESQL_92_DVQE,
-	ConnectionProfilesConstants.SYBASE_15_BQT2,
-	ConnectionProfilesConstants.INGRES_10_BQT2,
-	ConnectionProfilesConstants.SALESFORCE,
-	ConnectionProfilesConstants.SQL_SERVER_2008_BOOKS,
-	ConnectionProfilesConstants.SAP_HANA })
+		ConnectionProfileConstants.DB2_101_BQT,
+		ConnectionProfileConstants.DB2_97_BQT2,
+		ConnectionProfileConstants.ORACLE_11G_BQT2,
+		ConnectionProfileConstants.ORACLE_12C_BQT,
+		ConnectionProfileConstants.SQL_SERVER_2008_BQT2,
+		ConnectionProfileConstants.SQL_SERVER_2012_BQT2,
+		ConnectionProfileConstants.HSQLDB,
+		ConnectionProfileConstants.MYSQL_51_BQT2,
+		ConnectionProfileConstants.MYSQL_55_BQT2,
+		ConnectionProfileConstants.POSTGRESQL_84_BQT2,
+		ConnectionProfileConstants.POSTGRESQL_92_DVQE,
+		ConnectionProfileConstants.SYBASE_15_BQT2,
+		ConnectionProfileConstants.INGRES_10_BQT2,
+		ConnectionProfileConstants.SALESFORCE,
+		ConnectionProfileConstants.SQL_SERVER_2008_BOOKS,
+		ConnectionProfileConstants.SAP_HANA })
 public class TeiidConnectionImportTest extends SWTBotTestCase {
 
 	@InjectRequirement
@@ -64,7 +63,7 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 	private static final String FILE_MODEL = "FileImported";
 
 	// hsql
-	private static final String hsqlCPName = ConnectionProfilesConstants.HSQLDB;
+	private static final String hsqlCPName = ConnectionProfileConstants.HSQLDB;
 	private static final String hsqlModel = "HsqldbImported";
 
 	private static TeiidBot teiidBot = new TeiidBot();
@@ -76,7 +75,7 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 	public static void createProject() {
 		new TeiidDesignerPreferencePage().setTeiidConnectionImporterTimeout(240);
 
-		new ImportManager().importProject(teiidBot.toAbsolutePath(projectLocation));
+		new ModelExplorer().importProject(teiidBot.toAbsolutePath(projectLocation));
 		new ModelExplorer().getModelProject(PROJECT_NAME).open();
 
 	}
@@ -159,24 +158,17 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 
 	@Test
 	public void teiidTest() {
-		new ModelExplorerManager().changeConnectionProfile(ConnectionProfilesConstants.SQL_SERVER_2008_BOOKS,
+		new ModelExplorerManager().changeConnectionProfile(ConnectionProfileConstants.SQL_SERVER_2008_BOOKS,
 				PROJECT_NAME, sqlserverExistingModelName);
 
-		VDBManager vdbManager = new VDBManager();
-		vdbManager.createVDB(PROJECT_NAME, SOURCE_VDB_NAME);
-		vdbManager.addModelsToVDB(PROJECT_NAME, SOURCE_VDB_NAME, new String[] { sqlserverExistingModelName });
-
-		new DefaultShell();
-
-		String[] pathToVDB = new String[] { PROJECT_NAME, SOURCE_VDB_NAME + ".vdb" };
-
-		vdbManager.deployVDB(pathToVDB);
-
-		try {
-			vdbManager.createVDBDataSource(pathToVDB);
-		} catch (Exception e) {
-			System.err.println("VDB data source exists");
-		}
+		VdbWizard vdbWizard = new VdbWizard();
+		vdbWizard.open();
+		vdbWizard.setLocation(PROJECT_NAME)
+				.setName(SOURCE_VDB_NAME)
+				.addModel(PROJECT_NAME, sqlserverExistingModelName);
+		vdbWizard.finish();
+		
+		new ModelExplorer().deployVdb(PROJECT_NAME, SOURCE_VDB_NAME);
 
 		Properties iProps = new Properties();
 		iProps.setProperty(TeiidConnectionImportWizard.DATA_SOURCE_NAME, SOURCE_VDB_NAME);
@@ -189,7 +181,6 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 		new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME, model, iProps, null,
 				teiidImporterProperties);
 		teiidBot.assertResource(PROJECT_NAME, model + ".xmi", "AUTHORS");
-
 	}
 
 	@Test
@@ -197,7 +188,7 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 		Properties teiidImporterProperties = new Properties();
 		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "SMALL%");
 		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_SCHEMA_PATTERN, "%BQT%");
-		importModel(ConnectionProfilesConstants.DB2_101_BQT, "db2101Model", teiidImporterProperties);
+		importModel(ConnectionProfileConstants.DB2_101_BQT, "db2101Model", teiidImporterProperties);
 		checkImportedModel("db2101Model", "SMALLA", "SMALLB");
 
 	}
@@ -206,7 +197,7 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 	public void db297Test() {
 		Properties teiidImporterProperties = new Properties();
 		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "SMALL%");
-		importModel(ConnectionProfilesConstants.DB2_97_BQT2, "db297Model", teiidImporterProperties);
+		importModel(ConnectionProfileConstants.DB2_97_BQT2, "db297Model", teiidImporterProperties);
 		checkImportedModel("db297Model", "SMALLA", "SMALLB");
 
 	}
@@ -215,7 +206,7 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 	public void ingres10Test() {
 		Properties teiidImporterProperties = new Properties();
 		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "small%");
-		importModel(ConnectionProfilesConstants.INGRES_10_BQT2, "ingres10Model", teiidImporterProperties);
+		importModel(ConnectionProfileConstants.INGRES_10_BQT2, "ingres10Model", teiidImporterProperties);
 		checkImportedModel("ingres10Model", "smalla", "smallb");
 
 	}
@@ -225,7 +216,7 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 		Properties teiidImporterProperties = new Properties();
 		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "SMALL%");
 		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_SCHEMA_PATTERN, "BQT2");
-		importModel(ConnectionProfilesConstants.ORACLE_11G_BQT2, "oracle11gModel", teiidImporterProperties);
+		importModel(ConnectionProfileConstants.ORACLE_11G_BQT2, "oracle11gModel", teiidImporterProperties);
 		checkImportedModel("oracle11gModel", "SMALLA", "SMALLB");
 
 	}
@@ -234,7 +225,7 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 	public void oracle12cTest() {
 		Properties teiidImporterProperties = new Properties();
 		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "SMALL%");
-		importModel(ConnectionProfilesConstants.ORACLE_12C_BQT, "oracle12cModel", teiidImporterProperties);
+		importModel(ConnectionProfileConstants.ORACLE_12C_BQT, "oracle12cModel", teiidImporterProperties);
 		checkImportedModel("oracle12cModel", "SMALLA", "SMALLB");
 
 	}
@@ -243,7 +234,7 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 	public void sqlServer2008Test() {
 		Properties teiidImporterProperties = new Properties();
 		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "Small%");
-		importModel(ConnectionProfilesConstants.SQL_SERVER_2008_BQT2, "sqlServer2008Model", teiidImporterProperties);
+		importModel(ConnectionProfileConstants.SQL_SERVER_2008_BQT2, "sqlServer2008Model", teiidImporterProperties);
 		checkImportedModel("sqlServer2008Model", "SmallA", "SmallB");
 
 	}
@@ -252,7 +243,7 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 	public void sqlServer2012Test() {
 		Properties teiidImporterProperties = new Properties();
 		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "Small%");
-		importModel(ConnectionProfilesConstants.SQL_SERVER_2012_BQT2, "sqlServer2012Model", teiidImporterProperties);
+		importModel(ConnectionProfileConstants.SQL_SERVER_2012_BQT2, "sqlServer2012Model", teiidImporterProperties);
 		checkImportedModel("sqlServer2012Model", "SmallA", "SmallB");
 
 	}
@@ -261,7 +252,7 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 	public void sybaseTest() {
 		Properties teiidImporterProperties = new Properties();
 		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "Small%");
-		importModel(ConnectionProfilesConstants.SYBASE_15_BQT2, "sybaseModel", teiidImporterProperties);
+		importModel(ConnectionProfileConstants.SYBASE_15_BQT2, "sybaseModel", teiidImporterProperties);
 		checkImportedModel("sybaseModel", "SmallA", "SmallB");
 
 	}
@@ -270,7 +261,7 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 	public void mysql51Test() {
 		Properties teiidImporterProperties = new Properties();
 		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "small%");
-		importModel(ConnectionProfilesConstants.MYSQL_51_BQT2, "mysql51Model", teiidImporterProperties);
+		importModel(ConnectionProfileConstants.MYSQL_51_BQT2, "mysql51Model", teiidImporterProperties);
 		checkImportedModel("mysql51Model", "smalla", "smallb");
 
 	}
@@ -279,7 +270,7 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 	public void mysql55Test() {
 		Properties teiidImporterProperties = new Properties();
 		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "small%");
-		importModel(ConnectionProfilesConstants.MYSQL_55_BQT2, "mysql55Model", teiidImporterProperties);
+		importModel(ConnectionProfileConstants.MYSQL_55_BQT2, "mysql55Model", teiidImporterProperties);
 		checkImportedModel("mysql55Model", "smalla", "smallb");
 
 	}
@@ -289,7 +280,7 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 		Properties teiidImporterProperties = new Properties();
 		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "small%");
 		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_SCHEMA_PATTERN, "%public%");
-		importModel(ConnectionProfilesConstants.POSTGRESQL_84_BQT2, "postgresql84Model", teiidImporterProperties);
+		importModel(ConnectionProfileConstants.POSTGRESQL_84_BQT2, "postgresql84Model", teiidImporterProperties);
 		checkImportedModel("postgresql84Model", "smalla", "smallb");
 
 	}
@@ -300,7 +291,7 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "small%");
 		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_SCHEMA_PATTERN, "public");
 		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_CATALOG, "dvqe");
-		importModel(ConnectionProfilesConstants.POSTGRESQL_92_DVQE, "postgresql92Model", teiidImporterProperties);
+		importModel(ConnectionProfileConstants.POSTGRESQL_92_DVQE, "postgresql92Model", teiidImporterProperties);
 		checkImportedModel("postgresql92Model", "smalla", "smallb");
 
 	}
@@ -340,7 +331,7 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 
 		Properties dsProps = new Properties();
 		Properties excelDsProperties = teiidServer.getServerConfig()
-				.getConnectionProfile(ConnectionProfilesConstants.EXCEL_SMALLA).asProperties();
+				.getConnectionProfile(ConnectionProfileConstants.EXCEL_SMALLA).asProperties();
 		dsProps.put(TeiidConnectionImportWizard.DATASOURCE_PROPERTY_PARENT_DIR, excelDsProperties.getProperty("path"));
 
 		Properties teiidImporterProps = new Properties();
@@ -387,9 +378,9 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 		
 		// TODO temp till hana translator is not set automatically (updated importModel method)
 		new DefaultShell();
-		new ServersViewExt().createDatasource(teiidServer.getName(), ConnectionProfilesConstants.SAP_HANA);
+		new ServersViewExt().createDatasource(teiidServer.getName(), ConnectionProfileConstants.SAP_HANA);
 		Properties importProps = new Properties();
-		importProps.setProperty(TeiidConnectionImportWizard.DATA_SOURCE_NAME, ConnectionProfilesConstants.SAP_HANA);
+		importProps.setProperty(TeiidConnectionImportWizard.DATA_SOURCE_NAME, ConnectionProfileConstants.SAP_HANA);
 		importProps.setProperty(TeiidConnectionImportWizard.TRANSLATOR, "hana");
 		ImportMetadataManager importMgr = new ImportMetadataManager();
 		importMgr.importFromTeiidConnection(PROJECT_NAME, modelName, importProps, null, teiidImportProps);

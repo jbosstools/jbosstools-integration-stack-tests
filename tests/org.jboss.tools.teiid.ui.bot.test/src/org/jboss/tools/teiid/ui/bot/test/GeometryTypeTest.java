@@ -1,6 +1,8 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,19 +26,19 @@ import org.jboss.tools.teiid.reddeer.ModelBuilder;
 import org.jboss.tools.teiid.reddeer.ModelClass;
 import org.jboss.tools.teiid.reddeer.ModelType;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
+import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
-import org.jboss.tools.teiid.reddeer.manager.ConnectionProfilesConstants;
 import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.manager.ImportMetadataManager;
 import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
-import org.jboss.tools.teiid.reddeer.manager.VDBManager;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.MetadataModelWizard;
 import org.jboss.tools.teiid.reddeer.wizard.TeiidConnectionImportWizard;
+import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,7 +48,7 @@ import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
 @TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = {
-	ConnectionProfilesConstants.ORACLE_11G_BQT2,})
+	ConnectionProfileConstants.ORACLE_11G_BQT2,})
 public class GeometryTypeTest {
 	
 	@InjectRequirement
@@ -63,14 +65,14 @@ public class GeometryTypeTest {
 	
 	@BeforeClass
 	public static void before() {
-		new ModelExplorerManager().createProject(PROJECT_NAME);
+		new ModelExplorer().createModelProject(PROJECT_NAME);
 	}
 	
 	@Test
 	public void importFromJDBC(){
 		Properties iProps = new Properties();
 		iProps.setProperty("itemList", "BQT2/TABLE/BUILDINGS");
-		new ImportManager().importFromDatabase(PROJECT_NAME, SOURCE_MODEL_NAME, ConnectionProfilesConstants.ORACLE_11G_BQT2, iProps,false);
+		new ImportManager().importFromDatabase(PROJECT_NAME, SOURCE_MODEL_NAME, ConnectionProfileConstants.ORACLE_11G_BQT2, iProps,false);
 		//TEIIDDES-2799
 		setGeometryDatatype(PROJECT_NAME,SOURCE_MODEL_NAME+".xmi","BUILDINGS","POSITION : object(1)");
 		setGeometryDatatype(PROJECT_NAME,SOURCE_MODEL_NAME+".xmi","BUILDINGS","FOOTPRINT : object(1)");
@@ -82,19 +84,23 @@ public class GeometryTypeTest {
 		
 		assertTrue(testSetDatatype(VIEW_MODEL_NAME,"geometry : xs:base64Binary","SDO_GEOMETRY"));
 		
-		VDBManager vdb = new VDBManager(); 
-		vdb.createVDB(PROJECT_NAME, VDB_NAME);
-		vdb.addModelsToVDB(PROJECT_NAME, VDB_NAME, new String[]{SOURCE_MODEL_NAME + ".xmi", VIEW_MODEL_NAME + ".xmi"});
+		VdbWizard vdbWizard = new VdbWizard();
+		vdbWizard.open();
+		vdbWizard.setLocation(PROJECT_NAME)
+				.setName(VDB_NAME)
+				.addModel(PROJECT_NAME, SOURCE_MODEL_NAME + ".xmi")
+				.addModel(PROJECT_NAME, VIEW_MODEL_NAME + ".xmi");
+		vdbWizard.finish();
 		
-		vdb.deployVDB(new String[]{PROJECT_NAME, VDB_NAME});
+		new ModelExplorer().deployVdb(PROJECT_NAME, VDB_NAME);
 		
 		testVDB(VIEW_MODEL_NAME,VDB_NAME);
 	}
 	@Test
 	public void importViaTeiid(){		
-		new ServersViewExt().createDatasource(teiidServer.getName(), ConnectionProfilesConstants.ORACLE_11G_BQT2);
+		new ServersViewExt().createDatasource(teiidServer.getName(), ConnectionProfileConstants.ORACLE_11G_BQT2);
 		Properties iProps = new Properties();
-		iProps.setProperty(TeiidConnectionImportWizard.DATA_SOURCE_NAME, ConnectionProfilesConstants.ORACLE_11G_BQT2);
+		iProps.setProperty(TeiidConnectionImportWizard.DATA_SOURCE_NAME, ConnectionProfileConstants.ORACLE_11G_BQT2);
 		Properties teiidImporterProperties = new Properties();
 		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "BUILDINGS");
 		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_SCHEMA_PATTERN, "BQT2");
@@ -111,11 +117,15 @@ public class GeometryTypeTest {
 		
 		assertTrue(testSetDatatype(VIEW_TEIID_MODEL_NAME,"geometry : xs:base64Binary","SDO_GEOMETRY"));
 		
-		VDBManager vdb = new VDBManager(); 
-		vdb.createVDB(PROJECT_NAME, VDB_TEIID_NAME);
-		vdb.addModelsToVDB(PROJECT_NAME, VDB_TEIID_NAME, new String[]{SOURCE_TEIID_MODEL_NAME + ".xmi", VIEW_TEIID_MODEL_NAME + ".xmi"});
+		VdbWizard vdbWizard = new VdbWizard();
+		vdbWizard.open();
+		vdbWizard.setLocation(PROJECT_NAME)
+				.setName(VDB_TEIID_NAME)
+				.addModel(PROJECT_NAME, SOURCE_TEIID_MODEL_NAME + ".xmi")
+				.addModel(PROJECT_NAME, VIEW_TEIID_MODEL_NAME + ".xmi");
+		vdbWizard.finish();
 		
-		vdb.deployVDB(new String[]{PROJECT_NAME, VDB_TEIID_NAME});
+		new ModelExplorer().deployVdb(PROJECT_NAME, VDB_TEIID_NAME);
 		
 		testVDB(VIEW_TEIID_MODEL_NAME,VDB_TEIID_NAME);
 		
