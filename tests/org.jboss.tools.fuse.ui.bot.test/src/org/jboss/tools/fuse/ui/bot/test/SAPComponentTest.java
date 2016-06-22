@@ -8,7 +8,6 @@ import static org.jboss.tools.fuse.reddeer.component.SAPLabels.QUEUE;
 import static org.jboss.tools.fuse.reddeer.component.SAPLabels.RFC;
 import static org.jboss.tools.fuse.reddeer.component.SAPLabels.SERVER;
 import static org.jboss.tools.fuse.reddeer.component.SAPLabels.SYSTEM_RELEASE;
-import static org.jboss.tools.fuse.reddeer.ProjectType.SPRING;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
@@ -26,6 +25,8 @@ import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.common.reddeer.XPathEvaluator;
 import org.jboss.tools.common.reddeer.view.ErrorLogView;
+import org.jboss.tools.fuse.reddeer.ProjectTemplate;
+import org.jboss.tools.fuse.reddeer.ProjectType;
 import org.jboss.tools.fuse.reddeer.component.AbstractURICamelComponent;
 import org.jboss.tools.fuse.reddeer.component.SAPIDocDestination;
 import org.jboss.tools.fuse.reddeer.component.SAPIDocListDestination;
@@ -72,7 +73,7 @@ public class SAPComponentTest extends DefaultTest {
 	@BeforeClass
 	public static void setupResetCamelContext() throws Exception {
 		new WorkbenchShell();
-		ProjectFactory.createProject("camel-spring", "Content Based Router", SPRING);
+		ProjectFactory.newProject("camel-spring").template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();
 		new ErrorLogView().deleteLog();
 
 		new ProjectExplorer().open();

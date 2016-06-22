@@ -1,7 +1,6 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
 import static org.jboss.reddeer.requirements.server.ServerReqState.RUNNING;
-import static org.jboss.tools.fuse.reddeer.ProjectType.SPRING;
 import static org.jboss.tools.runtime.reddeer.requirement.ServerReqType.EAP;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -13,6 +12,8 @@ import org.jboss.reddeer.eclipse.ui.browser.BrowserView;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.tools.fuse.reddeer.ProjectTemplate;
+import org.jboss.tools.fuse.reddeer.ProjectType;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
@@ -44,7 +45,7 @@ public class DeploymentEAPTest extends DefaultTest {
 	@BeforeClass
 	public static void setupInitial() {
 
-		ProjectFactory.createProject(PROJECT_NAME, "Content Based Router", SPRING);
+		ProjectFactory.newProject(PROJECT_NAME).template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();
 	}
 
 	/**

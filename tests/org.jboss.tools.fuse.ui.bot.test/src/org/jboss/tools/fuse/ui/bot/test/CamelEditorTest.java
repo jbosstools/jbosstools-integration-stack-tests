@@ -1,6 +1,5 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
-import static org.jboss.tools.fuse.reddeer.ProjectType.SPRING;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -22,6 +21,8 @@ import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.common.reddeer.LogGrapper;
 import org.jboss.tools.common.reddeer.view.ErrorLogView;
+import org.jboss.tools.fuse.reddeer.ProjectTemplate;
+import org.jboss.tools.fuse.reddeer.ProjectType;
 import org.jboss.tools.fuse.reddeer.component.CamelComponent;
 import org.jboss.tools.fuse.reddeer.component.CamelComponents;
 import org.jboss.tools.fuse.reddeer.component.File;
@@ -62,7 +63,7 @@ public class CamelEditorTest extends DefaultTest {
 	public void setupResetCamelContext() {
 
 		new WorkbenchShell();
-		ProjectFactory.createProject("cbr", "Content Based Router", SPRING);
+		ProjectFactory.newProject("cbr").template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();
 		new ErrorLogView().deleteLog();
 	}
 

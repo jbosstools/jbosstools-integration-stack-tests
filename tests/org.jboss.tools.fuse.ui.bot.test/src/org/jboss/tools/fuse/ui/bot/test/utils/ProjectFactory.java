@@ -79,63 +79,6 @@ public class ProjectFactory {
 	}
 
 	/**
-	 * Creates an empty Fuse Integration Project
-	 * 
-	 * @param name
-	 *            Name of the project
-	 * @param type
-	 *            Project type (Spring, Blueprint, Java)
-	 */
-	public static void createEmptyProject(String name, ProjectType type) {
-		NewFuseIntegrationProjectWizard wiz = new NewFuseIntegrationProjectWizard();
-		wiz.open();
-		wiz.setProjectName(name);
-		wiz.next();
-		wiz.next();
-		wiz.setProjectType(type);
-		wiz.finish();
-		openAssociatedPerspective();
-		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(300));
-	}
-
-	/**
-	 * Creates a Fuse Integration Project from given template
-	 * 
-	 * @param name
-	 *            Name of the project
-	 * @param template
-	 *            Name of the template
-	 * @param type
-	 *            Project type (Spring, Blueprint, Java)
-	 */
-	public static void createProject(String name, String template, ProjectType type) {
-		NewFuseIntegrationProjectWizard wiz = new NewFuseIntegrationProjectWizard();
-		wiz.open();
-		wiz.setProjectName(name);
-		wiz.next();
-		wiz.next();
-		wiz.selectTemplate(template);
-		wiz.setProjectType(type);
-		wiz.finish();
-		openAssociatedPerspective();
-		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(300));
-	}
-
-	public static void createProject(String name, String camelVersion, String template, ProjectType type) {
-		NewFuseIntegrationProjectWizard wiz = new NewFuseIntegrationProjectWizard();
-		wiz.open();
-		wiz.setProjectName(name);
-		wiz.next();
-		wiz.selectCamelVersion(camelVersion);
-		wiz.next();
-		wiz.selectTemplate(template);
-		wiz.setProjectType(type);
-		wiz.finish();
-		openAssociatedPerspective();
-		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(300));
-	}
-
-	/**
 	 * Removes all projects from file system.
 	 */
 	public static void deleteAllProjects() {

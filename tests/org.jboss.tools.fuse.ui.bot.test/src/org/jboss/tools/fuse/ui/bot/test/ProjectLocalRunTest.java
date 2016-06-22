@@ -1,6 +1,5 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
-import static org.jboss.tools.fuse.reddeer.ProjectType.SPRING;
 import static org.junit.Assert.assertFalse;
 
 import org.jboss.reddeer.common.logging.Logger;
@@ -16,6 +15,8 @@ import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement
 import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.fuse.reddeer.ProjectTemplate;
+import org.jboss.tools.fuse.reddeer.ProjectType;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
 import org.jboss.tools.fuse.reddeer.wizard.CamelTestCaseWizard;
@@ -65,7 +66,7 @@ public class ProjectLocalRunTest extends DefaultTest {
 	public static void setupCreateProject() {
 
 		log.info("Create a new Fuse project from 'Content Based Router' template");
-		ProjectFactory.createProject(PROJECT_NAME, "2.15.1.redhat-621084", "Content Based Router", SPRING);
+		ProjectFactory.newProject(PROJECT_NAME).version("2.15.1.redhat-621084").template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();
 		createTestClass();
 	}
 

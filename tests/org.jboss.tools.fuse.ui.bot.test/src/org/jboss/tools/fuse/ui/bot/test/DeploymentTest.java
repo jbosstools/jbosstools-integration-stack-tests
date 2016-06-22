@@ -1,7 +1,6 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
 import static org.jboss.reddeer.requirements.server.ServerReqState.PRESENT;
-import static org.jboss.tools.fuse.reddeer.ProjectType.BLUEPRINT;
 import static org.jboss.tools.runtime.reddeer.requirement.ServerReqType.Fuse;
 import static org.junit.Assert.assertTrue;
 
@@ -12,6 +11,8 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.fuse.reddeer.ProjectTemplate;
+import org.jboss.tools.fuse.reddeer.ProjectType;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
@@ -47,7 +48,7 @@ public class DeploymentTest extends DefaultTest {
 	@BeforeClass
 	public static void setupInitial() {
 
-		ProjectFactory.createProject(PROJECT_NAME, "Content Based Router", BLUEPRINT);
+		ProjectFactory.newProject(PROJECT_NAME).template(ProjectTemplate.CBR).type(ProjectType.BLUEPRINT).create();
 	}
 
 	/**
