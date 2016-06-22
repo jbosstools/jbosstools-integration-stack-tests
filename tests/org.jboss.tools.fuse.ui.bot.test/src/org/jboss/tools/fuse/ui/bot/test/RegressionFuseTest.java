@@ -1,6 +1,5 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
-import static org.jboss.tools.fuse.reddeer.ProjectType.BLUEPRINT;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -26,6 +25,8 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.common.reddeer.ResourceHelper;
 import org.jboss.tools.common.reddeer.debug.IsRunning;
+import org.jboss.tools.fuse.reddeer.ProjectTemplate;
+import org.jboss.tools.fuse.reddeer.ProjectType;
 import org.jboss.tools.fuse.reddeer.condition.FuseLogContainsText;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
@@ -131,7 +132,7 @@ public class RegressionFuseTest extends DefaultTest {
 	@Test
 	public void issue_1132() {
 
-		ProjectFactory.createProject("camel-blueprint", "Content Based Router", BLUEPRINT);
+		ProjectFactory.newProject("camel-blueprint").template(ProjectTemplate.CBR).type(ProjectType.BLUEPRINT).create();
 		new ProjectExplorer().getProject("camel-blueprint")
 				.getProjectItem("src/test/java", "com.mycompany.camel.blueprint", "RouteTest.java").delete();
 		String server = serverRequirement.getConfig().getName();
@@ -169,7 +170,7 @@ public class RegressionFuseTest extends DefaultTest {
 	@Test
 	public void issue_1152() {
 
-		ProjectFactory.createProject("camel-spring-dm", "Content Based Router", BLUEPRINT);
+		ProjectFactory.newProject("camel-spring-dm").template(ProjectTemplate.CBR).type(ProjectType.BLUEPRINT).create();
 		String server = serverRequirement.getConfig().getName();
 		FuseServerManipulator.startServer(server);
 		FuseServerManipulator.addModule(server, "camel-spring-dm");
@@ -191,7 +192,7 @@ public class RegressionFuseTest extends DefaultTest {
 	@Test
 	public void issue_1252() {
 
-		ProjectFactory.createProject("camel-blueprint", "Content Based Router", BLUEPRINT);
+		ProjectFactory.newProject("camel-blueprint").template(ProjectTemplate.CBR).type(ProjectType.BLUEPRINT).create();
 		String server = serverRequirement.getConfig().getName();
 		FuseServerManipulator.addModule(server, "camel-blueprint");
 		FuseServerManipulator.startServer(server);

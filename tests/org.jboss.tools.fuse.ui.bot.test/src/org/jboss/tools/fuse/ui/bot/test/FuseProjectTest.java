@@ -178,7 +178,7 @@ public class FuseProjectTest extends DefaultTest {
 	@Test
 	public void testArchetype() {
 
-		ProjectFactory.createProject(template, template, ProjectType.SPRING);
+		ProjectFactory.newProject(template).template(template).type(ProjectType.SPRING).create();
 		assertTrue("Project '" + template + "' is not present in Project Explorer", isPresent(template));
 		assertFalse("Project '" + template + "' was created with errors", hasErrors());
 		assertTrue("Project '" + template + "' cannot be run as Local Camel Context", canBeRun(template));

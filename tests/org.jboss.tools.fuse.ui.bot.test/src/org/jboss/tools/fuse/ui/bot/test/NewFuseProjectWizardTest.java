@@ -23,9 +23,9 @@ import org.jboss.tools.common.reddeer.LogGrapper;
 import org.jboss.tools.common.reddeer.ResourceHelper;
 import org.jboss.tools.common.reddeer.ext.ProjectExt;
 import org.jboss.tools.common.reddeer.view.ErrorLogView;
+import org.jboss.tools.fuse.reddeer.ProjectType;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard;
-import org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard.ProjectType;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.impl.ServerFuse;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
@@ -148,7 +148,7 @@ public class NewFuseProjectWizardTest {
 		wiz.selectCamelVersion("2.15.6");
 		wiz.next();
 		wiz.startWithEmptyProject();
-		wiz.setProjectType(ProjectType.Blueprint);
+		wiz.setProjectType(ProjectType.BLUEPRINT);
 		wiz.finish();
 		assertFalse("Project was created with errors", hasErrors());
 		assertTrue("There are some errors in Error Log", LogGrapper.getPluginErrors("fuse").size() == 0);
@@ -184,7 +184,7 @@ public class NewFuseProjectWizardTest {
 		wiz.next();
 		wiz.next();
 		wiz.startWithEmptyProject();
-		wiz.setProjectType(ProjectType.Blueprint);
+		wiz.setProjectType(ProjectType.BLUEPRINT);
 		wiz.finish();
 		assertFalse("Project was created with errors", hasErrors());
 		assertTrue("There are some errors in Error Log", LogGrapper.getPluginErrors("fuse").size() == 0);
@@ -215,7 +215,7 @@ public class NewFuseProjectWizardTest {
 		wiz.next();
 		wiz.next();
 		wiz.selectTemplate("JBoss Fuse", "Beginner", "Content Based Router");
-		wiz.setProjectType(ProjectType.Blueprint);
+		wiz.setProjectType(ProjectType.BLUEPRINT);
 		wiz.finish();
 		assertFalse("Project was created with errors", hasErrors());
 		assertTrue("There are some errors in Error Log", LogGrapper.getPluginErrors("fuse").size() == 0);
@@ -250,7 +250,7 @@ public class NewFuseProjectWizardTest {
 		wiz.next();
 		wiz.next();
 		wiz.startWithEmptyProject();
-		wiz.setProjectType(ProjectType.Blueprint);
+		wiz.setProjectType(ProjectType.BLUEPRINT);
 		wiz.finish();
 		try {
 			assertTrue("Created Camel File is not in Blueprint DSL", new CamelEditor("blueprint.xml").xpath("/blueprint").length() > 0);
@@ -267,7 +267,7 @@ public class NewFuseProjectWizardTest {
 		wiz.next();
 		wiz.next();
 		wiz.startWithEmptyProject();
-		wiz.setProjectType(ProjectType.Spring);
+		wiz.setProjectType(ProjectType.SPRING);
 		wiz.finish();
 		try {
 			assertTrue("Created Camel File is not in Spring DSL", new CamelEditor("camel-context.xml").xpath("/beans").length() > 0);
@@ -284,7 +284,7 @@ public class NewFuseProjectWizardTest {
 		wiz.next();
 		wiz.next();
 		wiz.startWithEmptyProject();
-		wiz.setProjectType(ProjectType.Java);
+		wiz.setProjectType(ProjectType.JAVA);
 		wiz.finish();
 		assertTrue("Project created with Java DSL do not contain 'CamelRoute.java' file", new ProjectExplorer().getProject("java").containsItem("src/main/java", "com.mycompany.camel", "CamelRoute.java"));
 		assertFalse("Project with Java DSL was created with errors", hasErrors());

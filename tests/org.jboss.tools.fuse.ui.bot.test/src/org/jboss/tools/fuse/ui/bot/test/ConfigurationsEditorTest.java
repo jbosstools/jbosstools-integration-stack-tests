@@ -2,9 +2,10 @@ package org.jboss.tools.fuse.ui.bot.test;
 
 import static org.junit.Assert.fail;
 
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.ByteArrayInputStream;
+
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -56,7 +57,7 @@ public class ConfigurationsEditorTest extends DefaultTest {
 	public void setupResetCamelContext() {
 
 		new WorkbenchShell();
-		ProjectFactory.createProject(PROJECT_NAME, "2.15.1.redhat-621084", "Content Based Router", ProjectType.SPRING);
+		ProjectFactory.newProject(PROJECT_NAME).version("2.15.1.redhat-621084").template("Content Based Router").type(ProjectType.SPRING);
 		new ErrorLogView().deleteLog();
 	}
 	

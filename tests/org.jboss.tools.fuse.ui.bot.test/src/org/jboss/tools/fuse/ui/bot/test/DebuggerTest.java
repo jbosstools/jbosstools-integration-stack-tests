@@ -1,6 +1,5 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
-import static org.jboss.tools.fuse.reddeer.ProjectType.SPRING;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -24,6 +23,8 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.tools.common.reddeer.LogGrapper;
 import org.jboss.tools.common.reddeer.debug.IsRunning;
 import org.jboss.tools.common.reddeer.debug.StepOverButton;
+import org.jboss.tools.fuse.reddeer.ProjectTemplate;
+import org.jboss.tools.fuse.reddeer.ProjectType;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
@@ -42,7 +43,6 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 public class DebuggerTest extends DefaultTest {
 
-	private static final String PROJECT_ARCHETYPE = "Content Based Router";
 	private static final String PROJECT_NAME = "cbr";
 	private static final String CAMEL_CONTEXT = "camel-context.xml";
 	private static final String CHOICE = "Choice";
@@ -56,7 +56,7 @@ public class DebuggerTest extends DefaultTest {
 	@BeforeClass
 	public static void setupInitial() {
 
-		ProjectFactory.createProject(PROJECT_NAME, PROJECT_ARCHETYPE, SPRING);
+		ProjectFactory.newProject(PROJECT_NAME).template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();
 		CamelEditor editor = new CamelEditor(CAMEL_CONTEXT);
 		editor.selectEditPart("file:work/cbr/input");
 		editor.setProperty("Uri *", "file:src/main/data");
