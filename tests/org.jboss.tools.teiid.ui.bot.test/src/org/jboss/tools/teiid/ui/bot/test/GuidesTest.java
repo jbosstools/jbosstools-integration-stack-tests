@@ -7,10 +7,27 @@ import java.util.List;
 import java.util.Properties;
 
 import org.hamcrest.Matcher;
+import org.jboss.tools.common.reddeer.JiraClient;
+import org.jboss.tools.runtime.reddeer.condition.JobIsKilled;
+import org.jboss.tools.teiid.reddeer.ModelClass;
+import org.jboss.tools.teiid.reddeer.ModelType;
+import org.jboss.tools.teiid.reddeer.Procedure;
+import org.jboss.tools.teiid.reddeer.Table;
+import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
+import org.jboss.tools.teiid.reddeer.condition.IsPreviewInProgress;
+import org.jboss.tools.teiid.reddeer.connection.SimpleHttpClient;
+import org.jboss.tools.teiid.reddeer.dialog.CreateWarDialog;
+import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
+import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
+import org.jboss.tools.teiid.reddeer.manager.ImportMetadataManager;
+import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
+import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
+import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.matcher.WithMnemonicTextMatcher;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -21,23 +38,10 @@ import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
-import org.jboss.tools.teiid.reddeer.ModelClass;
-import org.jboss.tools.teiid.reddeer.ModelType;
-import org.jboss.tools.teiid.reddeer.Procedure;
-import org.jboss.tools.teiid.reddeer.Table;
-import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
-import org.jboss.tools.teiid.reddeer.condition.IsPreviewInProgress;
-import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
-import org.jboss.tools.teiid.reddeer.connection.SimpleHttpClient;
-import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
-import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
-import org.jboss.tools.teiid.reddeer.manager.ImportManager;
-import org.jboss.tools.teiid.reddeer.manager.ImportMetadataManager;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
@@ -46,7 +50,6 @@ import org.jboss.tools.teiid.reddeer.view.GuidesView;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.SQLResult;
 import org.jboss.tools.teiid.reddeer.wizard.FlatImportWizard;
-import org.jboss.tools.teiid.reddeer.wizard.ImportGeneralItemWizard;
 import org.jboss.tools.teiid.reddeer.wizard.ImportJDBCDatabaseWizard;
 import org.jboss.tools.teiid.reddeer.wizard.MetadataModelWizard;
 import org.jboss.tools.teiid.reddeer.wizard.WsdlImportWizard;
@@ -69,15 +72,16 @@ public class GuidesTest {
 	private static TeiidServerRequirement teiidServer;
 	
 	private static final String CONNECTION_PROFILE= ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER;
-	
 	private static final GuidesView guides = new GuidesView();
-	
+	private static final ResourceFileHelper fileHelper = new ResourceFileHelper();
+
 	@Before
 	public void openPerspective() {
 		TeiidPerspective.getInstance();
 		EditorHandler.getInstance().closeAll(false);
 		new ModelExplorer().deleteAllProjects(false);
-	}	
+	}
+	
 	@Test
 	public  void JDBC_Source(){
 		String actionSet = "Model JDBC Source";
@@ -106,6 +110,7 @@ public class GuidesTest {
 		List<Integer> results = guides.executeVDB(actionSet, teiidServer, vdb_JDBC_name,test_SQL);
 		assertEquals(Integer.valueOf(3),results.get(0));
 	}
+	
 	@Test
 	public void Soap(){	
 		String actionSet = "Consume SOAP Web Service";
@@ -143,6 +148,7 @@ public class GuidesTest {
 		assertEquals(Integer.valueOf(1),results.get(0));
 		assertEquals(Integer.valueOf(3),results.get(1));
 	}
+	
     @Test
 	public void Rest(){
  		String actionSet = "Create a REST WAR";
@@ -152,13 +158,9 @@ public class GuidesTest {
 		String table_REST_name = "viewSupplier";
 		String procedure_REST_name = "getSupplierByName";
 		String query_view = "SELECT * FROM REST_WARSource.SUPPLIER";
-		String query_procedure = "BEGIN SELECT XMLELEMENT(NAME Supplier, XMLAGG(XMLELEMENT(NAME Supplier, "
-				+ "XMLFOREST(REST_WarView.viewSupplier.SUPPLIER_ID, REST_WarView.viewSupplier.SUPPLIER_NAME, "
-				+ "REST_WarView.viewSupplier.SUPPLIER_STATUS, REST_WarView.viewSupplier.SUPPLIER_CITY, REST_WarView.viewSupplier.SUPPLIER_STATE)))) "
-				+ "AS result FROM REST_WarView.viewSupplier WHERE REST_WarView.viewSupplier.SUPPLIER_NAME = REST_WarView.getSupplierByName.nameIN; END";
+		String query_procedure = fileHelper.getSql("GuidesTest/restProcedure");
 		String uriRest = "supplier/{nameIN}";
 		String vdb_REST_name = "Rest_WarVDB";
-		String vdbJndiName = "Rest_WarVDB";
 		String result = "<Supplier><Supplier><SUPPLIER_ID>S111</SUPPLIER_ID><SUPPLIER_NAME>Park</SUPPLIER_NAME>"
 				+ "<SUPPLIER_STATUS>10</SUPPLIER_STATUS><SUPPLIER_CITY>Chicago</SUPPLIER_CITY><SUPPLIER_STATE>IL</SUPPLIER_STATE></Supplier></Supplier>";
 		
@@ -172,7 +174,7 @@ public class GuidesTest {
 		defineViewTable(project_REST_name, view_REST_name, query_view, table_REST_name);
 		new DefaultShell("Define View Table");
 		new PushButton("OK").click();
-
+		
 		guides.chooseAction(actionSet, "Define relational view procedure");
 		defineProcedure(procedure_REST_name, query_procedure, uriRest);
 
@@ -187,27 +189,25 @@ public class GuidesTest {
 		new CheckBox("Create Data Source for this VDB").click();
 		new PushButton("OK").click();
 		new WaitWhile(new IsInProgress(), TimePeriod.NORMAL);
-		String[] pathToVDB = new String[] { project_REST_name, vdb_REST_name };
-		new ModelExplorer().createVDBDataSource(pathToVDB, vdbJndiName , false);
-		
-		String path = new TeiidBot().toAbsolutePath("target");
-		//WAR war = guides.createWAR(actionSet, vdb_REST_name, WAR.NONE_SECURITY, vdbJndiName, path, pathToVDB);
 
+		ModelExplorer modelExplorer = new ModelExplorer();
+		modelExplorer.deployVdb(project_REST_name, vdb_REST_name);
+		
+		CreateWarDialog dialog = modelExplorer.generateWar(false, project_REST_name, vdb_REST_name);
+		dialog.setVdbJndiName(vdb_REST_name)
+			.setWarFileLocation(modelExplorer.getProjectPath(project_REST_name));
+		dialog.finish();
+		
 		guides.chooseAction(actionSet, "Deploy WAR file "); 
 		new DefaultShell("Deploy WAR Instructions");
 		new PushButton("OK").click();
-		// TODO following code (import WAR) is not needed
-		Properties itemProps = new Properties();
-		itemProps.setProperty("dirName", new TeiidBot().toAbsolutePath("target"));
-		itemProps.setProperty("file", vdb_REST_name + ".war");
-		itemProps.setProperty("intoFolder", project_REST_name);
-		new ImportManager().importGeneralItem(ImportGeneralItemWizard.Type.FILE_SYSTEM, itemProps);
-
-		//war.deploy(teiidServer.getName()); // TODO modelExplorer.deployWar
+		
+		modelExplorer.deployWar(teiidServer, project_REST_name,vdb_REST_name);
 		String url = "http://localhost:8080/"+vdb_REST_name+"/REST_WarView/supplier/Park";
 		
 		assertEquals(result, new SimpleHttpClient(url).get());
     }
+    
     @Test
 	public void Flat(){
 		String actionSet = "Model Flat File Source";
@@ -218,6 +218,7 @@ public class GuidesTest {
 		String vdb_Flat_name = "ModelFlatVDB";
 		String test_SQL = "SELECT * FROM "+view_Flat_name+"."+view_Flat_table;		
 		String flatProfile = "FlatDataSource";
+		String fileName = "supplier.csv";
 		
 		guides.createProjectViaGuides(actionSet, project_Flat_name);
 		
@@ -227,7 +228,7 @@ public class GuidesTest {
 		new ConnectionProfileManager().createCPFlatFile(flatProfile, "resources/guides");
 
 		guides.chooseAction(actionSet, "Create source model from ");
-		createFlatLocalSource(flatProfile,project_Flat_name,model_Flat_name, view_Flat_name,view_Flat_table);
+		createFlatLocalSource(flatProfile,fileName,project_Flat_name,model_Flat_name, view_Flat_name,view_Flat_table);
 		
 		guides.previewDataViaActionSet(actionSet,project_Flat_name, view_Flat_name+".xmi",view_Flat_table);
 		assertTrue(testLastPreview());
@@ -239,6 +240,7 @@ public class GuidesTest {
 		List<Integer> results = guides.executeVDB(actionSet, teiidServer, vdb_Flat_name,test_SQL);
 		assertEquals(Integer.valueOf(16),results.get(0));
 	}
+    
     @Test
 	public void localXML(){
 		String actionSet = "Model Local XML File Source";	
@@ -259,6 +261,7 @@ public class GuidesTest {
 		new PushButton("Cancel").click();
 		Properties props = new Properties();
 		props.setProperty("local", "true");
+		props.setProperty("JNDI Name", xmlLocalName);
 		props.setProperty("rootPath", "/SUPPLIERS/SUPPLIER");
 		props.setProperty("destination", xmlLocalprofile);
 		props.setProperty("elements", "SUPPLIERS/SUPPLIER/SUPPLIER_ID,SUPPLIERS/SUPPLIER/SUPPLIER_NAME,SUPPLIERS/SUPPLIER/SUPPLIER_STATUS,SUPPLIERS/SUPPLIER/SUPPLIER_CITY,SUPPLIERS/SUPPLIER/SUPPLIER_STATE");
@@ -274,6 +277,7 @@ public class GuidesTest {
 		List<Integer> results = guides.executeVDB(actionSet, teiidServer, vdb_localXML_name,test_SQL);
 		assertEquals(Integer.valueOf(16),results.get(0));
 	}
+    
 	@Test
 	public void remoteXML(){
 		String actionSet = "Model Remote XML File Source";	
@@ -294,9 +298,16 @@ public class GuidesTest {
 		new PushButton("Cancel").click();
 		Properties props = new Properties();
 		props.setProperty("local", "false");
+		props.setProperty("JNDI Name", xmlRemoteName);
 		props.setProperty("rootPath", "/CATALOG/CD");
 		props.setProperty("destination", xmlRemoteprofile);
-		props.setProperty("elements", "CATALOG/CD/TITLE,CATALOG/CD/ARTIST,CATALOG/CD/COUNTRY,CATALOG/CD/COMPANY,CATALOG/CD/PRICE,CATALOG/CD/YEAR");
+		
+		if(new JiraClient().isIssueClosed("TEIIDDES-2858")){
+			props.setProperty("elements", "CATALOG/CD/TITLE,CATALOG/CD/ARTIST,CATALOG/CD/COUNTRY,CATALOG/CD/COMPANY,CATALOG/CD/PRICE,CATALOG/CD/YEAR");
+		}else{
+			props.setProperty("elements", "CATALOG/CD/TITLE,CATALOG/CD/ARTIST,CATALOG/CD/COUNTRY,CATALOG/CD/COMPANY,CATALOG/CD/PRICE");
+		}
+		
 		new ImportMetadataManager().importFromXML(xmlRemoteprofile , xmlRemoteName, xmlRemoteprofile, props);
 		
 		guides.previewDataViaActionSet(actionSet,xmlRemoteprofile, xmlRemoteName+"View.xmi",xmlRemoteName+"Table");
@@ -309,6 +320,7 @@ public class GuidesTest {
 		List<Integer> results = guides.executeVDB(actionSet, teiidServer, vdb_remoteXML_name,test_SQL);
 		assertEquals(Integer.valueOf(26),results.get(0));
 	}
+	
 	@Test
 	public void teiidDataSource(){
 		String actionSet = "Model Teiid Data Source";
@@ -328,6 +340,8 @@ public class GuidesTest {
 		guides.createSourceModelFromTeiid(modelName, dataSource,null,"dbo");
 		
 		TeiidPerspective.getInstance();
+		
+		new WaitUntil(new JobIsKilled("Refreshing server adapter list"), TimePeriod.LONG, false); //windows 10
 
 		guides.chooseAction(actionSet, "Set Connection Profile");
 		new DefaultShell("Set Connection Profile");
@@ -344,9 +358,9 @@ public class GuidesTest {
 		guides.defineVDB(actionSet, projectName, vdbName, modelName);
 				
 		List<Integer> results = guides.executeVDB(actionSet, teiidServer, vdbName,test_SQL);
-		assertEquals(Integer.valueOf(3),results.get(0));
-		
+		assertEquals(Integer.valueOf(3),results.get(0));	
 	}
+	
 	@Test
 	public void teiid(){
 		EditorHandler.getInstance().closeAll(false);
@@ -358,9 +372,9 @@ public class GuidesTest {
 		
 		guides.setDefaultTeiidInstance(serverName);
 		
-		guides.startAndRefreshServer(serverName);
+		guides.startAndRefreshServer(serverName,teiidServer.getName());
 
-		cleanAfter();
+		cleanAfter(serverName);
     }
 	
     private void createJDBCSource(String modelName,String projectName,String cp_name){
@@ -371,26 +385,28 @@ public class GuidesTest {
 		importJDBC.fill();
 		importJDBC.finish();
     }
-    private void createFlatLocalSource(String profile,String projectName,String modelName, String viewModelName, String viewTableName){
+    private void createFlatLocalSource(String profile, String fileName,String projectName,String modelName, String viewModelName, String viewTableName){
     	FlatImportWizard importWizard = new FlatImportWizard();
-		importWizard.selectLocalFileImportMode();
+    	importWizard.selectLocalFileImportMode();
 		importWizard.next();
-		importWizard.selectProfile(profile);
-		new DefaultTable().getItem(0).setChecked(true); // importWizard.selectFile(fileName+"     <<<<"); unstable
-		new DefaultShell("Import From Flat File Source");
-		importWizard.setSourceModel(modelName);
-		importWizard.setProject(projectName);
+		importWizard.selectProfile(profile)
+					.selectFile(fileName)
+					.setSourceModel(modelName)
+					.setProject(projectName)
+					.next();
+		importWizard.setJndiName(modelName);
 		importWizard.next();
 		importWizard.next();
 		importWizard.next();
-		importWizard.setViewModel(viewModelName);
-		importWizard.setViewTable(viewTableName);
-		importWizard.finish();
+		importWizard.setViewModel(viewModelName)
+					.setViewTable(viewTableName)
+					.finish();
     }
     private void wsdlImportWizard(String soapProfile, String model_SOAP_name, String view_SOAP_name){
     	WsdlImportWizard wsdlWizard = new WsdlImportWizard();
 		wsdlWizard.setProfile(soapProfile);
 		wsdlWizard.setSourceModelName(model_SOAP_name);
+		wsdlWizard.setJndiName(model_SOAP_name);
 		wsdlWizard.setViewModelName(view_SOAP_name);
 		
 		wsdlWizard.addOperation("FullCountryInfo");
@@ -447,26 +463,24 @@ public class GuidesTest {
     /**
      * Restore default server after teiid test
      */
-    private void cleanAfter(){
+    private void cleanAfter(String serverName){
     	ServersView view = new ServersView();
 		view.open(); 
-		List <Server> servers = view.getServers();
-		servers.get(1).stop();
+		view.getServer(serverName).stop();
+		AbstractWait.sleep(TimePeriod.SHORT);
 		guides.chooseAction("Teiid", "Set the Default ");
-		new DefaultCombo().setSelection(0);
+		new DefaultCombo().setSelection(teiidServer.getName());
 		new PushButton("OK").click();
-		try { // if show untested teiid version dialog
-		        new DefaultShell("Untested Teiid Version");
-		        new PushButton("Yes").click();
-		}catch(Exception ex){
-		        // dialog doesn't appear
+		if (new ShellWithTextIsActive("Untested Teiid Version").test()){ 
+					new PushButton("Yes").click();
 		}
 		new DefaultShell("Default Server Changed");
 		new PushButton("OK").click();
-		servers.get(0).start();
-		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
+		view.getServer(teiidServer.getName()).start();
+		AbstractWait.sleep(TimePeriod.LONG);
+		new WaitUntil(new JobIsKilled("Refreshing server adapter list"), TimePeriod.LONG, false);
 		guides.chooseAction("Teiid", "Refresh ");
-		new DefaultCombo().setSelection(0);
+		new DefaultCombo().setSelection(teiidServer.getName());
 		new PushButton("OK").click();
 		new DefaultShell("Notification");
 		new PushButton("OK").click();
