@@ -7,7 +7,6 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 
 /**
  * @author skaleta
@@ -23,7 +22,6 @@ public class VdbWizard extends NewWizardDialog {
 	public void finish() {
 		super.finish();
 		AbstractWait.sleep(TimePeriod.SHORT);
-		new WorkbenchShell();
 	}
 
 	@Override

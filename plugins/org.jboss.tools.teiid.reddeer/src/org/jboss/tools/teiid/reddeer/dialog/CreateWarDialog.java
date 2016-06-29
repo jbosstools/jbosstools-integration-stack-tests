@@ -39,7 +39,7 @@ public class CreateWarDialog extends AbstractDialog {
 			new WaitWhile(new ShellWithTextIsActive("Overwrite existing WAR file?"), TimePeriod.NORMAL);
 			AbstractWait.sleep(TimePeriod.SHORT);
 		}
-		new DefaultShell(soap ? "Web Service WAR File Created" : "");// TODO REST title
+		new DefaultShell(soap ? "Web Service WAR File Created" : "REST WAR File Created");
 		new OkButton().click();
 		AbstractWait.sleep(TimePeriod.SHORT);
 	}

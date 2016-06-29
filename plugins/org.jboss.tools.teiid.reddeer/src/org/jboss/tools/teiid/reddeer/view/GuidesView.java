@@ -4,23 +4,20 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.Widget;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.lookup.WidgetLookup;
+import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.matcher.TreeItemRegexMatcher;
-import org.jboss.reddeer.core.util.Display;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
+import org.jboss.reddeer.jface.viewers.CellEditor;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
+import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.ccombo.DefaultCCombo;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
@@ -30,7 +27,6 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
@@ -40,6 +36,7 @@ import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.wizard.ModelProjectPage;
+import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
 
 public class GuidesView extends WorkbenchView {
 
@@ -127,40 +124,27 @@ public class GuidesView extends WorkbenchView {
 
 	public void setDefaultTeiidInstance(String serverName) {
 		chooseAction("Teiid", "Set the Default ");
-		try {
+		AbstractWait.sleep(TimePeriod.SHORT);
+		if (new ShellWithTextIsActive("Server Selection").test()){
 			new DefaultCombo().setSelection(serverName);
 			new PushButton("OK").click();
-		} catch (Exception ex) {
-			// dialog doesn't appear if only 1 server instance is defined
 		}
-		try { // if the teiid instances are different version
-			new DefaultShell("Change of Teiid Version");
+		if (new ShellWithTextIsActive("Change of Teiid Version").test()){ //the teiid instances are different version
 			new PushButton("Yes").click();
-		}catch(Exception ex){
-			// dialog doesn't appear if teiid instances are same version
 		}
-		try { // if test untestet teiid version
-			new DefaultShell("Untested Teiid Version");
+		if (new ShellWithTextIsActive("Untested Teiid Version").test()){ //if test untestet teiid version
 			new PushButton("Yes").click();
-		}catch(Exception ex){
-			// dialog doesn't appear 
 		}
-		try{ // if you wish to disconnect old instance before switching
-			new DefaultShell("Disconnect Current Default Instance");
+		if (new ShellWithTextIsActive("Disconnect Current Default Instance").test()){ //if you want to disconnect old instance before switching
 			new PushButton("Yes").click();
-		}catch(Exception ex){
-			//dialog doesn't appear if server is not running
 		}
-		try{ 
-			new DefaultShell("Default Server Changed");
-		}catch(Exception ex){ // if the default instance was already set 
-			try{
-				new DefaultShell("Default server unchanged");
-			}catch(Exception ex2){
-				System.err.println(ex2.getCause() + "," + ex2.getMessage());
-			}
+		if (new ShellWithTextIsActive("Default Server Changed").test()){
+			new PushButton("OK").click();
+		}else if (new ShellWithTextIsActive("Default server unchanged").test()){
+			new PushButton("OK").click();
+		}else{
+			throw new Error("Default server not been changed due to an error");
 		}
-		new PushButton("OK").click();
 	}
 
 	// TODO modeling actions... - the grey context menu
@@ -194,6 +178,10 @@ public class GuidesView extends WorkbenchView {
 	 * @param path - path
 	 */
 	public void previewDataViaActionSetWithParam(String actionSet, String param, String... path){
+		AbstractWait.sleep(TimePeriod.SHORT);
+		if (new ShellWithTextIsActive("Unsaved Models In Workspace").test()){ // win 10
+			new PushButton("Yes").click();
+		}
 		new GuidesView().chooseAction(actionSet, "Preview Data");
 		new DefaultShell("Preview Data");
 		new PushButton("...").click();
@@ -211,13 +199,13 @@ public class GuidesView extends WorkbenchView {
 		}
 
 		//setup display property; only 1st time
-		try {
-			//what property?
-			new DefaultShell("Change Property");
+		if (new ShellWithTextIsActive("Change Property").test()){
 			new PushButton("Yes").click();
-		} catch (Exception ex){
-			//do nothing
 		}
+		
+		new DefaultShell("Custom Preview Data");
+		new PushButton("OK").click();
+		
 		
 		new WaitWhile(new IsInProgress(), TimePeriod.VERY_LONG);
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -234,12 +222,10 @@ public class GuidesView extends WorkbenchView {
 		chooseAction(actionSet, "Define VDB");
 		new DefaultShell("Define VDB");
 		new PushButton("New...").click();
-//		CreateVDB vdb = new CreateVDB();  // TODO VdbWizard
-//		vdb.setFolder(projectName);
-//		vdb.setName(vdbName);
-//		vdb.fillFirstPageForGuides(); // TODO -> private function
-//		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
-//		vdb.finish();
+		VdbWizard vdbWizard = new VdbWizard();
+		vdbWizard.setLocation(projectName)
+				.setName(vdbName)
+				.finish();
 		new DefaultShell("Define VDB");
 		new PushButton("OK").click();
 		VDBEditor vdbEditor = new VDBEditor(vdbName+".vdb");
@@ -280,28 +266,6 @@ public class GuidesView extends WorkbenchView {
 		return result;
 	}
 
-//	public WAR createWAR(String actionSet, String warName, String warType, String JndiName, String path, String[] pathVDB){
-//		Properties warProps = new Properties();
-//		warProps.setProperty("contextName", warName);
-//		warProps.setProperty("vdbJndiName", JndiName);
-//		warProps.setProperty("securityType", warType);
-//		warProps.setProperty("saveLocation", path);
-//		WAR war = new WAR(warProps,pathVDB);
-//		chooseAction(actionSet, "Generate REST");
-//		new PushButton("OK").click();
-//		//war.setupRESTWAR();  //private -> public // TODO CreateWarDialog
-//		new PushButton("OK").click();
-//		try{
-//			new DefaultShell("Overwrite existing WAR file?");
-//			new PushButton("Yes").click();
-//
-//		}catch(Exception ex){
-//			
-//		}
-//		new PushButton("OK").click();
-//		return war; 
-//	}
-	
 	public void newServer(String serverName){
 		chooseAction("Teiid", "Configure new JBoss Server");
 		new LabeledText("Server name:").setText(serverName);
@@ -325,12 +289,13 @@ public class GuidesView extends WorkbenchView {
 		return true;
 	}
 	
-	public void startAndRefreshServer(String serverName){
+	public void startAndRefreshServer(String serverName, String defaultServerName){
 		ServersView view = new ServersView();
 		view.open();
-		List <Server> servers = view.getServers();
-		servers.get(0).stop();
-		servers.get(1).start();
+		view.getServer(defaultServerName).stop();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		view.getServer(serverName).start();	
+		AbstractWait.sleep(TimePeriod.LONG);
 		new WaitWhile(new IsInProgress(), TimePeriod.SHORT);
 		chooseAction("Teiid", "Refresh ");
 		new DefaultCombo().setSelection(serverName);
@@ -355,17 +320,14 @@ public class GuidesView extends WorkbenchView {
 		new PushButton("Next >").click();
 		DefaultTable importProperties = new DefaultTable(new DefaultGroup("Import Properties"),0);
 		if(tableName!=null){
-			importProperties.getItem("Table Name Pattern").click(1);
-			this.fillTextTable(tableName);
+			fillTextTable(importProperties,"Table Name Pattern",tableName);
 		}
 		if(schema!=null){
-			importProperties.getItem("Schema Pattern").click(1);
-			this.fillTextTable(schema);
+			fillTextTable(importProperties,"Schema Pattern",schema);
 		}
-		importProperties.getItem("Table Types").click(1);
-		this.fillTextTable("TABLE");
-		importProperties.getItem("Use Full Schema Name").click(1);
-		this.fillTextTable("false");
+		fillTextTable(importProperties,"Table Types","TABLE");
+		fillComboTable(importProperties,"Use Full Schema Name","false");	
+		
 		new PushButton("Next >").click();
 		new LabeledText("Name:").setText(name);
 		new PushButton("Next >").click();
@@ -375,16 +337,23 @@ public class GuidesView extends WorkbenchView {
 		new PushButton("Finish").click();
 	}
 	
-	private void fillTextTable(final String text){;
-	final Widget w = WidgetLookup.getInstance().getFocusControl();
-	Display.syncExec(new Runnable() {
-		
-		@Override
-		public void run() {
-			((Text) w).setText(text);
-			KeyboardFactory.getKeyboard().type(SWT.CR);				
-		}
-	});
-}
+	/**
+	 * fill specified text into table.
+	 */
+	private void fillTextTable(DefaultTable table, String nameItem, String value){
+		TableItem item = null;
+		item = table.getItem(nameItem);
+		item.click(1);
+		new DefaultText(new CellEditor(item),0).setText(value);
+	}
 	
+	/**
+	 * choose specific selection into table.
+	 */
+	private void fillComboTable(DefaultTable table, String nameItem, String selection){
+		TableItem item = null;
+		item = table.getItem(nameItem);
+		item.click(1);
+		new DefaultCCombo(new CellEditor(item),0).setSelection(selection);
+	}
 }
