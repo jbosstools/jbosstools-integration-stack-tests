@@ -72,8 +72,7 @@ public class CamelDataFormatDialog extends WizardDialog {
 		new DefaultTreeItem(new String[] { TYPE, "Data Format" }).select();
 		new PushButton("OK").click();		
 		new WaitUntil(new ShellWithTextIsAvailable("Create a new Data Format..."));
-		new DefaultShell("Create a new Data Format...");	
-		new LabeledCombo("Data Format:").getItems();				
+		new DefaultShell("Create a new Data Format...");				
 		CamelDataFormatDialog formatDialog = new CamelDataFormatDialog();
 		formatDialog.activate();			
 		List<String> items = new LabeledCombo("Data Format:").getItems();	

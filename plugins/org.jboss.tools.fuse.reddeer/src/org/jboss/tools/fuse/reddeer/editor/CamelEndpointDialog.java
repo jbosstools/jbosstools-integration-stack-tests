@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.api.TreeItem;
@@ -28,7 +29,7 @@ public class CamelEndpointDialog extends WizardDialog {
 	public void activate() {
 		new WaitUntil(new ShellWithTextIsAvailable("Choose Global Camel endpoint"));
 		new DefaultShell("Choose Global Camel endpoint");
-	}
+	}	
 	
 	/**
 	 * Method for select an Endpoint global element in the Camel Endpoint dialog<br/>
@@ -114,7 +115,7 @@ public class CamelEndpointDialog extends WizardDialog {
 		new WaitUntil(new ShellWithTextIsAvailable("Create new global element..."));
 		new DefaultShell("Create new global element...");
 		new DefaultTreeItem(new String[] { TYPE, "Endpoint" }).select();	
-		new PushButton("OK").click();
+		new PushButton("OK").click();	
 		CamelEndpointDialog endpointDialog = new CamelEndpointDialog();
 		endpointDialog.activate();			
 		List<TreeItem> items = new DefaultTree().getItems();
