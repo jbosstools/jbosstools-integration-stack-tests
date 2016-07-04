@@ -59,13 +59,12 @@ public class RecursiveCommonTableExpression {
 		me.setTransformation(TRANSFORMATION_SQL);
 		me.saveAndValidateSql();
 
-		VdbWizard vdbWizard = new VdbWizard();
-		vdbWizard.open();
-		vdbWizard.setLocation(PROJECT_NAME)
+		VdbWizard.openVdbWizard()
+				.setLocation(PROJECT_NAME)
 				.setName(VDB_NAME)
 				.addModel(PROJECT_NAME, SOURCE_MODEL_NAME)
-				.addModel(PROJECT_NAME, VIEW_MODEL_NAME);
-		vdbWizard.finish();
+				.addModel(PROJECT_NAME, VIEW_MODEL_NAME)
+				.finish();
 		
 		new ModelExplorer().deployVdb(PROJECT_NAME, VDB_NAME);
 

@@ -15,6 +15,7 @@ import org.hamcrest.Description;
 public class ModelEditorItemMatcher extends BaseMatcher<EditPart> {
 	public static final String MAPPING_CLASS = "<<Mapping Class>>";
 	public static final String TABLE = "<<Table>>";
+	public static final String PROCEDURE = "<<Procedure>>";
 	public static final String XML_DOCUMENT = "<<XML Document>>";
 	public static final String INPUT_SET = "<<Input Set>>";
 	public static final String STAGING_TABLE = "<<Staging Table>>";

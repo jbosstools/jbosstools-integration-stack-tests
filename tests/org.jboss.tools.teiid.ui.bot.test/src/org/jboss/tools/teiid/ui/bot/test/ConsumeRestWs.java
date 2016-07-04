@@ -9,7 +9,6 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
@@ -22,7 +21,6 @@ import org.jboss.tools.teiid.reddeer.wizard.RestProfileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -58,20 +56,18 @@ public class ConsumeRestWs {
 
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;
-
-	@BeforeClass
-	public static void before() {
-		new WorkbenchShell().maximize();
-	}
+	
+	private ModelExplorer modelExplorer;
 
 	@Before
 	public void createProject() {
-		new ModelExplorer().createModelProject(PROJECT_NAME);
+		modelExplorer = new ModelExplorer();
+		modelExplorer.createProject(PROJECT_NAME);
 	}
 
 	@After
 	public void cleanUp(){
-		new ModelExplorer().deleteAllProjectsSafely();
+		modelExplorer.deleteAllProjectsSafely();
 	}
 
 	@Test
@@ -100,18 +96,17 @@ public class ConsumeRestWs {
 		
 		restWizardXML.execute();
 
-		VdbWizard vdbWizard = new VdbWizard();
-		vdbWizard.open();
-		vdbWizard.setLocation(PROJECT_NAME)
+		VdbWizard.openVdbWizard()
+				.setLocation(PROJECT_NAME)
 				.setName(VDBXML)
 				.addModel(PROJECT_NAME, SOURCE_MODEL_XML + ".xmi")
-				.addModel(PROJECT_NAME, VIEW_MODEL_XML + ".xmi");
-		vdbWizard.finish();
+				.addModel(PROJECT_NAME, VIEW_MODEL_XML + ".xmi")
+				.finish();
 
 		new ServersView().open();
 		new ServersViewExt().refreshServer(new ServersView().getServers().get(0).getLabel().getName());
 
-		new ModelExplorer().deployVdb(PROJECT_NAME, VDBXML);
+		modelExplorer.deployVdb(PROJECT_NAME, VDBXML);
 
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, VDBXML);
 		assertEquals(16, jdbchelper.getNumberOfResults("exec " + VIEW_MODEL_XML + "." + PROCEDURE_NAME + "()"));
@@ -143,18 +138,17 @@ public class ConsumeRestWs {
 
 		restWizardJson.execute();
 		
-		VdbWizard vdbWizard = new VdbWizard();
-		vdbWizard.open();
-		vdbWizard.setLocation(PROJECT_NAME)
+		VdbWizard.openVdbWizard()
+				.setLocation(PROJECT_NAME)
 				.setName(VDBJSON)
 				.addModel(PROJECT_NAME, SOURCE_MODEL_JSON + ".xmi")
-				.addModel(PROJECT_NAME, VIEW_MODEL_JSON + ".xmi");
-		vdbWizard.finish();
+				.addModel(PROJECT_NAME, VIEW_MODEL_JSON + ".xmi")
+				.finish();
 
 		new ServersView().open();
 		new ServersViewExt().refreshServer(new ServersView().getServers().get(0).getLabel().getName());
 
-		new ModelExplorer().deployVdb(PROJECT_NAME, VDBJSON);
+		modelExplorer.deployVdb(PROJECT_NAME, VDBJSON);
 
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, VDBJSON);
 		assertEquals(16, jdbchelper.getNumberOfResults("exec " + VIEW_MODEL_JSON + "." + PROCEDURE_NAME + "()"));
@@ -189,18 +183,17 @@ public class ConsumeRestWs {
 
 		restWizardXML.execute();
 
-		VdbWizard vdbWizard = new VdbWizard();
-		vdbWizard.open();
-		vdbWizard.setLocation(PROJECT_NAME)
+		VdbWizard.openVdbWizard()
+				.setLocation(PROJECT_NAME)
 				.setName(VDBXMLDIGEST)
 				.addModel(PROJECT_NAME, SOURCE_MODEL_XML_DIGEST + ".xmi")
-				.addModel(PROJECT_NAME, VIEW_MODEL_XML_DIGEST + ".xmi");
-		vdbWizard.finish();
+				.addModel(PROJECT_NAME, VIEW_MODEL_XML_DIGEST + ".xmi")
+				.finish();
 
 		new ServersView().open();
 		new ServersViewExt().refreshServer(new ServersView().getServers().get(0).getLabel().getName());
 
-		new ModelExplorer().deployVdb(PROJECT_NAME, VDBXMLDIGEST);
+		modelExplorer.deployVdb(PROJECT_NAME, VDBXMLDIGEST);
 
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, VDBXMLDIGEST);
 		assertEquals(16, jdbchelper.getNumberOfResults("exec " + VIEW_MODEL_XML_DIGEST + "." + PROCEDURE_NAME + "()"));
@@ -235,18 +228,17 @@ public class ConsumeRestWs {
 
 		restWizardJson.execute();
 
-		VdbWizard vdbWizard = new VdbWizard();
-		vdbWizard.open();
-		vdbWizard.setLocation(PROJECT_NAME)
+		VdbWizard.openVdbWizard()
+				.setLocation(PROJECT_NAME)
 				.setName(VDBJSONDIGEST)
 				.addModel(PROJECT_NAME, SOURCE_MODEL_JSON_DIGEST + ".xmi")
-				.addModel(PROJECT_NAME, VIEW_MODEL_JSON_DIGEST + ".xmi");
-		vdbWizard.finish();
+				.addModel(PROJECT_NAME, VIEW_MODEL_JSON_DIGEST + ".xmi")
+				.finish();
 
 		new ServersView().open();
 		new ServersViewExt().refreshServer(new ServersView().getServers().get(0).getLabel().getName());
 
-		new ModelExplorer().deployVdb(PROJECT_NAME, VDBJSONDIGEST);
+		modelExplorer.deployVdb(PROJECT_NAME, VDBJSONDIGEST);
 
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, VDBJSONDIGEST);
 		assertEquals(16, jdbchelper.getNumberOfResults("exec " + VIEW_MODEL_JSON_DIGEST + "." + PROCEDURE_NAME + "()"));

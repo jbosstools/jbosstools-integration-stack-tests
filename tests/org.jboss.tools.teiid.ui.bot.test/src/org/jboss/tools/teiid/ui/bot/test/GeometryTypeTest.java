@@ -31,7 +31,6 @@ import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.manager.ImportMetadataManager;
-import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
@@ -65,7 +64,7 @@ public class GeometryTypeTest {
 	
 	@BeforeClass
 	public static void before() {
-		new ModelExplorer().createModelProject(PROJECT_NAME);
+		new ModelExplorer().createProject(PROJECT_NAME);
 	}
 	
 	@Test
@@ -84,13 +83,12 @@ public class GeometryTypeTest {
 		
 		assertTrue(testSetDatatype(VIEW_MODEL_NAME,"geometry : xs:base64Binary","SDO_GEOMETRY"));
 		
-		VdbWizard vdbWizard = new VdbWizard();
-		vdbWizard.open();
-		vdbWizard.setLocation(PROJECT_NAME)
+		VdbWizard.openVdbWizard()
+				.setLocation(PROJECT_NAME)
 				.setName(VDB_NAME)
 				.addModel(PROJECT_NAME, SOURCE_MODEL_NAME + ".xmi")
-				.addModel(PROJECT_NAME, VIEW_MODEL_NAME + ".xmi");
-		vdbWizard.finish();
+				.addModel(PROJECT_NAME, VIEW_MODEL_NAME + ".xmi")
+				.finish();
 		
 		new ModelExplorer().deployVdb(PROJECT_NAME, VDB_NAME);
 		
@@ -117,13 +115,12 @@ public class GeometryTypeTest {
 		
 		assertTrue(testSetDatatype(VIEW_TEIID_MODEL_NAME,"geometry : xs:base64Binary","SDO_GEOMETRY"));
 		
-		VdbWizard vdbWizard = new VdbWizard();
-		vdbWizard.open();
-		vdbWizard.setLocation(PROJECT_NAME)
+		VdbWizard.openVdbWizard()
+				.setLocation(PROJECT_NAME)
 				.setName(VDB_TEIID_NAME)
 				.addModel(PROJECT_NAME, SOURCE_TEIID_MODEL_NAME + ".xmi")
-				.addModel(PROJECT_NAME, VIEW_TEIID_MODEL_NAME + ".xmi");
-		vdbWizard.finish();
+				.addModel(PROJECT_NAME, VIEW_TEIID_MODEL_NAME + ".xmi")
+				.finish();
 		
 		new ModelExplorer().deployVdb(PROJECT_NAME, VDB_TEIID_NAME);
 		
@@ -155,7 +152,7 @@ public class GeometryTypeTest {
 	
 	private void setGeometryDatatype(String... tables){ 
 		new ModelExplorer().activate();
-		new ModelExplorerManager().getModelExplorerView().openModelEditor(tables[0],tables[1],tables[2],tables[3]);
+		new ModelExplorer().openModelEditor(tables[0],tables[1],tables[2],tables[3]);
 		new WaitWhile(new IsInProgress(), TimePeriod.SHORT); 
 		new ContextMenu("Modeling","Set Datatype").select();
 		new DefaultShell("Select a Datatype");

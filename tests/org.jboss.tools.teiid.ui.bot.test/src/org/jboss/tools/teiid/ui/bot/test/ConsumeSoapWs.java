@@ -18,7 +18,8 @@ import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
 import org.jboss.tools.teiid.reddeer.wizard.WsdlImportWizard;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -43,9 +44,14 @@ public class ConsumeSoapWs {
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;
 
-	@BeforeClass
+	@Before
 	public static void before() {
-		new ModelExplorer().createModelProject(PROJECT_NAME);
+		new ModelExplorer().createProject(PROJECT_NAME);
+	}
+	
+	@After
+	public void cleanUp(){
+		new ModelExplorer().deleteAllProjectsSafely();
 	}
 
 	@Test
@@ -83,13 +89,12 @@ public class ConsumeSoapWs {
 		wsdlWizard.setJndiName("SOAPSource");
 		wsdlWizard.execute();
 
-		VdbWizard vdbWizard = new VdbWizard();
-		vdbWizard.open();
-		vdbWizard.setLocation(PROJECT_NAME)
+		VdbWizard.openVdbWizard()
+				.setLocation(PROJECT_NAME)
 				.setName(VDB_NAME)
 				.addModel(PROJECT_NAME, SOURCE_MODEL_NAME + ".xmi")
-				.addModel(PROJECT_NAME, VIEW_MODEL_NAME + ".xmi");
-		vdbWizard.finish();
+				.addModel(PROJECT_NAME, VIEW_MODEL_NAME + ".xmi")
+				.finish();
 
 		new ServersView().open();
 		new ServersViewExt().refreshServer(new ServersView().getServers().get(0).getLabel().getName());

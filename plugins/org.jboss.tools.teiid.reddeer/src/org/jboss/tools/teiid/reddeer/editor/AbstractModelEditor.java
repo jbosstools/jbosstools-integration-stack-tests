@@ -14,6 +14,7 @@ public abstract class AbstractModelEditor extends SWTBotEditor {
 
 	AbstractModelEditor(String title){
 		super(new SWTWorkbenchBot().editorByTitle(title).getReference(), new SWTWorkbenchBot());
+		this.show();
 	}
 	
 	protected SWTBotGefViewer getEditorViewer(String tabLabel) {

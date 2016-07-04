@@ -9,7 +9,8 @@ public enum ChildType {
 	TABLE("Table..."),
 	OPERATION("Operation"),
 	INPUT("Input"),
-	OUTPUT("Output");
+	OUTPUT("Output"),
+	PROCEDURE("Procedure...");
 	
 	private String text;
 

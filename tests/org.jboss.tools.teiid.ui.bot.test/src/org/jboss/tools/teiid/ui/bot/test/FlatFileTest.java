@@ -15,7 +15,6 @@ import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.tools.common.reddeer.JiraClient;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
-import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
@@ -63,7 +62,7 @@ public class FlatFileTest {
 
 	@BeforeClass
 	public static void beforeClass() {
-		new ModelExplorerManager().createProject(PROJECT_NAME);
+		new ModelExplorer().createProject(PROJECT_NAME);
 	}
 	@Before
 	public void before(){
@@ -95,12 +94,11 @@ public class FlatFileTest {
 					.finish();
 		
 		// Deploying the VDB
-		VdbWizard wizardVDB = new VdbWizard();
-		wizardVDB.open();
-		wizardVDB.setLocation(PROJECT_NAME)
-				 .setName(LOCAL_VDB)
-				 .addModel(PROJECT_NAME,LOCAL_VIEW_MODEL + ".xmi")
-				 .finish();
+		VdbWizard.openVdbWizard()
+				.setLocation(PROJECT_NAME)
+				.setName(LOCAL_VDB)
+				.addModel(PROJECT_NAME,LOCAL_VIEW_MODEL + ".xmi")
+				.finish();
 
 		new ModelExplorer().deployVdb(PROJECT_NAME, LOCAL_VDB);
 
@@ -134,12 +132,11 @@ public class FlatFileTest {
 					.setViewTable(REMOTE_VIEW_TABLE)
 					.finish();
 
-		VdbWizard wizardVDB = new VdbWizard();
-		wizardVDB.open();
-		wizardVDB.setLocation(PROJECT_NAME)
-				 .setName(REMOTE_VDB)
-				 .addModel(PROJECT_NAME,REMOTE_VIEW_MODEL + ".xmi")
-				 .finish();
+		VdbWizard.openVdbWizard()
+				.setLocation(PROJECT_NAME)
+				.setName(REMOTE_VDB)
+				.addModel(PROJECT_NAME,REMOTE_VIEW_MODEL + ".xmi")
+				.finish();
 
 		new ModelExplorer().deployVdb(PROJECT_NAME, REMOTE_VDB);
 

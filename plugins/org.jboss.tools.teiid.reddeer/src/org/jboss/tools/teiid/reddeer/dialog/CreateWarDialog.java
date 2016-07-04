@@ -71,7 +71,6 @@ public class CreateWarDialog extends AbstractDialog {
 	public CreateWarDialog setWarFileLocation(String path) {
 		log.info("Setting WAR file location to '" + Arrays.toString(path.split("/")) + "'");
 		new LabeledText(soap ? "WAR File Save Location:" : "REST WAR File Save Location:").setText(path);
-		// TODO check whether REST is working
 		activate();
 		return this;
 	}
@@ -90,7 +89,6 @@ public class CreateWarDialog extends AbstractDialog {
 		if (soap){
 			new DefaultTabItem("General").activate();
 		} 
-		// TODO check whether REST is working
 		activate();
 		return this;
 	}
@@ -101,7 +99,6 @@ public class CreateWarDialog extends AbstractDialog {
 	public CreateWarDialog setNoneSecurity() {
 		log.info("Setting security to None");
 		new RadioButton("None").click();
-		// TODO check whether REST is working
 		activate();
 		return this;
 	}

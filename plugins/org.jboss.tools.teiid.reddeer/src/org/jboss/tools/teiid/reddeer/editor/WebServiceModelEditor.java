@@ -28,7 +28,6 @@ public class WebServiceModelEditor extends AbstractModelEditor {
 	
 	/**
 	 * Opens table editor's tab.
-	 * @param fromEditor - WebServiceModelEditor.PACKAGE_DIAGRAM|...
 	 */
 	public TableEditor openTableEditor(){
 		return new TableEditor(this.getTitle(), OPERATION_EDITOR);

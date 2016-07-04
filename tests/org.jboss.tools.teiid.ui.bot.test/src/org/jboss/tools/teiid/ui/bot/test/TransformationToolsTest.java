@@ -27,6 +27,7 @@ import org.jboss.tools.teiid.reddeer.editor.ModelDiagram;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
+import org.jboss.tools.teiid.reddeer.view.ProblemsViewEx;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -97,7 +98,7 @@ public class TransformationToolsTest {
 		for(String sourceAtt : sourceAttrs){
 			assertTrue(viewAttrs.contains(sourceAtt));
 		}	
-		assertTrue("There are validation errors", new ProblemsView().getProblems(ProblemType.ERROR).isEmpty());
+		new ProblemsViewEx().checkErrors();
 		
 		// 2. Create a WHERE clause using Criteria Builder
 		editor.show();
@@ -171,10 +172,10 @@ public class TransformationToolsTest {
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new ShellMenu("File","Save All").select();
 		AbstractWait.sleep(TimePeriod.getCustom(3));
-		assertTrue("There are validation errors", new ProblemsView().getProblems(ProblemType.ERROR).isEmpty());		
+		new ProblemsViewEx().checkErrors();		
 		
 		// 3. Create a new view table and use the Reconciler to map columns
-	    modelExplorer.addChildToModelItem(PROJECT_NAME + "/PartsView.xmi", "", ChildType.TABLE);
+	    modelExplorer.addChildToModelItem(ChildType.TABLE, PROJECT_NAME, "PartsView.xmi");
 		new DefaultShell("Create Relational View Table");
 		new LabeledText("Name").setText("AltParts");
 		new PushButton("OK").click();	
@@ -265,6 +266,6 @@ public class TransformationToolsTest {
 		new ShellMenu("File","Save All").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		
-		assertTrue("There are validation errors", new ProblemsView().getProblems(ProblemType.ERROR).isEmpty());
+		new ProblemsViewEx().checkErrors();
 	}
 }

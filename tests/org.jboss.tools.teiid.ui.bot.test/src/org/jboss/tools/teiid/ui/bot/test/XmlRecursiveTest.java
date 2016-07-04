@@ -31,9 +31,11 @@ import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
+import org.jboss.tools.teiid.reddeer.view.ProblemsViewEx;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.MetadataModelWizard;
 import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -70,6 +72,11 @@ public class XmlRecursiveTest {
 		fileHelper.copyFileToServer(new File("resources/flat/EmpData.csv").getAbsolutePath(), 
 				teiidServer.getServerConfig().getServerBase().getHome() + "/standalone/data/EmpData.csv");
 		new ServersViewExt().refreshServer(teiidServer.getName());
+	}
+	
+	@After
+	public void cleanUp() {
+		modelExplorer.deleteAllProjectsSafely();
 	}
 
 	@Test
@@ -141,17 +148,15 @@ public class XmlRecursiveTest {
 		supTransfEditor.close();
 	
 		editor.save();
-		
-		AbstractWait.sleep(TimePeriod.SHORT);
-		assertTrue("Validation errors!", new ProblemsView().getProblems(ProblemType.ERROR).isEmpty());
+
+		new ProblemsViewEx().checkErrors();
 
 		// 3. Create new VDB and check document without recursion		
-		VdbWizard vdbWizard = new VdbWizard();
-		vdbWizard.open();
-		vdbWizard.setLocation(PROJECT_NAME)
+		VdbWizard.openVdbWizard()
+				.setLocation(PROJECT_NAME)
 				.setName(VDB_NAME)
-				.addModel(PROJECT_NAME, VIEW_MODEL);
-		vdbWizard.finish();
+				.addModel(PROJECT_NAME, VIEW_MODEL)
+				.finish();
 		
 		modelExplorer.deployVdb(PROJECT_NAME, VDB_NAME);
 

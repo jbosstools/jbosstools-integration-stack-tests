@@ -25,7 +25,6 @@ import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.manager.ImportManager;
-import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.matcher.ModelColumnMatcher;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
@@ -53,7 +52,7 @@ public class LdapImportTest {
 	@BeforeClass
 	public static void prepare() {
 		new TeiidBot().uncheckBuildAutomatically();
-		new ModelExplorerManager().createProject(NEW_PROJECT);
+		new ModelExplorer().createProject(NEW_PROJECT);
 
 	}
 

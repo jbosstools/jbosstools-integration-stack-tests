@@ -35,6 +35,7 @@ import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
+import org.jboss.tools.teiid.reddeer.view.ProblemsViewEx;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.MetadataModelWizard;
 import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
@@ -98,7 +99,7 @@ public class WebServiceCreationTest {
 	@Test
 	public void testCreationFromWsdl() throws IOException{
 		// 1. Create Web Service Model
-		modelExplorer.deleteModel(PROJECT_NAME + "/views/XmlModel.xmi");
+		modelExplorer.deleteModel(PROJECT_NAME, "views", "XmlModel.xmi");
 		modelExplorer.selectItem(PROJECT_NAME, "web_services");
 		MetadataModelWizard modelWizard = new MetadataModelWizard();
 		modelWizard.open();
@@ -121,7 +122,7 @@ public class WebServiceCreationTest {
 		
 		// 2. Define XML documents
 		new WebServiceModelEditor(WS_MODEL).close();
-		modelExplorer.renameModel(PROJECT_NAME + "/web_services/ProductsWsResponses.xmi", "XmlModel.xmi");
+		modelExplorer.renameModel("XmlModel.xmi", PROJECT_NAME, "web_services", "ProductsWsResponses.xmi");
 		modelExplorer.openModelEditor(PROJECT_NAME, "web_services", "XmlModel.xmi");
 		XmlModelEditor xmlEditor = new XmlModelEditor("XmlModel.xmi");
 		
@@ -182,8 +183,7 @@ public class WebServiceCreationTest {
 		AbstractWait.sleep(TimePeriod.SHORT);
 		wsEditor.saveAndClose();
 		
-		AbstractWait.sleep(TimePeriod.SHORT);
-		assertTrue("Validation errors!", new ProblemsView().getProblems(ProblemType.ERROR).isEmpty());	
+		new ProblemsViewEx().checkErrors();
 		
 		// 4. Generate WAR and test it
 		generateWarAndTestIt();
@@ -192,7 +192,7 @@ public class WebServiceCreationTest {
 	@Test
 	public void testCreationFromRelationalModel() throws IOException{
 		// 1. Create Web Service Model
-		modelExplorer.deleteModel(PROJECT_NAME + "/views/XmlModel.xmi");
+		modelExplorer.deleteModel(PROJECT_NAME, "views", "XmlModel.xmi");
 		CreateWebServiceDialog createWsDialog = modelExplorer.modelingWebService(false, PROJECT_NAME, "views", "RelationalModel.xmi");
 		createWsDialog.setLocation(PROJECT_NAME, "web_services")
 				.setModelName(WS_MODEL)
@@ -202,15 +202,15 @@ public class WebServiceCreationTest {
 	
 		// 2. Define XML documents
 		new WebServiceModelEditor(WS_MODEL).close();
-		modelExplorer.renameModel(PROJECT_NAME + "/web_services/OutputSchema_View.xmi", "XmlModel.xmi");		
+		modelExplorer.renameModel("XmlModel.xmi", PROJECT_NAME, "web_services", "OutputSchema_View.xmi");		
 		
-		String xmlModelPath = PROJECT_NAME + "/web_services/XmlModel.xmi";
-		modelExplorer.openModelEditor(xmlModelPath.split("/"));
+		String[] xmlModelPath = new String[]{PROJECT_NAME + "web_services", "XmlModel.xmi"};
+		modelExplorer.openModelEditor(xmlModelPath);
 		XmlModelEditor xmlEditor = new XmlModelEditor("XmlModel.xmi");
 		
 		xmlEditor.renameDocument("ProductInfo_OutputView", DOCUMENT_PRODUCT);
 		
-		modelExplorer.addChildToModelItem(xmlModelPath, "", ChildType.XML_DOCUMENT);
+		modelExplorer.addChildToModelItem(ChildType.XML_DOCUMENT, xmlModelPath);
 		XmlDocumentBuilderDialog xmlDocumentBuilder = new XmlDocumentBuilderDialog();
 		xmlDocumentBuilder.setSchema(PROJECT_NAME,"schemas","ProductsSchema.xsd")
 				.addElement("putResults : putResultsType");
@@ -225,7 +225,7 @@ public class WebServiceCreationTest {
 		xmlEditor.returnToDocumentOverview();
 		xmlEditor.renameDocument("putResultsDocument", DOCUMENT_GOOD);
 		
-		modelExplorer.addChildToModelItem(xmlModelPath, "", ChildType.XML_DOCUMENT);
+		modelExplorer.addChildToModelItem(ChildType.XML_DOCUMENT, xmlModelPath);
 		xmlDocumentBuilder = new XmlDocumentBuilderDialog();
 		xmlDocumentBuilder.setSchema(PROJECT_NAME,"schemas","ProductsSchema.xsd")
 				.addElement("putResults : putResultsType");
@@ -245,15 +245,15 @@ public class WebServiceCreationTest {
 		
 		//3. Define web service operations
 		String wsModelPath = PROJECT_NAME + "/web_services/" + WS_MODEL;
-		modelExplorer.renameModelItem(wsModelPath, "RelationalModel_ProductInfo", INTERFACE_NAME);
+		modelExplorer.renameModelItem(INTERFACE_NAME, (wsModelPath+"/"+"RelationalModel_ProductInfo").split("/"));
 		modelExplorer.openModelEditor(PROJECT_NAME, "web_services", WS_MODEL);
 		WebServiceModelEditor wsEditor = new WebServiceModelEditor(WS_MODEL);
 		
 		// 3.2. Define get all operation
-		modelExplorer.addChildToModelItem(wsModelPath, INTERFACE_NAME, ChildType.OPERATION);
-		modelExplorer.renameModelItem(wsModelPath, INTERFACE_NAME + "/NewOperation", OPERATION_GET_ALL);
+		modelExplorer.addChildToModelItem(ChildType.OPERATION, (wsModelPath+"/"+INTERFACE_NAME).split("/"));
+		modelExplorer.renameModelItem(OPERATION_GET_ALL, (wsModelPath+"/"+INTERFACE_NAME+"/NewOperation").split("/"));
 		
-		modelExplorer.addChildToModelItem(wsModelPath, INTERFACE_NAME + "/" + OPERATION_GET_ALL, ChildType.INPUT);
+		modelExplorer.addChildToModelItem(ChildType.INPUT, (wsModelPath+"/"+INTERFACE_NAME+"/"+OPERATION_GET_ALL).split("/") );
 		TableEditor tableEditor = wsEditor.openTableEditor();
 		tableEditor.openTab(TableEditor.Tabs.INPUTS);
 		tableEditor.setCellTextViaProperties(OPERATION_GET_ALL, 
@@ -265,10 +265,10 @@ public class WebServiceCreationTest {
 		wsEditor.setOperationProcedure(fileHelper.getSql("WebServiceCreationTest/GetAll.sql"));
 		
 		// 3.3. Define insert operation	
-		modelExplorer.addChildToModelItem(wsModelPath, INTERFACE_NAME, ChildType.OPERATION);
-		modelExplorer.renameModelItem(wsModelPath, INTERFACE_NAME + "/NewOperation", OPERATION_INSERT);
-		modelExplorer.addChildToModelItem(wsModelPath, INTERFACE_NAME + "/" + OPERATION_INSERT, ChildType.INPUT);
-		modelExplorer.addChildToModelItem(wsModelPath, INTERFACE_NAME + "/" + OPERATION_INSERT, ChildType.OUTPUT);
+		modelExplorer.addChildToModelItem(ChildType.OPERATION, (wsModelPath+"/"+INTERFACE_NAME).split("/") );
+		modelExplorer.renameModelItem(OPERATION_INSERT, (wsModelPath+"/"+INTERFACE_NAME+"/NewOperation").split("/"));
+		modelExplorer.addChildToModelItem(ChildType.INPUT, (wsModelPath+"/"+INTERFACE_NAME+"/"+OPERATION_INSERT).split("/"));
+		modelExplorer.addChildToModelItem(ChildType.OUTPUT, (wsModelPath+"/"+INTERFACE_NAME+"/"+OPERATION_INSERT).split("/"));
 		
 		tableEditor = wsEditor.openTableEditor();
 		tableEditor.openTab(TableEditor.Tabs.INPUTS);
@@ -290,10 +290,10 @@ public class WebServiceCreationTest {
 				fileHelper.getSql("WebServiceCreationTest/Insert.sql"));
 		
 		// 3.4. Define delete operation
-		modelExplorer.addChildToModelItem(wsModelPath, INTERFACE_NAME, ChildType.OPERATION);
-		modelExplorer.renameModelItem(wsModelPath, INTERFACE_NAME + "/NewOperation", OPERATION_DELETE);
-		modelExplorer.addChildToModelItem(wsModelPath, INTERFACE_NAME + "/" + OPERATION_DELETE, ChildType.INPUT);
-		modelExplorer.addChildToModelItem(wsModelPath, INTERFACE_NAME + "/" + OPERATION_DELETE, ChildType.OUTPUT);
+		modelExplorer.addChildToModelItem(ChildType.OPERATION, wsModelPath, INTERFACE_NAME);
+		modelExplorer.renameModelItem(OPERATION_DELETE, (wsModelPath+"/"+INTERFACE_NAME+"/NewOperation").split("/"));
+		modelExplorer.addChildToModelItem(ChildType.INPUT, (wsModelPath+"/"+INTERFACE_NAME+"/"+OPERATION_DELETE).split("/"));
+		modelExplorer.addChildToModelItem(ChildType.OUTPUT, (wsModelPath+"/"+INTERFACE_NAME+"/"+OPERATION_DELETE).split("/"));
 		
 		tableEditor = wsEditor.openTableEditor();
 		tableEditor.openTab(TableEditor.Tabs.INPUTS);
@@ -317,8 +317,7 @@ public class WebServiceCreationTest {
 		AbstractWait.sleep(TimePeriod.SHORT);
 		wsEditor.saveAndClose();
 		
-		AbstractWait.sleep(TimePeriod.SHORT);
-		assertTrue("Validation errors!", new ProblemsView().getProblems(ProblemType.ERROR).isEmpty());	
+		new ProblemsViewEx().checkErrors();	
 		
 		// 4. Generate WAR and test it
 		generateWarAndTestIt();
@@ -343,10 +342,10 @@ public class WebServiceCreationTest {
 		WebServiceModelEditor wsEditor = new WebServiceModelEditor(WS_MODEL);	
 		
 		// 2.1. Define get operation
-		modelExplorer.addChildToModelItem(wsModelPath, INTERFACE_NAME, ChildType.OPERATION);
-		modelExplorer.renameModelItem(wsModelPath, INTERFACE_NAME + "/NewOperation", OPERATION_GET);
-		modelExplorer.addChildToModelItem(wsModelPath, INTERFACE_NAME + "/" + OPERATION_GET, ChildType.INPUT);
-		modelExplorer.addChildToModelItem(wsModelPath, INTERFACE_NAME + "/" + OPERATION_GET, ChildType.OUTPUT);
+		modelExplorer.addChildToModelItem(ChildType.OPERATION, (wsModelPath+"/"+INTERFACE_NAME).split("/"));
+		modelExplorer.renameModelItem(OPERATION_GET, (wsModelPath+"/"+INTERFACE_NAME+"/NewOperation").split("/"));
+		modelExplorer.addChildToModelItem(ChildType.INPUT, (wsModelPath+"/"+INTERFACE_NAME+"/"+OPERATION_GET).split("/"));
+		modelExplorer.addChildToModelItem(ChildType.OUTPUT, (wsModelPath+"/"+INTERFACE_NAME+"/"+OPERATION_GET).split("/"));
 		
 		TableEditor tableEditor = wsEditor.openTableEditor();
 		tableEditor.openTab(TableEditor.Tabs.INPUTS);
@@ -368,10 +367,10 @@ public class WebServiceCreationTest {
 				fileHelper.getSql("WebServiceCreationTest/Get.sql"));	
 
 		// 2.2. Define insert operation
-		modelExplorer.addChildToModelItem(wsModelPath, INTERFACE_NAME, ChildType.OPERATION);
-		modelExplorer.renameModelItem(wsModelPath, INTERFACE_NAME + "/NewOperation", OPERATION_INSERT);
-		modelExplorer.addChildToModelItem(wsModelPath, INTERFACE_NAME + "/" + OPERATION_INSERT, ChildType.INPUT);
-		modelExplorer.addChildToModelItem(wsModelPath, INTERFACE_NAME + "/" + OPERATION_INSERT, ChildType.OUTPUT);
+		modelExplorer.addChildToModelItem(ChildType.OPERATION, (wsModelPath+"/"+INTERFACE_NAME).split("/"));
+		modelExplorer.renameModelItem(OPERATION_INSERT, (wsModelPath+"/"+INTERFACE_NAME+"/NewOperation").split("/"));
+		modelExplorer.addChildToModelItem(ChildType.INPUT, (wsModelPath+"/"+INTERFACE_NAME+"/"+OPERATION_INSERT).split("/"));
+		modelExplorer.addChildToModelItem(ChildType.OUTPUT, (wsModelPath+"/"+INTERFACE_NAME+"/"+OPERATION_INSERT).split("/"));
 		
 		tableEditor = wsEditor.openTableEditor();
 		tableEditor.openTab(TableEditor.Tabs.INPUTS);
@@ -393,10 +392,10 @@ public class WebServiceCreationTest {
 				fileHelper.getSql("WebServiceCreationTest/Insert.sql"));	
 		
 		// 2.3. Define delete operation
-		modelExplorer.addChildToModelItem(wsModelPath, INTERFACE_NAME, ChildType.OPERATION);
-		modelExplorer.renameModelItem(wsModelPath, INTERFACE_NAME + "/NewOperation", OPERATION_DELETE);
-		modelExplorer.addChildToModelItem(wsModelPath, INTERFACE_NAME + "/" + OPERATION_DELETE, ChildType.INPUT);
-		modelExplorer.addChildToModelItem(wsModelPath, INTERFACE_NAME + "/" + OPERATION_DELETE, ChildType.OUTPUT);
+		modelExplorer.addChildToModelItem(ChildType.OPERATION, (wsModelPath+"/"+INTERFACE_NAME).split("/"));
+		modelExplorer.renameModelItem(OPERATION_DELETE, (wsModelPath+"/"+INTERFACE_NAME+"/NewOperation").split("/"));
+		modelExplorer.addChildToModelItem(ChildType.INPUT, (wsModelPath+"/"+INTERFACE_NAME+"/"+OPERATION_DELETE).split("/"));
+		modelExplorer.addChildToModelItem(ChildType.OUTPUT, (wsModelPath+"/"+INTERFACE_NAME+"/"+OPERATION_DELETE).split("/"));
 		
 		tableEditor = wsEditor.openTableEditor();
 		tableEditor.openTab(TableEditor.Tabs.INPUTS);
@@ -420,8 +419,7 @@ public class WebServiceCreationTest {
 		AbstractWait.sleep(TimePeriod.SHORT);
 		wsEditor.saveAndClose();
 		
-		AbstractWait.sleep(TimePeriod.SHORT);
-		assertTrue("Validation errors!", new ProblemsView().getProblems(ProblemType.ERROR).isEmpty());	
+		new ProblemsViewEx().checkErrors();	
 		
 		// 3. Generate WAR and test it
 		generateWarAndTestIt();
@@ -429,12 +427,11 @@ public class WebServiceCreationTest {
 
 	private void generateWarAndTestIt() throws IOException{
 		// 1. Create VDB and deploy it
-		VdbWizard vdbWizard = new VdbWizard();
-		vdbWizard.open();
-		vdbWizard.setLocation(PROJECT_NAME)
+		VdbWizard.openVdbWizard()
+				.setLocation(PROJECT_NAME)
 				.setName(VDB_NAME)
-				.addModel(PROJECT_NAME, "web_services", WS_MODEL);
-		vdbWizard.finish();
+				.addModel(PROJECT_NAME, "web_services", WS_MODEL)
+				.finish();
 		
 		AbstractWait.sleep(TimePeriod.SHORT); 
 		String translator = VDBEditor.getInstance(VDB_NAME + ".vdb").getTranslatorName("SourceModel.xmi");
@@ -443,11 +440,11 @@ public class WebServiceCreationTest {
 		modelExplorer.deployVdb(PROJECT_NAME, VDB_NAME);
 		
 		// 2. create WAR, deploy, send requests and check responses (HTTPBasic security)
-		CreateWarDialog dialog = modelExplorer.generateWar(true, PROJECT_NAME, VDB_NAME);
-		dialog.setVdbJndiName(VDB_NAME)
-			.setWarFileLocation(modelExplorer.getProjectPath(PROJECT_NAME) + "/others")
-			.setHttpBasicSecurity("teiid-security", "products");
-		dialog.finish();
+		modelExplorer.generateWar(true, PROJECT_NAME, VDB_NAME)
+				.setVdbJndiName(VDB_NAME)
+				.setWarFileLocation(modelExplorer.getProjectPath(PROJECT_NAME) + "/others")
+				.setHttpBasicSecurity("teiid-security", "products")
+				.finish();
 		
 		modelExplorer.deployWar(teiidServer, PROJECT_NAME, "others", VDB_NAME);
 
@@ -524,11 +521,11 @@ public class WebServiceCreationTest {
 		// 3. recreate WAR, redeploy, send requests and check responses (None security)
 		modelExplorer.undeployWar(PROJECT_NAME, "others", VDB_NAME);
 		
-		dialog = modelExplorer.generateWar(true, PROJECT_NAME, VDB_NAME);
-		dialog.setVdbJndiName(VDB_NAME)
-			.setWarFileLocation(modelExplorer.getProjectPath(PROJECT_NAME) + "/others")
-			.setNoneSecurity();
-		dialog.finish();
+		modelExplorer.generateWar(true, PROJECT_NAME, VDB_NAME)
+				.setVdbJndiName(VDB_NAME)
+				.setWarFileLocation(modelExplorer.getProjectPath(PROJECT_NAME) + "/others")
+				.setNoneSecurity()
+				.finish();
 		
 		modelExplorer.deployWar(teiidServer, PROJECT_NAME, "others", VDB_NAME);
 		

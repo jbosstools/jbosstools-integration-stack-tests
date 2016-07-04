@@ -30,6 +30,7 @@ import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
+import org.jboss.tools.teiid.reddeer.view.ProblemsViewEx;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,7 +48,7 @@ public class ModelRefactoringTest {
 	@Before
 	public void importProject() {
 		TeiidBot teiidBot = new TeiidBot();
-		new ImportManager().importProject(teiidBot.toAbsolutePath("resources/projects/" + PROJECT_NAME));
+		new ModelExplorer().importProject(PROJECT_NAME);
 		project = teiidBot.modelExplorer().getProject(PROJECT_NAME);
 		project.refresh();
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -75,7 +76,7 @@ public class ModelRefactoringTest {
 		renameItem(project.getProjectItem("partssupplier.xmi"), "partssupplier_X.xmi");
 		checkDependentModel("partssupplier_X", "partssupplier_view.xmi", "SUPPLIER");
 		checkDependentModel("partssupplier_X", "views", "partssupplier_view_2.xmi", "SUPPLIER");
-		checkErrors();
+		new ProblemsViewEx().checkErrors();
 	}
 
 	@Test
@@ -83,22 +84,21 @@ public class ModelRefactoringTest {
 		renameItem(project.getProjectItem("sources", "books.xmi"), "books_X.xmi");
 		checkDependentModel("books_X", "books_view_2.xmi", "PUBLISHERS");
 		checkDependentModel("books_X", "views", "books_view.xmi", "PUBLISHERS");
-		checkErrors();
-
+		new ProblemsViewEx().checkErrors();
 	}
 
 	@Test
 	public void renameViewModel() {
 		renameItem(project.getProjectItem("partssupplier_view_3.xmi"), "partssupplier_view_X.xmi");
 		checkDependentModel("partssupplier_view_X", "partssupplier_view_4.xmi", "SUPPLIER");
-		checkErrors();
+		new ProblemsViewEx().checkErrors();
 	}
 
 	@Test
 	public void renameViewModelInFolder() {
 		renameItem(project.getProjectItem("views", "partssupplier_view_2.xmi"), "partssupplier_view_X.xmi");
 		checkDependentModel("partssupplier_view_X", "partssupplier_view_3.xmi", "SUPPLIER");
-		checkErrors();
+		new ProblemsViewEx().checkErrors();
 	}
 
 	@Test
@@ -106,14 +106,14 @@ public class ModelRefactoringTest {
 		renameItem(project.getProjectItem("sources"), "sources_X");
 		checkDependentModel("books", "books_view_2.xmi", "PUBLISHERS");
 		checkDependentModel("books", "views", "books_view.xmi", "PUBLISHERS");
-		checkErrors();
+		new ProblemsViewEx().checkErrors();
 	}
 
 	@Test
 	public void moveSourceModel() {
 		moveItem(project.getProjectItem("sources", "books.xmi"), "sources2");
 		new WaitWhile(new JobIsRunning());
-		checkErrors();
+		new ProblemsViewEx().checkErrors();
 		checkDependentModel("books", "books_view_2.xmi", "PUBLISHERS");
 		checkDependentModel("books", "views", "books_view.xmi", "PUBLISHERS");
 	}
@@ -127,7 +127,7 @@ public class ModelRefactoringTest {
 		updateImports("views", "books_view.xmi");
 		updateImports("books_view_2.xmi");
 
-		checkErrors();
+		new ProblemsViewEx().checkErrors();
 		checkDependentModel("books", "books_view_2.xmi", "PUBLISHERS");
 		checkDependentModel("books", "views", "books_view.xmi", "PUBLISHERS");
 	}
@@ -135,7 +135,7 @@ public class ModelRefactoringTest {
 	@Test
 	public void moveViewModelIntoFolder() {
 		moveItem(project.getProjectItem("partssupplier_view_3.xmi"), "views");
-		checkErrors();
+		new ProblemsViewEx().checkErrors();
 		checkDependentModel("partssupplier_view_3", "partssupplier_view_4.xmi", "SUPPLIER");
 	}
 
@@ -146,14 +146,14 @@ public class ModelRefactoringTest {
 		updateImports("partssupplier_view_4.xmi");
 		updateImports("views", "partssupplier_view_3.xmi");
 
-		checkErrors();
+		new ProblemsViewEx().checkErrors();
 		checkDependentModel("partssupplier_view_3", "partssupplier_view_4.xmi", "SUPPLIER");
 	}
 
 	@Test
 	public void moveViewModelOutOfFolder() {
 		moveItem(project.getProjectItem("views", "partssupplier_view_2.xmi"));
-		checkErrors();
+		new ProblemsViewEx().checkErrors();
 		checkDependentModel("partssupplier_view_2", "partssupplier_view_3.xmi", "SUPPLIER");
 	}
 
@@ -165,7 +165,7 @@ public class ModelRefactoringTest {
 		updateImports("partssupplier_view_3.xmi");
 		updateImports("partssupplier_view_4.xmi");
 
-		checkErrors();
+		new ProblemsViewEx().checkErrors();
 		checkDependentModel("partssupplier_view_2", "partssupplier_view_3.xmi", "SUPPLIER");
 	}
 
@@ -178,7 +178,7 @@ public class ModelRefactoringTest {
 		modelView.openModelEditor(PROJECT_NAME, "views", "partssupplier_view_2.xmi");
 		modelView.openModelEditor(PROJECT_NAME, "partssupplier_view_3.xmi");
 		modelView.openModelEditor(PROJECT_NAME, "partssupplier_view_4.xmi");
-		checkErrors();
+		new ProblemsViewEx().checkErrors();
 	}
 
 	@Test
@@ -197,13 +197,13 @@ public class ModelRefactoringTest {
 		modelView.openModelEditor(PROJECT_NAME, "views", "partssupplier_view_2.xmi");
 		modelView.openModelEditor(PROJECT_NAME, "partssupplier_view_3.xmi");
 		modelView.openModelEditor(PROJECT_NAME, "partssupplier_view_4.xmi");
-		checkErrors();
+		new ProblemsViewEx().checkErrors();
 	}
 
 	@Test
 	public void moveSourceModelOutOfFolder() {
 		moveItem(project.getProjectItem("sources", "books.xmi"));
-		checkErrors();
+		new ProblemsViewEx().checkErrors();
 		checkDependentModel("books", "books_view_2.xmi", "PUBLISHERS");
 		checkDependentModel("books", "views", "books_view.xmi", "PUBLISHERS");
 	}
@@ -216,7 +216,7 @@ public class ModelRefactoringTest {
 		updateImports("views", "books_view.xmi");
 		updateImports("books_view_2.xmi");
 
-		checkErrors();
+		new ProblemsViewEx().checkErrors();
 		checkDependentModel("books", "books_view_2.xmi", "PUBLISHERS");
 		checkDependentModel("books", "views", "books_view.xmi", "PUBLISHERS");
 	}
@@ -231,7 +231,7 @@ public class ModelRefactoringTest {
 		modelView.openModelEditor(PROJECT_NAME, "partssupplier_view_3.xmi");
 		modelView.openModelEditor(PROJECT_NAME, "partssupplier_view_4.xmi");
 
-		checkErrors();
+		new ProblemsViewEx().checkErrors();
 	}
 
 	private void updateImports(String... path) {
@@ -240,11 +240,6 @@ public class ModelRefactoringTest {
 		project.getProjectItem(path).select();
 		new ContextMenu("Modeling", "Update Imports").select();
 		new WaitWhile(new ShellWithTextIsAvailable("Progress Information"), TimePeriod.SHORT);
-	}
-
-	private void checkErrors() {
-		ProblemsView problems = new ProblemsView();
-		assertTrue("There are validation errors", problems.getProblems(ProblemType.ERROR).isEmpty());
 	}
 
 	private void renameItem(ProjectItem projectItem, String newName) {

@@ -39,18 +39,13 @@ public class SimpleHttpClient {
 		return this;
 	}
 
-	public String get() {
-		try {
-			HttpURLConnection connection = (HttpURLConnection) new URL(this.url).openConnection();
-			connection.setRequestMethod("GET");
-			addBasicHeader(connection);
-			addHeaders(connection);
-			connection.connect();
-			return readResponse(connection);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "";
-		}
+	public String get() throws IOException {
+		HttpURLConnection connection = (HttpURLConnection) new URL(this.url).openConnection();
+		connection.setRequestMethod("GET");
+		addBasicHeader(connection);
+		addHeaders(connection);
+		connection.connect();
+		return readResponse(connection);
 	}
 
 	public String post(String data) throws IOException {

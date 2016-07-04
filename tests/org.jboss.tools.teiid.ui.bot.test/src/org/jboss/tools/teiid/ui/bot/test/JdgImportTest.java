@@ -22,7 +22,7 @@ public class JdgImportTest {
 
 	@BeforeClass
 	public static void createProject() {
-		teiidBot.createModelProject(PROJECT_NAME);
+		new ModelExplorer().createProject(PROJECT_NAME);
 		new ModelExplorer().getModelProject(PROJECT_NAME).open();
 
 	}

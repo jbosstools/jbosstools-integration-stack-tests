@@ -43,7 +43,7 @@ public class XmlFileImportTest {
 	public static void importProject() throws IOException {
 		new WorkbenchShell().maximize();
 		ModelExplorer modelExplorer = new ModelExplorer();
-		modelExplorer.createModelProject(PROJECT_NAME);
+		modelExplorer.createProject(PROJECT_NAME);
 	}
 
 	@Test
@@ -72,13 +72,12 @@ public class XmlFileImportTest {
 		
 		// Create VDB and test it.
 		new ModelExplorer().getProject(PROJECT_NAME).refresh();
-		VdbWizard vdbWizard = new VdbWizard();
-		vdbWizard.open();
-		vdbWizard.setLocation(PROJECT_NAME)
+		VdbWizard.openVdbWizard()
+				.setLocation(PROJECT_NAME)
 				.setName(VDB_NAME)
 				.addModel(PROJECT_NAME, LOCAL_MODEL_PREFIX + "View.xmi")
-				.addModel(PROJECT_NAME, REMOTE_MODEL_PREFIX + "View.xmi");
-		vdbWizard.finish();
+				.addModel(PROJECT_NAME, REMOTE_MODEL_PREFIX + "View.xmi")
+				.finish();
 		
 		new ModelExplorer().deployVdb(PROJECT_NAME, VDB_NAME);
 		

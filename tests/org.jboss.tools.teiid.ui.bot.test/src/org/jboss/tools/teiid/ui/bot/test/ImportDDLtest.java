@@ -29,9 +29,8 @@ import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
-import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
+import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
@@ -73,7 +72,7 @@ public class ImportDDLtest {
 	@BeforeClass
 	public static void openPerspective() {
 		new ModelExplorer().importProject(PROJECT_LOCATION);
-    	new ModelExplorerManager().changeConnectionProfile(ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER, PROJECT_NAME, NAME_SOURCE_MODEL);
+    	new ModelExplorer().changeConnectionProfile(ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER, PROJECT_NAME, NAME_SOURCE_MODEL);
 	}	
 
 	@Test
@@ -111,12 +110,11 @@ public class ImportDDLtest {
 			new TeiidBot().saveAll();
 		}
 		
-		VdbWizard wizardVDB = new VdbWizard();
-		wizardVDB.open();
-		wizardVDB.setLocation(PROJECT_NAME)
-				 .setName(NAME_VDB)
-				 .addModel(PROJECT_NAME,NAME_VIEW_MODEL + ".xmi")
-				 .finish();
+		VdbWizard.openVdbWizard()
+				.setLocation(PROJECT_NAME)
+				.setName(NAME_VDB)
+				.addModel(PROJECT_NAME,NAME_VIEW_MODEL + ".xmi")
+				.finish();
 
 		new ModelExplorer().deployVdb(PROJECT_NAME, NAME_VDB);
 		

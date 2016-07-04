@@ -18,6 +18,12 @@ public class VdbWizard extends NewWizardDialog {
 		super("Teiid Designer", "Teiid VDB");
 	}
 	
+	public static VdbWizard openVdbWizard() {
+		VdbWizard vdbWizard = new VdbWizard();
+		vdbWizard.open();
+		return vdbWizard;
+	}
+	
 	@Override
 	public void finish() {
 		super.finish();

@@ -1,8 +1,8 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
 
@@ -150,7 +150,7 @@ public class GuidesTest {
 	}
 	
     @Test
-	public void Rest(){
+	public void Rest() throws IOException{
  		String actionSet = "Create a REST WAR";
 		String project_REST_name = "REST_WAR";
 		String model_REST_name = "REST_WarSource";
