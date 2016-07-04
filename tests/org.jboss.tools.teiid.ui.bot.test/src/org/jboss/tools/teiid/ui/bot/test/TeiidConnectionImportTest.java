@@ -1,5 +1,6 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
+import java.io.IOException;
 import java.util.Properties;
 
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
@@ -10,7 +11,6 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.SimpleHttpClient;
 import org.jboss.tools.teiid.reddeer.manager.ImportMetadataManager;
-import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.preference.TeiidDesignerPreferencePage;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
@@ -158,15 +158,14 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 
 	@Test
 	public void teiidTest() {
-		new ModelExplorerManager().changeConnectionProfile(ConnectionProfileConstants.SQL_SERVER_2008_BOOKS,
+		new ModelExplorer().changeConnectionProfile(ConnectionProfileConstants.SQL_SERVER_2008_BOOKS,
 				PROJECT_NAME, sqlserverExistingModelName);
 
-		VdbWizard vdbWizard = new VdbWizard();
-		vdbWizard.open();
-		vdbWizard.setLocation(PROJECT_NAME)
+		VdbWizard.openVdbWizard()
+				.setLocation(PROJECT_NAME)
 				.setName(SOURCE_VDB_NAME)
-				.addModel(PROJECT_NAME, sqlserverExistingModelName);
-		vdbWizard.finish();
+				.addModel(PROJECT_NAME, sqlserverExistingModelName)
+				.finish();
 		
 		new ModelExplorer().deployVdb(PROJECT_NAME, SOURCE_VDB_NAME);
 
@@ -297,7 +296,7 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 	}
 
 	@Test
-	public void modeshapeTest() {
+	public void modeshapeTest() throws IOException {
 		Properties teiidImporterProperties = new Properties();
 		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN,
 				"mix:title");

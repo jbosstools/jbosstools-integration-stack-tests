@@ -1,6 +1,6 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,7 +22,6 @@ import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
 import org.jboss.tools.teiid.reddeer.manager.ImportManager;
-import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
@@ -60,21 +59,19 @@ public class ReuseVDBTest {
 	@BeforeClass
 	public static void before() {
 		new ModelExplorer().importProject(PROJECT_LOCATION);
-		new ModelExplorerManager().changeConnectionProfile(ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER, PROJECT_NAME, NAME_ORACLE_MODEL);
+		new ModelExplorer().changeConnectionProfile(ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER, PROJECT_NAME, NAME_ORACLE_MODEL);
 	}
 	
 	@Test
 	public void reuseVDBtest(){
-		VdbWizard wizardVDB = new VdbWizard();
-		wizardVDB.open();
-		wizardVDB.setLocation(PROJECT_NAME)
-				 .setName(SOURCE_VDB)
-				 .addModel(PROJECT_NAME,VIEW_SOURCE_MODEL + ".xmi")
-				 .finish();
-		new ModelExplorer().executeVDB(PROJECT_NAME, SOURCE_VDB);
-		TeiidPerspective.getInstance();
+		VdbWizard.openVdbWizard()
+				.setLocation(PROJECT_NAME)
+				.setName(SOURCE_VDB)
+				.addModel(PROJECT_NAME,VIEW_SOURCE_MODEL + ".xmi")
+				.finish();
+		new ModelExplorer().deployVdb(PROJECT_NAME, SOURCE_VDB);
 		
-		new ModelExplorerManager().createProject(PROJECT_NAME_REUSE);
+		new ModelExplorer().createProject(PROJECT_NAME_REUSE);
 		Properties iProps = new Properties();
 		iProps.setProperty("itemList", VIEW_SOURCE_MODEL);
 		new ImportManager().importFromDatabase(PROJECT_NAME_REUSE,VIEW_SOURCE_MODEL, SOURCE_VDB + " - localhost - Teiid Connection", iProps, false);
@@ -96,12 +93,11 @@ public class ReuseVDBTest {
 		modelWizard.finish();
 		new ModelEditor(VIEW_REUSE_MODEL + ".xmi").save();
 
-		wizardVDB = new VdbWizard();
-		wizardVDB.open();
-		wizardVDB.setLocation(PROJECT_NAME_REUSE)
-				 .setName(REUSE_VDB)
-				 .addModel(PROJECT_NAME_REUSE,VIEW_REUSE_MODEL + ".xmi")
-				 .finish();
+		VdbWizard.openVdbWizard()
+				.setLocation(PROJECT_NAME_REUSE)
+				.setName(REUSE_VDB)
+				.addModel(PROJECT_NAME_REUSE,VIEW_REUSE_MODEL + ".xmi")
+				.finish();
 		new ModelExplorer().deployVdb(PROJECT_NAME_REUSE, REUSE_VDB);
 		
 		/* test version 1 */

@@ -29,6 +29,7 @@ import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
+import org.jboss.tools.teiid.reddeer.view.ProblemsViewEx;
 import org.jboss.tools.teiid.reddeer.wizard.MetadataModelWizard;
 import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
 import org.junit.Before;
@@ -82,7 +83,7 @@ public class XmlStagingTableTest {
 		// 2. Model XML document without staging table
 		XmlModelEditor editor = new XmlModelEditor(VIEW_MODEL);
 		
-		modelExplorer.renameModelItem(PROJECT_NAME + "/views/SchemaModel.xmi", "ResultSetDocument", "NoStagingDocument");
+		modelExplorer.renameModelItem("NoStagingDocument", PROJECT_NAME, "views", "SchemaModel.xmi", "ResultSetDocument");
 		
 		editor.openMappingClass("publisher");
 		TransformationEditor pubTransfEditor = editor.openTransformationEditor();
@@ -102,17 +103,16 @@ public class XmlStagingTableTest {
 		AbstractWait.sleep(TimePeriod.SHORT);
 		editor.save();
 		
-		AbstractWait.sleep(TimePeriod.SHORT);
-		assertTrue("Validation errors!", new ProblemsView().getProblems(ProblemType.ERROR).isEmpty());
+		new ProblemsViewEx().checkErrors();
 		
 		// 3. Model XML document with staging table
-		modelExplorer.addChildToModelItem(PROJECT_NAME + "/views/" + VIEW_MODEL, "", ChildType.XML_DOCUMENT);
+		modelExplorer.addChildToModelItem(ChildType.XML_DOCUMENT, PROJECT_NAME, "views", VIEW_MODEL);
 		XmlDocumentBuilderDialog xmlDocumentBuilder = new XmlDocumentBuilderDialog();
 		xmlDocumentBuilder.setSchema(PROJECT_NAME,"schemas","PublisherSchema.xsd")
 				.addElement("ResultSet");
 		xmlDocumentBuilder.finish();
 		
-		modelExplorer.renameModelItem(PROJECT_NAME + "/views/" + VIEW_MODEL, "ResultSetDocument", "StagingDocument");
+		modelExplorer.renameModelItem("StagingDocument", PROJECT_NAME, "views", VIEW_MODEL, "ResultSetDocument");
 		
 		editor.createStagingTable("ResultSet");
 		editor.openStagingTable("ST_ResultSet");
@@ -139,17 +139,14 @@ public class XmlStagingTableTest {
 		AbstractWait.sleep(TimePeriod.SHORT);
 		editor.save();
 
-		AbstractWait.sleep(TimePeriod.SHORT);
-		assertTrue("Validation errors!", new ProblemsView().getProblems(ProblemType.ERROR).isEmpty());
+		new ProblemsViewEx().checkErrors();
 
 		// 4.Create a VDB and deploy
-		VdbWizard vdbWizard = new VdbWizard();
-		vdbWizard.open();
-		vdbWizard.setLocation(PROJECT_NAME)
+		VdbWizard.openVdbWizard()
+				.setLocation(PROJECT_NAME)
 				.setName(VDB_NAME)
-				.addModel(PROJECT_NAME, "views", VIEW_MODEL);
-		vdbWizard.finish();
-		
+				.addModel(PROJECT_NAME, "views", VIEW_MODEL)
+				.finish();
 		modelExplorer.deployVdb(PROJECT_NAME, VDB_NAME);
 		
 		// 5. Test created models		

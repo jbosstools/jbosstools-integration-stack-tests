@@ -41,13 +41,6 @@ import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
  */
 public class TeiidBot {
 
-	@Deprecated // use ModelExplorer.createModelProject()
-	public void createModelProject(String name) {
-		ModelExplorer modelExplorer = new ModelExplorer();
-		modelExplorer.open();
-		modelExplorer.createModelProject(name);
-	}
-
 	public ModelExplorer modelExplorer() {
 		ModelExplorer modelExplorer = new ModelExplorer();
 		modelExplorer.open();
@@ -218,12 +211,11 @@ public class TeiidBot {
 		String vdb_name = "Check_" + model;
 
 		// create VDB		
-		VdbWizard vdbWizard = new VdbWizard();
-		vdbWizard.open();
-		vdbWizard.setLocation(project)
+		VdbWizard.openVdbWizard()
+				.setLocation(project)
 				.setName(vdb_name)
-				.addModel(project, model);
-		vdbWizard.finish();
+				.addModel(project, model)
+				.finish();
 
 		new ModelExplorer().deployVdb(project, vdb_name);
 

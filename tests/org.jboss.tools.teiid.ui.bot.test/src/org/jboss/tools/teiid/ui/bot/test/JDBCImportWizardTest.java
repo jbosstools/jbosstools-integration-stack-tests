@@ -21,7 +21,6 @@ import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
 import org.jboss.tools.teiid.reddeer.manager.ImportManager;
-import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.manager.ServerManager;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
@@ -68,7 +67,7 @@ public class JDBCImportWizardTest {
 	public static void before() {
 
 		teiidBot.uncheckBuildAutomatically();
-		new ModelExplorerManager().createProject(MODEL_PROJECT);
+		new ModelExplorer().createProject(MODEL_PROJECT);
 		new ServerManager().getServersViewExt().refreshServer(teiidServer.getName());
 	}
 
@@ -194,12 +193,11 @@ public class JDBCImportWizardTest {
 		teiidBot.assertResource(MODEL_PROJECT, model + ".xmi", "SMALLB");
 		String vdb_name = "Check_" + model;
 		
-		VdbWizard vdbWizard = new VdbWizard();
-		vdbWizard.open();
-		vdbWizard.setLocation(MODEL_PROJECT)
+		VdbWizard.openVdbWizard()
+				.setLocation(MODEL_PROJECT)
 				.setName(vdb_name)
-				.addModel(MODEL_PROJECT, model);
-		vdbWizard.finish();
+				.addModel(MODEL_PROJECT, model)
+				.finish();
 		
 		VDBEditor.getInstance(vdb_name + ".vdb").setModelTranslator(model + ".xmi", model, "hana");
 
@@ -232,12 +230,11 @@ public class JDBCImportWizardTest {
 		teiidBot.assertResource(MODEL_PROJECT, model + ".xmi", procedure);
 
 		String vdb_name = "Check_" + model;	
-		VdbWizard vdbWizard = new VdbWizard();
-		vdbWizard.open();
-		vdbWizard.setLocation(MODEL_PROJECT)
+		VdbWizard.openVdbWizard()
+				.setLocation(MODEL_PROJECT)
 				.setName(vdb_name)
-				.addModel(MODEL_PROJECT, model);
-		vdbWizard.finish();
+				.addModel(MODEL_PROJECT, model)
+				.finish();
 		new ModelExplorer().deployVdb(MODEL_PROJECT, vdb_name);
 		
 		TeiidJDBCHelper jdbcHelper = new TeiidJDBCHelper(teiidServer, vdb_name);

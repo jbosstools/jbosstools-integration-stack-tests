@@ -13,9 +13,9 @@ import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
 import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.manager.ImportMetadataManager;
-import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
+import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.wizard.DDLCustomImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.FlatImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.ImportGeneralItemWizard;
@@ -44,7 +44,7 @@ public class ImportWizardTest {
 
 	@BeforeClass
 	public static void createModelProject() {
-		new ModelExplorerManager().createProject(MODEL_PROJECT);
+		new ModelExplorer().createProject(MODEL_PROJECT);
 	}
 
 	@AfterClass

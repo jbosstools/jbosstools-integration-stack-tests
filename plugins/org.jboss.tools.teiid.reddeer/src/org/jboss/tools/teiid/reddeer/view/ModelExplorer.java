@@ -2,9 +2,12 @@ package org.jboss.tools.teiid.reddeer.view;
 
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.util.List;
 import java.util.Properties;
 
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -26,6 +29,7 @@ import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.reddeer.workbench.impl.editor.AbstractEditor;
@@ -42,14 +46,17 @@ import org.jboss.tools.teiid.reddeer.condition.RadioButtonEnabled;
 import org.jboss.tools.teiid.reddeer.condition.WarIsDeployed;
 import org.jboss.tools.teiid.reddeer.dialog.CreateWarDialog;
 import org.jboss.tools.teiid.reddeer.dialog.CreateWebServiceDialog;
+import org.jboss.tools.teiid.reddeer.dialog.GenerateRestProcedureDialog;
 import org.jboss.tools.teiid.reddeer.dialog.SaveAsDialog;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
+import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.wizard.GenerateDynamicVdbWizard;
 import org.jboss.tools.teiid.reddeer.wizard.GenerateVdbArchiveWizard;
 import org.jboss.tools.teiid.reddeer.wizard.ImportProjectWizard;
 import org.jboss.tools.teiid.reddeer.wizard.MetadataModelWizard;
 import org.jboss.tools.teiid.reddeer.wizard.ModelProjectWizard;
+import org.jboss.tools.teiid.reddeer.wizard.ProcedureWizard;
 
 /**
  * This class represents a model explorer
@@ -75,69 +82,11 @@ public class ModelExplorer extends AbstractExplorer {
 		this.activate();
 	}
 
-	/**
-	 * Returns a model project with a given name
-	 * 
-	 * @param modelName
-	 * @return
-	 */
 	public ModelProject getModelProject(String modelName) {
 		return new ModelProject(getProject(modelName));
 	}
-
-	public void changeConnectionProfile(String connectionProfile, String projectName, String... projectItem) {
-		// if no extension specified, add .xmi
-		if (!projectItem[projectItem.length - 1].contains(".")) {
-			projectItem[projectItem.length - 1] = projectItem[projectItem.length - 1].concat(".xmi");
-		}
-		new DefaultShell();
-		new ModelExplorer().getProject(projectName).getProjectItem(projectItem).select();
-		new ContextMenu("Modeling", "Set Connection Profile").select();
-		new DefaultShell("Set Connection Profile");
-		new DefaultTreeItem("Database Connections", connectionProfile).select();
-		new PushButton("OK").click();
-
-		try {
-			new WaitUntil(new ShellWithTextIsAvailable(CONNECTION_PROFILE_CHANGE));
-			new PushButton("OK").click();
-		} catch (Exception e) {
-		}
-	}
-
-	public void newBaseTable(String project, String model, String tableName) {
-		open();
-
-		new DefaultTreeItem(project, model).select();
-		new ContextMenu("New Child", "Table...").select();
-		new DefaultShell("Create Relational View Table");
-		new LabeledText("Name").setText(tableName);
-		new PushButton("OK").click();
-	}
-
-	/**
-	 * Create new (base) table in view model
-	 * 
-	 * @param project
-	 * @param model
-	 * @param tableName
-	 * @param baseTable
-	 *            true if context menu contains "Base Table"
-	 */
-	public void newBaseTable(String project, String model, String tableName, boolean baseTable) {
-		open();
-
-		new DefaultTreeItem(project, model).select();
-		if (baseTable) {
-			new ContextMenu("New Child", "Base Table...").select();
-		} else {
-			new ContextMenu("New Child", "Table...").select();
-		}
-
-		new DefaultShell("Create Relational View Table");
-		new LabeledText("Name").setText(tableName);
-		new PushButton("OK").click();
-	}
-
+	
+	@Deprecated // use ModelExplorer.addChildToModelItem/addSiblingToModelItem + TableDialog
 	public void newTable(String tableName, Table.Type type, Properties props, String... pathToModelXmi) {
 		open();
 
@@ -147,36 +96,7 @@ public class ModelExplorer extends AbstractExplorer {
 		new ModelEditor(pathToModelXmi[pathToModelXmi.length - 1]).save();// the last member is modelXmi
 	}
 
-	public Procedure newProcedure(String project, String model, String procedure) {
-		open();
-
-		new DefaultTreeItem(project, model).select();
-		new ContextMenu("New Child", "Procedure...").select();
-		new LabeledText("NewProcedure").setText(procedure);
-
-		return new Procedure(project, model, procedure);
-	}
-
-	public Procedure newProcedure(String project, String model, String procedure, boolean procedureNotFunction) {
-		open();
-
-		new DefaultTreeItem(project, model).select();
-		new ContextMenu("New Child", "Procedure...").select();
-		new DefaultShell("Select Procedure Type");
-
-		if (procedureNotFunction) {
-			// Procedure?/(Function) - OK
-			new PushButton("OK").click();
-		}
-
-		new DefaultShell("Create Relational View Procedure");
-		new LabeledText("Name").setText(procedure);
-		new PushButton("OK").click();
-		new WaitWhile(new ShellWithTextIsAvailable("Create Relational View Procedure"));
-
-		return new Procedure(project, model, procedure);
-	}
-
+	@Deprecated // use ModelExplorer.addChildToModelItem/addSiblingToModelItem + ProcedureWizard
 	public void newProcedure(String project, String modelXmi, String procedure, Properties props) {
 
 		open();
@@ -188,37 +108,6 @@ public class ModelExplorer extends AbstractExplorer {
 		new Procedure().create(procedure, props);
 		new ModelEditor(modelXmi).save();
 	}
-
-	public void addTransformationSource(String project, String model, String tableName) {
-
-		open();
-		getProject(project).getProjectItem(model, tableName).select();
-	}
-
-	public void executeVDB(String project, String vdb) {
-		open();
-		vdb = (vdb.contains(".vdb")) ? vdb : vdb + ".vdb";
-
-		new DefaultTreeItem(project, vdb).select();
-		new ContextMenu(MODELING_MENU_ITEM, "Execute VDB").select();
-
-		new WaitWhile(new IsInProgress(), TimePeriod.VERY_LONG);
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		new WorkbenchShell();
-	}
-	
-	public void deleteTable(String project, String model, String table){
-		open();
-		
-		new DefaultTreeItem(project, model, table).select();
-		new ContextMenu("Delete").select();
-		
-		new WaitWhile(new IsInProgress(), TimePeriod.VERY_LONG);
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		new WorkbenchShell();
-	}
-
-	
 
 	@Override
 	public void open() {
@@ -260,18 +149,111 @@ public class ModelExplorer extends AbstractExplorer {
 	
 	
 	
+	
+	
+	// ###############################
 	// ### updated down from here
+	// ###############################
 	
-	
+
 	
 	/**
-	 * Selects Modeling/Create Web Service and returns related dialog. 
-	 * @param PathFrom - path to model from which WS will be created (<PROJECT>, ..., <ITEM>)
+	 * Changes connection profile of specified Source Model
+	 * @param connectionProfile - ConnectionProfileConstants.*
+	 * @param modelPath - path to the model (<PROJECT>, ..., <MODEL>) 
+	 */
+	public void changeConnectionProfile(String connectionProfile, String... modelPath) {
+		int n = modelPath.length -1;
+		modelPath[n] = (modelPath[n].contains(".xmi")) ? modelPath[n] : modelPath[n] + ".xmi";
+		new WorkbenchShell();
+		this.selectItem(modelPath);
+		new ContextMenu("Modeling", "Set Connection Profile").select();
+		new DefaultShell("Set Connection Profile");
+		new DefaultTreeItem("Database Connections", connectionProfile).select();
+		new PushButton("OK").click();
+		try {
+			new WaitUntil(new ShellWithTextIsAvailable(CONNECTION_PROFILE_CHANGE));
+			new PushButton("OK").click();
+		} catch (Exception e) {}
+	}
+	
+	/**
+	 * Performs preview of specified model's item.
+	 * @param params (TODO describe)
+	 * @param itemPath - path to item (<PROJECT>, ..., <ITEM>)
+	 */
+	public void previewModelItem(List<String> params, String... itemPath) {
+		new WorkbenchShell();
+		this.selectItem(itemPath);
+		new ContextMenu("Modeling", "Preview Data").select();
+		try {
+			new PushButton("Yes").click();
+		} catch (Exception e) { }
+		if ((params != null) && (!params.isEmpty())) {
+			new DefaultShell("Preview Data");
+			int i = 0;
+			for (String paramName : params) {// expects the params are sorted
+				new SWTWorkbenchBot().text(i).setText(paramName);
+				i++;
+			}
+			new PushButton("OK").click();
+		}
+		new PushButton("OK").click();
+	}
+	
+	/**
+	 * Checks that preview succeed.
+	 * @param previewSQL - specifies preview record
+	 */
+	public boolean checkPreviewOfModelObject(String previewSQL) {
+		// wait while is in progress
+		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
+		// wait while dialog Preview data... is active
+		new WaitWhile(new ShellWithTextIsActive(new RegexMatcher("Preview.*")), TimePeriod.LONG);
+		SQLResult result = DatabaseDevelopmentPerspective.getInstance().getSqlResultsView().getByOperation(previewSQL);
+		return result.getStatus().equals(SQLResult.STATUS_SUCCEEDED);
+	}
+	
+	/**
+	 * Creates data source for specified VDB.
+	 */
+	public void createVdbDataSource(String[] pathToVDB, String jndiName, boolean passThruAuth) {
+		int n = pathToVDB.length -1;
+		pathToVDB[n] = (pathToVDB[n].contains(".vdb")) ? pathToVDB[n] : pathToVDB[n] + ".vdb";
+		new WorkbenchShell();
+		this.selectItem(pathToVDB);
+		new ContextMenu("Modeling", "Create VDB Data Source").select();
+		try {
+			new DefaultShell("VDB Not Yet Deployed ");
+			new PushButton("Yes").click();// create ds anyway
+		} catch (Exception e) {		}
+		new WorkbenchShell();
+		new DefaultText(1).setText(jndiName);
+		if (passThruAuth) {
+			new CheckBox("Pass Thru Authentication").click();
+		}
+		new PushButton("OK").click();
+	}
+	
+	/**
+	 * Selects Modeling/'Generate REST Virtual Procedures' and returns related dialog. 
+	 * @param PathFrom - path to model from which WS will be created (<PROJECT>, ..., <MODEL>)
+	 */
+	public GenerateRestProcedureDialog modelingRestProcedure(String... pathFrom){
+		this.selectItem(pathFrom);
+		new ContextMenu("Modeling", "Generate REST Virtual Procedures").select();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		return new GenerateRestProcedureDialog();
+	}
+	
+	/**
+	 * Selects Modeling/'Create Web Service' and returns related dialog. 
+	 * @param PathFrom - path to model from which WS will be created (<PROJECT>, ..., <MODEL>)
 	 * @param IsXml - false - create from relation model 
 	 * 				- true - create from XML model
 	 */
-	public CreateWebServiceDialog modelingWebService(boolean fromXml, String... PathFrom){
-		this.selectItem(PathFrom);
+	public CreateWebServiceDialog modelingWebService(boolean fromXml, String... pathFrom){
+		this.selectItem(pathFrom);
 		new ContextMenu("Modeling", "Create Web Service").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		return new CreateWebServiceDialog(fromXml);
@@ -289,7 +271,7 @@ public class ModelExplorer extends AbstractExplorer {
 	/**
 	 * Creates a new model project with specified name.
 	 */
-	public void createModelProject(String projectName) {
+	public void createProject(String projectName) {
 		ModelProjectWizard wizard = new ModelProjectWizard(0);
 		wizard.create(projectName);
 	}
@@ -329,28 +311,6 @@ public class ModelExplorer extends AbstractExplorer {
 		} catch (SWTLayerException e) {	
 			// shell not opened -> continue
 		}
-	}
-	
-	public void createVDBDataSource(String[] pathToVDB, String jndiName, boolean passThruAuth) {
-
-		if (!pathToVDB[pathToVDB.length - 1].contains(".vdb")) {
-			pathToVDB[pathToVDB.length - 1] = pathToVDB[pathToVDB.length - 1].concat(".vdb");
-		}
-		new DefaultShell();
-		new ModelExplorer().getProject(pathToVDB[0]).getProjectItem(pathToVDB[1]).select();
-		new ContextMenu("Modeling", "Create VDB Data Source").select();
-		try {
-			new DefaultShell("VDB Not Yet Deployed ");
-			new PushButton("Yes").click();// create ds anyway
-		} catch (Exception e) {
-
-		}
-		new DefaultShell();
-		new DefaultText(1).setText(jndiName);
-		if (passThruAuth) {
-			new CheckBox("Pass Thru Authentication").click();
-		}
-		new PushButton("OK").click();
 	}
 	
 	/**
@@ -474,14 +434,12 @@ public class ModelExplorer extends AbstractExplorer {
 	
 	/**
 	 * Adds child to specified item of model's tree structure.
-	 * @param pathToModel - path to model (<PROJECT>/.../<MODEL>)
-	 * @param pathToItem - path to item (.../<ITEM>) ("" if directly to model)
 	 * @param childType - org.jboss.tools.teiid.reddeer.ChildType.*
+	 * @param itemPath - path to model (<PROJECT>, ..., <MODEL/ITEM>)
 	 */
-	public void addChildToModelItem(String pathToModel, String pathToItem, ChildType childType) {
-		this.getProject(pathToModel.split("/")[0]).refresh();
-		pathToItem = (pathToItem.equals("")) ? pathToItem : "/" + pathToItem;
-		new DefaultTreeItem((pathToModel + pathToItem).split("/")).select();
+	public void addChildToModelItem(ChildType childType, String... itemPath) {
+		this.getProject(itemPath[0]).refresh();
+		new DefaultTreeItem(itemPath).select();
 		new ContextMenu("New Child",childType.getText()).select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		KeyboardFactory.getKeyboard().type(KeyEvent.VK_TAB);
@@ -490,14 +448,12 @@ public class ModelExplorer extends AbstractExplorer {
 	
 	/**
 	 * Adds sibling to specified item of model's tree structure.
-	 * @param pathToModel - path to model (<PROJECT>/.../<MODEL>)
-	 * @param pathToItem - path to item (.../<ITEM>) ("" if directly to model)
 	 * @param siblingType - org.jboss.tools.teiid.reddeer.ChildType.*
+	 * @param itemPath - path to model (<PROJECT>, ..., <MODEL/ITEM>)
 	 */
-	public void addSiblingToModelItem(String pathToModel, String pathToItem, ChildType siblingType){
-		this.getProject(pathToModel.split("/")[0]).refresh();
-		pathToItem = (pathToItem.equals("")) ? pathToItem : "/" + pathToItem;
-		new DefaultTreeItem((pathToModel + pathToItem).split("/")).select();
+	public void addSiblingToModelItem(ChildType siblingType, String... itemPath){
+		this.getProject(itemPath[0]).refresh();
+		new DefaultTreeItem(itemPath).select();
 		new ContextMenu("New Sibling",siblingType.getText()).select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		KeyboardFactory.getKeyboard().type(KeyEvent.VK_TAB);
@@ -506,13 +462,11 @@ public class ModelExplorer extends AbstractExplorer {
 	
 	/**
 	 * Renames specified item of model's tree structure.
-	 * @param pathToModel - path to model (<PROJECT>/.../<MODEL>)
-	 * @param pathToItem - path to item (.../<ITEM>)
+	 * @param itemPath - path to item (<PROJECT>, ..., <ITEM>)
 	 */
-	public void renameModelItem(String pathToModel, String pathToItem, String newName){
-		this.getProject(pathToModel.split("/")[0]).refresh();
-		pathToItem = (pathToItem.equals("")) ? pathToItem : "/" + pathToItem;
-		new DefaultTreeItem((pathToModel + pathToItem).split("/")).select();
+	public void renameModelItem(String newName, String... itemPath){
+		this.getProject(itemPath[0]).refresh();
+		new DefaultTreeItem(itemPath).select();
 		new ContextMenu("Rename...").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new DefaultText().setText(newName);
@@ -522,12 +476,12 @@ public class ModelExplorer extends AbstractExplorer {
 	
 	/**
 	 * Renames specified model.
-	 * @param pathToModel - path to model (<PROJECT>/.../<MODEL>)
+	 * @param pathToModel - path to model (<PROJECT>, ..., <MODEL>)
 	 * Note: new name must contains extension of model.
 	 */
-	public void renameModel(String pathToModel, String newName){
-		this.getProject(pathToModel.split("/")[0]).refresh();
-		new DefaultTreeItem((pathToModel).split("/")).select();
+	public void renameModel(String newName, String... modelPath){
+		this.getProject(modelPath[0]).refresh();
+		new DefaultTreeItem(modelPath).select();
 		new ContextMenu("Refactor", "Rename...").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new LabeledText("New name:").setText(newName);
@@ -537,11 +491,11 @@ public class ModelExplorer extends AbstractExplorer {
 	
 	/**
 	 * Deletes specified model.
-	 * @param pathToModel - path to model (<PROJECT>/.../<MODEL>)
+	 * @param pathToModel - path to model (<PROJECT>, ... ,<MODEL>)
 	 */
-	public void deleteModel(String pathToModel){
-		this.getProject(pathToModel.split("/")[0]).refresh();
-		new DefaultTreeItem((pathToModel).split("/")).select();
+	public void deleteModel(String... modelPath){
+		this.getProject(modelPath[0]).refresh();
+		new DefaultTreeItem(modelPath).select();
 		new ContextMenu("Delete").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		try {
@@ -590,7 +544,7 @@ public class ModelExplorer extends AbstractExplorer {
 	}
 	
 	/**
-	 * set jndi name for source model
+	 * set JNDI name for source model
 	 */
 	public void setJndiName(String jndiName, String... pathToSourceModel) {
 		open();

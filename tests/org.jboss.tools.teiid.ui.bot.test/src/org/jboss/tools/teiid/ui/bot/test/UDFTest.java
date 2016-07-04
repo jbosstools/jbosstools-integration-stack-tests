@@ -13,7 +13,6 @@ import org.jboss.tools.teiid.reddeer.Table;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.manager.ImportManager;
-import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.manager.PerspectiveAndViewManager;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
@@ -76,24 +75,22 @@ public class UDFTest {
 		props.setProperty("javaMethod", "myConcatNull");
 		props.setProperty("udfJarPath", "lib/" + UDF_LIB);
 
-		new ModelExplorerManager().getModelExplorerView().newProcedure(PROJECT_NAME, MODEL_VIEW_NAME + ".xmi", proc,
-				props);
+		new ModelExplorer().newProcedure(PROJECT_NAME, MODEL_VIEW_NAME + ".xmi", proc, props);
 
 		// create table to test -> use UDF in transformation
 		String table = "tab";
 		String query = "select udfConcatNull(hsqldbParts.PARTS.PART_NAME,hsqldbParts.PARTS.PART_WEIGHT) as NAME_WEIGHT from hsqldbParts.PARTS";
 		props = new Properties();
 		props.setProperty("sql", query);
-		new ModelExplorerManager().getModelExplorerView().newTable(table, Table.Type.VIEW, props, PROJECT_NAME,
+		new ModelExplorer().newTable(table, Table.Type.VIEW, props, PROJECT_NAME,
 				MODEL_VIEW_NAME + ".xmi");
 
-		VdbWizard vdbWizard = new VdbWizard();
-		vdbWizard.open();
-		vdbWizard.setLocation(PROJECT_NAME)
+		VdbWizard.openVdbWizard()
+				.setLocation(PROJECT_NAME)
 				.setName(VDB_NAME)
 				.addModel(PROJECT_NAME, MODEL_SRC_NAME + ".xmi")
-				.addModel(PROJECT_NAME, MODEL_VIEW_NAME + ".xmi");
-		vdbWizard.finish();
+				.addModel(PROJECT_NAME, MODEL_VIEW_NAME + ".xmi")
+				.finish();
 		
 		new ModelExplorer().deployVdb(PROJECT_NAME, VDB_NAME);
 		

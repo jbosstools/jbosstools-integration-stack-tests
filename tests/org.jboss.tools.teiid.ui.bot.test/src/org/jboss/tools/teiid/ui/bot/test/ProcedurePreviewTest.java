@@ -17,7 +17,6 @@ import org.jboss.tools.teiid.reddeer.Procedure;
 import org.jboss.tools.teiid.reddeer.Table;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.manager.ImportManager;
-import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.manager.PerspectiveAndViewManager;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
@@ -65,16 +64,15 @@ public class ProcedurePreviewTest {
 		props.setProperty("sql",
 				"CREATE VIRTUAL PROCEDURE BEGIN select hsqldbParts.PARTS.PART_COLOR AS color from hsqldbParts.PARTS where hsqldbParts.PARTS.PART_ID=view.proc.id; END");
 
-		new ModelExplorerManager().getModelExplorerView().newProcedure(PROJECT_NAME, MODEL_VIEW_NAME + ".xmi", proc,
-				props);
+		new ModelExplorer().newProcedure(PROJECT_NAME, MODEL_VIEW_NAME + ".xmi", proc, props);
 
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		ArrayList<String> params = new ArrayList<String>();
 		params.add("P300");
-		new ModelExplorerManager().previewModelObject(params, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi", proc);
+		new ModelExplorer().previewModelItem(params, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi", proc);
 		String query = "select * from ( exec \"" + MODEL_VIEW_NAME + "\".\"" + proc + "\"('P300') ) AS X_X";
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		assertTrue(new ModelExplorerManager().checkPreviewOfModelObject(query));
+		assertTrue(new ModelExplorer().checkPreviewOfModelObject(query));
 	}
 
 	@Test
@@ -100,20 +98,18 @@ public class ProcedurePreviewTest {
 		props.setProperty("javaMethod", "myConcatNull");
 		props.setProperty("udfJarPath", "lib/" + UDF_LIB);
 
-		new ModelExplorerManager().getModelExplorerView().newProcedure(PROJECT_NAME, MODEL_VIEW_NAME + ".xmi", proc,
-				props);
+		new ModelExplorer().newProcedure(PROJECT_NAME, MODEL_VIEW_NAME + ".xmi", proc, props);
 
 		// create table to test -> use UDF in transformation
 		String table = "tab";
 		String query = "select udfConcatNull(hsqldbParts.PARTS.PART_NAME,hsqldbParts.PARTS.PART_WEIGHT) as NAME_WEIGHT from hsqldbParts.PARTS";
 		props = new Properties();
 		props.setProperty("sql", query);
-		new ModelExplorerManager().getModelExplorerView().newTable(table, Table.Type.VIEW, props, PROJECT_NAME,
-				MODEL_VIEW_NAME + ".xmi");
+		new ModelExplorer().newTable(table, Table.Type.VIEW, props, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi");
 
-		new ModelExplorerManager().previewModelObject(null, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi", table);
+		new ModelExplorer().previewModelItem(null, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi", table);
 		String previewQuery = teiidBot.generateTablePreviewQuery(MODEL_VIEW_NAME, table);
-		assertTrue(new ModelExplorerManager().checkPreviewOfModelObject(previewQuery));
+		assertTrue(new ModelExplorer().checkPreviewOfModelObject(previewQuery));
 
 	}
 }

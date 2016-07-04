@@ -5,10 +5,10 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.manager.ImportManager;
-import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.manager.ServerManager;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
+import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +27,7 @@ public class SalesforceImportTest {
 	public static void before() {
 
 		teiidBot.uncheckBuildAutomatically();
-		new ModelExplorerManager().createProject(MODEL_PROJECT);
+		new ModelExplorer().createProject(MODEL_PROJECT);
 		new ServerManager().getServersViewExt().refreshServer(teiidServer.getName());
 	}
 

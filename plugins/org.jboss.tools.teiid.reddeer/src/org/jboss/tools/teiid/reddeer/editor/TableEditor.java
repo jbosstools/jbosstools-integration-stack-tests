@@ -9,6 +9,7 @@ import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.util.Display;
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.jface.viewers.CellEditor;
+import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.ccombo.DefaultCCombo;
@@ -38,6 +39,7 @@ public class TableEditor extends AbstractModelEditor {
 		public static final String XML_NAMESPACES = "Xml Namespaces";
 		public static final String XML_ROOTS = "Xml Roots";
 		public static final String XML_SEQUENCES = "Xml Sequences";
+		public static final String PROCEDURES = "Procedures";
 	}
 	
 	private final String fromEditor;
@@ -94,21 +96,22 @@ public class TableEditor extends AbstractModelEditor {
 
 	/**
 	 * Sets specified text into specified cell of table.
-	 * @param firstCellValue - defines row by text of cell in first column.
+	 * @param iCellIndex, iCellText - defines row by text of cell in specified column.
 	 */
-	public void setCellText(String firstCellText, int columnIndex, String value){
-		new DefaultTable().getItem(firstCellText).doubleClick(columnIndex);
-		new DefaultText(new CellEditor(new DefaultTable().getItem(firstCellText), columnIndex)).setText(value);
+	public void setCellText(int iCellIndex, String iCellText, int columnIndex, String value){
+		TableItem item = new DefaultTable().getItem(iCellText, iCellIndex);
+		item.doubleClick(columnIndex);
+		new DefaultText(new CellEditor(item, columnIndex)).setText(value);
 		KeyboardFactory.getKeyboard().type(KeyEvent.VK_TAB);
 		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 	
 	/**
 	 * Sets specified text into specified cell of table.
-	 * @param firstCellValue - defines row by text of cell in first column.
+	 * @param iCellIndex, iCellText - defines row by text of cell in specified column.
 	 */
-	public void setCellText(String firstCellText, String columnName, String value){
-		setCellText(firstCellText, new DefaultTable().getHeaderIndex(columnName), value);
+	public void setCellText(int iCellIndex, String iCellText, String columnName, String value){
+		setCellText(iCellIndex, iCellText, new DefaultTable().getHeaderIndex(columnName), value);
 	}	
 	
 	/**
@@ -154,4 +157,36 @@ public class TableEditor extends AbstractModelEditor {
 		this.show();
 	}
 		
+	/**
+	 * Gets specified text from specified cell of table.
+	 * Note: row, column index starts from 0.
+	 */
+	public String getCellText(int rowIndex, int columnIndex){
+		return new DefaultTable().getItem(rowIndex).getText(columnIndex);
+	}
+	
+	/**
+	 * Gets specified text from specified cell of table.
+	 * Note: row index starts from 0.
+	 */
+	public String getCellText(int rowIndex, String columnName){
+		return getCellText(rowIndex, new DefaultTable().getHeaderIndex(columnName));
+	}
+	
+	/**
+	 * Gets specified text into specified cell of table.
+	 * @param iCellIndex, iCellText - defines row by text of cell in specified column.
+	 */
+	public String getCellText(int iCellIndex, String iCellText, int columnIndex){
+		return new DefaultTable().getItem(iCellText, iCellIndex).getText(columnIndex);
+	}
+	
+	/**
+	 * Gets specified text into specified cell of table.
+	 * @param iCellIndex, iCellText - defines row by text of cell in specified column.
+	 */
+	public String getCellText(int iCellIndex, String iCellText, String columnName){
+		return getCellText(iCellIndex, iCellText, new DefaultTable().getHeaderIndex(columnName));
+	}
+	
 }

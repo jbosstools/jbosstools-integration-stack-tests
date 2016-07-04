@@ -11,8 +11,8 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.teiid.reddeer.ModelClass;
 import org.jboss.tools.teiid.reddeer.ModelType;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
-import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
+import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.wizard.MetadataModelWizard;
 import org.junit.After;
 import org.junit.BeforeClass;
@@ -41,7 +41,7 @@ public class ModelWizardTest {
 	@BeforeClass
 	public static void beforeClass() {
 		teiidBot.uncheckBuildAutomatically();
-		new ModelExplorerManager().createProject(PROJECT_NAME);
+		new ModelExplorer().createProject(PROJECT_NAME);
 	}
 
 	@After

@@ -34,6 +34,7 @@ import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
+import org.jboss.tools.teiid.reddeer.view.ProblemsViewEx;
 import org.jboss.tools.teiid.reddeer.wizard.MetadataModelWizard;
 import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
 import org.junit.Before;
@@ -84,52 +85,52 @@ public class XmlSchemalessTest {
 		modelExplorer.openModelEditor(modelPath.split("/"));
 		XmlModelEditor editor = new XmlModelEditor(VIEW_MODEL);
 		
-		modelExplorer.addChildToModelItem(modelPath, "", ChildType.XML_DOCUMENT);
+		modelExplorer.addChildToModelItem(ChildType.XML_DOCUMENT, modelPath.split("/"));
 		XmlDocumentBuilderDialog xmlDocumentBuilder = new XmlDocumentBuilderDialog();
 		xmlDocumentBuilder.finish();
-		modelExplorer.renameModelItem(modelPath,"NewXMLDocument", "bookListingDocument");
+		modelExplorer.renameModelItem("bookListingDocument", (modelPath+"/NewXMLDocument").split("/"));
 		
 		AbstractWait.sleep(TimePeriod.SHORT);
 		editor.save();
 		
 		// 2. Model the document structure
 		String xmlStructureBuilt = "bookListingDocument";
-		modelExplorer.renameModelItem(modelPath, xmlStructureBuilt + "/Root_Element", "bookListing");
+		modelExplorer.renameModelItem("bookListing", (modelPath+"/"+xmlStructureBuilt+"/Root_Element").split("/"));
 		xmlStructureBuilt += "/bookListing";
 		
-		modelExplorer.addChildToModelItem(modelPath, xmlStructureBuilt, ChildType.NAME_SPACE);
+		modelExplorer.addChildToModelItem(ChildType.NAME_SPACE, (modelPath+"/"+xmlStructureBuilt).split("/"));
 
 		editor.show();
 		TableEditor tableEditor = editor.openTableEditor(XmlModelEditor.MAPPING_DIAGRAM);
 		tableEditor.openTab(TableEditor.Tabs.XML_NAMESPACES);
-		tableEditor.setCellText("bookListing", "Prefix", "xsd");
-		tableEditor.setCellText("bookListing", "Uri", "http://www.w3.org/2001/XMLSchema");
+		tableEditor.setCellText(0, "bookListing", "Prefix", "xsd");
+		tableEditor.setCellText(0, "bookListing", "Uri", "http://www.w3.org/2001/XMLSchema");
 		tableEditor.close();
 		
-		modelExplorer.addChildToModelItem(modelPath, xmlStructureBuilt, ChildType.SEQUENCE);
+		modelExplorer.addChildToModelItem(ChildType.SEQUENCE, (modelPath+"/"+xmlStructureBuilt).split("/"));
 		xmlStructureBuilt += "/sequence";
 		
-		modelExplorer.addChildToModelItem(modelPath, xmlStructureBuilt, ChildType.ELEMENT);
-		modelExplorer.renameModelItem(modelPath, xmlStructureBuilt + "/NewXmlElement", "book");
+		modelExplorer.addChildToModelItem(ChildType.ELEMENT, (modelPath+"/"+xmlStructureBuilt).split("/"));
+		modelExplorer.renameModelItem("book", (modelPath+"/"+xmlStructureBuilt+"/NewXmlElement").split("/"));
 		xmlStructureBuilt += "/book";
 		
-		modelExplorer.addChildToModelItem(modelPath, xmlStructureBuilt, ChildType.SEQUENCE);
+		modelExplorer.addChildToModelItem(ChildType.SEQUENCE, (modelPath+"/"+xmlStructureBuilt).split("/"));
 		xmlStructureBuilt += "/sequence";
 		
-		modelExplorer.addChildToModelItem(modelPath, xmlStructureBuilt, ChildType.ELEMENT);
-		modelExplorer.renameModelItem(modelPath, xmlStructureBuilt + "/NewXmlElement", "isbn");
+		modelExplorer.addChildToModelItem(ChildType.ELEMENT, (modelPath+"/"+xmlStructureBuilt).split("/"));
+		modelExplorer.renameModelItem("isbn", (modelPath+"/"+xmlStructureBuilt+"/NewXmlElement").split("/"));
 		
-		modelExplorer.addChildToModelItem(modelPath, xmlStructureBuilt, ChildType.ELEMENT);
-		modelExplorer.renameModelItem(modelPath, xmlStructureBuilt + "/NewXmlElement", "title");
+		modelExplorer.addChildToModelItem(ChildType.ELEMENT, (modelPath+"/"+xmlStructureBuilt).split("/"));
+		modelExplorer.renameModelItem("title", (modelPath+"/"+xmlStructureBuilt+"/NewXmlElement").split("/"));
 		
-		modelExplorer.addChildToModelItem(modelPath, xmlStructureBuilt, ChildType.ELEMENT);
-		modelExplorer.renameModelItem(modelPath, xmlStructureBuilt + "/NewXmlElement", "edition");
+		modelExplorer.addChildToModelItem(ChildType.ELEMENT, (modelPath+"/"+xmlStructureBuilt).split("/"));
+		modelExplorer.renameModelItem("edition", (modelPath+"/"+xmlStructureBuilt+"/NewXmlElement").split("/"));
 		
-		modelExplorer.addChildToModelItem(modelPath, xmlStructureBuilt, ChildType.ELEMENT);
-		modelExplorer.renameModelItem(modelPath, xmlStructureBuilt + "/NewXmlElement", "publisherName");
+		modelExplorer.addChildToModelItem(ChildType.ELEMENT, (modelPath+"/"+xmlStructureBuilt).split("/"));
+		modelExplorer.renameModelItem("publisherName", (modelPath+"/"+xmlStructureBuilt+"/NewXmlElement").split("/"));
 		
-		modelExplorer.addChildToModelItem(modelPath, xmlStructureBuilt, ChildType.ELEMENT);
-		modelExplorer.renameModelItem(modelPath, xmlStructureBuilt + "/NewXmlElement", "publisherLocation");
+		modelExplorer.addChildToModelItem(ChildType.ELEMENT, (modelPath+"/"+xmlStructureBuilt).split("/"));
+		modelExplorer.renameModelItem("publisherLocation", (modelPath+"/"+xmlStructureBuilt+"/NewXmlElement").split("/"));
 
 		AbstractWait.sleep(TimePeriod.SHORT);
 		editor.save();
@@ -148,18 +149,15 @@ public class XmlSchemalessTest {
 		
 		AbstractWait.sleep(TimePeriod.SHORT);
 		editor.save();
-		
-		AbstractWait.sleep(TimePeriod.SHORT);
-		assertTrue("Validation errors!", new ProblemsView().getProblems(ProblemType.ERROR).isEmpty());
+
+		new ProblemsViewEx().checkErrors();
 		
 		// 4. Create a VDB and query
-		VdbWizard vdbWizard = new VdbWizard();
-		vdbWizard.open();
-		vdbWizard.setLocation(PROJECT_NAME)
+		VdbWizard.openVdbWizard()
+				.setLocation(PROJECT_NAME)
 				.setName(VDB_NAME)
-				.addModel(PROJECT_NAME, VIEW_MODEL);
-		vdbWizard.finish();
-		
+				.addModel(PROJECT_NAME, VIEW_MODEL)
+				.finish();
 		modelExplorer.deployVdb(PROJECT_NAME, VDB_NAME);
 		
 		String output = jdbcHelper.executeQueryWithXmlStringResult("SELECT * FROM bookListingDocument");
@@ -167,25 +165,25 @@ public class XmlSchemalessTest {
 		assertEquals(output, expectedOutput);
 	    
 	    // 5. Expand the document	    
-	    modelExplorer.addSiblingToModelItem(modelPath, xmlStructureBuilt + "/edition", ChildType.ELEMENT);
- 		modelExplorer.renameModelItem(modelPath, xmlStructureBuilt + "/NewXmlElement", "authors");
+	    modelExplorer.addSiblingToModelItem(ChildType.ELEMENT, (modelPath+"/"+xmlStructureBuilt+"/edition").split("/"));
+ 		modelExplorer.renameModelItem("authors", (modelPath+"/"+xmlStructureBuilt+"/NewXmlElement").split("/"));
  		xmlStructureBuilt += "/authors";
  		
- 		modelExplorer.addChildToModelItem(modelPath, xmlStructureBuilt, ChildType.SEQUENCE);
+ 		modelExplorer.addChildToModelItem(ChildType.SEQUENCE, (modelPath+"/"+xmlStructureBuilt).split("/"));
  		xmlStructureBuilt += "/sequence";
  		
- 		modelExplorer.addChildToModelItem(modelPath, xmlStructureBuilt, ChildType.ELEMENT);
- 		modelExplorer.renameModelItem(modelPath, xmlStructureBuilt + "/NewXmlElement", "author");
+ 		modelExplorer.addChildToModelItem(ChildType.ELEMENT, (modelPath+"/"+xmlStructureBuilt).split("/"));
+ 		modelExplorer.renameModelItem("author", (modelPath+"/"+xmlStructureBuilt+"/NewXmlElement").split("/"));
  		xmlStructureBuilt += "/author";
  		
- 		modelExplorer.addChildToModelItem(modelPath, xmlStructureBuilt, ChildType.SEQUENCE);
+ 		modelExplorer.addChildToModelItem(ChildType.SEQUENCE, (modelPath+"/"+xmlStructureBuilt).split("/"));
  		xmlStructureBuilt += "/sequence";
  		
- 		modelExplorer.addChildToModelItem(modelPath, xmlStructureBuilt, ChildType.ELEMENT);
- 		modelExplorer.renameModelItem(modelPath, xmlStructureBuilt + "/NewXmlElement", "lastName");
+ 		modelExplorer.addChildToModelItem(ChildType.ELEMENT, (modelPath+"/"+xmlStructureBuilt).split("/"));
+ 		modelExplorer.renameModelItem("lastName", (modelPath+"/"+xmlStructureBuilt+"/NewXmlElement").split("/"));
  		
- 		modelExplorer.addChildToModelItem(modelPath, xmlStructureBuilt, ChildType.ELEMENT);
- 		modelExplorer.renameModelItem(modelPath, xmlStructureBuilt + "/NewXmlElement", "firstName");
+ 		modelExplorer.addChildToModelItem(ChildType.ELEMENT, (modelPath+"/"+xmlStructureBuilt).split("/"));
+ 		modelExplorer.renameModelItem("firstName", (modelPath+"/"+xmlStructureBuilt+"/NewXmlElement").split("/"));
 
  		AbstractWait.sleep(TimePeriod.SHORT);
  		editor.save();
@@ -203,9 +201,8 @@ public class XmlSchemalessTest {
 		
 		AbstractWait.sleep(TimePeriod.SHORT);
 		editor.save();
-		
-		AbstractWait.sleep(TimePeriod.SHORT);
-		assertTrue("Validation errors!", new ProblemsView().getProblems(ProblemType.ERROR).isEmpty());
+
+		new ProblemsViewEx().checkErrors();
  		
  		//6. Query the expanded model
  		VDBEditor.getInstance(VDB_NAME).synchronizeAll();

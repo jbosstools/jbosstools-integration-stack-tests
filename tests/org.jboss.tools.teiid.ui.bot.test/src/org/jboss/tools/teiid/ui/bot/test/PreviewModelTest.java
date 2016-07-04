@@ -16,7 +16,6 @@ import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
-import org.jboss.tools.teiid.reddeer.manager.ModelExplorerManager;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
@@ -84,9 +83,9 @@ public class PreviewModelTest {
 		String queryOracle = "select * from \"" + NAME_ORACLE_MODEL + "\".\""+ tableOracle +"\"";
 		String querySQL = "select * from \"" + NAME_SQL_MODEL + "\".\""+ tableSQL +"\"";
 		
-		new ModelExplorerManager().previewModelObject(new ArrayList<String>(),PROJECT_NAME, NAME_ORACLE_MODEL + ".xmi", tableOracle);
+		new ModelExplorer().previewModelItem(new ArrayList<String>(),PROJECT_NAME, NAME_ORACLE_MODEL + ".xmi", tableOracle);
 		waitUntilPreview();
-		new ModelExplorerManager().previewModelObject(new ArrayList<String>(),PROJECT_NAME, NAME_SQL_MODEL + ".xmi", tableSQL);
+		new ModelExplorer().previewModelItem(new ArrayList<String>(),PROJECT_NAME, NAME_SQL_MODEL + ".xmi", tableSQL);
 		waitUntilPreview();
 		
 		assertTrue(checkPreviewCSV(queryOracle,PATH_PARTS_ORACLE_CSV));
@@ -101,19 +100,19 @@ public class PreviewModelTest {
 
 		String table = "viewTable";
 		String queryViewTable = "select * from \"" + NAME_VIEW_MODEL + "\".\""+ table +"\"";
-		new ModelExplorerManager().previewModelObject(new ArrayList<String>(),PROJECT_NAME, NAME_VIEW_MODEL + ".xmi", table);
+		new ModelExplorer().previewModelItem(new ArrayList<String>(),PROJECT_NAME, NAME_VIEW_MODEL + ".xmi", table);
 		waitUntilPreview();
 
 		table = "viewTableTwoSources";
 		String queryViewTableTwoSources = "select * from \"" + NAME_VIEW_MODEL + "\".\""+ table +"\"";
-		new ModelExplorerManager().previewModelObject(new ArrayList<String>(),PROJECT_NAME, NAME_VIEW_MODEL + ".xmi", table);
+		new ModelExplorer().previewModelItem(new ArrayList<String>(),PROJECT_NAME, NAME_VIEW_MODEL + ".xmi", table);
 		waitUntilPreview();
 
 		table = "infoByName";
 		String queryViewProcedure = "select * from ( exec \"" + NAME_VIEW_MODEL + "\".\""+ table +"\"('Park') ) AS X_X";
 		ArrayList<String> previewParam = new ArrayList<String>();
 		previewParam.add("Park");
-		new ModelExplorerManager().previewModelObject(previewParam,PROJECT_NAME, NAME_VIEW_MODEL + ".xmi", table);
+		new ModelExplorer().previewModelItem(previewParam,PROJECT_NAME, NAME_VIEW_MODEL + ".xmi", table);
 		waitUntilPreview();
 		
 		table = "viewTableWithAccessPattern";
@@ -121,7 +120,7 @@ public class PreviewModelTest {
 					"\" where \"" + NAME_VIEW_MODEL + "\".\""+ table + "\".\"shipper_name\" = 'DHL'";
 		previewParam.clear();
 		previewParam.add("DHL");
-		new ModelExplorerManager().previewModelObject(previewParam,PROJECT_NAME, NAME_VIEW_MODEL + ".xmi", table);
+		new ModelExplorer().previewModelItem(previewParam,PROJECT_NAME, NAME_VIEW_MODEL + ".xmi", table);
 		waitUntilPreview();
 		
 		assertTrue(checkPreviewCSV(queryViewTable,PATH_VIEW_TABLE_CSV));
