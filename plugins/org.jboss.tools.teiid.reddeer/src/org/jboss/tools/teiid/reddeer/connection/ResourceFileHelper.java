@@ -89,6 +89,23 @@ public class ResourceFileHelper {
 		}
 	}
 	
+	public String getFlatFile(String filePath){
+		try {
+			filePath = "resources/flat/" + filePath;
+			StringBuilder result = new StringBuilder();
+			Scanner scanner = new Scanner(new File(filePath));
+			while (scanner.hasNextLine()) {
+				String line = scanner.nextLine();
+				result.append(line).append("\n");
+			}
+			scanner.close();
+			return result.toString(); 
+		} catch (FileNotFoundException e){
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	/**
 	 * Copies specified file from resources to specified server file (replace if existing).
 	 */
