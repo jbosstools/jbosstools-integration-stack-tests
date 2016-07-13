@@ -142,10 +142,14 @@ public class VDBEditor extends SWTBotEditor {
 		new PushButton("OK").click();
 	}
 
-	public void setGenerateRestWar(boolean check) {
+	/**
+	 * Enables/disables automatic WAR generation.
+	 */
+	public VDBEditor setGenerateRestWar(boolean check) {
 		new DefaultCTabItem("Advanced").activate();
 		new DefaultCTabItem("Properties").activate();
 		new CheckBox(new DefaultGroup("General"), "Auto-generate REST WAR").toggle(check);
+		return this;
 	}
 
 	public DataRolesEditor addDataRole() {

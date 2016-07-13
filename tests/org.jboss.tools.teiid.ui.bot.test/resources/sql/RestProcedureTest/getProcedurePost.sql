@@ -1,0 +1,9 @@
+CREATE VIRTUAL PROCEDURE  
+BEGIN  
+    SELECT XMLELEMENT(NAME Parts, XMLAGG(XMLELEMENT(NAME Part, XMLFOREST
+    (PartsView.PARTS.PART_ID, 
+    PartsView.PARTS.PART_NAME, 
+    PartsView.PARTS.PART_COLOR, 
+    PartsView.PARTS.PART_WEIGHT)))) AS result 
+    FROM PartsView.PARTS WHERE PartsView.PARTS.PART_ID = PartsView.GetPartPost.id;  
+END  

@@ -4,10 +4,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -20,18 +23,21 @@ import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
 import org.jboss.tools.teiid.reddeer.connection.SimpleHttpClient;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.dialog.GenerateRestProcedureDialog;
-import org.jboss.tools.teiid.reddeer.dialog.ViewProcedureDialog;
+import org.jboss.tools.teiid.reddeer.dialog.ProcedureViewDialog;
 import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.TableEditor;
+import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ProblemsViewEx;
+import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.ProcedureWizard;
 import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -48,6 +54,10 @@ import com.google.gson.JsonParser;
  * 		- creates and deploys REST WAR and test it (None, HTTPBasic security)
  * 		- tests Swagger
  * 		- verifies that's not possible to add procedure into source model
+ * - create insert procedure and test it
+ * 		- XML request
+ * 		- JSON request
+ * - create procedure with GET method and procedure with POST method - available on same URI
  * ... TODO
  */
 @RunWith(RedDeerSuite.class)
@@ -65,63 +75,165 @@ public class RestProcedureTest {
 	private ModelExplorer modelExplorer;
 	private ResourceFileHelper fileHelper;
 
+	@BeforeClass
+	public static void importRoles() throws IOException{
+		new ResourceFileHelper().copyFileToServer(
+				new File("resources/flat/RestProcedureTest/application-roles.properties").getAbsolutePath(), 
+				teiidServer.getServerConfig().getServerBase().getHome() + "/standalone/configuration/application-roles.properties");
+	}
+	
 	@Before
 	public void importProject() {
+		new ServersViewExt().refreshServer(teiidServer.getName());
 		modelExplorer = new ModelExplorer();
 		fileHelper = new ResourceFileHelper();
 		modelExplorer.importProject(PROJECT_NAME);
 		modelExplorer.getProject(PROJECT_NAME).refresh();
 		modelExplorer.changeConnectionProfile(ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER, PROJECT_NAME, SOURCE_MODEL);
+		
 	}
 
 	@After
 	public void cleanUp() {
 		modelExplorer.deleteAllProjectsSafely();
 	}
+	
+	@Test
+	public void testAutomaticWarGeneration() throws IOException{
+		String vdb = VDB_NAME + "Auto";
+		modelExplorer.addChildToModelItem(ChildType.PROCEDURE, PROJECT_NAME, VIEW_MODEL);
+		ProcedureWizard.createViewProcedure()
+				.setName("GetPartGet")
+				.toggleRest(true)
+				.setRestMethod(ProcedureViewDialog.RestMethod.GET)
+				.setRestUri("part/{id}")
+				.addParameter("id", "string", "4", "IN")
+				.setTransformationSql(fileHelper.getSql("RestProcedureTest/getProcedureGet"))
+				.finish();
+		new RelationalModelEditor(VIEW_MODEL).save();
+		new ProblemsViewEx().checkErrors();
+		
+		VdbWizard.openVdbWizard()
+				.setLocation(PROJECT_NAME)
+				.setName(vdb)
+				.addModel(PROJECT_NAME, VIEW_MODEL)
+				.finish();
+		
+		VDBEditor.getInstance(vdb).setGenerateRestWar(true).save();		
+		
+		modelExplorer.deployVdb(PROJECT_NAME, vdb);
+		AbstractWait.sleep(TimePeriod.getCustom(5));
+		
+		String response = new SimpleHttpClient("http://localhost:8080/" + vdb + "_1/PartsView/part/P305")
+				.setBasicAuth(teiidServer.getServerConfig().getServerBase().getProperty("teiidUser"),
+						teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword"))
+				.get();
+		assertEquals(fileHelper.getXmlNoHeader("RestProcedureTest/getResponse"), response);
+	}
 
 	@Test
-	public void testCreateInsertProcedure() throws IOException, SQLException{
+	public void testCreateInsertProcedure() throws IOException, SQLException {
+		String vdb = VDB_NAME + "Insert";
 		modelExplorer.addChildToModelItem(ChildType.PROCEDURE, PROJECT_NAME, VIEW_MODEL);
 		ProcedureWizard.createViewProcedure()
 				.setName("AddPart")
 				.toggleRest(true)
-				.setRestMethod(ViewProcedureDialog.RestMethod.POST)
+				.setRestMethod(ProcedureViewDialog.RestMethod.POST)
 				.setRestUri("part/")
 				.addParameter("id", "string", "4", "IN")
 				.addParameter("name", "string", "255", "IN")
 				.addParameter("color", "string", "30", "IN")
 				.addParameter("weight", "string", "255", "IN")
-				.setTransformationSql(new ResourceFileHelper().getSql("RestProcedureTest/insertProcedure"))
+				.setTransformationSql(fileHelper.getSql("RestProcedureTest/insertProcedure"))
 				.finish();
+		new RelationalModelEditor(VIEW_MODEL).save();
+		new ProblemsViewEx().checkErrors();
 		
 		VdbWizard.openVdbWizard()
 				.setLocation(PROJECT_NAME)
-				.setName(VDB_NAME)
+				.setName(vdb)
 				.addModel(PROJECT_NAME, VIEW_MODEL)
 				.finish();
-		modelExplorer.deployVdb(PROJECT_NAME, VDB_NAME);
+		modelExplorer.deployVdb(PROJECT_NAME, vdb);
 
-		modelExplorer.generateWar(false, PROJECT_NAME, VDB_NAME)
-				.setVdbJndiName(VDB_NAME)
+		modelExplorer.generateWar(false, PROJECT_NAME, vdb)
+				.setVdbJndiName(vdb)
 				.setWarFileLocation(modelExplorer.getProjectPath(PROJECT_NAME))
-				.setHttpBasicSecurity("teiid-security", "user")
+				.setHttpBasicSecurity("teiid-security", "rest")
 				.finish();		
-		modelExplorer.deployWar(teiidServer, PROJECT_NAME, VDB_NAME);
+		modelExplorer.deployWar(teiidServer, PROJECT_NAME, vdb);
 		
-		String response = new SimpleHttpClient("http://localhost:8080/" + VDB_NAME + "/PartsView/part/")
-				.setBasicAuth(teiidServer.getServerConfig().getServerBase().getProperty("teiidUser"),
-						teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword"))
-				.addHeader("Content-Type", "application/xml")
-				.addHeader("Accept", "application/xml; charset=UTF-8")
-				.post(new ResourceFileHelper().getXmlNoHeader("RestProcedureTest/insertRequest"));
-		assertEquals("<response>Operation Successful!</response>", response);
-		
-		new TeiidJDBCHelper(teiidServer, VDB_NAME).executeQueryNoResultSet("DELETE FROM Parts.PARTS WHERE PART_ID LIKE 'RPT%'");
+		try {
+			String response = new SimpleHttpClient("http://localhost:8080/" + vdb + "/PartsView/part/")
+					.setBasicAuth(teiidServer.getServerConfig().getServerBase().getProperty("teiidUser"),
+							teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword"))
+					.addHeader("Content-Type", "application/xml")
+					.addHeader("Accept", "application/xml; charset=UTF-8")
+					.post(fileHelper.getXmlNoHeader("RestProcedureTest/insertRequest"));
+			assertEquals("<response>Operation Successful!</response>", response);
+			
+			response = new SimpleHttpClient("http://localhost:8080/" + vdb + "/PartsView/json/part/")
+					.setBasicAuth(teiidServer.getServerConfig().getServerBase().getProperty("teiidUser"),
+							teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword"))
+					.addHeader("Content-Type", "application/json")
+					.addHeader("Accept", "application/json; charset=UTF-8")
+					.post(fileHelper.getFlatFile("RestProcedureTest/insertRequest.json"));
+			assertEquals("{\"response\": \"Operation Successful!\"}", response);
+		} finally {
+			new TeiidJDBCHelper(teiidServer, vdb).executeQueryNoResultSet("DELETE FROM Parts.PARTS WHERE PART_ID LIKE 'RPT%'");
+		}
 	}
 	
 	@Test 
-	public void testCreateProcedureWithGetPostMethods(){
-		// TODO
+	public void testCreateProcedureWithGetPostMethods() throws IOException, SQLException{
+		String vdb = VDB_NAME + "GetPost";
+		modelExplorer.addChildToModelItem(ChildType.PROCEDURE, PROJECT_NAME, VIEW_MODEL);
+		ProcedureWizard.createViewProcedure()
+				.setName("GetPartPost")
+				.toggleRest(true)
+				.setRestMethod(ProcedureViewDialog.RestMethod.POST)
+				.setRestUri("part/{id}")
+				.addParameter("id", "string", "4", "IN")
+				.setTransformationSql(fileHelper.getSql("RestProcedureTest/getProcedurePost"))
+				.finish();
+		modelExplorer.addChildToModelItem(ChildType.PROCEDURE, PROJECT_NAME, VIEW_MODEL);
+		ProcedureWizard.createViewProcedure()
+				.setName("GetPartGet")
+				.toggleRest(true)
+				.setRestMethod(ProcedureViewDialog.RestMethod.GET)
+				.setRestUri("part/{id}")
+				.addParameter("id", "string", "4", "IN")
+				.setTransformationSql(fileHelper.getSql("RestProcedureTest/getProcedureGet"))
+				.finish();
+		new RelationalModelEditor(VIEW_MODEL).save();
+		new ProblemsViewEx().checkErrors();
+		
+		VdbWizard.openVdbWizard()
+				.setLocation(PROJECT_NAME)
+				.setName(vdb)
+				.addModel(PROJECT_NAME, VIEW_MODEL)
+				.finish();
+		modelExplorer.deployVdb(PROJECT_NAME, vdb);
+
+		modelExplorer.generateWar(false, PROJECT_NAME, vdb)
+				.setVdbJndiName(vdb)
+				.setWarFileLocation(modelExplorer.getProjectPath(PROJECT_NAME))
+				.setHttpBasicSecurity("teiid-security", "rest")
+				.finish();		
+		modelExplorer.deployWar(teiidServer, PROJECT_NAME, vdb);
+		
+		String response = new SimpleHttpClient("http://localhost:8080/" + vdb + "/PartsView/part/P305")
+				.setBasicAuth(teiidServer.getServerConfig().getServerBase().getProperty("teiidUser"),
+						teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword"))
+				.post("");
+		assertEquals(fileHelper.getXmlNoHeader("RestProcedureTest/getResponse"), response);
+		
+		response = new SimpleHttpClient("http://localhost:8080/" + vdb + "/PartsView/part/P305")
+				.setBasicAuth(teiidServer.getServerConfig().getServerBase().getProperty("teiidUser"),
+						teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword"))
+				.get();
+		
+		assertEquals(fileHelper.getXmlNoHeader("RestProcedureTest/getResponse"), response);
 	}
 	
 	@Test
@@ -204,7 +316,7 @@ public class RestProcedureTest {
 		modelExplorer.generateWar(false, PROJECT_NAME, VDB_NAME)
 				.setVdbJndiName(VDB_NAME)
 				.setWarFileLocation(modelExplorer.getProjectPath(PROJECT_NAME))
-				.setHttpBasicSecurity("teiid-security", "user")
+				.setHttpBasicSecurity("teiid-security", "rest")
 				.finish();		
 		modelExplorer.deployWar(teiidServer, PROJECT_NAME, VDB_NAME);
 		

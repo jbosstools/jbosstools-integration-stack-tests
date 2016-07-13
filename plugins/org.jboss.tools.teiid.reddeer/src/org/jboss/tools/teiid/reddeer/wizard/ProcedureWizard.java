@@ -5,16 +5,16 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.tools.teiid.reddeer.dialog.ViewProcedureDialog;
+import org.jboss.tools.teiid.reddeer.dialog.ProcedureViewDialog;
 
 public class ProcedureWizard {
 	
-	public static ViewProcedureDialog createViewProcedure(){
+	public static ProcedureViewDialog createViewProcedure(){
 		new DefaultShell("Select Procedure Type");
 		new RadioButton("Procedure").click();
 		new OkButton().click();
 		AbstractWait.sleep(TimePeriod.SHORT);
-		return new ViewProcedureDialog();
+		return new ProcedureViewDialog();
 	}
 	
 	public static void  createSourceProcedure() {
@@ -22,7 +22,7 @@ public class ProcedureWizard {
 		new RadioButton("Procedure").click();
 		new OkButton().click();
 		AbstractWait.sleep(TimePeriod.SHORT);
-		//return new SourceProcedureDialog();
+		//return new ProcedureSourceDialog();
 	}
 	
 	public static void createUserDefinedFunction(){
