@@ -19,7 +19,7 @@
 	  <jbtis.repo>staging</jbtis.repo>
 	  <jbtis.site>http://download.jboss.org/jbosstools/neon/${jbtis.repo}/updates/integration-stack/</jbtis.site>
 	  <jbtis-ea.site>${jbtis.site}/earlyaccess/</jbtis-ea.site>
-	  <reddeer.site>http://download.jboss.org/jbosstools/updates/stable/mars/core/reddeer/1.0.1</reddeer.site>
+	  <reddeer.site>http://download.jboss.org/jbosstools/updates/stable/mars/core/reddeer/1.0.2</reddeer.site>
 	  <orbit.site>http://download.eclipse.org/tools/orbit/downloads/drops/R20130517111416/repository</orbit.site>
 	  <swtbot.site>http://download.eclipse.org/technology/swtbot/releases/latest</swtbot.site>
 	  <skipRequirements>${skipTests}</skipRequirements>
