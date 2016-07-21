@@ -21,19 +21,19 @@ public class SAPConnectionView extends WorkbenchView {
 
 	public void selectDestination() {
 		open();
-		new DefaultTreeItem("Sap Connection Configuration", "Destination Data Store").select();
+		new DefaultTreeItem("SAP Connection Configuration", "Destination Data Store").select();
 	}
 
 	public void selectDestination(String name) {
 		open();
-		new DefaultTreeItem("Sap Connection Configuration", "Destination Data Store", name).select();
+		new DefaultTreeItem("SAP Connection Configuration", "Destination Data Store", name).select();
 	}
 
 	public void newDestination(String name) {
 		selectDestination();
 		new ContextMenu("New Destination").select();
 		new DefaultShell("Create Destination");
-		new LabeledText("New Destination Name :").setText(name);
+		new LabeledText("Please provide a destination name").setText(name);
 		new OkButton().click();
 		new WaitWhile(new ShellWithTextIsAvailable("Create Destination"));
 	}
@@ -58,19 +58,19 @@ public class SAPConnectionView extends WorkbenchView {
 
 	public void selectServer() {
 		open();
-		new DefaultTreeItem("Sap Connection Configuration", "Server Data Store").select();
+		new DefaultTreeItem("SAP Connection Configuration", "Server Data Store").select();
 	}
 
 	public void selectServer(String name) {
 		open();
-		new DefaultTreeItem("Sap Connection Configuration", "Server Data Store", name).select();
+		new DefaultTreeItem("SAP Connection Configuration", "Server Data Store", name).select();
 	}
 
 	public void newServer(String name) {
 		selectServer();
 		new ContextMenu("New Server").select();
 		new DefaultShell("Create Server");
-		new LabeledText("New Server Name :").setText(name);
+		new LabeledText("Please provide a server name").setText(name);
 		new OkButton().click();
 		new WaitWhile(new ShellWithTextIsAvailable("Create Server"));
 	}
