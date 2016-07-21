@@ -14,7 +14,7 @@ import static org.jboss.tools.fuse.reddeer.component.SAPLabels.SYSTEM_RELEASE;
 public class SAPIDocDestination extends AbstractURICamelComponent {
 
 	public SAPIDocDestination() {
-		super("sap-idoc-destination:destination");
+		super("sap-idoc-destination");
 		addProperty(DESTINATION, "destination");
 		addProperty(IDOC_TYPE, "idocType");
 		addProperty(IDOC_TYPE_EXTENSION, "idocTypeExtension");

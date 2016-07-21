@@ -31,7 +31,7 @@ public class SAPServerProperties extends PropertiesView {
 	}
 
 	public Text getGatewayPortText() {
-		return new CLabeledText("Gatway Port:");
+		return new CLabeledText("Gateway Port:");
 	}
 
 	public Text getProgramIDText() {

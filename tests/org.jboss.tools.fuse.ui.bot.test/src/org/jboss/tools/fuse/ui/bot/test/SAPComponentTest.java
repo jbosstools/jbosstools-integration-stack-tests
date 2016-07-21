@@ -497,9 +497,6 @@ public class SAPComponentTest extends DefaultTest {
 		editor.setAdvancedProperty(component, DESTINATION, "myDestination");
 		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
 
-		new CamelComponentEditPart(component).remove();
-		editor.save();
-
 		assertErrorLog();
 	}
 
