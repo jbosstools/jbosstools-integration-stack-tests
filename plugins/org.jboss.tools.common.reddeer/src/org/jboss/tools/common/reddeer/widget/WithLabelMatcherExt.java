@@ -15,18 +15,29 @@ import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.core.Is;
+import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.core.handler.WidgetHandler;
 import org.jboss.reddeer.core.lookup.WidgetLookup;
 import org.jboss.reddeer.core.util.Display;
 
 public class WithLabelMatcherExt extends BaseMatcher<String> {
 
+	public static final String ASTERISK_REGEX = "\\p{Blank}*\\*?\\p{Blank}*";
+
 	private java.util.List<Control> allWidgets;
 
 	protected Matcher<String> matcher;
 
 	public WithLabelMatcherExt(String label) {
-		matcher = Is.<String> is(label);
+		this(label, true);
+	}
+
+	public WithLabelMatcherExt(String label, boolean ignoreAsterisk) {
+		if (ignoreAsterisk) {
+			matcher = new RegexMatcher(label + ASTERISK_REGEX);
+		} else {
+			matcher = Is.<String> is(label);
+		}
 	}
 
 	@Override
@@ -53,6 +64,7 @@ public class WithLabelMatcherExt extends BaseMatcher<String> {
 
 	@Override
 	public void describeTo(Description desc) {
+		desc.appendText("with label " + matcher);
 	}
 
 	private boolean isLabel(Widget widget) {
