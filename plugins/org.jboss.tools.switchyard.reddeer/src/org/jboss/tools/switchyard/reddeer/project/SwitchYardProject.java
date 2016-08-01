@@ -2,6 +2,8 @@ package org.jboss.tools.switchyard.reddeer.project;
 
 import java.io.File;
 
+import javax.xml.transform.stream.StreamResult;
+
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -25,8 +27,10 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
+import org.jboss.tools.switchyard.reddeer.editor.XPathEvaluator;
 import org.jboss.tools.switchyard.reddeer.properties.ProjectProperties;
 import org.jboss.tools.switchyard.reddeer.shell.ProjectCapabilitiesShell;
+import org.w3c.dom.Node;
 
 public class SwitchYardProject extends Project {
 
@@ -97,6 +101,47 @@ public class SwitchYardProject extends Project {
 	}
 
 	public void update() {
+		try {
+			File pomFile = new File(getFile(), "pom.xml");
+			XPathEvaluator xpath = new XPathEvaluator(pomFile);
+
+			// fix kie version if needed due to SWITCHYARD-2834
+			Node node = xpath.evaluateNode(
+					"/project/build/plugins/plugin/executions/execution/configuration/versions/switchyard.osgi.version");
+			if (node != null) {
+				node.setTextContent("${switchyard.version}");
+			}
+
+			// fix bpm and rules groupId
+			String kieVersion = xpath.evaluateString("/project/properties/kie.version");
+			if (kieVersion != null && kieVersion.startsWith("6.4.0")) {
+				node = xpath.evaluateNode(
+						"/project/dependencies/dependency[artifactId='switchyard-component-bpm']/groupId");
+				if (node != null) {
+					node.setTextContent("org.jboss.integration.fuse");
+				}
+				node = xpath.evaluateNode(
+						"/project/dependencies/dependency[artifactId='switchyard-component-rules']/groupId");
+				if (node != null) {
+					node.setTextContent("org.jboss.integration.fuse");
+				}
+			}
+
+			// fix order of boms
+			node = xpath
+					.evaluateNode("/project/dependencyManagement/dependencies/dependency[artifactId='switchyard-bom']");
+			if (node != null) {
+				Node parentNode = node.getParentNode(); 
+				parentNode.removeChild(node);
+				parentNode.appendChild(node);
+			}
+
+			// save the changes
+			xpath.printDocument(new StreamResult(pomFile));
+		} catch (Throwable e) {
+			throw new RuntimeException(e);
+		}
+
 		select();
 		new ContextMenu("Maven", "Update Project...").select();
 		new DefaultShell("Update Maven Project");

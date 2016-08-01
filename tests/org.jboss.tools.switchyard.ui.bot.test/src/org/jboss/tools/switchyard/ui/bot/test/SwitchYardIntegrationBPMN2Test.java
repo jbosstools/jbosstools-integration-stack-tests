@@ -164,6 +164,9 @@ public class SwitchYardIntegrationBPMN2Test {
 			// ok, no shell was popup
 		}
 
+		new SwitchYardEditor().save();
+		new SwitchYardProject(PROJECT).update(); 
+
 		new ProjectExplorer().open();
 		ProjectItem item = new SwitchYardProject(PROJECT).getProjectItem("src/test/java", PACKAGE,
 				PROCESS_GREET + "Test.java");

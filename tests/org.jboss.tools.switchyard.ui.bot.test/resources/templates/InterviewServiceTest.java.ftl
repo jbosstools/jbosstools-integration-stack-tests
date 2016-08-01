@@ -1,5 +1,6 @@
 package ${package};
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.switchyard.component.test.mixins.cdi.CDIMixIn;
@@ -15,15 +16,16 @@ public class InterviewServiceTest {
 
 	private SwitchYardTestKit testKit;
 	private CDIMixIn cdiMixIn;
-	@ServiceOperation("InterviewService")
+	@ServiceOperation("InterviewService.verify")
 	private Invoker service;
 
 	@Test
 	public void testVerify() throws Exception {
-		Applicant message = new Applicant("Twenty", 20);
-		service.operation("verify").sendInOnly(message);
-		service.operation("verify").sendInOnly(message);
-		message = new Applicant("Ten", 10);
+		Applicant app1 = service.sendInOut(new Applicant("Twenty", 20)).getContent(Applicant.class);
+		Assert.assertTrue(app1.isValid());
+		
+		Applicant app2 = service.sendInOut(new Applicant("Ten", 10)).getContent(Applicant.class);
+		Assert.assertFalse(app2.isValid());
 	}
 
 }
