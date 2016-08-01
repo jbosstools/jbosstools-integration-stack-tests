@@ -1,14 +1,15 @@
 package org.jboss.tools.common.reddeer.widget;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ListIterator;
 
+import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
 import org.hamcrest.BaseMatcher;
@@ -42,7 +43,7 @@ public class WithLabelMatcherExt extends BaseMatcher<String> {
 
 	@Override
 	public boolean matches(Object obj) {
-		if (!(obj instanceof Text || obj instanceof Combo || obj instanceof org.eclipse.swt.widgets.List)) {
+		if (!(obj instanceof Text || obj instanceof Combo || obj instanceof CCombo || obj instanceof List)) {
 			return false;
 		}
 
@@ -71,7 +72,7 @@ public class WithLabelMatcherExt extends BaseMatcher<String> {
 		return widget instanceof Label || widget instanceof CLabel;
 	}
 
-	private List<Control> findAllWidgets() {
+	private java.util.List<Control> findAllWidgets() {
 		final Control activeControl = WidgetLookup.getInstance().getActiveWidgetParentControl();
 		allWidgets = new ArrayList<Control>();
 		Display.syncExec(new Runnable() {

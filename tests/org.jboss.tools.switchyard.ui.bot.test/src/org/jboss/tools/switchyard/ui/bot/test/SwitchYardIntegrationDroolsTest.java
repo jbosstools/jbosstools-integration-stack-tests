@@ -32,7 +32,7 @@ import org.junit.runner.RunWith;
 /**
  * Create simple Drools application, run JUnit test
  * 
- * @author lfabriko
+ * @author lfabriko, apodhrad
  *
  */
 @SwitchYard
@@ -104,6 +104,7 @@ public class SwitchYardIntegrationDroolsTest {
 		textEditor.close(true);
 
 		new SwitchYardEditor().save();
+		new SwitchYardProject(PROJECT).update();
 
 		ProjectItem item = new SwitchYardProject(PROJECT).getProjectItem("src/test/java", PACKAGE, TEST);
 		new ProjectItemExt(item).runAsJUnitTest();

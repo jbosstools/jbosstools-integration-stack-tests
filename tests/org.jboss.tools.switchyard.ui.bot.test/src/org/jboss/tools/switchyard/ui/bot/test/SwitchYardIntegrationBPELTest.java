@@ -1,12 +1,13 @@
 package org.jboss.tools.switchyard.ui.bot.test;
 
 import static org.jboss.tools.switchyard.ui.bot.test.util.TemplateHandler.javaSource;
+import static org.junit.Assert.assertEquals;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
@@ -20,11 +21,13 @@ import org.jboss.tools.bpel.reddeer.activity.Sequence;
 import org.jboss.tools.bpel.reddeer.editor.BpelEditor;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
+import org.jboss.tools.switchyard.reddeer.condition.JUnitHasFinished;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.project.ProjectItemExt;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
+import org.jboss.tools.switchyard.reddeer.view.JUnitView;
 import org.jboss.tools.switchyard.reddeer.wizard.BPELServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ImportFileWizard;
 import org.junit.After;
@@ -105,12 +108,17 @@ public class SwitchYardIntegrationBPELTest {
 		reply.pickOperation("sayHello");
 
 		bpelEditor.save();
+		new SwitchYardEditor().save();
 		System.out.println();
 
-		ProjectExplorer projectExplorer = new ProjectExplorer();
-		projectExplorer.open();
-		ProjectItem item = projectExplorer.getProject(PROJECT).getProjectItem("pom.xml");
-		new ProjectItemExt(item).runAs("Maven test");
-		new WaitWhile(new ConsoleHasText("BUILD SUCCESS"));
+		new ProjectExplorer().open();
+		ProjectItem item = new SwitchYardProject(PROJECT).getProjectItem("src/test/java", PACKAGE,
+				"HelloServiceTest.java");
+		new ProjectItemExt(item).runAsJUnitTest();
+		new WaitUntil(new JUnitHasFinished(), TimePeriod.LONG);
+
+		assertEquals("1/1", new JUnitView().getRunStatus());
+		assertEquals(0, new JUnitView().getNumberOfErrors());
+		assertEquals(0, new JUnitView().getNumberOfFailures());
 	}
 }

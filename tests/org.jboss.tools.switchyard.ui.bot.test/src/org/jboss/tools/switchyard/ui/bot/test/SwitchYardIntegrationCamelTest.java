@@ -6,6 +6,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.swt.api.CCombo;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.fuse.reddeer.editor.CamelComponentEditPart;
@@ -17,7 +18,6 @@ import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.jboss.tools.switchyard.reddeer.view.JUnitView;
-import org.jboss.tools.switchyard.reddeer.widget.LabeledTextExt;
 import org.jboss.tools.switchyard.reddeer.wizard.CamelXMLServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ServiceTestClassWizard;
 import org.jboss.tools.switchyard.ui.bot.test.util.TemplateHandler;
@@ -77,12 +77,13 @@ public class SwitchYardIntegrationCamelTest {
 		/* Edit Camel XML implementation */
 		new SwitchYardComponent(ROUTE_NAME).doubleClick();
 		CamelEditor camelEditor = new CamelEditor(ROUTE_NAME + ".xml");
-		camelEditor.doOperation("log", "Add", "Transformation", "SetBody");
+		camelEditor.addCamelComponent("Set Body", "Route _route1");
+		camelEditor.addConnection("Log _log1", "SetBody _setBody1");
 		PropertiesView propertiesView = new PropertiesView();
 		propertiesView.open();
-		new CamelComponentEditPart("setBody[simple{}]").select();
-		propertiesView.selectTab("Generic");
-		new LabeledTextExt("Expression").setText("Hello ${body}");
+		new CamelComponentEditPart("SetBody _setBody1").select();
+		camelEditor.setProperty(CCombo.class, "Language", "simple");
+		camelEditor.setProperty("Expression", "Hello ${body}");
 		camelEditor.save();
 
 		/* Create the test */
@@ -102,5 +103,5 @@ public class SwitchYardIntegrationCamelTest {
 		assertEquals(0, new JUnitView().getNumberOfErrors());
 		assertEquals(0, new JUnitView().getNumberOfFailures());
 	}
-
+	
 }

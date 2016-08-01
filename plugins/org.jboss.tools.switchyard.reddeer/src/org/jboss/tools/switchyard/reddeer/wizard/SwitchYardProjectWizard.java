@@ -396,30 +396,6 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		selectComponents(components);
 		finish();
 
-		// fix kie version if needed due to SWITCHYARD-2834
-		if (intpkgVersion != null) {
-			try {
-				File pomFile = new File(new SwitchYardProject(name).getFile(), "pom.xml");
-				XPathEvaluator xpath = new XPathEvaluator(pomFile);
-				Node node = null;
-				for (String artifactId : new String[] { "switchyard", "kie", "drools", "jbpm" }) {
-					node = xpath.evaluateNode("/project/dependencyManagement/dependencies/dependency[artifactId='"
-							+ artifactId + "-bom']");
-					if (node != null) {
-						node.getParentNode().removeChild(node);
-					}
-				}
-				node = xpath.evaluateNode(
-						"/project/build/plugins/plugin/executions/execution/configuration/versions/switchyard.osgi.version");
-				if (node != null) {
-					node.setTextContent("${switchyard.version}");
-				}
-				xpath.printDocument(new StreamResult(pomFile));
-			} catch (Throwable e) {
-				throw new RuntimeException(e);
-			}
-		}
-
 		new WaitUntil(new SwitchYardEditorIsOpen(), TimePeriod.LONG);
 		new SwitchYardProject(name).update();
 		if ((osgi != null && osgi.booleanValue()) || (targetRuntime != null && isKaraf(targetRuntime))) {

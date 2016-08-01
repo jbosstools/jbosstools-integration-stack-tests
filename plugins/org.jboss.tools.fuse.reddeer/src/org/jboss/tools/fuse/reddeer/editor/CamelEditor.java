@@ -22,6 +22,9 @@ import org.jboss.reddeer.gef.api.Palette;
 import org.jboss.reddeer.gef.editor.GEFEditor;
 import org.jboss.reddeer.gef.handler.ViewerHandler;
 import org.jboss.reddeer.gef.view.PaletteView;
+import org.jboss.reddeer.swt.api.CCombo;
+import org.jboss.reddeer.swt.api.Combo;
+import org.jboss.reddeer.swt.api.Text;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.YesButton;
@@ -33,8 +36,11 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.widgets.Widget;
 import org.jboss.tools.common.reddeer.MouseAWTManager;
 import org.jboss.tools.common.reddeer.XPathEvaluator;
+import org.jboss.tools.common.reddeer.widget.LabeledCComboExt;
+import org.jboss.tools.common.reddeer.widget.LabeledComboExt;
 import org.jboss.tools.common.reddeer.widget.LabeledTextExt;
 import org.jboss.tools.fuse.reddeer.component.AbstractURICamelComponent;
 import org.jboss.tools.fuse.reddeer.component.CamelComponent;
@@ -390,21 +396,40 @@ public class CamelEditor extends GEFEditor {
 	/**
 	 * Sets a property to desired value. It presumes that some component in the Camel Editor is selected.
 	 * 
-	 * @param component
-	 *            component in the Camel editor
 	 * @param name
 	 *            name of the property
 	 * @param value
 	 *            value of the property
 	 */
 	public void setProperty(String name, String value) {
+		setProperty(Text.class, name, value);
+	}
 
+	/**
+	 * Sets a property to desired value. It presumes that some component in the Camel Editor is selected.
+	 * 
+	 * @param type
+	 *            widget type
+	 * @param name
+	 *            name of the property
+	 * @param value
+	 *            value of the property
+	 */
+	public void setProperty(Class<? extends Widget> type, String name, String value) {
 		log.debug("Setting '" + value + "' as the property '" + name + "' of selelected component in the Camel Editor");
 		PropertiesView prop = new PropertiesView();
 		prop.open();
 		prop.activate();
 		prop.selectTab("Details");
-		new LabeledTextExt(name).setText(value);
+		if (type.equals(Text.class)) {
+			new LabeledTextExt(name).setText(value);
+		} else if (type.equals(Combo.class)) {
+			new LabeledComboExt(name).setSelection(value);
+		} else if (type.equals(CCombo.class)) {
+			new LabeledCComboExt(name).setSelection(value);
+		} else {
+			throw new UnsupportedOperationException("Property of type '" + type + "' is not supported");
+		}
 		activate();
 		AbstractWait.sleep(TimePeriod.SHORT);
 	}
@@ -455,7 +480,7 @@ public class CamelEditor extends GEFEditor {
 		activate();
 		AbstractWait.sleep(TimePeriod.SHORT);
 	}
-	
+
 	/**
 	 * Sets a property to desired value.
 	 * 
