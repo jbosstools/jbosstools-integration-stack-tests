@@ -45,7 +45,7 @@ public class UDFTest {
 	@BeforeClass
 	public static void createModelProject() {
 		new PerspectiveAndViewManager().openTeiidDesignerPerspective();
-		new ModelExplorer().importProject("resources/projects/" + PROJECT_NAME);
+		new ModelExplorer().importProject(PROJECT_NAME);
 		new ModelExplorer().changeConnectionProfile(PROFILE_NAME, PROJECT_NAME, MODEL_SRC_NAME);
 	}
 
