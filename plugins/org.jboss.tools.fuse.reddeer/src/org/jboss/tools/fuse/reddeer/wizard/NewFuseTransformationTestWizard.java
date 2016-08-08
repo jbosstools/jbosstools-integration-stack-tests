@@ -15,7 +15,7 @@ public class NewFuseTransformationTestWizard extends NewWizardDialog {
 	private Logger log = Logger.getLogger(NewFuseTransformationTestWizard.class);
 
 	public NewFuseTransformationTestWizard() {
-		super("Fuse Tooling", "Fuse Transformation Test");
+		super("JBoss Fuse", "Fuse Transformation Test");
 	}
 
 	public void selectTransformationID(String name) {

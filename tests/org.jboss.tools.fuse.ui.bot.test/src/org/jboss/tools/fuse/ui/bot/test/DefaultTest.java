@@ -50,7 +50,7 @@ public class DefaultTest {
 
 		log.info("Disable showing Error Log view after changes");
 		ErrorLogView error = new ErrorLogView();
-		error.selectActivateOnNewEvents();
+		error.selectActivateOnNewEvents(false);
 	}
 
 	/**

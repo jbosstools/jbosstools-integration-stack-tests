@@ -7,10 +7,7 @@ import static org.junit.Assert.fail;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.eclipse.debug.core.BreakpointsView;
-import org.jboss.reddeer.eclipse.debug.core.ResumeButton;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -18,13 +15,9 @@ import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.C
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.tools.common.reddeer.ResourceHelper;
-import org.jboss.tools.common.reddeer.debug.IsRunning;
 import org.jboss.tools.fuse.reddeer.ProjectTemplate;
 import org.jboss.tools.fuse.reddeer.ProjectType;
 import org.jboss.tools.fuse.reddeer.condition.FuseLogContainsText;
@@ -124,44 +117,6 @@ public class RegressionFuseTest extends DefaultTest {
 
 	/**
 	 * <p>
-	 * Karaf cannot be started in debug mode
-	 * </p>
-	 * <b>Link: </b>
-	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-1132">https://issues.jboss.org/browse/FUSETOOLS-1132</a>
-	 */
-	@Test
-	public void issue_1132() {
-
-		ProjectFactory.newProject("camel-blueprint").template(ProjectTemplate.CBR).type(ProjectType.BLUEPRINT).create();
-		new ProjectExplorer().getProject("camel-blueprint")
-				.getProjectItem("src/test/java", "com.mycompany.camel.blueprint", "RouteTest.java").delete();
-		String server = serverRequirement.getConfig().getName();
-		new BreakpointsView().importBreakpoints(
-				ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID, "resources/breakpoint.bkpt"));
-		FuseServerManipulator.debugServer(server);
-		FuseServerManipulator.addModule(server, "camel-blueprint");
-		try {
-			new WaitUntil(new ShellWithTextIsAvailable("Confirm Perspective Switch"), TimePeriod.LONG);
-			new DefaultShell("Confirm Perspective Switch");
-			new CheckBox(0).toggle(true);
-			new PushButton("No").click();
-			AbstractWait.sleep(TimePeriod.NORMAL);
-		} catch (Exception e) {
-			fail();
-		} finally {
-			new WaitWhile(new IsRunning());
-			new BreakpointsView().removeAllBreakpoints();
-			new WorkbenchShell().setFocus();
-			ResumeButton resume = new ResumeButton();
-			if (resume.isEnabled()) {
-				resume.click();
-			}
-			FuseServerManipulator.removeAllModules(server);
-		}
-	}
-
-	/**
-	 * <p>
 	 * uninstall of bundles from servers broken
 	 * </p>
 	 * <b>Link: </b>
@@ -170,15 +125,15 @@ public class RegressionFuseTest extends DefaultTest {
 	@Test
 	public void issue_1152() {
 
-		ProjectFactory.newProject("camel-spring-dm").template(ProjectTemplate.CBR).type(ProjectType.BLUEPRINT).create();
+		ProjectFactory.newProject("cbr-blueprint").template(ProjectTemplate.CBR).type(ProjectType.BLUEPRINT).create();
 		String server = serverRequirement.getConfig().getName();
 		FuseServerManipulator.startServer(server);
-		FuseServerManipulator.addModule(server, "camel-spring-dm");
+		FuseServerManipulator.addModule(server, "cbr-blueprint");
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		FuseServerManipulator.removeAllModules(server);
 		new WaitUntil(
 				new FuseLogContainsText(
-						"Application context succesfully closed (OsgiBundleXmlApplicationContext(bundle=camel-archetype-spring-dm"),
+						"(CamelContext: cbr-example-context) is shutdown"),
 				TimePeriod.VERY_LONG);
 	}
 

@@ -2,8 +2,6 @@ package org.jboss.tools.fuse.ui.bot.test;
 
 import static org.jboss.reddeer.requirements.server.ServerReqState.RUNNING;
 import static org.jboss.tools.runtime.reddeer.requirement.ServerReqType.Fuse;
-import static org.jboss.tools.runtime.reddeer.requirement.ServerReqType.Karaf;
-import static org.jboss.tools.runtime.reddeer.requirement.ServerReqType.ServiceMix;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -48,7 +46,7 @@ import org.junit.runner.RunWith;
 @CleanWorkspace
 @OpenPerspective(FuseIntegrationPerspective.class)
 @RunWith(RedDeerSuite.class)
-@Server(type = { Fuse, Karaf, ServiceMix }, state = RUNNING)
+@Server(type = Fuse, state = RUNNING)
 public class JMXNavigatorServerTest {
 
 	private static final String PROJECT_NAME = "cbr-blueprint";
@@ -78,6 +76,10 @@ public class JMXNavigatorServerTest {
 		consolePref.toggleShowConsoleErrorWrite(false);
 		consolePref.toggleShowConsoleStandardWrite(false);
 		consolePref.ok();
+
+		// Disable showing Error Log view after changes
+		ErrorLogView error = new ErrorLogView();
+		error.selectActivateOnNewEvents(false);
 
 		ProjectFactory.newProject(PROJECT_NAME).template(ProjectTemplate.CBR).type(ProjectType.BLUEPRINT).create();
 		serverName = serverReq.getConfig().getName();
@@ -127,9 +129,9 @@ public class JMXNavigatorServerTest {
 	 * <li>add a new Fuse server</li>
 	 * <li>start the server</li>
 	 * <li>open JMX Navigator View</li>
-	 * <li>try to access node "karaf", "Camel", "camelContext-...", "Endpoints", "timer", "foo?period=5000"</li>
-	 * <li>try to access node "karaf", "Camel", "camelContext-...", "Routes", "route1", "timer:foo?period=5000",
-	 * "setBody1", "log1"</li>
+	 * <li>try to access node "karaf", "Camel", "cbr-example-context", "Endpoints", "file", "work/cbr/input"</li>
+	 * <li>try to access node "karaf", "Camel", "camelContext", "Routes", "cbr-route", "file:work/cbr/input",
+	 * "Log _log1", "Choice", "Otherwise", "Log _log4", "file:work/cbr/output/others"</li>
 	 * </ol>
 	 */
 	@Test
@@ -139,12 +141,13 @@ public class JMXNavigatorServerTest {
 		jmx.open();
 		assertNotNull("There is no Fuse node in JMX Navigator View!", jmx.getNode("karaf"));
 		jmx.connectTo("karaf");
-		assertNotNull("The following path is inaccesible: karaf/Camel/camelContext-.../Endpoints/timer/foo?period=5000",
-				jmx.getNode("karaf", "Camel", "camelContext", "Endpoints", "timer", "foo?period=5000"));
 		assertNotNull(
-				"The following path is inaccesible: karaf/Camel/camel-*/Routes/route/timer:foo?period=5000/setBody/log",
-				jmx.getNode("karaf", "Camel", "camelContext", "Routes", "_route1", "timer:foo?period=5000",
-						"SetBody _setBody1", "Log _log1"));
+				"The following path is inaccesible: karaf/Camel/cbr-example-context/Endpoints/file/work/cbr/input",
+				jmx.getNode("karaf", "Camel", "cbr-example-context", "Endpoints", "file", "work/cbr/input"));
+		assertNotNull(
+				"The following path is inaccesible: karaf/Camel/camel-*/Routes/cbr-route/file:work/cbr/input/Log _log1/Choice/Otherwise/Log _log4/file:work/cbr/output/others",
+				jmx.getNode("karaf", "Camel", "cbr-example-context", "Routes", "cbr-route", "file:work/cbr/input", "Log _log1",
+						"Choice", "Otherwise", "Log _log4", "file:work/cbr/output/others"));
 		assertTrue("There are some errors in Error Log", LogGrapper.getPluginErrors("fuse").size() == 0);
 	}
 
@@ -159,12 +162,12 @@ public class JMXNavigatorServerTest {
 	 * <li>add the project to the server</li>
 	 * <li>start the server</li>
 	 * <li>open JMX Navigator View</li>
-	 * <li>select node "karaf", "Camel", "camelContext-..."</li>
+	 * <li>select node "karaf", "Camel", "cbr-example-context"</li>
 	 * <li>select the context menu option Suspend Camel Context</li>
 	 * <li>open Fuse Shell view and execute command log:display</li>
 	 * <li>check if Fuse Shell view contains text "(CamelContext: camel-1) is suspended" (true)</li>
 	 * <li>open JMX Navigator View</li>
-	 * <li>select node "karaf", "Camel", "camelContext-..."</li>
+	 * <li>select node "karaf", "Camel", "cbr-example-context"</li>
 	 * <li>select the context menu option Resume Camel Context</li>
 	 * <li>open Fuse Shell view and execute command log:display</li>
 	 * <li>check if Fuse Shell view contains text "(CamelContext: camel-1) resumed" (true)</li>
@@ -175,7 +178,7 @@ public class JMXNavigatorServerTest {
 
 		FuseJMXNavigator jmx = new FuseJMXNavigator();
 		jmx.open();
-		String camel = jmx.getNode("karaf", "Camel", "camelContext").getText();
+		String camel = jmx.getNode("karaf", "Camel", "cbr-example-context").getText();
 		assertNotNull("Camel context was not found in JMX Navigator View!", camel);
 		assertTrue("Suspension was not performed", jmx.suspendCamelContext("karaf", "Camel", camel));
 		try {

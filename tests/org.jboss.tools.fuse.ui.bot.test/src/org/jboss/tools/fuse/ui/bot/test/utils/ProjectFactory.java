@@ -1,5 +1,12 @@
 package org.jboss.tools.fuse.ui.bot.test.utils;
 
+import static org.jboss.tools.fuse.reddeer.ProjectType.BLUEPRINT;
+import static org.jboss.tools.fuse.reddeer.ProjectType.JAVA;
+import static org.jboss.tools.fuse.reddeer.ProjectType.SPRING;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -26,16 +33,16 @@ import org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard;
  * @author tsedmik
  */
 public class ProjectFactory {
-	
+
 	private String name;
 	private String version;
 	private String template;
 	private ProjectType type;
-	
+
 	private ProjectFactory(String name) {
 		this.name = name;
 	}
-	
+
 	public ProjectFactory version(String version) {
 		this.version = version;
 		return this;
@@ -45,17 +52,17 @@ public class ProjectFactory {
 		this.template = template.getName();
 		return this;
 	}
-	
+
 	public ProjectFactory template(String template) {
 		this.template = template;
 		return this;
 	}
-	
+
 	public ProjectFactory type(ProjectType type) {
 		this.type = type;
 		return this;
 	}
-	
+
 	public void create() {
 		NewFuseIntegrationProjectWizard wiz = new NewFuseIntegrationProjectWizard();
 		wiz.open();
@@ -69,11 +76,11 @@ public class ProjectFactory {
 			wiz.selectTemplate(template);
 		}
 		wiz.setProjectType(type);
-		wiz.finish();
+		wiz.finish(TimePeriod.getCustom(900));
 		openAssociatedPerspective();
 		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(300));
 	}
-	
+
 	public static ProjectFactory newProject(String name) {
 		return new ProjectFactory(name);
 	}
@@ -126,14 +133,39 @@ public class ProjectFactory {
 		if (maven) {
 			new ProjectExplorer().selectProjects(name);
 			new ContextMenu("Configure", "Convert to Maven Project").select();
-			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+			new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		}
+	}
 
-		if (fuse) {
-			new ProjectExplorer().selectProjects(name);
-			new ContextMenu("Enable Fuse Camel Nature").select();
-			AbstractWait.sleep(TimePeriod.getCustom(5));
+	/**
+	 * Returns a list of all available templates in the following format:<br/>
+	 * {name}:{DSL} --> Content Based Router:blueprint, Content Based
+	 * Router:spring, Content Based Router:java
+	 * 
+	 * @return all available templates
+	 */
+	public static List<String> getAllAvailableTemplates() {
+		List<String> templates = new ArrayList<String>();
+		NewFuseIntegrationProjectWizard wiz = new NewFuseIntegrationProjectWizard();
+		wiz.open();
+		wiz.setProjectName("45frHHallkIIo");
+		wiz.next();
+		wiz.next();
+		List<String> temp = wiz.getAllAvailableTemplates();
+		for (String template : temp) {
+			wiz.selectTemplate(template);
+			if (wiz.isProjectTypeAvailable(BLUEPRINT)) {
+				templates.add(template + ":blueprint");
+			}
+			if (wiz.isProjectTypeAvailable(SPRING)) {
+				templates.add(template + ":spring");
+			}
+			if (wiz.isProjectTypeAvailable(JAVA)) {
+				templates.add(template + ":java");
+			}
 		}
+		wiz.cancel();
+		return templates;
 	}
 
 	private static void openAssociatedPerspective() {
