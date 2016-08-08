@@ -125,7 +125,7 @@ public class RegressionTest extends DefaultTest {
 	@Test
 	public void issue_853() {
 
-		ProjectFactory.newProject("camel-spring").template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();
+		ProjectFactory.newProject("camel-blueprint").template(ProjectTemplate.CBR).type(ProjectType.BLUEPRINT).create();
 		new ProjectExplorer().getProject("camel-blueprint")
 				.getProjectItem("src/main/resources", "OSGI-INF", "blueprint", "blueprint.xml").select();
 		try {
@@ -169,6 +169,7 @@ public class RegressionTest extends DefaultTest {
 
 		ProjectFactory.newProject("camel-spring").template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();
 		new CamelProject("camel-spring").runCamelContext("camel-context.xml");
+		AbstractWait.sleep(TimePeriod.NORMAL);
 		new FuseJMXNavigator().getNode("Local Camel Context", "Camel", "camel").select();
 
 		try {
@@ -215,8 +216,8 @@ public class RegressionTest extends DefaultTest {
 	@Test
 	public void issue_1149() {
 
-		new ShellMenu("File", "New", "Fuse Project").select();
-		new DefaultShell("New Fuse Project");
+		new ShellMenu("File", "New", "Fuse Integration Project").select();
+		new DefaultShell("New Fuse Integration Project");
 		if (new PushButton("Finish").isEnabled()) {
 			new DefaultShell().close();
 			fail("'Finish' button should not be enabled!");
@@ -239,6 +240,9 @@ public class RegressionTest extends DefaultTest {
 		CamelEditor editor = new CamelEditor("camel-context.xml");
 		editor.activate();
 		editor.setBreakpoint("Choice");
+		editor.selectEditPart("file:work/cbr/input");
+		editor.setProperty("Uri *", "file:src/main/data?noop=true");
+		editor.save();
 		project.debugCamelContextWithoutTests("camel-context.xml");
 		new WaitUntil(new IsSuspended(), TimePeriod.LONG);
 		try {
@@ -266,7 +270,7 @@ public class RegressionTest extends DefaultTest {
 		CamelEditor.switchTab("Design");
 		CamelEditor editor = new CamelEditor("camel-context.xml");
 		editor.click(5, 5);
-		editor.setProperty("Route _route1", "Id", "1");
+		editor.setProperty("Route cbr-route", "Id", "1");
 		editor.save();
 		CamelEditor.switchTab("Source");
 
@@ -371,7 +375,7 @@ public class RegressionTest extends DefaultTest {
 		ProjectFactory.newProject("camel-spring").template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();
 		CamelEditor editor = new CamelEditor("camel-context.xml");
 		editor.activate();
-		editor.setId("Route _route1", "1");
+		editor.setId("Route cbr-route", "1");
 		editor.save();
 		CamelEditor.switchTab("Source");
 		new ProjectExplorer().getProject("camel-spring").select();

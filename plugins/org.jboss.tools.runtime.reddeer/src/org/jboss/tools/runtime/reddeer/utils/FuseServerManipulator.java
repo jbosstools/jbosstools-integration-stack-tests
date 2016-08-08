@@ -293,7 +293,7 @@ public class FuseServerManipulator {
 		}
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		page.close();
-		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		new WorkbenchShell();
 	}
 

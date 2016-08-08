@@ -29,7 +29,7 @@ import org.junit.runner.RunWith;
  * 
  * @author tsedmik
  */
-@Server(type = { Fuse }, state = PRESENT)
+@Server(type = Fuse, state = PRESENT)
 @CleanWorkspace
 @OpenPerspective(FuseIntegrationPerspective.class)
 @RunWith(RedDeerSuite.class)

@@ -43,12 +43,12 @@ public class NewFuseTransformationWizard extends WizardDialog {
 
 	public void setSourceType(TransformationType type) {
 		log.debug("Set 'Source Type' to '" + type + "'");
-		new DefaultCombo(1).setSelection(type.toString());
+		new DefaultCombo(0).setSelection(type.toString());
 	}
 
 	public void setTargetType(TransformationType type) {
 		log.debug("Set 'Target Type' to '" + type + "'");
-		new DefaultCombo(2).setSelection(type.toString());
+		new DefaultCombo(1).setSelection(type.toString());
 	}
 
 	public void setXMLTypeDefinition(TypeDefinition type) {

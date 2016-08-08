@@ -56,9 +56,12 @@ public class ErrorLogView extends LogView {
 		return messages;
 	}
 
-	public void selectActivateOnNewEvents() {
+	public void selectActivateOnNewEvents(boolean value) {
 		open();
-		new ViewMenu("Activate on new events").select();
+		ViewMenu menu = new ViewMenu("View Menu", "Activate on new events");
+		if ((value && !menu.isSelected()) || (!value && menu.isSelected())) {
+			menu.select();
+		}
 	}
 
 	private void setFilter(String severity) {

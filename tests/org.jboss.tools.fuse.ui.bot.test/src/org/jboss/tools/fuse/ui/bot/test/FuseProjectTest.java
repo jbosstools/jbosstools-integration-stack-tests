@@ -1,11 +1,14 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
+import static org.jboss.tools.fuse.reddeer.ProjectType.BLUEPRINT;
+import static org.jboss.tools.fuse.reddeer.ProjectType.JAVA;
+import static org.jboss.tools.fuse.reddeer.ProjectType.SPRING;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.logging.Logger;
@@ -36,7 +39,8 @@ import org.junit.runners.Parameterized.Parameters;
 import org.junit.runners.Parameterized.UseParametersRunnerFactory;
 
 /**
- * Tries to create and run projects from all available archetypes as Local Camel Context
+ * Tries to create and run projects from all available archetypes as Local Camel
+ * Context
  * 
  * @author tsedmik
  */
@@ -57,8 +61,11 @@ public class FuseProjectTest extends DefaultTest {
 	 */
 	@Parameters
 	public static Collection<String> setupData() {
-
-		return Arrays.asList("Content Based Router", "ActiveMQ");
+		List<String> temp = ProjectFactory.getAllAvailableTemplates();
+		temp.add("empty:blueprint");
+		temp.add("empty:spring");
+		temp.add("empty:java");
+		return temp;
 	}
 
 	/**
@@ -161,15 +168,16 @@ public class FuseProjectTest extends DefaultTest {
 
 	/**
 	 * <p>
-	 * Tries to create a Fuse project from <i>${FUSE-TEMPLATE}</i> template and tries to run the project as Local Camel
-	 * Context.
+	 * Tries to create a Fuse project from <i>${FUSE-TEMPLATE}</i> template and
+	 * tries to run the project as Local Camel Context.
 	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>create a new project</li>
 	 * <li>open Problems view</li>
 	 * <li>check if there are some errors</li>
-	 * <li>(optional) try to update project - Maven --> Update Maven Project --> Force Update</li>
+	 * <li>(optional) try to update project - Maven --> Update Maven Project -->
+	 * Force Update</li>
 	 * <li>check if there are some errors</li>
 	 * <li>try to run the project as Local Camel Context</li>
 	 * <li>check the console output, if there are some build errors</li>
@@ -178,9 +186,20 @@ public class FuseProjectTest extends DefaultTest {
 	@Test
 	public void testArchetype() {
 
-		ProjectFactory.newProject(template).template(template).type(ProjectType.SPRING).create();
-		assertTrue("Project '" + template + "' is not present in Project Explorer", isPresent(template));
+		String[] templateComposite = template.split(":");
+		ProjectType type = BLUEPRINT;
+		if (templateComposite[1].startsWith("spring"))
+			type = SPRING;
+		if (templateComposite[1].startsWith("java"))
+			type = JAVA;
+		if (templateComposite[0].equals("empty")) {
+			ProjectFactory.newProject("test").type(type).create();
+		} else {
+			ProjectFactory.newProject("test").template(templateComposite[0]).type(type).create();
+		}
+		assertTrue("Project '" + template + "' is not present in Project Explorer", isPresent("test"));
 		assertFalse("Project '" + template + "' was created with errors", hasErrors());
-		assertTrue("Project '" + template + "' cannot be run as Local Camel Context", canBeRun(template));
+		if ((type != JAVA) && (!template.startsWith("empty")))
+			assertTrue("Project '" + template + "' cannot be run as Local Camel Context", canBeRun("test"));
 	}
 }
