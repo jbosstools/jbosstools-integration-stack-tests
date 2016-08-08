@@ -50,14 +50,12 @@ public class ConfigurationsEditorTest extends DefaultTest {
 	
 	/**
 	 * Prepares test environment
-	 * @throws FuseArchetypeNotFoundException
-	 *             Fuse archetype was not found. Tests cannot be executed!
 	 */
 	@Before
 	public void setupResetCamelContext() {
 
 		new WorkbenchShell();
-		ProjectFactory.newProject(PROJECT_NAME).version("2.15.1.redhat-621084").template("Content Based Router").type(ProjectType.SPRING);
+		ProjectFactory.newProject(PROJECT_NAME).version("2.15.1.redhat-621084").template("Content Based Router").type(ProjectType.SPRING).create();
 		new ErrorLogView().deleteLog();
 	}
 	

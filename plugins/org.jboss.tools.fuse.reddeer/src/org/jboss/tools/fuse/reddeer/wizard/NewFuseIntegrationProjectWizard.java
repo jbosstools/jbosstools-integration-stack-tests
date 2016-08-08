@@ -1,5 +1,6 @@
 package org.jboss.tools.fuse.reddeer.wizard;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.reddeer.common.logging.Logger;
@@ -156,6 +157,14 @@ public class NewFuseIntegrationProjectWizard extends NewWizardDialog {
 	}
 
 	public List<String> getAllAvailableTemplates() {
-		return null;
+		log.debug("Retrieving available templates");
+		List<String> templates = new ArrayList<String>();
+		new RadioButton("Use a predefined template").toggle(true);
+		for (TreeItem item : new DefaultTree().getAllItems()) {
+			if (item.getItems().size() == 0) {
+				templates.add(item.getText());
+			}
+		}
+		return templates;
 	}
 }

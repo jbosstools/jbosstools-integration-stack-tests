@@ -47,8 +47,8 @@ public class DebuggerTest extends DefaultTest {
 	private static final String CAMEL_CONTEXT = "camel-context.xml";
 	private static final String CHOICE = "Choice";
 	private static final String CHOICE_ID = "_choice1";
-	private static final String LOG = "Log _log2";
-	private static final String LOG_ID = "_log2";
+	private static final String LOG = "Log _log4";
+	private static final String LOG_ID = "_log4";
 
 	/**
 	 * Prepares test environment
@@ -59,7 +59,7 @@ public class DebuggerTest extends DefaultTest {
 		ProjectFactory.newProject(PROJECT_NAME).template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();
 		CamelEditor editor = new CamelEditor(CAMEL_CONTEXT);
 		editor.selectEditPart("file:work/cbr/input");
-		editor.setProperty("Uri *", "file:src/main/data");
+		editor.setProperty("Uri *", "file:src/main/data?noop=true");
 		editor.save();
 	}
 
@@ -143,25 +143,24 @@ public class DebuggerTest extends DefaultTest {
 	 * <li>open Project Explorer view</li>
 	 * <li>open camel-context.xml file</li>
 	 * <li>set breakpoint to the choice component</li>
-	 * <li>set breakpoint to the log component in the top branch</li>
+	 * <li>set breakpoint to the log component in the otherwise branch</li>
 	 * <li>debug the Camel Context without tests</li>
 	 * <li>wait until process is suspended</li>
 	 * <li>check if the Console View contains text Enabling Debugger</li>
 	 * <li>check if the Variables View contains variable Endpoint with value choice1</li>
-	 * <li>check if the Variables View contains variable Message with value <city>London</city></li>
+	 * <li>check if the Variables View contains variable Message with value <name>Antwerp Zoo</name></li>
 	 * <li>resume debugging</li>
 	 * <li>wait until process is suspended</li>
-	 * <li>check if the Variables View contains variable Endpoint with value log1</li>
+	 * <li>check if the Variables View contains variable Endpoint with value log4</li>
 	 * <li>click on the Step over button</li>
 	 * <li>wait until process is suspended</li>
-	 * <li>check if the Console View contains text UK message</li>
-	 * <li>check if the Variables View contains variable Endpoint with value to1</li>
+	 * <li>check if the Console View contains text "Sending order order1.xml to another country"</li>
+	 * <li>check if the Variables View contains variable Endpoint with value to3</li>
 	 * <li>remove all breakpoints</li>
 	 * <li>check if the Console View contains text Removing breakpoint choice1</li>
 	 * <li>check if the Console View contains text Removing breakpoint log1</li>
 	 * <li>resume debugging</li>
 	 * <li>terminate process via Terminate button in the Console View</li>
-	 * <li>check if the Console View contains text Disabling debugger</li>
 	 * </ol>
 	 */
 	@Test
@@ -185,7 +184,7 @@ public class DebuggerTest extends DefaultTest {
 		AbstractWait.sleep(TimePeriod.SHORT);
 		variables.open();
 		new DefaultTree().getItems().get(4).getItems().get(0).select();
-		assertTrue(new DefaultStyledText().getText().contains("<city>London</city>"));
+		assertTrue(new DefaultStyledText().getText().contains("<name>Antwerp Zoo</name>"));
 
 		// resume and then should stop on the 'log1' node
 		ResumeButton resume = new ResumeButton();
@@ -199,21 +198,20 @@ public class DebuggerTest extends DefaultTest {
 		assertTrue(resume.isEnabled());
 		new StepOverButton().select();
 		new WaitUntil(new IsSuspended(), TimePeriod.NORMAL);
-		assertTrue(new ConsoleHasText("UK message").test());
+		assertTrue(new ConsoleHasText("Sending order order1.xml to another country").test());
 		assertTrue(resume.isEnabled());
 		AbstractWait.sleep(TimePeriod.getCustom(5));
-		assertEquals("_to1", variables.getValue("Endpoint"));
+		assertEquals("_to3", variables.getValue("Endpoint"));
 
 		// remove all breakpoints
 		new BreakpointsView().removeAllBreakpoints();
 		assertTrue(new ConsoleHasText("Removing breakpoint _choice1").test());
-		assertTrue(new ConsoleHasText("Removing breakpoint _log1").test());
+		assertTrue(new ConsoleHasText("Removing breakpoint _log4").test());
 		resume.click();
 
 		// all breakpoints should be processed
 		new WaitUntil(new IsRunning(), TimePeriod.NORMAL);
 		new TerminateButton().click();
-		assertTrue(new ConsoleHasText("Disabling debugger").test());
 		assertTrue(LogGrapper.getPluginErrors("fuse").size() == 0);
 	}
 
@@ -228,8 +226,8 @@ public class DebuggerTest extends DefaultTest {
 	 * <li>open camel-context.xml file</li>
 	 * <li>set conditional breakpoint to the choice component - simple with
 	 * "${in.header.CamelFileName} == 'order1.xml'"</li>
-	 * <li>set conditional breakpoint to the log component in the top branch - simple with
-	 * "${in.header.CamelFileName} == 'order1.xml'"</li>
+	 * <li>set conditional breakpoint to the log component in the otherwise branch - simple with
+	 * "${in.header.CamelFileName} == 'order2.xml'"</li>
 	 * <li>debug the Camel Context without tests</li>
 	 * <li>wait until process is suspended</li>
 	 * <li>check if the Variables View contains variable Endpoint with value choice1</li>
@@ -249,7 +247,7 @@ public class DebuggerTest extends DefaultTest {
 		new CamelProject(PROJECT_NAME).openCamelContext(CAMEL_CONTEXT);
 		CamelEditor editor = new CamelEditor(CAMEL_CONTEXT);
 		editor.setConditionalBreakpoint(CHOICE, "simple", "${in.header.CamelFileName} == 'order1.xml'");
-		editor.setConditionalBreakpoint(LOG, "simple", "${in.header.CamelFileName} == 'order1.xml'");
+		editor.setConditionalBreakpoint(LOG, "simple", "${in.header.CamelFileName} == 'order2.xml'");
 		ResumeButton resume = new ResumeButton();
 		new CamelProject(PROJECT_NAME).debugCamelContextWithoutTests(CAMEL_CONTEXT);
 		new WaitUntil(new IsSuspended(), TimePeriod.NORMAL);

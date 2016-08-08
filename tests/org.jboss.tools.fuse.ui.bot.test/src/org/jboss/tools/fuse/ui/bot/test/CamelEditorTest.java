@@ -151,7 +151,6 @@ public class CamelEditorTest extends DefaultTest {
 		CamelEditor editor = new CamelEditor("camel-context.xml");
 
 		for (CamelComponent component : CamelComponents.getEndpoints()) {
-			new CamelProject("cbr").openCamelContext("camel-context.xml");
 			log.info("Testing camel component '" + component.getPaletteEntry() + "'");
 			editor.activate();
 			editor.addCamelComponent(component, "Route _route1");
