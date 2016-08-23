@@ -46,6 +46,13 @@ public class SwitchYardConfig extends ServerConfig {
 		this.targetRuntime = targetRuntime;
 	}
 
+	/**
+	 * Returns library version.
+	 * 
+	 * @deprecated Use switchyardRequirement.getLibraryVersionLabel()
+	 * @return library version
+	 */
+	@Deprecated
 	public String getLibraryVersion() {
 		return libraryVersion;
 	}
