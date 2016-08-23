@@ -150,8 +150,8 @@ public class ProjectExplorerProjectCreationTest {
 	@Test
 	public void createProjectWithOSGiTest() {
 		String projectName = "osgi";
-		String configurationVersion = SwitchYardProjectWizard.DEFAULT_CONFIGURATION_VERSION;
-		String libraryVersion = SwitchYardProjectWizard.DEFAULT_LIBRARY_VERSION;
+		String configurationVersion = switchyardRequirement.getConfig().getConfigurationVersion();
+		String libraryVersion = switchyardRequirement.getLibraryVersionLabel();
 
 		wizard = switchyardRequirement.project(projectName);
 		wizard.open();
@@ -180,7 +180,7 @@ public class ProjectExplorerProjectCreationTest {
 		XPathEvaluator xpath = new XPathEvaluator(new File(new SwitchYardProject(projectName).getFile(), "pom.xml"));
 		assertEquals(projectName, xpath.evaluateString("/project/artifactId"));
 		assertEquals("com.example.switchyard", xpath.evaluateString("/project/groupId"));
-		assertEquals(switchyardRequirement.getConfig().getLibraryVersion(),
+		assertEquals(switchyardRequirement.getLibraryVersionLabel(),
 				xpath.evaluateString("/project/properties/switchyard.version"));
 		assertEquals("bundle", xpath.evaluateString("/project/packaging"));
 		assertEquals("com.example.switchyard." + projectName + "*",

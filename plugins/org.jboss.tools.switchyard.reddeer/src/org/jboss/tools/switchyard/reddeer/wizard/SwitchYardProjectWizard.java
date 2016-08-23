@@ -1,10 +1,7 @@
 package org.jboss.tools.switchyard.reddeer.wizard;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.transform.stream.StreamResult;
 
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.TimePeriod;
@@ -26,9 +23,7 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.tools.switchyard.reddeer.condition.SwitchYardEditorIsOpen;
-import org.jboss.tools.switchyard.reddeer.editor.XPathEvaluator;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
-import org.w3c.dom.Node;
 
 /**
  * Wizard for creating a SwitchYard project.
@@ -50,7 +45,7 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 	public static final String INTEGRATION_PACK_KIE_VERSION = "Kie (BPM  Rules) Version:";
 
 	public static final String DEFAULT_CONFIGURATION_VERSION = "2.0";
-	public static final String DEFAULT_LIBRARY_VERSION = "2.0.0.Final";
+	public static final String DEFAULT_LIBRARY_VERSION = "2.1.0.Final";
 
 	public static final String SWITCHYARD_COMPONENTS = "SwitchYard Components";
 
