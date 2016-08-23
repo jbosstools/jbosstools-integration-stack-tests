@@ -43,6 +43,10 @@ public class BreakpointsView extends WorkbenchView {
 
 	public void removeAllBreakpoints() {
 		open();
+		if (!new DefaultToolItem("Remove All Breakpoints").isEnabled()) {
+			close();
+			open();
+		}
 		new DefaultToolItem("Remove All Breakpoints").click();
 		new DefaultShell("Remove All Breakpoints").setFocus();
 		new PushButton("Yes").click();
