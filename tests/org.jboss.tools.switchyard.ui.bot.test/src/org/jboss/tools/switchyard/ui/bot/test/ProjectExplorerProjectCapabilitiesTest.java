@@ -158,9 +158,13 @@ public class ProjectExplorerProjectCapabilitiesTest {
 	@Test
 	public void projectCapabilitiesVersionTest() {
 		new SwitchYardProject(SY_PROJECT).openSwitchYardFile();
+		// a workaround for SWITCHYARD-2907
+		new SwitchYardEditor().saveAndClose();
 		/* Set configuration version to 1.0 */
 		ProjectCapabilitiesShell capabilities = new SwitchYardProject(SY_PROJECT).configureCapabilities();
 		capabilities.setConfigurationVersion("1.0").ok();
+		// a workaround for SWITCHYARD-2907
+		new SwitchYardProject(SY_PROJECT).openSwitchYardFile();
 		assertSwitchYardNamespace("1.0");
 		/* Set configuration version to 1.1 */
 		capabilities = new SwitchYardProject(SY_PROJECT).configureCapabilities();
