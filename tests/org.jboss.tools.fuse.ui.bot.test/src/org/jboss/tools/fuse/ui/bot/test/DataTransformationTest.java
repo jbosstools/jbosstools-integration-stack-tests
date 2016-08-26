@@ -58,7 +58,7 @@ public class DataTransformationTest extends DefaultTest {
 
 		ProjectFactory.importExistingProject(
 				ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID, "resources/projects/starter"), "starter",
-				true, true);
+				true);
 		new CamelProject("starter").openCamelContext("camel-context.xml");
 		CamelEditor editor = new CamelEditor("camel-context.xml");
 		editor.activate();

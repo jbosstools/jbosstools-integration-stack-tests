@@ -2,6 +2,7 @@ package org.jboss.tools.fuse.ui.bot.test.suite;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.fuse.ui.bot.test.CamelEditorTest;
+import org.jboss.tools.fuse.ui.bot.test.ComponentTest;
 import org.jboss.tools.fuse.ui.bot.test.DataTransformationDeploymentTest;
 import org.jboss.tools.fuse.ui.bot.test.DataTransformationTest;
 import org.jboss.tools.fuse.ui.bot.test.DebuggerTest;
@@ -32,6 +33,7 @@ import junit.framework.TestSuite;
  */
 @SuiteClasses({
 	CamelEditorTest.class,
+	ComponentTest.class,
 	DataTransformationTest.class,
 	DataTransformationDeploymentTest.class,
 	DebuggerTest.class,

@@ -80,7 +80,7 @@ public class DataTransformationDeploymentTest extends DefaultTest {
 
 		ProjectFactory.importExistingProject(
 				ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID, "resources/projects/XML-to-JSON"),
-				"XML-to-JSON", true, true);
+				"XML-to-JSON", true);
 		CamelProject project = new CamelProject("XML-to-JSON");
 		project.close();
 		project.open();
