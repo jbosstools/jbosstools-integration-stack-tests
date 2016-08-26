@@ -67,6 +67,7 @@ public class ProjectLocalRunTest extends DefaultTest {
 
 		log.info("Create a new Fuse project from 'Content Based Router' template");
 		ProjectFactory.newProject(PROJECT_NAME).version("2.15.1.redhat-621084").template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();
+		new CamelProject(PROJECT_NAME).update();
 		createTestClass();
 	}
 

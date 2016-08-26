@@ -71,7 +71,7 @@ public class DataTransformationDeploymentEAPTest extends DefaultTest {
 
 		// import and deploy the project
 		ProjectFactory.importExistingProject(ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID,
-				"resources/projects/datatrans"), "wildfly-transformation", false, false);
+				"resources/projects/datatrans"), "wildfly-transformation", false);
 		new CamelProject("wildfly-transformation").update();
 		FuseServerManipulator.addModule(serverRequirement.getConfig().getName(), "wildfly-transformation");
 		try {

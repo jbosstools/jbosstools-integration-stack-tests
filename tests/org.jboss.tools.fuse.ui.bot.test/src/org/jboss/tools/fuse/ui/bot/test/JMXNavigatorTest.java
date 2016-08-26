@@ -50,7 +50,8 @@ public class JMXNavigatorTest extends DefaultTest {
 	public static void setupCreateProject() {
 
 		log.info("Create a new Fuse project from 'Content Based Router' template");
-		ProjectFactory.newProject(PROJECT_NAME).template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();
+		ProjectFactory.newProject(PROJECT_NAME).version("2.15.1.redhat-621084").template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();
+		new CamelProject(PROJECT_NAME).update();
 	}
 
 	/**
@@ -84,10 +85,10 @@ public class JMXNavigatorTest extends DefaultTest {
 		FuseJMXNavigator jmx = new FuseJMXNavigator();
 		assertNotNull(
 				"The following path is inaccesible: Local Camel Context/Camel/camelContext-.../Endpoints/file/work/cbr/input",
-				jmx.getNode("Local Camel Context", "Camel", "camelContext", "Endpoints", "file", "work/cbr/input"));
+				jmx.getNode("Local Camel Context", "Camel", "cbr-example-context", "Endpoints", "file", "work/cbr/input"));
 		assertNotNull(
 				"The following path is inaccesible: Local Camel Context/Camel/camelContext-.../Routes/cbr-route/file:work/cbr/input/Log _log1/Choice/Otherwise/Log _log4/file:work/cbr/output/others",
-				jmx.getNode("Local Camel Context", "Camel", "camelContext", "Routes", "cbr-route",
+				jmx.getNode("Local Camel Context", "Camel", "cbr-example-context", "Routes", "cbr-route",
 						"file:work/cbr/input", "Log _log1", "Choice", "Otherwise", "Log _log4",
 						"file:work/cbr/output/others"));
 		assertTrue("There are some errors in Error Log", LogGrapper.getPluginErrors("fuse").size() == 0);
@@ -118,14 +119,14 @@ public class JMXNavigatorTest extends DefaultTest {
 		FuseJMXNavigator jmx = new FuseJMXNavigator();
 		jmx.open();
 		assertTrue("Suspension was not performed",
-				jmx.suspendCamelContext("Local Camel Context", "Camel", "camelContext"));
+				jmx.suspendCamelContext("Local Camel Context", "Camel", "cbr-example-context"));
 		try {
 			new WaitUntil(new ConsoleHasText("Route: cbr-route suspend complete"), TimePeriod.NORMAL);
 		} catch (WaitTimeoutExpiredException e) {
 			fail("Camel context was not suspended!");
 		}
 		assertTrue("Resume of Camel Context was not performed",
-				jmx.resumeCamelContext("Local Camel Context", "Camel", "camelContext"));
+				jmx.resumeCamelContext("Local Camel Context", "Camel", "cbr-example-context"));
 		try {
 			new WaitUntil(new ConsoleHasText("Route: cbr-route resumed"), TimePeriod.NORMAL);
 		} catch (WaitTimeoutExpiredException e) {
