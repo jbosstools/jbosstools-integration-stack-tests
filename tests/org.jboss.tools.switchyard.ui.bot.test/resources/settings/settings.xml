@@ -1,9 +1,44 @@
-<?xml version="1.0" encoding="utf-8"?>
-<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
-
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
 	<profiles>
+		<!-- JBoss -->
+		<profile>
+			<id>jboss-default</id>
+			<repositories>
+				<repository>
+					<id>jboss-public-repository-group</id>
+					<name>JBoss Public Repository Group</name>
+					<url>http://repository.jboss.org/nexus/content/groups/public/</url>
+				</repository>
+				<repository>
+					<id>jboss-snapshots-repository</id>
+					<name>JBoss Snapshots Repository</name>
+					<url>https://repository.jboss.org/nexus/content/repositories/snapshots/</url>
+				</repository>
+				<repository>
+					<id>jboss-ea-repository</id>
+					<name>JBoss Snapshots Repository</name>
+					<url>https://repository.jboss.org/nexus/content/repositories/ea/</url>
+				</repository>
+			</repositories>
+			<pluginRepositories>
+				<pluginRepository>
+					<id>jboss-public-repository-group</id>
+					<name>JBoss Public Repository Group</name>
+					<url>http://repository.jboss.org/nexus/content/groups/public/</url>
+				</pluginRepository>
+				<pluginRepository>
+					<id>jboss-snapshots-repository</id>
+					<name>JBoss Snapshots Repository</name>
+					<url>https://repository.jboss.org/nexus/content/repositories/snapshots/</url>
+				</pluginRepository>
+				<pluginRepository>
+					<id>jboss-ea-repository</id>
+					<name>JBoss Snapshots Repository</name>
+					<url>https://repository.jboss.org/nexus/content/repositories/ea/</url>
+				</pluginRepository>
+			</pluginRepositories>
+		</profile>
 		<profile>
 			<id>redhat-techpreview-all-repository</id>
 			<repositories>
@@ -21,6 +56,16 @@
 						<updatePolicy>never</updatePolicy>
 					</snapshots>
 				</repository>
+				<repository>
+					<id>brew-repository</id>
+					<url>http://repository.engineering.redhat.com/nexus/content/groups/hudson-jb-ip-6.1-build</url>
+					<releases>
+						<enabled>true</enabled>
+					</releases>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
+				</repository>
 			</repositories>
 			<pluginRepositories>
 				<pluginRepository>
@@ -35,6 +80,16 @@
 					<snapshots>
 						<enabled>false</enabled>
 						<updatePolicy>never</updatePolicy>
+					</snapshots>
+				</pluginRepository>
+				<pluginRepository>
+					<id>brew-repository</id>
+					<url>http://repository.engineering.redhat.com/nexus/content/groups/hudson-jb-ip-6.1-build</url>
+					<releases>
+						<enabled>true</enabled>
+					</releases>
+					<snapshots>
+						<enabled>false</enabled>
 					</snapshots>
 				</pluginRepository>
 			</pluginRepositories>
@@ -52,6 +107,16 @@
 						<enabled>false</enabled>
 					</snapshots>
 				</repository>
+				<repository>
+					<id>hudson-repository2</id>
+					<url>http://download.lab.bos.redhat.com/brewroot/repos/jb-bxms-6.3-build/latest/maven</url>
+					<releases>
+						<enabled>true</enabled>
+					</releases>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
+				</repository>
 			</repositories>
 			<pluginRepositories>
 				<pluginRepository>
@@ -66,39 +131,10 @@
 				</pluginRepository>
 			</pluginRepositories>
 		</profile>
-		<profile>
-			<id>brewroot-repository</id>
-			<repositories>
-				<repository>
-					<id>brewroot-repository</id>
-					<url>http://download.lab.bos.redhat.com/brewroot/repos/jb-bxms-6.3-build/latest/maven</url>
-					<releases>
-						<enabled>true</enabled>
-					</releases>
-					<snapshots>
-						<enabled>false</enabled>
-					</snapshots>
-				</repository>
-			</repositories>
-			<pluginRepositories>
-				<pluginRepository>
-					<id>brewroot-repository</id>
-					<url>http://download.lab.bos.redhat.com/brewroot/repos/jb-bxms-6.3-build/latest/maven</url>
-					<releases>
-						<enabled>true</enabled>
-					</releases>
-					<snapshots>
-						<enabled>false</enabled>
-					</snapshots>
-				</pluginRepository>
-			</pluginRepositories>
-		</profile>
 	</profiles>
-
 	<activeProfiles>
-		<activeProfile>redhat-techpreview-all-repository</activeProfile>
+		<activeProfile>jboss-default</activeProfile>
 		<activeProfile>hudson-repository</activeProfile>
-		<activeProfile>brewroot-repository</activeProfile>
+		<activeProfile>redhat-techpreview-all-repository</activeProfile>
 	</activeProfiles>
-
 </settings>

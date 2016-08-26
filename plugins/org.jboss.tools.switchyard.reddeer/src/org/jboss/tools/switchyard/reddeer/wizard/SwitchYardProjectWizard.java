@@ -393,10 +393,6 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 
 		new WaitUntil(new SwitchYardEditorIsOpen(), TimePeriod.LONG);
 		new SwitchYardProject(name).update();
-		if ((osgi != null && osgi.booleanValue()) || (targetRuntime != null && isKaraf(targetRuntime))) {
-			new SwitchYardProject(name).enableFuseCamelNature();
-		}
-
 	}
 
 	public SwitchYardProjectWizard activate() {
