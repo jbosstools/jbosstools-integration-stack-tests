@@ -8,7 +8,6 @@ import static org.junit.Assert.fail;
 import java.util.List;
 
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.gef.view.PaletteView;
 import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
@@ -23,8 +22,6 @@ import org.jboss.tools.common.reddeer.LogGrapper;
 import org.jboss.tools.common.reddeer.view.ErrorLogView;
 import org.jboss.tools.fuse.reddeer.ProjectTemplate;
 import org.jboss.tools.fuse.reddeer.ProjectType;
-import org.jboss.tools.fuse.reddeer.component.CamelComponent;
-import org.jboss.tools.fuse.reddeer.component.CamelComponents;
 import org.jboss.tools.fuse.reddeer.component.File;
 import org.jboss.tools.fuse.reddeer.component.Log;
 import org.jboss.tools.fuse.reddeer.component.Otherwise;
@@ -126,37 +123,6 @@ public class CamelEditorTest extends DefaultTest {
 		assertEquals(2, editor.palleteGetComponents().size());
 		editor.paletteSearch("");
 		assertEquals(initSize, editor.palleteGetComponents().size());
-	}
-
-	/**
-	 * <p>
-	 * Test tries to create all endpoint components available in the Palette view associated with the Camel Editor.
-	 * </p>
-	 * <b>Steps</b>
-	 * <ol>
-	 * <li>create a new project from template 'Content Based Router'</li>
-	 * <li>open Project Explorer view</li>
-	 * <li>delete camel-context.xml and create a new empty one</li>
-	 * <li>try to create all endpoint components in Palette View</li>
-	 * <li>check if the component is present in Camel Editor</li>
-	 * <li>delete the component from Camel Editor</li>
-	 * </ol>
-	 */
-	@Test
-	public void testComponents() {
-
-		new ProjectExplorer().open();
-		new CamelProject("cbr").deleteCamelContext("camel-context.xml");
-		new CamelProject("cbr").createCamelContext("camel-context.xml");
-		CamelEditor editor = new CamelEditor("camel-context.xml");
-
-		for (CamelComponent component : CamelComponents.getEndpoints()) {
-			log.info("Testing camel component '" + component.getPaletteEntry() + "'");
-			editor.activate();
-			editor.addCamelComponent(component, "Route _route1");
-			editor.deleteCamelComponent(component);
-		}
-		assertTrue(LogGrapper.getPluginErrors("fuse").size() == 0);
 	}
 
 	/**

@@ -12,6 +12,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.util.Display;
@@ -137,6 +139,7 @@ public class DataTransformationEditor extends DefaultEditor {
 
 		log.info("Create a new variable: " + name);
 		activate();
+		AbstractWait.sleep(TimePeriod.NORMAL);
 		new DefaultCTabItem("Variables").activate();
 		new DefaultToolItem("Add a new variable").click();
 		new WaitUntil(new ShellWithTextIsAvailable("Add Variable"));
