@@ -12,7 +12,7 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-	  <rd.config>${project.build.directory}/config/wildfly-810_switchyard-200.xml</rd.config>
+	  <rd.config>${project.build.directory}/config/wildfly-810_switchyard-210.xml</rd.config>
 	  <reddeer.skipUnfixedIssues>false</reddeer.skipUnfixedIssues>
 	  <systemProperties>${integrationTestsSystemProperties} -Drd.config=${rd.config} -Dreddeer.skipUnfixedIssues=${reddeer.skipUnfixedIssues}</systemProperties>
 	  <test.class>AllTests</test.class>
@@ -83,7 +83,7 @@
 		</dependencies>
 	      </configuration>
 	    </plugin>
-	    <!-- Install SwitchYard 2.0.0.Final into JBoss WildFly 8.1.0.Final -->
+	    <!-- Install SwitchYard 2.1.0.Final into JBoss WildFly 8.1.0.Final -->
 	    <plugin>
 	      <groupId>com.googlecode.maven-download-plugin</groupId>
 	      <artifactId>download-maven-plugin</artifactId>
@@ -112,9 +112,9 @@
 		    <goal>wget</goal>
 		  </goals>
 		  <configuration>
-		    <url>http://downloads.jboss.org/switchyard/releases/v2.0.Final/switchyard-2.0.0.Final-WildFly.zip</url>
+		    <url>http://downloads.jboss.org/switchyard/releases/v2.1.Final/switchyard-2.1.0.Final-WildFly.zip</url>
 		    <unpack>true</unpack>
-		    <md5>d031fc955ba68c39cb302661d666758f</md5>
+		    <md5>9f90e24c7af7b25c267a80a49f267d8d</md5>
 		    <outputDirectory>${project.build.directory}/wildfly-8.1.0.Final</outputDirectory>
 		  </configuration>
 		</execution>
