@@ -139,6 +139,24 @@
 	      <jbtis.repo>stable</jbtis.repo>
 	    </properties>
 	  </profile>
+	  <profile>
+	    <id>nightly</id>
+	    <properties>
+	      <jbtis.repo>staging</jbtis.repo>
+	    </properties>
+		<repositories>
+		  <repository>
+			<id>fuse-nightly</id>
+			<url>http://download.jboss.org/jbosstools/mars/integration/updates/integration-stack/fuse-tooling/</url>
+			<layout>p2</layout>
+		  </repository>
+		  <repository>
+			<id>switchyard-nightly</id>
+			<url>http://download.jboss.org/jbosstools/mars/integration/updates/integration-stack/switchyard/2.1.0/</url>
+			<layout>p2</layout>
+		  </repository>
+		</repositories>
+	  </profile>
 	</profiles>
 
 </project>
