@@ -22,7 +22,7 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
+import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 
@@ -124,7 +124,7 @@ public class Procedure extends ModelObject {
 		String[] pathToNewParam = Arrays.copyOf(pathToProcedure, pathToProcedure.length + 1);
 		pathToNewParam[pathToNewParam.length - 1] = "NewProcedureParameter";
 		new DefaultTreeItem(pathToNewParam).select();
-		ModelEditor me = new ModelEditor("BooksInfo.xmi");
+		RelationalModelEditor me = new RelationalModelEditor("BooksInfo.xmi");
 		me.show();
 		ModelExplorer modelView = TeiidPerspective.getInstance().getModelExplorerView();
 		modelView.open();
@@ -190,7 +190,7 @@ public class Procedure extends ModelObject {
 		new DefaultTable().getItem(type).select();
 		new PushButton("OK").click();
 		new WaitWhile(new ShellWithTextIsActive("Select a Datatype"), TimePeriod.LONG);
-		new ModelEditor(model).save();
+		new RelationalModelEditor(model).save();
 	}
 
 	/**

@@ -92,7 +92,7 @@ public class XmlSchemalessTest {
 		modelExplorer.addChildToModelItem(ChildType.NAME_SPACE, (modelPath+"/"+xmlStructureBuilt).split("/"));
 
 		editor.show();
-		TableEditor tableEditor = editor.openTableEditor(XmlModelEditor.MAPPING_DIAGRAM);
+		TableEditor tableEditor = editor.openTableEditor();
 		tableEditor.openTab(TableEditor.Tabs.XML_NAMESPACES);
 		tableEditor.setCellText(0, "bookListing", "Prefix", "xsd");
 		tableEditor.setCellText(0, "bookListing", "Uri", "http://www.w3.org/2001/XMLSchema");

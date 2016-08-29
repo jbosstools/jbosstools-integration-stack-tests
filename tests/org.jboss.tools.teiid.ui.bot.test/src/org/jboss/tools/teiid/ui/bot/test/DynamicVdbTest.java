@@ -2,8 +2,8 @@ package org.jboss.tools.teiid.ui.bot.test;
 
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.startsWith;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.StringContains.containsString;
@@ -12,6 +12,7 @@ import static org.hamcrest.text.IsEqualIgnoringWhiteSpace.equalToIgnoringWhiteSp
 import java.io.File;
 import java.io.StringReader;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.Callable;
@@ -42,12 +43,13 @@ import org.jboss.tools.teiid.reddeer.dialog.GenerateDynamicVdbDialog;
 import org.jboss.tools.teiid.reddeer.dialog.GenerateVdbArchiveDialog;
 import org.jboss.tools.teiid.reddeer.editor.DataRolesEditor;
 import org.jboss.tools.teiid.reddeer.editor.DataRolesEditor.PermissionType;
-import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
+import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
+import org.jboss.tools.teiid.reddeer.editor.TableEditor;
+import org.jboss.tools.teiid.reddeer.editor.TransformationEditor;
 import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
+import org.jboss.tools.teiid.reddeer.matcher.ModelEditorItemMatcher;
 import org.jboss.tools.teiid.reddeer.matcher.TableItemMatcher;
 import org.jboss.tools.teiid.reddeer.modeling.ModelColumn;
-import org.jboss.tools.teiid.reddeer.modeling.ModelProcedure;
-import org.jboss.tools.teiid.reddeer.modeling.ModelProcedureParameter;
 import org.jboss.tools.teiid.reddeer.modeling.ModelTable;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
@@ -407,21 +409,16 @@ public class DynamicVdbTest {
 		createArchiveVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
 
 		new ModelExplorer().openModelEditor(IMPORT_PROJECT_NAME, PROCEDURE_MODEL + ".xmi");
-		ModelEditor ed = new ModelEditor(PROCEDURE_MODEL + ".xmi");
-		ModelProcedureParameter returnParam = ed.getProcedureParameter("udfConcatNull", "return");
-		collector.checkThat("return parameter not created", returnParam, notNullValue());
-		if (returnParam != null) {
-			collector.checkThat("return param is not of type RETURN", returnParam.getDirection(), is("RETURN"));
-		}
+		RelationalModelEditor editor = new RelationalModelEditor(PROCEDURE_MODEL + ".xmi");
+	    TableEditor tableEditor = editor.openTableEditor();
+	    tableEditor.openTab(TableEditor.Tabs.PROCEDURE_PARAMETERS);
+	    
+		collector.checkThat("return parameter not created", tableEditor.getRow("Name", "RETURNS"), notNullValue());
+		collector.checkThat("return param is not of type RETURN", tableEditor.getCellText(1, "RETURNS", "Direction"), is("RETURN"));
+		collector.checkThat("stringLeft parameter not created", tableEditor.getRow("Name", "stringLeft"), notNullValue());
+		collector.checkThat("stringLeft param is not of type IN", tableEditor.getCellText(1, "stringLeft", "Direction"), is("IN"));
 
-		ModelProcedureParameter stringLeft = ed.getProcedureParameter("udfConcatNull", "stringLeft");
-		collector.checkThat("stringLeft parameter not created", stringLeft, notNullValue());
-		if (stringLeft != null) {
-			collector.checkThat("stringLeft param is not of type IN", stringLeft.getDirection(), is("IN"));
-		}
-
-		new ModelExplorer().getProject(IMPORT_PROJECT_NAME).getProjectItem(PROCEDURE_MODEL + ".xmi", "udfConcatNull")
-				.select();
+		new ModelExplorer().selectItem(IMPORT_PROJECT_NAME, PROCEDURE_MODEL + ".xmi", "udfConcatNull");
 
 		PropertiesView propertiesView = new PropertiesView();
 		collector.checkThat("UDF Jar path not set",
@@ -477,16 +474,16 @@ public class DynamicVdbTest {
 
 		String staticVdbName = "MatViewsVdb";
 		String dynamicVdbName = staticVdbName + "-vdb.xml";
-		String viewModelName = "ViewModel";
+		String viewModelName = "ViewModel.xmi";
 
 		importDynamicVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
 		createArchiveVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
 
-		new ModelExplorer().openModelEditor(IMPORT_PROJECT_NAME, viewModelName + ".xmi");
+		new ModelExplorer().openModelEditor(IMPORT_PROJECT_NAME, viewModelName);
 
 		PropertiesView propertiesView = new PropertiesView();
 		for (String tableName : new String[] { "internal_short_ttl", "internal_long_ttl", "external_long_ttl" }) {
-			new ModelExplorer().getProject(IMPORT_PROJECT_NAME).getProjectItem(viewModelName + ".xmi", tableName)
+			new ModelExplorer().getProject(IMPORT_PROJECT_NAME).getProjectItem(viewModelName, tableName)
 					.select();
 			collector.checkThat("materialized property not set",
 					propertiesView.getProperty("Misc", "Materialized").getPropertyValue(), is("true"));
@@ -497,20 +494,22 @@ public class DynamicVdbTest {
 
 		ProblemsView problemsView = new ProblemsView();
 		collector.checkThat("Errors in imported view model",
-				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(viewModelName + ".xmi")),
+				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(viewModelName)),
 				empty());
 		collector.checkThat("Errors in imported VDB",
 				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(staticVdbName + ".vdb")),
 				empty());
 
-		String transformation = getTransformation(IMPORT_PROJECT_NAME, viewModelName, "internal_short_ttl")
-				.replaceAll("\\s+", " ");
-		collector.checkThat("cache hint not in transformation", transformation,
-				new StringContains("/*+ cache(ttl:100)*/"));
+		RelationalModelEditor editor = new RelationalModelEditor(viewModelName);
+	    TransformationEditor transformationEditor =  editor.openTransformationDiagram(ModelEditorItemMatcher.TABLE, "internal_short_ttl");
 
-		transformation = getTransformation(IMPORT_PROJECT_NAME, viewModelName, "internal_long_ttl").replaceAll("\\s+",
-				" ");
-		collector.checkThat("cache hint not in transformation", transformation,
+		collector.checkThat("cache hint not in transformation", transformationEditor.getTransformation().replaceAll("\\s+", " "),
+				new StringContains("/*+ cache(ttl:100)*/"));
+		
+		editor.returnToPackageDiagram();
+		transformationEditor =  editor.openTransformationDiagram(ModelEditorItemMatcher.TABLE, "internal_long_ttl");
+
+		collector.checkThat("cache hint not in transformation", transformationEditor.getTransformation().replaceAll("\\s+", " "),
 				new StringContains("/*+ cache(ttl:1000)*/"));
 
 		// TODO: check all the other materialized properties once TEIIDDES-2745 is resolved
@@ -656,27 +655,26 @@ public class DynamicVdbTest {
 		createArchiveVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
 
 		new ModelExplorer().openModelEditor(IMPORT_PROJECT_NAME, sourceModelName + ".xmi");
-		ModelEditor ed = new ModelEditor(sourceModelName + ".xmi");
-		// TODO: create classes for the following in the plugin
+		RelationalModelEditor editor = new RelationalModelEditor(sourceModelName + ".xmi");
+	    TableEditor tableEditor = editor.openTableEditor();
 
 		// check unique constraint in source model
-		ed.showTabItem(ModelEditor.TABLE_EDITOR);
-		ed.showSubTabItem(ModelEditor.UNIQUE_CONSTRAINTS);
+		tableEditor.openTab(TableEditor.Tabs.UNIQUE_CONSTRAINTS);
 		TableItem uc = new DefaultTable(0).getItems(new TableItemMatcher(1, "UC")).get(0);
 		collector.checkThat("column not referenced in unique constraint", uc.getText(3),
 				new StringContains("SecondID"));
 		collector.checkThat("column not referenced in unique constraint", uc.getText(3), new StringContains("ThirdID"));
 
 		// check foreign key in source model
-		ed.showSubTabItem(ModelEditor.FOREIGN_KEYS);
+		tableEditor.openTab(TableEditor.Tabs.FOREIGN_KEYS);
 		TableItem fk = new DefaultTable(0).getItems(new TableItemMatcher(1, "FKI_SECOND_THIRD_ID")).get(0);
 		collector.checkThat("wrong unique key referenced by fk", fk.getText(6), startsWith("UC"));
 
 		// check unique constraint in view model
 		new ModelExplorer().openModelEditor(IMPORT_PROJECT_NAME, viewModelName + ".xmi");
-		ed = new ModelEditor(viewModelName + ".xmi");
-		ed.showTabItem(ModelEditor.TABLE_EDITOR);
-		ed.showSubTabItem(ModelEditor.UNIQUE_CONSTRAINTS);
+		editor = new RelationalModelEditor(viewModelName + ".xmi");
+		tableEditor = editor.openTableEditor();
+		tableEditor.openTab(TableEditor.Tabs.UNIQUE_CONSTRAINTS);
 		uc = new DefaultTable(0).getItems(new TableItemMatcher(1, "UC")).get(0);
 		collector.checkThat("column not referenced in unique constraint", uc.getText(3),
 				new StringContains("SecondID"));
@@ -684,7 +682,7 @@ public class DynamicVdbTest {
 
 		// check foreign key in view model
 		try {
-			ed.showSubTabItem(ModelEditor.FOREIGN_KEYS);
+			tableEditor.openTab(TableEditor.Tabs.FOREIGN_KEYS);
 			List<TableItem> fks = new DefaultTable(0).getItems(new TableItemMatcher(1, "FKI_SECOND_THIRD_ID"));
 			collector.checkThat("wrong unique key referenced by fk", fks.get(0).getText(6), startsWith("UC"));
 		} catch (CoreLayerException e) {
@@ -727,15 +725,18 @@ public class DynamicVdbTest {
 		checkTablesSame(origViewTables, importedViewTables);
 
 		new ShellMenu("File", "Close All").select();
+		
+		new ModelExplorer().openModelEditor(IMPORT_PROJECT_NAME, VIEW_MODEL + ".xmi");
+		RelationalModelEditor editor = new RelationalModelEditor(VIEW_MODEL + ".xmi");
+	    TransformationEditor transformationEditor =  editor.openTransformationDiagram(ModelEditorItemMatcher.TABLE, "smalla");
 
-		String transformation = getTransformation(IMPORT_PROJECT_NAME, VIEW_MODEL, "smalla").replaceAll("\\s+", " ");
-		;
-		collector.checkThat("Wrong transformation for smalla", transformation,
+		collector.checkThat("Wrong transformation for smalla", transformationEditor.getTransformation().replaceAll("\\s+", " "),
 				new RegexMatcher("SELECT \\* FROM postgresql92Model\\.smalla"));
 
-		transformation = getTransformation(IMPORT_PROJECT_NAME, VIEW_MODEL, "smallb").replaceAll("\\s+", " ");
-		;
-		collector.checkThat("Wrong transformation for smallb", transformation,
+		editor.returnToPackageDiagram();
+		transformationEditor =  editor.openTransformationDiagram(ModelEditorItemMatcher.TABLE, "smallb");
+
+		collector.checkThat("Wrong transformation for smallb", transformationEditor.getTransformation().replaceAll("\\s+", " "),
 				new RegexMatcher("SELECT \\* FROM postgresql92Model\\.smallb"));
 
 		ProblemsView problemsView = new ProblemsView();
@@ -758,32 +759,27 @@ public class DynamicVdbTest {
 		createArchiveVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
 
 		new ModelExplorer().openModelEditor(IMPORT_PROJECT_NAME, PROCEDURE_MODEL + ".xmi");
-		ModelEditor ed = new ModelEditor(PROCEDURE_MODEL + ".xmi");
-		ed.showTabItem(ModelEditor.TABLE_EDITOR);
-		ed.showSubTabItem(ModelEditor.PROCEDURES);
+		RelationalModelEditor editor = new RelationalModelEditor(PROCEDURE_MODEL + ".xmi");
+		TableEditor tableEditor = editor.openTableEditor();
+		
+		tableEditor.openTab(TableEditor.Tabs.PROCEDURES);
+		collector.checkThat("REST method not set on procedure", tableEditor.getCellText(1, "testProc", "REST:Rest Method"), is("GET"));
+		collector.checkThat("REST URI not set on procedure", tableEditor.getCellText(1, "testProc", "REST:URI"), is("test/{p1}"));
+		
+		tableEditor.openTab(TableEditor.Tabs.COLUMNS);
+		collector.checkThat("wrong column name", tableEditor.getCellText(0, "testProc", "Name"), is("xml_out"));
+		collector.checkThat("wrong column name", tableEditor.getCellText(0, "testProc", "Datatype"), is("XMLLiteral : xs:string"));
 
-		ModelProcedure modelProcedure = new ModelProcedure(new DefaultTable().getItem("testProc", 1));
+		tableEditor.openTab(TableEditor.Tabs.PROCEDURE_PARAMETERS);
+		collector.checkThat("wrong parameter name", tableEditor.getCellText(0, "testProc", "Name"), is("p1"));
+		collector.checkThat("wrong parameter name", tableEditor.getCellText(0, "testProc", "Native Type"), is("STRING"));
+		collector.checkThat("wrong parameter name", tableEditor.getCellText(0, "testProc", "Datatype"), is("string"));
+		
+		tableEditor.close();
 
-		collector.checkThat("REST method not set on procedure", modelProcedure.getRestMethod(), is("GET"));
-		collector.checkThat("REST URI not set on procedure", modelProcedure.getRestUri(), is("test/{p1}"));
-
-		ModelColumn modelColumn = ed.getColumns("testProc").get(0);
-		collector.checkThat("wrong column name", modelColumn.getName(), is("xml_out"));
-		collector.checkThat("wrong column name", modelColumn.getDatatype(), is("XMLLiteral"));
-
-		ed.showTabItem(ModelEditor.TABLE_EDITOR);
-		ed.showSubTabItem(ModelEditor.PROCEDURE_PARAMETERS);
-
-		ModelProcedureParameter modelProcedureParameter = new ModelProcedureParameter(
-				new DefaultTable().getItem("testProc", 0));
-		collector.checkThat("wrong parameter name", modelProcedureParameter.getName(), is("p1"));
-		collector.checkThat("wrong parameter name", modelProcedureParameter.getNativeType(), is("STRING"));
-		collector.checkThat("wrong parameter name", modelProcedureParameter.getDatatype(), is("string"));
-
-		String transformation = getTransformation(IMPORT_PROJECT_NAME, PROCEDURE_MODEL, "testProc").replaceAll("\\s+",
-				" ");
-		;
-		collector.checkThat("Wrong transformation for testProc", transformation,
+	    TransformationEditor transformationEditor =  editor.openTransformationDiagram(ModelEditorItemMatcher.PROCEDURE, "testProc");
+		
+		collector.checkThat("Wrong transformation for testProc", transformationEditor.getTransformation().replaceAll("\\s+"," "),
 				is("BEGIN SELECT "
 						+ "XMLELEMENT(NAME test, XMLFOREST(ProcedureModel.testProc.p1 AS elem1, 'elem2' AS elem2)) "
 						+ "AS xml_out; END"));
@@ -799,32 +795,40 @@ public class DynamicVdbTest {
 
 	@Test
 	public void importAndUpdateModels() {
-
 		String staticVdbName = "SourceAndViewSmallerVdb";
 		String dynamicVdbName = staticVdbName + "-vdb.xml";
 
 		importDynamicVdb(PROJECT_NAME, dynamicVdbName);
 		createArchiveVdb(PROJECT_NAME, dynamicVdbName);
 
-		//ModelEditor ed = teiidBot.openModelEditor(PROJECT_NAME, VIEW_MODEL);
 		new ModelExplorer().openModelEditor(PROJECT_NAME, VIEW_MODEL + ".xmi");
-		ModelEditor ed = new ModelEditor(VIEW_MODEL + ".xmi");
-
-		collector.checkThat("timestampvalue removed from smalla", ed.getColumn("smalla", "timestampvalue"),
-				notNullValue());
-		collector.checkThat("doublenum not removed from smalla", ed.getColumn("smalla", "doublenum"), nullValue());
-		collector.checkThat("c1 not created in newViewA", ed.getColumn("newViewA", "c1"), notNullValue());
-		collector.checkThat("smallb not removed", ed.getTable("smallb"), nullValue());
-
-		new ModelExplorer().openModelEditor(PROJECT_NAME, BQT_MODEL_NAME + ".xmi");
-		 ed = new ModelEditor(BQT_MODEL_NAME + ".xmi");
+		TableEditor tableEditor = new RelationalModelEditor(VIEW_MODEL + ".xmi").openTableEditor();
 		
-		collector.checkThat("timestampvalue removed from smalla", ed.getColumn("smalla", "timestampvalue"),
-				notNullValue());
-		collector.checkThat("doublenum not removed from smalla", ed.getColumn("smalla", "doublenum"), nullValue());
-		collector.checkThat("smallb not removed", ed.getTable("smallb"), nullValue());
-		collector.checkThat("smallx not created", ed.getTable("smallx"), notNullValue());
-		collector.checkThat("wrong number of columns created in smallx", ed.getColumns("smallx").size(), is(16));
+		tableEditor.openTab(TableEditor.Tabs.COLUMNS);		
+		collector.checkThat("timestampvalue removed from smalla", tableEditor.getRow("Name", "timestampvalue"), notNullValue());
+		collector.checkThat("doublenum not removed from smalla", tableEditor.getRow("Name", "doublenum"), nullValue());
+		collector.checkThat("c1 not created in newViewA", tableEditor.getRow("Name", "c1"), notNullValue());
+		
+		tableEditor.openTab(TableEditor.Tabs.BASE_TABLES);
+		collector.checkThat("smallb not removed",  tableEditor.getRow("Name", "smallb"), nullValue());
+		
+		new ModelExplorer().openModelEditor(PROJECT_NAME, BQT_MODEL_NAME + ".xmi");
+		tableEditor = new RelationalModelEditor(BQT_MODEL_NAME + ".xmi").openTableEditor();
+		
+		tableEditor.openTab(TableEditor.Tabs.COLUMNS);
+		collector.checkThat("timestampvalue removed from smalla", tableEditor.getRow("Name", "timestampvalue"), notNullValue());
+		collector.checkThat("doublenum not removed from smalla", tableEditor.getRow("Name", "doublenum"), nullValue());
+		List<TableItem> smallxRows = new ArrayList<>();
+		for (TableItem row : tableEditor.getRows()){
+			if (row.getText(0).equals("smallx")){
+				smallxRows.add(row);
+			}
+		}
+		collector.checkThat("wrong number of columns created in smallx", smallxRows.size(), is(16));
+		
+		tableEditor.openTab(TableEditor.Tabs.BASE_TABLES);
+		collector.checkThat("smallb not removed",tableEditor.getRow("Name", "smallb"), nullValue());
+		collector.checkThat("smallx not created", tableEditor.getRow("Name", "smallx"), notNullValue());
 
 		ProblemsView problemsView = new ProblemsView();
 		collector.checkThat("Errors in imported view model",
@@ -868,13 +872,6 @@ public class DynamicVdbTest {
 			}
 			collector.checkThat("Table " + origTable.getName() + " not created", tableFound, is(true));
 		}
-	}
-
-	private String getTransformation(String projectName, String viewModelName, String tableName) {
-		new ModelExplorer().openTransformationDiagram(projectName, viewModelName + ".xmi", tableName);
-		ModelEditor me = new ModelEditor(viewModelName + ".xmi");
-		me.showTransformation();
-		return me.getTransformation();
 	}
 
 	private void importDynamicVdb(String projectName, String dynamicVdbName) {	
@@ -969,11 +966,23 @@ public class DynamicVdbTest {
 
 	private List<ModelTable> getTables(String projectName, String modelName) {
 		new ModelExplorer().openModelEditor(projectName, modelName + ".xmi");
-		ModelEditor ed = new ModelEditor(modelName + ".xmi");
-
-		List<ModelTable> tables = ed.getTables();
-		for (ModelTable t : tables) {
-			t.setColumns(ed.getColumns(t.getName()));
+		RelationalModelEditor editor = new RelationalModelEditor(modelName + ".xmi");
+	    TableEditor tableEditor = editor.openTableEditor();
+	    tableEditor.openTab(TableEditor.Tabs.BASE_TABLES);
+	    List<ModelTable> tables = new ArrayList<>();
+	    for (TableItem it : tableEditor.getRows()) {
+	    	tables.add(new ModelTable(it));
+		}
+	    tableEditor.openTab(TableEditor.Tabs.COLUMNS);
+	    for (ModelTable table : tables) {
+	    	List<ModelColumn> columns = new ArrayList<>();
+	    	for (TableItem it : tableEditor.getRows()) {
+				ModelColumn column = new ModelColumn(it);
+				if (column.getLocation().equalsIgnoreCase(table.getName())) {
+					columns.add(column);
+				}
+			}
+	    	table.setColumns(columns);
 		}
 		return tables;
 	}

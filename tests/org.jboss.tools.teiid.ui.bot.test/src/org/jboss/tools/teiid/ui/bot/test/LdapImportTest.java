@@ -1,7 +1,6 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.Properties;
@@ -26,7 +25,8 @@ import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
-import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
+import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
+import org.jboss.tools.teiid.reddeer.editor.TableEditor;
 import org.jboss.tools.teiid.reddeer.matcher.ModelColumnMatcher;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
@@ -92,10 +92,10 @@ public class LdapImportTest {
 		Project project = modelExplorer.getProject(NEW_PROJECT);
 		project.getProjectItem(RHDS_MODEL + ".xmi").open();
 
-		ModelEditor editor = new ModelEditor(RHDS_MODEL + ".xmi");
-		assertTrue(editor.isActive());
-		editor.showTabItem(ModelEditor.TABLE_EDITOR);
-		editor.showSubTabItem("Columns");
+		RelationalModelEditor editor = new RelationalModelEditor(LDAP_MODEL + ".xmi");
+		TableEditor tableEditor = editor.openTableEditor();
+		tableEditor.openTab(TableEditor.Tabs.COLUMNS);
+		
 		DefaultTable table = new DefaultTable(0);
 
 		assertColumns(table, importProperties.getProperty("selectedColumns"));
@@ -139,10 +139,10 @@ public class LdapImportTest {
 		Project project = modelExplorer.getProject(NEW_PROJECT);
 		project.getProjectItem(LDAP_MODEL + ".xmi").open();
 
-		ModelEditor editor = new ModelEditor(LDAP_MODEL + ".xmi");
-		assertTrue(editor.isActive());
-		editor.showTabItem(ModelEditor.TABLE_EDITOR);
-		editor.showSubTabItem("Columns");
+		RelationalModelEditor editor = new RelationalModelEditor(LDAP_MODEL + ".xmi");
+		TableEditor tableEditor = editor.openTableEditor();
+		tableEditor.openTab(TableEditor.Tabs.COLUMNS);
+		
 		DefaultTable table = new DefaultTable(0);
 
 		assertColumns(table, importProperties.getProperty("selectedColumns"));
@@ -187,7 +187,7 @@ public class LdapImportTest {
 			new DefaultTable().getItem(dataType).select();
 			;
 			new OkButton().click();
-			new ModelEditor(modelItem.getName()).save();
+			new RelationalModelEditor(modelItem.getName()).save();
 		} catch (Exception ex) {
 			System.out.println(ex);
 		}

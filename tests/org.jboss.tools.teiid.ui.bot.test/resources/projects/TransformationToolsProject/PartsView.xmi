@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="ASCII"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:diagram="http://www.metamatrix.com/metamodels/Diagram" xmlns:mmcore="http://www.metamatrix.com/metamodels/Core" xmlns:relational="http://www.metamatrix.com/metamodels/Relational" xmlns:transformation="http://www.metamatrix.com/metamodels/Transformation">
-  <mmcore:ModelAnnotation xmi:uuid="mmuuid:6fd74dda-80ba-4090-a3c1-678e575b9369" primaryMetamodelUri="http://www.metamatrix.com/metamodels/Relational" modelType="VIRTUAL" ProducerName="Teiid Designer" ProducerVersion="9.0.1.Beta1-v20141021-1225-B183"/>
+  <mmcore:ModelAnnotation xmi:uuid="mmuuid:6fd74dda-80ba-4090-a3c1-678e575b9369" primaryMetamodelUri="http://www.metamatrix.com/metamodels/Relational" modelType="VIRTUAL" ProducerName="Teiid Designer" ProducerVersion="10.0.1.Final-v20160713-1749-B16">
+    <modelImports xmi:uuid="mmuuid:da2b7e1d-356d-4ce7-9c28-a4d575fd034d" name="PartsSupplier" modelLocation="PartsSupplier.xmi" uuid="mmuuid:8c410d77-15f9-472e-a987-277b2ed73cf3" modelType="PHYSICAL" primaryMetamodelUri="http://www.metamatrix.com/metamodels/Relational"/>
+    <modelImports xmi:uuid="mmuuid:889e597b-cd4a-472d-8f62-cc3ce4f1c444" name="XMLSchema" modelLocation="http://www.w3.org/2001/XMLSchema" modelType="TYPE" primaryMetamodelUri="http://www.eclipse.org/xsd/2002/XSD"/>
+    <modelImports xmi:uuid="mmuuid:4b9a0f69-c884-4bbb-937c-7dab3c9556d1" name="SimpleDatatypes-instance" modelLocation="http://www.metamatrix.com/metamodels/SimpleDatatypes-instance" modelType="TYPE" primaryMetamodelUri="http://www.eclipse.org/xsd/2002/XSD"/>
+  </mmcore:ModelAnnotation>
   <diagram:DiagramContainer xmi:uuid="mmuuid:fa76285c-a6e1-440d-a118-fecab3de6bdb">
     <diagram xmi:uuid="mmuuid:85377e3b-aba0-4a67-a68f-bc0a9e1ab7ac" type="packageDiagramType" target="mmuuid/6fd74dda-80ba-4090-a3c1-678e575b9369">
       <diagramEntity xmi:uuid="mmuuid:a599ab0a-6ecd-4e80-b624-4043fc6defc0" modelObject="mmuuid/a4245229-1d32-4a88-a30a-cca87fa45ebf" xPosition="20" yPosition="20"/>
@@ -447,12 +451,138 @@
       <tags xmi:uuid="mmuuid:e77ed3cb-8642-4870-9737-ad9703731b25" key="en_US" value="The relative URI to map this procedure to."/>
     </annotations>
   </mmcore:AnnotationContainer>
-  <relational:BaseTable xmi:uuid="mmuuid:a4245229-1d32-4a88-a30a-cca87fa45ebf" name="SupplierParts"/>
+  <relational:BaseTable xmi:uuid="mmuuid:a4245229-1d32-4a88-a30a-cca87fa45ebf" name="CriteriaBuilderTable">
+    <columns xmi:uuid="mmuuid:5792a88f-49ed-4c62-9851-0dafe089a018" name="SUPPLIER_ID" length="10" nullable="NO_NULLS">
+      <type href="http://www.w3.org/2001/XMLSchema#string"/>
+    </columns>
+    <columns xmi:uuid="mmuuid:2523c27d-cfb8-488b-91ad-85d78f5603a0" name="SUPPLIER_NAME" length="30">
+      <type href="http://www.w3.org/2001/XMLSchema#string"/>
+    </columns>
+    <columns xmi:uuid="mmuuid:abbc6d3b-54f2-4da2-b3fc-47eb1401eb06" name="SUPPLIER_STATUS" fixedLength="true" precision="2" caseSensitive="false" searchability="ALL_EXCEPT_LIKE">
+      <type href="http://www.metamatrix.com/metamodels/SimpleDatatypes-instance#bigdecimal"/>
+    </columns>
+    <columns xmi:uuid="mmuuid:d6400587-179a-476d-86bb-749a7238054c" name="SUPPLIER_CITY" length="30">
+      <type href="http://www.w3.org/2001/XMLSchema#string"/>
+    </columns>
+    <columns xmi:uuid="mmuuid:c7f6f6a3-4f27-416c-b6df-05ee734b9aa5" name="SUPPLIER_STATE" length="2">
+      <type href="http://www.w3.org/2001/XMLSchema#string"/>
+    </columns>
+    <columns xmi:uuid="mmuuid:3360b929-0b6e-4c14-9354-295d65f18b77" name="PART_ID" length="50" nullable="NO_NULLS">
+      <type href="http://www.w3.org/2001/XMLSchema#string"/>
+    </columns>
+    <columns xmi:uuid="mmuuid:f908d461-8493-4678-90c1-1ff302d6e7a4" name="PART_NAME" length="255">
+      <type href="http://www.w3.org/2001/XMLSchema#string"/>
+    </columns>
+    <columns xmi:uuid="mmuuid:a84c94b1-1a93-439d-b012-8f4d171c9795" name="PART_COLOR" length="30">
+      <type href="http://www.w3.org/2001/XMLSchema#string"/>
+    </columns>
+    <columns xmi:uuid="mmuuid:e33add49-90a1-4143-8e31-06d2f91a396d" name="PART_WEIGHT" length="255">
+      <type href="http://www.w3.org/2001/XMLSchema#string"/>
+    </columns>
+    <columns xmi:uuid="mmuuid:6ba7200e-7b4c-4816-8eeb-272393ba272c" name="SUPPLIER_ID_1" length="10" nullable="NO_NULLS">
+      <type href="http://www.w3.org/2001/XMLSchema#string"/>
+    </columns>
+    <columns xmi:uuid="mmuuid:ff92bbb7-c03b-4b02-9aa5-1a26b7524a6c" name="PART_ID_1" length="50" nullable="NO_NULLS">
+      <type href="http://www.w3.org/2001/XMLSchema#string"/>
+    </columns>
+    <columns xmi:uuid="mmuuid:0e4f1fec-ed0a-434e-a8e7-388054b56c6a" name="QUANTITY" fixedLength="true" precision="3" caseSensitive="false" searchability="ALL_EXCEPT_LIKE">
+      <type href="http://www.metamatrix.com/metamodels/SimpleDatatypes-instance#bigdecimal"/>
+    </columns>
+    <columns xmi:uuid="mmuuid:c954766a-2018-4610-b5ff-c97a12499085" name="SHIPPER_ID" fixedLength="true" precision="2" caseSensitive="false" searchability="ALL_EXCEPT_LIKE">
+      <type href="http://www.metamatrix.com/metamodels/SimpleDatatypes-instance#bigdecimal"/>
+    </columns>
+  </relational:BaseTable>
   <transformation:TransformationContainer xmi:uuid="mmuuid:22bdfe24-9295-4aa0-beb9-2fae796f3d71">
     <transformationMappings xsi:type="transformation:SqlTransformationMappingRoot" xmi:uuid="mmuuid:4e54017b-74cc-417f-8484-e0e2d5def120" outputs="mmuuid/a4245229-1d32-4a88-a30a-cca87fa45ebf" target="mmuuid/a4245229-1d32-4a88-a30a-cca87fa45ebf">
       <helper xsi:type="transformation:SqlTransformation" xmi:uuid="mmuuid:0efb3d0e-b958-451f-98df-6ee93d14666b">
-        <nested xsi:type="transformation:SqlTransformation" xmi:uuid="mmuuid:5afc40ab-c6a3-44d1-8e76-3ecbcd911c54"/>
+        <nested xsi:type="transformation:SqlTransformation" xmi:uuid="mmuuid:5afc40ab-c6a3-44d1-8e76-3ecbcd911c54" selectSql="SELECT PartsSupplier.SUPPLIER.SUPPLIER_ID, PartsSupplier.SUPPLIER.SUPPLIER_NAME, PartsSupplier.SUPPLIER.SUPPLIER_STATUS, PartsSupplier.SUPPLIER.SUPPLIER_CITY, PartsSupplier.SUPPLIER.SUPPLIER_STATE, PartsSupplier.PARTS.PART_ID, PartsSupplier.PARTS.PART_NAME, PartsSupplier.PARTS.PART_COLOR, PartsSupplier.PARTS.PART_WEIGHT, PartsSupplier.SUPPLIER_PARTS.SUPPLIER_ID AS SUPPLIER_ID_1, PartsSupplier.SUPPLIER_PARTS.PART_ID AS PART_ID_1, PartsSupplier.SUPPLIER_PARTS.QUANTITY, PartsSupplier.SUPPLIER_PARTS.SHIPPER_ID FROM PartsSupplier.SUPPLIER, PartsSupplier.PARTS, PartsSupplier.SUPPLIER_PARTS"/>
+        <aliases xmi:uuid="mmuuid:832c0cf4-6e6e-4daa-ac50-5bb268baaae8" alias="SUPPLIER">
+          <aliasedObject href="PartsSupplier.xmi#mmuuid/915f582f-c10f-401e-9144-20949fefb31a"/>
+        </aliases>
+        <aliases xmi:uuid="mmuuid:a0a47ff2-e386-4f23-aaec-c45b2471a5db" alias="PARTS">
+          <aliasedObject href="PartsSupplier.xmi#mmuuid/c04603a6-5340-4a28-a83d-2d9fb5934f0f"/>
+        </aliases>
+        <aliases xmi:uuid="mmuuid:2fd176db-1bdb-407e-8274-5e29f8c80996" alias="SUPPLIER_PARTS">
+          <aliasedObject href="PartsSupplier.xmi#mmuuid/455b9d60-a321-45e8-a679-d0359022305e"/>
+        </aliases>
       </helper>
+      <nested xsi:type="transformation:TransformationMapping" xmi:uuid="mmuuid:c482c0d4-4628-410c-9ba2-99328e734673" outputs="mmuuid/5792a88f-49ed-4c62-9851-0dafe089a018">
+        <inputs href="PartsSupplier.xmi#mmuuid/21162cee-06f0-4871-8cb4-51c44fe60029"/>
+      </nested>
+      <nested xsi:type="transformation:TransformationMapping" xmi:uuid="mmuuid:bb0882ae-3910-4d06-b4b9-a1980c895b5b" outputs="mmuuid/2523c27d-cfb8-488b-91ad-85d78f5603a0">
+        <inputs href="PartsSupplier.xmi#mmuuid/712db661-8127-4131-ac17-8af41cc45c4f"/>
+      </nested>
+      <nested xsi:type="transformation:TransformationMapping" xmi:uuid="mmuuid:68a5b6fb-9d30-4dbc-9d2b-923b5c0a6eb3" outputs="mmuuid/abbc6d3b-54f2-4da2-b3fc-47eb1401eb06">
+        <inputs href="PartsSupplier.xmi#mmuuid/6218385e-8ead-4041-a82c-b5249c0b24b0"/>
+      </nested>
+      <nested xsi:type="transformation:TransformationMapping" xmi:uuid="mmuuid:11f736ac-9cb1-467d-8575-7f95e8fd0a2e" outputs="mmuuid/d6400587-179a-476d-86bb-749a7238054c">
+        <inputs href="PartsSupplier.xmi#mmuuid/14a2a97f-07bf-4d89-99d3-7b4dac6dfc60"/>
+      </nested>
+      <nested xsi:type="transformation:TransformationMapping" xmi:uuid="mmuuid:6a3e9ebe-1d07-49be-98a9-d571b0fb2b47" outputs="mmuuid/c7f6f6a3-4f27-416c-b6df-05ee734b9aa5">
+        <inputs href="PartsSupplier.xmi#mmuuid/a41008c5-04c0-468a-981e-b39c07d71e69"/>
+      </nested>
+      <nested xsi:type="transformation:TransformationMapping" xmi:uuid="mmuuid:9b019b7b-ec4f-4002-9018-d5d29c587399" outputs="mmuuid/3360b929-0b6e-4c14-9354-295d65f18b77">
+        <inputs href="PartsSupplier.xmi#mmuuid/c0fb32ec-758c-4c5b-84e7-b8261703a04b"/>
+      </nested>
+      <nested xsi:type="transformation:TransformationMapping" xmi:uuid="mmuuid:a6316741-18df-4177-b36a-4547a40a3335" outputs="mmuuid/f908d461-8493-4678-90c1-1ff302d6e7a4">
+        <inputs href="PartsSupplier.xmi#mmuuid/88f4a454-d33a-4a65-887e-41f1d9221481"/>
+      </nested>
+      <nested xsi:type="transformation:TransformationMapping" xmi:uuid="mmuuid:a36d89bc-f933-47e2-a295-181208c2577f" outputs="mmuuid/a84c94b1-1a93-439d-b012-8f4d171c9795">
+        <inputs href="PartsSupplier.xmi#mmuuid/499a807b-e0c0-4148-b713-2ed0e21de58f"/>
+      </nested>
+      <nested xsi:type="transformation:TransformationMapping" xmi:uuid="mmuuid:cfea214c-6575-4a0e-96ea-fd397e5ff293" outputs="mmuuid/e33add49-90a1-4143-8e31-06d2f91a396d">
+        <inputs href="PartsSupplier.xmi#mmuuid/09ec99bf-6800-4417-abfd-d508c3cbc9db"/>
+      </nested>
+      <nested xsi:type="transformation:TransformationMapping" xmi:uuid="mmuuid:fb987138-891b-4ac6-a2a4-ebc090ca263b" outputs="mmuuid/6ba7200e-7b4c-4816-8eeb-272393ba272c">
+        <inputs href="PartsSupplier.xmi#mmuuid/277b1f68-98e2-4062-b406-e0ee6514660a"/>
+      </nested>
+      <nested xsi:type="transformation:TransformationMapping" xmi:uuid="mmuuid:abc86780-c1c3-4aa5-941a-c74f384b0d37" outputs="mmuuid/ff92bbb7-c03b-4b02-9aa5-1a26b7524a6c">
+        <inputs href="PartsSupplier.xmi#mmuuid/141dd958-e0ef-4879-904d-1bf80d563573"/>
+      </nested>
+      <nested xsi:type="transformation:TransformationMapping" xmi:uuid="mmuuid:a998e1ca-db73-4980-9461-8c0f40819f1c" outputs="mmuuid/0e4f1fec-ed0a-434e-a8e7-388054b56c6a">
+        <inputs href="PartsSupplier.xmi#mmuuid/bdbb79c6-51c6-4d1c-b93f-505bfd28e76f"/>
+      </nested>
+      <nested xsi:type="transformation:TransformationMapping" xmi:uuid="mmuuid:6a960d5c-c59b-41e4-a602-f128cc7c8852" outputs="mmuuid/c954766a-2018-4610-b5ff-c97a12499085">
+        <inputs href="PartsSupplier.xmi#mmuuid/836186b9-b99d-4378-b251-66f25a28fc06"/>
+      </nested>
+      <inputs href="PartsSupplier.xmi#mmuuid/915f582f-c10f-401e-9144-20949fefb31a"/>
+      <inputs href="PartsSupplier.xmi#mmuuid/c04603a6-5340-4a28-a83d-2d9fb5934f0f"/>
+      <inputs href="PartsSupplier.xmi#mmuuid/455b9d60-a321-45e8-a679-d0359022305e"/>
+    </transformationMappings>
+    <transformationMappings xsi:type="transformation:SqlTransformationMappingRoot" xmi:uuid="mmuuid:d6f7c597-11e8-4276-991d-46f5d1a16b73" outputs="mmuuid/c8356b64-e27b-4180-9e78-26ae523e7228" target="mmuuid/c8356b64-e27b-4180-9e78-26ae523e7228">
+      <helper xsi:type="transformation:SqlTransformation" xmi:uuid="mmuuid:6fc9b865-6232-4d20-8a4f-cb12ef2579a7">
+        <nested xsi:type="transformation:SqlTransformation" xmi:uuid="mmuuid:593d4204-347f-46bb-bd89-549537083c78" selectSql="SELECT&#xa;&#x9;&#x9;*&#xa;&#x9;FROM&#xa;&#x9;&#x9;PartsSupplier.PARTS"/>
+        <aliases xmi:uuid="mmuuid:a9f6a3f8-2b34-48b4-a654-d0148636c9c6" alias="PARTS">
+          <aliasedObject href="PartsSupplier.xmi#mmuuid/c04603a6-5340-4a28-a83d-2d9fb5934f0f"/>
+        </aliases>
+      </helper>
+      <nested xsi:type="transformation:TransformationMapping" xmi:uuid="mmuuid:44e98e20-5b29-48cb-8c67-cd653f64d22d" outputs="mmuuid/c4194027-8d64-40b9-9477-c126548b5cfc">
+        <inputs href="PartsSupplier.xmi#mmuuid/c0fb32ec-758c-4c5b-84e7-b8261703a04b"/>
+      </nested>
+      <nested xsi:type="transformation:TransformationMapping" xmi:uuid="mmuuid:43464c50-218b-4e98-ab60-ee7088c96de6" outputs="mmuuid/c673bed1-0ff9-40a7-a78e-4d29118f96dc">
+        <inputs href="PartsSupplier.xmi#mmuuid/88f4a454-d33a-4a65-887e-41f1d9221481"/>
+      </nested>
+      <nested xsi:type="transformation:TransformationMapping" xmi:uuid="mmuuid:8e0de11e-3134-4c88-8e92-d53121a90f39" outputs="mmuuid/d57ea1fd-0b8c-4044-93d0-ceaf2c3ce2b8">
+        <inputs href="PartsSupplier.xmi#mmuuid/499a807b-e0c0-4148-b713-2ed0e21de58f"/>
+      </nested>
+      <nested xsi:type="transformation:TransformationMapping" xmi:uuid="mmuuid:8b6af809-8592-42e5-aeb9-6e0a0ac8c079" outputs="mmuuid/043cc900-5ff9-4e75-a8b7-b6d384cd1ed8">
+        <inputs href="PartsSupplier.xmi#mmuuid/09ec99bf-6800-4417-abfd-d508c3cbc9db"/>
+      </nested>
+      <inputs href="PartsSupplier.xmi#mmuuid/c04603a6-5340-4a28-a83d-2d9fb5934f0f"/>
     </transformationMappings>
   </transformation:TransformationContainer>
+  <relational:BaseTable xmi:uuid="mmuuid:c8356b64-e27b-4180-9e78-26ae523e7228" name="ReconcilerTable">
+    <columns xmi:uuid="mmuuid:c4194027-8d64-40b9-9477-c126548b5cfc" name="PART_ID" length="50" nullable="NO_NULLS">
+      <type href="http://www.w3.org/2001/XMLSchema#string"/>
+    </columns>
+    <columns xmi:uuid="mmuuid:c673bed1-0ff9-40a7-a78e-4d29118f96dc" name="PART_NAME" length="255">
+      <type href="http://www.w3.org/2001/XMLSchema#string"/>
+    </columns>
+    <columns xmi:uuid="mmuuid:d57ea1fd-0b8c-4044-93d0-ceaf2c3ce2b8" name="PART_COLOR" length="30">
+      <type href="http://www.w3.org/2001/XMLSchema#string"/>
+    </columns>
+    <columns xmi:uuid="mmuuid:043cc900-5ff9-4e75-a8b7-b6d384cd1ed8" name="PART_WEIGHT" length="255">
+      <type href="http://www.w3.org/2001/XMLSchema#string"/>
+    </columns>
+  </relational:BaseTable>
 </xmi:XMI>

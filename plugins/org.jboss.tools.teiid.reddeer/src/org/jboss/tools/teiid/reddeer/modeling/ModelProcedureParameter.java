@@ -3,7 +3,6 @@ package org.jboss.tools.teiid.reddeer.modeling;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.api.TableItem;
 
-// TODO: might want to extend ModelColumn
 public class ModelProcedureParameter {
 
 	private String direction;

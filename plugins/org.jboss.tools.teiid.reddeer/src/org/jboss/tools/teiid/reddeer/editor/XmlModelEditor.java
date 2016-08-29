@@ -193,14 +193,6 @@ public class XmlModelEditor extends AbstractModelEditor {
 	}
 	
 	/**
-	 * Opens table editor's tab.
-	 * @param fromDiagram - XmlModelEditor.PACKAGE_DIAGRAM|...
-	 */
-	public TableEditor openTableEditor(String fromDiagram){
-		return new TableEditor(this.getTitle(), fromDiagram);
-	}
-	
-	/**
 	 * Selects mapping class with specified prefix
 	 */
 	public void selectModelItem(String namePrefix, String type){

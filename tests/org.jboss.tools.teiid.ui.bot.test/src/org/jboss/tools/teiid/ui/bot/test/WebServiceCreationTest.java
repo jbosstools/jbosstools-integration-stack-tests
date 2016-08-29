@@ -62,7 +62,6 @@ public class WebServiceCreationTest {
 	private static final String DOCUMENT_PRODUCT = "productDocument";
 	private static final String DOCUMENT_GOOD = "goodResultsDocument";
 	private static final String DOCUMENT_BAD = "badResultsDocument";
-	private static final String VDB_NAME = "ProductWs";
 	
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;
@@ -111,12 +110,10 @@ public class WebServiceCreationTest {
 				.nextPage()
 				.finish();
 		
-		AbstractWait.sleep(TimePeriod.SHORT);
-		new ShellMenu("File","Save All").select();
+		new WebServiceModelEditor(WS_MODEL).saveAndClose();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		
 		// 2. Define XML documents
-		new WebServiceModelEditor(WS_MODEL).close();
 		modelExplorer.renameModel("XmlModel.xmi", PROJECT_NAME, "web_services", "ProductsWsResponses.xmi");
 		modelExplorer.openModelEditor(PROJECT_NAME, "web_services", "XmlModel.xmi");
 		XmlModelEditor xmlEditor = new XmlModelEditor("XmlModel.xmi");
@@ -181,7 +178,7 @@ public class WebServiceCreationTest {
 		new ProblemsViewEx().checkErrors();
 		
 		// 4. Generate WAR and test it
-		generateWarAndTestIt();
+		generateWarAndTestIt("WsWsdlVdb");
 	}
 	
 	@Test
@@ -199,7 +196,7 @@ public class WebServiceCreationTest {
 		new WebServiceModelEditor(WS_MODEL).close();
 		modelExplorer.renameModel("XmlModel.xmi", PROJECT_NAME, "web_services", "OutputSchema_View.xmi");		
 		
-		String[] xmlModelPath = new String[]{PROJECT_NAME + "web_services", "XmlModel.xmi"};
+		String[] xmlModelPath = new String[]{PROJECT_NAME, "web_services", "XmlModel.xmi"};
 		modelExplorer.openModelEditor(xmlModelPath);
 		XmlModelEditor xmlEditor = new XmlModelEditor("XmlModel.xmi");
 		
@@ -285,7 +282,7 @@ public class WebServiceCreationTest {
 				fileHelper.getSql("WebServiceCreationTest/Insert.sql"));
 		
 		// 3.4. Define delete operation
-		modelExplorer.addChildToModelItem(ChildType.OPERATION, wsModelPath, INTERFACE_NAME);
+		modelExplorer.addChildToModelItem(ChildType.OPERATION, (wsModelPath+"/"+INTERFACE_NAME).split("/"));
 		modelExplorer.renameModelItem(OPERATION_DELETE, (wsModelPath+"/"+INTERFACE_NAME+"/NewOperation").split("/"));
 		modelExplorer.addChildToModelItem(ChildType.INPUT, (wsModelPath+"/"+INTERFACE_NAME+"/"+OPERATION_DELETE).split("/"));
 		modelExplorer.addChildToModelItem(ChildType.OUTPUT, (wsModelPath+"/"+INTERFACE_NAME+"/"+OPERATION_DELETE).split("/"));
@@ -315,7 +312,7 @@ public class WebServiceCreationTest {
 		new ProblemsViewEx().checkErrors();	
 		
 		// 4. Generate WAR and test it
-		generateWarAndTestIt();
+		generateWarAndTestIt("WsRelVdb");
 	}
 	
 	@Test
@@ -417,51 +414,50 @@ public class WebServiceCreationTest {
 		new ProblemsViewEx().checkErrors();	
 		
 		// 3. Generate WAR and test it
-		generateWarAndTestIt();
+		generateWarAndTestIt("WsXmlVdb");
 	}
 
-	private void generateWarAndTestIt() throws IOException{
+	private void generateWarAndTestIt(String vdbName) throws IOException{
 		// 1. Create VDB and deploy it
 		VdbWizard.openVdbWizard()
 				.setLocation(PROJECT_NAME)
-				.setName(VDB_NAME)
+				.setName(vdbName)
 				.addModel(PROJECT_NAME, "web_services", WS_MODEL)
 				.finish();
 		
 		AbstractWait.sleep(TimePeriod.SHORT); 
-		String translator = VDBEditor.getInstance(VDB_NAME + ".vdb").getTranslatorName("SourceModel.xmi");
+		String translator = VDBEditor.getInstance(vdbName + ".vdb").getTranslatorName("SourceModel.xmi");
 		assertEquals("Translator: " + translator, "oracle", translator);
 		
-		modelExplorer.deployVdb(PROJECT_NAME, VDB_NAME);
+		modelExplorer.deployVdb(PROJECT_NAME, vdbName);
 		
 		// 2. create WAR, deploy, send requests and check responses (HTTPBasic security)
-		modelExplorer.generateWar(true, PROJECT_NAME, VDB_NAME)
-				.setVdbJndiName(VDB_NAME)
+		String warName = vdbName + "HttpBasicWar";
+		modelExplorer.generateWar(true, PROJECT_NAME, vdbName)
+				.setVdbJndiName(vdbName)
+				.setContextName(warName)
 				.setWarFileLocation(modelExplorer.getProjectPath(PROJECT_NAME) + "/others")
 				.setHttpBasicSecurity("teiid-security", "products")
 				.finish();
 		
-		modelExplorer.deployWar(teiidServer, PROJECT_NAME, "others", VDB_NAME);
+		modelExplorer.deployWar(teiidServer, PROJECT_NAME, "others", warName);
 
 		postRequestHttpBasicSecurity("getAllProductInfo", 
+				"http://localhost:8080/" + warName + "/" + INTERFACE_NAME + "?wsdl",
 				fileHelper.getXmlNoHeader("WebServiceCreationTest/GetAllRequest.xml"), 
 				fileHelper.getXmlNoHeader("WebServiceCreationTest/GetAllResponse.xml"));
 
 		try {
 			postRequestNoneSecurity("getAllProductInfo", 
+					"http://localhost:8080/" + warName + "/" + INTERFACE_NAME + "?wsdl",
 					fileHelper.getXmlNoHeader("WebServiceCreationTest/GetAllRequest.xml"), null);
 		} catch (IOException e){
 			// expected
 		}
-//		try {
-//			postRequestWsSecurity("getAllProductInfo",
-//					fileHelper.getXml("WebServiceCreationTest/GetAllRequest.xml"), null);
-//		} catch (IOException e){
-//			// expected
-//		}
 		
 		try {
 			postRequestHttpBasicSecurity("insertProductInfo", 
+					"http://localhost:8080/" + warName + "/" + INTERFACE_NAME + "?wsdl",
 					fileHelper.getXmlNoHeader("WebServiceCreationTest/InsertRequest.xml"), 
 					fileHelper.getXmlNoHeader("WebServiceCreationTest/ResponseSuccessful.xml"));
 		} catch (AssertionError e){
@@ -471,6 +467,7 @@ public class WebServiceCreationTest {
 		
 		try {
 			postRequestHttpBasicSecurity("insertProductInfo", 
+					"http://localhost:8080/" + warName + "/" + INTERFACE_NAME + "?wsdl",
 					fileHelper.getXmlNoHeader("WebServiceCreationTest/InsertRequest.xml"), 
 					fileHelper.getXmlNoHeader("WebServiceCreationTest/ResponseFailed.xml"));
 		} catch (AssertionError e){
@@ -483,6 +480,7 @@ public class WebServiceCreationTest {
 		
 		try {
 			postRequestHttpBasicSecurity("getProductInfo",
+					"http://localhost:8080/" + warName + "/" + INTERFACE_NAME + "?wsdl",
 					fileHelper.getXmlNoHeader("WebServiceCreationTest/GetRequest.xml"),
 					fileHelper.getXmlNoHeader("WebServiceCreationTest/GetResponse.xml"));
 		} catch (AssertionError e){
@@ -495,6 +493,7 @@ public class WebServiceCreationTest {
 		
 		try {
 			postRequestHttpBasicSecurity("deleteProductInfo",
+					"http://localhost:8080/" + warName + "/" + INTERFACE_NAME + "?wsdl",
 					fileHelper.getXmlNoHeader("WebServiceCreationTest/DeleteRequest.xml"),
 					fileHelper.getXmlNoHeader("WebServiceCreationTest/ResponseSuccessful.xml"));
 		} catch (AssertionError e){
@@ -506,30 +505,34 @@ public class WebServiceCreationTest {
 		}
 		
 		postRequestHttpBasicSecurity("deleteProductInfo",
+				"http://localhost:8080/" + warName + "/" + INTERFACE_NAME + "?wsdl",
 				fileHelper.getXmlNoHeader("WebServiceCreationTest/DeleteRequest.xml"),
 				fileHelper.getXmlNoHeader("WebServiceCreationTest/ResponseFailed.xml"));
 		
 		postRequestHttpBasicSecurity("getProductInfo",
+				"http://localhost:8080/" + warName + "/" + INTERFACE_NAME + "?wsdl",
 				fileHelper.getXmlNoHeader("WebServiceCreationTest/GetRequest.xml"),
 				fileHelper.getXmlNoHeader("WebServiceCreationTest/GetResponseNotFound.xml"));
 		
-		// 3. recreate WAR, redeploy, send requests and check responses (None security)
-		modelExplorer.undeployWar(PROJECT_NAME, "others", VDB_NAME);
-		
-		modelExplorer.generateWar(true, PROJECT_NAME, VDB_NAME)
-				.setVdbJndiName(VDB_NAME)
+		// 3. create WAR, deploy, send requests and check responses (None security)
+		warName = vdbName + "NoneWar";
+		modelExplorer.generateWar(true, PROJECT_NAME, vdbName)
+				.setVdbJndiName(vdbName)
+				.setContextName(warName)
 				.setWarFileLocation(modelExplorer.getProjectPath(PROJECT_NAME) + "/others")
 				.setNoneSecurity()
 				.finish();
 		
-		modelExplorer.deployWar(teiidServer, PROJECT_NAME, "others", VDB_NAME);
+		modelExplorer.deployWar(teiidServer, PROJECT_NAME, "others", warName);
 		
 		postRequestNoneSecurity("getAllProductInfo",
+				"http://localhost:8080/" + warName + "/" + INTERFACE_NAME + "?wsdl",
 				fileHelper.getXmlNoHeader("WebServiceCreationTest/GetAllRequest.xml"), 
 				fileHelper.getXmlNoHeader("WebServiceCreationTest/GetAllResponse.xml"));
 
 		try {
 			postRequestNoneSecurity("insertProductInfo", 
+					"http://localhost:8080/" + warName + "/" + INTERFACE_NAME + "?wsdl",
 					fileHelper.getXmlNoHeader("WebServiceCreationTest/InsertRequest.xml"), 
 					fileHelper.getXmlNoHeader("WebServiceCreationTest/ResponseSuccessful.xml"));
 		} catch (AssertionError e){
@@ -539,6 +542,7 @@ public class WebServiceCreationTest {
 		
 		try {
 			postRequestNoneSecurity("insertProductInfo", 
+					"http://localhost:8080/" + warName + "/" + INTERFACE_NAME + "?wsdl",
 					fileHelper.getXmlNoHeader("WebServiceCreationTest/InsertRequest.xml"), 
 					fileHelper.getXmlNoHeader("WebServiceCreationTest/ResponseFailed.xml"));
 		} catch (AssertionError e){
@@ -551,6 +555,7 @@ public class WebServiceCreationTest {
 		
 		try {
 			postRequestNoneSecurity("getProductInfo",
+					"http://localhost:8080/" + warName + "/" + INTERFACE_NAME + "?wsdl",
 					fileHelper.getXmlNoHeader("WebServiceCreationTest/GetRequest.xml"),
 					fileHelper.getXmlNoHeader("WebServiceCreationTest/GetResponse.xml"));
 		} catch (AssertionError e){
@@ -563,6 +568,7 @@ public class WebServiceCreationTest {
 		
 		try {
 			postRequestNoneSecurity("deleteProductInfo",
+					"http://localhost:8080/" + warName + "/" + INTERFACE_NAME + "?wsdl",
 					fileHelper.getXmlNoHeader("WebServiceCreationTest/DeleteRequest.xml"),
 					fileHelper.getXmlNoHeader("WebServiceCreationTest/ResponseSuccessful.xml"));
 		} catch (AssertionError e){
@@ -574,22 +580,21 @@ public class WebServiceCreationTest {
 		}
 		
 		postRequestNoneSecurity("deleteProductInfo",
+				"http://localhost:8080/" + warName + "/" + INTERFACE_NAME + "?wsdl",
 				fileHelper.getXmlNoHeader("WebServiceCreationTest/DeleteRequest.xml"),
 				fileHelper.getXmlNoHeader("WebServiceCreationTest/ResponseFailed.xml"));
 		
 		postRequestNoneSecurity("getProductInfo",
+				"http://localhost:8080/" + warName + "/" + INTERFACE_NAME + "?wsdl",
 				fileHelper.getXmlNoHeader("WebServiceCreationTest/GetRequest.xml"),
 				fileHelper.getXmlNoHeader("WebServiceCreationTest/GetResponseNotFound.xml"));		
-		
-		// 4. recreate WAR, redeploy, send requests and check responses (WS-security)
-		// TODO test this?
 	}
 	
-	private void postRequestHttpBasicSecurity(String soapAction, String request, String expected) throws IOException{
+	private void postRequestHttpBasicSecurity(String soapAction, String uri, String request, String expected) throws IOException{
 		String username = teiidServer.getServerConfig().getServerBase().getProperty("teiidUser");
 		String password = teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword");
 		System.out.println("Using HTTPBasic security with username '" + username + "' and password '" + password + "'");
-		String response = new SimpleHttpClient("http://localhost:8080/" + VDB_NAME + "/" + INTERFACE_NAME + "?wsdl")
+		String response = new SimpleHttpClient(uri)
 				.setBasicAuth(username, password)
 				.addHeader("Content-Type", "text/xml; charset=utf-8")
 				.addHeader("SOAPAction", soapAction)
@@ -597,8 +602,8 @@ public class WebServiceCreationTest {
 		assertEquals(expected, response);
 	}
 	
-	private void postRequestNoneSecurity(String soapAction,String request, String expected) throws IOException{
-		String response = new SimpleHttpClient("http://localhost:8080/" + VDB_NAME + "/" + INTERFACE_NAME + "?wsdl")
+	private void postRequestNoneSecurity(String soapAction, String uri, String request, String expected) throws IOException{
+		String response = new SimpleHttpClient(uri)
 					.addHeader("Content-Type", "text/xml; charset=utf-8")
 					.addHeader("SOAPAction", soapAction)
 					.post(request);

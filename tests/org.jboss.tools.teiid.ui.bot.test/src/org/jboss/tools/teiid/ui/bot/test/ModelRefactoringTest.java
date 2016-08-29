@@ -1,7 +1,6 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
@@ -14,7 +13,6 @@ import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
@@ -23,9 +21,11 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
+import org.jboss.tools.teiid.reddeer.AssertBot;
+import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
+import org.jboss.tools.teiid.reddeer.editor.TransformationEditor;
+import org.jboss.tools.teiid.reddeer.matcher.ModelEditorItemMatcher;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
-import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ProblemsViewEx;
 import org.junit.After;
@@ -34,7 +34,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
-@TeiidServer(state = ServerReqState.STOPPED)
 @OpenPerspective(value = TeiidPerspective.class)
 public class ModelRefactoringTest {
 
@@ -70,38 +69,38 @@ public class ModelRefactoringTest {
 	@Test
 	public void renameSourceModel() {
 		renameItem(project.getProjectItem("partssupplier.xmi"), "partssupplier_X.xmi");
-		checkDependentModel("partssupplier_X", "partssupplier_view.xmi", "SUPPLIER");
-		checkDependentModel("partssupplier_X", "views", "partssupplier_view_2.xmi", "SUPPLIER");
+		checkDependentModel("partssupplier_X", "SUPPLIER", PROJECT_NAME, "partssupplier_view.xmi");
+		checkDependentModel("partssupplier_X", "SUPPLIER", PROJECT_NAME, "views", "partssupplier_view_2.xmi");
 		new ProblemsViewEx().checkErrors();
 	}
 
 	@Test
 	public void renameSourceModelInFolder() {
 		renameItem(project.getProjectItem("sources", "books.xmi"), "books_X.xmi");
-		checkDependentModel("books_X", "books_view_2.xmi", "PUBLISHERS");
-		checkDependentModel("books_X", "views", "books_view.xmi", "PUBLISHERS");
+		checkDependentModel("books_X", "PUBLISHERS", PROJECT_NAME, "books_view_2.xmi");
+		checkDependentModel("books_X", "PUBLISHERS", PROJECT_NAME, "views", "books_view.xmi");
 		new ProblemsViewEx().checkErrors();
 	}
 
 	@Test
 	public void renameViewModel() {
 		renameItem(project.getProjectItem("partssupplier_view_3.xmi"), "partssupplier_view_X.xmi");
-		checkDependentModel("partssupplier_view_X", "partssupplier_view_4.xmi", "SUPPLIER");
+		checkDependentModel("partssupplier_view_X", "SUPPLIER", PROJECT_NAME, "partssupplier_view_4.xmi");
 		new ProblemsViewEx().checkErrors();
 	}
 
 	@Test
 	public void renameViewModelInFolder() {
 		renameItem(project.getProjectItem("views", "partssupplier_view_2.xmi"), "partssupplier_view_X.xmi");
-		checkDependentModel("partssupplier_view_X", "partssupplier_view_3.xmi", "SUPPLIER");
+		checkDependentModel("partssupplier_view_X", "SUPPLIER", PROJECT_NAME, "partssupplier_view_3.xmi");
 		new ProblemsViewEx().checkErrors();
 	}
 
 	@Test
 	public void renameFolder() {
 		renameItem(project.getProjectItem("sources"), "sources_X");
-		checkDependentModel("books", "books_view_2.xmi", "PUBLISHERS");
-		checkDependentModel("books", "views", "books_view.xmi", "PUBLISHERS");
+		checkDependentModel("books", "PUBLISHERS", PROJECT_NAME, "books_view_2.xmi");
+		checkDependentModel("books", "PUBLISHERS", PROJECT_NAME, "views", "books_view.xmi");
 		new ProblemsViewEx().checkErrors();
 	}
 
@@ -110,8 +109,8 @@ public class ModelRefactoringTest {
 		moveItem(project.getProjectItem("sources", "books.xmi"), "sources2");
 		new WaitWhile(new JobIsRunning());
 		new ProblemsViewEx().checkErrors();
-		checkDependentModel("books", "books_view_2.xmi", "PUBLISHERS");
-		checkDependentModel("books", "views", "books_view.xmi", "PUBLISHERS");
+		checkDependentModel("books", "PUBLISHERS", PROJECT_NAME, "books_view_2.xmi");
+		checkDependentModel("books", "PUBLISHERS", PROJECT_NAME, "views", "books_view.xmi");
 	}
 
 	@Test
@@ -124,15 +123,15 @@ public class ModelRefactoringTest {
 		updateImports("books_view_2.xmi");
 
 		new ProblemsViewEx().checkErrors();
-		checkDependentModel("books", "books_view_2.xmi", "PUBLISHERS");
-		checkDependentModel("books", "views", "books_view.xmi", "PUBLISHERS");
+		checkDependentModel("books", "PUBLISHERS", PROJECT_NAME, "books_view_2.xmi");
+		checkDependentModel("books", "PUBLISHERS", PROJECT_NAME, "views", "books_view.xmi");
 	}
 
 	@Test
 	public void moveViewModelIntoFolder() {
 		moveItem(project.getProjectItem("partssupplier_view_3.xmi"), "views");
 		new ProblemsViewEx().checkErrors();
-		checkDependentModel("partssupplier_view_3", "partssupplier_view_4.xmi", "SUPPLIER");
+		checkDependentModel("partssupplier_view_3", "SUPPLIER", PROJECT_NAME, "partssupplier_view_4.xmi");
 	}
 
 	@Test
@@ -143,14 +142,14 @@ public class ModelRefactoringTest {
 		updateImports("views", "partssupplier_view_3.xmi");
 
 		new ProblemsViewEx().checkErrors();
-		checkDependentModel("partssupplier_view_3", "partssupplier_view_4.xmi", "SUPPLIER");
+		checkDependentModel("partssupplier_view_3", "SUPPLIER", PROJECT_NAME, "partssupplier_view_4.xmi");
 	}
 
 	@Test
 	public void moveViewModelOutOfFolder() {
 		moveItem(project.getProjectItem("views", "partssupplier_view_2.xmi"));
 		new ProblemsViewEx().checkErrors();
-		checkDependentModel("partssupplier_view_2", "partssupplier_view_3.xmi", "SUPPLIER");
+		checkDependentModel("partssupplier_view_2", "SUPPLIER", PROJECT_NAME, "partssupplier_view_3.xmi");
 	}
 
 	@Test
@@ -162,7 +161,7 @@ public class ModelRefactoringTest {
 		updateImports("partssupplier_view_4.xmi");
 
 		new ProblemsViewEx().checkErrors();
-		checkDependentModel("partssupplier_view_2", "partssupplier_view_3.xmi", "SUPPLIER");
+		checkDependentModel("partssupplier_view_2", "SUPPLIER", PROJECT_NAME, "partssupplier_view_3.xmi");
 	}
 
 	@Test
@@ -200,8 +199,8 @@ public class ModelRefactoringTest {
 	public void moveSourceModelOutOfFolder() {
 		moveItem(project.getProjectItem("sources", "books.xmi"));
 		new ProblemsViewEx().checkErrors();
-		checkDependentModel("books", "books_view_2.xmi", "PUBLISHERS");
-		checkDependentModel("books", "views", "books_view.xmi", "PUBLISHERS");
+		checkDependentModel("books", "PUBLISHERS", PROJECT_NAME, "books_view_2.xmi");
+		checkDependentModel("books", "PUBLISHERS", PROJECT_NAME, "views", "books_view.xmi");
 	}
 
 	@Test
@@ -213,8 +212,8 @@ public class ModelRefactoringTest {
 		updateImports("books_view_2.xmi");
 
 		new ProblemsViewEx().checkErrors();
-		checkDependentModel("books", "books_view_2.xmi", "PUBLISHERS");
-		checkDependentModel("books", "views", "books_view.xmi", "PUBLISHERS");
+		checkDependentModel("books", "PUBLISHERS", PROJECT_NAME, "books_view_2.xmi");
+		checkDependentModel("books", "PUBLISHERS", PROJECT_NAME, "views", "books_view.xmi");
 	}
 
 	@Test
@@ -263,15 +262,14 @@ public class ModelRefactoringTest {
 		new WaitWhile(new ShellWithTextIsActive("Move Resource"));
 	}
 
-	private void checkDependentModel(String expectedSourceTable, String... path) {
-		ModelExplorer modelView = TeiidPerspective.getInstance().getModelExplorerView();
-		modelView.openTransformationDiagram(PROJECT_NAME, path);
-
-		ModelEditor me = new ModelEditor(path[path.length - 2]);
-		AbstractWait.sleep(TimePeriod.NORMAL);
-		me.showTransformation();
-		assertTrue("Transformation not updated after refactoring",
-				me.getTransformation().contains(expectedSourceTable));
+	/**
+	 * @param modelPath - path to model (<PROJECT>, ..., <MODEL>)
+	 */
+	private void checkDependentModel(String expectedSourceTable, String tableName, String... modelPath) {
+		new ModelExplorer().openModelEditor(modelPath);
+		RelationalModelEditor editor = new RelationalModelEditor(modelPath[modelPath.length - 1]);
+	    TransformationEditor transformationEditor =  editor.openTransformationDiagram(ModelEditorItemMatcher.TABLE, tableName);
+	    AssertBot.transformationContains(transformationEditor.getTransformation(), expectedSourceTable);
 	}
 
 }
