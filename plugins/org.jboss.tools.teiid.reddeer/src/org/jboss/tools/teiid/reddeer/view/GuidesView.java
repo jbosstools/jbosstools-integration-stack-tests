@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -32,7 +31,7 @@ import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.condition.IsPreviewInProgress;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
-import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
+import org.jboss.tools.teiid.reddeer.editor.VdbEditor;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
@@ -96,8 +95,12 @@ public class GuidesView extends WorkbenchView {
 		if (expectedErrorMessage != null) {// OR to guides view
 			new GuidesView().chooseAction("Model JDBC Source", "Preview Data");
 			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-			assertEquals(new SWTWorkbenchBot().activeShell().getText(), expectedErrorMessage);
-			new SWTWorkbenchBot().activeShell().close();
+//			assertEquals(new SWTWorkbenchBot().activeShell().getText(), expectedErrorMessage);
+//			new SWTWorkbenchBot().activeShell().close();
+			// TODO check this
+			if (new ShellWithTextIsActive(expectedErrorMessage).test()){
+				new DefaultShell(expectedErrorMessage).close();
+			}
 			return false;
 		} else {
 			new GuidesView().previewData(pathToTable);
@@ -227,7 +230,7 @@ public class GuidesView extends WorkbenchView {
 				.finish();
 		new DefaultShell("Define VDB");
 		new PushButton("OK").click();
-		VDBEditor vdbEditor = new VDBEditor(vdbName+".vdb");
+		VdbEditor vdbEditor = new VdbEditor(vdbName+".vdb");
 		vdbEditor.addModelsToVDB(projectName, models);
 		try{
 			DefaultShell mm = new DefaultShell("Add File(s) to VDB");

@@ -24,7 +24,7 @@ import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.TransformationEditor;
-import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
+import org.jboss.tools.teiid.reddeer.editor.VdbEditor;
 import org.jboss.tools.teiid.reddeer.matcher.ModelEditorItemMatcher;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
@@ -131,8 +131,8 @@ public class ReuseVDBTest {
 		
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		new ShellMenu("File", "Save All").select();
-		VDBEditor vdb = new VDBEditor(SOURCE_VDB + ".vdb");
-		vdb.show();
+		VdbEditor vdb = new VdbEditor(SOURCE_VDB + ".vdb");
+		vdb.activate();
 		vdb.synchronizeAll();
 		vdb.setVersion(2);
 		new RelationalModelEditor(SOURCE_VDB + ".vdb").save();
@@ -151,8 +151,8 @@ public class ReuseVDBTest {
 			}
 		}
 		/* change and test reuseVDB with version 2 */
-		vdb = new VDBEditor(REUSE_VDB + ".vdb");
-		vdb.show();
+		vdb = new VdbEditor(REUSE_VDB + ".vdb");
+		vdb.activate();
 		vdb.setImportVDB(SOURCE_VDB,2,false);
 		new RelationalModelEditor(REUSE_VDB + ".vdb").save();
 		

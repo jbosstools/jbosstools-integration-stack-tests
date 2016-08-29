@@ -1,6 +1,6 @@
 package org.jboss.tools.teiid.reddeer.preference;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.matcher.WithTooltipTextMatcher;
 import org.jboss.reddeer.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
@@ -46,7 +46,8 @@ public class TeiidDesignerPreferencePage extends PreferencePage {
 
 	public void close() {
 		new PushButton("Apply").click();
-		if (new SWTWorkbenchBot().activeShell().getText().equals("Changing Teiid Instance version")) {
+		if (/*new SWTWorkbenchBot().activeShell().getText().equals("Changing Teiid Instance version")*/
+			new ShellWithTextIsActive("Changing Teiid Instance version").test()) {
 			new PushButton("Yes").click();
 		}
 		new PushButton("OK").click();
