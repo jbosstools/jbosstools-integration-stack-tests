@@ -17,9 +17,7 @@ import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
  * @author mkralik
  */
 public class DDLCustomImportWizard extends ImportWizardDialog{
-	
-	private static DDLCustomImportWizard INSTANCE;
-	
+		
 	public static final String DIALOG_TITLE = "Import DDL";
 	
 	public static final String Source_Type = "Source Model";
@@ -38,16 +36,29 @@ public class DDLCustomImportWizard extends ImportWizardDialog{
 	}
 	
 	public static DDLCustomImportWizard getInstance(){
-		if(INSTANCE==null){
-			INSTANCE=new DDLCustomImportWizard();
-		}
-		return INSTANCE;
+		return new DDLCustomImportWizard();
 	}
 	
 	public static DDLCustomImportWizard openWizard(){
-		DDLCustomImportWizard wizard = getInstance();
+		DDLCustomImportWizard wizard = new DDLCustomImportWizard();
 		wizard.open();
 		return wizard;
+	}
+	
+	/**
+	 * use nextPage()
+	 */
+	@Deprecated
+	@Override
+	public void next(){
+		super.next();
+	}
+	
+	public DDLCustomImportWizard nextPage(){
+		log.info("Go to next wizard page");
+		super.next();
+		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
+		return this;
 	}
 	
 	public DDLCustomImportWizard activate() {
@@ -62,11 +73,11 @@ public class DDLCustomImportWizard extends ImportWizardDialog{
 		return this;
 	}
 	
-	public DDLCustomImportWizard autoSelect(boolean check){
-		log.info("Autoselect is : '" + check + "'");
+	public DDLCustomImportWizard autoSelect(boolean checked){
+		log.info("Autoselect is : '" + checked + "'");
 		activate();
 		CheckBox checkBox = new CheckBox("Auto-select");
-		if(check != checkBox.isChecked()){
+		if(checked != checkBox.isChecked()){
 			checkBox.click();
 		}
 		return this;
@@ -109,53 +120,37 @@ public class DDLCustomImportWizard extends ImportWizardDialog{
 		return this;
 	}
 	
-	public DDLCustomImportWizard generateValidDefaultSQL(boolean check){
-		log.info("Generate valid default sql is : '" + check + "'");
+	public DDLCustomImportWizard generateValidDefaultSQL(boolean checked){
+		log.info("Generate valid default sql is : '" + checked + "'");
 		activate();
 		CheckBox checkBox = new CheckBox("Generate valid default SQL (SELECT null AS column_name, etc....)");
-		if(check != checkBox.isChecked()){
+		if(checked != checkBox.isChecked()){
 			checkBox.click();
 		}
 		return this;
 	}
 	
-	public DDLCustomImportWizard setDescriptionOfModel(boolean check){
-		log.info("Description of model is : '" + check + "'");
+	public DDLCustomImportWizard setDescriptionOfModel(boolean checked){
+		log.info("Description of model is : '" + checked + "'");
 		activate();
 		new DefaultTabItem("Options").activate();
 		CheckBox checkBox = new CheckBox("Set description of model entities to corresponding DDL statement");
-		if(check != checkBox.isChecked()){
+		if(checked != checkBox.isChecked()){
 			checkBox.click();
 		}
 		new DefaultTabItem("Model Definition").activate();
 		return this;
 	}
 
-	public DDLCustomImportWizard createModelEntities(boolean check){
-		log.info("Create model entities is : '" + check + "'");
+	public DDLCustomImportWizard createModelEntities(boolean checked){
+		log.info("Create model entities is : '" + checked + "'");
 		activate();
 		new DefaultTabItem("Options").activate();
 		CheckBox checkBox = new CheckBox("Create model entities for DDL defined by unsupported DML (e.g., Views)");
-		if(check != checkBox.isChecked()){
+		if(checked != checkBox.isChecked()){
 			checkBox.click();
 		}
 		new DefaultTabItem("Model Definition").activate();
 		return this;
-	}
-	
-	public DDLCustomImportWizard nextPage(){
-		log.info("Go to next wizard page");
-		super.next();
-		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
-		return this;
-	}
-
-	/**
-	 * use nextPage()
-	 */
-	@Deprecated
-	@Override
-	public void next(){
-		super.next();
 	}
 }

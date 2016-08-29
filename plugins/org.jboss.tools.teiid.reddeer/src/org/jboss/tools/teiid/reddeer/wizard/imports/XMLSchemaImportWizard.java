@@ -1,5 +1,7 @@
 package org.jboss.tools.teiid.reddeer.wizard.imports;
 
+import java.util.Arrays;
+
 import org.eclipse.swt.SWT;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
@@ -22,8 +24,6 @@ import org.jboss.reddeer.common.wait.WaitUntil;
  */
 public class XMLSchemaImportWizard extends TeiidImportWizard {
 
-	private static XMLSchemaImportWizard INSTANCE;
-
 	public static final String DIALOG_TITLE = "Import XML Schema Files";
 
 	private XMLSchemaImportWizard() {
@@ -32,16 +32,19 @@ public class XMLSchemaImportWizard extends TeiidImportWizard {
 	}
 
 	public static XMLSchemaImportWizard getInstance(){
-		if(INSTANCE==null){
-			INSTANCE=new XMLSchemaImportWizard();
-		}
-		return INSTANCE;
+		return new XMLSchemaImportWizard();
 	}
 	
 	public static XMLSchemaImportWizard openWizard(){
-		XMLSchemaImportWizard wizard = getInstance();
+		XMLSchemaImportWizard wizard = new XMLSchemaImportWizard();
 		wizard.open();
 		return wizard;
+	}
+	
+	public XMLSchemaImportWizard nextPage(){
+		log.info("Go to next wizard page");
+		new NextButton().click();
+		return this;
 	}
 	
 	public XMLSchemaImportWizard activate() {
@@ -80,6 +83,7 @@ public class XMLSchemaImportWizard extends TeiidImportWizard {
 	}
 	
 	public XMLSchemaImportWizard selectSchema(String... schema) {
+		log.info("Set schema to '" + Arrays.toString(schema) + "'");
 		activate();
 		for (int i = 0; i < schema.length; i++) {
 			log.info("Select schema '" + schema[i] + "'");
@@ -109,19 +113,13 @@ public class XMLSchemaImportWizard extends TeiidImportWizard {
 		return this;
 	}
 	
-	public XMLSchemaImportWizard addDependentSchemas(boolean check){
-		log.info("Add dependent schemales is : '" + check + "'");
+	public XMLSchemaImportWizard addDependentSchemas(boolean checked){
+		log.info("Add dependent schemales is : '" + checked + "'");
 		activate();
 		CheckBox checkBox = new CheckBox("Add Dependent Schema Files");
-		if(check != checkBox.isChecked()){
+		if(checked != checkBox.isChecked()){
 			checkBox.click();
 		}
-		return this;
-	}
-	
-	public XMLSchemaImportWizard nextPage(){
-		log.info("Go to next wizard page");
-		new NextButton().click();
 		return this;
 	}
 }

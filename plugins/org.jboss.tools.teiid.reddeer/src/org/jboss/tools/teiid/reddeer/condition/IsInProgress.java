@@ -1,10 +1,8 @@
 package org.jboss.tools.teiid.reddeer.condition;
 
 import org.apache.log4j.Logger;
-import org.eclipse.swt.widgets.Shell;
 import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.core.lookup.ShellLookup;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 
 /**
  * Condition that specifies if a progress window is still present
@@ -22,8 +20,12 @@ public class IsInProgress extends AbstractWaitCondition {
 	@Override
 	public boolean test() {
 		log.debug("Looking for shell with title matching '" + DIALOG_TITLE + "'");
-		Shell shell = ShellLookup.getInstance().getShell(DIALOG_TITLE, TimePeriod.NONE);
-		return shell != null;
+		try {
+			new DefaultShell(DIALOG_TITLE);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 	@Override

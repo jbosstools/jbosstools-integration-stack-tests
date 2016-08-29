@@ -7,13 +7,14 @@ import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+
+import java.util.Arrays;
+
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 
 public class SalesforceImportWizard extends ImportWizardDialog {
-
-	private static SalesforceImportWizard INSTANCE;
 	
 	public static final String DIALOG_TITLE = "Create Relational Model from SalesForce Data Model";
 
@@ -23,19 +24,39 @@ public class SalesforceImportWizard extends ImportWizardDialog {
 	}
 	
 	public static SalesforceImportWizard getInstance(){
-		if(INSTANCE==null){
-			INSTANCE=new SalesforceImportWizard();
-		}
-		return INSTANCE;
+		return new SalesforceImportWizard();
 	}
 	
 	public static SalesforceImportWizard openWizard(){
-		SalesforceImportWizard wizard = getInstance();
+		SalesforceImportWizard wizard = new SalesforceImportWizard();
 		wizard.open();
 		return wizard;
 	}
+	
+	/**
+	 * use nextPage()
+	 */
+	@Deprecated
+	@Override
+	public void next(){
+		super.next();
+	}
+	
+	@Override
+	public void finish(){
+		super.finish();
+		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
+	}
+	
 	public SalesforceImportWizard activate() {
 		new DefaultShell(DIALOG_TITLE);
+		return this;
+	}
+	
+	public SalesforceImportWizard nextPage(){
+		log.info("Go to next wizard page");
+		super.next();
+		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
 		return this;
 	}
 	
@@ -48,7 +69,7 @@ public class SalesforceImportWizard extends ImportWizardDialog {
 	}
 	
 	public SalesforceImportWizard selectObjects(String... objects){
-		log.info("Select objects: '" + objects + "'");
+		log.info("Select objects: '" + Arrays.toString(objects) + "'");
 		activate();
 		new PushButton("Deselect All").click();
 		for (String object : objects) {
@@ -58,7 +79,7 @@ public class SalesforceImportWizard extends ImportWizardDialog {
 	}
 	
 	public SalesforceImportWizard deselectObjects(String... objects){
-		log.info("Deselect objects: '" + objects + "'");
+		log.info("Deselect objects: '" + Arrays.toString(objects) + "'");
 		activate();
 		new PushButton("Select All").click();
 		for (String object : objects) {
@@ -81,11 +102,11 @@ public class SalesforceImportWizard extends ImportWizardDialog {
 		return this;
 	}
 	
-	public SalesforceImportWizard autoCreateDataSource(boolean check) {
-		log.info("Auto-Create Data Source is : '" + check + "'");
+	public SalesforceImportWizard autoCreateDataSource(boolean checked) {
+		log.info("Auto-Create Data Source is : '" + checked + "'");
 		activate();
 		CheckBox checkBox = new CheckBox("Auto-create Data Source");
-		if(check != checkBox.isChecked()){
+		if(checked != checkBox.isChecked()){
 			checkBox.click();
 		}
 		return this;
@@ -96,27 +117,5 @@ public class SalesforceImportWizard extends ImportWizardDialog {
 		activate();
 		new LabeledText("JNDI Name").setText(JndiName);
 		return this;
-	}
-		
-	public SalesforceImportWizard nextPage(){
-		log.info("Go to next wizard page");
-		super.next();
-		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
-		return this;
-	}
-	
-	/**
-	 * use nextPage()
-	 */
-	@Deprecated
-	@Override
-	public void next(){
-		super.next();
-	}
-	
-	@Override
-	public void finish(){
-		super.finish();
-		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
 	}
 }

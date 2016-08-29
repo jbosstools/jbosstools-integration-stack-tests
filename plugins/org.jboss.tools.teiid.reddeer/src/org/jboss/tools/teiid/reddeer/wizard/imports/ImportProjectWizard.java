@@ -15,8 +15,6 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
  * 
  */
 public class ImportProjectWizard extends ImportWizardDialog {
-
-	private static ImportProjectWizard INSTANCE;
 	
 	private ImportProjectWizard() {
 		super("General", "Existing Projects into Workspace");
@@ -24,16 +22,19 @@ public class ImportProjectWizard extends ImportWizardDialog {
 	}
 	
 	public static ImportProjectWizard getInstance(){
-		if(INSTANCE==null){
-			INSTANCE=new ImportProjectWizard();
-		}
-		return INSTANCE;
+		return new ImportProjectWizard();
 	}
 	
 	public static ImportProjectWizard openWizard(){
-		ImportProjectWizard wizard = getInstance();
+		ImportProjectWizard wizard = new ImportProjectWizard();
 		wizard.open();
 		return wizard;
+	}
+	
+	public ImportProjectWizard nextPage(){
+		log.info("Go to next wizard page");
+		new NextButton().click();
+		return this;
 	}
 	
 	public ImportProjectWizard activate() {
@@ -57,11 +58,4 @@ public class ImportProjectWizard extends ImportWizardDialog {
 		new PushButton("Refresh").click();
 		return this;
 	}
-
-	public ImportProjectWizard nextPage(){
-		log.info("Go to next wizard page");
-		new NextButton().click();
-		return this;
-	}
-	
 }

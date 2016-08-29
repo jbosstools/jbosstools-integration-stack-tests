@@ -1,5 +1,7 @@
 package org.jboss.tools.teiid.reddeer.wizard.imports;
 
+import java.util.Arrays;
+
 import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -21,9 +23,7 @@ import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.condition.TreeItemHasChild;
 
 public class LdapImportWizard extends ImportWizardDialog {
-	
-	private static LdapImportWizard INSTANCE;
-	
+		
 	public static final String DIALOG_TITLE = "Create Relational Model from LDAP Service";
 	
 	private static final String TABLE_NAME = "Table Name";
@@ -39,16 +39,34 @@ public class LdapImportWizard extends ImportWizardDialog {
 	}
 	
 	public static LdapImportWizard getInstance(){
-		if(INSTANCE==null){
-			INSTANCE=new LdapImportWizard();
-		}
-		return INSTANCE;
+		return new LdapImportWizard();
 	}
 	
 	public static LdapImportWizard openWizard(){
-		LdapImportWizard wizard = getInstance();
+		LdapImportWizard wizard = new LdapImportWizard();
 		wizard.open();
 		return wizard;
+	}
+	
+	/**
+	 * use nextPage()
+	 */
+	@Deprecated
+	@Override
+	public void next(){
+		super.next();
+	}
+	
+	@Override
+	public void finish(){
+		super.finish();
+		new WaitWhile(new IsInProgress(), TimePeriod.SHORT, false);
+	}
+
+	public LdapImportWizard nextPage(){
+		log.info("Go to next wizard page");
+		super.next();
+		return this;
 	}
 	
 	public LdapImportWizard activate() {
@@ -92,11 +110,11 @@ public class LdapImportWizard extends ImportWizardDialog {
 		return this;
 	}
 	
-	public LdapImportWizard autoCreateDataSource(boolean check) {
-		log.info("Auto-Create Data Source is : '" + check + "'");
+	public LdapImportWizard autoCreateDataSource(boolean checked) {
+		log.info("Auto-Create Data Source is : '" + checked + "'");
 		activate();
 		CheckBox checkBox = new CheckBox("Auto-create Data Source");
-		if(check != checkBox.isChecked()){
+		if(checked != checkBox.isChecked()){
 			checkBox.click();
 		}
 		return this;
@@ -110,7 +128,7 @@ public class LdapImportWizard extends ImportWizardDialog {
 	}
 	
 	public LdapImportWizard selectEntries(String... selectedEntries) {
-		log.info("Set entries to: '" + selectedEntries + "'");
+		log.info("Set entries to: '" + Arrays.toString(selectedEntries) + "'");
 		activate();
 		for (String entry : selectedEntries) {
 			selectTableEntry(entry, null);
@@ -120,7 +138,7 @@ public class LdapImportWizard extends ImportWizardDialog {
 	}
 	
 	public LdapImportWizard selectColumns(String... selectedColumns) {
-		log.info("Set columns to: '" + selectedColumns + "'");
+		log.info("Set columns to: '" + Arrays.toString(selectedColumns) + "'");
 		activate();
 		for (String column : selectedColumns) {
 			String[] path = column.split("/");
@@ -182,26 +200,4 @@ public class LdapImportWizard extends ImportWizardDialog {
 		}
 
 	}
-	
-	@Override
-	public void finish(){
-		super.finish();
-		new WaitWhile(new IsInProgress(), TimePeriod.SHORT, false);
-	}
-
-	public LdapImportWizard nextPage(){
-		log.info("Go to next wizard page");
-		super.next();
-		return this;
-	}
-	
-	/**
-	 * use nextPage()
-	 */
-	@Deprecated
-	@Override
-	public void next(){
-		super.next();
-	}
-
 }

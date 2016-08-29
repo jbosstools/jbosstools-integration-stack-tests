@@ -1,5 +1,7 @@
 package org.jboss.tools.teiid.reddeer.wizard.imports;
 
+import java.util.Arrays;
+
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
@@ -21,8 +23,6 @@ import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
  * 
  */
 public class WsdlImportWizard extends TeiidImportWizard {
-
-	private static WsdlImportWizard INSTANCE;
 	
 	public static final String DIALOG_TITLE = "Create Relational Model from Web Service";
 
@@ -32,16 +32,20 @@ public class WsdlImportWizard extends TeiidImportWizard {
 	}
 
 	public static WsdlImportWizard getInstance(){
-		if(INSTANCE==null){
-			INSTANCE=new WsdlImportWizard();
-		}
-		return INSTANCE;
+		return new WsdlImportWizard();
 	}
 	
 	public static WsdlImportWizard openWizard(){
-		WsdlImportWizard wizard = getInstance();
+		WsdlImportWizard wizard = new WsdlImportWizard();
 		wizard.open();
 		return wizard;
+	}
+	
+	public WsdlImportWizard nextPage(){
+		log.info("Go to next wizard page");
+		new NextButton().click();
+		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
+		return this;
 	}
 	
 	public WsdlImportWizard activate() {
@@ -60,7 +64,7 @@ public class WsdlImportWizard extends TeiidImportWizard {
 	}
 	
 	public WsdlImportWizard selectOperations(String... operations) {
-		log.info("Set select operations: '" + operations + "'");
+		log.info("Set select operations: '" + Arrays.toString(operations) + "'");
 		activate();
 		for(String operation : operations){
 			new DefaultTable(new DefaultGroup("Select the desired WSDL Operations"), 0).getItem(operation).setChecked(true);
@@ -91,11 +95,11 @@ public class WsdlImportWizard extends TeiidImportWizard {
 		return this;
 	}
 	
-	public WsdlImportWizard autoCreateDataSource(boolean check) {
-		log.info("Auto-Create Data Source is : '" + check + "'");
+	public WsdlImportWizard autoCreateDataSource(boolean checked) {
+		log.info("Auto-Create Data Source is : '" + checked + "'");
 		activate();
 		CheckBox checkBox = new CheckBox("Auto-create Data Source");
-		if(check != checkBox.isChecked()){
+		if(checked != checkBox.isChecked()){
 			checkBox.click();
 		}
 		return this;
@@ -140,12 +144,5 @@ public class WsdlImportWizard extends TeiidImportWizard {
 		} catch (Exception e) {
 		}
 		new PushButton("Add").click();
-	}
-	
-	public WsdlImportWizard nextPage(){
-		log.info("Go to next wizard page");
-		new NextButton().click();
-		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
-		return this;
 	}
 }
