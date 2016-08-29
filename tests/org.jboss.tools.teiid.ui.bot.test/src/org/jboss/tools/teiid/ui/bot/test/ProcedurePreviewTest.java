@@ -24,8 +24,8 @@ import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.SQLResult;
-import org.jboss.tools.teiid.reddeer.wizard.ProcedureWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.ImportFromFileSystemWizard;
+import org.jboss.tools.teiid.reddeer.wizard.newWizard.NewProcedureWizard;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -64,7 +64,7 @@ public class ProcedurePreviewTest {
 	public void relViewProcedure() {
 		String procedureName = "proc";
 		new ModelExplorer().addChildToModelItem(ModelExplorer.ChildType.PROCEDURE, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi");
-		ProcedureWizard.createViewProcedure()
+		NewProcedureWizard.createViewProcedure()
 				.setName(procedureName)
 				.setTransformationSql("CREATE VIRTUAL PROCEDURE BEGIN select hsqldbParts.PARTS.PART_COLOR AS color from hsqldbParts.PARTS where hsqldbParts.PARTS.PART_ID=view.proc.id; END")
 				.toggleResultSet(true)
@@ -101,7 +101,7 @@ public class ProcedurePreviewTest {
 				.finish();
 
 		new ModelExplorer().addChildToModelItem(ModelExplorer.ChildType.PROCEDURE, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi");
-		ProcedureWizard.createUserDefinedFunction()
+		NewProcedureWizard.createUserDefinedFunction()
 				.setName("udfConcatNull")
 				.addParameter("stringLeft", "string", "400", "IN")
 				.addParameter("stringRight", "string", "400", "IN")

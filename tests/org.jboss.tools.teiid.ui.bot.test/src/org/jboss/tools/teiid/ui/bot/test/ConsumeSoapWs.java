@@ -2,20 +2,18 @@ package org.jboss.tools.teiid.ui.bot.test;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Properties;
-
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileHelper;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
+import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.noDatabase.WsdlConnectionProfileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.WsdlImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
 import org.junit.After;
@@ -56,11 +54,12 @@ public class ConsumeSoapWs {
 
 	@Test
 	public void test() {
-		Properties wsdlCP = new Properties();
-		wsdlCP.setProperty("wsdl", "http://ws-dvirt.rhcloud.com/dv-test-ws/soap?wsdl");
-		wsdlCP.setProperty("endPoint", "Countries");
-
-		new ConnectionProfileHelper().createCpWsdl("SOAP", wsdlCP);
+		WsdlConnectionProfileWizard.openWizard("SOAP")
+				.setWsdl("http://ws-dvirt.rhcloud.com/dv-test-ws/soap?wsdl")
+				.testConnection()
+				.nextPage()
+				.setEndPoint("Countries")
+				.finish();	
 
 		WsdlImportWizard.openWizard()
 				.setConnectionProfile("SOAP")

@@ -1,6 +1,5 @@
-package org.jboss.tools.teiid.reddeer.wizard.connectionProfiles;
+package org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.noDatabase;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
@@ -13,25 +12,16 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
  */
 public abstract class TeiidProfileWizard extends NewWizardDialog {
 
-	public static final String TITLE = "New Connection Profile";
+	public static final String DIALOG_TITLE = "New connection profile";
 	public static final String LABEL_NAME = "Name:";
-	public static final String LABEL_DESCRIPTION = "Description (optional):";
 
 	private String profile;
 	private String name;
-	private String description;
 
-	public TeiidProfileWizard(String profile) {
+	public TeiidProfileWizard(String profile,String name) {
 		super("Connection Profiles", "Connection Profile");
 		this.profile = profile;
-	}
-
-	public void setName(String name) {
 		this.name = name;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	@Override
@@ -43,17 +33,24 @@ public abstract class TeiidProfileWizard extends NewWizardDialog {
 			new DefaultTreeItem("Connection Profiles").collapse();
 			new DefaultTreeItem("Connection Profiles", "Connection Profile").expand();
 			new DefaultTreeItem("Connection Profiles", "Connection Profile").select();
-			next();
+			super.next();
 		}
 
 		new DefaultTable().select(profile);
-		new LabeledText(LABEL_NAME).setText(name);
-		// TODO: LabeledText
-		// new LabeledText(LABEL_DESCRIPTION).setText(description);
-		new SWTWorkbenchBot().textWithLabel(LABEL_DESCRIPTION).setText(description);
-
-		next();
+		if(name!=null){
+			new LabeledText(LABEL_NAME).setText(name);
+		}
+		super.next();
 	}
 
-	abstract public void execute();
+	/**
+	 * use nextPage()
+	 */
+	@Deprecated
+	@Override
+	public void next(){
+		super.next();
+	}
+	
+	public abstract TeiidProfileWizard testConnection();
 }

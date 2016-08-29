@@ -1,4 +1,4 @@
-package org.jboss.tools.teiid.reddeer.wizard.connectionProfiles;
+package org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.database;
 
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileDatabasePage;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
@@ -9,13 +9,13 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  * @author lfabriko
  *
  */
-public class ConnectionProfileSybasePage extends ConnectionProfileDatabasePage {
-	public static final String LABEL_DATABASE = "Database name:";
+public class ConnectionProfileDB2Page extends ConnectionProfileDatabasePage {
+	public static final String LABEL_DATABASE = "Database:";
 	public static final String LABEL_HOST = "Host:";
-	public static final String LABEL_PORT_NUMBER = "Port:";
+	public static final String LABEL_PORT_NUMBER = "Port number:";
 	public static final String LABEL_USER_NAME = "User name:";
 	public static final String LABEL_PASSWORD = "Password:";
-	public static final String LABEL_SAVE_PASSWORD = "Save Password";
+	public static final String LABEL_SAVE_PASSWORD = "Save password";
 
 	public String getDatabase() {
 		return new LabeledText(LABEL_DATABASE).getText();

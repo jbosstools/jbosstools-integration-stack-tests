@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.jboss.reddeer.jface.wizard.ImportWizardDialog;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
@@ -26,12 +26,12 @@ import org.jboss.reddeer.common.wait.WaitWhile;
  * 
  * @author Lucia Jelinkova
  */
-public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
+public class ImportJDBCDatabaseWizard extends TeiidImportWizard {
 	
 	private static final String DIALOG_TITLE = "Import Database via JDBC";
 	
 	private ImportJDBCDatabaseWizard() {
-		super("Teiid Designer", "JDBC Database >> Source Model");
+		super("JDBC Database >> Source Model");
 		log.info("JDBC Database import wizard is opened");
 	}
 
@@ -45,18 +45,9 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 		return wizard;
 	}
 	
-	/**
-	 * use nextPage()
-	 */
-	@Deprecated
-	@Override
-	public void next(){
-		super.next();
-	}
-	
 	public ImportJDBCDatabaseWizard nextPage(){
 		log.info("Go to next wizard page");
-		super.next();
+		new NextButton().click();
 		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
 		return this;
 	}

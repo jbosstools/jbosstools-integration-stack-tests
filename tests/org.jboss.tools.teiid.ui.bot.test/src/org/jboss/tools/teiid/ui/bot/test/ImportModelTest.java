@@ -3,7 +3,6 @@ package org.jboss.tools.teiid.ui.bot.test;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.util.Properties;
 
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.junit.execution.annotation.RunIf;
@@ -12,9 +11,11 @@ import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
-import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileHelper;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
+import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.noDatabase.FlatLocalConnectionProfileWizard;
+import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.noDatabase.WsdlConnectionProfileWizard;
+import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.noDatabase.XmlLocalConnectionProfileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.DDLCustomImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.FlatImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.ImportFromFileSystemWizard;
@@ -99,7 +100,10 @@ public class ImportModelTest {
 	@Test
 	public void flatImportTest() {
 		String flatProfile = "Flat Profile";
-		new ConnectionProfileHelper().createCpFlatFile(flatProfile, "resources/flat");
+		FlatLocalConnectionProfileWizard.openWizard(flatProfile)
+				.setFile("resources/flat")
+				.testConnection()
+				.finish();
 
 		FlatImportWizard.openWizard()
 				.selectLocalFileImportMode()
@@ -125,7 +129,10 @@ public class ImportModelTest {
 	@Test
 	public void xmlImportTest() {
 		String xmlProfile = "XML Local Profile";
-		new ConnectionProfileHelper().createCpXml(xmlProfile, "resources/flat/accounts.xml");
+
+		XmlLocalConnectionProfileWizard.openWizard(xmlProfile)
+				.setFile("resources/flat/accounts.xml")
+				.finish();
 		
 		XMLImportWizard.openWizard()
 				.setImportMode(XMLImportWizard.LOCAL)
@@ -177,10 +184,13 @@ public class ImportModelTest {
 	@Test
 	public void wsdlToSoapImportTest() {
 		String profile = "Hello Service";
-		Properties wsdlCp = new Properties();
-		wsdlCp.setProperty("wsdl", "resources/wsdl/Hello.wsdl");
-		wsdlCp.setProperty("endPoint", "HelloPort");
-		new ConnectionProfileHelper().createCpWsdl(profile, wsdlCp);
+
+		WsdlConnectionProfileWizard.openWizard(profile)
+				.setWsdl("resources/wsdl/Hello.wsdl")
+				.testConnection()
+				.nextPage()
+				.setEndPoint("HelloPort")
+				.finish();
 
 		WsdlImportWizard.openWizard()
 				.setConnectionProfile(profile)
