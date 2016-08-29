@@ -1,5 +1,7 @@
 package org.jboss.tools.teiid.reddeer.wizard.imports;
 
+import java.util.Arrays;
+
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
@@ -19,8 +21,6 @@ import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
  * @author mkralik
  */
 public class DDLTeiidImportWizard  extends ImportWizardDialog{
-
-	private static DDLTeiidImportWizard INSTANCE;
 	
 	public static final String DIALOG_TITLE = "Import Teiid DDL";
 
@@ -33,16 +33,40 @@ public class DDLTeiidImportWizard  extends ImportWizardDialog{
 	}
 	
 	public static DDLTeiidImportWizard getInstance(){
-		if(INSTANCE==null){
-			INSTANCE=new DDLTeiidImportWizard();
-		}
-		return INSTANCE;
+		return new DDLTeiidImportWizard();
 	}
 	
 	public static DDLTeiidImportWizard openWizard(){
-		DDLTeiidImportWizard wizard = getInstance();
+		DDLTeiidImportWizard wizard = new DDLTeiidImportWizard();
 		wizard.open();
 		return wizard;
+	}
+	
+	/**
+	 * use nextPage()
+	 */
+	@Deprecated
+	@Override
+	public void next(){
+		super.next();
+	}
+	
+	public DDLTeiidImportWizard nextPage(){
+		log.info("Go to next wizard page");
+		super.next();
+		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
+		return this;
+	}
+	
+	@Override
+	public void finish(){
+		log.info("Finish wizard");
+		FinishButton button = new FinishButton();
+		button.click();
+		if(new ShellWithTextIsActive("Table 'Supports Update' Property Changed").test()){
+			new PushButton("OK").click();
+		}
+		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
 	}
 	
 	public DDLTeiidImportWizard activate(){
@@ -58,7 +82,7 @@ public class DDLTeiidImportWizard  extends ImportWizardDialog{
 	}
 	
 	public DDLTeiidImportWizard setFolder(String... folder){
-		log.info("Set import folder: '" + folder + "'");
+		log.info("Set import folder: '" + Arrays.toString(folder) + "'");
 		activate();
 		new PushButton(2).click();
 		new DefaultTreeItem(folder).select();
@@ -82,76 +106,49 @@ public class DDLTeiidImportWizard  extends ImportWizardDialog{
 		return this;
 	}
 	
-	public DDLTeiidImportWizard generateValidDefaultSQL(boolean check){
-		log.info("Generate valid default SQL is: '" + check + "'");
+	public DDLTeiidImportWizard generateValidDefaultSQL(boolean checked){
+		log.info("Generate valid default SQL is: '" + checked + "'");
 		activate();
 		CheckBox checkBox = new CheckBox("Generate valid default SQL (SELECT null AS column_name, etc....)");
-		if(check != checkBox.isChecked()){
+		if(checked != checkBox.isChecked()){
 			checkBox.click();
 		}
 		return this;
 	}
 
-	public DDLTeiidImportWizard setDescriptionOfModel(boolean check){
-		log.info("Set description of model is: '" + check + "'");
+	public DDLTeiidImportWizard setDescriptionOfModel(boolean checked){
+		log.info("Set description of model is: '" + checked + "'");
 		activate();
 		new DefaultTabItem("Options").activate();
 		CheckBox checkBox = new CheckBox("Set description of model entities to corresponding DDL statement");
-		if(check != checkBox.isChecked()){
+		if(checked != checkBox.isChecked()){
 			checkBox.click();
 		}
 		new DefaultTabItem("Model Definition").activate();
 		return this;
 	}
 
-	public DDLTeiidImportWizard createModelEntities(boolean check){
-		log.info("Create model entities is: '" + check + "'");
+	public DDLTeiidImportWizard createModelEntities(boolean checked){
+		log.info("Create model entities is: '" + checked + "'");
 		activate();
 		new DefaultTabItem("Options").activate();
 		CheckBox checkBox = new CheckBox("Create model entities for DDL defined by unsupported DML (e.g., Views)");
-		if(check != checkBox.isChecked()){
+		if(checked != checkBox.isChecked()){
 			checkBox.click();
 		}
 		new DefaultTabItem("Model Definition").activate();
 		return this;
 	}	
 
-	public DDLTeiidImportWizard filterUniqueConstraints(boolean check){
-		log.info("Filter unique constraints is: '" + check + "'");
+	public DDLTeiidImportWizard filterUniqueConstraints(boolean checked){
+		log.info("Filter unique constraints is: '" + checked + "'");
 		activate();
 		new DefaultTabItem("Options").activate();
 		CheckBox checkBox = new CheckBox("Filter unique constraints already defined as a primary key (Teiid Only)");
-		if(check != checkBox.isChecked()){
+		if(checked != checkBox.isChecked()){
 			checkBox.click();
 		}
 		new DefaultTabItem("Model Definition").activate();
 		return this;
-	}
-
-	public DDLTeiidImportWizard nextPage(){
-		log.info("Go to next wizard page");
-		super.next();
-		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
-		return this;
-	}
-	
-	/**
-	 * use nextPage()
-	 */
-	@Deprecated
-	@Override
-	public void next(){
-		super.next();
-	}
-	
-	@Override
-	public void finish(){
-		log.info("Finish wizard");
-		FinishButton button = new FinishButton();
-		button.click();
-		if(new ShellWithTextIsActive("Table 'Supports Update' Property Changed").test()){
-			new PushButton("OK").click();
-		}
-		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
 	}
 }

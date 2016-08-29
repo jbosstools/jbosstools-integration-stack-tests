@@ -1,12 +1,10 @@
 package org.jboss.tools.teiid.reddeer.condition;
 
-import org.eclipse.swt.widgets.Shell;
 import org.hamcrest.Matcher;
 import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.core.lookup.ShellLookup;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 
 public class IsPreviewInProgress extends AbstractWaitCondition {
 	private static final Logger log = Logger.getLogger(IsPreviewInProgress.class);
@@ -15,8 +13,12 @@ public class IsPreviewInProgress extends AbstractWaitCondition {
 	@Override
 	public boolean test() {
 		log.debug("Waiting while preview is in progress");
-		Shell shell = ShellLookup.getInstance().getShell(matcher, TimePeriod.NONE);
-		return shell != null;
+		try {
+			new DefaultShell(matcher);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 	@Override

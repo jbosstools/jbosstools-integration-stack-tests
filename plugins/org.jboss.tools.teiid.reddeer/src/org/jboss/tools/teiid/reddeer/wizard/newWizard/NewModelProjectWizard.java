@@ -1,5 +1,7 @@
 package org.jboss.tools.teiid.reddeer.wizard.newWizard;
 
+import java.util.Arrays;
+
 import org.hamcrest.Matcher;
 import org.jboss.reddeer.core.matcher.WithMnemonicTextMatcher;
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
@@ -14,8 +16,6 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  * 
  */
 public class NewModelProjectWizard extends NewWizardDialog {
-
-private static NewModelProjectWizard INSTANCE;
 	
 	public static final String DIALOG_TITLE = "New Model Project";
 
@@ -32,23 +32,35 @@ private static NewModelProjectWizard INSTANCE;
 	}
 	
 	public static NewModelProjectWizard getInstance(){
-		if(INSTANCE==null){
-			INSTANCE=new NewModelProjectWizard();
-		}
-		return INSTANCE;
+		return new NewModelProjectWizard();
 	}
 	
 	public static NewModelProjectWizard openWizard(){
-		NewModelProjectWizard wizard = getInstance();
+		NewModelProjectWizard wizard = new NewModelProjectWizard();
 		wizard.open();
 		return wizard;
+	}
+
+	/**
+	 * use nextPage()
+	 */
+	@Deprecated
+	@Override
+	public void next(){
+		super.next();
+	}
+	
+	public NewModelProjectWizard nextPage(){
+		log.info("Go to next wizard page");
+		super.next();
+		return this;
 	}
 	
 	public NewModelProjectWizard activate() {
 		new DefaultShell(DIALOG_TITLE);
 		return this;
 	}
-
+	
 	public NewModelProjectWizard setProjectName(String name) {
 		activate();
 		log.info("Set project name to '" + name + "'");
@@ -61,7 +73,7 @@ private static NewModelProjectWizard INSTANCE;
 	 */
 	public NewModelProjectWizard chooseFolder(String...folders){
 		activate();
-		log.info("Choose default folders: '" + folders + "'");
+		log.info("Choose default folders: '" + Arrays.toString(folders) + "'");
 		Matcher<String> matcher = new WithMnemonicTextMatcher("Name");
 		for(int i=0;i<6;i++){
 			new CheckBox(i,matcher).toggle(false);
@@ -89,20 +101,5 @@ private static NewModelProjectWizard INSTANCE;
         }
 		}
 		return this;
-	}
-	
-	public NewModelProjectWizard nextPage(){
-		log.info("Go to next wizard page");
-		super.next();
-		return this;
-	}
-
-	/**
-	 * use nextPage()
-	 */
-	@Deprecated
-	@Override
-	public void next(){
-		super.next();
 	}
 }

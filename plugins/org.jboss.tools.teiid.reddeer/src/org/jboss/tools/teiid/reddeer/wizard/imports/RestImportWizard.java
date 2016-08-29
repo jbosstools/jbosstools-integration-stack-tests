@@ -1,5 +1,7 @@
 package org.jboss.tools.teiid.reddeer.wizard.imports;
 
+import java.util.Arrays;
+
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -19,8 +21,6 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 
 public class RestImportWizard extends TeiidImportWizard {
 
-	private static RestImportWizard INSTANCE;
-
 	private static final String DIALOG_TITLE = "Import From REST Web Service Source";
 	private String rootPath;
 	
@@ -30,16 +30,19 @@ public class RestImportWizard extends TeiidImportWizard {
 	}
 	
 	public static RestImportWizard getInstance(){
-		if(INSTANCE==null){
-			INSTANCE=new RestImportWizard();
-		}
-		return INSTANCE;
+		return new RestImportWizard();
 	}
 	
 	public static RestImportWizard openWizard(){
-		RestImportWizard wizard = getInstance();
+		RestImportWizard wizard = new RestImportWizard();
 		wizard.open();
 		return wizard;
+	}
+	
+	public RestImportWizard nextPage(){
+		log.info("Go to next wizard page");
+		new NextButton().click();
+		return this;
 	}
 	
 	public RestImportWizard activate() {
@@ -84,11 +87,11 @@ public class RestImportWizard extends TeiidImportWizard {
 		return this;
 	}
 	
-	public RestImportWizard autoCreateDataSource(boolean check) {
-		log.info("Auto-Create Data Source is : '" + check + "'");
+	public RestImportWizard autoCreateDataSource(boolean checked) {
+		log.info("Auto-Create Data Source is : '" + checked + "'");
 		activate();
 		CheckBox checkBox = new CheckBox("Auto-create Data Source");
-		if(check != checkBox.isChecked()){
+		if(checked != checkBox.isChecked()){
 			checkBox.click();
 		}
 		return this;
@@ -114,7 +117,7 @@ public class RestImportWizard extends TeiidImportWizard {
 	 * rootPath must be set (RestImportWizard.setRootPath(rootPath))
 	 */
 	public RestImportWizard setColumns(String... columns) {
-		log.info("Set columns to: '" + columns + "'");
+		log.info("Set columns to: '" + Arrays.toString(columns) + "'");
 		activate();
 		for (String column : columns) {
 			new DefaultTreeItem((rootPath + "/" + column).split("/")).select();
@@ -128,11 +131,5 @@ public class RestImportWizard extends TeiidImportWizard {
 		new DefaultShell("Select a Folder");
 		new DefaultTreeItem(projectName).select();
 		new PushButton("OK").click();
-	}
-	
-	public RestImportWizard nextPage(){
-		log.info("Go to next wizard page");
-		new NextButton().click();
-		return this;
 	}
 }

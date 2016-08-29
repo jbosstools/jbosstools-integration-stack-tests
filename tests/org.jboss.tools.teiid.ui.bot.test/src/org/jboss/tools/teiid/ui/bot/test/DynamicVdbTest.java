@@ -892,14 +892,13 @@ public class DynamicVdbTest {
 
 	private void createVdb(String projectName, String vdbName, String... models) {
 		
-		VdbWizard wizard = new VdbWizard();
-		wizard.open();
-		wizard.setName(vdbName)
-			  .setLocation(projectName);
+		VdbWizard.openVdbWizard()
+				.setName(vdbName)
+				.setLocation(projectName);
 		for(String model : models){
-			wizard.addModel(projectName, model);
+			VdbWizard.getInstance().addModel(projectName, model);
 		}
-		wizard.finish();
+		VdbWizard.getInstance().finish();
 		
 	}
 

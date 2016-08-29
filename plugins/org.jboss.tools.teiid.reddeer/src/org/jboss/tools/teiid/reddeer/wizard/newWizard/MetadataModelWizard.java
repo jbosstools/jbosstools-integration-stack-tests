@@ -16,6 +16,7 @@ import org.jboss.tools.teiid.reddeer.ModelClass;
 import org.jboss.tools.teiid.reddeer.ModelType;
 
 public class MetadataModelWizard extends NewWizardDialog {	
+	
 	public static final String DIALOG_TITLE = "New Model Wizard";
 
 	private MetadataModelWizard() {
@@ -31,12 +32,6 @@ public class MetadataModelWizard extends NewWizardDialog {
 		MetadataModelWizard wizard = new MetadataModelWizard();
 		wizard.open();
 		return wizard;
-	}
-	
-	@Override
-	public void open() {
-		super.open();
-		this.activate();
 	}
 	
 	/**

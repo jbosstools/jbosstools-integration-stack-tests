@@ -14,8 +14,8 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
-import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
 import org.jboss.tools.teiid.reddeer.connection.SimpleHttpClient;
+import org.jboss.tools.teiid.reddeer.dialog.CreateDataSourceDialog;
 import org.jboss.tools.teiid.reddeer.preference.TeiidDesignerPreferencePage;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
@@ -211,12 +211,14 @@ public class TeiidConnectionImportTest {
 	public void fileTest() {		
 		String modelName = "FileImported";
 		new ServersViewExt().deleteDatasource(teiidServer.getName(), "fileDS");
-
-		Map<String,String> dataSourceProperties = new HashMap<String, String>();
-		dataSourceProperties.put(TeiidConnectionImportWizard.DATASOURCE_PROPERTY_PARENT_DIR, "resources/flat/");
 		
 		TeiidConnectionImportWizard.openWizard()
-				.createNewDataSource("fileDS", "file", dataSourceProperties)
+				.createNewDataSource()
+						.setName("fileDS")
+						.setDriver("file")
+						.setImportPropertie(CreateDataSourceDialog.DATASOURCE_PROPERTY_PARENT_DIR, "resources/flat/")
+						.finish();
+		TeiidConnectionImportWizard.getInstance()
 				.nextPage()
 				.nextPage()
 				.setModelName(modelName)
@@ -235,12 +237,14 @@ public class TeiidConnectionImportTest {
 		
 		Properties sfProps = teiidServer.getServerConfig().getConnectionProfile("salesforce").asProperties();
 
-		Map<String,String> dataSourceProperties = new HashMap<String, String>();
-		dataSourceProperties.put(TeiidConnectionImportWizard.DATASOURCE_PROPERTY_PASSWORD, sfProps.getProperty("db.password"));
-		dataSourceProperties.put(TeiidConnectionImportWizard.DATASOURCE_PROPERTY_USER_NAME, sfProps.getProperty("db.username"));
-
 		TeiidConnectionImportWizard.openWizard()
-				.createNewDataSource("sfDS", "salesforce", dataSourceProperties)
+				.createNewDataSource()
+						.setName("sfDS")
+						.setDriver("salesforce")
+						.setImportPropertie(CreateDataSourceDialog.DATASOURCE_PROPERTY_PASSWORD, sfProps.getProperty("db.password"))
+						.setImportPropertie(CreateDataSourceDialog.DATASOURCE_PROPERTY_USER_NAME, sfProps.getProperty("db.username"))
+						.finish();
+		TeiidConnectionImportWizard.getInstance()
 				.nextPage()
 				.nextPage()
 				.setModelName(modelName)
@@ -256,12 +260,14 @@ public class TeiidConnectionImportTest {
 	public void odataTest() {
 		String modelName = "OdataModel";
 		new ServersViewExt().deleteDatasource(teiidServer.getName(), "odataDS");
-
-		Map<String,String> dataSourceProperties = new HashMap<String, String>();
-		dataSourceProperties.put(TeiidConnectionImportWizard.DATASOURCE_PROPERTY_URL, "http://services.odata.org/Northwind/Northwind.svc");
 		
 		TeiidConnectionImportWizard.openWizard()
-				.createNewDataSource("odataDS", "webservice", dataSourceProperties)
+				.createNewDataSource()
+						.setName("odataDS")
+						.setDriver("webservice")
+						.setImportPropertie(CreateDataSourceDialog.DATASOURCE_PROPERTY_URL, "http://services.odata.org/Northwind/Northwind.svc")
+						.finish();
+		TeiidConnectionImportWizard.getInstance()
 				.nextPage()
 				.setTranslator("odata")
 				.nextPage()
@@ -284,11 +290,13 @@ public class TeiidConnectionImportTest {
 		Properties excelDsProperties = teiidServer.getServerConfig()
 				.getConnectionProfile(ConnectionProfileConstants.EXCEL_SMALLA).asProperties();
 		
-		Map<String,String> dataSourceProperties = new HashMap<String, String>();
-		dataSourceProperties.put(TeiidConnectionImportWizard.DATASOURCE_PROPERTY_PARENT_DIR, excelDsProperties.getProperty("path"));
-		
 		TeiidConnectionImportWizard.openWizard()
-				.createNewDataSource("excelDS", "file", dataSourceProperties)
+				.createNewDataSource()
+						.setName("excelDS")
+						.setDriver("file")
+						.setImportPropertie(CreateDataSourceDialog.DATASOURCE_PROPERTY_PARENT_DIR, excelDsProperties.getProperty("path"))
+						.finish();
+		TeiidConnectionImportWizard.getInstance()
 				.nextPage()
 				.setTranslator("excel")
 				.setImportPropertie(TeiidConnectionImportWizard.IMPORT_PROPERTY_EXCEL_FILENAME, excelDsProperties.getProperty("filename"))

@@ -18,7 +18,6 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.uiforms.impl.hyperlink.DefaultHyperlink;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.tools.common.reddeer.JiraClient;
 import org.jboss.tools.runtime.reddeer.condition.JobIsKilled;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
@@ -73,29 +72,27 @@ public class ServerManipulationTest {
 		}
 	}
 
+	/*
+	 * test if server set teiid instance after start
+	 */
 	@Test
 	public void noRefreshTest(){
-		if(new JiraClient().isIssueClosed("TEIIDDES-2837")){
-			SView.open();
-			SView.getServer(teiidServer.getName()).start();
-			AbstractWait.sleep(TimePeriod.NORMAL);
-			assertTrue(testDeployVDB()); 
-		}
+		SView.open();
+		SView.getServer(teiidServer.getName()).start();
+		AbstractWait.sleep(TimePeriod.NORMAL);
+		assertTrue(testDeployVDB()); 
 	}
 
 	@Test
 	public void localServer(){
-		ServerWizard wizard = new ServerWizard();
 		String[] type = {"Red Hat JBoss Middleware","Red Hat JBoss Enterprise Application Platform 6.1+"};
-		wizard.open();
-		wizard
+		ServerWizard.openWizard()
 			.setType(type)
 			.setName(LOCAL_SERVER_NAME)
-			.next();
-		wizard
+			.nextPage()
 			.setTypeServer(ServerWizard.LOCAL_SERVER);
 		new WaitUntil(new JobIsKilled("Refreshing server adapter list"), TimePeriod.LONG, false);
-		wizard.finish();
+		ServerWizard.getInstance().finish();
 		
 		SView.open();
 		Server newServer = SView.getServer(LOCAL_SERVER_NAME);
@@ -118,24 +115,20 @@ public class ServerManipulationTest {
 		SView.startServer(teiidServer.getName());
 		
 		String[] type = {"Red Hat JBoss Middleware","Red Hat JBoss Enterprise Application Platform 6.1+"};
-		ServerWizard wizard = new ServerWizard();
-		wizard.open();
-		wizard
+		ServerWizard.openWizard()
 			.setType(type)
 			.setName(REMOTE_SERVER_NAME)
-			.next();
-		wizard
+			.nextPage()
 			.setTypeServer(ServerWizard.REMOTE_SERVER)
 			.setControlled(ServerWizard.MANAGEMENT_OPERATIONS)
 			.externallyManaged(true)
 			.assignRuntime(false)
-			.next();
-		wizard
+			.nextPage()
 			.setHost("Local")
 			.setPathToServer(teiidServer.getServerConfig().getServerBase().getHome())
-			.next();
+			.nextPage();
 		new WaitUntil(new JobIsKilled("Refreshing server adapter list"), TimePeriod.LONG, false);
-		wizard.finish();
+		ServerWizard.getInstance().finish();
 		
 		SView.open();
 		Server newServer = SView.getServer(REMOTE_SERVER_NAME);

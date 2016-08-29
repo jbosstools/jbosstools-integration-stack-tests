@@ -15,8 +15,6 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
  * 
  */
 public class WsdlWebImportWizard extends TeiidImportWizard {
-
-	private static WsdlWebImportWizard INSTANCE;
 	
 	public static final String DIALOG_TITLE = "Create Web Service from WSDL File";
 	
@@ -26,16 +24,19 @@ public class WsdlWebImportWizard extends TeiidImportWizard {
 	}
 
 	public static WsdlWebImportWizard getInstance(){
-		if(INSTANCE==null){
-			INSTANCE=new WsdlWebImportWizard();
-		}
-		return INSTANCE;
+		return new WsdlWebImportWizard();
 	}
 	
 	public static WsdlWebImportWizard openWizard(){
-		WsdlWebImportWizard wizard = getInstance();
+		WsdlWebImportWizard wizard = new WsdlWebImportWizard();
 		wizard.open();
 		return wizard;
+	}
+	
+	public WsdlWebImportWizard nextPage(){
+		log.info("Go to next wizard page");
+		new NextButton().click();
+		return this;
 	}
 	
 	public WsdlWebImportWizard activate() {
@@ -92,12 +93,6 @@ public class WsdlWebImportWizard extends TeiidImportWizard {
 		if(generateVirtualXML != checkBox.isChecked()){
 			checkBox.click();
 		}
-		return this;
-	}
-	
-	public WsdlWebImportWizard nextPage(){
-		log.info("Go to next wizard page");
-		new NextButton().click();
 		return this;
 	}
 }
