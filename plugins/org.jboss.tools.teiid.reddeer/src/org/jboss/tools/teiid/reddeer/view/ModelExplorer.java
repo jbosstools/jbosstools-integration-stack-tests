@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.List;
-import java.util.Properties;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
@@ -34,12 +33,6 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.reddeer.workbench.impl.editor.AbstractEditor;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.tools.teiid.reddeer.ChildType;
-import org.jboss.tools.teiid.reddeer.ModelBuilder;
-import org.jboss.tools.teiid.reddeer.ModelClass;
-import org.jboss.tools.teiid.reddeer.ModelProject;
-import org.jboss.tools.teiid.reddeer.ModelType;
-import org.jboss.tools.teiid.reddeer.Table;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.condition.RadioButtonEnabled;
 import org.jboss.tools.teiid.reddeer.condition.WarIsDeployed;
@@ -50,7 +43,6 @@ import org.jboss.tools.teiid.reddeer.dialog.GenerateDynamicVdbDialog;
 import org.jboss.tools.teiid.reddeer.dialog.GenerateRestProcedureDialog;
 import org.jboss.tools.teiid.reddeer.dialog.GenerateVdbArchiveDialog;
 import org.jboss.tools.teiid.reddeer.dialog.SaveAsDialog;
-import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.wizard.imports.ImportProjectWizard;
@@ -58,92 +50,30 @@ import org.jboss.tools.teiid.reddeer.wizard.newWizard.MetadataModelWizard;
 import org.jboss.tools.teiid.reddeer.wizard.newWizard.NewModelProjectWizard;
 import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
 
-
-/**
- * This class represents a model explorer
- * 
- * @author apodhrad
- * 
- */
 public class ModelExplorer extends AbstractExplorer {
 
-	private static String CONNECTION_PROFILE_CHANGE = "Confirm Connection Profile Change";
-
-	private static final String MODELING_MENU_ITEM = "Modeling";
-	private static final String CREATE_DATA_SOURCE = "Create Data Source";
-	private static final String SET_JNDI_NAME = "Set Data Source JNDI Name";
-
-	public static class ConnectionSourceType {
-		public static final String USE_MODEL_CONNECTION_INFO = "Use Model Connection Info";
-		public static final String USE_CONNECTION_PROFILE_INFO = "Use Connection Profile Info";
+	public static class ChildType{
+		public static final String XML_DOCUMENT = "XML Document";
+		public static final String NAME_SPACE = "Namespace Declaration";
+		public static final String SEQUENCE = "sequence";
+		public static final String ELEMENT = "Element";
+		public static final String TABLE = "Table...";
+		public static final String OPERATION = "Operation";
+		public static final String INPUT = "Input";
+		public static final String OUTPUT = "Output";
+		public static final String PROCEDURE = "Procedure...";
 	}
-
+	
 	public ModelExplorer() {
 		super("Model Explorer");
 		this.activate();
 	}
 
-	public ModelProject getModelProject(String modelName) {
-		return new ModelProject(getProject(modelName));
-	}
-	
-	@Deprecated // use ModelExplorer.addChildToModelItem/addSiblingToModelItem + TableDialog
-	public void newTable(String tableName, Table.Type type, Properties props, String... pathToModelXmi) {
-		open();
-
-		new DefaultTreeItem(pathToModelXmi).select();
-		new ContextMenu("New Child", "Table...").select();
-		new Table().create(type, tableName, props);
-		new RelationalModelEditor(pathToModelXmi[pathToModelXmi.length - 1]).save();// the last member is modelXmi
-	}
-
 	@Override
 	public void open() {
 		super.open();
-		new WorkbenchShell();
+		this.activate();
 	}
-
-	@Deprecated
-	public void openTransformationDiagram(String project, String... filePath) {
-		open();
-
-		getProject(project).getProjectItem(filePath).getChild("Transformation Diagram").open();
-	}
-
-	public void createDataSource(String connectionSourceType, String connectionProfile, String... pathToSourceModel) {
-		open();
-		// if last without ., set to .xmi
-		if (!pathToSourceModel[pathToSourceModel.length - 1].contains(".")) {
-			pathToSourceModel[pathToSourceModel.length - 1] = pathToSourceModel[pathToSourceModel.length - 1]
-					.concat(".xmi");
-		}
-		new WorkbenchShell();
-		new DefaultTreeItem(pathToSourceModel).select();
-		new ContextMenu(MODELING_MENU_ITEM, CREATE_DATA_SOURCE).select();
-		// wait until radio button is enabled
-		new WaitUntil(new RadioButtonEnabled(connectionSourceType), TimePeriod.NORMAL);
-		new RadioButton(connectionSourceType).click();
-		// in case of connection profile -> choose connection profile
-		if (connectionSourceType.toString().equals(ConnectionSourceType.USE_CONNECTION_PROFILE_INFO)) {
-			new DefaultCombo(1).setSelection(connectionProfile);
-		}
-		if (!new PushButton("OK").isEnabled()) {
-			System.err.println("Datasource " + pathToSourceModel[pathToSourceModel.length - 1] + "exists!");
-			new PushButton("Cancel").click();
-		} else {
-			new PushButton("OK").click();
-		}
-	}
-	
-	
-	
-	
-	
-	// ###############################
-	// ### updated down from here
-	// ###############################
-	
-
 	
 	/**
 	 * Changes connection profile of specified Source Model
@@ -160,7 +90,7 @@ public class ModelExplorer extends AbstractExplorer {
 		new DefaultTreeItem("Database Connections", connectionProfile).select();
 		new PushButton("OK").click();
 		try {
-			new WaitUntil(new ShellWithTextIsAvailable(CONNECTION_PROFILE_CHANGE));
+			new WaitUntil(new ShellWithTextIsAvailable("Confirm Connection Profile Change"));
 			new PushButton("OK").click();
 		} catch (Exception e) {}
 	}
@@ -226,7 +156,7 @@ public class ModelExplorer extends AbstractExplorer {
 	 * Creates data source for specified VDB.
 	 */
 	public void createVdbDataSource(String[] pathToVDB, String jndiName, boolean passThruAuth) {
-		int n = pathToVDB.length -1;
+		int n = pathToVDB.length - 1;
 		pathToVDB[n] = (pathToVDB[n].contains(".vdb")) ? pathToVDB[n] : pathToVDB[n] + ".vdb";
 		new WorkbenchShell();
 		this.selectItem(pathToVDB);
@@ -241,6 +171,31 @@ public class ModelExplorer extends AbstractExplorer {
 			new CheckBox("Pass Thru Authentication").click();
 		}
 		new PushButton("OK").click();
+	}
+	
+	/**
+	 * Creates data source for specified Source Model.
+	 */
+	public void createDataSource(String connectionSourceType, String connectionProfile, String... pathToSourceModel) {
+		open();
+		int n = pathToSourceModel.length - 1;
+		pathToSourceModel[n] = (pathToSourceModel[n].contains(".xmi")) ? pathToSourceModel[n] : pathToSourceModel[n] + ".xmi";
+		new WorkbenchShell();
+		this.selectItem(pathToSourceModel);
+		new ContextMenu("Modeling", "Create Data Source").select();
+		// wait until radio button is enabled
+		new WaitUntil(new RadioButtonEnabled(connectionSourceType), TimePeriod.NORMAL);
+		new RadioButton(connectionSourceType).click();
+		// in case of connection profile -> choose connection profile
+		if (connectionSourceType.toString().equals("Use Connection Profile Info")) {
+			new DefaultCombo(1).setSelection(connectionProfile);
+		}
+		if (!new PushButton("OK").isEnabled()) {
+			System.err.println("Datasource " + pathToSourceModel[pathToSourceModel.length - 1] + "exists!");
+			new PushButton("Cancel").click();
+		} else {
+			new PushButton("OK").click();
+		}
 	}
 	
 	/**
@@ -421,17 +376,17 @@ public class ModelExplorer extends AbstractExplorer {
 	 * Performs copy model action. 
 	 * @param originalModelPath - full path to original model (<PROJECT>/.../<MODEL>) 
 	 * @param newModelPath - full path to folder where new model will be located (<PROJECT>/.../<FOLDER>) 
-	 * @param newModelClass - org.jboss.tools.teiid.reddeer.ModelClass.*
-	 * @param newModelType - org.jboss.tools.teiid.reddeer.ModelType.*
+	 * @param newModelClass - MetadataModelWizard.ModelClass.*
+	 * @param newModelType - MetadataModelWizard.ModelType.*
 	 */
 	public void copyModel(String originalModelPath, String newModelName, String newModelPath, 
-		ModelClass newModelClass, ModelType newModelType){
+		String newModelClass, String newModelType){
 		MetadataModelWizard.openWizard()
 				.setLocation(newModelPath.split("/"))
 				.setModelName(newModelName)
 				.selectModelClass(newModelClass)
 				.selectModelType(newModelType)
-				.selectModelBuilder(ModelBuilder.COPY_EXISTING)
+				.selectModelBuilder(MetadataModelWizard.ModelBuilder.COPY_EXISTING)
 				.nextPage()
 				.setExistingModel(originalModelPath.split("/"))
 				.finish();
@@ -445,13 +400,13 @@ public class ModelExplorer extends AbstractExplorer {
 	
 	/**
 	 * Adds child to specified item of model's tree structure.
-	 * @param childType - org.jboss.tools.teiid.reddeer.ChildType.*
+	 * @param childType -ModelExplorer.ChildType.*
 	 * @param itemPath - path to model (<PROJECT>, ..., <MODEL/ITEM>)
 	 */
-	public void addChildToModelItem(ChildType childType, String... itemPath) {
+	public void addChildToModelItem(String childType, String... itemPath) {
 		this.getProject(itemPath[0]).refresh();
 		new DefaultTreeItem(itemPath).select();
-		new ContextMenu("New Child",childType.getText()).select();
+		new ContextMenu("New Child", childType).select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		KeyboardFactory.getKeyboard().type(KeyEvent.VK_TAB);
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -459,13 +414,13 @@ public class ModelExplorer extends AbstractExplorer {
 	
 	/**
 	 * Adds sibling to specified item of model's tree structure.
-	 * @param siblingType - org.jboss.tools.teiid.reddeer.ChildType.*
+	 * @param siblingType - ModelExplorer.ChildType.*
 	 * @param itemPath - path to model (<PROJECT>, ..., <MODEL/ITEM>)
 	 */
-	public void addSiblingToModelItem(ChildType siblingType, String... itemPath){
+	public void addSiblingToModelItem(String siblingType, String... itemPath){
 		this.getProject(itemPath[0]).refresh();
 		new DefaultTreeItem(itemPath).select();
-		new ContextMenu("New Sibling",siblingType.getText()).select();
+		new ContextMenu("New Sibling",siblingType).select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		KeyboardFactory.getKeyboard().type(KeyEvent.VK_TAB);
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -564,7 +519,7 @@ public class ModelExplorer extends AbstractExplorer {
 		int iModel = pathToSourceModel.length -1;
 		pathToSourceModel[iModel] = (pathToSourceModel[iModel].contains(".")) ? pathToSourceModel[iModel] : pathToSourceModel[iModel] + ".xmi";
 		this.selectItem(pathToSourceModel);
-		new ContextMenu(MODELING_MENU_ITEM, SET_JNDI_NAME).select();
+		new ContextMenu("Modeling", "Set Data Source JNDI Name").select();
 		new DefaultShell("Set JBoss Data Source JNDI Name");
 		new DefaultText(0).setText(jndiName);
 		new PushButton("OK").click();

@@ -8,8 +8,6 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.tools.teiid.reddeer.ModelClass;
-import org.jboss.tools.teiid.reddeer.ModelType;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.wizard.imports.XMLSchemaImportWizard;
@@ -141,9 +139,9 @@ public class BasicTest {
 	private void prepareModel(int i, String[] virtDocs) {
 
 		MetadataModelWizard wizard = MetadataModelWizard.openWizard();
-		wizard.setLocation(PROJECT).setModelName(MODEL + i).selectModelClass(ModelClass.XML)
-				.selectModelType(ModelType.VIEW)
-				.selectModelBuilder(org.jboss.tools.teiid.reddeer.ModelBuilder.BUILD_FROM_XML_SCHEMA)
+		wizard.setLocation(PROJECT).setModelName(MODEL + i).selectModelClass(MetadataModelWizard.ModelClass.XML)
+				.selectModelType(MetadataModelWizard.ModelType.VIEW)
+				.selectModelBuilder(MetadataModelWizard.ModelBuilder.BUILD_FROM_XML_SCHEMA)
 				.nextPage()
 				.selectXMLSchemaFile(new String[] { PROJECT, XSD });
 		for (String elem : virtDocs) {

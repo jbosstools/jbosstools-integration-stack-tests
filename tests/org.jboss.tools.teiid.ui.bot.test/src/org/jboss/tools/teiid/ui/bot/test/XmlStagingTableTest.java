@@ -11,10 +11,6 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.tools.teiid.reddeer.ChildType;
-import org.jboss.tools.teiid.reddeer.ModelBuilder;
-import org.jboss.tools.teiid.reddeer.ModelClass;
-import org.jboss.tools.teiid.reddeer.ModelType;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
@@ -68,9 +64,9 @@ public class XmlStagingTableTest {
 		MetadataModelWizard.openWizard()
 				.setLocation(PROJECT_NAME, "views")
 				.setModelName(VIEW_MODEL.substring(0, 11))
-				.selectModelClass(ModelClass.XML)
-				.selectModelType(ModelType.VIEW)
-				.selectModelBuilder(ModelBuilder.BUILD_FROM_XML_SCHEMA)
+				.selectModelClass(MetadataModelWizard.ModelClass.XML)
+				.selectModelType(MetadataModelWizard.ModelType.VIEW)
+				.selectModelBuilder(MetadataModelWizard.ModelBuilder.BUILD_FROM_XML_SCHEMA)
 				.nextPage()
 				.selectXMLSchemaFile(PROJECT_NAME, "schemas", "PublisherSchema.xsd")
 				.addElement("ResultSet")
@@ -102,7 +98,7 @@ public class XmlStagingTableTest {
 		new ProblemsViewEx().checkErrors();
 		
 		// 3. Model XML document with staging table
-		modelExplorer.addChildToModelItem(ChildType.XML_DOCUMENT, PROJECT_NAME, "views", VIEW_MODEL);
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.XML_DOCUMENT, PROJECT_NAME, "views", VIEW_MODEL);
 		XmlDocumentBuilderDialog xmlDocumentBuilder = new XmlDocumentBuilderDialog();
 		xmlDocumentBuilder.setSchema(PROJECT_NAME,"schemas","PublisherSchema.xsd")
 				.addElement("ResultSet");

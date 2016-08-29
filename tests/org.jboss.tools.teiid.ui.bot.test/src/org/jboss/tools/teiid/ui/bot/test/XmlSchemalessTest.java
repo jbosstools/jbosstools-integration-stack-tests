@@ -11,9 +11,6 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.tools.teiid.reddeer.ChildType;
-import org.jboss.tools.teiid.reddeer.ModelClass;
-import org.jboss.tools.teiid.reddeer.ModelType;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
@@ -68,15 +65,15 @@ public class XmlSchemalessTest {
 		// 1. Create an XML document model
 		MetadataModelWizard.openWizard()
 				.setModelName(VIEW_MODEL.substring(0,8))
-				.selectModelClass(ModelClass.XML)
-		        .selectModelType(ModelType.VIEW)
+				.selectModelClass(MetadataModelWizard.ModelClass.XML)
+		        .selectModelType(MetadataModelWizard.ModelType.VIEW)
 				.finish();	
 		
 		String modelPath = PROJECT_NAME + "/" + VIEW_MODEL;
 		modelExplorer.openModelEditor(modelPath.split("/"));
 		XmlModelEditor editor = new XmlModelEditor(VIEW_MODEL);
 		
-		modelExplorer.addChildToModelItem(ChildType.XML_DOCUMENT, modelPath.split("/"));
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.XML_DOCUMENT, modelPath.split("/"));
 		XmlDocumentBuilderDialog xmlDocumentBuilder = new XmlDocumentBuilderDialog();
 		xmlDocumentBuilder.finish();
 		modelExplorer.renameModelItem("bookListingDocument", (modelPath+"/NewXMLDocument").split("/"));
@@ -89,7 +86,7 @@ public class XmlSchemalessTest {
 		modelExplorer.renameModelItem("bookListing", (modelPath+"/"+xmlStructureBuilt+"/Root_Element").split("/"));
 		xmlStructureBuilt += "/bookListing";
 		
-		modelExplorer.addChildToModelItem(ChildType.NAME_SPACE, (modelPath+"/"+xmlStructureBuilt).split("/"));
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.NAME_SPACE, (modelPath+"/"+xmlStructureBuilt).split("/"));
 
 		editor.show();
 		TableEditor tableEditor = editor.openTableEditor();
@@ -98,29 +95,29 @@ public class XmlSchemalessTest {
 		tableEditor.setCellText(0, "bookListing", "Uri", "http://www.w3.org/2001/XMLSchema");
 		tableEditor.close();
 		
-		modelExplorer.addChildToModelItem(ChildType.SEQUENCE, (modelPath+"/"+xmlStructureBuilt).split("/"));
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.SEQUENCE, (modelPath+"/"+xmlStructureBuilt).split("/"));
 		xmlStructureBuilt += "/sequence";
 		
-		modelExplorer.addChildToModelItem(ChildType.ELEMENT, (modelPath+"/"+xmlStructureBuilt).split("/"));
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.ELEMENT, (modelPath+"/"+xmlStructureBuilt).split("/"));
 		modelExplorer.renameModelItem("book", (modelPath+"/"+xmlStructureBuilt+"/NewXmlElement").split("/"));
 		xmlStructureBuilt += "/book";
 		
-		modelExplorer.addChildToModelItem(ChildType.SEQUENCE, (modelPath+"/"+xmlStructureBuilt).split("/"));
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.SEQUENCE, (modelPath+"/"+xmlStructureBuilt).split("/"));
 		xmlStructureBuilt += "/sequence";
 		
-		modelExplorer.addChildToModelItem(ChildType.ELEMENT, (modelPath+"/"+xmlStructureBuilt).split("/"));
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.ELEMENT, (modelPath+"/"+xmlStructureBuilt).split("/"));
 		modelExplorer.renameModelItem("isbn", (modelPath+"/"+xmlStructureBuilt+"/NewXmlElement").split("/"));
 		
-		modelExplorer.addChildToModelItem(ChildType.ELEMENT, (modelPath+"/"+xmlStructureBuilt).split("/"));
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.ELEMENT, (modelPath+"/"+xmlStructureBuilt).split("/"));
 		modelExplorer.renameModelItem("title", (modelPath+"/"+xmlStructureBuilt+"/NewXmlElement").split("/"));
 		
-		modelExplorer.addChildToModelItem(ChildType.ELEMENT, (modelPath+"/"+xmlStructureBuilt).split("/"));
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.ELEMENT, (modelPath+"/"+xmlStructureBuilt).split("/"));
 		modelExplorer.renameModelItem("edition", (modelPath+"/"+xmlStructureBuilt+"/NewXmlElement").split("/"));
 		
-		modelExplorer.addChildToModelItem(ChildType.ELEMENT, (modelPath+"/"+xmlStructureBuilt).split("/"));
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.ELEMENT, (modelPath+"/"+xmlStructureBuilt).split("/"));
 		modelExplorer.renameModelItem("publisherName", (modelPath+"/"+xmlStructureBuilt+"/NewXmlElement").split("/"));
 		
-		modelExplorer.addChildToModelItem(ChildType.ELEMENT, (modelPath+"/"+xmlStructureBuilt).split("/"));
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.ELEMENT, (modelPath+"/"+xmlStructureBuilt).split("/"));
 		modelExplorer.renameModelItem("publisherLocation", (modelPath+"/"+xmlStructureBuilt+"/NewXmlElement").split("/"));
 
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -156,24 +153,24 @@ public class XmlSchemalessTest {
 		assertEquals(output, expectedOutput);
 	    
 	    // 5. Expand the document	    
-	    modelExplorer.addSiblingToModelItem(ChildType.ELEMENT, (modelPath+"/"+xmlStructureBuilt+"/edition").split("/"));
+	    modelExplorer.addSiblingToModelItem(ModelExplorer.ChildType.ELEMENT, (modelPath+"/"+xmlStructureBuilt+"/edition").split("/"));
  		modelExplorer.renameModelItem("authors", (modelPath+"/"+xmlStructureBuilt+"/NewXmlElement").split("/"));
  		xmlStructureBuilt += "/authors";
  		
- 		modelExplorer.addChildToModelItem(ChildType.SEQUENCE, (modelPath+"/"+xmlStructureBuilt).split("/"));
+ 		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.SEQUENCE, (modelPath+"/"+xmlStructureBuilt).split("/"));
  		xmlStructureBuilt += "/sequence";
  		
- 		modelExplorer.addChildToModelItem(ChildType.ELEMENT, (modelPath+"/"+xmlStructureBuilt).split("/"));
+ 		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.ELEMENT, (modelPath+"/"+xmlStructureBuilt).split("/"));
  		modelExplorer.renameModelItem("author", (modelPath+"/"+xmlStructureBuilt+"/NewXmlElement").split("/"));
  		xmlStructureBuilt += "/author";
  		
- 		modelExplorer.addChildToModelItem(ChildType.SEQUENCE, (modelPath+"/"+xmlStructureBuilt).split("/"));
+ 		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.SEQUENCE, (modelPath+"/"+xmlStructureBuilt).split("/"));
  		xmlStructureBuilt += "/sequence";
  		
- 		modelExplorer.addChildToModelItem(ChildType.ELEMENT, (modelPath+"/"+xmlStructureBuilt).split("/"));
+ 		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.ELEMENT, (modelPath+"/"+xmlStructureBuilt).split("/"));
  		modelExplorer.renameModelItem("lastName", (modelPath+"/"+xmlStructureBuilt+"/NewXmlElement").split("/"));
  		
- 		modelExplorer.addChildToModelItem(ChildType.ELEMENT, (modelPath+"/"+xmlStructureBuilt).split("/"));
+ 		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.ELEMENT, (modelPath+"/"+xmlStructureBuilt).split("/"));
  		modelExplorer.renameModelItem("firstName", (modelPath+"/"+xmlStructureBuilt+"/NewXmlElement").split("/"));
 
  		AbstractWait.sleep(TimePeriod.SHORT);

@@ -60,10 +60,10 @@ public class PreviewModelTest {
 		explorer.importProject(PROJECT_NAME);
 		explorer.changeConnectionProfile(ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER, PROJECT_NAME, NAME_ORACLE_MODEL);
 		explorer.changeConnectionProfile(ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER, PROJECT_NAME, NAME_SQL_MODEL);
-		explorer.createDataSource(ModelExplorer.ConnectionSourceType.USE_CONNECTION_PROFILE_INFO, 
+		explorer.createDataSource("Use Connection Profile Info", 
 							      ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER, 
 							      PROJECT_NAME, NAME_ORACLE_MODEL);
-		explorer.createDataSource(ModelExplorer.ConnectionSourceType.USE_CONNECTION_PROFILE_INFO,
+		explorer.createDataSource("Use Connection Profile Info",
 								  ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER,
 								  PROJECT_NAME, NAME_SQL_MODEL);
 		explorer.setJndiName(NAME_ORACLE_MODEL,PROJECT_NAME, NAME_ORACLE_MODEL);

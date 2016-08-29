@@ -14,9 +14,6 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.tools.teiid.reddeer.ModelBuilder;
-import org.jboss.tools.teiid.reddeer.ModelClass;
-import org.jboss.tools.teiid.reddeer.ModelType;
 import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.dialog.InputSetEditorDialog;
@@ -82,9 +79,9 @@ public class XmlRecursiveTest {
 		MetadataModelWizard.openWizard()
 				.setLocation(PROJECT_NAME)
 				.setModelName(VIEW_MODEL.substring(0,6))
-				.selectModelClass(ModelClass.XML)
-				.selectModelType(ModelType.VIEW)
-				.selectModelBuilder(ModelBuilder.BUILD_FROM_XML_SCHEMA)
+				.selectModelClass(MetadataModelWizard.ModelClass.XML)
+				.selectModelType(MetadataModelWizard.ModelType.VIEW)
+				.selectModelBuilder(MetadataModelWizard.ModelBuilder.BUILD_FROM_XML_SCHEMA)
 				.nextPage()
 				.selectXMLSchemaFile(PROJECT_NAME, "EmployeesSchema.xsd")
 				.addElement("SimpleEmployees")

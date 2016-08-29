@@ -1,23 +1,20 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
-import java.util.Properties;
-
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.tools.teiid.reddeer.ChildType;
-import org.jboss.tools.teiid.reddeer.Procedure;
-import org.jboss.tools.teiid.reddeer.Table;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
+import org.jboss.tools.teiid.reddeer.dialog.TableDialog;
 import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
+import org.jboss.tools.teiid.reddeer.wizard.ProcedureWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.ImportFromFileSystemWizard;
 import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
 import org.junit.Before;
@@ -54,6 +51,10 @@ public class UDFTest {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 	
+	/**
+	 * Note: Jar with UDF must be created and imported into "target/proc-udf/MyTestUdf/lib/" before execution.
+	 * TODO how to obtain this jar
+	 */
 	@Test
 	public void relViewUDF() {
 		// import lib/MyTestUDF.jar
@@ -63,29 +64,26 @@ public class UDFTest {
 				.selectFile(UDF_LIB)
 				.setCreteTopLevelFolder(true)
 				.finish();
-
-		// create UDF
-		String proc = "udfConcatNull";
-		Properties props = new Properties();
-		props.setProperty("type", Procedure.Type.RELVIEW_USER_DEFINED_FUNCTION);
-		props.setProperty("params", "stringLeft,stringRight");
-		props.setProperty("returnParam", "concatenatedResult");
-		props.setProperty("functionCategory", "MY_TESTING_FUNCTION_CATEGORY");
-		props.setProperty("javaClass", "userdefinedfunctions.MyConcatNull");// see decompiled jar
-		props.setProperty("javaMethod", "myConcatNull");
-		props.setProperty("udfJarPath", "lib/" + UDF_LIB);
 		
-		new ModelExplorer().addChildToModelItem(ChildType.PROCEDURE, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi");
-		new Procedure().create(proc, props);
-		new RelationalModelEditor(MODEL_VIEW_NAME + ".xmi").save();
+		new ModelExplorer().addChildToModelItem(ModelExplorer.ChildType.PROCEDURE, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi");
+		ProcedureWizard.createUserDefinedFunction()
+				.setName("udfConcatNull")
+				.addParameter("stringLeft", "string", "400", "IN")
+				.addParameter("stringRight", "string", "400", "IN")
+				.addParameter("concatenatedResult", "string", "400", "RETURN")
+				.setFunctionCategory("MY_TESTING_FUNCTION_CATEGORY")
+				.setJavaClass("userdefinedfunctions.MyConcatNull")
+				.setJavaMethod("myConcatNull")
+				.setUdfJarPath("lib/" + UDF_LIB)
+				.finish();
 
-		// create table to test -> use UDF in transformation
-		String table = "tab";
-		String query = "select udfConcatNull(hsqldbParts.PARTS.PART_NAME,hsqldbParts.PARTS.PART_WEIGHT) as NAME_WEIGHT from hsqldbParts.PARTS";
-		props = new Properties();
-		props.setProperty("sql", query);
-		new ModelExplorer().newTable(table, Table.Type.VIEW, props, PROJECT_NAME,
-				MODEL_VIEW_NAME + ".xmi");
+		new ModelExplorer().addChildToModelItem(ModelExplorer.ChildType.TABLE, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi");
+		new TableDialog(true)
+				.setName("tab")
+				.setTransformationSql("select udfConcatNull(hsqldbParts.PARTS.PART_NAME,hsqldbParts.PARTS.PART_WEIGHT) as NAME_WEIGHT from hsqldbParts.PARTS")
+				.finish();	
+		
+		new RelationalModelEditor(MODEL_VIEW_NAME + ".xmi").save();
 
 		VdbWizard.openVdbWizard()
 				.setLocation(PROJECT_NAME)

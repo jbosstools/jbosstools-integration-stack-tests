@@ -18,9 +18,6 @@ import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.tools.teiid.reddeer.ModelBuilder;
-import org.jboss.tools.teiid.reddeer.ModelClass;
-import org.jboss.tools.teiid.reddeer.ModelType;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
@@ -140,8 +137,8 @@ public class GeometryTypeTest {
 	private void createView(String sourceModel,String viewModel){
 		MetadataModelWizard.openWizard()
 				.setLocation(PROJECT_NAME).setModelName(viewModel)
-				.selectModelClass(ModelClass.RELATIONAL).selectModelType(ModelType.VIEW)
-				.selectModelBuilder(ModelBuilder.TRANSFORM_EXISTING)
+				.selectModelClass(MetadataModelWizard.ModelClass.RELATIONAL).selectModelType(MetadataModelWizard.ModelType.VIEW)
+				.selectModelBuilder(MetadataModelWizard.ModelBuilder.TRANSFORM_EXISTING)
 				.nextPage()
 				.setExistingModel(PROJECT_NAME,sourceModel+".xmi")
 				.finish();

@@ -14,6 +14,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 public class ProcedureViewDialog extends AbstractDialog {
@@ -99,11 +100,39 @@ public class ProcedureViewDialog extends AbstractDialog {
 	public ProcedureViewDialog setTransformationSql(String sql){
 		log.info("Setting transformation SQL to " + sql);
 		new DefaultTabItem("Transformation SQL").activate();
-		try {
-			new DefaultStyledText(new DefaultGroup("SQL Definition")).setText(sql);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		new DefaultStyledText(new DefaultGroup("SQL Definition")).setText(sql);
+		return this;
+	}
+	
+	public ProcedureViewDialog toggleResultSet(boolean flag){
+		log.info((flag) ? "Setting Result Set as included" : "Setting Result Set as excluded");
+		new DefaultTabItem("Result Set").activate();
+		new CheckBox("Include").toggle(flag);
+		return this;
+	}
+	
+	public ProcedureViewDialog setResultSetName(String resultSetName){
+		log.info("Setting Result Set name to " + resultSetName);
+		new DefaultTabItem("Result Set").activate();
+		new DefaultText(3).setText(resultSetName);
+		return this;
+	}
+	
+	public ProcedureViewDialog addResultSetColumn(String name, String dataType, String length){
+		log.info("Adding column " + name + " " + dataType + " " + length + " to Result Set");
+		new DefaultTabItem("Result Set").activate();
+		new PushButton("Add").click();
+		DefaultTable table = new DefaultTable();
+		table.getItem(table.rowCount() - 1).select();
+		new PushButton("Edit...").click();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		new DefaultShell("Edit Column");
+		new LabeledText("Name").setText(name);
+		new LabeledCombo("Data Type").setSelection(dataType);
+		new LabeledText("Length").setText(length);
+		new OkButton().click();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		this.activate();
 		return this;
 	}
 	

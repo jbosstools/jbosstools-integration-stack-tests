@@ -1,4 +1,4 @@
-package org.jboss.tools.teiid.reddeer.modeling;
+package org.jboss.tools.teiid.reddeer.model;
 
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.api.TableItem;
