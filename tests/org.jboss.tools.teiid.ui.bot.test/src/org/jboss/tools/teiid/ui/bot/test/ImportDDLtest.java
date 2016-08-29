@@ -84,7 +84,7 @@ public class ImportDDLtest {
 				.nextPage()
 				.finish();
 		
-		new ModelExplorer().getModelProject(PROJECT_NAME).open();
+		new ModelExplorer().selectItem(PROJECT_NAME);
 		new DefaultTreeItem(PROJECT_NAME,NAME_VIEW_MODEL + ".xmi","tempTable").doubleClick();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new DefaultCTabItem("Table Editor").activate();
@@ -151,8 +151,7 @@ public class ImportDDLtest {
 	@Test
 	public void exportOriginalDDL(){
 		//TEIIDDES-2827
-		new ModelExplorer().getModelProject(PROJECT_NAME).open();
-		new DefaultTreeItem(PROJECT_NAME,NAME_VIEW_ORIGINAL_MODEL + ".xmi").select();
+		new ModelExplorer().selectItem(PROJECT_NAME,NAME_VIEW_ORIGINAL_MODEL + ".xmi");
 
 		DDLTeiidExportWizard.openWizard()
 				.setLocation(PROJECT_NAME,NAME_VIEW_ORIGINAL_MODEL + ".xmi")
@@ -162,7 +161,7 @@ public class ImportDDLtest {
 				.exportToWorkspace("originalDDL", PROJECT_NAME)
 				.finish();
 		
-		new ModelExplorer().getModelProject(PROJECT_NAME).open();
+		new ModelExplorer().selectItem(PROJECT_NAME);
 		new DefaultTreeItem(PROJECT_NAME,"originalDDL").doubleClick();
 		
 		String generetedText = new DefaultStyledText().getText();

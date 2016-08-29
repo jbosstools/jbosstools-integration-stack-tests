@@ -68,7 +68,7 @@ public class TeiidConnectionImportTest {
 	public static void createProject() {
 		new TeiidDesignerPreferencePage().setTeiidConnectionImporterTimeout(240);
 		new ModelExplorer().importProject(PROJECT_NAME);
-		new ModelExplorer().getModelProject(PROJECT_NAME).open();
+		new ModelExplorer().selectItem(PROJECT_NAME);
 
 	}
 	

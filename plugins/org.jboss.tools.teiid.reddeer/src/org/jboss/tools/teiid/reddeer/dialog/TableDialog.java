@@ -6,6 +6,9 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.group.DefaultGroup;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 public class TableDialog extends AbstractDialog{
@@ -28,5 +31,11 @@ public class TableDialog extends AbstractDialog{
 		new LabeledText("Name").setText(name);
 		return this;
 	}
-
+	
+	public TableDialog setTransformationSql(String sql){
+		log.info("Setting transformation SQL to " + sql);
+		new DefaultTabItem("Transformation SQL").activate();
+		new DefaultStyledText(new DefaultGroup("SQL Definition")).setText(sql);
+		return this;
+	}
 }

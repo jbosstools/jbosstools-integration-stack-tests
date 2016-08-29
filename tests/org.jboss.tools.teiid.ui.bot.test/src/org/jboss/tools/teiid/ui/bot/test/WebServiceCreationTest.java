@@ -11,12 +11,7 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.tools.teiid.reddeer.ChildType;
-import org.jboss.tools.teiid.reddeer.ModelBuilder;
-import org.jboss.tools.teiid.reddeer.ModelClass;
-import org.jboss.tools.teiid.reddeer.ModelType;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
 import org.jboss.tools.teiid.reddeer.connection.SimpleHttpClient;
@@ -98,9 +93,9 @@ public class WebServiceCreationTest {
 		modelExplorer.selectItem(PROJECT_NAME, "web_services");
 		MetadataModelWizard.openWizard()
 				.setModelName(WS_MODEL.substring(0,10))
-				.selectModelClass(ModelClass.WEBSERVICE)
-		        .selectModelType(ModelType.VIEW)
-		        .selectModelBuilder(ModelBuilder.BUILD_FROM_WSDL_URL)
+				.selectModelClass(MetadataModelWizard.ModelClass.WEBSERVICE)
+		        .selectModelType(MetadataModelWizard.ModelType.VIEW)
+		        .selectModelBuilder(MetadataModelWizard.ModelBuilder.BUILD_FROM_WSDL_URL)
 				.nextPage()
 				.setWsdlFileFromWorkspace(PROJECT_NAME, "others", "ProductsInfo.wsdl")
 				.nextPage()
@@ -202,7 +197,7 @@ public class WebServiceCreationTest {
 		
 		xmlEditor.renameDocument("ProductInfo_OutputView", DOCUMENT_PRODUCT);
 		
-		modelExplorer.addChildToModelItem(ChildType.XML_DOCUMENT, xmlModelPath);
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.XML_DOCUMENT, xmlModelPath);
 		XmlDocumentBuilderDialog xmlDocumentBuilder = new XmlDocumentBuilderDialog();
 		xmlDocumentBuilder.setSchema(PROJECT_NAME,"schemas","ProductsSchema.xsd")
 				.addElement("putResults : putResultsType");
@@ -217,7 +212,7 @@ public class WebServiceCreationTest {
 		xmlEditor.returnToDocumentOverview();
 		xmlEditor.renameDocument("putResultsDocument", DOCUMENT_GOOD);
 		
-		modelExplorer.addChildToModelItem(ChildType.XML_DOCUMENT, xmlModelPath);
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.XML_DOCUMENT, xmlModelPath);
 		xmlDocumentBuilder = new XmlDocumentBuilderDialog();
 		xmlDocumentBuilder.setSchema(PROJECT_NAME,"schemas","ProductsSchema.xsd")
 				.addElement("putResults : putResultsType");
@@ -242,10 +237,10 @@ public class WebServiceCreationTest {
 		WebServiceModelEditor wsEditor = new WebServiceModelEditor(WS_MODEL);
 		
 		// 3.2. Define get all operation
-		modelExplorer.addChildToModelItem(ChildType.OPERATION, (wsModelPath+"/"+INTERFACE_NAME).split("/"));
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.OPERATION, (wsModelPath+"/"+INTERFACE_NAME).split("/"));
 		modelExplorer.renameModelItem(OPERATION_GET_ALL, (wsModelPath+"/"+INTERFACE_NAME+"/NewOperation").split("/"));
 		
-		modelExplorer.addChildToModelItem(ChildType.INPUT, (wsModelPath+"/"+INTERFACE_NAME+"/"+OPERATION_GET_ALL).split("/") );
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.INPUT, (wsModelPath+"/"+INTERFACE_NAME+"/"+OPERATION_GET_ALL).split("/") );
 		TableEditor tableEditor = wsEditor.openTableEditor();
 		tableEditor.openTab(TableEditor.Tabs.INPUTS);
 		tableEditor.setCellTextViaProperties(OPERATION_GET_ALL, 
@@ -257,10 +252,10 @@ public class WebServiceCreationTest {
 		wsEditor.setOperationProcedure(fileHelper.getSql("WebServiceCreationTest/GetAll.sql"));
 		
 		// 3.3. Define insert operation	
-		modelExplorer.addChildToModelItem(ChildType.OPERATION, (wsModelPath+"/"+INTERFACE_NAME).split("/") );
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.OPERATION, (wsModelPath+"/"+INTERFACE_NAME).split("/") );
 		modelExplorer.renameModelItem(OPERATION_INSERT, (wsModelPath+"/"+INTERFACE_NAME+"/NewOperation").split("/"));
-		modelExplorer.addChildToModelItem(ChildType.INPUT, (wsModelPath+"/"+INTERFACE_NAME+"/"+OPERATION_INSERT).split("/"));
-		modelExplorer.addChildToModelItem(ChildType.OUTPUT, (wsModelPath+"/"+INTERFACE_NAME+"/"+OPERATION_INSERT).split("/"));
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.INPUT, (wsModelPath+"/"+INTERFACE_NAME+"/"+OPERATION_INSERT).split("/"));
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.OUTPUT, (wsModelPath+"/"+INTERFACE_NAME+"/"+OPERATION_INSERT).split("/"));
 		
 		tableEditor = wsEditor.openTableEditor();
 		tableEditor.openTab(TableEditor.Tabs.INPUTS);
@@ -282,10 +277,10 @@ public class WebServiceCreationTest {
 				fileHelper.getSql("WebServiceCreationTest/Insert.sql"));
 		
 		// 3.4. Define delete operation
-		modelExplorer.addChildToModelItem(ChildType.OPERATION, (wsModelPath+"/"+INTERFACE_NAME).split("/"));
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.OPERATION, (wsModelPath+"/"+INTERFACE_NAME).split("/"));
 		modelExplorer.renameModelItem(OPERATION_DELETE, (wsModelPath+"/"+INTERFACE_NAME+"/NewOperation").split("/"));
-		modelExplorer.addChildToModelItem(ChildType.INPUT, (wsModelPath+"/"+INTERFACE_NAME+"/"+OPERATION_DELETE).split("/"));
-		modelExplorer.addChildToModelItem(ChildType.OUTPUT, (wsModelPath+"/"+INTERFACE_NAME+"/"+OPERATION_DELETE).split("/"));
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.INPUT, (wsModelPath+"/"+INTERFACE_NAME+"/"+OPERATION_DELETE).split("/"));
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.OUTPUT, (wsModelPath+"/"+INTERFACE_NAME+"/"+OPERATION_DELETE).split("/"));
 		
 		tableEditor = wsEditor.openTableEditor();
 		tableEditor.openTab(TableEditor.Tabs.INPUTS);
@@ -334,10 +329,10 @@ public class WebServiceCreationTest {
 		WebServiceModelEditor wsEditor = new WebServiceModelEditor(WS_MODEL);	
 		
 		// 2.1. Define get operation
-		modelExplorer.addChildToModelItem(ChildType.OPERATION, (wsModelPath+"/"+INTERFACE_NAME).split("/"));
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.OPERATION, (wsModelPath+"/"+INTERFACE_NAME).split("/"));
 		modelExplorer.renameModelItem(OPERATION_GET, (wsModelPath+"/"+INTERFACE_NAME+"/NewOperation").split("/"));
-		modelExplorer.addChildToModelItem(ChildType.INPUT, (wsModelPath+"/"+INTERFACE_NAME+"/"+OPERATION_GET).split("/"));
-		modelExplorer.addChildToModelItem(ChildType.OUTPUT, (wsModelPath+"/"+INTERFACE_NAME+"/"+OPERATION_GET).split("/"));
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.INPUT, (wsModelPath+"/"+INTERFACE_NAME+"/"+OPERATION_GET).split("/"));
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.OUTPUT, (wsModelPath+"/"+INTERFACE_NAME+"/"+OPERATION_GET).split("/"));
 		
 		TableEditor tableEditor = wsEditor.openTableEditor();
 		tableEditor.openTab(TableEditor.Tabs.INPUTS);
@@ -359,10 +354,10 @@ public class WebServiceCreationTest {
 				fileHelper.getSql("WebServiceCreationTest/Get.sql"));	
 
 		// 2.2. Define insert operation
-		modelExplorer.addChildToModelItem(ChildType.OPERATION, (wsModelPath+"/"+INTERFACE_NAME).split("/"));
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.OPERATION, (wsModelPath+"/"+INTERFACE_NAME).split("/"));
 		modelExplorer.renameModelItem(OPERATION_INSERT, (wsModelPath+"/"+INTERFACE_NAME+"/NewOperation").split("/"));
-		modelExplorer.addChildToModelItem(ChildType.INPUT, (wsModelPath+"/"+INTERFACE_NAME+"/"+OPERATION_INSERT).split("/"));
-		modelExplorer.addChildToModelItem(ChildType.OUTPUT, (wsModelPath+"/"+INTERFACE_NAME+"/"+OPERATION_INSERT).split("/"));
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.INPUT, (wsModelPath+"/"+INTERFACE_NAME+"/"+OPERATION_INSERT).split("/"));
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.OUTPUT, (wsModelPath+"/"+INTERFACE_NAME+"/"+OPERATION_INSERT).split("/"));
 		
 		tableEditor = wsEditor.openTableEditor();
 		tableEditor.openTab(TableEditor.Tabs.INPUTS);
@@ -384,10 +379,10 @@ public class WebServiceCreationTest {
 				fileHelper.getSql("WebServiceCreationTest/Insert.sql"));	
 		
 		// 2.3. Define delete operation
-		modelExplorer.addChildToModelItem(ChildType.OPERATION, (wsModelPath+"/"+INTERFACE_NAME).split("/"));
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.OPERATION, (wsModelPath+"/"+INTERFACE_NAME).split("/"));
 		modelExplorer.renameModelItem(OPERATION_DELETE, (wsModelPath+"/"+INTERFACE_NAME+"/NewOperation").split("/"));
-		modelExplorer.addChildToModelItem(ChildType.INPUT, (wsModelPath+"/"+INTERFACE_NAME+"/"+OPERATION_DELETE).split("/"));
-		modelExplorer.addChildToModelItem(ChildType.OUTPUT, (wsModelPath+"/"+INTERFACE_NAME+"/"+OPERATION_DELETE).split("/"));
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.INPUT, (wsModelPath+"/"+INTERFACE_NAME+"/"+OPERATION_DELETE).split("/"));
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.OUTPUT, (wsModelPath+"/"+INTERFACE_NAME+"/"+OPERATION_DELETE).split("/"));
 		
 		tableEditor = wsEditor.openTableEditor();
 		tableEditor.openTab(TableEditor.Tabs.INPUTS);

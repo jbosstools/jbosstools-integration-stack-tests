@@ -13,7 +13,6 @@ import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.AssertBot;
-import org.jboss.tools.teiid.reddeer.ChildType;
 import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
 import org.jboss.tools.teiid.reddeer.dialog.CriteriaBuilderDialog;
 import org.jboss.tools.teiid.reddeer.dialog.ExpressionBuilderDialog;
@@ -68,7 +67,7 @@ public class TransformationToolsTest {
 	@Test
 	public void addTransformationSources(){
 		// add transformation menu action
-		modelExplorer.addChildToModelItem(ChildType.TABLE, PROJECT_NAME, VIEW_MODEL);
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.TABLE, PROJECT_NAME, VIEW_MODEL);
 	    new TableDialog(true)
 	    		.setName("AddTransformation")
 	    		.finish();	
@@ -94,7 +93,7 @@ public class TransformationToolsTest {
 		new ProblemsViewEx().checkErrors();
 		
 		// paste transformation
-		modelExplorer.addChildToModelItem(ChildType.TABLE, PROJECT_NAME, VIEW_MODEL);
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.TABLE, PROJECT_NAME, VIEW_MODEL);
 	    new TableDialog(true)
 	    		.setName("PasteTransformation")
 	    		.finish();
@@ -117,7 +116,7 @@ public class TransformationToolsTest {
 		new ProblemsViewEx().checkErrors();
 		
 		// type transformation
-		modelExplorer.addChildToModelItem(ChildType.TABLE, PROJECT_NAME, VIEW_MODEL);
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.TABLE, PROJECT_NAME, VIEW_MODEL);
 	    new TableDialog(true)
 	    		.setName("TypeTransformation")
 	    		.finish();	

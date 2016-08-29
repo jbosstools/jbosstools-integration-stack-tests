@@ -1,4 +1,4 @@
-package org.jboss.tools.teiid.reddeer.modeling;
+package org.jboss.tools.teiid.reddeer.model;
 
 import java.util.Collections;
 import java.util.List;

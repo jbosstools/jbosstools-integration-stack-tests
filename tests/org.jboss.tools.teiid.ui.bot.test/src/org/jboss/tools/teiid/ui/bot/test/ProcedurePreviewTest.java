@@ -3,7 +3,6 @@ package org.jboss.tools.teiid.ui.bot.test;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Properties;
 
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -14,15 +13,13 @@ import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
-import org.jboss.tools.teiid.reddeer.ChildType;
-import org.jboss.tools.teiid.reddeer.Procedure;
-import org.jboss.tools.teiid.reddeer.Table;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
+import org.jboss.tools.teiid.reddeer.dialog.TableDialog;
 import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
-import org.jboss.tools.teiid.reddeer.wizard.imports.ImportFromFileSystemWizard;
+import org.jboss.tools.teiid.reddeer.wizard.ProcedureWizard;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -47,7 +44,7 @@ public class ProcedurePreviewTest {
 		
 		explorer.importProject(PROJECT_NAME);
 		explorer.changeConnectionProfile(PROFILE_NAME, PROJECT_NAME, MODEL_SRC_NAME);
-		explorer.createDataSource(ModelExplorer.ConnectionSourceType.USE_CONNECTION_PROFILE_INFO, PROFILE_NAME, PROJECT_NAME, MODEL_SRC_NAME);
+		explorer.createDataSource("Use Connection Profile Info", PROFILE_NAME, PROJECT_NAME, MODEL_SRC_NAME);
 		explorer.setJndiName(MODEL_SRC_NAME,PROJECT_NAME, MODEL_SRC_NAME);
 		new ShellMenu("File", "Save All").select();
 	}
@@ -59,66 +56,67 @@ public class ProcedurePreviewTest {
 
 	@Test
 	public void relViewProcedure() {
-		String proc = "proc";
-		Properties props = new Properties();
-		props.setProperty("type", Procedure.Type.RELVIEW_PROCEDURE);
-		props.setProperty("includeResultSet", "true");
-		props.setProperty("resultSetName", "rs");
-		props.setProperty("cols", "color");
-		props.setProperty("params", "id");
-		props.setProperty("sql",
-				"CREATE VIRTUAL PROCEDURE BEGIN select hsqldbParts.PARTS.PART_COLOR AS color from hsqldbParts.PARTS where hsqldbParts.PARTS.PART_ID=view.proc.id; END");
+		String procedureName = "proc";
+		new ModelExplorer().addChildToModelItem(ModelExplorer.ChildType.PROCEDURE, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi");
+		ProcedureWizard.createViewProcedure()
+				.setName(procedureName)
+				.setTransformationSql("CREATE VIRTUAL PROCEDURE BEGIN select hsqldbParts.PARTS.PART_COLOR AS color from hsqldbParts.PARTS where hsqldbParts.PARTS.PART_ID=view.proc.id; END")
+				.toggleResultSet(true)
+				.setResultSetName("rs")
+				.addResultSetColumn("color", "string", "400")
+				.addParameter("id", "string", "400", "IN")
+				.finish();
 		
-		new ModelExplorer().addChildToModelItem(ChildType.PROCEDURE, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi");
-		new Procedure().create(proc, props);
 		new RelationalModelEditor(MODEL_VIEW_NAME + ".xmi").save();
 
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		ArrayList<String> params = new ArrayList<String>();
 		params.add("P300");
-		new ModelExplorer().previewModelItem(params, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi", proc);
-		String query = "select * from ( exec \"" + MODEL_VIEW_NAME + "\".\"" + proc + "\"('P300') ) AS X_X";
+		new ModelExplorer().previewModelItem(params, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi", procedureName);
+		String query = "select * from ( exec \"" + MODEL_VIEW_NAME + "\".\"" + procedureName + "\"('P300') ) AS X_X";
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		assertTrue(new ModelExplorer().checkPreviewOfModelObject(query));
 	}
 
+	/**
+	 * Note: Jar with UDF must be created and imported into "target/proc-udf/MyTestUdf/lib/" before execution.
+	 * TODO how to obtain this jar
+	 */
 	@Test
 	@Jira("TEIIDDES-2677")
 	@RunIf(conditionClass = IssueIsClosed.class)
 	public void relViewUDF() {
 		// import lib/MyTestUDF.jar
-		ImportFromFileSystemWizard.openWizard()
-				.setPath(UDF_LIB_PATH)
-				.setFolder(PROJECT_NAME)
-				.selectFile(UDF_LIB)
-				.setCreteTopLevelFolder(true)
+//		ImportFromFileSystemWizard.openWizard()
+//				.setPath(UDF_LIB_PATH)
+//				.setFolder(PROJECT_NAME)
+//				.selectFile(UDF_LIB)
+//				.setCreteTopLevelFolder(true)
+//				.finish();
+
+		new ModelExplorer().addChildToModelItem(ModelExplorer.ChildType.PROCEDURE, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi");
+		ProcedureWizard.createUserDefinedFunction()
+				.setName("udfConcatNull")
+				.addParameter("stringLeft", "string", "400", "IN")
+				.addParameter("stringRight", "string", "400", "IN")
+				.addParameter("concatenatedResult", "string", "400", "RETURN")
+				.setFunctionCategory("MY_TESTING_FUNCTION_CATEGORY")
+				.setJavaClass("userdefinedfunctions.MyConcatNull")
+				.setJavaMethod("myConcatNull")
+				.setUdfJarPath("lib/" + UDF_LIB)
 				.finish();
 
-		// create UDF
-		String proc = "udfConcatNull";
-		Properties props = new Properties();
-		props.setProperty("type", Procedure.Type.RELVIEW_USER_DEFINED_FUNCTION);
-		props.setProperty("params", "stringLeft,stringRight");
-		props.setProperty("returnParam", "concatenatedResult");
-		props.setProperty("functionCategory", "MY_TESTING_FUNCTION_CATEGORY");
-		props.setProperty("javaClass", "userdefinedfunctions.MyConcatNull");
-		props.setProperty("javaMethod", "myConcatNull");
-		props.setProperty("udfJarPath", "lib/" + UDF_LIB);
+		String tableName = "tab";
+		new ModelExplorer().addChildToModelItem(ModelExplorer.ChildType.TABLE, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi");
+		new TableDialog(true)
+				.setName("tab")
+				.setTransformationSql("select udfConcatNull(hsqldbParts.PARTS.PART_NAME,hsqldbParts.PARTS.PART_WEIGHT) as NAME_WEIGHT from hsqldbParts.PARTS")
+				.finish();	
 		
-		new ModelExplorer().addChildToModelItem(ChildType.PROCEDURE, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi");
-		new Procedure().create(proc, props);
 		new RelationalModelEditor(MODEL_VIEW_NAME + ".xmi").save();
 
-		// create table to test -> use UDF in transformation
-		String table = "tab";
-		String query = "select udfConcatNull(hsqldbParts.PARTS.PART_NAME,hsqldbParts.PARTS.PART_WEIGHT) as NAME_WEIGHT from hsqldbParts.PARTS";
-		props = new Properties();
-		props.setProperty("sql", query);
-		new ModelExplorer().newTable(table, Table.Type.VIEW, props, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi");
-
-		new ModelExplorer().previewModelItem(null, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi", table);
-		String previewQuery = "select * from \"" + MODEL_VIEW_NAME + "\".\"" + table + "\"";
+		new ModelExplorer().previewModelItem(null, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi", tableName);
+		String previewQuery = "select * from \"" + MODEL_VIEW_NAME + "\".\"" + tableName + "\"";
 		assertTrue(new ModelExplorer().checkPreviewOfModelObject(previewQuery));
-
 	}
 }

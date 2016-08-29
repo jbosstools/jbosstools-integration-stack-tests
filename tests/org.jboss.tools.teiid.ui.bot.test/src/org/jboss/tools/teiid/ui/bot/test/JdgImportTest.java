@@ -21,7 +21,7 @@ public class JdgImportTest {
 	@BeforeClass
 	public static void createProject() {
 		new ModelExplorer().createProject(PROJECT_NAME);
-		new ModelExplorer().getModelProject(PROJECT_NAME).open();
+		new ModelExplorer().selectItem(PROJECT_NAME);
 
 	}
 

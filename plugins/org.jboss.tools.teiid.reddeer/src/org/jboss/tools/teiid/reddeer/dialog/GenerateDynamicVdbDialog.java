@@ -17,7 +17,7 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.teiid.reddeer.condition.StyledTextHasText;
 
 public class GenerateDynamicVdbDialog extends AbstractDialog {
-	private static final Logger log = Logger.getLogger(ProcedureViewDialog.class);
+	private static final Logger log = Logger.getLogger(GenerateDynamicVdbDialog.class);
 
 	public GenerateDynamicVdbDialog() {
 		super("Generate Dynamic VDB");

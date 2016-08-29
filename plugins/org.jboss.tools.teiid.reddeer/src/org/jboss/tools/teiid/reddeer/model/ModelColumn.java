@@ -1,11 +1,10 @@
-package org.jboss.tools.teiid.reddeer.modeling;
+package org.jboss.tools.teiid.reddeer.model;
 
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.api.TableItem;
 
-public class ModelProcedureParameter {
+public class ModelColumn {
 
-	private String direction;
 	private String location;
 	private String name;
 	private String nameInSource;
@@ -15,25 +14,20 @@ public class ModelProcedureParameter {
 	private Integer numericPrecision;
 	private Integer numericScale;
 
-	public ModelProcedureParameter(TableItem it) {
+	public ModelColumn() {
+
+	}
+
+	public ModelColumn(TableItem it) {
 		Table parent = it.getParent();
-		direction = it.getText(parent.getHeaderIndex("Direction"));
 		location = it.getText(parent.getHeaderIndex("Location"));
 		name = it.getText(parent.getHeaderIndex("Name"));
 		nameInSource = it.getText(parent.getHeaderIndex("Name In Source"));
 		nativeType = it.getText(parent.getHeaderIndex("Native Type"));
 		length = Integer.valueOf(it.getText(parent.getHeaderIndex("Length")));
-		numericPrecision = Integer.valueOf(it.getText(parent.getHeaderIndex("Precision")));
-		numericScale = Integer.valueOf(it.getText(parent.getHeaderIndex("Scale")));
+		numericPrecision = Integer.valueOf(it.getText(parent.getHeaderIndex("Numeric Precision")));
+		numericScale = Integer.valueOf(it.getText(parent.getHeaderIndex("Numeric Scale")));
 		datatype = it.getText(parent.getHeaderIndex("Datatype")).split(" :")[0];
-	}
-
-	public String getDirection() {
-		return direction;
-	}
-
-	public void setDirection(String direction) {
-		this.direction = direction;
 	}
 
 	public String getLocation() {

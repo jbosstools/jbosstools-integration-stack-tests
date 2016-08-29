@@ -7,8 +7,6 @@ import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.tools.teiid.reddeer.ModelClass;
-import org.jboss.tools.teiid.reddeer.ModelType;
 import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.WebServiceModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.XmlModelEditor;
@@ -56,8 +54,8 @@ public class CreateModelTest {
 		MetadataModelWizard.openWizard()
 				.setLocation(PROJECT_NAME)
 				.setModelName(RELATIONAL_SOURCE_MODEL_NAME)
-				.selectModelClass(ModelClass.RELATIONAL)
-				.selectModelType(ModelType.SOURCE)
+				.selectModelClass(MetadataModelWizard.ModelClass.RELATIONAL)
+				.selectModelType(MetadataModelWizard.ModelType.SOURCE)
 				.finish();
 
 		assertTrue(new ModelExplorer().getProject(PROJECT_NAME).containsItem(RELATIONAL_SOURCE_MODEL_NAME + ".xmi"));
@@ -69,8 +67,8 @@ public class CreateModelTest {
 		MetadataModelWizard.openWizard()
 				.setLocation(PROJECT_NAME)
 				.setModelName(RELATIONAL_VIEW_MODEL_NAME)
-				.selectModelClass(ModelClass.RELATIONAL)
-				.selectModelType(ModelType.VIEW)
+				.selectModelClass(MetadataModelWizard.ModelClass.RELATIONAL)
+				.selectModelType(MetadataModelWizard.ModelType.VIEW)
 				.finish();
 
 		assertTrue(new ModelExplorer().getProject(PROJECT_NAME).containsItem(RELATIONAL_VIEW_MODEL_NAME + ".xmi"));
@@ -82,8 +80,8 @@ public class CreateModelTest {
 		MetadataModelWizard.openWizard()
 				.setLocation(PROJECT_NAME)
 				.setModelName(XML_VIEW_MODEL_NAME)
-				.selectModelClass(ModelClass.XML)
-				.selectModelType(ModelType.VIEW)
+				.selectModelClass(MetadataModelWizard.ModelClass.XML)
+				.selectModelType(MetadataModelWizard.ModelType.VIEW)
 				.finish();
 
 		assertTrue(new ModelExplorer().getProject(PROJECT_NAME).containsItem(XML_VIEW_MODEL_NAME + ".xmi"));
@@ -95,8 +93,8 @@ public class CreateModelTest {
 		MetadataModelWizard.openWizard()
 				.setLocation(PROJECT_NAME)
 				.setModelName(XSD_DATATYPE_MODEL_NAME)
-				.selectModelClass(ModelClass.XSD)
-				.selectModelType(ModelType.DATATYPE)
+				.selectModelClass(MetadataModelWizard.ModelClass.XSD)
+				.selectModelType(MetadataModelWizard.ModelType.DATATYPE)
 				.finish();
 		
 		new DefaultShell("Model Initializer");
@@ -112,8 +110,8 @@ public class CreateModelTest {
 		MetadataModelWizard.openWizard()
 				.setLocation(PROJECT_NAME)
 				.setModelName(WEBSERVICE_MODEL_NAME)
-				.selectModelClass(ModelClass.WEBSERVICE)
-				.selectModelType(ModelType.VIEW)
+				.selectModelClass(MetadataModelWizard.ModelClass.WEBSERVICE)
+				.selectModelType(MetadataModelWizard.ModelType.VIEW)
 				.finish();
 
 		assertTrue(new ModelExplorer().getProject(PROJECT_NAME).containsItem(WEBSERVICE_MODEL_NAME + ".xmi"));

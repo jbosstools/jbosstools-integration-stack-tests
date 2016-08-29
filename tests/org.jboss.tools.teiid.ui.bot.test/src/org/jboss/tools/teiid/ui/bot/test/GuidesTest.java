@@ -31,9 +31,6 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.tools.common.reddeer.JiraClient;
 import org.jboss.tools.runtime.reddeer.condition.JobIsKilled;
-import org.jboss.tools.teiid.reddeer.ModelClass;
-import org.jboss.tools.teiid.reddeer.ModelType;
-import org.jboss.tools.teiid.reddeer.Table;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.condition.IsPreviewInProgress;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
@@ -41,6 +38,7 @@ import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileHelper;
 import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
 import org.jboss.tools.teiid.reddeer.connection.SimpleHttpClient;
 import org.jboss.tools.teiid.reddeer.dialog.CreateWarDialog;
+import org.jboss.tools.teiid.reddeer.dialog.TableDialog;
 import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
@@ -459,15 +457,16 @@ public class GuidesTest {
 		MetadataModelWizard.getInstance()
 				.setLocation(projectName)
 				.setModelName(viewName)
-				.selectModelClass(ModelClass.RELATIONAL)
-				.selectModelType(ModelType.VIEW)
+				.selectModelClass(MetadataModelWizard.ModelClass.RELATIONAL)
+				.selectModelType(MetadataModelWizard.ModelType.VIEW)
 				.finish();
 		new DefaultShell("Define View Table");
 		//3.2
 		new PushButton(1, matcher).click();	
-		Properties props = new Properties();
-		props.setProperty("sql", query);
-		new Table().create(Table.Type.VIEW, tableName, props);
+		new TableDialog(true)
+				.setName(tableName)
+				.setTransformationSql(query)
+				.finish();	
     }
     private void defineProcedure(String procedureName, String query, String uri){
     	new DefaultShell("Define View Procedure");

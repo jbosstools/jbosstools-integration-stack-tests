@@ -38,7 +38,7 @@ public abstract class AbstractModelEditor extends SWTBotEditor {
 	}
 
 	/**
-	 * Opens table editor's tab.
+	 * Opens table editor's tab and returns it.
 	 */
 	public TableEditor openTableEditor(){
 		return new TableEditor(this.getTitle());
