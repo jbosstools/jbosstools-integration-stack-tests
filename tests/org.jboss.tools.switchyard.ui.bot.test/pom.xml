@@ -160,7 +160,7 @@
 	      </property>
 	    </activation>
 	    <properties>	      
-	      <rd.config>${project.build.directory}/config/switchyard-200.xml</rd.config>
+	      <rd.config>${project.build.directory}/config/switchyard-210.xml</rd.config>
 	      <test.class>SmokeTests</test.class>
 	      <skipRequirements>true</skipRequirements>
 	    </properties>
