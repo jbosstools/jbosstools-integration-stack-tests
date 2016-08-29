@@ -1,5 +1,6 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -9,8 +10,8 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
+import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
 import org.jboss.tools.teiid.reddeer.connection.SimpleHttpClient;
-import org.jboss.tools.teiid.reddeer.manager.ImportMetadataManager;
 import org.jboss.tools.teiid.reddeer.preference.TeiidDesignerPreferencePage;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
@@ -66,8 +67,6 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 	private static final String hsqlCPName = ConnectionProfileConstants.HSQLDB;
 	private static final String hsqlModel = "HsqldbImported";
 
-	private static TeiidBot teiidBot = new TeiidBot();
-
 	/**
 	 * Create new Teiid Model Project
 	 */
@@ -82,65 +81,63 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 
 	@Test
 	public void fileTest() {
-		Properties iProps = new Properties();
-		iProps.setProperty(TeiidConnectionImportWizard.CREATE_NEW_DATA_SOURCE, "true");
-		iProps.setProperty(TeiidConnectionImportWizard.NEW_DATA_SOURCE_NAME, "fileDS");
-		iProps.setProperty(TeiidConnectionImportWizard.DRIVER_NAME, "file");
-
 		new ServersViewExt().deleteDatasource(teiidServer.getName(), "fileDS");
 
 		Properties dsProps = new Properties();
-		dsProps = teiidBot.getProperties("resources/teiidImporter/file_items_ds.properties");
-		String absPath = teiidBot.toAbsolutePath(dsProps.getProperty("* Parent Directory"));
+		dsProps = new ResourceFileHelper().getProperties("resources/teiidImporter/file_items_ds.properties");
+		String absPath = new File(dsProps.getProperty("* Parent Directory")).getAbsolutePath();
 		dsProps.setProperty("* Parent Directory", absPath);
+		
+		TeiidConnectionImportWizard importWizard = new TeiidConnectionImportWizard();
+		importWizard.setModelName(FILE_MODEL);
+		importWizard.setProjectName(PROJECT_NAME);
+		importWizard.setDataSourceProperties(dsProps);
+		importWizard.setCreateNewDataSource(true);
+		importWizard.setNewDataSourceName("fileDS");
+		importWizard.setDriverName("file");
+		importWizard.execute();
 
-		new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME, FILE_MODEL, iProps, dsProps);
-
-		teiidBot.assertResource(PROJECT_NAME, FILE_MODEL + ".xmi", "getTextFiles");
+		assertTrue(new ModelExplorer().getProject(PROJECT_NAME).containsItem(FILE_MODEL + ".xmi", "getTextFiles"));
 	}
 
 	@Test
 	public void hsqlTest() {
 		new ServersViewExt().createDatasource(teiidServer.getName(), hsqlCPName);
 
-		Properties iProps = new Properties();
-		iProps.setProperty(TeiidConnectionImportWizard.DATA_SOURCE_NAME, hsqlCPName);
-		iProps.setProperty(TeiidConnectionImportWizard.DRIVER_NAME, "hsqldb.jar");
-		iProps.setProperty("translator", "hsql");
-
 		Properties teiidImporterProperties = new Properties();
 		teiidImporterProperties.setProperty("Schema Pattern", "PUBLIC%");
 
-		new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME, hsqlModel, iProps, null,
-				teiidImporterProperties);
+		TeiidConnectionImportWizard importWizard = new TeiidConnectionImportWizard();
+		importWizard.setModelName(hsqlModel);
+		importWizard.setProjectName(PROJECT_NAME);
+		importWizard.setTeiidImporterProperties(teiidImporterProperties);
+		importWizard.setNewDataSourceName("hsqlCPName");
+		importWizard.setDriverName("hsqldb.jar");
+		importWizard.setTranslator("hsql");
+		importWizard.execute();
 
-		teiidBot.assertResource(PROJECT_NAME, hsqlModel + ".xmi", "CUSTOMER");
+		assertTrue(new ModelExplorer().getProject(PROJECT_NAME).containsItem(hsqlModel + ".xmi", "CUSTOMER"));
 	}
 
 	@Test
 	public void h2Test() {
-		// use default DV ds
-		Properties iProps = new Properties();
-		iProps.setProperty(TeiidConnectionImportWizard.DATA_SOURCE_NAME, "ExampleDS");
-		String model = "h2Imp";
-		String items = "Objects to Create/CONSTANTS";
-		iProps.setProperty(TeiidConnectionImportWizard.TABLES_TO_IMPORT, items);
-		
 		Properties teiidImporterProperties = new Properties();		
 		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_TYPES, "SYSTEM TABLE");
 
-		new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME, model, iProps, null, teiidImporterProperties);
-		teiidBot.assertResource(PROJECT_NAME, model + ".xmi", "CONSTANTS");
-
+		TeiidConnectionImportWizard importWizard = new TeiidConnectionImportWizard();
+		importWizard.setModelName("h2Imp");
+		importWizard.setProjectName(PROJECT_NAME);
+		importWizard.setTeiidImporterProperties(teiidImporterProperties);
+		// use default DV ds
+		importWizard.setNewDataSourceName("ExampleDS");
+		importWizard.setTablesToImport(new String[] {"Objects to Create/CONSTANTS"});
+		importWizard.execute();
+		
+		assertTrue(new ModelExplorer().getProject(PROJECT_NAME).containsItem("h2Imp.xmi", "CONSTANTS"));
 	}
 
 	@Test
 	public void salesforceTest() {
-		Properties iProps = new Properties();
-		iProps.setProperty(TeiidConnectionImportWizard.CREATE_NEW_DATA_SOURCE, "true");
-		iProps.setProperty(TeiidConnectionImportWizard.NEW_DATA_SOURCE_NAME, "sfDS");
-		iProps.setProperty(TeiidConnectionImportWizard.DRIVER_NAME, "salesforce");
-
 		new ServersViewExt().deleteDatasource(teiidServer.getName(), "sfDS");
 
 		Properties sfProps = teiidServer.getServerConfig().getConnectionProfile("salesforce").asProperties();
@@ -150,8 +147,15 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 		dsProps.setProperty("* User Name", sfProps.getProperty("db.username"));
 
 		String model = "sfImp";
-
-		new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME, model, iProps, dsProps);
+		
+		TeiidConnectionImportWizard importWizard = new TeiidConnectionImportWizard();
+		importWizard.setModelName(model);
+		importWizard.setProjectName(PROJECT_NAME);
+		importWizard.setDataSourceProperties(dsProps);
+		importWizard.setCreateNewDataSource(true);
+		importWizard.setNewDataSourceName("sfDS");
+		importWizard.setDriverName("salesforce");
+		importWizard.execute();
 
 		checkImportedModel(model, "Account", "Vote", "Profile");
 	}
@@ -169,17 +173,19 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 		
 		new ModelExplorer().deployVdb(PROJECT_NAME, SOURCE_VDB_NAME);
 
-		Properties iProps = new Properties();
-		iProps.setProperty(TeiidConnectionImportWizard.DATA_SOURCE_NAME, SOURCE_VDB_NAME);
-
 		Properties teiidImporterProperties = new Properties();
 		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_SCHEMA_PATTERN, "%sqlserver%");
 
 		String model = SOURCE_VDB_NAME + "Imp";
-
-		new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME, model, iProps, null,
-				teiidImporterProperties);
-		teiidBot.assertResource(PROJECT_NAME, model + ".xmi", "AUTHORS");
+		
+		TeiidConnectionImportWizard importWizard = new TeiidConnectionImportWizard();
+		importWizard.setModelName(model);
+		importWizard.setProjectName(PROJECT_NAME);
+		importWizard.setTeiidImporterProperties(teiidImporterProperties);
+		importWizard.setNewDataSourceName(SOURCE_VDB_NAME);
+		importWizard.execute();
+		
+		assertTrue(new ModelExplorer().getProject(PROJECT_NAME).containsItem(model + ".xmi", "AUTHORS"));
 	}
 
 	@Test
@@ -302,9 +308,6 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 				"mix:title");
 		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_USE_FULL_SCHEMA_NAME, "false");
 
-		Properties iProps = new Properties();
-		iProps.setProperty(TeiidConnectionImportWizard.DATA_SOURCE_NAME, modeshapeCPName);
-
 		// initialize modeshape
 		String resp = new SimpleHttpClient("http://localhost:8080/modeshape-rest/dv/")
 				.setBasicAuth(teiidServer.getServerConfig().getServerBase().getProperty("modeshapeUser"),
@@ -312,21 +315,20 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 				.get();
 
 		assertFalse("initializing modeshape failed", resp.isEmpty());
-
-		new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME, "ModeshapeModel", iProps, null,
-				teiidImporterProperties);
+		
+		TeiidConnectionImportWizard importWizard = new TeiidConnectionImportWizard();
+		importWizard.setModelName("ModeshapeModel");
+		importWizard.setProjectName(PROJECT_NAME);
+		importWizard.setTeiidImporterProperties(teiidImporterProperties);
+		importWizard.setNewDataSourceName(modeshapeCPName);
+		importWizard.execute();
+		
 		checkImportedModel("ModeshapeModel", "mix:title");
 	}
 
 	@Test
 	public void excelTest() {
 		String modelName = "ExcelModel";
-
-		Properties iProps = new Properties();
-		iProps.setProperty(TeiidConnectionImportWizard.CREATE_NEW_DATA_SOURCE, "true");
-		iProps.setProperty(TeiidConnectionImportWizard.NEW_DATA_SOURCE_NAME, "excelDS");
-		iProps.setProperty(TeiidConnectionImportWizard.DRIVER_NAME, "file");
-		iProps.setProperty(TeiidConnectionImportWizard.TRANSLATOR, "excel");
 
 		Properties dsProps = new Properties();
 		Properties excelDsProperties = teiidServer.getServerConfig()
@@ -337,34 +339,45 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 		teiidImporterProps.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_EXCEL_FILENAME,
 				excelDsProperties.getProperty("filename"));
 		teiidImporterProps.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_HEADER_ROW_NUMBER, "1");
+		
+		TeiidConnectionImportWizard importWizard = new TeiidConnectionImportWizard();
+		importWizard.setModelName(modelName);
+		importWizard.setProjectName(PROJECT_NAME);
+		importWizard.setTeiidImporterProperties(teiidImporterProps);
+		importWizard.setDataSourceProperties(dsProps);
+		importWizard.setCreateNewDataSource(true);
+		importWizard.setNewDataSourceName("excelDS");
+		importWizard.setDriverName("file");
+		importWizard.setTranslator("excel");
+		importWizard.execute();
+		
 
-		new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME, modelName, iProps, dsProps,
-				teiidImporterProps);
-
-		teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", "Sheet1");
-		teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", "Sheet1", "ROW_ID : int");
-		teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", "Sheet1", "StringNum : string");
+		assertTrue(new ModelExplorer().getProject(PROJECT_NAME).containsItem(modelName + ".xmi", "Sheet1"));
+		assertTrue(new ModelExplorer().getProject(PROJECT_NAME).containsItem(modelName + ".xmi", "Sheet1", "ROW_ID : int"));
+		assertTrue(new ModelExplorer().getProject(PROJECT_NAME).containsItem(modelName + ".xmi", "Sheet1", "StringNum : string"));
 	}
 
 	@Test
 	public void odataTest() {
 		String modelName = "OdataModel";
 
-		Properties iProps = new Properties();
-		iProps.setProperty(TeiidConnectionImportWizard.CREATE_NEW_DATA_SOURCE, "true");
-		iProps.setProperty(TeiidConnectionImportWizard.NEW_DATA_SOURCE_NAME, "odataDS");
-		iProps.setProperty(TeiidConnectionImportWizard.DRIVER_NAME, "webservice");
-		iProps.setProperty(TeiidConnectionImportWizard.TRANSLATOR, "odata");
-
 		Properties dsProps = new Properties();
 		dsProps.put(TeiidConnectionImportWizard.DATASOURCE_PROPERTY_URL,
 				"http://services.odata.org/Northwind/Northwind.svc");
+		
+		TeiidConnectionImportWizard importWizard = new TeiidConnectionImportWizard();
+		importWizard.setModelName(modelName);
+		importWizard.setProjectName(PROJECT_NAME);
+		importWizard.setDataSourceProperties(dsProps);
+		importWizard.setCreateNewDataSource(true);
+		importWizard.setNewDataSourceName("odataDS");
+		importWizard.setDriverName("webservice");
+		importWizard.setTranslator("odata");
+		importWizard.execute();
 
-		new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME, modelName, iProps, dsProps);
-
-		teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", "Customers");
-		teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", "Customers", "CustomerID : string(5)");
-		teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", "Employees", "EmployeeID : int");
+		assertTrue(new ModelExplorer().getProject(PROJECT_NAME).containsItem(modelName + ".xmi", "Customers"));
+		assertTrue(new ModelExplorer().getProject(PROJECT_NAME).containsItem(modelName + ".xmi", "Customers", "CustomerID : string(5)"));
+		assertTrue(new ModelExplorer().getProject(PROJECT_NAME).containsItem(modelName + ".xmi", "Employees", "EmployeeID : int"));
 	}
 	
 	@Test
@@ -376,33 +389,40 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 		teiidImportProps.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "SMALL%");
 		
 		// TODO temp till hana translator is not set automatically (updated importModel method)
+		// THEN -> importModel(ConnectionProfilesConstants.SAP_HANA, modelName, teiidImportProps);
 		new DefaultShell();
 		new ServersViewExt().createDatasource(teiidServer.getName(), ConnectionProfileConstants.SAP_HANA);
 		Properties importProps = new Properties();
 		importProps.setProperty(TeiidConnectionImportWizard.DATA_SOURCE_NAME, ConnectionProfileConstants.SAP_HANA);
 		importProps.setProperty(TeiidConnectionImportWizard.TRANSLATOR, "hana");
-		ImportMetadataManager importMgr = new ImportMetadataManager();
-		importMgr.importFromTeiidConnection(PROJECT_NAME, modelName, importProps, null, teiidImportProps);
-//		importModel(ConnectionProfilesConstants.SAP_HANA, modelName, teiidImportProps);
+		TeiidConnectionImportWizard importWizard = new TeiidConnectionImportWizard();
+		importWizard.setModelName(modelName);
+		importWizard.setProjectName(PROJECT_NAME);
+		importWizard.setTeiidImporterProperties(teiidImportProps);
+		importWizard.setNewDataSourceName(ConnectionProfileConstants.SAP_HANA);
+		importWizard.setTranslator("hana");
+		importWizard.execute();
+		// END
 		
 		checkImportedModel(modelName, "SMALLA", "SMALLB");
 	}
 
 	private void checkImportedModel(String modelName, String... tables) {
 		for (String table : tables) {
-			teiidBot.assertResource(PROJECT_NAME, modelName + ".xmi", table);
+			assertTrue(new ModelExplorer().getProject(PROJECT_NAME).containsItem(modelName + ".xmi", table));
 		}
 	}
 
 	private void importModel(String cpName, String modelName, Properties teiidImporterProperties) {
 		new DefaultShell();
 		new ServersViewExt().createDatasource(teiidServer.getName(), cpName);
-
-		Properties iProps = new Properties();
-		iProps.setProperty(TeiidConnectionImportWizard.DATA_SOURCE_NAME, cpName);
-
-		ImportMetadataManager importMgr = new ImportMetadataManager();
-		importMgr.importFromTeiidConnection(PROJECT_NAME, modelName, iProps, null, teiidImporterProperties);
+		
+		TeiidConnectionImportWizard importWizard = new TeiidConnectionImportWizard();
+		importWizard.setModelName(modelName);
+		importWizard.setProjectName(PROJECT_NAME);
+		importWizard.setTeiidImporterProperties(teiidImporterProperties);
+		importWizard.setNewDataSourceName(cpName);
+		importWizard.execute();
 	}
 
 }

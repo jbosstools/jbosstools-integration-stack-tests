@@ -12,8 +12,6 @@ import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
@@ -46,9 +44,8 @@ public class ModelRefactoringTest {
 
 	@Before
 	public void importProject() {
-		TeiidBot teiidBot = new TeiidBot();
 		new ModelExplorer().importProject(PROJECT_NAME);
-		project = teiidBot.modelExplorer().getProject(PROJECT_NAME);
+		project = new ModelExplorer().getProject(PROJECT_NAME);
 		project.refresh();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		project.refresh(); // refresh again (getting desperate here)

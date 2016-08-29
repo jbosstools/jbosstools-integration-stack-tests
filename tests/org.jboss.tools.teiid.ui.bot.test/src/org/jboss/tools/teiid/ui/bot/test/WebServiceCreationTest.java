@@ -1,15 +1,12 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
 
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
@@ -23,7 +20,6 @@ import org.jboss.tools.teiid.reddeer.ModelType;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
 import org.jboss.tools.teiid.reddeer.connection.SimpleHttpClient;
-import org.jboss.tools.teiid.reddeer.dialog.CreateWarDialog;
 import org.jboss.tools.teiid.reddeer.dialog.CreateWebServiceDialog;
 import org.jboss.tools.teiid.reddeer.dialog.XmlDocumentBuilderDialog;
 import org.jboss.tools.teiid.reddeer.editor.TableEditor;

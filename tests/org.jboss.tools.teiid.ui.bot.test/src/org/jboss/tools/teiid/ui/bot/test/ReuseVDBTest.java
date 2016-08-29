@@ -15,6 +15,7 @@ import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.common.reddeer.JiraClient;
@@ -133,7 +134,7 @@ public class ReuseVDBTest {
 		editor.setTransformation("SELECT 'version2'");
 		editor.saveAndValidateSql();
 		AbstractWait.sleep(TimePeriod.NORMAL);
-		new TeiidBot().saveAll();
+		new ShellMenu("File", "Save All").select();
 		VDBEditor vdb = new VDBEditor(SOURCE_VDB + ".vdb");
 		vdb.show();
 		vdb.synchronizeAll();

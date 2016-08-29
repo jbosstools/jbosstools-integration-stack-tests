@@ -67,6 +67,7 @@ import org.jboss.tools.teiid.reddeer.widget.TeiidStyledText;
  * @author apodhrad
  * 
  */
+@Deprecated
 public class ModelEditor extends SWTBotEditor {
 
 	public static final String BASE_TABLES = "Base Tables";
@@ -80,19 +81,8 @@ public class ModelEditor extends SWTBotEditor {
 	public static final String PACKAGE_DIAGRAM = "Package Diagram";
 	public static final String TABLE_EDITOR = "Table Editor";
 	public static final String COLUMNS = "Columns";
-	private static final String DIAGRAM = "Diagram";
-	private static final String INPUT_SET = "Input Set";
 
 	private SWTBotGefViewer viewer;
-
-	public ModelEditor(SWTBotEditor editor, SWTWorkbenchBot bot) {
-		this(editor.getReference(), bot);
-	}
-
-	public ModelEditor(IEditorReference editorReference, SWTWorkbenchBot bot) {
-		super(editorReference, bot);
-		new SWTWorkbenchBot().sleep(5 * 1000);
-	}
 
 	public ModelEditor(String title) {
 		super(new SWTWorkbenchBot().editorByTitle(title).getReference(), new SWTWorkbenchBot());
@@ -150,11 +140,6 @@ public class ModelEditor extends SWTBotEditor {
 		return tabItem;
 	}
 
-	public TabItem showSubTab(String label) {
-		DefaultTabItem tabItem = new DefaultTabItem(label);
-		tabItem.activate();
-		return tabItem;
-	}
 	@Deprecated // use %ModelEditor.openTransformantion()
 	public void showTransformation() {
 		viewer = getGraphicalViewer(TRANSFORMATION_DIAGRAM);
@@ -182,52 +167,7 @@ public class ModelEditor extends SWTBotEditor {
 		bot.toolbarButtonWithTooltip("Reconcile Transformation SQL with Target Columns").click();
 		return new ReconcilerDialog();
 	}
-	@Deprecated // TODO not used?
-	public void setTransformationProcedureBody(String procedure) {
-		String transformationText = getTransformation();
-		transformationText = transformationText.replaceAll("<--.*-->;", procedure);
 
-		TeiidStyledText styledText = new TeiidStyledText(0);
-		styledText.setText(transformationText);
-		styledText.navigateTo(2, procedure.length() / 2);
-		styledText.mouseClickOnCaret();
-	}
-
-	/**
-	 * 
-	 * @param procedure
-	 * @param notReplacingDefault
-	 *            false if editor contains <--.*--> to be replaced, true otherwise
-	 */
-	@Deprecated // TODO not used?
-	public void setTransformationProcedureBody(String procedure, boolean notReplacingDefault) {
-		String transformationText = getTransformation();// ""
-		if (transformationText.equals("") || (notReplacingDefault)) {
-			transformationText = procedure;
-		} else {
-			transformationText = transformationText.replaceAll("<--.*-->;", procedure);
-		}
-
-		TeiidStyledText styledText = new TeiidStyledText(0);
-		styledText.setFocus();
-		styledText.setText(transformationText);
-		styledText.navigateTo(2, procedure.length() / 2);
-		styledText.mouseClickOnCaret();
-	}
-	@Deprecated // TODO not used?
-	public ModelProcedureParameter getProcedureParameters(String procName) {
-		setFocus();
-		showTabItem(ModelEditor.TABLE_EDITOR);
-		showSubTabItem(BASE_TABLES);
-		DefaultTable table = new DefaultTable(0);
-
-		int headerIndex = table.getHeaderIndex("Location");
-		if (table.containsItem(procName, headerIndex)) {
-			return new ModelProcedureParameter(table.getItem(procName, headerIndex));
-		} else {
-			return null;
-		}
-	}
 	@Deprecated // TODO move to TransformationEditor
 	public String getTransformation() {
 		return bot.styledText(0).getText();
@@ -254,57 +194,6 @@ public class ModelEditor extends SWTBotEditor {
 	@Deprecated // use TransforamtionEditor
 	public void clickButtonOnToolbar(String button) {
 		bot.toolbarButtonWithTooltip(button).click();
-	}
-
-	public void editFigure(SWTBotGefFigure figureBot) {
-		Rectangle rectangle = figureBot.getAbsoluteBounds();
-		SWTBotGefFigureCanvas canvas = getFigureCanvas();
-		canvas.mouseMoveLeftClick(rectangle.x + 1, rectangle.y + 1);
-		canvas.contextMenu("Edit").click();
-		bot().waitUntil(new DefaultCondition() {
-
-			@Override
-			public boolean test() throws Exception {
-				try {
-					bot.styledText();
-					return true;
-				} catch (WidgetNotFoundException wnfe) {
-					return false;
-				}
-			}
-
-			@Override
-			public String getFailureMessage() {
-				return "Process wasn't completed";
-			}
-		});
-		bot().styledText();
-	}
-
-	private SWTBotGefFigureCanvas getFigureCanvas() {
-		Matcher<FigureCanvas> matcher = widgetOfType(FigureCanvas.class);
-		return new SWTBotGefFigureCanvas(bot.widget(matcher, 0));
-	}
-
-	public SWTBotGefFigure figureWithLabel(String label) {
-		return figureWithLabel(label, 0);
-	}
-
-	public SWTBotGefFigure figureWithLabel(String label, int index) {
-		Matcher<IFigure> matcher = new WithLabel(label);
-		return new SWTBotGefFigure(figure(matcher, index));
-	}
-
-	public SWTBotGefFigure tFigure() {
-		Matcher<IFigure> matcher = allOf(instanceOf(ImageFigure.class), new WithBounds(40, 60));
-		return new SWTBotGefFigure(figure(matcher, 0));
-	}
-
-	public IFigure figure(Matcher<IFigure> matcher, int index) {
-		SWTBotGefFigureCanvas canvas = getFigureCanvas();
-		WaitForFigure waitForFigure = new WaitForFigure(matcher, (FigureCanvas) canvas.widget);
-		bot().waitUntil(waitForFigure);
-		return waitForFigure.get(index);
 	}
 
 	public ModelDiagram getModeDiagram(String label) {
@@ -364,57 +253,7 @@ public class ModelEditor extends SWTBotEditor {
 
 		return result;
 	}
-	/**
-     * TODO should be in TableEditor (analyze dynamic VDB test)
-     */
-	public ModelTable getTable(String tableName) {
 
-		setFocus();
-		showTabItem(ModelEditor.TABLE_EDITOR);
-		showSubTabItem(BASE_TABLES);
-		DefaultTable table = new DefaultTable(0);
-
-		int headerIndex = table.getHeaderIndex("Name");
-		if (table.containsItem(tableName, headerIndex)) {
-			return new ModelTable(table.getItem(tableName, headerIndex));
-		} else {
-			return null;
-		}
-	}
-    /**
-     * TODO should be in TableEditor (analyze dynamic VDB test)
-     */
-	public ModelColumn getColumn(String tableName, String columnName) {
-		setFocus();
-		showTabItem(ModelEditor.TABLE_EDITOR);
-		showSubTabItem(COLUMNS);
-		DefaultTable table = new DefaultTable(0);
-		List<TableItem> matchingItems = table.getItems(new ModelColumnMatcher(tableName, columnName));
-		if (matchingItems.size() == 1) {
-			return new ModelColumn(matchingItems.get(0));
-		} else {
-			return null;
-		}
-	}
-	/**
-     * TODO only in dynamic VDB test
-     */
-	public ModelProcedureParameter getProcedureParameter(String procName, String parameterName) {
-		setFocus();
-		showTabItem(ModelEditor.TABLE_EDITOR);
-		showSubTabItem(PROCEDURE_PARAMETERS);
-		DefaultTable table = new DefaultTable(0);
-		int locationIndex = table.getHeaderIndex("Location");
-		int nameIndex = table.getHeaderIndex("Name");
-		@SuppressWarnings("unchecked")
-		List<TableItem> matchingItems = table.getItems(new AndMatcher(new TableItemMatcher(locationIndex, procName),
-				new TableItemMatcher(nameIndex, parameterName)));
-		if (matchingItems.size() == 1) {
-			return new ModelProcedureParameter(matchingItems.get(0));
-		} else {
-			return null;
-		}
-	}
 	/**
 	 * TODO should be in RelationalModelEditor
 	 * @param removeFromTransformation - whether remove column from transformation too

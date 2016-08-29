@@ -15,7 +15,7 @@ public class TransformationEditor {
 	
 	public void insertAndValidateSql(String sql){
 		setTransformation(sql);
-		saveAndValidateSql(sql);
+		saveAndValidateSql();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new WorkbenchShell();
 	}
@@ -24,7 +24,11 @@ public class TransformationEditor {
 		new DefaultStyledText(0).setText(sql);
 	}
 	
-	public void saveAndValidateSql(String sql){
+	public String getTransformation(){
+		return new DefaultStyledText(0).getText();
+	}
+	
+	public void saveAndValidateSql(){
 		new DefaultToolItem("Save/Validate SQL").click();
 	}
 	

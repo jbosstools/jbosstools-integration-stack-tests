@@ -7,6 +7,7 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
+@Deprecated // TODO refactor to TableDialog
 public class Table extends ModelObject {
 
 	public enum Type {

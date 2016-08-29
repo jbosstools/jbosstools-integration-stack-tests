@@ -1,10 +1,13 @@
 package org.jboss.tools.teiid.reddeer.editor;
 
+import java.util.List;
+
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefViewer;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.jboss.tools.teiid.reddeer.matcher.AttributeMatcher;
 import org.jboss.tools.teiid.reddeer.matcher.ModelEditorItemMatcher;
 
 public class RelationalModelEditor extends AbstractModelEditor{
@@ -45,6 +48,16 @@ public class RelationalModelEditor extends AbstractModelEditor{
 	public void returnToPackageDiagram(){
 		new DefaultToolItem("Show Parent Diagram").click();
 		AbstractWait.sleep(TimePeriod.SHORT);
+	}
+	
+	/**
+	 * Returns attribute's names of specified table.
+	 * Note: Transformation Diagram must be opened.
+	 */
+	public List<String> listTableAttributesNames(String tableName){
+		AttributeMatcher matcher = new AttributeMatcher("", ModelEditorItemMatcher.TABLE, tableName);
+		getEditorViewer(TRANSFORMATION_DIAGRAM).editParts(matcher);
+		return matcher.getTexts();
 	}
 
 }

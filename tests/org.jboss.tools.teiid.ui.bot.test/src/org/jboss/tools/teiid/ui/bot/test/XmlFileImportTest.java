@@ -3,21 +3,20 @@ package org.jboss.tools.teiid.ui.bot.test;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
-import java.util.Properties;
 
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileHelper;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
-import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
-import org.jboss.tools.teiid.reddeer.manager.ImportMetadataManager;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
+import org.jboss.tools.teiid.reddeer.wizard.imports.XMLImportWizard;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,26 +48,36 @@ public class XmlFileImportTest {
 	@Test
 	public void test() {
 		// Import from local XML file
-		new ConnectionProfileManager().createCPXml(LOCAL_CP_NAME, "resources/flat/cd_catalog.xml");
-		Properties props = new Properties();
-		props.setProperty("local", "true");
-		props.setProperty("rootPath", "/CATALOG/CD");
-		props.setProperty("destination", PROJECT_NAME);
-		props.setProperty("elements",
-				"CATALOG/CD/TITLE,CATALOG/CD/ARTIST,CATALOG/CD/COUNTRY,CATALOG/CD/COMPANY,CATALOG/CD/PRICE,CATALOG/CD/YEAR");
-		props.setProperty("JNDI Name", "XmlLocalSource");
-		new ImportMetadataManager().importFromXML(PROJECT_NAME, LOCAL_MODEL_PREFIX, LOCAL_CP_NAME, props);		
+		new ConnectionProfileHelper().createCpXml(LOCAL_CP_NAME, "resources/flat/cd_catalog.xml");
+
+		XMLImportWizard importWizard = new XMLImportWizard();
+		importWizard.setName(LOCAL_MODEL_PREFIX);
+		importWizard.setLocal(true);
+		importWizard.setRootPath("/CATALOG/CD");
+		importWizard.addElement("CATALOG/CD/TITLE");
+		importWizard.addElement("CATALOG/CD/ARTIST");
+		importWizard.addElement("CATALOG/CD/COUNTRY");
+		importWizard.addElement("CATALOG/CD/COMPANY");
+		importWizard.addElement("CATALOG/CD/PRICE");
+		importWizard.addElement("CATALOG/CD/YEAR");
+		importWizard.setJndiName("XmlLocalSource");
+		importWizard.execute();
 		
 		// Import from remote XML file
-		new ConnectionProfileManager().createCPXml(REMOTE_CP_NAME, "https://raw.githubusercontent.com/mmakovy/import-files/master/cd_catalog.xml");
-		props = new Properties();
-		props.setProperty("local", "false");
-		props.setProperty("rootPath", "/CATALOG/CD");
-		props.setProperty("destination", PROJECT_NAME);
-		props.setProperty("elements",
-				"CATALOG/CD/TITLE,CATALOG/CD/ARTIST,CATALOG/CD/COUNTRY,CATALOG/CD/COMPANY,CATALOG/CD/PRICE,CATALOG/CD/YEAR");
-		props.setProperty("JNDI Name", "XmlRemoteSource");
-		new ImportMetadataManager().importFromXML(PROJECT_NAME, REMOTE_MODEL_PREFIX, REMOTE_CP_NAME, props);
+		new ConnectionProfileHelper().createCpXml(REMOTE_CP_NAME, "https://raw.githubusercontent.com/mmakovy/import-files/master/cd_catalog.xml");
+
+		importWizard = new XMLImportWizard();
+		importWizard.setName(REMOTE_MODEL_PREFIX);
+		importWizard.setLocal(false);
+		importWizard.setRootPath("/CATALOG/CD");
+		importWizard.addElement("CATALOG/CD/TITLE");
+		importWizard.addElement("CATALOG/CD/ARTIST");
+		importWizard.addElement("CATALOG/CD/COUNTRY");
+		importWizard.addElement("CATALOG/CD/COMPANY");
+		importWizard.addElement("CATALOG/CD/PRICE");
+		importWizard.addElement("CATALOG/CD/YEAR");
+		importWizard.setJndiName("XmlRemoteSource");
+		importWizard.execute();
 		
 		// Create VDB and test it.
 		new ModelExplorer().getProject(PROJECT_NAME).refresh();

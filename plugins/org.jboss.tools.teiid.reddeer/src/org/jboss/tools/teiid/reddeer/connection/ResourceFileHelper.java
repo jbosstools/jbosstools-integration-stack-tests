@@ -2,15 +2,18 @@ package org.jboss.tools.teiid.reddeer.connection;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Properties;
 import java.util.Scanner;
 
 import javax.xml.transform.OutputKeys;
@@ -113,6 +116,40 @@ public class ResourceFileHelper {
 		Path source = Paths.get(resourcesFilePath);
 		Path target = Paths.get(serverFilePath);
 		Files.copy(source, target, REPLACE_EXISTING);
+	}
+	
+	/**
+	 * Loads properties file.
+	 * @param fileName - (resources/...)
+	 */
+	public Properties getProperties(String fileName) {
+		try {
+			Properties props = new Properties();
+			props.load(new FileReader(fileName));
+			return props;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	/**
+	 * Loads specified file.
+	 */
+	public String loadFileAsString(String fileName) {
+		String result = "";
+		File f = new File(fileName);
+		try (BufferedReader in = new BufferedReader(new FileReader(f))) {
+			;
+			String line = null;
+
+			while ((line = in.readLine()) != null) {
+				result = result.concat(line);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 	
 }
