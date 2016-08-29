@@ -27,13 +27,28 @@ import org.jboss.reddeer.common.wait.WaitWhile;
  */
 public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 
+	private static ImportJDBCDatabaseWizard INSTANCE;
+	
 	private static final String DIALOG_TITLE = "Import Database via JDBC";
-
-	public ImportJDBCDatabaseWizard() {
+	
+	private ImportJDBCDatabaseWizard() {
 		super("Teiid Designer", "JDBC Database >> Source Model");
 		log.info("JDBC Database import wizard is opened");
 	}
 
+	public static ImportJDBCDatabaseWizard getInstance(){
+		if(INSTANCE==null){
+			INSTANCE=new ImportJDBCDatabaseWizard();
+		}
+		return INSTANCE;
+	}
+	
+	public static ImportJDBCDatabaseWizard openWizard(){
+		ImportJDBCDatabaseWizard wizard = getInstance();
+		wizard.open();
+		return wizard;
+	}
+	
 	public ImportJDBCDatabaseWizard activate() {
 		new DefaultShell(DIALOG_TITLE);
 		return this;
@@ -308,10 +323,20 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 		return this;
 	}
 	
+	public ImportJDBCDatabaseWizard nextPage(){
+		log.info("Go to next wizard page");
+		super.next();
+		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
+		return this;
+	}
+	
+	/**
+	 * use nextPage()
+	 */
+	@Deprecated
 	@Override
 	public void next(){
 		super.next();
-		new WaitWhile(new ShellWithTextIsAvailable("Progress Information"), TimePeriod.LONG);
 	}
 	
 	@Override

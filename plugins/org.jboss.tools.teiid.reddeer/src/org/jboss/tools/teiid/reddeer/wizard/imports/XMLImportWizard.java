@@ -1,17 +1,12 @@
 package org.jboss.tools.teiid.reddeer.wizard.imports;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
@@ -24,82 +19,115 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
  */
 public class XMLImportWizard extends TeiidImportWizard {
 
-	private boolean isLocal;
-	private String name;
-	private String profileName;
-	private String rootPath;
-	private List<String[]> elements;
-	private String jndiName;
+	private static XMLImportWizard INSTANCE;
 
-	public XMLImportWizard() {
+	public static final String DIALOG_TITLE = "Import From XML File Source";
+
+	public static final String LOCAL = "XML file on local file system";
+	public static final String REMOTE = "XML file via remote URL";
+
+	
+	private XMLImportWizard() {
 		super("File Source (XML) >> Source and View Model");
-		elements = new ArrayList<String[]>();
+		log.info("XML import wizard is opened");
 	}
 
-	public void setLocal(boolean isLocal) {
-		this.isLocal = isLocal;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setProfileName(String profileName) {
-		this.profileName = profileName;
-	}
-
-	public void setRootPath(String rootPath) {
-		this.rootPath = rootPath;
-	}
-
-	public void addElement(String[] path) {
-		elements.add(path);
-	}
-
-	public void addElement(String path) {
-		elements.add(path.split("/"));
-	}
-
-	public String getJndiName() {
-		return jndiName;
-	}
-
-	public void setJndiName(String jndiName) {
-		this.jndiName = jndiName;
-	}
-
-	public void execute() {
-		open();
-		new WaitUntil(new ShellWithTextIsAvailable("Import From XML File Source"));
-		new DefaultShell("Import From XML File Source").setFocus();
-		if (isLocal) {
-			new RadioButton("XML file on local file system").click();
-		} else {
-			new RadioButton("XML file via remote URL").click();
+	public static XMLImportWizard getInstance(){
+		if(INSTANCE==null){
+			INSTANCE=new XMLImportWizard();
 		}
-
-		next();
-		new DefaultCombo(0).setSelection(profileName);
-		new LabeledText("Name:").setText(name + "Source");
-
-		next();
-		
-		if(jndiName != null){
-			new DefaultText(new DefaultGroup("JBoss Data Source Information"),0).setText(jndiName);
-		}
-		next();
-		
-		new SWTWorkbenchBot().text(1).setText(rootPath);
-		for (String[] path : elements) {
-			new DefaultTreeItem(new DefaultTree(0), path).select();
-			new PushButton("Add").click();
-		}
-
-		next();
-		new SWTWorkbenchBot().textWithLabel("Name:").setText(name + "View");
-		new LabeledText("New view table name:").setText(name + "Table");
-
-		finish();
+		return INSTANCE;
 	}
-
+	
+	public static XMLImportWizard openWizard(){
+		XMLImportWizard wizard = getInstance();
+		wizard.open();
+		return wizard;
+	}
+	
+	public XMLImportWizard activate() {
+		new DefaultShell(DIALOG_TITLE);
+		return this;
+	}
+	
+	/**
+	 * 
+	 * @param dialect use one of dialects (DDLCustomImportWizard.TEIID, DDLCustomImportWizard.ORACLE ...)
+	 */
+	
+	/**
+	 * @param importMode use one of import mode (XMLImportWizard.LOCAL or XMLImportWizard.REMOTE)
+	 */
+	public XMLImportWizard setImportMode(String importMode) {
+		log.info("Set import mode to : '" + importMode + "'");
+		activate();
+		new RadioButton(importMode).click();
+		return this;	
+	}
+	
+	public XMLImportWizard setDataFileSource(String dataFileSource) {
+		log.info("Set data file source: '" + dataFileSource + "'");
+		activate();
+		new DefaultCombo(0).setSelection(dataFileSource);
+		return this;
+	}
+	
+	public XMLImportWizard setSourceModelName(String sourceModelName) {
+		log.info("Set source model name to: '" + sourceModelName + "'");
+		activate();
+		new LabeledText(new DefaultGroup("Source Model Definition"), "Name:").setText(sourceModelName);
+		return this;
+	}
+	
+	public XMLImportWizard autoCreateDataSource(boolean check) {
+		log.info("Auto-Create Data Source is : '" + check + "'");
+		activate();
+		CheckBox checkBox = new CheckBox("Auto-create Data Source");
+		if(check != checkBox.isChecked()){
+			checkBox.click();
+		}
+		return this;
+	}
+	
+	public XMLImportWizard setJndiName(String JndiName) {
+		log.info("Set JNDI name to: '" + JndiName + "'");
+		activate();
+		new LabeledText("JNDI Name").setText(JndiName);
+		return this;
+	}
+	
+	public XMLImportWizard setRootPath(String rootPath) {
+		log.info("Set root path to: '" + rootPath + "'");
+		activate();
+		new LabeledText("Root Path").setText(rootPath);
+		return this;
+	}
+	
+	public XMLImportWizard addElement(String element) {
+		log.info("Add element: '" + element + "'");
+		activate();
+		new DefaultTreeItem(new DefaultTree(0), element.split("/")).select();
+		new PushButton("Add").click();
+		return this;
+	}
+	
+	public XMLImportWizard setViewModelName(String viewModelName) {
+		log.info("Set view model name to: '" + viewModelName + "'");
+		activate();
+		new LabeledText(new DefaultGroup("View Model Definition"), "Name:").setText(viewModelName);
+		return this;
+	}
+	
+	public XMLImportWizard setViewTableName(String viewTableName) {
+		log.info("Set view table name to: '" + viewTableName + "'");
+		activate();
+		new LabeledText(new DefaultGroup("View Model Definition"), "New view table name:").setText(viewTableName);
+		return this;
+	}
+	
+	public XMLImportWizard nextPage(){
+		log.info("Go to next wizard page");
+		new NextButton().click();
+		return this;
+	}
 }

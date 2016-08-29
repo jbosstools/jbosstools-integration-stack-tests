@@ -33,8 +33,8 @@ import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidSer
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ProblemsViewEx;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
-import org.jboss.tools.teiid.reddeer.wizard.MetadataModelWizard;
-import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
+import org.jboss.tools.teiid.reddeer.wizard.newWizard.MetadataModelWizard;
+import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -97,20 +97,19 @@ public class WebServiceCreationTest {
 		// 1. Create Web Service Model
 		modelExplorer.deleteModel(PROJECT_NAME, "views", "XmlModel.xmi");
 		modelExplorer.selectItem(PROJECT_NAME, "web_services");
-		MetadataModelWizard modelWizard = new MetadataModelWizard();
-		modelWizard.open();
-		modelWizard.setModelName(WS_MODEL.substring(0,10))
+		MetadataModelWizard.openWizard()
+				.setModelName(WS_MODEL.substring(0,10))
 				.selectModelClass(ModelClass.WEBSERVICE)
 		        .selectModelType(ModelType.VIEW)
-		        .selectModelBuilder(ModelBuilder.BUILD_FROM_WSDL_URL);
-		modelWizard.next();
-		modelWizard.setWsdlFileFromWorkspace(PROJECT_NAME, "others", "ProductsInfo.wsdl");
-		modelWizard.next();
-		modelWizard.next();
-		modelWizard.next();
-		modelWizard.next();
-		modelWizard.next();
-		modelWizard.finish();
+		        .selectModelBuilder(ModelBuilder.BUILD_FROM_WSDL_URL)
+				.nextPage()
+				.setWsdlFileFromWorkspace(PROJECT_NAME, "others", "ProductsInfo.wsdl")
+				.nextPage()
+				.nextPage()
+				.nextPage()
+				.nextPage()
+				.nextPage()
+				.finish();
 		
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new ShellMenu("File","Save All").select();

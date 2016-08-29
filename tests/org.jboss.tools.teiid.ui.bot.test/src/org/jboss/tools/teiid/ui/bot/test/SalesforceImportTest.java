@@ -38,13 +38,12 @@ public class SalesforceImportTest {
 	public void salesforceTest() {
 		String model = "SFModel";
 
-		SalesforceImportWizard sfWizard = new SalesforceImportWizard();
-		sfWizard.open();
-		sfWizard.setConnectionProfile(ConnectionProfileConstants.SALESFORCE)
-				.next();
-		sfWizard.deselectObjects("Account","Apex Class")
-				.next();
-		sfWizard.setModelName(model)
+		SalesforceImportWizard.openWizard()
+				.setConnectionProfile(ConnectionProfileConstants.SALESFORCE)
+				.nextPage()
+				.deselectObjects("Account","Apex Class")
+				.nextPage()
+				.setModelName(model)
 				.setProject(MODEL_PROJECT)
 				.finish();
 

@@ -4,10 +4,8 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.jface.wizard.ImportWizardDialog;
-import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
-import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -22,14 +20,29 @@ import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
  */
 public class DDLTeiidImportWizard  extends ImportWizardDialog{
 
+	private static DDLTeiidImportWizard INSTANCE;
+	
 	public static final String DIALOG_TITLE = "Import Teiid DDL";
 
 	public static final String Source_Type = "Source Model";
 	public static final String View_Type = "View Model";
 	
-	public DDLTeiidImportWizard() {
+	private DDLTeiidImportWizard() {
 		super("Teiid Designer","DDL File (Teiid) >> Source or View Model");
 		log.info("DDL teiid import Wizard is opened");
+	}
+	
+	public static DDLTeiidImportWizard getInstance(){
+		if(INSTANCE==null){
+			INSTANCE=new DDLTeiidImportWizard();
+		}
+		return INSTANCE;
+	}
+	
+	public static DDLTeiidImportWizard openWizard(){
+		DDLTeiidImportWizard wizard = getInstance();
+		wizard.open();
+		return wizard;
 	}
 	
 	public DDLTeiidImportWizard activate(){
@@ -114,13 +127,23 @@ public class DDLTeiidImportWizard  extends ImportWizardDialog{
 		new DefaultTabItem("Model Definition").activate();
 		return this;
 	}
+
+	public DDLTeiidImportWizard nextPage(){
+		log.info("Go to next wizard page");
+		super.next();
+		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
+		return this;
+	}
+	
+	/**
+	 * use nextPage()
+	 */
+	@Deprecated
 	@Override
 	public void next(){
-		log.info("Go to next wizard page");
-		Button button = new NextButton();
-		button.click();
-		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
+		super.next();
 	}
+	
 	@Override
 	public void finish(){
 		log.info("Finish wizard");

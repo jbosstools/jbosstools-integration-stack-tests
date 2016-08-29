@@ -1,4 +1,4 @@
-package org.jboss.tools.teiid.reddeer.wizard;
+package org.jboss.tools.teiid.reddeer.wizard.connectionProfiles;
 
 import static org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable.syncExec;
 

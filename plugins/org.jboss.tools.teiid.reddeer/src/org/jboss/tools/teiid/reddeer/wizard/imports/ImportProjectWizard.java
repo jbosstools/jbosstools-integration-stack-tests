@@ -2,6 +2,7 @@ package org.jboss.tools.teiid.reddeer.wizard.imports;
 
 import org.jboss.reddeer.jface.wizard.ImportWizardDialog;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
@@ -15,9 +16,24 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
  */
 public class ImportProjectWizard extends ImportWizardDialog {
 
-	public ImportProjectWizard() {
+	private static ImportProjectWizard INSTANCE;
+	
+	private ImportProjectWizard() {
 		super("General", "Existing Projects into Workspace");
 		log.info("Project import wizard is opened");
+	}
+	
+	public static ImportProjectWizard getInstance(){
+		if(INSTANCE==null){
+			INSTANCE=new ImportProjectWizard();
+		}
+		return INSTANCE;
+	}
+	
+	public static ImportProjectWizard openWizard(){
+		ImportProjectWizard wizard = getInstance();
+		wizard.open();
+		return wizard;
 	}
 	
 	public ImportProjectWizard activate() {
@@ -42,4 +58,10 @@ public class ImportProjectWizard extends ImportWizardDialog {
 		return this;
 	}
 
+	public ImportProjectWizard nextPage(){
+		log.info("Go to next wizard page");
+		new NextButton().click();
+		return this;
+	}
+	
 }

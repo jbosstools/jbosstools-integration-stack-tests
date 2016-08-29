@@ -25,15 +25,17 @@ import org.jboss.tools.teiid.reddeer.ModelType;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
-import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
+import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
+import org.jboss.tools.teiid.reddeer.editor.TransformationEditor;
 import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
+import org.jboss.tools.teiid.reddeer.matcher.ModelEditorItemMatcher;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
-import org.jboss.tools.teiid.reddeer.wizard.MetadataModelWizard;
-import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.ImportJDBCDatabaseWizard;
+import org.jboss.tools.teiid.reddeer.wizard.newWizard.MetadataModelWizard;
+import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -80,33 +82,30 @@ public class ReuseVDBTest {
 		executeVDB(PROJECT_NAME, SOURCE_VDB);
 		
 		modelExplorer.createProject(PROJECT_NAME_REUSE);
-		ImportJDBCDatabaseWizard jdbcWizard = new ImportJDBCDatabaseWizard();
-		jdbcWizard.open();
-		jdbcWizard.setConnectionProfile(SOURCE_VDB + " - localhost - Teiid Connection")
-		          .next();
-		jdbcWizard.setTableTypes(false, true, false)
-		      	  .next();
-		jdbcWizard.setTables(VIEW_SOURCE_MODEL)
-		          .next();
-		jdbcWizard.setFolder(PROJECT_NAME_REUSE)
-				  .finish();
+		ImportJDBCDatabaseWizard.openWizard()
+				.setConnectionProfile(SOURCE_VDB + " - localhost - Teiid Connection")
+				.nextPage()
+				.setTableTypes(false, true, false)
+				.nextPage()
+				.setTables(VIEW_SOURCE_MODEL)
+				.nextPage()
+				.setFolder(PROJECT_NAME_REUSE)
+				.finish();
 		
-		MetadataModelWizard modelWizard = new MetadataModelWizard();
-		modelWizard.open();
-		modelWizard.activate();
-		modelWizard.setLocation(PROJECT_NAME_REUSE);
-		modelWizard.setModelName(VIEW_REUSE_MODEL);
-		modelWizard.selectModelClass(ModelClass.RELATIONAL);
-		modelWizard.selectModelType(ModelType.VIEW);
-		modelWizard.selectModelBuilder(ModelBuilder.TRANSFORM_EXISTING);
-		modelWizard.next();
+		MetadataModelWizard.openWizard()
+				.setLocation(PROJECT_NAME_REUSE)
+				.setModelName(VIEW_REUSE_MODEL)
+				.selectModelClass(ModelClass.RELATIONAL)
+				.selectModelType(ModelType.VIEW)
+				.selectModelBuilder(ModelBuilder.TRANSFORM_EXISTING)
+				.nextPage();
 		try{
 			new PushButton("OK").click();
 		}catch(Exception ex){
 			
 		}
-		modelWizard.finish();
-		new ModelEditor(VIEW_REUSE_MODEL + ".xmi").save();
+		MetadataModelWizard.getInstance().finish();
+		new RelationalModelEditor(VIEW_REUSE_MODEL + ".xmi").save();
 
 		VdbWizard.openVdbWizard()
 				.setLocation(PROJECT_NAME_REUSE)
@@ -128,18 +127,18 @@ public class ReuseVDBTest {
 			jdbchelper.closeConnection();
 		}
 		/*change sourceVDB version to 2*/
-		modelExplorer.openModelEditor(PROJECT_NAME,VIEW_SOURCE_MODEL+".xmi","version");
-		ModelEditor editor = new ModelEditor(VIEW_SOURCE_MODEL+".xmi");
-		editor.showTransformation();
-		editor.setTransformation("SELECT 'version2'");
-		editor.saveAndValidateSql();
+		modelExplorer.openModelEditor(PROJECT_NAME,VIEW_SOURCE_MODEL+".xmi","version");		
+		TransformationEditor transformation = new RelationalModelEditor(VIEW_SOURCE_MODEL + ".xmi").openTransformationDiagram(ModelEditorItemMatcher.TABLE, "version");
+		transformation.setTransformation("SELECT 'version2'");
+		transformation.saveAndValidateSql();
+		
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		new ShellMenu("File", "Save All").select();
 		VDBEditor vdb = new VDBEditor(SOURCE_VDB + ".vdb");
 		vdb.show();
 		vdb.synchronizeAll();
 		vdb.setVersion(2);
-		new ModelEditor(SOURCE_VDB + ".vdb").save();		
+		new RelationalModelEditor(SOURCE_VDB + ".vdb").save();
 		modelExplorer.deployVdb(PROJECT_NAME, SOURCE_VDB);
 		
 		/* test version 1 */
@@ -158,7 +157,8 @@ public class ReuseVDBTest {
 		vdb = new VDBEditor(REUSE_VDB + ".vdb");
 		vdb.show();
 		vdb.setImportVDB(SOURCE_VDB,2,false);
-		new ModelEditor(REUSE_VDB + ".vdb").save();
+		new RelationalModelEditor(REUSE_VDB + ".vdb").save();
+		
 		modelExplorer.deployVdb(PROJECT_NAME_REUSE, REUSE_VDB);
 		
 		jdbchelper = new TeiidJDBCHelper(teiidServer, REUSE_VDB);

@@ -36,9 +36,9 @@ import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
-import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
 import org.jboss.tools.teiid.reddeer.wizard.exports.DDLTeiidExportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.DDLTeiidImportWizard;
+import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -75,15 +75,14 @@ public class ImportDDLtest {
 	@Test
 	public void importDDL(){
 		//ddl importer 
-		DDLTeiidImportWizard importWizard = new DDLTeiidImportWizard();
-		importWizard.open();
-		importWizard.setPath(PATH_TO_DDL)
-					.setFolder(PROJECT_NAME)
-					.setName(NAME_VIEW_MODEL)
-					.setModelType(DDLTeiidImportWizard.View_Type)
-					.generateValidDefaultSQL(true)
-					.next();
-		importWizard.finish();
+		DDLTeiidImportWizard.openWizard()
+				.setPath(PATH_TO_DDL)
+				.setFolder(PROJECT_NAME)
+				.setName(NAME_VIEW_MODEL)
+				.setModelType(DDLTeiidImportWizard.View_Type)
+				.generateValidDefaultSQL(true)
+				.nextPage()
+				.finish();
 		
 		new ModelExplorer().getModelProject(PROJECT_NAME).open();
 		new DefaultTreeItem(PROJECT_NAME,NAME_VIEW_MODEL + ".xmi","tempTable").doubleClick();
@@ -155,12 +154,13 @@ public class ImportDDLtest {
 		new ModelExplorer().getModelProject(PROJECT_NAME).open();
 		new DefaultTreeItem(PROJECT_NAME,NAME_VIEW_ORIGINAL_MODEL + ".xmi").select();
 
-		DDLTeiidExportWizard exportDDL = new DDLTeiidExportWizard();		
-		exportDDL.open();
-		exportDDL.setLocation(PROJECT_NAME,NAME_VIEW_ORIGINAL_MODEL + ".xmi")
-	     		 .next();
-		exportDDL.exportToWorkspace("originalDDL", PROJECT_NAME)
-			     .finish();
+		DDLTeiidExportWizard.openWizard()
+				.setLocation(PROJECT_NAME,NAME_VIEW_ORIGINAL_MODEL + ".xmi")
+				.setNameInSource(false)
+				.setNativeType(false)
+				.nextPage()
+				.exportToWorkspace("originalDDL", PROJECT_NAME)
+				.finish();
 		
 		new ModelExplorer().getModelProject(PROJECT_NAME).open();
 		new DefaultTreeItem(PROJECT_NAME,"originalDDL").doubleClick();

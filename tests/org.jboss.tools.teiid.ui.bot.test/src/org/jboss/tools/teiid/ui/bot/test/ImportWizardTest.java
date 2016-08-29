@@ -66,15 +66,14 @@ public class ImportWizardTest {
 
 		String ddl = new File("resources/ddl/hsqldb.ddl").getAbsolutePath();
 		
-		DDLCustomImportWizard wizard = new DDLCustomImportWizard();
-		wizard.open();
-		wizard.setPath(ddl)
-			  .setFolder(MODEL_PROJECT)
-			  .setName("CustomerHsqldb")
-			  .autoSelect(true)
-			  .setModelType(DDLCustomImportWizard.View_Type)
-			  .next();
-		wizard.finish();
+		DDLCustomImportWizard.openWizard()
+				.setPath(ddl)
+				.setFolder(MODEL_PROJECT)
+				.setName("CustomerHsqldb")
+				.autoSelect(true)
+				.setModelType(DDLCustomImportWizard.View_Type)
+				.nextPage()
+				.finish();
 		
 		assertTrue(new ModelExplorer().getProject(MODEL_PROJECT).containsItem("CustomerHsqldb.xmi"));
 		assertTrue(new ModelExplorer().getProject(MODEL_PROJECT).containsItem("CustomerHsqldb.xmi", "USER"));
@@ -87,14 +86,13 @@ public class ImportWizardTest {
 		String source = new File("resources/dtf/relationalModel.xml").getAbsolutePath();
 		String target = "RelationalModel.xmi";
 
-		MetadataImportWizard wizard = new MetadataImportWizard();
-		wizard.open();
-		wizard.setImportType(MetadataImportWizard.TYPE_RELATIONAL_MODEL)
-			  .next();
-		wizard.setName(target)
-			  .setPathToFile(source)
-			  .setProject(MODEL_PROJECT)
-			  .finish();
+		MetadataImportWizard.openWizard()
+				.setImportType(MetadataImportWizard.TYPE_RELATIONAL_MODEL)
+				.nextPage()
+				.setName(target)
+				.setPathToFile(source)
+				.setProject(MODEL_PROJECT)
+				.finish();
 		
 		assertTrue(new ModelExplorer().getProject(MODEL_PROJECT).containsItem(target));
 		new ModelExplorer().openModelEditor(MODEL_PROJECT, target);
@@ -111,18 +109,18 @@ public class ImportWizardTest {
 		String flatProfile = "Flat Profile";
 		new ConnectionProfileHelper().createCpFlatFile(flatProfile, "resources/flat");
 
-		FlatImportWizard importWizard = new FlatImportWizard();
-		importWizard.open();
-		importWizard.selectLocalFileImportMode();
-		importWizard.next();
-		importWizard.selectProfile(flatProfile);
-		importWizard.selectFile("items.csv");
-		importWizard.setSourceModel("Item");
-		importWizard.setProject(MODEL_PROJECT);
-		importWizard.next();
-		importWizard.next();
-		importWizard.next();
-		importWizard.finish();
+		FlatImportWizard.openWizard()
+				.selectLocalFileImportMode()
+				.nextPage()
+				.selectProfile(flatProfile)
+				.selectFile("items.csv")
+				.setSourceModel("Item")
+				.setProject(MODEL_PROJECT)
+				.nextPage()
+				.nextPage()
+				.nextPage()
+				.nextPage()
+				.finish();
 		new WorkbenchShell();
 
 		assertTrue(new ModelExplorer().getProject(MODEL_PROJECT).containsItem("Item.xmi"));
@@ -143,14 +141,22 @@ public class ImportWizardTest {
 		String xmlProfile = "XML Local Profile";
 		new ConnectionProfileHelper().createCpXml(xmlProfile, "resources/flat/accounts.xml");
 		
-		XMLImportWizard importWizard = new XMLImportWizard();
-		importWizard.setName("Account");
-		importWizard.setLocal(true);
-		importWizard.setRootPath("/accounts/account");
-		importWizard.addElement("accounts/account/nick");
-		importWizard.addElement("accounts/account/balance");
-		importWizard.execute();
-
+		XMLImportWizard.openWizard()
+				.setImportMode(XMLImportWizard.LOCAL)
+				.nextPage()
+				.setDataFileSource(xmlProfile)
+				.setSourceModelName("AccountSource")
+				.nextPage()
+				.setJndiName("AccountSource")
+				.nextPage()
+				.setRootPath("/accounts/account")
+				.addElement("accounts/account/nick")
+				.addElement("accounts/account/balance")
+				.nextPage()
+				.setViewModelName("AccountView")
+				.setViewTableName("AccountTable")
+				.finish();
+		
 		assertTrue(new ModelExplorer().getProject(MODEL_PROJECT).containsItem("AccountSource.xmi"));
 		assertTrue(new ModelExplorer().getProject(MODEL_PROJECT).containsItem("AccountView.xmi"));
 		new ModelExplorer().openModelEditor(MODEL_PROJECT, "AccountSource.xmi");
@@ -173,19 +179,21 @@ public class ImportWizardTest {
 
 		new ConnectionProfileHelper().createCpWsdl(profile, wsdlCP);
 
-		WsdlImportWizard wsdlWizard = new WsdlImportWizard();
-
-		wsdlWizard.setProfile(profile);
-
-		wsdlWizard.setSourceModelName("HelloService.xmi");
-		wsdlWizard.setViewModelName("HelloServiceView.xmi");
-
-		wsdlWizard.addOperation("sayHello");
-		wsdlWizard.addRequestElement("sayHello/sequence/arg0");
-		wsdlWizard.addResponseElement("sayHelloResponse/sequence/return");
-
-		wsdlWizard.execute();
-
+		WsdlImportWizard.openWizard()
+				.setConnectionProfile(profile)
+				.selectOperations("sayHello")
+				.nextPage()
+				.setProject(MODEL_PROJECT)
+				.setSourceModelName("HelloService")
+				.setViewModelName("HelloServiceView")
+				.nextPage()
+				.setJndiName("HelloService")
+				.nextPage()
+				.nextPage()
+				.addRequestElement("sayHello/sequence/arg0")
+				.addResponseElement("sayHello","sayHelloResponse/sequence/return")
+				.finish();
+		
 		assertTrue(new ModelExplorer().getProject(MODEL_PROJECT).containsItem("HelloService.xmi"));
 		assertTrue(new ModelExplorer().getProject(MODEL_PROJECT).containsItem("HelloServiceView.xmi"));
 		new ModelExplorer().openModelEditor(MODEL_PROJECT, "HelloService.xmi");
@@ -204,33 +212,34 @@ public class ImportWizardTest {
 	public void wsdlToWSImportTest() {
 
 		// import wsdl
-		ImportFromFileSystemWizard wizard = new ImportFromFileSystemWizard();
-		wizard.open();
-		wizard.setPath("resources/wsdl")
-			  .setFolder(MODEL_PROJECT)
-			  .selectFile("Hello.wsdl")
-			  .finish();
+		ImportFromFileSystemWizard.openWizard()
+				.setPath("resources/wsdl")
+				.setFolder(MODEL_PROJECT)
+				.selectFile("Hello.wsdl")
+				.finish();
 
 		// import from workspace
-		Properties iProps = new Properties();
-		iProps.setProperty("modelName", "WsdlToWS");
-		iProps.setProperty("project", MODEL_PROJECT);
-		iProps.setProperty("wsdlName", "Hello.wsdl");
-
-		WsdlWebImportWizard importWizard = new WsdlWebImportWizard();
-		importWizard.importWsdl(iProps, WsdlWebImportWizard.IMPORT_WSDL_FROM_WORKSPACE);
+		WsdlWebImportWizard.openWizard()
+				.setModelName("WsdlToWS")
+				.setProject(MODEL_PROJECT)
+				.importFromWorkspace(MODEL_PROJECT,"Hello.wsdl")
+				.nextPage()
+				.nextPage()
+				.nextPage()
+				.nextPage()
+				.finish();
 		
 		new WorkbenchShell();
-
-		// import from URL
-		iProps = new Properties();
-		iProps.setProperty("modelName", "WsdlToWS2");
-		iProps.setProperty("project", MODEL_PROJECT);
-		iProps.setProperty("wsdlUrl", "http://www.webservicex.com/globalweather.asmx?WSDL");
-		iProps.setProperty("securityType", "None");
-		
-		importWizard = new WsdlWebImportWizard();
-		importWizard.importWsdl(iProps, WsdlWebImportWizard.IMPORT_WSDL_FROM_URL);
+		// import from url
+		WsdlWebImportWizard.openWizard()
+				.setModelName("WsdlToWS2")
+				.setProject(MODEL_PROJECT)
+				.importFromURL("http://www.webservicex.com/globalweather.asmx?WSDL", null, null, false)
+				.nextPage()
+				.nextPage()
+				.nextPage()
+				.nextPage()
+				.finish();
 
 		assertTrue(new ModelExplorer().getProject(MODEL_PROJECT).containsItem("WsdlToWS.xmi"));
 		assertTrue(new ModelExplorer().getProject(MODEL_PROJECT).containsItem("WsdlToWS2Responses.xmi"));
@@ -238,24 +247,24 @@ public class ImportWizardTest {
 
 	@Test
 	public void xmlSchemaImportTest() {
-
 		// local xsd		
-		XMLSchemaImportWizard wizard = new XMLSchemaImportWizard();
-		wizard.setLocal(true);
-		wizard.setRootPath(new File("resources/xsd").getAbsolutePath());
-		wizard.setSchemas(new String[] { "EmployeesSchema.xsd", "BookDatatypes.xsd" });
-		wizard.execute();
+		XMLSchemaImportWizard.openWizard()
+				.selectLocalImportMode()
+				.nextPage()
+				.setFromDirectory(new File("resources/xsd").getAbsolutePath())
+				.setToDirectory(MODEL_PROJECT)
+				.selectSchema("EmployeesSchema.xsd", "BookDatatypes.xsd")
+				.finish();
 		
 		assertTrue(new ModelExplorer().getProject(MODEL_PROJECT).containsItem("EmployeesSchema.xsd"));
 		assertTrue(new ModelExplorer().getProject(MODEL_PROJECT).containsItem("BookDatatypes.xsd"));
-
 		// remote URI		
-		wizard = new XMLSchemaImportWizard();
-		wizard.setLocal(false);
-		wizard.setXmlSchemaURL("http://www.jboss.org/schema/jbosscommon/jboss-common_6_0.xsd");
-		wizard.setVerifyHostname(false);
-		wizard.setAddDependentSchemas(false);
-		wizard.execute();
+		XMLSchemaImportWizard.openWizard()
+				.selectRemoteImportMode()
+				.nextPage()
+				.setSchemaURL("http://www.jboss.org/schema/jbosscommon/jboss-common_6_0.xsd", null, null, false)
+				.addDependentSchemas(false)
+				.finish();
 		
 		assertTrue(new ModelExplorer().getProject(MODEL_PROJECT).containsItem("jboss-common_6_0.xsd"));
 	}

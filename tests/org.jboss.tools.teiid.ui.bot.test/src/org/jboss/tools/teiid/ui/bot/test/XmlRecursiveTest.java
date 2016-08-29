@@ -30,8 +30,8 @@ import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidSer
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ProblemsViewEx;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
-import org.jboss.tools.teiid.reddeer.wizard.MetadataModelWizard;
-import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
+import org.jboss.tools.teiid.reddeer.wizard.newWizard.MetadataModelWizard;
+import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -79,17 +79,16 @@ public class XmlRecursiveTest {
 	@Test
 	public void test() throws Exception {
 		// 1. Create Virtual Document XML model
-		MetadataModelWizard modelWizard = new MetadataModelWizard();
-		modelWizard.open();
-		modelWizard.setLocation(PROJECT_NAME)
+		MetadataModelWizard.openWizard()
+				.setLocation(PROJECT_NAME)
 				.setModelName(VIEW_MODEL.substring(0,6))
 				.selectModelClass(ModelClass.XML)
 				.selectModelType(ModelType.VIEW)
-				.selectModelBuilder(ModelBuilder.BUILD_FROM_XML_SCHEMA);
-		modelWizard.next();
-		modelWizard.selectXMLSchemaFile(PROJECT_NAME, "EmployeesSchema.xsd")
-				.addElement("SimpleEmployees");
-		modelWizard.finish();
+				.selectModelBuilder(ModelBuilder.BUILD_FROM_XML_SCHEMA)
+				.nextPage()
+				.selectXMLSchemaFile(PROJECT_NAME, "EmployeesSchema.xsd")
+				.addElement("SimpleEmployees")
+				.finish();
 
 		// 2. Create Employees Mapping Transformation Model
 		modelExplorer.openModelEditor(PROJECT_NAME, VIEW_MODEL);

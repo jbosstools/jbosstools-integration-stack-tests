@@ -5,7 +5,6 @@ import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
-import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
@@ -24,7 +23,6 @@ public abstract class TeiidImportWizard extends ImportWizardDialog {
 
 	@Override
 	public void finish() {
-		stupidWait();
 		super.finish();
 		// wait for 'Progress Information'
 		log.info("Progress waiting started ...");
@@ -44,13 +42,16 @@ public abstract class TeiidImportWizard extends ImportWizardDialog {
 			log.info("There is nothing to save.");
 		}
 	}
-
-	// The are some problems on Win7_32. We need to wait due to possible WSDL
-	// reading (not sure).
-	private void stupidWait() {
-		log.info("Stupid waiting for " + TimePeriod.NORMAL.getSeconds() + " s");
-		AbstractWait.sleep(TimePeriod.NORMAL);
-	}
+	
+	/**
+	 * use nextPage()
+	 */
 	@Deprecated
-	public abstract void execute();
+	@Override
+	public void next(){
+		super.next();
+	}
+	
+	public abstract TeiidImportWizard nextPage();
+	
 }

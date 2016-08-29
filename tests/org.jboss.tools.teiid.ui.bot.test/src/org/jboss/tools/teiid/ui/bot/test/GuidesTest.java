@@ -33,7 +33,6 @@ import org.jboss.tools.common.reddeer.JiraClient;
 import org.jboss.tools.runtime.reddeer.condition.JobIsKilled;
 import org.jboss.tools.teiid.reddeer.ModelClass;
 import org.jboss.tools.teiid.reddeer.ModelType;
-import org.jboss.tools.teiid.reddeer.Procedure;
 import org.jboss.tools.teiid.reddeer.Table;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.condition.IsPreviewInProgress;
@@ -42,7 +41,7 @@ import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileHelper;
 import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
 import org.jboss.tools.teiid.reddeer.connection.SimpleHttpClient;
 import org.jboss.tools.teiid.reddeer.dialog.CreateWarDialog;
-import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
+import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
@@ -50,11 +49,12 @@ import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidSer
 import org.jboss.tools.teiid.reddeer.view.GuidesView;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.SQLResult;
-import org.jboss.tools.teiid.reddeer.wizard.MetadataModelWizard;
+import org.jboss.tools.teiid.reddeer.wizard.ProcedureWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.FlatImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.ImportJDBCDatabaseWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.WsdlImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.XMLImportWizard;
+import org.jboss.tools.teiid.reddeer.wizard.newWizard.MetadataModelWizard;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -92,7 +92,6 @@ public class GuidesTest {
 		String vdb_JDBC_name = "JDBC_VDB";
 		String test_SQL = "SELECT * FROM JDBC_VDB.SQLtestSource.STATUS";
 
-		
 		guides.createProjectViaGuides(actionSet, project_JDBC_name);
 		
 		guides.chooseAction(actionSet, "Create JDBC "); 
@@ -136,7 +135,6 @@ public class GuidesTest {
 
 		guides.chooseAction(actionSet, "Generate "); 
 		new DefaultShell("Create Relational Model from Web Service");
-		new PushButton("Cancel").click();		
 		wsdlImportWizard(soapProfile, model_SOAP_name, view_SOAP_name);
 		
 		guides.previewDataViaActionSet(actionSet, project_SOAP_name, view_SOAP_name+".xmi","FullCountryInfoAllCountries");
@@ -181,7 +179,8 @@ public class GuidesTest {
 		defineProcedure(procedure_REST_name, query_procedure, uriRest);
 
 		String param = "Park";
-		new ModelEditor(view_REST_name + ".xmi").save();
+		new RelationalModelEditor(view_REST_name+".xmi").save();
+
 		guides.previewDataViaActionSetWithParam(actionSet, param, project_REST_name, view_REST_name+".xmi",procedure_REST_name); 
 		assertTrue(testLastPreview());
 
@@ -259,20 +258,25 @@ public class GuidesTest {
 		new ConnectionProfileHelper().createCpXml(xmlLocalprofile, "resources/guides/supplier.xml");
 
 		guides.chooseAction(actionSet, "Create source model from XML file source");
-		new DefaultShell("Import From XML File Source");
-		new PushButton("Cancel").click();
-
-		XMLImportWizard importWizard = new XMLImportWizard();
-		importWizard.setName(xmlLocalName);
-		importWizard.setLocal(true);
-		importWizard.setRootPath("/SUPPLIERS/SUPPLIER");
-		importWizard.addElement("SUPPLIERS/SUPPLIER/SUPPLIER_ID");
-		importWizard.addElement("SUPPLIERS/SUPPLIER/SUPPLIER_NAME");
-		importWizard.addElement("SUPPLIERS/SUPPLIER/SUPPLIER_STATUS");
-		importWizard.addElement("SUPPLIERS/SUPPLIER/SUPPLIER_CITY");
-		importWizard.addElement("SUPPLIERS/SUPPLIER/SUPPLIER_STATE");
-		importWizard.setJndiName(xmlLocalName);
-		importWizard.execute();
+		new DefaultShell("Import From XML File Source");	
+		XMLImportWizard.getInstance()
+			   .setImportMode(XMLImportWizard.LOCAL)
+			   .nextPage()
+			   .setDataFileSource(xmlLocalprofile)
+			   .setSourceModelName(xmlLocalName + "Source")
+			   .nextPage()
+			   .setJndiName(xmlLocalName + "Source")
+			   .nextPage()
+			   .setRootPath("/SUPPLIERS/SUPPLIER")
+			   .addElement("SUPPLIERS/SUPPLIER/SUPPLIER_ID")
+			   .addElement("SUPPLIERS/SUPPLIER/SUPPLIER_NAME")
+			   .addElement("SUPPLIERS/SUPPLIER/SUPPLIER_STATUS")
+			   .addElement("SUPPLIERS/SUPPLIER/SUPPLIER_CITY")
+			   .addElement("SUPPLIERS/SUPPLIER/SUPPLIER_STATE")
+			   .nextPage()
+			   .setViewModelName(xmlLocalName + "View")
+			   .setViewTableName(xmlLocalName + "Table")
+			   .finish();
 		
 		guides.previewDataViaActionSet(actionSet,xmlLocalprofile, xmlLocalName+"View.xmi",xmlLocalName+"Table");
 		assertTrue(testLastPreview());
@@ -302,22 +306,30 @@ public class GuidesTest {
 		
 		guides.chooseAction(actionSet, "Create source model from remote XML");
 		new DefaultShell("Import From XML File Source");
-		new PushButton("Cancel").click();
-
-		XMLImportWizard importWizard = new XMLImportWizard();
-		importWizard.setName(xmlRemoteName);
-		importWizard.setLocal(false);
-		importWizard.setRootPath("/CATALOG/CD");
-		importWizard.addElement("CATALOG/CD/TITLE");
-		importWizard.addElement("CATALOG/CD/ARTIST");
-		importWizard.addElement("CATALOG/CD/COUNTRY");
-		importWizard.addElement("CATALOG/CD/COMPANY");
-		importWizard.addElement("CATALOG/CD/PRICE");
+		XMLImportWizard.getInstance()
+			   .setImportMode(XMLImportWizard.REMOTE)
+			   .nextPage()
+			   .setDataFileSource(xmlRemoteprofile)
+			   .setSourceModelName(xmlRemoteName + "Source")
+			   .nextPage()
+			   .setJndiName(xmlRemoteName + "Source")
+			   .nextPage()
+			   .setRootPath("/CATALOG/CD")
+			   .addElement("CATALOG/CD/TITLE")
+			   .addElement("CATALOG/CD/ARTIST")
+			   .addElement("CATALOG/CD/COUNTRY")
+			   .addElement("CATALOG/CD/COMPANY")
+			   .addElement("CATALOG/CD/PRICE");
 		if(new JiraClient().isIssueClosed("TEIIDDES-2858")){
-			importWizard.addElement("CATALOG/CD/YEAR");
+			XMLImportWizard.getInstance()
+					.addElement("CATALOG/CD/YEAR");
 		}
-		importWizard.setJndiName(xmlRemoteName);
-		importWizard.execute();
+		XMLImportWizard.getInstance()
+			   .nextPage()
+			   .setViewModelName(xmlRemoteName + "View")
+			   .setViewTableName(xmlRemoteName + "Table")
+			   .finish();
+		
 		
 		guides.previewDataViaActionSet(actionSet,xmlRemoteprofile, xmlRemoteName+"View.xmi",xmlRemoteName+"Table");
 		assertTrue(testLastPreview());
@@ -387,69 +399,69 @@ public class GuidesTest {
     }
 	
     private void createJDBCSource(String modelName,String projectName,String cp_name){
-    	ImportJDBCDatabaseWizard jdbcWizard = new ImportJDBCDatabaseWizard();
-		jdbcWizard.setConnectionProfile(cp_name)
-		          .next();
-		jdbcWizard.setTableTypes(false, true, false)
-		      	  .next();
-		jdbcWizard.next();
-		jdbcWizard.setFolder(projectName)
-		   	  	  .setModelName(modelName)
-				  .finish();
+    	ImportJDBCDatabaseWizard.getInstance()
+				.setConnectionProfile(cp_name)
+				.nextPage()
+				.setTableTypes(false, true, false)
+				.nextPage()
+				.nextPage()
+				.setFolder(projectName)
+				.setModelName(modelName)
+				.finish();
     }
     private void createFlatLocalSource(String profile, String fileName,String projectName,String modelName, String viewModelName, String viewTableName){
-    	FlatImportWizard importWizard = new FlatImportWizard();
-    	importWizard.selectLocalFileImportMode();
-		importWizard.next();
-		importWizard.selectProfile(profile)
-					.selectFile(fileName)
-					.setSourceModel(modelName)
-					.setProject(projectName)
-					.next();
-		importWizard.setJndiName(modelName);
-		importWizard.next();
-		importWizard.next();
-		importWizard.next();
-		importWizard.setViewModel(viewModelName)
-					.setViewTable(viewTableName)
-					.finish();
+    	FlatImportWizard.getInstance()
+				.selectLocalFileImportMode()
+				.nextPage()
+				.selectProfile(profile)
+				.selectFile(fileName)
+				.setSourceModel(modelName)
+				.setProject(projectName)
+				.nextPage()
+				.setJndiName(modelName)
+				.nextPage()
+				.nextPage()
+				.nextPage()
+				.setViewModel(viewModelName)
+				.setViewTable(viewTableName)
+				.finish();
     }
     private void wsdlImportWizard(String soapProfile, String model_SOAP_name, String view_SOAP_name){
-    	WsdlImportWizard wsdlWizard = new WsdlImportWizard();
-		wsdlWizard.setProfile(soapProfile);
-		wsdlWizard.setSourceModelName(model_SOAP_name);
-		wsdlWizard.setJndiName(model_SOAP_name);
-		wsdlWizard.setViewModelName(view_SOAP_name);
-		
-		wsdlWizard.addOperation("FullCountryInfo");
-		wsdlWizard.addOperation("FullCountryInfoAllCountries");
-		wsdlWizard.addRequestElement("FullCountryInfo/sequence/arg0");
-		
-		wsdlWizard.addResponseElement("FullCountryInfoResponse/sequence/return/sequence/capitalCity");
-		wsdlWizard.addResponseElement("FullCountryInfoResponse/sequence/return/sequence/continentCode");
-		wsdlWizard.addResponseElement("FullCountryInfoResponse/sequence/return/sequence/currencyIsoCode");
-		wsdlWizard.addResponseElement("FullCountryInfoResponse/sequence/return/sequence/isoCode");
-		wsdlWizard.addResponseElement("FullCountryInfoResponse/sequence/return/sequence/name");
-		wsdlWizard.addResponseElement("FullCountryInfoResponse/sequence/return/sequence/phoneCode");
-		
-		wsdlWizard.addResponseElement("FullCountryInfoAllCountriesResponse/sequence/return/sequence/capitalCity");
-		wsdlWizard.addResponseElement("FullCountryInfoAllCountriesResponse/sequence/return/sequence/continentCode");
-		wsdlWizard.addResponseElement("FullCountryInfoAllCountriesResponse/sequence/return/sequence/currencyIsoCode");
-		wsdlWizard.addResponseElement("FullCountryInfoAllCountriesResponse/sequence/return/sequence/isoCode");
-		wsdlWizard.addResponseElement("FullCountryInfoAllCountriesResponse/sequence/return/sequence/name");
-		wsdlWizard.addResponseElement("FullCountryInfoAllCountriesResponse/sequence/return/sequence/phoneCode");
-		wsdlWizard.execute();
+    	WsdlImportWizard.getInstance()
+				.setConnectionProfile(soapProfile)
+				.selectOperations("FullCountryInfo","FullCountryInfoAllCountries")
+				.nextPage()
+				.setSourceModelName(model_SOAP_name)
+				.setViewModelName(view_SOAP_name)
+				.nextPage()
+				.setJndiName(model_SOAP_name)
+				.nextPage()
+				.nextPage()
+				.addRequestElement("FullCountryInfo/sequence/arg0")
+				.addResponseElement("FullCountryInfo","FullCountryInfoResponse/sequence/return/sequence/capitalCity")
+				.addResponseElement("FullCountryInfo","FullCountryInfoResponse/sequence/return/sequence/continentCode")
+				.addResponseElement("FullCountryInfo","FullCountryInfoResponse/sequence/return/sequence/currencyIsoCode")
+				.addResponseElement("FullCountryInfo","FullCountryInfoResponse/sequence/return/sequence/isoCode")
+				.addResponseElement("FullCountryInfo","FullCountryInfoResponse/sequence/return/sequence/name")
+				.addResponseElement("FullCountryInfo","FullCountryInfoResponse/sequence/return/sequence/phoneCode")
+				
+				.addResponseElement("FullCountryInfoAllCountries","FullCountryInfoAllCountriesResponse/sequence/return/sequence/capitalCity")
+				.addResponseElement("FullCountryInfoAllCountries","FullCountryInfoAllCountriesResponse/sequence/return/sequence/continentCode")
+				.addResponseElement("FullCountryInfoAllCountries","FullCountryInfoAllCountriesResponse/sequence/return/sequence/currencyIsoCode")
+				.addResponseElement("FullCountryInfoAllCountries","FullCountryInfoAllCountriesResponse/sequence/return/sequence/isoCode")
+				.addResponseElement("FullCountryInfoAllCountries","FullCountryInfoAllCountriesResponse/sequence/return/sequence/name")
+				.addResponseElement("FullCountryInfoAllCountries","FullCountryInfoAllCountriesResponse/sequence/return/sequence/phoneCode")
+				.finish();
     }
     private void defineViewTable(String projectName, String viewName, String query, String tableName){
 		Matcher<String> matcher = new WithMnemonicTextMatcher("New...");
     	new PushButton(0, matcher).click();	
-		MetadataModelWizard wizard = new MetadataModelWizard();
-		wizard
-			.setLocation(projectName)
-			.setModelName(viewName)
-			.selectModelClass(ModelClass.RELATIONAL)
-			.selectModelType(ModelType.VIEW)
-			.finish();
+		MetadataModelWizard.getInstance()
+				.setLocation(projectName)
+				.setModelName(viewName)
+				.selectModelClass(ModelClass.RELATIONAL)
+				.selectModelType(ModelType.VIEW)
+				.finish();
 		new DefaultShell("Define View Table");
 		//3.2
 		new PushButton(1, matcher).click();	
@@ -461,12 +473,12 @@ public class GuidesTest {
     	new DefaultShell("Define View Procedure");
     	Matcher<String> matcher = new WithMnemonicTextMatcher("New...");
     	new PushButton(1, matcher).click();
-		Properties props = new Properties();
-		props.setProperty("sql",query);
-		props.setProperty("type", Procedure.Type.RELVIEW_PROCEDURE);
-		props.setProperty("params", "nameIN");
-		new DefaultShell("Select Procedure Type");
-		new Procedure().create(procedureName, props);
+    	ProcedureWizard.createViewProcedure()
+    			.setName(procedureName)
+    			.setTransformationSql(query)
+				.addParameter("nameIN", "string", "40", "IN")
+				.finish();
+		
 		new DefaultShell("Define View Procedure");
 		new DefaultCombo().setSelection("GET");
 		new LabeledText("URI").setText(uri);

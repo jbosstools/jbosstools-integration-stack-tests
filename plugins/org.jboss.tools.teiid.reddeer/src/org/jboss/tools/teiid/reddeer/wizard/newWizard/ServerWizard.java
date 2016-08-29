@@ -1,4 +1,4 @@
-package org.jboss.tools.teiid.reddeer.wizard;
+package org.jboss.tools.teiid.reddeer.wizard.newWizard;
 
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.impl.button.CheckBox;

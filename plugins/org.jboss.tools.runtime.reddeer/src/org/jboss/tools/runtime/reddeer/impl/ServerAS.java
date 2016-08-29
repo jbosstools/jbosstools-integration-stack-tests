@@ -98,6 +98,7 @@ public class ServerAS extends ServerBase {
 
 			NewHostWizard hostWizard = serverWizard.addHost().setSshOnly();
 			hostWizard.next();
+			new WaitUntil(new JobIsKilled("Refreshing server adapter list"), TimePeriod.LONG, false);
 			hostWizard.setHostName(remote.getHost()).setConnectionName(remote.getHost()).finish();
 
 			if (!remote.isUseManagementOperations() || !remote.isExternallyManaged()) {

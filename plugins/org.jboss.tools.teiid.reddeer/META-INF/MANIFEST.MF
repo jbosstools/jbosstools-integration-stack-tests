@@ -35,4 +35,5 @@ Export-Package: org.jboss.tools.teiid.reddeer,
  org.jboss.tools.teiid.reddeer.wizard,
  org.jboss.tools.teiid.reddeer.wizard.connectionProfiles,
  org.jboss.tools.teiid.reddeer.wizard.exports,
- org.jboss.tools.teiid.reddeer.wizard.imports
+ org.jboss.tools.teiid.reddeer.wizard.imports,
+ org.jboss.tools.teiid.reddeer.wizard.newWizard
