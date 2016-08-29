@@ -1,27 +1,13 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
 
 import org.hamcrest.Matcher;
-import org.jboss.tools.common.reddeer.JiraClient;
-import org.jboss.tools.runtime.reddeer.condition.JobIsKilled;
-import org.jboss.tools.teiid.reddeer.ModelClass;
-import org.jboss.tools.teiid.reddeer.ModelType;
-import org.jboss.tools.teiid.reddeer.Procedure;
-import org.jboss.tools.teiid.reddeer.Table;
-import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
-import org.jboss.tools.teiid.reddeer.condition.IsPreviewInProgress;
-import org.jboss.tools.teiid.reddeer.connection.SimpleHttpClient;
-import org.jboss.tools.teiid.reddeer.dialog.CreateWarDialog;
-import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
-import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
-import org.jboss.tools.teiid.reddeer.manager.ImportMetadataManager;
-import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
-import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -37,11 +23,26 @@ import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
+import org.jboss.tools.common.reddeer.JiraClient;
+import org.jboss.tools.runtime.reddeer.condition.JobIsKilled;
+import org.jboss.tools.teiid.reddeer.ModelClass;
+import org.jboss.tools.teiid.reddeer.ModelType;
+import org.jboss.tools.teiid.reddeer.Procedure;
+import org.jboss.tools.teiid.reddeer.Table;
+import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
+import org.jboss.tools.teiid.reddeer.condition.IsPreviewInProgress;
+import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
+import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileHelper;
+import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
+import org.jboss.tools.teiid.reddeer.connection.SimpleHttpClient;
+import org.jboss.tools.teiid.reddeer.dialog.CreateWarDialog;
+import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
@@ -53,6 +54,7 @@ import org.jboss.tools.teiid.reddeer.wizard.MetadataModelWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.FlatImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.ImportJDBCDatabaseWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.WsdlImportWizard;
+import org.jboss.tools.teiid.reddeer.wizard.imports.XMLImportWizard;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -130,7 +132,7 @@ public class GuidesTest {
 		guides.chooseAction(actionSet, "Create Web ");
 		new DefaultShell("New Connection Profile");
 		new PushButton("Cancel").click();
-		new ConnectionProfileManager().createCPWSDL(soapProfile, wsdlCP);
+		new ConnectionProfileHelper().createCpWsdl(soapProfile, wsdlCP);
 
 		guides.chooseAction(actionSet, "Generate "); 
 		new DefaultShell("Create Relational Model from Web Service");
@@ -225,7 +227,7 @@ public class GuidesTest {
 		guides.chooseAction(actionSet, "Create Teiid flat ");
 		new DefaultShell("New Connection Profile");
 		new PushButton("Cancel").click();
-		new ConnectionProfileManager().createCPFlatFile(flatProfile, "resources/guides");
+		new ConnectionProfileHelper().createCpFlatFile(flatProfile, "resources/guides");
 
 		guides.chooseAction(actionSet, "Create source model from ");
 		createFlatLocalSource(flatProfile,fileName,project_Flat_name,model_Flat_name, view_Flat_name,view_Flat_table);
@@ -254,18 +256,23 @@ public class GuidesTest {
 		guides.chooseAction(actionSet, "Create Teiid local ");
 		new DefaultShell("New Connection Profile");
 		new PushButton("Cancel").click();
-		new ConnectionProfileManager().createCPXml(xmlLocalprofile, "resources/guides/supplier.xml");
+		new ConnectionProfileHelper().createCpXml(xmlLocalprofile, "resources/guides/supplier.xml");
 
 		guides.chooseAction(actionSet, "Create source model from XML file source");
 		new DefaultShell("Import From XML File Source");
 		new PushButton("Cancel").click();
-		Properties props = new Properties();
-		props.setProperty("local", "true");
-		props.setProperty("JNDI Name", xmlLocalName);
-		props.setProperty("rootPath", "/SUPPLIERS/SUPPLIER");
-		props.setProperty("destination", xmlLocalprofile);
-		props.setProperty("elements", "SUPPLIERS/SUPPLIER/SUPPLIER_ID,SUPPLIERS/SUPPLIER/SUPPLIER_NAME,SUPPLIERS/SUPPLIER/SUPPLIER_STATUS,SUPPLIERS/SUPPLIER/SUPPLIER_CITY,SUPPLIERS/SUPPLIER/SUPPLIER_STATE");
-		new ImportMetadataManager().importFromXML(xmlLocalprofile , xmlLocalName, xmlLocalprofile, props);
+
+		XMLImportWizard importWizard = new XMLImportWizard();
+		importWizard.setName(xmlLocalName);
+		importWizard.setLocal(true);
+		importWizard.setRootPath("/SUPPLIERS/SUPPLIER");
+		importWizard.addElement("SUPPLIERS/SUPPLIER/SUPPLIER_ID");
+		importWizard.addElement("SUPPLIERS/SUPPLIER/SUPPLIER_NAME");
+		importWizard.addElement("SUPPLIERS/SUPPLIER/SUPPLIER_STATUS");
+		importWizard.addElement("SUPPLIERS/SUPPLIER/SUPPLIER_CITY");
+		importWizard.addElement("SUPPLIERS/SUPPLIER/SUPPLIER_STATE");
+		importWizard.setJndiName(xmlLocalName);
+		importWizard.execute();
 		
 		guides.previewDataViaActionSet(actionSet,xmlLocalprofile, xmlLocalName+"View.xmi",xmlLocalName+"Table");
 		assertTrue(testLastPreview());
@@ -291,24 +298,26 @@ public class GuidesTest {
 		guides.chooseAction(actionSet, "Create Teiid Remote ");
 		new DefaultShell("New Connection Profile");
 		new PushButton("Cancel").click();
-		new ConnectionProfileManager().createCPXml(xmlRemoteprofile, "https://raw.githubusercontent.com/mmakovy/import-files/master/cd_catalog.xml");
+		new ConnectionProfileHelper().createCpXml(xmlRemoteprofile, "https://raw.githubusercontent.com/mmakovy/import-files/master/cd_catalog.xml");
 		
 		guides.chooseAction(actionSet, "Create source model from remote XML");
 		new DefaultShell("Import From XML File Source");
 		new PushButton("Cancel").click();
-		Properties props = new Properties();
-		props.setProperty("local", "false");
-		props.setProperty("JNDI Name", xmlRemoteName);
-		props.setProperty("rootPath", "/CATALOG/CD");
-		props.setProperty("destination", xmlRemoteprofile);
-		
+
+		XMLImportWizard importWizard = new XMLImportWizard();
+		importWizard.setName(xmlRemoteName);
+		importWizard.setLocal(false);
+		importWizard.setRootPath("/CATALOG/CD");
+		importWizard.addElement("CATALOG/CD/TITLE");
+		importWizard.addElement("CATALOG/CD/ARTIST");
+		importWizard.addElement("CATALOG/CD/COUNTRY");
+		importWizard.addElement("CATALOG/CD/COMPANY");
+		importWizard.addElement("CATALOG/CD/PRICE");
 		if(new JiraClient().isIssueClosed("TEIIDDES-2858")){
-			props.setProperty("elements", "CATALOG/CD/TITLE,CATALOG/CD/ARTIST,CATALOG/CD/COUNTRY,CATALOG/CD/COMPANY,CATALOG/CD/PRICE,CATALOG/CD/YEAR");
-		}else{
-			props.setProperty("elements", "CATALOG/CD/TITLE,CATALOG/CD/ARTIST,CATALOG/CD/COUNTRY,CATALOG/CD/COMPANY,CATALOG/CD/PRICE");
+			importWizard.addElement("CATALOG/CD/YEAR");
 		}
-		
-		new ImportMetadataManager().importFromXML(xmlRemoteprofile , xmlRemoteName, xmlRemoteprofile, props);
+		importWizard.setJndiName(xmlRemoteName);
+		importWizard.execute();
 		
 		guides.previewDataViaActionSet(actionSet,xmlRemoteprofile, xmlRemoteName+"View.xmi",xmlRemoteName+"Table");
 		assertTrue(testLastPreview());
@@ -350,7 +359,7 @@ public class GuidesTest {
 		
 		new WaitWhile(new IsPreviewInProgress(), TimePeriod.NORMAL);
 		new WaitWhile(new IsInProgress(), TimePeriod.NORMAL);
-		new TeiidBot().saveAll();
+		new ShellMenu("File", "Save All").select();
 
 		guides.previewDataViaActionSet(actionSet, projectName, modelName+".xmi","STATUS"); 	
 		assertTrue(testLastPreview());

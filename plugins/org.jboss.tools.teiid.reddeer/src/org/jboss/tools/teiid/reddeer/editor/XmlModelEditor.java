@@ -252,7 +252,7 @@ public class XmlModelEditor extends AbstractModelEditor {
 	 * Returns attribute's names of specified mapping class.
 	 * @return
 	 */
-	public List<String> ListAttributesNames(String mappingClass){
+	public List<String> listAttributesNames(String mappingClass){
 		AttributeMatcher matcher = new AttributeMatcher("", ModelEditorItemMatcher.MAPPING_CLASS, mappingClass);
 		getEditorViewer(MAPPING_DIAGRAM).editParts(matcher);
 		return matcher.getTexts();

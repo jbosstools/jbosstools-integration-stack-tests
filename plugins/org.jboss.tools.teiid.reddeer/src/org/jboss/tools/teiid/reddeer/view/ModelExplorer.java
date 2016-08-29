@@ -1,5 +1,7 @@
 package org.jboss.tools.teiid.reddeer.view;
 
+import static org.junit.Assert.assertTrue;
+
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.List;
@@ -42,6 +44,7 @@ import org.jboss.tools.teiid.reddeer.Table;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.condition.RadioButtonEnabled;
 import org.jboss.tools.teiid.reddeer.condition.WarIsDeployed;
+import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.dialog.CreateWarDialog;
 import org.jboss.tools.teiid.reddeer.dialog.CreateWebServiceDialog;
 import org.jboss.tools.teiid.reddeer.dialog.GenerateRestProcedureDialog;
@@ -53,6 +56,7 @@ import org.jboss.tools.teiid.reddeer.wizard.GenerateDynamicVdbWizard;
 import org.jboss.tools.teiid.reddeer.wizard.GenerateVdbArchiveWizard;
 import org.jboss.tools.teiid.reddeer.wizard.MetadataModelWizard;
 import org.jboss.tools.teiid.reddeer.wizard.ModelProjectWizard;
+import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.ImportProjectWizard;
 
 /**
@@ -91,19 +95,6 @@ public class ModelExplorer extends AbstractExplorer {
 		new ContextMenu("New Child", "Table...").select();
 		new Table().create(type, tableName, props);
 		new ModelEditor(pathToModelXmi[pathToModelXmi.length - 1]).save();// the last member is modelXmi
-	}
-
-	@Deprecated // use ModelExplorer.addChildToModelItem/addSiblingToModelItem + ProcedureWizard
-	public void newProcedure(String project, String modelXmi, String procedure, Properties props) {
-
-		open();
-
-		new DefaultTreeItem(project, modelXmi).select();
-		new ContextMenu("New Child", "Procedure...").select();
-		new DefaultShell("Select Procedure Type");
-
-		new Procedure().create(procedure, props);
-		new ModelEditor(modelXmi).save();
 	}
 
 	@Override
@@ -172,6 +163,26 @@ public class ModelExplorer extends AbstractExplorer {
 			new WaitUntil(new ShellWithTextIsAvailable(CONNECTION_PROFILE_CHANGE));
 			new PushButton("OK").click();
 		} catch (Exception e) {}
+	}
+	
+	/**
+	 * Simple check if model is correct. Creates VDB with model and query.
+	 */
+	public void simulateTablesPreview(TeiidServerRequirement teiidServer, String project, String model, String[] tables) {
+		String vdb_name = "Check_" + model;	
+		VdbWizard.openVdbWizard()
+				.setLocation(project)
+				.setName(vdb_name)
+				.addModel(project, model + ".xmi")
+				.finish();
+		this.deployVdb(project, vdb_name);
+
+		TeiidJDBCHelper jdbcHelper = new TeiidJDBCHelper(teiidServer, vdb_name);
+		// try simple select for every table
+		for (int i = 0; i < tables.length; i++) {
+			String previewSQL = "select * from \"" + model + "\".\"" + tables[i] + "\"";
+			assertTrue(jdbcHelper.isQuerySuccessful(previewSQL,true));
+		}
 	}
 	
 	/**
@@ -544,16 +555,13 @@ public class ModelExplorer extends AbstractExplorer {
 	}
 	
 	/**
-	 * set JNDI name for source model
+	 * Sets JNDI name for source model
 	 */
 	public void setJndiName(String jndiName, String... pathToSourceModel) {
-		open();
-		if (!pathToSourceModel[pathToSourceModel.length - 1].contains(".")) {
-			pathToSourceModel[pathToSourceModel.length - 1] = pathToSourceModel[pathToSourceModel.length - 1]
-					.concat(".xmi");
-		}
 		new WorkbenchShell();
-		new DefaultTreeItem(pathToSourceModel).select();
+		int iModel = pathToSourceModel.length -1;
+		pathToSourceModel[iModel] = (pathToSourceModel[iModel].contains(".")) ? pathToSourceModel[iModel] : pathToSourceModel[iModel] + ".xmi";
+		this.selectItem(pathToSourceModel);
 		new ContextMenu(MODELING_MENU_ITEM, SET_JNDI_NAME).select();
 		new DefaultShell("Set JBoss Data Source JNDI Name");
 		new DefaultText(0).setText(jndiName);

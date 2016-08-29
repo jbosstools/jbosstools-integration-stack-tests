@@ -12,6 +12,7 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
@@ -19,11 +20,11 @@ import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
-import org.jboss.tools.teiid.reddeer.manager.ServerManager;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
+import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.ImportJDBCDatabaseWizard;
 import org.junit.Before;
@@ -60,14 +61,13 @@ public class JDBCImportWizardTest {
 
 	public static final String MODEL_PROJECT = "jdbcImportTest";
 
-	private static TeiidBot teiidBot = new TeiidBot();
-
 	@BeforeClass
 	public static void before() {
-
-		teiidBot.uncheckBuildAutomatically();
+		if (new ShellMenu("Project", "Build Automatically").isSelected()) {
+			new ShellMenu("Project", "Build Automatically").select();
+		}
 		new ModelExplorer().createProject(MODEL_PROJECT);
-		new ServerManager().getServersViewExt().refreshServer(teiidServer.getName());
+		new ServersViewExt().refreshServer(teiidServer.getName());
 	}
 
 	@Before
@@ -188,10 +188,10 @@ public class JDBCImportWizardTest {
 		importModel(model, ConnectionProfileConstants.SAP_HANA, "BQT1/TABLE/SMALLA,BQT1/TABLE/SMALLB", false);
 		
 		// TODO temp till hana translator is not set automatically (updated checkImportedTablesInModel method)
-		teiidBot.assertResource(MODEL_PROJECT, model + ".xmi", "SMALLA");
-		teiidBot.assertResource(MODEL_PROJECT, model + ".xmi", "SMALLB");
-		String vdb_name = "Check_" + model;
+		assertTrue(new ModelExplorer().getProject(MODEL_PROJECT).containsItem(model + ".xmi", "SMALLA"));
+		assertTrue(new ModelExplorer().getProject(MODEL_PROJECT).containsItem(model + ".xmi", "SMALLB"));
 		
+		String vdb_name = "Check_" + model;
 		VdbWizard.openVdbWizard()
 				.setLocation(MODEL_PROJECT)
 				.setName(vdb_name)
@@ -229,14 +229,14 @@ public class JDBCImportWizardTest {
 	}
 
 	private void checkImportedTablesInModel(String model, String tableA, String tableB) {
-		teiidBot.assertResource(MODEL_PROJECT, model + ".xmi", tableA);
-		teiidBot.assertResource(MODEL_PROJECT, model + ".xmi", tableB);
-		teiidBot.simulateTablesPreview(teiidServer, MODEL_PROJECT, model, new String[] { tableA, tableB });
+		assertTrue(new ModelExplorer().getProject(MODEL_PROJECT).containsItem(model + ".xmi", tableA));
+		assertTrue(new ModelExplorer().getProject(MODEL_PROJECT).containsItem(model + ".xmi", tableB));
+		new ModelExplorer().simulateTablesPreview(teiidServer, MODEL_PROJECT, model, new String[] { tableA, tableB });
 
 	}
 	
 	private void checkImportedProcedureInModel(String model, String procedure, String...parameters) {
-		teiidBot.assertResource(MODEL_PROJECT, model + ".xmi", procedure);
+		assertTrue(new ModelExplorer().getProject(MODEL_PROJECT).containsItem(model + ".xmi", procedure));
 
 		String vdb_name = "Check_" + model;	
 		VdbWizard.openVdbWizard()
@@ -248,7 +248,13 @@ public class JDBCImportWizardTest {
 		
 		TeiidJDBCHelper jdbcHelper = new TeiidJDBCHelper(teiidServer, vdb_name);
 		ArrayList<String> parametersList = new ArrayList<String>(Arrays.asList(parameters));
-		String previewSQL = teiidBot.generateProcedurePreviewQuery(model, procedure, parametersList);
+		String params = "";
+		for (int i = 0; i < parametersList.size(); i++) {
+			params += "'" + parametersList.get(i) + "',";
+		}
+		params = params.substring(0, params.length() - 1);
+
+		String previewSQL =  "exec \"" + model + "\".\"" + procedure + "\"(" + params + ")";
 		assertTrue(jdbcHelper.isQuerySuccessful(previewSQL,false));
 	}
 	/**

@@ -9,17 +9,17 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileHelper;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
-import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
+import org.jboss.tools.teiid.reddeer.wizard.imports.WsdlImportWizard;
 import org.junit.After;
 import org.junit.Before;
-import org.jboss.tools.teiid.reddeer.wizard.imports.WsdlImportWizard;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -60,7 +60,7 @@ public class ConsumeSoapWs {
 		wsdlCP.setProperty("wsdl", "http://ws-dvirt.rhcloud.com/dv-test-ws/soap?wsdl");
 		wsdlCP.setProperty("endPoint", "Countries");
 
-		new ConnectionProfileManager().createCPWSDL("SOAP", wsdlCP);
+		new ConnectionProfileHelper().createCpWsdl("SOAP", wsdlCP);
 
 		WsdlImportWizard wsdlWizard = new WsdlImportWizard();
 

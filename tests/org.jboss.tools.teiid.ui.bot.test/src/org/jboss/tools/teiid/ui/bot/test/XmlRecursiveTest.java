@@ -5,13 +5,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
@@ -100,8 +97,8 @@ public class XmlRecursiveTest {
 		
 		editor.openDocument("SimpleEmployeesDocument");
 		
-		assertTrue(editor.ListAttributesNames(EMPLOYEE_MC).size() == 8);
-		assertTrue(editor.ListAttributesNames(SUPERVISOR_MC).size() == 0);
+		assertTrue(editor.listAttributesNames(EMPLOYEE_MC).size() == 8);
+		assertTrue(editor.listAttributesNames(SUPERVISOR_MC).size() == 0);
 
 		editor.addAttribute(EMPLOYEE_MC, "mgrID : positiveInteger");
 		
@@ -118,8 +115,8 @@ public class XmlRecursiveTest {
 		AbstractWait.sleep(TimePeriod.SHORT);
 		editor.save();
 		
-		List<String> supAttrs = editor.ListAttributesNames(SUPERVISOR_MC);	
-		List<String> empAttrs = editor.ListAttributesNames(EMPLOYEE_MC);
+		List<String> supAttrs = editor.listAttributesNames(SUPERVISOR_MC);	
+		List<String> empAttrs = editor.listAttributesNames(EMPLOYEE_MC);
 		assertTrue(supAttrs.size() == 9);
 		assertTrue(empAttrs.size() == 9);
 		for(String empAttr : empAttrs){

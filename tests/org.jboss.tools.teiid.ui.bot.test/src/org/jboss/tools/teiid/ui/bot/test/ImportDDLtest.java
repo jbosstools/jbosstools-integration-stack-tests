@@ -25,6 +25,7 @@ import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.ccombo.DefaultCCombo;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
@@ -57,16 +58,13 @@ public class ImportDDLtest {
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;
 
-	
-	private static TeiidBot teiidBot = new TeiidBot();
-
 	private static final String PROJECT_NAME = "DDLimport";
 	private static final String NAME_SOURCE_MODEL = "sourceModel";
 	private static final String NAME_VIEW_ORIGINAL_MODEL = "viewModelOriginal";
 	private static final String NAME_VIEW_MODEL = "viewModel";
 	private static final String NAME_VDB = "ddlVDB";
-	private static final String PATH_TO_DDL = teiidBot.toAbsolutePath("resources/ddl/viewModel.ddl");
-	private static final String PATH_TO_ORIGINAL_DDL = teiidBot.toAbsolutePath("resources/ddl/viewModelOriginal.ddl");
+	private static final String PATH_TO_DDL = new File("resources/ddl/viewModel.ddl").getAbsolutePath();
+	private static final String PATH_TO_ORIGINAL_DDL = new File("resources/ddl/viewModelOriginal.ddl").getAbsolutePath();
 
 	@BeforeClass
 	public static void openPerspective() {
@@ -106,7 +104,7 @@ public class ImportDDLtest {
 			if (new ShellWithTextIsActive("Table 'Supports Update' Property Changed").test()){
 				new PushButton("Yes").click();
 			}
-			new TeiidBot().saveAll();
+			new ShellMenu("File", "Save All").select();
 		}
 		
 		VdbWizard.openVdbWizard()

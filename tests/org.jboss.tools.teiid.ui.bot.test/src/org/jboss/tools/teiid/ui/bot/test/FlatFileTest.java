@@ -3,6 +3,8 @@ package org.jboss.tools.teiid.ui.bot.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
+import java.io.File;
+
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileSelectPage;
@@ -13,8 +15,8 @@ import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.tools.common.reddeer.JiraClient;
+import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileHelper;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
-import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
@@ -74,7 +76,7 @@ public class FlatFileTest {
 	 */
 	@Test
 	public void localFileTest() {
-		new ConnectionProfileManager().createCPFlatFile(LOCAL_PROFILE_NAME, LOCAL_FILE_PATH);
+		new ConnectionProfileHelper().createCpFlatFile(LOCAL_PROFILE_NAME, LOCAL_FILE_PATH);
 
 		FlatImportWizard importWizard = new FlatImportWizard();
 		importWizard.open();
@@ -155,7 +157,7 @@ public class FlatFileTest {
 		selectPage.setConnectionProfile("Flat File Data Source");
 		selectPage.setName("emptySpace");
 		connWizard.next();
-		new DefaultText(0).setText(new TeiidBot().toAbsolutePath(EMPTY_SPACE_PATH));
+		new DefaultText(0).setText(new File(EMPTY_SPACE_PATH).getAbsolutePath());
 		assertEquals(" The folder path cannot contain spaces.", new DefaultText(2).getText());
 		assertFalse(new PushButton("Next >").isEnabled());
 

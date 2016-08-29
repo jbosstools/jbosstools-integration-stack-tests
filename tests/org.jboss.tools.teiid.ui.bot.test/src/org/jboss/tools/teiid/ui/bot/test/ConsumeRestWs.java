@@ -9,8 +9,8 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileHelper;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
-import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
@@ -76,7 +76,7 @@ public class ConsumeRestWs {
 		restCpXml.setProperty("connectionUrl", "http://ws-dvirt.rhcloud.com/dv-test-ws/rest/xml");
 		restCpXml.setProperty("type", "xml");
 
-		new ConnectionProfileManager().createCPREST(XML_PROFILE_NAME, restCpXml);
+		new ConnectionProfileHelper().createCpRest(XML_PROFILE_NAME, restCpXml);
 
 		RestImportWizard restWizardXML = new RestImportWizard();
 		restWizardXML.open();
@@ -135,7 +135,7 @@ public class ConsumeRestWs {
 		restCpJson.setProperty("connectionUrl", "http://ws-dvirt.rhcloud.com/dv-test-ws/rest/json");
 		restCpJson.setProperty("type", "json");
 
-		new ConnectionProfileManager().createCPREST(JSON_PROFILE_NAME, restCpJson);
+		new ConnectionProfileHelper().createCpRest(JSON_PROFILE_NAME, restCpJson);
 
 		RestImportWizard restWizardXML = new RestImportWizard();
 		restWizardXML.open();
@@ -177,7 +177,7 @@ public class ConsumeRestWs {
 		restCpXml.setProperty("username", "digest");
 		restCpXml.setProperty("password", "digest");
 
-		new ConnectionProfileManager().createCPREST(XML_PROFILE_NAME_DIGEST, restCpXml);
+		new ConnectionProfileHelper().createCpRest(XML_PROFILE_NAME_DIGEST, restCpXml);
 
 		RestImportWizard restWizardXML = new RestImportWizard();
 		restWizardXML.open();
@@ -219,7 +219,7 @@ public class ConsumeRestWs {
 		restCpJson.setProperty("username", "digest");
 		restCpJson.setProperty("password", "digest");
 
-		new ConnectionProfileManager().createCPREST(JSON_PROFILE_NAME_DIGEST, restCpJson);
+		new ConnectionProfileHelper().createCpRest(JSON_PROFILE_NAME_DIGEST, restCpJson);
 
 		RestImportWizard restWizardXML = new RestImportWizard();
 		restWizardXML.open();

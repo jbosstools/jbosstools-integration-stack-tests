@@ -8,11 +8,13 @@ import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.tools.teiid.reddeer.ChildType;
 import org.jboss.tools.teiid.reddeer.Procedure;
 import org.jboss.tools.teiid.reddeer.Table;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
-import org.jboss.tools.teiid.reddeer.manager.PerspectiveAndViewManager;
+import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
+import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
@@ -42,7 +44,7 @@ public class UDFTest {
 	
 	@BeforeClass
 	public static void createModelProject() {
-		new PerspectiveAndViewManager().openTeiidDesignerPerspective();
+		TeiidPerspective.getInstance().open();
 		new ModelExplorer().importProject(PROJECT_NAME);
 		new ModelExplorer().changeConnectionProfile(PROFILE_NAME, PROJECT_NAME, MODEL_SRC_NAME);
 	}
@@ -73,8 +75,10 @@ public class UDFTest {
 		props.setProperty("javaClass", "userdefinedfunctions.MyConcatNull");// see decompiled jar
 		props.setProperty("javaMethod", "myConcatNull");
 		props.setProperty("udfJarPath", "lib/" + UDF_LIB);
-
-		new ModelExplorer().newProcedure(PROJECT_NAME, MODEL_VIEW_NAME + ".xmi", proc, props);
+		
+		new ModelExplorer().addChildToModelItem(ChildType.PROCEDURE, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi");
+		new Procedure().create(proc, props);
+		new RelationalModelEditor(MODEL_VIEW_NAME + ".xmi").save();
 
 		// create table to test -> use UDF in transformation
 		String table = "tab";

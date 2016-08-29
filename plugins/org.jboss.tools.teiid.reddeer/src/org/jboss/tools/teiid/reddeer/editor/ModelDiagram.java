@@ -5,6 +5,7 @@ import java.util.List;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
 import org.jboss.tools.teiid.reddeer.matcher.AttributeMatcher;
 
+@Deprecated // use %ModelEditor methods
 public class ModelDiagram {
 
 	protected SWTBotGefEditPart editPart;

@@ -28,17 +28,6 @@ public class ModelProject {
 		this.project = project;
 	}
 
-	public void importModel(TeiidImportWizard importWizard) {
-		project.select();
-		importWizard.execute();
-		AbstractWait.sleep(TimePeriod.NORMAL);
-		new WorkbenchShell().setFocus();
-	}
-
-	public boolean containsItem(String... path) {
-		return project.containsItem(path);
-	}
-
 	public void open(String... path) {
 		project.getProjectItem(path).open();
 	}
