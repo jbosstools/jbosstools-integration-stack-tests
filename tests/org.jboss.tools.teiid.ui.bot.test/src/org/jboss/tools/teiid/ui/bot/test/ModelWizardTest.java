@@ -7,6 +7,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.teiid.reddeer.ModelClass;
 import org.jboss.tools.teiid.reddeer.ModelType;
@@ -36,11 +37,12 @@ public class ModelWizardTest {
 	public static final String WEBSERVICE_MODEL_NAME = "webservice_view";
 	public static final String MODELEXT_MODEL_NAME = "modelext";
 	public static final String FUNCTION_MODEL_NAME = "function_userdef";
-	private static TeiidBot teiidBot = new TeiidBot();
 
 	@BeforeClass
 	public static void beforeClass() {
-		teiidBot.uncheckBuildAutomatically();
+		if (new ShellMenu("Project", "Build Automatically").isSelected()) {
+			new ShellMenu("Project", "Build Automatically").select();
+		}
 		new ModelExplorer().createProject(PROJECT_NAME);
 	}
 

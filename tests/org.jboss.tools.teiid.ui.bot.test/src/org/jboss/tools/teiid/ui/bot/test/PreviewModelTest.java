@@ -14,6 +14,7 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
@@ -40,16 +41,15 @@ import org.junit.runner.RunWith;
 public class PreviewModelTest {
 
 	private static final String PROJECT_NAME = "PreviewProject";
-	private static TeiidBot teiidBot = new TeiidBot();
 	private static final String NAME_ORACLE_MODEL = "partsSourceOracle";
 	private static final String NAME_SQL_MODEL = "partsSourceSQLServer";
 	private static final String NAME_VIEW_MODEL = "partsView";
-	private static final String PATH_PARTS_ORACLE_CSV = teiidBot.toAbsolutePath("resources/preview/oracleSource.csv") ;
-	private static final String PATH_PARTS_MSSQL_CSV = teiidBot.toAbsolutePath("resources/preview/mssqlSource.csv") ;
-	private static final String PATH_VIEW_TABLE_CSV = teiidBot.toAbsolutePath("resources/preview/viewTable.csv") ;
-	private static final String PATH_VIEW_TWO_TABLE_CSV = teiidBot.toAbsolutePath("resources/preview/viewTableTwoSources.csv") ;
-	private static final String PATH_VIEW_PROCEDURE_CSV = teiidBot.toAbsolutePath("resources/preview/queryViewProcedure.csv") ;
-	private static final String PATH_VIEW_ACCESS_PATERN_TABLE_CSV = teiidBot.toAbsolutePath("resources/preview/viewTableWithAccessPattern.csv") ;
+	private static final String PATH_PARTS_ORACLE_CSV = new File("resources/preview/oracleSource.csv").getAbsolutePath();
+	private static final String PATH_PARTS_MSSQL_CSV = new File("resources/preview/mssqlSource.csv").getAbsolutePath();
+	private static final String PATH_VIEW_TABLE_CSV = new File("resources/preview/viewTable.csv").getAbsolutePath();
+	private static final String PATH_VIEW_TWO_TABLE_CSV = new File("resources/preview/viewTableTwoSources.csv").getAbsolutePath();
+	private static final String PATH_VIEW_PROCEDURE_CSV = new File("resources/preview/queryViewProcedure.csv").getAbsolutePath();
+	private static final String PATH_VIEW_ACCESS_PATERN_TABLE_CSV = new File("resources/preview/viewTableWithAccessPattern.csv").getAbsolutePath();
 	
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;
@@ -68,7 +68,7 @@ public class PreviewModelTest {
 								  PROJECT_NAME, NAME_SQL_MODEL);
 		explorer.setJndiName(NAME_ORACLE_MODEL,PROJECT_NAME, NAME_ORACLE_MODEL);
 		explorer.setJndiName(NAME_SQL_MODEL,PROJECT_NAME, NAME_SQL_MODEL);
-		teiidBot.saveAll();
+		new ShellMenu("File", "Save All").select();
 	}
 	
 	@Before

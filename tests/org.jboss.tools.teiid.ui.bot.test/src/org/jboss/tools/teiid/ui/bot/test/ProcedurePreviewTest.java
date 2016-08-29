@@ -11,12 +11,15 @@ import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.junit.execution.annotation.RunIf;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
+import org.jboss.tools.teiid.reddeer.ChildType;
 import org.jboss.tools.teiid.reddeer.Procedure;
 import org.jboss.tools.teiid.reddeer.Table;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
-import org.jboss.tools.teiid.reddeer.manager.PerspectiveAndViewManager;
+import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
+import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.wizard.imports.ImportFromFileSystemWizard;
@@ -37,18 +40,16 @@ public class ProcedurePreviewTest {
 	private static final String UDF_LIB_PATH = "target/proc-udf/MyTestUdf/lib/";
 	private static final String UDF_LIB = "MyTestUdf-1.0-SNAPSHOT.jar";
 
-	private static TeiidBot teiidBot = new TeiidBot();
-
 	@BeforeClass
 	public static void createModelProject() {
-		new PerspectiveAndViewManager().openTeiidDesignerPerspective();		
+		TeiidPerspective.getInstance().open();	
 		ModelExplorer explorer = new ModelExplorer();
 		
 		explorer.importProject(PROJECT_NAME);
 		explorer.changeConnectionProfile(PROFILE_NAME, PROJECT_NAME, MODEL_SRC_NAME);
 		explorer.createDataSource(ModelExplorer.ConnectionSourceType.USE_CONNECTION_PROFILE_INFO, PROFILE_NAME, PROJECT_NAME, MODEL_SRC_NAME);
 		explorer.setJndiName(MODEL_SRC_NAME,PROJECT_NAME, MODEL_SRC_NAME);
-		teiidBot.saveAll();
+		new ShellMenu("File", "Save All").select();
 	}
 
 	@Before
@@ -67,8 +68,10 @@ public class ProcedurePreviewTest {
 		props.setProperty("params", "id");
 		props.setProperty("sql",
 				"CREATE VIRTUAL PROCEDURE BEGIN select hsqldbParts.PARTS.PART_COLOR AS color from hsqldbParts.PARTS where hsqldbParts.PARTS.PART_ID=view.proc.id; END");
-
-		new ModelExplorer().newProcedure(PROJECT_NAME, MODEL_VIEW_NAME + ".xmi", proc, props);
+		
+		new ModelExplorer().addChildToModelItem(ChildType.PROCEDURE, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi");
+		new Procedure().create(proc, props);
+		new RelationalModelEditor(MODEL_VIEW_NAME + ".xmi").save();
 
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		ArrayList<String> params = new ArrayList<String>();
@@ -102,8 +105,10 @@ public class ProcedurePreviewTest {
 		props.setProperty("javaClass", "userdefinedfunctions.MyConcatNull");
 		props.setProperty("javaMethod", "myConcatNull");
 		props.setProperty("udfJarPath", "lib/" + UDF_LIB);
-
-		new ModelExplorer().newProcedure(PROJECT_NAME, MODEL_VIEW_NAME + ".xmi", proc, props);
+		
+		new ModelExplorer().addChildToModelItem(ChildType.PROCEDURE, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi");
+		new Procedure().create(proc, props);
+		new RelationalModelEditor(MODEL_VIEW_NAME + ".xmi").save();
 
 		// create table to test -> use UDF in transformation
 		String table = "tab";
@@ -113,7 +118,7 @@ public class ProcedurePreviewTest {
 		new ModelExplorer().newTable(table, Table.Type.VIEW, props, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi");
 
 		new ModelExplorer().previewModelItem(null, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi", table);
-		String previewQuery = teiidBot.generateTablePreviewQuery(MODEL_VIEW_NAME, table);
+		String previewQuery = "select * from \"" + MODEL_VIEW_NAME + "\".\"" + table + "\"";
 		assertTrue(new ModelExplorer().checkPreviewOfModelObject(previewQuery));
 
 	}

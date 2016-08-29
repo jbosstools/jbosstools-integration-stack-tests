@@ -1,16 +1,19 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
-import java.util.Properties;
+import static org.junit.Assert.assertTrue;
+
+import java.io.File;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.teiid.reddeer.ModelClass;
 import org.jboss.tools.teiid.reddeer.ModelType;
-import org.jboss.tools.teiid.reddeer.manager.ImportMetadataManager;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.wizard.MetadataModelWizard;
+import org.jboss.tools.teiid.reddeer.wizard.imports.XMLSchemaImportWizard;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -21,21 +24,23 @@ import org.junit.runner.RunWith;
 public class BasicTest {
 
 	private static final String PROJECT = "XmlView";
-	private static TeiidBot teiidBot = new TeiidBot();
 	private static final String MODEL = "model";
 	private static final String XSD = "UpdatesSchema.xsd";
 	private static int i = 0;
 
 	@BeforeClass
 	public static void prepare() {
-		teiidBot.uncheckBuildAutomatically();
+		if (new ShellMenu("Project", "Build Automatically").isSelected()) {
+			new ShellMenu("Project", "Build Automatically").select();
+		}
 		new ModelExplorer().createProject(PROJECT);
-		Properties props = new Properties();
-		props.setProperty("local", "true");
-		props.setProperty("rootPath", teiidBot.toAbsolutePath("resources/xsd"));
-		props.setProperty("schemas", XSD);
-		props.setProperty("destination", PROJECT);
-		new ImportMetadataManager().importXMLSchema(PROJECT, props);
+		
+		XMLSchemaImportWizard wizard = new XMLSchemaImportWizard();
+		wizard.setLocal(true);
+		wizard.setRootPath(new File("resources/xsd").getAbsolutePath());
+		wizard.setSchemas(new String[] { XSD });
+		wizard.setDestination(PROJECT);
+		wizard.execute();
 	}
 
 	@AfterClass
@@ -173,8 +178,8 @@ public class BasicTest {
 			}
 			modelExplorer.activate();
 			new DefaultTreeItem(PROJECT, MODEL + i2 + ".xmi", el, el2);
-			teiidBot.assertResource(PROJECT, MODEL + i2 + ".xmi", el, el2,
-					"mns = http://www.teiid.org/UpdateBooks_Output");
+			assertTrue(new ModelExplorer().getProject(PROJECT).containsItem(MODEL + i2 + ".xmi", el, el2,
+					"mns = http://www.teiid.org/UpdateBooks_Output"));
 		}
 
 	}

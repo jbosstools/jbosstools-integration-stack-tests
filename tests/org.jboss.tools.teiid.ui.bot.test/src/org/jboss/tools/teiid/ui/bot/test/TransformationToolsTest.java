@@ -8,8 +8,6 @@ import java.util.List;
 
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -20,23 +18,24 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.ChildType;
+import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
 import org.jboss.tools.teiid.reddeer.dialog.CriteriaBuilderDialog;
 import org.jboss.tools.teiid.reddeer.dialog.ExpressionBuilderDialog;
 import org.jboss.tools.teiid.reddeer.dialog.ReconcilerDialog;
 import org.jboss.tools.teiid.reddeer.editor.ModelDiagram;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
+import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
+import org.jboss.tools.teiid.reddeer.editor.TransformationEditor;
+import org.jboss.tools.teiid.reddeer.matcher.ModelEditorItemMatcher;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ProblemsViewEx;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
  * @author skaleta
- * 
  * tested features:
  * - add transformation sources
  * - criteria builder
@@ -62,47 +61,36 @@ public class TransformationToolsTest {
 	@Test
 	public void test(){
 		// 1. Add the transformation sources
-		modelExplorer.openModelEditor(PROJECT_NAME,"PartsView.xmi","SupplierParts");
-		ModelEditor editor = new ModelEditor("PartsView.xmi");
-		editor.showTransformation();
+		modelExplorer.openModelEditor(PROJECT_NAME, "PartsView.xmi");
+		RelationalModelEditor editor = new RelationalModelEditor("PartsView.xmi");
 		
-		modelExplorer.activate();
-		new DefaultTreeItem(PROJECT_NAME,"PartsSupplier.xmi","SUPPLIER").select();
+		ModelEditor modelEditor = new ModelEditor("PartsView.xmi");
+
+		TransformationEditor transEditor =  editor.openTransformationDiagram(ModelEditorItemMatcher.TABLE, "SupplierParts");
+		modelExplorer.selectItem(PROJECT_NAME, "PartsSupplier.xmi", "SUPPLIER");
 		new ContextMenu("Modeling","Add Transformation Source(s)").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
-		assertTrue("transformation text not set", editor.getTransformation().replaceAll(" |\t|\n|\r" ,"").equals("SELECT*FROMPartsSupplier.SUPPLIER"));	
-		
-		editor.setTransformation("SELECT * FROM PartsSupplier.SUPPLIER, PartsSupplier.PARTS, PartsSupplier.SUPPLIER_PARTS");
-		editor.saveAndValidateSql();
-		AbstractWait.sleep(TimePeriod.SHORT);
-		new WorkbenchShell();
-		modelExplorer.getProject(PROJECT_NAME).refresh();
-		AbstractWait.sleep(TimePeriod.SHORT);
-		new ShellMenu("File","Save All").select();
-		
 		editor.show();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		assertTrue("transformation text not set", transEditor.getTransformation().replaceAll(" |\t|\n|\r" ,"").equals("SELECT*FROMPartsSupplier.SUPPLIER"));
+		
+		transEditor.insertAndValidateSql("SELECT * FROM PartsSupplier.SUPPLIER, PartsSupplier.PARTS, PartsSupplier.SUPPLIER_PARTS");
+		AbstractWait.sleep(TimePeriod.SHORT);
+		editor.save();
 		List<String> sourceAttrs = new ArrayList<>();
-		ModelDiagram supplier = editor.getModelDiagram("SUPPLIER", "Transformation Diagram");
-		supplier.select();
-		sourceAttrs.addAll(supplier.getModelAttributes());
-		ModelDiagram parts = editor.getModelDiagram("PARTS", "Transformation Diagram");
-		parts.select();
-		sourceAttrs.addAll(parts.getModelAttributes());		
-		ModelDiagram sp = editor.getModelDiagram("SUPPLIER_PARTS", "Transformation Diagram");
-		sp.select();
-		sourceAttrs.addAll(sp.getModelAttributes());
+		sourceAttrs.addAll(editor.listTableAttributesNames("SUPPLIER"));
+		sourceAttrs.addAll(editor.listTableAttributesNames("PARTS"));		
+		sourceAttrs.addAll(editor.listTableAttributesNames("SUPPLIER_PARTS"));
 		List<String> viewAttrs = new ArrayList<>();
-		ModelDiagram view = editor.getModelDiagram("SupplierParts", "Transformation Diagram");
-		view.select();
-		viewAttrs.addAll(view.getModelAttributes());		
+		viewAttrs.addAll(editor.listTableAttributesNames("SupplierParts"));		
 		for(String sourceAtt : sourceAttrs){
 			assertTrue(viewAttrs.contains(sourceAtt));
-		}	
+		}		
 		new ProblemsViewEx().checkErrors();
 		
 		// 2. Create a WHERE clause using Criteria Builder
 		editor.show();
-		CriteriaBuilderDialog criteriaBuilder = editor.openCriteriaBuilder();
+		CriteriaBuilderDialog criteriaBuilder = transEditor.openCriteriaBuilder();
 		criteriaBuilder.selectAttribute("PartsSupplier.PARTS", "PART_ID",CriteriaBuilderDialog.CriteriaSide.LEFT)
 				.selectAttribute("PartsSupplier.SUPPLIER_PARTS", "PART_ID",CriteriaBuilderDialog.CriteriaSide.RIGHT)
 				.selectOperator(CriteriaBuilderDialog.OperatorType.EQUALS)
@@ -157,21 +145,20 @@ public class TransformationToolsTest {
 				.selectConstantValue("10", 0)
 				.selectOperator(CriteriaBuilderDialog.OperatorType.LT)
 				.apply();
-		
-		String expectedSql = "(PartsSupplier.PARTS.PART_ID = PartsSupplier.SUPPLIER_PARTS.PART_ID) AND ((PartsSupplier.SUPPLIER.SUPPLIER_ID = PartsSupplier.SUPPLIER_PARTS.SUPPLIER_ID) "
-				+ "AND (((CONVERT(PartsSupplier.PARTS.PART_WEIGHT, bigdecimal) / 1000) * PartsSupplier.SUPPLIER_PARTS.QUANTITY) < 10))";
+		// TODO to resource
+//		String expectedSql = "(PartsSupplier.PARTS.PART_ID = PartsSupplier.SUPPLIER_PARTS.PART_ID) AND ((PartsSupplier.SUPPLIER.SUPPLIER_ID = PartsSupplier.SUPPLIER_PARTS.SUPPLIER_ID) "
+//				+ "AND (((CONVERT(PartsSupplier.PARTS.PART_WEIGHT, bigdecimal) / 1000) * PartsSupplier.SUPPLIER_PARTS.QUANTITY) < 10))";
+		String expectedSql = new ResourceFileHelper().getSql("TransformationToolsTest/expectedWhere").replaceAll("\r|\n", "");
 		assertEquals(expectedSql, criteriaBuilder.getCurrentSqlContent());	
 		criteriaBuilder.finish();
 		
-		assertTrue(editor.getTransformation().contains("WHERE"));
-		assertTrue(editor.getTransformation().contains(expectedSql));
-		editor.saveAndValidateSql();
+		assertTrue(transEditor.getTransformation().contains("WHERE"));
+		assertTrue(transEditor.getTransformation().contains(expectedSql));
+		transEditor.saveAndValidateSql();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new WorkbenchShell();
-		modelExplorer.getProject(PROJECT_NAME);
+		editor.save();
 		AbstractWait.sleep(TimePeriod.SHORT);
-		new ShellMenu("File","Save All").select();
-		AbstractWait.sleep(TimePeriod.getCustom(3));
 		new ProblemsViewEx().checkErrors();		
 		
 		// 3. Create a new view table and use the Reconciler to map columns
@@ -181,43 +168,43 @@ public class TransformationToolsTest {
 		new PushButton("OK").click();	
 		
 		modelExplorer.openModelEditor(PROJECT_NAME,"PartsView.xmi","AltParts");
-		editor = new ModelEditor("PartsView.xmi");
+		modelEditor = new ModelEditor("PartsView.xmi");
 		new WorkbenchShell();
 		AbstractWait.sleep(TimePeriod.SHORT);
-		editor.showTransformation();
+		modelEditor.showTransformation();
 		new WorkbenchShell();
 		AbstractWait.sleep(TimePeriod.SHORT);
-		editor.typeTransformation("SELECT * FROM PartsSupplier.PARTS");
+		modelEditor.typeTransformation("SELECT * FROM PartsSupplier.PARTS");
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new ShellMenu("File","Save All").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		
 		sourceAttrs = new ArrayList<>();
-		ModelDiagram source = editor.getModelDiagram("PARTS", "Transformation Diagram");
+		ModelDiagram source = modelEditor.getModelDiagram("PARTS", "Transformation Diagram");
 		source.select();
 		sourceAttrs.addAll(source.getModelAttributes());	
 		viewAttrs = new ArrayList<>();
-		view = editor.getModelDiagram("AltParts", "Transformation Diagram");
+		ModelDiagram view = modelEditor.getModelDiagram("AltParts", "Transformation Diagram");
 		view.select();
 		viewAttrs.addAll(view.getModelAttributes());		
 		for(String sourceAtt : sourceAttrs){
 			assertTrue(viewAttrs.contains(sourceAtt));
 		}
 		 
-		editor.clickButtonOnToolbar("Expand SELECT * ");
-		editor.getTransformation().contains("PartsSupplier.PARTS.PART_ID, PartsSupplier.PARTS.PART_NAME, PartsSupplier.PARTS.PART_COLOR, PartsSupplier.PARTS.PART_WEIGHT");
+		modelEditor.clickButtonOnToolbar("Expand SELECT * ");
+		modelEditor.getTransformation().contains("PartsSupplier.PARTS.PART_ID, PartsSupplier.PARTS.PART_NAME, PartsSupplier.PARTS.PART_COLOR, PartsSupplier.PARTS.PART_WEIGHT");
 		
-		editor.deleteColumnFromTable("AltParts", "PART_NAME", false);
-		editor.renameColumn("AltParts", "PART_COLOR", "COLOR_NAME");
-		editor.setDataTypeToColumn("AltParts", "COLOR_NAME", "string", 285);
-		editor.setDataTypeToColumn("AltParts", "PART_WEIGHT", "bigdecimal", null);
-		editor.renameColumn("AltParts", "PART_ID", "ID");
+		modelEditor.deleteColumnFromTable("AltParts", "PART_NAME", false);
+		modelEditor.renameColumn("AltParts", "PART_COLOR", "COLOR_NAME");
+		modelEditor.setDataTypeToColumn("AltParts", "COLOR_NAME", "string", 285);
+		modelEditor.setDataTypeToColumn("AltParts", "PART_WEIGHT", "bigdecimal", null);
+		modelEditor.renameColumn("AltParts", "PART_ID", "ID");
 		
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new ShellMenu("File","Save All").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		
-		ReconcilerDialog reconciler = editor.openReconciler();
+		ReconcilerDialog reconciler = modelEditor.openReconciler();
 		reconciler.bindAttributes("ID : string","PART_ID");
 		
 		ExpressionBuilderDialog expressionBuilder2 = reconciler.openExpressionBuilder("COLOR_NAME : string");
@@ -240,12 +227,12 @@ public class TransformationToolsTest {
 		reconciler.finish();
 	
 		AbstractWait.sleep(TimePeriod.SHORT);
-		assertTrue(editor.getTransformation().contains("PartsSupplier.PARTS.PART_ID AS ID, CONCAT(PartsSupplier.PARTS.PART_COLOR, "
+		assertTrue(modelEditor.getTransformation().contains("PartsSupplier.PARTS.PART_ID AS ID, CONCAT(PartsSupplier.PARTS.PART_COLOR, "
 				+ "PartsSupplier.PARTS.PART_NAME) AS COLOR_NAME, convert(PartsSupplier.PARTS.PART_WEIGHT, bigdecimal) AS PART_WEIGHT"));
 	
-		editor.setCoursorPositionInTransformation(47);	
+		modelEditor.setCoursorPositionInTransformation(47);	
 		
-		ExpressionBuilderDialog expressionBuilder3 = editor.openExpressionBuilder();
+		ExpressionBuilderDialog expressionBuilder3 = modelEditor.openExpressionBuilder();
 		expressionBuilder3.selectTreeViewItem("CONCAT(PartsSupplier.PARTS.PART_COLOR, PartsSupplier.PARTS.PART_NAME)","PartsSupplier.PARTS.PART_COLOR")
 				.selectRadioButton(ExpressionBuilderDialog.RadioButtonType.FUNCTION)
 				.selectFunctionCategory("String")
@@ -260,7 +247,7 @@ public class TransformationToolsTest {
 		expressionBuilder3.finish();
 		
 		new WorkbenchShell();
-		assertTrue(editor.getTransformation().contains("CONCAT(CONCAT(PartsSupplier.PARTS.PART_COLOR, ' '), PartsSupplier.PARTS.PART_NAME)"));
+		assertTrue(modelEditor.getTransformation().contains("CONCAT(CONCAT(PartsSupplier.PARTS.PART_COLOR, ' '), PartsSupplier.PARTS.PART_NAME)"));
 		
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new ShellMenu("File","Save All").select();

@@ -26,6 +26,7 @@ import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 
+@Deprecated // TODO refactor to ProcedureWizard
 public class Procedure extends ModelObject {
 
 	private String project;

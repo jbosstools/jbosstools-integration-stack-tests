@@ -29,7 +29,6 @@ import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
-import org.jboss.tools.teiid.reddeer.manager.ImportMetadataManager;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
@@ -105,13 +104,17 @@ public class GeometryTypeTest {
 	@Test
 	public void importViaTeiid(){		
 		new ServersViewExt().createDatasource(teiidServer.getName(), ConnectionProfileConstants.ORACLE_11G_BQT2);
-		Properties iProps = new Properties();
-		iProps.setProperty(TeiidConnectionImportWizard.DATA_SOURCE_NAME, ConnectionProfileConstants.ORACLE_11G_BQT2);
+
 		Properties teiidImporterProperties = new Properties();
 		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "BUILDINGS");
 		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_SCHEMA_PATTERN, "BQT2");
+		TeiidConnectionImportWizard importWizard = new TeiidConnectionImportWizard();
+		importWizard.setModelName(SOURCE_TEIID_MODEL_NAME);
+		importWizard.setProjectName(PROJECT_NAME);
+		importWizard.setTeiidImporterProperties(teiidImporterProperties);
+		importWizard.setDataSourceName(ConnectionProfileConstants.ORACLE_11G_BQT2);
+		importWizard.execute();
 		
-		new ImportMetadataManager().importFromTeiidConnection(PROJECT_NAME, SOURCE_TEIID_MODEL_NAME, iProps,null,teiidImporterProperties);
 		//TEIIDDES-2799
 		setGeometryDatatype(PROJECT_NAME,SOURCE_TEIID_MODEL_NAME+".xmi","BUILDINGS","POSITION : object(1)");
 		setGeometryDatatype(PROJECT_NAME,SOURCE_TEIID_MODEL_NAME+".xmi","BUILDINGS","FOOTPRINT : object(1)");
