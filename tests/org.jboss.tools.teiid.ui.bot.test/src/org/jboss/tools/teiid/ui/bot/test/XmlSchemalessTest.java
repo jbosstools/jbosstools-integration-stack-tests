@@ -28,8 +28,8 @@ import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ProblemsViewEx;
-import org.jboss.tools.teiid.reddeer.wizard.MetadataModelWizard;
-import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
+import org.jboss.tools.teiid.reddeer.wizard.newWizard.MetadataModelWizard;
+import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -66,12 +66,11 @@ public class XmlSchemalessTest {
 	@Test
 	public void test() throws SQLException {
 		// 1. Create an XML document model
-		MetadataModelWizard modelWizard = new MetadataModelWizard();
-		modelWizard.open();
-		modelWizard.setModelName(VIEW_MODEL.substring(0,8))
+		MetadataModelWizard.openWizard()
+				.setModelName(VIEW_MODEL.substring(0,8))
 				.selectModelClass(ModelClass.XML)
-		        .selectModelType(ModelType.VIEW);
-		modelWizard.finish();	
+		        .selectModelType(ModelType.VIEW)
+				.finish();	
 		
 		String modelPath = PROJECT_NAME + "/" + VIEW_MODEL;
 		modelExplorer.openModelEditor(modelPath.split("/"));

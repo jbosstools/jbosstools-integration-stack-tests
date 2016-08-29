@@ -2,16 +2,12 @@ package org.jboss.tools.teiid.reddeer.dialog;
 
 import java.util.Arrays;
 
-import org.eclipse.swt.widgets.Button;
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.matcher.WithLabelMatcher;
-import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
@@ -156,14 +152,7 @@ public class CriteriaBuilderDialog extends AbstractDialog {
 	 */
 	public ExpressionBuilderDialog openFunctionBuilder(int index) {
 		log.info("Opening function's expresion builder (index=" + index + ")");
-		new PushButton(index,new BaseMatcher<Button>(){
-			@Override
-			public boolean matches(Object o) {
-				return (o instanceof Button) && ((Button) o).getText().equals("Edit...");
-			}
-			@Override
-			public void describeTo(Description arg0) {}	
-		}).click();
+		new PushButton("Edit...").click();
 		return new ExpressionBuilderDialog();	
 	}
 	

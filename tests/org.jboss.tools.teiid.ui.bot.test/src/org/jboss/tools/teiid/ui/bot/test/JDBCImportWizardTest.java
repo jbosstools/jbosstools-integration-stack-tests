@@ -25,8 +25,8 @@ import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
-import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.ImportJDBCDatabaseWizard;
+import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -199,7 +199,8 @@ public class JDBCImportWizardTest {
 				.finish();
 		
 		VDBEditor.getInstance(vdb_name + ".vdb").setModelTranslator(model + ".xmi", model, "hana");
-
+		VDBEditor.getInstance(vdb_name + ".vdb").save();
+		
 		new ModelExplorer().deployVdb(MODEL_PROJECT, vdb_name);
 
 		TeiidJDBCHelper jdbcHelper = new TeiidJDBCHelper(teiidServer, vdb_name);
@@ -213,19 +214,18 @@ public class JDBCImportWizardTest {
 	
 
 	private void importModel(String modelName, String connectionProfile, String itemList, boolean importProcedures) {
-		ImportJDBCDatabaseWizard jdbcWizard = new ImportJDBCDatabaseWizard();
-		jdbcWizard.open();
-		jdbcWizard.setConnectionProfile(connectionProfile)
-		          .next();
-		jdbcWizard.setTableTypes(false, true, false)
-				  .procedures(importProcedures)
-		      	  .next();
 		String[] splitList = itemList.split(",");
-		jdbcWizard.setTables(splitList)
-		          .next();
-		jdbcWizard.setFolder(MODEL_PROJECT)
-		   	  	  .setModelName(modelName)
-				  .finish();
+		ImportJDBCDatabaseWizard.openWizard()
+				.setConnectionProfile(connectionProfile)
+				.nextPage()
+				.setTableTypes(false, true, false)
+				.procedures(importProcedures)
+				.nextPage()
+				.setTables(splitList)
+				.nextPage()
+				.setFolder(MODEL_PROJECT)
+				.setModelName(modelName)
+				.finish();
 	}
 
 	private void checkImportedTablesInModel(String model, String tableA, String tableB) {

@@ -6,20 +6,16 @@ import static org.junit.Assert.fail;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Properties;
 
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.tools.teiid.reddeer.ModelBuilder;
@@ -28,15 +24,16 @@ import org.jboss.tools.teiid.reddeer.ModelType;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
-import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
+import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
+import org.jboss.tools.teiid.reddeer.editor.TableEditor;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
-import org.jboss.tools.teiid.reddeer.wizard.MetadataModelWizard;
-import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.ImportJDBCDatabaseWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.TeiidConnectionImportWizard;
+import org.jboss.tools.teiid.reddeer.wizard.newWizard.MetadataModelWizard;
+import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -68,17 +65,16 @@ public class GeometryTypeTest {
 	
 	@Test
 	public void importFromJDBC(){
-		ImportJDBCDatabaseWizard jdbcWizard = new ImportJDBCDatabaseWizard();
-		jdbcWizard.open();
-		jdbcWizard.setConnectionProfile(ConnectionProfileConstants.ORACLE_11G_BQT2)
-		          .next();
-		jdbcWizard.setTableTypes(false, true, false)
-		      	  .next();
-		jdbcWizard.setTables("BQT2/TABLE/BUILDINGS")
-		          .next();
-		jdbcWizard.setFolder(PROJECT_NAME)
-		   	  	  .setModelName(SOURCE_MODEL_NAME)
-				  .finish();
+		ImportJDBCDatabaseWizard.openWizard()
+				.setConnectionProfile(ConnectionProfileConstants.ORACLE_11G_BQT2)
+				.nextPage()
+				.setTableTypes(false, true, false)
+				.nextPage()
+				.setTables("BQT2/TABLE/BUILDINGS")
+				.nextPage()
+				.setFolder(PROJECT_NAME)
+				.setModelName(SOURCE_MODEL_NAME)
+				.finish();
 		//TEIIDDES-2799
 		setGeometryDatatype(PROJECT_NAME,SOURCE_MODEL_NAME+".xmi","BUILDINGS","POSITION : object(1)");
 		setGeometryDatatype(PROJECT_NAME,SOURCE_MODEL_NAME+".xmi","BUILDINGS","FOOTPRINT : object(1)");
@@ -105,15 +101,17 @@ public class GeometryTypeTest {
 	public void importViaTeiid(){		
 		new ServersViewExt().createDatasource(teiidServer.getName(), ConnectionProfileConstants.ORACLE_11G_BQT2);
 
-		Properties teiidImporterProperties = new Properties();
-		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "BUILDINGS");
-		teiidImporterProperties.setProperty(TeiidConnectionImportWizard.IMPORT_PROPERTY_SCHEMA_PATTERN, "BQT2");
-		TeiidConnectionImportWizard importWizard = new TeiidConnectionImportWizard();
-		importWizard.setModelName(SOURCE_TEIID_MODEL_NAME);
-		importWizard.setProjectName(PROJECT_NAME);
-		importWizard.setTeiidImporterProperties(teiidImporterProperties);
-		importWizard.setDataSourceName(ConnectionProfileConstants.ORACLE_11G_BQT2);
-		importWizard.execute();
+		TeiidConnectionImportWizard.openWizard()
+				.selectDataSource(ConnectionProfileConstants.ORACLE_11G_BQT2)
+				.nextPage()
+				.setImportPropertie(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "BUILDINGS")
+				.setImportPropertie(TeiidConnectionImportWizard.IMPORT_PROPERTY_SCHEMA_PATTERN, "BQT2")
+				.nextPage()
+				.setModelName(SOURCE_TEIID_MODEL_NAME)
+				.setProject(PROJECT_NAME)
+				.nextPageWithWait()
+				.nextPageWithWait()
+				.finish();
 		
 		//TEIIDDES-2799
 		setGeometryDatatype(PROJECT_NAME,SOURCE_TEIID_MODEL_NAME+".xmi","BUILDINGS","POSITION : object(1)");
@@ -140,25 +138,22 @@ public class GeometryTypeTest {
 	}
 	
 	private void createView(String sourceModel,String viewModel){
-		MetadataModelWizard wizard = new MetadataModelWizard();
-		wizard.open();
-		wizard.setLocation(PROJECT_NAME).setModelName(viewModel)
-		.selectModelClass(ModelClass.RELATIONAL).selectModelType(ModelType.VIEW)
-		.selectModelBuilder(ModelBuilder.TRANSFORM_EXISTING)
-		.next();
-		wizard.setExistingModel(PROJECT_NAME,sourceModel+".xmi")
-		.finish();
-		new WaitWhile(new IsInProgress(), TimePeriod.SHORT); 
-		new ShellMenu("File","Save All").select();
+		MetadataModelWizard.openWizard()
+				.setLocation(PROJECT_NAME).setModelName(viewModel)
+				.selectModelClass(ModelClass.RELATIONAL).selectModelType(ModelType.VIEW)
+				.selectModelBuilder(ModelBuilder.TRANSFORM_EXISTING)
+				.nextPage()
+				.setExistingModel(PROJECT_NAME,sourceModel+".xmi")
+				.finish();
+		new WaitWhile(new IsInProgress(), TimePeriod.SHORT);
+		new RelationalModelEditor(viewModel+".xmi").save();
 	}
 	
 	private boolean testSetDatatype(String model,String exampleDatatype,String exampleNativeType){
-		ModelEditor editor = new ModelEditor(model+".xmi");
-		editor.showTab("Table Editor");
-		new DefaultTabItem("Columns").activate();
-		List<TableItem> items = new DefaultTable().getItems();
-		return ( exampleDatatype.equals(items.get(2).getText(29)) && exampleDatatype.equals(items.get(3).getText(29))) && //check 
-				exampleNativeType.equals(items.get(2).getText(3)) && exampleNativeType.equals(items.get(3).getText(3));  //check native type
+		TableEditor table = new RelationalModelEditor(model+".xmi").openTableEditor(RelationalModelEditor.PACKAGE_DIAGRAM);
+		table.openTab("Columns");
+		return ( exampleDatatype.equals(table.getCellText(2, 29)) && exampleDatatype.equals(table.getCellText(3, 29))) && //check 
+				exampleNativeType.equals(table.getCellText(2, 3)) && exampleNativeType.equals(table.getCellText(3, 3));  //check native type
 	}
 	
 	private void setGeometryDatatype(String... tables){ 

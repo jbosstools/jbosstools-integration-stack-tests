@@ -28,14 +28,19 @@ public class JdgImportTest {
 	@Test
 	public void jdgImport() {
 		String modelName = "JdgModel";
+	
+		TeiidConnectionImportWizard.openWizard()
+				.selectDataSource("infinispan-remote-cache-ds")
+				.nextPage()
+				.setTranslator("infinispan-cache-dsl")
+				.nextPage()
+				.setModelName(modelName)
+				.setProject(PROJECT_NAME)
+				.nextPageWithWait()
+				.nextPageWithWait()
+				.finish();
 		
-		TeiidConnectionImportWizard importWizard = new TeiidConnectionImportWizard();
-		importWizard.setModelName(modelName);
-		importWizard.setProjectName(PROJECT_NAME);
-		importWizard.setDataSourceName("infinispan-remote-cache-ds");
-		importWizard.setTranslator("infinispan-cache-dsl");
-		importWizard.execute();
-
+		new ModelExplorer().getProject(PROJECT_NAME).open();
 		assertTrue(new ModelExplorer().getProject(PROJECT_NAME).containsItem(modelName + ".xmi", "SmallA"));
 		assertTrue(new ModelExplorer().getProject(PROJECT_NAME).containsItem(modelName + ".xmi", "SmallA", "SmallAObject : object"));
 		assertTrue(new ModelExplorer().getProject(PROJECT_NAME).containsItem(modelName + ".xmi", "SmallA", "intKey : int"));

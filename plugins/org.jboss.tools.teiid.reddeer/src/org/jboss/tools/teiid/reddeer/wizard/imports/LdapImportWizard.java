@@ -19,9 +19,10 @@ import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.condition.TreeItemHasChild;
-import org.jboss.tools.teiid.reddeer.wizard.SelectTargetFolder;
 
 public class LdapImportWizard extends ImportWizardDialog {
+	
+	private static LdapImportWizard INSTANCE;
 	
 	public static final String DIALOG_TITLE = "Create Relational Model from LDAP Service";
 	
@@ -32,9 +33,22 @@ public class LdapImportWizard extends ImportWizardDialog {
 	
 	private String principalDnSuffix;
 	
-	public LdapImportWizard() {
+	private LdapImportWizard() {
 		super("Teiid Designer", "LDAP Service >> Source Model");
 		log.info("Import ldap wizard is opened");
+	}
+	
+	public static LdapImportWizard getInstance(){
+		if(INSTANCE==null){
+			INSTANCE=new LdapImportWizard();
+		}
+		return INSTANCE;
+	}
+	
+	public static LdapImportWizard openWizard(){
+		LdapImportWizard wizard = getInstance();
+		wizard.open();
+		return wizard;
 	}
 	
 	public LdapImportWizard activate() {
@@ -64,7 +78,10 @@ public class LdapImportWizard extends ImportWizardDialog {
 		log.info("Set project folder to: '" + project + "'");
 		activate();
 		new PushButton(new DefaultGroup(SOURCE_MODEL_DEFINITION), "...").click();
-		new SelectTargetFolder().select(project);
+		new DefaultShell("Select a Folder");
+		new DefaultTreeItem(project).select();
+		new PushButton("OK").click();
+		activate();
 		return this;
 	}
 	
@@ -111,12 +128,6 @@ public class LdapImportWizard extends ImportWizardDialog {
 		}
 		new PushButton("Validate").click();
 		return this;
-	}
-	
-	@Override
-	public void finish(){
-		super.finish();
-		new WaitWhile(new IsInProgress(), TimePeriod.SHORT);
 	}
 	
 	private void selectColumnEntry(String tableName, String entryName, String entryAlias) {
@@ -171,6 +182,26 @@ public class LdapImportWizard extends ImportWizardDialog {
 		}
 
 	}
+	
+	@Override
+	public void finish(){
+		super.finish();
+		new WaitWhile(new IsInProgress(), TimePeriod.SHORT, false);
+	}
 
+	public LdapImportWizard nextPage(){
+		log.info("Go to next wizard page");
+		super.next();
+		return this;
+	}
+	
+	/**
+	 * use nextPage()
+	 */
+	@Deprecated
+	@Override
+	public void next(){
+		super.next();
+	}
 
 }

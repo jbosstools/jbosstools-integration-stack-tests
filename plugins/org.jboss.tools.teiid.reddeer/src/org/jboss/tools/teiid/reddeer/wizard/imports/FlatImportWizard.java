@@ -1,14 +1,13 @@
 package org.jboss.tools.teiid.reddeer.wizard.imports;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
@@ -21,15 +20,35 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
  */
 public class FlatImportWizard extends TeiidImportWizard {
 
-	public static final String LABEL_FORMAT_OPRIONS = "Format Options";
-	public static final String LOCAL_FILE_MODE = "Flat file on local file system";
-	public static final String REMOTE_URL_MODE = "Flat file via remote URL";
+	private static FlatImportWizard INSTANCE;
 
-	public FlatImportWizard() {
+	public static final String DIALOG_TITLE = "Import From Flat File Source";
+	
+	public static final String LABEL_FORMAT_OPRIONS = "Format Options";
+
+	private FlatImportWizard() {
 		super("File Source (Flat) >> Source and View Model");
 		log.info("Flat file import Wizard is opened");
 	}
 
+	public static FlatImportWizard getInstance(){
+		if(INSTANCE==null){
+			INSTANCE=new FlatImportWizard();
+		}
+		return INSTANCE;
+	}
+	
+	public static FlatImportWizard openWizard(){
+		FlatImportWizard wizard = getInstance();
+		wizard.open();
+		return wizard;
+	}
+	
+	public FlatImportWizard activate() {
+		new DefaultShell(DIALOG_TITLE);
+		return this;
+	}
+	
 	static class TexttableFunctionOptions {
 		String INCLUDE_HEADER = "Include HEADER";
 		String INCLUDE_SKIP = "Include SKIP";
@@ -74,39 +93,38 @@ public class FlatImportWizard extends TeiidImportWizard {
 		}
 	}
 
-	public static class FlatFileImportMode {
-		public static final String FLAT_FILE_ON_LOCAL_FILE_SYSTEM = "Flat file on local file system";
-		public static final String FLAT_FILE_VIA_REMOTE_URL = "Flat file via remote URL";
-	}
-
 	public FlatImportWizard selectImportMode(String importMode) {
 		log.info("Select import mode to '" + importMode + "'");
+		activate();
 		new RadioButton(importMode).click();
 		return this;
 	}
 
 	public FlatImportWizard selectLocalFileImportMode() {
-		return selectImportMode(LOCAL_FILE_MODE);
+		return selectImportMode("Flat file on local file system");
 	}
 
 	public FlatImportWizard selectRemoteUrlImportMode() {
-		return selectImportMode(REMOTE_URL_MODE);
+		return selectImportMode("Flat file via remote URL");
 	}
 
 	public FlatImportWizard selectProfile(String profile) {
 		log.info("Select profile to '" + profile + "'");
+		activate();
 		new DefaultCombo(0).setSelection(profile);
 		return this;
 	}
 
 	public FlatImportWizard setSourceModel(String sourceModelName) {
 		log.info("Set source model to '" + sourceModelName + "'");
-		new SWTWorkbenchBot().textWithLabel("Name:").setText(sourceModelName);
+		activate();
+		new LabeledText("Name:").setText(sourceModelName);
 		return this;
 	}
 
 	public FlatImportWizard setProject(String project) {
 		log.info("Set project to '" + project + "'");
+		activate();
 		new PushButton("...").click();
 		new DefaultShell("Select a Folder");
 		new DefaultTreeItem(project).select();
@@ -116,6 +134,7 @@ public class FlatImportWizard extends TeiidImportWizard {
 
 	public FlatImportWizard checkHeaderNames() {
 		log.info("Check 'Column names in header'");
+		activate();
 		new CheckBox("Column names in header").toggle(true);
 		return this;
 	}
@@ -123,24 +142,28 @@ public class FlatImportWizard extends TeiidImportWizard {
 	public FlatImportWizard setHeaderLine(String num) {
 		checkHeaderNames();
 		log.info("Set header line to '" + num + "'");
+		activate();
 		new LabeledText("Header line #").setText(num);
 		return this;
 	}
 
 	public FlatImportWizard setDataLine(String num) {
 		log.info("Set data line to '" + num + "'");
+		activate();
 		new LabeledText("Data line #").setText(num);
 		return this;
 	}
 	
 	public FlatImportWizard setJndiName(String jndiName) {
 		log.info("Setting JNDI name");
+		activate();
 		new DefaultText(new DefaultGroup("JBoss Data Source Information"),0).setText(jndiName);
 		return this;
 	}
 
 	public FlatImportWizard selectDelimiterCharacter(DelimiterCharacter delimiterCharacter) {
 		log.info("Set dilimeter character to '" + delimiterCharacter + "'");
+		activate();
 		new PushButton("Edit Delimiter Character").click();
 		new DefaultShell("Select Delimiter Character");
 		new RadioButton(delimiterCharacter.getLabel()).click();
@@ -152,33 +175,27 @@ public class FlatImportWizard extends TeiidImportWizard {
 	}
 
 	public FlatImportWizard selectFile(String fileName) {
-		setCheckedFile(fileName, true);
+		new DefaultTable(new DefaultGroup("Available Data Files"),0).getItem(fileName+"     <<<<").setChecked(true);
 		return this;
-	}
-
-	protected void setCheckedFile(String fileName, boolean checked) {
-		SWTBotTable table = new SWTWorkbenchBot().tableInGroup("Available Data Files");
-		SWTBotTableItem item = table.getTableItem(fileName + "     <<<<");
-		if (checked) {
-			item.check();
-		} else {
-			item.uncheck();
-		}
 	}
 
 	public FlatImportWizard setViewModel(String viewModelName) {
 		log.info("Set view model name to '" + viewModelName + "'");
+		activate();
 		new LabeledText("Name:").setText(viewModelName);
 		return this;
 	}
 
 	public FlatImportWizard setViewTable(String viewTableName) {
 		log.info("Set view table name to '" + viewTableName + "'");
+		activate();
 		new LabeledText("New view table name:").setText(viewTableName);
 		return this;
 	}
-	@Deprecated
-	public void execute(){
-		//delete after refactor all importers
+	
+	public FlatImportWizard nextPage(){
+		log.info("Go to next wizard page");
+		new NextButton().click();
+		return this;
 	}
 }

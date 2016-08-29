@@ -1,4 +1,4 @@
-package org.jboss.tools.teiid.reddeer.wizard;
+package org.jboss.tools.teiid.reddeer.wizard.newWizard;
 
 import java.util.Arrays;
 
@@ -22,12 +22,27 @@ import org.jboss.tools.teiid.reddeer.ModelType;
  */
 public class MetadataModelWizard extends NewWizardDialog {
 
+	private static MetadataModelWizard INSTANCE;
+	
 	public static final String DIALOG_TITLE = "New Model Wizard";
 
-	public MetadataModelWizard() {
+	private MetadataModelWizard() {
 		super("Teiid Designer", "Teiid Metadata Model");
+		log.info("Metadata model wizard is opened");
 	}
-
+	
+	public static MetadataModelWizard getInstance(){
+		if(INSTANCE==null){
+			INSTANCE=new MetadataModelWizard();
+		}
+		return INSTANCE;
+	}
+	
+	public static MetadataModelWizard openWizard(){
+		MetadataModelWizard wizard = getInstance();
+		wizard.open();
+		return wizard;
+	}
 	public MetadataModelWizard activate() {
 		new DefaultShell(DIALOG_TITLE);
 		return this;
@@ -40,6 +55,7 @@ public class MetadataModelWizard extends NewWizardDialog {
 		new DefaultShell("Select a Folder");
 		new DefaultTreeItem(path).select();
 		new PushButton("OK").click();
+		activate();
 		return this;
 	}
 
@@ -78,6 +94,7 @@ public class MetadataModelWizard extends NewWizardDialog {
 		new DefaultShell("Select an XML Schema");
 		new DefaultTreeItem(path).select();
 		new PushButton("OK").click();
+		activate();
 		return this;
 	}
 
@@ -98,6 +115,7 @@ public class MetadataModelWizard extends NewWizardDialog {
 		new DefaultShell("Select a Model File");
 		new DefaultTreeItem(path).select();
 		new PushButton("OK").click();
+		activate();
 		return this;
 	}
 	
@@ -108,6 +126,7 @@ public class MetadataModelWizard extends NewWizardDialog {
 		new DefaultShell("WSDL File Selection");
 		new DefaultTreeItem(path).select();
 		new PushButton("OK").click();
+		activate();
 		return this;
 	}
 	
@@ -115,5 +134,20 @@ public class MetadataModelWizard extends NewWizardDialog {
 		activate();
 		new LabeledText("XML Model:").setText(name);
 		return this;
+	}
+	
+	public MetadataModelWizard nextPage(){
+		log.info("Go to next wizard page");
+		super.next();
+		return this;
+	}
+
+	/**
+	 * use nextPage()
+	 */
+	@Deprecated
+	@Override
+	public void next(){
+		super.next();
 	}
 }

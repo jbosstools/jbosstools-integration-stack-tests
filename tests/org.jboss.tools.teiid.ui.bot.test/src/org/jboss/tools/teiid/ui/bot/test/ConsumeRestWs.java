@@ -16,9 +16,9 @@ import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
-import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
 import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.RestProfileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.RestImportWizard;
+import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -78,41 +78,20 @@ public class ConsumeRestWs {
 
 		new ConnectionProfileHelper().createCpRest(XML_PROFILE_NAME, restCpXml);
 
-		RestImportWizard restWizardXML = new RestImportWizard();
-		restWizardXML.open();
-		restWizardXML.setProfileName(XML_PROFILE_NAME)
-		 			 .next();
-		restWizardXML.setProject(PROJECT_NAME)
-					 .setSourceModelName(SOURCE_MODEL_XML)
-					 .setViewModelName(VIEW_MODEL_XML)
-					 .setProcedureName(PROCEDURE_NAME)
-					 .next();
-		restWizardXML.setJndiName("restXMLSource")
-		 			 .next();
-		restWizardXML.setRootPath("schedule/day/broadcasts/broadcast")
-					 .setColumns("pid","start","end","programme/title")
-					 .finish();
-	/*	
-		restWizardXML = new RestImportWizard();
+		RestImportWizard.openWizard()
+				.setProfileName(XML_PROFILE_NAME)
+				.nextPage()
+				.setProject(PROJECT_NAME)
+				.setSourceModelName(SOURCE_MODEL_XML)
+				.setViewModelName(VIEW_MODEL_XML)
+				.setProcedureName(PROCEDURE_NAME)
+				.nextPage()
+				.setJndiName("restXMLSource")
+				.nextPage()
+				.setRootPath("schedule/day/broadcasts/broadcast")
+				.setColumns("pid","start","end","programme/title")
+				.finish();
 
-		restWizardXML.setProfileName(XML_PROFILE_NAME);
-		restWizardXML.setProjectName(PROJECT_NAME);
-		restWizardXML.setSourceModelName(SOURCE_MODEL_XML);
-		restWizardXML.setViewModelName(VIEW_MODEL_XML);
-		restWizardXML.setProcedureName(PROCEDURE_NAME);
-		
-		
-		restWizardXML.setRootPath("schedule/day/broadcasts/broadcast");
-
-		restWizardXML.addColumn("pid");
-		restWizardXML.addColumn("start");
-		restWizardXML.addColumn("end");
-		restWizardXML.addColumn("programme/title");
-
-		restWizardXML.setJndiName("restXMLSource");
-		
-		restWizardXML.execute();
-*/
 		VdbWizard.openVdbWizard()
 				.setLocation(PROJECT_NAME)
 				.setName(VDBXML)
@@ -137,20 +116,19 @@ public class ConsumeRestWs {
 
 		new ConnectionProfileHelper().createCpRest(JSON_PROFILE_NAME, restCpJson);
 
-		RestImportWizard restWizardXML = new RestImportWizard();
-		restWizardXML.open();
-		restWizardXML.setProfileName(JSON_PROFILE_NAME)
-		 			 .next();
-		restWizardXML.setProject(PROJECT_NAME)
-					 .setSourceModelName(SOURCE_MODEL_JSON)
-					 .setViewModelName(VIEW_MODEL_JSON)
-					 .setProcedureName(PROCEDURE_NAME)
-					 .next();
-		restWizardXML.setJndiName("restJsonSource")
-					 .next();
-		restWizardXML.setRootPath("response/schedule/day/broadcasts")
-					 .setColumns("pid","start","end","programme/title")
-					 .finish();
+		RestImportWizard.openWizard()
+				.setProfileName(JSON_PROFILE_NAME)
+				.nextPage()
+				.setProject(PROJECT_NAME)
+				.setSourceModelName(SOURCE_MODEL_JSON)
+				.setViewModelName(VIEW_MODEL_JSON)
+				.setProcedureName(PROCEDURE_NAME)
+				.nextPage()
+				.setJndiName("restJsonSource")
+				.nextPage()
+				.setRootPath("response/schedule/day/broadcasts")
+				.setColumns("pid","start","end","programme/title")
+				.finish();
 		
 		VdbWizard.openVdbWizard()
 				.setLocation(PROJECT_NAME)
@@ -179,21 +157,20 @@ public class ConsumeRestWs {
 
 		new ConnectionProfileHelper().createCpRest(XML_PROFILE_NAME_DIGEST, restCpXml);
 
-		RestImportWizard restWizardXML = new RestImportWizard();
-		restWizardXML.open();
-		restWizardXML.setProfileName(XML_PROFILE_NAME_DIGEST)
-		 			 .next();
-		restWizardXML.setProject(PROJECT_NAME)
-					 .setSourceModelName(SOURCE_MODEL_XML_DIGEST)
-					 .setViewModelName(VIEW_MODEL_XML_DIGEST)
-					 .setProcedureName(PROCEDURE_NAME)
-					 .next();
-		restWizardXML.setJndiName("restXMLDigestSource")
-					 .next();
-		restWizardXML.setRootPath("schedule/day/broadcasts/broadcast")
-					 .setColumns("pid","start","end","programme/title")
-					 .finish();
-		
+		RestImportWizard.openWizard()
+				.setProfileName(XML_PROFILE_NAME_DIGEST)
+				.nextPage()
+				.setProject(PROJECT_NAME)
+				.setSourceModelName(SOURCE_MODEL_XML_DIGEST)
+				.setViewModelName(VIEW_MODEL_XML_DIGEST)
+				.setProcedureName(PROCEDURE_NAME)
+				.nextPage()
+				.setJndiName("restXMLDigestSource")
+				.nextPage()
+				.setRootPath("schedule/day/broadcasts/broadcast")
+				.setColumns("pid","start","end","programme/title")
+				.finish();
+
 		VdbWizard.openVdbWizard()
 				.setLocation(PROJECT_NAME)
 				.setName(VDBXMLDIGEST)
@@ -221,20 +198,19 @@ public class ConsumeRestWs {
 
 		new ConnectionProfileHelper().createCpRest(JSON_PROFILE_NAME_DIGEST, restCpJson);
 
-		RestImportWizard restWizardXML = new RestImportWizard();
-		restWizardXML.open();
-		restWizardXML.setProfileName(JSON_PROFILE_NAME_DIGEST)
-		 			 .next();
-		restWizardXML.setProject(PROJECT_NAME)
-					 .setSourceModelName(SOURCE_MODEL_JSON_DIGEST)
-					 .setViewModelName(VIEW_MODEL_JSON_DIGEST)
-					 .setProcedureName(PROCEDURE_NAME)
-					 .next();
-		restWizardXML.setJndiName("restJsonDigestSource")
-					 .next();
-		restWizardXML.setRootPath("response/schedule/day/broadcasts")
-					 .setColumns("pid","start","end","programme/title")
-					 .finish();
+		RestImportWizard.openWizard()
+				.setProfileName(JSON_PROFILE_NAME_DIGEST)
+				.nextPage()
+				.setProject(PROJECT_NAME)
+				.setSourceModelName(SOURCE_MODEL_JSON_DIGEST)
+				.setViewModelName(VIEW_MODEL_JSON_DIGEST)
+				.setProcedureName(PROCEDURE_NAME)
+				.nextPage()
+				.setJndiName("restJsonDigestSource")
+				.nextPage()
+				.setRootPath("response/schedule/day/broadcasts")
+				.setColumns("pid","start","end","programme/title")
+				.finish();
 
 		VdbWizard.openVdbWizard()
 				.setLocation(PROJECT_NAME)

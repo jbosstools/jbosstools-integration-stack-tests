@@ -35,8 +35,7 @@ import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
-import org.jboss.tools.teiid.reddeer.wizard.ModelProjectPage;
-import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
+import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
 
 public class GuidesView extends WorkbenchView {
 
@@ -158,7 +157,7 @@ public class GuidesView extends WorkbenchView {
 	public void createProjectViaGuides(String actionSet,String projectName){
 		chooseAction(actionSet, "Define Teiid ");
 		new PushButton("New...").click();
-		new ModelProjectPage().setProjectName(projectName);
+		new LabeledText("Project name:").setText(projectName);
 		new WizardDialog().finish();
 		new DefaultShell("Define Model Project");
 		new PushButton("OK").click();
