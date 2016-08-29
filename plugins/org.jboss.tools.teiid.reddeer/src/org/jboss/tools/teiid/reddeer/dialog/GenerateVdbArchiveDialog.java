@@ -20,7 +20,7 @@ import org.jboss.tools.teiid.reddeer.condition.LabelWithTextIsAvailable;
 
 public class GenerateVdbArchiveDialog extends AbstractDialog {
 
-	private static final Logger log = Logger.getLogger(ProcedureViewDialog.class);
+	private static final Logger log = Logger.getLogger(GenerateVdbArchiveDialog.class);
 
 	public GenerateVdbArchiveDialog() {
 		super("Generate VDB Archive");

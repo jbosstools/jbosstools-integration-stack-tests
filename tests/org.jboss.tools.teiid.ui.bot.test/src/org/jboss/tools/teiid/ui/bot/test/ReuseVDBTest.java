@@ -19,9 +19,6 @@ import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.common.reddeer.JiraClient;
-import org.jboss.tools.teiid.reddeer.ModelBuilder;
-import org.jboss.tools.teiid.reddeer.ModelClass;
-import org.jboss.tools.teiid.reddeer.ModelType;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
@@ -95,9 +92,9 @@ public class ReuseVDBTest {
 		MetadataModelWizard.openWizard()
 				.setLocation(PROJECT_NAME_REUSE)
 				.setModelName(VIEW_REUSE_MODEL)
-				.selectModelClass(ModelClass.RELATIONAL)
-				.selectModelType(ModelType.VIEW)
-				.selectModelBuilder(ModelBuilder.TRANSFORM_EXISTING)
+				.selectModelClass(MetadataModelWizard.ModelClass.RELATIONAL)
+				.selectModelType(MetadataModelWizard.ModelType.VIEW)
+				.selectModelBuilder(MetadataModelWizard.ModelBuilder.TRANSFORM_EXISTING)
 				.nextPage();
 		try{
 			new PushButton("OK").click();

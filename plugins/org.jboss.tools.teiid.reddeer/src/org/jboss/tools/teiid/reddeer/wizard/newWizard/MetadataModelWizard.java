@@ -11,13 +11,34 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.tools.teiid.reddeer.ModelBuilder;
-import org.jboss.tools.teiid.reddeer.ModelClass;
-import org.jboss.tools.teiid.reddeer.ModelType;
 
 public class MetadataModelWizard extends NewWizardDialog {	
 	
 	public static final String DIALOG_TITLE = "New Model Wizard";
+	
+	public static class ModelType { 
+		public static final String SOURCE = "Source Model";
+		public static final String VIEW = "View Model";
+		public static final String DATATYPE = "Datatype Model";
+		public static final String EXTENSION = "Model Class Extension";
+		public static final String FUNCTION = "User Defined Function";
+	}
+	
+	public static class ModelClass {
+		public static final String RELATIONAL = "Relational";
+		public static final String XML = "XML (Deprecated)";
+		public static final String XSD = "XML Schema (XSD) (Deprecated)";
+		public static final String WEBSERVICE = "Web Service (Deprecated)";
+		public static final String MODEL_EXTENSION = "Model Extension (Deprecated)";
+		public static final String FUNCTION = "Function (Deprecated)";
+	}
+	
+	public static class ModelBuilder {
+		public static final String TRANSFORM_EXISTING = "Transform from an existing model";
+		public static final String COPY_EXISTING = "Copy from an existing model of the same model class";
+		public static final String BUILD_FROM_XML_SCHEMA = "Build XML documents from XML schema";
+		public static final String BUILD_FROM_WSDL_URL = "Build from existing WSDL file(s) or URL";
+	}
 
 	private MetadataModelWizard() {
 		super("Teiid Designer", "Teiid Metadata Model");
@@ -71,25 +92,34 @@ public class MetadataModelWizard extends NewWizardDialog {
 		new LabeledText("Model Name:").setText(modelName);
 		return this;
 	}
-
-	public MetadataModelWizard selectModelClass(ModelClass modelClass) {
+	
+	/**
+	 * @param modelClass MetadataModelWizard.ModelClass.*
+	 */
+	public MetadataModelWizard selectModelClass(String modelClass) {
 		activate();
-		log.info("Set model class to '" + modelClass.getText() + "'");
-		new LabeledCombo("Model Class:").setSelection(modelClass.getText());
+		log.info("Set model class to '" + modelClass + "'");
+		new LabeledCombo("Model Class:").setSelection(modelClass);
 		return this;
 	}
 
-	public MetadataModelWizard selectModelType(ModelType modelType) {
+	/**
+	 * @param modelType MetadataModelWizard.ModelType.*
+	 */
+	public MetadataModelWizard selectModelType(String modelType) {
 		activate();
-		log.info("Set model type to '" + modelType.getText() + "'");
-		new LabeledCombo("Model Type:").setSelection(modelType.getText());
+		log.info("Set model type to '" + modelType+ "'");
+		new LabeledCombo("Model Type:").setSelection(modelType);
 		return this;
 	}
 
-	public MetadataModelWizard selectModelBuilder(ModelBuilder modelBuilder) {
+	/**
+	 * @param modelBuilder MetadataModelWizard.ModelBuilder.*
+	 */
+	public MetadataModelWizard selectModelBuilder(String modelBuilder) {
 		activate();
-		log.info("Set model builder to '" + modelBuilder.getText() + "'");
-		new DefaultTable().select(modelBuilder.getText());
+		log.info("Set model builder to '" + modelBuilder + "'");
+		new DefaultTable().select(modelBuilder);
 		return this;
 	}
 

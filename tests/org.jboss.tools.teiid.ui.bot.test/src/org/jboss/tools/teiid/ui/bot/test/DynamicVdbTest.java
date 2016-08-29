@@ -49,8 +49,8 @@ import org.jboss.tools.teiid.reddeer.editor.TransformationEditor;
 import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
 import org.jboss.tools.teiid.reddeer.matcher.ModelEditorItemMatcher;
 import org.jboss.tools.teiid.reddeer.matcher.TableItemMatcher;
-import org.jboss.tools.teiid.reddeer.modeling.ModelColumn;
-import org.jboss.tools.teiid.reddeer.modeling.ModelTable;
+import org.jboss.tools.teiid.reddeer.model.ModelColumn;
+import org.jboss.tools.teiid.reddeer.model.ModelTable;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
@@ -183,8 +183,8 @@ public class DynamicVdbTest {
 
 		// create static vdb
 		createVdb(PROJECT_NAME, staticVdbName, PROCEDURE_MODEL + ".xmi");
-		new ModelExplorer().getModelProject(PROJECT_NAME).open(staticVdbName + ".vdb");
-		VDBEditor vdbEditor = VDBEditor.getInstance(staticVdbName + ".vdb");
+		new ModelExplorer().openModelEditor(PROJECT_NAME, staticVdbName + ".vdb");
+		VDBEditor vdbEditor = VDBEditor.getInstance(staticVdbName);
 		vdbEditor.setGenerateRestWar(true);
 		vdbEditor.save();
 
@@ -223,7 +223,7 @@ public class DynamicVdbTest {
 
 		// create static vdb
 		createVdb(PROJECT_NAME, staticVdbName, PROCEDURE_MODEL + ".xmi");
-		new ModelExplorer().getModelProject(PROJECT_NAME).open(staticVdbName + ".vdb");
+		new ModelExplorer().openModelEditor(PROJECT_NAME, staticVdbName + ".vdb");
 		VDBEditor vdbEditor = VDBEditor.getInstance(staticVdbName + ".vdb");
 		vdbEditor.addUserDefinedProperty("customVdbProperty", "someValue");
 		vdbEditor.save();
@@ -246,8 +246,8 @@ public class DynamicVdbTest {
 
 		// create static vdb
 		createVdb(PROJECT_NAME, staticVdbName, viewModelNameXmi);
-		new ModelExplorer().getModelProject(PROJECT_NAME).open(staticVdbName + ".vdb");
-		VDBEditor vdbEditor = VDBEditor.getInstance(staticVdbName + ".vdb");
+		new ModelExplorer().openModelEditor(PROJECT_NAME, staticVdbName + ".vdb");
+		VDBEditor vdbEditor = VDBEditor.getInstance(staticVdbName);
 
 		// setup data roles
 		DataRolesEditor dre;
@@ -362,8 +362,8 @@ public class DynamicVdbTest {
 
 		// create static vdb
 		createVdb(PROJECT_NAME, staticVdbName, BQT_MODEL_NAME + ".xmi");
-		new ModelExplorer().getModelProject(PROJECT_NAME).open(staticVdbName + ".vdb");
-		VDBEditor vdbEditor = VDBEditor.getInstance(staticVdbName + ".vdb");
+		new ModelExplorer().openModelEditor(PROJECT_NAME, staticVdbName + ".vdb");
+		VDBEditor vdbEditor = VDBEditor.getInstance(staticVdbName);
 
 		// add translator overrides
 		vdbEditor.addTranslatorOverride(overrideName, "postgresql");
@@ -453,7 +453,7 @@ public class DynamicVdbTest {
 		importDynamicVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
 		createArchiveVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
 
-		new ModelExplorer().getModelProject(IMPORT_PROJECT_NAME).open(staticVdbName + ".vdb");
+		new ModelExplorer().openModelEditor(IMPORT_PROJECT_NAME, staticVdbName + ".vdb");
 		new DefaultCTabItem("Advanced").activate();
 		new DefaultCTabItem("User Defined Properties").activate();
 
@@ -524,8 +524,8 @@ public class DynamicVdbTest {
 		importDynamicVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
 		createArchiveVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
 		
-		new ModelExplorer().getModelProject(IMPORT_PROJECT_NAME).open(staticVdbName + ".vdb");
-		VDBEditor vdbEditor = VDBEditor.getInstance(staticVdbName + ".vdb");
+		new ModelExplorer().openModelEditor(IMPORT_PROJECT_NAME, staticVdbName + ".vdb");
+		VDBEditor vdbEditor = VDBEditor.getInstance(staticVdbName);
 
 		Properties translatorOverrideProperties = vdbEditor.getTranslatorOverrideProperties("postgresOverride");
 		collector.checkThat("Wrong value for custom property MyCustomProperty",
@@ -548,8 +548,8 @@ public class DynamicVdbTest {
 		importDynamicVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
 		createArchiveVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
 
-		new ModelExplorer().getModelProject(IMPORT_PROJECT_NAME).open(staticVdbName + ".vdb");
-		VDBEditor vdbEditor = VDBEditor.getInstance(staticVdbName + ".vdb");
+		new ModelExplorer().openModelEditor(IMPORT_PROJECT_NAME, staticVdbName + ".vdb");
+		VDBEditor vdbEditor = VDBEditor.getInstance(staticVdbName);
 
 		DataRolesEditor dre = vdbEditor.getDataRole("readers");
 		List<String> roles = dre.getRoles();
@@ -710,8 +710,8 @@ public class DynamicVdbTest {
 		importDynamicVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
 		createArchiveVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
 
-		new ModelExplorer().getModelProject(IMPORT_PROJECT_NAME).open(staticVdbName + ".vdb");
-		VDBEditor vdbEditor = VDBEditor.getInstance(staticVdbName + ".vdb");
+		new ModelExplorer().openModelEditor(IMPORT_PROJECT_NAME, staticVdbName + ".vdb");
+		VDBEditor vdbEditor = VDBEditor.getInstance(staticVdbName);
 		collector.checkThat("wrong data source for source model", vdbEditor.getDataSourceName(BQT_MODEL_NAME + ".xmi"),
 				is("postgresql92Model"));
 		vdbEditor.saveAndClose();
@@ -956,7 +956,7 @@ public class DynamicVdbTest {
 	}
 
 	private void checkContentsSame(String staticVdbName, String dynamicVdbContent) {
-		File projectFile = new ModelExplorer().getModelProject(PROJECT_NAME).getFile();
+		File projectFile = new File(new ModelExplorer().getProjectPath(PROJECT_NAME));
 		String vdbPath = new File(projectFile, staticVdbName + "-vdb.xml").getAbsolutePath();
 		String fileContents = new ResourceFileHelper().loadFileAsString(vdbPath);
 		collector.checkThat("Created VDB different from VDB contents in wizard", fileContents,

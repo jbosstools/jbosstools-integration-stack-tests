@@ -17,7 +17,6 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.tools.teiid.reddeer.ChildType;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
 import org.jboss.tools.teiid.reddeer.connection.SimpleHttpClient;
@@ -99,7 +98,7 @@ public class RestProcedureTest {
 	
 	@Test
 	public void testAutomaticWarGeneration() throws IOException{
-		modelExplorer.addChildToModelItem(ChildType.PROCEDURE, PROJECT_NAME, VIEW_MODEL);
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.PROCEDURE, PROJECT_NAME, VIEW_MODEL);
 		ProcedureWizard.createViewProcedure()
 				.setName("GetPartGet")
 				.toggleRest(true)
@@ -132,7 +131,7 @@ public class RestProcedureTest {
 
 	@Test
 	public void testCreateInsertProcedure() throws IOException, SQLException {
-		modelExplorer.addChildToModelItem(ChildType.PROCEDURE, PROJECT_NAME, VIEW_MODEL);
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.PROCEDURE, PROJECT_NAME, VIEW_MODEL);
 		ProcedureWizard.createViewProcedure()
 				.setName("AddPart")
 				.toggleRest(true)
@@ -187,7 +186,7 @@ public class RestProcedureTest {
 	
 	@Test 
 	public void testCreateProcedureWithGetPostMethods() throws IOException, SQLException{
-		modelExplorer.addChildToModelItem(ChildType.PROCEDURE, PROJECT_NAME, VIEW_MODEL);
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.PROCEDURE, PROJECT_NAME, VIEW_MODEL);
 		ProcedureWizard.createViewProcedure()
 				.setName("GetPartPost")
 				.toggleRest(true)
@@ -196,7 +195,7 @@ public class RestProcedureTest {
 				.addParameter("id", "string", "4", "IN")
 				.setTransformationSql(fileHelper.getSql("RestProcedureTest/getProcedurePost"))
 				.finish();
-		modelExplorer.addChildToModelItem(ChildType.PROCEDURE, PROJECT_NAME, VIEW_MODEL);
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.PROCEDURE, PROJECT_NAME, VIEW_MODEL);
 		ProcedureWizard.createViewProcedure()
 				.setName("GetPartGet")
 				.toggleRest(true)
