@@ -50,13 +50,14 @@ import org.jboss.tools.teiid.reddeer.dialog.GenerateDynamicVdbDialog;
 import org.jboss.tools.teiid.reddeer.dialog.GenerateRestProcedureDialog;
 import org.jboss.tools.teiid.reddeer.dialog.GenerateVdbArchiveDialog;
 import org.jboss.tools.teiid.reddeer.dialog.SaveAsDialog;
-import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
+import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.wizard.imports.ImportProjectWizard;
 import org.jboss.tools.teiid.reddeer.wizard.newWizard.MetadataModelWizard;
 import org.jboss.tools.teiid.reddeer.wizard.newWizard.NewModelProjectWizard;
 import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
+
 
 /**
  * This class represents a model explorer
@@ -93,7 +94,7 @@ public class ModelExplorer extends AbstractExplorer {
 		new DefaultTreeItem(pathToModelXmi).select();
 		new ContextMenu("New Child", "Table...").select();
 		new Table().create(type, tableName, props);
-		new ModelEditor(pathToModelXmi[pathToModelXmi.length - 1]).save();// the last member is modelXmi
+		new RelationalModelEditor(pathToModelXmi[pathToModelXmi.length - 1]).save();// the last member is modelXmi
 	}
 
 	@Override

@@ -1,12 +1,21 @@
 package org.jboss.tools.teiid.reddeer.editor;
 
+import java.awt.event.KeyEvent;
 import java.util.List;
 
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefViewer;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.spinner.LabeledSpinner;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.matcher.AttributeMatcher;
 import org.jboss.tools.teiid.reddeer.matcher.ModelEditorItemMatcher;
 
@@ -20,14 +29,6 @@ public class RelationalModelEditor extends AbstractModelEditor{
 	}
 	
 	/**
-	 * Opens table editor's tab.
-	 * @param fromDiagram - RelationalModelEditor.PACKAGE_DIAGRAM|...
-	 */
-	public TableEditor openTableEditor(String fromDiagram){
-		return new TableEditor(this.getTitle(), fromDiagram);
-	}
-	
-	/**
 	 * Opens transformation diagram and returns transformation editor for specified item.
 	 * Note: Package Diagram must be opened.
 	 * @param type ModelEditorItemMatcher.PROCEDURE|TABLE|...
@@ -38,6 +39,7 @@ public class RelationalModelEditor extends AbstractModelEditor{
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new ContextMenu("Edit").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
+		new WorkbenchShell();
 		return new TransformationEditor();
 	}
 	
@@ -51,13 +53,71 @@ public class RelationalModelEditor extends AbstractModelEditor{
 	}
 	
 	/**
-	 * Returns attribute's names of specified table.
-	 * Note: Transformation Diagram must be opened.
+	 * Returns attribute's names of specified model item.
 	 */
 	public List<String> listTableAttributesNames(String tableName){
 		AttributeMatcher matcher = new AttributeMatcher("", ModelEditorItemMatcher.TABLE, tableName);
-		getEditorViewer(TRANSFORMATION_DIAGRAM).editParts(matcher);
+		getEditorViewer(new DefaultCTabItem(0).getText()).editParts(matcher);
 		return matcher.getTexts();
 	}
-
+	
+	/**
+	 * Selects model item(s) which name starts with specified prefix.
+	 * @param type ModelEditorItemMatcher.PROCEDURE|TABLE|...
+	 */
+	public void selectModelItem(String namePrefix, String type){
+		SWTBotGefViewer viewer = this.getEditorViewer(new DefaultCTabItem(0).getText());
+		viewer.select(viewer.editParts(new ModelEditorItemMatcher(type, namePrefix)));
+		AbstractWait.sleep(TimePeriod.SHORT);
+	}
+	
+	/**
+	 * Selects attribute which name starts with specified prefix of the item which name starts with specified prefix.
+	 * @param itemType ModelEditorItemMatcher.PROCEDURE|TABLE|...
+	 */
+	public void selectAttribute(String itemPrefix, String itemType, String attributePrefix){
+		SWTBotGefViewer viewer = this.getEditorViewer(new DefaultCTabItem(0).getText());
+		viewer.select(viewer.editParts(new AttributeMatcher(attributePrefix, itemType, itemPrefix)));
+		AbstractWait.sleep(TimePeriod.SHORT);
+	}
+	
+	/**
+	 * Deletes specified attribute from the specified model item.
+	 * @param itemType ModelEditorItemMatcher.PROCEDURE|TABLE|...
+	 * @param removeFromTransformation - whether remove column from transformation too
+	 */
+	public void deleteAttribute(String itemName, String itemType, String attrName, boolean removeFromTransformation){
+		selectAttribute(itemName, itemType, attrName);
+		new ContextMenu("Delete").select();	
+		AbstractWait.sleep(TimePeriod.SHORT);
+		PushButton button = (removeFromTransformation) ? new PushButton("Yes") : new PushButton("No");
+		button.click();
+	}
+	
+	/**
+	 * Renames specified attribute in the specified model item.
+	 * @param itemType ModelEditorItemMatcher.PROCEDURE|TABLE|...
+	 */
+	public void renameAttribute(String itemName, String itemType, String attrName, String newName){
+		selectAttribute(itemName, itemType, attrName);
+		new ContextMenu("Rename").select();
+		new DefaultText(0).setText(newName);
+		KeyboardFactory.getKeyboard().type(KeyEvent.VK_TAB);
+		
+	}
+	
+	/**
+	 * Sets specified data type to the specified attribute in the specified model item.
+	 */
+	public void setAttributeDataType(String itemName, String itemType, String attrName, String dataType, Integer length){
+		selectAttribute(itemName, itemType, attrName);
+		new ContextMenu("Modeling","Set Datatype").select();
+		new DefaultShell("Select a Datatype");
+		new DefaultText(0).setText(dataType);
+		new DefaultTable().getItem(0).click();
+		if (length != null){
+			new LabeledSpinner("'string' length value").setValue(length);
+		}		
+		new PushButton("OK").click();
+	}
 }

@@ -1,11 +1,13 @@
 package org.jboss.tools.teiid.reddeer.editor;
 
 import java.awt.event.KeyEvent;
+import java.util.List;
 
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.core.util.Display;
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.jface.viewers.CellEditor;
@@ -40,20 +42,19 @@ public class TableEditor extends AbstractModelEditor {
 		public static final String XML_ROOTS = "Xml Roots";
 		public static final String XML_SEQUENCES = "Xml Sequences";
 		public static final String PROCEDURES = "Procedures";
+		public static final String PROCEDURE_PARAMETERS = "Procedure Parameters";
+		public static final String UNIQUE_CONSTRAINTS = "Unique Constraints";
 	}
 	
-	private final String fromEditor;
-	
-	public TableEditor(String title, String fromEditor){
+	public TableEditor(String title){
 		super(title);
-		this.fromEditor = fromEditor;
 		new DefaultCTabItem(TABLE_EDITOR).activate();
 		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 
 	@Override
 	public void close() {
-		new DefaultCTabItem(fromEditor).activate();
+		new DefaultCTabItem(new DefaultCTabItem(0).getText()).activate();
 	}
 	
 	/**
@@ -64,14 +65,34 @@ public class TableEditor extends AbstractModelEditor {
 		new DefaultTabItem(tabName).activate();
 	}
 	
+	public List<TableItem> getRows(){
+		return new DefaultTable().getItems();
+	}
+	
 	/**
-	 * Deletes specified row in table
+	 * @param iCellIndex, iCellText - defines row by text of cell in specified column.
 	 */
-	public void deleteRow(int rowIndex){
-		new DefaultTable().getItem(rowIndex).select();
-		AbstractWait.sleep(TimePeriod.SHORT);
-		new ContextMenu("Delete").select();
-		AbstractWait.sleep(TimePeriod.SHORT);
+	public TableItem getRow(int iCellIndex, String iCellText){
+		return new DefaultTable().getItem(iCellText, iCellIndex);	
+	}
+	
+	/**
+	 * @param rowIndex - defines row by it's index.
+	 */
+	public TableItem getRow(int rowIndex){
+		return new DefaultTable().getItem(rowIndex);	
+	}
+	
+	/**
+	 * @param columnName, cellText - defines row by text of cell in specified column.
+	 */
+	public TableItem getRow(String columnName, String cellText){
+		DefaultTable table = new DefaultTable();
+		try {
+			return table.getItem(cellText, table.getHeaderIndex(columnName));
+		} catch(CoreLayerException ex){
+			return null;
+		}	
 	}
 	
 	/**

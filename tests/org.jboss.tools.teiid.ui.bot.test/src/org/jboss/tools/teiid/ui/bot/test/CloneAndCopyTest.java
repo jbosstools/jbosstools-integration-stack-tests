@@ -23,6 +23,7 @@ import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ProblemsViewEx;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -47,9 +48,13 @@ public class CloneAndCopyTest {
 	
 	private ModelExplorer modelExplorer;
 	
+	@BeforeClass
+	public static void before(){
+		new WorkbenchShell().maximize();
+	}
+	
 	@Before
 	public void importProject(){
-		new WorkbenchShell().maximize();
 		modelExplorer = new ModelExplorer();
 		modelExplorer.importProject(PROJECT_NAME);
 		modelExplorer.getProject(PROJECT_NAME).refresh();
@@ -61,7 +66,7 @@ public class CloneAndCopyTest {
 	}
 	
 	@Test
-	public void TestCopyRelationalSourceModel(){
+	public void testCopyRelationalSourceModel(){
 		String newModelName = "RelationalSourceModelCopy";
 		modelExplorer.copyModel(RELATIONAL_SOURCE_MODEL, newModelName, PROJECT_NAME + "/Copy", ModelClass.RELATIONAL, ModelType.SOURCE);
 		assertTrue(modelExplorer.getProject(PROJECT_NAME).containsItem("Copy", newModelName + ".xmi"));
@@ -69,7 +74,7 @@ public class CloneAndCopyTest {
 	}
 	
 	@Test
-	public void TestCopyRelationalViewModel(){
+	public void testCopyRelationalViewModel(){
 		String newModelName = "RelationalViewModelCopy";
 		modelExplorer.copyModel(RELATIONAL_VIEW_MODEL, newModelName, PROJECT_NAME + "/Copy", ModelClass.RELATIONAL, ModelType.VIEW);
 		assertTrue(modelExplorer.getProject(PROJECT_NAME).containsItem("Copy", newModelName + ".xmi"));
@@ -77,7 +82,7 @@ public class CloneAndCopyTest {
 	}
 	
 	@Test
-	public void TestCopyXmlViewModel(){
+	public void testCopyXmlViewModel(){
 		String newModelName = "XmlViewModelCopy";
 		modelExplorer.copyModel(XML_VIEW_MODEL, newModelName, PROJECT_NAME + "/Copy", ModelClass.XML, ModelType.VIEW);
 		assertTrue(modelExplorer.getProject(PROJECT_NAME).containsItem("Copy", newModelName + ".xmi"));
@@ -85,7 +90,7 @@ public class CloneAndCopyTest {
 	}
 	
 	@Test
-	public void TestCopyXmlSchemaModel(){
+	public void testCopyXmlSchemaModel(){
 		String newModelName = "XmlSchemaModelCopy";
 		modelExplorer.copyModel(XML_SCHEMA_MODEL, newModelName, PROJECT_NAME + "/Copy", ModelClass.XSD, ModelType.DATATYPE);
 		assertTrue(modelExplorer.getProject(PROJECT_NAME).containsItem("Copy", newModelName + ".xsd"));
@@ -93,7 +98,7 @@ public class CloneAndCopyTest {
 	}
 	
 	@Test
-	public void TestCopyWebServiceViewModel(){
+	public void testCopyWebServiceViewModel(){
 		String newModelName = "WebServiceViewModelCopy";
 		modelExplorer.copyModel(WEBSERVICE_VIEW_MODEL, newModelName, PROJECT_NAME + "/Copy", ModelClass.WEBSERVICE, ModelType.VIEW);
 		assertTrue(modelExplorer.getProject(PROJECT_NAME).containsItem("Copy", newModelName + ".xmi"));
@@ -101,7 +106,7 @@ public class CloneAndCopyTest {
 	}
 	
 	@Test
-	public void TestSaveAsRelationalSourceModel(){
+	public void testSaveAsRelationalSourceModel(){
 		String newModelName = "RelationalSourceModelSaveAs";
 		modelExplorer.saveModelAs(RELATIONAL_SOURCE_MODEL, newModelName, PROJECT_NAME + "/SaveAs", Boolean.FALSE);
 		assertTrue(modelExplorer.getProject(PROJECT_NAME).containsItem("SaveAs", newModelName + ".xmi"));
@@ -109,7 +114,7 @@ public class CloneAndCopyTest {
 	}
 	
 	@Test
-	public void TestSaveAsRelationalViewModel(){
+	public void testSaveAsRelationalViewModel(){
 		String newModelName = "RelationalViewModelSaveAs";
 		modelExplorer.saveModelAs(RELATIONAL_VIEW_MODEL, newModelName, PROJECT_NAME + "/SaveAs", Boolean.FALSE);
 		assertTrue(modelExplorer.getProject(PROJECT_NAME).containsItem("SaveAs", newModelName + ".xmi"));
@@ -117,7 +122,7 @@ public class CloneAndCopyTest {
 	}
 	
 	@Test
-	public void TestSaveAsXmlViewModel(){
+	public void testSaveAsXmlViewModel(){
 		String newModelName = "XmlViewModelSaveAs";
 		modelExplorer.saveModelAs(XML_VIEW_MODEL, newModelName, PROJECT_NAME + "/SaveAs", Boolean.FALSE);
 		assertTrue(modelExplorer.getProject(PROJECT_NAME).containsItem("SaveAs", newModelName + ".xmi"));
@@ -125,7 +130,7 @@ public class CloneAndCopyTest {
 	}
 	
 	@Test
-	public void TestSaveAsXmlSchemaModel(){
+	public void testSaveAsXmlSchemaModel(){
 		String newModelName = "XmlSchemaModelSaveAs";
 		modelExplorer.saveModelAs(XML_SCHEMA_MODEL, newModelName, PROJECT_NAME + "/SaveAs", Boolean.TRUE);
 		assertTrue(modelExplorer.getProject(PROJECT_NAME).containsItem("SaveAs", newModelName + ".xsd"));
@@ -133,7 +138,7 @@ public class CloneAndCopyTest {
 	}	
 	
 	@Test
-	public void TestSaveAsWebServiceViewModel(){
+	public void testSaveAsWebServiceViewModel(){
 		String newModelName = "WebServiceViewModelSaveAs";
 		modelExplorer.saveModelAs(WEBSERVICE_VIEW_MODEL, newModelName, PROJECT_NAME + "/SaveAs", Boolean.FALSE);
 		assertTrue(modelExplorer.getProject(PROJECT_NAME).containsItem("SaveAs", newModelName + ".xmi"));
@@ -141,7 +146,7 @@ public class CloneAndCopyTest {
 	}	
 	
 	@Test
-	public void TestCloneProject(){
+	public void testCloneProject(){
 		String clonedProjectName = "ClonedProject";
 		new ShellMenu("Project","Clone Project").select();
 		new DefaultShell("Clone Model Project");
