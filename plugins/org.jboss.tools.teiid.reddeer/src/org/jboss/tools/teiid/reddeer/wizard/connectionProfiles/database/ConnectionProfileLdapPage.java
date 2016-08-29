@@ -1,4 +1,4 @@
-package org.jboss.tools.teiid.reddeer.wizard.connectionProfiles;
+package org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.database;
 
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileDatabasePage;
 import org.jboss.reddeer.swt.impl.spinner.LabeledSpinner;

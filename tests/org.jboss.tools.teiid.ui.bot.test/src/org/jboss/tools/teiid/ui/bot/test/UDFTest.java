@@ -14,8 +14,8 @@ import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
-import org.jboss.tools.teiid.reddeer.wizard.ProcedureWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.ImportFromFileSystemWizard;
+import org.jboss.tools.teiid.reddeer.wizard.newWizard.NewProcedureWizard;
 import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -66,7 +66,7 @@ public class UDFTest {
 				.finish();
 		
 		new ModelExplorer().addChildToModelItem(ModelExplorer.ChildType.PROCEDURE, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi");
-		ProcedureWizard.createUserDefinedFunction()
+		NewProcedureWizard.createUserDefinedFunction()
 				.setName("udfConcatNull")
 				.addParameter("stringLeft", "string", "400", "IN")
 				.addParameter("stringRight", "string", "400", "IN")

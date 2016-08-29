@@ -10,12 +10,13 @@ import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.common.reddeer.JiraClient;
-import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileHelper;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
+import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.noDatabase.XmlLocalConnectionProfileWizard;
+import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.noDatabase.XmlRemoteConnectionProfileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.XMLImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
 import org.junit.BeforeClass;
@@ -49,7 +50,9 @@ public class XmlFileImportTest {
 	@Test
 	public void test() {
 		// Import from local XML file
-		new ConnectionProfileHelper().createCpXml(LOCAL_CP_NAME, "resources/flat/cd_catalog.xml");
+		XmlLocalConnectionProfileWizard.openWizard(LOCAL_CP_NAME)
+				.setFile("resources/flat/cd_catalog.xml")
+				.finish();
 
 		XMLImportWizard.openWizard()
 				.setImportMode(XMLImportWizard.LOCAL)
@@ -76,7 +79,10 @@ public class XmlFileImportTest {
 				.finish();
 		
 		// Import from remote XML file
-		new ConnectionProfileHelper().createCpXml(REMOTE_CP_NAME, "https://raw.githubusercontent.com/mmakovy/import-files/master/cd_catalog.xml");
+		XmlRemoteConnectionProfileWizard.openWizard(REMOTE_CP_NAME)
+				.setUrl("https://raw.githubusercontent.com/mmakovy/import-files/master/cd_catalog.xml")
+				.testConnection()
+				.finish();
 		
 		XMLImportWizard.openWizard()
 				.setImportMode(XMLImportWizard.REMOTE)

@@ -5,9 +5,9 @@ import java.util.Arrays;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.jface.wizard.ImportWizardDialog;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
+import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -20,7 +20,7 @@ import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
  * Wizard for import teiid DDL
  * @author mkralik
  */
-public class DDLTeiidImportWizard  extends ImportWizardDialog{
+public class DDLTeiidImportWizard  extends TeiidImportWizard{
 	
 	public static final String DIALOG_TITLE = "Import Teiid DDL";
 
@@ -28,7 +28,7 @@ public class DDLTeiidImportWizard  extends ImportWizardDialog{
 	public static final String View_Type = "View Model";
 	
 	private DDLTeiidImportWizard() {
-		super("Teiid Designer","DDL File (Teiid) >> Source or View Model");
+		super("DDL File (Teiid) >> Source or View Model");
 		log.info("DDL teiid import Wizard is opened");
 	}
 	
@@ -42,18 +42,9 @@ public class DDLTeiidImportWizard  extends ImportWizardDialog{
 		return wizard;
 	}
 	
-	/**
-	 * use nextPage()
-	 */
-	@Deprecated
-	@Override
-	public void next(){
-		super.next();
-	}
-	
 	public DDLTeiidImportWizard nextPage(){
 		log.info("Go to next wizard page");
-		super.next();
+		new NextButton().click();
 		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
 		return this;
 	}

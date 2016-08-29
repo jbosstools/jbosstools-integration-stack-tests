@@ -2,21 +2,18 @@ package org.jboss.tools.teiid.ui.bot.test;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Properties;
-
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileHelper;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
-import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.RestProfileWizard;
+import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.noDatabase.RestConnectionProfileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.RestImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
 import org.junit.After;
@@ -72,12 +69,12 @@ public class ConsumeRestWs {
 
 	@Test
 	public void testXml() {
-		Properties restCpXml = new Properties();
-		restCpXml.setProperty("connectionUrl", "http://ws-dvirt.rhcloud.com/dv-test-ws/rest/xml");
-		restCpXml.setProperty("type", "xml");
-
-		new ConnectionProfileHelper().createCpRest(XML_PROFILE_NAME, restCpXml);
-
+		RestConnectionProfileWizard.openWizard(XML_PROFILE_NAME)
+				.setConnectionUrl("http://ws-dvirt.rhcloud.com/dv-test-ws/rest/xml")
+				.setType(RestConnectionProfileWizard.TYPE_XML)
+				.testConnection()
+				.finish();
+		
 		RestImportWizard.openWizard()
 				.setProfileName(XML_PROFILE_NAME)
 				.nextPage()
@@ -110,12 +107,12 @@ public class ConsumeRestWs {
 
 	@Test
 	public void testJson() {
-		Properties restCpJson = new Properties();
-		restCpJson.setProperty("connectionUrl", "http://ws-dvirt.rhcloud.com/dv-test-ws/rest/json");
-		restCpJson.setProperty("type", "json");
-
-		new ConnectionProfileHelper().createCpRest(JSON_PROFILE_NAME, restCpJson);
-
+		RestConnectionProfileWizard.openWizard(JSON_PROFILE_NAME)
+				.setConnectionUrl("http://ws-dvirt.rhcloud.com/dv-test-ws/rest/json")
+				.setType(RestConnectionProfileWizard.TYPE_JSON)
+				.testConnection()
+				.finish();
+		
 		RestImportWizard.openWizard()
 				.setProfileName(JSON_PROFILE_NAME)
 				.nextPage()
@@ -148,15 +145,13 @@ public class ConsumeRestWs {
 	
 	@Test
 	public void testXmlHttpDigest() {
-		Properties restCpXml = new Properties();
-		restCpXml.setProperty("connectionUrl", "http://ws-dvirt.rhcloud.com/dv-test-ws-digest/rest/xml");
-		restCpXml.setProperty("type", "xml");
-		restCpXml.setProperty("authType", RestProfileWizard.AUTH_TYPE_DIGEST);
-		restCpXml.setProperty("username", "digest");
-		restCpXml.setProperty("password", "digest");
-
-		new ConnectionProfileHelper().createCpRest(XML_PROFILE_NAME_DIGEST, restCpXml);
-
+		RestConnectionProfileWizard.openWizard(XML_PROFILE_NAME_DIGEST)
+				.setConnectionUrl("http://ws-dvirt.rhcloud.com/dv-test-ws-digest/rest/xml")
+				.setType(RestConnectionProfileWizard.TYPE_XML)
+				.setAuth(RestConnectionProfileWizard.AUTH_TYPE_DIGEST, "digest", "digest")
+				.testConnection()
+				.finish();
+		
 		RestImportWizard.openWizard()
 				.setProfileName(XML_PROFILE_NAME_DIGEST)
 				.nextPage()
@@ -189,15 +184,13 @@ public class ConsumeRestWs {
 	
 	@Test
 	public void testHttpDigestJson() {
-		Properties restCpJson = new Properties();
-		restCpJson.setProperty("connectionUrl", "http://ws-dvirt.rhcloud.com/dv-test-ws-digest/rest/json");
-		restCpJson.setProperty("type", "json");
-		restCpJson.setProperty("authType", RestProfileWizard.AUTH_TYPE_DIGEST);
-		restCpJson.setProperty("username", "digest");
-		restCpJson.setProperty("password", "digest");
-
-		new ConnectionProfileHelper().createCpRest(JSON_PROFILE_NAME_DIGEST, restCpJson);
-
+		RestConnectionProfileWizard.openWizard(JSON_PROFILE_NAME_DIGEST)
+				.setConnectionUrl("http://ws-dvirt.rhcloud.com/dv-test-ws-digest/rest/json")
+				.setType(RestConnectionProfileWizard.TYPE_JSON)
+				.setAuth(RestConnectionProfileWizard.AUTH_TYPE_DIGEST, "digest", "digest")
+				.testConnection()
+				.finish();
+		
 		RestImportWizard.openWizard()
 				.setProfileName(JSON_PROFILE_NAME_DIGEST)
 				.nextPage()
