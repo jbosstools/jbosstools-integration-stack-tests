@@ -3,9 +3,7 @@ package org.jboss.tools.teiid.reddeer.wizard.imports;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.jface.wizard.ImportWizardDialog;
-import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -20,6 +18,8 @@ import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
  */
 public class DDLCustomImportWizard extends ImportWizardDialog{
 	
+	private static DDLCustomImportWizard INSTANCE;
+	
 	public static final String DIALOG_TITLE = "Import DDL";
 	
 	public static final String Source_Type = "Source Model";
@@ -32,9 +32,22 @@ public class DDLCustomImportWizard extends ImportWizardDialog{
 	public static final String POSTGRES = "POSTGRES";
 	public static final String DERBY = "DERBY";
 	
-	public DDLCustomImportWizard() {
+	private DDLCustomImportWizard() {
 		super("Teiid Designer","DDL File (General) >> Source or View Model");
 		log.info("DDL Custom import Wizard is opened");
+	}
+	
+	public static DDLCustomImportWizard getInstance(){
+		if(INSTANCE==null){
+			INSTANCE=new DDLCustomImportWizard();
+		}
+		return INSTANCE;
+	}
+	
+	public static DDLCustomImportWizard openWizard(){
+		DDLCustomImportWizard wizard = getInstance();
+		wizard.open();
+		return wizard;
 	}
 	
 	public DDLCustomImportWizard activate() {
@@ -130,11 +143,19 @@ public class DDLCustomImportWizard extends ImportWizardDialog{
 		return this;
 	}
 	
+	public DDLCustomImportWizard nextPage(){
+		log.info("Go to next wizard page");
+		super.next();
+		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
+		return this;
+	}
+
+	/**
+	 * use nextPage()
+	 */
+	@Deprecated
 	@Override
 	public void next(){
-		log.info("Go to next wizard page");
-		Button button = new NextButton();
-		button.click();
-		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
+		super.next();
 	}
 }

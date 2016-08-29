@@ -13,13 +13,27 @@ import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 
 public class SalesforceImportWizard extends ImportWizardDialog {
 
+	private static SalesforceImportWizard INSTANCE;
+	
 	public static final String DIALOG_TITLE = "Create Relational Model from SalesForce Data Model";
 
-	public SalesforceImportWizard() {
+	private SalesforceImportWizard() {
 		super("Teiid Designer", "Salesforce >> Source Model");
 		log.info("Salesforce import wizard is opened");
 	}
-
+	
+	public static SalesforceImportWizard getInstance(){
+		if(INSTANCE==null){
+			INSTANCE=new SalesforceImportWizard();
+		}
+		return INSTANCE;
+	}
+	
+	public static SalesforceImportWizard openWizard(){
+		SalesforceImportWizard wizard = getInstance();
+		wizard.open();
+		return wizard;
+	}
 	public SalesforceImportWizard activate() {
 		new DefaultShell(DIALOG_TITLE);
 		return this;
@@ -83,11 +97,21 @@ public class SalesforceImportWizard extends ImportWizardDialog {
 		new LabeledText("JNDI Name").setText(JndiName);
 		return this;
 	}
+		
+	public SalesforceImportWizard nextPage(){
+		log.info("Go to next wizard page");
+		super.next();
+		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
+		return this;
+	}
 	
+	/**
+	 * use nextPage()
+	 */
+	@Deprecated
 	@Override
 	public void next(){
 		super.next();
-		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
 	}
 	
 	@Override

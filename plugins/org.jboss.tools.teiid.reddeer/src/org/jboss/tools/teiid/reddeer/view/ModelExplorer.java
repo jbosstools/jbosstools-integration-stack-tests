@@ -39,7 +39,6 @@ import org.jboss.tools.teiid.reddeer.ModelBuilder;
 import org.jboss.tools.teiid.reddeer.ModelClass;
 import org.jboss.tools.teiid.reddeer.ModelProject;
 import org.jboss.tools.teiid.reddeer.ModelType;
-import org.jboss.tools.teiid.reddeer.Procedure;
 import org.jboss.tools.teiid.reddeer.Table;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.condition.RadioButtonEnabled;
@@ -47,17 +46,17 @@ import org.jboss.tools.teiid.reddeer.condition.WarIsDeployed;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.dialog.CreateWarDialog;
 import org.jboss.tools.teiid.reddeer.dialog.CreateWebServiceDialog;
+import org.jboss.tools.teiid.reddeer.dialog.GenerateDynamicVdbDialog;
 import org.jboss.tools.teiid.reddeer.dialog.GenerateRestProcedureDialog;
+import org.jboss.tools.teiid.reddeer.dialog.GenerateVdbArchiveDialog;
 import org.jboss.tools.teiid.reddeer.dialog.SaveAsDialog;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
-import org.jboss.tools.teiid.reddeer.wizard.GenerateDynamicVdbWizard;
-import org.jboss.tools.teiid.reddeer.wizard.GenerateVdbArchiveWizard;
-import org.jboss.tools.teiid.reddeer.wizard.MetadataModelWizard;
-import org.jboss.tools.teiid.reddeer.wizard.ModelProjectWizard;
-import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.ImportProjectWizard;
+import org.jboss.tools.teiid.reddeer.wizard.newWizard.MetadataModelWizard;
+import org.jboss.tools.teiid.reddeer.wizard.newWizard.NewModelProjectWizard;
+import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
 
 /**
  * This class represents a model explorer
@@ -280,8 +279,9 @@ public class ModelExplorer extends AbstractExplorer {
 	 * Creates a new model project with specified name.
 	 */
 	public void createProject(String projectName) {
-		ModelProjectWizard wizard = new ModelProjectWizard(0);
-		wizard.create(projectName);
+		NewModelProjectWizard.openWizard()
+				.setProjectName(projectName)
+				.finish();
 	}
 	
 	/**
@@ -325,20 +325,24 @@ public class ModelExplorer extends AbstractExplorer {
 	 * Generates dynamic VDB from specified VDB
 	 * @param vdbpath - path to VDB (<PROJECT>, ..., <VDB>)
 	 */
-	public GenerateDynamicVdbWizard generateDynamicVDB(String... vdbpath) {
-		this.selectItem(vdbpath);
+	public GenerateDynamicVdbDialog generateDynamicVDB(String... vdbPath) {
+		int i = vdbPath.length -1;
+		vdbPath[i] = (vdbPath[i].contains(".vdb")) ? vdbPath[i] : vdbPath[i] + ".vdb";
+		this.selectItem(vdbPath);
 		new ContextMenu("Modeling", "Generate Dynamic VDB").select();
-		return new GenerateDynamicVdbWizard().activate();
+		return new GenerateDynamicVdbDialog();
 	}
 	
 	/**
-	 * Generates VDB archive from specified VDB
+	 * Generates VDB archive from dynamic VDB
 	 * @param vdbpath - path to VDB (<PROJECT>, ..., <VDB>)
 	 */
-	public GenerateVdbArchiveWizard generateVdbArchive(String... vdbpath) {
-		this.selectItem(vdbpath);
+	public GenerateVdbArchiveDialog generateVdbArchive(String... vdbPath) {
+		int i = vdbPath.length -1;
+		vdbPath[i] = (vdbPath[i].contains(".xml")) ? vdbPath[i] : vdbPath[i] + ".xml";
+		this.selectItem(vdbPath);
 		new ContextMenu("Modeling", "Generate VDB Archive and Models").select();
-		return new GenerateVdbArchiveWizard().activate();
+		return new GenerateVdbArchiveDialog();
 	}
 	
 	/**
@@ -421,17 +425,15 @@ public class ModelExplorer extends AbstractExplorer {
 	 */
 	public void copyModel(String originalModelPath, String newModelName, String newModelPath, 
 		ModelClass newModelClass, ModelType newModelType){
-		MetadataModelWizard modelWizard = new MetadataModelWizard();
-		modelWizard.open();
-		modelWizard.activate();
-		modelWizard.setLocation(newModelPath.split("/"))
+		MetadataModelWizard.openWizard()
+				.setLocation(newModelPath.split("/"))
 				.setModelName(newModelName)
 				.selectModelClass(newModelClass)
 				.selectModelType(newModelType)
-				.selectModelBuilder(ModelBuilder.COPY_EXISTING);
-		modelWizard.next();
-		modelWizard.setExistingModel(originalModelPath.split("/"));
-		modelWizard.finish();
+				.selectModelBuilder(ModelBuilder.COPY_EXISTING)
+				.nextPage()
+				.setExistingModel(originalModelPath.split("/"))
+				.finish();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		ShellMenu saveMenu = new ShellMenu("File","Save");
 		if (saveMenu.isEnabled()){
@@ -520,10 +522,9 @@ public class ModelExplorer extends AbstractExplorer {
 	 * @param projectName = name of folder in 'resources/projects/' folder
 	 */
 	public void importProject(String projectName) {
-		ImportProjectWizard wizard = new ImportProjectWizard();
-		wizard.open();
-		wizard.setPath(new File("resources/projects/" + projectName).getAbsolutePath())
-		      .finish();
+		ImportProjectWizard.openWizard()
+						   .setPath(new File("resources/projects/" + projectName).getAbsolutePath())
+						   .finish();
 	}
 	
 	/**

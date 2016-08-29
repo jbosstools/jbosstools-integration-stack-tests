@@ -12,11 +12,27 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
  * @author mkralik
  */
 public class DDLTeiidExportWizard extends ExportWizardDialog{
-	public static final String DIALOG_TITLE = "Export Teiid DDL";
-
 	
-	public DDLTeiidExportWizard() {
+	private static DDLTeiidExportWizard INSTANCE;
+
+	public static final String DIALOG_TITLE = "Export Teiid DDL";
+	
+	private DDLTeiidExportWizard() {
 		super("Teiid Designer", "Teiid DDL");
+		log.info("DDL teiid export Wizard is opened");
+	}
+	
+	public static DDLTeiidExportWizard getInstance(){
+		if(INSTANCE==null){
+			INSTANCE=new DDLTeiidExportWizard();
+		}
+		return INSTANCE;
+	}
+	
+	public static DDLTeiidExportWizard openWizard(){
+		DDLTeiidExportWizard wizard = getInstance();
+		wizard.open();
+		return wizard;
 	}
 	
 	public DDLTeiidExportWizard activate() {
@@ -25,6 +41,7 @@ public class DDLTeiidExportWizard extends ExportWizardDialog{
 	}
 	
 	public DDLTeiidExportWizard setLocation(String... location) {
+		log.info("Set location: '" + location + "'");
 		activate();
 		new PushButton("...").click();
 		new DefaultShell();
@@ -33,27 +50,53 @@ public class DDLTeiidExportWizard extends ExportWizardDialog{
 		return this;
 	}
 	
-	public DDLTeiidExportWizard setNameInSource() {
+	public DDLTeiidExportWizard setNameInSource(boolean check) {
+		log.info("Set name in source : '" + check + "'");
 		activate();
-		new CheckBox("Add Name In Source values as OPTIONS").click();
+		CheckBox checkBox = new CheckBox("Add Name In Source values as OPTIONS");
+		if(check != checkBox.isChecked()){
+			checkBox.click();
+		}
 		return this;
 	}
 	
-	public DDLTeiidExportWizard setNativeType() {
+	public DDLTeiidExportWizard setNativeType(boolean check) {
+		log.info("Set native type : '" + check + "'");
 		activate();
-		new CheckBox("Add Native Type values as OPTIONS").click();
+		CheckBox checkBox = new CheckBox("Add Native Type values as OPTIONS");
+		if(check != checkBox.isChecked()){
+			checkBox.click();
+		}
 		return this;
 	}
 	
 	public DDLTeiidExportWizard exportToWorkspace(String Name,String... location) {
+		log.info("Export to workspace : '" + location + "'");
 		activate();
 		new PushButton("Export to Workspace...").click();
+		new DefaultShell("Export DDL To Workspace");
 		new PushButton("Browse...").click();
 		new DefaultShell("Select a Folder");
 		new DefaultTreeItem(location).select();
 		new PushButton("OK").click();
+		new DefaultShell("Export DDL To Workspace");
 		new LabeledText("Name:").setText(Name);
 		new PushButton("OK").click();
 		return this;
+	}
+	
+	public DDLTeiidExportWizard nextPage(){
+		log.info("Go to next wizard page");
+		super.next();
+		return this;
+	}
+
+	/**
+	 * use nextPage()
+	 */
+	@Deprecated
+	@Override
+	public void next(){
+		super.next();
 	}
 }

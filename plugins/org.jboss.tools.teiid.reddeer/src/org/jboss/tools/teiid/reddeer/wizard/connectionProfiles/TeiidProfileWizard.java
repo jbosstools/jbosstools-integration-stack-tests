@@ -1,4 +1,4 @@
-package org.jboss.tools.teiid.reddeer.wizard;
+package org.jboss.tools.teiid.reddeer.wizard.connectionProfiles;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;

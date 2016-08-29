@@ -4,7 +4,6 @@ import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.tools.teiid.reddeer.wizard.TeiidProfileWizard;
 
 /**
  * Wizard for creating REST connection profile

@@ -6,6 +6,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
+import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -20,6 +21,8 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
  */
 public class MetadataImportWizard extends TeiidImportWizard {
 
+	private static MetadataImportWizard INSTANCE;
+	
 	public static final String DIALOG_TITLE = "Import Metadata From Text File";
 	
 	public static final String TYPE_RELATIONAL_MODEL = "Relational Model (XML Format)";
@@ -28,9 +31,22 @@ public class MetadataImportWizard extends TeiidImportWizard {
 	
 	private String modelName;
 
-	public MetadataImportWizard() {
+	private MetadataImportWizard() {
 		super("Designer Text File >> Source or View Models");
 		log.info("Import metadata wizard is opened");
+	}
+	
+	public static MetadataImportWizard getInstance(){
+		if(INSTANCE==null){
+			INSTANCE=new MetadataImportWizard();
+		}
+		return INSTANCE;
+	}
+	
+	public static MetadataImportWizard openWizard(){
+		MetadataImportWizard wizard = getInstance();
+		wizard.open();
+		return wizard;
 	}
 	
 	public MetadataImportWizard activate() {
@@ -90,8 +106,9 @@ public class MetadataImportWizard extends TeiidImportWizard {
 		});
 	}
 	
-	@Deprecated
-	public void execute(){
-		//delete after refactor all importers
+	public MetadataImportWizard nextPage(){
+		log.info("Go to next wizard page");
+		new NextButton().click();
+		return this;
 	}
 }

@@ -87,13 +87,12 @@ public class ProcedurePreviewTest {
 	@RunIf(conditionClass = IssueIsClosed.class)
 	public void relViewUDF() {
 		// import lib/MyTestUDF.jar
-		ImportFromFileSystemWizard wizard = new ImportFromFileSystemWizard();
-		wizard.open();
-		wizard.setPath(UDF_LIB_PATH)
-			  .setFolder(PROJECT_NAME)
-			  .selectFile(UDF_LIB)
-			  .setCreteTopLevelFolder(true)
-			  .finish();
+		ImportFromFileSystemWizard.openWizard()
+				.setPath(UDF_LIB_PATH)
+				.setFolder(PROJECT_NAME)
+				.selectFile(UDF_LIB)
+				.setCreteTopLevelFolder(true)
+				.finish();
 
 		// create UDF
 		String proc = "udfConcatNull";

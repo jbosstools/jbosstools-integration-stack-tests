@@ -1,5 +1,10 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.startsWith;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.hamcrest.text.IsEqualIgnoringWhiteSpace.equalToIgnoringWhiteSpace;
@@ -8,36 +13,49 @@ import java.io.File;
 import java.io.StringReader;
 import java.sql.ResultSet;
 import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.Callable;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
 
+import org.hamcrest.core.IsNot;
 import org.hamcrest.core.StringContains;
+import org.hamcrest.text.IsEmptyString;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.exception.CoreLayerException;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsResourceMatcher;
+import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.api.TableItem;
+import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
+import org.jboss.tools.teiid.reddeer.dialog.GenerateDynamicVdbDialog;
+import org.jboss.tools.teiid.reddeer.dialog.GenerateVdbArchiveDialog;
 import org.jboss.tools.teiid.reddeer.editor.DataRolesEditor;
 import org.jboss.tools.teiid.reddeer.editor.DataRolesEditor.PermissionType;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
+import org.jboss.tools.teiid.reddeer.matcher.TableItemMatcher;
 import org.jboss.tools.teiid.reddeer.modeling.ModelColumn;
+import org.jboss.tools.teiid.reddeer.modeling.ModelProcedure;
+import org.jboss.tools.teiid.reddeer.modeling.ModelProcedureParameter;
 import org.jboss.tools.teiid.reddeer.modeling.ModelTable;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
-import org.jboss.tools.teiid.reddeer.wizard.GenerateDynamicVdbWizard;
-import org.jboss.tools.teiid.reddeer.wizard.ModelProjectWizard;
-import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
+import org.jboss.tools.teiid.reddeer.wizard.imports.ImportFromFileSystemWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.ImportProjectWizard;
+import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -74,12 +92,13 @@ public class DynamicVdbTest {
 	@Before
 	public void before() {
 		
-		ImportProjectWizard importWizard = new ImportProjectWizard();
-		importWizard.open();
-		importWizard.setPath(new File("resources/projects/" + PROJECT_NAME).getAbsolutePath())
-					.finish();
+		new ModelExplorer().deleteAllProjectsSafely();
 		
-		new ModelProjectWizard().create(IMPORT_PROJECT_NAME);
+		ImportProjectWizard.openWizard()
+			   .setPath(new File("resources/projects/" + PROJECT_NAME).getAbsolutePath())
+		       .finish();
+		
+		new ModelExplorer().createProject(IMPORT_PROJECT_NAME);
 	}
 
 	@After
@@ -379,492 +398,501 @@ public class DynamicVdbTest {
 				is("customValue"));
 	}
 
-//	@Test
-//	public void importWithUdf() {
-//		String staticVdbName = "UdfProcedureVdb";
-//		String dynamicVdbName = staticVdbName + "-vdb.xml";
-//
-//		importDynamicVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
-//		createArchiveVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
-//
-//		ModelEditor ed = teiidBot.openModelEditor(IMPORT_PROJECT_NAME, PROCEDURE_MODEL);
-//		ModelProcedureParameter returnParam = ed.getProcedureParameter("udfConcatNull", "return");
-//		collector.checkThat("return parameter not created", returnParam, notNullValue());
-//		if (returnParam != null) {
-//			collector.checkThat("return param is not of type RETURN", returnParam.getDirection(), is("RETURN"));
-//		}
-//
-//		ModelProcedureParameter stringLeft = ed.getProcedureParameter("udfConcatNull", "stringLeft");
-//		collector.checkThat("stringLeft parameter not created", stringLeft, notNullValue());
-//		if (stringLeft != null) {
-//			collector.checkThat("stringLeft param is not of type IN", stringLeft.getDirection(), is("IN"));
-//		}
-//
-//		new ModelExplorer().getProject(IMPORT_PROJECT_NAME).getProjectItem(PROCEDURE_MODEL + ".xmi", "udfConcatNull")
-//				.select();
-//
-//		PropertiesView propertiesView = new PropertiesView();
-//		collector.checkThat("UDF Jar path not set",
-//				propertiesView.getProperty("Extension", "relational:UDF Jar Path").getPropertyValue(),
-//				new IsNot<>(new IsEmptyString()));
-//		collector.checkThat("wrong function category",
-//				propertiesView.getProperty("Extension", "relational:Function Category").getPropertyValue(),
-//				is("MY_TESTING_FUNCTION_CATEGORY"));
-//		collector.checkThat("wrong java class",
-//				propertiesView.getProperty("Extension", "relational:Java Class").getPropertyValue(),
-//				is("userdefinedfunctions.MyConcatNull"));
-//		collector.checkThat("wrong java method",
-//				propertiesView.getProperty("Extension", "relational:Java Method").getPropertyValue(),
-//				is("myConcatNull"));
-//
-//		ProblemsView problemsView = new ProblemsView();
-//		collector.checkThat("Errors in imported view model",
-//				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(PROCEDURE_MODEL + ".xmi")),
-//				empty());
-//		collector.checkThat("Errors in imported VDB",
-//				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(staticVdbName + ".vdb")),
-//				empty());
-//
-//	}
-//
-//	@Test
-//	public void importWithCustomProperties() {
-//
-//		String dynamicVdbName = "CustomPropertyVdb-vdb.xml";
-//		String staticVdbName = "CustomPropertyVdb";
-//
-//		importDynamicVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
-//		createArchiveVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
-//
-//		new VDBManager().getVDBEditor(IMPORT_PROJECT_NAME, staticVdbName);
-//		new DefaultCTabItem("Advanced").activate();
-//		new DefaultCTabItem("User Defined Properties").activate();
-//
-//		String propValue = (String) collector.checkSucceeds(new Callable<Object>() {
-//
-//			@Override
-//			public Object call() throws Exception {
-//				DefaultTable table = new DefaultTable();
-//				return table.getItem("lib", 0).getText(1);
-//			}
-//		});
-//
-//		collector.checkThat("wrong property value", propValue, is("test"));
-//	}
-//
-//	@Test
-//	public void importWithMaterializedViews() {
-//
-//		String staticVdbName = "MatViewsVdb";
-//		String dynamicVdbName = staticVdbName + "-vdb.xml";
-//		String viewModelName = "ViewModel";
-//
-//		importDynamicVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
-//		createArchiveVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
-//
-//		teiidBot.openModelEditor(IMPORT_PROJECT_NAME, viewModelName);
-//
-//		PropertiesView propertiesView = new PropertiesView();
-//		for (String tableName : new String[] { "internal_short_ttl", "internal_long_ttl", "external_long_ttl" }) {
-//			new ModelExplorer().getProject(IMPORT_PROJECT_NAME).getProjectItem(viewModelName + ".xmi", tableName)
-//					.select();
-//			collector.checkThat("materialized property not set",
-//					propertiesView.getProperty("Misc", "Materialized").getPropertyValue(), is("true"));
-//		}
-//		collector.checkThat("materialized table property not set",
-//				propertiesView.getProperty("Misc", "Materialized Table").getPropertyValue(),
-//				is("Source.DB.PUBLIC.MAT_VIEW"));
-//
-//		ProblemsView problemsView = new ProblemsView();
-//		collector.checkThat("Errors in imported view model",
-//				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(viewModelName + ".xmi")),
-//				empty());
-//		collector.checkThat("Errors in imported VDB",
-//				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(staticVdbName + ".vdb")),
-//				empty());
-//
-//		String transformation = getTransformation(IMPORT_PROJECT_NAME, viewModelName, "internal_short_ttl")
-//				.replaceAll("\\s+", " ");
-//		collector.checkThat("cache hint not in transformation", transformation,
-//				new StringContains("/*+ cache(ttl:100)*/"));
-//
-//		transformation = getTransformation(IMPORT_PROJECT_NAME, viewModelName, "internal_long_ttl").replaceAll("\\s+",
-//				" ");
-//		collector.checkThat("cache hint not in transformation", transformation,
-//				new StringContains("/*+ cache(ttl:1000)*/"));
-//
-//		// TODO: check all the other materialized properties once TEIIDDES-2745 is resolved
-//	}
-//
-//	@Test
-//	public void importWithTranslatorOverrides() {
-//
-//		String staticVdbName = "TranslatorOverridesVdb";
-//		String dynamicVdbName = staticVdbName + "-vdb.xml";
-//
-//		importDynamicVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
-//		createArchiveVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
-//
-//		VDBEditor vdbEditor = new VDBManager().getVDBEditor(IMPORT_PROJECT_NAME, staticVdbName);
-//
-//		Properties translatorOverrideProperties = vdbEditor.getTranslatorOverrideProperties("postgresOverride");
-//		collector.checkThat("Wrong value for custom property MyCustomProperty",
-//				translatorOverrideProperties.getProperty("MyCustomProperty"), is("customValue"));
-//		collector.checkThat("Wrong value for predefined property TrimStrings",
-//				translatorOverrideProperties.getProperty("Trim string flag"), is("true"));
-//
-//		ProblemsView problemsView = new ProblemsView();
-//		collector.checkThat("Errors in imported VDB",
-//				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(staticVdbName + ".vdb")),
-//				empty());
-//	}
-//
-//	@Test
-//	public void importWithDataRoles() {
-//		String staticVdbName = "DataRolesVdb";
-//		String dynamicVdbName = staticVdbName + "-vdb.xml";
-//		String viewModelNameXmi = VIEW_MODEL + ".xmi";
-//
-//		importDynamicVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
-//		createArchiveVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
-//
-//		VDBEditor vdbEditor = new VDBManager().getVDBEditor(IMPORT_PROJECT_NAME, staticVdbName);
-//
-//		DataRolesEditor dre = vdbEditor.getDataRole("readers");
-//		List<String> roles = dre.getRoles();
-//		collector.checkThat("wrong groups assigned to readers role", roles, contains("readers", "user"));
-//		collector.checkThat("wrong permission for bqtViewModel",
-//				dre.getModelPermission(PermissionType.READ, viewModelNameXmi), is(true));
-//		collector.checkThat("wrong permission for bqtViewModel",
-//				dre.getModelPermission(PermissionType.ALTER, viewModelNameXmi), is(false));
-//		collector.checkThat("wrong permission for bqtViewModel",
-//				dre.getModelPermission(PermissionType.CREATE, viewModelNameXmi), is(false));
-//		collector.checkThat("wrong permission for bqtViewModel",
-//				dre.getModelPermission(PermissionType.DELETE, viewModelNameXmi), is(false));
-//		collector.checkThat("wrong permission for bqtViewModel",
-//				dre.getModelPermission(PermissionType.EXECUTE, viewModelNameXmi), is(false));
-//		collector.checkThat("wrong permission for bqtViewModel",
-//				dre.getModelPermission(PermissionType.UPDATE, viewModelNameXmi), is(false));
-//		// TODO: change the following to int once TEIIDDES-2737 is resolved
-//		collector.checkThat("wrong permission for bqtViewModel.smalla.intnum",
-//				dre.getModelPermission(PermissionType.READ, viewModelNameXmi, "smalla", "intnum : biginteger"),
-//				is(false));
-//		collector.checkThat("wrong permission for bqtViewModel.smallb",
-//				dre.getModelPermission(PermissionType.READ, viewModelNameXmi, "smallb"), is(false));
-//
-//		collector.checkThat("wrong column mask for bqtViewModel.smalla.intnum",
-//				dre.getColumnMask("bqtViewModel.smalla.intnum"), is("CASE WHEN TRUE THEN 'SECRET' END"));
-//		collector.checkThat("wrong condition mask for bqtViewModel.smalla.intnum",
-//				dre.getColumnMaskCondition("bqtViewModel.smalla.intnum"), is(""));
-//		collector.checkThat("wrong column mask for bqtViewModel.smalla.stringnum",
-//				dre.getColumnMask("bqtViewModel.smalla.stringnum"), is("0"));
-//		collector.checkThat("wrong condition mask for bqtViewModel.smalla.stringnum",
-//				dre.getColumnMaskCondition("bqtViewModel.smalla.stringnum"), is("stringnum='1'"));
-//		dre.cancel();
-//
-//		dre = vdbEditor.getDataRole("admins");
-//		roles = dre.getRoles();
-//		collector.checkThat("wrong groups assigned to admins role", roles, contains("admins"));
-//		collector.checkThat("wrong permission for bqtViewModel",
-//				dre.getModelPermission(PermissionType.READ, viewModelNameXmi), is(true));
-//		collector.checkThat("wrong permission for bqtViewModel",
-//				dre.getModelPermission(PermissionType.ALTER, viewModelNameXmi), is(true));
-//		collector.checkThat("wrong permission for bqtViewModel",
-//				dre.getModelPermission(PermissionType.CREATE, viewModelNameXmi), is(true));
-//		collector.checkThat("wrong permission for bqtViewModel",
-//				dre.getModelPermission(PermissionType.DELETE, viewModelNameXmi), is(true));
-//		collector.checkThat("wrong permission for bqtViewModel",
-//				dre.getModelPermission(PermissionType.EXECUTE, viewModelNameXmi), is(true));
-//		collector.checkThat("wrong permission for bqtViewModel",
-//				dre.getModelPermission(PermissionType.UPDATE, viewModelNameXmi), is(true));
-//		dre.cancel();
-//
-//		dre = vdbEditor.getDataRole("updaters");
-//		roles = dre.getRoles();
-//		collector.checkThat("wrong groups assigned to updaters role", roles, contains("updaters"));
-//		collector.checkThat("wrong permission for bqtViewModel",
-//				dre.getModelPermission(PermissionType.READ, viewModelNameXmi), is(true));
-//		collector.checkThat("wrong permission for bqtViewModel",
-//				dre.getModelPermission(PermissionType.ALTER, viewModelNameXmi), is(false));
-//		collector.checkThat("wrong permission for bqtViewModel",
-//				dre.getModelPermission(PermissionType.CREATE, viewModelNameXmi), is(false));
-//		collector.checkThat("wrong permission for bqtViewModel",
-//				dre.getModelPermission(PermissionType.DELETE, viewModelNameXmi), is(false));
-//		collector.checkThat("wrong permission for bqtViewModel",
-//				dre.getModelPermission(PermissionType.EXECUTE, viewModelNameXmi), is(false));
-//		collector.checkThat("wrong permission for bqtViewModel",
-//				dre.getModelPermission(PermissionType.UPDATE, viewModelNameXmi), is(true));
-//		collector.checkThat("wrong permission for bqtViewModel.smalla.intkey",
-//				dre.getModelPermission(PermissionType.READ, viewModelNameXmi, "smalla", "intkey : biginteger"),
-//				is(true));
-//		collector.checkThat("wrong permission for bqtViewModel.smallb.intkey",
-//				dre.getModelPermission(PermissionType.READ, viewModelNameXmi, "smallb", "intkey : biginteger"),
-//				is(true));
-//		collector.checkThat("wrong permission for bqtViewModel.smalla.intnum",
-//				dre.getModelPermission(PermissionType.READ, viewModelNameXmi, "smalla", "intnum : biginteger"),
-//				is(false));
-//		collector.checkThat("wrong permission for bqtViewModel.smallb.intnum",
-//				dre.getModelPermission(PermissionType.READ, viewModelNameXmi, "smallb", "intnum : biginteger"),
-//				is(false));
-//		collector.checkThat("wrong row filter condition for bqtViewModel.smalla",
-//				dre.getRowFilterCondition("bqtViewModel.smalla"), is("booleanvalue=TRUE"));
-//		collector.checkThat("wrong row filter constraint value for bqtViewModel.smalla",
-//				dre.getRowFilterConstraint("bqtViewModel.smalla"), is("true"));
-//		collector.checkThat("wrong row filter condition for bqtViewModel.smallb",
-//				dre.getRowFilterCondition("bqtViewModel.smallb"), is("stringnum='1'"));
-//		collector.checkThat("wrong row filter constraint value for bqtViewModel.smallb",
-//				dre.getRowFilterConstraint("bqtViewModel.smallb"), is("false"));
-//		dre.cancel();
-//
-//		ProblemsView problemsView = new ProblemsView();
-//		collector.checkThat("Errors in imported VDB",
-//				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(staticVdbName + ".vdb")),
-//				empty());
-//	}
-//
-//	@Test
-//	public void importWithForeignKeys() {
-//
-//		String staticVdbName = "FkVdb";
-//		String dynamicVdbName = staticVdbName + "-vdb.xml";
-//		String sourceModelName = "FkModel";
-//		String viewModelName = "FkView";
-//
-//		importDynamicVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
-//		createArchiveVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
-//
-//		ModelEditor ed = teiidBot.openModelEditor(IMPORT_PROJECT_NAME, sourceModelName);
-//
-//		// TODO: create classes for the following in the plugin
-//
-//		// check unique constraint in source model
-//		ed.showTabItem(ModelEditor.TABLE_EDITOR);
-//		ed.showSubTabItem(ModelEditor.UNIQUE_CONSTRAINTS);
-//		TableItem uc = new DefaultTable(0).getItems(new TableItemMatcher(1, "UC")).get(0);
-//		collector.checkThat("column not referenced in unique constraint", uc.getText(3),
-//				new StringContains("SecondID"));
-//		collector.checkThat("column not referenced in unique constraint", uc.getText(3), new StringContains("ThirdID"));
-//
-//		// check foreign key in source model
-//		ed.showSubTabItem(ModelEditor.FOREIGN_KEYS);
-//		TableItem fk = new DefaultTable(0).getItems(new TableItemMatcher(1, "FKI_SECOND_THIRD_ID")).get(0);
-//		collector.checkThat("wrong unique key referenced by fk", fk.getText(6), startsWith("UC"));
-//
-//		// check unique constraint in view model
-//		ed = teiidBot.openModelEditor(IMPORT_PROJECT_NAME, viewModelName);
-//		ed.showTabItem(ModelEditor.TABLE_EDITOR);
-//		ed.showSubTabItem(ModelEditor.UNIQUE_CONSTRAINTS);
-//		uc = new DefaultTable(0).getItems(new TableItemMatcher(1, "UC")).get(0);
-//		collector.checkThat("column not referenced in unique constraint", uc.getText(3),
-//				new StringContains("SecondID"));
-//		collector.checkThat("column not referenced in unique constraint", uc.getText(3), new StringContains("ThirdID"));
-//
-//		// check foreign key in view model
-//		try {
-//			ed.showSubTabItem(ModelEditor.FOREIGN_KEYS);
-//			List<TableItem> fks = new DefaultTable(0).getItems(new TableItemMatcher(1, "FKI_SECOND_THIRD_ID"));
-//			collector.checkThat("wrong unique key referenced by fk", fks.get(0).getText(6), startsWith("UC"));
-//		} catch (CoreLayerException e) {
-//			collector.addError(e);
-//		}
-//
-//		ProblemsView problemsView = new ProblemsView();
-//		collector.checkThat("Errors in imported view model",
-//				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(viewModelName + ".xmi")),
-//				empty());
-//		collector.checkThat("Errors in imported source model",
-//				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(sourceModelName + ".xmi")),
-//				empty());
-//		collector.checkThat("Errors in imported VDB",
-//				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(staticVdbName + ".vdb")),
-//				empty());
-//	}
-//
-//	@Test
-//	public void importWithSourceAndViewModel() {
-//
-//		String staticVdbName = "SourceAndViewVdb";
-//		String dynamicVdbName = staticVdbName + "-vdb.xml";
-//
-//		importDynamicVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
-//		createArchiveVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
-//
-//		VDBEditor vdbEditor = new VDBManager().getVDBEditor(IMPORT_PROJECT_NAME, staticVdbName);
-//		collector.checkThat("wrong data source for source model", vdbEditor.getDataSourceName(BQT_MODEL_NAME + ".xmi"),
-//				is("postgresql92Model"));
-//		vdbEditor.saveAndClose();
-//
-//		List<ModelTable> origSourceTables = getTables(PROJECT_NAME, BQT_MODEL_NAME);
-//		List<ModelTable> origViewTables = getTables(PROJECT_NAME, VIEW_MODEL);
-//		List<ModelTable> importedSourceTables = getTables(IMPORT_PROJECT_NAME, BQT_MODEL_NAME);
-//		List<ModelTable> importedViewTables = getTables(IMPORT_PROJECT_NAME, VIEW_MODEL);
-//
-//		checkTablesSame(origSourceTables, importedSourceTables);
-//		checkTablesSame(origViewTables, importedViewTables);
-//
-//		new ShellMenu("File", "Close All").select();
-//
-//		String transformation = getTransformation(IMPORT_PROJECT_NAME, VIEW_MODEL, "smalla").replaceAll("\\s+", " ");
-//		;
-//		collector.checkThat("Wrong transformation for smalla", transformation,
-//				new RegexMatcher("SELECT \\* FROM postgresql92Model\\.smalla"));
-//
-//		transformation = getTransformation(IMPORT_PROJECT_NAME, VIEW_MODEL, "smallb").replaceAll("\\s+", " ");
-//		;
-//		collector.checkThat("Wrong transformation for smallb", transformation,
-//				new RegexMatcher("SELECT \\* FROM postgresql92Model\\.smallb"));
-//
-//		ProblemsView problemsView = new ProblemsView();
-//		collector.checkThat("Errors in imported view model",
-//				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(VIEW_MODEL + ".xmi")), empty());
-//		collector.checkThat("Errors in imported source model",
-//				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(BQT_MODEL_NAME + ".xmi")),
-//				empty());
-//		collector.checkThat("Errors in imported VDB",
-//				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(staticVdbName + ".vdb")),
-//				empty());
-//	}
-//
-//	@Test
-//	public void importWithRestProcedure() {
-//		String staticVdbName = "RestProcedureVdb";
-//		String dynamicVdbName = staticVdbName + "-vdb.xml";
-//
-//		importDynamicVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
-//		createArchiveVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
-//
-//		ModelEditor ed = teiidBot.openModelEditor(IMPORT_PROJECT_NAME, PROCEDURE_MODEL);
-//		ed.showTabItem(ModelEditor.TABLE_EDITOR);
-//		ed.showSubTabItem(ModelEditor.PROCEDURES);
-//
-//		ModelProcedure modelProcedure = new ModelProcedure(new DefaultTable().getItem("testProc", 1));
-//
-//		collector.checkThat("REST method not set on procedure", modelProcedure.getRestMethod(), is("GET"));
-//		collector.checkThat("REST URI not set on procedure", modelProcedure.getRestUri(), is("test/{p1}"));
-//
-//		ModelColumn modelColumn = ed.getColumns("testProc").get(0);
-//		collector.checkThat("wrong column name", modelColumn.getName(), is("xml_out"));
-//		collector.checkThat("wrong column name", modelColumn.getDatatype(), is("XMLLiteral"));
-//
-//		ed.showTabItem(ModelEditor.TABLE_EDITOR);
-//		ed.showSubTabItem(ModelEditor.PROCEDURE_PARAMETERS);
-//
-//		ModelProcedureParameter modelProcedureParameter = new ModelProcedureParameter(
-//				new DefaultTable().getItem("testProc", 0));
-//		collector.checkThat("wrong parameter name", modelProcedureParameter.getName(), is("p1"));
-//		collector.checkThat("wrong parameter name", modelProcedureParameter.getNativeType(), is("STRING"));
-//		collector.checkThat("wrong parameter name", modelProcedureParameter.getDatatype(), is("string"));
-//
-//		String transformation = getTransformation(IMPORT_PROJECT_NAME, PROCEDURE_MODEL, "testProc").replaceAll("\\s+",
-//				" ");
-//		;
-//		collector.checkThat("Wrong transformation for testProc", transformation,
-//				is("BEGIN SELECT "
-//						+ "XMLELEMENT(NAME test, XMLFOREST(ProcedureModel.testProc.p1 AS elem1, 'elem2' AS elem2)) "
-//						+ "AS xml_out; END"));
-//
-//		ProblemsView problemsView = new ProblemsView();
-//		collector.checkThat("Errors in imported view model",
-//				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(PROCEDURE_MODEL + ".xmi")),
-//				empty());
-//		collector.checkThat("Errors in imported VDB",
-//				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(staticVdbName + ".vdb")),
-//				empty());
-//	}
-//
-//	@Test
-//	public void importAndUpdateModels() {
-//
-//		String staticVdbName = "SourceAndViewSmallerVdb";
-//		String dynamicVdbName = staticVdbName + "-vdb.xml";
-//
-//		importDynamicVdb(PROJECT_NAME, dynamicVdbName);
-//		createArchiveVdb(PROJECT_NAME, dynamicVdbName);
-//
-//		ModelEditor ed = teiidBot.openModelEditor(PROJECT_NAME, VIEW_MODEL);
-//
-//		collector.checkThat("timestampvalue removed from smalla", ed.getColumn("smalla", "timestampvalue"),
-//				notNullValue());
-//		collector.checkThat("doublenum not removed from smalla", ed.getColumn("smalla", "doublenum"), nullValue());
-//		collector.checkThat("c1 not created in newViewA", ed.getColumn("newViewA", "c1"), notNullValue());
-//		collector.checkThat("smallb not removed", ed.getTable("smallb"), nullValue());
-//
-//		ed = teiidBot.openModelEditor(PROJECT_NAME, BQT_MODEL_NAME);
-//		collector.checkThat("timestampvalue removed from smalla", ed.getColumn("smalla", "timestampvalue"),
-//				notNullValue());
-//		collector.checkThat("doublenum not removed from smalla", ed.getColumn("smalla", "doublenum"), nullValue());
-//		collector.checkThat("smallb not removed", ed.getTable("smallb"), nullValue());
-//		collector.checkThat("smallx not created", ed.getTable("smallx"), notNullValue());
-//		collector.checkThat("wrong number of columns created in smallx", ed.getColumns("smallx").size(), is(16));
-//
-//		ProblemsView problemsView = new ProblemsView();
-//		collector.checkThat("Errors in imported view model",
-//				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(VIEW_MODEL + ".xmi")), empty());
-//		collector.checkThat("Errors in imported source model",
-//				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(BQT_MODEL_NAME + ".xmi")),
-//				empty());
-//		collector.checkThat("Errors in imported VDB",
-//				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(staticVdbName + ".vdb")),
-//				empty());
-//	}
-//
-//	private void checkTablesSame(List<ModelTable> expected, List<ModelTable> actual) {
-//		for (ModelTable origTable : expected) {
-//			boolean tableFound = false;
-//			for (ModelTable newTable : actual) {
-//				if (origTable.getName().equals(newTable.getName())) {
-//					tableFound = true;
-//					for (ModelColumn origColumn : origTable.getColumns()) {
-//						boolean columnFound = false;
-//						for (ModelColumn newColumn : newTable.getColumns()) {
-//							if (origColumn.getName().equals(newColumn.getName())) {
-//								columnFound = true;
-//
-//								collector.checkThat("Wrong datatype for column " + newColumn.getName(),
-//										newColumn.getDatatype(), is(origColumn.getDatatype()));
-//								collector.checkThat("Wrong name in source for column " + newColumn.getName(),
-//										newColumn.getNameInSource(), is(origColumn.getNameInSource()));
-//								collector.checkThat("Wrong native type for column " + newColumn.getName(),
-//										newColumn.getNativeType(), is(origColumn.getNativeType()));
-//
-//								break;
-//							}
-//						}
-//						collector.checkThat(
-//								"Column " + origTable.getName() + "." + origColumn.getName() + " not created",
-//								columnFound, is(true));
-//					}
-//					break;
-//				}
-//			}
-//			collector.checkThat("Table " + origTable.getName() + " not created", tableFound, is(true));
-//		}
-//	}
-//
-//	private String getTransformation(String projectName, String viewModelName, String tableName) {
-//		new ModelExplorer().openTransformationDiagram(projectName, viewModelName + ".xmi", tableName);
-//		ModelEditor me = new ModelEditor(viewModelName + ".xmi");
-//		me.showTransformation();
-//		return me.getTransformation();
-//	}
-//
-//	private void importDynamicVdb(String projectName, String dynamicVdbName) {
-//		Properties itemProps = new Properties();
-//		itemProps.setProperty("dirName", teiidBot.toAbsolutePath("resources/dynamic-vdb"));
-//		itemProps.setProperty("intoFolder", projectName);
-//		itemProps.setProperty("file", dynamicVdbName);
-//		itemProps.setProperty("createTopLevel", "false");
-//		new ImportGeneralItemWizard(ImportGeneralItemWizard.Type.FILE_SYSTEM, itemProps).execute();
-//	}
-//
-//	private void createArchiveVdb(String projectName, String dynamicVdbName) {
-//		GenerateVdbArchiveWizard wizard = new ModelExplorer().getModelProject(projectName).getVDB(dynamicVdbName)
-//				.generateVdbArchive();
-//		wizard.next();
-//		wizard.generate();
-//		wizard.finish();
-//	}
-//
+	@Test
+	public void importWithUdf() {
+		String staticVdbName = "UdfProcedureVdb";
+		String dynamicVdbName = staticVdbName + "-vdb.xml";
+
+		importDynamicVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
+		createArchiveVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
+
+		new ModelExplorer().openModelEditor(IMPORT_PROJECT_NAME, PROCEDURE_MODEL + ".xmi");
+		ModelEditor ed = new ModelEditor(PROCEDURE_MODEL + ".xmi");
+		ModelProcedureParameter returnParam = ed.getProcedureParameter("udfConcatNull", "return");
+		collector.checkThat("return parameter not created", returnParam, notNullValue());
+		if (returnParam != null) {
+			collector.checkThat("return param is not of type RETURN", returnParam.getDirection(), is("RETURN"));
+		}
+
+		ModelProcedureParameter stringLeft = ed.getProcedureParameter("udfConcatNull", "stringLeft");
+		collector.checkThat("stringLeft parameter not created", stringLeft, notNullValue());
+		if (stringLeft != null) {
+			collector.checkThat("stringLeft param is not of type IN", stringLeft.getDirection(), is("IN"));
+		}
+
+		new ModelExplorer().getProject(IMPORT_PROJECT_NAME).getProjectItem(PROCEDURE_MODEL + ".xmi", "udfConcatNull")
+				.select();
+
+		PropertiesView propertiesView = new PropertiesView();
+		collector.checkThat("UDF Jar path not set",
+				propertiesView.getProperty("Extension", "relational:UDF Jar Path").getPropertyValue(),
+				new IsNot<>(new IsEmptyString()));
+		collector.checkThat("wrong function category",
+				propertiesView.getProperty("Extension", "relational:Function Category").getPropertyValue(),
+				is("MY_TESTING_FUNCTION_CATEGORY"));
+		collector.checkThat("wrong java class",
+				propertiesView.getProperty("Extension", "relational:Java Class").getPropertyValue(),
+				is("userdefinedfunctions.MyConcatNull"));
+		collector.checkThat("wrong java method",
+				propertiesView.getProperty("Extension", "relational:Java Method").getPropertyValue(),
+				is("myConcatNull"));
+
+		ProblemsView problemsView = new ProblemsView();
+		collector.checkThat("Errors in imported view model",
+				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(PROCEDURE_MODEL + ".xmi")),
+				empty());
+		collector.checkThat("Errors in imported VDB",
+				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(staticVdbName + ".vdb")),
+				empty());
+
+	}
+
+	@Test
+	public void importWithCustomProperties() {
+
+		String dynamicVdbName = "CustomPropertyVdb-vdb.xml";
+		String staticVdbName = "CustomPropertyVdb";
+
+		importDynamicVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
+		createArchiveVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
+
+		new ModelExplorer().getModelProject(IMPORT_PROJECT_NAME).open(staticVdbName + ".vdb");
+		new DefaultCTabItem("Advanced").activate();
+		new DefaultCTabItem("User Defined Properties").activate();
+
+		String propValue = (String) collector.checkSucceeds(new Callable<Object>() {
+
+			@Override
+			public Object call() throws Exception {
+				DefaultTable table = new DefaultTable();
+				return table.getItem("lib", 0).getText(1);
+			}
+		});
+
+		collector.checkThat("wrong property value", propValue, is("test"));
+	}
+
+	@Test
+	public void importWithMaterializedViews() {
+
+		String staticVdbName = "MatViewsVdb";
+		String dynamicVdbName = staticVdbName + "-vdb.xml";
+		String viewModelName = "ViewModel";
+
+		importDynamicVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
+		createArchiveVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
+
+		new ModelExplorer().openModelEditor(IMPORT_PROJECT_NAME, viewModelName + ".xmi");
+
+		PropertiesView propertiesView = new PropertiesView();
+		for (String tableName : new String[] { "internal_short_ttl", "internal_long_ttl", "external_long_ttl" }) {
+			new ModelExplorer().getProject(IMPORT_PROJECT_NAME).getProjectItem(viewModelName + ".xmi", tableName)
+					.select();
+			collector.checkThat("materialized property not set",
+					propertiesView.getProperty("Misc", "Materialized").getPropertyValue(), is("true"));
+		}
+		collector.checkThat("materialized table property not set",
+				propertiesView.getProperty("Misc", "Materialized Table").getPropertyValue(),
+				is("Source.DB.PUBLIC.MAT_VIEW"));
+
+		ProblemsView problemsView = new ProblemsView();
+		collector.checkThat("Errors in imported view model",
+				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(viewModelName + ".xmi")),
+				empty());
+		collector.checkThat("Errors in imported VDB",
+				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(staticVdbName + ".vdb")),
+				empty());
+
+		String transformation = getTransformation(IMPORT_PROJECT_NAME, viewModelName, "internal_short_ttl")
+				.replaceAll("\\s+", " ");
+		collector.checkThat("cache hint not in transformation", transformation,
+				new StringContains("/*+ cache(ttl:100)*/"));
+
+		transformation = getTransformation(IMPORT_PROJECT_NAME, viewModelName, "internal_long_ttl").replaceAll("\\s+",
+				" ");
+		collector.checkThat("cache hint not in transformation", transformation,
+				new StringContains("/*+ cache(ttl:1000)*/"));
+
+		// TODO: check all the other materialized properties once TEIIDDES-2745 is resolved
+	}
+
+	@Test
+	public void importWithTranslatorOverrides() {
+
+		String staticVdbName = "TranslatorOverridesVdb";
+		String dynamicVdbName = staticVdbName + "-vdb.xml";
+
+		importDynamicVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
+		createArchiveVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
+		
+		new ModelExplorer().getModelProject(IMPORT_PROJECT_NAME).open(staticVdbName + ".vdb");
+		VDBEditor vdbEditor = VDBEditor.getInstance(staticVdbName + ".vdb");
+
+		Properties translatorOverrideProperties = vdbEditor.getTranslatorOverrideProperties("postgresOverride");
+		collector.checkThat("Wrong value for custom property MyCustomProperty",
+				translatorOverrideProperties.getProperty("MyCustomProperty"), is("customValue"));
+		collector.checkThat("Wrong value for predefined property TrimStrings",
+				translatorOverrideProperties.getProperty("Trim string flag"), is("true"));
+
+		ProblemsView problemsView = new ProblemsView();
+		collector.checkThat("Errors in imported VDB",
+				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(staticVdbName + ".vdb")),
+				empty());
+	}
+
+	@Test
+	public void importWithDataRoles() {
+		String staticVdbName = "DataRolesVdb";
+		String dynamicVdbName = staticVdbName + "-vdb.xml";
+		String viewModelNameXmi = VIEW_MODEL + ".xmi";
+
+		importDynamicVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
+		createArchiveVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
+
+		new ModelExplorer().getModelProject(IMPORT_PROJECT_NAME).open(staticVdbName + ".vdb");
+		VDBEditor vdbEditor = VDBEditor.getInstance(staticVdbName + ".vdb");
+
+		DataRolesEditor dre = vdbEditor.getDataRole("readers");
+		List<String> roles = dre.getRoles();
+		collector.checkThat("wrong groups assigned to readers role", roles, contains("readers", "user"));
+		collector.checkThat("wrong permission for bqtViewModel",
+				dre.getModelPermission(PermissionType.READ, viewModelNameXmi), is(true));
+		collector.checkThat("wrong permission for bqtViewModel",
+				dre.getModelPermission(PermissionType.ALTER, viewModelNameXmi), is(false));
+		collector.checkThat("wrong permission for bqtViewModel",
+				dre.getModelPermission(PermissionType.CREATE, viewModelNameXmi), is(false));
+		collector.checkThat("wrong permission for bqtViewModel",
+				dre.getModelPermission(PermissionType.DELETE, viewModelNameXmi), is(false));
+		collector.checkThat("wrong permission for bqtViewModel",
+				dre.getModelPermission(PermissionType.EXECUTE, viewModelNameXmi), is(false));
+		collector.checkThat("wrong permission for bqtViewModel",
+				dre.getModelPermission(PermissionType.UPDATE, viewModelNameXmi), is(false));
+		// TODO: change the following to int once TEIIDDES-2737 is resolved
+		collector.checkThat("wrong permission for bqtViewModel.smalla.intnum",
+				dre.getModelPermission(PermissionType.READ, viewModelNameXmi, "smalla", "intnum : biginteger"),
+				is(false));
+		collector.checkThat("wrong permission for bqtViewModel.smallb",
+				dre.getModelPermission(PermissionType.READ, viewModelNameXmi, "smallb"), is(false));
+
+		collector.checkThat("wrong column mask for bqtViewModel.smalla.intnum",
+				dre.getColumnMask("bqtViewModel.smalla.intnum"), is("CASE WHEN TRUE THEN 'SECRET' END"));
+		collector.checkThat("wrong condition mask for bqtViewModel.smalla.intnum",
+				dre.getColumnMaskCondition("bqtViewModel.smalla.intnum"), is(""));
+		collector.checkThat("wrong column mask for bqtViewModel.smalla.stringnum",
+				dre.getColumnMask("bqtViewModel.smalla.stringnum"), is("0"));
+		collector.checkThat("wrong condition mask for bqtViewModel.smalla.stringnum",
+				dre.getColumnMaskCondition("bqtViewModel.smalla.stringnum"), is("stringnum='1'"));
+		dre.cancel();
+
+		dre = vdbEditor.getDataRole("admins");
+		roles = dre.getRoles();
+		collector.checkThat("wrong groups assigned to admins role", roles, contains("admins"));
+		collector.checkThat("wrong permission for bqtViewModel",
+				dre.getModelPermission(PermissionType.READ, viewModelNameXmi), is(true));
+		collector.checkThat("wrong permission for bqtViewModel",
+				dre.getModelPermission(PermissionType.ALTER, viewModelNameXmi), is(true));
+		collector.checkThat("wrong permission for bqtViewModel",
+				dre.getModelPermission(PermissionType.CREATE, viewModelNameXmi), is(true));
+		collector.checkThat("wrong permission for bqtViewModel",
+				dre.getModelPermission(PermissionType.DELETE, viewModelNameXmi), is(true));
+		collector.checkThat("wrong permission for bqtViewModel",
+				dre.getModelPermission(PermissionType.EXECUTE, viewModelNameXmi), is(true));
+		collector.checkThat("wrong permission for bqtViewModel",
+				dre.getModelPermission(PermissionType.UPDATE, viewModelNameXmi), is(true));
+		dre.cancel();
+
+		dre = vdbEditor.getDataRole("updaters");
+		roles = dre.getRoles();
+		collector.checkThat("wrong groups assigned to updaters role", roles, contains("updaters"));
+		collector.checkThat("wrong permission for bqtViewModel",
+				dre.getModelPermission(PermissionType.READ, viewModelNameXmi), is(true));
+		collector.checkThat("wrong permission for bqtViewModel",
+				dre.getModelPermission(PermissionType.ALTER, viewModelNameXmi), is(false));
+		collector.checkThat("wrong permission for bqtViewModel",
+				dre.getModelPermission(PermissionType.CREATE, viewModelNameXmi), is(false));
+		collector.checkThat("wrong permission for bqtViewModel",
+				dre.getModelPermission(PermissionType.DELETE, viewModelNameXmi), is(false));
+		collector.checkThat("wrong permission for bqtViewModel",
+				dre.getModelPermission(PermissionType.EXECUTE, viewModelNameXmi), is(false));
+		collector.checkThat("wrong permission for bqtViewModel",
+				dre.getModelPermission(PermissionType.UPDATE, viewModelNameXmi), is(true));
+		collector.checkThat("wrong permission for bqtViewModel.smalla.intkey",
+				dre.getModelPermission(PermissionType.READ, viewModelNameXmi, "smalla", "intkey : biginteger"),
+				is(true));
+		collector.checkThat("wrong permission for bqtViewModel.smallb.intkey",
+				dre.getModelPermission(PermissionType.READ, viewModelNameXmi, "smallb", "intkey : biginteger"),
+				is(true));
+		collector.checkThat("wrong permission for bqtViewModel.smalla.intnum",
+				dre.getModelPermission(PermissionType.READ, viewModelNameXmi, "smalla", "intnum : biginteger"),
+				is(false));
+		collector.checkThat("wrong permission for bqtViewModel.smallb.intnum",
+				dre.getModelPermission(PermissionType.READ, viewModelNameXmi, "smallb", "intnum : biginteger"),
+				is(false));
+		collector.checkThat("wrong row filter condition for bqtViewModel.smalla",
+				dre.getRowFilterCondition("bqtViewModel.smalla"), is("booleanvalue=TRUE"));
+		collector.checkThat("wrong row filter constraint value for bqtViewModel.smalla",
+				dre.getRowFilterConstraint("bqtViewModel.smalla"), is("true"));
+		collector.checkThat("wrong row filter condition for bqtViewModel.smallb",
+				dre.getRowFilterCondition("bqtViewModel.smallb"), is("stringnum='1'"));
+		collector.checkThat("wrong row filter constraint value for bqtViewModel.smallb",
+				dre.getRowFilterConstraint("bqtViewModel.smallb"), is("false"));
+		dre.cancel();
+
+		ProblemsView problemsView = new ProblemsView();
+		collector.checkThat("Errors in imported VDB",
+				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(staticVdbName + ".vdb")),
+				empty());
+	}
+
+	@Test
+	public void importWithForeignKeys() {
+
+		String staticVdbName = "FkVdb";
+		String dynamicVdbName = staticVdbName + "-vdb.xml";
+		String sourceModelName = "FkModel";
+		String viewModelName = "FkView";
+
+		importDynamicVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
+		createArchiveVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
+
+		new ModelExplorer().openModelEditor(IMPORT_PROJECT_NAME, sourceModelName + ".xmi");
+		ModelEditor ed = new ModelEditor(sourceModelName + ".xmi");
+		// TODO: create classes for the following in the plugin
+
+		// check unique constraint in source model
+		ed.showTabItem(ModelEditor.TABLE_EDITOR);
+		ed.showSubTabItem(ModelEditor.UNIQUE_CONSTRAINTS);
+		TableItem uc = new DefaultTable(0).getItems(new TableItemMatcher(1, "UC")).get(0);
+		collector.checkThat("column not referenced in unique constraint", uc.getText(3),
+				new StringContains("SecondID"));
+		collector.checkThat("column not referenced in unique constraint", uc.getText(3), new StringContains("ThirdID"));
+
+		// check foreign key in source model
+		ed.showSubTabItem(ModelEditor.FOREIGN_KEYS);
+		TableItem fk = new DefaultTable(0).getItems(new TableItemMatcher(1, "FKI_SECOND_THIRD_ID")).get(0);
+		collector.checkThat("wrong unique key referenced by fk", fk.getText(6), startsWith("UC"));
+
+		// check unique constraint in view model
+		new ModelExplorer().openModelEditor(IMPORT_PROJECT_NAME, viewModelName + ".xmi");
+		ed = new ModelEditor(viewModelName + ".xmi");
+		ed.showTabItem(ModelEditor.TABLE_EDITOR);
+		ed.showSubTabItem(ModelEditor.UNIQUE_CONSTRAINTS);
+		uc = new DefaultTable(0).getItems(new TableItemMatcher(1, "UC")).get(0);
+		collector.checkThat("column not referenced in unique constraint", uc.getText(3),
+				new StringContains("SecondID"));
+		collector.checkThat("column not referenced in unique constraint", uc.getText(3), new StringContains("ThirdID"));
+
+		// check foreign key in view model
+		try {
+			ed.showSubTabItem(ModelEditor.FOREIGN_KEYS);
+			List<TableItem> fks = new DefaultTable(0).getItems(new TableItemMatcher(1, "FKI_SECOND_THIRD_ID"));
+			collector.checkThat("wrong unique key referenced by fk", fks.get(0).getText(6), startsWith("UC"));
+		} catch (CoreLayerException e) {
+			collector.addError(e);
+		}
+
+		ProblemsView problemsView = new ProblemsView();
+		collector.checkThat("Errors in imported view model",
+				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(viewModelName + ".xmi")),
+				empty());
+		collector.checkThat("Errors in imported source model",
+				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(sourceModelName + ".xmi")),
+				empty());
+		collector.checkThat("Errors in imported VDB",
+				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(staticVdbName + ".vdb")),
+				empty());
+	}
+
+	@Test
+	public void importWithSourceAndViewModel() {
+
+		String staticVdbName = "SourceAndViewVdb";
+		String dynamicVdbName = staticVdbName + "-vdb.xml";
+
+		importDynamicVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
+		createArchiveVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
+
+		new ModelExplorer().getModelProject(IMPORT_PROJECT_NAME).open(staticVdbName + ".vdb");
+		VDBEditor vdbEditor = VDBEditor.getInstance(staticVdbName + ".vdb");
+		collector.checkThat("wrong data source for source model", vdbEditor.getDataSourceName(BQT_MODEL_NAME + ".xmi"),
+				is("postgresql92Model"));
+		vdbEditor.saveAndClose();
+
+		List<ModelTable> origSourceTables = getTables(PROJECT_NAME, BQT_MODEL_NAME);
+		List<ModelTable> origViewTables = getTables(PROJECT_NAME, VIEW_MODEL);
+		List<ModelTable> importedSourceTables = getTables(IMPORT_PROJECT_NAME, BQT_MODEL_NAME);
+		List<ModelTable> importedViewTables = getTables(IMPORT_PROJECT_NAME, VIEW_MODEL);
+
+		checkTablesSame(origSourceTables, importedSourceTables);
+		checkTablesSame(origViewTables, importedViewTables);
+
+		new ShellMenu("File", "Close All").select();
+
+		String transformation = getTransformation(IMPORT_PROJECT_NAME, VIEW_MODEL, "smalla").replaceAll("\\s+", " ");
+		;
+		collector.checkThat("Wrong transformation for smalla", transformation,
+				new RegexMatcher("SELECT \\* FROM postgresql92Model\\.smalla"));
+
+		transformation = getTransformation(IMPORT_PROJECT_NAME, VIEW_MODEL, "smallb").replaceAll("\\s+", " ");
+		;
+		collector.checkThat("Wrong transformation for smallb", transformation,
+				new RegexMatcher("SELECT \\* FROM postgresql92Model\\.smallb"));
+
+		ProblemsView problemsView = new ProblemsView();
+		collector.checkThat("Errors in imported view model",
+				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(VIEW_MODEL + ".xmi")), empty());
+		collector.checkThat("Errors in imported source model",
+				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(BQT_MODEL_NAME + ".xmi")),
+				empty());
+		collector.checkThat("Errors in imported VDB",
+				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(staticVdbName + ".vdb")),
+				empty());
+	}
+
+	@Test
+	public void importWithRestProcedure() {
+		String staticVdbName = "RestProcedureVdb";
+		String dynamicVdbName = staticVdbName + "-vdb.xml";
+
+		importDynamicVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
+		createArchiveVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
+
+		new ModelExplorer().openModelEditor(IMPORT_PROJECT_NAME, PROCEDURE_MODEL + ".xmi");
+		ModelEditor ed = new ModelEditor(PROCEDURE_MODEL + ".xmi");
+		ed.showTabItem(ModelEditor.TABLE_EDITOR);
+		ed.showSubTabItem(ModelEditor.PROCEDURES);
+
+		ModelProcedure modelProcedure = new ModelProcedure(new DefaultTable().getItem("testProc", 1));
+
+		collector.checkThat("REST method not set on procedure", modelProcedure.getRestMethod(), is("GET"));
+		collector.checkThat("REST URI not set on procedure", modelProcedure.getRestUri(), is("test/{p1}"));
+
+		ModelColumn modelColumn = ed.getColumns("testProc").get(0);
+		collector.checkThat("wrong column name", modelColumn.getName(), is("xml_out"));
+		collector.checkThat("wrong column name", modelColumn.getDatatype(), is("XMLLiteral"));
+
+		ed.showTabItem(ModelEditor.TABLE_EDITOR);
+		ed.showSubTabItem(ModelEditor.PROCEDURE_PARAMETERS);
+
+		ModelProcedureParameter modelProcedureParameter = new ModelProcedureParameter(
+				new DefaultTable().getItem("testProc", 0));
+		collector.checkThat("wrong parameter name", modelProcedureParameter.getName(), is("p1"));
+		collector.checkThat("wrong parameter name", modelProcedureParameter.getNativeType(), is("STRING"));
+		collector.checkThat("wrong parameter name", modelProcedureParameter.getDatatype(), is("string"));
+
+		String transformation = getTransformation(IMPORT_PROJECT_NAME, PROCEDURE_MODEL, "testProc").replaceAll("\\s+",
+				" ");
+		;
+		collector.checkThat("Wrong transformation for testProc", transformation,
+				is("BEGIN SELECT "
+						+ "XMLELEMENT(NAME test, XMLFOREST(ProcedureModel.testProc.p1 AS elem1, 'elem2' AS elem2)) "
+						+ "AS xml_out; END"));
+
+		ProblemsView problemsView = new ProblemsView();
+		collector.checkThat("Errors in imported view model",
+				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(PROCEDURE_MODEL + ".xmi")),
+				empty());
+		collector.checkThat("Errors in imported VDB",
+				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(staticVdbName + ".vdb")),
+				empty());
+	}
+
+	@Test
+	public void importAndUpdateModels() {
+
+		String staticVdbName = "SourceAndViewSmallerVdb";
+		String dynamicVdbName = staticVdbName + "-vdb.xml";
+
+		importDynamicVdb(PROJECT_NAME, dynamicVdbName);
+		createArchiveVdb(PROJECT_NAME, dynamicVdbName);
+
+		//ModelEditor ed = teiidBot.openModelEditor(PROJECT_NAME, VIEW_MODEL);
+		new ModelExplorer().openModelEditor(PROJECT_NAME, VIEW_MODEL + ".xmi");
+		ModelEditor ed = new ModelEditor(VIEW_MODEL + ".xmi");
+
+		collector.checkThat("timestampvalue removed from smalla", ed.getColumn("smalla", "timestampvalue"),
+				notNullValue());
+		collector.checkThat("doublenum not removed from smalla", ed.getColumn("smalla", "doublenum"), nullValue());
+		collector.checkThat("c1 not created in newViewA", ed.getColumn("newViewA", "c1"), notNullValue());
+		collector.checkThat("smallb not removed", ed.getTable("smallb"), nullValue());
+
+		new ModelExplorer().openModelEditor(PROJECT_NAME, BQT_MODEL_NAME + ".xmi");
+		 ed = new ModelEditor(BQT_MODEL_NAME + ".xmi");
+		
+		collector.checkThat("timestampvalue removed from smalla", ed.getColumn("smalla", "timestampvalue"),
+				notNullValue());
+		collector.checkThat("doublenum not removed from smalla", ed.getColumn("smalla", "doublenum"), nullValue());
+		collector.checkThat("smallb not removed", ed.getTable("smallb"), nullValue());
+		collector.checkThat("smallx not created", ed.getTable("smallx"), notNullValue());
+		collector.checkThat("wrong number of columns created in smallx", ed.getColumns("smallx").size(), is(16));
+
+		ProblemsView problemsView = new ProblemsView();
+		collector.checkThat("Errors in imported view model",
+				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(VIEW_MODEL + ".xmi")), empty());
+		collector.checkThat("Errors in imported source model",
+				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(BQT_MODEL_NAME + ".xmi")),
+				empty());
+		collector.checkThat("Errors in imported VDB",
+				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(staticVdbName + ".vdb")),
+				empty());
+	}
+
+	private void checkTablesSame(List<ModelTable> expected, List<ModelTable> actual) {
+		for (ModelTable origTable : expected) {
+			boolean tableFound = false;
+			for (ModelTable newTable : actual) {
+				if (origTable.getName().equals(newTable.getName())) {
+					tableFound = true;
+					for (ModelColumn origColumn : origTable.getColumns()) {
+						boolean columnFound = false;
+						for (ModelColumn newColumn : newTable.getColumns()) {
+							if (origColumn.getName().equals(newColumn.getName())) {
+								columnFound = true;
+
+								collector.checkThat("Wrong datatype for column " + newColumn.getName(),
+										newColumn.getDatatype(), is(origColumn.getDatatype()));
+								collector.checkThat("Wrong name in source for column " + newColumn.getName(),
+										newColumn.getNameInSource(), is(origColumn.getNameInSource()));
+								collector.checkThat("Wrong native type for column " + newColumn.getName(),
+										newColumn.getNativeType(), is(origColumn.getNativeType()));
+
+								break;
+							}
+						}
+						collector.checkThat(
+								"Column " + origTable.getName() + "." + origColumn.getName() + " not created",
+								columnFound, is(true));
+					}
+					break;
+				}
+			}
+			collector.checkThat("Table " + origTable.getName() + " not created", tableFound, is(true));
+		}
+	}
+
+	private String getTransformation(String projectName, String viewModelName, String tableName) {
+		new ModelExplorer().openTransformationDiagram(projectName, viewModelName + ".xmi", tableName);
+		ModelEditor me = new ModelEditor(viewModelName + ".xmi");
+		me.showTransformation();
+		return me.getTransformation();
+	}
+
+	private void importDynamicVdb(String projectName, String dynamicVdbName) {	
+		ImportFromFileSystemWizard.openWizard()
+				.setPath("resources/dynamic-vdb")
+				.setFolder(projectName)
+				.selectFile(dynamicVdbName)
+				.setCreteTopLevelFolder(false)
+				.finish();	
+	}
+
+	private void createArchiveVdb(String projectName, String dynamicVdbName) {
+		GenerateVdbArchiveDialog wizard = new ModelExplorer().generateVdbArchive(projectName, dynamicVdbName);
+		wizard.next()
+				.generate()
+				.finish();
+	}
+
 	private void createVdb(String projectName, String vdbName, String... models) {
 		
 		VdbWizard wizard = new VdbWizard();
@@ -879,13 +907,10 @@ public class DynamicVdbTest {
 	}
 
 	private String createDynamicVdb(String projectName, String staticVdbName, String dynamicVdbName) {
-		GenerateDynamicVdbWizard wizard = new ModelExplorer().generateDynamicVDB(projectName, staticVdbName + ".vdb");
-		wizard.setName(dynamicVdbName);
-		wizard.next();
-		wizard.generate();
-		if (new ShellWithTextIsAvailable("Generate Dynamic VDB Status\", ").test()){
-			new PushButton("OK").click();
-		}
+		GenerateDynamicVdbDialog wizard = new ModelExplorer().generateDynamicVDB(projectName, staticVdbName);
+		wizard.setName(dynamicVdbName)
+				.next()
+				.generate();
 		String contents = wizard.getContents();
 		wizard.finish();
 		return contents;

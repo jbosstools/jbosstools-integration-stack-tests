@@ -2,9 +2,9 @@ package org.jboss.tools.teiid.reddeer;
 
 import java.util.Properties;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 @Deprecated // TODO refactor to TableDialog
@@ -77,14 +77,16 @@ public class Table extends ModelObject {
 	private void fillColumns(Type type, Properties props) {
 		String prop = props.getProperty("cols");
 		if (prop != null) {
-			new SWTWorkbenchBot().tabItem(COLUMNS).activate();
+			//new SWTWorkbenchBot().tabItem(COLUMNS).activate();
+			new DefaultTabItem(COLUMNS).activate();
 			// ALL add, delete, move up, move down
 			setupTableProps(prop);
 		}
 	}
 
 	private void fillProperties(Type type, Properties props) {
-		new SWTWorkbenchBot().tabItem(PROPERTIES).activate();
+		//new SWTWorkbenchBot().tabItem(PROPERTIES).activate();
+		new DefaultTabItem(PROPERTIES).activate();
 		if (type.equals(Type.VIEW)) {
 
 		}

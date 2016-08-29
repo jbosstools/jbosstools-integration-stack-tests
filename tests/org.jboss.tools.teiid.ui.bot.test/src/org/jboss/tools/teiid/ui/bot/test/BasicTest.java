@@ -12,8 +12,8 @@ import org.jboss.tools.teiid.reddeer.ModelClass;
 import org.jboss.tools.teiid.reddeer.ModelType;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
-import org.jboss.tools.teiid.reddeer.wizard.MetadataModelWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.XMLSchemaImportWizard;
+import org.jboss.tools.teiid.reddeer.wizard.newWizard.MetadataModelWizard;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -35,12 +35,13 @@ public class BasicTest {
 		}
 		new ModelExplorer().createProject(PROJECT);
 		
-		XMLSchemaImportWizard wizard = new XMLSchemaImportWizard();
-		wizard.setLocal(true);
-		wizard.setRootPath(new File("resources/xsd").getAbsolutePath());
-		wizard.setSchemas(new String[] { XSD });
-		wizard.setDestination(PROJECT);
-		wizard.execute();
+		XMLSchemaImportWizard.openWizard()
+				.selectLocalImportMode()
+				.nextPage()
+				.setFromDirectory(new File("resources/xsd").getAbsolutePath())
+				.selectSchema(XSD)
+				.setToDirectory(PROJECT)
+				.finish();
 	}
 
 	@AfterClass
@@ -139,12 +140,12 @@ public class BasicTest {
 
 	private void prepareModel(int i, String[] virtDocs) {
 
-		MetadataModelWizard wizard = new MetadataModelWizard();
-		wizard.open();
+		MetadataModelWizard wizard = MetadataModelWizard.openWizard();
 		wizard.setLocation(PROJECT).setModelName(MODEL + i).selectModelClass(ModelClass.XML)
 				.selectModelType(ModelType.VIEW)
-				.selectModelBuilder(org.jboss.tools.teiid.reddeer.ModelBuilder.BUILD_FROM_XML_SCHEMA).next();
-		wizard.selectXMLSchemaFile(new String[] { PROJECT, XSD });
+				.selectModelBuilder(org.jboss.tools.teiid.reddeer.ModelBuilder.BUILD_FROM_XML_SCHEMA)
+				.nextPage()
+				.selectXMLSchemaFile(new String[] { PROJECT, XSD });
 		for (String elem : virtDocs) {
 			wizard.addElement(elem);
 		}

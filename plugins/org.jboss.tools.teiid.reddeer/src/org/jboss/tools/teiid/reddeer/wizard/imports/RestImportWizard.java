@@ -1,6 +1,7 @@
 package org.jboss.tools.teiid.reddeer.wizard.imports;
 
 import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
@@ -18,12 +19,27 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 
 public class RestImportWizard extends TeiidImportWizard {
 
+	private static RestImportWizard INSTANCE;
+
 	private static final String DIALOG_TITLE = "Import From REST Web Service Source";
 	private String rootPath;
 	
-	public RestImportWizard() {
+	private RestImportWizard() {
 		super("Web Service Source >> Source and View Model (REST)");
 		log.info("Rest import wizard is opened");
+	}
+	
+	public static RestImportWizard getInstance(){
+		if(INSTANCE==null){
+			INSTANCE=new RestImportWizard();
+		}
+		return INSTANCE;
+	}
+	
+	public static RestImportWizard openWizard(){
+		RestImportWizard wizard = getInstance();
+		wizard.open();
+		return wizard;
 	}
 	
 	public RestImportWizard activate() {
@@ -114,8 +130,9 @@ public class RestImportWizard extends TeiidImportWizard {
 		new PushButton("OK").click();
 	}
 	
-	@Deprecated
-	public void execute(){
-		//delete after refactor all importers
+	public RestImportWizard nextPage(){
+		log.info("Go to next wizard page");
+		new NextButton().click();
+		return this;
 	}
 }

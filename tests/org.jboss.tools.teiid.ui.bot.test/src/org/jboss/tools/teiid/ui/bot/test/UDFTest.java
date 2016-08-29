@@ -18,8 +18,8 @@ import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
-import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.ImportFromFileSystemWizard;
+import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -57,13 +57,12 @@ public class UDFTest {
 	@Test
 	public void relViewUDF() {
 		// import lib/MyTestUDF.jar
-		ImportFromFileSystemWizard wizard = new ImportFromFileSystemWizard();
-		wizard.open();
-		wizard.setPath(UDF_LIB_PATH)
-			  .setFolder(PROJECT_NAME)
-			  .selectFile(UDF_LIB)
-			  .setCreteTopLevelFolder(true)
-			  .finish();
+		ImportFromFileSystemWizard.openWizard()
+				.setPath(UDF_LIB_PATH)
+				.setFolder(PROJECT_NAME)
+				.selectFile(UDF_LIB)
+				.setCreteTopLevelFolder(true)
+				.finish();
 
 		// create UDF
 		String proc = "udfConcatNull";

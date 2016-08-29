@@ -17,6 +17,8 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
  */
 public class DDLCustomExportWizard extends ExportWizardDialog{
 	
+	private static DDLCustomExportWizard INSTANCE;
+	
 	public static final String DIALOG_TITLE = "Export DDL";
 	
 	public static final String TYPE_IBM = "IBM DB2 DDL";
@@ -27,8 +29,22 @@ public class DDLCustomExportWizard extends ExportWizardDialog{
 	public static final String TYPE_POSTGRESQL = "PostgreSQL DDL";
 	public static final String TYPE_SYBASE = "Sybase DDL";
 
-	public DDLCustomExportWizard() {
+	private DDLCustomExportWizard() {
 		super("Teiid Designer", "Data Definition Language (DDL)");
+		log.info("DDL custom export Wizard is opened");
+	}
+	
+	public static DDLCustomExportWizard getInstance(){
+		if(INSTANCE==null){
+			INSTANCE=new DDLCustomExportWizard();
+		}
+		return INSTANCE;
+	}
+	
+	public static DDLCustomExportWizard openWizard(){
+		DDLCustomExportWizard wizard = getInstance();
+		wizard.open();
+		return wizard;
 	}
 	
 	public DDLCustomExportWizard activate() {
@@ -36,15 +52,23 @@ public class DDLCustomExportWizard extends ExportWizardDialog{
 		return this;
 	}
 	
-	public DDLCustomExportWizard setNameInSource() {
+	public DDLCustomExportWizard setNameInSource(boolean check) {
+		log.info("Set name in source : '" + check + "'");
 		activate();
-		new CheckBox("Generate Names from \'\'Name in Source\'\' (if applicable)").click();
+		CheckBox checkBox = new CheckBox("Generate Names from \'\'Name in Source\'\' (if applicable)");
+		if(check != checkBox.isChecked()){
+			checkBox.click();
+		}
 		return this;
 	}
 	
-	public DDLCustomExportWizard setNativeType() {
+	public DDLCustomExportWizard setNativeType(boolean check) {
+		log.info("Set native type : '" + check + "'");
 		activate();
-		new CheckBox("Generate Types from \'\'Native Type\'\' (if applicable)").click(); 
+		CheckBox checkBox = new CheckBox("Generate Types from \'\'Native Type\'\' (if applicable)");
+		if(check != checkBox.isChecked()){
+			checkBox.click();
+		}
 		return this;
 	}
 	
@@ -52,19 +76,21 @@ public class DDLCustomExportWizard extends ExportWizardDialog{
 	 * @param type - use types from DDLCustomExportWizard.<type>
 	 */
 	public DDLCustomExportWizard setType(String type) {
+		log.info("Set type : '" + type + "'");
 		activate();
 		new LabeledCombo("Type:").setSelection(type);
-		
 		return this;
 	}
 	
 	public DDLCustomExportWizard exportToSQLWorkbook() {
+		log.info("Export to sql workbook");
 		activate();
 		new RadioButton(new DefaultGroup("Export To:"),"SQL Workbook").click();
 		return this;
 	}
 	
 	public DDLCustomExportWizard exportToFile(String location) {
+		log.info("Export to file");
 		activate();
 		new RadioButton(new DefaultGroup("Export To:"),"File").click();
 		new DefaultCombo(new DefaultGroup("Export To:"),0).setText(location);
@@ -72,6 +98,7 @@ public class DDLCustomExportWizard extends ExportWizardDialog{
 	}
 	
 	public DDLCustomExportWizard exportToWorkspace(String Name,String... location) {
+		log.info("Export to workspace");
 		activate();
 		new PushButton("Export to Workspace...").click();
 		new PushButton("Browse...").click();
@@ -84,12 +111,28 @@ public class DDLCustomExportWizard extends ExportWizardDialog{
 	}
 	
 	public DDLCustomExportWizard setLocation(String... location) {
+		log.info("Set location to : '" + location + "'");
 		activate();
 		new PushButton("...").click();
 		new DefaultShell();
 		new DefaultTreeItem(location).select();
 		new PushButton("OK").click();
 		return this;
+	}
+	
+	public DDLCustomExportWizard nextPage(){
+		log.info("Go to next wizard page");
+		super.next();
+		return this;
+	}
+
+	/**
+	 * use nextPage()
+	 */
+	@Deprecated
+	@Override
+	public void next(){
+		super.next();
 	}
 	
 }

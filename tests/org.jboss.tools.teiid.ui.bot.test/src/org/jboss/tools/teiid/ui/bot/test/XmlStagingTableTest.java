@@ -27,8 +27,8 @@ import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ProblemsViewEx;
-import org.jboss.tools.teiid.reddeer.wizard.MetadataModelWizard;
-import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
+import org.jboss.tools.teiid.reddeer.wizard.newWizard.MetadataModelWizard;
+import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -65,17 +65,16 @@ public class XmlStagingTableTest {
 	@Test
 	public void test() throws SQLException {
 		// 1. Create an XML document model using a schema
-		MetadataModelWizard modelWizard = new MetadataModelWizard();
-		modelWizard.open();
-		modelWizard.setLocation(PROJECT_NAME, "views")
+		MetadataModelWizard.openWizard()
+				.setLocation(PROJECT_NAME, "views")
 				.setModelName(VIEW_MODEL.substring(0, 11))
 				.selectModelClass(ModelClass.XML)
 				.selectModelType(ModelType.VIEW)
-				.selectModelBuilder(ModelBuilder.BUILD_FROM_XML_SCHEMA);
-		modelWizard.next();
-		modelWizard.selectXMLSchemaFile(PROJECT_NAME, "schemas", "PublisherSchema.xsd")
-				.addElement("ResultSet");
-		modelWizard.finish();
+				.selectModelBuilder(ModelBuilder.BUILD_FROM_XML_SCHEMA)
+				.nextPage()
+				.selectXMLSchemaFile(PROJECT_NAME, "schemas", "PublisherSchema.xsd")
+				.addElement("ResultSet")
+				.finish();
 
 		// 2. Model XML document without staging table
 		XmlModelEditor editor = new XmlModelEditor(VIEW_MODEL);

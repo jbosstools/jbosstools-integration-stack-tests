@@ -16,11 +16,26 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  */
 public class ImportFromFileSystemWizard extends ImportWizardDialog {
 
-	public ImportFromFileSystemWizard() {
+	private static ImportFromFileSystemWizard INSTANCE;
+
+	private ImportFromFileSystemWizard() {
 		super("General", "File System");
 		log.info("Import item from file wizard is opened");
 	}
 
+	public static ImportFromFileSystemWizard getInstance(){
+		if(INSTANCE==null){
+			INSTANCE=new ImportFromFileSystemWizard();
+		}
+		return INSTANCE;
+	}
+	
+	public static ImportFromFileSystemWizard openWizard(){
+		ImportFromFileSystemWizard wizard = getInstance();
+		wizard.open();
+		return wizard;
+	}
+	
 	public ImportFromFileSystemWizard activate() {
 		new DefaultShell(DIALOG_TITLE);
 		return this;
@@ -66,5 +81,20 @@ public class ImportFromFileSystemWizard extends ImportWizardDialog {
 			checkBox.click();
 		}
 		return this;
+	}
+	
+	public ImportFromFileSystemWizard nextPage(){
+		log.info("Go to next wizard page");
+		super.next();
+		return this;
+	}
+	
+	/**
+	 * use nextPage()
+	 */
+	@Deprecated
+	@Override
+	public void next(){
+		super.next();
 	}
 }

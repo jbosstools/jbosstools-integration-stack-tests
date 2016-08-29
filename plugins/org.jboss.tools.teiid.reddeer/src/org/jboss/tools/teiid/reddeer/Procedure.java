@@ -3,7 +3,6 @@ package org.jboss.tools.teiid.reddeer;
 import java.util.Arrays;
 import java.util.Properties;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
@@ -17,6 +16,7 @@ import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
@@ -145,7 +145,8 @@ public class Procedure extends ModelObject {
 		new ContextMenu("Modeling", "Set Datatype").select();
 
 		Shell shell = new DefaultShell("Select a Datatype");
-		new SWTWorkbenchBot().table().getTableItem(type).select();
+		//new SWTWorkbenchBot().table().getTableItem(type).select();
+		new DefaultTable().getItem(type).select();
 		new PushButton("OK").click();
 		new WaitWhile(new ShellWithTextIsActive(shell.getText()), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
@@ -173,7 +174,8 @@ public class Procedure extends ModelObject {
 		new ContextMenu("Modeling", "Set Datatype").select();
 
 		Shell shell = new DefaultShell("Select a Datatype");
-		new SWTWorkbenchBot().table().getTableItem(type).select();
+		//new SWTWorkbenchBot().table().getTableItem(type).select();
+		new DefaultTable().getItem(type).select();
 		new PushButton("OK").click();
 		new WaitWhile(new ShellWithTextIsActive(shell.getText()), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
@@ -184,7 +186,8 @@ public class Procedure extends ModelObject {
 		new DefaultTreeItem(project, model, procedure).expand();
 		new DefaultTreeItem(project, model, procedure, parameter).select();
 		new ContextMenu("Modeling", "Set Datatype").select();
-		new SWTWorkbenchBot().table().getTableItem(type).select();
+		//new SWTWorkbenchBot().table().getTableItem(type).select();
+		new DefaultTable().getItem(type).select();
 		new PushButton("OK").click();
 		new WaitWhile(new ShellWithTextIsActive("Select a Datatype"), TimePeriod.LONG);
 		new ModelEditor(model).save();
@@ -289,9 +292,11 @@ public class Procedure extends ModelObject {
 	private void fillDescription(String type, Properties props) {
 		String prop = props.getProperty("description");// text of description
 		if (prop != null) {
-			new SWTWorkbenchBot().tabItem(DESCRIPTION).activate();
+			//new SWTWorkbenchBot().tabItem(DESCRIPTION).activate();
+			new DefaultTabItem(DESCRIPTION).activate();
 			// ALL set text
-			new SWTWorkbenchBot().styledText().setText(prop);
+			//new SWTWorkbenchBot().styledText().setText(prop);
+			new DefaultStyledText().setText(prop);
 		}
 
 	}
@@ -300,11 +305,13 @@ public class Procedure extends ModelObject {
 		if (type.equals(Type.RELSRC_PROCEDURE) || type.equals(Type.RELVIEW_PROCEDURE)) {
 			String prop = props.getProperty("includeResultSet");// true
 			if (prop != null) {
-				new SWTWorkbenchBot().tabItem(RESULT_SET).activate();
+				//new SWTWorkbenchBot().tabItem(RESULT_SET).activate();
+				new DefaultTabItem(RESULT_SET).activate();
 				// include
 				new CheckBox("Include").click();
 				// name
-				new SWTWorkbenchBot().text(3).setText(props.getProperty("resultSetName"));// name
+				//new SWTWorkbenchBot().text(3).setText(props.getProperty("resultSetName"));// name
+				new DefaultText(3).setText(props.getProperty("resultSetName"));
 				// add, delete, move up, move down
 				prop = props.getProperty("cols");// colName1,colName2,colName3,...
 				if (prop != null) {

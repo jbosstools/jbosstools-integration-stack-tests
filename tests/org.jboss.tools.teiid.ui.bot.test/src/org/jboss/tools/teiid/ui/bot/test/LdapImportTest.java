@@ -71,20 +71,21 @@ public class LdapImportTest {
 		Properties importProperties = new ResourceFileHelper()
 				.getProperties(new File("resources/importWizard/rhds.properties").getAbsolutePath());
 
-		LdapImportWizard wizard = new LdapImportWizard();
-		wizard.open();
-	    wizard.setConnectionProfile(ConnectionProfileConstants.RHDS)
-			  .setLdapBaseDN(cpProperties.getProperty("principalDnSuffix"))
-			  .setModelName(RHDS_MODEL)
-			  .setProjectFolder(NEW_PROJECT)
-			  .next();
+		LdapImportWizard.openWizard()
+				.setConnectionProfile(ConnectionProfileConstants.RHDS)
+				.setLdapBaseDN(cpProperties.getProperty("principalDnSuffix"))
+				.setModelName(RHDS_MODEL)
+				.setProjectFolder(NEW_PROJECT)
+				.nextPage();
 		String objects;
 		objects = importProperties.getProperty("selectedEntries");
-		wizard.selectEntries(objects.split(","))
-			  .next();
+		LdapImportWizard.getInstance()
+				.selectEntries(objects.split(","))
+				.nextPage();
 		objects = importProperties.getProperty("selectedColumns");
-		wizard.selectColumns(objects.split(","))
-			  .finish();
+		LdapImportWizard.getInstance()
+				.selectColumns(objects.split(","))
+				.finish();
 		
 		ModelExplorer modelExplorer = new ModelExplorer();
 		modelExplorer.open();
@@ -117,20 +118,21 @@ public class LdapImportTest {
 		Properties importProperties = new ResourceFileHelper()
 				.getProperties(new File("resources/importWizard/ldap.properties").getAbsolutePath());
 
-		LdapImportWizard wizard = new LdapImportWizard();
-		wizard.open();
-	    wizard.setConnectionProfile(ConnectionProfileConstants.LDAP)
-			  .setLdapBaseDN(cpProperties.getProperty("principalDnSuffix"))
-			  .setModelName(LDAP_MODEL)
-			  .setProjectFolder(NEW_PROJECT)
-			  .next();
+		LdapImportWizard.openWizard()
+				.setConnectionProfile(ConnectionProfileConstants.LDAP)
+				.setLdapBaseDN(cpProperties.getProperty("principalDnSuffix"))
+				.setModelName(LDAP_MODEL)
+				.setProjectFolder(NEW_PROJECT)
+				.nextPage();
 		String objects;
 		objects = importProperties.getProperty("selectedEntries");
-		wizard.selectEntries(objects.split(","))
-			  .next();
+		LdapImportWizard.getInstance()
+				.selectEntries(objects.split(","))
+				.nextPage();
 		objects = importProperties.getProperty("selectedColumns");
-		wizard.selectColumns(objects.split(","))
-			  .finish();
+		LdapImportWizard.getInstance()
+				.selectColumns(objects.split(","))
+				.finish();
 
 		ModelExplorer modelExplorer = new ModelExplorer();
 		modelExplorer.open();
