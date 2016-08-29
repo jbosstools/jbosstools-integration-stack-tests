@@ -17,9 +17,9 @@ import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidSer
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
-import org.jboss.tools.teiid.reddeer.wizard.WsdlImportWizard;
 import org.junit.After;
 import org.junit.Before;
+import org.jboss.tools.teiid.reddeer.wizard.imports.WsdlImportWizard;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

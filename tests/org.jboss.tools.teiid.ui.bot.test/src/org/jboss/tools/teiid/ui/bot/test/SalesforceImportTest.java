@@ -4,11 +4,11 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
-import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.manager.ServerManager;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
+import org.jboss.tools.teiid.reddeer.wizard.imports.SalesforceImportWizard;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,12 +33,17 @@ public class SalesforceImportTest {
 
 	@Test
 	public void salesforceTest() {
-
 		String model = "SFModel";
 
-		String importProps = teiidBot.toAbsolutePath("resources/importWizard/sf.properties");
-		new ImportManager().importFromSalesForce(MODEL_PROJECT, model, ConnectionProfileConstants.SALESFORCE,
-				teiidBot.getProperties(importProps));
+		SalesforceImportWizard sfWizard = new SalesforceImportWizard();
+		sfWizard.open();
+		sfWizard.setConnectionProfile(ConnectionProfileConstants.SALESFORCE)
+				.next();
+		sfWizard.deselectObjects("Account","Apex Class")
+				.next();
+		sfWizard.setModelName(model)
+				.setProject(MODEL_PROJECT)
+				.finish();
 
 		teiidBot.assertResource(MODEL_PROJECT, model + ".xmi", "AccountFeed");
 		teiidBot.assertFailResource(MODEL_PROJECT, model + ".xmi", "Account");

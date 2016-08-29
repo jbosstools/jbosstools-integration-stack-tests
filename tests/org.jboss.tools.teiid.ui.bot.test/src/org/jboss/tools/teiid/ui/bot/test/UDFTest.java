@@ -12,13 +12,12 @@ import org.jboss.tools.teiid.reddeer.Procedure;
 import org.jboss.tools.teiid.reddeer.Table;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
-import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.manager.PerspectiveAndViewManager;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
-import org.jboss.tools.teiid.reddeer.wizard.ImportGeneralItemWizard;
 import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
+import org.jboss.tools.teiid.reddeer.wizard.imports.ImportFromFileSystemWizard;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -27,6 +26,7 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 @TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = {
 	ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER })
+
 public class UDFTest {
 	
 	private static final String PROJECT_NAME = "Partssupplier";
@@ -36,8 +36,6 @@ public class UDFTest {
 	private static final String UDF_LIB_PATH = "target/proc-udf/MyTestUdf/lib/";
 	private static final String UDF_LIB = "MyTestUdf-1.0-SNAPSHOT.jar";
 	private static final String VDB_NAME = "UDF_VDB";
-
-	private static TeiidBot teiidBot = new TeiidBot();
 	
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;
@@ -57,16 +55,17 @@ public class UDFTest {
 	@Test
 	public void relViewUDF() {
 		// import lib/MyTestUDF.jar
-		Properties props = new Properties();
-		props.setProperty("dirName", teiidBot.toAbsolutePath(UDF_LIB_PATH));
-		props.setProperty("intoFolder", PROJECT_NAME);
-		props.setProperty("file", UDF_LIB);
-		props.setProperty("createTopLevel", "true");
-		new ImportManager().importGeneralItem(ImportGeneralItemWizard.Type.FILE_SYSTEM, props);
+		ImportFromFileSystemWizard wizard = new ImportFromFileSystemWizard();
+		wizard.open();
+		wizard.setPath(UDF_LIB_PATH)
+			  .setFolder(PROJECT_NAME)
+			  .selectFile(UDF_LIB)
+			  .setCreteTopLevelFolder(true)
+			  .finish();
 
 		// create UDF
 		String proc = "udfConcatNull";
-		props = new Properties();
+		Properties props = new Properties();
 		props.setProperty("type", Procedure.Type.RELVIEW_USER_DEFINED_FUNCTION);
 		props.setProperty("params", "stringLeft,stringRight");
 		props.setProperty("returnParam", "concatenatedResult");
@@ -98,5 +97,4 @@ public class UDFTest {
 		jdbchelper.isQuerySuccessful("SELECT * FROM tab", true);
 		jdbchelper.isQuerySuccessful("SELECT udfConcatNull('direct','call') AS c1", true);
 	}
-
 }

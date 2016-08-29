@@ -35,9 +35,9 @@ import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
-import org.jboss.tools.teiid.reddeer.wizard.DDLTeiidExportWizard;
-import org.jboss.tools.teiid.reddeer.wizard.DDLTeiidImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
+import org.jboss.tools.teiid.reddeer.wizard.exports.DDLTeiidExportWizard;
+import org.jboss.tools.teiid.reddeer.wizard.imports.DDLTeiidImportWizard;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -61,7 +61,6 @@ public class ImportDDLtest {
 	private static TeiidBot teiidBot = new TeiidBot();
 
 	private static final String PROJECT_NAME = "DDLimport";
-	private static final String PROJECT_LOCATION = "resources/projects/"+ PROJECT_NAME;
 	private static final String NAME_SOURCE_MODEL = "sourceModel";
 	private static final String NAME_VIEW_ORIGINAL_MODEL = "viewModelOriginal";
 	private static final String NAME_VIEW_MODEL = "viewModel";
@@ -71,7 +70,7 @@ public class ImportDDLtest {
 
 	@BeforeClass
 	public static void openPerspective() {
-		new ModelExplorer().importProject(PROJECT_LOCATION);
+		new ModelExplorer().importProject(PROJECT_NAME);
     	new ModelExplorer().changeConnectionProfile(ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER, PROJECT_NAME, NAME_SOURCE_MODEL);
 	}	
 

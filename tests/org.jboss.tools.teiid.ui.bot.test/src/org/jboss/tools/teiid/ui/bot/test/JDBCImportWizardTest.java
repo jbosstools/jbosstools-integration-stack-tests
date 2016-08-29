@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Properties;
 
 import org.jboss.reddeer.junit.execution.annotation.RunIf;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
@@ -20,13 +19,13 @@ import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
-import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.manager.ServerManager;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
+import org.jboss.tools.teiid.reddeer.wizard.imports.ImportJDBCDatabaseWizard;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -214,9 +213,19 @@ public class JDBCImportWizardTest {
 	
 
 	private void importModel(String modelName, String connectionProfile, String itemList, boolean importProcedures) {
-		Properties iProps = new Properties();
-		iProps.setProperty("itemList", itemList);
-		new ImportManager().importFromDatabase(MODEL_PROJECT, modelName, connectionProfile, iProps, importProcedures);
+		ImportJDBCDatabaseWizard jdbcWizard = new ImportJDBCDatabaseWizard();
+		jdbcWizard.open();
+		jdbcWizard.setConnectionProfile(connectionProfile)
+		          .next();
+		jdbcWizard.setTableTypes(false, true, false)
+				  .procedures(importProcedures)
+		      	  .next();
+		String[] splitList = itemList.split(",");
+		jdbcWizard.setTables(splitList)
+		          .next();
+		jdbcWizard.setFolder(MODEL_PROJECT)
+		   	  	  .setModelName(modelName)
+				  .finish();
 	}
 
 	private void checkImportedTablesInModel(String model, String tableA, String tableB) {
@@ -233,7 +242,7 @@ public class JDBCImportWizardTest {
 		VdbWizard.openVdbWizard()
 				.setLocation(MODEL_PROJECT)
 				.setName(vdb_name)
-				.addModel(MODEL_PROJECT, model)
+				.addModel(MODEL_PROJECT, model + ".xmi")
 				.finish();
 		new ModelExplorer().deployVdb(MODEL_PROJECT, vdb_name);
 		

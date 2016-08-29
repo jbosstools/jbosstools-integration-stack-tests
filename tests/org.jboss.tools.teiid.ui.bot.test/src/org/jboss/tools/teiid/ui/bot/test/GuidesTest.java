@@ -49,10 +49,10 @@ import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidSer
 import org.jboss.tools.teiid.reddeer.view.GuidesView;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.SQLResult;
-import org.jboss.tools.teiid.reddeer.wizard.FlatImportWizard;
-import org.jboss.tools.teiid.reddeer.wizard.ImportJDBCDatabaseWizard;
 import org.jboss.tools.teiid.reddeer.wizard.MetadataModelWizard;
-import org.jboss.tools.teiid.reddeer.wizard.WsdlImportWizard;
+import org.jboss.tools.teiid.reddeer.wizard.imports.FlatImportWizard;
+import org.jboss.tools.teiid.reddeer.wizard.imports.ImportJDBCDatabaseWizard;
+import org.jboss.tools.teiid.reddeer.wizard.imports.WsdlImportWizard;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -378,12 +378,15 @@ public class GuidesTest {
     }
 	
     private void createJDBCSource(String modelName,String projectName,String cp_name){
-    	ImportJDBCDatabaseWizard importJDBC = new ImportJDBCDatabaseWizard();
-		importJDBC.setConnectionProfile(cp_name);
-		importJDBC.setProjectName(projectName);
-		importJDBC.setModelName(modelName);
-		importJDBC.fill();
-		importJDBC.finish();
+    	ImportJDBCDatabaseWizard jdbcWizard = new ImportJDBCDatabaseWizard();
+		jdbcWizard.setConnectionProfile(cp_name)
+		          .next();
+		jdbcWizard.setTableTypes(false, true, false)
+		      	  .next();
+		jdbcWizard.next();
+		jdbcWizard.setFolder(projectName)
+		   	  	  .setModelName(modelName)
+				  .finish();
     }
     private void createFlatLocalSource(String profile, String fileName,String projectName,String modelName, String viewModelName, String viewTableName){
     	FlatImportWizard importWizard = new FlatImportWizard();

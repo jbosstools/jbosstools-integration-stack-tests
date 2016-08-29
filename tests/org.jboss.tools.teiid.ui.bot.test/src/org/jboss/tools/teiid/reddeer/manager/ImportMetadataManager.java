@@ -4,14 +4,13 @@ import java.util.Properties;
 
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.ModelProject;
-import org.jboss.tools.teiid.reddeer.wizard.DDLImportWizard;
-import org.jboss.tools.teiid.reddeer.wizard.MetadataImportWizard;
-import org.jboss.tools.teiid.reddeer.wizard.TeiidConnectionImportWizard;
-import org.jboss.tools.teiid.reddeer.wizard.TeiidImportWizard;
-import org.jboss.tools.teiid.reddeer.wizard.WsdlImportWizard;
-import org.jboss.tools.teiid.reddeer.wizard.WsdlWebImportWizard;
-import org.jboss.tools.teiid.reddeer.wizard.XMLImportWizard;
-import org.jboss.tools.teiid.reddeer.wizard.XMLSchemaImportWizard;
+import org.jboss.tools.teiid.reddeer.wizard.imports.MetadataImportWizard;
+import org.jboss.tools.teiid.reddeer.wizard.imports.TeiidConnectionImportWizard;
+import org.jboss.tools.teiid.reddeer.wizard.imports.TeiidImportWizard;
+import org.jboss.tools.teiid.reddeer.wizard.imports.WsdlImportWizard;
+import org.jboss.tools.teiid.reddeer.wizard.imports.WsdlWebImportWizard;
+import org.jboss.tools.teiid.reddeer.wizard.imports.XMLImportWizard;
+import org.jboss.tools.teiid.reddeer.wizard.imports.XMLSchemaImportWizard;
 import org.jboss.tools.teiid.ui.bot.test.TeiidBot;
 
 public class ImportMetadataManager {
@@ -22,35 +21,6 @@ public class ImportMetadataManager {
 	 */
 	public void importWSDLToWSModel(String name, String project, String wsdl) {
 		new WsdlWebImportWizard().importWsdl(name, project, wsdl);
-	}
-	
-	/**
-	 * Teiid Designer: DDL File >> Source or View Model
-	 * @param wizardType - can be DDLImportWizard.CUSTOM_WIZARD or DDLImportWizard.TEIID_WIZARD
-	 * @param importProps - can contains 'autoselectDialect' and 'modelType'(DDLImportWizard.Source_Type or DDLImportWizard.View_Type)
-	 */
-	@Deprecated //use DDLCustomImportWizard or DDLTeiidImportWizard
-	public void importFromDDL(String projectName, String modelName, String ddlPath, String wizardType, Properties importProps) {
-		if(!(wizardType.equals(DDLImportWizard.CUSTOM_WIZARD)||wizardType.equals(DDLImportWizard.TEIID_WIZARD))){
-			throw new IllegalArgumentException("ddl wizard type is invalid");
-		}
-		DDLImportWizard importWizard = new DDLImportWizard(wizardType);
-		String ddl = teiidBot.toAbsolutePath(ddlPath);// if already absolute, returned as is
-		importWizard.setDdlPath(ddl);
-		importWizard.setModelName(modelName);
-		String modelType = null;
-		if ((modelType = importProps.getProperty("modelType")) != null) {
-			if(!(modelType.equals(DDLImportWizard.Source_Type)||modelType.equals(DDLImportWizard.View_Type))){
-				throw new IllegalArgumentException("model type for ddl wizard is invalid");
-			}
-			importWizard.setModelType(modelType);
-		}
-		String loadedProperty = null;
-		if ((loadedProperty = importProps.getProperty("autoselectDialect")) != null) {
-			importWizard.setAutoselectDialect(Boolean.valueOf(loadedProperty));
-		}
-		importModel(projectName, importWizard);
-		new WorkbenchShell();
 	}
 
 	/**
@@ -133,27 +103,6 @@ public class ImportMetadataManager {
 	public void importFromWSDLToWebService(Properties importProps, String wsdlLocation) {
 		WsdlWebImportWizard importWizard = new WsdlWebImportWizard();
 		importWizard.importWsdl(importProps, wsdlLocation);
-	}
-
-	/**
-	 * Designer Text File >> Source or View Models
-	 * 
-	 * @param projectName
-	 * @param props
-	 */
-	public void importFromDesignerTextFile(String projectName, Properties props) {
-		MetadataImportWizard importWizard = new MetadataImportWizard();
-		String loadedProperty = null;
-		if ((loadedProperty = props.getProperty("importType")) != null) {
-			importWizard.setImportType(loadedProperty);
-		}
-		if ((loadedProperty = props.getProperty("source")) != null) {
-			importWizard.setSource(loadedProperty);
-		}
-		if ((loadedProperty = props.getProperty("target")) != null) {
-			importWizard.setTarget(loadedProperty);
-		}
-		importModel(projectName, importWizard);
 	}
 
 	public static void importModel(String projectName, TeiidImportWizard importWizard) {// import mgr
