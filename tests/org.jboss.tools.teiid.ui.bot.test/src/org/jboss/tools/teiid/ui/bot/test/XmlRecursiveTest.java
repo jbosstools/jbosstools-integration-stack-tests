@@ -93,8 +93,8 @@ public class XmlRecursiveTest {
 		
 		editor.openDocument("SimpleEmployeesDocument");
 		
-		assertTrue(editor.listAttributesNames(EMPLOYEE_MC).size() == 8);
-		assertTrue(editor.listAttributesNames(SUPERVISOR_MC).size() == 0);
+		assertTrue(editor.listMappingClassAttributes(EMPLOYEE_MC).size() == 8);
+		assertTrue(editor.listMappingClassAttributes(SUPERVISOR_MC).size() == 0);
 
 		editor.addAttribute(EMPLOYEE_MC, "mgrID : positiveInteger");
 		
@@ -111,8 +111,8 @@ public class XmlRecursiveTest {
 		AbstractWait.sleep(TimePeriod.SHORT);
 		editor.save();
 		
-		List<String> supAttrs = editor.listAttributesNames(SUPERVISOR_MC);	
-		List<String> empAttrs = editor.listAttributesNames(EMPLOYEE_MC);
+		List<String> supAttrs = editor.listMappingClassAttributes(SUPERVISOR_MC);	
+		List<String> empAttrs = editor.listMappingClassAttributes(EMPLOYEE_MC);
 		assertTrue(supAttrs.size() == 9);
 		assertTrue(empAttrs.size() == 9);
 		for(String empAttr : empAttrs){
@@ -127,7 +127,7 @@ public class XmlRecursiveTest {
 		empTransfEditor.close();
 		
 		editor.save();
-		editor.returnToMappingClassOverview();
+		editor.returnToParentDiagram();
 		
 		// 2.6. Supervisor definition
 		editor.openMappingClass(SUPERVISOR_MC);
@@ -165,7 +165,7 @@ public class XmlRecursiveTest {
 		String recursionQuery = "SELECT * FROM EmpDoc.SimpleEmployeesDocument WHERE SimpleEmployees.Employee.EmpId LIKE '90001%'"; 
 		
 		// 4.1. Test recursion without limit
-		editor.show();
+		editor.activate();
 		RecursionEditor recursionEditor = editor.openRecursiveEditor();		
 		recursionEditor.toggleRecursion(true);
 		recursionEditor.close();
@@ -179,7 +179,7 @@ public class XmlRecursiveTest {
 		assertEquals(output, expectedOutput);	
 		
 		// 4.2. Test recursion with limit and actions when exceeded
-		editor.show();
+		editor.activate();
 		recursionEditor = editor.openRecursiveEditor();		
 		recursionEditor.limitRecursion(3);
 		recursionEditor.setActionWhenLimitExceeded(RecursionEditor.LimitAction.THROW);
@@ -189,7 +189,7 @@ public class XmlRecursiveTest {
 		modelExplorer.deployVdb(PROJECT_NAME, VDB_NAME);
 		assertFalse(jdbcHelper.isQuerySuccessful(recursionQuery,true));
 		
-		editor.show();
+		editor.activate();
 		recursionEditor = editor.openRecursiveEditor();		
 		recursionEditor.setActionWhenLimitExceeded(RecursionEditor.LimitAction.DISCARD);
 		recursionEditor.close();
@@ -200,7 +200,7 @@ public class XmlRecursiveTest {
 		expectedOutput = fileHelper.getXml("XmlRecursiveTest/RecursionWithLimit");
 		assertEquals(output, expectedOutput);
 		
-		editor.show();
+		editor.activate();
 		recursionEditor = editor.openRecursiveEditor();		
 		recursionEditor.setActionWhenLimitExceeded(RecursionEditor.LimitAction.RECORD);
 		recursionEditor.close();

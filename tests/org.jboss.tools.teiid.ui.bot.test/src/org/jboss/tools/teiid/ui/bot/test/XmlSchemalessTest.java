@@ -14,7 +14,6 @@ import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
-import org.jboss.tools.teiid.reddeer.dialog.InputSetEditorDialog;
 import org.jboss.tools.teiid.reddeer.dialog.XmlDocumentBuilderDialog;
 import org.jboss.tools.teiid.reddeer.editor.TableEditor;
 import org.jboss.tools.teiid.reddeer.editor.TransformationEditor;
@@ -88,7 +87,7 @@ public class XmlSchemalessTest {
 		
 		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.NAME_SPACE, (modelPath+"/"+xmlStructureBuilt).split("/"));
 
-		editor.show();
+		editor.activate();
 		TableEditor tableEditor = editor.openTableEditor();
 		tableEditor.openTab(TableEditor.Tabs.XML_NAMESPACES);
 		tableEditor.setCellText(0, "bookListing", "Prefix", "xsd");
@@ -125,7 +124,7 @@ public class XmlSchemalessTest {
 		
 		// 3. Define the transformation
 		modelExplorer.getProject(PROJECT_NAME).refresh();
-		editor.show();
+		editor.activate();;
 		
 		editor.createMappingClass("bookListing","sequence");
 		editor.deleteAttribute("book", "book");
@@ -133,7 +132,7 @@ public class XmlSchemalessTest {
 		TransformationEditor bookTransfEditor = editor.openTransformationEditor();
 		bookTransfEditor.insertAndValidateSql(fileHelper.getSql("XmlSchemalessTest/Book"));
 		bookTransfEditor.close();
-		editor.returnToMappingClassOverview();
+		editor.returnToParentDiagram();
 		
 		AbstractWait.sleep(TimePeriod.SHORT);
 		editor.save();
@@ -185,7 +184,7 @@ public class XmlSchemalessTest {
 		TransformationEditor authTransfEditor = editor.openTransformationEditor();
 		authTransfEditor.insertAndValidateSql(fileHelper.getSql("XmlSchemalessTest/Author"));
 		authTransfEditor.close();
-		editor.returnToMappingClassOverview();
+		editor.returnToParentDiagram();
 		
 		AbstractWait.sleep(TimePeriod.SHORT);
 		editor.save();

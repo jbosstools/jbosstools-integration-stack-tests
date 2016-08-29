@@ -1,7 +1,5 @@
 package org.jboss.tools.teiid.reddeer.matcher;
 
-import java.util.ArrayList;
-
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.gef.EditPart;
@@ -10,27 +8,19 @@ import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 
 /**
- * Decides whether item of model editor is of given type and name. 
+ * Decides whether item of model editor is of given type and name prefix. 
  */
-public class ModelEditorItemMatcher extends BaseMatcher<EditPart> {
-	public static final String MAPPING_CLASS = "<<Mapping Class>>";
-	public static final String TABLE = "<<Table>>";
-	public static final String PROCEDURE = "<<Procedure>>";
-	public static final String XML_DOCUMENT = "<<XML Document>>";
-	public static final String INPUT_SET = "<<Input Set>>";
-	public static final String STAGING_TABLE = "<<Staging Table>>";
-	public static final String INTERFACE = "<<Interface>>";
-	
+public class ModelEditorItemMatcher extends BaseMatcher<EditPart> {	
 	private String type;
-	private String prefix;
+	private String namePrefix;
 	
 	/** 
-	 * @param type ModelEditorItemMatcher.MAPPING_CLASS|TABLE|...
-	 * @param prefix - prefix of name or full name of the item
+	 * @param type - ModelEditor.ItemType.*
+	 * @param name - name of the item
 	 */
-	public ModelEditorItemMatcher(String type, String prefix){
+	public ModelEditorItemMatcher(String type, String namePrefix){
 		this.type = type;
-		this.prefix = prefix;
+		this.namePrefix = namePrefix;
 	}
 	
 	@Override
@@ -41,17 +31,18 @@ public class ModelEditorItemMatcher extends BaseMatcher<EditPart> {
 			String itemClass = item.getClass().toString();
 			if (itemClass.equals("class org.teiid.designer.diagram.ui.notation.uml.part.UmlClassifierEditPart")
 					|| itemClass.equals("class org.teiid.designer.diagram.ui.notation.uml.part.UmlPackageEditPart")) {
-				for (IFigure itemChild : new ArrayList<IFigure>(((GraphicalEditPart) item).getFigure().getChildren())) {
+				for (Object child : ((GraphicalEditPart) item).getFigure().getChildren()) {
+					IFigure itemChild = (IFigure) child;
 					String itemChildClass = itemChild.getClass().toString();
 					if (itemChildClass.equals("class org.teiid.designer.diagram.ui.notation.uml.figure.UmlClassifierHeader")
 							|| itemChildClass.equals("class org.teiid.designer.diagram.ui.figure.LabeledRectangleFigure")) {
-						for (IFigure headerChild : new ArrayList<IFigure>(itemChild.getChildren())) {
+						for (Object headerChild : itemChild.getChildren()) {
 							if (headerChild instanceof Label) {
 								String text = ((Label) headerChild).getText();
 								if (text.equals(type)) {
 									isGivenType = true;
 								}
-								if (text.startsWith(prefix)) {
+								if (text.startsWith(namePrefix)) {
 									startsWithPrefix = true;
 								}
 							}
@@ -65,6 +56,6 @@ public class ModelEditorItemMatcher extends BaseMatcher<EditPart> {
 
 	@Override
 	public void describeTo(Description description) {
-		description.appendText(" is a " + type + " with prefix " + prefix);
+		description.appendText(" is a " + type + " with name prefix " + namePrefix);
 	}
 }

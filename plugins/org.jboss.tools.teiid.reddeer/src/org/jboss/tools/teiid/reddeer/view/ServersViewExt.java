@@ -1,6 +1,6 @@
 package org.jboss.tools.teiid.reddeer.view;
 
-import org.apache.log4j.Logger;
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -11,6 +11,7 @@ import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
+import org.jboss.reddeer.swt.impl.clabel.DefaultCLabel;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -18,7 +19,7 @@ import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.teiid.reddeer.condition.ServerHasState;
-import org.jboss.tools.teiid.reddeer.widget.StatusLineCLabel;
+import org.jboss.tools.teiid.reddeer.matcher.StatusLineMatcher;
 
 /**
  * @author lfabriko
@@ -109,6 +110,28 @@ public class ServersViewExt extends ServersView {
 		ServerType type = determineServerType(serverName);
 		Server server = new ServersView().getServer(serverName);
 		server.start();
+		new WaitUntil(new ServerHasState(serverName), TimePeriod.LONG);
+		new WaitUntil(new ConsoleHasText("- Started"), TimePeriod.LONG);
+
+		// additional steps
+		if (type.equals(ServerType.EDS5)) {
+			connectTeiidInstance(serverName);
+		}
+		new GuidesView().chooseAction("Teiid", "Refresh ");
+		if (new ShellWithTextIsActive("Server Selection").test()){ //if you want to disconnect old instance before switching
+			new DefaultCombo().setSelection(serverName);
+			new PushButton("OK").click();
+		}
+		new DefaultShell("Notification");
+		new PushButton("OK").click();		
+		AbstractWait.sleep(TimePeriod.SHORT);
+		new DefaultShell();
+	}
+	
+	public void restartServer(String serverName) {
+		ServerType type = determineServerType(serverName);
+		Server server = new ServersView().getServer(serverName);
+		server.restart();
 		new WaitUntil(new ServerHasState(serverName), TimePeriod.LONG);
 		new WaitUntil(new ConsoleHasText("- Started"), TimePeriod.LONG);
 
@@ -246,7 +269,8 @@ public class ServersViewExt extends ServersView {
 		for (TreeItem treeItem : vdbs.getItems()) {
 			if (treeItem.getText().startsWith(vdbName)) {
 				treeItem.select();
-				return new StatusLineCLabel().getText();
+				return new DefaultCLabel(new StatusLineMatcher()).getText();
+
 			}
 		}
 		return null;

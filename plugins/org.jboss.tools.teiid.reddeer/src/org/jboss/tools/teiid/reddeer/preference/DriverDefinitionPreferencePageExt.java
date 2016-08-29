@@ -1,24 +1,22 @@
 package org.jboss.tools.teiid.reddeer.preference;
 
-import static org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable.syncExec;
-
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.util.Display;
 import org.jboss.reddeer.eclipse.datatools.ui.DriverTemplate;
 import org.jboss.reddeer.eclipse.datatools.ui.preference.DriverDefinitionPreferencePage;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.DriverDefinitionPage;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.DriverDefinitionWizard;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.swt.api.Tree;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.list.DefaultList;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.teiid.reddeer.extensions.DriverDefinitionExt;
 
 public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferencePage {
@@ -162,11 +160,10 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 		}
 
 		private void addItem(final String item) {
-			syncExec(new VoidResult() {
-
+			Display.syncExec(new Runnable() {
 				@Override
 				public void run() {
-					new SWTWorkbenchBot().list().widget.add(item);
+					new DefaultList().getSWTWidget().add(item);
 				}
 			});
 		}

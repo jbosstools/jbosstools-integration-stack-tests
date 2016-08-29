@@ -43,11 +43,11 @@ import org.jboss.tools.teiid.reddeer.dialog.GenerateDynamicVdbDialog;
 import org.jboss.tools.teiid.reddeer.dialog.GenerateVdbArchiveDialog;
 import org.jboss.tools.teiid.reddeer.editor.DataRolesEditor;
 import org.jboss.tools.teiid.reddeer.editor.DataRolesEditor.PermissionType;
+import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.TableEditor;
 import org.jboss.tools.teiid.reddeer.editor.TransformationEditor;
 import org.jboss.tools.teiid.reddeer.editor.VdbEditor;
-import org.jboss.tools.teiid.reddeer.matcher.ModelEditorItemMatcher;
 import org.jboss.tools.teiid.reddeer.matcher.TableItemMatcher;
 import org.jboss.tools.teiid.reddeer.model.ModelColumn;
 import org.jboss.tools.teiid.reddeer.model.ModelTable;
@@ -88,8 +88,8 @@ public class DynamicVdbTest {
 	private static final String CREATE_FOREIGN_TABLE = "CREATE FOREIGN TABLE ";
 	private static final String CREATE_VIRTUAL_TABLE = "CREATE VIEW ";
 
-	private static final String UDF_LIB_PATH = "target/proc-udf/MyTestUdf/lib/";
-	private static final String UDF_LIB = "MyTestUdf-1.0-SNAPSHOT.jar";
+//	private static final String UDF_LIB_PATH = "target/proc-udf/MyTestUdf/lib/";
+//	private static final String UDF_LIB = "MyTestUdf-1.0-SNAPSHOT.jar";
 
 	@Before
 	public void before() {
@@ -501,13 +501,13 @@ public class DynamicVdbTest {
 				empty());
 
 		RelationalModelEditor editor = new RelationalModelEditor(viewModelName);
-	    TransformationEditor transformationEditor =  editor.openTransformationDiagram(ModelEditorItemMatcher.TABLE, "internal_short_ttl");
+	    TransformationEditor transformationEditor =  editor.openTransformationDiagram(ModelEditor.ItemType.TABLE, "internal_short_ttl");
 
 		collector.checkThat("cache hint not in transformation", transformationEditor.getTransformation().replaceAll("\\s+", " "),
 				new StringContains("/*+ cache(ttl:100)*/"));
 		
-		editor.returnToPackageDiagram();
-		transformationEditor =  editor.openTransformationDiagram(ModelEditorItemMatcher.TABLE, "internal_long_ttl");
+		editor.returnToParentDiagram();
+		transformationEditor =  editor.openTransformationDiagram(ModelEditor.ItemType.TABLE, "internal_long_ttl");
 
 		collector.checkThat("cache hint not in transformation", transformationEditor.getTransformation().replaceAll("\\s+", " "),
 				new StringContains("/*+ cache(ttl:1000)*/"));
@@ -728,13 +728,13 @@ public class DynamicVdbTest {
 		
 		new ModelExplorer().openModelEditor(IMPORT_PROJECT_NAME, VIEW_MODEL + ".xmi");
 		RelationalModelEditor editor = new RelationalModelEditor(VIEW_MODEL + ".xmi");
-	    TransformationEditor transformationEditor =  editor.openTransformationDiagram(ModelEditorItemMatcher.TABLE, "smalla");
+	    TransformationEditor transformationEditor =  editor.openTransformationDiagram(ModelEditor.ItemType.TABLE, "smalla");
 
 		collector.checkThat("Wrong transformation for smalla", transformationEditor.getTransformation().replaceAll("\\s+", " "),
 				new RegexMatcher("SELECT \\* FROM postgresql92Model\\.smalla"));
 
-		editor.returnToPackageDiagram();
-		transformationEditor =  editor.openTransformationDiagram(ModelEditorItemMatcher.TABLE, "smallb");
+		editor.returnToParentDiagram();
+		transformationEditor =  editor.openTransformationDiagram(ModelEditor.ItemType.TABLE, "smallb");
 
 		collector.checkThat("Wrong transformation for smallb", transformationEditor.getTransformation().replaceAll("\\s+", " "),
 				new RegexMatcher("SELECT \\* FROM postgresql92Model\\.smallb"));
@@ -777,7 +777,7 @@ public class DynamicVdbTest {
 		
 		tableEditor.close();
 
-	    TransformationEditor transformationEditor =  editor.openTransformationDiagram(ModelEditorItemMatcher.PROCEDURE, "testProc");
+	    TransformationEditor transformationEditor =  editor.openTransformationDiagram(ModelEditor.ItemType.PROCEDURE, "testProc");
 		
 		collector.checkThat("Wrong transformation for testProc", transformationEditor.getTransformation().replaceAll("\\s+"," "),
 				is("BEGIN SELECT "

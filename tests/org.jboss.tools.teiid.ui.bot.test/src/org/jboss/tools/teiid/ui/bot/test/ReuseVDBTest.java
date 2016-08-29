@@ -22,10 +22,10 @@ import org.jboss.tools.common.reddeer.JiraClient;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
+import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.TransformationEditor;
 import org.jboss.tools.teiid.reddeer.editor.VdbEditor;
-import org.jboss.tools.teiid.reddeer.matcher.ModelEditorItemMatcher;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
@@ -89,7 +89,7 @@ public class ReuseVDBTest {
 				.setFolder(PROJECT_NAME_REUSE)
 				.finish();
 		
-		MetadataModelWizard.openWizard()
+		MetadataModelWizard wizard = MetadataModelWizard.openWizard()
 				.setLocation(PROJECT_NAME_REUSE)
 				.setModelName(VIEW_REUSE_MODEL)
 				.selectModelClass(MetadataModelWizard.ModelClass.RELATIONAL)
@@ -101,7 +101,8 @@ public class ReuseVDBTest {
 		}catch(Exception ex){
 			
 		}
-		MetadataModelWizard.getInstance().finish();
+		wizard.activate()
+				.finish();
 		new RelationalModelEditor(VIEW_REUSE_MODEL + ".xmi").save();
 
 		VdbWizard.openVdbWizard()
@@ -124,8 +125,9 @@ public class ReuseVDBTest {
 			jdbchelper.closeConnection();
 		}
 		/*change sourceVDB version to 2*/
-		modelExplorer.openModelEditor(PROJECT_NAME,VIEW_SOURCE_MODEL+".xmi","version");		
-		TransformationEditor transformation = new RelationalModelEditor(VIEW_SOURCE_MODEL + ".xmi").openTransformationDiagram(ModelEditorItemMatcher.TABLE, "version");
+		new RelationalModelEditor(VIEW_SOURCE_MODEL + ".xmi").close();
+		modelExplorer.openModelEditor(PROJECT_NAME,VIEW_SOURCE_MODEL+".xmi");		
+		TransformationEditor transformation = new RelationalModelEditor(VIEW_SOURCE_MODEL + ".xmi").openTransformationDiagram(ModelEditor.ItemType.TABLE, "version");
 		transformation.setTransformation("SELECT 'version2'");
 		transformation.saveAndValidateSql();
 		

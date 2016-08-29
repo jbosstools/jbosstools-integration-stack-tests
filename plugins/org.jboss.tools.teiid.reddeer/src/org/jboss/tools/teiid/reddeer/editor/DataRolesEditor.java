@@ -3,6 +3,11 @@ package org.jboss.tools.teiid.reddeer.editor;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Rectangle;
+import org.jboss.reddeer.core.handler.WidgetHandler;
+import org.jboss.reddeer.core.util.Display;
+import org.jboss.reddeer.core.util.ResultRunnable;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -15,7 +20,6 @@ import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.tools.teiid.reddeer.widget.PermissionWizardTreeItem;
 
 public class DataRolesEditor {
 
@@ -63,21 +67,62 @@ public class DataRolesEditor {
 		return this;
 	}
 
-	public boolean getModelPermission(PermissionType permType, String... path) {
+	public boolean getModelPermission(PermissionType permType, final String... path) {
 		new DefaultCTabItem("Permissions").activate();
 		new DefaultCTabItem("Model").activate();
-		PermissionWizardTreeItem columnItem = new PermissionWizardTreeItem(path);
-
-		return columnItem.getChecked(getColumnForPermission(permType));
+		
+		final int column = getColumnForPermission(permType);
+		return Display.syncExec(new ResultRunnable<Boolean>() {
+			@Override
+			public Boolean run() {
+				int checkPixel = new DefaultTreeItem(path).getSWTWidget().getImage(column).getImageData().getPixel(4, 9);
+				switch (checkPixel) {
+				case 0x818181:  // PARTIAL
+				case 0x00:  // TRUE
+					return true;
+				case 0xdedddd: // UNAVAILABLE
+				case 0x8cbdef: // FALSE
+					return false;
+				default:
+					throw new RuntimeException("unknown check state (designer changed checkbox images?)");
+				}
+			}
+		});
 	}
 
-	public DataRolesEditor setModelPermission(PermissionType permType, boolean allowed, String... path) {
+	public DataRolesEditor setModelPermission(PermissionType permType, final boolean allowed, final String... path) {
 		new DefaultCTabItem("Permissions").activate();
 		new DefaultCTabItem("Model").activate();
-		PermissionWizardTreeItem columnItem = new PermissionWizardTreeItem(path);
-		columnItem.select();
-
-		columnItem.setChecked(allowed, getColumnForPermission(permType));
+		
+		
+		new DefaultTreeItem(path).select();
+		
+		final int column = getColumnForPermission(permType);
+		Display.syncExec(new Runnable() {
+			@Override
+			public void run() {
+				int checkPixel = new DefaultTreeItem(path).getSWTWidget().getImage(column).getImageData().getPixel(4, 9);
+				boolean checked;
+				switch (checkPixel) {
+				case 0x818181:  // PARTIAL
+				case 0x00:  // TRUE
+					checked = true;
+					break;
+				case 0xdedddd: // UNAVAILABLE
+				case 0x8cbdef: // FALSE
+					checked = false;
+					break;
+				default:
+					throw new RuntimeException("unknown check state (designer changed checkbox images?)");
+				}
+				
+				Rectangle bounds = new DefaultTreeItem(path).getSWTWidget().getBounds(column);
+				if (checked != allowed) {
+					WidgetHandler.getInstance().notifyItemMouse(SWT.MouseDown, 0, new DefaultTreeItem(path).getParent().getSWTWidget(), null,
+							bounds.x + 1, bounds.y + 1, 1);
+				}
+			}
+		});
 		return this;
 	}
 

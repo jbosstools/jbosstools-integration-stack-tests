@@ -4,7 +4,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
-import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.junit.execution.annotation.RunIf;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
@@ -71,9 +70,9 @@ public class ImportModelTest {
 				.nextPage()
 				.finish();
 		
-		assertTrue(modelExplorer.getProject(PROJECT_NAME).containsItem("CustomerHsqldb.xmi"));
-		assertTrue(modelExplorer.getProject(PROJECT_NAME).containsItem("CustomerHsqldb.xmi", "USER"));
-		assertTrue(modelExplorer.getProject(PROJECT_NAME).containsItem("CustomerHsqldb.xmi", "ADDRESS"));
+		assertTrue(modelExplorer.containsItem(PROJECT_NAME,"CustomerHsqldb.xmi"));
+		assertTrue(modelExplorer.containsItem(PROJECT_NAME,"CustomerHsqldb.xmi", "USER"));
+		assertTrue(modelExplorer.containsItem(PROJECT_NAME,"CustomerHsqldb.xmi", "ADDRESS"));
 	}
 
 	@Test
@@ -84,17 +83,15 @@ public class ImportModelTest {
 		MetadataImportWizard.openWizard()
 				.setImportType(MetadataImportWizard.TYPE_RELATIONAL_MODEL)
 				.nextPage()
-				.setName(target)
 				.setPathToFile(source)
-				.setProject(PROJECT_NAME)
+				.setProject(PROJECT_NAME, target)
 				.finish();
 		
-		Project project = modelExplorer.getProject(PROJECT_NAME);
-		assertTrue(project.containsItem(target));
-		assertTrue(project.containsItem(target, "ProductSymbols"));
-		assertTrue(project.containsItem(target, "ProductData"));
-		assertTrue(project.containsItem(target, "getProductInfo"));
-		assertTrue(project.containsItem(target, "ProductIDIndex"));
+		assertTrue(modelExplorer.containsItem(PROJECT_NAME,target));
+		assertTrue(modelExplorer.containsItem(PROJECT_NAME,target, "ProductSymbols"));
+		assertTrue(modelExplorer.containsItem(PROJECT_NAME,target, "ProductData"));
+		assertTrue(modelExplorer.containsItem(PROJECT_NAME,target, "getProductInfo"));
+		assertTrue(modelExplorer.containsItem(PROJECT_NAME,target, "ProductIDIndex"));
 	}
 
 	@Test
@@ -118,12 +115,11 @@ public class ImportModelTest {
 				.nextPage()
 				.finish();
 
-		Project project = modelExplorer.getProject(PROJECT_NAME);
-		assertTrue(project.containsItem("Item.xmi"));
-		assertTrue(project.containsItem("Item.xmi", "getTextFiles"));
-		assertTrue(project.containsItem("Item.xmi",  "getTextFiles", "Result"));
-		assertTrue(project.containsItem("ViewModel.xmi"));
-		assertTrue(project.containsItem("ViewModel.xmi", "new_table"));
+		assertTrue(modelExplorer.containsItem(PROJECT_NAME,"Item.xmi"));
+		assertTrue(modelExplorer.containsItem(PROJECT_NAME,"Item.xmi", "getTextFiles"));
+		assertTrue(modelExplorer.containsItem(PROJECT_NAME,"Item.xmi",  "getTextFiles", "Result"));
+		assertTrue(modelExplorer.containsItem(PROJECT_NAME,"ViewModel.xmi"));
+		assertTrue(modelExplorer.containsItem(PROJECT_NAME,"ViewModel.xmi", "new_table"));
 	}
 
 	@Test
@@ -150,12 +146,11 @@ public class ImportModelTest {
 				.setViewTableName("AccountTable")
 				.finish();
 		
-		Project project = modelExplorer.getProject(PROJECT_NAME);
-		assertTrue(project.containsItem("AccountSource.xmi"));
-		assertTrue(project.containsItem("AccountSource.xmi", "getTextFiles"));
-		assertTrue(project.containsItem("AccountSource.xmi", "getTextFiles", "Result"));
-		assertTrue(project.containsItem("AccountView.xmi"));
-		assertTrue(project.containsItem("AccountView.xmi", "AccountTable"));
+		assertTrue(modelExplorer.containsItem(PROJECT_NAME,"AccountSource.xmi"));
+		assertTrue(modelExplorer.containsItem(PROJECT_NAME,"AccountSource.xmi", "getTextFiles"));
+		assertTrue(modelExplorer.containsItem(PROJECT_NAME,"AccountSource.xmi", "getTextFiles", "Result"));
+		assertTrue(modelExplorer.containsItem(PROJECT_NAME,"AccountView.xmi"));
+		assertTrue(modelExplorer.containsItem(PROJECT_NAME,"AccountView.xmi", "AccountTable"));
 	}
 	
 	@Test
@@ -168,8 +163,8 @@ public class ImportModelTest {
 				.selectSchema("EmployeesSchema.xsd", "BookDatatypes.xsd")
 				.finish();
 		
-		assertTrue(modelExplorer.getProject(PROJECT_NAME).containsItem("EmployeesSchema.xsd"));
-		assertTrue(modelExplorer.getProject(PROJECT_NAME).containsItem("BookDatatypes.xsd"));
+		assertTrue(modelExplorer.containsItem(PROJECT_NAME,"EmployeesSchema.xsd"));
+		assertTrue(modelExplorer.containsItem(PROJECT_NAME,"BookDatatypes.xsd"));
 	
 		XMLSchemaImportWizard.openWizard()
 				.selectRemoteImportMode()
@@ -178,7 +173,7 @@ public class ImportModelTest {
 				.addDependentSchemas(false)
 				.finish();
 		
-		assertTrue(modelExplorer.getProject(PROJECT_NAME).containsItem("jboss-common_6_0.xsd"));
+		assertTrue(modelExplorer.containsItem(PROJECT_NAME,"jboss-common_6_0.xsd"));
 	}
 
 	@Test
@@ -207,13 +202,12 @@ public class ImportModelTest {
 				.addResponseElement("sayHello","sayHelloResponse/sequence/return")
 				.finish();
 		
-		Project project = modelExplorer.getProject(PROJECT_NAME);
-		assertTrue(project.containsItem("HelloService.xmi"));
-		assertTrue(project.containsItem("HelloService.xmi", "invoke"));
-		assertTrue(project.containsItem("HelloServiceView.xmi"));
-		assertTrue(project.containsItem("HelloServiceView.xmi", "sayHello"));
-		assertTrue(project.containsItem("HelloServiceView.xmi", "sayHello_request"));
-		assertTrue(project.containsItem("HelloServiceView.xmi", "sayHello_response"));
+		assertTrue(modelExplorer.containsItem(PROJECT_NAME,"HelloService.xmi"));
+		assertTrue(modelExplorer.containsItem(PROJECT_NAME,"HelloService.xmi", "invoke"));
+		assertTrue(modelExplorer.containsItem(PROJECT_NAME,"HelloServiceView.xmi"));
+		assertTrue(modelExplorer.containsItem(PROJECT_NAME,"HelloServiceView.xmi", "sayHello"));
+		assertTrue(modelExplorer.containsItem(PROJECT_NAME,"HelloServiceView.xmi", "sayHello_request"));
+		assertTrue(modelExplorer.containsItem(PROJECT_NAME,"HelloServiceView.xmi", "sayHello_response"));
 	}
 
 	@Test
@@ -248,7 +242,7 @@ public class ImportModelTest {
 				.nextPage()
 				.finish();
 
-		assertTrue(modelExplorer.getProject(PROJECT_NAME).containsItem("WsdlToWS.xmi"));
-		assertTrue(modelExplorer.getProject(PROJECT_NAME).containsItem("WsdlToWS2Responses.xmi"));
+		assertTrue(modelExplorer.containsItem(PROJECT_NAME,"WsdlToWS.xmi"));
+		assertTrue(modelExplorer.containsItem(PROJECT_NAME,"WsdlToWS2Responses.xmi"));
 	}
 }

@@ -3,7 +3,6 @@ package org.jboss.tools.teiid.ui.bot.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
-
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;

@@ -47,9 +47,9 @@ public class SalesforceImportTest {
 				.setProject(MODEL_PROJECT)
 				.finish();
 
-		assertTrue(new ModelExplorer().getProject(MODEL_PROJECT).containsItem(model + ".xmi", "AccountFeed"));
-		assertFalse(new ModelExplorer().getProject(MODEL_PROJECT).containsItem(model + ".xmi", "Account"));
-		assertFalse(new ModelExplorer().getProject(MODEL_PROJECT).containsItem(model + ".xmi", "Apex Class"));
+		assertTrue(new ModelExplorer().containsItem(MODEL_PROJECT,model + ".xmi", "AccountFeed"));
+		assertFalse(new ModelExplorer().containsItem(MODEL_PROJECT,model + ".xmi", "Account"));
+		assertFalse(new ModelExplorer().containsItem(MODEL_PROJECT,model + ".xmi", "Apex Class"));
 
 		// old TD(prior to 9.0.4) needs table name "salesforce.Case_". From TD 9.0.4 there is no schema "salesforce"
 		// when importing from SF.

@@ -6,25 +6,22 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalEditPart;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-import org.hamcrest.Factory;
 
 /**
- * This matcher tells if a particular EditPart is a Transformation figure.
- * 
- * @author apodhrad
- * 
+ * Decides whether item of model editor is Transformation Arrow.
  */
-public class IsTransformation extends BaseMatcher<EditPart> {
-
-	public static final int WIDTH = 40;
-	public static final int HEIGHT = 60;
+public class TransformationArrowMatcher extends BaseMatcher<EditPart> {
+	
+	public static TransformationArrowMatcher getInstance(){
+		return new TransformationArrowMatcher();
+	}
 
 	@Override
 	public boolean matches(Object item) {
 		if (item instanceof GraphicalEditPart) {
 			IFigure figure = ((GraphicalEditPart) item).getFigure();
 			Rectangle rectangle = figure.getBounds().getCopy();
-			return rectangle.width == WIDTH && rectangle.height == HEIGHT;
+			return rectangle.width == 40 && rectangle.height == 60;
 		}
 		return false;
 	}
@@ -33,10 +30,4 @@ public class IsTransformation extends BaseMatcher<EditPart> {
 	public void describeTo(Description description) {
 		description.appendText("is a transformation edit part");
 	}
-
-	@Factory
-	public static IsTransformation isTransformation() {
-		return new IsTransformation();
-	}
-
 }
