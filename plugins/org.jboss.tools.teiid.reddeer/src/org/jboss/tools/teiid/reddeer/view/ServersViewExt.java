@@ -1,8 +1,6 @@
 package org.jboss.tools.teiid.reddeer.view;
 
 import org.apache.log4j.Logger;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.forms.finder.SWTFormsBot;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -23,13 +21,10 @@ import org.jboss.tools.teiid.reddeer.condition.ServerHasState;
 import org.jboss.tools.teiid.reddeer.widget.StatusLineCLabel;
 
 /**
- * 
  * @author lfabriko
- *
  */
 public class ServersViewExt extends ServersView {
 
-	private static final String OPEN_LAUNCH_CONFIG = "Open launch configuration";
 	private static final Logger log = Logger.getLogger(ServersView.class);
 	public static final String DV6_PREFIX_URL = "mm://localhost:9999";
 	public static final String EDS5_PREFIX_URL = "mms://localhost:31443";
@@ -45,37 +40,6 @@ public class ServersViewExt extends ServersView {
 
 	public ServersViewExt() {
 		super();
-	}
-
-	/*
-	 * public void editLaunchConfigVMArgs(String serverName, String newText){
-	 * 
-	 * }
-	 */
-
-	public void editLaunchConfigProgramArgs(String serverName, String appendedText) {
-		openServerOverview(serverName);
-
-		new SWTFormsBot().hyperlink(OPEN_LAUNCH_CONFIG).click();
-		String text = new SWTWorkbenchBot().text(1).getText();
-		new SWTWorkbenchBot().text(1).setText(text + " " + appendedText);
-		new PushButton("Apply").click();
-		new PushButton("OK").click();
-		// close the configuration tab
-		new SWTWorkbenchBot().cTabItem(serverName).close();
-	}
-
-	/*
-	 * public void refreshTeiidInstance(String serverName){
-	 * 
-	 * }
-	 */
-
-	private void openServerOverview(String serverName) {
-		String state = new ServersView().getServer(serverName).getLabel().getState().getText();
-		new DefaultTreeItem(serverName + "  [" + state + "]").select();
-		new ContextMenu("Open").select();
-		new SWTWorkbenchBot().cTabItem();
 	}
 
 	public boolean isVDBDeployed(String serverName, ServerType serverType, String vdbName) {

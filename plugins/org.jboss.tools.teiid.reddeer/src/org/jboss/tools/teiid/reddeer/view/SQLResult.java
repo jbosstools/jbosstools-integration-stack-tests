@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.api.TreeItem;
@@ -28,8 +27,8 @@ public class SQLResult {
 
 	public int getCount() {
 		resultRow.doubleClick();
-		new SWTWorkbenchBot().cTabItem("Result1").activate();
-		return new SWTWorkbenchBot().table().rowCount();
+		new DefaultCTabItem("Result1").activate();
+		return new DefaultTable().rowCount();
 	}
 
 	/**

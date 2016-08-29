@@ -18,7 +18,7 @@ import org.jboss.tools.teiid.reddeer.dialog.InputSetEditorDialog;
 import org.jboss.tools.teiid.reddeer.dialog.XmlDocumentBuilderDialog;
 import org.jboss.tools.teiid.reddeer.editor.TableEditor;
 import org.jboss.tools.teiid.reddeer.editor.TransformationEditor;
-import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
+import org.jboss.tools.teiid.reddeer.editor.VdbEditor;
 import org.jboss.tools.teiid.reddeer.editor.XmlModelEditor;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
@@ -179,9 +179,9 @@ public class XmlSchemalessTest {
 		editor.createMappingClass("bookListing","sequence [MC: book]","book","sequence","authors","sequence");
 		editor.deleteAttribute("author", "author");
 		editor.openMappingClass("author");
-		InputSetEditorDialog inputSetEditor = editor.openInputSetEditor();
-		inputSetEditor.addNewInputParam("book","isbn : string");
-		inputSetEditor.finish();
+		editor.openInputSetEditor()
+				.addNewInputParam("book","isbn : string")
+				.finish();
 		TransformationEditor authTransfEditor = editor.openTransformationEditor();
 		authTransfEditor.insertAndValidateSql(fileHelper.getSql("XmlSchemalessTest/Author"));
 		authTransfEditor.close();
@@ -193,7 +193,7 @@ public class XmlSchemalessTest {
 		new ProblemsViewEx().checkErrors();
  		
  		//6. Query the expanded model
- 		VDBEditor.getInstance(VDB_NAME).synchronizeAll();
+ 		VdbEditor.getInstance(VDB_NAME).synchronizeAll();
  		modelExplorer.deployVdb(PROJECT_NAME, VDB_NAME);
  		
  		output = jdbcHelper.executeQueryWithXmlStringResult("SELECT * FROM bookListingDocument");

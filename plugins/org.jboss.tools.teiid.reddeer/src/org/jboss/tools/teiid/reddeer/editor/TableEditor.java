@@ -16,14 +16,14 @@ import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.ccombo.DefaultCCombo;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 
-public class TableEditor extends AbstractModelEditor {
+public class TableEditor extends DefaultEditor {
 	private static final String TABLE_EDITOR = "Table Editor";
 	
 	public static class Tabs{
@@ -46,13 +46,14 @@ public class TableEditor extends AbstractModelEditor {
 		public static final String UNIQUE_CONSTRAINTS = "Unique Constraints";
 	}
 	
-	public TableEditor(String title){
-		super(title);
+	private AbstractModelEditor parent;
+	
+	public TableEditor(String name){
+		super(name);
 		new DefaultCTabItem(TABLE_EDITOR).activate();
 		AbstractWait.sleep(TimePeriod.SHORT);
 	}
-
-	@Override
+	
 	public void close() {
 		new DefaultCTabItem(new DefaultCTabItem(0).getText()).activate();
 	}
@@ -175,7 +176,7 @@ public class TableEditor extends AbstractModelEditor {
 		} catch (SWTLayerException e) {	
 			// shell not opened -> continue
 		}
-		this.show();
+		activate();
 	}
 		
 	/**

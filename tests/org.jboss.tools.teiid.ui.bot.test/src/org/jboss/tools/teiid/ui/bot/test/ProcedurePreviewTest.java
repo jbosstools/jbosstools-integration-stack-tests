@@ -4,22 +4,28 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
+import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.junit.execution.annotation.RunIf;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
+import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.dialog.TableDialog;
 import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
+import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
+import org.jboss.tools.teiid.reddeer.view.SQLResult;
 import org.jboss.tools.teiid.reddeer.wizard.ProcedureWizard;
+import org.jboss.tools.teiid.reddeer.wizard.imports.ImportFromFileSystemWizard;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -75,7 +81,7 @@ public class ProcedurePreviewTest {
 		new ModelExplorer().previewModelItem(params, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi", procedureName);
 		String query = "select * from ( exec \"" + MODEL_VIEW_NAME + "\".\"" + procedureName + "\"('P300') ) AS X_X";
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		assertTrue(new ModelExplorer().checkPreviewOfModelObject(query));
+		assertTrue(checkPreviewOfModelObject(query));
 	}
 
 	/**
@@ -87,12 +93,12 @@ public class ProcedurePreviewTest {
 	@RunIf(conditionClass = IssueIsClosed.class)
 	public void relViewUDF() {
 		// import lib/MyTestUDF.jar
-//		ImportFromFileSystemWizard.openWizard()
-//				.setPath(UDF_LIB_PATH)
-//				.setFolder(PROJECT_NAME)
-//				.selectFile(UDF_LIB)
-//				.setCreteTopLevelFolder(true)
-//				.finish();
+		ImportFromFileSystemWizard.openWizard()
+				.setPath(UDF_LIB_PATH)
+				.setFolder(PROJECT_NAME)
+				.selectFile(UDF_LIB)
+				.setCreteTopLevelFolder(true)
+				.finish();
 
 		new ModelExplorer().addChildToModelItem(ModelExplorer.ChildType.PROCEDURE, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi");
 		ProcedureWizard.createUserDefinedFunction()
@@ -117,6 +123,19 @@ public class ProcedurePreviewTest {
 
 		new ModelExplorer().previewModelItem(null, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi", tableName);
 		String previewQuery = "select * from \"" + MODEL_VIEW_NAME + "\".\"" + tableName + "\"";
-		assertTrue(new ModelExplorer().checkPreviewOfModelObject(previewQuery));
+		assertTrue(checkPreviewOfModelObject(previewQuery));
+	}
+	
+	/**
+	 * Checks that preview succeed.
+	 * @param previewSQL - specifies preview record
+	 */
+	private boolean checkPreviewOfModelObject(String previewSQL) {
+		// wait while is in progress
+		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
+		// wait while dialog Preview data... is active
+		new WaitWhile(new ShellWithTextIsActive(new RegexMatcher("Preview.*")), TimePeriod.LONG);
+		SQLResult result = DatabaseDevelopmentPerspective.getInstance().getSqlResultsView().getByOperation(previewSQL);
+		return result.getStatus().equals(SQLResult.STATUS_SUCCEEDED);
 	}
 }

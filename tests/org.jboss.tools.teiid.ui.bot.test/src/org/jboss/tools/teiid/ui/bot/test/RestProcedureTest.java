@@ -25,7 +25,7 @@ import org.jboss.tools.teiid.reddeer.dialog.GenerateRestProcedureDialog;
 import org.jboss.tools.teiid.reddeer.dialog.ProcedureViewDialog;
 import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.TableEditor;
-import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
+import org.jboss.tools.teiid.reddeer.editor.VdbEditor;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
@@ -117,7 +117,7 @@ public class RestProcedureTest {
 				.addModel(PROJECT_NAME, VIEW_MODEL)
 				.finish();
 		
-		VDBEditor.getInstance(vdb).setGenerateRestWar(true).save();		
+		VdbEditor.getInstance(vdb).setGenerateRestWar(true).save();		
 		
 		modelExplorer.deployVdb(PROJECT_NAME, vdb);
 		AbstractWait.sleep(TimePeriod.getCustom(5));

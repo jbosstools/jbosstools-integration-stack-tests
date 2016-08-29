@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
@@ -25,51 +22,42 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.teiid.reddeer.widget.TeiidEditorTableItem;
 
-public class VDBEditor extends SWTBotEditor {
+public class VdbEditor extends DefaultEditor {
 
-	public VDBEditor(String name) {
-		super(new SWTWorkbenchBot().editorByTitle(name).getReference(), new SWTWorkbenchBot());
+	public VdbEditor(String name) {
+		super(name);
 	}
 
-	public static VDBEditor getInstance(String name) {
+	public static VdbEditor getInstance(String name) {
 		name = (name.contains(".vdb")) ? name : name + ".vdb";
-		VDBEditor editor = new VDBEditor(name);
-		editor.show();
+		VdbEditor editor = new VdbEditor(name);
+		editor.activate();
 		return editor;
 	}
+	
+	public void saveAndClose(){
+		save();
+		close();
+	}
 
-	/**
-	 * 
-	 * @param projectName
-	 * @param modelXmi
-	 *            whole name (with ending)
-	 */
 	public void addModel(String projectName, String modelXmi) {
-		if (!modelXmi.contains(".")) {
-			modelXmi = modelXmi + ".xmi";
-		}
-		new SWTWorkbenchBot().toolbarButtonWithTooltip("Add model").click();
-
-		SWTBotShell shell = bot.shell("Add File(s) to VDB");
-		shell.activate();
-		shell.bot().tree(0).expandNode(projectName).select(modelXmi);
-
-		new PushButton("OK").click();
-		new WaitWhile(new ShellWithTextIsActive(shell.getText()), TimePeriod.LONG);
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		modelXmi = (modelXmi.contains(".xmi")) ? modelXmi : modelXmi + ".xmi"; 
+		addModel(projectName, modelXmi);
 	}
 
 	public void addModelsToVDB(String projectName, String[] models){
-		show();
+		activate();
 		String model = "";
 		try {
 			for (int i = 0; i < models.length; i++) {
 				model = models[i];
 				if (model.contains("/")){
-					addModel(true, model.split("/"));
+					addModel(model.split("/"));
 				} else {
 					addModel(projectName, model);
 				}
@@ -79,28 +67,14 @@ public class VDBEditor extends SWTBotEditor {
 		}
 		save();
 	}
-	
-	/**
-	 * 
-	 * @param projectName
-	 * @param model
-	 * @param longerPath
-	 *            true if path to model contains folders
-	 */
-	public void addModel(boolean longerPath, String... pathToModel) {
-		new SWTWorkbenchBot().toolbarButtonWithTooltip("Add model").click();
 
-		SWTBotShell shell = bot.shell("Add File(s) to VDB");
-		shell.activate();
-		shell.bot().tree(0).expandNode(pathToModel).select();
-
+	public void addModel(String... pathToModel) {
+		new DefaultToolItem("Add model").click();
+		new DefaultShell("Add File(s) to VDB");
+		new DefaultTreeItem(pathToModel).select();
 		new PushButton("OK").click();
-		new WaitWhile(new ShellWithTextIsActive(shell.getText()), TimePeriod.LONG);
+		new WaitWhile(new ShellWithTextIsActive("Add File(s) to VDB"), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-	}
-
-	public String getModel(int index) {
-		return new SWTWorkbenchBot().table(0).cell(index, 0);
 	}
 
 	public void setModelTranslator(String modelName, String sourceName, String translatorName) {
@@ -133,19 +107,17 @@ public class VDBEditor extends SWTBotEditor {
 		}
 	}
 
-	// TODO CHECK
 	public void removeModel(String projectName, String model) {
-		// ctab item models
 		new DefaultCTabItem("Models").activate();
 		new DefaultTable().getItem(model, 0).select();
-		new SWTWorkbenchBot().toolbarButtonWithTooltip("Remove selected model(s)").click();
+		new DefaultToolItem("Remove selected model(s)").click();
 		new PushButton("OK").click();
 	}
 
 	/**
 	 * Enables/disables automatic WAR generation.
 	 */
-	public VDBEditor setGenerateRestWar(boolean check) {
+	public VdbEditor setGenerateRestWar(boolean check) {
 		new DefaultCTabItem("Advanced").activate();
 		new DefaultCTabItem("Properties").activate();
 		new CheckBox(new DefaultGroup("General"), "Auto-generate REST WAR").toggle(check);

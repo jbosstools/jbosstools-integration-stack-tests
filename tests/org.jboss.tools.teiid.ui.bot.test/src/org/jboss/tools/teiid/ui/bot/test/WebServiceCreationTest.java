@@ -19,7 +19,7 @@ import org.jboss.tools.teiid.reddeer.dialog.CreateWebServiceDialog;
 import org.jboss.tools.teiid.reddeer.dialog.XmlDocumentBuilderDialog;
 import org.jboss.tools.teiid.reddeer.editor.TableEditor;
 import org.jboss.tools.teiid.reddeer.editor.TransformationEditor;
-import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
+import org.jboss.tools.teiid.reddeer.editor.VdbEditor;
 import org.jboss.tools.teiid.reddeer.editor.WebServiceModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.XmlModelEditor;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
@@ -421,7 +421,7 @@ public class WebServiceCreationTest {
 				.finish();
 		
 		AbstractWait.sleep(TimePeriod.SHORT); 
-		String translator = VDBEditor.getInstance(vdbName + ".vdb").getTranslatorName("SourceModel.xmi");
+		String translator = VdbEditor.getInstance(vdbName + ".vdb").getTranslatorName("SourceModel.xmi");
 		assertEquals("Translator: " + translator, "oracle", translator);
 		
 		modelExplorer.deployVdb(PROJECT_NAME, vdbName);

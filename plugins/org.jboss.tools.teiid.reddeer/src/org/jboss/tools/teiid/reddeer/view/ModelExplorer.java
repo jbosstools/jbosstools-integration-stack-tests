@@ -7,8 +7,6 @@ import java.io.File;
 import java.util.List;
 
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -33,7 +31,6 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.reddeer.workbench.impl.editor.AbstractEditor;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.condition.RadioButtonEnabled;
 import org.jboss.tools.teiid.reddeer.condition.WarIsDeployed;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
@@ -43,7 +40,6 @@ import org.jboss.tools.teiid.reddeer.dialog.GenerateDynamicVdbDialog;
 import org.jboss.tools.teiid.reddeer.dialog.GenerateRestProcedureDialog;
 import org.jboss.tools.teiid.reddeer.dialog.GenerateVdbArchiveDialog;
 import org.jboss.tools.teiid.reddeer.dialog.SaveAsDialog;
-import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.wizard.imports.ImportProjectWizard;
 import org.jboss.tools.teiid.reddeer.wizard.newWizard.MetadataModelWizard;
@@ -131,25 +127,12 @@ public class ModelExplorer extends AbstractExplorer {
 			new DefaultShell("Preview Data");
 			int i = 0;
 			for (String paramName : params) {// expects the params are sorted
-				new SWTWorkbenchBot().text(i).setText(paramName);
+				new DefaultText(i).setText(paramName);
 				i++;
 			}
 			new PushButton("OK").click();
 		}
 		new PushButton("OK").click();
-	}
-	
-	/**
-	 * Checks that preview succeed.
-	 * @param previewSQL - specifies preview record
-	 */
-	public boolean checkPreviewOfModelObject(String previewSQL) {
-		// wait while is in progress
-		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
-		// wait while dialog Preview data... is active
-		new WaitWhile(new ShellWithTextIsActive(new RegexMatcher("Preview.*")), TimePeriod.LONG);
-		SQLResult result = DatabaseDevelopmentPerspective.getInstance().getSqlResultsView().getByOperation(previewSQL);
-		return result.getStatus().equals(SQLResult.STATUS_SUCCEEDED);
 	}
 	
 	/**

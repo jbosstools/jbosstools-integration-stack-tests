@@ -28,10 +28,11 @@ public class InputSetEditorDialog extends AbstractDialog {
 	 * Creates new input parameter.
 	 * i.e. pushes attribute from the right list to the left list.
 	 */
-	public void addNewInputParam(String... pathToParam) {
+	public InputSetEditorDialog addNewInputParam(String... pathToParam) {
 		log.info("Adding new input parameter " + Arrays.toString(pathToParam));
 		new DefaultTree();
 		new DefaultTreeItem(pathToParam).select();
 		new PushButton("< New").click();
+		return this;
 	}
 }

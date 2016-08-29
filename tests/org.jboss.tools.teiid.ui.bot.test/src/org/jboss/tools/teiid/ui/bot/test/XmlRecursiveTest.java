@@ -19,7 +19,7 @@ import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.dialog.InputSetEditorDialog;
 import org.jboss.tools.teiid.reddeer.editor.RecursionEditor;
 import org.jboss.tools.teiid.reddeer.editor.TransformationEditor;
-import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
+import org.jboss.tools.teiid.reddeer.editor.VdbEditor;
 import org.jboss.tools.teiid.reddeer.editor.XmlModelEditor;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
@@ -156,10 +156,10 @@ public class XmlRecursiveTest {
 		assertTrue(jdbcHelper.isQuerySuccessful("SELECT * FROM Employees.EmpTable",true));
 					
         String output = jdbcHelper.executeQueryWithXmlStringResult("SELECT * FROM EmpDoc.SimpleEmployeesDocument");          
-		String oneOfexpectedEmployee = "<Employee><Name><LastName>Kisselmeyer</LastName><FirstName>Abbiegale</FirstName>"
+		String oneOfExpectedEmployee = "<Employee><Name><LastName>Kisselmeyer</LastName><FirstName>Abbiegale</FirstName>"
 				+ "<MiddleInitial>Tikvica</MiddleInitial></Name><Address><Street>123 State St.</Street><City>New York</City>"
 				+ "<State>NY</State></Address><EmpId>9000059</EmpId><Phone>670-270-7947</Phone></Employee>";
-		assertTrue(output.contains(oneOfexpectedEmployee));
+		assertTrue(output.contains(oneOfExpectedEmployee));
 		
 		// 4. Enable recursion and test it
 		String recursionQuery = "SELECT * FROM EmpDoc.SimpleEmployeesDocument WHERE SimpleEmployees.Employee.EmpId LIKE '90001%'"; 
@@ -171,7 +171,7 @@ public class XmlRecursiveTest {
 		recursionEditor.close();
 		editor.save();
 		
-		VDBEditor.getInstance(VDB_NAME).synchronizeAll();
+		VdbEditor.getInstance(VDB_NAME).synchronizeAll();
 		modelExplorer.deployVdb(PROJECT_NAME, VDB_NAME);
 		
  		output = jdbcHelper.executeQueryWithXmlStringResult(recursionQuery);
@@ -185,7 +185,7 @@ public class XmlRecursiveTest {
 		recursionEditor.setActionWhenLimitExceeded(RecursionEditor.LimitAction.THROW);
 		recursionEditor.close();
 		editor.save();
-		VDBEditor.getInstance(VDB_NAME).synchronizeAll();
+		VdbEditor.getInstance(VDB_NAME).synchronizeAll();
 		modelExplorer.deployVdb(PROJECT_NAME, VDB_NAME);
 		assertFalse(jdbcHelper.isQuerySuccessful(recursionQuery,true));
 		
@@ -194,7 +194,7 @@ public class XmlRecursiveTest {
 		recursionEditor.setActionWhenLimitExceeded(RecursionEditor.LimitAction.DISCARD);
 		recursionEditor.close();
 		editor.save();
-		VDBEditor.getInstance(VDB_NAME).synchronizeAll();
+		VdbEditor.getInstance(VDB_NAME).synchronizeAll();
 		modelExplorer.deployVdb(PROJECT_NAME, VDB_NAME);
 		output = jdbcHelper.executeQueryWithXmlStringResult(recursionQuery);
 		expectedOutput = fileHelper.getXml("XmlRecursiveTest/RecursionWithLimit");
@@ -205,7 +205,7 @@ public class XmlRecursiveTest {
 		recursionEditor.setActionWhenLimitExceeded(RecursionEditor.LimitAction.RECORD);
 		recursionEditor.close();
 		editor.save();
-		VDBEditor.getInstance(VDB_NAME).synchronizeAll();
+		VdbEditor.getInstance(VDB_NAME).synchronizeAll();
 		modelExplorer.deployVdb(PROJECT_NAME, VDB_NAME);
 		output = jdbcHelper.executeQueryWithXmlStringResult(recursionQuery);
 		expectedOutput = fileHelper.getXml("XmlRecursiveTest/RecursionWithLimit");

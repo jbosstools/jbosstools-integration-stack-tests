@@ -19,7 +19,7 @@ import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
-import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
+import org.jboss.tools.teiid.reddeer.editor.VdbEditor;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
@@ -200,8 +200,8 @@ public class JDBCImportWizardTest {
 				.addModel(MODEL_PROJECT, model)
 				.finish();
 		
-		VDBEditor.getInstance(vdb_name + ".vdb").setModelTranslator(model + ".xmi", model, "hana");
-		VDBEditor.getInstance(vdb_name + ".vdb").save();
+		VdbEditor.getInstance(vdb_name + ".vdb").setModelTranslator(model + ".xmi", model, "hana");
+		VdbEditor.getInstance(vdb_name + ".vdb").save();
 		
 		new ModelExplorer().deployVdb(MODEL_PROJECT, vdb_name);
 
