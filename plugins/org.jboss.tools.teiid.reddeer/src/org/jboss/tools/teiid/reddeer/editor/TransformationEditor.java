@@ -3,6 +3,8 @@ package org.jboss.tools.teiid.reddeer.editor;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.core.handler.WidgetHandler;
+import org.jboss.reddeer.core.util.Display;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
@@ -10,7 +12,6 @@ import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.dialog.CriteriaBuilderDialog;
 import org.jboss.tools.teiid.reddeer.dialog.ExpressionBuilderDialog;
 import org.jboss.tools.teiid.reddeer.dialog.ReconcilerDialog;
-import org.jboss.tools.teiid.reddeer.widget.TeiidStyledText;
 
 public class TransformationEditor {
 	private static final Logger log = Logger.getLogger(TransformationEditor.class);
@@ -31,9 +32,20 @@ public class TransformationEditor {
 		KeyboardFactory.getKeyboard().type(text);
 	}
 
-	public void setCoursorPositionInTransformation(int position){
-		new DefaultStyledText(0).selectPosition(position);
-		new TeiidStyledText(0).mouseClickOnCaret();
+	public void setCoursorPositionInTransformation(final int position){
+		Display.syncExec(new Runnable() {
+			@Override
+			public void run() {
+				DefaultStyledText styledText = new DefaultStyledText();
+				styledText.selectPosition(position);
+				int x = styledText.getCursorPosition().x;
+				int y = styledText.getCursorPosition().y;
+				WidgetHandler handler = WidgetHandler.getInstance();
+				handler.notifyItemMouse(5, 0, styledText.getSWTWidget(), null, x, y, 0);
+				handler.notifyItemMouse(3, 0, styledText.getSWTWidget(), null, x, y, 1);
+				handler.notifyItemMouse(4, 0, styledText.getSWTWidget(), null, x, y, 1);			
+			}
+		});	
 	}
 	
 	public String getTransformation(){

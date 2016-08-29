@@ -78,11 +78,11 @@ public class RestProcedureTest {
 		new ResourceFileHelper().copyFileToServer(
 				new File("resources/flat/RestProcedureTest/application-roles.properties").getAbsolutePath(), 
 				teiidServer.getServerConfig().getServerBase().getHome() + "/standalone/configuration/application-roles.properties");
+		new ServersViewExt().restartServer(teiidServer.getName());
 	}
 	
 	@Before
 	public void importProject() {
-		new ServersViewExt().refreshServer(teiidServer.getName());
 		modelExplorer = new ModelExplorer();
 		fileHelper = new ResourceFileHelper();
 		modelExplorer.importProject(PROJECT_NAME);

@@ -124,24 +124,24 @@ public class WebServiceCreationTest {
 		TransformationEditor outputTransfEditor = xmlEditor.openTransformationEditor();
 		outputTransfEditor.insertAndValidateSql("SELECT * FROM RelationalModel.ProductInfo");
 		outputTransfEditor.close();
-		xmlEditor.returnToMappingClassOverview();
-		xmlEditor.returnToDocumentOverview();
+		xmlEditor.returnToParentDiagram();
+		xmlEditor.returnToParentDiagram();
 		
 		xmlEditor.openDocument(DOCUMENT_GOOD);
 		xmlEditor.openMappingClass("putResults");
 		outputTransfEditor = xmlEditor.openTransformationEditor();
 		outputTransfEditor.insertAndValidateSql("SELECT 'Operation Successful!' AS results");
 		outputTransfEditor.close();
-		xmlEditor.returnToMappingClassOverview();
-		xmlEditor.returnToDocumentOverview();
+		xmlEditor.returnToParentDiagram();
+		xmlEditor.returnToParentDiagram();
 		
 		xmlEditor.openDocument(DOCUMENT_BAD);
 		xmlEditor.openMappingClass("putResults");
 		outputTransfEditor = xmlEditor.openTransformationEditor();
 		outputTransfEditor.insertAndValidateSql("SELECT 'Operation Failed!' AS results");
 		outputTransfEditor.close();
-		xmlEditor.returnToMappingClassOverview();
-		xmlEditor.returnToDocumentOverview();
+		xmlEditor.returnToParentDiagram();
+		xmlEditor.returnToParentDiagram();
 		
 		AbstractWait.sleep(TimePeriod.SHORT);
 		xmlEditor.saveAndClose();
@@ -208,8 +208,8 @@ public class WebServiceCreationTest {
 		TransformationEditor outputTransfEditor = xmlEditor.openTransformationEditor();
 		outputTransfEditor.insertAndValidateSql("SELECT 'Operation Successful!' AS results");
 		outputTransfEditor.close();
-		xmlEditor.returnToMappingClassOverview();
-		xmlEditor.returnToDocumentOverview();
+		xmlEditor.returnToParentDiagram();
+		xmlEditor.returnToParentDiagram();
 		xmlEditor.renameDocument("putResultsDocument", DOCUMENT_GOOD);
 		
 		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.XML_DOCUMENT, xmlModelPath);
@@ -223,8 +223,8 @@ public class WebServiceCreationTest {
 		outputTransfEditor = xmlEditor.openTransformationEditor();
 		outputTransfEditor.insertAndValidateSql("SELECT 'Operation Failed!' AS results");
 		outputTransfEditor.close();
-		xmlEditor.returnToMappingClassOverview();
-		xmlEditor.returnToDocumentOverview();
+		xmlEditor.returnToParentDiagram();
+		xmlEditor.returnToParentDiagram();
 		xmlEditor.renameDocument("putResultsDocument", DOCUMENT_BAD);
 		
 		AbstractWait.sleep(TimePeriod.SHORT);

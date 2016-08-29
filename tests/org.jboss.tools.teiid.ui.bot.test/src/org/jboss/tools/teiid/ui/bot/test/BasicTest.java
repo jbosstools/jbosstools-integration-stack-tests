@@ -177,7 +177,7 @@ public class BasicTest {
 			}
 			modelExplorer.activate();
 			new DefaultTreeItem(PROJECT, MODEL + i2 + ".xmi", el, el2);
-			assertTrue(new ModelExplorer().getProject(PROJECT).containsItem(MODEL + i2 + ".xmi", el, el2,
+			assertTrue(new ModelExplorer().containsItem(PROJECT,MODEL + i2 + ".xmi", el, el2,
 					"mns = http://www.teiid.org/UpdateBooks_Output"));
 		}
 

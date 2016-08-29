@@ -2,7 +2,6 @@ package org.jboss.tools.teiid.reddeer.wizard.imports;
 
 import java.util.Arrays;
 
-import org.eclipse.swt.SWT;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.NextButton;
@@ -13,7 +12,6 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.reddeer.common.wait.WaitUntil;
 
 /**
@@ -71,7 +69,7 @@ public class XMLSchemaImportWizard extends TeiidImportWizard {
 		log.info("Set from directory to '" + dir + "'");
 		activate();
 		new DefaultCombo(0).setText(dir);
-		KeyboardFactory.getKeyboard().type(SWT.TAB);
+		activate();
 		return this;
 	}
 

@@ -190,8 +190,8 @@ public class JDBCImportWizardTest {
 		importModel(model, ConnectionProfileConstants.SAP_HANA, "BQT1/TABLE/SMALLA,BQT1/TABLE/SMALLB", false);
 		
 		// TODO temp till hana translator is not set automatically (updated checkImportedTablesInModel method)
-		assertTrue(new ModelExplorer().getProject(MODEL_PROJECT).containsItem(model + ".xmi", "SMALLA"));
-		assertTrue(new ModelExplorer().getProject(MODEL_PROJECT).containsItem(model + ".xmi", "SMALLB"));
+		assertTrue(new ModelExplorer().containsItem(MODEL_PROJECT,model + ".xmi", "SMALLA"));
+		assertTrue(new ModelExplorer().containsItem(MODEL_PROJECT,model + ".xmi", "SMALLB"));
 		
 		String vdb_name = "Check_" + model;
 		VdbWizard.openVdbWizard()
@@ -230,14 +230,14 @@ public class JDBCImportWizardTest {
 	}
 
 	private void checkImportedTablesInModel(String model, String tableA, String tableB) {
-		assertTrue(new ModelExplorer().getProject(MODEL_PROJECT).containsItem(model + ".xmi", tableA));
-		assertTrue(new ModelExplorer().getProject(MODEL_PROJECT).containsItem(model + ".xmi", tableB));
+		assertTrue(new ModelExplorer().containsItem(MODEL_PROJECT,model + ".xmi", tableA));
+		assertTrue(new ModelExplorer().containsItem(MODEL_PROJECT,model + ".xmi", tableB));
 		new ModelExplorer().simulateTablesPreview(teiidServer, MODEL_PROJECT, model, new String[] { tableA, tableB });
 
 	}
 	
 	private void checkImportedProcedureInModel(String model, String procedure, String...parameters) {
-		assertTrue(new ModelExplorer().getProject(MODEL_PROJECT).containsItem(model + ".xmi", procedure));
+		assertTrue(new ModelExplorer().containsItem(MODEL_PROJECT,model + ".xmi", procedure));
 
 		String vdb_name = "Check_" + model;	
 		VdbWizard.openVdbWizard()

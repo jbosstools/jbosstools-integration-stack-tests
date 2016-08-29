@@ -277,9 +277,9 @@ public class TeiidConnectionImportTest {
 				.nextPageWithWait()
 				.finish();
 		
-		assertTrue(new ModelExplorer().getProject(PROJECT_NAME).containsItem(modelName + ".xmi", "Customers"));
-		assertTrue(new ModelExplorer().getProject(PROJECT_NAME).containsItem(modelName + ".xmi", "Customers", "CustomerID : string(5)"));
-		assertTrue(new ModelExplorer().getProject(PROJECT_NAME).containsItem(modelName + ".xmi", "Employees", "EmployeeID : int"));
+		assertTrue(new ModelExplorer().containsItem(PROJECT_NAME,modelName + ".xmi", "Customers"));
+		assertTrue(new ModelExplorer().containsItem(PROJECT_NAME,modelName + ".xmi", "Customers", "CustomerID : string(5)"));
+		assertTrue(new ModelExplorer().containsItem(PROJECT_NAME,modelName + ".xmi", "Employees", "EmployeeID : int"));
 	}
 
 	@Test
@@ -308,9 +308,9 @@ public class TeiidConnectionImportTest {
 				.nextPageWithWait()
 				.finish();
 
-		assertTrue(new ModelExplorer().getProject(PROJECT_NAME).containsItem(modelName + ".xmi", "Sheet1"));
-		assertTrue(new ModelExplorer().getProject(PROJECT_NAME).containsItem(modelName + ".xmi", "Sheet1", "ROW_ID : int"));
-		assertTrue(new ModelExplorer().getProject(PROJECT_NAME).containsItem(modelName + ".xmi", "Sheet1", "StringNum : string"));
+		assertTrue(new ModelExplorer().containsItem(PROJECT_NAME,modelName + ".xmi", "Sheet1"));
+		assertTrue(new ModelExplorer().containsItem(PROJECT_NAME,modelName + ".xmi", "Sheet1", "ROW_ID : int"));
+		assertTrue(new ModelExplorer().containsItem(PROJECT_NAME,modelName + ".xmi", "Sheet1", "StringNum : string"));
 	}
 	
 	@Test
@@ -407,12 +407,13 @@ public class TeiidConnectionImportTest {
 				.nextPageWithWait()
 				.finish();
 		
-		assertTrue(new ModelExplorer().getProject(PROJECT_NAME).containsItem(modelName + ".xmi", "AUTHORS"));
+		assertTrue(new ModelExplorer().containsItem(PROJECT_NAME,modelName + ".xmi", "AUTHORS"));
 	}
 
 	private void checkImportedModel(String modelName, String... tables) {
 		for (String table : tables) {
-			assertTrue(new ModelExplorer().getProject(PROJECT_NAME).containsItem(modelName + ".xmi", table));
+			String[] path = {PROJECT_NAME,modelName+".xmi",table};
+			assertTrue(new ModelExplorer().containsItem(path));
 		}
 	}
 

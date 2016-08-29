@@ -6,9 +6,13 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 public class TableDialog extends AbstractDialog{
@@ -36,6 +40,25 @@ public class TableDialog extends AbstractDialog{
 		log.info("Setting transformation SQL to " + sql);
 		new DefaultTabItem("Transformation SQL").activate();
 		new DefaultStyledText(new DefaultGroup("SQL Definition")).setText(sql);
+		return this;
+	}
+	
+	public TableDialog addColumn(String name, String dataType, String length){
+		log.info("Adding column " + name + " " + dataType + " " + length);
+		new DefaultTabItem("Columns").activate();
+		new PushButton("Add").click();
+		DefaultTable table = new DefaultTable();
+		table.getItem(table.rowCount() - 1).select();
+		// TODO TEIIDDES-2903
+		new PushButton("Edit...").click();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		new DefaultShell("Edit Column");
+		new LabeledText("Name").setText(name);
+		new LabeledCombo("Data Type").setSelection(dataType);
+		new LabeledText("Length").setText(length);
+		new OkButton().click();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		this.activate();
 		return this;
 	}
 }

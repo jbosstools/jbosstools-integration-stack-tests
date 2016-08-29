@@ -18,9 +18,9 @@ import org.jboss.tools.teiid.reddeer.dialog.CriteriaBuilderDialog;
 import org.jboss.tools.teiid.reddeer.dialog.ExpressionBuilderDialog;
 import org.jboss.tools.teiid.reddeer.dialog.ReconcilerDialog;
 import org.jboss.tools.teiid.reddeer.dialog.TableDialog;
+import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.TransformationEditor;
-import org.jboss.tools.teiid.reddeer.matcher.ModelEditorItemMatcher;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ProblemsViewEx;
@@ -73,23 +73,23 @@ public class TransformationToolsTest {
 	    		.finish();	
 	    
 	    RelationalModelEditor editor = new RelationalModelEditor(VIEW_MODEL);
-	    TransformationEditor transformationEditor =  editor.openTransformationDiagram(ModelEditorItemMatcher.TABLE, "AddTransformation");
+	    TransformationEditor transformationEditor =  editor.openTransformationDiagram(ModelEditor.ItemType.TABLE, "AddTransformation");
 		modelExplorer.selectItem(PROJECT_NAME, "PartsSupplier.xmi", "SUPPLIER");
 		new ContextMenu("Modeling","Add Transformation Source(s)").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
-		editor.show();
+		editor.activate();
 		editor.save();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		AssertBot.transformationContains(transformationEditor.getTransformation(), "Supplier.SUPPLIER");
 		
 		List<String> sourceAttrs = new ArrayList<>();
-		sourceAttrs.addAll(editor.listTableAttributesNames("SUPPLIER"));
+		sourceAttrs.addAll(editor.listTableAttributes("SUPPLIER"));
 		List<String> viewAttrs = new ArrayList<>();
-		viewAttrs.addAll(editor.listTableAttributesNames("AddTransformation"));		
+		viewAttrs.addAll(editor.listTableAttributes("AddTransformation"));		
 		for(String sourceAtt : sourceAttrs){
 			assertTrue(viewAttrs.contains(sourceAtt));
 		}
-		editor.returnToPackageDiagram();
+		editor.returnToParentDiagram();
 		new ProblemsViewEx().checkErrors();
 		
 		// paste transformation
@@ -98,21 +98,21 @@ public class TransformationToolsTest {
 	    		.setName("PasteTransformation")
 	    		.finish();
 		
-	    editor.show();
-	    transformationEditor =  editor.openTransformationDiagram(ModelEditorItemMatcher.TABLE, "PasteTransformation");
+	    editor.activate();
+	    transformationEditor =  editor.openTransformationDiagram(ModelEditor.ItemType.TABLE, "PasteTransformation");
 		transformationEditor.insertAndValidateSql("SELECT * FROM PartsSupplier.SUPPLIER, PartsSupplier.PARTS, PartsSupplier.SUPPLIER_PARTS");
 		editor.save();
 		
 		sourceAttrs = new ArrayList<>();
-		sourceAttrs.addAll(editor.listTableAttributesNames("SUPPLIER"));
-		sourceAttrs.addAll(editor.listTableAttributesNames("PARTS"));		
-		sourceAttrs.addAll(editor.listTableAttributesNames("SUPPLIER_PARTS"));
+		sourceAttrs.addAll(editor.listTableAttributes("SUPPLIER"));
+		sourceAttrs.addAll(editor.listTableAttributes("PARTS"));		
+		sourceAttrs.addAll(editor.listTableAttributes("SUPPLIER_PARTS"));
 		viewAttrs = new ArrayList<>();
-		viewAttrs.addAll(editor.listTableAttributesNames("PasteTransformation"));		
+		viewAttrs.addAll(editor.listTableAttributes("PasteTransformation"));		
 		for(String sourceAtt : sourceAttrs){
 			assertTrue(viewAttrs.contains(sourceAtt));
 		}	
-		editor.returnToPackageDiagram();
+		editor.returnToParentDiagram();
 		new ProblemsViewEx().checkErrors();
 		
 		// type transformation
@@ -121,15 +121,15 @@ public class TransformationToolsTest {
 	    		.setName("TypeTransformation")
 	    		.finish();	
 		
-		editor.show();
-		transformationEditor = editor.openTransformationDiagram(ModelEditorItemMatcher.TABLE, "TypeTransformation");
+		editor.activate();
+		transformationEditor = editor.openTransformationDiagram(ModelEditor.ItemType.TABLE, "TypeTransformation");
 		transformationEditor.typeTransformation("SELECT * FROM PartsSupplier.PARTS");
 		editor.save();
 		
 		sourceAttrs = new ArrayList<>();
-		sourceAttrs.addAll(editor.listTableAttributesNames("PARTS"));
+		sourceAttrs.addAll(editor.listTableAttributes("PARTS"));
 		viewAttrs = new ArrayList<>();
-		viewAttrs.addAll(editor.listTableAttributesNames("TypeTransformation"));
+		viewAttrs.addAll(editor.listTableAttributes("TypeTransformation"));
 		for(String sourceAtt : sourceAttrs){
 			assertTrue(viewAttrs.contains(sourceAtt));
 		}
@@ -141,18 +141,19 @@ public class TransformationToolsTest {
 		modelExplorer.openModelEditor(PROJECT_NAME, VIEW_MODEL);
 		RelationalModelEditor editor = new RelationalModelEditor(VIEW_MODEL);
 		
-	    TransformationEditor transformationEditor =  editor.openTransformationDiagram(ModelEditorItemMatcher.TABLE, "ReconcilerTable");
+	    TransformationEditor transformationEditor =  editor.openTransformationDiagram(ModelEditor.ItemType.TABLE, "ReconcilerTable");
 	    transformationEditor.expandSelect();
 		String expanededSelect = "PartsSupplier.PARTS.PART_ID, PartsSupplier.PARTS.PART_NAME, PartsSupplier.PARTS.PART_COLOR, PartsSupplier.PARTS.PART_WEIGHT";
 		AssertBot.transformationContains(transformationEditor.getTransformation(), expanededSelect);
 		
-		editor.show();
-		editor.deleteAttribute("ReconcilerTable", ModelEditorItemMatcher.TABLE, "PART_NAME", false);
-		editor.renameAttribute("ReconcilerTable", ModelEditorItemMatcher.TABLE, "PART_COLOR", "COLOR_NAME");
-		editor.renameAttribute("ReconcilerTable", ModelEditorItemMatcher.TABLE, "PART_ID", "ID");
-		editor.setAttributeDataType("ReconcilerTable", ModelEditorItemMatcher.TABLE, "COLOR_NAME", "string", 285);
-		editor.setAttributeDataType("ReconcilerTable", ModelEditorItemMatcher.TABLE, "PART_WEIGHT", "bigdecimal", null);
+		editor.activate();
+		editor.deleteAttribute("ReconcilerTable", ModelEditor.ItemType.TABLE, "PART_NAME", false);
+		editor.renameAttribute("ReconcilerTable", ModelEditor.ItemType.TABLE, "PART_COLOR", "COLOR_NAME");
+		editor.renameAttribute("ReconcilerTable", ModelEditor.ItemType.TABLE, "PART_ID", "ID");
+		editor.setAttributeDataType("ReconcilerTable", ModelEditor.ItemType.TABLE, "COLOR_NAME", "string", 285);
+		editor.setAttributeDataType("ReconcilerTable", ModelEditor.ItemType.TABLE, "PART_WEIGHT", "bigdecimal", null);
 		editor.save();
+		AbstractWait.sleep(TimePeriod.SHORT);
 		
 		ReconcilerDialog reconciler = transformationEditor.openReconciler();
 		reconciler.bindAttributes("ID : string","PART_ID");
@@ -211,7 +212,7 @@ public class TransformationToolsTest {
 		modelExplorer.openModelEditor(PROJECT_NAME, VIEW_MODEL);
 		RelationalModelEditor editor = new RelationalModelEditor(VIEW_MODEL);
 		
-		TransformationEditor transformationEditor =  editor.openTransformationDiagram(ModelEditorItemMatcher.TABLE, "CriteriaBuilder");
+		TransformationEditor transformationEditor =  editor.openTransformationDiagram(ModelEditor.ItemType.TABLE, "CriteriaBuilderTable");
 		CriteriaBuilderDialog criteriaBuilder = transformationEditor.openCriteriaBuilder();
 		criteriaBuilder.selectAttribute("PartsSupplier.PARTS", "PART_ID",CriteriaBuilderDialog.CriteriaSide.LEFT)
 				.selectAttribute("PartsSupplier.SUPPLIER_PARTS", "PART_ID",CriteriaBuilderDialog.CriteriaSide.RIGHT)

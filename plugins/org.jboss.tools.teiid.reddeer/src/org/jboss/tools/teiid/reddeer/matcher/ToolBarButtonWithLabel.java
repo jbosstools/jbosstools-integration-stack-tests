@@ -28,7 +28,6 @@ public class ToolBarButtonWithLabel extends BaseMatcher<ToolItem> {
 			if (ti.getControl() instanceof Button) {
 				final Button but = (Button) ti.getControl();
 				if (but.getText().equals(label)) {
-					System.out.println(but.getText());
 					Display.syncExec(new Runnable() {
 						@Override
 						public void run() {

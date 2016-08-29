@@ -58,7 +58,7 @@ public class CreateModelTest {
 				.selectModelType(MetadataModelWizard.ModelType.SOURCE)
 				.finish();
 
-		assertTrue(new ModelExplorer().getProject(PROJECT_NAME).containsItem(RELATIONAL_SOURCE_MODEL_NAME + ".xmi"));
+		assertTrue(new ModelExplorer().containsItem(PROJECT_NAME,RELATIONAL_SOURCE_MODEL_NAME + ".xmi"));
 		assertTrue(new RelationalModelEditor(RELATIONAL_SOURCE_MODEL_NAME + ".xmi").isActive());
 	}
 
@@ -71,7 +71,7 @@ public class CreateModelTest {
 				.selectModelType(MetadataModelWizard.ModelType.VIEW)
 				.finish();
 
-		assertTrue(new ModelExplorer().getProject(PROJECT_NAME).containsItem(RELATIONAL_VIEW_MODEL_NAME + ".xmi"));
+		assertTrue(new ModelExplorer().containsItem(PROJECT_NAME,RELATIONAL_VIEW_MODEL_NAME + ".xmi"));
 		assertTrue(new RelationalModelEditor(RELATIONAL_VIEW_MODEL_NAME + ".xmi").isActive());
 	}
 
@@ -84,7 +84,7 @@ public class CreateModelTest {
 				.selectModelType(MetadataModelWizard.ModelType.VIEW)
 				.finish();
 
-		assertTrue(new ModelExplorer().getProject(PROJECT_NAME).containsItem(XML_VIEW_MODEL_NAME + ".xmi"));
+		assertTrue(new ModelExplorer().containsItem(PROJECT_NAME,XML_VIEW_MODEL_NAME + ".xmi"));
 		assertTrue(new XmlModelEditor(XML_VIEW_MODEL_NAME + ".xmi").isActive());
 	}
 
@@ -100,7 +100,7 @@ public class CreateModelTest {
 		new DefaultShell("Model Initializer");
 		new PushButton("OK").click();
 
-		assertTrue(new ModelExplorer().getProject(PROJECT_NAME).containsItem(XSD_DATATYPE_MODEL_NAME + ".xsd"));
+		assertTrue(new ModelExplorer().containsItem(PROJECT_NAME,XSD_DATATYPE_MODEL_NAME + ".xsd"));
 		// TODO SchemaModelEditor is not implemented yet
 		assertTrue(new XmlModelEditor(XSD_DATATYPE_MODEL_NAME + ".xsd").isActive());
 	}
@@ -114,7 +114,7 @@ public class CreateModelTest {
 				.selectModelType(MetadataModelWizard.ModelType.VIEW)
 				.finish();
 
-		assertTrue(new ModelExplorer().getProject(PROJECT_NAME).containsItem(WEBSERVICE_MODEL_NAME + ".xmi"));
+		assertTrue(new ModelExplorer().containsItem(PROJECT_NAME,WEBSERVICE_MODEL_NAME + ".xmi"));
 		assertTrue(new WebServiceModelEditor(WEBSERVICE_MODEL_NAME + ".xmi").isActive());
 	}
 }
