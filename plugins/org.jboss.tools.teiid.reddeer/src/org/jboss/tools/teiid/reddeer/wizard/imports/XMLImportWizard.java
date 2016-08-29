@@ -19,8 +19,6 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
  */
 public class XMLImportWizard extends TeiidImportWizard {
 
-	private static XMLImportWizard INSTANCE;
-
 	public static final String DIALOG_TITLE = "Import From XML File Source";
 
 	public static final String LOCAL = "XML file on local file system";
@@ -33,16 +31,19 @@ public class XMLImportWizard extends TeiidImportWizard {
 	}
 
 	public static XMLImportWizard getInstance(){
-		if(INSTANCE==null){
-			INSTANCE=new XMLImportWizard();
-		}
-		return INSTANCE;
+		return new XMLImportWizard();
 	}
 	
 	public static XMLImportWizard openWizard(){
-		XMLImportWizard wizard = getInstance();
+		XMLImportWizard wizard = new XMLImportWizard();
 		wizard.open();
 		return wizard;
+	}
+	
+	public XMLImportWizard nextPage(){
+		log.info("Go to next wizard page");
+		new NextButton().click();
+		return this;
 	}
 	
 	public XMLImportWizard activate() {
@@ -79,11 +80,11 @@ public class XMLImportWizard extends TeiidImportWizard {
 		return this;
 	}
 	
-	public XMLImportWizard autoCreateDataSource(boolean check) {
-		log.info("Auto-Create Data Source is : '" + check + "'");
+	public XMLImportWizard autoCreateDataSource(boolean checked) {
+		log.info("Auto-Create Data Source is : '" + checked + "'");
 		activate();
 		CheckBox checkBox = new CheckBox("Auto-create Data Source");
-		if(check != checkBox.isChecked()){
+		if(checked != checkBox.isChecked()){
 			checkBox.click();
 		}
 		return this;
@@ -122,12 +123,6 @@ public class XMLImportWizard extends TeiidImportWizard {
 		log.info("Set view table name to: '" + viewTableName + "'");
 		activate();
 		new LabeledText(new DefaultGroup("View Model Definition"), "New view table name:").setText(viewTableName);
-		return this;
-	}
-	
-	public XMLImportWizard nextPage(){
-		log.info("Go to next wizard page");
-		new NextButton().click();
 		return this;
 	}
 }

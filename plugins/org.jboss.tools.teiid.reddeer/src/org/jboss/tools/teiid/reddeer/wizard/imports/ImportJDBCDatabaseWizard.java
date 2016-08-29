@@ -1,6 +1,7 @@
 package org.jboss.tools.teiid.reddeer.wizard.imports;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.jboss.reddeer.jface.wizard.ImportWizardDialog;
@@ -26,8 +27,6 @@ import org.jboss.reddeer.common.wait.WaitWhile;
  * @author Lucia Jelinkova
  */
 public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
-
-	private static ImportJDBCDatabaseWizard INSTANCE;
 	
 	private static final String DIALOG_TITLE = "Import Database via JDBC";
 	
@@ -37,16 +36,37 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 	}
 
 	public static ImportJDBCDatabaseWizard getInstance(){
-		if(INSTANCE==null){
-			INSTANCE=new ImportJDBCDatabaseWizard();
-		}
-		return INSTANCE;
+		return new ImportJDBCDatabaseWizard();
 	}
 	
 	public static ImportJDBCDatabaseWizard openWizard(){
-		ImportJDBCDatabaseWizard wizard = getInstance();
+		ImportJDBCDatabaseWizard wizard = new ImportJDBCDatabaseWizard();
 		wizard.open();
 		return wizard;
+	}
+	
+	/**
+	 * use nextPage()
+	 */
+	@Deprecated
+	@Override
+	public void next(){
+		super.next();
+	}
+	
+	public ImportJDBCDatabaseWizard nextPage(){
+		log.info("Go to next wizard page");
+		super.next();
+		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
+		return this;
+	}
+	
+	@Override
+	public void finish() {
+		super.finish();
+		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
+		new WaitWhile(new ShellWithTextIsAvailable(DIALOG_TITLE), TimePeriod.LONG);
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 	
 	public ImportJDBCDatabaseWizard activate() {
@@ -78,11 +98,11 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 	/**
 	 * Only with teiid connection (VDB Source model)
 	 */
-	public ImportJDBCDatabaseWizard importAsVDB(boolean check) {
-		log.info("Import as VDB source model is : '" + check + "'");
+	public ImportJDBCDatabaseWizard importAsVDB(boolean checked) {
+		log.info("Import as VDB source model is : '" + checked + "'");
 		activate();
 		CheckBox checkBox = new CheckBox("Import as VDB source model");
-		if(check != checkBox.isChecked()){
+		if(checked != checkBox.isChecked()){
 			checkBox.click();
 		}
 		return this;
@@ -101,11 +121,11 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 	/**
 	 * @param IncludeIncompleteFK -sub check box
 	 */
-	public ImportJDBCDatabaseWizard foreignKeys(boolean check, boolean IncludeIncompleteFK){
-		log.info("Foreign keys are : '" + check + "'");
+	public ImportJDBCDatabaseWizard foreignKeys(boolean checked, boolean IncludeIncompleteFK){
+		log.info("Foreign keys are : '" + checked + "'");
 		activate();
 		CheckBox checkBox = new CheckBox("Foreign Keys");
-		if(check != checkBox.isChecked()){
+		if(checked != checkBox.isChecked()){
 			checkBox.click();
 		}
 		if(checkBox.isChecked()){
@@ -121,11 +141,11 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 	 * @param uniqueOnly - sub check box
 	 * @param ApprocimationsAllowed - sub check box
 	 */
-	public ImportJDBCDatabaseWizard indexes(boolean check, boolean uniqueOnly, boolean ApprocimationsAllowed){
-		log.info("Indexes are : '" + check + "'");
+	public ImportJDBCDatabaseWizard indexes(boolean checked, boolean uniqueOnly, boolean ApprocimationsAllowed){
+		log.info("Indexes are : '" + checked + "'");
 		activate();
 		CheckBox checkBox = new CheckBox("Indexes");
-		if(check != checkBox.isChecked()){
+		if(checked != checkBox.isChecked()){
 			checkBox.click();
 		}
 		if(checkBox.isChecked()){
@@ -141,11 +161,11 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 		return this;
 	}
 	
-	public ImportJDBCDatabaseWizard procedures(boolean check){
-		log.info("Procedures are : '" + check + "'");
+	public ImportJDBCDatabaseWizard procedures(boolean checked){
+		log.info("Procedures are : '" + checked + "'");
 		activate();
 		CheckBox checkBox = new CheckBox("Procedures");
-		if(check != checkBox.isChecked()){
+		if(checked != checkBox.isChecked()){
 			checkBox.click();
 		}
 		return this;
@@ -195,7 +215,7 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 	 * @param itemList each of item have full path (for example: db/subDB/table)
 	 */
 	public ImportJDBCDatabaseWizard setTables(String... itemList){
-		log.info("Check tables : '" + itemList + "'");
+		log.info("Check tables : '" + Arrays.toString(itemList) + "'");
 		activate();
 
 		if ((itemList != null) && (itemList.length!=0)) {
@@ -229,11 +249,11 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 	/**
 	 * not working with teiid connection (VDB Source model)
 	 */
-	public ImportJDBCDatabaseWizard makeTargetViewModel(boolean check) {
-		log.info("Make target a view model is : '" + check + "'");
+	public ImportJDBCDatabaseWizard makeTargetViewModel(boolean checked) {
+		log.info("Make target a view model is : '" + checked + "'");
 		activate();
 		CheckBox checkBox = new CheckBox("Make target a view model");
-		if(check != checkBox.isChecked()){
+		if(checked != checkBox.isChecked()){
 			checkBox.click();
 		}
 		return this;
@@ -241,31 +261,31 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 	/**
 	 * not working with teiid connection (VDB Source model)
 	 */
-	public ImportJDBCDatabaseWizard update(boolean check) {
-		log.info("Update is : '" + check + "'");
+	public ImportJDBCDatabaseWizard update(boolean checked) {
+		log.info("Update is : '" + checked + "'");
 		activate();
 		CheckBox checkBox = new CheckBox("Update (if existing model selected)");
-		if(check != checkBox.isChecked()){
+		if(checked != checkBox.isChecked()){
 			checkBox.click();
 		}
 		return this;
 	}
 	
-	public ImportJDBCDatabaseWizard includeCostStatistics(boolean check) {
-		log.info("Include cost statistics is : '" + check + "'");
+	public ImportJDBCDatabaseWizard includeCostStatistics(boolean checked) {
+		log.info("Include cost statistics is : '" + checked + "'");
 		activate();
 		CheckBox checkBox = new CheckBox("Include Cost Statistics (will increase time for large imports)");
-		if(check != checkBox.isChecked()){
+		if(checked != checkBox.isChecked()){
 			checkBox.click();
 		}
 		return this;
 	}
 	
-	public ImportJDBCDatabaseWizard autoCreateDataSource(boolean check) {
-		log.info("Auto-Create Data Source is : '" + check + "'");
+	public ImportJDBCDatabaseWizard autoCreateDataSource(boolean checked) {
+		log.info("Auto-Create Data Source is : '" + checked + "'");
 		activate();
 		CheckBox checkBox = new CheckBox("Auto-create Data Source");
-		if(check != checkBox.isChecked()){
+		if(checked != checkBox.isChecked()){
 			checkBox.click();
 		}
 		return this;
@@ -281,11 +301,11 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 	/**
 	 * not working with teiid connection (VDB Source model)
 	 */
-	public ImportJDBCDatabaseWizard includeCatalog(boolean check) {
-		log.info("Include catalog is : '" + check + "'");
+	public ImportJDBCDatabaseWizard includeCatalog(boolean checked) {
+		log.info("Include catalog is : '" + checked + "'");
 		activate();
 		CheckBox checkBox = new CheckBox("Include Catalog For Fully Qualified Names");
-		if(check != checkBox.isChecked()){
+		if(checked != checkBox.isChecked()){
 			checkBox.click();
 		}
 		return this;
@@ -293,12 +313,12 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 	/**
 	 * not working with teiid connection (VDB Source model)
 	 */
-	public ImportJDBCDatabaseWizard useFullyNames(boolean check){
-		log.info("Use Fully Qualified Names is : '" + check + "'");
+	public ImportJDBCDatabaseWizard useFullyNames(boolean checked){
+		log.info("Use Fully Qualified Names is : '" + checked + "'");
 		activate();
 		new DefaultTabItem("Model Object Names (Tables, Procedures, Columns, etc...)").activate();
 		CheckBox checkBox = new CheckBox("Use Fully Qualified Names  (Example: partssupplier.dbo.PARTS)");
-		if(check != checkBox.isChecked()){
+		if(checked != checkBox.isChecked()){
 			checkBox.click();
 		}
 		new DefaultTabItem("Relational Model Definition").activate();
@@ -321,29 +341,5 @@ public class ImportJDBCDatabaseWizard extends ImportWizardDialog {
 		}
 		new DefaultTabItem("Relational Model Definition").activate();
 		return this;
-	}
-	
-	public ImportJDBCDatabaseWizard nextPage(){
-		log.info("Go to next wizard page");
-		super.next();
-		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
-		return this;
-	}
-	
-	/**
-	 * use nextPage()
-	 */
-	@Deprecated
-	@Override
-	public void next(){
-		super.next();
-	}
-	
-	@Override
-	public void finish() {
-		super.finish();
-		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
-		new WaitWhile(new ShellWithTextIsAvailable(DIALOG_TITLE), TimePeriod.LONG);
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 }

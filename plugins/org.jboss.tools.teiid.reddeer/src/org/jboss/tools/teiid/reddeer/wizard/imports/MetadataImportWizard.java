@@ -20,8 +20,6 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
  * 
  */
 public class MetadataImportWizard extends TeiidImportWizard {
-
-	private static MetadataImportWizard INSTANCE;
 	
 	public static final String DIALOG_TITLE = "Import Metadata From Text File";
 	
@@ -37,16 +35,19 @@ public class MetadataImportWizard extends TeiidImportWizard {
 	}
 	
 	public static MetadataImportWizard getInstance(){
-		if(INSTANCE==null){
-			INSTANCE=new MetadataImportWizard();
-		}
-		return INSTANCE;
+		return new MetadataImportWizard();
 	}
 	
 	public static MetadataImportWizard openWizard(){
-		MetadataImportWizard wizard = getInstance();
+		MetadataImportWizard wizard = new MetadataImportWizard();
 		wizard.open();
 		return wizard;
+	}
+	
+	public MetadataImportWizard nextPage(){
+		log.info("Go to next wizard page");
+		new NextButton().click();
+		return this;
 	}
 	
 	public MetadataImportWizard activate() {
@@ -104,11 +105,5 @@ public class MetadataImportWizard extends TeiidImportWizard {
 				combo.add(selection);
 			}
 		});
-	}
-	
-	public MetadataImportWizard nextPage(){
-		log.info("Go to next wizard page");
-		new NextButton().click();
-		return this;
 	}
 }

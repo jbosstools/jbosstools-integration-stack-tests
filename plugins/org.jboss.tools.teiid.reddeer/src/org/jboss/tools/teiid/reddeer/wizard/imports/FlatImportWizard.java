@@ -20,8 +20,6 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
  */
 public class FlatImportWizard extends TeiidImportWizard {
 
-	private static FlatImportWizard INSTANCE;
-
 	public static final String DIALOG_TITLE = "Import From Flat File Source";
 	
 	public static final String LABEL_FORMAT_OPRIONS = "Format Options";
@@ -32,16 +30,19 @@ public class FlatImportWizard extends TeiidImportWizard {
 	}
 
 	public static FlatImportWizard getInstance(){
-		if(INSTANCE==null){
-			INSTANCE=new FlatImportWizard();
-		}
-		return INSTANCE;
+		return new FlatImportWizard();
 	}
 	
 	public static FlatImportWizard openWizard(){
-		FlatImportWizard wizard = getInstance();
+		FlatImportWizard wizard = new FlatImportWizard();
 		wizard.open();
 		return wizard;
+	}
+	
+	public FlatImportWizard nextPage(){
+		log.info("Go to next wizard page");
+		new NextButton().click();
+		return this;
 	}
 	
 	public FlatImportWizard activate() {
@@ -190,12 +191,6 @@ public class FlatImportWizard extends TeiidImportWizard {
 		log.info("Set view table name to '" + viewTableName + "'");
 		activate();
 		new LabeledText("New view table name:").setText(viewTableName);
-		return this;
-	}
-	
-	public FlatImportWizard nextPage(){
-		log.info("Go to next wizard page");
-		new NextButton().click();
 		return this;
 	}
 }

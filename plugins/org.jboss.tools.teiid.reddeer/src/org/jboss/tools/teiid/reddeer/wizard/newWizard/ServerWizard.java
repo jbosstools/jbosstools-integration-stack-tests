@@ -1,5 +1,7 @@
 package org.jboss.tools.teiid.reddeer.wizard.newWizard;
 
+import java.util.Arrays;
+
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
@@ -24,10 +26,36 @@ public class ServerWizard extends NewWizardDialog {
 	public static final String FILESYSTEM_OPERATIONS = "Filesystem and shell operations";
 	public static final String MANAGEMENT_OPERATIONS = "Management Operations";
 	
-	public ServerWizard() {
+	private ServerWizard() {
 		super("Server", "Server");
+		log.info("New server wizard is opened");
 	}
-
+	
+	public static ServerWizard getInstance(){
+		return new ServerWizard();
+	}
+	
+	public static ServerWizard openWizard(){
+		ServerWizard wizard = new ServerWizard();
+		wizard.open();
+		return wizard;
+	}
+	
+	/**
+	 * use nextPage()
+	 */
+	@Deprecated
+	@Override
+	public void next(){
+		super.next();
+	}
+	
+	public ServerWizard nextPage(){
+		log.info("Go to next wizard page");
+		super.next();
+		return this;
+	}
+	
 	public ServerWizard activate() {
 		new DefaultShell(DIALOG_TITLE);
 		return this;
@@ -38,6 +66,7 @@ public class ServerWizard extends NewWizardDialog {
 	 */
 	public ServerWizard setTypeServer(String type) {
 		activate();
+		log.info("Set type server to '" + type + "'");
 		new RadioButton(type).click();
 		return this;
 	}
@@ -47,19 +76,28 @@ public class ServerWizard extends NewWizardDialog {
 	 */
 	public ServerWizard setControlled(String controlledBy) {
 		activate();
+		log.info("Set controled by to '" + controlledBy + "'");
 		new RadioButton(controlledBy).click();
 		return this;
 	}
 	
-	public ServerWizard externallyManaged(boolean externallyManaged) {
+	public ServerWizard externallyManaged(boolean checked) {
 		activate();
-		new CheckBox("Server lifecycle is externally managed.").toggle(externallyManaged);
+		log.info("Externally managed is '" + checked + "'");
+		CheckBox checkBox = new CheckBox("Server lifecycle is externally managed.");
+		if(checked != checkBox.isChecked()){
+			checkBox.click();
+		}
 		return this;
 	}
 	
-	public ServerWizard assignRuntime(boolean externallyManaged) {
+	public ServerWizard assignRuntime(boolean checked) {
 		activate();
-		new CheckBox("Assign a runtime to this server").toggle(externallyManaged);
+		log.info("Assigne runtime is '" + checked + "'");
+		CheckBox checkBox = new CheckBox("Assign a runtime to this server");
+		if(checked != checkBox.isChecked()){
+			checkBox.click();
+		}
 		return this;
 	}
 	
@@ -68,24 +106,28 @@ public class ServerWizard extends NewWizardDialog {
 	 */
 	public ServerWizard setType(String[] type) {
 		activate();
+		log.info("Set server type to '" + Arrays.toString(type) + "'");
 		selectType(type);
 		return this;
 	}
 	
 	public ServerWizard setName(String name) {
 		activate();
+		log.info("Set server name to '" + name + "'");
 		new LabeledText("Server name:").setText(name);
 		return this;
 	}
 
 	public ServerWizard setHost(String nameHost) {
 		activate();
+		log.info("Set server host name to '" + nameHost + "'");
 		new DefaultCombo(0).setSelection(nameHost);
 		return this;
 	}
 	
 	public ServerWizard setPathToServer(String path) {
 		activate();
+		log.info("Set path to server to '" + path + "'");
 		new DefaultText(0).setText(path);
 		return this;
 	}

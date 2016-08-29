@@ -90,7 +90,7 @@ public class JDBCImportWizardTest {
 		importModel(model, ConnectionProfileConstants.DB2_97_BQT2, "BQT2/TABLE/SMALLA,BQT2/TABLE/SMALLB", false);
 		checkImportedTablesInModel(model, "SMALLA", "SMALLB");
 	}
-
+	
 	@Test
 	public void ingres10Import() {
 		String model = "ingres10Model";
@@ -179,6 +179,8 @@ public class JDBCImportWizardTest {
 		checkImportedTablesInModel(model, "smalla", "smallb");
 	}
 	
+
+	
 	/**
 	 * Note: start database before this test! (AWS)
 	 */
@@ -211,7 +213,6 @@ public class JDBCImportWizardTest {
 		}		
 		//checkImportedTablesInModel(model, "SMALLA", "SMALLB");
 	}
-	
 
 	private void importModel(String modelName, String connectionProfile, String itemList, boolean importProcedures) {
 		String[] splitList = itemList.split(",");

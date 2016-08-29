@@ -16,24 +16,34 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  */
 public class ImportFromFileSystemWizard extends ImportWizardDialog {
 
-	private static ImportFromFileSystemWizard INSTANCE;
-
 	private ImportFromFileSystemWizard() {
 		super("General", "File System");
 		log.info("Import item from file wizard is opened");
 	}
 
 	public static ImportFromFileSystemWizard getInstance(){
-		if(INSTANCE==null){
-			INSTANCE=new ImportFromFileSystemWizard();
-		}
-		return INSTANCE;
+		return new ImportFromFileSystemWizard();
 	}
 	
 	public static ImportFromFileSystemWizard openWizard(){
-		ImportFromFileSystemWizard wizard = getInstance();
+		ImportFromFileSystemWizard wizard = new ImportFromFileSystemWizard();
 		wizard.open();
 		return wizard;
+	}
+	
+	public ImportFromFileSystemWizard nextPage(){
+		log.info("Go to next wizard page");
+		super.next();
+		return this;
+	}
+	
+	/**
+	 * use nextPage()
+	 */
+	@Deprecated
+	@Override
+	public void next(){
+		super.next();
 	}
 	
 	public ImportFromFileSystemWizard activate() {
@@ -63,38 +73,23 @@ public class ImportFromFileSystemWizard extends ImportWizardDialog {
 		return this;
 	}
 	
-	public ImportFromFileSystemWizard setOverwriteResources(boolean check){
-		log.info("Overwrite resources is : '" + check + "'");
+	public ImportFromFileSystemWizard setOverwriteResources(boolean checked){
+		log.info("Overwrite resources is : '" + checked + "'");
 		activate();
 		CheckBox checkBox = new CheckBox("Overwrite existing resources without warning");
-		if(check != checkBox.isChecked()){
+		if(checked != checkBox.isChecked()){
 			checkBox.click();
 		}
 		return this;
 	}
 	
-	public ImportFromFileSystemWizard setCreteTopLevelFolder(boolean check){
-		log.info("Create top-level folder is : '" + check + "'");
+	public ImportFromFileSystemWizard setCreteTopLevelFolder(boolean checked){
+		log.info("Create top-level folder is : '" + checked + "'");
 		activate();
 		CheckBox checkBox = new CheckBox("Create top-level folder");
-		if(check != checkBox.isChecked()){
+		if(checked != checkBox.isChecked()){
 			checkBox.click();
 		}
 		return this;
-	}
-	
-	public ImportFromFileSystemWizard nextPage(){
-		log.info("Go to next wizard page");
-		super.next();
-		return this;
-	}
-	
-	/**
-	 * use nextPage()
-	 */
-	@Deprecated
-	@Override
-	public void next(){
-		super.next();
 	}
 }

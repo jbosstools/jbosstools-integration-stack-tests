@@ -1,11 +1,10 @@
 package org.jboss.tools.teiid.reddeer.wizard.imports;
 
 import java.awt.event.KeyEvent;
-import java.util.Map;
+import java.util.Arrays;
 
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.jface.viewers.CellEditor;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.api.TableItem;
@@ -23,11 +22,10 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
+import org.jboss.tools.teiid.reddeer.dialog.CreateDataSourceDialog;
 
 public class TeiidConnectionImportWizard extends TeiidImportWizard{
-	
-	private static TeiidConnectionImportWizard INSTANCE;
-	
+		
 	public static final String DIALOG_TITLE = "Import using a Teiid Connection";
 
 	//import properties
@@ -38,13 +36,6 @@ public class TeiidConnectionImportWizard extends TeiidImportWizard{
 	public static final String IMPORT_PROPERTY_HEADER_ROW_NUMBER = "Header Row Number";
 	public static final String IMPORT_PROPERTY_USE_FULL_SCHEMA_NAME = "Use Full Schema Name";
 	public static final String IMPORT_PROPERTY_TABLE_TYPES = "Table Types";
-
-
-	public static final String DATASOURCE_PROPERTY_PARENT_DIR = "* Parent Directory";
-	public static final String DATASOURCE_PROPERTY_USER_NAME = "* User Name";
-	public static final String DATASOURCE_PROPERTY_PASSWORD = "* Password";
-	public static final String DATASOURCE_PROPERTY_URL = "* URL, End Point";
-	
 	
 	private TeiidConnectionImportWizard() {
 		super("Teiid Connection >> Source Model");
@@ -52,16 +43,30 @@ public class TeiidConnectionImportWizard extends TeiidImportWizard{
 	}
 
 	public static TeiidConnectionImportWizard getInstance(){
-		if(INSTANCE==null){
-			INSTANCE=new TeiidConnectionImportWizard();
-		}
-		return INSTANCE;
+		return new TeiidConnectionImportWizard();
 	}
 	
 	public static TeiidConnectionImportWizard openWizard(){
-		TeiidConnectionImportWizard wizard = getInstance();
+		TeiidConnectionImportWizard wizard = new TeiidConnectionImportWizard();
 		wizard.open();
 		return wizard;
+	}
+	
+	public TeiidConnectionImportWizard nextPage(){
+		log.info("Go to next wizard page");
+		activate();
+		new NextButton().click();
+		return this;
+	}
+	
+	public TeiidConnectionImportWizard nextPageWithWait(){
+		return this.nextPageWithWait(TimePeriod.LONG);
+	}
+	
+	public TeiidConnectionImportWizard nextPageWithWait(TimePeriod timePeriod){
+		this.nextPage();		
+		new WaitWhile(new IsInProgress(), timePeriod,false);
+		return this;
 	}
 	
 	public TeiidConnectionImportWizard activate() {
@@ -83,39 +88,11 @@ public class TeiidConnectionImportWizard extends TeiidImportWizard{
 	/**
 	 * @param dataSourceProperties - as key use one of TeiidConnectionImportWizard.DATASOURCE_PROPERTY_
 	 */
-	public TeiidConnectionImportWizard createNewDataSource(String dataSourceName, String driverName, Map<String,String> dataSourceProperties){
-		log.info("Create new data source with name '" + dataSourceName + "'");
+	public CreateDataSourceDialog createNewDataSource(){	
+		log.info("Create new data source");
 		activate();
 		new PushButton("New...").click();
-		new DefaultShell("Create DataSource");
-		new LabeledText("Name:").setText(dataSourceName);
-
-		// set driver
-		try {
-			Table table = new DefaultTable(0);
-			table.getItem(driverName).select();
-			
-			for (Map.Entry<String,String> entry : dataSourceProperties.entrySet())
-			{
-				Table propertiesTable = new DefaultTable(new DefaultGroup("Data Source Properties"), 0);
-				TableItem item = null;
-				item = propertiesTable.getItem(entry.getKey());
-				item.click(1);
-				new DefaultText(new CellEditor(item),0).setText(entry.getValue());
-				KeyboardFactory.getKeyboard().type(KeyEvent.VK_TAB);
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-
-		// set focus somewhere else
-		new DefaultShell("Create DataSource");
-		new PushButton("Apply").click();
-
-		new PushButton("OK").click();
-		new WaitWhile(new ShellWithTextIsAvailable("Progress Information"), TimePeriod.NORMAL);
-		activate();
-		return this;
+		return new CreateDataSourceDialog();
 	}
 	
 	public TeiidConnectionImportWizard setTranslator(String translatorName){
@@ -128,7 +105,7 @@ public class TeiidConnectionImportWizard extends TeiidImportWizard{
 	/**
 	 * @param propertyName - use one of TeiidConnectionImportWizard.IMPORT_PROPERTY_
 	 */
-	public TeiidConnectionImportWizard setImportPropertie(String propertyName,String value){
+	public TeiidConnectionImportWizard setImportPropertie(String propertyName, String value){
 		log.info("Set property " + propertyName + "'s value to: '"+value+"'");
 		activate();
 		try{
@@ -149,7 +126,7 @@ public class TeiidConnectionImportWizard extends TeiidImportWizard{
 		return this;
 	}
 	
-	public TeiidConnectionImportWizard addNewImportPropertie(String propertyName,String value){
+	public TeiidConnectionImportWizard addNewImportPropertie(String propertyName, String value){
 		log.info("Add new property '" + propertyName + "' with value to: '"+value+"'");
 		activate();
 		new PushButton(new DefaultGroup("Optional Source Import Properties"), 0).click();
@@ -190,7 +167,7 @@ public class TeiidConnectionImportWizard extends TeiidImportWizard{
 	}
 	
 	public TeiidConnectionImportWizard setTablesToImport(String... tables) {
-		log.info("Select tables to import: '" + tables + "'");
+		log.info("Select tables to import: '" + Arrays.toString(tables) + "'");
 		activate();
 		DefaultTree tree = new DefaultTree();
 		for (TreeItem treeItem : tree.getItems()) {
@@ -201,23 +178,6 @@ public class TeiidConnectionImportWizard extends TeiidImportWizard{
 			String[] parts = path.split("/");
 			new DefaultTreeItem(tree, parts).setChecked(true);
 		}
-		return this;
-	}
-	
-	public TeiidConnectionImportWizard nextPage(){
-		log.info("Go to next wizard page");
-		activate();
-		new NextButton().click();
-		return this;
-	}
-	
-	public TeiidConnectionImportWizard nextPageWithWait(){
-		return this.nextPageWithWait(TimePeriod.LONG);
-	}
-	
-	public TeiidConnectionImportWizard nextPageWithWait(TimePeriod timePeriod){
-		this.nextPage();		
-		new WaitWhile(new IsInProgress(), timePeriod,false);
 		return this;
 	}
 }

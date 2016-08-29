@@ -221,8 +221,8 @@ public class GuidesView extends WorkbenchView {
 		chooseAction(actionSet, "Define VDB");
 		new DefaultShell("Define VDB");
 		new PushButton("New...").click();
-		VdbWizard vdbWizard = new VdbWizard();
-		vdbWizard.setLocation(projectName)
+		VdbWizard.getInstance()
+				.setLocation(projectName)
 				.setName(vdbName)
 				.finish();
 		new DefaultShell("Define VDB");
