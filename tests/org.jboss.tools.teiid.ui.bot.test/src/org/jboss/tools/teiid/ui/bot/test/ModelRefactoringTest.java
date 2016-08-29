@@ -22,9 +22,9 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.AssertBot;
+import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.TransformationEditor;
-import org.jboss.tools.teiid.reddeer.matcher.ModelEditorItemMatcher;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ProblemsViewEx;
@@ -268,7 +268,7 @@ public class ModelRefactoringTest {
 	private void checkDependentModel(String expectedSourceTable, String tableName, String... modelPath) {
 		new ModelExplorer().openModelEditor(modelPath);
 		RelationalModelEditor editor = new RelationalModelEditor(modelPath[modelPath.length - 1]);
-	    TransformationEditor transformationEditor =  editor.openTransformationDiagram(ModelEditorItemMatcher.TABLE, tableName);
+	    TransformationEditor transformationEditor =  editor.openTransformationDiagram(ModelEditor.ItemType.TABLE, tableName);
 	    AssertBot.transformationContains(transformationEditor.getTransformation(), expectedSourceTable);
 	}
 

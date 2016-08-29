@@ -46,8 +46,6 @@ public class TableEditor extends DefaultEditor {
 		public static final String UNIQUE_CONSTRAINTS = "Unique Constraints";
 	}
 	
-	private AbstractModelEditor parent;
-	
 	public TableEditor(String name){
 		super(name);
 		new DefaultCTabItem(TABLE_EDITOR).activate();

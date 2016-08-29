@@ -1,7 +1,8 @@
 package org.jboss.tools.teiid.reddeer.condition;
 
-import org.apache.log4j.Logger;
+
 import org.jboss.reddeer.common.condition.AbstractWaitCondition;
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;

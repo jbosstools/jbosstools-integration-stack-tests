@@ -507,4 +507,21 @@ public class ModelExplorer extends AbstractExplorer {
 		new DefaultText(0).setText(jndiName);
 		new PushButton("OK").click();
 	}
+	
+	/**
+	 * Check if item is in the project
+	 * @param path - path to the item (<PROJECT>, ..., <ITEM>) 
+	 * @return
+	 */
+	public boolean containsItem(String... path){
+		boolean result = false;
+		getProject(path[0]).refresh();
+		try{
+			this.selectItem(path);
+			result = true;
+		}catch(Exception ex){
+			result = false;
+		}
+		return result;
+	}
 }

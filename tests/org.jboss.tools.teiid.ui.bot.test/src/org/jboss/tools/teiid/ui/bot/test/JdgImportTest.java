@@ -41,10 +41,10 @@ public class JdgImportTest {
 				.finish();
 		
 		new ModelExplorer().getProject(PROJECT_NAME).open();
-		assertTrue(new ModelExplorer().getProject(PROJECT_NAME).containsItem(modelName + ".xmi", "SmallA"));
-		assertTrue(new ModelExplorer().getProject(PROJECT_NAME).containsItem(modelName + ".xmi", "SmallA", "SmallAObject : object"));
-		assertTrue(new ModelExplorer().getProject(PROJECT_NAME).containsItem(modelName + ".xmi", "SmallA", "intKey : int"));
-		assertTrue(new ModelExplorer().getProject(PROJECT_NAME).containsItem(modelName + ".xmi", "SmallA", "PK_INTKEY"));
+		assertTrue(new ModelExplorer().containsItem(PROJECT_NAME,modelName + ".xmi", "SmallA"));
+		assertTrue(new ModelExplorer().containsItem(PROJECT_NAME,modelName + ".xmi", "SmallA", "SmallAObject : object"));
+		assertTrue(new ModelExplorer().containsItem(PROJECT_NAME,modelName + ".xmi", "SmallA", "intKey : int"));
+		assertTrue(new ModelExplorer().containsItem(PROJECT_NAME,modelName + ".xmi", "SmallA", "PK_INTKEY"));
 	}
 
 }

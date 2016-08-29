@@ -81,7 +81,7 @@ public class XmlStagingTableTest {
 		TransformationEditor pubTransfEditor = editor.openTransformationEditor();
 		pubTransfEditor.insertAndValidateSql(fileHelper.getSql("XmlStagingTableTest/Publisher"));
 		pubTransfEditor.close();
-		editor.returnToMappingClassOverview();
+		editor.returnToParentDiagram();
 		
 		editor.openMappingClass("book");
 		InputSetEditorDialog inputSetEditor = editor.openInputSetEditor();
@@ -90,7 +90,7 @@ public class XmlStagingTableTest {
 		TransformationEditor bookTransfEditor = editor.openTransformationEditor();
 		bookTransfEditor.insertAndValidateSql(fileHelper.getSql("XmlStagingTableTest/Book"));
 		bookTransfEditor.close();
-		editor.returnToMappingClassOverview();
+		editor.returnToParentDiagram();
 		
 		AbstractWait.sleep(TimePeriod.SHORT);
 		editor.save();
@@ -111,13 +111,13 @@ public class XmlStagingTableTest {
 		TransformationEditor stTransfEditor = editor.openTransformationEditor();
 		stTransfEditor.insertAndValidateSql(fileHelper.getSql("XmlStagingTableTest/StagingTable"));
 		stTransfEditor.close();
-		editor.returnToMappingClassOverview();
+		editor.returnToParentDiagram();
 
 		editor.openMappingClass("publisher");		
 		pubTransfEditor = editor.openTransformationEditor();
 		pubTransfEditor.insertAndValidateSql(fileHelper.getSql("XmlStagingTableTest/StPublisher"));
 		pubTransfEditor.close();
-		editor.returnToMappingClassOverview();
+		editor.returnToParentDiagram();
  		
 		editor.openMappingClass("book");
 		inputSetEditor = editor.openInputSetEditor();
@@ -126,7 +126,7 @@ public class XmlStagingTableTest {
 		bookTransfEditor = editor.openTransformationEditor();
 		bookTransfEditor.insertAndValidateSql(fileHelper.getSql("XmlStagingTableTest/StBook"));
 		bookTransfEditor.close();
-		editor.returnToMappingClassOverview();
+		editor.returnToParentDiagram();
 		
 		AbstractWait.sleep(TimePeriod.SHORT);
 		editor.save();

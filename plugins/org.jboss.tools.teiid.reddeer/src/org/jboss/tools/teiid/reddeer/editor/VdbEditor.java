@@ -5,11 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.eclipse.swt.widgets.Text;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.lookup.WidgetLookup;
 import org.jboss.reddeer.core.matcher.WithTooltipTextMatcher;
+import org.jboss.reddeer.core.util.Display;
 import org.jboss.reddeer.jface.viewers.CellEditor;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
@@ -25,7 +28,6 @@ import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
-import org.jboss.tools.teiid.reddeer.widget.TeiidEditorTableItem;
 
 public class VdbEditor extends DefaultEditor {
 
@@ -77,13 +79,18 @@ public class VdbEditor extends DefaultEditor {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
-	public void setModelTranslator(String modelName, String sourceName, String translatorName) {
+	public void setModelTranslator(String modelName, String sourceName, final String translatorName) {
 		new DefaultCTabItem("Content").activate();
 		new DefaultCTabItem("Models").activate();
 		new DefaultTable(0).getItem(modelName).select();
-		TeiidEditorTableItem sourceItem = new TeiidEditorTableItem(new DefaultTable(1).getItem(sourceName));
-		sourceItem.select();
-		sourceItem.setText(1, translatorName);
+		new DefaultTable(1).getItem(sourceName).click(1);
+		Display.syncExec(new Runnable() {
+			@Override
+			public void run() {
+				((Text) WidgetLookup.getInstance().getFocusControl()).setText(translatorName);
+				KeyboardFactory.getKeyboard().type(KeyEvent.VK_TAB);
+			}
+		});
 	}
 
 	public String getDataSourceName(String modelName) {
@@ -152,16 +159,22 @@ public class VdbEditor extends DefaultEditor {
 		new PushButton("OK").click();
 	}
 
-	public void addTranslatorOverrideProperty(String overrideName, String propertyName, String propertyValue) {
+	public void addTranslatorOverrideProperty(String overrideName, String propertyName, final String propertyValue) {
 		new DefaultCTabItem("Advanced").activate();
 		new DefaultCTabItem("Translator Overrides").activate();
 		new DefaultTable(0).getItem(overrideName).select();
 
 		if (new DefaultTable(1).containsItem(propertyName)) {
 			// known property
-			TeiidEditorTableItem item = new TeiidEditorTableItem(new DefaultTable(1).getItem(propertyName));
-			item.select();
-			item.setText(1, propertyValue);
+			new DefaultTable(1).getItem(propertyName).select();
+			new DefaultTable(1).getItem(propertyName).click(1);
+			Display.syncExec(new Runnable() {
+				@Override
+				public void run() {
+					((Text) WidgetLookup.getInstance().getFocusControl()).setText(propertyValue);
+					KeyboardFactory.getKeyboard().type(KeyEvent.VK_TAB);
+				}
+			});
 
 		} else {
 			// custom property

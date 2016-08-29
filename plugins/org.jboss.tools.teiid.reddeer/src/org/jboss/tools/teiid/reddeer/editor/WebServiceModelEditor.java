@@ -8,14 +8,11 @@ import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 
-public class WebServiceModelEditor extends AbstractModelEditor {
-	public static final String PACKAGE_DIAGRAM = "Package Diagram";
-	public static final String OPERATION_EDITOR = "Operation Editor";
+public class WebServiceModelEditor extends ModelEditor {
+	private static final String OPERATION_EDITOR = "Operation Editor";
 	
 	public WebServiceModelEditor(String title) {
 		super(title);
-		AbstractWait.sleep(TimePeriod.SHORT);
-		this.getEditorViewer(PACKAGE_DIAGRAM);
 	}
 	
 	/**

@@ -1,84 +1,38 @@
 package org.jboss.tools.teiid.reddeer.matcher;
 
-import static org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable.asyncExec;
-
-import java.util.List;
-
 import org.eclipse.draw2d.Clickable;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.Label;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalEditPart;
-import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Factory;
+import org.jboss.reddeer.core.util.Display;
+import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 
 public class RecursiveButtonMatcher extends BaseMatcher<EditPart> {
+	private String mappingClassPrefix;
 
-	private static final String MAPPING_CLASS = "<<Mapping Class>>";
-	private String prefixMappingClassRecursive;
-
-	private Clickable b;
-
-	public RecursiveButtonMatcher(String prefixMappingClassRecursive) {
-		this.prefixMappingClassRecursive = prefixMappingClassRecursive;
+	public RecursiveButtonMatcher(String mappingClassPrefix) {
+		this.mappingClassPrefix = mappingClassPrefix;
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public boolean matches(Object item) {
-
-		boolean isMappingClass = false;
-		boolean startsWithPrefix = false;
-
 		if (item instanceof GraphicalEditPart) {
-			if (item.getClass().toString()
-					.equals("class org.teiid.designer.diagram.ui.notation.uml.part.UmlClassifierEditPart")) {
-				IFigure figure = ((GraphicalEditPart) item).getFigure();
-
-				List<IFigure> children = figure.getChildren();// header,
-																// footer,
-																// triangle,
-																// imagefigure,
-																// button
-				for (IFigure figure2 : children) {
-					if (figure2 instanceof Clickable) {
-
-						// verify correct mapping class
-						for (IFigure sibling : children) {
-							if (sibling.getClass().toString().equals(
-									"class org.teiid.designer.diagram.ui.notation.uml.figure.UmlClassifierHeader")) {
-								List<IFigure> siblingChildren = sibling.getChildren();
-								for (IFigure siblingChild : siblingChildren) {
-									if (siblingChild instanceof Label) {
-										String text = ((Label) siblingChild).getText();
-										if (text.equals(MAPPING_CLASS)) {
-											isMappingClass = true;
-										}
-										if (text.startsWith(prefixMappingClassRecursive)) {
-											startsWithPrefix = true;
-										}
-									}
-								}
+			ModelEditorItemMatcher mappingClassMatcher = new ModelEditorItemMatcher(ModelEditor.ItemType.MAPPING_CLASS, mappingClassPrefix);
+			if (mappingClassMatcher.matches(item)){
+				for (Object child : ((GraphicalEditPart) item).getFigure().getChildren()) {
+					if (child instanceof Clickable){
+						final Clickable recursiveButton = (Clickable) child;
+						Display.syncExec(new Runnable() {
+							@Override
+							public void run() {
+								recursiveButton.doClick();
 							}
-						}
-						System.out.println(isMappingClass + ", " + startsWithPrefix);
-
-						if (isMappingClass && startsWithPrefix) {
-							b = (Clickable) figure2;
-							asyncExec(new VoidResult() {
-								@Override
-								public void run() {
-									b.doClick();
-								}
-							});
-							return true;
-						}
-
+						});
+						return true;
 					}
 				}
-
 			}
 		}
 		return false;
@@ -90,8 +44,8 @@ public class RecursiveButtonMatcher extends BaseMatcher<EditPart> {
 	}
 
 	@Factory
-	public static RecursiveButtonMatcher createRecursiveButtonMatcher(String prefix) {
-		return new RecursiveButtonMatcher(prefix);
+	public static RecursiveButtonMatcher createMatcher(String mappingClassPrefix) {
+		return new RecursiveButtonMatcher(mappingClassPrefix);
 	}
 
 }
