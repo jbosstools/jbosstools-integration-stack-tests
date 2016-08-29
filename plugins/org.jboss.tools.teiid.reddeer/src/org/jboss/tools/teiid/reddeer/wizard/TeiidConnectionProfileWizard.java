@@ -29,6 +29,10 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.tools.teiid.reddeer.extensions.DriverDefinitionExt;
 import org.jboss.tools.teiid.reddeer.preference.DriverDefinitionPreferencePageExt;
+import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.ConnectionProfileDB2Page;
+import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.ConnectionProfileHsqlPage;
+import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.ConnectionProfileLdapPage;
+import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.ConnectionProfileSalesForcePage;
 
 /**
  * Extends reddeer class

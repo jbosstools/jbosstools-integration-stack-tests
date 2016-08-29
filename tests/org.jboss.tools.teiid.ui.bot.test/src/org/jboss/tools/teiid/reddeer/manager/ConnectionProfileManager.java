@@ -6,12 +6,12 @@ import org.jboss.reddeer.eclipse.datatools.ui.DatabaseProfile;
 import org.jboss.reddeer.eclipse.datatools.ui.FlatFileProfile;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileSelectPage;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileWizard;
-import org.jboss.tools.teiid.reddeer.wizard.ConnectionProfileXmlLocalPage;
-import org.jboss.tools.teiid.reddeer.wizard.ConnectionProfileXmlPage;
-import org.jboss.tools.teiid.reddeer.wizard.ConnectionProfileXmlUrlPage;
-import org.jboss.tools.teiid.reddeer.wizard.RestProfileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.TeiidConnectionProfileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.WsdlProfileWizard;
+import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.ConnectionProfileXmlLocalPage;
+import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.ConnectionProfileXmlPage;
+import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.ConnectionProfileXmlUrlPage;
+import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.RestProfileWizard;
 import org.jboss.tools.teiid.ui.bot.test.TeiidBot;
 
 public class ConnectionProfileManager {

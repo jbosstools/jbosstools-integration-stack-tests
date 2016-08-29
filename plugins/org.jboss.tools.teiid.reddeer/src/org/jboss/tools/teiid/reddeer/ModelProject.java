@@ -12,7 +12,7 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.tools.teiid.reddeer.wizard.TeiidImportWizard;
+import org.jboss.tools.teiid.reddeer.wizard.imports.TeiidImportWizard;
 
 /**
  * This class represents a model project.

@@ -24,12 +24,12 @@ import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
-import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.matcher.ModelColumnMatcher;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
+import org.jboss.tools.teiid.reddeer.wizard.imports.LdapImportWizard;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -53,7 +53,6 @@ public class LdapImportTest {
 	public static void prepare() {
 		new TeiidBot().uncheckBuildAutomatically();
 		new ModelExplorer().createProject(NEW_PROJECT);
-
 	}
 
 	@Before
@@ -68,10 +67,21 @@ public class LdapImportTest {
 		Properties importProperties = teiidBot
 				.getProperties(teiidBot.toAbsolutePath("resources/importWizard/rhds.properties"));
 
-		new ImportManager().importFromLdap(NEW_PROJECT, RHDS_MODEL, ConnectionProfileConstants.RHDS,
-				cpProperties.getProperty("db.hostname"), cpProperties.getProperty("principalDnSuffix"),
-				importProperties);
-
+		LdapImportWizard wizard = new LdapImportWizard();
+		wizard.open();
+	    wizard.setConnectionProfile(ConnectionProfileConstants.RHDS)
+			  .setLdapBaseDN(cpProperties.getProperty("principalDnSuffix"))
+			  .setModelName(RHDS_MODEL)
+			  .setProjectFolder(NEW_PROJECT)
+			  .next();
+		String objects;
+		objects = importProperties.getProperty("selectedEntries");
+		wizard.selectEntries(objects.split(","))
+			  .next();
+		objects = importProperties.getProperty("selectedColumns");
+		wizard.selectColumns(objects.split(","))
+			  .finish();
+		
 		ModelExplorer modelExplorer = new ModelExplorer();
 		modelExplorer.open();
 		Project project = modelExplorer.getProject(NEW_PROJECT);
@@ -103,9 +113,20 @@ public class LdapImportTest {
 		Properties importProperties = teiidBot
 				.getProperties(teiidBot.toAbsolutePath("resources/importWizard/ldap.properties"));
 
-		new ImportManager().importFromLdap(NEW_PROJECT, LDAP_MODEL, ConnectionProfileConstants.LDAP,
-				cpProperties.getProperty("db.hostname"), cpProperties.getProperty("principalDnSuffix"),
-				importProperties);
+		LdapImportWizard wizard = new LdapImportWizard();
+		wizard.open();
+	    wizard.setConnectionProfile(ConnectionProfileConstants.LDAP)
+			  .setLdapBaseDN(cpProperties.getProperty("principalDnSuffix"))
+			  .setModelName(LDAP_MODEL)
+			  .setProjectFolder(NEW_PROJECT)
+			  .next();
+		String objects;
+		objects = importProperties.getProperty("selectedEntries");
+		wizard.selectEntries(objects.split(","))
+			  .next();
+		objects = importProperties.getProperty("selectedColumns");
+		wizard.selectColumns(objects.split(","))
+			  .finish();
 
 		ModelExplorer modelExplorer = new ModelExplorer();
 		modelExplorer.open();

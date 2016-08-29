@@ -4,30 +4,35 @@ import static org.junit.Assert.assertEquals;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Properties;
 
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.common.reddeer.JiraClient;
 import org.jboss.tools.teiid.reddeer.ModelBuilder;
 import org.jboss.tools.teiid.reddeer.ModelClass;
 import org.jboss.tools.teiid.reddeer.ModelType;
+import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.VDBEditor;
-import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.wizard.MetadataModelWizard;
 import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
+import org.jboss.tools.teiid.reddeer.wizard.imports.ImportJDBCDatabaseWizard;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,7 +49,6 @@ import org.junit.runner.RunWith;
 
 public class ReuseVDBTest {
 	private static final String PROJECT_NAME = "reuseVDB";
-	private static final String PROJECT_LOCATION = "resources/projects/"+ PROJECT_NAME;
 	private static final String NAME_ORACLE_MODEL = "sourceModel";
 	private static final String VIEW_SOURCE_MODEL = "viewFromSource";
 	private static final String SOURCE_VDB = "sourceVDB";
@@ -55,11 +59,14 @@ public class ReuseVDBTest {
 
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;
-		
+	
+	private static ModelExplorer modelExplorer;
+	
 	@BeforeClass
 	public static void before() {
-		new ModelExplorer().importProject(PROJECT_LOCATION);
-		new ModelExplorer().changeConnectionProfile(ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER, PROJECT_NAME, NAME_ORACLE_MODEL);
+		modelExplorer = new ModelExplorer();
+		modelExplorer.importProject(PROJECT_NAME);
+		modelExplorer.changeConnectionProfile(ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER, PROJECT_NAME, NAME_ORACLE_MODEL);
 	}
 	
 	@Test
@@ -69,12 +76,19 @@ public class ReuseVDBTest {
 				.setName(SOURCE_VDB)
 				.addModel(PROJECT_NAME,VIEW_SOURCE_MODEL + ".xmi")
 				.finish();
-		new ModelExplorer().deployVdb(PROJECT_NAME, SOURCE_VDB);
+		executeVDB(PROJECT_NAME, SOURCE_VDB);
 		
-		new ModelExplorer().createProject(PROJECT_NAME_REUSE);
-		Properties iProps = new Properties();
-		iProps.setProperty("itemList", VIEW_SOURCE_MODEL);
-		new ImportManager().importFromDatabase(PROJECT_NAME_REUSE,VIEW_SOURCE_MODEL, SOURCE_VDB + " - localhost - Teiid Connection", iProps, false);
+		modelExplorer.createProject(PROJECT_NAME_REUSE);
+		ImportJDBCDatabaseWizard jdbcWizard = new ImportJDBCDatabaseWizard();
+		jdbcWizard.open();
+		jdbcWizard.setConnectionProfile(SOURCE_VDB + " - localhost - Teiid Connection")
+		          .next();
+		jdbcWizard.setTableTypes(false, true, false)
+		      	  .next();
+		jdbcWizard.setTables(VIEW_SOURCE_MODEL)
+		          .next();
+		jdbcWizard.setFolder(PROJECT_NAME_REUSE)
+				  .finish();
 		
 		MetadataModelWizard modelWizard = new MetadataModelWizard();
 		modelWizard.open();
@@ -98,8 +112,8 @@ public class ReuseVDBTest {
 				.setName(REUSE_VDB)
 				.addModel(PROJECT_NAME_REUSE,VIEW_REUSE_MODEL + ".xmi")
 				.finish();
-		new ModelExplorer().deployVdb(PROJECT_NAME_REUSE, REUSE_VDB);
-		
+		modelExplorer.deployVdb(PROJECT_NAME_REUSE, REUSE_VDB);
+
 		/* test version 1 */
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, REUSE_VDB);
 		try {
@@ -113,7 +127,7 @@ public class ReuseVDBTest {
 			jdbchelper.closeConnection();
 		}
 		/*change sourceVDB version to 2*/
-		new ModelExplorer().openModelEditor(PROJECT_NAME,VIEW_SOURCE_MODEL+".xmi","version");
+		modelExplorer.openModelEditor(PROJECT_NAME,VIEW_SOURCE_MODEL+".xmi","version");
 		ModelEditor editor = new ModelEditor(VIEW_SOURCE_MODEL+".xmi");
 		editor.showTransformation();
 		editor.setTransformation("SELECT 'version2'");
@@ -125,7 +139,7 @@ public class ReuseVDBTest {
 		vdb.synchronizeAll();
 		vdb.setVersion(2);
 		new ModelEditor(SOURCE_VDB + ".vdb").save();		
-		new ModelExplorer().deployVdb(PROJECT_NAME, SOURCE_VDB);
+		modelExplorer.deployVdb(PROJECT_NAME, SOURCE_VDB);
 		
 		/* test version 1 */
 		if(new JiraClient().isIssueClosed("TEIIDDES-2848")){
@@ -144,7 +158,7 @@ public class ReuseVDBTest {
 		vdb.show();
 		vdb.setImportVDB(SOURCE_VDB,2,false);
 		new ModelEditor(REUSE_VDB + ".vdb").save();
-		new ModelExplorer().deployVdb(PROJECT_NAME_REUSE, REUSE_VDB);
+		modelExplorer.deployVdb(PROJECT_NAME_REUSE, REUSE_VDB);
 		
 		jdbchelper = new TeiidJDBCHelper(teiidServer, REUSE_VDB);
 		try {
@@ -156,4 +170,20 @@ public class ReuseVDBTest {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * deploy vdb and create connection profile (modelExplorer.deployVDB() doesn't create CP)
+	 */
+	private void executeVDB(String project, String vdb) {
+ 		modelExplorer.open();
+ 		vdb = (vdb.contains(".vdb")) ? vdb : vdb + ".vdb";
+ 		
+ 		new DefaultTreeItem(project, vdb).select();
+ 		new ContextMenu("Modeling", "Execute VDB").select();
+ 
+ 		new WaitWhile(new IsInProgress(), TimePeriod.VERY_LONG);
+ 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+ 		new WorkbenchShell();
+ 		TeiidPerspective.getInstance();
+ 	}
 }
