@@ -15,15 +15,7 @@ import org.jboss.tools.teiid.reddeer.ModelBuilder;
 import org.jboss.tools.teiid.reddeer.ModelClass;
 import org.jboss.tools.teiid.reddeer.ModelType;
 
-/**
- * 
- * @author apodhrad
- * 
- */
-public class MetadataModelWizard extends NewWizardDialog {
-
-	private static MetadataModelWizard INSTANCE;
-	
+public class MetadataModelWizard extends NewWizardDialog {	
 	public static final String DIALOG_TITLE = "New Model Wizard";
 
 	private MetadataModelWizard() {
@@ -32,17 +24,36 @@ public class MetadataModelWizard extends NewWizardDialog {
 	}
 	
 	public static MetadataModelWizard getInstance(){
-		if(INSTANCE==null){
-			INSTANCE=new MetadataModelWizard();
-		}
-		return INSTANCE;
+		return new MetadataModelWizard();
 	}
 	
 	public static MetadataModelWizard openWizard(){
-		MetadataModelWizard wizard = getInstance();
+		MetadataModelWizard wizard = new MetadataModelWizard();
 		wizard.open();
 		return wizard;
 	}
+	
+	@Override
+	public void open() {
+		super.open();
+		this.activate();
+	}
+	
+	/**
+	 * use nextPage()
+	 */
+	@Override
+	@Deprecated
+	public void next() {
+		super.next();
+	}
+	
+	public MetadataModelWizard nextPage() {
+		log.info("Go to next wizard page");
+		super.next();
+		return this;
+	}
+	
 	public MetadataModelWizard activate() {
 		new DefaultShell(DIALOG_TITLE);
 		return this;
@@ -134,20 +145,5 @@ public class MetadataModelWizard extends NewWizardDialog {
 		activate();
 		new LabeledText("XML Model:").setText(name);
 		return this;
-	}
-	
-	public MetadataModelWizard nextPage(){
-		log.info("Go to next wizard page");
-		super.next();
-		return this;
-	}
-
-	/**
-	 * use nextPage()
-	 */
-	@Deprecated
-	@Override
-	public void next(){
-		super.next();
 	}
 }

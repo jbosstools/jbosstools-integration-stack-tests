@@ -37,4 +37,11 @@ public abstract class AbstractModelEditor extends SWTBotEditor {
 		return new SWTBotGefViewer(graphicalViewer);
 	}
 
+	/**
+	 * Opens table editor's tab.
+	 */
+	public TableEditor openTableEditor(){
+		return new TableEditor(this.getTitle());
+	}	
+	
 }

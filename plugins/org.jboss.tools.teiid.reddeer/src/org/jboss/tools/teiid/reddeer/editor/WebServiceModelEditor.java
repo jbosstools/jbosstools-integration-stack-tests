@@ -27,13 +27,6 @@ public class WebServiceModelEditor extends AbstractModelEditor {
 	}
 	
 	/**
-	 * Opens table editor's tab.
-	 */
-	public TableEditor openTableEditor(){
-		return new TableEditor(this.getTitle(), OPERATION_EDITOR);
-	}	
-	
-	/**
 	 * Selects specified operation in specified interface.
 	 */
 	public void selectOperation(String iinterface, String operation){

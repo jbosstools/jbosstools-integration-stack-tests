@@ -150,7 +150,7 @@ public class GeometryTypeTest {
 	}
 	
 	private boolean testSetDatatype(String model,String exampleDatatype,String exampleNativeType){
-		TableEditor table = new RelationalModelEditor(model+".xmi").openTableEditor(RelationalModelEditor.PACKAGE_DIAGRAM);
+		TableEditor table = new RelationalModelEditor(model+".xmi").openTableEditor();
 		table.openTab("Columns");
 		return ( exampleDatatype.equals(table.getCellText(2, 29)) && exampleDatatype.equals(table.getCellText(3, 29))) && //check 
 				exampleNativeType.equals(table.getCellText(2, 3)) && exampleNativeType.equals(table.getCellText(3, 3));  //check native type
