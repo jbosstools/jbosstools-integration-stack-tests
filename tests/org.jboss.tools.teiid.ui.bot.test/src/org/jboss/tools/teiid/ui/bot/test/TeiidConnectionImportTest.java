@@ -16,8 +16,8 @@ import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
-import org.jboss.tools.teiid.reddeer.wizard.TeiidConnectionImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
+import org.jboss.tools.teiid.reddeer.wizard.imports.TeiidConnectionImportWizard;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,7 +53,7 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 
 	private static final String PROJECT_NAME = "TeiidConnImporter";
 	private static final String SOURCE_VDB_NAME = "teiid";
-	private static final String projectLocation = "resources/projects/TeiidConnImporter";
+	private static final String projectLocation = "TeiidConnImporter";
 
 	private static final String modeshapeCPName = "ModeShapeDS";
 
@@ -75,7 +75,7 @@ public class TeiidConnectionImportTest extends SWTBotTestCase {
 	public static void createProject() {
 		new TeiidDesignerPreferencePage().setTeiidConnectionImporterTimeout(240);
 
-		new ModelExplorer().importProject(teiidBot.toAbsolutePath(projectLocation));
+		new ModelExplorer().importProject(projectLocation);
 		new ModelExplorer().getModelProject(PROJECT_NAME).open();
 
 	}

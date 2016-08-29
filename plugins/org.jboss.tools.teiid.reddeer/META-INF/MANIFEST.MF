@@ -32,4 +32,7 @@ Export-Package: org.jboss.tools.teiid.reddeer,
  org.jboss.tools.teiid.reddeer.util,
  org.jboss.tools.teiid.reddeer.view,
  org.jboss.tools.teiid.reddeer.widget,
- org.jboss.tools.teiid.reddeer.wizard
+ org.jboss.tools.teiid.reddeer.wizard,
+ org.jboss.tools.teiid.reddeer.wizard.connectionProfiles,
+ org.jboss.tools.teiid.reddeer.wizard.exports,
+ org.jboss.tools.teiid.reddeer.wizard.imports

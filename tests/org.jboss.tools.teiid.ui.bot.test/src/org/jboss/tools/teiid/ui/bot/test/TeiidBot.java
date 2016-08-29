@@ -30,8 +30,8 @@ import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.wizard.HSQLDBDriverWizard;
-import org.jboss.tools.teiid.reddeer.wizard.HSQLDBProfileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
+import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.HSQLDBProfileWizard;
 
 /**
  * Bot operations specific for Teiid Designer.
@@ -209,12 +209,12 @@ public class TeiidBot {
 	public void simulateTablesPreview(TeiidServerRequirement teiidServer, String project, String model, String[] tables) {
 
 		String vdb_name = "Check_" + model;
-
+		
 		// create VDB		
 		VdbWizard.openVdbWizard()
 				.setLocation(project)
 				.setName(vdb_name)
-				.addModel(project, model)
+				.addModel(project, model + ".xmi")
 				.finish();
 
 		new ModelExplorer().deployVdb(project, vdb_name);

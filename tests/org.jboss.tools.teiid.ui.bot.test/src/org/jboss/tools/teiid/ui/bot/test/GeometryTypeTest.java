@@ -29,15 +29,15 @@ import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
-import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.manager.ImportMetadataManager;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.MetadataModelWizard;
-import org.jboss.tools.teiid.reddeer.wizard.TeiidConnectionImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.VdbWizard;
+import org.jboss.tools.teiid.reddeer.wizard.imports.ImportJDBCDatabaseWizard;
+import org.jboss.tools.teiid.reddeer.wizard.imports.TeiidConnectionImportWizard;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -69,9 +69,17 @@ public class GeometryTypeTest {
 	
 	@Test
 	public void importFromJDBC(){
-		Properties iProps = new Properties();
-		iProps.setProperty("itemList", "BQT2/TABLE/BUILDINGS");
-		new ImportManager().importFromDatabase(PROJECT_NAME, SOURCE_MODEL_NAME, ConnectionProfileConstants.ORACLE_11G_BQT2, iProps,false);
+		ImportJDBCDatabaseWizard jdbcWizard = new ImportJDBCDatabaseWizard();
+		jdbcWizard.open();
+		jdbcWizard.setConnectionProfile(ConnectionProfileConstants.ORACLE_11G_BQT2)
+		          .next();
+		jdbcWizard.setTableTypes(false, true, false)
+		      	  .next();
+		jdbcWizard.setTables("BQT2/TABLE/BUILDINGS")
+		          .next();
+		jdbcWizard.setFolder(PROJECT_NAME)
+		   	  	  .setModelName(SOURCE_MODEL_NAME)
+				  .finish();
 		//TEIIDDES-2799
 		setGeometryDatatype(PROJECT_NAME,SOURCE_MODEL_NAME+".xmi","BUILDINGS","POSITION : object(1)");
 		setGeometryDatatype(PROJECT_NAME,SOURCE_MODEL_NAME+".xmi","BUILDINGS","FOOTPRINT : object(1)");

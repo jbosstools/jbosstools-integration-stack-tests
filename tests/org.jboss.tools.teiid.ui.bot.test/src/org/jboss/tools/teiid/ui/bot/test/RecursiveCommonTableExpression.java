@@ -36,14 +36,12 @@ public class RecursiveCommonTableExpression {
 	private static final String VDB_NAME = "RCTEVDB";
 	private static final String TRANSFORMATION_SQL = "with a as (select intkey, 0 as lvl from Oracle11View.smallb where intkey = 1 UNION ALL select n.intkey, rcte.lvl + 1 as lvl from Oracle11View.smallb n inner join a rcte on n.intkey = rcte.intkey + 1) select * from a";
 
-	private static TeiidBot teiidBot = new TeiidBot();
-
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;
 
 	@Before
 	public void before() {
-		new ModelExplorer().importProject(teiidBot.toAbsolutePath("resources/projects/" + PROJECT_NAME));
+		new ModelExplorer().importProject(PROJECT_NAME);
 		new ModelExplorer().changeConnectionProfile(ConnectionProfileConstants.ORACLE_11G_BQT2, PROJECT_NAME,
 				SOURCE_MODEL_NAME);
 

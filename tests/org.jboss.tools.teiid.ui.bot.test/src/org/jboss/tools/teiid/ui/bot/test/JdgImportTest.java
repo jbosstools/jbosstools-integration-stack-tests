@@ -8,7 +8,7 @@ import org.jboss.tools.runtime.reddeer.requirement.ServerConnType;
 import org.jboss.tools.teiid.reddeer.manager.ImportMetadataManager;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
-import org.jboss.tools.teiid.reddeer.wizard.TeiidConnectionImportWizard;
+import org.jboss.tools.teiid.reddeer.wizard.imports.TeiidConnectionImportWizard;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;

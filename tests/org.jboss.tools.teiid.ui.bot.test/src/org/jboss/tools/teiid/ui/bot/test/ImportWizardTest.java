@@ -11,17 +11,16 @@ import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.teiid.reddeer.manager.ConnectionProfileManager;
-import org.jboss.tools.teiid.reddeer.manager.ImportManager;
 import org.jboss.tools.teiid.reddeer.manager.ImportMetadataManager;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
-import org.jboss.tools.teiid.reddeer.wizard.DDLCustomImportWizard;
-import org.jboss.tools.teiid.reddeer.wizard.FlatImportWizard;
-import org.jboss.tools.teiid.reddeer.wizard.ImportGeneralItemWizard;
-import org.jboss.tools.teiid.reddeer.wizard.MetadataImportWizard.ImportType;
-import org.jboss.tools.teiid.reddeer.wizard.WsdlImportWizard;
-import org.jboss.tools.teiid.reddeer.wizard.WsdlWebImportWizard;
+import org.jboss.tools.teiid.reddeer.wizard.imports.DDLCustomImportWizard;
+import org.jboss.tools.teiid.reddeer.wizard.imports.FlatImportWizard;
+import org.jboss.tools.teiid.reddeer.wizard.imports.ImportFromFileSystemWizard;
+import org.jboss.tools.teiid.reddeer.wizard.imports.MetadataImportWizard;
+import org.jboss.tools.teiid.reddeer.wizard.imports.WsdlImportWizard;
+import org.jboss.tools.teiid.reddeer.wizard.imports.WsdlWebImportWizard;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -84,12 +83,15 @@ public class ImportWizardTest {
 		String source = teiidBot.toAbsolutePath("resources/dtf/relationalModel.xml");
 		String target = "RelationalModel.xmi";
 
-		Properties props = new Properties();
-		props.setProperty("source", source);
-		props.setProperty("target", target);
-		props.setProperty("importType", ImportType.RELATIONAL_MODEL);
-
-		new ImportMetadataManager().importFromDesignerTextFile(MODEL_PROJECT, props);
+		MetadataImportWizard wizard = new MetadataImportWizard();
+		wizard.open();
+		wizard.setImportType(MetadataImportWizard.TYPE_RELATIONAL_MODEL)
+			  .next();
+		wizard.setName(target)
+			  .setPathToFile(source)
+			  .setProject(MODEL_PROJECT)
+			  .finish();
+		
 
 		teiidBot.assertResource(MODEL_PROJECT, target);
 		teiidBot.checkDiagram(MODEL_PROJECT, target, "ProductSymbols");
@@ -183,14 +185,15 @@ public class ImportWizardTest {
 	public void wsdlToWSImportTest() {
 
 		// import wsdl
-		Properties iProps = new Properties();
-		iProps.setProperty("dirName", teiidBot.toAbsolutePath("resources/wsdl"));
-		iProps.setProperty("file", "Hello.wsdl");
-		iProps.setProperty("intoFolder", MODEL_PROJECT);
-		new ImportManager().importGeneralItem(ImportGeneralItemWizard.Type.FILE_SYSTEM, iProps);
+		ImportFromFileSystemWizard wizard = new ImportFromFileSystemWizard();
+		wizard.open();
+		wizard.setPath("resources/wsdl")
+			  .setFolder(MODEL_PROJECT)
+			  .selectFile("Hello.wsdl")
+			  .finish();
 
 		// import from workspace
-		iProps = new Properties();
+		Properties iProps = new Properties();
 		iProps.setProperty("modelName", "WsdlToWS");
 		iProps.setProperty("project", MODEL_PROJECT);
 		iProps.setProperty("wsdlName", "Hello.wsdl");
