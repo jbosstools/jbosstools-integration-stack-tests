@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Properties;
 
 import org.hamcrest.Matcher;
 import org.jboss.reddeer.common.wait.AbstractWait;
@@ -13,6 +12,7 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.matcher.WithMnemonicTextMatcher;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
@@ -34,7 +34,6 @@ import org.jboss.tools.runtime.reddeer.condition.JobIsKilled;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.condition.IsPreviewInProgress;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
-import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileHelper;
 import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
 import org.jboss.tools.teiid.reddeer.connection.SimpleHttpClient;
 import org.jboss.tools.teiid.reddeer.dialog.CreateWarDialog;
@@ -47,12 +46,16 @@ import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidSer
 import org.jboss.tools.teiid.reddeer.view.GuidesView;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.SQLResult;
-import org.jboss.tools.teiid.reddeer.wizard.ProcedureWizard;
+import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.noDatabase.FlatLocalConnectionProfileWizard;
+import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.noDatabase.WsdlConnectionProfileWizard;
+import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.noDatabase.XmlLocalConnectionProfileWizard;
+import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.noDatabase.XmlRemoteConnectionProfileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.FlatImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.ImportJDBCDatabaseWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.WsdlImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.XMLImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.newWizard.MetadataModelWizard;
+import org.jboss.tools.teiid.reddeer.wizard.newWizard.NewProcedureWizard;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -120,17 +123,20 @@ public class GuidesTest {
 		String test_SQL = "exec FullCountryInfo('US')";
 		String test_SQL2 = "exec FullCountryInfoAllCountries()";
 		String soapProfile = "SOAP_WS";
-		Properties wsdlCP = new Properties();
-		wsdlCP.setProperty("wsdl", "http://ws-dvirt.rhcloud.com/dv-test-ws/soap?wsdl");
-		wsdlCP.setProperty("endPoint", "Countries");
 		
 		guides.createProjectViaGuides(actionSet, project_SOAP_name);
 
 		guides.chooseAction(actionSet, "Create Web ");
 		new DefaultShell("New Connection Profile");
-		new PushButton("Cancel").click();
-		new ConnectionProfileHelper().createCpWsdl(soapProfile, wsdlCP);
-
+		new LabeledText("Name:").setText(soapProfile);
+		new PushButton("Next >").click();
+		WsdlConnectionProfileWizard.getInstance()
+				.setWsdl("http://ws-dvirt.rhcloud.com/dv-test-ws/soap?wsdl")
+				.testConnection()
+				.nextPage()
+				.setEndPoint("Countries")
+				.finish();
+		
 		guides.chooseAction(actionSet, "Generate "); 
 		new DefaultShell("Create Relational Model from Web Service");
 		wsdlImportWizard(soapProfile, model_SOAP_name, view_SOAP_name);
@@ -222,9 +228,13 @@ public class GuidesTest {
 		guides.createProjectViaGuides(actionSet, project_Flat_name);
 		
 		guides.chooseAction(actionSet, "Create Teiid flat ");
+		
 		new DefaultShell("New Connection Profile");
-		new PushButton("Cancel").click();
-		new ConnectionProfileHelper().createCpFlatFile(flatProfile, "resources/guides");
+		new LabeledText("Name:").setText(flatProfile);
+		new PushButton("Next >").click();
+		FlatLocalConnectionProfileWizard.getInstance()
+				.setFile("resources/guides")
+				.finish();
 
 		guides.chooseAction(actionSet, "Create source model from ");
 		createFlatLocalSource(flatProfile,fileName,project_Flat_name,model_Flat_name, view_Flat_name,view_Flat_table);
@@ -251,9 +261,13 @@ public class GuidesTest {
 		guides.createProjectViaGuides(actionSet, "LocalXML");
 
 		guides.chooseAction(actionSet, "Create Teiid local ");
+		
 		new DefaultShell("New Connection Profile");
-		new PushButton("Cancel").click();
-		new ConnectionProfileHelper().createCpXml(xmlLocalprofile, "resources/guides/supplier.xml");
+		new LabeledText("Name:").setText(xmlLocalprofile);
+		new PushButton("Next >").click();
+		XmlLocalConnectionProfileWizard.getInstance()
+				.setFile("resources/guides/supplier.xml")
+				.finish();
 
 		guides.chooseAction(actionSet, "Create source model from XML file source");
 		new DefaultShell("Import From XML File Source");	
@@ -299,8 +313,12 @@ public class GuidesTest {
 		
 		guides.chooseAction(actionSet, "Create Teiid Remote ");
 		new DefaultShell("New Connection Profile");
-		new PushButton("Cancel").click();
-		new ConnectionProfileHelper().createCpXml(xmlRemoteprofile, "https://raw.githubusercontent.com/mmakovy/import-files/master/cd_catalog.xml");
+		new LabeledText("Name:").setText(xmlRemoteprofile);
+		new PushButton("Next >").click();
+		XmlRemoteConnectionProfileWizard.getInstance()
+				.setUrl("https://raw.githubusercontent.com/mmakovy/import-files/master/cd_catalog.xml")
+				.testConnection()
+				.finish();
 		
 		guides.chooseAction(actionSet, "Create source model from remote XML");
 		new DefaultShell("Import From XML File Source");
@@ -472,7 +490,7 @@ public class GuidesTest {
     	new DefaultShell("Define View Procedure");
     	Matcher<String> matcher = new WithMnemonicTextMatcher("New...");
     	new PushButton(1, matcher).click();
-    	ProcedureWizard.createViewProcedure()
+    	NewProcedureWizard.createViewProcedure()
     			.setName(procedureName)
     			.setTransformationSql(query)
 				.addParameter("nameIN", "string", "40", "IN")
@@ -510,6 +528,9 @@ public class GuidesTest {
     }
     
     private boolean testLastPreview(){
+    	if(new ShellWithTextIsAvailable("Internal Error").test()){ //problem with preview data on the Linux (if SWT_GTK3=0 is set)
+    		new PushButton("No").click();
+    	}
     	DatabaseDevelopmentPerspective.getInstance().getSqlResultsView();
 		List<TreeItem> items = new DefaultTree().getItems();
 		String status = items.get(items.size() - 1).getCell(0);

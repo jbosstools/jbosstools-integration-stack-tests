@@ -1,4 +1,4 @@
-package org.jboss.tools.teiid.reddeer.wizard.connectionProfiles;
+package org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.database;
 
 import java.io.File;
 

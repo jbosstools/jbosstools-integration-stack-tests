@@ -1,4 +1,4 @@
-package org.jboss.tools.teiid.reddeer.wizard;
+package org.jboss.tools.teiid.reddeer.wizard.newWizard;
 
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
@@ -8,7 +8,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.teiid.reddeer.dialog.ProcedureViewDialog;
 import org.jboss.tools.teiid.reddeer.dialog.UserDefinedFunctionDialog;
 
-public class ProcedureWizard {
+public class NewProcedureWizard {
 	
 	public static ProcedureViewDialog createViewProcedure(){
 		new DefaultShell("Select Procedure Type");

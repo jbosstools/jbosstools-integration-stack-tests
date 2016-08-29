@@ -1,4 +1,4 @@
-package org.jboss.tools.teiid.reddeer.wizard.connectionProfiles;
+package org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.database;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,9 +9,7 @@ import java.util.Properties;
 import org.jboss.reddeer.eclipse.datatools.ui.DatabaseProfile;
 import org.jboss.reddeer.eclipse.datatools.ui.DriverDefinition;
 import org.jboss.reddeer.eclipse.datatools.ui.DriverTemplate;
-import org.jboss.reddeer.eclipse.datatools.ui.FlatFileProfile;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileDatabasePage;
-import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileFlatFilePage;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileGenericPage;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileSelectPage;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileWizard;
@@ -22,8 +20,6 @@ import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -195,35 +191,6 @@ public class TeiidConnectionProfileWizard extends ConnectionProfileWizard {
 			e.printStackTrace();
 		}
 		return props;
-	}
-
-	@Override
-	public void createFlatFileProfile(FlatFileProfile flatProfile) {
-		ConnectionProfileSelectPage selectPage = new ConnectionProfileSelectPage();
-		selectPage.setConnectionProfile("Flat File Data Source");
-		selectPage.setName(flatProfile.getName());
-
-		next();
-
-		ConnectionProfileFlatFilePage flatPage = new ConnectionProfileFlatFilePage();
-		new DefaultText(0).setText(new File(flatProfile.getFolder()).getAbsolutePath());
-		// path!
-		// switch off validation of home folder
-		new CheckBox("Validate home folder").click();
-		flatPage.setCharset(flatProfile.getCharset());
-		flatPage.setStyle(flatProfile.getStyle());
-
-		finish();
-	}
-	
-	public void createFlatFileURLProfile(String name, String URL) {
-		open();
-		ConnectionProfileSelectPage selectPage = new ConnectionProfileSelectPage();
-		selectPage.setConnectionProfile("Flat File URL Source");
-		selectPage.setName(name);
-		next();
-		new LabeledText("Connection URL").setText(URL);
-		finish();
 	}
 	
 	/**

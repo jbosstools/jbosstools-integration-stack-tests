@@ -32,7 +32,7 @@ import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidSer
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ProblemsViewEx;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
-import org.jboss.tools.teiid.reddeer.wizard.ProcedureWizard;
+import org.jboss.tools.teiid.reddeer.wizard.newWizard.NewProcedureWizard;
 import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
 import org.junit.After;
 import org.junit.Before;
@@ -99,7 +99,7 @@ public class RestProcedureTest {
 	@Test
 	public void testAutomaticWarGeneration() throws IOException{
 		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.PROCEDURE, PROJECT_NAME, VIEW_MODEL);
-		ProcedureWizard.createViewProcedure()
+		NewProcedureWizard.createViewProcedure()
 				.setName("GetPartGet")
 				.toggleRest(true)
 				.setRestMethod(ProcedureViewDialog.RestMethod.GET)
@@ -132,7 +132,7 @@ public class RestProcedureTest {
 	@Test
 	public void testCreateInsertProcedure() throws IOException, SQLException {
 		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.PROCEDURE, PROJECT_NAME, VIEW_MODEL);
-		ProcedureWizard.createViewProcedure()
+		NewProcedureWizard.createViewProcedure()
 				.setName("AddPart")
 				.toggleRest(true)
 				.setRestMethod(ProcedureViewDialog.RestMethod.POST)
@@ -187,7 +187,7 @@ public class RestProcedureTest {
 	@Test 
 	public void testCreateProcedureWithGetPostMethods() throws IOException, SQLException{
 		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.PROCEDURE, PROJECT_NAME, VIEW_MODEL);
-		ProcedureWizard.createViewProcedure()
+		NewProcedureWizard.createViewProcedure()
 				.setName("GetPartPost")
 				.toggleRest(true)
 				.setRestMethod(ProcedureViewDialog.RestMethod.POST)
@@ -196,7 +196,7 @@ public class RestProcedureTest {
 				.setTransformationSql(fileHelper.getSql("RestProcedureTest/getProcedurePost"))
 				.finish();
 		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.PROCEDURE, PROJECT_NAME, VIEW_MODEL);
-		ProcedureWizard.createViewProcedure()
+		NewProcedureWizard.createViewProcedure()
 				.setName("GetPartGet")
 				.toggleRest(true)
 				.setRestMethod(ProcedureViewDialog.RestMethod.GET)

@@ -3,25 +3,22 @@ package org.jboss.tools.teiid.ui.bot.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
-import java.io.File;
 
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileSelectPage;
-import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileWizard;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.tools.common.reddeer.JiraClient;
-import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileHelper;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
-import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.TeiidConnectionProfileWizard;
+import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.noDatabase.FlatLocalConnectionProfileWizard;
+import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.noDatabase.FlatRemoteConnectionProfileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.FlatImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
 import org.junit.Before;
@@ -76,8 +73,11 @@ public class FlatFileTest {
 	 */
 	@Test
 	public void localFileTest() {
-		new ConnectionProfileHelper().createCpFlatFile(LOCAL_PROFILE_NAME, LOCAL_FILE_PATH);
-
+		FlatLocalConnectionProfileWizard.openWizard(LOCAL_PROFILE_NAME)
+				.setFile(LOCAL_FILE_PATH)
+				.testConnection()
+				.finish();
+		
 		FlatImportWizard.openWizard()
 				.selectLocalFileImportMode()
 				.nextPage()
@@ -114,7 +114,10 @@ public class FlatFileTest {
 	 */
 	@Test
 	public void remoteFileTest() {
-		new TeiidConnectionProfileWizard().createFlatFileURLProfile(REMOTE_PROFILE_NAME, REMOTE_URL);
+		FlatRemoteConnectionProfileWizard.openWizard(REMOTE_PROFILE_NAME)
+				.setUrl(REMOTE_URL)
+				.testConnection()
+				.finish();
 
 		FlatImportWizard.openWizard()
 				.selectRemoteUrlImportMode()
@@ -148,24 +151,21 @@ public class FlatFileTest {
 	
 	@Test
 	public void testEmptySpace(){
-		ConnectionProfileWizard connWizard = new TeiidConnectionProfileWizard();
-		connWizard.open();
-		ConnectionProfileSelectPage selectPage = new ConnectionProfileSelectPage();
-		selectPage.setConnectionProfile("Flat File Data Source");
-		selectPage.setName("emptySpace");
-		connWizard.next();
-		new DefaultText(0).setText(new File(EMPTY_SPACE_PATH).getAbsolutePath());
+		FlatLocalConnectionProfileWizard.openWizard("emptySpace")
+				.setFile(EMPTY_SPACE_PATH);
+		
 		assertEquals(" The folder path cannot contain spaces.", new DefaultText(2).getText());
 		assertFalse(new PushButton("Next >").isEnabled());
 
-		new PushButton("Test Connection").click();
-		new PushButton("OK").click();
+		FlatLocalConnectionProfileWizard.getInstance()
+				.testConnection();
 		
 		if(new JiraClient().isIssueClosed("TEIIDDES-2493")){
 			assertFalse(new PushButton("Next >").isEnabled());
 			assertEquals(" The folder path cannot contain spaces.", new DefaultText(2).getText());
 		}
-		connWizard.cancel();
+		
+		FlatLocalConnectionProfileWizard.getInstance().cancel();
 	}
 
 }
