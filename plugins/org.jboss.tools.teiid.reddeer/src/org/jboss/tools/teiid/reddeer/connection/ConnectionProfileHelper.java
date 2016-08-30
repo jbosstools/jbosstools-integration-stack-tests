@@ -10,7 +10,9 @@ import org.eclipse.datatools.connectivity.ProfileManager;
 import org.eclipse.datatools.connectivity.drivers.DriverInstance;
 import org.eclipse.datatools.connectivity.drivers.DriverManager;
 import org.jboss.tools.teiid.reddeer.requirement.ConnectionProfileConfig;
-import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.database.TeiidConnectionProfileWizard;
+import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.database.DatabaseConnectionProfile;
+import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.database.LdapConnectionProfileWizard;
+import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.database.SalesforceConnectionProfileWizard;
 
 public class ConnectionProfileHelper {
 
@@ -23,7 +25,7 @@ public class ConnectionProfileHelper {
 	 *            Connection profile to create
 	 */
 	public void createConnectionProfile(ConnectionProfileConfig cp) {
-		createConnectionProfile(cp, false);
+		createConnectionProfile(cp, false, false);
 	}
 
 	/**
@@ -34,11 +36,13 @@ public class ConnectionProfileHelper {
 	 * @param forceWizard
 	 *            Whether to use a wizard or try to create the profile using eclipse API. Passing true will ensure the
 	 *            profile is always created using the wizard, even when it already exists
+	 * @param connectAfter 
+	 * 			  Whether eclipse can connect after created CP
 	 */
-	public void createConnectionProfile(ConnectionProfileConfig cp, boolean forceWizard) {
+	public void createConnectionProfile(ConnectionProfileConfig cp, boolean forceWizard, boolean connectAfter) {
 		String vendor = cp.getVendor();
 		String cpName = cp.getName();
-		Properties cpProps = cp.asProperties();
+//		Properties cpProps = cp.asProperties();
 
 		if (connectionProfileExists(cpName)) {
 			if (forceWizard) {
@@ -50,60 +54,124 @@ public class ConnectionProfileHelper {
 				return;
 			}
 		}
+		
+		DatabaseConnectionProfile wizard = null;
+		switch (vendor) {
+        case "DB2 for Linux, UNIX, and Windows":  
+        case "Oracle":
+        case "SQL Server":
+        	wizard = DatabaseConnectionProfile.openWizard(vendor,cpName);
+        	wizard.createNewDriver()
+        			.selectTemplate(cp.getTemplate(), cp.getVersion())
+        			.setName(cpName + "_driver")
+        			.addDriver(cp.getJdbcPath())
+        			.finish();
+        	wizard.setDatabase(cp.getDbName())
+        			.setHostname(cp.getHostname())
+					.setPort(cp.getPort())
+					.setUsername(cp.getUsername())
+					.setPassword(cp.getPassword())
+					.savePassword(true)
+					.testConnection()
+					.connectAfter(connectAfter)
+					.finish();
+        	break;
+        case "PostgreSQL":  
+ //     case "Ingres":
+        case "MySQL": 
+        	wizard = DatabaseConnectionProfile.openWizard(vendor,cpName);
+        	wizard.createNewDriver()
+					.selectTemplate(cp.getTemplate(), cp.getVersion())
+					.setName(cpName + "_driver")
+					.addDriver(cp.getJdbcPath())
+					.finish();
+        	wizard.setDatabase(cp.getDbName())
+					.setHostname(cp.getHostname())
+					.setUsername(cp.getUsername())
+					.setPassword(cp.getPassword())
+					.savePassword(true)
+					.testConnection()
+					.connectAfter(connectAfter)
+					.finish();        	
+        	break;
+        case "Sybase ASE": 
+        	wizard = DatabaseConnectionProfile.openWizard(vendor,cpName);
+        	wizard.createNewDriver()
+					.selectTemplate(cp.getTemplate(), cp.getVersion())
+					.setName(cpName + "_driver")
+					.addDriver(cp.getJdbcPath())
+					.setDriverClass(cp.getJdbcClass())
+					.setDatabaseName(cp.getDbName())
+					.setConnectionUrl(cp.getHostname())
+					.finish();
+        	wizard.setDatabase(cp.getDbName())
+					.setHostname(cp.getHostname())
+					.setUsername(cp.getUsername())
+					.setPassword(cp.getPassword())
+					.savePassword(true)
+					.testConnection()
+					.connectAfter(connectAfter)
+					.finish();      
+        	break;
+        case "HSQLDB":  
+        	wizard = DatabaseConnectionProfile.openWizard(vendor,cpName);
+        	wizard.createNewDriver()
+					.selectTemplate(cp.getTemplate(), cp.getVersion())
+					.setName(cpName + "_driver")
+					.addDriver(cp.getJdbcPath())
+					.finish();
+        	wizard.setDatabase(cp.getDbName())
+					.setUsername(cp.getUsername())
+					.setPassword(cp.getPassword())
+					.savePassword(true)
+					.testConnection()
+					.connectAfter(connectAfter)
+					.finish(); 
+        	break;
+        case "Generic JDBC": 
+        	wizard = DatabaseConnectionProfile.openWizard(vendor,cpName);
+        	wizard.createNewDriver()
+					.selectTemplate(cp.getTemplate(), cp.getVersion())
+					.setName(cpName + "_driver")
+					.addDriver(cp.getJdbcPath())
+					.setDriverClassGeneric(cp.getJdbcClass())
+					.finish();
+        	wizard.setDatabase(cp.getDbName())
+					.setHostname(cp.getHostname())
+					.setUsername(cp.getUsername())
+					.setPassword(cp.getPassword())
+					.savePassword(true)
+					.testConnection()
+					.connectAfter(connectAfter)
+					.finish(); 
+        	break;
+        case "SalesForce":
+        	SalesforceConnectionProfileWizard.openWizard(cpName)
+        			.setUsername(cp.getUsername())
+        			.setPassword(cp.getPassword())
+        			.testConnection()
+        			.connectAfter(connectAfter)
+        			.finish();
+        	break;
+        case "LDAP":  
+        	LdapConnectionProfileWizard.openWizard(cpName)
+        			.setHostname(cp.getHostname())
+        			.setPort(cp.getPort())
+        			.nextPage()
+        			.setUsername(cp.getUsername())
+        			.setPassword(cp.getPassword())
+        			.testConnection()
+        			.connectAfter(connectAfter)
+        			.finish();
+        	break;
+        case "Ingres": //when TEIIDDES-2905 be done, delete this and uncomment Ingres below the PostgeSQL case
+			createConnectionProfileDirectly(cp);
+        	break;
 
-		if (cpProps.containsKey("providerID") && !forceWizard) {
-			try {
-				createConnectionProfileDirectly(cp);
-				return;
-			} catch (Exception e) {
-				// ok, will create the profile the usual way
-				e.printStackTrace();
-			}
+        default: 
+        	new AssertionError("Wizard for CP which has vendor name '"+ vendor +"' not yet implemented.");
+            break;
 		}
-
-		cpProps.put(TeiidConnectionProfileWizard.KEY_CONNECT_AFTER_COMPLETING, "false");
-		if ("LDAP".equals(vendor)) {
-			new TeiidConnectionProfileWizard().createLdapConnectionProfile(cpName, cpProps);
-		} else if ("SalesForce".equals(vendor)) {
-			new TeiidConnectionProfileWizard().createSalesforceConnectionProfile(cpName, cpProps);
-		} else {
-			new TeiidConnectionProfileWizard().createDatabaseProfile(cpName, cpProps);
-		}
-	}
-
-	private IConnectionProfile createConnectionProfileDirectly(ConnectionProfileConfig cp)
-			throws ConnectionProfileException {
-
-		IConnectionProfile profile = null;
-
-		profile = profileManager.getProfileByName(cp.getName());
-		if (profile != null) {
-			return profile;
-		}
-
-		Properties cpProps = cp.asProperties();
-
-		Properties props = new Properties();
-		props.put("org.eclipse.datatools.connectivity.db.savePWD", "true");
-		props.put("org.eclipse.datatools.connectivity.db.username", cp.getUsername());
-		props.put("org.eclipse.datatools.connectivity.db.password", cp.getPassword());
-		props.put("org.eclipse.datatools.connectivity.db.URL", cpProps.getProperty("url"));
-		props.put("org.eclipse.datatools.connectivity.db.vendor", cp.getVendor());
-
-		DriverInstance di = DriverManager.getInstance().createNewDriverInstance(cpProps.getProperty("defnType"),
-				cp.getName() + "Driver", cp.getJdbcPath());
-
-		props.put("org.eclipse.datatools.connectivity.db.driverClass",
-				di.getProperty("org.eclipse.datatools.connectivity.db.driverClass"));
-		props.put("org.eclipse.datatools.connectivity.driverDefinitionID", di.getId());
-		props.put("jarList", cp.getJdbcPath());
-
-		profile = profileManager.createProfile(cp.getName(), cp.getDescription(), cpProps.getProperty("providerID"),
-				props);
-
-		profileManager.addProfile(profile, true);
-
-		return profile;
 	}
 
 	public void deleteProfile(String cpName) {
@@ -131,4 +199,42 @@ public class ConnectionProfileHelper {
 		}
 		return null;
 	}
+	
+	//TODO delete after TEIIDDES-2905 will be done
+	private IConnectionProfile createConnectionProfileDirectly(ConnectionProfileConfig cp){
+
+			IConnectionProfile profile = null;
+
+			profile = profileManager.getProfileByName(cp.getName());
+			if (profile != null) {
+				return profile;
+			}
+
+			Properties cpProps = cp.asProperties();
+
+			Properties props = new Properties();
+			props.put("org.eclipse.datatools.connectivity.db.savePWD", "true");
+			props.put("org.eclipse.datatools.connectivity.db.username", cp.getUsername());
+			props.put("org.eclipse.datatools.connectivity.db.password", cp.getPassword());
+			props.put("org.eclipse.datatools.connectivity.db.URL", cpProps.getProperty("url"));
+			props.put("org.eclipse.datatools.connectivity.db.vendor", cp.getVendor());
+
+			DriverInstance di = DriverManager.getInstance().createNewDriverInstance(cpProps.getProperty("defnType"),
+					cp.getName() + "Driver", cp.getJdbcPath());
+
+			props.put("org.eclipse.datatools.connectivity.db.driverClass",
+					di.getProperty("org.eclipse.datatools.connectivity.db.driverClass"));
+			props.put("org.eclipse.datatools.connectivity.driverDefinitionID", di.getId());
+			props.put("jarList", cp.getJdbcPath());
+
+			try{
+				profile = profileManager.createProfile(cp.getName(), cp.getDescription(), cpProps.getProperty("providerID"),
+						props);
+				profileManager.addProfile(profile, true);
+			}catch(ConnectionProfileException ex){
+				ex.printStackTrace();
+			}
+
+			return profile;
+		}
 }

@@ -3,8 +3,9 @@ package org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.noDatabase;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.ConnectionProfileWizard;
 
-public class XmlRemoteConnectionProfileWizard extends TeiidProfileWizard {
+public class XmlRemoteConnectionProfileWizard extends ConnectionProfileWizard {
 
 		private XmlRemoteConnectionProfileWizard(String name) {
 			super("XML File URL Source",name);

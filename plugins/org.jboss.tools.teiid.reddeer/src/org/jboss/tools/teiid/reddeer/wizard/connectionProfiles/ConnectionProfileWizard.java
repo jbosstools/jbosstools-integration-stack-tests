@@ -1,6 +1,7 @@
-package org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.noDatabase;
+package org.jboss.tools.teiid.reddeer.wizard.connectionProfiles;
 
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
+import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
@@ -10,7 +11,7 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
  * @author apodhrad
  * 
  */
-public abstract class TeiidProfileWizard extends NewWizardDialog {
+public abstract class ConnectionProfileWizard extends NewWizardDialog {
 
 	public static final String DIALOG_TITLE = "New connection profile";
 	public static final String LABEL_NAME = "Name:";
@@ -18,7 +19,7 @@ public abstract class TeiidProfileWizard extends NewWizardDialog {
 	private String profile;
 	private String name;
 
-	public TeiidProfileWizard(String profile,String name) {
+	public ConnectionProfileWizard(String profile,String name) {
 		super("Connection Profiles", "Connection Profile");
 		this.profile = profile;
 		this.name = name;
@@ -43,6 +44,11 @@ public abstract class TeiidProfileWizard extends NewWizardDialog {
 		super.next();
 	}
 
+	@Override
+	public void finish() {
+		new FinishButton().click();;
+	};
+	
 	/**
 	 * use nextPage()
 	 */
@@ -52,5 +58,5 @@ public abstract class TeiidProfileWizard extends NewWizardDialog {
 		super.next();
 	}
 	
-	public abstract TeiidProfileWizard testConnection();
+	public abstract ConnectionProfileWizard testConnection();
 }

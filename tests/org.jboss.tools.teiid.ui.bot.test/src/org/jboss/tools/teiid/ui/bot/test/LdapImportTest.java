@@ -10,7 +10,6 @@ import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
-import org.jboss.reddeer.junit.execution.annotation.RunIf;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
@@ -21,8 +20,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
-import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
-import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
+import org.jboss.tools.common.reddeer.JiraClient;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
 import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
@@ -108,8 +106,6 @@ public class LdapImportTest {
 	}
 
 	@Test
-	@Jira("TEIIDDES-2793")
-	@RunIf(conditionClass = IssueIsClosed.class)
 	public void ldapImport() {
 
 		Properties cpProperties = teiidServer.getServerConfig().getConnectionProfile("ldap").asProperties();
@@ -147,9 +143,9 @@ public class LdapImportTest {
 
 		ProjectItem modelItem = project.getProjectItem(LDAP_MODEL + ".xmi");
 		addColumn(modelItem, "ou=groups", "dn", "string");
-
-		new ModelExplorer().simulateTablesPreview(teiidServer, NEW_PROJECT, LDAP_MODEL, new String[] { "ou=people", "ou=groups" });
-
+		if(new JiraClient().isIssueClosed("TEIIDDES-2793)")){
+			new ModelExplorer().simulateTablesPreview(teiidServer, NEW_PROJECT, LDAP_MODEL, new String[] { "ou=people", "ou=groups" });
+		}
 	}
 
 	private void assertColumns(DefaultTable table, String selectedColumns) {

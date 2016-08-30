@@ -10,6 +10,7 @@ import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.ConnectionProfileWizard;
 
 /**
  * Wizard for creating WSDL connection profile
@@ -17,7 +18,7 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  * @author apodhrad
  *
  */
-public class WsdlConnectionProfileWizard extends TeiidProfileWizard {
+public class WsdlConnectionProfileWizard extends ConnectionProfileWizard {
 
 	private WsdlConnectionProfileWizard(String name) {
 		super("Web Services Data Source (SOAP)",name);
@@ -32,12 +33,6 @@ public class WsdlConnectionProfileWizard extends TeiidProfileWizard {
 		WsdlConnectionProfileWizard wizard = new WsdlConnectionProfileWizard(name);
 		wizard.open();
 		return wizard;
-	}
-	
-	@Deprecated
-	@Override
-	public void next(){
-		super.next();
 	}
 	
 	public WsdlConnectionProfileWizard nextPage(){
