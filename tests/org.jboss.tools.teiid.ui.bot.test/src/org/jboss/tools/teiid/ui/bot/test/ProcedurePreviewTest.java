@@ -45,7 +45,7 @@ public class ProcedurePreviewTest {
 
 	@BeforeClass
 	public static void createModelProject() {
-		TeiidPerspective.getInstance().open();	
+		TeiidPerspective.activate();	
 		ModelExplorer explorer = new ModelExplorer();
 		
 		explorer.importProject(PROJECT_NAME);

@@ -14,6 +14,4 @@ import org.junit.runners.Suite.SuiteClasses;
 	RestProcedureTest.class,
 	WebServiceCreationTest.class})
 @RunWith(RedDeerSuite.class)
-public class WebServiceTests {
-
-}
+public class WebServiceTests {}

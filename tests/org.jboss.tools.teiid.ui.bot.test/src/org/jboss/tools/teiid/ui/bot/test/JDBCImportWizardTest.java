@@ -72,7 +72,7 @@ public class JDBCImportWizardTest {
 
 	@Before
 	public void openPerspective() {
-		TeiidPerspective.getInstance();
+		TeiidPerspective.activate();
 	}
 
 	// ============== generated jdbc tests ===========================

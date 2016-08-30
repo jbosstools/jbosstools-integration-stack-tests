@@ -28,28 +28,23 @@ import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.tools.teiid.reddeer.dialog.DataRolesDialog;
 
 public class VdbEditor extends DefaultEditor {
 
 	public VdbEditor(String name) {
 		super(name);
+		activate();
 	}
 
 	public static VdbEditor getInstance(String name) {
 		name = (name.contains(".vdb")) ? name : name + ".vdb";
-		VdbEditor editor = new VdbEditor(name);
-		editor.activate();
-		return editor;
+		return new VdbEditor(name);
 	}
 	
 	public void saveAndClose(){
 		save();
 		close();
-	}
-
-	public void addModel(String projectName, String modelXmi) {
-		modelXmi = (modelXmi.contains(".xmi")) ? modelXmi : modelXmi + ".xmi"; 
-		addModel(projectName, modelXmi);
 	}
 
 	public void addModelsToVDB(String projectName, String[] models){
@@ -71,6 +66,8 @@ public class VdbEditor extends DefaultEditor {
 	}
 
 	public void addModel(String... pathToModel) {
+		int i = pathToModel.length - 1;
+		pathToModel[i] = (pathToModel[i].contains(".xmi")) ? pathToModel[i] : pathToModel[i] + ".xmi"; 
 		new DefaultToolItem("Add model").click();
 		new DefaultShell("Add File(s) to VDB");
 		new DefaultTreeItem(pathToModel).select();
@@ -131,21 +128,21 @@ public class VdbEditor extends DefaultEditor {
 		return this;
 	}
 
-	public DataRolesEditor addDataRole() {
+	public DataRolesDialog addDataRole() {
 		new DefaultCTabItem("Advanced").activate();
 		new DefaultCTabItem("Data Roles").activate();
 		new DefaultToolItem("Add data role").click();
-		return new DataRolesEditor(DataRolesEditor.CREATE_TITLE);
+		return new DataRolesDialog(DataRolesDialog.CREATE_TITLE);
 	}
 
-	public DataRolesEditor getDataRole(String roleName) {
+	public DataRolesDialog getDataRole(String roleName) {
 		new DefaultCTabItem("Advanced").activate();
 		new DefaultCTabItem("Data Roles").activate();
 
 		new DefaultTable(0).getItem(roleName).select();
 		new DefaultToolItem("Edit selected data role").click();
 
-		return new DataRolesEditor(DataRolesEditor.EDIT_TITLE);
+		return new DataRolesDialog(DataRolesDialog.EDIT_TITLE);
 	}
 
 	public void addTranslatorOverride(String overrideName, String translatorName) {
@@ -223,7 +220,6 @@ public class VdbEditor extends DefaultEditor {
 			props.put(it.getText(0), it.getText(1));
 		}
 		return props;
-
 	}
 	
 	public void setVersion(int version){

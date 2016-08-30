@@ -14,9 +14,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	XmlSchemalessTest.class,
 	XmlStagingTableTest.class,
 	XmlRecursiveTest.class,
-	XmlFileImportTest.class
-})
+	XmlFileImportTest.class})
 @RunWith(RedDeerSuite.class)
-public class XmlTests {
-
-}
+public class XmlTests {}

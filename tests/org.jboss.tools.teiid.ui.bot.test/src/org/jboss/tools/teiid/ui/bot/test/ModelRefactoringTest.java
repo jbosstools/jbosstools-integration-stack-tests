@@ -168,7 +168,7 @@ public class ModelRefactoringTest {
 	public void moveSourceModelIntoFolder() {
 		moveItem(project.getProjectItem("partssupplier.xmi"), "sources2");
 
-		ModelExplorer modelView = TeiidPerspective.getInstance().getModelExplorerView();
+		ModelExplorer modelView = new ModelExplorer();
 		modelView.openModelEditor(PROJECT_NAME, "partssupplier_view.xmi");
 		modelView.openModelEditor(PROJECT_NAME, "views", "partssupplier_view_2.xmi");
 		modelView.openModelEditor(PROJECT_NAME, "partssupplier_view_3.xmi");
@@ -187,7 +187,7 @@ public class ModelRefactoringTest {
 		updateImports("partssupplier_view_4.xmi");
 		updateImports("partssupplier_view.xmi");
 
-		ModelExplorer modelView = TeiidPerspective.getInstance().getModelExplorerView();
+		ModelExplorer modelView = new ModelExplorer();
 		modelView.openModelEditor(PROJECT_NAME, "partssupplier_view.xmi");
 		modelView.openModelEditor(PROJECT_NAME, "views", "partssupplier_view_2.xmi");
 		modelView.openModelEditor(PROJECT_NAME, "partssupplier_view_3.xmi");
@@ -220,7 +220,7 @@ public class ModelRefactoringTest {
 	public void renameFolderWithViewModel() {
 		renameItem(project.getProjectItem("views"), "views_X");
 
-		ModelExplorer modelView = TeiidPerspective.getInstance().getModelExplorerView();
+		ModelExplorer modelView = new ModelExplorer();
 		modelView.openModelEditor(PROJECT_NAME, "partssupplier_view.xmi");
 		modelView.openModelEditor(PROJECT_NAME, "views_X", "partssupplier_view_2.xmi");
 		modelView.openModelEditor(PROJECT_NAME, "partssupplier_view_3.xmi");

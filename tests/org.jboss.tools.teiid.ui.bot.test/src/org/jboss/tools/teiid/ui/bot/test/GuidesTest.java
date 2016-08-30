@@ -80,7 +80,7 @@ public class GuidesTest {
 
 	@Before
 	public void openPerspective() {
-		TeiidPerspective.getInstance();
+		TeiidPerspective.activate();
 		EditorHandler.getInstance().closeAll(false);
 		new ModelExplorer().deleteAllProjects(false);
 	}
@@ -376,7 +376,7 @@ public class GuidesTest {
 		
 		guides.createSourceModelFromTeiid(modelName, dataSource,null,"dbo");
 		
-		TeiidPerspective.getInstance();
+		TeiidPerspective.activate();
 		
 		new WaitUntil(new JobIsKilled("Refreshing server adapter list"), TimePeriod.LONG, false); //windows 10
 
@@ -534,7 +534,7 @@ public class GuidesTest {
     	DatabaseDevelopmentPerspective.getInstance().getSqlResultsView();
 		List<TreeItem> items = new DefaultTree().getItems();
 		String status = items.get(items.size() - 1).getCell(0);
-		TeiidPerspective.getInstance();
+		TeiidPerspective.activate();
 		return SQLResult.STATUS_SUCCEEDED.equals(status);
     }
 }
