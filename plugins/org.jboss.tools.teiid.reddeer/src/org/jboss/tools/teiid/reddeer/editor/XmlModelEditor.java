@@ -15,6 +15,7 @@ import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.dialog.InputSetEditorDialog;
 import org.jboss.tools.teiid.reddeer.matcher.RecursiveButtonMatcher;
 
@@ -40,6 +41,7 @@ public class XmlModelEditor extends ModelEditor {
 	 * Note: document overview (=Package Diagram) must be opened.
 	 */
 	public void deleteDocument(String document){
+		new WorkbenchShell();
 		selectModelItem(ModelEditor.ItemType.XML_DOCUMENT, document);
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new ContextMenu("Delete").select();
@@ -68,6 +70,7 @@ public class XmlModelEditor extends ModelEditor {
 	 * Note: document overview (=Package Diagram) must be opened.
 	 */
 	public void renameDocument(String document, String newName){
+		new WorkbenchShell();
 		selectModelItem(ModelEditor.ItemType.XML_DOCUMENT, document);
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new ContextMenu("Rename").select();

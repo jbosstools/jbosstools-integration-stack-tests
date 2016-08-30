@@ -210,7 +210,7 @@ public class ModelExplorer extends AbstractExplorer {
 	 * @param path (<PROJECT>, ..., <ITEM>)
 	 */
 	public void selectItem(String... path){
-		getProject(path[0]).refresh();
+		open();
 		new DefaultTreeItem(path).select();
 	}
 	
@@ -230,7 +230,6 @@ public class ModelExplorer extends AbstractExplorer {
 	 */
 	public void openModelEditor(String... pathToModel) {
 		open();
-		this.getProject(pathToModel[0]).refresh();
 		new DefaultTreeItem(pathToModel).doubleClick();		
 		AbstractWait.sleep(TimePeriod.getCustom(3));
 	}
@@ -308,6 +307,9 @@ public class ModelExplorer extends AbstractExplorer {
 		new WorkbenchShell();
 		int iWar = warPath.length -1;
 		warPath[iWar] = (warPath[iWar].contains(".war")) ? warPath[iWar] : warPath[iWar] + ".war";
+		this.selectItem(warPath[0]);
+		new ContextMenu("Refresh").select();
+		AbstractWait.sleep(TimePeriod.SHORT);
 		this.selectItem(warPath);
 		new ContextMenu("Mark as Deployable").select();
 		AbstractWait.sleep(TimePeriod.SHORT);

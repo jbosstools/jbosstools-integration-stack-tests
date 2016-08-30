@@ -39,10 +39,10 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
+import org.jboss.tools.teiid.reddeer.dialog.DataRolesDialog;
+import org.jboss.tools.teiid.reddeer.dialog.DataRolesDialog.PermissionType;
 import org.jboss.tools.teiid.reddeer.dialog.GenerateDynamicVdbDialog;
 import org.jboss.tools.teiid.reddeer.dialog.GenerateVdbArchiveDialog;
-import org.jboss.tools.teiid.reddeer.editor.DataRolesEditor;
-import org.jboss.tools.teiid.reddeer.editor.DataRolesEditor.PermissionType;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.TableEditor;
@@ -250,7 +250,7 @@ public class DynamicVdbTest {
 		VdbEditor vdbEditor = VdbEditor.getInstance(staticVdbName);
 
 		// setup data roles
-		DataRolesEditor dre;
+		DataRolesDialog dre;
 
 		dre = vdbEditor.addDataRole();
 		dre.setName("readers");
@@ -551,7 +551,7 @@ public class DynamicVdbTest {
 		new ModelExplorer().openModelEditor(IMPORT_PROJECT_NAME, staticVdbName + ".vdb");
 		VdbEditor vdbEditor = VdbEditor.getInstance(staticVdbName);
 
-		DataRolesEditor dre = vdbEditor.getDataRole("readers");
+		DataRolesDialog dre = vdbEditor.getDataRole("readers");
 		List<String> roles = dre.getRoles();
 		collector.checkThat("wrong groups assigned to readers role", roles, contains("readers", "user"));
 		collector.checkThat("wrong permission for bqtViewModel",

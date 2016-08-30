@@ -1,15 +1,21 @@
-package org.jboss.tools.teiid.reddeer.editor;
+package org.jboss.tools.teiid.reddeer.dialog;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
+import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.handler.WidgetHandler;
 import org.jboss.reddeer.core.util.Display;
 import org.jboss.reddeer.core.util.ResultRunnable;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
@@ -21,43 +27,40 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 
-public class DataRolesEditor {
+public class DataRolesDialog extends AbstractDialog {
+	private static final Logger log = Logger.getLogger(DataRolesDialog.class);
 
-	public enum PermissionType {
-		CREATE("Create"), READ("Read"), UPDATE("Update"), DELETE("Delete"), EXECUTE("Execute"), ALTER("Alter");
-
-		private String header;
-
-		PermissionType(String header) {
-			this.header = header;
-		}
-
-		public String getHeader() {
-			return header;
-		}
+	public class PermissionType {
+		public static final String CREATE = "Create"; 
+		public static final String READ = "Read";
+		public static final String UPDATE = "Update";
+		public static final String DELETE ="Delete"; 
+		public static final String EXECUTE = "Execute";
+		public static final String ALTER  = "Alter";
 	}
 
 	public static final String CREATE_TITLE = "New VDB Data Role";
 	public static final String EDIT_TITLE = "Edit VDB Data Role";
 
-	private String title;
-
-	public DataRolesEditor(String title) {
-		this.title = title;
+	public DataRolesDialog(String title) {
+		super(title);
 		activate();
 	}
-
-	private DataRolesEditor activate() {
-		new DefaultShell(title);
-		return this;
+	
+	public void finish() {
+		log.info("Finishing '" + title + "' Dialog");
+		new FinishButton().click();
+		new WaitWhile(new ShellWithTextIsActive(title), TimePeriod.NORMAL);
+		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 
-	public DataRolesEditor setName(String name) {
+	public DataRolesDialog setName(String name) {
+		log.info("Setting data role name to '" + name + "'");
 		new LabeledText("Name").setText(name);
 		return this;
 	}
 
-	public DataRolesEditor addRole(String roleName) {
+	public DataRolesDialog addRole(String roleName) {
 		new DefaultCTabItem("Mapped Enterprise Role or Group").activate();
 		new PushButton("Add...").click();
 		new DefaultShell("Add Mapped Data Role Name");
@@ -67,7 +70,10 @@ public class DataRolesEditor {
 		return this;
 	}
 
-	public boolean getModelPermission(PermissionType permType, final String... path) {
+	/**
+	 * @param permType DataRolesDialog.PermissionType.*
+	 */
+	public boolean getModelPermission(String permType, final String... path) {
 		new DefaultCTabItem("Permissions").activate();
 		new DefaultCTabItem("Model").activate();
 		
@@ -90,7 +96,10 @@ public class DataRolesEditor {
 		});
 	}
 
-	public DataRolesEditor setModelPermission(PermissionType permType, final boolean allowed, final String... path) {
+	/**
+	 * @param permType DataRolesDialog.PermissionType.*
+	 */
+	public DataRolesDialog setModelPermission(String permType, final boolean allowed, final String... path) {
 		new DefaultCTabItem("Permissions").activate();
 		new DefaultCTabItem("Model").activate();
 		
@@ -126,7 +135,7 @@ public class DataRolesEditor {
 		return this;
 	}
 
-	public DataRolesEditor addRowFilter(String condition, boolean constraint, String... target) {
+	public DataRolesDialog addRowFilter(String condition, boolean constraint, String... target) {
 		new DefaultCTabItem("Permissions").activate();
 		new DefaultCTabItem("Row Filter").activate();
 		new PushButton("Add").click();
@@ -165,7 +174,7 @@ public class DataRolesEditor {
 		return "";
 	}
 
-	public DataRolesEditor addColumnMask(String condition, String columnExpression, int order, String... target) {
+	public DataRolesDialog addColumnMask(String condition, String columnExpression, int order, String... target) {
 		new DefaultCTabItem("Permissions").activate();
 		new DefaultCTabItem("Column Masking").activate();
 		new PushButton("Add").click();
@@ -205,16 +214,11 @@ public class DataRolesEditor {
 		return "";
 	}
 
-	private int getColumnForPermission(PermissionType permType) {
-		return new DefaultTree().getHeaderColumns().indexOf(permType.getHeader());
-	}
-
-	public void finish() {
-		new PushButton("Finish").click();
-	}
-
-	public void cancel() {
-		new PushButton("Cancel").click();
+	/**
+	 * @param permType DataRolesDialog.PermissionType.*
+	 */
+	private int getColumnForPermission(String permType) {
+		return new DefaultTree().getHeaderColumns().indexOf(permType);
 	}
 
 	public List<String> getRoles() {

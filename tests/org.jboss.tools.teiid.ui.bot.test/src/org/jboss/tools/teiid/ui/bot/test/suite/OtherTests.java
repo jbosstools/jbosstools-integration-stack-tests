@@ -11,11 +11,6 @@ import org.jboss.tools.teiid.ui.bot.test.UDFTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
-/**
- * Test suite for all teiid bot tests
- * 
- * @author apodhrad, tsedmik
- */
 @SuiteClasses({
 	PreviewModelTest.class,
 	ProcedurePreviewTest.class,
@@ -25,5 +20,4 @@ import org.junit.runners.Suite.SuiteClasses;
 	ServerManipulationTest.class,
 	ReuseVDBTest.class})
 @RunWith(RedDeerSuite.class)
-public class OtherTests {
-}
+public class OtherTests {}

@@ -5,6 +5,9 @@ import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.core.handler.WidgetHandler;
 import org.jboss.reddeer.core.util.Display;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.swt.impl.button.YesButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
@@ -12,6 +15,7 @@ import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.dialog.CriteriaBuilderDialog;
 import org.jboss.tools.teiid.reddeer.dialog.ExpressionBuilderDialog;
 import org.jboss.tools.teiid.reddeer.dialog.ReconcilerDialog;
+import org.jboss.tools.teiid.reddeer.matcher.ToolBarButtonWithLabel;
 
 public class TransformationEditor {
 	private static final Logger log = Logger.getLogger(TransformationEditor.class);
@@ -83,6 +87,18 @@ public class TransformationEditor {
 		log.info("Expanding Select");
 		new DefaultToolItem("Expand SELECT * ").click();	
 		AbstractWait.sleep(TimePeriod.SHORT);
+	}
+	
+	public void supportsUpdate(boolean toggle){
+		log.info(((toggle) ? "checking" : "unchecking") + "Supports Update");
+		new DefaultToolItem(new ToolBarButtonWithLabel("Supports Update", toggle));
+		AbstractWait.sleep(TimePeriod.SHORT);
+		try {
+			new DefaultShell("Table 'Supports Update' Property Changed");
+			new YesButton().click();
+		} catch(SWTLayerException e){
+			// shell not opened -> continue
+		}
 	}
 
 }

@@ -16,7 +16,7 @@ public class MetadataModelWizard extends NewWizardDialog {
 	
 	public static final String DIALOG_TITLE = "New Model Wizard";
 	
-	public static class ModelType { 
+	public class ModelType { 
 		public static final String SOURCE = "Source Model";
 		public static final String VIEW = "View Model";
 		public static final String DATATYPE = "Datatype Model";
@@ -24,7 +24,7 @@ public class MetadataModelWizard extends NewWizardDialog {
 		public static final String FUNCTION = "User Defined Function";
 	}
 	
-	public static class ModelClass {
+	public class ModelClass {
 		public static final String RELATIONAL = "Relational";
 		public static final String XML = "XML (Deprecated)";
 		public static final String XSD = "XML Schema (XSD) (Deprecated)";
@@ -33,7 +33,7 @@ public class MetadataModelWizard extends NewWizardDialog {
 		public static final String FUNCTION = "Function (Deprecated)";
 	}
 	
-	public static class ModelBuilder {
+	public class ModelBuilder {
 		public static final String TRANSFORM_EXISTING = "Transform from an existing model";
 		public static final String COPY_EXISTING = "Copy from an existing model of the same model class";
 		public static final String BUILD_FROM_XML_SCHEMA = "Build XML documents from XML schema";

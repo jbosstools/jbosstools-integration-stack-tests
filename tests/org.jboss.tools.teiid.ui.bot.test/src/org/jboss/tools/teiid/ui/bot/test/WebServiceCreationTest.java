@@ -11,12 +11,17 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
 import org.jboss.tools.teiid.reddeer.connection.SimpleHttpClient;
-import org.jboss.tools.teiid.reddeer.dialog.CreateWebServiceDialog;
 import org.jboss.tools.teiid.reddeer.dialog.XmlDocumentBuilderDialog;
+import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
+import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.TableEditor;
 import org.jboss.tools.teiid.reddeer.editor.TransformationEditor;
 import org.jboss.tools.teiid.reddeer.editor.VdbEditor;
@@ -66,11 +71,10 @@ public class WebServiceCreationTest {
 	
 	@BeforeClass
 	public static void setUp() throws Exception {
-		new WorkbenchShell().maximize();
 		fileHelper = new ResourceFileHelper();
-		fileHelper.copyFileToServer(new File("resources/projects/WsCreationProject/others/application-roles.properties").getAbsolutePath(), 
+		fileHelper.copyFileToServer(new File("resources/flat/WsCreationTest/application-roles.properties").getAbsolutePath(), 
 				teiidServer.getServerConfig().getServerBase().getHome() + "/standalone/configuration/application-roles.properties");
-		new ServersViewExt().refreshServer(teiidServer.getName());
+		new ServersViewExt().restartServer(teiidServer.getName());
 	}
 	
 	@Before
@@ -149,26 +153,27 @@ public class WebServiceCreationTest {
 		// 3. Define web service operations
 		modelExplorer.openModelEditor(PROJECT_NAME, "web_services", WS_MODEL);
 		WebServiceModelEditor wsEditor = new WebServiceModelEditor(WS_MODEL);
-		wsEditor.openOperationEditor();
 		
-		wsEditor.selectOperation(INTERFACE_NAME, OPERATION_GET_ALL);
-		wsEditor.setOperationProcedure(fileHelper.getSql("WebServiceCreationTest/GetAll.sql"));
+		wsEditor.setOperationProcedure(INTERFACE_NAME, OPERATION_GET_ALL, fileHelper.getSql("WebServiceCreationTest/GetAll.sql"));
 		
-		wsEditor.selectOperation(INTERFACE_NAME, OPERATION_GET);
-		wsEditor.replaceTextInOperationProcedure("SELECT * FROM XmlModel.ProductInfo_getProductInfo_getProductsInfo_OutputMsg "
+		wsEditor.replaceTextInOperationProcedure(INTERFACE_NAME, OPERATION_GET,
+				"SELECT * FROM XmlModel.ProductInfo_getProductInfo_getProductsInfo_OutputMsg "
 				+ "WHERE XmlModel.ProductInfo_getProductInfo_getProductsInfo_OutputMsg.REPLACE_WITH_ELEMENT_OR_COLUMN = VARIABLES.IN_INSTR_ID;",
 				fileHelper.getSql("WebServiceCreationTest/Get.sql"));
+
+		wsEditor.setOperationProcedure(INTERFACE_NAME, OPERATION_INSERT, fileHelper.getSql("WebServiceCreationTest/InsertWithDeclarations.sql"));
 		
-		wsEditor.selectOperation(INTERFACE_NAME, OPERATION_INSERT);
-		wsEditor.setOperationProcedure(fileHelper.getSql("WebServiceCreationTest/InsertWithDeclarations.sql"));
-		
-		wsEditor.selectOperation(INTERFACE_NAME, OPERATION_DELETE);
-		wsEditor.replaceTextInOperationProcedure("SELECT * FROM XmlModel.ProductInfo_deleteProductInfo_deleteProductsInfo_ResultOutput "
+		wsEditor.replaceTextInOperationProcedure(INTERFACE_NAME, OPERATION_DELETE, "SELECT * FROM XmlModel.ProductInfo_deleteProductInfo_deleteProductsInfo_ResultOutput "
 				+ "WHERE XmlModel.ProductInfo_deleteProductInfo_deleteProductsInfo_ResultOutput.REPLACE_WITH_ELEMENT_OR_COLUMN = VARIABLES.IN_INSTR_ID;",
 				fileHelper.getSql("WebServiceCreationTest/Delete.sql"));		
 		
 		AbstractWait.sleep(TimePeriod.SHORT);
 		wsEditor.saveAndClose();
+		
+		new ShellMenu("Project", "Clean...").select();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		new OkButton().click();
+		AbstractWait.sleep(TimePeriod.SHORT);
 		
 		new ProblemsViewEx().checkErrors();
 		
@@ -180,12 +185,12 @@ public class WebServiceCreationTest {
 	public void testCreationFromRelationalModel() throws IOException{
 		// 1. Create Web Service Model
 		modelExplorer.deleteModel(PROJECT_NAME, "views", "XmlModel.xmi");
-		CreateWebServiceDialog createWsDialog = modelExplorer.modelingWebService(false, PROJECT_NAME, "views", "RelationalModel.xmi");
-		createWsDialog.setLocation(PROJECT_NAME, "web_services")
+		modelExplorer.modelingWebService(false, PROJECT_NAME, "views", "RelationalModel.xmi")
+				.setLocation(PROJECT_NAME, "web_services")
 				.setModelName(WS_MODEL)
 				.setInputSchemaName("InputSchema")
-				.setOutputSchemaName("OutputSchema");
-		createWsDialog.finish();
+				.setOutputSchemaName("OutputSchema")
+				.finish();
 	
 		// 2. Define XML documents
 		new WebServiceModelEditor(WS_MODEL).close();
@@ -198,10 +203,10 @@ public class WebServiceCreationTest {
 		xmlEditor.renameDocument("ProductInfo_OutputView", DOCUMENT_PRODUCT);
 		
 		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.XML_DOCUMENT, xmlModelPath);
-		XmlDocumentBuilderDialog xmlDocumentBuilder = new XmlDocumentBuilderDialog();
-		xmlDocumentBuilder.setSchema(PROJECT_NAME,"schemas","ProductsSchema.xsd")
-				.addElement("putResults : putResultsType");
-		xmlDocumentBuilder.finish();
+		XmlDocumentBuilderDialog.getInstance()
+				.setSchema(PROJECT_NAME,"schemas","ProductsSchema.xsd")
+				.addElement("putResults : putResultsType")
+				.finish();
 		AbstractWait.sleep(TimePeriod.getCustom(3));
 		
 		xmlEditor.openMappingClass("putResults");
@@ -213,10 +218,10 @@ public class WebServiceCreationTest {
 		xmlEditor.renameDocument("putResultsDocument", DOCUMENT_GOOD);
 		
 		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.XML_DOCUMENT, xmlModelPath);
-		xmlDocumentBuilder = new XmlDocumentBuilderDialog();
-		xmlDocumentBuilder.setSchema(PROJECT_NAME,"schemas","ProductsSchema.xsd")
-				.addElement("putResults : putResultsType");
-		xmlDocumentBuilder.finish();
+		XmlDocumentBuilderDialog.getInstance()
+				.setSchema(PROJECT_NAME,"schemas","ProductsSchema.xsd")
+				.addElement("putResults : putResultsType")
+				.finish();
 		AbstractWait.sleep(TimePeriod.getCustom(3));
 		
 		xmlEditor.openMappingClass("putResults");
@@ -228,13 +233,28 @@ public class WebServiceCreationTest {
 		xmlEditor.renameDocument("putResultsDocument", DOCUMENT_BAD);
 		
 		AbstractWait.sleep(TimePeriod.SHORT);
-		xmlEditor.saveAndClose();				
+		xmlEditor.saveAndClose();	
+		
+		// 2.1. Align generated schema
+		modelExplorer.openModelEditor(PROJECT_NAME, "web_services", "OutputSchema.xsd");
+		AbstractWait.sleep(TimePeriod.SHORT);
+		RelationalModelEditor schemaEditor = new RelationalModelEditor("OutputSchema.xsd");
+		new DefaultCTabItem(1).activate();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		DefaultStyledText styledText = new DefaultStyledText();
+		styledText.setText(styledText.getText().replaceAll("http://www.metamatrix.com/ProductInfo_Output", "http://www.metamatrix.com/ProductInfo"));
+		schemaEditor.saveAndClose();
 		
 		//3. Define web service operations
 		String wsModelPath = PROJECT_NAME + "/web_services/" + WS_MODEL;
 		modelExplorer.renameModelItem(INTERFACE_NAME, (wsModelPath+"/"+"RelationalModel_ProductInfo").split("/"));
 		modelExplorer.openModelEditor(PROJECT_NAME, "web_services", WS_MODEL);
 		WebServiceModelEditor wsEditor = new WebServiceModelEditor(WS_MODEL);
+		
+		// 3.1. Define get operation
+		wsEditor.replaceTextInOperationProcedure(INTERFACE_NAME, OPERATION_GET, "RelationalModel_ProductInfo", INTERFACE_NAME);
+		wsEditor.replaceTextInOperationProcedure(INTERFACE_NAME, OPERATION_GET, "ProductInfo_OutputView", DOCUMENT_PRODUCT);
+		wsEditor.replaceTextInOperationProcedure(INTERFACE_NAME, OPERATION_GET, "ProductInfo_OutputView", DOCUMENT_PRODUCT);
 		
 		// 3.2. Define get all operation
 		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.OPERATION, (wsModelPath+"/"+INTERFACE_NAME).split("/"));
@@ -246,10 +266,8 @@ public class WebServiceCreationTest {
 		tableEditor.setCellTextViaProperties(OPERATION_GET_ALL, 
 				"ProductsInfo_AllProducts (Path=/WsCreationProject/schemas/ProductsSchema.xsd/ProductsSchema.xsd)",
 				"Misc", "Content via Element");
-		tableEditor.close();
 		
-		wsEditor.selectOperation(INTERFACE_NAME, OPERATION_GET_ALL);
-		wsEditor.setOperationProcedure(fileHelper.getSql("WebServiceCreationTest/GetAll.sql"));
+		wsEditor.setOperationProcedure(INTERFACE_NAME, OPERATION_GET_ALL, fileHelper.getSql("WebServiceCreationTest/GetAll.sql"));
 		
 		// 3.3. Define insert operation	
 		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.OPERATION, (wsModelPath+"/"+INTERFACE_NAME).split("/") );
@@ -270,10 +288,8 @@ public class WebServiceCreationTest {
 		tableEditor.setCellTextViaProperties(OPERATION_INSERT, 
 				"goodResultsDocument (Path=/WsCreationProject/web_services/XmlModel.xmi)",
 				"Misc", "XML Document");
-		tableEditor.close();
 		
-		wsEditor.selectOperation(INTERFACE_NAME, OPERATION_INSERT);
-		wsEditor.replaceTextInOperationProcedure("SELECT * FROM XmlModel.goodResultsDocument;", 
+		wsEditor.replaceTextInOperationProcedure(INTERFACE_NAME, OPERATION_INSERT, "SELECT * FROM XmlModel.goodResultsDocument;", 
 				fileHelper.getSql("WebServiceCreationTest/Insert.sql"));
 		
 		// 3.4. Define delete operation
@@ -295,10 +311,8 @@ public class WebServiceCreationTest {
 		tableEditor.setCellTextViaProperties(OPERATION_DELETE, 
 				"goodResultsDocument (Path=/WsCreationProject/web_services/XmlModel.xmi)",
 				"Misc", "XML Document");
-		tableEditor.close();
 		
-		wsEditor.selectOperation(INTERFACE_NAME, OPERATION_DELETE);
-		wsEditor.replaceTextInOperationProcedure("SELECT * FROM XmlModel.goodResultsDocument;", 
+		wsEditor.replaceTextInOperationProcedure(INTERFACE_NAME, OPERATION_DELETE, "SELECT * FROM XmlModel.goodResultsDocument;", 
 				fileHelper.getSql("WebServiceCreationTest/Delete.sql"));
 		
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -313,15 +327,15 @@ public class WebServiceCreationTest {
 	@Test
 	public void testCreationFromXmlDocument() throws IOException{
 		// 1. Create Web Service Model
-		CreateWebServiceDialog createWsDialog = modelExplorer.modelingWebService(true, PROJECT_NAME, "views", "XmlModel.xmi", DOCUMENT_PRODUCT);
-		createWsDialog.setLocation(PROJECT_NAME, "web_services")
+		modelExplorer.modelingWebService(true, PROJECT_NAME, "views", "XmlModel.xmi", DOCUMENT_PRODUCT)
+				.setLocation(PROJECT_NAME, "web_services")
 				.setModelName(WS_MODEL.substring(0,10))
 				.setInterfaceName(INTERFACE_NAME)
 				.setOperationName(OPERATION_GET_ALL)
 				.setInputMsgElement(PROJECT_NAME, "schemas", "ProductsSchema.xsd", "ProductsSchema.xsd", "ProductsInfo_AllProducts")
 				.setInputMsgName("Input")
-				.setOutputMsgName("Output");
-		createWsDialog.finish();
+				.setOutputMsgName("Output")
+				.finish();
 		
 		// 2. Define web service operations
 		String wsModelPath = PROJECT_NAME + "/web_services/" + WS_MODEL;
@@ -349,8 +363,7 @@ public class WebServiceCreationTest {
 				"Misc", "XML Document");
 		tableEditor.close();
 		
-		wsEditor.selectOperation(INTERFACE_NAME, OPERATION_GET);
-		wsEditor.replaceTextInOperationProcedure("SELECT * FROM XmlModel.productDocument;", 
+		wsEditor.replaceTextInOperationProcedure(INTERFACE_NAME, OPERATION_GET, "SELECT * FROM XmlModel.productDocument;", 
 				fileHelper.getSql("WebServiceCreationTest/Get.sql"));	
 
 		// 2.2. Define insert operation
@@ -374,8 +387,7 @@ public class WebServiceCreationTest {
 				"Misc", "XML Document");
 		tableEditor.close();
 		
-		wsEditor.selectOperation(INTERFACE_NAME, OPERATION_INSERT);
-		wsEditor.replaceTextInOperationProcedure("SELECT * FROM XmlModel.goodResultsDocument;", 
+		wsEditor.replaceTextInOperationProcedure(INTERFACE_NAME, OPERATION_INSERT, "SELECT * FROM XmlModel.goodResultsDocument;", 
 				fileHelper.getSql("WebServiceCreationTest/Insert.sql"));	
 		
 		// 2.3. Define delete operation
@@ -398,9 +410,8 @@ public class WebServiceCreationTest {
 				"goodResultsDocument (Path=/WsCreationProject/views/XmlModel.xmi)",
 				"Misc", "XML Document");
 		tableEditor.close();
-		
-		wsEditor.selectOperation(INTERFACE_NAME, OPERATION_DELETE);
-		wsEditor.replaceTextInOperationProcedure("SELECT * FROM XmlModel.goodResultsDocument;", 
+
+		wsEditor.replaceTextInOperationProcedure(INTERFACE_NAME, OPERATION_DELETE, "SELECT * FROM XmlModel.goodResultsDocument;", 
 				fileHelper.getSql("WebServiceCreationTest/Delete.sql"));
 		
 		AbstractWait.sleep(TimePeriod.SHORT);
