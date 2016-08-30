@@ -19,7 +19,7 @@ import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 
 public class CreateDataSourceDialog extends AbstractDialog {
 	
-	private static final Logger log = Logger.getLogger(ProcedureViewDialog.class);
+	private static final Logger log = Logger.getLogger(CreateDataSourceDialog.class);
 
 	public static final String DATASOURCE_PROPERTY_PARENT_DIR = "* Parent Directory";
 	public static final String DATASOURCE_PROPERTY_USER_NAME = "* User Name";

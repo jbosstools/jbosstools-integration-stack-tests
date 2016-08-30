@@ -144,6 +144,8 @@ public class TeiidServerRequirement implements Requirement<TeiidServer>, CustomC
 			new WaitUntil(new ConsoleHasText("started in"), TimePeriod.LONG);
 		} catch (Exception e) {
 		}
+		
+		AbstractWait.sleep(TimePeriod.NORMAL); //server is started but teiid instance has not been connected yet
 
 		if (teiid.state() == ServerReqState.RUNNING) {
 			new ServersViewExt().refreshServer(getName());

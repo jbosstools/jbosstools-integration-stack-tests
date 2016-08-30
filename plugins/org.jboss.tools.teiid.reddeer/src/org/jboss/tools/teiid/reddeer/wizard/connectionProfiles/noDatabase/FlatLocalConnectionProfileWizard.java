@@ -7,8 +7,9 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.ConnectionProfileWizard;
 
-public class FlatLocalConnectionProfileWizard extends TeiidProfileWizard {
+public class FlatLocalConnectionProfileWizard extends ConnectionProfileWizard {
 	
 	public static final String DIALOG_TITLE = "New Flat File Data Source Profile";
 

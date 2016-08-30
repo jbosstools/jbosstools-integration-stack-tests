@@ -5,6 +5,7 @@ import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.ConnectionProfileWizard;
 
 /**
  * Wizard for creating REST connection profile
@@ -13,7 +14,7 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  *
  */
 
-public class RestConnectionProfileWizard extends TeiidProfileWizard {
+public class RestConnectionProfileWizard extends ConnectionProfileWizard {
 
 	public static final String AUTH_TYPE_BASIC = "HTTPBasic";
 	public static final String AUTH_TYPE_DIGEST = "Digest";
