@@ -67,7 +67,7 @@ public class RecursiveCommonTableExpression {
 
 		TeiidJDBCHelper JDBCHelper = new TeiidJDBCHelper(teiidServer, VDB_NAME);
 
-		assertEquals(50, JDBCHelper.getNumberOfResults("SELECT * FROM TestTable"));
+		assertEquals(49, JDBCHelper.getNumberOfResults("SELECT * FROM TestTable"));
 	}
 
 }

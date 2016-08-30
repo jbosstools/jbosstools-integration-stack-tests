@@ -2,7 +2,6 @@ package org.jboss.tools.teiid.ui.bot.test;
 
 import static org.junit.Assert.assertTrue;
 
-
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -17,7 +16,8 @@ import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ProblemsViewEx;
-import org.jboss.tools.teiid.reddeer.wizard.newWizard.MetadataModelWizard;
+import org.jboss.tools.teiid.reddeer.wizard.newWizard.MetadataModelWizard.ModelClass;
+import org.jboss.tools.teiid.reddeer.wizard.newWizard.MetadataModelWizard.ModelType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -43,9 +43,6 @@ public class CloneAndCopyTest {
 	private static final String XML_SCHEMA_MODEL = PROJECT_NAME + "/original/XmlSchemaModel.xsd";	
 	private static final String WEBSERVICE_VIEW_MODEL = PROJECT_NAME + "/original/web/WebServiceViewModel.xmi";
 	
-	private static final MetadataModelWizard.ModelClass modelClass = new MetadataModelWizard.ModelClass();
-	private static final MetadataModelWizard.ModelType modelType = new MetadataModelWizard.ModelType();
-	
 	private ModelExplorer modelExplorer;
 	
 	@BeforeClass
@@ -68,7 +65,7 @@ public class CloneAndCopyTest {
 	@Test
 	public void testCopyRelationalSourceModel(){
 		String newModelName = "RelationalSourceModelCopy";
-		modelExplorer.copyModel(RELATIONAL_SOURCE_MODEL, newModelName, PROJECT_NAME + "/Copy", modelClass.RELATIONAL, modelType.SOURCE);
+		modelExplorer.copyModel(RELATIONAL_SOURCE_MODEL, newModelName, PROJECT_NAME + "/Copy", ModelClass.RELATIONAL, ModelType.SOURCE);
 		assertTrue(modelExplorer.containsItem(PROJECT_NAME,"Copy", newModelName + ".xmi"));
 		new ProblemsViewEx().checkErrors();
 	}
@@ -76,7 +73,7 @@ public class CloneAndCopyTest {
 	@Test
 	public void testCopyRelationalViewModel(){
 		String newModelName = "RelationalViewModelCopy";
-		modelExplorer.copyModel(RELATIONAL_VIEW_MODEL, newModelName, PROJECT_NAME + "/Copy", modelClass.RELATIONAL, modelType.VIEW);
+		modelExplorer.copyModel(RELATIONAL_VIEW_MODEL, newModelName, PROJECT_NAME + "/Copy", ModelClass.RELATIONAL, ModelType.VIEW);
 		assertTrue(modelExplorer.containsItem(PROJECT_NAME,"Copy", newModelName + ".xmi"));
 		new ProblemsViewEx().checkErrors();	
 	}
@@ -84,7 +81,7 @@ public class CloneAndCopyTest {
 	@Test
 	public void testCopyXmlViewModel(){
 		String newModelName = "XmlViewModelCopy";
-		modelExplorer.copyModel(XML_VIEW_MODEL, newModelName, PROJECT_NAME + "/Copy", modelClass.XML, modelType.VIEW);
+		modelExplorer.copyModel(XML_VIEW_MODEL, newModelName, PROJECT_NAME + "/Copy", ModelClass.XML, ModelType.VIEW);
 		assertTrue(modelExplorer.containsItem(PROJECT_NAME,"Copy", newModelName + ".xmi"));
 		new ProblemsViewEx().checkErrors();	
 	}
@@ -92,7 +89,7 @@ public class CloneAndCopyTest {
 	@Test
 	public void testCopyXmlSchemaModel(){
 		String newModelName = "XmlSchemaModelCopy";
-		modelExplorer.copyModel(XML_SCHEMA_MODEL, newModelName, PROJECT_NAME + "/Copy", modelClass.XSD, modelType.DATATYPE);
+		modelExplorer.copyModel(XML_SCHEMA_MODEL, newModelName, PROJECT_NAME + "/Copy", ModelClass.XSD, ModelType.DATATYPE);
 		assertTrue(modelExplorer.containsItem(PROJECT_NAME,"Copy", newModelName + ".xsd"));
 		new ProblemsViewEx().checkErrors();
 	}
@@ -100,7 +97,7 @@ public class CloneAndCopyTest {
 	@Test
 	public void testCopyWebServiceViewModel(){
 		String newModelName = "WebServiceViewModelCopy";
-		modelExplorer.copyModel(WEBSERVICE_VIEW_MODEL, newModelName, PROJECT_NAME + "/Copy", modelClass.WEBSERVICE, modelType.VIEW);
+		modelExplorer.copyModel(WEBSERVICE_VIEW_MODEL, newModelName, PROJECT_NAME + "/Copy", ModelClass.WEBSERVICE, ModelType.VIEW);
 		assertTrue(modelExplorer.containsItem(PROJECT_NAME,"Copy", newModelName + ".xmi"));
 		new ProblemsViewEx().checkErrors();	
 	}

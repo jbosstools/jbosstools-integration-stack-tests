@@ -22,6 +22,10 @@ public class XmlDocumentBuilderDialog extends AbstractDialog {
 		super("Build XML Documents From XML Schema");
 	}
 	
+	public static XmlDocumentBuilderDialog getInstance(){
+		return new XmlDocumentBuilderDialog();
+	}
+	
 	@Override
 	public void finish() {
 		log.info("Finishing '" + title + "' Dialog");

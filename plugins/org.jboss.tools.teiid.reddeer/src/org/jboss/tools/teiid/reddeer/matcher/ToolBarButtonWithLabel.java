@@ -22,7 +22,7 @@ public class ToolBarButtonWithLabel extends BaseMatcher<ToolItem> {
 	}
 
 	@Override
-	public boolean matches(Object o) {// ToolItem
+	public boolean matches(Object o) {
 		if (o instanceof ToolItem) {
 			ToolItem ti = (ToolItem) o;
 			if (ti.getControl() instanceof Button) {

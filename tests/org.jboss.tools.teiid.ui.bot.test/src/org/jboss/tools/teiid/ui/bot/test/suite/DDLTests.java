@@ -10,6 +10,4 @@ import org.junit.runners.Suite.SuiteClasses;
 	ImportDDLtest.class,
 	DynamicVdbTest.class})
 @RunWith(RedDeerSuite.class)
-public class DDLTests {
-
-}
+public class DDLTests {}

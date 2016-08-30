@@ -9,31 +9,18 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 
 public class WebServiceModelEditor extends ModelEditor {
-	private static final String OPERATION_EDITOR = "Operation Editor";
 	
 	public WebServiceModelEditor(String title) {
 		super(title);
-	}
-	
-	/**
-	 * Opens editor (=Operation Tab) of specified interface.
-	 * Note: interface overview (=Package Diagram) must be opened.
-	 */
-	public void openOperationEditor(){
-		new DefaultCTabItem(OPERATION_EDITOR).activate();
-	}
-	
-	/**
-	 * Selects specified operation in specified interface.
-	 */
-	public void selectOperation(String iinterface, String operation){
-		new DefaultTreeItem(iinterface, operation).select();
+		new DefaultCTabItem(0).activate();
 	}
 	
 	/**
 	 * Sets text to procedure of operation and validates it.
 	 */
-	public void setOperationProcedure(String text){
+	public void setOperationProcedure(String iinterface, String operation, String text){
+		new DefaultCTabItem("Operation Editor").activate();
+		new DefaultTreeItem(iinterface, operation).select();
 		new DefaultStyledText().setText(text);
 		new DefaultToolItem("Save/Validate SQL").click();
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -43,7 +30,9 @@ public class WebServiceModelEditor extends ModelEditor {
 	/**
 	 * Returns text from procedure of operation.
 	 */
-	public String getOperationProcedure(){
+	public String getOperationProcedure(String iinterface, String operation){
+		new DefaultCTabItem("Operation Editor").activate();
+		new DefaultTreeItem(iinterface, operation).select();
 		return new DefaultStyledText().getText();
 	}
 	
@@ -51,8 +40,10 @@ public class WebServiceModelEditor extends ModelEditor {
 	 * Replaces specified text in procedure of operation to specified value 
 	 * and validates it.
 	 */
-	public void replaceTextInOperationProcedure(String target, String replacement){
-		new DefaultStyledText().selectText(target);
+	public void replaceTextInOperationProcedure(String iinterface, String operation, String replacedText, String replacement){
+		new DefaultCTabItem("Operation Editor").activate();
+		new DefaultTreeItem(iinterface, operation).select();
+		new DefaultStyledText().selectText(replacedText);
 		new DefaultStyledText().insertText(replacement);
 		new DefaultToolItem("Save/Validate SQL").click();
 		AbstractWait.sleep(TimePeriod.SHORT);

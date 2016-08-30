@@ -184,6 +184,6 @@ public class ReuseVDBTest {
  		new WaitWhile(new IsInProgress(), TimePeriod.VERY_LONG);
  		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
  		new WorkbenchShell();
- 		TeiidPerspective.getInstance();
+ 		TeiidPerspective.activate();
  	}
 }

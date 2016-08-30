@@ -37,6 +37,18 @@ public class TeiidJDBCHelper {
 		this.password = teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword");
 		this.vdbName = vdbName;
 	}
+	
+	public TeiidJDBCHelper(TeiidServerRequirement teiidServer, String vdbName, String username, String password) {
+		this.pathToDriver = teiidServer.getTeiidDriverPath();
+		this.username = username;
+		this.password = password;
+		this.vdbName = vdbName;
+	}
+	
+	public void setUser(String username, String password){
+		this.username = username;
+		this.password = password;
+	}
 
 	/**
 	 * Method creates JDBC conenction to teiid VDB
@@ -57,7 +69,7 @@ public class TeiidJDBCHelper {
 			throw new IllegalArgumentException("vdbName is null");
 
 		registerDriver();
-		log.info("Connecting to VDB " + vdbName + " with username " + username + " and password " + password);
+		log.info("Connecting to VDB '" + vdbName + "' with username '" + username + "' and password '" + password + "'");
 		connection = DriverManager.getConnection("jdbc:teiid:" + vdbName + "@mm://localhost:31000", username, password);
 	}
 
