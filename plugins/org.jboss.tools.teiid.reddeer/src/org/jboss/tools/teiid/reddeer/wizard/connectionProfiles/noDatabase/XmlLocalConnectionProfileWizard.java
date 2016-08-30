@@ -5,8 +5,9 @@ import java.io.File;
 import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.ConnectionProfileWizard;
 
-public class XmlLocalConnectionProfileWizard extends TeiidProfileWizard {
+public class XmlLocalConnectionProfileWizard extends ConnectionProfileWizard {
 
 	private XmlLocalConnectionProfileWizard(String name) {
 		super("XML Local File Source",name);
