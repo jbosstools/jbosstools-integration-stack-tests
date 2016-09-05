@@ -11,6 +11,7 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
+import org.jboss.reddeer.junit.execution.annotation.RunIf;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
@@ -24,6 +25,7 @@ import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.jboss.tools.switchyard.reddeer.view.JUnitView;
+import org.jboss.tools.switchyard.ui.bot.test.condition.SwitchYardRequirementSupportDrools;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,7 +51,7 @@ public class SwitchYardIntegrationDroolsTest {
 	private static final String TEST = INTERVIEW + "ServiceTest.java";
 
 	@InjectRequirement
-	private SwitchYardRequirement switchyardRequirement;
+	private static SwitchYardRequirement switchyardRequirement;
 
 	@Before
 	@After
@@ -62,6 +64,7 @@ public class SwitchYardIntegrationDroolsTest {
 	}
 
 	@Test
+	@RunIf(conditionClass = SwitchYardRequirementSupportDrools.class)
 	public void switchyardDroolsIntegrationTest() {
 		Map<String, Object> dataModel = new HashMap<String, Object>();
 		dataModel.put("package", PACKAGE);
