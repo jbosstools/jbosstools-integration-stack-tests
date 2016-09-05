@@ -19,6 +19,8 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
+import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.XPathEvaluator;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
@@ -339,6 +341,42 @@ public class ProjectExplorerProjectCreationTest {
 		assertEquals("import", xpath.evaluateString(bomDependency + "/scope"));
 	}
 
+	@Test
+	@Jira("SWITCHYARD-2951")
+	@RunIf(conditionClass = IssueIsClosed.class)
+	public void createProjectWithIntPkgTest() {
+		String projectName = "withintpkg";
+
+		wizard = switchyardRequirement.project(projectName);
+		wizard.open();
+		wizard.setConfigurationVersion(switchyardRequirement.getConfig().getConfigurationVersion());
+		wizard.setTargetRuntime(switchyardRequirement.getTargetRuntimeLabel());
+
+		String kieVersion = "6.3.0.Final-redhat-7";
+		String intpkgVersion = "1.3.0.redhat-007";
+		IntegrationPack intpkg = switchyardRequirement.getConfig().getIntegrationPack();
+		if (intpkg != null) {
+			wizard.getConfigureIntegrationPackVersionDetailsCHB().toggle(true);
+			kieVersion = intpkg.getKieVersion();
+			assertEqualsWithKnownIssue("SWITCHYARD-2834", kieVersion, wizard.getKieBPMRulesVersion());
+			intpkgVersion = intpkg.getIntegrationPackVersion();
+			assertEqualsWithKnownIssue("SWITCHYARD-2834", intpkgVersion, wizard.getIntegrationPackLibraryVersion());
+		} else {
+			wizard.setTargetRuntime("<None>");
+			wizard.getConfigureIntegrationPackVersionDetailsCHB().toggle(true);
+			wizard.setKieBPMRulesVersion(kieVersion);
+			wizard.setIntegrationPackLibraryVersion(intpkgVersion);
+			assertTrueWithKnownIssue("SWITCHYARD-2951", wizard.isFinishEnabled());
+		}
+
+		wizard.finish();
+
+		XPathEvaluator xpath = new XPathEvaluator(new File(new SwitchYardProject(projectName).getFile(), "pom.xml"));
+		assertEquals(kieVersion, xpath.evaluateString("/project/properties/kie.version"));
+		assertEquals(intpkgVersion, xpath.evaluateString("/project/properties/integration.version"));
+
+	}
+
 	private void assertComponent(String group, String component) {
 		assertFalse("" + component + " should by unchecked by default", wizard.isComponent(group, component));
 		wizard.setComponent(group, component, true);
@@ -352,4 +390,13 @@ public class ProjectExplorerProjectCreationTest {
 			throw new KnownIssue(issue, t);
 		}
 	}
+
+	private static void assertTrueWithKnownIssue(String issue, boolean condition) {
+		try {
+			assertTrue(condition);
+		} catch (Throwable t) {
+			throw new KnownIssue(issue, t);
+		}
+	}
+
 }
