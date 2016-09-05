@@ -11,6 +11,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.junit.execution.annotation.RunIf;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -42,6 +43,7 @@ import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.jboss.tools.switchyard.reddeer.view.JUnitView;
 import org.jboss.tools.switchyard.reddeer.wizard.ReferenceWizard;
+import org.jboss.tools.switchyard.ui.bot.test.condition.SwitchYardRequirementSupportBPMN;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -69,7 +71,7 @@ public class SwitchYardIntegrationBPMN2Test {
 	private static final String EVAL_GREET_BEAN = EVAL_GREET + "Bean";
 
 	@InjectRequirement
-	private SwitchYardRequirement switchyardRequirement;
+	private static SwitchYardRequirement switchyardRequirement;
 
 	@Before
 	@After
@@ -78,6 +80,7 @@ public class SwitchYardIntegrationBPMN2Test {
 	}
 
 	@Test
+	@RunIf(conditionClass = SwitchYardRequirementSupportBPMN.class)
 	public void switchyardBPMN2IntegrationTest() {
 		new WorkbenchShell().maximize();
 
