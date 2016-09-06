@@ -59,7 +59,7 @@ public class DataTransformationDeploymentEAPTest extends DefaultTest {
 	 * <b>Steps</b>
 	 * <ol>
 	 * <li>start JBoss Fuse on EAP</li>
-	 * <li>import 'wildfly-transformation' project from 'resources/projects/wildfly-transformation'</li>
+	 * <li>import 'wildfly-transformation' project from 'resources/projects/datatrans'</li>
 	 * <li>deploy the project</li>
 	 * <li>invoke the route with copying a file</li>
 	 * <li>check whether transformation was successful - output directory contains a file with correctly transformed
@@ -71,7 +71,7 @@ public class DataTransformationDeploymentEAPTest extends DefaultTest {
 
 		// import and deploy the project
 		ProjectFactory.importExistingProject(ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID,
-				"resources/projects/wildfly-transformation"), "wildfly-transformation", false, false);
+				"resources/projects/datatrans"), "wildfly-transformation", false, false);
 		new CamelProject("wildfly-transformation").update();
 		FuseServerManipulator.addModule(serverRequirement.getConfig().getName(), "wildfly-transformation");
 		try {
@@ -84,7 +84,7 @@ public class DataTransformationDeploymentEAPTest extends DefaultTest {
 
 		// invoke the route with copying a file
 		String from = ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID,
-				"resources/projects/wildfly-transformation/src/data/abc-order.xml");
+				"resources/projects/datatrans/src/data/abc-order.xml");
 		String to = serverRequirement.getConfig().getServerBase().getHome() + "/bin/src/data/abc-order.xml";
 		try {
 			Files.copy(new File(from).toPath(), new File(to).toPath(), REPLACE_EXISTING);
