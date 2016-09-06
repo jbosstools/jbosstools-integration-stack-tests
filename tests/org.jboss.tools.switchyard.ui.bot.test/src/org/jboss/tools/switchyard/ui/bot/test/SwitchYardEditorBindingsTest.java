@@ -1,5 +1,7 @@
 package org.jboss.tools.switchyard.ui.bot.test;
 
+import static org.jboss.tools.switchyard.reddeer.binding.CXFBindingPage.DATA_FORMAT_MESSAGE;
+import static org.jboss.tools.switchyard.reddeer.binding.CXFBindingPage.DATA_FORMAT_PAYLOAD;
 import static org.jboss.tools.switchyard.reddeer.binding.CXFBindingPage.DATA_FORMAT_POJO;
 import static org.jboss.tools.switchyard.reddeer.binding.FTPSBindingPage.EXECUTION_PROTOCOL_S;
 import static org.jboss.tools.switchyard.reddeer.binding.FTPSBindingPage.SECURITY_PROTOCOL_SSL;
@@ -311,6 +313,77 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("port", bindingPath + "/portName");
 		assertXPath(DATA_FORMAT_POJO, bindingPath + "/dataFormat");
 		assertXPath("true", bindingPath + "/relayHeaders");
+		assertXPath("true", bindingPath + "/wrapped");
+		assertXPath("true", bindingPath + "/wrappedStyle");
+
+		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
+		CXFBindingPage page = properties.selectCXFBinding("cxf-binding");
+		assertEquals("cxf-binding", page.getName());
+		properties.ok();
+	}
+
+	@Test
+	public void cxfBindingPayloadTest() throws Exception {
+		new Service(SERVICE).addBinding("CXF");
+		CXFBindingPage wizard = new CXFBindingPage();
+		wizard.setName("cxf-binding");
+		wizard.getCXFURI().setText("http://localhost");
+		wizard.getWSDLURL().setText("hello.wsdl");
+		wizard.getDataFormat().setSelection(DATA_FORMAT_PAYLOAD);
+		wizard.getServiceClass().setText("myClass.java");
+		wizard.getPortName().setText("port");
+		assertFalse("SWITCHYARD-2794", wizard.getRelayHeaders().isEnabled());
+		wizard.getWrapped().toggle(false);
+		wizard.getWrapped().toggle(true);
+		wizard.getWrappedStyle().setSelection("true");
+		wizard.finish();
+
+		new SwitchYardEditor().save();
+
+		String bindingPath = "/switchyard/composite/service/binding.cxf";
+		assertXPath("cxf-binding", bindingPath + "/@name");
+		assertXPath("http://localhost", bindingPath + "/cxfURI");
+		assertXPath("hello.wsdl", bindingPath + "/wsdlURL");
+		assertXPath("myClass.java", bindingPath + "/serviceClass");
+		assertXPath("port", bindingPath + "/portName");
+		assertXPath(DATA_FORMAT_PAYLOAD, bindingPath + "/dataFormat");
+		assertXPath("0", "count(" + bindingPath + "/relayHeaders)", "SWITCHYARD-2794");
+		assertXPath("true", bindingPath + "/wrapped");
+		assertXPath("true", bindingPath + "/wrappedStyle");
+
+		BindingsPage properties = new Service(SERVICE).showProperties().selectBindings();
+		CXFBindingPage page = properties.selectCXFBinding("cxf-binding");
+		assertEquals("cxf-binding", page.getName());
+		properties.ok();
+	}
+
+	@Test
+	public void cxfBindingMessageTest() throws Exception {
+		new Service(SERVICE).addBinding("CXF");
+		CXFBindingPage wizard = new CXFBindingPage();
+		wizard.setName("cxf-binding");
+		wizard.getCXFURI().setText("http://localhost");
+		wizard.getWSDLURL().setText("hello.wsdl");
+		wizard.getDataFormat().setSelection(DATA_FORMAT_MESSAGE);
+		wizard.getServiceClass().setText("myClass.java");
+		wizard.getPortName().setText("port");
+		assertFalse("SWITCHYARD-2794", wizard.getRelayHeaders().isEnabled());
+		wizard.getWrapped().toggle(false);
+		wizard.getWrapped().toggle(true);
+		wizard.getWrappedStyle().setSelection("false");
+		wizard.getWrappedStyle().setSelection("true");
+		wizard.finish();
+
+		new SwitchYardEditor().save();
+
+		String bindingPath = "/switchyard/composite/service/binding.cxf";
+		assertXPath("cxf-binding", bindingPath + "/@name");
+		assertXPath("http://localhost", bindingPath + "/cxfURI");
+		assertXPath("hello.wsdl", bindingPath + "/wsdlURL");
+		assertXPath("myClass.java", bindingPath + "/serviceClass");
+		assertXPath("port", bindingPath + "/portName");
+		assertXPath(DATA_FORMAT_MESSAGE, bindingPath + "/dataFormat");
+		assertXPath("0", "count(" + bindingPath + "/relayHeaders)", "SWITCHYARD-2794");
 		assertXPath("true", bindingPath + "/wrapped");
 		assertXPath("true", bindingPath + "/wrappedStyle");
 
