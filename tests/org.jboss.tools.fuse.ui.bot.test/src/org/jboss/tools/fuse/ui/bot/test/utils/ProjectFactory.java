@@ -139,8 +139,7 @@ public class ProjectFactory {
 
 	/**
 	 * Returns a list of all available templates in the following format:<br/>
-	 * {name}:{DSL} --> Content Based Router:blueprint, Content Based
-	 * Router:spring, Content Based Router:java
+	 * {name}:{DSL} --> Content Based Router:blueprint, Content Based Router:spring, Content Based Router:java
 	 * 
 	 * @return all available templates
 	 */
@@ -166,6 +165,22 @@ public class ProjectFactory {
 		}
 		wiz.cancel();
 		return templates;
+	}
+
+	/**
+	 * Returns all available Camel versions in New Fuse Integration Project Wizard
+	 * 
+	 * @return all available Camel versions
+	 */
+	public static List<String> getAllAvailableCamelVersions() {
+		List<String> versions;
+		NewFuseIntegrationProjectWizard wiz = new NewFuseIntegrationProjectWizard();
+		wiz.open();
+		wiz.setProjectName("rfhaSS234");
+		wiz.next();
+		versions = wiz.getCamelVersions();
+		wiz.cancel();
+		return versions;
 	}
 
 	private static void openAssociatedPerspective() {
