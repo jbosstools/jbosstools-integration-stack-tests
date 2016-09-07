@@ -7,22 +7,23 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.common.reddeer.FileUtils;
 import org.jboss.tools.common.reddeer.preference.MavenUserSettingsPreferencePage;
@@ -39,7 +40,7 @@ import org.junit.runners.Parameterized.Parameters;
 import org.junit.runners.Parameterized.UseParametersRunnerFactory;
 
 /**
- * Tries to create and run projects from all available archetypes as Local Camel
+ * Tries to create and run projects from all available templates with all available Camel versions as Local Camel
  * Context
  * 
  * @author tsedmik
@@ -65,7 +66,14 @@ public class FuseProjectTest extends DefaultTest {
 		temp.add("empty:blueprint");
 		temp.add("empty:spring");
 		temp.add("empty:java");
-		return temp;
+		List<String> versions = ProjectFactory.getAllAvailableCamelVersions();
+		List<String> product = new ArrayList<String>();
+		for (String name : temp) {
+			for (String version : versions) {
+				product.add(name + ":" + version);
+			}
+		}
+		return product;
 	}
 
 	/**
@@ -132,12 +140,12 @@ public class FuseProjectTest extends DefaultTest {
 
 	private boolean hasErrors() {
 
-		new ProblemsView().open();
-		for (TreeItem item : new DefaultTree().getItems()) {
-			if (item.getText().toLowerCase().contains("error"))
-				return true;
+		ProblemsView view = new ProblemsView();
+		view.open();
+		if (view.getProblems(ProblemType.ERROR).isEmpty()) {
+			return false;
 		}
-		return false;
+		return true;
 	}
 
 	private boolean isPresent(String name) {
@@ -149,7 +157,13 @@ public class FuseProjectTest extends DefaultTest {
 
 		try {
 			log.info("Trying to run the project as Local Camel Context");
-			new CamelProject(name).runCamelContext();
+			try {
+				new CamelProject(name).runCamelContext();
+			} catch (CoreLayerException e) {
+				log.warn("There is no context menu option to run the project as Local Camel Context. Template: "
+						+ template);
+				return false;
+			}
 			ConsoleView console = new ConsoleView();
 			if (console.getConsoleText().contains("BUILD FAILURE")
 					|| console.getConsoleText().toLowerCase().contains("[ERROR]") || console.consoleIsTerminated()) {
@@ -168,16 +182,15 @@ public class FuseProjectTest extends DefaultTest {
 
 	/**
 	 * <p>
-	 * Tries to create a Fuse project from <i>${FUSE-TEMPLATE}</i> template and
-	 * tries to run the project as Local Camel Context.
+	 * Tries to create a Fuse project from <i>${FUSE-TEMPLATE}</i> template and tries to run the project as Local Camel
+	 * Context.
 	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
 	 * <li>create a new project</li>
 	 * <li>open Problems view</li>
 	 * <li>check if there are some errors</li>
-	 * <li>(optional) try to update project - Maven --> Update Maven Project -->
-	 * Force Update</li>
+	 * <li>(optional) try to update project - Maven --> Update Maven Project --> Force Update</li>
 	 * <li>check if there are some errors</li>
 	 * <li>try to run the project as Local Camel Context</li>
 	 * <li>check the console output, if there are some build errors</li>
@@ -193,13 +206,22 @@ public class FuseProjectTest extends DefaultTest {
 		if (templateComposite[1].startsWith("java"))
 			type = JAVA;
 		if (templateComposite[0].equals("empty")) {
-			ProjectFactory.newProject("test").type(type).create();
+			ProjectFactory.newProject("test").version(templateComposite[2]).type(type).create();
 		} else {
-			ProjectFactory.newProject("test").template(templateComposite[0]).type(type).create();
+			ProjectFactory.newProject("test").version(templateComposite[2]).template(templateComposite[0]).type(type)
+					.create();
 		}
 		assertTrue("Project '" + template + "' is not present in Project Explorer", isPresent("test"));
+		if (hasErrors()) {
+			log.warn("Project '" + template + "' was created with errors! Trying to update the project.");
+			new CamelProject("test").update();
+		}
 		assertFalse("Project '" + template + "' was created with errors", hasErrors());
-		if ((type != JAVA) && (!template.startsWith("empty")))
+		if ((type != JAVA) && // skip Java DSLs
+				(!template.startsWith("empty")) && // skip Empty project templates
+				(!template.startsWith("Spring on EAP")) // skip Spring on EAP template (see
+														// https://issues.jboss.org/browse/FUSETOOLS-1456)
+		)
 			assertTrue("Project '" + template + "' cannot be run as Local Camel Context", canBeRun("test"));
 	}
 }
