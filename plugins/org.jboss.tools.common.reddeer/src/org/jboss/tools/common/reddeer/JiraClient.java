@@ -20,7 +20,7 @@ public class JiraClient {
 
 	public String getIssue(String issueId) {
 		try {
-			return new HttpClient(url + "/issue/" + issueId).get();
+			return new HttpClient(url + "/issue/" + issueId + "?fields=status").get();
 		} catch (MalformedURLException e) {
 			return null;
 		} catch (IOException e) {
