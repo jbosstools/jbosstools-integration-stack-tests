@@ -27,6 +27,7 @@ import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
@@ -119,11 +120,12 @@ public class ModelExplorer extends AbstractExplorer {
 	}
 	
 	/**
-	 * Performs preview of specified model's item.
-	 * @param params (TODO describe)
+	 * Performs preview of specified model's item .
+	 * @param params - parameters for sql (access pattern or preview function with parameters)
+	 * @param customSql - custom sql for preview
 	 * @param itemPath - path to item (<PROJECT>, ..., <ITEM>)
 	 */
-	public void previewModelItem(List<String> params, String... itemPath) {
+	public void customPreviewModelItem(List<String> params, String customSql, String... itemPath) {
 		new WorkbenchShell();
 		this.selectItem(itemPath);
 		new ContextMenu("Modeling", "Preview Data").select();
@@ -139,7 +141,22 @@ public class ModelExplorer extends AbstractExplorer {
 			}
 			new PushButton("OK").click();
 		}
+		if(customSql!=null){
+			DefaultStyledText styledText = new DefaultStyledText();
+			String removedText = styledText.getText();
+			styledText.selectText(removedText);
+			styledText.insertText(customSql);
+		}
 		new PushButton("OK").click();
+	}
+	
+	/**
+	 * Performs preview of specified model's item.
+	 * @param params - parameters for sql (access pattern or preview function with parameters)
+	 * @param itemPath - path to item (<PROJECT>, ..., <ITEM>)
+	 */
+	public void previewModelItem(List<String> params, String... itemPath) {
+		customPreviewModelItem(params,null,itemPath);
 	}
 	
 	/**

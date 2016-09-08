@@ -12,6 +12,7 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.common.reddeer.JiraClient;
 import org.jboss.tools.teiid.reddeer.AssertBot;
 import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
 import org.jboss.tools.teiid.reddeer.dialog.CriteriaBuilderDialog;
@@ -277,5 +278,38 @@ public class TransformationToolsTest {
 		editor.save();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new ProblemsViewEx().checkErrors();		
+	}
+
+	@Test
+	public void commentInEditor(){
+		modelExplorer.openModelEditor(PROJECT_NAME, VIEW_MODEL);
+		RelationalModelEditor editor = new RelationalModelEditor(VIEW_MODEL);
+		
+	    TransformationEditor transformationEditor =  editor.openTransformationDiagram(ModelEditor.ItemType.TABLE, "ReconcilerTable");
+	    String sqlWithComment = new ResourceFileHelper().getSql("TransformationToolsTest/reconcilerComment").replaceAll("\r|\n", "");
+	    transformationEditor.insertAndValidateSql(sqlWithComment);
+	    editor.save();
+	    AssertBot.transformationContains(transformationEditor.getTransformation(), "/* First comment in the reconciler table */");
+		AssertBot.transformationContains(transformationEditor.getTransformation(), "/* Second comment in the reconciler table */");
+		transformationEditor.close();
+		editor.returnToParentDiagram();
+		editor.activate();
+		
+		transformationEditor =  editor.openTransformationDiagram(ModelEditor.ItemType.TABLE, "CriteriaBuilderTable");
+	    sqlWithComment = new ResourceFileHelper().getSql("TransformationToolsTest/criteriaBuilderComment").replaceAll("\r|\n", "");
+	    transformationEditor.insertAndValidateSql(sqlWithComment);
+	    editor.save();
+		AssertBot.transformationContains(transformationEditor.getTransformation(), "/* First comment in the criteria builder table */");
+		AssertBot.transformationContains(transformationEditor.getTransformation(), "/* Second comment in the criteria builder table */");
+		transformationEditor.close();
+		editor.returnToParentDiagram();
+		editor.activate();
+		
+	    if(new JiraClient().isIssueClosed("TEIIDDES-2411")){
+	    	//test if comments in the second sql transformation doesn't change comments in the first sql transformation
+		    transformationEditor =  editor.openTransformationDiagram(ModelEditor.ItemType.TABLE, "ReconcilerTable");
+		    AssertBot.transformationContains(transformationEditor.getTransformation(), "/* First comment in the reconciler table */");
+			AssertBot.transformationContains(transformationEditor.getTransformation(), "/* Second comment in the reconciler table */");
+	    }
 	}
 }
