@@ -18,12 +18,12 @@ public class SQLResultView extends WorkbenchView {
 	}
 
 	public SQLResult getByOperation(String operation) {
-
+		String operationWithoutSpaces = operation.replaceAll("\\s", "");
 		open();
 		AbstractWait.sleep(TimePeriod.getCustom(1));
 
 		for (TreeItem item : new DefaultTree().getItems()) {
-			if (item.getCell(1).trim().equals(operation)) {
+			if (item.getCell(1).replaceAll("\\s", "").equals(operationWithoutSpaces)) {
 				return new SQLResult(item);
 			}
 		}
@@ -39,5 +39,13 @@ public class SQLResultView extends WorkbenchView {
 		new CheckBox("Display results of unresolvable connection profiles").toggle(true);
 		new PushButton("OK").click();
 
+	}
+	
+	public void clear(){
+		open();
+		DefaultToolItem button = new DefaultToolItem(2);
+		if(button.isEnabled()){
+			button.click();
+		}
 	}
 }

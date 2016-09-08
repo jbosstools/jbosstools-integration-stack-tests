@@ -7,22 +7,34 @@ import java.io.File;
 import java.util.ArrayList;
 
 import org.jboss.reddeer.common.matcher.RegexMatcher;
+import org.jboss.reddeer.common.platform.RunningPlatform;
+import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.util.Display;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.tools.runtime.reddeer.condition.JobIsKilled;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
+import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.SQLResult;
+import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -44,12 +56,21 @@ public class PreviewModelTest {
 	private static final String NAME_ORACLE_MODEL = "partsSourceOracle";
 	private static final String NAME_SQL_MODEL = "partsSourceSQLServer";
 	private static final String NAME_VIEW_MODEL = "partsView";
-	private static final String PATH_PARTS_ORACLE_CSV = new File("resources/preview/oracleSource.csv").getAbsolutePath();
-	private static final String PATH_PARTS_MSSQL_CSV = new File("resources/preview/mssqlSource.csv").getAbsolutePath();
-	private static final String PATH_VIEW_TABLE_CSV = new File("resources/preview/viewTable.csv").getAbsolutePath();
-	private static final String PATH_VIEW_TWO_TABLE_CSV = new File("resources/preview/viewTableTwoSources.csv").getAbsolutePath();
-	private static final String PATH_VIEW_PROCEDURE_CSV = new File("resources/preview/queryViewProcedure.csv").getAbsolutePath();
-	private static final String PATH_VIEW_ACCESS_PATERN_TABLE_CSV = new File("resources/preview/viewTableWithAccessPattern.csv").getAbsolutePath();
+	private static final String NAME_VDB = "previewVDB";
+	
+	private static final String PARTS_ORACLE_CSV = "oracleSource.csv";
+	private static final String PARTS_MSSQL_CSV = "mssqlSource.csv";
+	private static final String VIEW_TABLE_CSV = "viewTable.csv";
+	private static final String VIEW_ORDERED_TABLE_CSV = "viewOrderedTable.csv"; 
+	private static final String VIEW_TWO_TABLE_CSV = "viewTableTwoSources.csv";
+	private static final String VIEW_TWO_TABLE_WIN_CSV = "viewTableTwoSourcesWindows.csv"; //windows sort result otherwise
+	private static final String VIEW_PROCEDURE_CSV = "queryViewProcedure.csv";
+	private static final String VIEW_ACCESS_PATERN_TABLE_CSV = "viewTableWithAccessPattern.csv";
+
+	private static final String QUERY_VIEW_TABLE = new ResourceFileHelper().getSql("PreviewModelTest/viewTable").replaceAll("\r|\n|\\s", "");
+	private static final String QUERY_VIEW_TABLE_TWO_SOURCES = new ResourceFileHelper().getSql("PreviewModelTest/viewTableTwoSources").replaceAll("\r|\n|\\s", "");
+	private static final String QUERY_VIEW_PROCEDURE = new ResourceFileHelper().getSql("PreviewModelTest/viewProcedure").replaceAll("\r|\n|\\s", "");
+	private static final String QUERY_ACCESS_PATTERN = new ResourceFileHelper().getSql("PreviewModelTest/accessPattern").replaceAll("\r|\n|\\s", "");
 	
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;
@@ -73,6 +94,7 @@ public class PreviewModelTest {
 	
 	@Before
 	public void openTeiidPerspective(){
+		DatabaseDevelopmentPerspective.getInstance().getSqlResultsView().clear();
 		new TeiidPerspective().open();
 	}
 	
@@ -88,8 +110,8 @@ public class PreviewModelTest {
 		new ModelExplorer().previewModelItem(new ArrayList<String>(),PROJECT_NAME, NAME_SQL_MODEL + ".xmi", tableSQL);
 		waitUntilPreview();
 		
-		assertTrue(checkPreviewCSV(queryOracle,PATH_PARTS_ORACLE_CSV));
-		assertTrue(checkPreviewCSV(querySQL,PATH_PARTS_MSSQL_CSV));
+		assertTrue(checkPreviewCSV(queryOracle,PARTS_ORACLE_CSV));
+		assertTrue(checkPreviewCSV(querySQL,PARTS_MSSQL_CSV));
 		
 		assertEquals(3,getCount(queryOracle));
 		assertEquals(3,getCount(querySQL));
@@ -99,44 +121,86 @@ public class PreviewModelTest {
 	public void previewDataViewModel(){
 
 		String table = "viewTable";
-		String queryViewTable = "select * from \"" + NAME_VIEW_MODEL + "\".\""+ table +"\"";
 		new ModelExplorer().previewModelItem(new ArrayList<String>(),PROJECT_NAME, NAME_VIEW_MODEL + ".xmi", table);
 		waitUntilPreview();
 
 		table = "viewTableTwoSources";
-		String queryViewTableTwoSources = "select * from \"" + NAME_VIEW_MODEL + "\".\""+ table +"\"";
 		new ModelExplorer().previewModelItem(new ArrayList<String>(),PROJECT_NAME, NAME_VIEW_MODEL + ".xmi", table);
 		waitUntilPreview();
 
 		table = "infoByName";
-		String queryViewProcedure = "select * from ( exec \"" + NAME_VIEW_MODEL + "\".\""+ table +"\"('Park') ) AS X_X";
 		ArrayList<String> previewParam = new ArrayList<String>();
 		previewParam.add("Park");
 		new ModelExplorer().previewModelItem(previewParam,PROJECT_NAME, NAME_VIEW_MODEL + ".xmi", table);
 		waitUntilPreview();
 		
 		table = "viewTableWithAccessPattern";
-     	String queryAccessPattern = "select * from \"" + NAME_VIEW_MODEL + "\".\""+ table +
-					"\" where \"" + NAME_VIEW_MODEL + "\".\""+ table + "\".\"shipper_name\" = 'DHL'";
 		previewParam.clear();
 		previewParam.add("DHL");
 		new ModelExplorer().previewModelItem(previewParam,PROJECT_NAME, NAME_VIEW_MODEL + ".xmi", table);
 		waitUntilPreview();
 		
-		assertTrue(checkPreviewCSV(queryViewTable,PATH_VIEW_TABLE_CSV));
-		assertTrue(checkPreviewCSV(queryViewTableTwoSources,PATH_VIEW_TWO_TABLE_CSV));
-		assertTrue(checkPreviewCSV(queryViewProcedure,PATH_VIEW_PROCEDURE_CSV));
-		assertTrue(checkPreviewCSV(queryAccessPattern,PATH_VIEW_ACCESS_PATERN_TABLE_CSV));
+		assertTrue(checkPreviewCSV(QUERY_VIEW_TABLE,VIEW_TABLE_CSV));
+		if(RunningPlatform.isWindows()){ //windows sort result otherwise
+			assertTrue(checkPreviewCSV(QUERY_VIEW_TABLE_TWO_SOURCES,VIEW_TWO_TABLE_WIN_CSV));
+		}else{
+			assertTrue(checkPreviewCSV(QUERY_VIEW_TABLE_TWO_SOURCES,VIEW_TWO_TABLE_CSV));
+		}
+		assertTrue(checkPreviewCSV(QUERY_VIEW_PROCEDURE,VIEW_PROCEDURE_CSV));
+		assertTrue(checkPreviewCSV(QUERY_ACCESS_PATTERN,VIEW_ACCESS_PATERN_TABLE_CSV));
 		
-		assertEquals(227,getCount(queryViewTable));
-		assertEquals(227,getCount(queryViewTableTwoSources));
-		assertEquals(15,getCount(queryViewProcedure));
-		assertEquals(75,getCount(queryAccessPattern));
+		assertEquals(227,getCount(QUERY_VIEW_TABLE));
+		assertEquals(227,getCount(QUERY_VIEW_TABLE_TWO_SOURCES));
+		assertEquals(15,getCount(QUERY_VIEW_PROCEDURE));
+		assertEquals(75,getCount(QUERY_ACCESS_PATTERN));
 	}
 	
-	private boolean checkPreviewCSV(String previewSQL,String pathCSV){
+	@Test
+	/* Test if execute vdb and SQL scrapbook work correctly */
+	public void executeVDB(){
+		new ModelExplorer().getProject(PROJECT_NAME).refresh();
+		VdbWizard.openVdbWizard()
+				.setName(NAME_VDB)
+				.addModel(PROJECT_NAME,NAME_VIEW_MODEL)
+				.finish();
+		
+		new ModelExplorer().open();
+		new DefaultTreeItem(PROJECT_NAME, NAME_VDB+".vdb").select();
+ 		new ContextMenu("Modeling", "Execute VDB").select();
+ 		new WaitWhile(new IsInProgress(), TimePeriod.VERY_LONG);
+ 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+ 		
+ 		setTextToScrapbookAndExecute(QUERY_VIEW_TABLE);
+ 		setTextToScrapbookAndExecute(QUERY_VIEW_TABLE_TWO_SOURCES + " order by PART_ID");
+ 		setTextToScrapbookAndExecute(QUERY_VIEW_PROCEDURE);
+ 		setTextToScrapbookAndExecute(QUERY_ACCESS_PATTERN);
+ 		
+ 		assertTrue(checkPreviewCSV(QUERY_VIEW_TABLE,VIEW_TABLE_CSV));
+		assertTrue(checkPreviewCSV(QUERY_VIEW_TABLE_TWO_SOURCES + " order by PART_ID",VIEW_TWO_TABLE_CSV));
+		assertTrue(checkPreviewCSV(QUERY_VIEW_PROCEDURE,VIEW_PROCEDURE_CSV));
+		assertTrue(checkPreviewCSV(QUERY_ACCESS_PATTERN,VIEW_ACCESS_PATERN_TABLE_CSV));
+		
+		assertEquals(227,getCount(QUERY_VIEW_TABLE));
+		assertEquals(227,getCount(QUERY_VIEW_TABLE_TWO_SOURCES + " order by PART_ID"));
+		assertEquals(15,getCount(QUERY_VIEW_PROCEDURE));
+		assertEquals(75,getCount(QUERY_ACCESS_PATTERN));
+	}
+	
+	@Test
+	/* Test preview which contains custom sql */
+	public void customPreview(){
+		String table = "viewTable";
+		String sql = QUERY_VIEW_TABLE + " order by SUPPLIER_NAME";
+		new ModelExplorer().customPreviewModelItem(new ArrayList<String>(),sql,PROJECT_NAME, NAME_VIEW_MODEL + ".xmi", table);
+		waitUntilPreview();
+		
+ 		assertTrue(checkPreviewCSV(sql,VIEW_ORDERED_TABLE_CSV));
+		assertEquals(227,getCount(sql));
+	}
+	
+	private boolean checkPreviewCSV(String previewSQL,String csv){
 		SQLResult result = DatabaseDevelopmentPerspective.getInstance().getSqlResultsView().getByOperation(previewSQL);	
-		return result.compareCSVQueryResults(new File(pathCSV));
+		return result.compareCSVQueryResults(new File("resources/preview/"+csv));
 	}
 	
 	private int getCount(String previewSQL){
@@ -149,5 +213,28 @@ public class PreviewModelTest {
 	private void waitUntilPreview(){
 		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
 		new WaitWhile(new ShellWithTextIsActive(new RegexMatcher("Preview.*")), TimePeriod.LONG);
+	}
+	
+	/**
+	 * Set text to the scrapbook
+	 * @param text
+	 */
+	private void setTextToScrapbookAndExecute(String text){
+		DefaultStyledText styledText = new DefaultStyledText();
+		String removedText = styledText.getText();
+		styledText.selectText(removedText);
+		styledText.insertText(text);
+		new WaitUntil(new JobIsKilled("Refreshing server adapter list"), TimePeriod.NORMAL, false);
+		
+ 		Display.syncExec(new Runnable() {
+			@Override
+			public void run() {
+				new DefaultStyledText().getSWTWidget().setFocus(); //because context menu would lose focus
+		 		new ContextMenu("Execute All").select();
+			}
+		});
+ 		
+		AbstractWait.sleep(TimePeriod.SHORT); // Shell hasn't already opened after execute
+ 		new WaitWhile(new ShellWithTextIsAvailable("SQL Statement Execution"), TimePeriod.LONG);
 	}
 }
