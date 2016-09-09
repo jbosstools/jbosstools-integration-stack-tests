@@ -444,6 +444,58 @@ public class SwitchYardEditorBindingsTest {
 		assertEquals("MyClass", page.getServiceName().getText());
 		properties.ok();
 	}
+	
+
+	@Test
+	public void cxfReferenceBindingPayloadTest() throws Exception {
+		new Service(REFERENCE_SERVICE).addBinding("CXF");
+		CXFBindingPage wizard = new CXFBindingPage();
+		wizard.setName("cxf-binding");
+		wizard.getCXFURI().setText("http://localhost");
+		wizard.getWSDLURL().setText("hello.wsdl");
+		wizard.getDataFormat().setSelection(DATA_FORMAT_PAYLOAD);
+		wizard.getServiceClass().setText("myClass.java");
+		wizard.getServiceName().setText("MyClass");
+		wizard.getPortName().setText("port");
+		assertFalse("SWITCHYARD-2794", wizard.getRelayHeaders().isEnabled());
+		wizard.getWrapped().toggle(false);
+		wizard.getWrapped().toggle(true);
+		wizard.getWrappedStyle().setSelection("false");
+		wizard.getWrappedStyle().setSelection("true");
+		wizard.getUserName().setText("admin");
+		wizard.getPassword().setText("admin123$");
+		wizard.getDefaultOperationName().setText("foo");
+		wizard.getDefaultOperationNamespace().setText("http://foo");
+		wizard.finish();
+
+		new SwitchYardEditor().save();
+
+		String bindingPath = "/switchyard/composite/reference/binding.cxf";
+		assertXPath("cxf-binding", bindingPath + "/@name");
+		assertXPath("http://localhost", bindingPath + "/cxfURI");
+		assertXPath("hello.wsdl", bindingPath + "/wsdlURL");
+		assertXPath("myClass.java", bindingPath + "/serviceClass");
+		assertXPath("MyClass", bindingPath + "/serviceName");
+		assertXPath("port", bindingPath + "/portName");
+		assertXPath(DATA_FORMAT_PAYLOAD, bindingPath + "/dataFormat");
+		assertXPath("0", "count(" + bindingPath + "/relayHeaders)", "SWITCHYARD-2794");
+		assertXPath("true", bindingPath + "/wrapped");
+		assertXPath("true", bindingPath + "/wrappedStyle");
+		assertXPath("admin", bindingPath + "/username");
+		assertXPath("admin123$", bindingPath + "/password");
+		assertXPath("foo", bindingPath + "/defaultOperationName");
+		assertXPath("http://foo", bindingPath + "/defaultOperationNamespace");
+
+		BindingsPage properties = new Service(REFERENCE_SERVICE).showProperties().selectBindings();
+		CXFBindingPage page = properties.selectCXFBinding("cxf-binding");
+		assertEquals("cxf-binding", page.getName());
+		assertEquals("http://localhost", page.getCXFURI().getText());
+		assertEquals("hello.wsdl", page.getWSDLURL().getText());
+		assertEquals(DATA_FORMAT_PAYLOAD, page.getDataFormat().getSelection());
+		assertEquals("myClass.java", page.getServiceClass().getText());
+		assertEquals("MyClass", page.getServiceName().getText());
+		properties.ok();
+	}
 
 	@Test
 	public void camelBindingTest() throws Exception {
