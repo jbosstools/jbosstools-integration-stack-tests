@@ -1,6 +1,5 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities;
 
-import org.jboss.reddeer.swt.impl.button.LabeledCheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
@@ -14,9 +13,9 @@ import org.jboss.tools.bpmn2.reddeer.properties.setup.AddActorSetUp;
 import org.jboss.tools.bpmn2.reddeer.properties.setup.AddLocalVariableSetUp;
 import org.jboss.tools.bpmn2.reddeer.properties.setup.ParameterMappingSetUp;
 import org.jboss.tools.bpmn2.reddeer.properties.setup.CheckBoxSetUp;
-import org.jboss.tools.bpmn2.reddeer.properties.setup.LabeledTextSetUp;
 import org.jboss.tools.bpmn2.reddeer.properties.setup.RemoveActorSetUp;
 import org.jboss.tools.bpmn2.reddeer.properties.setup.ScriptSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.UserTaskTextPropertySetUp;
 
 /**
  * 
@@ -40,7 +39,7 @@ public class UserTask extends Task {
 	 * @param name
 	 */
 	public void setTaskName(String name) {
-		propertiesHandler.setUp(new LabeledTextSetUp(PropertiesTabs.USER_TASK_TAB, "Task Name", name));
+		propertiesHandler.setUp(new UserTaskTextPropertySetUp(0, name));
 	}
 
 	public String getTaskName() {
@@ -63,7 +62,7 @@ public class UserTask extends Task {
 	 * @param priority
 	 */
 	public void setPriority(String priority) {
-		propertiesHandler.setUp(new LabeledTextSetUp(PropertiesTabs.USER_TASK_TAB, "Priority", priority));
+		propertiesHandler.setUp(new UserTaskTextPropertySetUp(1, priority));
 	}
 
 	/**
@@ -71,7 +70,7 @@ public class UserTask extends Task {
 	 * @param comment
 	 */
 	public void setComment(String comment) {
-		propertiesHandler.setUp(new LabeledTextSetUp(PropertiesTabs.USER_TASK_TAB, "Comment", comment));
+		propertiesHandler.setUp(new UserTaskTextPropertySetUp(2, comment));
 	}
 
 	/**
@@ -79,7 +78,7 @@ public class UserTask extends Task {
 	 * @param id
 	 */
 	public void setGroupId(String id) {
-		propertiesHandler.setUp(new LabeledTextSetUp(PropertiesTabs.USER_TASK_TAB, "Group Id", id));
+		propertiesHandler.setUp(new UserTaskTextPropertySetUp(4, id));
 
 	}
 
@@ -93,17 +92,16 @@ public class UserTask extends Task {
 	 * @param skippable
 	 */
 	public void setSkippable(boolean skippable) {
-		propertiesHandler.setUp(new CheckBoxSetUp(PropertiesTabs.USER_TASK_TAB, "Skippable", skippable));
-
+		propertiesHandler.setUp(new UserTaskTextPropertySetUp(5, String.valueOf(skippable)));
 	}
 
 	public boolean getSkippable() {
 		propertiesHandler.activateGraphitiPropertiesView();
 		new DefaultShell("Edit User Task");
 		new DefaultTabItem(PropertiesTabs.USER_TASK_TAB).activate();
-		boolean result = new LabeledCheckBox("Skippable").isChecked();
+		String skippable = new LabeledText("Skippable").getText();
 		new PushButton("OK").click();
-		return result;
+		return Boolean.valueOf(skippable);
 	}
 
 	/**
@@ -111,7 +109,7 @@ public class UserTask extends Task {
 	 * @param content
 	 */
 	public void setContent(String content) {
-		propertiesHandler.setUp(new LabeledTextSetUp(PropertiesTabs.USER_TASK_TAB, "Content", content));
+		propertiesHandler.setUp(new UserTaskTextPropertySetUp(6, content));
 	}
 
 	/**
@@ -119,7 +117,7 @@ public class UserTask extends Task {
 	 * @param locale
 	 */
 	public void setLocale(String locale) {
-		propertiesHandler.setUp(new LabeledTextSetUp(PropertiesTabs.USER_TASK_TAB, "Locale", locale));
+		propertiesHandler.setUp(new UserTaskTextPropertySetUp(7, locale));
 	}
 
 	/**
