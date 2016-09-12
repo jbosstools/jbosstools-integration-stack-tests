@@ -1,11 +1,14 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.junit.execution.annotation.RunIf;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -18,7 +21,10 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
+import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
+import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
+import org.jboss.tools.teiid.reddeer.editor.TableEditor;
 import org.jboss.tools.teiid.reddeer.editor.VdbEditor;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
@@ -53,13 +59,17 @@ import org.junit.runner.RunWith;
 		ConnectionProfileConstants.POSTGRESQL_92_DVQE,
 		ConnectionProfileConstants.SYBASE_15_BQT2,
 		ConnectionProfileConstants.INGRES_10_BQT2,
-		ConnectionProfileConstants.SAP_HANA})
+		ConnectionProfileConstants.SAP_HANA
+		})
 public class JDBCImportWizardTest {
 
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;
 
 	public static final String MODEL_PROJECT = "jdbcImportTest";
+	private static final String UPDATE_QUERY = new ResourceFileHelper().getSql("JDBCImportWizardTest/updateBook").replaceAll("\r|\n", " ");
+	private static final String UPDATE_DISALLOW_QUERY = new ResourceFileHelper().getSql("JDBCImportWizardTest/disallowUpdateBook").replaceAll("\r|\n", " ");
+	private static final String UPDATE_DEFAULT_QUERY = new ResourceFileHelper().getSql("JDBCImportWizardTest/updateDefault").replaceAll("\r|\n", " ");
 
 	@BeforeClass
 	public static void before() {
@@ -76,7 +86,6 @@ public class JDBCImportWizardTest {
 	}
 
 	// ============== generated jdbc tests ===========================
-
 	@Test
 	public void db2101Import() {
 		String model = "db2101Model";
@@ -213,27 +222,77 @@ public class JDBCImportWizardTest {
 		}		
 		//checkImportedTablesInModel(model, "SMALLA", "SMALLB");
 	}
+		
+	@Test
+	/* Test if updatable value is set correctly after import */
+	public void updatableModel(){
+		String updatableModel = "updatableModel";
+		String notUpdatableModel = "notUpdatableModel";
+		
+		importModel(updatableModel, ConnectionProfileConstants.ORACLE_11G_BOOKS, null, false, true);
+		assertTrue(checkUpdatableModel(updatableModel,true));
+		
+		importModel(notUpdatableModel, ConnectionProfileConstants.ORACLE_11G_BOOKS, null, false, false);
+		assertTrue(checkUpdatableModel(notUpdatableModel,false));
+		VdbWizard.openVdbWizard()
+				.setName(updatableModel+"Vdb")
+				.addModel(MODEL_PROJECT,updatableModel)
+				.finish();
+		new ModelExplorer().deployVdb(MODEL_PROJECT, updatableModel+"Vdb");
+		
+		VdbWizard.openVdbWizard()
+				.setName(notUpdatableModel+"Vdb")
+				.addModel(MODEL_PROJECT,notUpdatableModel)
+				.finish();
+		new ModelExplorer().deployVdb(MODEL_PROJECT, notUpdatableModel+"Vdb");
 
-	private void importModel(String modelName, String connectionProfile, String itemList, boolean importProcedures) {
-		String[] splitList = itemList.split(",");
+		try{
+			TeiidJDBCHelper jdbcHelper = new TeiidJDBCHelper(teiidServer, updatableModel+"Vdb");
+			assertTrue(jdbcHelper.isQuerySuccessful(UPDATE_QUERY,false));
+			jdbcHelper = new TeiidJDBCHelper(teiidServer, notUpdatableModel+"Vdb");
+			assertFalse(jdbcHelper.isQuerySuccessful(UPDATE_DISALLOW_QUERY,false));
+			assertTrue(new ConsoleHasText("TEIID30492 Metadata does not allow updates on the group: "+ notUpdatableModel +".AUTHORS").test());
+		}catch(Exception e){
+ 			fail(e.getMessage());
+		}finally{
+			TeiidJDBCHelper jdbcHelper = new TeiidJDBCHelper(teiidServer, updatableModel+"Vdb");
+			jdbcHelper.isQuerySuccessful(UPDATE_DEFAULT_QUERY,false);
+		}
+	}
+
+	private void importModel(String modelName, String connectionProfile, String itemList, 
+			boolean importProcedures, boolean updatable) {
+		String[] splitList = null;
+		if(itemList!=null){
+			splitList = itemList.split(",");
+		}
 		ImportJDBCDatabaseWizard.openWizard()
 				.setConnectionProfile(connectionProfile)
 				.nextPage()
 				.setTableTypes(false, true, false)
 				.procedures(importProcedures)
-				.nextPage()
-				.setTables(splitList)
+				.nextPage();
+		if(itemList!=null){
+			ImportJDBCDatabaseWizard.getInstance()
+					.setTables(splitList);
+		}
+		ImportJDBCDatabaseWizard.getInstance()
 				.nextPage()
 				.setFolder(MODEL_PROJECT)
 				.setModelName(modelName)
+				.setUpdatable(updatable)
 				.finish();
+	}
+
+	
+	private void importModel(String modelName, String connectionProfile, String itemList, boolean importProcedures) {
+		importModel(modelName, connectionProfile, itemList, importProcedures, true);
 	}
 
 	private void checkImportedTablesInModel(String model, String tableA, String tableB) {
 		assertTrue(new ModelExplorer().containsItem(MODEL_PROJECT,model + ".xmi", tableA));
 		assertTrue(new ModelExplorer().containsItem(MODEL_PROJECT,model + ".xmi", tableB));
 		new ModelExplorer().simulateTablesPreview(teiidServer, MODEL_PROJECT, model, new String[] { tableA, tableB });
-
 	}
 	
 	private void checkImportedProcedureInModel(String model, String procedure, String...parameters) {
@@ -267,5 +326,21 @@ public class JDBCImportWizardTest {
 		List<TableItem> items = new DefaultTable().getItems();
 		String nis = items.get(row).getText(column);
 		return value.equals(nis);
+	}
+	
+	private boolean checkUpdatableModel(String model,boolean updatable){
+		boolean result = false;
+		String expectedValue = String.valueOf(updatable);
+		new ModelExplorer().openModelEditor(MODEL_PROJECT, model + ".xmi");
+		RelationalModelEditor editor = new RelationalModelEditor(model + ".xmi");
+		TableEditor tableEditor = editor.openTableEditor();
+		for (int i=0;i<tableEditor.getRows().size();i++){
+			if(expectedValue.equals(tableEditor.getCellText(i, 5))){
+				result = true;
+			}else{
+				return false;
+			}
+		}
+		return result;
 	}
 }
