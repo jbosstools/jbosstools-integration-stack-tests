@@ -170,9 +170,8 @@ public abstract class JBPM6ComplexTest {
 
 		Resource resource = ResourceFactory.newByteArrayResource(diagramSourceCode.getBytes());
 		resource.setResourceType(ResourceType.BPMN2);
-		resource.setSourcePath("/home"); // it is not checked
 
-		KieBase kieBase = kieHelper.addResource(resource).build();
+		KieBase kieBase = kieHelper.addResource(resource, ResourceType.BPMN2).build();
 		KieSession kSession = kieBase.newKieSession();
 
 		return kSession;
@@ -218,21 +217,26 @@ public abstract class JBPM6ComplexTest {
 		project.getProjectItem(definition.dependentOn()).open();
 
 		Resource resource = null;
+		ResourceType resourceType = null;
+		String source = null;
 
 		if (dependencyFileName.endsWith("bpmn2")) {
 			GEFProcessEditor editor = new GEFProcessEditor();
-			String source = editor.getSourceText();
-			resource = ResourceFactory.newByteArrayResource(source.getBytes());
-			resource.setResourceType(ResourceType.BPMN2);
+			source = editor.getSourceText();
+			resourceType = ResourceType.BPMN2;
 		} else if (dependencyFileName.endsWith("drl")) {
-			String source = new DefaultStyledText().getText();
+			source = new DefaultStyledText().getText();
+			resourceType = ResourceType.DRL;
+		}
+		
+		if(source != null && !source.isEmpty()) {
 			resource = ResourceFactory.newByteArrayResource(source.getBytes());
-			resource.setResourceType(ResourceType.DRL);
+			resource.setResourceType(resourceType);
 		}
 
-		resource.setSourcePath("/home/dependency"); // it is not checked
-
-		helper = helper.addResource(resource);
+		if(resource != null && resourceType != null) {
+			helper = helper.addResource(resource, resourceType);
+		}
 
 		return helper;
 	}
