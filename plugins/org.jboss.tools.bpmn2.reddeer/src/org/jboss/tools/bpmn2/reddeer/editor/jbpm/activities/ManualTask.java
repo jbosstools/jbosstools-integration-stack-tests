@@ -7,7 +7,7 @@ import org.jboss.tools.bpmn2.reddeer.editor.properties.PropertiesTabs;
 import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItemButton;
 import org.jboss.tools.bpmn2.reddeer.properties.setup.ParameterMappingSetUp;
 import org.jboss.tools.bpmn2.reddeer.properties.setup.CheckBoxSetUp;
-import org.jboss.tools.bpmn2.reddeer.properties.setup.LabeledTextSetUp;
+import org.jboss.tools.bpmn2.reddeer.properties.setup.ManualTaskActorSetUp;
 import org.jboss.tools.bpmn2.reddeer.properties.setup.ScriptSetUp;
 
 /**
@@ -62,7 +62,7 @@ public class ManualTask extends Task {
 	}
 	
 	public void setActorId(String actorId) {
-		propertiesHandler.setUp(new LabeledTextSetUp(PropertiesTabs.MANUAL_TASK_TAB, "Actor Id", actorId));
+		propertiesHandler.setUp(new ManualTaskActorSetUp(PropertiesTabs.MANUAL_TASK_TAB, actorId));
 	}
 
 }
