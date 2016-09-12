@@ -14,7 +14,7 @@ import org.jboss.tools.bpmn2.ui.bot.test.jbpm.PersistenceWorkItemHandler;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
 
-@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-DefaultSkippable.bpmn2", saveAs = "BPMN2-DefaultSkippable.bpmn2")
+@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-DefaultSkippable.bpmn2", saveAs = "BPMN2-DefaultSkippable.bpmn2", knownIssues="ecl-501229")
 public class ComplexDefaultSkippableTest extends JBPM6ComplexTest {
 
 	@TestPhase(phase = Phase.MODEL)
