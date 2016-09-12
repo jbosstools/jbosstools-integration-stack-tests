@@ -307,12 +307,24 @@ public class ImportJDBCDatabaseWizard extends TeiidImportWizard {
 	public ImportJDBCDatabaseWizard useFullyNames(boolean checked){
 		log.info("Use Fully Qualified Names is : '" + checked + "'");
 		activate();
-		new DefaultTabItem("Model Object Names (Tables, Procedures, Columns, etc...)").activate();
+		new DefaultTabItem("Model Object Options").activate();
 		CheckBox checkBox = new CheckBox("Use Fully Qualified Names  (Example: partssupplier.dbo.PARTS)");
 		if(checked != checkBox.isChecked()){
 			checkBox.click();
 		}
-		new DefaultTabItem("Relational Model Definition").activate();
+		new DefaultTabItem("Model Definition").activate();
+		return this;
+	}
+	
+	public ImportJDBCDatabaseWizard setUpdatable(boolean checked){
+		log.info("Updatable is : '" + checked + "'");
+		activate();
+		new DefaultTabItem("Model Object Options").activate();
+		CheckBox checkBox = new CheckBox("Set all as updatable");
+		if(checked != checkBox.isChecked()){
+			checkBox.click();
+		}
+		new DefaultTabItem("Model Definition").activate();
 		return this;
 	}
 	
@@ -323,14 +335,14 @@ public class ImportJDBCDatabaseWizard extends TeiidImportWizard {
 	public ImportJDBCDatabaseWizard changeCase(boolean lowerCase){
 		log.info("Change case to lower : '" + lowerCase + "'");
 		activate();
-		new DefaultTabItem("Model Object Names (Tables, Procedures, Columns, etc...)").activate();
+		new DefaultTabItem("Model Object Options").activate();
 		new CheckBox("Change Case For All Characters").click();
 		if(lowerCase){
 			new RadioButton(new DefaultGroup("Case Options"),"Make All Lower Case  (Example: SUPPLIERS > suppliers)").click();
 		}else{
 			new RadioButton(new DefaultGroup("Case Options"),"Make All Upper Case  (Example: Suppliers > SUPPLIERS)").click();
 		}
-		new DefaultTabItem("Relational Model Definition").activate();
+		new DefaultTabItem("Model Definition").activate();
 		return this;
 	}
 }

@@ -21,6 +21,7 @@ import org.jboss.reddeer.swt.impl.ccombo.DefaultCCombo;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
@@ -77,7 +78,6 @@ public class VdbEditor extends DefaultEditor {
 	}
 
 	public void setModelTranslator(String modelName, String sourceName, final String translatorName) {
-		new DefaultCTabItem("Content").activate();
 		new DefaultCTabItem("Models").activate();
 		new DefaultTable(0).getItem(modelName).select();
 		new DefaultTable(1).getItem(sourceName).click(1);
@@ -91,14 +91,12 @@ public class VdbEditor extends DefaultEditor {
 	}
 
 	public String getDataSourceName(String modelName) {
-		new DefaultCTabItem("Content").activate();
 		new DefaultCTabItem("Models").activate();
 		new DefaultTable(0).getItem(modelName).select();
 		return new DefaultTable(1).getItem(0).getText(0);
 	}
 	
 	public String getTranslatorName(String modelName) {
-		new DefaultCTabItem("Content").activate();
 		new DefaultCTabItem("Models").activate();
 		new DefaultTable(0).getItem(modelName).select();
 		return new DefaultTable(1).getItem(0).getText(1);
@@ -122,31 +120,32 @@ public class VdbEditor extends DefaultEditor {
 	 * Enables/disables automatic WAR generation.
 	 */
 	public VdbEditor setGenerateRestWar(boolean check) {
-		new DefaultCTabItem("Advanced").activate();
+		new DefaultCTabItem("UDF Jars").activate(); //show another tab because next command open Properties in the models tab (it isn't same like Properties tab in the header)
 		new DefaultCTabItem("Properties").activate();
 		new CheckBox(new DefaultGroup("General"), "Auto-generate REST WAR").toggle(check);
 		return this;
 	}
 
+	public void setDescription(String description){
+		new DefaultCTabItem("UDF Jars").activate(); //show another tab because next command open description in the models tab
+		new DefaultCTabItem("Description").activate();
+		new DefaultStyledText().setText(description);
+	}
+	
 	public DataRolesDialog addDataRole() {
-		new DefaultCTabItem("Advanced").activate();
 		new DefaultCTabItem("Data Roles").activate();
-		new DefaultToolItem("Add data role").click();
+		new PushButton(2).click();
 		return new DataRolesDialog(DataRolesDialog.CREATE_TITLE);
 	}
 
 	public DataRolesDialog getDataRole(String roleName) {
-		new DefaultCTabItem("Advanced").activate();
 		new DefaultCTabItem("Data Roles").activate();
-
 		new DefaultTable(0).getItem(roleName).select();
-		new DefaultToolItem("Edit selected data role").click();
-
+		new PushButton(3).click();
 		return new DataRolesDialog(DataRolesDialog.EDIT_TITLE);
 	}
 
 	public void addTranslatorOverride(String overrideName, String translatorName) {
-		new DefaultCTabItem("Advanced").activate();
 		new DefaultCTabItem("Translator Overrides").activate();
 		new PushButton(new WithTooltipTextMatcher("Add a translator whose properties you want to override")).click();
 
@@ -157,7 +156,6 @@ public class VdbEditor extends DefaultEditor {
 	}
 
 	public void addTranslatorOverrideProperty(String overrideName, String propertyName, final String propertyValue) {
-		new DefaultCTabItem("Advanced").activate();
 		new DefaultCTabItem("Translator Overrides").activate();
 		new DefaultTable(0).getItem(overrideName).select();
 
@@ -184,8 +182,7 @@ public class VdbEditor extends DefaultEditor {
 	}
 
 	public void addUserDefinedProperty(String name, String value) {
-		new DefaultCTabItem("Advanced").activate();
-		new DefaultCTabItem("User Defined Properties").activate();
+		new DefaultCTabItem("User Properties").activate();
 
 		new PushButton(new WithTooltipTextMatcher("Add New Property")).click();
 
@@ -197,7 +194,6 @@ public class VdbEditor extends DefaultEditor {
 	}
 
 	public List<String> getTranslatorOverrides() {
-		new DefaultCTabItem("Advanced").activate();
 		new DefaultCTabItem("Translator Overrides").activate();
 
 		List<String> result = new ArrayList<>();
@@ -209,7 +205,6 @@ public class VdbEditor extends DefaultEditor {
 	}
 
 	public Properties getTranslatorOverrideProperties(String translatorOverrideName) {
-		new DefaultCTabItem("Advanced").activate();
 		new DefaultCTabItem("Translator Overrides").activate();
 
 		new DefaultTable(0).getItem(translatorOverrideName).select();
