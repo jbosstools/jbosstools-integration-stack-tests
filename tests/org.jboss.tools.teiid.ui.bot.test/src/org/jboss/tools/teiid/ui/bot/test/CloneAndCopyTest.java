@@ -54,7 +54,7 @@ public class CloneAndCopyTest {
 	public void importProject(){
 		modelExplorer = new ModelExplorer();
 		modelExplorer.importProject(PROJECT_NAME);
-		modelExplorer.getProject(PROJECT_NAME).refresh();
+		modelExplorer.refreshProject(PROJECT_NAME);
 	}
 	
 	@After

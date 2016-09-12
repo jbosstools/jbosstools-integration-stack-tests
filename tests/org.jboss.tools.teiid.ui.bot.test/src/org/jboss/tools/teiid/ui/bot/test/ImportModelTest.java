@@ -8,6 +8,8 @@ import org.jboss.reddeer.junit.execution.annotation.RunIf;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.common.reddeer.JiraClient;
+import org.jboss.tools.common.reddeer.JiraIssue;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
@@ -187,12 +189,15 @@ public class ImportModelTest {
 				.setEndPoint("HelloPort")
 				.finish();
 
+		if (!new JiraClient().isIssueClosed("TEIIDDES-2912")){
+			modelExplorer.selectItem(PROJECT_NAME);
+		}
 		WsdlImportWizard.openWizard()
 				.setConnectionProfile(profile)
 				.selectOperations("sayHello")
 				.nextPage()
 				.setProject(PROJECT_NAME)
-				.setSourceModelName("HelloService")
+ 				.setSourceModelName("HelloService")
 				.setViewModelName("HelloServiceView")
 				.nextPage()
 				.setJndiName("HelloService")
@@ -211,9 +216,10 @@ public class ImportModelTest {
 	}
 
 	@Test
-	@Jira("TEIIDDES-2855")
-	@RunIf(conditionClass = IssueIsClosed.class)
 	public void wsdlToWsImportTest() {
+		if (!new JiraClient().isIssueClosed("TEIIDDES-2855")){
+			return;
+		}
 		// import wsdl
 		ImportFromFileSystemWizard.openWizard()
 				.setPath("resources/wsdl")

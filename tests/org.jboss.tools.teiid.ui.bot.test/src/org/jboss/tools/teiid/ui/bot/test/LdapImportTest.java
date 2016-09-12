@@ -84,7 +84,6 @@ public class LdapImportTest {
 				.finish();
 		
 		ModelExplorer modelExplorer = new ModelExplorer();
-		modelExplorer.open();
 		Project project = modelExplorer.getProject(NEW_PROJECT);
 		project.getProjectItem(RHDS_MODEL + ".xmi").open();
 
@@ -127,7 +126,6 @@ public class LdapImportTest {
 				.finish();
 
 		ModelExplorer modelExplorer = new ModelExplorer();
-		modelExplorer.open();
 		Project project = modelExplorer.getProject(NEW_PROJECT);
 		project.getProjectItem(LDAP_MODEL + ".xmi").open();
 
