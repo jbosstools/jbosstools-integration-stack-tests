@@ -483,8 +483,7 @@ public class DynamicVdbTest {
 
 		PropertiesView propertiesView = new PropertiesView();
 		for (String tableName : new String[] { "internal_short_ttl", "internal_long_ttl", "external_long_ttl" }) {
-			new ModelExplorer().getProject(IMPORT_PROJECT_NAME).getProjectItem(viewModelName, tableName)
-					.select();
+			new ModelExplorer().selectItem(IMPORT_PROJECT_NAME, viewModelName, tableName);
 			collector.checkThat("materialized property not set",
 					propertiesView.getProperty("Misc", "Materialized").getPropertyValue(), is("true"));
 		}
