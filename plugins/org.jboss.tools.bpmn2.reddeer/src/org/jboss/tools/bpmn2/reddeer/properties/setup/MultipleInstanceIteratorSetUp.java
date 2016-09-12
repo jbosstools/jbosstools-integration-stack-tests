@@ -18,7 +18,7 @@ public class MultipleInstanceIteratorSetUp implements SetUpAble {
 	@Override
 	public void setUpCTab() {
 		new PushButton(new DefaultSection(new DefaultSection("Multi-Instance Loop Characteristics"), "Input Data Items"), 1).click();
-		new DataInputDialog().add(value, "Object");
+		new DataInputDialog().add(value, "java.lang.Object");
 	}
 
 	@Override
