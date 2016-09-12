@@ -4,7 +4,6 @@ import static org.jboss.reddeer.requirements.server.ServerReqState.RUNNING;
 import static org.jboss.tools.runtime.reddeer.requirement.ServerReqType.EAP;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -26,7 +25,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * Tests deployment of 'wildfly-camel-archetype-spring' project on Fuse on EAP runtime
+ * Tests deployment of 'Spring on EAP' project on Fuse on EAP runtime
  * 
  * @author tsedmik
  */
@@ -46,7 +45,7 @@ public class DeploymentEAPTest extends DefaultTest {
 	@BeforeClass
 	public static void setupInitial() {
 
-		ProjectFactory.newProject(PROJECT_NAME).template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();
+		ProjectFactory.newProject(PROJECT_NAME).template(ProjectTemplate.EAP).type(ProjectType.SPRING).create();
 	}
 
 	/**
@@ -64,7 +63,7 @@ public class DeploymentEAPTest extends DefaultTest {
 	 * </p>
 	 * <b>Steps</b>
 	 * <ol>
-	 * <li>create a new project with wildfly-camel-archetype-spring archetype</li>
+	 * <li>create a new project from 'Spring on EAP' template</li>
 	 * <li>add a new Fuse on EAP server</li>
 	 * <li>add the project to the server</li>
 	 * <li>check if the server contains the project in Add and Remove ... dialog window</li>
@@ -82,7 +81,6 @@ public class DeploymentEAPTest extends DefaultTest {
 	@Test
 	public void testDeployment() {
 
-		fail("There is no available template for JBoss Fuse on EAP!");
 		FuseServerManipulator.addModule(serverRequirement.getConfig().getName(), PROJECT_NAME);
 		assertTrue(FuseServerManipulator.hasServerModule(serverRequirement.getConfig().getName(), PROJECT_NAME));
 		new WaitUntil(new ConsoleHasText("(CamelContext: spring-context) started"), TimePeriod.LONG);
