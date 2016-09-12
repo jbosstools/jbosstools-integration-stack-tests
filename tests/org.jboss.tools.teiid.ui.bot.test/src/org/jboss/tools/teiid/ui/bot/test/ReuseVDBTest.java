@@ -175,7 +175,7 @@ public class ReuseVDBTest {
 	 * deploy vdb and create connection profile (modelExplorer.deployVDB() doesn't create CP)
 	 */
 	private void executeVDB(String project, String vdb) {
- 		modelExplorer.open();
+ 		modelExplorer.activate();
  		vdb = (vdb.contains(".vdb")) ? vdb : vdb + ".vdb";
  		
  		new DefaultTreeItem(project, vdb).select();

@@ -11,8 +11,10 @@ import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.eclipse.jdt.ui.AbstractExplorer;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
@@ -27,6 +29,7 @@ import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.reddeer.workbench.impl.editor.AbstractEditor;
@@ -62,13 +65,17 @@ public class ModelExplorer extends AbstractExplorer {
 	
 	public ModelExplorer() {
 		super("Model Explorer");
-		this.activate();
+		open();
+		activate();
 	}
-
-	@Override
-	public void open() {
-		super.open();
-		this.activate();
+	
+	/**
+	 * Selects and refreshes specified project.
+	 */
+	public void refreshProject(String projectName){
+		selectItem(projectName);
+		new ContextMenu("Refresh").select();
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 	
 	/**
@@ -160,7 +167,7 @@ public class ModelExplorer extends AbstractExplorer {
 	 * Creates data source for specified Source Model.
 	 */
 	public void createDataSource(String connectionSourceType, String connectionProfile, String... pathToSourceModel) {
-		open();
+		activate();
 		int n = pathToSourceModel.length - 1;
 		pathToSourceModel[n] = (pathToSourceModel[n].contains(".xmi")) ? pathToSourceModel[n] : pathToSourceModel[n] + ".xmi";
 		new WorkbenchShell();
@@ -210,7 +217,7 @@ public class ModelExplorer extends AbstractExplorer {
 	 * @param path (<PROJECT>, ..., <ITEM>)
 	 */
 	public void selectItem(String... path){
-		open();
+		activate();
 		new DefaultTreeItem(path).select();
 	}
 	
@@ -229,7 +236,7 @@ public class ModelExplorer extends AbstractExplorer {
 	 * Note: path can end with every item of model which is able to be opened.
 	 */
 	public void openModelEditor(String... pathToModel) {
-		open();
+		activate();
 		new DefaultTreeItem(pathToModel).doubleClick();		
 		AbstractWait.sleep(TimePeriod.getCustom(3));
 	}
@@ -307,9 +314,7 @@ public class ModelExplorer extends AbstractExplorer {
 		new WorkbenchShell();
 		int iWar = warPath.length -1;
 		warPath[iWar] = (warPath[iWar].contains(".war")) ? warPath[iWar] : warPath[iWar] + ".war";
-		this.selectItem(warPath[0]);
-		new ContextMenu("Refresh").select();
-		AbstractWait.sleep(TimePeriod.SHORT);
+		refreshProject(warPath[0]);
 		this.selectItem(warPath);
 		new ContextMenu("Mark as Deployable").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -389,7 +394,7 @@ public class ModelExplorer extends AbstractExplorer {
 	 * @param itemPath - path to model (<PROJECT>, ..., <MODEL/ITEM>)
 	 */
 	public void addChildToModelItem(String childType, String... itemPath) {
-		this.getProject(itemPath[0]).refresh();
+		refreshProject(itemPath[0]);
 		new DefaultTreeItem(itemPath).select();
 		new ContextMenu("New Child", childType).select();
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -403,7 +408,7 @@ public class ModelExplorer extends AbstractExplorer {
 	 * @param itemPath - path to model (<PROJECT>, ..., <MODEL/ITEM>)
 	 */
 	public void addSiblingToModelItem(String siblingType, String... itemPath){
-		this.getProject(itemPath[0]).refresh();
+		refreshProject(itemPath[0]);
 		new DefaultTreeItem(itemPath).select();
 		new ContextMenu("New Sibling",siblingType).select();
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -416,7 +421,7 @@ public class ModelExplorer extends AbstractExplorer {
 	 * @param itemPath - path to item (<PROJECT>, ..., <ITEM>)
 	 */
 	public void renameModelItem(String newName, String... itemPath){
-		this.getProject(itemPath[0]).refresh();
+		refreshProject(itemPath[0]);
 		new DefaultTreeItem(itemPath).select();
 		new ContextMenu("Rename...").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -431,7 +436,7 @@ public class ModelExplorer extends AbstractExplorer {
 	 * Note: new name must contains extension of model.
 	 */
 	public void renameModel(String newName, String... modelPath){
-		this.getProject(modelPath[0]).refresh();
+		refreshProject(modelPath[0]);
 		new DefaultTreeItem(modelPath).select();
 		new ContextMenu("Refactor", "Rename...").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -445,7 +450,7 @@ public class ModelExplorer extends AbstractExplorer {
 	 * @param pathToModel - path to model (<PROJECT>, ... ,<MODEL>)
 	 */
 	public void deleteModel(String... modelPath){
-		this.getProject(modelPath[0]).refresh();
+		refreshProject(modelPath[0]);
 		new DefaultTreeItem(modelPath).select();
 		new ContextMenu("Delete").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -513,17 +518,14 @@ public class ModelExplorer extends AbstractExplorer {
 	/**
 	 * Check if item is in the project
 	 * @param path - path to the item (<PROJECT>, ..., <ITEM>) 
-	 * @return
 	 */
 	public boolean containsItem(String... path){
-		boolean result = false;
-		getProject(path[0]).refresh();
+		refreshProject(path[0]);
 		try{
-			this.selectItem(path);
-			result = true;
-		}catch(Exception ex){
-			result = false;
+			new DefaultTreeItem(path);
+			return true;
+		}catch(CoreLayerException ex){
+			return false;
 		}
-		return result;
 	}
 }

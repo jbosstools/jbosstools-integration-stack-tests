@@ -235,16 +235,6 @@ public class WebServiceCreationTest {
 		AbstractWait.sleep(TimePeriod.SHORT);
 		xmlEditor.saveAndClose();	
 		
-		// 2.1. Align generated schema
-		modelExplorer.openModelEditor(PROJECT_NAME, "web_services", "OutputSchema.xsd");
-		AbstractWait.sleep(TimePeriod.SHORT);
-		RelationalModelEditor schemaEditor = new RelationalModelEditor("OutputSchema.xsd");
-		new DefaultCTabItem(1).activate();
-		AbstractWait.sleep(TimePeriod.SHORT);
-		DefaultStyledText styledText = new DefaultStyledText();
-		styledText.setText(styledText.getText().replaceAll("http://www.metamatrix.com/ProductInfo_Output", "http://www.metamatrix.com/ProductInfo"));
-		schemaEditor.saveAndClose();
-		
 		//3. Define web service operations
 		String wsModelPath = PROJECT_NAME + "/web_services/" + WS_MODEL;
 		modelExplorer.renameModelItem(INTERFACE_NAME, (wsModelPath+"/"+"RelationalModel_ProductInfo").split("/"));
@@ -301,7 +291,7 @@ public class WebServiceCreationTest {
 		tableEditor = wsEditor.openTableEditor();
 		tableEditor.openTab(TableEditor.Tabs.INPUTS);
 		tableEditor.setCellTextViaProperties(OPERATION_DELETE, 
-				"ProductInfo_Input (Path=/WsCreationProject/web_services/InputSchema.xsd/InputSchema.xsd)",
+				"ProductsInfo_Input (Path=/WsCreationProject/schemas/ProductsSchema.xsd/ProductsSchema.xsd)",
 				"Misc", "Content via Element");
 		tableEditor.openTab(TableEditor.Tabs.OUTPUTS);
 		tableEditor.setCellTextViaProperties(OPERATION_DELETE, 
@@ -321,7 +311,7 @@ public class WebServiceCreationTest {
 		new ProblemsViewEx().checkErrors();	
 		
 		// 4. Generate WAR and test it
-		generateWarAndTestIt("WsRelVdb");
+		//generateWarAndTestIt("WsRelVdb");
 	}
 	
 	@Test

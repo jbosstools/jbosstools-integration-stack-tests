@@ -81,7 +81,7 @@ public class DataRolesTest {
 	public void importProject(){
 		ModelExplorer modelExplorer = new ModelExplorer();
 		modelExplorer.importProject(PROJECT_NAME);
-		modelExplorer.getProject(PROJECT_NAME).refresh();
+		modelExplorer.refreshProject(PROJECT_NAME);
 		modelExplorer.changeConnectionProfile(ConnectionProfileConstants.ORACLE_11G_PRODUCTS, PROJECT_NAME, "sources", SOURCE_MODEL);
 	}
 	

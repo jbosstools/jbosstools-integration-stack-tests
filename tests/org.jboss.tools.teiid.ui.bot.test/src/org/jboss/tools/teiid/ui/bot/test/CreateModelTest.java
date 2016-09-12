@@ -2,6 +2,8 @@ package org.jboss.tools.teiid.ui.bot.test;
 
 import static org.junit.Assert.assertTrue;
 
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -99,6 +101,7 @@ public class CreateModelTest {
 		
 		new DefaultShell("Model Initializer");
 		new PushButton("OK").click();
+		AbstractWait.sleep(TimePeriod.NORMAL);
 
 		assertTrue(new ModelExplorer().containsItem(PROJECT_NAME,XSD_DATATYPE_MODEL_NAME + ".xsd"));
 		// TODO SchemaModelEditor is not implemented yet

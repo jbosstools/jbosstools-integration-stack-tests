@@ -8,11 +8,14 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.wizard.imports.XMLSchemaImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.newWizard.MetadataModelWizard;
+import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,6 +31,7 @@ public class BasicTest {
 
 	@BeforeClass
 	public static void prepare() {
+		new WorkbenchShell().maximize();
 		if (new ShellMenu("Project", "Build Automatically").isSelected()) {
 			new ShellMenu("Project", "Build Automatically").select();
 		}
@@ -40,6 +44,11 @@ public class BasicTest {
 				.selectSchema(XSD)
 				.setToDirectory(PROJECT)
 				.finish();
+	}
+
+	@AfterClass
+	public static void cleanUp(){
+		new ModelExplorer().deleteAllProjectsSafely();
 	}
 
 	@AfterClass
@@ -154,7 +163,6 @@ public class BasicTest {
 
 	private void checkModel(int i2, String[] elems) {
 		ModelExplorer modelExplorer = new ModelExplorer();
-		modelExplorer.open();
 		for (String elem : elems) {
 			String el = "";
 			String el2 = "";

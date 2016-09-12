@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Properties;
 
 import org.eclipse.swt.widgets.Text;
+import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
@@ -105,10 +106,9 @@ public class VdbEditor extends DefaultEditor {
 	}
 
 	public void synchronizeAll() {
-		PushButton syncAll = new PushButton("Synchronize All");
-		if (syncAll.isEnabled()) {
-			syncAll.click();
-		}
+		activate();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		new PushButton("Synchronize All").click();
 	}
 
 	public void removeModel(String projectName, String model) {
