@@ -15,7 +15,7 @@
 
 	<properties>
 	  <tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-integration-stack-tests.git</tycho.scmUrl>
-	  <jbtis.tp.version>4.4.0.Alpha1-SNAPSHOT</jbtis.tp.version>
+	  <jbtis.tp.version>4.4.0.Alpha2-SNAPSHOT</jbtis.tp.version>
 	  <jbtis.repo>staging</jbtis.repo>
 	  <jbtis.site>http://download.jboss.org/jbosstools/neon/${jbtis.repo}/updates/integration-stack/</jbtis.site>
 	  <jbtis-ea.site>${jbtis.site}/earlyaccess/</jbtis-ea.site>
@@ -138,24 +138,6 @@
 	    <properties>
 	      <jbtis.repo>stable</jbtis.repo>
 	    </properties>
-	  </profile>
-	  <profile>
-	    <id>nightly</id>
-	    <properties>
-	      <jbtis.repo>staging</jbtis.repo>
-	    </properties>
-		<repositories>
-		  <repository>
-			<id>fuse-nightly</id>
-			<url>http://download.jboss.org/jbosstools/mars/integration/updates/integration-stack/fuse-tooling/</url>
-			<layout>p2</layout>
-		  </repository>
-		  <repository>
-			<id>switchyard-nightly</id>
-			<url>http://download.jboss.org/jbosstools/mars/integration/updates/integration-stack/switchyard/2.1.0/</url>
-			<layout>p2</layout>
-		  </repository>
-		</repositories>
 	  </profile>
 	</profiles>
 
