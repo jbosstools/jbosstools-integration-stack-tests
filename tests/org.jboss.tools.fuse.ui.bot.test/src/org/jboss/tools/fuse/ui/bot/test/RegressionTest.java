@@ -41,7 +41,6 @@ import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.tools.common.reddeer.LogGrapper;
 import org.jboss.tools.common.reddeer.ResourceHelper;
 import org.jboss.tools.fuse.reddeer.ProjectTemplate;
 import org.jboss.tools.fuse.reddeer.ProjectType;
@@ -112,7 +111,6 @@ public class RegressionTest extends DefaultTest {
 		int i = doc.getElementsByTagName("onException").item(0).getChildNodes().getLength();
 
 		assertEquals("'camel-context.xml' file was changed!", 11, i);
-		assertTrue(LogGrapper.getPluginErrors("fuse").size() == 0);
 	}
 
 	/**
@@ -148,7 +146,9 @@ public class RegressionTest extends DefaultTest {
 		FuseServerRuntimePreferencePage serverRuntime = new FuseServerRuntimePreferencePage();
 		serverRuntime.open();
 		new PushButton("Add...").click();
+		new WaitUntil(new ShellWithTextIsAvailable("New Server Runtime Environment"));
 		new DefaultShell("New Server Runtime Environment").setFocus();
+		AbstractWait.sleep(TimePeriod.SHORT);
 		new DefaultTreeItem("JBoss Fuse", "JBoss Fuse 6.1").select();
 		if (new PushButton("Finish").isEnabled()) {
 			new PushButton("Cancel").click();
@@ -170,7 +170,7 @@ public class RegressionTest extends DefaultTest {
 		ProjectFactory.newProject("camel-spring").template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();
 		new CamelProject("camel-spring").runCamelContext("camel-context.xml");
 		AbstractWait.sleep(TimePeriod.NORMAL);
-		new FuseJMXNavigator().getNode("Local Camel Context", "Camel", "camel").select();
+		new FuseJMXNavigator().getNode("Local Camel Context", "Camel", "cbr-example-context").select();
 
 		try {
 			new ContextMenu("Close Camel Context");
