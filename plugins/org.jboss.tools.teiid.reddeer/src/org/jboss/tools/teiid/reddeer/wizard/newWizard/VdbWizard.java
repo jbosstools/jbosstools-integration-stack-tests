@@ -10,9 +10,6 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 
-/**
- * @author skaleta
- */
 public class VdbWizard extends NewWizardDialog {
 	
 	public static final String DIALOG_TITLE = "New VDB";
@@ -68,10 +65,8 @@ public class VdbWizard extends NewWizardDialog {
 	}
 
 	public VdbWizard addModel(String... pathToModel) {
-		if (!pathToModel[pathToModel.length - 1].contains(".")) {
-			pathToModel[pathToModel.length - 1] = pathToModel[pathToModel.length - 1]
-					.concat(".xmi");
-		}
+		int i = pathToModel.length - 1;
+		pathToModel[i] = (pathToModel[i].contains(".")) ? pathToModel[i] : pathToModel[i] + ".xmi";
 		activate();
 		log.info("Path to model: '" + Arrays.toString(pathToModel) + "'");
 		new PushButton("Add").click();
