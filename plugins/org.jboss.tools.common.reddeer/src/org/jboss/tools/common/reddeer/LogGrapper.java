@@ -14,10 +14,10 @@ import org.jboss.tools.common.reddeer.view.ErrorLogView;
 public class LogGrapper {
 
 	/**
-	 * Retrieves all error logs about Fuse plugins
+	 * Retrieves all error logs about given plugin
 	 * 
 	 * @param plugin name of plugin or substring of it
-	 * @return List of errors in Fuse plugins. In case of no error occurred, an empty List is returned
+	 * @return List of errors in the plugin. In case of no error occurred, an empty List is returned
 	 */
 	public static List<LogMessage> getPluginErrors(String plugin) {
 
