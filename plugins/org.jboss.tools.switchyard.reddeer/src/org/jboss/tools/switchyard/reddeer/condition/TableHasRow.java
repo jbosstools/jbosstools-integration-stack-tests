@@ -24,7 +24,7 @@ public class TableHasRow extends AbstractWaitCondition {
 	public boolean test() {
 		items = table.getItems();
 		for (TableItem item : items) {
-			if (matcher.matches(item.getText())) {
+			if (!item.getSWTWidget().isDisposed() && matcher.matches(item.getText())) {
 				item.select();
 				return true;
 			}
@@ -37,7 +37,11 @@ public class TableHasRow extends AbstractWaitCondition {
 		StringBuffer message = new StringBuffer();
 		message.append("an item matching ").append(matcher.toString()).append(" in\n");
 		for (TableItem item : items) {
-			message.append("\t").append(item.getText()).append("\n");
+			String text = null;
+			if (!item.getSWTWidget().isDisposed()) {
+				text = item.getText();
+			}
+			message.append("\t").append(text).append("\n");
 		}
 		return message.toString();
 	}
