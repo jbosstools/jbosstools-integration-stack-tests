@@ -10,9 +10,9 @@ Require-Bundle: org.eclipse.ui,
  org.custommonkey.xmlunit;bundle-version="1.3.0",
  org.jboss.reddeer.go;bundle-version="1.0.0",
  org.jboss.reddeer.gef;bundle-version="1.0.0",
- org.jboss.tools.common.reddeer;bundle-version="4.3.0",
- org.jboss.tools.runtime.reddeer;bundle-version="4.3.0",
- org.jboss.tools.bpel.reddeer;bundle-version="4.3.0"
+ org.jboss.tools.common.reddeer;bundle-version="4.4.0",
+ org.jboss.tools.runtime.reddeer;bundle-version="4.4.0",
+ org.jboss.tools.bpel.reddeer;bundle-version="4.4.0"
 Bundle-ActivationPolicy: lazy
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
