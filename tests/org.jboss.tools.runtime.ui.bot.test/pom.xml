@@ -69,18 +69,6 @@
 		    <artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
 		    <version>0.0.0</version>
 		  </dependency>
-		  <!-- JBoss ESB Feature -->
-		  <dependency>
-		    <type>p2-installable-unit</type>
-		    <artifactId>org.jboss.tools.esb.feature.feature.group</artifactId>
-		    <version>0.0.0</version>
-		  </dependency>
-		  <!-- jBPM3 Feature -->
-		  <dependency>
-		    <type>p2-installable-unit</type>
-		    <artifactId>org.jboss.tools.jbpm3.feature.feature.group</artifactId>
-		    <version>0.0.0</version>
-		  </dependency>
 		  <!-- Fuse Feature -->
 		  <dependency>
 		    <type>p2-installable-unit</type>
