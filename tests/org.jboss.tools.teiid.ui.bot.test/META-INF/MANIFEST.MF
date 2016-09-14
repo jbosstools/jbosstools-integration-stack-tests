@@ -12,10 +12,10 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Eclipse-RegisterBuddy: org.apache.log4j
 Eclipse-BundleShape: dir
 Require-Bundle: org.eclipse.gef,
- org.jboss.tools.runtime.reddeer;bundle-version="4.3.0",
- org.jboss.tools.teiid.reddeer;bundle-version="4.3.0",
+ org.jboss.tools.runtime.reddeer;bundle-version="4.4.0",
+ org.jboss.tools.teiid.reddeer;bundle-version="4.4.0",
+ org.jboss.tools.common.reddeer;bundle-version="4.4.0",
  org.jboss.reddeer.go;bundle-version="1.0.0",
- org.jboss.tools.common.reddeer;bundle-version="4.3.0",
  org.hamcrest.library,
  com.google.gson;bundle-version="2.1.0",
  org.jboss.reddeer.requirements,
