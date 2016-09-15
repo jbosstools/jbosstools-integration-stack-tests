@@ -29,7 +29,7 @@ public class ComplexMessageStartTest extends JBPM6ComplexTest {
 		Process process = new Process("BPMN2-MessageStart");
 
 		MessageStartEvent start = (MessageStartEvent) process.add("StartProcess", ElementType.MESSAGE_START_EVENT);
-		start.setMessageMapping(new Message("HelloMessage", "String"), VARIABLE1);
+		start.setMessageMapping(new Message("HelloMessage", STRING), VARIABLE1);
 		start.connectTo(new ScriptTask("Script"));
 	}
 

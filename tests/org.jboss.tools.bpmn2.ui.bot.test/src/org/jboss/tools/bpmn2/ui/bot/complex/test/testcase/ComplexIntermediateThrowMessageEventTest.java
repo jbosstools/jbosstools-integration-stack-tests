@@ -26,7 +26,7 @@ public class ComplexIntermediateThrowMessageEventTest extends JBPM6ComplexTest {
 
 		MessageIntermediateThrowEvent ithrow = (MessageIntermediateThrowEvent) start.append("Message Event",
 				ElementType.MESSAGE_INTERMEDIATE_THROW_EVENT);
-		ithrow.setMessageMapping(new Message("_2_Message", "String"), VARIABLE1);
+		ithrow.setMessageMapping(new Message("_2_Message", STRING), VARIABLE1);
 		ithrow.connectTo(new EndEvent("EndProcess"));
 	}
 

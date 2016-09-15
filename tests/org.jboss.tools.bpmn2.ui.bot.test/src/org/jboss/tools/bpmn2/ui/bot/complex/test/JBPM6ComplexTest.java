@@ -54,6 +54,9 @@ public abstract class JBPM6ComplexTest {
 
 	protected static final String VARIABLE1 = "VariableOne";
 	protected static final String VARIABLE2 = "VariableTwo";
+	protected static final String STRING = "java.lang.String";
+	protected static final String INTEGER = "java.lang.Integer";
+	protected static final String OBJECT = "java.lang.Object";
 
 	public JBPM6ComplexTest() {
 		validateMethods = new ArrayList<Method>();

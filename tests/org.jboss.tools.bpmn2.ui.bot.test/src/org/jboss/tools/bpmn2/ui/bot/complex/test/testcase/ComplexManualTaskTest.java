@@ -32,7 +32,7 @@ public class ComplexManualTaskTest extends JBPM6ComplexTest {
 
 		ManualTask manual = (ManualTask) start.append("NumberAssertion", ElementType.MANUAL_TASK);
 		manual.addParameterMapping(new ParameterMapping(new FromVariable(VARIABLE1),
-				new ToDataInput("internalVariable", "Integer"), ParameterMapping.Type.INPUT));
+				new ToDataInput("internalVariable", INTEGER), ParameterMapping.Type.INPUT));
 		manual.setActorId("actorForManualTask");
 		manual.connectTo(new EndEvent("EndProcess"));
 	}

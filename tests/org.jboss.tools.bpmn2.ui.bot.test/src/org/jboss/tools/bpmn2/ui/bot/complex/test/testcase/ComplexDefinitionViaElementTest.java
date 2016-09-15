@@ -25,7 +25,7 @@ public class ComplexDefinitionViaElementTest extends JBPM6ComplexTest {
 	private ErrorRef errorRefDef = new ErrorRef("RuntimeException", "java.lang.RuntimeException",
 			"java.lang.RuntimeException");
 	private Escalation escalationDef = new Escalation("IllegalArgumentException", "java.lang.IllegalArgumentException");
-	private Message messageDef = new Message("TextMessage", "String");
+	private Message messageDef = new Message("TextMessage", STRING);
 
 	/**
 	 * Modeled process is very crazy an has no real meaning It is assimilated for testcase, which try to add definitions
