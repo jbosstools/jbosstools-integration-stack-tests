@@ -29,7 +29,7 @@ public class ComplexDataObjectTest extends JBPM6ComplexTest {
 
 		DataObject object = (DataObject) process.add("employee", ElementType.DATA_OBJECT);
 		object.connectTo(new ScriptTask("Script"), ConnectionType.ASSOCIATION_ONE_WAY);
-		object.setDataType("String");
+		object.setDataType(STRING);
 		object.select();
 	}
 

@@ -28,13 +28,13 @@ public class ComplexSendTaskTest extends JBPM6ComplexTest {
 
 	@TestPhase(phase = Phase.MODEL)
 	public void model() {
-		Message msg = new Message("msgName", "String");
+		Message msg = new Message("msgName", STRING);
 
 		StartEvent start = new StartEvent("StartProcess");
 
 		SendTask send = (SendTask) start.append("Send", ElementType.SEND_TASK);
 		send.setImplementation("Unspecified");
-		send.setOperation("JavaObject/operationName", msg, msg, new ErrorRef("errName", "errCode", "String"));
+		send.setOperation("JavaObject/operationName", msg, msg, new ErrorRef("errName", "errCode", STRING));
 		send.setMessage(msg.getName(), msg.getDataType());
 		send.addParameterMapping(new ParameterMapping(new FromVariable("s"),
 				new ToDataInput("Message", msg.getDataType()), ParameterMapping.Type.INPUT));

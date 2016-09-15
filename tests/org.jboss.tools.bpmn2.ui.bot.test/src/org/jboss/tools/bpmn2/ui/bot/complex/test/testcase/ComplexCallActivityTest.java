@@ -27,9 +27,9 @@ public class ComplexCallActivityTest extends JBPM6ComplexTest {
 		call.setWaitForCompletion(true);
 		call.setIndependent(true);
 		call.setCalledActivity("DependencyBPMN2CallActivity");
-		call.addParameterMapping(new ParameterMapping(new FromVariable(VARIABLE2), new ToDataInput("subX", "String"),
+		call.addParameterMapping(new ParameterMapping(new FromVariable(VARIABLE2), new ToDataInput("subX", STRING),
 				ParameterMapping.Type.INPUT));
-		call.addParameterMapping(new ParameterMapping(new FromDataOutput("subY", "String"), new ToVariable(VARIABLE1),
+		call.addParameterMapping(new ParameterMapping(new FromDataOutput("subY", STRING), new ToVariable(VARIABLE1),
 				ParameterMapping.Type.OUTPUT));
 
 		call.connectTo(new EndEvent("EndProcess"));
