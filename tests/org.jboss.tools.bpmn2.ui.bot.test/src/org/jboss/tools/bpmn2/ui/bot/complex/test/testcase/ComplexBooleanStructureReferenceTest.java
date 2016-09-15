@@ -32,7 +32,7 @@ public class ComplexBooleanStructureReferenceTest extends JBPM6ComplexTest {
 	@TestPhase(phase = Phase.MODEL)
 	public void model() {
 		UserTask userTask = new UserTask(NODE_USER_TASK);
-		userTask.addParameterMapping(new ParameterMapping(new FromDataOutput("testHT", "String"),
+		userTask.addParameterMapping(new ParameterMapping(new FromDataOutput("testHT", STRING),
 				new ToVariable(VARIABLE1), ParameterMapping.Type.OUTPUT));
 	}
 

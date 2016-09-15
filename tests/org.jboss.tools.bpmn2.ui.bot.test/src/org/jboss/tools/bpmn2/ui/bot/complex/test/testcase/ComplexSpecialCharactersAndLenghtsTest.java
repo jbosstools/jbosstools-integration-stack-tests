@@ -23,7 +23,7 @@ public class ComplexSpecialCharactersAndLenghtsTest extends JBPM6ComplexTest {
 	@TestPhase(phase = Phase.MODEL)
 	public void model() {
 		process = new Process(PROCESS);
-		process.addLocalVariable("var-iable", "String", true);
+		process.addLocalVariable("var-iable", STRING, true);
 		new SectionToolItem("Global Variable List for Process \"BPMN2-SpecialCharactersAndLengths\"", "Add").click();
 		process.setExecutable(false);
 		process.setPackageName("invalid @#!1", true);

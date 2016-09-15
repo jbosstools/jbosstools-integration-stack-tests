@@ -29,7 +29,7 @@ public class ComplexSubProcessTest extends JBPM6ComplexTest {
 		StartEvent start = new StartEvent("StartProcess");
 
 		SubProcess subProcess = (SubProcess) start.append("Hello Subprocess", ElementType.SUB_PROCESS, Position.SOUTH);
-		subProcess.addLocalVariable(VARIABLE1, "String");
+		subProcess.addLocalVariable(VARIABLE1, STRING);
 		subProcess.connectTo(new ScriptTask("Goodbye"));
 
 		// Now create the inner of the sub process.

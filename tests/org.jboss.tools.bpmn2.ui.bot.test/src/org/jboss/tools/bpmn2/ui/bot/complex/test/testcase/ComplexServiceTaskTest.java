@@ -29,7 +29,7 @@ public class ComplexServiceTaskTest extends JBPM6ComplexTest {
 
 		service.setImplementation("Java");
 		service.setOperation("java.util.Date/compareTo", new Message("DateVar", "java.util.Date"),
-				new Message("ObjectVar", "java.lang.Object"), null);
+				new Message("ObjectVar", OBJECT), null);
 		
 		service.setServiceInputVariable("DateVar");
 		service.setServiceOutputVariable("ObjectVar");
