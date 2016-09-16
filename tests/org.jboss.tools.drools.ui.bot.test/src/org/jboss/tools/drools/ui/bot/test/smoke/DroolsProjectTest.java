@@ -4,10 +4,13 @@ import java.io.UnsupportedEncodingException;
 
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
+import org.jboss.reddeer.junit.execution.annotation.RunIf;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
+import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.drools.ui.bot.test.util.ProjectTestParent;
 import org.jboss.tools.drools.ui.bot.test.util.ProjectUtility;
 import org.jboss.tools.drools.ui.bot.test.util.RunUtility;
@@ -28,6 +31,8 @@ public class DroolsProjectTest extends ProjectTestParent {
 	protected RuntimeRequirement droolsRuntime;
 
 	@Test
+	@Jira("DROOLS-1250")
+	@RunIf(conditionClass = IssueIsClosed.class)
 	@UsePerspective(JavaPerspective.class)
 	public void testRuntimeDecisionTableClass() throws UnsupportedEncodingException {
 		final String projectName = this.getMethodName();
@@ -41,8 +46,10 @@ public class DroolsProjectTest extends ProjectTestParent {
 
 		assertProjectAndDelete(projectName);
 	}
-
+	
 	@Test
+	@Jira("DROOLS-1250")
+	@RunIf(conditionClass = IssueIsClosed.class)
 	@UsePerspective(JavaPerspective.class)
 	public void testRuntimeDroolsClass() throws UnsupportedEncodingException {
 		final String projectName = this.getMethodName();
