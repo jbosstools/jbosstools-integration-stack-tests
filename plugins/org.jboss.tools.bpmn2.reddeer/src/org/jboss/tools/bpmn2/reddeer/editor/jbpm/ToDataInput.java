@@ -14,8 +14,8 @@ import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.EditNameDialog;
 public class ToDataInput implements MappingSide {
 
 	private String name;
-
 	private String dataType;
+	private boolean isNameReserved;
 
 	/**
 	 * @deprecated
@@ -31,21 +31,34 @@ public class ToDataInput implements MappingSide {
 	 * @param dataType
 	 */
 	public ToDataInput(String name, String dataType) {
+		this(name, dataType, false);
+	}
+	
+	/**
+	 * 
+	 * @param name - name of input
+	 * @param dataType - data type of input
+	 * @param isNameReserved - is the 'name' reserved
+	 */
+	public ToDataInput(String name, String dataType, boolean isNameReserved) {
 		this.name = name;
 		this.dataType = dataType;
+		this.isNameReserved = isNameReserved;
 	}
 
 	@Override
 	public void setUp() {
 		new PushButton(new DefaultGroup("To"), 0).click();
-		new EditNameDialog().setName(name);
+		new EditNameDialog(isNameReserved).setName(name);
 
-		Combo dataTypeCombo = new LabeledCombo(new DefaultGroup("To"), "Data Type");
-		if (!dataTypeCombo.getItems().contains(dataType)) {
-			new PushButton(0).click();
-			new DataTypeDialog().add(dataType);
+		if(!isNameReserved) {
+			Combo dataTypeCombo = new LabeledCombo(new DefaultGroup("To"), "Data Type");
+			if (!dataTypeCombo.getItems().contains(dataType)) {
+				new PushButton(0).click();
+				new DataTypeDialog().add(dataType);
+			}
+			dataTypeCombo.setSelection(dataType);
 		}
-		dataTypeCombo.setSelection(dataType);
 	}
 
 	@Override
