@@ -26,19 +26,28 @@ import org.kie.api.runtime.process.ProcessInstance;
 @JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-SendTask.bpmn2", saveAs = "BPMN2-SendTask.bpmn2")
 public class ComplexSendTaskTest extends JBPM6ComplexTest {
 
+	private SendTask send;
+	private Message msg;
+	
 	@TestPhase(phase = Phase.MODEL)
 	public void model() {
-		Message msg = new Message("msgName", STRING);
+		msg = new Message("msgName", STRING);
 
 		StartEvent start = new StartEvent("StartProcess");
 
-		SendTask send = (SendTask) start.append("Send", ElementType.SEND_TASK);
+		send = (SendTask) start.append("Send", ElementType.SEND_TASK);
 		send.setImplementation("Unspecified");
 		send.setOperation("JavaObject/operationName", msg, msg, new ErrorRef("errName", "errCode", STRING));
 		send.setMessage(msg.getName(), msg.getDataType());
-		send.addParameterMapping(new ParameterMapping(new FromVariable("s"),
-				new ToDataInput("Message", msg.getDataType()), ParameterMapping.Type.INPUT));
+		send.setOutgoingMessageMappingFromVariable("s");
 		send.connectTo(new TerminateEndEvent("EndProcess"));
+	}
+	
+	@TestPhase(phase = Phase.VALIDATE)
+	public void validateMessagePreservedName() {
+		send.select();
+		send.addParameterMapping(new ParameterMapping(new FromVariable("s"),
+			new ToDataInput("Message", msg.getDataType(), true), ParameterMapping.Type.INPUT));
 	}
 
 	@TestPhase(phase = Phase.RUN)

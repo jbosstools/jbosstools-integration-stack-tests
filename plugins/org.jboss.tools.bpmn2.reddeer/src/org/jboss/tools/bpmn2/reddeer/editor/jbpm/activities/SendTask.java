@@ -89,5 +89,9 @@ public class SendTask extends Task {
 	public void addParameterMapping(ParameterMapping parameterMapping) {
 		propertiesHandler.setUp(new ParameterMappingSetUp(parameterMapping, SectionToolItemButton.ADD));
 	}
+	
+	public void setOutgoingMessageMappingFromVariable(String variableName) {
+		propertiesHandler.setUp(new ComboSetUp(PropertiesTabs.SEND_TASK_TAB, "Source", variableName));
+	}
 
 }
