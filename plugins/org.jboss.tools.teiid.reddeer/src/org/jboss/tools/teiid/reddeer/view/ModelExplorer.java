@@ -30,7 +30,6 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.reddeer.workbench.impl.editor.AbstractEditor;
@@ -44,6 +43,7 @@ import org.jboss.tools.teiid.reddeer.dialog.GenerateDynamicVdbDialog;
 import org.jboss.tools.teiid.reddeer.dialog.GenerateRestProcedureDialog;
 import org.jboss.tools.teiid.reddeer.dialog.GenerateVdbArchiveDialog;
 import org.jboss.tools.teiid.reddeer.dialog.SaveAsDialog;
+import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.wizard.imports.ImportProjectWizard;
 import org.jboss.tools.teiid.reddeer.wizard.newWizard.MetadataModelWizard;
@@ -96,6 +96,7 @@ public class ModelExplorer extends AbstractExplorer {
 	 */
 	public void changeConnectionProfile(String connectionProfile, String... modelPath) {
 		int n = modelPath.length -1;
+		String modelName = modelPath[n];
 		modelPath[n] = (modelPath[n].contains(".xmi")) ? modelPath[n] : modelPath[n] + ".xmi";
 		new WorkbenchShell();
 		this.selectItem(modelPath);
@@ -109,9 +110,10 @@ public class ModelExplorer extends AbstractExplorer {
 		} catch (Exception e) {}
 		try {
 			new WaitUntil(new ShellWithTextIsAvailable("Set JBoss Data Source JNDI Name"));
-			new DefaultText(0).setText(modelPath[modelPath.length-1].replace(".xmi", ""));
+			new DefaultText(0).setText(modelName.replace(".xmi", ""));
 			new PushButton("OK").click();
 		} catch (Exception e) {}
+		new RelationalModelEditor(modelName).save();
 	}
 	
 	/**

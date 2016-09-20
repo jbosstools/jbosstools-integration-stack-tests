@@ -35,13 +35,13 @@
         	"teiid_rel:MATVIEW_BEFORE_LOAD_SCRIPT" 'execute Source.native(''INSERT INTO check_table(id,before_load) VALUES (''internal_short_ttl'',1) ON DUPLICATE KEY UPDATE before_load=before_load+1;'');',
              "teiid_rel:MATVIEW_AFTER_LOAD_SCRIPT" 'execute Source.native(''INSERT INTO check_table(id,after_load) VALUES (''internal_short_ttl'',1) ON DUPLICATE KEY UPDATE after_load=after_load+1;'')'
         	)
-              AS /*+ cache(ttl:100)*/SELECT c.id AS customer_id, CONVERT(SUM(o.amount),biginteger) AS total_amount FROM customers c INNER JOIN orders o ON c.id = o.customer_id GROUP BY c.id;
+              AS /*+ cache(ttl:100)*/SELECT c.id AS customer_id, CONVERT(SUM(o.amount),integer) AS total_amount FROM customers c INNER JOIN orders o ON c.id = o.customer_id GROUP BY c.id;
               
         CREATE VIEW internal_long_ttl (
            customer_id integer PRIMARY KEY,
            total_amount integer
         ) OPTIONS (MATERIALIZED 'TRUE', UPDATABLE 'FALSE')
-              AS /*+ cache(ttl:1000 updatable)*/SELECT c.id AS customer_id, CONVERT(SUM(o.amount),biginteger) AS total_amount FROM customers c INNER JOIN orders o ON c.id = o.customer_id GROUP BY c.id;
+              AS /*+ cache(ttl:1000 updatable)*/SELECT c.id AS customer_id, CONVERT(SUM(o.amount),integer) AS total_amount FROM customers c INNER JOIN orders o ON c.id = o.customer_id GROUP BY c.id;
 
         CREATE VIEW external_long_ttl (
            customer_id integer NOT NULL,
@@ -57,7 +57,7 @@
               "teiid_rel:MATVIEW_AFTER_LOAD_SCRIPT" 'exec Source.native(''ALTER TABLE mat_view_stage RENAME TO mat_view_temp'');exec Source.native(''ALTER TABLE mat_view RENAME TO mat_view_stage'');exec Source.native(''ALTER TABLE mat_view_temp RENAME TO mat_view'');exec Source.native(''MERGE INTO check_table(id,after_load) KEY(id) VALUES (''''external_long_ttl'''',COALESCE((SELECT after_load from check_table WHERE id=''''external_long_ttl''''),0)+1)'');',
               "teiid_rel:MATVIEW_ONERROR_ACTION" 'THROW_EXCEPTION',
          	  "teiid_rel:MATVIEW_TTL" 2000)
-              AS SELECT c.id AS customer_id, CONVERT(SUM(o.amount),biginteger) AS total_amount FROM customers c INNER JOIN orders o ON c.id = o.customer_id GROUP BY c.id;
+              AS SELECT c.id AS customer_id, CONVERT(SUM(o.amount),integer) AS total_amount FROM customers c INNER JOIN orders o ON c.id = o.customer_id GROUP BY c.id;
      ]]>
 		</metadata>
 	</model>
