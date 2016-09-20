@@ -83,14 +83,16 @@ public class DataRolesDialog extends AbstractDialog {
 			public Boolean run() {
 				int checkPixel = new DefaultTreeItem(path).getSWTWidget().getImage(column).getImageData().getPixel(4, 9);
 				switch (checkPixel) {
-				case 0x818181:  // PARTIAL
+				case 0x818181:  // PARTIAL - FEDORA
+				case 0x808080: // PARTIAL - MAC
+				case 0x818181e6: // PARTIAL - WIN
 				case 0x00:  // TRUE
 					return true;
 				case 0xdedddd: // UNAVAILABLE
 				case 0x8cbdef: // FALSE
 					return false;
 				default:
-					throw new RuntimeException("unknown check state (designer changed checkbox images?)");
+					throw new RuntimeException("unknown check state (designer changed checkbox images?) Color is: " + Integer.toHexString(checkPixel) );
 				}
 			}
 		});
@@ -122,7 +124,7 @@ public class DataRolesDialog extends AbstractDialog {
 					checked = false;
 					break;
 				default:
-					throw new RuntimeException("unknown check state (designer changed checkbox images?)");
+					throw new RuntimeException("unknown check state (designer changed checkbox images?) Color is: " + Integer.toHexString(checkPixel));
 				}
 				
 				Rectangle bounds = new DefaultTreeItem(path).getSWTWidget().getBounds(column);

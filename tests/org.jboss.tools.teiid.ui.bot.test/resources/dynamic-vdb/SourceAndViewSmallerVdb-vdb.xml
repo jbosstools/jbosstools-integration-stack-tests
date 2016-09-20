@@ -49,7 +49,6 @@ CREATE FOREIGN TABLE smalla (
 ) OPTIONS(NAMEINSOURCE '"public"."smalla"')
 
 CREATE FOREIGN TABLE smallx (
-	doublenum float OPTIONS(NAMEINSOURCE '"doublenum"', NATIVE_TYPE 'float4', FIXED_LENGTH 'TRUE'),
 	booleanvalue boolean OPTIONS(NAMEINSOURCE '"booleanvalue"', NATIVE_TYPE 'bool', FIXED_LENGTH 'TRUE'),
 	intnum integer OPTIONS(NAMEINSOURCE '"intnum"', NATIVE_TYPE 'int4', FIXED_LENGTH 'TRUE'),
 	longnum long OPTIONS(NAMEINSOURCE '"longnum"', NATIVE_TYPE 'int8', FIXED_LENGTH 'TRUE'),

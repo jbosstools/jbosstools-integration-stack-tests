@@ -1,12 +1,12 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.startsWith;
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.StringContains.containsString;
 import static org.hamcrest.text.IsEqualIgnoringWhiteSpace.equalToIgnoringWhiteSpace;
 
 import java.io.File;
@@ -135,7 +135,7 @@ public class DynamicVdbTest {
 				getXPath(dynamicVdbContent, "/vdb/model[@name='postgresql92Model']/@type"), is(""));
 		collector.checkThat("wrong source jndi name",
 				getXPath(dynamicVdbContent, "/vdb/model[@name='postgresql92Model']/source/@connection-jndi-name"),
-				is(BQT_MODEL_NAME));
+				is("java:/" + BQT_MODEL_NAME));
 		collector.checkThat("wrong source translator name",
 				getXPath(dynamicVdbContent, "/vdb/model[@name='postgresql92Model']/source/@translator-name"),
 				is("postgresql"));
@@ -285,7 +285,6 @@ public class DynamicVdbTest {
 		dre = vdbEditor.getDataRole("updaters");
 		dre.addRowFilter("booleanvalue=TRUE", true, viewModelNameXmi, "smalla");
 		dre.addRowFilter("stringnum='1'", false, viewModelNameXmi, "smallb");
-		new DefaultTable().getItem(VIEW_MODEL + ".smallb").click(1); // workaround for unrelated TEIIDDES-2706
 		dre.finish();
 
 		vdbEditor.save();
@@ -454,8 +453,7 @@ public class DynamicVdbTest {
 		createArchiveVdb(IMPORT_PROJECT_NAME, dynamicVdbName);
 
 		new ModelExplorer().openModelEditor(IMPORT_PROJECT_NAME, staticVdbName + ".vdb");
-		new DefaultCTabItem("Advanced").activate();
-		new DefaultCTabItem("User Defined Properties").activate();
+		new DefaultCTabItem("User Properties").activate();
 
 		String propValue = (String) collector.checkSucceeds(new Callable<Object>() {
 
@@ -567,7 +565,7 @@ public class DynamicVdbTest {
 				dre.getModelPermission(PermissionType.UPDATE, viewModelNameXmi), is(false));
 		// TODO: change the following to int once TEIIDDES-2737 is resolved
 		collector.checkThat("wrong permission for bqtViewModel.smalla.intnum",
-				dre.getModelPermission(PermissionType.READ, viewModelNameXmi, "smalla", "intnum : biginteger"),
+				dre.getModelPermission(PermissionType.READ, viewModelNameXmi, "smalla", "intnum : int"),
 				is(false));
 		collector.checkThat("wrong permission for bqtViewModel.smallb",
 				dre.getModelPermission(PermissionType.READ, viewModelNameXmi, "smallb"), is(false));
@@ -615,16 +613,16 @@ public class DynamicVdbTest {
 		collector.checkThat("wrong permission for bqtViewModel",
 				dre.getModelPermission(PermissionType.UPDATE, viewModelNameXmi), is(true));
 		collector.checkThat("wrong permission for bqtViewModel.smalla.intkey",
-				dre.getModelPermission(PermissionType.READ, viewModelNameXmi, "smalla", "intkey : biginteger"),
+				dre.getModelPermission(PermissionType.READ, viewModelNameXmi, "smalla", "intkey : int"),
 				is(true));
 		collector.checkThat("wrong permission for bqtViewModel.smallb.intkey",
-				dre.getModelPermission(PermissionType.READ, viewModelNameXmi, "smallb", "intkey : biginteger"),
+				dre.getModelPermission(PermissionType.READ, viewModelNameXmi, "smallb", "intkey : int"),
 				is(true));
 		collector.checkThat("wrong permission for bqtViewModel.smalla.intnum",
-				dre.getModelPermission(PermissionType.READ, viewModelNameXmi, "smalla", "intnum : biginteger"),
+				dre.getModelPermission(PermissionType.READ, viewModelNameXmi, "smalla", "intnum : int"),
 				is(false));
 		collector.checkThat("wrong permission for bqtViewModel.smallb.intnum",
-				dre.getModelPermission(PermissionType.READ, viewModelNameXmi, "smallb", "intnum : biginteger"),
+				dre.getModelPermission(PermissionType.READ, viewModelNameXmi, "smallb", "intnum : int"),
 				is(false));
 		collector.checkThat("wrong row filter condition for bqtViewModel.smalla",
 				dre.getRowFilterCondition("bqtViewModel.smalla"), is("booleanvalue=TRUE"));
@@ -823,7 +821,7 @@ public class DynamicVdbTest {
 				smallxRows.add(row);
 			}
 		}
-		collector.checkThat("wrong number of columns created in smallx", smallxRows.size(), is(16));
+		collector.checkThat("wrong number of columns created in smallx", smallxRows.size(), is(15));
 		
 		tableEditor.openTab(TableEditor.Tabs.BASE_TABLES);
 		collector.checkThat("smallb not removed",tableEditor.getRow("Name", "smallb"), nullValue());
@@ -936,8 +934,8 @@ public class DynamicVdbTest {
 	private void checkDeployOk(String fileName, String dynamicVdbName) {
 		new ModelExplorer().deployVdb(PROJECT_NAME, fileName + "-vdb.xml");
 		new ServersViewExt().refreshServer(teiidServer.getName());
-		String vdbStatusTooltip = new ServersViewExt().getVdbStatus(teiidServer.getName(), dynamicVdbName);
-		collector.checkThat("vdb is not active", vdbStatusTooltip, containsString("State:  ACTIVE"));
+		String status = new ServersViewExt().getVdbStatus(teiidServer.getName(), dynamicVdbName);
+		collector.checkThat("vdb is not active", status, containsString("ACTIVE"));
 	}
 
 	private void checkPreview(final String vdbName, final String query) {
