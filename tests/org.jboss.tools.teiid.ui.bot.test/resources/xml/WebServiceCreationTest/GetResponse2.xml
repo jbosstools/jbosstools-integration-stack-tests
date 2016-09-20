@@ -1,0 +1,23 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+	<soap:Body>
+		<ProductInfo_Output:ProductInfo_Output
+			xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xmlns:ProductInfo_Output="http://www.metamatrix.com/ProductInfo_Output">
+			<ProductInfo_Output_Instance>
+				<INSTR_ID>PRD01099</INSTR_ID>
+				<SYMBOL_TYPE>1</SYMBOL_TYPE>
+				<SYMBOL>HON</SYMBOL>
+				<CUSIP>438516106</CUSIP>
+				<NAME>Honeywell International</NAME>
+				<TYPE>Stock</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE>NYSE</EXCHANGE>
+				<ISDJI>true</ISDJI>
+				<ISSP500>true</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductInfo_Output_Instance>
+		</ProductInfo_Output:ProductInfo_Output>
+	</soap:Body>
+</soap:Envelope>

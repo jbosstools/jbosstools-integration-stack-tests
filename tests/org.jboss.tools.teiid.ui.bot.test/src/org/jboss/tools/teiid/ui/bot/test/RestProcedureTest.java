@@ -86,7 +86,7 @@ public class RestProcedureTest {
 		modelExplorer = new ModelExplorer();
 		fileHelper = new ResourceFileHelper();
 		modelExplorer.importProject(PROJECT_NAME);
-		modelExplorer.getProject(PROJECT_NAME).refresh();
+		modelExplorer.refreshProject(PROJECT_NAME);
 		modelExplorer.changeConnectionProfile(ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER, PROJECT_NAME, SOURCE_MODEL);
 		
 	}
@@ -108,7 +108,7 @@ public class RestProcedureTest {
 				.setTransformationSql(fileHelper.getSql("RestProcedureTest/getProcedureGet"))
 				.finish();
 		new RelationalModelEditor(VIEW_MODEL).save();
-		new ProblemsViewEx().checkErrors();
+		ProblemsViewEx.checkErrors();
 		
 		String vdb = "RestAutoWarVdb";
 		VdbWizard.openVdbWizard()
@@ -144,7 +144,7 @@ public class RestProcedureTest {
 				.setTransformationSql(fileHelper.getSql("RestProcedureTest/insertProcedure"))
 				.finish();
 		new RelationalModelEditor(VIEW_MODEL).save();
-		new ProblemsViewEx().checkErrors();
+		ProblemsViewEx.checkErrors();
 		
 		String vdb = "RestInsertVdb";
 		VdbWizard.openVdbWizard()
@@ -205,7 +205,7 @@ public class RestProcedureTest {
 				.setTransformationSql(fileHelper.getSql("RestProcedureTest/getProcedureGet"))
 				.finish();
 		new RelationalModelEditor(VIEW_MODEL).save();
-		new ProblemsViewEx().checkErrors();
+		ProblemsViewEx.checkErrors();
 		
 		String vdb = "RestGetPostVdb";
 		VdbWizard.openVdbWizard()
@@ -246,7 +246,7 @@ public class RestProcedureTest {
 				.selectTables("PARTS", "SUPPLIER")
 				.finish();
 		
-		new ProblemsViewEx().checkErrors();
+		ProblemsViewEx.checkErrors();
 		
 		checkGeneratedProcedures(targetModel, "RestSourceVdb");
 	}
@@ -258,7 +258,7 @@ public class RestProcedureTest {
 				.selectTables("PARTS", "SUPPLIER")
 				.finish();
 
-		new ProblemsViewEx().checkErrors();
+		ProblemsViewEx.checkErrors();
 			
 		checkGeneratedProcedures(VIEW_MODEL, "RestViewVdb");
 	}

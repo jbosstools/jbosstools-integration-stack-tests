@@ -53,7 +53,7 @@ public class XmlSchemalessTest {
 		new WorkbenchShell().maximize();
 		modelExplorer = new ModelExplorer();
 		modelExplorer.importProject(PROJECT_NAME);
-		modelExplorer.getProject(PROJECT_NAME).refresh();
+		modelExplorer.refreshProject(PROJECT_NAME);
 		modelExplorer.changeConnectionProfile(ConnectionProfileConstants.ORACLE_11G_BOOKS, PROJECT_NAME, "Books.xmi");
 		fileHelper = new ResourceFileHelper();
 		jdbcHelper = new TeiidJDBCHelper(teiidServer, VDB_NAME);
@@ -123,7 +123,7 @@ public class XmlSchemalessTest {
 		editor.save();
 		
 		// 3. Define the transformation
-		modelExplorer.getProject(PROJECT_NAME).refresh();
+		modelExplorer.refreshProject(PROJECT_NAME);
 		editor.activate();;
 		
 		editor.createMappingClass("bookListing","sequence");
@@ -137,7 +137,7 @@ public class XmlSchemalessTest {
 		AbstractWait.sleep(TimePeriod.SHORT);
 		editor.save();
 
-		new ProblemsViewEx().checkErrors();
+		ProblemsViewEx.checkErrors();
 		
 		// 4. Create a VDB and query
 		VdbWizard.openVdbWizard()
@@ -189,7 +189,7 @@ public class XmlSchemalessTest {
 		AbstractWait.sleep(TimePeriod.SHORT);
 		editor.save();
 
-		new ProblemsViewEx().checkErrors();
+		ProblemsViewEx.checkErrors();
  		
  		//6. Query the expanded model
  		VdbEditor.getInstance(VDB_NAME).synchronizeAll();

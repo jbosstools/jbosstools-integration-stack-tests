@@ -59,7 +59,7 @@ public class XmlRecursiveTest {
 		new WorkbenchShell().maximize();
 		modelExplorer = new ModelExplorer();
 		modelExplorer.importProject(PROJECT_NAME);
-		modelExplorer.getProject(PROJECT_NAME).refresh();
+		modelExplorer.refreshProject(PROJECT_NAME);
 		fileHelper = new ResourceFileHelper();
 		jdbcHelper = new TeiidJDBCHelper(teiidServer, VDB_NAME);
 		
@@ -142,7 +142,7 @@ public class XmlRecursiveTest {
 	
 		editor.save();
 
-		new ProblemsViewEx().checkErrors();
+		ProblemsViewEx.checkErrors();
 
 		// 3. Create new VDB and check document without recursion		
 		VdbWizard.openVdbWizard()

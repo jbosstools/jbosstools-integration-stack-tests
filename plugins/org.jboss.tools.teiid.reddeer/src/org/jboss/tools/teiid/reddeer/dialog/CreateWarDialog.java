@@ -28,6 +28,14 @@ public class CreateWarDialog extends AbstractDialog {
 		this.soap = soap;
 	}
 	
+	public static CreateWarDialog getSoapInstance(){
+		return new CreateWarDialog(true);
+	}
+	
+	public static CreateWarDialog getRestInstance(){
+		return new CreateWarDialog(false);
+	}
+		
 	@Override
 	public void finish() {
 		log.info("Finishing '" + title + "' Dialog");

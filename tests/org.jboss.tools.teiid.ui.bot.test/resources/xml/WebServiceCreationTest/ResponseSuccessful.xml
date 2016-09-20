@@ -1,10 +1,8 @@
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
 	<soap:Body>
-		<ProductsInfo:putResults xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-			xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:schema1="http://www.metamatrix.com/ProductsInfo"
-			xmlns:tns="http://teiid.org" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-			xmlns:ProductsInfo="http://www.metamatrix.com/ProductsInfo">
+		<ProductInfo:ResultOutput xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			xmlns:ProductInfo="http://teiid.org/ProductInfo">
 			<results>Operation Successful!</results>
-		</ProductsInfo:putResults>
+		</ProductInfo:ResultOutput>
 	</soap:Body>
 </soap:Envelope>

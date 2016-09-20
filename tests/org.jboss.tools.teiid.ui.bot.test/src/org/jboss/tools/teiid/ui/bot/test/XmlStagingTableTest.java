@@ -52,7 +52,7 @@ public class XmlStagingTableTest {
 		new WorkbenchShell().maximize();
 		modelExplorer = new ModelExplorer();
 		modelExplorer.importProject(PROJECT_NAME);
-		modelExplorer.getProject(PROJECT_NAME).refresh();
+		modelExplorer.refreshProject(PROJECT_NAME);
 		modelExplorer.changeConnectionProfile(ConnectionProfileConstants.ORACLE_11G_BOOKS, PROJECT_NAME, "sources", "Books.xmi");
 		jdbcHelper = new TeiidJDBCHelper(teiidServer, VDB_NAME);
 		fileHelper = new ResourceFileHelper();
@@ -95,7 +95,7 @@ public class XmlStagingTableTest {
 		AbstractWait.sleep(TimePeriod.SHORT);
 		editor.save();
 		
-		new ProblemsViewEx().checkErrors();
+		ProblemsViewEx.checkErrors();
 		
 		// 3. Model XML document with staging table
 		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.XML_DOCUMENT, PROJECT_NAME, "views", VIEW_MODEL);
@@ -131,7 +131,7 @@ public class XmlStagingTableTest {
 		AbstractWait.sleep(TimePeriod.SHORT);
 		editor.save();
 
-		new ProblemsViewEx().checkErrors();
+		ProblemsViewEx.checkErrors();
 
 		// 4.Create a VDB and deploy
 		VdbWizard.openVdbWizard()

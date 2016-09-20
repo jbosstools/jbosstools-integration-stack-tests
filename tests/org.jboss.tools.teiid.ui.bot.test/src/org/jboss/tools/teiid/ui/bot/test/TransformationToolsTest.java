@@ -57,7 +57,7 @@ public class TransformationToolsTest {
 	public void importProject() {
 		modelExplorer = new ModelExplorer();
 		modelExplorer.importProject(PROJECT_NAME);
-		modelExplorer.getProject(PROJECT_NAME).refresh();
+		modelExplorer.refreshProject(PROJECT_NAME);
 	}
 	
 	@After
@@ -91,7 +91,7 @@ public class TransformationToolsTest {
 			assertTrue(viewAttrs.contains(sourceAtt));
 		}
 		editor.returnToParentDiagram();
-		new ProblemsViewEx().checkErrors();
+		ProblemsViewEx.checkErrors();
 		
 		// paste transformation
 		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.TABLE, PROJECT_NAME, VIEW_MODEL);
@@ -205,7 +205,7 @@ public class TransformationToolsTest {
 		AssertBot.transformationContains(transformationEditor.getTransformation(), expanededSelect);
 		
 		editor.save();		
-		new ProblemsViewEx().checkErrors();
+		ProblemsViewEx.checkErrors();
 	}
 	
 	@Test
@@ -277,7 +277,7 @@ public class TransformationToolsTest {
 		AssertBot.transformationContains(transformationEditor.getTransformation(), expectedSql);
 		editor.save();
 		AbstractWait.sleep(TimePeriod.SHORT);
-		new ProblemsViewEx().checkErrors();		
+		ProblemsViewEx.checkErrors();		
 	}
 
 	@Test

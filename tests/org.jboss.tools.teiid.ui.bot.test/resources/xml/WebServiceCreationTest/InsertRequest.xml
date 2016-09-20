@@ -1,17 +1,17 @@
-<x:Envelope xmlns:x="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pro="http://www.metamatrix.com/ProductsInfo">
-    <x:Header/>
-    <x:Body>
-        <pro:ProductsInfo_New_Input>
-            <pro:ProductsInfo_New_Input_Instance>
-                <pro:INSTR_ID>XXX1234</pro:INSTR_ID>
-                <pro:SYMBOL_TYPE>1</pro:SYMBOL_TYPE>
-                <pro:SYMBOL>TTT</pro:SYMBOL>
-                <pro:NAME>Test Corp</pro:NAME>
-                <pro:ISDJI>0</pro:ISDJI>
-                <pro:ISSP500>0</pro:ISSP500>
-                <pro:ISNAS100>0</pro:ISNAS100>
-                <pro:ISAMEXINT>0</pro:ISAMEXINT>
-            </pro:ProductsInfo_New_Input_Instance>
-        </pro:ProductsInfo_New_Input>
-    </x:Body>
-</x:Envelope>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ProductInfo="http://teiid.org/ProductInfo">
+    <soap:Header/>
+    <soap:Body>
+        <ProductInfo:ProductInput>
+            <ProductInfo:ProductInput_Instance>
+                <ProductInfo:INSTR_ID>XXX1234</ProductInfo:INSTR_ID>
+                <ProductInfo:SYMBOL_TYPE>1</ProductInfo:SYMBOL_TYPE>
+                <ProductInfo:SYMBOL>TTT</ProductInfo:SYMBOL>
+                <ProductInfo:NAME>Test Corp</ProductInfo:NAME>
+                <ProductInfo:ISDJI>0</ProductInfo:ISDJI>
+                <ProductInfo:ISSP500>0</ProductInfo:ISSP500>
+                <ProductInfo:ISNAS100>0</ProductInfo:ISNAS100>
+                <ProductInfo:ISAMEXINT>0</ProductInfo:ISAMEXINT>
+            </ProductInfo:ProductInput_Instance>
+        </ProductInfo:ProductInput>
+    </soap:Body>
+</soap:Envelope>

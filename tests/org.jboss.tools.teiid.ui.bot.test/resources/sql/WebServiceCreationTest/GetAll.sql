@@ -1,4 +1,0 @@
-CREATE VIRTUAL PROCEDURE  
-BEGIN  
-    SELECT * FROM XmlModel.ProductDocument;  
-END  

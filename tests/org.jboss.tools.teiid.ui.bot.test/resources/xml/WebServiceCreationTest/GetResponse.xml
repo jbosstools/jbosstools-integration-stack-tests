@@ -1,11 +1,8 @@
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
 	<soap:Body>
-		<ProductsInfo:ProductsInfo_Output
-			xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-			xmlns:schema1="http://www.metamatrix.com/ProductsInfo" xmlns:tns="http://teiid.org"
-			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-			xmlns:ProductsInfo="http://www.metamatrix.com/ProductsInfo">
-			<ProductsInfo_Output_Instance>
+		<ProductInfo:ProductOutput xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			xmlns:ProductInfo="http://teiid.org/ProductInfo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<ProductOutput_Instance>
 				<INSTR_ID>XXX1234</INSTR_ID>
 				<SYMBOL_TYPE>1</SYMBOL_TYPE>
 				<SYMBOL>TTT</SYMBOL>
@@ -19,7 +16,7 @@
 				<ISNAS100>false</ISNAS100>
 				<ISAMEXINT>false</ISAMEXINT>
 				<PRIBUSINESS xsi:nil="true" />
-			</ProductsInfo_Output_Instance>
-		</ProductsInfo:ProductsInfo_Output>
+			</ProductOutput_Instance>
+		</ProductInfo:ProductOutput>
 	</soap:Body>
 </soap:Envelope>
