@@ -19,7 +19,7 @@ import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
 import org.kie.api.runtime.process.WorkItem;
 
-@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-AdHocSubProcess.bpmn2", saveAs = "BPMN2-AdHocSubProcess.bpmn2", knownIssues = "1263267")
+@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-AdHocSubProcess.bpmn2", saveAs = "BPMN2-AdHocSubProcess.bpmn2")
 public class ComplexAdHocSubprocessTest extends JBPM6ComplexTest {
 
 	@TestPhase(phase = Phase.MODEL)

@@ -19,8 +19,7 @@ import org.jboss.tools.bpmn2.ui.bot.test.jbpm.TriggeredNodesListener;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
 
-@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-UserTask.bpmn2", saveAs = "BPMN2-UserTask.bpmn2", knownIssues = {
-	"1175772" })
+@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-UserTask.bpmn2", saveAs = "BPMN2-UserTask.bpmn2")
 public class ComplexUserTaskTest extends JBPM6ComplexTest {
 
 	@TestPhase(phase = Phase.MODEL)
