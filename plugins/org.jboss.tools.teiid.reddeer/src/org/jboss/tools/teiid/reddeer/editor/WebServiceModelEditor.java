@@ -24,7 +24,7 @@ public class WebServiceModelEditor extends ModelEditor {
 		new DefaultStyledText().setText(text);
 		new DefaultToolItem("Save/Validate SQL").click();
 		AbstractWait.sleep(TimePeriod.SHORT);
-		new WorkbenchShell();
+		activate();
 	}
 	
 	/**
@@ -47,6 +47,21 @@ public class WebServiceModelEditor extends ModelEditor {
 		new DefaultStyledText().insertText(replacement);
 		new DefaultToolItem("Save/Validate SQL").click();
 		AbstractWait.sleep(TimePeriod.SHORT);
-		new WorkbenchShell();
+		activate();
+	}
+	
+	/**
+	 * Replaces all specified text in procedure of operation to specified value 
+	 * and validates it.
+	 */
+	public void replaceAllTextInOperationProcedure(String iinterface, String operation, String replacedText, String replacement){
+		new DefaultCTabItem("Operation Editor").activate();
+		new DefaultTreeItem(iinterface, operation).select();
+		String procedureText = new DefaultStyledText().getText();
+		procedureText = procedureText.replaceAll(replacedText, replacement);
+		new DefaultStyledText().setText(procedureText);
+		new DefaultToolItem("Save/Validate SQL").click();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		activate();
 	}
 }
