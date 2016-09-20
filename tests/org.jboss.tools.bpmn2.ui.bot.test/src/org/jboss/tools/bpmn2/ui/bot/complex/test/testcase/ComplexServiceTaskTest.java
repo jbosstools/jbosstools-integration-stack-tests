@@ -18,8 +18,7 @@ import org.jbpm.bpmn2.handler.ServiceTaskHandler;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.WorkflowProcessInstance;
 
-@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-ServiceTask.bpmn2", saveAs = "BPMN2-ServiceTask.bpmn2", knownIssues = {
-	"1309951", "1316040" })
+@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-ServiceTask.bpmn2", saveAs = "BPMN2-ServiceTask.bpmn2")
 public class ComplexServiceTaskTest extends JBPM6ComplexTest {
 
 	@TestPhase(phase = Phase.MODEL)
