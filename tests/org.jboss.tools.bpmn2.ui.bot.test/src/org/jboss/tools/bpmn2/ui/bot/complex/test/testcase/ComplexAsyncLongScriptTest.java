@@ -1,6 +1,7 @@
 package org.jboss.tools.bpmn2.ui.bot.complex.test.testcase;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.activities.ScriptTask;
@@ -35,7 +36,9 @@ public class ComplexAsyncLongScriptTest extends JBPM6ComplexTest {
 
 	@TestPhase(phase = Phase.VALIDATE)
 	public void validateScriptLength() {
-		assertEquals(longScript, longScriptTask.getScript());
+		String actualScript = longScriptTask.getScript();
+		assertEquals(255, actualScript.length());
+		assertNotEquals(longScript, actualScript);
 	}
 	
 	@TestPhase(phase = Phase.VALIDATE)
