@@ -18,6 +18,7 @@ import org.jboss.reddeer.jface.viewers.CellEditor;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.ccombo.DefaultCCombo;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
@@ -233,4 +234,146 @@ public class VdbEditor extends DefaultEditor {
 		vdb.click();
 		new PushButton("OK").click();
 	}
+	/**
+	 * 
+	 * @param pathToSchema must contain string with ".xsd"
+	 */
+	public void addSchema(String... pathToSchema ){		
+		new DefaultToolItem("Add model").click();
+		new DefaultShell("Add File(s) to VDB");		
+		new DefaultTreeItem(pathToSchema).select(); ;
+		new PushButton("OK").click();
+	}
+	
+	public void removeSchema(String schema) {
+		schema = (schema.contains(".xsd")) ? schema : schema + ".xsd";
+		new DefaultCTabItem("Schemas").activate();
+		new DefaultTable(0).getItem(schema).click();		
+		new DefaultToolItem("Remove selected schema(s)").click();
+		new PushButton("OK").click();
+	}
+
+	/**
+	 * 
+	 * @param pathToModel must contain string with ".jar"
+	 */
+	public void addUDFJar(String... pathToModel) {
+		new DefaultCTabItem("UDF Jars").activate();
+		new DefaultToolItem("Add UDF jar file").click();
+		new DefaultShell("Select UDF jar");
+		new RadioButton("Choose the UDF jar from the workspace.").click();
+		new PushButton("OK").click();
+		new DefaultShell("Choose UDF jar");
+		new DefaultTreeItem(pathToModel).select();
+		new PushButton("OK").click();
+	}
+	
+	public void removeUDFJar(String UDFname) {
+		UDFname = (UDFname.contains(".jar")) ? UDFname : UDFname + ".jar";
+		new DefaultCTabItem("UDF Jars").activate();
+		new DefaultTable(0).getItem(UDFname).click();		
+		new DefaultToolItem("Remove selected UDF jar file(s)").click();
+		new PushButton("OK").click();
+	}
+	/**
+	 * 
+	 * @param pathToFile must contain string with type of file
+	 */
+	public void addOtherFile(String... pathToFile) {
+		new DefaultCTabItem("Other Files").activate();	
+		new DefaultToolItem("Add file").click();
+		new RadioButton("Choose the File from the workspace.").click();
+		new PushButton("OK").click();
+		new DefaultShell("Choose File");
+		new DefaultTreeItem(pathToFile).select();
+		new PushButton("OK").click();
+	}
+
+	public void addProjectDescription(String string) {
+		new DefaultCTabItem("Description").activate();
+		new DefaultStyledText().setText(string);		
+	}
+
+	public void addModelDescription(String editorSourceModel, String string) {
+		editorSourceModel = (editorSourceModel.contains(".xmi")) ? editorSourceModel : editorSourceModel + ".xmi";
+		new DefaultCTabItem("Models").activate();
+		new DefaultTable(0).getItem(editorSourceModel).select();
+		new DefaultCTabItem("Description").activate();		
+		new DefaultStyledText().setText(string);
+	}
+
+	public void addDefaultMultiSource(String editorSourceModel) {
+		editorSourceModel = (editorSourceModel.contains(".xmi")) ? editorSourceModel : editorSourceModel + ".xmi";
+		new DefaultCTabItem("Models").activate();
+		new DefaultTable(0).getItem(editorSourceModel).select();
+		new DefaultCTabItem("Source Binding Definition").activate();
+		new CheckBox("Multi-source").click();
+		new PushButton("Add").click();
+	}
+
+	public void deleteMultiSourceModel(String editorSourceModel, String name) {
+		editorSourceModel = (editorSourceModel.contains(".xmi")) ? editorSourceModel : editorSourceModel + ".xmi";
+		new DefaultCTabItem("Models").activate();
+		new DefaultTable(0).getItem(editorSourceModel).select();
+		new DefaultCTabItem("Source Binding Definition").activate();
+		new DefaultTable(1).getItem(name).select();
+		new PushButton("Delete").click();
+	}
+
+	public void addModelProperty(String editorSourceModel, String propertyName, String propertyValue) {
+		editorSourceModel = (editorSourceModel.contains(".xmi")) ? editorSourceModel : editorSourceModel + ".xmi";
+		new DefaultCTabItem("Models").activate();
+		new DefaultTable(0).getItem(editorSourceModel).select();
+		new DefaultCTabItem("Properties").activate();	
+		new PushButton(new WithTooltipTextMatcher("Add New Property")).click();
+		new DefaultShell("Add New Property");
+		new LabeledText("Name:").setText(propertyName);
+		new LabeledText("Value:").setText(propertyValue);
+		new PushButton("OK").click();
+	}
+
+	public void deleteModelProperty(String editorSourceModel, String propertyName) {
+		editorSourceModel = (editorSourceModel.contains(".xmi")) ? editorSourceModel : editorSourceModel + ".xmi";
+		new DefaultCTabItem("Models").activate();
+		new DefaultTable(0).getItem(editorSourceModel).select();
+		new DefaultCTabItem("Properties").activate();
+		new DefaultTable(1).getItem(propertyName).select();		
+		new PushButton(new WithTooltipTextMatcher("Remove Property")).click();
+	}
+
+	public void editTranslatorOverride(String oldName, String newName) {
+		new DefaultCTabItem("Translator Overrides").activate();
+		new DefaultTable(0).getItem(oldName).select();
+		new PushButton(new WithTooltipTextMatcher("Edit the selected translator name")).click();
+		new LabeledText("Name:").setText(newName);
+		new PushButton("OK").click();
+	}
+
+	public void editTranslatorOverrideProperty(String translatorName, String oldName, String newName) {
+		new DefaultCTabItem("Translator Overrides").activate();
+		new DefaultTable(0).getItem(translatorName).select();
+		new DefaultTable(1).getItem(oldName).select();
+		new PushButton(new WithTooltipTextMatcher("Edit the selected custom property")).click();
+		new DefaultShell("Edit Property");
+		new LabeledText("Name:").setText(newName);
+		new PushButton("OK").click();
+	}
+
+	public void deleteTranslatorOverrideProperty(String translatorName, String propertyName) {
+		new DefaultCTabItem("Translator Overrides").activate();
+		new DefaultTable(0).getItem(translatorName).select();
+		new DefaultTable(1).getItem(propertyName).select();
+		new PushButton(new WithTooltipTextMatcher("Remove the selected custom property")).click();
+		
+	}
+
+	public void deleteTranslatorOverride(String translatorName) {
+		new DefaultCTabItem("Translator Overrides").activate();
+		new DefaultTable(0).getItem(translatorName).select();		
+		new PushButton(new WithTooltipTextMatcher("Remove the selected overridden translator (all default property values will be used)")).click();
+		new PushButton("OK").click();
+	}
+
+
+	
 }

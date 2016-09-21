@@ -62,6 +62,15 @@ public class ModelExplorer extends AbstractExplorer {
 		public static final String INPUT = "Input";
 		public static final String OUTPUT = "Output";
 		public static final String PROCEDURE = "Procedure...";
+		public static final String INDEX = "Index...";
+		public static final String COLUMN = "Column";
+		public static final String ACCESS_PATTERN = "Access Pattern";
+		public static final String PROCEDURE_RESULTSET = "Procedure ResultSet";
+		public static final String PROCEDURE_PARAMETER = "Procedure Parameter";
+		public static final String UNIQUE_CONSTRAINT = "Unique Constraint";
+		public static final String PRIMARY_KEY = "Primary Key";
+		public static final String FOREIGN_KEY = "Foreign Key";
+		
 	}
 	
 	public ModelExplorer() {
@@ -77,6 +86,7 @@ public class ModelExplorer extends AbstractExplorer {
 		selectItem(projectName);
 		new ContextMenu("Refresh").select();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		activate();
 	}
 	
 	/**
@@ -95,6 +105,11 @@ public class ModelExplorer extends AbstractExplorer {
 		new PushButton("OK").click();
 		try {
 			new WaitUntil(new ShellWithTextIsAvailable("Confirm Connection Profile Change"));
+			new PushButton("OK").click();
+		} catch (Exception e) {}
+		try {
+			new WaitUntil(new ShellWithTextIsAvailable("Set JBoss Data Source JNDI Name"));
+			new DefaultText(0).setText(modelPath[modelPath.length-1].replace(".xmi", ""));
 			new PushButton("OK").click();
 		} catch (Exception e) {}
 	}
