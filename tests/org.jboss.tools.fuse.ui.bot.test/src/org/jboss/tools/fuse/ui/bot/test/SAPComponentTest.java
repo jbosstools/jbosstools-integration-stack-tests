@@ -1,5 +1,6 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
+import static org.jboss.tools.fuse.reddeer.SupportedVersions.CAMEL_2_17_0_REDHAT_630187;
 import static org.jboss.tools.fuse.reddeer.component.SAPLabels.APPLICATION_RELEASE;
 import static org.jboss.tools.fuse.reddeer.component.SAPLabels.DESTINATION;
 import static org.jboss.tools.fuse.reddeer.component.SAPLabels.IDOC_TYPE;
@@ -10,10 +11,7 @@ import static org.jboss.tools.fuse.reddeer.component.SAPLabels.SERVER;
 import static org.jboss.tools.fuse.reddeer.component.SAPLabels.SYSTEM_RELEASE;
 import static org.junit.Assert.assertEquals;
 
-import java.io.File;
 import java.util.List;
-
-import javax.xml.transform.stream.StreamResult;
 
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
@@ -23,9 +21,7 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.tools.common.reddeer.XPathEvaluator;
 import org.jboss.tools.common.reddeer.view.ErrorLogView;
-import org.jboss.tools.fuse.reddeer.ProjectTemplate;
 import org.jboss.tools.fuse.reddeer.ProjectType;
 import org.jboss.tools.fuse.reddeer.component.AbstractURICamelComponent;
 import org.jboss.tools.fuse.reddeer.component.SAPIDocDestination;
@@ -45,11 +41,10 @@ import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.requirement.SAPRequirement.SAP;
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 /**
  * Tests for all SAP components in Camel editor.
@@ -60,9 +55,12 @@ import org.w3c.dom.NodeList;
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
 @RunWith(RedDeerSuite.class)
-public class SAPComponentTest extends DefaultTest {
+public class SAPComponentTest {
 
 	private static Logger log = Logger.getLogger(SAPComponentTest.class);
+
+	public static final String PROJECT_NAME = "sap-components";
+	public static final ProjectType PROJECT_TYPE = ProjectType.SPRING;
 
 	private CamelEditor editor;
 	private AbstractURICamelComponent component;
@@ -73,37 +71,8 @@ public class SAPComponentTest extends DefaultTest {
 	@BeforeClass
 	public static void setupResetCamelContext() throws Exception {
 		new WorkbenchShell();
-		ProjectFactory.newProject("camel-spring").template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();
+		ProjectFactory.newProject(PROJECT_NAME).version(CAMEL_2_17_0_REDHAT_630187).type(PROJECT_TYPE).create();
 		new ErrorLogView().deleteLog();
-
-		new ProjectExplorer().open();
-		new CamelProject("camel-spring").deleteCamelContext("camel-context.xml");
-		new CamelProject("camel-spring").createCamelContext("camel-context.xml");
-
-		File pomFile = new File(new CamelProject("camel-spring").getFile(), "pom.xml");
-		XPathEvaluator xpath = new XPathEvaluator(pomFile);
-
-		Node node = xpath.evaluateNode("/project/dependencies/dependency");
-		Node sapNode = node.cloneNode(true);
-		NodeList children = sapNode.getChildNodes();
-		for (int i = 0; i < children.getLength(); i++) {
-			Node child = children.item(i);
-			if (child.getNodeName().equals("groupId")) {
-				child.setTextContent("org.fusesource");
-			}
-			if (child.getNodeName().equals("artifactId")) {
-				child.setTextContent("camel-sap");
-			}
-			if (child.getNodeName().equals("version")) {
-				child.setTextContent("6.2.1.redhat-084");
-			}
-		}
-
-		Node dependencies = xpath.evaluateNode("/project/dependencies");
-		dependencies.appendChild(sapNode);
-
-		xpath.printDocument(new StreamResult(pomFile));
-		new CamelProject("camel-spring").update();
 	}
 
 	/**
@@ -115,23 +84,27 @@ public class SAPComponentTest extends DefaultTest {
 		new ProjectExplorer().deleteAllProjects();
 	}
 
+	@Before
+	public void openCamelCOntext() {
+		new ProjectExplorer().open();
+		new CamelProject(PROJECT_NAME).openCamelContext(PROJECT_TYPE.getCamelContext());
+		editor = new CamelEditor(PROJECT_TYPE.getCamelContext());
+	}
+
 	@After
 	public void removeComponent() {
-		editor = new CamelEditor("camel-context.xml");
+		editor = new CamelEditor(PROJECT_TYPE.getCamelContext());
 		new CamelComponentEditPart("sap").delete();
 		editor.save();
 	}
 
 	/**
 	 * <p>
-	 * Tries to create/delete SAP component (see the method name) in the Camel Editor.
+	 * Tries to create/delete SAP component (see the method name) in the Camel Editor (empty Fuse project).
 	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
-	 * <li>create a new project from 'Content Based Router' template</li>
-	 * <li>open Project Explorer view</li>
-	 * <li>delete camel-context.xml and create a new empty one</li>
-	 * <li>try to create a SAP component (see the method name) in Palette View</li>
+	 * <li>add a SAP component (see the method name) in Palette View</li>
 	 * <li>check if the component is present in Camel Editor</li>
 	 * <li>set all properties in Advanced tab</li>
 	 * <li>check the xml file for each property change</li>
@@ -145,37 +118,32 @@ public class SAPComponentTest extends DefaultTest {
 	@Test
 	public void testSAPIDocListServer() throws Exception {
 		component = new SAPIDocListServer();
-		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		log.info("Testing camel component '" + component.getPaletteEntry() + "'");
-		editor = new CamelEditor("camel-context.xml");
 		editor.addCamelComponent(component, "Route _route1");
 		editor.save();
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 
 		editor.setAdvancedProperty(component, APPLICATION_RELEASE, "appRel");
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, SERVER, "myServer");
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, IDOC_TYPE, "abc");
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, IDOC_TYPE_EXTENSION, "cba");
-		assertEquals("FUSETOOLS-1779", component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals("FUSETOOLS-1779", component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, SYSTEM_RELEASE, "sysRel");
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 
 		assertErrorLog();
 	}
 
 	/**
 	 * <p>
-	 * Tries to create/delete SAP component (see the method name) in the Camel Editor.
+	 * Tries to create/delete SAP component (see the method name) in the Camel Editor (empty Fuse project).
 	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
-	 * <li>create a new project from 'Content Based Router' template</li>
-	 * <li>open Project Explorer view</li>
-	 * <li>delete camel-context.xml and create a new empty one</li>
-	 * <li>try to create a SAP component (see the method name) in Palette View</li>
+	 * <li>add a SAP component (see the method name) in Palette View</li>
 	 * <li>check if the component is present in Camel Editor</li>
 	 * <li>set all properties in Advanced tab</li>
 	 * <li>check the xml file for each property change</li>
@@ -189,31 +157,26 @@ public class SAPComponentTest extends DefaultTest {
 	@Test
 	public void testSAPSRFCServer() throws Exception {
 		component = new SAPSRFCServer();
-		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		log.info("Testing camel component '" + component.getPaletteEntry() + "'");
-		editor = new CamelEditor("camel-context.xml");
 		editor.addCamelComponent(component, "Route _route1");
 		editor.save();
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 
 		editor.setAdvancedProperty(component, RFC, "XYZ");
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, SERVER, "myServer");
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 
 		assertErrorLog();
 	}
 
 	/**
 	 * <p>
-	 * Tries to create/delete SAP component (see the method name) in the Camel Editor.
+	 * Tries to create/delete SAP component (see the method name) in the Camel Editor (empty Fuse project).
 	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
-	 * <li>create a new project from 'Content Based Router' template</li>
-	 * <li>open Project Explorer view</li>
-	 * <li>delete camel-context.xml and create a new empty one</li>
-	 * <li>try to create a SAP component (see the method name) in Palette View</li>
+	 * <li>add a SAP component (see the method name) in Palette View</li>
 	 * <li>check if the component is present in Camel Editor</li>
 	 * <li>set all properties in Advanced tab</li>
 	 * <li>check the xml file for each property change</li>
@@ -227,31 +190,26 @@ public class SAPComponentTest extends DefaultTest {
 	@Test
 	public void testSAPTRFCServer() throws Exception {
 		component = new SAPTRFCServer();
-		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		log.info("Testing camel component '" + component.getPaletteEntry() + "'");
-		editor = new CamelEditor("camel-context.xml");
 		editor.addCamelComponent(component, "Route _route1");
 		editor.save();
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 
 		editor.setAdvancedProperty(component, RFC, "XYZ");
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, SERVER, "myServer");
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 
 		assertErrorLog();
 	}
 
 	/**
 	 * <p>
-	 * Tries to create/delete SAP component (see the method name) in the Camel Editor.
+	 * Tries to create/delete SAP component (see the method name) in the Camel Editor (empty Fuse project).
 	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
-	 * <li>create a new project from 'Content Based Router' template</li>
-	 * <li>open Project Explorer view</li>
-	 * <li>delete camel-context.xml and create a new empty one</li>
-	 * <li>try to create a SAP component (see the method name) in Palette View</li>
+	 * <li>add a SAP component (see the method name) in Palette View</li>
 	 * <li>check if the component is present in Camel Editor</li>
 	 * <li>set all properties in Advanced tab</li>
 	 * <li>check the xml file for each property change</li>
@@ -265,37 +223,32 @@ public class SAPComponentTest extends DefaultTest {
 	@Test
 	public void testSAPIDocDestination() throws Exception {
 		component = new SAPIDocDestination();
-		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		log.info("Testing camel component '" + component.getPaletteEntry() + "'");
-		editor = new CamelEditor("camel-context.xml");
 		editor.addCamelComponent(component, "Route _route1");
 		editor.save();
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 
 		editor.setAdvancedProperty(component, APPLICATION_RELEASE, "appRel");
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, DESTINATION, "myDestination");
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, IDOC_TYPE, "abc");
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, IDOC_TYPE_EXTENSION, "cba");
-		assertEquals("FUSETOOLS-1779", component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals("FUSETOOLS-1779", component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, SYSTEM_RELEASE, "sysRel");
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 
 		assertErrorLog();
 	}
 
 	/**
 	 * <p>
-	 * Tries to create/delete SAP component (see the method name) in the Camel Editor.
+	 * Tries to create/delete SAP component (see the method name) in the Camel Editor (empty Fuse project).
 	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
-	 * <li>create a new project from 'Content Based Router' template</li>
-	 * <li>open Project Explorer view</li>
-	 * <li>delete camel-context.xml and create a new empty one</li>
-	 * <li>try to create a SAP component (see the method name) in Palette View</li>
+	 * <li>add a SAP component (see the method name) in Palette View</li>
 	 * <li>check if the component is present in Camel Editor</li>
 	 * <li>set all properties in Advanced tab</li>
 	 * <li>check the xml file for each property change</li>
@@ -309,37 +262,32 @@ public class SAPComponentTest extends DefaultTest {
 	@Test
 	public void testSAPIDocListDestination() throws Exception {
 		component = new SAPIDocListDestination();
-		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		log.info("Testing camel component '" + component.getPaletteEntry() + "'");
-		editor = new CamelEditor("camel-context.xml");
 		editor.addCamelComponent(component, "Route _route1");
 		editor.save();
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 
 		editor.setAdvancedProperty(component, APPLICATION_RELEASE, "appRel");
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, DESTINATION, "myDestination");
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, IDOC_TYPE, "abc");
-		assertEquals("FUSETOOLS-1779", component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals("FUSETOOLS-1779", component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, IDOC_TYPE_EXTENSION, "cba");
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, SYSTEM_RELEASE, "sysRel");
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 
 		assertErrorLog();
 	}
 
 	/**
 	 * <p>
-	 * Tries to create/delete SAP component (see the method name) in the Camel Editor.
+	 * Tries to create/delete SAP component (see the method name) in the Camel Editor (empty Fuse project).
 	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
-	 * <li>create a new project from 'Content Based Router' template</li>
-	 * <li>open Project Explorer view</li>
-	 * <li>delete camel-context.xml and create a new empty one</li>
-	 * <li>try to create a SAP component (see the method name) in Palette View</li>
+	 * <li>add a SAP component (see the method name) in Palette View</li>
 	 * <li>check if the component is present in Camel Editor</li>
 	 * <li>set all properties in Advanced tab</li>
 	 * <li>check the xml file for each property change</li>
@@ -353,39 +301,34 @@ public class SAPComponentTest extends DefaultTest {
 	@Test
 	public void testSAPQIDocDestination() throws Exception {
 		component = new SAPQIDocDestination();
-		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		log.info("Testing camel component '" + component.getPaletteEntry() + "'");
-		editor = new CamelEditor("camel-context.xml");
 		editor.addCamelComponent(component, "Route _route1");
 		editor.save();
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 
 		editor.setAdvancedProperty(component, APPLICATION_RELEASE, "appRel");
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, DESTINATION, "myDestination");
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, IDOC_TYPE_EXTENSION, "cba");
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, IDOC_TYPE, "abc");
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, QUEUE, "myQueue");
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, SYSTEM_RELEASE, "sysRel");
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 
 		assertErrorLog();
 	}
 
 	/**
 	 * <p>
-	 * Tries to create/delete SAP component (see the method name) in the Camel Editor.
+	 * Tries to create/delete SAP component (see the method name) in the Camel Editor (empty Fuse project).
 	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
-	 * <li>create a new project from 'Content Based Router' template</li>
-	 * <li>open Project Explorer view</li>
-	 * <li>delete camel-context.xml and create a new empty one</li>
-	 * <li>try to create a SAP component (see the method name) in Palette View</li>
+	 * <li>add a SAP component (see the method name) in Palette View</li>
 	 * <li>check if the component is present in Camel Editor</li>
 	 * <li>set all properties in Advanced tab</li>
 	 * <li>check the xml file for each property change</li>
@@ -399,39 +342,34 @@ public class SAPComponentTest extends DefaultTest {
 	@Test
 	public void testSAPQIDocListDestination() throws Exception {
 		component = new SAPQIDocListDestination();
-		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		log.info("Testing camel component '" + component.getPaletteEntry() + "'");
-		editor = new CamelEditor("camel-context.xml");
 		editor.addCamelComponent(component, "Route _route1");
 		editor.save();
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 
 		editor.setAdvancedProperty(component, APPLICATION_RELEASE, "appRel");
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, DESTINATION, "myDestination");
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, IDOC_TYPE, "abc");
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, IDOC_TYPE_EXTENSION, "cba");
-		assertEquals("FUSETOOLS-1779", component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals("FUSETOOLS-1779", component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, QUEUE, "myQueue");
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, SYSTEM_RELEASE, "sysRel");
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 
 		assertErrorLog();
 	}
 
 	/**
 	 * <p>
-	 * Tries to create/delete SAP component (see the method name) in the Camel Editor.
+	 * Tries to create/delete SAP component (see the method name) in the Camel Editor (empty Fuse project).
 	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
-	 * <li>create a new project from 'Content Based Router' template</li>
-	 * <li>open Project Explorer view</li>
-	 * <li>delete camel-context.xml and create a new empty one</li>
-	 * <li>try to create a SAP component (see the method name) in Palette View</li>
+	 * <li>add a SAP component (see the method name) in Palette View</li>
 	 * <li>check if the component is present in Camel Editor</li>
 	 * <li>set all properties in Advanced tab</li>
 	 * <li>check the xml file for each property change</li>
@@ -445,33 +383,28 @@ public class SAPComponentTest extends DefaultTest {
 	@Test
 	public void testSAPQRFCDestination() throws Exception {
 		component = new SAPQRFCDestination();
-		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		log.info("Testing camel component '" + component.getPaletteEntry() + "'");
-		editor = new CamelEditor("camel-context.xml");
 		editor.addCamelComponent(component, "Route _route1");
 		editor.save();
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 
 		editor.setAdvancedProperty(component, QUEUE, "myQueue");
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, RFC, "XYZ");
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, DESTINATION, "myDestination");
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 
 		assertErrorLog();
 	}
 
 	/**
 	 * <p>
-	 * Tries to create/delete SAP component (see the method name) in the Camel Editor.
+	 * Tries to create/delete SAP component (see the method name) in the Camel Editor (empty Fuse project).
 	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
-	 * <li>create a new project from 'Content Based Router' template</li>
-	 * <li>open Project Explorer view</li>
-	 * <li>delete camel-context.xml and create a new empty one</li>
-	 * <li>try to create a SAP component (see the method name) in Palette View</li>
+	 * <li>add a SAP component (see the method name) in Palette View</li>
 	 * <li>check if the component is present in Camel Editor</li>
 	 * <li>set all properties in Advanced tab</li>
 	 * <li>check the xml file for each property change</li>
@@ -485,31 +418,26 @@ public class SAPComponentTest extends DefaultTest {
 	@Test
 	public void testSAPSRFCDestination() throws Exception {
 		component = new SAPSRFCDestination();
-		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		log.info("Testing camel component '" + component.getPaletteEntry() + "'");
-		editor = new CamelEditor("camel-context.xml");
 		editor.addCamelComponent(component, "Route _route1");
 		editor.save();
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 
 		editor.setAdvancedProperty(component, RFC, "XYZ");
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, DESTINATION, "myDestination");
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 
 		assertErrorLog();
 	}
 
 	/**
 	 * <p>
-	 * Tries to create/delete SAP component (see the method name) in the Camel Editor.
+	 * Tries to create/delete SAP component (see the method name) in the Camel Editor (empty Fuse project).
 	 * </p>
 	 * <b>Steps:</b>
 	 * <ol>
-	 * <li>create a new project from 'Content Based Router' template</li>
-	 * <li>open Project Explorer view</li>
-	 * <li>delete camel-context.xml and create a new empty one</li>
-	 * <li>try to create a SAP component (see the method name) in Palette View</li>
+	 * <li>add a SAP component (see the method name) in Palette View</li>
 	 * <li>check if the component is present in Camel Editor</li>
 	 * <li>set all properties in Advanced tab</li>
 	 * <li>check the xml file for each property change</li>
@@ -523,17 +451,15 @@ public class SAPComponentTest extends DefaultTest {
 	@Test
 	public void testSAPTRFCDestination() throws Exception {
 		component = new SAPTRFCDestination();
-		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		log.info("Testing camel component '" + component.getPaletteEntry() + "'");
-		editor = new CamelEditor("camel-context.xml");
 		editor.addCamelComponent(component, "Route _route1");
 		editor.save();
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 
 		editor.setAdvancedProperty(component, RFC, "XYZ");
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, DESTINATION, "myDestination");
-		assertEquals(component.getUri(), editor.xpath("//route/to/@uri"));
+		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 
 		assertErrorLog();
 	}
