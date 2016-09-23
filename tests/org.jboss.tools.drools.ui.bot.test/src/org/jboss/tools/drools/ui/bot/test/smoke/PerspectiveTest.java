@@ -19,12 +19,6 @@ public class PerspectiveTest extends TestParent {
 		openAndCheckPerspective(new DroolsPerspective(), droolsPerspectiveName);
 	}
 
-	@Test
-	public void openJbpmPerspectiveTest() {
-		final String jbpmPerspectiveName = "jBPM";
-		openAndCheckPerspective(new JbpmPerspective(), jbpmPerspectiveName);
-	}
-	
 	private void openAndCheckPerspective(AbstractPerspective perspective, String perspectiveName) {
 		perspective.open();
 		String mainWindowTitle = new DefaultShell().getText();
