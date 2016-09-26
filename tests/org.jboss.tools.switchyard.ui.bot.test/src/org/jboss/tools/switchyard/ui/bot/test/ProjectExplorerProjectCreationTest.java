@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -267,17 +268,7 @@ public class ProjectExplorerProjectCreationTest {
 		assertEquals(switchyardRequirement.getLibraryVersionLabel(),
 				xpath.evaluateString("/project/properties/switchyard.version|/project/properties/integration.version"));
 
-		ProblemsView problemsView = new ProblemsView();
-		problemsView.open();
-		List<Problem> errors = problemsView.getProblems(ProblemType.ERROR);
-		if (!errors.isEmpty()) {
-			StringBuffer msg = new StringBuffer("The following errors occured during creating SY project:");
-			msg.append(System.getProperty("line.separator"));
-			for (Problem error : errors) {
-				msg.append(error.getDescription()).append(System.getProperty("line.separator"));
-			}
-			fail(msg.toString());
-		}
+		assertErrorLog("creating a SY project");
 	}
 
 	@Test
@@ -396,6 +387,33 @@ public class ProjectExplorerProjectCreationTest {
 			assertTrue(condition);
 		} catch (Throwable t) {
 			throw new KnownIssue(issue, t);
+		}
+	}
+
+	private static void assertErrorLog(String actionMsg) {
+		ProblemsView problemsView = new ProblemsView();
+		problemsView.open();
+		List<Problem> errors = problemsView.getProblems(ProblemType.ERROR);
+		List<String> errorMsgs = new ArrayList<>();
+		boolean isKnownIssue = false;
+		for (Problem error : errors) {
+			String errorMsg = error.getDescription();
+			if (errorMsg.startsWith("Referenced file contains error")) {
+				isKnownIssue = true;
+			}
+			errorMsgs.add(error.getDescription());
+		}
+		if (!errorMsgs.isEmpty()) {
+			StringBuffer msg = new StringBuffer("The following errors occured in Error log after " + actionMsg);
+			msg.append(System.getProperty("line.separator"));
+			for (String errorMsg : errorMsgs) {
+				msg.append(errorMsg).append(System.getProperty("line.separator"));
+			}
+			if (isKnownIssue) {
+				throw new KnownIssue("SWITCHYARD-2882", new AssertionError(msg.toString()));
+			} else {
+				throw new AssertionError(msg.toString());
+			}
 		}
 	}
 
