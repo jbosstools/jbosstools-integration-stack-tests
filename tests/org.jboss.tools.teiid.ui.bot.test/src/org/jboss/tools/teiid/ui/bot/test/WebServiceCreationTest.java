@@ -1,12 +1,8 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
 
-import java.io.File;
 import java.io.IOException;
-import java.sql.SQLException;
 
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
@@ -14,23 +10,12 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.tools.runtime.reddeer.preference.JBossRuntimeDetection;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
 import org.jboss.tools.teiid.reddeer.connection.SimpleHttpClient;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.dialog.CreateWarDialog;
-import org.jboss.tools.teiid.reddeer.dialog.XmlDocumentBuilderDialog;
-import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
-import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
-import org.jboss.tools.teiid.reddeer.editor.TableEditor;
 import org.jboss.tools.teiid.reddeer.editor.TransformationEditor;
-import org.jboss.tools.teiid.reddeer.editor.VdbEditor;
 import org.jboss.tools.teiid.reddeer.editor.WebServiceModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.XmlModelEditor;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
@@ -38,12 +23,10 @@ import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ProblemsViewEx;
-import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.newWizard.MetadataModelWizard;
 import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -75,18 +58,11 @@ public class WebServiceCreationTest {
 	private static TeiidServerRequirement teiidServer;
 	
 	private ModelExplorer modelExplorer;
-	private static ResourceFileHelper fileHelper;
-	
-	@BeforeClass
-	public static void setUp() throws Exception {
-		fileHelper = new ResourceFileHelper();
-		fileHelper.copyFileToServer(new File("resources/flat/WsCreationTest/application-roles.properties").getAbsolutePath(), 
-				teiidServer.getServerConfig().getServerBase().getHome() + "/standalone/configuration/application-roles.properties");
-		new ServersViewExt().restartServer(teiidServer.getName());
-	}
+	private ResourceFileHelper fileHelper;
 	
 	@Before
 	public void importProject(){
+		fileHelper = new ResourceFileHelper();
 		modelExplorer = new ModelExplorer();
 		modelExplorer.importProject(PROJECT_NAME);
 		modelExplorer.refreshProject(PROJECT_NAME);;

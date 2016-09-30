@@ -67,16 +67,6 @@ public class DataRolesTest {
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;
 	
-	@BeforeClass
-	public static void setUp() throws Exception {
-		ResourceFileHelper fileHelper = new ResourceFileHelper();
-		fileHelper.copyFileToServer(new File("resources/flat/DataRolesTest/application-roles.properties").getAbsolutePath(), 
-				teiidServer.getServerConfig().getServerBase().getHome() + "/standalone/configuration/application-roles.properties");
-		fileHelper.copyFileToServer(new File("resources/flat/DataRolesTest/application-users.properties").getAbsolutePath(), 
-				teiidServer.getServerConfig().getServerBase().getHome() + "/standalone/configuration/application-users.properties");
-		new ServersViewExt().refreshServer(teiidServer.getName());
-	}
-	
 	@Before
 	public void importProject(){
 		ModelExplorer modelExplorer = new ModelExplorer();
@@ -203,7 +193,7 @@ public class DataRolesTest {
 		String query = "SELECT * FROM Products_view.PRODUCTDATA";
 		TeiidJDBCHelper jdbcHelper = new TeiidJDBCHelper(teiidServer, VDB_NAME);
 		
-		jdbcHelper.setUser("reader", "mm");
+		jdbcHelper.setUser("reader", "dvdvdv0!");
 		ResultSet readerRs = jdbcHelper.executeQueryWithResultSet(query);
 		while (readerRs.next()){
 			if (!readerRs.getString("INSTR_ID").equals("SECRET")){
@@ -211,7 +201,7 @@ public class DataRolesTest {
 			}
 		}
 		
-		jdbcHelper.setUser("updater", "mm");
+		jdbcHelper.setUser("updater", "dvdvdv0!");
 		ResultSet updaterRs = jdbcHelper.executeQueryWithResultSet(query);
 		while (updaterRs.next()){
 			if (!updaterRs.getString("ISAMEXINT").equals("1")){
@@ -297,7 +287,7 @@ public class DataRolesTest {
 	}
 	
 	private void executeQueriesForUser(String vdbName, String model, String username, boolean[] expectedResult){
-		TeiidJDBCHelper jdbcHelper = new TeiidJDBCHelper(teiidServer, vdbName, username, "mm");
+		TeiidJDBCHelper jdbcHelper = new TeiidJDBCHelper(teiidServer, vdbName, username, "dvdvdv0!");
 
 		assertTrue("READ query " + ((expectedResult[0]) ? "failed" : "succed") + " for user " + username,
 				expectedResult[0] == jdbcHelper.isQuerySuccessful("SELECT * FROM " + model +".PRODUCTDATA", true));

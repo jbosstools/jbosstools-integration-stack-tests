@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -31,12 +30,10 @@ import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ProblemsViewEx;
-import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.newWizard.NewProcedureWizard;
 import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -72,23 +69,14 @@ public class RestProcedureTest {
 
 	private ModelExplorer modelExplorer;
 	private ResourceFileHelper fileHelper;
-
-	@BeforeClass
-	public static void importRoles() throws IOException{
-		new ResourceFileHelper().copyFileToServer(
-				new File("resources/flat/RestProcedureTest/application-roles.properties").getAbsolutePath(), 
-				teiidServer.getServerConfig().getServerBase().getHome() + "/standalone/configuration/application-roles.properties");
-		new ServersViewExt().restartServer(teiidServer.getName());
-	}
 	
 	@Before
 	public void importProject() {
-		modelExplorer = new ModelExplorer();
 		fileHelper = new ResourceFileHelper();
+		modelExplorer = new ModelExplorer();
 		modelExplorer.importProject(PROJECT_NAME);
 		modelExplorer.refreshProject(PROJECT_NAME);
-		modelExplorer.changeConnectionProfile(ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER, PROJECT_NAME, SOURCE_MODEL);
-		
+		modelExplorer.changeConnectionProfile(ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER, PROJECT_NAME, SOURCE_MODEL);		
 	}
 
 	@After
