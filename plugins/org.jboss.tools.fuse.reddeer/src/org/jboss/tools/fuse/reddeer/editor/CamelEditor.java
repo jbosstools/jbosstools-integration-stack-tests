@@ -199,8 +199,9 @@ public class CamelEditor extends GEFEditor {
 	public void deleteCamelComponent(String component) {
 
 		log.debug("Removing '" + component + "' component from the Camel Editor");
-		new CamelComponentEditPart(component).select();
-		new ContextMenu("Remove").select();
+		CamelComponentEditPart c = new CamelComponentEditPart(component);
+		c.select();
+		c.delete();
 	}
 
 	/**

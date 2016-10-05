@@ -120,7 +120,7 @@ public class ProjectFactory {
 	 * @param fuse
 	 *            true - if the imported project is Fuse project
 	 */
-	public static void importExistingProject(String path, String name, boolean maven, boolean fuse) {
+	public static void importExistingProject(String path, String name, boolean maven) {
 
 		ExternalProjectImportWizardDialog dialog = new ExternalProjectImportWizardDialog();
 		dialog.open();
@@ -128,7 +128,7 @@ public class ProjectFactory {
 		page.copyProjectsIntoWorkspace(true);
 		page.setRootDirectory(path);
 		page.selectProjects(name);
-		dialog.finish();
+		dialog.finish(TimePeriod.VERY_LONG);
 
 		if (maven) {
 			new ProjectExplorer().selectProjects(name);
