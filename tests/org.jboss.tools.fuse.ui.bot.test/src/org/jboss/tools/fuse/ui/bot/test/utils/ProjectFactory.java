@@ -128,7 +128,7 @@ public class ProjectFactory {
 		page.copyProjectsIntoWorkspace(true);
 		page.setRootDirectory(path);
 		page.selectProjects(name);
-		dialog.finish();
+		dialog.finish(TimePeriod.VERY_LONG);
 
 		if (maven) {
 			new ProjectExplorer().selectProjects(name);

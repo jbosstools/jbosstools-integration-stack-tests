@@ -2,7 +2,9 @@ package org.jboss.tools.fuse.reddeer.wizard;
 
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
@@ -84,6 +86,15 @@ public class NewFuseTransformationWizard extends WizardDialog {
 		new PushButton("OK").click();
 		new WaitUntil(new ShellWithTextIsActive("New Fuse Transformation"));
 	}
+
+	@Override
+	public void finish() {
+		super.finish();
+		if (new ShellWithTextIsAvailable("New Fuse Transformation").test()) {
+			new WaitWhile(new ShellWithTextIsAvailable("New Fuse Transformation"), TimePeriod.LONG);
+		}
+	}
+
 
 	public static enum TransformationType {
 		Java, XML, JSON, Other
