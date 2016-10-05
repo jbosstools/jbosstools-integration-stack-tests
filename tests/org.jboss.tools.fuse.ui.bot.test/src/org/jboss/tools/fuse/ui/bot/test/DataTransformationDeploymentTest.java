@@ -65,7 +65,7 @@ public class DataTransformationDeploymentTest extends DefaultTest {
 	 * <b>Steps</b>
 	 * <ol>
 	 * <li>start JBoss Fuse</li>
-	 * <li>import 'XML-to-JSON' project from 'resources/projects/XML-to-JSON'</li>
+	 * <li>import 'trans217' project from 'resources/projects/trans217'</li>
 	 * <li>enable Fuse Camel Nature on the project (has to be done to ensure that project can be deployed to JBoss Fuse
 	 * Runtime)</li>
 	 * <li>deploy the project</li>
@@ -79,18 +79,16 @@ public class DataTransformationDeploymentTest extends DefaultTest {
 	public void testDeployment() {
 
 		ProjectFactory.importExistingProject(
-				ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID, "resources/projects/XML-to-JSON"),
-				"XML-to-JSON", true);
-		CamelProject project = new CamelProject("XML-to-JSON");
-		project.close();
-		project.open();
-		project.enableCamelNature();
-		FuseServerManipulator.addModule(serverRequirement.getConfig().getName(), "XML-to-JSON");
+				ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID, "resources/projects/trans217"),
+				"trans217", false);
+		CamelProject project = new CamelProject("trans217");
+		project.update();
+		FuseServerManipulator.addModule(serverRequirement.getConfig().getName(), "trans217");
 
 		// invoke the route with copying a file
 		String from = ResourceHelper.getResourceAbsolutePath(Activator.PLUGIN_ID,
-				"resources/projects/XML-to-JSON/src/main/resources/data/abc-order.xml");
-		String to = serverRequirement.getConfig().getServerBase().getHome() + "/src/main/resources/data/abc-order.xml";
+				"resources/projects/trans217/src/main/data/abc-order.xml");
+		String to = serverRequirement.getConfig().getServerBase().getHome() + "/src/main/data/abc-order.xml";
 		try {
 			Files.copy(new File(from).toPath(), new File(to).toPath(), REPLACE_EXISTING);
 		} catch (IOException e) {
