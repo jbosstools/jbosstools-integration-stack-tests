@@ -17,8 +17,8 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
-public class ProcedureViewDialog extends AbstractDialog {
-	private static final Logger log = Logger.getLogger(ProcedureViewDialog.class);
+public class ProcedureDialog extends AbstractDialog {
+	private static final Logger log = Logger.getLogger(ProcedureDialog.class);
 
 	public static class RestMethod{
 		public static final String GET = "GET";
@@ -27,8 +27,8 @@ public class ProcedureViewDialog extends AbstractDialog {
 		public static final String PUT = "PUT";
 	}
 	
-	public ProcedureViewDialog() {
-		super("Create Relational View Procedure");
+	public ProcedureDialog(boolean viewProcedure) {		
+		super(viewProcedure ? "Create Relational View Procedure" : "Create Relational Procedure");
 	}
 
 	@Override
@@ -38,19 +38,19 @@ public class ProcedureViewDialog extends AbstractDialog {
 		new WaitWhile(new ShellWithTextIsActive(title), TimePeriod.NORMAL);
 	}
 	
-	public ProcedureViewDialog setName(String name){
+	public ProcedureDialog setName(String name){
 		log.info("Setting procedure's name to " + name);
 		new LabeledText("Name").setText(name);
 		return this;
 	}
 	
-	public ProcedureViewDialog setNameInSource(String name){
+	public ProcedureDialog setNameInSource(String name){
 		log.info("Setting procedure's name in source to " + name);
 		new LabeledText("Name In Source").setText(name);
 		return this;
 	}
 	
-	public ProcedureViewDialog toggleRest(boolean flag){
+	public ProcedureDialog toggleRest(boolean flag){
 		log.info((flag) ? "Setting REST to enabled" : "Setting REST to disabled");
 		new DefaultTabItem("Properties").activate();
 		new CheckBox("Enable REST for this procedure").toggle(flag);
@@ -61,7 +61,7 @@ public class ProcedureViewDialog extends AbstractDialog {
 	 * Sets REST method of this procedure.
 	 * @param method ViewProcedureDialog.RestMethod.*;
 	 */
-	public ProcedureViewDialog setRestMethod(String method){
+	public ProcedureDialog setRestMethod(String method){
 		log.info("Setting REST method to " + method);
 		new DefaultTabItem("Properties").activate();
 		new LabeledCombo("REST Method").setSelection(method);
@@ -71,14 +71,14 @@ public class ProcedureViewDialog extends AbstractDialog {
 	/**
 	 * Sets REST URI of this procedure.
 	 */
-	public ProcedureViewDialog setRestUri(String uri){
+	public ProcedureDialog setRestUri(String uri){
 		log.info("Setting REST URI to " + uri);
 		new DefaultTabItem("Properties").activate();
 		new LabeledText("URI").setText(uri);
 		return this;
 	}
 	
-	public ProcedureViewDialog addParameter(String name, String dataType, String length, String direction){
+	public ProcedureDialog addParameter(String name, String dataType, String length, String direction){
 		log.info("Adding parameter " + name + " " + dataType + " " + length + " " + direction);
 		new DefaultTabItem("Parameters").activate();
 		new PushButton("Add").click();
@@ -97,28 +97,35 @@ public class ProcedureViewDialog extends AbstractDialog {
 		return this;
 	}
 	
-	public ProcedureViewDialog setTransformationSql(String sql){
+	public ProcedureDialog deleteParameter(String name){
+		new DefaultTabItem("Parameters").activate();
+		new DefaultTable(0).getItem(name).select();
+		new PushButton("Delete").click();
+		return this;
+	}
+	
+	public ProcedureDialog setTransformationSql(String sql){
 		log.info("Setting transformation SQL to " + sql);
 		new DefaultTabItem("Transformation SQL").activate();
 		new DefaultStyledText(new DefaultGroup("SQL Definition")).setText(sql);
 		return this;
 	}
 	
-	public ProcedureViewDialog toggleResultSet(boolean flag){
+	public ProcedureDialog toggleResultSet(boolean flag){
 		log.info((flag) ? "Setting Result Set as included" : "Setting Result Set as excluded");
 		new DefaultTabItem("Result Set").activate();
 		new CheckBox("Include").toggle(flag);
 		return this;
 	}
 	
-	public ProcedureViewDialog setResultSetName(String resultSetName){
+	public ProcedureDialog setResultSetName(String resultSetName){
 		log.info("Setting Result Set name to " + resultSetName);
 		new DefaultTabItem("Result Set").activate();
 		new DefaultText(3).setText(resultSetName);
 		return this;
 	}
 	
-	public ProcedureViewDialog addResultSetColumn(String name, String dataType, String length){
+	public ProcedureDialog addResultSetColumn(String name, String dataType, String length){
 		log.info("Adding column " + name + " " + dataType + " " + length + " to Result Set");
 		new DefaultTabItem("Result Set").activate();
 		new PushButton("Add").click();
@@ -135,5 +142,23 @@ public class ProcedureViewDialog extends AbstractDialog {
 		this.activate();
 		return this;
 	}
+	
+	public ProcedureDialog setDescription(String text){
+		log.info("Setting description ");
+		new DefaultTabItem("Description").activate();
+		new DefaultStyledText().setText(text);
+		return this;
+	}
+	
+	public ProcedureDialog setPropertyTab(String updateCount, boolean nonPrepared){
+		log.info("Setting property tab ");
+		new DefaultTabItem("Properties").activate();
+		new LabeledCombo("Update Count").setSelection(updateCount);
+		if(nonPrepared){
+			new CheckBox("Non-Prepared").click();
+		}
+		return this;
+	}
+	
 	
 }

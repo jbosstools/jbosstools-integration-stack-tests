@@ -21,7 +21,7 @@ import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
 import org.jboss.tools.teiid.reddeer.connection.SimpleHttpClient;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.dialog.GenerateRestProcedureDialog;
-import org.jboss.tools.teiid.reddeer.dialog.ProcedureViewDialog;
+import org.jboss.tools.teiid.reddeer.dialog.ProcedureDialog;
 import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.TableEditor;
 import org.jboss.tools.teiid.reddeer.editor.VdbEditor;
@@ -90,7 +90,7 @@ public class RestProcedureTest {
 		NewProcedureWizard.createViewProcedure()
 				.setName("GetPartGet")
 				.toggleRest(true)
-				.setRestMethod(ProcedureViewDialog.RestMethod.GET)
+				.setRestMethod(ProcedureDialog.RestMethod.GET)
 				.setRestUri("part/{id}")
 				.addParameter("id", "string", "4", "IN")
 				.setTransformationSql(fileHelper.getSql("RestProcedureTest/getProcedureGet"))
@@ -123,7 +123,7 @@ public class RestProcedureTest {
 		NewProcedureWizard.createViewProcedure()
 				.setName("AddPart")
 				.toggleRest(true)
-				.setRestMethod(ProcedureViewDialog.RestMethod.POST)
+				.setRestMethod(ProcedureDialog.RestMethod.POST)
 				.setRestUri("part/")
 				.addParameter("id", "string", "4", "IN")
 				.addParameter("name", "string", "255", "IN")
@@ -178,7 +178,7 @@ public class RestProcedureTest {
 		NewProcedureWizard.createViewProcedure()
 				.setName("GetPartPost")
 				.toggleRest(true)
-				.setRestMethod(ProcedureViewDialog.RestMethod.POST)
+				.setRestMethod(ProcedureDialog.RestMethod.POST)
 				.setRestUri("part/{id}")
 				.addParameter("id", "string", "4", "IN")
 				.setTransformationSql(fileHelper.getSql("RestProcedureTest/getProcedurePost"))
@@ -187,7 +187,7 @@ public class RestProcedureTest {
 		NewProcedureWizard.createViewProcedure()
 				.setName("GetPartGet")
 				.toggleRest(true)
-				.setRestMethod(ProcedureViewDialog.RestMethod.GET)
+				.setRestMethod(ProcedureDialog.RestMethod.GET)
 				.setRestUri("part/{id}")
 				.addParameter("id", "string", "4", "IN")
 				.setTransformationSql(fileHelper.getSql("RestProcedureTest/getProcedureGet"))

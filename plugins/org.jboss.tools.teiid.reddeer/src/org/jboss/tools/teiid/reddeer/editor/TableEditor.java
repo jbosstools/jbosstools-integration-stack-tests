@@ -43,7 +43,9 @@ public class TableEditor extends DefaultEditor {
 		public static final String XML_SEQUENCES = "Xml Sequences";
 		public static final String PROCEDURES = "Procedures";
 		public static final String PROCEDURE_PARAMETERS = "Procedure Parameters";
+		public static final String PROCEDURE_RESULTS = "Procedure Results";
 		public static final String UNIQUE_CONSTRAINTS = "Unique Constraints";
+		public static final String ACCESS_PATTERNS = "Access Patterns";
 	}
 	
 	public TableEditor(String name){
@@ -54,6 +56,11 @@ public class TableEditor extends DefaultEditor {
 	
 	public void close() {
 		new DefaultCTabItem(new DefaultCTabItem(0).getText()).activate();
+	}
+	
+	public void activate() {
+		super.activate();
+		new DefaultCTabItem(TABLE_EDITOR).activate();
 	}
 	
 	/**
@@ -207,6 +214,15 @@ public class TableEditor extends DefaultEditor {
 	 */
 	public String getCellText(int iCellIndex, String iCellText, String columnName){
 		return getCellText(iCellIndex, iCellText, new DefaultTable().getHeaderIndex(columnName));
+	}
+	
+	public void setDatatype(String tabName, int rowIndex, int columnIndex, String datatype){
+		new DefaultTabItem(tabName).activate();
+		new DefaultTable(0).getItem(rowIndex).doubleClick(columnIndex);
+		new PushButton((new CellEditor(new DefaultTable().getItem(rowIndex), columnIndex))).click();
+		new DefaultShell("Select a Datatype");
+		new DefaultTable(0).getItem(datatype).select();
+		new PushButton("OK").click();		
 	}
 	
 }
