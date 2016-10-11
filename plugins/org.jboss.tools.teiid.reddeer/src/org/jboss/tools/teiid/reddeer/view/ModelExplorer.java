@@ -70,6 +70,7 @@ public class ModelExplorer extends AbstractExplorer {
 		public static final String UNIQUE_CONSTRAINT = "Unique Constraint";
 		public static final String PRIMARY_KEY = "Primary Key";
 		public static final String FOREIGN_KEY = "Foreign Key";
+		public static final String VIEW = "View...";
 		
 	}
 	
