@@ -80,6 +80,31 @@ public class CamelEditor extends GEFEditor {
 	}
 
 	/**
+	 * <p>
+	 * Adds a component into/before/after another component in the Camel Editor.
+	 * </p>
+	 * <p>
+	 * <b>Note:</b>This methods clicks on the center of the target component. It may cause problems in case of
+	 * containers components (e.g. Route).
+	 * </p>
+	 * <p>
+	 * <b>Note:</b>It does not wait until a new node is in the Camel Editor.
+	 * </p>
+	 * 
+	 * @param name
+	 *            Component name in Palette view
+	 * @param parent
+	 *            Parent name in the Camel Editor
+	 */
+	public void addComponent(String name, String parent) {
+		log.debug("Adding '" + name + "' component into the Camel Editor");
+		new PaletteView().open();
+		Palette palette = ViewerHandler.getInstance().getPalette(viewer);
+		palette.activateTool(name);
+		new CamelComponentEditPart(parent).click();
+	}
+
+	/**
 	 * Adds a component into the Camel Editor at given position
 	 * 
 	 * @param component
