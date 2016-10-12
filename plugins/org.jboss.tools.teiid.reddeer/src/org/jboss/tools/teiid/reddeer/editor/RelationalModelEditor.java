@@ -63,6 +63,8 @@ public class RelationalModelEditor extends ModelEditor{
 		AbstractWait.sleep(TimePeriod.SHORT);
 		PushButton button = (removeFromTransformation) ? new PushButton("Yes") : new PushButton("No");
 		button.click();
+		new WorkbenchShell();
+		activate();
 	}
 	
 	/**
