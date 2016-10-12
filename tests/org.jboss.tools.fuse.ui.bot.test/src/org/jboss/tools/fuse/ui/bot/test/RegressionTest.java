@@ -26,6 +26,7 @@ import org.jboss.reddeer.core.matcher.WithTooltipTextMatcher;
 import org.jboss.reddeer.eclipse.debug.core.IsSuspended;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
+import org.jboss.reddeer.junit.execution.annotation.RunIf;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
@@ -41,7 +42,11 @@ import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.common.reddeer.LogGrapper;
 import org.jboss.tools.common.reddeer.ResourceHelper;
+import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
+import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
+import org.jboss.tools.common.reddeer.view.ErrorLogView;
 import org.jboss.tools.fuse.reddeer.ProjectTemplate;
 import org.jboss.tools.fuse.reddeer.ProjectType;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
@@ -83,8 +88,7 @@ public class RegressionTest extends DefaultTest {
 	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-1729">https://issues.jboss.org/browse/FUSETOOLS-1729</a> <br>
 	 */
 	@Test
-	public void issue_674_1728_1729()
-			throws ParserConfigurationException, SAXException, IOException {
+	public void issue_674_1728_1729() throws ParserConfigurationException, SAXException, IOException {
 
 		ProjectFactory.newProject("camel-spring").template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
@@ -262,8 +266,7 @@ public class RegressionTest extends DefaultTest {
 	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-1172">https://issues.jboss.org/browse/FUSETOOLS-1172</a>
 	 */
 	@Test
-	public void issue_1172()
-			throws ParserConfigurationException, SAXException, IOException {
+	public void issue_1172() throws ParserConfigurationException, SAXException, IOException {
 
 		ProjectFactory.newProject("camel-spring").template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
@@ -361,6 +364,36 @@ public class RegressionTest extends DefaultTest {
 				"blueprint.xml");
 		new ContextMenu("Open").select();
 		assertFalse("Camel Editor is dirty! But no editing was performed.", new CamelEditor("blueprint.xml").isDirty());
+	}
+
+	/**
+	 * <p>
+	 * Node not deleted if trying to delete two elements sequentially which are the starting point of the route
+	 * </p>
+	 * <b>Link: </b>
+	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-1701">https://issues.jboss.org/browse/FUSETOOLS-1701</a>
+	 */
+	@Test
+	@Jira("FUSETOOLS-1701")
+	@RunIf(conditionClass = IssueIsClosed.class)
+	public void issue_1701() {
+		ProjectFactory.newProject("test").type(ProjectType.BLUEPRINT).create();
+		CamelEditor editor = new CamelEditor("blueprint.xml");
+		editor.activate();
+		editor.addComponent("File", "Route _route1");
+		editor.selectEditPart("file:directoryName");
+		editor.setProperty("Uri *", "file:src/main/data?noop=true");
+		editor.addComponent("File", "file:src/main/data?noop=true");
+		editor.addComponent("Log", "file:directoryName");
+		editor.setProperty("Message *", "XXX");
+		editor.save();
+		new ErrorLogView().deleteLog();
+		editor.activate();
+		editor.deleteCamelComponent("file:src/main/data?noop=true");
+		editor.deleteCamelComponent("file:directoryName");
+		editor.save();
+		assertFalse("Deleted component is still present in Camel Editor!", editor.isComponentAvailable("file:directoryName"));
+		assertTrue("There are some errors in Error Log!", LogGrapper.getPluginErrors("fuse").size() == 0);
 	}
 
 	/**
