@@ -36,9 +36,15 @@ import org.junit.runner.RunWith;
  * tested features:
  * - add transformation sources (add menu action, paste SQL, type SQL)
  * - reconciler 
- * 		- included: expand SELECT, expression builder from reconciler, transformation editor
+ * 		- included: expand SELECT, expression builder from reconciler and from transformation editor
  * - criteria builder
  * 		- included: expression builder from criteria builder
+ * - comments in transformation
+ * - SQL templates
+ * 		- all templates were verified manually
+ * 		- for every template, checks if its selecting sets right transformation
+ *  	- for one template, checks if generated table in model contains transformation
+ *  	- note: if template has changed, test would fail (so test it manually again and update test accordingly) 
  */
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
@@ -114,7 +120,7 @@ public class TransformationToolsTest {
 			assertTrue(viewAttrs.contains(sourceAtt));
 		}	
 		editor.returnToParentDiagram();
-		new ProblemsViewEx().checkErrors();
+		ProblemsViewEx.checkErrors();
 		
 		// type transformation
 		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.TABLE, PROJECT_NAME, VIEW_MODEL);
@@ -134,7 +140,7 @@ public class TransformationToolsTest {
 		for(String sourceAtt : sourceAttrs){
 			assertTrue(viewAttrs.contains(sourceAtt));
 		}
-		new ProblemsViewEx().checkErrors();
+		ProblemsViewEx.checkErrors();
 	}                             
 
 	@Test
@@ -281,7 +287,7 @@ public class TransformationToolsTest {
 	}
 
 	@Test
-	public void commentInEditor(){
+	public void testCommentsInTransformation(){
 		modelExplorer.openModelEditor(PROJECT_NAME, VIEW_MODEL);
 		RelationalModelEditor editor = new RelationalModelEditor(VIEW_MODEL);
 		
@@ -311,5 +317,40 @@ public class TransformationToolsTest {
 		    AssertBot.transformationContains(transformationEditor.getTransformation(), "/* First comment in the reconciler table */");
 			AssertBot.transformationContains(transformationEditor.getTransformation(), "/* Second comment in the reconciler table */");
 	    }
+	}
+
+	@Test
+	public void testTemplates(){
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.TABLE, PROJECT_NAME, VIEW_MODEL);
+		TableDialog dialog = new TableDialog(true);
+		dialog.setName("TemplateTable");
+		
+		dialog.setSqlTemplate("Simple SELECT","Replace all SQL Text");
+		AssertBot.transformationEquals(dialog.getTransformationSql(), "SELECT * FROM [TABLEA]");
+		
+		dialog.setSqlTemplate("SELECT with Join Criteria","Replace all SQL Text");
+		AssertBot.transformationEquals(dialog.getTransformationSql(), "SELECT [TABLEA.COL1], [TABLEA.COL2], [TABLEB.COL1] FROM [TABLEA], [TABLEB] WHERE [TABLEA.COL1] = [TABLEB.COL1]");
+		
+		dialog.setSqlTemplate("UNION Query","Replace all SQL Text");
+		AssertBot.transformationEquals(dialog.getTransformationSql(), "SELECT [COL1], [COL2] FROM [TABLEA] UNION SELECT [COL1], [COL2] FROM [TABLEB]");
+		
+		dialog.setSqlTemplate("Flat File - Local Source","Replace all SQL Text");
+		AssertBot.transformationEquals(dialog.getTransformationSql(), "SELECT A.[Name], A.[Sport], A.[Position], A.[City] FROM (EXEC [EmployeeFileProcedures].getTextFiles('PlayerData.txt')) AS f,  TEXTTABLE(f.file COLUMNS Name string, Sport string, Position string, City string HEADER 2 SKIP 3) AS A");
+		
+		dialog.setSqlTemplate("XML File - Local Source","Replace all SQL Text");
+		AssertBot.transformationEquals(dialog.getTransformationSql(), "SELECT A.PMID AS PMID, A.Journal AS Journal, A.Title AS Title FROM (EXEC MP.getTextFiles('medsamp2011.xml')) AS f, XMLTABLE('/MedlineCitationSet/MedlineCitation' PASSING XMLPARSE(DOCUMENT f.file) COLUMNS PMID string PATH '/PMID', Journal string PATH '/Article/Journal', Title string PATH '/Article/ArticleTitle') AS A");
+		
+		dialog.setSqlTemplate("XML File - URL Source","Replace all SQL Text");
+		AssertBot.transformationEquals(dialog.getTransformationSql(), "SELECT A.COMMON AS COMMON, A.BOTANICAL AS BOTANICAL, A.ZONE AS ZONE, A.PRICE AS PRICE FROM (EXEC PlantWSProcedures.invokeHttp('GET', null, 'http://www.w3schools.com/xml/plant_catalog.xml')) AS f, XMLTABLE('/CATALOG/PLANT' PASSING XMLPARSE(DOCUMENT f.result) COLUMNS COMMON string PATH '/COMMON', BOTANICAL string PATH '/BOTANICAL', ZONE string PATH '/ZONE', PRICE string PATH '/PRICE') AS A");
+		
+		String expectedT = "SELECT A.[col_1], A.[col_2] \nFROM [ObjectTableName] as T, \nOBJECTTABLE('x' PASSING T.[ObjectColumnName] Object as x COLUMNS col_1 string, col_2 string) AS A";
+		dialog.setSqlTemplate("OBJECTTABLE() example","Replace all SQL Text");
+		AssertBot.transformationEquals(dialog.getTransformationSql(), expectedT);
+		
+		dialog.finish();
+		
+		RelationalModelEditor editor = new RelationalModelEditor(VIEW_MODEL);
+		String actualT = editor.openTransformationDiagram(ModelEditor.ItemType.TABLE, "TemplateTable").getTransformation();
+		AssertBot.transformationEquals(actualT, expectedT);
 	}
 }

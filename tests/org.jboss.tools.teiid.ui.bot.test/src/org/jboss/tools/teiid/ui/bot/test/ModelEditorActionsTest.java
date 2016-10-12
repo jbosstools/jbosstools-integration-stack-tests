@@ -94,7 +94,7 @@ public class ModelEditorActionsTest {
 				.chceckSupportUpdateIsSystemTable(true, true)
 				.setDescription("This is table description")
 				//SQL tab
-				.setDefaultSQL()			
+				.setSqlTemplate("Simple SELECT","Replace all SQL Text")			
 				//Columns TAB
 				.addColumn("PKcolumn", "biginteger", "4000")
 				.addColumn("FKcolumn", "string", "4000")
