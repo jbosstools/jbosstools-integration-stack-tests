@@ -97,8 +97,8 @@ public class ModelExplorer extends AbstractExplorer {
 	 */
 	public void changeConnectionProfile(String connectionProfile, String... modelPath) {
 		int n = modelPath.length -1;
-		String modelName = modelPath[n];
 		modelPath[n] = (modelPath[n].contains(".xmi")) ? modelPath[n] : modelPath[n] + ".xmi";
+		String modelName = modelPath[n];
 		new WorkbenchShell();
 		this.selectItem(modelPath);
 		new ContextMenu("Modeling", "Set Connection Profile").select();
@@ -111,7 +111,8 @@ public class ModelExplorer extends AbstractExplorer {
 		} catch (Exception e) {}
 		try {
 			new WaitUntil(new ShellWithTextIsAvailable("Set JBoss Data Source JNDI Name"));
-			new DefaultText(0).setText(modelName.replace(".xmi", ""));
+			String jndiName = modelName;
+			new DefaultText(0).setText(jndiName.replace(".xmi", ""));
 			new PushButton("OK").click();
 		} catch (Exception e) {}
 		new RelationalModelEditor(modelName).save();
