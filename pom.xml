@@ -1,6 +1,5 @@
-<project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.jboss.tools</groupId>
@@ -12,134 +11,145 @@
 	<version>4.4.0-SNAPSHOT</version>
 	<name>integration-stack-tests.all</name>
 	<packaging>pom</packaging>
-
 	<properties>
-	  <tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-integration-stack-tests.git</tycho.scmUrl>
-	  <jbtis.tp.version>4.4.0.Alpha2-SNAPSHOT</jbtis.tp.version>
-	  <jbtis.repo>staging</jbtis.repo>
-	  <jbtis.site>http://download.jboss.org/jbosstools/neon/${jbtis.repo}/updates/integration-stack/</jbtis.site>
-	  <jbtis-ea.site>${jbtis.site}/earlyaccess/</jbtis-ea.site>
-	  <reddeer.site>http://download.jboss.org/jbosstools/updates/stable/mars/core/reddeer/1.0.2</reddeer.site>
-	  <orbit.site>http://download.eclipse.org/tools/orbit/downloads/drops/R20130517111416/repository</orbit.site>
-	  <swtbot.site>http://download.eclipse.org/technology/swtbot/releases/latest</swtbot.site>
-	  <skipRequirements>${skipTests}</skipRequirements>
+		<tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-integration-stack-tests.git</tycho.scmUrl>
+		<jbtis.tp.version>4.4.0.Alpha2-SNAPSHOT</jbtis.tp.version>
+		<jbtis.repo>staging</jbtis.repo>
+		<jbtis.site>http://download.jboss.org/jbosstools/neon/${jbtis.repo}/updates/integration-stack/</jbtis.site>
+		<jbtis-ea.site>${jbtis.site}/earlyaccess/</jbtis-ea.site>
+		<reddeer.site>http://download.jboss.org/jbosstools/updates/stable/mars/core/reddeer/1.0.2</reddeer.site>
+		<orbit.site>http://download.eclipse.org/tools/orbit/downloads/drops/R20130517111416/repository</orbit.site>
+		<swtbot.site>http://download.eclipse.org/technology/swtbot/releases/latest</swtbot.site>
+		<skipRequirements>${skipTests}</skipRequirements>
 	</properties>
-
 	<modules>
-	  <module>plugins</module>
-	  <module>tests</module>
-	  <module>site</module>
+		<module>plugins</module>
+		<module>tests</module>
+		<module>site</module>
 	</modules>
-
 	<repositories>
-	  <!-- JBTIS Repository -->
-	  <repository>
-	    <id>jbtis</id>
-	    <url>${jbtis.site}</url>
-	    <layout>p2</layout>
-	    <snapshots>
-	      <enabled>true</enabled>
-	    </snapshots>
-	    <releases>
-	      <enabled>true</enabled>
-	    </releases>
-	  </repository>
-	  <!-- JBTIS Repository (early access) -->
-	  <repository>
-	    <id>jbtis-ea</id>
-	    <url>${jbtis-ea.site}</url>
-	    <layout>p2</layout>
-	    <snapshots>
-	      <enabled>true</enabled>
-	    </snapshots>
-	    <releases>
-	      <enabled>true</enabled>
-	    </releases>
-	  </repository>
-	  <!-- Red Deer Update Site -->
-	  <repository>
-	    <id>reddeer-site</id>
-	    <url>${reddeer.site}</url>
-	    <layout>p2</layout>
-	  </repository>
-	  <!-- SWTBot Update Site -->
-	  <repository>
-	    <id>swtbot-site</id>
-	    <url>${swtbot.site}</url>
-	    <layout>p2</layout>
-	  </repository>
-	  <!-- Eclipse Orbit Update Site -->
-	  <repository>
-	    <id>orbit-site</id>
-	    <url>${orbit.site}</url>
-	    <layout>p2</layout>
-	  </repository>
-	  <!-- JBoss Nexus -->
-          <repository>
-            <id>jboss-public-repository-group</id>
-            <name>JBoss Public Repository Group</name>
-            <url>http://repository.jboss.org/nexus/content/groups/public/</url>
-          </repository>
+		<!--JBTIS Repository-->
+		<repository>
+			<id>jbtis</id>
+			<url>${jbtis.site}</url>
+			<layout>p2</layout>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+		<!-- JBTIS Repository (early access) -->
+		<repository>
+			<id>jbtis-ea</id>
+			<url>${jbtis-ea.site}</url>
+			<layout>p2</layout>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+		<!-- Red Deer Update Site -->
+		<repository>
+			<id>reddeer-site</id>
+			<url>${reddeer.site}</url>
+			<layout>p2</layout>
+		</repository>
+		<!-- SWTBot Update Site -->
+		<repository>
+			<id>swtbot-site</id>
+			<url>${swtbot.site}</url>
+			<layout>p2</layout>
+		</repository>
+		<!-- Eclipse Orbit Update Site -->
+		<repository>
+			<id>orbit-site</id>
+			<url>${orbit.site}</url>
+			<layout>p2</layout>
+		</repository>
+		<!-- JBoss Nexus -->
+		<repository>
+			<id>jboss-public-repository-group</id>
+			<name>JBoss Public Repository Group</name>
+			<url>http://repository.jboss.org/nexus/content/groups/public/</url>
+		</repository>
 	</repositories>
-
 	<build>
-	  <plugins>
-	    <!-- JBTIS Target Platform -->
-	    <plugin>
-	      <groupId>org.eclipse.tycho</groupId>
-	      <artifactId>target-platform-configuration</artifactId>
-	      <version>${tychoVersion}</version>
-	      <configuration>
-		<target>
-		  <artifact>
-		    <groupId>org.jboss.tools.integration-stack</groupId>
-		    <artifactId>target-platform</artifactId>
-		    <version>${jbtis.tp.version}</version>
-		    <type>target</type>
-		    <classifier>base</classifier>
-		  </artifact>
-		  <artifact>
-		    <groupId>org.jboss.tools.integration-stack</groupId>
-		    <artifactId>target-platform</artifactId>
-		    <version>${jbtis.tp.version}</version>
-		    <type>target</type>
-		    <classifier>base-ea</classifier>
-		  </artifact>
-		</target>
-	      </configuration>
-	    </plugin>
-            <plugin>
-              <groupId>org.eclipse.tycho</groupId>
-              <artifactId>tycho-compiler-plugin</artifactId>
-              <version>${tychoVersion}</version>
-              <configuration>
-                <source>1.7</source>
-                <target>1.7</target>
-              </configuration>
-            </plugin>
-	  </plugins>
+		<plugins>
+			<!-- JBTIS Target Platform -->
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tychoVersion}</version>
+				<configuration>
+					<target>
+						<artifact>
+							<groupId>org.jboss.tools.integration-stack</groupId>
+							<artifactId>target-platform</artifactId>
+							<version>${jbtis.tp.version}</version>
+							<type>target</type>
+							<classifier>base</classifier>
+						</artifact>
+						<artifact>
+							<groupId>org.jboss.tools.integration-stack</groupId>
+							<artifactId>target-platform</artifactId>
+							<version>${jbtis.tp.version}</version>
+							<type>target</type>
+							<classifier>base-ea</classifier>
+						</artifact>
+					</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-compiler-plugin</artifactId>
+				<version>${tychoVersion}</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
-
 	<profiles>
-	  <profile>
-	    <id>staging</id>
-	    <properties>
-	      <jbtis.repo>staging</jbtis.repo>
-	    </properties>
-	  </profile>
-	  <profile>
-	    <id>development</id>
-	    <properties>
-	      <jbtis.repo>development</jbtis.repo>
-	    </properties>
-	  </profile>
-	  <profile>
-	    <id>stable</id>
-	    <properties>
-	      <jbtis.repo>stable</jbtis.repo>
-	    </properties>
-	  </profile>
+		<profile>
+			<id>staging</id>
+			<properties>
+				<jbtis.repo>staging</jbtis.repo>
+			</properties>
+		</profile>
+		<profile>
+			<id>development</id>
+			<properties>
+				<jbtis.repo>development</jbtis.repo>
+			</properties>
+		</profile>
+		<profile>
+			<id>stable</id>
+			<properties>
+				<jbtis.repo>stable</jbtis.repo>
+			</properties>
+		</profile>
+		<profile>
+			<id>ci</id>
+			<properties>
+				<jbtis.repo>staging</jbtis.repo>
+			</properties>
+			<repositories>
+				<repository>
+					<id>fuse-ci</id>
+					<url>http://download.jboss.org/jbosstools/neon/integration/updates/integration-stack/fuse-tooling/9.0.0.CI/</url>
+					<layout>p2</layout>
+				</repository>
+				<repository>
+					<id>switchyard-ci</id>
+					<url>http://download.jboss.org/jbosstools/neon/integration/updates/integration-stack/switchyard/2.2.0.CI/</url>
+					<layout>p2</layout>
+				</repository>
+			</repositories>
+		</profile>
 	</profiles>
-
 </project>
-
