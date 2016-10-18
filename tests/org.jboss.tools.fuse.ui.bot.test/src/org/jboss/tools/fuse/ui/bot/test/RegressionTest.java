@@ -1,5 +1,6 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
+import static org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType.ERROR;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
@@ -46,7 +47,10 @@ import org.jboss.tools.common.reddeer.LogGrapper;
 import org.jboss.tools.common.reddeer.ResourceHelper;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
+import org.jboss.tools.common.reddeer.ext.PropertiesViewExt;
 import org.jboss.tools.common.reddeer.view.ErrorLogView;
+import org.jboss.tools.common.reddeer.view.ProblemsViewExt;
+import org.jboss.tools.common.reddeer.widget.LabeledTextExt;
 import org.jboss.tools.fuse.reddeer.ProjectTemplate;
 import org.jboss.tools.fuse.reddeer.ProjectType;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
@@ -394,6 +398,44 @@ public class RegressionTest extends DefaultTest {
 		editor.save();
 		assertFalse("Deleted component is still present in Camel Editor!", editor.isComponentAvailable("file:directoryName"));
 		assertTrue("There are some errors in Error Log!", LogGrapper.getPluginErrors("fuse").size() == 0);
+	}
+
+	/**
+	 * <p>
+	 * Double-click on an error in problems View of a Fuse error when corresponding editor is closed don't select the correct node.
+	 * </p>
+	 * <b>Link: </b>
+	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-1726">https://issues.jboss.org/browse/FUSETOOLS-1726</a>
+	 */
+	@Test
+	@Jira("FUSETOOLS-1726")
+	@RunIf(conditionClass = IssueIsClosed.class)
+	public void issue_1726() {
+		ProjectFactory.newProject("test").type(ProjectType.BLUEPRINT).create();
+		CamelEditor editor = new CamelEditor("blueprint.xml");
+		editor.activate();
+		editor.addComponent("IMAP", "Route _route1");
+		editor.close();
+		new ErrorLogView().deleteLog();
+		ProblemsViewExt problems = new ProblemsViewExt();
+		problems.open();
+		AbstractWait.sleep(TimePeriod.getCustom(5));
+		problems.doubleClickProblem("The parameter port requires a numeric value.", ERROR);
+		AbstractWait.sleep(TimePeriod.getCustom(5));
+		try {
+			new CamelEditor("blueprint.xml");
+		} catch (Exception e) {
+			fail ("Camel Editor was not opened after double-click on a problem in Problems view!");
+		}
+		PropertiesViewExt properties = new PropertiesViewExt();
+		properties.activate();
+		try {
+			properties.selectTab("Details");
+			String title = new LabeledTextExt("Uri *").getText();
+			assertEquals("imap:host:port", title);
+		} catch (Exception e) {
+			fail ("Properties view does not contains properties of appropriate Camel Component!");
+		}
 	}
 
 	/**
