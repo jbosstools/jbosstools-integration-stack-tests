@@ -26,23 +26,7 @@
 		<test.class>AllTests</test.class>
 		<customization.file>resources/settings/plugin_customization.ini</customization.file>
 		<maven.repo>${project.build.directory}/requirements/repository/</maven.repo>
-		<fuse.site>http://download.jboss.org/jbosstools/mars/integration/updates/integration-stack/fuse-tooling/</fuse.site>
 	</properties>
-
-	<repositories>
-		<!-- Fuse Repository -->
-		<repository>
-			<id>fuse</id>
-			<url>${fuse.site}</url>
-			<layout>p2</layout>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-	</repositories>
 
 	<build>
 		<plugins>
@@ -156,29 +140,4 @@
 
 		</plugins>
 	</build>
-	
-	<profiles>
-	  <!-- Fuse Master Repository -->
-	  <profile>
-	    <id>master</id>
-	    <activation>
-	      <property>
-		<name>fuse.site</name>
-	      </property>
-	    </activation>
-	    <repositories>
-	      <repository>
-		<id>fuse</id>
-		<url>${fuse.site}</url>
-		<layout>p2</layout>
-		<snapshots>
-		  <enabled>true</enabled>
-		</snapshots>
-		<releases>
-		  <enabled>true</enabled>
-		</releases>
-	      </repository>
-	    </repositories>
-	  </profile>
-	</profiles>
 </project>
