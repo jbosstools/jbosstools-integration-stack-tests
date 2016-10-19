@@ -6,6 +6,7 @@ import static org.jboss.tools.fuse.reddeer.ProjectType.SPRING;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -24,10 +25,15 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.common.reddeer.FileUtils;
+import org.jboss.tools.common.reddeer.preference.MavenUserSettingsPreferencePage;
 import org.jboss.tools.fuse.reddeer.ProjectType;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized.Parameters;
@@ -35,7 +41,7 @@ import org.junit.runners.Parameterized.UseParametersRunnerFactory;
 
 /**
  * Tries to create and run projects from all available templates with all available Camel versions as Local Camel
- * Context
+ * Context. Always with empty Maven repository.
  * 
  * @author tsedmik
  */
@@ -43,10 +49,11 @@ import org.junit.runners.Parameterized.UseParametersRunnerFactory;
 @OpenPerspective(JavaEEPerspective.class)
 @RunWith(RedDeerSuite.class)
 @UseParametersRunnerFactory(ParameterizedRequirementsRunnerFactory.class)
-public class FuseProjectTest extends DefaultTest {
+public class FuseProjectTestLong extends DefaultTest {
 
-	protected Logger log = Logger.getLogger(FuseProjectTest.class);
+	protected Logger log = Logger.getLogger(FuseProjectTestLong.class);
 	private String template;
+	private static String maven;
 
 	/**
 	 * Sets parameters for parameterized test
@@ -75,8 +82,48 @@ public class FuseProjectTest extends DefaultTest {
 	 * @param template
 	 *            a Fuse project archetype
 	 */
-	public FuseProjectTest(String template) {
+	public FuseProjectTestLong(String template) {
 		this.template = template;
+	}
+
+	/**
+	 * Changes local repository to an empty one
+	 */
+	@BeforeClass
+	public static void setupMaven() {
+
+		MavenUserSettingsPreferencePage pref = new MavenUserSettingsPreferencePage();
+		pref.open();
+		maven = pref.getUserSettings();
+		pref.setUserSettings(System.getProperty("maven.settings"));
+		pref.updateSettings();
+		pref.reindex();
+		pref.ok();
+	}
+
+	/**
+	 * Deletes a local Maven repository
+	 */
+	@Before
+	public void setupDeleteMavenRepo() {
+
+		FileUtils.deleteDir(new File(System.getProperty("maven.repository")));
+	}
+
+	/**
+	 * Revertes change of the local repository
+	 */
+	@AfterClass
+	public static void setupMavenBack() {
+
+		MavenUserSettingsPreferencePage pref = new MavenUserSettingsPreferencePage();
+		pref.open();
+		pref.setUserSettings(maven);
+		pref.updateSettings();
+		pref.reindex();
+		pref.ok();
+
+		FileUtils.deleteDir(new File(System.getProperty("maven.repository")));
 	}
 
 	/**
