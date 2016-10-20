@@ -2,11 +2,14 @@ package org.jboss.tools.drools.ui.bot.test.functional.view;
 
 import java.util.List;
 
+import org.jboss.reddeer.junit.execution.annotation.RunIf;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.StyledText;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
+import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.drools.reddeer.editor.DrlEditor;
 import org.jboss.tools.drools.reddeer.editor.RuleEditor;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
@@ -51,6 +54,8 @@ public class GlobalDataViewTest extends ViewTestParent {
 	}
 
 	@Test
+	@Jira("DROOLS-1336")
+	@RunIf(conditionClass = IssueIsClosed.class)
 	@UsePerspective(DroolsPerspective.class)
 	@UseDefaultProject
 	public void testUninitiatedGlobal() {
@@ -68,11 +73,13 @@ public class GlobalDataViewTest extends ViewTestParent {
 		globals.open();
 
 		List<String> names = globals.getGlobalsList();
-		Assert.assertEquals("Known issue: Wrong number of globals found", 1, names.size());
+		Assert.assertEquals("Wrong number of globals found", 1, names.size());
 		Assert.assertEquals("Wrong global name encountered", "stringVar", names.get(0));
 	}
 
 	@Test
+	@Jira("DROOLS-1336")
+	@RunIf(conditionClass = IssueIsClosed.class)
 	@UsePerspective(DroolsPerspective.class)
 	@UseDefaultProject
 	public void testMultipleGlobals() {
@@ -102,7 +109,7 @@ public class GlobalDataViewTest extends ViewTestParent {
 		globals.open();
 
 		List<String> names = globals.getGlobalsList();
-		Assert.assertEquals("Known issue: Wrong number of globals found", 3, names.size());
+		Assert.assertEquals("Wrong number of globals found", 3, names.size());
 		Assert.assertTrue("Global 'stringVar' not found", names.contains("stringVar"));
 		Assert.assertTrue("Global 'objectVar' not found", names.contains("objectVar"));
 		Assert.assertTrue("Global 'listVar' not found", names.contains("listVar"));

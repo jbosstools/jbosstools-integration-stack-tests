@@ -56,8 +56,6 @@ public class NestedEditor implements Editor {
 		parent.minimize();
 	}
 
-	// TODO The following methods were added in Red Deer 0.6.0
-
 	@Override
 	public void activate() {
 		throw new UnsupportedOperationException();

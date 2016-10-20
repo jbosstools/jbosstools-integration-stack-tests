@@ -6,9 +6,12 @@ import org.apache.log4j.Logger;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
+import org.jboss.reddeer.junit.execution.annotation.RunIf;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
+import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.drools.reddeer.dialog.DslLineDialog;
 import org.jboss.tools.drools.reddeer.dialog.DslLineDialog.Scope;
 import org.jboss.tools.drools.reddeer.editor.DslEditor;
@@ -82,7 +85,6 @@ public class DslEditorTest extends TestParent {
 		dialog.setScope(Scope.CONSEQUENCE);
 		dialog.ok();
 
-		// FIXME this is annoying - closing dialog makes editor loose focus and nothing works then
 		editor = openTestDslFile();
 
 		List<DslLine> newLines = editor.getDslLines();
@@ -95,6 +97,8 @@ public class DslEditorTest extends TestParent {
 	}
 
 	@Test
+	@Jira("RHBRMS-1286")
+	@RunIf(conditionClass = IssueIsClosed.class)
 	@UsePerspective(JavaPerspective.class)
 	@UseDefaultProject
 	public void testInsertExpression() {
@@ -110,15 +114,13 @@ public class DslEditorTest extends TestParent {
 		dialog.setScope(Scope.CONSEQUENCE);
 		dialog.ok();
 
-		// FIXME this is annoying - closing dialog makes editor loose focus and nothing works then
 		editor = openTestDslFile();
 
 		List<DslLine> newLines = editor.getDslLines();
 		Assert.assertEquals("Line count is same!", origLines.size() + 1, newLines.size());
 
-		// FIXME this doesn't really work, it needs to be addressed in bz#1013750
 		DslLine line = newLines.get(position + 1);
-		Assert.assertEquals("BZ1013750: DSL Editor can't change the order of DSL lines", MAPPING, line.getMapping());
+		Assert.assertEquals("DSL Editor can't change the order of DSL lines", MAPPING, line.getMapping());
 		Assert.assertEquals("Wrong expression!", EXPRESSION, line.getExpression());
 		Assert.assertEquals("Wrong scope!", Scope.CONSEQUENCE.toEditorString(), line.getScope());
 	}
@@ -138,7 +140,6 @@ public class DslEditorTest extends TestParent {
 		dialog.setLanguageExpression(EXPRESSION);
 		dialog.ok();
 
-		// FIXME this is annoying - closing dialog makes editor loose focus and nothing works then
 		editor = openTestDslFile();
 
 		List<DslLine> newLines = editor.getDslLines();
@@ -183,8 +184,6 @@ public class DslEditorTest extends TestParent {
 		for (DslLine line : origLines) {
 			Assert.assertTrue("Missing line " + line, newLines.contains(line));
 		}
-
-		// TODO test the order of dsl lines?
 	}
 
 	@Test

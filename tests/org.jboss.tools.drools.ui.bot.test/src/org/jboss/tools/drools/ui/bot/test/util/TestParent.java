@@ -24,6 +24,7 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.junit.screenshot.CaptureScreenshotException;
 import org.jboss.reddeer.junit.screenshot.ScreenshotCapturer;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
@@ -166,18 +167,35 @@ public abstract class TestParent {
 		new JavaPerspective().open();
 
 		// refresh and delete all projects (as running the projects creates logs)
-		PackageExplorer pe = new PackageExplorer();
-		pe.deleteAllProjects();
-		pe.deleteAllProjects(); // BZ 1225885
+		// RHBRMS-713
+		deleteAllProjectsWorkaround();
 
 		ConsoleView console = new ConsoleView();
 		console.open();
 		try {
-			// FIXME uncomment once my pull request is applied
 			// console.removeAllTerminatedLaunches();
 			new DefaultToolItem("Remove All Terminated Launches").click();
 		} catch (Exception ex) {
 			LOGGER.debug("Console was not cleared", ex);
+		}
+	}
+	
+	private void deleteAllProjectsWorkaround() {
+		final int numberOfAttempts = 5;
+		
+		for (int i = 0; i < numberOfAttempts; i++) {
+			PackageExplorer pe = new PackageExplorer();
+			pe.open();
+			
+			new ShellMenu("File", "Refresh").select();
+			
+			pe.deleteAllProjects();
+			
+			new ShellMenu("File", "Refresh").select();
+			
+			if (pe.getProjects().size() == 0) {
+				break;
+			}
 		}
 	}
 

@@ -9,6 +9,8 @@ import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectWithExamplesWizardP
 import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectWizard;
 
 public final class ProjectUtility {
+	
+	private static final long TEN_MINUTES = 600L;
 
 	public static void createDroolsProjectWithAllSamples(String projectName) {
 		createProjectWithSamples(projectName, false, true, true, true);
@@ -56,7 +58,7 @@ public final class ProjectUtility {
 		
 		if (useMaven) {
 			projectWithExamplesWizardPage.useMaven();
-			projectWizard.finish(TimePeriod.VERY_LONG);
+			projectWizard.finish(TimePeriod.getCustom(TEN_MINUTES));
 		} else {
 			projectWithExamplesWizardPage.useRuntime();
 			if (projectWithExamplesWizardPage.getInstalledRuntimes().size() <= 0) {

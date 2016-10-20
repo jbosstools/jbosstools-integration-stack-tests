@@ -5,10 +5,10 @@ import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.eclipse.ui.perspectives.ResourcePerspective;
+import org.jboss.reddeer.junit.execution.annotation.RunIf;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
@@ -19,6 +19,8 @@ import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
+import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.drools.reddeer.editor.DrlEditor;
 import org.jboss.tools.drools.reddeer.editor.RuleEditor;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
@@ -116,6 +118,8 @@ public class RulesManagementTest extends TestParent {
 	}
 
 	@Test
+	@Jira("RHBRMS-1795")
+	@RunIf(conditionClass = IssueIsClosed.class)
 	@UsePerspective(JavaPerspective.class)
 	@UseDefaultProject
 	public void testSetBreakpoint() {
@@ -127,15 +131,7 @@ public class RulesManagementTest extends TestParent {
 		new ResourcePerspective().open();
 		new JavaPerspective().open();
 
-		try {
-			new ShellMenu(new RegexMatcher("Run"), new RegexMatcher("Toggle Breakpoint.*")).select();
-		} catch (CoreLayerException exception) {
-			if (exception.getMessage().contains("Menu item is not enabled")) {
-				Assert.fail("BZ1012380: Unable to toggle breakpoint in rules");
-			} else {
-				throw exception;
-			}
-		}
+		new ShellMenu(new RegexMatcher("Run"), new RegexMatcher("Toggle Breakpoint.*")).select();
 	}
 
 	@Test

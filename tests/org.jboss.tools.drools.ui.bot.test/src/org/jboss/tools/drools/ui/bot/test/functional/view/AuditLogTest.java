@@ -1,6 +1,5 @@
 package org.jboss.tools.drools.ui.bot.test.functional.view;
 
-import java.io.File;
 import java.util.List;
 
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
@@ -83,20 +82,5 @@ public class AuditLogTest extends TestParent {
 		Assert.assertTrue("Wrong event encountered", events.get(0).contains("Object inserted"));
 		Assert.assertTrue("Wrong event encountered", events.get(1).contains("Activation executed"));
 		Assert.assertTrue("Wrong event encountered", events.get(2).contains("Activation executed"));
-	}
-
-	@Test
-	@UsePerspective(DroolsPerspective.class)
-	@UseDefaultProject
-	public void testBussinessAuditLog() throws Exception {
-		String path = new File("resources/test150.log").getAbsolutePath();
-
-		AuditView view = new AuditView();
-		view.open();
-		view.openLog(path);
-
-		List<String> events = view.getEvents();
-		// do not hunt for all the events, just check the number
-		Assert.assertEquals("BZ1135925: Audit View fails to open logs which includes a ruleflow", 313, events.size());
 	}
 }

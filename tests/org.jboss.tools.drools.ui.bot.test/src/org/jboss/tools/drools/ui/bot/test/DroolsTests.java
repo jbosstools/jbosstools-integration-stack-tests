@@ -49,7 +49,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	DslEditorTest.class,
 	// DSLR editor
 	DslrEditorTest.class,
-	// TODO debugging tests
 	// views test
 	AgendaViewTest.class,
 	GlobalDataViewTest.class,
