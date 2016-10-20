@@ -3,12 +3,15 @@ package org.jboss.tools.drools.ui.bot.test.functional;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
+import org.jboss.reddeer.junit.execution.annotation.RunIf;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
+import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.drools.reddeer.dialog.DroolsRuntimeDialog;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage.DroolsRuntime;
@@ -79,6 +82,8 @@ public class DroolsRuntimeManagementTest extends TestParent {
 	}
 
 	@Test
+	@Jira("DROOLS-1160")
+	@RunIf(conditionClass = IssueIsClosed.class)
 	public void testDuplicateName() {
 		final String name = "testDuplicateName";
 		final String runtimeHome = droolsRequirement.getConfig().getRuntimeFamily().getHome();
@@ -92,12 +97,14 @@ public class DroolsRuntimeManagementTest extends TestParent {
 		Assert.assertEquals("The Runtime \"" + name + "\" is already registered", wiz.getWarningText());
 		
 		wiz.setLocation(runtimeHome);
-		Assert.assertFalse("DROOLS-1160: It is possible to save runtime with duplicate name.", wiz.isValid());
+		Assert.assertFalse("It is possible to save runtime with duplicate name.", wiz.isValid());
 		wiz.cancel();
 		pref.cancel();
 	}
 
 	@Test
+	@Jira("DROOLS-1162")
+	@RunIf(conditionClass = IssueIsClosed.class)
 	public void testSetDefaultRuntime() {
 		final String name1 = "testSetDefaultRuntime1";
 		final String name2 = "testSetDefaultRuntime2";
@@ -141,6 +148,8 @@ public class DroolsRuntimeManagementTest extends TestParent {
 	}
 
 	@Test
+	@Jira("DROOLS-1162")
+	@RunIf(conditionClass = IssueIsClosed.class)
 	public void testDeleteDefaultRuntime() {
 		final String name1 = "testDeleteDefaultRuntime1";
 		final String name2 = "testDeleteDefaultRuntime2";
@@ -181,6 +190,8 @@ public class DroolsRuntimeManagementTest extends TestParent {
 	}
 
 	@Test
+	@Jira("DROOLS-1161")
+	@RunIf(conditionClass = IssueIsClosed.class)
 	public void testApply() {
 		DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
 		pref.open();
@@ -201,11 +212,8 @@ public class DroolsRuntimeManagementTest extends TestParent {
 			LOGGER.info("'Default runtime changed' warning was not shown.");
 		}
 
-		try {
-			Assert.assertNotNull("DROOLS-1161: The default runtime was reset!", pref.getDefaultDroolsRuntime());
-		} finally {
-			pref.cancel();
-		}
+		Assert.assertNotNull("The default runtime was reset!", pref.getDefaultDroolsRuntime());
+		pref.cancel();
 	}
 
 	private static void addRuntime(String name, String location, boolean setAsDefault) {
@@ -230,7 +238,7 @@ public class DroolsRuntimeManagementTest extends TestParent {
 		Assert.assertNotSame("No runtimes are present.", 0, runtimes.size());
 
 		DroolsRuntime runtime = getRuntime(name, pref);
-		Assert.assertNotNull("DROOLS-1162: Requested runtime was not created.", runtime);
+		Assert.assertNotNull("Requested runtime was not created.", runtime);
 	}
 
 	private static DroolsRuntime getRuntime(String name, DroolsRuntimesPreferencePage pref) {

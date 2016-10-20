@@ -43,32 +43,10 @@ public class ServerConnectionTest extends KieNavigatorTestParent {
 		checkError(knv);
 	}
 
-	@Test
-	public void incorrectAppNameTest() {
-		knv = new KieNavigatorView();
-		knv.open();
-		ServerProperties sp = knv.getServer(0).properties();
-		sp.setApplicationName("kie-wb");
-		sp.apply();
-		sp.ok();
-		checkError(knv);
-	}
-
-	@Test
-	public void incorrectPortTest() {
-		knv = new KieNavigatorView();
-		knv.open();
-		ServerProperties sp = knv.getServer(0).properties();
-		sp.setHttpPort("8081");
-		sp.apply();
-		sp.ok();
-		checkError(knv);
-	}
-
 	private void checkError(KieNavigatorView knv) {
 		knv.getServer(0).refresh();
 		List<OrgUnitItem> ouList = knv.getServer(0).getOrgUnits();
-		Assert.assertEquals("BZ1269106", 1, ouList.size());
+		Assert.assertEquals(1, ouList.size());
 		Assert.assertTrue(ouList.get(0).getName().contains("Server returned"));
 	}
 }

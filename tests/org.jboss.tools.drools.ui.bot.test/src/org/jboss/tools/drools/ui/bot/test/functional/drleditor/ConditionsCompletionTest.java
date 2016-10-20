@@ -16,10 +16,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-/*
- * TODO: accumulate, from, and/or, exists, forall, entry-points, windows
- * TODO: named consequences, inline cast, grouped accessors
- */
 @Runtime(type = RuntimeReqType.DROOLS)
 @RunWith(RedDeerSuite.class)
 public class ConditionsCompletionTest extends DrlCompletionParent {

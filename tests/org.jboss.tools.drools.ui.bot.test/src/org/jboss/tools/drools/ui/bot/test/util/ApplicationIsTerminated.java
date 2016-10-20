@@ -13,8 +13,6 @@ public class ApplicationIsTerminated extends AbstractWaitCondition {
 	}
 
 	public boolean test() {
-		// TODO Please verify if it is a correct implementation
-		// return console.getTitle().contains("<terminated>");
 		console.activate();
 		return new DefaultLabel().getText().contains("<terminated>");
 	}

@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
@@ -79,6 +80,7 @@ public abstract class DrlCompletionParent extends TestParent {
 
 	protected void selectFromContentAssist(RuleEditor editor, String line) {
 		ContentAssist assist = editor.createContentAssist();
+		WaitUntil.sleep(TimePeriod.SHORT);
 		List<String> items = assist.getItems();
 
 		Assert.assertTrue(String.format("Could not find '%s' in content assist (%s).", line, items),

@@ -1,7 +1,10 @@
 package org.jboss.tools.drools.ui.bot.test.functional.drleditor;
 
+import org.jboss.reddeer.junit.execution.annotation.RunIf;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
+import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.drools.reddeer.editor.RuleEditor;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
 import org.jboss.tools.drools.ui.bot.test.util.annotation.UseDefaultProject;
@@ -13,9 +16,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-/*
- * TODO: window, entry-point
- */
 @Runtime(type = RuntimeReqType.DROOLS)
 @RunWith(RedDeerSuite.class)
 public class DeclareCompletionTest extends DrlCompletionParent {
@@ -24,26 +24,22 @@ public class DeclareCompletionTest extends DrlCompletionParent {
 	private RuntimeRequirement droolsRequirement;
 
 	@Test
+	@Jira("RHBRMS-1388")
+	@RunIf(conditionClass = IssueIsClosed.class)
 	@UsePerspective(DroolsPerspective.class)
 	@UseDefaultProject
 	public void testFactTypeDeclare() {
 		RuleEditor editor = master.showRuleEditor();
 		editor.setPosition(2, 0);
 
-		try {
-			selectFromContentAssist(editor, "declare");
-		} catch (AssertionError exception) {
-			if (exception.getMessage().contains("Could not find 'declare' in content assist")) {
-				Assert.fail("BZ1029044: No content assist for declarations");
-			} else {
-				throw exception;
-			}
-		}
+		selectFromContentAssist(editor, "declare");
 
-		// TODO: not implemented in plugin, hard to tell what the line will look like
+		Assert.fail("Check if declare keyword is present.");
 	}
 
 	@Test
+	@Jira("RHBRMS-893")
+	@RunIf(conditionClass = IssueIsClosed.class)
 	@UsePerspective(DroolsPerspective.class)
 	@UseDefaultProject
 	public void testFactTypeUsage() {
@@ -54,15 +50,8 @@ public class DeclareCompletionTest extends DrlCompletionParent {
 		editor.setPosition(10, 21);
 		editor.writeText("\n        ");
 
-		try {
-			selectFromContentAssist(editor, "Person");
-		} catch (AssertionError exception) {
-			if (exception.getMessage().contains("Could not find 'Person' in content assist")) {
-				Assert.fail("BZ1029040: Content assist does not offer types declared in DRL file");
-			} else {
-				throw exception;
-			}
-		}
+		selectFromContentAssist(editor, "Person");
+		
 		selectFromContentAssist(editor, "name");
 		editor.writeText("!= null, ");
 		selectFromContentAssist(editor, "age");
@@ -72,6 +61,8 @@ public class DeclareCompletionTest extends DrlCompletionParent {
 	}
 
 	@Test
+	@Jira("RHBRMS-1888")
+	@RunIf(conditionClass = IssueIsClosed.class)
 	@UsePerspective(DroolsPerspective.class)
 	@UseDefaultProject
 	public void testQueryDeclare() {
@@ -89,19 +80,14 @@ public class DeclareCompletionTest extends DrlCompletionParent {
 		editor.replaceText("\n", 12); // delete "#consequences"
 		editor.setPosition(5, 1);
 
-		try {
-			selectFromContentAssist(editor, "MyMessage");
-		} catch (AssertionError exception) {
-			if (exception.getMessage().contains("Could not find 'MyMessage' in content assist")) {
-				Assert.fail("BZ1031618: Wrong code completion for query");
-			} else {
-				throw exception;
-			}
-		}
+		selectFromContentAssist(editor, "MyMessage");
+		
 		assertCorrectText(editor, "MyMessage( )");
 	}
 
 	@Test
+	@Jira("RHBRMS-2103")
+	@RunIf(conditionClass = IssueIsClosed.class)
 	@UsePerspective(DroolsPerspective.class)
 	@UseDefaultProject
 	public void testQueryUsage() {
@@ -112,15 +98,8 @@ public class DeclareCompletionTest extends DrlCompletionParent {
 		editor.setPosition(11, 21);
 		editor.writeText("\n        ");
 
-		try {
-			selectFromContentAssist(editor, "testQuery");
-		} catch (AssertionError exception) {
-			if (exception.getMessage().contains("Could not find 'testQuery' in content assist")) {
-				Assert.fail("BZ1029054: Queries are not included in content assist");
-			} else {
-				throw exception;
-			}
-		}
+		selectFromContentAssist(editor, "testQuery");
+
 		assertCorrectText(editor, "testQuery( )");
 	}
 

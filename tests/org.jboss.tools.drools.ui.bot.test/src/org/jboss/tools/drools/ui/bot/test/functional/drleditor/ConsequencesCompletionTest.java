@@ -16,9 +16,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-/*
- * TODO: modify, insert, retract
- */
 @Runtime(type = RuntimeReqType.DROOLS)
 @RunWith(RedDeerSuite.class)
 public class ConsequencesCompletionTest extends DrlCompletionParent {
