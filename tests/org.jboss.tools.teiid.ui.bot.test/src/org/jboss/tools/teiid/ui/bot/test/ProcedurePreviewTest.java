@@ -12,7 +12,6 @@ import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.junit.execution.annotation.RunIf;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
@@ -50,9 +49,6 @@ public class ProcedurePreviewTest {
 		
 		explorer.importProject(PROJECT_NAME);
 		explorer.changeConnectionProfile(PROFILE_NAME, PROJECT_NAME, MODEL_SRC_NAME);
-		explorer.createDataSource("Use Connection Profile Info", PROFILE_NAME, PROJECT_NAME, MODEL_SRC_NAME);
-		explorer.setJndiName(MODEL_SRC_NAME,PROJECT_NAME, MODEL_SRC_NAME);
-		new ShellMenu("File", "Save All").select();
 	}
 
 	@Before
@@ -89,7 +85,7 @@ public class ProcedurePreviewTest {
 	 * TODO how to obtain this jar
 	 */
 	@Test
-	@Jira("TEIIDDES-2677")
+	@Jira("TEIIDDES-2880")
 	@RunIf(conditionClass = IssueIsClosed.class)
 	public void relViewUDF() {
 		// import lib/MyTestUDF.jar
