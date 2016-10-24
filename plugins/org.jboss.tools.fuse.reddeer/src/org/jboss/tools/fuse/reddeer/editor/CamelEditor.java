@@ -39,6 +39,7 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.widgets.Widget;
 import org.jboss.tools.common.reddeer.MouseAWTManager;
 import org.jboss.tools.common.reddeer.XPathEvaluator;
+import org.jboss.tools.common.reddeer.ext.PropertiesViewExt;
 import org.jboss.tools.common.reddeer.widget.LabeledCComboExt;
 import org.jboss.tools.common.reddeer.widget.LabeledComboExt;
 import org.jboss.tools.common.reddeer.widget.LabeledTextExt;
@@ -77,6 +78,31 @@ public class CamelEditor extends GEFEditor {
 	public void close() {
 		save();
 		super.close();
+	}
+
+	/**
+	 * <p>
+	 * Adds a component into/before/after another component in the Camel Editor.
+	 * </p>
+	 * <p>
+	 * <b>Note:</b>This methods clicks on the center of the target component. It may cause problems in case of
+	 * containers components (e.g. Route).
+	 * </p>
+	 * <p>
+	 * <b>Note:</b>It does not wait until a new node is in the Camel Editor.
+	 * </p>
+	 * 
+	 * @param name
+	 *            Component name in Palette view
+	 * @param parent
+	 *            Parent name in the Camel Editor
+	 */
+	public void addComponent(String name, String parent) {
+		log.debug("Adding '" + name + "' component into the Camel Editor");
+		new PaletteView().open();
+		Palette palette = ViewerHandler.getInstance().getPalette(viewer);
+		palette.activateTool(name);
+		new CamelComponentEditPart(parent).click();
 	}
 
 	/**
@@ -174,8 +200,9 @@ public class CamelEditor extends GEFEditor {
 	public void deleteCamelComponent(String component) {
 
 		log.debug("Removing '" + component + "' component from the Camel Editor");
-		new CamelComponentEditPart(component).select();
-		new ContextMenu("Remove").select();
+		CamelComponentEditPart c = new CamelComponentEditPart(component);
+		c.select();
+		c.delete();
 	}
 
 	/**
@@ -447,7 +474,7 @@ public class CamelEditor extends GEFEditor {
 	public void setProperty(String component, String name, String value) {
 
 		log.debug("Setting '" + value + "' as the property '" + name + "' of selelected component in the Camel Editor");
-		PropertiesView properties = new PropertiesView();
+		PropertiesViewExt properties = new PropertiesViewExt();
 		properties.open();
 		selectEditPart(component);
 		properties.activate();

@@ -78,7 +78,7 @@ public class RouteManipulationTest extends DefaultTest {
 	 * </li>
 	 * <li>Run a Project as Local Camel Context without tests</li>
 	 * <li>open JMX Navigator view</li>
-	 * <li>select the node "Local Camel Context", "Camel", "camelContext..."
+	 * <li>select the node "Local Camel Context", "Camel", "cbr-example-context"
 	 * </li>
 	 * <li>select the context menu option Edit Routes</li>
 	 * <li>set focus on the recently opened Camel Editor</li>
@@ -101,11 +101,11 @@ public class RouteManipulationTest extends DefaultTest {
 	 * INFO YYY</li>
 	 * <li>open JMX Navigator view</li>
 	 * <li>try to select the node "Local Camel Context", "Camel",
-	 * "camelContext", "Routes", "_route1", "file:src/data?noop=true", "Choice",
+	 * "cbr-example-context", "Routes", "_route1", "file:src/data?noop=true", "Choice",
 	 * "When /person/city = 'London'", "Log _log1", "file:target/messages/uk"
 	 * (successful)</li>
 	 * <li>try to select the node "Local Camel Context", "Camel",
-	 * "camelContext", "Routes", "_route1", "file:src/data?noop=true", "Choice",
+	 * "cbr-example-context", "Routes", "_route1", "file:src/data?noop=true", "Choice",
 	 * "Otherwise"" (unsuccessful)</li>
 	 * </ol>
 	 */
@@ -124,9 +124,9 @@ public class RouteManipulationTest extends DefaultTest {
 		FuseJMXNavigator jmx = new FuseJMXNavigator();
 		jmx.getNode("Local Camel Context", "Camel");
 		AbstractWait.sleep(TimePeriod.NORMAL);
-		assertNotNull(jmx.getNode("Local Camel Context", "Camel", "camelContext", "Routes", "cbr-route",
+		assertNotNull(jmx.getNode("Local Camel Context", "Camel", "cbr-example-context", "Routes", "cbr-route",
 				"file:src/main/data?noop=true", "Log _log1", "Choice", "Log _log5"));
-		jmx.getNode("Local Camel Context", "Camel", "camelContext").select();
+		jmx.getNode("Local Camel Context", "Camel", "cbr-example-context").select();
 		new ContextMenu("Edit Routes").select();
 		editor = new CamelEditor(new DefaultEditor(new RegexMatcher("Remote CamelContext:.*")).getTitle());
 		assertTrue(editor.isComponentAvailable("Log _log1"));
@@ -145,10 +145,10 @@ public class RouteManipulationTest extends DefaultTest {
 		EditorManipulator.copyFileContentToCamelXMLEditor("resources/camel-context-route-edit.xml");
 		CamelEditor.switchTab("Design");
 		new WaitUntil(new ConsoleHasText("INFO  YYY"));
-		assertNotNull(jmx.getNode("Local Camel Context", "Camel", "camelContext", "Routes", "cbr-route",
+		assertNotNull(jmx.getNode("Local Camel Context", "Camel", "cbr-example-context", "Routes", "cbr-route",
 				"file:src/main/data?noop=true", "Log _log1", "Choice", "When /order:order/order:customer/order:country = 'UK'", "Log _log2",
 				"file:work/cbr/output/uk"));
-		assertNull(jmx.getNode("Local Camel Context", "Camel", "camelContext", "Routes", "cbr-route",
+		assertNull(jmx.getNode("Local Camel Context", "Camel", "cbr-example-context", "Routes", "cbr-route",
 				"file:src/main/data?noop=true", "Choice", "Otherwise"));
 		assertTrue(LogGrapper.getPluginErrors("fuse").size() == 0);
 	}
@@ -162,19 +162,19 @@ public class RouteManipulationTest extends DefaultTest {
 	 * <li>create a new project from 'Content Based Router' template</li>
 	 * <li>Run a Project as Local Camel Context without tests</li>
 	 * <li>open JMX Navigator view</li>
-	 * <li>select the node "Local Camel Context", "Camel", "camel-*"</li>
+	 * <li>select the node "Local Camel Context", "Camel", "cbr-example-context"</li>
 	 * <li>select the context menu option Start Tracing</li>
 	 * <li>check if the context menu option was changed into Stop Tracing
 	 * Context</li>
 	 * <li>in Project Explorer open "camel-spring", "src", "main", "data"</li>
-	 * <li>in JMX Navigator open "Local Camel Context", "Camel", "camel-*",
+	 * <li>in JMX Navigator open "Local Camel Context", "Camel", "cbr-example-context",
 	 * "Endpoints", "file"</li>
 	 * <li>perform drag&drop order1.xml from Project Explorer to
 	 * "work/cbr/input" in JMX Navigator</li>
 	 * <li>perform drag&drop order2.xml from Project Explorer to
 	 * "work/cbr/input" in JMX Navigator</li>
 	 * <li>open Message View</li>
-	 * <li>in JMX Navigator open "Local Camel Context", "Camel", "camel-*"</li>
+	 * <li>in JMX Navigator open "Local Camel Context", "Camel", "cbr-example-context"</li>
 	 * <li>check if the messages in the Message View corresponds with sent
 	 * messages</li>
 	 * </ol>
@@ -191,27 +191,27 @@ public class RouteManipulationTest extends DefaultTest {
 		FuseJMXNavigator jmx = new FuseJMXNavigator();
 		jmx.getNode("Local Camel Context", "Camel");
 		AbstractWait.sleep(TimePeriod.NORMAL);
-		jmx.getNode("Local Camel Context", "Camel", "camelContext").select();
+		jmx.getNode("Local Camel Context", "Camel", "cbr-example-context").select();
 		new ContextMenu("Start Tracing").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
-		jmx.getNode("Local Camel Context", "Camel", "camelContext").select();
+		jmx.getNode("Local Camel Context", "Camel", "cbr-example-context").select();
 		new ContextMenu("Stop Tracing Context");
 
 		String[] from = { "camel-spring", "src", "main", "data", "order1.xml" };
 		String[] from2 = { "camel-spring", "src", "main", "data", "order2.xml" };
-		String[] to = { "Local Camel Context", "Camel", "camelContext", "Endpoints", "file", "work/cbr/input" };
+		String[] to = { "Local Camel Context", "Camel", "cbr-example-context", "Endpoints", "file", "work/cbr/input" };
 		MessagesView msg = new MessagesView();
 		msg.open();
-		jmx.refreshNode("Local Camel Context", "Camel", "camelContext");
-		jmx.getNode("Local Camel Context", "Camel", "camelContext", "Endpoints", "file", "work/cbr/output/us").select();
+		jmx.refreshNode("Local Camel Context", "Camel", "cbr-example-context");
+		jmx.getNode("Local Camel Context", "Camel", "cbr-example-context", "Endpoints", "file", "work/cbr/output/us").select();
 		new TracingDragAndDropManager(from, to).performDragAndDrop();
 		new WaitUntil(new ConsoleHasText("to another country"), TimePeriod.getCustom(60));
-		jmx.getNode("Local Camel Context", "Camel", "camelContext", "Endpoints", "file", "work/cbr/output/us").select();
+		jmx.getNode("Local Camel Context", "Camel", "cbr-example-context", "Endpoints", "file", "work/cbr/output/us").select();
 		new TracingDragAndDropManager(from2, to).performDragAndDrop();
 
 		msg = new MessagesView();
 		msg.open();
-		jmx.getNode("Local Camel Context", "Camel", "camelContext").select();
+		jmx.getNode("Local Camel Context", "Camel", "cbr-example-context").select();
 		assertEquals(12, msg.getAllMessages().size());
 		assertEquals("_log1", msg.getMessage(2).getTraceNode());
 		assertEquals("_choice1", msg.getMessage(3).getTraceNode());
