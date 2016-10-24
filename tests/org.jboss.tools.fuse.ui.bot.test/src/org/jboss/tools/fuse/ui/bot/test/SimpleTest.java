@@ -30,6 +30,7 @@ import org.junit.runner.RunWith;
 public class SimpleTest extends DefaultTest {
 
 	private static Logger log = Logger.getLogger(SimpleTest.class);
+	private static String PROJECT_NAME = "cbr @1";
 
 	/**
 	 * <p>
@@ -44,9 +45,9 @@ public class SimpleTest extends DefaultTest {
 	public void testCreateFuseProject() {
 
 		log.info("Create a new Fuse project from 'Content Based Router'");
-		ProjectFactory.newProject("cbr").template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();
+		ProjectFactory.newProject(PROJECT_NAME).template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();
 		try {
-			new ProjectExplorer().getProject("cbr");
+			new ProjectExplorer().getProject(PROJECT_NAME);
 		} catch (EclipseLayerException ex) {
 			fail("Created project is not present in Project Explorer");
 		}
