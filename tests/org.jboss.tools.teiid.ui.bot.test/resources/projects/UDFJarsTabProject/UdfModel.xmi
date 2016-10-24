@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ASCII"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:diagram="http://www.metamatrix.com/metamodels/Diagram" xmlns:mmcore="http://www.metamatrix.com/metamodels/Core" xmlns:relational="http://www.metamatrix.com/metamodels/Relational" xmlns:transformation="http://www.metamatrix.com/metamodels/Transformation">
-  <mmcore:ModelAnnotation xmi:uuid="mmuuid:5325be32-4256-4f65-a902-192a5d25c30f" primaryMetamodelUri="http://www.metamatrix.com/metamodels/Relational" modelType="VIRTUAL" ProducerName="Teiid Designer" ProducerVersion="10.0.1.Final-v20160713-1749-B16">
+  <mmcore:ModelAnnotation xmi:uuid="mmuuid:5325be32-4256-4f65-a902-192a5d25c30f" primaryMetamodelUri="http://www.metamatrix.com/metamodels/Relational" modelType="VIRTUAL" ProducerName="Teiid Designer" ProducerVersion="10.0.2.Beta1-v20161011-2001-B53">
     <modelImports xmi:uuid="mmuuid:d30f990c-b765-4d9f-98b0-e9756ca0b934" name="XMLSchema" modelLocation="http://www.w3.org/2001/XMLSchema" modelType="TYPE" primaryMetamodelUri="http://www.eclipse.org/xsd/2002/XSD"/>
     <modelImports xmi:uuid="mmuuid:f6de92f7-32aa-43ca-8e3d-1b5cb5fbf282" name="Products" modelLocation="Products.xmi" uuid="mmuuid:9d811316-db07-4d8b-9a22-31ebf98008f7" modelType="PHYSICAL" primaryMetamodelUri="http://www.metamatrix.com/metamodels/Relational"/>
   </mmcore:ModelAnnotation>
@@ -679,8 +679,8 @@
     </annotations>
     <annotations xmi:uuid="mmuuid:2b731804-3890-4001-86ec-334b3e12fe62" annotatedObject="mmuuid/93b00e8e-25b3-42f4-91fd-90857a0ca224">
       <tags xmi:uuid="mmuuid:7d59da34-17ca-42d6-a2b8-df8b4be2426e" key="relational:function-category" value="TEST_FUNCTIONS"/>
-      <tags xmi:uuid="mmuuid:0920cad8-9a1c-43c5-bf21-80216dc40d92" key="relational:java-class" value="userdefinedfunctions.ConcatNull"/>
-      <tags xmi:uuid="mmuuid:3f25265b-264f-4120-b487-d718b8cf9f9f" key="relational:java-method" value="concatNull"/>
+      <tags xmi:uuid="mmuuid:0920cad8-9a1c-43c5-bf21-80216dc40d92" key="relational:java-class" value="userdefinedfunctions.MyConcatNull"/>
+      <tags xmi:uuid="mmuuid:3f25265b-264f-4120-b487-d718b8cf9f9f" key="relational:java-method" value="myConcatNull"/>
       <tags xmi:uuid="mmuuid:41859cd1-e801-4ec8-8df7-2386eb59b283" key="relational:udfJarPath" value="lib/MyTestUdf-1.0-SNAPSHOT.jar"/>
     </annotations>
   </mmcore:AnnotationContainer>

@@ -21,7 +21,6 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.runtime.reddeer.condition.JobIsKilled;
@@ -81,15 +80,6 @@ public class PreviewModelTest {
 		explorer.importProject(PROJECT_NAME);
 		explorer.changeConnectionProfile(ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER, PROJECT_NAME, NAME_ORACLE_MODEL);
 		explorer.changeConnectionProfile(ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER, PROJECT_NAME, NAME_SQL_MODEL);
-		explorer.createDataSource("Use Connection Profile Info", 
-							      ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER, 
-							      PROJECT_NAME, NAME_ORACLE_MODEL);
-		explorer.createDataSource("Use Connection Profile Info",
-								  ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER,
-								  PROJECT_NAME, NAME_SQL_MODEL);
-		explorer.setJndiName(NAME_ORACLE_MODEL,PROJECT_NAME, NAME_ORACLE_MODEL);
-		explorer.setJndiName(NAME_SQL_MODEL,PROJECT_NAME, NAME_SQL_MODEL);
-		new ShellMenu("File", "Save All").select();
 	}
 	
 	@Before
