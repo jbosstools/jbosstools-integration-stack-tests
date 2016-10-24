@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
@@ -12,18 +13,18 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 
-public class MetadataModelWizard extends NewWizardDialog {	
-	
+public class MetadataModelWizard extends NewWizardDialog {
+
 	public static final String DIALOG_TITLE = "New Model Wizard";
-	
-	public class ModelType { 
+
+	public class ModelType {
 		public static final String SOURCE = "Source Model";
 		public static final String VIEW = "View Model";
 		public static final String DATATYPE = "Datatype Model";
 		public static final String EXTENSION = "Model Class Extension";
 		public static final String FUNCTION = "User Defined Function";
 	}
-	
+
 	public class ModelClass {
 		public static final String RELATIONAL = "Relational";
 		public static final String XML = "XML (Deprecated)";
@@ -32,7 +33,7 @@ public class MetadataModelWizard extends NewWizardDialog {
 		public static final String MODEL_EXTENSION = "Model Extension (Deprecated)";
 		public static final String FUNCTION = "Function (Deprecated)";
 	}
-	
+
 	public class ModelBuilder {
 		public static final String TRANSFORM_EXISTING = "Transform from an existing model";
 		public static final String COPY_EXISTING = "Copy from an existing model of the same model class";
@@ -44,17 +45,17 @@ public class MetadataModelWizard extends NewWizardDialog {
 		super("Teiid Designer", "Teiid Metadata Model");
 		log.info("Metadata model wizard is opened");
 	}
-	
-	public static MetadataModelWizard getInstance(){
+
+	public static MetadataModelWizard getInstance() {
 		return new MetadataModelWizard();
 	}
-	
-	public static MetadataModelWizard openWizard(){
+
+	public static MetadataModelWizard openWizard() {
 		MetadataModelWizard wizard = new MetadataModelWizard();
 		wizard.open();
 		return wizard;
 	}
-	
+
 	/**
 	 * use nextPage()
 	 */
@@ -63,13 +64,13 @@ public class MetadataModelWizard extends NewWizardDialog {
 	public void next() {
 		super.next();
 	}
-	
+
 	public MetadataModelWizard nextPage() {
 		log.info("Go to next wizard page");
 		super.next();
 		return this;
 	}
-	
+
 	public MetadataModelWizard activate() {
 		new DefaultShell(DIALOG_TITLE);
 		return this;
@@ -92,9 +93,10 @@ public class MetadataModelWizard extends NewWizardDialog {
 		new LabeledText("Model Name:").setText(modelName);
 		return this;
 	}
-	
+
 	/**
-	 * @param modelClass MetadataModelWizard.ModelClass.*
+	 * @param modelClass
+	 *            MetadataModelWizard.ModelClass.*
 	 */
 	public MetadataModelWizard selectModelClass(String modelClass) {
 		activate();
@@ -104,17 +106,19 @@ public class MetadataModelWizard extends NewWizardDialog {
 	}
 
 	/**
-	 * @param modelType MetadataModelWizard.ModelType.*
+	 * @param modelType
+	 *            MetadataModelWizard.ModelType.*
 	 */
 	public MetadataModelWizard selectModelType(String modelType) {
 		activate();
-		log.info("Set model type to '" + modelType+ "'");
+		log.info("Set model type to '" + modelType + "'");
 		new LabeledCombo("Model Type:").setSelection(modelType);
 		return this;
 	}
 
 	/**
-	 * @param modelBuilder MetadataModelWizard.ModelBuilder.*
+	 * @param modelBuilder
+	 *            MetadataModelWizard.ModelBuilder.*
 	 */
 	public MetadataModelWizard selectModelBuilder(String modelBuilder) {
 		activate();
@@ -151,11 +155,14 @@ public class MetadataModelWizard extends NewWizardDialog {
 		new DefaultShell("Select a Model File");
 		new DefaultTreeItem(path).select();
 		new PushButton("OK").click();
+		if (new ShellWithTextIsAvailable("").test()) {
+			new PushButton("OK").click();
+		}
 		activate();
 		return this;
 	}
-	
-	public MetadataModelWizard setWsdlFileFromWorkspace(String... path){
+
+	public MetadataModelWizard setWsdlFileFromWorkspace(String... path) {
 		activate();
 		new PushButton("Workspace...").click();
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -165,8 +172,8 @@ public class MetadataModelWizard extends NewWizardDialog {
 		activate();
 		return this;
 	}
-	
-	public MetadataModelWizard setXmlModelNameForWebService(String name){
+
+	public MetadataModelWizard setXmlModelNameForWebService(String name) {
 		activate();
 		new LabeledText("XML Model:").setText(name);
 		return this;
