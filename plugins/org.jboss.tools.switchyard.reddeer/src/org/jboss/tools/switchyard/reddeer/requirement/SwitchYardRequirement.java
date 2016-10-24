@@ -105,14 +105,7 @@ public class SwitchYardRequirement implements Requirement<SwitchYard>, CustomCon
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.activate();
-		for (Project project : pe.getProjects()) {
-			try {
-				DeleteUtils.forceProjectDeletion(project, true);
-			} catch (Exception e) {
-				LOGGER.debug("Delete project '" + project.getName() + "' via Eclipse API ");
-				org.jboss.reddeer.direct.project.Project.delete(project.getName(), true, true);
-			}
-		}
+		pe.deleteAllProjects();
 	}
 
 	@Override
