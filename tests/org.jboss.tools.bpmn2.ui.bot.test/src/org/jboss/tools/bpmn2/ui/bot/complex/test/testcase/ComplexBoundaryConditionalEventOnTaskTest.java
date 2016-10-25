@@ -36,6 +36,8 @@ public class ComplexBoundaryConditionalEventOnTaskTest extends JBPM6ComplexTest 
 
 	@TestPhase(phase = Phase.RUN)
 	public void run(KieSession kSession) {
+		kSession = kSession.getKieBase().newKieSession();
+		
 		PersistenceWorkItemHandler workItemHandler = new PersistenceWorkItemHandler();
 		kSession.getWorkItemManager().registerWorkItemHandler("Human Task", workItemHandler);
 

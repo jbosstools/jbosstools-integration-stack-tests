@@ -12,12 +12,9 @@
 	<artifactId>org.jboss.tools.bpmn2.ui.bot.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<droolsjbpm.site>https://repository.jboss.org/nexus/content/groups/public-jboss/</droolsjbpm.site>
+		<droolsjbpm.site>http://download.lab.bos.redhat.com/brewroot/repos/jb-bxms-6.4-build/latest/maven/</droolsjbpm.site>
 		<systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.skip=false -Dtest.configurations.dir=resources/ -Dgraphiti.properties=${graphiti.properties}</systemProperties>
-		<droolsjbpm.version>6.3.0.Beta2</droolsjbpm.version>
-		<droolsjbpm.feature.version>6.2.0.Final</droolsjbpm.feature.version>
-		<bpmn2.modeler.version>1.2.1</bpmn2.modeler.version>
-		<bpmn2.metamodel.version>1.2.1</bpmn2.metamodel.version>
+		<droolsjbpm.version>6.5.0.CR2-redhat-2</droolsjbpm.version>
 		<test.class>JBPM6ComplexTests</test.class>
 		<graphiti.properties>true</graphiti.properties>
 		<customization.file>resources/settings/plugin_customization.ini</customization.file>
@@ -108,29 +105,24 @@
 				<dependency>
 				  <type>p2-installable-unit</type>
 				  <artifactId>org.eclipse.bpmn2.modeler.feature.group</artifactId>
-				  <version>${bpmn2.modeler.version}</version>
 				</dependency>
 				<dependency>
 				  <type>p2-installable-unit</type>
 				  <artifactId>org.eclipse.bpmn2.modeler.runtime.jboss.feature.group</artifactId>
-				  <version>${bpmn2.modeler.version}</version>
 				</dependency>
 				<dependency>
 				  <type>p2-installable-unit</type>
 				  <artifactId>org.eclipse.bpmn2.feature.feature.group</artifactId>
-				  <version>${bpmn2.metamodel.version}</version>
 				</dependency>
 				
 				<!-- jBPM wizard  -->
 				<dependency>
 				  <type>p2-installable-unit</type>
 				  <artifactId>org.jbpm.eclipse.feature.feature.group</artifactId>
-				  <version>${droolsjbpm.feature.version}</version>
 				</dependency>
 				<dependency>
 				  <type>p2-installable-unit</type>
 				  <artifactId>org.drools.eclipse.feature.feature.group</artifactId>
-				  <version>${droolsjbpm.feature.version}</version>
 				</dependency>
 				
 				<!-- This entry should enable creating of default JDK on Mac -->

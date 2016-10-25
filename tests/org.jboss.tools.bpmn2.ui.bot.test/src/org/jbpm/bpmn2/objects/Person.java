@@ -1,25 +1,18 @@
 package org.jbpm.bpmn2.objects;
 
+import java.io.Serializable;
+
 /**
  * Class used in editor tests.
  */
-public class Person {
+public class Person implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private String name;
-
-	/**
-	 * 
-	 */
-	public Person() {
-	}
-
-	/**
-	 * 
-	 * @param name
-	 */
-	public Person(String name) {
-		this.name = name;
-	}
 
 	/**
 	 * 
@@ -35,11 +28,6 @@ public class Person {
 	 */
 	public String getName() {
 		return name;
-	}
-
-	public static String getClassBody() {
-		return "private String name; public Person() {} public Person(String name) { this.name = name; }"
-				+ "public void setName(String name) {this.name = name;}" + "public String getName() {return name;}";
 	}
 
 }

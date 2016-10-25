@@ -37,10 +37,11 @@ public class ComplexDesignerSignalEventTest extends JBPM6ComplexTest {
 	@TestPhase(phase = Phase.RUN)
 	public void run(KieSession kSession) {
 		TriggeredNodesListener triggered = new TriggeredNodesListener(
-				Arrays.asList("Sart", "End"), new ArrayList<String>());
+				Arrays.asList("Start", "End"), new ArrayList<String>());
 		triggered.setExpectedFinalProcessState(ProcessInstance.STATE_COMPLETED);
 		kSession.addEventListener(triggered);
 		
 		kSession.signalEvent("com.sample.MySignal", "any data");
+		assertEquals(true, triggered.wasCompletitionReached());
 	}
 }
