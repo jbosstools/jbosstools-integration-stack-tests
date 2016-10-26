@@ -15,6 +15,7 @@ import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexConditionalStar
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexDataObjectTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexDefaultSkippableTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexDefinitionViaElementTest;
+import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexDesignerSignalEventTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexErrorBoundaryEventOnTaskTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexErrorEndEventTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexEventBasedSplitTest;
@@ -61,7 +62,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	ComplexConditionalStartTest.class,
 	ComplexDataObjectTest.class,
 	ComplexDefaultSkippableTest.class,
-	ComplexDefinitionViaElementTest.class, 
+	ComplexDefinitionViaElementTest.class,
+	ComplexDesignerSignalEventTest.class,
 	ComplexErrorBoundaryEventOnTaskTest.class,
 	ComplexErrorEndEventTest.class,
 	ComplexEventBasedSplitTest.class,
