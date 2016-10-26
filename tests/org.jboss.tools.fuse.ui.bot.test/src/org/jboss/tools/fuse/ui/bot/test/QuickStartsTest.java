@@ -5,15 +5,20 @@ import static org.jboss.tools.runtime.reddeer.requirement.ServerReqType.Fuse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.List;
+
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.common.reddeer.JiraIssue;
+import org.jboss.tools.common.reddeer.LogGrapper;
 import org.jboss.tools.common.reddeer.preference.ConsolePreferencePage;
 import org.jboss.tools.common.reddeer.view.ErrorLogView;
 import org.jboss.tools.common.reddeer.wizard.ImportMavenWizard;
@@ -105,8 +110,7 @@ public class QuickStartsTest {
 
 		String quickstart = serverRequirement.getConfig().getServerBase().getHome() + "/quickstarts/beginner/camel-cbr";
 		new ImportMavenWizard().importProject(quickstart);
-		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
-		assertTrue(new ProblemsView().getProblems(ProblemType.ERROR).size() == 0);
+		assertTrue("There are some errors in Error Log", LogGrapper.getPluginErrors("fuse").size() == 0);
 		CamelProject project = new CamelProject("beginner-camel-cbr");
 		project.enableCamelNature();
 		FuseServerManipulator.addModule(serverRequirement.getConfig().getName(), "beginner-camel-cbr");
@@ -115,6 +119,7 @@ public class QuickStartsTest {
 		} catch (WaitTimeoutExpiredException e) {
 			fail("Project 'beginner-camel-cbr' was not sucessfully deployed!");
 		}
+		checkProblemsView();
 	}
 
 	/**
@@ -136,8 +141,7 @@ public class QuickStartsTest {
 		String quickstart = serverRequirement.getConfig().getServerBase().getHome()
 				+ "/quickstarts/beginner/camel-eips";
 		new ImportMavenWizard().importProject(quickstart);
-		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
-		assertTrue(new ProblemsView().getProblems(ProblemType.ERROR).size() == 0);
+		assertTrue("There are some errors in Error Log", LogGrapper.getPluginErrors("fuse").size() == 0);
 		CamelProject project = new CamelProject("beginner-camel-eips");
 		project.enableCamelNature();
 		FuseServerManipulator.addModule(serverRequirement.getConfig().getName(), "beginner-camel-eips");
@@ -146,6 +150,7 @@ public class QuickStartsTest {
 		} catch (WaitTimeoutExpiredException e) {
 			fail("Project 'beginner-camel-eips' was not sucessfully deployed!");
 		}
+		checkProblemsView();
 	}
 
 	/**
@@ -167,8 +172,7 @@ public class QuickStartsTest {
 		String quickstart = serverRequirement.getConfig().getServerBase().getHome()
 				+ "/quickstarts/beginner/camel-errorhandler";
 		new ImportMavenWizard().importProject(quickstart);
-		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
-		assertTrue(new ProblemsView().getProblems(ProblemType.ERROR).size() == 0);
+		assertTrue("There are some errors in Error Log", LogGrapper.getPluginErrors("fuse").size() == 0);
 		CamelProject project = new CamelProject("beginner-camel-errorhandler");
 		project.enableCamelNature();
 		FuseServerManipulator.addModule(serverRequirement.getConfig().getName(), "beginner-camel-errorhandler");
@@ -177,6 +181,7 @@ public class QuickStartsTest {
 		} catch (WaitTimeoutExpiredException e) {
 			fail("Project 'beginner-camel-errorhandler' was not sucessfully deployed!");
 		}
+		checkProblemsView();
 	}
 
 	/**
@@ -197,8 +202,7 @@ public class QuickStartsTest {
 
 		String quickstart = serverRequirement.getConfig().getServerBase().getHome() + "/quickstarts/beginner/camel-log";
 		new ImportMavenWizard().importProject(quickstart);
-		assertTrue(new ErrorLogView().getErrorMessages().size() == 0);
-		assertTrue(new ProblemsView().getProblems(ProblemType.ERROR).size() == 0);
+		assertTrue("There are some errors in Error Log", LogGrapper.getPluginErrors("fuse").size() == 0);
 		CamelProject project = new CamelProject("beginner-camel-log");
 		project.enableCamelNature();
 		FuseServerManipulator.addModule(serverRequirement.getConfig().getName(), "beginner-camel-log");
@@ -207,5 +211,18 @@ public class QuickStartsTest {
 		} catch (WaitTimeoutExpiredException e) {
 			fail("Project 'beginner-camel-log' was not sucessfully deployed!");
 		}
+		checkProblemsView();
+	}
+
+	private void checkProblemsView() {
+		
+		List<Problem> problems = new ProblemsView().getProblems(ProblemType.ERROR);
+		if (problems.size() == 0) {
+			return;
+		}
+		if (problems.size() == 1 && problems.get(0).getDescription().startsWith("Referenced file contains errors (http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd).")) {
+			throw new JiraIssue("ENTESB-6115");
+		}
+		fail("There are some errors in Problems view");
 	}
 }
