@@ -21,10 +21,12 @@ import org.kie.api.runtime.process.WorkflowProcessInstance;
 @JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-ServiceTask.bpmn2", saveAs = "BPMN2-ServiceTask.bpmn2")
 public class ComplexServiceTaskTest extends JBPM6ComplexTest {
 
+	private ServiceTask service;
+	
 	@TestPhase(phase = Phase.MODEL)
 	public void model() {
 		StartEvent start = new StartEvent("StartProcess");
-		ServiceTask service = (ServiceTask) start.append("DateService", ElementType.SERVICE_TASK);
+		service = (ServiceTask) start.append("DateService", ElementType.SERVICE_TASK);
 
 		service.setImplementation("Java");
 		service.setOperation("java.util.Date/compareTo", new Message("DateVar", "java.util.Date"),
@@ -33,6 +35,12 @@ public class ComplexServiceTaskTest extends JBPM6ComplexTest {
 		service.setServiceInputVariable("DateVar");
 		service.setServiceOutputVariable("ObjectVar");
 		service.connectTo(new EndEvent("EndProcess"));
+	}
+	
+	@TestPhase(phase = Phase.VALIDATE)
+	public void noParameterAndResultInIOTab() {
+		assertEquals(0, service.getInputParameterMappingCount());
+		assertEquals(0, service.getOutputParameterMappingCount());
 	}
 
 	@TestPhase(phase = Phase.RUN)
