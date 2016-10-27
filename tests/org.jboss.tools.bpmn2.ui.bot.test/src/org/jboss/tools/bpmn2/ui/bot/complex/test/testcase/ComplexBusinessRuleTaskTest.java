@@ -11,7 +11,7 @@ import org.jboss.tools.bpmn2.ui.bot.complex.test.TestPhase;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.JBPM6ComplexTestDefinitionRequirement.JBPM6ComplexTestDefinition;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.TestPhase.Phase;
 import org.jboss.tools.bpmn2.ui.bot.test.jbpm.JbpmAssertions;
-import org.jbpm.process.instance.event.listeners.RuleAwareProcessEventLister;
+import org.jbpm.bpmn2.objects.Person;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
 
@@ -29,10 +29,15 @@ public class ComplexBusinessRuleTaskTest extends JBPM6ComplexTest {
 
 	@TestPhase(phase = Phase.RUN)
 	public void run(KieSession kSession) {
-		kSession.addEventListener(new RuleAwareProcessEventLister());
+		Person john = new Person();
+		john.setName("John");
+		
+		kSession.insert(john);
+		
 		ProcessInstance processInstance = kSession.startProcess("BPMN2BusinessRuleTask");
-		int fired = kSession.fireAllRules();
-		assertEquals(1, fired);
+		kSession.fireAllRules();
 		JbpmAssertions.assertProcessInstanceCompleted(processInstance, kSession);
+		
+		assertEquals("john", john.getName());
 	}
 }
