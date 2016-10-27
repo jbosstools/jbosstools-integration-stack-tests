@@ -1,12 +1,13 @@
 package defaultPackge
 
 
-import org.kie.api.runtime.process.WorkflowProcessInstance;
+import org.jbpm.bpmn2.objects.Person;
 
 rule "Your First Rule" ruleflow-group "MyRuleFlow"
     when
-        WorkflowProcessInstance()
+        p : Person(name == "John")
     then
-        System.out.println("Hello");
+    	p.setName("john");
+        System.out.println("John was lower cased");
 
 end
