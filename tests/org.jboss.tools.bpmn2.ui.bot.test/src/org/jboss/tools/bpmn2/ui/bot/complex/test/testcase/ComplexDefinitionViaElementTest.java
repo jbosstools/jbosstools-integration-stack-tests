@@ -18,7 +18,7 @@ import org.jboss.tools.bpmn2.ui.bot.complex.test.JBPM6ComplexTestDefinitionRequi
 import org.jboss.tools.bpmn2.ui.bot.complex.test.TestPhase;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.TestPhase.Phase;
 
-@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-DefinitionViaElement.bpmn2", saveAs = "BPMN2-DefinitionViaElement.bpmn2")
+@JBPM6ComplexTestDefinition(projectName = "JBPM6ComplexTest", importFolder = "resources/bpmn2/model/base", openFile = "BaseBPMN2-DefinitionViaElement.bpmn2", saveAs = "BPMN2-DefinitionViaElement.bpmn2", knownIssues={"RHBPMS-4420"})
 public class ComplexDefinitionViaElementTest extends JBPM6ComplexTest {
 
 	private Signal signalDef = new Signal("ComplexSignal");
