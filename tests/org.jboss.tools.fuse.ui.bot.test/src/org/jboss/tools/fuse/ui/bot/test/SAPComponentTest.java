@@ -17,6 +17,7 @@ import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.eclipse.ui.views.log.LogMessage;
+import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
@@ -93,6 +94,9 @@ public class SAPComponentTest {
 
 	@After
 	public void removeComponent() {
+		// a workaround for FUSETOOLS-2184
+		// the Properties view must be activated before deleting a component
+		new PropertiesView().open();
 		editor = new CamelEditor(PROJECT_TYPE.getCamelContext());
 		new CamelComponentEditPart("sap").delete();
 		editor.save();
