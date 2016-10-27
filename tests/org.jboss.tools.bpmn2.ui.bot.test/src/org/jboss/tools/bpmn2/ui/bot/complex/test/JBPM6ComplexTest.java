@@ -35,7 +35,10 @@ import org.kie.api.KieBase;
 import org.kie.api.io.Resource;
 import org.kie.api.io.ResourceType;
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.KieSessionConfiguration;
+import org.kie.internal.KnowledgeBaseFactory;
 import org.kie.internal.io.ResourceFactory;
+import org.kie.internal.runtime.conf.ForceEagerActivationOption;
 import org.kie.internal.utils.KieHelper;
 
 @RunWith(RedDeerSuite.class)
@@ -175,7 +178,11 @@ public abstract class JBPM6ComplexTest {
 		resource.setResourceType(ResourceType.BPMN2);
 
 		KieBase kieBase = kieHelper.addResource(resource, ResourceType.BPMN2).build();
-		KieSession kSession = kieBase.newKieSession();
+		
+		KieSessionConfiguration conf = KnowledgeBaseFactory.newKnowledgeSessionConfiguration();
+		conf.setOption(ForceEagerActivationOption.YES);
+
+		KieSession kSession = kieBase.newKieSession(conf, null);
 
 		return kSession;
 	}
