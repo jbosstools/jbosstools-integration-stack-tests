@@ -21,6 +21,8 @@
 		<orbit.site>http://download.eclipse.org/tools/orbit/downloads/drops/R20160520211859/repository/</orbit.site>
 		<swtbot.site>http://download.eclipse.org/technology/swtbot/releases/latest</swtbot.site>
 		<skipRequirements>${skipTests}</skipRequirements>
+		<!-- Need to specify a stable version of tycho plugin -->
+		<jbossTychoPluginsVersion>0.26.0</jbossTychoPluginsVersion>
 	</properties>
 	<modules>
 		<module>plugins</module>
