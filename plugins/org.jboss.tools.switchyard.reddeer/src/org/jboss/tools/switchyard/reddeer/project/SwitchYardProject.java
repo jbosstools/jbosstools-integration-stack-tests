@@ -7,11 +7,13 @@ import javax.xml.transform.stream.StreamResult;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.direct.preferences.PreferencesUtil;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
@@ -182,6 +184,9 @@ public class SwitchYardProject extends Project {
 	}
 
 	public void build() {
+		if (PreferencesUtil.isAutoBuildingOn()) {
+			throw new RedDeerException("Cannot builld a project if projects are built automatically");
+		}
 		select();
 		Menu menu = new ShellMenu("Project", "Build Project");
 		if (menu.isEnabled()) {

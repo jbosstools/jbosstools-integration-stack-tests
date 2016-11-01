@@ -11,6 +11,7 @@ import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.junit.execution.annotation.RunIf;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.jboss.reddeer.swt.impl.button.NoButton;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -31,7 +32,6 @@ import org.jboss.tools.switchyard.reddeer.preference.implementation.Implementati
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
-import org.jboss.tools.switchyard.reddeer.utils.PreferenceUtils;
 import org.jboss.tools.switchyard.reddeer.wizard.BPELServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.BPMNServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.BeanServiceWizard;
@@ -46,7 +46,6 @@ import org.jboss.tools.switchyard.reddeer.wizard.ImportFileWizard;
 import org.jboss.tools.switchyard.ui.bot.test.condition.SwitchYardRequirementSupportBPMN;
 import org.jboss.tools.switchyard.ui.bot.test.condition.SwitchYardRequirementSupportDrools;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -60,6 +59,7 @@ import org.junit.runner.RunWith;
  *
  */
 @SwitchYard
+@AutoBuilding(false)
 @RunWith(RedDeerSuite.class)
 public class SwitchYardEditorImplementationsTest {
 
@@ -76,8 +76,6 @@ public class SwitchYardEditorImplementationsTest {
 	@InjectRequirement
 	private static SwitchYardRequirement switchyardRequirement;
 
-	private static String autoBuilding;
-
 	private List<String[]> classesToDelete;
 	private List<String[]> resourcesToDelete;
 	private List<String> componentsToDelete;
@@ -85,19 +83,6 @@ public class SwitchYardEditorImplementationsTest {
 	@BeforeClass
 	public static void maximizeWorkbench() {
 		new WorkbenchShell().maximize();
-	}
-
-	@BeforeClass
-	public static void turnOffAutoBuilding() {
-		autoBuilding = PreferenceUtils.getAutoBuilding();
-		PreferenceUtils.setAutoBuilding("false");
-	}
-
-	@AfterClass
-	public static void turnBackAutoBuilding() {
-		if (autoBuilding != null) {
-			PreferenceUtils.setAutoBuilding(autoBuilding);
-		}
 	}
 
 	@BeforeClass

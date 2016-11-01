@@ -25,6 +25,7 @@ import org.jboss.reddeer.core.handler.IBeforeShellIsClosed;
 import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.core.util.Display;
 import org.jboss.reddeer.core.util.ResultRunnable;
+import org.jboss.reddeer.direct.preferences.PreferencesUtil;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.eclipse.ui.perspectives.ResourcePerspective;
 import org.jboss.reddeer.gef.api.EditPart;
@@ -38,7 +39,6 @@ import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComposite;
 import org.jboss.tools.switchyard.reddeer.preference.CompositePropertiesPage;
-import org.jboss.tools.switchyard.reddeer.utils.PreferenceUtils;
 import org.jboss.tools.switchyard.reddeer.wizard.BPELServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.BPMNServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.BeanServiceWizard;
@@ -284,7 +284,7 @@ public class SwitchYardEditor extends GEFEditor {
 
 		super.save();
 
-		if (PreferenceUtils.isAutoBuildingOn()) {
+		if (PreferencesUtil.isAutoBuildingOn()) {
 			new WaitUntil(new JobIsRunning(), TimePeriod.NORMAL, false);
 			new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		} else {

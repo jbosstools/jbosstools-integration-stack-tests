@@ -11,6 +11,7 @@ import java.util.List;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
@@ -21,7 +22,6 @@ import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.jboss.tools.switchyard.reddeer.shell.DomainPropertiesFileShell;
-import org.jboss.tools.switchyard.reddeer.utils.PreferenceUtils;
 import org.jboss.tools.switchyard.reddeer.wizard.SecurityConfigurationWizard;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -35,6 +35,7 @@ import org.junit.runner.RunWith;
  * 
  */
 @SwitchYard
+@AutoBuilding(false)
 @OpenPerspective(JavaEEPerspective.class)
 @RunWith(RedDeerSuite.class)
 public class SwitchYardEditorDomainSettingsTest {
@@ -44,19 +45,6 @@ public class SwitchYardEditorDomainSettingsTest {
 
 	@InjectRequirement
 	private static SwitchYardRequirement switchyardRequirement;
-
-	private static String autoBuilding;
-
-	@BeforeClass
-	public static void turnOffAutoBuilding() {
-		autoBuilding = PreferenceUtils.getAutoBuilding();
-		PreferenceUtils.setAutoBuilding("false");
-	}
-
-	@AfterClass
-	public static void turnBackAutoBuilding() {
-		PreferenceUtils.setAutoBuilding(autoBuilding);
-	}
 
 	@BeforeClass
 	public static void createProject() {
