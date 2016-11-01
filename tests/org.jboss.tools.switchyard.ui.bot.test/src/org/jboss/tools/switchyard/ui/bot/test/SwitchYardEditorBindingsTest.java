@@ -39,6 +39,7 @@ import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
@@ -73,7 +74,6 @@ import org.jboss.tools.switchyard.reddeer.preference.binding.BindingsPage;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
-import org.jboss.tools.switchyard.reddeer.utils.PreferenceUtils;
 import org.jboss.tools.switchyard.reddeer.wizard.ReferenceWizard;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -91,6 +91,7 @@ import org.junit.runner.RunWith;
  * 
  */
 @SwitchYard
+@AutoBuilding(false)
 @RunWith(RedDeerSuite.class)
 public class SwitchYardEditorBindingsTest {
 
@@ -122,23 +123,10 @@ public class SwitchYardEditorBindingsTest {
 		"SOAP",
 		"SQL" };
 
-	private static String autoBuilding;
-
 	private SwitchYardEditor editor;
 
 	@InjectRequirement
 	private static SwitchYardRequirement switchyardRequirement;
-
-	@BeforeClass
-	public static void turnOffAutoBuilding() {
-		autoBuilding = PreferenceUtils.getAutoBuilding();
-		PreferenceUtils.setAutoBuilding("false");
-	}
-
-	@AfterClass
-	public static void turnBackAutoBuilding() {
-		PreferenceUtils.setAutoBuilding(autoBuilding);
-	}
 
 	@BeforeClass
 	public static void maximizeWorkbench() {

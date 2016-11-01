@@ -11,6 +11,7 @@ import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.handler.WidgetHandler;
 import org.jboss.reddeer.core.reference.ReferencedComposite;
+import org.jboss.reddeer.direct.preferences.PreferencesUtil;
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.api.Combo;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
@@ -393,6 +394,9 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 
 		new WaitUntil(new SwitchYardEditorIsOpen(), TimePeriod.LONG);
 		new SwitchYardProject(name).update();
+		if (!PreferencesUtil.isAutoBuildingOn()) {
+			new SwitchYardProject(name).build();
+		}
 	}
 
 	public SwitchYardProjectWizard activate() {

@@ -4,16 +4,15 @@ import static org.junit.Assert.assertEquals;
 
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.preference.CompositePropertiesPage;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
-import org.jboss.tools.switchyard.reddeer.utils.PreferenceUtils;
 import org.jboss.tools.switchyard.reddeer.wizard.ValidatorWizard;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -26,6 +25,7 @@ import org.junit.runner.RunWith;
  *
  */
 @SwitchYard
+@AutoBuilding(false)
 @RunWith(RedDeerSuite.class)
 public class SwitchYardEditorValidatorsTest {
 
@@ -34,19 +34,6 @@ public class SwitchYardEditorValidatorsTest {
 
 	@InjectRequirement
 	private static SwitchYardRequirement switchYardRequirement;
-
-	private static String autoBuilding;
-
-	@BeforeClass
-	public static void turnOffAutoBuilding() {
-		autoBuilding = PreferenceUtils.getAutoBuilding();
-		PreferenceUtils.setAutoBuilding("false");
-	}
-
-	@AfterClass
-	public static void turnBackAutoBuilding() {
-		PreferenceUtils.setAutoBuilding(autoBuilding);
-	}
 
 	@BeforeClass
 	public static void maximizeWorkbench() {
