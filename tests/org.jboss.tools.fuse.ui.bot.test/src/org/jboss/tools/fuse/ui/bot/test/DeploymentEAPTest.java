@@ -84,17 +84,17 @@ public class DeploymentEAPTest extends DefaultTest {
 		FuseServerManipulator.addModule(serverRequirement.getConfig().getName(), PROJECT_NAME);
 		assertTrue(FuseServerManipulator.hasServerModule(serverRequirement.getConfig().getName(), PROJECT_NAME));
 		new WaitUntil(new ConsoleHasText("(CamelContext: spring-context) started"), TimePeriod.LONG);
-		new WaitUntil(new ConsoleHasText("Deployed \"wildfly-spring.war\""), TimePeriod.LONG);
+		new WaitUntil(new ConsoleHasText("Deployed \"camel-test-spring.war\""), TimePeriod.LONG);
 		BrowserView browser = new BrowserView();
 		browser.open();
-		browser.openPageURL("http://localhost:8080/wildfly-spring");
+		browser.openPageURL("http://localhost:8080/camel-test-spring");
 		assertTrue(browser.getText().contains("Hello null"));
 		FuseServerManipulator.removeAllModules(serverRequirement.getConfig().getName());
 		new WaitUntil(new ConsoleHasText("(CamelContext: spring-context) is shutdown"), TimePeriod.LONG);
-		new WaitUntil(new ConsoleHasText("Undeployed \"wildfly-spring.war\""), TimePeriod.LONG);
+		new WaitUntil(new ConsoleHasText("Undeployed \"camel-test-spring.war\""), TimePeriod.LONG);
 		assertFalse(FuseServerManipulator.hasServerModule(serverRequirement.getConfig().getName(), PROJECT_NAME));
 		browser.open();
-		browser.openPageURL("http://localhost:8080/wildfly-spring");
+		browser.openPageURL("http://localhost:8080/camel-test-spring");
 		assertTrue(browser.getText().contains("404"));
 	}
 }

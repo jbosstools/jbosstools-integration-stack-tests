@@ -133,7 +133,7 @@ public class NewFuseProjectWizardTest {
 	 * <li>Set project name</li>
 	 * <li>Hit 'Next'</li>
 	 * <li>Verify that 'No Runtime Selected' is in 'Target Runtime'</li>
-	 * <li>Change the version of Camel to '2.15.6'</li>
+	 * <li>Change the version of Camel to '2.17.3'</li>
 	 * <li>Finish the wizard</li>
 	 * <li>Check whether the project has in 'pom.xml' right version of Camel</li>
 	 * </ol>
@@ -145,7 +145,7 @@ public class NewFuseProjectWizardTest {
 		wiz.setProjectName("test");
 		wiz.next();
 		wiz.selectTargetRuntime("No Runtime selected");
-		wiz.selectCamelVersion("2.15.6");
+		wiz.selectCamelVersion("2.17.3");
 		wiz.next();
 		wiz.startWithEmptyProject();
 		wiz.setProjectType(ProjectType.BLUEPRINT);
@@ -154,7 +154,7 @@ public class NewFuseProjectWizardTest {
 		assertTrue("There are some errors in Error Log", LogGrapper.getPluginErrors("fuse").size() == 0);
 		try {
 			String pom = FileUtils.getFileContent(new ProjectExt().getLocation("test") + "/pom.xml");
-			assertTrue(pom.contains("<version>2.15.6</version>"));
+			assertTrue(pom.contains("<version>2.17.3</version>"));
 		} catch (IOException e) {
 			fail("Cannot access project's pom.xml file!");
 		}
@@ -286,7 +286,7 @@ public class NewFuseProjectWizardTest {
 		wiz.startWithEmptyProject();
 		wiz.setProjectType(ProjectType.JAVA);
 		wiz.finish();
-		assertTrue("Project created with Java DSL do not contain 'CamelRoute.java' file", new ProjectExplorer().getProject("java").containsItem("src/main/java", "com.mycompany.camel", "CamelRoute.java"));
+		assertTrue("Project created with Java DSL do not contain 'CamelRoute.java' file", new ProjectExplorer().getProject("java").containsItem("src/main/java", "com.mycompany", "CamelRoute.java"));
 		assertFalse("Project with Java DSL was created with errors", hasErrors());
 		assertTrue("There are some errors in Error Log", LogGrapper.getPluginErrors("fuse").size() == 0);
 	}

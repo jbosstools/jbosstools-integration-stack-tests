@@ -50,7 +50,7 @@ public class LicenseTest {
 	@Parameters
 	public static Collection<String> setupData() {
 		new ShellMenu("Help", "Installation Details").select();
-		new DefaultShell("JBoss Developer Studio Installation Details");
+		new DefaultShell("Red Hat JBoss Developer Studio Installation Details");
 		new DefaultTabItem("Installed Software").activate();
 		List<String> fusePlugins = new ArrayList<String>();
 		for (TreeItem item : new DefaultTree().getItems()) {
@@ -77,14 +77,14 @@ public class LicenseTest {
 	public void setupOpenInstallationDetails() {
 
 		new ShellMenu("Help", "Installation Details").select();
-		new DefaultShell("JBoss Developer Studio Installation Details");
+		new DefaultShell("Red Hat JBoss Developer Studio Installation Details");
 	}
 
 	@After
 	public void setupCloseShells() {
 
 		new PushButton("OK").click();
-		new DefaultShell("JBoss Developer Studio Installation Details");
+		new DefaultShell("Red Hat JBoss Developer Studio Installation Details");
 		new PushButton("Close").click();
 	}
 

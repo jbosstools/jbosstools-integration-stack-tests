@@ -63,6 +63,7 @@ public class DataTransformationTest extends DefaultTest {
 		CamelEditor editor = new CamelEditor("camel-context.xml");
 		editor.activate();
 		editor.deleteCamelComponent("file:target/messages?fileName=xyz-order.json");
+		editor.save();
 		editor.addCamelComponent("Data Transformation", "Route _route1");
 		NewFuseTransformationWizard wizard = new NewFuseTransformationWizard();
 		wizard.setTransformationID("xml2json");

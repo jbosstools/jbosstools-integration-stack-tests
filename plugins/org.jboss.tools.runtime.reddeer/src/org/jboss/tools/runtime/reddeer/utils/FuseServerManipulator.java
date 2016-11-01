@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -251,7 +252,7 @@ public class FuseServerManipulator {
 	public static boolean hasServerModule(String server, String module) {
 
 		try {
-			new ServersView().getServer(server).getModule(module);
+			new ServersView().getServer(server).getModule(new RegexMatcher(module + ".*"));
 			AbstractWait.sleep(TimePeriod.SHORT);
 		} catch (EclipseLayerException ex) {
 			return false;
@@ -312,10 +313,11 @@ public class FuseServerManipulator {
 		view.getServer(server).addAndRemoveModules();
 		new DefaultShell("Add and Remove...");
 		FuseModifyModulesPage page = new FuseModifyModulesPage();
-		try {
-			page.add(project);
-		} catch (Exception ex) {
-			log.error("Cannot add '" + project + "' project to the server.");
+		for (String module : page.getAvailableModules()) {
+			if (module.startsWith(project)) {
+				page.add(module);
+				break;
+			}
 		}
 		page.close();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);

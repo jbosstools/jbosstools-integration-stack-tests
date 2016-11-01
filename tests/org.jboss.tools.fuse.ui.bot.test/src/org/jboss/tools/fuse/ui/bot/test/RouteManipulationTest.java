@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
@@ -18,6 +19,7 @@ import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.common.reddeer.JiraIssue;
 import org.jboss.tools.common.reddeer.LogGrapper;
 import org.jboss.tools.common.reddeer.view.ErrorLogView;
 import org.jboss.tools.common.reddeer.view.MessagesView;
@@ -135,6 +137,15 @@ public class RouteManipulationTest extends DefaultTest {
 		editor.selectEditPart("Log _log1");
 		editor.setProperty("Message *", "XXX");
 		editor.save();
+
+		// test for https://issues.jboss.org/browse/FUSETOOLS-2023
+		try {
+			new WaitUntil(new ConsoleHasText("Invalid xpath: /order:order/order:customer/order:country = 'UK'"));
+			throw new JiraIssue("FUSETOOLS-2023");
+		} catch (WaitTimeoutExpiredException e) {
+			// ok
+		}
+
 		new WaitUntil(
 				new ConsoleHasText("Route: cbr-route is stopped, was consuming from: Endpoint[file:src/main/data?noop=true]"));
 		new WaitUntil(
