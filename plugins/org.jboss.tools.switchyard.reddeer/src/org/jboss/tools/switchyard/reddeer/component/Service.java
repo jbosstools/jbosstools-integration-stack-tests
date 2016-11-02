@@ -3,6 +3,7 @@ package org.jboss.tools.switchyard.reddeer.component;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.switchyard.reddeer.wizard.PromoteServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ServiceTestClassWizard;
@@ -24,11 +25,13 @@ public class Service extends SwitchYardComponent {
 	}
 
 	public PromoteServiceWizard promoteService() {
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		getContextButton("Promote Service").click();
 		return new PromoteServiceWizard("Promote Component Service").activate();
 	}
 
 	public PromoteServiceWizard promoteReference() {
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		getContextButton("Promote Reference").click();
 		return new PromoteServiceWizard("Promote Component Reference").activate();
 	}
