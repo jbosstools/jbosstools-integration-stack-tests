@@ -127,6 +127,7 @@ public class SAPComponentTest {
 		editor.save();
 		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 
+		new CamelComponentEditPart("Route _route1").select();
 		editor.setAdvancedProperty(component, APPLICATION_RELEASE, "appRel");
 		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, SERVER, "myServer");
@@ -166,6 +167,7 @@ public class SAPComponentTest {
 		editor.save();
 		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 
+		new CamelComponentEditPart("Route _route1").select();
 		editor.setAdvancedProperty(component, RFC, "XYZ");
 		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, SERVER, "myServer");
@@ -199,6 +201,7 @@ public class SAPComponentTest {
 		editor.save();
 		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 
+		new CamelComponentEditPart("Route _route1").select();
 		editor.setAdvancedProperty(component, RFC, "XYZ");
 		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, SERVER, "myServer");
@@ -232,6 +235,7 @@ public class SAPComponentTest {
 		editor.save();
 		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 
+		new CamelComponentEditPart("Route _route1").select();
 		editor.setAdvancedProperty(component, APPLICATION_RELEASE, "appRel");
 		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, DESTINATION, "myDestination");
@@ -271,6 +275,7 @@ public class SAPComponentTest {
 		editor.save();
 		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 
+		new CamelComponentEditPart("Route _route1").select();
 		editor.setAdvancedProperty(component, APPLICATION_RELEASE, "appRel");
 		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, DESTINATION, "myDestination");
@@ -310,6 +315,7 @@ public class SAPComponentTest {
 		editor.save();
 		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 
+		new CamelComponentEditPart("Route _route1").select();
 		editor.setAdvancedProperty(component, APPLICATION_RELEASE, "appRel");
 		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, DESTINATION, "myDestination");
@@ -351,6 +357,7 @@ public class SAPComponentTest {
 		editor.save();
 		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 
+		new CamelComponentEditPart("Route _route1").select();
 		editor.setAdvancedProperty(component, APPLICATION_RELEASE, "appRel");
 		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, DESTINATION, "myDestination");
@@ -392,6 +399,7 @@ public class SAPComponentTest {
 		editor.save();
 		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 
+		new CamelComponentEditPart("Route _route1").select();
 		editor.setAdvancedProperty(component, QUEUE, "myQueue");
 		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, RFC, "XYZ");
@@ -427,6 +435,7 @@ public class SAPComponentTest {
 		editor.save();
 		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 
+		new CamelComponentEditPart("Route _route1").select();
 		editor.setAdvancedProperty(component, RFC, "XYZ");
 		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, DESTINATION, "myDestination");
@@ -460,6 +469,7 @@ public class SAPComponentTest {
 		editor.save();
 		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 
+		new CamelComponentEditPart("Route _route1").select();
 		editor.setAdvancedProperty(component, RFC, "XYZ");
 		assertEquals(component.getUri(), editor.xpath("//route/from/@uri"));
 		editor.setAdvancedProperty(component, DESTINATION, "myDestination");
