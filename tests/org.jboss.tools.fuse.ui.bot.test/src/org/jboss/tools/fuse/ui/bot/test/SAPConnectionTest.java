@@ -5,10 +5,12 @@ import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.fuse.reddeer.condition.ContainsText;
 import org.jboss.tools.fuse.reddeer.dialog.SAPTestDestinationDialog;
 import org.jboss.tools.fuse.reddeer.dialog.SAPTestServerDialog;
+import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.view.SAPConnectionView;
 import org.jboss.tools.fuse.reddeer.view.SAPDestinationProperties;
 import org.jboss.tools.fuse.reddeer.view.SAPServerProperties;
@@ -28,6 +30,7 @@ import org.junit.runner.RunWith;
  */
 @SAP
 @CleanWorkspace
+@OpenPerspective(FuseIntegrationPerspective.class)
 @RunWith(RedDeerSuite.class)
 public class SAPConnectionTest {
 
