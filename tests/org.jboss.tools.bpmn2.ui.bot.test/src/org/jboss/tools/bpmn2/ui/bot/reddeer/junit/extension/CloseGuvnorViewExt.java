@@ -46,4 +46,9 @@ public class CloseGuvnorViewExt implements IBeforeTest {
 		return !closedAlready;
 	}
 
+	@Override
+	public long getPriority() {
+		return 0;
+	}
+
 }

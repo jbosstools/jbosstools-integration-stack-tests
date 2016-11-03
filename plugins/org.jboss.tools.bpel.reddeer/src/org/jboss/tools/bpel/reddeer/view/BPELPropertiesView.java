@@ -71,7 +71,7 @@ public class BPELPropertiesView extends PropertiesView {
 		return this;
 	}
 
-	public String getTitle() {
+	public String getType() {
 		return new DefaultCLabel().getText();
 	}
 }
