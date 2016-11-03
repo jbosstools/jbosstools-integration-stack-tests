@@ -5,6 +5,7 @@ import junit.framework.TestSuite;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.switchyard.ui.bot.test.DebuggerBreakpointTest;
 import org.jboss.tools.switchyard.ui.bot.test.DebuggerDebuggingTest;
+import org.jboss.tools.switchyard.ui.bot.test.ProjectExplorerJavaWSDLTest;
 import org.jboss.tools.switchyard.ui.bot.test.ProjectExplorerProjectCapabilitiesTest;
 import org.jboss.tools.switchyard.ui.bot.test.ProjectExplorerProjectCreationTest;
 import org.jboss.tools.switchyard.ui.bot.test.ServerManagingDeploymentTest;
@@ -31,6 +32,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
 	ProjectExplorerProjectCreationTest.class,
 	ProjectExplorerProjectCapabilitiesTest.class,
+	ProjectExplorerJavaWSDLTest.class,
 	SwitchYardEditorImplementationsTest.class,
 	SwitchYardEditorDomainSettingsTest.class,
 	SwitchYardEditorBindingsTest.class,
