@@ -3,7 +3,6 @@ package org.jboss.tools.switchyard.ui.bot.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -65,16 +64,12 @@ public class ProjectExplorerProjectCreationTest {
 	}
 
 	@After
-	public void closeProjectWizard() {
+	public void deleteSwitchYardProjects() {
 		try {
 			new DefaultShell("New SwitchYard Project").close();
 		} catch (Exception ex) {
 			// it is ok, we just try to close the wizard if it is open
 		}
-	}
-
-	@After
-	public void deleteSwitchYardProjects() {
 		switchyardRequirement.deleteAllProjects();
 	}
 
@@ -115,6 +110,9 @@ public class ProjectExplorerProjectCreationTest {
 		wizard.setConfigurationVersion(switchyardRequirement.getConfig().getConfigurationVersion());
 		wizard.setTargetRuntime(switchyardRequirement.getTargetRuntimeLabel());
 		assertEquals(switchyardRequirement.getTargetRuntimeLabel(), wizard.getTargetRuntime());
+		if (wizard.getLibraryVersion().equals("switchyard.runtime 2.0")) {
+			throw new KnownIssue("SWITCHYARD-2968");
+		}
 		assertEquals(switchyardRequirement.getLibraryVersionLabel(), wizard.getLibraryVersion());
 		wizard.setTargetRuntime("<None>");
 		wizard.setLibraryVersion("foo");
