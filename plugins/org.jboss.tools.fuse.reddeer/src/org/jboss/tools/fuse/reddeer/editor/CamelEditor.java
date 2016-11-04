@@ -8,11 +8,11 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.core.util.Display;
@@ -27,7 +27,6 @@ import org.jboss.reddeer.swt.api.Combo;
 import org.jboss.reddeer.swt.api.Text;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.button.YesButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -63,15 +62,9 @@ public class CamelEditor extends GEFEditor {
 	@Override
 	public void save() {
 		activate();
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		new ShellMenu("File", "Save").select();
-		try {
-			new WaitUntil(new ShellWithTextIsAvailable("Please confirm..."));
-			new DefaultShell("Please confirm...");
-			new YesButton().click();
-			throw new CamelEditorException("There are unconnected endpoints in the diagram!");
-		} catch (WaitTimeoutExpiredException e) {
-			// The dialog "Please confirm..." didn't show up => everything is OK
-		}
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
 	@Override
