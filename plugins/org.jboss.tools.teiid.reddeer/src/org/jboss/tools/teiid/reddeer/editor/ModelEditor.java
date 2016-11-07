@@ -11,7 +11,6 @@ import org.jboss.reddeer.core.util.Display;
 import org.jboss.reddeer.gef.handler.ViewerHandler;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.matcher.ModelEditorItemAttributeMatcher;
 import org.jboss.tools.teiid.reddeer.matcher.ModelEditorItemMatcher;
 import org.jboss.tools.teiid.reddeer.matcher.TransformationArrowMatcher;

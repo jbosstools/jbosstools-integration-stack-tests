@@ -21,6 +21,11 @@
 			CONSTRAINT PK_ID PRIMARY KEY(id),
 			CONSTRAINT FK_CUST FOREIGN KEY(customer_id) REFERENCES customers(id)
 		) OPTIONS(NAMEINSOURCE 'order')
+
+		CREATE FOREIGN TABLE mat_table (
+			   customer_id integer NOT NULL,
+			   total_amount integer
+		)OPTIONS(NAMEINSOURCE 'mat_table')
 			]]>
 		</metadata>
 	</model>
@@ -47,7 +52,7 @@
            customer_id integer NOT NULL,
            total_amount integer
         ) OPTIONS (MATERIALIZED 'TRUE', UPDATABLE 'FALSE',
-         	MATERIALIZED_TABLE 'Source.DB.PUBLIC.MAT_VIEW',
+         	MATERIALIZED_TABLE 'Source.mat_table',
          	  "teiid_rel:ALLOW_MATVIEW_MANAGEMENT" 'true',
               "teiid_rel:MATVIEW_STATUS_TABLE" 'Source.DB.PUBLIC.STATUS',
               "teiid_rel:ON_VDB_START_SCRIPT" 'exec Source.native(''MERGE INTO check_table(id,vdb_create) KEY(id) VALUES (''''external_long_ttl'''',COALESCE((SELECT vdb_create from check_table WHERE id=''''external_long_ttl''''),0)+1)'');',
