@@ -10,8 +10,10 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.condition.ProgressInformationShellIsActive;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.direct.preferences.PreferencesUtil;
 import org.jboss.reddeer.eclipse.core.resources.Project;
@@ -55,6 +57,8 @@ public class SwitchYardProject extends Project {
 	public SwitchYardEditor openSwitchYardFile() {
 		getProjectItem("SwitchYard").open();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		new WaitUntil(new ProgressInformationShellIsActive(), TimePeriod.SHORT, false);
+		new WaitWhile(new ProgressInformationShellIsActive());
 		return new SwitchYardEditor();
 	}
 
