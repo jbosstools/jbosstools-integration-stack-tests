@@ -59,7 +59,7 @@ public class CreateDataSourceDialog extends AbstractDialog {
 			item = propertiesTable.getItem(propertyName);
 			item.click(1);
 			new DefaultText(new CellEditor(item),0).setText(value);
-			KeyboardFactory.getKeyboard().type(KeyEvent.VK_TAB);
+			activate();
 		}catch(Exception ex){
 			log.warn("Property is not exist. It will be added.");
 		}

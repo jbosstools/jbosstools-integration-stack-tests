@@ -20,9 +20,7 @@ import java.util.concurrent.Callable;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
 
-import org.hamcrest.core.IsNot;
 import org.hamcrest.core.StringContains;
-import org.hamcrest.text.IsEmptyString;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
@@ -33,9 +31,13 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.TableItem;
+import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.tools.common.reddeer.JiraClient;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
@@ -88,8 +90,8 @@ public class DynamicVdbTest {
 	private static final String CREATE_FOREIGN_TABLE = "CREATE FOREIGN TABLE ";
 	private static final String CREATE_VIRTUAL_TABLE = "CREATE VIEW ";
 
-//	private static final String UDF_LIB_PATH = "target/proc-udf/MyTestUdf/lib/";
-//	private static final String UDF_LIB = "MyTestUdf-1.0-SNAPSHOT.jar";
+	private static final String UDF_LIB_PATH = "target/proc-udf/MyTestUdf/lib/";
+	private static final String UDF_LIB = "MyTestUdf-1.0-SNAPSHOT.jar";
 
 	@Before
 	public void before() {
@@ -209,11 +211,12 @@ public class DynamicVdbTest {
 				new RegexMatcher(".*SET NAMESPACE 'http://teiid.org/rest' AS REST;.*"));
 
 		// check deployment
-		checkDeployOk(staticVdbName, dynamicVdbName);
-		checkPreview(dynamicVdbName, "EXEC testProc('param1')");
+		if(new JiraClient().isIssueClosed("TEIIDDES-2942")){
+			checkDeployOk(staticVdbName, dynamicVdbName);
+			checkPreview(dynamicVdbName, "EXEC testProc('param1')");
 
-		checkContentsSame(staticVdbName, dynamicVdbContent);
-
+			checkContentsSame(staticVdbName, dynamicVdbContent);
+		}
 	}
 
 	@Test
@@ -417,12 +420,21 @@ public class DynamicVdbTest {
 		collector.checkThat("stringLeft parameter not created", tableEditor.getRow("Name", "stringLeft"), notNullValue());
 		collector.checkThat("stringLeft param is not of type IN", tableEditor.getCellText(1, "stringLeft", "Direction"), is("IN"));
 
+		/*set jar because ddl doesn't contains info about jar*/
+		ImportFromFileSystemWizard.openWizard()
+			.setPath(UDF_LIB_PATH)
+			.setFolder(IMPORT_PROJECT_NAME)
+			.selectFile(UDF_LIB)
+			.setCreteTopLevelFolder(true)
+			.finish();
+		setUDFpath();
+		new ModelExplorer().openModelEditor(IMPORT_PROJECT_NAME,staticVdbName+".vdb");
+		VdbEditor staticVdb = VdbEditor.getInstance(staticVdbName);
+		staticVdb.synchronizeAll();
+		staticVdb.saveAndClose();
+		
 		new ModelExplorer().selectItem(IMPORT_PROJECT_NAME, PROCEDURE_MODEL + ".xmi", "udfConcatNull");
-
-		PropertiesView propertiesView = new PropertiesView();
-		collector.checkThat("UDF Jar path not set",
-				propertiesView.getProperty("Extension", "relational:UDF Jar Path").getPropertyValue(),
-				new IsNot<>(new IsEmptyString()));
+		PropertiesView propertiesView = new PropertiesView();		
 		collector.checkThat("wrong function category",
 				propertiesView.getProperty("Extension", "relational:Function Category").getPropertyValue(),
 				is("MY_TESTING_FUNCTION_CATEGORY"));
@@ -432,7 +444,7 @@ public class DynamicVdbTest {
 		collector.checkThat("wrong java method",
 				propertiesView.getProperty("Extension", "relational:Java Method").getPropertyValue(),
 				is("myConcatNull"));
-
+		
 		ProblemsView problemsView = new ProblemsView();
 		collector.checkThat("Errors in imported view model",
 				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(PROCEDURE_MODEL + ".xmi")),
@@ -487,7 +499,39 @@ public class DynamicVdbTest {
 		}
 		collector.checkThat("materialized table property not set",
 				propertiesView.getProperty("Misc", "Materialized Table").getPropertyValue(),
-				is("Source.DB.PUBLIC.MAT_VIEW"));
+				is("mat_table (Path=/ImportProject/Source.xmi)"));
+		/*Test extension property*/
+		collector.checkThat("Allow Teiid based management property not set",
+				propertiesView.getProperty("Extension", "relational:Allow Teiid based management").getPropertyValue(),
+				is("true"));
+		
+		collector.checkThat("Commands To Run On VDB Drop property not set",
+				propertiesView.getProperty("Extension", "relational:Commands To Run On VDB Drop").getPropertyValue(),
+				is("exec Source.native(''MERGE INTO check_table(id,vdb_drop) KEY(id) VALUES (''''external_long_ttl'''',COALESCE((SELECT vdb_drop from check_table WHERE id=''''external_long_ttl''''),0)+1)'');"));
+		
+		collector.checkThat("Commands To Run On VDB Start property not set",
+				propertiesView.getProperty("Extension", "relational:Commands To Run On VDB Start").getPropertyValue(),
+				is("exec Source.native(''MERGE INTO check_table(id,vdb_create) KEY(id) VALUES (''''external_long_ttl'''',COALESCE((SELECT vdb_create from check_table WHERE id=''''external_long_ttl''''),0)+1)'');"));
+		
+		collector.checkThat("Materialize After Load Script property not set",
+				propertiesView.getProperty("Extension", "relational:Materialize After Load Script").getPropertyValue(),
+				is("exec Source.native(''ALTER TABLE mat_view_stage RENAME TO mat_view_temp'');exec Source.native(''ALTER TABLE mat_view RENAME TO mat_view_stage'');exec Source.native(''ALTER TABLE mat_view_temp RENAME TO mat_view'');exec Source.native(''MERGE INTO check_table(id,after_load) KEY(id) VALUES (''''external_long_ttl'''',COALESCE((SELECT after_load from check_table WHERE id=''''external_long_ttl''''),0)+1)'');"));
+		
+		collector.checkThat("Materialize Before Load Script property not set",
+				propertiesView.getProperty("Extension", "relational:Materialize Before Load Script").getPropertyValue(),
+				is("execute Source.native(''truncate table mat_view_stage'');exec Source.native(''MERGE INTO check_table(id,before_load) KEY(id) VALUES (''''external_long_ttl'''',COALESCE((SELECT before_load from check_table WHERE id=''''external_long_ttl''''),0)+1)'');"));
+		
+		collector.checkThat("Materialize Load Script property not set",
+				propertiesView.getProperty("Extension", "relational:Materialize Load Script").getPropertyValue(),
+				is("INSERT INTO mat_view_stage(customer_id,total_amount) SELECT c.id AS customer_id, CONVERT(SUM(o.amount),integer) AS total_amount FROM customers c INNER JOIN orders o ON c.id = o.customer_id GROUP BY c.id;"));
+		
+		collector.checkThat("Status Table Name property not set",
+				propertiesView.getProperty("Extension", "relational:Status Table Name").getPropertyValue(),
+				is("Source.DB.PUBLIC.STATUS"));
+		
+		collector.checkThat("Time To Live property not set",
+				propertiesView.getProperty("Extension", "relational:Time To Live (ms)").getPropertyValue(),
+				is("2000"));
 
 		ProblemsView problemsView = new ProblemsView();
 		collector.checkThat("Errors in imported view model",
@@ -500,16 +544,14 @@ public class DynamicVdbTest {
 		RelationalModelEditor editor = new RelationalModelEditor(viewModelName);
 	    TransformationEditor transformationEditor =  editor.openTransformationDiagram(ModelEditor.ItemType.TABLE, "internal_short_ttl");
 
-		collector.checkThat("cache hint not in transformation", transformationEditor.getTransformation().replaceAll("\\s+", " "),
-				new StringContains("/*+ cache(ttl:100)*/"));
+		collector.checkThat("cache hint not in transformation", Boolean.toString(transformationEditor.getTransformation().contains("/*+ cache(ttl:100) */")),
+				is("true"));
 		
 		editor.returnToParentDiagram();
 		transformationEditor =  editor.openTransformationDiagram(ModelEditor.ItemType.TABLE, "internal_long_ttl");
 
-		collector.checkThat("cache hint not in transformation", transformationEditor.getTransformation().replaceAll("\\s+", " "),
-				new StringContains("/*+ cache(ttl:1000)*/"));
-
-		// TODO: check all the other materialized properties once TEIIDDES-2745 is resolved
+		collector.checkThat("cache hint (updatable) not in transformation", Boolean.toString(transformationEditor.getTransformation().contains("/*+ cache(ttl:1000 updatable) */")),
+				is("true"));
 	}
 
 	@Test
@@ -993,4 +1035,19 @@ public class DynamicVdbTest {
 		}
 		return null;
 	}
+	
+	private void setUDFpath(){
+		new ModelExplorer().selectItem(IMPORT_PROJECT_NAME, PROCEDURE_MODEL + ".xmi", "udfConcatNull");
+		PropertiesView propertiesView = new PropertiesView();
+		propertiesView.getProperty("Extension", "relational:UDF Jar Path").getTreeItem().doubleClick();
+		new PushButton("...").click();
+ 		
+ 		new DefaultShell("Select UDF jar");
+ 		new PushButton("OK").click();
+ 
+ 		new DefaultShell("Choose UDF jar");
+ 		new DefaultTreeItem(IMPORT_PROJECT_NAME,"lib",UDF_LIB).select();
+ 		new PushButton("OK").click();	
+ 		new RelationalModelEditor(PROCEDURE_MODEL+".xmi").save();
+	 }
 }

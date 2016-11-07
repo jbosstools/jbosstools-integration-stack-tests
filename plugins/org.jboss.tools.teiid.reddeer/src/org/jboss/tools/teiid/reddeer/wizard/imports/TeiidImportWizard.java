@@ -23,7 +23,8 @@ public abstract class TeiidImportWizard extends ImportWizardDialog {
 
 	@Override
 	public void finish() {
-		super.finish();
+		// super.finish(); fail MAC jenkins
+		new PushButton("Finish").click(); 
 		// wait for 'Progress Information'
 		log.info("Progress waiting started ...");
 		try {
