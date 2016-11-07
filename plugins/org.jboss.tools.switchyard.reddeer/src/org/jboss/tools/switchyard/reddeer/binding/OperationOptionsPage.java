@@ -25,7 +25,8 @@ public abstract class OperationOptionsPage<T> extends WizardDialog {
 	@SuppressWarnings("unchecked")
 	public T setName(String name) {
 		new LabeledText(NAME).setFocus();
-		new LabeledText(NAME).typeText(name);
+		// a workaround to activate typing listener
+		new LabeledText(NAME).typeText("aa");
 		new LabeledText(NAME).setText(name);
 		new LabeledText(NAME).setFocusOut();
 		return (T) this;
