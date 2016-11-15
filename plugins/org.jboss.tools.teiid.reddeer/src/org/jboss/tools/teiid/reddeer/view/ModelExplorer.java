@@ -288,6 +288,11 @@ public class ModelExplorer extends AbstractExplorer {
 		this.selectItem(vdbpath);
 		new ContextMenu("Modeling", "Deploy").select();
 		AbstractWait.sleep(TimePeriod.getCustom(3));
+		
+		if (new ShellWithTextIsActive("Create Missing Teiid Data Sources Confirmation").test()){
+			new PushButton("Yes").click();
+		}
+		
 		if (new ShellWithTextIsActive("Server is not connected").test()){
 			new PushButton("OK").click();
 			throw new Error("Server is not connected");
