@@ -184,7 +184,8 @@ public class CamelEditorTest extends DefaultTest {
 		CamelEditor.switchTab("Source");
 		EditorManipulator.copyFileContentToCamelXMLEditor("resources/camel-context-all.xml");
 		SourceEditor editor = new SourceEditor();
-		editor.setCursorPosition(713);
+		int i = editor.getText().indexOf("<from");
+		editor.setCursorPosition(i + 6);
 		ContentAssistant assistent = editor.openContentAssistant();
 		List<String> proposals = assistent.getProposals();
 		assertTrue("Content Assistent does not contain 'id' value", proposals.contains("id"));
@@ -197,13 +198,14 @@ public class CamelEditorTest extends DefaultTest {
 		proposals = assistent.getProposals();
 		assertFalse("Content Assistent does contain 'id' value", proposals.contains("id"));
 		assistent.close();
-		editor.setCursorPosition(701);
+		editor.setCursorPosition(i - 3);
 		assistent = editor.openContentAssistant();
 		assistent.chooseProposal("to");
 		assertTrue("Editor does not contain generated text", editor.getText().contains("<to></to>"));
-		editor.setCursorPosition(704);
+		i = editor.getText().indexOf("<to");
+		editor.setCursorPosition(i + 3);
 		editor.insertTest(" ");
-		editor.setCursorPosition(705);
+		editor.setCursorPosition(i + 4);
 		assistent = editor.openContentAssistant();
 		proposals = assistent.getProposals();
 		assertTrue("Content Assistent does not contain 'uri' value", proposals.contains("uri"));
