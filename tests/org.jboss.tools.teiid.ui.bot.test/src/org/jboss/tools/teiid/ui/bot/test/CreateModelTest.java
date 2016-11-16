@@ -6,8 +6,6 @@ import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.WebServiceModelEditor;
@@ -99,8 +97,6 @@ public class CreateModelTest {
 				.selectModelType(MetadataModelWizard.ModelType.DATATYPE)
 				.finish();
 		
-		new DefaultShell("Model Initializer");
-		new PushButton("OK").click();
 		AbstractWait.sleep(TimePeriod.NORMAL);
 
 		assertTrue(new ModelExplorer().containsItem(PROJECT_NAME,XSD_DATATYPE_MODEL_NAME + ".xsd"));
