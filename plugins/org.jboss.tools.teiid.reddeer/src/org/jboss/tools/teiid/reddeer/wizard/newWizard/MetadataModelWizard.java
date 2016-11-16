@@ -4,8 +4,12 @@ import java.util.Arrays;
 
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
+import org.jboss.reddeer.swt.api.Button;
+import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -177,5 +181,21 @@ public class MetadataModelWizard extends NewWizardDialog {
 		activate();
 		new LabeledText("XML Model:").setText(name);
 		return this;
+	}
+
+	public void finish() {
+		TimePeriod timeout = TimePeriod.LONG;
+		log.info("Finish wizard");
+
+		String shellText = new DefaultShell().getText();
+		Button button = new FinishButton();
+		button.click();
+
+		if (new ShellWithTextIsAvailable("Model Initializer").test()) {
+			new PushButton("OK").click();
+		}
+
+		new WaitWhile(new ShellWithTextIsAvailable(shellText), timeout);
+		new WaitWhile(new JobIsRunning(), timeout);
 	}
 }

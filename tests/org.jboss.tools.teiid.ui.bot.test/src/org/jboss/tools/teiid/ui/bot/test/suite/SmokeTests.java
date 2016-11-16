@@ -8,7 +8,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @SuiteClasses({ 
 	BasicTest.class, 
-//	CreateModelTest.class 
+	CreateModelTest.class 
 })
 @RunWith(RedDeerSuite.class)
 public class SmokeTests {}
