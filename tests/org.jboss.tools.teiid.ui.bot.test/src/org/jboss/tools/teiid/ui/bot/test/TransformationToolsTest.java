@@ -17,6 +17,7 @@ import org.jboss.tools.teiid.reddeer.AssertBot;
 import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
 import org.jboss.tools.teiid.reddeer.dialog.CriteriaBuilderDialog;
 import org.jboss.tools.teiid.reddeer.dialog.ExpressionBuilderDialog;
+import org.jboss.tools.teiid.reddeer.dialog.ProcedureDialog;
 import org.jboss.tools.teiid.reddeer.dialog.ReconcilerDialog;
 import org.jboss.tools.teiid.reddeer.dialog.TableDialog;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
@@ -25,6 +26,7 @@ import org.jboss.tools.teiid.reddeer.editor.TransformationEditor;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ProblemsViewEx;
+import org.jboss.tools.teiid.reddeer.wizard.newWizard.NewProcedureWizard;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -321,6 +323,7 @@ public class TransformationToolsTest {
 
 	@Test
 	public void testTemplates(){
+		// table templates
 		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.TABLE, PROJECT_NAME, VIEW_MODEL);
 		TableDialog dialog = new TableDialog(true);
 		dialog.setName("TemplateTable");
@@ -352,5 +355,38 @@ public class TransformationToolsTest {
 		RelationalModelEditor editor = new RelationalModelEditor(VIEW_MODEL);
 		String actualT = editor.openTransformationDiagram(ModelEditor.ItemType.TABLE, "TemplateTable").getTransformation();
 		AssertBot.transformationEquals(actualT, expectedT);
+		
+		// procedure templates
+		modelExplorer.addChildToModelItem(ModelExplorer.ChildType.PROCEDURE, PROJECT_NAME, VIEW_MODEL);
+		ProcedureDialog pDialog = NewProcedureWizard.createViewProcedure();
+		pDialog.setName("TemplateProcedure");
+		
+		pDialog.setSqlTemplate("Simple Procedure","Replace all SQL Text");
+		AssertBot.transformationEquals(pDialog.getTransformationSql(), "BEGIN\n	SELECT * FROM [TABLEA];\nEND");
+		
+		pDialog.setSqlTemplate("INSERT Procedure","Replace all SQL Text");
+		AssertBot.transformationEquals(pDialog.getTransformationSql(), "FOR EACH ROW BEGIN ATOMIC INSERT INTO [TABLEA] ([COL1], [COL2], [COL3]) VALUES (NEW.[COL1], NEW.[COL2], NEW.[COL3]); END");
+		
+		pDialog.setSqlTemplate("UPDATE Procedure","Replace all SQL Text");
+		AssertBot.transformationEquals(pDialog.getTransformationSql(), "FOR EACH ROW BEGIN UPDATE [TABLEA] SET [COL1]=NEW.[COL1], [COL2]=NEW.[COL2], [COL3]=NEW.[COL3] WHERE [PK-KEY-COL]=OLD.[PK-KEY-COL]; END");
+		
+		pDialog.setSqlTemplate("DELETE Procedure","Replace all SQL Text");
+		AssertBot.transformationEquals(pDialog.getTransformationSql(), "FOR EACH ROW BEGIN DELETE FROM [TABLEA] WHERE [PK-KEY COL] = OLD.[PK-KEY-COL]; END");
+		
+		pDialog.setSqlTemplate("SOAP Web Service - \"Create\" Procedure","Replace all SQL Text");
+		AssertBot.transformationEquals(pDialog.getTransformationSql(), "BEGIN SELECT XMLELEMENT(NAME CapitalCity, XMLNAMESPACES(DEFAULT 'http://www.oorsprong.org/websamples.countryinfo'), XMLELEMENT(NAME sCountryISOCode, COUNTRYINFOSERVICEXML.CAPITALCITY.CREATE_CAPITALCITY.sCountryISOCode)) AS xml_out; END");
+		
+		pDialog.setSqlTemplate("SOAP Web Service - \"Extract\" Procedure","Replace all SQL Text");
+		AssertBot.transformationEquals(pDialog.getTransformationSql(), "BEGIN SELECT employee.* FROM XMLTABLE(XMLNAMESPACES('http://teiid.org' as teiid), '/teiid:getdepartmentResponse/return/employee' PASSING f.result COLUMNS empID integer PATH '@id', firstname string PATH 'name/first', lastname string PATH 'name/last') AS employee; END");
+		
+		pDialog.setSqlTemplate("REST ProcedureExportTeiidDdl_modelGroupTitle","Replace all SQL Text");
+		AssertBot.transformationEquals(pDialog.getTransformationSql(), "BEGIN SELECT XMLELEMENT(NAME authors, XMLAGG(XMLELEMENT(NAME author, XMLFOREST(MySqlBooks.AUTHORS.AUTHOR_ID, MySqlBooks.AUTHORS.FIRSTNAME, MySqlBooks.AUTHORS.LASTNAME, MySqlBooks.AUTHORS.MIDDLEINIT)))) AS result FROM MySqlBooks.AUTHORS WHERE Procedures.GetAuthorByID.author_id = MySqlBooks.AUTHORS.AUTHOR_ID; END");
+		
+		pDialog.finish();
+		
+		editor.activate();
+		editor.returnToParentDiagram();
+		actualT = editor.openTransformationDiagram(ModelEditor.ItemType.PROCEDURE, "TemplateProcedure").getTransformation();
+		AssertBot.transformationEquals(actualT, "BEGIN\n	SELECT XMLELEMENT(NAME authors, XMLAGG(XMLELEMENT(NAME author, XMLFOREST(MySqlBooks.AUTHORS.AUTHOR_ID, MySqlBooks.AUTHORS.FIRSTNAME, MySqlBooks.AUTHORS.LASTNAME, MySqlBooks.AUTHORS.MIDDLEINIT)))) AS result FROM MySqlBooks.AUTHORS WHERE Procedures.GetAuthorByID.author_id = MySqlBooks.AUTHORS.AUTHOR_ID;\nEND");	
 	}
 }
