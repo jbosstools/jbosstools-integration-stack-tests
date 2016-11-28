@@ -217,10 +217,6 @@ public class DataRolesTest {
 		AbstractWait.sleep(TimePeriod.SHORT);
 		modelExplorer.selectItem(PROJECT_NAME, "PreparedVdb.vdb");
  		new ContextMenu("Modeling", "Execute VDB").select();
- 		new DefaultShell("VDB is not Synchronized");
-		new YesButton().click();
-		new DefaultShell("VDB is not Synchronized");
-		new YesButton().click();
  		new WaitWhile(new IsInProgress(), TimePeriod.VERY_LONG);
  		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
  		new WorkbenchShell();
