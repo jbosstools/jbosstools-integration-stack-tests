@@ -19,6 +19,7 @@ import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPag
 import org.jboss.reddeer.eclipse.utils.DeleteUtils;
 import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -76,9 +77,9 @@ public class ProjectFactory {
 			wiz.selectTemplate(template);
 		}
 		wiz.setProjectType(type);
-		wiz.finish(TimePeriod.getCustom(900));
+		new FinishButton().click();
 		openAssociatedPerspective();
-		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(300));
+		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(900));
 	}
 
 	public static ProjectFactory newProject(String name) {
