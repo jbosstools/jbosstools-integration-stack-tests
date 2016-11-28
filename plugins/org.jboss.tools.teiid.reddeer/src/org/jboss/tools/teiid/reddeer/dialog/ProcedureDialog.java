@@ -5,9 +5,11 @@ import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -160,5 +162,28 @@ public class ProcedureDialog extends AbstractDialog {
 		return this;
 	}
 	
+	public ProcedureDialog setSqlTemplate(String templateName, String insertOption){
+		log.info("Inserting SQL tamplate " + templateName + " with option " + insertOption);
+		new DefaultTabItem("Transformation SQL").activate();
+		new PushButton("Select SQL Template").click();
+		new DefaultShell("Choose a SQL Template");
+		new RadioButton(new DefaultGroup("Template Options"), templateName).click();
+		new RadioButton(new DefaultGroup("Insert Text Options"), insertOption).click();
+		new OkButton().click();
+		try {
+			new DefaultShell("Confirm Replace SQL Text");
+			new OkButton().click();
+			new WaitWhile(new ShellWithTextIsActive("Confirm Replace SQL Text"), TimePeriod.NORMAL);
+		} catch (SWTLayerException e) {	
+			// shell not opened -> continue
+		}
+		this.activate();
+		return this;
+	}	
 	
+	public String getTransformationSql(){
+		log.info("Returning transformation SQL");
+		new DefaultTabItem("Transformation SQL").activate();
+		return new DefaultStyledText(new DefaultGroup("SQL Definition")).getText();
+	}
 }
