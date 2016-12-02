@@ -147,9 +147,9 @@ public class RouteManipulationTest extends DefaultTest {
 		}
 
 		new WaitUntil(
-				new ConsoleHasText("Route: cbr-route is stopped, was consuming from: Endpoint[file:src/main/data?noop=true]"));
+				new ConsoleHasText("Route: cbr-route is stopped, was consuming from: Endpoint[file://src/main/data?noop=true]"));
 		new WaitUntil(
-				new ConsoleHasText("Route: cbr-route started and consuming from: Endpoint[file:src/main/data?noop=true]"));
+				new ConsoleHasText("Route: cbr-route started and consuming from: Endpoint[file://src/main/data?noop=true]"));
 		new WaitUntil(new ConsoleHasText("INFO  XXX"));
 		editor.activate();
 		CamelEditor.switchTab("Source");
@@ -157,7 +157,7 @@ public class RouteManipulationTest extends DefaultTest {
 		CamelEditor.switchTab("Design");
 		new WaitUntil(new ConsoleHasText("INFO  YYY"));
 		assertNotNull(jmx.getNode("Local Camel Context", "Camel", "cbr-example-context", "Routes", "cbr-route",
-				"file:src/main/data?noop=true", "Log _log1", "Choice", "When /order:order/order:customer/order:country = 'UK'", "Log _log2",
+				"file:src/main/data?noop=true", "Log _log1", "Choice", "When /order/customer/country = 'UK'", "Log _log2",
 				"file:work/cbr/output/uk"));
 		assertNull(jmx.getNode("Local Camel Context", "Camel", "cbr-example-context", "Routes", "cbr-route",
 				"file:src/main/data?noop=true", "Choice", "Otherwise"));
