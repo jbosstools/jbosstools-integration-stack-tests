@@ -2,7 +2,6 @@ package org.jboss.tools.teiid.ui.bot.test;
 
 import static org.junit.Assert.assertEquals;
 
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
@@ -22,34 +21,17 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * Test for consuming REST WS - XML and JSON
- * 
- * @author mmakovy
- * 
+ * @author mmakovy, skaleta
+ * tested features:
+ * - consume REST WS - XML and JSON (+ Digest access authentication)
  */
 
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
 @TeiidServer(state = ServerReqState.RUNNING)
 public class ConsumeRestWs {
-	private static final String PROJECT_NAME = "REST";
-	private static final String XML_PROFILE_NAME = "REST_XML";
-	private static final String JSON_PROFILE_NAME = "REST_JSON";
-	private static final String XML_PROFILE_NAME_DIGEST = "REST_XML_DIGEST";
-	private static final String JSON_PROFILE_NAME_DIGEST = "REST_JSON_DIGEST";
+	private static final String PROJECT_NAME = "ConsumeRest";
 	private static final String PROCEDURE_NAME = "getProgrammes";
-	private static final String VDBXML = "RESTXML";
-	private static final String VDBJSON = "RESTJSON";
-	private static final String VDBXMLDIGEST = "RESTXMLDIGEST";
-	private static final String VDBJSONDIGEST = "RESTJSONDIGEST";
-	private static final String SOURCE_MODEL_XML = "RestXMLSource";
-	private static final String VIEW_MODEL_XML = "RestXMLView";
-	private static final String SOURCE_MODEL_JSON = "RestJSONSource";
-	private static final String VIEW_MODEL_JSON = "RestJSONView";
-	private static final String SOURCE_MODEL_XML_DIGEST = "RestXMLSourceDigest";
-	private static final String VIEW_MODEL_XML_DIGEST = "RestXMLViewDigest";
-	private static final String SOURCE_MODEL_JSON_DIGEST = "RestJSONSourceDigest";
-	private static final String VIEW_MODEL_JSON_DIGEST = "RestJSONViewDigest";
 
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;
@@ -69,156 +51,168 @@ public class ConsumeRestWs {
 
 	@Test
 	public void testXml() {
-		RestConnectionProfileWizard.openWizard(XML_PROFILE_NAME)
+		String cp = "REST_XML";
+		RestConnectionProfileWizard.openWizard(cp)
 				.setConnectionUrl("http://ws-dvirt.rhcloud.com/dv-test-ws/rest/xml")
 				.setType(RestConnectionProfileWizard.TYPE_XML)
 				.testConnection()
 				.finish();
 		
+		String sourceModel = "RestXmlSource";
+		String viewModel = "RestXmlView";
 		RestImportWizard.openWizard()
-				.setProfileName(XML_PROFILE_NAME)
+				.setProfileName(cp)
 				.nextPage()
 				.setProject(PROJECT_NAME)
-				.setSourceModelName(SOURCE_MODEL_XML)
-				.setViewModelName(VIEW_MODEL_XML)
+				.setSourceModelName(sourceModel)
+				.setViewModelName(viewModel)
 				.setProcedureName(PROCEDURE_NAME)
 				.nextPage()
-				.setJndiName("restXMLSource")
+				.setJndiName(sourceModel + "DS")
 				.nextPage()
 				.setRootPath("schedule/day/broadcasts/broadcast")
 				.setColumns("pid","start","end","programme/title")
 				.finish();
 
+		String vdb = "RestXmlVdb";
 		VdbWizard.openVdbWizard()
 				.setLocation(PROJECT_NAME)
-				.setName(VDBXML)
-				.addModel(PROJECT_NAME, SOURCE_MODEL_XML + ".xmi")
-				.addModel(PROJECT_NAME, VIEW_MODEL_XML + ".xmi")
+				.setName(vdb)
+				.addModel(PROJECT_NAME, sourceModel)
+				.addModel(PROJECT_NAME, viewModel)
 				.finish();
 
-		new ServersView().open();
-		new ServersViewExt().refreshServer(new ServersView().getServers().get(0).getLabel().getName());
+		ServersViewExt.getInstance().refreshServer(teiidServer.getName());
 
-		modelExplorer.deployVdb(PROJECT_NAME, VDBXML);
+		modelExplorer.deployVdb(PROJECT_NAME, vdb);
 
-		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, VDBXML);
-		assertEquals(16, jdbchelper.getNumberOfResults("exec " + VIEW_MODEL_XML + "." + PROCEDURE_NAME + "()"));
+		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, vdb);
+		assertEquals(16, jdbchelper.getNumberOfResults("exec " + viewModel + "." + PROCEDURE_NAME + "()"));
 	}
 
 	@Test
 	public void testJson() {
-		RestConnectionProfileWizard.openWizard(JSON_PROFILE_NAME)
+		String cp = "REST_JSON";
+		RestConnectionProfileWizard.openWizard(cp)
 				.setConnectionUrl("http://ws-dvirt.rhcloud.com/dv-test-ws/rest/json")
 				.setType(RestConnectionProfileWizard.TYPE_JSON)
 				.testConnection()
 				.finish();
 		
+		String sourceModel = "RestJsonSource";
+		String viewModel = "RestJsonView";
 		RestImportWizard.openWizard()
-				.setProfileName(JSON_PROFILE_NAME)
+				.setProfileName(cp)
 				.nextPage()
 				.setProject(PROJECT_NAME)
-				.setSourceModelName(SOURCE_MODEL_JSON)
-				.setViewModelName(VIEW_MODEL_JSON)
+				.setSourceModelName(sourceModel)
+				.setViewModelName(viewModel)
 				.setProcedureName(PROCEDURE_NAME)
 				.nextPage()
-				.setJndiName("restJsonSource")
+				.setJndiName(sourceModel + "DS")
 				.nextPage()
 				.setRootPath("response/schedule/day/broadcasts")
 				.setColumns("pid","start","end","programme/title")
 				.finish();
 		
+		String vdb = "RestJsonVdb";
 		VdbWizard.openVdbWizard()
 				.setLocation(PROJECT_NAME)
-				.setName(VDBJSON)
-				.addModel(PROJECT_NAME, SOURCE_MODEL_JSON + ".xmi")
-				.addModel(PROJECT_NAME, VIEW_MODEL_JSON + ".xmi")
+				.setName(vdb)
+				.addModel(PROJECT_NAME, sourceModel)
+				.addModel(PROJECT_NAME, viewModel)
 				.finish();
 
-		new ServersView().open();
-		new ServersViewExt().refreshServer(new ServersView().getServers().get(0).getLabel().getName());
+		ServersViewExt.getInstance().refreshServer(teiidServer.getName());
 
-		modelExplorer.deployVdb(PROJECT_NAME, VDBJSON);
+		modelExplorer.deployVdb(PROJECT_NAME, vdb);
 
-		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, VDBJSON);
-		assertEquals(16, jdbchelper.getNumberOfResults("exec " + VIEW_MODEL_JSON + "." + PROCEDURE_NAME + "()"));
+		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, vdb);
+		assertEquals(16, jdbchelper.getNumberOfResults("exec " + viewModel + "." + PROCEDURE_NAME + "()"));
 	}
 	
 	@Test
 	public void testXmlHttpDigest() {
-		RestConnectionProfileWizard.openWizard(XML_PROFILE_NAME_DIGEST)
+		String cp = "REST_XML_DIGEST";
+		RestConnectionProfileWizard.openWizard(cp)
 				.setConnectionUrl("http://ws-dvirt.rhcloud.com/dv-test-ws-digest/rest/xml")
 				.setType(RestConnectionProfileWizard.TYPE_XML)
 				.setAuth(RestConnectionProfileWizard.AUTH_TYPE_DIGEST, "digest", "digest")
 				.testConnection()
 				.finish();
 		
+		String sourceModel = "RestXmlDigestSource";
+		String viewModel = "RestXmlDigestView";
 		RestImportWizard.openWizard()
-				.setProfileName(XML_PROFILE_NAME_DIGEST)
+				.setProfileName(cp)
 				.nextPage()
 				.setProject(PROJECT_NAME)
-				.setSourceModelName(SOURCE_MODEL_XML_DIGEST)
-				.setViewModelName(VIEW_MODEL_XML_DIGEST)
+				.setSourceModelName(sourceModel)
+				.setViewModelName(viewModel)
 				.setProcedureName(PROCEDURE_NAME)
 				.nextPage()
-				.setJndiName("restXMLDigestSource")
+				.setJndiName(sourceModel + "DS")
 				.nextPage()
 				.setRootPath("schedule/day/broadcasts/broadcast")
 				.setColumns("pid","start","end","programme/title")
 				.finish();
 
+		String vdb = "RestXmlDigestVdb";
 		VdbWizard.openVdbWizard()
 				.setLocation(PROJECT_NAME)
-				.setName(VDBXMLDIGEST)
-				.addModel(PROJECT_NAME, SOURCE_MODEL_XML_DIGEST + ".xmi")
-				.addModel(PROJECT_NAME, VIEW_MODEL_XML_DIGEST + ".xmi")
+				.setName(vdb)
+				.addModel(PROJECT_NAME, sourceModel)
+				.addModel(PROJECT_NAME, viewModel)
 				.finish();
 
-		new ServersView().open();
-		new ServersViewExt().refreshServer(new ServersView().getServers().get(0).getLabel().getName());
+		ServersViewExt.getInstance().refreshServer(teiidServer.getName());
 
-		modelExplorer.deployVdb(PROJECT_NAME, VDBXMLDIGEST);
+		modelExplorer.deployVdb(PROJECT_NAME, vdb);
 
-		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, VDBXMLDIGEST);
-		assertEquals(16, jdbchelper.getNumberOfResults("exec " + VIEW_MODEL_XML_DIGEST + "." + PROCEDURE_NAME + "()"));
+		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, vdb);
+		assertEquals(16, jdbchelper.getNumberOfResults("exec " + viewModel + "." + PROCEDURE_NAME + "()"));
 	}
 	
 	@Test
 	public void testHttpDigestJson() {
-		RestConnectionProfileWizard.openWizard(JSON_PROFILE_NAME_DIGEST)
+		String cp = "REST_JSON_DIGEST";
+		RestConnectionProfileWizard.openWizard(cp)
 				.setConnectionUrl("http://ws-dvirt.rhcloud.com/dv-test-ws-digest/rest/json")
 				.setType(RestConnectionProfileWizard.TYPE_JSON)
 				.setAuth(RestConnectionProfileWizard.AUTH_TYPE_DIGEST, "digest", "digest")
 				.testConnection()
 				.finish();
 		
+		String sourceModel = "RestJsonDigestSource";
+		String viewModel = "RestJsonDigestView";
 		RestImportWizard.openWizard()
-				.setProfileName(JSON_PROFILE_NAME_DIGEST)
+				.setProfileName(cp)
 				.nextPage()
 				.setProject(PROJECT_NAME)
-				.setSourceModelName(SOURCE_MODEL_JSON_DIGEST)
-				.setViewModelName(VIEW_MODEL_JSON_DIGEST)
+				.setSourceModelName(sourceModel)
+				.setViewModelName(viewModel)
 				.setProcedureName(PROCEDURE_NAME)
 				.nextPage()
-				.setJndiName("restJsonDigestSource")
+				.setJndiName(sourceModel + "DS")
 				.nextPage()
 				.setRootPath("response/schedule/day/broadcasts")
 				.setColumns("pid","start","end","programme/title")
 				.finish();
 
+		String vdb = "RestJsonDigestVdb";
 		VdbWizard.openVdbWizard()
 				.setLocation(PROJECT_NAME)
-				.setName(VDBJSONDIGEST)
-				.addModel(PROJECT_NAME, SOURCE_MODEL_JSON_DIGEST + ".xmi")
-				.addModel(PROJECT_NAME, VIEW_MODEL_JSON_DIGEST + ".xmi")
+				.setName(vdb)
+				.addModel(PROJECT_NAME, sourceModel)
+				.addModel(PROJECT_NAME, viewModel)
 				.finish();
 
-		new ServersView().open();
-		new ServersViewExt().refreshServer(new ServersView().getServers().get(0).getLabel().getName());
+		ServersViewExt.getInstance().refreshServer(teiidServer.getName());
 
-		modelExplorer.deployVdb(PROJECT_NAME, VDBJSONDIGEST);
+		modelExplorer.deployVdb(PROJECT_NAME, vdb);
 
-		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, VDBJSONDIGEST);
-		assertEquals(16, jdbchelper.getNumberOfResults("exec " + VIEW_MODEL_JSON_DIGEST + "." + PROCEDURE_NAME + "()"));
+		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, vdb);
+		assertEquals(16, jdbchelper.getNumberOfResults("exec " + viewModel + "." + PROCEDURE_NAME + "()"));
 	}
 
 }

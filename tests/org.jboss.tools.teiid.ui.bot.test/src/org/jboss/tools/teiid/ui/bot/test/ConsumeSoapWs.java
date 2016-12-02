@@ -2,7 +2,6 @@ package org.jboss.tools.teiid.ui.bot.test;
 
 import static org.junit.Assert.assertEquals;
 
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
@@ -22,88 +21,140 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * Test for consuming SOAP WS
- * 
- * @author mmakovy
- * 
+ * @author mmakovy, skaleta 
+ * tested features:
+ * - consume SOAP WS (+ Digest access authentication)
  */
 
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
 @TeiidServer(state = ServerReqState.RUNNING)
 public class ConsumeSoapWs {
-	private static final String PROJECT_NAME = "SOAP";
-	private static final String SOURCE_MODEL_NAME = "Soap_Source";
-	private static final String VIEW_MODEL_NAME = "Soap_View";
-	private static final String VDB_NAME = "SOAP_VDB";
-	private static final String TESTSQL = "exec FullCountryInfo('US')";
-	private static final String TESTSQL1 = "exec FullCountryInfoAllCountries()";
+	private static final String PROJECT_NAME = "ConsumeSoap";
 
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;
 
+	private ModelExplorer modelExplorer;
+
 	@Before
-	public void before() {
-		new ModelExplorer().createProject(PROJECT_NAME);
+	public void createProject() {
+		modelExplorer = new ModelExplorer();
+		modelExplorer.createProject(PROJECT_NAME);
 	}
-	
+
 	@After
 	public void cleanUp(){
-		new ModelExplorer().deleteAllProjectsSafely();
+		modelExplorer.deleteAllProjectsSafely();
 	}
 
 	@Test
-	public void test() {
-		WsdlConnectionProfileWizard.openWizard("SOAP")
+	public void testSoap() {
+		String cp = "SOAP";
+		WsdlConnectionProfileWizard.openWizard(cp)
 				.setWsdl("http://ws-dvirt.rhcloud.com/dv-test-ws/soap?wsdl")
 				.testConnection()
 				.nextPage()
 				.setEndPoint("Countries")
-				.finish();	
+				.finish();
 
-		WsdlImportWizard.openWizard()
-				.setConnectionProfile("SOAP")
-				.selectOperations("FullCountryInfo","FullCountryInfoAllCountries")
+		String sourceModel = "SoapSource";
+		String viewModel = "SoapView";
+		WsdlImportWizard.openWizard().setConnectionProfile(cp)
+				.selectOperations("FullCountryInfo", "FullCountryInfoAllCountries")
 				.nextPage()
 				.setProject(PROJECT_NAME)
-				.setSourceModelName(SOURCE_MODEL_NAME)
-				.setViewModelName(VIEW_MODEL_NAME)
+				.setSourceModelName(sourceModel)
+				.setViewModelName(viewModel)
 				.nextPage()
-				.setJndiName(SOURCE_MODEL_NAME)
+				.setJndiName(sourceModel + "DS")
 				.nextPage()
 				.nextPage()
 				.addRequestElement("FullCountryInfo/sequence/arg0")
-				.addResponseElement("FullCountryInfo","FullCountryInfoResponse/sequence/return/sequence/capitalCity")
-				.addResponseElement("FullCountryInfo","FullCountryInfoResponse/sequence/return/sequence/continentCode")
-				.addResponseElement("FullCountryInfo","FullCountryInfoResponse/sequence/return/sequence/currencyIsoCode")
-				.addResponseElement("FullCountryInfo","FullCountryInfoResponse/sequence/return/sequence/isoCode")
-				.addResponseElement("FullCountryInfo","FullCountryInfoResponse/sequence/return/sequence/name")
-				.addResponseElement("FullCountryInfo","FullCountryInfoResponse/sequence/return/sequence/phoneCode")
-			
-				.addResponseElement("FullCountryInfoAllCountries","FullCountryInfoAllCountriesResponse/sequence/return/sequence/capitalCity")
-				.addResponseElement("FullCountryInfoAllCountries","FullCountryInfoAllCountriesResponse/sequence/return/sequence/continentCode")
-				.addResponseElement("FullCountryInfoAllCountries","FullCountryInfoAllCountriesResponse/sequence/return/sequence/currencyIsoCode")
-				.addResponseElement("FullCountryInfoAllCountries","FullCountryInfoAllCountriesResponse/sequence/return/sequence/isoCode")
-				.addResponseElement("FullCountryInfoAllCountries","FullCountryInfoAllCountriesResponse/sequence/return/sequence/name")
-				.addResponseElement("FullCountryInfoAllCountries","FullCountryInfoAllCountriesResponse/sequence/return/sequence/phoneCode")
+				.addResponseElement("FullCountryInfo", "FullCountryInfoResponse/sequence/return/sequence/capitalCity")
+				.addResponseElement("FullCountryInfo", "FullCountryInfoResponse/sequence/return/sequence/continentCode")
+				.addResponseElement("FullCountryInfo", "FullCountryInfoResponse/sequence/return/sequence/currencyIsoCode")
+				.addResponseElement("FullCountryInfo", "FullCountryInfoResponse/sequence/return/sequence/isoCode")
+				.addResponseElement("FullCountryInfo", "FullCountryInfoResponse/sequence/return/sequence/name")
+				.addResponseElement("FullCountryInfo", "FullCountryInfoResponse/sequence/return/sequence/phoneCode")
+				.addResponseElement("FullCountryInfoAllCountries", "FullCountryInfoAllCountriesResponse/sequence/return/sequence/capitalCity")
+				.addResponseElement("FullCountryInfoAllCountries", "FullCountryInfoAllCountriesResponse/sequence/return/sequence/continentCode")
+				.addResponseElement("FullCountryInfoAllCountries", "FullCountryInfoAllCountriesResponse/sequence/return/sequence/currencyIsoCode")
+				.addResponseElement("FullCountryInfoAllCountries", "FullCountryInfoAllCountriesResponse/sequence/return/sequence/isoCode")
+				.addResponseElement("FullCountryInfoAllCountries", "FullCountryInfoAllCountriesResponse/sequence/return/sequence/name")
+				.addResponseElement("FullCountryInfoAllCountries", "FullCountryInfoAllCountriesResponse/sequence/return/sequence/phoneCode")
 				.finish();
 
+		String vdb = "SoapVdb";
 		VdbWizard.openVdbWizard()
 				.setLocation(PROJECT_NAME)
-				.setName(VDB_NAME)
-				.addModel(PROJECT_NAME, SOURCE_MODEL_NAME + ".xmi")
-				.addModel(PROJECT_NAME, VIEW_MODEL_NAME + ".xmi")
+				.setName(vdb)
+				.addModel(PROJECT_NAME, sourceModel)
+				.addModel(PROJECT_NAME, viewModel)
 				.finish();
 
-		new ServersView().open();
-		new ServersViewExt().refreshServer(new ServersView().getServers().get(0).getLabel().getName());
+		ServersViewExt.getInstance().refreshServer(teiidServer.getName());
 
-		new ModelExplorer().deployVdb(PROJECT_NAME, VDB_NAME);
+		modelExplorer.deployVdb(PROJECT_NAME, vdb);
 
-		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, VDB_NAME);
+		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, vdb);
+		assertEquals(1, jdbchelper.getNumberOfResults("exec FullCountryInfo('US')"));
+		assertEquals(3, jdbchelper.getNumberOfResults("exec FullCountryInfoAllCountries()"));
+	}
 
-		assertEquals(1, jdbchelper.getNumberOfResults(TESTSQL));
-		assertEquals(3, jdbchelper.getNumberOfResults(TESTSQL1));
+	@Test
+	public void testSoapDigest() {
+		String cp = "SOAP_DIGEST";
+		WsdlConnectionProfileWizard.openWizard(cp)
+				.setWsdl("http://ws-dvirt.rhcloud.com/dv-test-ws-digest/soap?wsdl",WsdlConnectionProfileWizard.AUTH_TYPE_DIGEST,"digest","digest")	
+				.testConnection()
+				.nextPage()
+				.setEndPoint("Countries")
+				.finish();
+
+		String sourceModel = "SoapDigestSource";
+		String viewModel = "SoapDigestView";
+		WsdlImportWizard.openWizard()
+				.setConnectionProfile(cp)
+				.selectOperations("FullCountryInfo", "FullCountryInfoAllCountries")
+				.nextPage()
+				.setProject(PROJECT_NAME)
+				.setSourceModelName(sourceModel)
+				.setViewModelName(viewModel)
+				.nextPage()
+				.setJndiName(sourceModel + "DS")
+				.nextPage()
+				.nextPage()
+				.addRequestElement("FullCountryInfo/sequence/arg0")
+				.addResponseElement("FullCountryInfo", "FullCountryInfoResponse/sequence/return/sequence/capitalCity")
+				.addResponseElement("FullCountryInfo", "FullCountryInfoResponse/sequence/return/sequence/continentCode")
+				.addResponseElement("FullCountryInfo", "FullCountryInfoResponse/sequence/return/sequence/currencyIsoCode")
+				.addResponseElement("FullCountryInfo", "FullCountryInfoResponse/sequence/return/sequence/isoCode")
+				.addResponseElement("FullCountryInfo", "FullCountryInfoResponse/sequence/return/sequence/name")
+				.addResponseElement("FullCountryInfo", "FullCountryInfoResponse/sequence/return/sequence/phoneCode")
+				.addResponseElement("FullCountryInfoAllCountries", "FullCountryInfoAllCountriesResponse/sequence/return/sequence/capitalCity")
+				.addResponseElement("FullCountryInfoAllCountries", "FullCountryInfoAllCountriesResponse/sequence/return/sequence/continentCode")
+				.addResponseElement("FullCountryInfoAllCountries", "FullCountryInfoAllCountriesResponse/sequence/return/sequence/currencyIsoCode")
+				.addResponseElement("FullCountryInfoAllCountries", "FullCountryInfoAllCountriesResponse/sequence/return/sequence/isoCode")
+				.addResponseElement("FullCountryInfoAllCountries", "FullCountryInfoAllCountriesResponse/sequence/return/sequence/name")
+				.addResponseElement("FullCountryInfoAllCountries", "FullCountryInfoAllCountriesResponse/sequence/return/sequence/phoneCode")
+				.finish();
+
+		String vdb = "SoapDigestVdb";
+		VdbWizard.openVdbWizard()
+				.setLocation(PROJECT_NAME)
+				.setName(vdb)
+				.addModel(PROJECT_NAME, sourceModel)
+				.addModel(PROJECT_NAME, viewModel)
+				.finish();
+
+		ServersViewExt.getInstance().refreshServer(teiidServer.getName());
+
+		modelExplorer.deployVdb(PROJECT_NAME, vdb);
+
+		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, vdb);
+		assertEquals(1, jdbchelper.getNumberOfResults("exec FullCountryInfo('US')"));
+		assertEquals(3, jdbchelper.getNumberOfResults("exec FullCountryInfoAllCountries()"));
 	}
 
 }

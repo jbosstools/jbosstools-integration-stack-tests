@@ -21,8 +21,6 @@ public class RestConnectionProfileWizard extends ConnectionProfileWizard {
 	
 	public static final String TYPE_XML = "XML";
 	public static final String TYPE_JSON = "JSON";
-	public static final String TYPE_AUTH_HTTPBASIC = "HTTPBasic";
-	public static final String TYPE_AUTH_DIGEST = "Digest";
 
 	public RestConnectionProfileWizard(String name) {
 		super("Web Services Data Source (REST)",name);

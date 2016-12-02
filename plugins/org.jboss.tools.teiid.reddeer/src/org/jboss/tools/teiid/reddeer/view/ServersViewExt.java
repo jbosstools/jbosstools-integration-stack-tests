@@ -45,6 +45,12 @@ public class ServersViewExt extends ServersView {
 	public ServersViewExt() {
 		super();
 	}
+	
+	public static ServersViewExt getInstance(){
+		ServersViewExt serversViewExt = new ServersViewExt();
+		serversViewExt.open();
+		return serversViewExt;
+	}
 
 	public boolean isVDBDeployed(String serverName, ServerType serverType, String vdbName) {
 		boolean result = false;
