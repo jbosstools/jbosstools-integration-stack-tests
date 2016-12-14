@@ -32,8 +32,8 @@
 	<repositories>
 		<!--JBTIS Repository-->
 		<repository>
-			<id>jbtis</id>
-			<url>${jbtis.site}</url>
+			<id>jbtis-44-staging</id>
+			<url>http://download.jboss.org/jbosstools/neon/staging/updates/integration-stack/</url>
 			<layout>p2</layout>
 			<snapshots>
 				<enabled>true</enabled>
@@ -44,8 +44,8 @@
 		</repository>
 		<!-- JBTIS Repository (early access) -->
 		<repository>
-			<id>jbtis-ea</id>
-			<url>${jbtis-ea.site}</url>
+			<id>jbtis-44-staging-ea</id>
+			<url>http://download.jboss.org/jbosstools/neon/staging/updates/integration-stack/earlyaccess</url>
 			<layout>p2</layout>
 			<snapshots>
 				<enabled>true</enabled>
