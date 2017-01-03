@@ -129,6 +129,22 @@ public class NewFuseIntegrationProjectWizard extends NewWizardDialog {
 		}
 	}
 
+	public boolean isProjectTypeSelected(ProjectType type) {
+		switch (type) {
+		case JAVA:
+			log.debug("Trying to determine whether 'Java DSL' project type is selected");
+			return new RadioButton(type.getDescription()).isSelected();
+		case SPRING:
+			log.debug("Trying to determine whether 'Spring DSL' project type is selected");
+			return new RadioButton(type.getDescription()).isSelected();
+		case BLUEPRINT:
+			log.debug("Trying to determine whether 'Blueprint DSL' project type is selected");
+			return new RadioButton(type.getDescription()).isSelected();
+		default:
+			return true;
+		}
+	}
+
 	public void startWithEmptyProject() {
 		new RadioButton("Start with an empty project").toggle(true);
 	}
