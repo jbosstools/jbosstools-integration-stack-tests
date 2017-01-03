@@ -57,6 +57,7 @@ import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
 import org.jboss.tools.fuse.reddeer.view.FuseJMXNavigator;
+import org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard;
 import org.jboss.tools.fuse.ui.bot.test.utils.EditorManipulator;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.preference.FuseServerRuntimePreferencePage;
@@ -470,6 +471,27 @@ public class RegressionTest extends DefaultTest {
 			fail("Error during project deletion occurred - see https://issues.jboss.org/browse/FUSETOOLS-1730");
 		} catch (WaitTimeoutExpiredException e) {
 			// issue is not present - great :-)
+		}
+	}
+
+	/**
+	 * <p>
+	 * New Fuse Integration Project Wizard should prevent selection of disabled DSL type
+	 * </p>
+	 * <b>Link:</b>
+	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-2051">https://issues.jboss.org/browse/FUSETOOLS-2051</a>
+	 */
+	@Test
+	public void issue_2051() {
+		NewFuseIntegrationProjectWizard wiz = new NewFuseIntegrationProjectWizard();
+		wiz.open();
+		wiz.setProjectName("test-erfiojkn");
+		wiz.next();
+		wiz.next();
+		wiz.selectTemplate("Fuse on EAP", "Medium", "Spring on EAP");
+		if (wiz.isProjectTypeAvailable(ProjectType.BLUEPRINT) || wiz.isProjectTypeSelected(ProjectType.BLUEPRINT)) {
+			wiz.cancel();
+			fail("Disabled project type is selected - see https://issues.jboss.org/browse/FUSETOOLS-2051");
 		}
 	}
 }
