@@ -22,7 +22,7 @@ public class IssueIsClosed implements TestMethodShouldRun {
 
 	@Override
 	public boolean shouldRun(FrameworkMethod method) {
-		boolean skipUnfixedIssues = Boolean.valueOf(System.getProperty("reddeer.skipUnfixedIssues", "false"));
+		boolean skipUnfixedIssues = Boolean.valueOf(System.getProperty("rd.skipUnfixedIssues", "false"));
 		if (!skipUnfixedIssues) {
 			return true;
 		}
