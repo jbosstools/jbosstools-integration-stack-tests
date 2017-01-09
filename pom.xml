@@ -13,7 +13,7 @@
 	<packaging>pom</packaging>
 	<properties>
 		<tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-integration-stack-tests.git</tycho.scmUrl>
-		<jbtis.tp.version>4.4.1.CR2-SNAPSHOT</jbtis.tp.version>
+		<jbtis.tp.version>4.4.1.CR2</jbtis.tp.version>
 		<jbtis.repo>staging</jbtis.repo>
 		<jbtis.site>http://download.jboss.org/jbosstools/neon/${jbtis.repo}/updates/integration-stack/</jbtis.site>
 		<jbtis-ea.site>${jbtis.site}/earlyaccess/</jbtis-ea.site>
