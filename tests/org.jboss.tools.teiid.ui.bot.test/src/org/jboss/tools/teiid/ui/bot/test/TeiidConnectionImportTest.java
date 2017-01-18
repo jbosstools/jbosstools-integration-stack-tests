@@ -23,6 +23,7 @@ import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.imports.TeiidConnectionImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
+import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -231,7 +232,8 @@ public class TeiidConnectionImportTest {
 	}
 	
 	@Test
-	public void salesforceTest() {	
+	public void salesforceTest() {
+	    Assume.assumeFalse(System.getProperty("os.name").toLowerCase().startsWith("mac")); //this method works in Mac only local machine 
 		String modelName = "sfImp";
 		new ServersViewExt().deleteDatasource(teiidServer.getName(), "sfDS");
 		
@@ -245,12 +247,14 @@ public class TeiidConnectionImportTest {
 						.setImportPropertie(CreateDataSourceDialog.DATASOURCE_PROPERTY_USER_NAME, sfProps.getProperty("db.username"))
 						.finish();
 		TeiidConnectionImportWizard.getInstance()
+				.selectDataSource("sfDS")
 				.nextPage()
 				.nextPage()
 				.setModelName(modelName)
 				.setProject(PROJECT_NAME)
 				.nextPageWithWait()
 				.nextPageWithWait()
+				.setTablesToImport("Objects to Create/Account","Objects to Create/Vote","Objects to Create/Profile")
 				.finish();
 		
 		checkImportedModel(modelName, "Account", "Vote", "Profile");

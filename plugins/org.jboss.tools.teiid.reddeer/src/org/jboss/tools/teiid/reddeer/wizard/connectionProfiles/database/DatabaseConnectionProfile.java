@@ -59,7 +59,7 @@ public class DatabaseConnectionProfile extends ConnectionProfileWizard{
 		log.info("Set database to: '" + database + "'");
 		activate();
 		if(vendor.equals("Oracle")){
-			new LabeledText("SID:").setText(database);
+			new LabeledText("Database instance:").setText(database);
 		}else{
 			new LabeledText("Database:").setText(database);
 		}
