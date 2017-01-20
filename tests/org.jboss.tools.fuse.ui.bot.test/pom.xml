@@ -26,6 +26,7 @@
 		<test.class>AllTests</test.class>
 		<customization.file>resources/settings/plugin_customization.ini</customization.file>
 		<maven.repo>${project.build.directory}/requirements/repository/</maven.repo>
+		<staging.repos>false</staging.repos>
 	</properties>
 
 	<build>
@@ -89,6 +90,7 @@
 						<logDebug>${enable.debug.log}</logDebug>
 						<maven.settings>${project.build.directory}/requirements/emptysettings.xml</maven.settings>
 						<maven.repository>${maven.repo}</maven.repository>
+						<staging.repositories>${staging.repos}</staging.repositories>
 					</systemProperties>
 
 					<dependencies combine.children="append">

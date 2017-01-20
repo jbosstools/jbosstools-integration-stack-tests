@@ -25,9 +25,11 @@ import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.C
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.fuse.reddeer.ProjectType;
+import org.jboss.tools.fuse.reddeer.preference.StagingRepositoriesPreferencePage;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.After;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized.Parameters;
@@ -67,6 +69,18 @@ public class FuseProjectTest extends DefaultTest {
 			}
 		}
 		return product;
+	}
+
+	@BeforeClass
+	public static void useStagingRepos() {
+		StagingRepositoriesPreferencePage pref = new StagingRepositoriesPreferencePage();
+		pref.open();
+		if (System.getProperty("staging.repositories").equals("true")) {
+			pref.toggleStagingRepositories(true);
+		} else {
+			pref.toggleStagingRepositories(false);
+		}
+		pref.ok();
 	}
 
 	/**
