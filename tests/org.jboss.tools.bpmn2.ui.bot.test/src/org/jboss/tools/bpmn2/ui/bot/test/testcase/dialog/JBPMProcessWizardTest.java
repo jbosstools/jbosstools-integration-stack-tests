@@ -7,6 +7,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.tools.bpmn2.reddeer.dialog.JBPMProcessWizard;
 import org.jboss.tools.bpmn2.reddeer.dialog.JBPMProjectWizard;
 import org.jboss.tools.bpmn2.reddeer.dialog.JBPMProjectWizard.ProjectType;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -37,7 +38,6 @@ public class JBPMProcessWizardTest {
 		Assert.assertTrue(
 				packageView.getProject("TestProject").containsItem("src/main/resources", "SampleProcess.bpmn2"));
 	}
-
 	
 	@Test
 	public void newProcessFormValidationTest() throws Exception {

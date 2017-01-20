@@ -2,12 +2,17 @@ package org.jboss.tools.bpmn2.ui.bot.test.testcase.dialog;
 
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.eclipse.condition.ProblemsViewIsEmpty;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsDescriptionMatcher;
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.button.RadioButton;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.reddeer.dialog.JBPMProjectWizard;
 import org.jboss.tools.bpmn2.reddeer.dialog.JBPMProjectWizard.ProjectType;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -20,17 +25,19 @@ public class JBPMProjectWizardTest extends SWTBotTestCase {
 	
 	private static ProjectExplorer explorerView;
 	private static JBPMProjectWizard wizardView;
+	private static ProblemsView problemsView;
 	
 	@BeforeClass
 	public static void init() {
 		explorerView = new ProjectExplorer();
 		wizardView = new JBPMProjectWizard();
+		problemsView = new ProblemsView();
 	}
 
 	@After
 	public void deleteAllProjects() {
 		try{
-			new WaitUntil(new ProblemsViewIsEmpty());
+			problemsView.getProblems(ProblemType.ERROR, new ProblemsDescriptionMatcher("")).isEmpty();	
 		} finally {
 		
 			for (Project p : explorerView.getProjects()) {
@@ -45,7 +52,7 @@ public class JBPMProjectWizardTest extends SWTBotTestCase {
 
 		Project p = explorerView.getProject("TestProject");
 		// the node list will contain one empty node!
-		assertTrue(new DefaultTreeItem("TestProject", "src/main/java").getItems().isEmpty());
+		assertTrue(p.containsItem("src/main/resources", "com.sample"));
 		assertTrue(p.containsItem("src/main/resources", "META-INF", "kmodule.xml"));
 	}
 
@@ -79,10 +86,18 @@ public class JBPMProjectWizardTest extends SWTBotTestCase {
 
 	@Test()
 	public void newProjectFormValidationTest() throws Exception {
-		try {
+		
 			wizardView.open();
+			new PushButton(ProjectType.EMPTY.getButtonIndex()).click();
+			wizardView.next();	
+			new LabeledText("Project name:").setText("");
+			new RadioButton("Maven").click();
+			new LabeledText("Artifact ID:").setText("");
+		try{
 			wizardView.finish();
 			Assert.fail("Project with an empty name was created!");
+		} catch (WaitTimeoutExpiredException ex) {
+		
 		} finally {
 			wizardView.cancel();
 		}
