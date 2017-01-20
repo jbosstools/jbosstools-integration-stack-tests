@@ -6,7 +6,9 @@ import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.LabeledCheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 
@@ -47,6 +49,8 @@ public class JBPMProjectWizard extends NewWizardDialog {
 		new PushButton(projectType.getButtonIndex()).click();
 		next();	
 		new LabeledText("Project name:").setText(projectName);
+		new RadioButton("Maven").click();
+		new LabeledText("Artifact ID:").setText("artifact-" + projectName);
 		finish();
 		assertTrue("Project '" + projectName + "' was not created", new PackageExplorer().containsProject(projectName));
 	}
@@ -65,9 +69,11 @@ public class JBPMProjectWizard extends NewWizardDialog {
 		new PushButton(ProjectType.HELLO_WORLD.getButtonIndex()).click();
 		next();
 		new LabeledText("Project name:").setText(projectName);
-		if(!includeTests) {
+		if(includeTests) {
 			new CheckBox("Also include a sample JUnit test for the process").click();
 		}
+		new RadioButton("Maven").click();
+		new LabeledText("Artifact ID:").setText(projectName);
 		finish();
 		assertTrue("Project '" + projectName + "' was not created", new PackageExplorer().containsProject(projectName));
 	}

@@ -6,9 +6,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.apache.log4j.Logger;
-import org.jboss.reddeer.junit.requirement.PropertyConfiguration;
 import org.jboss.reddeer.junit.requirement.Requirement;
+import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.api.Table;
+import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
@@ -18,11 +19,12 @@ import org.jboss.tools.bpmn2.ui.bot.test.requirements.ProcessRuntimeRequirement.
 /**
  * 
  */
-public class ProcessRuntimeRequirement implements Requirement<ProcessRuntime>, PropertyConfiguration {
+public class ProcessRuntimeRequirement implements Requirement<ProcessRuntime> {
 
 	private static final String RUNTIME_NAME = "jbpm6";
 
-	private String runtimeDir; // = System.getProperty("jbpm.runtime.dir");
+	private String runtimeDir = "default/test/runtime/dir";
+	private String runtimeVer = "1.0.0.ER9";
 
 	/**
 	 *
@@ -35,7 +37,7 @@ public class ProcessRuntimeRequirement implements Requirement<ProcessRuntime>, P
 
 	@Override
 	public boolean canFulfill() {
-		return runtimeDir != null;
+		return true;//runtimeDir != null;
 	}
 
 	@Override
@@ -59,7 +61,16 @@ public class ProcessRuntimeRequirement implements Requirement<ProcessRuntime>, P
 			new PushButton("Add...").click();
 			new DefaultText(0).setText(RUNTIME_NAME);
 			new DefaultText(1).setText(runtimeDir);
-			new PushButton("OK").click();
+			new DefaultText(2).setText(runtimeVer);
+			new FinishButton().click();
+			try {
+				preferences.wait((long) 5000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			preferences.cancel();
 
 			Logger.getLogger(ProcessRuntimeRequirement.class).info("jBPM Runtime '" + RUNTIME_NAME + "' added.");
 		}
