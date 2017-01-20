@@ -28,6 +28,7 @@ import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.common.reddeer.FileUtils;
 import org.jboss.tools.common.reddeer.preference.MavenUserSettingsPreferencePage;
 import org.jboss.tools.fuse.reddeer.ProjectType;
+import org.jboss.tools.fuse.reddeer.preference.StagingRepositoriesPreferencePage;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.After;
@@ -98,6 +99,18 @@ public class FuseProjectTestLong extends DefaultTest {
 		pref.setUserSettings(System.getProperty("maven.settings"));
 		pref.updateSettings();
 		pref.reindex();
+		pref.ok();
+	}
+
+	@BeforeClass
+	public static void useStagingRepos() {
+		StagingRepositoriesPreferencePage pref = new StagingRepositoriesPreferencePage();
+		pref.open();
+		if (System.getProperty("staging.repositories").equals("true")) {
+			pref.toggleStagingRepositories(true);
+		} else {
+			pref.toggleStagingRepositories(false);
+		}
 		pref.ok();
 	}
 
