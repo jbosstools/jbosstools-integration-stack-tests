@@ -29,7 +29,7 @@
 <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
 <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.jboss.tools.switchyard.ui.bot.test.suite.SmokeTests"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog -eclipse.password resources/security/password -pluginCustomization resources/settings/plugin_customization.ini"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog -eclipse.password resources/security/password -pluginCustomization resources/settings/plugin_customization_with_proxy_settings.ini"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="org.jboss.tools.switchyard.ui.bot.test"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xms512m -Xmx1024m -XX:PermSize=256m -XX:MaxPermSize=384m -Dusage_reporting_enabled=false -Drd.config=target/config/switchyard-210.xml"/>
@@ -40,6 +40,7 @@
 <stringAttribute key="rd.launch.property.rd.closeShells" value="true"/>
 <stringAttribute key="rd.launch.property.rd.closeWelcomeScreen" value="true"/>
 <stringAttribute key="rd.launch.property.rd.disableMavenIndex" value="true"/>
+<stringAttribute key="rd.launch.property.rd.logCollectorEnabled" value="true"/>
 <stringAttribute key="rd.launch.property.rd.logLevel" value="ALL"/>
 <stringAttribute key="rd.launch.property.rd.logMessageFilter" value="ALL"/>
 <stringAttribute key="rd.launch.property.rd.openAssociatedPerspective" value="never"/>
