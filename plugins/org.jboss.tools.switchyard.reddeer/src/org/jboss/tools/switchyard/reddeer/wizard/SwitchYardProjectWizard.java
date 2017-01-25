@@ -212,7 +212,15 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 	}
 
 	public SwitchYardProjectWizard implAll() {
-		components.add(new String[] { "Implementation Support" });
+		String suffix = "";
+		if (intpkgVersion != null) {
+			suffix = " (Fuse Integration Pack)";
+		}
+		components.add(new String[] { "Implementation Support", "Bean" });
+		components.add(new String[] { "Implementation Support", "BPEL" });
+		components.add(new String[] { "Implementation Support", "Camel Route" });
+		components.add(new String[] { "Implementation Support", "BPM (jBPM)" + suffix });
+		components.add(new String[] { "Implementation Support", "Rules (Drools)" + suffix });
 		return this;
 	}
 
