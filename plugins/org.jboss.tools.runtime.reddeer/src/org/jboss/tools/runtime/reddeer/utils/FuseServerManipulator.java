@@ -3,6 +3,7 @@ package org.jboss.tools.runtime.reddeer.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.AbstractWait;
@@ -19,6 +20,7 @@ import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerLabel;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.swt.api.Tree;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -294,6 +296,16 @@ public class FuseServerManipulator {
 		}
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		page.close();
+		
+		// Maybe prompt "Are you sure ..." occurs
+		try {
+			new WaitUntil(new ShellWithTextIsAvailable("Server"));
+			new OkButton().click();
+			return;
+		} catch (WaitTimeoutExpiredException e) {
+			log.debug("Are you sure you want to remove ... didn't appeared");
+		}
+
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		new WorkbenchShell();
 	}
