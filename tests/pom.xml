@@ -18,7 +18,7 @@
     <swt.bot.test.record.screencast>false</swt.bot.test.record.screencast>
     <pauseFailedTest>false</pauseFailedTest>
     <reddeer.skipUnfixedIssues>false</reddeer.skipUnfixedIssues>
-    <integrationTestsSystemProperties>-Dswt.bot.test.record.screencast=${swt.bot.test.record.screencast} -Dorg.eclipse.swtbot.screenshots.dir=${project.build.directory}/screenshots -DpauseFailedTest=${pauseFailedTest} -Dorg.jboss.tools.central.donotshow=true -Dreddeer.skipUnfixedIssues=${reddeer.skipUnfixedIssues}</integrationTestsSystemProperties>
+    <integrationTestsSystemProperties>-Dswt.bot.test.record.screencast=${swt.bot.test.record.screencast} -Dorg.eclipse.swtbot.screenshots.dir=${project.build.directory}/screenshots -DpauseFailedTest=${pauseFailedTest} -Dorg.jboss.tools.central.donotshow=true -Dreddeer.skipUnfixedIssues=${reddeer.skipUnfixedIssues} -Dorg.eclipse.swt.internal.gtk.disablePrinting</integrationTestsSystemProperties>
     <killServers>false</killServers>
     <test.installPath.OSX></test.installPath.OSX>
   </properties>
