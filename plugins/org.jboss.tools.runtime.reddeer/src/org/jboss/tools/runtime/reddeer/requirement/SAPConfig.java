@@ -39,7 +39,7 @@ public class SAPConfig {
 		return lib;
 	}
 
-	@XmlElementWrapper
+	@XmlElementWrapper(name = "destinations", namespace = Namespaces.SOA_REQ)
 	@XmlElement(name = "destination", namespace = Namespaces.SOA_REQ)
 	private List<SAPDestination> destinations;
 
@@ -51,7 +51,7 @@ public class SAPConfig {
 		return destinations.get(0);
 	}
 
-	@XmlElementWrapper
+	@XmlElementWrapper(name = "servers", namespace = Namespaces.SOA_REQ)
 	@XmlElement(name = "server", namespace = Namespaces.SOA_REQ)
 	private List<SAPServer> servers;
 
