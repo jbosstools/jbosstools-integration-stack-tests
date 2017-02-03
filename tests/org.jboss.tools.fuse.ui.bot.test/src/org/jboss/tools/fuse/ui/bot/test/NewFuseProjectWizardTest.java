@@ -9,6 +9,9 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.jboss.reddeer.core.handler.ShellHandler;
@@ -24,6 +27,7 @@ import org.jboss.tools.common.reddeer.ResourceHelper;
 import org.jboss.tools.common.reddeer.ext.ProjectExt;
 import org.jboss.tools.common.reddeer.view.ErrorLogView;
 import org.jboss.tools.fuse.reddeer.ProjectType;
+import org.jboss.tools.fuse.reddeer.SupportedVersions;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
@@ -253,7 +257,8 @@ public class NewFuseProjectWizardTest {
 		wiz.setProjectType(ProjectType.BLUEPRINT);
 		wiz.finish();
 		try {
-			assertTrue("Created Camel File is not in Blueprint DSL", new CamelEditor("blueprint.xml").xpath("/blueprint").length() > 0);
+			assertTrue("Created Camel File is not in Blueprint DSL",
+					new CamelEditor("blueprint.xml").xpath("/blueprint").length() > 0);
 		} catch (CoreException e) {
 			fail("Something went wrong with access to Camel File - blueprint.xml");
 		}
@@ -270,13 +275,14 @@ public class NewFuseProjectWizardTest {
 		wiz.setProjectType(ProjectType.SPRING);
 		wiz.finish();
 		try {
-			assertTrue("Created Camel File is not in Spring DSL", new CamelEditor("camel-context.xml").xpath("/beans").length() > 0);
+			assertTrue("Created Camel File is not in Spring DSL",
+					new CamelEditor("camel-context.xml").xpath("/beans").length() > 0);
 		} catch (CoreException e) {
 			fail("Something went wrong with access to Camel File - camel-context.xml");
 		}
 		assertFalse("Project with Spring DSL was created with errors", hasErrors());
 		assertTrue("There are some errors in Error Log", LogGrapper.getPluginErrors("fuse").size() == 0);
-		
+
 		// Java DSL
 		wiz = new NewFuseIntegrationProjectWizard();
 		wiz.open();
@@ -286,7 +292,8 @@ public class NewFuseProjectWizardTest {
 		wiz.startWithEmptyProject();
 		wiz.setProjectType(ProjectType.JAVA);
 		wiz.finish();
-		assertTrue("Project created with Java DSL do not contain 'CamelRoute.java' file", new ProjectExplorer().getProject("java").containsItem("src/main/java", "com.mycompany", "CamelRoute.java"));
+		assertTrue("Project created with Java DSL do not contain 'CamelRoute.java' file", new ProjectExplorer()
+				.getProject("java").containsItem("src/main/java", "com.mycompany", "CamelRoute.java"));
 		assertFalse("Project with Java DSL was created with errors", hasErrors());
 		assertTrue("There are some errors in Error Log", LogGrapper.getPluginErrors("fuse").size() == 0);
 	}
@@ -300,4 +307,48 @@ public class NewFuseProjectWizardTest {
 		}
 		return false;
 	}
+
+	/**
+	 * <p>
+	 * Verifies that all supported Camel versions are available in New Fuse Project Wizard
+	 * </p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>Invoke <i>File --> New --> Fuse Integration Project</i> wizard</li>
+	 * <li>Set project name</li>
+	 * <li>Hit 'Next'</li>
+	 * <li>Get all available Camel versions in New Fuse Project Wizard</li>
+	 * <li>Get all supported Camel versions</li>
+	 * <li>Check availability of supported versions in available versions</li>
+	 * </ol>
+	 *
+	 * @author djelinek
+	 */
+	@Test
+	public void testSupportedCamelVersions() {
+
+		NewFuseIntegrationProjectWizard wiz = new NewFuseIntegrationProjectWizard();
+		wiz.open();
+		wiz.setProjectName("test");
+		wiz.next();
+		List<String> versions = wiz.getCamelVersions();
+		Collection<String> supported = SupportedVersions.getCamelVersions();
+		List<String> missing = new ArrayList<>();
+		for (String sup : supported) {
+			if (!versions.contains(sup)) {
+				missing.add(sup);
+			}
+		}
+
+		if (!missing.isEmpty()) {
+			StringBuilder build = new StringBuilder();
+			build.append("List of missing supported Camel versions:");
+			for (String mis : missing) {
+				build.append("\n" + mis);
+			}
+			fail(build.toString());
+		}
+
+	}
+
 }
