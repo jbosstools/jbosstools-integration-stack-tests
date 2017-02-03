@@ -166,6 +166,11 @@ public class ModelExplorer extends AbstractExplorer {
 			styledText.selectText(removedText);
 			styledText.insertText(customSql);
 		}
+		
+		if (new ShellWithTextIsAvailable("Data Sources Missing").test()){
+			new PushButton("Yes").click();
+		}
+		
 		new PushButton("OK").click();
 	}
 	
