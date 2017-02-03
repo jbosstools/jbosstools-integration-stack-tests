@@ -1,5 +1,6 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
+import static org.jboss.tools.fuse.reddeer.SupportedVersions.CAMEL_2_17_0_REDHAT_630187;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -47,8 +48,8 @@ public class DebuggerTest extends DefaultTest {
 	private static final String CAMEL_CONTEXT = "camel-context.xml";
 	private static final String CHOICE = "Choice";
 	private static final String CHOICE_ID = "_choice1";
-	private static final String LOG = "Log _log4";
-	private static final String LOG_ID = "_log4";
+	private static final String LOG = "Log _log2";
+	private static final String LOG_ID = "_log2";
 
 	/**
 	 * Prepares test environment
@@ -56,7 +57,7 @@ public class DebuggerTest extends DefaultTest {
 	@BeforeClass
 	public static void setupInitial() {
 
-		ProjectFactory.newProject(PROJECT_NAME).template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();
+		ProjectFactory.newProject(PROJECT_NAME).version(CAMEL_2_17_0_REDHAT_630187).template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();
 		CamelEditor editor = new CamelEditor(CAMEL_CONTEXT);
 		editor.selectEditPart("file:work/cbr/input");
 		editor.setProperty("Uri *", "file:src/main/data?noop=true");
@@ -184,7 +185,7 @@ public class DebuggerTest extends DefaultTest {
 		AbstractWait.sleep(TimePeriod.SHORT);
 		variables.open();
 		new DefaultTree().getItems().get(4).getItems().get(0).select();
-		assertTrue(new DefaultStyledText().getText().contains("<name>Antwerp Zoo</name>"));
+		assertTrue(new DefaultStyledText().getText().contains("<name>Bristol Zoo Gardens</name>"));
 
 		// resume and then should stop on the 'log1' node
 		ResumeButton resume = new ResumeButton();
@@ -198,15 +199,15 @@ public class DebuggerTest extends DefaultTest {
 		assertTrue(resume.isEnabled());
 		new StepOverButton().select();
 		new WaitUntil(new IsSuspended(), TimePeriod.NORMAL);
-		assertTrue(new ConsoleHasText("Sending order order1.xml to another country").test());
+		assertTrue(new ConsoleHasText("Sending order order2.xml to the UK").test());
 		assertTrue(resume.isEnabled());
 		AbstractWait.sleep(TimePeriod.getCustom(5));
-		assertEquals("_to3", variables.getValue("Endpoint"));
+		assertEquals("_to1", variables.getValue("Endpoint"));
 
 		// remove all breakpoints
 		new BreakpointsView().removeAllBreakpoints();
 		assertTrue(new ConsoleHasText("Removing breakpoint _choice1").test());
-		assertTrue(new ConsoleHasText("Removing breakpoint _log4").test());
+		assertTrue(new ConsoleHasText("Removing breakpoint _log2").test());
 		resume.click();
 
 		// all breakpoints should be processed
@@ -246,8 +247,8 @@ public class DebuggerTest extends DefaultTest {
 
 		new CamelProject(PROJECT_NAME).openCamelContext(CAMEL_CONTEXT);
 		CamelEditor editor = new CamelEditor(CAMEL_CONTEXT);
-		editor.setConditionalBreakpoint(CHOICE, "simple", "${in.header.CamelFileName} == 'order1.xml'");
-		editor.setConditionalBreakpoint(LOG, "simple", "${in.header.CamelFileName} == 'order2.xml'");
+		editor.setConditionalBreakpoint(CHOICE, "simple", "${in.header.CamelFileName} == 'order2.xml'");
+		editor.setConditionalBreakpoint(LOG, "simple", "${in.header.CamelFileName} == 'order1.xml'");
 		ResumeButton resume = new ResumeButton();
 		new CamelProject(PROJECT_NAME).debugCamelContextWithoutTests(CAMEL_CONTEXT);
 		new WaitUntil(new IsSuspended(), TimePeriod.NORMAL);
