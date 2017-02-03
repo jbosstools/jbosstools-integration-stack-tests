@@ -10,6 +10,7 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.matcher.TreeItemRegexMatcher;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.jface.viewers.CellEditor;
@@ -82,7 +83,7 @@ public class GuidesView extends WorkbenchView {
 	 *            to table
 	 */
 	public void previewData(String... path) {// just try-catch, no boolean param
-		previewDataViaActionSet("Model JDBC Source",path);
+		previewDataViaActionSet("Model JDBC Source", path);
 	}
 
 	public boolean canPreviewData(String expectedErrorMessage, String[] pathToTable, String previewSQL) {// nechat
@@ -95,10 +96,10 @@ public class GuidesView extends WorkbenchView {
 		if (expectedErrorMessage != null) {// OR to guides view
 			new GuidesView().chooseAction("Model JDBC Source", "Preview Data");
 			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-//			assertEquals(new SWTWorkbenchBot().activeShell().getText(), expectedErrorMessage);
-//			new SWTWorkbenchBot().activeShell().close();
+			// assertEquals(new SWTWorkbenchBot().activeShell().getText(), expectedErrorMessage);
+			// new SWTWorkbenchBot().activeShell().close();
 			// TODO check this
-			if (new ShellWithTextIsActive(expectedErrorMessage).test()){
+			if (new ShellWithTextIsActive(expectedErrorMessage).test()) {
 				new DefaultShell(expectedErrorMessage).close();
 			}
 			return false;
@@ -127,37 +128,41 @@ public class GuidesView extends WorkbenchView {
 	public void setDefaultTeiidInstance(String serverName) {
 		chooseAction("Teiid", "Set the Default ");
 		AbstractWait.sleep(TimePeriod.SHORT);
-		if (new ShellWithTextIsActive("Server Selection").test()){
+		if (new ShellWithTextIsActive("Server Selection").test()) {
 			new DefaultCombo().setSelection(serverName);
 			new PushButton("OK").click();
 		}
-		if (new ShellWithTextIsActive("Change of Teiid Version").test()){ //the teiid instances are different version
+		if (new ShellWithTextIsActive("Change of Teiid Version").test()) { // the teiid instances are different version
 			new PushButton("Yes").click();
 		}
-		if (new ShellWithTextIsActive("Untested Teiid Version").test()){ //if test untestet teiid version
+		if (new ShellWithTextIsActive("Untested Teiid Version").test()) { // if test untestet teiid version
 			new PushButton("Yes").click();
 		}
-		if (new ShellWithTextIsActive("Disconnect Current Default Instance").test()){ //if you want to disconnect old instance before switching
+		if (new ShellWithTextIsActive("Disconnect Current Default Instance").test()) { // if you want to disconnect old
+																						// instance before switching
 			new PushButton("Yes").click();
 		}
-		if (new ShellWithTextIsActive("Default Server Changed").test()){
+		if (new ShellWithTextIsActive("Default Server Changed").test()) {
 			new PushButton("OK").click();
-		}else if (new ShellWithTextIsActive("Default server unchanged").test()){
+		} else if (new ShellWithTextIsActive("Default server unchanged").test()) {
 			new PushButton("OK").click();
-		}else{
+		} else {
 			throw new Error("Default server not been changed due to an error");
 		}
 	}
 
 	// TODO modeling actions... - the grey context menu
 	// TODO support other action sets
-	
+
 	/**
 	 * Create new project via guides
-	 * @param actionSet - actionSet name through that trigger new project wizard
-	 * @param projectName - project name
+	 * 
+	 * @param actionSet
+	 *            - actionSet name through that trigger new project wizard
+	 * @param projectName
+	 *            - project name
 	 */
-	public void createProjectViaGuides(String actionSet,String projectName){
+	public void createProjectViaGuides(String actionSet, String projectName) {
 		chooseAction(actionSet, "Define Teiid ");
 		new PushButton("New...").click();
 		new LabeledText("Project name:").setText(projectName);
@@ -165,23 +170,32 @@ public class GuidesView extends WorkbenchView {
 		new DefaultShell("Define Model Project");
 		new PushButton("OK").click();
 	}
+
 	/**
 	 * previewData, can set actionset
-	 * @param actionSet - actionSet name through that trigger preview
-	 * @param path - path
+	 * 
+	 * @param actionSet
+	 *            - actionSet name through that trigger preview
+	 * @param path
+	 *            - path
 	 */
-	public void previewDataViaActionSet(String actionSet,String... path){//just try-catch, no boolean param
-		this.previewDataViaActionSetWithParam(actionSet,null,path);
+	public void previewDataViaActionSet(String actionSet, String... path) {// just try-catch, no boolean param
+		this.previewDataViaActionSetWithParam(actionSet, null, path);
 	}
+
 	/**
 	 * previewData, can set actionset, with param
-	 * @param actionSet - actionSet name through that trigger preview
-	 * @param param - parameters to preview
-	 * @param path - path
+	 * 
+	 * @param actionSet
+	 *            - actionSet name through that trigger preview
+	 * @param param
+	 *            - parameters to preview
+	 * @param path
+	 *            - path
 	 */
-	public void previewDataViaActionSetWithParam(String actionSet, String param, String... path){
+	public void previewDataViaActionSetWithParam(String actionSet, String param, String... path) {
 		AbstractWait.sleep(TimePeriod.SHORT);
-		if (new ShellWithTextIsActive("Unsaved Models In Workspace").test()){ // win 10
+		if (new ShellWithTextIsActive("Unsaved Models In Workspace").test()) { // win 10
 			new PushButton("Yes").click();
 		}
 		new GuidesView().chooseAction(actionSet, "Preview Data");
@@ -192,72 +206,81 @@ public class GuidesView extends WorkbenchView {
 		new PushButton("OK").click();
 		new DefaultShell("Preview Data");
 		new PushButton("OK").click();
-		if(param!=null){
+		if (param != null) {
 			new WaitWhile(new IsInProgress(), TimePeriod.NORMAL);
 			new DefaultShell("Preview Data");
-//			new LabeledText(nameParam).setText(param);
+			// new LabeledText(nameParam).setText(param);
 			new DefaultText(0).setText(param);
 			new PushButton("OK").click();
 		}
 
-		//setup display property; only 1st time
-		if (new ShellWithTextIsActive("Change Property").test()){
+		// setup display property; only 1st time
+		if (new ShellWithTextIsActive("Change Property").test()) {
 			new PushButton("Yes").click();
 		}
-		
+
+		if (new ShellWithTextIsAvailable("Data Sources Missing").test()) {
+			new PushButton("Yes").click();
+		}
+
 		new DefaultShell("Custom Preview Data");
 		new PushButton("OK").click();
-		
-		
+
 		new WaitWhile(new IsInProgress(), TimePeriod.VERY_LONG);
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new WaitWhile(new IsPreviewInProgress(), TimePeriod.VERY_LONG);
 	}
+
 	/**
 	 * Define VDB via guides
-	 * @param actionSet - name action set 
-	 * @param projectName - project name
-	 * @param vdbName - VDB name
-	 * @param models - all models which we want add to VDB
+	 * 
+	 * @param actionSet
+	 *            - name action set
+	 * @param projectName
+	 *            - project name
+	 * @param vdbName
+	 *            - VDB name
+	 * @param models
+	 *            - all models which we want add to VDB
 	 */
-	public void defineVDB(String actionSet,String projectName,String vdbName, String... models){
+	public void defineVDB(String actionSet, String projectName, String vdbName, String... models) {
 		chooseAction(actionSet, "Define VDB");
 		new DefaultShell("Define VDB");
 		new PushButton("New...").click();
-		VdbWizard.getInstance()
-				.setLocation(projectName)
-				.setName(vdbName)
-				.finish();
+		VdbWizard.getInstance().setLocation(projectName).setName(vdbName).finish();
 		new DefaultShell("Define VDB");
 		new PushButton("OK").click();
-		VdbEditor vdbEditor = new VdbEditor(vdbName+".vdb");
+		VdbEditor vdbEditor = new VdbEditor(vdbName + ".vdb");
 		vdbEditor.addModelsToVDB(projectName, models);
-		try{
+		try {
 			DefaultShell mm = new DefaultShell("Add File(s) to VDB");
 			mm.close();
-		}catch(Exception ex){
+		} catch (Exception ex) {
 			return;
 		}
 	}
+
 	/*
-	 *  Check when VDB editor was opened via guides
+	 * Check when VDB editor was opened via guides
 	 */
-	public boolean editVDB(String actionSet,String projectName, String vdbName){
-		new DefaultEditor(vdbName+".vdb").close();
+	public boolean editVDB(String actionSet, String projectName, String vdbName) {
+		new DefaultEditor(vdbName + ".vdb").close();
 		chooseAction(actionSet, "Edit VDB");
-		try{
-			new DefaultEditor(vdbName+".vdb");  //check when editor was opened 
-		}catch(Exception ex){
+		try {
+			new DefaultEditor(vdbName + ".vdb"); // check when editor was opened
+		} catch (Exception ex) {
 			System.err.println(ex);
 			return false;
 		}
 		return true;
 	}
-	/* 
-	 * @return list with the number of columns from results for each query 
+
+	/*
+	 * @return list with the number of columns from results for each query
 	 */
-	public List<Integer> executeVDB(String actionSet,TeiidServerRequirement teiidServer, String vdbName,String... testSql){
-		chooseAction(actionSet, "Execute VDB");	
+	public List<Integer> executeVDB(String actionSet, TeiidServerRequirement teiidServer, String vdbName,
+			String... testSql) {
+		chooseAction(actionSet, "Execute VDB");
 		new PushButton("OK").click();
 		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
 		List<Integer> result = new ArrayList<Integer>();
@@ -268,7 +291,7 @@ public class GuidesView extends WorkbenchView {
 		return result;
 	}
 
-	public void newServer(String serverName){
+	public void newServer(String serverName) {
 		chooseAction("Teiid", "Configure new JBoss Server");
 		new LabeledText("Server name:").setText(serverName);
 		new PushButton("Next >").click();
@@ -276,27 +299,27 @@ public class GuidesView extends WorkbenchView {
 		new PushButton("Finish").click();
 		new WaitWhile(new IsInProgress(), TimePeriod.SHORT);
 	}
-	
-	public boolean editServer(String serverName){
+
+	public boolean editServer(String serverName) {
 		chooseAction("Teiid", "Edit JBoss");
 		new DefaultShell("Server Selection");
 		new DefaultCombo().setSelection(serverName);
 		new PushButton("OK").click();
-		try{
-			new DefaultEditor(serverName);  
-		}catch(Exception ex){
+		try {
+			new DefaultEditor(serverName);
+		} catch (Exception ex) {
 			System.err.println(ex);
 			return false;
 		}
 		return true;
 	}
-	
-	public void startAndRefreshServer(String serverName, String defaultServerName){
+
+	public void startAndRefreshServer(String serverName, String defaultServerName) {
 		ServersView view = new ServersView();
 		view.open();
 		view.getServer(defaultServerName).stop();
 		AbstractWait.sleep(TimePeriod.SHORT);
-		view.getServer(serverName).start();	
+		view.getServer(serverName).start();
 		AbstractWait.sleep(TimePeriod.LONG);
 		new WaitWhile(new IsInProgress(), TimePeriod.SHORT);
 		chooseAction("Teiid", "Refresh ");
@@ -307,29 +330,29 @@ public class GuidesView extends WorkbenchView {
 		new ShellMenu("File", "Save All").select();
 		new WaitWhile(new IsInProgress(), TimePeriod.SHORT);
 	}
-	
-	public void createDataSource(String name, String connectionProfile){
+
+	public void createDataSource(String name, String connectionProfile) {
 		chooseAction("Model Teiid Data Source", "Create Data Source");
 		new LabeledText("Data Source Name:").setText(name);
 		new LabeledCombo("Connection Profile").setSelection(connectionProfile);
 		new PushButton("OK").click();
 		new WaitWhile(new IsInProgress(), TimePeriod.SHORT);
 	}
-	
-	public void createSourceModelFromTeiid(String name, String sourceName, String tableName, String schema){
+
+	public void createSourceModelFromTeiid(String name, String sourceName, String tableName, String schema) {
 		chooseAction("Model Teiid Data Source", "Create source model from Teiid ");
-		new DefaultTable(new DefaultGroup("Data Sources"),0).getItem(sourceName).click();
+		new DefaultTable(new DefaultGroup("Data Sources"), 0).getItem(sourceName).click();
 		new PushButton("Next >").click();
-		DefaultTable importProperties = new DefaultTable(new DefaultGroup("Import Properties"),0);
-		if(tableName!=null){
-			fillTextTable(importProperties,"Table Name Pattern",tableName);
+		DefaultTable importProperties = new DefaultTable(new DefaultGroup("Import Properties"), 0);
+		if (tableName != null) {
+			fillTextTable(importProperties, "Table Name Pattern", tableName);
 		}
-		if(schema!=null){
-			fillTextTable(importProperties,"Schema Pattern",schema);
+		if (schema != null) {
+			fillTextTable(importProperties, "Schema Pattern", schema);
 		}
-		fillTextTable(importProperties,"Table Types","TABLE");
-		fillComboTable(importProperties,"Use Full Schema Name","false");	
-		
+		fillTextTable(importProperties, "Table Types", "TABLE");
+		fillComboTable(importProperties, "Use Full Schema Name", "false");
+
 		new PushButton("Next >").click();
 		new LabeledText("Name:").setText(name);
 		new PushButton("Next >").click();
@@ -338,24 +361,24 @@ public class GuidesView extends WorkbenchView {
 		new WaitWhile(new IsInProgress(), TimePeriod.NORMAL);
 		new PushButton("Finish").click();
 	}
-	
+
 	/**
 	 * fill specified text into table.
 	 */
-	private void fillTextTable(DefaultTable table, String nameItem, String value){
+	private void fillTextTable(DefaultTable table, String nameItem, String value) {
 		TableItem item = null;
 		item = table.getItem(nameItem);
 		item.click(1);
-		new DefaultText(new CellEditor(item),0).setText(value);
+		new DefaultText(new CellEditor(item), 0).setText(value);
 	}
-	
+
 	/**
 	 * choose specific selection into table.
 	 */
-	private void fillComboTable(DefaultTable table, String nameItem, String selection){
+	private void fillComboTable(DefaultTable table, String nameItem, String selection) {
 		TableItem item = null;
 		item = table.getItem(nameItem);
 		item.click(1);
-		new DefaultCCombo(new CellEditor(item),0).setSelection(selection);
+		new DefaultCCombo(new CellEditor(item), 0).setSelection(selection);
 	}
 }
