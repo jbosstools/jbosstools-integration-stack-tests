@@ -56,6 +56,7 @@ import org.jboss.tools.fuse.reddeer.ProjectType;
 import org.jboss.tools.fuse.reddeer.SupportedVersions;
 import org.jboss.tools.fuse.reddeer.component.Log;
 import org.jboss.tools.fuse.reddeer.component.Timer;
+import org.jboss.tools.fuse.reddeer.component.Route;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
@@ -374,6 +375,34 @@ public class RegressionTest extends DefaultTest {
 				"blueprint.xml");
 		new ContextMenu("Open").select();
 		assertFalse("Camel Editor is dirty! But no editing was performed.", new CamelEditor("blueprint.xml").isDirty());
+	}
+
+	/**
+	 * <p>
+	 * Graphic is disposed when using "Go into"
+	 * </p>
+	 * <b>Link: </b>
+	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-1678">https://issues.jboss.org/browse/FUSETOOLS-1678</a>
+	 */
+	@Test
+	public void issue_1678() {
+
+		ProjectFactory.newProject("test-empty").version(SupportedVersions.CAMEL_LATEST).type(ProjectType.SPRING)
+				.create();
+		CamelEditor editor = new CamelEditor("camel-context.xml");
+		editor.addCamelComponent(new Route(), 100, 100);
+		editor.selectEditPart("Route _route1");
+		FusePropertiesView propertiesView = new FusePropertiesView();
+		propertiesView.activate();
+		propertiesView.selectTab("Details");
+		propertiesView.setProperty(PropertyType.TEXT, "Auto Startup", "true");
+		editor.save();
+		editor.doOperation("Route _route1", "Go Into");
+		assertFalse("Invoke of 'Go Into' failed", editor.isComponentAvailable("Route _route2"));
+		assertTrue(LogGrapper.getPluginErrors("fuse").size() == 0);
+		editor.doOperation("Route _route1", "Show Camel Context");
+		assertTrue("Invoke of 'Show Camel Context' failed", editor.isComponentAvailable("Route _route2"));
+		assertTrue(LogGrapper.getPluginErrors("fuse").size() == 0);
 	}
 
 	/**
