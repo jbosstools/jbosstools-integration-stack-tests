@@ -53,10 +53,15 @@ import org.jboss.tools.common.reddeer.view.ProblemsViewExt;
 import org.jboss.tools.common.reddeer.widget.LabeledTextExt;
 import org.jboss.tools.fuse.reddeer.ProjectTemplate;
 import org.jboss.tools.fuse.reddeer.ProjectType;
+import org.jboss.tools.fuse.reddeer.SupportedVersions;
+import org.jboss.tools.fuse.reddeer.component.Log;
+import org.jboss.tools.fuse.reddeer.component.Timer;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
 import org.jboss.tools.fuse.reddeer.view.FuseJMXNavigator;
+import org.jboss.tools.fuse.reddeer.view.FusePropertiesView;
+import org.jboss.tools.fuse.reddeer.view.FusePropertiesView.PropertyType;
 import org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard;
 import org.jboss.tools.fuse.ui.bot.test.utils.EditorManipulator;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
@@ -397,13 +402,15 @@ public class RegressionTest extends DefaultTest {
 		editor.deleteCamelComponent("file:src/main/data?noop=true");
 		editor.deleteCamelComponent("file:directoryName");
 		editor.save();
-		assertFalse("Deleted component is still present in Camel Editor!", editor.isComponentAvailable("file:directoryName"));
+		assertFalse("Deleted component is still present in Camel Editor!",
+				editor.isComponentAvailable("file:directoryName"));
 		assertTrue("There are some errors in Error Log!", LogGrapper.getPluginErrors("fuse").size() == 0);
 	}
 
 	/**
 	 * <p>
-	 * Double-click on an error in problems View of a Fuse error when corresponding editor is closed don't select the correct node.
+	 * Double-click on an error in problems View of a Fuse error when corresponding editor is closed don't select the
+	 * correct node.
 	 * </p>
 	 * <b>Link: </b>
 	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-1726">https://issues.jboss.org/browse/FUSETOOLS-1726</a>
@@ -426,7 +433,7 @@ public class RegressionTest extends DefaultTest {
 		try {
 			new CamelEditor("blueprint.xml");
 		} catch (Exception e) {
-			fail ("Camel Editor was not opened after double-click on a problem in Problems view!");
+			fail("Camel Editor was not opened after double-click on a problem in Problems view!");
 		}
 		PropertiesViewExt properties = new PropertiesViewExt();
 		properties.activate();
@@ -435,7 +442,7 @@ public class RegressionTest extends DefaultTest {
 			String title = new LabeledTextExt("Uri *").getText();
 			assertEquals("imap:host:port", title);
 		} catch (Exception e) {
-			fail ("Properties view does not contains properties of appropriate Camel Component!");
+			fail("Properties view does not contains properties of appropriate Camel Component!");
 		}
 	}
 
@@ -494,4 +501,37 @@ public class RegressionTest extends DefaultTest {
 			fail("Disabled project type is selected - see https://issues.jboss.org/browse/FUSETOOLS-2051");
 		}
 	}
+
+	/**
+	 * <p>
+	 * Local Launch doesn't work all times
+	 * </p>
+	 * <b>Link:</b>
+	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-2062">https://issues.jboss.org/browse/FUSETOOLS-2062</a>
+	 */
+	@Test
+	public void issue_2062() {
+
+		ProjectFactory.newProject("test-empty").version(SupportedVersions.CAMEL_LATEST).type(ProjectType.SPRING)
+				.create();
+		CamelEditor.switchTab("Source");
+		CamelEditor.switchTab("Design");
+		CamelEditor editor = new CamelEditor("camel-context.xml");
+		editor.addCamelComponent(new Timer(), "Route _route1");
+		editor.addCamelComponent(new Log(), "Route _route1");
+		FusePropertiesView propertiesView = new FusePropertiesView();
+		propertiesView.activate();
+		propertiesView.selectTab("Details");
+		propertiesView.setProperty(PropertyType.TEXT, "Message", "test-log-message");
+		editor.activate();
+		editor.save();
+		new CamelProject("test-empty").runCamelContext();
+		ConsoleView console = new ConsoleView();
+		if (console.getConsoleText().contains("BUILD FAILURE")
+				|| console.getConsoleText().toLowerCase().contains("[ERROR]") || console.consoleIsTerminated())
+			fail("There is a problem with building 'test-empty' project");
+		assertTrue("Running project 'test-empty' doesn't contains control 'test-log-message'",
+				console.getConsoleText().contains("test-log-message"));
+	}
+
 }
