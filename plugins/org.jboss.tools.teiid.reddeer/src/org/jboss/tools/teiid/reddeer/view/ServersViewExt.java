@@ -1,9 +1,9 @@
 package org.jboss.tools.teiid.reddeer.view;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -24,9 +24,6 @@ import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.teiid.reddeer.condition.ServerHasState;
 
-/**
- * @author lfabriko
- */
 public class ServersViewExt extends ServersView {
 
 	private static final Logger log = Logger.getLogger(ServersView.class);
@@ -231,6 +228,11 @@ public class ServersViewExt extends ServersView {
 		} else {
 			new PushButton("OK").click();
 		}
+	}
+	
+	public void restartWar(String serverName, String warName){
+		new ServersView().getServer(serverName).getModule(new RegexMatcher(".*" + warName + ".*"));
+		new ContextMenu("Restart").select();
 	}
 
 	public void createDatasource(String serverName, String connectionProfile) {

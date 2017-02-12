@@ -72,7 +72,7 @@ public class ReconcilerDialog extends AbstractDialog {
 	 */
 	public ReconcilerDialog clearRemainingUnmatchedSymbols() {
 		log.info("Clearing unmatched SQL symbols");
-		new PushButton("Clear").click();
+		new PushButton(new ButtonWithToolTipMatcher("Clear")).click();
 		return this;
 	}
 

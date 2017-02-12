@@ -78,7 +78,6 @@ public class ConsumeRestWs {
 		VdbWizard.openVdbWizard()
 				.setLocation(PROJECT_NAME)
 				.setName(vdb)
-				.addModel(PROJECT_NAME, sourceModel)
 				.addModel(PROJECT_NAME, viewModel)
 				.finish();
 
@@ -119,7 +118,6 @@ public class ConsumeRestWs {
 		VdbWizard.openVdbWizard()
 				.setLocation(PROJECT_NAME)
 				.setName(vdb)
-				.addModel(PROJECT_NAME, sourceModel)
 				.addModel(PROJECT_NAME, viewModel)
 				.finish();
 
@@ -161,7 +159,6 @@ public class ConsumeRestWs {
 		VdbWizard.openVdbWizard()
 				.setLocation(PROJECT_NAME)
 				.setName(vdb)
-				.addModel(PROJECT_NAME, sourceModel)
 				.addModel(PROJECT_NAME, viewModel)
 				.finish();
 
@@ -203,7 +200,6 @@ public class ConsumeRestWs {
 		VdbWizard.openVdbWizard()
 				.setLocation(PROJECT_NAME)
 				.setName(vdb)
-				.addModel(PROJECT_NAME, sourceModel)
 				.addModel(PROJECT_NAME, viewModel)
 				.finish();
 

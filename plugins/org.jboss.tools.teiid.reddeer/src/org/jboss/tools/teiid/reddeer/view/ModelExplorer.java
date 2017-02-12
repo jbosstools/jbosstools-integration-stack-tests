@@ -7,6 +7,7 @@ import java.io.File;
 import java.util.List;
 
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -368,7 +369,12 @@ public class ModelExplorer extends AbstractExplorer {
 			new PushButton("OK").click();
 			throw new Error("Server is not connected");
 		}
-		new WaitUntil(new WarIsDeployed(teiidServer.getName(), warPath[iWar]), TimePeriod.LONG);
+		try {
+			new WaitUntil(new WarIsDeployed(teiidServer.getName(), warPath[iWar]), TimePeriod.LONG);
+		} catch (WaitTimeoutExpiredException ex){ 
+			new ServersViewExt().restartWar(teiidServer.getName(), warPath[iWar]);
+			new WaitUntil(new WarIsDeployed(teiidServer.getName(), warPath[iWar]), TimePeriod.LONG);
+		}
 		AbstractWait.sleep(TimePeriod.getCustom(5));
 	}
 	
