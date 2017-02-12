@@ -7,6 +7,7 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
+import org.jboss.tools.teiid.reddeer.editor.VdbEditor;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
@@ -89,11 +90,9 @@ public class ConsumeSoapWs {
 		VdbWizard.openVdbWizard()
 				.setLocation(PROJECT_NAME)
 				.setName(vdb)
-				.addModel(PROJECT_NAME, sourceModel)
 				.addModel(PROJECT_NAME, viewModel)
 				.finish();
 
-		ServersViewExt.getInstance().refreshServer(teiidServer.getName());
 
 		modelExplorer.deployVdb(PROJECT_NAME, vdb);
 
@@ -144,11 +143,10 @@ public class ConsumeSoapWs {
 		VdbWizard.openVdbWizard()
 				.setLocation(PROJECT_NAME)
 				.setName(vdb)
-				.addModel(PROJECT_NAME, sourceModel)
 				.addModel(PROJECT_NAME, viewModel)
 				.finish();
 
-		ServersViewExt.getInstance().refreshServer(teiidServer.getName());
+		VdbEditor.getInstance(vdb).save();
 
 		modelExplorer.deployVdb(PROJECT_NAME, vdb);
 

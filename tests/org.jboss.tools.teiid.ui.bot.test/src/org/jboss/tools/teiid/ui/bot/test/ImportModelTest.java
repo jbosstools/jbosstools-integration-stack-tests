@@ -217,9 +217,6 @@ public class ImportModelTest {
 
 	@Test
 	public void wsdlToWsImportTest() {
-		if (!new JiraClient().isIssueClosed("TEIIDDES-2855")){
-			return;
-		}
 		// import wsdl
 		ImportFromFileSystemWizard.openWizard()
 				.setPath("resources/wsdl")

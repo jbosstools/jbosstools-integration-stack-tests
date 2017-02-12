@@ -158,7 +158,7 @@ public class RestProcedureTest {
 					.setBasicAuth(teiidServer.getServerConfig().getServerBase().getProperty("teiidUser"),
 							teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword"))
 					.addHeader("Content-Type", "application/xml")
-					.addHeader("Accept", "application/xml; charset=UTF-8")
+					.addHeader("Accept", "application/xml; charset=UTF-8") // windows-1252
 					.post(fileHelper.getXmlNoHeader("RestProcedureTest/insertRequest"));
 			assertEquals("<response>Operation Successful!</response>", response);
 			
@@ -166,7 +166,7 @@ public class RestProcedureTest {
 					.setBasicAuth(teiidServer.getServerConfig().getServerBase().getProperty("teiidUser"),
 							teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword"))
 					.addHeader("Content-Type", "application/json")
-					.addHeader("Accept", "application/json; charset=UTF-8")
+					.addHeader("Accept", "application/json; charset=UTF-8") // windows-1252
 					.post(fileHelper.getFlatFile("RestProcedureTest/insertRequest.json"));
 			assertEquals("{\"response\": \"Operation Successful!\"}", response);
 		} finally {

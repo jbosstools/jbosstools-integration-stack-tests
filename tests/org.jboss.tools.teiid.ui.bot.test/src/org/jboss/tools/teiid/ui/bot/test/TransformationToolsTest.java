@@ -379,7 +379,7 @@ public class TransformationToolsTest {
 		pDialog.setSqlTemplate("SOAP Web Service - \"Extract\" Procedure","Replace all SQL Text");
 		AssertBot.transformationEquals(pDialog.getTransformationSql(), "BEGIN SELECT employee.* FROM XMLTABLE(XMLNAMESPACES('http://teiid.org' as teiid), '/teiid:getdepartmentResponse/return/employee' PASSING f.result COLUMNS empID integer PATH '@id', firstname string PATH 'name/first', lastname string PATH 'name/last') AS employee; END");
 		
-		pDialog.setSqlTemplate("REST ProcedureExportTeiidDdl_modelGroupTitle","Replace all SQL Text");
+		pDialog.setSqlTemplate("REST","Replace all SQL Text");
 		AssertBot.transformationEquals(pDialog.getTransformationSql(), "BEGIN SELECT XMLELEMENT(NAME authors, XMLAGG(XMLELEMENT(NAME author, XMLFOREST(MySqlBooks.AUTHORS.AUTHOR_ID, MySqlBooks.AUTHORS.FIRSTNAME, MySqlBooks.AUTHORS.LASTNAME, MySqlBooks.AUTHORS.MIDDLEINIT)))) AS result FROM MySqlBooks.AUTHORS WHERE Procedures.GetAuthorByID.author_id = MySqlBooks.AUTHORS.AUTHOR_ID; END");
 		
 		pDialog.finish();
