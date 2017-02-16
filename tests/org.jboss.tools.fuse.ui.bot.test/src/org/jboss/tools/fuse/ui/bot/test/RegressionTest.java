@@ -27,6 +27,7 @@ import org.jboss.reddeer.core.matcher.WithTooltipTextMatcher;
 import org.jboss.reddeer.eclipse.debug.core.IsSuspended;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.junit.execution.annotation.RunIf;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
@@ -54,6 +55,7 @@ import org.jboss.tools.common.reddeer.widget.LabeledTextExt;
 import org.jboss.tools.fuse.reddeer.ProjectTemplate;
 import org.jboss.tools.fuse.reddeer.ProjectType;
 import org.jboss.tools.fuse.reddeer.SupportedVersions;
+import org.jboss.tools.fuse.reddeer.component.ConvertBodyTo;
 import org.jboss.tools.fuse.reddeer.component.Log;
 import org.jboss.tools.fuse.reddeer.component.Timer;
 import org.jboss.tools.fuse.reddeer.component.Route;
@@ -403,6 +405,28 @@ public class RegressionTest extends DefaultTest {
 		editor.doOperation("Route _route1", "Show Camel Context");
 		assertTrue("Invoke of 'Show Camel Context' failed", editor.isComponentAvailable("Route _route2"));
 		assertTrue(LogGrapper.getPluginErrors("fuse").size() == 0);
+	}
+
+	/**
+	 * Resolved problems in Camel Context file by deleting an element are not propagated into Problems view and Project
+	 * Explorer
+	 * </p>
+	 * <b>Link: </b>
+	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-1694">https://issues.jboss.org/browse/FUSETOOLS-1694</a>
+	 */
+	@Test
+	public void issue_1694() {
+
+		ProjectFactory.newProject("cbr-spring").version(SupportedVersions.CAMEL_2_17_3).template(ProjectTemplate.CBR)
+				.type(ProjectType.SPRING).create();
+		CamelEditor editor = new CamelEditor("camel-context.xml");
+		editor.addCamelComponent(new ConvertBodyTo(), "Route cbr-route");
+		ProblemsView problems = new ProblemsView();
+		problems.open();
+		editor.deleteCamelComponent("ConvertBodyTo _convertBodyTo1");
+		new CamelProject("cbr-spring").selectCamelContext("camel-context.xml");
+		new ContextMenu("Validate").select();
+		assertTrue("Problems view contains errors", problems.getProblems(ERROR).isEmpty());
 	}
 
 	/**
