@@ -1,214 +1,206 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-                <groupId>org.jboss.tools.integration-stack-tests</groupId>
+		<groupId>org.jboss.tools.integration-stack-tests</groupId>
 		<artifactId>tests</artifactId>
 		<version>4.4.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.runtime</groupId>
 	<artifactId>org.jboss.tools.runtime.ui.bot.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
-
 	<properties>
-	  <server.jre>default</server.jre>
-	  <rd.config>${project.build.directory}/config</rd.config>
-	  <reddeerProperties>-Drd.config=${rd.config}</reddeerProperties>
-	  <systemProperties>${integrationTestsSystemProperties} ${reddeerProperties}</systemProperties>
-	  <maven-download-plugin.version>1.2.0</maven-download-plugin.version>
-	  <skipJBPM>${skipRequirements}</skipJBPM>
-	  <skipESB>${skipRequirements}</skipESB>
-	  <skipAS>${skipRequirements}</skipAS>
-	  <skipWildfly>${skipRequirements}</skipWildfly>
-	  <skipKaraf>${skipRequirements}</skipKaraf>
-	  <customization.file>resources/settings/plugin_customization.ini</customization.file>
+		<server.jre>default</server.jre>
+		<rd.config>${project.build.directory}/config</rd.config>
+		<reddeerProperties>-Drd.config=${rd.config}</reddeerProperties>
+		<systemProperties>${integrationTestsSystemProperties} ${reddeerProperties}</systemProperties>
+		<maven-download-plugin.version>1.2.0</maven-download-plugin.version>
+		<skipJBPM>${skipRequirements}</skipJBPM>
+		<skipESB>${skipRequirements}</skipESB>
+		<skipAS>${skipRequirements}</skipAS>
+		<skipWildfly>${skipRequirements}</skipWildfly>
+		<skipKaraf>${skipRequirements}</skipKaraf>
+		<customization.file>resources/settings/plugin_customization.ini</customization.file>
 	</properties>
-
 	<build>
-	  <plugins>
-	    <plugin>
-	      <artifactId>maven-resources-plugin</artifactId>
-	      <version>2.6</version>
-	      <executions>
-	        <execution>
-                  <id>copy-resources</id>
-	          <phase>validate</phase>
-	          <goals>
-	            <goal>copy-resources</goal>
-	          </goals>
-	          <configuration>
-	            <encoding>UTF-8</encoding>
-	            <outputDirectory>${basedir}/target/</outputDirectory>
-	            <resources>          
-	              <resource>
-	                <directory>resources</directory>
-			<includes>
-			  <include>config/*</include>
-			  <include>auto/*</include>
-			</includes>
-	                <filtering>true</filtering>
-	              </resource>
-	            </resources>
-	          </configuration>            
-	        </execution>
-	      </executions>
-	    </plugin>
-	    <!-- Runtime Bot Tests -->
-	    <plugin>
-	      <groupId>org.eclipse.tycho</groupId>
-	      <artifactId>tycho-surefire-plugin</artifactId>
-	      <configuration>
-		<appArgLine>-eclipse.password ${project.basedir}/resources/security/password -pluginCustomization ${customization.file} -clean</appArgLine>
-		<useUIThread>false</useUIThread>
-		<skip>${skipTests}</skip>
-		<dependencies combine.children="append">
-		  <!-- JBoss AS Feature -->
-		  <dependency>
-		    <type>p2-installable-unit</type>
-		    <artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
-		    <version>0.0.0</version>
-		  </dependency>
-		  <!-- Fuse Feature -->
-		  <dependency>
-		    <type>p2-installable-unit</type>
-		    <artifactId>org.fusesource.ide.server.extensions.feature.feature.group</artifactId>
-		    <version>0.0.0</version>
-		  </dependency>
-		  <!-- This entry should enable creating of default JDK on Mac -->
-		  <dependency>
-		    <type>p2-installable-unit</type>
-		    <artifactId>org.eclipse.jdt.feature.group</artifactId>
-		    <version>0.0.0</version>
-		  </dependency>
-		</dependencies>
-	      </configuration>
-	    </plugin>
-	    <plugin>
-	      <groupId>com.googlecode.maven-download-plugin</groupId>
-	      <artifactId>download-maven-plugin</artifactId>
-	      <version>1.2.0</version>
-	      <configuration>
-		<skip>${skipRequirements}</skip>
-	      </configuration>
-	      <executions>
-		<execution>
-		  <id>download-jboss-esb</id>
-		  <phase>pre-integration-test</phase>
-		  <goals>
-                    <goal>wget</goal>
-		  </goals>
-		  <configuration>
-		    <skip>${skipESB}</skip>
-                    <url>http://download.jboss.org/jbossesb/4.12/binary/jbossesb-4.12.zip</url>
-                    <unpack>true</unpack>
-                    <outputDirectory>${project.build.directory}</outputDirectory>
-                    <md5>24077f0ad7643a1f34448c0ed5225590</md5>
-		  </configuration>
-		</execution>
-		<execution>
-		  <id>download-jboss-as</id>
-		  <phase>pre-integration-test</phase>
-		  <goals>
-                    <goal>wget</goal>
-		  </goals>
-		  <configuration>
-		    <skip>${skipAS}</skip>
-		    <url>http://download.jboss.org/jbossas/7.1/jboss-as-7.1.1.Final/jboss-as-7.1.1.Final.zip</url>
-                    <unpack>true</unpack>
-                    <outputDirectory>${project.build.directory}</outputDirectory>
-		    <md5>175c92545454f4e7270821f4b8326c4e</md5>
-		  </configuration>
-		</execution>
-		<execution>
-		  <id>download-apache-karaf</id>
-		  <phase>pre-integration-test</phase>
-		  <goals>
-                    <goal>wget</goal>
-		  </goals>
-		  <configuration>
-		    <skip>${skipKaraf}</skip>
-                    <url>http://archive.apache.org/dist/karaf/2.3.6/apache-karaf-2.3.6.zip</url>
-                    <unpack>true</unpack>
-                    <outputDirectory>${project.build.directory}</outputDirectory>
-                    <md5>d8179d5d90aec394b48955faf2ada99b</md5>
-		  </configuration>
-		</execution>
-		<execution>
-		  <id>download-jbpm3</id>
-		  <phase>pre-integration-test</phase>
-		  <goals>
-		    <goal>wget</goal>
-		  </goals>
-		  <configuration>
-		    <skip>${skipJBPM}</skip>
-		    <url>https://repository.jboss.org/nexus/content/groups/public/org/jbpm/jbpm3/jbpm-distribution/3.2.9/jbpm-distribution-3.2.9-installer.jar</url>
-		    <unpack>false</unpack>
-                    <outputDirectory>${project.build.directory}</outputDirectory>
-		    <md5>e2d8624bd181235a34b5f97fb088c589</md5>
-		  </configuration>
-		</execution>
-		<execution>
-		  <id>download-wildfly</id>
-		  <phase>pre-integration-test</phase>
-		  <goals>
-		    <goal>wget</goal>
-		  </goals>
-		  <configuration>
-		    <skip>${skipWildfly}</skip>
-		    <url>http://download.jboss.org/wildfly/8.1.0.Final/wildfly-8.1.0.Final.zip</url>
-		    <unpack>true</unpack>
-                    <outputDirectory>${project.build.directory}</outputDirectory>
-		    <md5>b7df11f92ee80155702a351aee4b003b</md5>
-		  </configuration>
-		</execution>
-	      </executions>
-	    </plugin>
-	    <plugin>
-	      <artifactId>maven-antrun-plugin</artifactId>
-	      <version>1.7</version>
-	      <configuration>
-		<skip>${skipJBPM}</skip>
-	      </configuration>
-	      <executions>
-		<execution>
-		  <id>install-jbpm3</id>
-		  <phase>pre-integration-test</phase>
-		  <goals>
-		    <goal>run</goal>
-		  </goals>
-		  <configuration>
-		    <tasks>
-		      <java
-			  jar="${project.build.directory}/jbpm-distribution-3.2.9-installer.jar"
-			  dir="${project.build.directory}" fork="true">
-			<arg value="${project.build.directory}/auto/install-jbpm3.xml" />
-		      </java>
-		    </tasks>
-		  </configuration>
-		</execution>
-	      </executions>
-	    </plugin>
-	  </plugins>
+		<plugins>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.6</version>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<encoding>UTF-8</encoding>
+							<outputDirectory>${basedir}/target/</outputDirectory>
+							<resources>
+								<resource>
+									<directory>resources</directory>
+									<includes>
+										<include>config/*</include>
+										<include>auto/*</include>
+									</includes>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- Runtime Bot Tests -->
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<configuration>
+					<appArgLine>-eclipse.password ${project.basedir}/resources/security/password -pluginCustomization ${customization.file} -clean</appArgLine>
+					<useUIThread>false</useUIThread>
+					<skip>${skipTests}</skip>
+					<dependencies combine.children="append">
+						<!-- JBoss AS Feature -->
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+						<!-- Fuse Feature -->
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.fusesource.ide.server.extensions.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+						<!-- This entry should enable creating of default JDK on Mac -->
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.eclipse.jdt.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+					</dependencies>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.googlecode.maven-download-plugin</groupId>
+				<artifactId>download-maven-plugin</artifactId>
+				<version>1.2.0</version>
+				<configuration>
+					<skip>${skipRequirements}</skip>
+				</configuration>
+				<executions>
+					<execution>
+						<id>download-jboss-esb</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<skip>${skipESB}</skip>
+							<url>http://download.jboss.org/jbossesb/4.12/binary/jbossesb-4.12.zip</url>
+							<unpack>true</unpack>
+							<outputDirectory>${project.build.directory}</outputDirectory>
+							<md5>24077f0ad7643a1f34448c0ed5225590</md5>
+						</configuration>
+					</execution>
+					<execution>
+						<id>download-jboss-as</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<skip>${skipAS}</skip>
+							<url>http://download.jboss.org/jbossas/7.1/jboss-as-7.1.1.Final/jboss-as-7.1.1.Final.zip</url>
+							<unpack>true</unpack>
+							<outputDirectory>${project.build.directory}</outputDirectory>
+							<md5>175c92545454f4e7270821f4b8326c4e</md5>
+						</configuration>
+					</execution>
+					<execution>
+						<id>download-apache-karaf</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<skip>${skipKaraf}</skip>
+							<url>http://archive.apache.org/dist/karaf/2.3.6/apache-karaf-2.3.6.zip</url>
+							<unpack>true</unpack>
+							<outputDirectory>${project.build.directory}</outputDirectory>
+							<md5>d8179d5d90aec394b48955faf2ada99b</md5>
+						</configuration>
+					</execution>
+					<execution>
+						<id>download-jbpm3</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<skip>${skipJBPM}</skip>
+							<url>https://repository.jboss.org/nexus/content/groups/public/org/jbpm/jbpm3/jbpm-distribution/3.2.9/jbpm-distribution-3.2.9-installer.jar</url>
+							<unpack>false</unpack>
+							<outputDirectory>${project.build.directory}</outputDirectory>
+							<md5>e2d8624bd181235a34b5f97fb088c589</md5>
+						</configuration>
+					</execution>
+					<execution>
+						<id>download-wildfly</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<skip>${skipWildfly}</skip>
+							<url>http://download.jboss.org/wildfly/8.1.0.Final/wildfly-8.1.0.Final.zip</url>
+							<unpack>true</unpack>
+							<outputDirectory>${project.build.directory}</outputDirectory>
+							<md5>b7df11f92ee80155702a351aee4b003b</md5>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<configuration>
+					<skip>${skipJBPM}</skip>
+				</configuration>
+				<executions>
+					<execution>
+						<id>install-jbpm3</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<java jar="${project.build.directory}/jbpm-distribution-3.2.9-installer.jar" dir="${project.build.directory}" fork="true">
+									<arg value="${project.build.directory}/auto/install-jbpm3.xml"/>
+								</java>
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 	</build>
-	
 	<profiles>
-	  <profile>
-	    <id>smoke</id>
-	    <activation>
-	      <property>
-		<name>test</name>
-		<value>SmokeTests</value>
-	      </property>
-	    </activation>
-	    <properties>
-	      <skipRequirements>true</skipRequirements>
-	      <skipWildfly>false</skipWildfly>
-	      <rd.config>${project.build.directory}/config/wildfly-810.xml</rd.config>
-	      <test.class>SmokeTests</test.class>
-	    </properties>
-	  </profile>
+		<profile>
+			<id>smoke</id>
+			<activation>
+				<property>
+					<name>test</name>
+					<value>SmokeTests</value>
+				</property>
+			</activation>
+			<properties>
+				<skipRequirements>true</skipRequirements>
+				<skipWildfly>false</skipWildfly>
+				<rd.config>${project.build.directory}/config/wildfly-810.xml</rd.config>
+				<test.class>SmokeTests</test.class>
+			</properties>
+		</profile>
 	</profiles>
-	
 </project>
-      

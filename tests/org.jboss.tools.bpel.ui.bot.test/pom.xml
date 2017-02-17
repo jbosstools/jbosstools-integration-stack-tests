@@ -1,201 +1,195 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-                <groupId>org.jboss.tools.integration-stack-tests</groupId>
+		<groupId>org.jboss.tools.integration-stack-tests</groupId>
 		<artifactId>tests</artifactId>
 		<version>4.4.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.bpel</groupId>
 	<artifactId>org.jboss.tools.bpel.ui.bot.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
-
 	<properties>
-	  <rd.config>${project.build.directory}/config</rd.config>
-	  <reddeerProperties>-Drd.config=${rd.config}</reddeerProperties>
-	  <systemProperties>${integrationTestsSystemProperties} ${reddeerProperties}</systemProperties>
-	  <customization.file>resources/settings/plugin_customization.ini</customization.file>
+		<rd.config>${project.build.directory}/config</rd.config>
+		<reddeerProperties>-Drd.config=${rd.config}</reddeerProperties>
+		<systemProperties>${integrationTestsSystemProperties} ${reddeerProperties}</systemProperties>
+		<customization.file>resources/settings/plugin_customization.ini</customization.file>
 	</properties>
-
 	<build>
-	  <plugins>
-	    <!-- BPEL Bot Tests -->
-	    <plugin>
-	      <groupId>org.eclipse.tycho</groupId>
-	      <artifactId>tycho-surefire-plugin</artifactId>
-	      <configuration>
-		<appArgLine>-eclipse.password ${project.basedir}/resources/security/password -pluginCustomization ${customization.file} -clean</appArgLine>
-		<useUIThread>false</useUIThread>
-		<skip>${skipTests}</skip>
-		<dependencies combine.children="append">
-		  <!-- BPEL feature -->
-		  <dependency>
-		    <type>p2-installable-unit</type>
-		    <artifactId>org.jboss.tools.bpel.feature.feature.group</artifactId>
-		    <version>0.0.0</version>
-		  </dependency>
-		  <!-- AS feature -->
-		  <dependency>
-		    <type>p2-installable-unit</type>
-		    <artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
-		    <version>0.0.0</version>
-		  </dependency>
-		  <!-- This entry should enable creating of default JDK on Mac -->
-		  <dependency>
-		    <type>p2-installable-unit</type>
-		    <artifactId>org.eclipse.jdt.feature.group</artifactId>
-		    <version>0.0.0</version>
-		  </dependency>
-		  <!-- XMLUnit -->
-		  <dependency>
-		    <type>p2-installable-unit</type>
-		    <artifactId>org.custommonkey.xmlunit</artifactId>
-		    <version>0.0.0</version>
-		  </dependency>
-		</dependencies>
-	      </configuration>
-	    </plugin>
-	    <!-- Install AS, ESB and Riftsaw -->
-	    <plugin>
-	      <groupId>com.googlecode.maven-download-plugin</groupId>
-	      <artifactId>download-maven-plugin</artifactId>
-	      <version>1.2.0</version>
-	      <configuration>
-		<skip>${skipRequirements}</skip>
-	      </configuration>
-	      <executions>
-		<execution>
-		  <id>install-as-5.1.0</id>
-		  <phase>pre-integration-test</phase>
-		  <goals>
-		    <goal>wget</goal>
-		  </goals>
-		  <configuration>
-		    <url>http://repository.jboss.org/sourceforge/jboss-5.1.0.GA.zip</url>
-		    <md5>78322c75ca0c13002a04418b4a8bc920</md5>
-		    <unpack>true</unpack>
-                    <outputDirectory>${project.build.directory}</outputDirectory>
-		  </configuration>
-		</execution>
-		<execution>
-		  <id>get-esb</id>
-		  <phase>pre-integration-test</phase>
-		  <goals>
-		    <goal>wget</goal>
-		  </goals>
-		  <configuration>
-		    <url>http://download.jboss.org/jbossesb/4.11/binary/jbossesb-4.11.zip</url>
-		    <md5>506bb7f42777cf0e524ccc37336aa137</md5>
-		    <unpack>true</unpack>
-                    <outputDirectory>${project.build.directory}</outputDirectory>
-		  </configuration>
-		</execution>
-		<execution>
-		  <id>get-riftsaw</id>
-		  <phase>pre-integration-test</phase>
-		  <goals>
-		    <goal>wget</goal>
-		  </goals>
-		  <configuration>
-		    <url>http://downloads.jboss.org/riftsaw/releases/2.3.0.Final/riftsaw-2.3.0.Final.zip</url>
-		    <md5>d57290b01d25ec0d15e143c6053d0878</md5>
-		    <unpack>true</unpack>
-                    <outputDirectory>${project.build.directory}</outputDirectory>
-		  </configuration>
-		</execution>
-	      </executions>
-	    </plugin>
-	    <plugin>
-	      <artifactId>maven-antrun-plugin</artifactId>
-	      <version>1.7</version>
-	      <configuration>
-		<skip>${skipRequirements}</skip>
-	      </configuration>
-	      <executions>
-		<execution>
-		  <id>install-esb</id>
-		  <phase>pre-integration-test</phase>
-		  <goals>
-		    <goal>run</goal>
-		  </goals>
-		  <configuration>
-		    <skip>${skipRequirements}</skip>
-		    <target>
-		      <ant dir="${project.build.directory}/jbossesb-4.11/install" target="deploy">
-			<property name="org.jboss.esb.server.home" value="${project.build.directory}/jboss-5.1.0.GA" />
-			<property name="org.jboss.esb.server.config" value="default" />
-		      </ant>
-		    </target>
-		  </configuration>
-		</execution>
-		<execution>
-		  <id>install-riftsaw</id>
-		  <phase>pre-integration-test</phase>
-		  <goals>
-		    <goal>run</goal>
-		  </goals>
-		  <configuration>
-		    <skip>${skipRequirements}</skip>
-		    <target>
-		      <ant dir="${project.build.directory}/riftsaw-2.3.0.Final/install" target="deploy">
-			<property name="org.jboss.as.home" value="${project.build.directory}/jboss-5.1.0.GA" />
-			<property name="org.jboss.as.config" value="default" />
-			<property name="org.jboss.esb.home" value="${project.build.directory}/jbossesb-4.11" />
-			<property name="databasev" value="hsql" />
-			<property name="ws.version" value="3.4.0.GA" />
-		      </ant>
-		    </target>
-		  </configuration>
-		</execution>
-	      </executions>
-	    </plugin>
-	    <!-- Copy resources and replace variables with its values -->
-	    <plugin>
-	      <artifactId>maven-resources-plugin</artifactId>
-	      <version>2.6</version>
-	      <executions>
-	        <execution>
-                  <id>copy-resources</id>
-	          <phase>validate</phase>
-	          <goals>
-	            <goal>copy-resources</goal>
-	          </goals>
-	          <configuration>
-	            <encoding>UTF-8</encoding>
-	            <outputDirectory>${project.build.directory}</outputDirectory>
-	            <resources>          
-	              <resource>
-	                <directory>resources</directory>
-			<includes>
-			  <include>config/*</include>
-			</includes>
-	                <filtering>true</filtering>
-	              </resource>
-	            </resources>
-	          </configuration>            
-	        </execution>
-	      </executions>
-	    </plugin>
-	  </plugins>
+		<plugins>
+			<!-- BPEL Bot Tests -->
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<configuration>
+					<appArgLine>-eclipse.password ${project.basedir}/resources/security/password -pluginCustomization ${customization.file} -clean</appArgLine>
+					<useUIThread>false</useUIThread>
+					<skip>${skipTests}</skip>
+					<dependencies combine.children="append">
+						<!-- BPEL feature -->
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.jboss.tools.bpel.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+						<!-- AS feature -->
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+						<!-- This entry should enable creating of default JDK on Mac -->
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.eclipse.jdt.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+						<!-- XMLUnit -->
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.custommonkey.xmlunit</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+					</dependencies>
+				</configuration>
+			</plugin>
+			<!-- Install AS, ESB and Riftsaw -->
+			<plugin>
+				<groupId>com.googlecode.maven-download-plugin</groupId>
+				<artifactId>download-maven-plugin</artifactId>
+				<version>1.2.0</version>
+				<configuration>
+					<skip>${skipRequirements}</skip>
+				</configuration>
+				<executions>
+					<execution>
+						<id>install-as-5.1.0</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>http://repository.jboss.org/sourceforge/jboss-5.1.0.GA.zip</url>
+							<md5>78322c75ca0c13002a04418b4a8bc920</md5>
+							<unpack>true</unpack>
+							<outputDirectory>${project.build.directory}</outputDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>get-esb</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>http://download.jboss.org/jbossesb/4.11/binary/jbossesb-4.11.zip</url>
+							<md5>506bb7f42777cf0e524ccc37336aa137</md5>
+							<unpack>true</unpack>
+							<outputDirectory>${project.build.directory}</outputDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>get-riftsaw</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>http://downloads.jboss.org/riftsaw/releases/2.3.0.Final/riftsaw-2.3.0.Final.zip</url>
+							<md5>d57290b01d25ec0d15e143c6053d0878</md5>
+							<unpack>true</unpack>
+							<outputDirectory>${project.build.directory}</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<configuration>
+					<skip>${skipRequirements}</skip>
+				</configuration>
+				<executions>
+					<execution>
+						<id>install-esb</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<skip>${skipRequirements}</skip>
+							<target>
+								<ant dir="${project.build.directory}/jbossesb-4.11/install" target="deploy">
+									<property name="org.jboss.esb.server.home" value="${project.build.directory}/jboss-5.1.0.GA"/>
+									<property name="org.jboss.esb.server.config" value="default"/>
+								</ant>
+							</target>
+						</configuration>
+					</execution>
+					<execution>
+						<id>install-riftsaw</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<skip>${skipRequirements}</skip>
+							<target>
+								<ant dir="${project.build.directory}/riftsaw-2.3.0.Final/install" target="deploy">
+									<property name="org.jboss.as.home" value="${project.build.directory}/jboss-5.1.0.GA"/>
+									<property name="org.jboss.as.config" value="default"/>
+									<property name="org.jboss.esb.home" value="${project.build.directory}/jbossesb-4.11"/>
+									<property name="databasev" value="hsql"/>
+									<property name="ws.version" value="3.4.0.GA"/>
+								</ant>
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- Copy resources and replace variables with its values -->
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.6</version>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<encoding>UTF-8</encoding>
+							<outputDirectory>${project.build.directory}</outputDirectory>
+							<resources>
+								<resource>
+									<directory>resources</directory>
+									<includes>
+										<include>config/*</include>
+									</includes>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 	</build>
-	
 	<profiles>
-	  <profile>
-	    <id>smoke</id>
-	    <activation>
-	      <property>
-		<name>test</name>
-		<value>SmokeTests</value>
-	      </property>
-	    </activation>
-	    <properties>	      
-	      <reddeerProperties></reddeerProperties>
-	      <test.class>SmokeTests</test.class>
-	      <skipRequirements>true</skipRequirements>
-	    </properties>
-	  </profile>
+		<profile>
+			<id>smoke</id>
+			<activation>
+				<property>
+					<name>test</name>
+					<value>SmokeTests</value>
+				</property>
+			</activation>
+			<properties>
+				<reddeerProperties/>
+				<test.class>SmokeTests</test.class>
+				<skipRequirements>true</skipRequirements>
+			</properties>
+		</profile>
 	</profiles>
-	
 </project>
-      
