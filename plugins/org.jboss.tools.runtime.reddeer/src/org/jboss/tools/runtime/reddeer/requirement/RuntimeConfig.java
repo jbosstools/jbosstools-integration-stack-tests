@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.jboss.tools.runtime.reddeer.Namespaces;
 import org.jboss.tools.runtime.reddeer.RuntimeBase;
 import org.jboss.tools.runtime.reddeer.impl.RuntimeDrools;
+import org.jboss.tools.runtime.reddeer.impl.RuntimeJbpm;
 
 /**
  * 
@@ -30,7 +31,8 @@ public class RuntimeConfig {
 	}
 
 	@XmlElements({
-		@XmlElement(name = "brms", namespace = Namespaces.SOA_REQ, type = RuntimeDrools.class) })
+		@XmlElement(name = "brms", namespace = Namespaces.SOA_REQ, type = RuntimeDrools.class),
+		@XmlElement(name = "bpms", namespace = Namespaces.SOA_REQ, type = RuntimeJbpm.class)})
 	private RuntimeBase runtimeBase;
 
 	public RuntimeBase getRuntimeFamily() {

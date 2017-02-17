@@ -11,7 +11,6 @@ import org.jboss.tools.bpmn2.ui.bot.test.testcase.dialog.*;
 @SuiteClasses({
 	// Wizard tests
 	// ------------
-    // BPMN2ModelWizardTest.class,
 	 JBPMProcessWizardTest.class,
 	 JBPMProjectWizardTest.class
 	})

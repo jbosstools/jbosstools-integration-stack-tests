@@ -3,17 +3,21 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
+	
 	<parent>
 		<groupId>org.jboss.tools.integration-stack-tests</groupId>
 		<artifactId>tests</artifactId>
 		<version>4.4.0-SNAPSHOT</version>
 	</parent>
+	
 	<groupId>org.jboss.tools.bpmn2.tests</groupId>
 	<artifactId>org.jboss.tools.bpmn2.ui.bot.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
+	
 	<properties>
 		<droolsjbpm.site>http://download.lab.bos.redhat.com/brewroot/repos/jb-bxms-6.4-build/latest/maven/</droolsjbpm.site>
-		<systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.skip=false -Dtest.configurations.dir=resources/ -Dgraphiti.properties=${graphiti.properties}</systemProperties>
+		<reddeerProperties> -Drd.config=${rd.config} </reddeerProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.skip=false -Dtest.configurations.dir=resources/ -Dgraphiti.properties=${graphiti.properties} ${reddeerProperties}</systemProperties>
 		<droolsjbpm.version>6.5.0.CR2-redhat-2</droolsjbpm.version>
 		<test.class>JBPM6ComplexTests</test.class>
 		<graphiti.properties>true</graphiti.properties>
@@ -282,5 +286,21 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+	<profiles>
+		<profile>
+			<id>smoke</id>
+			<activation>
+				<property>
+					<name>test</name>
+					<value>SmokeTests</value>
+				</property>
+			</activation>
+			<properties>
+				<reddeerProperties/>
+				<test.class>SmokeTests</test.class>
+				<skipRequirements>true</skipRequirements>
+			</properties>
+		</profile>
+	</profiles>
 
 </project>

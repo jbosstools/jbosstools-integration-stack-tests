@@ -36,7 +36,9 @@ Require-Bundle:
  org.eclipse.ui.forms,
  org.hamcrest.library,
  org.jboss.tools.bpmn2.reddeer;bundle-version="4.4.0",
- org.jboss.reddeer.go;bundle-version="1.0.0"
+ org.jboss.tools.runtime.reddeer;bundle-version="4.4.0",
+ org.jboss.reddeer.go;bundle-version="1.0.0",
+ org.jboss.reddeer.junit
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: JBoss by Red Hat
 Eclipse-RegisterBuddy: org.apache.log4j

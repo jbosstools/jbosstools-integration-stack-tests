@@ -6,7 +6,6 @@ import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.LabeledCheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
@@ -44,14 +43,19 @@ public class JBPMProjectWizard extends NewWizardDialog {
 	 * @param projectName
 	 * @param projectType
 	 */
-	public void execute(String projectName, ProjectType projectType) {
+	public void execute(String projectName, ProjectType projectType, boolean withRuntime) {
 		open();
 		new PushButton(projectType.getButtonIndex()).click();
 		next();	
 		new LabeledText("Project name:").setText(projectName);
-		new RadioButton("Maven").click();
-		new LabeledText("Artifact ID:").setText("artifact-" + projectName);
+		if (!withRuntime) {
+			new RadioButton("Maven").click();
+			new LabeledText("Artifact ID:").setText("artifact-" + projectName);
+		} else {
+			new RadioButton("Java and jBPM Runtime classes").click();
+		}
 		finish();
+		new PackageExplorer().open();
 		assertTrue("Project '" + projectName + "' was not created", new PackageExplorer().containsProject(projectName));
 	}
 	
@@ -75,6 +79,7 @@ public class JBPMProjectWizard extends NewWizardDialog {
 		new RadioButton("Maven").click();
 		new LabeledText("Artifact ID:").setText(projectName);
 		finish();
+		new PackageExplorer().open();
 		assertTrue("Project '" + projectName + "' was not created", new PackageExplorer().containsProject(projectName));
 	}
 
