@@ -20,7 +20,7 @@ public class MixedApproachWizardTest {
 
 	@BeforeClass
 	public static void createProject() {
-		new JBPMProjectWizard().execute("TestProject", ProjectType.EMPTY);
+		new JBPMProjectWizard().execute("TestProject", ProjectType.EMPTY, false);
 	}
 
 	@AfterClass

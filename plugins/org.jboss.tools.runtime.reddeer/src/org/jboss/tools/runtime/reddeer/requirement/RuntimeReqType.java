@@ -2,6 +2,7 @@ package org.jboss.tools.runtime.reddeer.requirement;
 
 import org.jboss.tools.runtime.reddeer.RuntimeBase;
 import org.jboss.tools.runtime.reddeer.impl.RuntimeDrools;
+import org.jboss.tools.runtime.reddeer.impl.RuntimeJbpm;
 
 /**
  * 
@@ -10,7 +11,7 @@ import org.jboss.tools.runtime.reddeer.impl.RuntimeDrools;
  */
 public enum RuntimeReqType {
 
-	ANY(null), DROOLS(RuntimeDrools.class);
+	ANY(null), DROOLS(RuntimeDrools.class), JBPM(RuntimeJbpm.class);
 
 	private Class<?> clazz;
 

@@ -7,15 +7,18 @@ import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.tools.bpmn2.reddeer.dialog.JBPMProcessWizard;
 import org.jboss.tools.bpmn2.reddeer.dialog.JBPMProjectWizard;
 import org.jboss.tools.bpmn2.reddeer.dialog.JBPMProjectWizard.ProjectType;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * Verify functionality of the process wizard.
  */
+@RunWith(RedDeerSuite.class)
 public class JBPMProcessWizardTest {
 
 	static ProjectExplorer packageView = new ProjectExplorer();
@@ -24,7 +27,7 @@ public class JBPMProcessWizardTest {
 
 	@Before
 	public void createProject() {
-		projectWizardView.execute("TestProject", ProjectType.EMPTY);
+		projectWizardView.execute("TestProject", ProjectType.EMPTY, false);
 	}
 
 	@After
