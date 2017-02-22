@@ -145,7 +145,7 @@
 			<repositories>
 				<repository>
 					<id>fuse-ci</id>
-					<url>http://download.jboss.org/jbosstools/neon/integration/updates/integration-stack/fuse-tooling/9.1.0.CI/</url>
+					<url>http://download.jboss.org/jbosstools/neon/integration/updates/integration-stack/fuse-tooling/9.2.0.CI/</url>
 					<layout>p2</layout>
 				</repository>
 				<repository>
