@@ -536,6 +536,28 @@ public class RegressionTest extends DefaultTest {
 
 	/**
 	 * <p>
+	 * Choice should only allow a single Otherwise
+	 * </p>
+	 * <b>Link:</b>
+	 * <a href="https://issues.jboss.org/browse/FUSETOOLS-1993">https://issues.jboss.org/browse/FUSETOOLS-1993</a>
+	 */
+	@Test
+	public void issue_1993() {
+		ProjectFactory.newProject("cbr-spring").template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();
+		CamelEditor editor = new CamelEditor("camel-context.xml");
+		CamelEditor.switchTab("Source");
+		String beforeContent = new DefaultStyledText().getText();
+		CamelEditor.switchTab("Design");
+		editor.addComponent("Otherwise", "Choice");
+		CamelEditor.switchTab("Source");
+		String afterContent = new DefaultStyledText().getText();
+		assertTrue("More then one 'Otherwise' component is present in Camel Editor",
+				beforeContent.contentEquals(afterContent));
+		assertTrue(LogGrapper.getPluginErrors("fuse").size() == 0);
+	}
+
+	/**
+	 * <p>
 	 * New Fuse Integration Project Wizard should prevent selection of disabled DSL type
 	 * </p>
 	 * <b>Link:</b>
