@@ -187,6 +187,7 @@
 		</plugins>
 	</build>
 	<profiles>
+		<!-- Smoke Tests -->
 		<profile>
 			<id>smoke</id>
 			<activation>
@@ -196,11 +197,20 @@
 				</property>
 			</activation>
 			<properties>
+				<reddeerProperties/>
 				<skipRequirements>true</skipRequirements>
-				<skipWildfly>false</skipWildfly>
-				<rd.config>${project.build.directory}/config/wildfly-810.xml</rd.config>
-				<test.class>SmokeTests</test.class>
 			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>tycho-surefire-plugin</artifactId>
+						<configuration>
+							<failIfNoTests>false</failIfNoTests>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
 		</profile>
 	</profiles>
 </project>

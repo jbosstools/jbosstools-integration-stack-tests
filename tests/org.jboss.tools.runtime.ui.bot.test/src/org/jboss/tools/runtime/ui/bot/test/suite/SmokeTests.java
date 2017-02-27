@@ -5,7 +5,7 @@ import org.jboss.tools.runtime.ui.bot.test.ServerPresentTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
-@SuiteClasses({ ServerPresentTest.class })
+@SuiteClasses({})
 @RunWith(RedDeerSuite.class)
 public class SmokeTests {
 
