@@ -1,7 +1,6 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
@@ -12,6 +11,9 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.tools.common.reddeer.JiraClient;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
+import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
+import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
+import org.jboss.tools.teiid.reddeer.editor.TransformationEditor;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
@@ -19,6 +21,7 @@ import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.noDatabase.FlatLocalConnectionProfileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.noDatabase.FlatRemoteConnectionProfileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.FlatImportWizard;
+import org.jboss.tools.teiid.reddeer.wizard.imports.FlatImportWizard.DelimiterCharacter;
 import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -36,8 +39,11 @@ import org.junit.runner.RunWith;
 public class FlatFileTest {
 
 	private static final String PROJECT_NAME = "Flat_file_import";
-	private final String LOCAL_FILE_PATH = "resources/flat";
-	private final String LOCAL_FILE_NAME = "productdata_data.csv";
+	private static final String LOCAL_FILE_PATH = "resources/flat";
+	private static final String LOCAL_FILE_NAME = "productdata_data.csv";
+	private static final String CUSTOM_FIELD_FILE_NAME = "productdata_data_customField.csv";
+	private static final String CUSTOM_LINE_FILE_NAME = "productdata_data_customLine.csv";
+
 	private static final String LOCAL_PROFILE_NAME = "localFlatProfile";
 	private static final String LOCAL_SOURCE_MODEL = "localSourceModel";
 	private static final String LOCAL_VIEW_MODEL = "localViewModel";
@@ -60,10 +66,19 @@ public class FlatFileTest {
 
 	@BeforeClass
 	public static void beforeClass() {
-		new ModelExplorer().createProject(PROJECT_NAME);
+		FlatLocalConnectionProfileWizard.openWizard(LOCAL_PROFILE_NAME)
+				.setFile(LOCAL_FILE_PATH)
+				.testConnection()
+				.finish();
+		FlatRemoteConnectionProfileWizard.openWizard(REMOTE_PROFILE_NAME)
+				.setUrl(REMOTE_URL)
+				.testConnection()
+				.finish();
 	}
 	@Before
 	public void before(){
+		new ModelExplorer().deleteAllProjectsSafely();
+		new ModelExplorer().createProject(PROJECT_NAME);
 		new TeiidPerspective().open();
 	}
 
@@ -72,11 +87,6 @@ public class FlatFileTest {
 	 */
 	@Test
 	public void localFileTest() {
-		FlatLocalConnectionProfileWizard.openWizard(LOCAL_PROFILE_NAME)
-				.setFile(LOCAL_FILE_PATH)
-				.testConnection()
-				.finish();
-		
 		FlatImportWizard.openWizard()
 				.selectLocalFileImportMode()
 				.nextPage()
@@ -92,7 +102,6 @@ public class FlatFileTest {
 				.setViewModel(LOCAL_VIEW_MODEL)
 				.setViewTable(LOCAL_VIEW_TABLE)
 				.finish();
-		
 		// Deploying the VDB
 		VdbWizard.openVdbWizard()
 				.setLocation(PROJECT_NAME)
@@ -101,23 +110,15 @@ public class FlatFileTest {
 				.finish();
 
 		new ModelExplorer().deployVdb(PROJECT_NAME, LOCAL_VDB);
-
 		new WaitWhile(new ShellWithTextIsActive("Progress Information"));
-
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, LOCAL_VDB);
 		assertEquals(122, jdbchelper.getNumberOfResults("SELECT * FROM "+LOCAL_VIEW_TABLE));
 	}
-	
 	/*
 	 * Creates a VDB using remote file
 	 */
 	@Test
 	public void remoteFileTest() {
-		FlatRemoteConnectionProfileWizard.openWizard(REMOTE_PROFILE_NAME)
-				.setUrl(REMOTE_URL)
-				.testConnection()
-				.finish();
-
 		FlatImportWizard.openWizard()
 				.selectRemoteUrlImportMode()
 				.nextPage()
@@ -132,7 +133,7 @@ public class FlatFileTest {
 				.setViewModel(REMOTE_VIEW_MODEL)
 				.setViewTable(REMOTE_VIEW_TABLE)
 				.finish();
-
+		// Deploying the VDB
 		VdbWizard.openVdbWizard()
 				.setLocation(PROJECT_NAME)
 				.setName(REMOTE_VDB)
@@ -140,10 +141,7 @@ public class FlatFileTest {
 				.finish();
 
 		new ModelExplorer().deployVdb(PROJECT_NAME, REMOTE_VDB);
-
-
 		new WaitWhile(new ShellWithTextIsActive("Progress Information"));
-
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, REMOTE_VDB);
 		assertEquals(122, jdbchelper.getNumberOfResults("SELECT * FROM "+REMOTE_VIEW_TABLE));
 	}
@@ -166,5 +164,118 @@ public class FlatFileTest {
 		
 		FlatLocalConnectionProfileWizard.getInstance().cancel();
 	}
+	/**
+	 * Test import csv with custom line separator
+	 */
+	@Test
+	public void testCustomLineSeparator(){
+		FlatImportWizard.openWizard()
+				.selectLocalFileImportMode()
+				.nextPage()
+				.selectProfile(LOCAL_PROFILE_NAME)
+				.selectFile(CUSTOM_LINE_FILE_NAME)
+				.setSourceModel(LOCAL_SOURCE_MODEL+"customLine")
+				.setProject(PROJECT_NAME)
+				.nextPage()
+				.setJndiName(JNDI_NAME_LOCAL+"customLine")
+				.nextPage()
+				.setFixedWidth()
+				.nextPage()
+				.setConfigureDelimiters("#");
+		addColumnToWizard(FlatImportWizard.getInstance());
+		FlatImportWizard.getInstance()
+				.nextPage()
+				.setViewModel(LOCAL_VIEW_MODEL+"customLine")
+				.setViewTable(LOCAL_VIEW_TABLE)
+				.finish();
+		
+		new ModelExplorer().openModelEditor(PROJECT_NAME,LOCAL_VIEW_MODEL+"customLine.xmi");		
+		TransformationEditor transformation = new RelationalModelEditor(LOCAL_VIEW_MODEL+"customLine.xmi").openTransformationDiagram(ModelEditor.ItemType.TABLE, LOCAL_VIEW_TABLE);
+		assertTrue(transformation.getTransformation().contains("ROW DELIMITER '#'"));
+		
+		// Deploying the VDB
+		VdbWizard.openVdbWizard()
+				.setLocation(PROJECT_NAME)
+				.setName(LOCAL_VDB+"customLine")
+				.addModel(PROJECT_NAME,LOCAL_VIEW_MODEL + "customLine.xmi")
+				.finish();
 
+		new ModelExplorer().deployVdb(PROJECT_NAME, LOCAL_VDB+"customLine");
+		new WaitWhile(new ShellWithTextIsActive("Progress Information"));
+		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, LOCAL_VDB+"customLine");
+		assertEquals(3, jdbchelper.getNumberOfResults("SELECT * FROM "+LOCAL_VIEW_TABLE));
+	}
+	
+	/**
+	 * auxiliary functions for clarifying code
+	 */
+	private void addColumnToWizard(FlatImportWizard flatWizard){
+		flatWizard.addColumn()
+				.setName("INSTR_ID")
+				.setType("biginteger")
+				.setWidth("11")
+				.finish();
+		flatWizard.addColumn()
+				.setName("NAME")
+				.setWidth("27")
+				.finish();
+		flatWizard.addColumn()
+				.setName("BALANCE")
+				.setType("float")
+				.setWidth("8")
+				.finish();
+		flatWizard.addColumn()
+				.setName("ISDJI")
+				.setType("boolean")
+				.setWidth("6")
+				.finish();
+		flatWizard.addColumn()
+				.setName("ISAMEXINT")
+				.setType("boolean")
+				.setWidth("10")
+				.finish();
+		flatWizard.addColumn()
+				.setName("PRIBUSINESS")
+				.setWidth("20")
+				.finish();
+	}
+	
+	/**
+	 * Test import csv with custom field separator
+	 */
+	@Test
+	public void testCustomFieldSeparator(){
+		FlatImportWizard.openWizard()
+				.selectLocalFileImportMode()
+				.nextPage()
+				.selectProfile(LOCAL_PROFILE_NAME)
+				.selectFile(CUSTOM_FIELD_FILE_NAME)
+				.setSourceModel(LOCAL_SOURCE_MODEL+"customField")
+				.setProject(PROJECT_NAME)
+				.nextPage()
+				.setJndiName(JNDI_NAME_LOCAL+"customField")
+				.nextPage()
+				.nextPage()
+				.selectDelimiterCharacter(DelimiterCharacter.other("#"))
+				.nextPage()
+				.setViewModel(LOCAL_VIEW_MODEL+"customField")
+				.setViewTable(LOCAL_VIEW_TABLE)
+				.finish();
+		
+		new ModelExplorer().openModelEditor(PROJECT_NAME,LOCAL_VIEW_MODEL+"customField.xmi");		
+		TransformationEditor transformation = new RelationalModelEditor(LOCAL_VIEW_MODEL+"customField.xmi").openTransformationDiagram(ModelEditor.ItemType.TABLE, LOCAL_VIEW_TABLE);
+		assertTrue(transformation.getTransformation().contains("DELIMITER '#'"));
+		
+		// Deploying the VDB
+		VdbWizard.openVdbWizard()
+				.setLocation(PROJECT_NAME)
+				.setName(LOCAL_VDB+"customField")
+				.addModel(PROJECT_NAME,LOCAL_VIEW_MODEL + "customField.xmi")
+				.finish();
+
+		new ModelExplorer().deployVdb(PROJECT_NAME, LOCAL_VDB+"customField");
+		new WaitWhile(new ShellWithTextIsActive("Progress Information"));
+		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, LOCAL_VDB+"customField");
+		assertEquals(122, jdbchelper.getNumberOfResults("SELECT * FROM "+LOCAL_VIEW_TABLE));
+	}
 }
