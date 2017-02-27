@@ -1,5 +1,8 @@
 package org.jboss.tools.teiid.reddeer.wizard.imports;
 
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -11,7 +14,7 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-
+import org.jboss.tools.teiid.reddeer.dialog.EditColumnDialog;
 /**
  * Wizard for importing a flat file source into a model project
  * 
@@ -41,6 +44,9 @@ public class FlatImportWizard extends TeiidImportWizard {
 	
 	public FlatImportWizard nextPage(){
 		log.info("Go to next wizard page");
+		activate();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		new PushButton("Next >");
 		new NextButton().click();
 		return this;
 	}
@@ -65,7 +71,7 @@ public class FlatImportWizard extends TeiidImportWizard {
 		TAB("Tab"),
 		SEMICOLON("Semicolon \':\'"),
 		BAR("Bar \'|\'"),
-		OTHER("Other");
+		OTHER("Custom character:");
 
 		private String label;
 		private String delimiterCharacter;
@@ -133,6 +139,9 @@ public class FlatImportWizard extends TeiidImportWizard {
 		return this;
 	}
 
+	/**
+	 * Only for character delimited csv format
+	 */
 	public FlatImportWizard checkHeaderNames() {
 		log.info("Check 'Column names in header'");
 		activate();
@@ -140,6 +149,9 @@ public class FlatImportWizard extends TeiidImportWizard {
 		return this;
 	}
 
+	/**
+	 * Only for character delimited csv format
+	 */
 	public FlatImportWizard setHeaderLine(String num) {
 		checkHeaderNames();
 		log.info("Set header line to '" + num + "'");
@@ -162,11 +174,14 @@ public class FlatImportWizard extends TeiidImportWizard {
 		return this;
 	}
 
+	/**
+	 * Only for character delimited csv format
+	 */
 	public FlatImportWizard selectDelimiterCharacter(DelimiterCharacter delimiterCharacter) {
 		log.info("Set dilimeter character to '" + delimiterCharacter + "'");
 		activate();
-		new PushButton("Edit Delimiter Character").click();
-		new DefaultShell("Select Delimiter Character");
+		new PushButton("Configure Delimiters").click();
+		new DefaultShell("Flat File Delimiter");
 		new RadioButton(delimiterCharacter.getLabel()).click();
 		if (delimiterCharacter.getDelimiterCharacter() != null) {
 			new DefaultText().setText(delimiterCharacter.getDelimiterCharacter());
@@ -192,5 +207,39 @@ public class FlatImportWizard extends TeiidImportWizard {
 		activate();
 		new LabeledText("New view table name:").setText(viewTableName);
 		return this;
+	}
+	
+	public FlatImportWizard setFixedWidth() {
+		log.info("set fixed width csv");
+		activate();
+		new RadioButton("Fixed width").toggle(true);
+		if (new ShellWithTextIsActive("Column Format Changed").test()){
+			new PushButton("Yes").click();
+		}
+		return this;
+	}
+	
+	/**
+	 * Only for csv with fixed width
+	 */
+	public FlatImportWizard setConfigureDelimiters(String delimiterCharacter) {
+		log.info("Set view table name to '" + delimiterCharacter + "'");
+		activate();
+		new PushButton("Configure Delimiters").click();
+		new DefaultShell("Flat File Delimiter");
+		new CheckBox("Use Default (new line character)").toggle(false);
+		new RadioButton("Custom character:  ").click();
+		new DefaultText().setText(delimiterCharacter);
+		new PushButton("OK").click();
+		return this;
+	}
+	
+	/**
+	 * Only for csv with fixed width
+	 */
+	public EditColumnDialog addColumn() {
+		activate();
+		new PushButton("ADD").click();
+		return new EditColumnDialog();
 	}
 }
