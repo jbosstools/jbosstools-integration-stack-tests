@@ -106,16 +106,15 @@ public class ModelExplorer extends AbstractExplorer {
 		new DefaultShell("Set Connection Profile");
 		new DefaultTreeItem("Database Connections", connectionProfile).select();
 		new PushButton("OK").click();
-		try {
-			new WaitUntil(new ShellWithTextIsAvailable("Confirm Connection Profile Change"));
+		if (new ShellWithTextIsAvailable("Confirm Connection Profile Change").test()){ //if test untestet teiid version
 			new PushButton("OK").click();
-		} catch (Exception e) {}
-		try {
+		}
+		if (new ShellWithTextIsAvailable("Set JBoss Data Source JNDI Name").test()){ //if test untestet teiid version
 			new WaitUntil(new ShellWithTextIsAvailable("Set JBoss Data Source JNDI Name"));
 			String jndiName = modelName;
 			new DefaultText(0).setText(jndiName.replace(".xmi", ""));
 			new PushButton("OK").click();
-		} catch (Exception e) {}
+		}
 		new RelationalModelEditor(modelName).save();
 	}
 	
@@ -294,6 +293,10 @@ public class ModelExplorer extends AbstractExplorer {
 		this.selectItem(vdbpath);
 		new ContextMenu("Modeling", "Deploy").select();
 		AbstractWait.sleep(TimePeriod.getCustom(3));
+		
+		if (new ShellWithTextIsActive("VDB is not Synchronized").test()){
+			new PushButton("Yes").click();
+		}
 		
 		if (new ShellWithTextIsActive("Create Missing Teiid Data Sources Confirmation").test()){
 			new PushButton("Yes").click();
@@ -552,7 +555,6 @@ public class ModelExplorer extends AbstractExplorer {
 		this.activate();
 		this.deleteAllProjects();
 	}
-	
 	/**
 	 * Sets JNDI name for source model
 	 */

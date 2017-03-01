@@ -6,7 +6,6 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
@@ -44,6 +43,7 @@ public class DDLTeiidImportWizard  extends TeiidImportWizard{
 	
 	public DDLTeiidImportWizard nextPage(){
 		log.info("Go to next wizard page");
+		activate();
 		new NextButton().click();
 		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
 		return this;
@@ -52,8 +52,8 @@ public class DDLTeiidImportWizard  extends TeiidImportWizard{
 	@Override
 	public void finish(){
 		log.info("Finish wizard");
-		FinishButton button = new FinishButton();
-		button.click();
+		activate();
+		new PushButton("Finish").click();
 		if(new ShellWithTextIsActive("Table 'Supports Update' Property Changed").test()){
 			new PushButton("OK").click();
 		}

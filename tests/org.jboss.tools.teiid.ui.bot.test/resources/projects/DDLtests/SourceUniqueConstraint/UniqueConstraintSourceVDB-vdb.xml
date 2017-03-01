@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<vdb name="UniqueConstraintSourceVDB" version="1">
+<description/>
+<property name="validationDateTime" value="Thu Dec 08 10:42:32 CET 2016"/>
+<property name="validationVersion" value="8.12.5"/>
+<property name="validationVersion" value="8.12.5"/>
+<property name="validationDateTime" value="Thu Dec 08 10:42:01 CET 2016"/>
+<model name="UniqueConstraintSource">
+<source connection-jndi-name="UniqueConstraintSource" name="UniqueConstraintSource" translator-name="sqlserver"/>
+<metadata type="DDL"><![CDATA[
+CREATE FOREIGN TABLE myTable (
+	Column1 string(4000),
+	CONSTRAINT UniqueConstraint UNIQUE(Column1) OPTIONS(ANNOTATION 'UniqueConstraint description', NAMEINSOURCE 'UniqueConstraintSource')
+) OPTIONS(NAMEINSOURCE 'myTableSource', UPDATABLE 'TRUE')
+
+]]></metadata>
+</model>
+</vdb>

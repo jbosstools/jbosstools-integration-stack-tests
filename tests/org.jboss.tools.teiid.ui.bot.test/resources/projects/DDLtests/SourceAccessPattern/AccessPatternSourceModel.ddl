@@ -1,0 +1,6 @@
+
+CREATE FOREIGN TABLE APtable (
+	col1 string(4000),
+	CONSTRAINT AccessPattern ACCESSPATTERN(col1) OPTIONS(ANNOTATION 'AccessPattern description', NAMEINSOURCE 'AccessPatternSource')
+) OPTIONS(NAMEINSOURCE 'APtable', UPDATABLE 'TRUE')
+

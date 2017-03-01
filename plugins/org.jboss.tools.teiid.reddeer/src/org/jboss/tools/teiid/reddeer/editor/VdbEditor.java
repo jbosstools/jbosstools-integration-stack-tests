@@ -32,6 +32,7 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.teiid.reddeer.dialog.DataRolesDialog;
+import org.jboss.reddeer.swt.impl.list.DefaultList;
 
 public class VdbEditor extends DefaultEditor {
 
@@ -222,6 +223,10 @@ public class VdbEditor extends DefaultEditor {
 		new LabeledText("Version").setText(Integer.toString(version));
 	}
 	
+	public String getVersion(){
+		return new LabeledText("Version").getText();
+	}
+	
 	public void setImportVDB(String nameVDB,int version, boolean dataPolicies){
 		new PushButton("Show Import VDBs").click();
 		new DefaultShell("Import VDBs");
@@ -293,6 +298,11 @@ public class VdbEditor extends DefaultEditor {
 		new DefaultCTabItem("Description").activate();
 		new DefaultStyledText().setText(string);		
 	}
+	public String getProjectDescription() {
+		new DefaultCTabItem("Schemas").activate();	//because there are two description tabs
+		new DefaultCTabItem("Description").activate();
+		return new DefaultStyledText().getText();
+	}
 
 	public void addModelDescription(String editorSourceModel, String string) {
 		editorSourceModel = (editorSourceModel.contains(".xmi")) ? editorSourceModel : editorSourceModel + ".xmi";
@@ -300,6 +310,13 @@ public class VdbEditor extends DefaultEditor {
 		new DefaultTable(0).getItem(editorSourceModel).select();
 		new DefaultCTabItem("Description").activate();		
 		new DefaultStyledText().setText(string);
+	}
+	public String getModelDescription(String model) {
+		model = (model.contains(".xmi")) ? model : model + ".xmi";
+		new DefaultCTabItem("Models").activate();
+		new DefaultTable(0).getItem(model).select();
+		new DefaultCTabItem("Description").activate();		
+		return new DefaultStyledText().getText();
 	}
 
 	public void addDefaultMultiSource(String editorSourceModel) {
@@ -309,6 +326,25 @@ public class VdbEditor extends DefaultEditor {
 		new DefaultCTabItem("Source Binding Definition").activate();
 		new CheckBox("Multi-source").click();
 		new PushButton("Add").click();
+	}
+	public void addMultiSource(String editorSourceModel, String sourceName, String translatorName, String jndiName) {
+		editorSourceModel = (editorSourceModel.contains(".xmi")) ? editorSourceModel : editorSourceModel + ".xmi";
+		new DefaultCTabItem("Models").activate();
+		new DefaultTable(0).getItem(editorSourceModel).select();
+		new DefaultCTabItem("Source Binding Definition").activate();
+		new CheckBox("Multi-source").click();
+		new PushButton("Add").click();		
+		new DefaultTable(1).getItem(new DefaultTable(1).rowCount()-1).click(0);		
+		new DefaultText(new CellEditor(new DefaultTable(1).getItem(new DefaultTable(1).rowCount()-1), 0)).setText(sourceName);
+		
+		new DefaultCTabItem("Source Binding Definition").activate();
+		new DefaultTable(1).getItem(new DefaultTable(1).rowCount()-1).click(1);
+		new DefaultCCombo(new CellEditor(new DefaultTable(1).getItem(new DefaultTable(1).rowCount()-1), 1)).setSelection(translatorName);
+		
+		new DefaultCTabItem("Source Binding Definition").activate();
+		new DefaultTable(1).getItem(new DefaultTable(1).rowCount()-1).click(2);		
+		new DefaultCCombo(new CellEditor(new DefaultTable(1).getItem(new DefaultTable(1).rowCount()-1), 2)).setText(jndiName);
+		
 	}
 
 	public void deleteMultiSourceModel(String editorSourceModel, String name) {
@@ -339,6 +375,13 @@ public class VdbEditor extends DefaultEditor {
 		new DefaultCTabItem("Properties").activate();
 		new DefaultTable(1).getItem(propertyName).select();		
 		new PushButton(new WithTooltipTextMatcher("Remove Property")).click();
+	}
+	public List<TableItem> getListOfModelProperties(String editorSourceModel) {
+		editorSourceModel = (editorSourceModel.contains(".xmi")) ? editorSourceModel : editorSourceModel + ".xmi";
+		new DefaultCTabItem("Models").activate();
+		new DefaultTable(0).getItem(editorSourceModel).select();
+		new DefaultCTabItem("Properties").activate();	
+		return new DefaultTable(1).getItems();
 	}
 
 	public void editTranslatorOverride(String oldName, String newName) {
@@ -374,6 +417,46 @@ public class VdbEditor extends DefaultEditor {
 		new PushButton("OK").click();
 	}
 
-
+	public void setAllowedLanguage(String language){
+		new DefaultCTabItem("Properties").activate();
+		new PushButton(new WithTooltipTextMatcher("Add new allowed language (i.e. pearl, javascript, etc...)")).click();
+		new DefaultShell("Add Allowed Language");
+		new DefaultText().setText(language);
+		new PushButton("OK").click();
+	}
+	public String[] getListOfAllowedLanguage(){
+		new DefaultCTabItem("Properties").activate();			
+		return new DefaultList(new DefaultGroup("Allowed Languages")).getListItems();
+	}
 	
+	public void checkAddColumnCheckbox(String model){
+		new DefaultCTabItem("Models").activate();
+		new DefaultTable(0).getItem(model + ".xmi").select();
+		new DefaultCTabItem("Source Binding Definition").activate();
+		if(!new CheckBox("Multi-source").isChecked()){
+			new CheckBox("Multi-source").click();
+		}
+		new CheckBox("Add Column      ").click();
+	}
+	
+	public boolean isCheckedMultiSource(String model){
+		new DefaultCTabItem("Models").activate();	
+		new DefaultCTabItem("Source Binding Definition").activate();
+		new DefaultTable(0).getItem(model + ".xmi").select();
+		return new CheckBox("Multi-source").isChecked();
+	}
+	
+	public boolean isCheckedAddColumn(String model){
+		new DefaultCTabItem("Models").activate();	
+		new DefaultTable(0).getItem(model + ".xmi").select();
+		new DefaultCTabItem("Source Binding Definition").activate();		
+		return new CheckBox("Add Column      ").isChecked();
+	}
+	
+	public List<TableItem> getListOfSources(String model){
+		new DefaultCTabItem("Models").activate();	
+		new DefaultTable(0).getItem(model + ".xmi").select();
+		new DefaultCTabItem("Source Binding Definition").activate();
+		return new DefaultTable(1).getItems();		
+	}
 }

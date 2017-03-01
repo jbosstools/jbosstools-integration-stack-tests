@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<vdb name="ViewTableSettingsVDB" version="1">
+<description/>
+<property name="validationDateTime" value="Thu Dec 08 12:08:36 CET 2016"/>
+<property name="validationVersion" value="8.12.5"/>
+<model name="ViewTableSettings" type="VIRTUAL">
+<metadata type="DDL"><![CDATA[
+CREATE VIEW myTable (
+	Column1 string(4000)
+) OPTIONS(NAMEINSOURCE 'myTableSource', MATERIALIZED 'TRUE', UPDATABLE 'TRUE', CARDINALITY '120', MATERIALIZED_TABLE 'ViewTableSettings.helpTable', ANNOTATION 'Table description') 
+AS
+	SELECT
+		'test' AS Column1;
+
+CREATE VIEW helpTable (
+	newColumn_1 string(4000)
+) OPTIONS(NAMEINSOURCE 'HTsource', UPDATABLE 'TRUE') 
+AS
+	SELECT
+		'test' AS newColumn_1;
+
+]]></metadata>
+</model>
+</vdb>

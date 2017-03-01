@@ -84,6 +84,9 @@ public class GenerateVdbArchiveDialog extends AbstractDialog {
 		activate();
 		new PushButton("Generate").click();
 		new WaitWhile(new LabelWithTextIsAvailable("Converting Dynamic Vdb to Xmi Vdb"));
+		if(new ShellWithTextIsActive("Table 'Supports Update' Property Changed").test()){
+			new PushButton("OK").click();
+		}
 		return this;
 	}
 
@@ -112,6 +115,7 @@ public class GenerateVdbArchiveDialog extends AbstractDialog {
 	@Override
 	public void finish() {
 		log.info("Finishing '" + title + "' Dialog");
+		activate();
 		new PushButton("Finish").click();
 		new WaitWhile(new ShellWithTextIsActive(title), TimePeriod.NORMAL);
 		AbstractWait.sleep(TimePeriod.SHORT);

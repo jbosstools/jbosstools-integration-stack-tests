@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<vdb name="AccessPatternVDB" version="1">
+<description/>
+<property name="validationDateTime" value="Fri Dec 02 12:29:56 CET 2016"/>
+<property name="validationVersion" value="8.12.5"/>
+<model name="AccessPatternSourceModel">
+<source connection-jndi-name="AccessPatternSourceModel" name="AccessPatternSourceModel" translator-name="AccessPatternSourceModel"/>
+<metadata type="DDL"><![CDATA[
+CREATE FOREIGN TABLE APtable (
+	col1 string(4000),
+	CONSTRAINT AccessPattern ACCESSPATTERN(col1) OPTIONS(ANNOTATION 'AccessPattern description', NAMEINSOURCE 'AccessPatternSource')
+) OPTIONS(NAMEINSOURCE 'APtable', UPDATABLE 'TRUE')
+
+]]></metadata>
+</model>
+</vdb>

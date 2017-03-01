@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<vdb name="SourceModelPrimaryKeyVDB" version="1">
+<description/>
+<property name="validationDateTime" value="Mon Dec 05 14:36:48 CET 2016"/>
+<property name="validationVersion" value="8.12.5"/>
+<model name="SourceModelPrimaryKey">
+<source connection-jndi-name="SourceModelPrimaryKey" name="SourceModelPrimaryKey" translator-name="sqlserver"/>
+<metadata type="DDL"><![CDATA[
+CREATE FOREIGN TABLE myTable (
+	Column1 string(4000),
+	Column2 string(4000) NOT NULL,
+	Column3 string(4000) NOT NULL,
+	CONSTRAINT PrimaryKey PRIMARY KEY(Column3, Column2)OPTIONS(ANNOTATION 'This is PrimaryKey description', NAMEINSOURCE 'PrimaryKeySource')
+) OPTIONS(NAMEINSOURCE 'myTableSource', UPDATABLE 'TRUE')
+
+]]></metadata>
+</model>
+</vdb>
