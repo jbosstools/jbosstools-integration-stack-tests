@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<vdb name="ViewProcedureSettingsVDB" version="1">
+<description/>
+<property name="validationDateTime" value="Fri Dec 09 12:28:44 CET 2016"/>
+<property name="validationVersion" value="8.12.5"/>
+<model name="ViewProcedureSettings" type="VIRTUAL">
+<property name="imports" value="sourceM"/>
+<metadata type="DDL"><![CDATA[
+SET NAMESPACE 'http://teiid.org/rest' AS REST;
+
+CREATE VIRTUAL PROCEDURE myProcedure (
+	IN Parameter1 string(4000)
+) RETURNS
+	TABLE (
+		c1 string(4000)
+) OPTIONS(ANNOTATION 'Procedure description', NAMEINSOURCE 'myProcedureSource', UPDATECOUNT '1')
+	AS
+BEGIN
+	SELECT * FROM sourceM.myTable WHERE sourceM.myTable.c1 = ViewProcedureSettings.myProcedure.Parameter1;
+END;
+
+]]></metadata>
+</model>
+<model name="sourceM">
+<source connection-jndi-name="sourceM" name="sourceM" translator-name="sqlserver"/>
+<metadata type="DDL"><![CDATA[
+CREATE FOREIGN TABLE myTable (
+	c1 string(4000)
+) OPTIONS(NAMEINSOURCE 'myTableSource', UPDATABLE 'TRUE')
+
+]]></metadata>
+</model>
+</vdb>

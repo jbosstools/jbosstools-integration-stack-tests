@@ -4,14 +4,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
-import org.jboss.reddeer.junit.execution.annotation.RunIf;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.common.reddeer.JiraClient;
-import org.jboss.tools.common.reddeer.JiraIssue;
-import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
-import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.noDatabase.FlatLocalConnectionProfileWizard;

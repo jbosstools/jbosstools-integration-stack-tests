@@ -1,7 +1,5 @@
 package org.jboss.tools.teiid.reddeer.dialog;
 
-import java.awt.event.KeyEvent;
-
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
@@ -15,7 +13,6 @@ import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 
 public class CreateDataSourceDialog extends AbstractDialog {
 	
