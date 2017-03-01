@@ -8,6 +8,7 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.ui.views.log.LogMessage;
 import org.jboss.reddeer.eclipse.ui.views.log.LogView;
 import org.jboss.reddeer.swt.api.TreeItem;
@@ -47,9 +48,15 @@ public class ErrorLogView extends LogView {
 		open();
 		setFilter(ERROR_SEVERITY);
 		open();
+		List<LogMessage> messages = new ArrayList<LogMessage>();
+		try {
+			new DefaultTree();
+		} catch (CoreLayerException e) {
+			log.debug("No entries in Error log.");
+			return messages;
+		}
 		DefaultTree tree = new DefaultTree();
 		List<TreeItem> treeItems = tree.getAllItems();
-		List<LogMessage> messages = new ArrayList<LogMessage>();
 		for (TreeItem item : treeItems) {
 			messages.add(new LogMessage(item, IStatus.ERROR));
 		}
