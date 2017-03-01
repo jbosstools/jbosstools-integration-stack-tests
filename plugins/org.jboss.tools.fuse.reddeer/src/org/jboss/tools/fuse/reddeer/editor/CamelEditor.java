@@ -169,6 +169,8 @@ public class CamelEditor extends GEFEditor {
 		log.debug("Adding '" + component + "' component into '" + route + "' route");
 		Point r = getInEditorCoords(route);
 		addCamelComponent(component, r.x + 10, r.y + 10);
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 
 	/**
@@ -700,7 +702,8 @@ public class CamelEditor extends GEFEditor {
 	 *            search box input
 	 */
 	public void paletteSearch(String text) {
-		new DefaultText().typeText(text);
+		new DefaultText().setText(text);
+		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 
 	/**

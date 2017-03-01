@@ -27,6 +27,7 @@
 		<customization.file>resources/settings/plugin_customization.ini</customization.file>
 		<maven.repo>${project.build.directory}/requirements/repository/</maven.repo>
 		<staging.repos>false</staging.repos>
+		<rd.skipUnfixedIssues>true</rd.skipUnfixedIssues>
 	</properties>
 
 	<build>
@@ -91,6 +92,7 @@
 						<maven.settings>${project.build.directory}/requirements/emptysettings.xml</maven.settings>
 						<maven.repository>${maven.repo}</maven.repository>
 						<staging.repositories>${staging.repos}</staging.repositories>
+						<rd.skipUnfixedIssues>${rd.skipUnfixedIssues}</rd.skipUnfixedIssues>						
 					</systemProperties>
 
 					<dependencies combine.children="append">

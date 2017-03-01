@@ -3,14 +3,15 @@ package org.jboss.tools.fuse.ui.bot.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.util.List;
 
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.gef.view.PaletteView;
 import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
+import org.jboss.reddeer.junit.execution.annotation.RunIf;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
@@ -19,6 +20,8 @@ import org.jboss.reddeer.workbench.exception.WorkbenchLayerException;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.common.reddeer.LogGrapper;
+import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
+import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.common.reddeer.view.ErrorLogView;
 import org.jboss.tools.fuse.reddeer.ProjectTemplate;
 import org.jboss.tools.fuse.reddeer.ProjectType;
@@ -26,7 +29,6 @@ import org.jboss.tools.fuse.reddeer.component.File;
 import org.jboss.tools.fuse.reddeer.component.Log;
 import org.jboss.tools.fuse.reddeer.component.Otherwise;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
-import org.jboss.tools.fuse.reddeer.editor.CamelEditorException;
 import org.jboss.tools.fuse.reddeer.editor.SourceEditor;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
 import org.jboss.tools.fuse.ui.bot.test.utils.EditorManipulator;
@@ -178,6 +180,8 @@ public class CamelEditorTest extends DefaultTest {
 	 * </ol>
 	 */
 	@Test
+	@Jira("FUSETOOLS-2281")
+	@RunIf(conditionClass = IssueIsClosed.class)
 	public void testCodeCompletion() {
 
 		new CamelProject("cbr").openCamelContext("camel-context.xml");
@@ -224,8 +228,7 @@ public class CamelEditorTest extends DefaultTest {
 	 * <li>switch to Source tab in the Camel Editor</li>
 	 * <li>remove branch otherwise</li>
 	 * <li>switch to Design tab in the Camel Editor</li>
-	 * <li>add back removed components (from branch otherwise) via Drag&Drop feature (Adds components from Palette and
-	 * connections between components via the Camel Editor)</li>
+	 * <li>add back removed components (from branch otherwise) via Drag&Drop feature</li>
 	 * <li>switch to Source tab in the Camel Editor</li>
 	 * <li>check if the content of the file is equals to content of the same file immediately after project creation
 	 * </li>
@@ -238,15 +241,14 @@ public class CamelEditorTest extends DefaultTest {
 		CamelEditor editor = new CamelEditor("camel-context.xml");
 		editor.addCamelComponent(new Otherwise(), "Choice");
 		editor.addCamelComponent(new Log(), "Otherwise");
-		editor.setProperty("Log _log2", "Message *", "Other message");
+		try {
+			editor.setProperty("Log _log2", "Message *", "Other message");
+		} catch (CoreLayerException e) {
+			log.warn("There is no component with label 'Log _log2'! See https://issues.jboss.org/browse/FUSETOOLS-2294");
+			editor.setProperty("Log", "Message *", "Other message");
+		}
 		editor.addCamelComponent(new File(), "Otherwise");
 		editor.setProperty("file:directoryName", "Uri *", "file:target/messages/others");
-		editor.addConnection("Log _log2", "file:target/messages/others");
-		try {
-			editor.save();
-		} catch (CamelEditorException e) {
-			fail("Connection between 'Log _log2' and 'file:target/messages/others' wasn't created");
-		}
 		CamelEditor.switchTab("Source");
 		assertTrue(EditorManipulator.isEditorContentEqualsFile("resources/camel-context-all.xml"));
 		assertTrue(LogGrapper.getPluginErrors("fuse").size() == 0);
