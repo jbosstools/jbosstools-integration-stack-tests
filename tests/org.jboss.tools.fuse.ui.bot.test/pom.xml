@@ -20,9 +20,10 @@
 		<karaf.username>karaf</karaf.username>
 		<karaf.password>karaf</karaf.password>
 		<rd.config>${project.build.directory}/requirements/karaf-3.0.3.xml</rd.config>
+		<reddeerConfig>-Drd.config=${rd.config}</reddeerConfig>
 		<enable.debug.log>false</enable.debug.log>
 		<sap.url>http://download.jboss.org/jbosstools/mars/integration/updates/integration-stack/extras/jboss-fuse-sap-tool-suite/8.0.0.Beta1/all/</sap.url>
-		<systemProperties>${integrationTestsSystemProperties} -Drd.config=${rd.config} -Djboss.discovery.site.integration-stack-sap.feature=org.fusesource.ide.sap.feature.feature.group -Djboss.discovery.site.integration-stack-sap.url=${sap.url}</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} ${reddeerConfig} -Djboss.discovery.site.integration-stack-sap.feature=org.fusesource.ide.sap.feature.feature.group -Djboss.discovery.site.integration-stack-sap.url=${sap.url}</systemProperties>
 		<test.class>AllTests</test.class>
 		<customization.file>resources/settings/plugin_customization.ini</customization.file>
 		<maven.repo>${project.build.directory}/requirements/repository/</maven.repo>
@@ -61,6 +62,9 @@
 				<groupId>com.googlecode.maven-download-plugin</groupId>
 				<artifactId>maven-download-plugin</artifactId>
 				<version>1.0.0</version>
+				<configuration>
+					<skip>${skipRequirements}</skip>
+				</configuration>
 				<executions>
 					<execution>
 						<id>get-karaf</id>
@@ -92,7 +96,7 @@
 						<maven.settings>${project.build.directory}/requirements/emptysettings.xml</maven.settings>
 						<maven.repository>${maven.repo}</maven.repository>
 						<staging.repositories>${staging.repos}</staging.repositories>
-						<rd.skipUnfixedIssues>${rd.skipUnfixedIssues}</rd.skipUnfixedIssues>						
+						<rd.skipUnfixedIssues>${rd.skipUnfixedIssues}</rd.skipUnfixedIssues>
 					</systemProperties>
 
 					<dependencies combine.children="append">
@@ -144,4 +148,20 @@
 
 		</plugins>
 	</build>
+	<profiles>
+		<profile>
+			<id>smoke</id>
+			<activation>
+				<property>
+					<name>test</name>
+					<value>SmokeTests</value>
+				</property>
+			</activation>
+			<properties>
+				<reddeerConfig/>
+				<test.class>SmokeTests</test.class>
+				<skipRequirements>true</skipRequirements>
+			</properties>
+		</profile>
+	</profiles>
 </project>
