@@ -144,13 +144,13 @@
 			</properties>
 			<repositories>
 				<repository>
-					<id>fuse-ci</id>
+					<id>fuse-9.2.0.CI</id>
 					<url>http://download.jboss.org/jbosstools/neon/integration/updates/integration-stack/fuse-tooling/9.2.0.CI/</url>
 					<layout>p2</layout>
 				</repository>
 				<repository>
-					<id>switchyard-ci</id>
-					<url>http://download.jboss.org/jbosstools/neon/integration/updates/integration-stack/switchyard/2.2.0.CI/</url>
+					<id>switchyard-2.4.0.CI</id>
+					<url>http://download.jboss.org/jbosstools/neon/integration/updates/integration-stack/switchyard/2.4.0.CI/</url>
 					<layout>p2</layout>
 				</repository>
 			</repositories>
