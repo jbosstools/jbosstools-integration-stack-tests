@@ -432,7 +432,6 @@ public class SwitchYardEditorBindingsTest {
 		assertEquals("MyClass", page.getServiceName().getText());
 		properties.ok();
 	}
-	
 
 	@Test
 	public void cxfReferenceBindingPayloadTest() throws Exception {
@@ -868,13 +867,33 @@ public class SwitchYardEditorBindingsTest {
 		wizard.getMethod().setSelection("GET");
 		wizard.getContentType().setText("coolType");
 		wizard.getRequestTimeout().setText("1234");
+		wizard.next();
+		wizard.getAuthenticationType().setSelection("Basic");
+		wizard.getUser().setText("admin");
+		wizard.getPassword().setText("admin123");
+		wizard.getHost().setText("localhost");
+		wizard.getPort().setText("8081");
+		wizard.next();
+		wizard.getUserName().setText("proxyAdmin");
+		wizard.getPassword().setText("proxyAdmin123");
+		wizard.getHost().setText("proxyhost");
+		wizard.getPort().setText("1234");
 		wizard.finish();
 
-		new SwitchYardEditor().save();
+		new SwitchYardEditor().saveAndClose();
+		editor = new SwitchYardProject(PROJECT).openSwitchYardFile();
 
 		String bindingPath = "/switchyard/composite/reference/binding.http";
 		assertXPath("http-binding", bindingPath + "/@name");
-		assertXPath("http-binding", bindingPath + "/@name");
+		assertXPath("http://localhost", bindingPath + "/address");
+		assertXPath("admin", bindingPath + "/basic/user");
+		assertXPath("admin123", bindingPath + "/basic/password");
+		assertXPath("localhost", bindingPath + "/basic/host");
+		assertXPath("8081", bindingPath + "/basic/port");
+		assertXPath("proxyAdmin", bindingPath + "/proxy/user");
+		assertXPath("proxyAdmin123", bindingPath + "/proxy/password");
+		assertXPath("proxyhost", bindingPath + "/proxy/host");
+		assertXPath("1234", bindingPath + "/proxy/port");
 
 		BindingsPage properties = new Service(REFERENCE_SERVICE).showProperties().selectBindings();
 		HTTPBindingPage page = properties.selectHTTPBinding("http-binding");
@@ -882,6 +901,18 @@ public class SwitchYardEditorBindingsTest {
 		page.setName("http1");
 		assertEquals("http://localhost", page.getAddress().getText());
 		page.getAddress().setText("http://foo");
+		page.selectAuthenticationDetails();
+		assertEquals("admin", page.getUser().getText());
+		assertEquals("admin123", page.getPassword().getText());
+		assertEquals("localhost", page.getHost().getText());
+		assertEquals("8081", page.getPort().getText());
+		page.getPort().setText("8181");
+		page.selectProxySettings();
+		assertEquals("proxyAdmin", page.getUserName().getText());
+		assertEquals("proxyAdmin123", page.getPassword().getText());
+		assertEquals("proxyhost", page.getHost().getText());
+		assertEquals("1234", page.getPort().getText());
+		page.getPort().setText("${proxyPort}");
 		page.ok();
 
 		new SwitchYardEditor().save();
@@ -891,6 +922,14 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("GET", bindingPath + "/method");
 		assertXPath("coolType", bindingPath + "/contentType");
 		assertXPath("1234", bindingPath + "/timeout");
+		assertXPath("admin", bindingPath + "/basic/user");
+		assertXPath("admin123", bindingPath + "/basic/password");
+		assertXPath("localhost", bindingPath + "/basic/host");
+		assertXPath("8181", bindingPath + "/basic/port");
+		assertXPath("proxyAdmin", bindingPath + "/proxy/user");
+		assertXPath("proxyAdmin123", bindingPath + "/proxy/password");
+		assertXPath("proxyhost", bindingPath + "/proxy/host");
+		assertXPath("${proxyPort}", bindingPath + "/proxy/port");
 	}
 
 	@Test
@@ -1540,20 +1579,53 @@ public class SwitchYardEditorBindingsTest {
 		wizard.setName("rest-binding");
 		wizard.getAddress().setText("http://localhost");
 		wizard.addInterface("Hello");
+		wizard.next();
+		wizard.getAuthenticationType().setSelection("Basic");
+		wizard.getUser().setText("admin");
+		wizard.getPassword().setText("admin123");
+		wizard.getHost().setText("localhost");
+		wizard.getPort().setText("8081");
+		wizard.next();
+		wizard.getUserName().setText("proxyAdmin");
+		wizard.getPassword().setText("proxyAdmin123");
+		wizard.getHost().setText("proxyhost");
+		wizard.getPort().setText("1234");
 		wizard.finish();
 
-		new SwitchYardEditor().save();
+		new SwitchYardEditor().saveAndClose();
+		editor = new SwitchYardProject(PROJECT).openSwitchYardFile();
 
 		String bindingPath = "/switchyard/composite/reference/binding.rest";
 		assertXPath("rest-binding", bindingPath + "/@name");
 		assertXPath(PACKAGE + ".Hello", bindingPath + "/interfaces");
 		assertXPath("http://localhost", bindingPath + "/address");
+		assertXPath("admin", bindingPath + "/basic/user");
+		assertXPath("admin123", bindingPath + "/basic/password");
+		assertXPath("localhost", bindingPath + "/basic/host");
+		assertXPath("8081", bindingPath + "/basic/port");
+		assertXPath("proxyAdmin", bindingPath + "/proxy/user");
+		assertXPath("proxyAdmin123", bindingPath + "/proxy/password");
+		assertXPath("proxyhost", bindingPath + "/proxy/host");
+		assertXPath("1234", bindingPath + "/proxy/port");
 
 		BindingsPage properties = new Service(REFERENCE_SERVICE).showProperties().selectBindings();
 		RESTBindingPage page = properties.selectRESTBinding("rest-binding");
 		assertEquals("rest-binding", page.getName());
 		assertEquals("http://localhost", page.getAddress().getText());
 		assertTrue(page.getInterfaces().contains(PACKAGE + ".Hello"));
+
+		page.selectAuthenticationDetails();
+		assertEquals("admin", page.getUser().getText());
+		assertEquals("admin123", page.getPassword().getText());
+		assertEquals("localhost", page.getHost().getText());
+		assertEquals("8081", page.getPort().getText());
+
+		page.selectProxySettings();
+		assertEquals("proxyAdmin", page.getUserName().getText());
+		assertEquals("proxyAdmin123", page.getPassword().getText());
+		assertEquals("proxyhost", page.getHost().getText());
+		assertEquals("1234", page.getPort().getText());
+
 		properties.ok();
 	}
 
@@ -2191,9 +2263,20 @@ public class SwitchYardEditorBindingsTest {
 		wizard.getxopExpand().setSelection("false");
 		wizard.getxopExpand().setSelection("true");
 		wizard.getThreshold().setText("963");
+		wizard.next();
+		wizard.getAuthenticationType().setSelection("Basic");
+		wizard.getUser().setText("admin");
+		wizard.getPassword().setText("admin123");
+		wizard.next();
+		wizard.getUserName().setText("proxyAdmin");
+		wizard.getPassword().setText("proxyAdmin123");
+		wizard.getHost().setText("proxyhost");
+		wizard.getPort().setText("1234");
 		wizard.finish();
 
-		new SwitchYardEditor().save();
+		new SwitchYardEditor().saveAndClose();
+		editor = new SwitchYardProject(PROJECT).openSwitchYardFile();
+
 		String bindingPath = "/switchyard/composite/reference/binding.soap";
 		assertXPath("soap-binding", bindingPath + "/@name");
 		assertXPath("DOM", bindingPath + "/contextMapper/@soapHeadersType");
@@ -2204,11 +2287,27 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("true", bindingPath + "/mtom/@enabled");
 		assertXPath("963", bindingPath + "/mtom/@threshold");
 		assertXPath("true", bindingPath + "/mtom/@xopExpand");
+		assertXPath("admin", bindingPath + "/basic/user");
+		assertXPath("admin123", bindingPath + "/basic/password");
+		assertXPath("proxyAdmin", bindingPath + "/proxy/user");
+		assertXPath("proxyAdmin123", bindingPath + "/proxy/password");
+		assertXPath("proxyhost", bindingPath + "/proxy/host");
+		assertXPath("1234", bindingPath + "/proxy/port");
 
 		BindingsPage properties = new Service(REFERENCE_SERVICE).showProperties().selectBindings();
 		SOAPBindingPage page = properties.selectSOAPBinding("soap-binding");
 		assertEquals("soap-binding", page.getName());
 		assertEquals("${propValue}:4321", page.getEndpointAddress());
+
+		page.selectAuthenticationDetails();
+		assertEquals("admin", page.getUser().getText());
+		assertEquals("admin123", page.getPassword().getText());
+
+		page.selectProxySettings();
+		assertEquals("proxyAdmin", page.getUserName().getText());
+		assertEquals("proxyAdmin123", page.getPassword().getText());
+		assertEquals("proxyhost", page.getHost().getText());
+		assertEquals("1234", page.getPort().getText());
 		properties.ok();
 	}
 
