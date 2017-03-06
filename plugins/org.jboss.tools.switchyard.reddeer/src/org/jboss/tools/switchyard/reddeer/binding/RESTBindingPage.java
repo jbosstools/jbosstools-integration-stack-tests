@@ -5,10 +5,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
+import org.jboss.reddeer.swt.api.Combo;
 import org.jboss.reddeer.swt.api.Text;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.condition.TableHasRows;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.list.DefaultList;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
@@ -61,4 +63,5 @@ public class RESTBindingPage extends OperationOptionsPage<RESTBindingPage> {
 	public Text getAddress() {
 		return new LabeledText("Address");
 	}
+
 }

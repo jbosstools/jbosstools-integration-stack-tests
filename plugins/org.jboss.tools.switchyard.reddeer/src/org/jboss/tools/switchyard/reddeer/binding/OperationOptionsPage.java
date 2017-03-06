@@ -1,16 +1,20 @@
 package org.jboss.tools.switchyard.reddeer.binding;
 
-import org.jboss.reddeer.jface.wizard.WizardDialog;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.group.DefaultGroup;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.jface.wizard.WizardDialog;
+import org.jboss.reddeer.swt.api.Combo;
+import org.jboss.reddeer.swt.api.Text;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
+import org.jboss.reddeer.swt.impl.group.DefaultGroup;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.tools.switchyard.reddeer.widget.LabeledText;
 
 public abstract class OperationOptionsPage<T> extends WizardDialog {
@@ -86,4 +90,47 @@ public abstract class OperationOptionsPage<T> extends WizardDialog {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
+	/* Only on properties */
+
+	public void selectAuthenticationDetails() {
+		new DefaultTabItem("Authentication Details").activate();
+	}
+
+	public void selectProxySettings() {
+		new DefaultTabItem("Proxy settings").activate();
+	}
+
+	/* Only on reference binding */
+
+	public Combo getAuthenticationType() {
+		return new LabeledCombo("Authentication Type");
+	}
+
+	public Text getDomain() {
+		return new LabeledText("Domain");
+	}
+
+	public Text getPort() {
+		return new LabeledText("Port");
+	}
+
+	public Text getHost() {
+		return new LabeledText("Host");
+	}
+
+	public Text getRealm() {
+		return new LabeledText("Realm");
+	}
+
+	public Text getPassword() {
+		return new LabeledText("Password");
+	}
+
+	public Text getUser() {
+		return new LabeledText("User");
+	}
+
+	public Text getUserName() {
+		return new LabeledText("User Name");
+	}
 }
