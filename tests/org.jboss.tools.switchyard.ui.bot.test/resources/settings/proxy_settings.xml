@@ -8,13 +8,13 @@
 			<repositories>
 				<repository>
 					<id>jbdsis-qe-group</id>
-					<url>http://10.8.172.212:8081/nexus/content/groups/jbdsis-qe/</url>
+					<url>http://10.8.172.58:8081/nexus/content/groups/jbdsis-qe/</url>
 				</repository>
 			</repositories>
 			<pluginRepositories>
 				<pluginRepository>
 					<id>jbdsis-qe-group</id>
-					<url>http://10.8.172.212:8081/nexus/content/groups/jbdsis-qe/</url>
+					<url>http://10.8.172.58:8081/nexus/content/groups/jbdsis-qe/</url>
 				</pluginRepository>
 			</pluginRepositories>
 		</profile>
@@ -25,71 +25,8 @@
 	<mirrors>
 		<mirror>
 			<id>internal-repository</id>
-			<url>http://10.8.172.212:8081/nexus/content/groups/jbdsis-qe/</url>
+			<url>http://10.8.172.58:8081/nexus/content/groups/jbdsis-qe/</url>
 			<mirrorOf>*</mirrorOf>
-		</mirror>
-		<mirror>
-			<id>jbtis-mirror</id>
-			<layout>p2</layout>
-			<url>http://10.8.172.212:8081/nexus/content/repositories/jbtis-44-staging/</url>
-			<mirrorOf>jbtis-44-staging</mirrorOf>
-			<mirrorOfLayouts>p2</mirrorOfLayouts>
-		</mirror>
-		<mirror>
-			<id>jbtis-ea-mirror</id>
-			<layout>p2</layout>
-			<url>http://10.8.172.212:8081/nexus/content/repositories/jbtis-44-staging-ea/</url>
-			<mirrorOf>jbtis-44-staging-ea</mirrorOf>
-			<mirrorOfLayouts>p2</mirrorOfLayouts>
-		</mirror>
-		<mirror>
-			<id>jbt-apache-mirror</id>
-			<layout>p2</layout>
-			<url>http://10.8.172.212:8081/nexus/content/repositories/jbt-apache/</url>
-			<mirrorOf>jbt-apache</mirrorOf>
-			<mirrorOfLayouts>p2</mirrorOfLayouts>
-		</mirror>
-		<mirror>
-			<id>jbt-birt-mirror</id>
-			<layout>p2</layout>
-			<url>http://10.8.172.212:8081/nexus/content/repositories/jbt-birt/</url>
-			<mirrorOf>jbt-birt</mirrorOf>
-			<mirrorOfLayouts>p2</mirrorOfLayouts>
-		</mirror>
-		<mirror>
-			<id>jbt-bpel-mirror</id>
-			<layout>p2</layout>
-			<url>http://10.8.172.212:8081/nexus/content/repositories/jbt-bpel/</url>
-			<mirrorOf>jbt-bpel</mirrorOf>
-			<mirrorOfLayouts>p2</mirrorOfLayouts>
-		</mirror>
-		<mirror>
-			<id>jbt-core-4.4.2.Final-mirror</id>
-			<layout>p2</layout>
-			<url>http://10.8.172.212:8081/nexus/content/repositories/jbt-core-4.4.2.Final/</url>
-			<mirrorOf>jbt-core-4.4.2.Final</mirrorOf>
-			<mirrorOfLayouts>p2</mirrorOfLayouts>
-		</mirror>
-		<mirror>
-			<id>jbt-gemini-mirror</id>
-			<layout>p2</layout>
-			<url>http://10.8.172.212:8081/nexus/content/repositories/jbt-gemini/</url>
-			<mirrorOf>jbt-gemini</mirrorOf>
-			<mirrorOfLayouts>p2</mirrorOfLayouts>
-		</mirror>
-		<mirror>
-			<id>jbt-neon-mirror</id>
-			<layout>p2</layout>
-			<url>http://10.8.172.212:8081/nexus/content/repositories/jbt-neon/</url>
-			<mirrorOf>jbt-neon</mirrorOf>
-			<mirrorOfLayouts>p2</mirrorOfLayouts>
-		</mirror>
-		<mirror>
-			<id>jbt-orbit-mirror</id>
-			<layout>p2</layout>
-			<url>http://10.8.172.212:8081/nexus/content/repositories/jbt-orbit/</url>
-			<mirrorOf>jbt-orbit</mirrorOf>
-			<mirrorOfLayouts>p2</mirrorOfLayouts>
 		</mirror>
 	</mirrors>
 </settings>
