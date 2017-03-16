@@ -100,7 +100,7 @@ To run tests for a specific component
 
     $ mvn clean verify -pl tests/org.jboss.tools.<component>.ui.bot.test -am -Dtest=SmokeTests
 
-**Note:** _The deafult test is AllTests._
+**Note:** _The default test is AllTests._
 
 For running the tests against an existing instance of Eclipse or JBDS use the following command
 
