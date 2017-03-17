@@ -1,19 +1,13 @@
 package org.jboss.tools.fuse.reddeer;
 
-public enum ProjectTemplate {
+import java.util.Arrays;
+import java.util.List;
 
-	CBR("Content Based Router"),
-	AMQ("ActiveMQ"),
-	CXF("CXF code first"),
-	EAP("Spring on EAP");
+public class ProjectTemplate {
 
-	private String name;
+	public static List<String> CBR = Arrays.asList("JBoss Fuse", "Beginner", "Content Based Router");
+	public static List<String> AMQ = Arrays.asList("JBoss Fuse", "Beginner", "ActiveMQ");
+	public static List<String> CXF = Arrays.asList("JBoss Fuse", "Advanced", "CXF code first");
+	public static List<String> EAP = Arrays.asList("Fuse on EAP", "Medium", "Spring on EAP");
 
-	private ProjectTemplate(String name) {
-		this.name = name;
-	}
-
-	public String getName() {
-		return name;
-	}
 }

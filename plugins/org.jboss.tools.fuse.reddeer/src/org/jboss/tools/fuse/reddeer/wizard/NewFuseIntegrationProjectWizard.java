@@ -177,7 +177,7 @@ public class NewFuseIntegrationProjectWizard extends NewWizardDialog {
 		List<String> templates = new ArrayList<String>();
 		new RadioButton("Use a predefined template").toggle(true);
 		for (TreeItem item : new DefaultTree().getAllItems()) {
-			if (item.getItems().size() == 0) {
+			if (item.getItems().isEmpty()) {
 				templates.add(item.getText());
 			}
 		}

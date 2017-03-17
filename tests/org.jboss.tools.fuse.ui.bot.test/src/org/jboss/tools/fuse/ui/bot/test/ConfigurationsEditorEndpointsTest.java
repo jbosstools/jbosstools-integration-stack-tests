@@ -22,6 +22,7 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.common.reddeer.XPathEvaluator;
+import org.jboss.tools.fuse.reddeer.ProjectTemplate;
 import org.jboss.tools.fuse.reddeer.ProjectType;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.editor.CamelEndpointDialog;
@@ -113,7 +114,7 @@ public class ConfigurationsEditorEndpointsTest extends DefaultTest {
 	public static Collection<String> setupData() {
 		
 		new WorkbenchShell();
-		ProjectFactory.newProject(PROJECT_NAME).version("2.17.0.redhat-630077").template("Content Based Router").type(ProjectType.SPRING).create();		
+		ProjectFactory.newProject(PROJECT_NAME).version("2.17.0.redhat-630077").template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();		
 		for (IViewReference viewReference : WorkbenchPartLookup.getInstance().findAllViewReferences()) {
 			if (viewReference.getPartName().equals("Welcome")) {
 				final IViewReference iViewReference = viewReference;
@@ -148,7 +149,7 @@ public class ConfigurationsEditorEndpointsTest extends DefaultTest {
 	@BeforeClass
 	public static void setupResetCamelContext() {
 		
-		ProjectFactory.newProject(PROJECT_NAME).version("2.17.0.redhat-630077").template("Content Based Router").type(ProjectType.SPRING).create();
+		ProjectFactory.newProject(PROJECT_NAME).version("2.17.0.redhat-630077").template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();
 	}
 	
 	@Before

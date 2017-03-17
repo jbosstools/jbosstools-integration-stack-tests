@@ -24,7 +24,6 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.tools.fuse.reddeer.ProjectTemplate;
 import org.jboss.tools.fuse.reddeer.ProjectType;
 import org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard;
 
@@ -38,6 +37,7 @@ public class ProjectFactory {
 	private String name;
 	private String version;
 	private String template;
+	private List<String> templatePath;
 	private ProjectType type;
 
 	private ProjectFactory(String name) {
@@ -48,14 +48,19 @@ public class ProjectFactory {
 		this.version = version;
 		return this;
 	}
-
-	public ProjectFactory template(ProjectTemplate template) {
-		this.template = template.getName();
-		return this;
-	}
-
+	
+	/**
+	 * @param template
+	 * @return You should use a full path to the Template for performance reason.
+	 */
+	@Deprecated
 	public ProjectFactory template(String template) {
 		this.template = template;
+		return this;
+	}
+	
+	public ProjectFactory template(List<String> templatePath) {
+		this.templatePath = templatePath;
 		return this;
 	}
 
@@ -73,7 +78,9 @@ public class ProjectFactory {
 			wiz.selectCamelVersion(version);
 		}
 		wiz.next();
-		if (template != null) {
+		if(templatePath != null) {
+			wiz.selectTemplate(templatePath.toArray(new String[templatePath.size()]));
+		} else if (template != null) {
 			wiz.selectTemplate(template);
 		}
 		wiz.setProjectType(type);
