@@ -1,7 +1,9 @@
 package org.jboss.tools.switchyard.ui.bot.test;
 
+import static org.hamcrest.Matchers.isOneOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -788,8 +790,9 @@ public class SwitchYardEditorImplementationsTest {
 		assertEquals("org.switchyard.component.common.knowledge.service.SwitchYardServiceChannel",
 				editor.xpath(xpath + "/channels/channel/@class"));
 		assertEquals("1", editor.xpath("count(" + xpath + "/listeners)"));
-		assertEquals("org.drools.core.management.KieSessionMonitoringImpl$AgendaStats",
-				editor.xpath(xpath + "/listeners/listener/@class"));
+		assertThat(editor.xpath(xpath + "/listeners/listener/@class"),
+				isOneOf("org.drools.core.management.KieSessionMonitoringImpl$AgendaStats",
+						"org.drools.core.management.GenericKieSessionMonitoringImpl$AgendaStats"));
 		assertEquals("1", editor.xpath("count(" + xpath + "/loggers)"));
 		assertEquals("CONSOLE", editor.xpath(xpath + "/loggers/logger/@type"));
 		assertEquals("1", editor.xpath("count(" + xpath + "/properties)"));
