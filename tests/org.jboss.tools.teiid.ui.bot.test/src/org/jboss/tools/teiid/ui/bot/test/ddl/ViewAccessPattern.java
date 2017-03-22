@@ -14,17 +14,12 @@ import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.teiid.reddeer.DdlHelper;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
-import org.jboss.tools.teiid.reddeer.dialog.GenerateVdbArchiveDialog;
 import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.TableEditor;
-import org.jboss.tools.teiid.reddeer.editor.VdbEditor;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
-import org.jboss.tools.teiid.reddeer.wizard.imports.DDLTeiidImportWizard;
-import org.jboss.tools.teiid.reddeer.wizard.imports.ImportFromFileSystemWizard;
-import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -46,9 +41,8 @@ public class ViewAccessPattern {
 	public ErrorCollector collector = new ErrorCollector();
 	public DdlHelper ddlHelper = null;
 	
-	private static final String PROJECT_NAME = "ViewAccessPattern";
-	private static final String NAME_SOURCE_MODEL = "viewAccessPatternSource";
-	private static final String NAME_VIEW_MODEL = "viewAccessPatternView";
+	private static final String PROJECT_NAME = "ViewAccessPattern";	
+	private static final String NAME_VIEW_MODEL = "viewAccessPattern";
 	private static final String NAME_VDB = "viewAccessPatternVdb";
 	private static final String NAME_ORIGINAL_DYNAMIC_VDB = "viewAccessPatternVdb-vdb.xml";
 	
@@ -63,10 +57,7 @@ public class ViewAccessPattern {
 
 		ddlHelper = new DdlHelper(collector);
 		
-		explorer.importProject("DDLtests/"+PROJECT_NAME);
-		explorer.changeConnectionProfile(ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER, PROJECT_NAME, NAME_SOURCE_MODEL);
-		/* data source is needed when exported VDB will be tested to deploy on the server */
-		explorer.createDataSource("Use Connection Profile Info",ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER, PROJECT_NAME, NAME_SOURCE_MODEL);
+		explorer.importProject("DDLtests/"+PROJECT_NAME);		
 		explorer.createProject(WORK_PROJECT_NAME);
 	}
 	
@@ -76,41 +67,16 @@ public class ViewAccessPattern {
 	}
 	
 	@Test
-	public void importDdl(){
-		DDLTeiidImportWizard.openWizard()
-				.setPath("resources/projects/DDLtests/"+PROJECT_NAME+"/"+ NAME_VIEW_MODEL +".ddl")
-				.setFolder(WORK_PROJECT_NAME)
-				.setName(NAME_VIEW_MODEL)
-				.setModelType(DDLTeiidImportWizard.View_Type)
-				.generateValidDefaultSQL(true)
-				.nextPage()
-				.finish();
+	public void importDdlTest(){
+		ddlHelper.importDdlFromView(PROJECT_NAME, NAME_VIEW_MODEL, WORK_PROJECT_NAME);		
 		checkImportedModel();
 	}
 
 	@Test
-	public void importVdb(){
-		ImportFromFileSystemWizard.openWizard()
-				.setPath("resources/projects/DDLtests/"+PROJECT_NAME)
-				.setFolder(WORK_PROJECT_NAME)
-				.selectFile(NAME_ORIGINAL_DYNAMIC_VDB)
-				.setCreteTopLevelFolder(false)
-				.finish();
-		GenerateVdbArchiveDialog wizard = new ModelExplorer().generateVdbArchive(WORK_PROJECT_NAME, NAME_ORIGINAL_DYNAMIC_VDB);
-		wizard.next()
-				.generate()
-				.finish();
-		checkImportedModel();
-		
-		/*all models must be opened before synchronize VDB*/
-		new ModelExplorer().openModelEditor(WORK_PROJECT_NAME,NAME_SOURCE_MODEL+".xmi");
-		new ModelExplorer().openModelEditor(WORK_PROJECT_NAME,NAME_VDB+".vdb");
-		VdbEditor staticVdb = VdbEditor.getInstance(NAME_VDB);
-		staticVdb.synchronizeAll();
-		staticVdb.saveAndClose();
-		/*test deploy generated VDB from dynamic VDB*/
-		String status = ddlHelper.deploy(WORK_PROJECT_NAME, NAME_VDB, teiidServer);
-		collector.checkThat("vdb is not active", status, containsString("ACTIVE"));
+	public void importVdbTest(){
+		ddlHelper.importVdb(PROJECT_NAME, NAME_ORIGINAL_DYNAMIC_VDB, WORK_PROJECT_NAME);		
+		checkImportedModel();		
+		ddlHelper.checkDeploy(null, NAME_VIEW_MODEL, WORK_PROJECT_NAME, NAME_VDB, teiidServer);		
 	}
 	
 	
@@ -121,17 +87,18 @@ public class ViewAccessPattern {
 
 		// check access pattern
 		tableEditor.openTab(TableEditor.Tabs.ACCESS_PATTERNS);
-	    collector.checkThat("column not referenced in access pattern", tableEditor.getCellText(0,"viewTable", "Name"),
-	    		is("NAME"));
-	    collector.checkThat("column not referenced in access pattern", tableEditor.getCellText(0,"viewTable", "Columns"),
-	    		is("SUPPLIER_NAME : string(30)"));
+	    collector.checkThat("Name of view Access Pattern is missing", tableEditor.getCellText(0,"viewTable", "Name"),
+	    		is("viewAP"));
+	    collector.checkThat("Name in source of view Access Pattern is missing", tableEditor.getCellText(0,"viewTable", "Name In Source"),
+	    		is("viewAPsource"));
+	    collector.checkThat("Columns of view Access Pattern are bad set", tableEditor.getCellText(0,"viewTable", "Columns"),
+	    		is("col1 : string(4000)"));
+	    collector.checkThat("Description of view Access Pattern is missing", tableEditor.getCellText(0,"viewTable", "Description"),
+	    		is("view AP description"));
 		
 		ProblemsView problemsView = new ProblemsView();
 		collector.checkThat("Errors in imported view model",
 				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(NAME_VIEW_MODEL + ".xmi")),
-				empty());
-		collector.checkThat("Errors in imported source model",
-				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(NAME_SOURCE_MODEL + ".xmi")),
 				empty());
 		collector.checkThat("Errors in imported VDB",
 				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(NAME_VDB + ".vdb")),
@@ -139,13 +106,8 @@ public class ViewAccessPattern {
 	}
 	
 	@Test
-	public void exportVdb(){
-		VdbWizard.openVdbWizard()
-				.setName(NAME_VDB)
-				.setLocation(PROJECT_NAME)
-				.addModel(PROJECT_NAME, NAME_SOURCE_MODEL)
-				.addModel(PROJECT_NAME, NAME_VIEW_MODEL)
-				.finish();
+	public void exportVdbTest(){
+		ddlHelper.createStaticVdb(NAME_VDB, PROJECT_NAME, NAME_VIEW_MODEL);		
 		String dynamicVdbContent = ddlHelper.createDynamicVdb(PROJECT_NAME, NAME_VDB, NAME_GENERATED_DYNAMIC_VDB);
 		checkExportedFile(dynamicVdbContent);
 
@@ -155,14 +117,14 @@ public class ViewAccessPattern {
 	}
 	
 	@Test
-	public void exportDdl(){
+	public void exportDdlTest(){
 		String ddlContent = ddlHelper.exportDDL(PROJECT_NAME, NAME_VIEW_MODEL, WORK_PROJECT_NAME);
 		checkExportedFile(ddlContent);
 	}
 	
 	private void checkExportedFile(String contentFile){
 		collector.checkThat("access pattern is not in ddl", contentFile, new StringContains(
-				"CONSTRAINT NAME ACCESSPATTERN(SUPPLIER_NAME)"));
+				"CONSTRAINT viewAP ACCESSPATTERN(col1)"));
 	}
 }
 

@@ -8,11 +8,11 @@ import org.hamcrest.core.StringContains;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsResourceMatcher;
-import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.tools.common.reddeer.JiraClient;
 import org.jboss.tools.teiid.reddeer.DdlHelper;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
@@ -34,7 +34,7 @@ import org.junit.runner.RunWith;
 @TeiidServer(state = ServerReqState.RUNNING, connectionProfiles={
 		ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER,
 })
-public class SourceTableSettings {
+public class SourceProcedureSettings {
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;
 	
@@ -42,12 +42,12 @@ public class SourceTableSettings {
 	public ErrorCollector collector = new ErrorCollector();
 	public DdlHelper ddlHelper = null;
 	
-	private static final String PROJECT_NAME = "SourceTableSettings";
-	private static final String NAME_SOURCE_MODEL = "TableSettingsSourceModel";
-	private static final String NAME_VDB = "TableSettingsVDB";
+	private static final String PROJECT_NAME = "SourceProcedureSettings";
+	private static final String NAME_SOURCE_MODEL = "SourceProcedureSettings";
+	private static final String NAME_VDB = "SourceProcedureSettingsVDB";
 	private static final String NAME_ORIGINAL_DYNAMIC_VDB = NAME_VDB + "-vdb.xml";
 	
-	private static final String NAME_GENERATED_DYNAMIC_VDB = "TableSettingsVDBgenerated-vdb.xml";
+	private static final String NAME_GENERATED_DYNAMIC_VDB = "SourceProcedureSettingsVDBgenerated-vdb.xml";
 	
 	private static final String WORK_PROJECT_NAME = "workProject" ;
 	
@@ -85,31 +85,33 @@ public class SourceTableSettings {
 	
 	
 	private void checkImportedModel(){
-		new ModelExplorer().selectItem(WORK_PROJECT_NAME, NAME_SOURCE_MODEL + ".xmi", "myTable");
-
-		PropertiesView propertiesView = new PropertiesView();
-		collector.checkThat("Wrong cardinality for Table",
-				propertiesView.getProperty("Misc", "Cardinality").getPropertyValue(), is("120"));
-		collector.checkThat("Materialized is false(should be true)",
-				propertiesView.getProperty("Misc", "Materialized").getPropertyValue(), is("true"));		
-		collector.checkThat("Materialized table is not set correctly",
-				propertiesView.getProperty("Misc", "Materialized Table").getPropertyValue(), new StringContains("helpTable"));		
-		collector.checkThat("Table name in source is badly set",
-				propertiesView.getProperty("Misc", "Name In Source").getPropertyValue(), is("myTableSource"));
-		collector.checkThat("Supports Update is badly set",
-				propertiesView.getProperty("Misc", "Supports Update").getPropertyValue(), is("true"));
-		
 		RelationalModelEditor editor = new RelationalModelEditor(NAME_SOURCE_MODEL + ".xmi");
 		editor.close();
-		new ModelExplorer().openModelEditor(WORK_PROJECT_NAME, NAME_SOURCE_MODEL + ".xmi");	
+		new ModelExplorer().openModelEditor(WORK_PROJECT_NAME, NAME_SOURCE_MODEL + ".xmi");
 		editor = new RelationalModelEditor(NAME_SOURCE_MODEL + ".xmi");
 	    TableEditor tableEditor = editor.openTableEditor();
+		tableEditor.openTab(TableEditor.Tabs.PROCEDURES);
 	    
-		// check table description
-		tableEditor.openTab(TableEditor.Tabs.BASE_TABLES);
-		collector.checkThat("Description is not set correctly", tableEditor.getCellText(1,"myTable", "Description"),
-	    		is("This is Table description"));
+	    collector.checkThat("Procedure name in source is badly set", tableEditor.getCellText(1,"myProcedure", "Name In Source"),
+	    		is("myProcedureSource"));
+	    if (new JiraClient().isIssueClosed("TEIIDDES-2985")){
+	    	collector.checkThat("Update count is badly set",tableEditor.getCellText(1,"myProcedure", "Update Count"),
+	    			is("ONE"));
+	    }
+	    collector.checkThat("Table description is missing", tableEditor.getCellText(1,"myProcedure", "Description"),
+	    		is("procedure description"));
 
+		tableEditor.openTab(TableEditor.Tabs.PROCEDURE_RESULTS);
+		collector.checkThat("Procedure result is set wrongly", tableEditor.getCellText(0,"myProcedure", "Name"),
+	    		is("myProcedure"));
+	    
+		tableEditor.openTab(TableEditor.Tabs.PROCEDURE_PARAMETERS);
+		collector.checkThat("Procedure parameter direction is set wrongly", tableEditor.getCellText(0,"myProcedure", "Direction"),
+	    		is("IN"));
+		collector.checkThat("Procedure parameter datatype is set wrongly", tableEditor.getCellText(0,"myProcedure", "Datatype"),
+	    		is("string"));
+		collector.checkThat("Procedure parameter length is set wrongly", tableEditor.getCellText(0,"myProcedure", "Length"),
+	    		is("4000"));
 		
 		ProblemsView problemsView = new ProblemsView();
 		collector.checkThat("Errors in imported source model",
@@ -138,12 +140,12 @@ public class SourceTableSettings {
 	}
 	
 	private void checkExportedFile(String contentFile){
-		collector.checkThat("missing name in source for table", contentFile, new StringContains("NAMEINSOURCE 'myTableSource'"));
-		collector.checkThat("missing materialized checkbox on true", contentFile, new StringContains("MATERIALIZED 'TRUE'"));
-		collector.checkThat("missing updatable on true", contentFile, new StringContains("UPDATABLE 'TRUE'"));
-		collector.checkThat("missing cardinality", contentFile, new StringContains("CARDINALITY '120'"));
-		collector.checkThat("missing materialized table", contentFile, new StringContains("MATERIALIZED_TABLE 'TableSettingsSourceModel.helpTable'"));
-		collector.checkThat("missing table description", contentFile, new StringContains("ANNOTATION 'This is Table description'"));		
+		collector.checkThat("missing CREATE FOREIGN PROCEDURE", contentFile, new StringContains("CREATE FOREIGN PROCEDURE"));
+		collector.checkThat("missing RESULT", contentFile.replaceAll("\\t|\\n|\\r", ""),
+				new StringContains("RETURNSTABLE (newColumn_1 string(4000),newColumn_2 string(4000))"));
+		collector.checkThat("missing IN newParameter_1 string(4000)", contentFile, new StringContains("IN newParameter_1 string(4000)"));
+		collector.checkThat("missing UPDATECOUNT 'myProcedureSource'", contentFile, new StringContains("UPDATECOUNT '1'"));
+		collector.checkThat("missing ANNOTATION 'Procedure description'", contentFile, new StringContains("ANNOTATION 'procedure description'"));
+		collector.checkThat("missing NAMEINSOURCE 'myProcedureSource'", contentFile, new StringContains("NAMEINSOURCE 'myProcedureSource'"));		
 	}
 }
-

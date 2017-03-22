@@ -46,6 +46,7 @@ public class TableEditor extends DefaultEditor {
 		public static final String PROCEDURE_RESULTS = "Procedure Results";
 		public static final String UNIQUE_CONSTRAINTS = "Unique Constraints";
 		public static final String ACCESS_PATTERNS = "Access Patterns";
+		public static final String INDEXES = "Indexes";
 	}
 	
 	public TableEditor(String name){

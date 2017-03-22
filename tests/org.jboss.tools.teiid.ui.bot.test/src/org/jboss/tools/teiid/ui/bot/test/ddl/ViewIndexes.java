@@ -32,9 +32,9 @@ import org.junit.runner.RunWith;
 @OpenPerspective(TeiidPerspective.class)
 
 @TeiidServer(state = ServerReqState.RUNNING, connectionProfiles={
-		ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER,
+		ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER,
 })
-public class ViewRestProcedure {
+public class ViewIndexes {
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;
 	
@@ -42,13 +42,12 @@ public class ViewRestProcedure {
 	public ErrorCollector collector = new ErrorCollector();
 	public DdlHelper ddlHelper = null;
 	
-	private static final String PROJECT_NAME = "ViewRestProcedure";
-	private static final String NAME_SOURCE_MODEL = "viewRestProcedureSource";
-	private static final String NAME_VIEW_MODEL = "viewRestProcedureView";
-	private static final String NAME_VDB = "viewRestProcedureVDB";
+	private static final String PROJECT_NAME = "ViewIndexes";
+	private static final String NAME_VIEW_MODEL = "ViewIndexes";
+	private static final String NAME_VDB = "ViewIndexesVDB";
 	private static final String NAME_ORIGINAL_DYNAMIC_VDB = NAME_VDB + "-vdb.xml";
 	
-	private static final String NAME_GENERATED_DYNAMIC_VDB = "ViewProcedureSettingsVDBgenerated-vdb.xml";
+	private static final String NAME_GENERATED_DYNAMIC_VDB = "ViewIndexesVDBgenerated-vdb.xml";
 	
 	private static final String WORK_PROJECT_NAME = "workProject" ;
 	
@@ -60,9 +59,6 @@ public class ViewRestProcedure {
 		ddlHelper = new DdlHelper(collector);
 		
 		explorer.importProject("DDLtests/"+PROJECT_NAME);
-		explorer.changeConnectionProfile(ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER, PROJECT_NAME, NAME_SOURCE_MODEL);
-		/* data source is needed when exported VDB will be tested to deploy on the server */
-		explorer.createDataSource("Use Connection Profile Info",ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER, PROJECT_NAME, NAME_SOURCE_MODEL);
 		explorer.createProject(WORK_PROJECT_NAME);
 	}
 	
@@ -73,38 +69,57 @@ public class ViewRestProcedure {
 	
 	@Test
 	public void importDdlTest(){
-		if (new JiraClient().isIssueClosed("TEIIDTOOLS-30")){
-			ddlHelper.importDdlFromView(PROJECT_NAME, NAME_VIEW_MODEL, WORK_PROJECT_NAME);			
-			checkImportedModel();
-		}
+		ddlHelper.importDdlFromView(PROJECT_NAME, NAME_VIEW_MODEL, WORK_PROJECT_NAME);
+		checkImportedModel();
 	}
 
 	@Test
 	public void importVdbTest(){
-		if (new JiraClient().isIssueClosed("TEIIDTOOLS-30")){
-			ddlHelper.importVdb(PROJECT_NAME, NAME_ORIGINAL_DYNAMIC_VDB, WORK_PROJECT_NAME);			
-			checkImportedModel();
-			ddlHelper.checkDeploy(NAME_SOURCE_MODEL, null, WORK_PROJECT_NAME, NAME_VDB, teiidServer);			
-		}
+		ddlHelper.importVdb(PROJECT_NAME, NAME_ORIGINAL_DYNAMIC_VDB, WORK_PROJECT_NAME);		
+		checkImportedModel();
+		ddlHelper.checkDeploy(null, NAME_VIEW_MODEL, WORK_PROJECT_NAME, NAME_VDB, teiidServer);		
 	}
 	
+	
 	private void checkImportedModel(){
-		RelationalModelEditor editor = new RelationalModelEditor(NAME_SOURCE_MODEL + ".xmi");
-		editor.close();
-		new ModelExplorer().openModelEditor(WORK_PROJECT_NAME, NAME_VIEW_MODEL + ".xmi");
-		editor = new RelationalModelEditor(NAME_VIEW_MODEL + ".xmi");
-	    TableEditor tableEditor = editor.openTableEditor();
-		tableEditor.openTab(TableEditor.Tabs.PROCEDURES);
-	    
-	    collector.checkThat("Procedure method is not set to get", tableEditor.getCellText(1,"getProcedure", "REST:Rest Method"),
-	    		is("GET"));
-	    collector.checkThat("Get procedure URI is badly set",tableEditor.getCellText(1,"myProcedure", "REST:URI"),
-	    		is("product/{instr_id}"));
-	    
-	    collector.checkThat("Procedure method is not set to post", tableEditor.getCellText(1,"addProduct", "REST:Rest Method"),
-	    		is("POST"));
-	    collector.checkThat("Post procedure URI is badly set",tableEditor.getCellText(1,"getProduct", "REST:URI"),
-	    		is("product/"));
+		new ModelExplorer().openModelEditor(WORK_PROJECT_NAME, NAME_VIEW_MODEL + ".xmi");	
+		RelationalModelEditor editor = new RelationalModelEditor(NAME_VIEW_MODEL + ".xmi");
+		TableEditor tableEditor = editor.openTableEditor();
+				
+		tableEditor.openTab(TableEditor.Tabs.INDEXES);
+		
+		if (new JiraClient().isIssueClosed("TEIIDDES-3024")){
+			collector.checkThat("Index1 name in source is badly set", tableEditor.getCellText(1,"Index1", "Name In Source"),
+					is("Index1Source"));
+			collector.checkThat("Index2 name in source is badly set", tableEditor.getCellText(1,"Index2", "Name In Source"),
+					is("Index2Source"));
+			
+			collector.checkThat("Index1 Nullable checkbox is badly set", tableEditor.getCellText(1,"Index1", "Nullable"),
+		    		is("true")); 
+			collector.checkThat("Index2 Nullable checkbox is badly set", tableEditor.getCellText(1,"Index2", "Nullable"),
+		    		is("true")); 
+			
+			collector.checkThat("Index1 AutoUpdate checkbox is badly set", tableEditor.getCellText(1,"Index1", "Auto Update"),
+		    		is("true")); 
+			collector.checkThat("Index2 AutoUpdate checkbox is badly set", tableEditor.getCellText(1,"Index2", "Auto Update"),
+		    		is("true")); 
+			
+			collector.checkThat("Index1 Unique checkbox is badly set", tableEditor.getCellText(1,"Index1", "Unique"),
+		    		is("true")); 
+			collector.checkThat("Index2 Unique checkbox is badly set", tableEditor.getCellText(1,"Index2", "Unique"),
+		    		is("true")); 
+		}
+		collector.checkThat("Column of Foreign key 1 is badly set", tableEditor.getCellText(1,"Index1", "Columns"),
+				is("column1 : string(4000)")); 
+		collector.checkThat("Column of Foreign key 2 is badly set", tableEditor.getCellText(1,"Index2", "Columns"),
+				is("column2 : string(4000)")); 
+		
+		collector.checkThat("Index1 description is badly set", tableEditor.getCellText(1,"Index1", "Description"),
+				is("Index 1 description")); 
+		collector.checkThat("Index2 description is badly set", tableEditor.getCellText(1,"Index2", "Description"),
+				is("Index 2 description")); 
+		
+		
 		
 		ProblemsView problemsView = new ProblemsView();
 		collector.checkThat("Errors in imported view model",
@@ -112,7 +127,7 @@ public class ViewRestProcedure {
 				empty());
 		collector.checkThat("Errors in imported VDB",
 				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(NAME_VDB + ".vdb")),
-				empty());
+				empty());		
 	}
 	
 	@Test
@@ -133,9 +148,10 @@ public class ViewRestProcedure {
 	}
 	
 	private void checkExportedFile(String contentFile){
-		collector.checkThat("missing REST:URI in options in getProduct", contentFile, new StringContains("\"REST:URI\" 'product/{instr_id}'"));
-		collector.checkThat("missing REST:METHOD in options in getProduct", contentFile, new StringContains("\"REST:METHOD\" 'GET'"));
-		collector.checkThat("missing REST:URI in options in addProduct", contentFile, new StringContains("\"REST:URI\" 'product/'"));
-		collector.checkThat("missing REST:METHOD in options in addProduct", contentFile, new StringContains("\"REST:METHOD\" 'POST'"));	
+		collector.checkThat("Wrong set index 1", contentFile,
+				new StringContains("CONSTRAINT Index1 INDEX(column1) OPTIONS(ANNOTATION 'Index 1 description')"));
+		collector.checkThat("Wrong set Index 2", contentFile,
+				new StringContains("CONSTRAINT Index2 INDEX(column2) OPTIONS(ANNOTATION 'Index 2 description')"));
+		
 	}
 }
