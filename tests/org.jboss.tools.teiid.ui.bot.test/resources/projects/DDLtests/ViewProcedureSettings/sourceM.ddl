@@ -1,0 +1,6 @@
+
+
+CREATE FOREIGN TABLE myTable (
+	c1 string(4000)
+) OPTIONS(NAMEINSOURCE 'myTableSource', UPDATABLE 'TRUE');
+

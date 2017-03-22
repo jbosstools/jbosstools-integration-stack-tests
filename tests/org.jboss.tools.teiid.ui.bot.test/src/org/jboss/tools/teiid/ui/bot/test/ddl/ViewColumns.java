@@ -14,17 +14,12 @@ import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.teiid.reddeer.DdlHelper;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
-import org.jboss.tools.teiid.reddeer.dialog.GenerateVdbArchiveDialog;
 import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.TableEditor;
-import org.jboss.tools.teiid.reddeer.editor.VdbEditor;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
-import org.jboss.tools.teiid.reddeer.wizard.imports.DDLTeiidImportWizard;
-import org.jboss.tools.teiid.reddeer.wizard.imports.ImportFromFileSystemWizard;
-import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -76,40 +71,18 @@ public class ViewColumns {
 	}
 	
 	@Test
-	public void importDdl(){
-		DDLTeiidImportWizard.openWizard()
-				.setPath("resources/projects/DDLtests/"+PROJECT_NAME+"/"+ NAME_VIEW_MODEL +".ddl")
-				.setFolder(WORK_PROJECT_NAME)
-				.setName(NAME_VIEW_MODEL)
-				.setModelType(DDLTeiidImportWizard.View_Type)
-				.nextPage()
-				.finish();
+	public void importDdlTest(){
+		//Procedure need source model
+		ddlHelper.importDdlFromSource(PROJECT_NAME, NAME_SOURCE_MODEL, WORK_PROJECT_NAME);
+		ddlHelper.importDdlFromView(PROJECT_NAME, NAME_VIEW_MODEL, WORK_PROJECT_NAME);		
 		checkImportedModel();
 	}
 
 	@Test
-	public void importVdb(){
-		ImportFromFileSystemWizard.openWizard()
-				.setPath("resources/projects/DDLtests/"+PROJECT_NAME)
-				.setFolder(WORK_PROJECT_NAME)
-				.selectFile(NAME_ORIGINAL_DYNAMIC_VDB)
-				.setCreteTopLevelFolder(false)
-				.finish();
-		GenerateVdbArchiveDialog wizard = new ModelExplorer().generateVdbArchive(WORK_PROJECT_NAME, NAME_ORIGINAL_DYNAMIC_VDB);
-		wizard.next()
-				.generate()
-				.finish();
+	public void importVdbTest(){
+		ddlHelper.importVdb(PROJECT_NAME, NAME_ORIGINAL_DYNAMIC_VDB, WORK_PROJECT_NAME);		
 		checkImportedModel();
-		
-		/*all models must be opened before synchronize VDB*/
-		new ModelExplorer().openModelEditor(WORK_PROJECT_NAME,NAME_SOURCE_MODEL+".xmi");
-		new ModelExplorer().openModelEditor(WORK_PROJECT_NAME,NAME_VDB+".vdb");
-		VdbEditor staticVdb = VdbEditor.getInstance(NAME_VDB);
-		staticVdb.synchronizeAll();
-		staticVdb.saveAndClose();
-		/*test deploy generated VDB from dynamic VDB*/
-		String status = ddlHelper.deploy(WORK_PROJECT_NAME, NAME_VDB, teiidServer);
-		collector.checkThat("vdb is not active", status, containsString("ACTIVE"));
+		ddlHelper.checkDeploy(NAME_SOURCE_MODEL, NAME_VIEW_MODEL, WORK_PROJECT_NAME, NAME_VDB, teiidServer);		
 	}
 	
 	
@@ -189,19 +162,17 @@ public class ViewColumns {
 		collector.checkThat("Errors in imported source model",
 				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(NAME_SOURCE_MODEL + ".xmi")),
 				empty());
+		collector.checkThat("Errors in imported view model",
+				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(NAME_VIEW_MODEL + ".xmi")),
+				empty());
 		collector.checkThat("Errors in imported VDB",
 				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(NAME_VDB + ".vdb")),
 				empty());		
 	}
 	
 	@Test
-	public void exportVdb(){
-		VdbWizard.openVdbWizard()
-				.setName(NAME_VDB)
-				.setLocation(PROJECT_NAME)
-				.addModel(PROJECT_NAME, NAME_SOURCE_MODEL)		
-				.addModel(PROJECT_NAME, NAME_VIEW_MODEL)
-				.finish();
+	public void exportVdbTest(){
+		ddlHelper.createStaticVdb(NAME_VDB, PROJECT_NAME, NAME_VIEW_MODEL);		
 		String contentFile = ddlHelper.createDynamicVdb(PROJECT_NAME, NAME_VDB, NAME_GENERATED_DYNAMIC_VDB);
 		checkExportedFile(contentFile);
 
@@ -211,7 +182,7 @@ public class ViewColumns {
 	}
 	
 	@Test
-	public void exportDdl(){
+	public void exportDdlTest(){
 		String ddlContent = ddlHelper.exportDDL(PROJECT_NAME, NAME_VIEW_MODEL, WORK_PROJECT_NAME);
 		checkExportedFile(ddlContent);
 	}

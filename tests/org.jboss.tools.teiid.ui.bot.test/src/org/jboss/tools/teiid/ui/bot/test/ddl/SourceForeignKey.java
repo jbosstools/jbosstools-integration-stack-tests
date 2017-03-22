@@ -12,7 +12,6 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.tools.common.reddeer.JiraClient;
 import org.jboss.tools.teiid.reddeer.DdlHelper;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
@@ -32,9 +31,9 @@ import org.junit.runner.RunWith;
 @OpenPerspective(TeiidPerspective.class)
 
 @TeiidServer(state = ServerReqState.RUNNING, connectionProfiles={
-		ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER,
+		ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER,
 })
-public class ViewRestProcedure {
+public class SourceForeignKey {
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;
 	
@@ -42,13 +41,12 @@ public class ViewRestProcedure {
 	public ErrorCollector collector = new ErrorCollector();
 	public DdlHelper ddlHelper = null;
 	
-	private static final String PROJECT_NAME = "ViewRestProcedure";
-	private static final String NAME_SOURCE_MODEL = "viewRestProcedureSource";
-	private static final String NAME_VIEW_MODEL = "viewRestProcedureView";
-	private static final String NAME_VDB = "viewRestProcedureVDB";
+	private static final String PROJECT_NAME = "SourceForeignKey";
+	private static final String NAME_SOURCE_MODEL = "SourceForeignKey";
+	private static final String NAME_VDB = "SourceForeignKeyVDB";
 	private static final String NAME_ORIGINAL_DYNAMIC_VDB = NAME_VDB + "-vdb.xml";
 	
-	private static final String NAME_GENERATED_DYNAMIC_VDB = "ViewProcedureSettingsVDBgenerated-vdb.xml";
+	private static final String NAME_GENERATED_DYNAMIC_VDB = "SourceForeignKeyVDBgenerated-vdb.xml";
 	
 	private static final String WORK_PROJECT_NAME = "workProject" ;
 	
@@ -60,9 +58,9 @@ public class ViewRestProcedure {
 		ddlHelper = new DdlHelper(collector);
 		
 		explorer.importProject("DDLtests/"+PROJECT_NAME);
-		explorer.changeConnectionProfile(ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER, PROJECT_NAME, NAME_SOURCE_MODEL);
+		explorer.changeConnectionProfile(ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER, PROJECT_NAME, NAME_SOURCE_MODEL);
 		/* data source is needed when exported VDB will be tested to deploy on the server */
-		explorer.createDataSource("Use Connection Profile Info",ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER, PROJECT_NAME, NAME_SOURCE_MODEL);
+		explorer.createDataSource("Use Connection Profile Info",ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER, PROJECT_NAME, NAME_SOURCE_MODEL);
 		explorer.createProject(WORK_PROJECT_NAME);
 	}
 	
@@ -73,51 +71,54 @@ public class ViewRestProcedure {
 	
 	@Test
 	public void importDdlTest(){
-		if (new JiraClient().isIssueClosed("TEIIDTOOLS-30")){
-			ddlHelper.importDdlFromView(PROJECT_NAME, NAME_VIEW_MODEL, WORK_PROJECT_NAME);			
-			checkImportedModel();
-		}
+		ddlHelper.importDdlFromSource(PROJECT_NAME, NAME_SOURCE_MODEL, WORK_PROJECT_NAME);
+		checkImportedModel();
 	}
 
 	@Test
 	public void importVdbTest(){
-		if (new JiraClient().isIssueClosed("TEIIDTOOLS-30")){
-			ddlHelper.importVdb(PROJECT_NAME, NAME_ORIGINAL_DYNAMIC_VDB, WORK_PROJECT_NAME);			
-			checkImportedModel();
-			ddlHelper.checkDeploy(NAME_SOURCE_MODEL, null, WORK_PROJECT_NAME, NAME_VDB, teiidServer);			
-		}
+		ddlHelper.importVdb(PROJECT_NAME, NAME_ORIGINAL_DYNAMIC_VDB, WORK_PROJECT_NAME);
+		checkImportedModel();
+		ddlHelper.checkDeploy(NAME_SOURCE_MODEL, null, WORK_PROJECT_NAME, NAME_VDB, teiidServer);		
 	}
+	
 	
 	private void checkImportedModel(){
 		RelationalModelEditor editor = new RelationalModelEditor(NAME_SOURCE_MODEL + ".xmi");
 		editor.close();
-		new ModelExplorer().openModelEditor(WORK_PROJECT_NAME, NAME_VIEW_MODEL + ".xmi");
-		editor = new RelationalModelEditor(NAME_VIEW_MODEL + ".xmi");
-	    TableEditor tableEditor = editor.openTableEditor();
-		tableEditor.openTab(TableEditor.Tabs.PROCEDURES);
-	    
-	    collector.checkThat("Procedure method is not set to get", tableEditor.getCellText(1,"getProcedure", "REST:Rest Method"),
-	    		is("GET"));
-	    collector.checkThat("Get procedure URI is badly set",tableEditor.getCellText(1,"myProcedure", "REST:URI"),
-	    		is("product/{instr_id}"));
-	    
-	    collector.checkThat("Procedure method is not set to post", tableEditor.getCellText(1,"addProduct", "REST:Rest Method"),
-	    		is("POST"));
-	    collector.checkThat("Post procedure URI is badly set",tableEditor.getCellText(1,"getProduct", "REST:URI"),
-	    		is("product/"));
+		new ModelExplorer().openModelEditor(WORK_PROJECT_NAME, NAME_SOURCE_MODEL + ".xmi");	
+		editor = new RelationalModelEditor(NAME_SOURCE_MODEL + ".xmi");
+		TableEditor tableEditor = editor.openTableEditor();
+				
+		tableEditor.openTab(TableEditor.Tabs.FOREIGN_KEYS);
+		
+		collector.checkThat("Foreign key 1 name in source is badly set", tableEditor.getCellText(1,"ForeignKey1", "Name In Source"),
+				is("ForeignKey1Source"));
+		collector.checkThat("Foreign key 2 name in source is badly set", tableEditor.getCellText(1,"ForeignKey2", "Name In Source"),
+				is("ForeignKey2Source"));
+		
+		collector.checkThat("Column of Foreign key 1 is badly set", tableEditor.getCellText(1,"ForeignKey1", "Columns"),
+				is("fk_Column1 : string(4000)")); 
+		collector.checkThat("Column of Foreign key 2 is badly set", tableEditor.getCellText(1,"ForeignKey2", "Columns"),
+				is("fk_Column2 : string(4000)")); 
+		
+		collector.checkThat("Unique Key of Foreign key 1 is badly set", tableEditor.getCellText(1,"ForeignKey1", "Unique Key"),
+				containsString("PrimaryKey")); 
+		collector.checkThat("Unique Key of Foreign key 2 is badly set", tableEditor.getCellText(1,"ForeignKey2", "Unique Key"),
+				containsString("UniqueConstraint")); 
 		
 		ProblemsView problemsView = new ProblemsView();
-		collector.checkThat("Errors in imported view model",
-				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(NAME_VIEW_MODEL + ".xmi")),
+		collector.checkThat("Errors in imported source model",
+				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(NAME_SOURCE_MODEL + ".xmi")),
 				empty());
 		collector.checkThat("Errors in imported VDB",
 				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(NAME_VDB + ".vdb")),
-				empty());
+				empty());		
 	}
 	
 	@Test
 	public void exportVdbTest(){
-		ddlHelper.createStaticVdb(NAME_VDB, PROJECT_NAME, NAME_VIEW_MODEL);		
+		ddlHelper.createStaticVdb(NAME_VDB, PROJECT_NAME, NAME_SOURCE_MODEL);		
 		String contentFile = ddlHelper.createDynamicVdb(PROJECT_NAME, NAME_VDB, NAME_GENERATED_DYNAMIC_VDB);
 		checkExportedFile(contentFile);
 
@@ -128,14 +129,15 @@ public class ViewRestProcedure {
 	
 	@Test
 	public void exportDdlTest(){
-		String ddlContent = ddlHelper.exportDDL(PROJECT_NAME, NAME_VIEW_MODEL, WORK_PROJECT_NAME);
+		String ddlContent = ddlHelper.exportDDL(PROJECT_NAME, NAME_SOURCE_MODEL, WORK_PROJECT_NAME);
 		checkExportedFile(ddlContent);
 	}
 	
 	private void checkExportedFile(String contentFile){
-		collector.checkThat("missing REST:URI in options in getProduct", contentFile, new StringContains("\"REST:URI\" 'product/{instr_id}'"));
-		collector.checkThat("missing REST:METHOD in options in getProduct", contentFile, new StringContains("\"REST:METHOD\" 'GET'"));
-		collector.checkThat("missing REST:URI in options in addProduct", contentFile, new StringContains("\"REST:URI\" 'product/'"));
-		collector.checkThat("missing REST:METHOD in options in addProduct", contentFile, new StringContains("\"REST:METHOD\" 'POST'"));	
+		collector.checkThat("Wrong set foreign key 1", contentFile,
+				new StringContains("CONSTRAINT ForeignKey1 FOREIGN KEY(fk_Column1) REFERENCES helpTable(Column1)"));
+		collector.checkThat("Wrong set foreign key 2", contentFile,
+				new StringContains("CONSTRAINT ForeignKey2 FOREIGN KEY(fk_Column2) REFERENCES helpTable(Column2)"));
+		
 	}
 }

@@ -19,14 +19,12 @@ import org.jboss.tools.teiid.reddeer.DdlHelper;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.dialog.DataRolesDialog;
 import org.jboss.tools.teiid.reddeer.dialog.DataRolesDialog.PermissionType;
-import org.jboss.tools.teiid.reddeer.dialog.GenerateVdbArchiveDialog;
+import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.VdbEditor;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
-import org.jboss.tools.teiid.reddeer.wizard.imports.ImportFromFileSystemWizard;
-import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -79,17 +77,8 @@ public class StaticVDBdataRoles {
 	}
 
 	@Test
-	public void importVdb(){
-		ImportFromFileSystemWizard.openWizard()
-				.setPath("resources/projects/DDLtests/"+PROJECT_NAME)
-				.setFolder(WORK_PROJECT_NAME)
-				.selectFile(NAME_ORIGINAL_DYNAMIC_VDB)
-				.setCreteTopLevelFolder(false)
-				.finish();
-		GenerateVdbArchiveDialog wizard = new ModelExplorer().generateVdbArchive(WORK_PROJECT_NAME, NAME_ORIGINAL_DYNAMIC_VDB);
-		wizard.next()
-				.generate()
-				.finish();		
+	public void importVdbTest(){
+		ddlHelper.importVdb(PROJECT_NAME, NAME_ORIGINAL_DYNAMIC_VDB, WORK_PROJECT_NAME);
 		
 		checkVDB();
 		
@@ -107,7 +96,9 @@ public class StaticVDBdataRoles {
 	}
 	
 	
-	private void checkVDB(){		
+	private void checkVDB(){	
+		RelationalModelEditor editor = new RelationalModelEditor(NAME_SOURCE_MODEL + ".xmi");
+		editor.close();
 		new ModelExplorer().openModelEditor(WORK_PROJECT_NAME, NAME_VDB + ".vdb");
 		VdbEditor vdbEditor = VdbEditor.getInstance(NAME_VDB);
 
@@ -204,12 +195,8 @@ public class StaticVDBdataRoles {
 	}
 	
 	@Test
-	public void exportVdb(){		
-		VdbWizard.openVdbWizard()
-				.setName(NAME_VDB)
-				.setLocation(PROJECT_NAME)
-				.addModel(PROJECT_NAME, NAME_VIEW_MODEL)				
-				.finish();
+	public void exportVdbTest(){	
+		ddlHelper.createStaticVdb(NAME_VDB, PROJECT_NAME, NAME_VIEW_MODEL);
 
 		new ModelExplorer().openModelEditor(PROJECT_NAME, NAME_VDB + ".vdb");		
 		VdbEditor vdbEditor = VdbEditor.getInstance(NAME_VDB);
@@ -261,14 +248,6 @@ public class StaticVDBdataRoles {
 		/*test deploy generated dynamic VDB from static VDB*/
 		String status = ddlHelper.deploy(PROJECT_NAME, NAME_GENERATED_DYNAMIC_VDB, teiidServer); 		
 		collector.checkThat("vdb is not active", status, is("ACTIVE"));
-		
-		ProblemsView problemsView = new ProblemsView();
-		collector.checkThat("Errors in imported source model",
-				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(NAME_SOURCE_MODEL + ".xmi")),
-				empty());
-		collector.checkThat("Errors in imported VDB",
-				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(NAME_VDB + ".vdb")),
-				empty());	
 	}
 	
 	private void checkExportedFile(String dynamicVdbContent){

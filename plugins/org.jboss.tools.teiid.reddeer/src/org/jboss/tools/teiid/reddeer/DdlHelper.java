@@ -1,5 +1,6 @@
 package org.jboss.tools.teiid.reddeer;
 
+import static org.hamcrest.core.StringContains.containsString;
 import static org.hamcrest.core.Is.is;
 
 import java.io.StringReader;
@@ -9,11 +10,17 @@ import javax.xml.xpath.XPathFactory;
 
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.dialog.GenerateDynamicVdbDialog;
+import org.jboss.tools.teiid.reddeer.dialog.GenerateVdbArchiveDialog;
+import org.jboss.tools.teiid.reddeer.editor.VdbEditor;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.exports.DDLTeiidExportWizard;
+import org.jboss.tools.teiid.reddeer.wizard.imports.DDLTeiidImportWizard;
+import org.jboss.tools.teiid.reddeer.wizard.imports.ImportFromFileSystemWizard;
+import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
 import org.junit.Rule;
 import org.junit.rules.ErrorCollector;
 import org.xml.sax.InputSource;
@@ -86,6 +93,65 @@ public class DdlHelper {
 			ex.printStackTrace();
 		}
 	}
-
 	
+	public void importDdlFromSource(String projectName, String sourceModelName, String workProjectName){
+		DDLTeiidImportWizard.openWizard()
+				.setPath("resources/projects/DDLtests/"+projectName+"/"+ sourceModelName +".ddl")
+				.setFolder(workProjectName)
+				.setName(sourceModelName)				
+				.setModelType(DDLTeiidImportWizard.Source_Type)
+				.nextPage()
+				.finish();
+	}
+	
+	public void importDdlFromView(String projectName, String viewModelName, String workProjectName){
+		DDLTeiidImportWizard.openWizard()
+				.setPath("resources/projects/DDLtests/"+projectName+"/"+ viewModelName +".ddl")
+				.setFolder(workProjectName)
+				.setName(viewModelName)
+				.setModelType(DDLTeiidImportWizard.View_Type)
+				.generateValidDefaultSQL(true)
+				.nextPage()
+				.finish();
+	}
+
+	public void importVdb(String projectName, String originalDynamicVDB, String workProjectName){
+		ImportFromFileSystemWizard.openWizard()
+				.setPath("resources/projects/DDLtests/"+projectName)
+				.setFolder(workProjectName)
+				.selectFile(originalDynamicVDB)
+				.setCreteTopLevelFolder(false)
+				.finish();
+		GenerateVdbArchiveDialog wizard = new ModelExplorer().generateVdbArchive(workProjectName, originalDynamicVDB);
+		wizard.next()
+				.generate()
+				.finish();
+		}
+	
+	public void checkDeploy(String sourceModelName, String viewModelName, String workProjectName, String vdbName,TeiidServerRequirement teiidServer){
+		/*all models must be opened before synchronize VDB*/
+		if(viewModelName != null){
+			new ModelExplorer().openModelEditor(workProjectName,viewModelName+".xmi");
+		}
+		if(sourceModelName != null){
+			new ModelExplorer().openModelEditor(workProjectName,sourceModelName+".xmi");
+			new ModelExplorer().changeConnectionProfile(ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER, workProjectName, sourceModelName);
+		}
+		new ModelExplorer().openModelEditor(workProjectName,vdbName+".vdb");
+		
+		VdbEditor staticVdb = VdbEditor.getInstance(vdbName);
+		staticVdb.synchronizeAll();
+		staticVdb.saveAndClose();
+		/*test deploy generated VDB from dynamic VDB*/
+		String status = deploy(workProjectName, vdbName, teiidServer);
+		collector.checkThat("vdb is not active", status, containsString("ACTIVE"));
+	}
+	
+	public void createStaticVdb(String vdbName, String projectName, String modelName){
+		VdbWizard.openVdbWizard()
+				.setName(vdbName)
+				.setLocation(projectName)
+				.addModel(projectName, modelName)				
+				.finish();		
+	}	
 }

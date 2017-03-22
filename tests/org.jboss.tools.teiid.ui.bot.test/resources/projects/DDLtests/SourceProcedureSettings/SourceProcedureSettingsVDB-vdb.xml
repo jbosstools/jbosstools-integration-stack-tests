@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<vdb name="SourceProcedureSettingsVDB" version="1">
+<description/>
+<property name="validationDateTime" value="Wed Mar 01 15:43:19 CET 2017"/>
+<property name="validationVersion" value="8.12.8"/>
+<model name="SourceProcedureSettings">
+<source connection-jndi-name="SourceProcedureSettings" name="SourceProcedureSettings" translator-name="oracle"/>
+<metadata type="DDL"><![CDATA[
+CREATE FOREIGN PROCEDURE myProcedure (
+	IN newParameter_1 string(4000)
+) RETURNS
+	TABLE (
+		newColumn_1 string(4000),
+		newColumn_2 string(4000)
+) OPTIONS(ANNOTATION 'procedure description', NAMEINSOURCE 'myProcedureSource', "NON-PREPARED" 'TRUE', UPDATECOUNT '1');
+
+]]></metadata>
+</model>
+</vdb>
