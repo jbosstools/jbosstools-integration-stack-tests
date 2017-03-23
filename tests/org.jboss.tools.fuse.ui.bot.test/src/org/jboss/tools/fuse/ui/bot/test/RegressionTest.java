@@ -1,6 +1,8 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
 import static org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType.ERROR;
+import static org.jboss.tools.fuse.reddeer.ProjectTemplate.CBR;
+import static org.jboss.tools.fuse.reddeer.ProjectType.SPRING;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
@@ -57,8 +59,8 @@ import org.jboss.tools.fuse.reddeer.ProjectType;
 import org.jboss.tools.fuse.reddeer.SupportedVersions;
 import org.jboss.tools.fuse.reddeer.component.ConvertBodyTo;
 import org.jboss.tools.fuse.reddeer.component.Log;
-import org.jboss.tools.fuse.reddeer.component.Timer;
 import org.jboss.tools.fuse.reddeer.component.Route;
+import org.jboss.tools.fuse.reddeer.component.Timer;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
@@ -89,6 +91,7 @@ public class RegressionTest extends DefaultTest {
 	public void setupClean() {
 
 		ProjectFactory.deleteAllProjects();
+		new ErrorLogView().deleteLog();
 	}
 
 	/**
@@ -185,7 +188,7 @@ public class RegressionTest extends DefaultTest {
 	public void issue_1115() {
 
 		ProjectFactory.newProject("camel-spring").template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();
-		new CamelProject("camel-spring").runCamelContext("camel-context.xml");
+		new CamelProject("camel-spring").runCamelContextWithoutTests("camel-context.xml");
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		new FuseJMXNavigator().getNode("Local Camel Context", "Camel", "cbr-example-context").select();
 
@@ -251,12 +254,12 @@ public class RegressionTest extends DefaultTest {
 	@Test
 	public void issue_1158() {
 
-		ProjectFactory.newProject("camel-spring").template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();
+		ProjectFactory.newProject("camel-spring").template(CBR).type(SPRING).create();
 		CamelProject project = new CamelProject("camel-spring");
 		project.openCamelContext("camel-context.xml");
 		CamelEditor editor = new CamelEditor("camel-context.xml");
 		editor.activate();
-		editor.setBreakpoint("Choice");
+		editor.setBreakpoint("Log _log1");
 		editor.selectEditPart("file:work/cbr/input");
 		editor.setProperty("Uri *", "file:src/main/data?noop=true");
 		editor.save();
@@ -417,8 +420,7 @@ public class RegressionTest extends DefaultTest {
 	@Test
 	public void issue_1694() {
 
-		ProjectFactory.newProject("cbr-spring").version(SupportedVersions.CAMEL_2_17_3).template(ProjectTemplate.CBR)
-				.type(ProjectType.SPRING).create();
+		ProjectFactory.newProject("cbr-spring").template(CBR).type(SPRING).create();
 		CamelEditor editor = new CamelEditor("camel-context.xml");
 		editor.addCamelComponent(new ConvertBodyTo(), "Route cbr-route");
 		ProblemsView problems = new ProblemsView();
