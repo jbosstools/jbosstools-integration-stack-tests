@@ -24,6 +24,7 @@ import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.wizard.CamelXmlFileWizard;
@@ -145,8 +146,24 @@ public class CamelProject {
 		new ProjectExplorer().open();
 		project.getProjectItem("src/main/resources", "META-INF", "spring", name).select();
 		new ContextMenu("Debug As", "3 Local Camel Context (without tests)").select();
+		closeSecureStorage();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		closePerspectiveSwitchWindow();
+	}
+
+	/**
+	 * Tries to close 'Secure Storage' dialog window
+	 */
+	private static void closeSecureStorage() {
+		try {
+			new WaitUntil(new ShellWithTextIsAvailable("Secure Storage"), TimePeriod.NORMAL);
+		} catch (RuntimeException ex1) {
+			return;
+		}
+		new DefaultShell("Secure Storage");
+		new LabeledText("Password:").setText("admin");
+		new OkButton().click();
+		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 
 	public CamelProject(Project project) {
