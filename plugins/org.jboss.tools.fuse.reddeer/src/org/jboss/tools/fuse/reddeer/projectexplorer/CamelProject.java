@@ -8,6 +8,7 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -15,6 +16,7 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.exception.CoreLayerException;
+import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
@@ -156,11 +158,11 @@ public class CamelProject {
 	 */
 	private static void closeSecureStorage() {
 		try {
-			new WaitUntil(new ShellWithTextIsAvailable("Secure Storage"), TimePeriod.NORMAL);
+			new WaitUntil(new ShellWithTextIsAvailable(new WithTextMatcher(new RegexMatcher("Secure Storage.*"))), TimePeriod.NORMAL);
 		} catch (RuntimeException ex1) {
 			return;
 		}
-		new DefaultShell("Secure Storage");
+		new DefaultShell(new WithTextMatcher(new RegexMatcher("Secure Storage.*")));
 		new LabeledText("Password:").setText("admin");
 		new OkButton().click();
 		AbstractWait.sleep(TimePeriod.SHORT);
