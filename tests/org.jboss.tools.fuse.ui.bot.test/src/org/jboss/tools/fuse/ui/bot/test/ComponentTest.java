@@ -1,5 +1,7 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
+import static org.jboss.tools.fuse.reddeer.ProjectType.SPRING;
+import static org.jboss.tools.fuse.reddeer.SupportedVersions.CAMEL_2_17_0_REDHAT_630187;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -19,7 +21,6 @@ import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.common.reddeer.LogGrapper;
 import org.jboss.tools.common.reddeer.view.ErrorLogView;
-import org.jboss.tools.fuse.reddeer.ProjectType;
 import org.jboss.tools.fuse.reddeer.component.CamelComponent;
 import org.jboss.tools.fuse.reddeer.component.CamelComponents;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
@@ -67,7 +68,7 @@ public class ComponentTest extends DefaultTest {
 	public static void setupResetCamelContext() {
 
 		new WorkbenchShell();
-		ProjectFactory.newProject("camel-spring").type(ProjectType.SPRING).create();
+		ProjectFactory.newProject("camel-spring").type(SPRING).version(CAMEL_2_17_0_REDHAT_630187).create();
 		new ErrorLogView().deleteLog();
 	}
 
@@ -114,7 +115,7 @@ public class ComponentTest extends DefaultTest {
 			editor.addCamelComponent(component, "Route _route1");
 			editor.deleteCamelComponent(component);
 		} catch (Exception e) {
-			fail("There is a problem with this component!");
+			fail("There is a problem with this component - " + component.getLabel());
 		}
 		assertTrue(LogGrapper.getPluginErrors("fuse").size() == 0);
 	}
