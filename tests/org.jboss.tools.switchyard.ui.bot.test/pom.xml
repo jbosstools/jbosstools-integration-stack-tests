@@ -65,12 +65,12 @@
 							<artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
 							<version>0.0.0</version>
 						</dependency>
-						<!-- WS fature -->
-						<dependency>
+						<!-- WS fature (disabled due to JBTIS-1069) -->
+						<!--dependency>
 							<type>p2-installable-unit</type>
 							<artifactId>org.jboss.tools.ws.feature.feature.group</artifactId>
 							<version>0.0.0</version>
-						</dependency>
+						</dependency-->
 						<!-- This entry should enable creating of default JDK on Mac -->
 						<dependency>
 							<type>p2-installable-unit</type>
