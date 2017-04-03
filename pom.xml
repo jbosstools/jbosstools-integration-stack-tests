@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.jboss.tools</groupId>
 		<artifactId>parent</artifactId>
-		<version>4.4.2.Final-SNAPSHOT</version>
+		<version>4.4.4.AM1-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools</groupId>
 	<artifactId>integration-stack-tests</artifactId>
@@ -13,10 +13,9 @@
 	<packaging>pom</packaging>
 	<properties>
 		<tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-integration-stack-tests.git</tycho.scmUrl>
+		<jbosstools.url>http://download.jboss.org/jbosstools</jbosstools.url>
 		<jbtis.tp.version>4.4.3.CR1-SNAPSHOT</jbtis.tp.version>
 		<jbtis.repo>staging</jbtis.repo>
-		<jbtis.site>http://download.jboss.org/jbosstools/neon/${jbtis.repo}/updates/integration-stack/</jbtis.site>
-		<jbtis-ea.site>${jbtis.site}/earlyaccess/</jbtis-ea.site>
 		<reddeer.site>http://download.jboss.org/jbosstools/neon/stable/updates/reddeer/1.2.0/</reddeer.site>
 		<orbit.site>http://download.eclipse.org/tools/orbit/downloads/drops/R20160520211859/repository/</orbit.site>
 		<swtbot.site>http://download.eclipse.org/technology/swtbot/releases/latest</swtbot.site>
@@ -35,7 +34,7 @@
 		<!--JBTIS Repository-->
 		<repository>
 			<id>jbtis-44-staging</id>
-			<url>http://download.jboss.org/jbosstools/neon/staging/updates/integration-stack/</url>
+			<url>${jbosstools.url}/neon/staging/updates/integration-stack/</url>
 			<layout>p2</layout>
 			<snapshots>
 				<enabled>true</enabled>
@@ -47,7 +46,7 @@
 		<!-- JBTIS Repository (early access) -->
 		<repository>
 			<id>jbtis-44-staging-ea</id>
-			<url>http://download.jboss.org/jbosstools/neon/staging/updates/integration-stack/earlyaccess</url>
+			<url>${jbosstools.url}/neon/staging/updates/integration-stack/earlyaccess</url>
 			<layout>p2</layout>
 			<snapshots>
 				<enabled>true</enabled>
@@ -145,12 +144,12 @@
 			<repositories>
 				<repository>
 					<id>fuse-9.2.0.CI</id>
-					<url>http://download.jboss.org/jbosstools/neon/integration/updates/integration-stack/fuse-tooling/9.2.0.CI/</url>
+					<url>${jbosstools.url}/neon/integration/updates/integration-stack/fuse-tooling/9.2.0.CI/</url>
 					<layout>p2</layout>
 				</repository>
 				<repository>
 					<id>switchyard-2.4.0.CI</id>
-					<url>http://download.jboss.org/jbosstools/neon/integration/updates/integration-stack/switchyard/2.4.0.CI/</url>
+					<url>${jbosstools.url}/neon/integration/updates/integration-stack/switchyard/2.4.0.CI/</url>
 					<layout>p2</layout>
 				</repository>
 			</repositories>
