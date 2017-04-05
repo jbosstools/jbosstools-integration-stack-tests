@@ -21,6 +21,7 @@ import org.jboss.tools.fuse.reddeer.view.FuseJMXNavigator;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -114,6 +115,7 @@ public class JMXNavigatorTest extends DefaultTest {
 	 * </ol>
 	 */
 	@Test
+	@Ignore
 	public void testContextOperations() {
 
 		FuseJMXNavigator jmx = new FuseJMXNavigator();
