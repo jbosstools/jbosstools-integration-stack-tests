@@ -79,9 +79,13 @@ public class JBossRuntimeDetection extends PreferencePage {
 	public void open() {
 		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
 		dialog.open();
-		dialog.select(this);
+		try {
+			dialog.select(this);
+		} catch (Exception e) {
+			dialog.select(getPath()[1]);
+		}
 	}
-
+	 
 	public void ok() {
 		String title = new DefaultShell().getText();
 		new OkButton().click();
