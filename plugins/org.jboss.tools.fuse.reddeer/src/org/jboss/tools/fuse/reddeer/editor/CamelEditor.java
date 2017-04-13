@@ -38,7 +38,6 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.widgets.Widget;
 import org.jboss.tools.common.reddeer.MouseAWTManager;
 import org.jboss.tools.common.reddeer.XPathEvaluator;
-import org.jboss.tools.common.reddeer.ext.PropertiesViewExt;
 import org.jboss.tools.common.reddeer.widget.LabeledCComboExt;
 import org.jboss.tools.common.reddeer.widget.LabeledComboExt;
 import org.jboss.tools.common.reddeer.widget.LabeledTextExt;
@@ -470,7 +469,7 @@ public class CamelEditor extends GEFEditor {
 	public void setProperty(String component, String name, String value) {
 
 		log.debug("Setting '" + value + "' as the property '" + name + "' of selelected component in the Camel Editor");
-		PropertiesViewExt properties = new PropertiesViewExt();
+		PropertiesView properties = new PropertiesView();
 		properties.open();
 		selectEditPart(component);
 		properties.activate();

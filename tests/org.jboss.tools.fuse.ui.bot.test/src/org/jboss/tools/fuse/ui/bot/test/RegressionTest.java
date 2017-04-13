@@ -30,6 +30,7 @@ import org.jboss.reddeer.eclipse.debug.core.IsSuspended;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.junit.execution.annotation.RunIf;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
@@ -50,7 +51,6 @@ import org.jboss.tools.common.reddeer.LogGrapper;
 import org.jboss.tools.common.reddeer.ResourceHelper;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
-import org.jboss.tools.common.reddeer.ext.PropertiesViewExt;
 import org.jboss.tools.common.reddeer.view.ErrorLogView;
 import org.jboss.tools.common.reddeer.view.ProblemsViewExt;
 import org.jboss.tools.common.reddeer.widget.LabeledTextExt;
@@ -490,7 +490,7 @@ public class RegressionTest extends DefaultTest {
 		} catch (Exception e) {
 			fail("Camel Editor was not opened after double-click on a problem in Problems view!");
 		}
-		PropertiesViewExt properties = new PropertiesViewExt();
+		PropertiesView properties = new PropertiesView();
 		properties.activate();
 		try {
 			properties.selectTab("Details");
