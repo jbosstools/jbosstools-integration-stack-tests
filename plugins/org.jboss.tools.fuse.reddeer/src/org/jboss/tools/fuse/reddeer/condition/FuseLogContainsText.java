@@ -1,7 +1,7 @@
 package org.jboss.tools.fuse.reddeer.condition;
 
 import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.tools.runtime.reddeer.view.TerminalView;
+import org.jboss.tools.runtime.reddeer.utils.FuseShellSSH;
 
 /**
  * Checks whether Fuse server's log contains specified text
@@ -20,7 +20,7 @@ public class FuseLogContainsText extends AbstractWaitCondition {
 	@Override
 	public boolean test() {
 
-		return new TerminalView().execute("log:display").contains(text);
+		return new FuseShellSSH().execute("log:display").contains(text);
 	}
 
 	@Override

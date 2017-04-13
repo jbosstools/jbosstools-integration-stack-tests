@@ -19,6 +19,5 @@ Export-Package: org.jboss.tools.runtime.reddeer,
  org.jboss.tools.runtime.reddeer.preference,
  org.jboss.tools.runtime.reddeer.requirement,
  org.jboss.tools.runtime.reddeer.utils,
- org.jboss.tools.runtime.reddeer.view,
  org.jboss.tools.runtime.reddeer.wizard
 Eclipse-BundleShape: dir

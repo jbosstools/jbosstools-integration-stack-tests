@@ -28,7 +28,6 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.runtime.reddeer.preference.FuseServerRuntimePreferencePage;
-import org.jboss.tools.runtime.reddeer.view.TerminalView;
 import org.jboss.tools.runtime.reddeer.wizard.FuseModifyModulesPage;
 import org.jboss.tools.runtime.reddeer.wizard.FuseServerWizard;
 
@@ -170,7 +169,7 @@ public class FuseServerManipulator {
 	public static void stopServer(String name) {
 
 		try {
-			new TerminalView().execute("log:clear");
+			new FuseShellSSH().execute("log:clear");
 			ServersView serversView = new ServersView();
 			serversView.open();
 			Server server = serversView.getServer(name);
