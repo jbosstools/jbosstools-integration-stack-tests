@@ -12,13 +12,7 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<karaf.url>http://archive.apache.org/dist/karaf/3.0.3/apache-karaf-3.0.3.zip</karaf.url>
-		<karaf.path>${project.build.directory}/requirements/apache-karaf-3.0.3</karaf.path>
-		<karaf.name>Apache Karaf 3.0</karaf.name>
-		<karaf.hostname>localhost</karaf.hostname>
-		<karaf.port>8101</karaf.port>
-		<karaf.username>karaf</karaf.username>
-		<karaf.password>karaf</karaf.password>
+		<karaf.version>3.0.3</karaf.version>
 		<rd.config>${project.build.directory}/requirements/karaf-3.0.3.xml</rd.config>
 		<reddeerConfig>-Drd.config=${rd.config}</reddeerConfig>
 		<enable.debug.log>false</enable.debug.log>
@@ -73,7 +67,7 @@
 							<goal>wget</goal>
 						</goals>
 						<configuration>
-							<url>${karaf.url}</url>
+							<url>http://archive.apache.org/dist/karaf/${karaf.version}/apache-karaf-${karaf.version}.zip</url>
 							<unpack>true</unpack>
 							<outputDirectory>${project.build.directory}/requirements</outputDirectory>
 						</configuration>

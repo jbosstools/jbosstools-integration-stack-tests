@@ -7,11 +7,11 @@
 	<requirements>
 		<server:server-requirement name="${karaf.name}">
 			<server:karaf version="3.0">
-				<server:home>${karaf.path}</server:home>
-				<server:host>${karaf.hostname}</server:host>
-				<server:port>${karaf.port}</server:port>
-				<server:username>${karaf.username}</server:username>
-				<server:password>${karaf.password}</server:password>
+				<server:home>${project.build.directory}/requirements/apache-karaf-3.0.3</server:home>
+				<server:host>localhost</server:host>
+				<server:port>8101</server:port>
+				<server:username>karaf</server:username>
+				<server:password>karaf</server:password>
 			</server:karaf>
 		</server:server-requirement>
 	</requirements>
