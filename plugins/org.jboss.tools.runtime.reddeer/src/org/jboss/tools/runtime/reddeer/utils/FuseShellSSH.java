@@ -1,26 +1,22 @@
-package org.jboss.tools.runtime.reddeer.view;
+package org.jboss.tools.runtime.reddeer.utils;
 
 import java.io.IOException;
 
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
-import org.jboss.tools.runtime.reddeer.utils.ShellManager;
 
 import com.jcraft.jsch.JSchException;
 
 /**
- * Performs operations with the <i>Fuse Shell</i> in <i>Terminal</i> view. Command execution is performed via SSH (not
+ * Performs operations with the <i>Fuse Shell</i>. Command execution is performed via SSH (not
  * via JBoss Fuse Tooling).
  * 
  * @author tsedmik
  */
-public class TerminalView extends WorkbenchView {
+public class FuseShellSSH {
 
-	public TerminalView() {
-		super("Terminal", "Terminal");
-	}
+	private static Logger log = Logger.getLogger(FuseShellSSH.class);
 
 	/**
 	 * Types a given command into the Fuse Shell
@@ -44,24 +40,6 @@ public class TerminalView extends WorkbenchView {
 		}
 
 		return null;
-	}
-
-	/**
-	 * Tries to connect to the Fuse shell
-	 */
-	public void connect() {
-
-		AbstractWait.sleep(TimePeriod.getCustom(2));
-		new DefaultToolItem("Connect").click();
-		AbstractWait.sleep(TimePeriod.getCustom(2));
-	}
-
-	/**
-	 * Creates a new Local Fabric
-	 */
-	public void createFabric() {
-
-		execute("fabric:create");
 	}
 
 	/**

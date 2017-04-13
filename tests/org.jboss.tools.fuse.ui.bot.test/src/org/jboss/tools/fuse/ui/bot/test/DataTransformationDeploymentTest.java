@@ -23,7 +23,7 @@ import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.runtime.reddeer.utils.FuseServerManipulator;
-import org.jboss.tools.runtime.reddeer.view.TerminalView;
+import org.jboss.tools.runtime.reddeer.utils.FuseShellSSH;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -99,7 +99,7 @@ public class DataTransformationDeploymentTest extends DefaultTest {
 			new WaitUntil(new FuseLogContainsText(
 					"{\"custId\":\"ACME-123\",\"priority\":\"GOLD\",\"orderId\":\"[ORDER1]\",\"origin\":\"web\",\"approvalCode\":\"AUTO_OK\",\"lineItems\":[{\"itemId\":\"PICKLE\",\"amount\":1000,\"cost\":2.25},{\"itemId\":\"BANANA\",\"amount\":400,\"cost\":1.25}]}"));
 		} catch (WaitTimeoutExpiredException e) {
-			fail("Transformation is broken! \n\n" + new TerminalView().execute("log:display"));
+			fail("Transformation is broken! \n\n" + new FuseShellSSH().execute("log:display"));
 		}
 	}
 }

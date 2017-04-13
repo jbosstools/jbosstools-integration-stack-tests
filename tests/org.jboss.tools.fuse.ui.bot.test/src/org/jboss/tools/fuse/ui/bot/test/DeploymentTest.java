@@ -19,7 +19,7 @@ import org.jboss.tools.runtime.reddeer.impl.ServerFuse;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.runtime.reddeer.utils.FuseServerManipulator;
-import org.jboss.tools.runtime.reddeer.view.TerminalView;
+import org.jboss.tools.runtime.reddeer.utils.FuseShellSSH;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -91,9 +91,9 @@ public class DeploymentTest extends DefaultTest {
 		assertTrue(FuseServerManipulator.hasServerModule(serverRequirement.getConfig().getName(), PROJECT_NAME));
 		FuseServerManipulator.startServer(serverRequirement.getConfig().getName());
 		FuseServerManipulator.publish(serverRequirement.getConfig().getName());
-		assertTrue("The project was not properly deployed!", new TerminalView().containsLog(PROJECT_IS_DEPLOYED));
+		assertTrue("The project was not properly deployed!", new FuseShellSSH().containsLog(PROJECT_IS_DEPLOYED));
 		FuseServerManipulator.removeAllModules(serverRequirement.getConfig().getName());
 		AbstractWait.sleep(TimePeriod.getCustom(30));
-		assertTrue("The project was not properly undeployed!", new TerminalView().containsLog(PROJECT_IS_UNDEPLOYED));
+		assertTrue("The project was not properly undeployed!", new FuseShellSSH().containsLog(PROJECT_IS_UNDEPLOYED));
 	}
 }
