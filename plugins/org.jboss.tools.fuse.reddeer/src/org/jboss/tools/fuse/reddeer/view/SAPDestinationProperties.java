@@ -2,7 +2,7 @@ package org.jboss.tools.fuse.reddeer.view;
 
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.swt.api.Text;
-import org.jboss.tools.common.reddeer.widget.CLabeledText;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 /**
  * 
@@ -22,27 +22,27 @@ public class SAPDestinationProperties extends PropertiesView {
 	}
 
 	public Text getSAPApplicationServerText() {
-		return new CLabeledText("SAP Application Server:");
+		return new LabeledText("SAP Application Server:");
 	}
 
 	public Text getSAPSystemNumberText() {
-		return new CLabeledText("SAP System Number:");
+		return new LabeledText("SAP System Number:");
 	}
 
 	public Text getSAPClientText() {
-		return new CLabeledText("SAP Client:");
+		return new LabeledText("SAP Client:");
 	}
 
 	public Text getLogonUserText() {
-		return new CLabeledText("Logon User:");
+		return new LabeledText("Logon User:");
 	}
 
 	public Text getLogonPasswordText() {
-		return new CLabeledText("Logon Password:");
+		return new LabeledText("Logon Password:");
 	}
 
 	public Text getLogonLanguageText() {
-		return new CLabeledText("Logon Language:");
+		return new LabeledText("Logon Language:");
 	}
 
 }

@@ -2,7 +2,7 @@ package org.jboss.tools.fuse.reddeer.view;
 
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.swt.api.Text;
-import org.jboss.tools.common.reddeer.widget.CLabeledText;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 /**
  * 
@@ -27,23 +27,23 @@ public class SAPServerProperties extends PropertiesView {
 	}
 
 	public Text getGatewayHostText() {
-		return new CLabeledText("Gateway Host:");
+		return new LabeledText("Gateway Host:");
 	}
 
 	public Text getGatewayPortText() {
-		return new CLabeledText("Gateway Port:");
+		return new LabeledText("Gateway Port:");
 	}
 
 	public Text getProgramIDText() {
-		return new CLabeledText("Program ID:");
+		return new LabeledText("Program ID:");
 	}
 
 	public Text getRepositoryDestinationText() {
-		return new CLabeledText("Repository Destination:");
+		return new LabeledText("Repository Destination:");
 	}
 
 	public Text getConnectionCountText() {
-		return new CLabeledText("Connection Count:");
+		return new LabeledText("Connection Count:");
 	}
 
 }
