@@ -20,7 +20,7 @@
 		<orbit.site>http://download.eclipse.org/tools/orbit/downloads/drops/R20160520211859/repository/</orbit.site>
 		<swtbot.site>http://download.eclipse.org/technology/swtbot/releases/latest</swtbot.site>
 		<fuse.site>${jbosstools.url}/neon/integration/updates/integration-stack/fuse-tooling/9.2.0.CI/</fuse.site>
-		<switchyard.site>${jbosstools.url}/neon/integration/updates/integration-stack/switchyard/2.4.0.CI/</switchyard.site>
+		<switchyard.site>${jbosstools.url}/neon/integration/updates/integration-stack/switchyard/2.3.1.CI/</switchyard.site>
 		<skipRequirements>${skipTests}</skipRequirements>
 		<!-- Need to specify a stable version of tycho plugin -->
 		<jbossTychoPluginsVersion>0.26.0</jbossTychoPluginsVersion>
