@@ -25,15 +25,6 @@
 		<rd.skipUnfixedIssues>true</rd.skipUnfixedIssues>
 	</properties>
 
-	<repositories>
-	  <!-- https://issues.jboss.org/browse/JBIDE-24298 -->
-	  <repository>
-		<id>tychoM2E</id>
-		<layout>p2</layout>
-		<url>http://download.jboss.org/jbosstools/updates/requirements/m2eclipse-tycho/0.9.0.201609061714/</url>
-	  </repository>
-	</repositories>
-
 	<build>
 		<plugins>
 

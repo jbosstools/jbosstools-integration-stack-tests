@@ -20,6 +20,14 @@
 		<killServers>false</killServers>
 		<test.installPath.OSX/>
 	</properties>
+	<repositories>
+		<!-- https://issues.jboss.org/browse/JBIDE-24298 -->
+		<repository>
+			<id>tychoM2E</id>
+			<layout>p2</layout>
+			<url>http://download.jboss.org/jbosstools/updates/requirements/m2eclipse-tycho/0.9.0.201609061714/</url>
+		</repository>
+	</repositories>
 	<modules>
 		<module>org.jboss.tools.runtime.ui.bot.test</module>
 		<module>org.jboss.tools.bpel.ui.bot.test</module>
