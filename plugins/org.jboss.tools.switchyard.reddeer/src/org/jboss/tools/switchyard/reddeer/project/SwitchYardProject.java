@@ -186,6 +186,15 @@ public class SwitchYardProject extends Project {
 		new ContextMenu("Properties").select();
 		return new ProjectProperties();
 	}
+	
+	public void build() {
+		select();
+		Menu menu = new ShellMenu("Project", "Build Project");
+		if (menu.isEnabled()) {
+			menu.select();
+		}
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+	}
 
 	public void build() {
 		if (PreferencesUtil.isAutoBuildingOn()) {
