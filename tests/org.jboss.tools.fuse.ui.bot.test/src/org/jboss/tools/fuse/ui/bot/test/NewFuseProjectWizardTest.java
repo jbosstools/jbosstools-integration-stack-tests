@@ -27,7 +27,7 @@ import org.jboss.tools.common.reddeer.ResourceHelper;
 import org.jboss.tools.common.reddeer.ext.ProjectExt;
 import org.jboss.tools.common.reddeer.view.ErrorLogView;
 import org.jboss.tools.fuse.reddeer.ProjectType;
-import org.jboss.tools.fuse.reddeer.SupportedVersions;
+import org.jboss.tools.fuse.reddeer.SupportedCamelVersions;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
@@ -332,7 +332,7 @@ public class NewFuseProjectWizardTest {
 		wiz.setProjectName("test");
 		wiz.next();
 		List<String> versions = wiz.getCamelVersions();
-		Collection<String> supported = SupportedVersions.getCamelVersions();
+		Collection<String> supported = SupportedCamelVersions.getCamelVersions();
 		List<String> missing = new ArrayList<>();
 		for (String sup : supported) {
 			if (!versions.contains(sup)) {
