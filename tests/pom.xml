@@ -45,4 +45,41 @@
 			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+		<profile>
+			<id>mac-installPath</id>
+			<activation>
+				<os>
+					<family>mac</family>
+				</os>
+			</activation>
+			<properties>
+				<test.installPath.OSX>/devstudio.app/</test.installPath.OSX>
+			</properties>
+		</profile>
+		<profile>
+			<id>install-base</id>
+			<activation>
+				<property>
+					<name>test.installBase</name>
+				</property>
+			</activation>
+			<properties>
+				<test.installPath>${test.installBase}${test.installPath.OSX}</test.installPath>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>tycho-surefire-plugin</artifactId>
+						<configuration>
+							<testRuntime>p2Installed</testRuntime>
+							<work>${test.installPath}</work>
+							<profileName>devstudio</profileName>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>
