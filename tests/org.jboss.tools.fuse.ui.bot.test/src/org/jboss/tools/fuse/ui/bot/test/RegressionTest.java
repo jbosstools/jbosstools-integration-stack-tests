@@ -56,7 +56,7 @@ import org.jboss.tools.common.reddeer.view.ProblemsViewExt;
 import org.jboss.tools.common.reddeer.widget.LabeledTextExt;
 import org.jboss.tools.fuse.reddeer.ProjectTemplate;
 import org.jboss.tools.fuse.reddeer.ProjectType;
-import org.jboss.tools.fuse.reddeer.SupportedVersions;
+import org.jboss.tools.fuse.reddeer.SupportedCamelVersions;
 import org.jboss.tools.fuse.reddeer.component.ConvertBodyTo;
 import org.jboss.tools.fuse.reddeer.component.Log;
 import org.jboss.tools.fuse.reddeer.component.Route;
@@ -392,7 +392,7 @@ public class RegressionTest extends DefaultTest {
 	@Test
 	public void issue_1678() {
 
-		ProjectFactory.newProject("test-empty").version(SupportedVersions.CAMEL_LATEST).type(ProjectType.SPRING)
+		ProjectFactory.newProject("test-empty").version(SupportedCamelVersions.CAMEL_LATEST).type(ProjectType.SPRING)
 				.create();
 		CamelEditor editor = new CamelEditor("camel-context.xml");
 		editor.addCamelComponent(new Route(), 100, 100);
@@ -589,7 +589,7 @@ public class RegressionTest extends DefaultTest {
 	@Test
 	public void issue_2062() {
 
-		ProjectFactory.newProject("test-empty").version(SupportedVersions.CAMEL_LATEST).type(ProjectType.SPRING)
+		ProjectFactory.newProject("test-empty").version(SupportedCamelVersions.CAMEL_LATEST).type(ProjectType.SPRING)
 				.create();
 		CamelEditor.switchTab("Source");
 		CamelEditor.switchTab("Design");

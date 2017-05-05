@@ -1,6 +1,6 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
-import static org.jboss.tools.fuse.reddeer.SupportedVersions.CAMEL_2_17_0_REDHAT_630187;
+import static org.jboss.tools.fuse.reddeer.SupportedCamelVersions.CAMEL_2_17_0_REDHAT_630187;
 import static org.jboss.tools.fuse.reddeer.component.SAPLabels.APPLICATION_RELEASE;
 import static org.jboss.tools.fuse.reddeer.component.SAPLabels.DESTINATION;
 import static org.jboss.tools.fuse.reddeer.component.SAPLabels.IDOC_TYPE;
