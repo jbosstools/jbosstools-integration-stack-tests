@@ -2,7 +2,10 @@ package org.jboss.tools.fuse.ui.bot.test;
 
 import static org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType.ERROR;
 import static org.jboss.tools.fuse.reddeer.ProjectTemplate.CBR;
+import static org.jboss.tools.fuse.reddeer.ProjectType.BLUEPRINT;
 import static org.jboss.tools.fuse.reddeer.ProjectType.SPRING;
+import static org.jboss.tools.fuse.reddeer.SupportedCamelVersions.CAMEL_2_17_0_REDHAT_630254;
+import static org.jboss.tools.fuse.reddeer.SupportedCamelVersions.CAMEL_LATEST;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
@@ -106,7 +109,7 @@ public class RegressionTest extends DefaultTest {
 	@Test
 	public void issue_674_1728_1729() throws ParserConfigurationException, SAXException, IOException {
 
-		ProjectFactory.newProject("camel-spring").template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();
+		ProjectFactory.newProject("camel-spring").template(CBR).type(SPRING).create();
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		new DefaultCTabItem("Source").activate();
 
@@ -143,7 +146,7 @@ public class RegressionTest extends DefaultTest {
 	@Test
 	public void issue_853() {
 
-		ProjectFactory.newProject("camel-blueprint").template(ProjectTemplate.CBR).type(ProjectType.BLUEPRINT).create();
+		ProjectFactory.newProject("camel-blueprint").template(CBR).type(BLUEPRINT).create();
 		new ProjectExplorer().getProject("camel-blueprint")
 				.getProjectItem("src/main/resources", "OSGI-INF", "blueprint", "blueprint.xml").select();
 		try {
@@ -187,7 +190,7 @@ public class RegressionTest extends DefaultTest {
 	@Test
 	public void issue_1115() {
 
-		ProjectFactory.newProject("camel-spring").template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();
+		ProjectFactory.newProject("camel-spring").version(CAMEL_2_17_0_REDHAT_630254).template(CBR).type(ProjectType.SPRING).create();
 		new CamelProject("camel-spring").runCamelContextWithoutTests("camel-context.xml");
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		new FuseJMXNavigator().getNode("Local Camel Context", "Camel", "cbr-example-context").select();
@@ -216,7 +219,7 @@ public class RegressionTest extends DefaultTest {
 	@Test
 	public void issue_1123() {
 
-		ProjectFactory.newProject("camel-spring").template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();
+		ProjectFactory.newProject("camel-spring").template(CBR).type(SPRING).create();
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		CamelEditor.switchTab("Source");
 		EditorManipulator.copyFileContentToCamelXMLEditor("resources/camel-context-routeContextId.xml");
@@ -254,7 +257,7 @@ public class RegressionTest extends DefaultTest {
 	@Test
 	public void issue_1158() {
 
-		ProjectFactory.newProject("camel-spring").template(CBR).type(SPRING).create();
+		ProjectFactory.newProject("camel-spring").version(CAMEL_2_17_0_REDHAT_630254).template(CBR).type(SPRING).create();
 		CamelProject project = new CamelProject("camel-spring");
 		project.openCamelContext("camel-context.xml");
 		CamelEditor editor = new CamelEditor("camel-context.xml");
@@ -284,7 +287,7 @@ public class RegressionTest extends DefaultTest {
 	@Test
 	public void issue_1172() throws ParserConfigurationException, SAXException, IOException {
 
-		ProjectFactory.newProject("camel-spring").template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();
+		ProjectFactory.newProject("camel-spring").template(CBR).type(SPRING).create();
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		CamelEditor.switchTab("Design");
 		CamelEditor editor = new CamelEditor("camel-context.xml");
@@ -312,7 +315,7 @@ public class RegressionTest extends DefaultTest {
 	@Test
 	public void issue_1243() {
 
-		ProjectFactory.newProject("camel-spring").template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();
+		ProjectFactory.newProject("camel-spring").template(CBR).type(SPRING).create();
 		new CamelProject("camel-spring").openCamelContext("camel-context.xml");
 		assertFalse("Camel editor should not be dirty",
 				new DefaultToolItem(new WorkbenchShell(), 1, new WithTooltipTextMatcher(new RegexMatcher("Save.*")))
@@ -337,7 +340,7 @@ public class RegressionTest extends DefaultTest {
 	@Test
 	public void issue_1214() {
 
-		ProjectFactory.newProject("camel-spring").template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();
+		ProjectFactory.newProject("camel-spring").template(CBR).type(SPRING).create();
 		new ProjectExplorer().selectProjects("camel-spring");
 		new ContextMenu("Run As", "Run Configurations...").select();
 		new WaitUntil(new ShellWithTextIsAvailable("Run Configurations"));
@@ -375,7 +378,7 @@ public class RegressionTest extends DefaultTest {
 	@Test
 	public void issue_1403() {
 
-		ProjectFactory.newProject("camel-blueprint").template(ProjectTemplate.CBR).type(ProjectType.BLUEPRINT).create();
+		ProjectFactory.newProject("camel-blueprint").template(CBR).type(BLUEPRINT).create();
 		new CamelProject("camel-blueprint").selectProjectItem("src/main/resources", "OSGI-INF", "blueprint",
 				"blueprint.xml");
 		new ContextMenu("Open").select();
@@ -392,7 +395,7 @@ public class RegressionTest extends DefaultTest {
 	@Test
 	public void issue_1678() {
 
-		ProjectFactory.newProject("test-empty").version(SupportedCamelVersions.CAMEL_LATEST).type(ProjectType.SPRING)
+		ProjectFactory.newProject("test-empty").version(CAMEL_LATEST).type(SPRING)
 				.create();
 		CamelEditor editor = new CamelEditor("camel-context.xml");
 		editor.addCamelComponent(new Route(), 100, 100);
@@ -420,7 +423,7 @@ public class RegressionTest extends DefaultTest {
 	@Test
 	public void issue_1694() {
 
-		ProjectFactory.newProject("cbr-spring").template(CBR).type(SPRING).create();
+		ProjectFactory.newProject("cbr-spring").version(CAMEL_2_17_0_REDHAT_630254).template(CBR).type(SPRING).create();
 		CamelEditor editor = new CamelEditor("camel-context.xml");
 		editor.addCamelComponent(new ConvertBodyTo(), "Route cbr-route");
 		ProblemsView problems = new ProblemsView();
@@ -442,7 +445,7 @@ public class RegressionTest extends DefaultTest {
 	@Jira("FUSETOOLS-1701")
 	@RunIf(conditionClass = IssueIsClosed.class)
 	public void issue_1701() {
-		ProjectFactory.newProject("test").type(ProjectType.BLUEPRINT).create();
+		ProjectFactory.newProject("test").type(BLUEPRINT).create();
 		CamelEditor editor = new CamelEditor("blueprint.xml");
 		editor.activate();
 		editor.addComponent("File", "Route _route1");
@@ -474,7 +477,7 @@ public class RegressionTest extends DefaultTest {
 	@Jira("FUSETOOLS-1726")
 	@RunIf(conditionClass = IssueIsClosed.class)
 	public void issue_1726() {
-		ProjectFactory.newProject("test").type(ProjectType.BLUEPRINT).create();
+		ProjectFactory.newProject("test").type(BLUEPRINT).create();
 		CamelEditor editor = new CamelEditor("blueprint.xml");
 		editor.activate();
 		editor.addComponent("IMAP", "Route _route1");
@@ -510,7 +513,7 @@ public class RegressionTest extends DefaultTest {
 	 */
 	@Test
 	public void issue_1730() {
-		ProjectFactory.newProject("camel-spring").template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();
+		ProjectFactory.newProject("camel-spring").template(CBR).type(SPRING).create();
 		CamelEditor editor = new CamelEditor("camel-context.xml");
 		editor.activate();
 		editor.setId("Route cbr-route", "1");
@@ -545,7 +548,7 @@ public class RegressionTest extends DefaultTest {
 	 */
 	@Test
 	public void issue_1993() {
-		ProjectFactory.newProject("cbr-spring").template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();
+		ProjectFactory.newProject("cbr-spring").template(CBR).type(SPRING).create();
 		CamelEditor editor = new CamelEditor("camel-context.xml");
 		CamelEditor.switchTab("Source");
 		String beforeContent = new DefaultStyledText().getText();
@@ -573,7 +576,7 @@ public class RegressionTest extends DefaultTest {
 		wiz.next();
 		wiz.next();
 		wiz.selectTemplate("Fuse on EAP", "Medium", "Spring on EAP");
-		if (wiz.isProjectTypeAvailable(ProjectType.BLUEPRINT) || wiz.isProjectTypeSelected(ProjectType.BLUEPRINT)) {
+		if (wiz.isProjectTypeAvailable(BLUEPRINT) || wiz.isProjectTypeSelected(BLUEPRINT)) {
 			wiz.cancel();
 			fail("Disabled project type is selected - see https://issues.jboss.org/browse/FUSETOOLS-2051");
 		}
@@ -589,7 +592,7 @@ public class RegressionTest extends DefaultTest {
 	@Test
 	public void issue_2062() {
 
-		ProjectFactory.newProject("test-empty").version(SupportedCamelVersions.CAMEL_LATEST).type(ProjectType.SPRING)
+		ProjectFactory.newProject("test-empty").version(CAMEL_2_17_0_REDHAT_630254).type(SPRING)
 				.create();
 		CamelEditor.switchTab("Source");
 		CamelEditor.switchTab("Design");
