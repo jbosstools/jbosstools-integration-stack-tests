@@ -5,6 +5,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
+
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -16,11 +18,13 @@ import org.jboss.reddeer.eclipse.debug.core.ResumeButton;
 import org.jboss.reddeer.eclipse.debug.core.TerminateButton;
 import org.jboss.reddeer.eclipse.debug.core.VariablesView;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.eclipse.ui.views.log.LogMessage;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.tools.common.reddeer.JiraIssue;
 import org.jboss.tools.common.reddeer.LogGrapper;
 import org.jboss.tools.common.reddeer.debug.IsRunning;
 import org.jboss.tools.common.reddeer.debug.StepOverButton;
@@ -213,6 +217,7 @@ public class DebuggerTest extends DefaultTest {
 		// all breakpoints should be processed
 		new WaitUntil(new IsRunning(), TimePeriod.NORMAL);
 		new TerminateButton().click();
+		testIssue2306();
 		assertTrue(LogGrapper.getPluginErrors("fuse").size() == 0);
 	}
 
@@ -266,6 +271,22 @@ public class DebuggerTest extends DefaultTest {
 		assertTrue(new ConsoleHasText("Receiving order order3.xml").test());
 		assertTrue(new ConsoleHasText("Receiving order order4.xml").test());
 		new TerminateButton().click();
+		testIssue2306();
 		assertTrue(LogGrapper.getPluginErrors("fuse").size() == 0);
+	}
+
+	/**
+	 * https://issues.jboss.org/browse/FUSETOOLS-2306
+	 */
+	private void testIssue2306() {
+		List<LogMessage> errors = LogGrapper.getPluginErrors("fuse");
+		if (errors.isEmpty()) {
+			return;
+		}
+		for (LogMessage msg : errors) {
+			if (msg.getMessage().contains("Connection refused to host")) {
+				throw new JiraIssue("FUSETOOLS-2306");
+			}
+		}
 	}
 }
