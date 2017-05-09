@@ -18,6 +18,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.common.reddeer.JiraIssue;
 import org.jboss.tools.common.reddeer.ResourceHelper;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.editor.DataTransformationEditor;
@@ -112,7 +113,13 @@ public class DataTransformationTest extends DefaultTest {
 		}
 		test.setPackage("example");
 		test.selectTransformationID("xml2json");
-		test.finish();
+		try {
+			test.finish();
+		} catch (WaitTimeoutExpiredException e) {
+			if (new ShellWithTextIsAvailable("New Fuse Transformation Test").test()) {
+				throw new JiraIssue("FUSETOOLS-2398");
+			}
+		}
 		TextEditor javaEditor = new TextEditor("TransformationTest.java");
 		javaEditor.insertLine(25,
 				"startEndpoint.sendBodyAndHeader(readFile(\"src/data/abc-order.xml\"), \"approvalID\", \"AUTO_OK\");");
