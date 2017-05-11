@@ -18,10 +18,25 @@ public class CreateDataSourceDialog extends AbstractDialog {
 	
 	private static final Logger log = Logger.getLogger(CreateDataSourceDialog.class);
 
-	public static final String DATASOURCE_PROPERTY_PARENT_DIR = "* Parent Directory";
+	
 	public static final String DATASOURCE_PROPERTY_USER_NAME = "* User Name";
+	public static final String DATASOURCE_PROPERTY_USER_NAME_OPTIONAL = "User Name";
+	public static final String DATASOURCE_PROPERTY_USER_NAME_OPTIONAL_SMALL = "user-name";
+	
 	public static final String DATASOURCE_PROPERTY_PASSWORD = "* Password";
+	public static final String DATASOURCE_PROPERTY_PASSWORD_OPTIONAL = "Password";
+	public static final String DATASOURCE_PROPERTY_PASSWORD_OPTIONAL_SMALL = "password";
+	
+	public static final String DATASOURCE_PROPERTY_INSTANCE_NAME = "* Instance Name";
+	public static final String DATASOURCE_PROPERTY_ZOO_KEEPER = "* Zoo Keeper Server List";
+	public static final String DATASOURCE_PROPERTY_PARENT_DIR = "* Parent Directory";
 	public static final String DATASOURCE_PROPERTY_URL = "* URL, End Point";
+	public static final String DATASOURCE_PROPERTY_ADDRESS = "* Address";
+	public static final String DATASOURCE_PROPERTY_KEYSPACE = "* Keyspace";
+	public static final String DATASOURCE_PROPERTY_CORE_INDEX_NAME = "* Core Index Name";
+	public static final String DATASOURCE_PROPERTY_URL_SOLR = "* URL of the Solr server";
+	public static final String DATASOURCE_PROPERTY_URL_SERVER_LIST = "* URL/Server List";
+	public static final String DATASOURCE_DATABASE = "Database";
 	
 	public CreateDataSourceDialog() {
 		super("Create DataSource");
