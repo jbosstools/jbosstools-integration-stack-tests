@@ -26,12 +26,21 @@ public class DatabaseConnectionProfile extends ConnectionProfileWizard{
 	}
 
 	public DatabaseConnectionProfile activate() {
-		if(vendor.equals("Sybase ASE")){
+		switch (vendor){
+		
+		case "Sybase ASE":
 			new DefaultShell("New Sybase ASE Connection Profile");
-		}else if(vendor.equals("PostgreSQL")||vendor.equals("Ingres")){
+			break;
+		case "PostgreSQL":
+		case "Ingres":
 			new DefaultShell("New JDBC Connection Profile");
-		}else{
+			break;
+		case "MongoDB Data Source":
+			new DefaultShell("New MongoDB Data Source Profile");
+			break;
+		default:
 			new DefaultShell(DIALOG_TITLE);
+			break;
 		}
 		return this;
 	}
@@ -46,23 +55,41 @@ public class DatabaseConnectionProfile extends ConnectionProfileWizard{
 	public DatabaseConnectionProfile setHostname(String hostname) {
 		log.info("Set host name to: '" + hostname + "'");
 		activate();
-		if(vendor.equals("Sybase ASE")||vendor.equals("PostgreSQL")||vendor.equals("Ingres")
-				||vendor.equals("MySQL")||vendor.equals("Generic JDBC")){
+		switch(vendor){
+		
+		case "Sybase ASE":
+		case "PostgreSQL":
+		case "Ingres":
+		case "MySQL":
+		case "Generic JDBC":
 			new LabeledText("URL:").setText(hostname);
-		}else{
+			break;
+		case "MongoDB Data Source":
+			new LabeledText("Server Host:").setText(hostname);
+			break;
+		default: 
 			new LabeledText("Host:").setText(hostname);
-		}
+			break;
+		}		
 		return this;
 	}
 	
 	public DatabaseConnectionProfile setDatabase(String database) {
 		log.info("Set database to: '" + database + "'");
 		activate();
-		if(vendor.equals("Oracle")){
+		
+		switch (vendor){
+		
+		case "Oracle":
 			new LabeledText("Database instance:").setText(database);
-		}else{
+			break;
+		case "MongoDB Data Source":
+			new LabeledText("Database Name:").setText(database);
+			break;
+		default:
 			new LabeledText("Database:").setText(database);
-		}
+			break;
+		}		
 		return this;
 	}
 	
@@ -73,10 +100,21 @@ public class DatabaseConnectionProfile extends ConnectionProfileWizard{
 		return this;
 	}
 	
+	public DatabaseConnectionProfile setServer(String server) {
+		log.info("Set server to: '" + server + "'");
+		activate();
+		new LabeledText("Server:").setText(server);
+		return this;
+	}
+	
 	public DatabaseConnectionProfile setUsername(String username) {
 		log.info("Set user name to: '" + username + "'");
 		activate();
-		new LabeledText("User name:").setText(username);
+		if(vendor.equals("MongoDB Data Source")){
+			new LabeledText("User Name:").setText(username);
+		}else{
+			new LabeledText("User name:").setText(username);
+		}
 		return this;
 	}
 	

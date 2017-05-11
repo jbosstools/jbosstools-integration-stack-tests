@@ -42,6 +42,11 @@ public class ConnectionProfileHelper {
 	public void createConnectionProfile(ConnectionProfileConfig cp, boolean forceWizard, boolean connectAfter) {
 		String vendor = cp.getVendor();
 		String cpName = cp.getName();
+		String password = "";
+		if(cp.getPassword() != null){
+			password = cp.getPassword();
+		}
+		
 //		Properties cpProps = cp.asProperties();
 
 		if (connectionProfileExists(cpName)) {
@@ -70,7 +75,7 @@ public class ConnectionProfileHelper {
         			.setHostname(cp.getHostname())
 					.setPort(cp.getPort())
 					.setUsername(cp.getUsername())
-					.setPassword(cp.getPassword())
+					.setPassword(password)
 					.savePassword(true)
 					.testConnection()
 					.connectAfter(connectAfter)
@@ -88,7 +93,7 @@ public class ConnectionProfileHelper {
         	wizard.setDatabase(cp.getDbName())
 					.setHostname(cp.getHostname())
 					.setUsername(cp.getUsername())
-					.setPassword(cp.getPassword())
+					.setPassword(password)
 					.savePassword(true)
 					.testConnection()
 					.connectAfter(connectAfter)
@@ -107,7 +112,7 @@ public class ConnectionProfileHelper {
         	wizard.setDatabase(cp.getDbName())
 					.setHostname(cp.getHostname())
 					.setUsername(cp.getUsername())
-					.setPassword(cp.getPassword())
+					.setPassword(password)
 					.savePassword(true)
 					.testConnection()
 					.connectAfter(connectAfter)
@@ -122,7 +127,7 @@ public class ConnectionProfileHelper {
 					.finish();
         	wizard.setDatabase(cp.getDbName())
 					.setUsername(cp.getUsername())
-					.setPassword(cp.getPassword())
+					.setPassword(password)
 					.savePassword(true)
 					.testConnection()
 					.connectAfter(connectAfter)
@@ -139,16 +144,43 @@ public class ConnectionProfileHelper {
         	wizard.setDatabase(cp.getDbName())
 					.setHostname(cp.getHostname())
 					.setUsername(cp.getUsername())
-					.setPassword(cp.getPassword())
+					.setPassword(password)
 					.savePassword(true)
 					.testConnection()
 					.connectAfter(connectAfter)
 					.finish(); 
         	break;
+        case "MongoDB Data Source": 		
+        	wizard = DatabaseConnectionProfile.openWizard(vendor,cpName);
+        	wizard.setDatabase(cp.getDbName())
+        			.setHostname(cp.getHostname())
+        			.setUsername(cp.getUsername())
+        			.setPassword(cp.getPassword())
+        			.testConnection()
+        			.finish();
+        	break;
+        case "Informix": 		
+        	wizard = DatabaseConnectionProfile.openWizard(vendor,cpName);
+        	wizard.createNewDriver()
+				.selectTemplate(cp.getTemplate(), cp.getVersion())
+				.setName(cpName + "_driver")
+				.addDriver(cp.getJdbcPath())				
+				.finish();
+        	wizard.setHostname(cp.getHostname())
+				.setDatabase(cp.getDbName())
+				.setPort(cp.getPort())
+				.setServer(cp.asProperties().getProperty("server"))
+				.setUsername(cp.getUsername())
+				.setPassword(password)
+				.savePassword(true)
+				.testConnection()
+				.connectAfter(connectAfter)
+				.finish();         	
+    		break;
         case "SalesForce":
         	SalesforceConnectionProfileWizard.openWizard(cpName)
         			.setUsername(cp.getUsername())
-        			.setPassword(cp.getPassword())
+        			.setPassword(password)
         			.testConnection()
         			.connectAfter(connectAfter)
         			.finish();
@@ -159,7 +191,7 @@ public class ConnectionProfileHelper {
         			.setPort(cp.getPort())
         			.nextPage()
         			.setUsername(cp.getUsername())
-        			.setPassword(cp.getPassword())
+        			.setPassword(password)
         			.testConnection()
         			.connectAfter(connectAfter)
         			.finish();
@@ -205,6 +237,11 @@ public class ConnectionProfileHelper {
 
 			IConnectionProfile profile = null;
 
+			String password = "";
+			if(cp.getPassword() != null){
+				password = cp.getPassword();
+			}
+			
 			profile = profileManager.getProfileByName(cp.getName());
 			if (profile != null) {
 				return profile;
@@ -215,7 +252,7 @@ public class ConnectionProfileHelper {
 			Properties props = new Properties();
 			props.put("org.eclipse.datatools.connectivity.db.savePWD", "true");
 			props.put("org.eclipse.datatools.connectivity.db.username", cp.getUsername());
-			props.put("org.eclipse.datatools.connectivity.db.password", cp.getPassword());
+			props.put("org.eclipse.datatools.connectivity.db.password", password);
 			props.put("org.eclipse.datatools.connectivity.db.URL", cpProps.getProperty("url"));
 			props.put("org.eclipse.datatools.connectivity.db.vendor", cp.getVendor());
 

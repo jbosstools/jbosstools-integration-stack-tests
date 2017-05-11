@@ -1,0 +1,10 @@
+TABLE, Table_1, "Table_1 Description"
+COLUMN, Column_1, VARCHAR, 255, "Column_1 Description" 
+COLUMN, Column_2, VARCHAR, 255, "Column_2 Description" 
+COLUMN, Column_3, NUMBER, 25, "Column_3 Description" 
+COLUMN, Column_4, DATE, 20, "Column_4 Description" 
+INDEX, TestIndex1, NORMAL, UNIQUE, Table_1, Column_2 
+TABLE, Table_2, "Table_2 Description" 
+COLUMN, Column_5, VARCHAR, 255, "Column_5 Description" 
+COLUMN, Column_6, VARCHAR, 255, "Column_6 Description" 
+INDEX, TestIndex2, NORMAL, UNIQUE, Table_2, Column_5
