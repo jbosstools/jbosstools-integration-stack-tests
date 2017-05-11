@@ -217,6 +217,7 @@ public class NewFuseProjectWizardTest {
 		wiz.open();
 		wiz.setProjectName("test");
 		wiz.next();
+		wiz.selectCamelVersion(SupportedCamelVersions.CAMEL_2_17_0_REDHAT_630254);
 		wiz.next();
 		wiz.selectTemplate("JBoss Fuse", "Beginner", "Content Based Router");
 		wiz.setProjectType(ProjectType.BLUEPRINT);
