@@ -84,6 +84,7 @@ public class ConfigurationsEditor extends DefaultEditor {
 		endpointDialog.setId(title);
 		endpointDialog.chooseCamelComponent(component);
 		endpointDialog.finish();
+		save();
 	}
 
 	/**
@@ -109,6 +110,7 @@ public class ConfigurationsEditor extends DefaultEditor {
 		formatDialog.setIdText(title);
 		formatDialog.chooseDataFormat(format);
 		formatDialog.finish();
+		save();
 	}
 
 	/**
@@ -165,6 +167,7 @@ public class ConfigurationsEditor extends DefaultEditor {
 		try {
 			new DefaultTreeItem(new String[] { TYPE, title }).select();
 			new PushButton("Delete").click();
+			save();
 		} catch (Exception e) {
 			log.debug("Component with title - " + title + " isn't exist", e);
 		}
