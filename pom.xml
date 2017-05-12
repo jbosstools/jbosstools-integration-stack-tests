@@ -16,9 +16,7 @@
 		<jbosstools.url>http://download.jboss.org/jbosstools</jbosstools.url>
 		<jbtis.tp.version>4.4.3.CR2</jbtis.tp.version>
 		<jbtis.repo>staging</jbtis.repo>
-		<reddeer.site>http://download.jboss.org/jbosstools/neon/stable/updates/reddeer/1.2.0/</reddeer.site>
-		<orbit.site>http://download.eclipse.org/tools/orbit/downloads/drops/R20160520211859/repository/</orbit.site>
-		<swtbot.site>http://download.eclipse.org/technology/swtbot/releases/latest</swtbot.site>
+		<orbit.site>${jbosstools.url}/updates/requirements/orbit/R20170307180635/</orbit.site>
 		<fuse.site>${jbosstools.url}/neon/integration/updates/integration-stack/fuse-tooling/9.2.0.CI/</fuse.site>
 		<switchyard.site>${jbosstools.url}/neon/integration/updates/integration-stack/switchyard/2.3.1.CI/</switchyard.site>
 		<skipRequirements>${skipTests}</skipRequirements>
@@ -56,18 +54,6 @@
 			<releases>
 				<enabled>true</enabled>
 			</releases>
-		</repository>
-		<!-- Red Deer Update Site -->
-		<repository>
-			<id>reddeer-site</id>
-			<url>${reddeer.site}</url>
-			<layout>p2</layout>
-		</repository>
-		<!-- SWTBot Update Site -->
-		<repository>
-			<id>swtbot-site</id>
-			<url>${swtbot.site}</url>
-			<layout>p2</layout>
 		</repository>
 		<!-- Eclipse Orbit Update Site -->
 		<repository>
