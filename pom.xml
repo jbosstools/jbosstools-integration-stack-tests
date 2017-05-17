@@ -14,8 +14,9 @@
 	<properties>
 		<tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-integration-stack-tests.git</tycho.scmUrl>
 		<jbosstools.url>http://download.jboss.org/jbosstools</jbosstools.url>
-		<jbtis.tp.version>4.4.3.CR2</jbtis.tp.version>
+		<jbtis.tp.version>4.4.3.Final</jbtis.tp.version>
 		<jbtis.repo>staging</jbtis.repo>
+		<reddeer.site>${jbosstools.url}/neon/stable/updates/reddeer/1.2.1/</reddeer.site>
 		<orbit.site>${jbosstools.url}/updates/requirements/orbit/R20170307180635/</orbit.site>
 		<fuse.site>${jbosstools.url}/neon/integration/updates/integration-stack/fuse-tooling/9.2.0.CI/</fuse.site>
 		<switchyard.site>${jbosstools.url}/neon/integration/updates/integration-stack/switchyard/2.3.1.CI/</switchyard.site>
@@ -54,6 +55,12 @@
 			<releases>
 				<enabled>true</enabled>
 			</releases>
+		</repository>
+		<!-- RedDeer Update Site -->
+		<repository>
+			<id>reddeer-site</id>
+			<url>${reddeer.site}</url>
+			<layout>p2</layout>
 		</repository>
 		<!-- Eclipse Orbit Update Site -->
 		<repository>
