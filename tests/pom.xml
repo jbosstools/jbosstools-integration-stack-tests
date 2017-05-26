@@ -81,5 +81,17 @@
 				</plugins>
 			</build>
 		</profile>
+		<profile>
+			<id>long-lasting-for-fuse</id>
+			<activation>
+				<property>
+					<name>test</name>
+					<value>FuseProjectTestLong</value>
+				</property>
+			</activation>
+			<properties>
+				<surefire.timeout>86400</surefire.timeout>
+			</properties>
+		</profile>
 	</profiles>
 </project>

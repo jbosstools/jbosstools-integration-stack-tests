@@ -5,6 +5,7 @@ import static org.jboss.tools.fuse.reddeer.ProjectType.JAVA;
 import static org.jboss.tools.fuse.reddeer.ProjectType.SPRING;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.eclipse.ui.views.log.LogMessage;
 import org.jboss.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
@@ -27,7 +29,9 @@ import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.common.reddeer.FileUtils;
 import org.jboss.tools.common.reddeer.preference.MavenUserSettingsPreferencePage;
+import org.jboss.tools.common.reddeer.view.ErrorLogView;
 import org.jboss.tools.fuse.reddeer.ProjectType;
+import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.preference.StagingRepositoriesPreferencePage;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
@@ -236,5 +240,78 @@ public class FuseProjectTestLong extends DefaultTest {
 														// https://issues.jboss.org/browse/FUSETOOLS-1456)
 		)
 			assertTrue("Project '" + template + "' cannot be run as Local Camel Context", canBeRun("test"));
+	}
+
+	/**
+	 * <p>
+	 * Verifies that Camel editor in created Fuse project is opened (activated) and opened properly (contains
+	 * components)
+	 * </p>
+	 * <b>Steps:</b>
+	 * <ol>
+	 * <li>create a new project</li>
+	 * <li>check Camel editor errors</li>
+	 * <li>check if Camel editor is open and active</li>
+	 * <li>check if Camel editor isn't open as "dirty"</li>
+	 * <li>check if Camel editor is open properly (contains components)</li>
+	 * </ol>
+	 * 
+	 * @author djelinek
+	 */
+	@Test
+	public void testCamelEditor() {
+
+		String[] templateComposite = template.split(":");
+		ProjectType type = BLUEPRINT;
+		if (templateComposite[1].startsWith("spring"))
+			type = SPRING;
+		if (templateComposite[1].startsWith("java"))
+			type = JAVA;
+		if (templateComposite[0].equals("empty")) {
+			ProjectFactory.newProject("test").version(templateComposite[2]).type(type).create();
+		} else {
+			ProjectFactory.newProject("test").version(templateComposite[2]).template(templateComposite[0]).type(type)
+					.create();
+		}
+
+		/*
+		 * Check Error log view for possible Camel editor errors
+		 */
+		ErrorLogView err = new ErrorLogView();
+		List<LogMessage> msg = err.getErrorMessages();
+		for (LogMessage logMessage : msg) {
+			if (logMessage.getPlugin().equals("org.fusesource.ide.camel.editor"))
+				fail("Project '" + template + "' is created with Camel editor errors");
+		}
+
+		/*
+		 * Possible variants of Camel Context XML, for Fuse project types Spring DSL and Blueprint DSL
+		 */
+		String[] springContext = { "camel-context.xml", "jboss-camel-context.xml" };
+		String[] blueprintContext = { "blueprint.xml", "camel-blueprint.xml" };
+
+		CamelEditor editor = null;
+		int i = 0;
+
+		if (type == SPRING) {
+			try {
+				editor = new CamelEditor(springContext[i]);
+			} catch (Exception e) {
+				editor = new CamelEditor(springContext[++i]);
+			}
+		} else if (type == BLUEPRINT) {
+			try {
+				editor = new CamelEditor(blueprintContext[i]);
+			} catch (Exception e) {
+				editor = new CamelEditor(blueprintContext[++i]);
+			}
+		}
+
+		if (type != JAVA) { // skip Java DSLs
+			assertTrue("Camel editor wasn't opened and activated -> " + template, editor.isActive());
+			assertFalse("Camel editor was opened as 'dirty' -> " + template, editor.isDirty());
+			assertFalse("Camel editor wasn't opened properly, it doesn't contains any component -> " + template,
+					editor.palleteGetComponents().isEmpty());
+		}
 	}
 }
