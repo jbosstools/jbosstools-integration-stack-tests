@@ -11,7 +11,6 @@ import org.jboss.tools.runtime.reddeer.impl.ServerAS;
 import org.jboss.tools.runtime.reddeer.impl.ServerEAP;
 import org.jboss.tools.runtime.reddeer.impl.ServerFuse;
 import org.jboss.tools.runtime.reddeer.impl.ServerKaraf;
-import org.jboss.tools.runtime.reddeer.impl.ServerServiceMix;
 import org.jboss.tools.runtime.reddeer.impl.ServerWildFly;
 
 /**
@@ -39,9 +38,7 @@ public class ServerConfig {
 		@XmlElement(name = "eap", namespace = Namespaces.SOA_REQ, type = ServerEAP.class),
 		@XmlElement(name = "wildfly", namespace = Namespaces.SOA_REQ, type = ServerWildFly.class),
 		@XmlElement(name = "karaf", namespace = Namespaces.SOA_REQ, type = ServerKaraf.class),
-		@XmlElement(name = "fuse", namespace = Namespaces.SOA_REQ, type = ServerFuse.class),
-		@XmlElement(name = "servicemix", namespace = Namespaces.SOA_REQ, type = ServerServiceMix.class),
-		@XmlElement(name = "fabric8", namespace = Namespaces.SOA_REQ, type = ServerServiceMix.class) })
+		@XmlElement(name = "fuse", namespace = Namespaces.SOA_REQ, type = ServerFuse.class) })
 	private ServerBase serverBase;
 
 	public ServerBase getServerBase() {

@@ -198,36 +198,6 @@ public class RuntimeDetectionDownloadTest {
 	}
 
 	@Test
-	public void testDownloadServiceMix453() {
-		downloadRuntime("Apache ServiceMix 4.5.3");
-	}
-
-	@Test
-	public void testDownloadServiceMix506() {
-		downloadRuntime("Apache ServiceMix 5.0.6");
-	}
-
-	@Test
-	public void testDownloadServiceMix514() {
-		downloadRuntime("Apache ServiceMix 5.1.4");
-	}
-
-	@Test
-	public void testDownloadServiceMix520() {
-		downloadRuntime("Apache ServiceMix 5.2.0");
-	}
-
-	@Test
-	public void testDownloadServiceMix531() {
-		downloadRuntime("Apache ServiceMix 5.3.1");
-	}
-
-	@Test
-	public void testDownloadServiceMix540() {
-		downloadRuntime("Apache ServiceMix 5.4.0");
-	}
-
-	@Test
 	public void testDownloadFuse600() {
 		downloadRuntime("JBoss Fuse 6.0.0");
 	}

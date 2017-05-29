@@ -331,7 +331,7 @@ public class RegressionTest extends DefaultTest {
 
 	/**
 	 * <p>
-	 * Run Configurations dialog shows launch config types for server adapters for Karaf, SMX, Fuse and Fabric8 which
+	 * Run Configurations dialog shows launch config types for server adapters for Karaf and Fuse which
 	 * partially don't work
 	 * </p>
 	 * <b>Link: </b>
@@ -348,16 +348,6 @@ public class RegressionTest extends DefaultTest {
 		new DefaultTreeItem("Java Application").select();
 		try {
 			new DefaultTreeItem("Apache Karaf Launcher").select();
-			fail("Run Configurations contains forbidden item");
-		} catch (CoreLayerException e) {
-		}
-		try {
-			new DefaultTreeItem("Apache ServiceMix Launcher").select();
-			fail("Run Configurations contains forbidden item");
-		} catch (CoreLayerException e) {
-		}
-		try {
-			new DefaultTreeItem("Fabric8 Launcher").select();
 			fail("Run Configurations contains forbidden item");
 		} catch (CoreLayerException e) {
 		}
