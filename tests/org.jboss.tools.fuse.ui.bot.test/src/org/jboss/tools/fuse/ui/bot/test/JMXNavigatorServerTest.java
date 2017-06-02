@@ -24,9 +24,10 @@ import org.jboss.tools.fuse.reddeer.ProjectTemplate;
 import org.jboss.tools.fuse.reddeer.ProjectType;
 import org.jboss.tools.fuse.reddeer.condition.FuseLogContainsText;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
+import org.jboss.tools.fuse.reddeer.requirement.FuseRequirement;
+import org.jboss.tools.fuse.reddeer.requirement.FuseRequirement.Fuse;
 import org.jboss.tools.fuse.reddeer.view.FuseJMXNavigator;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
-import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.runtime.reddeer.utils.FuseServerManipulator;
 import org.junit.After;
@@ -47,7 +48,7 @@ import org.junit.runner.RunWith;
 @CleanWorkspace
 @OpenPerspective(FuseIntegrationPerspective.class)
 @RunWith(RedDeerSuite.class)
-@Server(type = Fuse, state = RUNNING)
+@Fuse(server = @Server(type = Fuse, state = RUNNING))
 public class JMXNavigatorServerTest {
 
 	private static final String PROJECT_NAME = "cbr-blueprint";
@@ -56,7 +57,7 @@ public class JMXNavigatorServerTest {
 	private static boolean setupIsDone = false;
 
 	@InjectRequirement
-	private static ServerRequirement serverReq;
+	private static FuseRequirement serverReq;
 
 	/**
 	 * Prepares test environment

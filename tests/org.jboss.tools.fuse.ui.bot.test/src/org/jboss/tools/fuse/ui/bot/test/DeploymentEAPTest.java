@@ -1,6 +1,7 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
 import static org.jboss.reddeer.requirements.server.ServerReqState.RUNNING;
+import static org.jboss.tools.fuse.reddeer.ProjectType.SPRING;
 import static org.jboss.tools.fuse.reddeer.SupportedCamelVersions.CAMEL_2_17_0_REDHAT_630187;
 import static org.jboss.tools.runtime.reddeer.requirement.ServerReqType.EAP;
 import static org.junit.Assert.assertFalse;
@@ -14,10 +15,10 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.tools.fuse.reddeer.ProjectTemplate;
-import org.jboss.tools.fuse.reddeer.ProjectType;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
+import org.jboss.tools.fuse.reddeer.requirement.FuseRequirement;
+import org.jboss.tools.fuse.reddeer.requirement.FuseRequirement.Fuse;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
-import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.runtime.reddeer.utils.FuseServerManipulator;
 import org.junit.After;
@@ -30,7 +31,7 @@ import org.junit.runner.RunWith;
  * 
  * @author tsedmik
  */
-@Server(type = EAP, state = RUNNING)
+@Fuse(server = @Server(type = EAP, state = RUNNING))
 @OpenPerspective(FuseIntegrationPerspective.class)
 @RunWith(RedDeerSuite.class)
 public class DeploymentEAPTest extends DefaultTest {
@@ -38,7 +39,7 @@ public class DeploymentEAPTest extends DefaultTest {
 	private static final String PROJECT_NAME = "wildfly-spring";
 
 	@InjectRequirement
-	private static ServerRequirement serverRequirement;
+	private static FuseRequirement serverRequirement;
 
 	/**
 	 * Prepares test environment
@@ -46,7 +47,7 @@ public class DeploymentEAPTest extends DefaultTest {
 	@BeforeClass
 	public static void setupInitial() {
 
-		ProjectFactory.newProject(PROJECT_NAME).template(ProjectTemplate.EAP).version(CAMEL_2_17_0_REDHAT_630187).type(ProjectType.SPRING).create();
+		ProjectFactory.newProject(PROJECT_NAME).template(ProjectTemplate.EAP).version(CAMEL_2_17_0_REDHAT_630187).type(SPRING).create();
 	}
 
 	/**

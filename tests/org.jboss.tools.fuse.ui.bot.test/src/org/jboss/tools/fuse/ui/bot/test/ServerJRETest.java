@@ -1,5 +1,8 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
+import static org.jboss.reddeer.requirements.server.ServerReqState.PRESENT;
+import static org.jboss.tools.runtime.reddeer.requirement.ServerReqType.Fuse;
+import static org.jboss.tools.runtime.reddeer.requirement.ServerReqType.Karaf;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -8,12 +11,11 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.label.DefaultLabel;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
+import org.jboss.tools.fuse.reddeer.requirement.FuseRequirement;
+import org.jboss.tools.fuse.reddeer.requirement.FuseRequirement.Fuse;
 import org.jboss.tools.runtime.reddeer.impl.ServerKaraf;
-import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
-import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.runtime.reddeer.utils.FuseServerManipulator;
 import org.junit.Test;
@@ -24,14 +26,14 @@ import org.junit.runner.RunWith;
  * 
  * @author tsedmik
  */
-@Server(type = { ServerReqType.Fuse, ServerReqType.Karaf, ServerReqType.ServiceMix }, state = ServerReqState.PRESENT)
+@Fuse(server = @Server(type = { Fuse, Karaf }, state = PRESENT))
 @OpenPerspective(FuseIntegrationPerspective.class)
 @CleanWorkspace
 @RunWith(RedDeerSuite.class)
 public class ServerJRETest extends DefaultTest {
 
 	@InjectRequirement
-	private ServerRequirement serverRequirement;
+	private FuseRequirement serverRequirement;
 
 	/**
 	 * <p>

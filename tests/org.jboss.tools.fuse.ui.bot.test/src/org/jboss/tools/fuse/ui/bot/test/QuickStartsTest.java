@@ -24,8 +24,9 @@ import org.jboss.tools.common.reddeer.view.ErrorLogView;
 import org.jboss.tools.common.reddeer.wizard.ImportMavenWizard;
 import org.jboss.tools.fuse.reddeer.condition.FuseLogContainsText;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
+import org.jboss.tools.fuse.reddeer.requirement.FuseRequirement;
+import org.jboss.tools.fuse.reddeer.requirement.FuseRequirement.Fuse;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
-import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.runtime.reddeer.utils.FuseServerManipulator;
 import org.junit.After;
@@ -39,12 +40,12 @@ import org.junit.runner.RunWith;
  * 
  * @author tsedmik
  */
-@Server(type = Fuse, state = RUNNING)
+@Fuse(server = @Server(type = Fuse, state = RUNNING))
 @RunWith(RedDeerSuite.class)
 public class QuickStartsTest {
 
 	@InjectRequirement
-	private ServerRequirement serverRequirement;
+	private FuseRequirement serverRequirement;
 
 	/**
 	 * Prepares test environment

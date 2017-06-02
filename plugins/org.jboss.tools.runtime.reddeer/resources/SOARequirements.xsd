@@ -26,6 +26,13 @@
 		</xs:annotation>
 	</xs:element>
 
+	<!-- Specify fuse user-requirement -->
+	<xs:element name="fuse-requirement" type="server:fuseRequirementType" substitutionGroup="rd:abstractRequirement">
+		<xs:annotation>
+			<xs:documentation>Requirement for Fuse server</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+
 	<!-- Specify teiid user-requirement -->
 	<xs:element name="teiid-requirement" type="server:teiidRequirementType" substitutionGroup="rd:abstractRequirement">
 		<xs:annotation>
@@ -69,6 +76,21 @@
 		</xs:complexContent>
 	</xs:complexType>
 
+	<xs:complexType name="fuseRequirementType">
+		<xs:complexContent>
+			<xs:extension base="rd:abstractRequirementType">
+				<xs:sequence>
+					<xs:element name="camelVersion" type="xs:string" minOccurs="1" maxOccurs="1"/>
+					<xs:choice>
+						<xs:element name="karaf" type="server:apache-karaf" />
+						<xs:element name="fuse" type="server:jboss-fuse" />
+						<xs:element name="eap" type="server:jboss-eap" />
+					</xs:choice>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
 	<xs:complexType name="switchyardRequirementType">
 		<xs:complexContent>
 			<xs:extension base="rd:abstractRequirementType">
@@ -366,7 +388,6 @@
 				<xs:element name="jre" type="xs:string" />
 				<xs:element name="execEnv" type="xs:string" />
 			</xs:choice>
-			<xs:element name="camelVersion" type="xs:string" minOccurs="1" maxOccurs="1"/>
 			<xs:element name="host" type="xs:string" minOccurs="0" maxOccurs="1" />
 			<xs:element name="port" type="xs:string" minOccurs="0" maxOccurs="1" />
 			<xs:element name="username" type="xs:string" minOccurs="0" maxOccurs="1" />

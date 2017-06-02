@@ -19,8 +19,9 @@ import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.fuse.reddeer.condition.FuseLogContainsText;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
+import org.jboss.tools.fuse.reddeer.requirement.FuseRequirement;
+import org.jboss.tools.fuse.reddeer.requirement.FuseRequirement.Fuse;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
-import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.runtime.reddeer.utils.FuseServerManipulator;
 import org.jboss.tools.runtime.reddeer.utils.FuseShellSSH;
@@ -35,11 +36,11 @@ import org.junit.runner.RunWith;
  * @author tsedmik
  */
 @RunWith(RedDeerSuite.class)
-@Server(type = Fuse, state = PRESENT)
+@Fuse(server = @Server(type = Fuse, state = PRESENT))
 public class DataTransformationDeploymentTest extends DefaultTest {
 
 	@InjectRequirement
-	private static ServerRequirement serverRequirement;
+	private static FuseRequirement serverRequirement;
 
 	/**
 	 * Prepares test environment

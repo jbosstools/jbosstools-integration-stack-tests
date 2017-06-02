@@ -28,6 +28,7 @@ Export-Package: org.jboss.tools.fuse.reddeer,
  org.jboss.tools.fuse.reddeer.perspectives,
  org.jboss.tools.fuse.reddeer.preference,
  org.jboss.tools.fuse.reddeer.projectexplorer,
+ org.jboss.tools.fuse.reddeer.requirement,
  org.jboss.tools.fuse.reddeer.utils,
  org.jboss.tools.fuse.reddeer.view,
  org.jboss.tools.fuse.reddeer.wizard

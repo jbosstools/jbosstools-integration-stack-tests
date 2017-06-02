@@ -21,8 +21,9 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.common.reddeer.FileUtils;
 import org.jboss.tools.common.reddeer.ResourceHelper;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
+import org.jboss.tools.fuse.reddeer.requirement.FuseRequirement;
+import org.jboss.tools.fuse.reddeer.requirement.FuseRequirement.Fuse;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
-import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.runtime.reddeer.utils.FuseServerManipulator;
 import org.junit.AfterClass;
@@ -35,11 +36,11 @@ import org.junit.runner.RunWith;
  * @author tsedmik
  */
 @RunWith(RedDeerSuite.class)
-@Server(type = EAP, state = RUNNING)
+@Fuse(server = @Server(type = EAP, state = RUNNING))
 public class DataTransformationDeploymentEAPTest extends DefaultTest {
 
 	@InjectRequirement
-	private static ServerRequirement serverRequirement;
+	private static FuseRequirement serverRequirement;
 
 	/**
 	 * Cleans up test environment
