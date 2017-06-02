@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: BPMN2 Bot Tests
 Bundle-SymbolicName: org.jboss.tools.bpmn2.ui.bot.test;singleton:=true
-Bundle-Version: 4.4.0.qualifier
+Bundle-Version: 4.5.0.qualifier
 Bundle-Activator: org.jboss.tools.bpmn2.ui.bot.test.Activator
 Bundle-ClassPath: .,
  lib/drools-compiler.jar,
@@ -35,8 +35,8 @@ Require-Bundle:
  org.eclipse.swtbot.go,
  org.eclipse.ui.forms,
  org.hamcrest.library,
- org.jboss.tools.bpmn2.reddeer;bundle-version="4.4.0",
- org.jboss.tools.runtime.reddeer;bundle-version="4.4.0",
+ org.jboss.tools.bpmn2.reddeer;bundle-version="4.5.0",
+ org.jboss.tools.runtime.reddeer;bundle-version="4.5.0",
  org.jboss.reddeer.go;bundle-version="1.0.0",
  org.jboss.reddeer.junit
 Bundle-ActivationPolicy: lazy

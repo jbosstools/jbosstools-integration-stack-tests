@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Fuse Reddeer Framework
 Bundle-SymbolicName: org.jboss.tools.fuse.reddeer
-Bundle-Version: 4.4.0.qualifier
+Bundle-Version: 4.5.0.qualifier
 Bundle-Activator: org.jboss.tools.fuse.reddeer.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.eclipse.ui,
@@ -18,8 +18,8 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.reddeer.go;bundle-version="1.0.0",
  org.jboss.reddeer.gef;bundle-version="1.0.0",
  org.jboss.reddeer.graphiti;bundle-version="1.0.0",
- org.jboss.tools.runtime.reddeer;bundle-version="4.4.0",
- org.jboss.tools.common.reddeer;bundle-version="4.4.0"
+ org.jboss.tools.runtime.reddeer;bundle-version="4.5.0",
+ org.jboss.tools.common.reddeer;bundle-version="4.5.0"
 Export-Package: org.jboss.tools.fuse.reddeer,
  org.jboss.tools.fuse.reddeer.component,
  org.jboss.tools.fuse.reddeer.condition,
