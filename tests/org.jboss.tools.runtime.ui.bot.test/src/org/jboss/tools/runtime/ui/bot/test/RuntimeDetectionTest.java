@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.tools.runtime.reddeer.RuntimeEntry;
 import org.jboss.tools.runtime.reddeer.preference.JBossRuntimeDetection;
@@ -40,9 +41,11 @@ public class RuntimeDetectionTest {
 
 	@Test
 	public void testDownloadRuntimesProjectURLs() {
-		JBossRuntimeDetection prefPage = new JBossRuntimeDetection();
-		prefPage.open();
-		DownloadRuntimesWizard runtimeWiz = prefPage.downloadRuntime();
+		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
+		JBossRuntimeDetection page = new JBossRuntimeDetection();
+		dialog.open();
+		dialog.select(page);
+		DownloadRuntimesWizard runtimeWiz = page.downloadRuntime();
 		StringBuilder badURLs = new StringBuilder();
 		for (String runtime : runtimeWiz.getAllRuntimes()) {
 			String url = runtimeWiz.getProjectURL(runtime);
@@ -50,15 +53,17 @@ public class RuntimeDetectionTest {
 				badURLs.append(runtime + " - " + url + "\n");
 		}
 		runtimeWiz.cancel();
-		prefPage.cancel();
+		dialog.cancel();
 		assertEquals(badURLs.toString(), 0, badURLs.length());
 	}
 
 	@Test
 	public void testDownloadRuntimesDownloadURLs() {
-		JBossRuntimeDetection prefPage = new JBossRuntimeDetection();
-		prefPage.open();
-		DownloadRuntimesWizard runtimeWiz = prefPage.downloadRuntime();
+		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
+		JBossRuntimeDetection page = new JBossRuntimeDetection();
+		dialog.open();
+		dialog.select(page);
+		DownloadRuntimesWizard runtimeWiz = page.downloadRuntime();
 		StringBuilder badURLs = new StringBuilder();
 		for (String runtime : runtimeWiz.getAllRuntimes()) {
 			String url = runtimeWiz.getDownloadURL(runtime);
@@ -66,7 +71,7 @@ public class RuntimeDetectionTest {
 				badURLs.append(runtime + " - " + url + "\n");
 		}
 		runtimeWiz.cancel();
-		prefPage.cancel();
+		dialog.cancel();
 		assertEquals(badURLs.toString(), 0, badURLs.length());
 	}
 
@@ -83,10 +88,12 @@ public class RuntimeDetectionTest {
 
 		// workaround due to native window dialog for specifying a path
 		RuntimeDetectionDownloadTest.downloadRuntime("WildFly 8.1.0 Final");
-		JBossRuntimeDetection prefPage = new JBossRuntimeDetection();
-		prefPage.open();
-		prefPage.editFirstPath(pathToServers);
-		List<RuntimeEntry> entries = prefPage.searchRuntimes();
+		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
+		JBossRuntimeDetection page = new JBossRuntimeDetection();
+		dialog.open();
+		dialog.select(page);
+		page.editFirstPath(pathToServers);
+		List<RuntimeEntry> entries = page.searchRuntimes();
 
 		// entries should contains following elements
 		List<RuntimeEntry> temp = new ArrayList<RuntimeEntry>();
@@ -102,7 +109,7 @@ public class RuntimeDetectionTest {
 			}
 		}
 
-		prefPage.ok();
+		dialog.ok();
 	}
 
 	/**

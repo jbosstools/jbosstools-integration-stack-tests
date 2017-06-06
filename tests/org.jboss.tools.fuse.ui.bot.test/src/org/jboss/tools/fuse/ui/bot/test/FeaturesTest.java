@@ -21,6 +21,7 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.fuse.reddeer.ProjectTemplate;
 import org.jboss.tools.fuse.reddeer.ProjectType;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
@@ -59,10 +60,12 @@ public class FeaturesTest extends DefaultTest {
 		editor.setId("file:work/cbr/input", "start");
 
 		// enable "If enabled the ID values will be used for labels if existing"
-		FuseToolingEditorPreferencePage prefPage = new FuseToolingEditorPreferencePage();
-		prefPage.open();
-		prefPage.setShowIDinEditor(true);
-		prefPage.ok();
+		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
+		FuseToolingEditorPreferencePage page = new FuseToolingEditorPreferencePage();
+		dialog.open();
+		dialog.select(page);
+		page.setShowIDinEditor(true);
+		dialog.ok();
 		editor.activate();
 		try {
 			new LabeledEditPart("From start").select();
@@ -71,9 +74,10 @@ public class FeaturesTest extends DefaultTest {
 		}
 
 		// disable "If enabled the ID values will be used for labels if existing"
-		prefPage.open();
-		prefPage.setShowIDinEditor(false);
-		prefPage.ok();
+		dialog.open();
+		dialog.select(page);
+		page.setShowIDinEditor(false);
+		dialog.ok();
 		editor.activate();
 		try {
 			new LabeledEditPart("file:work/cbr/input").select();

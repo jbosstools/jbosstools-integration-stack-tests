@@ -15,6 +15,8 @@ import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
+import org.jboss.reddeer.eclipse.wst.server.ui.Runtime;
+import org.jboss.reddeer.eclipse.wst.server.ui.RuntimePreferencePage;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerLabel;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
@@ -27,6 +29,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.runtime.reddeer.preference.FuseServerRuntimePreferencePage;
 import org.jboss.tools.runtime.reddeer.wizard.FuseModifyModulesPage;
 import org.jboss.tools.runtime.reddeer.wizard.FuseServerWizard;
@@ -41,52 +44,53 @@ public class FuseServerManipulator {
 	private static final Logger log = Logger.getLogger(FuseServerManipulator.class);
 
 	public static void addServerRuntime(String type, String path) {
-
+		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
 		FuseServerRuntimePreferencePage serverRuntime = new FuseServerRuntimePreferencePage();
-		serverRuntime.open();
+		dialog.open();
+		dialog.select(serverRuntime);
 		serverRuntime.addServerRuntime(type, path);
-		serverRuntime.ok();
+		dialog.ok();
 	}
 
 	public static void editServerRuntime(String name, String path) {
-
+		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
 		FuseServerRuntimePreferencePage serverRuntime = new FuseServerRuntimePreferencePage();
-		serverRuntime.open();
+		dialog.open();
+		dialog.select(serverRuntime);
 		serverRuntime.editServerRuntime(name, path);
-		serverRuntime.ok();
+		dialog.ok();
 	}
 
 	public static void removeServerRuntime(String name) {
-
+		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
 		FuseServerRuntimePreferencePage serverRuntime = new FuseServerRuntimePreferencePage();
-		serverRuntime.open();
+		dialog.open();
+		dialog.select(serverRuntime);
 		try {
-			serverRuntime.removeServerRuntime(name);
+			serverRuntime.removeRuntime(new Runtime(name, ""));
 		} catch (CoreLayerException ex) {
 			log.warn("Cannot remove '" + name + "' server runtime. It is not listed in Server Runtimes!");
 		}
-		serverRuntime.ok();
+		dialog.ok();
 	}
 
 	public static void deleteAllServerRuntimes() {
 
-		FuseServerRuntimePreferencePage serverRuntime = new FuseServerRuntimePreferencePage();
-		serverRuntime.open();
-		try {
-			for (String runtime : serverRuntime.getServerRuntimes()) {
-				serverRuntime.removeServerRuntime(runtime);
-			}
-		} catch (CoreLayerException ex) {
-		}
-		serverRuntime.ok();
+		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
+		RuntimePreferencePage page = new RuntimePreferencePage();
+		dialog.open();
+		dialog.select(page);
+		page.removeAllRuntimes();
+		dialog.ok();
 	}
 
-	public static List<String> getServerRuntimes() {
-
+	public static List<Runtime> getServerRuntimes() {
+		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
 		FuseServerRuntimePreferencePage serverRuntime = new FuseServerRuntimePreferencePage();
-		serverRuntime.open();
-		List<String> temp = serverRuntime.getServerRuntimes();
-		serverRuntime.cancel();
+		dialog.open();
+		dialog.select(serverRuntime);
+		List<Runtime> temp = serverRuntime.getServerRuntimes();
+		dialog.cancel();
 		return temp;
 	}
 

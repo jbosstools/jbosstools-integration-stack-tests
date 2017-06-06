@@ -8,13 +8,11 @@ import org.jboss.reddeer.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
-import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.list.DefaultList;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 
 /**
  * 
@@ -65,17 +63,5 @@ public class InstalledJREs extends PreferencePage {
 			}
 		}
 		return false;
-	}
-
-	public void open() {
-		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
-		dialog.open();
-		dialog.select(this);
-	}
-
-	public void ok() {
-		String title = new DefaultShell().getText();
-		new OkButton().click();
-		new WaitWhile(new ShellWithTextIsAvailable(title));
 	}
 }
