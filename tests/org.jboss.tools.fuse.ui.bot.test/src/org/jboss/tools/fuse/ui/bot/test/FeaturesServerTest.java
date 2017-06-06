@@ -15,6 +15,7 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.common.reddeer.FileUtils;
 import org.jboss.tools.common.reddeer.condition.RadioButtonIsAvailable;
 import org.jboss.tools.common.reddeer.widget.LabeledTextExt;
@@ -63,9 +64,11 @@ public class FeaturesServerTest extends DefaultTest {
 	public void testFuseJbossRuntimeDetection() {
 		downloadRuntime("JBoss Fuse 6.3.0");
 		assertTrue("Server was not created in view", new ServersView().getServers().size() == 1);
-		FuseServerRuntimePreferencePage runtimePref = new FuseServerRuntimePreferencePage();
-		runtimePref.open();
-		assertTrue("Server runtime was not created", runtimePref.getServerRuntimes().size() == 1);
+		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
+		FuseServerRuntimePreferencePage serverRuntime = new FuseServerRuntimePreferencePage();
+		dialog.open();
+		dialog.select(serverRuntime);
+		assertTrue("Server runtime was not created", serverRuntime.getServerRuntimes().size() == 1);
 	}
 
 	/**
@@ -75,9 +78,11 @@ public class FeaturesServerTest extends DefaultTest {
 	 *            String name of runtime
 	 */
 	private void downloadRuntime(String name) {
-		JBossRuntimeDetection prefPage = new JBossRuntimeDetection();
-		prefPage.open();
-		DownloadRuntimesWizard runtimeWiz = prefPage.downloadRuntime();
+		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
+		JBossRuntimeDetection page = new JBossRuntimeDetection();
+		dialog.open();
+		dialog.select(page);
+		DownloadRuntimesWizard runtimeWiz = page.downloadRuntime();
 		runtimeWiz.selectRuntime(name);
 		runtimeWiz.next();
 		new PushButton("Add...").click();
@@ -96,7 +101,7 @@ public class FeaturesServerTest extends DefaultTest {
 		runtimeWiz.setDownloadFolder(getPath() + "target/temp");
 		runtimeWiz.finish(name);
 		new WaitWhile(new ShellWithTextIsAvailable("Download 'JBoss Fuse 6.3.0'"), TimePeriod.getCustom(900));
-		prefPage.ok();
+		dialog.ok();
 	}
 
 	/**

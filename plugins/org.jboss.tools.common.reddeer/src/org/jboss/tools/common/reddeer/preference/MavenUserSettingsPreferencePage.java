@@ -1,13 +1,8 @@
 package org.jboss.tools.common.reddeer.preference;
 
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.jface.preference.PreferencePage;
-import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 
 /**
  * Represents "Maven --> User Settings" preference page
@@ -46,17 +41,5 @@ public class MavenUserSettingsPreferencePage extends PreferencePage {
 
 	public String getRepositoryLocation() {
 		return new DefaultText(3).getText();
-	}
-
-	public void open() {
-		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
-		dialog.open();
-		dialog.select(this);
-	}
-
-	public void ok() {
-		String title = new DefaultShell().getText();
-		new OkButton().click();
-		new WaitWhile(new ShellWithTextIsAvailable(title));
 	}
 }

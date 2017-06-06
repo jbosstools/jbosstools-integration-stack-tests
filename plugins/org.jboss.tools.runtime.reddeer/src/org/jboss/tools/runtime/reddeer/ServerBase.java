@@ -24,6 +24,7 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -168,10 +169,12 @@ public abstract class ServerBase extends RuntimeBase {
 	 */
 	protected void addJre() {
 		if (jre != null) {
-			InstalledJREs installedJREsPage = new InstalledJREs();
-			installedJREsPage.open();
-			installedJREsPage.addJre(jre, jreName);
-			installedJREsPage.ok();
+			WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
+			InstalledJREs page = new InstalledJREs();
+			dialog.open();
+			dialog.select(page);
+			page.addJre(jre, jreName);
+			dialog.ok();
 		}
 	}
 

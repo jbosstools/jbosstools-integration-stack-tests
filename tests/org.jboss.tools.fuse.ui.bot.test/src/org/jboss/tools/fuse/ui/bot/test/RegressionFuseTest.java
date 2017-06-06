@@ -22,6 +22,7 @@ import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.fuse.reddeer.ProjectTemplate;
 import org.jboss.tools.fuse.reddeer.ProjectType;
 import org.jboss.tools.fuse.reddeer.condition.FuseLogContainsText;
@@ -73,7 +74,10 @@ public class RegressionFuseTest extends DefaultTest {
 	@Test
 	public void issue_1067() {
 
-		new FuseServerRuntimePreferencePage().open();
+		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
+		FuseServerRuntimePreferencePage serverRuntime = new FuseServerRuntimePreferencePage();
+		dialog.open();
+		dialog.select(serverRuntime);
 
 		new PushButton("Add...").click();
 		new DefaultShell("New Server Runtime Environment").setFocus();

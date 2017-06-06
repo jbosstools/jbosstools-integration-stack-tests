@@ -13,6 +13,7 @@ import org.jboss.reddeer.swt.impl.link.DefaultLink;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -60,7 +61,10 @@ public class DownloadServerTest extends DefaultTest {
 	@Test
 	public void testDownloadServerRuntimeTest() {
 
-		new FuseServerRuntimePreferencePage().open();
+		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
+		FuseServerRuntimePreferencePage serverRuntime = new FuseServerRuntimePreferencePage();
+		dialog.open();
+		dialog.select(serverRuntime);
 		new PushButton(ADD_BUTTON).click();
 		new DefaultShell(NEW_WINDOW).setFocus();
 		new DefaultTreeItem(SERVER_SECTION, SERVER_TYPE).select();

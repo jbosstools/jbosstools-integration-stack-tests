@@ -17,6 +17,7 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.common.reddeer.LogGrapper;
 import org.jboss.tools.common.reddeer.preference.ConsolePreferencePage;
 import org.jboss.tools.common.reddeer.view.ErrorLogView;
@@ -73,11 +74,13 @@ public class JMXNavigatorServerTest {
 		new WorkbenchShell().maximize();
 
 		// Disable showing Console view after standard output changes
+		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
 		ConsolePreferencePage consolePref = new ConsolePreferencePage();
-		consolePref.open();
+		dialog.open();
+		dialog.select(consolePref);
 		consolePref.toggleShowConsoleErrorWrite(false);
 		consolePref.toggleShowConsoleStandardWrite(false);
-		consolePref.ok();
+		dialog.ok();
 
 		// Disable showing Error Log view after changes
 		ErrorLogView error = new ErrorLogView();

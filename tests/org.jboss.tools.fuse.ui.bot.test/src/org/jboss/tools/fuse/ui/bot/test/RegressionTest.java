@@ -50,6 +50,7 @@ import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.common.reddeer.LogGrapper;
 import org.jboss.tools.common.reddeer.ResourceHelper;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
@@ -57,9 +58,7 @@ import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.common.reddeer.view.ErrorLogView;
 import org.jboss.tools.common.reddeer.view.ProblemsViewExt;
 import org.jboss.tools.common.reddeer.widget.LabeledTextExt;
-import org.jboss.tools.fuse.reddeer.ProjectTemplate;
 import org.jboss.tools.fuse.reddeer.ProjectType;
-import org.jboss.tools.fuse.reddeer.SupportedCamelVersions;
 import org.jboss.tools.fuse.reddeer.component.ConvertBodyTo;
 import org.jboss.tools.fuse.reddeer.component.Log;
 import org.jboss.tools.fuse.reddeer.component.Route;
@@ -166,8 +165,10 @@ public class RegressionTest extends DefaultTest {
 	@Test
 	public void issue_1076() {
 
+		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
 		FuseServerRuntimePreferencePage serverRuntime = new FuseServerRuntimePreferencePage();
-		serverRuntime.open();
+		dialog.open();
+		dialog.select(serverRuntime);
 		new PushButton("Add...").click();
 		new WaitUntil(new ShellWithTextIsAvailable("New Server Runtime Environment"));
 		new DefaultShell("New Server Runtime Environment").setFocus();
