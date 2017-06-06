@@ -14,8 +14,7 @@ import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.views.log.LogMessage;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
-import org.jboss.tools.common.reddeer.preference.ConsolePreferencePage;
+import org.jboss.tools.common.reddeer.preference.ConsolePreferenceUtil;
 import org.jboss.tools.common.reddeer.view.ErrorLogView;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.utils.FuseServerManipulator;
@@ -43,13 +42,8 @@ public class DefaultTest {
 		new WorkbenchShell().maximize();
 
 		log.info("Disable showing Console view after standard output changes");
-		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
-		ConsolePreferencePage consolePref = new ConsolePreferencePage();
-		dialog.open();
-		dialog.select(consolePref);
-		consolePref.toggleShowConsoleErrorWrite(false);
-		consolePref.toggleShowConsoleStandardWrite(false);
-		dialog.ok();
+		ConsolePreferenceUtil.setConsoleOpenOnError(false);
+		ConsolePreferenceUtil.setConsoleOpenOnOutput(false);
 
 		log.info("Disable showing Error Log view after changes");
 		new ErrorLogView().selectActivateOnNewEvents(false);
