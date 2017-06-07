@@ -21,7 +21,7 @@ import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.editor.DomainEditor;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
-import org.jboss.tools.switchyard.reddeer.preference.CompositePropertiesPage;
+import org.jboss.tools.switchyard.reddeer.preference.CompositePropertiesDialog;
 import org.jboss.tools.switchyard.reddeer.preference.component.ComponentPage;
 import org.jboss.tools.switchyard.reddeer.preference.component.ComponentPropertiesPage;
 import org.jboss.tools.switchyard.reddeer.preference.contract.ContractPage;
@@ -612,7 +612,7 @@ public class SwitchYardEditorImplementationsTest {
 	}
 
 	private void checkImplementationProperties(String tooltip, String name) throws Exception {
-		CompositePropertiesPage properties = new SwitchYardComponent(tooltip).showProperties();
+		CompositePropertiesDialog properties = new SwitchYardComponent(tooltip).showProperties();
 
 		ImplementationPage implPage = properties.selectImplementation();
 		assertEquals(name, implPage.getName());
@@ -643,7 +643,7 @@ public class SwitchYardEditorImplementationsTest {
 	}
 
 	private void checkContractProperties(String tooltip, String name, String type) throws Exception {
-		CompositePropertiesPage properties = new SwitchYardComponent(tooltip).showProperties();
+		CompositePropertiesDialog properties = new SwitchYardComponent(tooltip).showProperties();
 
 		ContractPage contractPage = properties.selectContract();
 
@@ -701,7 +701,7 @@ public class SwitchYardEditorImplementationsTest {
 	}
 
 	private void checkComponentProperties(String tooltip, String name) throws Exception {
-		CompositePropertiesPage properties = new SwitchYardComponent(tooltip).showProperties();
+		CompositePropertiesDialog properties = new SwitchYardComponent(tooltip).showProperties();
 
 		ComponentPage componanetPage = properties.selectComponent();
 		assertEquals(name, componanetPage.getName());
@@ -728,15 +728,15 @@ public class SwitchYardEditorImplementationsTest {
 			throws Exception {
 		SwitchYardEditor editor = new SwitchYardEditor();
 
-		ImplementationKnowledgePage rulesPage = new SwitchYardComponent(tooltip).showProperties()
-				.selectRulesImplementation();
+		CompositePropertiesDialog propertiesDialog = new SwitchYardComponent(tooltip).showProperties();
+		ImplementationKnowledgePage rulesPage = propertiesDialog.selectRulesImplementation();
 		rulesPage.selectOperations();
 		rulesPage.addOperation(operation, type, null);
 		rulesPage.addGlobal(operation + "globalfrom", operation + "globalto");
 		rulesPage.addInput(operation + "inputfrom", operation + "inputto", operation + "inputoutput");
 		rulesPage.addOutput(operation + "outputfrom", operation + "outputto");
 		rulesPage.addFault(operation + "faultfrom", operation + "faultto");
-		rulesPage.ok();
+		propertiesDialog.ok();
 
 		editor.save();
 
@@ -772,14 +772,14 @@ public class SwitchYardEditorImplementationsTest {
 	private void checkAdvancedProperties(String xpath, String tooltip) throws Exception {
 		SwitchYardEditor editor = new SwitchYardEditor();
 
-		ImplementationKnowledgePage knowledgePage = new SwitchYardComponent(tooltip).showProperties()
-				.selectRulesImplementation();
+		CompositePropertiesDialog propertiesDialog = new SwitchYardComponent(tooltip).showProperties();
+		ImplementationKnowledgePage knowledgePage = propertiesDialog.selectRulesImplementation();
 		knowledgePage.selectAdvanced();
 		knowledgePage.addChannel("myChannel", "myOperation", "myReference", "SwitchYardServiceChannel");
 		knowledgePage.addListener("AgendaStats");
 		knowledgePage.addLogger("CONSOLE", null, null);
 		knowledgePage.addProperty("prop", "val");
-		knowledgePage.ok();
+		propertiesDialog.ok();
 
 		editor.save();
 

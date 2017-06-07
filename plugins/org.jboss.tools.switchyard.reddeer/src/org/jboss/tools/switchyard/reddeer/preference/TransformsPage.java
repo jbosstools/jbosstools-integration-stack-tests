@@ -7,7 +7,7 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.tools.switchyard.reddeer.wizard.ValidatorWizard;
 
-public class TransformsPage extends CompositePropertiesPage {
+public class TransformsPage extends CompositePropertiesDialog {
 
 	public static final int COLUMN_FROM = 0;
 	public static final int COLUMN_TO = 1;

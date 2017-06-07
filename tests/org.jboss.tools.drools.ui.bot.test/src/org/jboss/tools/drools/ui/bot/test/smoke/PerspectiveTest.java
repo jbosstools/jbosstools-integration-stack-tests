@@ -28,6 +28,6 @@ public class PerspectiveTest extends TestParent {
 	private void openAndCheckPerspective(AbstractPerspective perspective, String perspectiveName) {
 		perspective.open();
 		String mainWindowTitle = new DefaultShell().getText();
-		Assert.assertTrue(perspectiveName + " perspective is not opened.", mainWindowTitle.contains(perspectiveName));
+		Assert.assertTrue(perspectiveName + " perspective is not opened.", perspective.isOpened());
 	}
 }

@@ -168,10 +168,4 @@ public class ImplementationKnowledgePage {
 			new WaitWhile(new ShellWithTextIsAvailable(title));
 		}
 	}
-
-	public void ok() {
-		String title = new DefaultShell().getText();
-		new OkButton().click();
-		new WaitWhile(new ShellWithTextIsAvailable(title));
-	}
 }
