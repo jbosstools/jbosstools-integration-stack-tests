@@ -38,7 +38,7 @@ import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComposite;
-import org.jboss.tools.switchyard.reddeer.preference.CompositePropertiesPage;
+import org.jboss.tools.switchyard.reddeer.preference.CompositePropertiesDialog;
 import org.jboss.tools.switchyard.reddeer.wizard.BPELServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.BPMNServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.BeanServiceWizard;
@@ -210,9 +210,9 @@ public class SwitchYardEditor extends GEFEditor {
 		return super.getPalette();
 	}
 
-	public CompositePropertiesPage showProperties() {
+	public CompositePropertiesDialog showProperties() {
 		getComposite().getContextButton("Properties").click();
-		return new CompositePropertiesPage("");
+		return new CompositePropertiesDialog("");
 	}
 
 	public String xpath(String expr) throws FileNotFoundException {

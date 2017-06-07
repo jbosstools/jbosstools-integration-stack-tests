@@ -7,7 +7,7 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
-import org.jboss.tools.switchyard.reddeer.preference.CompositePropertiesPage;
+import org.jboss.tools.switchyard.reddeer.preference.CompositePropertiesDialog;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
@@ -59,7 +59,7 @@ public class SwitchYardEditorValidatorsTest {
 	@Test
 	public void validatorDTDTest() throws Exception {
 		SwitchYardEditor editor = new SwitchYardEditor();
-		CompositePropertiesPage compositePropertiesPage = editor.showProperties();
+		CompositePropertiesDialog compositePropertiesPage = editor.showProperties();
 		ValidatorWizard wizard = compositePropertiesPage.selectValidators().add();
 		wizard.selectValidatorType("XML");
 		wizard.next();
@@ -81,7 +81,7 @@ public class SwitchYardEditorValidatorsTest {
 	@Test
 	public void validatorXMLSchemaTest() throws Exception {
 		SwitchYardEditor editor = new SwitchYardEditor();
-		CompositePropertiesPage compositePropertiesPage = editor.showProperties();
+		CompositePropertiesDialog compositePropertiesPage = editor.showProperties();
 		ValidatorWizard wizard = compositePropertiesPage.selectValidators().add();
 		wizard.selectValidatorType("XML");
 		wizard.next();
@@ -103,7 +103,7 @@ public class SwitchYardEditorValidatorsTest {
 	@Test
 	public void validatorRelaxNGTest() throws Exception {
 		SwitchYardEditor editor = new SwitchYardEditor();
-		CompositePropertiesPage compositePropertiesPage = editor.showProperties();
+		CompositePropertiesDialog compositePropertiesPage = editor.showProperties();
 		ValidatorWizard wizard = compositePropertiesPage.selectValidators().add();
 		wizard.selectValidatorType("XML");
 		wizard.next();
@@ -125,7 +125,7 @@ public class SwitchYardEditorValidatorsTest {
 	@Test
 	public void validatorJavaClassTest() throws Exception {
 		SwitchYardEditor editor = new SwitchYardEditor();
-		CompositePropertiesPage compositePropertiesPage = editor.showProperties();
+		CompositePropertiesDialog compositePropertiesPage = editor.showProperties();
 		ValidatorWizard wizard = compositePropertiesPage.selectValidators().add();
 		wizard.selectValidatorType("Java");
 		wizard.next();
@@ -147,14 +147,14 @@ public class SwitchYardEditorValidatorsTest {
 	@Test
 	public void validatorJavaBeanTest() throws Exception {
 		SwitchYardEditor editor = new SwitchYardEditor();
-		CompositePropertiesPage compositePropertiesPage = editor.showProperties();
-		ValidatorWizard wizard = compositePropertiesPage.selectValidators().add();
+		CompositePropertiesDialog propertiesDialog = editor.showProperties();
+		ValidatorWizard wizard = propertiesDialog.selectValidators().add();
 		wizard.selectValidatorType("Java");
 		wizard.next();
 		wizard.setName("aaa");
 		wizard.setBeanName("bbb");
 		wizard.finish();
-		compositePropertiesPage.activate().ok();
+		propertiesDialog.activate().ok();
 		editor.save();
 
 		assertEquals("1", editor.xpath("count(/switchyard/validates)"));

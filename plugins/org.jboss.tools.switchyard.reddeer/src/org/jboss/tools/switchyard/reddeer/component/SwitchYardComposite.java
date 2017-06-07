@@ -1,6 +1,6 @@
 package org.jboss.tools.switchyard.reddeer.component;
 
-import org.jboss.tools.switchyard.reddeer.preference.CompositePropertiesPage;
+import org.jboss.tools.switchyard.reddeer.preference.CompositePropertiesDialog;
 
 public class SwitchYardComposite extends SwitchYardComponent {
 
@@ -9,8 +9,8 @@ public class SwitchYardComposite extends SwitchYardComponent {
 	}
 
 	@Override
-	public CompositePropertiesPage showProperties() {
+	public CompositePropertiesDialog showProperties() {
 		getContextButton("Properties").click();
-		return new CompositePropertiesPage("").activate();
+		return new CompositePropertiesDialog("").activate();
 	}
 }
