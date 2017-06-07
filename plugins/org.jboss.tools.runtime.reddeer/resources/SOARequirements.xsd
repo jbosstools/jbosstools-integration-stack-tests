@@ -315,6 +315,7 @@
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
+	</xs:complexType>
 
 	<!-- JBoss Fuse -->
 	<xs:complexType name="jboss-fuse">
