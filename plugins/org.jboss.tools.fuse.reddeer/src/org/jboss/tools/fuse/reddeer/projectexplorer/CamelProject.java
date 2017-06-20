@@ -27,9 +27,7 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
-import org.jboss.tools.fuse.reddeer.wizard.CamelXmlFileWizard;
 
 /**
  * Manipulates with Camel projects
@@ -55,32 +53,12 @@ public class CamelProject {
 		item.open();
 	}
 
-	public void deleteFile(String... path) {
-		selectProjectItem(path);
-		new ContextMenu("Delete").select();
-		new WaitUntil(new ShellWithTextIsAvailable("Delete"));
-		new DefaultShell("Delete");
-		new OkButton().click();
-		new WorkbenchShell();
-	}
-
 	public void openCamelContext(String name) {
 		try {
 			openFile("src/main/resources", "META-INF", "spring", name);
 		} catch (Throwable t) {
 			openFile("src/main/resources", "OSGI-INF", "blueprint", name);
 		}
-	}
-
-	public void deleteCamelContext(String name) {
-
-		project.getProjectItem("src/main/resources", "META-INF", "spring", name).delete();
-	}
-
-	public void createCamelContext(String name) {
-
-		project.getProjectItem("src/main/resources", "META-INF", "spring").select();
-		new CamelXmlFileWizard().openWizard().setName(name).finish();
 	}
 
 	public void selectCamelContext(String name) {
@@ -99,10 +77,14 @@ public class CamelProject {
 
 		ConsoleHasText camel = new ConsoleHasText("Starting Camel ...");
 		ConsoleHasText jetty = new ConsoleHasText("Started Jetty Server");
+		ConsoleHasText failure = new ConsoleHasText("BUILD FAILURE");
 		boolean started = false;
 		for (int i = 0; i < 300; i++) {
 			if (camel.test() || jetty.test()) {
 				started = true;
+				break;
+			}
+			if (failure.test()) {
 				break;
 			}
 			AbstractWait.sleep(TimePeriod.SHORT);
@@ -115,32 +97,12 @@ public class CamelProject {
 		new WaitUntil(new ConsoleHasText("started and consuming from"), TimePeriod.VERY_LONG);
 	}
 
-	public void runCamelContext(String name) {
-
-		String id = getCamelContextId("src/main/resources", "META-INF", "spring", name);
-		project.getProjectItem("src/main/resources", "META-INF", "spring", name).select();
-		try {
-			new ContextMenu("Run As", "2 Local Camel Context").select();
-		} catch (CoreLayerException ex) {
-			new ContextMenu("Run As", "1 Local Camel Context").select();
-		}
-		new WaitUntil(new ConsoleHasText("(CamelContext: " + id + ") started"), TimePeriod.VERY_LONG);
-	}
-
 	public void runCamelContextWithoutTests(String name) {
 
 		String id = getCamelContextId("src/main/resources", "META-INF", "spring", name);
 		project.getProjectItem("src/main/resources", "META-INF", "spring", name).select();
 		new ContextMenu("Run As", "3 Local Camel Context (without tests)").select();
 		new WaitUntil(new ConsoleHasText("(CamelContext: " + id + ") started"), TimePeriod.VERY_LONG);
-	}
-
-	public void debugCamelContext(String name) {
-
-		project.getProjectItem("src/main/resources", "META-INF", "spring", name).select();
-		new ContextMenu("Debug As", "2 Local Camel Context").select();
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		closePerspectiveSwitchWindow();
 	}
 
 	public void debugCamelContextWithoutTests(String name) {
@@ -166,37 +128,6 @@ public class CamelProject {
 		new LabeledText("Password:").setText("admin");
 		new OkButton().click();
 		AbstractWait.sleep(TimePeriod.SHORT);
-	}
-
-	public CamelProject(Project project) {
-
-		this.project = project;
-	}
-
-	public Project getProject() {
-
-		return project;
-	}
-
-	public void deleteProject() {
-
-		new ProjectExplorer().getProject(project.getName()).delete(true);
-	}
-
-	public void close() {
-
-		new WorkbenchShell();
-		project.select();
-		new ContextMenu("Close Project").select();
-		new WaitWhile(new JobIsRunning());
-	}
-
-	public void open() {
-
-		new WorkbenchShell();
-		project.select();
-		new ContextMenu("Open Project").select();
-		new WaitWhile(new JobIsRunning());
 	}
 
 	public void enableCamelNature() {
@@ -230,10 +161,6 @@ public class CamelProject {
 		IWorkspaceRoot root = workspace.getRoot();
 
 		return new File(new File(root.getLocationURI().getPath()), project.getName());
-	}
-
-	public File getPomFile() {
-		return new File(getFile(), "pom.xml");
 	}
 
 	public File getCamelContextFile(String name) throws FileNotFoundException {
