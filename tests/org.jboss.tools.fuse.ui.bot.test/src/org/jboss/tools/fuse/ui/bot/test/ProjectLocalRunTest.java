@@ -91,7 +91,7 @@ public class ProjectLocalRunTest extends DefaultTest {
 		log.info("Run a project as Local Camel Context (Project contains a passing test case).");
 		new DefaultEditor("CamelContextXmlTest.java").activate();
 		EditorManipulator.copyFileContent("resources/PassingTest.java");
-		new CamelProject(PROJECT_NAME).runCamelContext(PROJECT_CAMEL_CONTEXT);
+		new CamelProject(PROJECT_NAME).runCamelContext();
 		workbenchShell.setFocus();
 		assertFalse("This build should be successful.", new ConsoleView().getConsoleText().contains("BUILD FAILURE"));
 	}
@@ -115,7 +115,7 @@ public class ProjectLocalRunTest extends DefaultTest {
 		log.info("Run a project as Local Camel Context (Project contains a failing test case).");
 		new DefaultEditor("CamelContextXmlTest.java").activate();
 		EditorManipulator.copyFileContent("resources/FailingTest.java");
-		new CamelProject(PROJECT_NAME).runCamelContext(PROJECT_CAMEL_CONTEXT);
+		new CamelProject(PROJECT_NAME).runCamelContext();
 		new WaitUntil(new ConsoleHasText("BUILD FAILURE"), TimePeriod.getCustom(300));
 		workbenchShell.setFocus();
 	}
