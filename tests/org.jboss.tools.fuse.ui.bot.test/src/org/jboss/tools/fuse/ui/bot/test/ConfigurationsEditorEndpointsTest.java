@@ -24,6 +24,7 @@ import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.common.reddeer.XPathEvaluator;
 import org.jboss.tools.fuse.reddeer.ProjectTemplate;
 import org.jboss.tools.fuse.reddeer.ProjectType;
+import org.jboss.tools.fuse.reddeer.SupportedCamelVersions;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.editor.CamelEndpointDialog;
 import org.jboss.tools.fuse.reddeer.editor.ConfigurationsEditor;
@@ -113,8 +114,8 @@ public class ConfigurationsEditorEndpointsTest extends DefaultTest {
 	@Parameters
 	public static Collection<String> setupData() {
 		
-		new WorkbenchShell();
-		ProjectFactory.newProject(PROJECT_NAME).version("2.17.0.redhat-630077").template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();		
+		new WorkbenchShell();	
+		ProjectFactory.newProject(PROJECT_NAME).version(SupportedCamelVersions.CAMEL_2_17_0_REDHAT_630187).template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();		
 		for (IViewReference viewReference : WorkbenchPartLookup.getInstance().findAllViewReferences()) {
 			if (viewReference.getPartName().equals("Welcome")) {
 				final IViewReference iViewReference = viewReference;
@@ -149,13 +150,14 @@ public class ConfigurationsEditorEndpointsTest extends DefaultTest {
 	@BeforeClass
 	public static void setupResetCamelContext() {
 		
-		ProjectFactory.newProject(PROJECT_NAME).version("2.17.0.redhat-630077").template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();
+		ProjectFactory.newProject(PROJECT_NAME).version(SupportedCamelVersions.CAMEL_2_17_0_REDHAT_630187).template(ProjectTemplate.CBR).type(ProjectType.SPRING).create();
 	}
 	
 	@Before
 	public void initialSetup() {
 		
 		new CamelProject(PROJECT_NAME).openCamelContext(CONTEXT);
+		//new CamelEditor("camel-context.xml").activate();
 		CamelEditor.switchTab("Configurations");
 	}
 	
@@ -173,6 +175,7 @@ public class ConfigurationsEditorEndpointsTest extends DefaultTest {
 	@After
 	public void clearEnviroment() {
 		
+		//new CamelEditor("camel-context.xml").activate();
 		CamelEditor.switchTab("Source");
 		EditorManipulator.copyFileContentToCamelXMLEditor("resources/camel-context-cbr.xml");
 	}
@@ -205,6 +208,7 @@ public class ConfigurationsEditorEndpointsTest extends DefaultTest {
 		
 		try {
 			ConfigurationsEditor confEditor = new ConfigurationsEditor(PROJECT_NAME, CONTEXT);	
+			confEditor.activate();
 			String[] title = element.split(" ");
 			confEditor.createNewGlobalEndpoint(title[0], element);	
 			new DefaultTreeItem(new String[] { TYPE, title[0] + " (Endpoint)" }).select();
@@ -231,6 +235,7 @@ public class ConfigurationsEditorEndpointsTest extends DefaultTest {
 		
 		try {
 			ConfigurationsEditor confEditor = new ConfigurationsEditor(PROJECT_NAME, CONTEXT);
+			confEditor.activate();
 			String[] title = element.split(" ");
 			confEditor.createNewGlobalEndpoint(title[0], element);	
 			confEditor.editGlobalEndpoint(title[0]);
@@ -266,6 +271,7 @@ public class ConfigurationsEditorEndpointsTest extends DefaultTest {
 		
 		try {
 			ConfigurationsEditor confEditor = new ConfigurationsEditor(PROJECT_NAME, CONTEXT);
+			confEditor.activate();
 			String[] title = element.split(" ");
 			confEditor.createNewGlobalEndpoint(title[0], element);	
 			confEditor.deleteGlobalElement(Element.ENDPOINT, title[0]);
@@ -295,6 +301,7 @@ public class ConfigurationsEditorEndpointsTest extends DefaultTest {
 		
 		try {		
 			ConfigurationsEditor confEditor = new ConfigurationsEditor(PROJECT_NAME, CONTEXT);
+			confEditor.activate();
 			String[] title = element.split(" ");
 			confEditor.createNewGlobalEndpoint(title[0], element);	
 			CamelEditor.switchTab("Source");	

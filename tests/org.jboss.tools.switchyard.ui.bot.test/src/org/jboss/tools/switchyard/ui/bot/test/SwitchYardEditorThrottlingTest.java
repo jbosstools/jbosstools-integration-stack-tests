@@ -4,12 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
-import java.io.IOException;
-
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.stream.StreamResult;
-
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
@@ -18,9 +12,8 @@ import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
-import org.jboss.tools.switchyard.reddeer.editor.XPathEvaluator;
+import org.jboss.tools.switchyard.reddeer.preference.CompositePropertiesDialog;
 import org.jboss.tools.switchyard.reddeer.preference.ThrottlingPage;
-import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.jboss.tools.switchyard.reddeer.wizard.DefaultServiceWizard;
@@ -28,7 +21,6 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.w3c.dom.Node;
 
 /**
  * Test for setting throttling
@@ -75,7 +67,8 @@ public class SwitchYardEditorThrottlingTest {
 		new SwitchYardEditor().save();
 
 		/* Set Throttling */
-		ThrottlingPage throttlingPage = new Service("HelloService").showProperties().selectThrottling();
+		CompositePropertiesDialog propertiesDialog = new Service("HelloService").showProperties(); 
+		ThrottlingPage throttlingPage = propertiesDialog.selectThrottling();
 		throttlingPage.setThrottlingEnable(true);
 		assertTrue(throttlingPage.isMaximumRequestsEnabled());
 		assertTrue(throttlingPage.isTimePeriodEnabled());
@@ -83,30 +76,33 @@ public class SwitchYardEditorThrottlingTest {
 		assertFalse(throttlingPage.isTimePeriodReadOnly());
 		throttlingPage.setMaximumRequests("3");
 		throttlingPage.setTimePeriod("10000");
-		throttlingPage.ok();
+		propertiesDialog.ok();
 		new SwitchYardEditor().save();
 
 		/* Check settings */
-		throttlingPage = new Service("HelloService").showProperties().selectThrottling();
+		propertiesDialog = new Service("HelloService").showProperties();
+		throttlingPage = propertiesDialog.selectThrottling();
 		assertTrue(throttlingPage.isThrottlingEnableChecked());
 		assertEquals("3", throttlingPage.getMaximumRequests());
 		assertEquals("10000", throttlingPage.getTimePeriod());
-		throttlingPage.ok();
+		propertiesDialog.ok();
 
 		/* Disable Throttling */
-		throttlingPage = new Service("HelloService").showProperties().selectThrottling();
+		propertiesDialog = new Service("HelloService").showProperties();
+		throttlingPage = propertiesDialog.selectThrottling();
 		throttlingPage.setThrottlingEnable(false);
 		assertFalse(throttlingPage.isMaximumRequestsEnabled());
 		assertFalse(throttlingPage.isTimePeriodEnabled());
-		throttlingPage.ok();
+		propertiesDialog.ok();
 		new SwitchYardEditor().save();
 
 		/* Check settings */
-		throttlingPage = new Service("HelloService").showProperties().selectThrottling();
+		propertiesDialog = new Service("HelloService").showProperties();
+		throttlingPage = propertiesDialog.selectThrottling();
 		assertFalse(throttlingPage.isThrottlingEnableChecked());
 		assertFalse(throttlingPage.isMaximumRequestsEnabled());
 		assertFalse(throttlingPage.isTimePeriodEnabled());
-		throttlingPage.ok();
+		propertiesDialog.ok();
 	}
 
 	@AfterClass

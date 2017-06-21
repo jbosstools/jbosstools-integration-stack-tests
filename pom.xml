@@ -4,23 +4,21 @@
 	<parent>
 		<groupId>org.jboss.tools</groupId>
 		<artifactId>parent</artifactId>
-		<version>4.4.4.AM1-SNAPSHOT</version>
+		<version>4.5.0.AM1-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools</groupId>
 	<artifactId>integration-stack-tests</artifactId>
-	<version>4.4.0-SNAPSHOT</version>
+	<version>4.5.0-SNAPSHOT</version>
 	<name>integration-stack-tests.all</name>
 	<packaging>pom</packaging>
 	<properties>
 		<tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-integration-stack-tests.git</tycho.scmUrl>
 		<jbosstools.url>http://download.jboss.org/jbosstools</jbosstools.url>
-		<jbtis.tp.version>4.4.3.CR1</jbtis.tp.version>
+		<jbtis.tp.version>4.5.0.AM1-SNAPSHOT</jbtis.tp.version>
 		<jbtis.repo>staging</jbtis.repo>
-		<reddeer.site>http://download.jboss.org/jbosstools/neon/stable/updates/reddeer/1.2.0/</reddeer.site>
-		<orbit.site>http://download.eclipse.org/tools/orbit/downloads/drops/R20160520211859/repository/</orbit.site>
-		<swtbot.site>http://download.eclipse.org/technology/swtbot/releases/latest</swtbot.site>
-		<fuse.site>${jbosstools.url}/neon/integration/updates/integration-stack/fuse-tooling/9.2.0.CI/</fuse.site>
-		<switchyard.site>${jbosstools.url}/neon/integration/updates/integration-stack/switchyard/2.3.1.CI/</switchyard.site>
+		<orbit.site>${jbosstools.url}/updates/requirements/orbit/S20170516192513/</orbit.site>
+		<fuse.site>${jbosstools.url}/oxygen/snapshots/builds/jbosstools-fuse_master/</fuse.site>
+		<switchyard.site>${jbosstools.url}/oxygen/integration/updates/integration-stack/switchyard/2.4.0.CI/</switchyard.site>
 		<skipRequirements>${skipTests}</skipRequirements>
 		<!-- Need to specify a stable version of tycho plugin -->
 		<jbossTychoPluginsVersion>0.26.0</jbossTychoPluginsVersion>
@@ -35,8 +33,8 @@
 	<repositories>
 		<!--JBTIS Repository-->
 		<repository>
-			<id>jbtis-44-staging</id>
-			<url>${jbosstools.url}/neon/staging/updates/integration-stack/</url>
+			<id>jbtis-45-staging</id>
+			<url>${jbosstools.url}/oxygen/staging/updates/integration-stack/</url>
 			<layout>p2</layout>
 			<snapshots>
 				<enabled>true</enabled>
@@ -46,9 +44,10 @@
 			</releases>
 		</repository>
 		<!-- JBTIS Repository (early access) -->
+		<!-- At the moment there is no EA update site
 		<repository>
-			<id>jbtis-44-staging-ea</id>
-			<url>${jbosstools.url}/neon/staging/updates/integration-stack/earlyaccess</url>
+			<id>jbtis-45-staging-ea</id>
+			<url>${jbosstools.url}/oxygen/staging/updates/integration-stack/earlyaccess</url>
 			<layout>p2</layout>
 			<snapshots>
 				<enabled>true</enabled>
@@ -56,19 +55,7 @@
 			<releases>
 				<enabled>true</enabled>
 			</releases>
-		</repository>
-		<!-- Red Deer Update Site -->
-		<repository>
-			<id>reddeer-site</id>
-			<url>${reddeer.site}</url>
-			<layout>p2</layout>
-		</repository>
-		<!-- SWTBot Update Site -->
-		<repository>
-			<id>swtbot-site</id>
-			<url>${swtbot.site}</url>
-			<layout>p2</layout>
-		</repository>
+		</repository-->
 		<!-- Eclipse Orbit Update Site -->
 		<repository>
 			<id>orbit-site</id>
@@ -145,7 +132,7 @@
 			</properties>
 			<repositories>
 				<repository>
-					<id>fuse-9.2.0.CI</id>
+					<id>fuse-10.0.0.CI</id>
 					<url>${fuse.site}</url>
 					<layout>p2</layout>
 				</repository>

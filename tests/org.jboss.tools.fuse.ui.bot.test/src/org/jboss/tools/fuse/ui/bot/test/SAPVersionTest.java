@@ -14,7 +14,7 @@ import org.jboss.tools.common.reddeer.JiraClient;
 import org.jboss.tools.common.reddeer.XPathEvaluator;
 import org.jboss.tools.common.reddeer.view.ErrorLogView;
 import org.jboss.tools.fuse.reddeer.ProjectType;
-import org.jboss.tools.fuse.reddeer.SupportedVersions;
+import org.jboss.tools.fuse.reddeer.SupportedCamelVersions;
 import org.jboss.tools.fuse.reddeer.component.SAPIDocListServer;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
@@ -46,7 +46,7 @@ public class SAPVersionTest {
 
 	@Parameters(name = "{0}")
 	public static Collection<String> getCamelVersions() {
-		return SupportedVersions.getCamelVersions();
+		return SupportedCamelVersions.getCamelVersions();
 	}
 
 	public SAPVersionTest(String camelVersion) {
@@ -78,7 +78,7 @@ public class SAPVersionTest {
 	 */
 	@Test
 	public void testSAPVersion() throws Exception {
-		if (camelVersion.equals(SupportedVersions.CAMEL_2_15_1_REDHAT_621117)) {
+		if (camelVersion.equals(SupportedCamelVersions.CAMEL_2_15_1_REDHAT_621117)) {
 			Assume.assumeTrue(new JiraClient().isIssueClosed("FUSETOOLS-2121"));
 		}
 
@@ -95,7 +95,7 @@ public class SAPVersionTest {
 		XPathEvaluator xpath = new XPathEvaluator(pomFile);
 		String sapVersion = xpath.evaluateString("/project/dependencies/dependency[artifactId='camel-sap']/version");
 
-		assertEquals("For Camel '" + camelVersion + "'", SupportedVersions.getSAPVersion(camelVersion), sapVersion);
+		assertEquals("For Camel '" + camelVersion + "'", SupportedCamelVersions.getSAPVersion(camelVersion), sapVersion);
 	}
 
 }

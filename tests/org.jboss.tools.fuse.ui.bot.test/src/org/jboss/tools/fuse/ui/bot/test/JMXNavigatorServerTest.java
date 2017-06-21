@@ -1,7 +1,7 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
 import static org.jboss.reddeer.requirements.server.ServerReqState.RUNNING;
-import static org.jboss.tools.fuse.reddeer.SupportedVersions.CAMEL_2_17_0_REDHAT_630187;
+import static org.jboss.tools.fuse.reddeer.SupportedCamelVersions.CAMEL_2_17_0_REDHAT_630187;
 import static org.jboss.tools.runtime.reddeer.requirement.ServerReqType.Fuse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -17,6 +17,7 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.common.reddeer.LogGrapper;
 import org.jboss.tools.common.reddeer.preference.ConsolePreferencePage;
 import org.jboss.tools.common.reddeer.view.ErrorLogView;
@@ -24,9 +25,10 @@ import org.jboss.tools.fuse.reddeer.ProjectTemplate;
 import org.jboss.tools.fuse.reddeer.ProjectType;
 import org.jboss.tools.fuse.reddeer.condition.FuseLogContainsText;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
+import org.jboss.tools.fuse.reddeer.requirement.FuseRequirement;
+import org.jboss.tools.fuse.reddeer.requirement.FuseRequirement.Fuse;
 import org.jboss.tools.fuse.reddeer.view.FuseJMXNavigator;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
-import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.runtime.reddeer.utils.FuseServerManipulator;
 import org.junit.After;
@@ -47,7 +49,7 @@ import org.junit.runner.RunWith;
 @CleanWorkspace
 @OpenPerspective(FuseIntegrationPerspective.class)
 @RunWith(RedDeerSuite.class)
-@Server(type = Fuse, state = RUNNING)
+@Fuse(server = @Server(type = Fuse, state = RUNNING))
 public class JMXNavigatorServerTest {
 
 	private static final String PROJECT_NAME = "cbr-blueprint";
@@ -56,7 +58,7 @@ public class JMXNavigatorServerTest {
 	private static boolean setupIsDone = false;
 
 	@InjectRequirement
-	private static ServerRequirement serverReq;
+	private static FuseRequirement serverReq;
 
 	/**
 	 * Prepares test environment
@@ -72,11 +74,13 @@ public class JMXNavigatorServerTest {
 		new WorkbenchShell().maximize();
 
 		// Disable showing Console view after standard output changes
+		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
 		ConsolePreferencePage consolePref = new ConsolePreferencePage();
-		consolePref.open();
+		dialog.open();
+		dialog.select(consolePref);
 		consolePref.toggleShowConsoleErrorWrite(false);
 		consolePref.toggleShowConsoleStandardWrite(false);
-		consolePref.ok();
+		dialog.ok();
 
 		// Disable showing Error Log view after changes
 		ErrorLogView error = new ErrorLogView();

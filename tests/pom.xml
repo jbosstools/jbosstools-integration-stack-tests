@@ -4,14 +4,14 @@
 	<parent>
 		<groupId>org.jboss.tools</groupId>
 		<artifactId>integration-stack-tests</artifactId>
-		<version>4.4.0-SNAPSHOT</version>
+		<version>4.5.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.integration-stack-tests</groupId>
 	<artifactId>tests</artifactId>
 	<name>integration-stack-tests.tests</name>
 	<packaging>pom</packaging>
 	<properties>
-		<surefire.timeout>10800</surefire.timeout>
+		<surefire.timeout>21600</surefire.timeout>
 		<memoryOptions2>-XX:MaxPermSize=384m</memoryOptions2>
 		<swt.bot.test.record.screencast>false</swt.bot.test.record.screencast>
 		<pauseFailedTest>false</pauseFailedTest>
@@ -45,4 +45,53 @@
 			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+		<profile>
+			<id>mac-installPath</id>
+			<activation>
+				<os>
+					<family>mac</family>
+				</os>
+			</activation>
+			<properties>
+				<test.installPath.OSX>/devstudio.app/</test.installPath.OSX>
+			</properties>
+		</profile>
+		<profile>
+			<id>install-base</id>
+			<activation>
+				<property>
+					<name>test.installBase</name>
+				</property>
+			</activation>
+			<properties>
+				<test.installPath>${test.installBase}${test.installPath.OSX}</test.installPath>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>tycho-surefire-plugin</artifactId>
+						<configuration>
+							<testRuntime>p2Installed</testRuntime>
+							<work>${test.installPath}</work>
+							<profileName>devstudio</profileName>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>long-lasting-for-fuse</id>
+			<activation>
+				<property>
+					<name>test</name>
+					<value>FuseProjectTestLong</value>
+				</property>
+			</activation>
+			<properties>
+				<surefire.timeout>86400</surefire.timeout>
+			</properties>
+		</profile>
+	</profiles>
 </project>

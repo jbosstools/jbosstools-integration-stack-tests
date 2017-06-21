@@ -1,5 +1,10 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
+import static org.jboss.reddeer.requirements.server.ServerReqState.PRESENT;
+import static org.jboss.tools.fuse.reddeer.ProjectTemplate.CBR;
+import static org.jboss.tools.fuse.reddeer.ProjectType.BLUEPRINT;
+import static org.jboss.tools.fuse.reddeer.SupportedCamelVersions.CAMEL_2_17_0_REDHAT_630254;
+import static org.jboss.tools.runtime.reddeer.requirement.ServerReqType.Fuse;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -13,19 +18,19 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.fuse.reddeer.ProjectTemplate;
 import org.jboss.tools.fuse.reddeer.ProjectType;
 import org.jboss.tools.fuse.reddeer.condition.FuseLogContainsText;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
+import org.jboss.tools.fuse.reddeer.requirement.FuseRequirement;
+import org.jboss.tools.fuse.reddeer.requirement.FuseRequirement.Fuse;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.preference.FuseServerRuntimePreferencePage;
-import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
-import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.runtime.reddeer.utils.FuseServerManipulator;
 import org.junit.After;
@@ -40,11 +45,11 @@ import org.junit.runner.RunWith;
 @CleanWorkspace
 @OpenPerspective(FuseIntegrationPerspective.class)
 @RunWith(RedDeerSuite.class)
-@Server(type = ServerReqType.Fuse, state = ServerReqState.PRESENT)
+@Fuse(server = @Server(type = Fuse, state = PRESENT))
 public class RegressionFuseTest extends DefaultTest {
 
 	@InjectRequirement
-	private ServerRequirement serverRequirement;
+	private FuseRequirement serverRequirement;
 
 	/**
 	 * Cleans up test environment
@@ -69,7 +74,10 @@ public class RegressionFuseTest extends DefaultTest {
 	@Test
 	public void issue_1067() {
 
-		new FuseServerRuntimePreferencePage().open();
+		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
+		FuseServerRuntimePreferencePage serverRuntime = new FuseServerRuntimePreferencePage();
+		dialog.open();
+		dialog.select(serverRuntime);
 
 		new PushButton("Add...").click();
 		new DefaultShell("New Server Runtime Environment").setFocus();
@@ -97,7 +105,8 @@ public class RegressionFuseTest extends DefaultTest {
 
 		// tests the _Cancel_ button
 		AbstractWait.sleep(TimePeriod.SHORT);
-		new DefaultTreeItem("JBoss Fuse", "JBoss Fuse " + serverRequirement.getConfig().getServerBase().getVersion()).select();
+		new DefaultTreeItem("JBoss Fuse", "JBoss Fuse " + serverRequirement.getConfig().getServerBase().getVersion())
+				.select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new PushButton("Cancel").click();
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -125,16 +134,13 @@ public class RegressionFuseTest extends DefaultTest {
 	@Test
 	public void issue_1152() {
 
-		ProjectFactory.newProject("cbr-blueprint").template(ProjectTemplate.CBR).type(ProjectType.BLUEPRINT).create();
+		ProjectFactory.newProject("cbr-blueprint").version(CAMEL_2_17_0_REDHAT_630254).template(CBR).type(BLUEPRINT).create();
 		String server = serverRequirement.getConfig().getName();
 		FuseServerManipulator.startServer(server);
 		FuseServerManipulator.addModule(server, "cbr-blueprint");
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		FuseServerManipulator.removeAllModules(server);
-		new WaitUntil(
-				new FuseLogContainsText(
-						"(CamelContext: cbr-example-context) is shutdown"),
-				TimePeriod.VERY_LONG);
+		new WaitUntil(new FuseLogContainsText("(CamelContext: cbr-example-context) is shutdown"), TimePeriod.VERY_LONG);
 	}
 
 	/**

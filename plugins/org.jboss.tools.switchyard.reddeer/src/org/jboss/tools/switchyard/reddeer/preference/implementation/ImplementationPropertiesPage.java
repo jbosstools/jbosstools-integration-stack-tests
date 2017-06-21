@@ -1,8 +1,6 @@
 package org.jboss.tools.switchyard.reddeer.preference.implementation;
 
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.swt.api.Button;
-import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
@@ -101,20 +99,6 @@ public class ImplementationPropertiesPage {
 		log.info("Open the 'Implementation' page for Rules (DRL).");
 		new DefaultTreeItem("Implementation").select();
 		return new ImplementationKnowledgePage();
-	}
-
-	public void ok() {
-
-		Button b = new PushButton("OK");
-		log.info("Close Preferences dialog");
-		b.click();
-	}
-
-	public void cancel() {
-
-		Button b = new PushButton("Cancel");
-		log.info("Cancel Preferences dialog");
-		b.click();
 	}
 
 }

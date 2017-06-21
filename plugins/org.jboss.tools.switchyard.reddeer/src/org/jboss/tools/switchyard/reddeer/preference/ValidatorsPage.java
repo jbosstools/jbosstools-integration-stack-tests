@@ -7,7 +7,7 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.tools.switchyard.reddeer.wizard.ValidatorWizard;
 
-public class ValidatorsPage extends CompositePropertiesPage {
+public class ValidatorsPage extends CompositePropertiesDialog {
 
 	public ValidatorsPage() {
 		super("");

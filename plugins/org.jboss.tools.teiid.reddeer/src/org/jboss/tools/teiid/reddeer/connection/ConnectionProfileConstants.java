@@ -18,6 +18,7 @@ public final class ConnectionProfileConstants {
 	public static final String SQL_SERVER_2008_PARTS_SUPPLIER = "sql_server_2008_parts_supplier";
 	public static final String SQL_SERVER_2008_PRODUCTS = "sql_server_2008_products";
 	public static final String SQL_SERVER_2012_BQT2 = "sql_server_2012_bqt2";
+	public static final String SQL_SERVER_2014_BQT2 = "sql_server_2014_bqt2";
 	public static final String SALESFORCE = "salesforce";
 	public static final String RHDS = "rhds";
 	public static final String LDAP = "ldap";
@@ -34,5 +35,21 @@ public final class ConnectionProfileConstants {
 	public static final String POSTGRESQL_92_DVQE = "postgresql_92_dvqe";
 	public static final String INGRES_10_BQT2 = "ingres_10_bqt2";
 	public static final String EXCEL_SMALLA = "excel_smalla";
-	public static final String SAP_HANA = "sap_hana";
+	public static final String SAP_HANA = "sap_hana";	
+	public static final String APACHE_SPARK = "apache_spark_2.0.0";
+	public static final String APACHE_HIVE = "apache_hive";
+	public static final String APACHE_HBASE = "apache_hbase";
+	public static final String MONGO_DB = "mongo_db";
+	public static final String TERADATA = "teradata";
+	public static final String CLOUDERA_IMPALA = "cloudera_impala";
+	public static final String SAP_IQ = "sap_iq";
+	public static final String PRESTODB = "prestodb";
+	public static final String VERTICA = "vertica";
+	public static final String INFORMIX = "informix";
+	public static final String MONDRIAN = "mondrian";
+	public static final String GREENPLUM = "greenplum";
+	public static final String MARIADB = "mariadb";
+	public static final String NETEZZA = "netezza";
+	public static final String GOOGLE_SPREADSHEET = "google_spreadsheet";
+	public static final String GOOGLE_SPREADSHEET_CRUD = "google_spreadsheet_crud";
 }

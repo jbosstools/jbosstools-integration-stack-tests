@@ -8,13 +8,13 @@
 			<repositories>
 				<repository>
 					<id>jbdsis-qe-group</id>
-					<url>http://10.8.172.58:8081/nexus/content/groups/jbdsis-qe/</url>
+					<url>http://nexus.fuse-qe.eng.rdu2.redhat.com/repository/jbdsis-qe/</url>
 				</repository>
 			</repositories>
 			<pluginRepositories>
 				<pluginRepository>
 					<id>jbdsis-qe-group</id>
-					<url>http://10.8.172.58:8081/nexus/content/groups/jbdsis-qe/</url>
+					<url>http://nexus.fuse-qe.eng.rdu2.redhat.com/repository/jbdsis-qe/</url>
 				</pluginRepository>
 			</pluginRepositories>
 		</profile>
@@ -25,7 +25,7 @@
 	<mirrors>
 		<mirror>
 			<id>internal-repository</id>
-			<url>http://10.8.172.58:8081/nexus/content/groups/jbdsis-qe/</url>
+			<url>http://nexus.fuse-qe.eng.rdu2.redhat.com/repository/jbdsis-qe/</url>
 			<mirrorOf>*</mirrorOf>
 		</mirror>
 	</mirrors>

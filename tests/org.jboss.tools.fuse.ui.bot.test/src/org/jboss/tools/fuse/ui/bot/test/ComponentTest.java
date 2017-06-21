@@ -1,7 +1,7 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
 import static org.jboss.tools.fuse.reddeer.ProjectType.SPRING;
-import static org.jboss.tools.fuse.reddeer.SupportedVersions.CAMEL_2_17_0_REDHAT_630187;
+import static org.jboss.tools.fuse.reddeer.SupportedCamelVersions.CAMEL_2_17_0_REDHAT_630187;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 

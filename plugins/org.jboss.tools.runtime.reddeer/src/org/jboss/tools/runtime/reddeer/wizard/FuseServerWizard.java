@@ -96,7 +96,7 @@ public class FuseServerWizard extends NewWizardDialog {
 		next();
 		new ModifyModulesPage().add(projects);
 
-		finish();
+		finish(TimePeriod.VERY_LONG);
 	}
 
 	/**

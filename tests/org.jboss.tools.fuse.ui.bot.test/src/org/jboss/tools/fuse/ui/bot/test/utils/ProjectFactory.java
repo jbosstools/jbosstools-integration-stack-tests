@@ -9,10 +9,9 @@ import java.util.List;
 
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.direct.preferences.PreferencesUtil;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
@@ -70,6 +69,7 @@ public class ProjectFactory {
 	}
 
 	public void create() {
+		PreferencesUtil.setOpenAssociatedPerspective("never");
 		NewFuseIntegrationProjectWizard wiz = new NewFuseIntegrationProjectWizard();
 		wiz.open();
 		wiz.setProjectName(name);
@@ -85,7 +85,6 @@ public class ProjectFactory {
 		}
 		wiz.setProjectType(type);
 		new FinishButton().click();
-		openAssociatedPerspective();
 		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(900));
 	}
 
@@ -189,14 +188,5 @@ public class ProjectFactory {
 		versions = wiz.getCamelVersions();
 		wiz.cancel();
 		return versions;
-	}
-
-	private static void openAssociatedPerspective() {
-		try {
-			new WaitUntil(new ShellWithTextIsAvailable("Open Associated Perspective?"), TimePeriod.NORMAL);
-			new DefaultShell("Open Associated Perspective?");
-			new PushButton("No").click();
-		} catch (Exception ex) {
-		}
 	}
 }

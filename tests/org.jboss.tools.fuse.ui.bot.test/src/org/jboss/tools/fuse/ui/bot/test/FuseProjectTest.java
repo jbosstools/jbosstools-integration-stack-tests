@@ -26,6 +26,7 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.common.reddeer.view.ErrorLogView;
 import org.jboss.tools.fuse.reddeer.ProjectType;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
@@ -77,14 +78,16 @@ public class FuseProjectTest extends DefaultTest {
 
 	@BeforeClass
 	public static void useStagingRepos() {
-		StagingRepositoriesPreferencePage pref = new StagingRepositoriesPreferencePage();
-		pref.open();
+		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
+		StagingRepositoriesPreferencePage page = new StagingRepositoriesPreferencePage();
+		dialog.open();
+		dialog.select(page);
 		if (System.getProperty("staging.repositories").equals("true")) {
-			pref.toggleStagingRepositories(true);
+			page.toggleStagingRepositories(true);
 		} else {
-			pref.toggleStagingRepositories(false);
+			page.toggleStagingRepositories(false);
 		}
-		pref.ok();
+		dialog.ok();
 	}
 
 	/**

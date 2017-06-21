@@ -1,9 +1,7 @@
 package org.jboss.tools.switchyard.reddeer.preference;
 
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.jface.preference.PreferenceDialog;
 import org.jboss.reddeer.swt.impl.list.DefaultList;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
@@ -24,18 +22,28 @@ import org.jboss.tools.switchyard.reddeer.preference.implementation.Implementati
  * @author apodhrad
  *
  */
-public class CompositePropertiesPage {
+public class CompositePropertiesDialog extends PreferenceDialog {
 
-	private final Logger log = Logger.getLogger(CompositePropertiesPage.class);
+	private final Logger log = Logger.getLogger(CompositePropertiesDialog.class);
 
 	protected String title;
 
-	public CompositePropertiesPage(String title) {
+	public CompositePropertiesDialog(String title) {
 		this.title = title;
 	}
 
-	public CompositePropertiesPage activate() {
-		new DefaultShell("Properties for " + title);
+	@Override
+	public String getTitle() {
+		return "Properties for " + title;
+	}
+
+	@Override
+	protected void openImpl() {
+		throw new UnsupportedOperationException("Select 'Properties' from the Graphiti context menu");
+	}
+
+	public CompositePropertiesDialog activate() {
+		new DefaultShell(getTitle());
 		return this;
 	}
 
@@ -130,12 +138,6 @@ public class CompositePropertiesPage {
 		new DefaultTreeItem("Bindings").select();
 		new DefaultList().deselectAll();
 		return new BindingsPage();
-	}
-
-	public void ok() {
-		activate();
-		new OkButton().click();
-		new WaitWhile(new ShellWithTextIsAvailable("Properties for " + title));
 	}
 
 }

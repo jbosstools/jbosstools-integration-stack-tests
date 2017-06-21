@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.jboss.tools.integration-stack-tests</groupId>
 		<artifactId>tests</artifactId>
-		<version>4.4.0-SNAPSHOT</version>
+		<version>4.5.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.teiid</groupId>
 	<artifactId>org.jboss.tools.teiid.ui.bot.test</artifactId>
@@ -19,7 +19,7 @@
 		<test.package>org.jboss.tools.teiid.ui.bot.test.suite</test.package>
 		<test.class>AllTests</test.class>
 		<jdbc.dir>${requirementsDirectory}/lib</jdbc.dir>
-		<teiid.site>http://download.jboss.org/jbosstools/updates/development/mars/integration-stack/teiiddesigner/</teiid.site>
+		<teiid.site>http://download.jboss.org/jbosstools/updates/stable/neon/integration-stack/teiiddesigner/11.0.1.Final/</teiid.site>
 		<customization.file>resources/settings/plugin_customization.ini</customization.file>
 	</properties>
 

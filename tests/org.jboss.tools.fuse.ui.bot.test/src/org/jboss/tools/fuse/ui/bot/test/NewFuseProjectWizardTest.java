@@ -1,6 +1,7 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
 import static org.jboss.reddeer.requirements.server.ServerReqState.PRESENT;
+import static org.jboss.tools.runtime.reddeer.requirement.ServerReqType.EAP;
 import static org.jboss.tools.runtime.reddeer.requirement.ServerReqType.Fuse;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -27,12 +28,12 @@ import org.jboss.tools.common.reddeer.ResourceHelper;
 import org.jboss.tools.common.reddeer.ext.ProjectExt;
 import org.jboss.tools.common.reddeer.view.ErrorLogView;
 import org.jboss.tools.fuse.reddeer.ProjectType;
-import org.jboss.tools.fuse.reddeer.SupportedVersions;
+import org.jboss.tools.fuse.reddeer.SupportedCamelVersions;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
+import org.jboss.tools.fuse.reddeer.requirement.FuseRequirement;
+import org.jboss.tools.fuse.reddeer.requirement.FuseRequirement.Fuse;
 import org.jboss.tools.fuse.reddeer.wizard.NewFuseIntegrationProjectWizard;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
-import org.jboss.tools.runtime.reddeer.impl.ServerFuse;
-import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.junit.After;
 import org.junit.Test;
@@ -44,11 +45,11 @@ import org.junit.runner.RunWith;
  * @author tsedmik
  */
 @RunWith(RedDeerSuite.class)
-@Server(type = Fuse, state = PRESENT)
+@Fuse(server = @Server(type = { Fuse, EAP }, state = PRESENT))
 public class NewFuseProjectWizardTest {
 
 	@InjectRequirement
-	private ServerRequirement serverRequirement;
+	private FuseRequirement serverRequirement;
 
 	/**
 	 * Prepares test environment
@@ -121,8 +122,7 @@ public class NewFuseProjectWizardTest {
 		}
 		wiz.selectTargetRuntime(serverRequirement.getConfig().getServerBase().getRuntimeName());
 		assertFalse("Path should not be editable!. The runtime is set.", wiz.isCamelVersionEditable());
-		assertEquals("Camel versions are different (runtime vs wizard)!",
-				((ServerFuse) serverRequirement.getConfig().getServerBase()).getCamelVersion(), wiz.getCamelVersion());
+		assertEquals("Camel versions are different (runtime vs wizard)!", serverRequirement.getConfig().getCamelVersion(), wiz.getCamelVersion());
 		wiz.cancel();
 		assertTrue("There are some errors in Error Log", LogGrapper.getPluginErrors("fuse").size() == 0);
 	}
@@ -217,6 +217,7 @@ public class NewFuseProjectWizardTest {
 		wiz.open();
 		wiz.setProjectName("test");
 		wiz.next();
+		wiz.selectCamelVersion(SupportedCamelVersions.CAMEL_2_17_0_REDHAT_630254);
 		wiz.next();
 		wiz.selectTemplate("JBoss Fuse", "Beginner", "Content Based Router");
 		wiz.setProjectType(ProjectType.BLUEPRINT);
@@ -332,7 +333,7 @@ public class NewFuseProjectWizardTest {
 		wiz.setProjectName("test");
 		wiz.next();
 		List<String> versions = wiz.getCamelVersions();
-		Collection<String> supported = SupportedVersions.getCamelVersions();
+		Collection<String> supported = SupportedCamelVersions.getCamelVersions();
 		List<String> missing = new ArrayList<>();
 		for (String sup : supported) {
 			if (!versions.contains(sup)) {

@@ -14,9 +14,10 @@ import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.fuse.reddeer.ProjectTemplate;
 import org.jboss.tools.fuse.reddeer.ProjectType;
 import org.jboss.tools.fuse.reddeer.perspectives.FuseIntegrationPerspective;
+import org.jboss.tools.fuse.reddeer.requirement.FuseRequirement;
+import org.jboss.tools.fuse.reddeer.requirement.FuseRequirement.Fuse;
 import org.jboss.tools.fuse.ui.bot.test.utils.ProjectFactory;
 import org.jboss.tools.runtime.reddeer.impl.ServerFuse;
-import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.runtime.reddeer.utils.FuseServerManipulator;
 import org.jboss.tools.runtime.reddeer.utils.FuseShellSSH;
@@ -30,7 +31,7 @@ import org.junit.runner.RunWith;
  * 
  * @author tsedmik
  */
-@Server(type = Fuse, state = PRESENT)
+@Fuse(server = @Server(type = Fuse, state = PRESENT))
 @CleanWorkspace
 @OpenPerspective(FuseIntegrationPerspective.class)
 @RunWith(RedDeerSuite.class)
@@ -41,7 +42,7 @@ public class DeploymentTest extends DefaultTest {
 	private static final String PROJECT_IS_UNDEPLOYED = "Route: cbr-route shutdown complete, was consuming from: Endpoint[file://work/cbr/input]";
 
 	@InjectRequirement
-	private static ServerRequirement serverRequirement;
+	private static FuseRequirement serverRequirement;
 
 	/**
 	 * Prepares test environment

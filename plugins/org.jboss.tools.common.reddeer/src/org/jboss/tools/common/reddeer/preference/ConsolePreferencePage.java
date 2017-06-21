@@ -1,12 +1,7 @@
 package org.jboss.tools.common.reddeer.preference;
 
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 
 /**
  * Represents <i>Console</i> preference page
@@ -25,17 +20,5 @@ public class ConsolePreferencePage extends PreferencePage {
 
 	public void toggleShowConsoleErrorWrite(boolean checked) {
 		new CheckBox(3).toggle(checked);
-	}
-
-	public void open() {
-		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
-		dialog.open();
-		dialog.select(this);
-	}
-
-	public void ok() {
-		String title = new DefaultShell().getText();
-		new OkButton().click();
-		new WaitWhile(new ShellWithTextIsAvailable(title));
 	}
 }

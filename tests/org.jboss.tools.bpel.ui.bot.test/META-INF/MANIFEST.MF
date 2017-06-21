@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: BPEL Bot Tests
 Bundle-SymbolicName: org.jboss.tools.bpel.ui.bot.test
-Bundle-Version: 4.4.0.qualifier
+Bundle-Version: 4.5.0.qualifier
 Bundle-Activator: org.jboss.tools.bpel.ui.bot.test.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -10,9 +10,9 @@ Require-Bundle: org.eclipse.ui,
  org.custommonkey.xmlunit;bundle-version="1.3.0",
  org.jboss.reddeer.go;bundle-version="1.0.0",
  org.jboss.reddeer.gef;bundle-version="1.0.0",
- org.jboss.tools.common.reddeer;bundle-version="4.4.0",
- org.jboss.tools.runtime.reddeer;bundle-version="4.4.0",
- org.jboss.tools.bpel.reddeer;bundle-version="4.4.0"
+ org.jboss.tools.common.reddeer;bundle-version="4.5.0",
+ org.jboss.tools.runtime.reddeer;bundle-version="4.5.0",
+ org.jboss.tools.bpel.reddeer;bundle-version="4.5.0"
 Bundle-ActivationPolicy: lazy
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7

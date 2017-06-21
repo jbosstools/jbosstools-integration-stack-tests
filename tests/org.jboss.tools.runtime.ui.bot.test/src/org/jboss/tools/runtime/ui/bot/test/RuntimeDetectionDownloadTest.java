@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.eclipse.ui.views.log.LogView;
 import org.jboss.tools.runtime.reddeer.preference.JBossRuntimeDetection;
@@ -40,16 +41,19 @@ public class RuntimeDetectionDownloadTest {
 		ShellHandler.getInstance().closeAllNonWorbenchShells();
 
 		// remove all configured runtimes (in Runtime Detection)
-		JBossRuntimeDetection prefPage = new JBossRuntimeDetection();
-		prefPage.open();
-		prefPage.removeAllRuntimes();
-		prefPage.ok();
+		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
+		JBossRuntimeDetection page = new JBossRuntimeDetection();
+		dialog.open();
+		dialog.select(page);
+		page.removeAllRuntimes();
+		dialog.ok();
 
 		// remove all configured runtimes (in server runtimes)
-		FuseServerRuntimePreferencePage runtimePref = new FuseServerRuntimePreferencePage();
-		runtimePref.open();
-		runtimePref.removeAllServerRuntimes();
-		runtimePref.ok();
+		FuseServerRuntimePreferencePage serverRuntime = new FuseServerRuntimePreferencePage();
+		dialog.open();
+		dialog.select(serverRuntime);
+		serverRuntime.removeAllRuntimes();
+		dialog.ok();
 	}
 
 	@Test
@@ -198,36 +202,6 @@ public class RuntimeDetectionDownloadTest {
 	}
 
 	@Test
-	public void testDownloadServiceMix453() {
-		downloadRuntime("Apache ServiceMix 4.5.3");
-	}
-
-	@Test
-	public void testDownloadServiceMix506() {
-		downloadRuntime("Apache ServiceMix 5.0.6");
-	}
-
-	@Test
-	public void testDownloadServiceMix514() {
-		downloadRuntime("Apache ServiceMix 5.1.4");
-	}
-
-	@Test
-	public void testDownloadServiceMix520() {
-		downloadRuntime("Apache ServiceMix 5.2.0");
-	}
-
-	@Test
-	public void testDownloadServiceMix531() {
-		downloadRuntime("Apache ServiceMix 5.3.1");
-	}
-
-	@Test
-	public void testDownloadServiceMix540() {
-		downloadRuntime("Apache ServiceMix 5.4.0");
-	}
-
-	@Test
 	public void testDownloadFuse600() {
 		downloadRuntime("JBoss Fuse 6.0.0");
 	}
@@ -238,9 +212,11 @@ public class RuntimeDetectionDownloadTest {
 	}
 
 	protected static void downloadRuntime(String name) {
-		JBossRuntimeDetection prefPage = new JBossRuntimeDetection();
-		prefPage.open();
-		DownloadRuntimesWizard runtimeWiz = prefPage.downloadRuntime();
+		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
+		JBossRuntimeDetection page = new JBossRuntimeDetection();
+		dialog.open();
+		dialog.select(page);
+		DownloadRuntimesWizard runtimeWiz = page.downloadRuntime();
 		runtimeWiz.selectRuntime(name);
 		runtimeWiz.next();
 		runtimeWiz.acceptTerms();
@@ -249,12 +225,13 @@ public class RuntimeDetectionDownloadTest {
 		runtimeWiz.setInstallFolder(getPath() + "target/temp_install");
 		runtimeWiz.setDownloadFolder(getPath() + "target/temp");
 		runtimeWiz.finish(name);
-		assertEquals(1, prefPage.getRuntimesCount());
-		prefPage.cancel();
-		FuseServerRuntimePreferencePage runtimePref = new FuseServerRuntimePreferencePage();
-		runtimePref.open();
-		assertEquals(1, runtimePref.getServerRuntimes().size());
-		runtimePref.cancel();
+		assertEquals(1, page.getRuntimesCount());
+		dialog.cancel();
+		FuseServerRuntimePreferencePage serverRuntime = new FuseServerRuntimePreferencePage();
+		dialog.open();
+		dialog.select(serverRuntime);
+		assertEquals(1, serverRuntime.getServerRuntimes().size());
+		dialog.cancel();
 		new LogView().open();
 		assertTrue(new LogView().getErrorMessages().size() == 0);
 	}
