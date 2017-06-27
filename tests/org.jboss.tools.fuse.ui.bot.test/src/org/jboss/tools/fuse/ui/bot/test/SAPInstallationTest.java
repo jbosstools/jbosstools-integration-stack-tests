@@ -1,17 +1,17 @@
 package org.jboss.tools.fuse.ui.bot.test;
 
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.jface.wizard.ImportWizardDialog;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.swt.api.Text;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.NoButton;
-import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.tools.runtime.reddeer.requirement.SAPRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.SAPRequirement.SAP;
 import org.junit.Test;
@@ -54,7 +54,7 @@ public class SAPInstallationTest {
 		try {
 			new WaitUntil(new ShellWithTextIsAvailable("Security Warning"), TimePeriod.LONG);
 			new DefaultShell("Security Warning");
-			new OkButton().click();
+			new PushButton("Install anyway").click();
 		} catch (Exception e) {
 			// sometimes the window doesn't pop up
 		}

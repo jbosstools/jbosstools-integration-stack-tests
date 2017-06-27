@@ -6,13 +6,15 @@ import java.io.File;
 import java.util.Collection;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.eclipse.ui.views.log.LogView;
 import org.jboss.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.common.reddeer.JiraClient;
 import org.jboss.tools.common.reddeer.XPathEvaluator;
-import org.jboss.tools.common.reddeer.view.ErrorLogView;
 import org.jboss.tools.fuse.reddeer.ProjectType;
 import org.jboss.tools.fuse.reddeer.SupportedCamelVersions;
 import org.jboss.tools.fuse.reddeer.component.SAPIDocListServer;
@@ -35,6 +37,7 @@ import org.junit.runners.Parameterized.UseParametersRunnerFactory;
  */
 @SAP
 @CleanWorkspace
+@OpenPerspective(JavaEEPerspective.class)
 @RunWith(RedDeerSuite.class)
 @UseParametersRunnerFactory(ParameterizedRequirementsRunnerFactory.class)
 public class SAPVersionTest {
@@ -84,7 +87,8 @@ public class SAPVersionTest {
 
 		new WorkbenchShell();
 		ProjectFactory.newProject(PROJECT_NAME).version(camelVersion).type(PROJECT_TYPE).create();
-		new ErrorLogView().deleteLog();
+		new LogView().open();
+		new LogView().deleteLog();
 
 		new ProjectExplorer().open();
 		new CamelProject(PROJECT_NAME).openCamelContext(PROJECT_TYPE.getCamelContext());
