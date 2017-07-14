@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.jboss.tools</groupId>
 		<artifactId>parent</artifactId>
-		<version>4.5.0.AM1-SNAPSHOT</version>
+		<version>4.5.0.AM2-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools</groupId>
 	<artifactId>integration-stack-tests</artifactId>
@@ -14,7 +14,7 @@
 	<properties>
 		<tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-integration-stack-tests.git</tycho.scmUrl>
 		<jbosstools.url>http://download.jboss.org/jbosstools</jbosstools.url>
-		<jbtis.tp.version>4.5.0.AM1-SNAPSHOT</jbtis.tp.version>
+		<jbtis.tp.version>4.5.0.CR1-SNAPSHOT</jbtis.tp.version>
 		<jbtis.repo>staging</jbtis.repo>
 		<orbit.site>${jbosstools.url}/updates/requirements/orbit/S20170516192513/</orbit.site>
 		<fuse.site>${jbosstools.url}/oxygen/snapshots/builds/jbosstools-fuse_master/</fuse.site>
@@ -85,13 +85,14 @@
 							<type>target</type>
 							<classifier>base</classifier>
 						</artifact>
+						<!-- At the moment there is no EA target platform
 						<artifact>
 							<groupId>org.jboss.tools.integration-stack</groupId>
 							<artifactId>target-platform</artifactId>
 							<version>${jbtis.tp.version}</version>
 							<type>target</type>
 							<classifier>base-ea</classifier>
-						</artifact>
+						</artifact-->
 					</target>
 				</configuration>
 			</plugin>
