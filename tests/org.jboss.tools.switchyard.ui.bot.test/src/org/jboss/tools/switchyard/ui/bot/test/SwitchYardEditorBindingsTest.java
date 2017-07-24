@@ -41,7 +41,7 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
-import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
@@ -2231,21 +2231,21 @@ public class SwitchYardEditorBindingsTest {
 		page.getServerPort().setText("foo");
 		// TODO Fix for Oxygen
 		// For more info see https://github.com/eclipse/reddeer/issues/1739
-		assertFalse(new OkButton().isEnabled());
+		assertFalse(new PushButton("Apply and Close").isEnabled());
 		page.getServerPort().setText("4321");
-		assertTrue(new OkButton().isEnabled());
+		assertTrue(new PushButton("Apply and Close").isEnabled());
 		page.getServerPort().setText(":4321");
-		assertTrue(new OkButton().isEnabled());
+		assertTrue(new PushButton("Apply and Close").isEnabled());
 		page.getServerPort().setText("host:4321");
-		assertTrue(new OkButton().isEnabled());
+		assertTrue(new PushButton("Apply and Close").isEnabled());
 		page.getServerPort().setText("${propValue}");
-		assertTrue(new OkButton().isEnabled());
+		assertTrue(new PushButton("Apply and Close").isEnabled());
 		page.getServerPort().setText(":${propValue}");
-		assertTrue(new OkButton().isEnabled());
+		assertTrue(new PushButton("Apply and Close").isEnabled());
 		page.getServerPort().setText("host:${propValue}");
-		assertTrue(new OkButton().isEnabled());
+		assertTrue(new PushButton("Apply and Close").isEnabled());
 		page.getServerPort().setText("${propValue}:4321");
-		assertTrue(new OkButton().isEnabled());
+		assertTrue(new PushButton("Apply and Close").isEnabled());
 
 		properties.ok();
 	}
