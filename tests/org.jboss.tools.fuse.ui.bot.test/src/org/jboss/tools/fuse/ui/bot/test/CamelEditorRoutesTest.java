@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.eclipse.ui.views.log.LogView;
 import org.jboss.reddeer.gef.view.PaletteView;
 import org.jboss.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -14,7 +15,6 @@ import org.jboss.reddeer.workbench.exception.WorkbenchLayerException;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.common.reddeer.JiraIssue;
-import org.jboss.tools.common.reddeer.view.ErrorLogView;
 import org.jboss.tools.fuse.reddeer.ProjectType;
 import org.jboss.tools.fuse.reddeer.component.Route;
 import org.jboss.tools.fuse.reddeer.editor.CamelComponentEditPart;
@@ -71,7 +71,10 @@ public class CamelEditorRoutesTest {
 	public void createProject() {
 		new WorkbenchShell();
 		ProjectFactory.newProject(PROJECT_NAME).type(type).create();
-		new ErrorLogView().deleteLog();
+
+		LogView view = new LogView();
+		view.open();
+		view.deleteLog();
 
 		new WorkbenchShell();
 		log.info("Trying to close Palette View (if it's open)");

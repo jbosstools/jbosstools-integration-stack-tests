@@ -117,6 +117,7 @@ public class RouteManipulationTest extends DefaultTest {
 		workbenchShell.setFocus();
 
 		FuseJMXNavigator jmx = new FuseJMXNavigator();
+		jmx.refreshLocalProcesses();
 		jmx.getNode("Local Camel Context", "Camel");
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		assertNotNull(jmx.getNode("Local Camel Context", "Camel", "cbr-example-context", "Routes", "cbr-route",
@@ -188,6 +189,7 @@ public class RouteManipulationTest extends DefaultTest {
 		workbenchShell.setFocus();
 
 		FuseJMXNavigator jmx = new FuseJMXNavigator();
+		jmx.refreshLocalProcesses();
 		jmx.getNode("Local Camel Context", "Camel");
 		AbstractWait.sleep(TimePeriod.NORMAL);
 		jmx.getNode("Local Camel Context", "Camel", "cbr-example-context").select();
