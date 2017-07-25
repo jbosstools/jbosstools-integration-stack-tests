@@ -14,6 +14,7 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.eclipse.ui.views.log.LogView;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
@@ -21,7 +22,6 @@ import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.common.reddeer.JiraIssue;
 import org.jboss.tools.common.reddeer.LogGrapper;
 import org.jboss.tools.common.reddeer.preference.ConsolePreferencePage;
-import org.jboss.tools.common.reddeer.view.ErrorLogView;
 import org.jboss.tools.common.reddeer.wizard.ImportMavenWizard;
 import org.jboss.tools.fuse.reddeer.condition.FuseLogContainsText;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
@@ -74,7 +74,9 @@ public class QuickStartsTest {
 	public void setupDefault() {
 
 		new WorkbenchShell();
-		new ErrorLogView().deleteLog();
+		LogView view = new LogView();
+		view.open();
+		view.deleteLog();
 	}
 
 	/**

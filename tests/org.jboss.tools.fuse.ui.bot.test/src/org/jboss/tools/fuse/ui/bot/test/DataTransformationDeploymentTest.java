@@ -11,12 +11,9 @@ import java.nio.file.Files;
 
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.junit.execution.annotation.RunIf;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.common.reddeer.ResourceHelper;
-import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
-import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.fuse.reddeer.condition.FuseLogContainsText;
 import org.jboss.tools.fuse.reddeer.projectexplorer.CamelProject;
 import org.jboss.tools.fuse.reddeer.requirement.FuseRequirement;
@@ -75,8 +72,6 @@ public class DataTransformationDeploymentTest extends DefaultTest {
 	 * </ol>
 	 */
 	@Test
-	@Jira("ENTESB-4452")
-	@RunIf(conditionClass = IssueIsClosed.class)
 	public void testDeployment() {
 
 		ProjectFactory.importExistingProject(
