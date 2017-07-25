@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.views.log.LogView;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.TreeItem;
@@ -57,7 +58,9 @@ public class NewFuseProjectWizardTest {
 	@After
 	public void setupDeleteProjects() {
 		ProjectFactory.deleteAllProjects();
-		new ErrorLogView().deleteLog();
+		LogView log = new LogView();
+		log.open();
+		log.deleteLog();
 		ShellHandler.getInstance().closeAllNonWorbenchShells();
 	}
 

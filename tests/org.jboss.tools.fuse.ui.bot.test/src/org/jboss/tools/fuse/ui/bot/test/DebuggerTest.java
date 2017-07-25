@@ -52,8 +52,8 @@ public class DebuggerTest extends DefaultTest {
 	private static final String CAMEL_CONTEXT = "camel-context.xml";
 	private static final String CHOICE = "Choice";
 	private static final String CHOICE_ID = "_choice1";
-	private static final String LOG = "Log _log2";
-	private static final String LOG_ID = "_log2";
+	private static final String LOG = "Log _log3";
+	private static final String LOG_ID = "_log3";
 
 	/**
 	 * Prepares test environment
@@ -189,7 +189,7 @@ public class DebuggerTest extends DefaultTest {
 		AbstractWait.sleep(TimePeriod.SHORT);
 		variables.open();
 		new DefaultTree().getItems().get(4).getItems().get(0).select();
-		assertTrue(new DefaultStyledText().getText().contains("<name>Bristol Zoo Gardens</name>"));
+		assertTrue(new DefaultStyledText().getText().contains("<name>Erie Zoo</name>"));
 
 		// resume and then should stop on the 'log1' node
 		ResumeButton resume = new ResumeButton();
@@ -203,15 +203,15 @@ public class DebuggerTest extends DefaultTest {
 		assertTrue(resume.isEnabled());
 		new StepOverButton().select();
 		new WaitUntil(new IsSuspended(), TimePeriod.NORMAL);
-		assertTrue(new ConsoleHasText("Sending order order2.xml to the UK").test());
+		assertTrue(new ConsoleHasText("Sending order order5.xml to the US").test());
 		assertTrue(resume.isEnabled());
 		AbstractWait.sleep(TimePeriod.getCustom(5));
-		assertEquals("_to1", variables.getValue("Endpoint"));
+		assertEquals("_to2", variables.getValue("Endpoint"));
 
 		// remove all breakpoints
 		new BreakpointsView().removeAllBreakpoints();
 		assertTrue(new ConsoleHasText("Removing breakpoint _choice1").test());
-		assertTrue(new ConsoleHasText("Removing breakpoint _log2").test());
+		assertTrue(new ConsoleHasText("Removing breakpoint _log3").test());
 		resume.click();
 
 		// all breakpoints should be processed

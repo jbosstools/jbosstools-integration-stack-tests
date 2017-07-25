@@ -21,7 +21,6 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.direct.preferences.Preferences;
 import org.jboss.reddeer.eclipse.wst.server.ui.RuntimePreferencePage;
-import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
@@ -147,8 +146,7 @@ public class ServerKaraf extends ServerBase {
 		new WaitUntil(new JobIsKilled("Refreshing server adapter list"), TimePeriod.LONG, false);
 		runtimeWizard.finish(TimePeriod.VERY_LONG);
 
-		// TODO Replace ok() method
-		new OkButton().click();
+		preferences.ok();
 
 		// Add server
 		ServerWizard serverWizard = new ServerWizard();

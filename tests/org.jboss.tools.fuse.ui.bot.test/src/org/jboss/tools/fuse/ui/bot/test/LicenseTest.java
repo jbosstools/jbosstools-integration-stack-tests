@@ -11,6 +11,7 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -49,17 +50,20 @@ public class LicenseTest {
 	 */
 	@Parameters
 	public static Collection<String> setupData() {
-		new ShellMenu("Help", "Installation Details").select();
+		new ShellMenu("Help", "About Red Hat JBoss Developer Studio").select();
+		new DefaultShell("About Red Hat JBoss Developer Studio");
+		new PushButton("Installation Details").click();
 		new DefaultShell("Red Hat JBoss Developer Studio Installation Details");
 		new DefaultTabItem("Installed Software").activate();
 		List<String> fusePlugins = new ArrayList<String>();
 		for (TreeItem item : new DefaultTree().getItems()) {
-			if (item.getText().startsWith("JBoss Fuse Tooling")) {
+			if (item.getText().startsWith("Red Hat JBoss Fuse Tools")) {
 				fusePlugins.add(item.getText());
 			}
 		}
 		new PushButton("Close").click();
-		;
+		new DefaultShell("About Red Hat JBoss Developer Studio");
+		new PushButton("Close").click();
 		return fusePlugins;
 	}
 
@@ -76,15 +80,19 @@ public class LicenseTest {
 	@Before
 	public void setupOpenInstallationDetails() {
 
-		new ShellMenu("Help", "Installation Details").select();
+		new ShellMenu("Help", "About Red Hat JBoss Developer Studio").select();
+		new DefaultShell("About Red Hat JBoss Developer Studio");
+		new PushButton("Installation Details").click();
 		new DefaultShell("Red Hat JBoss Developer Studio Installation Details");
 	}
 
 	@After
 	public void setupCloseShells() {
 
-		new PushButton("OK").click();
+		new CancelButton().click();
 		new DefaultShell("Red Hat JBoss Developer Studio Installation Details");
+		new PushButton("Close").click();
+		new DefaultShell("About Red Hat JBoss Developer Studio");
 		new PushButton("Close").click();
 	}
 
