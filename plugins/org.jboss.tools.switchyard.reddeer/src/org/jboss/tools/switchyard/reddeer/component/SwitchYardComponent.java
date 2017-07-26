@@ -44,8 +44,16 @@ public class SwitchYardComponent extends AbstractGraphitiEditPart {
 	}
 
 	public CompositePropertiesDialog showProperties() {
+		return showProperties(true);
+	}
+	
+	public CompositePropertiesDialog showProperties(boolean isComponent) {
 		getContextButton("Properties").click();
-		return new CompositePropertiesDialog(tooltip).activate();
+		if (isComponent) {
+			return new CompositePropertiesDialog(tooltip).activate();
+		} else {
+			return new CompositePropertiesDialog("").activate();
+		}	
 	}
 
 	public void delete() {

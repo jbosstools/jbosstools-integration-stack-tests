@@ -28,7 +28,6 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.debug.Breakpoint;
@@ -36,6 +35,7 @@ import org.jboss.tools.switchyard.reddeer.debug.Breakpoint.TriggerOn;
 import org.jboss.tools.switchyard.reddeer.debug.Breakpoint.TriggeringPhase;
 import org.jboss.tools.switchyard.reddeer.debug.BreakpointsView;
 import org.jboss.tools.switchyard.reddeer.debug.TerminateButton;
+import org.jboss.tools.switchyard.reddeer.preference.CompositePropertiesDialog;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.junit.After;
@@ -115,9 +115,8 @@ public class DebuggerBreakpointTest {
 		breakpoint.checkTransformer("String {java.lang}", "Person {com.example.switchyard.hello}");
 
 		// check the breakpoint in Properties
-		new SwitchYardComponent("hello").getContextButton("Properties").click();
-		new DefaultShell("Properties for ").setFocus();
-		new DefaultTreeItem("Transform Breakpoint Properties").select();
+		CompositePropertiesDialog dialog = new SwitchYardComponent("hello").showProperties(false);
+		dialog.select("Transform Breakpoint Properties");
 		assertEquals("hello", new LabeledText("Project").getText());
 		assertTrue(new CheckBox("Enabled").isChecked());
 		assertTrue(new CheckBox("IN").isChecked());
@@ -128,7 +127,7 @@ public class DebuggerBreakpointTest {
 		assertEquals("Person {com.example.switchyard.hello}", new DefaultTable().getItem(0).getText(1));
 		new CheckBox("IN").toggle(false);
 		new CheckBox("OUT").toggle(false);
-		new PushButton("OK").click();
+		dialog.ok();
 		new WaitWhile(new ShellWithTextIsAvailable("Properties for "));
 
 		// check the breakpoint in Breakpoints view
@@ -144,15 +143,14 @@ public class DebuggerBreakpointTest {
 		breakpoint.setChecked(false);
 
 		// check the breakpoint in Properties
-		new SwitchYardComponent("hello").getContextButton("Properties").click();
-		new DefaultShell("Properties for ").setFocus();
-		new DefaultTreeItem("Transform Breakpoint Properties").select();
+		dialog = new SwitchYardComponent("hello").showProperties(false);
+		dialog.select("Transform Breakpoint Properties");
 		assertEquals("hello", new LabeledText("Project").getText());
 		assertFalse(new CheckBox("Enabled").isChecked());
 		assertTrue(new CheckBox("IN").isChecked());
 		assertFalse(new CheckBox("OUT").isChecked());
 		assertTrue(new CheckBox("FAULT").isChecked());
-		new PushButton("OK").click();
+		dialog.ok();
 		new WaitWhile(new ShellWithTextIsAvailable("Properties for "));
 
 		// delete breakpoint
@@ -177,9 +175,8 @@ public class DebuggerBreakpointTest {
 		assertBreakpoint(breakpoint, TriggeringPhase.FAULT, true);
 
 		// check the breakpoint in Properties
-		new SwitchYardComponent("hello").getContextButton("Properties").click();
-		new DefaultShell("Properties for ").setFocus();
-		new DefaultTreeItem("Validate Breakpoint Properties").select();
+		CompositePropertiesDialog dialog = new SwitchYardComponent("hello").showProperties(false);
+		dialog.select("Validate Breakpoint Properties");
 		assertEquals("hello", new LabeledText("Project").getText());
 		assertTrue(new CheckBox("Enabled").isChecked());
 		assertTrue(new CheckBox("IN").isChecked());
@@ -187,7 +184,7 @@ public class DebuggerBreakpointTest {
 		assertTrue(new CheckBox("FAULT").isChecked());
 		new CheckBox("IN").toggle(false);
 		new CheckBox("OUT").toggle(false);
-		new PushButton("OK").click();
+		dialog.ok();
 		new WaitWhile(new ShellWithTextIsAvailable("Properties for "));
 
 		// check the breakpoint in Breakpoints view
@@ -203,15 +200,14 @@ public class DebuggerBreakpointTest {
 		breakpoint.setChecked(false);
 
 		// check the breakpoint in Properties
-		new SwitchYardComponent("hello").getContextButton("Properties").click();
-		new DefaultShell("Properties for ").setFocus();
-		new DefaultTreeItem("Validate Breakpoint Properties").select();
+		dialog = new SwitchYardComponent("hello").showProperties(false);
+		dialog.select("Validate Breakpoint Properties");
 		assertEquals("hello", new LabeledText("Project").getText());
 		assertFalse(new CheckBox("Enabled").isChecked());
 		assertTrue(new CheckBox("IN").isChecked());
 		assertFalse(new CheckBox("OUT").isChecked());
 		assertTrue(new CheckBox("FAULT").isChecked());
-		new PushButton("OK").click();
+		dialog.ok();
 		new WaitWhile(new ShellWithTextIsAvailable("Properties for "));
 
 		// delete breakpoint
@@ -245,9 +241,8 @@ public class DebuggerBreakpointTest {
 		assertBreakpoint(breakpoint, TriggerOn.TRANSFORMATION, false);
 
 		// check the breakpoint in Properties
-		new SwitchYardComponent("HelloService").getContextButton("Properties").click();
-		new DefaultShell("Properties for HelloService").setFocus();
-		new DefaultTreeItem("Service Breakpoint Properties").select();
+		CompositePropertiesDialog dialog = new SwitchYardComponent("HelloService").showProperties();
+		dialog.select("Service Breakpoint Properties");
 		assertEquals("HelloService", new LabeledText("Service Name").getText());
 		assertEquals("urn:com.example.switchyard:hello:1.0", new LabeledText("Service Namespace").getText());
 		assertEquals("hello", new LabeledText("Project").getText());
@@ -257,7 +252,7 @@ public class DebuggerBreakpointTest {
 		assertTrue(new CheckBox("FAULT").isChecked());
 		new CheckBox("IN").toggle(false);
 		new CheckBox("OUT").toggle(false);
-		new PushButton("OK").click();
+		dialog.ok();
 		new WaitWhile(new ShellWithTextIsAvailable("Properties for HelloService"));
 
 		// check the breakpoint in Breakpoints view
@@ -296,28 +291,26 @@ public class DebuggerBreakpointTest {
 		breakpoint.setChecked(false);
 
 		// check the breakpoint in Properties
-		new SwitchYardComponent("HelloService").getContextButton("Properties").click();
-		new DefaultShell("Properties for HelloService").setFocus();
-		new DefaultTreeItem("Service Breakpoint Properties").select();
+		dialog = new SwitchYardComponent("HelloService").showProperties();
+		dialog.select("Service Breakpoint Properties");
 		assertEquals("hello", new LabeledText("Project").getText());
 		assertFalse(new CheckBox("Enabled").isChecked());
 		assertTrue(new CheckBox("IN").isChecked());
 		assertFalse(new CheckBox("OUT").isChecked());
 		assertTrue(new CheckBox("FAULT").isChecked());
-		new PushButton("OK").click();
+		dialog.ok();
 		new WaitWhile(new ShellWithTextIsAvailable("Properties for HelloService"));
 
 		// delete breakpoint
 		new BreakpointsView().removeAllBreakpoints();
-		new SwitchYardComponent("HelloService").getContextButton("Properties").click();
-		new DefaultShell("Properties for HelloService").setFocus();
+		dialog = new SwitchYardComponent("HelloService").showProperties();
 		try {
-			new DefaultTreeItem("Service Breakpoint Properties").select();
+			dialog.select("Service Breakpoint Properties");
 			fail("Item 'Service Breakpoint Properties' is still available");
 		} catch (SWTLayerException | CoreLayerException ex) {
 			// ok
 		}
-		new PushButton("OK").click();
+		dialog.ok();
 		new WaitWhile(new ShellWithTextIsAvailable("Properties for HelloService"));
 	}
 
@@ -347,9 +340,8 @@ public class DebuggerBreakpointTest {
 		assertBreakpoint(breakpoint, TriggerOn.TRANSFORMATION, false);
 
 		// check the breakpoint in Properties
-		new SwitchYardComponent("Hello").getContextButton("Properties").click();
-		new DefaultShell("Properties for Hello").setFocus();
-		new DefaultTreeItem("Service Breakpoint Properties").select();
+		CompositePropertiesDialog dialog = new SwitchYardComponent("Hello").showProperties();
+		dialog.select("Service Breakpoint Properties");
 		assertEquals("Hello", new LabeledText("Service Name").getText());
 		assertEquals("urn:com.example.switchyard:hello:1.0", new LabeledText("Service Namespace").getText());
 		assertEquals("hello", new LabeledText("Project").getText());
@@ -359,7 +351,7 @@ public class DebuggerBreakpointTest {
 		assertTrue(new CheckBox("FAULT").isChecked());
 		new CheckBox("IN").toggle(false);
 		new CheckBox("OUT").toggle(false);
-		new PushButton("OK").click();
+		dialog.ok();
 		new WaitWhile(new ShellWithTextIsAvailable("Properties for Hello"));
 
 		// check the breakpoint in Breakpoints view
@@ -398,28 +390,27 @@ public class DebuggerBreakpointTest {
 		breakpoint.setChecked(false);
 
 		// check the breakpoint in Properties
-		new SwitchYardComponent("Hello").getContextButton("Properties").click();
-		new DefaultShell("Properties for Hello").setFocus();
-		new DefaultTreeItem("Service Breakpoint Properties").select();
+		dialog = new SwitchYardComponent("Hello").showProperties();
+		dialog.select("Service Breakpoint Properties");
 		assertEquals("hello", new LabeledText("Project").getText());
 		assertFalse(new CheckBox("Enabled").isChecked());
 		assertTrue(new CheckBox("IN").isChecked());
 		assertFalse(new CheckBox("OUT").isChecked());
 		assertTrue(new CheckBox("FAULT").isChecked());
-		new PushButton("OK").click();
+		dialog.ok();
 		new WaitWhile(new ShellWithTextIsAvailable("Properties for Hello"));
 
 		// delete breakpoint
 		new BreakpointsView().removeAllBreakpoints();
-		new SwitchYardComponent("Hello").getContextButton("Properties").click();
+		dialog = new SwitchYardComponent("Hello").showProperties();
 		new DefaultShell("Properties for Hello").setFocus();
 		try {
-			new DefaultTreeItem("Service Breakpoint Properties").select();
+			dialog.select("Service Breakpoint Properties");
 			fail("Item 'Service Breakpoint Properties' is still available");
 		} catch (SWTLayerException | CoreLayerException ex) {
 			// ok
 		}
-		new PushButton("OK").click();
+		dialog.ok();
 		new WaitWhile(new ShellWithTextIsAvailable("Properties for Hello"));
 	}
 
