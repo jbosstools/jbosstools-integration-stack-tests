@@ -6,7 +6,6 @@ import org.jboss.tools.fuse.ui.bot.test.ComponentTest;
 import org.jboss.tools.fuse.ui.bot.test.DataTransformationDeploymentTest;
 import org.jboss.tools.fuse.ui.bot.test.DataTransformationTest;
 import org.jboss.tools.fuse.ui.bot.test.DebuggerTest;
-import org.jboss.tools.fuse.ui.bot.test.DeploymentEAPTest;
 import org.jboss.tools.fuse.ui.bot.test.DeploymentTest;
 import org.jboss.tools.fuse.ui.bot.test.DownloadServerTest;
 import org.jboss.tools.fuse.ui.bot.test.FeaturesTest;
@@ -37,7 +36,6 @@ import junit.framework.TestSuite;
 	DataTransformationTest.class,
 	DataTransformationDeploymentTest.class,
 	DebuggerTest.class,
-	DeploymentEAPTest.class,
 	DeploymentTest.class,
 	DownloadServerTest.class,
 	FeaturesTest.class,
