@@ -110,7 +110,7 @@ public class DroolsRuntimesPreferencePage extends PreferencePage {
 
 	public boolean okCloseWarning() {
 		String shellText = new DefaultShell().getText();
-		Button b = new PushButton("OK");
+		Button b = new PushButton("Apply and Close");
 		LOGGER.info("Close Preferences dialog");
 		b.click();
 

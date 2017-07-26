@@ -5,7 +5,7 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 public class Dialog {
 
 	public void ok() {
-		new PushButton("OK").click();
+		new PushButton("Apply and Close").click();
 	}
 
 	public void cancel() {
