@@ -5,7 +5,7 @@
 						http://www.jboss.org/NS/SOAReq    http://www.jboss.org/schema/reddeer/3rdparty/SOARequirements.xsd">
 
 	<requirements>
-		<server:server-requirement name="${karaf.name}">
+		<server:server-requirement name="Karaf-3.0.3">
 			<server:karaf version="3.0">
 				<server:home>${project.build.directory}/requirements/apache-karaf-3.0.3</server:home>
 				<server:host>localhost</server:host>
@@ -14,7 +14,7 @@
 				<server:password>karaf</server:password>
 			</server:karaf>
 		</server:server-requirement>
-		<fuse:fuse-requirement name="${karaf.name}-Fuse">
+		<fuse:fuse-requirement name="Karaf303">
 			<fuse:camelVersion>2.17.3</fuse:camelVersion>
 			<server:karaf version="3.0">
 				<server:home>${project.build.directory}/requirements/apache-karaf-3.0.3</server:home>
