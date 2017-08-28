@@ -16,8 +16,8 @@ import org.jboss.tools.runtime.reddeer.Namespaces;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ServerFuse extends ServerKaraf {
 
-	private final String category = "JBoss Fuse";
-	private final String label = "JBoss Fuse";
+	private final String category = "Red Hat JBoss Middleware";
+	private final String label = "Red Hat JBoss Fuse";
 
 	@XmlElement(name = "camelVersion", namespace = Namespaces.SOA_REQ)
 	private String camelVersion;

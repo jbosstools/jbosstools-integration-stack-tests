@@ -18,7 +18,7 @@ import org.jboss.reddeer.common.wait.WaitUntil;
  */
 public class FuseServerWizard extends NewWizardDialog {
 
-	private static final String SERVER_SECTION = "JBoss Fuse";
+	private static final String SERVER_SECTION = "Red Hat JBoss Middleware";
 	private static final String HOST_NAME = "Server's host name:";
 	private static final String NAME = "Server name:";
 	private static final String PORT_NUMBER = "SSH Port: ";

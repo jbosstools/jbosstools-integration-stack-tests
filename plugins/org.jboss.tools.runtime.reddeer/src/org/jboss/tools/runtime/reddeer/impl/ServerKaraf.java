@@ -43,7 +43,7 @@ import org.jboss.tools.runtime.reddeer.wizard.ServerWizard;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ServerKaraf extends ServerBase {
 
-	private final String category = "JBoss Fuse";
+	private final String category = "Apache";
 
 	private final String label = "Apache Karaf";
 
