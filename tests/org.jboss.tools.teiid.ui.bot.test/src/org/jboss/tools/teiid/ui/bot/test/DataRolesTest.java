@@ -13,9 +13,7 @@ import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
-import org.eclipse.reddeer.swt.impl.button.OkButton;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
-import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
@@ -211,9 +209,6 @@ public class DataRolesTest {
 		modelExplorer.openModelEditor(PROJECT_NAME, "PreparedVdb.vdb");
 		VdbEditor.getInstance("PreparedVdb.vdb").synchronizeAll();
 		AbstractWait.sleep(TimePeriod.SHORT);
-		new DefaultShell("Confirm");
-		new OkButton().click();
-		AbstractWait.sleep(TimePeriod.SHORT);
 		modelExplorer.selectItem(PROJECT_NAME, "PreparedVdb.vdb");
  		new ContextMenuItem("Modeling", "Execute VDB").select();
  		new WaitWhile(new IsInProgress(), TimePeriod.VERY_LONG);
@@ -261,7 +256,7 @@ public class DataRolesTest {
  				.addModel(project, "VdbReuseView.xmi")
  				.finish();
  		
- 		modelExplorer.deployVdb(project, "ReuseVdb.vdb");
+        modelExplorer.deployVdb(project, "ReuseVdb.vdb");
  		
  		executeQueriesForUser("ReuseVdb", "VdbReuseView", "user", new boolean[]{true, true, true, true, true});
  		

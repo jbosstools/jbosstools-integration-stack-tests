@@ -3,8 +3,10 @@ package org.jboss.tools.teiid.reddeer.wizard.imports;
 import java.util.Arrays;
 
 import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.swt.condition.ShellIsActive;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.button.CheckBox;
 import org.eclipse.reddeer.swt.impl.button.NextButton;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
@@ -61,7 +63,8 @@ public class DDLTeiidImportWizard  extends TeiidImportWizard{
 	}
 	
 	public DDLTeiidImportWizard activate(){
-		new DefaultShell(DIALOG_TITLE);
+        new WaitUntil(new ShellIsAvailable(DIALOG_TITLE), TimePeriod.DEFAULT, false);
+        new DefaultShell(DIALOG_TITLE);
 		return this;
 	}
 	

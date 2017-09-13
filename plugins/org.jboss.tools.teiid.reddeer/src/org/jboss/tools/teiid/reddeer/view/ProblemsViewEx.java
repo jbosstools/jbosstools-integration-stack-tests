@@ -8,7 +8,7 @@ import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.eclipse.ui.problems.Problem;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
-import org.eclipse.reddeer.swt.impl.button.OkButton;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 
@@ -21,7 +21,7 @@ public class ProblemsViewEx extends ProblemsView {
 		// temporally until problem with Errors sync is present.
 		new ShellMenuItem(new WorkbenchShell(), "Project", "Clean...").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
-		new OkButton().click();
+		new PushButton("Clean").click();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		
 		AbstractWait.sleep(TimePeriod.SHORT);

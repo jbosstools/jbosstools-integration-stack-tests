@@ -2,7 +2,10 @@ package org.jboss.tools.teiid.ui.bot.test.ddl;
 
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
 
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.eclipse.ui.markers.matcher.MarkerResourceMatcher;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
@@ -11,9 +14,15 @@ import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
+import org.eclipse.reddeer.swt.impl.list.DefaultList;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.workbench.handler.EditorHandler;
 import org.hamcrest.core.StringContains;
+import org.jboss.tools.common.reddeer.JiraClient;
 import org.jboss.tools.teiid.reddeer.DdlHelper;
-import org.jboss.tools.teiid.reddeer.editor.VdbEditor;
+import org.jboss.tools.teiid.reddeer.dialog.GenerateDynamicVdbDialog;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
@@ -81,16 +90,12 @@ public class ViewUdf {
 		ddlHelper.importVdb(PROJECT_NAME, NAME_ORIGINAL_DYNAMIC_VDB, WORK_PROJECT_NAME);
 		
 		PropertiesViewExt.setUdf(WORK_PROJECT_NAME, NAME_VIEW_MODEL, NAME_UDF_FUNCTION, UDF_LIB, UDF_LIB_PATH);
-		new ModelExplorer().openModelEditor(WORK_PROJECT_NAME,NAME_VIEW_MODEL+".xmi");
-		new ModelExplorer().openModelEditor(WORK_PROJECT_NAME,NAME_VDB+".vdb");
-		VdbEditor staticVdb = VdbEditor.getInstance(NAME_VDB);
-		staticVdb.synchronizeAll();
-		staticVdb.saveAndClose();
+		ddlHelper.synchronizeAllModelsInVdb(WORK_PROJECT_NAME, NAME_VDB);
 		checkImportedModel();
-		
-		/*all models must be opened before synchronize VDB*//* TODO generated static vdb from dynamic vdb is different
-		String status = ddlHelper.deploy(WORK_PROJECT_NAME, NAME_VDB, teiidServer);
-		collector.checkThat("vdb is not active", status, containsString("ACTIVE"));*/
+        /*
+         * TODO generated static vdb from dynamic vdb is different String status = ddlHelper.deploy(WORK_PROJECT_NAME,
+         * NAME_VDB, teiidServer); collector.checkThat("vdb is not active", status, containsString("ACTIVE"));
+         */
 	}
 	
 	private void checkImportedModel(){
@@ -107,6 +112,7 @@ public class ViewUdf {
 				propertiesView.getProperty("Extension", "relational:Java Method").getPropertyValue(),
 				is("myConcatNull"));
 		
+        EditorHandler.getInstance().closeAll(false);// vdb editor contains problems view too, it must be closed
 		ProblemsView problemsView = new ProblemsView();
 		collector.checkThat("Errors in imported view model",
 				problemsView.getProblems(ProblemType.ERROR, new MarkerResourceMatcher(NAME_VIEW_MODEL + ".xmi")),
@@ -118,10 +124,27 @@ public class ViewUdf {
 	
 	@Test
 	public void exportVdbTest(){	
-		ddlHelper.createStaticVdb(NAME_VDB, PROJECT_NAME, NAME_VIEW_MODEL);
-		
-		String dynamicVdbContent = ddlHelper.createDynamicVdb(PROJECT_NAME, NAME_VDB, NAME_GENERATED_DYNAMIC_VDB);
-		checkExportedFile(dynamicVdbContent);
+        ddlHelper.createStaticVdb(NAME_VDB, PROJECT_NAME, NAME_VIEW_MODEL);
+        new ModelExplorer().selectItem(PROJECT_NAME, NAME_VDB + ".vdb");
+        new ContextMenuItem("Modeling", "Generate VDB XML").select();
+        new WaitUntil(new ShellIsAvailable("Generate Dynamic VDB Status "), TimePeriod.DEFAULT);
+        DefaultList warning = new DefaultList(0);
+        warning.select(0); // on macOS the warning is not selected
+        assertEquals(
+            "The vdb contains the udf library named \"MyTestUdf-1.0-SNAPSHOT\" hence a property referencing this has been added\n"
+                    + " to the dynamic VDB. For the dynamic VDB to perform successfully, the udf library must also be\n"
+                    + " deployed to the Teiid instance. ",
+            warning.getSelectedItems()[0]);
+        new OkButton().click();
+        GenerateDynamicVdbDialog wizard = new GenerateDynamicVdbDialog();
+        if (new JiraClient().isIssueClosed("TEIIDDES-3100")) {
+            wizard.setName(NAME_GENERATED_DYNAMIC_VDB)
+                .setFileName(NAME_GENERATED_DYNAMIC_VDB);
+        }
+        wizard.setLocation(PROJECT_NAME);
+        String contents = wizard.getContents();
+        wizard.finish();
+        checkExportedFile(contents);
 
 		/*test deploy generated dynamic VDB from static VDB*//*//TODO dynamic VDB doesn't support UDF function
 		String status = ddlHelper.deploy(PROJECT_NAME, NAME_GENERATED_DYNAMIC_VDB, teiidServer);

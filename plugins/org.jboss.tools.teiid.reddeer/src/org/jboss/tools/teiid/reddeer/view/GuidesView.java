@@ -15,7 +15,12 @@ import org.eclipse.reddeer.jface.wizard.WizardDialog;
 import org.eclipse.reddeer.swt.api.TableItem;
 import org.eclipse.reddeer.swt.condition.ShellIsActive;
 import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.CancelButton;
+import org.eclipse.reddeer.swt.impl.button.FinishButton;
+import org.eclipse.reddeer.swt.impl.button.NextButton;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.button.YesButton;
 import org.eclipse.reddeer.swt.impl.ccombo.DefaultCCombo;
 import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
 import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
@@ -28,7 +33,6 @@ import org.eclipse.reddeer.swt.impl.text.LabeledText;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
-import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.eclipse.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.condition.IsPreviewInProgress;
@@ -131,22 +135,22 @@ public class GuidesView extends WorkbenchView {
 		AbstractWait.sleep(TimePeriod.SHORT);
 		if (new ShellIsActive("Server Selection").test()) {
 			new DefaultCombo().setSelection(serverName);
-			new PushButton("OK").click();
+            new OkButton().click();
 		}
-		if (new ShellIsActive("Change of Teiid Version").test()) { // the teiid instances are different version
-			new PushButton("Yes").click();
+        if (new ShellIsActive("Change of Teiid Version").test()) { // the teiid instances are different version
+            new YesButton().click();
 		}
 		if (new ShellIsActive("Untested Teiid Version").test()) { // if test untestet teiid version
-			new PushButton("Yes").click();
+        new YesButton().click();
 		}
 		if (new ShellIsActive("Disconnect Current Default Instance").test()) { // if you want to disconnect old
 																						// instance before switching
-			new PushButton("Yes").click();
+        new YesButton().click();
 		}
 		if (new ShellIsActive("Default Server Changed").test()) {
-			new PushButton("OK").click();
+            new OkButton().click();
 		} else if (new ShellIsActive("Default server unchanged").test()) {
-			new PushButton("OK").click();
+            new OkButton().click();
 		} else {
 			throw new Error("Default server not been changed due to an error");
 		}
@@ -169,7 +173,7 @@ public class GuidesView extends WorkbenchView {
 		new LabeledText("Project name:").setText(projectName);
 		new WizardDialog().finish();
 		new DefaultShell("Define Model Project");
-		new PushButton("OK").click();
+        new OkButton().click();
 	}
 
 	/**
@@ -196,36 +200,39 @@ public class GuidesView extends WorkbenchView {
 	 */
 	public void previewDataViaActionSetWithParam(String actionSet, String param, String... path) {
 		AbstractWait.sleep(TimePeriod.SHORT);
-		if (new ShellIsActive("Unsaved Models In Workspace").test()) { // win 10
-			new PushButton("Yes").click();
+        if (new ShellIsAvailable("Unsaved Models In Workspace").test()) { // win 10
+            new YesButton().click();
 		}
 		new GuidesView().chooseAction(actionSet, "Preview Data");
+        if (new ShellIsAvailable("Unsaved Models In Workspace").test()) {
+            new YesButton().click();
+        }
 		new DefaultShell("Preview Data");
 		new PushButton("...").click();
 		new DefaultShell("Table or Procedure Selection");
 		new DefaultTreeItem(path).select();
-		new PushButton("OK").click();
+        new OkButton().click();
 		new DefaultShell("Preview Data");
-		new PushButton("OK").click();
+        new OkButton().click();
 		if (param != null) {
 			new WaitWhile(new IsInProgress(), TimePeriod.DEFAULT);
 			new DefaultShell("Preview Data");
 			// new LabeledText(nameParam).setText(param);
 			new DefaultText(0).setText(param);
-			new PushButton("OK").click();
+            new OkButton().click();
 		}
 
 		// setup display property; only 1st time
 		if (new ShellIsActive("Change Property").test()) {
-			new PushButton("Yes").click();
+            new YesButton().click();
 		}
 
 		if (new ShellIsAvailable("Data Sources Missing").test()) {
-			new PushButton("Yes").click();
+            new YesButton().click();
 		}
 
 		new DefaultShell("Custom Preview Data");
-		new PushButton("OK").click();
+        new OkButton().click();
 
 		new WaitWhile(new IsInProgress(), TimePeriod.VERY_LONG);
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -250,7 +257,7 @@ public class GuidesView extends WorkbenchView {
 		new PushButton("New...").click();
 		VdbWizard.getInstance().setLocation(projectName).setName(vdbName).finish();
 		new DefaultShell("Define VDB");
-		new PushButton("OK").click();
+        new OkButton().click();
 		VdbEditor vdbEditor = new VdbEditor(vdbName + ".vdb");
 		vdbEditor.addModelsToVDB(projectName, models);
 		try {
@@ -282,7 +289,7 @@ public class GuidesView extends WorkbenchView {
 	public List<Integer> executeVDB(String actionSet, TeiidServerRequirement teiidServer, String vdbName,
 			String... testSql) {
 		chooseAction(actionSet, "Execute VDB");
-		new PushButton("OK").click();
+        new OkButton().click();
 		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
 		List<Integer> result = new ArrayList<Integer>();
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, vdbName);
@@ -295,9 +302,9 @@ public class GuidesView extends WorkbenchView {
 	public void newServer(String serverName) {
 		chooseAction("Teiid", "Configure new JBoss Server");
 		new LabeledText("Server name:").setText(serverName);
-		new PushButton("Next >").click();
+        new NextButton().click();
 		new DefaultCombo().setSelection(0);
-		new PushButton("Finish").click();
+        new FinishButton().click();
 		new WaitWhile(new IsInProgress(), TimePeriod.SHORT);
 	}
 
@@ -305,7 +312,7 @@ public class GuidesView extends WorkbenchView {
 		chooseAction("Teiid", "Edit JBoss");
 		new DefaultShell("Server Selection");
 		new DefaultCombo().setSelection(serverName);
-		new PushButton("OK").click();
+        new OkButton().click();
 		try {
 			new DefaultEditor(serverName);
 		} catch (Exception ex) {
@@ -325,25 +332,29 @@ public class GuidesView extends WorkbenchView {
 		new WaitWhile(new IsInProgress(), TimePeriod.SHORT);
 		chooseAction("Teiid", "Refresh ");
 		new DefaultCombo().setSelection(serverName);
-		new PushButton("OK").click();
+        new OkButton().click();
 		new DefaultShell("Notification");
-		new PushButton("OK").click();
-		new ShellMenuItem(new WorkbenchShell(), "File", "Save All").select();
+        new OkButton().click();
+        new ShellMenuItem("File", "Save All").select();
 		new WaitWhile(new IsInProgress(), TimePeriod.SHORT);
 	}
 
 	public void createDataSource(String name, String connectionProfile) {
 		chooseAction("Model Teiid Data Source", "Create Data Source");
-		new LabeledText("Data Source Name:").setText(name);
+		new LabeledText("Data Source Name:").setText("java:/" + name);
 		new LabeledCombo("Connection Profile").setSelection(connectionProfile);
-		new PushButton("OK").click();
+        if (new OkButton().isEnabled()) {
+            new OkButton().click();
+        } else {
+            new CancelButton().click(); // cp is already created
+        }
 		new WaitWhile(new IsInProgress(), TimePeriod.SHORT);
 	}
 
 	public void createSourceModelFromTeiid(String name, String sourceName, String tableName, String schema) {
 		chooseAction("Model Teiid Data Source", "Create source model from Teiid ");
 		new DefaultTable(new DefaultGroup("Data Sources"), 0).getItem(sourceName).click();
-		new PushButton("Next >").click();
+        new NextButton().click();
 		DefaultTable importProperties = new DefaultTable(new DefaultGroup("Import Properties"), 0);
 		if (tableName != null) {
 			fillTextTable(importProperties, "Table Name Pattern", tableName);
@@ -354,13 +365,13 @@ public class GuidesView extends WorkbenchView {
 		fillTextTable(importProperties, "Table Types", "TABLE");
 		fillComboTable(importProperties, "Use Full Schema Name", "false");
 
-		new PushButton("Next >").click();
+        new NextButton().click();
 		new LabeledText("Name:").setText(name);
-		new PushButton("Next >").click();
+        new NextButton().click();
 		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
-		new PushButton("Next >").click();
+        new NextButton().click();
 		new WaitWhile(new IsInProgress(), TimePeriod.DEFAULT);
-		new PushButton("Finish").click();
+        new FinishButton().click();
 	}
 
 	/**

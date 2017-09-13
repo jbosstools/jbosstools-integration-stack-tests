@@ -10,6 +10,7 @@ import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.swt.api.TableItem;
 import org.eclipse.reddeer.swt.condition.ShellIsActive;
 import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.FinishButton;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
@@ -116,8 +117,12 @@ public class GenerateVdbArchiveDialog extends AbstractDialog {
 	public void finish() {
 		log.info("Finishing '" + title + "' Dialog");
 		activate();
-		new PushButton("Finish").click();
-		new WaitWhile(new ShellIsActive(title), TimePeriod.DEFAULT);
+		FinishButton finish = new FinishButton();
+		if(!finish.isEnabled()){ //try generate again
+		    generate();
+		}
+		finish.click();
+        new WaitWhile(new ShellIsActive(title), TimePeriod.DEFAULT);
 		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 

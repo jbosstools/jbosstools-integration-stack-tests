@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.platform.RunningPlatform;
 import org.eclipse.reddeer.common.util.Display;
 import org.eclipse.reddeer.common.util.ResultRunnable;
 import org.eclipse.reddeer.common.wait.AbstractWait;
@@ -20,7 +21,6 @@ import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.eclipse.reddeer.swt.impl.table.DefaultTable;
-import org.eclipse.reddeer.swt.impl.text.DefaultText;
 import org.eclipse.reddeer.swt.impl.text.LabeledText;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
@@ -64,7 +64,7 @@ public class DataRolesDialog extends AbstractDialog {
 		new DefaultCTabItem("Mapped Enterprise Role or Group").activate();
 		new PushButton("Add...").click();
 		new DefaultShell("Add Mapped Data Role Name");
-		new DefaultText(new DefaultGroup("Name"), 0).setText(roleName);
+		new LabeledText("Name").setText(roleName);
 		new PushButton("OK").click();
 		activate();
 		return this;
@@ -83,17 +83,20 @@ public class DataRolesDialog extends AbstractDialog {
 			public Boolean run() {
 				int checkPixel = new DefaultTreeItem(path).getSWTWidget().getImage(column).getImageData().getPixel(4, 9);
 				switch (checkPixel) {
-				case 0x818181:  // PARTIAL - FEDORA
-				case 0x808080: // PARTIAL - MAC
-				case 0x818181e6: // PARTIAL - WIN
-				case 0x00:  // TRUE
-					return true;
-				case 0xdedddd: // UNAVAILABLE
-				case 0x8cbdef: // FALSE
-					return false;
-				default:
-					throw new RuntimeException("unknown check state (designer changed checkbox images?) Color is: " + Integer.toHexString(checkPixel) );
-				}
+                    case 0x818181: // PARTIAL - FEDORA
+                    case 0x808080: // PARTIAL - MAC
+                    case -2122219034: // PARTIAL - WIN
+                    case 0x00: // TRUE - FEDORA
+                    case 255: // TRUE - WIN
+                        return true;
+                    case 0xdedddd: // UNAVAILABLE
+                    case -272790273: // FALSE - WIN
+                    case 0x8cbdef: // FALSE
+                        return false;
+                    default:
+                        throw new RuntimeException("unknown check state (designer changed checkbox images?) Color is: "
+                                + Integer.toHexString(checkPixel));
+                }
 			}
 		});
 	}
@@ -102,40 +105,52 @@ public class DataRolesDialog extends AbstractDialog {
 	 * @param permType DataRolesDialog.PermissionType.*
 	 */
 	public DataRolesDialog setModelPermission(String permType, final boolean allowed, final String... path) {
-		new DefaultCTabItem("Permissions").activate();
-		new DefaultCTabItem("Model").activate();
-		
-		
-		new DefaultTreeItem(path).select();
-		
-		final int column = getColumnForPermission(permType);
-		Display.syncExec(new Runnable() {
-			@Override
-			public void run() {
-				int checkPixel = new DefaultTreeItem(path).getSWTWidget().getImage(column).getImageData().getPixel(4, 9);
-				boolean checked;
-				switch (checkPixel) {
-				case 0x818181:  // PARTIAL
-				case 0x00:  // TRUE
-					checked = true;
-					break;
-				case 0xdedddd: // UNAVAILABLE
-				case 0x8cbdef: // FALSE
-					checked = false;
-					break;
-				default:
-					throw new RuntimeException("unknown check state (designer changed checkbox images?) Color is: " + Integer.toHexString(checkPixel));
-				}
-				
-				Rectangle bounds = new DefaultTreeItem(path).getSWTWidget().getBounds(column);
-				if (checked != allowed) {
-					WidgetHandler.getInstance().notifyItemMouse(SWT.MouseDown, 0, new DefaultTreeItem(path).getParent().getSWTWidget(), null,
-							bounds.x + 1, bounds.y + 1, 1);
-				}
-			}
-		});
-		return this;
-	}
+        new DefaultCTabItem("Permissions").activate();
+        new DefaultCTabItem("Model").activate();
+        
+        
+        new DefaultTreeItem(path).select();
+        
+        final int column = getColumnForPermission(permType);
+        Display.syncExec(new Runnable() {
+            @Override
+            public void run() {
+                int checkPixel = new DefaultTreeItem(path).getSWTWidget().getImage(column).getImageData().getPixel(4, 9);
+                boolean checked;
+                if(RunningPlatform.isWindows()){
+                    switch (checkPixel) {
+                    case 255:  // TRUE
+                        checked = true;
+                        break;
+                    case -272790273: // FALSE
+                        checked = false;
+                        break;
+                    default:
+                        throw new RuntimeException("unknown check state (designer changed checkbox images?) Color is: " + Integer.toHexString(checkPixel));
+                    }
+                }else{
+                    switch (checkPixel) {
+                    case 0x818181:  // PARTIAL
+                    case 0x00:  // TRUE
+                        checked = true;
+                        break;
+                    case 0xdedddd: // UNAVAILABLE
+                    case 0x8cbdef: // FALSE
+                        checked = false;
+                        break;
+                    default:
+                        throw new RuntimeException("unknown check state (designer changed checkbox images?) Color is: " + Integer.toHexString(checkPixel));
+                    }
+                }
+                Rectangle bounds = new DefaultTreeItem(path).getSWTWidget().getBounds(column);
+                if (checked != allowed) {
+                    WidgetHandler.getInstance().notifyItemMouse(SWT.MouseDown, 0, new DefaultTreeItem(path).getParent().getSWTWidget(), null,
+                            bounds.x + 1, bounds.y + 1, 1);
+                }
+            }
+        });
+        return this;
+    }
 
 	public DataRolesDialog addRowFilter(String condition, boolean constraint, String... target) {
 		new DefaultCTabItem("Permissions").activate();

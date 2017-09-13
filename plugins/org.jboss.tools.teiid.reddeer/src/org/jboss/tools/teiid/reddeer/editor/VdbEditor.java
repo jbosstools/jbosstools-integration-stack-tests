@@ -15,6 +15,7 @@ import org.eclipse.reddeer.jface.viewers.CellEditor;
 import org.eclipse.reddeer.swt.api.TableItem;
 import org.eclipse.reddeer.swt.condition.ShellIsActive;
 import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.button.RadioButton;
 import org.eclipse.reddeer.swt.impl.ccombo.DefaultCCombo;
@@ -108,7 +109,16 @@ public class VdbEditor extends DefaultEditor {
 	public void synchronizeAll() {
 		activate();
 		AbstractWait.sleep(TimePeriod.SHORT);
-		new PushButton("Synchronize All").click();
+		PushButton synchronize = new PushButton("Synchronize All");
+		if(synchronize.isEnabled()) {
+		    synchronize.click();
+		}
+        if (new ShellIsActive("Unsaved Models In Workspace").test()) {
+		    new OkButton().click();
+		}
+        if (new ShellIsActive("Confirm").test()) {
+            new OkButton().click();
+        }
 	}
 
 	public void removeModel(String projectName, String model) {
@@ -136,14 +146,14 @@ public class VdbEditor extends DefaultEditor {
 	
 	public DataRolesDialog addDataRole() {
 		new DefaultCTabItem("Data Roles").activate();
-		new PushButton(2).click();
+		new PushButton(5).click();
 		return new DataRolesDialog(DataRolesDialog.CREATE_TITLE);
 	}
 
 	public DataRolesDialog getDataRole(String roleName) {
 		new DefaultCTabItem("Data Roles").activate();
 		new DefaultTable(0).getItem(roleName).select();
-		new PushButton(3).click();
+		new PushButton(6).click();
 		return new DataRolesDialog(DataRolesDialog.EDIT_TITLE);
 	}
 
@@ -459,4 +469,10 @@ public class VdbEditor extends DefaultEditor {
 		new DefaultCTabItem("Source Binding Definition").activate();
 		return new DefaultTable(1).getItems();		
 	}
+
+    public List<TableItem> getListOfModels() {
+        activate();
+        new DefaultCTabItem("Models").activate();
+        return new DefaultTable(0).getItems();
+    }
 }

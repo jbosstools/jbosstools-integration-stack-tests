@@ -52,6 +52,7 @@ public class ImportProjectWizard extends ImportMenuWizard {
 			new RadioButton("Select archive file:").click();
 			new DefaultCombo(1).setText(path);
 		} else {
+            new RadioButton("Select root directory:").click();
 			new DefaultCombo(0).setText(path);
 			if (!new CheckBox("Copy projects into workspace").isChecked()) {
 				new CheckBox("Copy projects into workspace").click();

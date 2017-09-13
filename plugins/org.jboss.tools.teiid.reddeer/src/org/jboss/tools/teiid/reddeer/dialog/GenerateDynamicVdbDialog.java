@@ -8,10 +8,12 @@ import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.swt.condition.ShellIsActive;
 import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.eclipse.reddeer.swt.impl.tab.DefaultTabItem;
 import org.eclipse.reddeer.swt.impl.text.LabeledText;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.teiid.reddeer.condition.StyledTextHasText;
@@ -20,22 +22,28 @@ public class GenerateDynamicVdbDialog extends AbstractDialog {
 	private static final Logger log = Logger.getLogger(GenerateDynamicVdbDialog.class);
 
 	public GenerateDynamicVdbDialog() {
-		super("Generate Dynamic VDB");
+		super("Save as VDB XML file");
 		log.info("Generate dynamic vdb dialog is opened");
 
+	}
+	
+	@Override
+	public void activate() {
+	    super.activate();
+	    new DefaultTabItem("Dynamic VDB Definition").activate();
 	}
 	
 	public GenerateDynamicVdbDialog setName(String name) {
 		log.info("Set name to: '" + name + "'");
 		activate();	
-		new LabeledText("Dynamic VDB Name").setText(name);
+		new LabeledText("Name").setText(name);
 		return this;
 	}
 	
 	public GenerateDynamicVdbDialog setFileName(String name) {
 		log.info("Set file name to: '" + name + "'");
 		activate();	
-		new LabeledText("Dynamic VDB File Name").setText(name);
+		new LabeledText("File Name").setText(name);
 		return this;
 	}
 	
@@ -49,7 +57,7 @@ public class GenerateDynamicVdbDialog extends AbstractDialog {
 	public GenerateDynamicVdbDialog setLocation(String... location) {
 		log.info("Set location to: '" + location + "'");
 		activate();	
-		new PushButton("Change...").click();
+		new PushButton("Browse...").click();
 		new DefaultShell("Select a Folder");
 		new DefaultTreeItem(location).select();
 		new PushButton("OK").click();
@@ -60,6 +68,7 @@ public class GenerateDynamicVdbDialog extends AbstractDialog {
 	public GenerateDynamicVdbDialog setExcludeSourceMetadata(boolean checked) {
 		log.info("Set Exclude Source Metadata is : '" + checked + "'");
 		activate();
+	    new DefaultTabItem("Options").activate();
 		CheckBox checkBox = new CheckBox("Exclude source DDL metadata");
 		if(checked != checkBox.isChecked()){
 			checkBox.click();
@@ -70,6 +79,7 @@ public class GenerateDynamicVdbDialog extends AbstractDialog {
 	public GenerateDynamicVdbDialog setSuppressAttributesWithDefaultValues(boolean checked) {
 		log.info("Set Suppress Attributes With Default Values is : '" + checked + "'");
 		activate();
+		new DefaultTabItem("Options").activate();
 		CheckBox checkBox = new CheckBox("Suppress attributes with default values");
 		if(checked != checkBox.isChecked()){
 			checkBox.click();
@@ -104,17 +114,11 @@ public class GenerateDynamicVdbDialog extends AbstractDialog {
 		new WaitUntil(new StyledTextHasText(contentsText), TimePeriod.DEFAULT, false);
 		return contentsText.getText();
 	}
-	
-	public GenerateDynamicVdbDialog next(){
-		log.info("Go to next dialog page");
-		new PushButton("Next >").click();
-		return this;
-	}
 
 	@Override
 	public void finish() {
 		log.info("Finishing '" + title + "' Dialog");
-		new PushButton("Finish").click();
+        new OkButton().click();
 		new WaitWhile(new ShellIsActive(title), TimePeriod.DEFAULT);
 		AbstractWait.sleep(TimePeriod.SHORT);
 	}

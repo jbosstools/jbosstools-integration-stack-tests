@@ -103,9 +103,9 @@ public class ViewProcedureSettings {
 	    		is("Procedure description"));
 
 		tableEditor.openTab(TableEditor.Tabs.PROCEDURE_RESULTS);
-		collector.checkThat("Procedure result is set wrongly", tableEditor.getCellText(0,"myProcedure", "Name"),
-	    		is("myProcedure"));
-	    
+        collector.checkThat("Procedure result is set wrongly", tableEditor.getCellText(0, "myProcedure", "Name"),
+            is("resultSet"));
+
 		tableEditor.openTab(TableEditor.Tabs.PROCEDURE_PARAMETERS);
 		collector.checkThat("Procedure parameter direction is set wrongly", tableEditor.getCellText(0,"myProcedure", "Direction"),
 	    		is("IN"));

@@ -5,11 +5,15 @@ import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.dialog.TableDialog;
+import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
+import org.jboss.tools.teiid.reddeer.editor.VdbEditor;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
@@ -78,6 +82,8 @@ public class UDFTest {
 				.finish();
 
 		new ModelExplorer().addChildToModelItem(ModelExplorer.ChildType.TABLE, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi");
+        new RadioButton("Option 1: Build with new table wizard").click();
+        new OkButton().click();
 		new TableDialog(true)
 				.setName("tab")
 				.setTransformationSql("select udfConcatNull(hsqldbParts.PARTS.PART_NAME,hsqldbParts.PARTS.PART_WEIGHT) as NAME_WEIGHT from hsqldbParts.PARTS")
@@ -85,13 +91,18 @@ public class UDFTest {
 		
 		new RelationalModelEditor(MODEL_VIEW_NAME + ".xmi").save();
 
+        RelationalModelEditor editor = new RelationalModelEditor(MODEL_VIEW_NAME + ".xmi");
+        editor.activate();
+        editor.setAttributeDataType("tab", ModelEditor.ItemType.TABLE, "NAME_WEIGHT", "string", 800);
+        editor.save();
+
 		VdbWizard.openVdbWizard()
 				.setLocation(PROJECT_NAME)
 				.setName(VDB_NAME)
 				.addModel(PROJECT_NAME, MODEL_SRC_NAME + ".xmi")
 				.addModel(PROJECT_NAME, MODEL_VIEW_NAME + ".xmi")
 				.finish();
-		
+        new VdbEditor(VDB_NAME + ".vdb").save();
 		new ModelExplorer().deployVdb(PROJECT_NAME, VDB_NAME);
 		
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, VDB_NAME);

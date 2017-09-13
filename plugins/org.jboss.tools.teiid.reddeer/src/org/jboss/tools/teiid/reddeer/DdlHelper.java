@@ -1,15 +1,19 @@
 package org.jboss.tools.teiid.reddeer;
 
-import static org.hamcrest.core.StringContains.containsString;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.StringContains.containsString;
 
 import java.io.StringReader;
+import java.util.List;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
 
+import org.eclipse.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.workbench.handler.EditorHandler;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.dialog.GenerateDynamicVdbDialog;
 import org.jboss.tools.teiid.reddeer.dialog.GenerateVdbArchiveDialog;
@@ -38,9 +42,7 @@ public class DdlHelper {
 		GenerateDynamicVdbDialog wizard = new ModelExplorer().generateDynamicVDB(sourceProject, staticVdbName);
 		wizard.setName(dynamicVdbName)
 				.setFileName(dynamicVdbName)
-				.setLocation(sourceProject)
-				.next()
-				.generate();
+				.setLocation(sourceProject);
 		String contents = wizard.getContents();
 		wizard.finish();
 		return contents;
@@ -118,6 +120,7 @@ public class DdlHelper {
 	public void importVdb(String projectName, String originalDynamicVDB, String workProjectName){
 		ImportFromFileSystemWizard.openWizard()
 				.setPath("resources/projects/DDLtests/"+projectName)
+				.activate() //need refresh for show folders after set path
 				.setFolder(workProjectName)
 				.selectFile(originalDynamicVDB)
 				.setCreteTopLevelFolder(false)
@@ -129,16 +132,12 @@ public class DdlHelper {
 		}
 	
 	public void checkDeploy(String sourceModelName, String viewModelName, String workProjectName, String vdbName,TeiidServerRequirement teiidServer){
-		/*all models must be opened before synchronize VDB*/
-		if(viewModelName != null){
-			new ModelExplorer().openModelEditor(workProjectName,viewModelName+".xmi");
-		}
-		if(sourceModelName != null){
-			new ModelExplorer().openModelEditor(workProjectName,sourceModelName+".xmi");
-			new ModelExplorer().changeConnectionProfile(ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER, workProjectName, sourceModelName);
-		}
-		new ModelExplorer().openModelEditor(workProjectName,vdbName+".vdb");
-		
+	    EditorHandler.getInstance().closeAll(false);
+	    if(sourceModelName != null){
+            new ModelExplorer().openModelEditor(workProjectName,sourceModelName+".xmi");
+            new ModelExplorer().changeConnectionProfile(ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER, workProjectName, sourceModelName);
+        }
+	    synchronizeAllModelsInVdb(workProjectName, vdbName);
 		VdbEditor staticVdb = VdbEditor.getInstance(vdbName);
 		staticVdb.synchronizeAll();
 		staticVdb.saveAndClose();
@@ -153,5 +152,25 @@ public class DdlHelper {
 				.setLocation(projectName)
 				.addModel(projectName, modelName)				
 				.finish();		
-	}	
+	}
+	
+    /**
+     * When vdb and models are generated from xml(dynamic vdb), each of models must be open before synchronize VDB
+     * This is happened only in the test (manually it works), so this is workaround
+     */
+    public void synchronizeAllModelsInVdb(String project, String vdb) {
+        new ModelExplorer().openModelEditor(project,vdb+".vdb");
+        VdbEditor staticVdb = VdbEditor.getInstance(vdb);
+        List<TableItem> models = staticVdb.getListOfModels();
+        for(TableItem model : models) {
+            String modelName = model.getText();
+            new ModelExplorer().openModelEditor(project,modelName);
+            new DefaultCTabItem(1).activate();
+        }
+        staticVdb.activate();
+        staticVdb.synchronizeAll();
+        staticVdb.save();
+        EditorHandler.getInstance().closeAll(false);
+        new ModelExplorer().openModelEditor(project,vdb+".vdb");
+    }
 }

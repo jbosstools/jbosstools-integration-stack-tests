@@ -1,5 +1,6 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -24,6 +25,7 @@ import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.eclipse.reddeer.workbench.core.condition.JobIsKilled;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
@@ -34,6 +36,7 @@ import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidSer
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.SQLResult;
 import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -86,6 +89,15 @@ public class PreviewModelTest {
 	public void openTeiidPerspective(){
 		DatabaseDevelopmentPerspective.getInstance().getSqlResultsView().clear();
 		new TeiidPerspective().open();
+	}
+	
+	@After
+	public void closeScrapbook(){
+		try{
+			new DefaultEditor(containsString("SQL Scrapbook")).close(false);
+		}catch(Exception ex){
+			//editor have been already closed
+		}
 	}
 	
 	@Test
@@ -224,7 +236,7 @@ public class PreviewModelTest {
 			}
 		});
  		
-		AbstractWait.sleep(TimePeriod.SHORT); // Shell hasn't already opened after execute
+        AbstractWait.sleep(TimePeriod.LONG); // After execute, Studio is freeze for couple of seconds
  		new WaitWhile(new ShellIsAvailable("SQL Statement Execution"), TimePeriod.LONG);
 	}
 }

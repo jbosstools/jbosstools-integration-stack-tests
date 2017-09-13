@@ -6,6 +6,7 @@ import java.util.List;
 import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.spinner.LabeledSpinner;
@@ -14,11 +15,11 @@ import org.eclipse.reddeer.swt.impl.text.DefaultText;
 import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.eclipse.reddeer.swt.keyboard.KeyboardFactory;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
-
 public class RelationalModelEditor extends ModelEditor{
 	
 	public RelationalModelEditor(String title) {
 		super(title);
+        new DefaultCTabItem(1).activate(); // legacy, some test expect package diagram as default page
 		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 	

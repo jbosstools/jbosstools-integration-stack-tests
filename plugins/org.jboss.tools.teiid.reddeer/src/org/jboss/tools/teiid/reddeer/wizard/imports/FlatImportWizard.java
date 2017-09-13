@@ -170,6 +170,7 @@ public class FlatImportWizard extends TeiidImportWizard {
 	public FlatImportWizard setJndiName(String jndiName) {
 		log.info("Setting JNDI name");
 		activate();
+        jndiName = (jndiName.contains("java:/")) ? jndiName : "java:/" + jndiName;
 		new DefaultText(new DefaultGroup("JBoss Data Source Information"),0).setText(jndiName);
 		return this;
 	}

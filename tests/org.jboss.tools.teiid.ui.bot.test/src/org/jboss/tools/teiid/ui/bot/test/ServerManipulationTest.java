@@ -19,6 +19,7 @@ import org.eclipse.reddeer.uiforms.impl.hyperlink.DefaultHyperlink;
 import org.eclipse.reddeer.workbench.core.condition.JobIsKilled;
 import org.eclipse.reddeer.workbench.handler.EditorHandler;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
@@ -109,7 +110,7 @@ public class ServerManipulationTest {
 		assertTrue(testPingToServer(newServer)); //check ping after restart
 		
 	}
-	
+
 	@Test
 	public void remoteServer(){
 		SView.startServer(teiidServer.getName());
@@ -151,6 +152,7 @@ public class ServerManipulationTest {
 	 */
 	private boolean checkDefaultTeiidName(String nameServer){
 		new ModelExplorer().activate();
+        new WorkbenchView("Teiid Designer", "Connections").activate();
 		String defaultServerName = new DefaultHyperlink(0).getText();
 		return nameServer.equals(defaultServerName);
 	}
