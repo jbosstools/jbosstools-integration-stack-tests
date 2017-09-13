@@ -67,6 +67,7 @@ public class Db2 {
 	public void db2101JDBCtest() {
 		String model = "db2101Model";
 		importHelper.importModelJDBC(PROJECT_NAME_JDBC, model, ConnectionProfileConstants.DB2_101_BQT, "BQT/TABLE/SMALLA,BQT/TABLE/SMALLB", false);
+		new RelationalModelEditor(model + ".xmi").save();
 		importHelper.checkImportedTablesInModelJDBC(PROJECT_NAME_JDBC, model, "SMALLA", "SMALLB", teiidServer);
 		checkDatatypes(model);		
 	}
@@ -75,6 +76,7 @@ public class Db2 {
 	public void db297JDBCtest() {
 		String model = "db297Model";
 		importHelper.importModelJDBC(PROJECT_NAME_JDBC, model, ConnectionProfileConstants.DB2_97_BQT2, "BQT2/TABLE/SMALLA,BQT2/TABLE/SMALLB", false);
+		new RelationalModelEditor(model + ".xmi").save();
 		importHelper.checkImportedTablesInModelJDBC(PROJECT_NAME_JDBC, model, "SMALLA", "SMALLB", teiidServer);
 		checkDatatypes(model);
 	}

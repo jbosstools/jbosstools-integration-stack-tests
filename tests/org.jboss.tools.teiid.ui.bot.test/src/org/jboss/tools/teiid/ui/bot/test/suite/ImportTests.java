@@ -33,7 +33,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 @SuiteClasses({ 
-	SalesforceImportTest.class, 
+	/*SalesforceImportTest.class, 
 	LdapImportTest.class, 
 	GeometryTypeTest.class, 
 	FlatFileTest.class,
@@ -53,7 +53,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	MongoDB.class,
 	MySql.class,
 	Odata.class,
-	Oracle.class,
+	Oracle.class,*/
 	PostgreSql.class,
 	SalesForce.class,
 	SapHana.class,

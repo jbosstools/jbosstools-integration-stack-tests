@@ -74,7 +74,7 @@ public class Apache {
 				.setImportPropertie(CreateDataSourceDialog.DATASOURCE_PROPERTY_ZOO_KEEPER, apacheProps.getProperty("db.hostname"))
 				.finish();
 		TeiidConnectionImportWizard.getInstance()
-				.selectDataSource("apacheAccumuloDS")
+				.selectDataSource("java:/apacheAccumuloDS")
 				.nextPage()
 				.setTranslator("accumulo")
 				.nextPage()
@@ -105,7 +105,7 @@ public class Apache {
 				.setImportPropertie(CreateDataSourceDialog.DATASOURCE_PROPERTY_KEYSPACE, apacheProps.getProperty("db.name"))
 				.finish();
 		TeiidConnectionImportWizard.getInstance()
-				.selectDataSource("apacheCassandraDS")
+				.selectDataSource("java:/apacheCassandraDS")
 				.nextPage()
 				.setTranslator("cassandra")
 				.nextPage()
@@ -135,7 +135,7 @@ public class Apache {
 				.finish();
 		AbstractWait.sleep(TimePeriod.getCustom(5));
 		TeiidConnectionImportWizard.getInstance()
-				.selectDataSource("apacheSolrDS")
+				.selectDataSource("java:/apacheSolrDS")
 				.nextPage()
 				.setTranslator("solr")
 				.nextPage()

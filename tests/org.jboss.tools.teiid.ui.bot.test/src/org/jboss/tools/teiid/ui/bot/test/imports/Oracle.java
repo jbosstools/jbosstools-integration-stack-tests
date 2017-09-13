@@ -19,6 +19,7 @@ import org.jboss.tools.teiid.reddeer.ImportHelper;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
+import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.preference.TeiidDesignerPreferencePage;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
@@ -76,6 +77,7 @@ public class Oracle {
 	public void oracle11gJDBCtest() {
 		String model = "oracle11gModel";
 		importHelper.importModelJDBC(PROJECT_NAME_JDBC, model, ConnectionProfileConstants.ORACLE_11G_BQT2, "BQT2/TABLE/SMALLA,BQT2/TABLE/SMALLB", false);
+		new RelationalModelEditor(model + ".xmi").save();
 		importHelper.checkImportedTablesInModelJDBC(PROJECT_NAME_JDBC, model, "SMALLA", "SMALLB", teiidServer);
 	}
 	
@@ -83,6 +85,7 @@ public class Oracle {
 	public void oracle11gPackageJDBCtest() {
 		String model = "oracle11gModelPackage";
 		importHelper.importModelJDBC(PROJECT_NAME_JDBC, model, ConnectionProfileConstants.ORACLE_11G_BOOKS, "BOOKS/procedure/REMOVE_AUTHOR2", true);
+		new RelationalModelEditor(model + ".xmi").save();
 		importHelper.checkImportedProcedureInModelJDBC(PROJECT_NAME_JDBC, model,"REMOVE_AUTHOR2", teiidServer, "90" );
 	}
 
@@ -90,6 +93,7 @@ public class Oracle {
 	public void oracle12cJDBCtest() {
 		String model = "oracle12cModel";
 		importHelper.importModelJDBC(PROJECT_NAME_JDBC, model, ConnectionProfileConstants.ORACLE_12C_BQT, "DV/TABLE/SMALLA,DV/TABLE/SMALLB", false);
+		new RelationalModelEditor(model + ".xmi").save();
 		importHelper.checkImportedTablesInModelJDBC(PROJECT_NAME_JDBC, model, "SMALLA", "SMALLB", teiidServer);
 	}
 	
@@ -116,9 +120,11 @@ public class Oracle {
 		String notUpdatableModel = "notUpdatableModel";
 		
 		importHelper.importModelJDBC(PROJECT_NAME_JDBC, updatableModel, ConnectionProfileConstants.ORACLE_11G_BOOKS, null, false, true);
+		new RelationalModelEditor(updatableModel + ".xmi").save();
 		assertTrue(importHelper.checkUpdatableModelJDBC(PROJECT_NAME_JDBC, updatableModel,true));
 		
 		importHelper.importModelJDBC(PROJECT_NAME_JDBC, notUpdatableModel, ConnectionProfileConstants.ORACLE_11G_BOOKS, null, false, false);
+		new RelationalModelEditor(notUpdatableModel + ".xmi").save();
 		assertTrue(importHelper.checkUpdatableModelJDBC(PROJECT_NAME_JDBC, notUpdatableModel,false));
 		VdbWizard.openVdbWizard()
 				.setName(updatableModel+"Vdb")

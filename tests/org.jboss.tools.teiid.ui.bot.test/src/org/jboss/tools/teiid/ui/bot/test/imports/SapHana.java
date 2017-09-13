@@ -12,6 +12,7 @@ import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.teiid.reddeer.ImportHelper;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
+import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.VdbEditor;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.preference.TeiidDesignerPreferencePage;
@@ -67,6 +68,8 @@ public class SapHana {
 	public void sapHanaJDBCtest() {
 		String model = "sapHanaModel";
 		importHelper.importModelJDBC(PROJECT_NAME_JDBC, model, ConnectionProfileConstants.SAP_HANA, "BQT1/TABLE/SMALLA,BQT1/TABLE/SMALLB", false);
+		
+		new RelationalModelEditor(model + ".xmi").save();
 		
 		// TODO temp till hana translator is not set automatically (updated checkImportedTablesInModel method)
 		assertTrue(new ModelExplorer().containsItem(PROJECT_NAME_JDBC,model + ".xmi", "SMALLA"));

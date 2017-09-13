@@ -69,10 +69,10 @@ public class Excel {
 		
 		TeiidConnectionImportWizard.openWizard()
 				.createNewDataSource()
-						.setName("excelDS")
-						.setDriver("file")
-						.setImportPropertie(CreateDataSourceDialog.DATASOURCE_PROPERTY_PARENT_DIR, excelDsProperties.getProperty("path"))
-						.finish();
+				.setName("excelDS")
+				.setDriver("file")
+				.setImportPropertie(CreateDataSourceDialog.DATASOURCE_PROPERTY_PARENT_DIR, excelDsProperties.getProperty("path"))
+				.finish();
 		TeiidConnectionImportWizard.getInstance()
 				.nextPage()
 				.setTranslator("excel")

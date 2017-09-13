@@ -219,6 +219,7 @@ public class ServersViewExt extends ServersView2 {
 		new DefaultTreeItem(getServerLabel(serverName), TEIID_INSTANCE_CONFIG, DV6_PREFIX_URL, DATA_SOURCES).select();
 		new ContextMenuItem("Create Data Source").select();
 		new DefaultShell("");
+		datasourceName = (datasourceName.contains("java:/")) ? datasourceName : "java:/" + datasourceName;
 		new DefaultText().setText(datasourceName);
 		new RadioButton("Use Connection Profile Info").click();
 		new DefaultCombo(1).setSelection(connectionProfile);

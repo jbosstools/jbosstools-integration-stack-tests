@@ -14,6 +14,7 @@ import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.teiid.reddeer.ImportHelper;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
+import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.preference.TeiidDesignerPreferencePage;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
@@ -72,6 +73,7 @@ public class SqlServer {
 	public void sqlServer2008JDBCtest() {
 		String model = "sqlServer2008Model";
 		importHelper.importModelJDBC(PROJECT_NAME_JDBC, model, ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER,"partssupplier/dbo/TABLE/SHIP_VIA,partssupplier/dbo/TABLE/PARTS", false);
+		new RelationalModelEditor(model + ".xmi").save();
 		assertTrue(importHelper.checkNameInTableJDBC("\"AVERAGE TIME DELIVERY\"",6,2));
 		importHelper.checkImportedTablesInModelJDBC(PROJECT_NAME_JDBC, model, "SHIP_VIA", "PARTS", teiidServer);
 	}
@@ -81,6 +83,7 @@ public class SqlServer {
 		String model = "sqlServer2012Model";
 		importHelper.importModelJDBC(PROJECT_NAME_JDBC, model, ConnectionProfileConstants.SQL_SERVER_2012_BQT2,
 				"bqt2/dbo/TABLE/SmallA,bqt2/dbo/TABLE/SmallB", false);
+		new RelationalModelEditor(model + ".xmi").save();
 		importHelper.checkImportedTablesInModelJDBC(PROJECT_NAME_JDBC, model, "SmallA", "SmallB", teiidServer);
 	}
 	
@@ -89,6 +92,7 @@ public class SqlServer {
 		String model = "sqlServer2014Model";
 		importHelper.importModelJDBC(PROJECT_NAME_JDBC, model, ConnectionProfileConstants.SQL_SERVER_2014_BQT2,
 				"bqt2/dbo/TABLE/SMALLA,bqt2/dbo/TABLE/SMALLB", false);
+		new RelationalModelEditor(model + ".xmi").save();
 		importHelper.checkImportedTablesInModelJDBC(PROJECT_NAME_JDBC, model, "SMALLA", "SMALLB", teiidServer);
 	}
 	
