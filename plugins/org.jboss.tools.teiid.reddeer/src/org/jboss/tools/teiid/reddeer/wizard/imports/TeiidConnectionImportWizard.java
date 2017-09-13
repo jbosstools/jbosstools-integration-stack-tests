@@ -75,7 +75,7 @@ public class TeiidConnectionImportWizard extends TeiidImportWizard{
 	}
 	
 	public TeiidConnectionImportWizard selectDataSource(String dataSourceName) {
-		log.info("Select existing data source '" + dataSourceName + "'");
+		log.info("Select existing data source '" + dataSourceName + "'");		
 		activate();
 		Table table = new DefaultTable(0);
 		TableItem item = table.getItem(dataSourceName, 0);

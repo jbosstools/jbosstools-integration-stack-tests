@@ -13,6 +13,7 @@ import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.teiid.reddeer.ImportHelper;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
+import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.preference.TeiidDesignerPreferencePage;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
@@ -67,7 +68,7 @@ public class Greenplum {
 		teiidImporterProperties.put(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "small%");
 		
 		// 90 seconds is not enough
-		importHelper.importModelTeiid(PROJECT_NAME_TEIID, ConnectionProfileConstants.GREENPLUM, modelName, teiidImporterProperties, TimePeriod.getCustom(120),teiidServer);		
+		importHelper.importModelTeiid(PROJECT_NAME_TEIID, ConnectionProfileConstants.GREENPLUM, modelName, teiidImporterProperties, TimePeriod.getCustom(180),teiidServer);		
 		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, modelName, "smalla", "smallb");
 	}
 	
@@ -75,6 +76,7 @@ public class Greenplum {
 	public void greenplumJDBCtest() {
 		String modelName = "greenplum";
 		importHelper.importModelJDBC(PROJECT_NAME_JDBC, modelName, ConnectionProfileConstants.GREENPLUM, "public/TABLE/smalla,public/TABLE/smallb", false);
+		new RelationalModelEditor(modelName + ".xmi").save();
 		importHelper.checkImportedTablesInModelJDBC(PROJECT_NAME_JDBC, modelName, "smalla", "smallb", teiidServer);
 	}	
 	

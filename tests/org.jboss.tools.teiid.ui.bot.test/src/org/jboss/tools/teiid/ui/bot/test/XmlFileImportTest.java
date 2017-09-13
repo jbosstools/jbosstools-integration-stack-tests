@@ -56,7 +56,7 @@ public class XmlFileImportTest {
 				.setImportMode(XMLImportWizard.LOCAL)
 				.nextPage()
 				.setDataFileSource("LOCAL_XML")
-				.setSourceModelName("LocalSource")
+				.setSourceModelName("LocalSource2222")
 				.nextPage()
 				.setJndiName("LocalSource")
 				.nextPage()

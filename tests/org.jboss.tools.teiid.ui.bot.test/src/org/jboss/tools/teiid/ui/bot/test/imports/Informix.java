@@ -12,6 +12,7 @@ import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.teiid.reddeer.ImportHelper;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
+import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.preference.TeiidDesignerPreferencePage;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
@@ -61,10 +62,10 @@ public class Informix {
 	
 	@Test
 	public void informixTeiidtest() {
-		String modelName = "informix";		
+		String modelName = "informixTeiid";		
 		Map<String,String> teiidImporterProperties = new HashMap<String, String>();
 		teiidImporterProperties.put(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "small%");
-		importHelper.importModelTeiid(PROJECT_NAME_TEIID, ConnectionProfileConstants.INFORMIX, modelName, teiidImporterProperties, teiidServer);		
+		importHelper.importModelTeiid(PROJECT_NAME_TEIID, ConnectionProfileConstants.INFORMIX, modelName, teiidImporterProperties, teiidServer);			
 		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, modelName, "smalla", "smallb");
 	}
 	
@@ -72,6 +73,7 @@ public class Informix {
 	public void informixJDBCtest() {
 		String modelName = "informix";
 		importHelper.importModelJDBC(PROJECT_NAME_JDBC, modelName, ConnectionProfileConstants.INFORMIX, "dvqe/informix/TABLE/smalla,dvqe/informix/TABLE/smallb", false);
+		new RelationalModelEditor(modelName + ".xmi").save();
 		importHelper.checkImportedTablesInModelJDBC(PROJECT_NAME_JDBC, modelName, "smalla", "smallb", teiidServer);	
 	}	
 }

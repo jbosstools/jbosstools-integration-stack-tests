@@ -3,6 +3,7 @@ package org.jboss.tools.teiid.ui.bot.test.imports;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.junit.execution.annotation.RunIf;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
@@ -67,7 +68,7 @@ public class SapIq {
 		String modelName = "sap_iq";
 		Map<String,String> teiidImporterProperties = new HashMap<String, String>();
 		teiidImporterProperties.put(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "Small%");
-		importHelper.importModelTeiid(PROJECT_NAME_TEIID, ConnectionProfileConstants.SAP_IQ, modelName, teiidImporterProperties, teiidServer);		
+		importHelper.importModelTeiid(PROJECT_NAME_TEIID, ConnectionProfileConstants.SAP_IQ, modelName, teiidImporterProperties,TimePeriod.getCustom(120), teiidServer);		
 		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, modelName, "SmallA", "SmallB");
 	}
 	

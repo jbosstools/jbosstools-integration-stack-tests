@@ -2,6 +2,8 @@ package org.jboss.tools.teiid.ui.bot.test.imports;
 
 import java.util.Properties;
 
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
@@ -71,8 +73,9 @@ public class MongoDB {
 				.setImportPropertie(CreateDataSourceDialog.DATASOURCE_DATABASE, apacheProps.getProperty("db.name"))
 				.setImportPropertie(CreateDataSourceDialog.DATASOURCE_PROPERTY_URL_SERVER_LIST, apacheProps.getProperty("url"))					
 				.finish();
+		AbstractWait.sleep(TimePeriod.getCustom(5));
 		TeiidConnectionImportWizard.getInstance()
-				.selectDataSource("mongodbDS")
+				.selectDataSource("java:/mongodbDS")
 				.nextPage()
 				.setTranslator("mongodb")
 				.nextPage()

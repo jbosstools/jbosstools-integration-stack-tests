@@ -38,6 +38,8 @@ public class CreateDataSourceDialog extends AbstractDialog {
 	public static final String DATASOURCE_PROPERTY_URL_SERVER_LIST = "* URL/Server List";
 	public static final String DATASOURCE_DATABASE = "Database";
 	
+	public static final String DATASOURCE_CONNECTION_URL = "connection-url";
+	
 	public CreateDataSourceDialog() {
 		super("Create DataSource");
 		log.info("Generate dynamic vdb dialog is opened");
@@ -47,6 +49,7 @@ public class CreateDataSourceDialog extends AbstractDialog {
 	public CreateDataSourceDialog setName(String name){
 		log.info("Set driver to: '"+ name +"'");
 		activate();
+		name = (name.contains("java:/")) ? name : "java:/" + name;
 		new LabeledText("Name:").setText(name);
 		return this;
 	}
