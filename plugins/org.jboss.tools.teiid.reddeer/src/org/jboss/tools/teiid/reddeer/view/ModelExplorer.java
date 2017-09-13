@@ -17,11 +17,13 @@ import org.eclipse.reddeer.eclipse.ui.navigator.resources.AbstractExplorer;
 import org.eclipse.reddeer.swt.condition.ShellIsActive;
 import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.exception.SWTLayerException;
+import org.eclipse.reddeer.swt.impl.button.CancelButton;
 import org.eclipse.reddeer.swt.impl.button.CheckBox;
 import org.eclipse.reddeer.swt.impl.button.LabeledCheckBox;
 import org.eclipse.reddeer.swt.impl.button.OkButton;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.swt.impl.button.YesButton;
 import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
@@ -105,15 +107,20 @@ public class ModelExplorer extends AbstractExplorer {
 		new ContextMenuItem("Modeling", "Set Connection Profile").select();
 		new DefaultShell("Set Connection Profile");
 		new DefaultTreeItem("Database Connections", connectionProfile).select();
-		new PushButton("OK").click();
-		if (new ShellIsAvailable("Confirm Connection Profile Change").test()){ //if test untestet teiid version
-			new PushButton("OK").click();
+        new OkButton().click();
+        if (new ShellIsAvailable("Confirm Connection Profile Change").test()) { // if test untestet teiid
+                                                                                        // version
+            new OkButton().click();
 		}
-		if (new ShellIsAvailable("Set JBoss Data Source JNDI Name").test()){ //if test untestet teiid version
-			new WaitUntil(new ShellIsAvailable("Set JBoss Data Source JNDI Name"));
-			String jndiName = modelName;
-			new DefaultText(0).setText(jndiName.replace(".xmi", ""));
-			new PushButton("OK").click();
+        String jndiName = modelName;
+        if (new ShellIsAvailable("Set JBoss Data Source JNDI Name").test()) { // if test untestet teiid version
+            new WaitUntil(new ShellIsAvailable("Set JBoss Data Source JNDI Name"));
+		    jndiName = (jndiName.contains("java:/")) ? jndiName : "java:/" + jndiName;
+		    new DefaultShell("Set JBoss Data Source JNDI Name");
+		    new DefaultText(0).setText(jndiName.replace(".xmi", ""));
+			new OkButton().click();
+        } else {
+            setJndiName(jndiName, modelPath);
 		}
 		new RelationalModelEditor(modelName).save();
 	}
@@ -149,7 +156,7 @@ public class ModelExplorer extends AbstractExplorer {
 		this.selectItem(itemPath);
 		new ContextMenuItem("Modeling", "Preview Data").select();
 		try {
-			new PushButton("Yes").click();
+            new YesButton().click();
 		} catch (Exception e) { }
 		if ((params != null) && (!params.isEmpty())) {
 			new DefaultShell("Preview Data");
@@ -158,7 +165,7 @@ public class ModelExplorer extends AbstractExplorer {
 				new DefaultText(i).setText(paramName);
 				i++;
 			}
-			new PushButton("OK").click();
+            new OkButton().click();
 		}
 		if(customSql!=null){
 			DefaultStyledText styledText = new DefaultStyledText();
@@ -168,10 +175,10 @@ public class ModelExplorer extends AbstractExplorer {
 		}
 		
 		if (new ShellIsAvailable("Data Sources Missing").test()){
-			new PushButton("Yes").click();
+            new YesButton().click();
 		}
 		
-		new PushButton("OK").click();
+        new OkButton().click();
 	}
 	
 	/**
@@ -194,14 +201,14 @@ public class ModelExplorer extends AbstractExplorer {
 		new ContextMenuItem("Modeling", "Create VDB Data Source").select();
 		try {
 			new DefaultShell("VDB Not Yet Deployed ");
-			new PushButton("Yes").click();// create ds anyway
+            new YesButton().click();// create ds anyway
 		} catch (Exception e) {		}
 		new WorkbenchShell();
 		new DefaultText(1).setText(jndiName);
 		if (passThruAuth) {
 			new CheckBox("Pass Thru Authentication").click();
 		}
-		new PushButton("OK").click();
+        new OkButton().click();
 	}
 	
 	/**
@@ -221,11 +228,11 @@ public class ModelExplorer extends AbstractExplorer {
 		if (connectionSourceType.toString().equals("Use Connection Profile Info")) {
 			new DefaultCombo(1).setSelection(connectionProfile);
 		}
-		if (!new PushButton("OK").isEnabled()) {
+        if (!new OkButton().isEnabled()) {
 			System.err.println("Datasource " + pathToSourceModel[pathToSourceModel.length - 1] + "exists!");
-			new PushButton("Cancel").click();
+            new CancelButton().click();
 		} else {
-			new PushButton("OK").click();
+            new OkButton().click();
 		}
 	}
 	
@@ -293,17 +300,19 @@ public class ModelExplorer extends AbstractExplorer {
 		this.selectItem(vdbpath);
 		new ContextMenuItem("Modeling", "Deploy").select();
 		AbstractWait.sleep(TimePeriod.getCustom(3));
-		
-		if (new ShellIsActive("VDB is not Synchronized").test()){
-			new PushButton("Yes").click();
+        if (new ShellIsActive("Save VDB").test()) {
+            new OkButton().click();
+        }
+        if (new ShellIsActive("VDB is not Synchronized").test()) {
+            new YesButton().click();
 		}
 		
-		if (new ShellIsActive("Create Missing Teiid Data Sources Confirmation").test()){
-			new PushButton("Yes").click();
+        if (new ShellIsActive("Create Missing Teiid Data Sources Confirmation").test()) {
+            new YesButton().click();
 		}
 		
-		if (new ShellIsActive("Server is not connected").test()){
-			new PushButton("OK").click();
+        if (new ShellIsActive("Server is not connected").test()) {
+            new OkButton().click();
 			throw new Error("Server is not connected");
 		}
 		try {
@@ -324,7 +333,7 @@ public class ModelExplorer extends AbstractExplorer {
 		int i = vdbPath.length -1;
 		vdbPath[i] = (vdbPath[i].contains(".vdb")) ? vdbPath[i] : vdbPath[i] + ".vdb";
 		this.selectItem(vdbPath);
-		new ContextMenuItem("Modeling", "Generate Dynamic VDB").select();
+		new ContextMenuItem("Modeling", "Generate VDB XML").select();
 		return new GenerateDynamicVdbDialog();
 	}
 	
@@ -369,7 +378,7 @@ public class ModelExplorer extends AbstractExplorer {
 		new ContextMenuItem("Mark as Deployable").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		if (new ShellIsActive("No deployable servers found").test()){
-			new PushButton("OK").click();
+            new OkButton().click();
 			throw new Error("Server is not connected");
 		}
 		try {
@@ -452,6 +461,10 @@ public class ModelExplorer extends AbstractExplorer {
 		refreshProject(itemPath[0]);
 		new DefaultTreeItem(itemPath).select();
 		new ContextMenuItem("New Child", childType).select();
+        if (new ShellIsAvailable("Create Virtual Table Options").test()) {
+            new DefaultShell("Create Virtual Table Options");
+            new OkButton().click();
+        }
 		AbstractWait.sleep(TimePeriod.SHORT);
 		KeyboardFactory.getKeyboard().type(KeyEvent.VK_TAB);
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -466,6 +479,10 @@ public class ModelExplorer extends AbstractExplorer {
 		refreshProject(itemPath[0]);
 		new DefaultTreeItem(itemPath).select();
 		new ContextMenuItem("New Sibling",siblingType).select();
+        if (new ShellIsAvailable("Create Virtual Table Options").test()) {
+            new DefaultShell("Create Virtual Table Options");
+            new OkButton().click();
+        }
 		AbstractWait.sleep(TimePeriod.SHORT);
 		KeyboardFactory.getKeyboard().type(KeyEvent.VK_TAB);
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -565,8 +582,11 @@ public class ModelExplorer extends AbstractExplorer {
 		this.selectItem(pathToSourceModel);
 		new ContextMenuItem("Modeling", "Set Data Source JNDI Name").select();
 		new DefaultShell("Set JBoss Data Source JNDI Name");
+		jndiName = jndiName.replace(".xmi","");
+		jndiName = (jndiName.contains("java:/")) ? jndiName : "java:/" + jndiName;
+	    new DefaultShell("Set JBoss Data Source JNDI Name");
 		new DefaultText(0).setText(jndiName);
-		new PushButton("OK").click();
+		new OkButton().click();
 	}
 	
 	/**

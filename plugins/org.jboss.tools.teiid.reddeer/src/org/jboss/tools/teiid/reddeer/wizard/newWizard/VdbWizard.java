@@ -4,7 +4,9 @@ import java.util.Arrays;
 
 import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.text.LabeledText;
@@ -42,6 +44,7 @@ public class VdbWizard extends NewMenuWizard {
 	}
 
 	public VdbWizard activate() {
+        new WaitWhile(new ShellIsAvailable(DIALOG_TITLE), TimePeriod.DEFAULT);
 		new DefaultShell(DIALOG_TITLE);
 		return this;
 	}

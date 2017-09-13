@@ -88,7 +88,7 @@ public class CreateModelTest {
 		assertTrue(new XmlModelEditor(XML_VIEW_MODEL_NAME + ".xmi").isActive());
 	}
 
-	@Test
+    @Test
 	public void xsdDatatypeModel() {
 		MetadataModelWizard.openWizard()
 				.setLocation(PROJECT_NAME)
@@ -104,7 +104,7 @@ public class CreateModelTest {
 		assertTrue(new XmlModelEditor(XSD_DATATYPE_MODEL_NAME + ".xsd").isActive());
 	}
 
-	@Test
+    @Test
 	public void webserviceViewModel() {
 		MetadataModelWizard.openWizard()
 				.setLocation(PROJECT_NAME)

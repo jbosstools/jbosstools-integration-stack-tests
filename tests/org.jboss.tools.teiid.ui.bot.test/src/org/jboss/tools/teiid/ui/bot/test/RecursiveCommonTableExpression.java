@@ -46,7 +46,6 @@ public class RecursiveCommonTableExpression {
 		new ModelExplorer().importProject(PROJECT_NAME);
 		new ModelExplorer().changeConnectionProfile(ConnectionProfileConstants.ORACLE_11G_BQT2, PROJECT_NAME,
 				SOURCE_MODEL_NAME);
-
 	}
 
 	@Test

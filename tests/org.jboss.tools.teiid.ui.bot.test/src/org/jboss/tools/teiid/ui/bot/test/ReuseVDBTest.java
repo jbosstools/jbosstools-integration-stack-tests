@@ -55,7 +55,7 @@ public class ReuseVDBTest {
 	
 	private static final String PROJECT_NAME_REUSE = "reuseVDBProject";
 	private static final String VIEW_REUSE_MODEL = "viewReuse";
-	private static final String REUSE_VDB = "reuseVDB";
+	private static final String REUSE_VDB = "reuseVDBname";
 
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;

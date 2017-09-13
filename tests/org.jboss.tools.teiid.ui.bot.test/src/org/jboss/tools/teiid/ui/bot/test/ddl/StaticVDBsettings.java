@@ -78,12 +78,7 @@ public class StaticVDBsettings {
 		
 		checkVDB();
 		
-		/*all models must be opened before synchronize VDB*/
-		new ModelExplorer().openModelEditor(WORK_PROJECT_NAME,NAME_SOURCE_MODEL+".xmi");
-		new ModelExplorer().openModelEditor(WORK_PROJECT_NAME,NAME_VDB+".vdb");
-		VdbEditor staticVdb = VdbEditor.getInstance(NAME_VDB);
-		staticVdb.synchronizeAll();
-		staticVdb.saveAndClose();
+		ddlHelper.synchronizeAllModelsInVdb(WORK_PROJECT_NAME, NAME_VDB);
 		/*test deploy generated VDB from dynamic VDB*/
 		String status = ddlHelper.deploy(WORK_PROJECT_NAME, NAME_VDB, teiidServer);	
 		collector.checkThat("vdb is not active", status, is("ACTIVE"));
@@ -206,7 +201,7 @@ public class StaticVDBsettings {
 				ddlHelper.getXPath(contentFile,"/vdb/model[@name='sourceModel']/property[@name='SourceModelProperty']/@value"),
 					is("10"));
 		collector.checkThat("wrong default source model",
-				ddlHelper.getXPath(contentFile,"/vdb/model[@name='sourceModel']/source[@connection-jndi-name='sourceModel']/@name"),
+				ddlHelper.getXPath(contentFile,"/vdb/model[@name='sourceModel']/source[@connection-jndi-name='java:/sourceModel']/@name"),
 					is(NAME_SOURCE_MODEL));
 		collector.checkThat("wrong multi source model",
 				ddlHelper.getXPath(contentFile,"/vdb/model[@name='sourceModel']/source[@connection-jndi-name='java:/secondSource']/@name"),

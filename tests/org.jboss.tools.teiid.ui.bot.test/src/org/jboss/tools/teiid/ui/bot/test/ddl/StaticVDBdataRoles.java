@@ -13,8 +13,6 @@ import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
-import org.eclipse.reddeer.swt.impl.button.PushButton;
-import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.teiid.reddeer.DdlHelper;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.dialog.DataRolesDialog;
@@ -82,14 +80,7 @@ public class StaticVDBdataRoles {
 		
 		checkVDB();
 		
-		/*all models must be opened before synchronize VDB*/
-		new ModelExplorer().openModelEditor(WORK_PROJECT_NAME,NAME_SOURCE_MODEL+".xmi");
-		new ModelExplorer().openModelEditor(WORK_PROJECT_NAME,NAME_VDB+".vdb");
-		VdbEditor staticVdb = VdbEditor.getInstance(NAME_VDB);
-		staticVdb.synchronizeAll();
-		new DefaultShell("Confirm");
-		new PushButton("OK").click();
-		staticVdb.saveAndClose();
+		ddlHelper.synchronizeAllModelsInVdb(WORK_PROJECT_NAME, NAME_VDB);
 		/*test deploy generated VDB from dynamic VDB*/
 		String status = ddlHelper.deploy(WORK_PROJECT_NAME, NAME_VDB, teiidServer);	
 		collector.checkThat("vdb is not active", status, is("ACTIVE"));

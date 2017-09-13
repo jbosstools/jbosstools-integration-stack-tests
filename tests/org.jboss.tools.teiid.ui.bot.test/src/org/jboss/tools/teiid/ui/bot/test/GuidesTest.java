@@ -20,7 +20,9 @@ import org.eclipse.reddeer.swt.api.TreeItem;
 import org.eclipse.reddeer.swt.condition.ShellIsActive;
 import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
 import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
 import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
@@ -102,7 +104,8 @@ public class GuidesTest {
 		
 		guides.chooseAction(actionSet, "Create source ");
 		createJDBCSource(model_JDBC_name,project_JDBC_name,CONNECTION_PROFILE);
-		
+
+        new RelationalModelEditor(model_JDBC_name + ".xmi").save();
 		guides.previewDataViaActionSet(actionSet,project_JDBC_name, model_JDBC_name+".xmi","PARTS"); 
 		assertTrue(testLastPreview());
 		
@@ -137,7 +140,7 @@ public class GuidesTest {
 				.nextPage()
 				.setEndPoint("Countries")
 				.finish();
-		
+
 		guides.chooseAction(actionSet, "Generate "); 
 		new DefaultShell("Create Relational Model from Web Service");
 		wsdlImportWizard(soapProfile, model_SOAP_name, view_SOAP_name);
@@ -481,7 +484,9 @@ public class GuidesTest {
 				.finish();
 		new DefaultShell("Define View Table");
 		//3.2
-		new PushButton(1, matcher).click();	
+        new PushButton(1, matcher).click();
+        new RadioButton("Option 1: Build with new table wizard").click();
+        new OkButton().click();
 		new TableDialog(true)
 				.setName(tableName)
 				.setTransformationSql(query)

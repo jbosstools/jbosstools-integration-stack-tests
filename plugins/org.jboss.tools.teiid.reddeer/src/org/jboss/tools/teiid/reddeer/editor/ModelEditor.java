@@ -52,7 +52,7 @@ public abstract class ModelEditor extends DefaultEditor {
 		Display.syncExec(new Runnable() {
 			@Override
 			public void run() {
-				DefaultCTabItem tabItem = new DefaultCTabItem(0);
+                DefaultCTabItem tabItem = new DefaultCTabItem(1);
 				tabItem.activate();
 				GraphicalViewer viewer = ((IEditorPart) tabItem.getSWTWidget().getData()).getAdapter(GraphicalViewer.class);
 				viewer.select(ViewerHandler.getInstance().getEditParts(viewer, new ModelEditorItemMatcher(type, name)).get(0));
@@ -68,7 +68,7 @@ public abstract class ModelEditor extends DefaultEditor {
 		Display.syncExec(new Runnable() {
 			@Override
 			public void run() {
-				DefaultCTabItem tabItem = new DefaultCTabItem(0);
+                DefaultCTabItem tabItem = new DefaultCTabItem(1);
 				tabItem.activate();
 				GraphicalViewer viewer = ((IEditorPart) tabItem.getSWTWidget().getData()).getAdapter(GraphicalViewer.class);
 				viewer.select(ViewerHandler.getInstance().getEditParts(viewer, new ModelEditorItemAttributeMatcher(name, parentType, parentName)).get(0));
@@ -85,7 +85,7 @@ public abstract class ModelEditor extends DefaultEditor {
 		Display.syncExec(new Runnable() {
 			@Override
 			public void run() {
-				DefaultCTabItem tabItem = new DefaultCTabItem(0);
+                DefaultCTabItem tabItem = new DefaultCTabItem(1);
 				tabItem.activate();
 				ModelEditorItemAttributeMatcher matcher = new ModelEditorItemAttributeMatcher("", itemType, itemName);
 				
@@ -105,7 +105,7 @@ public abstract class ModelEditor extends DefaultEditor {
 		Display.syncExec(new Runnable() {
 			@Override
 			public void run() {
-				DefaultCTabItem tabItem = new DefaultCTabItem(0);
+                DefaultCTabItem tabItem = new DefaultCTabItem(1);
 				tabItem.activate();
 				GraphicalViewer viewer = ((IEditorPart) tabItem.getSWTWidget().getData()).getAdapter(GraphicalViewer.class);
 				viewer.select(ViewerHandler.getInstance().getEditParts(viewer, TransformationArrowMatcher.getInstance()).get(0));
@@ -122,7 +122,7 @@ public abstract class ModelEditor extends DefaultEditor {
 		Display.syncExec(new Runnable() {
 			@Override
 			public void run() {
-				DefaultCTabItem tabItem = new DefaultCTabItem(0);
+                DefaultCTabItem tabItem = new DefaultCTabItem(1);
 				tabItem.activate();
 				GraphicalViewer viewer = ((IEditorPart) tabItem.getSWTWidget().getData()).getAdapter(GraphicalViewer.class);
 				ViewerHandler.getInstance().getEditParts(viewer, matcher);

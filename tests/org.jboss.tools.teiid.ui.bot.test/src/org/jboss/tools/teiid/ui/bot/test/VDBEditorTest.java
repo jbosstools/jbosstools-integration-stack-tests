@@ -54,7 +54,6 @@ public class VDBEditorTest {
 	private static final String UDF_VDB = "UdfVdb";
 	private static final String UDF_LIB_PATH = "target/proc-udf/MyTestUdf/lib/";
 	private static final String UDF_LIB = "MyTestUdf-1.0-SNAPSHOT.jar";
-	private static final String OTHER_FILE_PATH ="resources/ddl" ;
 	private static final String OTHER_FILE = "viewModel.ddl";
 	
 	@InjectRequirement
@@ -189,11 +188,11 @@ public class VDBEditorTest {
 	public void UDFJarsTabTest() throws Exception{	
 		modelExplorer.importProject(UDF_PROJECT_NAME);
 		ImportFromFileSystemWizard.openWizard()
-		.setPath(UDF_LIB_PATH)
-		.setFolder(UDF_PROJECT_NAME)
-		.selectFile(UDF_LIB)
-		.setCreteTopLevelFolder(true)
-		.finish();
+            .setPath(UDF_LIB_PATH)
+            .setFolder(UDF_PROJECT_NAME)
+            .selectFile(UDF_LIB)
+            .setCreteTopLevelFolder(true)
+            .finish();
 		modelExplorer.getProject(UDF_PROJECT_NAME).refresh();
 		modelExplorer.changeConnectionProfile(ConnectionProfileConstants.ORACLE_11G_PRODUCTS, UDF_PROJECT_NAME, UDF_SOURCE_MODEL + ".xmi");		
 		modelExplorer.selectItem(UDF_PROJECT_NAME);
@@ -241,13 +240,7 @@ public class VDBEditorTest {
 	@Test 
 	public void restTabsTest(){
 		modelExplorer.selectItem(EDITOR_PROJECT_NAME);
-		ImportFromFileSystemWizard.openWizard()
-		.setPath(OTHER_FILE_PATH)
-		.setFolder(EDITOR_PROJECT_NAME)
-		.selectFile(OTHER_FILE)
-		.setCreteTopLevelFolder(true)
-		.finish();
-		
+
 		VdbWizard.openVdbWizard()		
 				.setName(EDITOR_OTHER_TABS_VDB)	
 				.addModel(EDITOR_PROJECT_NAME,"views",EDITOR_VIEW_MODEL + ".xmi")

@@ -26,7 +26,10 @@ public class PropertiesViewExt extends PropertySheet {
 				.finish();
 	
 		new ModelExplorer().openModelEditor(projectName, model + ".xmi", function);
-		PropertySheet propertiesView = new PropertySheet();
+        new ModelExplorer().openModelEditor(projectName, model + ".xmi", function); // because after first open,
+                                                                                    // properties are blanked
+
+        PropertySheet propertiesView = new PropertySheet();
 		propertiesView.getProperty("Extension", "relational:UDF Jar Path").getTreeItem().doubleClick();
 		new PushButton("...").click();
 			
