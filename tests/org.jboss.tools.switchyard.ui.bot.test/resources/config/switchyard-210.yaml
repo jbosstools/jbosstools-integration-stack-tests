@@ -1,0 +1,4 @@
+org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard:
+- name: SwitchYard 2.1.0.Final
+  configurationVersion: "2.0"
+  switchyardVersion: 2.1.0.Final

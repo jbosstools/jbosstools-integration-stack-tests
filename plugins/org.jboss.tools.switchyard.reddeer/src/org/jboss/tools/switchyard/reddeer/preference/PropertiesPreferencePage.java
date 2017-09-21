@@ -1,8 +1,8 @@
 package org.jboss.tools.switchyard.reddeer.preference;
 
-import org.jboss.reddeer.swt.impl.list.DefaultList;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.swt.impl.list.DefaultList;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.switchyard.reddeer.binding.CamelBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.FTPBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.FTPSBindingPage;

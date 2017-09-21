@@ -1,17 +1,18 @@
 package org.jboss.tools.common.reddeer.debug;
 
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 
 /**
  * Represents 'Suspend' button
  * 
  * @author tsedmik
  */
-public class SuspendButton extends ShellMenu {
+public class SuspendButton extends ShellMenuItem {
 
 	public SuspendButton() {
 
-		super("Run", "Suspend");
+		super(new WorkbenchShell(), "Run", "Suspend");
 	}
 
 }

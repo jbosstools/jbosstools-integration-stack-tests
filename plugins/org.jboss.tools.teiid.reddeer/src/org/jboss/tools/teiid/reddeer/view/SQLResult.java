@@ -5,11 +5,11 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
 
 public class SQLResult {
 	private static Logger logger = new Logger(SQLResult.class);

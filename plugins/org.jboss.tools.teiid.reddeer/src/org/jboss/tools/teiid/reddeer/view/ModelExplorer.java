@@ -7,34 +7,34 @@ import java.io.File;
 import java.util.List;
 
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.core.handler.ShellHandler;
-import org.jboss.reddeer.eclipse.jdt.ui.AbstractExplorer;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.LabeledCheckBox;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
-import org.jboss.reddeer.workbench.impl.editor.AbstractEditor;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.AbstractExplorer;
+import org.eclipse.reddeer.swt.condition.ShellIsActive;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.exception.SWTLayerException;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.LabeledCheckBox;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.swt.keyboard.KeyboardFactory;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.condition.RadioButtonEnabled;
 import org.jboss.tools.teiid.reddeer.condition.WarIsDeployed;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
@@ -86,7 +86,7 @@ public class ModelExplorer extends AbstractExplorer {
 	 */
 	public void refreshProject(String projectName){
 		selectItem(projectName);
-		new ContextMenu("Refresh").select();
+		new ContextMenuItem("Refresh").select();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		activate();
 	}
@@ -102,15 +102,15 @@ public class ModelExplorer extends AbstractExplorer {
 		String modelName = modelPath[n];
 		new WorkbenchShell();
 		this.selectItem(modelPath);
-		new ContextMenu("Modeling", "Set Connection Profile").select();
+		new ContextMenuItem("Modeling", "Set Connection Profile").select();
 		new DefaultShell("Set Connection Profile");
 		new DefaultTreeItem("Database Connections", connectionProfile).select();
 		new PushButton("OK").click();
-		if (new ShellWithTextIsAvailable("Confirm Connection Profile Change").test()){ //if test untestet teiid version
+		if (new ShellIsAvailable("Confirm Connection Profile Change").test()){ //if test untestet teiid version
 			new PushButton("OK").click();
 		}
-		if (new ShellWithTextIsAvailable("Set JBoss Data Source JNDI Name").test()){ //if test untestet teiid version
-			new WaitUntil(new ShellWithTextIsAvailable("Set JBoss Data Source JNDI Name"));
+		if (new ShellIsAvailable("Set JBoss Data Source JNDI Name").test()){ //if test untestet teiid version
+			new WaitUntil(new ShellIsAvailable("Set JBoss Data Source JNDI Name"));
 			String jndiName = modelName;
 			new DefaultText(0).setText(jndiName.replace(".xmi", ""));
 			new PushButton("OK").click();
@@ -147,7 +147,7 @@ public class ModelExplorer extends AbstractExplorer {
 	public void customPreviewModelItem(List<String> params, String customSql, String... itemPath) {
 		new WorkbenchShell();
 		this.selectItem(itemPath);
-		new ContextMenu("Modeling", "Preview Data").select();
+		new ContextMenuItem("Modeling", "Preview Data").select();
 		try {
 			new PushButton("Yes").click();
 		} catch (Exception e) { }
@@ -167,7 +167,7 @@ public class ModelExplorer extends AbstractExplorer {
 			styledText.insertText(customSql);
 		}
 		
-		if (new ShellWithTextIsAvailable("Data Sources Missing").test()){
+		if (new ShellIsAvailable("Data Sources Missing").test()){
 			new PushButton("Yes").click();
 		}
 		
@@ -191,7 +191,7 @@ public class ModelExplorer extends AbstractExplorer {
 		pathToVDB[n] = (pathToVDB[n].contains(".vdb")) ? pathToVDB[n] : pathToVDB[n] + ".vdb";
 		new WorkbenchShell();
 		this.selectItem(pathToVDB);
-		new ContextMenu("Modeling", "Create VDB Data Source").select();
+		new ContextMenuItem("Modeling", "Create VDB Data Source").select();
 		try {
 			new DefaultShell("VDB Not Yet Deployed ");
 			new PushButton("Yes").click();// create ds anyway
@@ -213,9 +213,9 @@ public class ModelExplorer extends AbstractExplorer {
 		pathToSourceModel[n] = (pathToSourceModel[n].contains(".xmi")) ? pathToSourceModel[n] : pathToSourceModel[n] + ".xmi";
 		new WorkbenchShell();
 		this.selectItem(pathToSourceModel);
-		new ContextMenu("Modeling", "Create Data Source").select();
+		new ContextMenuItem("Modeling", "Create Data Source").select();
 		// wait until radio button is enabled
-		new WaitUntil(new RadioButtonEnabled(connectionSourceType), TimePeriod.NORMAL);
+		new WaitUntil(new RadioButtonEnabled(connectionSourceType), TimePeriod.DEFAULT);
 		new RadioButton(connectionSourceType).click();
 		// in case of connection profile -> choose connection profile
 		if (connectionSourceType.toString().equals("Use Connection Profile Info")) {
@@ -235,7 +235,7 @@ public class ModelExplorer extends AbstractExplorer {
 	 */
 	public GenerateRestProcedureDialog modelingRestProcedure(String... pathFrom){
 		this.selectItem(pathFrom);
-		new ContextMenu("Modeling", "Generate REST Virtual Procedures").select();
+		new ContextMenuItem("Modeling", "Generate REST Virtual Procedures").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		return new GenerateRestProcedureDialog();
 	}
@@ -248,7 +248,7 @@ public class ModelExplorer extends AbstractExplorer {
 	 */
 	public CreateWebServiceDialog modelingWebService(boolean fromXml, String... pathFrom){
 		this.selectItem(pathFrom);
-		new ContextMenu("Modeling", "Create Web Service").select();
+		new ContextMenuItem("Modeling", "Create Web Service").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		return new CreateWebServiceDialog(fromXml);
 	}
@@ -291,18 +291,18 @@ public class ModelExplorer extends AbstractExplorer {
 		int i = vdbpath.length -1;
 		vdbpath[i] = (vdbpath[i].contains(".vdb") || vdbpath[i].contains(".xml")) ? vdbpath[i] : vdbpath[i] + ".vdb";
 		this.selectItem(vdbpath);
-		new ContextMenu("Modeling", "Deploy").select();
+		new ContextMenuItem("Modeling", "Deploy").select();
 		AbstractWait.sleep(TimePeriod.getCustom(3));
 		
-		if (new ShellWithTextIsActive("VDB is not Synchronized").test()){
+		if (new ShellIsActive("VDB is not Synchronized").test()){
 			new PushButton("Yes").click();
 		}
 		
-		if (new ShellWithTextIsActive("Create Missing Teiid Data Sources Confirmation").test()){
+		if (new ShellIsActive("Create Missing Teiid Data Sources Confirmation").test()){
 			new PushButton("Yes").click();
 		}
 		
-		if (new ShellWithTextIsActive("Server is not connected").test()){
+		if (new ShellIsActive("Server is not connected").test()){
 			new PushButton("OK").click();
 			throw new Error("Server is not connected");
 		}
@@ -310,7 +310,7 @@ public class ModelExplorer extends AbstractExplorer {
 			new DefaultShell("Create VDB Data Source");
 			new LabeledCheckBox("JNDI Name >>    java:/").toggle(true/*passThruAuth*/);
 			new PushButton("Create Source").click();
-			new WaitWhile(new ShellWithTextIsActive("Create VDB Data Source"), TimePeriod.NORMAL);
+			new WaitWhile(new ShellIsActive("Create VDB Data Source"), TimePeriod.DEFAULT);
 		} catch (SWTLayerException e) {	
 			// shell not opened -> continue
 		}
@@ -324,7 +324,7 @@ public class ModelExplorer extends AbstractExplorer {
 		int i = vdbPath.length -1;
 		vdbPath[i] = (vdbPath[i].contains(".vdb")) ? vdbPath[i] : vdbPath[i] + ".vdb";
 		this.selectItem(vdbPath);
-		new ContextMenu("Modeling", "Generate Dynamic VDB").select();
+		new ContextMenuItem("Modeling", "Generate Dynamic VDB").select();
 		return new GenerateDynamicVdbDialog();
 	}
 	
@@ -336,7 +336,7 @@ public class ModelExplorer extends AbstractExplorer {
 		int i = vdbPath.length -1;
 		vdbPath[i] = (vdbPath[i].contains(".xml")) ? vdbPath[i] : vdbPath[i] + ".xml";
 		this.selectItem(vdbPath);
-		new ContextMenu("Modeling", "Generate VDB Archive and Models").select();
+		new ContextMenuItem("Modeling", "Generate VDB Archive and Models").select();
 		return new GenerateVdbArchiveDialog();
 	}
 	
@@ -350,7 +350,7 @@ public class ModelExplorer extends AbstractExplorer {
 		int i = vdbPath.length -1;
 		vdbPath[i] = (vdbPath[i].contains(".vdb")) ? vdbPath[i] : vdbPath[i] + ".vdb";
 		this.selectItem(vdbPath);
-		new ContextMenu("Modeling", soap ? "Generate SOAP War" : "Generate REST War").select();
+		new ContextMenuItem("Modeling", soap ? "Generate SOAP War" : "Generate REST War").select();
 		AbstractWait.sleep(TimePeriod.getCustom(3));
 		return new CreateWarDialog(soap);
 	}
@@ -366,9 +366,9 @@ public class ModelExplorer extends AbstractExplorer {
 		warPath[iWar] = (warPath[iWar].contains(".war")) ? warPath[iWar] : warPath[iWar] + ".war";
 		refreshProject(warPath[0]);
 		this.selectItem(warPath);
-		new ContextMenu("Mark as Deployable").select();
+		new ContextMenuItem("Mark as Deployable").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
-		if (new ShellWithTextIsActive("No deployable servers found").test()){
+		if (new ShellIsActive("No deployable servers found").test()){
 			new PushButton("OK").click();
 			throw new Error("Server is not connected");
 		}
@@ -390,7 +390,7 @@ public class ModelExplorer extends AbstractExplorer {
 		int iWar = warPath.length -1;
 		warPath[iWar] = (warPath[iWar].contains(".war")) ? warPath[iWar] : warPath[iWar] + ".war";
 		this.selectItem(warPath);
-		new ContextMenu("Unmark as Deployable").select();
+		new ContextMenuItem("Unmark as Deployable").select();
 		AbstractWait.sleep(TimePeriod.getCustom(5));
 	}
 	
@@ -409,7 +409,7 @@ public class ModelExplorer extends AbstractExplorer {
 	 */
 	public void saveModelAs(String originalModelPath, String newModelName, String newModelPath, boolean isSchemaModel){
 		this.openModelEditor(originalModelPath.split("/"));
-		new ShellMenu("File","Save As...").select();
+		new ShellMenuItem(new WorkbenchShell(), "File", "Save As...").select();
 		SaveAsDialog saveAsDialog = new SaveAsDialog(isSchemaModel);
 		saveAsDialog.setLocation(newModelPath.split("/"));
 		saveAsDialog.setModelName(newModelName);
@@ -436,7 +436,7 @@ public class ModelExplorer extends AbstractExplorer {
 				.setExistingModel(originalModelPath.split("/"))
 				.finish();
 		AbstractWait.sleep(TimePeriod.SHORT);
-		ShellMenu saveMenu = new ShellMenu("File","Save");
+		ShellMenuItem saveMenu = new ShellMenuItem(new WorkbenchShell(), "File", "Save");
 		if (saveMenu.isEnabled()){
 			saveMenu.select();
 			AbstractWait.sleep(TimePeriod.SHORT);
@@ -451,7 +451,7 @@ public class ModelExplorer extends AbstractExplorer {
 	public void addChildToModelItem(String childType, String... itemPath) {
 		refreshProject(itemPath[0]);
 		new DefaultTreeItem(itemPath).select();
-		new ContextMenu("New Child", childType).select();
+		new ContextMenuItem("New Child", childType).select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		KeyboardFactory.getKeyboard().type(KeyEvent.VK_TAB);
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -465,7 +465,7 @@ public class ModelExplorer extends AbstractExplorer {
 	public void addSiblingToModelItem(String siblingType, String... itemPath){
 		refreshProject(itemPath[0]);
 		new DefaultTreeItem(itemPath).select();
-		new ContextMenu("New Sibling",siblingType).select();
+		new ContextMenuItem("New Sibling",siblingType).select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		KeyboardFactory.getKeyboard().type(KeyEvent.VK_TAB);
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -478,7 +478,7 @@ public class ModelExplorer extends AbstractExplorer {
 	public void renameModelItem(String newName, String... itemPath){
 		refreshProject(itemPath[0]);
 		new DefaultTreeItem(itemPath).select();
-		new ContextMenu("Rename...").select();
+		new ContextMenuItem("Rename...").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new DefaultText().setText(newName);
 		KeyboardFactory.getKeyboard().type(KeyEvent.VK_TAB);
@@ -493,7 +493,7 @@ public class ModelExplorer extends AbstractExplorer {
 	public void renameModel(String newName, String... modelPath){
 		refreshProject(modelPath[0]);
 		new DefaultTreeItem(modelPath).select();
-		new ContextMenu("Refactor", "Rename...").select();
+		new ContextMenuItem("Refactor", "Rename...").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new LabeledText("New name:").setText(newName);
 		new OkButton().click();
@@ -507,12 +507,12 @@ public class ModelExplorer extends AbstractExplorer {
 	public void deleteModel(String... modelPath){
 		refreshProject(modelPath[0]);
 		new DefaultTreeItem(modelPath).select();
-		new ContextMenu("Delete").select();
+		new ContextMenuItem("Delete").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		try {
 			new DefaultShell("Delete Resources");
 			new OkButton().click();
-			new WaitWhile(new ShellWithTextIsActive("Delete Resources"), TimePeriod.NORMAL);
+			new WaitWhile(new ShellIsActive("Delete Resources"), TimePeriod.DEFAULT);
 		} catch (SWTLayerException e) {	
 			// shell not opened -> continue
 		}
@@ -533,20 +533,20 @@ public class ModelExplorer extends AbstractExplorer {
 	 * @param project
 	 */
 	public void deleteAllProjectsSafely() {
-		ShellHandler.getInstance().closeAllNonWorbenchShells();
+		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 		try {
-			new AbstractEditor();
+			new DefaultEditor();
 		} catch (Exception ex) {
 			// no editor, ignore
 		}
 		try {
-			new ShellMenu("File", "Save All").select();
+			new ShellMenuItem(new WorkbenchShell(), "File", "Save All").select();
 			AbstractWait.sleep(TimePeriod.getCustom(3));
 		} catch (Exception ex) {
 			// no editors need saving, ignore
 		}
 		try {
-			new ShellMenu("File", "Close All").select();
+			new ShellMenuItem(new WorkbenchShell(), "File", "Close All").select();
 			AbstractWait.sleep(TimePeriod.getCustom(3));
 		} catch (Exception ex) {
 			// no editors open, ignore
@@ -563,7 +563,7 @@ public class ModelExplorer extends AbstractExplorer {
 		int iModel = pathToSourceModel.length -1;
 		pathToSourceModel[iModel] = (pathToSourceModel[iModel].contains(".")) ? pathToSourceModel[iModel] : pathToSourceModel[iModel] + ".xmi";
 		this.selectItem(pathToSourceModel);
-		new ContextMenu("Modeling", "Set Data Source JNDI Name").select();
+		new ContextMenuItem("Modeling", "Set Data Source JNDI Name").select();
 		new DefaultShell("Set JBoss Data Source JNDI Name");
 		new DefaultText(0).setText(jndiName);
 		new PushButton("OK").click();

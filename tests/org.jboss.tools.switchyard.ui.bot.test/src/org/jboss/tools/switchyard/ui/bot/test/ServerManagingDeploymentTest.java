@@ -2,22 +2,24 @@ package org.jboss.tools.switchyard.ui.bot.test;
 
 import static org.junit.Assert.assertEquals;
 
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.runtime.reddeer.ServerBase;
-import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
-import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
+import org.jboss.tools.runtime.reddeer.requirement.ServerImplementationType;
 import org.jboss.tools.switchyard.reddeer.binding.HTTPBindingPage;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
+import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardServerRestriction;
 import org.jboss.tools.switchyard.ui.bot.test.util.HttpClient;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +29,7 @@ import org.junit.runner.RunWith;
  * @author apodhrad
  *
  */
-@SwitchYard(server = @Server(type = ServerReqType.ANY, state = ServerReqState.RUNNING) )
+@SwitchYard(state = ServerRequirementState.RUNNING)
 @RunWith(RedDeerSuite.class)
 public class ServerManagingDeploymentTest {
 
@@ -35,6 +37,11 @@ public class ServerManagingDeploymentTest {
 
 	@InjectRequirement
 	private SwitchYardRequirement switchyardRequirement;
+
+	@RequirementRestriction
+	public static RequirementMatcher getRequirementMatcher() {
+		return new SwitchYardServerRestriction(ServerImplementationType.ANY);
+	}
 
 	@Test
 	public void deployTest() throws Exception {
@@ -68,7 +75,7 @@ public class ServerManagingDeploymentTest {
 
 		new SwitchYardEditor().save();
 
-		final ServerBase server = switchyardRequirement.getConfig().getServerBase();
+		final ServerBase server = switchyardRequirement.getConfiguration().getServer();
 		server.deployProject(PROJECT_NAME);
 		new WaitUntil(new AbstractWaitCondition() {
 

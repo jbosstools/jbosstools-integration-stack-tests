@@ -1,20 +1,20 @@
 package org.jboss.tools.drools.ui.bot.test.functional.drleditor;
 
-import static org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType.ERROR;
-import static org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType.WARNING;
+import static org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType.ERROR;
+import static org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType.WARNING;
 
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.eclipse.ui.problems.Problem;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
+import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassCreationWizard;
+import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassWizardPage;
+import org.eclipse.reddeer.eclipse.ui.problems.Problem;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.drools.reddeer.editor.ContentAssist;
 import org.jboss.tools.drools.reddeer.editor.DrlEditor;
 import org.jboss.tools.drools.reddeer.editor.RuleEditor;
@@ -35,10 +35,10 @@ public abstract class DrlCompletionParent extends TestParent {
 	@Before
 	public void setUpDomainAndRule() {
 		// create domain class
-		NewJavaClassWizardDialog diag = new NewJavaClassWizardDialog();
+		NewClassCreationWizard diag = new NewClassCreationWizard();
 		diag.open();
-		new NewJavaClassWizardPage().setName("MyMessage");
-		new NewJavaClassWizardPage().setPackage("com.sample.domain");
+		new NewClassWizardPage(diag).setName("MyMessage");
+		new NewClassWizardPage(diag).setPackage("com.sample.domain");
 		diag.finish();
 
 		TextEditor txtEditor = new TextEditor();
@@ -117,7 +117,7 @@ public abstract class DrlCompletionParent extends TestParent {
 	}
 
 	private DrlEditor openDrlEditor() {
-		PackageExplorer explorer = new PackageExplorer();
+		PackageExplorerPart explorer = new PackageExplorerPart();
 		explorer.open();
 		explorer.getProject(DEFAULT_PROJECT_NAME).getProjectItem(getResourcePath(getMethodName() + ".drl")).open();
 

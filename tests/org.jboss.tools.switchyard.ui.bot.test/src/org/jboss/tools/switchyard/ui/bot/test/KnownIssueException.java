@@ -1,6 +1,6 @@
 package org.jboss.tools.switchyard.ui.bot.test;
 
-import org.jboss.reddeer.common.exception.RedDeerException;
+import org.eclipse.reddeer.common.exception.RedDeerException;
 
 public class KnownIssueException extends RedDeerException {
 

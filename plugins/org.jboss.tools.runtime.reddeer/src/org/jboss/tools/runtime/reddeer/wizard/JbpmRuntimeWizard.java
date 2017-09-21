@@ -1,10 +1,10 @@
 package org.jboss.tools.runtime.reddeer.wizard;
 
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 /**
  * Represents Runtime Wizard dialog jBPM runtime preference page.
@@ -31,6 +31,6 @@ public class JbpmRuntimeWizard {
 	public void ok() {
 		new DefaultShell(ADD_RUNTIME_LABEL);
 		new PushButton("OK").click();
-		new WaitWhile((new ShellWithTextIsAvailable(ADD_RUNTIME_LABEL)));
+		new WaitWhile((new ShellIsAvailable(ADD_RUNTIME_LABEL)));
 	}
 }

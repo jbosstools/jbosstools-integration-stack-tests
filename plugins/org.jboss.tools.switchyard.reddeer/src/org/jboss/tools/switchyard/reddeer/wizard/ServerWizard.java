@@ -1,8 +1,8 @@
 package org.jboss.tools.switchyard.reddeer.wizard;
 
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 
 /**
  * Wizard for creating a server.
@@ -10,13 +10,13 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
  * @author apodhrad
  * 
  */
-public class ServerWizard extends NewWizardDialog {
+public class ServerWizard extends NewMenuWizard {
 
 	private String[] type;
 	private String name;
 
 	public ServerWizard() {
-		super("Server", "Server");
+		super("New Server", "Server", "Server");
 	}
 
 	public void setType(String[] type) {

@@ -1,8 +1,8 @@
 package org.jboss.tools.switchyard.reddeer.binding;
 
-import org.jboss.reddeer.swt.api.Combo;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.group.DefaultGroup;
+import org.eclipse.reddeer.swt.api.Combo;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
 
 /**
  * SCA binding page

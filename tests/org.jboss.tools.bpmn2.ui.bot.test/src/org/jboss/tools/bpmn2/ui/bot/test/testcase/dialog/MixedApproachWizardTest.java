@@ -1,8 +1,8 @@
 package org.jboss.tools.bpmn2.ui.bot.test.testcase.dialog;
 
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.jface.exception.JFaceLayerException;
+import org.eclipse.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.jface.exception.JFaceLayerException;
 import org.jboss.tools.bpmn2.reddeer.dialog.BPMN2ProcessWizard;
 import org.jboss.tools.bpmn2.reddeer.dialog.JBPMProjectWizard;
 import org.jboss.tools.bpmn2.reddeer.dialog.JBPMProjectWizard.ProjectType;
@@ -25,14 +25,14 @@ public class MixedApproachWizardTest {
 
 	@AfterClass
 	public static void deleteProject() throws Exception {
-		new PackageExplorer().getProject("TestProject").delete(true);
+		new PackageExplorerPart().getProject("TestProject").delete(true);
 	}
 
 	@Test
 	public void newModelTest() throws Exception {
 		new BPMN2ProcessWizard().execute(new String[] { "TestProject" }, "SampleProcess.bpmn", "Sample",
 				"jboss.org.bpmn2", "defaultPackage");
-		Assert.assertTrue(new ProjectExplorer().getProject("TestProject").containsItem("SampleProcess.bpmn"));
+		Assert.assertTrue(new ProjectExplorer().getProject("TestProject").containsResource("SampleProcess.bpmn"));
 		// Assert process name, process id and package
 	}
 

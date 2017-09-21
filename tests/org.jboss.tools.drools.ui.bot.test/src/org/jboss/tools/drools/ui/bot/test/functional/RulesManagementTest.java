@@ -1,24 +1,27 @@
 package org.jboss.tools.drools.ui.bot.test.functional;
 
 import org.apache.log4j.Logger;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
-import org.jboss.reddeer.eclipse.ui.perspectives.ResourcePerspective;
-import org.jboss.reddeer.junit.execution.annotation.RunIf;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
+import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaPerspective;
+import org.eclipse.reddeer.eclipse.ui.perspectives.ResourcePerspective;
+import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
+import org.eclipse.reddeer.junit.execution.annotation.RunIf;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.drools.reddeer.editor.DrlEditor;
@@ -30,14 +33,15 @@ import org.jboss.tools.drools.ui.bot.test.util.RunUtility;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
 import org.jboss.tools.drools.ui.bot.test.util.annotation.UseDefaultProject;
 import org.jboss.tools.drools.ui.bot.test.util.annotation.UsePerspective;
-import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeImplementationRestriction;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeImplementationType;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@Runtime(type = RuntimeReqType.DROOLS)
+@Runtime
 @RunWith(RedDeerSuite.class)
 public class RulesManagementTest extends TestParent {
 	private static final Logger LOGGER = Logger.getLogger(RulesManagementTest.class);
@@ -51,6 +55,11 @@ public class RulesManagementTest extends TestParent {
 
 	@InjectRequirement
 	private RuntimeRequirement droolsRequirement;
+	
+	@RequirementRestriction
+	public static RequirementMatcher getRequirementMatcher() {
+		return new RuntimeImplementationRestriction(RuntimeImplementationType.DROOLS);
+	}
 
 	@Test
 	@UsePerspective(JavaPerspective.class)
@@ -101,11 +110,11 @@ public class RulesManagementTest extends TestParent {
 		final String oldName = DEFAULT_PROJECT_NAME;
 		final String newName = "renamed" + oldName;
 
-		PackageExplorer explorer = new PackageExplorer();
+		PackageExplorerPart explorer = new PackageExplorerPart();
 		Assert.assertTrue("The original project was not created.", explorer.containsProject(oldName));
 		explorer.getProject(oldName).select();
 
-		new ContextMenu(new RegexMatcher("Refactor.*"), new RegexMatcher("Rename.*")).select();
+		new ContextMenuItem(new RegexMatcher("Refactor.*"), new RegexMatcher("Rename.*")).select();
 
 		new DefaultShell("Rename Java Project");
 		new LabeledText("New name:").setText(newName);
@@ -131,7 +140,7 @@ public class RulesManagementTest extends TestParent {
 		new ResourcePerspective().open();
 		new JavaPerspective().open();
 
-		new ShellMenu(new RegexMatcher("Run"), new RegexMatcher("Toggle Breakpoint.*")).select();
+		new ShellMenuItem(new WorkbenchShell(), new RegexMatcher("Run"), new RegexMatcher("Toggle Breakpoint.*")).select();
 	}
 
 	@Test
@@ -158,7 +167,7 @@ public class RulesManagementTest extends TestParent {
 		// wait a moment before Debug perspective is fully loaded
 		AbstractWait.sleep(TimePeriod.SHORT);
 
-		new ShellMenu(new RegexMatcher("Run"), new RegexMatcher("Resume.*")).select();
+		new ShellMenuItem(new WorkbenchShell(), new RegexMatcher("Run"), new RegexMatcher("Resume.*")).select();
 		console.open();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		consoleText = console.getConsoleText();

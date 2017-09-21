@@ -5,13 +5,13 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 import org.hamcrest.Matcher;
-import org.jboss.reddeer.swt.api.Text;
-import org.jboss.reddeer.swt.impl.text.AbstractText;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.core.matcher.WithLabelMatcher;
-import org.jboss.reddeer.core.util.Display;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.swt.api.Text;
+import org.eclipse.reddeer.swt.impl.text.AbstractText;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.core.matcher.WithLabelMatcher;
+import org.eclipse.reddeer.common.util.Display;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
 
 /**
  * 

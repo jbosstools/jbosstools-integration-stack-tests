@@ -1,13 +1,13 @@
 package org.jboss.tools.drools.ui.bot.test.functional;
 
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaPerspective;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.jboss.tools.drools.ui.bot.test.util.ProjectTestParent;
 import org.jboss.tools.drools.ui.bot.test.util.ProjectUtility;
 import org.jboss.tools.drools.ui.bot.test.util.RunUtility;
@@ -59,9 +59,9 @@ public class MavenProjectTest extends ProjectTestParent {
 	
 	@SuppressWarnings("unchecked")
 	private void updateMavenProject(String projectName) {
-		PackageExplorer packageExplorer = new PackageExplorer();
+		PackageExplorerPart packageExplorer = new PackageExplorerPart();
 		packageExplorer.getProject(projectName).select();
-		new ContextMenu(new RegexMatcher("Maven.*"), new RegexMatcher("Update Project.*")).select();
+		new ContextMenuItem(new RegexMatcher("Maven.*"), new RegexMatcher("Update Project.*")).select();
 		new PushButton("OK").click();
 		WaitWhile.sleep(TimePeriod.LONG);
 	}

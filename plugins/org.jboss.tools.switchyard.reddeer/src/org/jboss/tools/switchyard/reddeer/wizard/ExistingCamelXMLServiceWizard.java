@@ -1,7 +1,5 @@
 package org.jboss.tools.switchyard.reddeer.wizard;
 
-import org.jboss.reddeer.gef.editor.GEFEditor;
-
 /**
  * 
  * @author apodhrad
@@ -12,11 +10,11 @@ public class ExistingCamelXMLServiceWizard extends ExistingServiceWizard<Existin
 	public static final String DIALOG_TITLE = "";
 
 	public ExistingCamelXMLServiceWizard() {
-		this(null);
+		this(DIALOG_TITLE);
 	}
 
-	public ExistingCamelXMLServiceWizard(GEFEditor editor) {
-		super(DIALOG_TITLE);
+	public ExistingCamelXMLServiceWizard(String title) {
+		super(title);
 	}
 
 	@Override

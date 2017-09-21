@@ -2,23 +2,23 @@ package org.jboss.tools.teiid.reddeer.wizard.imports;
 
 import java.util.Arrays;
 
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.matcher.TreeItemTextMatcher;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.NextButton;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.group.DefaultGroup;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.matcher.TreeItemTextMatcher;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.condition.ControlIsEnabled;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.NextButton;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.condition.TreeItemHasChild;
 
@@ -34,7 +34,7 @@ public class LdapImportWizard extends TeiidImportWizard {
 	private String principalDnSuffix;
 	
 	private LdapImportWizard() {
-		super("LDAP Service >> Source Model");
+		super(DIALOG_TITLE, "LDAP Service >> Source Model");
 		log.info("Import ldap wizard is opened");
 	}
 	
@@ -77,7 +77,7 @@ public class LdapImportWizard extends TeiidImportWizard {
 		activate();
 		new PushButton("Fetch Base DNs").click();
 		LabeledCombo ldapBaseDnCombo = new LabeledCombo("LDAP Base DN:");
-		new WaitUntil(new WidgetIsEnabled(ldapBaseDnCombo), TimePeriod.LONG);
+		new WaitUntil(new ControlIsEnabled(ldapBaseDnCombo), TimePeriod.LONG);
 		ldapBaseDnCombo.setSelection(principalDnSuffix);
 		this.principalDnSuffix = principalDnSuffix;
 		return this;

@@ -10,7 +10,7 @@ import org.jboss.tools.switchyard.reddeer.utils.MouseUtils;
  * @author apodhrad
  * 
  */
-public class RadioButtonExt extends org.jboss.reddeer.swt.impl.button.RadioButton {
+public class RadioButtonExt extends org.eclipse.reddeer.swt.impl.button.RadioButton {
 
 	public RadioButtonExt(String label) {
 		super(label);

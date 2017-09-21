@@ -1,7 +1,7 @@
 package org.jboss.tools.teiid.reddeer.condition;
 
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.swt.api.StyledText;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.swt.api.StyledText;
 
 public class StyledTextHasText extends AbstractWaitCondition {
 

@@ -1,7 +1,7 @@
 package org.jboss.tools.bpmn2.reddeer.properties.setup;
 
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.uiforms.impl.section.DefaultSection;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.ParameterMapping;
 import org.jboss.tools.bpmn2.reddeer.editor.properties.PropertiesTabs;
 import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;

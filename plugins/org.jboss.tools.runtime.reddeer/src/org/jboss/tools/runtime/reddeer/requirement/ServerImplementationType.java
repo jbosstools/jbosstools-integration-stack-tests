@@ -12,7 +12,7 @@ import org.jboss.tools.runtime.reddeer.impl.ServerWildFly;
  * @author apodhrad
  * 
  */
-public enum ServerReqType {
+public enum ServerImplementationType {
 
 	ANY(null),
 	AS(ServerAS.class),
@@ -23,7 +23,7 @@ public enum ServerReqType {
 
 	private Class<?> clazz;
 
-	private ServerReqType(Class<?> clazz) {
+	private ServerImplementationType(Class<?> clazz) {
 		this.clazz = clazz;
 	}
 

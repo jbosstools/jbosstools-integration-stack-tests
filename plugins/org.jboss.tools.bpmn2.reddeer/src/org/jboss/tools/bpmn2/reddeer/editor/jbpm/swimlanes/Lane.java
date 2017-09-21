@@ -1,6 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.swimlanes;
 
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.jboss.tools.bpmn2.reddeer.editor.ConnectionType;
 import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
@@ -32,7 +32,7 @@ public class Lane extends ElementContainer {
 
 	public void changeOrientation() {
 		click();
-		new ContextMenu("Change Lane Orientation").select();
+		new ContextMenuItem("Change Lane Orientation").select();
 
 	}
 

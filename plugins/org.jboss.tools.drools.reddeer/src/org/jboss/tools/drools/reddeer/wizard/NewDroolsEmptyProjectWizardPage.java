@@ -2,12 +2,13 @@ package org.jboss.tools.drools.reddeer.wizard;
 
 import java.util.List;
 
-import org.jboss.reddeer.jface.wizard.WizardPage;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.link.DefaultLink;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.wizard.WizardPage;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.swt.impl.link.DefaultLink;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 public class NewDroolsEmptyProjectWizardPage extends WizardPage {
 
@@ -20,6 +21,10 @@ public class NewDroolsEmptyProjectWizardPage extends WizardPage {
 	private static final String ARTIFACT_ID_LABEL = "Artifact ID:";
 	private static final String VERSION_LABEL = "Version:";
 	private static final String MANAGE_RUNTIMES_LABEL = "Manage Runtime definitions...";
+
+	public NewDroolsEmptyProjectWizardPage(ReferencedComposite referencedComposite) {
+		super(referencedComposite);
+	}
 
 	public void setProjectName(String projectName) {
 		new LabeledText(PROJECT_NAME_LABEL).setText(projectName);

@@ -1,6 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.editor.switchyard.activities;
 
-import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.OperationDialog;

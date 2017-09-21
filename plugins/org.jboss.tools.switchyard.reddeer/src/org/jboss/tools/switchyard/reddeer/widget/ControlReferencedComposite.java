@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.eclipse.swt.widgets.Control;
 import org.hamcrest.Matcher;
-import org.jboss.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
 import org.jboss.tools.switchyard.reddeer.utils.ControlUtils;
 
 /**

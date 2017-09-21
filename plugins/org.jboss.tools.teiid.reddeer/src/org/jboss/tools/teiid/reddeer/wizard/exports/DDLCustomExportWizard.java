@@ -2,22 +2,22 @@ package org.jboss.tools.teiid.reddeer.wizard.exports;
 
 import java.util.Arrays;
 
-import org.jboss.reddeer.jface.wizard.ExportWizardDialog;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.group.DefaultGroup;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.eclipse.selectionwizard.ExportMenuWizard;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 
 /**
  * Wizard for export custom DDL
  * @author mkralik
  */
-public class DDLCustomExportWizard extends ExportWizardDialog{
+public class DDLCustomExportWizard extends ExportMenuWizard {
 		
 	public static final String DIALOG_TITLE = "Export DDL";
 	
@@ -30,7 +30,7 @@ public class DDLCustomExportWizard extends ExportWizardDialog{
 	public static final String TYPE_SYBASE = "Sybase DDL";
 
 	private DDLCustomExportWizard() {
-		super("Teiid Designer", "Data Definition Language (DDL)");
+		super(DIALOG_TITLE, "Teiid Designer", "Data Definition Language (DDL)");
 		log.info("DDL custom export Wizard is opened");
 	}
 	
@@ -42,15 +42,6 @@ public class DDLCustomExportWizard extends ExportWizardDialog{
 		DDLCustomExportWizard wizard = new DDLCustomExportWizard();
 		wizard.open();
 		return wizard;
-	}
-	
-	/**
-	 * use nextPage()
-	 */
-	@Deprecated
-	@Override
-	public void next(){
-		super.next();
 	}
 	
 	public DDLCustomExportWizard nextPage(){

@@ -1,6 +1,6 @@
 package org.jboss.tools.bpel.reddeer.perspective;
 
-import org.jboss.reddeer.eclipse.ui.perspectives.AbstractPerspective;
+import org.eclipse.reddeer.eclipse.ui.perspectives.AbstractPerspective;
 
 /**
  * BPEL Perspective.

@@ -1,12 +1,13 @@
 package org.jboss.tools.teiid.reddeer.wizard.imports;
 
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.jface.wizard.ImportWizardDialog;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.selectionwizard.ImportMenuWizard;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 
 /**
@@ -15,10 +16,10 @@ import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
  * @author apodhrad
  * 
  */
-public abstract class TeiidImportWizard extends ImportWizardDialog {
+public abstract class TeiidImportWizard extends ImportMenuWizard {
 
-	public TeiidImportWizard(String importer) {
-		super("Teiid Designer", importer);
+	public TeiidImportWizard(String dialogTitle, String importer) {
+		super(dialogTitle, "Teiid Designer", importer);
 	}
 
 	@Override
@@ -37,22 +38,13 @@ public abstract class TeiidImportWizard extends ImportWizardDialog {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		log.info("No running job");
 		try {
-			new ShellMenu("File", "Save All").select();
+			new ShellMenuItem(new WorkbenchShell(), "File", "Save All").select();
 			log.info("All files saved.");
 		} catch (Exception e) {
 			log.info("There is nothing to save.");
 		}
 	}
-	
-	/**
-	 * use nextPage()
-	 */
-	@Deprecated
-	@Override
-	public void next(){
-		super.next();
-	}
-	
+
 	public abstract TeiidImportWizard nextPage();
 	
 }

@@ -4,11 +4,11 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.wizard.imports.XMLSchemaImportWizard;
@@ -30,8 +30,8 @@ public class BasicTest {
 	@BeforeClass
 	public static void prepare() {
 		new WorkbenchShell().maximize();
-		if (new ShellMenu("Project", "Build Automatically").isSelected()) {
-			new ShellMenu("Project", "Build Automatically").select();
+		if (new ShellMenuItem(new WorkbenchShell(), "Project", "Build Automatically").isSelected()) {
+			new ShellMenuItem(new WorkbenchShell(), "Project", "Build Automatically").select();
 		}
 		new ModelExplorer().createProject(PROJECT);
 		

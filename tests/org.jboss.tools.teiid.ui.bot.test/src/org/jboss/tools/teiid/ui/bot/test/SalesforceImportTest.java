@@ -3,10 +3,11 @@ package org.jboss.tools.teiid.ui.bot.test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
@@ -18,7 +19,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
-@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = { ConnectionProfileConstants.SALESFORCE })
+@TeiidServer(state = ServerRequirementState.RUNNING, connectionProfiles = { ConnectionProfileConstants.SALESFORCE })
 public class SalesforceImportTest {
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;
@@ -27,8 +28,8 @@ public class SalesforceImportTest {
 
 	@BeforeClass
 	public static void before() {
-		if (new ShellMenu("Project", "Build Automatically").isSelected()) {
-			new ShellMenu("Project", "Build Automatically").select();
+		if (new ShellMenuItem(new WorkbenchShell(), "Project", "Build Automatically").isSelected()) {
+			new ShellMenuItem(new WorkbenchShell(), "Project", "Build Automatically").select();
 		}
 		new ModelExplorer().createProject(MODEL_PROJECT);
 		new ServersViewExt().refreshServer(teiidServer.getName());

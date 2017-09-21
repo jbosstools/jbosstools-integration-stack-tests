@@ -1,21 +1,21 @@
 package org.jboss.tools.teiid.reddeer.view;
 
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewException;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.Server;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersViewEnums.ServerState;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersViewException;
+import org.eclipse.reddeer.swt.exception.SWTLayerException;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.teiid.reddeer.condition.ServerHasState;
 
 /**
@@ -48,12 +48,12 @@ public class TeiidInstanceView extends WorkbenchView {// DEPRECATED - JBDS7 only
 
 	/*
 	 * public void deleteDataSource(String teiidInstance, String dataSource) {// new DefaultTreeItem(teiidInstance,
-	 * "Data Sources", dataSource).select(); new ContextMenu("Delete Data Source").select(); }
+	 * "Data Sources", dataSource).select(); new ContextMenuItem("Delete Data Source").select(); }
 	 */
 
 	/*
 	 * public void undeployVDB(String teiidInstance, String vdb) {//--> VDB new DefaultTreeItem(teiidInstance, "VDBs",
-	 * vdb).select(); new ContextMenu("Undeploy VDB").select(); }
+	 * vdb).select(); new ContextMenuItem("Undeploy VDB").select(); }
 	 * 
 	 * public boolean containsDataSource(String teiidInstance, String datasource) { SWTBot bot = new SWTWorkbenchBot();
 	 * try { SWTBotTreeItem item = bot.tree().expandNode(teiidInstance, "Data Sources"); item.getNode(datasource);
@@ -152,13 +152,13 @@ public class TeiidInstanceView extends WorkbenchView {// DEPRECATED - JBDS7 only
 	}
 
 	public void startServer(String serverName) {// --copy to servermgr for servers view
-		Server server = new ServersView().getServer(serverName);
+		Server server = new ServersView2().getServer(serverName);
 		server.start();
 		new WaitUntil(new ServerHasState(serverName), TimePeriod.LONG);
 	}
 
 	public void stopServer(String serverName) {// --> server mgr
-		Server server = new ServersView().getServer(serverName);
+		Server server = new ServersView2().getServer(serverName);
 		log.info("Stopping server " + server.getLabel().getName());
 		ServerState state = server.getLabel().getState();
 		if (!ServerState.STARTING.equals(state) && !state.isRunningState()) {
@@ -170,7 +170,7 @@ public class TeiidInstanceView extends WorkbenchView {// DEPRECATED - JBDS7 only
 			new DefaultTreeItem(serverName + "  [Started]").select();
 		}
 
-		new ContextMenu("Stop").select();
+		new ContextMenuItem("Stop").select();
 		AbstractWait.sleep(TimePeriod.VERY_LONG);
 		// new WaitUntil(new ServerHasState(serverName), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);

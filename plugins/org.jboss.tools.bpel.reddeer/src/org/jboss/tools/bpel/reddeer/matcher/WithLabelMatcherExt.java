@@ -4,18 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.eclipse.reddeer.common.util.Display;
+import org.eclipse.reddeer.core.handler.LabelHandler;
+import org.eclipse.reddeer.core.handler.StyledTextHandler;
+import org.eclipse.reddeer.core.handler.TextHandler;
+import org.eclipse.reddeer.core.lookup.WidgetLookup;
+import org.eclipse.reddeer.core.matcher.WithMnemonicTextMatcher;
 import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.jboss.reddeer.core.handler.WidgetHandler;
-import org.jboss.reddeer.core.lookup.WidgetLookup;
-import org.jboss.reddeer.core.matcher.WithMnemonicTextMatcher;
-import org.jboss.reddeer.core.util.Display;
 
 /**
  * 
@@ -47,7 +51,16 @@ public class WithLabelMatcherExt extends BaseMatcher<String> {
 		while (listIterator.hasPrevious()) {
 			Widget previousWidget = listIterator.previous();
 			if (isLabel(previousWidget)) {
-				String label = WidgetHandler.getInstance().getText(previousWidget);
+				String label = null;
+				if (previousWidget instanceof Label) {
+					label = LabelHandler.getInstance().getText((Label) previousWidget);
+				}
+				if (previousWidget instanceof Text) {
+					label = TextHandler.getInstance().getText((Text) previousWidget);
+				}
+				if (previousWidget instanceof StyledText) {
+					label = StyledTextHandler.getInstance().getText((StyledText) previousWidget);
+				}
 				if (matcher.matches(label)) {
 					return true;
 				}

@@ -1,10 +1,10 @@
 package org.jboss.tools.teiid.reddeer.condition;
 
 import org.hamcrest.Matcher;
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 
 public class IsPreviewInProgress extends AbstractWaitCondition {
 	private static final Logger log = Logger.getLogger(IsPreviewInProgress.class);

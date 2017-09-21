@@ -7,36 +7,35 @@ import javax.xml.transform.stream.StreamResult;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.jboss.reddeer.common.exception.RedDeerException;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ProgressInformationShellIsActive;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.direct.preferences.PreferencesUtil;
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.swt.api.Menu;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.common.exception.RedDeerException;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.direct.preferences.PreferencesUtil;
+import org.eclipse.reddeer.eclipse.core.resources.MavenProject;
+import org.eclipse.reddeer.eclipse.core.resources.ProjectItem;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.swt.api.MenuItem;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.XPathEvaluator;
 import org.jboss.tools.switchyard.reddeer.properties.ProjectProperties;
 import org.jboss.tools.switchyard.reddeer.shell.ProjectCapabilitiesShell;
 import org.w3c.dom.Node;
 
-public class SwitchYardProject extends Project {
+public class SwitchYardProject extends MavenProject {
 
 	public static final String MAIN_JAVA = "src/main/java";
 	public static final String MAIN_RESOURCE = "src/main/resources";
@@ -57,15 +56,15 @@ public class SwitchYardProject extends Project {
 	public SwitchYardEditor openSwitchYardFile() {
 		getProjectItem("SwitchYard").open();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		new WaitUntil(new ProgressInformationShellIsActive(), TimePeriod.SHORT, false);
-		new WaitWhile(new ProgressInformationShellIsActive());
+		new WaitUntil(new ShellIsAvailable("Progress Information"), false);
+		new WaitWhile(new ShellIsAvailable("Progress Information"), TimePeriod.LONG);
 		return new SwitchYardEditor();
 	}
 
 	public TextEditor createJavaInterface(String pkg, String name) {
 		getProjectItem(MAIN_JAVA).select();
 		select();
-		new ShellMenu("File", "New", "Other...").select();
+		new ShellMenuItem(new WorkbenchShell(), "File", "New", "Other...").select();
 		new DefaultShell("New");
 		new DefaultTreeItem("Java", "Interface").select();
 		new PushButton("Next >").click();
@@ -73,7 +72,7 @@ public class SwitchYardProject extends Project {
 		new LabeledText("Name:").setText(name);
 		new LabeledText("Package:").setText(pkg);
 		new PushButton("Finish").click();
-		new WaitWhile(new ShellWithTextIsActive("New Java Interface"));
+		new WaitWhile(new ShellIsAvailable("New Java Interface"));
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 
 		getProjectItem(MAIN_JAVA, pkg, name + ".java").open();
@@ -88,7 +87,7 @@ public class SwitchYardProject extends Project {
 		return getProjectItemExt(TEST_JAVA, path);
 	}
 
-	public ProjectItemExt getResource(String... path) {
+	public ProjectItemExt getResourceExt(String... path) {
 		return getProjectItemExt(MAIN_RESOURCE, path);
 	}
 
@@ -149,20 +148,20 @@ public class SwitchYardProject extends Project {
 		}
 
 		select();
-		new ContextMenu("Maven", "Update Project...").select();
+		new ContextMenuItem("Maven", "Update Project...").select();
 		new DefaultShell("Update Maven Project");
 		new CheckBox("Force Update of Snapshots/Releases").toggle(true);
 		new PushButton("OK").click();
 
-		AbstractWait.sleep(TimePeriod.NORMAL);
+		AbstractWait.sleep(TimePeriod.DEFAULT);
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 
 	public void enableFuseCamelNature() {
 		select();
-		new ContextMenu("Enable Fuse Camel Nature").select();
+		new ContextMenuItem("Enable Fuse Camel Nature").select();
 
-		AbstractWait.sleep(TimePeriod.NORMAL);
+		AbstractWait.sleep(TimePeriod.DEFAULT);
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 
@@ -177,14 +176,14 @@ public class SwitchYardProject extends Project {
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		select();
-		new ContextMenu("SwitchYard", "Configure Capabilities...").select();
+		new ContextMenuItem("SwitchYard", "Configure Capabilities...").select();
 		return new ProjectCapabilitiesShell("Properties for " + getName());
 	}
 
 	public ProjectProperties openProperties() {
 		select();
-		new ContextMenu("Properties").select();
-		return new ProjectProperties();
+		new ContextMenuItem("Properties").select();
+		return new ProjectProperties(getText());
 	}
 
 	public void build() {
@@ -192,7 +191,7 @@ public class SwitchYardProject extends Project {
 			throw new RedDeerException("Cannot builld a project if projects are built automatically");
 		}
 		select();
-		Menu menu = new ShellMenu("Project", "Build Project");
+		MenuItem menu = new ShellMenuItem(new WorkbenchShell(), "Project", "Build Project");
 		if (menu.isEnabled()) {
 			menu.select();
 		}

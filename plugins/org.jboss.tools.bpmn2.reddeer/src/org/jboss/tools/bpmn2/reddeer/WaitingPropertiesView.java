@@ -3,13 +3,13 @@ package org.jboss.tools.bpmn2.reddeer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
-import org.jboss.reddeer.eclipse.ui.views.properties.TabbedPropertyList;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.eclipse.ui.views.properties.PropertySheet;
+import org.eclipse.reddeer.eclipse.ui.views.properties.TabbedPropertyList;
 
-public class WaitingPropertiesView extends PropertiesView {
+public class WaitingPropertiesView extends PropertySheet {
 
 	@Override
 	public void selectTab(String label) {
@@ -21,7 +21,7 @@ public class WaitingPropertiesView extends PropertiesView {
 		} catch (Exception ex) {
 			// probably not rendered yet
 		}
-		new WaitUntil(new AnotherTabsRendered(old), TimePeriod.NORMAL, false);
+		new WaitUntil(new AnotherTabsRendered(old), TimePeriod.DEFAULT, false);
 		super.selectTab(label);
 	}
 

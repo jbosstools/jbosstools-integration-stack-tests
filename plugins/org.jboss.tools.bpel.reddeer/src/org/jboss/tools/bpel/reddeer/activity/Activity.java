@@ -1,14 +1,15 @@
 package org.jboss.tools.bpel.reddeer.activity;
 
 import org.eclipse.gef.EditPart;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.matcher.AndMatcher;
+import org.eclipse.reddeer.common.util.Display;
+import org.eclipse.reddeer.gef.impl.editpart.AbstractEditPart;
+import org.eclipse.reddeer.swt.api.MenuItem;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.hamcrest.Matcher;
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.gef.impl.editpart.AbstractEditPart;
-import org.jboss.reddeer.swt.api.Menu;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.core.matcher.AndMatcher;
-import org.jboss.reddeer.core.util.Display;
 import org.jboss.tools.bpel.reddeer.editor.BpelEditor;
 import org.jboss.tools.bpel.reddeer.view.BPELPropertiesView;
 
@@ -114,7 +115,7 @@ public class Activity extends AbstractEditPart {
 
 	protected void menu(String... menu) {
 		select();
-		new ContextMenu(menu).select();
+		new ContextMenuItem(menu).select();
 	}
 
 	public boolean validate(String text) {
@@ -131,7 +132,7 @@ public class Activity extends AbstractEditPart {
 	}
 
 	protected void save() {
-		Menu saveMenu = new ShellMenu("File", "Save");
+		MenuItem saveMenu = new ShellMenuItem(new WorkbenchShell(), "File", "Save");
 		if (saveMenu.isEnabled()) {
 			saveMenu.select();
 		}

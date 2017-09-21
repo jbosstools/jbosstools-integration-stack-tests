@@ -1,7 +1,7 @@
 package org.jboss.tools.common.reddeer.preference;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.direct.preferences.Preferences;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.direct.preferences.Preferences;
 
 /**
  * 

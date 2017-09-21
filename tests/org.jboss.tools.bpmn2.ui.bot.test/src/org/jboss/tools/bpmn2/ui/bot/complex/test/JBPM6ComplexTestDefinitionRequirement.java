@@ -8,23 +8,26 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.util.Display;
-import org.jboss.reddeer.direct.preferences.Preferences;
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.junit.requirement.Requirement;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.common.util.Display;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.direct.preferences.Preferences;
+import org.eclipse.reddeer.eclipse.core.resources.Project;
+import org.eclipse.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
+import org.eclipse.reddeer.eclipse.jdt.ui.wizards.JavaProjectWizard;
+import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewJavaProjectWizardPageOne;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.junit.requirement.Requirement;
+import org.eclipse.reddeer.swt.exception.SWTLayerException;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.bpmn2.reddeer.JBPM6ComplexEnvironment;
-import org.jboss.tools.bpmn2.reddeer.dialog.JavaProjectWizard;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.JBPM6ComplexTestDefinitionRequirement.JBPM6ComplexTestDefinition;
 import org.jboss.tools.bpmn2.ui.bot.tmp.ImportFileWizard;
 
@@ -56,11 +59,6 @@ public class JBPM6ComplexTestDefinitionRequirement implements Requirement<JBPM6C
 	private static List<String> foldersToImport = new ArrayList<String>(Arrays.asList(""));
 
 	@Override
-	public boolean canFulfill() {
-		return true;
-	}
-
-	@Override
 	public void fulfill() {
 		JBPM6ComplexEnvironment.getInstance().setUseGraphiti(declaration.useGraphiti());
 
@@ -75,15 +73,18 @@ public class JBPM6ComplexTestDefinitionRequirement implements Requirement<JBPM6C
 			expertModeEnabled = true;
 		}
 
-		PackageExplorer pe = new PackageExplorer();
+		PackageExplorerPart pe = new PackageExplorerPart();
 		pe.open();
 		if (!pe.containsProject(declaration.projectName())) {
-			new JavaProjectWizard().execute(declaration.projectName());
+			JavaProjectWizard wizard = new JavaProjectWizard();
+			wizard.open();
+			new NewJavaProjectWizardPageOne(wizard).setProjectName(declaration.projectName());
+			wizard.finish();
 
 			try {
 				new DefaultShell("Open Associated Perspective?");
 				new PushButton("No").click();
-			} catch (SWTLayerException e) {
+			} catch (CoreLayerException e) {
 				// ignore
 			}
 		}
@@ -103,7 +104,11 @@ public class JBPM6ComplexTestDefinitionRequirement implements Requirement<JBPM6C
 	@Override
 	public void setDeclaration(JBPM6ComplexTestDefinition declaration) {
 		this.declaration = declaration;
+	}
 
+	@Override
+	public JBPM6ComplexTestDefinition getDeclaration() {
+		return declaration;
 	}
 
 	private void saveAs(String filename) {
@@ -130,7 +135,7 @@ public class JBPM6ComplexTestDefinitionRequirement implements Requirement<JBPM6C
 		@Override
 		public boolean test() {
 			try {
-				new ShellMenu(new String[] { "File", "Save As..." }).select();
+				new ShellMenuItem(new WorkbenchShell(), "File", "Save As...").select();
 			} catch (SWTLayerException e) {
 				return true;
 			}

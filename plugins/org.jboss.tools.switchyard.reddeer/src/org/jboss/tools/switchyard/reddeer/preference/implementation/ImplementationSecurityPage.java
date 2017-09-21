@@ -1,6 +1,6 @@
 package org.jboss.tools.switchyard.reddeer.preference.implementation;
 
-import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
 
 /**
  * Represents a properties page "Implementation --> Security Policy".

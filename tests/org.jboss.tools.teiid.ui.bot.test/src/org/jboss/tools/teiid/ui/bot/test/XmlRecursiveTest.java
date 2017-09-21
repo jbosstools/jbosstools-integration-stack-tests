@@ -7,13 +7,13 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.util.List;
 
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.dialog.InputSetEditorDialog;
@@ -39,7 +39,7 @@ import org.junit.runner.RunWith;
  */
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
-@TeiidServer(state = ServerReqState.RUNNING)
+@TeiidServer(state = ServerRequirementState.RUNNING)
 public class XmlRecursiveTest {
 	private static final String PROJECT_NAME = "XmlRecursiveProject";
 	private static final String VIEW_MODEL = "EmpDoc.xmi";
@@ -64,7 +64,7 @@ public class XmlRecursiveTest {
 		jdbcHelper = new TeiidJDBCHelper(teiidServer, VDB_NAME);
 		
 		fileHelper.copyFileToServer(new File("resources/flat/EmpData.csv").getAbsolutePath(), 
-				teiidServer.getServerConfig().getServerBase().getHome() + "/standalone/data/EmpData.csv");
+				teiidServer.getServerConfig().getServer().getHome() + "/standalone/data/EmpData.csv");
 		new ServersViewExt().refreshServer(teiidServer.getName());
 	}
 	

@@ -1,10 +1,15 @@
 package org.jboss.tools.drools.reddeer.wizard;
 
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 public class NewRuleResourceWizardPage extends NewResourceWizardPage {
+
+	public NewRuleResourceWizardPage(ReferencedComposite referencedComposite) {
+		super(referencedComposite);
+	}
 
 	public enum RuleResourceType {
 		rulePackage("New DRL (rule package)"), individualRule("New Rule (individual rule)");

@@ -1,19 +1,19 @@
 package org.jboss.tools.teiid.reddeer.wizard.imports;
 
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.NextButton;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.group.DefaultGroup;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.swt.condition.ShellIsActive;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.NextButton;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.teiid.reddeer.dialog.EditColumnDialog;
 /**
  * Wizard for importing a flat file source into a model project
@@ -28,7 +28,7 @@ public class FlatImportWizard extends TeiidImportWizard {
 	public static final String LABEL_FORMAT_OPRIONS = "Format Options";
 
 	private FlatImportWizard() {
-		super("File Source (Flat) >> Source and View Model");
+		super(DIALOG_TITLE, "File Source (Flat) >> Source and View Model");
 		log.info("Flat file import Wizard is opened");
 	}
 
@@ -213,7 +213,7 @@ public class FlatImportWizard extends TeiidImportWizard {
 		log.info("set fixed width csv");
 		activate();
 		new RadioButton("Fixed width").toggle(true);
-		if (new ShellWithTextIsActive("Column Format Changed").test()){
+		if (new ShellIsActive("Column Format Changed").test()){
 			new PushButton("Yes").click();
 		}
 		return this;

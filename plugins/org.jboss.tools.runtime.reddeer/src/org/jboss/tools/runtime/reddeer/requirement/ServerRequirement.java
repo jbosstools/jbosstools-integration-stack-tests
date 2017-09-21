@@ -6,11 +6,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.List;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.direct.preferences.Preferences;
-import org.jboss.reddeer.junit.requirement.CustomConfiguration;
-import org.jboss.reddeer.junit.requirement.Requirement;
-import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.direct.preferences.Preferences;
+import org.eclipse.reddeer.junit.requirement.AbstractConfigurableRequirement;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.jboss.tools.runtime.reddeer.ServerBase;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 
@@ -20,63 +19,28 @@ import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
  * 
  */
 
-public class ServerRequirement implements Requirement<Server>, CustomConfiguration<ServerConfig> {
+public class ServerRequirement extends AbstractConfigurableRequirement<ServerConfiguration, Server> {
 
 	private static final Logger LOGGER = Logger.getLogger(ServerRequirement.class);
 
-	private ServerConfig config;
+	private ServerConfiguration config;
 	private Server server;
 
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.TYPE)
 	public @interface Server {
-		ServerReqType[] type() default ServerReqType.ANY;
-
-		ServerReqState state() default ServerReqState.RUNNING;
+		ServerRequirementState state() default ServerRequirementState.RUNNING;
 
 		String[] property() default "";
 
-		ServerConnType[] connectionType() default ServerConnType.ANY;
-	}
+		ServerConnectionType[] connectionType() default ServerConnectionType.ANY;
 
-	@Override
-	public boolean canFulfill() {
-		String[] requiredProperties = server.property();
-		for (String requiredProperty : requiredProperties) {
-			if (requiredProperty != null && !requiredProperty.isEmpty()
-					&& config.getServerBase().getProperties(requiredProperty).isEmpty()) {
-				return false;
-			}
-		}
-
-		boolean serverTypeMatches = false;
-		boolean connectionTypeMatches = false;
-
-		ServerReqType[] type = server.type();
-		if (type.length == 0) {
-			serverTypeMatches = true;
-		}
-		for (int i = 0; i < type.length; i++) {
-			if (type[i].matches(config.getServerBase())) {
-				serverTypeMatches = true;
-			}
-		}
-
-		ServerConnType[] connTypes = server.connectionType();
-		if (connTypes.length == 0) {
-			connectionTypeMatches = true;
-		}
-		for (int i = 0; i < connTypes.length; i++) {
-			if (connTypes[i].matches(config.getServerBase())) {
-				connectionTypeMatches = true;
-			}
-		}
-		return serverTypeMatches && connectionTypeMatches;
+		ServerImplementationType[] implementationType() default ServerImplementationType.ANY;
 	}
 
 	@Override
 	public void fulfill() {
-		ServerBase serverBase = config.getServerBase();
+		ServerBase serverBase = config.getServer();
 		List<String> preferences = serverBase.getProperties("preference");
 		for (String preference : preferences) {
 			// Example: org.eclipse.m2e.core/eclipse.m2.userSettingsFile=settings.xml
@@ -104,22 +68,20 @@ public class ServerRequirement implements Requirement<Server>, CustomConfigurati
 	}
 
 	@Override
-	public Class<ServerConfig> getConfigurationClass() {
-		return ServerConfig.class;
+	public Class<ServerConfiguration> getConfigurationClass() {
+		return ServerConfiguration.class;
 	}
 
 	@Override
-	public void setConfiguration(ServerConfig config) {
+	public void setConfiguration(ServerConfiguration config) {
 		this.config = config;
 	}
 
-	public ServerConfig getConfig() {
+	public ServerConfiguration getConfig() {
 		return this.config;
 	}
 
 	@Override
 	public void cleanUp() {
-		// TODO cleanUp()
-
 	}
 }

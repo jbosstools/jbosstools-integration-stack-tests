@@ -1,8 +1,8 @@
 package org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.noDatabase;
 
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.ConnectionProfileWizard;
 
 public class FlatRemoteConnectionProfileWizard extends ConnectionProfileWizard {

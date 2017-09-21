@@ -1,14 +1,14 @@
 package org.jboss.tools.drools.reddeer.wizard;
 
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
+import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
 
-public class NewDecisionTableWizard extends NewWizardDialog {
+public class NewDecisionTableWizard extends NewMenuWizard {
 
 	public NewDecisionTableWizard() {
-		super("Drools", "Decision Table");
+		super("New Decision Table", "Drools", "Decision Table");
 	}
 
 	public NewDecisionTableWizardPage getFirstPage() {
-		return new NewDecisionTableWizardPage();
+		return new NewDecisionTableWizardPage(this);
 	}
 }

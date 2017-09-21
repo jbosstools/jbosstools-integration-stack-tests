@@ -1,7 +1,7 @@
 package org.jboss.tools.bpmn2.reddeer;
 
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
 
 /**
  * 

@@ -1,10 +1,10 @@
 package org.jboss.tools.switchyard.reddeer.wizard;
 
-import org.jboss.reddeer.gef.condition.EditorHasEditParts;
-import org.jboss.reddeer.gef.editor.GEFEditor;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.gef.condition.EditorHasEditParts;
+import org.eclipse.reddeer.gef.editor.GEFEditor;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.common.wait.WaitUntil;
 
 /**
  * 

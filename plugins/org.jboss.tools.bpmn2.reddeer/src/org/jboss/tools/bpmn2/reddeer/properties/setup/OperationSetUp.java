@@ -1,6 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.properties.setup;
 
-import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.jboss.tools.bpmn2.reddeer.DefaultCombo;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.InterfaceDialog;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.OperationDialog;

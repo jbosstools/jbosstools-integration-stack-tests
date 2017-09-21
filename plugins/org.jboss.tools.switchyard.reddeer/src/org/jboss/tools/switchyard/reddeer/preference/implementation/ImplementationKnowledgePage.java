@@ -2,23 +2,23 @@ package org.jboss.tools.switchyard.reddeer.preference.implementation;
 
 import java.util.List;
 
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.core.handler.ShellHandler;
-import org.jboss.reddeer.swt.api.Button;
-import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.jface.viewers.CellEditor;
+import org.eclipse.reddeer.swt.api.Button;
+import org.eclipse.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.tab.DefaultTabItem;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.uiforms.impl.section.DefaultSection;
+import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.jboss.tools.switchyard.reddeer.condition.TableHasRow;
-import org.jboss.tools.switchyard.reddeer.widget.CellEditor;
 import org.jboss.tools.switchyard.reddeer.widget.DefaultCCombo;
 
 /**
@@ -155,7 +155,7 @@ public class ImplementationKnowledgePage {
 			try {
 				new DefaultShell(title);
 			} catch (Exception e) {
-				ShellHandler.getInstance().closeAllNonWorbenchShells();
+				WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 				throw new RuntimeException("Cannot find a shell with title '" + title + "'", e);
 			}
 		} else {
@@ -165,7 +165,7 @@ public class ImplementationKnowledgePage {
 		new WaitUntil(new TableHasRow(new DefaultTable(), new RegexMatcher(".*" + clazz + ".*")), TimePeriod.LONG);
 		new OkButton().click();
 		if (title != null) {
-			new WaitWhile(new ShellWithTextIsAvailable(title));
+			new WaitWhile(new ShellIsAvailable(title));
 		}
 	}
 }

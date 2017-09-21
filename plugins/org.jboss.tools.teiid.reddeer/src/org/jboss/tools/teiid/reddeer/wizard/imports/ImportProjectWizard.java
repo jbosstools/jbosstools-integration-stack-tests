@@ -1,12 +1,12 @@
 package org.jboss.tools.teiid.reddeer.wizard.imports;
 
-import org.jboss.reddeer.jface.wizard.ImportWizardDialog;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.NextButton;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.eclipse.selectionwizard.ImportMenuWizard;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.NextButton;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 
 /**
  * Wizard for importing an existing project.
@@ -14,10 +14,12 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
  * @author apodhrad
  * 
  */
-public class ImportProjectWizard extends ImportWizardDialog {
+public class ImportProjectWizard extends ImportMenuWizard {
+	
+	public static final String DIALOG_TITLE = "Import";
 	
 	private ImportProjectWizard() {
-		super("General", "Existing Projects into Workspace");
+		super(DIALOG_TITLE, "General", "Existing Projects into Workspace");
 		log.info("Project import wizard is opened");
 	}
 	

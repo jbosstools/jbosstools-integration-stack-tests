@@ -3,10 +3,10 @@ package org.jboss.tools.bpel.reddeer.widget;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.reddeer.swt.api.Tree;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.swt.api.Tree;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 
 /**
  * 

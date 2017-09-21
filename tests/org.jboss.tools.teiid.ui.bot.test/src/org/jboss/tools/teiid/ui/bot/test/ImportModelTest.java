@@ -1,16 +1,16 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
+import org.eclipse.reddeer.eclipse.ui.views.properties.PropertySheet;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.hamcrest.core.StringContains;
-import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.common.reddeer.JiraClient;
 import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
@@ -111,7 +111,7 @@ public class ImportModelTest {
 		assertEquals("Unique ID for this product", editor.getCellText(0, "Description"));
 		assertEquals("Unique ID for this product", editor.getCellText(2, "Description"));		
 		
-		PropertiesView properties = new PropertiesView();
+		PropertySheet properties = new PropertySheet();
 		
 		modelExplorer.selectItem(PROJECT_NAME, target, "ProductData");		
 		assertEquals("100", properties.getProperty("Misc","Cardinality").getPropertyValue()); 

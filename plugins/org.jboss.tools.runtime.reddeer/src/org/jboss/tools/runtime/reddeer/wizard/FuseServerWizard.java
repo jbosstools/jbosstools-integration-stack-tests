@@ -1,22 +1,22 @@
 package org.jboss.tools.runtime.reddeer.wizard;
 
-import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesPage;
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
+import org.eclipse.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesPage;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 
 /**
  * Wizard for creating a Fuse server.
  * 
  * @author tsedmik
  */
-public class FuseServerWizard extends NewWizardDialog {
+public class FuseServerWizard extends NewMenuWizard {
 
 	private static final String SERVER_SECTION = "Red Hat JBoss Middleware";
 	private static final String HOST_NAME = "Server's host name:";
@@ -34,7 +34,7 @@ public class FuseServerWizard extends NewWizardDialog {
 	private String[] projects;
 
 	public FuseServerWizard() {
-		super("Server", "Server");
+		super("New Server", "Server", "Server");
 	}
 
 	public void setType(String type) {
@@ -94,7 +94,7 @@ public class FuseServerWizard extends NewWizardDialog {
 		}
 
 		next();
-		new ModifyModulesPage().add(projects);
+		new ModifyModulesPage(this).add(projects);
 
 		finish(TimePeriod.VERY_LONG);
 	}
@@ -105,7 +105,7 @@ public class FuseServerWizard extends NewWizardDialog {
 	private static void closeSecureStorage() {
 
 		try {
-			new WaitUntil(new ShellWithTextIsAvailable("Secure Storage"), TimePeriod.getCustom(5));
+			new WaitUntil(new ShellIsAvailable("Secure Storage"), TimePeriod.getCustom(5));
 		} catch (RuntimeException ex) {
 			return;
 		}

@@ -1,14 +1,16 @@
 package org.jboss.tools.drools.ui.bot.test.functional.drleditor;
 
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
-import org.jboss.reddeer.junit.execution.annotation.RunIf;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassCreationWizard;
+import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassWizardPage;
+import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
+import org.eclipse.reddeer.junit.execution.annotation.RunIf;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.drools.reddeer.editor.ContentAssist;
@@ -17,18 +19,24 @@ import org.jboss.tools.drools.reddeer.editor.RuleEditor;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
 import org.jboss.tools.drools.ui.bot.test.util.annotation.UseDefaultProject;
 import org.jboss.tools.drools.ui.bot.test.util.annotation.UsePerspective;
-import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeImplementationRestriction;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeImplementationType;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@Runtime(type = RuntimeReqType.DROOLS)
+@Runtime
 @RunWith(RedDeerSuite.class)
 public class MetadataCompletionTest extends DrlCompletionParent {
 
 	@InjectRequirement
 	private RuntimeRequirement droolsRequirement;
+	
+	@RequirementRestriction
+	public static RequirementMatcher getRequirementMatcher() {
+		return new RuntimeImplementationRestriction(RuntimeImplementationType.DROOLS);
+	}
 
 	@Test
 	@UsePerspective(DroolsPerspective.class)
@@ -49,10 +57,10 @@ public class MetadataCompletionTest extends DrlCompletionParent {
 	@UsePerspective(DroolsPerspective.class)
 	@UseDefaultProject
 	public void testStarImportUsage() {
-		NewJavaClassWizardDialog diag = new NewJavaClassWizardDialog();
+		NewClassCreationWizard diag = new NewClassCreationWizard();
 		diag.open();
-		new NewJavaClassWizardPage().setName("TestDomainClass");
-		new NewJavaClassWizardPage().setPackage("com.sample.domain");
+		new NewClassWizardPage(diag).setName("TestDomainClass");
+		new NewClassWizardPage(diag).setPackage("com.sample.domain");
 		new LabeledText("Source folder:").setText(DEFAULT_PROJECT_NAME + "/src/main/java");
 		diag.finish();
 

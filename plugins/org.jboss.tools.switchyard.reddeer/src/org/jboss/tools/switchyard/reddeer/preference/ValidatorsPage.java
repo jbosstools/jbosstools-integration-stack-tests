@@ -2,9 +2,9 @@ package org.jboss.tools.switchyard.reddeer.preference;
 
 import java.util.List;
 
-import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.tools.switchyard.reddeer.wizard.ValidatorWizard;
 
 public class ValidatorsPage extends CompositePropertiesDialog {

@@ -1,23 +1,23 @@
 package org.jboss.tools.bpel.reddeer.wizard;
 
-import org.jboss.reddeer.jface.wizard.ImportWizardDialog;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.eclipse.selectionwizard.ImportMenuWizard;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
 
 /**
  * 
  * @author apodhrad
  * 
  */
-public class ImportProjectWizard extends ImportWizardDialog {
+public class ImportProjectWizard extends ImportMenuWizard {
 
 	public static final String ARCHIVE_LABEL = "Select archive file:";
 
 	private String location;
 
 	public ImportProjectWizard(String location) {
-		super("General", "Existing Projects into Workspace");
+		super("Import", "General", "Existing Projects into Workspace");
 		this.location = location;
 	}
 

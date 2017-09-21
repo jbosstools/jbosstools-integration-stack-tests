@@ -6,13 +6,13 @@ import static org.jboss.tools.switchyard.reddeer.wizard.TransformersWizard.TRANS
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
-import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.core.handler.ShellHandler;
-import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.eclipse.exception.EclipseLayerException;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardConnection;
@@ -69,7 +69,7 @@ public class SwitchYardEditorTransformersTest {
 
 	@After
 	public void removeAllTransformsAndComponents() {
-		ShellHandler.getInstance().closeAllNonWorbenchShells();
+		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 
 		new SwitchYardEditor().getComposite().showProperties().selectTransforms().removeAll().ok();
 		new SwitchYardEditor().save();

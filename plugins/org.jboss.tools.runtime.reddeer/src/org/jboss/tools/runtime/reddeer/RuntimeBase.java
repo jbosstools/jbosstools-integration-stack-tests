@@ -1,34 +1,37 @@
 package org.jboss.tools.runtime.reddeer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
+import java.util.Map;
 
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.ServerCore;
+import org.jboss.tools.runtime.reddeer.impl.RuntimeBrms;
+import org.jboss.tools.runtime.reddeer.impl.RuntimeDrools;
+import org.jboss.tools.runtime.reddeer.impl.RuntimeJbpm;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 /**
  * 
  * @author apodhrad
  * 
  */
-@XmlAccessorType(XmlAccessType.FIELD)
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
+@JsonSubTypes({
+	@JsonSubTypes.Type(name = "brms", value = RuntimeBrms.class),
+	@JsonSubTypes.Type(name = "drools", value = RuntimeDrools.class),
+	@JsonSubTypes.Type(name = "jbpm", value = RuntimeJbpm.class) })
 public abstract class RuntimeBase {
 
 	protected String name;
-
-	@XmlAttribute(name = "version")
 	private String version;
-
-	@XmlElement(name = "home", namespace = Namespaces.SOA_REQ)
 	private String home;
-
-	@XmlElement(name = "properties", namespace = Namespaces.SOA_REQ)
-	private Properties properties;
+	private Map<String, String> properties;
 
 	public String getName() {
 		return name;
@@ -54,16 +57,20 @@ public abstract class RuntimeBase {
 		this.home = home;
 	}
 
-	public void setProperties(Properties properties) {
+	public Map<String, String> getProperties() {
+		return properties;
+	}
+
+	public void setProperties(Map<String, String> properties) {
 		this.properties = properties;
 	}
 
 	public String getProperty(String key) {
-		return properties != null ? properties.getProperty(key) : null;
+		return properties != null ? properties.get(key) : null;
 	}
 
 	public List<String> getProperties(String key) {
-		return properties != null ? properties.getProperties(key) : new ArrayList<String>();
+		return properties != null ? Arrays.asList(new String[] { properties.get(key) }) : new ArrayList<String>();
 	}
 
 	public String getProperty(String key, String defaultValue) {

@@ -14,19 +14,19 @@ import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.swt.SWT;
 import org.hamcrest.Matcher;
-import org.jboss.reddeer.gef.GEFLayerException;
-import org.jboss.reddeer.gef.condition.EditorHasEditParts;
-import org.jboss.reddeer.gef.editor.GEFEditor;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.core.handler.WidgetHandler;
-import org.jboss.reddeer.core.util.Display;
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.gef.GEFLayerException;
+import org.eclipse.reddeer.gef.condition.EditorHasEditParts;
+import org.eclipse.reddeer.gef.editor.GEFEditor;
+import org.eclipse.reddeer.swt.exception.SWTLayerException;
+import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.core.handler.WidgetHandler;
+import org.eclipse.reddeer.common.util.Display;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.bpmn2.reddeer.editor.ConnectionType;
 import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
@@ -90,7 +90,7 @@ public class GEFProcessEditor extends GEFEditor {
 		return viewer;
 	}
 
-	public org.jboss.reddeer.gef.api.EditPart addElementFromPalette(ElementType type, final int x, final int y,
+	public org.eclipse.reddeer.gef.api.EditPart addElementFromPalette(ElementType type, final int x, final int y,
 			final EditPart parent) {
 		int oldCount = getNumberOfEditParts();
 
@@ -114,7 +114,7 @@ public class GEFProcessEditor extends GEFEditor {
 		return new AbsoluteEditPart(viewerListener.getAddedEditPart());
 	}
 
-	public org.jboss.reddeer.gef.api.EditPart addConnectionFromPalette(ConnectionType connectionType, Element from,
+	public org.eclipse.reddeer.gef.api.EditPart addConnectionFromPalette(ConnectionType connectionType, Element from,
 			Element to) {
 		int oldCount = getNumberOfEditParts();
 
@@ -258,7 +258,7 @@ public class GEFProcessEditor extends GEFEditor {
 		public boolean test() {
 			try {
 				click(1, 1);
-				new ContextMenu("Show Source View").select();
+				new ContextMenuItem("Show Source View").select();
 			} catch (CoreLayerException | SWTLayerException e) {
 				return true;
 			}

@@ -6,25 +6,25 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
-import org.jboss.reddeer.swt.impl.group.DefaultGroup;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.swt.condition.ShellIsActive;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.uiforms.impl.section.DefaultSection;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.editor.XPathEvaluator;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
@@ -59,7 +59,7 @@ public class ProjectExplorerProjectCapabilitiesTest {
 		new ProjectExplorer().open();
 
 		/* Create simple maven project */
-		new ShellMenu("File", "New", "Project...").select();
+		new ShellMenuItem(new WorkbenchShell(), "File", "New", "Project...").select();
 		new DefaultShell("New Project");
 		new DefaultTreeItem("Maven", "Maven Project").select();
 		new PushButton("Next >").click();
@@ -71,7 +71,7 @@ public class ProjectExplorerProjectCapabilitiesTest {
 		new LabeledCombo(new DefaultGroup("Artifact"), "Artifact Id:").setText(SY_PARENT_PROJECT);
 		new LabeledCombo(new DefaultGroup("Artifact"), "Packaging:").setSelection("pom");
 		new PushButton("Finish").click();
-		new WaitWhile(new ShellWithTextIsActive("New Maven Project"));
+		new WaitWhile(new ShellIsActive("New Maven Project"));
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 
 		/* Add http component to the parent project */
@@ -82,7 +82,7 @@ public class ProjectExplorerProjectCapabilitiesTest {
 		new DefaultShell("Select Dependency");
 		new LabeledText("Group Id:").setText("org.switchyard.components");
 		new LabeledText("Artifact Id:").setText("switchyard-component-http");
-		new LabeledText("Version: ").setText(switchYardRequirement.getConfig().getSwitchyardVersion());
+		new LabeledText("Version: ").setText(switchYardRequirement.getConfiguration().getSwitchyardVersion());
 		new PushButton("OK").click();
 		new DefaultEditor(SY_PARENT_PROJECT + "/pom.xml").save();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
@@ -171,7 +171,7 @@ public class ProjectExplorerProjectCapabilitiesTest {
 		capabilities.setConfigurationVersion("1.1").ok();
 		assertSwitchYardNamespace("1.1");
 		/* Set configuration version to 2.0 */
-		if (switchYardRequirement.getConfig().getSwitchyardVersion().startsWith("2")) {
+		if (switchYardRequirement.getConfiguration().getSwitchyardVersion().startsWith("2")) {
 			capabilities = new SwitchYardProject(SY_PROJECT).configureCapabilities();
 			capabilities.setConfigurationVersion("2.0").ok();
 			assertSwitchYardNamespace("2.0");

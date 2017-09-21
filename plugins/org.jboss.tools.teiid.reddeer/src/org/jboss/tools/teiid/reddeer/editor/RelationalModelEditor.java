@@ -3,17 +3,17 @@ package org.jboss.tools.teiid.reddeer.editor;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.spinner.LabeledSpinner;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.spinner.LabeledSpinner;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.eclipse.reddeer.swt.keyboard.KeyboardFactory;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 
 public class RelationalModelEditor extends ModelEditor{
 	
@@ -30,7 +30,7 @@ public class RelationalModelEditor extends ModelEditor{
 	public TransformationEditor openTransformationDiagram(String type, String name){
 		selectModelItem(type, name);
 		AbstractWait.sleep(TimePeriod.SHORT);
-		new ContextMenu("Edit").select();
+		new ContextMenuItem("Edit").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new WorkbenchShell();
 		return new TransformationEditor();
@@ -59,7 +59,7 @@ public class RelationalModelEditor extends ModelEditor{
 	 */
 	public void deleteAttribute(String itemName, String itemType, String attrName, boolean removeFromTransformation){
 		selectModelItemAttribute(attrName, itemType, itemName);
-		new ContextMenu("Delete").select();	
+		new ContextMenuItem("Delete").select();	
 		AbstractWait.sleep(TimePeriod.SHORT);
 		PushButton button = (removeFromTransformation) ? new PushButton("Yes") : new PushButton("No");
 		button.click();
@@ -73,7 +73,7 @@ public class RelationalModelEditor extends ModelEditor{
 	 */
 	public void renameAttribute(String itemName, String itemType, String attrName, String newName){
 		selectModelItemAttribute(attrName, itemType, itemName);
-		new ContextMenu("Rename").select();
+		new ContextMenuItem("Rename").select();
 		new DefaultText(0).setText(newName);
 		KeyboardFactory.getKeyboard().type(KeyEvent.VK_TAB);
 		
@@ -84,7 +84,7 @@ public class RelationalModelEditor extends ModelEditor{
 	 */
 	public void setAttributeDataType(String itemName, String itemType, String attrName, String dataType, Integer length){
 		selectModelItemAttribute(attrName, itemType, itemName);
-		new ContextMenu("Modeling","Set Datatype").select();
+		new ContextMenuItem("Modeling","Set Datatype").select();
 		new DefaultShell("Select a Datatype");
 		new DefaultText(0).setText(dataType);
 		new DefaultTable().getItem(0).click();

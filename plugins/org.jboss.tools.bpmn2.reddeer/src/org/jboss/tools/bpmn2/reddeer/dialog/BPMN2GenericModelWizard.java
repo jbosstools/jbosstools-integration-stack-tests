@@ -1,13 +1,13 @@
 package org.jboss.tools.bpmn2.reddeer.dialog;
 
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 /**
  * 
  */
-public class BPMN2GenericModelWizard extends NewWizardDialog {
+public class BPMN2GenericModelWizard extends NewMenuWizard {
 
 	/**
 	 * 
@@ -31,7 +31,7 @@ public class BPMN2GenericModelWizard extends NewWizardDialog {
 	 * Creates a new instance of BPMN2GenericModelWizard.
 	 */
 	public BPMN2GenericModelWizard() {
-		super("BPMN2", "Generic BPMN 2.0 Diagram");
+		super("", "BPMN2", "Generic BPMN 2.0 Diagram");
 	}
 
 	/**

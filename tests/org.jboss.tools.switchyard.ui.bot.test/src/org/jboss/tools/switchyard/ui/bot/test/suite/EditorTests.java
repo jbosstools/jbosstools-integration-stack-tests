@@ -1,6 +1,6 @@
 package org.jboss.tools.switchyard.ui.bot.test.suite;
 
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.switchyard.ui.bot.test.SwitchYardEditorBindingsTest;
 import org.jboss.tools.switchyard.ui.bot.test.SwitchYardEditorDomainSettingsTest;
 import org.jboss.tools.switchyard.ui.bot.test.SwitchYardEditorImplementationsTest;

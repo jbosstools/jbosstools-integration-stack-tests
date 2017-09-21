@@ -1,8 +1,8 @@
 package org.jboss.tools.switchyard.reddeer.binding;
 
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.group.DefaultGroup;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 /**
  * RSS binding page

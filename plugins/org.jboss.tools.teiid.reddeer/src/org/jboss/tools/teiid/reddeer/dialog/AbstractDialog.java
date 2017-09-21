@@ -1,11 +1,11 @@
 package org.jboss.tools.teiid.reddeer.dialog;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.swt.impl.button.CancelButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.swt.condition.ShellIsActive;
+import org.eclipse.reddeer.swt.impl.button.CancelButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 
 public abstract class AbstractDialog {
 	private static final Logger log = Logger.getLogger(AbstractDialog.class);
@@ -42,6 +42,6 @@ public abstract class AbstractDialog {
 	public void cancel(){
 		log.info("Canceling '" + title + "' Dialog");
 		new CancelButton().click();
-		new WaitWhile(new ShellWithTextIsActive(title), TimePeriod.NORMAL);
+		new WaitWhile(new ShellIsActive(title), TimePeriod.DEFAULT);
 	}
 }

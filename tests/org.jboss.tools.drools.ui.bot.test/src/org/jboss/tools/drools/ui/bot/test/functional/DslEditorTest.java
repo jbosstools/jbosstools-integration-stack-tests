@@ -3,13 +3,15 @@ package org.jboss.tools.drools.ui.bot.test.functional;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
-import org.jboss.reddeer.junit.execution.annotation.RunIf;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.eclipse.core.resources.Project;
+import org.eclipse.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaPerspective;
+import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
+import org.eclipse.reddeer.junit.execution.annotation.RunIf;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.drools.reddeer.dialog.DslLineDialog;
@@ -24,7 +26,8 @@ import org.jboss.tools.drools.ui.bot.test.util.OpenUtility;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
 import org.jboss.tools.drools.ui.bot.test.util.annotation.UseDefaultProject;
 import org.jboss.tools.drools.ui.bot.test.util.annotation.UsePerspective;
-import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeImplementationRestriction;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeImplementationType;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
 import org.junit.Assert;
@@ -32,7 +35,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@Runtime(type = RuntimeReqType.DROOLS)
+@Runtime
 @RunWith(RedDeerSuite.class)
 public class DslEditorTest extends TestParent {
 	private static final Logger LOGGER = Logger.getLogger(DslEditorTest.class);
@@ -41,16 +44,21 @@ public class DslEditorTest extends TestParent {
 
 	@InjectRequirement
 	private RuntimeRequirement droolsRequirement;
+	
+	@RequirementRestriction
+	public static RequirementMatcher getRequirementMatcher() {
+		return new RuntimeImplementationRestriction(RuntimeImplementationType.DROOLS);
+	}
 
 	@Before
 	public void createDefaultDsl() {
 		NewDslWizard wiz = new NewDslWizard();
 		wiz.open();
-		NewDslWizardPage page = new NewDslWizardPage();
+		NewDslWizardPage page = new NewDslWizardPage(wiz);
 		page.setParentFolder(getRulesLocation());
 		page.setFileName(getMethodName());
 		wiz.next();
-		NewDslSamplesWizardPage samplePage = new NewDslSamplesWizardPage();
+		NewDslSamplesWizardPage samplePage = new NewDslSamplesWizardPage(wiz);
 		samplePage.setAddSampleDsl(true);
 		wiz.finish();
 
@@ -61,7 +69,7 @@ public class DslEditorTest extends TestParent {
 	@UsePerspective(JavaPerspective.class)
 	@UseDefaultProject
 	public void testOpen() {
-		Project project = new PackageExplorer().getProject(DEFAULT_PROJECT_NAME);
+		Project project = new PackageExplorerPart().getProject(DEFAULT_PROJECT_NAME);
 		project.getProjectItem(getResourcePath(getMethodName() + ".dsl")).open();
 
 		DslEditor editor = new DslEditor();

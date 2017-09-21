@@ -3,11 +3,11 @@ package org.jboss.tools.bpmn2.reddeer.editor.jbpm;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.reddeer.swt.api.Table;
-import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
+import org.eclipse.reddeer.swt.api.Table;
+import org.eclipse.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.uiforms.impl.section.DefaultSection;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementContainer;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
 import org.jboss.tools.bpmn2.reddeer.properties.jbpm.DataItemsTab;

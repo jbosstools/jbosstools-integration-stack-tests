@@ -3,19 +3,19 @@ package org.jboss.tools.teiid.reddeer.editor;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.swt.condition.ShellIsActive;
+import org.eclipse.reddeer.swt.exception.SWTLayerException;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.swt.keyboard.KeyboardFactory;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.dialog.InputSetEditorDialog;
 import org.jboss.tools.teiid.reddeer.matcher.RecursiveButtonMatcher;
 
@@ -32,7 +32,7 @@ public class XmlModelEditor extends ModelEditor {
 	public void openDocument(String document){
 		selectModelItem(ModelEditor.ItemType.XML_DOCUMENT, document);
 		AbstractWait.sleep(TimePeriod.SHORT);
-		new ContextMenu("Open").select();
+		new ContextMenuItem("Open").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 	
@@ -44,12 +44,12 @@ public class XmlModelEditor extends ModelEditor {
 		new WorkbenchShell();
 		selectModelItem(ModelEditor.ItemType.XML_DOCUMENT, document);
 		AbstractWait.sleep(TimePeriod.SHORT);
-		new ContextMenu("Delete").select();
+		new ContextMenuItem("Delete").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		try {
 			new DefaultShell("Dependent Models Detected");
 			new PushButton("Yes").click();
-			new WaitWhile(new ShellWithTextIsActive("Dependent Models Detected"), TimePeriod.NORMAL);
+			new WaitWhile(new ShellIsActive("Dependent Models Detected"), TimePeriod.DEFAULT);
 		} catch (SWTLayerException e) {	
 			// shell not opened -> continue
 		}
@@ -57,7 +57,7 @@ public class XmlModelEditor extends ModelEditor {
 		try {
 			new DefaultShell("Confirm SQL Update");
 			new PushButton("Yes").click();
-			new WaitWhile(new ShellWithTextIsActive("Confirm SQL Update"), TimePeriod.NORMAL);
+			new WaitWhile(new ShellIsActive("Confirm SQL Update"), TimePeriod.DEFAULT);
 		} catch (SWTLayerException e) {	
 			// shell not opened -> continue
 		}
@@ -73,7 +73,7 @@ public class XmlModelEditor extends ModelEditor {
 		new WorkbenchShell();
 		selectModelItem(ModelEditor.ItemType.XML_DOCUMENT, document);
 		AbstractWait.sleep(TimePeriod.SHORT);
-		new ContextMenu("Rename").select();
+		new ContextMenuItem("Rename").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new DefaultText().setText(newName);
 		KeyboardFactory.getKeyboard().type(KeyEvent.VK_TAB);
@@ -96,7 +96,7 @@ public class XmlModelEditor extends ModelEditor {
 	public void openMappingClass(String mappingClass){
 		selectModelItem(ModelEditor.ItemType.MAPPING_CLASS, mappingClass);
 		AbstractWait.sleep(TimePeriod.SHORT);
-		new ContextMenu("Open").select();
+		new ContextMenuItem("Open").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 	
@@ -117,7 +117,7 @@ public class XmlModelEditor extends ModelEditor {
 	public void openStagingTable(String stagingTable){
 		selectModelItem(ModelEditor.ItemType.STAGING_TABLE, stagingTable);
 		AbstractWait.sleep(TimePeriod.SHORT);
-		new ContextMenu("Open").select();
+		new ContextMenuItem("Open").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 	
@@ -137,7 +137,7 @@ public class XmlModelEditor extends ModelEditor {
 	 */
 	public InputSetEditorDialog openInputSetEditor(){
 		selectModelItem(ModelEditor.ItemType.INPUT_SET, "Input Set");
-		new ContextMenu("Edit Input Set").select();;
+		new ContextMenuItem("Edit Input Set").select();;
 		return new InputSetEditorDialog();
 	}
 	
@@ -147,7 +147,7 @@ public class XmlModelEditor extends ModelEditor {
 	 */
 	public TransformationEditor openTransformationEditor(){
 		selectTransformationArrow();
-		new ContextMenu("Edit").select();;
+		new ContextMenuItem("Edit").select();;
 		AbstractWait.sleep(TimePeriod.getCustom(3));
 		return new TransformationEditor();
 	}
@@ -166,7 +166,7 @@ public class XmlModelEditor extends ModelEditor {
 	 */
 	public void addAttribute(String mappingClass, String attribute){
 		selectModelItem(ModelEditor.ItemType.MAPPING_CLASS, mappingClass);
-		new ContextMenu("New Child", "Mapping Class Column").select();
+		new ContextMenuItem("New Child", "Mapping Class Column").select();
 		new DefaultText(0).setText(attribute);
 		KeyboardFactory.getKeyboard().type(KeyEvent.VK_TAB);		
 	}
@@ -176,10 +176,10 @@ public class XmlModelEditor extends ModelEditor {
 	 */
 	public void copyAttribute(String fromMappingClass, String toMappingClass, String attribute){
 		selectModelItemAttribute(attribute, ModelEditor.ItemType.MAPPING_CLASS, fromMappingClass);
-		new ContextMenu("Copy").select();
+		new ContextMenuItem("Copy").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		selectModelItem(ModelEditor.ItemType.MAPPING_CLASS, toMappingClass);
-		new ContextMenu("Paste").select();
+		new ContextMenuItem("Paste").select();
 		KeyboardFactory.getKeyboard().type(KeyEvent.VK_TAB);
 	}
 	
@@ -188,7 +188,7 @@ public class XmlModelEditor extends ModelEditor {
 	 */
 	public void deleteAttribute(String mappingClass, String attribute){
 		selectModelItemAttribute(attribute, ModelEditor.ItemType.MAPPING_CLASS, mappingClass);
-		new ContextMenu("Delete").select();
+		new ContextMenuItem("Delete").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 	

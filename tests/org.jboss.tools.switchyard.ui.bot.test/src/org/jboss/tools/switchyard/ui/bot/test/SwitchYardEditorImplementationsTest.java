@@ -9,15 +9,15 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.reddeer.core.handler.ShellHandler;
-import org.jboss.reddeer.junit.execution.annotation.RunIf;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
-import org.jboss.reddeer.swt.impl.button.NoButton;
-import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.junit.execution.annotation.RunIf;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
+import org.eclipse.reddeer.swt.impl.button.NoButton;
+import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.editor.DomainEditor;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
@@ -111,7 +111,7 @@ public class SwitchYardEditorImplementationsTest {
 			// ok
 		}
 
-		ShellHandler.getInstance().closeAllNonWorbenchShells();
+		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 
 		List<SwitchYardComponent> components = new SwitchYardEditor().getComponents();
 		while (!components.isEmpty()) {
@@ -122,7 +122,7 @@ public class SwitchYardEditorImplementationsTest {
 			new SwitchYardProject(PROJECT_NAME).getClass(javaClass).delete();
 		}
 		for (String[] resource : resourcesToDelete) {
-			new SwitchYardProject(PROJECT_NAME).getResource(resource).delete();
+			new SwitchYardProject(PROJECT_NAME).getResourceExt(resource).delete();
 		}
 	}
 

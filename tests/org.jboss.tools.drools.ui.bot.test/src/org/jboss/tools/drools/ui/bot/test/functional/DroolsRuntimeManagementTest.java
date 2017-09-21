@@ -3,20 +3,24 @@ package org.jboss.tools.drools.ui.bot.test.functional;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
-import org.jboss.reddeer.junit.execution.annotation.RunIf;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.api.Table;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
+import org.eclipse.reddeer.junit.execution.annotation.RunIf;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.swt.api.Table;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.drools.reddeer.dialog.DroolsRuntimeDialog;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage.DroolsRuntime;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
-import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeImplementationRestriction;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeImplementationType;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
 import org.junit.Assert;
@@ -24,13 +28,18 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@Runtime(type = RuntimeReqType.DROOLS)
+@Runtime
 @RunWith(RedDeerSuite.class)
 public class DroolsRuntimeManagementTest extends TestParent {
 	private static final Logger LOGGER = Logger.getLogger(DroolsRuntimeManagementTest.class);
 
 	@InjectRequirement
 	private RuntimeRequirement droolsRequirement;
+	
+	@RequirementRestriction
+	public static RequirementMatcher getRequirementMatcher() {
+		return new RuntimeImplementationRestriction(RuntimeImplementationType.DROOLS);
+	}
 
 	@Before
 	public void clearRuntimes() {
@@ -42,10 +51,10 @@ public class DroolsRuntimeManagementTest extends TestParent {
 		final String name = "testRuntimeCreation";
 
 		// add new runtime
-		DroolsRuntimeManagementTest.addRuntime(name, droolsRequirement.getConfig().getRuntimeFamily().getHome(), false);
+		DroolsRuntimeManagementTest.addRuntime(name, droolsRequirement.getConfiguration().getRuntimeFamily().getHome(), false);
 
 		// check that runtime was added
-		DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
+		DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage(openPreferences());
 		pref.open();
 		DroolsRuntime runtime = null;
 		for (DroolsRuntime r : pref.getDroolsRuntimes()) {
@@ -70,7 +79,7 @@ public class DroolsRuntimeManagementTest extends TestParent {
 		final String name = "testWrongLocation";
 		final String location = "/path/to/runtime";
 
-		DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
+		DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage(openPreferences());
 		pref.open();
 		DroolsRuntimeDialog wiz = pref.addDroolsRuntime();
 		wiz.setName(name);
@@ -86,10 +95,10 @@ public class DroolsRuntimeManagementTest extends TestParent {
 	@RunIf(conditionClass = IssueIsClosed.class)
 	public void testDuplicateName() {
 		final String name = "testDuplicateName";
-		final String runtimeHome = droolsRequirement.getConfig().getRuntimeFamily().getHome();
+		final String runtimeHome = droolsRequirement.getConfiguration().getRuntimeFamily().getHome();
 		addRuntime(name, runtimeHome, false);
 
-		DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
+		DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage(openPreferences());
 		pref.open();
 
 		DroolsRuntimeDialog wiz = pref.addDroolsRuntime();
@@ -108,9 +117,9 @@ public class DroolsRuntimeManagementTest extends TestParent {
 	public void testSetDefaultRuntime() {
 		final String name1 = "testSetDefaultRuntime1";
 		final String name2 = "testSetDefaultRuntime2";
-		final String runtimeHome = droolsRequirement.getConfig().getRuntimeFamily().getHome();
+		final String runtimeHome = droolsRequirement.getConfiguration().getRuntimeFamily().getHome();
 
-		DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
+		DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage(openPreferences());
 		pref.open();
 		addRuntime(name1, runtimeHome, false, pref);
 		addRuntime(name2, runtimeHome, false, pref);
@@ -154,9 +163,9 @@ public class DroolsRuntimeManagementTest extends TestParent {
 		final String name1 = "testDeleteDefaultRuntime1";
 		final String name2 = "testDeleteDefaultRuntime2";
 		final String name3 = "testDeleteDefaultRuntime3";
-		final String runtimeHome = droolsRequirement.getConfig().getRuntimeFamily().getHome();
+		final String runtimeHome = droolsRequirement.getConfiguration().getRuntimeFamily().getHome();
 
-		DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
+		DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage(openPreferences());
 		pref.open();
 		addRuntime(name1, runtimeHome, true, pref);
 		addRuntime(name2, runtimeHome, false, pref);
@@ -193,11 +202,11 @@ public class DroolsRuntimeManagementTest extends TestParent {
 	@Jira("DROOLS-1161")
 	@RunIf(conditionClass = IssueIsClosed.class)
 	public void testApply() {
-		DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
+		DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage(openPreferences());
 		pref.open();
 		DroolsRuntimeDialog wiz = pref.addDroolsRuntime();
 		wiz.setName(getMethodName());
-		wiz.setLocation(droolsRequirement.getConfig().getRuntimeFamily().getHome());
+		wiz.setLocation(droolsRequirement.getConfiguration().getRuntimeFamily().getHome());
 		Assert.assertTrue("Impossible to use created runtime.", wiz.isValid());
 		wiz.ok();
 
@@ -217,7 +226,7 @@ public class DroolsRuntimeManagementTest extends TestParent {
 	}
 
 	private static void addRuntime(String name, String location, boolean setAsDefault) {
-		DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
+		DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage(openPreferences());
 		pref.open();
 		addRuntime(name, location, setAsDefault, pref);
 		pref.okCloseWarning();
@@ -248,5 +257,11 @@ public class DroolsRuntimeManagementTest extends TestParent {
 			}
 		}
 		return null;
+	}
+	
+	private static WorkbenchPreferenceDialog openPreferences() {
+		WorkbenchPreferenceDialog preferences = new WorkbenchPreferenceDialog();
+		preferences.open();
+		return preferences;
 	}
 }

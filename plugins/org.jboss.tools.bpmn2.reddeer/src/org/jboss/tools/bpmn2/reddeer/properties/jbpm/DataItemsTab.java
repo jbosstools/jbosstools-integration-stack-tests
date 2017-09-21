@@ -1,9 +1,9 @@
 package org.jboss.tools.bpmn2.reddeer.properties.jbpm;
 
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.uiforms.impl.section.DefaultSection;
 import org.jboss.tools.bpmn2.reddeer.DefaultCombo;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.DataTypeDialog;
 import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;

@@ -6,12 +6,12 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.common.reddeer.JiraClient;
 import org.jboss.tools.teiid.reddeer.AssertBot;
 import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
@@ -84,7 +84,7 @@ public class TransformationToolsTest {
 	    RelationalModelEditor editor = new RelationalModelEditor(VIEW_MODEL);
 	    TransformationEditor transformationEditor =  editor.openTransformationDiagram(ModelEditor.ItemType.TABLE, "AddTransformation");
 		modelExplorer.selectItem(PROJECT_NAME, "PartsSupplier.xmi", "SUPPLIER");
-		new ContextMenu("Modeling","Add Transformation Source(s)").select();
+		new ContextMenuItem("Modeling","Add Transformation Source(s)").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		editor.activate();
 		editor.save();

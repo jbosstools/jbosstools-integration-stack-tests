@@ -5,7 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.jboss.reddeer.eclipse.ui.perspectives.AbstractPerspective;
+import org.eclipse.reddeer.eclipse.ui.perspectives.AbstractPerspective;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

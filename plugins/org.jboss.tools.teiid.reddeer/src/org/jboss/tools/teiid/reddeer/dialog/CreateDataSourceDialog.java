@@ -1,18 +1,18 @@
 package org.jboss.tools.teiid.reddeer.dialog;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.jface.viewers.CellEditor;
-import org.jboss.reddeer.swt.api.Table;
-import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.group.DefaultGroup;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.jface.viewers.CellEditor;
+import org.eclipse.reddeer.swt.api.Table;
+import org.eclipse.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 public class CreateDataSourceDialog extends AbstractDialog {
 	
@@ -83,7 +83,7 @@ public class CreateDataSourceDialog extends AbstractDialog {
 	public void finish() {
 		log.info("Finishing '" + title + "' Dialog");
 		new PushButton("OK").click();
-		new WaitWhile(new ShellWithTextIsAvailable("Progress Information"), TimePeriod.NORMAL);
+		new WaitWhile(new ShellIsAvailable("Progress Information"), TimePeriod.DEFAULT);
 		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 	

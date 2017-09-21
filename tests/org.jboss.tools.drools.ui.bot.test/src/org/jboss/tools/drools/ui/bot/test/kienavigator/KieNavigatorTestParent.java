@@ -3,12 +3,12 @@ package org.jboss.tools.drools.ui.bot.test.kienavigator;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
+import org.eclipse.reddeer.swt.condition.ShellIsActive;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.drools.reddeer.kienavigator.item.ServerItem;
 import org.jboss.tools.drools.reddeer.kienavigator.properties.ServerProperties;
 import org.jboss.tools.drools.reddeer.view.KieNavigatorView;
@@ -89,7 +89,7 @@ public class KieNavigatorTestParent extends TestParent {
 	protected void progressInformationWaiting() {
 		try {
 			new DefaultShell(PROGRESS_INFORMATION_LABEL);
-			new WaitWhile(new ShellWithTextIsActive(PROGRESS_INFORMATION_LABEL), TimePeriod.VERY_LONG);
+			new WaitWhile(new ShellIsActive(PROGRESS_INFORMATION_LABEL), TimePeriod.VERY_LONG);
 		} catch (Exception ex) {
 			LOGGER.debug("'" + PROGRESS_INFORMATION_LABEL + "' shell was not shown.");
 		}

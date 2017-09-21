@@ -5,13 +5,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+import org.eclipse.reddeer.common.exception.RedDeerException;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.eclipse.ui.views.contentoutline.ContentOutline;
+import org.eclipse.reddeer.gef.editor.GEFEditor;
+import org.eclipse.reddeer.swt.api.TreeItem;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
-import org.jboss.reddeer.common.exception.RedDeerException;
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.eclipse.ui.views.contentoutline.OutlineView;
-import org.jboss.reddeer.gef.editor.GEFEditor;
-import org.jboss.reddeer.swt.api.TreeItem;
 
 /**
  * 
@@ -79,7 +79,7 @@ public class BpelEditor extends GEFEditor {
 	}
 
 	public Variable getVariable(String variableName) {
-		OutlineView outlineView = new OutlineView();
+		ContentOutline outlineView = new ContentOutline();
 		outlineView.open();
 		for (TreeItem treeItem : outlineView.outlineElements()) {
 			if ("Variables".equals(treeItem.getText())) {

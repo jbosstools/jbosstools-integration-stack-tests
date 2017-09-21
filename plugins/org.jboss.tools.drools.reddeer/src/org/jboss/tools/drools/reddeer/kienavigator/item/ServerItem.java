@@ -3,7 +3,7 @@ package org.jboss.tools.drools.reddeer.kienavigator.item;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.api.TreeItem;
 import org.jboss.tools.drools.reddeer.kienavigator.dialog.CreateOrgUnitDialog;
 import org.jboss.tools.drools.reddeer.kienavigator.properties.ServerProperties;
 

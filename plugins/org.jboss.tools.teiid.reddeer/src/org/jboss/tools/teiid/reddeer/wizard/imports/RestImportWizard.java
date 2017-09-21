@@ -2,15 +2,15 @@ package org.jboss.tools.teiid.reddeer.wizard.imports;
 
 import java.util.Arrays;
 
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.NextButton;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.group.DefaultGroup;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.NextButton;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 
 /**
  * Wizard for importing relational model from REST WS
@@ -25,7 +25,7 @@ public class RestImportWizard extends TeiidImportWizard {
 	private String rootPath;
 	
 	private RestImportWizard() {
-		super("Web Service Source >> Source and View Model (REST)");
+		super(DIALOG_TITLE, "Web Service Source >> Source and View Model (REST)");
 		log.info("Rest import wizard is opened");
 	}
 	
@@ -108,7 +108,7 @@ public class RestImportWizard extends TeiidImportWizard {
 		log.info("Set root path to: '" + rootPath + "'");
 		activate();
 		new DefaultTreeItem(rootPath.split("/")).select();
-		new ContextMenu("Set as root path").select();
+		new ContextMenuItem("Set as root path").select();
 		this.rootPath=rootPath;
 		return this;
 	}

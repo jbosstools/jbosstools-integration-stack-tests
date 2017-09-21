@@ -1,22 +1,22 @@
 package org.jboss.tools.drools.reddeer.wizard;
 
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
+import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
 
-public class NewDroolsProjectWizard extends NewWizardDialog {
+public class NewDroolsProjectWizard extends NewMenuWizard {
 
     public NewDroolsProjectWizard() {
-        super("Drools", "Drools Project");
+        super("", "Drools", "Drools Project");
     }
 
     public NewDroolsInitialContentsWizardPage getFirstPage() {
-        return new NewDroolsInitialContentsWizardPage();
+        return new NewDroolsInitialContentsWizardPage(this);
     }
 
     public NewDroolsEmptyProjectWizardPage getEmptyProjectPage() {
-        return new NewDroolsEmptyProjectWizardPage();
+        return new NewDroolsEmptyProjectWizardPage(this);
     }
 
     public NewDroolsProjectWithExamplesWizardPage getProjectWithExamplesPage() {
-        return new NewDroolsProjectWithExamplesWizardPage();
+        return new NewDroolsProjectWithExamplesWizardPage(this);
     }
 }

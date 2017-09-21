@@ -1,9 +1,9 @@
 package org.jboss.tools.common.reddeer.condition;
 
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.swt.api.Tree;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.swt.api.Tree;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 
 /**
  * Wait condition - test whether a tree has an item

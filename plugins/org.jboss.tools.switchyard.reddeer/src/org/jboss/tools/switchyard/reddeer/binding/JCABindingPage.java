@@ -1,10 +1,10 @@
 package org.jboss.tools.switchyard.reddeer.binding;
 
-import org.jboss.reddeer.swt.api.Combo;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.group.DefaultGroup;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.api.Combo;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 /**
  * JCA binding page
@@ -96,7 +96,7 @@ public class JCABindingPage extends OperationOptionsPage<JMSBindingPage> {
 		return new LabeledText("Resource Adapter Archive*");
 	}
 
-	public LabeledCombo getMessageType() {
+	public LabeledCombo getMessageTypeCMB() {
 		return new LabeledCombo(new DefaultGroup("JMS Endpoint Properties"), "Message Type:");
 	}
 

@@ -1,10 +1,10 @@
 package org.jboss.tools.runtime.reddeer.wizard;
 
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 public class DroolsRuntimeWizard {
 
@@ -26,6 +26,6 @@ public class DroolsRuntimeWizard {
 	public void ok() {
 		new DefaultShell(DROOLS_LABEL);
 		new PushButton("OK").click();
-		new WaitWhile((new ShellWithTextIsAvailable(DROOLS_LABEL)));
+		new WaitWhile((new ShellIsAvailable(DROOLS_LABEL)));
 	}
 }

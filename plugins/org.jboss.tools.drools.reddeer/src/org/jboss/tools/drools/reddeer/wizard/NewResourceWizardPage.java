@@ -1,9 +1,14 @@
 package org.jboss.tools.drools.reddeer.wizard;
 
-import org.jboss.reddeer.jface.wizard.WizardPage;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.wizard.WizardPage;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 public abstract class NewResourceWizardPage extends WizardPage {
+
+	public NewResourceWizardPage(ReferencedComposite referencedComposite) {
+		super(referencedComposite);
+	}
 
 	public void setParentFolder(String parent) {
 		new LabeledText("Enter or select the parent folder:").setText(parent);

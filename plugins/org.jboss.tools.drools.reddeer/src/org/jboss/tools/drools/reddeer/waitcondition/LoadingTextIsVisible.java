@@ -2,8 +2,8 @@ package org.jboss.tools.drools.reddeer.waitcondition;
 
 import java.util.List;
 
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.swt.api.TreeItem;
 
 public class LoadingTextIsVisible extends AbstractWaitCondition {
 

@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.hamcrest.Matcher;
-import org.jboss.reddeer.swt.api.Table;
-import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.api.Tree;
-import org.jboss.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.api.Table;
+import org.eclipse.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.swt.api.Tree;
+import org.eclipse.reddeer.swt.api.TreeItem;
 
 public final class ItemLookup {
 	private static final Logger LOGGER = Logger.getLogger(ItemLookup.class);

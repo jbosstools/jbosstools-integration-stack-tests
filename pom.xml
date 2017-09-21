@@ -56,6 +56,18 @@
 				<enabled>true</enabled>
 			</releases>
 		</repository-->
+		<!--Fuse Update Site-->
+		<repository>
+			<id>fuse-site</id>
+			<url>${jbosstools.url}/oxygen/snapshots/builds/jbosstools-fuse_master/</url>
+			<layout>p2</layout>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
 		<!-- Eclipse Orbit Update Site -->
 		<repository>
 			<id>orbit-site</id>

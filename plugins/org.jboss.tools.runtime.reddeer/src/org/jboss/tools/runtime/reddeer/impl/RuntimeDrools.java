@@ -1,23 +1,19 @@
 package org.jboss.tools.runtime.reddeer.impl;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-
-import org.jboss.reddeer.direct.preferences.Preferences;
-import org.jboss.tools.runtime.reddeer.Namespaces;
+import org.eclipse.reddeer.direct.preferences.Preferences;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.runtime.reddeer.RuntimeBase;
 import org.jboss.tools.runtime.reddeer.wizard.DroolsRuntimePreferencePage;
 import org.jboss.tools.runtime.reddeer.wizard.DroolsRuntimeWizard;
 
-@XmlRootElement(name = "brms", namespace = Namespaces.SOA_REQ)
-@XmlAccessorType(XmlAccessType.FIELD)
 public class RuntimeDrools extends RuntimeBase {
 
 	@Override
 	public void create() {
-		DroolsRuntimePreferencePage droolsRuntimePreferencePage = new DroolsRuntimePreferencePage();
-		droolsRuntimePreferencePage.open();
+		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
+		dialog.open();
+		DroolsRuntimePreferencePage droolsRuntimePreferencePage = new DroolsRuntimePreferencePage(dialog);
+		dialog.select(droolsRuntimePreferencePage);
 		DroolsRuntimeWizard droolsRuntimeWizard = droolsRuntimePreferencePage.addRuntime();
 		droolsRuntimeWizard.setName(getName());
 		droolsRuntimeWizard.setPath(getHome());

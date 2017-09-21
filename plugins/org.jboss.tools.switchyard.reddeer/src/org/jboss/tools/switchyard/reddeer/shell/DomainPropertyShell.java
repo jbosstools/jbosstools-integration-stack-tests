@@ -1,12 +1,12 @@
 package org.jboss.tools.switchyard.reddeer.shell;
 
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.switchyard.reddeer.condition.IsButtonEnabled;
 
 /**
@@ -48,7 +48,7 @@ public class DomainPropertyShell {
 	}
 
 	protected void waitForFinish() {
-		new WaitWhile(new ShellWithTextIsAvailable(TITLE));
+		new WaitWhile(new ShellIsAvailable(TITLE));
 		new WaitWhile(new JobIsRunning());
 	}
 

@@ -1,21 +1,21 @@
 package org.jboss.tools.switchyard.reddeer.wizard;
 
-import org.jboss.reddeer.jface.wizard.WizardDialog;
-import org.jboss.reddeer.swt.api.Button;
-import org.jboss.reddeer.swt.api.List;
-import org.jboss.reddeer.swt.api.Table;
-import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.api.Text;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.group.DefaultGroup;
-import org.jboss.reddeer.swt.impl.list.DefaultList;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.jface.wizard.WizardDialog;
+import org.eclipse.reddeer.swt.api.Button;
+import org.eclipse.reddeer.swt.api.List;
+import org.eclipse.reddeer.swt.api.Table;
+import org.eclipse.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.swt.api.Text;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
+import org.eclipse.reddeer.swt.impl.list.DefaultList;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.table.DefaultTableItem;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.switchyard.reddeer.shell.SelectDozerFileShell;
 
 /**

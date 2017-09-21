@@ -2,13 +2,13 @@ package org.jboss.tools.switchyard.ui.bot.test;
 
 import static org.junit.Assert.assertEquals;
 
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.api.CCombo;
-import org.jboss.reddeer.workbench.handler.EditorHandler;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.ui.views.properties.PropertySheet;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.swt.api.CCombo;
+import org.eclipse.reddeer.workbench.handler.EditorHandler;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.fuse.reddeer.editor.CamelComponentEditPart;
 import org.jboss.tools.fuse.reddeer.editor.CamelEditor;
 import org.jboss.tools.switchyard.reddeer.component.Service;
@@ -79,7 +79,7 @@ public class SwitchYardIntegrationCamelTest {
 		CamelEditor camelEditor = new CamelEditor(ROUTE_NAME + ".xml");
 		camelEditor.addCamelComponent("Set Body", "Route _route1");
 		camelEditor.addConnection("Log _log1", "SetBody _setBody1");
-		PropertiesView propertiesView = new PropertiesView();
+		PropertySheet propertiesView = new PropertySheet();
 		propertiesView.open();
 		new CamelComponentEditPart("SetBody _setBody1").select();
 		camelEditor.setProperty(CCombo.class, "Language", "simple");

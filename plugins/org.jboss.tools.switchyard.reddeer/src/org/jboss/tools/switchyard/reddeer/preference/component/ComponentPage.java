@@ -1,6 +1,6 @@
 package org.jboss.tools.switchyard.reddeer.preference.component;
 
-import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
 
 /**
  * Represents a properties page "Component".

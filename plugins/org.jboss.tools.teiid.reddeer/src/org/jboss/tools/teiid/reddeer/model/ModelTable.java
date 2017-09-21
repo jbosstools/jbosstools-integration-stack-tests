@@ -3,8 +3,8 @@ package org.jboss.tools.teiid.reddeer.model;
 import java.util.Collections;
 import java.util.List;
 
-import org.jboss.reddeer.swt.api.Table;
-import org.jboss.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.swt.api.Table;
+import org.eclipse.reddeer.swt.api.TableItem;
 
 public class ModelTable {
 	private String name;

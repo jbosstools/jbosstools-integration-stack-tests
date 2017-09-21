@@ -6,31 +6,32 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.util.List;
 
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.matcher.WithMnemonicTextMatcher;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.condition.ShellIsActive;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.workbench.core.condition.JobIsKilled;
+import org.eclipse.reddeer.workbench.handler.EditorHandler;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.hamcrest.Matcher;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.core.matcher.WithMnemonicTextMatcher;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.tools.common.reddeer.JiraClient;
-import org.jboss.tools.runtime.reddeer.condition.JobIsKilled;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.condition.IsPreviewInProgress;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
@@ -65,7 +66,7 @@ import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
-@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles={
+@TeiidServer(state = ServerRequirementState.RUNNING, connectionProfiles={
 		ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER,
 		ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER,
 })
@@ -193,7 +194,7 @@ public class GuidesTest {
 		guides.chooseAction(actionSet, "Deploy VDB");
 		new CheckBox("Create Data Source for this VDB").click();
 		new PushButton("OK").click();
-		new WaitWhile(new IsInProgress(), TimePeriod.NORMAL);
+		new WaitWhile(new IsInProgress(), TimePeriod.DEFAULT);
 
 		ModelExplorer modelExplorer = new ModelExplorer();
 		modelExplorer.deployVdb(project_REST_name, vdb_REST_name);
@@ -385,9 +386,9 @@ public class GuidesTest {
 		new DefaultTreeItem("Teiid Importer Connections", "TeiidImportCP_" + dataSource).select();
 		new PushButton("OK").click();
 		
-		new WaitWhile(new IsPreviewInProgress(), TimePeriod.NORMAL);
-		new WaitWhile(new IsInProgress(), TimePeriod.NORMAL);
-		new ShellMenu("File", "Save All").select();
+		new WaitWhile(new IsPreviewInProgress(), TimePeriod.DEFAULT);
+		new WaitWhile(new IsInProgress(), TimePeriod.DEFAULT);
+		new ShellMenuItem(new WorkbenchShell(), "File", "Save All").select();
 
 		guides.previewDataViaActionSet(actionSet, projectName, modelName+".xmi","STATUS"); 	
 		assertTrue(testLastPreview());
@@ -505,14 +506,14 @@ public class GuidesTest {
      * Restore default server after teiid test
      */
     private void cleanAfter(String serverName){
-    	ServersView view = new ServersView();
+    	ServersView2 view = new ServersView2();
 		view.open(); 
 		view.getServer(serverName).stop();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		guides.chooseAction("Teiid", "Set the Default ");
 		new DefaultCombo().setSelection(teiidServer.getName());
 		new PushButton("OK").click();
-		if (new ShellWithTextIsActive("Untested Teiid Version").test()){ 
+		if (new ShellIsActive("Untested Teiid Version").test()){ 
 					new PushButton("Yes").click();
 		}
 		new DefaultShell("Default Server Changed");
@@ -528,7 +529,7 @@ public class GuidesTest {
     }
     
     private boolean testLastPreview(){
-    	if(new ShellWithTextIsAvailable("Internal Error").test()){ //problem with preview data on the Linux (if SWT_GTK3=0 is set)
+    	if(new ShellIsAvailable("Internal Error").test()){ //problem with preview data on the Linux (if SWT_GTK3=0 is set)
     		new PushButton("No").click();
     	}
     	DatabaseDevelopmentPerspective.getInstance().getSqlResultsView();

@@ -1,9 +1,9 @@
 package org.jboss.tools.bpel.reddeer.editor;
 
-import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
-import org.jboss.tools.bpel.reddeer.widget.CellEditor;
-import org.jboss.tools.bpel.reddeer.widget.DefaultCCombo;
+import org.eclipse.reddeer.jface.viewers.CellEditor;
+import org.eclipse.reddeer.swt.impl.ccombo.DefaultCCombo;
+import org.eclipse.reddeer.swt.impl.table.DefaultTableItem;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 
 /**
  * 

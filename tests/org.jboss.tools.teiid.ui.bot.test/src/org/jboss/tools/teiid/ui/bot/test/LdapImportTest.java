@@ -5,21 +5,22 @@ import static org.junit.Assert.assertEquals;
 import java.io.File;
 import java.util.Properties;
 
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.eclipse.core.resources.Project;
+import org.eclipse.reddeer.eclipse.core.resources.ProjectItem;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.swt.keyboard.KeyboardFactory;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.eclipse.swt.SWT;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.tools.common.reddeer.JiraClient;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
@@ -37,7 +38,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
-@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = {
+@TeiidServer(state = ServerRequirementState.RUNNING, connectionProfiles = {
 		ConnectionProfileConstants.LDAP,
 		ConnectionProfileConstants.RHDS })
 public class LdapImportTest {
@@ -51,8 +52,8 @@ public class LdapImportTest {
 
 	@BeforeClass
 	public static void prepare() {
-		if (new ShellMenu("Project", "Build Automatically").isSelected()) {
-			new ShellMenu("Project", "Build Automatically").select();
+		if (new ShellMenuItem(new WorkbenchShell(), "Project", "Build Automatically").isSelected()) {
+			new ShellMenuItem(new WorkbenchShell(), "Project", "Build Automatically").select();
 		}
 		new ModelExplorer().createProject(NEW_PROJECT);
 	}
@@ -162,18 +163,18 @@ public class LdapImportTest {
 		try {
 			new DefaultShell();
 			new ModelExplorer().activate();
-			ProjectItem tableItem = modelItem.getChild(tableName);
+			ProjectItem tableItem = modelItem.getProjectItem(tableName);
 
 			tableItem.select();
-			new ContextMenu("New Child", "Column").select();
+			new ContextMenuItem("New Child", "Column").select();
 			new DefaultText(0).setText(columnName);
 			// Type Enter, selecting something else does not seem to work
 			KeyboardFactory.getKeyboard().type(SWT.CR);
 			// wait until the column is renamed, should probably implement a condition
-			AbstractWait.sleep(TimePeriod.NORMAL);
+			AbstractWait.sleep(TimePeriod.DEFAULT);
 			new ModelExplorer().activate();
-			tableItem.getChild(columnName).select();
-			new ContextMenu("Modeling", "Set Datatype").select();
+			tableItem.getProjectItem(columnName).select();
+			new ContextMenuItem("Modeling", "Set Datatype").select();
 			new DefaultTable().getItem(dataType).select();
 			;
 			new OkButton().click();

@@ -2,7 +2,7 @@ package org.jboss.tools.teiid.reddeer.matcher;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-import org.jboss.reddeer.swt.impl.clabel.DefaultCLabel;
+import org.eclipse.reddeer.swt.impl.clabel.DefaultCLabel;
 
 public class StatusLineMatcher extends BaseMatcher<DefaultCLabel> {
 

@@ -5,30 +5,31 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.core.matcher.TreeItemRegexMatcher;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.jface.viewers.CellEditor;
-import org.jboss.reddeer.jface.wizard.WizardDialog;
-import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.ccombo.DefaultCCombo;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.group.DefaultGroup;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
-import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.matcher.TreeItemRegexMatcher;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
+import org.eclipse.reddeer.jface.viewers.CellEditor;
+import org.eclipse.reddeer.jface.wizard.WizardDialog;
+import org.eclipse.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.swt.condition.ShellIsActive;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.ccombo.DefaultCCombo;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.condition.IsPreviewInProgress;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
@@ -99,7 +100,7 @@ public class GuidesView extends WorkbenchView {
 			// assertEquals(new SWTWorkbenchBot().activeShell().getText(), expectedErrorMessage);
 			// new SWTWorkbenchBot().activeShell().close();
 			// TODO check this
-			if (new ShellWithTextIsActive(expectedErrorMessage).test()) {
+			if (new ShellIsActive(expectedErrorMessage).test()) {
 				new DefaultShell(expectedErrorMessage).close();
 			}
 			return false;
@@ -128,23 +129,23 @@ public class GuidesView extends WorkbenchView {
 	public void setDefaultTeiidInstance(String serverName) {
 		chooseAction("Teiid", "Set the Default ");
 		AbstractWait.sleep(TimePeriod.SHORT);
-		if (new ShellWithTextIsActive("Server Selection").test()) {
+		if (new ShellIsActive("Server Selection").test()) {
 			new DefaultCombo().setSelection(serverName);
 			new PushButton("OK").click();
 		}
-		if (new ShellWithTextIsActive("Change of Teiid Version").test()) { // the teiid instances are different version
+		if (new ShellIsActive("Change of Teiid Version").test()) { // the teiid instances are different version
 			new PushButton("Yes").click();
 		}
-		if (new ShellWithTextIsActive("Untested Teiid Version").test()) { // if test untestet teiid version
+		if (new ShellIsActive("Untested Teiid Version").test()) { // if test untestet teiid version
 			new PushButton("Yes").click();
 		}
-		if (new ShellWithTextIsActive("Disconnect Current Default Instance").test()) { // if you want to disconnect old
+		if (new ShellIsActive("Disconnect Current Default Instance").test()) { // if you want to disconnect old
 																						// instance before switching
 			new PushButton("Yes").click();
 		}
-		if (new ShellWithTextIsActive("Default Server Changed").test()) {
+		if (new ShellIsActive("Default Server Changed").test()) {
 			new PushButton("OK").click();
-		} else if (new ShellWithTextIsActive("Default server unchanged").test()) {
+		} else if (new ShellIsActive("Default server unchanged").test()) {
 			new PushButton("OK").click();
 		} else {
 			throw new Error("Default server not been changed due to an error");
@@ -195,7 +196,7 @@ public class GuidesView extends WorkbenchView {
 	 */
 	public void previewDataViaActionSetWithParam(String actionSet, String param, String... path) {
 		AbstractWait.sleep(TimePeriod.SHORT);
-		if (new ShellWithTextIsActive("Unsaved Models In Workspace").test()) { // win 10
+		if (new ShellIsActive("Unsaved Models In Workspace").test()) { // win 10
 			new PushButton("Yes").click();
 		}
 		new GuidesView().chooseAction(actionSet, "Preview Data");
@@ -207,7 +208,7 @@ public class GuidesView extends WorkbenchView {
 		new DefaultShell("Preview Data");
 		new PushButton("OK").click();
 		if (param != null) {
-			new WaitWhile(new IsInProgress(), TimePeriod.NORMAL);
+			new WaitWhile(new IsInProgress(), TimePeriod.DEFAULT);
 			new DefaultShell("Preview Data");
 			// new LabeledText(nameParam).setText(param);
 			new DefaultText(0).setText(param);
@@ -215,11 +216,11 @@ public class GuidesView extends WorkbenchView {
 		}
 
 		// setup display property; only 1st time
-		if (new ShellWithTextIsActive("Change Property").test()) {
+		if (new ShellIsActive("Change Property").test()) {
 			new PushButton("Yes").click();
 		}
 
-		if (new ShellWithTextIsAvailable("Data Sources Missing").test()) {
+		if (new ShellIsAvailable("Data Sources Missing").test()) {
 			new PushButton("Yes").click();
 		}
 
@@ -315,7 +316,7 @@ public class GuidesView extends WorkbenchView {
 	}
 
 	public void startAndRefreshServer(String serverName, String defaultServerName) {
-		ServersView view = new ServersView();
+		ServersView2 view = new ServersView2();
 		view.open();
 		view.getServer(defaultServerName).stop();
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -327,7 +328,7 @@ public class GuidesView extends WorkbenchView {
 		new PushButton("OK").click();
 		new DefaultShell("Notification");
 		new PushButton("OK").click();
-		new ShellMenu("File", "Save All").select();
+		new ShellMenuItem(new WorkbenchShell(), "File", "Save All").select();
 		new WaitWhile(new IsInProgress(), TimePeriod.SHORT);
 	}
 
@@ -358,7 +359,7 @@ public class GuidesView extends WorkbenchView {
 		new PushButton("Next >").click();
 		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
 		new PushButton("Next >").click();
-		new WaitWhile(new IsInProgress(), TimePeriod.NORMAL);
+		new WaitWhile(new IsInProgress(), TimePeriod.DEFAULT);
 		new PushButton("Finish").click();
 	}
 

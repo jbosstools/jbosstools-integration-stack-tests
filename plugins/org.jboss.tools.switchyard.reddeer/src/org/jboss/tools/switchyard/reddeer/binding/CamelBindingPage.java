@@ -1,6 +1,6 @@
 package org.jboss.tools.switchyard.reddeer.binding;
 
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 /**
  * Camel binding page

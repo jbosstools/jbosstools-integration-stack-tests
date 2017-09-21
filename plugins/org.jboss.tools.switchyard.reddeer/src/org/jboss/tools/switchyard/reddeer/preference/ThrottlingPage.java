@@ -1,7 +1,7 @@
 package org.jboss.tools.switchyard.reddeer.preference;
 
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 /**
  * Represents a properties page "Throttling".

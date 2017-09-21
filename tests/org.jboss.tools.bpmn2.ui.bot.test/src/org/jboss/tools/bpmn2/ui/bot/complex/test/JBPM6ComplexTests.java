@@ -1,6 +1,6 @@
 package org.jboss.tools.bpmn2.ui.bot.complex.test;
 
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexAdHocProcessTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexAdHocSubprocessTest;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.testcase.ComplexAssociationTest;

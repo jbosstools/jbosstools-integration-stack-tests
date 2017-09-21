@@ -1,6 +1,6 @@
 package org.jboss.tools.switchyard.reddeer.wizard;
 
-import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.jboss.tools.switchyard.reddeer.widget.LabeledText;
 
 /**

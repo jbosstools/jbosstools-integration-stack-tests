@@ -2,22 +2,24 @@ package org.jboss.tools.teiid.reddeer.wizard.imports;
 
 import java.io.File;
 
-import org.jboss.reddeer.jface.wizard.ImportWizardDialog;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.eclipse.selectionwizard.ImportMenuWizard;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 /**
  * Wizard for importing a file from file system
  * 
  * @author lkrejcir (=lfabriko)
  */
-public class ImportFromFileSystemWizard extends ImportWizardDialog {
+public class ImportFromFileSystemWizard extends ImportMenuWizard {
+	
+	public static final String DIALOG_TITLE = "Import";
 
 	private ImportFromFileSystemWizard() {
-		super("General", "File System");
+		super(DIALOG_TITLE, "General", "File System");
 		log.info("Import item from file wizard is opened");
 	}
 
@@ -36,15 +38,7 @@ public class ImportFromFileSystemWizard extends ImportWizardDialog {
 		super.next();
 		return this;
 	}
-	
-	/**
-	 * use nextPage()
-	 */
-	@Deprecated
-	@Override
-	public void next(){
-		super.next();
-	}
+
 	
 	public ImportFromFileSystemWizard activate() {
 		new DefaultShell(DIALOG_TITLE);

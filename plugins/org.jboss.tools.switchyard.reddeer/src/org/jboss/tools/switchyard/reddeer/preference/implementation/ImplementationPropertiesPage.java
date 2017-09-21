@@ -1,8 +1,8 @@
 package org.jboss.tools.switchyard.reddeer.preference.implementation;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.preference.ResourcePage;
 import org.jboss.tools.switchyard.reddeer.preference.component.ComponentPage;

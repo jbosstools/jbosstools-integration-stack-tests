@@ -10,10 +10,10 @@ import java.nio.file.Files;
 import java.util.Collection;
 import java.util.List;
 
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
@@ -83,7 +83,7 @@ public class ProjectExplorerJavaWSDLTest {
 		wizard.getUseImportsForGeneratedTypeSchemaCHB().toggle(false);
 		wizard.finish();
 
-		File file = new SwitchYardProject(PROJECT).getResource("HelloWrapped.wsdl").toFile();
+		File file = new SwitchYardProject(PROJECT).getResourceExt("HelloWrapped.wsdl").toFile();
 		assertFiles(file, "HelloWrapped.wsdl", "HelloWrapped2.wsdl");
 	}
 
@@ -98,7 +98,7 @@ public class ProjectExplorerJavaWSDLTest {
 		wizard.getUseImportsForGeneratedTypeSchemaCHB().toggle(false);
 		wizard.finish();
 
-		File file = new SwitchYardProject(PROJECT).getResource("HelloUnwrapped.wsdl").toFile();
+		File file = new SwitchYardProject(PROJECT).getResourceExt("HelloUnwrapped.wsdl").toFile();
 		assertFiles(file, "HelloUnwrapped.wsdl", "HelloUnwrapped2.wsdl");
 	}
 

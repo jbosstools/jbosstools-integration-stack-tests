@@ -1,7 +1,7 @@
 package org.jboss.tools.drools.reddeer.kienavigator.dialog;
 
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
 
 public class RemoveRepositoryDialog {
 

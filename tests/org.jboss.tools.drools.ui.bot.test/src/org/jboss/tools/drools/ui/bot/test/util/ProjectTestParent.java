@@ -4,10 +4,10 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.junit.Assert;
 
 public class ProjectTestParent extends TestParent {

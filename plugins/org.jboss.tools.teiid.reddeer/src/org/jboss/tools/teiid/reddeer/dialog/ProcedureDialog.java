@@ -1,23 +1,23 @@
 package org.jboss.tools.teiid.reddeer.dialog;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.group.DefaultGroup;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.swt.condition.ShellIsActive;
+import org.eclipse.reddeer.swt.exception.SWTLayerException;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.eclipse.reddeer.swt.impl.tab.DefaultTabItem;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 public class ProcedureDialog extends AbstractDialog {
 	private static final Logger log = Logger.getLogger(ProcedureDialog.class);
@@ -37,7 +37,7 @@ public class ProcedureDialog extends AbstractDialog {
 	public void finish() {
 		log.info("Finishing '" + title + "' Dialog");
 		new PushButton("OK").click();
-		new WaitWhile(new ShellWithTextIsActive(title), TimePeriod.NORMAL);
+		new WaitWhile(new ShellIsActive(title), TimePeriod.DEFAULT);
 	}
 	
 	public ProcedureDialog setName(String name){
@@ -173,7 +173,7 @@ public class ProcedureDialog extends AbstractDialog {
 		try {
 			new DefaultShell("Confirm Replace SQL Text");
 			new OkButton().click();
-			new WaitWhile(new ShellWithTextIsActive("Confirm Replace SQL Text"), TimePeriod.NORMAL);
+			new WaitWhile(new ShellIsActive("Confirm Replace SQL Text"), TimePeriod.DEFAULT);
 		} catch (SWTLayerException e) {	
 			// shell not opened -> continue
 		}

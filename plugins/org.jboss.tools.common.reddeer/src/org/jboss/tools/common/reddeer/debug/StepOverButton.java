@@ -1,16 +1,17 @@
 package org.jboss.tools.common.reddeer.debug;
 
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 
 /**
  * Represents 'Step Over' button
  * 
  * @author tsedmik
  */
-public class StepOverButton extends ShellMenu {
+public class StepOverButton extends ShellMenuItem {
 
 	public StepOverButton() {
 
-		super("Run", "Step Over");
+		super(new WorkbenchShell(), "Run", "Step Over");
 	}
 }

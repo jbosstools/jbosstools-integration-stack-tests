@@ -1,11 +1,11 @@
 package org.jboss.tools.bpel.reddeer.view;
 
-import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.clabel.DefaultCLabel;
-import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.eclipse.ui.views.properties.PropertySheet;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.swt.impl.clabel.DefaultCLabel;
+import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
 import org.jboss.tools.bpel.reddeer.widget.QuickPickTree;
 
 /**
@@ -13,7 +13,7 @@ import org.jboss.tools.bpel.reddeer.widget.QuickPickTree;
  * @author apodhrad
  *
  */
-public class BPELPropertiesView extends PropertiesView {
+public class BPELPropertiesView extends PropertySheet {
 
 	public static final String TAB_DESCRIPTION = "Description";
 	public static final String TAB_DETAILS = "Details";

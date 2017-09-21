@@ -2,7 +2,7 @@ package org.jboss.tools.bpel.reddeer.matcher;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-import org.jboss.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.api.TreeItem;
 
 /**
  * 

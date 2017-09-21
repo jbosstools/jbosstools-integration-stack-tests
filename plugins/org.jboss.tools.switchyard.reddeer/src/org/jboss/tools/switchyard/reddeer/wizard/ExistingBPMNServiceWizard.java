@@ -1,17 +1,16 @@
 package org.jboss.tools.switchyard.reddeer.wizard;
 
-import org.jboss.reddeer.gef.editor.GEFEditor;
-import org.jboss.reddeer.swt.api.Button;
-import org.jboss.reddeer.swt.api.Combo;
-import org.jboss.reddeer.swt.api.Text;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.group.DefaultGroup;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.core.reference.ReferencedComposite;
-import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.swt.api.Button;
+import org.eclipse.reddeer.swt.api.Combo;
+import org.eclipse.reddeer.swt.api.Text;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.uiforms.impl.section.DefaultSection;
 
 /**
  * 
@@ -23,11 +22,11 @@ public class ExistingBPMNServiceWizard extends ExistingServiceWizard<ExistingBPM
 	public static final String DIALOG_TITLE = "";
 
 	public ExistingBPMNServiceWizard() {
-		this(null);
+		this(DIALOG_TITLE);
 	}
 
-	public ExistingBPMNServiceWizard(GEFEditor editor) {
-		super(DIALOG_TITLE);
+	public ExistingBPMNServiceWizard(String title) {
+		super(title);
 	}
 
 	@Override

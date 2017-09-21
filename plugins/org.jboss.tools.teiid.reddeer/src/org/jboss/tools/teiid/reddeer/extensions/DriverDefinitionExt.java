@@ -1,6 +1,6 @@
 package org.jboss.tools.teiid.reddeer.extensions;
 
-import org.jboss.reddeer.eclipse.datatools.ui.DriverDefinition;
+import org.eclipse.reddeer.eclipse.datatools.ui.DriverDefinition;
 
 /**
  * 

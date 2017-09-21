@@ -4,7 +4,7 @@ import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.core.IsEqual;
-import org.jboss.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.swt.api.TableItem;
 
 public class TableItemMatcher extends BaseMatcher<TableItem> {
 

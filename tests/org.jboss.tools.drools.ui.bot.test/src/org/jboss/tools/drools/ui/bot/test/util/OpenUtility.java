@@ -1,8 +1,8 @@
 package org.jboss.tools.drools.ui.bot.test.util;
 
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.eclipse.reddeer.eclipse.core.resources.ProjectItem;
+import org.eclipse.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 
 public final class OpenUtility {
 
@@ -18,7 +18,7 @@ public final class OpenUtility {
 	}
 
 	private static ProjectItem openResource(String project, String editor, String... path) {
-		PackageExplorer explorer = new PackageExplorer();
+		PackageExplorerPart explorer = new PackageExplorerPart();
 		explorer.open();
 
 		ProjectItem pi = explorer.getProject(project).getProjectItem(path);
@@ -27,7 +27,7 @@ public final class OpenUtility {
 		if (editor == null) {
 			pi.open();
 		} else {
-			new ContextMenu("Open With", editor).select();
+			new ContextMenuItem("Open With", editor).select();
 		}
 		return explorer.getProject(project).getProjectItem(path);
 	}

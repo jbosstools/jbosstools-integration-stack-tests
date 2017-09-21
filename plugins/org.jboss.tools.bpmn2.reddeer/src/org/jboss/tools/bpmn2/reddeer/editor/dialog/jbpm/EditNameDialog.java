@@ -2,9 +2,9 @@ package org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm;
 
 import static org.junit.Assert.assertFalse;
 
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
 
 public class EditNameDialog {
 	private static final String SHELL_LABEL = "Edit Name";

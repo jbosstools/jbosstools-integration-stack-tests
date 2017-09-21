@@ -4,29 +4,29 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ProgressInformationShellIsActive;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.jface.preference.PreferencePage;
-import org.jboss.reddeer.swt.api.Button;
-import org.jboss.reddeer.swt.api.Table;
-import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.impl.button.CancelButton;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.preference.PreferencePage;
+import org.eclipse.reddeer.swt.api.Button;
+import org.eclipse.reddeer.swt.api.Table;
+import org.eclipse.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.swt.condition.ShellIsActive;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.CancelButton;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.drools.reddeer.dialog.DroolsRuntimeDialog;
 
 public class DroolsRuntimesPreferencePage extends PreferencePage {
 	private static final Logger LOGGER = Logger.getLogger(DroolsRuntimesPreferencePage.class);
 
-	public DroolsRuntimesPreferencePage() {
-		super("Drools", "Installed Drools Runtimes");
+	public DroolsRuntimesPreferencePage(ReferencedComposite ref) {
+		super(ref, "Drools", "Installed Drools Runtimes");
 	}
 
 	public DroolsRuntimeDialog addDroolsRuntime() {
@@ -116,7 +116,7 @@ public class DroolsRuntimesPreferencePage extends PreferencePage {
 
 		boolean warning;
 		try {
-			new WaitUntil(new ShellWithTextIsActive("Warning"), TimePeriod.SHORT);
+			new WaitUntil(new ShellIsActive("Warning"), TimePeriod.SHORT);
 			new PushButton("OK").click();
 			warning = true;
 		} catch (Exception ex) {
@@ -124,8 +124,9 @@ public class DroolsRuntimesPreferencePage extends PreferencePage {
 			warning = false;
 		}
 
-		new WaitWhile(new ProgressInformationShellIsActive());
-		new WaitWhile(new ShellWithTextIsAvailable(shellText));
+		new WaitUntil(new ShellIsAvailable("Progress Information"), false);
+		new WaitWhile(new ShellIsAvailable("Progress Information"), TimePeriod.LONG);
+		new WaitWhile(new ShellIsAvailable(shellText));
 		return warning;
 	}
 
@@ -148,12 +149,12 @@ public class DroolsRuntimesPreferencePage extends PreferencePage {
 	public void ok() {
 		String title = new DefaultShell().getText();
 		new OkButton().click();
-		new WaitWhile(new ShellWithTextIsAvailable(title));
+		new WaitWhile(new ShellIsAvailable(title));
 	}
 
 	public void cancel() {
 		String title = new DefaultShell().getText();
 		new CancelButton().click();
-		new WaitWhile(new ShellWithTextIsAvailable(title));
+		new WaitWhile(new ShellIsAvailable(title));
 	}
 }

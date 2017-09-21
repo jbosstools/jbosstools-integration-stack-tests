@@ -1,11 +1,11 @@
 package org.jboss.tools.teiid.reddeer.condition;
 
 
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.Server;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersViewEnums.ServerState;
 
 /**
  * Condition that specifies if a server has state either 'Stopped' or 'Started'
@@ -26,7 +26,7 @@ public class ServerHasState extends AbstractWaitCondition {
 
 	@Override
 	public boolean test() {
-		ServersView view = new ServersView();
+		ServersView2 view = new ServersView2();
 		view.open();
 		Server server = view.getServer(serverName);
 		state = server.getLabel().getState();

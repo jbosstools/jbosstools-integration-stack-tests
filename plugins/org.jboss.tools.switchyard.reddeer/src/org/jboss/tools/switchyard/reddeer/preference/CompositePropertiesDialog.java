@@ -1,10 +1,10 @@
 package org.jboss.tools.switchyard.reddeer.preference;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.jface.preference.PreferenceDialog;
-import org.jboss.reddeer.swt.impl.list.DefaultList;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.jface.preference.PreferenceDialog;
+import org.eclipse.reddeer.swt.impl.list.DefaultList;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.switchyard.reddeer.preference.binding.BindingsPage;
 import org.jboss.tools.switchyard.reddeer.preference.component.ComponentPage;
 import org.jboss.tools.switchyard.reddeer.preference.component.ComponentPropertiesPage;
@@ -29,15 +29,14 @@ public class CompositePropertiesDialog extends PreferenceDialog {
 	protected String title;
 
 	public CompositePropertiesDialog(String title) {
+		super("Properties for " + title);
 		this.title = title;
 	}
 
-	@Override
 	public String getTitle() {
 		return "Properties for " + title;
 	}
 
-	@Override
 	protected void openImpl() {
 		throw new UnsupportedOperationException("Select 'Properties' from the Graphiti context menu");
 	}

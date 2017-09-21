@@ -8,17 +8,17 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.eclipse.ui.problems.Problem;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
-import org.jboss.reddeer.junit.execution.annotation.RunIf;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.ui.problems.Problem;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
+import org.eclipse.reddeer.junit.execution.annotation.RunIf;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.switchyard.reddeer.editor.SwitchYardEditor;
@@ -107,7 +107,7 @@ public class ProjectExplorerProjectCreationTest {
 
 		wizard = switchyardRequirement.project(projectName);
 		wizard.open();
-		wizard.setConfigurationVersion(switchyardRequirement.getConfig().getConfigurationVersion());
+		wizard.setConfigurationVersion(switchyardRequirement.getConfiguration().getConfigurationVersion());
 		wizard.setTargetRuntime(switchyardRequirement.getTargetRuntimeLabel());
 		assertEquals(switchyardRequirement.getTargetRuntimeLabel(), wizard.getTargetRuntime());
 		if (wizard.getLibraryVersion().equals("switchyard.runtime 2.0")) {
@@ -121,16 +121,16 @@ public class ProjectExplorerProjectCreationTest {
 		wizard.setTargetRuntime(switchyardRequirement.getTargetRuntimeLabel());
 		assertEquals(switchyardRequirement.getTargetRuntimeLabel(), wizard.getTargetRuntime());
 		assertEquals(switchyardRequirement.getLibraryVersionLabel(), wizard.getLibraryVersion());
-		wizard.setConfigurationVersion(switchyardRequirement.getConfig().getConfigurationVersion());
+		wizard.setConfigurationVersion(switchyardRequirement.getConfiguration().getConfigurationVersion());
 		assertEquals(switchyardRequirement.getTargetRuntimeLabel(), wizard.getTargetRuntime());
 		assertEquals(switchyardRequirement.getLibraryVersionLabel(), wizard.getLibraryVersion());
-		if (switchyardRequirement.getConfig().getIntegrationPack() != null) {
+		if (switchyardRequirement.getConfiguration().getIntegrationPack() != null) {
 			wizard.getConfigureIntegrationPackVersionDetailsCHB().toggle(true);
 			assertEqualsWithKnownIssue("SWITCHYARD-2834",
-					switchyardRequirement.getConfig().getIntegrationPack().getIntegrationPackVersion(),
+					switchyardRequirement.getConfiguration().getIntegrationPack().getIntegrationPackVersion(),
 					wizard.getIntegrationPackLibraryVersion());
 			assertEqualsWithKnownIssue("SWITCHYARD-2834",
-					switchyardRequirement.getConfig().getIntegrationPack().getKieVersion(),
+					switchyardRequirement.getConfiguration().getIntegrationPack().getKieVersion(),
 					wizard.getKieBPMRulesVersion());
 		}
 		wizard.finish();
@@ -140,10 +140,10 @@ public class ProjectExplorerProjectCreationTest {
 		assertEquals("com.example.switchyard", xpath.evaluateString("/project/groupId"));
 		assertEquals(switchyardRequirement.getLibraryVersionLabel(),
 				xpath.evaluateString("/project/properties/switchyard.version"));
-		if (switchyardRequirement.getConfig().getIntegrationPack() != null) {
-			assertEquals(switchyardRequirement.getConfig().getIntegrationPack().getKieVersion(),
+		if (switchyardRequirement.getConfiguration().getIntegrationPack() != null) {
+			assertEquals(switchyardRequirement.getConfiguration().getIntegrationPack().getKieVersion(),
 					xpath.evaluateString("/project/properties/kie.version"));
-			assertEquals(switchyardRequirement.getConfig().getIntegrationPack().getIntegrationPackVersion(),
+			assertEquals(switchyardRequirement.getConfiguration().getIntegrationPack().getIntegrationPackVersion(),
 					xpath.evaluateString("/project/properties/integration.version"));
 		}
 	}
@@ -151,7 +151,7 @@ public class ProjectExplorerProjectCreationTest {
 	@Test
 	public void createProjectWithOSGiTest() {
 		String projectName = "osgi";
-		String configurationVersion = switchyardRequirement.getConfig().getConfigurationVersion();
+		String configurationVersion = switchyardRequirement.getConfiguration().getConfigurationVersion();
 		String libraryVersion = switchyardRequirement.getLibraryVersionLabel();
 
 		wizard = switchyardRequirement.project(projectName);
@@ -171,7 +171,7 @@ public class ProjectExplorerProjectCreationTest {
 		try {
 			new DefaultShell("Error Creating Project");
 			new OkButton().click();
-			new WaitWhile(new ShellWithTextIsAvailable("Error Creating Project"));
+			new WaitWhile(new ShellIsAvailable("Error Creating Project"));
 			throw new KnownIssue("SWITCHYARD-2871");
 		} catch (Exception e) {
 			// ok, the issue was fixed
@@ -196,18 +196,18 @@ public class ProjectExplorerProjectCreationTest {
 
 		wizard = switchyardRequirement.project(projectName);
 		wizard.open();
-		wizard.setConfigurationVersion(switchyardRequirement.getConfig().getConfigurationVersion());
+		wizard.setConfigurationVersion(switchyardRequirement.getConfiguration().getConfigurationVersion());
 		wizard.setTargetRuntime(switchyardRequirement.getTargetRuntimeLabel());
 		if (switchyardRequirement.getTargetRuntimeLabel().equals("<None>")) {
 			wizard.setLibraryVersion(switchyardRequirement.getLibraryVersionLabel());
 		}
-		if (switchyardRequirement.getConfig().getIntegrationPack() != null) {
-			IntegrationPack integrationPack = switchyardRequirement.getConfig().getIntegrationPack();
+		if (switchyardRequirement.getConfiguration().getIntegrationPack() != null) {
+			IntegrationPack integrationPack = switchyardRequirement.getConfiguration().getIntegrationPack();
 			wizard.setIntegrationPackLibraryVersion(integrationPack.getIntegrationPackVersion());
 			wizard.setKieBPMRulesVersion(integrationPack.getKieVersion());
 		}
 
-		String componentRestriction = switchyardRequirement.getConfig().getComponentRestriction();
+		String componentRestriction = switchyardRequirement.getConfiguration().getComponentRestriction();
 		if (componentRestriction == null) {
 			componentRestriction = "bean,bpel,bpm,camel,rules";
 		} else {
@@ -249,7 +249,7 @@ public class ProjectExplorerProjectCreationTest {
 		assertComponent("Test Mixins", "Naming Mixin");
 		assertComponent("Test Mixins", "Smooks Mixin");
 
-		if (switchyardRequirement.getConfig().getConfigurationVersion().equals("2.0")) {
+		if (switchyardRequirement.getConfiguration().getConfigurationVersion().equals("2.0")) {
 			assertComponent("Gateway Bindings", "Atom");
 			assertComponent("Gateway Bindings", "CXF");
 			assertComponent("Gateway Bindings", "RSS");
@@ -338,12 +338,12 @@ public class ProjectExplorerProjectCreationTest {
 
 		wizard = switchyardRequirement.project(projectName);
 		wizard.open();
-		wizard.setConfigurationVersion(switchyardRequirement.getConfig().getConfigurationVersion());
+		wizard.setConfigurationVersion(switchyardRequirement.getConfiguration().getConfigurationVersion());
 		wizard.setTargetRuntime(switchyardRequirement.getTargetRuntimeLabel());
 
 		String kieVersion = "6.3.0.Final-redhat-7";
 		String intpkgVersion = "1.3.0.redhat-007";
-		IntegrationPack intpkg = switchyardRequirement.getConfig().getIntegrationPack();
+		IntegrationPack intpkg = switchyardRequirement.getConfiguration().getIntegrationPack();
 		if (intpkg != null) {
 			wizard.getConfigureIntegrationPackVersionDetailsCHB().toggle(true);
 			kieVersion = intpkg.getKieVersion();

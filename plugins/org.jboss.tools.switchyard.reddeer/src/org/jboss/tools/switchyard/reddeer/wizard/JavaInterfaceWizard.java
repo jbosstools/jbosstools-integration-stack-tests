@@ -1,8 +1,8 @@
 package org.jboss.tools.switchyard.reddeer.wizard;
 
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 /**
  * Wizard for creating Java interface.
@@ -10,12 +10,12 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  * @author apodhrad
  * 
  */
-public class JavaInterfaceWizard extends NewWizardDialog {
+public class JavaInterfaceWizard extends NewMenuWizard {
 
 	public static final String DIALOG_TITLE = "New Java Interface";
 
 	public JavaInterfaceWizard() {
-		super("Java", "Interface");
+		super(DIALOG_TITLE, "Java", "Interface");
 	}
 
 	public JavaInterfaceWizard activate() {

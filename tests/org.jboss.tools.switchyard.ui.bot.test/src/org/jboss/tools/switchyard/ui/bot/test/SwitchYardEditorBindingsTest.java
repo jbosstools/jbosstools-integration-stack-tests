@@ -35,16 +35,16 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
-import org.jboss.reddeer.core.handler.ShellHandler;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
-import org.jboss.reddeer.swt.impl.button.FinishButton;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.workbench.handler.EditorHandler;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
+import org.eclipse.reddeer.swt.impl.button.FinishButton;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.workbench.handler.EditorHandler;
+import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.switchyard.reddeer.binding.AtomBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.CXFBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.CamelBindingPage;
@@ -198,7 +198,7 @@ public class SwitchYardEditorBindingsTest {
 
 	@After
 	public void removeAllBindings() {
-		ShellHandler.getInstance().closeAllNonWorbenchShells();
+		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 		new SwitchYardEditor().save();
 		CompositePropertiesDialog properties = new Service("HelloService").showProperties(); 
 		properties.selectBindings().removeAll();

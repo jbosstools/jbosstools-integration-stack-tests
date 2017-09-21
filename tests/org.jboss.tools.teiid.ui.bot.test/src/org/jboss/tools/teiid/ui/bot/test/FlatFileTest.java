@@ -1,14 +1,16 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.condition.ShellIsActive;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
 import org.jboss.tools.common.reddeer.JiraClient;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
@@ -35,7 +37,7 @@ import org.junit.runner.RunWith;
  *
  */
 @RunWith(RedDeerSuite.class)
-@TeiidServer(state = ServerReqState.RUNNING)
+@TeiidServer(state = ServerRequirementState.RUNNING)
 public class FlatFileTest {
 
 	private static final String PROJECT_NAME = "Flat_file_import";
@@ -110,7 +112,7 @@ public class FlatFileTest {
 				.finish();
 
 		new ModelExplorer().deployVdb(PROJECT_NAME, LOCAL_VDB);
-		new WaitWhile(new ShellWithTextIsActive("Progress Information"));
+		new WaitWhile(new ShellIsActive("Progress Information"));
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, LOCAL_VDB);
 		assertEquals(122, jdbchelper.getNumberOfResults("SELECT * FROM "+LOCAL_VIEW_TABLE));
 	}
@@ -141,7 +143,7 @@ public class FlatFileTest {
 				.finish();
 
 		new ModelExplorer().deployVdb(PROJECT_NAME, REMOTE_VDB);
-		new WaitWhile(new ShellWithTextIsActive("Progress Information"));
+		new WaitWhile(new ShellIsActive("Progress Information"));
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, REMOTE_VDB);
 		assertEquals(122, jdbchelper.getNumberOfResults("SELECT * FROM "+REMOTE_VIEW_TABLE));
 	}
@@ -201,7 +203,7 @@ public class FlatFileTest {
 				.finish();
 
 		new ModelExplorer().deployVdb(PROJECT_NAME, LOCAL_VDB+"customLine");
-		new WaitWhile(new ShellWithTextIsActive("Progress Information"));
+		new WaitWhile(new ShellIsActive("Progress Information"));
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, LOCAL_VDB+"customLine");
 		assertEquals(3, jdbchelper.getNumberOfResults("SELECT * FROM "+LOCAL_VIEW_TABLE));
 	}
@@ -274,7 +276,7 @@ public class FlatFileTest {
 				.finish();
 
 		new ModelExplorer().deployVdb(PROJECT_NAME, LOCAL_VDB+"customField");
-		new WaitWhile(new ShellWithTextIsActive("Progress Information"));
+		new WaitWhile(new ShellIsActive("Progress Information"));
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, LOCAL_VDB+"customField");
 		assertEquals(122, jdbchelper.getNumberOfResults("SELECT * FROM "+LOCAL_VIEW_TABLE));
 	}

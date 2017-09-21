@@ -1,18 +1,18 @@
 package org.jboss.tools.bpmn2.reddeer.dialog;
 
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 /**
  * 
  */
-public class JBPMProcessWizard extends NewWizardDialog {
+public class JBPMProcessWizard extends NewMenuWizard {
 
 	/**
 	 * 
 	 */
 	public JBPMProcessWizard() {
-		super("jBPM", "jBPM Process Diagram");
+		super("", "jBPM", "jBPM Process Diagram");
 	}
 
 	/**

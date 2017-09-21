@@ -13,8 +13,8 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 import org.eclipse.ui.forms.widgets.Section;
-import org.jboss.reddeer.core.reference.ReferencedComposite;
-import org.jboss.reddeer.core.util.Display;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.common.util.Display;
 
 /**
  * 

@@ -1,7 +1,7 @@
 package org.jboss.tools.bpel.reddeer.activity;
 
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 /**
  * 

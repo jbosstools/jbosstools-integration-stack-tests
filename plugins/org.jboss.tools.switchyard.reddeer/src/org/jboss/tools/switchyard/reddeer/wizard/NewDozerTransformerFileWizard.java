@@ -1,13 +1,13 @@
 package org.jboss.tools.switchyard.reddeer.wizard;
 
-import org.jboss.reddeer.jface.wizard.WizardDialog;
-import org.jboss.reddeer.swt.api.Button;
-import org.jboss.reddeer.swt.api.Text;
-import org.jboss.reddeer.swt.api.Tree;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.jface.wizard.WizardDialog;
+import org.eclipse.reddeer.swt.api.Button;
+import org.eclipse.reddeer.swt.api.Text;
+import org.eclipse.reddeer.swt.api.Tree;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
 
 public class NewDozerTransformerFileWizard extends WizardDialog {
 

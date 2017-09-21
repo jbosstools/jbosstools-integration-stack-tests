@@ -3,11 +3,11 @@ package org.jboss.tools.drools.ui.bot.test.smoke;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.eclipse.core.resources.Project;
+import org.eclipse.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaPerspective;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.drools.reddeer.editor.DrlEditor;
 import org.jboss.tools.drools.reddeer.wizard.NewDslSamplesWizardPage;
 import org.jboss.tools.drools.reddeer.wizard.NewDslWizard;
@@ -18,14 +18,13 @@ import org.jboss.tools.drools.reddeer.wizard.NewRuleResourceWizardPage.RuleResou
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
 import org.jboss.tools.drools.ui.bot.test.util.annotation.UseDefaultProject;
 import org.jboss.tools.drools.ui.bot.test.util.annotation.UsePerspective;
-import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@Runtime(type = RuntimeReqType.DROOLS)
+@Runtime
 @RunWith(RedDeerSuite.class)
 public class NewResourcesTest extends TestParent {
 
@@ -44,7 +43,7 @@ public class NewResourcesTest extends TestParent {
 
 		Project project = openDefaultProject();
 
-		Assert.assertTrue("Rule resource was not created", project.containsItem(getResourcePath(drlName + ".drl")));
+		Assert.assertTrue("Rule resource was not created", project.containsResource(getResourcePath(drlName + ".drl")));
 
 		String drlText = new DrlEditor().showRuleEditor().getText();
 
@@ -67,7 +66,7 @@ public class NewResourcesTest extends TestParent {
 
 		Project project = openDefaultProject();
 
-		Assert.assertTrue("Rule resource was not created", project.containsItem(getResourcePath(drlName + ".drl")));
+		Assert.assertTrue("Rule resource was not created", project.containsResource(getResourcePath(drlName + ".drl")));
 
 		String drlText = new DrlEditor().showRuleEditor().getText();
 
@@ -87,8 +86,8 @@ public class NewResourcesTest extends TestParent {
 
 		createDslResource(dslName);
 
-		PackageExplorer packageExplorer = new PackageExplorer();
-		Assert.assertTrue(packageExplorer.getProject(DEFAULT_PROJECT_NAME).containsItem(getResourcePath(dslName + ".dsl")));
+		PackageExplorerPart packageExplorer = new PackageExplorerPart();
+		Assert.assertTrue(packageExplorer.getProject(DEFAULT_PROJECT_NAME).containsResource(getResourcePath(dslName + ".dsl")));
 	}
 
 	@Test
@@ -101,7 +100,7 @@ public class NewResourcesTest extends TestParent {
 
 		Project project = openDefaultProject();
 		
-		Assert.assertTrue("Rule resource was not created", project.containsItem(getResourcePath(dslrName + ".dslr")));
+		Assert.assertTrue("Rule resource was not created", project.containsResource(getResourcePath(dslrName + ".dslr")));
 
 		String text = new DrlEditor().showRuleEditor().getText();
 
@@ -130,17 +129,17 @@ public class NewResourcesTest extends TestParent {
 	private void createDslResource(String dslName) {
 		NewDslWizard wizard = new NewDslWizard();
 		wizard.open();
-		NewDslWizardPage page = new NewDslWizardPage();
+		NewDslWizardPage page = new NewDslWizardPage(wizard);
 		page.setParentFolder(getRulesLocation());
 		page.setFileName(dslName);
 		wizard.next();
-		NewDslSamplesWizardPage samplePage = new NewDslSamplesWizardPage();
+		NewDslSamplesWizardPage samplePage = new NewDslSamplesWizardPage(wizard);
 		samplePage.setAddSampleDsl(true);
 		wizard.finish();
 	}
 
 	private Project openDefaultProject() {
-		PackageExplorer packageExplorer = new PackageExplorer();
+		PackageExplorerPart packageExplorer = new PackageExplorerPart();
 		packageExplorer.open();
 		return packageExplorer.getProject(DEFAULT_PROJECT_NAME);
 	}

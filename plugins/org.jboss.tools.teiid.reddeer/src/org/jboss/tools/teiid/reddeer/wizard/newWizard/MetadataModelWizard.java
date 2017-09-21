@@ -2,22 +2,22 @@ package org.jboss.tools.teiid.reddeer.wizard.newWizard;
 
 import java.util.Arrays;
 
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
-import org.jboss.reddeer.swt.api.Button;
-import org.jboss.reddeer.swt.impl.button.FinishButton;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
+import org.eclipse.reddeer.swt.api.Button;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.FinishButton;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 
-public class MetadataModelWizard extends NewWizardDialog {
+public class MetadataModelWizard extends NewMenuWizard {
 
 	public static final String DIALOG_TITLE = "New Model Wizard";
 
@@ -46,7 +46,7 @@ public class MetadataModelWizard extends NewWizardDialog {
 	}
 
 	private MetadataModelWizard() {
-		super("Teiid Designer", "Teiid Metadata Model");
+		super(DIALOG_TITLE, "Teiid Designer", "Teiid Metadata Model");
 		log.info("Metadata model wizard is opened");
 	}
 
@@ -58,15 +58,6 @@ public class MetadataModelWizard extends NewWizardDialog {
 		MetadataModelWizard wizard = new MetadataModelWizard();
 		wizard.open();
 		return wizard;
-	}
-
-	/**
-	 * use nextPage()
-	 */
-	@Override
-	@Deprecated
-	public void next() {
-		super.next();
 	}
 
 	public MetadataModelWizard nextPage() {
@@ -159,7 +150,7 @@ public class MetadataModelWizard extends NewWizardDialog {
 		new DefaultShell("Select a Model File");
 		new DefaultTreeItem(path).select();
 		new PushButton("OK").click();
-		if (new ShellWithTextIsAvailable("").test()) {
+		if (new ShellIsAvailable("").test()) {
 			new PushButton("OK").click();
 		}
 		activate();
@@ -191,11 +182,11 @@ public class MetadataModelWizard extends NewWizardDialog {
 		Button button = new FinishButton();
 		button.click();
 
-		if (new ShellWithTextIsAvailable("Model Initializer").test()) {
+		if (new ShellIsAvailable("Model Initializer").test()) {
 			new PushButton("OK").click();
 		}
 
-		new WaitWhile(new ShellWithTextIsAvailable(shellText), timeout);
+		new WaitWhile(new ShellIsAvailable(shellText), timeout);
 		new WaitWhile(new JobIsRunning(), timeout);
 	}
 }

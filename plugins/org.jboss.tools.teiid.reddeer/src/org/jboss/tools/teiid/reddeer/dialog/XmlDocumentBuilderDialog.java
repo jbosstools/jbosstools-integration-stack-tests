@@ -3,17 +3,17 @@ package org.jboss.tools.teiid.reddeer.dialog;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.swt.impl.button.FinishButton;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.swt.condition.ShellIsActive;
+import org.eclipse.reddeer.swt.impl.button.FinishButton;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.swt.keyboard.KeyboardFactory;
 
 public class XmlDocumentBuilderDialog extends AbstractDialog {
 	private static final Logger log = Logger.getLogger(XmlDocumentBuilderDialog.class);
@@ -30,7 +30,7 @@ public class XmlDocumentBuilderDialog extends AbstractDialog {
 	public void finish() {
 		log.info("Finishing '" + title + "' Dialog");
 		new FinishButton().click();
-		new WaitWhile(new ShellWithTextIsActive(title), TimePeriod.NORMAL);
+		new WaitWhile(new ShellIsActive(title), TimePeriod.DEFAULT);
 		AbstractWait.sleep(TimePeriod.SHORT);
 		KeyboardFactory.getKeyboard().type(KeyEvent.VK_TAB);
 	}

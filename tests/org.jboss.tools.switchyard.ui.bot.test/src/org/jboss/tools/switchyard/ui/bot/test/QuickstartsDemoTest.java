@@ -1,11 +1,9 @@
 package org.jboss.tools.switchyard.ui.bot.test;
 
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
-import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.tools.fuse.reddeer.requirement.FuseRequirement.Fuse;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,8 +14,9 @@ import org.junit.runner.RunWith;
  * @author apodhrad
  * 
  */
+@Fuse
+@SwitchYard
 @OpenPerspective(JavaEEPerspective.class)
-@SwitchYard(server = @Server(type = ServerReqType.ANY, state = ServerReqState.PRESENT) )
 @RunWith(RedDeerSuite.class)
 public class QuickstartsDemoTest extends QuickstartsTest {
 

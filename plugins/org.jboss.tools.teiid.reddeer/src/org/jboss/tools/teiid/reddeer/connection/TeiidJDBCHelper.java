@@ -11,7 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.logging.Logger;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.util.TeiidDriver;
 
@@ -33,8 +33,8 @@ public class TeiidJDBCHelper {
 
 	public TeiidJDBCHelper(TeiidServerRequirement teiidServer, String vdbName) {
 		this.pathToDriver = teiidServer.getTeiidDriverPath();
-		this.username = teiidServer.getServerConfig().getServerBase().getProperty("teiidUser");
-		this.password = teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword");
+		this.username = teiidServer.getServerConfig().getServer().getProperty("teiidUser");
+		this.password = teiidServer.getServerConfig().getServer().getProperty("teiidPassword");
 		this.vdbName = vdbName;
 	}
 	

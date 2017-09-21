@@ -8,23 +8,24 @@ import java.util.List;
 import javax.xml.bind.ValidationException;
 
 import org.apache.log4j.Logger;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.core.resources.Project;
+import org.eclipse.reddeer.eclipse.ui.markers.matcher.MarkerResourceMatcher;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.ui.problems.Problem;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.swt.exception.SWTLayerException;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.problems.Problem;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
-import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsResourceMatcher;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.tools.bpmn2.reddeer.GEFProcessEditor;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.JBPM6ComplexTestDefinitionRequirement.JBPM6ComplexTestDefinition;
 import org.jboss.tools.bpmn2.ui.bot.test.validator.JBPM6Validator;
@@ -205,12 +206,12 @@ public abstract class JBPM6ComplexTest {
 
 		public ErrorAppearOrDisappear(ProblemsView problemsView) {
 			problems = problemsView;
-			oldCount = problems.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(definition.saveAs())).size();
+			oldCount = problems.getProblems(ProblemType.ERROR, new MarkerResourceMatcher(definition.saveAs())).size();
 		}
 
 		@Override
 		public boolean test() {
-			int newCount = problems.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(definition.saveAs()))
+			int newCount = problems.getProblems(ProblemType.ERROR, new MarkerResourceMatcher(definition.saveAs()))
 					.size();
 			return oldCount != newCount;
 		}
@@ -260,7 +261,7 @@ public abstract class JBPM6ComplexTest {
 		@Override
 		public boolean test() {
 			try {
-				new ShellMenu(new String[] { "File", "Save All" }).select();
+				new ShellMenuItem(new WorkbenchShell(), "File", "Save All").select();
 			} catch (SWTLayerException e) {
 				return true;
 			}
@@ -288,7 +289,7 @@ public abstract class JBPM6ComplexTest {
 		new WaitUntil(new ErrorAppearOrDisappear(problems), TimePeriod.getCustom(5), false);
 
 		List<Problem> errorList = problems.getProblems(ProblemType.ERROR,
-				new ProblemsResourceMatcher(definition.saveAs()));
+				new MarkerResourceMatcher(definition.saveAs()));
 
 		StringBuilder error = new StringBuilder();
 		for (Problem problem : errorList) {

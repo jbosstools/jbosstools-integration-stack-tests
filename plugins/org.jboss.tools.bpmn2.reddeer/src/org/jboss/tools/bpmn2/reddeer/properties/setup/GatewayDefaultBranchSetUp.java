@@ -1,7 +1,7 @@
 package org.jboss.tools.bpmn2.reddeer.properties.setup;
 
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.tools.bpmn2.reddeer.editor.properties.PropertiesTabs;
 import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
 

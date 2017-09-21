@@ -2,17 +2,19 @@ package org.jboss.tools.drools.ui.bot.test.functional.view;
 
 import java.util.List;
 
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.api.StyledText;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
+import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.swt.api.StyledText;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
 import org.jboss.tools.drools.reddeer.view.AuditView;
 import org.jboss.tools.drools.ui.bot.test.util.ApplicationIsTerminated;
@@ -21,7 +23,8 @@ import org.jboss.tools.drools.ui.bot.test.util.RunUtility;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
 import org.jboss.tools.drools.ui.bot.test.util.annotation.UseDefaultProject;
 import org.jboss.tools.drools.ui.bot.test.util.annotation.UsePerspective;
-import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeImplementationRestriction;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeImplementationType;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
 import org.junit.Assert;
@@ -29,12 +32,17 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@Runtime(type = RuntimeReqType.DROOLS)
+@Runtime
 @RunWith(RedDeerSuite.class)
 public class AuditLogTest extends TestParent {
 
 	@InjectRequirement
 	private RuntimeRequirement droolsRequirement;
+	
+	@RequirementRestriction
+	public static RequirementMatcher getRequirementMatcher() {
+		return new RuntimeImplementationRestriction(RuntimeImplementationType.DROOLS);
+	}
 
 	@Before
 	public void addLoggerToSession() {
@@ -58,17 +66,17 @@ public class AuditLogTest extends TestParent {
 		RunUtility.runAsJavaApplication(DEFAULT_PROJECT_NAME, "src/main/java", "com.sample", "DroolsTest.java");
 		new WaitUntil(new ApplicationIsTerminated());
 
-		PackageExplorer explorer = new PackageExplorer();
+		PackageExplorerPart explorer = new PackageExplorerPart();
 		explorer.open();
 		explorer.getProject(DEFAULT_PROJECT_NAME).select();
 
-		new ContextMenu(new RegexMatcher("Refresh.*")).select();
+		new ContextMenuItem(new RegexMatcher("Refresh.*")).select();
 
-		explorer = new PackageExplorer();
+		explorer = new PackageExplorerPart();
 		explorer.open();
 		explorer.getProject(DEFAULT_PROJECT_NAME).getProjectItem("test.log").select();
 
-		new ContextMenu(new RegexMatcher("Properties.*")).select();
+		new ContextMenuItem(new RegexMatcher("Properties.*")).select();
 
 		String location = new LabeledText("Location:").getText();
 		new PushButton("Cancel").click();

@@ -4,21 +4,21 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.uiforms.impl.hyperlink.DefaultHyperlink;
-import org.jboss.reddeer.workbench.handler.EditorHandler;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.tools.runtime.reddeer.condition.JobIsKilled;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.eclipse.condition.ConsoleHasText;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.Server;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.uiforms.impl.hyperlink.DefaultHyperlink;
+import org.eclipse.reddeer.workbench.core.condition.JobIsKilled;
+import org.eclipse.reddeer.workbench.handler.EditorHandler;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
@@ -35,7 +35,7 @@ import org.junit.runner.RunWith;
  */
 
 @RunWith(RedDeerSuite.class)
-@TeiidServer(state = ServerReqState.RUNNING,connectionProfiles={
+@TeiidServer(state = ServerRequirementState.RUNNING,connectionProfiles={
 		ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER
 })
 public class ServerManipulationTest {
@@ -79,7 +79,7 @@ public class ServerManipulationTest {
 	public void noRefreshTest(){
 		SView.open();
 		SView.getServer(teiidServer.getName()).start();
-		AbstractWait.sleep(TimePeriod.NORMAL);
+		AbstractWait.sleep(TimePeriod.DEFAULT);
 		assertTrue(testDeployVDB()); 
 	}
 
@@ -97,7 +97,7 @@ public class ServerManipulationTest {
 		SView.open();
 		Server newServer = SView.getServer(LOCAL_SERVER_NAME);
 		SView.startServer(LOCAL_SERVER_NAME);
-		AbstractWait.sleep(TimePeriod.NORMAL);
+		AbstractWait.sleep(TimePeriod.DEFAULT);
 		assertTrue(testPingToServer(newServer)); //check ping
 		
 		SView.setDefaultTeiidInstance(LOCAL_SERVER_NAME);
@@ -105,7 +105,7 @@ public class ServerManipulationTest {
 		assertTrue(testDeployVDB());
 
 		newServer.restart();
-		AbstractWait.sleep(TimePeriod.NORMAL); 
+		AbstractWait.sleep(TimePeriod.DEFAULT); 
 		assertTrue(testPingToServer(newServer)); //check ping after restart
 		
 	}
@@ -125,7 +125,7 @@ public class ServerManipulationTest {
 			.assignRuntime(false)
 			.nextPage()
 			.setHost("Local")
-			.setPathToServer(teiidServer.getServerConfig().getServerBase().getHome())
+			.setPathToServer(teiidServer.getServerConfig().getServer().getHome())
 			.nextPage();
 		new WaitUntil(new JobIsKilled("Refreshing server adapter list"), TimePeriod.LONG, false);
 		ServerWizard.getInstance().finish();
@@ -133,7 +133,7 @@ public class ServerManipulationTest {
 		SView.open();
 		Server newServer = SView.getServer(REMOTE_SERVER_NAME);
 		SView.startServer(REMOTE_SERVER_NAME);
-		AbstractWait.sleep(TimePeriod.NORMAL);
+		AbstractWait.sleep(TimePeriod.DEFAULT);
 		assertTrue(testPingToServer(newServer)); //check ping
 		
 		SView.setDefaultTeiidInstance(REMOTE_SERVER_NAME);
@@ -141,7 +141,7 @@ public class ServerManipulationTest {
 		assertTrue(testDeployVDB());
 
 		newServer.restart();
-		AbstractWait.sleep(TimePeriod.NORMAL); 
+		AbstractWait.sleep(TimePeriod.DEFAULT); 
 		assertTrue(testPingToServer(newServer)); //check ping after restart
 		
 	}
@@ -162,11 +162,11 @@ public class ServerManipulationTest {
 		server.open();
 		new DefaultCTabItem("Teiid Instance").activate();
 		new WorkbenchShell();
-		new LabeledText("User name").setText(teiidServer.getServerConfig().getServerBase().getProperty("teiidUser"));
-		new LabeledText("Password").setText(teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword"));
+		new LabeledText("User name").setText(teiidServer.getServerConfig().getServer().getProperty("teiidUser"));
+		new LabeledText("Password").setText(teiidServer.getServerConfig().getServer().getProperty("teiidPassword"));
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new DefaultHyperlink("Test JDBC Connection").activate();
-		new ShellMenu("File", "Save All").select();
+		new ShellMenuItem(new WorkbenchShell(), "File", "Save All").select();
 		return !(new ConsoleHasText("payload token could not be authenticated by security domain teiid-security").test());
 	}
 	

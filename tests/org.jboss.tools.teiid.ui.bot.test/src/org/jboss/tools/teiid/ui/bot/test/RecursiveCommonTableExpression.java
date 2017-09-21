@@ -2,10 +2,10 @@ package org.jboss.tools.teiid.ui.bot.test;
 
 import static org.junit.Assert.assertEquals;
 
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
@@ -29,7 +29,7 @@ import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
-@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = { ConnectionProfileConstants.ORACLE_11G_BQT2 })
+@TeiidServer(state = ServerRequirementState.RUNNING, connectionProfiles = { ConnectionProfileConstants.ORACLE_11G_BQT2 })
 public class RecursiveCommonTableExpression {
 
 	private static final String PROJECT_NAME = "RecursiveCTE";

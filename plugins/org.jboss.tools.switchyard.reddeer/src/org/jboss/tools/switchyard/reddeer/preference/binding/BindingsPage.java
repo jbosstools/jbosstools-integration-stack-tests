@@ -1,9 +1,9 @@
 package org.jboss.tools.switchyard.reddeer.preference.binding;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.swt.api.List;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.list.DefaultList;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.swt.api.List;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.list.DefaultList;
 import org.jboss.tools.switchyard.reddeer.binding.AtomBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.CXFBindingPage;
 import org.jboss.tools.switchyard.reddeer.binding.CamelBindingPage;

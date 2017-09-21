@@ -6,15 +6,15 @@ import static org.hamcrest.core.Is.is;
 
 import java.util.List;
 
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
-import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsResourceMatcher;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.eclipse.ui.markers.matcher.MarkerResourceMatcher;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.teiid.reddeer.DdlHelper;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.dialog.DataRolesDialog;
@@ -35,7 +35,7 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
 
-@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles={
+@TeiidServer(state = ServerRequirementState.RUNNING, connectionProfiles={
 		ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER, ConnectionProfileConstants.POSTGRESQL_92_DVQE
 })
 public class StaticVDBdataRoles {
@@ -190,7 +190,7 @@ public class StaticVDBdataRoles {
 
 		ProblemsView problemsView = new ProblemsView();
 		collector.checkThat("Errors in imported VDB",
-				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(NAME_VDB + ".vdb")),
+				problemsView.getProblems(ProblemType.ERROR, new MarkerResourceMatcher(NAME_VDB + ".vdb")),
 				empty());
 	}
 	

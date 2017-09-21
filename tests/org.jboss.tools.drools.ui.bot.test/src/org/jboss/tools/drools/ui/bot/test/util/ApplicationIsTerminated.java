@@ -1,8 +1,8 @@
 package org.jboss.tools.drools.ui.bot.test.util;
 
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.swt.impl.label.DefaultLabel;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
+import org.eclipse.reddeer.swt.impl.label.DefaultLabel;
 
 public class ApplicationIsTerminated extends AbstractWaitCondition {
 	private ConsoleView console;

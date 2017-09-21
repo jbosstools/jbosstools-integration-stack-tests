@@ -9,20 +9,20 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.util.List;
 
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.eclipse.ui.perspectives.DebugPerspective;
-import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
-import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.ui.perspectives.DebugPerspective;
+import org.eclipse.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
+import org.eclipse.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.swt.condition.ShellIsActive;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.condition.IsSuspended;
@@ -36,6 +36,7 @@ import org.jboss.tools.switchyard.reddeer.debug.ResumeButton;
 import org.jboss.tools.switchyard.reddeer.debug.TerminateButton;
 import org.jboss.tools.switchyard.reddeer.debug.VariablesView;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
+import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -48,6 +49,7 @@ import org.junit.runner.RunWith;
  * @author apodhrad
  * 
  */
+@SwitchYard
 @CleanWorkspace
 @OpenPerspective(DebugPerspective.class)
 @RunWith(RedDeerSuite.class)
@@ -66,14 +68,15 @@ public class DebuggerDebuggingTest {
 
 	@BeforeClass
 	public static void importTestProject() {
-		new ExternalProjectImportWizardDialog().open();
-		WizardProjectsImportPage importPage = new WizardProjectsImportPage();
+		ExternalProjectImportWizardDialog wizard = new ExternalProjectImportWizardDialog();
+		wizard.open();
+		WizardProjectsImportPage importPage = new WizardProjectsImportPage(wizard);
 		importPage.setRootDirectory(new File(RESOURCES, "projects/hello").getAbsolutePath());
 		importPage.copyProjectsIntoWorkspace(true);
 		// This may take several minutes
 		new PushButton("Finish").click();
 		TimePeriod timeout = TimePeriod.getCustom(20 * 60 * 1000);
-		new WaitWhile(new ShellWithTextIsActive("Import"), timeout);
+		new WaitWhile(new ShellIsActive("Import"), timeout);
 		new WaitWhile(new JobIsRunning(), timeout);
 		// Finally update the project
 		new SwitchYardProject("hello").update();

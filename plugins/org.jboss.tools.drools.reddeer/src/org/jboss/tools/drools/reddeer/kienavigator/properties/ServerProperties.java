@@ -1,7 +1,7 @@
 package org.jboss.tools.drools.reddeer.kienavigator.properties;
 
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 public class ServerProperties extends Properties {
 

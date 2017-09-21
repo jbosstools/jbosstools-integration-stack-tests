@@ -1,23 +1,25 @@
 package org.jboss.tools.switchyard.reddeer.wizard;
 
-import org.jboss.reddeer.jface.wizard.WizardDialog;
-import org.jboss.reddeer.swt.api.Button;
-import org.jboss.reddeer.swt.api.Combo;
-import org.jboss.reddeer.swt.api.Text;
-import org.jboss.reddeer.swt.impl.button.BackButton;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.NextButton;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.jface.wizard.WizardDialog;
+import org.eclipse.reddeer.swt.api.Button;
+import org.eclipse.reddeer.swt.api.Combo;
+import org.eclipse.reddeer.swt.api.Shell;
+import org.eclipse.reddeer.swt.api.Text;
+import org.eclipse.reddeer.swt.impl.button.BackButton;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.NextButton;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 public class WSDLWizard extends WizardDialog {
 
 	public static final String TITLE = "New WSDL File";
 
 	public WSDLWizard activate() {
-		new DefaultShell(TITLE);
+		Shell shell = new DefaultShell(TITLE);
+		setShell(shell);
 		return this;
 	}
 

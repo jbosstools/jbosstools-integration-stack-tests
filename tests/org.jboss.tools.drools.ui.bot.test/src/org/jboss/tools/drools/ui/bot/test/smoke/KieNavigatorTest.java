@@ -1,6 +1,6 @@
 package org.jboss.tools.drools.ui.bot.test.smoke;
 
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.drools.reddeer.view.KieNavigatorView;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
 import org.junit.Assert;
@@ -14,7 +14,7 @@ public class KieNavigatorTest extends TestParent {
 	public void openKieNavigatorTest() {
 		KieNavigatorView kieNavigatorView = new KieNavigatorView();
 		kieNavigatorView.open();
-		Assert.assertEquals("Kie Navigator is not opened.", true, kieNavigatorView.isOpened());
+		Assert.assertEquals("Kie Navigator is not opened.", true, kieNavigatorView.isOpen());
 		Assert.assertEquals("There is no link to the Servers View.", true, kieNavigatorView.isLinkToServersViewExists());
 	}
 }

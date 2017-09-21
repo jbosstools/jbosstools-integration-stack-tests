@@ -3,19 +3,20 @@ package org.jboss.tools.runtime.reddeer.wizard;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.jface.preference.PreferencePage;
-import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.preference.PreferencePage;
+import org.eclipse.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 
 public class DroolsRuntimePreferencePage extends PreferencePage {
 
-	public DroolsRuntimePreferencePage() {
-		super("Drools", "Installed Drools Runtimes");
+	public DroolsRuntimePreferencePage(ReferencedComposite ref) {
+		super(ref, "Drools", "Installed Drools Runtimes");
 	}
 
 	public DroolsRuntimeWizard addRuntime() {
@@ -49,6 +50,6 @@ public class DroolsRuntimePreferencePage extends PreferencePage {
 	public void ok() {
 		String title = new DefaultShell().getText();
 		new PushButton("Apply and Close").click();
-		new WaitWhile(new ShellWithTextIsAvailable(title));
+		new WaitWhile(new ShellIsAvailable(title));
 	}
 }

@@ -2,23 +2,23 @@ package org.jboss.tools.teiid.reddeer.wizard.exports;
 
 import java.util.Arrays;
 
-import org.jboss.reddeer.jface.wizard.ExportWizardDialog;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.eclipse.selectionwizard.ExportMenuWizard;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 
 /**
  * Wizard for export teiid DDL
  * @author mkralik
  */
-public class DDLTeiidExportWizard extends ExportWizardDialog{
+public class DDLTeiidExportWizard extends ExportMenuWizard {
 	
 	public static final String DIALOG_TITLE = "Export Teiid DDL";
 	
 	private DDLTeiidExportWizard() {
-		super("Teiid Designer", "Teiid DDL");
+		super(DIALOG_TITLE, "Teiid Designer", "Teiid DDL");
 		log.info("DDL teiid export Wizard is opened");
 	}
 	
@@ -30,15 +30,6 @@ public class DDLTeiidExportWizard extends ExportWizardDialog{
 		DDLTeiidExportWizard wizard = new DDLTeiidExportWizard();
 		wizard.open();
 		return wizard;
-	}
-	
-	/**
-	 * use nextPage()
-	 */
-	@Deprecated
-	@Override
-	public void next(){
-		super.next();
 	}
 	
 	public DDLTeiidExportWizard nextPage(){

@@ -1,9 +1,9 @@
 package org.jboss.tools.bpel.ui.bot.test;
 
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.bpel.reddeer.editor.BpelEditor;
 import org.jboss.tools.bpel.reddeer.perspective.BPELPerspective;
 import org.jboss.tools.bpel.reddeer.wizard.NewProcessWizard;

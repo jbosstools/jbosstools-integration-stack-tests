@@ -2,19 +2,19 @@ package org.jboss.tools.bpmn2.reddeer.dialog;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
+import org.eclipse.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
+import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 
 /**
  * 
  */
-public class JBPMProjectWizard extends NewWizardDialog {
+public class JBPMProjectWizard extends NewMenuWizard {
 	
 	public enum ProjectType {
 
@@ -35,7 +35,7 @@ public class JBPMProjectWizard extends NewWizardDialog {
 	 * 
 	 */
 	public JBPMProjectWizard() {
-		super("jBPM", "jBPM project");
+		super("", "jBPM", "jBPM project");
 	}
 
 	/**
@@ -55,8 +55,8 @@ public class JBPMProjectWizard extends NewWizardDialog {
 			new RadioButton("Java and jBPM Runtime classes").click();
 		}
 		finish();
-		new PackageExplorer().open();
-		assertTrue("Project '" + projectName + "' was not created", new PackageExplorer().containsProject(projectName));
+		new PackageExplorerPart().open();
+		assertTrue("Project '" + projectName + "' was not created", new PackageExplorerPart().containsProject(projectName));
 	}
 	
 	public void executeForHumanResourcesExample() {
@@ -79,8 +79,8 @@ public class JBPMProjectWizard extends NewWizardDialog {
 		new RadioButton("Maven").click();
 		new LabeledText("Artifact ID:").setText(projectName);
 		finish();
-		new PackageExplorer().open();
-		assertTrue("Project '" + projectName + "' was not created", new PackageExplorer().containsProject(projectName));
+		new PackageExplorerPart().open();
+		assertTrue("Project '" + projectName + "' was not created", new PackageExplorerPart().containsProject(projectName));
 	}
 
 }

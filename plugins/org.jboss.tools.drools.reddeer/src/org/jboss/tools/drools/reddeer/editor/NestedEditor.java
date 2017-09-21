@@ -2,10 +2,14 @@ package org.jboss.tools.drools.reddeer.editor;
 
 import java.util.List;
 
+import org.eclipse.reddeer.jface.text.contentassist.ContentAssistant;
+import org.eclipse.reddeer.workbench.api.Editor;
+import org.eclipse.reddeer.workbench.api.EditorFile;
+import org.eclipse.reddeer.workbench.impl.editor.AbstractEditor.ContentAssistantEnum;
+import org.eclipse.reddeer.workbench.impl.editor.Marker;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IEditorPart;
-import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
-import org.jboss.reddeer.workbench.api.Editor;
-import org.jboss.reddeer.workbench.impl.editor.Marker;
 
 public class NestedEditor implements Editor {
 	private IEditorPart editor;
@@ -87,12 +91,37 @@ public class NestedEditor implements Editor {
 	}
 
 	@Override
-	public void closeAll(boolean save) {
+	public ContentAssistant getAutoContentAssistant(Runnable execute) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public ContentAssistant getAutoContentAssistant(Runnable execute) {
+	public Image getTitleImage() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public Control getControl() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public ContentAssistant openContentAssistant(ContentAssistantEnum assistantType) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public ContentAssistant openContentAssistant(String assistantLabel) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public List<ContentAssistantEnum> getAvailableContentAssistants() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public EditorFile getAssociatedFile() {
 		throw new UnsupportedOperationException();
 	}
 

@@ -1,10 +1,10 @@
 package org.jboss.tools.drools.ui.bot.test.util;
 
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.eclipse.jdt.ui.ide.NewJavaProjectWizardDialog;
-import org.jboss.reddeer.eclipse.jdt.ui.ide.NewJavaProjectWizardPage;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.jdt.ui.wizards.JavaProjectWizard;
+import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewJavaProjectWizardPageOne;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectWithExamplesWizardPage;
 import org.jboss.tools.drools.reddeer.wizard.NewDroolsProjectWizard;
 
@@ -70,9 +70,9 @@ public final class ProjectUtility {
 	}
 
 	public static void createJavaProject(String projectName) {
-		NewJavaProjectWizardDialog newJavaProjectWizardDialog = new NewJavaProjectWizardDialog();
+		JavaProjectWizard newJavaProjectWizardDialog = new JavaProjectWizard();
 		newJavaProjectWizardDialog.open();
-		new NewJavaProjectWizardPage().setProjectName(projectName);
+		new NewJavaProjectWizardPageOne(newJavaProjectWizardDialog).setProjectName(projectName);
 		newJavaProjectWizardDialog.finish();
 	}
 }

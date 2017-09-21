@@ -1,6 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.properties.setup;
 
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 public class LabeledTextSetUp implements SetUpAble {
 

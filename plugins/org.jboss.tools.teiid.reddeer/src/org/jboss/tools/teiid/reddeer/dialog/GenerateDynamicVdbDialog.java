@@ -1,19 +1,19 @@
 package org.jboss.tools.teiid.reddeer.dialog;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.group.DefaultGroup;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.swt.condition.ShellIsActive;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.teiid.reddeer.condition.StyledTextHasText;
 
 public class GenerateDynamicVdbDialog extends AbstractDialog {
@@ -92,7 +92,7 @@ public class GenerateDynamicVdbDialog extends AbstractDialog {
 		activate();
 		new PushButton("Generate").click();
 		AbstractWait.sleep(TimePeriod.SHORT);
-		if (new ShellWithTextIsAvailable("Generate Dynamic VDB Status ").test()){
+		if (new ShellIsAvailable("Generate Dynamic VDB Status ").test()){
 			new PushButton("OK").click();
 		}
 		return this;
@@ -101,7 +101,7 @@ public class GenerateDynamicVdbDialog extends AbstractDialog {
 	public String getContents() {
 		activate();
 		DefaultStyledText contentsText = new DefaultStyledText(new DefaultGroup("Dynamic VDB XML Contents"));
-		new WaitUntil(new StyledTextHasText(contentsText), TimePeriod.NORMAL, false);
+		new WaitUntil(new StyledTextHasText(contentsText), TimePeriod.DEFAULT, false);
 		return contentsText.getText();
 	}
 	
@@ -115,7 +115,7 @@ public class GenerateDynamicVdbDialog extends AbstractDialog {
 	public void finish() {
 		log.info("Finishing '" + title + "' Dialog");
 		new PushButton("Finish").click();
-		new WaitWhile(new ShellWithTextIsActive(title), TimePeriod.NORMAL);
+		new WaitWhile(new ShellIsActive(title), TimePeriod.DEFAULT);
 		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 }

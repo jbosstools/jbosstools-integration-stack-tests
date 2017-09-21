@@ -1,12 +1,12 @@
 package org.jboss.tools.teiid.reddeer.wizard.imports;
 
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.NextButton;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.NextButton;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 
 /**
  * Wizard for importing relational model from WSDL
@@ -19,7 +19,7 @@ public class WsdlWebImportWizard extends TeiidImportWizard {
 	public static final String DIALOG_TITLE = "Create Web Service from WSDL File";
 	
 	public WsdlWebImportWizard() {
-		super("WSDL File or URL >> Web Service Model");
+		super(DIALOG_TITLE, "WSDL File or URL >> Web Service Model");
 		log.info("Wsdl web import wizard is opened");
 	}
 

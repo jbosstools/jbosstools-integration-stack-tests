@@ -14,22 +14,23 @@ import javax.xml.soap.SOAPException;
 
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLUnit;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.junit.execution.annotation.RunIf;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
+import org.eclipse.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesDialog;
+import org.eclipse.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesPage;
+import org.eclipse.reddeer.junit.execution.annotation.RunIf;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.jboss.tools.bpel.reddeer.perspective.BPELPerspective;
-import org.jboss.tools.bpel.reddeer.server.ServerDeployment;
 import org.jboss.tools.bpel.reddeer.wizard.ExampleWizard;
 import org.jboss.tools.bpel.ui.bot.test.util.ResourceHelper;
 import org.jboss.tools.bpel.ui.bot.test.util.SoapClient;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
-import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.junit.Test;
@@ -45,7 +46,7 @@ import org.xml.sax.SAXException;
 @CleanWorkspace
 @OpenPerspective(BPELPerspective.class)
 @RunWith(RedDeerSuite.class)
-@Server(type = ServerReqType.ANY, state = ServerReqState.RUNNING)
+@Server(state = ServerRequirementState.RUNNING)
 public class ExampleTest {
 
 	public static final String HOST_URL = "http://localhost:8080";
@@ -122,9 +123,12 @@ public class ExampleTest {
 
 		public void deployToServer() {
 			String serverName = serverRequirement.getConfig().getName();
-			ServerDeployment server = new ServerDeployment(serverName);
-			server.deployProject(projectName);
-			AbstractWait.sleep(TimePeriod.NORMAL);
+			ServersView2 serversView = new ServersView2();
+			serversView.open();
+			ModifyModulesDialog deployDialog = serversView.getServer(serverName).addAndRemoveModules();
+			new ModifyModulesPage(deployDialog).add(projectName);
+			deployDialog.finish();
+			AbstractWait.sleep(TimePeriod.DEFAULT);
 		}
 
 		public void testResponses() {

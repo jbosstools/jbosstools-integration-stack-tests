@@ -4,24 +4,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.matcher.WithLabelMatcher;
+import org.eclipse.reddeer.swt.api.Text;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.condition.TableHasRows;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.list.DefaultList;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.keyboard.KeyboardFactory;
 import org.eclipse.swt.SWT;
-import org.jboss.reddeer.swt.api.Combo;
-import org.jboss.reddeer.swt.api.Text;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.condition.TableHasRows;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.list.DefaultList;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.tools.switchyard.reddeer.widget.LabeledTextExt;
-import org.jboss.tools.switchyard.reddeer.widget.WithLabelMatcherExt;
 
 /**
  * REST binding page
@@ -39,8 +36,8 @@ public class RESTBindingPage extends OperationOptionsPage<RESTBindingPage> {
 	}
 
 	public RESTBindingPage setAddress(String address) {
-		new LabeledTextExt("Address").setFocus();
-		new LabeledTextExt("Address").setText(address);
+		new LabeledText("Address").setFocus();
+		new LabeledText("Address").setText(address);
 		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.TAB);
 		return this;
 	}
@@ -51,12 +48,12 @@ public class RESTBindingPage extends OperationOptionsPage<RESTBindingPage> {
 		new DefaultText().setText(javaInterface);
 		new WaitUntil(new TableHasRows(new DefaultTable()), TimePeriod.LONG);
 		new PushButton("OK").click();
-		new WaitWhile(new ShellWithTextIsAvailable("Select entries"));
+		new WaitWhile(new ShellIsAvailable("Select entries"));
 		return this;
 	}
 
 	public List<String> getInterfaces() {
-		String[] items = new DefaultList(null, 0, new WithLabelMatcherExt("RESTful Interfaces*")).getListItems();
+		String[] items = new DefaultList(null, 0, new WithLabelMatcher("RESTful Interfaces*")).getListItems();
 		return new ArrayList<String>(Arrays.asList(items));
 	}
 

@@ -1,7 +1,7 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm;
 
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.reddeer.editor.MappingSide;
 
 /**

@@ -2,8 +2,8 @@ package org.jboss.tools.switchyard.reddeer.preference.contract;
 
 import java.util.List;
 
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
 
 /**
  * Represents a properties page "Contract --> Transaction Policy".

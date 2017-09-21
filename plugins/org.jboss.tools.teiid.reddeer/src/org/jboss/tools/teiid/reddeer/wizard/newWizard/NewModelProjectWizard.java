@@ -2,12 +2,12 @@ package org.jboss.tools.teiid.reddeer.wizard.newWizard;
 
 import java.util.Arrays;
 
+import org.eclipse.reddeer.core.matcher.WithMnemonicTextMatcher;
+import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 import org.hamcrest.Matcher;
-import org.jboss.reddeer.core.matcher.WithMnemonicTextMatcher;
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 /**
  * Wizard for creating a new model project
@@ -15,7 +15,7 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  * @author apodhrad
  * 
  */
-public class NewModelProjectWizard extends NewWizardDialog {
+public class NewModelProjectWizard extends NewMenuWizard {
 	
 	public static final String DIALOG_TITLE = "New Model Project";
 
@@ -27,7 +27,7 @@ public class NewModelProjectWizard extends NewWizardDialog {
 	public static final String FOLDER_TYPE_EXTENSIONS = "extensions";
 	
 	private NewModelProjectWizard() {
-		super("Teiid Designer", "Teiid Model Project");
+		super(DIALOG_TITLE, "Teiid Designer", "Teiid Model Project");
 		log.info("Metadata model wizard is opened");
 	}
 	
@@ -41,15 +41,6 @@ public class NewModelProjectWizard extends NewWizardDialog {
 		return wizard;
 	}
 
-	/**
-	 * use nextPage()
-	 */
-	@Deprecated
-	@Override
-	public void next(){
-		super.next();
-	}
-	
 	public NewModelProjectWizard nextPage(){
 		log.info("Go to next wizard page");
 		super.next();

@@ -2,17 +2,17 @@ package org.jboss.tools.teiid.ui.bot.test;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.swt.impl.button.FinishButton;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.swt.condition.ShellIsActive;
+import org.eclipse.reddeer.swt.impl.button.FinishButton;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ProblemsViewEx;
@@ -145,11 +145,11 @@ public class CloneAndCopyTest {
 	@Test
 	public void testCloneProject(){
 		String clonedProjectName = "ClonedProject";
-		new ShellMenu("Project","Clone Project").select();
+		new ShellMenuItem(new WorkbenchShell(), "Project","Clone Project").select();
 		new DefaultShell("Clone Model Project");
 		new LabeledText("Project name:").setText(clonedProjectName);
 		new FinishButton().click();
-		new WaitWhile(new ShellWithTextIsActive("Clone Model Project"), TimePeriod.NORMAL);
+		new WaitWhile(new ShellIsActive("Clone Model Project"), TimePeriod.DEFAULT);
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new WorkbenchShell();
 		

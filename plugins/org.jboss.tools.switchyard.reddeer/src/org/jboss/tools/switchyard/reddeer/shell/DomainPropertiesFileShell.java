@@ -1,13 +1,13 @@
 package org.jboss.tools.switchyard.reddeer.shell;
 
-import org.jboss.reddeer.swt.api.Text;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.group.DefaultGroup;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.swt.api.Text;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
 
 /**
  * 
@@ -45,12 +45,12 @@ public class DomainPropertiesFileShell {
 
 	public void ok() {
 		new PushButton("OK").click();
-		new WaitWhile(new ShellWithTextIsAvailable(TITLE));
+		new WaitWhile(new ShellIsAvailable(TITLE));
 	}
 
 	public void cancel() {
 		new PushButton("Cancel").click();
-		new WaitWhile(new ShellWithTextIsAvailable(TITLE));
+		new WaitWhile(new ShellIsAvailable(TITLE));
 	}
 
 }

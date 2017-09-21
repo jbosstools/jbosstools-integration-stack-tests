@@ -3,12 +3,12 @@ package org.jboss.tools.drools.reddeer.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.link.DefaultLink;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.impl.link.DefaultLink;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.drools.reddeer.kienavigator.item.OrgUnitItem;
 import org.jboss.tools.drools.reddeer.kienavigator.item.ProjectItem;
 import org.jboss.tools.drools.reddeer.kienavigator.item.RepositoryItem;
@@ -26,7 +26,7 @@ public class KieNavigatorView extends WorkbenchView {
 	 * Opens Kie Navigator if it is not opened.
 	 */
 	private void checkAndOpen() {
-		if (!isOpened()) {
+		if (!isOpen()) {
 			open();
 		}
 	}
@@ -59,7 +59,7 @@ public class KieNavigatorView extends WorkbenchView {
 	 */
 	public void refresh() {
 		checkAndOpen();
-		new ContextMenu("Refresh");
+		new ContextMenuItem("Refresh");
 	}
 
 	/**

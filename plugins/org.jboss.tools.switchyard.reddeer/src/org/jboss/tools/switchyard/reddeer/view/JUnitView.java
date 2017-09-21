@@ -1,8 +1,8 @@
 package org.jboss.tools.switchyard.reddeer.view;
 
-import org.jboss.reddeer.swt.impl.label.DefaultLabel;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
+import org.eclipse.reddeer.swt.impl.label.DefaultLabel;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.workbench.impl.view.WorkbenchView;
 
 /**
  * JUnit View

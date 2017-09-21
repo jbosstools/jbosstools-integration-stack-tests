@@ -1,6 +1,6 @@
 package org.jboss.tools.drools.reddeer.kienavigator.dialog;
 
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 public class CreateOrgUnitDialog extends Dialog {
 

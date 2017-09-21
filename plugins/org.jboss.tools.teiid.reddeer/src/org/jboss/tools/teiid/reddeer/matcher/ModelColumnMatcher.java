@@ -5,7 +5,7 @@ package org.jboss.tools.teiid.reddeer.matcher;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-import org.jboss.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.swt.api.TableItem;
 
 /**
  * @author asmigala

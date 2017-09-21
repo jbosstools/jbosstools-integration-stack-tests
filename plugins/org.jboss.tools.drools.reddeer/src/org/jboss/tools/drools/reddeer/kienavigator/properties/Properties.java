@@ -1,6 +1,6 @@
 package org.jboss.tools.drools.reddeer.kienavigator.properties;
 
-import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.jboss.tools.drools.reddeer.kienavigator.dialog.Dialog;
 
 public abstract class Properties extends Dialog {

@@ -7,17 +7,18 @@ import static org.junit.Assert.fail;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
@@ -39,7 +40,7 @@ import org.junit.runner.RunWith;
  */
 
 @RunWith(RedDeerSuite.class)
-@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = {
+@TeiidServer(state = ServerRequirementState.RUNNING, connectionProfiles = {
 	ConnectionProfileConstants.ORACLE_11G_BQT2,})
 public class GeometryTypeTest {
 	
@@ -75,7 +76,7 @@ public class GeometryTypeTest {
 		//TEIIDDES-2799
 		setGeometryDatatype(PROJECT_NAME,SOURCE_MODEL_NAME+".xmi","BUILDINGS","POSITION : object(1)");
 		setGeometryDatatype(PROJECT_NAME,SOURCE_MODEL_NAME+".xmi","BUILDINGS","FOOTPRINT : object(1)");
-		new ShellMenu("File","Save All").select();
+		new ShellMenuItem(new WorkbenchShell(), "File","Save All").select();
 
 		assertTrue(testSetDatatype(SOURCE_MODEL_NAME,"geometry : xs:base64Binary","SDO_GEOMETRY"));
 		
@@ -113,7 +114,7 @@ public class GeometryTypeTest {
 		//TEIIDDES-2799
 		setGeometryDatatype(PROJECT_NAME,SOURCE_TEIID_MODEL_NAME+".xmi","BUILDINGS","POSITION : object(1)");
 		setGeometryDatatype(PROJECT_NAME,SOURCE_TEIID_MODEL_NAME+".xmi","BUILDINGS","FOOTPRINT : object(1)");
-		new ShellMenu("File","Save All").select();
+		new ShellMenuItem(new WorkbenchShell(), "File","Save All").select();
 		
 		assertTrue(testSetDatatype(SOURCE_TEIID_MODEL_NAME,"geometry : xs:base64Binary","SDO_GEOMETRY"));
 		
@@ -157,7 +158,7 @@ public class GeometryTypeTest {
 		new ModelExplorer().activate();
 		new ModelExplorer().openModelEditor(tables[0],tables[1],tables[2],tables[3]);
 		new WaitWhile(new IsInProgress(), TimePeriod.SHORT); 
-		new ContextMenu("Modeling","Set Datatype").select();
+		new ContextMenuItem("Modeling","Set Datatype").select();
 		new DefaultShell("Select a Datatype");
 		new DefaultText(0).setText("geometry");
 		new DefaultTable().getItem(0).click();

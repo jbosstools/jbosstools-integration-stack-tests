@@ -3,25 +3,25 @@ package org.jboss.tools.teiid.reddeer.editor;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.core.util.Display;
-import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
-import org.jboss.reddeer.jface.viewers.CellEditor;
-import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.ccombo.DefaultCCombo;
-import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.eclipse.reddeer.common.util.Display;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.eclipse.ui.views.properties.PropertySheet;
+import org.eclipse.reddeer.jface.viewers.CellEditor;
+import org.eclipse.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.swt.condition.ShellIsActive;
+import org.eclipse.reddeer.swt.exception.SWTLayerException;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.ccombo.DefaultCCombo;
+import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.tab.DefaultTabItem;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.swt.keyboard.KeyboardFactory;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 
 public class TableEditor extends DefaultEditor {
 	private static final String TABLE_EDITOR = "Table Editor";
@@ -166,19 +166,19 @@ public class TableEditor extends DefaultEditor {
 	 * TODO include - if cell of property value is not CCombo 
 	 */
 	private void setProperty(String value, String... propertyPath){
-		new PropertiesView().getProperty(propertyPath).getTreeItem().doubleClick();
+		new PropertySheet().getProperty(propertyPath).getTreeItem().doubleClick();
 		new DefaultCCombo().setSelection(value);
 		Display.asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				new PropertiesView();
+				new PropertySheet();
 			}
 		});	
 		AbstractWait.sleep(TimePeriod.SHORT);
 		try {
 			new DefaultShell("Confirm SQL Update");
 			new PushButton("Yes").click();
-			new WaitWhile(new ShellWithTextIsActive("Confirm SQL Update"), TimePeriod.NORMAL);
+			new WaitWhile(new ShellIsActive("Confirm SQL Update"), TimePeriod.DEFAULT);
 		} catch (SWTLayerException e) {	
 			// shell not opened -> continue
 		}

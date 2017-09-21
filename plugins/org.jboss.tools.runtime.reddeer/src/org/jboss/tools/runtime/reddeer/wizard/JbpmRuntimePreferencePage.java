@@ -3,15 +3,16 @@ package org.jboss.tools.runtime.reddeer.wizard;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.jface.preference.PreferencePage;
-import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.preference.PreferencePage;
+import org.eclipse.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 
 /**
  * Represents jBPM runtime preference page.
@@ -23,8 +24,8 @@ import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
  */
 public class JbpmRuntimePreferencePage extends PreferencePage {
 	
-	public JbpmRuntimePreferencePage() {
-		super("jBPM", "Installed jBPM Runtimes");
+	public JbpmRuntimePreferencePage(ReferencedComposite ref) {
+		super(ref, "jBPM", "Installed jBPM Runtimes");
 	}
 	
 	public JbpmRuntimeWizard addRuntime() {
@@ -58,6 +59,6 @@ public class JbpmRuntimePreferencePage extends PreferencePage {
 	public void ok() {
 		String title = new DefaultShell().getText();
 		new OkButton().click();
-		new WaitWhile(new ShellWithTextIsAvailable(title));
+		new WaitWhile(new ShellIsAvailable(title));
 	}
 }

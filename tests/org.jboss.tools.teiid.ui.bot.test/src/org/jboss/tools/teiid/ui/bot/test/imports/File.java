@@ -1,10 +1,12 @@
 package org.jboss.tools.teiid.ui.bot.test.imports;
 
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.teiid.reddeer.ImportHelper;
 import org.jboss.tools.teiid.reddeer.dialog.CreateDataSourceDialog;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
@@ -22,7 +24,7 @@ import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
-@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = {})
+@TeiidServer(state = ServerRequirementState.RUNNING, connectionProfiles = {})
 public class File {
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;	
@@ -33,10 +35,12 @@ public class File {
 
 	@Before
 	public void before() {
-		if (new ShellMenu("Project", "Build Automatically").isSelected()) {
-			new ShellMenu("Project", "Build Automatically").select();
-		}		
-		new TeiidDesignerPreferencePage().setTeiidConnectionImporterTimeout(240);
+		if (new ShellMenuItem(new WorkbenchShell(), "Project", "Build Automatically").isSelected()) {
+			new ShellMenuItem(new WorkbenchShell(), "Project", "Build Automatically").select();
+		}
+		WorkbenchPreferenceDialog preferences = new WorkbenchPreferenceDialog();
+		preferences.open();
+		new TeiidDesignerPreferencePage(preferences).setTeiidConnectionImporterTimeout(240);
 		new ModelExplorer().importProject(PROJECT_NAME_TEIID);
 		new ModelExplorer().selectItem(PROJECT_NAME_TEIID);
 		new ServersViewExt().refreshServer(teiidServer.getName());

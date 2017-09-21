@@ -1,45 +1,24 @@
 package org.jboss.tools.teiid.reddeer.requirement;
 
+import java.util.Map;
 import java.util.Properties;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-
-import org.jboss.tools.runtime.reddeer.Namespaces;
-
-@XmlAccessorType(XmlAccessType.FIELD)
 public class ConnectionProfileConfig {
 
-	@XmlElement(namespace = Namespaces.SOA_REQ)
 	protected String hostname;
-	@XmlElement(required = true, namespace = Namespaces.SOA_REQ)
 	protected String vendor;
-	@XmlElement(required = true, namespace = Namespaces.SOA_REQ)
 	protected String template;
-	@XmlElement(name = "name", namespace = Namespaces.SOA_REQ)
 	protected String dbName;
-	@XmlElement(namespace = Namespaces.SOA_REQ)
 	protected String description;
-	@XmlElement(name = "vendor_template", namespace = Namespaces.SOA_REQ)
 	protected String vendorTemplate;
-	@XmlElement(name = "jdbc_path", namespace = Namespaces.SOA_REQ)
 	protected String jdbcPath;
-	@XmlElement(required = true, namespace = Namespaces.SOA_REQ)
 	protected String password;
-	@XmlElement(namespace = Namespaces.SOA_REQ)
 	protected String version;
-	@XmlElement(name = "jdbc_class", namespace = Namespaces.SOA_REQ)
 	protected String jdbcClass;
-	@XmlElement(namespace = Namespaces.SOA_REQ)
 	protected String port;
-	@XmlElement(required = true, namespace = Namespaces.SOA_REQ)
 	protected String username;
-	@XmlAttribute(name = "name", required = true)
 	protected String name;
-	@XmlElement(name = "properties", namespace = Namespaces.SOA_REQ)
-	private ConnectionProfileProperties extraProperties;
+	private Map<String, String> extraProperties;
 
 	public ConnectionProfileConfig() {
 		System.err.println("creating cp config");
@@ -60,7 +39,7 @@ public class ConnectionProfileConfig {
 		putIfNotNull(result, "db.port", port);
 		putIfNotNull(result, "db.username", username);
 		if (extraProperties != null) {
-			result.putAll(extraProperties.getAllProperties());
+			result.putAll(extraProperties);
 		}
 		return result;
 	}
@@ -167,6 +146,14 @@ public class ConnectionProfileConfig {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Map<String, String> getExtraProperties() {
+		return extraProperties;
+	}
+
+	public void setExtraProperties(Map<String, String> extraProperties) {
+		this.extraProperties = extraProperties;
 	}
 
 	private void putIfNotNull(Properties props, String key, String value) {

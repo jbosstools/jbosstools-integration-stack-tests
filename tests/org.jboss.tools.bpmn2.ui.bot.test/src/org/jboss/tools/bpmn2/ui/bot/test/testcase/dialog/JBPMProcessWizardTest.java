@@ -3,12 +3,11 @@ package org.jboss.tools.bpmn2.ui.bot.test.testcase.dialog;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.bpmn2.reddeer.dialog.JBPMProcessWizard;
 import org.jboss.tools.bpmn2.reddeer.dialog.JBPMProjectWizard;
 import org.jboss.tools.bpmn2.reddeer.dialog.JBPMProjectWizard.ProjectType;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -39,7 +38,7 @@ public class JBPMProcessWizardTest {
 	public void newProcessTest() {
 		processWizardView.execute(new String[] { "TestProject", "src/main/resources" }, "SampleProcess");
 		Assert.assertTrue(
-				packageView.getProject("TestProject").containsItem("src/main/resources", "SampleProcess.bpmn2"));
+				packageView.getProject("TestProject").containsResource("src/main/resources", "SampleProcess.bpmn2"));
 	}
 	
 	@Test
@@ -51,7 +50,7 @@ public class JBPMProcessWizardTest {
 			processWizardView.cancel();
 		}
 		
-		assertFalse(packageView.getProject("TestProject").containsItem("src/main/resources", "SampleProcess.bpmn2"));
+		assertFalse(packageView.getProject("TestProject").containsResource("src/main/resources", "SampleProcess.bpmn2"));
 	}
 
 }

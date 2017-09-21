@@ -1,9 +1,9 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm;
 
-import org.jboss.reddeer.swt.api.Combo;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.group.DefaultGroup;
+import org.eclipse.reddeer.swt.api.Combo;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.tools.bpmn2.reddeer.editor.MappingSide;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.DataTypeDialog;
 import org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm.EditNameDialog;

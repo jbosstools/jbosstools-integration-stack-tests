@@ -1,15 +1,15 @@
 package org.jboss.tools.drools.reddeer.wizard;
 
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
+import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
 
-public class NewRuleResourceWizard extends NewWizardDialog {
+public class NewRuleResourceWizard extends NewMenuWizard {
 
 	public NewRuleResourceWizard() {
-		super("Drools", "Rule Resource");
+		super("New Rule Pakcge...", "Drools", "Rule Resource");
 	}
 
 	public NewRuleResourceWizardPage getFirstPage() {
-		return new NewRuleResourceWizardPage();
+		return new NewRuleResourceWizardPage(this);
 	}
 
 }

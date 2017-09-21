@@ -2,9 +2,12 @@ package org.jboss.tools.teiid.ui.bot.test;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.tools.runtime.reddeer.requirement.ServerConnType;
+import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
+import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.jboss.tools.runtime.reddeer.requirement.ServerConnectionRestriction;
+import org.jboss.tools.runtime.reddeer.requirement.ServerConnectionType;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.wizard.imports.TeiidConnectionImportWizard;
@@ -13,8 +16,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
-@TeiidServer(state = ServerReqState.RUNNING, connectionType = ServerConnType.REMOTE)
+@TeiidServer(state = ServerRequirementState.RUNNING)
 public class JdgImportTest {
+
+	@RequirementRestriction
+	public static RequirementMatcher getRequirementMatcher() {
+		return new ServerConnectionRestriction(ServerConnectionType.REMOTE);
+	}
 
 	private static final String PROJECT_NAME = "JdgImportProject";
 

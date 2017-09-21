@@ -2,12 +2,13 @@ package org.jboss.tools.switchyard.reddeer.wizard;
 
 import java.util.List;
 
-import org.jboss.reddeer.jface.wizard.WizardDialog;
-import org.jboss.reddeer.swt.api.Table;
-import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.jface.wizard.WizardDialog;
+import org.eclipse.reddeer.swt.api.Shell;
+import org.eclipse.reddeer.swt.api.Table;
+import org.eclipse.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 /**
  * Wizard for creating a service test class.
@@ -22,7 +23,8 @@ public class ServiceTestClassWizard extends WizardDialog {
 	public static final String PACKAGE = "Package:";
 
 	public ServiceTestClassWizard activate() {
-		new DefaultShell(DIALOG_TITLE);
+		Shell shell = new DefaultShell(DIALOG_TITLE);
+		setShell(shell);
 		return this;
 	}
 

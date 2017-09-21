@@ -2,10 +2,10 @@ package org.jboss.tools.drools.reddeer.wizard;
 
 import java.util.List;
 
-import org.jboss.reddeer.swt.api.Tree;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.swt.api.Tree;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
 
 public class NewDroolsOnlineExampleProjectWizardPage {
 

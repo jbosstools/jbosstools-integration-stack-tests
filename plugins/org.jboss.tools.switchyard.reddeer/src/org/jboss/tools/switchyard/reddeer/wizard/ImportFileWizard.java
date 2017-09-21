@@ -2,28 +2,28 @@ package org.jboss.tools.switchyard.reddeer.wizard;
 
 import java.io.File;
 
-import org.jboss.reddeer.jface.wizard.ImportWizardDialog;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.TableHasRows;
-import org.jboss.reddeer.core.handler.WidgetHandler;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.core.handler.ControlHandler;
+import org.eclipse.reddeer.eclipse.selectionwizard.ImportMenuWizard;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.condition.TableHasRows;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.table.DefaultTableItem;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.swt.keyboard.KeyboardFactory;
 
 /**
  * 
  * @author apodhrad
  * 
  */
-public class ImportFileWizard extends ImportWizardDialog {
+public class ImportFileWizard extends ImportMenuWizard {
 
 	public ImportFileWizard() {
-		super("General", "File System");
+		super("Import", "General", "File System");
 	}
 
 	public void importFile(String folder, String... fileNames) {
@@ -38,7 +38,7 @@ public class ImportFileWizard extends ImportWizardDialog {
 		new LabeledComboExt("From directory:").typeText("abc");
 		new LabeledComboExt("From directory:").setText(file.getAbsolutePath());
 		new DefaultTree().setFocus();
-		new WaitUntil(new TableHasRows(new DefaultTable()), TimePeriod.NORMAL);
+		new WaitUntil(new TableHasRows(new DefaultTable()), TimePeriod.DEFAULT);
 		for (String fileName : fileNames) {
 			new DefaultTableItem(fileName).setChecked(true);
 		}
@@ -59,7 +59,7 @@ public class ImportFileWizard extends ImportWizardDialog {
 
 		public void setFocus() {
 			log.debug("Set focus to Combo");
-			WidgetHandler.getInstance().setFocus(swtWidget);
+			ControlHandler.getInstance().setFocus(swtWidget);
 		}
 
 		public void typeText(String text) {

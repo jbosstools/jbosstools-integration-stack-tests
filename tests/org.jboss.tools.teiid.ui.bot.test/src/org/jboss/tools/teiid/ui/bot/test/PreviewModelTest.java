@@ -6,24 +6,24 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.util.ArrayList;
 
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.common.platform.RunningPlatform;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.core.util.Display;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.tools.runtime.reddeer.condition.JobIsKilled;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.common.platform.RunningPlatform;
+import org.eclipse.reddeer.common.util.Display;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.condition.ShellIsActive;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.workbench.core.condition.JobIsKilled;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
@@ -45,7 +45,7 @@ import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
-@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles={
+@TeiidServer(state = ServerRequirementState.RUNNING, connectionProfiles={
 		ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER,
 		ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER,
 })
@@ -156,7 +156,7 @@ public class PreviewModelTest {
 		
 		new ModelExplorer().open();
 		new DefaultTreeItem(PROJECT_NAME, NAME_VDB+".vdb").select();
- 		new ContextMenu("Modeling", "Execute VDB").select();
+ 		new ContextMenuItem("Modeling", "Execute VDB").select();
  		new WaitWhile(new IsInProgress(), TimePeriod.VERY_LONG);
  		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
  		
@@ -202,7 +202,7 @@ public class PreviewModelTest {
 	 */
 	private void waitUntilPreview(){
 		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
-		new WaitWhile(new ShellWithTextIsActive(new RegexMatcher("Preview.*")), TimePeriod.LONG);
+		new WaitWhile(new ShellIsActive(new RegexMatcher("Preview.*")), TimePeriod.LONG);
 	}
 	
 	/**
@@ -214,17 +214,17 @@ public class PreviewModelTest {
 		String removedText = styledText.getText();
 		styledText.selectText(removedText);
 		styledText.insertText(text);
-		new WaitUntil(new JobIsKilled("Refreshing server adapter list"), TimePeriod.NORMAL, false);
+		new WaitUntil(new JobIsKilled("Refreshing server adapter list"), TimePeriod.DEFAULT, false);
 		
  		Display.syncExec(new Runnable() {
 			@Override
 			public void run() {
 				new DefaultStyledText().getSWTWidget().setFocus(); //because context menu would lose focus
-		 		new ContextMenu("Execute All").select();
+		 		new ContextMenuItem("Execute All").select();
 			}
 		});
  		
 		AbstractWait.sleep(TimePeriod.SHORT); // Shell hasn't already opened after execute
- 		new WaitWhile(new ShellWithTextIsAvailable("SQL Statement Execution"), TimePeriod.LONG);
+ 		new WaitWhile(new ShellIsAvailable("SQL Statement Execution"), TimePeriod.LONG);
 	}
 }

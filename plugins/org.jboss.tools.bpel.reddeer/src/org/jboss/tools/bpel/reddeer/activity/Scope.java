@@ -1,6 +1,6 @@
 package org.jboss.tools.bpel.reddeer.activity;
 
-import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
 
 /**
  * 

@@ -2,7 +2,7 @@ package org.jboss.tools.switchyard.ui.bot.test.suite;
 
 import junit.framework.TestSuite;
 
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.switchyard.ui.bot.test.SwitchYardIntegrationBPELTest;
 import org.jboss.tools.switchyard.ui.bot.test.SwitchYardIntegrationBPMN2Test;
 import org.jboss.tools.switchyard.ui.bot.test.SwitchYardIntegrationBeanTest;

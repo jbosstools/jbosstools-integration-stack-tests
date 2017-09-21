@@ -2,31 +2,31 @@ package org.jboss.tools.teiid.reddeer.view;
 
 import java.util.Arrays;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.list.DefaultList;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.eclipse.condition.ConsoleHasText;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.Server;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.condition.ShellIsActive;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.swt.impl.list.DefaultList;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.teiid.reddeer.condition.ServerHasState;
 
-public class ServersViewExt extends ServersView {
+public class ServersViewExt extends ServersView2 {
 
-	private static final Logger log = Logger.getLogger(ServersView.class);
+	private static final Logger log = Logger.getLogger(ServersView2.class);
 	public static final String DV6_PREFIX_URL = "mm://localhost:9999";
 	public static final String EDS5_PREFIX_URL = "mms://localhost:31443";
 	private static final String REFRESH = "Refresh / Reconnect Teiid Instance Connection";
@@ -53,7 +53,7 @@ public class ServersViewExt extends ServersView {
 		boolean result = false;
 		String url = getServerURLPrefix(serverType);
 		String[] path = new String[5];
-		new ServersView().getServer(serverName);
+		new ServersView2().getServer(serverName);
 		/*
 		 * String state = server.getLabel().getState().getText(); String publishState =
 		 * server.getLabel().getPublishState().getText();
@@ -114,7 +114,7 @@ public class ServersViewExt extends ServersView {
 
 	public void startServer(String serverName) {
 		ServerType type = determineServerType(serverName);
-		Server server = new ServersView().getServer(serverName);
+		Server server = new ServersView2().getServer(serverName);
 		server.start();
 		new WaitUntil(new ServerHasState(serverName), TimePeriod.LONG);
 		new WaitUntil(new ConsoleHasText("- Started"), TimePeriod.LONG);
@@ -124,7 +124,7 @@ public class ServersViewExt extends ServersView {
 			connectTeiidInstance(serverName);
 		}
 		new GuidesView().chooseAction("Teiid", "Refresh ");
-		if (new ShellWithTextIsActive("Server Selection").test()) { // if you want to disconnect old instance before
+		if (new ShellIsActive("Server Selection").test()) { // if you want to disconnect old instance before
 																	// switching
 			new DefaultCombo().setSelection(serverName);
 			new PushButton("OK").click();
@@ -137,7 +137,7 @@ public class ServersViewExt extends ServersView {
 
 	public void restartServer(String serverName) {
 		ServerType type = determineServerType(serverName);
-		Server server = new ServersView().getServer(serverName);
+		Server server = new ServersView2().getServer(serverName);
 		server.restart();
 		new WaitUntil(new ServerHasState(serverName), TimePeriod.LONG);
 		new WaitUntil(new ConsoleHasText("- Started"), TimePeriod.LONG);
@@ -147,7 +147,7 @@ public class ServersViewExt extends ServersView {
 			connectTeiidInstance(serverName);
 		}
 		new GuidesView().chooseAction("Teiid", "Refresh ");
-		if (new ShellWithTextIsActive("Server Selection").test()) { // if you want to disconnect old instance before
+		if (new ShellIsActive("Server Selection").test()) { // if you want to disconnect old instance before
 																	// switching
 			new DefaultCombo().setSelection(serverName);
 			new PushButton("OK").click();
@@ -159,7 +159,7 @@ public class ServersViewExt extends ServersView {
 	}
 
 	public String getServerLabel(String serverName) {// TEST!!!
-		Server server = new ServersView().getServer(serverName);
+		Server server = new ServersView2().getServer(serverName);
 		String state = server.getLabel().getState().getText();
 		String publishState = server.getLabel().getPublishState().getText();
 		if (publishState != null && publishState.length() > 0) {
@@ -169,7 +169,7 @@ public class ServersViewExt extends ServersView {
 	}
 
 	public void stopServer(String serverName) {// server.stop?
-		Server server = new ServersView().getServer(serverName);
+		Server server = new ServersView2().getServer(serverName);
 		server.stop();
 
 		log.info("Stopping server " + server.getLabel().getName());
@@ -184,7 +184,7 @@ public class ServersViewExt extends ServersView {
 		new DefaultTreeItem(label, TEIID_INSTANCE_CONFIG, url).select();
 		refreshServer(serverName);
 		new DefaultTreeItem(label, TEIID_INSTANCE_CONFIG, url).select();
-		new ContextMenu(DISCONNECT).select();
+		new ContextMenuItem(DISCONNECT).select();
 	}
 
 	public void setDefaultTeiidInstance(String serverName) {
@@ -215,9 +215,9 @@ public class ServersViewExt extends ServersView {
 	}
 
 	public void createDatasource(String serverName, String connectionProfile, String datasourceName) {
-		new ServersView().getServer(serverName);
+		new ServersView2().getServer(serverName);
 		new DefaultTreeItem(getServerLabel(serverName), TEIID_INSTANCE_CONFIG, DV6_PREFIX_URL, DATA_SOURCES).select();
-		new ContextMenu("Create Data Source").select();
+		new ContextMenuItem("Create Data Source").select();
 		new DefaultShell("");
 		new DefaultText().setText(datasourceName);
 		new RadioButton("Use Connection Profile Info").click();
@@ -231,8 +231,8 @@ public class ServersViewExt extends ServersView {
 	}
 	
 	public void restartWar(String serverName, String warName){
-		new ServersView().getServer(serverName).getModule(new RegexMatcher(".*" + warName + ".*"));
-		new ContextMenu("Restart").select();
+		new ServersView2().getServer(serverName).getModule(new RegexMatcher(".*" + warName + ".*"));
+		new ContextMenuItem("Restart").select();
 	}
 
 	public void createDatasource(String serverName, String connectionProfile) {
@@ -240,14 +240,14 @@ public class ServersViewExt extends ServersView {
 	}
 
 	public void deleteDatasource(String serverName, String dsName) {
-		new ServersView().getServer(serverName);
+		new ServersView2().getServer(serverName);
 		try {
 			DefaultTreeItem dataSources = new DefaultTreeItem(getServerLabel(serverName), TEIID_INSTANCE_CONFIG,
 					DV6_PREFIX_URL, DATA_SOURCES);
 			for (TreeItem treeItem : dataSources.getItems()) {
 				if (treeItem.getText().startsWith(dsName)) {
 					treeItem.select();
-					new ContextMenu("Delete Data Source").select();
+					new ContextMenuItem("Delete Data Source").select();
 					break;
 				}
 			}
@@ -258,14 +258,14 @@ public class ServersViewExt extends ServersView {
 	}
 
 	public void undeployVdb(String serverName, String vdbName) {
-		new ServersView().getServer(serverName);
+		new ServersView2().getServer(serverName);
 		try {
 			DefaultTreeItem vdbs = new DefaultTreeItem(getServerLabel(serverName), TEIID_INSTANCE_CONFIG,
 					DV6_PREFIX_URL, VDBS);
 			for (TreeItem treeItem : vdbs.getItems()) {
 				if (treeItem.getText().startsWith(vdbName)) {
 					treeItem.select();
-					new ContextMenu("Undeploy VDB").select();
+					new ContextMenuItem("Undeploy VDB").select();
 					break;
 				}
 			}
@@ -276,14 +276,14 @@ public class ServersViewExt extends ServersView {
 	}
 
 	public String getVdbStatus(String serverName, String vdbName) {
-		new ServersView().getServer(serverName);
+		new ServersView2().getServer(serverName);
 		DefaultTreeItem vdbs = new DefaultTreeItem(getServerLabel(serverName), TEIID_INSTANCE_CONFIG, DV6_PREFIX_URL,
 				VDBS);
 		for (TreeItem treeItem : vdbs.getItems()) {
 			if (treeItem.getText().startsWith(vdbName)) {
 				treeItem.select();
 				try {
-					new ContextMenu("Show VDB Errors").select();
+					new ContextMenuItem("Show VDB Errors").select();
 					String[] errors = new DefaultList(0).getListItems();
 					new PushButton("OK").click();
 					return "ERROR: " + Arrays.toString(errors);

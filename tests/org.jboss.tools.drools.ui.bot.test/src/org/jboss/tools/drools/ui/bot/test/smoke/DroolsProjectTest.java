@@ -2,17 +2,16 @@ package org.jboss.tools.drools.ui.bot.test.smoke;
 
 import java.io.UnsupportedEncodingException;
 
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaPerspective;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.drools.ui.bot.test.util.ProjectTestParent;
 import org.jboss.tools.drools.ui.bot.test.util.ProjectUtility;
 import org.jboss.tools.drools.ui.bot.test.util.RunUtility;
 import org.jboss.tools.drools.ui.bot.test.util.annotation.UsePerspective;
-import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
 import org.junit.Assert;
@@ -20,7 +19,7 @@ import org.junit.Assume;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@Runtime(type = RuntimeReqType.DROOLS)
+@Runtime
 @RunWith(RedDeerSuite.class)
 public class DroolsProjectTest extends ProjectTestParent {
 
@@ -76,11 +75,11 @@ public class DroolsProjectTest extends ProjectTestParent {
 	}
 	
 	private void assertProjectAndDelete(String projectName) throws UnsupportedEncodingException {
-		PackageExplorer packageExplorer = new PackageExplorer();
+		PackageExplorerPart packageExplorer = new PackageExplorerPart();
 
 		Assert.assertTrue("Project is not created.", packageExplorer.containsProject(projectName));
-		Assert.assertTrue("Project does not have Drools dependencies.", packageExplorer.getProject(projectName).containsItem(DROOLS_LIBRARY_NAME));
-		Assert.assertTrue("Wrong drools runtime is used.", findDroolsCoreJar(projectName).contains(getRuntimeLocation(droolsRuntime.getConfig().getRuntimeFamily().getHome())));
+		Assert.assertTrue("Project does not have Drools dependencies.", packageExplorer.getProject(projectName).containsResource(DROOLS_LIBRARY_NAME));
+		Assert.assertTrue("Wrong drools runtime is used.", findDroolsCoreJar(projectName).contains(getRuntimeLocation(droolsRuntime.getConfiguration().getRuntimeFamily().getHome())));
 		assertNoErrorsInProblemsView();
 
 		packageExplorer.getProject(projectName).delete(true);
@@ -89,7 +88,7 @@ public class DroolsProjectTest extends ProjectTestParent {
 	}
 
 	private String findDroolsCoreJar(String projectName) {
-		new PackageExplorer().open();
+		new PackageExplorerPart().open();
 		TreeItem droolsLibrary = new DefaultTreeItem(projectName, DROOLS_LIBRARY_NAME);
 		for (TreeItem droolsJar : droolsLibrary.getItems()) {
 			if (droolsJar.getText().startsWith(DROOLS_CORE_JAR_PREFIX)) {

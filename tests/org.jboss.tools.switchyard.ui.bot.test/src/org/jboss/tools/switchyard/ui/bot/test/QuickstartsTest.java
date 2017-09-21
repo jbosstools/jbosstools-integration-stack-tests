@@ -6,28 +6,30 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.eclipse.reddeer.eclipse.ui.problems.Problem;
+import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.handler.ShellHandler;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.eclipse.ui.problems.Problem;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
-import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
+import org.jboss.tools.runtime.reddeer.requirement.ServerImplementationType;
 import org.jboss.tools.switchyard.reddeer.condition.ErrorsExist;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
+import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardServerRestriction;
 import org.jboss.tools.switchyard.reddeer.wizard.ImportMavenWizard;
 import org.junit.After;
 import org.junit.runner.RunWith;
@@ -38,7 +40,7 @@ import org.junit.runner.RunWith;
  * @author apodhrad
  * 
  */
-@SwitchYard(server = @Server(type = ServerReqType.ANY, state = ServerReqState.PRESENT) )
+@SwitchYard(state = ServerRequirementState.PRESENT)
 @OpenPerspective(JavaEEPerspective.class)
 @RunWith(RedDeerSuite.class)
 public abstract class QuickstartsTest {
@@ -48,12 +50,17 @@ public abstract class QuickstartsTest {
 	@InjectRequirement
 	private SwitchYardRequirement switchyardRequirement;
 
+	@RequirementRestriction
+	public static RequirementMatcher getRequirementMatcher() {
+		return new SwitchYardServerRestriction(ServerImplementationType.ANY);
+	}
+
 	public QuickstartsTest(String quickstartPath) {
 		this.quickstartPath = quickstartPath;
 	}
 
 	protected void testQuickstart(String path) {
-		String fullPath = switchyardRequirement.getConfig().getServerBase().getHome() + "/" + quickstartPath + "/"
+		String fullPath = switchyardRequirement.getConfiguration().getServer().getHome() + "/" + quickstartPath + "/"
 				+ path;
 		assertTrue("Path '" + fullPath + "' doesn exist!", new File(fullPath).exists());
 
@@ -67,7 +74,7 @@ public abstract class QuickstartsTest {
 	}
 
 	protected void checkErrors(String path, Matcher<TreeItem> excludeMatcher) {
-		AbstractWait.sleep(TimePeriod.NORMAL);
+		AbstractWait.sleep(TimePeriod.DEFAULT);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 
 		ErrorsExist errorsExistCondition = new ErrorsExist();
@@ -87,9 +94,9 @@ public abstract class QuickstartsTest {
 
 	@After
 	public void deleteAllProjects() {
-		ShellHandler.getInstance().closeAllNonWorbenchShells();
+		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 
-		PackageExplorer packageExplorer = new PackageExplorer();
+		PackageExplorerPart packageExplorer = new PackageExplorerPart();
 		packageExplorer.open();
 		packageExplorer.deleteAllProjects(false);
 	}

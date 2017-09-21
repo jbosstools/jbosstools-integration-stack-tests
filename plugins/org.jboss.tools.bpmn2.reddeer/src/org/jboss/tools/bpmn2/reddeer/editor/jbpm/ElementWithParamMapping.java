@@ -1,6 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm;
 
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.tools.bpmn2.reddeer.DefaultSection;
 import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;

@@ -3,11 +3,11 @@ package org.jboss.tools.bpel.reddeer.view;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.reddeer.eclipse.ui.views.contentoutline.ContentOutline;
+import org.eclipse.reddeer.swt.api.Tree;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
 import org.hamcrest.Matcher;
-import org.jboss.reddeer.eclipse.ui.views.contentoutline.OutlineView;
-import org.jboss.reddeer.swt.api.Tree;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.tools.bpel.reddeer.matcher.TreeItemWithText;
 
 /**
@@ -15,7 +15,7 @@ import org.jboss.tools.bpel.reddeer.matcher.TreeItemWithText;
  * @author apodhrad
  *
  */
-public class BPELOutlineView extends OutlineView {
+public class BPELOutlineView extends ContentOutline {
 
 	public void select(String label) {
 		TreeItem itemToSelect = null;

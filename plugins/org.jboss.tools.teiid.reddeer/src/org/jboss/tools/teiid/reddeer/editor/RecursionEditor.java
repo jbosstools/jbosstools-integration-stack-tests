@@ -1,8 +1,8 @@
 package org.jboss.tools.teiid.reddeer.editor;
 
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.spinner.LabeledSpinner;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.spinner.LabeledSpinner;
+import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.tools.teiid.reddeer.matcher.ToolBarButtonWithLabel;
 
 public class RecursionEditor {

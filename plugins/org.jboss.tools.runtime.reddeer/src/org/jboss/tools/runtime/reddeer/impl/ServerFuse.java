@@ -1,25 +1,15 @@
 package org.jboss.tools.runtime.reddeer.impl;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
-import org.jboss.tools.runtime.reddeer.Namespaces;
-
 /**
  * JBoss Fuse Server
  * 
  * @author apodhrad
  */
-@XmlRootElement(name = "fuse", namespace = Namespaces.SOA_REQ)
-@XmlAccessorType(XmlAccessType.FIELD)
 public class ServerFuse extends ServerKaraf {
 
 	private final String category = "Red Hat JBoss Middleware";
 	private final String label = "Red Hat JBoss Fuse";
 
-	@XmlElement(name = "camelVersion", namespace = Namespaces.SOA_REQ)
 	private String camelVersion;
 
 	public String getCamelVersion() {

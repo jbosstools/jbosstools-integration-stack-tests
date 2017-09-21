@@ -3,20 +3,21 @@ package org.jboss.tools.switchyard.ui.bot.test;
 import static org.jboss.tools.switchyard.ui.bot.test.util.TemplateHandler.javaSource;
 import static org.junit.Assert.assertEquals;
 
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.core.resources.ProjectItem;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.runtime.reddeer.ServerBase;
-import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
-import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
+import org.jboss.tools.runtime.reddeer.requirement.ServerImplementationType;
 import org.jboss.tools.switchyard.reddeer.binding.SOAPBindingPage;
 import org.jboss.tools.switchyard.reddeer.component.Service;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
@@ -27,6 +28,7 @@ import org.jboss.tools.switchyard.reddeer.project.ProjectItemExt;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
+import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardServerRestriction;
 import org.jboss.tools.switchyard.reddeer.view.JUnitView;
 import org.jboss.tools.switchyard.reddeer.wizard.PromoteServiceWizard;
 import org.jboss.tools.switchyard.ui.bot.test.util.SoapClient;
@@ -55,7 +57,7 @@ import org.junit.runner.RunWith;
  * @author apodhrad
  * 
  */
-@SwitchYard(server = @Server(type = ServerReqType.ANY, state = ServerReqState.RUNNING) )
+@SwitchYard(state = ServerRequirementState.RUNNING)
 @OpenPerspective(JavaEEPerspective.class)
 @RunWith(RedDeerSuite.class)
 public class UseCaseSimpleTest {
@@ -65,6 +67,11 @@ public class UseCaseSimpleTest {
 
 	@InjectRequirement
 	private SwitchYardRequirement switchyardRequirement;
+
+	@RequirementRestriction
+	public static RequirementMatcher getRequirementMatcher() {
+		return new SwitchYardServerRestriction(ServerImplementationType.ANY);
+	}
 
 	@Before
 	@After
@@ -132,7 +139,7 @@ public class UseCaseSimpleTest {
 		new SwitchYardEditor().save();
 
 		/* Test SOAP Response */
-		final ServerBase server = switchyardRequirement.getConfig().getServerBase();
+		final ServerBase server = switchyardRequirement.getConfiguration().getServer();
 		server.deployProject(PROJECT);
 		new WaitUntil(new AbstractWaitCondition() {
 

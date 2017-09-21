@@ -12,30 +12,30 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.graphiti.ui.platform.GraphitiShapeEditPart;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.util.Display;
+import org.eclipse.reddeer.common.util.ResultRunnable;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.handler.IBeforeShellIsClosed;
+import org.eclipse.reddeer.direct.preferences.PreferencesUtil;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.eclipse.reddeer.eclipse.ui.perspectives.ResourcePerspective;
+import org.eclipse.reddeer.gef.api.EditPart;
+import org.eclipse.reddeer.gef.api.Palette;
+import org.eclipse.reddeer.gef.condition.EditorHasEditParts;
+import org.eclipse.reddeer.gef.editor.GEFEditor;
+import org.eclipse.reddeer.gef.handler.ViewerHandler;
+import org.eclipse.reddeer.gef.view.PaletteView;
+import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.handler.IBeforeShellIsClosed;
-import org.jboss.reddeer.core.handler.ShellHandler;
-import org.jboss.reddeer.core.util.Display;
-import org.jboss.reddeer.core.util.ResultRunnable;
-import org.jboss.reddeer.direct.preferences.PreferencesUtil;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.eclipse.ui.perspectives.ResourcePerspective;
-import org.jboss.reddeer.gef.api.EditPart;
-import org.jboss.reddeer.gef.api.Palette;
-import org.jboss.reddeer.gef.condition.EditorHasEditParts;
-import org.jboss.reddeer.gef.editor.GEFEditor;
-import org.jboss.reddeer.gef.handler.ViewerHandler;
-import org.jboss.reddeer.gef.view.PaletteView;
-import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComposite;
 import org.jboss.tools.switchyard.reddeer.preference.CompositePropertiesDialog;
@@ -148,17 +148,17 @@ public class SwitchYardEditor extends GEFEditor {
 	}
 
 	public CamelXMLServiceWizard addCamelXMLImplementation() {
-		addCamelXmlImplementation(composite);
+		addTool(TOOL_CAMEL_XML, composite);
 		return new CamelXMLServiceWizard(this);
 	}
 
 	public ExistingCamelXMLServiceWizard addCamelXmlImplementation(EditPart editPart) {
 		addTool(TOOL_CAMEL_XML, editPart);
-		return new ExistingCamelXMLServiceWizard(this);
+		return new ExistingCamelXMLServiceWizard();
 	}
 
 	public BPELServiceWizard addBPELImplementation() {
-		addBPELImplementation(composite);
+		addTool(TOOL_BPEL, composite);
 		return new BPELServiceWizard();
 	}
 
@@ -168,7 +168,7 @@ public class SwitchYardEditor extends GEFEditor {
 	}
 
 	public BPMNServiceWizard addBPMNImplementation() {
-		addBPMNImplementation(composite);
+		addTool(TOOL_BPMN, composite);
 		return new BPMNServiceWizard();
 	}
 
@@ -178,7 +178,7 @@ public class SwitchYardEditor extends GEFEditor {
 	}
 
 	public DroolsServiceWizard addDroolsImplementation() {
-		addDroolsImplementation(composite);
+		addTool(TOOL_RULES, composite);
 		return new DroolsServiceWizard();
 	}
 
@@ -274,18 +274,20 @@ public class SwitchYardEditor extends GEFEditor {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 
 		remainedShell = null;
-		ShellHandler.getInstance().closeAllNonWorbenchShells(new IBeforeShellIsClosed() {
+		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells(new IBeforeShellIsClosed() {
 
 			@Override
 			public void runBeforeShellIsClosed(Shell shell) {
 				remainedShell = shell;
 			}
 		});
-
-		super.save();
+		
+		if (isDirty()) {
+			super.save();
+		}
 
 		if (PreferencesUtil.isAutoBuildingOn()) {
-			new WaitUntil(new JobIsRunning(), TimePeriod.NORMAL, false);
+			new WaitUntil(new JobIsRunning(), TimePeriod.DEFAULT, false);
 			new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		} else {
 			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);

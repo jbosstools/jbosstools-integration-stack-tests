@@ -4,14 +4,14 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
 
+import org.eclipse.reddeer.eclipse.ui.markers.matcher.MarkerResourceMatcher;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.hamcrest.core.StringContains;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
-import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsResourceMatcher;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.common.reddeer.JiraClient;
 import org.jboss.tools.teiid.reddeer.DdlHelper;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
@@ -31,7 +31,7 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
 
-@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles={
+@TeiidServer(state = ServerRequirementState.RUNNING, connectionProfiles={
 		ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER,
 })
 public class SourceProcedureSettings {
@@ -115,10 +115,10 @@ public class SourceProcedureSettings {
 		
 		ProblemsView problemsView = new ProblemsView();
 		collector.checkThat("Errors in imported source model",
-				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(NAME_SOURCE_MODEL + ".xmi")),
+				problemsView.getProblems(ProblemType.ERROR, new MarkerResourceMatcher(NAME_SOURCE_MODEL + ".xmi")),
 				empty());
 		collector.checkThat("Errors in imported VDB",
-				problemsView.getProblems(ProblemType.ERROR, new ProblemsResourceMatcher(NAME_VDB + ".vdb")),
+				problemsView.getProblems(ProblemType.ERROR, new MarkerResourceMatcher(NAME_VDB + ".vdb")),
 				empty());		
 	}
 	

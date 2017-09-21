@@ -1,9 +1,9 @@
 package org.jboss.tools.bpmn2.reddeer.editor.dialog.jbpm;
 
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.bpmn2.reddeer.GEFProcessEditor;
 
 /**

@@ -1,7 +1,7 @@
 package org.jboss.tools.switchyard.reddeer.preference.implementation;
 
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
 
 /**
  * Represents a properties page "Implementation".

@@ -1,6 +1,6 @@
 package org.jboss.tools.teiid.ui.bot.test.suite;
 
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.teiid.ui.bot.test.XmlFileImportTest;
 import org.jboss.tools.teiid.ui.bot.test.XmlRecursiveTest;
 import org.jboss.tools.teiid.ui.bot.test.XmlSchemalessTest;

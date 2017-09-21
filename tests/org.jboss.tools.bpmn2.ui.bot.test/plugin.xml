@@ -4,10 +4,12 @@
     <extension
          id="org.jboss.reddeer.junit.before.test"
          name="BeforeTestExtPoint"
-         point="org.jboss.reddeer.junit.before.test">
+         point="org.eclipse.reddeer.junit.before.test">
    		<client
 			class="org.jboss.tools.bpmn2.ui.bot.reddeer.junit.extension.CloseGuvnorViewExt">
 		</client>
     </extension>
-
+    <extension point="org.eclipse.reddeer.junit.requirement">
+        <requirement class="org.jboss.tools.bpmn2.ui.bot.testrequirements.ProcessRuntimeRequirement"/>
+    </extension>
 </plugin>

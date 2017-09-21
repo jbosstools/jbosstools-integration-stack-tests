@@ -2,22 +2,22 @@ package org.jboss.tools.teiid.reddeer.wizard.newWizard;
 
 import java.util.Arrays;
 
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 
 /**
  * 
  * @author apodhrad
  *
  */
-public class ServerWizard extends NewWizardDialog {
+public class ServerWizard extends NewMenuWizard {
 
 	public static final String DIALOG_TITLE = "New Server";
 	
@@ -27,7 +27,7 @@ public class ServerWizard extends NewWizardDialog {
 	public static final String MANAGEMENT_OPERATIONS = "Management Operations";
 	
 	private ServerWizard() {
-		super("Server", "Server");
+		super(DIALOG_TITLE, "Server", "Server");
 		log.info("New server wizard is opened");
 	}
 	
@@ -40,16 +40,7 @@ public class ServerWizard extends NewWizardDialog {
 		wizard.open();
 		return wizard;
 	}
-	
-	/**
-	 * use nextPage()
-	 */
-	@Deprecated
-	@Override
-	public void next(){
-		super.next();
-	}
-	
+
 	public ServerWizard nextPage(){
 		log.info("Go to next wizard page");
 		super.next();

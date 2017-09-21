@@ -1,7 +1,7 @@
 package org.jboss.tools.switchyard.reddeer.preference.contract;
 
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
 
 /**
  * Represents a properties page "Contract --> Security Policy".

@@ -1,8 +1,8 @@
 package org.jboss.tools.bpmn2.reddeer.properties.jbpm;
 
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.LabeledCheckBox;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.LabeledCheckBox;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 /**
  * 

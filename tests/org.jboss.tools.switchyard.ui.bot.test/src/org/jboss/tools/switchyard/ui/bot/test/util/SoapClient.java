@@ -21,7 +21,7 @@ import javax.xml.soap.SOAPMessage;
 
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLUnit;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
+import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
 import org.xml.sax.SAXException;
 
 /**

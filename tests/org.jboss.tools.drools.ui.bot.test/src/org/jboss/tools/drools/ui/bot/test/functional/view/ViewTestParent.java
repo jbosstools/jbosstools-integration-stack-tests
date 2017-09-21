@@ -1,10 +1,11 @@
 package org.jboss.tools.drools.ui.bot.test.functional.view;
 
 import org.apache.log4j.Logger;
-import org.jboss.reddeer.eclipse.ui.perspectives.DebugPerspective;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.workbench.api.View;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.eclipse.ui.perspectives.DebugPerspective;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.workbench.api.View;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.drools.reddeer.debug.DebugView;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;
@@ -35,7 +36,7 @@ public abstract class ViewTestParent extends TestParent {
 		v.open();
 		v.selectItem(new RegexMatcher("DroolsTest.*"));
 		try {
-			new ShellMenu(new RegexMatcher("Run"), new RegexMatcher("Terminate.*")).select();
+			new ShellMenuItem(new WorkbenchShell(), new RegexMatcher("Run"), new RegexMatcher("Terminate.*")).select();
 		} catch (Exception ex) {
 			LOGGER.debug("Unable to resume debugging", ex);
 		}

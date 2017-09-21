@@ -1,28 +1,32 @@
 package org.jboss.tools.teiid.reddeer.preference;
 
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.core.util.Display;
-import org.jboss.reddeer.eclipse.datatools.ui.DriverTemplate;
-import org.jboss.reddeer.eclipse.datatools.ui.preference.DriverDefinitionPreferencePage;
-import org.jboss.reddeer.eclipse.datatools.ui.wizard.DriverDefinitionPage;
-import org.jboss.reddeer.eclipse.datatools.ui.wizard.DriverDefinitionWizard;
-import org.jboss.reddeer.swt.api.Tree;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.list.DefaultList;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.eclipse.reddeer.common.util.Display;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.eclipse.datatools.connectivity.ui.dialogs.DriverDialog;
+import org.eclipse.reddeer.eclipse.datatools.connectivity.ui.preferences.DriverPreferences;
+import org.eclipse.reddeer.eclipse.datatools.ui.DriverTemplate;
+import org.eclipse.reddeer.swt.api.Tree;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.list.DefaultList;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.teiid.reddeer.extensions.DriverDefinitionExt;
 
-public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferencePage {
+public class DriverDefinitionPreferencePageExt extends DriverPreferences {
 
 	private static final String GENERIC_JDBC = "Generic JDBC";
 	public static final CharSequence OTHER = "Other";
+
+	public DriverDefinitionPreferencePageExt(ReferencedComposite ref) {
+		super(ref);
+	}
 
 	public void open() {
 		try {
@@ -48,10 +52,10 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 	public void ok() {
 		String title = new DefaultShell().getText();
 		new OkButton().click();
-		new WaitWhile(new ShellWithTextIsAvailable(title));
+		new WaitWhile(new ShellIsAvailable(title));
 	}
 
-	private class DriverDefinitionWizardExt extends DriverDefinitionWizard {
+	private class DriverDefinitionWizardExt extends DriverDialog {
 
 		// private DriverDefinition driverDefinition;
 		private DriverDefinitionExt driverDefinition;
@@ -93,7 +97,7 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 
 			else {
 				// normal jdbc (e.g. HSQL with HSQL CP, Sybase jconn3)
-				DriverDefinitionPage page = new DriverDefinitionPage();
+				DriverDialog page = new DriverDialog();
 				page.selectDriverTemplate(drvTemp.getType(), drvTemp.getVersion());
 				page.setName(driverDefinition.getDriverName());
 				page.addDriverLibrary(driverDefinition.getDriverLibrary());// firstly clears all suggested jars, but for
@@ -103,7 +107,7 @@ public class DriverDefinitionPreferencePageExt extends DriverDefinitionPreferenc
 
 	}
 
-	private class DriverDefinitionPageExt extends DriverDefinitionPage {
+	private class DriverDefinitionPageExt extends DriverDialog {
 
 		private static final String DATABASE_NAME = "Database Name";
 		private static final String CONNECTION_URL = "Connection URL";

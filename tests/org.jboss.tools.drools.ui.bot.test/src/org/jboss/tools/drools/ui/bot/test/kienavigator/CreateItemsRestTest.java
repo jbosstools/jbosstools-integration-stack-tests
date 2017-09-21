@@ -5,11 +5,11 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.impl.button.YesButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.impl.button.YesButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.drools.reddeer.kienavigator.dialog.CreateOrgUnitDialog;
 import org.jboss.tools.drools.reddeer.kienavigator.dialog.CreateProjectDialog;
 import org.jboss.tools.drools.reddeer.kienavigator.dialog.CreateRepositoryDialog;
@@ -19,14 +19,13 @@ import org.jboss.tools.drools.reddeer.kienavigator.structure.Project;
 import org.jboss.tools.drools.reddeer.kienavigator.structure.Repository;
 import org.jboss.tools.drools.reddeer.view.KieNavigatorView;
 import org.jboss.tools.drools.ui.bot.test.util.RestClient;
-import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@Server(type = { ServerReqType.EAP, ServerReqType.WildFly }, state = ServerReqState.RUNNING)
+@Server(state = ServerRequirementState.RUNNING)
 @RunWith(RedDeerSuite.class)
 public class CreateItemsRestTest extends KieNavigatorTestParent {
 	

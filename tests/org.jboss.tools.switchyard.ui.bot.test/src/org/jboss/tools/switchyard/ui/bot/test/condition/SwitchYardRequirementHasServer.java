@@ -2,8 +2,8 @@ package org.jboss.tools.switchyard.ui.bot.test.condition;
 
 import java.lang.reflect.Field;
 
-import org.jboss.reddeer.junit.execution.TestMethodShouldRun;
-import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardConfig;
+import org.eclipse.reddeer.junit.execution.TestMethodShouldRun;
+import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardConfiguration;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement;
 import org.junit.runners.model.FrameworkMethod;
 
@@ -23,8 +23,8 @@ public class SwitchYardRequirementHasServer implements TestMethodShouldRun {
 			Object obj = field.get(SwitchYardRequirement.class);
 			if (obj instanceof SwitchYardRequirement) {
 				SwitchYardRequirement switchYardRequirement = (SwitchYardRequirement) obj;
-				SwitchYardConfig config = switchYardRequirement.getConfig();
-				return config.getServerBase() != null;
+				SwitchYardConfiguration config = switchYardRequirement.getConfiguration();
+				return config.getServer() != null;
 			}
 		} catch (Exception e) {
 			throw new SwitchYardConditionException("Cannot parse switchyardRequirement.", e);

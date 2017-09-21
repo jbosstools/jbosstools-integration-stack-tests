@@ -1,14 +1,14 @@
 package org.jboss.tools.switchyard.reddeer.wizard;
 
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
-import org.jboss.reddeer.swt.api.Button;
-import org.jboss.reddeer.swt.api.Text;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
+import org.eclipse.reddeer.swt.api.Button;
+import org.eclipse.reddeer.swt.api.Text;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 /**
  * Wizard for creating WSDL from Java.
@@ -16,12 +16,12 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  * @author apodhrad
  * 
  */
-public class Java2WSDLWizard extends NewWizardDialog {
+public class Java2WSDLWizard extends NewMenuWizard {
 
 	public static final String DIALOG_TITLE = "Java2WSDL";
 
 	public Java2WSDLWizard() {
-		super("SwitchYard", "WSDL File from Java");
+		super(DIALOG_TITLE, "SwitchYard", "WSDL File from Java");
 	}
 
 	public Java2WSDLWizard activate() {

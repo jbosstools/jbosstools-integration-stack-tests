@@ -2,17 +2,17 @@ package org.jboss.tools.teiid.reddeer.wizard.imports;
 
 import java.util.Arrays;
 
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.NextButton;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.swt.condition.ShellIsActive;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.NextButton;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.tab.DefaultTabItem;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 
 /**
@@ -27,7 +27,7 @@ public class DDLTeiidImportWizard  extends TeiidImportWizard{
 	public static final String View_Type = "View Model";
 	
 	private DDLTeiidImportWizard() {
-		super("DDL File (Teiid) >> Source or View Model");
+		super(DIALOG_TITLE, "DDL File (Teiid) >> Source or View Model");
 		log.info("DDL teiid import Wizard is opened");
 	}
 	
@@ -54,7 +54,7 @@ public class DDLTeiidImportWizard  extends TeiidImportWizard{
 		log.info("Finish wizard");
 		activate();
 		new PushButton("Finish").click();
-		if(new ShellWithTextIsActive("Table 'Supports Update' Property Changed").test()){
+		if(new ShellIsActive("Table 'Supports Update' Property Changed").test()){
 			new PushButton("OK").click();
 		}
 		new WaitWhile(new IsInProgress(), TimePeriod.LONG);

@@ -5,9 +5,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.junit.requirement.CustomConfiguration;
-import org.jboss.reddeer.junit.requirement.Requirement;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.junit.requirement.AbstractConfigurableRequirement;
 import org.jboss.tools.runtime.reddeer.RuntimeBase;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
 
@@ -17,27 +16,19 @@ import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
  * 
  */
 
-public class RuntimeRequirement implements Requirement<Runtime>, CustomConfiguration<RuntimeConfig> {
+public class RuntimeRequirement extends AbstractConfigurableRequirement<RuntimeConfiguration, Runtime> {
 
 	private static final Logger LOGGER = Logger.getLogger(RuntimeRequirement.class);
-
-	private RuntimeConfig config;
-	private Runtime runtime;
 
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.TYPE)
 	public @interface Runtime {
-		RuntimeReqType type();
-	}
 
-	@Override
-	public boolean canFulfill() {
-		return runtime.type().matches(config.getRuntimeFamily());
 	}
 
 	@Override
 	public void fulfill() {
-		RuntimeBase runtimeFamily = config.getRuntimeFamily();
+		RuntimeBase runtimeFamily = getConfiguration().getRuntimeFamily();
 		if (!runtimeFamily.exists()) {
 			LOGGER.info("Creating runtime '" + runtimeFamily.getName() + "'.");
 			runtimeFamily.create();
@@ -47,26 +38,12 @@ public class RuntimeRequirement implements Requirement<Runtime>, CustomConfigura
 	}
 
 	@Override
-	public void setDeclaration(Runtime server) {
-		this.runtime = server;
-	}
-
-	@Override
-	public Class<RuntimeConfig> getConfigurationClass() {
-		return RuntimeConfig.class;
-	}
-
-	@Override
-	public void setConfiguration(RuntimeConfig config) {
-		this.config = config;
-	}
-
-	public RuntimeConfig getConfig() {
-		return this.config;
+	public Class<RuntimeConfiguration> getConfigurationClass() {
+		return RuntimeConfiguration.class;
 	}
 
 	@Override
 	public void cleanUp() {
-		// TODO cleanUp()
+		// we don't want to clean up any runtime
 	}
 }

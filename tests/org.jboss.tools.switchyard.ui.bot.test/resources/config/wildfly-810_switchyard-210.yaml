@@ -1,0 +1,8 @@
+org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard:
+- name: WildFly-8.1.0.Final
+  configurationVersion: "2.0"
+  switchyardVersion: 2.1.0.Final
+  server:
+    "@type": wildfly
+    version: 8.x
+    home: ${project.build.directory}/wildfly-8.1.0.Final

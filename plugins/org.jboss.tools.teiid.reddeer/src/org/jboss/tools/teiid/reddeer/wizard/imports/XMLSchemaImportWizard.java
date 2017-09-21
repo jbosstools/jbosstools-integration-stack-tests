@@ -2,17 +2,17 @@ package org.jboss.tools.teiid.reddeer.wizard.imports;
 
 import java.util.Arrays;
 
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.NextButton;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.NextButton;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
 
 /**
  * Wizard for importing XML schemas
@@ -25,7 +25,7 @@ public class XMLSchemaImportWizard extends TeiidImportWizard {
 	public static final String DIALOG_TITLE = "Import XML Schema Files";
 
 	private XMLSchemaImportWizard() {
-		super("XML Schemas");
+		super(DIALOG_TITLE, "XML Schemas");
 		log.info("XML Schema import wizard is opened");
 	}
 
@@ -94,7 +94,7 @@ public class XMLSchemaImportWizard extends TeiidImportWizard {
 		log.info("Set schemaURL: '" + schemaURL + "', username: '" + userName +"', password: '" + password +"'");
 		activate();
 		new DefaultToolItem("Add XML schema URL").click();
-		new WaitUntil(new ShellWithTextIsAvailable("XML Schema Url"));
+		new WaitUntil(new ShellIsAvailable("XML Schema Url"));
 		new DefaultShell("XML Schema Url").setFocus();
 		new LabeledText("Enter XML schema URL:").setText(schemaURL);
 		if(userName != null){

@@ -1,15 +1,16 @@
 package org.jboss.tools.drools.reddeer.preference;
 
-import org.jboss.reddeer.jface.preference.PreferencePage;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.preference.PreferencePage;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
 
 /**
  * Drools Flow nodes preference page: Drools -> Drools Flow nodes
  */
 public class DroolsFlowNodesPreferencePage extends PreferencePage {
 
-	public DroolsFlowNodesPreferencePage() {
-		super("Drools", "Drools Flow nodes");
+	public DroolsFlowNodesPreferencePage(ReferencedComposite ref) {
+		super(ref, "Drools", "Drools Flow nodes");
 	}
 
 	public void setShowRuleFlowGroup(boolean value) {

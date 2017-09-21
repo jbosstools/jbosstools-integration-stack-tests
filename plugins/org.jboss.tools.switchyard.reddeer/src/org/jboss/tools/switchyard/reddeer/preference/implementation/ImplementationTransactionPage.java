@@ -2,7 +2,7 @@ package org.jboss.tools.switchyard.reddeer.preference.implementation;
 
 import java.util.List;
 
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
 
 /**
  * Represents a properties page "Transaction Policy".

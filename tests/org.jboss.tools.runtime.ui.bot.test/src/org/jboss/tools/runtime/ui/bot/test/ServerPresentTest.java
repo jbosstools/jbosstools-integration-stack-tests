@@ -2,17 +2,16 @@ package org.jboss.tools.runtime.ui.bot.test;
 
 import static org.junit.Assert.assertEquals;
 
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@Server(type = ServerReqType.ANY, state = ServerReqState.PRESENT)
+@Server(state = ServerRequirementState.PRESENT)
 @RunWith(RedDeerSuite.class)
 public class ServerPresentTest {
 
@@ -21,9 +20,9 @@ public class ServerPresentTest {
 
 	@Test
 	public void serverPresentTest() {
-		ServersView view = new ServersView();
+		ServersView2 view = new ServersView2();
 		view.open();
-		org.jboss.reddeer.eclipse.wst.server.ui.view.Server server = view.getServer(requirement.getConfig().getName());
+		org.eclipse.reddeer.eclipse.wst.server.ui.cnf.Server server = view.getServer(requirement.getConfig().getName());
 		assertEquals(requirement.getConfig().getName(), server.getLabel().getName());
 	}
 

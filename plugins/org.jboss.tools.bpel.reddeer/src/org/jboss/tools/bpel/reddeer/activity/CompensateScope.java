@@ -1,6 +1,6 @@
 package org.jboss.tools.bpel.reddeer.activity;
 
-import org.jboss.tools.bpel.reddeer.widget.DefaultCCombo;
+import org.eclipse.reddeer.swt.impl.ccombo.DefaultCCombo;
 
 /**
  * 

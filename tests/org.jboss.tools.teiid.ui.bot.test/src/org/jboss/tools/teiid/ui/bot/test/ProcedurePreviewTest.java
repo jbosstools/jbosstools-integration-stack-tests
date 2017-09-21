@@ -4,14 +4,14 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.junit.execution.annotation.RunIf;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.junit.execution.annotation.RunIf;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.condition.ShellIsActive;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
 import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
@@ -31,7 +31,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
-@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = {
+@TeiidServer(state = ServerRequirementState.RUNNING, connectionProfiles = {
 		ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER })
 public class ProcedurePreviewTest {
 
@@ -130,7 +130,7 @@ public class ProcedurePreviewTest {
 		// wait while is in progress
 		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
 		// wait while dialog Preview data... is active
-		new WaitWhile(new ShellWithTextIsActive(new RegexMatcher("Preview.*")), TimePeriod.LONG);
+		new WaitWhile(new ShellIsActive(new RegexMatcher("Preview.*")), TimePeriod.LONG);
 		SQLResult result = DatabaseDevelopmentPerspective.getInstance().getSqlResultsView().getByOperation(previewSQL);
 		return result.getStatus().equals(SQLResult.STATUS_SUCCEEDED);
 	}

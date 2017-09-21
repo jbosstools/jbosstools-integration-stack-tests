@@ -5,19 +5,19 @@ import java.io.File;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.matcher.WithMnemonicTextMatcher;
+import org.eclipse.reddeer.direct.preferences.Preferences;
+import org.eclipse.reddeer.eclipse.core.resources.ProjectItem;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.matcher.WithMnemonicTextMatcher;
-import org.jboss.reddeer.direct.preferences.Preferences;
-import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.switchyard.reddeer.condition.JUnitHasFinished;
 
 /**
@@ -37,21 +37,21 @@ public class ProjectItemExt {
 	@SuppressWarnings("unchecked")
 	public void runAs(String menu) {
 		projectItem.select();
-		new ContextMenu(new WithMnemonicTextMatcher("Run As"), new MenuMatcher(menu)).select();
+		new ContextMenuItem(new WithMnemonicTextMatcher("Run As"), new MenuMatcher(menu)).select();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
 	@SuppressWarnings("unchecked")
 	public void runAs(Configuration config) {
 		projectItem.select();
-		new ContextMenu(new WithMnemonicTextMatcher("Run As"), config.getMatcher()).select();
+		new ContextMenuItem(new WithMnemonicTextMatcher("Run As"), config.getMatcher()).select();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
 	@SuppressWarnings("unchecked")
 	public void debugAs(Configuration config) {
 		projectItem.select();
-		new ContextMenu(new WithMnemonicTextMatcher("Debug As"), config.getMatcher()).select();
+		new ContextMenuItem(new WithMnemonicTextMatcher("Debug As"), config.getMatcher()).select();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 

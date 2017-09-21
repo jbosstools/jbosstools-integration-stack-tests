@@ -2,25 +2,25 @@ package org.jboss.tools.teiid.ui.bot.test;
 
 import static org.junit.Assert.assertFalse;
 
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.core.handler.ShellHandler;
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.core.resources.Project;
+import org.eclipse.reddeer.eclipse.core.resources.ProjectItem;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.swt.condition.ShellIsActive;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.AssertBot;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
@@ -52,9 +52,9 @@ public class ModelRefactoringTest {
 
 	@After
 	public void deleteProject() {
-		ShellHandler.getInstance().closeAllNonWorbenchShells();
+		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 		try {
-			new ShellMenu("File", "Close All").select();
+			new ShellMenuItem(new WorkbenchShell(), "File", "Close All").select();
 		} catch (Exception ex) {
 			// no editors open, ignore
 		}
@@ -233,25 +233,25 @@ public class ModelRefactoringTest {
 		new DefaultShell();
 		new ModelExplorer();
 		project.getProjectItem(path).select();
-		new ContextMenu("Modeling", "Update Imports").select();
-		new WaitWhile(new ShellWithTextIsAvailable("Progress Information"), TimePeriod.SHORT);
+		new ContextMenuItem("Modeling", "Update Imports").select();
+		new WaitWhile(new ShellIsAvailable("Progress Information"), TimePeriod.SHORT);
 	}
 
 	private void renameItem(ProjectItem projectItem, String newName) {
 		projectItem.select();
 		String oldName = projectItem.getName();
-		new ContextMenu("Refactor", "Rename...").select();
+		new ContextMenuItem("Refactor", "Rename...").select();
 		new DefaultShell("Rename Resource " + oldName);
 		new LabeledText("New name:").setText(newName);
 		new OkButton().click();
-		new WaitWhile(new ShellWithTextIsActive("Rename Resource " + oldName));
-		assertFalse("Refactoring failed", new ShellWithTextIsAvailable("Rename Resource " + oldName).test());
+		new WaitWhile(new ShellIsActive("Rename Resource " + oldName));
+		assertFalse("Refactoring failed", new ShellIsAvailable("Rename Resource " + oldName).test());
 
 	}
 
 	private void moveItem(ProjectItem projectItem, String... newPath) {
 		projectItem.select();
-		new ContextMenu("Refactor", "Move...").select();
+		new ContextMenuItem("Refactor", "Move...").select();
 		new DefaultShell("Move Resource");
 		new DefaultTree();
 		String[] fullPath = new String[newPath.length + 1];
@@ -259,7 +259,7 @@ public class ModelRefactoringTest {
 		System.arraycopy(newPath, 0, fullPath, 1, newPath.length);
 		new DefaultTreeItem(fullPath).select();
 		new OkButton().click();
-		new WaitWhile(new ShellWithTextIsActive("Move Resource"));
+		new WaitWhile(new ShellIsActive("Move Resource"));
 	}
 
 	/**

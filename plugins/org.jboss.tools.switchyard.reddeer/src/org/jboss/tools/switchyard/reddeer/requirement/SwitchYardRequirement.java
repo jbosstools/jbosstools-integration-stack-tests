@@ -6,21 +6,16 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.List;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.direct.preferences.Preferences;
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.utils.DeleteUtils;
-import org.jboss.reddeer.junit.requirement.CustomConfiguration;
-import org.jboss.reddeer.junit.requirement.Requirement;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.workbench.handler.EditorHandler;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.direct.preferences.Preferences;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.junit.requirement.AbstractConfigurableRequirement;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.workbench.handler.EditorHandler;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.runtime.reddeer.ServerBase;
 import org.jboss.tools.runtime.reddeer.impl.ServerAS;
 import org.jboss.tools.runtime.reddeer.impl.ServerKaraf;
-import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
-import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.jboss.tools.switchyard.reddeer.requirement.SwitchYardRequirement.SwitchYard;
 import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
 
@@ -29,51 +24,25 @@ import org.jboss.tools.switchyard.reddeer.wizard.SwitchYardProjectWizard;
  * @author apodhrad
  *
  */
-public class SwitchYardRequirement implements Requirement<SwitchYard>, CustomConfiguration<SwitchYardConfig> {
+public class SwitchYardRequirement extends AbstractConfigurableRequirement<SwitchYardConfiguration, SwitchYard> {
 
 	private static final Logger LOGGER = Logger.getLogger(SwitchYardRequirement.class);
-
-	private SwitchYardConfig config;
-	private SwitchYard switchyard;
 
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.TYPE)
 	public @interface SwitchYard {
-		String configurationVersion() default SwitchYardProjectWizard.DEFAULT_CONFIGURATION_VERSION;
-
-		String libraryVersion() default SwitchYardProjectWizard.DEFAULT_LIBRARY_VERSION;
-
-		Server server() default @Server(type = {}, state = ServerReqState.PRESENT);
+		ServerRequirementState state() default ServerRequirementState.PRESENT;
 	}
 
 	@Override
-	public Class<SwitchYardConfig> getConfigurationClass() {
-		return SwitchYardConfig.class;
-	}
-
-	@Override
-	public void setConfiguration(SwitchYardConfig config) {
-		this.config = config;
-	}
-
-	@Override
-	public boolean canFulfill() {
-		ServerReqType[] type = switchyard.server().type();
-		if (type.length == 0) {
-			return true;
-		}
-		for (int i = 0; i < type.length; i++) {
-			if (type[i].matches(config.getServerBase())) {
-				return true;
-			}
-		}
-		return false;
+	public Class<SwitchYardConfiguration> getConfigurationClass() {
+		return SwitchYardConfiguration.class;
 	}
 
 	@Override
 	public void fulfill() {
 		deleteAllProjects();
-		ServerBase serverBase = config.getServerBase();
+		ServerBase serverBase = configuration.getServer();
 		if (serverBase == null) {
 			return;
 		}
@@ -95,7 +64,7 @@ public class SwitchYardRequirement implements Requirement<SwitchYard>, CustomCon
 		if (!serverBase.exists()) {
 			serverBase.create();
 		}
-		serverBase.setState(switchyard.server().state());
+		serverBase.setState(annotation.state());
 	}
 
 	public void deleteAllProjects() {
@@ -108,18 +77,9 @@ public class SwitchYardRequirement implements Requirement<SwitchYard>, CustomCon
 		pe.deleteAllProjects();
 	}
 
-	@Override
-	public void setDeclaration(SwitchYard switchyard) {
-		this.switchyard = switchyard;
-	}
-
-	public SwitchYardConfig getConfig() {
-		return this.config;
-	}
-
 	public String getTargetRuntimeLabel() {
-		String targetRuntime = getConfig().getTargetRuntime();
-		ServerBase server = getConfig().getServerBase();
+		String targetRuntime = configuration.getTargetRuntime();
+		ServerBase server = configuration.getServer();
 		if (targetRuntime != null) {
 			if (server != null && !targetRuntime.matches(".* \\[.*\\]")) {
 				targetRuntime += " [" + server.getRuntimeName() + "]";
@@ -129,27 +89,27 @@ public class SwitchYardRequirement implements Requirement<SwitchYard>, CustomCon
 		if (server == null) {
 			return "<None>";
 		} else if (server instanceof ServerAS) {
-			targetRuntime = "SwitchYard: AS7 Extension " + getConfig().getSwitchyardVersion();
+			targetRuntime = "SwitchYard: AS7 Extension " + configuration.getSwitchyardVersion();
 		} else if (server instanceof ServerKaraf) {
-			targetRuntime = "SwitchYard: Karaf Extension " + getConfig().getSwitchyardVersion();
+			targetRuntime = "SwitchYard: Karaf Extension " + configuration.getSwitchyardVersion();
 		}
 		return targetRuntime + " [" + server.getRuntimeName() + "]";
 	}
 
 	public String getLibraryVersionLabel() {
-		String libraryVersion = getConfig().getLibraryVersion();
+		String libraryVersion = configuration.getLibraryVersion();
 		if (libraryVersion != null) {
 			return libraryVersion;
 		}
-		return getConfig().getSwitchyardVersion();
+		return configuration.getSwitchyardVersion();
 	}
 
 	public SwitchYardProjectWizard project(String name) {
 		SwitchYardProjectWizard project = new SwitchYardProjectWizard(name);
-		project.config(config.getConfigurationVersion());
+		project.config(configuration.getConfigurationVersion());
 		project.library(getLibraryVersionLabel());
 		project.runtime(getTargetRuntimeLabel());
-		IntegrationPack integrationPack = config.getIntegrationPack();
+		IntegrationPack integrationPack = configuration.getIntegrationPack();
 		if (integrationPack != null) {
 			project.intpkg(integrationPack.getIntegrationPackVersion());
 			project.intpkgKie(integrationPack.getKieVersion());

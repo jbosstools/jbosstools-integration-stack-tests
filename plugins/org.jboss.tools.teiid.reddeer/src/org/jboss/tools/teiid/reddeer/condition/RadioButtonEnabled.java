@@ -1,7 +1,7 @@
 package org.jboss.tools.teiid.reddeer.condition;
 
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
 
 /**
  * Condition that specifies if a progress window is still present

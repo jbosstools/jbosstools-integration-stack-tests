@@ -1,16 +1,16 @@
 package org.jboss.tools.switchyard.reddeer.wizard;
 
-import org.jboss.reddeer.jface.wizard.WizardDialog;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.jface.wizard.WizardDialog;
+import org.eclipse.reddeer.swt.condition.ShellIsActive;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.switchyard.reddeer.condition.TableHasRow;
 
 /**
@@ -22,12 +22,12 @@ public abstract class ExistingServiceWizard<T extends ExistingServiceWizard<?>> 
 
 	private String dialogTitle;
 
-	public ExistingServiceWizard() {
-		super();
-	}
+//	public ExistingServiceWizard() {
+//		super();
+//	}
 
 	public ExistingServiceWizard(String dialogTitle) {
-		super();
+		super(dialogTitle);
 		this.dialogTitle = dialogTitle;
 	}
 
@@ -45,7 +45,7 @@ public abstract class ExistingServiceWizard<T extends ExistingServiceWizard<?>> 
 		new DefaultText().setText(impl);
 		new WaitUntil(new TableHasRow(new DefaultTable(), new RegexMatcher(".*" + impl + ".*")));
 		new PushButton("OK").click();
-		new WaitWhile(new ShellWithTextIsActive(getSelectionDialogTitle()));
+		new WaitWhile(new ShellIsActive(getSelectionDialogTitle()));
 		return activate();
 	}
 

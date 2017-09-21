@@ -1,13 +1,13 @@
 package org.jboss.tools.teiid.reddeer.view;
 
-import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.eclipse.ui.views.properties.PropertySheet;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.wizard.imports.ImportFromFileSystemWizard;
 
-public class PropertiesViewExt extends PropertiesView{
+public class PropertiesViewExt extends PropertySheet {
 	
 	/**
 	 * Import udf to workspace and set udf to udf function
@@ -26,7 +26,7 @@ public class PropertiesViewExt extends PropertiesView{
 				.finish();
 	
 		new ModelExplorer().openModelEditor(projectName, model + ".xmi", function);
-		PropertiesView propertiesView = new PropertiesView();
+		PropertySheet propertiesView = new PropertySheet();
 		propertiesView.getProperty("Extension", "relational:UDF Jar Path").getTreeItem().doubleClick();
 		new PushButton("...").click();
 			

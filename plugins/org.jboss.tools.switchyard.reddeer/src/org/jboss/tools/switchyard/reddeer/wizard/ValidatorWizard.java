@@ -2,11 +2,12 @@ package org.jboss.tools.switchyard.reddeer.wizard;
 
 import java.util.List;
 
-import org.jboss.reddeer.jface.wizard.WizardDialog;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.list.DefaultList;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.jface.wizard.WizardDialog;
+import org.eclipse.reddeer.swt.api.Shell;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.list.DefaultList;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.switchyard.reddeer.widget.RadioButtonExt;
 
 /**
@@ -21,7 +22,8 @@ public class ValidatorWizard extends WizardDialog {
 	}
 
 	public ValidatorWizard activate() {
-		new DefaultShell("New Validator");
+		Shell shell = new DefaultShell("New Validator");
+		setShell(shell);
 		return this;
 	}
 

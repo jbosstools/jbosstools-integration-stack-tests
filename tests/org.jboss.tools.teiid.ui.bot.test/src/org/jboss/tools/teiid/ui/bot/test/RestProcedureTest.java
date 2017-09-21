@@ -8,15 +8,15 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.ResourceFileHelper;
 import org.jboss.tools.teiid.reddeer.connection.SimpleHttpClient;
@@ -59,7 +59,7 @@ import com.google.gson.JsonParser;
  */
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
-@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles = {ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER})
+@TeiidServer(state = ServerRequirementState.RUNNING, connectionProfiles = {ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER})
 public class RestProcedureTest {
 	private static final String PROJECT_NAME = "RestProcedureProject";
 	private static final String VIEW_MODEL = "PartsView.xmi";
@@ -113,8 +113,8 @@ public class RestProcedureTest {
 		AbstractWait.sleep(TimePeriod.getCustom(5));
 		
 		String response = new SimpleHttpClient("http://localhost:8080/" + vdb + "_1/PartsView/part/P305")
-				.setBasicAuth(teiidServer.getServerConfig().getServerBase().getProperty("teiidUser"),
-						teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword"))
+				.setBasicAuth(teiidServer.getServerConfig().getServer().getProperty("teiidUser"),
+						teiidServer.getServerConfig().getServer().getProperty("teiidPassword"))
 				.get();
 		assertEquals(fileHelper.getXmlNoHeader("RestProcedureTest/getResponse"), response);
 	}
@@ -155,16 +155,16 @@ public class RestProcedureTest {
 		
 		try {
 			String response = new SimpleHttpClient("http://localhost:8080/" + war + "/PartsView/part/")
-					.setBasicAuth(teiidServer.getServerConfig().getServerBase().getProperty("teiidUser"),
-							teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword"))
+					.setBasicAuth(teiidServer.getServerConfig().getServer().getProperty("teiidUser"),
+							teiidServer.getServerConfig().getServer().getProperty("teiidPassword"))
 					.addHeader("Content-Type", "application/xml")
 					.addHeader("Accept", "application/xml; charset=UTF-8") // windows-1252
 					.post(fileHelper.getXmlNoHeader("RestProcedureTest/insertRequest"));
 			assertEquals("<response>Operation Successful!</response>", response);
 			
 			response = new SimpleHttpClient("http://localhost:8080/" + war + "/PartsView/json/part/")
-					.setBasicAuth(teiidServer.getServerConfig().getServerBase().getProperty("teiidUser"),
-							teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword"))
+					.setBasicAuth(teiidServer.getServerConfig().getServer().getProperty("teiidUser"),
+							teiidServer.getServerConfig().getServer().getProperty("teiidPassword"))
 					.addHeader("Content-Type", "application/json")
 					.addHeader("Accept", "application/json; charset=UTF-8") // windows-1252
 					.post(fileHelper.getFlatFile("RestProcedureTest/insertRequest.json"));
@@ -215,14 +215,14 @@ public class RestProcedureTest {
 		modelExplorer.deployWar(teiidServer, PROJECT_NAME, war);
 		
 		String response = new SimpleHttpClient("http://localhost:8080/" + war + "/PartsView/part/P305")
-				.setBasicAuth(teiidServer.getServerConfig().getServerBase().getProperty("teiidUser"),
-						teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword"))
+				.setBasicAuth(teiidServer.getServerConfig().getServer().getProperty("teiidUser"),
+						teiidServer.getServerConfig().getServer().getProperty("teiidPassword"))
 				.post("");
 		assertEquals(fileHelper.getXmlNoHeader("RestProcedureTest/getResponse"), response);
 		
 		response = new SimpleHttpClient("http://localhost:8080/" + war + "/PartsView/part/P305")
-				.setBasicAuth(teiidServer.getServerConfig().getServerBase().getProperty("teiidUser"),
-						teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword"))
+				.setBasicAuth(teiidServer.getServerConfig().getServer().getProperty("teiidUser"),
+						teiidServer.getServerConfig().getServer().getProperty("teiidPassword"))
 				.get();
 		assertEquals(fileHelper.getXmlNoHeader("RestProcedureTest/getResponse"), response);
 	}
@@ -343,8 +343,8 @@ public class RestProcedureTest {
 	
 	private void checkWarHttpBasicSecurity(String uri, String expected) throws IOException {
 		String response = new SimpleHttpClient(uri)
-				.setBasicAuth(teiidServer.getServerConfig().getServerBase().getProperty("teiidUser"),
-						teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword"))
+				.setBasicAuth(teiidServer.getServerConfig().getServer().getProperty("teiidUser"),
+						teiidServer.getServerConfig().getServer().getProperty("teiidPassword"))
 				.get();
 		assertEquals(expected, response);
 	}
@@ -362,8 +362,8 @@ public class RestProcedureTest {
 	 */
 	private void checkSwagger(String modelName, String war) throws IOException {
 		new SimpleHttpClient("http://localhost:8080/" + war)
-				.setBasicAuth(teiidServer.getServerConfig().getServerBase().getProperty("teiidUser"),
-						teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword"))
+				.setBasicAuth(teiidServer.getServerConfig().getServer().getProperty("teiidUser"),
+						teiidServer.getServerConfig().getServer().getProperty("teiidPassword"))
 				.get();
 		
 		ArrayList<String> allowedPaths = new ArrayList<String>();
@@ -373,8 +373,8 @@ public class RestProcedureTest {
 		allowedPaths.add("\"/"+ modelName +"/json/PARTS/{pk_PART_ID_in}\"");
 
 		String response = new SimpleHttpClient("http://localhost:8080/" + war + "/api-docs/" + modelName)
-				.setBasicAuth(teiidServer.getServerConfig().getServerBase().getProperty("teiidUser"),
-						teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword"))
+				.setBasicAuth(teiidServer.getServerConfig().getServer().getProperty("teiidUser"),
+						teiidServer.getServerConfig().getServer().getProperty("teiidPassword"))
 				.get();
 		
 		JsonObject wholeJson = new JsonParser().parse(response).getAsJsonObject();

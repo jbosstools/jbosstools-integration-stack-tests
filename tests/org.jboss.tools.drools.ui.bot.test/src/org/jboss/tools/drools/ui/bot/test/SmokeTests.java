@@ -1,6 +1,6 @@
 package org.jboss.tools.drools.ui.bot.test;
 
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.drools.ui.bot.test.smoke.KieNavigatorTest;
 import org.jboss.tools.drools.ui.bot.test.smoke.PerspectiveTest;
 import org.junit.runner.RunWith;

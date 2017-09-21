@@ -1,14 +1,14 @@
 package org.jboss.tools.bpel.reddeer.editor;
 
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.ui.views.properties.PropertySheet;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.table.DefaultTableItem;
 
 /**
  * 
@@ -24,19 +24,19 @@ public class Variable {
 	}
 
 	public void activate() {
-		new PropertiesView().open();
+		new PropertySheet().open();
 		treeItem.select();
 	}
 
 	public Variable setType(String filter, String name) {
 		activate();
-		new PropertiesView().selectTab("Details");
+		new PropertySheet().selectTab("Details");
 		new PushButton("Browse...").click();
 		new DefaultShell("Choose type of variable");
 		new CheckBox(filter).toggle(true);
 		new DefaultTableItem(name).select();
 		new OkButton().click();
-		new WaitWhile(new ShellWithTextIsAvailable("Choose type of a variable"));
+		new WaitWhile(new ShellIsAvailable("Choose type of a variable"));
 		return this;
 	}
 

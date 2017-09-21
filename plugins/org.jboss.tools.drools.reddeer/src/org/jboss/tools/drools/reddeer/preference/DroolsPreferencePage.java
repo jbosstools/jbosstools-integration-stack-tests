@@ -1,8 +1,9 @@
 package org.jboss.tools.drools.reddeer.preference;
 
-import org.jboss.reddeer.jface.preference.PreferencePage;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.preference.PreferencePage;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
 
 /**
  * Drools preference page.
@@ -17,8 +18,8 @@ public class DroolsPreferencePage extends PreferencePage {
 	private static final String LABEL_ALOLOW_NODES_CUSTOMIZATION = "Allow the customization of process nodes.";
 	private static final String LABEL_INTERNAL_CLASSES = "Internal Drools classes are:";
 
-	public DroolsPreferencePage() {
-		super("Drools");
+	public DroolsPreferencePage(ReferencedComposite ref) {
+		super(ref, "Drools");
 	}
 
 	/**

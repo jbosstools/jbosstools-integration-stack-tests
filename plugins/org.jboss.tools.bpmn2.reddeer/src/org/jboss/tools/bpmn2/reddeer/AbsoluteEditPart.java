@@ -1,9 +1,9 @@
 package org.jboss.tools.bpmn2.reddeer;
 
 import org.hamcrest.Matcher;
-import org.jboss.reddeer.gef.editor.GEFEditor;
-import org.jboss.reddeer.gef.impl.editpart.AbstractEditPart;
-import org.jboss.reddeer.gef.matcher.IsEditPartWithLabel;
+import org.eclipse.reddeer.gef.editor.GEFEditor;
+import org.eclipse.reddeer.gef.impl.editpart.AbstractEditPart;
+import org.eclipse.reddeer.gef.matcher.IsEditPartWithLabel;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;

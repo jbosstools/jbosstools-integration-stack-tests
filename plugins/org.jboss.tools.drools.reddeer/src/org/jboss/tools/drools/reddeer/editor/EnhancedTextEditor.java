@@ -6,9 +6,9 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.viewers.ISelection;
-import org.jboss.reddeer.core.util.Display;
-import org.jboss.reddeer.core.util.ResultRunnable;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.common.util.Display;
+import org.eclipse.reddeer.common.util.ResultRunnable;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 
 @Deprecated
 public class EnhancedTextEditor extends TextEditor {
@@ -86,13 +86,13 @@ public class EnhancedTextEditor extends TextEditor {
 	}
 
 	protected IDocument getDocument() {
-		return getTextEditorPart().getDocumentProvider().getDocument(getTextEditorPart().getEditorInput());
+		return getEditorPart().getDocumentProvider().getDocument(getEditorPart().getEditorInput());
 	}
 
 	protected void setSelection(final int offset, final int length) {
 		Display.syncExec(new Runnable() {
 			public void run() {
-				getTextEditorPart().getSelectionProvider()
+				getEditorPart().getSelectionProvider()
 						.setSelection(new TextSelection(getDocument(), offset, length));
 			}
 		});
@@ -101,7 +101,7 @@ public class EnhancedTextEditor extends TextEditor {
 	protected int getOffset() {
 		int offset = Display.syncExec(new ResultRunnable<Integer>() {
 			public Integer run() {
-				ISelection sel = getTextEditorPart().getSelectionProvider().getSelection();
+				ISelection sel = getEditorPart().getSelectionProvider().getSelection();
 				if (sel instanceof ITextSelection) {
 					return ((ITextSelection) sel).getOffset();
 				}

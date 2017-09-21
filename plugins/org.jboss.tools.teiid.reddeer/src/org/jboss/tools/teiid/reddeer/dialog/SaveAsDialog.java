@@ -2,14 +2,14 @@ package org.jboss.tools.teiid.reddeer.dialog;
 
 import java.util.Arrays;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.swt.condition.ShellIsActive;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 
 public class SaveAsDialog extends AbstractDialog {
 	private static final Logger log = Logger.getLogger(SaveAsDialog.class);
@@ -28,13 +28,13 @@ public class SaveAsDialog extends AbstractDialog {
 	public void finish() {
 		log.info("Finishing '" + title + "' Dialog");
 		new OkButton().click();
-		new WaitWhile(new ShellWithTextIsActive(title), TimePeriod.NORMAL);
+		new WaitWhile(new ShellIsActive(title), TimePeriod.DEFAULT);
 		
 		AbstractWait.sleep(TimePeriod.SHORT);
 		String importRefDialogName = title + " - Import References";
-		if (new ShellWithTextIsActive(importRefDialogName).test()){
+		if (new ShellIsActive(importRefDialogName).test()){
 			new OkButton().click();
-			new WaitWhile(new ShellWithTextIsActive(importRefDialogName), TimePeriod.NORMAL);
+			new WaitWhile(new ShellIsActive(importRefDialogName), TimePeriod.DEFAULT);
 		}
 	}
 

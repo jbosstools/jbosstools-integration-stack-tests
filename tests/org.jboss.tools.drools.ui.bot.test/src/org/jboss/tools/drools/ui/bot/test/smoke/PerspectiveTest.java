@@ -1,8 +1,8 @@
 package org.jboss.tools.drools.ui.bot.test.smoke;
 
-import org.jboss.reddeer.eclipse.ui.perspectives.AbstractPerspective;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.eclipse.ui.perspectives.AbstractPerspective;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
 import org.jboss.tools.drools.reddeer.perspective.JbpmPerspective;
 import org.jboss.tools.drools.ui.bot.test.util.TestParent;

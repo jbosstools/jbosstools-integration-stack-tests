@@ -1,11 +1,11 @@
 package org.jboss.tools.drools.reddeer.properties;
 
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 
 public class DroolsProjectProperties {
 	private final String projectName;
@@ -15,10 +15,10 @@ public class DroolsProjectProperties {
 	}
 
 	public void open() {
-		PackageExplorer explorer = new PackageExplorer();
+		PackageExplorerPart explorer = new PackageExplorerPart();
 		explorer.open();
 		explorer.getProject(projectName).select();
-		new ContextMenu("Properties").select();
+		new ContextMenuItem("Properties").select();
 		new DefaultTreeItem("Drools").select();
 	}
 

@@ -1,7 +1,5 @@
 package org.jboss.tools.switchyard.reddeer.wizard;
 
-import org.jboss.reddeer.gef.editor.GEFEditor;
-
 /**
  * 
  * @author apodhrad
@@ -12,11 +10,11 @@ public class ExistingBPELServiceWizard extends ExistingServiceWizard<ExistingBPE
 	public static final String DIALOG_TITLE = "";
 
 	public ExistingBPELServiceWizard() {
-		this(null);
+		this(DIALOG_TITLE);
 	}
 
-	public ExistingBPELServiceWizard(GEFEditor editor) {
-		super(DIALOG_TITLE);
+	public ExistingBPELServiceWizard(String title) {
+		super(title);
 	}
 
 	@Override

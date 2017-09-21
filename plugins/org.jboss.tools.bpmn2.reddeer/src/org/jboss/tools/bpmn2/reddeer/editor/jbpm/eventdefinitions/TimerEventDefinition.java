@@ -1,7 +1,7 @@
 package org.jboss.tools.bpmn2.reddeer.editor.jbpm.eventdefinitions;
 
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.reddeer.editor.jbpm.EventDefinition;
 import org.jboss.tools.bpmn2.reddeer.editor.properties.SectionToolItem;
 

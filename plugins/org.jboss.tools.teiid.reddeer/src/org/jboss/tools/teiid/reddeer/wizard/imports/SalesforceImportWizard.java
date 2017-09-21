@@ -2,15 +2,15 @@ package org.jboss.tools.teiid.reddeer.wizard.imports;
 
 import java.util.Arrays;
 
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.NextButton;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.NextButton;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 
 public class SalesforceImportWizard extends TeiidImportWizard {
@@ -18,7 +18,7 @@ public class SalesforceImportWizard extends TeiidImportWizard {
 	public static final String DIALOG_TITLE = "Create Relational Model from SalesForce Data Model";
 
 	private SalesforceImportWizard() {
-		super("Salesforce >> Source Model");
+		super(DIALOG_TITLE, "Salesforce >> Source Model");
 		log.info("Salesforce import wizard is opened");
 	}
 	

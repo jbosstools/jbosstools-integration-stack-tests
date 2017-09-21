@@ -3,26 +3,26 @@ package org.jboss.tools.switchyard.reddeer.wizard;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.core.handler.WidgetHandler;
-import org.jboss.reddeer.core.reference.ReferencedComposite;
-import org.jboss.reddeer.direct.preferences.PreferencesUtil;
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
-import org.jboss.reddeer.swt.api.Combo;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.group.DefaultGroup;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.handler.ControlHandler;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.direct.preferences.PreferencesUtil;
+import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
+import org.eclipse.reddeer.swt.api.Combo;
+import org.eclipse.reddeer.swt.condition.ShellIsActive;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.swt.keyboard.KeyboardFactory;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.switchyard.reddeer.condition.SwitchYardEditorIsOpen;
 import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
 
@@ -32,7 +32,7 @@ import org.jboss.tools.switchyard.reddeer.project.SwitchYardProject;
  * @author apodhrad
  * 
  */
-public class SwitchYardProjectWizard extends NewWizardDialog {
+public class SwitchYardProjectWizard extends NewMenuWizard {
 
 	public static final String PROJECT_NAME = "Project name:";
 	public static final String ARTIFACT_ID = "Artifact Id:";
@@ -69,7 +69,7 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 	private String intpkgKieVersion;
 
 	public SwitchYardProjectWizard() {
-		super("SwitchYard", "SwitchYard Project");
+		super("New SwitchYard Project", "SwitchYard", "SwitchYard Project");
 		this.configurationVersion = DEFAULT_CONFIGURATION_VERSION;
 		this.libraryVersion = DEFAULT_LIBRARY_VERSION;
 		this.components = new ArrayList<String[]>();
@@ -427,13 +427,11 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 		}
 
 		TimePeriod timeout = TimePeriod.getCustom(20 * 60 * 1000);
-		new WaitWhile(new ShellWithTextIsActive(DIALOG_TITLE), timeout);
+		new WaitWhile(new ShellIsActive(DIALOG_TITLE), timeout);
 		new WaitWhile(new JobIsRunning(), timeout);
 	}
 
 	private class LabeledComboExt extends LabeledCombo {
-
-		private final Logger log = Logger.getLogger(LabeledComboExt.class);
 
 		public LabeledComboExt(String label) {
 			super(label);
@@ -441,11 +439,6 @@ public class SwitchYardProjectWizard extends NewWizardDialog {
 
 		public LabeledComboExt(ReferencedComposite referencedComposite, String label) {
 			super(referencedComposite, label);
-		}
-
-		public void setFocus() {
-			log.debug("Set focus to Combo Text");
-			WidgetHandler.getInstance().setFocus(swtWidget);
 		}
 
 		public void typeText(String text) {

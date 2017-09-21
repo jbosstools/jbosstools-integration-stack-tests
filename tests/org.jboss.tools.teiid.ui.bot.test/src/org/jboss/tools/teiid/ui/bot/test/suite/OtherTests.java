@@ -1,6 +1,6 @@
 package org.jboss.tools.teiid.ui.bot.test.suite;
 
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.teiid.ui.bot.test.DataRolesTest;
 import org.jboss.tools.teiid.ui.bot.test.GuidesTest;
 import org.jboss.tools.teiid.ui.bot.test.PreviewModelTest;

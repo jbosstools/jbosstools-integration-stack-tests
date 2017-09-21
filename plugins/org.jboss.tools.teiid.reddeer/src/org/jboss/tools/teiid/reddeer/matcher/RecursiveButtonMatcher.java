@@ -6,7 +6,7 @@ import org.eclipse.gef.GraphicalEditPart;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Factory;
-import org.jboss.reddeer.core.util.Display;
+import org.eclipse.reddeer.common.util.Display;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 
 public class RecursiveButtonMatcher extends BaseMatcher<EditPart> {

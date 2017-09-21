@@ -14,21 +14,23 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.Platform;
-import org.jboss.reddeer.core.handler.ShellHandler;
-import org.jboss.reddeer.core.lookup.ShellLookup;
-import org.jboss.reddeer.core.util.Display;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.junit.screenshot.CaptureScreenshotException;
-import org.jboss.reddeer.junit.screenshot.ScreenshotCapturer;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
-import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
+import org.eclipse.reddeer.common.util.Display;
+import org.eclipse.reddeer.core.lookup.ShellLookup;
+import org.eclipse.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
+import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaPerspective;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.junit.screenshot.CaptureScreenshotException;
+import org.eclipse.reddeer.junit.screenshot.ScreenshotCapturer;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.workbench.impl.view.WorkbenchView;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage.DroolsRuntime;
 import org.jboss.tools.drools.ui.bot.test.Activator;
@@ -184,14 +186,14 @@ public abstract class TestParent {
 		final int numberOfAttempts = 5;
 		
 		for (int i = 0; i < numberOfAttempts; i++) {
-			PackageExplorer pe = new PackageExplorer();
+			PackageExplorerPart pe = new PackageExplorerPart();
 			pe.open();
 			
-			new ShellMenu("File", "Refresh").select();
+			new ShellMenuItem(new WorkbenchShell(), "File", "Refresh").select();
 			
 			pe.deleteAllProjects();
 			
-			new ShellMenu("File", "Refresh").select();
+			new ShellMenuItem(new WorkbenchShell(), "File", "Refresh").select();
 			
 			if (pe.getProjects().size() == 0) {
 				break;
@@ -200,8 +202,10 @@ public abstract class TestParent {
 	}
 
 	protected void deleteAllRuntimes() {
-		DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage();
-		pref.open();
+		WorkbenchPreferenceDialog preferences = new WorkbenchPreferenceDialog();
+		preferences.open();
+		DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage(preferences);
+		preferences.select(pref);
 		for (DroolsRuntime runtime : pref.getDroolsRuntimes()) {
 			pref.removeDroolsRuntime(runtime.getName());
 		}
@@ -283,7 +287,7 @@ public abstract class TestParent {
 				break;
 			}
 		}
-		ShellHandler.getInstance().closeAllNonWorbenchShells();
+		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 	}
 
 	protected String getResourcesLocation() {

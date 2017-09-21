@@ -3,23 +3,25 @@ package org.jboss.tools.bpmn2.ui.bot.test.testcase.dialog;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
-import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsDescriptionMatcher;
-import org.jboss.tools.runtime.reddeer.requirement.RuntimeReqType;
-import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
-import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.eclipse.reddeer.eclipse.core.resources.Project;
+import org.eclipse.reddeer.eclipse.ui.markers.matcher.MarkerDescriptionMatcher;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
+import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.bpmn2.reddeer.dialog.JBPMProjectWizard;
 import org.jboss.tools.bpmn2.reddeer.dialog.JBPMProjectWizard.ProjectType;
-
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeImplementationRestriction;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeImplementationType;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
+import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -29,13 +31,18 @@ import org.junit.runner.RunWith;
 /**
  * Verify functionality of the project wizard.
  */
-@Runtime(type = RuntimeReqType.JBPM)
+@Runtime
 @RunWith(RedDeerSuite.class)
 public class JBPMProjectWizardTest {
 	
 	@InjectRequirement
 	protected RuntimeRequirement jbpmRuntime;
 	
+	@RequirementRestriction
+	public static RequirementMatcher getRequirementMatcher() {
+		return new RuntimeImplementationRestriction(RuntimeImplementationType.JBPM);
+	}
+
 	private static ProjectExplorer explorerView;
 	private static JBPMProjectWizard wizardView;
 	private static ProblemsView problemsView;
@@ -51,7 +58,7 @@ public class JBPMProjectWizardTest {
 	public void deleteAllProjects() {
 		try {
 			problemsView.open();
-			problemsView.getProblems(ProblemType.ERROR, new ProblemsDescriptionMatcher("")).isEmpty();	
+			problemsView.getProblems(ProblemType.ERROR, new MarkerDescriptionMatcher("")).isEmpty();	
 		} finally {
 		
 			for (Project p : explorerView.getProjects()) {
@@ -67,8 +74,8 @@ public class JBPMProjectWizardTest {
 
 		Project p = explorerView.getProject("TestProject");
 		// the node list will contain one empty node!
-		assertTrue(p.containsItem("src/main/resources", "com.sample"));
-		assertTrue(p.containsItem("src/main/resources", "META-INF", "kmodule.xml"));
+		assertTrue(p.containsResource("src/main/resources", "com.sample"));
+		assertTrue(p.containsResource("src/main/resources", "META-INF", "kmodule.xml"));
 	}
 	
 	@Test
@@ -78,8 +85,8 @@ public class JBPMProjectWizardTest {
 
 		Project p = explorerView.getProject("TestProjectWithRuntime");
 		// the node list will contain one empty node!
-		assertTrue(p.containsItem("src/main/resources", "com.sample"));
-		assertTrue(p.containsItem("src/main/resources", "META-INF", "kmodule.xml"));
+		assertTrue(p.containsResource("src/main/resources", "com.sample"));
+		assertTrue(p.containsResource("src/main/resources", "META-INF", "kmodule.xml"));
 	}
 
 	@Test
@@ -87,8 +94,8 @@ public class JBPMProjectWizardTest {
 		wizardView.execute("TestProject", false);
 
 		Project p = explorerView.getProject("TestProject");
-		assertFalse(p.containsItem("src/main/java", "com.sample", "ProcessTest.java"));
-		assertTrue(p.containsItem("src/main/resources", "META-INF", "kmodule.xml"));
+		assertFalse(p.containsResource("src/main/java", "com.sample", "ProcessTest.java"));
+		assertTrue(p.containsResource("src/main/resources", "META-INF", "kmodule.xml"));
 	}
 
 	@Test
@@ -96,9 +103,9 @@ public class JBPMProjectWizardTest {
 		wizardView.execute("TestProject", true);
 
 		Project p = explorerView.getProject("TestProject");
-		assertTrue(p.containsItem("src/main/resources", "com.sample", "sample.bpmn"));
-		assertTrue(p.containsItem("src/main/java", "com.sample", "ProcessTest.java"));
-		assertTrue(p.containsItem("src/main/resources", "META-INF", "kmodule.xml"));
+		assertTrue(p.containsResource("src/main/resources", "com.sample", "sample.bpmn"));
+		assertTrue(p.containsResource("src/main/java", "com.sample", "ProcessTest.java"));
+		assertTrue(p.containsResource("src/main/resources", "META-INF", "kmodule.xml"));
 	}
 	
 	/*
@@ -106,8 +113,8 @@ public class JBPMProjectWizardTest {
 	public void projectWithExampleFromInternetTest() {
 		wizardView.executeForHumanResourcesExample();
 
-		assertTrue(explorerView.getProject("human-resources").containsItem("src/main/resources"));
-		assertTrue(explorerView.getProject("human-resources-tests").containsItem("src/main/resources"));
+		assertTrue(explorerView.getProject("human-resources").containsResource("src/main/resources"));
+		assertTrue(explorerView.getProject("human-resources-tests").containsResource("src/main/resources"));
 	}
 	*/
 

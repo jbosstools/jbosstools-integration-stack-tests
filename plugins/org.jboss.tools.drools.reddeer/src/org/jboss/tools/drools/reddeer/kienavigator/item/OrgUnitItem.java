@@ -3,7 +3,7 @@ package org.jboss.tools.drools.reddeer.kienavigator.item;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.api.TreeItem;
 import org.jboss.tools.drools.reddeer.kienavigator.dialog.AddRepositoryDialog;
 import org.jboss.tools.drools.reddeer.kienavigator.dialog.CreateRepositoryDialog;
 import org.jboss.tools.drools.reddeer.kienavigator.dialog.Dialog;

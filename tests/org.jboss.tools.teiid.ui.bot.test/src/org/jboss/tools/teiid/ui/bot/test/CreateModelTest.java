@@ -2,11 +2,11 @@ package org.jboss.tools.teiid.ui.bot.test;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.WebServiceModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.XmlModelEditor;
@@ -97,7 +97,7 @@ public class CreateModelTest {
 				.selectModelType(MetadataModelWizard.ModelType.DATATYPE)
 				.finish();
 		
-		AbstractWait.sleep(TimePeriod.NORMAL);
+		AbstractWait.sleep(TimePeriod.DEFAULT);
 
 		assertTrue(new ModelExplorer().containsItem(PROJECT_NAME,XSD_DATATYPE_MODEL_NAME + ".xsd"));
 		// TODO SchemaModelEditor is not implemented yet

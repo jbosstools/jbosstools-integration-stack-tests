@@ -1,17 +1,17 @@
 package org.jboss.tools.bpel.reddeer.wizard;
 
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 
 /**
  * 
  * @author apodhrad
  * 
  */
-public class NewProcessWizard extends NewWizardDialog {
+public class NewProcessWizard extends NewMenuWizard {
 
 	public static final String TEMPLATE_SYNC = "Synchronous BPEL Process";
 	public static final String TEMPLATE_ASYNC = "Asynchronous BPEL Process";
@@ -32,7 +32,7 @@ public class NewProcessWizard extends NewWizardDialog {
 	private boolean isAbstract;
 
 	public NewProcessWizard(String projectName, String processName) {
-		super("BPEL 2.0", "BPEL Process File");
+		super("New BPEL Process", "BPEL 2.0", "BPEL Process File");
 		this.projectName = projectName;
 		this.processName = processName;
 		this.namespace = "http://eclipse.org/bpel/sample";

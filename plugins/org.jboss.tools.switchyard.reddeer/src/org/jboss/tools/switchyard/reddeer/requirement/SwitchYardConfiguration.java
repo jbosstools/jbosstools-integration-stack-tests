@@ -1,33 +1,19 @@
 package org.jboss.tools.switchyard.reddeer.requirement;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
-import org.jboss.tools.runtime.reddeer.Namespaces;
-import org.jboss.tools.runtime.reddeer.requirement.ServerConfig;
+import org.jboss.tools.runtime.reddeer.requirement.ServerConfiguration;
 
 /**
  * 
  * @author apodhrad
  *
  */
-@XmlRootElement(name = "switchyard-requirement", namespace = Namespaces.SOA_REQ)
-@XmlAccessorType(XmlAccessType.FIELD)
-public class SwitchYardConfig extends ServerConfig {
+public class SwitchYardConfiguration extends ServerConfiguration {
 
-	@XmlElement(name = "configurationVersion", namespace = Namespaces.SOA_REQ)
 	private String configurationVersion;
-	@XmlElement(name = "targetRuntime", namespace = Namespaces.SOA_REQ)
 	private String targetRuntime;
-	@XmlElement(name = "libraryVersion", namespace = Namespaces.SOA_REQ)
 	private String libraryVersion;
-	@XmlElement(name = "switchyardVersion", namespace = Namespaces.SOA_REQ)
 	private String switchyardVersion;
-	@XmlElement(name = "componentRestriction", namespace = Namespaces.SOA_REQ)
 	private String componentRestriction;
-	@XmlElement(name = "integrationPack", namespace = Namespaces.SOA_REQ)
 	private IntegrationPack integrationPack;
 
 	public String getConfigurationVersion() {

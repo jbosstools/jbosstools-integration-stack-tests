@@ -2,22 +2,21 @@ package org.jboss.tools.drools.ui.bot.test.kienavigator;
 
 import java.util.List;
 
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.jboss.tools.drools.reddeer.kienavigator.dialog.AddRepositoryDialog;
 import org.jboss.tools.drools.reddeer.kienavigator.dialog.CreateOrgUnitDialog;
 import org.jboss.tools.drools.reddeer.kienavigator.dialog.CreateRepositoryDialog;
 import org.jboss.tools.drools.reddeer.kienavigator.item.RepositoryItem;
 import org.jboss.tools.drools.reddeer.kienavigator.item.ServerItem;
-import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@Server(type = { ServerReqType.EAP, ServerReqType.WildFly }, state = ServerReqState.RUNNING)
+@Server(state = ServerRequirementState.RUNNING)
 @RunWith(RedDeerSuite.class)
 public class RepositoryManipulationTest extends KieNavigatorTestParent {
 

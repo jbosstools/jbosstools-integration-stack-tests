@@ -8,27 +8,27 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.util.List;
 
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.eclipse.ui.perspectives.DebugPerspective;
-import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
-import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.eclipse.ui.perspectives.DebugPerspective;
+import org.eclipse.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
+import org.eclipse.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.swt.condition.ShellIsActive;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.exception.SWTLayerException;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.switchyard.reddeer.component.SwitchYardComponent;
 import org.jboss.tools.switchyard.reddeer.debug.Breakpoint;
 import org.jboss.tools.switchyard.reddeer.debug.Breakpoint.TriggerOn;
@@ -67,14 +67,15 @@ public class DebuggerBreakpointTest {
 
 	@BeforeClass
 	public static void importTestProject() {
-		new ExternalProjectImportWizardDialog().open();
-		WizardProjectsImportPage importPage = new WizardProjectsImportPage();
+		ExternalProjectImportWizardDialog wizard = new ExternalProjectImportWizardDialog();
+		wizard.open();
+		WizardProjectsImportPage importPage = new WizardProjectsImportPage(wizard);
 		importPage.setRootDirectory(new File(RESOURCES, "projects/hello").getAbsolutePath());
 		importPage.copyProjectsIntoWorkspace(true);
 		// This may take several minutes
 		new PushButton("Finish").click();
 		TimePeriod timeout = TimePeriod.getCustom(20 * 60 * 1000);
-		new WaitWhile(new ShellWithTextIsActive("Import"), timeout);
+		new WaitWhile(new ShellIsActive("Import"), timeout);
 		new WaitWhile(new JobIsRunning(), timeout);
 		// Finally update the project
 		new SwitchYardProject("hello").update();
@@ -128,7 +129,7 @@ public class DebuggerBreakpointTest {
 		new CheckBox("IN").toggle(false);
 		new CheckBox("OUT").toggle(false);
 		dialog.ok();
-		new WaitWhile(new ShellWithTextIsAvailable("Properties for "));
+		new WaitWhile(new ShellIsAvailable("Properties for "));
 
 		// check the breakpoint in Breakpoints view
 		breakpoints = new BreakpointsView().getBreakpoints();
@@ -151,7 +152,7 @@ public class DebuggerBreakpointTest {
 		assertFalse(new CheckBox("OUT").isChecked());
 		assertTrue(new CheckBox("FAULT").isChecked());
 		dialog.ok();
-		new WaitWhile(new ShellWithTextIsAvailable("Properties for "));
+		new WaitWhile(new ShellIsAvailable("Properties for "));
 
 		// delete breakpoint
 		new SwitchYardComponent("hello").getContextButton("Breakpoints", "Disable Transform Breakpoint").click();
@@ -185,7 +186,7 @@ public class DebuggerBreakpointTest {
 		new CheckBox("IN").toggle(false);
 		new CheckBox("OUT").toggle(false);
 		dialog.ok();
-		new WaitWhile(new ShellWithTextIsAvailable("Properties for "));
+		new WaitWhile(new ShellIsAvailable("Properties for "));
 
 		// check the breakpoint in Breakpoints view
 		breakpoints = new BreakpointsView().getBreakpoints();
@@ -208,7 +209,7 @@ public class DebuggerBreakpointTest {
 		assertFalse(new CheckBox("OUT").isChecked());
 		assertTrue(new CheckBox("FAULT").isChecked());
 		dialog.ok();
-		new WaitWhile(new ShellWithTextIsAvailable("Properties for "));
+		new WaitWhile(new ShellIsAvailable("Properties for "));
 
 		// delete breakpoint
 		new SwitchYardComponent("hello").getContextButton("Breakpoints", "Disable Validate Breakpoint").click();
@@ -253,7 +254,7 @@ public class DebuggerBreakpointTest {
 		new CheckBox("IN").toggle(false);
 		new CheckBox("OUT").toggle(false);
 		dialog.ok();
-		new WaitWhile(new ShellWithTextIsAvailable("Properties for HelloService"));
+		new WaitWhile(new ShellIsAvailable("Properties for HelloService"));
 
 		// check the breakpoint in Breakpoints view
 		breakpoints = new BreakpointsView().getBreakpoints();
@@ -299,7 +300,7 @@ public class DebuggerBreakpointTest {
 		assertFalse(new CheckBox("OUT").isChecked());
 		assertTrue(new CheckBox("FAULT").isChecked());
 		dialog.ok();
-		new WaitWhile(new ShellWithTextIsAvailable("Properties for HelloService"));
+		new WaitWhile(new ShellIsAvailable("Properties for HelloService"));
 
 		// delete breakpoint
 		new BreakpointsView().removeAllBreakpoints();
@@ -311,7 +312,7 @@ public class DebuggerBreakpointTest {
 			// ok
 		}
 		dialog.ok();
-		new WaitWhile(new ShellWithTextIsAvailable("Properties for HelloService"));
+		new WaitWhile(new ShellIsAvailable("Properties for HelloService"));
 	}
 
 	@Test
@@ -352,7 +353,7 @@ public class DebuggerBreakpointTest {
 		new CheckBox("IN").toggle(false);
 		new CheckBox("OUT").toggle(false);
 		dialog.ok();
-		new WaitWhile(new ShellWithTextIsAvailable("Properties for Hello"));
+		new WaitWhile(new ShellIsAvailable("Properties for Hello"));
 
 		// check the breakpoint in Breakpoints view
 		breakpoints = new BreakpointsView().getBreakpoints();
@@ -398,7 +399,7 @@ public class DebuggerBreakpointTest {
 		assertFalse(new CheckBox("OUT").isChecked());
 		assertTrue(new CheckBox("FAULT").isChecked());
 		dialog.ok();
-		new WaitWhile(new ShellWithTextIsAvailable("Properties for Hello"));
+		new WaitWhile(new ShellIsAvailable("Properties for Hello"));
 
 		// delete breakpoint
 		new BreakpointsView().removeAllBreakpoints();
@@ -411,7 +412,7 @@ public class DebuggerBreakpointTest {
 			// ok
 		}
 		dialog.ok();
-		new WaitWhile(new ShellWithTextIsAvailable("Properties for Hello"));
+		new WaitWhile(new ShellIsAvailable("Properties for Hello"));
 	}
 
 	private static void assertBreakpoint(Breakpoint breakpoint, TriggeringPhase triggeringPhase, boolean checked) {

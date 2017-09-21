@@ -115,8 +115,8 @@ public class SimpleHttpClient {
 	 * @throws IOException if request fails
 	 */
 	public static String postSoapRequest(TeiidServerRequirement teiidServer, String url, String soapAction, String request) throws IOException{
-		String username = teiidServer.getServerConfig().getServerBase().getProperty("teiidUser");
-		String password = teiidServer.getServerConfig().getServerBase().getProperty("teiidPassword");
+		String username = teiidServer.getServerConfig().getServer().getProperty("teiidUser");
+		String password = teiidServer.getServerConfig().getServer().getProperty("teiidPassword");
 		System.out.println("Using HTTPBasic security with username '" + username + "' and password '" + password + "'");
 		return new SimpleHttpClient(url)
 				.setBasicAuth(username, password)

@@ -1,26 +1,26 @@
 package org.jboss.tools.runtime.reddeer.wizard;
 
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.group.DefaultGroup;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 
 /**
  * 
  * @author apodhrad
  * 
  */
-public class ServerWizard extends NewWizardDialog {
+public class ServerWizard extends NewMenuWizard {
 
 	public static final String HOST_NAME = "Server's host name:";
 	public static final String SERVER_NAME = "Server name:";
@@ -35,13 +35,13 @@ public class ServerWizard extends NewWizardDialog {
 	public static final String EXTERNALLY_MANAGED = "Server lifecycle is externally managed.";
 
 	public ServerWizard() {
-		super("Server", "Server");
+		super("New Server", "Server", "Server");
 	}
 
 	@Override
 	public void open() {
 		super.open();
-		new WaitUntil(new ShellWithTextIsAvailable("New Server"));
+		new WaitUntil(new ShellIsAvailable("New Server"));
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new DefaultShell("New Server");
 	}

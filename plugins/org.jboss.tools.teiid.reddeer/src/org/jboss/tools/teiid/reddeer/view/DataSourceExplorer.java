@@ -5,13 +5,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.jboss.reddeer.eclipse.jdt.ui.AbstractExplorer;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.AbstractExplorer;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 
 public class DataSourceExplorer extends AbstractExplorer {
 
@@ -24,7 +24,7 @@ public class DataSourceExplorer extends AbstractExplorer {
 
 		open();
 		selectVDB(datasource);
-		new ContextMenu("Open SQL Scrapbook").select();
+		new ContextMenuItem("Open SQL Scrapbook").select();
 	}
 
 	public void setVDBDriver(String properties, String vdb) {
@@ -41,7 +41,7 @@ public class DataSourceExplorer extends AbstractExplorer {
 		}
 
 		selectVDB(vdb);
-		new ContextMenu("Properties").select();
+		new ContextMenuItem("Properties").select();
 		new DefaultTreeItem("Driver Properties").select();
 		new DefaultCombo("Drivers:").setSelection(props.getProperty("driver"));
 		new PushButton("OK").click();

@@ -5,19 +5,19 @@ import static org.junit.Assert.assertEquals;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.common.reddeer.JiraClient;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
@@ -43,7 +43,7 @@ import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
-@TeiidServer(state = ServerReqState.RUNNING, connectionProfiles={
+@TeiidServer(state = ServerRequirementState.RUNNING, connectionProfiles={
 		ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER,
 })
 
@@ -131,8 +131,8 @@ public class ReuseVDBTest {
 		transformation.setTransformation("SELECT 'version2'");
 		transformation.saveAndValidateSql();
 		
-		AbstractWait.sleep(TimePeriod.NORMAL);
-		new ShellMenu("File", "Save All").select();
+		AbstractWait.sleep(TimePeriod.DEFAULT);
+		new ShellMenuItem(new WorkbenchShell(), "File", "Save All").select();
 		VdbEditor vdb = new VdbEditor(SOURCE_VDB + ".vdb");
 		vdb.activate();
 		vdb.synchronizeAll();
@@ -179,7 +179,7 @@ public class ReuseVDBTest {
  		vdb = (vdb.contains(".vdb")) ? vdb : vdb + ".vdb";
  		
  		new DefaultTreeItem(project, vdb).select();
- 		new ContextMenu("Modeling", "Execute VDB").select();
+ 		new ContextMenuItem("Modeling", "Execute VDB").select();
  
  		new WaitWhile(new IsInProgress(), TimePeriod.VERY_LONG);
  		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);

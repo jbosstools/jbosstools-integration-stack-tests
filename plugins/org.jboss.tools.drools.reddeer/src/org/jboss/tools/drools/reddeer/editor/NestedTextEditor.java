@@ -6,10 +6,10 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.reddeer.common.util.Display;
+import org.eclipse.reddeer.common.util.ResultRunnable;
+import org.eclipse.reddeer.workbench.exception.WorkbenchLayerException;
 import org.eclipse.ui.texteditor.ITextEditor;
-import org.jboss.reddeer.core.util.Display;
-import org.jboss.reddeer.core.util.ResultRunnable;
-import org.jboss.reddeer.workbench.exception.WorkbenchLayerException;
 
 public class NestedTextEditor extends NestedEditor {
 	private static final Logger LOGGER = Logger.getLogger(NestedTextEditor.class);

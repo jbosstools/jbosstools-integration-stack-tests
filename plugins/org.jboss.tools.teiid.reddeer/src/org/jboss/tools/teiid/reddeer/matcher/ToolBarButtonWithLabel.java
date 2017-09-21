@@ -4,8 +4,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.ToolItem;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-import org.jboss.reddeer.core.handler.ButtonHandler;
-import org.jboss.reddeer.core.util.Display;
+import org.eclipse.reddeer.core.handler.ButtonHandler;
+import org.eclipse.reddeer.common.util.Display;
 
 public class ToolBarButtonWithLabel extends BaseMatcher<ToolItem> {
 	private String label;

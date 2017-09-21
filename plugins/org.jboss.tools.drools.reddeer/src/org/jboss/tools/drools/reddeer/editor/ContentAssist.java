@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.action.IAction;
+import org.eclipse.reddeer.common.util.Display;
+import org.eclipse.reddeer.common.util.ResultRunnable;
+import org.eclipse.reddeer.core.lookup.ShellLookup;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
@@ -11,9 +14,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.texteditor.ITextEditor;
-import org.jboss.reddeer.core.lookup.ShellLookup;
-import org.jboss.reddeer.core.util.Display;
-import org.jboss.reddeer.core.util.ResultRunnable;
 
 public class ContentAssist {
 	private final ITextEditor editor;

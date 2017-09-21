@@ -6,13 +6,13 @@ import static org.junit.Assert.assertEquals;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.eclipse.core.resources.ProjectItem;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.bpel.reddeer.activity.Assign;
 import org.jboss.tools.bpel.reddeer.activity.Pick;
 import org.jboss.tools.bpel.reddeer.activity.Receive;
@@ -107,7 +107,9 @@ public class SwitchYardIntegrationBPELTest {
 		Reply reply = new Sequence("MainSequence").addReply("Reply");
 		reply.pickOperation("sayHello");
 
-		bpelEditor.save();
+		if (bpelEditor.isDirty()) {
+			bpelEditor.save();
+		}
 		new SwitchYardEditor().save();
 		System.out.println();
 

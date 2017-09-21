@@ -1,6 +1,6 @@
 package org.jboss.tools.teiid.reddeer.perspective;
 
-import org.jboss.reddeer.eclipse.ui.perspectives.AbstractPerspective;
+import org.eclipse.reddeer.eclipse.ui.perspectives.AbstractPerspective;
 import org.jboss.tools.teiid.reddeer.view.DataSourceExplorer;
 import org.jboss.tools.teiid.reddeer.view.SQLResultView;
 

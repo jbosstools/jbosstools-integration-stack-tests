@@ -2,7 +2,7 @@ package org.jboss.tools.runtime.reddeer.requirement;
 
 import org.jboss.tools.runtime.reddeer.ServerBase;
 
-public enum ServerConnType {
+public enum ServerConnectionType {
 
 	LOCAL, REMOTE, ANY;
 

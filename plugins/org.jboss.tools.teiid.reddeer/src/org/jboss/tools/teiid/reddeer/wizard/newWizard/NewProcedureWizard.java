@@ -1,10 +1,10 @@
 package org.jboss.tools.teiid.reddeer.wizard.newWizard;
 
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.teiid.reddeer.dialog.ProcedureDialog;
 import org.jboss.tools.teiid.reddeer.dialog.UserDefinedFunctionDialog;
 

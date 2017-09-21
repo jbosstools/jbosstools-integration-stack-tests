@@ -1,13 +1,14 @@
 package org.jboss.tools.bpel.reddeer.activity;
 
-import org.jboss.reddeer.swt.api.Tree;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.core.matcher.WithLabelMatcher;
+import org.eclipse.reddeer.swt.api.Tree;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.bpel.reddeer.matcher.WithLabelMatcherExt;
 
 /**
@@ -84,7 +85,7 @@ public class Assign extends Activity {
 	private void fillAssignement(String label, String assignment, String... value) {
 		new LabeledCombo(label).setSelection(assignment);
 		if (assignment.equals(VAR)) {
-			Tree tree = new DefaultTree(new WithLabelMatcherExt(label));
+			Tree tree = new DefaultTree(new WithLabelMatcher(label));
 			new DefaultTreeItem(tree, value).select();
 		}
 		if (assignment.equals(FIX)) {

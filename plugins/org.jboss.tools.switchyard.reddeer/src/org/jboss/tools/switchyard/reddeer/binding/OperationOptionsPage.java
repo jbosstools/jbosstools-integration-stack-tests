@@ -1,20 +1,20 @@
 package org.jboss.tools.switchyard.reddeer.binding;
 
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.jface.wizard.WizardDialog;
-import org.jboss.reddeer.swt.api.Combo;
-import org.jboss.reddeer.swt.api.Text;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.group.DefaultGroup;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.jface.wizard.WizardDialog;
+import org.eclipse.reddeer.swt.api.Combo;
+import org.eclipse.reddeer.swt.api.Text;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.tab.DefaultTabItem;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.switchyard.reddeer.widget.LabeledText;
 
 public abstract class OperationOptionsPage<T> extends WizardDialog {
@@ -77,6 +77,9 @@ public abstract class OperationOptionsPage<T> extends WizardDialog {
 	@Override
 	public void finish() {
 		AbstractWait.sleep(TimePeriod.SHORT);
+		if (getShell() == null) {
+			setShell(new DefaultShell(""));
+		}
 		super.finish();
 	}
 
@@ -86,7 +89,7 @@ public abstract class OperationOptionsPage<T> extends WizardDialog {
 		String shellText = new DefaultShell().getText();
 		new PushButton("OK").click();
 
-		new WaitWhile(new ShellWithTextIsAvailable(shellText), TimePeriod.LONG);
+		new WaitWhile(new ShellIsAvailable(shellText), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 

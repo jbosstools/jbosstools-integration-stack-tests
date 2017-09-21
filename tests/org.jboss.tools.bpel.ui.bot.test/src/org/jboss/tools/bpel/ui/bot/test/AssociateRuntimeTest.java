@@ -1,24 +1,24 @@
 package org.jboss.tools.bpel.ui.bot.test;
 
-import static org.jboss.reddeer.common.wait.TimePeriod.NORMAL;
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.api.Table;
-import org.jboss.reddeer.core.condition.ProgressInformationShellIsActive;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.api.Table;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.bpel.reddeer.perspective.BPELPerspective;
 import org.jboss.tools.bpel.reddeer.wizard.NewProjectWizard;
-import org.jboss.tools.runtime.reddeer.requirement.ServerReqType;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.junit.Test;
@@ -32,7 +32,7 @@ import org.junit.runner.RunWith;
 @CleanWorkspace
 @OpenPerspective(BPELPerspective.class)
 @RunWith(RedDeerSuite.class)
-@Server(type = ServerReqType.ANY, state = ServerReqState.PRESENT)
+@Server(state = ServerRequirementState.PRESENT)
 public class AssociateRuntimeTest {
 
 	@InjectRequirement
@@ -42,18 +42,19 @@ public class AssociateRuntimeTest {
 	public void testModeling() throws Exception {
 		new NewProjectWizard("runtimeTest").execute();
 
-		new PackageExplorer().getProject("runtimeTest").select();
+		new ProjectExplorer().getProject("runtimeTest").select();
 
-		new ContextMenu("Properties").select();
+		new ContextMenuItem("Properties").select();
 
 		new DefaultTreeItem("Targeted Runtimes").select();
 
 		String runtimeName = serverRequirement.getConfig().getName() + " Runtime";
 		assertTrue(containsItem(new DefaultTable(), runtimeName));
 
-		new PushButton("OK").click();
+		new PushButton("Apply and Close").click();
 
-		new WaitWhile(new ProgressInformationShellIsActive(), NORMAL);
+		new WaitUntil(new ShellIsAvailable("Progress Information"), false);
+		new WaitWhile(new ShellIsAvailable("Progress Information"), TimePeriod.LONG);
 	}
 
 	private static boolean containsItem(Table table, String item) {

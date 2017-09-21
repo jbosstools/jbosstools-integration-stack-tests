@@ -1,6 +1,6 @@
 package org.jboss.tools.drools.ui.bot.test;
 
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.drools.ui.bot.test.functional.DroolsRuntimeManagementTest;
 import org.jboss.tools.drools.ui.bot.test.functional.DslEditorTest;
 import org.jboss.tools.drools.ui.bot.test.functional.DslrEditorTest;

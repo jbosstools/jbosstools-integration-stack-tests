@@ -1,6 +1,6 @@
 package org.jboss.tools.bpmn2.reddeer.properties.setup;
 
-import org.jboss.reddeer.swt.impl.button.LabeledCheckBox;
+import org.eclipse.reddeer.swt.impl.button.LabeledCheckBox;
 
 public class CheckBoxSetUp implements SetUpAble {
 

@@ -1,17 +1,17 @@
 package org.jboss.tools.teiid.reddeer.wizard.connectionProfiles;
 
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
-import org.jboss.reddeer.swt.impl.button.FinishButton;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
+import org.eclipse.reddeer.swt.impl.button.FinishButton;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 
 /**
  * 
  * @author apodhrad
  * 
  */
-public abstract class ConnectionProfileWizard extends NewWizardDialog {
+public abstract class ConnectionProfileWizard extends NewMenuWizard {
 
 	public static final String DIALOG_TITLE = "New connection profile";
 	public static final String LABEL_NAME = "Name:";
@@ -20,7 +20,7 @@ public abstract class ConnectionProfileWizard extends NewWizardDialog {
 	private String name;
 
 	public ConnectionProfileWizard(String profile,String name) {
-		super("Connection Profiles", "Connection Profile");
+		super(DIALOG_TITLE, "Connection Profiles", "Connection Profile");
 		this.profile = profile;
 		this.name = name;
 	}
@@ -48,15 +48,6 @@ public abstract class ConnectionProfileWizard extends NewWizardDialog {
 	public void finish() {
 		new FinishButton().click();;
 	};
-	
-	/**
-	 * use nextPage()
-	 */
-	@Deprecated
-	@Override
-	public void next(){
-		super.next();
-	}
 	
 	public abstract ConnectionProfileWizard testConnection();
 }
