@@ -31,8 +31,6 @@ Bundle-ClassPath: .,
 Require-Bundle: 
  org.eclipse.gef,
  org.eclipse.graphiti,
- org.eclipse.swtbot.eclipse.gef.finder,
- org.eclipse.swtbot.go,
  org.eclipse.ui.forms,
  org.hamcrest.library,
  org.jboss.tools.bpmn2.reddeer;bundle-version="4.5.0",

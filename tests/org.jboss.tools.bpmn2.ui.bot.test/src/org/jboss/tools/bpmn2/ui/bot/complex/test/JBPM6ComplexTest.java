@@ -19,13 +19,13 @@ import org.eclipse.reddeer.eclipse.ui.problems.Problem;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.junit.screenshot.CaptureScreenshotException;
+import org.eclipse.reddeer.junit.screenshot.ScreenshotCapturer;
 import org.eclipse.reddeer.swt.exception.SWTLayerException;
 import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
 import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
-import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
 import org.jboss.tools.bpmn2.reddeer.GEFProcessEditor;
 import org.jboss.tools.bpmn2.ui.bot.complex.test.JBPM6ComplexTestDefinitionRequirement.JBPM6ComplexTestDefinition;
 import org.jboss.tools.bpmn2.ui.bot.test.validator.JBPM6Validator;
@@ -193,10 +193,9 @@ public abstract class JBPM6ComplexTest {
 		project.getProjectItem(definition.openFile()).delete();
 	}
 
-	private void captureScreenshotWithDescription(String description) {
-		String fileName = "target/screenshots/" + description + "-" + getClass().getSimpleName() + "."
-				+ SWTBotPreferences.SCREENSHOT_FORMAT.toLowerCase();
-		SWTUtils.captureScreenshot(fileName);
+	private void captureScreenshotWithDescription(String description) throws CaptureScreenshotException {
+		String fileName = "target/screenshots/" + description + "-" + getClass().getSimpleName() + ".png";
+		ScreenshotCapturer.getInstance().captureScreenshot(fileName);
 	}
 
 	private class ErrorAppearOrDisappear extends AbstractWaitCondition {
