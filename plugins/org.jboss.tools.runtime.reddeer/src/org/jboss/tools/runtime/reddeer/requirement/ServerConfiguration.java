@@ -11,6 +11,7 @@ import org.jboss.tools.runtime.reddeer.ServerBase;
 public class ServerConfiguration implements RequirementConfiguration {
 
 	private String name;
+	private ServerBase server;
 
 	public void setName(String name) {
 		this.name = name;
@@ -20,16 +21,11 @@ public class ServerConfiguration implements RequirementConfiguration {
 		return name;
 	}
 
-	private ServerBase server;
-
 	public void setServer(ServerBase server) {
 		this.server = server;
 	}
 
 	public ServerBase getServer() {
-		if (server != null) {
-			server.setName(name);
-		}
 		return server;
 	}
 

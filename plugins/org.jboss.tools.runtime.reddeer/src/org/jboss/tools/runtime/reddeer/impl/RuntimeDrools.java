@@ -30,7 +30,7 @@ public class RuntimeDrools extends RuntimeBase {
 		}
 		String[] droolsRuntimes = droolsDefinition.split("###");
 		for (String runtime : droolsRuntimes) {
-			if (runtime.split("#")[0].equals(name)) {
+			if (runtime.split("#")[0].equals(getName())) {
 				return true;
 			}
 		}

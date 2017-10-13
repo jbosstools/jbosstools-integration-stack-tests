@@ -95,7 +95,7 @@ public abstract class ServerBase extends RuntimeBase {
 	public void setState(ServerRequirementState requiredState) {
 		ServersView2 serversView = new ServersView2();
 		serversView.open();
-		Server server = serversView.getServer(name);
+		Server server = serversView.getServer(getName());
 
 		ServerState currentState = server.getLabel().getState();
 		switch (currentState) {
@@ -109,12 +109,12 @@ public abstract class ServerBase extends RuntimeBase {
 					server.start();
 				} catch (Exception e) {
 					try {
-						server = new ServersView2().getServer(name);
+						server = new ServersView2().getServer(getName());
 						server.stop();
 					} catch (Exception ex) {
 
 					}
-					server = new ServersView2().getServer(name);
+					server = new ServersView2().getServer(getName());
 					server.start();
 				}
 			}
@@ -192,7 +192,7 @@ public abstract class ServerBase extends RuntimeBase {
 	public boolean exists() {
 		IServer[] server = ServerCore.getServers();
 		for (int i = 0; i < server.length; i++) {
-			if (server[i].getId().equals(name)) {
+			if (server[i].getId().equals(getName())) {
 				return true;
 			}
 		}

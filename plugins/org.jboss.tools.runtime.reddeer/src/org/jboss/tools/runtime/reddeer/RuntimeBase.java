@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 	@JsonSubTypes.Type(name = "jbpm", value = RuntimeJbpm.class) })
 public abstract class RuntimeBase {
 
-	protected String name;
+	private String name;
 	private String version;
 	private String home;
 	private Map<String, String> properties;

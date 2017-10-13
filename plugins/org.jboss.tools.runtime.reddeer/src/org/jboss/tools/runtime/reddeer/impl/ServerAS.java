@@ -75,7 +75,7 @@ public class ServerAS extends ServerBase {
 			ServerWizard serverWizard = new ServerWizard();
 			serverWizard.open();
 			serverWizard.setType(getCategory(), getServerType());
-			serverWizard.setName(name);
+			serverWizard.setName(getName());
 			serverWizard.setHostName(remote.getHost());
 
 			serverWizard.next();
@@ -99,7 +99,7 @@ public class ServerAS extends ServerBase {
 
 			ServersView2 servers = new ServersView2();
 			servers.open();
-			ServerEditor serverEditor = servers.getServer(name).open();
+			ServerEditor serverEditor = servers.getServer(getName()).open();
 			new LabeledText("User Name").setText(remote.getUsername()); // TODO: move this into ServerEditor
 			new LabeledText("Password").setText(remote.getPassword());
 			serverEditor.save();
