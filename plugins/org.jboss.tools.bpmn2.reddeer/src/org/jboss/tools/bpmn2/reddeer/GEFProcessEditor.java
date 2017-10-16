@@ -12,21 +12,22 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartListener;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.GraphicalViewer;
-import org.eclipse.swt.SWT;
-import org.hamcrest.Matcher;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.common.util.Display;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.core.handler.WidgetHandler;
 import org.eclipse.reddeer.gef.GEFLayerException;
 import org.eclipse.reddeer.gef.condition.EditorHasEditParts;
 import org.eclipse.reddeer.gef.editor.GEFEditor;
+import org.eclipse.reddeer.gef.handler.ViewerHandler;
 import org.eclipse.reddeer.swt.exception.SWTLayerException;
 import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.eclipse.reddeer.core.exception.CoreLayerException;
-import org.eclipse.reddeer.core.handler.WidgetHandler;
-import org.eclipse.reddeer.common.util.Display;
-import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
-import org.eclipse.reddeer.common.wait.WaitUntil;
-import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.swt.SWT;
+import org.hamcrest.Matcher;
 import org.jboss.tools.bpmn2.reddeer.editor.ConnectionType;
 import org.jboss.tools.bpmn2.reddeer.editor.Element;
 import org.jboss.tools.bpmn2.reddeer.editor.ElementType;
@@ -94,11 +95,24 @@ public class GEFProcessEditor extends GEFEditor {
 			final EditPart parent) {
 		int oldCount = getNumberOfEditParts();
 
-		final ViewerListener viewerListener = new ViewerListener();
+		// Detect new edit part in the parent
+		final ViewerListener parentViewerListener = new ViewerListener();
 		Display.syncExec(new Runnable() {
 			@Override
 			public void run() {
-				parent.addEditPartListener(viewerListener);
+				parent.addEditPartListener(parentViewerListener);
+			}
+		});
+		
+		// Detect any new edit part
+		final ViewerListener viewerListener = new ViewerListener();
+		Display.asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				List<EditPart> editParts = ViewerHandler.getInstance().getEditParts(viewer);
+				for (EditPart editPart : editParts) {
+					editPart.addEditPartListener(viewerListener);
+				}
 			}
 		});
 
@@ -107,11 +121,13 @@ public class GEFProcessEditor extends GEFEditor {
 
 		new WaitUntil(new EditorHasEditParts(this, oldCount));
 
-		if (viewerListener.getAddedEditPart() == null) {
+		EditPart parentNewEditPart = parentViewerListener.getAddedEditPart();
+		EditPart newEditPart = viewerListener.getAddedEditPart();
+		if (parentNewEditPart == null && newEditPart == null) {
 			throw new GEFLayerException("No new edit part was detected");
 		}
 
-		return new AbsoluteEditPart(viewerListener.getAddedEditPart());
+		return new AbsoluteEditPart(parentNewEditPart == null ? parentNewEditPart : newEditPart);
 	}
 
 	public org.eclipse.reddeer.gef.api.EditPart addConnectionFromPalette(ConnectionType connectionType, Element from,

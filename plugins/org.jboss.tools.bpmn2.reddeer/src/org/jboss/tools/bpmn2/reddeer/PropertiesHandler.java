@@ -1,17 +1,18 @@
 package org.jboss.tools.bpmn2.reddeer;
 
 import org.eclipse.gef.EditPart;
+import org.eclipse.reddeer.eclipse.ui.views.properties.PropertySheet;
 import org.jboss.tools.bpmn2.reddeer.editor.graphiti.PropertiesGraphitiEditPart;
 import org.jboss.tools.bpmn2.reddeer.properties.setup.SetUpAble;
 
 public abstract class PropertiesHandler {
 
-	private WaitingPropertiesView propertiesView;
+	private PropertySheet propertiesView;
 	private PropertiesGraphitiEditPart graphitiProperties;
 	private boolean useGraphitiProperties;
 
 	public PropertiesHandler(EditPart editPart, boolean useGraphitiProperties) {
-		propertiesView = new WaitingPropertiesView();
+		propertiesView = new PropertySheet();
 		graphitiProperties = new PropertiesGraphitiEditPart(editPart);
 		this.useGraphitiProperties = useGraphitiProperties;
 
