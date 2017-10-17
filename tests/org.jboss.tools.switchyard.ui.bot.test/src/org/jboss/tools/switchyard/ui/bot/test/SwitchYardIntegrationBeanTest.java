@@ -6,6 +6,7 @@ import static org.junit.Assert.assertEquals;
 import org.eclipse.reddeer.common.logging.Logger;
 import org.eclipse.reddeer.eclipse.core.resources.ProjectItem;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.jface.wizard.WizardDialog;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
@@ -71,11 +72,11 @@ public class SwitchYardIntegrationBeanTest {
 		new SwitchYardEditor().save();
 
 		new Service("Hello").promoteService().activate().setServiceName("HelloService").finish();
-		new Service("HelloService").addBinding("HTTP");
-		HTTPBindingPage wizard = new HTTPBindingPage();
-		wizard.setName("http-binding");
-		wizard.getContextPath().setText("hello");
-		wizard.setOperationSelector(OPERATION_NAME, "sayHello");
+		WizardDialog wizard = new Service("HelloService").addBinding("HTTP");
+		HTTPBindingPage page = new HTTPBindingPage();
+		page.setName("http-binding");
+		page.getContextPath().setText("hello");
+		page.setOperationSelector(OPERATION_NAME, "sayHello");
 		wizard.finish();
 
 		new SwitchYardEditor().save();

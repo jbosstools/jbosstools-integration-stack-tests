@@ -42,7 +42,7 @@ public class TransformersWizard extends WizardDialog {
 	}
 
 	public TransformersWizard activate() {
-		new DefaultShell(TITLE);
+		setShell(new DefaultShell(TITLE));
 		return this;
 	}
 
@@ -64,75 +64,75 @@ public class TransformersWizard extends WizardDialog {
 	}
 
 	public LabeledCombo getTransformerTypeCMB() {
-		return new LabeledCombo("Transformer Type:");
+		return new LabeledCombo(this, "Transformer Type:");
 	}
 
 	public CheckBox getCreateNewSmooksfileCHK() {
-		return new CheckBox("Create new Smooks file");
+		return new CheckBox(this, "Create new Smooks file");
 	}
 
 	public PushButton getRemovePackagesBTN() {
-		return new PushButton("Remove Packages");
+		return new PushButton(this, "Remove Packages");
 	}
 
 	public PushButton getAddPackagesBTN() {
-		return new PushButton("Add Packages");
+		return new PushButton(this, "Add Packages");
 	}
 
 	public PushButton getClearAllBTN() {
-		return new PushButton(new DefaultGroup("Dozer File Options"), "Clear All");
+		return new PushButton(new DefaultGroup(this, "Dozer File Options"), "Clear All");
 	}
 
 	public PushButton getDownBTN() {
-		return new PushButton(new DefaultGroup("Dozer File Options"), "Down");
+		return new PushButton(new DefaultGroup(this, "Dozer File Options"), "Down");
 	}
 
 	public PushButton getUpBTN() {
-		return new PushButton(new DefaultGroup("Dozer File Options"), "Up");
+		return new PushButton(new DefaultGroup(this, "Dozer File Options"), "Up");
 	}
 
 	public PushButton getRemoveBTN() {
-		return new PushButton(new DefaultGroup("Dozer File Options"), "Remove");
+		return new PushButton(new DefaultGroup(this, "Dozer File Options"), "Remove");
 	}
 
 	public PushButton getNewBTN() {
-		return new PushButton(new DefaultGroup("Dozer File Options"), "New...");
+		return new PushButton(new DefaultGroup(this, "Dozer File Options"), "New...");
 	}
 
 	public PushButton getBrowseBTN() {
-		return new PushButton(new DefaultGroup("Dozer File Options"), "Browse...");
+		return new PushButton(new DefaultGroup(this, "Dozer File Options"), "Browse...");
 	}
 
 	public PushButton getDeselectAllBTN() {
-		return new PushButton("Deselect All");
+		return new PushButton(this, "Deselect All");
 	}
 
 	public PushButton getSelectAllBTN() {
-		return new PushButton("Select All");
+		return new PushButton(this, "Select All");
 	}
 
 	public Button getFinishBTN() {
-		return new PushButton("Finish");
+		return new PushButton(this, "Finish");
 	}
 
 	public Button getCancelBTN() {
-		return new PushButton("Cancel");
+		return new PushButton(this, "Cancel");
 	}
 
 	public Button getNextBTN() {
-		return new PushButton("Next >");
+		return new PushButton(this, "Next >");
 	}
 
 	public Button getBackBTN() {
-		return new PushButton("< Back");
+		return new PushButton(this, "< Back");
 	}
 
 	public RadioButton getCreateNewSmooksFileRDO() {
-		return new RadioButton("Create new Smooks file");
+		return new RadioButton(this, "Create new Smooks file");
 	}
 
 	public Text getSmooksFileTXT() {
-		return new LabeledText("Smooks file:");
+		return new LabeledText(this, "Smooks file:");
 	}
 
 	public void setSmooksFile(String text) {
@@ -144,15 +144,15 @@ public class TransformersWizard extends WizardDialog {
 	}
 
 	public CheckBox getCreateNewXSLfileCHK() {
-		return new CheckBox("Create new XSL file");
+		return new CheckBox(this, "Create new XSL file");
 	}
 
 	public RadioButton getCreatenewXSLfileRDO() {
-		return new RadioButton("Create new XSL file");
+		return new RadioButton(this, "Create new XSL file");
 	}
 
 	public Text getXSLFileTXT() {
-		return new LabeledText("XSL file:");
+		return new LabeledText(this, "XSL file:");
 	}
 
 	public void setXSLFile(String text) {
@@ -172,7 +172,7 @@ public class TransformersWizard extends WizardDialog {
 	}
 
 	public List getDozerFileOptionsLST() {
-		return new DefaultList(new DefaultGroup("Dozer File Options"));
+		return new DefaultList(new DefaultGroup(this, "Dozer File Options"));
 	}
 
 }

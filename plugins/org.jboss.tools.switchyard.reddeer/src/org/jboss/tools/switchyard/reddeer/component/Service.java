@@ -3,7 +3,6 @@ package org.jboss.tools.switchyard.reddeer.component;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.jface.wizard.WizardDialog;
-import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.switchyard.reddeer.wizard.PromoteServiceWizard;
 import org.jboss.tools.switchyard.reddeer.wizard.ServiceTestClassWizard;
@@ -54,8 +53,7 @@ public class Service extends SwitchYardComponent {
 	public WizardDialog addBinding(String binding) {
 		getContextButton("Binding", binding).click();
 		new WaitWhile(new JobIsRunning());
-		new DefaultShell("");
-		return new WizardDialog();
+		return new WizardDialog("");
 	}
 
 	public void openTextEditor() {

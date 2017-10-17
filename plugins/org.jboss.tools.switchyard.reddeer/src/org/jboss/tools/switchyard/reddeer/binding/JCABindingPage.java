@@ -12,7 +12,7 @@ import org.eclipse.reddeer.swt.impl.text.LabeledText;
  * @author apodhrad
  * 
  */
-public class JCABindingPage extends OperationOptionsPage<JMSBindingPage> {
+public class JCABindingPage extends OperationOptionsPage<JCABindingPage> {
 
 	public static final String RESOURCE_ADAPTER_GENERIC = "Generic Resource Adapter";
 	public static final String RESOURCE_ADAPTER_HORNETQ_QUEUE = "HornetQ Queue Resource Adapter";

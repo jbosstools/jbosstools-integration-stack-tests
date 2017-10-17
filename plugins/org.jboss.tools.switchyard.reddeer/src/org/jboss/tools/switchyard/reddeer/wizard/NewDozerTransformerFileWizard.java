@@ -16,20 +16,20 @@ public class NewDozerTransformerFileWizard extends WizardDialog {
 	}
 
 	public NewDozerTransformerFileWizard activate() {
-		new DefaultShell("New Dozer Transformer File");
+		setShell(new DefaultShell("New Dozer Transformer File"));
 		return this;
 	}
 
 	public Button getFinishBTN() {
-		return new PushButton("Finish");
+		return new PushButton(this, "Finish");
 	}
 
 	public Button getCancelBTN() {
-		return new PushButton("Cancel");
+		return new PushButton(this, "Cancel");
 	}
 
 	public Text getFilenameTXT() {
-		return new LabeledText("File name:");
+		return new LabeledText(this, "File name:");
 	}
 
 	public void setFilename(String text) {
@@ -45,7 +45,7 @@ public class NewDozerTransformerFileWizard extends WizardDialog {
 	}
 
 	public Text getEnterOrSelectTheParentFolderTXT() {
-		return new LabeledText("Enter or select the parent folder:");
+		return new LabeledText(this, "Enter or select the parent folder:");
 	}
 
 	public void setEnterOrSelectTheParentFolder(String text) {

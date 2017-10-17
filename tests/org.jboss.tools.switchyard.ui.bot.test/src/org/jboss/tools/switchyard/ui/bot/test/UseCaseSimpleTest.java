@@ -9,6 +9,7 @@ import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.eclipse.core.resources.ProjectItem;
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.eclipse.reddeer.jface.wizard.WizardDialog;
 import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
@@ -131,10 +132,10 @@ public class UseCaseSimpleTest {
 		textEditor.setText(javaSource("ExampleServiceTransformers.java", PACKAGE));
 		textEditor.close(true);
 
-		new Service("ExampleServicePortType").addBinding("SOAP");
-		SOAPBindingPage soapWizard = new SOAPBindingPage();
-		soapWizard.getContextPath().setText(PROJECT);
-		soapWizard.finish();
+		WizardDialog bindingsWizard = new Service("ExampleServicePortType").addBinding("SOAP");
+		SOAPBindingPage page = new SOAPBindingPage();
+		page.getContextPath().setText(PROJECT);
+		bindingsWizard.finish();
 
 		new SwitchYardEditor().save();
 

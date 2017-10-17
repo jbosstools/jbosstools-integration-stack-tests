@@ -36,6 +36,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.jface.wizard.WizardDialog;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
@@ -213,18 +214,18 @@ public class SwitchYardEditorBindingsTest {
 	public void atomBindingTest() throws Exception {
 		String time = "2015-01-01T00:00:00";
 
-		new Service(SERVICE).addBinding("Atom");
-		AtomBindingPage wizard = new AtomBindingPage();
-		wizard.setName("atom-binding");
-		wizard.getFeedURI().setText("http://localhost");
-		wizard.getSplitEntries().toggle(false);
-		wizard.getSplitEntries().toggle(true);
-		wizard.getFilter().toggle(false);
-		wizard.getFilter().toggle(true);
-		wizard.getLastUpdateStartingTimestamp().setText(time);
-		wizard.getSortEntriesbyDate().toggle(false);
-		wizard.getSortEntriesbyDate().toggle(true);
-		wizard.getDelayBetweenPolls().setText("1234");
+		WizardDialog wizard = new Service(SERVICE).addBinding("Atom");
+		AtomBindingPage page = new AtomBindingPage();
+		page.setName("atom-binding");
+		page.getFeedURI().setText("http://localhost");
+		page.getSplitEntries().toggle(false);
+		page.getSplitEntries().toggle(true);
+		page.getFilter().toggle(false);
+		page.getFilter().toggle(true);
+		page.getLastUpdateStartingTimestamp().setText(time);
+		page.getSortEntriesbyDate().toggle(false);
+		page.getSortEntriesbyDate().toggle(true);
+		page.getDelayBetweenPolls().setText("1234");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -239,7 +240,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("1234", bindingPath + "/consume/delay");
 
 		CompositePropertiesDialog properties = new Service(SERVICE).showProperties();
-		AtomBindingPage page = properties.selectBindings().selectAtomBinding("atom-binding");
+		page = properties.selectBindings().selectAtomBinding("atom-binding");
 		assertEquals("atom-binding", page.getName());
 		properties.ok();
 	}
@@ -248,17 +249,17 @@ public class SwitchYardEditorBindingsTest {
 	public void atomReferenceBindingTest() throws Exception {
 		String time = "2015-01-01T00:00:00";
 
-		new Service(REFERENCE_SERVICE).addBinding("Atom");
-		AtomBindingPage wizard = new AtomBindingPage();
-		wizard.setName("atom-binding");
-		wizard.getFeedURI().setText("http://localhost");
-		wizard.getSplitEntries().toggle(false);
-		wizard.getSplitEntries().toggle(true);
-		wizard.getFilter().toggle(false);
-		wizard.getFilter().toggle(true);
-		wizard.getLastUpdateStartingTimestamp().setText(time);
-		wizard.getSortEntriesbyDate().toggle(false);
-		wizard.getSortEntriesbyDate().toggle(true);
+		WizardDialog wizard = new Service(REFERENCE_SERVICE).addBinding("Atom");
+		AtomBindingPage page = new AtomBindingPage();
+		page.setName("atom-binding");
+		page.getFeedURI().setText("http://localhost");
+		page.getSplitEntries().toggle(false);
+		page.getSplitEntries().toggle(true);
+		page.getFilter().toggle(false);
+		page.getFilter().toggle(true);
+		page.getLastUpdateStartingTimestamp().setText(time);
+		page.getSortEntriesbyDate().toggle(false);
+		page.getSortEntriesbyDate().toggle(true);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -272,27 +273,27 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("true", bindingPath + "/sortEntries");
 
 		CompositePropertiesDialog properties = new Service(REFERENCE_SERVICE).showProperties();
-		AtomBindingPage page = properties.selectBindings().selectAtomBinding("atom-binding");
+		page = properties.selectBindings().selectAtomBinding("atom-binding");
 		assertEquals("atom-binding", page.getName());
 		properties.ok();
 	}
 
 	@Test
 	public void cxfBindingTest() throws Exception {
-		new Service(SERVICE).addBinding("CXF");
-		CXFBindingPage wizard = new CXFBindingPage();
-		wizard.setName("cxf-binding");
-		wizard.getCXFURI().setText("http://localhost");
-		wizard.getWSDLURL().setText("hello.wsdl");
-		wizard.getDataFormat().setSelection(DATA_FORMAT_POJO);
-		wizard.getServiceClass().setText("myClass.java");
-		wizard.getPortName().setText("port");
-		wizard.getRelayHeaders().toggle(false);
-		wizard.getRelayHeaders().toggle(true);
-		wizard.getWrapped().toggle(false);
-		wizard.getWrapped().toggle(true);
-		wizard.getWrappedStyle().setSelection("false");
-		wizard.getWrappedStyle().setSelection("true");
+		WizardDialog wizard = new Service(SERVICE).addBinding("CXF");
+		CXFBindingPage page = new CXFBindingPage();
+		page.setName("cxf-binding");
+		page.getCXFURI().setText("http://localhost");
+		page.getWSDLURL().setText("hello.wsdl");
+		page.getDataFormat().setSelection(DATA_FORMAT_POJO);
+		page.getServiceClass().setText("myClass.java");
+		page.getPortName().setText("port");
+		page.getRelayHeaders().toggle(false);
+		page.getRelayHeaders().toggle(true);
+		page.getWrapped().toggle(false);
+		page.getWrapped().toggle(true);
+		page.getWrappedStyle().setSelection("false");
+		page.getWrappedStyle().setSelection("true");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -309,25 +310,25 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("true", bindingPath + "/wrappedStyle");
 
 		CompositePropertiesDialog properties = new Service(SERVICE).showProperties();
-		CXFBindingPage page = properties.selectBindings().selectCXFBinding("cxf-binding");
+		page = properties.selectBindings().selectCXFBinding("cxf-binding");
 		assertEquals("cxf-binding", page.getName());
 		properties.ok();
 	}
 
 	@Test
 	public void cxfBindingPayloadTest() throws Exception {
-		new Service(SERVICE).addBinding("CXF");
-		CXFBindingPage wizard = new CXFBindingPage();
-		wizard.setName("cxf-binding");
-		wizard.getCXFURI().setText("http://localhost");
-		wizard.getWSDLURL().setText("hello.wsdl");
-		wizard.getDataFormat().setSelection(DATA_FORMAT_PAYLOAD);
-		wizard.getServiceClass().setText("myClass.java");
-		wizard.getPortName().setText("port");
-		assertFalse("SWITCHYARD-2794", wizard.getRelayHeaders().isEnabled());
-		wizard.getWrapped().toggle(false);
-		wizard.getWrapped().toggle(true);
-		wizard.getWrappedStyle().setSelection("true");
+		WizardDialog wizard = new Service(SERVICE).addBinding("CXF");
+		CXFBindingPage page = new CXFBindingPage();
+		page.setName("cxf-binding");
+		page.getCXFURI().setText("http://localhost");
+		page.getWSDLURL().setText("hello.wsdl");
+		page.getDataFormat().setSelection(DATA_FORMAT_PAYLOAD);
+		page.getServiceClass().setText("myClass.java");
+		page.getPortName().setText("port");
+		assertFalse("SWITCHYARD-2794", page.getRelayHeaders().isEnabled());
+		page.getWrapped().toggle(false);
+		page.getWrapped().toggle(true);
+		page.getWrappedStyle().setSelection("true");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -344,26 +345,26 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("true", bindingPath + "/wrappedStyle");
 
 		CompositePropertiesDialog properties = new Service(SERVICE).showProperties();
-		CXFBindingPage page = properties.selectBindings().selectCXFBinding("cxf-binding");
+		page = properties.selectBindings().selectCXFBinding("cxf-binding");
 		assertEquals("cxf-binding", page.getName());
 		properties.ok();
 	}
 
 	@Test
 	public void cxfBindingMessageTest() throws Exception {
-		new Service(SERVICE).addBinding("CXF");
-		CXFBindingPage wizard = new CXFBindingPage();
-		wizard.setName("cxf-binding");
-		wizard.getCXFURI().setText("http://localhost");
-		wizard.getWSDLURL().setText("hello.wsdl");
-		wizard.getDataFormat().setSelection(DATA_FORMAT_MESSAGE);
-		wizard.getServiceClass().setText("myClass.java");
-		wizard.getPortName().setText("port");
-		assertFalse("SWITCHYARD-2794", wizard.getRelayHeaders().isEnabled());
-		wizard.getWrapped().toggle(false);
-		wizard.getWrapped().toggle(true);
-		wizard.getWrappedStyle().setSelection("false");
-		wizard.getWrappedStyle().setSelection("true");
+		WizardDialog wizard = new Service(SERVICE).addBinding("CXF");
+		CXFBindingPage page = new CXFBindingPage();
+		page.setName("cxf-binding");
+		page.getCXFURI().setText("http://localhost");
+		page.getWSDLURL().setText("hello.wsdl");
+		page.getDataFormat().setSelection(DATA_FORMAT_MESSAGE);
+		page.getServiceClass().setText("myClass.java");
+		page.getPortName().setText("port");
+		assertFalse("SWITCHYARD-2794", page.getRelayHeaders().isEnabled());
+		page.getWrapped().toggle(false);
+		page.getWrapped().toggle(true);
+		page.getWrappedStyle().setSelection("false");
+		page.getWrappedStyle().setSelection("true");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -380,32 +381,32 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("true", bindingPath + "/wrappedStyle");
 
 		CompositePropertiesDialog properties = new Service(SERVICE).showProperties();
-		CXFBindingPage page = properties.selectBindings().selectCXFBinding("cxf-binding");
+		page = properties.selectBindings().selectCXFBinding("cxf-binding");
 		assertEquals("cxf-binding", page.getName());
 		properties.ok();
 	}
 
 	@Test
 	public void cxfReferenceBindingTest() throws Exception {
-		new Service(REFERENCE_SERVICE).addBinding("CXF");
-		CXFBindingPage wizard = new CXFBindingPage();
-		wizard.setName("cxf-binding");
-		wizard.getCXFURI().setText("http://localhost");
-		wizard.getWSDLURL().setText("hello.wsdl");
-		wizard.getDataFormat().setSelection(DATA_FORMAT_POJO);
-		wizard.getServiceClass().setText("myClass.java");
-		wizard.getServiceName().setText("MyClass");
-		wizard.getPortName().setText("port");
-		wizard.getRelayHeaders().toggle(false);
-		wizard.getRelayHeaders().toggle(true);
-		wizard.getWrapped().toggle(false);
-		wizard.getWrapped().toggle(true);
-		wizard.getWrappedStyle().setSelection("false");
-		wizard.getWrappedStyle().setSelection("true");
-		wizard.getUserName().setText("admin");
-		wizard.getPassword().setText("admin123$");
-		wizard.getDefaultOperationName().setText("foo");
-		wizard.getDefaultOperationNamespace().setText("http://foo");
+		WizardDialog wizard = new Service(REFERENCE_SERVICE).addBinding("CXF");
+		CXFBindingPage page = new CXFBindingPage();
+		page.setName("cxf-binding");
+		page.getCXFURI().setText("http://localhost");
+		page.getWSDLURL().setText("hello.wsdl");
+		page.getDataFormat().setSelection(DATA_FORMAT_POJO);
+		page.getServiceClass().setText("myClass.java");
+		page.getServiceName().setText("MyClass");
+		page.getPortName().setText("port");
+		page.getRelayHeaders().toggle(false);
+		page.getRelayHeaders().toggle(true);
+		page.getWrapped().toggle(false);
+		page.getWrapped().toggle(true);
+		page.getWrappedStyle().setSelection("false");
+		page.getWrappedStyle().setSelection("true");
+		page.getUserName().setText("admin");
+		page.getPassword().setText("admin123$");
+		page.getDefaultOperationName().setText("foo");
+		page.getDefaultOperationNamespace().setText("http://foo");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -427,7 +428,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("http://foo", bindingPath + "/defaultOperationNamespace");
 
 		CompositePropertiesDialog properties = new Service(REFERENCE_SERVICE).showProperties();
-		CXFBindingPage page = properties.selectBindings().selectCXFBinding("cxf-binding");
+		page = properties.selectBindings().selectCXFBinding("cxf-binding");
 		assertEquals("cxf-binding", page.getName());
 		assertEquals("http://localhost", page.getCXFURI().getText());
 		assertEquals("hello.wsdl", page.getWSDLURL().getText());
@@ -439,24 +440,24 @@ public class SwitchYardEditorBindingsTest {
 
 	@Test
 	public void cxfReferenceBindingPayloadTest() throws Exception {
-		new Service(REFERENCE_SERVICE).addBinding("CXF");
-		CXFBindingPage wizard = new CXFBindingPage();
-		wizard.setName("cxf-binding");
-		wizard.getCXFURI().setText("http://localhost");
-		wizard.getWSDLURL().setText("hello.wsdl");
-		wizard.getDataFormat().setSelection(DATA_FORMAT_PAYLOAD);
-		wizard.getServiceClass().setText("myClass.java");
-		wizard.getServiceName().setText("MyClass");
-		wizard.getPortName().setText("port");
-		assertFalse("SWITCHYARD-2794", wizard.getRelayHeaders().isEnabled());
-		wizard.getWrapped().toggle(false);
-		wizard.getWrapped().toggle(true);
-		wizard.getWrappedStyle().setSelection("false");
-		wizard.getWrappedStyle().setSelection("true");
-		wizard.getUserName().setText("admin");
-		wizard.getPassword().setText("admin123$");
-		wizard.getDefaultOperationName().setText("foo");
-		wizard.getDefaultOperationNamespace().setText("http://foo");
+		WizardDialog wizard = new Service(REFERENCE_SERVICE).addBinding("CXF");
+		CXFBindingPage page = new CXFBindingPage();
+		page.setName("cxf-binding");
+		page.getCXFURI().setText("http://localhost");
+		page.getWSDLURL().setText("hello.wsdl");
+		page.getDataFormat().setSelection(DATA_FORMAT_PAYLOAD);
+		page.getServiceClass().setText("myClass.java");
+		page.getServiceName().setText("MyClass");
+		page.getPortName().setText("port");
+		assertFalse("SWITCHYARD-2794", page.getRelayHeaders().isEnabled());
+		page.getWrapped().toggle(false);
+		page.getWrapped().toggle(true);
+		page.getWrappedStyle().setSelection("false");
+		page.getWrappedStyle().setSelection("true");
+		page.getUserName().setText("admin");
+		page.getPassword().setText("admin123$");
+		page.getDefaultOperationName().setText("foo");
+		page.getDefaultOperationNamespace().setText("http://foo");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -478,7 +479,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("http://foo", bindingPath + "/defaultOperationNamespace");
 
 		CompositePropertiesDialog properties = new Service(REFERENCE_SERVICE).showProperties();
-		CXFBindingPage page = properties.selectBindings().selectCXFBinding("cxf-binding");
+		page = properties.selectBindings().selectCXFBinding("cxf-binding");
 		assertEquals("cxf-binding", page.getName());
 		assertEquals("http://localhost", page.getCXFURI().getText());
 		assertEquals("hello.wsdl", page.getWSDLURL().getText());
@@ -490,12 +491,12 @@ public class SwitchYardEditorBindingsTest {
 
 	@Test
 	public void camelBindingTest() throws Exception {
-		new Service(SERVICE).addBinding("Camel");
-		CamelBindingPage wizard = new CamelBindingPage();
-		assertEquals("camel1", wizard.getName());
-		wizard.setName("camel-binding");
-		wizard.getConfigURI().setText("camel-uri");
-		wizard.setOperationSelector(OPERATION_NAME, METHOD);
+		WizardDialog wizard = new Service(SERVICE).addBinding("Camel");
+		CamelBindingPage page = new CamelBindingPage();
+		assertEquals("camel1", page.getName());
+		page.setName("camel-binding");
+		page.getConfigURI().setText("camel-uri");
+		page.setOperationSelector(OPERATION_NAME, METHOD);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -506,7 +507,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath(METHOD, bindingPath + "/operationSelector/@operationName");
 
 		CompositePropertiesDialog properties = new Service(SERVICE).showProperties();
-		CamelBindingPage page = properties.selectBindings().selectCamelBinding("camel-binding");
+		page = properties.selectBindings().selectCamelBinding("camel-binding");
 		assertEquals("camel-binding", page.getName());
 		assertEquals("camel-uri", page.getConfigURI().getText());
 		assertEquals(OPERATION_NAME, page.getOperationSelector());
@@ -516,11 +517,11 @@ public class SwitchYardEditorBindingsTest {
 
 	@Test
 	public void camelReferenceBindingTest() throws Exception {
-		new Service(REFERENCE_SERVICE).addBinding("Camel");
-		CamelBindingPage wizard = new CamelBindingPage();
-		assertEquals("camel1", wizard.getName());
-		wizard.setName("camel-binding");
-		wizard.getConfigURI().setText("camel-uri");
+		WizardDialog wizard = new Service(REFERENCE_SERVICE).addBinding("Camel");
+		CamelBindingPage page = new CamelBindingPage();
+		assertEquals("camel1", page.getName());
+		page.setName("camel-binding");
+		page.getConfigURI().setText("camel-uri");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -530,38 +531,38 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("camel-uri", bindingPath + "/@configURI");
 
 		CompositePropertiesDialog properties = new Service(REFERENCE_SERVICE).showProperties();
-		CamelBindingPage page = properties.selectBindings().selectCamelBinding("camel-binding");
+		page = properties.selectBindings().selectCamelBinding("camel-binding");
 		assertEquals("camel-binding", page.getName());
 		assertEquals("camel-uri", page.getConfigURI().getText());
 		properties.ok();
 	}
 
-	@Test
+	 @Test
 	public void ftpBindingTest() throws Exception {
-		new Service(SERVICE).addBinding("FTP");
-		FTPBindingPage wizard = new FTPBindingPage();
-		assertEquals("ftp1", wizard.getName());
-		wizard.setName("ftp-binding");
-		wizard.getHost().setText("myhost");
-		wizard.getPort().setText("1234");
-		wizard.getUserName().setText("admin");
-		wizard.getPassword().setText("admin123$");
-		wizard.getUseBinaryTransferMode().toggle(true);
-		wizard.getDirectory().setText("ftp-directory");
-		wizard.getFileName().setText("fileName");
-		wizard.getAutoCreateMissingDirectoriesinFilePath().click();
-		wizard.getAutoCreateMissingDirectoriesinFilePath().toggle(true);
-		wizard.getInclude().setText("include");
-		wizard.getExclude().setText("exclude");
-		wizard.getDeleteFilesOnceProcessed().toggle(true);
-		wizard.getProcessSubDirectoriesRecursively().toggle(true);
-		wizard.setOperationSelector(OPERATION_NAME, METHOD);
+		WizardDialog wizard = new Service(SERVICE).addBinding("FTP");
+		FTPBindingPage page = new FTPBindingPage();
+		assertEquals("ftp1", page.getName());
+		page.setName("ftp-binding");
+		page.getHost().setText("myhost");
+		page.getPort().setText("1234");
+		page.getUserName().setText("admin");
+		page.getPassword().setText("admin123$");
+		page.getUseBinaryTransferMode().toggle(true);
+		page.getDirectory().setText("ftp-directory");
+		page.getFileName().setText("fileName");
+		page.getAutoCreateMissingDirectoriesinFilePath().click();
+		page.getAutoCreateMissingDirectoriesinFilePath().toggle(true);
+		page.getInclude().setText("include");
+		page.getExclude().setText("exclude");
+		page.getDeleteFilesOnceProcessed().toggle(true);
+		page.getProcessSubDirectoriesRecursively().toggle(true);
+		page.setOperationSelector(OPERATION_NAME, METHOD);
 		wizard.next();
-		wizard.getPreMove().setText("preMove");
-		wizard.getMove().setText("move");
-		wizard.getMoveFailed().setText("moveFailed");
-		wizard.getDelayBetweenPolls().setText("3000");
-		wizard.getMaxMessagesPerPoll().setText("10");
+		page.getPreMove().setText("preMove");
+		page.getMove().setText("move");
+		page.getMoveFailed().setText("moveFailed");
+		page.getDelayBetweenPolls().setText("3000");
+		page.getMaxMessagesPerPoll().setText("10");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -588,29 +589,29 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("3000", bindingPath + "/consume/delay");
 
 		CompositePropertiesDialog properties = new Service(SERVICE).showProperties();
-		FTPBindingPage page = properties.selectBindings().selectFTPBinding("ftp-binding");
+		page = properties.selectBindings().selectFTPBinding("ftp-binding");
 		assertEquals("ftp-binding", page.getName());
 		assertEquals("ftp-directory", page.getDirectory().getText());
 		properties.ok();
 	}
 
-	@Test
+	 @Test
 	public void ftpReferenceBindingTest() throws Exception {
-		new Service(REFERENCE_SERVICE).addBinding("FTP");
-		FTPBindingPage wizard = new FTPBindingPage();
-		assertEquals("ftp1", wizard.getName());
-		wizard.setName("ftp-binding");
-		wizard.getHost().setText("myhost");
-		wizard.getPort().setText("1234");
-		wizard.getUserName().setText("admin");
-		wizard.getPassword().setText("admin123$");
-		wizard.getUseBinaryTransferMode().toggle(true);
-		wizard.getDirectory().setText("ftp-directory");
-		wizard.getFileName().setText("fileName");
-		wizard.getAutoCreateMissingDirectoriesinFilePath().click();
-		wizard.getAutoCreateMissingDirectoriesinFilePath().toggle(true);
-		wizard.getFileExist().setText("exist");
-		wizard.getTempPrefix().setText("prefix");
+		WizardDialog wizard = new Service(REFERENCE_SERVICE).addBinding("FTP");
+		FTPBindingPage page = new FTPBindingPage();
+		assertEquals("ftp1", page.getName());
+		page.setName("ftp-binding");
+		page.getHost().setText("myhost");
+		page.getPort().setText("1234");
+		page.getUserName().setText("admin");
+		page.getPassword().setText("admin123$");
+		page.getUseBinaryTransferMode().toggle(true);
+		page.getDirectory().setText("ftp-directory");
+		page.getFileName().setText("fileName");
+		page.getAutoCreateMissingDirectoriesinFilePath().click();
+		page.getAutoCreateMissingDirectoriesinFilePath().toggle(true);
+		page.getFileExist().setText("exist");
+		page.getTempPrefix().setText("prefix");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -629,7 +630,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("prefix", bindingPath + "/produce/tempPrefix");
 
 		CompositePropertiesDialog properties = new Service(REFERENCE_SERVICE).showProperties();
-		FTPBindingPage page = properties.selectBindings().selectFTPBinding("ftp-binding");
+		page = properties.selectBindings().selectFTPBinding("ftp-binding");
 		assertEquals("ftp-binding", page.getName());
 		assertEquals("myhost", page.getHost().getText());
 		assertEquals("admin", page.getUserName().getText());
@@ -638,40 +639,40 @@ public class SwitchYardEditorBindingsTest {
 		properties.ok();
 	}
 
-	@Test
+	 @Test
 	public void ftpsBindingTest() throws Exception {
-		new Service(SERVICE).addBinding("FTPS");
-		FTPSBindingPage wizard = new FTPSBindingPage();
-		assertEquals("ftps1", wizard.getName());
-		wizard.setName("ftps-binding");
-		wizard.getHost().setText("localhost");
-		wizard.getPort().setText("1234");
-		wizard.getUserName().setText("admin");
-		wizard.getPassword().setText("admin123$");
-		wizard.getUseBinaryTransferMode().toggle(true);
-		wizard.getDirectory().setText("ftps-directory");
-		wizard.getFileName().setText("filename");
-		wizard.getAutoCreateMissingDirectoriesinFilePath().toggle(false);
-		wizard.getAutoCreateMissingDirectoriesinFilePath().toggle(true);
-		wizard.getInclude().setText("include");
-		wizard.getExclude().setText("exclude");
-		wizard.getDeleteFilesOnceProcessed().toggle(true);
-		wizard.getProcessSubDirectoriesRecursively().toggle(true);
-		wizard.setOperationSelector(OPERATION_NAME, METHOD);
+		WizardDialog wizard = new Service(SERVICE).addBinding("FTPS");
+		FTPSBindingPage page = new FTPSBindingPage();
+		assertEquals("ftps1", page.getName());
+		page.setName("ftps-binding");
+		page.getHost().setText("localhost");
+		page.getPort().setText("1234");
+		page.getUserName().setText("admin");
+		page.getPassword().setText("admin123$");
+		page.getUseBinaryTransferMode().toggle(true);
+		page.getDirectory().setText("ftps-directory");
+		page.getFileName().setText("filename");
+		page.getAutoCreateMissingDirectoriesinFilePath().toggle(false);
+		page.getAutoCreateMissingDirectoriesinFilePath().toggle(true);
+		page.getInclude().setText("include");
+		page.getExclude().setText("exclude");
+		page.getDeleteFilesOnceProcessed().toggle(true);
+		page.getProcessSubDirectoriesRecursively().toggle(true);
+		page.setOperationSelector(OPERATION_NAME, METHOD);
 		wizard.next();
-		wizard.getPreMove().setText("pre-move");
-		wizard.getMove().setText("move");
-		wizard.getMoveFailed().setText("move-failed");
-		wizard.getDelayBetweenPolls().setText("1200");
-		wizard.getMaxMessagesPerPoll().setText("3");
+		page.getPreMove().setText("pre-move");
+		page.getMove().setText("move");
+		page.getMoveFailed().setText("move-failed");
+		page.getDelayBetweenPolls().setText("1200");
+		page.getMaxMessagesPerPoll().setText("3");
 		wizard.next();
-		wizard.getSecurityProtocol().setSelection(FTPSBindingPage.SECURITY_PROTOCOL_SSL);
-		wizard.getSecurityProtocol().setSelection(FTPSBindingPage.SECURITY_PROTOCOL_TLS);
-		wizard.getImplicit().toggle(true);
-		wizard.getExecutionProtocol().setSelection(FTPSBindingPage.EXECUTION_PROTOCOL_C);
-		wizard.getExecutionProtocol().setSelection(FTPSBindingPage.EXECUTION_PROTOCOL_S);
-		wizard.getExecutionProtocol().setSelection(FTPSBindingPage.EXECUTION_PROTOCOL_E);
-		wizard.getExecutionProtocol().setSelection(FTPSBindingPage.EXECUTION_PROTOCOL_P);
+		page.getSecurityProtocol().setSelection(FTPSBindingPage.SECURITY_PROTOCOL_SSL);
+		page.getSecurityProtocol().setSelection(FTPSBindingPage.SECURITY_PROTOCOL_TLS);
+		page.getImplicit().toggle(true);
+		page.getExecutionProtocol().setSelection(FTPSBindingPage.EXECUTION_PROTOCOL_C);
+		page.getExecutionProtocol().setSelection(FTPSBindingPage.EXECUTION_PROTOCOL_S);
+		page.getExecutionProtocol().setSelection(FTPSBindingPage.EXECUTION_PROTOCOL_E);
+		page.getExecutionProtocol().setSelection(FTPSBindingPage.EXECUTION_PROTOCOL_P);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -697,7 +698,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("1200", bindingPath + "/consume/delay");
 
 		CompositePropertiesDialog properties = new Service(SERVICE).showProperties();
-		FTPSBindingPage page = properties.selectBindings().selectFTPSBinding("ftps-binding");
+		page = properties.selectBindings().selectFTPSBinding("ftps-binding");
 		assertEquals("ftps-binding", page.getName());
 		assertEquals("ftps-directory", page.getDirectory().getText());
 		properties.ok();
@@ -705,25 +706,25 @@ public class SwitchYardEditorBindingsTest {
 
 	@Test
 	public void ftpsReferenceBindingTest() throws Exception {
-		new Service(REFERENCE_SERVICE).addBinding("FTPS");
-		FTPSBindingPage wizard = new FTPSBindingPage();
-		assertEquals("ftps1", wizard.getName());
-		wizard.setName("ftps-binding");
-		wizard.getHost().setText("localhost");
-		wizard.getPort().setText("1234");
-		wizard.getUserName().setText("admin");
-		wizard.getPassword().setText("admin123$");
-		wizard.getUseBinaryTransferMode().toggle(true);
-		wizard.getDirectory().setText("ftps-directory");
-		wizard.getFileName().setText("filename");
-		wizard.getAutoCreateMissingDirectoriesinFilePath().toggle(false);
-		wizard.getAutoCreateMissingDirectoriesinFilePath().toggle(true);
-		wizard.getFileExist().setText("exist");
-		wizard.getTempPrefix().setText("prefix");
+		WizardDialog wizard = new Service(REFERENCE_SERVICE).addBinding("FTPS");
+		FTPSBindingPage page = new FTPSBindingPage();
+		assertEquals("ftps1", page.getName());
+		page.setName("ftps-binding");
+		page.getHost().setText("localhost");
+		page.getPort().setText("1234");
+		page.getUserName().setText("admin");
+		page.getPassword().setText("admin123$");
+		page.getUseBinaryTransferMode().toggle(true);
+		page.getDirectory().setText("ftps-directory");
+		page.getFileName().setText("filename");
+		page.getAutoCreateMissingDirectoriesinFilePath().toggle(false);
+		page.getAutoCreateMissingDirectoriesinFilePath().toggle(true);
+		page.getFileExist().setText("exist");
+		page.getTempPrefix().setText("prefix");
 		wizard.next();
-		wizard.getSecurityProtocol().setSelection(SECURITY_PROTOCOL_SSL);
-		wizard.getImplicit().toggle(true);
-		wizard.getExecutionProtocol().setSelection(EXECUTION_PROTOCOL_S);
+		page.getSecurityProtocol().setSelection(SECURITY_PROTOCOL_SSL);
+		page.getImplicit().toggle(true);
+		page.getExecutionProtocol().setSelection(EXECUTION_PROTOCOL_S);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -744,7 +745,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("S", bindingPath + "/execProt");
 
 		CompositePropertiesDialog properties = new Service(REFERENCE_SERVICE).showProperties();
-		FTPSBindingPage page = properties.selectBindings().selectFTPSBinding("ftps-binding");
+		page = properties.selectBindings().selectFTPSBinding("ftps-binding");
 		assertEquals("ftps-binding", page.getName());
 		assertEquals("ftps-directory", page.getDirectory().getText());
 		properties.ok();
@@ -752,22 +753,22 @@ public class SwitchYardEditorBindingsTest {
 
 	@Test
 	public void fileBindingTest() throws Exception {
-		new Service(SERVICE).addBinding("File");
-		FileBindingPage wizard = new FileBindingPage();
-		assertEquals("file1", wizard.getName());
-		wizard.setName("file-binding");
-		wizard.getDirectory().setText("file-directory");
-		wizard.getFileName().setText("test.txt");
-		wizard.getAutoCreateMissingDirectoriesinFilePath().toggle(false);
-		wizard.getAutoCreateMissingDirectoriesinFilePath().toggle(true);
-		wizard.getInclude().setText("inc");
-		wizard.getExclude().setText("ex");
-		wizard.setOperationSelector(OPERATION_NAME, METHOD);
-		wizard.getPreMove().setText("pre");
-		wizard.getMove().setText("processed");
-		wizard.getMoveFailed().setText("failed");
-		wizard.getMaxMessagesPerPoll().setText("10");
-		wizard.getDelayBetweenPolls().setText("963");
+		WizardDialog wizard = new Service(SERVICE).addBinding("File");
+		FileBindingPage page = new FileBindingPage();
+		assertEquals("file1", page.getName());
+		page.setName("file-binding");
+		page.getDirectory().setText("file-directory");
+		page.getFileName().setText("test.txt");
+		page.getAutoCreateMissingDirectoriesinFilePath().toggle(false);
+		page.getAutoCreateMissingDirectoriesinFilePath().toggle(true);
+		page.getInclude().setText("inc");
+		page.getExclude().setText("ex");
+		page.setOperationSelector(OPERATION_NAME, METHOD);
+		page.getPreMove().setText("pre");
+		page.getMove().setText("processed");
+		page.getMoveFailed().setText("failed");
+		page.getMaxMessagesPerPoll().setText("10");
+		page.getDelayBetweenPolls().setText("963");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -787,7 +788,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("ex", bindingPath + "/consume/exclude");
 
 		CompositePropertiesDialog properties = new Service(SERVICE).showProperties();
-		FileBindingPage page = properties.selectBindings().selectFileBinding("file-binding");
+		page = properties.selectBindings().selectFileBinding("file-binding");
 		assertEquals("file-binding", page.getName());
 		assertEquals("file-directory", page.getDirectory().getText());
 		assertTrue(page.getAutoCreateMissingDirectoriesinFilePath().isChecked());
@@ -796,16 +797,16 @@ public class SwitchYardEditorBindingsTest {
 
 	@Test
 	public void fileReferenceBindingTest() throws Exception {
-		new Service(REFERENCE_SERVICE).addBinding("File");
-		FileBindingPage wizard = new FileBindingPage();
-		assertEquals("file1", wizard.getName());
-		wizard.setName("file-binding");
-		wizard.getDirectory().setText("file-directory");
-		wizard.getFileName().setText("test.txt");
-		wizard.getAutoCreateMissingDirectoriesinFilePath().toggle(false);
-		wizard.getAutoCreateMissingDirectoriesinFilePath().toggle(true);
-		wizard.getFileExist().setText("exist");
-		wizard.getTempPrefix().setText("prefix");
+		WizardDialog wizard = new Service(REFERENCE_SERVICE).addBinding("File");
+		FileBindingPage page = new FileBindingPage();
+		assertEquals("file1", page.getName());
+		page.setName("file-binding");
+		page.getDirectory().setText("file-directory");
+		page.getFileName().setText("test.txt");
+		page.getAutoCreateMissingDirectoriesinFilePath().toggle(false);
+		page.getAutoCreateMissingDirectoriesinFilePath().toggle(true);
+		page.getFileExist().setText("exist");
+		page.getTempPrefix().setText("prefix");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -819,7 +820,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("prefix", bindingPath + "/produce/tempPrefix");
 
 		CompositePropertiesDialog properties = new Service(REFERENCE_SERVICE).showProperties();
-		FileBindingPage page = properties.selectBindings().selectFileBinding("file-binding");
+		page = properties.selectBindings().selectFileBinding("file-binding");
 		assertEquals("file-binding", page.getName());
 		assertEquals("file-directory", page.getDirectory().getText());
 		assertTrue(page.getAutoCreateMissingDirectoriesinFilePath().isChecked());
@@ -828,12 +829,12 @@ public class SwitchYardEditorBindingsTest {
 
 	@Test
 	public void httpBindingTest() throws Exception {
-		new Service(SERVICE).addBinding("HTTP");
-		HTTPBindingPage wizard = new HTTPBindingPage();
-		assertEquals("http1", wizard.getName());
-		wizard.setName("http-binding");
-		wizard.getContextPath().setText("http-context");
-		wizard.setOperationSelector(OPERATION_NAME, METHOD);
+		WizardDialog wizard = new Service(SERVICE).addBinding("HTTP");
+		HTTPBindingPage page = new HTTPBindingPage();
+		assertEquals("http1", page.getName());
+		page.setName("http-binding");
+		page.getContextPath().setText("http-context");
+		page.setOperationSelector(OPERATION_NAME, METHOD);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -844,7 +845,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("http-context", bindingPath + "/contextPath");
 
 		CompositePropertiesDialog properties = new Service(SERVICE).showProperties();
-		HTTPBindingPage page = properties.selectBindings().selectHTTPBinding("http-binding");
+		page = properties.selectBindings().selectHTTPBinding("http-binding");
 		assertEquals("http-binding", page.getName());
 		page.setName("http1");
 		assertEquals("http-context", page.getContextPath().getText());
@@ -863,25 +864,25 @@ public class SwitchYardEditorBindingsTest {
 
 	@Test
 	public void httpReferenceBindingTest() throws Exception {
-		new Service(REFERENCE_SERVICE).addBinding("HTTP");
-		HTTPBindingPage wizard = new HTTPBindingPage();
-		assertEquals("http1", wizard.getName());
-		wizard.setName("http-binding");
-		wizard.getAddress().setText("http://localhost");
-		wizard.getMethod().setSelection("GET");
-		wizard.getContentType().setText("coolType");
-		wizard.getRequestTimeout().setText("1234");
+		WizardDialog wizard = new Service(REFERENCE_SERVICE).addBinding("HTTP");
+		HTTPBindingPage page = new HTTPBindingPage();
+		assertEquals("http1", page.getName());
+		page.setName("http-binding");
+		page.getAddress().setText("http://localhost");
+		page.getMethod().setSelection("GET");
+		page.getContentType().setText("coolType");
+		page.getRequestTimeout().setText("1234");
 		wizard.next();
-		wizard.getAuthenticationType().setSelection("Basic");
-		wizard.getUser().setText("admin");
-		wizard.getPassword().setText("admin123");
-		wizard.getHost().setText("localhost");
-		wizard.getPort().setText("8081");
+		page.getAuthenticationType().setSelection("Basic");
+		page.getUser().setText("admin");
+		page.getPassword().setText("admin123");
+		page.getHost().setText("localhost");
+		page.getPort().setText("8081");
 		wizard.next();
-		wizard.getUserName().setText("proxyAdmin");
-		wizard.getPassword().setText("proxyAdmin123");
-		wizard.getHost().setText("proxyhost");
-		wizard.getPort().setText("1234");
+		page.getUserName().setText("proxyAdmin");
+		page.getPassword().setText("proxyAdmin123");
+		page.getHost().setText("proxyhost");
+		page.getPort().setText("1234");
 		wizard.finish();
 
 		new SwitchYardEditor().saveAndClose();
@@ -900,7 +901,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("1234", bindingPath + "/proxy/port");
 
 		CompositePropertiesDialog properties = new Service(REFERENCE_SERVICE).showProperties();
-		HTTPBindingPage page = properties.selectBindings().selectHTTPBinding("http-binding");
+		page = properties.selectBindings().selectHTTPBinding("http-binding");
 		assertEquals("http-binding", page.getName());
 		page.setName("http1");
 		assertEquals("http://localhost", page.getAddress().getText());
@@ -938,22 +939,22 @@ public class SwitchYardEditorBindingsTest {
 
 	@Test
 	public void jcaBindingGenericTest() throws Exception {
-		new Service(SERVICE).addBinding("JCA");
-		JCABindingPage wizard = new JCABindingPage();
-		assertEquals("jca1", wizard.getName());
-		wizard.setName("jca-binding");
-		wizard.getResourceAdapterType().setSelection(RESOURCE_ADAPTER_GENERIC);
-		wizard.getResourceAdapterArchive().setText("generic-ra.rar");
-		wizard.setOperationSelector(OPERATION_NAME, METHOD);
+		WizardDialog wizard = new Service(SERVICE).addBinding("JCA");
+		JCABindingPage page = new JCABindingPage();
+		assertEquals("jca1", page.getName());
+		page.setName("jca-binding");
+		page.getResourceAdapterType().setSelection(RESOURCE_ADAPTER_GENERIC);
+		page.getResourceAdapterArchive().setText("generic-ra.rar");
+		page.setOperationSelector(OPERATION_NAME, METHOD);
 		wizard.next();
-		wizard.getEndpointMappingType().setSelection(ENDPOINT_JMS);
-		wizard.getTransacted().setText("false");
-		wizard.getTransacted().setText("true");
-		wizard.getBatchSize().setText("123");
-		wizard.getBatchTimeoutin().setText("2000");
-		wizard.getConnectionFactoryJNDIName().setText("jndiName");
-		wizard.getJNDIPropertiesFileName().setText("jndi.properties");
-		wizard.getDestinationType().setSelection("javax.jms.Queue");
+		page.getEndpointMappingType().setSelection(ENDPOINT_JMS);
+		page.getTransacted().setText("false");
+		page.getTransacted().setText("true");
+		page.getBatchSize().setText("123");
+		page.getBatchTimeoutin().setText("2000");
+		page.getConnectionFactoryJNDIName().setText("jndiName");
+		page.getJNDIPropertiesFileName().setText("jndi.properties");
+		page.getDestinationType().setSelection("javax.jms.Queue");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -974,26 +975,26 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("2000", bindingPath + "/inboundInteraction/batchCommit/@batchTimeout");
 
 		CompositePropertiesDialog properties = new Service(SERVICE).showProperties();
-		JCABindingPage page = properties.selectBindings().selectJCABinding("jca-binding");
+		page = properties.selectBindings().selectJCABinding("jca-binding");
 		assertEquals("jca-binding", page.getName());
 		assertEquals(RESOURCE_ADAPTER_GENERIC, page.getResourceAdapterType().getSelection());
 		assertEquals("generic-ra.rar", page.getResourceAdapterArchive().getText());
 		properties.ok();
 	}
 
-	@Test
+	 @Test
 	public void jcaBindingHornetQueueTest() throws Exception {
-		new Service(SERVICE).addBinding("JCA");
-		JCABindingPage wizard = new JCABindingPage();
-		assertEquals("jca1", wizard.getName());
-		wizard.setName("jca-binding");
-		wizard.getResourceAdapterType().setSelection(RESOURCE_ADAPTER_HORNETQ_QUEUE);
-		wizard.getDestinationQueue().setText("queue/MyQueue");
-		wizard.getMessageSelector().setText("ms");
-		wizard.getAcknowledgeMode().setSelection(ACKNOWLEDGE_MODE_DUPS_OK);
-		wizard.setOperationSelector(REGEX, "say[H|h]ello");
+		WizardDialog wizard = new Service(SERVICE).addBinding("JCA");
+		JCABindingPage page = new JCABindingPage();
+		assertEquals("jca1", page.getName());
+		page.setName("jca-binding");
+		page.getResourceAdapterType().setSelection(RESOURCE_ADAPTER_HORNETQ_QUEUE);
+		page.getDestinationQueue().setText("queue/MyQueue");
+		page.getMessageSelector().setText("ms");
+		page.getAcknowledgeMode().setSelection(ACKNOWLEDGE_MODE_DUPS_OK);
+		page.setOperationSelector(REGEX, "say[H|h]ello");
 		wizard.next();
-		wizard.getEndpointMappingType().setSelection(ENDPOINT_JMS);
+		page.getEndpointMappingType().setSelection(ENDPOINT_JMS);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -1011,28 +1012,28 @@ public class SwitchYardEditorBindingsTest {
 				bindingPath + "/inboundConnection/activationSpec/property[@name='acknowledgeMode']/@value");
 
 		CompositePropertiesDialog properties = new Service(SERVICE).showProperties();
-		JCABindingPage page = properties.selectBindings().selectJCABinding("jca-binding");
+		page = properties.selectBindings().selectJCABinding("jca-binding");
 		assertEquals("jca-binding", page.getName());
 		assertTrue(page.getResourceAdapterType().getSelection().equals(RESOURCE_ADAPTER_HORNETQ_QUEUE));
 		properties.ok();
 	}
 
-	@Test
+	 @Test
 	public void jcaBindingHornetTopicTest() throws Exception {
-		new Service(SERVICE).addBinding("JCA");
-		JCABindingPage wizard = new JCABindingPage();
-		assertEquals("jca1", wizard.getName());
-		wizard.setName("jca-binding");
-		wizard.getResourceAdapterType().setSelection(RESOURCE_ADAPTER_HORNETQ_TOPIC);
-		wizard.getDestinationTopic().setText("topic/MyTopic");
-		wizard.getMessageSelector().setText("ms");
-		wizard.getAcknowledgeMode().setSelection(ACKNOWLEDGE_MODE_AUTO);
-		wizard.getSubscriptionDurability().setSelection(SUBSCRIPTION_NONDURABLE);
-		wizard.getClientID().setText("clientID");
-		wizard.getSubscriptionName().setText("sub-name");
-		wizard.setOperationSelector(JAVA_CLASS, "myClass.java");
+		WizardDialog wizard = new Service(SERVICE).addBinding("JCA");
+		JCABindingPage page = new JCABindingPage();
+		assertEquals("jca1", page.getName());
+		page.setName("jca-binding");
+		page.getResourceAdapterType().setSelection(RESOURCE_ADAPTER_HORNETQ_TOPIC);
+		page.getDestinationTopic().setText("topic/MyTopic");
+		page.getMessageSelector().setText("ms");
+		page.getAcknowledgeMode().setSelection(ACKNOWLEDGE_MODE_AUTO);
+		page.getSubscriptionDurability().setSelection(SUBSCRIPTION_NONDURABLE);
+		page.getClientID().setText("clientID");
+		page.getSubscriptionName().setText("sub-name");
+		page.setOperationSelector(JAVA_CLASS, "myClass.java");
 		wizard.next();
-		wizard.getEndpointMappingType().setSelection(ENDPOINT_JMS);
+		page.getEndpointMappingType().setSelection(ENDPOINT_JMS);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -1059,7 +1060,7 @@ public class SwitchYardEditorBindingsTest {
 				"count(" + bindingPath + "/inboundConnection/activationSpec/property[@name='acknowledgeMode'])");
 
 		CompositePropertiesDialog properties = new Service(SERVICE).showProperties();
-		JCABindingPage page = properties.selectBindings().selectJCABinding("jca-binding");
+		page = properties.selectBindings().selectJCABinding("jca-binding");
 		assertEquals("jca-binding", page.getName());
 		assertTrue(page.getResourceAdapterType().getSelection().equals(RESOURCE_ADAPTER_HORNETQ_TOPIC));
 		properties.ok();
@@ -1067,21 +1068,21 @@ public class SwitchYardEditorBindingsTest {
 
 	@Test
 	public void jmsQueueBindingTest() throws Exception {
-		new Service(SERVICE).addBinding("JMS");
-		JMSBindingPage wizard = new JMSBindingPage();
-		assertEquals("jms1", wizard.getName());
-		wizard.setName("jms-binding");
-		wizard.getType().setSelection(TYPE_QUEUE);
-		wizard.getQueueTopicName().setText("myqueue");
-		wizard.getConnectionFactory().setText("#MyFactory");
-		wizard.getConcurrentConsumers().setText("3");
-		wizard.getMaximumConcurrentConsumers().setText("7");
-		wizard.getReplyTo().setText("reply-to");
-		wizard.getSelector().setText("selector");
-		wizard.getTransactionManager().setText("MyTX");
-		wizard.getTransacted().toggle(false);
-		wizard.getTransacted().toggle(true);
-		wizard.setOperationSelector(OPERATION_NAME, METHOD);
+		WizardDialog wizard = new Service(SERVICE).addBinding("JMS");
+		JMSBindingPage page = new JMSBindingPage();
+		assertEquals("jms1", page.getName());
+		page.setName("jms-binding");
+		page.getType().setSelection(TYPE_QUEUE);
+		page.getQueueTopicName().setText("myqueue");
+		page.getConnectionFactory().setText("#MyFactory");
+		page.getConcurrentConsumers().setText("3");
+		page.getMaximumConcurrentConsumers().setText("7");
+		page.getReplyTo().setText("reply-to");
+		page.getSelector().setText("selector");
+		page.getTransactionManager().setText("MyTX");
+		page.getTransacted().toggle(false);
+		page.getTransacted().toggle(true);
+		page.setOperationSelector(OPERATION_NAME, METHOD);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -1099,7 +1100,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("MyTX", bindingPath + "/transactionManager");
 
 		CompositePropertiesDialog properties = new Service(SERVICE).showProperties();
-		JMSBindingPage page = properties.selectBindings().selectJMSBinding("jms-binding");
+		page = properties.selectBindings().selectJMSBinding("jms-binding");
 		assertEquals("jms-binding", page.getName());
 		assertEquals("myqueue", page.getQueueTopicName().getText());
 		properties.ok();
@@ -1107,20 +1108,20 @@ public class SwitchYardEditorBindingsTest {
 
 	@Test
 	public void jmsQueueReferenceBindingTest() throws Exception {
-		new Service(REFERENCE_SERVICE).addBinding("JMS");
-		JMSBindingPage wizard = new JMSBindingPage();
-		assertEquals("jms1", wizard.getName());
-		wizard.setName("jms-binding");
-		wizard.getType().setSelection(TYPE_QUEUE);
-		wizard.getQueueTopicName().setText("myqueue");
-		wizard.getConnectionFactory().setText("#MyFactory");
-		wizard.getConcurrentConsumers().setText("3");
-		wizard.getMaximumConcurrentConsumers().setText("7");
-		wizard.getReplyTo().setText("reply-to");
-		wizard.getSelector().setText("selector");
-		wizard.getTransactionManager().setText("MyTX");
-		wizard.getTransacted().toggle(false);
-		wizard.getTransacted().toggle(true);
+		WizardDialog wizard = new Service(REFERENCE_SERVICE).addBinding("JMS");
+		JMSBindingPage page = new JMSBindingPage();
+		assertEquals("jms1", page.getName());
+		page.setName("jms-binding");
+		page.getType().setSelection(TYPE_QUEUE);
+		page.getQueueTopicName().setText("myqueue");
+		page.getConnectionFactory().setText("#MyFactory");
+		page.getConcurrentConsumers().setText("3");
+		page.getMaximumConcurrentConsumers().setText("7");
+		page.getReplyTo().setText("reply-to");
+		page.getSelector().setText("selector");
+		page.getTransactionManager().setText("MyTX");
+		page.getTransacted().toggle(false);
+		page.getTransacted().toggle(true);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -1137,7 +1138,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("MyTX", bindingPath + "/transactionManager");
 
 		CompositePropertiesDialog properties = new Service(REFERENCE_SERVICE).showProperties();
-		JMSBindingPage page = properties.selectBindings().selectJMSBinding("jms-binding");
+		page = properties.selectBindings().selectJMSBinding("jms-binding");
 		assertEquals("jms-binding", page.getName());
 		assertEquals("myqueue", page.getQueueTopicName().getText());
 
@@ -1146,21 +1147,21 @@ public class SwitchYardEditorBindingsTest {
 
 	@Test
 	public void jmsTopicBindingTest() throws Exception {
-		new Service(SERVICE).addBinding("JMS");
-		JMSBindingPage wizard = new JMSBindingPage();
-		assertEquals("jms1", wizard.getName());
-		wizard.setName("jms-binding");
-		wizard.getType().setSelection(TYPE_TOPIC);
-		wizard.getQueueTopicName().setText("mytopic");
-		wizard.getConnectionFactory().setText("#MyFactory");
-		wizard.getConcurrentConsumers().setText("3");
-		wizard.getMaximumConcurrentConsumers().setText("7");
-		wizard.getReplyTo().setText("reply-to");
-		wizard.getSelector().setText("selector");
-		wizard.getTransactionManager().setText("MyTX");
-		wizard.getTransacted().toggle(true);
-		wizard.getTransacted().toggle(false);
-		wizard.setOperationSelector(OPERATION_NAME, METHOD);
+		WizardDialog wizard = new Service(SERVICE).addBinding("JMS");
+		JMSBindingPage page = new JMSBindingPage();
+		assertEquals("jms1", page.getName());
+		page.setName("jms-binding");
+		page.getType().setSelection(TYPE_TOPIC);
+		page.getQueueTopicName().setText("mytopic");
+		page.getConnectionFactory().setText("#MyFactory");
+		page.getConcurrentConsumers().setText("3");
+		page.getMaximumConcurrentConsumers().setText("7");
+		page.getReplyTo().setText("reply-to");
+		page.getSelector().setText("selector");
+		page.getTransactionManager().setText("MyTX");
+		page.getTransacted().toggle(true);
+		page.getTransacted().toggle(false);
+		page.setOperationSelector(OPERATION_NAME, METHOD);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -1178,7 +1179,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("MyTX", bindingPath + "/transactionManager");
 
 		CompositePropertiesDialog properties = new Service(SERVICE).showProperties();
-		JMSBindingPage page = properties.selectBindings().selectJMSBinding("jms-binding");
+		page = properties.selectBindings().selectJMSBinding("jms-binding");
 		assertEquals("jms-binding", page.getName());
 		assertEquals("mytopic", page.getQueueTopicName().getText());
 		properties.ok();
@@ -1186,20 +1187,20 @@ public class SwitchYardEditorBindingsTest {
 
 	// @Test
 	public void jmsTopicReferenceBindingTest() throws Exception {
-		new Service(REFERENCE_SERVICE).addBinding("JMS");
-		JMSBindingPage wizard = new JMSBindingPage();
-		assertEquals("jms1", wizard.getName());
-		wizard.setName("jms-binding");
-		wizard.getType().setSelection(TYPE_TOPIC);
-		wizard.getQueueTopicName().setText("mytopic");
-		wizard.getConnectionFactory().setText("#MyFactory");
-		wizard.getConcurrentConsumers().setText("3");
-		wizard.getMaximumConcurrentConsumers().setText("7");
-		wizard.getReplyTo().setText("reply-to");
-		wizard.getSelector().setText("selector");
-		wizard.getTransactionManager().setText("MyTX");
-		wizard.getTransacted().toggle(true);
-		wizard.getTransacted().toggle(false);
+		WizardDialog wizard = new Service(REFERENCE_SERVICE).addBinding("JMS");
+		JMSBindingPage page = new JMSBindingPage();
+		assertEquals("jms1", page.getName());
+		page.setName("jms-binding");
+		page.getType().setSelection(TYPE_TOPIC);
+		page.getQueueTopicName().setText("mytopic");
+		page.getConnectionFactory().setText("#MyFactory");
+		page.getConcurrentConsumers().setText("3");
+		page.getMaximumConcurrentConsumers().setText("7");
+		page.getReplyTo().setText("reply-to");
+		page.getSelector().setText("selector");
+		page.getTransactionManager().setText("MyTX");
+		page.getTransacted().toggle(true);
+		page.getTransacted().toggle(false);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -1216,7 +1217,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("MyTX", bindingPath + "/transactionManager");
 
 		CompositePropertiesDialog properties = new Service(REFERENCE_SERVICE).showProperties();
-		JMSBindingPage page = properties.selectBindings().selectJMSBinding("jms-binding");
+		page = properties.selectBindings().selectJMSBinding("jms-binding");
 		assertEquals("jms-binding", page.getName());
 		assertEquals("mytopic", page.getQueueTopicName().getText());
 		properties.ok();
@@ -1224,23 +1225,23 @@ public class SwitchYardEditorBindingsTest {
 
 	@Test
 	public void jpaBindingTest() throws Exception {
-		new Service(SERVICE).addBinding("JPA");
-		JPABindingPage wizard = new JPABindingPage();
-		assertEquals("jpa1", wizard.getName());
-		wizard.setName("jpa-binding");
-		wizard.getEntityClassName().setText("EClass.java");
-		wizard.getPersistenceUnit().setText("persistence.xml");
-		wizard.getTransactionManager().setText("myTX");
-		wizard.getDelete().toggle(false);
-		wizard.getDelete().toggle(true);
-		wizard.getLockEntity().toggle(false);
-		wizard.getLockEntity().toggle(true);
-		wizard.getMaximumResults().setText("5");
-		wizard.getQuery().setText("query");
-		wizard.getNamedQuery().setText("named-query");
-		wizard.getNativeQuery().setText("native-query");
-		wizard.getTransacted().toggle(false);
-		wizard.getTransacted().toggle(true);
+		WizardDialog wizard = new Service(SERVICE).addBinding("JPA");
+		JPABindingPage page = new JPABindingPage();
+		assertEquals("jpa1", page.getName());
+		page.setName("jpa-binding");
+		page.getEntityClassName().setText("EClass.java");
+		page.getPersistenceUnit().setText("persistence.xml");
+		page.getTransactionManager().setText("myTX");
+		page.getDelete().toggle(false);
+		page.getDelete().toggle(true);
+		page.getLockEntity().toggle(false);
+		page.getLockEntity().toggle(true);
+		page.getMaximumResults().setText("5");
+		page.getQuery().setText("query");
+		page.getNamedQuery().setText("named-query");
+		page.getNativeQuery().setText("native-query");
+		page.getTransacted().toggle(false);
+		page.getTransacted().toggle(true);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -1259,7 +1260,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("true", bindingPath + "/consume/consumer.transacted");
 
 		CompositePropertiesDialog properties = new Service(SERVICE).showProperties();
-		JPABindingPage page = properties.selectBindings().selectJPABinding("jpa-binding");
+		page = properties.selectBindings().selectJPABinding("jpa-binding");
 		assertEquals("jpa-binding", page.getName());
 		assertEquals("EClass.java", page.getEntityClassName().getText());
 		assertEquals("persistence.xml", page.getPersistenceUnit().getText());
@@ -1268,17 +1269,17 @@ public class SwitchYardEditorBindingsTest {
 
 	// @Test
 	public void jpaReferenceBindingTest() throws Exception {
-		new Service(REFERENCE_SERVICE).addBinding("JPA");
-		JPABindingPage wizard = new JPABindingPage();
-		assertEquals("jpa1", wizard.getName());
-		wizard.setName("jpa-binding");
-		wizard.getEntityClassName().setText("EClass.java");
-		wizard.getPersistenceUnit().setText("persistence.xml");
-		wizard.getTransactionManager().setText("myTX");
-		wizard.getFlushonSend().toggle(false);
-		wizard.getFlushonSend().toggle(true);
-		wizard.getUsePersist().toggle(false);
-		wizard.getUsePersist().toggle(true);
+		WizardDialog wizard = new Service(REFERENCE_SERVICE).addBinding("JPA");
+		JPABindingPage page = new JPABindingPage();
+		assertEquals("jpa1", page.getName());
+		page.setName("jpa-binding");
+		page.getEntityClassName().setText("EClass.java");
+		page.getPersistenceUnit().setText("persistence.xml");
+		page.getTransactionManager().setText("myTX");
+		page.getFlushonSend().toggle(false);
+		page.getFlushonSend().toggle(true);
+		page.getUsePersist().toggle(false);
+		page.getUsePersist().toggle(true);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -1292,7 +1293,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("true", bindingPath + "/produce/usePersist");
 
 		CompositePropertiesDialog properties = new Service(REFERENCE_SERVICE).showProperties();
-		JPABindingPage page = properties.selectBindings().selectJPABinding("jpa-binding");
+		page = properties.selectBindings().selectJPABinding("jpa-binding");
 		assertEquals("jpa-binding", page.getName());
 		assertEquals("EClass.java", page.getEntityClassName().getText());
 		assertEquals("persistence.xml", page.getPersistenceUnit().getText());
@@ -1301,14 +1302,14 @@ public class SwitchYardEditorBindingsTest {
 
 	@Test
 	public void mqttBindingTest() throws Exception {
-		new Service(SERVICE).addBinding("MQTT");
-		MQTTBindingPage wizard = new MQTTBindingPage();
-		wizard.setName("mqtt-binding");
-		wizard.getHostURI().setText("tcp://localhost:1883");
-		wizard.getSubscribeTopicName().setText("topicName");
-		wizard.getConnectAttemptsMax().setText("111");
-		wizard.getReconnectAttemptsMax().setText("222");
-		wizard.getQualityofService().setSelection(QOS_EXACTLY_ONCE);
+		WizardDialog wizard = new Service(SERVICE).addBinding("MQTT");
+		MQTTBindingPage page = new MQTTBindingPage();
+		page.setName("mqtt-binding");
+		page.getHostURI().setText("tcp://localhost:1883");
+		page.getSubscribeTopicName().setText("topicName");
+		page.getConnectAttemptsMax().setText("111");
+		page.getReconnectAttemptsMax().setText("222");
+		page.getQualityofService().setSelection(QOS_EXACTLY_ONCE);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -1322,21 +1323,21 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("topicName", bindingPath + "/subscribeTopicName");
 
 		CompositePropertiesDialog properties = new Service(SERVICE).showProperties();
-		MQTTBindingPage page = properties.selectBindings().selectMQTTBinding("mqtt-binding");
+		page = properties.selectBindings().selectMQTTBinding("mqtt-binding");
 		assertEquals("mqtt-binding", page.getName());
 		properties.ok();
 	}
 
 	@Test
 	public void mqttReferenceBindingTest() throws Exception {
-		new Service(REFERENCE_SERVICE).addBinding("MQTT");
-		MQTTBindingPage wizard = new MQTTBindingPage();
-		wizard.setName("mqtt-binding");
-		wizard.getHostURI().setText("tcp://localhost:1883");
-		wizard.getPublishTopicName().setText("topicName");
-		wizard.getConnectAttemptsMax().setText("111");
-		wizard.getReconnectAttemptsMax().setText("222");
-		wizard.getQualityofService().setSelection(QOS_EXACTLY_ONCE);
+		WizardDialog wizard = new Service(REFERENCE_SERVICE).addBinding("MQTT");
+		MQTTBindingPage page = new MQTTBindingPage();
+		page.setName("mqtt-binding");
+		page.getHostURI().setText("tcp://localhost:1883");
+		page.getPublishTopicName().setText("topicName");
+		page.getConnectAttemptsMax().setText("111");
+		page.getReconnectAttemptsMax().setText("222");
+		page.getQualityofService().setSelection(QOS_EXACTLY_ONCE);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -1350,31 +1351,31 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("topicName", bindingPath + "/publishTopicName");
 
 		CompositePropertiesDialog properties = new Service(REFERENCE_SERVICE).showProperties();
-		MQTTBindingPage page = properties.selectBindings().selectMQTTBinding("mqtt-binding");
+		page = properties.selectBindings().selectMQTTBinding("mqtt-binding");
 		assertEquals("mqtt-binding", page.getName());
 		properties.ok();
 	}
 
 	@Test
 	public void mailBindingTest() throws Exception {
-		new Service(SERVICE).addBinding("Mail");
-		MailBindingPage wizard = new MailBindingPage();
-		assertEquals("mail1", wizard.getName());
-		wizard.setName("mail-binding");
-		wizard.getHost().setText("localhost");
-		wizard.getPort().setText("1234");
-		wizard.getUserName().setText("admin");
-		wizard.getPassword().setText("admin123$");
-		wizard.getSecured().toggle(false);
-		wizard.getSecured().toggle(true);
-		wizard.getAccountType().setSelection(ACCOUNT_TYPE_IMAP);
-		wizard.getFolderName().setText("inbox");
-		wizard.getFetchSize().setText("3");
-		wizard.getUnreadOnly().toggle(false);
-		wizard.getUnreadOnly().toggle(true);
-		wizard.getDelete().toggle(false);
-		wizard.getDelete().toggle(true);
-		wizard.setOperationSelector(OPERATION_NAME, METHOD);
+		WizardDialog wizard = new Service(SERVICE).addBinding("Mail");
+		MailBindingPage page = new MailBindingPage();
+		assertEquals("mail1", page.getName());
+		page.setName("mail-binding");
+		page.getHost().setText("localhost");
+		page.getPort().setText("1234");
+		page.getUserName().setText("admin");
+		page.getPassword().setText("admin123$");
+		page.getSecured().toggle(false);
+		page.getSecured().toggle(true);
+		page.getAccountType().setSelection(ACCOUNT_TYPE_IMAP);
+		page.getFolderName().setText("inbox");
+		page.getFetchSize().setText("3");
+		page.getUnreadOnly().toggle(false);
+		page.getUnreadOnly().toggle(true);
+		page.getDelete().toggle(false);
+		page.getDelete().toggle(true);
+		page.setOperationSelector(OPERATION_NAME, METHOD);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -1392,7 +1393,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("true", bindingPath + "/consume/delete");
 
 		CompositePropertiesDialog properties = new Service(SERVICE).showProperties();
-		MailBindingPage page = properties.selectBindings().selectMailBinding("mail-binding");
+		page = properties.selectBindings().selectMailBinding("mail-binding");
 		assertEquals("mail-binding", page.getName());
 		assertEquals("localhost", page.getHost().getText());
 		properties.ok();
@@ -1400,22 +1401,22 @@ public class SwitchYardEditorBindingsTest {
 
 	@Test
 	public void mailReferenceBindingTest() throws Exception {
-		new Service(REFERENCE_SERVICE).addBinding("Mail");
-		MailBindingPage wizard = new MailBindingPage();
-		assertEquals("mail1", wizard.getName());
-		wizard.setName("mail-binding");
-		wizard.getHost().setText("localhost");
-		wizard.getPort().setText("1234");
-		wizard.getUserName().setText("admin");
-		wizard.getPassword().setText("admin123$");
-		wizard.getSecured().toggle(false);
-		wizard.getSecured().toggle(true);
-		wizard.getSubject().setText("subject");
-		wizard.getFrom().setText("from");
-		wizard.getTo().setText("to");
-		wizard.getCC().setText("cc");
-		wizard.getBCC().setText("bcc");
-		wizard.getReplyTo().setText("replyto");
+		WizardDialog wizard = new Service(REFERENCE_SERVICE).addBinding("Mail");
+		MailBindingPage page = new MailBindingPage();
+		assertEquals("mail1", page.getName());
+		page.setName("mail-binding");
+		page.getHost().setText("localhost");
+		page.getPort().setText("1234");
+		page.getUserName().setText("admin");
+		page.getPassword().setText("admin123$");
+		page.getSecured().toggle(false);
+		page.getSecured().toggle(true);
+		page.getSubject().setText("subject");
+		page.getFrom().setText("from");
+		page.getTo().setText("to");
+		page.getCC().setText("cc");
+		page.getBCC().setText("bcc");
+		page.getReplyTo().setText("replyto");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -1434,7 +1435,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("replyto", bindingPath + "/produce/replyTo");
 
 		CompositePropertiesDialog properties = new Service(REFERENCE_SERVICE).showProperties();
-		MailBindingPage page = properties.selectBindings().selectMailBinding("mail-binding");
+		page = properties.selectBindings().selectMailBinding("mail-binding");
 		assertEquals("mail-binding", page.getName());
 		assertEquals("localhost", page.getHost().getText());
 		properties.ok();
@@ -1442,13 +1443,13 @@ public class SwitchYardEditorBindingsTest {
 
 	@Test
 	public void nettyTcpBindingTest() throws Exception {
-		new Service(SERVICE).addBinding("Netty TCP");
-		NettyTCPBindingPage wizard = new NettyTCPBindingPage();
-		assertEquals("tcp1", wizard.getName());
-		wizard.setName("tcp-binding");
-		wizard.getHost().setText("tcp-host");
-		wizard.getPort().setText("1234");
-		wizard.setOperationSelector(OPERATION_NAME, METHOD);
+		WizardDialog wizard = new Service(SERVICE).addBinding("Netty TCP");
+		NettyTCPBindingPage page = new NettyTCPBindingPage();
+		assertEquals("tcp1", page.getName());
+		page.setName("tcp-binding");
+		page.getHost().setText("tcp-host");
+		page.getPort().setText("1234");
+		page.setOperationSelector(OPERATION_NAME, METHOD);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -1460,7 +1461,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("1234", bindingPath + "/port");
 
 		CompositePropertiesDialog properties = new Service(SERVICE).showProperties();
-		NettyTCPBindingPage page = properties.selectBindings().selectNettyTCPBinding("tcp-binding");
+		page = properties.selectBindings().selectNettyTCPBinding("tcp-binding");
 		assertEquals("tcp-binding", page.getName());
 		assertEquals("tcp-host", page.getHost().getText());
 		assertEquals("1234", page.getPort().getText());
@@ -1469,12 +1470,12 @@ public class SwitchYardEditorBindingsTest {
 
 	@Test
 	public void nettyTcpReferenceBindingTest() throws Exception {
-		new Service(REFERENCE_SERVICE).addBinding("Netty TCP");
-		NettyTCPBindingPage wizard = new NettyTCPBindingPage();
-		assertEquals("tcp1", wizard.getName());
-		wizard.setName("tcp-binding");
-		wizard.getHost().setText("tcp-host");
-		wizard.getPort().setText("1234");
+		WizardDialog wizard = new Service(REFERENCE_SERVICE).addBinding("Netty TCP");
+		NettyTCPBindingPage page = new NettyTCPBindingPage();
+		assertEquals("tcp1", page.getName());
+		page.setName("tcp-binding");
+		page.getHost().setText("tcp-host");
+		page.getPort().setText("1234");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -1485,7 +1486,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("1234", bindingPath + "/port");
 
 		CompositePropertiesDialog properties = new Service(REFERENCE_SERVICE).showProperties();
-		NettyTCPBindingPage page = properties.selectBindings().selectNettyTCPBinding("tcp-binding");
+		page = properties.selectBindings().selectNettyTCPBinding("tcp-binding");
 		assertEquals("tcp-binding", page.getName());
 		assertEquals("tcp-host", page.getHost().getText());
 		assertEquals("1234", page.getPort().getText());
@@ -1494,15 +1495,15 @@ public class SwitchYardEditorBindingsTest {
 
 	@Test
 	public void nettyUdpBindingTest() throws Exception {
-		new Service(SERVICE).addBinding("Netty UDP");
-		NettyUDPBindingPage wizard = new NettyUDPBindingPage();
-		assertEquals("udp1", wizard.getName());
-		wizard.setName("udp-binding");
-		wizard.getHost().setText("udp-host");
-		wizard.getPort().setText("1234");
-		wizard.getBroadcast().toggle(false);
-		wizard.getBroadcast().toggle(true);
-		wizard.setOperationSelector(OPERATION_NAME, METHOD);
+		WizardDialog wizard = new Service(SERVICE).addBinding("Netty UDP");
+		NettyUDPBindingPage page = new NettyUDPBindingPage();
+		assertEquals("udp1", page.getName());
+		page.setName("udp-binding");
+		page.getHost().setText("udp-host");
+		page.getPort().setText("1234");
+		page.getBroadcast().toggle(false);
+		page.getBroadcast().toggle(true);
+		page.setOperationSelector(OPERATION_NAME, METHOD);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -1515,7 +1516,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("true", bindingPath + "/broadcast");
 
 		CompositePropertiesDialog properties = new Service(SERVICE).showProperties();
-		NettyUDPBindingPage page = properties.selectBindings().selectNettyUDPBinding("udp-binding");
+		page = properties.selectBindings().selectNettyUDPBinding("udp-binding");
 		assertEquals("udp-binding", page.getName());
 		assertEquals("udp-host", page.getHost().getText());
 		assertEquals("1234", page.getPort().getText());
@@ -1524,14 +1525,14 @@ public class SwitchYardEditorBindingsTest {
 
 	@Test
 	public void nettyUdpReferenceBindingTest() throws Exception {
-		new Service(REFERENCE_SERVICE).addBinding("Netty UDP");
-		NettyUDPBindingPage wizard = new NettyUDPBindingPage();
-		assertEquals("udp1", wizard.getName());
-		wizard.setName("udp-binding");
-		wizard.getHost().setText("udp-host");
-		wizard.getPort().setText("1234");
-		wizard.getBroadcast().toggle(false);
-		wizard.getBroadcast().toggle(true);
+		WizardDialog wizard = new Service(REFERENCE_SERVICE).addBinding("Netty UDP");
+		NettyUDPBindingPage page = new NettyUDPBindingPage();
+		assertEquals("udp1", page.getName());
+		page.setName("udp-binding");
+		page.getHost().setText("udp-host");
+		page.getPort().setText("1234");
+		page.getBroadcast().toggle(false);
+		page.getBroadcast().toggle(true);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -1543,21 +1544,21 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("true", bindingPath + "/broadcast");
 
 		CompositePropertiesDialog properties = new Service(REFERENCE_SERVICE).showProperties();
-		NettyUDPBindingPage page = properties.selectBindings().selectNettyUDPBinding("udp-binding");
+		page = properties.selectBindings().selectNettyUDPBinding("udp-binding");
 		assertEquals("udp-binding", page.getName());
 		assertEquals("udp-host", page.getHost().getText());
 		assertEquals("1234", page.getPort().getText());
 		properties.ok();
 	}
 
-	@Test
+	 @Test
 	public void restBindingTest() throws Exception {
-		new Service(SERVICE).addBinding("REST");
-		RESTBindingPage wizard = new RESTBindingPage();
-		assertEquals("rest1", wizard.getName());
-		wizard.setName("rest-binding");
-		wizard.getContextPath().setText("rest-context");
-		wizard.addInterface("Hello");
+		WizardDialog wizard = new Service(SERVICE).addBinding("REST");
+		RESTBindingPage page = new RESTBindingPage();
+		assertEquals("rest1", page.getName());
+		page.setName("rest-binding");
+		page.getContextPath().setText("rest-context");
+		page.addInterface("Hello");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -1568,32 +1569,32 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("rest-context", bindingPath + "/contextPath");
 
 		CompositePropertiesDialog properties = new Service(SERVICE).showProperties();
-		RESTBindingPage page = properties.selectBindings().selectRESTBinding("rest-binding");
+		page = properties.selectBindings().selectRESTBinding("rest-binding");
 		assertEquals("rest-binding", page.getName());
 		assertEquals("rest-context", page.getContextPath().getText());
 		assertTrue(page.getInterfaces().contains(PACKAGE + ".Hello"));
 		properties.ok();
 	}
 
-	@Test
+	 @Test
 	public void restReferenceBindingTest() throws Exception {
-		new Service(REFERENCE_SERVICE).addBinding("REST");
-		RESTBindingPage wizard = new RESTBindingPage();
-		assertEquals("rest1", wizard.getName());
-		wizard.setName("rest-binding");
-		wizard.getAddress().setText("http://localhost");
-		wizard.addInterface("Hello");
+		WizardDialog wizard = new Service(REFERENCE_SERVICE).addBinding("REST");
+		RESTBindingPage page = new RESTBindingPage();
+		assertEquals("rest1", page.getName());
+		page.setName("rest-binding");
+		page.getAddress().setText("http://localhost");
+		page.addInterface("Hello");
 		wizard.next();
-		wizard.getAuthenticationType().setSelection("Basic");
-		wizard.getUser().setText("admin");
-		wizard.getPassword().setText("admin123");
-		wizard.getHost().setText("localhost");
-		wizard.getPort().setText("8081");
+		page.getAuthenticationType().setSelection("Basic");
+		page.getUser().setText("admin");
+		page.getPassword().setText("admin123");
+		page.getHost().setText("localhost");
+		page.getPort().setText("8081");
 		wizard.next();
-		wizard.getUserName().setText("proxyAdmin");
-		wizard.getPassword().setText("proxyAdmin123");
-		wizard.getHost().setText("proxyhost");
-		wizard.getPort().setText("1234");
+		page.getUserName().setText("proxyAdmin");
+		page.getPassword().setText("proxyAdmin123");
+		page.getHost().setText("proxyhost");
+		page.getPort().setText("1234");
 		wizard.finish();
 
 		new SwitchYardEditor().saveAndClose();
@@ -1613,7 +1614,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("1234", bindingPath + "/proxy/port");
 
 		CompositePropertiesDialog properties = new Service(REFERENCE_SERVICE).showProperties();
-		RESTBindingPage page = properties.selectBindings().selectRESTBinding("rest-binding");
+		page = properties.selectBindings().selectRESTBinding("rest-binding");
 		assertEquals("rest-binding", page.getName());
 		assertEquals("http://localhost", page.getAddress().getText());
 		assertTrue(page.getInterfaces().contains(PACKAGE + ".Hello"));
@@ -1637,18 +1638,18 @@ public class SwitchYardEditorBindingsTest {
 	public void rssBindingTest() throws Exception {
 		String time = "2015-01-01T00:00:00";
 
-		new Service(SERVICE).addBinding("RSS");
-		RSSBindingPage wizard = new RSSBindingPage();
-		wizard.setName("rss-binding");
-		wizard.getFeedURI().setText("http://localhost");
-		wizard.getSplitEntries().toggle(false);
-		wizard.getSplitEntries().toggle(true);
-		wizard.getFilter().toggle(false);
-		wizard.getFilter().toggle(true);
-		wizard.getLastUpdateStartingTimestamp().setText(time);
-		wizard.getSortEntriesbyDate().toggle(false);
-		wizard.getSortEntriesbyDate().toggle(true);
-		wizard.getDelayBetweenPolls().setText("1234");
+		WizardDialog wizard = new Service(SERVICE).addBinding("RSS");
+		RSSBindingPage page = new RSSBindingPage();
+		page.setName("rss-binding");
+		page.getFeedURI().setText("http://localhost");
+		page.getSplitEntries().toggle(false);
+		page.getSplitEntries().toggle(true);
+		page.getFilter().toggle(false);
+		page.getFilter().toggle(true);
+		page.getLastUpdateStartingTimestamp().setText(time);
+		page.getSortEntriesbyDate().toggle(false);
+		page.getSortEntriesbyDate().toggle(true);
+		page.getDelayBetweenPolls().setText("1234");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -1663,7 +1664,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("1234", bindingPath + "/consume/delay");
 
 		CompositePropertiesDialog properties = new Service(SERVICE).showProperties();
-		RSSBindingPage page = properties.selectBindings().selectRSSBinding("rss-binding");
+		page = properties.selectBindings().selectRSSBinding("rss-binding");
 		assertEquals("rss-binding", page.getName());
 		properties.ok();
 	}
@@ -1672,17 +1673,17 @@ public class SwitchYardEditorBindingsTest {
 	public void rssReferenceBindingTest() throws Exception {
 		String time = "2015-01-01T00:00:00";
 
-		new Service(REFERENCE_SERVICE).addBinding("RSS");
-		RSSBindingPage wizard = new RSSBindingPage();
-		wizard.setName("rss-binding");
-		wizard.getFeedURI().setText("http://localhost");
-		wizard.getSplitEntries().toggle(false);
-		wizard.getSplitEntries().toggle(true);
-		wizard.getFilter().toggle(false);
-		wizard.getFilter().toggle(true);
-		wizard.getLastUpdateStartingTimestamp().setText(time);
-		wizard.getSortEntriesbyDate().toggle(false);
-		wizard.getSortEntriesbyDate().toggle(true);
+		WizardDialog wizard = new Service(REFERENCE_SERVICE).addBinding("RSS");
+		RSSBindingPage page = new RSSBindingPage();
+		page.setName("rss-binding");
+		page.getFeedURI().setText("http://localhost");
+		page.getSplitEntries().toggle(false);
+		page.getSplitEntries().toggle(true);
+		page.getFilter().toggle(false);
+		page.getFilter().toggle(true);
+		page.getLastUpdateStartingTimestamp().setText(time);
+		page.getSortEntriesbyDate().toggle(false);
+		page.getSortEntriesbyDate().toggle(true);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -1696,22 +1697,22 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("true", bindingPath + "/sortEntries");
 
 		CompositePropertiesDialog properties = new Service(REFERENCE_SERVICE).showProperties();
-		RSSBindingPage page = properties.selectBindings().selectRSSBinding("rss-binding");
+		page = properties.selectBindings().selectRSSBinding("rss-binding");
 		assertEquals("rss-binding", page.getName());
 		properties.ok();
 	}
 
 	@Test
 	public void sapIDocListBindingTest() throws Exception {
-		new Service(SERVICE).addBinding("SAP");
-		SAPBindingPage wizard = new SAPBindingPage();
-		wizard.setName("sap-binding");
-		wizard.getSAPObject().setSelection(SAP_OBJECT_IDOC_LIST);
-		wizard.getServer().setText("localhost");
-		wizard.getIDocType().setText("docType");
-		wizard.getIDocTypeExtension().setText("ext");
-		wizard.getSystemRelease().setText("sysRel");
-		wizard.getApplicationRelease().setText("appRel");
+		WizardDialog wizard = new Service(SERVICE).addBinding("SAP");
+		SAPBindingPage page = new SAPBindingPage();
+		page.setName("sap-binding");
+		page.getSAPObject().setSelection(SAP_OBJECT_IDOC_LIST);
+		page.getServer().setText("localhost");
+		page.getIDocType().setText("docType");
+		page.getIDocTypeExtension().setText("ext");
+		page.getSystemRelease().setText("sysRel");
+		page.getApplicationRelease().setText("appRel");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -1725,7 +1726,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("appRel", bindingPath + "/idoclist-server/applicationRelease");
 
 		CompositePropertiesDialog properties = new Service(SERVICE).showProperties();
-		SAPBindingPage page = properties.selectBindings().selectSAPBinding("sap-binding");
+		page = properties.selectBindings().selectSAPBinding("sap-binding");
 		assertEquals("sap-binding", page.getName());
 		assertEquals("localhost", page.getServer().getText());
 		assertEquals("docType", page.getIDocType().getText());
@@ -1737,15 +1738,15 @@ public class SwitchYardEditorBindingsTest {
 
 	@Test
 	public void sapIDocListReferenceBindingTest() throws Exception {
-		new Service(REFERENCE_SERVICE).addBinding("SAP");
-		SAPBindingPage wizard = new SAPBindingPage();
-		wizard.setName("sap-binding");
-		wizard.getSAPObject().setSelection(SAP_OBJECT_IDOC_LIST);
-		wizard.getDestinationName().setText("example.com");
-		wizard.getIDocType().setText("docType");
-		wizard.getIDocTypeExtension().setText("ext");
-		wizard.getSystemRelease().setText("sysRel");
-		wizard.getApplicationRelease().setText("appRel");
+		WizardDialog wizard = new Service(REFERENCE_SERVICE).addBinding("SAP");
+		SAPBindingPage page = new SAPBindingPage();
+		page.setName("sap-binding");
+		page.getSAPObject().setSelection(SAP_OBJECT_IDOC_LIST);
+		page.getDestinationName().setText("example.com");
+		page.getIDocType().setText("docType");
+		page.getIDocTypeExtension().setText("ext");
+		page.getSystemRelease().setText("sysRel");
+		page.getApplicationRelease().setText("appRel");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -1759,7 +1760,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("appRel", bindingPath + "/idoclist-destination/applicationRelease");
 
 		CompositePropertiesDialog properties = new Service(REFERENCE_SERVICE).showProperties();
-		SAPBindingPage page = properties.selectBindings().selectSAPBinding("sap-binding");
+		page = properties.selectBindings().selectSAPBinding("sap-binding");
 		assertEquals("sap-binding", page.getName());
 		assertEquals("example.com", page.getDestinationName().getText());
 		assertEquals("docType", page.getIDocType().getText());
@@ -1771,12 +1772,12 @@ public class SwitchYardEditorBindingsTest {
 
 	@Test
 	public void sapSRFCBindingTest() throws Exception {
-		new Service(SERVICE).addBinding("SAP");
-		SAPBindingPage wizard = new SAPBindingPage();
-		wizard.setName("sap-binding");
-		wizard.getSAPObject().setSelection(SAP_OBJECT_SRFC);
-		wizard.getServer().setText("localhost");
-		wizard.getRFCName().setText("srfcName");
+		WizardDialog wizard = new Service(SERVICE).addBinding("SAP");
+		SAPBindingPage page = new SAPBindingPage();
+		page.setName("sap-binding");
+		page.getSAPObject().setSelection(SAP_OBJECT_SRFC);
+		page.getServer().setText("localhost");
+		page.getRFCName().setText("srfcName");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -1787,7 +1788,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("srfcName", bindingPath + "/srfc-server/rfcName");
 
 		CompositePropertiesDialog properties = new Service(SERVICE).showProperties();
-		SAPBindingPage page = properties.selectBindings().selectSAPBinding("sap-binding");
+		page = properties.selectBindings().selectSAPBinding("sap-binding");
 		assertEquals("sap-binding", page.getName());
 		assertEquals("localhost", page.getServer().getText());
 		assertEquals("srfcName", page.getRFCName().getText());
@@ -1796,13 +1797,13 @@ public class SwitchYardEditorBindingsTest {
 
 	@Test
 	public void sapSRFCReferenceBindingTest() throws Exception {
-		new Service(REFERENCE_SERVICE).addBinding("SAP");
-		SAPBindingPage wizard = new SAPBindingPage();
-		wizard.setName("sap-binding");
-		wizard.getSAPObject().setSelection(SAP_OBJECT_SRFC);
-		wizard.getDestinationName().setText("example.com");
-		wizard.getRFCName().setText("srfcName");
-		wizard.getTransacted().setText("${myVar}");
+		WizardDialog wizard = new Service(REFERENCE_SERVICE).addBinding("SAP");
+		SAPBindingPage page = new SAPBindingPage();
+		page.setName("sap-binding");
+		page.getSAPObject().setSelection(SAP_OBJECT_SRFC);
+		page.getDestinationName().setText("example.com");
+		page.getRFCName().setText("srfcName");
+		page.getTransacted().setText("${myVar}");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -1814,7 +1815,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("${myVar}", bindingPath + "/srfc-destination/transacted");
 
 		CompositePropertiesDialog properties = new Service(REFERENCE_SERVICE).showProperties();
-		SAPBindingPage page = properties.selectBindings().selectSAPBinding("sap-binding");
+		page = properties.selectBindings().selectSAPBinding("sap-binding");
 		assertEquals("sap-binding", page.getName());
 		assertEquals("example.com", page.getDestinationName().getText());
 		assertEquals("srfcName", page.getRFCName().getText());
@@ -1824,12 +1825,12 @@ public class SwitchYardEditorBindingsTest {
 
 	@Test
 	public void sapTRFCBindingTest() throws Exception {
-		new Service(SERVICE).addBinding("SAP");
-		SAPBindingPage wizard = new SAPBindingPage();
-		wizard.setName("sap-binding");
-		wizard.getSAPObject().setSelection(SAP_OBJECT_TRFC);
-		wizard.getServer().setText("localhost");
-		wizard.getRFCName().setText("trfcName");
+		WizardDialog wizard = new Service(SERVICE).addBinding("SAP");
+		SAPBindingPage page = new SAPBindingPage();
+		page.setName("sap-binding");
+		page.getSAPObject().setSelection(SAP_OBJECT_TRFC);
+		page.getServer().setText("localhost");
+		page.getRFCName().setText("trfcName");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -1840,7 +1841,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("trfcName", bindingPath + "/trfc-server/rfcName");
 
 		CompositePropertiesDialog properties = new Service(SERVICE).showProperties();
-		SAPBindingPage page = properties.selectBindings().selectSAPBinding("sap-binding");
+		page = properties.selectBindings().selectSAPBinding("sap-binding");
 		assertEquals("sap-binding", page.getName());
 		assertEquals("localhost", page.getServer().getText());
 		assertEquals("trfcName", page.getRFCName().getText());
@@ -1849,13 +1850,13 @@ public class SwitchYardEditorBindingsTest {
 
 	@Test
 	public void sapTRFCReferenceBindingTest() throws Exception {
-		new Service(REFERENCE_SERVICE).addBinding("SAP");
-		SAPBindingPage wizard = new SAPBindingPage();
-		wizard.setName("sap-binding");
-		wizard.getSAPObject().setSelection(SAP_OBJECT_TRFC);
-		wizard.getDestinationName().setText("example.com");
-		wizard.getRFCName().setText("trfcName");
-		wizard.getTransacted().setText("${myVar}");
+		WizardDialog wizard = new Service(REFERENCE_SERVICE).addBinding("SAP");
+		SAPBindingPage page = new SAPBindingPage();
+		page.setName("sap-binding");
+		page.getSAPObject().setSelection(SAP_OBJECT_TRFC);
+		page.getDestinationName().setText("example.com");
+		page.getRFCName().setText("trfcName");
+		page.getTransacted().setText("${myVar}");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -1867,7 +1868,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("${myVar}", bindingPath + "/trfc-destination/transacted");
 
 		CompositePropertiesDialog properties = new Service(REFERENCE_SERVICE).showProperties();
-		SAPBindingPage page = properties.selectBindings().selectSAPBinding("sap-binding");
+		page = properties.selectBindings().selectSAPBinding("sap-binding");
 		assertEquals("sap-binding", page.getName());
 		assertEquals("example.com", page.getDestinationName().getText());
 		assertEquals("trfcName", page.getRFCName().getText());
@@ -1877,15 +1878,15 @@ public class SwitchYardEditorBindingsTest {
 
 	@Test
 	public void sapIDocReferenceBindingTest() throws Exception {
-		new Service(REFERENCE_SERVICE).addBinding("SAP");
-		SAPBindingPage wizard = new SAPBindingPage();
-		wizard.setName("sap-binding");
-		wizard.getSAPObject().setSelection(SAP_OBJECT_IDOC);
-		wizard.getDestinationName().setText("example.com");
-		wizard.getIDocType().setText("docType");
-		wizard.getIDocTypeExtension().setText("ext");
-		wizard.getSystemRelease().setText("sysRel");
-		wizard.getApplicationRelease().setText("appRel");
+		WizardDialog wizard = new Service(REFERENCE_SERVICE).addBinding("SAP");
+		SAPBindingPage page = new SAPBindingPage();
+		page.setName("sap-binding");
+		page.getSAPObject().setSelection(SAP_OBJECT_IDOC);
+		page.getDestinationName().setText("example.com");
+		page.getIDocType().setText("docType");
+		page.getIDocTypeExtension().setText("ext");
+		page.getSystemRelease().setText("sysRel");
+		page.getApplicationRelease().setText("appRel");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -1899,7 +1900,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("appRel", bindingPath + "/idoc-destination/applicationRelease");
 
 		CompositePropertiesDialog properties = new Service(REFERENCE_SERVICE).showProperties();
-		SAPBindingPage page = properties.selectBindings().selectSAPBinding("sap-binding");
+		page = properties.selectBindings().selectSAPBinding("sap-binding");
 		assertEquals("sap-binding", page.getName());
 		assertEquals("example.com", page.getDestinationName().getText());
 		assertEquals("docType", page.getIDocType().getText());
@@ -1911,16 +1912,16 @@ public class SwitchYardEditorBindingsTest {
 
 	@Test
 	public void sapQIDocReferenceBindingTest() throws Exception {
-		new Service(REFERENCE_SERVICE).addBinding("SAP");
-		SAPBindingPage wizard = new SAPBindingPage();
-		wizard.setName("sap-binding");
-		wizard.getSAPObject().setSelection(SAP_OBJECT_QIDOC);
-		wizard.getDestinationName().setText("example.com");
-		wizard.getQueueName().setText("myqueue");
-		wizard.getIDocType().setText("docType");
-		wizard.getIDocTypeExtension().setText("ext");
-		wizard.getSystemRelease().setText("sysRel");
-		wizard.getApplicationRelease().setText("appRel");
+		WizardDialog wizard = new Service(REFERENCE_SERVICE).addBinding("SAP");
+		SAPBindingPage page = new SAPBindingPage();
+		page.setName("sap-binding");
+		page.getSAPObject().setSelection(SAP_OBJECT_QIDOC);
+		page.getDestinationName().setText("example.com");
+		page.getQueueName().setText("myqueue");
+		page.getIDocType().setText("docType");
+		page.getIDocTypeExtension().setText("ext");
+		page.getSystemRelease().setText("sysRel");
+		page.getApplicationRelease().setText("appRel");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -1934,7 +1935,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("sysRel", bindingPath + "/qidoc-destination/systemRelease");
 
 		CompositePropertiesDialog properties = new Service(REFERENCE_SERVICE).showProperties();
-		SAPBindingPage page = properties.selectBindings().selectSAPBinding("sap-binding");
+		page = properties.selectBindings().selectSAPBinding("sap-binding");
 		assertEquals("sap-binding", page.getName());
 		assertEquals("example.com", page.getDestinationName().getText());
 		assertEquals("myqueue", page.getQueueName().getText());
@@ -1947,16 +1948,16 @@ public class SwitchYardEditorBindingsTest {
 
 	@Test
 	public void sapQIDocListReferenceBindingTest() throws Exception {
-		new Service(REFERENCE_SERVICE).addBinding("SAP");
-		SAPBindingPage wizard = new SAPBindingPage();
-		wizard.setName("sap-binding");
-		wizard.getSAPObject().setSelection(SAP_OBJECT_QIDOC_LIST);
-		wizard.getDestinationName().setText("example.com");
-		wizard.getQueueName().setText("myqueue");
-		wizard.getIDocType().setText("docType");
-		wizard.getIDocTypeExtension().setText("ext");
-		wizard.getSystemRelease().setText("sysRel");
-		wizard.getApplicationRelease().setText("appRel");
+		WizardDialog wizard = new Service(REFERENCE_SERVICE).addBinding("SAP");
+		SAPBindingPage page = new SAPBindingPage();
+		page.setName("sap-binding");
+		page.getSAPObject().setSelection(SAP_OBJECT_QIDOC_LIST);
+		page.getDestinationName().setText("example.com");
+		page.getQueueName().setText("myqueue");
+		page.getIDocType().setText("docType");
+		page.getIDocTypeExtension().setText("ext");
+		page.getSystemRelease().setText("sysRel");
+		page.getApplicationRelease().setText("appRel");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -1971,7 +1972,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("appRel", bindingPath + "/qidoclist-destination/applicationRelease");
 
 		CompositePropertiesDialog properties = new Service(REFERENCE_SERVICE).showProperties();
-		SAPBindingPage page = properties.selectBindings().selectSAPBinding("sap-binding");
+		page = properties.selectBindings().selectSAPBinding("sap-binding");
 		assertEquals("sap-binding", page.getName());
 		assertEquals("example.com", page.getDestinationName().getText());
 		assertEquals("myqueue", page.getQueueName().getText());
@@ -1984,14 +1985,14 @@ public class SwitchYardEditorBindingsTest {
 
 	@Test
 	public void sapQRFCReferenceBindingTest() throws Exception {
-		new Service(REFERENCE_SERVICE).addBinding("SAP");
-		SAPBindingPage wizard = new SAPBindingPage();
-		wizard.setName("sap-binding");
-		wizard.getSAPObject().setSelection(SAP_OBJECT_QRFC);
-		wizard.getDestinationName().setText("example.com");
-		wizard.getQueueName().setText("myqueue");
-		wizard.getRFCName().setText("qrfcName");
-		wizard.getTransacted().setText("${myVar}");
+		WizardDialog wizard = new Service(REFERENCE_SERVICE).addBinding("SAP");
+		SAPBindingPage page = new SAPBindingPage();
+		page.setName("sap-binding");
+		page.getSAPObject().setSelection(SAP_OBJECT_QRFC);
+		page.getDestinationName().setText("example.com");
+		page.getQueueName().setText("myqueue");
+		page.getRFCName().setText("qrfcName");
+		page.getTransacted().setText("${myVar}");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -2004,7 +2005,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("${myVar}", bindingPath + "/qrfc-destination/transacted");
 
 		CompositePropertiesDialog properties = new Service(REFERENCE_SERVICE).showProperties();
-		SAPBindingPage page = properties.selectBindings().selectSAPBinding("sap-binding");
+		page = properties.selectBindings().selectSAPBinding("sap-binding");
 		assertEquals("sap-binding", page.getName());
 		assertEquals("example.com", page.getDestinationName().getText());
 		assertEquals("myqueue", page.getQueueName().getText());
@@ -2015,12 +2016,12 @@ public class SwitchYardEditorBindingsTest {
 
 	@Test
 	public void scaBindingTest() throws Exception {
-		new Service(SERVICE).addBinding("SCA");
-		SCABindingPage wizard = new SCABindingPage();
-		assertEquals("sca1", wizard.getName());
-		wizard.setName("sca-binding");
-		wizard.getClustered().setSelection("false");
-		wizard.getClustered().setSelection("true");
+		WizardDialog wizard = new Service(SERVICE).addBinding("SCA");
+		SCABindingPage page = new SCABindingPage();
+		assertEquals("sca1", page.getName());
+		page.setName("sca-binding");
+		page.getClustered().setSelection("false");
+		page.getClustered().setSelection("true");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -2030,7 +2031,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("true", bindingPath + "/@clustered");
 
 		CompositePropertiesDialog properties = new Service(SERVICE).showProperties();
-		SCABindingPage page = properties.selectBindings().selectSCABinding("sca-binding");
+		page = properties.selectBindings().selectSCABinding("sca-binding");
 		assertEquals("sca-binding", page.getName());
 		assertEquals("true", page.getClustered().getText());
 		properties.ok();
@@ -2038,12 +2039,12 @@ public class SwitchYardEditorBindingsTest {
 
 	@Test
 	public void scaReferenceBindingTest() throws Exception {
-		new Service(REFERENCE_SERVICE).addBinding("SCA");
-		SCABindingPage wizard = new SCABindingPage();
-		assertEquals("sca1", wizard.getName());
-		wizard.setName("sca-binding");
-		wizard.getClustered().setSelection("false");
-		wizard.getClustered().setSelection("true");
+		WizardDialog wizard = new Service(REFERENCE_SERVICE).addBinding("SCA");
+		SCABindingPage page = new SCABindingPage();
+		assertEquals("sca1", page.getName());
+		page.setName("sca-binding");
+		page.getClustered().setSelection("false");
+		page.getClustered().setSelection("true");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -2053,7 +2054,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("true", bindingPath + "/@clustered");
 
 		CompositePropertiesDialog properties = new Service(REFERENCE_SERVICE).showProperties();
-		SCABindingPage page = properties.selectBindings().selectSCABinding("sca-binding");
+		page = properties.selectBindings().selectSCABinding("sca-binding");
 		assertEquals("sca-binding", page.getName());
 		assertEquals("true", page.getClustered().getText());
 		properties.ok();
@@ -2061,36 +2062,36 @@ public class SwitchYardEditorBindingsTest {
 
 	@Test
 	public void sftpBindingTest() throws Exception {
-		new Service(SERVICE).addBinding("SFTP");
-		SFTPBindingPage wizard = new SFTPBindingPage();
-		assertEquals("sftp1", wizard.getName());
-		wizard.setName("sftp-binding");
-		wizard.getHost().setText("localhost");
-		wizard.getPort().setText("1234");
-		wizard.getUserName().setText("admin");
-		wizard.getPassword().setText("admin123$");
-		wizard.getUseBinaryTransferMode().toggle(false);
-		wizard.getUseBinaryTransferMode().toggle(true);
-		wizard.getDirectory().setText("sftp-directory");
-		wizard.getFileName().setText("test.txt");
-		wizard.getAutoCreateMissingDirectoriesinFilePath().toggle(false);
-		wizard.getAutoCreateMissingDirectoriesinFilePath().toggle(true);
-		wizard.getInclude().setText("in");
-		wizard.getExclude().setText("ex");
-		wizard.getDeleteFilesOnceProcessed().toggle(false);
-		wizard.getDeleteFilesOnceProcessed().toggle(true);
-		wizard.getProcessSubDirectoriesRecursively().toggle(false);
-		wizard.getProcessSubDirectoriesRecursively().toggle(true);
-		wizard.setOperationSelector(OPERATION_NAME, METHOD);
+		WizardDialog wizard = new Service(SERVICE).addBinding("SFTP");
+		SFTPBindingPage page = new SFTPBindingPage();
+		assertEquals("sftp1", page.getName());
+		page.setName("sftp-binding");
+		page.getHost().setText("localhost");
+		page.getPort().setText("1234");
+		page.getUserName().setText("admin");
+		page.getPassword().setText("admin123$");
+		page.getUseBinaryTransferMode().toggle(false);
+		page.getUseBinaryTransferMode().toggle(true);
+		page.getDirectory().setText("sftp-directory");
+		page.getFileName().setText("test.txt");
+		page.getAutoCreateMissingDirectoriesinFilePath().toggle(false);
+		page.getAutoCreateMissingDirectoriesinFilePath().toggle(true);
+		page.getInclude().setText("in");
+		page.getExclude().setText("ex");
+		page.getDeleteFilesOnceProcessed().toggle(false);
+		page.getDeleteFilesOnceProcessed().toggle(true);
+		page.getProcessSubDirectoriesRecursively().toggle(false);
+		page.getProcessSubDirectoriesRecursively().toggle(true);
+		page.setOperationSelector(OPERATION_NAME, METHOD);
 		wizard.next();
-		wizard.getPreMove().setText("preMove");
-		wizard.getMove().setText("move");
-		wizard.getMoveFailed().setText("moveFailed");
-		wizard.getDelayBetweenPolls().setText("1000");
-		wizard.getMaxMessagesPerPoll().setText("2");
+		page.getPreMove().setText("preMove");
+		page.getMove().setText("move");
+		page.getMoveFailed().setText("moveFailed");
+		page.getDelayBetweenPolls().setText("1000");
+		page.getMaxMessagesPerPoll().setText("2");
 		wizard.next();
-		wizard.getPrivateKeyFile().setText("private.key");
-		wizard.getPrivateKeyFilePassphrase().setText("secret");
+		page.getPrivateKeyFile().setText("private.key");
+		page.getPrivateKeyFilePassphrase().setText("secret");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -2117,7 +2118,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("1000", bindingPath + "/consume/delay");
 
 		CompositePropertiesDialog properties = new Service(SERVICE).showProperties();
-		SFTPBindingPage page = properties.selectBindings().selectSFTPBinding("sftp-binding");
+		page = properties.selectBindings().selectSFTPBinding("sftp-binding");
 		assertEquals("sftp-binding", page.getName());
 		assertEquals("sftp-directory", page.getDirectory().getText());
 		properties.ok();
@@ -2125,25 +2126,25 @@ public class SwitchYardEditorBindingsTest {
 
 	@Test
 	public void sftpReferenceBindingTest() throws Exception {
-		new Service(REFERENCE_SERVICE).addBinding("SFTP");
-		SFTPBindingPage wizard = new SFTPBindingPage();
-		assertEquals("sftp1", wizard.getName());
-		wizard.setName("sftp-binding");
-		wizard.getHost().setText("localhost");
-		wizard.getPort().setText("1234");
-		wizard.getUserName().setText("admin");
-		wizard.getPassword().setText("admin123$");
-		wizard.getUseBinaryTransferMode().toggle(false);
-		wizard.getUseBinaryTransferMode().toggle(true);
-		wizard.getDirectory().setText("sftp-directory");
-		wizard.getFileName().setText("test.txt");
-		wizard.getAutoCreateMissingDirectoriesinFilePath().toggle(false);
-		wizard.getAutoCreateMissingDirectoriesinFilePath().toggle(true);
-		wizard.getFileExist().setText("exist");
-		wizard.getTempPrefix().setText("prefix");
+		WizardDialog wizard = new Service(REFERENCE_SERVICE).addBinding("SFTP");
+		SFTPBindingPage page = new SFTPBindingPage();
+		assertEquals("sftp1", page.getName());
+		page.setName("sftp-binding");
+		page.getHost().setText("localhost");
+		page.getPort().setText("1234");
+		page.getUserName().setText("admin");
+		page.getPassword().setText("admin123$");
+		page.getUseBinaryTransferMode().toggle(false);
+		page.getUseBinaryTransferMode().toggle(true);
+		page.getDirectory().setText("sftp-directory");
+		page.getFileName().setText("test.txt");
+		page.getAutoCreateMissingDirectoriesinFilePath().toggle(false);
+		page.getAutoCreateMissingDirectoriesinFilePath().toggle(true);
+		page.getFileExist().setText("exist");
+		page.getTempPrefix().setText("prefix");
 		wizard.next();
-		wizard.getPrivateKeyFile().setText("private.key");
-		wizard.getPrivateKeyFilePassphrase().setText("secret");
+		page.getPrivateKeyFile().setText("private.key");
+		page.getPrivateKeyFilePassphrase().setText("secret");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -2162,7 +2163,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("prefix", bindingPath + "/produce/tempPrefix");
 
 		CompositePropertiesDialog properties = new Service(REFERENCE_SERVICE).showProperties();
-		SFTPBindingPage page = properties.selectBindings().selectSFTPBinding("sftp-binding");
+		page = properties.selectBindings().selectSFTPBinding("sftp-binding");
 		assertEquals("sftp-binding", page.getName());
 		assertEquals("sftp-directory", page.getDirectory().getText());
 		properties.ok();
@@ -2170,42 +2171,42 @@ public class SwitchYardEditorBindingsTest {
 
 	@Test
 	public void soapBindingTest() throws Exception {
-		new Service(SERVICE).addBinding("SOAP");
-		SOAPBindingPage wizard = new SOAPBindingPage();
-		assertEquals("soap1", wizard.getName());
-		wizard.setName("soap-binding");
-		wizard.getContextPath().setText("soap-context");
-		wizard.setWsdlURI("hello.wsdl");
-		wizard.getWSDLPort().setText("1234");
-		wizard.getServerPort().setText("foo");
+		WizardDialog wizard = new Service(SERVICE).addBinding("SOAP");
+		SOAPBindingPage page = new SOAPBindingPage();
+		assertEquals("soap1", page.getName());
+		page.setName("soap-binding");
+		page.getContextPath().setText("soap-context");
+		page.setWsdlURI("hello.wsdl");
+		page.getWSDLPort().setText("1234");
+		page.getServerPort().setText("foo");
 		assertFalse(new FinishButton().isEnabled());
-		wizard.getServerPort().setText("4321");
+		page.getServerPort().setText("4321");
 		assertTrue(new FinishButton().isEnabled());
-		wizard.getServerPort().setText(":4321");
+		page.getServerPort().setText(":4321");
 		assertTrue(new FinishButton().isEnabled());
-		wizard.getServerPort().setText("host:4321");
+		page.getServerPort().setText("host:4321");
 		assertTrue(new FinishButton().isEnabled());
-		wizard.getServerPort().setText("${propValue}");
+		page.getServerPort().setText("${propValue}");
 		assertTrue(new FinishButton().isEnabled());
-		wizard.getServerPort().setText(":${propValue}");
+		page.getServerPort().setText(":${propValue}");
 		assertTrue(new FinishButton().isEnabled());
-		wizard.getServerPort().setText("host:${propValue}");
+		page.getServerPort().setText("host:${propValue}");
 		assertTrue(new FinishButton().isEnabled());
-		wizard.getServerPort().setText("${propValue}:4321");
+		page.getServerPort().setText("${propValue}:4321");
 		assertTrue(new FinishButton().isEnabled());
-		wizard.getUnwrappedPayload().toggle(false);
-		wizard.getUnwrappedPayload().toggle(true);
-		wizard.getSOAPHeadersType().setSelection(SOAP_HEADERS_TYPE_DOM);
-		wizard.getConfigFile().setText("soap.conf");
-		wizard.getConfigName().setText("configName");
-		wizard.getEnable().toggle(false);
-		wizard.getEnable().toggle(true);
+		page.getUnwrappedPayload().toggle(false);
+		page.getUnwrappedPayload().toggle(true);
+		page.getSOAPHeadersType().setSelection(SOAP_HEADERS_TYPE_DOM);
+		page.getConfigFile().setText("soap.conf");
+		page.getConfigName().setText("configName");
+		page.getEnable().toggle(false);
+		page.getEnable().toggle(true);
 
-		wizard.getTemporarilyDisable().setSelection("false");
-		wizard.getTemporarilyDisable().setSelection("true");
-		wizard.getxopExpand().setSelection("false");
-		wizard.getxopExpand().setSelection("true");
-		wizard.getThreshold().setText("963");
+		page.getTemporarilyDisable().setSelection("false");
+		page.getTemporarilyDisable().setSelection("true");
+		page.getxopExpand().setSelection("false");
+		page.getxopExpand().setSelection("true");
+		page.getThreshold().setText("963");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -2224,7 +2225,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("true", bindingPath + "/mtom/@xopExpand");
 
 		CompositePropertiesDialog properties = new Service(SERVICE).showProperties();
-		SOAPBindingPage page = properties.selectBindings().selectSOAPBinding("soap-binding");
+		page = properties.selectBindings().selectSOAPBinding("soap-binding");
 		assertEquals("soap-binding", page.getName());
 		assertEquals("soap-context", page.getContextPath().getText());
 		assertEquals("${propValue}:4321", page.getServerPort().getText());
@@ -2250,34 +2251,34 @@ public class SwitchYardEditorBindingsTest {
 		properties.ok();
 	}
 
-	@Test
+	 @Test
 	public void soapReferenceBindingTest() throws Exception {
-		new Service(REFERENCE_SERVICE).addBinding("SOAP");
-		SOAPBindingPage wizard = new SOAPBindingPage();
-		assertEquals("soap1", wizard.getName());
-		wizard.setName("soap-binding");
-		wizard.setEndpointAddress("${propValue}:4321");
-		wizard.setWsdlURI("hello.wsdl");
-		wizard.getWSDLPort().setText("1234");
-		wizard.getUnwrappedPayload().toggle(false);
-		wizard.getUnwrappedPayload().toggle(true);
-		wizard.getSOAPHeadersType().setSelection(SOAP_HEADERS_TYPE_DOM);
-		wizard.getEnable().toggle(false);
-		wizard.getEnable().toggle(true);
-		wizard.getTemporarilyDisable().setSelection("false");
-		wizard.getTemporarilyDisable().setSelection("true");
-		wizard.getxopExpand().setSelection("false");
-		wizard.getxopExpand().setSelection("true");
-		wizard.getThreshold().setText("963");
+		WizardDialog wizard = new Service(REFERENCE_SERVICE).addBinding("SOAP");
+		SOAPBindingPage page = new SOAPBindingPage();
+		assertEquals("soap1", page.getName());
+		page.setName("soap-binding");
+		page.setEndpointAddress("${propValue}:4321");
+		page.setWsdlURI("hello.wsdl");
+		page.getWSDLPort().setText("1234");
+		page.getUnwrappedPayload().toggle(false);
+		page.getUnwrappedPayload().toggle(true);
+		page.getSOAPHeadersType().setSelection(SOAP_HEADERS_TYPE_DOM);
+		page.getEnable().toggle(false);
+		page.getEnable().toggle(true);
+		page.getTemporarilyDisable().setSelection("false");
+		page.getTemporarilyDisable().setSelection("true");
+		page.getxopExpand().setSelection("false");
+		page.getxopExpand().setSelection("true");
+		page.getThreshold().setText("963");
 		wizard.next();
-		wizard.getAuthenticationType().setSelection("Basic");
-		wizard.getUser().setText("admin");
-		wizard.getPassword().setText("admin123");
+		page.getAuthenticationType().setSelection("Basic");
+		page.getUser().setText("admin");
+		page.getPassword().setText("admin123");
 		wizard.next();
-		wizard.getUserName().setText("proxyAdmin");
-		wizard.getPassword().setText("proxyAdmin123");
-		wizard.getHost().setText("proxyhost");
-		wizard.getPort().setText("1234");
+		page.getUserName().setText("proxyAdmin");
+		page.getPassword().setText("proxyAdmin123");
+		page.getHost().setText("proxyhost");
+		page.getPort().setText("1234");
 		wizard.finish();
 
 		new SwitchYardEditor().saveAndClose();
@@ -2301,7 +2302,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("1234", bindingPath + "/proxy/port");
 
 		CompositePropertiesDialog properties = new Service(REFERENCE_SERVICE).showProperties();
-		SOAPBindingPage page = properties.selectBindings().selectSOAPBinding("soap-binding");
+		page = properties.selectBindings().selectSOAPBinding("soap-binding");
 		assertEquals("soap-binding", page.getName());
 		assertEquals("${propValue}:4321", page.getEndpointAddress());
 
@@ -2319,16 +2320,16 @@ public class SwitchYardEditorBindingsTest {
 
 	@Test
 	public void sqlBindingTest() throws Exception {
-		new Service(SERVICE).addBinding("SQL");
-		SQLBindingPage wizard = new SQLBindingPage();
-		assertEquals("sql1", wizard.getName());
-		wizard.setName("sql-binding");
-		wizard.getQuery().setText("sql-query");
-		wizard.getDataSource().setText("data-source");
-		wizard.getPlaceholder().setText("place-holder");
-		wizard.getPeriod().setText("10");
-		wizard.getInitialDelayMS().setText("1234");
-		wizard.setOperationSelector(OPERATION_NAME, METHOD);
+		WizardDialog wizard = new Service(SERVICE).addBinding("SQL");
+		SQLBindingPage page = new SQLBindingPage();
+		assertEquals("sql1", page.getName());
+		page.setName("sql-binding");
+		page.getQuery().setText("sql-query");
+		page.getDataSource().setText("data-source");
+		page.getPlaceholder().setText("place-holder");
+		page.getPeriod().setText("10");
+		page.getInitialDelayMS().setText("1234");
+		page.setOperationSelector(OPERATION_NAME, METHOD);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -2343,7 +2344,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("place-holder", bindingPath + "/placeholder");
 
 		CompositePropertiesDialog properties = new Service(SERVICE).showProperties();
-		SQLBindingPage page = properties.selectBindings().selectSQLBinding("sql-binding");
+		page = properties.selectBindings().selectSQLBinding("sql-binding");
 		assertEquals("sql-binding", page.getName());
 		assertEquals("sql-query", page.getQuery().getText());
 		assertEquals("data-source", page.getDataSource().getText());
@@ -2352,13 +2353,13 @@ public class SwitchYardEditorBindingsTest {
 
 	@Test
 	public void sqlReferenceBindingTest() throws Exception {
-		new Service(REFERENCE_SERVICE).addBinding("SQL");
-		SQLBindingPage wizard = new SQLBindingPage();
-		assertEquals("sql1", wizard.getName());
-		wizard.setName("sql-binding");
-		wizard.getQuery().setText("sql-query");
-		wizard.getDataSource().setText("data-source");
-		wizard.getPlaceholder().setText("place-holder");
+		WizardDialog wizard = new Service(REFERENCE_SERVICE).addBinding("SQL");
+		SQLBindingPage page = new SQLBindingPage();
+		assertEquals("sql1", page.getName());
+		page.setName("sql-binding");
+		page.getQuery().setText("sql-query");
+		page.getDataSource().setText("data-source");
+		page.getPlaceholder().setText("place-holder");
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -2369,7 +2370,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("data-source", bindingPath + "/dataSourceRef");
 
 		CompositePropertiesDialog properties = new Service(REFERENCE_SERVICE).showProperties();
-		SQLBindingPage page = properties.selectBindings().selectSQLBinding("sql-binding");
+		page = properties.selectBindings().selectSQLBinding("sql-binding");
 		assertEquals("sql-binding", page.getName());
 		assertEquals("sql-query", page.getQuery().getText());
 		assertEquals("data-source", page.getDataSource().getText());
@@ -2382,15 +2383,15 @@ public class SwitchYardEditorBindingsTest {
 		String startTime = "2014-01-01T00:00:00";
 		String endTime = "2015-01-01T00:00:00";
 
-		new Service(SERVICE).addBinding("Scheduling");
-		SchedulingBindingPage wizard = new SchedulingBindingPage();
-		wizard.setName("schedule-binding");
-		wizard.getSchedulingType().setSelection(SCHEDULING_TYPE_CRON);
-		wizard.getCron().setText(cron);
-		wizard.getStartTime().setText(startTime);
-		wizard.getEndTime().setText(endTime);
-		wizard.getTimeZone().setSelection("Europe/Prague");
-		wizard.setOperationSelector(OPERATION_NAME, METHOD);
+		WizardDialog wizard = new Service(SERVICE).addBinding("Scheduling");
+		SchedulingBindingPage page = new SchedulingBindingPage();
+		page.setName("schedule-binding");
+		page.getSchedulingType().setSelection(SCHEDULING_TYPE_CRON);
+		page.getCron().setText(cron);
+		page.getStartTime().setText(startTime);
+		page.getEndTime().setText(endTime);
+		page.getTimeZone().setSelection("Europe/Prague");
+		page.setOperationSelector(OPERATION_NAME, METHOD);
 		wizard.finish();
 
 		new SwitchYardEditor().save();
@@ -2403,7 +2404,7 @@ public class SwitchYardEditorBindingsTest {
 		assertXPath("Europe/Prague", bindingPath + "/trigger.timeZone");
 
 		CompositePropertiesDialog properties = new Service(SERVICE).showProperties();
-		SchedulingBindingPage page = properties.selectBindings().selectSchedulingBinding("HelloService1");
+		page = properties.selectBindings().selectSchedulingBinding("HelloService1");
 		assertEquals(cron, page.getCron().getText());
 		assertEquals(OPERATION_NAME, page.getOperationSelector());
 		assertEquals(METHOD, page.getOperationSelectorValue());

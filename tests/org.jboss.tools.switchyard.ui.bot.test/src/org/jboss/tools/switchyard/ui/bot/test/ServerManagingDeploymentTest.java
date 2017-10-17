@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.jface.wizard.WizardDialog;
 import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
@@ -67,11 +68,11 @@ public class ServerManagingDeploymentTest {
 
 		new Service("Hello").promoteService().activate().setServiceName("HelloService").finish();
 
-		new Service("HelloService").addBinding("HTTP");
-		HTTPBindingPage soapWizard = new HTTPBindingPage();
-		soapWizard.setName("soap-binding");
-		soapWizard.getContextPath().setText("hello");
-		soapWizard.finish();
+		WizardDialog wizard = new Service("HelloService").addBinding("HTTP");
+		HTTPBindingPage page = new HTTPBindingPage();
+		page.setName("soap-binding");
+		page.getContextPath().setText("hello");
+		wizard.finish();
 
 		new SwitchYardEditor().save();
 

@@ -2,7 +2,6 @@ package org.jboss.tools.switchyard.reddeer.preference;
 
 import org.eclipse.reddeer.common.logging.Logger;
 import org.eclipse.reddeer.jface.preference.PreferenceDialog;
-import org.eclipse.reddeer.swt.impl.list.DefaultList;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.switchyard.reddeer.preference.binding.BindingsPage;
@@ -134,9 +133,9 @@ public class CompositePropertiesDialog extends PreferenceDialog {
 
 	public BindingsPage selectBindings() {
 		log.info("Select 'Bindings' page.");
-		new DefaultTreeItem("Bindings").select();
-		new DefaultList().deselectAll();
-		return new BindingsPage();
+		BindingsPage bindingsPage = new BindingsPage(this, "Bindings");
+		select(bindingsPage);
+		return bindingsPage;
 	}
 
 }

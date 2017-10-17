@@ -1,6 +1,8 @@
 package org.jboss.tools.switchyard.reddeer.preference.binding;
 
 import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.jface.preference.PreferenceDialog;
+import org.eclipse.reddeer.jface.preference.PreferencePage;
 import org.eclipse.reddeer.swt.api.List;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.list.DefaultList;
@@ -32,9 +34,13 @@ import org.jboss.tools.switchyard.reddeer.binding.SchedulingBindingPage;
  * 
  * @author apodhrad
  */
-public class BindingsPage {
+public class BindingsPage extends PreferencePage {
 
 	protected final Logger log = Logger.getLogger(this.getClass());
+
+	public BindingsPage(PreferenceDialog preferenceDialog, String... path) {
+		super(preferenceDialog, path);
+	}
 
 	public BindingsPage remove() {
 		new PushButton("Remove").click();

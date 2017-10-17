@@ -3,7 +3,6 @@ package org.jboss.tools.switchyard.reddeer.binding;
 import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitWhile;
-import org.eclipse.reddeer.jface.wizard.WizardDialog;
 import org.eclipse.reddeer.swt.api.Combo;
 import org.eclipse.reddeer.swt.api.Text;
 import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
@@ -17,7 +16,7 @@ import org.eclipse.reddeer.swt.impl.text.DefaultText;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.switchyard.reddeer.widget.LabeledText;
 
-public abstract class OperationOptionsPage<T> extends WizardDialog {
+public abstract class OperationOptionsPage<T> {
 
 	public static final String NAME = "Name";
 	public static final String OPERATION_NAME = "Operation Name";
@@ -72,15 +71,6 @@ public abstract class OperationOptionsPage<T> extends WizardDialog {
 	public String getOperationSelectorValue() {
 		DefaultGroup group = new DefaultGroup(OPERATION_SELECTOR);
 		return new DefaultCombo(group, 1).getText();
-	}
-
-	@Override
-	public void finish() {
-		AbstractWait.sleep(TimePeriod.SHORT);
-		if (getShell() == null) {
-			setShell(new DefaultShell(""));
-		}
-		super.finish();
 	}
 
 	public void ok() {
