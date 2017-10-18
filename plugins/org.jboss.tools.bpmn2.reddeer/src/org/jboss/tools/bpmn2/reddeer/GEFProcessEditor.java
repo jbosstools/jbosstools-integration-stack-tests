@@ -21,7 +21,6 @@ import org.eclipse.reddeer.core.handler.WidgetHandler;
 import org.eclipse.reddeer.gef.GEFLayerException;
 import org.eclipse.reddeer.gef.condition.EditorHasEditParts;
 import org.eclipse.reddeer.gef.editor.GEFEditor;
-import org.eclipse.reddeer.gef.handler.ViewerHandler;
 import org.eclipse.reddeer.swt.exception.SWTLayerException;
 import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
@@ -103,31 +102,25 @@ public class GEFProcessEditor extends GEFEditor {
 				parent.addEditPartListener(parentViewerListener);
 			}
 		});
-		
-		// Detect any new edit part
-		final ViewerListener viewerListener = new ViewerListener();
-		Display.asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				List<EditPart> editParts = ViewerHandler.getInstance().getEditParts(viewer);
-				for (EditPart editPart : editParts) {
-					editPart.addEditPartListener(viewerListener);
-				}
-			}
-		});
 
 		getPalette().activateTool(type.toToolPath()[1], type.toToolPath()[0]);
 		click(x, y);
 
 		new WaitUntil(new EditorHasEditParts(this, oldCount));
+		
+		Display.syncExec(new Runnable() {
+			@Override
+			public void run() {
+				parent.refresh();
+			}
+		});
 
 		EditPart parentNewEditPart = parentViewerListener.getAddedEditPart();
-		EditPart newEditPart = viewerListener.getAddedEditPart();
-		if (parentNewEditPart == null && newEditPart == null) {
+		if (parentNewEditPart == null) {
 			throw new GEFLayerException("No new edit part was detected");
 		}
 
-		return new AbsoluteEditPart(parentNewEditPart == null ? parentNewEditPart : newEditPart);
+		return new AbsoluteEditPart(parentNewEditPart);
 	}
 
 	public org.eclipse.reddeer.gef.api.EditPart addConnectionFromPalette(ConnectionType connectionType, Element from,
