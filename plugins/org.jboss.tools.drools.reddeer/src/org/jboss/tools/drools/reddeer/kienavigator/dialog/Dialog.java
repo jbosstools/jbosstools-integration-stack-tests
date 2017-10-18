@@ -5,7 +5,12 @@ import org.eclipse.reddeer.swt.impl.button.PushButton;
 public class Dialog {
 
 	public void ok() {
-		new PushButton("Apply and Close").click();
+		// TODO provide a better logic for buttons "OK" and "Click and Apply"
+		try {
+			new PushButton("OK").click();
+		} catch (Exception e) {
+			new PushButton("Apply and Close").click();
+		}
 	}
 
 	public void cancel() {
