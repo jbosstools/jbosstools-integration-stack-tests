@@ -3,11 +3,9 @@ package org.jboss.tools.switchyard.reddeer.shell;
 import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitWhile;
-import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
-import org.eclipse.reddeer.swt.impl.button.OkButton;
+import org.eclipse.reddeer.jface.preference.PreferenceDialog;
 import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
 import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
-import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
@@ -17,7 +15,7 @@ import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
  * @author apodhrad
  *
  */
-public class ProjectCapabilitiesShell {
+public class ProjectCapabilitiesShell extends PreferenceDialog {
 
 	public static final String VERSION_DETAILS = "SwitchYard Version Details";
 	public static final String CONFIG_VERSION = "Configuration Version:";
@@ -26,11 +24,8 @@ public class ProjectCapabilitiesShell {
 
 	public static final String COMPONENTS = "SwitchYard Components";
 
-	protected String title;
-
 	public ProjectCapabilitiesShell(String title) {
-		this.title = title;
-		new DefaultShell(title);
+		super(title);
 	}
 
 	public String getConfigurationVersion() {
@@ -72,9 +67,6 @@ public class ProjectCapabilitiesShell {
 	public void ok() {
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		new OkButton().click();
-		new WaitWhile(new ShellIsAvailable(title));
-		AbstractWait.sleep(TimePeriod.SHORT);
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		super.ok();
 	}
 }

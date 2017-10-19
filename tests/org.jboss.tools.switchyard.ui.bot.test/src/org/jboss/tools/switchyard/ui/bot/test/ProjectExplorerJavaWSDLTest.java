@@ -104,7 +104,7 @@ public class ProjectExplorerJavaWSDLTest {
 
 	@Test
 	public void generateJavaFromWsdl() throws Exception {
-		new SwitchYardProject(PROJECT).getResource("Service.wsdl").select();
+		new SwitchYardProject(PROJECT).getResourceExt("Service.wsdl").select();
 		WSDL2JavaWizard wizard = new WSDL2JavaWizard().openDialog();
 		assertEquals(PACKAGE, wizard.getPackageTXT().getText());
 		assertEquals("/java_wsdl/src/main/resources/Service.wsdl", wizard.getWSDLFileTXT().getText());

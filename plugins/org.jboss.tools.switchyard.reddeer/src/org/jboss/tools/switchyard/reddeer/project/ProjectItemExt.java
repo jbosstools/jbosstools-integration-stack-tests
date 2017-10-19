@@ -73,7 +73,7 @@ public class ProjectItemExt {
 	}
 	
 	public File toFile() {
-		String projectName = projectItem.getProject().getName();
+		String projectName = projectItem.getTreeItem().getPath()[0];
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 		IFile file = project.getFile(joinStrings(projectItem.getTreeItem().getPath(), "/"));
 		return file.getLocation().toFile();
