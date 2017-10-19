@@ -72,7 +72,7 @@ public class SimpleDeployTest {
 		new BpelDescriptorEditor().setAssociatedPort("deployHelloPort");
 
 		// deploy project
-		String serverName = serverRequirement.getConfig().getName();
+		String serverName = serverRequirement.getConfig().getServer().getName();
 		ServersView2 serversView = new ServersView2();
 		serversView.open();
 		ModifyModulesDialog deployDialog = serversView.getServer(serverName).addAndRemoveModules();
