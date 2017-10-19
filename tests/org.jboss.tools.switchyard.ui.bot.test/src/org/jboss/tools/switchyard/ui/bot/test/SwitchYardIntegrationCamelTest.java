@@ -77,8 +77,7 @@ public class SwitchYardIntegrationCamelTest {
 		/* Edit Camel XML implementation */
 		new SwitchYardComponent(ROUTE_NAME).doubleClick();
 		CamelEditor camelEditor = new CamelEditor(ROUTE_NAME + ".xml");
-		camelEditor.addCamelComponent("Set Body", "Route _route1");
-		camelEditor.addConnection("Log _log1", "SetBody _setBody1");
+		camelEditor.addComponent("Set Body", "Log _log1");
 		PropertySheet propertiesView = new PropertySheet();
 		propertiesView.open();
 		new CamelComponentEditPart("SetBody _setBody1").select();
