@@ -1,5 +1,5 @@
 package org.jboss.tools.runtime.reddeer.impl;
 
-public class RuntimeBrms extends RuntimeJbpm {
+public class RuntimeBrms extends RuntimeDrools {
 
 }

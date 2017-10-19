@@ -35,7 +35,7 @@ public class MetadataCompletionTest extends DrlCompletionParent {
 	
 	@RequirementRestriction
 	public static RequirementMatcher getRequirementMatcher() {
-		return new RuntimeImplementationRestriction(RuntimeImplementationType.DROOLS);
+		return new RuntimeImplementationRestriction(RuntimeImplementationType.DROOLS, RuntimeImplementationType.BRMS);
 	}
 
 	@Test

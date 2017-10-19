@@ -5,7 +5,7 @@ import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
 public class NewRuleResourceWizard extends NewMenuWizard {
 
 	public NewRuleResourceWizard() {
-		super("New Rule Pakcge...", "Drools", "Rule Resource");
+		super("New Rule Package...", "Drools", "Rule Resource");
 	}
 
 	public NewRuleResourceWizardPage getFirstPage() {

@@ -30,7 +30,9 @@ public class RuntimeConfiguration implements RequirementConfiguration {
 	}
 
 	public RuntimeBase getRuntimeFamily() {
-		runtime.setName(name);
+		if (runtime.getName() == null) {
+			runtime.setName(name);
+		}
 		return runtime;
 	}
 

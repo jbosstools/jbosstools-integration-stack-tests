@@ -38,7 +38,7 @@ public class DroolsRuntimeManagementTest extends TestParent {
 	
 	@RequirementRestriction
 	public static RequirementMatcher getRequirementMatcher() {
-		return new RuntimeImplementationRestriction(RuntimeImplementationType.DROOLS);
+		return new RuntimeImplementationRestriction(RuntimeImplementationType.DROOLS, RuntimeImplementationType.BRMS);
 	}
 
 	@Before

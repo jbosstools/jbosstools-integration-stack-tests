@@ -58,7 +58,7 @@ public class RulesManagementTest extends TestParent {
 	
 	@RequirementRestriction
 	public static RequirementMatcher getRequirementMatcher() {
-		return new RuntimeImplementationRestriction(RuntimeImplementationType.DROOLS);
+		return new RuntimeImplementationRestriction(RuntimeImplementationType.DROOLS, RuntimeImplementationType.BRMS);
 	}
 
 	@Test
@@ -132,13 +132,13 @@ public class RulesManagementTest extends TestParent {
 	@UsePerspective(JavaPerspective.class)
 	@UseDefaultProject
 	public void testSetBreakpoint() {
+		new ResourcePerspective().open();
+		new JavaPerspective().open();
+		
 		OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));
 
 		RuleEditor editor = new DrlEditor().showRuleEditor();
 		editor.setPosition(8, 0);
-
-		new ResourcePerspective().open();
-		new JavaPerspective().open();
 
 		new ShellMenuItem(new WorkbenchShell(), new RegexMatcher("Run"), new RegexMatcher("Toggle Breakpoint.*")).select();
 	}
