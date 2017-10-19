@@ -8,7 +8,8 @@ import org.eclipse.reddeer.gef.impl.editpart.AbstractEditPart;
 import org.eclipse.reddeer.swt.api.MenuItem;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
-import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.swt.impl.shell.AbstractShell;
+import org.eclipse.reddeer.workbench.core.lookup.WorkbenchShellLookup;
 import org.hamcrest.Matcher;
 import org.jboss.tools.bpel.reddeer.editor.BpelEditor;
 import org.jboss.tools.bpel.reddeer.view.BPELPropertiesView;
@@ -132,7 +133,18 @@ public class Activity extends AbstractEditPart {
 	}
 
 	protected void save() {
-		MenuItem saveMenu = new ShellMenuItem(new WorkbenchShell(), "File", "Save");
+		// we need to get a workbench shell without setting a focus
+		org.eclipse.swt.widgets.Shell swtWorkbenchShell = WorkbenchShellLookup.getInstance().getWorkbenchShell();
+		
+		// use anonymous class of AbstractShell with empty setFocus method
+		MenuItem saveMenu = new ShellMenuItem(new AbstractShell(swtWorkbenchShell) {
+
+			@Override
+			public void setFocus() {
+				// do nothing
+			}
+			
+		}, "File", "Save");
 		if (saveMenu.isEnabled()) {
 			saveMenu.select();
 		}

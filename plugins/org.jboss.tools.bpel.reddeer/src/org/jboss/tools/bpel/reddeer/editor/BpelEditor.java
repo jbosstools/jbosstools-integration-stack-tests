@@ -62,7 +62,7 @@ public class BpelEditor extends GEFEditor {
 	}
 
 	public void saveAndClose() {
-
+		close(true);
 	}
 
 	public void addPartnerLink() {

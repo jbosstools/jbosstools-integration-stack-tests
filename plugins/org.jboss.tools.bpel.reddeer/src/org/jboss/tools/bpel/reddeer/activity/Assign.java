@@ -1,7 +1,11 @@
 package org.jboss.tools.bpel.reddeer.activity;
 
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.core.matcher.WithLabelMatcher;
 import org.eclipse.reddeer.swt.api.Tree;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
@@ -75,8 +79,11 @@ public class Assign extends Activity {
 		save();
 
 		// Variable doesn't have initializer. Should it be generated?
-		if (new DefaultShell().getText().equals("Initializer")) {
-			new PushButton("Yes").click();
+		ShellIsAvailable initializerIsAvailable = new ShellIsAvailable("Initializer"); 
+		new WaitUntil(initializerIsAvailable, false);
+		if (initializerIsAvailable.getResult() != null) {
+			new PushButton(new DefaultShell(initializerIsAvailable.getResult()), "Yes").click();
+			new WaitWhile(initializerIsAvailable);
 			save();
 		}
 		return this;
