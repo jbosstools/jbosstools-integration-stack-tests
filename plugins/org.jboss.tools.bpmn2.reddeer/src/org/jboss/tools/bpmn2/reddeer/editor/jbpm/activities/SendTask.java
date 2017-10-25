@@ -53,7 +53,7 @@ public class SendTask extends Task {
 	 * @param dataType
 	 */
 	public void setMessage(String name, String dataType) {
-		propertiesHandler.setUp(new ComboSetUp(PropertiesTabs.SEND_TASK_TAB, "Message", name + "(" + dataType + ")"));
+		propertiesHandler.setUp(new ComboSetUp(PropertiesTabs.SEND_TASK_TAB, "Message", name));
 	}
 
 	/**
