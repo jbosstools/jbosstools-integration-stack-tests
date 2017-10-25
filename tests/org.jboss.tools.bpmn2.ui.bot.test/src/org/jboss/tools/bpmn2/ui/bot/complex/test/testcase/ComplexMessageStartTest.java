@@ -46,7 +46,7 @@ public class ComplexMessageStartTest extends JBPM6ComplexTest {
 			}
 		});
 
-		kSession.signalEvent("Message-HelloMessage", "bpmn rules world");
+		kSession.signalEvent("Message-Message_1", "bpmn rules world");
 
 		assertEquals("Variable " + VARIABLE1 + " schould change because of start message", "bpmn rules world",
 				changedVar);
