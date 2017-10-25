@@ -57,7 +57,7 @@ public class ReceiveTask extends Task {
 	 */
 	public void setMessage(String name, String dataType) {
 		propertiesHandler
-				.setUp(new ComboSetUp(PropertiesTabs.RECEIVE_TASK_TAB, "Message", name + "(" + dataType + ")"));
+				.setUp(new ComboSetUp(PropertiesTabs.RECEIVE_TASK_TAB, "Message", name));
 	}
 
 	/**
