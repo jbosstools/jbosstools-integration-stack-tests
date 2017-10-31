@@ -155,5 +155,21 @@
 				</repository>
 			</repositories>
 		</profile>
+		<profile>
+			<id>reddeer-site</id>
+			<activation>
+				<property>
+					<name>reddeer.site</name>
+				</property>
+			</activation>
+			<repositories>
+				<!-- RedDeer Update Site -->
+				<repository>
+					<id>reddeer-site</id>
+					<url>${reddeer.site}</url>
+					<layout>p2</layout>
+				</repository>
+			</repositories>
+		</profile>
 	</profiles>
 </project>

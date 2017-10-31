@@ -94,12 +94,11 @@ public class GEFProcessEditor extends GEFEditor {
 			final EditPart parent) {
 		int oldCount = getNumberOfEditParts();
 
-		// Detect new edit part in the parent
-		final ViewerListener parentViewerListener = new ViewerListener();
+		final ViewerListener viewerListener = new ViewerListener();
 		Display.syncExec(new Runnable() {
 			@Override
 			public void run() {
-				parent.addEditPartListener(parentViewerListener);
+				parent.addEditPartListener(viewerListener);
 			}
 		});
 
@@ -107,20 +106,12 @@ public class GEFProcessEditor extends GEFEditor {
 		click(x, y);
 
 		new WaitUntil(new EditorHasEditParts(this, oldCount));
-		
-		Display.syncExec(new Runnable() {
-			@Override
-			public void run() {
-				parent.refresh();
-			}
-		});
 
-		EditPart parentNewEditPart = parentViewerListener.getAddedEditPart();
-		if (parentNewEditPart == null) {
+		if (viewerListener.getAddedEditPart() == null) {
 			throw new GEFLayerException("No new edit part was detected");
 		}
 
-		return new AbsoluteEditPart(parentNewEditPart);
+		return new AbsoluteEditPart(viewerListener.getAddedEditPart());
 	}
 
 	public org.eclipse.reddeer.gef.api.EditPart addConnectionFromPalette(ConnectionType connectionType, Element from,
