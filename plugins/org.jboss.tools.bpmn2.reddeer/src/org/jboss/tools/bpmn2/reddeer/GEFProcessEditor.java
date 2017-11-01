@@ -16,14 +16,14 @@ import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
 import org.eclipse.reddeer.common.util.Display;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
-import org.eclipse.reddeer.core.exception.CoreLayerException;
 import org.eclipse.reddeer.core.handler.WidgetHandler;
+import org.eclipse.reddeer.core.lookup.MenuLookup;
 import org.eclipse.reddeer.gef.GEFLayerException;
 import org.eclipse.reddeer.gef.condition.EditorHasEditParts;
 import org.eclipse.reddeer.gef.editor.GEFEditor;
-import org.eclipse.reddeer.swt.exception.SWTLayerException;
+import org.eclipse.reddeer.swt.api.MenuItem;
 import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
-import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.menu.AbstractMenu;
 import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.eclipse.swt.SWT;
 import org.hamcrest.Matcher;
@@ -253,13 +253,14 @@ public class GEFProcessEditor extends GEFEditor {
 	}
 	
 	private class SourceCodeIsNotShown extends AbstractWaitCondition {
+		
+		private static final String ITEM_SHOW_SOURCE_VIEW = "Show Source View";
 
 		@Override
 		public boolean test() {
-			try {
-				click(1, 1);
-				new ContextMenuItem("Show Source View").select();
-			} catch (CoreLayerException | SWTLayerException e) {
+			EditorContextMenu contextMenu = new EditorContextMenu();
+			if (contextMenu.hasMenuItem(ITEM_SHOW_SOURCE_VIEW)) {
+				contextMenu.getItem(ITEM_SHOW_SOURCE_VIEW).select();
 				return true;
 			}
 			return false;
@@ -268,6 +269,23 @@ public class GEFProcessEditor extends GEFEditor {
 		@Override
 		public String description() {
 			return "Wait while source code is not shown";
+		}
+
+	}
+	
+	private class EditorContextMenu extends AbstractMenu {
+
+		public EditorContextMenu() {
+			super(MenuLookup.getInstance().getControlMenu(getControl()));
+		}
+		
+		public boolean hasMenuItem(String item) {
+			for (MenuItem menuItem: getItems()) {
+				if (menuItem.getText().equals(item)) {
+					return true;
+				}
+			}
+			return false;
 		}
 
 	}
