@@ -14,7 +14,9 @@ import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassCreationWizard;
 import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassWizardPage;
 import org.eclipse.reddeer.eclipse.ui.problems.Problem;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.drools.reddeer.editor.ContentAssist;
 import org.jboss.tools.drools.reddeer.editor.DrlEditor;
 import org.jboss.tools.drools.reddeer.editor.RuleEditor;
@@ -110,7 +112,9 @@ public abstract class DrlCompletionParent extends TestParent {
 
 	private void assertWorkingReteTree() {
 		DrlEditor editor = new DrlEditor();
-		editor.save();
+		if (new ShellMenuItem(new WorkbenchShell(), "File", "Save").isEnabled()) {
+			editor.save();
+		}
 
 		editor.showReteTree();
 		Assert.assertTrue("Rete Tree is not opened! Check log for errors.", editor.isReteTreeOpened());
