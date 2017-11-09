@@ -1,5 +1,7 @@
 package org.jboss.tools.drools.reddeer.editor;
 
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.eclipse.ui.IEditorPart;
 
 public class DslrEditor extends MultiPageEditor {
@@ -15,7 +17,9 @@ public class DslrEditor extends MultiPageEditor {
 	}
 
 	IEditorPart getEditorByTitle(String title) {
-		save();
+		if (new ShellMenuItem(new WorkbenchShell(), "File", "Save").isEnabled()) {
+			save();
+		}
 		if (TEXT_EDITOR.equals(title)) {
 			return getEditorByIndex(0);
 		}
