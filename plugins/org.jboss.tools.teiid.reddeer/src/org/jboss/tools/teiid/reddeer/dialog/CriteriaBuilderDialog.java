@@ -7,6 +7,7 @@ import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.core.matcher.WithLabelMatcher;
+import org.eclipse.reddeer.core.matcher.WithMnemonicTextMatcher;
 import org.eclipse.reddeer.swt.condition.ShellIsActive;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.button.RadioButton;
@@ -17,7 +18,6 @@ import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.eclipse.reddeer.swt.impl.text.DefaultText;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.tools.teiid.reddeer.matcher.ButtonWithToolTipMatcher;
 
 public class CriteriaBuilderDialog extends AbstractDialog {
 	private static final Logger log = Logger.getLogger(CriteriaBuilderDialog.class);
@@ -27,9 +27,9 @@ public class CriteriaBuilderDialog extends AbstractDialog {
 		public static final int RIGHT = 1;
 	}
 	public static class RadioButtonType {
-		public static final String COLUMN = "Show the Column Editor";
-		public static final String CONSTANT = "Show the Constant Editor";
-		public static final String FUNCTION = "Show the Function Display Editor";
+        public static final String COLUMN = "Column";
+        public static final String CONSTANT = "Constant";
+        public static final String FUNCTION = "Function";
 	}
 	public static class OperatorType {
 		public static final int EQUALS = 0;// =
@@ -67,9 +67,9 @@ public class CriteriaBuilderDialog extends AbstractDialog {
 	 * @param type - CriteriaBuilder.RadioButtonType.COLUMN|CONSTANT|FUNCTION
 	 * @param leftRight - CriteriaBuilder.CriteriaSide.LEFT|RIGHT
 	 */
-	public CriteriaBuilderDialog selectRadioButton(String type, int leftRight) {
+    public CriteriaBuilderDialog selectRadioButton(String type, int leftRight) {
 		log.info("Selecting " + type + " radio button (index=" + leftRight + ")");
-		new RadioButton(leftRight,new ButtonWithToolTipMatcher(type)).click();
+        new RadioButton(leftRight, new WithMnemonicTextMatcher(type)).click();
 		return this;
 	}
 	
@@ -139,6 +139,7 @@ public class CriteriaBuilderDialog extends AbstractDialog {
 	 */
 	public CriteriaBuilderDialog selectAttribute(String table, String attribute, int index) {
 		log.info("Selecting attribute '"+ attribute + "' in table '" + table + "' (index=" + index + ")");
+        new RadioButton(index, new WithMnemonicTextMatcher(RadioButtonType.COLUMN)).click();
 		DefaultTree tree = new DefaultTree(index + 1);
 		tree.setFocus();
 		new DefaultTreeItem(tree, table, table + "." + attribute).select();
@@ -152,7 +153,8 @@ public class CriteriaBuilderDialog extends AbstractDialog {
 	 */
 	public ExpressionBuilderDialog openFunctionBuilder(int index) {
 		log.info("Opening function's expresion builder (index=" + index + ")");
-		new PushButton("Edit...").click();
+        new RadioButton(index, new WithMnemonicTextMatcher(RadioButtonType.FUNCTION)).click();
+        new PushButton(index, new WithMnemonicTextMatcher("Edit...")).click();
 		return new ExpressionBuilderDialog();	
 	}
 	
@@ -163,6 +165,7 @@ public class CriteriaBuilderDialog extends AbstractDialog {
 	 */
 	public CriteriaBuilderDialog selectConstantType(String type, int index){
 		log.info("Setting constant type to '" + type + "' (index=" + index + ")");
+        new RadioButton(index, new WithMnemonicTextMatcher(RadioButtonType.CONSTANT)).click();
 		new DefaultCombo(index,new WithLabelMatcher("Type:")).setSelection(type);
 		return this;
 	}
@@ -174,7 +177,9 @@ public class CriteriaBuilderDialog extends AbstractDialog {
 	 */
 	public CriteriaBuilderDialog selectConstantValue(String value, int index){
 		log.info("Setting constant value to '" + value + "' (index=" + index + ")");
-		new DefaultText(new DefaultGroup("Value"),index).setText(value);
+        new RadioButton(index, new WithMnemonicTextMatcher(RadioButtonType.CONSTANT)).click();
+        DefaultGroup groupFromSide = new DefaultGroup(index, new WithMnemonicTextMatcher("Value"));
+		new DefaultText(groupFromSide).setText(value);
 		return this;
 	}
 }

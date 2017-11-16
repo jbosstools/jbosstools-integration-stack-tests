@@ -22,6 +22,7 @@ import org.eclipse.reddeer.swt.impl.ccombo.DefaultCCombo;
 import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
 import org.eclipse.reddeer.swt.impl.list.DefaultList;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.eclipse.reddeer.swt.impl.table.DefaultTable;
@@ -32,6 +33,7 @@ import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.eclipse.reddeer.swt.keyboard.KeyboardFactory;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.eclipse.swt.widgets.Text;
 import org.jboss.tools.teiid.reddeer.dialog.DataRolesDialog;
 
@@ -51,6 +53,13 @@ public class VdbEditor extends DefaultEditor {
 		save();
 		close();
 	}
+
+    @Override
+    public void save() {
+        if (new ShellMenuItem(new WorkbenchShell(), "File", "Save").isEnabled()) {
+            super.save();
+        }
+    }
 
 	public void addModelsToVDB(String projectName, String[] models){
 		activate();

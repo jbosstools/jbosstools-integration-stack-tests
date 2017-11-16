@@ -13,7 +13,7 @@ import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
  */
 public abstract class ConnectionProfileWizard extends NewMenuWizard {
 
-	public static final String DIALOG_TITLE = "New connection profile";
+    public static final String DIALOG_TITLE = "New Connection Profile";
 	public static final String LABEL_NAME = "Name:";
 
 	private String profile;

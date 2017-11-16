@@ -97,10 +97,11 @@ public class RestImportWizard extends TeiidImportWizard {
 		return this;
 	}
 	
-	public RestImportWizard setJndiName(String JndiName) {
-		log.info("Set JNDI name to: '" + JndiName + "'");
+    public RestImportWizard setJndiName(String jndiName) {
+        log.info("Set JNDI name to: '" + jndiName + "'");
 		activate();
-		new LabeledText("JNDI Name").setText(JndiName);
+        jndiName = (jndiName.contains("java:/")) ? jndiName : "java:/" + jndiName;
+        new LabeledText("JNDI Name").setText(jndiName);
 		return this;
 	}
 	

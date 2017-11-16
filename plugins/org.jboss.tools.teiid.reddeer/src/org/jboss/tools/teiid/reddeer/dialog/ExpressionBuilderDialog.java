@@ -14,15 +14,14 @@ import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
 import org.eclipse.reddeer.swt.impl.text.DefaultText;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.tools.teiid.reddeer.matcher.ButtonWithToolTipMatcher;
 
 public class ExpressionBuilderDialog extends AbstractDialog {
 	private static final Logger log = Logger.getLogger(ExpressionBuilderDialog.class);
 	
 	public static class RadioButtonType {
-		public static final String COLUMN = "Show the Column Editor";
-		public static final String CONSTANT = "Show the Constant Editor";
-		public static final String FUNCTION = "Show the Function Editor";
+        public static final String COLUMN = "Column";
+        public static final String CONSTANT = "Constant";
+        public static final String FUNCTION = "Function";
 	}
 
 	public ExpressionBuilderDialog(){
@@ -56,7 +55,7 @@ public class ExpressionBuilderDialog extends AbstractDialog {
 	 */
 	public ExpressionBuilderDialog selectRadioButton(String type) {
 		log.info("Selecting " + type + " radio button");
-		new RadioButton(new ButtonWithToolTipMatcher(type)).click();
+        new RadioButton(type).click();
 		return this;
 	}
 	

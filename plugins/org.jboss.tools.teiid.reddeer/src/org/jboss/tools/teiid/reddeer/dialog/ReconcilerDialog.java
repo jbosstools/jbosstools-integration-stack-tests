@@ -1,6 +1,7 @@
 package org.jboss.tools.teiid.reddeer.dialog;
 
 import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.util.Display;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.swt.condition.ShellIsActive;
@@ -63,7 +64,12 @@ public class ReconcilerDialog extends AbstractDialog {
 		log.info("Opening Expression Builder Dialog for '" + attribute + "' attribute");
 		new DefaultTable(0).deselectAll();
 		new DefaultTable(0).select(attribute);
-		new PushButton(new ButtonWithToolTipMatcher("Create Expression")).click();
+        Display.syncExec(new Runnable() {
+            @Override
+            public void run() {
+                new PushButton(new ButtonWithToolTipMatcher("Create Expression")).click();
+            }
+        });
 		return new ExpressionBuilderDialog();
 	}
 
@@ -72,7 +78,12 @@ public class ReconcilerDialog extends AbstractDialog {
 	 */
 	public ReconcilerDialog clearRemainingUnmatchedSymbols() {
 		log.info("Clearing unmatched SQL symbols");
-		new PushButton(new ButtonWithToolTipMatcher("Clear")).click();
+        Display.syncExec(new Runnable() {
+            @Override
+            public void run() {
+                new PushButton(new ButtonWithToolTipMatcher("Clear")).click();
+            }
+        });
 		return this;
 	}
 

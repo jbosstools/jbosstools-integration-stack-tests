@@ -14,7 +14,7 @@
 <booleanAttribute key="includeOptional" value="true"/>
 <stringAttribute key="location" value="${workspace_loc}/../junit-workspace"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/org.jboss.tools.teiid.ui.bot.test/src/org/jboss/tools/teiid/ui/bot/test/LdapImportTest.java"/>
+<listEntry value="/org.jboss.tools.teiid.ui.bot.test/src/org/jboss/tools/teiid/ui/bot/test/GeometryTypeTest.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
@@ -28,7 +28,7 @@
 <stringAttribute key="org.eclipse.jdt.junit.TEST_KIND" value="org.eclipse.jdt.junit.loader.junit4"/>
 <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
 <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.jboss.tools.teiid.ui.bot.test.LdapImportTest"/>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.jboss.tools.teiid.ui.bot.test.GeometryTypeTest"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog -eclipse.password resources/security/password -pluginCustomization resources/settings/plugin_customization.ini"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="org.jboss.tools.teiid.ui.bot.test"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
@@ -39,10 +39,12 @@
 <stringAttribute key="rd.launch.property.rd.captureScreenshot" value="true"/>
 <stringAttribute key="rd.launch.property.rd.closeShells" value="true"/>
 <stringAttribute key="rd.launch.property.rd.closeWelcomeScreen" value="true"/>
-<stringAttribute key="rd.launch.property.rd.config" value="/home/mkralik/newDir/server-installer/dv-6.3.0.GA/target/config"/>
+<stringAttribute key="rd.launch.property.rd.config" value="/home/mkralik/newDir/server-installer/dv-6.4.0.ER2/target/config/reddeer.yaml"/>
 <stringAttribute key="rd.launch.property.rd.disableMavenIndex" value="true"/>
+<stringAttribute key="rd.launch.property.rd.logCollectorEnabled" value="true"/>
 <stringAttribute key="rd.launch.property.rd.logLevel" value="ALL"/>
 <stringAttribute key="rd.launch.property.rd.logMessageFilter" value="ALL"/>
+<stringAttribute key="rd.launch.property.rd.maximizeWorkbench" value="true"/>
 <stringAttribute key="rd.launch.property.rd.openAssociatedPerspective" value="never"/>
 <stringAttribute key="rd.launch.property.rd.pauseFailedTest" value="false"/>
 <stringAttribute key="rd.launch.property.rd.recordScreenCast" value="false"/>

@@ -158,7 +158,7 @@ public class XmlModelEditor extends ModelEditor {
 	 */
 	public RecursionEditor openRecursiveEditor(){
 		executeMatcher(RecursiveButtonMatcher.createMatcher(""));
-		return new RecursionEditor();
+        return new RecursionEditor(this);
 	}
 	
 	/**

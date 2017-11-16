@@ -31,12 +31,12 @@ Example:
             <server:eap version="6.1+">
                 <server:home>/home/apodhrad/Projects/server-installer/dv-6.2.0.GA/target/jboss-eap-6.4</server:home>
                 <server:properties>
-                    <adminPassword>dvdvdv0!</adminPassword>
+                    <adminPassword>dvdvdv0#</adminPassword>
                     <modeshapeUser>modeshapeUser</modeshapeUser>
-                    <modeshapePassword>dvdvdv0!</modeshapePassword>
+                    <modeshapePassword>dvdvdv0#</modeshapePassword>
                     <modeshape>dv</modeshape>
                     <teiidUser>teiidUser</teiidUser>
-                    <teiidPassword>dvdvdv0!</teiidPassword>
+                    <teiidPassword>dvdvdv0#</teiidPassword>
                 </server:properties>
             </server:eap>
         </server:server-requirement>
@@ -45,12 +45,12 @@ Example:
             <server:eap version="6.1+">
                 <server:home>/home/apodhrad/Projects/server-installer/dv-6.2.0.GA/target/jboss-eap-6.4</server:home>
                 <server:properties>
-                    <adminPassword>dvdvdv0!</adminPassword>
+                    <adminPassword>dvdvdv0#</adminPassword>
                     <modeshapeUser>modeshapeUser</modeshapeUser>
-                    <modeshapePassword>dvdvdv0!</modeshapePassword>
+                    <modeshapePassword>dvdvdv0#</modeshapePassword>
                     <modeshape>dv</modeshape>
                     <teiidUser>teiidUser</teiidUser>
-                    <teiidPassword>dvdvdv0!</teiidPassword>
+                    <teiidPassword>dvdvdv0#</teiidPassword>
                 </server:properties>
             </server:eap>
 

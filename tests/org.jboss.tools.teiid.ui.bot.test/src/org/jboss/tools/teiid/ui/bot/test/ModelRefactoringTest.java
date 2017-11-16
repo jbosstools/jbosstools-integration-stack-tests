@@ -21,7 +21,9 @@ import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.common.reddeer.JiraClient;
 import org.jboss.tools.teiid.reddeer.AssertBot;
+import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.TransformationEditor;
@@ -148,6 +150,10 @@ public class ModelRefactoringTest {
 	@Test
 	public void moveViewModelOutOfFolder() {
 		moveItem(project.getProjectItem("views", "partssupplier_view_2.xmi"));
+        if (!new JiraClient().isIssueClosed("TEIIDDES-2940")) {
+            updateImports("partssupplier_view_3.xmi");
+            updateImports("partssupplier_view_4.xmi");
+        }
 		ProblemsViewEx.checkErrors();
 		checkDependentModel("partssupplier_view_2", "SUPPLIER", PROJECT_NAME, "partssupplier_view_3.xmi");
 	}
@@ -198,6 +204,10 @@ public class ModelRefactoringTest {
 	@Test
 	public void moveSourceModelOutOfFolder() {
 		moveItem(project.getProjectItem("sources", "books.xmi"));
+        if (!new JiraClient().isIssueClosed("TEIIDDES-2940")) {
+            updateImports("books_view_2.xmi");
+            updateImports("views", "books_view.xmi");
+        }
 		ProblemsViewEx.checkErrors();
 		checkDependentModel("books", "PUBLISHERS", PROJECT_NAME, "books_view_2.xmi");
 		checkDependentModel("books", "PUBLISHERS", PROJECT_NAME, "views", "books_view.xmi");
@@ -234,7 +244,7 @@ public class ModelRefactoringTest {
 		new ModelExplorer();
 		project.getProjectItem(path).select();
 		new ContextMenuItem("Modeling", "Update Imports").select();
-		new WaitWhile(new ShellIsAvailable("Progress Information"), TimePeriod.SHORT);
+        new WaitWhile(new IsInProgress(), TimePeriod.SHORT);
 	}
 
 	private void renameItem(ProjectItem projectItem, String newName) {

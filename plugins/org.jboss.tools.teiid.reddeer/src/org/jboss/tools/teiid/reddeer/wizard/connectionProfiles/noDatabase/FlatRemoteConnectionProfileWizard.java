@@ -7,6 +7,8 @@ import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.ConnectionProfile
 
 public class FlatRemoteConnectionProfileWizard extends ConnectionProfileWizard {
 
+    public static final String DIALOG_TITLE = "New connection profile";
+
 	private FlatRemoteConnectionProfileWizard(String name) {
 		super("Flat File URL Source",name);
 		log.info("Remote flat file profile wizard is opened");

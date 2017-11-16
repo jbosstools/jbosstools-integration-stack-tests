@@ -10,7 +10,9 @@ import org.eclipse.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.ConnectionProfileWizard;
 
 public class LdapConnectionProfileWizard extends ConnectionProfileWizard{
-	
+
+    public static final String DIALOG_TITLE = "New connection Profile";
+
 	private LdapConnectionProfileWizard(String name) {
 		super("LDAP",name);
 		log.info("Ldap connection profile wizard is opened");

@@ -16,12 +16,14 @@ import org.eclipse.reddeer.swt.exception.SWTLayerException;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.ccombo.DefaultCCombo;
 import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.tab.DefaultTabItem;
 import org.eclipse.reddeer.swt.impl.table.DefaultTable;
 import org.eclipse.reddeer.swt.impl.text.DefaultText;
 import org.eclipse.reddeer.swt.keyboard.KeyboardFactory;
 import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 
 public class TableEditor extends DefaultEditor {
 	private static final String TABLE_EDITOR = "Table Editor";
@@ -69,7 +71,8 @@ public class TableEditor extends DefaultEditor {
 	 * Note: every model (diagram) can have unique tabs
 	 */
 	public void openTab(String tabName){
-		new DefaultTabItem(tabName).activate();
+        this.activate();
+        new DefaultTabItem(tabName).activate();
 	}
 	
 	public List<TableItem> getRows(){
@@ -222,8 +225,16 @@ public class TableEditor extends DefaultEditor {
 		new DefaultTable(0).getItem(rowIndex).doubleClick(columnIndex);
 		new PushButton((new CellEditor(new DefaultTable().getItem(rowIndex), columnIndex))).click();
 		new DefaultShell("Select a Datatype");
-		new DefaultTable(0).getItem(datatype).select();
+        new DefaultText(0).setText(datatype);
+        AbstractWait.sleep(TimePeriod.SHORT); // wait if show only dataType in the table
+        new DefaultTable().getItem(0).click();
 		new PushButton("OK").click();		
 	}
 	
+    @Override
+    public void save() {
+        if (new ShellMenuItem(new WorkbenchShell(), "File", "Save").isEnabled()) {
+            super.save();
+        }
+    }
 }

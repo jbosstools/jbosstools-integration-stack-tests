@@ -7,6 +7,7 @@ import static org.junit.Assert.fail;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
@@ -166,6 +167,7 @@ public class GeometryTypeTest {
 		new ContextMenuItem("Modeling","Set Datatype").select();
 		new DefaultShell("Select a Datatype");
 		new DefaultText(0).setText("geometry");
+        AbstractWait.sleep(TimePeriod.SHORT); // wait if show only geometry in the table
 		new DefaultTable().getItem(0).click();
 		new PushButton("OK").click();
 	}

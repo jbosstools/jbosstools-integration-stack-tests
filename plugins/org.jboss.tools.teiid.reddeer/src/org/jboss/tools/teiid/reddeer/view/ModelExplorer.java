@@ -122,7 +122,8 @@ public class ModelExplorer extends AbstractExplorer {
         } else {
             setJndiName(jndiName, modelPath);
 		}
-		new RelationalModelEditor(modelName).save();
+        new RelationalModelEditor(modelName).save();
+        createDataSource("Use Connection Profile Info", connectionProfile, modelPath);
 	}
 	
 	/**
@@ -315,14 +316,12 @@ public class ModelExplorer extends AbstractExplorer {
             new OkButton().click();
 			throw new Error("Server is not connected");
 		}
-		try {
-			new DefaultShell("Create VDB Data Source");
-			new LabeledCheckBox("JNDI Name >>    java:/").toggle(true/*passThruAuth*/);
-			new PushButton("Create Source").click();
-			new WaitWhile(new ShellIsActive("Create VDB Data Source"), TimePeriod.DEFAULT);
-		} catch (SWTLayerException e) {	
-			// shell not opened -> continue
-		}
+        if (new ShellIsAvailable("Create VDB Data Source").test()) {
+            new DefaultShell("Create VDB Data Source");
+            new LabeledCheckBox("JNDI Name >>    java:/").toggle(true/* passThruAuth */);
+            new PushButton("Create Source").click();
+            new WaitWhile(new ShellIsActive("Create VDB Data Source"), TimePeriod.DEFAULT);
+        }
 	}
 	
 	/**
@@ -364,17 +363,46 @@ public class ModelExplorer extends AbstractExplorer {
 		return new CreateWarDialog(soap);
 	}
 
+    /**
+     * Deploys jar to server
+     * 
+     * @param teiidServer
+     * @param jarPath
+     */
+    public void deployJar(TeiidServerRequirement teiidServer, String... jarPath) {
+        new WorkbenchShell();
+        int iJar = jarPath.length - 1;
+        jarPath[iJar] = (jarPath[iJar].contains(".jar")) ? jarPath[iJar] : jarPath[iJar] + ".jar";
+        refreshProject(jarPath[0]);
+        this.selectItem(jarPath);
+        deployFile(teiidServer, jarPath);
+    }
+
+    /**
+     * Deploys war to server
+     * 
+     * @param teiidServer
+     * @param jarPath
+     */
+    public void deployWar(TeiidServerRequirement teiidServer, String... warPath) {
+        new WorkbenchShell();
+        int iWar = warPath.length -1;
+        warPath[iWar] = (warPath[iWar].contains(".war")) ? warPath[iWar] : warPath[iWar] + ".war";
+        refreshProject(warPath[0]);
+        this.selectItem(warPath);
+        deployFile(teiidServer, warPath);
+	}
+
 	/**
-	 * Deploys specified WAR.
-	 * @param - name of the server where WAR will be deployed (TeiidServerRequirement.getName())
-	 * @param warPath - path to WAR (<PROJECT>, ..., <WAR>)
-	 */
-	public void deployWar(TeiidServerRequirement teiidServer, String... warPath){
-		new WorkbenchShell();
-		int iWar = warPath.length -1;
-		warPath[iWar] = (warPath[iWar].contains(".war")) ? warPath[iWar] : warPath[iWar] + ".war";
-		refreshProject(warPath[0]);
-		this.selectItem(warPath);
+     * Deploys specified file (war or jar).
+     * 
+     * @param -
+     *            name of the server where file will be deployed (TeiidServerRequirement.getName())
+     * @param path
+     *            - path to file (<PROJECT>, ..., <WAR>)
+     */
+    public void deployFile(TeiidServerRequirement teiidServer, String... path) {
+        int iWar = path.length - 1;
 		new ContextMenuItem("Mark as Deployable").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		if (new ShellIsActive("No deployable servers found").test()){
@@ -382,10 +410,10 @@ public class ModelExplorer extends AbstractExplorer {
 			throw new Error("Server is not connected");
 		}
 		try {
-			new WaitUntil(new WarIsDeployed(teiidServer.getName(), warPath[iWar]), TimePeriod.LONG);
+            new WaitUntil(new WarIsDeployed(teiidServer.getName(), path[iWar]), TimePeriod.LONG);
 		} catch (WaitTimeoutExpiredException ex){ 
-			new ServersViewExt().restartWar(teiidServer.getName(), warPath[iWar]);
-			new WaitUntil(new WarIsDeployed(teiidServer.getName(), warPath[iWar]), TimePeriod.LONG);
+            new ServersViewExt().restartWar(teiidServer.getName(), path[iWar]);
+            new WaitUntil(new WarIsDeployed(teiidServer.getName(), path[iWar]), TimePeriod.LONG);
 		}
 		AbstractWait.sleep(TimePeriod.getCustom(5));
 	}
@@ -602,4 +630,15 @@ public class ModelExplorer extends AbstractExplorer {
 			return false;
 		}
 	}
+
+    /**
+     * Update imports on specific project
+     * 
+     * @param pathToModel
+     */
+    public void updateImport(String... pathToModel) {
+        selectItem(pathToModel);
+        // new DefaultTreeItem(pathToModel).getSWTWidget().get //TODO
+
+    }
 }

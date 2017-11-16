@@ -9,6 +9,8 @@ import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.ConnectionProfile
 
 public class XmlLocalConnectionProfileWizard extends ConnectionProfileWizard {
 
+    public static final String DIALOG_TITLE = "New connection profile";
+	
 	private XmlLocalConnectionProfileWizard(String name) {
 		super("XML Local File Source",name);
 		log.info("Local XML profile wizard is opened");

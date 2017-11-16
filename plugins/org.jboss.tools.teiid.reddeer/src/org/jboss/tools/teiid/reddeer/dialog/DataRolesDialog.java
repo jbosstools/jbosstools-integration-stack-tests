@@ -76,7 +76,7 @@ public class DataRolesDialog extends AbstractDialog {
 	public boolean getModelPermission(String permType, final String... path) {
 		new DefaultCTabItem("Permissions").activate();
 		new DefaultCTabItem("Model").activate();
-		
+        new DefaultTreeItem(path).select();
 		final int column = getColumnForPermission(permType);
 		return Display.syncExec(new ResultRunnable<Boolean>() {
 			@Override
