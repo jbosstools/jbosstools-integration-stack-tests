@@ -8,7 +8,6 @@ import java.io.File;
 import java.util.ArrayList;
 
 import org.eclipse.reddeer.common.matcher.RegexMatcher;
-import org.eclipse.reddeer.common.platform.RunningPlatform;
 import org.eclipse.reddeer.common.util.Display;
 import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
@@ -65,7 +64,6 @@ public class PreviewModelTest {
 	private static final String VIEW_TABLE_CSV = "viewTable.csv";
 	private static final String VIEW_ORDERED_TABLE_CSV = "viewOrderedTable.csv"; 
 	private static final String VIEW_TWO_TABLE_CSV = "viewTableTwoSources.csv";
-	private static final String VIEW_TWO_TABLE_WIN_CSV = "viewTableTwoSourcesWindows.csv"; //windows sort result otherwise
 	private static final String VIEW_PROCEDURE_CSV = "queryViewProcedure.csv";
 	private static final String VIEW_ACCESS_PATERN_TABLE_CSV = "viewTableWithAccessPattern.csv";
 
@@ -143,11 +141,7 @@ public class PreviewModelTest {
 		waitUntilPreview();
 		
 		assertTrue(checkPreviewCSV(QUERY_VIEW_TABLE,VIEW_TABLE_CSV));
-		if(RunningPlatform.isWindows()){ //windows sort result otherwise
-			assertTrue(checkPreviewCSV(QUERY_VIEW_TABLE_TWO_SOURCES,VIEW_TWO_TABLE_WIN_CSV));
-		}else{
-			assertTrue(checkPreviewCSV(QUERY_VIEW_TABLE_TWO_SOURCES,VIEW_TWO_TABLE_CSV));
-		}
+        assertTrue(checkPreviewCSV(QUERY_VIEW_TABLE_TWO_SOURCES, VIEW_TWO_TABLE_CSV));
 		assertTrue(checkPreviewCSV(QUERY_VIEW_PROCEDURE,VIEW_PROCEDURE_CSV));
 		assertTrue(checkPreviewCSV(QUERY_ACCESS_PATTERN,VIEW_ACCESS_PATERN_TABLE_CSV));
 		

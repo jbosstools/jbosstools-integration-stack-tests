@@ -11,7 +11,6 @@ import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.core.matcher.TreeItemRegexMatcher;
 import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
 import org.eclipse.reddeer.jface.viewers.CellEditor;
-import org.eclipse.reddeer.jface.wizard.WizardDialog;
 import org.eclipse.reddeer.swt.api.TableItem;
 import org.eclipse.reddeer.swt.condition.ShellIsActive;
 import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
@@ -171,7 +170,7 @@ public class GuidesView extends WorkbenchView {
 		chooseAction(actionSet, "Define Teiid ");
 		new PushButton("New...").click();
 		new LabeledText("Project name:").setText(projectName);
-		new WizardDialog().finish();
+        new FinishButton().click();
 		new DefaultShell("Define Model Project");
         new OkButton().click();
 	}

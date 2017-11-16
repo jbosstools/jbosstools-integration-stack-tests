@@ -20,6 +20,8 @@ import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.ConnectionProfile
  */
 public class WsdlConnectionProfileWizard extends ConnectionProfileWizard {
 
+    public static final String DIALOG_TITLE = "New connection profile";
+	
 	public static final String AUTH_TYPE_BASIC = "HTTPBasic";
 	public static final String AUTH_TYPE_DIGEST = "Digest";
 	

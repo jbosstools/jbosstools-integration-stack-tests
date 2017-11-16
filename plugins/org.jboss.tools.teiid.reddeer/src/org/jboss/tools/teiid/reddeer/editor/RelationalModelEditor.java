@@ -88,10 +88,17 @@ public class RelationalModelEditor extends ModelEditor{
 		new ContextMenuItem("Modeling","Set Datatype").select();
 		new DefaultShell("Select a Datatype");
 		new DefaultText(0).setText(dataType);
+        AbstractWait.sleep(TimePeriod.SHORT); // wait if show only dataType in the table
 		new DefaultTable().getItem(0).click();
 		if (length != null){
 			new LabeledSpinner("'string' length value").setValue(length);
 		}		
 		new PushButton("OK").click();
 	}
+
+    @Override
+    public void save() {
+        AbstractWait.sleep(TimePeriod.SHORT); // on windows save button shows after a second
+        super.save();
+    }
 }

@@ -1,12 +1,13 @@
 package org.jboss.tools.teiid.reddeer.editor;
 
 import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.util.Display;
 import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.core.handler.WidgetHandler;
-import org.eclipse.reddeer.common.util.Display;
 import org.eclipse.reddeer.swt.exception.SWTLayerException;
 import org.eclipse.reddeer.swt.impl.button.YesButton;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
@@ -24,6 +25,7 @@ public class TransformationEditor {
 		setTransformation(sql);
 		saveAndValidateSql();
 		AbstractWait.sleep(TimePeriod.SHORT);
+        new ShellMenuItem(new WorkbenchShell(), "File", "Save").select();
 		new WorkbenchShell();
 	}
 	
@@ -89,10 +91,15 @@ public class TransformationEditor {
 		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 	
-	public void supportsUpdate(boolean toggle){
-		log.info(((toggle) ? "checking" : "unchecking") + "Supports Update");
-		new DefaultToolItem(new ToolBarButtonWithLabel("Supports Update", toggle));
-		AbstractWait.sleep(TimePeriod.SHORT);
+    public void supportsUpdate(final boolean toggle) {
+        log.info(((toggle) ? "checking" : "unchecking") + "Supports Update");
+        Display.syncExec(new Runnable() {
+            @Override
+            public void run() {
+                new DefaultToolItem(new ToolBarButtonWithLabel("Supports Update", toggle));
+            }
+        });
+        AbstractWait.sleep(TimePeriod.SHORT);
 		try {
 			new DefaultShell("Table 'Supports Update' Property Changed");
 			new YesButton().click();

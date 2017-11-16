@@ -7,7 +7,6 @@ import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.swt.condition.ShellIsActive;
-import org.eclipse.reddeer.swt.exception.SWTLayerException;
 import org.eclipse.reddeer.swt.impl.button.CheckBox;
 import org.eclipse.reddeer.swt.impl.button.OkButton;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
@@ -258,14 +257,12 @@ public class TableDialog extends AbstractDialog{
 		new DefaultShell("Choose a SQL Template");
 		new RadioButton(new DefaultGroup("Template Options"), templateName).click();
 		new RadioButton(new DefaultGroup("Insert Text Options"), insertOption).click();
-		new OkButton().click();
-		try {
-			new DefaultShell("Confirm Replace SQL Text");
-			new OkButton().click();
-			new WaitWhile(new ShellIsActive("Confirm Replace SQL Text"), TimePeriod.DEFAULT);
-		} catch (SWTLayerException e) {	
-			// shell not opened -> continue
-		}
+        new OkButton().click();
+        if (new ShellIsActive("Confirm Replace SQL Text").test()) {
+            new DefaultShell("Confirm Replace SQL Text");
+            new OkButton().click();
+            new WaitWhile(new ShellIsActive("Confirm Replace SQL Text"), TimePeriod.DEFAULT);
+        }
 		this.activate();
 		return this;
 	}

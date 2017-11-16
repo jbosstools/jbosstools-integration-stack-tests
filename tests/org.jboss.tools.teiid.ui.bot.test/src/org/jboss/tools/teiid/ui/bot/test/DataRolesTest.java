@@ -186,7 +186,7 @@ public class DataRolesTest {
 		String query = "SELECT * FROM Products_view.PRODUCTDATA";
 		TeiidJDBCHelper jdbcHelper = new TeiidJDBCHelper(teiidServer, VDB_NAME);
 		
-		jdbcHelper.setUser("reader", "dvdvdv0!");
+        jdbcHelper.setUser("reader", "dvdvdv0#");
 		ResultSet readerRs = jdbcHelper.executeQueryWithResultSet(query);
 		while (readerRs.next()){
 			if (!readerRs.getString("INSTR_ID").equals("SECRET")){
@@ -194,7 +194,7 @@ public class DataRolesTest {
 			}
 		}
 		
-		jdbcHelper.setUser("updater", "dvdvdv0!");
+        jdbcHelper.setUser("updater", "dvdvdv0#");
 		ResultSet updaterRs = jdbcHelper.executeQueryWithResultSet(query);
 		while (updaterRs.next()){
 			if (!updaterRs.getString("ISAMEXINT").equals("1")){
@@ -273,7 +273,7 @@ public class DataRolesTest {
 	}
 	
 	private void executeQueriesForUser(String vdbName, String model, String username, boolean[] expectedResult){
-		TeiidJDBCHelper jdbcHelper = new TeiidJDBCHelper(teiidServer, vdbName, username, "dvdvdv0!");
+        TeiidJDBCHelper jdbcHelper = new TeiidJDBCHelper(teiidServer, vdbName, username, "dvdvdv0#");
 
 		assertTrue("READ query " + ((expectedResult[0]) ? "failed" : "succed") + " for user " + username,
 				expectedResult[0] == jdbcHelper.isQuerySuccessful("SELECT * FROM " + model +".PRODUCTDATA", true));

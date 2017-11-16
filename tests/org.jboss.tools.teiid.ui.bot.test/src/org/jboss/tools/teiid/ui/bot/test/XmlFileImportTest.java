@@ -2,11 +2,19 @@ package org.jboss.tools.teiid.ui.bot.test;
 
 import static org.junit.Assert.assertEquals;
 
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.YesButton;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.common.reddeer.JiraClient;
+import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
@@ -49,14 +57,15 @@ public class XmlFileImportTest {
 				.setFile("resources/flat/cd_catalog.xml")
 				.finish();
 
-		String modelName = "LocalXmlModel";
+        String sourceModelName = "LocalXmlSourceModel";
+        String viewModelName = "LocalXmlModel";
 		String vdbName = "LocalXmlFileImportVdb";
-		
+
 		XMLImportWizard.openWizard()
 				.setImportMode(XMLImportWizard.LOCAL)
 				.nextPage()
 				.setDataFileSource("LOCAL_XML")
-				.setSourceModelName("LocalSource2222")
+            .setSourceModelName(sourceModelName)
 				.nextPage()
 				.setJndiName("LocalSource")
 				.nextPage()
@@ -72,24 +81,24 @@ public class XmlFileImportTest {
 		}
 		XMLImportWizard.getInstance()
 				.nextPage()
-				.setViewModelName(modelName)
+            .setViewModelName(viewModelName)
 				.setViewTableName("Table")
 				.finish();
+        workaround(sourceModelName);
 
 		new ModelExplorer().refreshProject(PROJECT_NAME);
 		VdbWizard.openVdbWizard()
-				.setLocation(PROJECT_NAME)
-				.setName(vdbName)
-				.addModel(PROJECT_NAME, modelName)
-				.finish();
+            .setLocation(PROJECT_NAME).setName(vdbName)
+            .addModel(PROJECT_NAME, viewModelName)
+            .finish();
 		new ModelExplorer().deployVdb(PROJECT_NAME, vdbName);
 		
 		TeiidJDBCHelper jdbcHelper = new TeiidJDBCHelper(teiidServer, vdbName);
-		assertEquals(26, jdbcHelper.getNumberOfResults("SELECT * FROM LocalXmlModel.Table"));
+        assertEquals(26, jdbcHelper.getNumberOfResults("SELECT * FROM " + viewModelName + ".Table"));
 	}
 	
 	@Test
-	public void testImportRemoteXml(){		
+    public void testImportRemoteXml() {
 		XmlRemoteConnectionProfileWizard.openWizard("REMOTE_XML")
 				.setUrl("https://raw.githubusercontent.com/mmakovy/import-files/master/cd_catalog.xml")
 				.testConnection()
@@ -133,4 +142,29 @@ public class XmlFileImportTest {
 			TeiidJDBCHelper jdbcHelper = new TeiidJDBCHelper(teiidServer, vdbName);
 			assertEquals(26, jdbcHelper.getNumberOfResults("SELECT * FROM RemoteXmlModel.Table"));
 	}
+
+    /**
+     * TEIIDDES-3107 Workaround for issue with number of parameters
+     */
+    public void workaround(String modelName) {
+        if (!new JiraClient().isIssueClosed("TEIIDDES-3107")) {
+            ModelExplorer explorer = new ModelExplorer();
+            explorer.selectItem(PROJECT_NAME, modelName + ".xmi", "getTextFiles", "Result", "lastModified : timestamp");
+            new ContextMenuItem("Delete").select();
+            new WaitUntil(new ShellIsAvailable("Dependent Models Detected"));
+            new YesButton().click();
+            new WaitWhile(new IsInProgress(), false);
+            explorer.selectItem(PROJECT_NAME, modelName + ".xmi", "getTextFiles", "Result", "created : timestamp");
+            new ContextMenuItem("Delete").select();
+            new WaitUntil(new ShellIsAvailable("Dependent Models Detected"));
+            new YesButton().click();
+            new WaitWhile(new IsInProgress(), false);
+            explorer.selectItem(PROJECT_NAME, modelName + ".xmi", "getTextFiles", "Result", "size : int");
+            new ContextMenuItem("Delete").select();
+            new WaitUntil(new ShellIsAvailable("Dependent Models Detected"));
+            new YesButton().click();
+            new WaitWhile(new IsInProgress(), false);
+            new ShellMenuItem(new WorkbenchShell(), "File", "Save All").select();
+        }
+    }
 }

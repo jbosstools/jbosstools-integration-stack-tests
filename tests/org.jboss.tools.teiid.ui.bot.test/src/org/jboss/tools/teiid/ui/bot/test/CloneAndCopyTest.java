@@ -13,6 +13,7 @@ import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.text.LabeledText;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.common.reddeer.JiraClient;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ProblemsViewEx;
@@ -104,10 +105,12 @@ public class CloneAndCopyTest {
 	
 	@Test
 	public void testSaveAsRelationalSourceModel(){
-		String newModelName = "RelationalSourceModelSaveAs";
-		modelExplorer.saveModelAs(RELATIONAL_SOURCE_MODEL, newModelName, PROJECT_NAME + "/SaveAs", Boolean.FALSE);
-		assertTrue(modelExplorer.containsItem(PROJECT_NAME,"SaveAs", newModelName + ".xmi"));
-		ProblemsViewEx.checkErrors();			
+        if (new JiraClient().isIssueClosed("TEIIDDES-3119")) {
+            String newModelName = "RelationalSourceModelSaveAs";
+            modelExplorer.saveModelAs(RELATIONAL_SOURCE_MODEL, newModelName, PROJECT_NAME + "/SaveAs", Boolean.FALSE);
+            assertTrue(modelExplorer.containsItem(PROJECT_NAME, "SaveAs", newModelName + ".xmi"));
+            ProblemsViewEx.checkErrors();
+        }
 	}
 	
 	@Test

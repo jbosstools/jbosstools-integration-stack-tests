@@ -217,7 +217,7 @@ public class TransformationToolsTest {
 	}
 	
 	@Test
-	public void testCriteriaBuilder(){			
+    public void testCriteriaBuilder() {
 		modelExplorer.openModelEditor(PROJECT_NAME, VIEW_MODEL);
 		RelationalModelEditor editor = new RelationalModelEditor(VIEW_MODEL);
 		
@@ -273,11 +273,12 @@ public class TransformationToolsTest {
 		
 		criteriaBuilder.activate();
 		criteriaBuilder.selectRadioButton(CriteriaBuilderDialog.RadioButtonType.CONSTANT, CriteriaBuilderDialog.CriteriaSide.RIGHT)
-				.selectConstantType("bigdecimal", 0)
-				.selectConstantValue("10", 0)
-				.selectOperator(CriteriaBuilderDialog.OperatorType.LT)
-				.apply();
+            .selectConstantType("bigdecimal", CriteriaBuilderDialog.CriteriaSide.RIGHT)
+            .selectConstantValue("10", CriteriaBuilderDialog.CriteriaSide.RIGHT)
+            .selectOperator(CriteriaBuilderDialog.OperatorType.LT)
+            .apply();
 		String expectedSql = new ResourceFileHelper().getSql("TransformationToolsTest/expectedWhere").replaceAll("\r|\n", "");
+
 		assertEquals(expectedSql, criteriaBuilder.getCurrentSqlContent());	
 		criteriaBuilder.finish();
 		
@@ -285,7 +286,7 @@ public class TransformationToolsTest {
 		AssertBot.transformationContains(transformationEditor.getTransformation(), expectedSql);
 		editor.save();
 		AbstractWait.sleep(TimePeriod.SHORT);
-		ProblemsViewEx.checkErrors();		
+        ProblemsViewEx.checkErrors();
 	}
 
 	@Test

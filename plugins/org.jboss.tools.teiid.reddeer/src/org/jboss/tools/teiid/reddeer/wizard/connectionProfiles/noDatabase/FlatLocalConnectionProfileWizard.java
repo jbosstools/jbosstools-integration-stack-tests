@@ -2,11 +2,15 @@ package org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.noDatabase;
 
 import java.io.File;
 
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.jface.condition.WindowIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.CancelButton;
 import org.eclipse.reddeer.swt.impl.button.NextButton;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.ConnectionProfileWizard;
 
 public class FlatLocalConnectionProfileWizard extends ConnectionProfileWizard {
@@ -39,6 +43,18 @@ public class FlatLocalConnectionProfileWizard extends ConnectionProfileWizard {
 		return this;
 	}
 	
+    @Override
+    public void cancel() {
+        log.info("Cancel wizard");
+        new CancelButton().click();
+        new WaitWhile(new WindowIsAvailable(this));
+        try {
+            new WaitWhile(new JobIsRunning());
+        } catch (NoClassDefFoundError e) {
+            // do nothing, reddeer.workbench plugin is not available
+        }
+    }
+
 	public FlatLocalConnectionProfileWizard setFile(String path) {
 		log.info("Path to file is : '" + path + "'");
 		activate();

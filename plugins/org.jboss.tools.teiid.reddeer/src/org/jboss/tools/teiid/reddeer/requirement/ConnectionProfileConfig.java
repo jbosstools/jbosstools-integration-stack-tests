@@ -13,7 +13,7 @@ public class ConnectionProfileConfig {
 	protected String vendorTemplate;
 	protected String jdbcPath;
 	protected String password;
-	protected String version;
+    protected String version;
 	protected String jdbcClass;
 	protected String port;
 	protected String username;
@@ -108,11 +108,11 @@ public class ConnectionProfileConfig {
 		this.password = password;
 	}
 
-	public String getVersion() {
+    public String getVersion() {
 		return version;
 	}
 
-	public void setVersion(String version) {
+    public void setVersion(String version) {
 		this.version = version;
 	}
 

@@ -4,14 +4,20 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
-import org.eclipse.reddeer.swt.condition.ShellIsActive;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.button.YesButton;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
 import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.common.reddeer.JiraClient;
+import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
@@ -104,6 +110,7 @@ public class FlatFileTest {
 				.setViewModel(LOCAL_VIEW_MODEL)
 				.setViewTable(LOCAL_VIEW_TABLE)
 				.finish();
+        workaround(LOCAL_SOURCE_MODEL);
 		// Deploying the VDB
 		VdbWizard.openVdbWizard()
 				.setLocation(PROJECT_NAME)
@@ -112,7 +119,7 @@ public class FlatFileTest {
 				.finish();
 
 		new ModelExplorer().deployVdb(PROJECT_NAME, LOCAL_VDB);
-		new WaitWhile(new ShellIsActive("Progress Information"));
+        new WaitWhile(new IsInProgress());
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, LOCAL_VDB);
 		assertEquals(122, jdbchelper.getNumberOfResults("SELECT * FROM "+LOCAL_VIEW_TABLE));
 	}
@@ -143,28 +150,27 @@ public class FlatFileTest {
 				.finish();
 
 		new ModelExplorer().deployVdb(PROJECT_NAME, REMOTE_VDB);
-		new WaitWhile(new ShellIsActive("Progress Information"));
+        new WaitWhile(new IsInProgress());
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, REMOTE_VDB);
 		assertEquals(122, jdbchelper.getNumberOfResults("SELECT * FROM "+REMOTE_VIEW_TABLE));
 	}
 	
 	@Test
 	public void testEmptySpace(){
-		FlatLocalConnectionProfileWizard.openWizard("emptySpace")
+        FlatLocalConnectionProfileWizard wizard = FlatLocalConnectionProfileWizard.openWizard("emptySpace")
 				.setFile(EMPTY_SPACE_PATH);
 		
 		assertEquals(" The folder path cannot contain spaces.", new DefaultText(2).getText());
 		assertFalse(new PushButton("Next >").isEnabled());
 
-		FlatLocalConnectionProfileWizard.getInstance()
-				.testConnection();
+        wizard.testConnection();
 		
 		if(new JiraClient().isIssueClosed("TEIIDDES-2493")){
 			assertFalse(new PushButton("Next >").isEnabled());
 			assertEquals(" The folder path cannot contain spaces.", new DefaultText(2).getText());
 		}
 		
-		FlatLocalConnectionProfileWizard.getInstance().cancel();
+        wizard.cancel();
 	}
 	/**
 	 * Test import csv with custom line separator
@@ -194,7 +200,8 @@ public class FlatFileTest {
 		new ModelExplorer().openModelEditor(PROJECT_NAME,LOCAL_VIEW_MODEL+"customLine.xmi");		
 		TransformationEditor transformation = new RelationalModelEditor(LOCAL_VIEW_MODEL+"customLine.xmi").openTransformationDiagram(ModelEditor.ItemType.TABLE, LOCAL_VIEW_TABLE);
 		assertTrue(transformation.getTransformation().contains("ROW DELIMITER '#'"));
-		
+
+        workaround(LOCAL_SOURCE_MODEL + "customLine");
 		// Deploying the VDB
 		VdbWizard.openVdbWizard()
 				.setLocation(PROJECT_NAME)
@@ -203,7 +210,7 @@ public class FlatFileTest {
 				.finish();
 
 		new ModelExplorer().deployVdb(PROJECT_NAME, LOCAL_VDB+"customLine");
-		new WaitWhile(new ShellIsActive("Progress Information"));
+        new WaitWhile(new IsInProgress());
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, LOCAL_VDB+"customLine");
 		assertEquals(3, jdbchelper.getNumberOfResults("SELECT * FROM "+LOCAL_VIEW_TABLE));
 	}
@@ -268,6 +275,7 @@ public class FlatFileTest {
 		TransformationEditor transformation = new RelationalModelEditor(LOCAL_VIEW_MODEL+"customField.xmi").openTransformationDiagram(ModelEditor.ItemType.TABLE, LOCAL_VIEW_TABLE);
 		assertTrue(transformation.getTransformation().contains("DELIMITER '#'"));
 		
+        workaround(LOCAL_SOURCE_MODEL + "customField");
 		// Deploying the VDB
 		VdbWizard.openVdbWizard()
 				.setLocation(PROJECT_NAME)
@@ -276,8 +284,33 @@ public class FlatFileTest {
 				.finish();
 
 		new ModelExplorer().deployVdb(PROJECT_NAME, LOCAL_VDB+"customField");
-		new WaitWhile(new ShellIsActive("Progress Information"));
+        new WaitWhile(new IsInProgress());
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, LOCAL_VDB+"customField");
 		assertEquals(122, jdbchelper.getNumberOfResults("SELECT * FROM "+LOCAL_VIEW_TABLE));
 	}
+
+    /**
+     * TEIIDDES-3107 Workaround for issue with number of parameters
+     */
+    public void workaround(String modelName) {
+        if (!new JiraClient().isIssueClosed("TEIIDDES-3107")) {
+            ModelExplorer explorer = new ModelExplorer();
+            explorer.selectItem(PROJECT_NAME, modelName + ".xmi", "getTextFiles", "Result", "lastModified : timestamp");
+            new ContextMenuItem("Delete").select();
+            new WaitUntil(new ShellIsAvailable("Dependent Models Detected"));
+            new YesButton().click();
+            new WaitWhile(new IsInProgress(), false);
+            explorer.selectItem(PROJECT_NAME, modelName + ".xmi", "getTextFiles", "Result", "created : timestamp");
+            new ContextMenuItem("Delete").select();
+            new WaitUntil(new ShellIsAvailable("Dependent Models Detected"));
+            new YesButton().click();
+            new WaitWhile(new IsInProgress(), false);
+            explorer.selectItem(PROJECT_NAME, modelName + ".xmi", "getTextFiles", "Result", "size : int");
+            new ContextMenuItem("Delete").select();
+            new WaitUntil(new ShellIsAvailable("Dependent Models Detected"));
+            new YesButton().click();
+            new WaitWhile(new IsInProgress(), false);
+            new ShellMenuItem(new WorkbenchShell(), "File", "Save All").select();
+        }
+    }
 }

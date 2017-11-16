@@ -8,6 +8,7 @@ import org.eclipse.reddeer.common.matcher.RegexMatcher;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.junit.execution.annotation.RunIf;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.eclipse.reddeer.swt.condition.ShellIsActive;
@@ -17,9 +18,11 @@ import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.dialog.TableDialog;
+import org.jboss.tools.teiid.reddeer.editor.ModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.perspective.DatabaseDevelopmentPerspective;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
+import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.SQLResult;
@@ -34,10 +37,12 @@ import org.junit.runner.RunWith;
 @TeiidServer(state = ServerRequirementState.RUNNING, connectionProfiles = {
 		ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER })
 public class ProcedurePreviewTest {
+    @InjectRequirement
+    private static TeiidServerRequirement teiidServer;
 
 	private static final String PROJECT_NAME = "Partssupplier";
 	private static final String MODEL_SRC_NAME = "hsqldbParts";
-	private static final String MODEL_VIEW_NAME = "view";
+    private static final String MODEL_VIEW_NAME = "view";
 	private static final String PROFILE_NAME = ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER;
 	private static final String UDF_LIB_PATH = "target/proc-udf/MyTestUdf/lib/";
 	private static final String UDF_LIB = "MyTestUdf-1.0-SNAPSHOT.jar";
@@ -82,11 +87,11 @@ public class ProcedurePreviewTest {
 
 	/**
 	 * Note: Jar with UDF must be created and imported into "target/proc-udf/MyTestUdf/lib/" before execution.
-	 * TODO how to obtain this jar
+	 * how to obtain this jar -> mvn clean verify in the test folder
 	 */
 	@Test
-	@Jira("TEIIDDES-2880")
-	@RunIf(conditionClass = IssueIsClosed.class)
+    @Jira("TEIIDDES-2880")
+    @RunIf(conditionClass = IssueIsClosed.class)
 	public void relViewUDF() {
 		// import lib/MyTestUDF.jar
 		ImportFromFileSystemWizard.openWizard()
@@ -95,8 +100,10 @@ public class ProcedurePreviewTest {
 				.selectFile(UDF_LIB)
 				.setCreteTopLevelFolder(true)
 				.finish();
+        ModelExplorer modelExplorer = new ModelExplorer();
+        modelExplorer.deployJar(teiidServer, PROJECT_NAME, "lib", UDF_LIB);
 
-		new ModelExplorer().addChildToModelItem(ModelExplorer.ChildType.PROCEDURE, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi");
+        modelExplorer.addChildToModelItem(ModelExplorer.ChildType.PROCEDURE, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi");
 		NewProcedureWizard.createUserDefinedFunction()
 				.setName("udfConcatNull")
 				.addParameter("stringLeft", "string", "400", "IN")
@@ -109,15 +116,18 @@ public class ProcedurePreviewTest {
 				.finish();
 
 		String tableName = "tab";
-		new ModelExplorer().addChildToModelItem(ModelExplorer.ChildType.TABLE, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi");
+        modelExplorer.addChildToModelItem(ModelExplorer.ChildType.TABLE, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi");
 		new TableDialog(true)
 				.setName("tab")
 				.setTransformationSql("select udfConcatNull(hsqldbParts.PARTS.PART_NAME,hsqldbParts.PARTS.PART_WEIGHT) as NAME_WEIGHT from hsqldbParts.PARTS")
 				.finish();	
 		
-		new RelationalModelEditor(MODEL_VIEW_NAME + ".xmi").save();
+        RelationalModelEditor editor = new RelationalModelEditor(MODEL_VIEW_NAME + ".xmi");
+        editor.save();
+        editor.setAttributeDataType(tableName, ModelEditor.ItemType.TABLE, "NAME_WEIGHT", "string", 510);
+        editor.save();
 
-		new ModelExplorer().previewModelItem(null, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi", tableName);
+        modelExplorer.previewModelItem(null, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi", tableName);
 		String previewQuery = "select * from \"" + MODEL_VIEW_NAME + "\".\"" + tableName + "\"";
 		assertTrue(checkPreviewOfModelObject(previewQuery));
 	}

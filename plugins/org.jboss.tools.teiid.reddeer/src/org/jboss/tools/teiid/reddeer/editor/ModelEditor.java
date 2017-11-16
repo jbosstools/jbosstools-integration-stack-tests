@@ -5,12 +5,14 @@ import java.util.List;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalViewer;
-import org.eclipse.ui.IEditorPart;
-import org.hamcrest.BaseMatcher;
 import org.eclipse.reddeer.common.util.Display;
 import org.eclipse.reddeer.gef.handler.ViewerHandler;
 import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
 import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.ui.IEditorPart;
+import org.hamcrest.BaseMatcher;
 import org.jboss.tools.teiid.reddeer.matcher.ModelEditorItemAttributeMatcher;
 import org.jboss.tools.teiid.reddeer.matcher.ModelEditorItemMatcher;
 import org.jboss.tools.teiid.reddeer.matcher.TransformationArrowMatcher;
@@ -32,6 +34,13 @@ public abstract class ModelEditor extends DefaultEditor {
 		activate();
 	}
 	
+    @Override
+    public void save() {
+        if (new ShellMenuItem(new WorkbenchShell(), "File", "Save").isEnabled()) {
+            super.save();
+        }
+    }
+
 	public void saveAndClose(){
 		save();
 		close();
@@ -41,6 +50,7 @@ public abstract class ModelEditor extends DefaultEditor {
 	 * Opens table editor's tab and returns it.
 	 */
 	public TableEditor openTableEditor(){
+        this.save();
 		return new TableEditor(this.getTitle());
 	}	
 	

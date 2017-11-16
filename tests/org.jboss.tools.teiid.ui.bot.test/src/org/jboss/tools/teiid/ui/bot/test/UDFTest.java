@@ -5,8 +5,6 @@ import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
-import org.eclipse.reddeer.swt.impl.button.OkButton;
-import org.eclipse.reddeer.swt.impl.button.RadioButton;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
@@ -82,8 +80,6 @@ public class UDFTest {
 				.finish();
 
 		new ModelExplorer().addChildToModelItem(ModelExplorer.ChildType.TABLE, PROJECT_NAME, MODEL_VIEW_NAME + ".xmi");
-        new RadioButton("Option 1: Build with new table wizard").click();
-        new OkButton().click();
 		new TableDialog(true)
 				.setName("tab")
 				.setTransformationSql("select udfConcatNull(hsqldbParts.PARTS.PART_NAME,hsqldbParts.PARTS.PART_WEIGHT) as NAME_WEIGHT from hsqldbParts.PARTS")

@@ -129,7 +129,7 @@ public class TeiidServerRequirement extends AbstractConfigurableRequirement<Teii
 		// set username and password
 		ServersView2 servers = new ServersView2();
 		servers.open();
-		servers.getServer(serverConfig.getName()).open();
+        servers.getServer(serverConfig.getServer().getName()).open();
 
 		// this is necessary when running locally
 		new WaitUntil(new ShellIsAvailable(SECURE_STORAGE_PASSWORD_TITLE), TimePeriod.SHORT, false);
@@ -146,7 +146,7 @@ public class TeiidServerRequirement extends AbstractConfigurableRequirement<Teii
 		new WorkbenchShell();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new ShellMenuItem(new WorkbenchShell(), "File", "Save All").select();
-		new ServerEditor(serverConfig.getName()).close();
+        new ServerEditor(serverConfig.getServer().getName()).close();
 	}
 
 	@Override
@@ -159,7 +159,7 @@ public class TeiidServerRequirement extends AbstractConfigurableRequirement<Teii
 	}
 
 	public String getName() {
-		return serverConfig.getName();
+        return serverConfig.getServer().getName();
 	}
 
 	public String getTeiidDriverPath() {
