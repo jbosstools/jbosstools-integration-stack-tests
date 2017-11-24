@@ -1,6 +1,7 @@
 package org.jboss.tools.teiid.ui.bot.test.suite;
 
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.tools.teiid.ui.bot.test.ConnectionViewTest;
 import org.jboss.tools.teiid.ui.bot.test.DataRolesTest;
 import org.jboss.tools.teiid.ui.bot.test.PreviewModelTest;
 import org.jboss.tools.teiid.ui.bot.test.ProcedurePreviewTest;
@@ -20,6 +21,7 @@ import org.junit.runners.Suite.SuiteClasses;
 //    ServerManipulationTest.class,
 	ReuseVDBTest.class,
 	DataRolesTest.class,
-	VDBEditorTest.class})
+	VDBEditorTest.class,
+	ConnectionViewTest.class})
 @RunWith(RedDeerSuite.class)
 public class OtherTests {}
