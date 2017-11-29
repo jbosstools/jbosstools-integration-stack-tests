@@ -2,7 +2,6 @@ package org.jboss.tools.runtime.reddeer.wizard;
 
 import org.eclipse.reddeer.jface.wizard.WizardDialog;
 import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
-import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.text.LabeledText;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 
@@ -14,7 +13,7 @@ public class NewHostWizard extends WizardDialog {
 	public static final String CONNECTION_NAME = "Connection name:";
 
 	public NewHostWizard() {
-		new DefaultShell(TITLE);
+		super(TITLE);
 	}
 
 	public NewHostWizard setSshOnly() {

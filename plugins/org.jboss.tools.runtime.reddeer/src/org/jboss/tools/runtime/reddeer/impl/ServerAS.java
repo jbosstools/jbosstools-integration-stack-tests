@@ -37,6 +37,14 @@ public class ServerAS extends ServerBase {
 
 	private String configuration;
 
+	public Remote getRemote() {
+		return remote;
+	}
+
+	public void setRemote(Remote remote) {
+		this.remote = remote;
+	}
+
 	public String getConfiguration() {
 		return configuration;
 	}

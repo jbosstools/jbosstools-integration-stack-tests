@@ -6,7 +6,7 @@ public class Remote {
 	private String remoteHome;
 	private String username;
 	private String password;
-	private boolean isExternallyManaged;
+	private boolean externallyManaged;
 	private boolean useManagementOperations;
 
 	public String getHost() {
@@ -42,11 +42,11 @@ public class Remote {
 	}
 
 	public boolean isExternallyManaged() {
-		return isExternallyManaged;
+		return externallyManaged;
 	}
 
 	public void setExternallyManaged(boolean isExternallyManaged) {
-		this.isExternallyManaged = isExternallyManaged;
+		this.externallyManaged = isExternallyManaged;
 	}
 
 	public boolean isUseManagementOperations() {
