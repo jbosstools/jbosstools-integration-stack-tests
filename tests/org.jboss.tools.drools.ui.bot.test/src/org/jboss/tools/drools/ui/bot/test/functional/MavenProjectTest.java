@@ -28,7 +28,7 @@ public class MavenProjectTest extends ProjectTestParent {
 		updateMavenProject(projectName);
 		String consoleText = RunUtility.runTest(projectName, className);
 
-		assertConsoleText(consoleText, HELLO_GOODBYE_WORLD_REGEX);
+		assertHelloGoodbyeConsoleText(consoleText);
 	}
 
 	@Test
@@ -41,7 +41,7 @@ public class MavenProjectTest extends ProjectTestParent {
 		updateMavenProject(projectName);
 		String consoleText = RunUtility.runTest(projectName, className);
 
-		assertConsoleText(consoleText, HELLO_GOODBYE_WORLD_REGEX);
+		assertHelloGoodbyeConsoleText(consoleText);
 	}
 	
 	@Test
@@ -54,7 +54,7 @@ public class MavenProjectTest extends ProjectTestParent {
 		updateMavenProject(projectName);
 		String consoleText = RunUtility.runTest(projectName, className);
 
-		assertConsoleText(consoleText, HELLO_WORLD_REGEX);
+		assertHelloConsoleText(consoleText);
 	}
 	
 	@SuppressWarnings("unchecked")

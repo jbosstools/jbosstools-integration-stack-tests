@@ -19,7 +19,6 @@ import org.jboss.tools.drools.ui.bot.test.kienavigator.CreateItemsRestTest;
 import org.jboss.tools.drools.ui.bot.test.kienavigator.CreateItemsTest;
 import org.jboss.tools.drools.ui.bot.test.kienavigator.OpenKieNavigatorTest;
 import org.jboss.tools.drools.ui.bot.test.kienavigator.RepositoryManipulationTest;
-import org.jboss.tools.drools.ui.bot.test.kienavigator.ServerConnectionTest;
 import org.jboss.tools.drools.ui.bot.test.smoke.ConvertProjectTest;
 import org.jboss.tools.drools.ui.bot.test.smoke.DroolsProjectTest;
 import org.jboss.tools.drools.ui.bot.test.smoke.KieNavigatorTest;
@@ -59,8 +58,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	CloneRepoTest.class,
 	CreateItemsRestTest.class,
 	CreateItemsTest.class,
-	RepositoryManipulationTest.class,
-	ServerConnectionTest.class
+	RepositoryManipulationTest.class
 })
 public class DroolsTests {
 

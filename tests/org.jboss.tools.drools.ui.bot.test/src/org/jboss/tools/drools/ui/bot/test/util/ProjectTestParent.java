@@ -16,9 +16,8 @@ public class ProjectTestParent extends TestParent {
 	protected static final String DROOLS_LIBRARY_NAME = "Drools Library";
 	protected static final String DROOLS_CORE_JAR_PREFIX = "drools-core";
 
-	private static final String DEBUG_REGEX = "(SLF4J: .*[\r\n]+)+?(.*[\r\n]+)*?";
-	protected static final String HELLO_WORLD_REGEX = DEBUG_REGEX + "Hello World[\r\n]+";
-	protected static final String HELLO_GOODBYE_WORLD_REGEX = HELLO_WORLD_REGEX + "Goodbye cruel world[\r\n]+";
+	protected static final String HELLO_WORLD = "Hello World";
+	protected static final String GOODBYE_WORLD = "Goodbye cruel world";
 
 	protected void assertNoErrorsInProblemsView() {
 		ProblemsView problemsView = new ProblemsView();
@@ -27,10 +26,16 @@ public class ProjectTestParent extends TestParent {
 		Assert.assertEquals("There are errors in problems view.", 0, problemsView.getProblems(ProblemType.ERROR).size());
 	}
 
-	protected void assertConsoleText(String consoleText, String expectedRegex) {
+	protected void assertHelloConsoleText(String consoleText) {
 		Assert.assertNotNull("Console text is empty.", consoleText);
-		Assert.assertTrue("Unexpected text in console:\n" + consoleText, consoleText.matches(expectedRegex));
+		Assert.assertTrue("Unexpected text in console:\n" + consoleText, consoleText.contains(HELLO_WORLD));
 	}
+	
+	protected void assertHelloGoodbyeConsoleText(String consoleText) {
+		assertHelloConsoleText(consoleText);
+		Assert.assertTrue("Unexpected text in console:\n" + consoleText, consoleText.contains(GOODBYE_WORLD));
+	}
+	
 
 	protected String getRuntimeLocation(String runtimeHome) throws UnsupportedEncodingException {
 		return new File(URLDecoder.decode(runtimeHome, "utf-8")).getPath();

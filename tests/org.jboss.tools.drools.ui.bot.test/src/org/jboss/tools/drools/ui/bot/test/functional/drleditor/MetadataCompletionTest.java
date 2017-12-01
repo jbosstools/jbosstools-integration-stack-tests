@@ -5,14 +5,11 @@ import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassCreationWizard;
 import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassWizardPage;
 import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
-import org.eclipse.reddeer.junit.execution.annotation.RunIf;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.swt.impl.text.LabeledText;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
-import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.drools.reddeer.editor.ContentAssist;
 import org.jboss.tools.drools.reddeer.editor.DrlEditor;
 import org.jboss.tools.drools.reddeer.editor.RuleEditor;
@@ -23,6 +20,7 @@ import org.jboss.tools.runtime.reddeer.requirement.RuntimeImplementationRestrict
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeImplementationType;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -102,8 +100,7 @@ public class MetadataCompletionTest extends DrlCompletionParent {
 	}
 
 	@Test
-	@Jira("RHBRMS-642")
-	@RunIf(conditionClass = IssueIsClosed.class)
+	@Ignore("RHBRMS-642")
 	@UsePerspective(DroolsPerspective.class)
 	@UseDefaultProject
 	public void testGlobalCodeCompletion() {

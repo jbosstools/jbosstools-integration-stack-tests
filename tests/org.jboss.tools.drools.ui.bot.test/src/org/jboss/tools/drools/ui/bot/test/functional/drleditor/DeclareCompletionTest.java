@@ -1,12 +1,9 @@
 package org.jboss.tools.drools.ui.bot.test.functional.drleditor;
 
 import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
-import org.eclipse.reddeer.junit.execution.annotation.RunIf;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
-import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.drools.reddeer.editor.RuleEditor;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
 import org.jboss.tools.drools.ui.bot.test.util.annotation.UseDefaultProject;
@@ -16,6 +13,7 @@ import org.jboss.tools.runtime.reddeer.requirement.RuntimeImplementationType;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -32,8 +30,7 @@ public class DeclareCompletionTest extends DrlCompletionParent {
 	}
 
 	@Test
-	@Jira("RHBRMS-1388")
-	@RunIf(conditionClass = IssueIsClosed.class)
+	@Ignore("RHBRMS-1388")
 	@UsePerspective(DroolsPerspective.class)
 	@UseDefaultProject
 	public void testFactTypeDeclare() {
@@ -46,8 +43,7 @@ public class DeclareCompletionTest extends DrlCompletionParent {
 	}
 
 	@Test
-	@Jira("RHBRMS-893")
-	@RunIf(conditionClass = IssueIsClosed.class)
+	@Ignore("RHBRMS-893")
 	@UsePerspective(DroolsPerspective.class)
 	@UseDefaultProject
 	public void testFactTypeUsage() {
@@ -69,8 +65,7 @@ public class DeclareCompletionTest extends DrlCompletionParent {
 	}
 
 	@Test
-	@Jira("RHBRMS-1888")
-	@RunIf(conditionClass = IssueIsClosed.class)
+	@Ignore("RHBRMS-1888")
 	@UsePerspective(DroolsPerspective.class)
 	@UseDefaultProject
 	public void testQueryDeclare() {
@@ -94,8 +89,7 @@ public class DeclareCompletionTest extends DrlCompletionParent {
 	}
 
 	@Test
-	@Jira("RHBRMS-2103")
-	@RunIf(conditionClass = IssueIsClosed.class)
+	@Ignore("RHBRMS-2103")
 	@UsePerspective(DroolsPerspective.class)
 	@UseDefaultProject
 	public void testQueryUsage() {

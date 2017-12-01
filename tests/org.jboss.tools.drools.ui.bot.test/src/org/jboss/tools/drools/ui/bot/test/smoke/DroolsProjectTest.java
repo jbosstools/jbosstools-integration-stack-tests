@@ -36,7 +36,7 @@ public class DroolsProjectTest extends ProjectTestParent {
 		ProjectUtility.createDroolsProjectWithDecisionTableSample(projectName);
 
 		String consoleText = RunUtility.runTest(projectName, className);
-		assertConsoleText(consoleText, HELLO_GOODBYE_WORLD_REGEX);
+		assertHelloGoodbyeConsoleText(consoleText);
 
 		assertProjectAndDelete(projectName);
 	}
@@ -51,7 +51,7 @@ public class DroolsProjectTest extends ProjectTestParent {
 		ProjectUtility.createDroolsProjectWithRuleSample(projectName);
 
 		String consoleText = RunUtility.runTest(projectName, className);
-		assertConsoleText(consoleText, HELLO_GOODBYE_WORLD_REGEX);
+		assertHelloGoodbyeConsoleText(consoleText);
 
 		assertProjectAndDelete(projectName);
 	}
@@ -69,7 +69,7 @@ public class DroolsProjectTest extends ProjectTestParent {
 		ProjectUtility.createDroolsProjectWithProcessSample(projectName);
 
 		String consoleText = RunUtility.runTest(projectName, className);
-		assertConsoleText(consoleText, HELLO_WORLD_REGEX);
+		assertHelloConsoleText(consoleText);
 
 		assertProjectAndDelete(projectName);
 	}
