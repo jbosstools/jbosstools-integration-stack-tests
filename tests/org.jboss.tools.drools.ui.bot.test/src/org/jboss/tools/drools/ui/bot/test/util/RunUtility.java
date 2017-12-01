@@ -67,7 +67,7 @@ public final class RunUtility {
 		consoleView.open();
 
 		runAsJavaApplication(projectName, testDirectory, testPackage, className);
-		new WaitUntil(new ApplicationIsTerminated());
+		new WaitUntil(new ApplicationIsTerminated(), TimePeriod.LONG);
 
 		consoleView.open();
 

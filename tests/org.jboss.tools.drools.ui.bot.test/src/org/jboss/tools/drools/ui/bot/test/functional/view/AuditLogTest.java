@@ -29,6 +29,7 @@ import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -60,6 +61,7 @@ public class AuditLogTest extends TestParent {
 	}
 
 	@Test
+	@Ignore("DROOLS-701")
 	@UsePerspective(DroolsPerspective.class)
 	@UseDefaultProject
 	public void testDefaultProject() {

@@ -4,7 +4,6 @@ import java.util.Collection;
 
 import org.apache.log4j.Logger;
 import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
-import org.eclipse.reddeer.junit.execution.annotation.RunIf;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
@@ -13,8 +12,6 @@ import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.table.DefaultTable;
 import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
-import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
-import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.drools.reddeer.dialog.DroolsRuntimeDialog;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage;
 import org.jboss.tools.drools.reddeer.preference.DroolsRuntimesPreferencePage.DroolsRuntime;
@@ -25,6 +22,7 @@ import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -91,8 +89,7 @@ public class DroolsRuntimeManagementTest extends TestParent {
 	}
 
 	@Test
-	@Jira("DROOLS-1160")
-	@RunIf(conditionClass = IssueIsClosed.class)
+	@Ignore("DROOLS-1160")
 	public void testDuplicateName() {
 		final String name = "testDuplicateName";
 		final String runtimeHome = droolsRequirement.getConfiguration().getRuntimeFamily().getHome();
@@ -112,8 +109,7 @@ public class DroolsRuntimeManagementTest extends TestParent {
 	}
 
 	@Test
-	@Jira("DROOLS-1162")
-	@RunIf(conditionClass = IssueIsClosed.class)
+	@Ignore("DROOLS-1162")
 	public void testSetDefaultRuntime() {
 		final String name1 = "testSetDefaultRuntime1";
 		final String name2 = "testSetDefaultRuntime2";
@@ -157,8 +153,7 @@ public class DroolsRuntimeManagementTest extends TestParent {
 	}
 
 	@Test
-	@Jira("DROOLS-1162")
-	@RunIf(conditionClass = IssueIsClosed.class)
+	@Ignore("DROOLS-1162")
 	public void testDeleteDefaultRuntime() {
 		final String name1 = "testDeleteDefaultRuntime1";
 		final String name2 = "testDeleteDefaultRuntime2";
@@ -199,8 +194,7 @@ public class DroolsRuntimeManagementTest extends TestParent {
 	}
 
 	@Test
-	@Jira("DROOLS-1161")
-	@RunIf(conditionClass = IssueIsClosed.class)
+	@Ignore("DROOLS-1161")
 	public void testApply() {
 		DroolsRuntimesPreferencePage pref = new DroolsRuntimesPreferencePage(openPreferences());
 		pref.open();

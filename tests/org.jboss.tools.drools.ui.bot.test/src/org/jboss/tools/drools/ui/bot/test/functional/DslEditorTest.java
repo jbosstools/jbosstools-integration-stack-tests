@@ -7,13 +7,10 @@ import org.eclipse.reddeer.eclipse.core.resources.Project;
 import org.eclipse.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
-import org.eclipse.reddeer.junit.execution.annotation.RunIf;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
-import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.drools.reddeer.dialog.DslLineDialog;
 import org.jboss.tools.drools.reddeer.dialog.DslLineDialog.Scope;
 import org.jboss.tools.drools.reddeer.editor.DslEditor;
@@ -32,6 +29,7 @@ import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -105,8 +103,7 @@ public class DslEditorTest extends TestParent {
 	}
 
 	@Test
-	@Jira("RHBRMS-1286")
-	@RunIf(conditionClass = IssueIsClosed.class)
+	@Ignore("RHBRMS-1286")
 	@UsePerspective(JavaPerspective.class)
 	@UseDefaultProject
 	public void testInsertExpression() {

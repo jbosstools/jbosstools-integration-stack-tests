@@ -3,15 +3,12 @@ package org.jboss.tools.drools.ui.bot.test.functional.view;
 import java.util.List;
 
 import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
-import org.eclipse.reddeer.junit.execution.annotation.RunIf;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.swt.api.StyledText;
 import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
-import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.drools.reddeer.editor.DrlEditor;
 import org.jboss.tools.drools.reddeer.editor.RuleEditor;
 import org.jboss.tools.drools.reddeer.perspective.DroolsPerspective;
@@ -25,6 +22,7 @@ import org.jboss.tools.runtime.reddeer.requirement.RuntimeImplementationType;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -62,8 +60,7 @@ public class GlobalDataViewTest extends ViewTestParent {
 	}
 
 	@Test
-	@Jira("DROOLS-1336")
-	@RunIf(conditionClass = IssueIsClosed.class)
+	@Ignore("DROOLS-1336")
 	@UsePerspective(DroolsPerspective.class)
 	@UseDefaultProject
 	public void testUninitiatedGlobal() {
@@ -86,8 +83,7 @@ public class GlobalDataViewTest extends ViewTestParent {
 	}
 
 	@Test
-	@Jira("DROOLS-1336")
-	@RunIf(conditionClass = IssueIsClosed.class)
+	@Ignore("DROOLS-1336")
 	@UsePerspective(DroolsPerspective.class)
 	@UseDefaultProject
 	public void testMultipleGlobals() {

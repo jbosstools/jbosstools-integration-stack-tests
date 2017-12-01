@@ -6,7 +6,6 @@ import org.jboss.tools.drools.ui.bot.test.kienavigator.CreateItemsRestTest;
 import org.jboss.tools.drools.ui.bot.test.kienavigator.CreateItemsTest;
 import org.jboss.tools.drools.ui.bot.test.kienavigator.OpenKieNavigatorTest;
 import org.jboss.tools.drools.ui.bot.test.kienavigator.RepositoryManipulationTest;
-import org.jboss.tools.drools.ui.bot.test.kienavigator.ServerConnectionTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
@@ -16,8 +15,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	CloneRepoTest.class,
 	CreateItemsRestTest.class,
 	CreateItemsTest.class,
-	RepositoryManipulationTest.class,
-	ServerConnectionTest.class
+	RepositoryManipulationTest.class
 })
 public class KieNavigatorTests {
 
