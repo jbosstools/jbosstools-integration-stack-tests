@@ -3,15 +3,16 @@ package org.jboss.tools.drools.reddeer.editor;
 import java.util.List;
 
 import org.eclipse.reddeer.jface.text.contentassist.ContentAssistant;
+import org.eclipse.reddeer.swt.api.Menu;
 import org.eclipse.reddeer.workbench.api.Editor;
 import org.eclipse.reddeer.workbench.api.EditorFile;
-import org.eclipse.reddeer.workbench.impl.editor.AbstractEditor;
+import org.eclipse.reddeer.workbench.impl.editor.AbstractEditor.ContentAssistantEnum;
 import org.eclipse.reddeer.workbench.impl.editor.Marker;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IEditorPart;
 
-public class NestedEditor extends AbstractEditor {
+public class NestedEditor implements Editor {
 	private IEditorPart editor;
 	private Editor parent;
 
@@ -20,7 +21,7 @@ public class NestedEditor extends AbstractEditor {
 		editor = parent.getEditorByTitle(title);
 	}
 
-	public IEditorPart getEditorPart() {
+	protected IEditorPart getEditorPart() {
 		return editor;
 	}
 
@@ -125,4 +126,8 @@ public class NestedEditor extends AbstractEditor {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
+	public Menu getContextMenu() {
+		throw new UnsupportedOperationException();
+	}
 }
