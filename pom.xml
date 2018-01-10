@@ -60,18 +60,24 @@
 			<id>fuse-site</id>
 			<url>${fuse.site}</url>
 			<layout>p2</layout>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
 		</repository>
 		<!-- Eclipse Orbit Update Site -->
 		<repository>
 			<id>orbit-site</id>
 			<url>${orbit.site}</url>
 			<layout>p2</layout>
+		</repository>
+		<!-- RedDeer Update Site -->
+		<repository>
+			<id>reddeer-site</id>
+			<url>http://download.eclipse.org/reddeer/releases/2.0.1/</url>
+			<layout>p2</layout>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
 		</repository>
 		<!-- JBoss Nexus -->
 		<repository>
@@ -151,22 +157,6 @@
 				<repository>
 					<id>switchyard-2.4.0.CI</id>
 					<url>${switchyard.site}</url>
-					<layout>p2</layout>
-				</repository>
-			</repositories>
-		</profile>
-		<profile>
-			<id>reddeer-site</id>
-			<activation>
-				<property>
-					<name>reddeer.site</name>
-				</property>
-			</activation>
-			<repositories>
-				<!-- RedDeer Update Site -->
-				<repository>
-					<id>reddeer-site</id>
-					<url>${reddeer.site}</url>
 					<layout>p2</layout>
 				</repository>
 			</repositories>
