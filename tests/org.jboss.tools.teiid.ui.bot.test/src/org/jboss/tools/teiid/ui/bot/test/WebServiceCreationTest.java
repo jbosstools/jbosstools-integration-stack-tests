@@ -59,7 +59,9 @@ public class WebServiceCreationTest {
 	
 	private ModelExplorer modelExplorer;
 	private ResourceFileHelper fileHelper;
-	
+    private SimpleHttpClient httpClientSecure;
+    private SimpleHttpClient httpClientInSecure;
+
 	@Before
 	public void importProject(){
 		fileHelper = new ResourceFileHelper();
@@ -67,6 +69,9 @@ public class WebServiceCreationTest {
 		modelExplorer.importProject(PROJECT_NAME);
 		modelExplorer.refreshProject(PROJECT_NAME);;
 		modelExplorer.changeConnectionProfile(ConnectionProfileConstants.ORACLE_11G_PRODUCTS, PROJECT_NAME, "sources", "ProductsSource.xmi");
+        httpClientSecure = new SimpleHttpClient(teiidServer.getServerConfig().getServer().getProperty("teiidUser"),
+            teiidServer.getServerConfig().getServer().getProperty("teiidPassword"));
+        httpClientInSecure = new SimpleHttpClient();
 	}
 	
 	@After
@@ -159,31 +164,31 @@ public class WebServiceCreationTest {
 		
 		String url = "http://localhost:8080/" + warName + "/" + INTERFACE_NAME + "?wsdl";
 		String request = fileHelper.getXmlNoHeader("WebServiceCreationTest/GetAllRequest.xml");
-		String response = SimpleHttpClient.postSoapRequest(teiidServer, url, "getAllProductInfo", request);
+        String response = postSoapRequest(httpClientSecure, url, "getAllProductInfo", request);
 		String expected = fileHelper.getXmlNoHeader("WebServiceCreationTest/GetAllResponse.xml");
 		assertEquals(expected, response);
 		
 		try {
-			SimpleHttpClient.postSoapRequest(url, "getAllProductInfo", request);
+            postSoapRequest(httpClientInSecure, url, "getAllProductInfo", request);
 		} catch (IOException e){/*expected*/}
 		
 		request = fileHelper.getXmlNoHeader("WebServiceCreationTest/InsertRequest.xml");
-		response = SimpleHttpClient.postSoapRequest(teiidServer, url, "insertProductInfo", request);
+        response = postSoapRequest(httpClientSecure, url, "insertProductInfo", request);
 		expected = fileHelper.getXmlNoHeader("WebServiceCreationTest/ResponseSuccessful.xml");
 		assertEquals(expected, response);
 		
 		try {
-			response = SimpleHttpClient.postSoapRequest(teiidServer, url, "insertProductInfo", request);
+            response = postSoapRequest(httpClientSecure, url, "insertProductInfo", request);
 			expected = fileHelper.getXmlNoHeader("WebServiceCreationTest/ResponseFailed.xml");
 			assertEquals(expected, response);
 			
 			request = fileHelper.getXmlNoHeader("WebServiceCreationTest/GetRequest.xml");
-			response = SimpleHttpClient.postSoapRequest(teiidServer, url, "getProductInfo", request);
+            response = postSoapRequest(httpClientSecure, url, "getProductInfo", request);
 			expected = fileHelper.getXmlNoHeader("WebServiceCreationTest/GetResponse.xml");
 			assertEquals(expected, response);
 			
 			request = fileHelper.getXmlNoHeader("WebServiceCreationTest/DeleteRequest.xml");
-			response = SimpleHttpClient.postSoapRequest(teiidServer, url, "deleteProductInfo", request);
+            response = postSoapRequest(httpClientSecure, url, "deleteProductInfo", request);
 			expected = fileHelper.getXmlNoHeader("WebServiceCreationTest/ResponseSuccessful.xml");
 			assertEquals(expected, response);
 		} catch (IOException e){
@@ -192,12 +197,12 @@ public class WebServiceCreationTest {
 			jdbcHelper.executeQueryNoResultSet("DELETE FROM PRODUCTDATA WHERE INSTR_ID = 'XXX1234';");	
 		}
 		
-		response = SimpleHttpClient.postSoapRequest(teiidServer, url, "deleteProductInfo", request);
+        response = postSoapRequest(httpClientSecure, url, "deleteProductInfo", request);
 		expected = fileHelper.getXmlNoHeader("WebServiceCreationTest/ResponseFailed.xml");
 		assertEquals(expected, response);
 		
 		request = fileHelper.getXmlNoHeader("WebServiceCreationTest/GetRequest.xml");
-		response = SimpleHttpClient.postSoapRequest(teiidServer, url, "getProductInfo", request);
+        response = postSoapRequest(httpClientSecure, url, "getProductInfo", request);
 		expected = fileHelper.getXmlNoHeader("WebServiceCreationTest/ResponseNotFound.xml");
 		assertEquals(expected, response);
 		
@@ -207,27 +212,27 @@ public class WebServiceCreationTest {
 		
 		url = "http://localhost:8080/" + warName + "/" + INTERFACE_NAME + "?wsdl";
 		request = fileHelper.getXmlNoHeader("WebServiceCreationTest/GetAllRequest.xml");
-		response = SimpleHttpClient.postSoapRequest(url, "getAllProductInfo", request);
+        response = postSoapRequest(httpClientInSecure, url, "getAllProductInfo", request);
 		expected = fileHelper.getXmlNoHeader("WebServiceCreationTest/GetAllResponse.xml");
 		assertEquals(expected, response);
 		
 		request = fileHelper.getXmlNoHeader("WebServiceCreationTest/InsertRequest.xml");
-		response = SimpleHttpClient.postSoapRequest(url, "insertProductInfo", request);
+        response = postSoapRequest(httpClientInSecure, url, "insertProductInfo", request);
 		expected = fileHelper.getXmlNoHeader("WebServiceCreationTest/ResponseSuccessful.xml");
 		assertEquals(expected, response);
 		
 		try {
-			response = SimpleHttpClient.postSoapRequest(url, "insertProductInfo", request);
+            response = postSoapRequest(httpClientInSecure, url, "insertProductInfo", request);
 			expected = fileHelper.getXmlNoHeader("WebServiceCreationTest/ResponseFailed.xml");
 			assertEquals(expected, response);
 			
 			request = fileHelper.getXmlNoHeader("WebServiceCreationTest/GetRequest.xml");
-			response = SimpleHttpClient.postSoapRequest(url, "getProductInfo", request);
+            response = postSoapRequest(httpClientInSecure, url, "getProductInfo", request);
 			expected = fileHelper.getXmlNoHeader("WebServiceCreationTest/GetResponse.xml");
 			assertEquals(expected, response);
 			
 			request = fileHelper.getXmlNoHeader("WebServiceCreationTest/DeleteRequest.xml");
-			response = SimpleHttpClient.postSoapRequest(url, "deleteProductInfo", request);
+            response = postSoapRequest(httpClientInSecure, url, "deleteProductInfo", request);
 			expected = fileHelper.getXmlNoHeader("WebServiceCreationTest/ResponseSuccessful.xml");
 			assertEquals(expected, response);
 		} catch (IOException e){
@@ -236,12 +241,12 @@ public class WebServiceCreationTest {
 			jdbcHelper.executeQueryNoResultSet("DELETE FROM PRODUCTDATA WHERE INSTR_ID = 'XXX1234';");	
 		}
 		
-		response = SimpleHttpClient.postSoapRequest(url, "deleteProductInfo", request);
+        response = postSoapRequest(httpClientInSecure, url, "deleteProductInfo", request);
 		expected = fileHelper.getXmlNoHeader("WebServiceCreationTest/ResponseFailed.xml");
 		assertEquals(expected, response);
 		
 		request = fileHelper.getXmlNoHeader("WebServiceCreationTest/GetRequest.xml");
-		response = SimpleHttpClient.postSoapRequest(url, "getProductInfo", request);
+        response = postSoapRequest(httpClientInSecure, url, "getProductInfo", request);
 		expected = fileHelper.getXmlNoHeader("WebServiceCreationTest/ResponseNotFound.xml");
 		assertEquals(expected, response);
 	}
@@ -268,7 +273,7 @@ public class WebServiceCreationTest {
 		String warName = vdbName + "War";
 		createAndDeployWar(warName, vdbName, true);
 		
-		String response = SimpleHttpClient.postSoapRequest(teiidServer, 
+        String response = postSoapRequest(httpClientSecure,
 				"http://localhost:8080/" + warName + "/" + INTERFACE_NAME + "?wsdl", 
 				"getAllProductInfo", 
 				fileHelper.getXmlNoHeader("WebServiceCreationTest/GetAllRequest.xml"));
@@ -295,7 +300,7 @@ public class WebServiceCreationTest {
 		String warName = vdbName + "War";
 		createAndDeployWar(warName, vdbName, true);
 		
-		String response = SimpleHttpClient.postSoapRequest(teiidServer, 
+        String response = postSoapRequest(httpClientSecure,
 				"http://localhost:8080/" + warName + "/ProductsView_" + INTERFACE_NAME + "?wsdl", 
 				"getProductInfo", 
 				fileHelper.getXmlNoHeader("WebServiceCreationTest/GetRequest2.xml"));
@@ -341,4 +346,9 @@ public class WebServiceCreationTest {
 		modelExplorer.deployWar(teiidServer, PROJECT_NAME, "others", warName); 
 	}
 
+    public static String postSoapRequest(SimpleHttpClient client, String url, String soapAction, String request)
+            throws IOException {
+        return client.addHeader("Content-Type", "text/xml; charset=utf-8").addHeader("SOAPAction", soapAction).post(url,
+            request);
+    }
 }
