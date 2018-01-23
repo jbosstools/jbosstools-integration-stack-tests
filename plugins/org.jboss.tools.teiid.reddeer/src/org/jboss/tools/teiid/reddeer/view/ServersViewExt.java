@@ -7,12 +7,16 @@ import org.eclipse.reddeer.common.matcher.RegexMatcher;
 import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.core.exception.CoreLayerException;
 import org.eclipse.reddeer.eclipse.condition.ConsoleHasText;
+import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
 import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.Server;
 import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersViewException;
 import org.eclipse.reddeer.swt.api.TreeItem;
 import org.eclipse.reddeer.swt.condition.ShellIsActive;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.button.RadioButton;
 import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
@@ -23,6 +27,7 @@ import org.eclipse.reddeer.swt.impl.text.DefaultText;
 import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.teiid.reddeer.condition.ServerHasState;
+import org.jboss.tools.teiid.reddeer.condition.WarIsDeployed;
 
 public class ServersViewExt extends ServersView2 {
 
@@ -113,12 +118,16 @@ public class ServersViewExt extends ServersView2 {
 	}
 
 	public void startServer(String serverName) {
+        new ConsoleView().clearConsole();
 		ServerType type = determineServerType(serverName);
 		Server server = new ServersView2().getServer(serverName);
-		server.start();
-		new WaitUntil(new ServerHasState(serverName), TimePeriod.LONG);
-		new WaitUntil(new ConsoleHasText("- Started"), TimePeriod.LONG);
-
+        try {
+            server.start();
+            new WaitUntil(new ServerHasState(serverName), TimePeriod.LONG);
+            new WaitUntil(new ConsoleHasText("- Started"), TimePeriod.LONG);
+        } catch (ServersViewException ex) {
+            log.warn("Server was already started " + server.getLabel().getName());
+        }
 		// additional steps
 		if (type.equals(ServerType.EDS5)) {
 			connectTeiidInstance(serverName);
@@ -127,10 +136,13 @@ public class ServersViewExt extends ServersView2 {
 		if (new ShellIsActive("Server Selection").test()) { // if you want to disconnect old instance before
 																	// switching
 			new DefaultCombo().setSelection(serverName);
-			new PushButton("OK").click();
+            new OkButton(new DefaultShell("Server Selection")).click();
 		}
-		new DefaultShell("Notification");
-		new PushButton("OK").click();
+        DefaultShell notify = new DefaultShell("Notification");
+        new WaitUntil(new ShellIsActive(notify), TimePeriod.DEFAULT, false);
+        if (new ShellIsActive(notify).test()) {
+            new OkButton(notify).click();
+        }
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new DefaultShell();
 	}
@@ -152,8 +164,11 @@ public class ServersViewExt extends ServersView2 {
 			new DefaultCombo().setSelection(serverName);
 			new PushButton("OK").click();
 		}
-		new DefaultShell("Notification");
-		new PushButton("OK").click();
+        DefaultShell notify = new DefaultShell("Notification");
+        new WaitUntil(new ShellIsActive(notify), TimePeriod.DEFAULT, false);
+        if (new ShellIsActive(notify).test()) {
+            new OkButton(notify).click();
+        }
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new DefaultShell();
 	}
@@ -170,8 +185,11 @@ public class ServersViewExt extends ServersView2 {
 
 	public void stopServer(String serverName) {// server.stop?
 		Server server = new ServersView2().getServer(serverName);
-		server.stop();
-
+        try {
+            server.stop();
+        } catch (ServersViewException ex) {
+            log.warn("Server was already stopped " + server.getLabel().getName());
+        }
 		log.info("Stopping server " + server.getLabel().getName());
 	}
 
@@ -206,13 +224,13 @@ public class ServersViewExt extends ServersView2 {
 		new DefaultTreeItem(label).select();
 		activate();
 		new DefaultToolItem(REFRESH).click();
-
-		// server was refreshed
-		new DefaultShell("Notification");
-		new PushButton("OK").click();
-		AbstractWait.sleep(TimePeriod.SHORT);
-		new DefaultShell();
-	}
+		
+        new WaitUntil(new ShellIsActive("Notification"), TimePeriod.LONG, false);
+        if (new ShellIsActive("Notification").test()) {
+            new OkButton(new DefaultShell("Notification")).click();
+        }
+        new WaitWhile(new ShellIsActive("Notification"));
+    }
 
 	public void createDatasource(String serverName, String connectionProfile, String datasourceName) {
 		new ServersView2().getServer(serverName);
@@ -232,9 +250,15 @@ public class ServersViewExt extends ServersView2 {
 	}
 	
 	public void restartWar(String serverName, String warName){
-		new ServersView2().getServer(serverName).getModule(new RegexMatcher(".*" + warName + ".*"));
-		new ContextMenuItem("Restart").select();
-	}
+        new ServersView2().getServer(serverName).getModule(new RegexMatcher(".*" + warName + ".*"));
+        try {
+            new ContextMenuItem("Restart").select();
+        }catch(CoreLayerException ex) {
+            new ContextMenuItem("Start").select();
+            new WaitUntil(new WarIsDeployed(serverName, warName), TimePeriod.DEFAULT);
+        }
+        new WaitUntil(new WarIsDeployed(serverName, warName), TimePeriod.DEFAULT);
+    }
 
 	public void createDatasource(String serverName, String connectionProfile) {
 		createDatasource(serverName, connectionProfile, connectionProfile);

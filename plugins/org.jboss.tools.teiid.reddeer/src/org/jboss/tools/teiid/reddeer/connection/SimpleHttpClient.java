@@ -46,7 +46,7 @@ public class SimpleHttpClient {
 		addBasicHeader(connection);
 		addHeaders(connection);
 		connection.connect();
-		return readResponse(connection);
+        return readResponse(connection);
 	}
 
 	public String post(String data) throws IOException {

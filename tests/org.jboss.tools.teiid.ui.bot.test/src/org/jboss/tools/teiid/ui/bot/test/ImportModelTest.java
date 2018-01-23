@@ -261,7 +261,7 @@ public class ImportModelTest {
  				.setSourceModelName("HelloService")
 				.setViewModelName("HelloServiceView")
 				.nextPage()
-				.setJndiName("HelloService")
+            .setJndiName("java:/HelloService")
 				.nextPage()
 				.nextPage()
 				.addRequestElement("sayHello/sequence/arg0")

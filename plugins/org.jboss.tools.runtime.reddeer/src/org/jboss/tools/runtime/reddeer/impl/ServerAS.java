@@ -84,7 +84,7 @@ public class ServerAS extends ServerBase {
 			serverWizard.open();
 			serverWizard.setType(getCategory(), getServerType());
 			serverWizard.setName(getName());
-			serverWizard.setHostName(remote.getHost());
+            serverWizard.setHostName(remote.getHost());
 
 			serverWizard.next();
 			serverWizard.setRemote();
@@ -97,7 +97,8 @@ public class ServerAS extends ServerBase {
 			NewHostWizard hostWizard = serverWizard.addHost().setSshOnly();
 			hostWizard.next();
 			new WaitUntil(new JobIsKilled("Refreshing server adapter list"), TimePeriod.LONG, false);
-			hostWizard.setHostName(remote.getHost()).setConnectionName(remote.getHost()).finish();
+            hostWizard.setHostName(remote.getHost()).setConnectionName(remote.getHost())
+                .next().next().next().finish();
 
 			if (!remote.isUseManagementOperations() || !remote.isExternallyManaged()) {
 				serverWizard.setRemoteServerHome(remote.getRemoteHome());

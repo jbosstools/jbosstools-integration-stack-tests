@@ -16,7 +16,7 @@ import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequireme
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.button.OkButton;
-import org.eclipse.reddeer.swt.impl.list.DefaultList;
+import org.eclipse.reddeer.swt.impl.label.DefaultLabel;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.workbench.handler.EditorHandler;
 import org.hamcrest.core.StringContains;
@@ -128,13 +128,16 @@ public class ViewUdf {
         new ModelExplorer().selectItem(PROJECT_NAME, NAME_VDB + ".vdb");
         new ContextMenuItem("Modeling", "Generate VDB XML").select();
         new WaitUntil(new ShellIsAvailable("Generate Dynamic VDB Status "), TimePeriod.DEFAULT);
-        DefaultList warning = new DefaultList(0);
-        warning.select(0); // on macOS the warning is not selected
+        DefaultLabel warning = new DefaultLabel(1);
+        warning.setFocus(); // on macOS the warning is not selected
         assertEquals(
-            "The vdb contains the udf library named \"MyTestUdf-1.0-SNAPSHOT\" hence a property referencing this has been added\n"
-                    + " to the dynamic VDB. For the dynamic VDB to perform successfully, the udf library must also be\n"
-                    + " deployed to the Teiid instance. ",
-            warning.getSelectedItems()[0]);
+            "This VDB contains 1 or more UDF jar files. A \"lib\" property has been added\n"
+                    + " to the VDB xml which references these jars.\n\n"
+                    + " Note that the actual UDF jars must be deployed for this VDB to be active.\n\n"
+                    + " If you defined UDF as a module in a server, change \"lib\" property according to\n"
+                    + " name of that module.\n\n For more information, see \"Support for User-Defined Features\""
+                    + " in the documentation.",
+            warning.getText());
         new OkButton().click();
         GenerateDynamicVdbDialog wizard = new GenerateDynamicVdbDialog();
         if (new JiraClient().isIssueClosed("TEIIDDES-3100")) {

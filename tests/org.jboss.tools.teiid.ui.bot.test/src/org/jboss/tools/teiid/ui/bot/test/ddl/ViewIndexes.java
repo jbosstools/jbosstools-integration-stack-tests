@@ -12,7 +12,6 @@ import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.hamcrest.core.StringContains;
-import org.jboss.tools.common.reddeer.JiraClient;
 import org.jboss.tools.teiid.reddeer.DdlHelper;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
@@ -88,27 +87,10 @@ public class ViewIndexes {
 				
 		tableEditor.openTab(TableEditor.Tabs.INDEXES);
 		
-		if (new JiraClient().isIssueClosed("TEIIDDES-3024")){
-			collector.checkThat("Index1 name in source is badly set", tableEditor.getCellText(1,"Index1", "Name In Source"),
-					is("Index1Source"));
-			collector.checkThat("Index2 name in source is badly set", tableEditor.getCellText(1,"Index2", "Name In Source"),
-					is("Index2Source"));
-			
-			collector.checkThat("Index1 Nullable checkbox is badly set", tableEditor.getCellText(1,"Index1", "Nullable"),
-		    		is("true")); 
-			collector.checkThat("Index2 Nullable checkbox is badly set", tableEditor.getCellText(1,"Index2", "Nullable"),
-		    		is("true")); 
-			
-			collector.checkThat("Index1 AutoUpdate checkbox is badly set", tableEditor.getCellText(1,"Index1", "Auto Update"),
-		    		is("true")); 
-			collector.checkThat("Index2 AutoUpdate checkbox is badly set", tableEditor.getCellText(1,"Index2", "Auto Update"),
-		    		is("true")); 
-			
-			collector.checkThat("Index1 Unique checkbox is badly set", tableEditor.getCellText(1,"Index1", "Unique"),
-		    		is("true")); 
-			collector.checkThat("Index2 Unique checkbox is badly set", tableEditor.getCellText(1,"Index2", "Unique"),
-		    		is("true")); 
-		}
+        collector.checkThat("Index1 name in source is badly set",
+            tableEditor.getCellText(1, "Index1", "Name In Source"), is("Index1Source"));
+        collector.checkThat("Index2 name in source is badly set",
+            tableEditor.getCellText(1, "Index2", "Name In Source"), is("Index2Source"));
 		collector.checkThat("Column of Foreign key 1 is badly set", tableEditor.getCellText(1,"Index1", "Columns"),
 				is("column1 : string(4000)")); 
 		collector.checkThat("Column of Foreign key 2 is badly set", tableEditor.getCellText(1,"Index2", "Columns"),
@@ -149,9 +131,9 @@ public class ViewIndexes {
 	
 	private void checkExportedFile(String contentFile){
 		collector.checkThat("Wrong set index 1", contentFile,
-				new StringContains("CONSTRAINT Index1 INDEX(column1) OPTIONS(ANNOTATION 'Index 1 description')"));
+				new StringContains("CONSTRAINT Index1 INDEX(column1) OPTIONS(ANNOTATION 'Index 1 description'"));
 		collector.checkThat("Wrong set Index 2", contentFile,
-				new StringContains("CONSTRAINT Index2 INDEX(column2) OPTIONS(ANNOTATION 'Index 2 description')"));
+				new StringContains("CONSTRAINT Index2 INDEX(column2) OPTIONS(ANNOTATION 'Index 2 description'"));
 		
 	}
 }

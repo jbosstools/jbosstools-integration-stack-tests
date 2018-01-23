@@ -329,13 +329,18 @@ public class ModelExplorer extends AbstractExplorer {
 	 * @param vdbpath - path to VDB (<PROJECT>, ..., <VDB>)
 	 */
 	public GenerateDynamicVdbDialog generateDynamicVDB(String... vdbPath) {
-		int i = vdbPath.length -1;
-		vdbPath[i] = (vdbPath[i].contains(".vdb")) ? vdbPath[i] : vdbPath[i] + ".vdb";
-		this.selectItem(vdbPath);
-		new ContextMenuItem("Modeling", "Generate VDB XML").select();
-		return new GenerateDynamicVdbDialog();
-	}
-	
+        int i = vdbPath.length - 1;
+        vdbPath[i] = (vdbPath[i].contains(".vdb")) ? vdbPath[i] : vdbPath[i] + ".vdb";
+        this.selectItem(vdbPath);
+        new ContextMenuItem("Modeling", "Generate VDB XML").select();
+        /* due to Win, if shell will show, wait for it, if not, don't throw exception */
+        new WaitUntil(new ShellIsAvailable("Generate Dynamic VDB Status "), TimePeriod.SHORT, false);
+        if (new ShellIsAvailable("Generate Dynamic VDB Status ").test()) {
+            DefaultShell warning = new DefaultShell("Generate Dynamic VDB Status ");
+            new OkButton(warning).click();
+        }
+        return new GenerateDynamicVdbDialog();
+    }
 	/**
 	 * Generates VDB archive from dynamic VDB
 	 * @param vdbpath - path to VDB (<PROJECT>, ..., <VDB>)

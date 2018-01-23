@@ -7,9 +7,9 @@ import java.util.List;
 
 import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.core.matcher.TreeItemRegexMatcher;
-import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
 import org.eclipse.reddeer.jface.viewers.CellEditor;
 import org.eclipse.reddeer.swt.api.TableItem;
 import org.eclipse.reddeer.swt.condition.ShellIsActive;
@@ -132,27 +132,32 @@ public class GuidesView extends WorkbenchView {
 	public void setDefaultTeiidInstance(String serverName) {
 		chooseAction("Teiid", "Set the Default ");
 		AbstractWait.sleep(TimePeriod.SHORT);
-		if (new ShellIsActive("Server Selection").test()) {
-			new DefaultCombo().setSelection(serverName);
+        if (new ShellIsAvailable("Default server unchanged").test()) {
+            new OkButton(new DefaultShell("Default server unchanged")).click();
+            return; // only one sever is configured,
+        }
+        DefaultShell shell = new DefaultShell("Server Selection");
+        if (new ShellIsAvailable(shell).test()) {
+            new DefaultCombo().setSelection(serverName);
             new OkButton().click();
-		}
-        if (new ShellIsActive("Change of Teiid Version").test()) { // the teiid instances are different version
-            new YesButton().click();
-		}
-		if (new ShellIsActive("Untested Teiid Version").test()) { // if test untestet teiid version
-        new YesButton().click();
-		}
-		if (new ShellIsActive("Disconnect Current Default Instance").test()) { // if you want to disconnect old
-																						// instance before switching
-        new YesButton().click();
-		}
-		if (new ShellIsActive("Default Server Changed").test()) {
-            new OkButton().click();
-		} else if (new ShellIsActive("Default server unchanged").test()) {
-            new OkButton().click();
-		} else {
-			throw new Error("Default server not been changed due to an error");
-		}
+        }
+        if (new ShellIsAvailable("Change of Teiid Version").test()) { // the teiid instances are different version
+            new YesButton(new DefaultShell("Change of Teiid Version")).click();
+        }
+        if (new ShellIsAvailable("Untested Teiid Version").test()) { // if test untestet teiid version
+            new YesButton(new DefaultShell("Untested Teiid Version")).click();
+        }
+        if (new ShellIsAvailable("Disconnect Current Default Instance").test()) { // if you want to disconnect old
+                                                                                  // instance before switching
+            new YesButton(new DefaultShell("Disconnect Current Default Instance")).click();
+        }
+        if (new ShellIsAvailable("Default Server Changed").test()) {
+            new OkButton(new DefaultShell("Default Server Changed")).click();
+        } else if (new ShellIsAvailable("Default server unchanged").test()) {
+            new OkButton(new DefaultShell("Default server unchanged")).click();
+        } else {
+            throw new Error("Default server not been changed due to an error");
+        }
 	}
 
 	// TODO modeling actions... - the grey context menu
@@ -168,11 +173,13 @@ public class GuidesView extends WorkbenchView {
 	 */
 	public void createProjectViaGuides(String actionSet, String projectName) {
 		chooseAction(actionSet, "Define Teiid ");
-		new PushButton("New...").click();
+        DefaultShell openedDialog = new DefaultShell("Define Model Project");
+        new PushButton(openedDialog, "New...").click();
+        DefaultShell newProjectDialog = new DefaultShell("New Model Project");
 		new LabeledText("Project name:").setText(projectName);
-        new FinishButton().click();
-		new DefaultShell("Define Model Project");
-        new OkButton().click();
+        new FinishButton(newProjectDialog).click();
+        new WaitWhile(new ShellIsActive(newProjectDialog));
+        new OkButton(openedDialog).click();
 	}
 
 	/**
@@ -322,18 +329,22 @@ public class GuidesView extends WorkbenchView {
 	}
 
 	public void startAndRefreshServer(String serverName, String defaultServerName) {
-		ServersView2 view = new ServersView2();
+        ServersViewExt view = new ServersViewExt();
 		view.open();
-		view.getServer(defaultServerName).stop();
+        view.stopServer(defaultServerName);
 		AbstractWait.sleep(TimePeriod.SHORT);
-		view.getServer(serverName).start();
+        view.startServer(serverName);
 		AbstractWait.sleep(TimePeriod.LONG);
 		new WaitWhile(new IsInProgress(), TimePeriod.SHORT);
 		chooseAction("Teiid", "Refresh ");
-		new DefaultCombo().setSelection(serverName);
-        new OkButton().click();
-		new DefaultShell("Notification");
-        new OkButton().click();
+        DefaultShell serverSelection = new DefaultShell("Server Selection");
+        new DefaultCombo(serverSelection).setSelection(serverName);
+        new OkButton(serverSelection).click();
+        DefaultShell notify = new DefaultShell("Notification");
+        new WaitUntil(new ShellIsActive(notify), TimePeriod.DEFAULT, false);
+        if (new ShellIsActive(notify).test()) {
+            new OkButton(notify).click();
+        }
         new ShellMenuItem("File", "Save All").select();
 		new WaitWhile(new IsInProgress(), TimePeriod.SHORT);
 	}

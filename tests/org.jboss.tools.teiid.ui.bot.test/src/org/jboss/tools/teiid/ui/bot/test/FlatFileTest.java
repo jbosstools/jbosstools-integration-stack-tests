@@ -1,20 +1,26 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import java.io.File;
+import java.util.List;
 
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.ui.problems.Problem;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
-import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.button.YesButton;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
-import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.workbench.handler.EditorHandler;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.common.reddeer.JiraClient;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
@@ -157,20 +163,36 @@ public class FlatFileTest {
 	
 	@Test
 	public void testEmptySpace(){
-        FlatLocalConnectionProfileWizard wizard = FlatLocalConnectionProfileWizard.openWizard("emptySpace")
-				.setFile(EMPTY_SPACE_PATH);
-		
-		assertEquals(" The folder path cannot contain spaces.", new DefaultText(2).getText());
-		assertFalse(new PushButton("Next >").isEnabled());
+        String sourceModel = LOCAL_SOURCE_MODEL + "EmptySpace";
+        String viewModel = LOCAL_VIEW_MODEL + "EmptySpace";
 
-        wizard.testConnection();
-		
-		if(new JiraClient().isIssueClosed("TEIIDDES-2493")){
-			assertFalse(new PushButton("Next >").isEnabled());
-			assertEquals(" The folder path cannot contain spaces.", new DefaultText(2).getText());
-		}
-		
-        wizard.cancel();
+        String emptySpaceCp = "emptySpace";
+        FlatLocalConnectionProfileWizard.openWizard(emptySpaceCp)
+            .setFile(EMPTY_SPACE_PATH)
+            .testConnection()
+            .finish();
+        
+        FlatImportWizard.openWizard()
+            .selectLocalFileImportMode().nextPage()
+            .selectProfile(emptySpaceCp)
+            .selectFile(LOCAL_FILE_NAME)
+            .setSourceModel(sourceModel)
+            .setProject(PROJECT_NAME).nextPage()
+            .setJndiName(JNDI_NAME_LOCAL + "EmptySpace")
+            .nextPage().nextPage().nextPage()
+            .setViewModel(viewModel).setViewTable(LOCAL_VIEW_TABLE + "EmptySpace")
+            .finish();
+        VdbWizard.openVdbWizard().setLocation(PROJECT_NAME).setName(LOCAL_VDB + "EmptySpace")
+            .addModel(PROJECT_NAME, viewModel)
+            .finish();
+        EditorHandler.getInstance().closeAll(false); //! vdbeditor contains problem view too
+        List<Problem> problems = new ProblemsView().getProblems(ProblemType.WARNING);
+        String expectedDescription = "Connection URL property "
+                + new File("resources/flat/folder empty space").getAbsolutePath().toString() + " for source model "
+                + sourceModel
+                + " contains one or more spaces. Some operating systems may require replacement characters in URL.";
+        assertThat(problems.stream().anyMatch(item -> expectedDescription.equals(item.getDescription())), is(true));
+        assertThat(problems.stream().filter(item -> expectedDescription.equals(item.getDescription())).count(), is(2L));
 	}
 	/**
 	 * Test import csv with custom line separator
