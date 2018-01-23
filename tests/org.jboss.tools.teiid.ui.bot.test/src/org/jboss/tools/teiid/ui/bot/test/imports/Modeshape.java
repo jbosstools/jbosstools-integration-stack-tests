@@ -61,10 +61,9 @@ public class Modeshape {
 	@Test
 	public void modeshapeTeiidTest() throws IOException {
     	// initialize modeshape
-		String resp = new SimpleHttpClient("http://localhost:8080/modeshape-rest/dv/")
-				.setBasicAuth(teiidServer.getServerConfig().getServer().getProperty("modeshapeUser"),
-						teiidServer.getServerConfig().getServer().getProperty("modeshapePassword"))
-				.get();
+        String resp = new SimpleHttpClient(teiidServer.getServerConfig().getServer().getProperty("modeshapeUser"),
+                teiidServer.getServerConfig().getServer().getProperty("modeshapePassword"))
+                    .get("http://localhost:8080/modeshape-rest/dv/");
 
 		assertFalse("initializing modeshape failed", resp.isEmpty());
 		

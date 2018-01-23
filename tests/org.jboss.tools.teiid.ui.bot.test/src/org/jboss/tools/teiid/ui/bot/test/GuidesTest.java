@@ -223,7 +223,7 @@ public class GuidesTest {
 		modelExplorer.deployWar(teiidServer, project_REST_name,vdb_REST_name);
 		String url = "http://localhost:8080/"+vdb_REST_name+"/REST_WarView/supplier/Park";
 		
-		assertEquals(result, new SimpleHttpClient(url).get());
+        assertEquals(result, new SimpleHttpClient().get(url));
     }
     
     @Test
