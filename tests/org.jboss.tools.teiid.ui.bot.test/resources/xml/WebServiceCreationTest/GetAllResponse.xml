@@ -1548,6 +1548,21 @@
 				<PRIBUSINESS>pharmaceuticals</PRIBUSINESS>
 			</ProductOutput_Instance>
 			<ProductOutput_Instance>
+				<INSTR_ID>TT2</INSTR_ID>
+				<SYMBOL_TYPE xsi:nil="true" />
+				<SYMBOL>TT2</SYMBOL>
+				<CUSIP xsi:nil="true" />
+				<NAME>Test Company 2</NAME>
+				<TYPE>('Stock')</TYPE>
+				<ISSUER xsi:nil="true" />
+				<EXCHANGE xsi:nil="true" />
+				<ISDJI>false</ISDJI>
+				<ISSP500>false</ISSP500>
+				<ISNAS100>false</ISNAS100>
+				<ISAMEXINT>false</ISAMEXINT>
+				<PRIBUSINESS xsi:nil="true" />
+			</ProductOutput_Instance>
+			<ProductOutput_Instance>
 				<INSTR_ID>PRD01220</INSTR_ID>
 				<SYMBOL_TYPE xsi:nil="true" />
 				<SYMBOL>UIS</SYMBOL>

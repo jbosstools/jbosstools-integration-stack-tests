@@ -2,12 +2,10 @@ package org.jboss.tools.teiid.ui.bot.test;
 
 import static org.junit.Assert.assertTrue;
 
-import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
-import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
-import org.jboss.tools.runtime.reddeer.requirement.ServerConnectionRestriction;
-import org.jboss.tools.runtime.reddeer.requirement.ServerConnectionType;
+import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.wizard.imports.TeiidConnectionImportWizard;
@@ -19,10 +17,8 @@ import org.junit.runner.RunWith;
 @TeiidServer(state = ServerRequirementState.RUNNING)
 public class JdgImportTest {
 
-	@RequirementRestriction
-	public static RequirementMatcher getRequirementMatcher() {
-		return new ServerConnectionRestriction(ServerConnectionType.REMOTE);
-	}
+    @InjectRequirement
+    private static TeiidServerRequirement teiidServer;
 
 	private static final String PROJECT_NAME = "JdgImportProject";
 
@@ -38,7 +34,7 @@ public class JdgImportTest {
 		String modelName = "JdgModel";
 	
 		TeiidConnectionImportWizard.openWizard()
-				.selectDataSource("infinispan-remote-cache-ds")
+                .selectDataSource("java:/infinispanRemoteDSL")
 				.nextPage()
 				.setTranslator("infinispan-cache-dsl")
 				.nextPage()

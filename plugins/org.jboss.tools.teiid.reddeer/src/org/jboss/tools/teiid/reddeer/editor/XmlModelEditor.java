@@ -31,7 +31,7 @@ public class XmlModelEditor extends ModelEditor {
 	 */
 	public void openDocument(String document){
 		selectModelItem(ModelEditor.ItemType.XML_DOCUMENT, document);
-		AbstractWait.sleep(TimePeriod.SHORT);
+        AbstractWait.sleep(TimePeriod.SHORT);
 		new ContextMenuItem("Open").select();
 		AbstractWait.sleep(TimePeriod.SHORT);
 	}
@@ -78,6 +78,7 @@ public class XmlModelEditor extends ModelEditor {
 		new DefaultText().setText(newName);
 		KeyboardFactory.getKeyboard().type(KeyEvent.VK_TAB);
 		AbstractWait.sleep(TimePeriod.SHORT);
+        this.save();
 	}
 	
 	/**

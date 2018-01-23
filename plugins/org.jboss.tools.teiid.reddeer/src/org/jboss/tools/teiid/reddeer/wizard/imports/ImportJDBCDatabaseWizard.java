@@ -61,7 +61,7 @@ public class ImportJDBCDatabaseWizard extends TeiidImportWizard {
 	}
 	
 	public ImportJDBCDatabaseWizard activate() {
-		new DefaultShell(DIALOG_TITLE);
+        new DefaultShell(DIALOG_TITLE).setFocus();
 		return this;
 	}
 	

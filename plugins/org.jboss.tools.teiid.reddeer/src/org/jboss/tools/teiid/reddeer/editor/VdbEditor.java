@@ -15,6 +15,7 @@ import org.eclipse.reddeer.jface.viewers.CellEditor;
 import org.eclipse.reddeer.swt.api.TableItem;
 import org.eclipse.reddeer.swt.condition.ShellIsActive;
 import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.CancelButton;
 import org.eclipse.reddeer.swt.impl.button.CheckBox;
 import org.eclipse.reddeer.swt.impl.button.OkButton;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
@@ -67,28 +68,31 @@ public class VdbEditor extends DefaultEditor {
 	public void addModelsToVDB(String projectName, String[] models){
 		activate();
 		String model = "";
-		try {
-			for (int i = 0; i < models.length; i++) {
-				model = models[i];
-				if (model.contains("/")){
-					addModel(model.split("/"));
-				} else {
-					addModel(projectName, model);
-				}
+        for (int i = 0; i < models.length; i++) {
+            model = models[i];
+            if (model.contains("/")) {
+                addModel(model.split("/"));
+            } else {
+                addModel(projectName, model);
 			}
-		} catch (Exception ex) {
-			log.warn("Cannot add model " + model);
 		}
-		save();
+        save();
 	}
 
 	public void addModel(String... pathToModel) {
 		int i = pathToModel.length - 1;
 		pathToModel[i] = (pathToModel[i].contains(".xmi")) ? pathToModel[i] : pathToModel[i] + ".xmi"; 
 		new DefaultToolItem("Add model").click();
-		new DefaultShell("Add File(s) to VDB");
-		new DefaultTreeItem(pathToModel).select();
-		new PushButton("OK").click();
+        DefaultShell addFileDialog = new DefaultShell("Add File(s) to VDB");
+        try {
+            new DefaultTreeItem(pathToModel).select();
+            new OkButton(addFileDialog).click();
+        } catch (Exception ex) {
+            log.warn(
+                "Cannot add model to vdb or maybe model was added automatically. Path to model is: "
+                        + pathToModel[pathToModel.length - 1]);
+            new CancelButton(addFileDialog).click();
+        }
 		new WaitWhile(new ShellIsActive("Add File(s) to VDB"), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}

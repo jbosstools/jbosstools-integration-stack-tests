@@ -103,6 +103,7 @@ public class WebServiceCreationTest {
 		xmlEditor.renameDocument("ProductInfo_getProductInfo_getProductInfo_Output", DOCUMENT_PRODUCT);
 		xmlEditor.renameDocument("ProductInfo_deleteProductInfo_deleteProductInfo_Output", DOCUMENT_OK);
 		xmlEditor.renameDocument("ProductInfo_insertProductInfo_insertProductInfo_Output", DOCUMENT_FAILED);
+		xmlEditor.activate();
 		
 		xmlEditor.openDocument(DOCUMENT_PRODUCT);
 		xmlEditor.openMappingClass("ProductOutput_Instance");
@@ -244,7 +245,7 @@ public class WebServiceCreationTest {
 		expected = fileHelper.getXmlNoHeader("WebServiceCreationTest/ResponseNotFound.xml");
 		assertEquals(expected, response);
 	}
-	
+
 	@Test
 	public void testCreationFromXmlDocument() throws IOException{
 		modelExplorer.modelingWebService(true, PROJECT_NAME, "views", "XmlDocuments.xmi", DOCUMENT_PRODUCT)
@@ -316,7 +317,7 @@ public class WebServiceCreationTest {
 	public void testCreationFromSourceProcedure(){
 		// TODO to be decided
 	}
-	
+
 	private void createAndDeployVdb(String vdbName){
 		VdbWizard.openVdbWizard()
 				.setLocation(PROJECT_NAME)

@@ -6,18 +6,17 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.util.List;
 
-import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.core.matcher.WithMnemonicTextMatcher;
 import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersViewException;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.eclipse.reddeer.swt.api.TreeItem;
-import org.eclipse.reddeer.swt.condition.ShellIsActive;
 import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.button.CheckBox;
 import org.eclipse.reddeer.swt.impl.button.OkButton;
@@ -49,6 +48,7 @@ import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidSer
 import org.jboss.tools.teiid.reddeer.view.GuidesView;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.SQLResult;
+import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.noDatabase.FlatLocalConnectionProfileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.noDatabase.WsdlConnectionProfileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.noDatabase.XmlLocalConnectionProfileWizard;
@@ -86,8 +86,17 @@ public class GuidesTest {
 		TeiidPerspective.activate();
 		EditorHandler.getInstance().closeAll(false);
 		new ModelExplorer().deleteAllProjects(false);
+
+        guides.setDefaultTeiidInstance(teiidServer.getName());
+        ServersView2 view = new ServersView2();
+        view.open();
+        try {
+            view.getServer(teiidServer.getName()).start();
+        } catch (ServersViewException ex) {
+            // server is running
+        }
 	}
-	
+
 	@Test
 	public  void JDBC_Source(){
 		String actionSet = "Model JDBC Source";
@@ -131,9 +140,9 @@ public class GuidesTest {
 		guides.createProjectViaGuides(actionSet, project_SOAP_name);
 
 		guides.chooseAction(actionSet, "Create Web ");
-		new DefaultShell("New Connection Profile");
+        DefaultShell cp = new DefaultShell("New Connection Profile");
 		new LabeledText("Name:").setText(soapProfile);
-		new PushButton("Next >").click();
+        new PushButton(cp, "Next >").click();
 		WsdlConnectionProfileWizard.getInstance()
 				.setWsdl("http://ws-dvirt.rhcloud.com/dv-test-ws/soap?wsdl")
 				.testConnection()
@@ -372,7 +381,6 @@ public class GuidesTest {
 		String test_SQL = "SELECT * FROM STATUS";
 
 		new WaitWhile(new IsPreviewInProgress(), TimePeriod.LONG);
-
 		
 		guides.createProjectViaGuides(actionSet, projectName);
 		
@@ -386,7 +394,7 @@ public class GuidesTest {
 
 		guides.chooseAction(actionSet, "Set Connection Profile");
 		new DefaultShell("Set Connection Profile");
-		new DefaultTreeItem("Teiid Importer Connections", "TeiidImportCP_" + dataSource).select();
+        new DefaultTreeItem("Teiid Importer Connections", "TeiidImportCP_java:/" + dataSource).select();
 		new PushButton("OK").click();
 		
 		new WaitWhile(new IsPreviewInProgress(), TimePeriod.DEFAULT);
@@ -401,21 +409,23 @@ public class GuidesTest {
 		List<Integer> results = guides.executeVDB(actionSet, teiidServer, vdbName,test_SQL);
 		assertEquals(Integer.valueOf(3),results.get(0));	
 	}
-	
+
 	@Test
 	public void teiid(){
-		EditorHandler.getInstance().closeAll(false);
+        String serverName = "testServer";
+        try {
+            EditorHandler.getInstance().closeAll(false);
 
-		String serverName = "testServer";
-		guides.newServer(serverName);
-		
-		assertTrue(guides.editServer(serverName));
-		
-		guides.setDefaultTeiidInstance(serverName);
-		
-		guides.startAndRefreshServer(serverName,teiidServer.getName());
+            guides.newServer(serverName);
 
-		cleanAfter(serverName);
+            assertTrue(guides.editServer(serverName));
+
+            guides.setDefaultTeiidInstance(serverName);
+
+            guides.startAndRefreshServer(serverName, teiidServer.getName());
+        } finally {
+            cleanAfter(serverName);
+        }
     }
 	
     private void createJDBCSource(String modelName,String projectName,String cp_name){
@@ -448,30 +458,30 @@ public class GuidesTest {
     }
     private void wsdlImportWizard(String soapProfile, String model_SOAP_name, String view_SOAP_name){
     	WsdlImportWizard.getInstance()
-				.setConnectionProfile(soapProfile)
-				.selectOperations("FullCountryInfo","FullCountryInfoAllCountries")
-				.nextPage()
-				.setSourceModelName(model_SOAP_name)
-				.setViewModelName(view_SOAP_name)
-				.nextPage()
-				.setJndiName(model_SOAP_name)
-				.nextPage()
-				.nextPage()
-				.addRequestElement("FullCountryInfo/sequence/arg0")
-				.addResponseElement("FullCountryInfo","FullCountryInfoResponse/sequence/return/sequence/capitalCity")
-				.addResponseElement("FullCountryInfo","FullCountryInfoResponse/sequence/return/sequence/continentCode")
-				.addResponseElement("FullCountryInfo","FullCountryInfoResponse/sequence/return/sequence/currencyIsoCode")
-				.addResponseElement("FullCountryInfo","FullCountryInfoResponse/sequence/return/sequence/isoCode")
-				.addResponseElement("FullCountryInfo","FullCountryInfoResponse/sequence/return/sequence/name")
-				.addResponseElement("FullCountryInfo","FullCountryInfoResponse/sequence/return/sequence/phoneCode")
-				
-				.addResponseElement("FullCountryInfoAllCountries","FullCountryInfoAllCountriesResponse/sequence/return/sequence/capitalCity")
-				.addResponseElement("FullCountryInfoAllCountries","FullCountryInfoAllCountriesResponse/sequence/return/sequence/continentCode")
-				.addResponseElement("FullCountryInfoAllCountries","FullCountryInfoAllCountriesResponse/sequence/return/sequence/currencyIsoCode")
-				.addResponseElement("FullCountryInfoAllCountries","FullCountryInfoAllCountriesResponse/sequence/return/sequence/isoCode")
-				.addResponseElement("FullCountryInfoAllCountries","FullCountryInfoAllCountriesResponse/sequence/return/sequence/name")
-				.addResponseElement("FullCountryInfoAllCountries","FullCountryInfoAllCountriesResponse/sequence/return/sequence/phoneCode")
-				.finish();
+            .setConnectionProfile(soapProfile).selectOperations("FullCountryInfo", "FullCountryInfoAllCountries")
+            .nextPage().setSourceModelName(model_SOAP_name).setViewModelName(view_SOAP_name).nextPage()
+            .setJndiName("java:/" + model_SOAP_name).nextPage().nextPage()
+            .addRequestElement("FullCountryInfo/sequence/arg0")
+            .addResponseElement("FullCountryInfo", "FullCountryInfoResponse/sequence/return/sequence/capitalCity")
+            .addResponseElement("FullCountryInfo", "FullCountryInfoResponse/sequence/return/sequence/continentCode")
+            .addResponseElement("FullCountryInfo", "FullCountryInfoResponse/sequence/return/sequence/currencyIsoCode")
+            .addResponseElement("FullCountryInfo", "FullCountryInfoResponse/sequence/return/sequence/isoCode")
+            .addResponseElement("FullCountryInfo", "FullCountryInfoResponse/sequence/return/sequence/name")
+            .addResponseElement("FullCountryInfo", "FullCountryInfoResponse/sequence/return/sequence/phoneCode")
+
+            .addResponseElement("FullCountryInfoAllCountries",
+                "FullCountryInfoAllCountriesResponse/sequence/return/sequence/capitalCity")
+            .addResponseElement("FullCountryInfoAllCountries",
+                "FullCountryInfoAllCountriesResponse/sequence/return/sequence/continentCode")
+            .addResponseElement("FullCountryInfoAllCountries",
+                "FullCountryInfoAllCountriesResponse/sequence/return/sequence/currencyIsoCode")
+            .addResponseElement("FullCountryInfoAllCountries",
+                "FullCountryInfoAllCountriesResponse/sequence/return/sequence/isoCode")
+            .addResponseElement("FullCountryInfoAllCountries",
+                "FullCountryInfoAllCountriesResponse/sequence/return/sequence/name")
+            .addResponseElement("FullCountryInfoAllCountries",
+                "FullCountryInfoAllCountriesResponse/sequence/return/sequence/phoneCode")
+            .finish();
     }
     private void defineViewTable(String projectName, String viewName, String query, String tableName){
 		Matcher<String> matcher = new WithMnemonicTextMatcher("New...");
@@ -511,26 +521,11 @@ public class GuidesTest {
      * Restore default server after teiid test
      */
     private void cleanAfter(String serverName){
-    	ServersView2 view = new ServersView2();
-		view.open(); 
-		view.getServer(serverName).stop();
-		AbstractWait.sleep(TimePeriod.SHORT);
-		guides.chooseAction("Teiid", "Set the Default ");
-		new DefaultCombo().setSelection(teiidServer.getName());
-		new PushButton("OK").click();
-		if (new ShellIsActive("Untested Teiid Version").test()){ 
-					new PushButton("Yes").click();
-		}
-		new DefaultShell("Default Server Changed");
-		new PushButton("OK").click();
-		view.getServer(teiidServer.getName()).start();
-		AbstractWait.sleep(TimePeriod.LONG);
-		new WaitUntil(new JobIsKilled("Refreshing server adapter list"), TimePeriod.LONG, false);
-		guides.chooseAction("Teiid", "Refresh ");
-		new DefaultCombo().setSelection(teiidServer.getName());
-		new PushButton("OK").click();
-		new DefaultShell("Notification");
-		new PushButton("OK").click();
+        ServersViewExt viewEx = new ServersViewExt();
+        viewEx.stopServer(serverName);
+        viewEx.setDefaultTeiidInstance(teiidServer.getName());
+        viewEx.startServer(teiidServer.getName());
+        viewEx.refreshServer(teiidServer.getName());
     }
     
     private boolean testLastPreview(){

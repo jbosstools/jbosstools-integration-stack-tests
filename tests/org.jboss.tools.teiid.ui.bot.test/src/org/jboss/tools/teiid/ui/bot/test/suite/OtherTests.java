@@ -15,10 +15,8 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
 	PreviewModelTest.class,
 	ProcedurePreviewTest.class,
-//    GuidesTest.class,
 	RecursiveCommonTableExpression.class,
 	UDFTest.class,
-//    ServerManipulationTest.class,
 	ReuseVDBTest.class,
 	DataRolesTest.class,
 	VDBEditorTest.class,

@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import org.eclipse.reddeer.common.platform.RunningPlatform;
 import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
@@ -27,7 +28,7 @@ import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.newWizard.ServerWizard;
 import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
-import org.junit.Before;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -36,7 +37,7 @@ import org.junit.runner.RunWith;
  */
 
 @RunWith(RedDeerSuite.class)
-@TeiidServer(state = ServerRequirementState.RUNNING,connectionProfiles={
+@TeiidServer(state = ServerRequirementState.STOPPED, connectionProfiles = {
 		ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER
 })
 public class ServerManipulationTest {
@@ -51,7 +52,7 @@ public class ServerManipulationTest {
 
 	private static final ServersViewExt SView= new ServersViewExt();
 	
-	@Before
+    @After
 	public void stopAndDeleteAllServers(){
 		ServersViewExt SView= new ServersViewExt();
 		List<Server> servers = SView.getServers();
@@ -96,24 +97,27 @@ public class ServerManipulationTest {
 		ServerWizard.getInstance().finish();
 		
 		SView.open();
-		Server newServer = SView.getServer(LOCAL_SERVER_NAME);
+        Server oldServer = SView.getServer(LOCAL_SERVER_NAME);
 		SView.startServer(LOCAL_SERVER_NAME);
 		AbstractWait.sleep(TimePeriod.DEFAULT);
-		assertTrue(testPingToServer(newServer)); //check ping
+        assertTrue(testPingToServer(oldServer)); // check ping
 		
 		SView.setDefaultTeiidInstance(LOCAL_SERVER_NAME);
 		assertTrue(checkDefaultTeiidName(LOCAL_SERVER_NAME));
 		assertTrue(testDeployVDB());
 
-		newServer.restart();
+        oldServer.restart();
 		AbstractWait.sleep(TimePeriod.DEFAULT); 
-		assertTrue(testPingToServer(newServer)); //check ping after restart
+        assertTrue(testPingToServer(oldServer)); // check ping after restart
 		
 	}
 
 	@Test
 	public void remoteServer(){
-		SView.startServer(teiidServer.getName());
+        if (RunningPlatform.isWindows()) {
+            return; // due to 'not support cmd' issue
+        }
+        SView.startServer(teiidServer.getName());
 		
 		String[] type = {"Red Hat JBoss Middleware","Red Hat JBoss Enterprise Application Platform 6.1+"};
 		ServerWizard.openWizard()
@@ -121,8 +125,9 @@ public class ServerManipulationTest {
 			.setName(REMOTE_SERVER_NAME)
 			.nextPage()
 			.setTypeServer(ServerWizard.REMOTE_SERVER)
-			.setControlled(ServerWizard.MANAGEMENT_OPERATIONS)
-			.externallyManaged(true)
+            .setControlled(ServerWizard.FILESYSTEM_OPERATIONS)
+
+            .externallyManaged(false)
 			.assignRuntime(false)
 			.nextPage()
 			.setHost("Local")
@@ -132,6 +137,7 @@ public class ServerManipulationTest {
 		ServerWizard.getInstance().finish();
 		
 		SView.open();
+        SView.getServer(teiidServer.getName()).stop();
 		Server newServer = SView.getServer(REMOTE_SERVER_NAME);
 		SView.startServer(REMOTE_SERVER_NAME);
 		AbstractWait.sleep(TimePeriod.DEFAULT);

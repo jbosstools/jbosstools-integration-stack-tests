@@ -8,9 +8,10 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.eclipse.condition.ConsoleHasText;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
@@ -100,6 +101,13 @@ public class RestProcedureTest {
 		new RelationalModelEditor(VIEW_MODEL).save();
 		ProblemsViewEx.checkErrors();
 		
+        // set content type
+        modelExplorer.selectItem(PROJECT_NAME, VIEW_MODEL, "GetPartGet");
+        TableEditor editor = new RelationalModelEditor(VIEW_MODEL).openTableEditor();
+        editor.openTab("Procedures");
+        editor.setCellCombo(0, "REST:Content Type", "xml");
+        editor.save();
+
 		String vdb = "RestAutoWarVdb";
 		VdbWizard.openVdbWizard()
 				.setLocation(PROJECT_NAME)
@@ -110,7 +118,7 @@ public class RestProcedureTest {
 		VdbEditor.getInstance(vdb).setGenerateRestWar(true).save();		
 		
 		modelExplorer.deployVdb(PROJECT_NAME, vdb);
-		AbstractWait.sleep(TimePeriod.getCustom(5));
+        new WaitUntil(new ConsoleHasText("Register web context: /" + vdb + "_1"), TimePeriod.LONG);
 		
 		String response = new SimpleHttpClient("http://localhost:8080/" + vdb + "_1/PartsView/part/P305")
 				.setBasicAuth(teiidServer.getServerConfig().getServer().getProperty("teiidUser"),
@@ -136,6 +144,13 @@ public class RestProcedureTest {
 		new RelationalModelEditor(VIEW_MODEL).save();
 		ProblemsViewEx.checkErrors();
 		
+        // set content type
+        modelExplorer.selectItem(PROJECT_NAME, VIEW_MODEL, "AddPart");
+        TableEditor editor = new RelationalModelEditor(VIEW_MODEL).openTableEditor();
+        editor.openTab("Procedures");
+        editor.setCellCombo(0, "REST:CHARSET", "UTF-8");
+        editor.save();
+
 		String vdb = "RestInsertVdb";
 		VdbWizard.openVdbWizard()
 				.setLocation(PROJECT_NAME)

@@ -116,6 +116,14 @@ public class TableEditor extends DefaultEditor {
 		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 	
+    public void setCellCombo(int rowIndex, String columnName, String value) {
+        int columnIndex = new DefaultTable().getHeaderIndex(columnName);
+        new DefaultTable().getItem(rowIndex).doubleClick(columnIndex);
+        new DefaultCCombo(new CellEditor(new DefaultTable().getItem(rowIndex), columnIndex)).setSelection(value);
+        KeyboardFactory.getKeyboard().type(KeyEvent.VK_TAB);
+        AbstractWait.sleep(TimePeriod.SHORT);
+    }
+
 	/**
 	 * Sets specified text into specified cell of table.
 	 * Note: row index starts from 0.

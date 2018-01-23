@@ -31,6 +31,7 @@ public abstract class ModelEditor extends DefaultEditor {
 	
 	ModelEditor(String name){
 		super(name);
+        new DefaultCTabItem(1).activate(); // legacy, some test expect package diagram as default page
 		activate();
 	}
 	
