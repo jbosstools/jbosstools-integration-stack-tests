@@ -30,9 +30,11 @@ import org.eclipse.reddeer.gef.editor.GEFEditor;
 import org.eclipse.reddeer.gef.handler.ViewerHandler;
 import org.eclipse.reddeer.gef.view.PaletteView;
 import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
@@ -283,7 +285,10 @@ public class SwitchYardEditor extends GEFEditor {
 		});
 		
 		if (isDirty()) {
-			super.save();
+			ShellMenuItem saveItem = new ShellMenuItem(new WorkbenchShell(), "File", "Save");
+			if (saveItem.isEnabled()) {
+				saveItem.select();
+			}
 		}
 
 		if (PreferencesUtil.isAutoBuildingOn()) {
