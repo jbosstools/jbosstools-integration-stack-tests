@@ -2,14 +2,17 @@ package org.jboss.tools.switchyard.reddeer.preference.implementation;
 
 import java.util.List;
 
+import org.eclipse.reddeer.common.exception.RedDeerException;
 import org.eclipse.reddeer.common.matcher.RegexMatcher;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.jface.viewers.CellEditor;
 import org.eclipse.reddeer.swt.api.Button;
+import org.eclipse.reddeer.swt.api.Shell;
 import org.eclipse.reddeer.swt.api.TableItem;
 import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.CancelButton;
 import org.eclipse.reddeer.swt.impl.button.OkButton;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
@@ -150,22 +153,32 @@ public class ImplementationKnowledgePage {
 	}
 
 	private void addClass(CellEditor cellEditor, String title, String clazz) {
-		new PushButton(cellEditor, "...").click();
-		if (title != null) {
-			try {
-				new DefaultShell(title);
-			} catch (Exception e) {
-				WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
-				throw new RuntimeException("Cannot find a shell with title '" + title + "'", e);
+		TableHasRow condition = null;
+		for (int i = 0; i < 3; i++) {
+			new PushButton(cellEditor, "...").click();
+			Shell shell;
+			if (title != null) {
+				try {
+					shell = new DefaultShell(title);
+				} catch (Exception e) {
+					WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
+					throw new RuntimeException("Cannot find a shell with title '" + title + "'", e);
+				}
+			} else {
+				shell = new DefaultShell();
 			}
-		} else {
-			new DefaultShell();
+			new DefaultText(shell).setText(clazz);
+			condition = new TableHasRow(new DefaultTable(shell), new RegexMatcher(".*" + clazz + ".*")); 
+			new WaitUntil(condition, TimePeriod.LONG, false);
+			if (condition.getResult() != null) {
+				new OkButton(shell).click();
+				new WaitWhile(new ShellIsAvailable(shell));
+				return;
+			} else {
+				new CancelButton(shell).click();
+				new WaitWhile(new ShellIsAvailable(shell));
+			}
 		}
-		new DefaultText().setText(clazz);
-		new WaitUntil(new TableHasRow(new DefaultTable(), new RegexMatcher(".*" + clazz + ".*")), TimePeriod.LONG);
-		new OkButton().click();
-		if (title != null) {
-			new WaitWhile(new ShellIsAvailable(title));
-		}
+		throw new RedDeerException("Cannot find " + condition.errorMessageUntil());
 	}
 }

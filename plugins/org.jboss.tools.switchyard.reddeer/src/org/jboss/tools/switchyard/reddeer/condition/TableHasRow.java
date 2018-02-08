@@ -3,16 +3,17 @@ package org.jboss.tools.switchyard.reddeer.condition;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hamcrest.Matcher;
 import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
 import org.eclipse.reddeer.swt.api.Table;
 import org.eclipse.reddeer.swt.api.TableItem;
+import org.hamcrest.Matcher;
 
 public class TableHasRow extends AbstractWaitCondition {
 
 	private Table table;
 	private Matcher<String> matcher;
 	private List<TableItem> items;
+	private TableItem tableItem;
 
 	public TableHasRow(Table table, Matcher<String> matcher) {
 		this.table = table;
@@ -25,11 +26,18 @@ public class TableHasRow extends AbstractWaitCondition {
 		items = table.getItems();
 		for (TableItem item : items) {
 			if (!item.getSWTWidget().isDisposed() && matcher.matches(item.getText())) {
+				tableItem = item;
 				item.select();
 				return true;
 			}
 		}
 		return false;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public TableItem getResult() {
+		return tableItem;
 	}
 
 	@Override
