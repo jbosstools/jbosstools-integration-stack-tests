@@ -1,22 +1,38 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.CancelButton;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.eclipse.reddeer.swt.impl.tab.DefaultTabItem;
 import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.dialog.IndexDialog;
 import org.jboss.tools.teiid.reddeer.dialog.TableDialog;
 import org.jboss.tools.teiid.reddeer.dialog.ViewDialog;
 import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
+import org.jboss.tools.teiid.reddeer.editor.TabModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.TableEditor.Tabs;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
+import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.wizard.newWizard.MetadataModelWizard;
 import org.jboss.tools.teiid.reddeer.wizard.newWizard.NewProcedureWizard;
@@ -31,20 +47,21 @@ import org.junit.runner.RunWith;
  */
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
-
+@TeiidServer(state = ServerRequirementState.RUNNING, connectionProfiles = {ConnectionProfileConstants.ORACLE_11G_BOOKS})
 public class ModelEditorActionsTest {
 
-	private static final String PROJECT_NAME = "ModelEditorActionsProject";	
-	private static final String VIEW_MODEL_TABLE_DIALOG = "ViewTableDialog";	
-	private static final String VIEW_MODEL_MANUAL_ADD_TABLE = "ViewManualAdd";
-	private static final String VIEW_MODEL_PROCEDURE_MANUAL_FILL = "ViewProcedureManualFill";	
-	private static final String VIEW_MODEL_INDEX = "ViewIndex";	
-	private static final String SOURCE_MODEL_TABLE_DIALOG = "SourceTableDialog";
-	private static final String SOURCE_MODEL_MANUAL_ADD_TABLE = "SourceManualAdd";
-	private static final String SOURCE_MODEL_PROCEDURE_DIALOG = "SourceProcedureDialog";
-	private static final String SOURCE_MODEL_PROCEDURE_MANUAL_FILL = "SourceProcedureManualFill";
-	private static final String SOURCE_MODEL_VIEW_DIALOG = "SourceViewDialog";
-	private static final String SOURCE_MODEL_INDEX_DIALOG = "SourceIndexDialog";
+    private static final String PROJECT_NAME = "ModelEditorActionsProject";
+    private static final String VIEW_MODEL_TABLE_DIALOG = "ViewTableDialog";
+    private static final String VIEW_MODEL_MANUAL_ADD_TABLE = "ViewManualAdd";
+    private static final String VIEW_MODEL_PROCEDURE_MANUAL_FILL = "ViewProcedureManualFill";
+    private static final String VIEW_MODEL_INDEX = "ViewIndex";
+    private static final String SOURCE_MODEL_TABLE_DIALOG = "SourceTableDialog";
+    private static final String SOURCE_MODEL_MANUAL_ADD_TABLE = "SourceManualAdd";
+    private static final String SOURCE_MODEL_PROCEDURE_DIALOG = "SourceProcedureDialog";
+    private static final String SOURCE_MODEL_PROCEDURE_MANUAL_FILL = "SourceProcedureManualFill";
+    private static final String SOURCE_MODEL_VIEW_DIALOG = "SourceViewDialog";
+    private static final String SOURCE_MODEL_INDEX_DIALOG = "SourceIndexDialog";
+    private static final String SOURCE_MODEL_EDITOR = "ModelEditorSource";
 		
 	private ModelExplorer modelExplorer;
 	
@@ -661,5 +678,115 @@ public class ModelEditorActionsTest {
 		assertEquals("This is Index description",editor.getCellText(0, "Description"));
 		editor.save();
 	}
-	
+    @Test
+    public void modelEditorTest() throws Exception {
+        final String TABLE_NAME = "exampleTable";
+
+        MetadataModelWizard.openWizard()
+            .setLocation(PROJECT_NAME)
+            .setModelName(SOURCE_MODEL_EDITOR)
+            .selectModelClass(MetadataModelWizard.ModelClass.RELATIONAL)
+            .selectModelType(MetadataModelWizard.ModelType.SOURCE)
+            .finish();
+
+        modelExplorer.addChildToModelItem(ModelExplorer.ChildType.TABLE, PROJECT_NAME, SOURCE_MODEL_EDITOR +".xmi");
+
+        new TableDialog(false)
+                .setName(TABLE_NAME)
+                .setDescription("Example description")
+                .addColumn("column1", "string", "4000")
+                .finish();
+
+        RelationalModelEditor editor = new RelationalModelEditor(SOURCE_MODEL_EDITOR + ".xmi");
+        editor.save();
+
+        modelExplorer.changeConnectionProfile(ConnectionProfileConstants.ORACLE_11G_BOOKS, PROJECT_NAME, SOURCE_MODEL_EDITOR + ".xmi");
+
+        editor.activate();
+        TabModelEditor modelEditor = new TabModelEditor();
+
+        new DefaultText().setText(TABLE_NAME);
+        assertThat( new DefaultTreeItem(new DefaultTree(modelEditor), SOURCE_MODEL_EDITOR + ".xmi" , TABLE_NAME).getCell(0), is(TABLE_NAME));
+
+        try {
+            TreeItem ti =  new DefaultTreeItem(new DefaultTree(modelEditor), SOURCE_MODEL_EDITOR + ".xmi" , TABLE_NAME ).getItem("column1 : string(4000)");
+            assertThat( ti.getText(), is("column1 : string(4000)"));
+            throw new Exception("column should not be there");
+        }catch (CoreLayerException e) {
+            // OK
+        }
+
+        new DefaultText().setText("");
+        AbstractWait.sleep(TimePeriod.MEDIUM);
+        assertThat( new DefaultTreeItem(new DefaultTree(modelEditor), SOURCE_MODEL_EDITOR + ".xmi" , TABLE_NAME , "column1 : string(4000)").getCell(0),
+            is("column1 : string(4000)"));
+
+        modelEditor.selectItem(SOURCE_MODEL_EDITOR + ".xmi");
+        modelEditor.createRelationalTable();
+
+        assertTrue(new ShellIsAvailable("Create Relational Table").test() );
+        new CancelButton(new DefaultShell("Create Relational Table")).click();
+
+        modelEditor.createProcedureOrFunction();
+        assertTrue(new ShellIsAvailable("Select Procedure Type").test() );
+        new CancelButton(new DefaultShell("Select Procedure Type")).click();
+
+        modelEditor.createRelationalIndex(false);
+        assertTrue(new ShellIsAvailable("Create Relational Index").test() );
+        new CancelButton(new DefaultShell("Create Relational Index")).click();
+
+        modelEditor.selectItem(SOURCE_MODEL_EDITOR + ".xmi", TABLE_NAME);
+        modelEditor.previewData();
+        assertTrue(new ShellIsAvailable("Custom Preview Data").test() );
+        new CancelButton(new DefaultShell("Custom Preview Data")).click();
+
+        modelEditor.generateDynamicVdb();
+        assertTrue(new ShellIsAvailable("Generate Data Service").test() );
+        new CancelButton(new DefaultShell("Generate Data Service")).click();
+
+        modelEditor.createVdb();
+        assertTrue(new ShellIsAvailable("New VDB").test() );
+        new CancelButton(new DefaultShell("New VDB")).click();
+
+        modelEditor.exportTeiidDDL();
+        assertTrue(new ShellIsAvailable("Export Teiid DDL").test() );
+        new CancelButton(new DefaultShell("Export Teiid DDL")).click();
+
+        modelEditor.setConnectionProfile();
+        assertTrue(new ShellIsAvailable("Set Connection Profile").test() );
+        new CancelButton(new DefaultShell("Set Connection Profile")).click();
+
+        modelEditor.setJBossDataSourceName();
+        assertTrue(new ShellIsAvailable("Set JBoss Data Source JNDI Name").test() );
+        new CancelButton(new DefaultShell("Set JBoss Data Source JNDI Name")).click();
+
+        modelEditor.setTranslatorName();
+        assertTrue(new ShellIsAvailable("Set Translator Name").test() );
+        new CancelButton(new DefaultShell("Set Translator Name")).click();
+
+        modelEditor.editTranslatorOverrides();
+        assertTrue(new ShellIsAvailable("Edit Translator Override Properties").test() );
+        new CancelButton(new DefaultShell("Edit Translator Override Properties")).click();
+
+        modelEditor.manageExtenstions();
+        assertTrue(new ShellIsAvailable("Manage Model Extension Definitions").test() );
+        new CancelButton(new DefaultShell("Manage Model Extension Definitions")).click();
+
+        modelEditor.showModelStatistics();
+        assertTrue(new ShellIsAvailable("Model Statistics").test() );
+        new OkButton(new DefaultShell("Model Statistics")).click();
+
+        DefaultTabItem dti = modelEditor.openPropertiesTab();
+        dti.activate();
+
+        assertThat( new DefaultTreeItem(new DefaultTree(dti), "Misc" , "Name").getCell(1), is(TABLE_NAME));
+
+        modelEditor.openDescriptionTab().activate();
+
+        assertEquals("Example description", new DefaultStyledText().getText());
+
+        modelEditor.editDescription();
+        assertTrue(new ShellIsAvailable("Edit Description for " + TABLE_NAME).test() );
+        new CancelButton(new DefaultShell("Edit Description for " + TABLE_NAME)).click();
+    }
 }

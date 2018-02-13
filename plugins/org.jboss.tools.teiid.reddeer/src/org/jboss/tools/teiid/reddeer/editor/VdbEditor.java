@@ -14,11 +14,13 @@ import org.eclipse.reddeer.core.matcher.WithTooltipTextMatcher;
 import org.eclipse.reddeer.jface.viewers.CellEditor;
 import org.eclipse.reddeer.swt.api.TableItem;
 import org.eclipse.reddeer.swt.condition.ShellIsActive;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.button.CheckBox;
 import org.eclipse.reddeer.swt.impl.button.OkButton;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.button.RadioButton;
 import org.eclipse.reddeer.swt.impl.ccombo.DefaultCCombo;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
 import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
 import org.eclipse.reddeer.swt.impl.list.DefaultList;
@@ -35,6 +37,7 @@ import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.eclipse.swt.widgets.Text;
+import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.dialog.DataRolesDialog;
 
 public class VdbEditor extends DefaultEditor {
@@ -483,5 +486,39 @@ public class VdbEditor extends DefaultEditor {
         activate();
         new DefaultCTabItem("Models").activate();
         return new DefaultTable(0).getItems();
+    }
+
+    public void setFilterCondition(String condition) {
+        new LabeledText("Filter").setText(condition);
+    }
+
+    public void clearFilterCondition() {
+        new PushButton(new WithTooltipTextMatcher("Clear Filter")).click();
+    }
+
+    public void setFilterModelsType(String type) {
+        new DefaultCombo().setSelection(type);
+    }
+
+    public void deployVdb() {
+        new PushButton("Deploy").click();
+        new WaitWhile(new IsInProgress(), TimePeriod.VERY_LONG);
+        new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+        if (new ShellIsAvailable("Create VDB Data Source").test()) {
+            new DefaultShell("Create VDB Data Source");
+            new PushButton("Create Source").click();
+            new WaitWhile(new ShellIsActive("Create VDB Data Source"), TimePeriod.DEFAULT);
+        }
+    }
+
+    public void testVdb() {
+        new PushButton("Test").click();
+        new WaitWhile(new IsInProgress(), TimePeriod.VERY_LONG);
+        new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+    }
+
+    public void saveAsXml() {
+        new PushButton("Save as XML").click();
+        AbstractWait.sleep(TimePeriod.MEDIUM);
     }
 }
