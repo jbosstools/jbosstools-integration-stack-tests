@@ -48,8 +48,8 @@ public class ConnectionView extends WorkbenchView {
     }
     
     public boolean existDataSource(String name) {
-    	refreshView();
-    	try {
+        refreshView();
+        try {
             new DefaultTreeItem("Deployed", name).select();
         } catch (org.eclipse.reddeer.core.exception.CoreLayerException ex) {
             if (ex.getMessage()
@@ -63,6 +63,7 @@ public class ConnectionView extends WorkbenchView {
     }
     
     public void createConnectionProfile() {
+        this.activate();
         List<String> path = new ArrayList<String>();
         path.add("Local Profiles");
         new PushButton(this, new WithTooltipTextMatcher("Create Connection Profile")).click();
@@ -70,6 +71,7 @@ public class ConnectionView extends WorkbenchView {
     }
 
     public void createDataSource() {
+        this.activate();
         new DefaultTreeItem("Deployed").select();
         new PushButton(this, new WithTooltipTextMatcher("Create Data Source")).click();
         new DefaultShell("Create DataSource"); // TODO create class for it?
@@ -115,11 +117,13 @@ public class ConnectionView extends WorkbenchView {
     }
 
     public void refreshView() {
+        this.activate();
         new PushButton(this, new WithTooltipTextMatcher("Refresh profiles and deployed data sources")).click();
     }
 
     public void changeDefaultServer(String nameNewServer) {
-        new DefaultHyperlink(new WithTooltipTextMatcher("Change Default Server;"));
+        this.activate();
+        new DefaultHyperlink(new WithTooltipTextMatcher("Change Default Server;")).activate();
         if (new ShellIsAvailable("Default server unchanged").test()) {
             throw new Error("Only 1 server is configured");
         }
