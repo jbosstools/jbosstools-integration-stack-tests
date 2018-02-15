@@ -1,8 +1,8 @@
 package org.jboss.tools.teiid.reddeer.editor;
 
-import java.awt.event.KeyEvent;
 import java.util.List;
 
+import org.eclipse.reddeer.common.platform.RunningPlatform;
 import org.eclipse.reddeer.common.util.Display;
 import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
@@ -13,15 +13,16 @@ import org.eclipse.reddeer.jface.viewers.CellEditor;
 import org.eclipse.reddeer.swt.api.TableItem;
 import org.eclipse.reddeer.swt.condition.ShellIsActive;
 import org.eclipse.reddeer.swt.exception.SWTLayerException;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.ccombo.DefaultCCombo;
 import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.tab.DefaultTabItem;
 import org.eclipse.reddeer.swt.impl.table.DefaultTable;
 import org.eclipse.reddeer.swt.impl.text.DefaultText;
-import org.eclipse.reddeer.swt.keyboard.KeyboardFactory;
 import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 
@@ -110,18 +111,24 @@ public class TableEditor extends DefaultEditor {
 	 * Note: row, column index starts from 0.
 	 */
 	public void setCellText(int rowIndex, int columnIndex, String value){
-		new DefaultTable().getItem(rowIndex).doubleClick(columnIndex);
-		new DefaultText(new CellEditor(new DefaultTable().getItem(rowIndex), columnIndex)).setText(value);
-		KeyboardFactory.getKeyboard().type(KeyEvent.VK_TAB);
+        activate();
+        DefaultTable table = new DefaultTable(this);
+        table.getItem(rowIndex).doubleClick(columnIndex);
+        new DefaultText(new CellEditor(table.getItem(rowIndex), columnIndex)).setText(value);
+        confirmValue(table);
 		AbstractWait.sleep(TimePeriod.SHORT);
+        save();
 	}
 	
     public void setCellCombo(int rowIndex, String columnName, String value) {
-        int columnIndex = new DefaultTable().getHeaderIndex(columnName);
+        activate();
+        DefaultTable table = new DefaultTable(this);
+        int columnIndex = table.getHeaderIndex(columnName);
         new DefaultTable().getItem(rowIndex).doubleClick(columnIndex);
-        new DefaultCCombo(new CellEditor(new DefaultTable().getItem(rowIndex), columnIndex)).setSelection(value);
-        KeyboardFactory.getKeyboard().type(KeyEvent.VK_TAB);
+        new DefaultCCombo(new CellEditor(table.getItem(rowIndex), columnIndex)).setSelection(value);
+        confirmValue(table);
         AbstractWait.sleep(TimePeriod.SHORT);
+        save();
     }
 
 	/**
@@ -138,11 +145,14 @@ public class TableEditor extends DefaultEditor {
 	 * @param iCellIndex, iCellText - defines row by text of cell in specified column.
 	 */
 	public void setCellText(int iCellIndex, String iCellText, int columnIndex, String value){
-		TableItem item = new DefaultTable().getItem(iCellText, iCellIndex);
+        activate();
+        DefaultTable table = new DefaultTable(this);
+        TableItem item = table.getItem(iCellText, iCellIndex);
 		item.doubleClick(columnIndex);
 		new DefaultText(new CellEditor(item, columnIndex)).setText(value);
-		KeyboardFactory.getKeyboard().type(KeyEvent.VK_TAB);
-		AbstractWait.sleep(TimePeriod.SHORT);
+        confirmValue(table);
+        AbstractWait.sleep(TimePeriod.SHORT);
+        save();
 	}
 	
 	/**
@@ -229,20 +239,44 @@ public class TableEditor extends DefaultEditor {
 	}
 	
 	public void setDatatype(String tabName, int rowIndex, int columnIndex, String datatype){
-		new DefaultTabItem(tabName).activate();
-		new DefaultTable(0).getItem(rowIndex).doubleClick(columnIndex);
-		new PushButton((new CellEditor(new DefaultTable().getItem(rowIndex), columnIndex))).click();
-		new DefaultShell("Select a Datatype");
-        new DefaultText(0).setText(datatype);
-        AbstractWait.sleep(TimePeriod.SHORT); // wait if show only dataType in the table
-        new DefaultTable().getItem(0).click();
-		new PushButton("OK").click();		
+        this.activate();
+        new DefaultTabItem(tabName).activate();
+        DefaultTable table = new DefaultTable(0);
+        if (RunningPlatform.isOSX()) {
+            table.getItem(rowIndex).click();
+            new ContextMenuItem("Modeling", "Set Datatype").select();
+            DefaultShell datatypeShell = new DefaultShell("Select a Datatype");
+            new DefaultText(datatypeShell).setText(datatype);
+            AbstractWait.sleep(TimePeriod.SHORT); // wait if show only dataType in the table
+            new DefaultTable(datatypeShell).getItem(0).doubleClick();
+            new OkButton(datatypeShell).click();
+            new WaitWhile(new ShellIsActive(datatypeShell));
+        } else {
+            table.getItem(rowIndex).doubleClick(columnIndex);
+            new PushButton((new CellEditor(table.getItem(rowIndex), columnIndex))).click();
+            DefaultShell datatypeShell = new DefaultShell("Select a Datatype");
+            new DefaultText(datatypeShell).setText(datatype);
+            AbstractWait.sleep(TimePeriod.SHORT); // wait if show only dataType in the table
+            new DefaultTable(datatypeShell).getItem(0).doubleClick();
+            new OkButton(datatypeShell).click();
+            new WaitWhile(new ShellIsActive(datatypeShell));
+        }
+        save();
 	}
 	
     @Override
     public void save() {
         if (new ShellMenuItem(new WorkbenchShell(), "File", "Save").isEnabled()) {
             super.save();
+            AbstractWait.sleep(TimePeriod.SHORT); // wait because after save JBDS change editor
+            this.activate();
         }
+    }
+
+    /**
+     * On macOS doesn't work KeyEvent.VK_TAB , this is workaround
+     */
+    private void confirmValue(DefaultTable table) {
+        table.getItems().get(0).click();
     }
 }
