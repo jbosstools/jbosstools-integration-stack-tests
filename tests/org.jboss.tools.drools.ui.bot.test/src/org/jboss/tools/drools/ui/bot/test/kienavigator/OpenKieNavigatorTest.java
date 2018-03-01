@@ -1,14 +1,10 @@
 package org.jboss.tools.drools.ui.bot.test.kienavigator;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
-import org.jboss.tools.drools.reddeer.kienavigator.item.OrgUnitItem;
-import org.jboss.tools.drools.reddeer.kienavigator.item.RepositoryItem;
-import org.jboss.tools.drools.reddeer.kienavigator.item.ServerItem;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.junit.Assert;
@@ -23,11 +19,7 @@ public class OpenKieNavigatorTest extends KieNavigatorTestParent {
 	private ServerRequirement serverReq;
 
 	@Test
-	public void openKieNavigatorTest() throws IOException, InterruptedException {
-		ServerItem si = knv.getServers().get(0);
-		OrgUnitItem oui = si.getOrgUnit("example");
-		List<RepositoryItem> ril = oui.getRepositories();
-		Assert.assertEquals(1, ril.size());
-		Assert.assertEquals("repository1", ril.get(0).getName());
+	public void openKieNavigatorTest() throws IOException, InterruptedException { 
+		Assert.assertEquals(1, knv.getServers().size());
 	}
 }

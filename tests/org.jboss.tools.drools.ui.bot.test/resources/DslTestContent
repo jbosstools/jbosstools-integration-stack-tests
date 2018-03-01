@@ -41,7 +41,7 @@
 [keyword]this is no a keyword=true
 [keyword][]true=false
 [keyword][java.lang.Object]false=true
-[conditions]příliš žluťoučký kůň úpěl ďábelské ódy=The quick brown fox jumps over the lazy dog
+[conditions]prilis zlutoucky kun upel dabelske ody=The quick brown fox jumps over the lazy dog
 [conditions][this is no object]when=if
 [consequences][no!]bye=syso "Hello world!"
 [consequences]syso "{text}"=System.out.println("{text}");

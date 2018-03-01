@@ -30,6 +30,19 @@ import org.junit.runner.RunWith;
 public class CreateItemsRestTest extends KieNavigatorTestParent {
 	
 	private static final Logger LOGGER = Logger.getLogger(CreateItemsRestTest.class);
+	
+	private static final String SPACE_NAME = "restname",
+			OWNER = "rest@drools.org",
+			GROUP_ID = "restgroupid",
+			REPO_1 = "restreponame",
+			REPO_2 = "restreponame2",
+			PROJECT_NAME = "restprojectname",
+			PROJECT_GID = "resrprojectgid",
+			USER_1 = "restrepouser",
+			USER_2 = "restrepouser2",
+			PROJECT_VERSION = "restprojectversion",
+			PROJECT_AID = "restprojectaid",
+			GIT_URL = "git://restreponame";
 
 	@InjectRequirement
 	private ServerRequirement serverReq;
@@ -38,69 +51,69 @@ public class CreateItemsRestTest extends KieNavigatorTestParent {
 	public void createItemsRestTest() throws MalformedURLException, IOException {
 		initServerStructure(knv);
 
-		OrganizationalUnit ou = RestClient.getOrganizationalUnit("restname");
-		Assert.assertEquals("restname", ou.getName());
-		Assert.assertEquals("rest@drools.org", ou.getOwner());
-		Assert.assertEquals("restgroupid", ou.getGroupId());
+		OrganizationalUnit ou = RestClient.getOrganizationalUnit(SPACE_NAME);
+		Assert.assertEquals(SPACE_NAME, ou.getName());
+		Assert.assertEquals(OWNER, ou.getOwner());
+		Assert.assertEquals(GROUP_ID, ou.getGroupId());
 
 		List<String> repoList = ou.getRepositories();
 		Assert.assertEquals(2, repoList.size());
-		Assert.assertEquals("restreponame", repoList.get(0));
-		Assert.assertEquals("restreponame2", repoList.get(1));
+		Assert.assertEquals(REPO_1, repoList.get(0));
+		Assert.assertEquals(REPO_2, repoList.get(1));
 
-		Repository repo = RestClient.getRepository("restreponame");
-		Assert.assertEquals("restreponame", repo.getName());
+		Repository repo = RestClient.getRepository(REPO_1);
+		Assert.assertEquals(REPO_1, repo.getName());
 		Assert.assertEquals("null", repo.getUsername());
 
-		Repository repo2 = RestClient.getRepository("restreponame2");
-		Assert.assertEquals("restreponame2", repo2.getName());
+		Repository repo2 = RestClient.getRepository(REPO_2);
+		Assert.assertEquals(REPO_2, repo2.getName());
 		Assert.assertEquals("null", repo2.getUsername());
-		Assert.assertEquals("git://restreponame", repo.getGitUrl());
+		Assert.assertEquals(GIT_URL, repo.getGitUrl());
 
-		List<Project> projectList = RestClient.getProjects("restreponame");
+		List<Project> projectList = RestClient.getProjects(REPO_1);
 		Assert.assertEquals(1, projectList.size());
 		Project project = projectList.get(0);
-		Assert.assertEquals("restprojectname", project.getName());
-		Assert.assertEquals("resrprojectgid", project.getGroupId());
-		Assert.assertEquals("restprojectversion", project.getVersion());
+		Assert.assertEquals(PROJECT_NAME, project.getName());
+		Assert.assertEquals(PROJECT_GID, project.getGroupId());
+		Assert.assertEquals(PROJECT_VERSION, project.getVersion());
 
-		List<Project> projectList2 = RestClient.getProjects("restreponame2");
-		Assert.assertEquals(4, projectList2.size());
+		List<Project> projectList2 = RestClient.getProjects(REPO_2);
+		Assert.assertEquals(1, projectList2.size());
 	}
 
 	private void initServerStructure(KieNavigatorView knv) {
 		CreateOrgUnitDialog cod = knv.getServer(0).createOrgUnit();
-		cod.setName("restname");
-		cod.setOwner("rest@drools.org");
-		cod.setDefaultGroupId("restgroupid");
+		cod.setName(SPACE_NAME);
+		cod.setOwner(OWNER);
+		cod.setDefaultGroupId(GROUP_ID);
 		cod.ok();
 
 		progressInformationWaiting();
 
-		CreateRepositoryDialog crd = knv.getOrgUnit(0, "restname").createRepository();
-		crd.setName("restreponame");
-		crd.setUsername("restrepouser");
+		CreateRepositoryDialog crd = knv.getOrgUnit(0, SPACE_NAME).createRepository();
+		crd.setName(REPO_1);
+		crd.setUsername(USER_1);
 		crd.createNewRepository();
 		crd.ok();
 
 		progressInformationWaiting();
 
-		CreateRepositoryDialog crd2 = knv.getOrgUnit(0, "restname").createRepository();
-		crd2.setName("restreponame2");
-		crd2.setUsername("restrepouser2");
+		CreateRepositoryDialog crd2 = knv.getOrgUnit(0, SPACE_NAME).createRepository();
+		crd2.setName(REPO_2);
+		crd2.setUsername(USER_2);
 		crd2.cloneAnExistingRepository();
 		crd2.setRepositoryUrl(REPO_URL);
 		crd2.ok();
 
 		progressInformationWaiting();
 
-		RepositoryItem ri = knv.getRepository(0, "restname", "restreponame");
+		RepositoryItem ri = knv.getRepository(0, SPACE_NAME, REPO_1);
 		ri.importRepository();
 		CreateProjectDialog cpd = ri.createProject();
-		cpd.setName("restprojectname");
-		cpd.setGroupId("resrprojectgid");
-		cpd.setArtifactId("restprojectaid");
-		cpd.setVersion("restprojectversion");
+		cpd.setName(PROJECT_NAME);
+		cpd.setGroupId(PROJECT_GID);
+		cpd.setArtifactId(PROJECT_AID);
+		cpd.setVersion(PROJECT_VERSION);
 		cpd.importProjectToWorkspace(false);
 		cpd.ok();
 

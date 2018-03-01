@@ -26,7 +26,7 @@ public class KieNavigatorTestParent extends TestParent {
 
 	private static final String PROGRESS_INFORMATION_LABEL = "Progress Information";
 
-	protected static final String REPO_URL = "https://github.com/jboss-developer/jboss-brms-repository.git";
+	protected static final String REPO_URL = "https://github.com/guvnorngtestuser1/guvnorng-playground.git";
 
 	protected static final String WEB_APP_NAME = "business-central";
 
@@ -48,6 +48,10 @@ public class KieNavigatorTestParent extends TestParent {
 	public void waitForServer() throws IOException {
 		int time = 0;
 		int responceCode = 0;
+		
+		// wait a while for the server
+		AbstractWait.sleep(TimePeriod.LONG);
+		
 		while (time < MAX_WAIT_TIME) {
 			responceCode = RestClient.getResponseCode();
 			LOGGER.debug("Waiting for server. Responce code: " + responceCode);
