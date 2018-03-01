@@ -25,6 +25,16 @@ import org.junit.runner.RunWith;
 public class CreateItemsTest extends KieNavigatorTestParent {
 	
 	private static final Logger LOGGER = Logger.getLogger(CreateItemsTest.class);
+	
+	private static final String SPACE_NAME = "orgname",
+			OWNER = "owner@email.com",
+			GROUP_ID = "orggroupid",
+			REPO_NAME = "reponame",
+			REPO_USER = "repouser",
+			PROJECT_NAME = "projectname",
+			PROJECT_GID = "projectgid",
+			PROJECT_AID = "projectaid",
+			PROJECT_VERSION = "projectversion";
 
 	@InjectRequirement
 	private ServerRequirement serverReq;
@@ -34,40 +44,40 @@ public class CreateItemsTest extends KieNavigatorTestParent {
 		ServerItem si = knv.getServers().get(0);
 
 		CreateOrgUnitDialog cod = si.createOrgUnit();
-		cod.setName("orgname");
-		cod.setOwner("owner@email.com");
-		cod.setDefaultGroupId("orggroupid");
+		cod.setName(SPACE_NAME);
+		cod.setOwner(OWNER);
+		cod.setDefaultGroupId(GROUP_ID);
 		cod.ok();
 
 		progressInformationWaiting();
 
-		OrgUnitProperties op = knv.getOrgUnit(0, "orgname").properties();
-		Assert.assertEquals("orgname", op.getOrganizationName());
-		Assert.assertEquals("owner@email.com", op.getOwner());
-		Assert.assertEquals("orggroupid", op.getDefaultGroupId());
+		OrgUnitProperties op = knv.getOrgUnit(0, SPACE_NAME).properties();
+		Assert.assertEquals(SPACE_NAME, op.getOrganizationName());
+		Assert.assertEquals(OWNER, op.getOwner());
+		Assert.assertEquals(GROUP_ID, op.getDefaultGroupId());
 		op.ok();
 
-		CreateRepositoryDialog crd = knv.getOrgUnit(0, "orgname").createRepository();
-		crd.setName("reponame");
-		crd.setUsername("repouser");
+		CreateRepositoryDialog crd = knv.getOrgUnit(0, SPACE_NAME).createRepository();
+		crd.setName(REPO_NAME);
+		crd.setUsername(REPO_USER);
 		crd.createNewRepository();
 		crd.ok();
 
 		progressInformationWaiting();
 
-		RepositoryProperties rp = knv.getRepository(0, "orgname", "reponame").properties();
-		Assert.assertEquals("reponame", rp.getRepositoryName());
-		Assert.assertEquals("orgname", rp.getOrganizationalUnit());
+		RepositoryProperties rp = knv.getRepository(0, SPACE_NAME, REPO_NAME).properties();
+		Assert.assertEquals(REPO_NAME, rp.getRepositoryName());
+		Assert.assertEquals(SPACE_NAME, rp.getOrganizationalUnit());
 		Assert.assertEquals("null", rp.getUserName());
 		rp.ok();
 
-		RepositoryItem ri = knv.getRepository(0, "orgname", "reponame");
+		RepositoryItem ri = knv.getRepository(0, SPACE_NAME, REPO_NAME);
 		ri.importRepository();
 		CreateProjectDialog cpd = ri.createProject();
-		cpd.setName("projectname");
-		cpd.setGroupId("projectgid");
-		cpd.setArtifactId("projectaid");
-		cpd.setVersion("projectversion");
+		cpd.setName(PROJECT_NAME);
+		cpd.setGroupId(PROJECT_GID);
+		cpd.setArtifactId(PROJECT_AID);
+		cpd.setVersion(PROJECT_VERSION);
 		cpd.importProjectToWorkspace(false);
 		cpd.ok();
 
@@ -80,11 +90,11 @@ public class CreateItemsTest extends KieNavigatorTestParent {
 			LOGGER.debug("Dialog window with 'Connect to Server is not visible.'");
 		}
 
-		ProjectProperties pp = knv.getProject(0, "orgname", "reponame", "projectname").properties();
-		Assert.assertEquals("projectname", pp.getProjectName());
-		Assert.assertEquals("reponame", pp.getRepository());
-		Assert.assertEquals("projectgid", pp.getGroupId());
-		Assert.assertEquals("projectversion", pp.getVersion());
+		ProjectProperties pp = knv.getProject(0, SPACE_NAME, REPO_NAME, PROJECT_NAME).properties();
+		Assert.assertEquals(PROJECT_NAME, pp.getProjectName());
+		Assert.assertEquals(REPO_NAME, pp.getRepository());
+		Assert.assertEquals(PROJECT_GID, pp.getGroupId());
+		Assert.assertEquals(PROJECT_VERSION, pp.getVersion());
 		pp.ok();
 	}
 }

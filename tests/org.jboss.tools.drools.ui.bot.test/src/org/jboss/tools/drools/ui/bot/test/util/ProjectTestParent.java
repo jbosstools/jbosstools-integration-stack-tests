@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
 import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.junit.Assert;
@@ -27,17 +29,28 @@ public class ProjectTestParent extends TestParent {
 	}
 
 	protected void assertHelloConsoleText(String consoleText) {
+		waitForConsoleText(consoleText, HELLO_WORLD);
 		Assert.assertNotNull("Console text is empty.", consoleText);
 		Assert.assertTrue("Unexpected text in console:\n" + consoleText, consoleText.contains(HELLO_WORLD));
 	}
 	
 	protected void assertHelloGoodbyeConsoleText(String consoleText) {
 		assertHelloConsoleText(consoleText);
+		waitForConsoleText(consoleText, GOODBYE_WORLD);
 		Assert.assertTrue("Unexpected text in console:\n" + consoleText, consoleText.contains(GOODBYE_WORLD));
 	}
 	
 
 	protected String getRuntimeLocation(String runtimeHome) throws UnsupportedEncodingException {
 		return new File(URLDecoder.decode(runtimeHome, "utf-8")).getPath();
+	}
+	
+	private void waitForConsoleText(String consoleText, String expectedText) {
+		new WaitUntil(new AbstractWaitCondition() {
+			@Override
+			public boolean test() {
+				return consoleText.contains(expectedText);
+			}
+		}, TimePeriod.VERY_LONG);
 	}
 }

@@ -19,6 +19,10 @@ import org.junit.runner.RunWith;
 @Server(state = ServerRequirementState.RUNNING)
 @RunWith(RedDeerSuite.class)
 public class RepositoryManipulationTest extends KieNavigatorTestParent {
+	
+	private static final String SPACE_NAME = "repotest",
+			REPO_NAME = "newrepo",
+			OWNER = "owner";
 
 	@InjectRequirement
 	private ServerRequirement serverReq;
@@ -28,30 +32,30 @@ public class RepositoryManipulationTest extends KieNavigatorTestParent {
 		ServerItem si = knv.getServers().get(0);
 
 		CreateOrgUnitDialog cod = si.createOrgUnit();
-		cod.setName("repotest");
-		cod.setOwner("owner");
+		cod.setName(SPACE_NAME);
+		cod.setOwner(OWNER);
 		cod.ok();
 
 		progressInformationWaiting();
 
-		CreateRepositoryDialog crd = knv.getOrgUnit(0, "repotest").createRepository();
-		crd.setName("newrepo");
+		CreateRepositoryDialog crd = knv.getOrgUnit(0, SPACE_NAME).createRepository();
+		crd.setName(REPO_NAME);
 		crd.ok();
 
 		progressInformationWaiting();
 
-		knv.getRepository(0, "repotest", "newrepo").removeRepository().yes();
+		knv.getRepository(0, SPACE_NAME, REPO_NAME).removeRepository().yes();
 
 		progressInformationWaiting();
 
-		AddRepositoryDialog ard = knv.getOrgUnit(0, "repotest").addRepository();
-		ard.selectRepository("newrepo");
+		AddRepositoryDialog ard = knv.getOrgUnit(0, SPACE_NAME).addRepository();
+		ard.selectRepository(REPO_NAME);
 		ard.ok();
 
 		progressInformationWaiting();
 
-		List<RepositoryItem> riList = knv.getOrgUnit(0, "repotest").getRepositories();
+		List<RepositoryItem> riList = knv.getOrgUnit(0, SPACE_NAME).getRepositories();
 		Assert.assertEquals(1, riList.size());
-		Assert.assertEquals("newrepo", riList.get(0).getName());
+		Assert.assertEquals(REPO_NAME, riList.get(0).getName());
 	}
 }
