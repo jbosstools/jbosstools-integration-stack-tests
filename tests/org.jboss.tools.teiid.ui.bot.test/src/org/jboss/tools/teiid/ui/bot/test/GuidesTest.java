@@ -18,6 +18,7 @@ import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequireme
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.eclipse.reddeer.swt.api.TreeItem;
 import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.CancelButton;
 import org.eclipse.reddeer.swt.impl.button.CheckBox;
 import org.eclipse.reddeer.swt.impl.button.OkButton;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
@@ -50,7 +51,6 @@ import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.SQLResult;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.noDatabase.FlatLocalConnectionProfileWizard;
-import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.noDatabase.WsdlConnectionProfileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.noDatabase.XmlLocalConnectionProfileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.noDatabase.XmlRemoteConnectionProfileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.FlatImportWizard;
@@ -69,8 +69,9 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
 @TeiidServer(state = ServerRequirementState.RUNNING, connectionProfiles={
-		ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER,
-		ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER,
+	ConnectionProfileConstants.ORACLE_11G_PARTS_SUPPLIER,
+	ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER,
+    ConnectionProfileConstants.SOAP
 })
 
 public class GuidesTest {
@@ -135,24 +136,16 @@ public class GuidesTest {
 		String vdb_SOAP_name = "SOAP_VDB";
 		String test_SQL = "exec FullCountryInfo('US')";
 		String test_SQL2 = "exec FullCountryInfoAllCountries()";
-		String soapProfile = "SOAP_WS";
 		
 		guides.createProjectViaGuides(actionSet, project_SOAP_name);
 
 		guides.chooseAction(actionSet, "Create Web ");
         DefaultShell cp = new DefaultShell("New Connection Profile");
-		new LabeledText("Name:").setText(soapProfile);
-        new PushButton(cp, "Next >").click();
-		WsdlConnectionProfileWizard.getInstance()
-				.setWsdl("http://ws-dvirt.rhcloud.com/dv-test-ws/soap?wsdl")
-				.testConnection()
-				.nextPage()
-				.setEndPoint("Countries")
-				.finish();
+        new CancelButton(cp).click();
 
 		guides.chooseAction(actionSet, "Generate "); 
 		new DefaultShell("Create Relational Model from Web Service");
-		wsdlImportWizard(soapProfile, model_SOAP_name, view_SOAP_name);
+        wsdlImportWizard(ConnectionProfileConstants.SOAP, model_SOAP_name, view_SOAP_name);
 		
 		guides.previewDataViaActionSet(actionSet, project_SOAP_name, view_SOAP_name+".xmi","FullCountryInfoAllCountries");
 		assertTrue(testLastPreview());
@@ -165,7 +158,7 @@ public class GuidesTest {
 		assertEquals(Integer.valueOf(1),results.get(0));
 		assertEquals(Integer.valueOf(3),results.get(1));
 	}
-	
+
     @Test
 	public void Rest() throws IOException{
  		String actionSet = "Create a REST WAR";
@@ -225,7 +218,7 @@ public class GuidesTest {
 		
         assertEquals(result, new SimpleHttpClient().get(url));
     }
-    
+
     @Test
 	public void Flat(){
 		String actionSet = "Model Flat File Source";
@@ -262,7 +255,7 @@ public class GuidesTest {
 		List<Integer> results = guides.executeVDB(actionSet, teiidServer, vdb_Flat_name,test_SQL);
 		assertEquals(Integer.valueOf(16),results.get(0));
 	}
-    
+
     @Test
 	public void localXML(){
 		String actionSet = "Model Local XML File Source";	
@@ -313,7 +306,7 @@ public class GuidesTest {
 		List<Integer> results = guides.executeVDB(actionSet, teiidServer, vdb_localXML_name,test_SQL);
 		assertEquals(Integer.valueOf(16),results.get(0));
 	}
-    
+
 	@Test
 	public void remoteXML(){
 		String actionSet = "Model Remote XML File Source";	
@@ -370,7 +363,7 @@ public class GuidesTest {
 		List<Integer> results = guides.executeVDB(actionSet, teiidServer, vdb_remoteXML_name,test_SQL);
 		assertEquals(Integer.valueOf(26),results.get(0));
 	}
-	
+
 	@Test
 	public void teiidDataSource(){
 		String actionSet = "Model Teiid Data Source";

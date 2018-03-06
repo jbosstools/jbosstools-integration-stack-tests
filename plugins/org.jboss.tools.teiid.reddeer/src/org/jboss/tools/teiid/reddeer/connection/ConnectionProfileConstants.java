@@ -55,4 +55,10 @@ public final class ConnectionProfileConstants {
 	public static final String NETEZZA = "netezza";
 	public static final String GOOGLE_SPREADSHEET = "google_spreadsheet";
 	public static final String GOOGLE_SPREADSHEET_CRUD = "google_spreadsheet_crud";
+    public static final String REST_JSON = "rest_json";
+    public static final String REST_XML = "rest_xml";
+    public static final String SOAP = "soap";
+    public static final String REST_JSON_SECURE = "rest_json_secure";
+    public static final String REST_XML_SECURE = "rest_xml_secure";
+    public static final String SOAP_SECURE = "soap_secure";
 }

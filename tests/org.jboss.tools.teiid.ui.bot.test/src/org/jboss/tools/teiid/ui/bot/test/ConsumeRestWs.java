@@ -6,13 +6,13 @@ import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
-import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.noDatabase.RestConnectionProfileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.RestImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
 import org.junit.After;
@@ -28,7 +28,11 @@ import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
-@TeiidServer(state = ServerRequirementState.RUNNING)
+@TeiidServer(state = ServerRequirementState.RUNNING, connectionProfiles = {
+    ConnectionProfileConstants.REST_XML,
+    ConnectionProfileConstants.REST_XML_SECURE,
+    ConnectionProfileConstants.REST_JSON,
+    ConnectionProfileConstants.REST_JSON_SECURE })
 public class ConsumeRestWs {
 	private static final String PROJECT_NAME = "ConsumeRest";
 	private static final String PROCEDURE_NAME = "getProgrammes";
@@ -51,17 +55,10 @@ public class ConsumeRestWs {
 
 	@Test
 	public void testXml() {
-		String cp = "REST_XML";
-		RestConnectionProfileWizard.openWizard(cp)
-				.setConnectionUrl("http://ws-dvirt.rhcloud.com/dv-test-ws/rest/xml")
-				.setType(RestConnectionProfileWizard.TYPE_XML)
-				.testConnection()
-				.finish();
-		
 		String sourceModel = "RestXmlSource";
 		String viewModel = "RestXmlView";
 		RestImportWizard.openWizard()
-				.setProfileName(cp)
+				.setProfileName(ConnectionProfileConstants.REST_XML)
 				.nextPage()
 				.setProject(PROJECT_NAME)
 				.setSourceModelName(sourceModel)
@@ -91,17 +88,10 @@ public class ConsumeRestWs {
 
 	@Test
 	public void testJson() {
-		String cp = "REST_JSON";
-		RestConnectionProfileWizard.openWizard(cp)
-				.setConnectionUrl("http://ws-dvirt.rhcloud.com/dv-test-ws/rest/json")
-				.setType(RestConnectionProfileWizard.TYPE_JSON)
-				.testConnection()
-				.finish();
-		
 		String sourceModel = "RestJsonSource";
 		String viewModel = "RestJsonView";
 		RestImportWizard.openWizard()
-				.setProfileName(cp)
+            .setProfileName(ConnectionProfileConstants.REST_JSON)
 				.nextPage()
 				.setProject(PROJECT_NAME)
 				.setSourceModelName(sourceModel)
@@ -128,21 +118,13 @@ public class ConsumeRestWs {
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, vdb);
 		assertEquals(16, jdbchelper.getNumberOfResults("exec " + viewModel + "." + PROCEDURE_NAME + "()"));
 	}
-	
+
 	@Test
 	public void testXmlHttpDigest() {
-		String cp = "REST_XML_DIGEST";
-		RestConnectionProfileWizard.openWizard(cp)
-				.setConnectionUrl("http://ws-dvirt.rhcloud.com/dv-test-ws-digest/rest/xml")
-				.setType(RestConnectionProfileWizard.TYPE_XML)
-				.setAuth(RestConnectionProfileWizard.AUTH_TYPE_DIGEST, "digest", "digest")
-				.testConnection()
-				.finish();
-		
 		String sourceModel = "RestXmlDigestSource";
 		String viewModel = "RestXmlDigestView";
 		RestImportWizard.openWizard()
-				.setProfileName(cp)
+                .setProfileName(ConnectionProfileConstants.REST_XML_SECURE)
 				.nextPage()
 				.setProject(PROJECT_NAME)
 				.setSourceModelName(sourceModel)
@@ -169,21 +151,13 @@ public class ConsumeRestWs {
 		TeiidJDBCHelper jdbchelper = new TeiidJDBCHelper(teiidServer, vdb);
 		assertEquals(16, jdbchelper.getNumberOfResults("exec " + viewModel + "." + PROCEDURE_NAME + "()"));
 	}
-	
+
 	@Test
 	public void testHttpDigestJson() {
-		String cp = "REST_JSON_DIGEST";
-		RestConnectionProfileWizard.openWizard(cp)
-				.setConnectionUrl("http://ws-dvirt.rhcloud.com/dv-test-ws-digest/rest/json")
-				.setType(RestConnectionProfileWizard.TYPE_JSON)
-				.setAuth(RestConnectionProfileWizard.AUTH_TYPE_DIGEST, "digest", "digest")
-				.testConnection()
-				.finish();
-		
 		String sourceModel = "RestJsonDigestSource";
 		String viewModel = "RestJsonDigestView";
 		RestImportWizard.openWizard()
-				.setProfileName(cp)
+                .setProfileName(ConnectionProfileConstants.REST_JSON_SECURE)
 				.nextPage()
 				.setProject(PROJECT_NAME)
 				.setSourceModelName(sourceModel)

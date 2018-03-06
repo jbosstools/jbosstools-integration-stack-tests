@@ -6,13 +6,13 @@ import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
 import org.jboss.tools.teiid.reddeer.editor.VdbEditor;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
-import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.noDatabase.WsdlConnectionProfileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.WsdlImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
 import org.junit.After;
@@ -28,7 +28,9 @@ import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
-@TeiidServer(state = ServerRequirementState.RUNNING)
+@TeiidServer(state = ServerRequirementState.RUNNING, connectionProfiles = {
+    ConnectionProfileConstants.SOAP,
+    ConnectionProfileConstants.SOAP_SECURE })
 public class ConsumeSoapWs {
 	private static final String PROJECT_NAME = "ConsumeSoap";
 
@@ -50,17 +52,10 @@ public class ConsumeSoapWs {
 
 	@Test
 	public void testSoap() {
-		String cp = "SOAP";
-		WsdlConnectionProfileWizard.openWizard(cp)
-				.setWsdl("http://ws-dvirt.rhcloud.com/dv-test-ws/soap?wsdl")
-				.testConnection()
-				.nextPage()
-				.setEndPoint("Countries")
-				.finish();
-
 		String sourceModel = "SoapSource";
 		String viewModel = "SoapView";
-		WsdlImportWizard.openWizard().setConnectionProfile(cp)
+		WsdlImportWizard.openWizard()
+                .setConnectionProfile(ConnectionProfileConstants.SOAP)
 				.selectOperations("FullCountryInfo", "FullCountryInfoAllCountries")
 				.nextPage()
 				.setProject(PROJECT_NAME)
@@ -102,18 +97,10 @@ public class ConsumeSoapWs {
 
 	@Test
 	public void testSoapDigest() {
-		String cp = "SOAP_DIGEST";
-		WsdlConnectionProfileWizard.openWizard(cp)
-				.setWsdl("http://ws-dvirt.rhcloud.com/dv-test-ws-digest/soap?wsdl",WsdlConnectionProfileWizard.AUTH_TYPE_DIGEST,"digest","digest")	
-				.testConnection()
-				.nextPage()
-				.setEndPoint("Countries")
-				.finish();
-
 		String sourceModel = "SoapDigestSource";
 		String viewModel = "SoapDigestView";
 		WsdlImportWizard.openWizard()
-				.setConnectionProfile(cp)
+                .setConnectionProfile(ConnectionProfileConstants.SOAP_SECURE)
 				.selectOperations("FullCountryInfo", "FullCountryInfoAllCountries")
 				.nextPage()
 				.setProject(PROJECT_NAME)
