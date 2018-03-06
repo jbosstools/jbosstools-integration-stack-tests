@@ -62,7 +62,7 @@ public class RestConnectionProfileWizard extends ConnectionProfileWizard {
 	}
 	
 	/**
-	 * @param authType use one of type (RestProfileWizard.TYPE_AUTH_HTTPBASIC or RestProfileWizard.TYPE_AUTH_DIGEST)
+	 * @param authType use one of type (RestConnectionProfileWizard.AUTH_TYPE_BASIC or RestConnectionProfileWizard.AUTH_TYPE_DIGEST)
 	 */
 	public RestConnectionProfileWizard setAuth(String authType,String userName, String password){
 		log.info("Set authType to : '" + authType + "', username: '" + userName +"', password: '" + password +"'");

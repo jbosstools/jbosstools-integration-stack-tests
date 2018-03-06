@@ -13,6 +13,8 @@ import org.jboss.tools.teiid.reddeer.requirement.ConnectionProfileConfig;
 import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.database.DatabaseConnectionProfile;
 import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.database.LdapConnectionProfileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.database.SalesforceConnectionProfileWizard;
+import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.noDatabase.RestConnectionProfileWizard;
+import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.noDatabase.WsdlConnectionProfileWizard;
 
 public class ConnectionProfileHelper {
 
@@ -199,7 +201,51 @@ public class ConnectionProfileHelper {
         case "Ingres": //when TEIIDDES-2905 be done, delete this and uncomment Ingres below the PostgeSQL case
 			createConnectionProfileDirectly(cp);
         	break;
-
+            case "REST":
+                String type = cp.getExtraProperties().get("type");
+                RestConnectionProfileWizard restWizard = RestConnectionProfileWizard.openWizard(cpName);
+                restWizard.setConnectionUrl(cp.getExtraProperties().get("url"));
+                if (RestConnectionProfileWizard.TYPE_XML.equalsIgnoreCase(type)) {
+                    restWizard.setType(RestConnectionProfileWizard.TYPE_XML);
+                } else if (RestConnectionProfileWizard.TYPE_JSON.equalsIgnoreCase(type)) {
+                    restWizard.setType(RestConnectionProfileWizard.TYPE_JSON);
+                } else {
+                    throw new IllegalArgumentException("Unsupported type of REST: " + type);
+                }
+                if(cp.getUsername()!=null) { //auth
+                    String typeOfAuth = cp.getExtraProperties().get("typeOfAuth");
+                    if (RestConnectionProfileWizard.AUTH_TYPE_BASIC.equalsIgnoreCase(typeOfAuth)) {
+                        restWizard.setAuth(RestConnectionProfileWizard.AUTH_TYPE_BASIC, cp.getUsername(), cp.getPassword());
+                    } else if (RestConnectionProfileWizard.AUTH_TYPE_DIGEST.equalsIgnoreCase(typeOfAuth)) {
+                        restWizard.setAuth(RestConnectionProfileWizard.AUTH_TYPE_DIGEST, cp.getUsername(), cp.getPassword());
+                    } else {
+                        throw new IllegalArgumentException("Unsupported type of auth for REST: " + typeOfAuth);
+                    }
+                }
+                restWizard.testConnection().finish();
+                break;
+            case "SOAP":
+                WsdlConnectionProfileWizard wsdlWizard = WsdlConnectionProfileWizard.openWizard(cpName);
+                if(cp.getUsername()!=null) {
+                    String typeOfAuth = cp.getExtraProperties().get("typeOfAuth");
+                    if (WsdlConnectionProfileWizard.AUTH_TYPE_BASIC.equalsIgnoreCase(typeOfAuth)) {
+                        wsdlWizard.setWsdl(cp.getExtraProperties().get("url"),
+                            WsdlConnectionProfileWizard.AUTH_TYPE_BASIC, cp.getUsername(), cp.getPassword());
+                    } else if (WsdlConnectionProfileWizard.AUTH_TYPE_DIGEST.equalsIgnoreCase(typeOfAuth)) {
+                        wsdlWizard.setWsdl(cp.getExtraProperties().get("url"),
+                            WsdlConnectionProfileWizard.AUTH_TYPE_DIGEST, cp.getUsername(), cp.getPassword());
+                    } else {
+                        throw new IllegalArgumentException("Unsupported type of auth for REST: " + typeOfAuth);
+                    }
+                    wsdlWizard.testConnection();
+                }else {
+                    wsdlWizard.setWsdl(cp.getExtraProperties().get("url"));
+                    wsdlWizard.testConnection();
+                }
+                wsdlWizard.nextPage()
+                    .setEndPoint(cp.getExtraProperties().get("endpoint"))
+                    .finish();
+                break;
         default: 
         	new AssertionError("Wizard for CP which has vendor name '"+ vendor +"' not yet implemented.");
             break;
