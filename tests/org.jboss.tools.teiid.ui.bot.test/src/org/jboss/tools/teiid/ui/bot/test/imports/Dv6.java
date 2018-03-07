@@ -25,19 +25,20 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
 @TeiidServer(state = ServerRequirementState.RUNNING, connectionProfiles = {
 		ConnectionProfileConstants.DV6_DS1})
 public class Dv6 {
 	@InjectRequirement
-	private static TeiidServerRequirement teiidServer;	
-	
+	private static TeiidServerRequirement teiidServer;
+
 	public ImportHelper importHelper = null;
 
-	private static final String PROJECT_NAME_JDBC = "jdbcImportTest";	
+	private static final String PROJECT_NAME_JDBC = "jdbcImportTest";
 	private static final String PROJECT_NAME_TEIID = "TeiidConnImporter";
+
+	private static final String MODEL_NAME = "dv6Model";
 
 	@Before
 	public void before() {
@@ -53,25 +54,27 @@ public class Dv6 {
 		new ServersViewExt().refreshServer(teiidServer.getName());
 		importHelper = new ImportHelper();
 	}
-	
-	@After
-	public void after(){
-		new ModelExplorer().deleteAllProjectsSafely();
-	}	
+
+    @After
+    public void after(){
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + ConnectionProfileConstants.DV6_DS1);
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/dv6_ds1_DS");	//change - to _
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/Check_" + MODEL_NAME);
+        new ModelExplorer().deleteAllProjectsSafely();
+    }
 
 	@Test
 	public void dv6JDBCtest() {
-		String model = "dv6Model";
-		importHelper.importModelJDBC(PROJECT_NAME_JDBC, model, ConnectionProfileConstants.DV6_DS1, "PUBLIC/PUBLIC/TABLE/STATUS,PUBLIC/PUBLIC/TABLE/PARTS", false);
-		new RelationalModelEditor(model + ".xmi").save();
-		importHelper.checkImportedTablesInModelJDBC(PROJECT_NAME_JDBC, model, "STATUS", "PARTS", teiidServer);
+		importHelper.importModelJDBC(PROJECT_NAME_JDBC, MODEL_NAME, ConnectionProfileConstants.DV6_DS1, "PUBLIC/PUBLIC/TABLE/STATUS,PUBLIC/PUBLIC/TABLE/PARTS", false);
+		new RelationalModelEditor(MODEL_NAME + ".xmi").save();
+		importHelper.checkImportedTablesInModelJDBC(PROJECT_NAME_JDBC, MODEL_NAME, "STATUS", "PARTS", teiidServer);
 	}
-	
+
 	@Test
 	public void dv6TeiidTest() {
 		Map<String,String> teiidImporterProperties = new HashMap<String, String>();
 		teiidImporterProperties.put(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "");
-		importHelper.importModelTeiid(PROJECT_NAME_TEIID,ConnectionProfileConstants.DV6_DS1, "dv6Model", teiidImporterProperties,teiidServer);
-		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, "dv6Model", "STATUS", "PARTS");
+		importHelper.importModelTeiid(PROJECT_NAME_TEIID,ConnectionProfileConstants.DV6_DS1, MODEL_NAME, teiidImporterProperties,teiidServer);
+		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, MODEL_NAME, "STATUS", "PARTS");
 	}
 }

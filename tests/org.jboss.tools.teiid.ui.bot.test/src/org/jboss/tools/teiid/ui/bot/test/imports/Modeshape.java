@@ -25,14 +25,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
 @TeiidServer(state = ServerRequirementState.RUNNING, connectionProfiles = {})
 public class Modeshape {
 	@InjectRequirement
-	private static TeiidServerRequirement teiidServer;	
-	
+	private static TeiidServerRequirement teiidServer;
+
 	public ImportHelper importHelper = null;
 
 	private static final String MODESHAPE_CP_NAME = "ModeShapeDS";
@@ -52,11 +51,11 @@ public class Modeshape {
 		new ServersViewExt().refreshServer(teiidServer.getName());
 		importHelper = new ImportHelper();
 	}
-	
+
 	@After
 	public void after(){
 		new ModelExplorer().deleteAllProjectsSafely();
-	}	
+	}
 
 	@Test
 	public void modeshapeTeiidTest() throws IOException {
@@ -66,9 +65,9 @@ public class Modeshape {
                     .get("http://localhost:8080/modeshape-rest/dv/");
 
 		assertFalse("initializing modeshape failed", resp.isEmpty());
-		
+
 		String modelName = "ModeshapeModel";
-		
+
 		TeiidConnectionImportWizard.openWizard()
 				.selectDataSource(MODESHAPE_CP_NAME)
 				.nextPage()
@@ -80,7 +79,7 @@ public class Modeshape {
 				.nextPageWithWait()
 				.nextPageWithWait()
 				.finish();
-		
+
 		importHelper.checkImportedModelTeiid(modelName, "mix:title");
 	}
 }

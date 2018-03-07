@@ -11,7 +11,7 @@ import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.ConnectionProfile
 
 public class LdapConnectionProfileWizard extends ConnectionProfileWizard{
 
-    public static final String DIALOG_TITLE = "New connection Profile";
+    public static final String DIALOG_TITLE = "New connection profile";
 
 	private LdapConnectionProfileWizard(String name) {
 		super("LDAP",name);

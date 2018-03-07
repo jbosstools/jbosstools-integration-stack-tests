@@ -101,6 +101,7 @@ public class ImportHelper {
 		assertTrue(new ModelExplorer().containsItem(projectName,model + ".xmi", tableA));
 		assertTrue(new ModelExplorer().containsItem(projectName,model + ".xmi", tableB));
 		new ModelExplorer().simulateTablesPreview(teiidServer, projectName, model, new String[] { tableA, tableB });
+		new ServersViewExt().undeployVdb(teiidServer.getName(), "Check_" + model);
 	}
 	
 	public void checkImportedProcedureInModelJDBC(String projectName, String model, String procedure, TeiidServerRequirement teiidServer, String...parameters) {

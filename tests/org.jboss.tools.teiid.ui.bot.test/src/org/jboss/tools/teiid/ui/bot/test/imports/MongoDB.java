@@ -25,14 +25,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
 @TeiidServer(state = ServerRequirementState.RUNNING, connectionProfiles = {})
 public class MongoDB {
 	@InjectRequirement
-	private static TeiidServerRequirement teiidServer;	
-	
+	private static TeiidServerRequirement teiidServer;
+
 	public ImportHelper importHelper = null;
 
 	private static final String PROJECT_NAME_TEIID = "TeiidConnImporter";
@@ -50,32 +49,31 @@ public class MongoDB {
 		new ServersViewExt().refreshServer(teiidServer.getName());
 		importHelper = new ImportHelper();
 	}
-	
+
 	@After
 	public void after(){
 		new ModelExplorer().deleteAllProjectsSafely();
 	}
-	
-	
+
 	@Test
 	public void mongoDBteiidTest() {
 		String modelName = "mongoDB";
-		new ServersViewExt().deleteDatasource(teiidServer.getName(), "mongodbDS");
-		
+		String dataSourceName = "mongodbDS";
+
 		Properties apacheProps = teiidServer.getServerConfig().getConnectionProfile("mongo_db").asProperties();
 
 		TeiidConnectionImportWizard.openWizard()
 				.createNewDataSource()
-				.setName("mongodbDS")
-				.setDriver("mongodb")			
+				.setName(dataSourceName)
+				.setDriver("mongodb")
 				.setImportPropertie(CreateDataSourceDialog.DATASOURCE_PROPERTY_USER_NAME_OPTIONAL, apacheProps.getProperty("db.username"))
 				.setImportPropertie(CreateDataSourceDialog.DATASOURCE_PROPERTY_PASSWORD_OPTIONAL, apacheProps.getProperty("db.password"))
 				.setImportPropertie(CreateDataSourceDialog.DATASOURCE_DATABASE, apacheProps.getProperty("db.name"))
-				.setImportPropertie(CreateDataSourceDialog.DATASOURCE_PROPERTY_URL_SERVER_LIST, apacheProps.getProperty("url"))					
+				.setImportPropertie(CreateDataSourceDialog.DATASOURCE_PROPERTY_URL_SERVER_LIST, apacheProps.getProperty("url"))
 				.finish();
 		AbstractWait.sleep(TimePeriod.getCustom(5));
 		TeiidConnectionImportWizard.getInstance()
-				.selectDataSource("java:/mongodbDS")
+				.selectDataSource("java:/" + dataSourceName)
 				.nextPage()
 				.setTranslator("mongodb")
 				.nextPage()
@@ -84,8 +82,9 @@ public class MongoDB {
 				.nextPageWithWait()
 				.nextPageWithWait()
 				.setTablesToImport("Objects to Create/smalla","Objects to Create/smallb")
-				.finish();		
-		
+				.finish();
+
 		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, modelName, "smalla", "smallb");
-	}	
+		new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + dataSourceName);
+	}
 }

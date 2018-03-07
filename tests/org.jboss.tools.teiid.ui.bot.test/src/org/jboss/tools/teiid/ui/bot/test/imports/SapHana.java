@@ -27,19 +27,20 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
 @TeiidServer(state = ServerRequirementState.RUNNING, connectionProfiles = {
 		ConnectionProfileConstants.SAP_HANA})
 public class SapHana {
 	@InjectRequirement
-	private static TeiidServerRequirement teiidServer;	
-	
+	private static TeiidServerRequirement teiidServer;
+
 	public ImportHelper importHelper = null;
 
 	private static final String PROJECT_NAME_JDBC = "jdbcImportTest";
 	private static final String PROJECT_NAME_TEIID = "TeiidConnImporter";
+
+	private static final String MODEL_NAME = "sapHanaModel";
 
 	@Before
 	public void before() {
@@ -55,53 +56,53 @@ public class SapHana {
 		new ServersViewExt().refreshServer(teiidServer.getName());
 		importHelper = new ImportHelper();
 	}
-	
-	@After
-	public void after(){
-		new ModelExplorer().deleteAllProjectsSafely();
-	}	
+
+    @After
+    public void after(){
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + ConnectionProfileConstants.SAP_HANA);
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/Check_" + MODEL_NAME);
+        new ModelExplorer().deleteAllProjectsSafely();
+    }
 
 	/**
 	 * Note: start database before this test! (AWS)
 	 */
 	@Test
 	public void sapHanaJDBCtest() {
-		String model = "sapHanaModel";
-		importHelper.importModelJDBC(PROJECT_NAME_JDBC, model, ConnectionProfileConstants.SAP_HANA, "BQT1/TABLE/SMALLA,BQT1/TABLE/SMALLB", false);
-		
-		new RelationalModelEditor(model + ".xmi").save();
-		
+		importHelper.importModelJDBC(PROJECT_NAME_JDBC, MODEL_NAME, ConnectionProfileConstants.SAP_HANA, "BQT1/TABLE/SMALLA,BQT1/TABLE/SMALLB", false);
+
+		new RelationalModelEditor(MODEL_NAME + ".xmi").save();
+
 		// TODO temp till hana translator is not set automatically (updated checkImportedTablesInModel method)
-		assertTrue(new ModelExplorer().containsItem(PROJECT_NAME_JDBC,model + ".xmi", "SMALLA"));
-		assertTrue(new ModelExplorer().containsItem(PROJECT_NAME_JDBC,model + ".xmi", "SMALLB"));
-		
-		String vdb_name = "Check_" + model;
+		assertTrue(new ModelExplorer().containsItem(PROJECT_NAME_JDBC,MODEL_NAME + ".xmi", "SMALLA"));
+		assertTrue(new ModelExplorer().containsItem(PROJECT_NAME_JDBC,MODEL_NAME + ".xmi", "SMALLB"));
+
+		String vdb_name = "Check_" + MODEL_NAME;
 		VdbWizard.openVdbWizard()
 				.setLocation(PROJECT_NAME_JDBC)
 				.setName(vdb_name)
-				.addModel(PROJECT_NAME_JDBC, model)
+				.addModel(PROJECT_NAME_JDBC, MODEL_NAME)
 				.finish();
-		
-		VdbEditor.getInstance(vdb_name + ".vdb").setModelTranslator(model + ".xmi", model, "hana");
+
+		VdbEditor.getInstance(vdb_name + ".vdb").setModelTranslator(MODEL_NAME + ".xmi", MODEL_NAME, "hana");
 		VdbEditor.getInstance(vdb_name + ".vdb").save();
-		
+
 		new ModelExplorer().deployVdb(PROJECT_NAME_JDBC, vdb_name);
 
 		TeiidJDBCHelper jdbcHelper = new TeiidJDBCHelper(teiidServer, vdb_name);
 		String[] tables = new String[] { "SMALLA", "SMALLB" };
 		for (int i = 0; i < tables.length; i++) {
-			String previewSQL = "select * from \"" + model + "\".\"" + tables[i] + "\"";
+			String previewSQL = "select * from \"" + MODEL_NAME + "\".\"" + tables[i] + "\"";
 			assertTrue(jdbcHelper.isQuerySuccessful(previewSQL,true));
-		}		
+		}
 		//checkImportedTablesInModel(model, "SMALLA", "SMALLB");
+		new ServersViewExt().undeployVdb(teiidServer.getName(), vdb_name);
 	}
-	
+
 	@Test
 	public void sapHanaTeiidTest() {
-		String modelName = "sapHanaModel";
-		
 		new ServersViewExt().createDatasource(teiidServer.getName(), ConnectionProfileConstants.SAP_HANA);
-		
+
 		TeiidConnectionImportWizard.openWizard()
 				.selectDataSource(ConnectionProfileConstants.SAP_HANA)
 				.nextPage()
@@ -109,12 +110,14 @@ public class SapHana {
 				.setImportPropertie(TeiidConnectionImportWizard.IMPORT_PROPERTY_SCHEMA_PATTERN, "BQT1")
 				.setImportPropertie(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "SMALL%")
 				.nextPage()
-				.setModelName(modelName)
+				.setModelName(MODEL_NAME)
 				.setProject(PROJECT_NAME_TEIID)
 				.nextPageWithWait()
 				.nextPageWithWait()
 				.finish();
-		
-		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, modelName, "SMALLA", "SMALLB");
+
+		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, MODEL_NAME, "SMALLA", "SMALLB");
+
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + ConnectionProfileConstants.SAP_HANA);
 	}
 }

@@ -25,7 +25,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
 @TeiidServer(state = ServerRequirementState.RUNNING, connectionProfiles = {
@@ -33,12 +32,15 @@ import org.junit.runner.RunWith;
 	ConnectionProfileConstants.MYSQL_55_BQT2})
 public class MySql {
 	@InjectRequirement
-	private static TeiidServerRequirement teiidServer;	
-	
+	private static TeiidServerRequirement teiidServer;
+
 	public ImportHelper importHelper = null;
 
 	private static final String PROJECT_NAME_JDBC = "jdbcImportTest";
 	private static final String PROJECT_NAME_TEIID = "TeiidConnImporter";
+
+	private static final String MODEL_NAME_MYSQL51 = "mySql51";
+	private static final String MODEL_NAME_MYSQL55 = "mySql55";
 
 	@Before
 	public void before() {
@@ -54,41 +56,47 @@ public class MySql {
 		new ServersViewExt().refreshServer(teiidServer.getName());
 		importHelper = new ImportHelper();
 	}
-	
-	@After
-	public void after(){
-		new ModelExplorer().deleteAllProjectsSafely();
-	}	
-	
+
+    @After
+    public void after(){
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + ConnectionProfileConstants.MYSQL_51_BQT2);
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + ConnectionProfileConstants.MYSQL_51_BQT2 + "_DS");
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/Check_" + MODEL_NAME_MYSQL51);
+
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + ConnectionProfileConstants.MYSQL_55_BQT2);
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + ConnectionProfileConstants.MYSQL_55_BQT2 + "_DS");
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/Check_" + MODEL_NAME_MYSQL55);
+
+        new ModelExplorer().deleteAllProjectsSafely();
+    }
+
 	@Test
 	public void mysql51JDBCtest() {
-		String model = "mysql51Model";
-		importHelper.importModelJDBC(PROJECT_NAME_JDBC, model, ConnectionProfileConstants.MYSQL_51_BQT2, "bqt2/TABLE/smalla,bqt2/TABLE/smallb", false);
-		new RelationalModelEditor(model + ".xmi").save();
-		importHelper.checkImportedTablesInModelJDBC(PROJECT_NAME_JDBC, model, "smalla", "smallb",teiidServer);
+		importHelper.importModelJDBC(PROJECT_NAME_JDBC, MODEL_NAME_MYSQL51, ConnectionProfileConstants.MYSQL_51_BQT2, "bqt2/TABLE/smalla,bqt2/TABLE/smallb", false);
+		new RelationalModelEditor(MODEL_NAME_MYSQL51 + ".xmi").save();
+		importHelper.checkImportedTablesInModelJDBC(PROJECT_NAME_JDBC, MODEL_NAME_MYSQL51, "smalla", "smallb",teiidServer);
 	}
 
 	@Test
 	public void mysql55JDBCtest() {
-		String model = "mysql55Model";
-		importHelper.importModelJDBC(PROJECT_NAME_JDBC, model, ConnectionProfileConstants.MYSQL_55_BQT2, "bqt2/TABLE/smalla,bqt2/TABLE/smallb", false);
-		new RelationalModelEditor(model + ".xmi").save();
-		importHelper.checkImportedTablesInModelJDBC(PROJECT_NAME_JDBC, model, "smalla", "smallb", teiidServer);
+		importHelper.importModelJDBC(PROJECT_NAME_JDBC, MODEL_NAME_MYSQL55, ConnectionProfileConstants.MYSQL_55_BQT2, "bqt2/TABLE/smalla,bqt2/TABLE/smallb", false);
+		new RelationalModelEditor(MODEL_NAME_MYSQL55 + ".xmi").save();
+		importHelper.checkImportedTablesInModelJDBC(PROJECT_NAME_JDBC, MODEL_NAME_MYSQL55, "smalla", "smallb", teiidServer);
 	}
-	
+
 	@Test
 	public void mysql51TeiidTest() {
 		Map<String,String> teiidImporterProperties = new HashMap<String, String>();
 		teiidImporterProperties.put(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "small%");
-		importHelper.importModelTeiid(PROJECT_NAME_TEIID, ConnectionProfileConstants.MYSQL_51_BQT2, "mysql51Model", teiidImporterProperties, teiidServer);
-		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, "mysql51Model", "smalla", "smallb");
+		importHelper.importModelTeiid(PROJECT_NAME_TEIID, ConnectionProfileConstants.MYSQL_51_BQT2, MODEL_NAME_MYSQL51, teiidImporterProperties, teiidServer);
+		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, MODEL_NAME_MYSQL51, "smalla", "smallb");
 	}
 
 	@Test
 	public void mysql55TeiidTest() {
 		Map<String,String> teiidImporterProperties = new HashMap<String, String>();
 		teiidImporterProperties.put(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "small%");
-		importHelper.importModelTeiid(PROJECT_NAME_TEIID, ConnectionProfileConstants.MYSQL_55_BQT2, "mysql55Model", teiidImporterProperties, teiidServer);
-		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, "mysql55Model", "smalla", "smallb");
+		importHelper.importModelTeiid(PROJECT_NAME_TEIID, ConnectionProfileConstants.MYSQL_55_BQT2, MODEL_NAME_MYSQL55, teiidImporterProperties, teiidServer);
+		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, MODEL_NAME_MYSQL55, "smalla", "smallb");
 	}
 }

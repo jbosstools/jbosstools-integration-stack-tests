@@ -34,6 +34,7 @@ import org.jboss.tools.teiid.reddeer.wizard.imports.ImportJDBCDatabaseWizard;
 import org.jboss.tools.teiid.reddeer.wizard.imports.TeiidConnectionImportWizard;
 import org.jboss.tools.teiid.reddeer.wizard.newWizard.MetadataModelWizard;
 import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
+import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -61,6 +62,19 @@ public class GeometryTypeTest {
 	@BeforeClass
 	public static void before() {
 		new ModelExplorer().createProject(PROJECT_NAME);
+	}
+	
+	@After
+	public void after(){
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + ConnectionProfileConstants.ORACLE_11G_BQT2);
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + ConnectionProfileConstants.ORACLE_11G_BQT2 + "_DS");
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/Check_" + ConnectionProfileConstants.ORACLE_11G_BQT2);
+
+		new ServersViewExt().undeployVdb(teiidServer.getName(), VDB_NAME);
+		new ServersViewExt().undeployVdb(teiidServer.getName(), VDB_TEIID_NAME);
+		
+		new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + VDB_NAME);
+		new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + VDB_TEIID_NAME);
 	}
 	
 	@Test

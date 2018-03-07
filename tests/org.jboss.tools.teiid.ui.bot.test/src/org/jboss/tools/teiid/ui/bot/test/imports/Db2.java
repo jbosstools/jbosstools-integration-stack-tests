@@ -27,7 +27,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
 @TeiidServer(state = ServerRequirementState.RUNNING, connectionProfiles = {
@@ -35,12 +34,15 @@ import org.junit.runner.RunWith;
 		ConnectionProfileConstants.DB2_97_BQT2})
 public class Db2 {
 	@InjectRequirement
-	private static TeiidServerRequirement teiidServer;	
+	private static TeiidServerRequirement teiidServer;
 	
 	public ImportHelper importHelper = null;
 
 	private static final String PROJECT_NAME_JDBC = "jdbcImportTest";
 	private static final String PROJECT_NAME_TEIID = "TeiidConnImporter";
+
+	private static final String modelNameDB2_101 = "db2_101";
+	private static final String modelNameDB2_97 = "db2_97";
 
 	@Before
 	public void before() {
@@ -56,52 +58,56 @@ public class Db2 {
 		new ServersViewExt().refreshServer(teiidServer.getName());
 		importHelper = new ImportHelper();
 	}
-	
-	
-	@After
-	public void after(){
-		new ModelExplorer().deleteAllProjectsSafely();
-	}
-	
+
+    @After
+    public void after(){
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + ConnectionProfileConstants.DB2_101_BQT);
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + ConnectionProfileConstants.DB2_101_BQT + "_DS");
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/Check_" + modelNameDB2_101);
+
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + ConnectionProfileConstants.DB2_97_BQT2);
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + ConnectionProfileConstants.DB2_97_BQT2 + "_DS");
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/Check_" + modelNameDB2_97);
+        new ModelExplorer().deleteAllProjectsSafely();
+    }
+
 	@Test
 	public void db2101JDBCtest() {
-		String model = "db2101Model";
-		importHelper.importModelJDBC(PROJECT_NAME_JDBC, model, ConnectionProfileConstants.DB2_101_BQT, "BQT/TABLE/SMALLA,BQT/TABLE/SMALLB", false);
-		new RelationalModelEditor(model + ".xmi").save();
-		importHelper.checkImportedTablesInModelJDBC(PROJECT_NAME_JDBC, model, "SMALLA", "SMALLB", teiidServer);
-		checkDatatypes(model);		
+		importHelper.importModelJDBC(PROJECT_NAME_JDBC, modelNameDB2_101, ConnectionProfileConstants.DB2_101_BQT, "BQT/TABLE/SMALLA,BQT/TABLE/SMALLB", false);
+		new RelationalModelEditor(modelNameDB2_101 + ".xmi").save();
+		importHelper.checkImportedTablesInModelJDBC(PROJECT_NAME_JDBC, modelNameDB2_101, "SMALLA", "SMALLB", teiidServer);
+		checkDatatypes(modelNameDB2_101);
 	}
-	
+
 	@Test
 	public void db297JDBCtest() {
-		String model = "db297Model";
-		importHelper.importModelJDBC(PROJECT_NAME_JDBC, model, ConnectionProfileConstants.DB2_97_BQT2, "BQT2/TABLE/SMALLA,BQT2/TABLE/SMALLB", false);
-		new RelationalModelEditor(model + ".xmi").save();
-		importHelper.checkImportedTablesInModelJDBC(PROJECT_NAME_JDBC, model, "SMALLA", "SMALLB", teiidServer);
-		checkDatatypes(model);
+		importHelper.importModelJDBC(PROJECT_NAME_JDBC, modelNameDB2_97, ConnectionProfileConstants.DB2_97_BQT2, "BQT2/TABLE/SMALLA,BQT2/TABLE/SMALLB", false);
+		new RelationalModelEditor(modelNameDB2_97 + ".xmi").save();
+		importHelper.checkImportedTablesInModelJDBC(PROJECT_NAME_JDBC, modelNameDB2_97, "SMALLA", "SMALLB", teiidServer);
+		checkDatatypes(modelNameDB2_97);
 	}
-	
+
 	@Test
 	public void db2101TeiidTest() {
 		Map<String,String> teiidImporterProperties = new HashMap<String, String>();
 		teiidImporterProperties.put(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "SMALL%");
 		teiidImporterProperties.put(TeiidConnectionImportWizard.IMPORT_PROPERTY_SCHEMA_PATTERN, "%BQT%");
-		importHelper.importModelTeiid(PROJECT_NAME_TEIID, ConnectionProfileConstants.DB2_101_BQT, "db2101Model", teiidImporterProperties,teiidServer);
-		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, "db2101Model", "SMALLA", "SMALLB");
-		checkDatatypes("db2101Model");		
+		importHelper.importModelTeiid(PROJECT_NAME_TEIID, ConnectionProfileConstants.DB2_101_BQT, modelNameDB2_101, teiidImporterProperties,teiidServer);
+		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, modelNameDB2_101, "SMALLA", "SMALLB");
+		checkDatatypes(modelNameDB2_101);
 	}
-	
+
 	@Test
 	public void db297TeiidTest() {
 		Map<String,String> teiidImporterProperties = new HashMap<String, String>();
 		teiidImporterProperties.put(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "SMALL%");
-		importHelper.importModelTeiid(PROJECT_NAME_TEIID,ConnectionProfileConstants.DB2_97_BQT2, "db297Model", teiidImporterProperties,teiidServer);
-		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, "db297Model", "SMALLA", "SMALLB");
-		checkDatatypes("db297Model");
+		importHelper.importModelTeiid(PROJECT_NAME_TEIID,ConnectionProfileConstants.DB2_97_BQT2, modelNameDB2_97, teiidImporterProperties,teiidServer);
+		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, modelNameDB2_97, "SMALLA", "SMALLB");
+		checkDatatypes(modelNameDB2_97);
 	}
-	
+
 	private void checkDatatypes(String modelName){
-		org.jboss.tools.teiid.reddeer.editor.TableEditor editor = new RelationalModelEditor(modelName + ".xmi").openTableEditor();	
+		org.jboss.tools.teiid.reddeer.editor.TableEditor editor = new RelationalModelEditor(modelName + ".xmi").openTableEditor();
 		editor.openTab("Columns");
 		assertEquals("date", editor.getCellText(1, "DATEVALUE", "Datatype"));
 		assertEquals("decimal", editor.getCellText(1, "BIGDECIMALVALUE", "Datatype"));

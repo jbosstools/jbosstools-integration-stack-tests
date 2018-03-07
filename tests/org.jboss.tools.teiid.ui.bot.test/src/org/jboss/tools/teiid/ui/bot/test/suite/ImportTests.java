@@ -19,6 +19,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 @SuiteClasses({ 
+    Odata.class,
     SalesforceImportTest.class,
     LdapImportTest.class,
     GeometryTypeTest.class,
@@ -27,8 +28,8 @@ import org.junit.runners.Suite.SuiteClasses;
     HSql.class,
     MariaDB.class,
     MongoDB.class,
-    MySql.class,
     Odata.class,
+    MySql.class,
     Oracle.class,
     PostgreSql.class,
     SqlServer.class,

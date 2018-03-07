@@ -14,6 +14,7 @@ import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidSer
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.imports.SalesforceImportWizard;
+import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +26,7 @@ public class SalesforceImportTest {
 	private static TeiidServerRequirement teiidServer;
 
 	public static final String MODEL_PROJECT = "jdbcImportTest";
-
+    public static final String MODEL_NAME = "SFModel";
 	@BeforeClass
 	public static void before() {
 		if (new ShellMenuItem(new WorkbenchShell(), "Project", "Build Automatically").isSelected()) {
@@ -35,26 +36,34 @@ public class SalesforceImportTest {
 		new ServersViewExt().refreshServer(teiidServer.getName());
 	}
 
+    @After
+    public void after(){
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + MODEL_NAME);
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/Check_" + MODEL_NAME);
+
+        new ModelExplorer().deleteAllProjectsSafely();
+    }
+
 	@Test
 	public void salesforceTest() {
-		String model = "SFModel";
 
 		SalesforceImportWizard.openWizard()
 				.setConnectionProfile(ConnectionProfileConstants.SALESFORCE)
 				.nextPage()
 				.deselectObjects("Account","Apex Class")
 				.nextPage()
-				.setModelName(model)
+				.setModelName(MODEL_NAME)
 				.setProject(MODEL_PROJECT)
 				.finish();
 
-		assertTrue(new ModelExplorer().containsItem(MODEL_PROJECT,model + ".xmi", "AccountFeed"));
-		assertFalse(new ModelExplorer().containsItem(MODEL_PROJECT,model + ".xmi", "Account"));
-		assertFalse(new ModelExplorer().containsItem(MODEL_PROJECT,model + ".xmi", "Apex Class"));
+		assertTrue(new ModelExplorer().containsItem(MODEL_PROJECT, MODEL_NAME + ".xmi", "AccountFeed"));
+		assertFalse(new ModelExplorer().containsItem(MODEL_PROJECT, MODEL_NAME + ".xmi", "Account"));
+		assertFalse(new ModelExplorer().containsItem(MODEL_PROJECT, MODEL_NAME + ".xmi", "Apex Class"));
 
 		// old TD(prior to 9.0.4) needs table name "salesforce.Case_". From TD 9.0.4 there is no schema "salesforce"
 		// when importing from SF.
-		new ModelExplorer().simulateTablesPreview(teiidServer, MODEL_PROJECT, model, new String[] { "Case_" });
+		new ModelExplorer().simulateTablesPreview(teiidServer, MODEL_PROJECT, MODEL_NAME, new String[] { "Case_" });
 
+        new ServersViewExt().undeployVdb(teiidServer.getName(), "Check_" + MODEL_NAME);
 	}
 }

@@ -39,6 +39,9 @@ public final class ConnectionProfileConstants {
 	public static final String APACHE_SPARK = "apache_spark_2.0.0";
 	public static final String APACHE_HIVE = "apache_hive";
 	public static final String APACHE_HBASE = "apache_hbase";
+	public static final String APACHE_ACCUMULO = "apache_accumulo";
+	public static final String APACHE_CASSANDRA = "apache_cassandra";
+	public static final String APACHE_SOLR = "apache_solr";
 	public static final String MONGO_DB = "mongo_db";
 	public static final String TERADATA = "teradata";
 	public static final String CLOUDERA_IMPALA = "cloudera_impala";
