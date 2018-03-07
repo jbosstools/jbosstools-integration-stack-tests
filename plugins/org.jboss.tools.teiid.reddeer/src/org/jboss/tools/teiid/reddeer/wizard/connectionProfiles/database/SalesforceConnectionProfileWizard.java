@@ -8,7 +8,7 @@ import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.ConnectionProfile
 
 public class SalesforceConnectionProfileWizard extends ConnectionProfileWizard{
 	
-    public static final String DIALOG_TITLE = "New connection Profile";
+    public static final String DIALOG_TITLE = "New connection profile";
 
 	private SalesforceConnectionProfileWizard(String name) {
 		super("SalesForce",name);

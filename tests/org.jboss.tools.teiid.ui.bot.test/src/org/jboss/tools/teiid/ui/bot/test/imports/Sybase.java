@@ -27,19 +27,20 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
 @TeiidServer(state = ServerRequirementState.RUNNING, connectionProfiles = {
 	ConnectionProfileConstants.SYBASE_15_BQT2})
 public class Sybase {
 	@InjectRequirement
-	private static TeiidServerRequirement teiidServer;	
-	
+	private static TeiidServerRequirement teiidServer;
+
 	public ImportHelper importHelper = null;
 
 	private static final String PROJECT_NAME_JDBC = "jdbcImportTest";
 	private static final String PROJECT_NAME_TEIID = "TeiidConnImporter";
+
+	private static final String MODEL_NAME_SYBASE = "sybaseModel";
 
 	@Before
 	public void before() {
@@ -55,27 +56,29 @@ public class Sybase {
 		new ServersViewExt().refreshServer(teiidServer.getName());
 		importHelper = new ImportHelper();
 	}
-	
-	@After
-	public void after(){
-		new ModelExplorer().deleteAllProjectsSafely();
-	}	
+
+    @After
+    public void after(){
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + ConnectionProfileConstants.SYBASE_15_BQT2);
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + ConnectionProfileConstants.SYBASE_15_BQT2 + "_DS");
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/Check_" + MODEL_NAME_SYBASE);
+
+        new ModelExplorer().deleteAllProjectsSafely();
+    }
 
 	@Test
 	@Jira("TEIIDDES-2458")
 	@RunIf(conditionClass = IssueIsClosed.class)
 	public void sybaseJDBCtest() {
-		String model = "sybaseModel";
-		importHelper.importModelJDBC(PROJECT_NAME_JDBC, model, ConnectionProfileConstants.SYBASE_15_BQT2, "bqt2/TABLE/SmallA,bqt2/TABLE/SmallB", false);
-		importHelper.checkImportedTablesInModelJDBC(PROJECT_NAME_JDBC, model, "SmallA", "SmallB",teiidServer);
+		importHelper.importModelJDBC(PROJECT_NAME_JDBC, MODEL_NAME_SYBASE, ConnectionProfileConstants.SYBASE_15_BQT2, "bqt2/TABLE/SmallA,bqt2/TABLE/SmallB", false);
+		importHelper.checkImportedTablesInModelJDBC(PROJECT_NAME_JDBC, MODEL_NAME_SYBASE, "SmallA", "SmallB",teiidServer);
 	}
 
 	@Test
 	public void sybaseTeiidTest() {
 		Map<String,String> teiidImporterProperties = new HashMap<String, String>();
 		teiidImporterProperties.put(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "Small%");
-		importHelper.importModelTeiid(PROJECT_NAME_TEIID, ConnectionProfileConstants.SYBASE_15_BQT2, "sybaseModel", teiidImporterProperties, teiidServer);
-		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, "sybaseModel", "SmallA", "SmallB");
-
+		importHelper.importModelTeiid(PROJECT_NAME_TEIID, ConnectionProfileConstants.SYBASE_15_BQT2, MODEL_NAME_SYBASE, teiidImporterProperties, teiidServer);
+		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, MODEL_NAME_SYBASE, "SmallA", "SmallB");
 	}
 }

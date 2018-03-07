@@ -28,7 +28,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
 @TeiidServer(state = ServerRequirementState.RUNNING, connectionProfiles = {
@@ -39,15 +38,20 @@ import org.junit.runner.RunWith;
 		ConnectionProfileConstants.SQL_SERVER_2014_BQT2})
 public class SqlServer {
 	@InjectRequirement
-	private static TeiidServerRequirement teiidServer;	
+	private static TeiidServerRequirement teiidServer;
 	
 	public ImportHelper importHelper = null;
-	
+
 	private static final String SOURCE_VDB_NAME = "teiid";
 	private static final String SQL_SERVER_EXISTING_MODEL_NAME = "sqlserver";
 
 	private static final String PROJECT_NAME_JDBC = "jdbcImportTest";
 	private static final String PROJECT_NAME_TEIID = "TeiidConnImporter";
+
+    private static final String MODEL_NAME_SQL_2008_PARTS = "sql2008parts";
+    private static final String MODEL_NAME_SQL_2008_BQT2 = "sql2008bqt2";
+    private static final String MODEL_NAME_SQL_2012 = "sql2012";
+    private static final String MODEL_NAME_SQL_2014 = "sql2014";
 
 	@Before
 	public void before() {
@@ -63,63 +67,77 @@ public class SqlServer {
 		new ServersViewExt().refreshServer(teiidServer.getName());
 		importHelper = new ImportHelper();
 	}
-	
-	@After
-	public void after(){
-		new ModelExplorer().deleteAllProjectsSafely();
-	}	
+
+    @After
+    public void after(){
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER + "_DS");
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/Check_" + MODEL_NAME_SQL_2008_PARTS);
+
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + ConnectionProfileConstants.SQL_SERVER_2008_BQT2);
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + ConnectionProfileConstants.SQL_SERVER_2008_BQT2 + "_DS");
+
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + ConnectionProfileConstants.SQL_SERVER_2012_BQT2);
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + ConnectionProfileConstants.SQL_SERVER_2012_BQT2 + "_DS");
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/Check_" + MODEL_NAME_SQL_2012);
+
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + ConnectionProfileConstants.SQL_SERVER_2014_BQT2);
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + ConnectionProfileConstants.SQL_SERVER_2014_BQT2 + "_DS");
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/Check_" + MODEL_NAME_SQL_2014);
+
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + SQL_SERVER_EXISTING_MODEL_NAME);
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + SOURCE_VDB_NAME);
+
+        new ModelExplorer().deleteAllProjectsSafely();
+    }
 
 	@Test
 	public void sqlServer2008JDBCtest() {
-		String model = "sqlServer2008Model";
-		importHelper.importModelJDBC(PROJECT_NAME_JDBC, model, ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER,"partssupplier/dbo/TABLE/SHIP_VIA,partssupplier/dbo/TABLE/PARTS", false);
-		new RelationalModelEditor(model + ".xmi").save();
+		importHelper.importModelJDBC(PROJECT_NAME_JDBC, MODEL_NAME_SQL_2008_PARTS, ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER,"partssupplier/dbo/TABLE/SHIP_VIA,partssupplier/dbo/TABLE/PARTS", false);
+		new RelationalModelEditor(MODEL_NAME_SQL_2008_PARTS + ".xmi").save();
 		assertTrue(importHelper.checkNameInTableJDBC("\"AVERAGE TIME DELIVERY\"",6,2));
-		importHelper.checkImportedTablesInModelJDBC(PROJECT_NAME_JDBC, model, "SHIP_VIA", "PARTS", teiidServer);
+		importHelper.checkImportedTablesInModelJDBC(PROJECT_NAME_JDBC, MODEL_NAME_SQL_2008_PARTS, "SHIP_VIA", "PARTS", teiidServer);
 	}
 
 	@Test
 	public void sqlServer2012JDBCtest() {
-		String model = "sqlServer2012Model";
-		importHelper.importModelJDBC(PROJECT_NAME_JDBC, model, ConnectionProfileConstants.SQL_SERVER_2012_BQT2,
+		importHelper.importModelJDBC(PROJECT_NAME_JDBC, MODEL_NAME_SQL_2012, ConnectionProfileConstants.SQL_SERVER_2012_BQT2,
 				"bqt2/dbo/TABLE/SmallA,bqt2/dbo/TABLE/SmallB", false);
-		new RelationalModelEditor(model + ".xmi").save();
-		importHelper.checkImportedTablesInModelJDBC(PROJECT_NAME_JDBC, model, "SmallA", "SmallB", teiidServer);
+		new RelationalModelEditor(MODEL_NAME_SQL_2012 + ".xmi").save();
+		importHelper.checkImportedTablesInModelJDBC(PROJECT_NAME_JDBC, MODEL_NAME_SQL_2012, "SmallA", "SmallB", teiidServer);
 	}
-	
+
 	@Test
 	public void sqlServer2014JDBCtest() {
-		String model = "sqlServer2014Model";
-		importHelper.importModelJDBC(PROJECT_NAME_JDBC, model, ConnectionProfileConstants.SQL_SERVER_2014_BQT2,
+		importHelper.importModelJDBC(PROJECT_NAME_JDBC, MODEL_NAME_SQL_2014, ConnectionProfileConstants.SQL_SERVER_2014_BQT2,
 				"bqt2/dbo/TABLE/SMALLA,bqt2/dbo/TABLE/SMALLB", false);
-		new RelationalModelEditor(model + ".xmi").save();
-		importHelper.checkImportedTablesInModelJDBC(PROJECT_NAME_JDBC, model, "SMALLA", "SMALLB", teiidServer);
+		new RelationalModelEditor(MODEL_NAME_SQL_2014 + ".xmi").save();
+		importHelper.checkImportedTablesInModelJDBC(PROJECT_NAME_JDBC, MODEL_NAME_SQL_2014, "SMALLA", "SMALLB", teiidServer);
 	}
-	
-	@Test		
+
+	@Test
 	public void sqlServer2008TeiidTest() {
 		Map<String,String> teiidImporterProperties = new HashMap<String, String>();
 		teiidImporterProperties.put(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "Small%");
-		importHelper.importModelTeiid(PROJECT_NAME_TEIID, ConnectionProfileConstants.SQL_SERVER_2008_BQT2, "sqlServer2008Model", teiidImporterProperties, teiidServer);
-		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, "sqlServer2008Model", "SmallA", "SmallB");
+		importHelper.importModelTeiid(PROJECT_NAME_TEIID, ConnectionProfileConstants.SQL_SERVER_2008_BQT2, MODEL_NAME_SQL_2008_BQT2, teiidImporterProperties, teiidServer);
+		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, MODEL_NAME_SQL_2008_BQT2, "SmallA", "SmallB");
 	}
 
 	@Test
 	public void sqlServer2012TeiidTest() {
 		Map<String,String> teiidImporterProperties = new HashMap<String, String>();
 		teiidImporterProperties.put(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "Small%");
-		importHelper.importModelTeiid(PROJECT_NAME_TEIID, ConnectionProfileConstants.SQL_SERVER_2012_BQT2, "sqlServer2012Model", teiidImporterProperties, teiidServer);
-		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, "sqlServer2012Model", "SmallA", "SmallB");
+		importHelper.importModelTeiid(PROJECT_NAME_TEIID, ConnectionProfileConstants.SQL_SERVER_2012_BQT2, MODEL_NAME_SQL_2012, teiidImporterProperties, teiidServer);
+		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, MODEL_NAME_SQL_2012, "SmallA", "SmallB");
 	}
-	
+
 	@Test
 	public void sqlServer2014TeiidTest() {
 		Map<String,String> teiidImporterProperties = new HashMap<String, String>();
 		teiidImporterProperties.put(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "SMALL%");
-		importHelper.importModelTeiid(PROJECT_NAME_TEIID, ConnectionProfileConstants.SQL_SERVER_2014_BQT2, "sqlServer2014Model", teiidImporterProperties, teiidServer);
-		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, "sqlServer2014Model", "SMALLA", "SMALLB");
+		importHelper.importModelTeiid(PROJECT_NAME_TEIID, ConnectionProfileConstants.SQL_SERVER_2014_BQT2, MODEL_NAME_SQL_2014, teiidImporterProperties, teiidServer);
+		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, MODEL_NAME_SQL_2014, "SMALLA", "SMALLB");
 	}
-	
+
 	@Test
 	public void teiidTest() {
 		new ModelExplorer().changeConnectionProfile(ConnectionProfileConstants.SQL_SERVER_2008_BOOKS,
@@ -130,11 +148,11 @@ public class SqlServer {
 				.setName(SOURCE_VDB_NAME)
 				.addModel(PROJECT_NAME_TEIID, SQL_SERVER_EXISTING_MODEL_NAME + ".xmi")
 				.finish();
-		
+
 		new ModelExplorer().deployVdb(PROJECT_NAME_TEIID, SOURCE_VDB_NAME);
-	
+
 		String modelName = SOURCE_VDB_NAME + "Imp";
-		
+
 		TeiidConnectionImportWizard.openWizard()
 				.selectDataSource(SOURCE_VDB_NAME)
 				.nextPage()
@@ -145,7 +163,9 @@ public class SqlServer {
 				.nextPageWithWait()
 				.nextPageWithWait()
 				.finish();
-		
+
 		assertTrue(new ModelExplorer().containsItem(PROJECT_NAME_TEIID,modelName + ".xmi", "AUTHORS"));
+
+		new ServersViewExt().undeployVdb(teiidServer.getName(), SOURCE_VDB_NAME);
 	}
 }

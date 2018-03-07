@@ -18,6 +18,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 @SuiteClasses({ 
+    SalesForce.class,
     Apache.class,
     Db2.class,
     Dv6.class,
@@ -25,9 +26,8 @@ import org.junit.runners.Suite.SuiteClasses;
     File.class,
     GoogleSpreadSheet.class,
     Informix.class,
-    Ingres10.class,    
+    Ingres10.class,
     Modeshape.class,
-    SalesForce.class,
     SapHana.class,
     SapIq.class,
     Sybase.class

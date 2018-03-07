@@ -12,6 +12,7 @@ import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.teiid.reddeer.ImportHelper;
+import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.dialog.CreateDataSourceDialog;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.preference.TeiidDesignerPreferencePage;
@@ -25,16 +26,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
 @TeiidServer(state = ServerRequirementState.RUNNING, connectionProfiles = {})
 public class Apache {
 	@InjectRequirement
-	private static TeiidServerRequirement teiidServer;	
-	
+	private static TeiidServerRequirement teiidServer;
+
 	public ImportHelper importHelper = null;
-	
+
 	private static final String PROJECT_NAME_TEIID = "TeiidConnImporter";
 
 	@Before
@@ -51,22 +51,22 @@ public class Apache {
 		new ServersViewExt().refreshServer(teiidServer.getName());
 		importHelper = new ImportHelper();
 	}
-	
+
 	@After
 	public void after(){
 		new ModelExplorer().deleteAllProjectsSafely();
 	}
-	
+
 	@Test
 	public void apacheAccumuloTeiidtest() {
-		String modelName = "apache";
-		new ServersViewExt().deleteDatasource(teiidServer.getName(), "apacheAccumuloDS");
-		
-		Properties apacheProps = teiidServer.getServerConfig().getConnectionProfile("apache_accumulo").asProperties();
+		String modelName = "apacheAccumulo";
+		String dataSourceName = "apacheAccumuloDS";
+
+		Properties apacheProps = teiidServer.getServerConfig().getConnectionProfile(ConnectionProfileConstants.APACHE_ACCUMULO).asProperties();
 
 		TeiidConnectionImportWizard.openWizard()
 				.createNewDataSource()
-				.setName("apacheAccumuloDS")
+				.setName(dataSourceName)
 				.setDriver("accumulo")
 				.setImportPropertie(CreateDataSourceDialog.DATASOURCE_PROPERTY_USER_NAME_OPTIONAL, apacheProps.getProperty("db.username"))
 				.setImportPropertie(CreateDataSourceDialog.DATASOURCE_PROPERTY_PASSWORD_OPTIONAL, apacheProps.getProperty("db.password"))
@@ -74,7 +74,7 @@ public class Apache {
 				.setImportPropertie(CreateDataSourceDialog.DATASOURCE_PROPERTY_ZOO_KEEPER, apacheProps.getProperty("db.hostname"))
 				.finish();
 		TeiidConnectionImportWizard.getInstance()
-				.selectDataSource("java:/apacheAccumuloDS")
+				.selectDataSource("java:/" + dataSourceName)
 				.nextPage()
 				.setTranslator("accumulo")
 				.nextPage()
@@ -83,21 +83,22 @@ public class Apache {
 				.nextPageWithWait()
 				.nextPageWithWait()
 				.setTablesToImport("Objects to Create/SmallA","Objects to Create/SmallB")
-				.finish();		
-		
+				.finish();
+
 		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, modelName, "SmallA", "SmallB");
+		new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + dataSourceName);
 	}
-	
+
 	@Test
 	public void apacheCassandraTeiidtest() {
-		String modelName = "apache";
-		new ServersViewExt().deleteDatasource(teiidServer.getName(), "apacheCassandraDS");
-		
-		Properties apacheProps = teiidServer.getServerConfig().getConnectionProfile("apache_cassandra").asProperties();
-		
+		String modelName = "apacheCassandra";
+		String dataSourceName = "apacheCassandraDS";
+
+		Properties apacheProps = teiidServer.getServerConfig().getConnectionProfile(ConnectionProfileConstants.APACHE_CASSANDRA).asProperties();
+
 		TeiidConnectionImportWizard.openWizard()
 				.createNewDataSource()
-				.setName("apacheCassandraDS")
+				.setName(dataSourceName)
 				.setDriver("cassandra")
 				.setImportPropertie(CreateDataSourceDialog.DATASOURCE_PROPERTY_USER_NAME_OPTIONAL, apacheProps.getProperty("db.username"))
 				.setImportPropertie(CreateDataSourceDialog.DATASOURCE_PROPERTY_PASSWORD_OPTIONAL, apacheProps.getProperty("db.password"))
@@ -105,7 +106,7 @@ public class Apache {
 				.setImportPropertie(CreateDataSourceDialog.DATASOURCE_PROPERTY_KEYSPACE, apacheProps.getProperty("db.name"))
 				.finish();
 		TeiidConnectionImportWizard.getInstance()
-				.selectDataSource("java:/apacheCassandraDS")
+				.selectDataSource("java:/" + dataSourceName)
 				.nextPage()
 				.setTranslator("cassandra")
 				.nextPage()
@@ -115,27 +116,28 @@ public class Apache {
 				.nextPageWithWait()
 				.setTablesToImport("Objects to Create/smalla","Objects to Create/smallb")
 				.finish();
-			
+
 		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, modelName, "smalla", "smallb");
-	}		
-		
+		new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + dataSourceName);
+	}
+
 	@Test
 	public void apacheSolrTeiidtest() {
-		String modelName = "apache";
-		new ServersViewExt().deleteDatasource(teiidServer.getName(), "apacheSolrDS");
-		
-		Properties apacheProps = teiidServer.getServerConfig().getConnectionProfile("apache_solr").asProperties();
+		String modelName = "apacheSolr";
+		String dataSourceName = "apacheSolrDS";
+
+		Properties apacheProps = teiidServer.getServerConfig().getConnectionProfile(ConnectionProfileConstants.APACHE_SOLR).asProperties();
 
 		TeiidConnectionImportWizard.openWizard()
 				.createNewDataSource()
-				.setName("apacheSolrDS")
-				.setDriver("solr")			
+				.setName(dataSourceName)
+				.setDriver("solr")
 				.setImportPropertie(CreateDataSourceDialog.DATASOURCE_PROPERTY_CORE_INDEX_NAME, apacheProps.getProperty("db.name"))
 				.setImportPropertie(CreateDataSourceDialog.DATASOURCE_PROPERTY_URL_SOLR, apacheProps.getProperty("url"))
 				.finish();
 		AbstractWait.sleep(TimePeriod.getCustom(5));
 		TeiidConnectionImportWizard.getInstance()
-				.selectDataSource("java:/apacheSolrDS")
+				.selectDataSource("java:/" + dataSourceName)
 				.nextPage()
 				.setTranslator("solr")
 				.nextPage()
@@ -144,8 +146,9 @@ public class Apache {
 				.nextPageWithWait()
 				.nextPageWithWait()
 				.setTablesToImport("Objects to Create/collection1")
-				.finish();		
-		
+				.finish();
+
 		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, modelName, "collection1");
-	}		
+		new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + dataSourceName);
+	}
 }

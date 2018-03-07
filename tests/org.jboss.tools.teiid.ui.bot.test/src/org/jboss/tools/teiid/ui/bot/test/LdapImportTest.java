@@ -11,6 +11,7 @@ import org.eclipse.reddeer.eclipse.core.resources.Project;
 import org.eclipse.reddeer.eclipse.core.resources.ProjectItem;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.eclipse.reddeer.swt.impl.button.OkButton;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
@@ -31,13 +32,16 @@ import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
+import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.imports.LdapImportWizard;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
+@OpenPerspective(TeiidPerspective.class)
 @TeiidServer(state = ServerRequirementState.RUNNING, connectionProfiles = {
 		ConnectionProfileConstants.LDAP,
 		ConnectionProfileConstants.RHDS })
@@ -50,18 +54,21 @@ public class LdapImportTest {
 	private static final String LDAP_MODEL = "LdapImp";
 	private static final String RHDS_MODEL = "RhdsImp";
 
-	@BeforeClass
-	public static void prepare() {
+	@Before
+	public void before() {
 		if (new ShellMenuItem(new WorkbenchShell(), "Project", "Build Automatically").isSelected()) {
 			new ShellMenuItem(new WorkbenchShell(), "Project", "Build Automatically").select();
 		}
 		new ModelExplorer().createProject(NEW_PROJECT);
 	}
 
-	@Before
-	public void openTeiidPerspective() {
-		new TeiidPerspective().open();
-	}
+    @After
+    public void after(){
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + RHDS_MODEL);
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/Check_" + RHDS_MODEL);
+
+        new ModelExplorer().deleteAllProjectsSafely();
+    }
 
 	@Test
 	public void rhdsImport() {
@@ -103,6 +110,7 @@ public class LdapImportTest {
 
 		new ModelExplorer().simulateTablesPreview(teiidServer, NEW_PROJECT, RHDS_MODEL, new String[] { "ou=People", "ou=Apps" });
 
+        new ServersViewExt().undeployVdb(teiidServer.getName(), "Check_" + RHDS_MODEL);
 	}
 
 	@Test

@@ -25,7 +25,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
 @TeiidServer(state = ServerRequirementState.RUNNING, connectionProfiles = {
@@ -33,11 +32,13 @@ import org.junit.runner.RunWith;
 public class Ingres10 {
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;	
-	
+
 	public ImportHelper importHelper = null;
 
 	private static final String PROJECT_NAME_JDBC = "jdbcImportTest";
 	private static final String PROJECT_NAME_TEIID = "TeiidConnImporter";
+
+	private static final String MODEL_NAME = "ingres10";
 
 	@Before
 	public void before() {
@@ -53,25 +54,28 @@ public class Ingres10 {
 		new ServersViewExt().refreshServer(teiidServer.getName());
 		importHelper = new ImportHelper();
 	}
-	
-	@After
-	public void after(){
-		new ModelExplorer().deleteAllProjectsSafely();
-	}	
+
+    @After
+    public void after(){
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + ConnectionProfileConstants.INGRES_10_BQT2);
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + ConnectionProfileConstants.INGRES_10_BQT2 + "_DS");
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/Check_" + MODEL_NAME);
+
+        new ModelExplorer().deleteAllProjectsSafely();
+    }
 
 	@Test
 	public void ingres10JDBCtest() {
-		String model = "ingres10Model";
-		importHelper.importModelJDBC(PROJECT_NAME_JDBC, model, ConnectionProfileConstants.INGRES_10_BQT2, "bqt2/TABLE/smalla,bqt2/TABLE/smallb", false);
-		new RelationalModelEditor(model + ".xmi").save();
-		importHelper.checkImportedTablesInModelJDBC(PROJECT_NAME_JDBC, model, "smalla", "smallb", teiidServer);
+		importHelper.importModelJDBC(PROJECT_NAME_JDBC, MODEL_NAME, ConnectionProfileConstants.INGRES_10_BQT2, "bqt2/TABLE/smalla,bqt2/TABLE/smallb", false);
+		new RelationalModelEditor(MODEL_NAME + ".xmi").save();
+		importHelper.checkImportedTablesInModelJDBC(PROJECT_NAME_JDBC, MODEL_NAME, "smalla", "smallb", teiidServer);
 	}
-	
+
 	@Test
 	public void ingres10TeiidTest() {
 		Map<String,String> teiidImporterProperties = new HashMap<String, String>();
 		teiidImporterProperties.put(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "small%");
-		importHelper.importModelTeiid(PROJECT_NAME_TEIID, ConnectionProfileConstants.INGRES_10_BQT2, "ingres10Model", teiidImporterProperties,teiidServer);
-		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, "ingres10Model", "smalla", "smallb");
-	}	
+		importHelper.importModelTeiid(PROJECT_NAME_TEIID, ConnectionProfileConstants.INGRES_10_BQT2, MODEL_NAME, teiidImporterProperties,teiidServer);
+		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, MODEL_NAME, "smalla", "smallb");
+	}
 }

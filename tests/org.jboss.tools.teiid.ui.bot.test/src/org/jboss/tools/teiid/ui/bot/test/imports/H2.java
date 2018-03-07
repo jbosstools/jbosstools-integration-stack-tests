@@ -20,16 +20,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
 @TeiidServer(state = ServerRequirementState.RUNNING, connectionProfiles = {})
 public class H2 {
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;	
-	
+
 	public ImportHelper importHelper = null;
-	
+
 	private static final String PROJECT_NAME_TEIID = "TeiidConnImporter";
 
 	@Before
@@ -46,11 +45,11 @@ public class H2 {
 		new ServersViewExt().refreshServer(teiidServer.getName());
 		importHelper = new ImportHelper();
 	}
-	
+
 	@After
 	public void after(){
 		new ModelExplorer().deleteAllProjectsSafely();
-	}	
+	}
 
 	@Test
 	public void h2TeiidTest() {
@@ -67,7 +66,7 @@ public class H2 {
 				.nextPageWithWait()
 				.setTablesToImport("Objects to Create/CONSTANTS")
 				.finish();
-		
+
 		importHelper.checkImportedModelTeiid(modelName, "CONSTANTS");
 	}
 }

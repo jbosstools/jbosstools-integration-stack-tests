@@ -21,7 +21,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
 @TeiidServer(state = ServerRequirementState.RUNNING, connectionProfiles = {
@@ -29,9 +28,9 @@ import org.junit.runner.RunWith;
 public class HSql {
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;	
-	
+
 	public ImportHelper importHelper = null;
-	
+
 	private static final String PROJECT_NAME_TEIID = "TeiidConnImporter";
 
 	@Before
@@ -48,17 +47,17 @@ public class HSql {
 		new ServersViewExt().refreshServer(teiidServer.getName());
 		importHelper = new ImportHelper();
 	}
-	
+
 	@After
 	public void after(){
 		new ModelExplorer().deleteAllProjectsSafely();
-	}	
+	}
 
 	@Test
 	public void hsqlTeiidTest() {
 		String modelName = "HsqldbImported";
 		new ServersViewExt().createDatasource(teiidServer.getName(), ConnectionProfileConstants.HSQLDB);
-	
+
 		TeiidConnectionImportWizard.openWizard()
 				.selectDataSource(ConnectionProfileConstants.HSQLDB)
 				.nextPage()
@@ -70,7 +69,8 @@ public class HSql {
 				.nextPageWithWait()
 				.nextPageWithWait()
 				.finish();
-		
+
 		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, modelName, "CUSTOMER");
+		new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + ConnectionProfileConstants.HSQLDB);
 	}
 }

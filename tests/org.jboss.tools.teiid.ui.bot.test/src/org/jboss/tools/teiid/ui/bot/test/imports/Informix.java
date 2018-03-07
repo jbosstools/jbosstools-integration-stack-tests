@@ -25,7 +25,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
 @TeiidServer(state = ServerRequirementState.RUNNING, connectionProfiles = {
@@ -33,12 +32,14 @@ import org.junit.runner.RunWith;
 		})
 public class Informix {
 	@InjectRequirement
-	private static TeiidServerRequirement teiidServer;	
-	
+	private static TeiidServerRequirement teiidServer;
+
 	public ImportHelper importHelper = null;
 
 	private static final String PROJECT_NAME_JDBC = "jdbcImportTest";
 	private static final String PROJECT_NAME_TEIID = "TeiidConnImporter";
+
+	private static final String MODEL_NAME = "informix";
 
 	@Before
 	public void before() {
@@ -54,26 +55,27 @@ public class Informix {
 		new ServersViewExt().refreshServer(teiidServer.getName());
 		importHelper = new ImportHelper();
 	}
-	
-	@After
-	public void after(){
-		new ModelExplorer().deleteAllProjectsSafely();
-	}
-	
+
+    @After
+    public void after(){
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + ConnectionProfileConstants.INFORMIX);
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + ConnectionProfileConstants.INFORMIX + "_DS");
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/Check_" + MODEL_NAME);
+        new ModelExplorer().deleteAllProjectsSafely();
+    }
+
 	@Test
 	public void informixTeiidtest() {
-		String modelName = "informixTeiid";		
 		Map<String,String> teiidImporterProperties = new HashMap<String, String>();
 		teiidImporterProperties.put(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "small%");
-		importHelper.importModelTeiid(PROJECT_NAME_TEIID, ConnectionProfileConstants.INFORMIX, modelName, teiidImporterProperties, teiidServer);			
-		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, modelName, "smalla", "smallb");
+		importHelper.importModelTeiid(PROJECT_NAME_TEIID, ConnectionProfileConstants.INFORMIX, MODEL_NAME, teiidImporterProperties, teiidServer);
+		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, MODEL_NAME, "smalla", "smallb");
 	}
-	
+
 	@Test
 	public void informixJDBCtest() {
-		String modelName = "informix";
-		importHelper.importModelJDBC(PROJECT_NAME_JDBC, modelName, ConnectionProfileConstants.INFORMIX, "dvqe/informix/TABLE/smalla,dvqe/informix/TABLE/smallb", false);
-		new RelationalModelEditor(modelName + ".xmi").save();
-		importHelper.checkImportedTablesInModelJDBC(PROJECT_NAME_JDBC, modelName, "smalla", "smallb", teiidServer);	
-	}	
+		importHelper.importModelJDBC(PROJECT_NAME_JDBC, MODEL_NAME, ConnectionProfileConstants.INFORMIX, "dvqe/informix/TABLE/smalla,dvqe/informix/TABLE/smallb", false);
+		new RelationalModelEditor(MODEL_NAME + ".xmi").save();
+		importHelper.checkImportedTablesInModelJDBC(PROJECT_NAME_JDBC, MODEL_NAME, "smalla", "smallb", teiidServer);
+	}
 }

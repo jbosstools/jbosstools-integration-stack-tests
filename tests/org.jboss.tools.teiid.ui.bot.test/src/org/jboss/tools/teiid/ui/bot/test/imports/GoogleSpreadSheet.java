@@ -25,7 +25,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
 @TeiidServer(state = ServerRequirementState.RUNNING, connectionProfiles = {
@@ -36,7 +35,7 @@ public class GoogleSpreadSheet {
 	private static TeiidServerRequirement teiidServer;
 
 	public ImportHelper importHelper = null;
-	
+
 	private static final String PROJECT_NAME_TEIID = "TeiidConnImporter";
 
 	@Before
@@ -53,23 +52,23 @@ public class GoogleSpreadSheet {
 		new ServersViewExt().refreshServer(teiidServer.getName());
 		importHelper = new ImportHelper();
 	}
-	
+
 	@After
 	public void after(){
 		new ModelExplorer().deleteAllProjectsSafely();
-	}	
+	}
 
 	@Test
 	public void googleSpreadSheetTeiidTest() {
-		String modelName = "GoogleSpreadSheetModel";		
-		new ServersViewExt().deleteDatasource(teiidServer.getName(), "googleSpreadSheetDS");
+		String modelName = "GoogleSpreadSheetModel";
+		String dataSourceName = "googleSpreadSheetDS";
 
 		Properties googleDsProperties = teiidServer.getServerConfig()
 				.getConnectionProfile(ConnectionProfileConstants.GOOGLE_SPREADSHEET).asProperties();
-		
+
 		TeiidConnectionImportWizard.openWizard()
 				.createNewDataSource()
-				.setName("googleSpreadSheetDS")
+				.setName(dataSourceName)
 				.setDriver("google")
 				.setImportPropertie("* Refresh key", googleDsProperties.getProperty("refreshToken"))
 				.setImportPropertie("Authentication method", googleDsProperties.getProperty("authMethod"))
@@ -77,6 +76,7 @@ public class GoogleSpreadSheet {
 				.setImportPropertie("Name of the spreadsheet we are connecting to", googleDsProperties.getProperty("spreadsheetName"))
 				.finish();
 		TeiidConnectionImportWizard.getInstance()
+				.selectDataSource("java:/" + dataSourceName)
 				.nextPage()
 				.setTranslator("google-spreadsheet")
 				.nextPage()
@@ -88,11 +88,13 @@ public class GoogleSpreadSheet {
 
 		assertTrue(new ModelExplorer().containsItem(PROJECT_NAME_TEIID,modelName + ".xmi", "smalla"));
 		assertTrue(new ModelExplorer().containsItem(PROJECT_NAME_TEIID,modelName + ".xmi", "smallb"));
-		
+
 		assertTrue(new ModelExplorer().containsItem(PROJECT_NAME_TEIID,modelName + ".xmi", "smalla", "doublenum : double"));
 		assertTrue(new ModelExplorer().containsItem(PROJECT_NAME_TEIID,modelName + ".xmi", "smalla", "booleanvalue : boolean"));
-		
+
 		assertTrue(new ModelExplorer().containsItem(PROJECT_NAME_TEIID,modelName + ".xmi", "smallb", "datevalue : date"));
 		assertTrue(new ModelExplorer().containsItem(PROJECT_NAME_TEIID,modelName + ".xmi", "smallb", "timestampvalue : timestamp"));
-	}	
+
+		new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + dataSourceName);
+	}
 }

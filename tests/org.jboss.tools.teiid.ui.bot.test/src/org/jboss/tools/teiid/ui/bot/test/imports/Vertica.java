@@ -25,20 +25,20 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
 @TeiidServer(state = ServerRequirementState.RUNNING, connectionProfiles = {
-		ConnectionProfileConstants.VERTICA	
-		})
+		ConnectionProfileConstants.VERTICA })
 public class Vertica {
 	@InjectRequirement
-	private static TeiidServerRequirement teiidServer;	
-	
+	private static TeiidServerRequirement teiidServer;
+
 	public ImportHelper importHelper = null;
 
 	private static final String PROJECT_NAME_JDBC = "jdbcImportTest";
 	private static final String PROJECT_NAME_TEIID = "TeiidConnImporter";
+
+	private static final String MODEL_NAME = "vertica";
 
 	@Before
 	public void before() {
@@ -54,27 +54,28 @@ public class Vertica {
 		new ServersViewExt().refreshServer(teiidServer.getName());
 		importHelper = new ImportHelper();
 	}
-	
-	@After
-	public void after(){
-		new ModelExplorer().deleteAllProjectsSafely();
-	}
-	
+
+    @After
+    public void after(){
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + ConnectionProfileConstants.VERTICA);
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + ConnectionProfileConstants.VERTICA + "_DS");
+        new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/Check_" + MODEL_NAME);
+
+        new ModelExplorer().deleteAllProjectsSafely();
+    }
+
 	@Test
 	public void verticaTeiidtest() {
-		String modelName = "vertica";		
 		Map<String,String> teiidImporterProperties = new HashMap<String, String>();
 		teiidImporterProperties.put(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "small%");
-		importHelper.importModelTeiid(PROJECT_NAME_TEIID, ConnectionProfileConstants.VERTICA, modelName, teiidImporterProperties, teiidServer);		
-		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, modelName, "smalla", "smallb");
+		importHelper.importModelTeiid(PROJECT_NAME_TEIID, ConnectionProfileConstants.VERTICA, MODEL_NAME, teiidImporterProperties, teiidServer);
+		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, MODEL_NAME, "smalla", "smallb");
 	}
-	
+
 	@Test
 	public void verticaJDBCtest() {
-		String modelName = "vertica";
-		importHelper.importModelJDBC(PROJECT_NAME_JDBC, modelName, ConnectionProfileConstants.VERTICA, "dvqe/public/TABLE/smalla,dvqe/public/TABLE/smallb", false);
-		new RelationalModelEditor(modelName + ".xmi").save();
-		importHelper.checkImportedTablesInModelJDBC(PROJECT_NAME_JDBC, modelName, "smalla", "smallb", teiidServer);
+		importHelper.importModelJDBC(PROJECT_NAME_JDBC, MODEL_NAME, ConnectionProfileConstants.VERTICA, "dvqe/public/TABLE/smalla,dvqe/public/TABLE/smallb", false);
+		new RelationalModelEditor(MODEL_NAME + ".xmi").save();
+		importHelper.checkImportedTablesInModelJDBC(PROJECT_NAME_JDBC, MODEL_NAME, "smalla", "smallb", teiidServer);
 	}
-	
 }

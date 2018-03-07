@@ -23,14 +23,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
 @TeiidServer(state = ServerRequirementState.RUNNING, connectionProfiles = {})
 public class Odata {
 	@InjectRequirement
-	private static TeiidServerRequirement teiidServer;	
-	
+	private static TeiidServerRequirement teiidServer;
+
 	public ImportHelper importHelper = null;
 
 	private static final String PROJECT_NAME_TEIID = "TeiidConnImporter";
@@ -49,35 +48,38 @@ public class Odata {
 		new ServersViewExt().refreshServer(teiidServer.getName());
 		importHelper = new ImportHelper();
 	}
-	
+
 	@After
 	public void after(){
 		new ModelExplorer().deleteAllProjectsSafely();
-	}	
+	}
 
 	@Test
 	public void odataTeiidTest() {
 		String modelName = "OdataModel";
-		new ServersViewExt().deleteDatasource(teiidServer.getName(), "odataDS");
-		
+		String dataSourceName = "odataDS";
+
 		TeiidConnectionImportWizard.openWizard()
 				.createNewDataSource()
-						.setName("odataDS")
-						.setDriver("webservice")
-						.setImportPropertie(CreateDataSourceDialog.DATASOURCE_PROPERTY_URL, "http://services.odata.org/Northwind/Northwind.svc")
-						.finish();
+				.setName(dataSourceName)
+				.setDriver("webservice")
+				.setImportPropertie(CreateDataSourceDialog.DATASOURCE_PROPERTY_URL, "http://services.odata.org/Northwind/Northwind.svc")
+				.finish();
 		TeiidConnectionImportWizard.getInstance()
+				.selectDataSource("java:/" + dataSourceName)
 				.nextPage()
 				.setTranslator("odata")
 				.nextPage()
 				.setModelName(modelName)
 				.setProject(PROJECT_NAME_TEIID)
-				.nextPageWithWait()				
+				.nextPageWithWait()
 				.nextPageWithWait()
 				.finish();
-		
+
 		assertTrue(new ModelExplorer().containsItem(PROJECT_NAME_TEIID,modelName + ".xmi", "Customers"));
 		assertTrue(new ModelExplorer().containsItem(PROJECT_NAME_TEIID,modelName + ".xmi", "Customers", "CustomerID : string(5)"));
 		assertTrue(new ModelExplorer().containsItem(PROJECT_NAME_TEIID,modelName + ".xmi", "Employees", "EmployeeID : int"));
+
+		new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + dataSourceName);
 	}
 }

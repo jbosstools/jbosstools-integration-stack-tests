@@ -21,14 +21,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
 @TeiidServer(state = ServerRequirementState.RUNNING, connectionProfiles = {})
 public class File {
 	@InjectRequirement
-	private static TeiidServerRequirement teiidServer;	
-	
+	private static TeiidServerRequirement teiidServer;
+
 	public ImportHelper importHelper = null;
 
 	private static final String PROJECT_NAME_TEIID = "TeiidConnImporter";
@@ -46,24 +45,25 @@ public class File {
 		new ServersViewExt().refreshServer(teiidServer.getName());
 		importHelper = new ImportHelper();
 	}
-	
+
 	@After
 	public void after(){
 		new ModelExplorer().deleteAllProjectsSafely();
-	}	
+	}
 
 	@Test
-	public void fileTeiidTest() {		
+	public void fileTeiidTest() {
 		String modelName = "FileImported";
-		new ServersViewExt().deleteDatasource(teiidServer.getName(), "fileDS");
-		
+		String dataSourceName = "fileDS";
+
 		TeiidConnectionImportWizard.openWizard()
 				.createNewDataSource()
-						.setName("fileDS")
+						.setName(dataSourceName)
 						.setDriver("file")
 						.setImportPropertie(CreateDataSourceDialog.DATASOURCE_PROPERTY_PARENT_DIR, "resources/flat/")
 						.finish();
 		TeiidConnectionImportWizard.getInstance()
+				.selectDataSource("java:/" + dataSourceName)
 				.nextPage()
 				.nextPage()
 				.setModelName(modelName)
@@ -71,7 +71,8 @@ public class File {
 				.nextPageWithWait()
 				.nextPageWithWait()
 				.finish();
-		
+
 		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, modelName, "getTextFiles");
+		new ServersViewExt().deleteDatasource(teiidServer.getName(), "java:/" + dataSourceName);
 	}
 }
