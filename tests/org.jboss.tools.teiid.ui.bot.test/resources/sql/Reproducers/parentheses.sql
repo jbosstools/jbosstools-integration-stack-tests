@@ -1,0 +1,5 @@
+(SELECT * FROM PartsSupplier.PARTS AS a
+UNION ALL
+SELECT * FROM PartsSupplier.PARTS AS b)
+INTERSECT
+SELECT * FROM PartsSupplier.PARTS AS d
