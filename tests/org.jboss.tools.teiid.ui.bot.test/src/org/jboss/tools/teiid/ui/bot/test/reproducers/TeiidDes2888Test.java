@@ -16,6 +16,7 @@ import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.wizard.newWizard.VdbWizard;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,6 +43,11 @@ public class TeiidDes2888Test {
             SOURCE_MODEL);
         modelExplorer.createDataSource("Use Connection Profile Info", ConnectionProfileConstants.ORACLE_11G_PRODUCTS,
             PROJECT_NAME, SOURCE_MODEL);
+    }
+
+    @After
+    public void after() {
+        new ModelExplorer().deleteAllProjectsSafely();
     }
 
     @Test
