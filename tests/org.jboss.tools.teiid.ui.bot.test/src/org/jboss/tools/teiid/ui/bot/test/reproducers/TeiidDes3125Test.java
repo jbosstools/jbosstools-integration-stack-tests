@@ -11,6 +11,7 @@ import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.TransformationEditor;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -34,6 +35,11 @@ public class TeiidDes3125Test {
         modelExplorer = new ModelExplorer();
         modelExplorer.importProject(PROJECT_NAME);
         modelExplorer.refreshProject(PROJECT_NAME);
+    }
+
+    @After
+    public void after() {
+        new ModelExplorer().deleteAllProjectsSafely();
     }
 
     @Test
