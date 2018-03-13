@@ -29,7 +29,7 @@ public abstract class ModelEditor extends DefaultEditor {
 		public static final String INTERFACE = "<<Interface>>";
 	}
 	
-	ModelEditor(String name){
+    ModelEditor(String name) {
 		super(name);
         new DefaultCTabItem(1).activate(); // legacy, some test expect package diagram as default page
 		activate();

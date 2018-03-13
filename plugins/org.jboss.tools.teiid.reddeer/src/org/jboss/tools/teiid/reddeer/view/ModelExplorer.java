@@ -45,6 +45,7 @@ import org.jboss.tools.teiid.reddeer.dialog.CreateWebServiceDialog;
 import org.jboss.tools.teiid.reddeer.dialog.GenerateDynamicVdbDialog;
 import org.jboss.tools.teiid.reddeer.dialog.GenerateRestProcedureDialog;
 import org.jboss.tools.teiid.reddeer.dialog.GenerateVdbArchiveDialog;
+import org.jboss.tools.teiid.reddeer.dialog.MaterializationDialog;
 import org.jboss.tools.teiid.reddeer.dialog.SaveAsDialog;
 import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
@@ -93,12 +94,22 @@ public class ModelExplorer extends AbstractExplorer {
 		activate();
 	}
 	
+	   /**
+     * Changes connection profile of specified Source Model, data source will be created too
+     * @param connectionProfile - ConnectionProfileConstants.*
+     * @param modelPath - path to the model (<PROJECT>, ..., <MODEL>) 
+     */
+	public void changeConnectionProfile(String connectionProfile, String... modelPath) {
+	    this.changeConnectionProfile(connectionProfile, true, modelPath);
+	}
+	
 	/**
 	 * Changes connection profile of specified Source Model
 	 * @param connectionProfile - ConnectionProfileConstants.*
+	 * @param create Data Source whether DS should be created too
 	 * @param modelPath - path to the model (<PROJECT>, ..., <MODEL>) 
 	 */
-	public void changeConnectionProfile(String connectionProfile, String... modelPath) {
+	public void changeConnectionProfile(String connectionProfile, boolean createDataSource, String... modelPath) {
 		int n = modelPath.length -1;
 		modelPath[n] = (modelPath[n].contains(".xmi")) ? modelPath[n] : modelPath[n] + ".xmi";
 		String modelName = modelPath[n];
@@ -106,7 +117,11 @@ public class ModelExplorer extends AbstractExplorer {
 		this.selectItem(modelPath);
 		new ContextMenuItem("Modeling", "Set Connection Profile").select();
 		new DefaultShell("Set Connection Profile");
-		new DefaultTreeItem("Database Connections", connectionProfile).select();
+        try {
+            new DefaultTreeItem("Database Connections", connectionProfile).select();
+        } catch (CoreLayerException ex) {
+            new DefaultTreeItem("Teiid Importer Connections", connectionProfile).select();
+        }
         new OkButton().click();
         if (new ShellIsAvailable("Confirm Connection Profile Change").test()) { // if test untestet teiid
                                                                                         // version
@@ -123,7 +138,9 @@ public class ModelExplorer extends AbstractExplorer {
             setJndiName(jndiName, modelPath);
 		}
         new RelationalModelEditor(modelName).save();
-        createDataSource("Use Connection Profile Info", connectionProfile, modelPath);
+        if (createDataSource) {
+            createDataSource("Use Connection Profile Info", connectionProfile, modelPath);
+        }
 	}
 	
 	/**
@@ -601,6 +618,9 @@ public class ModelExplorer extends AbstractExplorer {
 		} catch (Exception ex) {
 			// no editors open, ignore
 		}
+        if (new ShellIsActive("Save Resource").test()) {
+            new PushButton(new DefaultShell("Save Resource"), "Don't Save").click();
+        }
 		new WorkbenchShell();
 		this.activate();
 		this.deleteAllProjects();
@@ -635,7 +655,34 @@ public class ModelExplorer extends AbstractExplorer {
 			return false;
 		}
 	}
+	
+    /**
+     * Open materialization dialog
+     * @param pathToViewTable - path to item (<PROJECT>, ..., <VIEWTable>)
+     */
+   public MaterializationDialog setMaterialization(String... pathToViewTable) {
+        new WorkbenchShell();
+        this.selectItem(pathToViewTable);
+        new ContextMenuItem("Modeling", "Materialize").select();
+        return new MaterializationDialog();
+    }
+	
+    public void saveAll() {
+        if (new ShellMenuItem(new WorkbenchShell(), "File", "Save All").isEnabled()) {
+            new ShellMenuItem(new WorkbenchShell(), "File", "Save All").select();
+        }
+    }
 
+    /**
+     * Save specific model
+     * @param pathToModel - path to model (<PROJECT>, ..., <MODEL>)
+     */
+    public void saveSpecificModel(String... pathToModel) {
+        this.openModelEditor(pathToModel);
+        RelationalModelEditor model = new RelationalModelEditor(pathToModel[pathToModel.length - 1]);
+        model.save();
+    }
+    
     /**
      * Update imports on specific project
      * 
