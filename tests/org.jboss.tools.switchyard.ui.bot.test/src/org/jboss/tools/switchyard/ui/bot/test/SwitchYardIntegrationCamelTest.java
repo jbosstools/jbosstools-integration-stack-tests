@@ -81,7 +81,7 @@ public class SwitchYardIntegrationCamelTest {
 		PropertySheet propertiesView = new PropertySheet();
 		propertiesView.open();
 		new CamelComponentEditPart("SetBody _setBody1").select();
-		camelEditor.setProperty(CCombo.class, "Language", "simple");
+		camelEditor.setProperty(CCombo.class, "Expression", "simple");
 		camelEditor.setProperty("Expression", "Hello ${body}");
 		camelEditor.save();
 
