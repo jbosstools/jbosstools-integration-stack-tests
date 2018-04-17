@@ -59,7 +59,7 @@ public class HSql {
 		new ServersViewExt().createDatasource(teiidServer.getName(), ConnectionProfileConstants.HSQLDB);
 
 		TeiidConnectionImportWizard.openWizard()
-				.selectDataSource(ConnectionProfileConstants.HSQLDB)
+                .selectDataSource("java:/" + ConnectionProfileConstants.HSQLDB)
 				.nextPage()
 				.setTranslator("hsql")
 				.setImportPropertie(TeiidConnectionImportWizard.IMPORT_PROPERTY_SCHEMA_PATTERN, "PUBLIC%")

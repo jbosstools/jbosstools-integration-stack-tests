@@ -96,7 +96,7 @@ public class Oracle {
 
 	@Test
 	public void oracle11gJDBCtest() {
-		importHelper.importModelJDBC(PROJECT_NAME_JDBC, MODEL_NAME_ORACLE_11_G, ConnectionProfileConstants.ORACLE_11G_BQT2, "BQT2/TABLE/SMALLA,BQT2/TABLE/SMALLB", false);
+		importHelper.importModelJDBC(PROJECT_NAME_JDBC, MODEL_NAME_ORACLE_11_G, ConnectionProfileConstants.ORACLE_11G_BQT2, "DVQE/TABLE/SMALLA,DVQE/TABLE/SMALLB", false);
 		new RelationalModelEditor(MODEL_NAME_ORACLE_11_G + ".xmi").save();
 		importHelper.checkImportedTablesInModelJDBC(PROJECT_NAME_JDBC, MODEL_NAME_ORACLE_11_G, "SMALLA", "SMALLB", teiidServer);
 	}
@@ -120,7 +120,7 @@ public class Oracle {
 	public void oracle11gTeiidTest() {
 		Map<String,String> teiidImporterProperties = new HashMap<String, String>();
 		teiidImporterProperties.put(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "SMALL%");
-		teiidImporterProperties.put(TeiidConnectionImportWizard.IMPORT_PROPERTY_SCHEMA_PATTERN, "BQT2");
+		teiidImporterProperties.put(TeiidConnectionImportWizard.IMPORT_PROPERTY_SCHEMA_PATTERN, "DVQE");
 		importHelper.importModelTeiid(PROJECT_NAME_TEIID, ConnectionProfileConstants.ORACLE_11G_BQT2, MODEL_NAME_ORACLE_11_G, teiidImporterProperties, teiidServer);
 		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, MODEL_NAME_ORACLE_11_G, "SMALLA", "SMALLB");
 	}

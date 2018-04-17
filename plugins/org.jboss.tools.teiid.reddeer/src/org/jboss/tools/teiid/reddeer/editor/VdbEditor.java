@@ -492,16 +492,24 @@ public class VdbEditor extends DefaultEditor {
         return new DefaultTable(0).getItems();
     }
 
-    public void setFilterCondition(String condition) {
-        new LabeledText("Filter").setText(condition);
+    public void setFilterCondition(String condition, Boolean isDataRolesTab) {
+        if(isDataRolesTab) {
+            new LabeledText(new DefaultShell("New VDB Data Role"),"Filter").setText(condition);	
+        }else {
+            new LabeledText("Filter").setText(condition);
+        }
     }
 
     public void clearFilterCondition() {
         new PushButton(new WithTooltipTextMatcher("Clear Filter")).click();
     }
 
-    public void setFilterModelsType(String type) {
-        new DefaultCombo().setSelection(type);
+    public void setFilterModelsType(String type , Boolean isDataRolesTab) {
+        if(isDataRolesTab) {
+            new DefaultCombo(new DefaultShell("New VDB Data Role")).setSelection(type);
+        }else {
+            new DefaultCombo().setSelection(type);
+        }
     }
 
     public void deployVdb() {

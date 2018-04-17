@@ -56,7 +56,7 @@ public class H2 {
 		String modelName = "h2Imp";
 
 		TeiidConnectionImportWizard.openWizard()
-				.selectDataSource("ExampleDS")
+                .selectDataSource("java:jboss/datasources/ExampleDS")
 				.nextPage()
 				.setImportPropertie(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_TYPES, "SYSTEM TABLE")
 				.nextPage()

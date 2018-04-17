@@ -5,15 +5,21 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.util.Properties;
 
 import org.eclipse.reddeer.eclipse.ui.views.properties.PropertySheet;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.hamcrest.core.StringContains;
 import org.jboss.tools.common.reddeer.JiraClient;
+import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
+import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
+import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.noDatabase.FlatLocalConnectionProfileWizard;
 import org.jboss.tools.teiid.reddeer.wizard.connectionProfiles.noDatabase.WsdlConnectionProfileWizard;
@@ -39,11 +45,15 @@ import org.junit.runner.RunWith;
  */
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(TeiidPerspective.class)
+@TeiidServer(state = ServerRequirementState.STOPPED, connectionProfiles = {})
 public class ImportModelTest {
 	public static final String PROJECT_NAME = "ImportModelProject";
 	public static final String VIRTUAL_TABLES_PROJECT = "VirtualTablesImport";
 	private ModelExplorer modelExplorer;
-	
+
+	@InjectRequirement
+	private static TeiidServerRequirement teiidServer;
+
 	@BeforeClass
 	public static void before(){
 		new WorkbenchShell().maximize();
@@ -278,6 +288,8 @@ public class ImportModelTest {
 
 	@Test
 	public void wsdlToWsImportTest() {
+		Properties properties = teiidServer.getServerConfig().getConnectionProfile(ConnectionProfileConstants.SOAP).asProperties();
+
 		// import wsdl
 		ImportFromFileSystemWizard.openWizard()
 				.setPath("resources/wsdl")
@@ -299,7 +311,7 @@ public class ImportModelTest {
 		WsdlWebImportWizard.openWizard()
 				.setModelName("WsdlToWS2")
 				.setProject(PROJECT_NAME)
-				.importFromURL("http://www.webservicex.com/globalweather.asmx?WSDL", null, null, false)
+                .importFromURL(properties.getProperty("url"), null, null, false)
 				.nextPage()
 				.nextPage()
 				.nextPage()

@@ -36,7 +36,6 @@ import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.jboss.tools.teiid.reddeer.wizard.imports.LdapImportWizard;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -82,6 +81,7 @@ public class LdapImportTest {
 				.setLdapBaseDN(cpProperties.getProperty("principalDnSuffix"))
 				.setModelName(RHDS_MODEL)
 				.setProjectFolder(NEW_PROJECT)
+                .setJndiName("java:/"+ ConnectionProfileConstants.RHDS )
 				.nextPage();
 		String objects;
 		objects = importProperties.getProperty("selectedEntries");
@@ -124,6 +124,7 @@ public class LdapImportTest {
 		wizard.setConnectionProfile(ConnectionProfileConstants.LDAP)
 				.setLdapBaseDN(cpProperties.getProperty("principalDnSuffix"))
 				.setModelName(LDAP_MODEL)
+				.setJndiName("java:/" + ConnectionProfileConstants.LDAP)
 				.setProjectFolder(NEW_PROJECT)
 				.nextPage();
 		String objects;
