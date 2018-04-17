@@ -44,7 +44,7 @@ public class ImportHelper {
 		new ServersViewExt().createDatasource(teiidServer.getName(), cpName);
 		
 		TeiidConnectionImportWizard wizard = TeiidConnectionImportWizard.openWizard();
-		wizard.selectDataSource(cpName)
+		wizard.selectDataSource("java:/" + cpName)
 				.nextPage();		
 
 		if(cpName.equals("greenplum") ){

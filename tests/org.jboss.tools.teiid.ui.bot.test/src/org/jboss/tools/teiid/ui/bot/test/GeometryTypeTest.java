@@ -44,7 +44,7 @@ import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
 @TeiidServer(state = ServerRequirementState.RUNNING, connectionProfiles = {
-	ConnectionProfileConstants.ORACLE_11G_BQT2,})
+	ConnectionProfileConstants.ORACLE_11G_BQT2})
 public class GeometryTypeTest {
 	
 	@InjectRequirement
@@ -84,7 +84,7 @@ public class GeometryTypeTest {
 				.nextPage()
 				.setTableTypes(false, true, false)
 				.nextPage()
-				.setTables("BQT2/TABLE/BUILDINGS")
+				.setTables("DVQE/TABLE/BUILDINGS")
 				.nextPage()
 				.setFolder(PROJECT_NAME)
 				.setModelName(SOURCE_MODEL_NAME)
@@ -120,10 +120,10 @@ public class GeometryTypeTest {
 		new ServersViewExt().createDatasource(teiidServer.getName(), ConnectionProfileConstants.ORACLE_11G_BQT2);
 
 		TeiidConnectionImportWizard.openWizard()
-				.selectDataSource(ConnectionProfileConstants.ORACLE_11G_BQT2)
+				.selectDataSource("java:/" + ConnectionProfileConstants.ORACLE_11G_BQT2)
 				.nextPage()
 				.setImportPropertie(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "BUILDINGS")
-				.setImportPropertie(TeiidConnectionImportWizard.IMPORT_PROPERTY_SCHEMA_PATTERN, "BQT2")
+				.setImportPropertie(TeiidConnectionImportWizard.IMPORT_PROPERTY_SCHEMA_PATTERN, "DVQE")
 				.nextPage()
 				.setModelName(SOURCE_TEIID_MODEL_NAME)
 				.setProject(PROJECT_NAME)

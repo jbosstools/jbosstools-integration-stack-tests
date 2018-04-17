@@ -397,18 +397,18 @@ public class VDBEditorTest {
         vdbeditor.activate();
         vdbeditor.save();
 
-        vdbeditor.setFilterModelsType("SOURCE");
+        vdbeditor.setFilterModelsType("SOURCE", false);
         assertEquals(3, new DefaultTable(0).getItems().size());
 
-        vdbeditor.setFilterModelsType("VIEW");
+        vdbeditor.setFilterModelsType("VIEW", false);
         assertEquals(2, new DefaultTable(0).getItems().size());
 
-        vdbeditor.setFilterModelsType("ALL");
-        vdbeditor.setFilterCondition("test");
+        vdbeditor.setFilterModelsType("ALL", false);
+        vdbeditor.setFilterCondition("test", false);
         assertEquals(2, new DefaultTable(0).getItems().size());
 
-        vdbeditor.setFilterModelsType("SOURCE");
-        vdbeditor.setFilterCondition("xx");
+        vdbeditor.setFilterModelsType("SOURCE", false);
+        vdbeditor.setFilterCondition("xx", false);
         assertEquals(1, new DefaultTable(0).getItems().size());
 
         vdbeditor.clearFilterCondition();
@@ -417,18 +417,18 @@ public class VDBEditorTest {
         //test filter in data roles tab
         vdbeditor.addDataRole();
 
-        vdbeditor.setFilterModelsType("SOURCE");
+        vdbeditor.setFilterModelsType("SOURCE", true);
         assertEquals(3, new DefaultTree().getItems().size());
 
-        vdbeditor.setFilterModelsType("VIEW");
+        vdbeditor.setFilterModelsType("VIEW", true);
         assertEquals(2, new DefaultTree().getItems().size());
 
-        vdbeditor.setFilterModelsType("ALL");
-        vdbeditor.setFilterCondition("test");
+        vdbeditor.setFilterModelsType("ALL", true);
+        vdbeditor.setFilterCondition("test", true);
         assertEquals(2, new DefaultTree().getItems().size());
 
-        vdbeditor.setFilterModelsType("SOURCE");
-        vdbeditor.setFilterCondition("xx");
+        vdbeditor.setFilterModelsType("SOURCE", true);
+        vdbeditor.setFilterCondition("xx", true);
         assertEquals(1, new DefaultTree().getItems().size());
 
         vdbeditor.clearFilterCondition();

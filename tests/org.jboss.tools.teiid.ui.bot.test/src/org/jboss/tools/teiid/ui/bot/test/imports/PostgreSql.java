@@ -3,6 +3,7 @@ package org.jboss.tools.teiid.ui.bot.test.imports;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
@@ -89,7 +90,7 @@ public class PostgreSql {
 		Map<String,String> teiidImporterProperties = new HashMap<String, String>();
 		teiidImporterProperties.put(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "small%");
 		teiidImporterProperties.put(TeiidConnectionImportWizard.IMPORT_PROPERTY_SCHEMA_PATTERN, "%public%");
-		importHelper.importModelTeiid(PROJECT_NAME_TEIID, ConnectionProfileConstants.POSTGRESQL_84_BQT2, MODEL_NAME_POSTGRESQL_84, teiidImporterProperties, teiidServer);
+		importHelper.importModelTeiid(PROJECT_NAME_TEIID, ConnectionProfileConstants.POSTGRESQL_84_BQT2, MODEL_NAME_POSTGRESQL_84, teiidImporterProperties, TimePeriod.getCustom(240), teiidServer);
 		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, MODEL_NAME_POSTGRESQL_84, "smalla", "smallb");
 	}
 
@@ -99,7 +100,7 @@ public class PostgreSql {
 		teiidImporterProperties.put(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN,  "small%");
 		teiidImporterProperties.put(TeiidConnectionImportWizard.IMPORT_PROPERTY_SCHEMA_PATTERN, "public");
 		teiidImporterProperties.put(TeiidConnectionImportWizard.IMPORT_PROPERTY_CATALOG, "dvqe");
-		importHelper.importModelTeiid(PROJECT_NAME_TEIID, ConnectionProfileConstants.POSTGRESQL_92_DVQE, MODEL_NAME_POSTGRESQL_92, teiidImporterProperties, teiidServer);
+		importHelper.importModelTeiid(PROJECT_NAME_TEIID, ConnectionProfileConstants.POSTGRESQL_92_DVQE, MODEL_NAME_POSTGRESQL_92, teiidImporterProperties, TimePeriod.getCustom(240), teiidServer);
 		importHelper.checkImportedModelTeiid(PROJECT_NAME_TEIID, MODEL_NAME_POSTGRESQL_92, "smalla", "smallb");
 	}
 }

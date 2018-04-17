@@ -154,7 +154,7 @@ public class SqlServer {
 		String modelName = SOURCE_VDB_NAME + "Imp";
 
 		TeiidConnectionImportWizard.openWizard()
-				.selectDataSource(SOURCE_VDB_NAME)
+                .selectDataSource("java:/" + SOURCE_VDB_NAME)
 				.nextPage()
 				.setImportPropertie(TeiidConnectionImportWizard.IMPORT_PROPERTY_SCHEMA_PATTERN, "%sqlserver%")
 				.nextPage()
