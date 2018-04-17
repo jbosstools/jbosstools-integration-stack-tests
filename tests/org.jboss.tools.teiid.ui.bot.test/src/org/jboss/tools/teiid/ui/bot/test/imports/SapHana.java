@@ -104,7 +104,7 @@ public class SapHana {
 		new ServersViewExt().createDatasource(teiidServer.getName(), ConnectionProfileConstants.SAP_HANA);
 
 		TeiidConnectionImportWizard.openWizard()
-				.selectDataSource(ConnectionProfileConstants.SAP_HANA)
+				.selectDataSource("java:/" + ConnectionProfileConstants.SAP_HANA)
 				.nextPage()
 				.setTranslator("hana")
 				.setImportPropertie(TeiidConnectionImportWizard.IMPORT_PROPERTY_SCHEMA_PATTERN, "BQT1")

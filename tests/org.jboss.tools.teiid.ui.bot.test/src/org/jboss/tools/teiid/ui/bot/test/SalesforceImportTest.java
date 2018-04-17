@@ -54,6 +54,7 @@ public class SalesforceImportTest {
 				.nextPage()
 				.setModelName(MODEL_NAME)
 				.setProject(MODEL_PROJECT)
+				.setJndiName("java:/" + ConnectionProfileConstants.SALESFORCE)
 				.finish();
 
 		assertTrue(new ModelExplorer().containsItem(MODEL_PROJECT, MODEL_NAME + ".xmi", "AccountFeed"));

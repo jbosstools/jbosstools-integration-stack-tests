@@ -69,7 +69,7 @@ public class Modeshape {
 		String modelName = "ModeshapeModel";
 
 		TeiidConnectionImportWizard.openWizard()
-				.selectDataSource(MODESHAPE_CP_NAME)
+                .selectDataSource("java:/datasources/" + MODESHAPE_CP_NAME)
 				.nextPage()
 				.setImportPropertie(TeiidConnectionImportWizard.IMPORT_PROPERTY_TABLE_NAME_PATTERN, "mix:title")
 				.setImportPropertie(TeiidConnectionImportWizard.IMPORT_PROPERTY_USE_FULL_SCHEMA_NAME, "false")
