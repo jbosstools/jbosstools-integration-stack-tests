@@ -379,7 +379,7 @@ public class GuidesTest {
 		
 		guides.createDataSource(dataSource, ConnectionProfileConstants.SQL_SERVER_2008_PARTS_SUPPLIER);
 		
-		guides.createSourceModelFromTeiid(modelName, dataSource,null,"dbo");
+        guides.createSourceModelFromTeiid(modelName, "java:/" + dataSource, null, "dbo");
 		
 		TeiidPerspective.activate();
 		

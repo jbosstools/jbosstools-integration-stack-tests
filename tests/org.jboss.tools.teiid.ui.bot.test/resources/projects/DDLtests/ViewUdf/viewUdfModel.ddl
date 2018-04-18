@@ -17,8 +17,5 @@ CREATE VIRTUAL FUNCTION udfConcatNull (
 	IN stringLeft string(2000),
 	IN stringRight string(2000),
 	OUT concatenation string(4000) RESULT
-) RETURNS
-	TABLE (
-		workAround string(2000)
 ) OPTIONS("FUNCTION-CATEGORY" 'MY_TESTING_FUNCTION_CATEGORY', JAVA_CLASS 'userdefinedfunctions.MyConcatNull', JAVA_METHOD 'myConcatNull');
 

@@ -1,636 +1,636 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bookListing xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-	<book>
-		<isbn>0-7356-0631-5</isbn>
-		<title>Software Requirements</title>
-		<edition>1</edition>
-		<authors>
-			<author>
-				<lastName>Wiegers</lastName>
-				<firstName>Karl</firstName>
-			</author>
-		</authors>
-		<publisherName>Microsoft Press</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>1-556-15900-5</isbn>
-		<title>Rapid Development</title>
-		<edition>1</edition>
-		<authors>
-			<author>
-				<lastName>McConnell</lastName>
-				<firstName>Steve</firstName>
-			</author>
-		</authors>
-		<publisherName>Microsoft Press</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>1-55615-484-4</isbn>
-		<title>Code Complete</title>
-		<edition>1</edition>
-		<authors>
-			<author>
-				<lastName>McConnell</lastName>
-				<firstName>Steve</firstName>
-			</author>
-		</authors>
-		<publisherName>Microsoft Press</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>0-7356-0877-6</isbn>
-		<title>After the Gold Rush</title>
-		<edition>1</edition>
-		<authors>
-			<author>
-				<lastName>McConnell</lastName>
-				<firstName>Steve</firstName>
-			</author>
-		</authors>
-		<publisherName>Microsoft Press</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>1-57231-621-7</isbn>
-		<title>Software Project Survival Guide</title>
-		<edition>1</edition>
-		<authors>
-			<author>
-				<lastName>McConnell</lastName>
-				<firstName>Steve</firstName>
-			</author>
-		</authors>
-		<publisherName>Microsoft Press</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>0-201-31009-0</isbn>
-		<title>Concurrent Programming in Java</title>
-		<edition>2</edition>
-		<authors>
-			<author>
-				<lastName>Lea</lastName>
-				<firstName>Douglas</firstName>
-			</author>
-		</authors>
-		<publisherName>Addison-Wesley</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>0-201-10088-6</isbn>
-		<title>Compilers</title>
-		<edition>1</edition>
-		<authors>
-			<author>
-				<lastName>Aho</lastName>
-				<firstName>Alfred</firstName>
-			</author>
-			<author>
-				<lastName>Sethi</lastName>
-				<firstName>Ravi</firstName>
-			</author>
-			<author>
-				<lastName>Ullman</lastName>
-				<firstName>Jeffrey</firstName>
-			</author>
-		</authors>
-		<publisherName>Addison-Wesley</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>0-201-43287-0</isbn>
-		<title>Automated Software Testing</title>
-		<edition>1</edition>
-		<authors>
-			<author>
-				<lastName>Dustin</lastName>
-				<firstName>Elfriede</firstName>
-			</author>
-			<author>
-				<lastName>Rashka</lastName>
-				<firstName>Jeff</firstName>
-			</author>
-			<author>
-				<lastName>Paul</lastName>
-				<firstName>John</firstName>
-			</author>
-		</authors>
-		<publisherName>Addison-Wesley</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>0201877562</isbn>
-		<title>Software Testing in the Real World</title>
-		<edition>1</edition>
-		<authors>
-			<author>
-				<lastName>Kit</lastName>
-				<firstName>Edward</firstName>
-			</author>
-			<author>
-				<lastName>Finzi</lastName>
-				<firstName>Susannah</firstName>
-			</author>
-		</authors>
-		<publisherName>Addison-Wesley</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>0-201-70225-8</isbn>
-		<title>Writing Effective Use Cases</title>
-		<edition>1</edition>
-		<authors>
-			<author>
-				<lastName>Cockburn</lastName>
-				<firstName>Alistair</firstName>
-			</author>
-		</authors>
-		<publisherName>Addison-Wesley</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>020130998X</isbn>
-		<title>The Unified Modeling Language Reference Manual</title>
-		<edition>1</edition>
-		<authors>
-			<author>
-				<lastName>Rumbaugh</lastName>
-				<firstName>James</firstName>
-			</author>
-			<author>
-				<lastName>Jacobson</lastName>
-				<firstName>Ivar</firstName>
-			</author>
-			<author>
-				<lastName>Booch</lastName>
-				<firstName>Grady</firstName>
-			</author>
-		</authors>
-		<publisherName>Addison-Wesley</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>0-201-43336-2</isbn>
-		<title>SQL Queries for Mere Mortals</title>
-		<edition>1</edition>
-		<authors>
-			<author>
-				<lastName>Hernandez</lastName>
-				<firstName>Michael</firstName>
-			</author>
-			<author>
-				<lastName>Viescas</lastName>
-				<firstName>John</firstName>
-			</author>
-		</authors>
-		<publisherName>Addison-Wesley</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>0-201-44787-8</isbn>
-		<title>The Practical SQL Handbook</title>
-		<edition>1</edition>
-		<authors>
-			<author>
-				<lastName>Bowman</lastName>
-				<firstName>Judith</firstName>
-			</author>
-			<author>
-				<lastName>Emerson</lastName>
-				<firstName>Sandra</firstName>
-			</author>
-			<author>
-				<lastName>Darnovsky</lastName>
-				<firstName>Marcy</firstName>
-			</author>
-		</authors>
-		<publisherName>Addison-Wesley</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>0-201-65758-9</isbn>
-		<title>LDAP Programming with Java</title>
-		<edition>1</edition>
-		<authors>
-			<author>
-				<lastName>Weltman</lastName>
-				<firstName>Rob</firstName>
-			</author>
-			<author>
-				<lastName>Dahbura</lastName>
-				<firstName>Tony</firstName>
-			</author>
-		</authors>
-		<publisherName>Addison-Wesley</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>0-201-31000-7</isbn>
-		<title>Inside Java 2 Security</title>
-		<edition>1</edition>
-		<authors>
-			<author>
-				<lastName>Gong</lastName>
-				<firstName>Li</firstName>
-			</author>
-		</authors>
-		<publisherName>Addison-Wesley</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>0-471-98710-7</isbn>
-		<title>Concurrency State Models &amp; Java Programs</title>
-		<edition>1</edition>
-		<authors>
-			<author>
-				<lastName>Kramer</lastName>
-				<firstName>Magee</firstName>
-			</author>
-			<author>
-				<lastName>Magee</lastName>
-				<firstName>Jeff</firstName>
-			</author>
-		</authors>
-		<publisherName>Wiley</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>0-471355232</isbn>
-		<title>Building and Managing the Meta Data Repository</title>
-		<edition>1</edition>
-		<authors>
-			<author>
-				<lastName>Marco</lastName>
-				<firstName>David</firstName>
-			</author>
-		</authors>
-		<publisherName>Wiley</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>0-7897-2271-2</isbn>
-		<title>Complete Idiot's Guide to Project Management with Microsoft Project 2000</title>
-		<edition>1</edition>
-		<authors>
-			<author>
-				<lastName>Black</lastName>
-				<firstName>Ron</firstName>
-			</author>
-		</authors>
-		<publisherName>Que</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>0-932633-43-9</isbn>
-		<title>Peopleware</title>
-		<edition>2</edition>
-		<authors>
-			<author>
-				<lastName>DeMarco</lastName>
-				<firstName>Tom</firstName>
-			</author>
-			<author>
-				<lastName>Lister</lastName>
-				<firstName>Timothy</firstName>
-			</author>
-		</authors>
-		<publisherName>Dorset House Publishing</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>0-932633-33-1</isbn>
-		<title>Creating a Software Engineering Culture</title>
-		<edition>1</edition>
-		<authors>
-			<author>
-				<lastName>Wiegers</lastName>
-				<firstName>Karl</firstName>
-			</author>
-		</authors>
-		<publisherName>Dorset House Publishing</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>1-55860-415-4</isbn>
-		<title>Principles of Transaction Processing</title>
-		<edition>1</edition>
-		<authors>
-			<author>
-				<lastName>Bernstein</lastName>
-				<firstName>Philip</firstName>
-			</author>
-			<author>
-				<lastName>Newcomer</lastName>
-				<firstName>Eric</firstName>
-			</author>
-		</authors>
-		<publisherName>Morgan Kaufman</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>1558605150</isbn>
-		<title>Database Design for Smarties</title>
-		<edition>1</edition>
-		<authors>
-			<author>
-				<lastName>Muller</lastName>
-				<firstName>Robert</firstName>
-			</author>
-		</authors>
-		<publisherName>Morgan Kaufman</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>1-558-60190-2</isbn>
-		<title>Transaction Processing</title>
-		<edition>1</edition>
-		<authors>
-			<author>
-				<lastName>Gray</lastName>
-				<firstName>Jim</firstName>
-			</author>
-		</authors>
-		<publisherName>Morgan Kaufman</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>1558605231</isbn>
-		<title>Readings in Database Systems</title>
-		<edition>3</edition>
-		<authors>
-			<author>
-				<lastName>Stonebraker</lastName>
-				<firstName>Michael</firstName>
-			</author>
-			<author>
-				<lastName>Hellerstein</lastName>
-				<firstName>Joseph</firstName>
-			</author>
-		</authors>
-		<publisherName>Morgan Kaufman</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>0-13-239856-7</isbn>
-		<title>How to Run Successful Projects II</title>
-		<edition>2</edition>
-		<authors>
-			<author>
-				<lastName>O'Connell</lastName>
-				<firstName>Fergus</firstName>
-			</author>
-		</authors>
-		<publisherName>Prentice Hall</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>0-13-014714-1</isbn>
-		<title>The XML Handbook</title>
-		<edition>2</edition>
-		<authors>
-			<author>
-				<lastName>Goldfarb</lastName>
-				<firstName>Charles</firstName>
-			</author>
-			<author>
-				<lastName>Prescod</lastName>
-				<firstName>Paul</firstName>
-			</author>
-		</authors>
-		<publisherName>Prentice Hall</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>0130273635</isbn>
-		<title>Thinking in Java</title>
-		<edition>2</edition>
-		<authors>
-			<author>
-				<lastName>Eckel</lastName>
-				<firstName>Bruce</firstName>
-			</author>
-		</authors>
-		<publisherName>Prentice Hall</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>130402648</isbn>
-		<title>Database System Implementation</title>
-		<edition>1</edition>
-		<authors>
-			<author>
-				<lastName>Ullman</lastName>
-				<firstName>Jeffrey</firstName>
-			</author>
-			<author>
-				<lastName>Garcia-Molina</lastName>
-				<firstName>Hector</firstName>
-			</author>
-			<author>
-				<lastName>Widom</lastName>
-				<firstName>Jennifer</firstName>
-			</author>
-		</authors>
-		<publisherName>Prentice Hall</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>1-56592-483-5</isbn>
-		<title>Java Enterprise in a Nutshell</title>
-		<edition>1</edition>
-		<authors>
-			<author>
-				<lastName>Flanagan</lastName>
-				<firstName>David</firstName>
-			</author>
-		</authors>
-		<publisherName>O'Reilly</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>0-596-00016-2</isbn>
-		<title>Java and XML</title>
-		<edition>1</edition>
-		<authors>
-			<author>
-				<lastName>McLaughlin</lastName>
-				<firstName>Brett</firstName>
-			</author>
-			<author>
-				<lastName>Loukides</lastName>
-				<firstName>Mike</firstName>
-			</author>
-		</authors>
-		<publisherName>O'Reilly</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>1-56592-487-8</isbn>
-		<title>Java in a Nutshell</title>
-		<edition>3</edition>
-		<authors>
-			<author>
-				<lastName>Flanagan</lastName>
-				<firstName>David</firstName>
-			</author>
-		</authors>
-		<publisherName>O'Reilly</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>0-672-31602-1</isbn>
-		<title>Java Security Handbook</title>
-		<edition>1</edition>
-		<authors>
-			<author>
-				<lastName>Jaworski</lastName>
-				<firstName>Jamie</firstName>
-			</author>
-			<author>
-				<lastName>Perrone</lastName>
-				<firstName>Paul</firstName>
-			</author>
-		</authors>
-		<publisherName>Sams</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>0-672-31983-7</isbn>
-		<title>Software Testing</title>
-		<edition>1</edition>
-		<authors>
-			<author>
-				<lastName>Patton</lastName>
-				<firstName>Ron</firstName>
-			</author>
-		</authors>
-		<publisherName>Sams</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>1-861-00506-7</isbn>
-		<title>XSLT Programmer's Reference</title>
-		<edition>2</edition>
-		<authors>
-			<author>
-				<lastName>Kay</lastName>
-				<firstName>Michael</firstName>
-			</author>
-		</authors>
-		<publisherName>Wrox</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>1-861002-77-7</isbn>
-		<title>Professional Java Server Programming</title>
-		<edition>1</edition>
-		<authors>
-			<author>
-				<lastName>Ayers</lastName>
-				<firstName>Danny</firstName>
-			</author>
-			<author>
-				<lastName>Bergsten</lastName>
-				<firstName>Hans</firstName>
-			</author>
-			<author>
-				<lastName>Diamond</lastName>
-				<firstName>Jason</firstName>
-			</author>
-		</authors>
-		<publisherName>Wrox</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>1-861-00312-9</isbn>
-		<title>XSLT Programmer's Reference</title>
-		<edition>1</edition>
-		<authors>
-			<author>
-				<lastName>Kay</lastName>
-				<firstName>Michael</firstName>
-			</author>
-		</authors>
-		<publisherName>Wrox</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>0-818-68300-7</isbn>
-		<title>The Software Project Manager's Handbook</title>
-		<edition>1</edition>
-		<authors>
-			<author>
-				<lastName>Phillips</lastName>
-				<firstName>Dwayne</firstName>
-			</author>
-		</authors>
-		<publisherName>IEEE Computer Society</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>1-884777-84-8</isbn>
-		<title>Swing</title>
-		<edition>1</edition>
-		<authors>
-			<author>
-				<lastName>Robinson</lastName>
-				<firstName>Mathew</firstName>
-			</author>
-			<author>
-				<lastName>Vorobiev</lastName>
-				<firstName>Paul</firstName>
-			</author>
-		</authors>
-		<publisherName>Manning</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>1-893115-10-0</isbn>
-		<title>Taming Java Threads</title>
-		<edition>1</edition>
-		<authors>
-			<author>
-				<lastName>Holub</lastName>
-				<firstName>Alan</firstName>
-			</author>
-		</authors>
-		<publisherName>Apress</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>1-57870-070-1</isbn>
-		<title>Understanding and Deploying LDAP Directory Services</title>
-		<edition>1</edition>
-		<authors>
-			<author>
-				<lastName>Howes</lastName>
-				<firstName>Timothy</firstName>
-			</author>
-			<author>
-				<lastName>Smith</lastName>
-				<firstName>Mark</firstName>
-			</author>
-			<author>
-				<lastName>Good</lastName>
-				<firstName>Gordon</firstName>
-			</author>
-		</authors>
-		<publisherName>Macmillan</publisherName>
-		<publisherLocation />
-	</book>
-	<book>
-		<isbn>0-7821-1148-3</isbn>
-		<title>SQL Instant Reference</title>
-		<edition>1</edition>
-		<authors>
-			<author>
-				<lastName>Gruber</lastName>
-				<firstName>Martin</firstName>
-			</author>
-		</authors>
-		<publisherName>Sybex</publisherName>
-		<publisherLocation />
-	</book>
+  <book>
+    <isbn>0-7356-0877-6</isbn>
+    <title>After the Gold Rush</title>
+    <edition>1</edition>
+    <authors>
+      <author>
+        <lastName>McConnell</lastName>
+        <firstName>Steve</firstName>
+      </author>
+    </authors>
+    <publisherName>Microsoft Press</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>0-201-43287-0</isbn>
+    <title>Automated Software Testing</title>
+    <edition>1</edition>
+    <authors>
+      <author>
+        <lastName>Dustin</lastName>
+        <firstName>Elfriede</firstName>
+      </author>
+      <author>
+        <lastName>Rashka</lastName>
+        <firstName>Jeff</firstName>
+      </author>
+      <author>
+        <lastName>Paul</lastName>
+        <firstName>John</firstName>
+      </author>
+    </authors>
+    <publisherName>Addison-Wesley</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>1-55615-484-4</isbn>
+    <title>Code Complete</title>
+    <edition>1</edition>
+    <authors>
+      <author>
+        <lastName>McConnell</lastName>
+        <firstName>Steve</firstName>
+      </author>
+    </authors>
+    <publisherName>Microsoft Press</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>0-201-10088-6</isbn>
+    <title>Compilers</title>
+    <edition>1</edition>
+    <authors>
+      <author>
+        <lastName>Aho</lastName>
+        <firstName>Alfred</firstName>
+      </author>
+      <author>
+        <lastName>Sethi</lastName>
+        <firstName>Ravi</firstName>
+      </author>
+      <author>
+        <lastName>Ullman</lastName>
+        <firstName>Jeffrey</firstName>
+      </author>
+    </authors>
+    <publisherName>Addison-Wesley</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>0-7897-2271-2</isbn>
+    <title>Complete Idiot's Guide to Project Management with Microsoft Project 2000</title>
+    <edition>1</edition>
+    <authors>
+      <author>
+        <lastName>Black</lastName>
+        <firstName>Ron</firstName>
+      </author>
+    </authors>
+    <publisherName>Que</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>0-471-98710-7</isbn>
+    <title>Concurrency State Models &amp; Java Programs</title>
+    <edition>1</edition>
+    <authors>
+      <author>
+        <lastName>Kramer</lastName>
+        <firstName>Magee</firstName>
+      </author>
+      <author>
+        <lastName>Magee</lastName>
+        <firstName>Jeff</firstName>
+      </author>
+    </authors>
+    <publisherName>Wiley</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>0-201-31009-0</isbn>
+    <title>Concurrent Programming in Java</title>
+    <edition>2</edition>
+    <authors>
+      <author>
+        <lastName>Lea</lastName>
+        <firstName>Douglas</firstName>
+      </author>
+    </authors>
+    <publisherName>Addison-Wesley</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>0-932633-33-1</isbn>
+    <title>Creating a Software Engineering Culture</title>
+    <edition>1</edition>
+    <authors>
+      <author>
+        <lastName>Wiegers</lastName>
+        <firstName>Karl</firstName>
+      </author>
+    </authors>
+    <publisherName>Dorset House Publishing</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>1558605150</isbn>
+    <title>Database Design for Smarties</title>
+    <edition>1</edition>
+    <authors>
+      <author>
+        <lastName>Muller</lastName>
+        <firstName>Robert</firstName>
+      </author>
+    </authors>
+    <publisherName>Morgan Kaufman</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>0-13-239856-7</isbn>
+    <title>How to Run Successful Projects II</title>
+    <edition>2</edition>
+    <authors>
+      <author>
+        <lastName>O'Connell</lastName>
+        <firstName>Fergus</firstName>
+      </author>
+    </authors>
+    <publisherName>Prentice Hall</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>0-201-31000-7</isbn>
+    <title>Inside Java 2 Security</title>
+    <edition>1</edition>
+    <authors>
+      <author>
+        <lastName>Gong</lastName>
+        <firstName>Li</firstName>
+      </author>
+    </authors>
+    <publisherName>Addison-Wesley</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>0-596-00016-2</isbn>
+    <title>Java and XML</title>
+    <edition>1</edition>
+    <authors>
+      <author>
+        <lastName>McLaughlin</lastName>
+        <firstName>Brett</firstName>
+      </author>
+      <author>
+        <lastName>Loukides</lastName>
+        <firstName>Mike</firstName>
+      </author>
+    </authors>
+    <publisherName>O'Reilly</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>1-56592-487-8</isbn>
+    <title>Java in a Nutshell</title>
+    <edition>3</edition>
+    <authors>
+      <author>
+        <lastName>Flanagan</lastName>
+        <firstName>David</firstName>
+      </author>
+    </authors>
+    <publisherName>O'Reilly</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>1-56592-483-5</isbn>
+    <title>Java Enterprise in a Nutshell</title>
+    <edition>1</edition>
+    <authors>
+      <author>
+        <lastName>Flanagan</lastName>
+        <firstName>David</firstName>
+      </author>
+    </authors>
+    <publisherName>O'Reilly</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>0-672-31602-1</isbn>
+    <title>Java Security Handbook</title>
+    <edition>1</edition>
+    <authors>
+      <author>
+        <lastName>Jaworski</lastName>
+        <firstName>Jamie</firstName>
+      </author>
+      <author>
+        <lastName>Perrone</lastName>
+        <firstName>Paul</firstName>
+      </author>
+    </authors>
+    <publisherName>Sams</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>0-201-65758-9</isbn>
+    <title>LDAP Programming with Java</title>
+    <edition>1</edition>
+    <authors>
+      <author>
+        <lastName>Weltman</lastName>
+        <firstName>Rob</firstName>
+      </author>
+      <author>
+        <lastName>Dahbura</lastName>
+        <firstName>Tony</firstName>
+      </author>
+    </authors>
+    <publisherName>Addison-Wesley</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>0-932633-43-9</isbn>
+    <title>Peopleware</title>
+    <edition>2</edition>
+    <authors>
+      <author>
+        <lastName>DeMarco</lastName>
+        <firstName>Tom</firstName>
+      </author>
+      <author>
+        <lastName>Lister</lastName>
+        <firstName>Timothy</firstName>
+      </author>
+    </authors>
+    <publisherName>Dorset House Publishing</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>0-201-44787-8</isbn>
+    <title>The Practical SQL Handbook</title>
+    <edition>1</edition>
+    <authors>
+      <author>
+        <lastName>Bowman</lastName>
+        <firstName>Judith</firstName>
+      </author>
+      <author>
+        <lastName>Emerson</lastName>
+        <firstName>Sandra</firstName>
+      </author>
+      <author>
+        <lastName>Darnovsky</lastName>
+        <firstName>Marcy</firstName>
+      </author>
+    </authors>
+    <publisherName>Addison-Wesley</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>1-55860-415-4</isbn>
+    <title>Principles of Transaction Processing</title>
+    <edition>1</edition>
+    <authors>
+      <author>
+        <lastName>Bernstein</lastName>
+        <firstName>Philip</firstName>
+      </author>
+      <author>
+        <lastName>Newcomer</lastName>
+        <firstName>Eric</firstName>
+      </author>
+    </authors>
+    <publisherName>Morgan Kaufman</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>1-861002-77-7</isbn>
+    <title>Professional Java Server Programming</title>
+    <edition>1</edition>
+    <authors>
+      <author>
+        <lastName>Ayers</lastName>
+        <firstName>Danny</firstName>
+      </author>
+      <author>
+        <lastName>Bergsten</lastName>
+        <firstName>Hans</firstName>
+      </author>
+      <author>
+        <lastName>Diamond</lastName>
+        <firstName>Jason</firstName>
+      </author>
+    </authors>
+    <publisherName>Wrox</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>1-556-15900-5</isbn>
+    <title>Rapid Development</title>
+    <edition>1</edition>
+    <authors>
+      <author>
+        <lastName>McConnell</lastName>
+        <firstName>Steve</firstName>
+      </author>
+    </authors>
+    <publisherName>Microsoft Press</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>0-818-68300-7</isbn>
+    <title>The Software Project Manager's Handbook</title>
+    <edition>1</edition>
+    <authors>
+      <author>
+        <lastName>Phillips</lastName>
+        <firstName>Dwayne</firstName>
+      </author>
+    </authors>
+    <publisherName>IEEE Computer Society</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>1-57231-621-7</isbn>
+    <title>Software Project Survival Guide</title>
+    <edition>1</edition>
+    <authors>
+      <author>
+        <lastName>McConnell</lastName>
+        <firstName>Steve</firstName>
+      </author>
+    </authors>
+    <publisherName>Microsoft Press</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>0-7356-0631-5</isbn>
+    <title>Software Requirements</title>
+    <edition>1</edition>
+    <authors>
+      <author>
+        <lastName>Wiegers</lastName>
+        <firstName>Karl</firstName>
+      </author>
+    </authors>
+    <publisherName>Microsoft Press</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>0-672-31983-7</isbn>
+    <title>Software Testing</title>
+    <edition>1</edition>
+    <authors>
+      <author>
+        <lastName>Patton</lastName>
+        <firstName>Ron</firstName>
+      </author>
+    </authors>
+    <publisherName>Sams</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>0-201-43336-2</isbn>
+    <title>SQL Queries for Mere Mortals</title>
+    <edition>1</edition>
+    <authors>
+      <author>
+        <lastName>Hernandez</lastName>
+        <firstName>Michael</firstName>
+      </author>
+      <author>
+        <lastName>Viescas</lastName>
+        <firstName>John</firstName>
+      </author>
+    </authors>
+    <publisherName>Addison-Wesley</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>1-884777-84-8</isbn>
+    <title>Swing</title>
+    <edition>1</edition>
+    <authors>
+      <author>
+        <lastName>Robinson</lastName>
+        <firstName>Mathew</firstName>
+      </author>
+      <author>
+        <lastName>Vorobiev</lastName>
+        <firstName>Paul</firstName>
+      </author>
+    </authors>
+    <publisherName>Manning</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>1-893115-10-0</isbn>
+    <title>Taming Java Threads</title>
+    <edition>1</edition>
+    <authors>
+      <author>
+        <lastName>Holub</lastName>
+        <firstName>Alan</firstName>
+      </author>
+    </authors>
+    <publisherName>Apress</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>1-558-60190-2</isbn>
+    <title>Transaction Processing</title>
+    <edition>1</edition>
+    <authors>
+      <author>
+        <lastName>Gray</lastName>
+        <firstName>Jim</firstName>
+      </author>
+    </authors>
+    <publisherName>Morgan Kaufman</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>1-57870-070-1</isbn>
+    <title>Understanding and Deploying LDAP Directory Services</title>
+    <edition>1</edition>
+    <authors>
+      <author>
+        <lastName>Howes</lastName>
+        <firstName>Timothy</firstName>
+      </author>
+      <author>
+        <lastName>Smith</lastName>
+        <firstName>Mark</firstName>
+      </author>
+      <author>
+        <lastName>Good</lastName>
+        <firstName>Gordon</firstName>
+      </author>
+    </authors>
+    <publisherName>Macmillan</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>020130998X</isbn>
+    <title>The Unified Modeling Language Reference Manual</title>
+    <edition>1</edition>
+    <authors>
+      <author>
+        <lastName>Rumbaugh</lastName>
+        <firstName>James</firstName>
+      </author>
+      <author>
+        <lastName>Jacobson</lastName>
+        <firstName>Ivar</firstName>
+      </author>
+      <author>
+        <lastName>Booch</lastName>
+        <firstName>Grady</firstName>
+      </author>
+    </authors>
+    <publisherName>Addison-Wesley</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>0-201-70225-8</isbn>
+    <title>Writing Effective Use Cases</title>
+    <edition>1</edition>
+    <authors>
+      <author>
+        <lastName>Cockburn</lastName>
+        <firstName>Alistair</firstName>
+      </author>
+    </authors>
+    <publisherName>Addison-Wesley</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>0-13-014714-1</isbn>
+    <title>The XML Handbook</title>
+    <edition>2</edition>
+    <authors>
+      <author>
+        <lastName>Goldfarb</lastName>
+        <firstName>Charles</firstName>
+      </author>
+      <author>
+        <lastName>Prescod</lastName>
+        <firstName>Paul</firstName>
+      </author>
+    </authors>
+    <publisherName>Prentice Hall</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>1-861-00312-9</isbn>
+    <title>XSLT Programmer's Reference</title>
+    <edition>1</edition>
+    <authors>
+      <author>
+        <lastName>Kay</lastName>
+        <firstName>Michael</firstName>
+      </author>
+    </authors>
+    <publisherName>Wrox</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>0-7821-1148-3</isbn>
+    <title>SQL Instant Reference</title>
+    <edition>1</edition>
+    <authors>
+      <author>
+        <lastName>Gruber</lastName>
+        <firstName>Martin</firstName>
+      </author>
+    </authors>
+    <publisherName>Sybex</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>130402648</isbn>
+    <title>Database System Implementation</title>
+    <edition>1</edition>
+    <authors>
+      <author>
+        <lastName>Ullman</lastName>
+        <firstName>Jeffrey</firstName>
+      </author>
+      <author>
+        <lastName>Garcia-Molina</lastName>
+        <firstName>Hector</firstName>
+      </author>
+      <author>
+        <lastName>Widom</lastName>
+        <firstName>Jennifer</firstName>
+      </author>
+    </authors>
+    <publisherName>Prentice Hall</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>1558605231</isbn>
+    <title>Readings in Database Systems</title>
+    <edition>3</edition>
+    <authors>
+      <author>
+        <lastName>Stonebraker</lastName>
+        <firstName>Michael</firstName>
+      </author>
+      <author>
+        <lastName>Hellerstein</lastName>
+        <firstName>Joseph</firstName>
+      </author>
+    </authors>
+    <publisherName>Morgan Kaufman</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>0-471355232</isbn>
+    <title>Building and Managing the Meta Data Repository</title>
+    <edition>1</edition>
+    <authors>
+      <author>
+        <lastName>Marco</lastName>
+        <firstName>David</firstName>
+      </author>
+    </authors>
+    <publisherName>Wiley</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>0201877562</isbn>
+    <title>Software Testing in the Real World</title>
+    <edition>1</edition>
+    <authors>
+      <author>
+        <lastName>Kit</lastName>
+        <firstName>Edward</firstName>
+      </author>
+      <author>
+        <lastName>Finzi</lastName>
+        <firstName>Susannah</firstName>
+      </author>
+    </authors>
+    <publisherName>Addison-Wesley</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>0130273635</isbn>
+    <title>Thinking in Java</title>
+    <edition>2</edition>
+    <authors>
+      <author>
+        <lastName>Eckel</lastName>
+        <firstName>Bruce</firstName>
+      </author>
+    </authors>
+    <publisherName>Prentice Hall</publisherName>
+    <publisherLocation/>
+  </book>
+  <book>
+    <isbn>1-861-00506-7</isbn>
+    <title>XSLT Programmer's Reference</title>
+    <edition>2</edition>
+    <authors>
+      <author>
+        <lastName>Kay</lastName>
+        <firstName>Michael</firstName>
+      </author>
+    </authors>
+    <publisherName>Wrox</publisherName>
+    <publisherLocation/>
+  </book>
 </bookListing>

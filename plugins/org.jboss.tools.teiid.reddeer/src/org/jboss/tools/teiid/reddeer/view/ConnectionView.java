@@ -31,6 +31,7 @@ public class ConnectionView extends WorkbenchView {
 
     public boolean existConnectionProfile(String... inputPath) {
         refreshView();
+        log.info("Search for connection profile: " + inputPath);
         List<String> path = new ArrayList<String>();
         path.add("Local Profiles");
         path.addAll(Arrays.asList(inputPath));
@@ -39,6 +40,7 @@ public class ConnectionView extends WorkbenchView {
         } catch (org.eclipse.reddeer.core.exception.CoreLayerException ex) {
             if (ex.getMessage()
                 .contains("There are no items matching matcher tree item text on position <0> matches")) {
+                log.info("Connection profile with path " + inputPath + " not found.");
                 return false;
             } else {
                 throw ex; // another problem
@@ -49,11 +51,14 @@ public class ConnectionView extends WorkbenchView {
     
     public boolean existDataSource(String name) {
         refreshView();
+        log.info("Search for data source: " + name);
         try {
+            name = (name.contains("java:/")) ? name : "java:/" + name;
             new DefaultTreeItem("Deployed", name).select();
         } catch (org.eclipse.reddeer.core.exception.CoreLayerException ex) {
             if (ex.getMessage()
                 .contains("There are no items matching matcher tree item text on position <0> matches")) {
+                log.info("Data source with name " + name + " not found.");
                 return false;
             } else {
                 throw ex; // another problem
@@ -91,6 +96,7 @@ public class ConnectionView extends WorkbenchView {
 
     public void deleteDataSource(String name) {
         refreshView();
+        name = (name.contains("java:/")) ? name : "java:/" + name;
         new DefaultTreeItem("Deployed", name).select();
         new PushButton(this, new WithTooltipTextMatcher("Delete")).click();
         DefaultShell deleteDialog = new DefaultShell("Delete DataSource");
@@ -111,6 +117,7 @@ public class ConnectionView extends WorkbenchView {
 
     public void editDataSource(String name) {
         refreshView();
+        name = (name.contains("java:/")) ? name : "java:/" + name;
         new DefaultTreeItem("Deployed", name).select();
         new PushButton(this, new WithTooltipTextMatcher("Edit")).click();
         new DefaultShell("Edit DataSource"); // TODO create class for it?

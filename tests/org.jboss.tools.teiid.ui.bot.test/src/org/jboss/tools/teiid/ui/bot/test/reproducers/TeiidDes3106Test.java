@@ -47,8 +47,8 @@ public class TeiidDes3106Test {
         new ContextMenuItem("Modeling", "Materialize").select();
         new WaitUntil(new ShellIsActive("Generate Materialized JDG Module"), TimePeriod.DEFAULT);
         DefaultShell wizard = new DefaultShell("Generate Materialized JDG Module");
-        new DefaultText(new DefaultGroup(wizard, "JDG Options;"), 0).setText("primaryCache");
-        new DefaultText(new DefaultGroup(wizard, "JDG Options;"), 1).setText("stagingCache");
+        new DefaultText(new DefaultGroup(wizard, "JDG Options"), 0).setText("primaryCache");
+        new DefaultText(new DefaultGroup(wizard, "JDG Options"), 1).setText("stagingCache");
 
         new DefaultText(new DefaultGroup(wizard, "Source Model Information"), 0).setText("Wrong-source-name");
         assertThat(new DefaultText(wizard, 6).getText(), equalToIgnoringCase(
