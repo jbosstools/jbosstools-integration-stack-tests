@@ -120,7 +120,6 @@ public class ConnectionViewTest {
         assertFalse(connectionView.existDataSource(NAME_SQL_MODEL));
     }
 
-    @Test(expected = Error.class)
     public void changeTeiid() {
         try {
             connectionView.changeDefaultServer("whatEver");

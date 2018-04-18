@@ -149,7 +149,7 @@ public class XmlSchemalessTest {
 		
 		String output = jdbcHelper.executeQueryWithXmlStringResult("SELECT * FROM bookListingDocument");
 		String expectedOutput = fileHelper.getXml("XmlSchemalessTest/BuiltDocument");
-		assertEquals(output, expectedOutput);
+        assertEquals(output.replaceAll("\\s+",""), expectedOutput.replaceAll("\\s+",""));
 	    
 	    // 5. Expand the document	    
 	    modelExplorer.addSiblingToModelItem(ModelExplorer.ChildType.ELEMENT, (modelPath+"/"+xmlStructureBuilt+"/edition").split("/"));
@@ -197,6 +197,6 @@ public class XmlSchemalessTest {
  		
  		output = jdbcHelper.executeQueryWithXmlStringResult("SELECT * FROM bookListingDocument");
  		expectedOutput = fileHelper.getXml("XmlSchemalessTest/BuiltDocumentExtended");	
- 	    assertEquals(output, expectedOutput); 	
+        assertEquals(output.replaceAll("\\s+",""), expectedOutput.replaceAll("\\s+",""));
 	}
 }

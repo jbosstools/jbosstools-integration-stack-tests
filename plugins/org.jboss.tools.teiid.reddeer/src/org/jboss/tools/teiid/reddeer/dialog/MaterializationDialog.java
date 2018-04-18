@@ -49,7 +49,7 @@ public class MaterializationDialog extends AbstractDialog {
      */
     public MaterializationDialog setVersionOfJdg(String type) {
         log.info("Set version of JDG to '" + type + "'");
-        new DefaultCombo(new DefaultGroup(dialog, "JDG Options;"), 0).setSelection(type);
+        new DefaultCombo(new DefaultGroup(dialog, "JDG Options"), 0).setSelection(type);
         return this;
     }
 
@@ -58,7 +58,7 @@ public class MaterializationDialog extends AbstractDialog {
      */
     public MaterializationDialog setPrimaryCache(String primaryCacheName) {
         log.info("Set primary cache name to '" + primaryCacheName + "'");
-        new DefaultText(new DefaultGroup(dialog, "JDG Options;"), 0).setText(primaryCacheName);
+        new DefaultText(new DefaultGroup(dialog, "JDG Options"), 0).setText(primaryCacheName);
         return this;
     }
 
@@ -67,7 +67,7 @@ public class MaterializationDialog extends AbstractDialog {
      */
     public MaterializationDialog setStagingCache(String stagingCacheName) {
         log.info("Set staging cache name to '" + stagingCacheName + "'");
-        new DefaultText(new DefaultGroup(dialog, "JDG Options;"), 1).setText(stagingCacheName);
+        new DefaultText(new DefaultGroup(dialog, "JDG Options"), 1).setText(stagingCacheName);
         return this;
     }
 
