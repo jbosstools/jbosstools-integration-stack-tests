@@ -17,7 +17,7 @@
 		<jbtis.tp.version>4.5.3.Final</jbtis.tp.version>
 		<jbtis.repo>staging</jbtis.repo>
 		<orbit.site>${jbosstools.url}/updates/requirements/orbit/S20170516192513/</orbit.site>
-		<fuse.site>${jbosstools.url}/oxygen/snapshots/builds/jbosstools-fuse_master/latest/all/repo/</fuse.site>
+		<fuse.site>${jbosstools.url}/oxygen/snapshots/builds/jbosstools-fuse_master/2018-04-11_13-54-39-B572/all/repo/</fuse.site>
 		<switchyard.site>${jbosstools.url}/oxygen/integration/updates/integration-stack/switchyard/2.4.1.CI/</switchyard.site>
 		<skipRequirements>${skipTests}</skipRequirements>
 		<!-- Need to specify a stable version of tycho plugin -->
