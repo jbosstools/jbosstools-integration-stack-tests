@@ -319,4 +319,22 @@ public class ServersViewExt extends ServersView2 {
 		}
 		return "ERROR";
 	}
+
+    public void undeployJar(String serverName, String jarName) {
+        new ServersView2().getServer(serverName);
+        try {
+            DefaultTreeItem vdbs = new DefaultTreeItem(getServerLabel(serverName), TEIID_INSTANCE_CONFIG,
+                    DV6_PREFIX_URL);
+            for (TreeItem treeItem : vdbs.getItems()) {
+                if (treeItem.getText().startsWith(jarName)) {
+                    treeItem.select();
+                    new ContextMenuItem("Remove").select();
+                    break;
+                }
+            }
+        } catch (Exception ex) {
+            // jar not in server
+            ex.printStackTrace();
+        }
+    }
 }

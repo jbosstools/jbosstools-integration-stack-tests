@@ -221,6 +221,12 @@ public class VdbEditor extends DefaultEditor {
 		new PushButton("OK").click();
 	}
 
+    public void deleteUserDefinedProperty(String name) {
+        new DefaultCTabItem("User Properties").activate();
+        new DefaultTable(new DefaultGroup(""), 0).getItem(name).select();
+        new PushButton(new WithTooltipTextMatcher("Remove Property")).click();
+    }
+
 	public List<String> getTranslatorOverrides() {
 		new DefaultCTabItem("Translator Overrides").activate();
 
