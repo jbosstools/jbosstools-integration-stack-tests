@@ -1,5 +1,6 @@
 package org.jboss.tools.teiid.ui.bot.test.ddl;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
@@ -23,11 +24,13 @@ import org.hamcrest.core.StringContains;
 import org.jboss.tools.common.reddeer.JiraClient;
 import org.jboss.tools.teiid.reddeer.DdlHelper;
 import org.jboss.tools.teiid.reddeer.dialog.GenerateDynamicVdbDialog;
+import org.jboss.tools.teiid.reddeer.editor.VdbEditor;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement;
 import org.jboss.tools.teiid.reddeer.requirement.TeiidServerRequirement.TeiidServer;
 import org.jboss.tools.teiid.reddeer.view.ModelExplorer;
 import org.jboss.tools.teiid.reddeer.view.PropertiesViewExt;
+import org.jboss.tools.teiid.reddeer.view.ServersViewExt;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -54,30 +57,40 @@ public class ViewUdf {
 	private static final String NAME_VDB = "viewUdfVDB";
 	private static final String NAME_ORIGINAL_DYNAMIC_VDB  = NAME_VDB + "-vdb.xml";
 	
-	private static final String NAME_GENERATED_DYNAMIC_VDB = "viewUdfVDB-vdb.xml";
+    private static final String NAME_GENERATED_DYNAMIC_VDB = "viewUdfVDB-vdb.xml";
 	
 	private static final String WORK_PROJECT_NAME = "workProject" ;
 	
 	private static final String UDF_LIB_PATH = "target/proc-udf/MyTestUdf/lib/";
 	private static final String UDF_LIB = "MyTestUdf-1.0-SNAPSHOT.jar";
 	
+    ModelExplorer modelExplorer = new ModelExplorer();
+
 	@Before
 	public void before() {
-		ModelExplorer explorer = new ModelExplorer();
-		explorer.deleteAllProjectsSafely();
+        modelExplorer.deleteAllProjectsSafely();
 
 		ddlHelper = new DdlHelper(collector);
-		explorer.importProject("DDLtests/"+PROJECT_NAME);
+        modelExplorer.importProject("DDLtests/" + PROJECT_NAME);
 		PropertiesViewExt.setUdf(PROJECT_NAME, NAME_VIEW_MODEL, NAME_UDF_FUNCTION, UDF_LIB, UDF_LIB_PATH);
 
-		explorer.createProject(WORK_PROJECT_NAME);
+        modelExplorer.createProject(WORK_PROJECT_NAME);
 	}
 	
+    /**
+     * Because staticVDB use JAR included in zip file and dynamicVDB use JAR as module deployed in the sever
+     * (deployed.<jar name>), JAR and VDB have to be removed from server before starting another test.
+     */
 	@After
-	public void after(){
-		new ModelExplorer().deleteAllProjectsSafely();
+    public void cleanUp() {
+        modelExplorer.deleteAllProjectsSafely();
+        ServersViewExt serversViewExt = new ServersViewExt();
+        serversViewExt.undeployJar(teiidServer.getName(), UDF_LIB);
+        serversViewExt.undeployVdb(teiidServer.getName(), NAME_VDB);
+        serversViewExt.refreshServer(teiidServer.getName());
+        // new ServersViewExt().restartServer(teiidServer.getName());
 	}
-	
+
 	@Test
 	public void importDdlTest(){
 		ddlHelper.importDdlFromView(PROJECT_NAME, NAME_VIEW_MODEL, WORK_PROJECT_NAME);		
@@ -92,14 +105,16 @@ public class ViewUdf {
 		PropertiesViewExt.setUdf(WORK_PROJECT_NAME, NAME_VIEW_MODEL, NAME_UDF_FUNCTION, UDF_LIB, UDF_LIB_PATH);
 		ddlHelper.synchronizeAllModelsInVdb(WORK_PROJECT_NAME, NAME_VDB);
 		checkImportedModel();
-        /*
-         * TODO generated static vdb from dynamic vdb is different String status = ddlHelper.deploy(WORK_PROJECT_NAME,
-         * NAME_VDB, teiidServer); collector.checkThat("vdb is not active", status, containsString("ACTIVE"));
-         */
+
+        modelExplorer.openModelEditor(WORK_PROJECT_NAME, NAME_VDB + ".vdb");
+        new VdbEditor(NAME_VDB + ".vdb").deleteUserDefinedProperty("lib");
+        new VdbEditor(NAME_VDB + ".vdb").save();
+        String status = ddlHelper.deploy(WORK_PROJECT_NAME, NAME_VDB, teiidServer);
+        collector.checkThat("vdb is not active", status, containsString("ACTIVE"));
 	}
 	
 	private void checkImportedModel(){
-		new ModelExplorer().selectItem(WORK_PROJECT_NAME, NAME_VIEW_MODEL + ".xmi", "udfConcatNull");
+        modelExplorer.selectItem(WORK_PROJECT_NAME, NAME_VIEW_MODEL + ".xmi", "udfConcatNull");
 
 		PropertySheet propertiesView = new PropertySheet();
 		collector.checkThat("wrong function category",
@@ -125,7 +140,7 @@ public class ViewUdf {
 	@Test
 	public void exportVdbTest(){	
         ddlHelper.createStaticVdb(NAME_VDB, PROJECT_NAME, NAME_VIEW_MODEL);
-        new ModelExplorer().selectItem(PROJECT_NAME, NAME_VDB + ".vdb");
+        modelExplorer.selectItem(PROJECT_NAME, NAME_VDB + ".vdb");
         new ContextMenuItem("Modeling", "Generate VDB XML").select();
         new WaitUntil(new ShellIsAvailable("Generate Dynamic VDB Status "), TimePeriod.DEFAULT);
         DefaultLabel warning = new DefaultLabel(1);
@@ -149,9 +164,10 @@ public class ViewUdf {
         wizard.finish();
         checkExportedFile(contents);
 
-		/*test deploy generated dynamic VDB from static VDB*//*//TODO dynamic VDB doesn't support UDF function
-		String status = ddlHelper.deploy(PROJECT_NAME, NAME_GENERATED_DYNAMIC_VDB, teiidServer);
-		collector.checkThat("vdb is not active", status, containsString("ACTIVE"));*/
+        modelExplorer.deployJar(teiidServer, PROJECT_NAME, "lib", UDF_LIB);
+        new ServersViewExt().refreshServer(teiidServer.getName());
+        String status = ddlHelper.deploy(PROJECT_NAME, NAME_GENERATED_DYNAMIC_VDB, teiidServer);
+        collector.checkThat("vdb is not active", status, containsString("ACTIVE"));
 	}
 	
 	@Test
