@@ -38,14 +38,14 @@ public class DDLTeiidExportWizard extends ExportMenuWizard {
 		return this;
 	}
 	
-	public DDLTeiidExportWizard activate() {
+	public DDLTeiidExportWizard activateWizard() {
 		new DefaultShell(DIALOG_TITLE);
 		return this;
 	}
 	
 	public DDLTeiidExportWizard setLocation(String... location) {
 		log.info("Set location: '" + Arrays.toString(location) + "'");
-		activate();
+		activateWizard();
 		new PushButton("...").click();
 		new DefaultShell();
 		new DefaultTreeItem(location).select();
@@ -55,7 +55,7 @@ public class DDLTeiidExportWizard extends ExportMenuWizard {
 	
 	public DDLTeiidExportWizard setNameInSource(boolean checked) {
 		log.info("Set name in source : '" + checked + "'");
-		activate();
+		activateWizard();
 		CheckBox checkBox = new CheckBox("Add Name In Source values as OPTIONS");
 		if(checked != checkBox.isChecked()){
 			checkBox.click();
@@ -65,7 +65,7 @@ public class DDLTeiidExportWizard extends ExportMenuWizard {
 	
 	public DDLTeiidExportWizard setNativeType(boolean checked) {
 		log.info("Set native type : '" + checked + "'");
-		activate();
+		activateWizard();
 		CheckBox checkBox = new CheckBox("Add Native Type values as OPTIONS");
 		if(checked != checkBox.isChecked()){
 			checkBox.click();
@@ -75,7 +75,7 @@ public class DDLTeiidExportWizard extends ExportMenuWizard {
 	
 	public DDLTeiidExportWizard exportToWorkspace(String Name,String... location) {
 		log.info("Export to workspace : '" + Arrays.toString(location) + "'");
-		activate();
+		activateWizard();
 		new PushButton("Export to Workspace...").click();
 		new DefaultShell("Export DDL To Workspace");
 		new PushButton("Browse...").click();

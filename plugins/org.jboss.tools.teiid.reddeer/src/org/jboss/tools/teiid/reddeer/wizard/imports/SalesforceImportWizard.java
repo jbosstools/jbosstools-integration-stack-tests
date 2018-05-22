@@ -38,7 +38,7 @@ public class SalesforceImportWizard extends TeiidImportWizard {
 		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
 	}
 	
-	public SalesforceImportWizard activate() {
+	public SalesforceImportWizard activateWizard() {
 		new DefaultShell(DIALOG_TITLE);
 		return this;
 	}
@@ -52,7 +52,7 @@ public class SalesforceImportWizard extends TeiidImportWizard {
 	
 	public SalesforceImportWizard setConnectionProfile(String connectionProfile) {
 		log.info("Set connection profile: '" + connectionProfile + "'");
-		activate();
+		activateWizard();
 		new DefaultCombo(0).setSelection(connectionProfile);
 		new PushButton("Validate Connection").click();
 		return this;
@@ -60,7 +60,7 @@ public class SalesforceImportWizard extends TeiidImportWizard {
 	
 	public SalesforceImportWizard selectObjects(String... objects){
 		log.info("Select objects: '" + Arrays.toString(objects) + "'");
-		activate();
+		activateWizard();
 		new PushButton("Deselect All").click();
 		for (String object : objects) {
 			new DefaultTable().getItem(object.trim()).setChecked(true);
@@ -70,7 +70,7 @@ public class SalesforceImportWizard extends TeiidImportWizard {
 	
 	public SalesforceImportWizard deselectObjects(String... objects){
 		log.info("Deselect objects: '" + Arrays.toString(objects) + "'");
-		activate();
+		activateWizard();
 		new PushButton("Select All").click();
 		for (String object : objects) {
 			new DefaultTable().getItem(object.trim()).setChecked(false);
@@ -80,21 +80,21 @@ public class SalesforceImportWizard extends TeiidImportWizard {
 	
 	public SalesforceImportWizard setModelName(String modelName) {
 		log.info("Set model name to: '" + modelName + "'");
-		activate();
+		activateWizard();
 		new LabeledText("Model Name:").setText(modelName);
 		return this;
 	}
 	
 	public SalesforceImportWizard setProject(String projectName) {
 		log.info("Set project name to: '" + projectName + "'");
-		activate();
+		activateWizard();
 		new LabeledText("Location:").setText(projectName);
 		return this;
 	}
 	
 	public SalesforceImportWizard autoCreateDataSource(boolean checked) {
 		log.info("Auto-Create Data Source is : '" + checked + "'");
-		activate();
+		activateWizard();
 		CheckBox checkBox = new CheckBox("Auto-create Data Source");
 		if(checked != checkBox.isChecked()){
 			checkBox.click();
@@ -104,7 +104,7 @@ public class SalesforceImportWizard extends TeiidImportWizard {
 	
 	public SalesforceImportWizard setJndiName(String JndiName) {
 		log.info("Set JNDI name to: '" + JndiName + "'");
-		activate();
+		activateWizard();
 		new LabeledText("JNDI Name").setText(JndiName);
 		return this;
 	}

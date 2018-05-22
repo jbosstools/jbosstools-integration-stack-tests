@@ -25,28 +25,28 @@ public class SalesforceConnectionProfileWizard extends ConnectionProfileWizard{
 		return wizard;
 	}
 	
-	public SalesforceConnectionProfileWizard activate() {
+	public SalesforceConnectionProfileWizard activateWizard() {
 		new DefaultShell(DIALOG_TITLE);
 		return this;
 	}
 
 	public SalesforceConnectionProfileWizard setUsername(String username) {
 		log.info("Set user name to: '" + username + "'");
-		activate();
+		activateWizard();
 		new LabeledText("User Name").setText(username);
 		return this;
 	}
 
 	public SalesforceConnectionProfileWizard setPassword(String password) {
 		log.info("Set password to: '" + password + "'");
-		activate();
+		activateWizard();
 		new LabeledText("Password").setText(password);
 		return this;
 	}
 	
 	public SalesforceConnectionProfileWizard connectAfter(boolean checked) {
 		log.info("Connect when the wizard completes : '" + checked + "'");
-		activate();
+		activateWizard();
 		CheckBox checkBox = new CheckBox("Connect when the wizard completes");
 		if(checked != checkBox.isChecked()){
 			checkBox.click();
@@ -59,7 +59,7 @@ public class SalesforceConnectionProfileWizard extends ConnectionProfileWizard{
 		new PushButton("Test Connection").click();
 		new DefaultShell("Success");
 		new PushButton("OK").click();
-		activate();
+		activateWizard();
 		return this;
 	}
 }

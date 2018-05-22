@@ -44,14 +44,14 @@ public class FlatImportWizard extends TeiidImportWizard {
 	
 	public FlatImportWizard nextPage(){
 		log.info("Go to next wizard page");
-		activate();
+		activateWizard();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new PushButton("Next >");
 		new NextButton().click();
 		return this;
 	}
 	
-	public FlatImportWizard activate() {
+	public FlatImportWizard activateWizard() {
 		new DefaultShell(DIALOG_TITLE);
 		return this;
 	}
@@ -102,7 +102,7 @@ public class FlatImportWizard extends TeiidImportWizard {
 
 	public FlatImportWizard selectImportMode(String importMode) {
 		log.info("Select import mode to '" + importMode + "'");
-		activate();
+		activateWizard();
 		new RadioButton(importMode).click();
 		return this;
 	}
@@ -117,21 +117,21 @@ public class FlatImportWizard extends TeiidImportWizard {
 
 	public FlatImportWizard selectProfile(String profile) {
 		log.info("Select profile to '" + profile + "'");
-		activate();
+		activateWizard();
 		new DefaultCombo(0).setSelection(profile);
 		return this;
 	}
 
 	public FlatImportWizard setSourceModel(String sourceModelName) {
 		log.info("Set source model to '" + sourceModelName + "'");
-		activate();
+		activateWizard();
 		new LabeledText("Name:").setText(sourceModelName);
 		return this;
 	}
 
 	public FlatImportWizard setProject(String project) {
 		log.info("Set project to '" + project + "'");
-		activate();
+		activateWizard();
 		new PushButton("...").click();
 		new DefaultShell("Select a Folder");
 		new DefaultTreeItem(project).select();
@@ -144,7 +144,7 @@ public class FlatImportWizard extends TeiidImportWizard {
 	 */
 	public FlatImportWizard checkHeaderNames() {
 		log.info("Check 'Column names in header'");
-		activate();
+		activateWizard();
 		new CheckBox("Column names in header").toggle(true);
 		return this;
 	}
@@ -155,21 +155,21 @@ public class FlatImportWizard extends TeiidImportWizard {
 	public FlatImportWizard setHeaderLine(String num) {
 		checkHeaderNames();
 		log.info("Set header line to '" + num + "'");
-		activate();
+		activateWizard();
 		new LabeledText("Header line #").setText(num);
 		return this;
 	}
 
 	public FlatImportWizard setDataLine(String num) {
 		log.info("Set data line to '" + num + "'");
-		activate();
+		activateWizard();
 		new LabeledText("Data line #").setText(num);
 		return this;
 	}
 	
 	public FlatImportWizard setJndiName(String jndiName) {
 		log.info("Setting JNDI name");
-		activate();
+		activateWizard();
         jndiName = (jndiName.contains("java:/")) ? jndiName : "java:/" + jndiName;
 		new DefaultText(new DefaultGroup("JBoss Data Source Information"),0).setText(jndiName);
 		return this;
@@ -180,7 +180,7 @@ public class FlatImportWizard extends TeiidImportWizard {
 	 */
 	public FlatImportWizard selectDelimiterCharacter(DelimiterCharacter delimiterCharacter) {
 		log.info("Set dilimeter character to '" + delimiterCharacter + "'");
-		activate();
+		activateWizard();
 		new PushButton("Configure Delimiters").click();
 		new DefaultShell("Flat File Delimiter");
 		new RadioButton(delimiterCharacter.getLabel()).click();
@@ -198,21 +198,21 @@ public class FlatImportWizard extends TeiidImportWizard {
 
 	public FlatImportWizard setViewModel(String viewModelName) {
 		log.info("Set view model name to '" + viewModelName + "'");
-		activate();
+		activateWizard();
 		new LabeledText("Name:").setText(viewModelName);
 		return this;
 	}
 
 	public FlatImportWizard setViewTable(String viewTableName) {
 		log.info("Set view table name to '" + viewTableName + "'");
-		activate();
+		activateWizard();
 		new LabeledText("New view table name:").setText(viewTableName);
 		return this;
 	}
 	
 	public FlatImportWizard setFixedWidth() {
 		log.info("set fixed width csv");
-		activate();
+		activateWizard();
 		new RadioButton("Fixed width").toggle(true);
 		if (new ShellIsActive("Column Format Changed").test()){
 			new PushButton("Yes").click();
@@ -225,7 +225,7 @@ public class FlatImportWizard extends TeiidImportWizard {
 	 */
 	public FlatImportWizard setConfigureDelimiters(String delimiterCharacter) {
 		log.info("Set view table name to '" + delimiterCharacter + "'");
-		activate();
+		activateWizard();
 		new PushButton("Configure Delimiters").click();
 		new DefaultShell("Flat File Delimiter");
 		new CheckBox("Use Default (new line character)").toggle(false);
@@ -239,7 +239,7 @@ public class FlatImportWizard extends TeiidImportWizard {
 	 * Only for csv with fixed width
 	 */
 	public EditColumnDialog addColumn() {
-		activate();
+		activateWizard();
 		new PushButton("ADD").click();
 		return new EditColumnDialog();
 	}

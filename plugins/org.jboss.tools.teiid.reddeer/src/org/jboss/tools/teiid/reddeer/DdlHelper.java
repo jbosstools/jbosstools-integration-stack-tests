@@ -120,7 +120,7 @@ public class DdlHelper {
 	public void importVdb(String projectName, String originalDynamicVDB, String workProjectName){
 		ImportFromFileSystemWizard.openWizard()
 				.setPath("resources/projects/DDLtests/"+projectName)
-				.activate() //need refresh for show folders after set path
+				.activateWizard() //need refresh for show folders after set path
 				.setFolder(workProjectName)
 				.selectFile(originalDynamicVDB)
 				.setCreteTopLevelFolder(false)

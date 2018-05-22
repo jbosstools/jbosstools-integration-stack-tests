@@ -101,8 +101,7 @@ public class ReuseVDBTest {
 		}catch(Exception ex){
 			
 		}
-		wizard.activate()
-				.finish();
+		wizard.activateWizard().finish();
 		new RelationalModelEditor(VIEW_REUSE_MODEL + ".xmi").save();
 
 		VdbWizard.openVdbWizard()

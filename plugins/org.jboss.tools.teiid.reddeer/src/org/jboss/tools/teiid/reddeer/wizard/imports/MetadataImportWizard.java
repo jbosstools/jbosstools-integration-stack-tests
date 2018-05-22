@@ -44,7 +44,7 @@ public class MetadataImportWizard extends TeiidImportWizard {
 		return this;
 	}
 	
-	public MetadataImportWizard activate() {
+	public MetadataImportWizard activateWizard() {
 		new DefaultShell(DIALOG_TITLE);
 		return this;
 	}
@@ -54,14 +54,14 @@ public class MetadataImportWizard extends TeiidImportWizard {
 	 */
 	public MetadataImportWizard setImportType(String importType) {
 		log.info("Set import type to: '" + importType + "'");
-		activate();
+		activateWizard();
 		new DefaultCombo().setSelection(importType);
 		return this;
 	}
 	
 	public MetadataImportWizard setPathToFile(final String path) {
 		log.info("Set path to file: '" + path + "'");
-		activate();
+		activateWizard();
 		// Workaround due to TEIIDDES-417
 		Display.syncExec(new Runnable() {
 			@Override

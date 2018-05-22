@@ -39,14 +39,14 @@ public class ImportProjectWizard extends ImportMenuWizard {
 		return this;
 	}
 	
-	public ImportProjectWizard activate() {
+	public ImportProjectWizard activateWizard() {
 		new DefaultShell(DIALOG_TITLE);
 		return this;
 	}
 	
 	public ImportProjectWizard setPath(String path){
 		log.info("Set import path: '" + path + "'");
-		activate();
+		activateWizard();
 		
 		if (path.toLowerCase().endsWith(".zip")) {
 			new RadioButton("Select archive file:").click();

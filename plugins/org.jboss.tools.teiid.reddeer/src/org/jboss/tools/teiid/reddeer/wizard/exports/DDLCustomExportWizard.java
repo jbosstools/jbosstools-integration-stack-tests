@@ -49,12 +49,7 @@ public class DDLCustomExportWizard extends ExportMenuWizard {
 		super.next();
 		return this;
 	}
-	
-	public DDLCustomExportWizard activate() {
-		new DefaultShell(DIALOG_TITLE);
-		return this;
-	}
-	
+
 	public DDLCustomExportWizard setNameInSource(boolean checked) {
 		log.info("Set name in source : '" + checked + "'");
 		activate();

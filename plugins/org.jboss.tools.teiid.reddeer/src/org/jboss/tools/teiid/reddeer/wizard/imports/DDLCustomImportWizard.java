@@ -52,21 +52,21 @@ public class DDLCustomImportWizard extends TeiidImportWizard{
 		return this;
 	}
 	
-	public DDLCustomImportWizard activate() {
+	public DDLCustomImportWizard activateWizard() {
 		new DefaultShell(DIALOG_TITLE);
 		return this;
 	}
 	
 	public DDLCustomImportWizard setPath(String path){
 		log.info("Set import path: '" + path + "'");
-		activate();
+		activateWizard();
 		new DefaultCombo(0).setText(path);
 		return this;
 	}
 	
 	public DDLCustomImportWizard autoSelect(boolean checked){
 		log.info("Autoselect is : '" + checked + "'");
-		activate();
+		activateWizard();
 		CheckBox checkBox = new CheckBox("Auto-select");
 		if(checked != checkBox.isChecked()){
 			checkBox.click();
@@ -79,7 +79,7 @@ public class DDLCustomImportWizard extends TeiidImportWizard{
 	 */
 	public DDLCustomImportWizard setDialect(String dialect){
 		log.info("Set dialect to: '" + dialect + "'");
-		activate();
+		activateWizard();
 		autoSelect(false);
 		new DefaultCombo(1).setSelection(dialect);
 		return this;
@@ -87,7 +87,7 @@ public class DDLCustomImportWizard extends TeiidImportWizard{
 	
 	public DDLCustomImportWizard setFolder(String folder){
 		log.info("Set folder to: '" + folder + "'");
-		activate();
+		activateWizard();
 		new PushButton(2).click();
 		new DefaultTreeItem(folder).select();
 		new PushButton("OK").click();
@@ -96,7 +96,7 @@ public class DDLCustomImportWizard extends TeiidImportWizard{
 	
 	public DDLCustomImportWizard setName(String name){
 		log.info("Set name to: '" + name + "'");
-		activate();
+		activateWizard();
 		new DefaultText(1).setText(name);
 		return this;
 	}
@@ -106,14 +106,14 @@ public class DDLCustomImportWizard extends TeiidImportWizard{
 	 */
 	public DDLCustomImportWizard setModelType(String modelType){
 		log.info("Set model type to: '" + modelType + "'");
-		activate();
+		activateWizard();
 		new DefaultCombo(2).setText(modelType);
 		return this;
 	}
 	
 	public DDLCustomImportWizard generateValidDefaultSQL(boolean checked){
 		log.info("Generate valid default sql is : '" + checked + "'");
-		activate();
+		activateWizard();
 		CheckBox checkBox = new CheckBox("Generate valid default SQL (SELECT null AS column_name, etc....)");
 		if(checked != checkBox.isChecked()){
 			checkBox.click();
@@ -123,7 +123,7 @@ public class DDLCustomImportWizard extends TeiidImportWizard{
 	
 	public DDLCustomImportWizard setDescriptionOfModel(boolean checked){
 		log.info("Description of model is : '" + checked + "'");
-		activate();
+		activateWizard();
 		new DefaultTabItem("Options").activate();
 		CheckBox checkBox = new CheckBox("Set description of model entities to corresponding DDL statement");
 		if(checked != checkBox.isChecked()){
@@ -135,7 +135,7 @@ public class DDLCustomImportWizard extends TeiidImportWizard{
 
 	public DDLCustomImportWizard createModelEntities(boolean checked){
 		log.info("Create model entities is : '" + checked + "'");
-		activate();
+		activateWizard();
 		new DefaultTabItem("Options").activate();
 		CheckBox checkBox = new CheckBox("Create model entities for DDL defined by unsupported DML (e.g., Views)");
 		if(checked != checkBox.isChecked()){

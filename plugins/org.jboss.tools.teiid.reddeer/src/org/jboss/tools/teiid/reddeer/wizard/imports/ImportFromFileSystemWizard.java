@@ -40,28 +40,28 @@ public class ImportFromFileSystemWizard extends ImportMenuWizard {
 	}
 
 	
-	public ImportFromFileSystemWizard activate() {
+	public ImportFromFileSystemWizard activateWizard() {
 		new DefaultShell(DIALOG_TITLE);
 		return this;
 	}
 	
 	public ImportFromFileSystemWizard setPath(String path){
 		log.info("Set import path: '" + path + "'");
-		activate();
+		activateWizard();
 		new DefaultCombo(0).setText(new File(path).getAbsolutePath());
 		return this;
 	}
 	
 	public ImportFromFileSystemWizard setFolder(String folder){
 		log.info("Set folder to: '" + folder + "'");
-		activate();
+		activateWizard();
 		new LabeledText("Into folder:").setText(folder);
 		return this;
 	}
 	
 	public ImportFromFileSystemWizard selectFile(String file){
 		log.info("Select file: '" + file + "'");
-		activate();
+		activateWizard();
 		new LabeledText("Into folder:").setFocus();
 		new DefaultTable().getItem(file).setChecked(true);
 		return this;
@@ -69,7 +69,7 @@ public class ImportFromFileSystemWizard extends ImportMenuWizard {
 	
 	public ImportFromFileSystemWizard setOverwriteResources(boolean checked){
 		log.info("Overwrite resources is : '" + checked + "'");
-		activate();
+		activateWizard();
 		CheckBox checkBox = new CheckBox("Overwrite existing resources without warning");
 		if(checked != checkBox.isChecked()){
 			checkBox.click();
@@ -79,7 +79,7 @@ public class ImportFromFileSystemWizard extends ImportMenuWizard {
 	
 	public ImportFromFileSystemWizard setCreteTopLevelFolder(boolean checked){
 		log.info("Create top-level folder is : '" + checked + "'");
-		activate();
+		activateWizard();
 		CheckBox checkBox = new CheckBox("Create top-level folder");
 		if(checked != checkBox.isChecked()){
 			checkBox.click();

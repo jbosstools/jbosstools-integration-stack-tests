@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-  <soap:Header/>
-  <soap:Body>
-    <sayHello xmlns="urn:com.example.switchyard:proxy_rest:1.0">
-      <string>apodhrad</string>
-    </sayHello>
-  </soap:Body>
-</soap:Envelope>

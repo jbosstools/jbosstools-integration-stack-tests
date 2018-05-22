@@ -60,28 +60,28 @@ public class ImportJDBCDatabaseWizard extends TeiidImportWizard {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 	
-	public ImportJDBCDatabaseWizard activate() {
+	public ImportJDBCDatabaseWizard activateWizard() {
         new DefaultShell(DIALOG_TITLE).setFocus();
 		return this;
 	}
 	
 	public ImportJDBCDatabaseWizard setConnectionProfile(String connectionProfile) {
 		log.info("Set connection profile: '" + connectionProfile + "'");
-		activate();
+		activateWizard();
 		new DefaultCombo(0).setSelection(connectionProfile);
 		return this;
 	}
 	
 	public ImportJDBCDatabaseWizard setJDBCMetadataProcessor(String metadataProcessor) {
 		log.info("Set JDBC Metadata Processor: '" + metadataProcessor + "'");
-		activate();
+		activateWizard();
 		new DefaultCombo(1).setSelection(metadataProcessor);
 		return this;
 	}
 	
 	public ImportJDBCDatabaseWizard setCPpassword(String password) {
 		log.info("Set connection profile password: '" + password + "'");
-		activate();
+		activateWizard();
 		new LabeledText("Password:").setText(password);
 		return this;
 	}
@@ -91,7 +91,7 @@ public class ImportJDBCDatabaseWizard extends TeiidImportWizard {
 	 */
 	public ImportJDBCDatabaseWizard importAsVDB(boolean checked) {
 		log.info("Import as VDB source model is : '" + checked + "'");
-		activate();
+		activateWizard();
 		CheckBox checkBox = new CheckBox("Import as VDB source model");
 		if(checked != checkBox.isChecked()){
 			checkBox.click();
@@ -104,7 +104,7 @@ public class ImportJDBCDatabaseWizard extends TeiidImportWizard {
 	 */
 	public ImportJDBCDatabaseWizard setVDBversion(int version) {
 		log.info("Set VDB version to : '" + version + "'");
-		activate();
+		activateWizard();
 		new LabeledText("VDB Version").setText(Integer.toString(version));
 		return this;
 	}
@@ -114,7 +114,7 @@ public class ImportJDBCDatabaseWizard extends TeiidImportWizard {
 	 */
 	public ImportJDBCDatabaseWizard foreignKeys(boolean checked, boolean IncludeIncompleteFK){
 		log.info("Foreign keys are : '" + checked + "'");
-		activate();
+		activateWizard();
 		CheckBox checkBox = new CheckBox("Foreign Keys");
 		if(checked != checkBox.isChecked()){
 			checkBox.click();
@@ -134,7 +134,7 @@ public class ImportJDBCDatabaseWizard extends TeiidImportWizard {
 	 */
 	public ImportJDBCDatabaseWizard indexes(boolean checked, boolean uniqueOnly, boolean ApprocimationsAllowed){
 		log.info("Indexes are : '" + checked + "'");
-		activate();
+		activateWizard();
 		CheckBox checkBox = new CheckBox("Indexes");
 		if(checked != checkBox.isChecked()){
 			checkBox.click();
@@ -154,7 +154,7 @@ public class ImportJDBCDatabaseWizard extends TeiidImportWizard {
 	
 	public ImportJDBCDatabaseWizard procedures(boolean checked){
 		log.info("Procedures are : '" + checked + "'");
-		activate();
+		activateWizard();
 		CheckBox checkBox = new CheckBox("Procedures");
 		if(checked != checkBox.isChecked()){
 			checkBox.click();
@@ -172,7 +172,7 @@ public class ImportJDBCDatabaseWizard extends TeiidImportWizard {
 	public ImportJDBCDatabaseWizard setTableTypes(boolean systemTable, boolean table, boolean view, boolean xmlstagingtable, boolean document){
 		log.info("Table types are: System table is: '" + systemTable + "'; Table is: '" + table + "'; View is: '"+view+"'; "
 				+ "XmlStagingTable is: '"+xmlstagingtable+"'; Document is: '"+document+"'");
-		activate();
+		activateWizard();
 		new PushButton("Deselect All").click();
 		
 		List<String> list = new ArrayList<String>();
@@ -207,7 +207,7 @@ public class ImportJDBCDatabaseWizard extends TeiidImportWizard {
 	 */
 	public ImportJDBCDatabaseWizard setTables(String... itemList){
 		log.info("Check tables : '" + Arrays.toString(itemList) + "'");
-		activate();
+		activateWizard();
 
 		if ((itemList != null) && (itemList.length!=0)) {
 			new PushButton("Deselect All").click();
@@ -223,7 +223,7 @@ public class ImportJDBCDatabaseWizard extends TeiidImportWizard {
 	
 	public ImportJDBCDatabaseWizard setFolder(String folder) {
 		log.info("Set folder to: '" + folder + "'");
-		activate();
+		activateWizard();
 		new LabeledText("Into Folder:").setText(folder);
 		return this;
 	}
@@ -233,7 +233,7 @@ public class ImportJDBCDatabaseWizard extends TeiidImportWizard {
 	 */
 	public ImportJDBCDatabaseWizard setModelName(String modelName) {
 		log.info("Set model name to: '" + modelName + "'");
-		activate();
+		activateWizard();
 		new LabeledText("Model Name:").setText(modelName);
 		return this;
 	}
@@ -242,7 +242,7 @@ public class ImportJDBCDatabaseWizard extends TeiidImportWizard {
 	 */
 	public ImportJDBCDatabaseWizard makeTargetViewModel(boolean checked) {
 		log.info("Make target a view model is : '" + checked + "'");
-		activate();
+		activateWizard();
 		CheckBox checkBox = new CheckBox("Make target a view model");
 		if(checked != checkBox.isChecked()){
 			checkBox.click();
@@ -254,7 +254,7 @@ public class ImportJDBCDatabaseWizard extends TeiidImportWizard {
 	 */
 	public ImportJDBCDatabaseWizard update(boolean checked) {
 		log.info("Update is : '" + checked + "'");
-		activate();
+		activateWizard();
 		CheckBox checkBox = new CheckBox("Update (if existing model selected)");
 		if(checked != checkBox.isChecked()){
 			checkBox.click();
@@ -264,7 +264,7 @@ public class ImportJDBCDatabaseWizard extends TeiidImportWizard {
 	
 	public ImportJDBCDatabaseWizard includeCostStatistics(boolean checked) {
 		log.info("Include cost statistics is : '" + checked + "'");
-		activate();
+		activateWizard();
 		CheckBox checkBox = new CheckBox("Include Cost Statistics (will increase time for large imports)");
 		if(checked != checkBox.isChecked()){
 			checkBox.click();
@@ -274,7 +274,7 @@ public class ImportJDBCDatabaseWizard extends TeiidImportWizard {
 	
 	public ImportJDBCDatabaseWizard autoCreateDataSource(boolean checked) {
 		log.info("Auto-Create Data Source is : '" + checked + "'");
-		activate();
+		activateWizard();
 		CheckBox checkBox = new CheckBox("Auto-create Data Source");
 		if(checked != checkBox.isChecked()){
 			checkBox.click();
@@ -284,7 +284,7 @@ public class ImportJDBCDatabaseWizard extends TeiidImportWizard {
 	
 	public ImportJDBCDatabaseWizard setJndiName(String JndiName) {
 		log.info("Set JNDI name to: '" + JndiName + "'");
-		activate();
+		activateWizard();
 		new LabeledText("JNDI Name").setText(JndiName);
 		return this;
 	}
@@ -294,7 +294,7 @@ public class ImportJDBCDatabaseWizard extends TeiidImportWizard {
 	 */
 	public ImportJDBCDatabaseWizard includeCatalog(boolean checked) {
 		log.info("Include catalog is : '" + checked + "'");
-		activate();
+		activateWizard();
 		CheckBox checkBox = new CheckBox("Include Catalog For Fully Qualified Names");
 		if(checked != checkBox.isChecked()){
 			checkBox.click();
@@ -306,7 +306,7 @@ public class ImportJDBCDatabaseWizard extends TeiidImportWizard {
 	 */
 	public ImportJDBCDatabaseWizard useFullyNames(boolean checked){
 		log.info("Use Fully Qualified Names is : '" + checked + "'");
-		activate();
+		activateWizard();
 		new DefaultTabItem("Model Object Options").activate();
 		CheckBox checkBox = new CheckBox("Use Fully Qualified Names  (Example: partssupplier.dbo.PARTS)");
 		if(checked != checkBox.isChecked()){
@@ -318,7 +318,7 @@ public class ImportJDBCDatabaseWizard extends TeiidImportWizard {
 	
 	public ImportJDBCDatabaseWizard setUpdatable(boolean checked){
 		log.info("Updatable is : '" + checked + "'");
-		activate();
+		activateWizard();
 		new DefaultTabItem("Model Object Options").activate();
 		CheckBox checkBox = new CheckBox("Set all as updatable");
 		if(checked != checkBox.isChecked()){
@@ -334,7 +334,7 @@ public class ImportJDBCDatabaseWizard extends TeiidImportWizard {
 	 */
 	public ImportJDBCDatabaseWizard changeCase(boolean lowerCase){
 		log.info("Change case to lower : '" + lowerCase + "'");
-		activate();
+		activateWizard();
 		new DefaultTabItem("Model Object Options").activate();
 		new CheckBox("Change Case For All Characters").click();
 		if(lowerCase){

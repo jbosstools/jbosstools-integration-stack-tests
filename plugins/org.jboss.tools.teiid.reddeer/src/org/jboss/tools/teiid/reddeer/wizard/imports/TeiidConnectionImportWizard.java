@@ -54,7 +54,7 @@ public class TeiidConnectionImportWizard extends TeiidImportWizard{
 	
 	public TeiidConnectionImportWizard nextPage(){
 		log.info("Go to next wizard page");
-		activate();
+		activateWizard();
 		new NextButton().click();
 		return this;
 	}
@@ -69,14 +69,14 @@ public class TeiidConnectionImportWizard extends TeiidImportWizard{
 		return this;
 	}
 	
-	public TeiidConnectionImportWizard activate() {
+	public TeiidConnectionImportWizard activateWizard() {
 		new DefaultShell(DIALOG_TITLE);
 		return this;
 	}
 	
 	public TeiidConnectionImportWizard selectDataSource(String dataSourceName) {
 		log.info("Select existing data source '" + dataSourceName + "'");		
-		activate();
+		activateWizard();
 		Table table = new DefaultTable(0);
 		TableItem item = table.getItem(dataSourceName, 0);
 		if (item != null) {
@@ -90,14 +90,14 @@ public class TeiidConnectionImportWizard extends TeiidImportWizard{
 	 */
 	public CreateDataSourceDialog createNewDataSource(){	
 		log.info("Create new data source");
-		activate();
+		activateWizard();
 		new PushButton("New...").click();
 		return new CreateDataSourceDialog();
 	}
 	
 	public TeiidConnectionImportWizard setTranslator(String translatorName){
 		log.info("Change translator to '" + translatorName + "'");
-		activate();
+		activateWizard();
 		new DefaultCombo(0).setSelection(translatorName);
 		return this;
 	}
@@ -107,7 +107,7 @@ public class TeiidConnectionImportWizard extends TeiidImportWizard{
 	 */
 	public TeiidConnectionImportWizard setImportPropertie(String propertyName, String value){
 		log.info("Set property " + propertyName + "'s value to: '"+value+"'");
-		activate();
+		activateWizard();
 		try{
 			Table table = new DefaultTable(new DefaultGroup("Import Properties"), 0);
 			TableItem item = null;
@@ -128,7 +128,7 @@ public class TeiidConnectionImportWizard extends TeiidImportWizard{
 	
 	public TeiidConnectionImportWizard addNewImportPropertie(String propertyName, String value){
 		log.info("Add new property '" + propertyName + "' with value to: '"+value+"'");
-		activate();
+		activateWizard();
 		new PushButton(new DefaultGroup("Optional Source Import Properties"), 0).click();
 		new DefaultShell("Add New Property");
 		new LabeledText("Name:").setText(propertyName);
@@ -138,7 +138,7 @@ public class TeiidConnectionImportWizard extends TeiidImportWizard{
 		}catch(Exception ex){
 			log.warn("Property is already exist.");
 			new PushButton("Cancel").click();
-			activate();
+			activateWizard();
 			Table table = new DefaultTable(new DefaultGroup("Optional Source Import Properties"), 0);
 			TableItem item = null;
 			item = table.getItem(propertyName);
@@ -151,7 +151,7 @@ public class TeiidConnectionImportWizard extends TeiidImportWizard{
 	
 	public TeiidConnectionImportWizard setProject(String projectName) {
 		log.info("Set project name to: '" + projectName + "'");
-		activate();
+		activateWizard();
 		new PushButton("...").click();
 		new DefaultShell("Select a Folder");
 		new DefaultTreeItem(projectName).select();
@@ -161,14 +161,14 @@ public class TeiidConnectionImportWizard extends TeiidImportWizard{
 	
 	public TeiidConnectionImportWizard setModelName(String modelName) {
 		log.info("Set model name to: '" + modelName + "'");
-		activate();
+		activateWizard();
 		new LabeledText("Name:").setText(modelName);
 		return this;
 	}
 	
 	public TeiidConnectionImportWizard setTablesToImport(String... tables) {
 		log.info("Select tables to import: '" + Arrays.toString(tables) + "'");
-		activate();
+		activateWizard();
 		DefaultTree tree = new DefaultTree();
 		for (TreeItem treeItem : tree.getItems()) {
 			treeItem.setChecked(false);

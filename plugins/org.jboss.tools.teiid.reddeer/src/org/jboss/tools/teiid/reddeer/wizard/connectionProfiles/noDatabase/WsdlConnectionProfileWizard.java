@@ -46,14 +46,14 @@ public class WsdlConnectionProfileWizard extends ConnectionProfileWizard {
 		return this;
 	}
 	
-	public WsdlConnectionProfileWizard activate() {
+	public WsdlConnectionProfileWizard activateWizard() {
 		new DefaultShell(DIALOG_TITLE);
 		return this;
 	}
 	
 	public WsdlConnectionProfileWizard setWsdl(String wsdl) {
 		log.info("Set wsdl to : '" + wsdl + "'");
-		activate();
+		activateWizard();
 		new PushButton("URL...").click();
 		new DefaultShell("WSDL URL");
 		
@@ -62,13 +62,13 @@ public class WsdlConnectionProfileWizard extends ConnectionProfileWizard {
 		}
 		new LabeledText("Enter WSDL URL:").setText(wsdl);
 		new PushButton("OK").click();
-		activate();
+		activateWizard();
 		return this;
 	}
 	
 	public WsdlConnectionProfileWizard setWsdl(String wsdl, String securityType, String userName, String password) {
 		log.info("Set wsdl to : '" + wsdl + "'");
-		activate();
+		activateWizard();
 		new PushButton("URL...").click();
 		new DefaultShell("WSDL URL");
 		
@@ -82,13 +82,13 @@ public class WsdlConnectionProfileWizard extends ConnectionProfileWizard {
 		new LabeledText("Password").setText(password);
 		
 		new PushButton("OK").click();
-		activate();
+		activateWizard();
 		return this;
 	}
 
 	public WsdlConnectionProfileWizard setEndPoint(String endPoint){
 		log.info("Set end point to : '" + endPoint + "'");
-		activate();
+		activateWizard();
 		new DefaultCombo().setSelection(endPoint);
 		return this;
 	}

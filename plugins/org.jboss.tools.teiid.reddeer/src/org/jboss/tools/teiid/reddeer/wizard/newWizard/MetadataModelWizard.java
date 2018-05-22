@@ -66,24 +66,24 @@ public class MetadataModelWizard extends NewMenuWizard {
 		return this;
 	}
 
-	public MetadataModelWizard activate() {
+	public MetadataModelWizard activateWizard() {
 		new DefaultShell(DIALOG_TITLE);
 		return this;
 	}
 
 	public MetadataModelWizard setLocation(String... path) {
-		activate();
+		activateWizard();
 		log.info("Set location to '" + Arrays.toString(path) + "'");
 		new PushButton("Browse...").click();
 		new DefaultShell("Select a Folder");
 		new DefaultTreeItem(path).select();
 		new PushButton("OK").click();
-		activate();
+		activateWizard();
 		return this;
 	}
 
 	public MetadataModelWizard setModelName(String modelName) {
-		activate();
+		activateWizard();
 		log.info("Set model name to '" + modelName + "'");
 		new LabeledText("Model Name:").setText(modelName);
 		return this;
@@ -94,7 +94,7 @@ public class MetadataModelWizard extends NewMenuWizard {
 	 *            MetadataModelWizard.ModelClass.*
 	 */
 	public MetadataModelWizard selectModelClass(String modelClass) {
-		activate();
+		activateWizard();
 		log.info("Set model class to '" + modelClass + "'");
 		new LabeledCombo("Model Class:").setSelection(modelClass);
 		return this;
@@ -105,7 +105,7 @@ public class MetadataModelWizard extends NewMenuWizard {
 	 *            MetadataModelWizard.ModelType.*
 	 */
 	public MetadataModelWizard selectModelType(String modelType) {
-		activate();
+		activateWizard();
 		log.info("Set model type to '" + modelType + "'");
 		new LabeledCombo("Model Type:").setSelection(modelType);
 		return this;
@@ -116,25 +116,25 @@ public class MetadataModelWizard extends NewMenuWizard {
 	 *            MetadataModelWizard.ModelBuilder.*
 	 */
 	public MetadataModelWizard selectModelBuilder(String modelBuilder) {
-		activate();
+		activateWizard();
 		log.info("Set model builder to '" + modelBuilder + "'");
 		new DefaultTable().select(modelBuilder);
 		return this;
 	}
 
 	public MetadataModelWizard selectXMLSchemaFile(String... path) {
-		activate();
+		activateWizard();
 		log.info("Set xml schema file to '" + Arrays.toString(path) + "'");
 		new PushButton("...").click();
 		new DefaultShell("Select an XML Schema");
 		new DefaultTreeItem(path).select();
 		new PushButton("OK").click();
-		activate();
+		activateWizard();
 		return this;
 	}
 
 	public MetadataModelWizard addElement(String... element) {
-		activate();
+		activateWizard();
 		for (int i = 0; i < element.length; i++) {
 			log.info("Add element '" + element[i] + "'");
 			new DefaultTable().select(element[i]);
@@ -144,7 +144,7 @@ public class MetadataModelWizard extends NewMenuWizard {
 	}
 
 	public MetadataModelWizard setExistingModel(String... path) {
-		activate();
+		activateWizard();
 		log.info("Set existing model to '" + Arrays.toString(path) + "'");
 		new PushButton("...").click();
 		new DefaultShell("Select a Model File");
@@ -153,23 +153,23 @@ public class MetadataModelWizard extends NewMenuWizard {
 		if (new ShellIsAvailable("").test()) {
 			new PushButton("OK").click();
 		}
-		activate();
+		activateWizard();
 		return this;
 	}
 
 	public MetadataModelWizard setWsdlFileFromWorkspace(String... path) {
-		activate();
+		activateWizard();
 		new PushButton("Workspace...").click();
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new DefaultShell("WSDL File Selection");
 		new DefaultTreeItem(path).select();
 		new PushButton("OK").click();
-		activate();
+		activateWizard();
 		return this;
 	}
 
 	public MetadataModelWizard setXmlModelNameForWebService(String name) {
-		activate();
+		activateWizard();
 		new LabeledText("XML Model:").setText(name);
 		return this;
 	}

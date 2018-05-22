@@ -43,25 +43,25 @@ public class VdbWizard extends NewMenuWizard {
 		AbstractWait.sleep(TimePeriod.SHORT);
 	}
 
-	public VdbWizard activate() {
+	public VdbWizard activateWizard() {
         new WaitUntil(new ShellIsAvailable(DIALOG_TITLE), TimePeriod.DEFAULT);
 		new DefaultShell(DIALOG_TITLE);
 		return this;
 	}
 	
 	public VdbWizard setLocation(String... location) {
-		activate();
+		activateWizard();
 		log.info("Set location to '" + Arrays.toString(location) + "'");
 		new PushButton("...").click();
 		new DefaultShell("Select a Folder");
 		new DefaultTreeItem(location).select();
 		new PushButton("OK").click();
-		activate();
+		activateWizard();
 		return this;
 	}
 	
 	public VdbWizard setName(String name) {
-		activate();
+		activateWizard();
 		log.info("Set vdb name to '" + name + "'");
 		new LabeledText("VDB Name:").setText(name);
 		return this;
@@ -70,13 +70,13 @@ public class VdbWizard extends NewMenuWizard {
 	public VdbWizard addModel(String... pathToModel) {
 		int i = pathToModel.length - 1;
 		pathToModel[i] = (pathToModel[i].contains(".")) ? pathToModel[i] : pathToModel[i] + ".xmi";
-		activate();
+		activateWizard();
 		log.info("Path to model: '" + Arrays.toString(pathToModel) + "'");
 		new PushButton("Add").click();
 		new DefaultShell("Select Models");
 		new DefaultTreeItem(pathToModel).select();
 		new PushButton("OK").click();
-		activate();
+		activateWizard();
 		return this;
 	}
 

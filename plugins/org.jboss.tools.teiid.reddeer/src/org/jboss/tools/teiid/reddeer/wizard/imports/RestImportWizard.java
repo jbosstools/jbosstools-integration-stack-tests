@@ -45,21 +45,21 @@ public class RestImportWizard extends TeiidImportWizard {
 		return this;
 	}
 	
-	public RestImportWizard activate() {
+	public RestImportWizard activateWizard() {
 		new DefaultShell(DIALOG_TITLE);
 		return this;
 	}
 	
 	public RestImportWizard setProfileName(String profileName) {
 		log.info("Set connectionProfile to: '" + profileName + "'");
-		activate();
+		activateWizard();
 		new DefaultCombo().setSelection(profileName);
 		return this;
 	}
 	
 	public RestImportWizard setProject(String projectName) {
 		log.info("Set project name to: '" + projectName + "'");
-		activate();
+		activateWizard();
 		new DefaultCombo(0).setSelection(projectName);
 		setProjectToModel("Source Model Definition",projectName);
 		setProjectToModel("View Model Definition",projectName);
@@ -68,28 +68,28 @@ public class RestImportWizard extends TeiidImportWizard {
 	
 	public RestImportWizard setSourceModelName(String sourceModelName) {
 		log.info("Set source model name to: '" + sourceModelName + "'");
-		activate();
+		activateWizard();
 		new LabeledText(new DefaultGroup("Source Model Definition"), "Name:").setText(sourceModelName);
 		return this;
 	}
 	
 	public RestImportWizard setViewModelName(String viewModelName) {
 		log.info("Set view model name to: '" + viewModelName + "'");
-		activate();
+		activateWizard();
 		new LabeledText(new DefaultGroup("View Model Definition"), "Name:").setText(viewModelName);
 		return this;
 	}
 	
 	public RestImportWizard setProcedureName(String procedureName) {
 		log.info("Set procedure name to: '" + procedureName + "'");
-		activate();
+		activateWizard();
 		new LabeledText(new DefaultGroup("View Model Definition"), "New View Procedure Name:").setText(procedureName);
 		return this;
 	}
 	
 	public RestImportWizard autoCreateDataSource(boolean checked) {
 		log.info("Auto-Create Data Source is : '" + checked + "'");
-		activate();
+		activateWizard();
 		CheckBox checkBox = new CheckBox("Auto-create Data Source");
 		if(checked != checkBox.isChecked()){
 			checkBox.click();
@@ -99,7 +99,7 @@ public class RestImportWizard extends TeiidImportWizard {
 	
     public RestImportWizard setJndiName(String jndiName) {
         log.info("Set JNDI name to: '" + jndiName + "'");
-		activate();
+		activateWizard();
         jndiName = (jndiName.contains("java:/")) ? jndiName : "java:/" + jndiName;
         new LabeledText("JNDI Name").setText(jndiName);
 		return this;
@@ -107,7 +107,7 @@ public class RestImportWizard extends TeiidImportWizard {
 	
 	public RestImportWizard setRootPath(String rootPath) {
 		log.info("Set root path to: '" + rootPath + "'");
-		activate();
+		activateWizard();
 		new DefaultTreeItem(rootPath.split("/")).select();
 		new ContextMenuItem("Set as root path").select();
 		this.rootPath=rootPath;
@@ -119,7 +119,7 @@ public class RestImportWizard extends TeiidImportWizard {
 	 */
 	public RestImportWizard setColumns(String... columns) {
 		log.info("Set columns to: '" + Arrays.toString(columns) + "'");
-		activate();
+		activateWizard();
 		for (String column : columns) {
 			new DefaultTreeItem((rootPath + "/" + column).split("/")).select();
 			new PushButton("Add").click();

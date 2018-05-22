@@ -34,35 +34,35 @@ public class LdapConnectionProfileWizard extends ConnectionProfileWizard{
 		return this;
 	}
 	
-	public LdapConnectionProfileWizard activate() {
+	public LdapConnectionProfileWizard activateWizard() {
 		new DefaultShell(DIALOG_TITLE);
 		return this;
 	}
 
 	public LdapConnectionProfileWizard setHostname(String hostname) {
 		log.info("Set host name to: '" + hostname + "'");
-		activate();
+		activateWizard();
 		new LabeledText("Hostname").setText(hostname);
 		return this;
 	}
 
 	public LdapConnectionProfileWizard setPort(String port) {
 		log.info("Set port to: '" + port + "'");
-		activate();
+		activateWizard();
 		new DefaultSpinner().setValue(Integer.parseInt(port));
 		return this;
 	}
 	
 	public LdapConnectionProfileWizard setSslEncryption() {
 		log.info("Set ssl encryption");
-		activate();
+		activateWizard();
 		new LabeledCombo("Encryption method").setSelection(1);
 		return this;
 	}
 	
 	public LdapConnectionProfileWizard connectAfter(boolean checked) {
 		log.info("Connect when the wizard completes : '" + checked + "'");
-		activate();
+		activateWizard();
 		CheckBox checkBox = new CheckBox("Connect when the wizard completes");
 		if(checked != checkBox.isChecked()){
 			checkBox.click();
@@ -72,14 +72,14 @@ public class LdapConnectionProfileWizard extends ConnectionProfileWizard{
 	
 	public LdapConnectionProfileWizard setUsername(String username) {
 		log.info("Set user name to: '" + username + "'");
-		activate();
+		activateWizard();
 		new LabeledText("Bind DN or user").setText(username);
 		return this;
 	}
 	
 	public LdapConnectionProfileWizard setPassword(String password) {
 		log.info("Set password to: '" + password + "'");
-		activate();
+		activateWizard();
 		new LabeledText("Bind password").setText(password);
 		return this;
 	}
@@ -89,7 +89,7 @@ public class LdapConnectionProfileWizard extends ConnectionProfileWizard{
 		new PushButton("Test Connection").click();
 		new DefaultShell("Success");
 		new PushButton("OK").click();
-		activate();
+		activateWizard();
 		return this;
 	}
 }

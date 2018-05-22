@@ -47,7 +47,7 @@ public class ServerWizard extends NewMenuWizard {
 		return this;
 	}
 	
-	public ServerWizard activate() {
+	public ServerWizard activateWizard() {
 		new DefaultShell(DIALOG_TITLE);
 		return this;
 	}
@@ -56,7 +56,7 @@ public class ServerWizard extends NewMenuWizard {
 	 * @param controlledBy - ServerWizard.LOCAL_SERVER or ServerWizard.REMOTE_SERVER
 	 */
 	public ServerWizard setTypeServer(String type) {
-		activate();
+		activateWizard();
 		log.info("Set type server to '" + type + "'");
 		new RadioButton(type).click();
 		return this;
@@ -66,14 +66,14 @@ public class ServerWizard extends NewMenuWizard {
 	 * @param controlledBy - ServerWizard.FILESYSTEM_OPERATIONS or ServerWizard.MANAGEMENT_OPERATIONS
 	 */
 	public ServerWizard setControlled(String controlledBy) {
-		activate();
+		activateWizard();
 		log.info("Set controled by to '" + controlledBy + "'");
 		new RadioButton(controlledBy).click();
 		return this;
 	}
 	
 	public ServerWizard externallyManaged(boolean checked) {
-		activate();
+		activateWizard();
 		log.info("Externally managed is '" + checked + "'");
 		CheckBox checkBox = new CheckBox("Server lifecycle is externally managed.");
 		if(checked != checkBox.isChecked()){
@@ -83,7 +83,7 @@ public class ServerWizard extends NewMenuWizard {
 	}
 	
 	public ServerWizard assignRuntime(boolean checked) {
-		activate();
+		activateWizard();
 		log.info("Assigne runtime is '" + checked + "'");
 		CheckBox checkBox = new CheckBox("Assign a runtime to this server");
 		if(checked != checkBox.isChecked()){
@@ -96,28 +96,28 @@ public class ServerWizard extends NewMenuWizard {
 	 * @param type of server for example: {"Red Hat JBoss Middleware","Red Hat JBoss Enterprise Application Platform 6.1+"}
 	 */
 	public ServerWizard setType(String[] type) {
-		activate();
+		activateWizard();
 		log.info("Set server type to '" + Arrays.toString(type) + "'");
 		selectType(type);
 		return this;
 	}
 	
 	public ServerWizard setName(String name) {
-		activate();
+		activateWizard();
 		log.info("Set server name to '" + name + "'");
 		new LabeledText("Server name:").setText(name);
 		return this;
 	}
 
 	public ServerWizard setHost(String nameHost) {
-		activate();
+		activateWizard();
 		log.info("Set server host name to '" + nameHost + "'");
 		new DefaultCombo(0).setSelection(nameHost);
 		return this;
 	}
 	
 	public ServerWizard setPathToServer(String path) {
-		activate();
+		activateWizard();
 		log.info("Set path to server to '" + path + "'");
 		new DefaultText(0).setText(path);
 		return this;

@@ -47,13 +47,13 @@ public class NewModelProjectWizard extends NewMenuWizard {
 		return this;
 	}
 	
-	public NewModelProjectWizard activate() {
+	public NewModelProjectWizard activateWizard() {
 		new DefaultShell(DIALOG_TITLE);
 		return this;
 	}
 	
 	public NewModelProjectWizard setProjectName(String name) {
-		activate();
+		activateWizard();
 		log.info("Set project name to '" + name + "'");
 		new LabeledText("Project name:").setText(name);
 		return this;
@@ -63,7 +63,7 @@ public class NewModelProjectWizard extends NewMenuWizard {
 	 * @param folders use one of folder type (ModelProjectWizard.FOLDER_TYPE_ ...)
 	 */
 	public NewModelProjectWizard chooseFolder(String...folders){
-		activate();
+		activateWizard();
 		log.info("Choose default folders: '" + Arrays.toString(folders) + "'");
 		Matcher<String> matcher = new WithMnemonicTextMatcher("Name");
 		for(int i=0;i<6;i++){

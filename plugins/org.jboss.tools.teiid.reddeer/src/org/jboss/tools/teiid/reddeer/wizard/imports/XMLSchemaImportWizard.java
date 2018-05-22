@@ -45,7 +45,7 @@ public class XMLSchemaImportWizard extends TeiidImportWizard {
 		return this;
 	}
 	
-	public XMLSchemaImportWizard activate() {
+	public XMLSchemaImportWizard activateWizard() {
 		new DefaultShell(DIALOG_TITLE);
 		return this;
 	}
@@ -60,29 +60,29 @@ public class XMLSchemaImportWizard extends TeiidImportWizard {
 	
 	public XMLSchemaImportWizard selectImportMode(String importMode) {
 		log.info("Select import mode to '" + importMode + "'");
-		activate();
+		activateWizard();
 		new RadioButton(importMode).click();
 		return this;
 	}
 	
 	public XMLSchemaImportWizard setFromDirectory(String dir) {
 		log.info("Set from directory to '" + dir + "'");
-		activate();
+		activateWizard();
 		new DefaultCombo(0).setText(dir);
-		activate();
+		activateWizard();
 		return this;
 	}
 
 	public XMLSchemaImportWizard setToDirectory(String dir) {
 		log.info("Set to directory to '" + dir + "'");
-		activate();
+		activateWizard();
 		new LabeledText("Into folder:").setText(dir);
 		return this;
 	}
 	
 	public XMLSchemaImportWizard selectSchema(String... schema) {
 		log.info("Set schema to '" + Arrays.toString(schema) + "'");
-		activate();
+		activateWizard();
 		for (int i = 0; i < schema.length; i++) {
 			log.info("Select schema '" + schema[i] + "'");
 			new DefaultTable().getItem(schema[i]).setChecked(true);
@@ -92,7 +92,7 @@ public class XMLSchemaImportWizard extends TeiidImportWizard {
 	
 	public XMLSchemaImportWizard setSchemaURL(String schemaURL, String userName, String password, boolean verifyHostname) {
 		log.info("Set schemaURL: '" + schemaURL + "', username: '" + userName +"', password: '" + password +"'");
-		activate();
+		activateWizard();
 		new DefaultToolItem("Add XML schema URL").click();
 		new WaitUntil(new ShellIsAvailable("XML Schema Url"));
 		new DefaultShell("XML Schema Url").setFocus();
@@ -113,7 +113,7 @@ public class XMLSchemaImportWizard extends TeiidImportWizard {
 	
 	public XMLSchemaImportWizard addDependentSchemas(boolean checked){
 		log.info("Add dependent schemales is : '" + checked + "'");
-		activate();
+		activateWizard();
 		CheckBox checkBox = new CheckBox("Add Dependent Schema Files");
 		if(checked != checkBox.isChecked()){
 			checkBox.click();

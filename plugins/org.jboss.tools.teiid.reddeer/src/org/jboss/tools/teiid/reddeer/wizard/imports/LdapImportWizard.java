@@ -60,21 +60,21 @@ public class LdapImportWizard extends TeiidImportWizard {
 		return this;
 	}
 	
-	public LdapImportWizard activate() {
+	public LdapImportWizard activateWizard() {
 		new DefaultShell(DIALOG_TITLE);
 		return this;
 	}
 	
 	public LdapImportWizard setConnectionProfile(String connectionProfile) {
 		log.info("Set connectionProfile to: '" + connectionProfile + "'");
-		activate();
+		activateWizard();
 		new DefaultCombo(new DefaultGroup(CONNECTION_PROFILE), 0).setSelection(connectionProfile);
 		return this;
 	}
 		
 	public LdapImportWizard setLdapBaseDN(String principalDnSuffix) {
 		log.info("Set LDAP base dn to: '" + principalDnSuffix + "'");
-		activate();
+		activateWizard();
 		new PushButton("Fetch Base DNs").click();
 		LabeledCombo ldapBaseDnCombo = new LabeledCombo("LDAP Base DN:");
 		new WaitUntil(new ControlIsEnabled(ldapBaseDnCombo), TimePeriod.LONG);
@@ -85,25 +85,25 @@ public class LdapImportWizard extends TeiidImportWizard {
 	
 	public LdapImportWizard setProjectFolder(String project) {
 		log.info("Set project folder to: '" + project + "'");
-		activate();
+		activateWizard();
 		new PushButton(new DefaultGroup(SOURCE_MODEL_DEFINITION), "...").click();
 		new DefaultShell("Select a Folder");
 		new DefaultTreeItem(project).select();
 		new PushButton("OK").click();
-		activate();
+		activateWizard();
 		return this;
 	}
 	
 	public LdapImportWizard setModelName(String modelName) {
 		log.info("Set model name to: '" + modelName + "'");
-		activate();
+		activateWizard();
 		new LabeledText("Name").setText(modelName);
 		return this;
 	}
 	
 	public LdapImportWizard autoCreateDataSource(boolean checked) {
 		log.info("Auto-Create Data Source is : '" + checked + "'");
-		activate();
+		activateWizard();
 		CheckBox checkBox = new CheckBox("Auto-create Data Source");
 		if(checked != checkBox.isChecked()){
 			checkBox.click();
@@ -113,14 +113,14 @@ public class LdapImportWizard extends TeiidImportWizard {
 	
 	public LdapImportWizard setJndiName(String JndiName) {
 		log.info("Set JNDI name to: '" + JndiName + "'");
-		activate();
+		activateWizard();
 		new LabeledText("JNDI Name").setText(JndiName);
 		return this;
 	}
 	
 	public LdapImportWizard selectEntries(String... selectedEntries) {
 		log.info("Set entries to: '" + Arrays.toString(selectedEntries) + "'");
-		activate();
+		activateWizard();
 		for (String entry : selectedEntries) {
 			selectTableEntry(entry, null);
 		}
@@ -130,7 +130,7 @@ public class LdapImportWizard extends TeiidImportWizard {
 	
 	public LdapImportWizard selectColumns(String... selectedColumns) {
 		log.info("Set columns to: '" + Arrays.toString(selectedColumns) + "'");
-		activate();
+		activateWizard();
 		for (String column : selectedColumns) {
 			String[] path = column.split("/");
 			selectColumnEntry(path[0], path[1], null);

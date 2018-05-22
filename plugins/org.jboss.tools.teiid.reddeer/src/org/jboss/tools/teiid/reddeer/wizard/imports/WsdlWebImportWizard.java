@@ -39,21 +39,21 @@ public class WsdlWebImportWizard extends TeiidImportWizard {
 		return this;
 	}
 	
-	public WsdlWebImportWizard activate() {
+	public WsdlWebImportWizard activateWizard() {
 		new DefaultShell(DIALOG_TITLE);
 		return this;
 	}
 	
 	public WsdlWebImportWizard setModelName(String modelName) {
 		log.info("Set model name: '" + modelName + "'");
-		activate();
+		activateWizard();
 		new LabeledText("Web Service Model Name").setText(modelName);
 		return this;	
 	}
 
 	public WsdlWebImportWizard setProject(String projectName) {
 		log.info("Set project name to: '" + projectName + "'");
-		activate();
+		activateWizard();
 		new PushButton("Browse...").click();
 		new DefaultShell("Select a Folder");
 		new DefaultTreeItem(projectName).select();
@@ -63,7 +63,7 @@ public class WsdlWebImportWizard extends TeiidImportWizard {
 	
 	public WsdlWebImportWizard importFromWorkspace(String... pathToWsdl){
 		log.info("Import from workspace");
-		activate();
+		activateWizard();
 		new PushButton("Workspace...").click();
 		new DefaultShell("WSDL File Selection");
 		new DefaultTreeItem(pathToWsdl).select();
@@ -73,7 +73,7 @@ public class WsdlWebImportWizard extends TeiidImportWizard {
 	
 	public WsdlWebImportWizard importFromURL(String url, String userName, String password, boolean httpBasic) {
 		log.info("Set wsdlURL: '" + url + "', username: '" + userName +"', password: '" + password +"'");
-		activate();
+		activateWizard();
 		new PushButton("URL...").click();
 		new LabeledText("Enter WSDL URL:").setText(url);
 		if(httpBasic){
@@ -87,7 +87,7 @@ public class WsdlWebImportWizard extends TeiidImportWizard {
 	
 	public WsdlWebImportWizard setXmlModel(String xmlModelName, boolean generateVirtualXML) {
 		log.info("Set xml model name to: '" + xmlModelName + "' and set general virtual xml to: "+generateVirtualXML);
-		activate();
+		activateWizard();
 		new LabeledText("XML Model:").setText(xmlModelName);
 		CheckBox checkBox = new CheckBox();
 		if(generateVirtualXML != checkBox.isChecked()){

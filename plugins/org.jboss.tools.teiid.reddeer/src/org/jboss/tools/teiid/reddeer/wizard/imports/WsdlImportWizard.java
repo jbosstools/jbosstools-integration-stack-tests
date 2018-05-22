@@ -48,14 +48,14 @@ public class WsdlImportWizard extends TeiidImportWizard {
 		return this;
 	}
 	
-	public WsdlImportWizard activate() {
+	public WsdlImportWizard activateWizard() {
 		new DefaultShell(DIALOG_TITLE);
 		return this;
 	}
 	
 	public WsdlImportWizard setConnectionProfile(String connectionProfile) {
 		log.info("Set connection profile: '" + connectionProfile + "'");
-		activate();
+		activateWizard();
 		new DefaultCombo(0).setSelection(connectionProfile);
 		new PushButton("Validate WSDL").click();
 		new DefaultShell("WSDL Validation Results");
@@ -65,7 +65,7 @@ public class WsdlImportWizard extends TeiidImportWizard {
 	
 	public WsdlImportWizard selectOperations(String... operations) {
 		log.info("Set select operations: '" + Arrays.toString(operations) + "'");
-		activate();
+		activateWizard();
 		for(String operation : operations){
 			new DefaultTable(new DefaultGroup("Select the desired WSDL Operations"), 0).getItem(operation).setChecked(true);
 		}
@@ -74,7 +74,7 @@ public class WsdlImportWizard extends TeiidImportWizard {
 	
 	public WsdlImportWizard setProject(String projectName) {
 		log.info("Set project name to: '" + projectName + "'");
-		activate();
+		activateWizard();
 		new DefaultCombo(0).setSelection(projectName);
 		setProjectToModel("Source Model Definition",projectName);
 		setProjectToModel("View Model Definition",projectName);
@@ -83,21 +83,21 @@ public class WsdlImportWizard extends TeiidImportWizard {
 	
 	public WsdlImportWizard setSourceModelName(String sourceModelName) {
 		log.info("Set source model name to: '" + sourceModelName + "'");
-		activate();
+		activateWizard();
 		new LabeledText(new DefaultGroup("Source Model Definition"), "Name").setText(sourceModelName);
 		return this;
 	}
 	
 	public WsdlImportWizard setViewModelName(String viewModelName) {
 		log.info("Set view model name to: '" + viewModelName + "'");
-		activate();
+		activateWizard();
 		new LabeledText(new DefaultGroup("View Model Definition"), "Name").setText(viewModelName);
 		return this;
 	}
 	
 	public WsdlImportWizard autoCreateDataSource(boolean checked) {
 		log.info("Auto-Create Data Source is : '" + checked + "'");
-		activate();
+		activateWizard();
 		CheckBox checkBox = new CheckBox("Auto-create Data Source");
 		if(checked != checkBox.isChecked()){
 			checkBox.click();
@@ -107,7 +107,7 @@ public class WsdlImportWizard extends TeiidImportWizard {
 	
 	public WsdlImportWizard setJndiName(String JndiName) {
 		log.info("Set JNDI name to: '" + JndiName + "'");
-		activate();
+		activateWizard();
 		new LabeledText("JNDI Name").setText(JndiName);
 		return this;
 	}
@@ -115,7 +115,7 @@ public class WsdlImportWizard extends TeiidImportWizard {
 	public WsdlImportWizard addRequestElement(String element) {
 		String operation = element.split("/")[0];
 		log.info("Set request element: '" + element + "' to operation:'"+ operation +"'");
-		activate();
+		activateWizard();
 		new DefaultCombo(new DefaultGroup("Operations"), 0).setSelection(operation);
 		addElement("Request", element);
 		return this;
@@ -123,7 +123,7 @@ public class WsdlImportWizard extends TeiidImportWizard {
 	
 	public WsdlImportWizard addResponseElement(String operation, String element) {
 		log.info("Set response element: '" + element + "' to operation:'"+ operation +"'");
-		activate();
+		activateWizard();
 		new DefaultCombo(new DefaultGroup("Operations"), 0).setSelection(operation);
 		addElement("Response", element);
 		return this;

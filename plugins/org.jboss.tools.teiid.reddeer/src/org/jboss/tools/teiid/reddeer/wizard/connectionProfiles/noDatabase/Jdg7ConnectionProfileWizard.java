@@ -25,21 +25,21 @@ public class Jdg7ConnectionProfileWizard extends ConnectionProfileWizard {
         return wizard;
     }
 
-    public Jdg7ConnectionProfileWizard activate() {
+    public Jdg7ConnectionProfileWizard activateWizard() {
         new DefaultShell(DIALOG_TITLE);
         return this;
     }
 
     public Jdg7ConnectionProfileWizard setJndiName(String jndiName) {
         log.info("Set JNDI name to: '" + jndiName + "'");
-        activate();
+        activateWizard();
         new DefaultText(0).setText(jndiName);
         return this;
     }
 
     public Jdg7ConnectionProfileWizard setRemoteServerList(String remoteServerList) {
         log.info("Set remote server list to: '" + remoteServerList + "'");
-        activate();
+        activateWizard();
         new DefaultText(1).setText(remoteServerList);
         return this;
     }

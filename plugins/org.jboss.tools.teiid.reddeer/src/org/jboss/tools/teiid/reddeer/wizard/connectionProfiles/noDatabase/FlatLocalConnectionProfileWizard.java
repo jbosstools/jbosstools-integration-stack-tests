@@ -38,7 +38,7 @@ public class FlatLocalConnectionProfileWizard extends ConnectionProfileWizard {
 		return this;
 	}
 	
-	public FlatLocalConnectionProfileWizard activate() {
+	public FlatLocalConnectionProfileWizard activateWizard() {
 		new DefaultShell(DIALOG_TITLE);
 		return this;
 	}
@@ -57,26 +57,26 @@ public class FlatLocalConnectionProfileWizard extends ConnectionProfileWizard {
 
 	public FlatLocalConnectionProfileWizard setFile(String path) {
 		log.info("Path to file is : '" + path + "'");
-		activate();
+		activateWizard();
 		path = new File(path).getAbsolutePath();
 		new DefaultText(0).setText(path);
-		activate();
+		activateWizard();
 		return this;
 	}
 	
 	public FlatLocalConnectionProfileWizard setCharset(String charset) {
 		log.info("Set charset to: '" + charset + "'");
-		activate();
+		activateWizard();
 		new LabeledCombo("Select charset:").setSelection(charset);
-		activate();
+		activateWizard();
 		return this;
 	}
 	
 	public FlatLocalConnectionProfileWizard setStyle(String style) {
 		log.info("Set style to: '" + style + "'");
-		activate();
+		activateWizard();
 		new LabeledCombo("Select flatfile style:").setSelection(style);
-		activate();
+		activateWizard();
 		return this;
 	}
 	
@@ -85,7 +85,7 @@ public class FlatLocalConnectionProfileWizard extends ConnectionProfileWizard {
 		new PushButton("Test Connection").click();
 		new DefaultShell("Success");
 		new PushButton("OK").click();
-		activate();
+		activateWizard();
 		return this;
 	}
 

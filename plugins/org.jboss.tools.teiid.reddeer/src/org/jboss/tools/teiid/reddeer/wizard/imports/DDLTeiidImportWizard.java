@@ -45,7 +45,7 @@ public class DDLTeiidImportWizard  extends TeiidImportWizard{
 	
 	public DDLTeiidImportWizard nextPage(){
 		log.info("Go to next wizard page");
-		activate();
+		activateWizard();
 		new NextButton().click();
 		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
 		return this;
@@ -54,7 +54,7 @@ public class DDLTeiidImportWizard  extends TeiidImportWizard{
 	@Override
 	public void finish(){
 		log.info("Finish wizard");
-		activate();
+		activateWizard();
 		new PushButton("Finish").click();
 		if(new ShellIsActive("Table 'Supports Update' Property Changed").test()){
 			new PushButton("OK").click();
@@ -62,7 +62,7 @@ public class DDLTeiidImportWizard  extends TeiidImportWizard{
 		new WaitWhile(new IsInProgress(), TimePeriod.LONG);
 	}
 	
-	public DDLTeiidImportWizard activate(){
+	public DDLTeiidImportWizard activateWizard(){
         new WaitUntil(new ShellIsAvailable(DIALOG_TITLE), TimePeriod.DEFAULT, false);
         new DefaultShell(DIALOG_TITLE);
 		return this;
@@ -70,14 +70,14 @@ public class DDLTeiidImportWizard  extends TeiidImportWizard{
 	
 	public DDLTeiidImportWizard setPath(String path){
 		log.info("Set import path: '" + path + "'");
-		activate();
+		activateWizard();
 		new DefaultCombo(0).setText(path);
 		return this;
 	}
 	
 	public DDLTeiidImportWizard setFolder(String... folder){
 		log.info("Set import folder: '" + Arrays.toString(folder) + "'");
-		activate();
+		activateWizard();
 		new PushButton(2).click();
 		new DefaultTreeItem(folder).select();
 		new PushButton("OK").click();
@@ -86,7 +86,7 @@ public class DDLTeiidImportWizard  extends TeiidImportWizard{
 	
 	public DDLTeiidImportWizard setName(String name){
 		log.info("Set name: '" + name + "'");
-		activate();
+		activateWizard();
 		new DefaultText(1).setText(name);
 		return this;
 	}
@@ -95,14 +95,14 @@ public class DDLTeiidImportWizard  extends TeiidImportWizard{
 	 */
 	public DDLTeiidImportWizard setModelType(String modelType){
 		log.info("Set model type: '" + modelType + "'");
-		activate();
+		activateWizard();
 		new DefaultCombo(1).setText(modelType);
 		return this;
 	}
 	
 	public DDLTeiidImportWizard generateValidDefaultSQL(boolean checked){
 		log.info("Generate valid default SQL is: '" + checked + "'");
-		activate();
+		activateWizard();
 		CheckBox checkBox = new CheckBox("Generate valid default SQL (SELECT null AS column_name, etc....)");
 		if(checked != checkBox.isChecked()){
 			checkBox.click();
@@ -112,7 +112,7 @@ public class DDLTeiidImportWizard  extends TeiidImportWizard{
 
 	public DDLTeiidImportWizard setDescriptionOfModel(boolean checked){
 		log.info("Set description of model is: '" + checked + "'");
-		activate();
+		activateWizard();
 		new DefaultTabItem("Options").activate();
 		CheckBox checkBox = new CheckBox("Set description of model entities to corresponding DDL statement");
 		if(checked != checkBox.isChecked()){
@@ -124,7 +124,7 @@ public class DDLTeiidImportWizard  extends TeiidImportWizard{
 
 	public DDLTeiidImportWizard createModelEntities(boolean checked){
 		log.info("Create model entities is: '" + checked + "'");
-		activate();
+		activateWizard();
 		new DefaultTabItem("Options").activate();
 		CheckBox checkBox = new CheckBox("Create model entities for DDL defined by unsupported DML (e.g., Views)");
 		if(checked != checkBox.isChecked()){
@@ -136,7 +136,7 @@ public class DDLTeiidImportWizard  extends TeiidImportWizard{
 
 	public DDLTeiidImportWizard filterUniqueConstraints(boolean checked){
 		log.info("Filter unique constraints is: '" + checked + "'");
-		activate();
+		activateWizard();
 		new DefaultTabItem("Options").activate();
 		CheckBox checkBox = new CheckBox("Filter unique constraints already defined as a primary key (Teiid Only)");
 		if(checked != checkBox.isChecked()){

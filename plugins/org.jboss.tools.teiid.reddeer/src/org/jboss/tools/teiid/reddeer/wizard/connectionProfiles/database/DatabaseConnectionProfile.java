@@ -25,7 +25,7 @@ public class DatabaseConnectionProfile extends ConnectionProfileWizard{
 		return wizard;
 	}
 
-	public DatabaseConnectionProfile activate() {
+	public DatabaseConnectionProfile activateWizard() {
 		switch (vendor){
 		
 		case "Sybase ASE":
@@ -47,7 +47,7 @@ public class DatabaseConnectionProfile extends ConnectionProfileWizard{
 	
 	public CreateDriverDialog createNewDriver(){	
 		log.info("Create new driver");
-		activate();
+		activateWizard();
 		new DefaultToolItem("New Driver Definition").click();
 		return new CreateDriverDialog();
 	}

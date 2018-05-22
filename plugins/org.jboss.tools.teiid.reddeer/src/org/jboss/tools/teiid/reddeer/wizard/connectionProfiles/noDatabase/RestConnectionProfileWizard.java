@@ -39,14 +39,14 @@ public class RestConnectionProfileWizard extends ConnectionProfileWizard {
 		return wizard;
 	}
 	
-	public RestConnectionProfileWizard activate() {
+	public RestConnectionProfileWizard activateWizard() {
 		new DefaultShell(DIALOG_TITLE);
 		return this;
 	}
 	
 	public RestConnectionProfileWizard setConnectionUrl(String url){
 		log.info("Set connection url to : '" + url + "'");
-		activate();
+		activateWizard();
 		new LabeledText(new DefaultGroup("Properties"), "Connection URL").setText(url);
 		return this;
 	}
@@ -56,7 +56,7 @@ public class RestConnectionProfileWizard extends ConnectionProfileWizard {
 	 */
 	public RestConnectionProfileWizard setType(String type){
 		log.info("Set type to : '" + type + "'");
-		activate();
+		activateWizard();
 		new DefaultCombo().setSelection(type);
 		return this;
 	}
@@ -66,7 +66,7 @@ public class RestConnectionProfileWizard extends ConnectionProfileWizard {
 	 */
 	public RestConnectionProfileWizard setAuth(String authType,String userName, String password){
 		log.info("Set authType to : '" + authType + "', username: '" + userName +"', password: '" + password +"'");
-		activate();
+		activateWizard();
 		new DefaultCombo(1).setSelection(authType);
 		new LabeledText(new DefaultGroup("Properties"),"User Name").setText(userName);
 		new LabeledText(new DefaultGroup("Properties"),"Password").setText(password);
@@ -79,7 +79,7 @@ public class RestConnectionProfileWizard extends ConnectionProfileWizard {
 		new PushButton("Test Connection").click();
 		new DefaultShell("Success");
 		new PushButton("OK").click();
-		activate();
+		activateWizard();
 		return this;
 	}
 }

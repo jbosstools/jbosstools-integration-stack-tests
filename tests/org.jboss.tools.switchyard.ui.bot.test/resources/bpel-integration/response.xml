@@ -1,3 +1,0 @@
-<tns:sayHelloResponse xmlns:tns="http://www.jboss.org/bpel/examples">
-	<tns:string>Hello World</tns:string>
-</tns:sayHelloResponse>

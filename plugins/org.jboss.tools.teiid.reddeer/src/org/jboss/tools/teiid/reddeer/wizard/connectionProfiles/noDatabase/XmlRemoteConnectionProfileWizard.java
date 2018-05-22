@@ -24,16 +24,16 @@ public class XmlRemoteConnectionProfileWizard extends ConnectionProfileWizard {
         return wizard;
     }
 
-    public XmlRemoteConnectionProfileWizard activate() {
+    public XmlRemoteConnectionProfileWizard activateWizard() {
         new DefaultShell(DIALOG_TITLE);
         return this;
     }
 
     public XmlRemoteConnectionProfileWizard setUrl(String url) {
         log.info("Set url to : '" + url + "'");
-        activate();
+        activateWizard();
         new LabeledText("Connection URL").setText(url);
-        activate();
+        activateWizard();
         return this;
     }
 
@@ -42,7 +42,7 @@ public class XmlRemoteConnectionProfileWizard extends ConnectionProfileWizard {
         new PushButton("Test Connection").click();
         new DefaultShell("Success");
         new PushButton("OK").click();
-        activate();
+        activateWizard();
         return this;
     }
 }

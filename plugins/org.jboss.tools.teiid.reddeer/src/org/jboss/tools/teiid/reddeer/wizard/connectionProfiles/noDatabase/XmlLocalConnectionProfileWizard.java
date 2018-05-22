@@ -32,17 +32,17 @@ public class XmlLocalConnectionProfileWizard extends ConnectionProfileWizard {
 		return this;
 	}
 	
-	public XmlLocalConnectionProfileWizard activate() {
+	public XmlLocalConnectionProfileWizard activateWizard() {
 		new DefaultShell(DIALOG_TITLE);
 		return this;
 	}
 	
 	public XmlLocalConnectionProfileWizard setFile(String path) {
 		log.info("Path to file is : '" + path + "'");
-		activate();
+		activateWizard();
 		path = new File(path).getAbsolutePath();
 		new LabeledText("File Name").setText(path);
-		activate();
+		activateWizard();
 		return this;
 	}
 	
