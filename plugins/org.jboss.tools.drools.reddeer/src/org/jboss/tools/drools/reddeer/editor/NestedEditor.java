@@ -130,4 +130,9 @@ public class NestedEditor implements Editor {
 	public Menu getContextMenu() {
 		throw new UnsupportedOperationException();
 	}
+
+	@Override
+	public List<Marker> getAYTMarkers() {
+		throw new UnsupportedOperationException();
+	}
 }

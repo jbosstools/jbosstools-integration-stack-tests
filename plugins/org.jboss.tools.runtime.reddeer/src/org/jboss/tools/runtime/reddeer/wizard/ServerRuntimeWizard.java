@@ -6,7 +6,6 @@ import org.eclipse.reddeer.jface.wizard.WizardDialog;
 import org.eclipse.reddeer.swt.impl.button.RadioButton;
 import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
 import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
-import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.text.LabeledText;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 
@@ -22,11 +21,6 @@ public class ServerRuntimeWizard extends WizardDialog {
 	
 	public ServerRuntimeWizard() {
 		super(TITLE);
-	}
-
-	public ServerRuntimeWizard activate() {
-		new DefaultShell(TITLE).setFocus();
-		return this;
 	}
 
 	public ServerRuntimeWizard setType(String category, String label) {
