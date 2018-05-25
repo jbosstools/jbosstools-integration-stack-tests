@@ -19,7 +19,9 @@ import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequireme
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.eclipse.reddeer.swt.condition.ShellIsActive;
 import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.NoButton;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.eclipse.reddeer.workbench.core.condition.JobIsKilled;
@@ -58,6 +60,7 @@ public class PreviewModelTest {
 	private static final String NAME_SQL_MODEL = "partsSourceSQLServer";
 	private static final String NAME_VIEW_MODEL = "partsView";
 	private static final String NAME_VDB = "previewVDB";
+	private static final String VDB_NAME_MULTIPLE = "multiqueryVDB";
 	
 	private static final String PARTS_ORACLE_CSV = "oracleSource.csv";
 	private static final String PARTS_MSSQL_CSV = "mssqlSource.csv";
@@ -71,6 +74,7 @@ public class PreviewModelTest {
 	private static final String QUERY_VIEW_TABLE_TWO_SOURCES = new ResourceFileHelper().getSql("PreviewModelTest/viewTableTwoSources").replaceAll("\r|\n|\\s", "");
 	private static final String QUERY_VIEW_PROCEDURE = new ResourceFileHelper().getSql("PreviewModelTest/viewProcedure").replaceAll("\r|\n|\\s", "");
 	private static final String QUERY_ACCESS_PATTERN = new ResourceFileHelper().getSql("PreviewModelTest/accessPattern").replaceAll("\r|\n|\\s", "");
+	private static final String QUERY_MULTIPLE = new ResourceFileHelper().getSql("PreviewModelTest/multipleQueries");
 	
 	@InjectRequirement
 	private static TeiidServerRequirement teiidServer;
@@ -155,17 +159,9 @@ public class PreviewModelTest {
 	/* Test if execute vdb and SQL scrapbook work correctly */
 	public void executeVDB(){
 		new ModelExplorer().getProject(PROJECT_NAME).refresh();
-		VdbWizard.openVdbWizard()
-				.setName(NAME_VDB)
-				.addModel(PROJECT_NAME,NAME_VIEW_MODEL)
-				.finish();
-		
-		new ModelExplorer().open();
-		new DefaultTreeItem(PROJECT_NAME, NAME_VDB+".vdb").select();
- 		new ContextMenuItem("Modeling", "Execute VDB").select();
- 		new WaitWhile(new IsInProgress(), TimePeriod.VERY_LONG);
- 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
- 		
+
+		createAndExecuteVDB(NAME_VDB, PROJECT_NAME, NAME_VIEW_MODEL);
+
  		setTextToScrapbookAndExecute(QUERY_VIEW_TABLE);
  		setTextToScrapbookAndExecute(QUERY_VIEW_TABLE_TWO_SOURCES + " order by PART_ID");
  		setTextToScrapbookAndExecute(QUERY_VIEW_PROCEDURE);
@@ -181,7 +177,7 @@ public class PreviewModelTest {
 		assertEquals(15,getCount(QUERY_VIEW_PROCEDURE));
 		assertEquals(75,getCount(QUERY_ACCESS_PATTERN));
 	}
-	
+
 	@Test
 	/* Test preview which contains custom sql */
 	public void customPreview(){
@@ -193,7 +189,34 @@ public class PreviewModelTest {
  		assertTrue(checkPreviewCSV(sql,VIEW_ORDERED_TABLE_CSV));
 		assertEquals(227,getCount(sql));
 	}
-	
+
+    @Test
+    public void multipleQueriesTest() {
+        createAndExecuteVDB(VDB_NAME_MULTIPLE, PROJECT_NAME, NAME_ORACLE_MODEL);
+
+        setTextToScrapbookAndExecute(QUERY_MULTIPLE);
+        SQLResult result = DatabaseDevelopmentPerspective.getInstance().getSqlResultsView().getByOperation("Group Execution");
+
+        if (new ShellIsAvailable("Continue Execution").test()) {
+            new NoButton(new DefaultShell("Continue Execution")).click();
+        }
+
+        assertEquals("Succeeded", result.getStatus());
+    }
+
+    private void createAndExecuteVDB(String vdbName, String projectName, String modelName) {
+        VdbWizard.openVdbWizard()
+            .setName(vdbName)
+            .addModel(projectName, modelName)
+            .finish();
+
+        new ModelExplorer().open();
+        new DefaultTreeItem(projectName, vdbName + ".vdb").select();
+        new ContextMenuItem("Modeling", "Execute VDB").select();
+        new WaitWhile(new IsInProgress(), TimePeriod.VERY_LONG);
+        new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+    }
+
 	private boolean checkPreviewCSV(String previewSQL,String csv){
 		SQLResult result = DatabaseDevelopmentPerspective.getInstance().getSqlResultsView().getByOperation(previewSQL);	
 		return result.compareCSVQueryResults(new File("resources/preview/"+csv));
