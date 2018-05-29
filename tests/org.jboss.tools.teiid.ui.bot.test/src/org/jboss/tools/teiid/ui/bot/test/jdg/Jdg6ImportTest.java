@@ -1,4 +1,4 @@
-package org.jboss.tools.teiid.ui.bot.test;
+package org.jboss.tools.teiid.ui.bot.test.jdg;
 
 import static org.junit.Assert.assertTrue;
 
@@ -13,9 +13,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+/**
+ * Work with DV-6.3.0-REMOTE
+ */
 @RunWith(RedDeerSuite.class)
 @TeiidServer(state = ServerRequirementState.RUNNING)
-public class JdgImportTest {
+public class Jdg6ImportTest {
 
     @InjectRequirement
     private static TeiidServerRequirement teiidServer;

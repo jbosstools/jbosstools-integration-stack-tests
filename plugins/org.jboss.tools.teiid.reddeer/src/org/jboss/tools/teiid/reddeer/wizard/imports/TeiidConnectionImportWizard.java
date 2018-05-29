@@ -15,6 +15,7 @@ import org.eclipse.reddeer.swt.impl.ccombo.DefaultCCombo;
 import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
 import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.eclipse.reddeer.swt.impl.table.DefaultTable;
 import org.eclipse.reddeer.swt.impl.text.DefaultText;
 import org.eclipse.reddeer.swt.impl.text.LabeledText;
@@ -180,4 +181,8 @@ public class TeiidConnectionImportWizard extends TeiidImportWizard{
 		}
 		return this;
 	}
+
+    public String getDdlContent() {
+        return new DefaultStyledText(this).getText();
+    }
 }
