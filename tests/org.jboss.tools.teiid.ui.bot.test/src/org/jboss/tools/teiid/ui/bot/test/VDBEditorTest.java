@@ -26,6 +26,7 @@ import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
 import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
+import org.jboss.tools.teiid.reddeer.dialog.DataRolesDialog;
 import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
 import org.jboss.tools.teiid.reddeer.editor.VdbEditor;
 import org.jboss.tools.teiid.reddeer.perspective.TeiidPerspective;
@@ -397,42 +398,44 @@ public class VDBEditorTest {
         vdbeditor.activate();
         vdbeditor.save();
 
-        vdbeditor.setFilterModelsType("SOURCE", false);
+        vdbeditor.setFilterModelsType("SOURCE");
         assertEquals(3, new DefaultTable(0).getItems().size());
 
-        vdbeditor.setFilterModelsType("VIEW", false);
+        vdbeditor.setFilterModelsType("VIEW");
         assertEquals(2, new DefaultTable(0).getItems().size());
 
-        vdbeditor.setFilterModelsType("ALL", false);
-        vdbeditor.setFilterCondition("test", false);
+        vdbeditor.setFilterModelsType("ALL");
+        vdbeditor.setFilterCondition("test");
         assertEquals(2, new DefaultTable(0).getItems().size());
 
-        vdbeditor.setFilterModelsType("SOURCE", false);
-        vdbeditor.setFilterCondition("xx", false);
+        vdbeditor.setFilterModelsType("SOURCE");
+        vdbeditor.setFilterCondition("xx");
         assertEquals(1, new DefaultTable(0).getItems().size());
 
         vdbeditor.clearFilterCondition();
         assertEquals(5, new DefaultTable(0).getItems().size());
 
         //test filter in data roles tab
-        vdbeditor.addDataRole();
+        DataRolesDialog drDialog = vdbeditor.addDataRole();
 
-        vdbeditor.setFilterModelsType("SOURCE", true);
+        drDialog.setFilterModelsType("SOURCE");
         assertEquals(3, new DefaultTree().getItems().size());
 
-        vdbeditor.setFilterModelsType("VIEW", true);
+        drDialog.setFilterModelsType("VIEW");
         assertEquals(2, new DefaultTree().getItems().size());
 
-        vdbeditor.setFilterModelsType("ALL", true);
-        vdbeditor.setFilterCondition("test", true);
+        drDialog.setFilterModelsType("ALL");
+        drDialog.setFilterCondition("test");
         assertEquals(2, new DefaultTree().getItems().size());
 
-        vdbeditor.setFilterModelsType("SOURCE", true);
-        vdbeditor.setFilterCondition("xx", true);
+        drDialog.setFilterModelsType("SOURCE");
+        drDialog.setFilterCondition("xx");
         assertEquals(1, new DefaultTree().getItems().size());
 
-        vdbeditor.clearFilterCondition();
+        drDialog.clearFilterCondition();
         assertEquals(5, new DefaultTree().getItems().size());
+
+        drDialog.cancel();
     }
 
     @Test

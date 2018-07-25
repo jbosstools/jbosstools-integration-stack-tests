@@ -11,11 +11,13 @@ import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.core.handler.WidgetHandler;
+import org.eclipse.reddeer.core.matcher.WithTooltipTextMatcher;
 import org.eclipse.reddeer.swt.api.TableItem;
 import org.eclipse.reddeer.swt.condition.ShellIsActive;
 import org.eclipse.reddeer.swt.impl.button.CheckBox;
 import org.eclipse.reddeer.swt.impl.button.FinishButton;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
 import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
@@ -246,5 +248,17 @@ public class DataRolesDialog extends AbstractDialog {
 		}
 
 		return result;
+	}
+
+	public void setFilterModelsType(String type) {
+        new DefaultCombo(new DefaultShell(title)).setSelection(type);
+	}
+
+	public void setFilterCondition(String condition) {
+        new LabeledText(new DefaultShell(title),"Filter").setText(condition);
+	}
+
+	public void clearFilterCondition() {
+        new PushButton(new DefaultShell(title), new WithTooltipTextMatcher("Clear Filter")).click();
 	}
 }
