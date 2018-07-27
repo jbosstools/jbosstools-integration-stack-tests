@@ -2,9 +2,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
+		<!-- https://repository.jboss.org/nexus/content/groups/public/org/jboss/tools/parent/ -->
 		<groupId>org.jboss.tools</groupId>
 		<artifactId>parent</artifactId>
-		<version>4.6.0.AM1-SNAPSHOT</version>
+		<version>4.6.0.Final-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools</groupId>
 	<artifactId>integration-stack-tests</artifactId>
@@ -14,7 +15,7 @@
 	<properties>
 		<tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-integration-stack-tests.git</tycho.scmUrl>
 		<jbosstools.url>http://download.jboss.org/jbosstools</jbosstools.url>
-		<jbtis.tp.version>4.6.0.AM1-SNAPSHOT</jbtis.tp.version>
+		<jbtis.tp.version>4.6.0.Final</jbtis.tp.version>
 		<jbtis.repo>staging</jbtis.repo>
 		<orbit.site>${jbosstools.url}/updates/requirements/orbit/S20180504181223/</orbit.site>
 		<skipRequirements>${skipTests}</skipRequirements>

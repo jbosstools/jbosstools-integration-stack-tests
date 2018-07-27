@@ -1,0 +1,5 @@
+org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime:
+- runtime:
+    "@type": brms
+    name: Drools-7.3.0.Final
+    home: ${project.build.directory}/drools-distribution-7.3.0.Final/binaries
