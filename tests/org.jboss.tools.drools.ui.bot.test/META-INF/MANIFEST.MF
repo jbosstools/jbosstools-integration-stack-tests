@@ -11,7 +11,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.reddeer.go;bundle-version="2.0.1",
  org.jboss.tools.drools.reddeer;bundle-version="4.5.0",
  org.jboss.tools.runtime.reddeer;bundle-version="4.5.0",
- org.jboss.tools.common.reddeer;bundle-version="4.5.0"
+ org.jboss.tools.common.reddeer;bundle-version="4.5.0",
+ com.fasterxml.jackson.core.jackson-databind;bundle-version="2.6.2",
+ com.fasterxml.jackson.core.jackson-core;bundle-version="2.6.2"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-RegisterBuddy: org.apache.log4j

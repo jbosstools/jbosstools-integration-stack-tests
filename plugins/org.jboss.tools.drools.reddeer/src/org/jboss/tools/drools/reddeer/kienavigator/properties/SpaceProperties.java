@@ -2,11 +2,11 @@ package org.jboss.tools.drools.reddeer.kienavigator.properties;
 
 import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
-public class OrgUnitProperties extends Properties {
+public class SpaceProperties extends Properties {
 
-	private static final String ORG_UNIT = "Organization Name";
-	private static final String DEFAULT_GID = "Default Group ID";
-	private static final String OWNER = "Owner";
+	private static final String SPACE_NAME = "Space Name";
+	private static final String DEFAULT_GID = "defaultGroupId";
+	private static final String OWNER = "owner";
 
 	public void setOwner(String owner) {
 		new LabeledText(OWNER).setText(owner);
@@ -16,8 +16,8 @@ public class OrgUnitProperties extends Properties {
 		new LabeledText(DEFAULT_GID).setText(defaultGroupId);
 	}
 
-	public String getOrganizationName() {
-		return new LabeledText(ORG_UNIT).getText();
+	public String getSpaceName() {
+		return new LabeledText(SPACE_NAME).getText();
 	}
 
 	public String getOwner() {

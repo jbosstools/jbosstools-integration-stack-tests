@@ -14,10 +14,8 @@ import org.jboss.tools.drools.ui.bot.test.functional.view.AgendaViewTest;
 import org.jboss.tools.drools.ui.bot.test.functional.view.AuditLogTest;
 import org.jboss.tools.drools.ui.bot.test.functional.view.GlobalDataViewTest;
 import org.jboss.tools.drools.ui.bot.test.functional.view.WorkingMemoryViewTest;
-import org.jboss.tools.drools.ui.bot.test.kienavigator.CloneRepoTest;
 import org.jboss.tools.drools.ui.bot.test.kienavigator.CreateItemsRestTest;
 import org.jboss.tools.drools.ui.bot.test.kienavigator.CreateItemsTest;
-import org.jboss.tools.drools.ui.bot.test.kienavigator.OpenKieNavigatorTest;
 import org.jboss.tools.drools.ui.bot.test.kienavigator.RepositoryManipulationTest;
 import org.jboss.tools.drools.ui.bot.test.smoke.ConvertProjectTest;
 import org.jboss.tools.drools.ui.bot.test.smoke.DroolsProjectTest;
@@ -54,8 +52,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	WorkingMemoryViewTest.class,
 	AuditLogTest.class,
 	// Kie Navigator tests
-	OpenKieNavigatorTest.class,
-	CloneRepoTest.class,
 	CreateItemsRestTest.class,
 	CreateItemsTest.class,
 	RepositoryManipulationTest.class

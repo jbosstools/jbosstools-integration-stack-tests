@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.reddeer.swt.api.TreeItem;
-import org.jboss.tools.drools.reddeer.kienavigator.dialog.CreateProjectDialog;
-import org.jboss.tools.drools.reddeer.kienavigator.dialog.RemoveRepositoryDialog;
+import org.jboss.tools.drools.reddeer.kienavigator.dialog.Dialog;
 import org.jboss.tools.drools.reddeer.kienavigator.properties.RepositoryProperties;
 
 public class RepositoryItem extends Item<RepositoryProperties> {
@@ -24,14 +23,9 @@ public class RepositoryItem extends Item<RepositoryProperties> {
 		selectEnabledAction("Import Repository");
 	}
 
-	public CreateProjectDialog createProject() {
-		selectAction("Create Project...");
-		return new CreateProjectDialog();
-	}
-
-	public RemoveRepositoryDialog removeRepository() {
-		selectAction("Remove Repository...");
-		return new RemoveRepositoryDialog();
+	public Dialog deleteRepository() {
+		selectAction("Delete Repository...");
+		return new Dialog();
 	}
 
 	public void showInGitRepositoryView() {

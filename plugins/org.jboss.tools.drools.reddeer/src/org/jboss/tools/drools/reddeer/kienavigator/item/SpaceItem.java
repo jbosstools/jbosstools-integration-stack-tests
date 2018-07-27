@@ -4,26 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.reddeer.swt.api.TreeItem;
-import org.jboss.tools.drools.reddeer.kienavigator.dialog.AddRepositoryDialog;
 import org.jboss.tools.drools.reddeer.kienavigator.dialog.CreateRepositoryDialog;
 import org.jboss.tools.drools.reddeer.kienavigator.dialog.Dialog;
-import org.jboss.tools.drools.reddeer.kienavigator.properties.OrgUnitProperties;
+import org.jboss.tools.drools.reddeer.kienavigator.properties.SpaceProperties;
 
-public class OrgUnitItem extends Item<OrgUnitProperties> {
+public class SpaceItem extends Item<SpaceProperties> {
 
-	public OrgUnitItem(TreeItem treeItem) {
+	public SpaceItem(TreeItem treeItem) {
 		super(treeItem);
 	}
 
 	@Override
-	public OrgUnitProperties properties() {
+	public SpaceProperties properties() {
 		selectAction("Properties");
-		return new OrgUnitProperties();
-	}
-
-	public AddRepositoryDialog addRepository() {
-		selectAction("Add Repository...");
-		return new AddRepositoryDialog();
+		return new SpaceProperties();
 	}
 
 	public CreateRepositoryDialog createRepository() {
@@ -31,8 +25,8 @@ public class OrgUnitItem extends Item<OrgUnitProperties> {
 		return new CreateRepositoryDialog();
 	}
 
-	public Dialog deleteOrganization() {
-		selectAction("Delete Organization...");
+	public Dialog deleteSpace() {
+		selectAction("Delete Space...");
 		return new Dialog();
 	}
 
@@ -54,6 +48,6 @@ public class OrgUnitItem extends Item<OrgUnitProperties> {
 				return new RepositoryItem(item);
 			}
 		}
-		throw new IllegalArgumentException("No such organization unit: " + name);
+		throw new IllegalArgumentException("No such repository: " + name);
 	}
 }

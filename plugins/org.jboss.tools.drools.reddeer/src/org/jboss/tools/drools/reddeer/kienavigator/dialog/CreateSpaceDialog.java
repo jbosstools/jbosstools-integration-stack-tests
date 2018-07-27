@@ -2,7 +2,7 @@ package org.jboss.tools.drools.reddeer.kienavigator.dialog;
 
 import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
-public class CreateOrgUnitDialog extends Dialog {
+public class CreateSpaceDialog extends Dialog {
 
 	public void setName(String name) {
 		new LabeledText("Name:").setText(name);

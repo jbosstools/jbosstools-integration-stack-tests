@@ -1,6 +1,5 @@
 package org.jboss.tools.drools.reddeer.kienavigator.dialog;
 
-import org.eclipse.reddeer.swt.impl.button.RadioButton;
 import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 public class CreateRepositoryDialog extends Dialog {
@@ -13,23 +12,11 @@ public class CreateRepositoryDialog extends Dialog {
 		new LabeledText("Description:").setText(description);
 	}
 
-	public void setUsername(String username) {
-		new LabeledText("Username:").setText(username);
+	public void setGroupId(String groupId) {
+		new LabeledText("Group ID:").setText(groupId);
 	}
 
-	public void setPassword(String password) {
-		new LabeledText("Password:").setText(password);
-	}
-
-	public void createNewRepository() {
-		new RadioButton("Create New Repository").click();
-	}
-
-	public void cloneAnExistingRepository() {
-		new RadioButton("Clone an existing Repository").click();
-	}
-
-	public void setRepositoryUrl(String url) {
-		new LabeledText("URL of a Repository to clone:").setText(url);
+	public void setVersion(String version) {
+		new LabeledText("Version:").setText(version);
 	}
 }

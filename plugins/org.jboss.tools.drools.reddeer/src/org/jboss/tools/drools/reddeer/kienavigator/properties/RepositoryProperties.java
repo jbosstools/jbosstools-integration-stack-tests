@@ -5,7 +5,7 @@ import org.eclipse.reddeer.swt.impl.text.LabeledText;
 public class RepositoryProperties extends Properties {
 
 	private static final String REPO_NAME = "Repository Name";
-	private static final String ORG_UNIT = "Organizational Unit";
+	private static final String SPACE = "Space";
 	private static final String REMOTE_GIT_URL = "Remote Git URL";
 	private static final String LOCAL_GIT_URL = "Local Git Directory";
 	private static final String DESCRIPTION = "Description";
@@ -28,8 +28,8 @@ public class RepositoryProperties extends Properties {
 		return new LabeledText(REPO_NAME).getText();
 	}
 
-	public String getOrganizationalUnit() {
-		return new LabeledText(ORG_UNIT).getText();
+	public String getSpace() {
+		return new LabeledText(SPACE).getText();
 	}
 
 	public String getRemoteUrl() {

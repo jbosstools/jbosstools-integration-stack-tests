@@ -6,15 +6,13 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import javax.xml.bind.DatatypeConverter;
 
-import org.jboss.tools.drools.reddeer.kienavigator.structure.OrganizationalUnit;
 import org.jboss.tools.drools.reddeer.kienavigator.structure.Project;
-import org.jboss.tools.drools.reddeer.kienavigator.structure.Repository;
+import org.jboss.tools.drools.reddeer.kienavigator.structure.Space;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class RestClient {
 
@@ -24,9 +22,7 @@ public class RestClient {
 
 	private static final String APP_URL = "http://localhost:8080/business-central/";
 
-	private static final String ORG_UNIT_CALL = APP_URL + "rest/organizationalunits/";
-
-	private static final String REPOSITORY_CALL = APP_URL + "rest/repositories/";
+	private static final String SPACES_CALL = APP_URL + "rest/spaces/";
 
 	private static final String PROJECTS_CALL_EXTENSION = "/projects";
 
@@ -43,7 +39,7 @@ public class RestClient {
 		return getConnection(APP_URL).getResponseCode();
 	}
 
-	public static String[] getResponse(String url) throws MalformedURLException, IOException {
+	private static String getResponse(String url) throws MalformedURLException, IOException {
 		StringBuffer response = new StringBuffer();
 		HttpURLConnection huc = getConnection(url);
 
@@ -57,25 +53,17 @@ public class RestClient {
 			response.append(line);
 		}
 		in.close();
-		return response.toString().replaceAll("[\\{\\}\"\\[\\]]", "").split(",");
+		
+		return response.toString();
 	}
 
-	public static OrganizationalUnit getOrganizationalUnit(String name) throws MalformedURLException, IOException {
-		return new OrganizationalUnit(getResponse(ORG_UNIT_CALL + name));
+	public static Space getSpace(String name) throws MalformedURLException, IOException {
+		String jsonResponce = getResponse(SPACES_CALL + name);
+		return new ObjectMapper().readValue(jsonResponce, Space.class);
 	}
-
-	public static Repository getRepository(String name) throws MalformedURLException, IOException {
-		return new Repository(getResponse(REPOSITORY_CALL + name));
-	}
-
-	public static List<Project> getProjects(String repositoryName) throws MalformedURLException, IOException {
-		List<Project> projects = new ArrayList<Project>();
-		String[] response = getResponse(REPOSITORY_CALL + repositoryName + PROJECTS_CALL_EXTENSION);
-
-		for (int i = 0; i < response.length; i += 4) {
-			Project p = new Project(Arrays.copyOfRange(response, i, i + 4));
-			projects.add(p);
-		}
-		return projects;
+	
+	public static Project[] getProjects(final String spaceName) throws MalformedURLException, IOException {
+		String jsonResponce = getResponse(SPACES_CALL + spaceName + PROJECTS_CALL_EXTENSION);
+		return new ObjectMapper().readValue(jsonResponce, Project[].class);
 	}
 }

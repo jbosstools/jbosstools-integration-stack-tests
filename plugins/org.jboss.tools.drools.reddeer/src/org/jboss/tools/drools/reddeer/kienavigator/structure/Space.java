@@ -3,17 +3,15 @@ package org.jboss.tools.drools.reddeer.kienavigator.structure;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Project {
+public class Space {
 
 	private String name;
-	
-	private String spaceName;
 
 	private String description;
 
-	private String groupId;
+	private String owner;
 
-	private String version;
+	private String defaultGroupId;
 
 	public String getName() {
 		return name;
@@ -21,14 +19,6 @@ public class Project {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getSpaceName() {
-		return spaceName;
-	}
-
-	public void setSpaceName(String spaceName) {
-		this.spaceName = spaceName;
 	}
 
 	public String getDescription() {
@@ -39,19 +29,19 @@ public class Project {
 		this.description = description;
 	}
 
-	public String getGroupId() {
-		return groupId;
+	public String getOwner() {
+		return owner;
 	}
 
-	public void setGroupId(String groupId) {
-		this.groupId = groupId;
+	public void setOwner(String owner) {
+		this.owner = owner;
 	}
 
-	public String getVersion() {
-		return version;
+	public String getDefaultGroupId() {
+		return defaultGroupId;
 	}
 
-	public void setVersion(String version) {
-		this.version = version;
+	public void setDefaultGroupId(String defaultGroupId) {
+		this.defaultGroupId = defaultGroupId;
 	}
 }

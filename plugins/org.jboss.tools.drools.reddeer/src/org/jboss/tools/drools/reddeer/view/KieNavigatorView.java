@@ -9,7 +9,7 @@ import org.eclipse.reddeer.swt.impl.link.DefaultLink;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
 import org.eclipse.reddeer.workbench.impl.view.WorkbenchView;
-import org.jboss.tools.drools.reddeer.kienavigator.item.OrgUnitItem;
+import org.jboss.tools.drools.reddeer.kienavigator.item.SpaceItem;
 import org.jboss.tools.drools.reddeer.kienavigator.item.ProjectItem;
 import org.jboss.tools.drools.reddeer.kienavigator.item.RepositoryItem;
 import org.jboss.tools.drools.reddeer.kienavigator.item.ServerItem;
@@ -108,17 +108,17 @@ public class KieNavigatorView extends WorkbenchView {
 		throw new IllegalArgumentException("No such server: " + number);
 	}
 
-	public OrgUnitItem getOrgUnit(int serverNumber, String orgUnitName) {
-		return getServer(serverNumber).getOrgUnit(orgUnitName);
+	public SpaceItem getSpace(int serverNumber, String space) {
+		return getServer(serverNumber).getSpace(space);
 	}
 
-	public RepositoryItem getRepository(int serverNumber, String orgUnitName, String repoName) {
-		RepositoryItem ri = getOrgUnit(serverNumber, orgUnitName).getRepository(repoName);
+	public RepositoryItem getRepository(int serverNumber, String space, String repoName) {
+		RepositoryItem ri = getSpace(serverNumber, space).getRepository(repoName);
 		ri.importRepository();
-		return getOrgUnit(serverNumber, orgUnitName).getRepository(repoName);
+		return getSpace(serverNumber, space).getRepository(repoName);
 	}
 
-	public ProjectItem getProject(int serverNumber, String orgUnitName, String repoName, String projectName) {
-		return getRepository(serverNumber, orgUnitName, repoName).getProject(projectName);
+	public ProjectItem getProject(int serverNumber, String space, String repoName, String projectName) {
+		return getRepository(serverNumber, space, repoName).getProject(projectName);
 	}
 }

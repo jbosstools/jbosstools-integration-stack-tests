@@ -1,19 +1,15 @@
 package org.jboss.tools.drools.ui.bot.test.kienavigator;
 
-import org.apache.log4j.Logger;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
-import org.eclipse.reddeer.swt.impl.button.YesButton;
-import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.tools.drools.reddeer.kienavigator.dialog.CreateOrgUnitDialog;
-import org.jboss.tools.drools.reddeer.kienavigator.dialog.CreateProjectDialog;
 import org.jboss.tools.drools.reddeer.kienavigator.dialog.CreateRepositoryDialog;
+import org.jboss.tools.drools.reddeer.kienavigator.dialog.CreateSpaceDialog;
 import org.jboss.tools.drools.reddeer.kienavigator.item.RepositoryItem;
 import org.jboss.tools.drools.reddeer.kienavigator.item.ServerItem;
-import org.jboss.tools.drools.reddeer.kienavigator.properties.OrgUnitProperties;
 import org.jboss.tools.drools.reddeer.kienavigator.properties.ProjectProperties;
 import org.jboss.tools.drools.reddeer.kienavigator.properties.RepositoryProperties;
+import org.jboss.tools.drools.reddeer.kienavigator.properties.SpaceProperties;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.ServerRequirement.Server;
 import org.junit.Assert;
@@ -24,17 +20,14 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 public class CreateItemsTest extends KieNavigatorTestParent {
 	
-	private static final Logger LOGGER = Logger.getLogger(CreateItemsTest.class);
-	
-	private static final String SPACE_NAME = "orgname",
+	private static final String 
+			SPACE_NAME = "orgname",
 			OWNER = "owner@email.com",
 			GROUP_ID = "orggroupid",
 			REPO_NAME = "reponame",
-			REPO_USER = "repouser",
-			PROJECT_NAME = "projectname",
 			PROJECT_GID = "projectgid",
-			PROJECT_AID = "projectaid",
-			PROJECT_VERSION = "projectversion";
+			PROJECT_VERSION = "projectversion",
+			DESCRIPTION = "some description";
 
 	@InjectRequirement
 	private ServerRequirement serverReq;
@@ -43,7 +36,7 @@ public class CreateItemsTest extends KieNavigatorTestParent {
 	public void createItemsTest() {
 		ServerItem si = knv.getServers().get(0);
 
-		CreateOrgUnitDialog cod = si.createOrgUnit();
+		CreateSpaceDialog cod = si.createSpace();
 		cod.setName(SPACE_NAME);
 		cod.setOwner(OWNER);
 		cod.setDefaultGroupId(GROUP_ID);
@@ -51,48 +44,32 @@ public class CreateItemsTest extends KieNavigatorTestParent {
 
 		progressInformationWaiting();
 
-		OrgUnitProperties op = knv.getOrgUnit(0, SPACE_NAME).properties();
-		Assert.assertEquals(SPACE_NAME, op.getOrganizationName());
-		Assert.assertEquals(OWNER, op.getOwner());
-		Assert.assertEquals(GROUP_ID, op.getDefaultGroupId());
+		SpaceProperties op = knv.getSpace(0, SPACE_NAME).properties();
+		Assert.assertEquals(SPACE_NAME, op.getSpaceName());
 		op.ok();
 
-		CreateRepositoryDialog crd = knv.getOrgUnit(0, SPACE_NAME).createRepository();
+		CreateRepositoryDialog crd = knv.getSpace(0, SPACE_NAME).createRepository();
 		crd.setName(REPO_NAME);
-		crd.setUsername(REPO_USER);
-		crd.createNewRepository();
+		crd.setGroupId(PROJECT_GID);
+		crd.setVersion(PROJECT_VERSION);
+		crd.setDescription(DESCRIPTION);
 		crd.ok();
 
 		progressInformationWaiting();
 
 		RepositoryProperties rp = knv.getRepository(0, SPACE_NAME, REPO_NAME).properties();
 		Assert.assertEquals(REPO_NAME, rp.getRepositoryName());
-		Assert.assertEquals(SPACE_NAME, rp.getOrganizationalUnit());
-		Assert.assertEquals("null", rp.getUserName());
+		Assert.assertEquals(SPACE_NAME, rp.getSpace());
+		Assert.assertEquals(DESCRIPTION, rp.getDescription());
 		rp.ok();
 
 		RepositoryItem ri = knv.getRepository(0, SPACE_NAME, REPO_NAME);
 		ri.importRepository();
-		CreateProjectDialog cpd = ri.createProject();
-		cpd.setName(PROJECT_NAME);
-		cpd.setGroupId(PROJECT_GID);
-		cpd.setArtifactId(PROJECT_AID);
-		cpd.setVersion(PROJECT_VERSION);
-		cpd.importProjectToWorkspace(false);
-		cpd.ok();
 
-		progressInformationWaiting();
-
-		try {
-			new DefaultShell("Connect to Server");
-			new YesButton().click();
-		} catch (Exception e) {
-			LOGGER.debug("Dialog window with 'Connect to Server is not visible.'");
-		}
-
-		ProjectProperties pp = knv.getProject(0, SPACE_NAME, REPO_NAME, PROJECT_NAME).properties();
-		Assert.assertEquals(PROJECT_NAME, pp.getProjectName());
+		ProjectProperties pp = knv.getProject(0, SPACE_NAME, REPO_NAME, REPO_NAME).properties();
+		Assert.assertEquals(REPO_NAME, pp.getProjectName());
 		Assert.assertEquals(REPO_NAME, pp.getRepository());
+		Assert.assertEquals(DESCRIPTION, pp.getDescription());
 		Assert.assertEquals(PROJECT_GID, pp.getGroupId());
 		Assert.assertEquals(PROJECT_VERSION, pp.getVersion());
 		pp.ok();
