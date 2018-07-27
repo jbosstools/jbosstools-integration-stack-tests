@@ -15,7 +15,7 @@
   <properties>
     <pluginVersion>7.3.0.Final</pluginVersion>
     <runtimeVersion>7.3.0.Final</runtimeVersion>
-    <rd.config>${project.build.directory}/config</rd.config>
+    <rd.config>${project.build.directory}/config/drools.yaml</rd.config>
     <systemProperties>${integrationTestsSystemProperties} -Drd.config=${rd.config}</systemProperties>
     <customization.file>resources/settings/plugin_customization.ini</customization.file>
   </properties>
