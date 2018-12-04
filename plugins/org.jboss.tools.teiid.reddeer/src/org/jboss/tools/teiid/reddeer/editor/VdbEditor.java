@@ -163,6 +163,9 @@ public class VdbEditor extends DefaultEditor {
 	public DataRolesDialog addDataRole() {
 		new DefaultCTabItem("Data Roles").activate();
 		new PushButton(5).click();
+		if(new ShellIsActive("Default Role Access").test()){
+			new PushButton("No").click(); //Legacy behavior before TEIIDDES-2964
+		}
 		return new DataRolesDialog(DataRolesDialog.CREATE_TITLE);
 	}
 
