@@ -54,7 +54,7 @@ public class DatabaseConnectionProfile extends ConnectionProfileWizard{
 	
 	public DatabaseConnectionProfile setHostname(String hostname) {
 		log.info("Set host name to: '" + hostname + "'");
-		activate();
+		activateWizard();
 		switch(vendor){
 		
 		case "Sybase ASE":
@@ -76,7 +76,7 @@ public class DatabaseConnectionProfile extends ConnectionProfileWizard{
 	
 	public DatabaseConnectionProfile setDatabase(String database) {
 		log.info("Set database to: '" + database + "'");
-		activate();
+		activateWizard();
 		
 		switch (vendor){
 		
@@ -95,21 +95,21 @@ public class DatabaseConnectionProfile extends ConnectionProfileWizard{
 	
 	public DatabaseConnectionProfile setPort(String port) {
 		log.info("Set port to: '" + port + "'");
-		activate();
+		activateWizard();
 		new LabeledText("Port number:").setText(port);
 		return this;
 	}
 	
 	public DatabaseConnectionProfile setServer(String server) {
 		log.info("Set server to: '" + server + "'");
-		activate();
+		activateWizard();
 		new LabeledText("Server:").setText(server);
 		return this;
 	}
 	
 	public DatabaseConnectionProfile setUsername(String username) {
 		log.info("Set user name to: '" + username + "'");
-		activate();
+		activateWizard();
 		if(vendor.equals("MongoDB Data Source")){
 			new LabeledText("User Name:").setText(username);
 		}else{
@@ -120,14 +120,14 @@ public class DatabaseConnectionProfile extends ConnectionProfileWizard{
 	
 	public DatabaseConnectionProfile setPassword(String password) {
 		log.info("Set password to: '" + password + "'");
-		activate();
+		activateWizard();
 		new LabeledText("Password:").setText(password);
 		return this;
 	}
 	
 	public DatabaseConnectionProfile savePassword(boolean checked) {
 		log.info("Save password : '" + checked + "'");
-		activate();
+		activateWizard();
 		CheckBox checkBox = null;
 		if(vendor.equals("HSQLDB")){
 			checkBox = new CheckBox("Save Password");
@@ -142,7 +142,7 @@ public class DatabaseConnectionProfile extends ConnectionProfileWizard{
 	
 	public DatabaseConnectionProfile connectAfter(boolean checked) {
 		log.info("Connect when the wizard completes : '" + checked + "'");
-		activate();
+		activateWizard();
 		CheckBox checkBox = new CheckBox("Connect when the wizard completes");
 		if(checked != checkBox.isChecked()){
 			checkBox.click();
@@ -155,7 +155,7 @@ public class DatabaseConnectionProfile extends ConnectionProfileWizard{
 		new PushButton("Test Connection").click();
 		new DefaultShell("Success");
 		new PushButton("OK").click();
-		activate();
+		activateWizard();
 		return this;
 	}
 }

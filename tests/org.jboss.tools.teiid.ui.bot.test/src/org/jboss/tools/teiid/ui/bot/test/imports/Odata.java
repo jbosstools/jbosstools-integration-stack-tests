@@ -63,7 +63,7 @@ public class Odata {
 				.createNewDataSource()
 				.setName(dataSourceName)
 				.setDriver("webservice")
-				.setImportPropertie(CreateDataSourceDialog.DATASOURCE_PROPERTY_URL, "http://services.odata.org/Northwind/Northwind.svc")
+				.setImportPropertie(CreateDataSourceDialog.DATASOURCE_PROPERTY_URL, "https://services.odata.org/Northwind/Northwind.svc/")
 				.finish();
 		TeiidConnectionImportWizard.getInstance()
 				.selectDataSource("java:/" + dataSourceName)
