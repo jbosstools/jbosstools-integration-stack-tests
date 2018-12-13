@@ -1,5 +1,6 @@
 package org.jboss.tools.teiid.ui.bot.test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -19,6 +20,7 @@ import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.teiid.reddeer.condition.IsInProgress;
 import org.jboss.tools.teiid.reddeer.connection.ConnectionProfileConstants;
 import org.jboss.tools.teiid.reddeer.connection.TeiidJDBCHelper;
+import org.jboss.tools.teiid.reddeer.dialog.DataRolesDialog;
 import org.jboss.tools.teiid.reddeer.dialog.DataRolesDialog.PermissionType;
 import org.jboss.tools.teiid.reddeer.editor.ModelEditor.ItemType;
 import org.jboss.tools.teiid.reddeer.editor.RelationalModelEditor;
@@ -262,8 +264,8 @@ public class DataRolesTest {
  		
  		VdbEditor vdbEditor = VdbEditor.getInstance("ReuseVdb");
  		vdbEditor.addDataRole()
- 				.setName("Users")
- 				.addRole("users")
+ 				.setName("Customers")
+ 				.addRole("customers")
  				.finish();
  		vdbEditor.save();
  		
@@ -272,6 +274,68 @@ public class DataRolesTest {
  		executeQueriesForUser("ReuseVdb", "VdbReuseView", "user", new boolean[]{true, false, false, false, false});
 	}
 	
+	@Test
+    public void testClearPermissions() {
+        ModelExplorer modelExplorer = new ModelExplorer();
+        modelExplorer.openModelEditor(PROJECT_NAME, "PreparedVdb.vdb");
+        VdbEditor vdbEditor = VdbEditor.getInstance("PreparedVdb.vdb");
+        vdbEditor.synchronizeAll();
+        AbstractWait.sleep(TimePeriod.SHORT);
+
+        DataRolesDialog dialog = vdbEditor.getDataRole("user");
+
+        dialog.setModelPermission(PermissionType.CREATE, true, SOURCE_MODEL)
+            .setModelPermission(PermissionType.UPDATE, true, VIEW_MODEL)
+            .setModelPermission(PermissionType.DELETE, true, SOURCE_MODEL)
+            .setModelPermission(PermissionType.EXECUTE, true, VIEW_MODEL)
+            .setModelPermission(PermissionType.EXECUTE, false, SOURCE_MODEL)
+            .finish();
+
+        dialog = vdbEditor.getDataRole("user");
+
+        assertEquals(dialog.getModelPermission(DataRolesDialog.PermissionType.CREATE, SOURCE_MODEL), true);
+        assertEquals(dialog.getModelPermission(DataRolesDialog.PermissionType.CREATE, VIEW_MODEL), false);
+        assertEquals(dialog.getModelPermission(DataRolesDialog.PermissionType.READ, SOURCE_MODEL), true);
+        assertEquals(dialog.getModelPermission(DataRolesDialog.PermissionType.READ, VIEW_MODEL), true);
+        assertEquals(dialog.getModelPermission(DataRolesDialog.PermissionType.UPDATE, SOURCE_MODEL), false);
+        assertEquals(dialog.getModelPermission(DataRolesDialog.PermissionType.UPDATE, VIEW_MODEL), true);
+        assertEquals(dialog.getModelPermission(DataRolesDialog.PermissionType.DELETE, SOURCE_MODEL), true);
+        assertEquals(dialog.getModelPermission(DataRolesDialog.PermissionType.DELETE, VIEW_MODEL), false);
+        assertEquals(dialog.getModelPermission(DataRolesDialog.PermissionType.EXECUTE, SOURCE_MODEL), false);
+        assertEquals(dialog.getModelPermission(DataRolesDialog.PermissionType.EXECUTE, VIEW_MODEL), true);
+
+        dialog.cancel();
+
+        vdbEditor.save();
+        modelExplorer.deployVdb(PROJECT_NAME, "PreparedVdb.vdb");
+        executeQueriesForUser("PreparedVdb", "Products_source", "teiidUser", new boolean[]{true, false, true, true, false});
+        executeQueriesForUser("PreparedVdb", "Products_view", "teiidUser", new boolean[]{true, true, false, false, true});
+
+        vdbEditor.activate();
+        dialog = vdbEditor.getDataRole("user");
+        dialog.clearAllPermissions();
+
+        assertEquals(dialog.getModelPermission(DataRolesDialog.PermissionType.CREATE, SOURCE_MODEL), false);
+        assertEquals(dialog.getModelPermission(DataRolesDialog.PermissionType.CREATE, VIEW_MODEL), false);
+        assertEquals(dialog.getModelPermission(DataRolesDialog.PermissionType.READ, SOURCE_MODEL), false);
+        assertEquals(dialog.getModelPermission(DataRolesDialog.PermissionType.READ, VIEW_MODEL), false);
+        assertEquals(dialog.getModelPermission(DataRolesDialog.PermissionType.UPDATE, SOURCE_MODEL), false);
+        assertEquals(dialog.getModelPermission(DataRolesDialog.PermissionType.UPDATE, VIEW_MODEL), false);
+        assertEquals(dialog.getModelPermission(DataRolesDialog.PermissionType.DELETE, SOURCE_MODEL), false);
+        assertEquals(dialog.getModelPermission(DataRolesDialog.PermissionType.DELETE, VIEW_MODEL), false);
+        assertEquals(dialog.getModelPermission(DataRolesDialog.PermissionType.EXECUTE, SOURCE_MODEL), false);
+        assertEquals(dialog.getModelPermission(DataRolesDialog.PermissionType.EXECUTE, VIEW_MODEL), false);
+
+        dialog.setModelPermission(PermissionType.READ, true, SOURCE_MODEL)
+            .setModelPermission(PermissionType.READ, true, VIEW_MODEL)
+            .finish();
+
+        vdbEditor.save();
+        modelExplorer.deployVdb(PROJECT_NAME, "PreparedVdb.vdb");
+        executeQueriesForUser("PreparedVdb", "Products_source", "teiidUser", new boolean[]{true, false, false, false, false});
+        executeQueriesForUser("PreparedVdb", "Products_view", "teiidUser", new boolean[]{true, false, false, false, false});
+	}
+
 	private void executeQueriesForUser(String vdbName, String model, String username, boolean[] expectedResult){
         TeiidJDBCHelper jdbcHelper = new TeiidJDBCHelper(teiidServer, vdbName, username, "dvdvdv0#");
 

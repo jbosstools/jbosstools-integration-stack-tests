@@ -14,10 +14,12 @@ import org.eclipse.reddeer.core.handler.WidgetHandler;
 import org.eclipse.reddeer.core.matcher.WithTooltipTextMatcher;
 import org.eclipse.reddeer.swt.api.TableItem;
 import org.eclipse.reddeer.swt.condition.ShellIsActive;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.button.CheckBox;
 import org.eclipse.reddeer.swt.impl.button.FinishButton;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.swt.impl.button.YesButton;
 import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
@@ -261,4 +263,14 @@ public class DataRolesDialog extends AbstractDialog {
 	public void clearFilterCondition() {
         new PushButton(new DefaultShell(title), new WithTooltipTextMatcher("Clear Filter")).click();
 	}
+
+    public void clearAllPermissions() {
+        new DefaultCTabItem("Permissions").activate();
+        new DefaultCTabItem("Model").activate();
+        new PushButton("Clear All Permissions").click();
+
+        if (new ShellIsAvailable("Remove All Permissions").test()) {
+            new YesButton().click();
+        }
+    }
 }
