@@ -5,17 +5,17 @@
 		<!-- https://repository.jboss.org/nexus/content/groups/public/org/jboss/tools/parent/ -->
 		<groupId>org.jboss.tools</groupId>
 		<artifactId>parent</artifactId>
-		<version>4.6.0.Final-SNAPSHOT</version>
+		<version>4.11.0.Final-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools</groupId>
 	<artifactId>integration-stack-tests</artifactId>
-	<version>4.6.0-SNAPSHOT</version>
+	<version>4.11.0-SNAPSHOT</version>
 	<name>integration-stack-tests.all</name>
 	<packaging>pom</packaging>
 	<properties>
 		<tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-integration-stack-tests.git</tycho.scmUrl>
 		<jbosstools.url>http://download.jboss.org/jbosstools</jbosstools.url>
-		<jbtis.tp.version>4.6.0.Final</jbtis.tp.version>
+		<jbtis.tp.version>4.11.0.Final</jbtis.tp.version>
 		<jbtis.repo>staging</jbtis.repo>
 		<orbit.site>${jbosstools.url}/updates/requirements/orbit/S20180504181223/</orbit.site>
 		<skipRequirements>${skipTests}</skipRequirements>

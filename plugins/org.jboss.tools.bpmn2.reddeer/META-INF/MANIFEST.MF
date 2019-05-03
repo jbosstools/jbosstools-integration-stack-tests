@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: BPMN2 Reddeer
 Bundle-SymbolicName: org.jboss.tools.bpmn2.reddeer
-Bundle-Version: 4.6.0.qualifier
+Bundle-Version: 4.11.0.qualifier
 Bundle-ClassPath: .
 Require-Bundle: 
  org.eclipse.gef,

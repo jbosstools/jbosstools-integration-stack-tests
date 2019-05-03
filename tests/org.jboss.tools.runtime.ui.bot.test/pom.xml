@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.jboss.tools.integration-stack-tests</groupId>
 		<artifactId>tests</artifactId>
-		<version>4.6.0-SNAPSHOT</version>
+		<version>4.11.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.runtime</groupId>
 	<artifactId>org.jboss.tools.runtime.ui.bot.test</artifactId>
