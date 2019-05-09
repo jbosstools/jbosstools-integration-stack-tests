@@ -1,4 +1,0 @@
-VTable1, "SELECT * FROM PMod1.PTab1, PMod1.PTab2", "Descrip, no embedded quotes" 
-VTable2, "SELECT * FROM PMod1.PTab2", "Descrip 2 with quotes ""xxx"""  
-VTable10, "SELECT * FROM PMod1.PTab10", "Descrip 10" 
-VProc1, "BEGIN SELECT * FROM PMod1.PTab10; END", "Descrip VProc1"

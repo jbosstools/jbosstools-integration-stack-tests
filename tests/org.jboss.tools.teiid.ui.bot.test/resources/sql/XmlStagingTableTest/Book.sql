@@ -1,4 +1,0 @@
-SELECT Books.BOOKS.ISBN AS isbn, Books.BOOKS.TITLE AS title 
-FROM Books.BOOKS 
-WHERE INPUTS.publisherId = Books.BOOKS.PUBLISHER 
-ORDER BY isbn

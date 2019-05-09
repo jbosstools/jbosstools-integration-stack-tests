@@ -1,1 +1,0 @@
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><mns:putResults xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:mns="http://www.teiid.org/CheckBook_Output"><results>Book NOT found</results></mns:putResults></soap:Body></soap:Envelope>

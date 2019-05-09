@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<xs:schema xmlns="http://www.metamatrix.com/ProductsInfo_Input" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.metamatrix.com/ProductsInfo_Input">
-  <xs:element name="ProductsInfo_Input" type="ProductsInfo_Input_Type"/>
-  <xs:complexType name="ProductsInfo_Input_Type">
-    <xs:sequence>
-      <xs:element maxOccurs="1" minOccurs="0" name="INSTR_ID" nillable="false" type="xs:string"/>
-    </xs:sequence>
-  </xs:complexType>
-</xs:schema>

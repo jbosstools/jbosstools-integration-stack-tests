@@ -1,8 +1,0 @@
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-	<soap:Body>
-		<ProductInfo:ResultOutput xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-			xmlns:ProductInfo="http://teiid.org/ProductInfo">
-			<results>Operation Successful!</results>
-		</ProductInfo:ResultOutput>
-	</soap:Body>
-</soap:Envelope>

@@ -1,6 +1,0 @@
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-	<soap:Body>
-		<ProductInfo:ProductOutput xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-			xmlns:ProductInfo="http://teiid.org/ProductInfo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" />
-	</soap:Body>
-</soap:Envelope>

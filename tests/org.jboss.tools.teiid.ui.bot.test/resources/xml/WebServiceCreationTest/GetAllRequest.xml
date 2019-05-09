@@ -1,6 +1,0 @@
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ProductInfo="http://teiid.org/ProductInfo">
-    <soap:Header/>
-    <soap:Body>
-        <ProductInfo:EmptyInput/>
-    </soap:Body>
-</soap:Envelope>

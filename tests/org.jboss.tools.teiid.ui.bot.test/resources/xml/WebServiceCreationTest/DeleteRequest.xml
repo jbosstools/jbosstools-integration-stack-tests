@@ -1,8 +1,0 @@
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ProductInfo="http://teiid.org/ProductInfo">
-    <soap:Header/>
-    <soap:Body>
-        <ProductInfo:IdInput>
-            <ProductInfo:INSTR_ID>XXX1234</ProductInfo:INSTR_ID>
-        </ProductInfo:IdInput>
-    </soap:Body>
-</soap:Envelope>
