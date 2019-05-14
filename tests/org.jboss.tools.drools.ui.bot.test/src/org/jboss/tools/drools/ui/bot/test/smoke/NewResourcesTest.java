@@ -6,8 +6,11 @@ import java.util.regex.Pattern;
 import org.eclipse.reddeer.eclipse.core.resources.Project;
 import org.eclipse.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaPerspective;
+import org.eclipse.reddeer.junit.execution.annotation.RunIf;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.tools.common.reddeer.condition.IssueIsClosed;
+import org.jboss.tools.common.reddeer.condition.IssueIsClosed.Jira;
 import org.jboss.tools.drools.reddeer.editor.DrlEditor;
 import org.jboss.tools.drools.reddeer.wizard.NewDslSamplesWizardPage;
 import org.jboss.tools.drools.reddeer.wizard.NewDslWizard;
@@ -91,6 +94,8 @@ public class NewResourcesTest extends TestParent {
 	}
 
 	@Test
+	@Jira("DROOLS-2793")
+	@RunIf(conditionClass = IssueIsClosed.class)
 	@UsePerspective(JavaPerspective.class)
 	@UseDefaultProject
 	public void testNewDslr() {
