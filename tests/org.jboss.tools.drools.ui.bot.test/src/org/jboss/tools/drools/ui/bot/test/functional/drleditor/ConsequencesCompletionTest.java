@@ -73,7 +73,7 @@ public class ConsequencesCompletionTest extends DrlCompletionParent {
 		editor.writeText("MyMessage.");
 		assist = editor.createContentAssist();
 		items = assist.getItems();
-		Assert.assertEquals("Some Message methods are missing", 3, items.size());
+		Assert.assertEquals("Some Message methods are missing", 4, items.size());
 		Assert.assertTrue("Constant NO_PARAMETER is missing", items.contains("NO_PARAMETER : Object - MyMessage"));
 		assist.selectItem("NO_PARAMETER : Object - MyMessage");
 		assertCorrectText(editor, "$msg.setParameter(MyMessage.NO_PARAMETER);");

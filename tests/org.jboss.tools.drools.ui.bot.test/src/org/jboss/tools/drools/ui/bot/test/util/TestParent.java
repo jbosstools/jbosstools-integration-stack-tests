@@ -304,7 +304,7 @@ public abstract class TestParent {
 				.append("/")
 				.append(getResourcesLocation())
 				.append("/")
-				.append("rules");
+				.append("com/sample/rules");
 		return sb.toString();
 	}
 

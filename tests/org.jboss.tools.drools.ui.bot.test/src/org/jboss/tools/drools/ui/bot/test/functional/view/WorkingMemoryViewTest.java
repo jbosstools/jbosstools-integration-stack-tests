@@ -6,6 +6,7 @@ import java.util.Map;
 import org.eclipse.reddeer.common.matcher.RegexMatcher;
 import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.direct.preferences.PreferencesUtil;
 import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
@@ -29,6 +30,7 @@ import org.jboss.tools.runtime.reddeer.requirement.RuntimeImplementationType;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -46,6 +48,11 @@ public class WorkingMemoryViewTest extends ViewTestParent {
 
 	public WorkingMemoryViewTest() {
 		super(WorkingMemoryView.class);
+	}
+	
+	@BeforeClass
+	public static void doNotOpenAssociatedPerspective() {
+		PreferencesUtil.setOpenAssociatedPerspective("never");
 	}
 
 	@Test
