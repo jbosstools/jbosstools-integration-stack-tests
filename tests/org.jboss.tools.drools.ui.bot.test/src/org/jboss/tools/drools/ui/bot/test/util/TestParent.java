@@ -309,7 +309,7 @@ public abstract class TestParent {
 	}
 
 	protected String[] getResourcePath(String resourceName) {
-		return getResourcePath("rules", resourceName);
+		return getResourcePath("com.sample.rules", resourceName);
 	}
 
 	protected String[] getResourcePath(String packageName, String resourceName) {

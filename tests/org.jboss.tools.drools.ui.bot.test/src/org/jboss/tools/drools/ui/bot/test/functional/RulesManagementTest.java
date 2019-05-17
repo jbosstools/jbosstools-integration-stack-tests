@@ -8,6 +8,7 @@ import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
 import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
+import org.eclipse.reddeer.eclipse.ui.perspectives.DebugPerspective;
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.eclipse.reddeer.eclipse.ui.perspectives.ResourcePerspective;
 import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
@@ -141,7 +142,7 @@ public class RulesManagementTest extends TestParent {
 	}
 
 	@Test
-	@UsePerspective(DroolsPerspective.class)
+	@UsePerspective(DebugPerspective.class)
 	@UseDefaultProject
 	public void testDebugRule() {
 		OpenUtility.openResource(DEFAULT_PROJECT_NAME, getResourcePath("Sample.drl"));

@@ -26,10 +26,12 @@ import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement;
 import org.jboss.tools.runtime.reddeer.requirement.RuntimeRequirement.Runtime;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @Runtime
+@Ignore("DROOLS-2793")
 @RunWith(RedDeerSuite.class)
 public class DslrEditorTest extends TestParent {
 	
